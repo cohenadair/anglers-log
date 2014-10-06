@@ -19,30 +19,47 @@
 - (id)initWithName: (NSString *)aName {
     if (self = [super init]) {
         _name = aName;
-        _fishingSpots = [NSMutableDictionary dictionary];
+        _fishingSpots = [NSMutableSet setWithCapacity:0];
     }
     
     return self;
 }
 
 // setting
-- (void)addFishingSpot: (NSString *)aName location: (CLLocation *)aLocation {
-    [self.fishingSpots setObject: aLocation forKey: aName];
+- (BOOL)addFishingSpot: (CMAFishingSpot *)aFishingSpot {
+    if (aFishingSpot != nil) {
+        if ([self fishingSpotWithName:aFishingSpot.name] != nil) {
+            NSLog(@"Fishing spot with name %@ already exists", aFishingSpot.name);
+            return NO;
+        }
+    
+        [self.fishingSpots addObject:aFishingSpot];
+        return YES;
+    }
+    
+    return NO;
 }
 
-- (void)removeFishingSpotByName: (NSString *)aName {
-    [self.fishingSpots removeObjectForKey:aName];
+- (void)removeFishingSpot: (CMAFishingSpot *)aFishingSpot {
+    [self.fishingSpots removeObject:aFishingSpot];
 }
 
-// removes fishing spot with aName and adds fishing spot with aNewName and aNewLocation
-- (void)editFishingSpot: (NSString *)aName newName: (NSString *)aNewName newLocation: (CLLocation *)aNewLocation {
-    [self removeFishingSpotByName:aName];
-    [self addFishingSpot:aNewName location:aNewLocation];
+- (void)editFishingSpot: (CMAFishingSpot *)anOldFishingSpot newFishingSpot: (CMAFishingSpot *)aNewFishingSpot {
+    [self removeFishingSpot:anOldFishingSpot];
+    [self addFishingSpot:aNewFishingSpot];
 }
 
 // accessing
 - (NSInteger)fishingSpotCount {
     return [self.fishingSpots count];
+}
+
+- (CMAFishingSpot *)fishingSpotWithName: (NSString *)aName {
+    for (CMAFishingSpot *spot in self.fishingSpots)
+        if ([spot.name caseInsensitiveCompare:aName] == NSOrderedSame)
+            return spot;
+    
+    return nil;
 }
 
 @end

@@ -10,6 +10,7 @@
 #import <XCTest/XCTest.h>
 #import <CoreLocation/CoreLocation.h>
 #import "CMALocation.h"
+#import "CMAFishingSpot.h"
 
 
 @interface CMALocationTestCase : XCTestCase
@@ -42,19 +43,26 @@
     CLLocation *loc3 = [CLLocation new];
     loc3 = [loc3 initWithLatitude:2.3456 longitude:6.1872];
     
+    CMAFishingSpot *mySpot1 = [CMAFishingSpot withName:@"Little Hole"];
+    mySpot1.location = loc1;
+    CMAFishingSpot *mySpot2 = [CMAFishingSpot withName:@"Beaver Dam"];
+    mySpot2.location = loc2;
+    CMAFishingSpot *mySpot3 = [CMAFishingSpot withName:@"Rock Wall"];
+    mySpot3.location = loc3;
+    
     // addFishingSpot
     XCTAssert([myLocation fishingSpotCount] == 0, @"Wrong fishing spot count; should be 0");
-    [myLocation addFishingSpot:@"Little Hole" location:loc1];
+    [myLocation addFishingSpot:mySpot1];
     XCTAssert([myLocation fishingSpotCount] == 1, @"Wrong fishing spot count; should be 1");
-    [myLocation addFishingSpot:@"Beaver Dam" location:loc2];
-    [myLocation addFishingSpot:@"Rock Wall" location:loc3];
+    [myLocation addFishingSpot:mySpot2];
+    [myLocation addFishingSpot:mySpot3];
     XCTAssert([myLocation fishingSpotCount] == 3, @"Wrong fishing spot count; should be 3");
     
     // removeFishingSpotByName
-    [myLocation removeFishingSpotByName:@"Little Hole"];
+    [myLocation removeFishingSpot:mySpot1];
     XCTAssert([myLocation fishingSpotCount] == 2, @"Wrong fishing spot count; should be 2");
-    [myLocation removeFishingSpotByName:@"Rock Wall"];
-    [myLocation removeFishingSpotByName:@"Beaver Dam"];
+    [myLocation removeFishingSpot:mySpot3];
+    [myLocation removeFishingSpot:mySpot2];
     XCTAssert([myLocation fishingSpotCount] == 0, @"Wrong fishing spot count; should be 0");
 }
 
@@ -66,13 +74,18 @@
     CLLocation *loc2 = [CLLocation new];
     loc2 = [loc2 initWithLatitude:3.2245 longitude:7.2235];
     
-    [myLocation addFishingSpot:@"Little Hole" location:loc1];
-    [myLocation editFishingSpot:@"Little Hole" newName:@"Willow Overgrown" newLocation:loc2];
-    XCTAssert([[myLocation fishingSpots] objectForKey:@"Willow Overgrown"], @"Edit fishing spot failed; name should have changed");
+    CMAFishingSpot *mySpot1 = [CMAFishingSpot withName:@"Little Hole"];
+    mySpot1.location = loc1;
+    CMAFishingSpot *mySpot2 = [CMAFishingSpot withName:@"Beaver Dam"];
+    mySpot2.location = loc2;
     
-    CLLocation *loc = [myLocation.fishingSpots objectForKey:@"Willow Overgrown"];
-    XCTAssert([loc coordinate].latitude == 3.2245, @"Edit fishing spot failed; latitude should have changed");
-    XCTAssert([loc coordinate].longitude == 7.2235, @"Edit fishing spot failed; longitute should have changed");
+    [myLocation addFishingSpot:mySpot1];
+    [myLocation editFishingSpot:mySpot1 newFishingSpot:mySpot2];
+    XCTAssert([[myLocation fishingSpots] containsObject:mySpot2], @"Edit fishing spot failed; mySpot2 fishing spot should exist");
+    
+    CMAFishingSpot *myFishingSpot = [myLocation.fishingSpots member:mySpot2];
+    XCTAssert([myFishingSpot coordinate].latitude == 3.2245, @"Edit fishing spot failed; latitude should have changed");
+    XCTAssert([myFishingSpot coordinate].longitude == 7.2235, @"Edit fishing spot failed; longitute should have changed");
 }
 
 /*

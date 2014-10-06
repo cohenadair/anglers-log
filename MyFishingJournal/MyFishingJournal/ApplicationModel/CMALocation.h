@@ -8,11 +8,12 @@
 
 #import <Foundation/Foundation.h>
 #import <CoreLocation/CoreLocation.h>
+#import "CMAFishingSpot.h"
 
 @interface CMALocation : NSObject
 
 @property (strong, nonatomic)NSString *name;
-@property (strong, nonatomic)NSMutableDictionary *fishingSpots;
+@property (strong, nonatomic)NSMutableSet *fishingSpots;
 
 // instance creation
 + (CMALocation *)withName: (NSString *)aName;
@@ -21,11 +22,12 @@
 - (id)initWithName: (NSString *)aName;
 
 // setting
-- (void)addFishingSpot: (NSString *)aName location: (CLLocation *)aLocation;
-- (void)removeFishingSpotByName: (NSString *)aName;
-- (void)editFishingSpot: (NSString *)aName newName: (NSString *)aNewName newLocation: (CLLocation *)aNewLocation;
+- (BOOL)addFishingSpot: (CMAFishingSpot *)aFishingSpot;
+- (void)removeFishingSpot: (CMAFishingSpot *)aFishingSpot;
+- (void)editFishingSpot: (CMAFishingSpot *)anOldFishingSpot newFishingSpot: (CMAFishingSpot *)aNewFishingSpot;
 
 // accessing
 - (NSInteger)fishingSpotCount;
+- (CMAFishingSpot *)fishingSpotWithName: (NSString *)aName;
 
 @end
