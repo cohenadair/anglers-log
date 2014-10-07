@@ -58,6 +58,9 @@
     [myLocation addFishingSpot:mySpot3];
     XCTAssert([myLocation fishingSpotCount] == 3, @"Wrong fishing spot count; should be 3");
     
+    // duplicate fishing spot
+    XCTAssert(![myLocation addFishingSpot:mySpot2], @"Duplicate fishing spot should not be added");
+    
     // removeFishingSpotByName
     [myLocation removeFishingSpot:mySpot1];
     XCTAssert([myLocation fishingSpotCount] == 2, @"Wrong fishing spot count; should be 2");
