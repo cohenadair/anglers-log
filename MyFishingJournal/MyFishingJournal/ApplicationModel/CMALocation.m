@@ -27,22 +27,17 @@
 
 // setting
 - (BOOL)addFishingSpot: (CMAFishingSpot *)aFishingSpot {
-    if (aFishingSpot != nil) {
-        if ([self fishingSpotWithName:aFishingSpot.name] != nil) {
-            NSLog(@"Fishing spot with name %@ already exists", aFishingSpot.name);
-            return NO;
-        }
-    
-        [self.fishingSpots addObject:aFishingSpot];
-        return YES;
+    if ([self fishingSpotWithName:aFishingSpot.name] != nil) {
+        NSLog(@"Fishing spot with name %@ already exists", aFishingSpot.name);
+        return NO;
     }
-    
-    return NO;
+
+    [self.fishingSpots addObject:aFishingSpot];
+    return YES;
 }
 
 - (void)removeFishingSpot: (CMAFishingSpot *)aFishingSpot {
-    if (aFishingSpot != nil)
-        [self.fishingSpots removeObject:aFishingSpot];
+    [self.fishingSpots removeObject:aFishingSpot];
 }
 
 - (void)editFishingSpot: (CMAFishingSpot *)anOldFishingSpot newFishingSpot: (CMAFishingSpot *)aNewFishingSpot {

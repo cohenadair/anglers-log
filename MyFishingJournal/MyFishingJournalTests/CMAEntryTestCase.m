@@ -30,7 +30,7 @@
     [entry setFishSpecies:@"Steelhead"];
     [entry setFishLength:30];
     [entry setFishWeight:5];
-    [entry setFishingMethods:[NSArray arrayWithObjects:@"Boat", @"Troll", nil]];
+    [entry setFishingMethods:[NSSet setWithObjects:@"Boat", @"Troll", nil]];
     
     return entry;
 }
