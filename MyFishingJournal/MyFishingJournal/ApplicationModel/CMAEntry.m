@@ -19,7 +19,7 @@
 - (id)initWithDate: (NSDate *)aDate {
     if (self = [super init]) {
         _entryDate = aDate;
-        _images = [NSMutableArray arrayWithCapacity:0];
+        _images = [NSMutableSet setWithCapacity:0];
     }
     
     return self;

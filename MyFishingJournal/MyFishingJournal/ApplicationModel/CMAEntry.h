@@ -20,8 +20,8 @@
 @property (nonatomic)NSInteger fishLength;
 @property (nonatomic)NSInteger fishWeight;
 
-@property (strong, nonatomic)NSMutableArray *images;
-@property (strong, nonatomic)NSArray *fishingMethods;
+@property (strong, nonatomic)NSMutableSet *images;
+@property (strong, nonatomic)NSSet *fishingMethods;
 
 @property (strong, nonatomic)CMALocation *location;
 
