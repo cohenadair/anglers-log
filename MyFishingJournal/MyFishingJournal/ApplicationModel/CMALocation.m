@@ -41,7 +41,8 @@
 }
 
 - (void)removeFishingSpot: (CMAFishingSpot *)aFishingSpot {
-    [self.fishingSpots removeObject:aFishingSpot];
+    if (aFishingSpot != nil)
+        [self.fishingSpots removeObject:aFishingSpot];
 }
 
 - (void)editFishingSpot: (CMAFishingSpot *)anOldFishingSpot newFishingSpot: (CMAFishingSpot *)aNewFishingSpot {

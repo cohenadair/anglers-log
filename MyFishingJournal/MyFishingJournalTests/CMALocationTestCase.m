@@ -67,6 +67,14 @@
     [myLocation removeFishingSpot:mySpot3];
     [myLocation removeFishingSpot:mySpot2];
     XCTAssert([myLocation fishingSpotCount] == 0, @"Wrong fishing spot count; should be 0");
+    
+    // adding/removing a nil object
+    mySpot1 = nil;
+    XCTAssert(![myLocation addFishingSpot:mySpot1], @"Should not be able to add a nil object");
+    XCTAssert([myLocation fishingSpotCount] == 0, @"Fishing spot count should be 0 after adding a nil object");
+    [myLocation addFishingSpot:mySpot2];
+    [myLocation removeFishingSpot:mySpot1];
+    XCTAssert([myLocation fishingSpotCount] == 1, @"Fishing spot count should be 1");
 }
 
 - (void)testEditFishingSpot {
