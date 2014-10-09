@@ -62,10 +62,10 @@
     XCTAssert(![myLocation addFishingSpot:mySpot2], @"Duplicate fishing spot should not be added");
     
     // removeFishingSpotByName
-    [myLocation removeFishingSpot:mySpot1];
+    [myLocation removeFishingSpotNamed:@"Little Hole"];
     XCTAssert([myLocation fishingSpotCount] == 2, @"Wrong fishing spot count; should be 2");
-    [myLocation removeFishingSpot:mySpot3];
-    [myLocation removeFishingSpot:mySpot2];
+    [myLocation removeFishingSpotNamed:@"Beaver Dam"];
+    [myLocation removeFishingSpotNamed:@"Rock Wall"];
     XCTAssert([myLocation fishingSpotCount] == 0, @"Wrong fishing spot count; should be 0");
 }
 
@@ -84,21 +84,12 @@
     
     [myLocation addFishingSpot:mySpot1];
     [myLocation editFishingSpot:@"Little Hole" newProperties:mySpot2];
-    XCTAssert([myLocation fishingSpotWithName:@"Beaver Dam"] != nil, @"Edit fishing spot failed; Beaver Dam should exist");
-    XCTAssert([myLocation fishingSpotWithName:@"Little Hole"] == nil, @"Edit fishing spot failed; Little Hold should no exist");
+    XCTAssert([myLocation fishingSpotNamed:@"Beaver Dam"] != nil, @"Edit fishing spot failed; Beaver Dam should exist");
+    XCTAssert([myLocation fishingSpotNamed:@"Little Hole"] == nil, @"Edit fishing spot failed; Little Hold should no exist");
     
-    CMAFishingSpot *myFishingSpot = [myLocation fishingSpotWithName:@"Beaver Dam"];
+    CMAFishingSpot *myFishingSpot = [myLocation fishingSpotNamed:@"Beaver Dam"];
     XCTAssert([myFishingSpot coordinate].latitude == 3.2245, @"Edit fishing spot failed; latitude should have changed");
     XCTAssert([myFishingSpot coordinate].longitude == 7.2235, @"Edit fishing spot failed; longitute should have changed");
 }
-
-/*
-- (void)testPerformanceExample {
-    // This is an example of a performance test case.
-    [self measureBlock:^{
-        // Put the code you want to measure the time of here.
-    }];
-}
- */
 
 @end

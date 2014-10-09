@@ -27,7 +27,7 @@
 
 // setting
 - (BOOL)addFishingSpot: (CMAFishingSpot *)aFishingSpot {
-    if ([self fishingSpotWithName:aFishingSpot.name] != nil) {
+    if ([self fishingSpotNamed:aFishingSpot.name] != nil) {
         NSLog(@"Fishing spot with name %@ already exists", aFishingSpot.name);
         return NO;
     }
@@ -36,12 +36,12 @@
     return YES;
 }
 
-- (void)removeFishingSpot: (CMAFishingSpot *)aFishingSpot {
-    [self.fishingSpots removeObject:aFishingSpot];
+- (void)removeFishingSpotNamed: (NSString *)aName {
+    [self.fishingSpots removeObject:[self fishingSpotNamed:aName]];
 }
 
 - (void)editFishingSpot: (NSString *)fishingSpotName newProperties: (CMAFishingSpot *)aNewFishingSpot; {
-    CMAFishingSpot *spotToEdit = [self fishingSpotWithName:fishingSpotName];
+    CMAFishingSpot *spotToEdit = [self fishingSpotNamed:fishingSpotName];
     
     spotToEdit.name = aNewFishingSpot.name;
     spotToEdit.location = aNewFishingSpot.location;
@@ -53,7 +53,7 @@
 }
 
 // returns nil if a fishing spot with aName does not exist, otherwise returns a pointer to the existing fishing spot
-- (CMAFishingSpot *)fishingSpotWithName: (NSString *)aName {
+- (CMAFishingSpot *)fishingSpotNamed: (NSString *)aName {
     for (CMAFishingSpot *spot in self.fishingSpots)
         if ([spot.name caseInsensitiveCompare:aName] == NSOrderedSame)
             return spot;
