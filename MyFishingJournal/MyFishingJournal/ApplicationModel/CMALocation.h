@@ -24,7 +24,7 @@
 // setting
 - (BOOL)addFishingSpot: (CMAFishingSpot *)aFishingSpot;
 - (void)removeFishingSpot: (CMAFishingSpot *)aFishingSpot;
-- (void)editFishingSpot: (CMAFishingSpot *)anOldFishingSpot newFishingSpot: (CMAFishingSpot *)aNewFishingSpot;
+- (void)editFishingSpot: (NSString *)fishingSpotName newProperties: (CMAFishingSpot *)aNewFishingSpot;
 
 // accessing
 - (NSInteger)fishingSpotCount;
