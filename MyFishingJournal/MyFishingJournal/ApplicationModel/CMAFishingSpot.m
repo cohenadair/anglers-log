@@ -18,14 +18,20 @@
 // initialization
 - (id)initWithName: (NSString *)aName {
     if (self = [super init]) {
-        _name = aName;
+        _name = [NSMutableString stringWithString:aName];
         _location = [CLLocation new];
     }
     
     return self;
 }
 
-// accessing
+// updates self's properties with aNewFishinSpot's attributes
+- (void)edit: (CMAFishingSpot *)aNewFishingSpot {
+    self.name = aNewFishingSpot.name;
+    self.location = aNewFishingSpot.location;
+}
+
+// returns the coordinates of the location
 - (CLLocationCoordinate2D)coordinate {
     return [self.location coordinate];
 }

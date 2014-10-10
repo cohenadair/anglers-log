@@ -25,7 +25,6 @@
     return self;
 }
 
-// accessing
 - (NSInteger)imageCount {
     return [self.images count];
 }
@@ -34,7 +33,6 @@
     return [self.fishingMethods count];
 }
 
-// settings
 - (void)addImage: (NSURL *)imageURL {
     [self.images addObject:imageURL];
 }

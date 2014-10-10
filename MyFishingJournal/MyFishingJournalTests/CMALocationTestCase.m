@@ -50,11 +50,12 @@
     CMAFishingSpot *mySpot3 = [CMAFishingSpot withName:@"Rock Wall"];
     mySpot3.location = loc3;
     
-    // addFishingSpot
+    // addFishingSpot including adding duplicates
     XCTAssert([myLocation fishingSpotCount] == 0, @"Wrong fishing spot count; should be 0");
     [myLocation addFishingSpot:mySpot1];
     XCTAssert([myLocation fishingSpotCount] == 1, @"Wrong fishing spot count; should be 1");
     [myLocation addFishingSpot:mySpot2];
+    [myLocation addFishingSpot:mySpot3];
     [myLocation addFishingSpot:mySpot3];
     XCTAssert([myLocation fishingSpotCount] == 3, @"Wrong fishing spot count; should be 3");
     
@@ -83,9 +84,10 @@
     mySpot2.location = loc2;
     
     [myLocation addFishingSpot:mySpot1];
-    [myLocation editFishingSpot:@"Little Hole" newProperties:mySpot2];
+    [myLocation editFishingSpotNamed:@"Little Hole" newProperties:mySpot2];
     XCTAssert([myLocation fishingSpotNamed:@"Beaver Dam"] != nil, @"Edit fishing spot failed; Beaver Dam should exist");
     XCTAssert([myLocation fishingSpotNamed:@"Little Hole"] == nil, @"Edit fishing spot failed; Little Hold should no exist");
+    XCTAssert([myLocation.fishingSpots containsObject:mySpot1], @"Edit fishing spot failed; mySpot1 should exist");
     
     CMAFishingSpot *myFishingSpot = [myLocation fishingSpotNamed:@"Beaver Dam"];
     XCTAssert([myFishingSpot coordinate].latitude == 3.2245, @"Edit fishing spot failed; latitude should have changed");

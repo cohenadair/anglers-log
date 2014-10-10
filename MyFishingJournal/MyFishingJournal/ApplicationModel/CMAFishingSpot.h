@@ -11,7 +11,7 @@
 
 @interface CMAFishingSpot : NSObject
 
-@property (strong, nonatomic)NSString *name;
+@property (strong, nonatomic)NSMutableString *name;
 @property (strong, nonatomic)CLLocation *location;
 
 // instance creation
@@ -19,6 +19,9 @@
 
 // initialization
 - (id)initWithName: (NSString *)aName;
+
+// setting
+- (void)edit: (CMAFishingSpot *)aNewFishingSpot;
 
 // accessing
 - (CLLocationCoordinate2D)coordinate;

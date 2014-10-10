@@ -18,14 +18,13 @@
 // initializing
 - (id)initWithName: (NSString *)aName {
     if (self = [super init]) {
-        _name = aName;
+        _name = [NSMutableString stringWithString:aName];
         _fishingSpots = [NSMutableSet setWithCapacity:0];
     }
     
     return self;
 }
 
-// setting
 - (BOOL)addFishingSpot: (CMAFishingSpot *)aFishingSpot {
     if ([self fishingSpotNamed:aFishingSpot.name] != nil) {
         NSLog(@"Fishing spot with name %@ already exists", aFishingSpot.name);
@@ -40,11 +39,15 @@
     [self.fishingSpots removeObject:[self fishingSpotNamed:aName]];
 }
 
-- (void)editFishingSpot: (NSString *)fishingSpotName newProperties: (CMAFishingSpot *)aNewFishingSpot; {
-    CMAFishingSpot *spotToEdit = [self fishingSpotNamed:fishingSpotName];
+- (void)editFishingSpotNamed: (NSString *)aName newProperties: (CMAFishingSpot *)aNewFishingSpot; {
+    [[self fishingSpotNamed:aName] edit:aNewFishingSpot];
+}
+
+// updates self's properties with aNewLocation's properties
+- (void)edit:(CMALocation *)aNewLocation {
+    self.name = aNewLocation.name;
     
-    spotToEdit.name = aNewFishingSpot.name;
-    spotToEdit.location = aNewFishingSpot.location;
+    // no need to mess with fishing spots since there are separate methods for that
 }
 
 // accessing

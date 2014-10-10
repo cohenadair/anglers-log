@@ -12,7 +12,7 @@
 
 @interface CMALocation : NSObject
 
-@property (strong, nonatomic)NSString *name;
+@property (strong, nonatomic)NSMutableString *name;
 @property (strong, nonatomic)NSMutableSet *fishingSpots;
 
 // instance creation
@@ -24,7 +24,8 @@
 // setting
 - (BOOL)addFishingSpot: (CMAFishingSpot *)aFishingSpot;
 - (void)removeFishingSpotNamed: (NSString *)aName;
-- (void)editFishingSpot: (NSString *)fishingSpotName newProperties: (CMAFishingSpot *)aNewFishingSpot;
+- (void)editFishingSpotNamed: (NSString *)aName newProperties: (CMAFishingSpot *)aNewFishingSpot;
+- (void)edit: (CMALocation *)aNewLocation;
 
 // accessing
 - (NSInteger)fishingSpotCount;
