@@ -18,7 +18,6 @@
 		E70B639019D3A8E400DFBA85 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E70B637519D3A8E400DFBA85 /* Foundation.framework */; };
 		E70B639119D3A8E400DFBA85 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E70B637919D3A8E400DFBA85 /* UIKit.framework */; };
 		E70B639919D3A8E400DFBA85 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = E70B639719D3A8E400DFBA85 /* InfoPlist.strings */; };
-		E70B639B19D3A8E400DFBA85 /* MyFishingJournalTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E70B639A19D3A8E400DFBA85 /* MyFishingJournalTests.m */; };
 		E72669B719DF14DE003C8E0B /* CMAEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = E72669B619DF14DE003C8E0B /* CMAEntry.m */; };
 		E72669B819DF14DE003C8E0B /* CMAEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = E72669B619DF14DE003C8E0B /* CMAEntry.m */; };
 		E72669BA19DF150F003C8E0B /* CMAEntryTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = E72669B919DF150F003C8E0B /* CMAEntryTestCase.m */; };
@@ -28,6 +27,16 @@
 		E72669C319E3444F003C8E0B /* CMAFishingSpot.m in Sources */ = {isa = PBXBuildFile; fileRef = E72669C219E3444F003C8E0B /* CMAFishingSpot.m */; };
 		E72669C419E3444F003C8E0B /* CMAFishingSpot.m in Sources */ = {isa = PBXBuildFile; fileRef = E72669C219E3444F003C8E0B /* CMAFishingSpot.m */; };
 		E72669C619E34471003C8E0B /* CMAFishingSpotTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = E72669C519E34471003C8E0B /* CMAFishingSpotTestCase.m */; };
+		E72669C919E6F4A8003C8E0B /* CMAJournal.m in Sources */ = {isa = PBXBuildFile; fileRef = E72669C819E6F4A8003C8E0B /* CMAJournal.m */; };
+		E72669CA19E6F4A8003C8E0B /* CMAJournal.m in Sources */ = {isa = PBXBuildFile; fileRef = E72669C819E6F4A8003C8E0B /* CMAJournal.m */; };
+		E72669CC19E6F4C1003C8E0B /* CMAJournalTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = E72669CB19E6F4C1003C8E0B /* CMAJournalTestCase.m */; };
+		E72669D219E6F569003C8E0B /* CMAUserDefinesTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = E72669D119E6F569003C8E0B /* CMAUserDefinesTestCase.m */; };
+		E72669DA19E76B38003C8E0B /* CMAUserLocations.m in Sources */ = {isa = PBXBuildFile; fileRef = E72669D919E76B38003C8E0B /* CMAUserLocations.m */; };
+		E72669DB19E76B38003C8E0B /* CMAUserLocations.m in Sources */ = {isa = PBXBuildFile; fileRef = E72669D919E76B38003C8E0B /* CMAUserLocations.m */; };
+		E72669DE19E76B63003C8E0B /* CMAUserDefine.m in Sources */ = {isa = PBXBuildFile; fileRef = E72669DD19E76B63003C8E0B /* CMAUserDefine.m */; };
+		E72669DF19E76B64003C8E0B /* CMAUserDefine.m in Sources */ = {isa = PBXBuildFile; fileRef = E72669DD19E76B63003C8E0B /* CMAUserDefine.m */; };
+		E72669E219E76B92003C8E0B /* CMAUserStrings.m in Sources */ = {isa = PBXBuildFile; fileRef = E72669E119E76B92003C8E0B /* CMAUserStrings.m */; };
+		E72669E319E76B92003C8E0B /* CMAUserStrings.m in Sources */ = {isa = PBXBuildFile; fileRef = E72669E119E76B92003C8E0B /* CMAUserStrings.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -56,7 +65,6 @@
 		E70B638E19D3A8E400DFBA85 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		E70B639619D3A8E400DFBA85 /* MyFishingJournalTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "MyFishingJournalTests-Info.plist"; sourceTree = "<group>"; };
 		E70B639819D3A8E400DFBA85 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		E70B639A19D3A8E400DFBA85 /* MyFishingJournalTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyFishingJournalTests.m; sourceTree = "<group>"; };
 		E72669B519DF14DE003C8E0B /* CMAEntry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAEntry.h; path = ApplicationModel/CMAEntry.h; sourceTree = "<group>"; };
 		E72669B619DF14DE003C8E0B /* CMAEntry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAEntry.m; path = ApplicationModel/CMAEntry.m; sourceTree = "<group>"; };
 		E72669B919DF150F003C8E0B /* CMAEntryTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CMAEntryTestCase.m; sourceTree = "<group>"; };
@@ -66,6 +74,16 @@
 		E72669C119E3444F003C8E0B /* CMAFishingSpot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAFishingSpot.h; path = ApplicationModel/CMAFishingSpot.h; sourceTree = "<group>"; };
 		E72669C219E3444F003C8E0B /* CMAFishingSpot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAFishingSpot.m; path = ApplicationModel/CMAFishingSpot.m; sourceTree = "<group>"; };
 		E72669C519E34471003C8E0B /* CMAFishingSpotTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CMAFishingSpotTestCase.m; sourceTree = "<group>"; };
+		E72669C719E6F4A8003C8E0B /* CMAJournal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAJournal.h; path = ApplicationModel/CMAJournal.h; sourceTree = "<group>"; };
+		E72669C819E6F4A8003C8E0B /* CMAJournal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAJournal.m; path = ApplicationModel/CMAJournal.m; sourceTree = "<group>"; };
+		E72669CB19E6F4C1003C8E0B /* CMAJournalTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CMAJournalTestCase.m; sourceTree = "<group>"; };
+		E72669D119E6F569003C8E0B /* CMAUserDefinesTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CMAUserDefinesTestCase.m; sourceTree = "<group>"; };
+		E72669D819E76B38003C8E0B /* CMAUserLocations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAUserLocations.h; path = ApplicationModel/UserDefines/CMAUserLocations.h; sourceTree = "<group>"; };
+		E72669D919E76B38003C8E0B /* CMAUserLocations.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAUserLocations.m; path = ApplicationModel/UserDefines/CMAUserLocations.m; sourceTree = "<group>"; };
+		E72669DC19E76B63003C8E0B /* CMAUserDefine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAUserDefine.h; path = ApplicationModel/UserDefines/CMAUserDefine.h; sourceTree = "<group>"; };
+		E72669DD19E76B63003C8E0B /* CMAUserDefine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAUserDefine.m; path = ApplicationModel/UserDefines/CMAUserDefine.m; sourceTree = "<group>"; };
+		E72669E019E76B92003C8E0B /* CMAUserStrings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAUserStrings.h; path = ApplicationModel/UserDefines/CMAUserStrings.h; sourceTree = "<group>"; };
+		E72669E119E76B92003C8E0B /* CMAUserStrings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAUserStrings.m; path = ApplicationModel/UserDefines/CMAUserStrings.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -148,11 +166,12 @@
 		E70B639419D3A8E400DFBA85 /* MyFishingJournalTests */ = {
 			isa = PBXGroup;
 			children = (
-				E70B639A19D3A8E400DFBA85 /* MyFishingJournalTests.m */,
 				E70B639519D3A8E400DFBA85 /* Supporting Files */,
 				E72669B919DF150F003C8E0B /* CMAEntryTestCase.m */,
 				E72669BF19DF3C92003C8E0B /* CMALocationTestCase.m */,
 				E72669C519E34471003C8E0B /* CMAFishingSpotTestCase.m */,
+				E72669CB19E6F4C1003C8E0B /* CMAJournalTestCase.m */,
+				E72669D119E6F569003C8E0B /* CMAUserDefinesTestCase.m */,
 			);
 			path = MyFishingJournalTests;
 			sourceTree = "<group>";
@@ -169,14 +188,30 @@
 		E72669B119DF1350003C8E0B /* ApplicationModel */ = {
 			isa = PBXGroup;
 			children = (
+				E72669D719E76AC1003C8E0B /* UserDefines */,
 				E72669B519DF14DE003C8E0B /* CMAEntry.h */,
 				E72669B619DF14DE003C8E0B /* CMAEntry.m */,
 				E72669BB19DF3C5A003C8E0B /* CMALocation.h */,
 				E72669BC19DF3C5A003C8E0B /* CMALocation.m */,
 				E72669C119E3444F003C8E0B /* CMAFishingSpot.h */,
 				E72669C219E3444F003C8E0B /* CMAFishingSpot.m */,
+				E72669C719E6F4A8003C8E0B /* CMAJournal.h */,
+				E72669C819E6F4A8003C8E0B /* CMAJournal.m */,
 			);
 			name = ApplicationModel;
+			sourceTree = "<group>";
+		};
+		E72669D719E76AC1003C8E0B /* UserDefines */ = {
+			isa = PBXGroup;
+			children = (
+				E72669DC19E76B63003C8E0B /* CMAUserDefine.h */,
+				E72669DD19E76B63003C8E0B /* CMAUserDefine.m */,
+				E72669D819E76B38003C8E0B /* CMAUserLocations.h */,
+				E72669D919E76B38003C8E0B /* CMAUserLocations.m */,
+				E72669E019E76B92003C8E0B /* CMAUserStrings.h */,
+				E72669E119E76B92003C8E0B /* CMAUserStrings.m */,
+			);
+			name = UserDefines;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -276,8 +311,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				E72669B719DF14DE003C8E0B /* CMAEntry.m in Sources */,
+				E72669DA19E76B38003C8E0B /* CMAUserLocations.m in Sources */,
+				E72669E219E76B92003C8E0B /* CMAUserStrings.m in Sources */,
+				E72669C919E6F4A8003C8E0B /* CMAJournal.m in Sources */,
 				E72669C319E3444F003C8E0B /* CMAFishingSpot.m in Sources */,
 				E70B638619D3A8E400DFBA85 /* CMAAppDelegate.m in Sources */,
+				E72669DE19E76B63003C8E0B /* CMAUserDefine.m in Sources */,
 				E72669BD19DF3C5A003C8E0B /* CMALocation.m in Sources */,
 				E70B638219D3A8E400DFBA85 /* main.m in Sources */,
 			);
@@ -288,12 +327,17 @@
 			buildActionMask = 2147483647;
 			files = (
 				E72669B819DF14DE003C8E0B /* CMAEntry.m in Sources */,
-				E70B639B19D3A8E400DFBA85 /* MyFishingJournalTests.m in Sources */,
+				E72669DF19E76B64003C8E0B /* CMAUserDefine.m in Sources */,
 				E72669C619E34471003C8E0B /* CMAFishingSpotTestCase.m in Sources */,
+				E72669CA19E6F4A8003C8E0B /* CMAJournal.m in Sources */,
 				E72669BE19DF3C5A003C8E0B /* CMALocation.m in Sources */,
 				E72669BA19DF150F003C8E0B /* CMAEntryTestCase.m in Sources */,
+				E72669CC19E6F4C1003C8E0B /* CMAJournalTestCase.m in Sources */,
 				E72669C419E3444F003C8E0B /* CMAFishingSpot.m in Sources */,
+				E72669DB19E76B38003C8E0B /* CMAUserLocations.m in Sources */,
+				E72669E319E76B92003C8E0B /* CMAUserStrings.m in Sources */,
 				E72669C019DF3C92003C8E0B /* CMALocationTestCase.m in Sources */,
+				E72669D219E6F569003C8E0B /* CMAUserDefinesTestCase.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
