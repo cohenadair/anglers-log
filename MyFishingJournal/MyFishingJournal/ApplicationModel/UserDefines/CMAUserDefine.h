@@ -24,6 +24,6 @@
 - (void)removeObject: (id)anObject;
 
 // accessing
-- (NSInteger)objectCount;
+- (NSInteger)count;
 
 @end

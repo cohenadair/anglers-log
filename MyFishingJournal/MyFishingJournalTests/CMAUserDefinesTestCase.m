@@ -30,18 +30,18 @@
 - (void)testAddEditRemove {
     // NSStrings
     CMAUserStrings *userStrings = [CMAUserStrings withName:@"Example"];
-    NSMutableString *someName = [NSMutableString stringWithString:@"Some Name"];
+    NSMutableString *aName = [NSMutableString stringWithString:@"Some Name"];
     NSString *anotherName = @"Another Name";
     
-    [userStrings addObject:someName];
-    XCTAssert([userStrings objectCount] == 1, @"Add object failed; count should be 1");
+    [userStrings addObject:aName];
+    XCTAssert([userStrings count] == 1, @"Add object failed; count should be 1");
     
-    [userStrings editString:someName newString:anotherName];
-    XCTAssert([userStrings.objects containsObject:someName], @"Edit string failed; someName should still exist");
+    [userStrings editString:aName newString:anotherName];
+    XCTAssert([userStrings.objects containsObject:aName], @"Edit string failed; someName should still exist");
     XCTAssert([userStrings stringNamed:@"Another Name"] != nil, @"Edit string failed; should be a string with named Another String");
     
-    [userStrings removeObject:someName];
-    XCTAssert([userStrings objectCount] == 0, @"Remove object failed; count should be 0");
+    [userStrings removeObject:aName];
+    XCTAssert([userStrings count] == 0, @"Remove object failed; count should be 0");
     
     // CMALocations
     CMAUserLocations *userLocations = [CMAUserLocations withName:@"Another Example"];
@@ -52,6 +52,9 @@
     [userLocations editLocation:aLocation newLocation:anotherLocation];
     XCTAssert([userLocations.objects containsObject:aLocation], @"Edit location failed, aLocation should still exist");
     XCTAssert([userLocations locationNamed:@"Goderich"] != nil, @"Edit location failed; should be a location with name Goderich");
+    
+    [userLocations removeObject:aLocation];
+    XCTAssert([userLocations count] == 0, @"Remove object failed; count should be 0");
 }
 
 @end

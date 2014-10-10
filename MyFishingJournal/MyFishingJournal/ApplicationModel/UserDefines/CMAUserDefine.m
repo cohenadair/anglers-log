@@ -34,7 +34,7 @@
     [self.objects removeObject:anObject];
 }
 
-- (NSInteger)objectCount {
+- (NSInteger)count {
     return [self.objects count];
 }
 

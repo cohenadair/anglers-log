@@ -18,8 +18,8 @@
 // initializing
 - (id)initWithDate: (NSDate *)aDate {
     if (self = [super init]) {
-        _entryDate = aDate;
-        _images = [NSMutableSet setWithCapacity:0];
+        _date = aDate;
+        _images = [NSMutableSet set];
     }
     
     return self;

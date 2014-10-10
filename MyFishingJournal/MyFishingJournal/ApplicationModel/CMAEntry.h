@@ -11,11 +11,10 @@
 
 @interface CMAEntry : NSObject
 
-@property (strong, nonatomic)NSDate *entryDate;
+@property (strong, nonatomic)NSDate *date;
 @property (strong, nonatomic)NSString *fishSpecies;
 @property (strong, nonatomic)NSString *notes;
 @property (strong, nonatomic)NSString *baitUsed;
-@property (strong, nonatomic)NSString *trip;
 
 @property (nonatomic)NSInteger fishLength;
 @property (nonatomic)NSInteger fishWeight;
