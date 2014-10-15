@@ -11,25 +11,25 @@
 @implementation CMAUserLocations
 
 // instance creation
-+ (CMAUserLocations *)withName: (NSString *)aName {
-    return [[self alloc] initWithName:aName];
-}
-
-// initializing
-- (CMAUserLocations *)initWithName: (NSString *)aName {
-    self = [super initWithName:aName];
+- (CMAUserLocations *)init {
+    self = [super init];
     return self;
 }
 
-// updates self's poperties with aNewLocation's properties
-- (void)editLocation: (CMALocation *)aLocation newLocation: (CMALocation *)aNewLocation {
-    [aLocation edit:aNewLocation];
+// updates self's poperties with aNewObject's properties
+- (void)editObjectNamed: (NSString *)aName newObject: (id)aNewObject {
+    [[self locationNamed:aName] edit:aNewObject];
+}
+
+// removes obejct with aName from self's objects
+- (void)removeObjectNamed: (NSString *)aName {
+    [self.objects removeObject:[self locationNamed:aName]];
 }
 
 // returns nil if a location with aName doesn't exist
 - (CMALocation *)locationNamed: (NSString *)aName {
     for (CMALocation *loc in self.objects)
-        if ([loc.name caseInsensitiveCompare:aName] == NSOrderedSame)
+        if ([loc.name isEqualToString:aName])
             return loc;
     
     return nil;

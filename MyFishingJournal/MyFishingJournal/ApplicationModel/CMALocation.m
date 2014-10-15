@@ -19,7 +19,7 @@
 - (id)initWithName: (NSString *)aName {
     if (self = [super init]) {
         _name = [NSMutableString stringWithString:aName];
-        _fishingSpots = [NSMutableSet setWithCapacity:0];
+        _fishingSpots = [NSMutableSet set];
     }
     
     return self;
@@ -44,13 +44,12 @@
 }
 
 // updates self's properties with aNewLocation's properties
-- (void)edit:(CMALocation *)aNewLocation {
-    self.name = aNewLocation.name;
+- (void)edit: (CMALocation *)aNewLocation {
+    [self.name setString:aNewLocation.name];
     
     // no need to mess with fishing spots since there are separate methods for that
 }
 
-// accessing
 - (NSInteger)fishingSpotCount {
     return [self.fishingSpots count];
 }
@@ -58,7 +57,7 @@
 // returns nil if a fishing spot with aName does not exist, otherwise returns a pointer to the existing fishing spot
 - (CMAFishingSpot *)fishingSpotNamed: (NSString *)aName {
     for (CMAFishingSpot *spot in self.fishingSpots)
-        if ([spot.name caseInsensitiveCompare:aName] == NSOrderedSame)
+        if ([spot.name isEqualToString:aName])
             return spot;
     
     return nil;

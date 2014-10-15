@@ -10,18 +10,12 @@
 
 @interface CMAUserDefine : NSObject
 
-@property (strong, nonatomic)NSString *name;
 @property (strong, nonatomic)NSMutableSet *objects;
-
-// instance creation
-+ (CMAUserDefine *)withName: (NSString *)aName;
-
-// initializing
-- (CMAUserDefine *)initWithName: (NSString *)aName;
 
 // setting
 - (void)addObject: (id)anObject;
-- (void)removeObject: (id)anObject;
+- (void)removeObjectNamed: (NSString *)aName;
+- (void)editObjectNamed: (NSString *)aName newObject: (id)aNewObject;
 
 // accessing
 - (NSInteger)count;

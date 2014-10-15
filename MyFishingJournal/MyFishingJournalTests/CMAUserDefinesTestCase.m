@@ -28,32 +28,30 @@
 }
 
 - (void)testAddEditRemove {
-    // NSStrings
-    CMAUserStrings *userStrings = [CMAUserStrings withName:@"Example"];
-    NSMutableString *aName = [NSMutableString stringWithString:@"Some Name"];
-    NSString *anotherName = @"Another Name";
+    // Strings
+    CMAUserStrings *userStrings = [CMAUserStrings new];
+    NSMutableString *aName = [NSMutableString stringWithString:@"Black Spoon"];
     
     [userStrings addObject:aName];
     XCTAssert([userStrings count] == 1, @"Add object failed; count should be 1");
     
-    [userStrings editString:aName newString:anotherName];
+    [userStrings editObjectNamed:aName newObject:@"Blue Spoon"];
     XCTAssert([userStrings.objects containsObject:aName], @"Edit string failed; someName should still exist");
-    XCTAssert([userStrings stringNamed:@"Another Name"] != nil, @"Edit string failed; should be a string with named Another String");
+    XCTAssert([userStrings stringNamed:@"Blue Spoon"] != nil, @"Edit string failed; should be a string with named Another String");
     
-    [userStrings removeObject:aName];
+    [userStrings removeObjectNamed:@"Blue Spoon"];
     XCTAssert([userStrings count] == 0, @"Remove object failed; count should be 0");
     
     // CMALocations
-    CMAUserLocations *userLocations = [CMAUserLocations withName:@"Another Example"];
+    CMAUserLocations *userLocations = [CMAUserLocations new];
     CMALocation *aLocation = [CMALocation withName:@"Port Albert"];
-    CMALocation *anotherLocation = [CMALocation withName:@"Goderich"];
     
     [userLocations addObject:aLocation];
-    [userLocations editLocation:aLocation newLocation:anotherLocation];
+    [userLocations editObjectNamed:@"Port Albert" newObject:[CMALocation withName:@"Goderich"]];
     XCTAssert([userLocations.objects containsObject:aLocation], @"Edit location failed, aLocation should still exist");
     XCTAssert([userLocations locationNamed:@"Goderich"] != nil, @"Edit location failed; should be a location with name Goderich");
     
-    [userLocations removeObject:aLocation];
+    [userLocations removeObjectNamed:@"Goderich"];
     XCTAssert([userLocations count] == 0, @"Remove object failed; count should be 0");
 }
 

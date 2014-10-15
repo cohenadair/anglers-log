@@ -11,15 +11,6 @@
 
 @interface CMAUserLocations : CMAUserDefine
 
-// instance creation
-+ (CMAUserLocations *)withName: (NSString *)aName;
-
-// initializing
-- (CMAUserLocations *)initWithName: (NSString *)aName;
-
-// setting
-- (void)editLocation: (CMALocation *)aLocation newLocation: (CMALocation *)aNewLocation;
-
 // accessing
 - (CMALocation *)locationNamed: (NSString *)aName;
 

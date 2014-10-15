@@ -14,21 +14,17 @@
 @interface CMAJournal : NSObject
 
 @property (strong, nonatomic)NSMutableSet *entries;
-
-// user defines
-@property (strong, nonatomic)CMAUserStrings *species;
-@property (strong, nonatomic)CMAUserStrings *baits;
-@property (strong, nonatomic)CMAUserStrings *fishingMethods;
-@property (strong, nonatomic)CMAUserLocations *locations;
+@property (strong, nonatomic)NSMutableDictionary *userDefines;
 
 // setting
 - (void)addEntry: (CMAEntry *)anEntry;
 - (void)removeEntryDated: (NSDate *)aDate;
 - (void)editEntryDated: (NSDate *)aDate newProperties: (CMAEntry *)aNewEntry;
 
-- (void)addUserDefine: (NSString *)aName objectToAdd: (id)anObject;
-- (void)removeUserDefine: (NSString *)aName objectToRemove: (id)anObject;
-- (void)editUserDefine: (NSString *)aName objectToEdit: (id)anObject newProperties: (id)aNewObject;
+- (id)userDefineNamed: (NSString *)aName;
+- (void)addUserDefine: (NSString *)aDefineName objectToAdd: (id)anObject;
+- (void)removeUserDefine: (NSString *)aDefineName objectNamed: (NSString *)anObjectName;
+- (void)editUserDefine: (NSString *)aDefineName objectNamed: (id)aName newProperties: (id)aNewObject;
 
 // accessing
 - (NSInteger)entryCount;

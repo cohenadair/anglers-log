@@ -12,17 +12,8 @@
 @implementation CMAUserDefine
 
 // instance creation
-+ (CMAUserDefine *)withName: (NSString *)aName {
-    return [[self alloc] initWithName:aName];
-}
-
-// initializing
-- (CMAUserDefine *)initWithName: (NSString *)aName {
-    if (self = [super init]) {
-        _name = aName;
-        _objects = [NSMutableSet set];
-    }
-    
+- (CMAUserDefine *)init {
+    _objects = [NSMutableSet set];
     return self;
 }
 
@@ -30,8 +21,12 @@
     [self.objects addObject:anObject];
 }
 
-- (void)removeObject: (id)anObject {
-    [self.objects removeObject:anObject];
+- (void)removeObjectNamed: (NSString *)aName {
+    NSAssert(NO, @"Subclass needs to overwrite this method");
+}
+
+- (void)editObjectNamed: (NSString *)aName newObject: (id)aNewObject {
+    NSAssert(NO, @"Subclass needs to overwrite this method");
 }
 
 - (NSInteger)count {
