@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="sKN-2s-l4h">
+    <dependencies>
+        <deployment defaultVersion="1808" identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+    </dependencies>
+    <scenes>
+        <!--My Fishing Journal-->
+        <scene sceneID="Ex8-kM-ahq">
+            <objects>
+                <viewController id="yB5-2V-0Ji" customClass="CMAHomeViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="n7A-Xc-Drv"/>
+                        <viewControllerLayoutGuide type="bottom" id="vOq-zF-Kmq"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="fxX-fc-qIg">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DSc-ZF-Dfq">
+                                <rect key="frame" x="277" y="285" width="46" height="30"/>
+                                <state key="normal" title="View Entries">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                            </button>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="9Bt-9e-7NJ">
+                                <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
+                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rO4-JA-0dd">
+                                <rect key="frame" x="-23" y="-15" width="46" height="30"/>
+                                <state key="normal" title="Settings">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="soV-5G-qSM">
+                                <rect key="frame" x="-23" y="-15" width="46" height="30"/>
+                                <state key="normal" title="Statistics">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="bottom" secondItem="rO4-JA-0dd" secondAttribute="bottom" constant="20" symbolic="YES" id="EmI-on-FPq"/>
+                            <constraint firstItem="soV-5G-qSM" firstAttribute="top" secondItem="DSc-ZF-Dfq" secondAttribute="bottom" constant="8" symbolic="YES" id="FzD-pl-et2"/>
+                            <constraint firstItem="soV-5G-qSM" firstAttribute="leading" secondItem="DSc-ZF-Dfq" secondAttribute="leading" id="GNO-rs-XlL"/>
+                            <constraint firstItem="9Bt-9e-7NJ" firstAttribute="top" secondItem="n7A-Xc-Drv" secondAttribute="bottom" constant="8" symbolic="YES" id="HF1-Ca-Nfc"/>
+                            <constraint firstItem="DSc-ZF-Dfq" firstAttribute="leading" secondItem="9Bt-9e-7NJ" secondAttribute="leading" id="PHq-lg-yRT"/>
+                            <constraint firstItem="soV-5G-qSM" firstAttribute="trailing" secondItem="rO4-JA-0dd" secondAttribute="trailing" id="Rgv-Bv-BhV"/>
+                            <constraint firstItem="rO4-JA-0dd" firstAttribute="trailing" secondItem="fxX-fc-qIg" secondAttribute="trailingMargin" id="Zaq-8o-U3Z"/>
+                            <constraint firstItem="soV-5G-qSM" firstAttribute="trailing" secondItem="DSc-ZF-Dfq" secondAttribute="trailing" id="bFc-QZ-AmV"/>
+                            <constraint firstItem="9Bt-9e-7NJ" firstAttribute="trailing" secondItem="DSc-ZF-Dfq" secondAttribute="trailing" id="iBZ-jM-uEY"/>
+                            <constraint firstItem="DSc-ZF-Dfq" firstAttribute="top" secondItem="9Bt-9e-7NJ" secondAttribute="bottom" constant="8" symbolic="YES" id="j6x-fJ-2mD"/>
+                            <constraint firstItem="rO4-JA-0dd" firstAttribute="leading" secondItem="soV-5G-qSM" secondAttribute="leading" id="rNT-yn-LWI"/>
+                            <constraint firstItem="rO4-JA-0dd" firstAttribute="leading" secondItem="fxX-fc-qIg" secondAttribute="leadingMargin" id="uyc-lb-spB"/>
+                            <constraint firstItem="rO4-JA-0dd" firstAttribute="top" secondItem="soV-5G-qSM" secondAttribute="bottom" constant="8" symbolic="YES" id="xfR-Vf-Z6F"/>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="subviews">
+                                <exclude reference="9Bt-9e-7NJ"/>
+                                <exclude reference="rO4-JA-0dd"/>
+                                <exclude reference="soV-5G-qSM"/>
+                            </mask>
+                            <mask key="constraints">
+                                <exclude reference="HF1-Ca-Nfc"/>
+                                <exclude reference="iBZ-jM-uEY"/>
+                                <exclude reference="PHq-lg-yRT"/>
+                                <exclude reference="j6x-fJ-2mD"/>
+                                <exclude reference="FzD-pl-et2"/>
+                                <exclude reference="GNO-rs-XlL"/>
+                                <exclude reference="Rgv-Bv-BhV"/>
+                                <exclude reference="bFc-QZ-AmV"/>
+                                <exclude reference="EmI-on-FPq"/>
+                                <exclude reference="Zaq-8o-U3Z"/>
+                                <exclude reference="rNT-yn-LWI"/>
+                                <exclude reference="uyc-lb-spB"/>
+                                <exclude reference="xfR-Vf-Z6F"/>
+                            </mask>
+                        </variation>
+                        <variation key="widthClass=compact">
+                            <mask key="subviews">
+                                <include reference="9Bt-9e-7NJ"/>
+                                <include reference="rO4-JA-0dd"/>
+                                <include reference="soV-5G-qSM"/>
+                            </mask>
+                            <mask key="constraints">
+                                <include reference="HF1-Ca-Nfc"/>
+                                <include reference="iBZ-jM-uEY"/>
+                                <include reference="PHq-lg-yRT"/>
+                                <include reference="j6x-fJ-2mD"/>
+                                <include reference="FzD-pl-et2"/>
+                                <include reference="GNO-rs-XlL"/>
+                                <include reference="Rgv-Bv-BhV"/>
+                                <include reference="bFc-QZ-AmV"/>
+                                <include reference="EmI-on-FPq"/>
+                                <include reference="Zaq-8o-U3Z"/>
+                                <include reference="rNT-yn-LWI"/>
+                                <include reference="uyc-lb-spB"/>
+                                <include reference="xfR-Vf-Z6F"/>
+                            </mask>
+                        </variation>
+                    </view>
+                    <navigationItem key="navigationItem" title="My Fishing Journal" id="Ds4-rX-AbK">
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="Pl8-HU-6fu"/>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="Button" destination="DSc-ZF-Dfq" id="fSH-dD-ARG"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="FVC-nC-FmP" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1683" y="459"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="ucU-GO-F5K">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="sKN-2s-l4h" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="2z4-Wy-Oih">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="yB5-2V-0Ji" kind="relationship" relationship="rootViewController" id="93R-d4-gxG"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="RnY-ja-E9C" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="765" y="459"/>
+        </scene>
+    </scenes>
+</document>

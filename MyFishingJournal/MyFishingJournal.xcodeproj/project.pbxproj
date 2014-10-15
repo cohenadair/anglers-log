@@ -37,6 +37,8 @@
 		E72669DF19E76B64003C8E0B /* CMAUserDefine.m in Sources */ = {isa = PBXBuildFile; fileRef = E72669DD19E76B63003C8E0B /* CMAUserDefine.m */; };
 		E72669E219E76B92003C8E0B /* CMAUserStrings.m in Sources */ = {isa = PBXBuildFile; fileRef = E72669E119E76B92003C8E0B /* CMAUserStrings.m */; };
 		E72669E319E76B92003C8E0B /* CMAUserStrings.m in Sources */ = {isa = PBXBuildFile; fileRef = E72669E119E76B92003C8E0B /* CMAUserStrings.m */; };
+		E7C926D319EE37750010A9FE /* MyFishingJournal.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E7C926D219EE37750010A9FE /* MyFishingJournal.storyboard */; };
+		E7C926D719EE3BC30010A9FE /* CMAHomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7C926D619EE3BC30010A9FE /* CMAHomeViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -84,6 +86,9 @@
 		E72669DD19E76B63003C8E0B /* CMAUserDefine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAUserDefine.m; path = ApplicationModel/UserDefines/CMAUserDefine.m; sourceTree = "<group>"; };
 		E72669E019E76B92003C8E0B /* CMAUserStrings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAUserStrings.h; path = ApplicationModel/UserDefines/CMAUserStrings.h; sourceTree = "<group>"; };
 		E72669E119E76B92003C8E0B /* CMAUserStrings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAUserStrings.m; path = ApplicationModel/UserDefines/CMAUserStrings.m; sourceTree = "<group>"; };
+		E7C926D219EE37750010A9FE /* MyFishingJournal.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MyFishingJournal.storyboard; sourceTree = "<group>"; };
+		E7C926D519EE3BC30010A9FE /* CMAHomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAHomeViewController.h; path = ViewControllers/CMAHomeViewController.h; sourceTree = "<group>"; };
+		E7C926D619EE3BC30010A9FE /* CMAHomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAHomeViewController.m; path = ViewControllers/CMAHomeViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -143,11 +148,13 @@
 		E70B637B19D3A8E400DFBA85 /* MyFishingJournal */ = {
 			isa = PBXGroup;
 			children = (
+				E7C926D419EE3B320010A9FE /* ViewControllers */,
 				E72669B119DF1350003C8E0B /* ApplicationModel */,
 				E70B638419D3A8E400DFBA85 /* CMAAppDelegate.h */,
 				E70B638519D3A8E400DFBA85 /* CMAAppDelegate.m */,
 				E70B638719D3A8E400DFBA85 /* Images.xcassets */,
 				E70B637C19D3A8E400DFBA85 /* Supporting Files */,
+				E7C926D219EE37750010A9FE /* MyFishingJournal.storyboard */,
 			);
 			path = MyFishingJournal;
 			sourceTree = "<group>";
@@ -212,6 +219,15 @@
 				E72669E119E76B92003C8E0B /* CMAUserStrings.m */,
 			);
 			name = UserDefines;
+			sourceTree = "<group>";
+		};
+		E7C926D419EE3B320010A9FE /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				E7C926D519EE3BC30010A9FE /* CMAHomeViewController.h */,
+				E7C926D619EE3BC30010A9FE /* CMAHomeViewController.m */,
+			);
+			name = ViewControllers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -291,6 +307,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E70B638019D3A8E400DFBA85 /* InfoPlist.strings in Resources */,
+				E7C926D319EE37750010A9FE /* MyFishingJournal.storyboard in Resources */,
 				E70B638819D3A8E400DFBA85 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -315,6 +332,7 @@
 				E72669E219E76B92003C8E0B /* CMAUserStrings.m in Sources */,
 				E72669C919E6F4A8003C8E0B /* CMAJournal.m in Sources */,
 				E72669C319E3444F003C8E0B /* CMAFishingSpot.m in Sources */,
+				E7C926D719EE3BC30010A9FE /* CMAHomeViewController.m in Sources */,
 				E70B638619D3A8E400DFBA85 /* CMAAppDelegate.m in Sources */,
 				E72669DE19E76B63003C8E0B /* CMAUserDefine.m in Sources */,
 				E72669BD19DF3C5A003C8E0B /* CMALocation.m in Sources */,
