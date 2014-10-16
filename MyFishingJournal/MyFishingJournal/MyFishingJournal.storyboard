@@ -117,7 +117,9 @@
                     <navigationItem key="navigationItem" title="My Fishing Journal" id="Ds4-rX-AbK">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="Pl8-HU-6fu">
                             <connections>
-                                <segue destination="IfN-1a-jTc" kind="presentation" identifier="fromHomeToAddEntry" id="AeD-V4-gkl"/>
+                                <segue destination="IfN-1a-jTc" kind="popoverPresentation" identifier="fromHomeToAddEntry" popoverAnchorBarButtonItem="Pl8-HU-6fu" id="AeD-V4-gkl">
+                                    <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
+                                </segue>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -243,7 +245,9 @@
                     <navigationItem key="navigationItem" title="Entries" id="SyW-dX-zkA">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="aZa-bt-tgH">
                             <connections>
-                                <segue destination="IfN-1a-jTc" kind="presentation" identifier="fromViewEntriesToAddEntry" id="gjw-if-E38"/>
+                                <segue destination="IfN-1a-jTc" kind="popoverPresentation" identifier="fromViewEntriesToAddEntry" popoverAnchorBarButtonItem="aZa-bt-tgH" id="gjw-if-E38">
+                                    <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
+                                </segue>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
