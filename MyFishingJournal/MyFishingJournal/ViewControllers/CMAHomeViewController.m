@@ -29,7 +29,6 @@
     if ([segue.identifier isEqualToString:@"fromHomeToAddEntry"]) {
         CMAAddEntryViewController *destination = [[segue.destinationViewController viewControllers] objectAtIndex:0];
         destination.previousViewID = CMAViewControllerID_Home;
-        NSLog(@"fromHomeToAddEntry");
     }
 }
 

@@ -28,8 +28,6 @@
 }
 
 - (void)performSegueToPreviousView {
-    NSLog(@"self.prevousViewID: %ld", (long)self.previousViewID);
-    
     switch (self.previousViewID) {
         case CMAViewControllerID_Home:
             [self performSegueWithIdentifier:@"unwindToHome" sender:self];

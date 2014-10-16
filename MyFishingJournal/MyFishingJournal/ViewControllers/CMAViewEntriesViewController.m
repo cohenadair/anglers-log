@@ -90,7 +90,6 @@
     if ([segue.identifier isEqualToString:@"fromViewEntriesToAddEntry"]) {
         CMAAddEntryViewController *destination = [[segue.destinationViewController viewControllers] objectAtIndex:0];
         destination.previousViewID = CMAViewControllerID_ViewEntries;
-        NSLog(@"fromViewEntriesToAddEntry");
     }
 }
 
