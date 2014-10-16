@@ -16,14 +16,14 @@
     return self;
 }
 
-// updates self's string with aNewObject's string
-- (void)editObjectNamed: (NSString *)aName newObject: (id)aNewObject {
-    [[self stringNamed:aName] setString:aNewObject];
-}
-
 // removes obejct with aName from self's objects
 - (void)removeObjectNamed: (NSString *)aName {
     [self.objects removeObject:[self stringNamed:aName]];
+}
+
+// updates self's string with aNewObject's string
+- (void)editObjectNamed: (NSString *)aName newObject: (id)aNewObject {
+    [[self stringNamed:aName] setString:aNewObject];
 }
 
 // returns nil if a string with aName doesn't exist

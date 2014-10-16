@@ -16,14 +16,14 @@
     return self;
 }
 
-// updates self's poperties with aNewObject's properties
-- (void)editObjectNamed: (NSString *)aName newObject: (id)aNewObject {
-    [[self locationNamed:aName] edit:aNewObject];
-}
-
 // removes obejct with aName from self's objects
 - (void)removeObjectNamed: (NSString *)aName {
     [self.objects removeObject:[self locationNamed:aName]];
+}
+
+// updates self's poperties with aNewObject's properties
+- (void)editObjectNamed: (NSString *)aName newObject: (id)aNewObject {
+    [[self locationNamed:aName] edit:aNewObject];
 }
 
 // returns nil if a location with aName doesn't exist
