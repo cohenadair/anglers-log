@@ -18,6 +18,7 @@
 
 @property (nonatomic)NSInteger fishLength;
 @property (nonatomic)NSInteger fishWeight;
+@property (nonatomic)NSInteger quantity;
 
 @property (strong, nonatomic)NSMutableSet *images;
 @property (strong, nonatomic)NSSet *fishingMethods;
