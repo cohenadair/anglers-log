@@ -28,8 +28,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
     self.navigationItem.title = self.settingName; // sets title according to the setting that was clicked in the previous view
     
     self.navigationController.toolbarHidden = NO;
