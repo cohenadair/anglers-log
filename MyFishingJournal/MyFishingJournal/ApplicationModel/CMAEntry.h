@@ -16,9 +16,9 @@
 @property (strong, nonatomic)NSString *notes;
 @property (strong, nonatomic)NSString *baitUsed;
 
-@property (nonatomic)NSInteger fishLength;
-@property (nonatomic)NSInteger fishWeight;
-@property (nonatomic)NSInteger quantity;
+@property (strong, nonatomic)NSNumber *fishLength;
+@property (strong, nonatomic)NSNumber *fishWeight;
+@property (strong, nonatomic)NSNumber *quantity;
 
 @property (strong, nonatomic)NSMutableSet *images;
 @property (strong, nonatomic)NSSet *fishingMethods;
