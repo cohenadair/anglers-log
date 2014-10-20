@@ -63,7 +63,7 @@
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([segue.identifier isEqualToString:@"fromSettingsToEditSettings"]) {
-        CMAEditSettingsViewController *destination = segue.destinationViewController;
+        CMAEditSettingsViewController *destination = [[segue.destinationViewController viewControllers] objectAtIndex:0];
         destination.settingName = [self.settingLabels objectAtIndex:[[self.tableView indexPathForCell:sender] item]];
     }
 }
