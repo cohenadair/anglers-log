@@ -7,6 +7,7 @@
 //
 
 #import "CMAJournal.h"
+#import "CMAConstants.h"
 
 @implementation CMAJournal
 
@@ -14,10 +15,28 @@
 - (CMAJournal *)init {
     _entries = [NSMutableSet set];
     _userDefines = [NSMutableDictionary dictionary];
-    [_userDefines setValue:[CMAUserStrings new] forKey:@"Species"];
-    [_userDefines setValue:[CMAUserStrings new] forKey:@"Baits"];
-    [_userDefines setValue:[CMAUserStrings new] forKey:@"Fishing Methods"];
-    [_userDefines setValue:[CMAUserLocations new] forKey:@"Locations"];
+    [_userDefines setValue:[CMAUserStrings new] forKey:SET_SPECIES];
+    [_userDefines setValue:[CMAUserStrings new] forKey:SET_BAITS];
+    [_userDefines setValue:[CMAUserStrings new] forKey:SET_FISHING_METHODS];
+    [_userDefines setValue:[CMAUserLocations new] forKey:SET_LOCATIONS];
+    
+    [self addUserDefine:SET_SPECIES objectToAdd:@"Smallmouth Bass"];
+    [self addUserDefine:SET_SPECIES objectToAdd:@"Largemouth Bass"];
+    [self addUserDefine:SET_SPECIES objectToAdd:@"Steelhead"];
+    [self addUserDefine:SET_SPECIES objectToAdd:@"Pike"];
+    [self addUserDefine:SET_SPECIES objectToAdd:@"Walleye"];
+    
+    [self addUserDefine:SET_BAITS objectToAdd:@"Yellow Twisty Tail"];
+    [self addUserDefine:SET_BAITS objectToAdd:@"Crayfish"];
+    [self addUserDefine:SET_BAITS objectToAdd:@"Giant Minnow"];
+    
+    [self addUserDefine:SET_FISHING_METHODS objectToAdd:@"Shore"];
+    [self addUserDefine:SET_FISHING_METHODS objectToAdd:@"Fly Fishing"];
+    [self addUserDefine:SET_FISHING_METHODS objectToAdd:@"Boat"];
+    [self addUserDefine:SET_FISHING_METHODS objectToAdd:@"Trolling"];
+    
+    [self addUserDefine:SET_LOCATIONS objectToAdd:[CMALocation withName:@"Port Albert"]];
+    [self addUserDefine:SET_LOCATIONS objectToAdd:[CMALocation withName:@"Silver Lake"]];
     
     return self;
 }
