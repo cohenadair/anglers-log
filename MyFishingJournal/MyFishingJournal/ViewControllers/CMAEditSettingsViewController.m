@@ -68,7 +68,9 @@
     // add the new user define
     if (alertView == self.addItemAlert)
         if (buttonIndex == 1) {
-            [[self journal] addUserDefine:self.settingName objectToAdd:[[[alertView textFieldAtIndex:0] text] capitalizedString]];
+            [[self journal] addUserDefine:self.settingName objectToAdd:[[alertView textFieldAtIndex:0] text]];
+            [[alertView textFieldAtIndex:0] setText:@""];
+            
             [self.tableView reloadData];
         }
 }

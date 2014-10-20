@@ -16,6 +16,11 @@
     return self;
 }
 
+// overridden to make sure the incoming NSString is capitalized
+- (void)addObject: (id)anObject {
+    [self.objects addObject:[anObject capitalizedString]];
+}
+
 // removes obejct with aName from self's objects
 - (void)removeObjectNamed: (NSString *)aName {
     [self.objects removeObject:[self stringNamed:aName]];

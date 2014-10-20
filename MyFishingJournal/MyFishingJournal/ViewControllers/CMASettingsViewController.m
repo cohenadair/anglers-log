@@ -34,6 +34,8 @@
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
+    
+    // hide to toolbar when navigating back from "Edit Settings"
     self.navigationController.toolbarHidden = YES;
 }
 
@@ -56,7 +58,6 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"settingsCell" forIndexPath:indexPath];
     
     cell.textLabel.text = [self.settingLabels objectAtIndex:indexPath.item];
-    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     
     return cell;
 }
@@ -64,6 +65,8 @@
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([segue.identifier isEqualToString:@"fromSettingsToEditSettings"]) {
         CMAEditSettingsViewController *destination = [[segue.destinationViewController viewControllers] objectAtIndex:0];
+        
+        // sets the proper title for the "Edit Settings" screen
         destination.settingName = [self.settingLabels objectAtIndex:[[self.tableView indexPathForCell:sender] item]];
     }
 }

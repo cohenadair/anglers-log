@@ -43,12 +43,10 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"entriesCell" forIndexPath:indexPath];
     
-    cell = [cell initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"entriesCell"];
     cell.textLabel.text = @"Walleye";
     cell.detailTextLabel.text = @"May 5th, 2014 at 6:15am";
     cell.detailTextLabel.textColor = [UIColor lightGrayColor];
     cell.imageView.image = [UIImage imageNamed:@"example.jpg"];
-    cell.accessoryType = UITableViewCellAccessoryDetailButton;
     
     return cell;
 }
