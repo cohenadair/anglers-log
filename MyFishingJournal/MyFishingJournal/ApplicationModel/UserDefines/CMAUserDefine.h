@@ -19,5 +19,6 @@
 
 // accessing
 - (NSInteger)count;
+- (NSString *)nameAtIndex: (NSInteger)anIndex;
 
 @end

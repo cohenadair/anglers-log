@@ -35,4 +35,18 @@
     return nil;
 }
 
+// returns the name at anIndex
+- (NSString *)nameAtIndex: (NSInteger)anIndex {
+    int i = 0;
+    
+    for (CMALocation *loc in self.objects) {
+        if (i == anIndex)
+            return loc.name;
+        
+        i++;
+    }
+    
+    return @"";
+}
+
 @end

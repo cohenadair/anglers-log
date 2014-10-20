@@ -33,4 +33,9 @@
     return [self.objects count];
 }
 
+- (NSString *)nameAtIndex: (NSInteger)anIndex {
+    NSAssert(NO, @"Subclass needs to overwrite this method");
+    return nil;
+}
+
 @end

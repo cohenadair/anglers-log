@@ -31,4 +31,9 @@
     return [self.objects member:aName];
 }
 
+// returns the name at anIndex
+- (NSString *)nameAtIndex: (NSInteger)anIndex {
+    return [[self.objects allObjects] objectAtIndex:anIndex];
+}
+
 @end
