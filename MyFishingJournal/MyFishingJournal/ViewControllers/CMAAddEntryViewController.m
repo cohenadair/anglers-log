@@ -7,6 +7,7 @@
 //
 
 #import "CMAAddEntryViewController.h"
+#import "CMAAddLocationViewController.h"
 
 @interface CMAAddEntryViewController ()
 
@@ -49,6 +50,17 @@
 
 - (IBAction)clickedCancel:(id)sender {
     [self performSegueToPreviousView];
+}
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    if ([segue.identifier isEqualToString:@"fromAddEntryToAddLocation"]) {
+        CMAAddLocationViewController *destination = [[segue.destinationViewController viewControllers] objectAtIndex:0];
+        destination.previousViewID = CMAViewControllerID_AddEntry;
+    }
+}
+
+- (IBAction)unwindToAddEntry:(UIStoryboardSegue *)segue {
+    
 }
 
 @end

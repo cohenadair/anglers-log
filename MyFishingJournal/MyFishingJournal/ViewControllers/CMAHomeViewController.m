@@ -8,6 +8,7 @@
 
 #import "CMAHomeViewController.h"
 #import "CMAAddEntryViewController.h"
+#import "CMAConstants.h"
 
 @interface CMAHomeViewController ()
 

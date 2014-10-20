@@ -22,7 +22,7 @@
     // self.clearsSelectionOnViewWillAppear = NO;
     
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    //self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -30,27 +30,38 @@
     // Dispose of any resources that can be recreated.
 }
 
-#pragma mark - Table view data source
-
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     // Return the number of sections.
-    return 0;
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     // Return the number of rows in the section.
-    return 0;
+    return 5;
 }
 
-/*
+// sets the height of each cell
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 75;
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:<#@"reuseIdentifier"#> forIndexPath:indexPath];
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"entriesCell" forIndexPath:indexPath];
     
-    // Configure the cell...
+    cell = [cell initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"entriesCell"];
+    cell.textLabel.text = @"Walleye";
+    cell.detailTextLabel.text = @"May 5th, 2014 at 6:15am";
+    cell.detailTextLabel.textColor = [UIColor lightGrayColor];
+    cell.imageView.image = [UIImage imageNamed:@"example.jpg"];
+    cell.accessoryType = UITableViewCellAccessoryDetailButton;
     
     return cell;
 }
-*/
+
+- (void) tableView:(UITableView *) tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
+    [self performSegueWithIdentifier:@"fromViewEntriesToSingleEntry" sender:self];
+}
 
 /*
 // Override to support conditional editing of the table view.
@@ -60,7 +71,6 @@
 }
 */
 
-/*
 // Override to support editing the table view.
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
@@ -70,7 +80,6 @@
         // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
     }   
 }
-*/
 
 /*
 // Override to support rearranging the table view.
@@ -92,7 +101,6 @@
         destination.previousViewID = CMAViewControllerID_ViewEntries;
     }
 }
-
 
 - (IBAction)unwindToViewEntries:(UIStoryboardSegue *)segue {
     

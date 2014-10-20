@@ -7,9 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "CMAJournal.h"
 
 @interface CMAAppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
+
+@property (strong, nonatomic) CMAJournal *journal;
 
 @end

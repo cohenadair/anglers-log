@@ -7,12 +7,20 @@
 //
 
 #import "CMASettingsViewController.h"
+#import "CMAEditSettingsViewController.h"
+#import "CMAAppDelegate.h"
 
 @interface CMASettingsViewController ()
+
+@property (strong, nonatomic)NSArray *settingLabels;
 
 @end
 
 @implementation CMASettingsViewController
+
+- (CMAJournal *)journal {
+    return [((CMAAppDelegate *)[[UIApplication sharedApplication] delegate]) journal];
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -22,6 +30,17 @@
     
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    
+    // sets the back button to get back to this view (this button is visible on any view shown by a "show" segue)
+    self.navigationItem.backBarButtonItem = [UIBarButtonItem new];
+    self.navigationItem.backBarButtonItem = [self.navigationItem.backBarButtonItem initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:nil action:nil];
+    
+    self.settingLabels = [NSArray arrayWithArray:[[[self journal] userDefines] allKeys]];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    self.navigationController.toolbarHidden = YES;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -29,27 +48,34 @@
     // Dispose of any resources that can be recreated.
 }
 
-#pragma mark - Table view data source
-
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-#warning Potentially incomplete method implementation.
     // Return the number of sections.
-    return 0;
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-#warning Incomplete method implementation.
     // Return the number of rows in the section.
-    return 0;
+    return [self.settingLabels count];
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"settingsCell" forIndexPath:indexPath];
+    
+    cell.textLabel.text = [self.settingLabels objectAtIndex:indexPath.item];
+    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    
+    return cell;
 }
 
 /*
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:<#@"reuseIdentifier"#> forIndexPath:indexPath];
-    
-    // Configure the cell...
-    
-    return cell;
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+
+}
+*/
+
+/*
+- (void) tableView:(UITableView *) tableView accessoryButtonTappedForRowWithIndexPath: (NSIndexPath *)indexPath {
+    [self performSegueWithIdentifier:@"fromViewEntriesToSingleEntry" sender:self];
 }
 */
 
@@ -87,14 +113,11 @@
 }
 */
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+    if ([segue.identifier isEqualToString:@"fromSettingsToEditSettings"]) {
+        CMAEditSettingsViewController *destination = segue.destinationViewController;
+        destination.settingName = [self.settingLabels objectAtIndex:[[self.tableView indexPathForCell:sender] item]];
+    }
 }
-*/
 
 @end

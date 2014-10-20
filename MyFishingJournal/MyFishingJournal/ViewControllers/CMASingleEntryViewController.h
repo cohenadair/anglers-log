@@ -1,5 +1,5 @@
 //
-//  CMASettingsViewController.h
+//  CMASingleEntryViewController.h
 //  MyFishingJournal
 //
 //  Created by Cohen Adair on 10/16/14.
@@ -7,10 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "CMAJournal.h"
 
-@interface CMASettingsViewController : UITableViewController
-
-- (CMAJournal *)journal;
+@interface CMASingleEntryViewController : UIViewController
 
 @end
