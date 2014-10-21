@@ -10,11 +10,14 @@
 
 @implementation CMAUserStrings
 
-// instance creation
+#pragma mark - Initialization
+
 - (CMAUserStrings *)init {
     self = [super init];
     return self;
 }
+
+#pragma mark - Editing
 
 // overridden to make sure the incoming NSString is capitalized
 - (void)addObject: (id)anObject {
@@ -30,6 +33,8 @@
 - (void)editObjectNamed: (NSString *)aName newObject: (id)aNewObject {
     [[self stringNamed:aName] setString:aNewObject];
 }
+
+#pragma mark - Accessing
 
 // returns nil if a string with aName doesn't exist
 - (NSMutableString *)stringNamed: (NSString *)aName {

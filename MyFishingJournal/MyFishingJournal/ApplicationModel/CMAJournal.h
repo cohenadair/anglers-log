@@ -16,17 +16,17 @@
 @property (strong, nonatomic)NSMutableSet *entries;
 @property (strong, nonatomic)NSMutableDictionary *userDefines;
 
-// setting
+// editing
 - (void)addEntry: (CMAEntry *)anEntry;
 - (void)removeEntryDated: (NSDate *)aDate;
 - (void)editEntryDated: (NSDate *)aDate newProperties: (CMAEntry *)aNewEntry;
 
-- (id)userDefineNamed: (NSString *)aName;
 - (void)addUserDefine: (NSString *)aDefineName objectToAdd: (id)anObject;
 - (void)removeUserDefine: (NSString *)aDefineName objectNamed: (NSString *)anObjectName;
 - (void)editUserDefine: (NSString *)aDefineName objectNamed: (id)aName newProperties: (id)aNewObject;
 
 // accessing
+- (id)userDefineNamed: (NSString *)aName;
 - (NSInteger)entryCount;
 - (CMAEntry *)entryDated: (NSDate *)aDate;
 

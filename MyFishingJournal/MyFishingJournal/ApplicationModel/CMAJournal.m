@@ -11,7 +11,8 @@
 
 @implementation CMAJournal
 
-// initializing
+#pragma mark - Initialization
+
 - (CMAJournal *)init {
     _entries = [NSMutableSet set];
     _userDefines = [NSMutableDictionary dictionary];
@@ -41,6 +42,8 @@
     return self;
 }
 
+#pragma mark - Editing
+
 - (void)addEntry: (CMAEntry *)anEntry {
     [self.entries addObject:anEntry];
 }
@@ -56,10 +59,6 @@
     [self addEntry:aNewEntry];
 }
 
-- (id)userDefineNamed: (NSString *)aName {
-    return [self.userDefines objectForKey:aName];
-}
-
 - (void)addUserDefine: (NSString *)aDefineName objectToAdd: (id)anObject {
     [[self userDefineNamed:aDefineName] addObject:anObject];
 }
@@ -70,6 +69,12 @@
 
 - (void)editUserDefine: (NSString *)aDefineName objectNamed: (NSString *)objectName newProperties: (id)aNewObject {
     [[self userDefineNamed:aDefineName] editObjectNamed:objectName newObject:aNewObject];
+}
+
+#pragma mark - Accessing
+
+- (id)userDefineNamed: (NSString *)aName {
+    return [self.userDefines objectForKey:aName];
 }
 
 - (NSInteger)entryCount {

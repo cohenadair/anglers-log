@@ -10,12 +10,14 @@
 
 @implementation CMAEntry
 
-// instance creation
+#pragma mark - Instance Creation
+
 + (CMAEntry *)onDate: (NSDate *)aDate {
     return [[self alloc] initWithDate:aDate];
 }
 
-// initializing
+#pragma mark - Initialization
+
 - (id)initWithDate: (NSDate *)aDate {
     if (self = [super init]) {
         _date = aDate;
@@ -25,6 +27,8 @@
     return self;
 }
 
+#pragma mark - Accessing
+
 - (NSInteger)imageCount {
     return [self.images count];
 }
@@ -32,6 +36,8 @@
 - (NSInteger)fishingMethodCount {
     return [self.fishingMethods count];
 }
+
+#pragma mark - Editing
 
 - (void)addImage: (NSURL *)imageURL {
     [self.images addObject:imageURL];

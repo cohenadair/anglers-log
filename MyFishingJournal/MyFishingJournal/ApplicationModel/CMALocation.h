@@ -21,7 +21,7 @@
 // initializing
 - (id)initWithName: (NSString *)aName;
 
-// setting
+// editing
 - (BOOL)addFishingSpot: (CMAFishingSpot *)aFishingSpot;
 - (void)removeFishingSpotNamed: (NSString *)aName;
 - (void)editFishingSpotNamed: (NSString *)aName newProperties: (CMAFishingSpot *)aNewFishingSpot;

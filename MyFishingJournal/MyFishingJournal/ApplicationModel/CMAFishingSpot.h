@@ -20,7 +20,7 @@
 // initialization
 - (id)initWithName: (NSString *)aName;
 
-// setting
+// editing
 - (void)edit: (CMAFishingSpot *)aNewFishingSpot;
 
 // accessing

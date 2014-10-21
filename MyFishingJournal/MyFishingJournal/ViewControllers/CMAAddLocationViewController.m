@@ -17,6 +17,8 @@
 
 @implementation CMAAddLocationViewController
 
+#pragma mark - View Management
+
 - (void)viewDidLoad {
     [super viewDidLoad];
 }
@@ -25,6 +27,18 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+#pragma mark - Events
+
+- (IBAction)clickedDone:(id)sender {
+    [self performSegueToPreviousView];
+}
+
+- (IBAction)clickedCancel:(id)sender {
+    [self performSegueToPreviousView];
+}
+
+#pragma mark - Navigation
 
 - (void)performSegueToPreviousView {
     switch (self.previousViewID) {
@@ -40,14 +54,6 @@
             NSLog(@"Invalid previousViewID value");
             break;
     }
-}
-
-- (IBAction)clickedDone:(id)sender {
-    [self performSegueToPreviousView];
-}
-
-- (IBAction)clickedCancel:(id)sender {
-    [self performSegueToPreviousView];
 }
 
 @end

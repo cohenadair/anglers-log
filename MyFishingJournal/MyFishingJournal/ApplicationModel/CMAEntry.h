@@ -35,7 +35,7 @@
 - (NSInteger)imageCount;
 - (NSInteger)fishingMethodCount;
 
-// setting
+// editing
 - (void)addImage: (NSURL *)imageURL;
 - (void)removeImage: (NSURL *)imageURL;
 

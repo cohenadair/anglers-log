@@ -14,6 +14,8 @@
 
 @implementation CMASingleEntryViewController
 
+#pragma mark - View Management
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.

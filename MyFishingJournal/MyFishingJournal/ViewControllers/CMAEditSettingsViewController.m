@@ -22,9 +22,13 @@
 
 @implementation CMAEditSettingsViewController
 
+#pragma mark - Global Accessing
+
 - (CMAJournal *)journal {
     return [((CMAAppDelegate *)[[UIApplication sharedApplication] delegate]) journal];
 }
+
+#pragma mark - View Management
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -51,6 +55,7 @@
     // Dispose of any resources that can be recreated.
 }
 
+#pragma mark - Table View Initializing
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     // Return the number of sections.
@@ -82,6 +87,20 @@
     }
 }
 
+// Override to support editing the table view.
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        // delete from data source
+        UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+        [[self journal] removeUserDefine:self.settingName objectNamed:cell.textLabel.text];
+        
+        // delete from table
+        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+    }
+}
+
+#pragma mark - Alert Views
+
 // handles all UIAlertViews results for this screen
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     // add the new user define
@@ -93,6 +112,8 @@
             [self.tableView reloadData];
         }
 }
+
+#pragma mark - Events
 
 - (IBAction)clickAddButton:(UIBarButtonItem *)sender {
     if ([self.settingName isEqualToString:SET_LOCATIONS])
@@ -121,17 +142,7 @@
     self.navigationItem.rightBarButtonItem = nil;
 }
 
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // delete from data source
-        UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-        [[self journal] removeUserDefine:self.settingName objectNamed:cell.textLabel.text];
-        
-        // delete from table
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }
-}
+#pragma mark - Navigation
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([segue.identifier isEqualToString:@"fromEditSettingsToAddLocation"]) {

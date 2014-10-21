@@ -16,6 +16,8 @@
 
 @implementation CMAHomeViewController
 
+#pragma mark - View Management
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -28,6 +30,8 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+#pragma mark - Navigation
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([segue.identifier isEqualToString:@"fromHomeToAddEntry"]) {

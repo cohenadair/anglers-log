@@ -15,6 +15,8 @@
 
 @implementation CMAViewEntriesViewController
 
+#pragma mark - View Management
+
 - (void)viewDidLoad {
     [super viewDidLoad];
 }
@@ -23,6 +25,8 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+#pragma mark - Table View Initializing
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     // Return the number of sections.
@@ -35,8 +39,7 @@
 }
 
 // Sets the height of each cell.
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     return 75;
 }
 
@@ -54,6 +57,8 @@
 - (void) tableView:(UITableView *) tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
     [self performSegueWithIdentifier:@"fromViewEntriesToSingleEntry" sender:self];
 }
+
+#pragma mark - Navigation
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([segue.identifier isEqualToString:@"fromViewEntriesToAddEntry"]) {

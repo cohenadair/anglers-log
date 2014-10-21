@@ -10,12 +10,14 @@
 
 @implementation CMAFishingSpot
 
-// instance creation
+#pragma mark - Instance Creation
+
 + (CMAFishingSpot *)withName: (NSString *)aName {
     return [[self alloc] initWithName:aName];
 }
 
-// initialization
+#pragma mark - Initialization
+
 - (id)initWithName: (NSString *)aName {
     if (self = [super init]) {
         _name = [NSMutableString stringWithString:aName];
@@ -25,11 +27,15 @@
     return self;
 }
 
+#pragma mark - Editing
+
 // updates self's properties with aNewFishinSpot's attributes
 - (void)edit: (CMAFishingSpot *)aNewFishingSpot {
     self.name = aNewFishingSpot.name;
     self.location = aNewFishingSpot.location;
 }
+
+#pragma mark - Accessing
 
 // returns the coordinates of the location
 - (CLLocationCoordinate2D)coordinate {

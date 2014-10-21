@@ -10,11 +10,14 @@
 
 @implementation CMAUserLocations
 
-// instance creation
+#pragma mark - Initialization
+
 - (CMAUserLocations *)init {
     self = [super init];
     return self;
 }
+
+#pragma mark - Editing
 
 // removes obejct with aName from self's objects
 - (void)removeObjectNamed: (NSString *)aName {
@@ -25,6 +28,8 @@
 - (void)editObjectNamed: (NSString *)aName newObject: (id)aNewObject {
     [[self locationNamed:aName] edit:aNewObject];
 }
+
+#pragma mark - Accessing
 
 // returns nil if a location with aName doesn't exist
 - (CMALocation *)locationNamed: (NSString *)aName {

@@ -11,11 +11,14 @@
 
 @implementation CMAUserDefine
 
-// instance creation
+#pragma mark - Initialization
+
 - (CMAUserDefine *)init {
     _objects = [NSMutableSet set];
     return self;
 }
+
+#pragma Editing
 
 - (void)addObject: (id)anObject {
     [self.objects addObject:anObject];
@@ -28,6 +31,8 @@
 - (void)editObjectNamed: (NSString *)aName newObject: (id)aNewObject {
     NSAssert(NO, @"Subclass needs to overwrite this method");
 }
+
+#pragma mark - Accessing
 
 - (NSInteger)count {
     return [self.objects count];

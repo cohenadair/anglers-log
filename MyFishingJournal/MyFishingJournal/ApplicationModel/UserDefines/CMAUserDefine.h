@@ -12,7 +12,7 @@
 
 @property (strong, nonatomic)NSMutableSet *objects;
 
-// setting
+// editing
 - (void)addObject: (id)anObject;
 - (void)removeObjectNamed: (NSString *)aName;
 - (void)editObjectNamed: (NSString *)aName newObject: (id)aNewObject;

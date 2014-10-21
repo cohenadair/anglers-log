@@ -18,6 +18,8 @@
 
 @implementation CMAAddEntryViewController
 
+#pragma mark - View Management
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
@@ -28,12 +30,24 @@
     // Dispose of any resources that can be recreated.
 }
 
+#pragma mark - Events
+
+- (IBAction)clickedDone:(id)sender {
+    [self performSegueToPreviousView];
+}
+
+- (IBAction)clickedCancel:(id)sender {
+    [self performSegueToPreviousView];
+}
+
+#pragma mark - Navigation
+
 - (void)performSegueToPreviousView {
     switch (self.previousViewID) {
         case CMAViewControllerID_Home:
             [self performSegueWithIdentifier:@"unwindToHome" sender:self];
             break;
-        
+            
         case CMAViewControllerID_ViewEntries:
             [self performSegueWithIdentifier:@"unwindToViewEntries" sender:self];
             break;
@@ -42,14 +56,6 @@
             NSLog(@"Invalid previousViewID value");
             break;
     }
-}
-
-- (IBAction)clickedDone:(id)sender {
-    [self performSegueToPreviousView];
-}
-
-- (IBAction)clickedCancel:(id)sender {
-    [self performSegueToPreviousView];
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {

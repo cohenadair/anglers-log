@@ -18,9 +18,13 @@
 
 @implementation CMASettingsViewController
 
+#pragma mark - Global Accessing
+
 - (CMAJournal *)journal {
     return [((CMAAppDelegate *)[[UIApplication sharedApplication] delegate]) journal];
 }
+
+#pragma mark - View Management
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -36,6 +40,8 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+#pragma mark - Table View Initializing
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     // Return the number of sections.
@@ -54,6 +60,8 @@
     
     return cell;
 }
+
+#pragma mark - Navigation
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([segue.identifier isEqualToString:@"fromSettingsToEditSettings"]) {

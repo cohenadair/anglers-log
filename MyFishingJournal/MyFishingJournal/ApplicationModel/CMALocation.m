@@ -10,12 +10,14 @@
 
 @implementation CMALocation
 
-// instance creation
+#pragma mark - Instance Creation
+
 + (CMALocation *)withName: (NSString *)aName {
     return [[self alloc] initWithName:aName];
 }
 
-// initializing
+#pragma mark - Initialization
+
 - (id)initWithName: (NSString *)aName {
     if (self = [super init]) {
         _name = [NSMutableString stringWithString:aName];
@@ -24,6 +26,8 @@
     
     return self;
 }
+
+#pragma mark - Editing
 
 - (BOOL)addFishingSpot: (CMAFishingSpot *)aFishingSpot {
     if ([self fishingSpotNamed:aFishingSpot.name] != nil) {
@@ -49,6 +53,8 @@
     
     // no need to mess with fishing spots since there are separate methods for that
 }
+
+#pragma mark - Accessing
 
 - (NSInteger)fishingSpotCount {
     return [self.fishingSpots count];
