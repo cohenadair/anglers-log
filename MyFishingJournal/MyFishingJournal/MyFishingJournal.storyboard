@@ -199,7 +199,7 @@
             </objects>
             <point key="canvasLocation" x="3345" y="1307"/>
         </scene>
-        <!--Edit Settings-->
+        <!--Edit Settings View Controller-->
         <scene sceneID="ifO-ji-FnT">
             <objects>
                 <tableViewController id="6A2-09-VCg" customClass="CMAEditSettingsViewController" sceneMemberID="viewController">
@@ -245,12 +245,13 @@
                             </connections>
                         </barButtonItem>
                     </toolbarItems>
-                    <navigationItem key="navigationItem" title="Edit Settings" id="5ct-CG-ULC"/>
+                    <navigationItem key="navigationItem" id="5ct-CG-ULC"/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="addButton" destination="oAT-Nv-Fd9" id="X0S-ah-TEI"/>
                         <outlet property="deleteButton" destination="vdJ-oJ-D2g" id="yT6-eE-w4k"/>
                         <segue destination="wPk-gh-VRC" kind="show" identifier="fromEditSettingsToAddLocation" id="2y7-DF-qwT"/>
+                        <segue destination="uOl-nS-jZa" kind="show" identifier="fromEditSettingsToSingleLocation" id="3iG-ba-4EM"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mRj-jc-hEB" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -398,7 +399,7 @@
             </objects>
             <point key="canvasLocation" x="1546.5" y="1304"/>
         </scene>
-        <!--Entry-->
+        <!--Single Entry-->
         <scene sceneID="W72-fV-RO7">
             <objects>
                 <viewController id="dwX-Yu-1tC" customClass="CMASingleEntryViewController" sceneMemberID="viewController">
@@ -411,7 +412,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Entry" id="fY9-kD-Rqi">
+                    <navigationItem key="navigationItem" title="Single Entry" id="fY9-kD-Rqi">
                         <barButtonItem key="rightBarButtonItem" systemItem="edit" id="Jgl-X6-rDA"/>
                     </navigationItem>
                 </viewController>
@@ -544,7 +545,51 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zvM-95-skl" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="Dya-wC-YzT" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="4126.5" y="445"/>
+            <point key="canvasLocation" x="4126.5" y="453"/>
+        </scene>
+        <!--Single Location View Controller-->
+        <scene sceneID="SdT-sQ-rsg">
+            <objects>
+                <viewController id="ix4-nj-qXp" customClass="CMASingleLocationViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="ceV-XL-teO"/>
+                        <viewControllerLayoutGuide type="bottom" id="3AJ-uI-IwF"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="ak1-vs-ToX">
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Location Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xfD-IZ-9D4">
+                                <rect key="frame" x="0.0" y="-21" width="42" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                                <variation key="widthClass=compact" fixedFrame="YES">
+                                    <rect key="frame" x="16" y="72" width="368" height="29"/>
+                                </variation>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <variation key="default">
+                            <mask key="subviews">
+                                <exclude reference="xfD-IZ-9D4"/>
+                            </mask>
+                        </variation>
+                        <variation key="widthClass=compact">
+                            <mask key="subviews">
+                                <include reference="xfD-IZ-9D4"/>
+                            </mask>
+                        </variation>
+                    </view>
+                    <navigationItem key="navigationItem" id="vZs-kA-F2K">
+                        <barButtonItem key="rightBarButtonItem" systemItem="edit" id="ZJ6-Zb-z28"/>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="locationNameLabel" destination="xfD-IZ-9D4" id="zeG-3c-vb1"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="zqC-p8-bef" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4126.5" y="2144"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="RL9-la-gtA">
@@ -580,7 +625,25 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="B7C-Tp-2Xk" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4066.5" y="395"/>
+            <point key="canvasLocation" x="4051.5" y="395"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="eGk-qw-CWG">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="uOl-nS-jZa" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="sXG-VM-4na">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="ix4-nj-qXp" kind="relationship" relationship="rootViewController" id="Rx3-H1-0W3"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="6Dr-SN-dyr" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4051.5" y="2096"/>
         </scene>
     </scenes>
     <resources>
@@ -588,6 +651,6 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="AvI-Kf-dmD"/>
-        <segue reference="2y7-DF-qwT"/>
+        <segue reference="Mt6-pQ-wm7"/>
     </inferredMetricsTieBreakers>
 </document>

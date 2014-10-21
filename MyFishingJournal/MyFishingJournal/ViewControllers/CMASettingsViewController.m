@@ -32,13 +32,6 @@
     self.settingLabels = [NSArray arrayWithArray:[[[self journal] userDefines] allKeys]];
 }
 
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-    
-    // hide to toolbar when navigating back from "Edit Settings"
-    self.navigationController.toolbarHidden = YES;
-}
-
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

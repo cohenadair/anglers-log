@@ -12,6 +12,7 @@
 @interface CMAEditSettingsViewController : UITableViewController
 
 @property (strong, nonatomic)NSString *settingName;
+@property (strong, nonatomic)NSString *clickedCellLabelText;
 
 - (CMAJournal *)journal;
 

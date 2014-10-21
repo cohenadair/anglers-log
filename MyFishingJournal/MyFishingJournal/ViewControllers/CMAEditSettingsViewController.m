@@ -9,6 +9,7 @@
 #import "CMAEditSettingsViewController.h"
 #import "CMAAppDelegate.h"
 #import "CMAAddLocationViewController.h"
+#import "CMASingleLocationViewController.h"
 
 @interface CMAEditSettingsViewController ()
 
@@ -38,6 +39,13 @@
     self.addItemAlert.alertViewStyle = UIAlertViewStylePlainTextInput;
 }
 
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
+    // show the toolbar when navigating back from a push segue
+    self.navigationController.toolbarHidden = NO;
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -60,7 +68,18 @@
     
     cell.textLabel.text = [[[[self journal] userDefines] objectForKey:self.settingName] nameAtIndex:indexPath.item];
     
+    // enable chevron if locations are being shown
+    if ([self.settingName isEqualToString:SET_LOCATIONS])
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    
     return cell;
+}
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    if ([self.settingName isEqualToString:SET_LOCATIONS]) {
+        self.clickedCellLabelText = [[[self.tableView cellForRowAtIndexPath:indexPath] textLabel] text];
+        [self performSegueWithIdentifier:@"fromEditSettingsToSingleLocation" sender:self];
+    }
 }
 
 // handles all UIAlertViews results for this screen
@@ -118,6 +137,11 @@
     if ([segue.identifier isEqualToString:@"fromEditSettingsToAddLocation"]) {
         CMAAddLocationViewController *destination = [[segue.destinationViewController viewControllers] objectAtIndex:0];
         destination.previousViewID = CMAViewControllerID_EditSettings;
+    }
+    
+    if ([segue.identifier isEqualToString:@"fromEditSettingsToSingleLocation"]) {
+        CMASingleLocationViewController *destination = [[segue.destinationViewController viewControllers] objectAtIndex:0];
+        destination.locationName = self.clickedCellLabelText;
     }
 }
 

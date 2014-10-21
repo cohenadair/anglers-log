@@ -18,7 +18,10 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+    
+    // sets the back button text to "Home" when unwinding from a push segue
+    self.navigationItem.backBarButtonItem = [UIBarButtonItem new];
+    self.navigationItem.backBarButtonItem = [self.navigationItem.backBarButtonItem initWithTitle:@"Home" style:UIBarButtonItemStylePlain target:nil action:nil];
 }
 
 - (void)didReceiveMemoryWarning {
