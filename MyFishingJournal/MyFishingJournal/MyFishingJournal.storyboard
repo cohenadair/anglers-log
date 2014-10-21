@@ -3,7 +3,6 @@
     <dependencies>
         <deployment defaultVersion="1808" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
-        <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
@@ -50,22 +49,34 @@
                                     <segue destination="w2w-YC-eax" kind="show" id="eAY-5i-awG"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="l3r-vE-eSe">
+                                <rect key="frame" x="-23" y="-15" width="46" height="30"/>
+                                <state key="normal" title="Add Entry">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <segue destination="IfN-1a-jTc" kind="presentation" identifier="fromHomeToAddEntry" id="AvI-Kf-dmD"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="rO4-JA-0dd" firstAttribute="top" secondItem="soV-5G-qSM" secondAttribute="bottom" constant="8" symbolic="YES" id="Bee-DN-MmU"/>
-                            <constraint firstItem="soV-5G-qSM" firstAttribute="leading" secondItem="rO4-JA-0dd" secondAttribute="leading" id="Hmc-UB-baU"/>
-                            <constraint firstItem="Mti-Ui-mKL" firstAttribute="top" secondItem="9Bt-9e-7NJ" secondAttribute="bottom" constant="8" symbolic="YES" id="PEO-ce-Dvj"/>
-                            <constraint firstItem="soV-5G-qSM" firstAttribute="trailing" secondItem="fxX-fc-qIg" secondAttribute="trailingMargin" id="PT6-FG-PMf"/>
-                            <constraint firstItem="rO4-JA-0dd" firstAttribute="trailing" secondItem="soV-5G-qSM" secondAttribute="trailing" id="Sl9-Yf-pIl"/>
-                            <constraint firstItem="Mti-Ui-mKL" firstAttribute="trailing" secondItem="9Bt-9e-7NJ" secondAttribute="trailing" id="ZNm-7L-uvB"/>
-                            <constraint firstItem="9Bt-9e-7NJ" firstAttribute="top" secondItem="n7A-Xc-Drv" secondAttribute="bottom" constant="8" symbolic="YES" id="a6s-MR-DW0"/>
-                            <constraint firstItem="Mti-Ui-mKL" firstAttribute="leading" secondItem="soV-5G-qSM" secondAttribute="leading" id="eD3-qf-du6"/>
-                            <constraint firstItem="rO4-JA-0dd" firstAttribute="leading" secondItem="fxX-fc-qIg" secondAttribute="leadingMargin" id="gbf-Kn-GgW"/>
-                            <constraint firstItem="soV-5G-qSM" firstAttribute="trailing" secondItem="Mti-Ui-mKL" secondAttribute="trailing" id="l99-Oc-hTw"/>
-                            <constraint firstAttribute="bottom" secondItem="rO4-JA-0dd" secondAttribute="bottom" constant="20" symbolic="YES" id="tCv-6F-0Wc"/>
-                            <constraint firstItem="soV-5G-qSM" firstAttribute="top" secondItem="Mti-Ui-mKL" secondAttribute="bottom" constant="8" symbolic="YES" id="u60-bK-0el"/>
-                            <constraint firstItem="Mti-Ui-mKL" firstAttribute="leading" secondItem="9Bt-9e-7NJ" secondAttribute="leading" id="yNP-IW-du1"/>
+                            <constraint firstItem="soV-5G-qSM" firstAttribute="trailing" secondItem="rO4-JA-0dd" secondAttribute="trailing" id="3Gh-9V-cbY"/>
+                            <constraint firstItem="l3r-vE-eSe" firstAttribute="trailing" secondItem="9Bt-9e-7NJ" secondAttribute="trailing" id="Bka-A4-KBT"/>
+                            <constraint firstItem="soV-5G-qSM" firstAttribute="top" secondItem="Mti-Ui-mKL" secondAttribute="bottom" constant="8" symbolic="YES" id="CTg-cM-Ycr"/>
+                            <constraint firstItem="rO4-JA-0dd" firstAttribute="leading" secondItem="soV-5G-qSM" secondAttribute="leading" id="Gc8-Ff-C62"/>
+                            <constraint firstItem="l3r-vE-eSe" firstAttribute="top" secondItem="9Bt-9e-7NJ" secondAttribute="bottom" constant="8" symbolic="YES" id="HLg-57-RPs"/>
+                            <constraint firstItem="l3r-vE-eSe" firstAttribute="leading" secondItem="Mti-Ui-mKL" secondAttribute="leading" id="KCH-xS-SOL"/>
+                            <constraint firstItem="Mti-Ui-mKL" firstAttribute="top" secondItem="l3r-vE-eSe" secondAttribute="bottom" constant="8" symbolic="YES" id="KuH-Rv-U5o"/>
+                            <constraint firstItem="soV-5G-qSM" firstAttribute="leading" secondItem="fxX-fc-qIg" secondAttribute="leadingMargin" id="Mqm-P4-4CL"/>
+                            <constraint firstItem="soV-5G-qSM" firstAttribute="trailing" secondItem="Mti-Ui-mKL" secondAttribute="trailing" id="UvK-Hg-3Sz"/>
+                            <constraint firstItem="rO4-JA-0dd" firstAttribute="top" secondItem="soV-5G-qSM" secondAttribute="bottom" constant="8" symbolic="YES" id="hj3-0T-yJE"/>
+                            <constraint firstItem="Mti-Ui-mKL" firstAttribute="trailing" secondItem="l3r-vE-eSe" secondAttribute="trailing" id="lTe-CO-PH9"/>
+                            <constraint firstItem="vOq-zF-Kmq" firstAttribute="top" secondItem="rO4-JA-0dd" secondAttribute="bottom" constant="8" symbolic="YES" id="o9a-xr-wpC"/>
+                            <constraint firstItem="l3r-vE-eSe" firstAttribute="leading" secondItem="9Bt-9e-7NJ" secondAttribute="leading" id="p8s-j1-qYU"/>
+                            <constraint firstItem="Mti-Ui-mKL" firstAttribute="trailing" secondItem="fxX-fc-qIg" secondAttribute="trailingMargin" id="r19-RN-Zh8"/>
+                            <constraint firstItem="soV-5G-qSM" firstAttribute="leading" secondItem="Mti-Ui-mKL" secondAttribute="leading" id="rBq-gf-eQ8"/>
+                            <constraint firstItem="9Bt-9e-7NJ" firstAttribute="top" secondItem="n7A-Xc-Drv" secondAttribute="bottom" constant="8" symbolic="YES" id="uaf-mq-VQn"/>
                         </constraints>
                         <variation key="default">
                             <mask key="subviews">
@@ -73,21 +84,25 @@
                                 <exclude reference="rO4-JA-0dd"/>
                                 <exclude reference="Mti-Ui-mKL"/>
                                 <exclude reference="soV-5G-qSM"/>
+                                <exclude reference="l3r-vE-eSe"/>
                             </mask>
                             <mask key="constraints">
-                                <exclude reference="PEO-ce-Dvj"/>
-                                <exclude reference="ZNm-7L-uvB"/>
-                                <exclude reference="eD3-qf-du6"/>
-                                <exclude reference="yNP-IW-du1"/>
-                                <exclude reference="Bee-DN-MmU"/>
-                                <exclude reference="Sl9-Yf-pIl"/>
-                                <exclude reference="gbf-Kn-GgW"/>
-                                <exclude reference="tCv-6F-0Wc"/>
-                                <exclude reference="Hmc-UB-baU"/>
-                                <exclude reference="PT6-FG-PMf"/>
-                                <exclude reference="l99-Oc-hTw"/>
-                                <exclude reference="u60-bK-0el"/>
-                                <exclude reference="a6s-MR-DW0"/>
+                                <exclude reference="uaf-mq-VQn"/>
+                                <exclude reference="Bka-A4-KBT"/>
+                                <exclude reference="HLg-57-RPs"/>
+                                <exclude reference="KCH-xS-SOL"/>
+                                <exclude reference="p8s-j1-qYU"/>
+                                <exclude reference="KuH-Rv-U5o"/>
+                                <exclude reference="lTe-CO-PH9"/>
+                                <exclude reference="r19-RN-Zh8"/>
+                                <exclude reference="3Gh-9V-cbY"/>
+                                <exclude reference="CTg-cM-Ycr"/>
+                                <exclude reference="Mqm-P4-4CL"/>
+                                <exclude reference="UvK-Hg-3Sz"/>
+                                <exclude reference="rBq-gf-eQ8"/>
+                                <exclude reference="Gc8-Ff-C62"/>
+                                <exclude reference="hj3-0T-yJE"/>
+                                <exclude reference="o9a-xr-wpC"/>
                             </mask>
                         </variation>
                         <variation key="widthClass=compact">
@@ -96,33 +111,29 @@
                                 <include reference="rO4-JA-0dd"/>
                                 <include reference="Mti-Ui-mKL"/>
                                 <include reference="soV-5G-qSM"/>
+                                <include reference="l3r-vE-eSe"/>
                             </mask>
                             <mask key="constraints">
-                                <include reference="PEO-ce-Dvj"/>
-                                <include reference="ZNm-7L-uvB"/>
-                                <include reference="eD3-qf-du6"/>
-                                <include reference="yNP-IW-du1"/>
-                                <include reference="Bee-DN-MmU"/>
-                                <include reference="Sl9-Yf-pIl"/>
-                                <include reference="gbf-Kn-GgW"/>
-                                <include reference="tCv-6F-0Wc"/>
-                                <include reference="Hmc-UB-baU"/>
-                                <include reference="PT6-FG-PMf"/>
-                                <include reference="l99-Oc-hTw"/>
-                                <include reference="u60-bK-0el"/>
-                                <include reference="a6s-MR-DW0"/>
+                                <include reference="uaf-mq-VQn"/>
+                                <include reference="Bka-A4-KBT"/>
+                                <include reference="HLg-57-RPs"/>
+                                <include reference="KCH-xS-SOL"/>
+                                <include reference="p8s-j1-qYU"/>
+                                <include reference="KuH-Rv-U5o"/>
+                                <include reference="lTe-CO-PH9"/>
+                                <include reference="r19-RN-Zh8"/>
+                                <include reference="3Gh-9V-cbY"/>
+                                <include reference="CTg-cM-Ycr"/>
+                                <include reference="Mqm-P4-4CL"/>
+                                <include reference="UvK-Hg-3Sz"/>
+                                <include reference="rBq-gf-eQ8"/>
+                                <include reference="Gc8-Ff-C62"/>
+                                <include reference="hj3-0T-yJE"/>
+                                <include reference="o9a-xr-wpC"/>
                             </mask>
                         </variation>
                     </view>
-                    <navigationItem key="navigationItem" title="My Fishing Journal" id="Ds4-rX-AbK">
-                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="Pl8-HU-6fu">
-                            <connections>
-                                <segue destination="IfN-1a-jTc" kind="popoverPresentation" identifier="fromHomeToAddEntry" popoverAnchorBarButtonItem="Pl8-HU-6fu" id="AeD-V4-gkl">
-                                    <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
-                                </segue>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="My Fishing Journal" id="Ds4-rX-AbK"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FVC-nC-FmP" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -249,6 +260,7 @@
         <!--Navigation Controller-->
         <scene sceneID="ucU-GO-F5K">
             <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="RnY-ja-E9C" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="sKN-2s-l4h" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="2z4-Wy-Oih">
@@ -260,7 +272,6 @@
                         <segue destination="yB5-2V-0Ji" kind="relationship" relationship="rootViewController" id="93R-d4-gxG"/>
                     </connections>
                 </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="RnY-ja-E9C" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1989" y="395"/>
         </scene>
@@ -576,7 +587,7 @@
         <image name="example.jpg" width="3240" height="3240"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="gjw-if-E38"/>
+        <segue reference="AvI-Kf-dmD"/>
         <segue reference="2y7-DF-qwT"/>
     </inferredMetricsTieBreakers>
 </document>
