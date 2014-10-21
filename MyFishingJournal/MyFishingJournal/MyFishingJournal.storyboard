@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="sKN-2s-l4h">
     <dependencies>
+        <deployment defaultVersion="1808" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--My Fishing Journal-->
@@ -17,126 +17,60 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="9Bt-9e-7NJ">
-                                <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
-                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                            </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rO4-JA-0dd">
-                                <rect key="frame" x="-23" y="-15" width="46" height="30"/>
-                                <state key="normal" title="Settings">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <segue destination="bIG-Tl-tOo" kind="show" id="E6K-8o-qjJ"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Mti-Ui-mKL">
-                                <rect key="frame" x="-23" y="-15" width="46" height="30"/>
-                                <state key="normal" title="View Entries">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <segue destination="9Xe-Ut-CPY" kind="show" id="Xtf-Jr-x5X"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="soV-5G-qSM">
-                                <rect key="frame" x="-23" y="-15" width="46" height="30"/>
-                                <state key="normal" title="Statistics">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <segue destination="w2w-YC-eax" kind="show" id="eAY-5i-awG"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="l3r-vE-eSe">
-                                <rect key="frame" x="-23" y="-15" width="46" height="30"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zWJ-Op-VU3">
+                                <rect key="frame" x="266" y="285" width="68" height="30"/>
                                 <state key="normal" title="Add Entry">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <segue destination="IfN-1a-jTc" kind="presentation" identifier="fromHomeToAddEntry" id="AvI-Kf-dmD"/>
+                                    <segue destination="IfN-1a-jTc" kind="presentation" identifier="fromHomeToAddEntry" id="U4I-aL-XxQ"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5eO-gP-2ka">
+                                <rect key="frame" x="258" y="323" width="84" height="30"/>
+                                <state key="normal" title="View Entries">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <segue destination="9Xe-Ut-CPY" kind="show" id="uFc-J4-vaL"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HCG-il-e2P">
+                                <rect key="frame" x="268" y="361" width="64" height="30"/>
+                                <state key="normal" title="Statisitcs">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <segue destination="w2w-YC-eax" kind="show" id="kBP-ee-wzU"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ckr-Fb-i34">
+                                <rect key="frame" x="272" y="399" width="57" height="30"/>
+                                <state key="normal" title="Settings">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <segue destination="bIG-Tl-tOo" kind="show" id="vQI-f4-2Ma"/>
                                 </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="soV-5G-qSM" firstAttribute="trailing" secondItem="rO4-JA-0dd" secondAttribute="trailing" id="3Gh-9V-cbY"/>
-                            <constraint firstItem="l3r-vE-eSe" firstAttribute="trailing" secondItem="9Bt-9e-7NJ" secondAttribute="trailing" id="Bka-A4-KBT"/>
-                            <constraint firstItem="soV-5G-qSM" firstAttribute="top" secondItem="Mti-Ui-mKL" secondAttribute="bottom" constant="8" symbolic="YES" id="CTg-cM-Ycr"/>
-                            <constraint firstItem="rO4-JA-0dd" firstAttribute="leading" secondItem="soV-5G-qSM" secondAttribute="leading" id="Gc8-Ff-C62"/>
-                            <constraint firstItem="l3r-vE-eSe" firstAttribute="top" secondItem="9Bt-9e-7NJ" secondAttribute="bottom" constant="8" symbolic="YES" id="HLg-57-RPs"/>
-                            <constraint firstItem="l3r-vE-eSe" firstAttribute="leading" secondItem="Mti-Ui-mKL" secondAttribute="leading" id="KCH-xS-SOL"/>
-                            <constraint firstItem="Mti-Ui-mKL" firstAttribute="top" secondItem="l3r-vE-eSe" secondAttribute="bottom" constant="8" symbolic="YES" id="KuH-Rv-U5o"/>
-                            <constraint firstItem="soV-5G-qSM" firstAttribute="leading" secondItem="fxX-fc-qIg" secondAttribute="leadingMargin" id="Mqm-P4-4CL"/>
-                            <constraint firstItem="soV-5G-qSM" firstAttribute="trailing" secondItem="Mti-Ui-mKL" secondAttribute="trailing" id="UvK-Hg-3Sz"/>
-                            <constraint firstItem="rO4-JA-0dd" firstAttribute="top" secondItem="soV-5G-qSM" secondAttribute="bottom" constant="8" symbolic="YES" id="hj3-0T-yJE"/>
-                            <constraint firstItem="Mti-Ui-mKL" firstAttribute="trailing" secondItem="l3r-vE-eSe" secondAttribute="trailing" id="lTe-CO-PH9"/>
-                            <constraint firstItem="vOq-zF-Kmq" firstAttribute="top" secondItem="rO4-JA-0dd" secondAttribute="bottom" constant="8" symbolic="YES" id="o9a-xr-wpC"/>
-                            <constraint firstItem="l3r-vE-eSe" firstAttribute="leading" secondItem="9Bt-9e-7NJ" secondAttribute="leading" id="p8s-j1-qYU"/>
-                            <constraint firstItem="Mti-Ui-mKL" firstAttribute="trailing" secondItem="fxX-fc-qIg" secondAttribute="trailingMargin" id="r19-RN-Zh8"/>
-                            <constraint firstItem="soV-5G-qSM" firstAttribute="leading" secondItem="Mti-Ui-mKL" secondAttribute="leading" id="rBq-gf-eQ8"/>
-                            <constraint firstItem="9Bt-9e-7NJ" firstAttribute="top" secondItem="n7A-Xc-Drv" secondAttribute="bottom" constant="8" symbolic="YES" id="uaf-mq-VQn"/>
+                            <constraint firstItem="HCG-il-e2P" firstAttribute="centerX" secondItem="Ckr-Fb-i34" secondAttribute="centerX" id="2Tf-Im-lzR"/>
+                            <constraint firstItem="zWJ-Op-VU3" firstAttribute="centerY" secondItem="fxX-fc-qIg" secondAttribute="centerY" id="7rf-OD-fel"/>
+                            <constraint firstItem="Ckr-Fb-i34" firstAttribute="top" secondItem="HCG-il-e2P" secondAttribute="bottom" constant="8" symbolic="YES" id="8OD-f6-eY4"/>
+                            <constraint firstItem="HCG-il-e2P" firstAttribute="top" secondItem="5eO-gP-2ka" secondAttribute="bottom" constant="8" symbolic="YES" id="BaS-RS-hA6"/>
+                            <constraint firstItem="5eO-gP-2ka" firstAttribute="centerX" secondItem="fxX-fc-qIg" secondAttribute="centerX" id="S0X-DZ-vdz"/>
+                            <constraint firstItem="HCG-il-e2P" firstAttribute="centerX" secondItem="5eO-gP-2ka" secondAttribute="centerX" id="qTy-Ui-lzC"/>
+                            <constraint firstItem="5eO-gP-2ka" firstAttribute="centerX" secondItem="zWJ-Op-VU3" secondAttribute="centerX" id="zD2-CQ-oDn"/>
+                            <constraint firstItem="5eO-gP-2ka" firstAttribute="top" secondItem="zWJ-Op-VU3" secondAttribute="bottom" constant="8" symbolic="YES" id="zLs-pp-aap"/>
                         </constraints>
-                        <variation key="default">
-                            <mask key="subviews">
-                                <exclude reference="9Bt-9e-7NJ"/>
-                                <exclude reference="rO4-JA-0dd"/>
-                                <exclude reference="Mti-Ui-mKL"/>
-                                <exclude reference="soV-5G-qSM"/>
-                                <exclude reference="l3r-vE-eSe"/>
-                            </mask>
-                            <mask key="constraints">
-                                <exclude reference="uaf-mq-VQn"/>
-                                <exclude reference="Bka-A4-KBT"/>
-                                <exclude reference="HLg-57-RPs"/>
-                                <exclude reference="KCH-xS-SOL"/>
-                                <exclude reference="p8s-j1-qYU"/>
-                                <exclude reference="KuH-Rv-U5o"/>
-                                <exclude reference="lTe-CO-PH9"/>
-                                <exclude reference="r19-RN-Zh8"/>
-                                <exclude reference="3Gh-9V-cbY"/>
-                                <exclude reference="CTg-cM-Ycr"/>
-                                <exclude reference="Mqm-P4-4CL"/>
-                                <exclude reference="UvK-Hg-3Sz"/>
-                                <exclude reference="rBq-gf-eQ8"/>
-                                <exclude reference="Gc8-Ff-C62"/>
-                                <exclude reference="hj3-0T-yJE"/>
-                                <exclude reference="o9a-xr-wpC"/>
-                            </mask>
-                        </variation>
-                        <variation key="widthClass=compact">
-                            <mask key="subviews">
-                                <include reference="9Bt-9e-7NJ"/>
-                                <include reference="rO4-JA-0dd"/>
-                                <include reference="Mti-Ui-mKL"/>
-                                <include reference="soV-5G-qSM"/>
-                                <include reference="l3r-vE-eSe"/>
-                            </mask>
-                            <mask key="constraints">
-                                <include reference="uaf-mq-VQn"/>
-                                <include reference="Bka-A4-KBT"/>
-                                <include reference="HLg-57-RPs"/>
-                                <include reference="KCH-xS-SOL"/>
-                                <include reference="p8s-j1-qYU"/>
-                                <include reference="KuH-Rv-U5o"/>
-                                <include reference="lTe-CO-PH9"/>
-                                <include reference="r19-RN-Zh8"/>
-                                <include reference="3Gh-9V-cbY"/>
-                                <include reference="CTg-cM-Ycr"/>
-                                <include reference="Mqm-P4-4CL"/>
-                                <include reference="UvK-Hg-3Sz"/>
-                                <include reference="rBq-gf-eQ8"/>
-                                <include reference="Gc8-Ff-C62"/>
-                                <include reference="hj3-0T-yJE"/>
-                                <include reference="o9a-xr-wpC"/>
-                            </mask>
-                        </variation>
                     </view>
                     <navigationItem key="navigationItem" title="My Fishing Journal" id="Ds4-rX-AbK"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FVC-nC-FmP" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2037" y="445"/>
+            <point key="canvasLocation" x="2028" y="453"/>
         </scene>
         <!--Statistics-->
         <scene sceneID="IL0-Ib-UuN">
@@ -287,30 +221,17 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pk3-L9-sxA">
-                                <rect key="frame" x="-23" y="-15" width="46" height="30"/>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Lcx-tk-AkH">
+                                <rect key="frame" x="16" y="72" width="92" height="30"/>
                                 <state key="normal" title="Add Location">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
-                                <variation key="widthClass=compact" fixedFrame="YES">
-                                    <rect key="frame" x="16" y="72" width="92" height="30"/>
-                                </variation>
                                 <connections>
-                                    <segue destination="wPk-gh-VRC" kind="presentation" identifier="fromAddEntryToAddLocation" id="Mt6-pQ-wm7"/>
+                                    <segue destination="wPk-gh-VRC" kind="presentation" identifier="fromAddEntryToAddLocation" id="0UT-IC-eGS"/>
                                 </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <variation key="default">
-                            <mask key="subviews">
-                                <exclude reference="pk3-L9-sxA"/>
-                            </mask>
-                        </variation>
-                        <variation key="widthClass=compact">
-                            <mask key="subviews">
-                                <include reference="pk3-L9-sxA"/>
-                            </mask>
-                        </variation>
                     </view>
                     <navigationItem key="navigationItem" title="Add Entry" id="wvE-dt-ICd">
                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="1dM-pe-Hrb">
@@ -555,6 +476,7 @@
                         <viewControllerLayoutGuide type="bottom" id="3AJ-uI-IwF"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="ak1-vs-ToX">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Location Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xfD-IZ-9D4">
@@ -649,7 +571,7 @@
         <image name="example.jpg" width="3240" height="3240"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="AvI-Kf-dmD"/>
-        <segue reference="Mt6-pQ-wm7"/>
+        <segue reference="U4I-aL-XxQ"/>
+        <segue reference="0UT-IC-eGS"/>
     </inferredMetricsTieBreakers>
 </document>
