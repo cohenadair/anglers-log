@@ -86,11 +86,18 @@
         [cell.segmentedControl setTitle:@"Imperial" forSegmentAtIndex:0];
         [cell.segmentedControl setTitle:@"Metric" forSegmentAtIndex:1];
         [cell.segmentedControl setSelectedSegmentIndex:[[self journal] measurementSystem]];
+        [cell.segmentedControl addTarget:self action:@selector(clickMeasurementSystemControl:) forControlEvents:UIControlEventAllEvents];
         
         return cell;
     }
     
     return nil;
+}
+
+#pragma mark - Events
+
+- (void)clickMeasurementSystemControl:(UISegmentedControl *)sender {
+    [[self journal] setMeasurementSystem:(CMAMeasuringSystemType)[sender selectedSegmentIndex]];
 }
 
 #pragma mark - Navigation
