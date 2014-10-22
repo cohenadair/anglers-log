@@ -74,12 +74,12 @@ NSString *const CELL_NOTES = @"notesCell";
 }
 
 - (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    return CELL_HEADER_HEIGHT;
+    return TABLE_SECTION_SPACING;
 }
 
 - (CGFloat) tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
     if (section == ([self numberOfSectionsInTableView:tableView] - 1))
-        return CELL_HEADER_HEIGHT;
+        return TABLE_SECTION_SPACING;
 
     return CGFLOAT_MIN;
 }
