@@ -37,7 +37,8 @@
     if ([segue.identifier isEqualToString:@"fromHomeToAddEntry"]) {
         CMAAddEntryViewController *destination = [[segue.destinationViewController viewControllers] objectAtIndex:0];
         destination.previousViewID = CMAViewControllerID_Home;
-    }
+    } else
+        self.navigationController.navigationBarHidden = NO;
 }
 
 - (IBAction)unwindToHome:(UIStoryboardSegue *)segue {

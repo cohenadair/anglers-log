@@ -32,11 +32,11 @@
 
 #pragma mark - Events
 
-- (IBAction)clickedDone:(id)sender {
+- (IBAction)clickedDone:(UIButton *)sender {
     [self performSegueToPreviousView];
 }
 
-- (IBAction)clickedCancel:(id)sender {
+- (IBAction)clickedCancel:(UIButton *)sender {
     [self performSegueToPreviousView];
 }
 

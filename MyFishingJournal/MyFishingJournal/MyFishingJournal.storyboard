@@ -6,7 +6,7 @@
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
-        <!--My Fishing Journal-->
+        <!--Home View Controller-->
         <scene sceneID="Ex8-kM-ahq">
             <objects>
                 <viewController id="yB5-2V-0Ji" customClass="CMAHomeViewController" sceneMemberID="viewController">
@@ -79,7 +79,13 @@
                             <constraint firstItem="5eO-gP-2ka" firstAttribute="top" secondItem="zWJ-Op-VU3" secondAttribute="bottom" constant="8" symbolic="YES" id="zLs-pp-aap"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="My Fishing Journal" id="Ds4-rX-AbK"/>
+                    <navigationItem key="navigationItem" id="Ds4-rX-AbK">
+                        <barButtonItem key="rightBarButtonItem" title="Help" id="3xI-SL-Znz">
+                            <connections>
+                                <segue destination="1r1-P5-FcP" kind="show" id="Bvl-zK-WZX"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FVC-nC-FmP" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -241,6 +247,25 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mRj-jc-hEB" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="4126.5" y="1307"/>
+        </scene>
+        <!--Help-->
+        <scene sceneID="Mwq-JI-Iv4">
+            <objects>
+                <viewController id="X4H-De-NJx" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="FGq-r8-3Bg"/>
+                        <viewControllerLayoutGuide type="bottom" id="4gY-7C-ugF"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="mnj-Kq-xli">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Help" id="886-my-zdN"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="wgW-4w-Y9Z" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2028" y="-358"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="ucU-GO-F5K">
@@ -616,6 +641,24 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6Dr-SN-dyr" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="4051.5" y="2096"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="Vj1-RG-C96">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="1r1-P5-FcP" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="bhh-xp-I2Z">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="X4H-De-NJx" kind="relationship" relationship="rootViewController" id="WO8-zq-lud"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="DkI-P8-QXD" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1989" y="-412"/>
         </scene>
     </scenes>
     <resources>
