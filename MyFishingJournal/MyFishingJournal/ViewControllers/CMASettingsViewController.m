@@ -9,6 +9,7 @@
 #import "CMASettingsViewController.h"
 #import "CMAEditSettingsViewController.h"
 #import "CMAAppDelegate.h"
+#import "CMASegmentedControlTableViewCell.h"
 
 @interface CMASettingsViewController ()
 
@@ -34,6 +35,9 @@
     self.navigationItem.backBarButtonItem = [self.navigationItem.backBarButtonItem initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:nil action:nil];
     
     self.settingLabels = [NSArray arrayWithArray:[[[self journal] userDefines] allKeys]];
+    
+    [self.tableView setRowHeight:44.0];
+    [self.tableView setTableFooterView:[[UIView alloc] initWithFrame:CGRectZero]]; // removes empty cells at the end of the list
 }
 
 - (void)didReceiveMemoryWarning {
@@ -43,22 +47,50 @@
 
 #pragma mark - Table View Initializing
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    // Return the number of sections.
-    return 1;
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    return 20.0;
 }
 
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    // Return the number of sections.
+    return 2;
+}
+
+// Returns the number of rows in section.
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    // Return the number of rows in the section.
-    return [self.settingLabels count];
+    switch (section) {
+        case 0:
+            return [self.settingLabels count];
+            
+        case 1:
+            return 1;
+            
+        default:
+            return 0;
+    }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"settingsCell" forIndexPath:indexPath];
+    // user defines
+    if (indexPath.section == 0) {
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"settingsDisclosureCell" forIndexPath:indexPath];
+        cell.textLabel.text = [self.settingLabels objectAtIndex:indexPath.item];
+        return cell;
+    }
     
-    cell.textLabel.text = [self.settingLabels objectAtIndex:indexPath.item];
+    // other settings
+    if (indexPath.section == 1) {
+        CMASegmentedControlTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"segmentedControlCell" forIndexPath:indexPath];
+        
+        [cell.label setText:@"Measurement System"];
+        [cell.segmentedControl setTitle:@"Imperial" forSegmentAtIndex:0];
+        [cell.segmentedControl setTitle:@"Metric" forSegmentAtIndex:1];
+        [cell.segmentedControl setEnabled:YES forSegmentAtIndex:0];
+        
+        return cell;
+    }
     
-    return cell;
+    return nil;
 }
 
 #pragma mark - Navigation

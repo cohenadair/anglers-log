@@ -3,6 +3,7 @@
     <dependencies>
         <deployment defaultVersion="1808" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--My Fishing Journal-->
@@ -100,7 +101,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="settingsCell" textLabel="Qds-hi-z1F" style="IBUITableViewCellStyleDefault" id="14h-vy-D5b">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="settingsDisclosureCell" textLabel="Qds-hi-z1F" style="IBUITableViewCellStyleDefault" id="14h-vy-D5b">
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="14h-vy-D5b" id="VS0-ji-wrd">
                                     <autoresizingMask key="autoresizingMask"/>
@@ -120,6 +121,44 @@
                                     <segue destination="brF-Rc-1Et" kind="show" identifier="fromSettingsToEditSettings" id="hIY-7h-4M5"/>
                                 </connections>
                             </tableViewCell>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="segmentedControlCell" id="M1f-EG-IkT" customClass="CMASegmentedControlTableViewCell">
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="M1f-EG-IkT" id="G7q-4v-LvY">
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Y4b-f5-jPA">
+                                            <rect key="frame" x="16" y="-1" width="301" height="47"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="301" id="tah-Nw-C8P"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <nil key="highlightedColor"/>
+                                            <variation key="widthClass=compact">
+                                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                            </variation>
+                                        </label>
+                                        <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="Hfc-Hg-ucV">
+                                            <rect key="frame" x="469" y="8" width="123" height="29"/>
+                                            <segments>
+                                                <segment title="First"/>
+                                                <segment title="Second"/>
+                                            </segments>
+                                        </segmentedControl>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="Y4b-f5-jPA" firstAttribute="centerY" secondItem="Hfc-Hg-ucV" secondAttribute="centerY" id="X6c-Sn-YU5"/>
+                                        <constraint firstItem="Y4b-f5-jPA" firstAttribute="leading" secondItem="G7q-4v-LvY" secondAttribute="leadingMargin" constant="8" id="aIh-r1-ycu"/>
+                                        <constraint firstItem="Y4b-f5-jPA" firstAttribute="top" secondItem="G7q-4v-LvY" secondAttribute="topMargin" constant="-9" id="aJn-5F-bV9"/>
+                                        <constraint firstItem="Hfc-Hg-ucV" firstAttribute="trailing" secondItem="G7q-4v-LvY" secondAttribute="trailingMargin" id="auF-92-Tfa"/>
+                                        <constraint firstItem="Hfc-Hg-ucV" firstAttribute="top" secondItem="G7q-4v-LvY" secondAttribute="topMargin" id="cN4-8q-avG"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="label" destination="Y4b-f5-jPA" id="eD0-SE-yNm"/>
+                                    <outlet property="segmentedControl" destination="Hfc-Hg-ucV" id="bQb-xJ-twE"/>
+                                </connections>
+                            </tableViewCell>
                         </prototypes>
                         <connections>
                             <outlet property="dataSource" destination="xYT-rV-mpH" id="aai-yT-KPP"/>
@@ -130,7 +169,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rTH-ZQ-8CI" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3345" y="1307"/>
+            <point key="canvasLocation" x="3348" y="1306.5"/>
         </scene>
         <!--Edit Settings View Controller-->
         <scene sceneID="ifO-ji-FnT">
@@ -194,7 +233,6 @@
         <!--Navigation Controller-->
         <scene sceneID="ucU-GO-F5K">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="RnY-ja-E9C" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="sKN-2s-l4h" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="2z4-Wy-Oih">
@@ -206,6 +244,7 @@
                         <segue destination="yB5-2V-0Ji" kind="relationship" relationship="rootViewController" id="93R-d4-gxG"/>
                     </connections>
                 </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="RnY-ja-E9C" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1989" y="395"/>
         </scene>
