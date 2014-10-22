@@ -85,7 +85,7 @@
         [cell.label setText:@"Measurement System"];
         [cell.segmentedControl setTitle:@"Imperial" forSegmentAtIndex:0];
         [cell.segmentedControl setTitle:@"Metric" forSegmentAtIndex:1];
-        [cell.segmentedControl setEnabled:YES forSegmentAtIndex:0];
+        [cell.segmentedControl setSelectedSegmentIndex:[[self journal] measurementSystem]];
         
         return cell;
     }

@@ -13,8 +13,13 @@ typedef enum {
     CMAViewControllerID_AddEntry = 4
 } CMAViewControllerID;
 
+// Each value represents the index for an item in a UISegmentedControlView.
+typedef enum {
+    CMAMeasuringSystemType_Imperial = 0,
+    CMAMeasuringSystemType_Metric = 1
+} CMAMeasuringSystemType;
+
 extern NSString *const SET_SPECIES;
 extern NSString *const SET_BAITS;
 extern NSString *const SET_LOCATIONS;
 extern NSString *const SET_FISHING_METHODS;
-

@@ -10,11 +10,13 @@
 #import "CMAEntry.h"
 #import "CMAUserStrings.h"
 #import "CMAUserLocations.h"
+#import "CMAConstants.h"
 
 @interface CMAJournal : NSObject
 
 @property (strong, nonatomic)NSMutableSet *entries;
 @property (strong, nonatomic)NSMutableDictionary *userDefines;
+@property (nonatomic)CMAMeasuringSystemType measurementSystem;
 
 // editing
 - (void)addEntry: (CMAEntry *)anEntry;

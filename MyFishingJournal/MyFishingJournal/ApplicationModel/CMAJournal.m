@@ -39,6 +39,8 @@
     [self addUserDefine:SET_LOCATIONS objectToAdd:[CMALocation withName:@"Port Albert"]];
     [self addUserDefine:SET_LOCATIONS objectToAdd:[CMALocation withName:@"Silver Lake"]];
     
+    [self setMeasurementSystem:CMAMeasuringSystemType_Imperial];
+    
     return self;
 }
 
