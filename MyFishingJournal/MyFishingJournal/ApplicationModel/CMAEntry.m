@@ -33,10 +33,6 @@
     return [self.images count];
 }
 
-- (NSInteger)fishingMethodCount {
-    return [self.fishingMethods count];
-}
-
 #pragma mark - Editing
 
 - (void)addImage: (NSURL *)imageURL {

@@ -15,13 +15,13 @@
 @property (strong, nonatomic)NSString *fishSpecies;
 @property (strong, nonatomic)NSString *notes;
 @property (strong, nonatomic)NSString *baitUsed;
+@property (strong, nonatomic)NSString *fishingMethod;
 
 @property (strong, nonatomic)NSNumber *fishLength;
 @property (strong, nonatomic)NSNumber *fishWeight;
 @property (strong, nonatomic)NSNumber *quantity;
 
 @property (strong, nonatomic)NSMutableSet *images;
-@property (strong, nonatomic)NSSet *fishingMethods;
 
 @property (strong, nonatomic)CMALocation *location;
 
@@ -33,7 +33,6 @@
 
 // accessing
 - (NSInteger)imageCount;
-- (NSInteger)fishingMethodCount;
 
 // editing
 - (void)addImage: (NSURL *)imageURL;
