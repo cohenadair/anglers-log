@@ -23,3 +23,5 @@ extern NSString *const SET_SPECIES;
 extern NSString *const SET_BAITS;
 extern NSString *const SET_LOCATIONS;
 extern NSString *const SET_FISHING_METHODS;
+
+extern CGFloat const CELL_HEADER_HEIGHT;

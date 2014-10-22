@@ -47,8 +47,15 @@
 
 #pragma mark - Table View Initializing
 
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    return 20.0;
+- (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    return CELL_HEADER_HEIGHT;
+}
+
+- (CGFloat) tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+    if (section == ([self numberOfSectionsInTableView:tableView] - 1))
+        return CELL_HEADER_HEIGHT;
+    
+    return CGFLOAT_MIN;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {

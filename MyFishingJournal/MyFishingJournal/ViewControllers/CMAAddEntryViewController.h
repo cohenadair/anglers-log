@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "CMAConstants.h"
 
-@interface CMAAddEntryViewController : UIViewController
+@interface CMAAddEntryViewController : UITableViewController
 
 @property (nonatomic)CMAViewControllerID previousViewID;
 
