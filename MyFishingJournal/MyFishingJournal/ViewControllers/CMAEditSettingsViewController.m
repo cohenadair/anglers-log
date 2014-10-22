@@ -41,6 +41,8 @@
     self.addItemAlert = [UIAlertView new];
     self.addItemAlert = [self.addItemAlert initWithTitle:@"" message:[NSString stringWithFormat:@"Add to %@:", self.settingName] delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Add", nil];
     self.addItemAlert.alertViewStyle = UIAlertViewStylePlainTextInput;
+    
+    [self.tableView setTableFooterView:[[UIView alloc] initWithFrame:CGRectZero]]; // removes empty cells at the end of the list
 }
 
 - (void)viewDidAppear:(BOOL)animated {

@@ -54,14 +54,26 @@
                                     <segue destination="bIG-Tl-tOo" kind="show" id="vQI-f4-2Ma"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="My Fishing Journal" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hwA-Fn-MB8">
+                                <rect key="frame" x="16" y="154" width="568" height="76"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="76" id="NlQ-jZ-vTD"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="30"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="HCG-il-e2P" firstAttribute="centerX" secondItem="Ckr-Fb-i34" secondAttribute="centerX" id="2Tf-Im-lzR"/>
+                            <constraint firstItem="hwA-Fn-MB8" firstAttribute="centerX" secondItem="zWJ-Op-VU3" secondAttribute="centerX" id="75h-99-yvg"/>
                             <constraint firstItem="zWJ-Op-VU3" firstAttribute="centerY" secondItem="fxX-fc-qIg" secondAttribute="centerY" id="7rf-OD-fel"/>
                             <constraint firstItem="Ckr-Fb-i34" firstAttribute="top" secondItem="HCG-il-e2P" secondAttribute="bottom" constant="8" symbolic="YES" id="8OD-f6-eY4"/>
                             <constraint firstItem="HCG-il-e2P" firstAttribute="top" secondItem="5eO-gP-2ka" secondAttribute="bottom" constant="8" symbolic="YES" id="BaS-RS-hA6"/>
+                            <constraint firstItem="zWJ-Op-VU3" firstAttribute="top" secondItem="hwA-Fn-MB8" secondAttribute="bottom" constant="55" id="Q9Z-0A-sOD"/>
                             <constraint firstItem="5eO-gP-2ka" firstAttribute="centerX" secondItem="fxX-fc-qIg" secondAttribute="centerX" id="S0X-DZ-vdz"/>
+                            <constraint firstItem="hwA-Fn-MB8" firstAttribute="leading" secondItem="fxX-fc-qIg" secondAttribute="leadingMargin" id="XMI-qq-GWS"/>
                             <constraint firstItem="HCG-il-e2P" firstAttribute="centerX" secondItem="5eO-gP-2ka" secondAttribute="centerX" id="qTy-Ui-lzC"/>
                             <constraint firstItem="5eO-gP-2ka" firstAttribute="centerX" secondItem="zWJ-Op-VU3" secondAttribute="centerX" id="zD2-CQ-oDn"/>
                             <constraint firstItem="5eO-gP-2ka" firstAttribute="top" secondItem="zWJ-Op-VU3" secondAttribute="bottom" constant="8" symbolic="YES" id="zLs-pp-aap"/>
@@ -99,7 +111,7 @@
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="yn2-cm-8GV">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="settingsDisclosureCell" textLabel="Qds-hi-z1F" style="IBUITableViewCellStyleDefault" id="14h-vy-D5b">
                                 <autoresizingMask key="autoresizingMask"/>
@@ -611,6 +623,6 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="U4I-aL-XxQ"/>
-        <segue reference="0UT-IC-eGS"/>
+        <segue reference="2y7-DF-qwT"/>
     </inferredMetricsTieBreakers>
 </document>
