@@ -14,10 +14,16 @@
 @property (weak, nonatomic)IBOutlet UIBarButtonItem *doneButton;
 @property (weak, nonatomic)IBOutlet UIBarButtonItem *cancelButton;
 
-@property (weak, nonatomic)IBOutlet UILabel *dateTimeLabel;
+@property (weak, nonatomic)IBOutlet UILabel *dateTimeDetailLabel;
 @property (weak, nonatomic)IBOutlet UIDatePicker *datePicker;
+@property (weak, nonatomic)IBOutlet UITextField *quantityTextField;
+@property (weak, nonatomic)IBOutlet UITextField *lengthTextField;
+@property (weak, nonatomic)IBOutlet UITextField *weightTextField;
+@property (weak, nonatomic)IBOutlet UITextView *notesTextView;
 
+@property (strong, nonatomic)NSDateFormatter *dateFormatter;
 @property (nonatomic)BOOL isEditingDateTime;
+@property (nonatomic)BOOL hasEditedNotesTextView;
 
 @end
 
@@ -34,7 +40,14 @@ NSInteger const DATE_DISPLAY_ROW = 0;
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    self.dateFormatter = [NSDateFormatter new];
+    [self.dateFormatter setDateFormat:@"MMM dd, yyyy 'at' h:mm a"];
+    
+    // set date detail label to the current date and time
+    [self.dateTimeDetailLabel setText:[self.dateFormatter stringFromDate:[NSDate new]]];
+    
     self.isEditingDateTime = NO;
+    self.hasEditedNotesTextView = NO;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -99,6 +112,16 @@ NSInteger const DATE_DISPLAY_ROW = 0;
             [self toggleDatePickerCellHidden:tableView];
 }
 
+#pragma mark - Text View Initialization
+
+- (void)textViewDidBeginEditing:(UITextView *)textView {
+    // clear the default "Notes" text
+    if (!self.hasEditedNotesTextView) {
+        [textView setText:@""];
+        self.hasEditedNotesTextView = YES;
+    }
+}
+
 #pragma mark - Events
 
 - (IBAction)clickedDone:(UIBarButtonItem *)sender {
@@ -110,10 +133,7 @@ NSInteger const DATE_DISPLAY_ROW = 0;
 }
 
 - (IBAction)changedDatePicker:(UIDatePicker *)sender {
-    NSDateFormatter *dateFormatter = [NSDateFormatter new];
-    [dateFormatter setDateFormat:@"MMM dd, yyyy 'at' h:mm a"];
-    
-    [self.dateTimeLabel setText:[dateFormatter stringFromDate:sender.date]];
+    [self.dateTimeDetailLabel setText:[self.dateFormatter stringFromDate:sender.date]];
 }
 
 #pragma mark - Navigation
