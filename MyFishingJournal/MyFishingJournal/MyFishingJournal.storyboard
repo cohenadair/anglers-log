@@ -384,13 +384,13 @@
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Eas-P7-cEg" id="TQF-Kt-Ec7">
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Date &amp; Time" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Yva-eh-OdD">
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Date" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Yva-eh-OdD">
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="25/12/2014 at 6:15 pm" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="RLa-LE-c2q">
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="May 5, 2014 at 6:15 AM" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="RLa-LE-c2q">
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                     <color key="textColor" red="0.55686274509803924" green="0.55686274509803924" blue="0.57647058823529407" alpha="1" colorSpace="calibratedRGB"/>
@@ -399,22 +399,25 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="225" id="NJZ-aM-lef">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="180" id="NJZ-aM-lef">
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="NJZ-aM-lef" id="MHv-Pe-Ypq">
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="dateAndTime" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="63A-xe-zPt">
-                                                    <rect key="frame" x="8" y="4" width="584" height="162"/>
+                                                <datePicker alpha="0.0" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="dateAndTime" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="63A-xe-zPt">
+                                                    <rect key="frame" x="8" y="8" width="584" height="162"/>
                                                     <date key="date" timeIntervalSinceReferenceDate="435687225.99961197">
                                                         <!--2014-10-22 16:13:45 +0000-->
                                                     </date>
+                                                    <connections>
+                                                        <action selector="changedDatePicker:" destination="T1c-yJ-jzQ" eventType="valueChanged" id="ASg-om-E6M"/>
+                                                    </connections>
                                                 </datePicker>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="63A-xe-zPt" firstAttribute="leading" secondItem="MHv-Pe-Ypq" secondAttribute="leadingMargin" id="0Zy-pK-QAE"/>
-                                                <constraint firstItem="63A-xe-zPt" firstAttribute="top" secondItem="MHv-Pe-Ypq" secondAttribute="topMargin" constant="-4" id="WmW-m7-n9N"/>
-                                                <constraint firstItem="63A-xe-zPt" firstAttribute="trailing" secondItem="MHv-Pe-Ypq" secondAttribute="trailingMargin" id="g6z-Wf-qTH"/>
+                                                <constraint firstItem="63A-xe-zPt" firstAttribute="trailing" secondItem="MHv-Pe-Ypq" secondAttribute="trailingMargin" id="BBT-jz-y5u"/>
+                                                <constraint firstItem="63A-xe-zPt" firstAttribute="top" secondItem="MHv-Pe-Ypq" secondAttribute="topMargin" id="NCx-jT-GE2"/>
+                                                <constraint firstItem="63A-xe-zPt" firstAttribute="leading" secondItem="MHv-Pe-Ypq" secondAttribute="leadingMargin" id="cLx-EP-bOS"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -667,6 +670,8 @@
                     </navigationItem>
                     <connections>
                         <outlet property="cancelButton" destination="fUB-XX-lJa" id="Wwv-Eq-dhW"/>
+                        <outlet property="datePicker" destination="63A-xe-zPt" id="CXw-ub-sLX"/>
+                        <outlet property="dateTimeLabel" destination="RLa-LE-c2q" id="Ivd-Z9-S7r"/>
                         <outlet property="doneButton" destination="dty-g7-z94" id="TwA-Kd-bET"/>
                         <segue destination="gLf-px-n2a" kind="unwind" identifier="unwindToHome" unwindAction="unwindToHome:" id="y1Q-lf-imf"/>
                         <segue destination="gLf-px-n2a" kind="unwind" identifier="unwindToViewEntries" unwindAction="unwindToViewEntries:" id="0cS-3g-Mnn"/>
