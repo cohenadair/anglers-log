@@ -7,9 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "CMALocation.h"
 
-@interface CMASingleLocationViewController : UIViewController
+@interface CMASingleLocationViewController : UITableViewController
 
-@property (strong, nonatomic)NSString *locationName;
+@property (strong, nonatomic)CMALocation *location;
+@property (strong, nonatomic)NSString *addEntryLabelText;
+@property (nonatomic)BOOL isSelectingForAddEntry;
 
 @end

@@ -11,9 +11,11 @@
 
 @interface CMAEditSettingsViewController : UITableViewController
 
-@property (strong, nonatomic)NSString *settingName;
-@property (strong, nonatomic)NSString *clickedCellLabelText;
+// a pointer to the journal's userDefine object for the cell clicked in the previous view
+@property (strong, nonatomic)id userDefine;
+@property (nonatomic)CMAViewControllerID previousViewID;
 
-- (CMAJournal *)journal;
+// used for communication to the Add Entry view
+@property (strong, nonatomic)NSString *selectedCellLabelText;
 
 @end

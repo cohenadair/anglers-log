@@ -7,7 +7,9 @@
 //
 
 #import "CMAAddEntryViewController.h"
-#import "CMAAddLocationViewController.h"
+#import "CMAEditSettingsViewController.h"
+#import "CMASingleLocationViewController.h"
+#import "CMAAppDelegate.h"
 
 @interface CMAAddEntryViewController ()
 
@@ -22,6 +24,7 @@
 @property (weak, nonatomic)IBOutlet UITextView *notesTextView;
 
 @property (strong, nonatomic)NSDateFormatter *dateFormatter;
+@property (strong, nonatomic)NSIndexPath *indexPathForOptionsCell; // used after an unwind from selecting options
 @property (nonatomic)BOOL isEditingDateTime;
 @property (nonatomic)BOOL hasEditedNotesTextView;
 
@@ -34,6 +37,12 @@ NSInteger const DATE_DISPLAY_SECTION = 0;
 NSInteger const DATE_DISPLAY_ROW = 0;
 
 @implementation CMAAddEntryViewController
+
+#pragma mark - Global Accessing
+
+- (CMAJournal *)journal {
+    return [((CMAAppDelegate *)[[UIApplication sharedApplication] delegate]) journal];
+}
 
 #pragma mark - View Management
 
@@ -64,11 +73,11 @@ NSInteger const DATE_DISPLAY_ROW = 0;
     [aTableView beginUpdates];
     
     if (self.isEditingDateTime)
-        [UIView animateWithDuration:0.5 animations:^{
+        [UIView animateWithDuration:0.5 animations:^(void) {
             [self.datePicker setAlpha:1.0f];
         }];
     else
-        [UIView animateWithDuration:0.15 animations:^{
+        [UIView animateWithDuration:0.15 animations:^ (void) {
             [self.datePicker setAlpha:0.0f];
         }];
     
@@ -122,6 +131,14 @@ NSInteger const DATE_DISPLAY_ROW = 0;
     }
 }
 
+- (void)textViewDidEndEditing:(UITextView *)textView {
+    // if nothing was added while editing, reset the text to "Notes"
+    if ([textView.text isEqualToString:@""]) {
+        [textView setText:@"Notes"];
+        self.hasEditedNotesTextView = NO;
+    }
+}
+
 #pragma mark - Events
 
 - (IBAction)clickedDone:(UIBarButtonItem *)sender {
@@ -155,14 +172,61 @@ NSInteger const DATE_DISPLAY_ROW = 0;
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    if ([segue.identifier isEqualToString:@"fromAddEntryToAddLocation"]) {
-        CMAAddLocationViewController *destination = [[segue.destinationViewController viewControllers] objectAtIndex:0];
+    BOOL isSetting = NO;
+    NSString *userDefineName;
+    
+    // species
+    if ([segue.identifier isEqualToString:@"fromAddEntrySpeciesToEditSettings"]) {
+        isSetting = YES;
+        userDefineName = SET_SPECIES;
+    }
+    
+    // location
+    if ([segue.identifier isEqualToString:@"fromAddEntryLocationToEditSettings"]) {
+        isSetting = YES;
+        userDefineName = SET_LOCATIONS;
+    }
+    
+    // bait used
+    if ([segue.identifier isEqualToString:@"fromAddEntryBaitToEditSettings"]) {
+        isSetting = YES;
+        userDefineName = SET_BAITS;
+    }
+    
+    // methods
+    if ([segue.identifier isEqualToString:@"fromAddEntryMethodsToEditSettings"]) {
+        isSetting = YES;
+        userDefineName = SET_FISHING_METHODS;
+    }
+    
+    if (isSetting) {
+        CMAEditSettingsViewController *destination = [[segue.destinationViewController viewControllers] objectAtIndex:0];
+        destination.userDefine = [[self journal] userDefineNamed:userDefineName];
         destination.previousViewID = CMAViewControllerID_AddEntry;
+        
+        self.indexPathForOptionsCell = [self.tableView indexPathForSelectedRow];
     }
 }
 
 - (IBAction)unwindToAddEntry:(UIStoryboardSegue *)segue {
+    // set the detail label text after selecting an option from the Edit Settings view
+    if ([segue.identifier isEqualToString:@"unwindToAddEntryFromEditSettings"]) {
+        CMAEditSettingsViewController *source = [segue sourceViewController];
+        UITableViewCell *cellToEdit = [self.tableView cellForRowAtIndexPath:self.indexPathForOptionsCell];
+        
+        if ([source.selectedCellLabelText isEqualToString:@""])
+            [[cellToEdit detailTextLabel] setText:@"Not Selected"];
+        else
+            [[cellToEdit detailTextLabel] setText:source.selectedCellLabelText];
+        
+        source.previousViewID = CMAViewControllerID_Nil;
+    }
     
+    if ([segue.identifier isEqualToString:@"unwindToAddEntryFromSingleLocation"]) {
+        CMASingleLocationViewController *source = [segue sourceViewController];
+        UITableViewCell *cellToEdit = [self.tableView cellForRowAtIndexPath:self.indexPathForOptionsCell];
+        [[cellToEdit detailTextLabel] setText:source.addEntryLabelText];
+    }
 }
 
 @end

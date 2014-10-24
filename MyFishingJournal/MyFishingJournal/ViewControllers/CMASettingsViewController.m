@@ -30,10 +30,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    // sets the back button to get back to this view (this button is visible on any view shown by a "show" segue)
-    self.navigationItem.backBarButtonItem = [UIBarButtonItem new];
-    self.navigationItem.backBarButtonItem = [self.navigationItem.backBarButtonItem initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:nil action:nil];
-    
     self.settingLabels = [NSArray arrayWithArray:[[[self journal] userDefines] allKeys]];
     
     [self.tableView setRowHeight:44.0];
@@ -113,8 +109,8 @@
     if ([segue.identifier isEqualToString:@"fromSettingsToEditSettings"]) {
         CMAEditSettingsViewController *destination = [[segue.destinationViewController viewControllers] objectAtIndex:0];
         
-        // sets the proper title for the "Edit Settings" screen
-        destination.settingName = [self.settingLabels objectAtIndex:[[self.tableView indexPathForCell:sender] item]];
+        // sets the proper user define to be displayed in the Edit Settings view
+        destination.userDefine = [[self journal] userDefineNamed:[[sender textLabel] text]];
     }
 }
 

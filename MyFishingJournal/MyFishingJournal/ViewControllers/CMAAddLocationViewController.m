@@ -46,10 +46,6 @@
             [self performSegueWithIdentifier:@"unwindToEditSettings" sender:self];
             break;
             
-        case CMAViewControllerID_AddEntry:
-            [self performSegueWithIdentifier:@"unwindToAddEntry" sender:self];
-            break;
-            
         default:
             NSLog(@"Invalid previousViewID value");
             break;
