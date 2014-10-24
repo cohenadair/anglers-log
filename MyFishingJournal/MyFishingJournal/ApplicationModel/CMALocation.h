@@ -30,5 +30,6 @@
 // accessing
 - (NSInteger)fishingSpotCount;
 - (CMAFishingSpot *)fishingSpotNamed: (NSString *)aName;
+- (CMAFishingSpot *)fishingSpotAtIndex: (NSInteger)anIndex;
 
 @end

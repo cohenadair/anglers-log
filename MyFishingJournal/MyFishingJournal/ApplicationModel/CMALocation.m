@@ -69,4 +69,8 @@
     return nil;
 }
 
+- (CMAFishingSpot *)fishingSpotAtIndex: (NSInteger)anIndex {
+    return [[self.fishingSpots allObjects] objectAtIndex:anIndex];
+}
+
 @end

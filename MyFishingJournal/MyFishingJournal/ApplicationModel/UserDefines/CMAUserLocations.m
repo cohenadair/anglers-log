@@ -54,4 +54,8 @@
     return @"";
 }
 
+- (BOOL)isSetOfStrings {
+    return NO;
+}
+
 @end

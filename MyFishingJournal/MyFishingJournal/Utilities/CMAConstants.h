@@ -7,6 +7,7 @@
 //
 
 typedef enum {
+    CMAViewControllerID_Nil = 0,
     CMAViewControllerID_Home = 1,
     CMAViewControllerID_ViewEntries = 2,
     CMAViewControllerID_EditSettings = 3,

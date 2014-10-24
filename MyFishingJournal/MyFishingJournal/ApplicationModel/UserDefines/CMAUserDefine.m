@@ -11,10 +11,20 @@
 
 @implementation CMAUserDefine
 
+#pragma mark - Instance Creation
+
++ (CMAUserDefine *)withName: (NSString *)aName {
+    return [[self alloc] initWithName:aName];
+}
+
 #pragma mark - Initialization
 
-- (CMAUserDefine *)init {
-    _objects = [NSMutableSet set];
+- (id)initWithName: (NSString *)aName {
+    if (self = [super init]) {
+        _name = [NSMutableString stringWithString:aName];
+        _objects = [NSMutableSet set];
+    }
+    
     return self;
 }
 
@@ -41,6 +51,10 @@
 - (NSString *)nameAtIndex: (NSInteger)anIndex {
     NSAssert(NO, @"Subclass needs to overwrite this method");
     return nil;
+}
+
+- (BOOL)isSetOfStrings {
+    return YES;
 }
 
 @end

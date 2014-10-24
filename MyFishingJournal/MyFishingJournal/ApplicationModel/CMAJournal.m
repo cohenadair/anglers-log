@@ -16,10 +16,10 @@
 - (CMAJournal *)init {
     _entries = [NSMutableSet set];
     _userDefines = [NSMutableDictionary dictionary];
-    [_userDefines setValue:[CMAUserStrings new] forKey:SET_SPECIES];
-    [_userDefines setValue:[CMAUserStrings new] forKey:SET_BAITS];
-    [_userDefines setValue:[CMAUserStrings new] forKey:SET_FISHING_METHODS];
-    [_userDefines setValue:[CMAUserLocations new] forKey:SET_LOCATIONS];
+    [_userDefines setValue:[CMAUserStrings withName:SET_SPECIES] forKey:SET_SPECIES];
+    [_userDefines setValue:[CMAUserStrings withName:SET_BAITS] forKey:SET_BAITS];
+    [_userDefines setValue:[CMAUserStrings withName:SET_FISHING_METHODS] forKey:SET_FISHING_METHODS];
+    [_userDefines setValue:[CMAUserLocations withName:SET_LOCATIONS] forKey:SET_LOCATIONS];
     
     [self addUserDefine:SET_SPECIES objectToAdd:@"Smallmouth Bass"];
     [self addUserDefine:SET_SPECIES objectToAdd:@"Largemouth Bass"];
@@ -36,8 +36,17 @@
     [self addUserDefine:SET_FISHING_METHODS objectToAdd:@"Boat"];
     [self addUserDefine:SET_FISHING_METHODS objectToAdd:@"Trolling"];
     
-    [self addUserDefine:SET_LOCATIONS objectToAdd:[CMALocation withName:@"Port Albert"]];
-    [self addUserDefine:SET_LOCATIONS objectToAdd:[CMALocation withName:@"Silver Lake"]];
+    CMALocation *portAlbert = [CMALocation withName:@"Port Albert"];
+    [portAlbert addFishingSpot:[CMAFishingSpot withName:@"Little Hole"]];
+    [portAlbert addFishingSpot:[CMAFishingSpot withName:@"Beaver Dam"]];
+    [portAlbert addFishingSpot:[CMAFishingSpot withName:@"Baskets"]];
+    
+    CMALocation *silverLake = [CMALocation withName:@"Silver Lake"];
+    [silverLake addFishingSpot:[CMAFishingSpot withName:@"Walleye Way"]];
+    [silverLake addFishingSpot:[CMAFishingSpot withName:@"Lillypad Lane"]];
+    
+    [self addUserDefine:SET_LOCATIONS objectToAdd:portAlbert];
+    [self addUserDefine:SET_LOCATIONS objectToAdd:silverLake];
     
     [self setMeasurementSystem:CMAMeasuringSystemType_Imperial];
     
