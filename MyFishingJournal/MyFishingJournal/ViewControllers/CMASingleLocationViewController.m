@@ -21,7 +21,7 @@ NSInteger const FISHING_SPOT_SECTION = 2;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+
     [self.tableView setTableFooterView:[[UIView alloc] initWithFrame:CGRectZero]]; // removes empty cells at the end of the list
 }
 
@@ -33,6 +33,10 @@ NSInteger const FISHING_SPOT_SECTION = 2;
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 3;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    return CGFLOAT_MIN;
 }
 
 - (CGFloat) tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
