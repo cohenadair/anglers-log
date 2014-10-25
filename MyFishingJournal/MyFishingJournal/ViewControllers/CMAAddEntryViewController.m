@@ -23,6 +23,9 @@
 @property (weak, nonatomic)IBOutlet UITextField *weightTextField;
 @property (weak, nonatomic)IBOutlet UITextView *notesTextView;
 
+@property (weak, nonatomic)IBOutlet UIButton *cameraButton;
+@property (weak, nonatomic)IBOutlet UIButton *attachButton;
+
 @property (strong, nonatomic)NSDateFormatter *dateFormatter;
 @property (strong, nonatomic)NSIndexPath *indexPathForOptionsCell; // used after an unwind from selecting options
 @property (nonatomic)BOOL isEditingDateTime;
@@ -35,6 +38,8 @@ NSInteger const DATE_PICKER_SECTION = 0;
 NSInteger const DATE_PICKER_ROW = 1;
 NSInteger const DATE_DISPLAY_SECTION = 0;
 NSInteger const DATE_DISPLAY_ROW = 0;
+
+NSString *const NO_SELECT = @"Not Selected";
 
 @implementation CMAAddEntryViewController
 
@@ -73,11 +78,11 @@ NSInteger const DATE_DISPLAY_ROW = 0;
     [aTableView beginUpdates];
     
     if (self.isEditingDateTime)
-        [UIView animateWithDuration:0.5 animations:^(void) {
+        [UIView animateWithDuration:0.5 animations:^{
             [self.datePicker setAlpha:1.0f];
         }];
     else
-        [UIView animateWithDuration:0.15 animations:^ (void) {
+        [UIView animateWithDuration:0.15 animations:^{
             [self.datePicker setAlpha:0.0f];
         }];
     
@@ -142,6 +147,9 @@ NSInteger const DATE_DISPLAY_ROW = 0;
 #pragma mark - Events
 
 - (IBAction)clickedDone:(UIBarButtonItem *)sender {
+    // add new event to journal
+    
+    
     [self performSegueToPreviousView];
 }
 
@@ -152,6 +160,17 @@ NSInteger const DATE_DISPLAY_ROW = 0;
 - (IBAction)changedDatePicker:(UIDatePicker *)sender {
     [self.dateTimeDetailLabel setText:[self.dateFormatter stringFromDate:sender.date]];
 }
+
+- (IBAction)clickedCamera:(UIButton *)sender {
+    if ([self cameraAvailable])
+        [self presentImagePicker:YES];
+}
+
+- (IBAction)clickedAttach:(UIButton *)sender {
+    [self presentImagePicker:NO];
+}
+
+
 
 #pragma mark - Navigation
 
@@ -204,7 +223,7 @@ NSInteger const DATE_DISPLAY_ROW = 0;
         destination.userDefine = [[self journal] userDefineNamed:userDefineName];
         destination.previousViewID = CMAViewControllerID_AddEntry;
         
-        self.indexPathForOptionsCell = [self.tableView indexPathForSelectedRow];
+        self.indexPathForOptionsCell = [self.tableView indexPathForSelectedRow]; // so it knows which cell to edit after the unwind
     }
 }
 
@@ -215,7 +234,7 @@ NSInteger const DATE_DISPLAY_ROW = 0;
         UITableViewCell *cellToEdit = [self.tableView cellForRowAtIndexPath:self.indexPathForOptionsCell];
         
         if ([source.selectedCellLabelText isEqualToString:@""])
-            [[cellToEdit detailTextLabel] setText:@"Not Selected"];
+            [[cellToEdit detailTextLabel] setText:NO_SELECT];
         else
             [[cellToEdit detailTextLabel] setText:source.selectedCellLabelText];
         
@@ -227,6 +246,67 @@ NSInteger const DATE_DISPLAY_ROW = 0;
         UITableViewCell *cellToEdit = [self.tableView cellForRowAtIndexPath:self.indexPathForOptionsCell];
         [[cellToEdit detailTextLabel] setText:source.addEntryLabelText];
     }
+}
+
+#pragma mark - Entry Creation
+
+// Returns true if all the user input is valid. Sets anEntry's properties after validation.
+// Used as a loop condition to validate user input.
+- (BOOL)checkUserInputAndSetEntry: (CMAEntry *)anEntry {
+    return YES;
+}
+
+// Returns array of length 2 where [0] is a CMALocation and [1] is a CMAFishingSpot.
+- (NSArray *)parseLocationDetailText {
+    NSArray *result = [NSArray array];
+    
+    return result;
+}
+
+// Returns an NSSet of fishing methods from [[self journal] userDefines].
+- (NSSet *)parseMethodsDetailText {
+    NSSet *result = [NSSet set];
+    
+    return result;
+}
+
+#pragma mark - Image Picker Delegate
+
+// Presents either the devices camera or photo library depening on the camera BOOL.
+- (void)presentImagePicker:(BOOL)camera {
+    UIImagePickerController *imagePicker = [UIImagePickerController new];
+    [imagePicker setDelegate:self];
+    [imagePicker setAllowsEditing:YES];
+    
+    if (camera)
+        [imagePicker setSourceType:UIImagePickerControllerSourceTypeCamera];
+    else
+        [imagePicker setSourceType:UIImagePickerControllerSourceTypePhotoLibrary];
+    
+    [self presentViewController:imagePicker animated:YES completion:NULL];
+}
+
+// Returns whether or not the device has a camera.
+// If not, displays an alert to the user.
+- (BOOL)cameraAvailable {
+    if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Device has no camera." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+        [alert show];
+        return false;
+    }
+    
+    return true;
+}
+
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
+    UIImage *chosenImage = info[UIImagePickerControllerEditedImage];
+    //[self.imageView setImage:chosenImage];
+    
+    [picker dismissViewControllerAnimated:YES completion:NULL];
+}
+
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
+    [picker dismissViewControllerAnimated:YES completion:NULL];
 }
 
 @end

@@ -25,4 +25,8 @@ extern NSString *const SET_BAITS;
 extern NSString *const SET_LOCATIONS;
 extern NSString *const SET_FISHING_METHODS;
 
+// Used for splitting up NSStrings.
+extern NSString *const TOKEN_FISHING_METHODS;
+extern NSString *const TOKEN_LOCATION;
+
 extern CGFloat const TABLE_SECTION_SPACING;

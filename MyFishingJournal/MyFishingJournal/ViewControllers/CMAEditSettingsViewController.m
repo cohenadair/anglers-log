@@ -96,7 +96,7 @@
     
     for (NSIndexPath *path in selectedPaths) {
         UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:path];
-        [selectedCellLabels appendFormat:@"%@, ", [cell.textLabel text]];
+        [selectedCellLabels appendFormat:@"%@%@", [cell.textLabel text], TOKEN_FISHING_METHODS];
     }
     
     // remove the next comma and space
@@ -144,6 +144,9 @@
     // enable chevron for non-strings
     if (![self.userDefine isSetOfStrings])
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    else
+        if (!self.isSelectingForAddEntry)
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
     if (self.isSelectingMultiple)
         [self configureCellForMultipleSelection:cell];
@@ -162,7 +165,7 @@
     if (self.isSelectingMultiple)
         [self toggleCellAccessoryCheckmarkAtIndexPath:indexPath];
     else
-    
+        
     // unwind if we're selecting for Add Entry
     if (self.isSelectingForAddEntry) {
         self.selectedCellLabelText = [[[self.tableView cellForRowAtIndexPath:indexPath] textLabel] text];

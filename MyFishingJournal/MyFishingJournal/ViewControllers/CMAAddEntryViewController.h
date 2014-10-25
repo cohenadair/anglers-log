@@ -8,8 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import "CMAConstants.h"
+#import "CMAEntry.h"
 
-@interface CMAAddEntryViewController : UITableViewController
+@interface CMAAddEntryViewController : UITableViewController <UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 
 @property (nonatomic)CMAViewControllerID previousViewID;
 

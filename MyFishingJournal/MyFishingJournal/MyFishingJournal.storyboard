@@ -2,6 +2,8 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="sKN-2s-l4h">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
+        <capability name="Alignment constraints to the first baseline" minToolsVersion="6.0"/>
+        <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
@@ -192,7 +194,7 @@
         <scene sceneID="ifO-ji-FnT">
             <objects>
                 <tableViewController id="6A2-09-VCg" customClass="CMAEditSettingsViewController" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="H8C-A3-qVx">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelectionDuringEditing="YES" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="H8C-A3-qVx">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -222,7 +224,7 @@
                         </connections>
                     </tableView>
                     <toolbarItems>
-                        <barButtonItem systemItem="add" id="oAT-Nv-Fd9">
+                        <barButtonItem title="Add" id="oAT-Nv-Fd9">
                             <connections>
                                 <action selector="clickAddButton:" destination="6A2-09-VCg" id="lKS-j8-hd5"/>
                             </connections>
@@ -234,7 +236,7 @@
                             </connections>
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="s75-WA-yBg"/>
-                        <barButtonItem systemItem="trash" id="vdJ-oJ-D2g">
+                        <barButtonItem systemItem="edit" id="vdJ-oJ-D2g">
                             <connections>
                                 <action selector="clickDeleteButton:" destination="6A2-09-VCg" id="IEA-j6-bJD"/>
                             </connections>
@@ -702,22 +704,46 @@
                             </tableViewSection>
                             <tableViewSection id="XO1-gg-NUO">
                                 <cells>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="VMW-Bd-1Rj">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="44" id="VMW-Bd-1Rj">
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="VMW-Bd-1Rj" id="Lak-sh-fb4">
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pictures" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fcl-MQ-yId">
-                                                    <rect key="frame" x="16" y="11" width="59" height="21"/>
+                                                    <rect key="frame" x="16" y="12" width="59" height="22"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="22" id="2mP-el-d8Q"/>
+                                                    </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EtH-3k-Rzk">
+                                                    <rect key="frame" x="477" y="7" width="54" height="30"/>
+                                                    <state key="normal" title="Camera">
+                                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                                    </state>
+                                                    <connections>
+                                                        <action selector="clickedCamera:" destination="T1c-yJ-jzQ" eventType="touchUpInside" id="Kut-RV-g1e"/>
+                                                    </connections>
+                                                </button>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xT8-NM-mlQ">
+                                                    <rect key="frame" x="539" y="7" width="45" height="30"/>
+                                                    <state key="normal" title="Attach">
+                                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                                    </state>
+                                                    <connections>
+                                                        <action selector="clickedAttach:" destination="T1c-yJ-jzQ" eventType="touchUpInside" id="qqR-G4-BsW"/>
+                                                    </connections>
+                                                </button>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="Fcl-MQ-yId" firstAttribute="top" secondItem="Lak-sh-fb4" secondAttribute="topMargin" constant="3" id="0eD-3x-1Ni"/>
-                                                <constraint firstItem="Fcl-MQ-yId" firstAttribute="leading" secondItem="Lak-sh-fb4" secondAttribute="leadingMargin" constant="8" id="QXk-CL-znp"/>
-                                                <constraint firstItem="Fcl-MQ-yId" firstAttribute="centerY" secondItem="Lak-sh-fb4" secondAttribute="centerY" id="yEC-6F-Ca2"/>
+                                                <constraint firstItem="Fcl-MQ-yId" firstAttribute="leading" secondItem="Lak-sh-fb4" secondAttribute="leadingMargin" constant="8" id="9Km-RQ-Vlk"/>
+                                                <constraint firstItem="xT8-NM-mlQ" firstAttribute="leading" secondItem="EtH-3k-Rzk" secondAttribute="trailing" constant="8" symbolic="YES" id="Q26-bt-eMD"/>
+                                                <constraint firstItem="EtH-3k-Rzk" firstAttribute="top" secondItem="Lak-sh-fb4" secondAttribute="topMargin" constant="-1" id="Wr9-Wk-l4q"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="xT8-NM-mlQ" secondAttribute="trailing" constant="8" id="YgL-ej-xfA"/>
+                                                <constraint firstItem="EtH-3k-Rzk" firstAttribute="baseline" secondItem="Fcl-MQ-yId" secondAttribute="firstBaseline" id="b4D-hu-fCk"/>
+                                                <constraint firstItem="xT8-NM-mlQ" firstAttribute="baseline" secondItem="EtH-3k-Rzk" secondAttribute="baseline" id="sEK-yu-FfE"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -771,6 +797,8 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="attachButton" destination="xT8-NM-mlQ" id="eVi-fv-HpY"/>
+                        <outlet property="cameraButton" destination="EtH-3k-Rzk" id="Rgw-SH-6vs"/>
                         <outlet property="cancelButton" destination="fUB-XX-lJa" id="Wwv-Eq-dhW"/>
                         <outlet property="datePicker" destination="63A-xe-zPt" id="CXw-ub-sLX"/>
                         <outlet property="dateTimeDetailLabel" destination="RLa-LE-c2q" id="Rqc-7Z-l7n"/>
@@ -786,7 +814,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2di-wx-5W8" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="gLf-px-n2a" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="612" y="1289.5"/>
+            <point key="canvasLocation" x="612" y="1276"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="uHb-v9-W6m">

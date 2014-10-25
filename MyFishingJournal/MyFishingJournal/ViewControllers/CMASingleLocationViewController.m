@@ -87,7 +87,7 @@ NSInteger const FISHING_SPOT_SECTION = 2;
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     // unwind to Add Entry view after selecting a fishing spot
     if (indexPath.section == FISHING_SPOT_SECTION && self.isSelectingForAddEntry) {
-        self.addEntryLabelText = [NSString stringWithFormat:@"%@: %@", [self.location name], [[[self.tableView cellForRowAtIndexPath:indexPath] textLabel] text]];
+        self.addEntryLabelText = [NSString stringWithFormat:@"%@%@%@", [self.location name], TOKEN_LOCATION, [[[self.tableView cellForRowAtIndexPath:indexPath] textLabel] text]];
         [self performSegueWithIdentifier:@"unwindToAddEntryFromSingleLocation" sender:self];
     }
 }

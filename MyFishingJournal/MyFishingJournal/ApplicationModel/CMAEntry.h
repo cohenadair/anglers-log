@@ -24,6 +24,7 @@
 @property (strong, nonatomic)NSSet *fishingMethods;
 
 @property (strong, nonatomic)CMALocation *location;
+@property (strong, nonatomic)CMAFishingSpot *fishingSpot;
 
 // instance creation
 + (CMAEntry *)onDate: (NSDate *)aDate;
