@@ -13,11 +13,12 @@
 
 @interface CMAEditSettingsViewController ()
 
-@property (weak, nonatomic)IBOutlet UIBarButtonItem *deleteButton;
+@property (weak, nonatomic)IBOutlet UIBarButtonItem *editButton;
 @property (weak, nonatomic)IBOutlet UIBarButtonItem *addButton;
 @property (weak, nonatomic)IBOutlet UIBarButtonItem *doneSelectingButton;
 
 @property (strong, nonatomic)UIAlertView *addItemAlert;
+@property (strong, nonatomic)UIAlertView *editItemAlert;
 
 @property (nonatomic)BOOL isSelectingForAddEntry;
 @property (nonatomic)BOOL isSelectingMultiple;
@@ -40,6 +41,12 @@
     self.navigationItem.title = [self.userDefine name]; // sets title according to the setting that was clicked in the previous view
     self.navigationController.toolbarHidden = NO;
     
+    // remove editing button for non-string defines
+    if (![self.userDefine isSetOfStrings]) {
+        [self.editButton setTitle:@""];
+        [self.editButton setEnabled:NO];
+    }
+    
     self.isSelectingForAddEntry = (self.previousViewID == CMAViewControllerID_AddEntry);
     self.isSelectingMultiple = (self.isSelectingForAddEntry && [[self.userDefine name] isEqualToString:SET_FISHING_METHODS]);
     
@@ -47,10 +54,8 @@
     if (self.isSelectingMultiple)
         [self configureTableForMutipleSelection];
     
-    // initilize addItemAlert
-    self.addItemAlert = [UIAlertView new];
-    self.addItemAlert = [self.addItemAlert initWithTitle:@"" message:[NSString stringWithFormat:@"Add to %@:", [self.userDefine name]] delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Add", nil];
-    self.addItemAlert.alertViewStyle = UIAlertViewStylePlainTextInput;
+    [self initAddItemAlert];
+    [self initEditItemAlert];
     
     [self.tableView setTableFooterView:[[UIView alloc] initWithFrame:CGRectZero]]; // removes empty cells at the end of the list
 }
@@ -73,10 +78,6 @@
     [self toggleDoneSelectingButton:YES];
     [self.tableView setAllowsMultipleSelection:YES];
     [self setIsSelectingForAddEntry:YES];
-}
-
-- (void)configureCellForMultipleSelection: (UITableViewCell *)aCell {
-    [aCell setSelectionStyle:UITableViewCellSelectionStyleGray];
 }
 
 // Hides/shows a checkmark inside aCell.
@@ -148,28 +149,36 @@
         if (!self.isSelectingForAddEntry)
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
-    if (self.isSelectingMultiple)
-        [self configureCellForMultipleSelection:cell];
-    
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     // if it's a location, show Single Location View
     if ([[self.userDefine name] isEqualToString:SET_LOCATIONS]) {
-        self.selectedCellLabelText = [[[self.tableView cellForRowAtIndexPath:indexPath] textLabel] text];
+        self.selectedCellLabelText = [[[tableView cellForRowAtIndexPath:indexPath] textLabel] text];
         [self performSegueWithIdentifier:@"fromEditSettingsToSingleLocation" sender:self];
-    } else
+        return;
+    }
     
     // if selecting multiple
-    if (self.isSelectingMultiple)
+    if (self.isSelectingMultiple) {
         [self toggleCellAccessoryCheckmarkAtIndexPath:indexPath];
-    else
+        return;
+    }
         
     // unwind if we're selecting for Add Entry
     if (self.isSelectingForAddEntry) {
-        self.selectedCellLabelText = [[[self.tableView cellForRowAtIndexPath:indexPath] textLabel] text];
+        self.selectedCellLabelText = [[[tableView cellForRowAtIndexPath:indexPath] textLabel] text];
         [self performSegueWithIdentifier:@"unwindToAddEntryFromEditSettings" sender:self];
+        return;
+    }
+        
+    // if in editing mode
+    if (tableView.editing) {
+        self.selectedCellLabelText = [[[tableView cellForRowAtIndexPath:indexPath] textLabel] text];
+        [[self.editItemAlert textFieldAtIndex:0] setText:self.selectedCellLabelText];
+        [self.editItemAlert show];
+        return;
     }
 }
 
@@ -177,6 +186,13 @@
     // if selecting multiple
     if (self.isSelectingMultiple)
         [self toggleCellAccessoryCheckmarkAtIndexPath:indexPath];
+}
+
+- (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    cell.selectionStyle = UITableViewCellSelectionStyleDefault;
+    
+    return indexPath;
 }
 
 // Override to support editing the table view.
@@ -207,16 +223,31 @@
 
 #pragma mark - Alert Views
 
+- (void)initAddItemAlert {
+    self.addItemAlert = [[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"Add to %@:", [self.userDefine name]] message:@"" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Add", nil];
+    self.addItemAlert.alertViewStyle = UIAlertViewStylePlainTextInput;
+}
+
+- (void)initEditItemAlert {
+    self.editItemAlert = [[UIAlertView alloc] initWithTitle:@"Edit Item" message:nil delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Done", nil];
+    self.editItemAlert.alertViewStyle = UIAlertViewStylePlainTextInput;
+}
+
 // handles all UIAlertViews results for this screen
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    // add the new user define
     if (alertView == self.addItemAlert)
-        if (buttonIndex == 1) {
+        if (buttonIndex == 1) { // add button
             NSString *enteredText = [[alertView textFieldAtIndex:0] text];
             [[alertView textFieldAtIndex:0] setText:@""];
             
             [self.userDefine addObject:enteredText];
             [self insertCellAtTableEnd:enteredText];
+        }
+    
+    if (alertView == self.editItemAlert)
+        if (buttonIndex == 1) { // ok button
+            [[self journal] editUserDefine:[self.userDefine name] objectNamed:self.selectedCellLabelText newProperties:[[alertView textFieldAtIndex:0] text]];
+            [self.tableView reloadData];
         }
 }
 
@@ -230,7 +261,7 @@
 }
 
 // Enter editing mode.
-- (IBAction)clickDeleteButton:(UIBarButtonItem *)sender {
+- (IBAction)clickEditButton:(UIBarButtonItem *)sender {
     [self.tableView setEditing:YES animated:YES];
     [sender setEnabled:NO];
     [self.addButton setEnabled:NO];
@@ -250,7 +281,7 @@
 // Used to exit out of editing mode.
 - (void)clickDoneButton {
     [self.tableView setEditing:NO animated:YES];
-    [self.deleteButton setEnabled:YES];
+    [self.editButton setEnabled:YES];
     [self.addButton setEnabled:YES];
     self.navigationItem.rightBarButtonItem = nil;
 }

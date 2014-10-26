@@ -199,7 +199,8 @@ NSString *const NO_SELECT = @"Not Selected";
 }
 
 - (IBAction)clickedAttach:(UIButton *)sender {
-    [self presentImagePicker:NO];
+    //[self presentImagePicker:NO];
+    [self insertImageIntoCollection:[UIImage imageNamed:@"no-image.png"]];
 }
 
 - (IBAction)longPressedImageInCollection:(UILongPressGestureRecognizer *)sender {

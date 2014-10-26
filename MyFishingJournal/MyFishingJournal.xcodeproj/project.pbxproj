@@ -38,8 +38,8 @@
 		E72669E219E76B92003C8E0B /* CMAUserStrings.m in Sources */ = {isa = PBXBuildFile; fileRef = E72669E119E76B92003C8E0B /* CMAUserStrings.m */; };
 		E72669E319E76B92003C8E0B /* CMAUserStrings.m in Sources */ = {isa = PBXBuildFile; fileRef = E72669E119E76B92003C8E0B /* CMAUserStrings.m */; };
 		E738583D19FCD6DE00FE122B /* no-image.png in Resources */ = {isa = PBXBuildFile; fileRef = E738583C19FCD6DE00FE122B /* no-image.png */; };
+		E738584019FD930000FE122B /* CMASingleEntryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E738583F19FD930000FE122B /* CMASingleEntryViewController.m */; };
 		E7A51E9E19EFAA0E009BDC20 /* CMASettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7A51E9D19EFAA0E009BDC20 /* CMASettingsViewController.m */; };
-		E7A51EA119EFB94C009BDC20 /* CMASingleEntryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7A51EA019EFB94C009BDC20 /* CMASingleEntryViewController.m */; };
 		E7A51EA819F4440F009BDC20 /* CMAEditSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7A51EA719F4440F009BDC20 /* CMAEditSettingsViewController.m */; };
 		E7A51EB219F4938C009BDC20 /* CMAAddLocationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7A51EB119F4938C009BDC20 /* CMAAddLocationViewController.m */; };
 		E7A51EBA19F4ADC2009BDC20 /* CMAConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = E7A51EB919F4ADC2009BDC20 /* CMAConstants.m */; };
@@ -98,10 +98,10 @@
 		E72669E019E76B92003C8E0B /* CMAUserStrings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAUserStrings.h; path = ApplicationModel/UserDefines/CMAUserStrings.h; sourceTree = "<group>"; };
 		E72669E119E76B92003C8E0B /* CMAUserStrings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAUserStrings.m; path = ApplicationModel/UserDefines/CMAUserStrings.m; sourceTree = "<group>"; };
 		E738583C19FCD6DE00FE122B /* no-image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "no-image.png"; path = "Images/no-image.png"; sourceTree = "<group>"; };
+		E738583E19FD930000FE122B /* CMASingleEntryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMASingleEntryViewController.h; path = ViewControllers/CMASingleEntryViewController.h; sourceTree = "<group>"; };
+		E738583F19FD930000FE122B /* CMASingleEntryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMASingleEntryViewController.m; path = ViewControllers/CMASingleEntryViewController.m; sourceTree = "<group>"; };
 		E7A51E9C19EFAA0E009BDC20 /* CMASettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMASettingsViewController.h; path = ViewControllers/CMASettingsViewController.h; sourceTree = "<group>"; };
 		E7A51E9D19EFAA0E009BDC20 /* CMASettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMASettingsViewController.m; path = ViewControllers/CMASettingsViewController.m; sourceTree = "<group>"; };
-		E7A51E9F19EFB94C009BDC20 /* CMASingleEntryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMASingleEntryViewController.h; path = ViewControllers/CMASingleEntryViewController.h; sourceTree = "<group>"; };
-		E7A51EA019EFB94C009BDC20 /* CMASingleEntryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMASingleEntryViewController.m; path = ViewControllers/CMASingleEntryViewController.m; sourceTree = "<group>"; };
 		E7A51EA619F4440F009BDC20 /* CMAEditSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAEditSettingsViewController.h; path = ViewControllers/CMAEditSettingsViewController.h; sourceTree = "<group>"; };
 		E7A51EA719F4440F009BDC20 /* CMAEditSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAEditSettingsViewController.m; path = ViewControllers/CMAEditSettingsViewController.m; sourceTree = "<group>"; };
 		E7A51EB019F4938C009BDC20 /* CMAAddLocationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAAddLocationViewController.h; path = ViewControllers/CMAAddLocationViewController.h; sourceTree = "<group>"; };
@@ -286,14 +286,14 @@
 				E7C9271E19EF4BEB0010A9FE /* CMAViewEntriesViewController.m */,
 				E7A51E9C19EFAA0E009BDC20 /* CMASettingsViewController.h */,
 				E7A51E9D19EFAA0E009BDC20 /* CMASettingsViewController.m */,
-				E7A51E9F19EFB94C009BDC20 /* CMASingleEntryViewController.h */,
-				E7A51EA019EFB94C009BDC20 /* CMASingleEntryViewController.m */,
 				E7A51EA619F4440F009BDC20 /* CMAEditSettingsViewController.h */,
 				E7A51EA719F4440F009BDC20 /* CMAEditSettingsViewController.m */,
 				E7A51EB019F4938C009BDC20 /* CMAAddLocationViewController.h */,
 				E7A51EB119F4938C009BDC20 /* CMAAddLocationViewController.m */,
 				E7A6883A19F610A100B032E3 /* CMASingleLocationViewController.h */,
 				E7A6883B19F610A100B032E3 /* CMASingleLocationViewController.m */,
+				E738583E19FD930000FE122B /* CMASingleEntryViewController.h */,
+				E738583F19FD930000FE122B /* CMASingleEntryViewController.m */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -406,6 +406,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E72669B719DF14DE003C8E0B /* CMAEntry.m in Sources */,
+				E738584019FD930000FE122B /* CMASingleEntryViewController.m in Sources */,
 				E7A51EA819F4440F009BDC20 /* CMAEditSettingsViewController.m in Sources */,
 				E7C926DA19EEC7BC0010A9FE /* CMAAddEntryViewController.m in Sources */,
 				E7C926E319EEC9DC0010A9FE /* CMAStatisticsViewController.m in Sources */,
@@ -420,7 +421,6 @@
 				E72669C319E3444F003C8E0B /* CMAFishingSpot.m in Sources */,
 				E7C926D719EE3BC30010A9FE /* CMAHomeViewController.m in Sources */,
 				E70B638619D3A8E400DFBA85 /* CMAAppDelegate.m in Sources */,
-				E7A51EA119EFB94C009BDC20 /* CMASingleEntryViewController.m in Sources */,
 				E72669DE19E76B63003C8E0B /* CMAUserDefine.m in Sources */,
 				E72669BD19DF3C5A003C8E0B /* CMALocation.m in Sources */,
 				E70B638219D3A8E400DFBA85 /* main.m in Sources */,
