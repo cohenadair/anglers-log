@@ -8,12 +8,19 @@
 
 #import "CMAViewEntriesViewController.h"
 #import "CMAAddEntryViewController.h"
+#import "CMAAppDelegate.h"
 
 @interface CMAViewEntriesViewController ()
 
 @end
 
 @implementation CMAViewEntriesViewController
+
+#pragma mark - Global Accessing
+
+- (CMAJournal *)journal {
+    return [((CMAAppDelegate *)[[UIApplication sharedApplication] delegate]) journal];
+}
 
 #pragma mark - View Management
 
@@ -37,21 +44,29 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     // Return the number of rows in the section.
-    return 1;
+    return [[self journal] entryCount];
 }
 
 // Sets the height of each cell.
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 75;
+    return 100;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"entriesCell" forIndexPath:indexPath];
     
-    cell.textLabel.text = @"Walleye";
-    cell.detailTextLabel.text = @"May 5th, 2014 at 6:15am";
+    CMAEntry *entry = [[self journal] entryAtIndex:indexPath.item];
+    NSDateFormatter *dateFormatter = [NSDateFormatter new];
+    [dateFormatter setDateFormat:@"MMM dd, yyyy 'at' h:mm a"];
+    
+    cell.textLabel.text = entry.fishSpecies;
+    cell.detailTextLabel.text = [dateFormatter stringFromDate:entry.date];
     cell.detailTextLabel.textColor = [UIColor lightGrayColor];
-    cell.imageView.image = [UIImage imageNamed:@"example.jpg"];
+    
+    if ([entry.images count] > 0)
+        cell.imageView.image = [entry.images anyObject];
+    else
+        cell.imageView.image = [UIImage imageNamed:@"no-image.png"];
     
     return cell;
 }

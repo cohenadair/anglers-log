@@ -31,5 +31,6 @@
 - (id)userDefineNamed: (NSString *)aName;
 - (NSInteger)entryCount;
 - (CMAEntry *)entryDated: (NSDate *)aDate;
+- (CMAEntry *)entryAtIndex: (NSInteger)anIndex;
 
 @end

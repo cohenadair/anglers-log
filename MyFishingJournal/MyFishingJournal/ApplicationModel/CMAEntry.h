@@ -18,7 +18,7 @@
 
 @property (strong, nonatomic)NSNumber *fishLength;
 @property (strong, nonatomic)NSNumber *fishWeight;
-@property (strong, nonatomic)NSNumber *quantity;
+@property (strong, nonatomic)NSNumber *fishQuantity;
 
 @property (strong, nonatomic)NSMutableSet *images;
 @property (strong, nonatomic)NSSet *fishingMethods;
@@ -37,7 +37,7 @@
 - (NSInteger)fishingMethodCount;
 
 // editing
-- (void)addImage: (NSURL *)imageURL;
-- (void)removeImage: (NSURL *)imageURL;
+- (void)addImage: (UIImage *)anImage;
+- (void)removeImage: (UIImage *)anImage;
 
 @end

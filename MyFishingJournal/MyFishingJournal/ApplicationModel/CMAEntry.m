@@ -39,12 +39,12 @@
 
 #pragma mark - Editing
 
-- (void)addImage: (NSURL *)imageURL {
-    [self.images addObject:imageURL];
+- (void)addImage: (UIImage *)anImage {
+    [self.images addObject:anImage];
 }
 
-- (void)removeImage: (NSURL *)imageURL {
-    [self.images removeObject:(imageURL)];
+- (void)removeImage: (UIImage *)anImage {
+    [self.images removeObject:(anImage)];
 }
 
 @end

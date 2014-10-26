@@ -368,12 +368,12 @@
         <scene sceneID="qbr-pc-l7U">
             <objects>
                 <tableViewController id="t80-QM-oZt" customClass="CMAViewEntriesViewController" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelectionDuringEditing="YES" rowHeight="75" sectionHeaderHeight="22" sectionFooterHeight="22" id="sto-jE-hWR">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelectionDuringEditing="YES" rowHeight="110" sectionHeaderHeight="22" sectionFooterHeight="22" id="sto-jE-hWR">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="detailButton" indentationWidth="10" reuseIdentifier="entriesCell" textLabel="dFd-Uz-rgU" detailTextLabel="obn-IA-5BW" imageView="aHZ-MB-dQ7" style="IBUITableViewCellStyleSubtitle" id="LOf-Hg-IVW">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="detailButton" indentationWidth="10" reuseIdentifier="entriesCell" textLabel="dFd-Uz-rgU" detailTextLabel="obn-IA-5BW" imageView="FeA-EX-MKX" rowHeight="100" style="IBUITableViewCellStyleSubtitle" id="LOf-Hg-IVW">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="LOf-Hg-IVW" id="7DJ-bU-WwA">
@@ -397,7 +397,7 @@
                                                 <fontDescription key="fontDescription" type="system" pointSize="11"/>
                                             </variation>
                                         </label>
-                                        <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" image="example.jpg" id="aHZ-MB-dQ7">
+                                        <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" image="no-image.png" id="FeA-EX-MKX">
                                             <autoresizingMask key="autoresizingMask"/>
                                         </imageView>
                                     </subviews>
@@ -424,7 +424,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="EcS-Oh-0t4" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1546.5" y="1304"/>
+            <point key="canvasLocation" x="1546" y="1304"/>
         </scene>
         <!--Single Entry-->
         <scene sceneID="W72-fV-RO7">
@@ -710,7 +710,7 @@
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="VMW-Bd-1Rj" id="Lak-sh-fb4">
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Pictures" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fcl-MQ-yId">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pictures" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fcl-MQ-yId">
                                                     <rect key="frame" x="16" y="14" width="59" height="22"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -736,12 +736,13 @@
                                                 </button>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstAttribute="trailingMargin" secondItem="xT8-NM-mlQ" secondAttribute="trailing" constant="8" id="2zP-RM-n3h"/>
-                                                <constraint firstItem="xT8-NM-mlQ" firstAttribute="baseline" secondItem="EtH-3k-Rzk" secondAttribute="baseline" id="CGL-Y6-q6E"/>
-                                                <constraint firstItem="EtH-3k-Rzk" firstAttribute="baseline" secondItem="Fcl-MQ-yId" secondAttribute="firstBaseline" id="I6H-xs-2MX"/>
-                                                <constraint firstItem="Fcl-MQ-yId" firstAttribute="leading" secondItem="Lak-sh-fb4" secondAttribute="leadingMargin" constant="8" id="Xaf-Ri-5AN"/>
-                                                <constraint firstItem="Fcl-MQ-yId" firstAttribute="top" secondItem="Lak-sh-fb4" secondAttribute="topMargin" constant="6" id="aIn-Ap-Hh0"/>
-                                                <constraint firstItem="xT8-NM-mlQ" firstAttribute="leading" secondItem="EtH-3k-Rzk" secondAttribute="trailing" constant="8" symbolic="YES" id="jxc-H1-Kse"/>
+                                                <constraint firstItem="Fcl-MQ-yId" firstAttribute="leading" secondItem="Lak-sh-fb4" secondAttribute="leadingMargin" constant="8" id="Cah-Dj-RSI"/>
+                                                <constraint firstItem="Fcl-MQ-yId" firstAttribute="top" secondItem="Lak-sh-fb4" secondAttribute="topMargin" constant="6" id="EgW-sX-nRq"/>
+                                                <constraint firstItem="xT8-NM-mlQ" firstAttribute="leading" secondItem="EtH-3k-Rzk" secondAttribute="trailing" constant="8" symbolic="YES" id="IR0-l0-eO9"/>
+                                                <constraint firstItem="EtH-3k-Rzk" firstAttribute="baseline" secondItem="Fcl-MQ-yId" secondAttribute="firstBaseline" id="QUO-Dw-p03"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="xT8-NM-mlQ" secondAttribute="trailing" constant="8" id="R6t-Jl-XBm"/>
+                                                <constraint firstItem="xT8-NM-mlQ" firstAttribute="baseline" secondItem="EtH-3k-Rzk" secondAttribute="baseline" id="hof-eW-uob"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="Fcl-MQ-yId" secondAttribute="bottom" constant="-1" id="rZP-md-PNz"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -852,6 +853,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="attachButton" destination="xT8-NM-mlQ" id="eVi-fv-HpY"/>
+                        <outlet property="baitUsedDetailLabel" destination="DKE-eF-o43" id="ChZ-pt-0nF"/>
                         <outlet property="cameraButton" destination="EtH-3k-Rzk" id="Rgw-SH-6vs"/>
                         <outlet property="cancelButton" destination="fUB-XX-lJa" id="Wwv-Eq-dhW"/>
                         <outlet property="datePicker" destination="63A-xe-zPt" id="CXw-ub-sLX"/>
@@ -859,8 +861,11 @@
                         <outlet property="doneButton" destination="dty-g7-z94" id="TwA-Kd-bET"/>
                         <outlet property="imageCollection" destination="PbH-Fk-chE" id="wag-Si-cxy"/>
                         <outlet property="lengthTextField" destination="nBM-tZ-R64" id="d1o-AE-3wa"/>
+                        <outlet property="locationDetailLabel" destination="voV-vz-j1Z" id="v3U-6N-N39"/>
+                        <outlet property="methodsDetailLabel" destination="6dp-Ea-mmb" id="btx-U2-3LF"/>
                         <outlet property="notesTextView" destination="TtB-VP-hHv" id="mgy-aH-AeV"/>
                         <outlet property="quantityTextField" destination="7gR-XQ-cyh" id="eAH-so-S1b"/>
+                        <outlet property="speciesDetailLabel" destination="iG0-tN-1ui" id="1dz-uF-Ukq"/>
                         <outlet property="weightTextField" destination="Kiv-US-vyI" id="zWv-l9-M4D"/>
                         <segue destination="gLf-px-n2a" kind="unwind" identifier="unwindToHome" unwindAction="unwindToHome:" id="y1Q-lf-imf"/>
                         <segue destination="gLf-px-n2a" kind="unwind" identifier="unwindToViewEntries" unwindAction="unwindToViewEntries:" id="0cS-3g-Mnn"/>
@@ -1076,10 +1081,10 @@
         </scene>
     </scenes>
     <resources>
-        <image name="example.jpg" width="3240" height="3240"/>
+        <image name="no-image.png" width="150" height="150"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="wIu-l2-edA"/>
         <segue reference="qAO-gb-5Yr"/>
-        <segue reference="GZI-Xr-sAg"/>
     </inferredMetricsTieBreakers>
 </document>

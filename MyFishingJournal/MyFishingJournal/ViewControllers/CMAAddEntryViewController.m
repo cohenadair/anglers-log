@@ -18,14 +18,18 @@
 
 @property (weak, nonatomic)IBOutlet UILabel *dateTimeDetailLabel;
 @property (weak, nonatomic)IBOutlet UIDatePicker *datePicker;
+@property (weak, nonatomic)IBOutlet UILabel *speciesDetailLabel;
+@property (weak, nonatomic)IBOutlet UILabel *locationDetailLabel;
+@property (weak, nonatomic)IBOutlet UILabel *baitUsedDetailLabel;
+@property (weak, nonatomic)IBOutlet UILabel *methodsDetailLabel;
 @property (weak, nonatomic)IBOutlet UITextField *quantityTextField;
 @property (weak, nonatomic)IBOutlet UITextField *lengthTextField;
 @property (weak, nonatomic)IBOutlet UITextField *weightTextField;
+@property (weak, nonatomic)IBOutlet UICollectionView *imageCollection;
 @property (weak, nonatomic)IBOutlet UITextView *notesTextView;
 
 @property (weak, nonatomic)IBOutlet UIButton *cameraButton;
 @property (weak, nonatomic)IBOutlet UIButton *attachButton;
-@property (weak, nonatomic)IBOutlet UICollectionView *imageCollection;
 
 @property (strong, nonatomic)NSDateFormatter *dateFormatter;
 @property (strong, nonatomic)NSIndexPath *indexPathForOptionsCell; // used after an unwind from selecting options
@@ -47,6 +51,8 @@ NSInteger const DATE_DISPLAY_ROW = 0;
 NSInteger const IMAGES_HEIGHT = 121;
 NSInteger const IMAGES_SECTION = 2;
 NSInteger const IMAGES_ROW = 1;
+
+NSInteger const IMAGE_VIEW_TAG = 100;
 
 NSString *const NO_SELECT = @"Not Selected";
 
@@ -171,9 +177,12 @@ NSString *const NO_SELECT = @"Not Selected";
 
 - (IBAction)clickedDone:(UIBarButtonItem *)sender {
     // add new event to journal
+    CMAEntry *entryToAdd = [CMAEntry new];
     
-    
-    [self performSegueToPreviousView];
+    if ([self checkUserInputAndSetEntry:entryToAdd]) {
+        [[self journal] addEntry:entryToAdd];
+        [self performSegueToPreviousView];
+    }
 }
 
 - (IBAction)clickedCancel:(UIBarButtonItem *)sender {
@@ -205,6 +214,11 @@ NSString *const NO_SELECT = @"Not Selected";
 }
 
 #pragma mark - Alert View
+
+- (void)showInvalidInputAlert:(NSString *)aMessage {
+    UIAlertView *alertVew = [[UIAlertView alloc] initWithTitle:@"Error" message:aMessage delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+    [alertVew show];
+}
 
 // handles all UIAlertViews results for this screen
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
@@ -297,19 +311,99 @@ NSString *const NO_SELECT = @"Not Selected";
 // Returns true if all the user input is valid. Sets anEntry's properties after validation.
 // Used as a loop condition to validate user input.
 - (BOOL)checkUserInputAndSetEntry: (CMAEntry *)anEntry {
+    // date
+    [anEntry setDate:[self.datePicker date]];
+    
+    // species
+    if (![[self.speciesDetailLabel text] isEqualToString:NO_SELECT]) {
+        NSString *species = [[[self journal] userDefineNamed:SET_SPECIES] stringNamed:[self.speciesDetailLabel text]];
+        [anEntry setFishSpecies:species];
+    } else {
+        [self showInvalidInputAlert:@"Please select a species."];
+        return NO;
+    }
+    
+    // location and fishing spot
+    if (![[self.locationDetailLabel text] isEqualToString:NO_SELECT]) {
+        NSArray *locationInfo = [self parseLocationDetailText];
+        
+        [anEntry setLocation:locationInfo[0]];
+        [anEntry setFishingSpot:locationInfo[1]];
+    } else {
+        [self showInvalidInputAlert:@"Please select a location."];
+        return NO;
+    }
+    
+    // bait used
+    if (![[self.baitUsedDetailLabel text] isEqualToString:NO_SELECT]) {
+        NSString *bait = [[[self journal] userDefineNamed:SET_BAITS] stringNamed:[self.baitUsedDetailLabel text]];
+        [anEntry setBaitUsed:bait];
+    } else {
+        [anEntry setBaitUsed:nil];
+    }
+    
+    // fishing methods
+    if (![[self.methodsDetailLabel text] isEqualToString:NO_SELECT]) {
+        [anEntry setFishingMethods:[self parseMethodsDetailText]];
+    } else {
+        [anEntry setFishingMethods:nil];
+    }
+    
+    // fish quantity
+    if (![[self.quantityTextField text] isEqualToString:@"0"]) {
+        NSNumber *quantity = [NSNumber numberWithInteger:[[self.quantityTextField text] integerValue]];
+        [anEntry setFishQuantity:quantity];
+    } else {
+        [anEntry setFishQuantity:[NSNumber numberWithInt:-1]];
+    }
+    
+    // fish length
+    if (![[self.lengthTextField text] isEqualToString:@"0"]) {
+        NSNumber *length = [NSNumber numberWithInteger:[[self.lengthTextField text] integerValue]];
+        [anEntry setFishLength:length];
+    } else {
+        [anEntry setFishLength:[NSNumber numberWithInt:-1]];
+    }
+    
+    // fish weight
+    if (![[self.weightTextField text] isEqualToString:@"0"]) {
+        NSNumber *weight = [NSNumber numberWithInteger:[[self.weightTextField text] integerValue]];
+        [anEntry setFishWeight:weight];
+    } else {
+        [anEntry setFishWeight:[NSNumber numberWithInt:-1]];
+    }
+    
+    // pictures
+    if (![self.imageCollection numberOfItemsInSection:0] == 0) {
+        for (int i = 0; i < [self.imageCollection numberOfItemsInSection:0]; i++) {
+            UICollectionViewCell *cell = [self.imageCollection cellForItemAtIndexPath:[NSIndexPath indexPathForItem:i inSection:0]];
+            UIImage *imageView = [(UIImageView *)[cell viewWithTag:IMAGE_VIEW_TAG] image];
+            [anEntry addImage:imageView];
+        }
+    }
+    
+    // notes
+    if (![[self.notesTextView text] isEqualToString:@"Notes"]) {
+        [anEntry setNotes:[self.notesTextView text]];
+    } else {
+        [anEntry setNotes:nil];
+    }
+    
     return YES;
 }
 
 // Returns array of length 2 where [0] is a CMALocation and [1] is a CMAFishingSpot.
 - (NSArray *)parseLocationDetailText {
-    NSArray *result = [NSArray array];
-    
-    return result;
+    return [[self.locationDetailLabel text] componentsSeparatedByString:TOKEN_LOCATION];
 }
 
 // Returns an NSSet of fishing methods from [[self journal] userDefines].
 - (NSSet *)parseMethodsDetailText {
-    NSSet *result = [NSSet set];
+    NSMutableSet *result = [NSMutableSet set];
+    NSArray *fishingMethods = [[self.methodsDetailLabel text] componentsSeparatedByString:TOKEN_FISHING_METHODS];
+    
+    for (NSString *str in fishingMethods)
+        [result addObject:[[[self journal] userDefineNamed:SET_FISHING_METHODS] stringNamed:str]];
     
     return result;
 }
@@ -384,7 +478,7 @@ NSString *const NO_SELECT = @"Not Selected";
     
     UICollectionViewCell *insertedCell = [self.imageCollection cellForItemAtIndexPath:indexPath];
     
-    UIImageView *imageView = (UIImageView *)[insertedCell viewWithTag:100];
+    UIImageView *imageView = (UIImageView *)[insertedCell viewWithTag:IMAGE_VIEW_TAG];
     [imageView setImage:anImage];
 }
 

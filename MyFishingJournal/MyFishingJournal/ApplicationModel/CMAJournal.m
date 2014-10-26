@@ -101,4 +101,8 @@
     return nil;
 }
 
+- (CMAEntry *)entryAtIndex: (NSInteger)anIndex {
+    return [[self.entries allObjects] objectAtIndex:anIndex];
+}
+
 @end
