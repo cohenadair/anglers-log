@@ -25,11 +25,16 @@
 
 @property (weak, nonatomic)IBOutlet UIButton *cameraButton;
 @property (weak, nonatomic)IBOutlet UIButton *attachButton;
+@property (weak, nonatomic)IBOutlet UICollectionView *imageCollection;
 
 @property (strong, nonatomic)NSDateFormatter *dateFormatter;
 @property (strong, nonatomic)NSIndexPath *indexPathForOptionsCell; // used after an unwind from selecting options
 @property (nonatomic)BOOL isEditingDateTime;
 @property (nonatomic)BOOL hasEditedNotesTextView;
+
+@property (nonatomic)BOOL hasAttachedImages;
+@property (nonatomic)NSInteger numberOfImages;
+@property (strong, nonatomic)NSIndexPath *deleteImageIndexPath;
 
 @end
 
@@ -38,6 +43,10 @@ NSInteger const DATE_PICKER_SECTION = 0;
 NSInteger const DATE_PICKER_ROW = 1;
 NSInteger const DATE_DISPLAY_SECTION = 0;
 NSInteger const DATE_DISPLAY_ROW = 0;
+
+NSInteger const IMAGES_HEIGHT = 121;
+NSInteger const IMAGES_SECTION = 2;
+NSInteger const IMAGES_ROW = 1;
 
 NSString *const NO_SELECT = @"Not Selected";
 
@@ -60,8 +69,14 @@ NSString *const NO_SELECT = @"Not Selected";
     // set date detail label to the current date and time
     [self.dateTimeDetailLabel setText:[self.dateFormatter stringFromDate:[NSDate new]]];
     
+    [self.imageCollection setAllowsSelection:NO];
+    [self.imageCollection setAllowsMultipleSelection:NO];
+    
     self.isEditingDateTime = NO;
     self.hasEditedNotesTextView = NO;
+    
+    self.hasAttachedImages = NO;
+    self.numberOfImages = 0;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -112,6 +127,14 @@ NSString *const NO_SELECT = @"Not Selected";
             return 0;
     }
     
+    // for the images collection cell
+    if (indexPath.section == IMAGES_SECTION && indexPath.row == IMAGES_ROW) {
+        if (self.hasAttachedImages)
+            return IMAGES_HEIGHT;
+        else
+            return 0;
+    }
+    
     // using the super class's implementation gets the height set in storyboard
     return [super tableView:tableView heightForRowAtIndexPath:indexPath];
 }
@@ -126,7 +149,7 @@ NSString *const NO_SELECT = @"Not Selected";
             [self toggleDatePickerCellHidden:tableView];
 }
 
-#pragma mark - Text View Initialization
+#pragma mark - Text View Initializing
 
 - (void)textViewDidBeginEditing:(UITextView *)textView {
     // clear the default "Notes" text
@@ -170,7 +193,28 @@ NSString *const NO_SELECT = @"Not Selected";
     [self presentImagePicker:NO];
 }
 
+- (IBAction)longPressedImageInCollection:(UILongPressGestureRecognizer *)sender {
+    // only show at the beginning of the gesture
+    if (sender.state == UIGestureRecognizerStateBegan) {
+        // referenced in the UIAlertView delegate protocol
+        self.deleteImageIndexPath = [self.imageCollection indexPathForItemAtPoint:[sender locationInView:self.imageCollection]];
+        
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Remove Picture" message:@"Do you want to remove this picture?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Delete", nil];
+        [alertView show];
+    }
+}
 
+#pragma mark - Alert View
+
+// handles all UIAlertViews results for this screen
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    // delete button
+    if (buttonIndex == 1)
+        if (self.deleteImageIndexPath != nil) {
+            [self deleteImageFromCollectionAtIndexPath:self.deleteImageIndexPath];
+            self.deleteImageIndexPath = nil;
+        }
+}
 
 #pragma mark - Navigation
 
@@ -270,7 +314,7 @@ NSString *const NO_SELECT = @"Not Selected";
     return result;
 }
 
-#pragma mark - Image Picker Delegate
+#pragma mark - Image Picker
 
 // Presents either the devices camera or photo library depening on the camera BOOL.
 - (void)presentImagePicker:(BOOL)camera {
@@ -300,13 +344,63 @@ NSString *const NO_SELECT = @"Not Selected";
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
     UIImage *chosenImage = info[UIImagePickerControllerEditedImage];
-    //[self.imageView setImage:chosenImage];
+    [self insertImageIntoCollection:chosenImage];
     
     [picker dismissViewControllerAnimated:YES completion:NULL];
 }
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
     [picker dismissViewControllerAnimated:YES completion:NULL];
+}
+
+#pragma mark - Collection View
+
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
+    return self.numberOfImages;
+}
+
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+    UICollectionViewCell * cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"thumbnailImageCell" forIndexPath:indexPath];
+    
+    [[cell.contentView layer] setBorderColor:[UIColor blackColor].CGColor];
+    [[cell.contentView layer] setBorderWidth:1.0f];
+    
+    return cell;
+}
+
+- (void)insertImageIntoCollection: (UIImage *)anImage {
+    self.numberOfImages++;
+    
+    // reload table if adding the first image
+    if (!self.hasAttachedImages) {
+        self.hasAttachedImages = YES;
+        [self.tableView beginUpdates];
+        [self.tableView reloadData];
+        [self.tableView endUpdates];
+    }
+    
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+    [self.imageCollection insertItemsAtIndexPaths:@[indexPath]];
+    
+    UICollectionViewCell *insertedCell = [self.imageCollection cellForItemAtIndexPath:indexPath];
+    
+    UIImageView *imageView = (UIImageView *)[insertedCell viewWithTag:100];
+    [imageView setImage:anImage];
+}
+
+- (void)deleteImageFromCollectionAtIndexPath:(NSIndexPath *)anIndexPath {
+    self.numberOfImages--;
+    
+    [self.imageCollection deleteItemsAtIndexPaths:@[anIndexPath]];
+    
+    // reload table to hide collection cell if there are no more images
+    if (self.numberOfImages == 0) {
+        self.hasAttachedImages = NO;
+        
+        [self.tableView beginUpdates];
+        [self.tableView reloadData];
+        [self.tableView endUpdates];
+    }
 }
 
 @end

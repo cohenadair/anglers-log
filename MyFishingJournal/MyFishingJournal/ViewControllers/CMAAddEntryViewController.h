@@ -10,7 +10,7 @@
 #import "CMAConstants.h"
 #import "CMAEntry.h"
 
-@interface CMAAddEntryViewController : UITableViewController <UIImagePickerControllerDelegate, UINavigationControllerDelegate>
+@interface CMAAddEntryViewController : UITableViewController <UIImagePickerControllerDelegate, UINavigationControllerDelegate, UICollectionViewDelegate, UICollectionViewDataSource>
 
 @property (nonatomic)CMAViewControllerID previousViewID;
 
