@@ -8,11 +8,12 @@
 
 #import <UIKit/UIKit.h>
 #import "CMAJournal.h"
+#import "CMAUserDefine.h"
 
 @interface CMAEditSettingsViewController : UITableViewController
 
 // a pointer to the journal's userDefine object for the cell clicked in the previous view
-@property (strong, nonatomic)id userDefine;
+@property (strong, nonatomic)CMAUserDefine *userDefine;
 @property (nonatomic)CMAViewControllerID previousViewID;
 
 // used for communication to the Add Entry view

@@ -20,7 +20,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.entry = [CMAEntry new];
+    NSLog(@"Entry image count: %ld", [self.entry imageCount]);
     
     [self.tableView setTableFooterView:[[UIView alloc] initWithFrame:CGRectZero]]; // removes empty cells at the end of the list
 }

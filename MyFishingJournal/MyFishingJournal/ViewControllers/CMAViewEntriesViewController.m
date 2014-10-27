@@ -8,9 +8,12 @@
 
 #import "CMAViewEntriesViewController.h"
 #import "CMAAddEntryViewController.h"
+#import "CMASingleEntryViewController.h"
 #import "CMAAppDelegate.h"
 
 @interface CMAViewEntriesViewController ()
+
+@property (strong, nonatomic)NSArray *entriesArray;
 
 @end
 
@@ -26,6 +29,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    [self setEntriesArray:[[self journal].entries allObjects]];
     
     [self.tableView setTableFooterView:[[UIView alloc] initWithFrame:CGRectZero]]; // removes empty cells at the end of the list
 }
@@ -55,7 +60,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"entriesCell" forIndexPath:indexPath];
     
-    CMAEntry *entry = [[self journal] entryAtIndex:indexPath.item];
+    CMAEntry *entry = [self.entriesArray objectAtIndex:indexPath.item];
     NSDateFormatter *dateFormatter = [NSDateFormatter new];
     [dateFormatter setDateFormat:@"MMM dd, yyyy 'at' h:mm a"];
     
@@ -71,16 +76,18 @@
     return cell;
 }
 
-- (void) tableView:(UITableView *) tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
-    [self performSegueWithIdentifier:@"fromViewEntriesToSingleEntry" sender:self];
-}
-
 #pragma mark - Navigation
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([segue.identifier isEqualToString:@"fromViewEntriesToAddEntry"]) {
         CMAAddEntryViewController *destination = [[segue.destinationViewController viewControllers] objectAtIndex:0];
         destination.previousViewID = CMAViewControllerID_ViewEntries;
+    }
+    
+    if ([segue.identifier isEqualToString:@"fromViewEntriesToSingleEntry"]) {
+        CMASingleEntryViewController *destination = [[segue.destinationViewController viewControllers] objectAtIndex:0];
+        CMAEntry *entryToDisplay = [self.entriesArray objectAtIndex:[self.tableView indexPathForSelectedRow].item];
+        destination.entry = entryToDisplay;
     }
 }
 

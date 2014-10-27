@@ -23,6 +23,8 @@
 @property (nonatomic)BOOL isSelectingForAddEntry;
 @property (nonatomic)BOOL isSelectingMultiple;
 
+@property (strong, nonatomic)NSArray *userDefineArray;
+
 @end
 
 @implementation CMAEditSettingsViewController
@@ -46,6 +48,9 @@
         [self.editButton setTitle:@""];
         [self.editButton setEnabled:NO];
     }
+    
+    // used to populate cells
+    [self setUserDefineArray:[[self.userDefine objects] allObjects]];
     
     self.isSelectingForAddEntry = (self.previousViewID == CMAViewControllerID_AddEntry);
     self.isSelectingMultiple = (self.isSelectingForAddEntry && [[self.userDefine name] isEqualToString:SET_FISHING_METHODS]);
@@ -92,23 +97,24 @@
 
 // Returns a string with all selected cell labels separated by a comma.
 - (NSString *)stringFromSelectedCells {
-    NSArray *selectedPaths = [self.tableView indexPathsForSelectedRows];
-    NSMutableString *selectedCellLabels = [NSMutableString string];
+    NSMutableString *result = [NSMutableString string];
     
-    for (NSIndexPath *path in selectedPaths) {
-        UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:path];
-        [selectedCellLabels appendFormat:@"%@%@", [cell.textLabel text], TOKEN_FISHING_METHODS];
+    for (int i = 0; i < [self.tableView numberOfRowsInSection:0]; i++) {
+        UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0]];
+        
+        if (cell.accessoryType == UITableViewCellAccessoryCheckmark)
+            [result appendFormat:@"%@%@", [cell.textLabel text], TOKEN_FISHING_METHODS];
     }
     
     // remove the next comma and space
-    if (selectedCellLabels.length > 0) {
+    if (result.length > 0) {
         NSRange range;
-        range.location = [selectedCellLabels length] - 2;
+        range.location = [result length] - 2;
         range.length = 2;
-        [selectedCellLabels replaceCharactersInRange:range withString:@""];
+        [result replaceCharactersInRange:range withString:@""];
     }
     
-    return selectedCellLabels;
+    return result;
 }
 
 // Inserts a cell with label aStringForLabel at the end of the table.
@@ -139,19 +145,20 @@
 // Initialize each cell.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"editSettingsCell" forIndexPath:indexPath];
-    
-    cell.textLabel.text = [self.userDefine nameAtIndex:indexPath.item];
+    [cell setSelectionStyle:UITableViewCellSelectionStyleBlue];
+    cell.textLabel.text = [[self.userDefineArray objectAtIndex:indexPath.item] name];
     
     // enable chevron for non-strings
     if (![self.userDefine isSetOfStrings])
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     else
-        if (!self.isSelectingForAddEntry)
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        if (!self.isSelectingForAddEntry || self.isSelectingMultiple)
+            [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
     
     return cell;
 }
 
+// NO NOT CHANGE ORDER OF IF STATEMENTS!
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     // if it's a location, show Single Location View
     if ([[self.userDefine name] isEqualToString:SET_LOCATIONS]) {
@@ -160,24 +167,24 @@
         return;
     }
     
-    // if selecting multiple
-    if (self.isSelectingMultiple) {
-        [self toggleCellAccessoryCheckmarkAtIndexPath:indexPath];
-        return;
-    }
-        
-    // unwind if we're selecting for Add Entry
-    if (self.isSelectingForAddEntry) {
-        self.selectedCellLabelText = [[[tableView cellForRowAtIndexPath:indexPath] textLabel] text];
-        [self performSegueWithIdentifier:@"unwindToAddEntryFromEditSettings" sender:self];
-        return;
-    }
-        
     // if in editing mode
     if (tableView.editing) {
         self.selectedCellLabelText = [[[tableView cellForRowAtIndexPath:indexPath] textLabel] text];
         [[self.editItemAlert textFieldAtIndex:0] setText:self.selectedCellLabelText];
         [self.editItemAlert show];
+        return;
+    }
+    
+    // if selecting multiple
+    if (self.isSelectingMultiple) {
+        [self toggleCellAccessoryCheckmarkAtIndexPath:indexPath];
+        return;
+    }
+    
+    // unwind if we're selecting for Add Entry
+    if (self.isSelectingForAddEntry) {
+        self.selectedCellLabelText = [[[tableView cellForRowAtIndexPath:indexPath] textLabel] text];
+        [self performSegueWithIdentifier:@"unwindToAddEntryFromEditSettings" sender:self];
         return;
     }
 }
@@ -186,13 +193,6 @@
     // if selecting multiple
     if (self.isSelectingMultiple)
         [self toggleCellAccessoryCheckmarkAtIndexPath:indexPath];
-}
-
-- (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-    cell.selectionStyle = UITableViewCellSelectionStyleDefault;
-    
-    return indexPath;
 }
 
 // Override to support editing the table view.
@@ -246,6 +246,9 @@
     
     if (alertView == self.editItemAlert)
         if (buttonIndex == 1) { // ok button
+            NSLog(@"Selected label text: %@", self.selectedCellLabelText);
+            NSLog(@"New text: %@", [[alertView textFieldAtIndex:0] text]);
+            
             [[self journal] editUserDefine:[self.userDefine name] objectNamed:self.selectedCellLabelText newProperties:[[alertView textFieldAtIndex:0] text]];
             [self.tableView reloadData];
         }
@@ -283,6 +286,10 @@
     [self.tableView setEditing:NO animated:YES];
     [self.editButton setEnabled:YES];
     [self.addButton setEnabled:YES];
+    
+    if (self.isSelectingMultiple)
+        [self.doneSelectingButton setEnabled:YES];
+    
     self.navigationItem.rightBarButtonItem = nil;
 }
 
@@ -296,7 +303,7 @@
     
     if ([segue.identifier isEqualToString:@"fromEditSettingsToSingleLocation"]) {
         CMASingleLocationViewController *destination = [[segue.destinationViewController viewControllers] objectAtIndex:0];
-        destination.location = [[[self journal] userDefineNamed:SET_LOCATIONS] locationNamed:self.selectedCellLabelText];
+        destination.location = [[[self journal] userDefineNamed:SET_LOCATIONS] objectNamed:self.selectedCellLabelText];
         destination.isSelectingForAddEntry = self.isSelectingForAddEntry;
     }
 }

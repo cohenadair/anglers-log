@@ -317,7 +317,7 @@ NSString *const NO_SELECT = @"Not Selected";
     
     // species
     if (![[self.speciesDetailLabel text] isEqualToString:NO_SELECT]) {
-        NSString *species = [[[self journal] userDefineNamed:SET_SPECIES] stringNamed:[self.speciesDetailLabel text]];
+        NSString *species = [[[self journal] userDefineNamed:SET_SPECIES] objectNamed:[self.speciesDetailLabel text]];
         [anEntry setFishSpecies:species];
     } else {
         [self showInvalidInputAlert:@"Please select a species."];
@@ -337,7 +337,7 @@ NSString *const NO_SELECT = @"Not Selected";
     
     // bait used
     if (![[self.baitUsedDetailLabel text] isEqualToString:NO_SELECT]) {
-        NSString *bait = [[[self journal] userDefineNamed:SET_BAITS] stringNamed:[self.baitUsedDetailLabel text]];
+        NSString *bait = [[[self journal] userDefineNamed:SET_BAITS] objectNamed:[self.baitUsedDetailLabel text]];
         [anEntry setBaitUsed:bait];
     } else {
         [anEntry setBaitUsed:nil];
@@ -375,13 +375,18 @@ NSString *const NO_SELECT = @"Not Selected";
     }
     
     // pictures
-    if (![self.imageCollection numberOfItemsInSection:0] == 0) {
+    NSLog(@"Number of items in section: %ld", [self.imageCollection numberOfItemsInSection:0]);
+    
+    if ([self.imageCollection numberOfItemsInSection:0] > 0) {
         for (int i = 0; i < [self.imageCollection numberOfItemsInSection:0]; i++) {
+            NSLog(@"%d", i);
             UICollectionViewCell *cell = [self.imageCollection cellForItemAtIndexPath:[NSIndexPath indexPathForItem:i inSection:0]];
-            UIImage *imageView = [(UIImageView *)[cell viewWithTag:IMAGE_VIEW_TAG] image];
-            [anEntry addImage:imageView];
+            UIImage *image = [(UIImageView *)[cell viewWithTag:IMAGE_VIEW_TAG] image];
+            [anEntry addImage:[UIImage imageNamed:@"no-image.png"]];
         }
     }
+    
+    NSLog(@"2 - Image count: %ld", [anEntry imageCount]);
     
     // notes
     if (![[self.notesTextView text] isEqualToString:@"Notes"]) {
@@ -404,7 +409,7 @@ NSString *const NO_SELECT = @"Not Selected";
     NSArray *fishingMethods = [[self.methodsDetailLabel text] componentsSeparatedByString:TOKEN_FISHING_METHODS];
     
     for (NSString *str in fishingMethods)
-        [result addObject:[[[self journal] userDefineNamed:SET_FISHING_METHODS] stringNamed:str]];
+        [result addObject:[[[self journal] userDefineNamed:SET_FISHING_METHODS] objectNamed:str]];
     
     return result;
 }
