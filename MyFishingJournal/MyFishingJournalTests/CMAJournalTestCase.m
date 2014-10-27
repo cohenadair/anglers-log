@@ -9,6 +9,9 @@
 #import <UIKit/UIKit.h>
 #import <XCTest/XCTest.h>
 #import "CMAJournal.h"
+#import "CMASpecies.h"
+#import "CMABait.h"
+#import "CMAFishingMethod.h"
 
 @interface CMAJournalTestCase : XCTestCase
 
@@ -31,8 +34,8 @@
     result.fishSpecies = @"Smallmouth Bass";
     result.notes = @"Slow jig on the bottom";
     result.baitUsed = @"Black twisty tail";
-    result.fishLength = 15;
-    result.fishWeight = 3.0;
+    result.fishLength = [NSNumber numberWithInt:15];
+    result.fishWeight = [NSNumber numberWithInt:3];
     result.fishingMethods = [NSSet setWithObjects:@"Shore", @"Casting", nil];
     result.location = [CMALocation withName:@"The Nine Mile River"];
     [result.location addFishingSpot:[CMAFishingSpot withName:@"Beaver Dam"]];
@@ -45,8 +48,8 @@
     result.fishSpecies = @"Pike";
     result.notes = @"Small, quick jerks of fly";
     result.baitUsed = @"Minnow Fly (Giant)";
-    result.fishLength = 43;
-    result.fishWeight = 20;
+    result.fishLength = [NSNumber numberWithInt:43];
+    result.fishWeight = [NSNumber numberWithInt:20];
     result.fishingMethods = [NSSet setWithObjects:@"Boat", @"Fly", nil];
     result.location = [CMALocation withName:@"Wildwood Lake"];
     [result.location addFishingSpot:[CMAFishingSpot withName:@"Dam"]];
@@ -73,40 +76,40 @@
     CMAJournal *myJournal = [CMAJournal new];
     
     // adding
-    [myJournal addUserDefine:@"Species" objectToAdd:[NSMutableString stringWithString:@"Largemouth Bass"]];
+    [myJournal addUserDefine:@"Species" objectToAdd:[CMASpecies withName:@"Largemouth Bass"]];
     XCTAssert([[myJournal userDefineNamed:@"Species"] count] == 1);
     
-    [myJournal addUserDefine:@"Baits" objectToAdd:[NSMutableString stringWithString:@"Spoon"]];
+    [myJournal addUserDefine:@"Baits" objectToAdd:[CMABait withName:@"Spoon"]];
     XCTAssert([[myJournal userDefineNamed:@"Baits"] count] == 1);
     
-    [myJournal addUserDefine:@"Fishing Methods" objectToAdd:[NSMutableString stringWithString:@"Shore"]];
+    [myJournal addUserDefine:@"Fishing Methods" objectToAdd:[CMAFishingMethod withName:@"Shore"]];
     XCTAssert([[myJournal userDefineNamed:@"Fishing Methods"] count] == 1);
     
     [myJournal addUserDefine:@"Locations" objectToAdd:[CMALocation withName:@"The Maitland River"]];
     XCTAssert([[myJournal userDefineNamed:@"Locations"] count] == 1);
     
     // editing
-    NSMutableString *editStr = [[myJournal userDefineNamed:@"Species"] stringNamed:@"Largemouth Bass"];
+    NSMutableString *editStr = [[myJournal userDefineNamed:@"Species"] objectNamed:@"Largemouth Bass"];
     [myJournal editUserDefine:@"Species" objectNamed:@"Largemouth Bass" newProperties:@"Smallmouth Bass"];
     XCTAssert([[[myJournal userDefineNamed:@"Species"] objects] containsObject:editStr]);
-    XCTAssert([[myJournal userDefineNamed:@"Species"] stringNamed:@"Smallmouth Bass"] != nil);
+    XCTAssert([[myJournal userDefineNamed:@"Species"] objectNamed:@"Smallmouth Bass"] != nil);
     
-    editStr = [[myJournal userDefineNamed:@"Baits"] stringNamed:@"Spoon"];
+    editStr = [[myJournal userDefineNamed:@"Baits"] objectNamed:@"Spoon"];
     [myJournal editUserDefine:@"Baits" objectNamed:@"Spoon" newProperties:@"Jig"];
     NSLog(@"editStr: %@", editStr);
     NSLog(@"Baits: %@", [[myJournal userDefineNamed:@"Baits"] objects]);
     XCTAssert([[[myJournal userDefineNamed:@"Baits"] objects] containsObject:editStr]);
-    XCTAssert([[myJournal userDefineNamed:@"Baits"] stringNamed:@"Jig"] != nil);
+    XCTAssert([[myJournal userDefineNamed:@"Baits"] objectNamed:@"Jig"] != nil);
     
-    editStr = [[myJournal userDefineNamed:@"Fishing Methods"] stringNamed:@"Shore"];
+    editStr = [[myJournal userDefineNamed:@"Fishing Methods"] objectNamed:@"Shore"];
     [myJournal editUserDefine:@"Fishing Methods" objectNamed:@"Shore" newProperties:@"Casting"];
     XCTAssert([[[myJournal userDefineNamed:@"Fishing Methods"] objects] containsObject:editStr]);
-    XCTAssert([[myJournal userDefineNamed:@"Fishing Methods"] stringNamed:@"Casting"] != nil);
+    XCTAssert([[myJournal userDefineNamed:@"Fishing Methods"] objectNamed:@"Casting"] != nil);
     
-    CMALocation *editLoc = [[myJournal userDefineNamed:@"Locations"] locationNamed:@"The Maitland River"];
+    CMALocation *editLoc = [[myJournal userDefineNamed:@"Locations"] objectNamed:@"The Maitland River"];
     [myJournal editUserDefine:@"Locations" objectNamed:@"The Maitland River" newProperties:[CMALocation withName:@"The Nine Mile River"]];
     XCTAssert([[[myJournal userDefineNamed:@"Locations"] objects] containsObject:editLoc]);
-    XCTAssert([[myJournal userDefineNamed:@"Locations"] locationNamed:@"The Nine Mile River"] != nil);
+    XCTAssert([[myJournal userDefineNamed:@"Locations"] objectNamed:@"The Nine Mile River"] != nil);
     
     // removing
     [myJournal removeUserDefine:@"Species" objectNamed:@"Smallmouth Bass"];

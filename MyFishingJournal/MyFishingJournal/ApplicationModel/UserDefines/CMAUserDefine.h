@@ -11,6 +11,10 @@
 @interface CMAUserDefine : NSObject
 
 @property (strong, nonatomic)NSString *name;
+
+// Objects within this set have to implement the following:
+//   @property (strong, nonatomic)NSString *name;
+//   - (void)edit: (ClassType *)aNewObjectOfClassType; // Resets the name property to aNewObjectOfClassType's name property
 @property (strong, nonatomic)NSMutableSet *objects;
 
 // instance creation
@@ -26,7 +30,7 @@
 
 // accessing
 - (NSInteger)count;
-- (NSString *)nameAtIndex: (NSInteger)anIndex;
+- (id)objectNamed: (NSString *)aName;
 - (BOOL)isSetOfStrings;
 
 @end

@@ -8,8 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import <XCTest/XCTest.h>
-#import "CMAUserStrings.h"
-#import "CMAUserLocations.h"
+#import "CMAUserDefine.h"
+#import "CMASpecies.h"
 
 @interface CMAUserDefinesTestCase : XCTestCase
 
@@ -28,31 +28,29 @@
 }
 
 - (void)testAddEditRemove {
-    // Strings
-    CMAUserStrings *userStrings = [CMAUserStrings new];
-    NSMutableString *aName = [NSMutableString stringWithString:@"Black Spoon"];
+    CMAUserDefine *define = [CMAUserDefine withName:@"Species"];
+    CMASpecies *species1 = [CMASpecies withName:@"Steelhead"];
+    CMASpecies *species2 = [CMASpecies withName:@"Salmon"];
     
-    [userStrings addObject:aName];
-    XCTAssert([userStrings count] == 1, @"Add object failed; count should be 1");
+    // add
+    [define addObject:species1];
+    XCTAssert([define count] == 1);
+    [define addObject:species2];
+    XCTAssert([define count] == 2);
     
-    [userStrings editObjectNamed:aName newObject:@"Blue Spoon"];
-    XCTAssert([userStrings.objects containsObject:aName], @"Edit string failed; someName should still exist");
-    XCTAssert([userStrings stringNamed:@"Blue Spoon"] != nil, @"Edit string failed; should be a string with named Another String");
+    // edit
+    [define editObjectNamed:@"Steelhead" newObject:@"Rainbow Trout"];
+    [define editObjectNamed:@"Salmon" newObject:@"King Salmon"];
+    XCTAssert([[define objects] containsObject:species1]);
+    XCTAssert([[define objects] containsObject:species2]);
+    XCTAssert([define objectNamed:@"Rainbow Trout"] != nil);
+    XCTAssert([define objectNamed:@"King Salmon"] != nil);
     
-    [userStrings removeObjectNamed:@"Blue Spoon"];
-    XCTAssert([userStrings count] == 0, @"Remove object failed; count should be 0");
-    
-    // CMALocations
-    CMAUserLocations *userLocations = [CMAUserLocations new];
-    CMALocation *aLocation = [CMALocation withName:@"Port Albert"];
-    
-    [userLocations addObject:aLocation];
-    [userLocations editObjectNamed:@"Port Albert" newObject:[CMALocation withName:@"Goderich"]];
-    XCTAssert([userLocations.objects containsObject:aLocation], @"Edit location failed, aLocation should still exist");
-    XCTAssert([userLocations locationNamed:@"Goderich"] != nil, @"Edit location failed; should be a location with name Goderich");
-    
-    [userLocations removeObjectNamed:@"Goderich"];
-    XCTAssert([userLocations count] == 0, @"Remove object failed; count should be 0");
+    // remove
+    [define removeObjectNamed:@"Rainbow Trout"];
+    XCTAssert([define count] == 1);
+    [define removeObjectNamed:@"King Salmon"];
+    XCTAssert([define count] == 0);
 }
 
 @end

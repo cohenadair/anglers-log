@@ -28,8 +28,8 @@
 - (CMAEntry *)sampleEntryOne {
     CMAEntry *entry = [CMAEntry onDate:[NSDate date]];
     [entry setFishSpecies:@"Steelhead"];
-    [entry setFishLength:30];
-    [entry setFishWeight:5];
+    [entry setFishLength:[NSNumber numberWithInt:30]];
+    [entry setFishWeight:[NSNumber numberWithInt:5]];
     [entry setFishingMethods:[NSSet setWithObjects:@"Boat", @"Troll", nil]];
     
     return entry;
@@ -38,9 +38,9 @@
 - (void)testAddRemoveImage {
     CMAEntry *myEntry = [self sampleEntryOne];
     
-    NSURL *image1 = [NSURL URLWithString:@"image1.png"];
-    NSURL *image2 = [NSURL URLWithString:@"image2.png"];
-    NSURL *image3 = [NSURL URLWithString:@"image3.png"];
+    UIImage *image1 = [UIImage imageNamed:@"no-image.png"];
+    UIImage *image2 = [UIImage imageNamed:@"apple-logo.png"];
+    UIImage *image3 = [UIImage imageNamed:@"orange.jpeg"];
     
     // addImage
     XCTAssert([myEntry imageCount] == 0, @"Wrong image count; should be 0");

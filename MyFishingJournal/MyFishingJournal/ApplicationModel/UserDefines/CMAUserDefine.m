@@ -8,6 +8,7 @@
 
 #import "CMAUserDefine.h"
 #import "CMALocation.h"
+#import "CMAConstants.h"
 
 @implementation CMAUserDefine
 
@@ -35,11 +36,11 @@
 }
 
 - (void)removeObjectNamed: (NSString *)aName {
-    NSAssert(NO, @"Subclass needs to overwrite this method");
+    [self.objects removeObject:[self objectNamed:aName]];
 }
 
 - (void)editObjectNamed: (NSString *)aName newObject: (id)aNewObject {
-    NSAssert(NO, @"Subclass needs to overwrite this method");
+    [[self objectNamed:aName] edit:aNewObject];
 }
 
 #pragma mark - Accessing
@@ -48,13 +49,16 @@
     return [self.objects count];
 }
 
-- (NSString *)nameAtIndex: (NSInteger)anIndex {
-    NSAssert(NO, @"Subclass needs to overwrite this method");
+- (id)objectNamed: (NSString *)aName {
+    for (id obj in self.objects)
+        if ([[obj name] isEqualToString:aName])
+            return obj;
+    
     return nil;
 }
 
 - (BOOL)isSetOfStrings {
-    return YES;
+    return ![self.name isEqualToString:SET_LOCATIONS];
 }
 
 @end

@@ -8,9 +8,8 @@
 
 #import <Foundation/Foundation.h>
 #import "CMAEntry.h"
-#import "CMAUserStrings.h"
-#import "CMAUserLocations.h"
 #import "CMAConstants.h"
+#import "CMAUserDefine.h"
 
 @interface CMAJournal : NSObject
 
@@ -28,9 +27,8 @@
 - (void)editUserDefine: (NSString *)aDefineName objectNamed: (id)aName newProperties: (id)aNewObject;
 
 // accessing
-- (id)userDefineNamed: (NSString *)aName;
+- (CMAUserDefine *)userDefineNamed: (NSString *)aName;
 - (NSInteger)entryCount;
 - (CMAEntry *)entryDated: (NSDate *)aDate;
-- (CMAEntry *)entryAtIndex: (NSInteger)anIndex;
 
 @end

@@ -8,6 +8,10 @@
 
 #import "CMAJournal.h"
 #import "CMAConstants.h"
+#import "CMAUserDefine.h"
+#import "CMASpecies.h"
+#import "CMABait.h"
+#import "CMAFishingMethod.h"
 
 @implementation CMAJournal
 
@@ -16,25 +20,26 @@
 - (CMAJournal *)init {
     _entries = [NSMutableSet set];
     _userDefines = [NSMutableDictionary dictionary];
-    [_userDefines setValue:[CMAUserStrings withName:SET_SPECIES] forKey:SET_SPECIES];
-    [_userDefines setValue:[CMAUserStrings withName:SET_BAITS] forKey:SET_BAITS];
-    [_userDefines setValue:[CMAUserStrings withName:SET_FISHING_METHODS] forKey:SET_FISHING_METHODS];
-    [_userDefines setValue:[CMAUserLocations withName:SET_LOCATIONS] forKey:SET_LOCATIONS];
     
-    [self addUserDefine:SET_SPECIES objectToAdd:@"Smallmouth Bass"];
-    [self addUserDefine:SET_SPECIES objectToAdd:@"Largemouth Bass"];
-    [self addUserDefine:SET_SPECIES objectToAdd:@"Steelhead"];
-    [self addUserDefine:SET_SPECIES objectToAdd:@"Pike"];
-    [self addUserDefine:SET_SPECIES objectToAdd:@"Walleye"];
+    [_userDefines setValue:[CMAUserDefine withName:SET_SPECIES] forKey:SET_SPECIES];
+    [_userDefines setValue:[CMAUserDefine withName:SET_BAITS] forKey:SET_BAITS];
+    [_userDefines setValue:[CMAUserDefine withName:SET_FISHING_METHODS] forKey:SET_FISHING_METHODS];
+    [_userDefines setValue:[CMAUserDefine withName:SET_LOCATIONS] forKey:SET_LOCATIONS];
     
-    [self addUserDefine:SET_BAITS objectToAdd:@"Yellow Twisty Tail"];
-    [self addUserDefine:SET_BAITS objectToAdd:@"Crayfish"];
-    [self addUserDefine:SET_BAITS objectToAdd:@"Giant Minnow"];
+    [self addUserDefine:SET_SPECIES objectToAdd:[CMASpecies withName:@"Smallmouth Bass"]];
+    [self addUserDefine:SET_SPECIES objectToAdd:[CMASpecies withName:@"Largemouth Bass"]];
+    [self addUserDefine:SET_SPECIES objectToAdd:[CMASpecies withName:@"Steelhead"]];
+    [self addUserDefine:SET_SPECIES objectToAdd:[CMASpecies withName:@"Pike"]];
+    [self addUserDefine:SET_SPECIES objectToAdd:[CMASpecies withName:@"Walleye"]];
     
-    [self addUserDefine:SET_FISHING_METHODS objectToAdd:@"Shore"];
-    [self addUserDefine:SET_FISHING_METHODS objectToAdd:@"Fly Fishing"];
-    [self addUserDefine:SET_FISHING_METHODS objectToAdd:@"Boat"];
-    [self addUserDefine:SET_FISHING_METHODS objectToAdd:@"Trolling"];
+    [self addUserDefine:SET_BAITS objectToAdd:[CMABait withName:@"Yellow Twisty Tail"]];
+    [self addUserDefine:SET_BAITS objectToAdd:[CMABait withName:@"Crayfish"]];
+    [self addUserDefine:SET_BAITS objectToAdd:[CMABait withName:@"Giant Minnow"]];
+    
+    [self addUserDefine:SET_FISHING_METHODS objectToAdd:[CMAFishingMethod withName:@"Shore"]];
+    [self addUserDefine:SET_FISHING_METHODS objectToAdd:[CMAFishingMethod withName:@"Fly Fishing"]];
+    [self addUserDefine:SET_FISHING_METHODS objectToAdd:[CMAFishingMethod withName:@"Boat"]];
+    [self addUserDefine:SET_FISHING_METHODS objectToAdd:[CMAFishingMethod withName:@"Trolling"]];
     
     CMALocation *portAlbert = [CMALocation withName:@"Port Albert"];
     [portAlbert addFishingSpot:[CMAFishingSpot withName:@"Little Hole"]];
@@ -84,7 +89,7 @@
 
 #pragma mark - Accessing
 
-- (id)userDefineNamed: (NSString *)aName {
+- (CMAUserDefine *)userDefineNamed: (NSString *)aName {
     return [self.userDefines objectForKey:aName];
 }
 

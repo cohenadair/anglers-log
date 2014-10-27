@@ -44,7 +44,7 @@
 }
 
 - (void)removeImage: (UIImage *)anImage {
-    [self.images removeObject:(anImage)];
+    [self.images removeObject:anImage];
 }
 
 @end
