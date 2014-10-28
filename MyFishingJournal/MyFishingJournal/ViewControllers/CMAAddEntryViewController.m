@@ -195,12 +195,11 @@ NSString *const NO_SELECT = @"Not Selected";
 
 - (IBAction)clickedCamera:(UIButton *)sender {
     if ([self cameraAvailable])
-        [self presentImagePicker:YES];
+        [self presentImagePicker:UIImagePickerControllerSourceTypeCamera];
 }
 
 - (IBAction)clickedAttach:(UIButton *)sender {
-    //[self presentImagePicker:NO];
-    [self insertImageIntoCollection:[UIImage imageNamed:@"no-image.png"]];
+    [self presentImagePicker:UIImagePickerControllerSourceTypePhotoLibrary];
 }
 
 - (IBAction)longPressedImageInCollection:(UILongPressGestureRecognizer *)sender {
@@ -375,20 +374,14 @@ NSString *const NO_SELECT = @"Not Selected";
     }
     
     // pictures
-    /*
     if ([self.imageCollection numberOfItemsInSection:0] > 0) {
         for (int i = 0; i < [self.imageCollection numberOfItemsInSection:0]; i++) {
-            NSLog(@"%d", i);
             UICollectionViewCell *cell = [self.imageCollection cellForItemAtIndexPath:[NSIndexPath indexPathForItem:i inSection:0]];
             UIImage *image = [(UIImageView *)[cell viewWithTag:IMAGE_VIEW_TAG] image];
+            
             [anEntry addImage:image];
         }
-    }*/
-    
-    [anEntry addImage:[UIImage imageNamed:@"fish-1.jpg"]];
-    [anEntry addImage:[UIImage imageNamed:@"fish-2.jpg"]];
-    [anEntry addImage:[UIImage imageNamed:@"fish-3.jpg"]];
-    [anEntry addImage:[UIImage imageNamed:@"fish-4.jpg"]];
+    }
     
     // notes
     if (![[self.notesTextView text] isEqualToString:@"Notes"]) {
@@ -423,16 +416,12 @@ NSString *const NO_SELECT = @"Not Selected";
 
 #pragma mark - Image Picker
 
-// Presents either the devices camera or photo library depening on the camera BOOL.
-- (void)presentImagePicker:(BOOL)camera {
+// Presents an image picker with sourceType.
+- (void)presentImagePicker:(UIImagePickerControllerSourceType)sourceType {
     UIImagePickerController *imagePicker = [UIImagePickerController new];
     [imagePicker setDelegate:self];
     [imagePicker setAllowsEditing:YES];
-    
-    if (camera)
-        [imagePicker setSourceType:UIImagePickerControllerSourceTypeCamera];
-    else
-        [imagePicker setSourceType:UIImagePickerControllerSourceTypePhotoLibrary];
+    [imagePicker setSourceType:sourceType];
     
     [self presentViewController:imagePicker animated:YES completion:NULL];
 }
