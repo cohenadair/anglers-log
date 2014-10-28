@@ -33,4 +33,7 @@
 - (id)objectNamed: (NSString *)aName;
 - (BOOL)isSetOfStrings;
 
+// object types
+- (id)emptyObjectNamed: (NSString *)aName;
+
 @end

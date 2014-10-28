@@ -95,6 +95,14 @@
         [selectedCell setAccessoryType:UITableViewCellAccessoryCheckmark];
 }
 
+// Sets each cell's selection style to selectionStyle.
+- (void)toggleCellSelectionStyles: (UITableViewCellSelectionStyle)selectionStyle {
+    for (int i = 0; i < [self.tableView numberOfRowsInSection:0]; i++) {
+        UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0]];
+        [cell setSelectionStyle:selectionStyle];
+    }
+}
+
 // Returns a string with all selected cell labels separated by a comma.
 - (NSString *)stringFromSelectedCells {
     NSMutableString *result = [NSMutableString string];
@@ -117,21 +125,6 @@
     return result;
 }
 
-// Inserts a cell with label aStringForLabel at the end of the table.
-- (void)insertCellAtTableEnd: (NSString *)aStringForLabel {
-    NSInteger lastSection = [self.tableView numberOfSections] - 1;
-    NSInteger lastRow = [self.tableView numberOfRowsInSection:lastSection] - 1;
-    NSArray *indexPaths = @[[NSIndexPath indexPathForRow:lastRow inSection:lastSection]];
-    
-    [self.tableView beginUpdates];
-    
-    [self.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationTop];
-    UITableViewCell *insertedCell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:lastRow + 1 inSection:lastSection + 1]];
-    [insertedCell.textLabel setText:aStringForLabel];
-    
-    [self.tableView endUpdates];
-}
-
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     // Return the number of sections.
     return 1;
@@ -152,7 +145,7 @@
     if (![self.userDefine isSetOfStrings])
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     else
-        if (!self.isSelectingForAddEntry || self.isSelectingMultiple)
+        if ((!self.isSelectingForAddEntry || self.isSelectingMultiple) && !self.tableView.editing)
             [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
     
     return cell;
@@ -240,18 +233,17 @@
             NSString *enteredText = [[alertView textFieldAtIndex:0] text];
             [[alertView textFieldAtIndex:0] setText:@""];
             
-            [self.userDefine addObject:enteredText];
-            [self insertCellAtTableEnd:enteredText];
+            [self.userDefine addObject:[self.userDefine emptyObjectNamed:enteredText]];
+            self.userDefineArray = [[self.userDefine objects] allObjects];
         }
     
     if (alertView == self.editItemAlert)
         if (buttonIndex == 1) { // ok button
-            NSLog(@"Selected label text: %@", self.selectedCellLabelText);
-            NSLog(@"New text: %@", [[alertView textFieldAtIndex:0] text]);
-            
-            [[self journal] editUserDefine:[self.userDefine name] objectNamed:self.selectedCellLabelText newProperties:[[alertView textFieldAtIndex:0] text]];
-            [self.tableView reloadData];
+            id newProperties = [self.userDefine emptyObjectNamed:[[alertView textFieldAtIndex:0] text]];
+            [[self journal] editUserDefine:[self.userDefine name] objectNamed:self.selectedCellLabelText newProperties:newProperties];
         }
+    
+    [self.tableView reloadData];
 }
 
 #pragma mark - Events
@@ -274,6 +266,8 @@
     UIBarButtonItem *doneButton = [UIBarButtonItem new];
     doneButton = [doneButton initWithTitle:@"Done" style:UIBarButtonItemStyleDone target:self action:@selector(clickDoneButton)];
     self.navigationItem.rightBarButtonItem = doneButton;
+    
+    [self toggleCellSelectionStyles:UITableViewCellSelectionStyleDefault];
 }
 
 - (IBAction)clickDoneSelectingButton:(UIBarButtonItem *)sender {
@@ -291,6 +285,8 @@
         [self.doneSelectingButton setEnabled:YES];
     
     self.navigationItem.rightBarButtonItem = nil;
+    
+    [self toggleCellSelectionStyles:UITableViewCellSelectionStyleNone];
 }
 
 #pragma mark - Navigation

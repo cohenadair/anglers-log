@@ -11,7 +11,9 @@
 
 @interface CMASingleEntryViewController ()
 
-@property (weak, nonatomic) IBOutlet UICollectionView *imageCollectionView;
+@property (weak, nonatomic)IBOutlet UICollectionView *imageCollectionView;
+
+@property (strong, nonatomic)NSArray *entryImageArray;
 
 @end
 
@@ -20,7 +22,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    NSLog(@"Entry image count: %ld", [self.entry imageCount]);
+    self.entryImageArray = [[self.entry images] allObjects];
     
     [self.tableView setTableFooterView:[[UIView alloc] initWithFrame:CGRectZero]]; // removes empty cells at the end of the list
 }
@@ -53,8 +55,8 @@
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     UICollectionViewCell * cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"imageCollectionCell" forIndexPath:indexPath];
     
-    [[cell.contentView layer] setBorderColor:[UIColor blackColor].CGColor];
-    [[cell.contentView layer] setBorderWidth:1.0f];
+    UIImageView *imageView = (UIImageView *)[cell viewWithTag:100];
+    [imageView setImage:[self.entryImageArray objectAtIndex:indexPath.item]];
 
     return cell;
 }
@@ -66,4 +68,5 @@
     
     return cellSize;
 }
+
 @end

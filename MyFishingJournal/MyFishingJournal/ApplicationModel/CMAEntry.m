@@ -27,6 +27,13 @@
     return self;
 }
 
+- (id)init {
+    if (self = [super init])
+        _images = [NSMutableSet set];
+    
+    return self;
+}
+
 #pragma mark - Accessing
 
 - (NSInteger)imageCount {

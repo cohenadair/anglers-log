@@ -28,8 +28,8 @@
 
 #pragma mark - Editing
 
-- (void)edit: (NSString *)aNewBait {
-    [self setName:aNewBait];
+- (void)edit: (CMABait *)aNewBait {
+    [self setName:aNewBait.name];
 }
 
 @end

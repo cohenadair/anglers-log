@@ -17,7 +17,7 @@
 - (id)initWithName: (NSString *)aName;
 
 // editing
-- (void)edit: (NSString *)aNewFishingMethod;
+- (void)edit: (CMAFishingMethod *)aNewFishingMethod;
 
 @property (strong, nonatomic)NSString *name;
 

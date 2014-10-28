@@ -64,7 +64,7 @@
     NSDateFormatter *dateFormatter = [NSDateFormatter new];
     [dateFormatter setDateFormat:@"MMM dd, yyyy 'at' h:mm a"];
     
-    cell.textLabel.text = entry.fishSpecies;
+    cell.textLabel.text = [entry.fishSpecies name];
     cell.detailTextLabel.text = [dateFormatter stringFromDate:entry.date];
     cell.detailTextLabel.textColor = [UIColor lightGrayColor];
     

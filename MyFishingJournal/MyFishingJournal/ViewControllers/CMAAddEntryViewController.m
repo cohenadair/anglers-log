@@ -317,7 +317,7 @@ NSString *const NO_SELECT = @"Not Selected";
     
     // species
     if (![[self.speciesDetailLabel text] isEqualToString:NO_SELECT]) {
-        NSString *species = [[[self journal] userDefineNamed:SET_SPECIES] objectNamed:[self.speciesDetailLabel text]];
+        CMASpecies *species = [[[self journal] userDefineNamed:SET_SPECIES] objectNamed:[self.speciesDetailLabel text]];
         [anEntry setFishSpecies:species];
     } else {
         [self showInvalidInputAlert:@"Please select a species."];
@@ -337,7 +337,7 @@ NSString *const NO_SELECT = @"Not Selected";
     
     // bait used
     if (![[self.baitUsedDetailLabel text] isEqualToString:NO_SELECT]) {
-        NSString *bait = [[[self journal] userDefineNamed:SET_BAITS] objectNamed:[self.baitUsedDetailLabel text]];
+        CMABait *bait = [[[self journal] userDefineNamed:SET_BAITS] objectNamed:[self.baitUsedDetailLabel text]];
         [anEntry setBaitUsed:bait];
     } else {
         [anEntry setBaitUsed:nil];
@@ -375,18 +375,20 @@ NSString *const NO_SELECT = @"Not Selected";
     }
     
     // pictures
-    NSLog(@"Number of items in section: %ld", [self.imageCollection numberOfItemsInSection:0]);
-    
+    /*
     if ([self.imageCollection numberOfItemsInSection:0] > 0) {
         for (int i = 0; i < [self.imageCollection numberOfItemsInSection:0]; i++) {
             NSLog(@"%d", i);
             UICollectionViewCell *cell = [self.imageCollection cellForItemAtIndexPath:[NSIndexPath indexPathForItem:i inSection:0]];
             UIImage *image = [(UIImageView *)[cell viewWithTag:IMAGE_VIEW_TAG] image];
-            [anEntry addImage:[UIImage imageNamed:@"no-image.png"]];
+            [anEntry addImage:image];
         }
-    }
+    }*/
     
-    NSLog(@"2 - Image count: %ld", [anEntry imageCount]);
+    [anEntry addImage:[UIImage imageNamed:@"fish-1.jpg"]];
+    [anEntry addImage:[UIImage imageNamed:@"fish-2.jpg"]];
+    [anEntry addImage:[UIImage imageNamed:@"fish-3.jpg"]];
+    [anEntry addImage:[UIImage imageNamed:@"fish-4.jpg"]];
     
     // notes
     if (![[self.notesTextView text] isEqualToString:@"Notes"]) {
@@ -400,15 +402,20 @@ NSString *const NO_SELECT = @"Not Selected";
 
 // Returns array of length 2 where [0] is a CMALocation and [1] is a CMAFishingSpot.
 - (NSArray *)parseLocationDetailText {
-    return [[self.locationDetailLabel text] componentsSeparatedByString:TOKEN_LOCATION];
+    NSArray *stringLocationInfo = [[self.locationDetailLabel text] componentsSeparatedByString:TOKEN_LOCATION];
+    
+    CMALocation *location = [[[self journal] userDefineNamed:SET_LOCATIONS] objectNamed:stringLocationInfo[0]];
+    CMAFishingSpot *fishingSpot = [location fishingSpotNamed:stringLocationInfo[1]];
+
+    return [NSArray arrayWithObjects:location, fishingSpot, nil];
 }
 
 // Returns an NSSet of fishing methods from [[self journal] userDefines].
 - (NSSet *)parseMethodsDetailText {
     NSMutableSet *result = [NSMutableSet set];
-    NSArray *fishingMethods = [[self.methodsDetailLabel text] componentsSeparatedByString:TOKEN_FISHING_METHODS];
+    NSArray *fishingMethodStrings = [[self.methodsDetailLabel text] componentsSeparatedByString:TOKEN_FISHING_METHODS];
     
-    for (NSString *str in fishingMethods)
+    for (NSString *str in fishingMethodStrings)
         [result addObject:[[[self journal] userDefineNamed:SET_FISHING_METHODS] objectNamed:str]];
     
     return result;

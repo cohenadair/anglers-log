@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="sKN-2s-l4h">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6250" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="sKN-2s-l4h">
     <dependencies>
-        <deployment defaultVersion="1808" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
         <capability name="Alignment constraints to the first baseline" minToolsVersion="6.0"/>
         <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
@@ -207,6 +207,7 @@
                                     <subviews>
                                         <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="xMK-aD-kUc">
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <gestureRecognizers/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                             <nil key="highlightedColor"/>
@@ -442,10 +443,10 @@
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="3ts-ra-N7e" id="nLj-4q-VkN">
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="5tv-Cu-EOb">
-                                                    <rect key="frame" x="8" y="8" width="584" height="200"/>
+                                                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="5tv-Cu-EOb">
+                                                    <rect key="frame" x="0.0" y="1" width="600" height="214"/>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                                    <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="FbT-4g-4Du">
+                                                    <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="FbT-4g-4Du">
                                                         <size key="itemSize" width="300" height="200"/>
                                                         <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                                         <size key="footerReferenceSize" width="0.0" height="0.0"/>
@@ -480,10 +481,10 @@
                                                 </collectionView>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="5tv-Cu-EOb" firstAttribute="trailing" secondItem="nLj-4q-VkN" secondAttribute="trailingMargin" id="0Ts-dE-t88"/>
-                                                <constraint firstItem="5tv-Cu-EOb" firstAttribute="leading" secondItem="nLj-4q-VkN" secondAttribute="leadingMargin" id="DCY-xD-8PQ"/>
-                                                <constraint firstItem="5tv-Cu-EOb" firstAttribute="top" secondItem="nLj-4q-VkN" secondAttribute="topMargin" id="PIn-x4-hB2"/>
-                                                <constraint firstAttribute="bottomMargin" secondItem="5tv-Cu-EOb" secondAttribute="bottom" constant="-2" id="uwd-4L-AbN"/>
+                                                <constraint firstItem="5tv-Cu-EOb" firstAttribute="leading" secondItem="nLj-4q-VkN" secondAttribute="leading" id="O0y-le-FM7"/>
+                                                <constraint firstItem="5tv-Cu-EOb" firstAttribute="top" secondItem="nLj-4q-VkN" secondAttribute="topMargin" constant="-7" id="ZQ5-Qu-nKn"/>
+                                                <constraint firstAttribute="trailing" secondItem="5tv-Cu-EOb" secondAttribute="trailing" id="fyA-76-cs5"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="5tv-Cu-EOb" secondAttribute="bottom" constant="-9" id="gNR-J3-OGZ"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -520,7 +521,7 @@
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Location Name: Fishing Spot Name" lineBreakMode="wordWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="l5T-DD-ILe">
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Location Name: Fishing Spot Name" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="l5T-DD-ILe">
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                     <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
@@ -706,7 +707,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yot-kI-9CO" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1546" y="2167"/>
+            <point key="canvasLocation" x="1546" y="2163"/>
         </scene>
         <!--Add Entry-->
         <scene sceneID="KBL-RQ-65D">
@@ -1341,8 +1342,8 @@
         <image name="no-image.png" width="150" height="150"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="GZI-Xr-sAg"/>
+        <segue reference="5ZT-8I-qr3"/>
+        <segue reference="y0h-hR-J5c"/>
         <segue reference="qAO-gb-5Yr"/>
-        <segue reference="gpK-ox-KiN"/>
     </inferredMetricsTieBreakers>
 </document>

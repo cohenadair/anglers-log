@@ -17,7 +17,7 @@
 - (id)initWithName: (NSString *)aName;
 
 // editing
-- (void)edit: (NSString *)aNewBait;
+- (void)edit: (CMABait *)aNewBait;
 
 @property (strong, nonatomic)NSString *name;
 

@@ -31,8 +31,6 @@
 		E72669DF19E76B64003C8E0B /* CMAUserDefine.m in Sources */ = {isa = PBXBuildFile; fileRef = E72669DD19E76B63003C8E0B /* CMAUserDefine.m */; };
 		E738583D19FCD6DE00FE122B /* no-image.png in Resources */ = {isa = PBXBuildFile; fileRef = E738583C19FCD6DE00FE122B /* no-image.png */; };
 		E738584019FD930000FE122B /* CMASingleEntryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E738583F19FD930000FE122B /* CMASingleEntryViewController.m */; };
-		E738584319FDEC8800FE122B /* apple-logo.png in Resources */ = {isa = PBXBuildFile; fileRef = E738584119FDEC8800FE122B /* apple-logo.png */; };
-		E738584419FDEC8800FE122B /* orange.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = E738584219FDEC8800FE122B /* orange.jpeg */; };
 		E738584A19FDFCBF00FE122B /* CMASpecies.m in Sources */ = {isa = PBXBuildFile; fileRef = E738584919FDFCBF00FE122B /* CMASpecies.m */; };
 		E738584B19FDFCBF00FE122B /* CMASpecies.m in Sources */ = {isa = PBXBuildFile; fileRef = E738584919FDFCBF00FE122B /* CMASpecies.m */; };
 		E738585019FE093700FE122B /* CMAFishingSpot.m in Sources */ = {isa = PBXBuildFile; fileRef = E738584D19FE093700FE122B /* CMAFishingSpot.m */; };
@@ -43,6 +41,10 @@
 		E738585719FE098A00FE122B /* CMABait.m in Sources */ = {isa = PBXBuildFile; fileRef = E738585519FE098A00FE122B /* CMABait.m */; };
 		E738585A19FE0A3400FE122B /* CMAFishingMethod.m in Sources */ = {isa = PBXBuildFile; fileRef = E738585919FE0A3400FE122B /* CMAFishingMethod.m */; };
 		E738585B19FE0A3400FE122B /* CMAFishingMethod.m in Sources */ = {isa = PBXBuildFile; fileRef = E738585919FE0A3400FE122B /* CMAFishingMethod.m */; };
+		E78BB76319FEC48A0082004B /* fish-1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E78BB75F19FEC48A0082004B /* fish-1.jpg */; };
+		E78BB76419FEC48A0082004B /* fish-2.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E78BB76019FEC48A0082004B /* fish-2.jpg */; };
+		E78BB76519FEC48A0082004B /* fish-3.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E78BB76119FEC48A0082004B /* fish-3.jpg */; };
+		E78BB76619FEC48A0082004B /* fish-4.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E78BB76219FEC48A0082004B /* fish-4.jpg */; };
 		E7A51E9E19EFAA0E009BDC20 /* CMASettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7A51E9D19EFAA0E009BDC20 /* CMASettingsViewController.m */; };
 		E7A51EA819F4440F009BDC20 /* CMAEditSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7A51EA719F4440F009BDC20 /* CMAEditSettingsViewController.m */; };
 		E7A51EB219F4938C009BDC20 /* CMAAddLocationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7A51EB119F4938C009BDC20 /* CMAAddLocationViewController.m */; };
@@ -96,8 +98,6 @@
 		E738583C19FCD6DE00FE122B /* no-image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "no-image.png"; path = "Images/no-image.png"; sourceTree = "<group>"; };
 		E738583E19FD930000FE122B /* CMASingleEntryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMASingleEntryViewController.h; path = ViewControllers/CMASingleEntryViewController.h; sourceTree = "<group>"; };
 		E738583F19FD930000FE122B /* CMASingleEntryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMASingleEntryViewController.m; path = ViewControllers/CMASingleEntryViewController.m; sourceTree = "<group>"; };
-		E738584119FDEC8800FE122B /* apple-logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "apple-logo.png"; path = "Images/apple-logo.png"; sourceTree = "<group>"; };
-		E738584219FDEC8800FE122B /* orange.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = orange.jpeg; path = Images/orange.jpeg; sourceTree = "<group>"; };
 		E738584819FDFCBF00FE122B /* CMASpecies.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMASpecies.h; path = ApplicationModel/UserDefines/CMASpecies.h; sourceTree = "<group>"; };
 		E738584919FDFCBF00FE122B /* CMASpecies.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMASpecies.m; path = ApplicationModel/UserDefines/CMASpecies.m; sourceTree = "<group>"; };
 		E738584C19FE093700FE122B /* CMAFishingSpot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAFishingSpot.h; path = ApplicationModel/UserDefines/CMAFishingSpot.h; sourceTree = "<group>"; };
@@ -108,6 +108,10 @@
 		E738585519FE098A00FE122B /* CMABait.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMABait.m; path = ApplicationModel/UserDefines/CMABait.m; sourceTree = "<group>"; };
 		E738585819FE0A3400FE122B /* CMAFishingMethod.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAFishingMethod.h; path = ApplicationModel/UserDefines/CMAFishingMethod.h; sourceTree = "<group>"; };
 		E738585919FE0A3400FE122B /* CMAFishingMethod.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAFishingMethod.m; path = ApplicationModel/UserDefines/CMAFishingMethod.m; sourceTree = "<group>"; };
+		E78BB75F19FEC48A0082004B /* fish-1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "fish-1.jpg"; path = "Images/fish-1.jpg"; sourceTree = "<group>"; };
+		E78BB76019FEC48A0082004B /* fish-2.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "fish-2.jpg"; path = "Images/fish-2.jpg"; sourceTree = "<group>"; };
+		E78BB76119FEC48A0082004B /* fish-3.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "fish-3.jpg"; path = "Images/fish-3.jpg"; sourceTree = "<group>"; };
+		E78BB76219FEC48A0082004B /* fish-4.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "fish-4.jpg"; path = "Images/fish-4.jpg"; sourceTree = "<group>"; };
 		E7A51E9C19EFAA0E009BDC20 /* CMASettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMASettingsViewController.h; path = ViewControllers/CMASettingsViewController.h; sourceTree = "<group>"; };
 		E7A51E9D19EFAA0E009BDC20 /* CMASettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMASettingsViewController.m; path = ViewControllers/CMASettingsViewController.m; sourceTree = "<group>"; };
 		E7A51EA619F4440F009BDC20 /* CMAEditSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAEditSettingsViewController.h; path = ViewControllers/CMAEditSettingsViewController.h; sourceTree = "<group>"; };
@@ -269,8 +273,10 @@
 		E738583B19FCD49100FE122B /* Images */ = {
 			isa = PBXGroup;
 			children = (
-				E738584119FDEC8800FE122B /* apple-logo.png */,
-				E738584219FDEC8800FE122B /* orange.jpeg */,
+				E78BB75F19FEC48A0082004B /* fish-1.jpg */,
+				E78BB76019FEC48A0082004B /* fish-2.jpg */,
+				E78BB76119FEC48A0082004B /* fish-3.jpg */,
+				E78BB76219FEC48A0082004B /* fish-4.jpg */,
 				E738583C19FCD6DE00FE122B /* no-image.png */,
 			);
 			name = Images;
@@ -396,11 +402,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				E70B638019D3A8E400DFBA85 /* InfoPlist.strings in Resources */,
+				E78BB76519FEC48A0082004B /* fish-3.jpg in Resources */,
+				E78BB76319FEC48A0082004B /* fish-1.jpg in Resources */,
 				E7C926D319EE37750010A9FE /* MyFishingJournal.storyboard in Resources */,
-				E738584319FDEC8800FE122B /* apple-logo.png in Resources */,
+				E78BB76619FEC48A0082004B /* fish-4.jpg in Resources */,
 				E738583D19FCD6DE00FE122B /* no-image.png in Resources */,
+				E78BB76419FEC48A0082004B /* fish-2.jpg in Resources */,
 				E70B638819D3A8E400DFBA85 /* Images.xcassets in Resources */,
-				E738584419FDEC8800FE122B /* orange.jpeg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

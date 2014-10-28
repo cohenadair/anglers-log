@@ -8,13 +8,15 @@
 
 #import <Foundation/Foundation.h>
 #import "CMALocation.h"
+#import "CMASpecies.h"
+#import "CMABait.h"
 
 @interface CMAEntry : NSObject
 
 @property (strong, nonatomic)NSDate *date;
-@property (strong, nonatomic)NSString *fishSpecies;
+@property (strong, nonatomic)CMASpecies *fishSpecies;
+@property (strong, nonatomic)CMABait *baitUsed;
 @property (strong, nonatomic)NSString *notes;
-@property (strong, nonatomic)NSString *baitUsed;
 
 @property (strong, nonatomic)NSNumber *fishLength;
 @property (strong, nonatomic)NSNumber *fishWeight;

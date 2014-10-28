@@ -8,6 +8,9 @@
 
 #import "CMAUserDefine.h"
 #import "CMALocation.h"
+#import "CMABait.h"
+#import "CMASpecies.h"
+#import "CMAFishingMethod.h"
 #import "CMAConstants.h"
 
 @implementation CMAUserDefine
@@ -59,6 +62,26 @@
 
 - (BOOL)isSetOfStrings {
     return ![self.name isEqualToString:SET_LOCATIONS];
+}
+
+#pragma mark - Object Types
+
+// Returns an object of correct type with the name property set to aName.
+- (id)emptyObjectNamed: (NSString *)aName {
+    if ([self.name isEqualToString:SET_LOCATIONS])
+        return [CMALocation withName:aName];
+    
+    if ([self.name isEqualToString:SET_SPECIES])
+        return [CMASpecies withName:aName];
+    
+    if ([self.name isEqualToString:SET_BAITS])
+        return [CMABait withName:aName];
+    
+    if ([self.name isEqualToString:SET_FISHING_METHODS])
+        return [CMAFishingMethod withName:aName];
+    
+    NSLog(@"Invalid user define name in - [CMAUserDefine emptyObjectNamed]");
+    return nil;
 }
 
 @end

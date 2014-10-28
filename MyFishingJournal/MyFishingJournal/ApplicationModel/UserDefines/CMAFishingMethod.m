@@ -28,8 +28,8 @@
 
 #pragma mark - Editing
 
-- (void)edit: (NSString *)aNewFishingMethod {
-    [self setName:aNewFishingMethod];
+- (void)edit: (CMAFishingMethod *)aNewFishingMethod {
+    [self setName:aNewFishingMethod.name];
 }
 
 @end
