@@ -31,9 +31,9 @@
 
 - (CMAEntry *)sampleEntryOne {
     CMAEntry *result = [CMAEntry onDate:[NSDate date]];
-    result.fishSpecies = @"Smallmouth Bass";
+    result.fishSpecies = [CMASpecies withName:@"Smallmouth Bass"];
     result.notes = @"Slow jig on the bottom";
-    result.baitUsed = @"Black twisty tail";
+    result.baitUsed = [CMABait withName:@"Black twisty tail"];
     result.fishLength = [NSNumber numberWithInt:15];
     result.fishWeight = [NSNumber numberWithInt:3];
     result.fishingMethods = [NSSet setWithObjects:@"Shore", @"Casting", nil];
@@ -45,9 +45,9 @@
 
 - (CMAEntry *)sampleEntryTwo {
     CMAEntry *result = [CMAEntry onDate:[NSDate dateWithTimeIntervalSinceNow:1200]];
-    result.fishSpecies = @"Pike";
+    result.fishSpecies = [CMASpecies withName:@"Pike"];
     result.notes = @"Small, quick jerks of fly";
-    result.baitUsed = @"Minnow Fly (Giant)";
+    result.baitUsed = [CMABait withName:@"Minnow Fly (Giant)"];
     result.fishLength = [NSNumber numberWithInt:43];
     result.fishWeight = [NSNumber numberWithInt:20];
     result.fishingMethods = [NSSet setWithObjects:@"Boat", @"Fly", nil];
@@ -90,19 +90,19 @@
     
     // editing
     NSMutableString *editStr = [[myJournal userDefineNamed:@"Species"] objectNamed:@"Largemouth Bass"];
-    [myJournal editUserDefine:@"Species" objectNamed:@"Largemouth Bass" newProperties:@"Smallmouth Bass"];
+    [myJournal editUserDefine:@"Species" objectNamed:@"Largemouth Bass" newProperties:[CMASpecies withName:@"Smallmouth Bass"]];
     XCTAssert([[[myJournal userDefineNamed:@"Species"] objects] containsObject:editStr]);
     XCTAssert([[myJournal userDefineNamed:@"Species"] objectNamed:@"Smallmouth Bass"] != nil);
     
     editStr = [[myJournal userDefineNamed:@"Baits"] objectNamed:@"Spoon"];
-    [myJournal editUserDefine:@"Baits" objectNamed:@"Spoon" newProperties:@"Jig"];
+    [myJournal editUserDefine:@"Baits" objectNamed:@"Spoon" newProperties:[CMABait withName:@"Jig"]];
     NSLog(@"editStr: %@", editStr);
     NSLog(@"Baits: %@", [[myJournal userDefineNamed:@"Baits"] objects]);
     XCTAssert([[[myJournal userDefineNamed:@"Baits"] objects] containsObject:editStr]);
     XCTAssert([[myJournal userDefineNamed:@"Baits"] objectNamed:@"Jig"] != nil);
     
     editStr = [[myJournal userDefineNamed:@"Fishing Methods"] objectNamed:@"Shore"];
-    [myJournal editUserDefine:@"Fishing Methods" objectNamed:@"Shore" newProperties:@"Casting"];
+    [myJournal editUserDefine:@"Fishing Methods" objectNamed:@"Shore" newProperties:[CMAFishingMethod withName:@"Casting"]];
     XCTAssert([[[myJournal userDefineNamed:@"Fishing Methods"] objects] containsObject:editStr]);
     XCTAssert([[myJournal userDefineNamed:@"Fishing Methods"] objectNamed:@"Casting"] != nil);
     

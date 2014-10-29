@@ -27,7 +27,7 @@
 
 - (CMAEntry *)sampleEntryOne {
     CMAEntry *entry = [CMAEntry onDate:[NSDate date]];
-    [entry setFishSpecies:@"Steelhead"];
+    [entry setFishSpecies:[CMASpecies withName:@"Steelhead"]];
     [entry setFishLength:[NSNumber numberWithInt:30]];
     [entry setFishWeight:[NSNumber numberWithInt:5]];
     [entry setFishingMethods:[NSSet setWithObjects:@"Boat", @"Troll", nil]];

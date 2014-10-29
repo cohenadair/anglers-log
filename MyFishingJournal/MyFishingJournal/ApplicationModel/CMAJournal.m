@@ -26,6 +26,7 @@
     [_userDefines setValue:[CMAUserDefine withName:SET_FISHING_METHODS] forKey:SET_FISHING_METHODS];
     [_userDefines setValue:[CMAUserDefine withName:SET_LOCATIONS] forKey:SET_LOCATIONS];
     
+    // TODO: Replace default defines with an Archiving file
     [self addUserDefine:SET_SPECIES objectToAdd:[CMASpecies withName:@"Smallmouth Bass"]];
     [self addUserDefine:SET_SPECIES objectToAdd:[CMASpecies withName:@"Largemouth Bass"]];
     [self addUserDefine:SET_SPECIES objectToAdd:[CMASpecies withName:@"Steelhead"]];
@@ -52,6 +53,7 @@
     
     [self addUserDefine:SET_LOCATIONS objectToAdd:portAlbert];
     [self addUserDefine:SET_LOCATIONS objectToAdd:silverLake];
+
     
     [self setMeasurementSystem:CMAMeasuringSystemType_Imperial];
     
