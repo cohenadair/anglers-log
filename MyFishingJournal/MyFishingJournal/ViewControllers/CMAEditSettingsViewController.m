@@ -114,7 +114,7 @@
             [result appendFormat:@"%@%@", [cell.textLabel text], TOKEN_FISHING_METHODS];
     }
     
-    // remove the next comma and space
+    // remove the last comma and space
     if (result.length > 0) {
         NSRange range;
         range.location = [result length] - 2;

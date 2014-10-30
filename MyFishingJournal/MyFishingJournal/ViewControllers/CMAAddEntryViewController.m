@@ -93,18 +93,23 @@ NSString *const NO_SELECT = @"Not Selected";
     self.numberOfImages = 0;
     
     // if we're editing rather than adding an entry
-    if (self.previousViewID == CMAViewControllerID_SingleEntry) {
-        self.navigationItem.title = @"Edit Entry";
-        [self initializeCellsForEditing];
-        self.entryImages = [self.entry.images allObjects];
-        self.numberOfImages = [self.entryImages count];
-        self.hasAttachedImages = YES;
-    }
+    if (self.previousViewID == CMAViewControllerID_SingleEntry)
+        [self initializeTableForEditing];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+#pragma mark - Table View Initializing
+
+- (void)initializeTableForEditing {
+    self.navigationItem.title = @"Edit Entry";
+    [self initializeCellsForEditing];
+    self.entryImages = [self.entry.images allObjects];
+    self.numberOfImages = [self.entryImages count];
+    self.hasAttachedImages = (self.numberOfImages > 0);
 }
 
 - (void)initializeCellsForEditing {
@@ -145,8 +150,6 @@ NSString *const NO_SELECT = @"Not Selected";
     if (self.entry.notes)
         [self.notesTextView setText:self.entry.notes];
 }
-
-#pragma mark - Table View Initializing
 
 - (void)toggleDatePickerCellHidden:(UITableView *)aTableView {
     self.isEditingDateTime = !self.isEditingDateTime;
