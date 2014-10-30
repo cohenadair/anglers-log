@@ -11,7 +11,8 @@ typedef enum {
     CMAViewControllerID_Home = 1,
     CMAViewControllerID_ViewEntries = 2,
     CMAViewControllerID_EditSettings = 3,
-    CMAViewControllerID_AddEntry = 4
+    CMAViewControllerID_AddEntry = 4,
+    CMAViewControllerID_SingleEntry = 5
 } CMAViewControllerID;
 
 // Each value represents the index for an item in a UISegmentedControlView.

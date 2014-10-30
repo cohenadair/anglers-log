@@ -112,4 +112,32 @@
     return [[self.entries allObjects] objectAtIndex:anIndex];
 }
 
+- (NSString *)lengthUnitsAsString: (BOOL)shorthand {
+    if (self.measurementSystem == CMAMeasuringSystemType_Imperial) {
+        if (shorthand)
+            return @"\"";
+        else
+            return @"Inches";
+    }
+    
+    if (shorthand)
+        return @" cm";
+    else
+        return @"Centimeters";
+}
+
+- (NSString *)weightUnitsAsString: (BOOL)shorthand {
+    if (self.measurementSystem == CMAMeasuringSystemType_Imperial) {
+        if (shorthand)
+            return @" lbs.";
+        else
+            return @"Pounds";
+    }
+    
+    if (shorthand)
+        return @" kg";
+    else
+        return @"Kilograms";
+}
+
 @end

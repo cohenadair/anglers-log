@@ -35,6 +35,11 @@
     [self.tableView setTableFooterView:[[UIView alloc] initWithFrame:CGRectZero]]; // removes empty cells at the end of the list
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [self setEntriesArray:[[self journal].entries allObjects]];
+    [self.tableView reloadData];
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

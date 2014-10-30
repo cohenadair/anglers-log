@@ -13,5 +13,6 @@
 @interface CMAAddEntryViewController : UITableViewController <UIImagePickerControllerDelegate, UINavigationControllerDelegate, UICollectionViewDelegate, UICollectionViewDataSource>
 
 @property (nonatomic)CMAViewControllerID previousViewID;
+@property (strong, nonatomic)CMAEntry *entry;
 
 @end

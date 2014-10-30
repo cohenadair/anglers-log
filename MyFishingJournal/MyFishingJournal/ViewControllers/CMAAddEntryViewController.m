@@ -28,6 +28,9 @@
 @property (weak, nonatomic)IBOutlet UICollectionView *imageCollection;
 @property (weak, nonatomic)IBOutlet UITextView *notesTextView;
 
+@property (weak, nonatomic)IBOutlet UILabel *lengthLabel;
+@property (weak, nonatomic)IBOutlet UILabel *weightLabel;
+
 @property (weak, nonatomic)IBOutlet UIButton *cameraButton;
 @property (weak, nonatomic)IBOutlet UIButton *attachButton;
 
@@ -39,6 +42,7 @@
 @property (nonatomic)BOOL hasAttachedImages;
 @property (nonatomic)NSInteger numberOfImages;
 @property (strong, nonatomic)NSIndexPath *deleteImageIndexPath;
+@property (strong, nonatomic)NSArray *entryImages;
 
 @end
 
@@ -75,6 +79,10 @@ NSString *const NO_SELECT = @"Not Selected";
     // set date detail label to the current date and time
     [self.dateTimeDetailLabel setText:[self.dateFormatter stringFromDate:[NSDate new]]];
     
+    // set propert units for length and weight labels
+    [self.lengthLabel setText:[NSString stringWithFormat:@"Length (%@)", [[self journal] lengthUnitsAsString:NO]]];
+    [self.weightLabel setText:[NSString stringWithFormat:@"Weight (%@)", [[self journal] weightUnitsAsString:NO]]];
+    
     [self.imageCollection setAllowsSelection:NO];
     [self.imageCollection setAllowsMultipleSelection:NO];
     
@@ -83,11 +91,59 @@ NSString *const NO_SELECT = @"Not Selected";
     
     self.hasAttachedImages = NO;
     self.numberOfImages = 0;
+    
+    // if we're editing rather than adding an entry
+    if (self.previousViewID == CMAViewControllerID_SingleEntry) {
+        self.navigationItem.title = @"Edit Entry";
+        [self initializeCellsForEditing];
+        self.entryImages = [self.entry.images allObjects];
+        self.numberOfImages = [self.entryImages count];
+        self.hasAttachedImages = YES;
+    }
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)initializeCellsForEditing {
+    // date
+    [self.datePicker setDate:[self.entry date]];
+    [self.dateTimeDetailLabel setText:[self.dateFormatter stringFromDate:[self.entry date]]];
+    
+    // species
+    [self.speciesDetailLabel setText:self.entry.fishSpecies.name];
+    
+    // location and fishing spot
+    [self.locationDetailLabel setText:[NSString stringWithFormat:@"%@: %@", self.entry.location.name, self.entry.fishingSpot.name]];
+    
+    // bait used
+    if (self.entry.baitUsed)
+        [self.baitUsedDetailLabel setText:self.entry.baitUsed.name];
+    
+    // fishing methods
+    if (self.entry.fishingMethods)
+        [self.methodsDetailLabel setText:[self.entry concatinateFishingMethods]];
+    
+    // fish quantity
+    if (self.entry.fishQuantity)
+        [self.quantityTextField setText:self.entry.fishQuantity.stringValue];
+    
+    // fish length
+    if (self.entry.fishLength)
+        [self.lengthTextField setText:self.entry.fishLength.stringValue];
+    
+    // fish weight
+    if (self.entry.fishWeight)
+        [self.weightTextField setText:self.entry.fishWeight.stringValue];
+    
+    // pictures
+    [self.imageCollection reloadData];
+    
+    // notes
+    if (self.entry.notes)
+        [self.notesTextView setText:self.entry.notes];
 }
 
 #pragma mark - Table View Initializing
@@ -180,7 +236,12 @@ NSString *const NO_SELECT = @"Not Selected";
     CMAEntry *entryToAdd = [CMAEntry new];
     
     if ([self checkUserInputAndSetEntry:entryToAdd]) {
-        [[self journal] addEntry:entryToAdd];
+        if (self.previousViewID == CMAViewControllerID_SingleEntry) {
+            [[self journal] editEntryDated:[self.entry date] newProperties:entryToAdd];
+            [self setEntry:entryToAdd];
+        } else
+            [[self journal] addEntry:entryToAdd];
+        
         [self performSegueToPreviousView];
     }
 }
@@ -240,6 +301,10 @@ NSString *const NO_SELECT = @"Not Selected";
             
         case CMAViewControllerID_ViewEntries:
             [self performSegueWithIdentifier:@"unwindToViewEntries" sender:self];
+            break;
+            
+        case CMAViewControllerID_SingleEntry:
+            [self performSegueWithIdentifier:@"unwindToSingleEntryFromAddEntry" sender:self];
             break;
             
         default:
@@ -354,7 +419,7 @@ NSString *const NO_SELECT = @"Not Selected";
         NSNumber *quantity = [NSNumber numberWithInteger:[[self.quantityTextField text] integerValue]];
         [anEntry setFishQuantity:quantity];
     } else {
-        [anEntry setFishQuantity:[NSNumber numberWithInt:-1]];
+        [anEntry setFishQuantity:nil];
     }
     
     // fish length
@@ -362,7 +427,7 @@ NSString *const NO_SELECT = @"Not Selected";
         NSNumber *length = [NSNumber numberWithInteger:[[self.lengthTextField text] integerValue]];
         [anEntry setFishLength:length];
     } else {
-        [anEntry setFishLength:[NSNumber numberWithInt:-1]];
+        [anEntry setFishLength:nil];
     }
     
     // fish weight
@@ -370,7 +435,7 @@ NSString *const NO_SELECT = @"Not Selected";
         NSNumber *weight = [NSNumber numberWithInteger:[[self.weightTextField text] integerValue]];
         [anEntry setFishWeight:weight];
     } else {
-        [anEntry setFishWeight:[NSNumber numberWithInt:-1]];
+        [anEntry setFishWeight:nil];
     }
     
     // pictures
@@ -381,7 +446,8 @@ NSString *const NO_SELECT = @"Not Selected";
             
             [anEntry addImage:image];
         }
-    }
+    } else
+        [anEntry setImages:nil];
     
     // notes
     if (![[self.notesTextView text] isEqualToString:@"Notes"]) {
@@ -456,11 +522,13 @@ NSString *const NO_SELECT = @"Not Selected";
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    UICollectionViewCell * cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"thumbnailImageCell" forIndexPath:indexPath];
+    UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"thumbnailImageCell" forIndexPath:indexPath];
     
-    [[cell.contentView layer] setBorderColor:[UIColor blackColor].CGColor];
-    [[cell.contentView layer] setBorderWidth:1.0f];
-    
+    if ([self.entryImages count] > 0) {
+        UIImageView *imageView = (UIImageView *)[cell viewWithTag:IMAGE_VIEW_TAG];
+        [imageView setImage:[self.entryImages objectAtIndex:indexPath.item]];
+    }
+        
     return cell;
 }
 

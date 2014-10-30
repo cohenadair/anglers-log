@@ -37,6 +37,7 @@
 // accessing
 - (NSInteger)imageCount;
 - (NSInteger)fishingMethodCount;
+- (NSString *)concatinateFishingMethods;
 
 // editing
 - (void)addImage: (UIImage *)anImage;

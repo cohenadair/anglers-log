@@ -44,6 +44,23 @@
     return [self.fishingMethods count];
 }
 
+- (NSString *)concatinateFishingMethods {
+    NSString *result = [NSString new];
+    NSArray *fishingMethods = [self.fishingMethods allObjects];
+    
+    for (int i = 0; i < [fishingMethods count]; i++) {
+        if (i == ([fishingMethods count] - 1)) {
+            result = [result stringByAppendingString:[fishingMethods[i] name]];
+            break;
+        }
+        
+        result = [result stringByAppendingString:[fishingMethods[i] name]];
+        result = [result stringByAppendingString:@", "];
+    }
+    
+    return result;
+}
+
 #pragma mark - Editing
 
 - (void)addImage: (UIImage *)anImage {
