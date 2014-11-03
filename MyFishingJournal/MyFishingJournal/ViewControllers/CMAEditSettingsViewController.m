@@ -51,6 +51,8 @@
     
     // used to populate cells
     [self setUserDefineArray:[[self.userDefine objects] allObjects]];
+    if ([self.userDefineArray count] <= 0)
+        [self.editButton setEnabled:NO];
     
     self.isSelectingForAddEntry = (self.previousViewID == CMAViewControllerID_AddEntry);
     self.isSelectingMultiple = (self.isSelectingForAddEntry && [[self.userDefine name] isEqualToString:SET_FISHING_METHODS]);
@@ -198,8 +200,10 @@
         // delete from table
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
         
-        if ([tableView numberOfRowsInSection:0] == 0)
+        if ([tableView numberOfRowsInSection:0] == 0) {
             [self toggleEditButtons:YES];
+            [self.editButton setEnabled:NO];
+        }
     }
 }
 

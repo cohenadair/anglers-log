@@ -40,6 +40,8 @@
     [self.dateFormatter setDateFormat:@"MMM dd, yyyy 'at' h:mm a"];
     
     [self setEntriesArray:[[self journal].entries allObjects]];
+    if ([self.entriesArray count] <= 0)
+        [self.deleteButton setEnabled:NO];
     
     [self.tableView setTableFooterView:[[UIView alloc] initWithFrame:CGRectZero]]; // removes empty cells at the end of the list
 }
@@ -102,6 +104,7 @@
         
         if ([tableView numberOfRowsInSection:0] == 0) {
             [self toggleEditButtons:YES];
+            [self.deleteButton setEnabled:NO];
         }
     }
 }
