@@ -101,15 +101,22 @@
 
 // returns nil if no entry with aDate exist, otherwise returns entry with aDate
 - (CMAEntry *)entryDated: (NSDate *)aDate {
-    for (CMAEntry *entry in self.entries)
-        if ([entry.date compare:aDate] == NSOrderedSame)
+    // calender stuff is needed so only certain date units are compared
+    NSCalendar *calendar = [NSCalendar currentCalendar];
+    NSInteger calendarComponents = (NSDayCalendarUnit | NSMonthCalendarUnit | NSYearCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit);
+    
+    NSDateComponents *aDateComponents = [calendar components:calendarComponents fromDate:aDate];
+    aDate = [calendar dateFromComponents:aDateComponents];
+    
+    for (CMAEntry *entry in self.entries) {
+        NSDateComponents *entryDateComponents = [calendar components:calendarComponents fromDate:entry.date];
+        NSDate *entryDate = [calendar dateFromComponents:entryDateComponents];
+        
+        if ([entryDate isEqualToDate:aDate])
             return entry;
+    }
     
     return nil;
-}
-
-- (CMAEntry *)entryAtIndex: (NSInteger)anIndex {
-    return [[self.entries allObjects] objectAtIndex:anIndex];
 }
 
 - (NSString *)lengthUnitsAsString: (BOOL)shorthand {

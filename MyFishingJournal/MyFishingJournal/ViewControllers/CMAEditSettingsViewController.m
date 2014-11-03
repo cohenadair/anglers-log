@@ -65,7 +65,7 @@
     [self.tableView setTableFooterView:[[UIView alloc] initWithFrame:CGRectZero]]; // removes empty cells at the end of the list
 }
 
-- (void)viewDidAppear:(BOOL)animated {
+- (void)viewWillAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
     // show the toolbar when navigating back from a push segue
@@ -197,6 +197,9 @@
         
         // delete from table
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+        
+        if ([tableView numberOfRowsInSection:0] == 0)
+            [self toggleEditButtons:YES];
     }
 }
 
@@ -248,6 +251,33 @@
 
 #pragma mark - Events
 
+- (void)toggleEditButtons: (BOOL)enable {
+    if (enable) {
+        [self.tableView setEditing:NO animated:YES];
+        [self.editButton setEnabled:YES];
+        [self.addButton setEnabled:YES];
+        
+        if (self.isSelectingMultiple)
+            [self.doneSelectingButton setEnabled:YES];
+        
+        self.navigationItem.rightBarButtonItem = nil;
+        
+        [self toggleCellSelectionStyles:UITableViewCellSelectionStyleNone];
+    } else {
+        [self.tableView setEditing:YES animated:YES];
+        [self.editButton setEnabled:NO];
+        [self.addButton setEnabled:NO];
+        [self.doneSelectingButton setEnabled:NO];
+        
+        // add a done button that will be used to exit editing mode
+        UIBarButtonItem *doneButton = [UIBarButtonItem new];
+        doneButton = [doneButton initWithTitle:@"Done" style:UIBarButtonItemStyleDone target:self action:@selector(clickDoneButton)];
+        self.navigationItem.rightBarButtonItem = doneButton;
+        
+        [self toggleCellSelectionStyles:UITableViewCellSelectionStyleDefault];
+    }
+}
+
 - (IBAction)clickAddButton:(UIBarButtonItem *)sender {
     if ([[self.userDefine name] isEqualToString:SET_LOCATIONS])
         [self performSegueWithIdentifier:@"fromEditSettingsToAddLocation" sender:self];
@@ -257,17 +287,7 @@
 
 // Enter editing mode.
 - (IBAction)clickEditButton:(UIBarButtonItem *)sender {
-    [self.tableView setEditing:YES animated:YES];
-    [sender setEnabled:NO];
-    [self.addButton setEnabled:NO];
-    [self.doneSelectingButton setEnabled:NO];
-    
-    // add a done button that will be used to exit editing mode
-    UIBarButtonItem *doneButton = [UIBarButtonItem new];
-    doneButton = [doneButton initWithTitle:@"Done" style:UIBarButtonItemStyleDone target:self action:@selector(clickDoneButton)];
-    self.navigationItem.rightBarButtonItem = doneButton;
-    
-    [self toggleCellSelectionStyles:UITableViewCellSelectionStyleDefault];
+    [self toggleEditButtons:NO];
 }
 
 - (IBAction)clickDoneSelectingButton:(UIBarButtonItem *)sender {
@@ -277,16 +297,7 @@
 
 // Used to exit out of editing mode.
 - (void)clickDoneButton {
-    [self.tableView setEditing:NO animated:YES];
-    [self.editButton setEnabled:YES];
-    [self.addButton setEnabled:YES];
-    
-    if (self.isSelectingMultiple)
-        [self.doneSelectingButton setEnabled:YES];
-    
-    self.navigationItem.rightBarButtonItem = nil;
-    
-    [self toggleCellSelectionStyles:UITableViewCellSelectionStyleNone];
+    [self toggleEditButtons:YES];
 }
 
 #pragma mark - Navigation

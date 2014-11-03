@@ -55,6 +55,7 @@
 
 - (void)setLabels {
     NSString *temp = [NSString new];
+    NSString *naString = @"N/A";
     
     // species
     [self.fishSpeciesLabel setText:[[self.entry fishSpecies] name]];
@@ -76,33 +77,33 @@
     if (self.entry.fishLength)
         temp = [NSString stringWithFormat:@"%@%@", self.entry.fishLength.stringValue, [[self journal] lengthUnitsAsString:YES]];
     else
-        temp = @"N/A";
+        temp = naString;
     [self.lengthDetailLabel setText:temp];
     
     // weight
     if (self.entry.fishWeight)
         temp = [NSString stringWithFormat:@"%@%@", self.entry.fishWeight.stringValue, [[self journal] weightUnitsAsString:YES]];
     else
-        temp = @"N/A";
+        temp = naString;
     [self.weightDetailLabel setText:temp];
     
     // fishing methods
     if (self.entry.fishingMethods)
         [self.methodsDetailLabel setText:[self.entry concatinateFishingMethods]];
     else
-        [self.methodsDetailLabel setText:@"N/A"];
+        [self.methodsDetailLabel setText:naString];
     
     // bait used
     if (self.entry.baitUsed)
         [self.baitUsedDetailLabel setText:self.entry.baitUsed.name];
     else
-        [self.baitUsedDetailLabel setText:@"N/A"];
+        [self.baitUsedDetailLabel setText:naString];
     
     // notes
     if (self.entry.notes)
         [self.notesDetailLabel setText:self.entry.notes];
     else
-        [self.notesDetailLabel setText:@"N/A"];
+        [self.notesDetailLabel setText:naString];
 }
 
 #pragma mark - Table View

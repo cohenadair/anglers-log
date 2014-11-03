@@ -13,7 +13,11 @@
 
 @interface CMAViewEntriesViewController ()
 
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *deleteButton;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *addButton;
+
 @property (strong, nonatomic)NSArray *entriesArray;
+@property (strong, nonatomic)NSDateFormatter *dateFormatter;
 
 @end
 
@@ -30,12 +34,19 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    self.navigationController.toolbarHidden = NO;
+    
+    self.dateFormatter = [NSDateFormatter new];
+    [self.dateFormatter setDateFormat:@"MMM dd, yyyy 'at' h:mm a"];
+    
     [self setEntriesArray:[[self journal].entries allObjects]];
     
     [self.tableView setTableFooterView:[[UIView alloc] initWithFrame:CGRectZero]]; // removes empty cells at the end of the list
 }
 
 - (void)viewWillAppear:(BOOL)animated {
+    self.navigationController.toolbarHidden = NO;
+    
     [self setEntriesArray:[[self journal].entries allObjects]];
     [self.tableView reloadData];
 }
@@ -66,11 +77,9 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"entriesCell" forIndexPath:indexPath];
     
     CMAEntry *entry = [self.entriesArray objectAtIndex:indexPath.item];
-    NSDateFormatter *dateFormatter = [NSDateFormatter new];
-    [dateFormatter setDateFormat:@"MMM dd, yyyy 'at' h:mm a"];
     
     cell.textLabel.text = [entry.fishSpecies name];
-    cell.detailTextLabel.text = [dateFormatter stringFromDate:entry.date];
+    cell.detailTextLabel.text = [self.dateFormatter stringFromDate:entry.date];
     cell.detailTextLabel.textColor = [UIColor lightGrayColor];
     
     if ([entry.images count] > 0)
@@ -79,6 +88,52 @@
         cell.imageView.image = [UIImage imageNamed:@"no-image.png"];
     
     return cell;
+}
+
+// Override to support editing the table view.
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        // delete from data source
+        UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+        [[self journal] removeEntryDated:[self.dateFormatter dateFromString:cell.detailTextLabel.text]];
+        
+        // delete from table
+        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+        
+        if ([tableView numberOfRowsInSection:0] == 0) {
+            [self toggleEditButtons:YES];
+        }
+    }
+}
+
+#pragma mark - Events
+
+- (void)toggleEditButtons: (BOOL)enable {
+    if (enable) {
+        [self.tableView setEditing:NO animated:YES];
+        [self.deleteButton setEnabled:YES];
+        [self.addButton setEnabled:YES];
+        
+        self.navigationItem.rightBarButtonItem = nil;
+    } else {
+        [self.tableView setEditing:YES animated:YES];
+        [self.deleteButton setEnabled:NO];
+        [self.addButton setEnabled:NO];
+        
+        // add a done button that will be used to exit editing mode
+        UIBarButtonItem *doneButton = [UIBarButtonItem new];
+        doneButton = [doneButton initWithTitle:@"Done" style:UIBarButtonItemStyleDone target:self action:@selector(clickDoneButton)];
+        self.navigationItem.rightBarButtonItem = doneButton;
+    }
+}
+
+- (IBAction)clickDeleteButton:(UIBarButtonItem *)sender {
+    [self toggleEditButtons:NO];
+}
+
+// Used to exit out of editing mode.
+- (void)clickDoneButton {
+    [self toggleEditButtons:YES];
 }
 
 #pragma mark - Navigation
@@ -97,7 +152,7 @@
 }
 
 - (IBAction)unwindToViewEntries:(UIStoryboardSegue *)segue {
-    
+    self.navigationController.toolbarHidden = NO;
 }
 
 @end

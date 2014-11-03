@@ -13,7 +13,7 @@
 
 @end
 
-NSInteger const FISHING_SPOT_SECTION = 2;
+NSInteger const FISHING_SPOT_SECTION = 3;
 
 @implementation CMASingleLocationViewController
 
@@ -32,7 +32,7 @@ NSInteger const FISHING_SPOT_SECTION = 2;
 #pragma mark - Table View Initializing
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 3;
+    return 4;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
@@ -40,11 +40,11 @@ NSInteger const FISHING_SPOT_SECTION = 2;
 }
 
 - (CGFloat) tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-    return TABLE_SECTION_SPACING;
+    return CGFLOAT_MIN;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if (section < 2)
+    if (section < FISHING_SPOT_SECTION)
         return 1;
     
     if (section == FISHING_SPOT_SECTION)
@@ -65,6 +65,13 @@ NSInteger const FISHING_SPOT_SECTION = 2;
     // map
     if (indexPath.section == 1) {
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"mapCell" forIndexPath:indexPath];
+        return cell;
+    }
+    
+    if (indexPath.section == 2) {
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"fishingSpotTitleCell" forIndexPath:indexPath];
+        [cell.textLabel setText:@"Fishing Spots"];
+        
         return cell;
     }
     
