@@ -29,6 +29,10 @@
 
 #pragma mark - Editing
 
+- (void)setCoordinates: (CLLocationCoordinate2D)coordinates {
+    self.location = [self.location initWithLatitude:coordinates.latitude longitude:coordinates.longitude];
+}
+
 // updates self's properties with aNewFishinSpot's attributes
 - (void)edit: (CMAFishingSpot *)aNewFishingSpot {
     self.name = aNewFishingSpot.name;

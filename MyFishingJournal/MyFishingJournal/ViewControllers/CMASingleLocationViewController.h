@@ -7,9 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <MapKit/MapKit.h>
 #import "CMALocation.h"
 
-@interface CMASingleLocationViewController : UITableViewController
+@interface CMASingleLocationViewController : UITableViewController <MKMapViewDelegate>
 
 @property (strong, nonatomic)CMALocation *location;
 @property (strong, nonatomic)NSString *addEntryLabelText;

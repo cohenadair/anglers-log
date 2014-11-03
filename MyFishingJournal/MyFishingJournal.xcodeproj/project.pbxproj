@@ -41,6 +41,8 @@
 		E738585719FE098A00FE122B /* CMABait.m in Sources */ = {isa = PBXBuildFile; fileRef = E738585519FE098A00FE122B /* CMABait.m */; };
 		E738585A19FE0A3400FE122B /* CMAFishingMethod.m in Sources */ = {isa = PBXBuildFile; fileRef = E738585919FE0A3400FE122B /* CMAFishingMethod.m */; };
 		E738585B19FE0A3400FE122B /* CMAFishingMethod.m in Sources */ = {isa = PBXBuildFile; fileRef = E738585919FE0A3400FE122B /* CMAFishingMethod.m */; };
+		E78BB7D41A0724290082004B /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E78BB7D31A0724290082004B /* MapKit.framework */; };
+		E78BB7D61A0724760082004B /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E78BB7D51A0724760082004B /* CoreLocation.framework */; };
 		E7A51E9E19EFAA0E009BDC20 /* CMASettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7A51E9D19EFAA0E009BDC20 /* CMASettingsViewController.m */; };
 		E7A51EA819F4440F009BDC20 /* CMAEditSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7A51EA719F4440F009BDC20 /* CMAEditSettingsViewController.m */; };
 		E7A51EB219F4938C009BDC20 /* CMAAddLocationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7A51EB119F4938C009BDC20 /* CMAAddLocationViewController.m */; };
@@ -104,6 +106,8 @@
 		E738585519FE098A00FE122B /* CMABait.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMABait.m; path = ApplicationModel/UserDefines/CMABait.m; sourceTree = "<group>"; };
 		E738585819FE0A3400FE122B /* CMAFishingMethod.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAFishingMethod.h; path = ApplicationModel/UserDefines/CMAFishingMethod.h; sourceTree = "<group>"; };
 		E738585919FE0A3400FE122B /* CMAFishingMethod.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAFishingMethod.m; path = ApplicationModel/UserDefines/CMAFishingMethod.m; sourceTree = "<group>"; };
+		E78BB7D31A0724290082004B /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		E78BB7D51A0724760082004B /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		E7A51E9C19EFAA0E009BDC20 /* CMASettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMASettingsViewController.h; path = ViewControllers/CMASettingsViewController.h; sourceTree = "<group>"; };
 		E7A51E9D19EFAA0E009BDC20 /* CMASettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMASettingsViewController.m; path = ViewControllers/CMASettingsViewController.m; sourceTree = "<group>"; };
 		E7A51EA619F4440F009BDC20 /* CMAEditSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAEditSettingsViewController.h; path = ViewControllers/CMAEditSettingsViewController.h; sourceTree = "<group>"; };
@@ -132,6 +136,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E78BB7D61A0724760082004B /* CoreLocation.framework in Frameworks */,
+				E78BB7D41A0724290082004B /* MapKit.framework in Frameworks */,
 				E70B637819D3A8E400DFBA85 /* CoreGraphics.framework in Frameworks */,
 				E70B637A19D3A8E400DFBA85 /* UIKit.framework in Frameworks */,
 				E70B637619D3A8E400DFBA85 /* Foundation.framework in Frameworks */,
@@ -173,6 +179,8 @@
 		E70B637419D3A8E400DFBA85 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				E78BB7D51A0724760082004B /* CoreLocation.framework */,
+				E78BB7D31A0724290082004B /* MapKit.framework */,
 				E70B637519D3A8E400DFBA85 /* Foundation.framework */,
 				E70B637719D3A8E400DFBA85 /* CoreGraphics.framework */,
 				E70B637919D3A8E400DFBA85 /* UIKit.framework */,

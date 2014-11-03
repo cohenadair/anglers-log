@@ -44,12 +44,17 @@
     
     CMALocation *portAlbert = [CMALocation withName:@"Port Albert"];
     [portAlbert addFishingSpot:[CMAFishingSpot withName:@"Little Hole"]];
+    [[portAlbert fishingSpotNamed:@"Little Hole"] setCoordinates:CLLocationCoordinate2DMake(43.878362, -81.717821)];
     [portAlbert addFishingSpot:[CMAFishingSpot withName:@"Beaver Dam"]];
+    [[portAlbert fishingSpotNamed:@"Beaver Dam"] setCoordinates:CLLocationCoordinate2DMake(43.878702, -81.718722)];
     [portAlbert addFishingSpot:[CMAFishingSpot withName:@"Baskets"]];
+    [[portAlbert fishingSpotNamed:@"Baskets"] setCoordinates:CLLocationCoordinate2DMake(43.878702, -81.718722)];
     
     CMALocation *silverLake = [CMALocation withName:@"Silver Lake"];
     [silverLake addFishingSpot:[CMAFishingSpot withName:@"Walleye Way"]];
+    [[silverLake fishingSpotNamed:@"Walleye Way"] setCoordinates:CLLocationCoordinate2DMake(44.086182, -81.417250)];
     [silverLake addFishingSpot:[CMAFishingSpot withName:@"Lillypad Lane"]];
+    [[silverLake fishingSpotNamed:@"Lillypad Lane"] setCoordinates:CLLocationCoordinate2DMake(44.081620, -81.416220)];
     
     [self addUserDefine:SET_LOCATIONS objectToAdd:portAlbert];
     [self addUserDefine:SET_LOCATIONS objectToAdd:silverLake];

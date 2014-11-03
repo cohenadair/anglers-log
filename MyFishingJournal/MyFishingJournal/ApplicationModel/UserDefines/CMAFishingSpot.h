@@ -21,6 +21,7 @@
 - (id)initWithName: (NSString *)aName;
 
 // editing
+- (void)setCoordinates: (CLLocationCoordinate2D)coordinates;
 - (void)edit: (CMAFishingSpot *)aNewFishingSpot;
 
 // accessing

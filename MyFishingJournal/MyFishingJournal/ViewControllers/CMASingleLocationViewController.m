@@ -11,9 +11,11 @@
 
 @interface CMASingleLocationViewController ()
 
+@property (weak, nonatomic)MKMapView *mapView;
+
 @end
 
-NSInteger const FISHING_SPOT_SECTION = 3;
+NSInteger const FISHING_SPOT_SECTION = 2;
 
 @implementation CMASingleLocationViewController
 
@@ -32,7 +34,7 @@ NSInteger const FISHING_SPOT_SECTION = 3;
 #pragma mark - Table View Initializing
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 4;
+    return 3;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
@@ -43,14 +45,20 @@ NSInteger const FISHING_SPOT_SECTION = 3;
     return CGFLOAT_MIN;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if (section < FISHING_SPOT_SECTION)
-        return 1;
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.section == 1) {
+        return tableView.frame.size.width * 0.75;
+    }
     
+    // using the super class's implementation gets the height set in storyboard
+    return [super tableView:tableView heightForRowAtIndexPath:indexPath];
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if (section == FISHING_SPOT_SECTION)
         return [self.location fishingSpotCount];
-    
-    return 0;
+    else
+        return 1;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -65,12 +73,7 @@ NSInteger const FISHING_SPOT_SECTION = 3;
     // map
     if (indexPath.section == 1) {
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"mapCell" forIndexPath:indexPath];
-        return cell;
-    }
-    
-    if (indexPath.section == 2) {
-        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"fishingSpotTitleCell" forIndexPath:indexPath];
-        [cell.textLabel setText:@"Fishing Spots"];
+        self.mapView = (MKMapView *)[cell viewWithTag:100];
         
         return cell;
     }
@@ -102,6 +105,8 @@ NSInteger const FISHING_SPOT_SECTION = 3;
 - (void) tableView:(UITableView *) tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
     NSLog(@"Tapped accessory button.");
 }
+
+#pragma mark - Map Initializing
 
 
 @end

@@ -283,25 +283,24 @@
                                     </subviews>
                                 </tableViewCellContentView>
                             </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="mapCell" id="c4R-x4-kUD">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="mapCell" rowHeight="215" id="c4R-x4-kUD">
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="c4R-x4-kUD" id="2LQ-3k-oks">
                                     <autoresizingMask key="autoresizingMask"/>
-                                </tableViewCellContentView>
-                            </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="fishingSpotTitleCell" textLabel="nQr-qA-3Du" style="IBUITableViewCellStyleDefault" id="yCy-sZ-frh">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="yCy-sZ-frh" id="fOM-rj-KUv">
-                                    <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Fishing Spots" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="nQr-qA-3Du">
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
+                                        <mapView clipsSubviews="YES" multipleTouchEnabled="YES" tag="100" contentMode="scaleToFill" mapType="satellite" pitchEnabled="NO" showsPointsOfInterest="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nmb-S3-Ku0">
+                                            <rect key="frame" x="0.0" y="-1" width="600" height="209"/>
+                                            <connections>
+                                                <outlet property="delegate" destination="adr-BS-f2S" id="kRK-6Z-3uB"/>
+                                            </connections>
+                                        </mapView>
                                     </subviews>
+                                    <constraints>
+                                        <constraint firstItem="nmb-S3-Ku0" firstAttribute="top" secondItem="2LQ-3k-oks" secondAttribute="topMargin" constant="-9" id="A88-4c-BZi"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="nmb-S3-Ku0" secondAttribute="bottom" constant="-2" id="AhN-Fn-aTj"/>
+                                        <constraint firstAttribute="trailing" secondItem="nmb-S3-Ku0" secondAttribute="trailing" id="Hko-GN-Xvr"/>
+                                        <constraint firstItem="nmb-S3-Ku0" firstAttribute="leading" secondItem="2LQ-3k-oks" secondAttribute="leading" id="S5c-UW-hrp"/>
+                                    </constraints>
                                 </tableViewCellContentView>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="detailButton" indentationWidth="10" reuseIdentifier="fishingSpotCell" textLabel="3yU-Zd-VuP" detailTextLabel="moq-TB-Gzk" style="IBUITableViewCellStyleSubtitle" id="kVS-U5-0b3">
@@ -341,7 +340,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1xd-Vw-zsy" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="aLM-pd-xcd" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="4126" y="2118"/>
+            <point key="canvasLocation" x="4126" y="2109"/>
         </scene>
         <!--Help-->
         <scene sceneID="Mwq-JI-Iv4">
