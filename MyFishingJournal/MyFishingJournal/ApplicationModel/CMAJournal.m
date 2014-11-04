@@ -48,7 +48,7 @@
     [portAlbert addFishingSpot:[CMAFishingSpot withName:@"Beaver Dam"]];
     [[portAlbert fishingSpotNamed:@"Beaver Dam"] setCoordinates:CLLocationCoordinate2DMake(43.878702, -81.718722)];
     [portAlbert addFishingSpot:[CMAFishingSpot withName:@"Baskets"]];
-    [[portAlbert fishingSpotNamed:@"Baskets"] setCoordinates:CLLocationCoordinate2DMake(43.878702, -81.718722)];
+    [[portAlbert fishingSpotNamed:@"Baskets"] setCoordinates:CLLocationCoordinate2DMake(43.879364, -81.720203)];
     
     CMALocation *silverLake = [CMALocation withName:@"Silver Lake"];
     [silverLake addFishingSpot:[CMAFishingSpot withName:@"Walleye Way"]];

@@ -11,8 +11,9 @@
 
 @interface CMAAppDelegate : UIResponder <UIApplicationDelegate>
 
-@property (strong, nonatomic) UIWindow *window;
+@property (strong, nonatomic)UIWindow *window;
 
-@property (strong, nonatomic) CMAJournal *journal;
+@property (strong, nonatomic)CMAJournal *journal;
+@property (strong, nonatomic)CLLocationManager *locationManager;
 
 @end

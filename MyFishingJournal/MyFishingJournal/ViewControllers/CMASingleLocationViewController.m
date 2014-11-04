@@ -12,6 +12,9 @@
 @interface CMASingleLocationViewController ()
 
 @property (weak, nonatomic)MKMapView *mapView;
+@property (nonatomic)BOOL didSetRegion;
+
+@property (strong, nonatomic)NSArray *fishingSpots;
 
 @end
 
@@ -23,7 +26,10 @@ NSInteger const FISHING_SPOT_SECTION = 2;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
+    
+    self.didSetRegion = NO;
+    [self setFishingSpots:[[self.location fishingSpots] allObjects]];
+        
     [self.tableView setTableFooterView:[[UIView alloc] initWithFrame:CGRectZero]]; // removes empty cells at the end of the list
 }
 
@@ -82,7 +88,7 @@ NSInteger const FISHING_SPOT_SECTION = 2;
     if (indexPath.section == FISHING_SPOT_SECTION) {
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"fishingSpotCell" forIndexPath:indexPath];
         
-        CMAFishingSpot *fishingSpot = [self.location fishingSpotAtIndex:indexPath.item];
+        CMAFishingSpot *fishingSpot = [self.fishingSpots objectAtIndex:indexPath.item];
         [cell.textLabel setText:fishingSpot.name];
         
         NSString *coordinateText = [NSString stringWithFormat:@"Latitude: %f, Longitude: %f", fishingSpot.location.coordinate.latitude, fishingSpot.location.coordinate.longitude];
@@ -100,13 +106,84 @@ NSInteger const FISHING_SPOT_SECTION = 2;
         self.addEntryLabelText = [NSString stringWithFormat:@"%@%@%@", [self.location name], TOKEN_LOCATION, [[[self.tableView cellForRowAtIndexPath:indexPath] textLabel] text]];
         [self performSegueWithIdentifier:@"unwindToAddEntryFromSingleLocation" sender:self];
     }
+    
+    if (indexPath.section == FISHING_SPOT_SECTION && !self.isSelectingForAddEntry) {
+        UITableViewCell *cell = [tableView cellForRowAtIndexPath:[tableView indexPathForSelectedRow]];
+        [self.mapView selectAnnotation:[self annotationWithTitle:cell.textLabel.text] animated:YES];
+    }
 }
 
-- (void) tableView:(UITableView *) tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
-    NSLog(@"Tapped accessory button.");
+- (void) tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
+    [tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionMiddle];
+    
+    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    [self.mapView selectAnnotation:[self annotationWithTitle:cell.textLabel.text] animated:YES];
 }
 
 #pragma mark - Map Initializing
 
+// Returns an MKPointAnnotation with aTitle.
+- (MKPointAnnotation *)annotationWithTitle:(NSString *)aTitle {
+    for (MKPointAnnotation *annotation in [self.mapView annotations])
+        if ([annotation.title isEqualToString:aTitle])
+            return annotation;
+    
+    return nil;
+}
+
+// Adds an annotation to the map for each fishing spot in the location.
+- (void)addFishingSpotsToMap: (MKMapView *)mapView {
+    for (int i = 0; i < [self.fishingSpots count]; i++) {
+        MKPointAnnotation *p = [MKPointAnnotation new];
+        [p setCoordinate:[self.fishingSpots[i] coordinate]];
+        [p setTitle:[self.fishingSpots[i] name]];
+        
+        [mapView addAnnotation:p];
+    }
+}
+
+// Returns the map's region based on the location's fishing spot coordinates.
+- (MKCoordinateRegion)getMapRegion {
+    MKCoordinateRegion result;
+    
+    CMAFishingSpot *fishingSpot = [[self.location fishingSpots] anyObject];
+    
+    CLLocationDegrees maxLatitude = fishingSpot.coordinate.latitude;
+    CLLocationDegrees minLatitude = fishingSpot.coordinate.latitude;
+    CLLocationDegrees maxLongitude = fishingSpot.coordinate.longitude;
+    CLLocationDegrees minLongitude = fishingSpot.coordinate.longitude;
+    
+    for (MKPointAnnotation *p in [self.mapView annotations]) {
+        if (p.coordinate.latitude < minLatitude)
+            minLatitude = p.coordinate.latitude;
+        
+        if (p.coordinate.latitude > maxLatitude)
+            maxLatitude = p.coordinate.latitude;
+        
+        if (p.coordinate.longitude < minLongitude)
+            minLongitude = p.coordinate.longitude;
+        
+        if (p.coordinate.longitude > maxLongitude)
+            maxLongitude = p.coordinate.longitude;
+    }
+    
+    result.center.latitude = minLatitude + ((maxLatitude - minLatitude) / 2);
+    result.center.longitude = minLongitude + ((maxLongitude - minLongitude) / 2);
+    
+    // add some padding to the region
+    result.span.latitudeDelta = (maxLatitude - minLatitude) * 3.0;
+    result.span.longitudeDelta = (maxLongitude - minLongitude) * 3.0;
+    
+    self.didSetRegion = YES;
+    return result;
+}
+
+- (void)mapViewWillStartLoadingMap:(MKMapView *)mapView {
+    if ([self.mapView.annotations count] <= 0)
+        [self addFishingSpotsToMap:self.mapView];
+    
+    if (!self.didSetRegion)
+        [self.mapView setRegion:[self getMapRegion] animated:NO];
+}
 
 @end
