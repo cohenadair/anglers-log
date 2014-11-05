@@ -226,11 +226,6 @@
                         </connections>
                     </tableView>
                     <toolbarItems>
-                        <barButtonItem title="Edit" id="vdJ-oJ-D2g">
-                            <connections>
-                                <action selector="clickEditButton:" destination="6A2-09-VCg" id="RgE-Xa-jEK"/>
-                            </connections>
-                        </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="tgZ-wP-HI4"/>
                         <barButtonItem enabled="NO" style="plain" id="NDN-bp-yma">
                             <connections>
@@ -249,7 +244,6 @@
                     <connections>
                         <outlet property="addButton" destination="oAT-Nv-Fd9" id="X0S-ah-TEI"/>
                         <outlet property="doneSelectingButton" destination="NDN-bp-yma" id="UjO-pi-I8k"/>
-                        <outlet property="editButton" destination="vdJ-oJ-D2g" id="Ge5-qQ-mjg"/>
                         <segue destination="wPk-gh-VRC" kind="show" identifier="fromEditSettingsToAddLocation" id="2y7-DF-qwT"/>
                         <segue destination="ei6-rd-qrR" kind="unwind" identifier="unwindToAddEntryFromEditSettings" unwindAction="unwindToAddEntry:" id="hnK-Ch-Ono"/>
                         <segue destination="IQ4-cE-Bal" kind="show" identifier="fromEditSettingsToSingleLocation" id="gpK-ox-KiN"/>

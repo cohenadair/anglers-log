@@ -13,7 +13,7 @@
 
 @interface CMAEditSettingsViewController ()
 
-@property (weak, nonatomic)IBOutlet UIBarButtonItem *editButton;
+@property (strong, nonatomic)UIBarButtonItem *editButton;
 @property (weak, nonatomic)IBOutlet UIBarButtonItem *addButton;
 @property (weak, nonatomic)IBOutlet UIBarButtonItem *doneSelectingButton;
 
@@ -43,11 +43,7 @@
     self.navigationItem.title = [self.userDefine name]; // sets title according to the setting that was clicked in the previous view
     self.navigationController.toolbarHidden = NO;
     
-    // remove editing button for non-string defines
-    if (![self.userDefine isSetOfStrings]) {
-        [self.editButton setTitle:@""];
-        [self.editButton setEnabled:NO];
-    }
+    [self initializeToolbar];
     
     // used to populate cells
     [self setUserDefineArray:[[self.userDefine objects] allObjects]];
@@ -81,6 +77,25 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+#pragma mark - Toolbar Initializing
+
+- (void)initializeToolbar {
+    UIBarButtonSystemItem editItem;
+    
+    // remove editing button for non-string defines
+    if (![self.userDefine isSetOfStrings]) {
+        editItem = UIBarButtonSystemItemTrash;
+    } else
+        editItem = UIBarButtonSystemItemEdit;
+    
+    self.editButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:editItem target:self action:@selector(clickEditButton:)];
+    
+    NSMutableArray *barItems = [self.toolbarItems mutableCopy];
+    [barItems insertObject:self.editButton atIndex:0];
+    
+    [self setToolbarItems:barItems];
 }
 
 #pragma mark - Table View Initializing
@@ -205,7 +220,7 @@
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
         
         if ([tableView numberOfRowsInSection:0] == 0) {
-            [self toggleEditButtons:YES];
+            [self toggleEditMode:YES];
             [self.editButton setEnabled:NO];
         }
     }
@@ -259,31 +274,41 @@
 
 #pragma mark - Events
 
-- (void)toggleEditButtons: (BOOL)enable {
-    if (enable) {
-        [self.tableView setEditing:NO animated:YES];
-        [self.editButton setEnabled:YES];
-        [self.addButton setEnabled:YES];
-        
-        if (self.isSelectingMultiple)
-            [self.doneSelectingButton setEnabled:YES];
-        
-        self.navigationItem.rightBarButtonItem = nil;
-        
-        [self toggleCellSelectionStyles:UITableViewCellSelectionStyleNone];
-    } else {
-        [self.tableView setEditing:YES animated:YES];
-        [self.editButton setEnabled:NO];
-        [self.addButton setEnabled:NO];
-        [self.doneSelectingButton setEnabled:NO];
-        
-        // add a done button that will be used to exit editing mode
-        UIBarButtonItem *doneButton = [UIBarButtonItem new];
-        doneButton = [doneButton initWithTitle:@"Done" style:UIBarButtonItemStyleDone target:self action:@selector(clickDoneButton)];
-        self.navigationItem.rightBarButtonItem = doneButton;
-        
+- (void)enterEditMode {
+    [self.tableView setEditing:YES animated:YES];
+    [self.editButton setEnabled:NO];
+    [self.addButton setEnabled:NO];
+    [self.doneSelectingButton setEnabled:NO];
+    
+    // add a done button that will be used to exit editing mode
+    UIBarButtonItem *doneButton = [UIBarButtonItem new];
+    doneButton = [doneButton initWithTitle:@"Done" style:UIBarButtonItemStyleDone target:self action:@selector(clickDoneButton)];
+    self.navigationItem.rightBarButtonItem = doneButton;
+    
+    if ([self.userDefine isSetOfStrings])
         [self toggleCellSelectionStyles:UITableViewCellSelectionStyleDefault];
-    }
+    else
+        [self.tableView setAllowsSelectionDuringEditing:NO];
+}
+
+- (void)exitEditMode {
+    [self.tableView setEditing:NO animated:YES];
+    [self.editButton setEnabled:YES];
+    [self.addButton setEnabled:YES];
+    
+    if (self.isSelectingMultiple)
+        [self.doneSelectingButton setEnabled:YES];
+    
+    self.navigationItem.rightBarButtonItem = nil;
+    
+    [self toggleCellSelectionStyles:UITableViewCellSelectionStyleNone];
+}
+
+- (void)toggleEditMode: (BOOL)exiting {
+    if (exiting)
+        [self exitEditMode];
+    else
+        [self enterEditMode];
 }
 
 - (IBAction)clickAddButton:(UIBarButtonItem *)sender {
@@ -295,7 +320,7 @@
 
 // Enter editing mode.
 - (IBAction)clickEditButton:(UIBarButtonItem *)sender {
-    [self toggleEditButtons:NO];
+    [self toggleEditMode:NO];
 }
 
 - (IBAction)clickDoneSelectingButton:(UIBarButtonItem *)sender {
@@ -305,7 +330,7 @@
 
 // Used to exit out of editing mode.
 - (void)clickDoneButton {
-    [self toggleEditButtons:YES];
+    [self toggleEditMode:YES];
 }
 
 #pragma mark - Navigation
