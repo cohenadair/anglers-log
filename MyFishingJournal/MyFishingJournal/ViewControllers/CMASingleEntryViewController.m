@@ -7,6 +7,7 @@
 //
 
 #import "CMASingleEntryViewController.h"
+#import "CMASingleLocationViewController.h"
 #import "CMAAddEntryViewController.h"
 #import "CMAAppDelegate.h"
 #import "CMAConstants.h"
@@ -150,6 +151,13 @@
         CMAAddEntryViewController *destination = [[segue.destinationViewController viewControllers] objectAtIndex:0];
         destination.previousViewID = CMAViewControllerID_SingleEntry;
         destination.entry = self.entry;
+    }
+    
+    if ([segue.identifier isEqualToString:@"fromSingleEntryToSingleLocation"]) {
+        CMASingleLocationViewController *destination = [[segue.destinationViewController viewControllers] objectAtIndex:0];
+        destination.previousViewID = CMAViewControllerID_SingleEntry;
+        destination.location = self.entry.location;
+        destination.fishingSpotFromSingleEntry = self.entry.fishingSpot;
     }
 }
 

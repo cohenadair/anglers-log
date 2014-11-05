@@ -11,6 +11,8 @@
 
 @interface CMASingleLocationViewController ()
 
+@property (weak, nonatomic)IBOutlet UIBarButtonItem *editButton;
+
 @property (weak, nonatomic)MKMapView *mapView;
 @property (nonatomic)BOOL didSetRegion;
 
@@ -35,6 +37,17 @@ NSInteger const FISHING_SPOT_SECTION = 2;
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
+}
+
+- (void)configureForReadOnly {
+    [self.mapView selectAnnotation:[self annotationWithTitle:self.fishingSpotFromSingleEntry.name] animated:YES];
+    [self.mapView setUserInteractionEnabled:NO];
+    
+    [self.tableView selectRowAtIndexPath:self.selectedFishingSpotFromSingleEntry animated:NO scrollPosition:UITableViewScrollPositionMiddle];
+    [self.tableView setAllowsSelection:NO];
+    
+    [self.editButton setTitle:@""];
+    [self.editButton setEnabled:NO];
 }
 
 #pragma mark - Table View Initializing
@@ -91,6 +104,9 @@ NSInteger const FISHING_SPOT_SECTION = 2;
         CMAFishingSpot *fishingSpot = [self.fishingSpots objectAtIndex:indexPath.item];
         [cell.textLabel setText:fishingSpot.name];
         
+        if (self.previousViewID == CMAViewControllerID_SingleEntry && [fishingSpot.name isEqualToString:self.fishingSpotFromSingleEntry.name])
+            self.selectedFishingSpotFromSingleEntry = indexPath;
+        
         NSString *coordinateText = [NSString stringWithFormat:@"Latitude: %f, Longitude: %f", fishingSpot.location.coordinate.latitude, fishingSpot.location.coordinate.longitude];
         [cell.detailTextLabel setText:coordinateText];
         
@@ -114,10 +130,12 @@ NSInteger const FISHING_SPOT_SECTION = 2;
 }
 
 - (void) tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
-    [tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionMiddle];
-    
-    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-    [self.mapView selectAnnotation:[self annotationWithTitle:cell.textLabel.text] animated:YES];
+    if (!(self.previousViewID == CMAViewControllerID_SingleEntry)) {
+        [tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionMiddle];
+        
+        UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+        [self.mapView selectAnnotation:[self annotationWithTitle:cell.textLabel.text] animated:YES];
+    }
 }
 
 #pragma mark - Map Initializing
@@ -184,6 +202,12 @@ NSInteger const FISHING_SPOT_SECTION = 2;
     
     if (!self.didSetRegion)
         [self.mapView setRegion:[self getMapRegion] animated:NO];
+}
+
+- (void)mapViewDidFinishLoadingMap:(MKMapView *)mapView {
+    if (self.previousViewID == CMAViewControllerID_SingleEntry) {
+        [self configureForReadOnly];
+    }
 }
 
 @end

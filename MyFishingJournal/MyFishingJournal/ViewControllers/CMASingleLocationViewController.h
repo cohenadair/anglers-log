@@ -9,10 +9,15 @@
 #import <UIKit/UIKit.h>
 #import <MapKit/MapKit.h>
 #import "CMALocation.h"
+#import "CMAConstants.h"
 
 @interface CMASingleLocationViewController : UITableViewController <MKMapViewDelegate>
 
+@property (nonatomic)CMAViewControllerID previousViewID;
 @property (strong, nonatomic)CMALocation *location;
+@property (strong, nonatomic)CMAFishingSpot *fishingSpotFromSingleEntry;
+@property (strong, nonatomic)NSIndexPath *selectedFishingSpotFromSingleEntry;
+
 @property (strong, nonatomic)NSString *addEntryLabelText;
 @property (nonatomic)BOOL isSelectingForAddEntry;
 

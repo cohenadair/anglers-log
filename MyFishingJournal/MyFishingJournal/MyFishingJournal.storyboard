@@ -259,7 +259,7 @@
             <objects>
                 <tableViewController id="adr-BS-f2S" customClass="CMASingleLocationViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="eVA-Zu-3b5">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="556"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
@@ -325,9 +325,10 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" id="WzY-ql-Ziv">
-                        <barButtonItem key="rightBarButtonItem" systemItem="edit" id="9gZ-tT-Mgi"/>
+                        <barButtonItem key="rightBarButtonItem" title="Edit" id="9gZ-tT-Mgi"/>
                     </navigationItem>
                     <connections>
+                        <outlet property="editButton" destination="9gZ-tT-Mgi" id="dkm-M7-MWb"/>
                         <segue destination="aLM-pd-xcd" kind="unwind" identifier="unwindToAddEntryFromSingleLocation" unwindAction="unwindToAddEntry:" id="i4g-iX-B1F"/>
                     </connections>
                 </tableViewController>
@@ -1385,8 +1386,8 @@
         <image name="no-image.png" width="150" height="150"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="gpK-ox-KiN"/>
+        <segue reference="y0h-hR-J5c"/>
         <segue reference="hIY-7h-4M5"/>
-        <segue reference="rQz-NV-wiY"/>
+        <segue reference="5ZT-8I-qr3"/>
     </inferredMetricsTieBreakers>
 </document>
