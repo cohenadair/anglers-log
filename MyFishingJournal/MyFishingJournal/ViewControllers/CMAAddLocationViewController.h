@@ -8,9 +8,11 @@
 
 #import <UIKit/UIKit.h>
 #import "CMAConstants.h"
+#import "CMALocation.h"
 
-@interface CMAAddLocationViewController : UIViewController
+@interface CMAAddLocationViewController : UITableViewController
 
 @property (nonatomic)CMAViewControllerID previousViewID;
+@property (strong, nonatomic)CMALocation *location;
 
 @end
