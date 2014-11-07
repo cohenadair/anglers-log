@@ -27,6 +27,15 @@
     return self;
 }
 
+- (id)init {
+    if (self = [super init]) {
+        _name = [NSMutableString string];
+        _location = [CLLocation new];
+    }
+    
+    return self;
+}
+
 #pragma mark - Editing
 
 - (void)setCoordinates: (CLLocationCoordinate2D)coordinates {

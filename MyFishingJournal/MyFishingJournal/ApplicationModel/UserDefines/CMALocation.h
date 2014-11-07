@@ -13,7 +13,7 @@
 @interface CMALocation : NSObject
 
 @property (strong, nonatomic)NSMutableString *name;
-@property (strong, nonatomic)NSMutableSet *fishingSpots;
+@property (strong, nonatomic)NSMutableArray *fishingSpots;
 
 // instance creation
 + (CMALocation *)withName: (NSString *)aName;

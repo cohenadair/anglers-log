@@ -16,8 +16,6 @@
 @property (weak, nonatomic)MKMapView *mapView;
 @property (nonatomic)BOOL didSetRegion;
 
-@property (strong, nonatomic)NSArray *fishingSpots;
-
 @end
 
 NSInteger const FISHING_SPOT_SECTION = 2;
@@ -30,7 +28,6 @@ NSInteger const FISHING_SPOT_SECTION = 2;
     [super viewDidLoad];
     
     self.didSetRegion = NO;
-    [self setFishingSpots:[[self.location fishingSpots] allObjects]];
         
     [self.tableView setTableFooterView:[[UIView alloc] initWithFrame:CGRectZero]]; // removes empty cells at the end of the list
 }
@@ -101,7 +98,7 @@ NSInteger const FISHING_SPOT_SECTION = 2;
     if (indexPath.section == FISHING_SPOT_SECTION) {
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"fishingSpotCell" forIndexPath:indexPath];
         
-        CMAFishingSpot *fishingSpot = [self.fishingSpots objectAtIndex:indexPath.item];
+        CMAFishingSpot *fishingSpot = [self.location.fishingSpots objectAtIndex:indexPath.item];
         [cell.textLabel setText:fishingSpot.name];
         
         if (self.previousViewID == CMAViewControllerID_SingleEntry && [fishingSpot.name isEqualToString:self.fishingSpotFromSingleEntry.name])
@@ -151,10 +148,10 @@ NSInteger const FISHING_SPOT_SECTION = 2;
 
 // Adds an annotation to the map for each fishing spot in the location.
 - (void)addFishingSpotsToMap: (MKMapView *)mapView {
-    for (int i = 0; i < [self.fishingSpots count]; i++) {
+    for (int i = 0; i < [self.location.fishingSpots count]; i++) {
         MKPointAnnotation *p = [MKPointAnnotation new];
-        [p setCoordinate:[self.fishingSpots[i] coordinate]];
-        [p setTitle:[self.fishingSpots[i] name]];
+        [p setCoordinate:[self.location.fishingSpots[i] coordinate]];
+        [p setTitle:[self.location.fishingSpots[i] name]];
         
         [mapView addAnnotation:p];
     }
@@ -164,33 +161,35 @@ NSInteger const FISHING_SPOT_SECTION = 2;
 - (MKCoordinateRegion)getMapRegion {
     MKCoordinateRegion result;
     
-    CMAFishingSpot *fishingSpot = [[self.location fishingSpots] anyObject];
-    
-    CLLocationDegrees maxLatitude = fishingSpot.coordinate.latitude;
-    CLLocationDegrees minLatitude = fishingSpot.coordinate.latitude;
-    CLLocationDegrees maxLongitude = fishingSpot.coordinate.longitude;
-    CLLocationDegrees minLongitude = fishingSpot.coordinate.longitude;
-    
-    for (MKPointAnnotation *p in [self.mapView annotations]) {
-        if (p.coordinate.latitude < minLatitude)
-            minLatitude = p.coordinate.latitude;
+    if ([self.location fishingSpotCount] > 0) {
+        CMAFishingSpot *fishingSpot = [[self.location fishingSpots] objectAtIndex:0];
         
-        if (p.coordinate.latitude > maxLatitude)
-            maxLatitude = p.coordinate.latitude;
+        CLLocationDegrees maxLatitude = fishingSpot.coordinate.latitude;
+        CLLocationDegrees minLatitude = fishingSpot.coordinate.latitude;
+        CLLocationDegrees maxLongitude = fishingSpot.coordinate.longitude;
+        CLLocationDegrees minLongitude = fishingSpot.coordinate.longitude;
+
+        for (MKPointAnnotation *p in [self.mapView annotations]) {
+            if (p.coordinate.latitude < minLatitude)
+                minLatitude = p.coordinate.latitude;
+            
+            if (p.coordinate.latitude > maxLatitude)
+                maxLatitude = p.coordinate.latitude;
+            
+            if (p.coordinate.longitude < minLongitude)
+                minLongitude = p.coordinate.longitude;
+            
+            if (p.coordinate.longitude > maxLongitude)
+                maxLongitude = p.coordinate.longitude;
+        }
         
-        if (p.coordinate.longitude < minLongitude)
-            minLongitude = p.coordinate.longitude;
+        result.center.latitude = minLatitude + ((maxLatitude - minLatitude) / 2);
+        result.center.longitude = minLongitude + ((maxLongitude - minLongitude) / 2);
         
-        if (p.coordinate.longitude > maxLongitude)
-            maxLongitude = p.coordinate.longitude;
+        // add some padding to the region
+        result.span.latitudeDelta = (maxLatitude - minLatitude) * 3.0;
+        result.span.longitudeDelta = (maxLongitude - minLongitude) * 3.0;
     }
-    
-    result.center.latitude = minLatitude + ((maxLatitude - minLatitude) / 2);
-    result.center.longitude = minLongitude + ((maxLongitude - minLongitude) / 2);
-    
-    // add some padding to the region
-    result.span.latitudeDelta = (maxLatitude - minLatitude) * 3.0;
-    result.span.longitudeDelta = (maxLongitude - minLongitude) * 3.0;
     
     self.didSetRegion = YES;
     return result;

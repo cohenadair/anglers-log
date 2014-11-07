@@ -11,6 +11,4 @@
 
 @interface CMASettingsViewController : UITableViewController
 
-- (CMAJournal *)journal;
-
 @end

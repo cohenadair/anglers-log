@@ -12,10 +12,10 @@
 
 @property (strong, nonatomic)NSString *name;
 
-// Objects within this set have to implement the following:
+// Objects within this array have to implement the following:
 //   @property (strong, nonatomic)NSString *name;
 //   - (void)edit: (ClassType *)aNewObjectOfClassType; // Resets the name property to aNewObjectOfClassType's name property
-@property (strong, nonatomic)NSMutableSet *objects;
+@property (strong, nonatomic)NSMutableArray *objects;
 
 // instance creation
 + (CMAUserDefine *)withName: (NSString *)aName;

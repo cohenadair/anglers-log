@@ -23,8 +23,6 @@
 @property (nonatomic)BOOL isSelectingForAddEntry;
 @property (nonatomic)BOOL isSelectingMultiple;
 
-@property (strong, nonatomic)NSArray *userDefineArray;
-
 @end
 
 @implementation CMAEditSettingsViewController
@@ -46,8 +44,7 @@
     [self initializeToolbar];
     
     // used to populate cells
-    [self setUserDefineArray:[[self.userDefine objects] allObjects]];
-    if ([self.userDefineArray count] <= 0)
+    if ([self.userDefine.objects count] <= 0)
         [self.editButton setEnabled:NO];
     
     self.isSelectingForAddEntry = (self.previousViewID == CMAViewControllerID_AddEntry);
@@ -159,7 +156,7 @@
 // Initialize each cell.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"editSettingsCell" forIndexPath:indexPath];
-    cell.textLabel.text = [[self.userDefineArray objectAtIndex:indexPath.item] name];
+    cell.textLabel.text = [[self.userDefine.objects objectAtIndex:indexPath.item] name];
     
     // enable chevron for non-strings
     if (![self.userDefine isSetOfStrings])
@@ -259,7 +256,6 @@
             [[alertView textFieldAtIndex:0] setText:@""];
             
             [self.userDefine addObject:[self.userDefine emptyObjectNamed:enteredText]];
-            self.userDefineArray = [[self.userDefine objects] allObjects];
         }
     
     if (alertView == self.editItemAlert)

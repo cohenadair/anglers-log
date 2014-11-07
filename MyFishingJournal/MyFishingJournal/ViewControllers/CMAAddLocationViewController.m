@@ -7,6 +7,7 @@
 //
 
 #import "CMAAddLocationViewController.h"
+#import "CMAAddFishingSpotViewController.h"
 #import "CMAAppDelegate.h"
 
 @interface CMAAddLocationViewController ()
@@ -15,6 +16,10 @@
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *cancelButton;
 
 @end
+
+NSInteger const SECTION_TITLE = 0;
+NSInteger const SECTION_FISHING_SPOTS = 1;
+NSInteger const SECTION_ADD = 2;
 
 @implementation CMAAddLocationViewController
 
@@ -29,8 +34,10 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
+    [self.tableView setEditing:YES];
     [self.tableView setTableFooterView:[[UIView alloc] initWithFrame:CGRectZero]]; // removes empty cells at the end of the list
+    
+    self.location = [CMALocation withName:@""];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -41,6 +48,9 @@
 #pragma mark - Table View Initializing
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    if (section == SECTION_ADD && [self.location fishingSpotCount] <= 0)
+        return CGFLOAT_MIN;
+    
     return TABLE_SECTION_SPACING;
 }
 
@@ -50,27 +60,73 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     // Return the number of sections.
-    return 2;
+    return 3;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    // Return the number of rows in the section.
+    if (section == SECTION_FISHING_SPOTS)
+        return [self.location fishingSpotCount];
+    
     return 1;
+}
+
+- (BOOL)tableView:(UITableView *)tableView shouldIndentWhileEditingRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.section == SECTION_FISHING_SPOTS)
+        return YES;
+    
+    return NO;
 }
 
 // Initialize each cell.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.section == 0) {
+    if (indexPath.section == SECTION_TITLE) {
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"locationNameCell" forIndexPath:indexPath];
         return cell;
     }
     
-    if (indexPath.section == 1) {
+    if (indexPath.section == SECTION_FISHING_SPOTS) {
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"fishingSpotCell" forIndexPath:indexPath];
+        
+        CMAFishingSpot *fishingSpot = [self.location.fishingSpots objectAtIndex:indexPath.item];
+        NSString *coordinateText = [NSString stringWithFormat:@"Lat: %f, Long: %f", fishingSpot.location.coordinate.latitude, fishingSpot.location.coordinate.longitude];
+        
+        cell.textLabel.text = fishingSpot.name;
+        cell.detailTextLabel.text = coordinateText;
+        
+        return cell;
+    }
+    
+    if (indexPath.section == SECTION_ADD) {
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"addFishingSpotCell" forIndexPath:indexPath];
         return cell;
     }
     
     return nil;
+}
+
+- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.section == SECTION_TITLE)
+        return UITableViewCellEditingStyleNone;
+    
+    if (indexPath.section == SECTION_FISHING_SPOTS)
+        return UITableViewCellEditingStyleDelete;
+    
+    if (indexPath.section == SECTION_ADD)
+        return UITableViewCellEditingStyleNone;
+    
+    return UITableViewCellEditingStyleDelete;
+}
+
+// Override to support editing the table view.
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        // delete from data source
+        UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+        [self.location removeFishingSpotNamed:cell.textLabel.text];
+        
+        // delete from table
+        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+    }
 }
 
 #pragma mark - Location Creation
@@ -111,6 +167,31 @@
         default:
             NSLog(@"Invalid previousViewID value");
             break;
+    }
+}
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    if ([segue.identifier isEqualToString:@"fromFishingSpotCellToAddFishingSpot"]) {
+        CMAAddFishingSpotViewController *destination = [[segue.destinationViewController viewControllers] objectAtIndex:0];
+        NSString *selectedCellText = [[[self.tableView cellForRowAtIndexPath:[self.tableView indexPathForSelectedRow]] textLabel] text];
+        destination.fishingSpot = [self.location fishingSpotNamed:selectedCellText];
+        destination.locationFromAddLocation = self.location;
+    }
+    
+    if ([segue.identifier isEqualToString:@"fromAddFishingSpotCellToAddFishingSpot"]) {
+        CMAAddFishingSpotViewController *destination = [[segue.destinationViewController viewControllers] objectAtIndex:0];
+        destination.locationFromAddLocation = self.location;
+    }
+}
+
+- (IBAction)unwindToAddLocation:(UIStoryboardSegue *)segue {
+    if ([segue.identifier isEqualToString:@"unwindToAddLocation"]) {
+        CMAAddFishingSpotViewController *source = [segue sourceViewController];
+        
+        if (!source.isEditingFishingSpot)
+            [self.location addFishingSpot:source.fishingSpot];
+        
+        [self.tableView reloadData];
     }
 }
 

@@ -21,7 +21,16 @@
 - (id)initWithName: (NSString *)aName {
     if (self = [super init]) {
         _name = [NSMutableString stringWithString:aName];
-        _fishingSpots = [NSMutableSet set];
+        _fishingSpots = [NSMutableArray array];
+    }
+    
+    return self;
+}
+
+- (id)init {
+    if (self = [super init]) {
+        _name = [NSMutableString string];
+        _fishingSpots = [NSMutableArray array];
     }
     
     return self;

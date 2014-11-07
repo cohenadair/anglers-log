@@ -26,7 +26,7 @@
 - (id)initWithName: (NSString *)aName {
     if (self = [super init]) {
         _name = [NSMutableString stringWithString:aName];
-        _objects = [NSMutableSet set];
+        _objects = [NSMutableArray array];
     }
     
     return self;
@@ -34,8 +34,10 @@
 
 #pragma Editing
 
+// Does nothing if an object with the same name already exists in self.objects.
 - (void)addObject: (id)anObject {
-    [self.objects addObject:anObject];
+    if ([self objectNamed:[anObject name]] == nil)
+        [self.objects addObject:anObject];
 }
 
 - (void)removeObjectNamed: (NSString *)aName {
