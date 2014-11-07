@@ -71,16 +71,16 @@
 // Returns an object of correct type with the name property set to aName.
 - (id)emptyObjectNamed: (NSString *)aName {
     if ([self.name isEqualToString:SET_LOCATIONS])
-        return [CMALocation withName:aName];
+        return [CMALocation withName:[aName capitalizedString]];
     
     if ([self.name isEqualToString:SET_SPECIES])
-        return [CMASpecies withName:aName];
+        return [CMASpecies withName:[aName capitalizedString]];
     
     if ([self.name isEqualToString:SET_BAITS])
-        return [CMABait withName:aName];
+        return [CMABait withName:[aName capitalizedString]];
     
     if ([self.name isEqualToString:SET_FISHING_METHODS])
-        return [CMAFishingMethod withName:aName];
+        return [CMAFishingMethod withName:[aName capitalizedString]];
     
     NSLog(@"Invalid user define name in - [CMAUserDefine emptyObjectNamed]");
     return nil;

@@ -29,7 +29,7 @@
 #pragma mark - Editing
 
 - (void)edit: (CMABait *)aNewBait {
-    [self setName:aNewBait.name];
+    [self setName:[aNewBait.name capitalizedString]];
 }
 
 @end

@@ -29,7 +29,7 @@
 #pragma mark - Editing
 
 - (void)edit: (CMASpecies *)aNewSpecies {
-    [self setName:aNewSpecies.name];
+    [self setName:[aNewSpecies.name capitalizedString]];
 }
 
 @end

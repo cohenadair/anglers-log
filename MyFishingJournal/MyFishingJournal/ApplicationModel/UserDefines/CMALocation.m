@@ -20,7 +20,7 @@
 
 - (id)initWithName: (NSString *)aName {
     if (self = [super init]) {
-        _name = [NSMutableString stringWithString:aName];
+        _name = [NSMutableString stringWithString:[aName capitalizedString]];
         _fishingSpots = [NSMutableArray array];
     }
     
@@ -34,6 +34,10 @@
     }
     
     return self;
+}
+
+- (void)setName:(NSMutableString *)name {
+    _name = [[name capitalizedString] mutableCopy];
 }
 
 #pragma mark - Editing

@@ -20,7 +20,7 @@
 
 - (id)initWithName: (NSString *)aName {
     if (self = [super init]) {
-        _name = [NSMutableString stringWithString:aName];
+        _name = [NSMutableString stringWithString:[aName capitalizedString]];
         _location = [CLLocation new];
     }
     
@@ -36,6 +36,10 @@
     return self;
 }
 
+- (void)setName:(NSMutableString *)name {
+    _name = [[name capitalizedString] mutableCopy];
+}
+
 #pragma mark - Editing
 
 - (void)setCoordinates: (CLLocationCoordinate2D)coordinates {
@@ -44,7 +48,7 @@
 
 // updates self's properties with aNewFishinSpot's attributes
 - (void)edit: (CMAFishingSpot *)aNewFishingSpot {
-    self.name = aNewFishingSpot.name;
+    self.name = [[aNewFishingSpot.name capitalizedString] mutableCopy];
     self.location = aNewFishingSpot.location;
 }
 

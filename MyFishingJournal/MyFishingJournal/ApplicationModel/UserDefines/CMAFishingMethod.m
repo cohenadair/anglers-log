@@ -29,7 +29,7 @@
 #pragma mark - Editing
 
 - (void)edit: (CMAFishingMethod *)aNewFishingMethod {
-    [self setName:aNewFishingMethod.name];
+    [self setName:[aNewFishingMethod.name capitalizedString]];
 }
 
 @end
