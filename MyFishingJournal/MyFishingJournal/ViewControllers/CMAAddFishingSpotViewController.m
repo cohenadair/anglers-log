@@ -12,11 +12,13 @@
 
 @interface CMAAddFishingSpotViewController () <MKMapViewDelegate, CLLocationManagerDelegate>
 
-@property (weak, nonatomic) IBOutlet UITextField *fishingSpotNameTextField;
+@property (weak, nonatomic)IBOutlet UITextField *fishingSpotNameTextField;
 @property (weak, nonatomic)IBOutlet UIBarButtonItem *doneButton;
 @property (weak, nonatomic)IBOutlet MKMapView *mapView;
 @property (weak, nonatomic)IBOutlet UILabel *latitudeLabel;
 @property (weak, nonatomic)IBOutlet UILabel *longitudeLabel;
+@property (weak, nonatomic)IBOutlet UILabel *latitudeTitleLabel;
+@property (weak, nonatomic)IBOutlet UILabel *longitudeTitleLabel;
 
 @property (strong, nonatomic)CLLocationManager *locationManager;
 
@@ -60,27 +62,27 @@ NSInteger const INDEX_COORDINATES = 2;
 #pragma mark - Table View Initializing
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    return TABLE_SECTION_SPACING;
+    return CGFLOAT_MIN;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
     // only set a footer for the last cell in the table
     if (section == ([self numberOfSectionsInTableView:tableView] - 1))
-        return TABLE_SECTION_SPACING;
+        return CGFLOAT_MIN;
     
     return CGFLOAT_MIN;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.item == INDEX_MAP) {
+    if (indexPath.item == INDEX_MAP)
         return tableView.frame.size.width * 0.75;
-    }
     
     // using the super class's implementation gets the height set in storyboard
     return [super tableView:tableView heightForRowAtIndexPath:indexPath];
 }
 
 #pragma mark - Events
+
 - (IBAction)clickDoneButton:(UIBarButtonItem *)sender {
     // validate fishing spot name
     if ([[self.fishingSpotNameTextField text] isEqualToString:@""]) {
