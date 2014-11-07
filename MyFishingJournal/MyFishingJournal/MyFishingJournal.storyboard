@@ -1458,9 +1458,7 @@
                         <outlet property="doneButton" destination="6zi-Ba-2lv" id="4Ri-VQ-woV"/>
                         <outlet property="fishingSpotNameTextField" destination="0Pc-wS-1HL" id="f1A-Db-CGE"/>
                         <outlet property="latitudeLabel" destination="lvS-dh-6bS" id="wnl-fc-MeI"/>
-                        <outlet property="latitudeTitleLabel" destination="oV5-s3-bCy" id="b36-EH-kZM"/>
                         <outlet property="longitudeLabel" destination="64r-wH-OUX" id="p1e-3U-dHi"/>
-                        <outlet property="longitudeTitleLabel" destination="Ohl-tS-r6s" id="rFo-J1-NPW"/>
                         <outlet property="mapView" destination="KWy-xh-Kse" id="9lC-yX-Z7O"/>
                         <segue destination="a4R-R8-Ii2" kind="unwind" identifier="unwindToAddLocation" unwindAction="unwindToAddLocation:" id="m9c-cP-gro"/>
                     </connections>

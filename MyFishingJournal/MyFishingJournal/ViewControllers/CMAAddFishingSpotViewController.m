@@ -17,8 +17,6 @@
 @property (weak, nonatomic)IBOutlet MKMapView *mapView;
 @property (weak, nonatomic)IBOutlet UILabel *latitudeLabel;
 @property (weak, nonatomic)IBOutlet UILabel *longitudeLabel;
-@property (weak, nonatomic)IBOutlet UILabel *latitudeTitleLabel;
-@property (weak, nonatomic)IBOutlet UILabel *longitudeTitleLabel;
 
 @property (strong, nonatomic)CLLocationManager *locationManager;
 
@@ -124,10 +122,14 @@ NSInteger const INDEX_COORDINATES = 2;
 }
 
 - (void)mapViewWillStartLoadingMap:(MKMapView *)mapView {
-    if (![self.fishingSpot.name isEqualToString:@""]) {
-        MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(self.fishingSpot.coordinate, 800, 800);
-        [self.mapView setRegion:[self.mapView regionThatFits:region] animated:NO];
-    }
+    MKCoordinateRegion region;
+    
+    if (![self.fishingSpot.name isEqualToString:@""])
+        region = MKCoordinateRegionMakeWithDistance(self.fishingSpot.coordinate, 800, 800);
+    else
+        region = MKCoordinateRegionMakeWithDistance([[self.locationManager location] coordinate], 800, 800);
+    
+    [self.mapView setRegion:[self.mapView regionThatFits:region] animated:NO];
 }
 
 - (void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation {
