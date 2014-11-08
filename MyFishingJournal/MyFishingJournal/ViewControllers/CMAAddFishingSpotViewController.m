@@ -17,8 +17,12 @@
 @property (weak, nonatomic)IBOutlet MKMapView *mapView;
 @property (weak, nonatomic)IBOutlet UILabel *latitudeLabel;
 @property (weak, nonatomic)IBOutlet UILabel *longitudeLabel;
+@property (weak, nonatomic)IBOutlet UIImageView *rectileImage;
+@property (weak, nonatomic)IBOutlet UIView *loadingMapView;
 
 @property (strong, nonatomic)CLLocationManager *locationManager;
+@property (nonatomic)BOOL userLocationAdded;
+@property (nonatomic)BOOL mapHasLoaded;
 
 @end
 
@@ -122,21 +126,32 @@ NSInteger const INDEX_COORDINATES = 2;
 }
 
 - (void)mapViewWillStartLoadingMap:(MKMapView *)mapView {
-    MKCoordinateRegion region;
-    
-    if (![self.fishingSpot.name isEqualToString:@""])
-        region = MKCoordinateRegionMakeWithDistance(self.fishingSpot.coordinate, 800, 800);
-    else
-        region = MKCoordinateRegionMakeWithDistance([[self.locationManager location] coordinate], 800, 800);
-    
-    [self.mapView setRegion:[self.mapView regionThatFits:region] animated:NO];
+    if (!self.mapHasLoaded) {
+        MKCoordinateRegion region;
+        
+        //
+        if (self.isEditingFishingSpot)
+            region = MKCoordinateRegionMakeWithDistance(self.fishingSpot.coordinate, 800, 800);
+        else
+            region = MKCoordinateRegionMakeWithDistance([[self.locationManager location] coordinate], 800, 800);
+        
+        [self.mapView setRegion:[self.mapView regionThatFits:region] animated:NO];
+        self.mapHasLoaded = YES;
+    }
 }
 
 - (void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation {
-    if ([self.fishingSpot.name isEqualToString:@""]) {
+    if (!self.isEditingFishingSpot && !self.userLocationAdded) {
         MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(userLocation.coordinate, 800, 800);
         [self.mapView setRegion:[self.mapView regionThatFits:region] animated:YES];
+        self.userLocationAdded = YES;
     }
+}
+
+- (void)mapViewDidFinishRenderingMap:(MKMapView *)mapView fullyRendered:(BOOL)fullyRendered {
+    [self.mapView setHidden:NO];
+    [self.rectileImage setHidden:NO];
+    [self.loadingMapView setHidden:YES];
 }
 
 @end
