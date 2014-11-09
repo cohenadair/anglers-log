@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 Cohen Adair. All rights reserved.
 //
 
+#import <MapKit/MapKit.h>
 #import <Foundation/Foundation.h>
 #import <CoreLocation/CoreLocation.h>
 #import "CMAFishingSpot.h"
@@ -30,5 +31,7 @@
 // accessing
 - (NSInteger)fishingSpotCount;
 - (CMAFishingSpot *)fishingSpotNamed: (NSString *)aName;
+- (MKCoordinateRegion)mapRegion;
+- (CMALocation *)copy;
 
 @end

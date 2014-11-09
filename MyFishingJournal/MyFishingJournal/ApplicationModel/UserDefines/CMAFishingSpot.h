@@ -13,6 +13,7 @@
 
 @property (strong, nonatomic)NSMutableString *name;
 @property (strong, nonatomic)CLLocation *location;
+@property (strong, nonatomic)id parentLocation; // CMALocation *
 
 // instance creation
 + (CMAFishingSpot *)withName: (NSString *)aName;

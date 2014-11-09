@@ -66,9 +66,7 @@
     // show the toolbar when navigating back from a push segue
     self.navigationController.toolbarHidden = NO;
     
-    NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
-    if(indexPath)
-        [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+    [self.tableView reloadData];
 }
 
 - (void)didReceiveMemoryWarning {

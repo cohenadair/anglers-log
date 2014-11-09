@@ -7,6 +7,7 @@
 //
 
 #import "CMASingleLocationViewController.h"
+#import "CMAAddLocationViewController.h"
 #import "CMAConstants.h"
 
 @interface CMASingleLocationViewController ()
@@ -14,6 +15,8 @@
 @property (weak, nonatomic)IBOutlet UIBarButtonItem *editButton;
 
 @property (weak, nonatomic)MKMapView *mapView;
+@property (weak, nonatomic)UIView *loadingMapView;
+
 @property (nonatomic)BOOL didSetRegion;
 
 @end
@@ -90,6 +93,7 @@ NSInteger const FISHING_SPOT_SECTION = 2;
     if (indexPath.section == 1) {
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"mapCell" forIndexPath:indexPath];
         self.mapView = (MKMapView *)[cell viewWithTag:100];
+        self.loadingMapView = (UIView *)[cell viewWithTag:200];
         
         return cell;
     }
@@ -135,7 +139,34 @@ NSInteger const FISHING_SPOT_SECTION = 2;
     }
 }
 
+#pragma mark - Navigation
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    if ([segue.identifier isEqualToString:@"fromSingleLocationToAddLocation"]) {
+        CMAAddLocationViewController *destination = [[segue.destinationViewController viewControllers] objectAtIndex:0];
+        destination.previousViewID = CMAViewControllerID_SingleLocation;
+        destination.location = self.location;
+    }
+}
+
+- (IBAction)unwindToSingleLocation:(UIStoryboardSegue *)segue {
+    if ([segue.identifier isEqualToString:@"unwindToSingleLocation"]) {
+        CMAAddLocationViewController *source = segue.sourceViewController;
+        self.location = source.location;
+        source.location = nil;
+        [self.tableView reloadData];
+        [self mapViewReset];
+    }
+}
+
 #pragma mark - Map Initializing
+
+// Used to reset the map after editing the location.
+- (void)mapViewReset {
+    [self.mapView removeAnnotations:[self.mapView annotations]]; // remove old annotations
+    [self addFishingSpotsToMap:self.mapView];                    // add new annotations
+    [self.mapView setRegion:[self getMapRegion] animated:NO];    // reset map's region
+}
 
 // Returns an MKPointAnnotation with aTitle.
 - (MKPointAnnotation *)annotationWithTitle:(NSString *)aTitle {
@@ -159,40 +190,8 @@ NSInteger const FISHING_SPOT_SECTION = 2;
 
 // Returns the map's region based on the location's fishing spot coordinates.
 - (MKCoordinateRegion)getMapRegion {
-    MKCoordinateRegion result;
-    
-    if ([self.location fishingSpotCount] > 0) {
-        CMAFishingSpot *fishingSpot = [[self.location fishingSpots] objectAtIndex:0];
-        
-        CLLocationDegrees maxLatitude = fishingSpot.coordinate.latitude;
-        CLLocationDegrees minLatitude = fishingSpot.coordinate.latitude;
-        CLLocationDegrees maxLongitude = fishingSpot.coordinate.longitude;
-        CLLocationDegrees minLongitude = fishingSpot.coordinate.longitude;
-
-        for (MKPointAnnotation *p in [self.mapView annotations]) {
-            if (p.coordinate.latitude < minLatitude)
-                minLatitude = p.coordinate.latitude;
-            
-            if (p.coordinate.latitude > maxLatitude)
-                maxLatitude = p.coordinate.latitude;
-            
-            if (p.coordinate.longitude < minLongitude)
-                minLongitude = p.coordinate.longitude;
-            
-            if (p.coordinate.longitude > maxLongitude)
-                maxLongitude = p.coordinate.longitude;
-        }
-        
-        result.center.latitude = minLatitude + ((maxLatitude - minLatitude) / 2);
-        result.center.longitude = minLongitude + ((maxLongitude - minLongitude) / 2);
-        
-        // add some padding to the region
-        result.span.latitudeDelta = (maxLatitude - minLatitude) * 3.0;
-        result.span.longitudeDelta = (maxLongitude - minLongitude) * 3.0;
-    }
-    
     self.didSetRegion = YES;
-    return result;
+    return [self.location mapRegion];
 }
 
 - (void)mapViewWillStartLoadingMap:(MKMapView *)mapView {
@@ -207,6 +206,11 @@ NSInteger const FISHING_SPOT_SECTION = 2;
     if (self.previousViewID == CMAViewControllerID_SingleEntry) {
         [self configureForReadOnly];
     }
+}
+
+- (void)mapViewDidFinishRenderingMap:(MKMapView *)mapView fullyRendered:(BOOL)fullyRendered {
+    [self.mapView setHidden:NO];
+    [self.loadingMapView setHidden:YES];
 }
 
 @end

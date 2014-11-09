@@ -245,11 +245,13 @@ NSString *const NO_SELECT = @"Not Selected";
         } else
             [[self journal] addEntry:entryToAdd];
         
+        [self setEntry:nil];
         [self performSegueToPreviousView];
     }
 }
 
 - (IBAction)clickedCancel:(UIBarButtonItem *)sender {
+    [self setEntry:nil];
     [self performSegueToPreviousView];
 }
 

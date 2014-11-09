@@ -12,8 +12,12 @@
 
 @interface CMAAddLocationViewController ()
 
-@property (weak, nonatomic) IBOutlet UIBarButtonItem *doneButton;
-@property (weak, nonatomic) IBOutlet UIBarButtonItem *cancelButton;
+@property (weak, nonatomic)IBOutlet UIBarButtonItem *doneButton;
+@property (weak, nonatomic)IBOutlet UIBarButtonItem *cancelButton;
+
+@property (weak, nonatomic)UITextField *locationNameTextField;
+@property (nonatomic)BOOL isEditingLocation;
+@property (strong, nonatomic)CMALocation *nonEditedLocation;
 
 @end
 
@@ -37,7 +41,14 @@ NSInteger const SECTION_ADD = 2;
     [self.tableView setEditing:YES];
     [self.tableView setTableFooterView:[[UIView alloc] initWithFrame:CGRectZero]]; // removes empty cells at the end of the list
     
-    self.location = [CMALocation withName:@""];
+    self.isEditingLocation = (self.previousViewID == CMAViewControllerID_SingleLocation);
+    
+    if (!self.isEditingLocation)
+        self.location = [CMALocation new];
+    else {
+        self.navigationItem.title = @"Edit Location";
+        self.nonEditedLocation = [self.location copy];
+    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -81,6 +92,11 @@ NSInteger const SECTION_ADD = 2;
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == SECTION_TITLE) {
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"locationNameCell" forIndexPath:indexPath];
+        
+        self.locationNameTextField = (UITextField *)[cell viewWithTag:100];
+        if (self.isEditingLocation)
+            self.locationNameTextField.text = self.location.name;
+        
         return cell;
     }
     
@@ -132,7 +148,32 @@ NSInteger const SECTION_ADD = 2;
 #pragma mark - Location Creation
 
 - (BOOL)checkUserInputAndSetLocation: (CMALocation *)aLocation {
-    return NO;
+    // validate fishing spot name
+    if ([self.locationNameTextField.text isEqualToString:@""]) {
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Please enter a location name." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+        [alertView show];
+        return NO;
+    }
+    
+    // make sure the location name doesn't already exist
+    if (!self.isEditingLocation)
+        if ([[[self journal] userDefineNamed:SET_LOCATIONS] objectNamed:self.locationNameTextField.text] != nil) {
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error" message:@"A location by that name already exists. Please choose a new name or edit the existing location." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+            [alertView show];
+            return NO;
+        }
+    
+    // make sure there is at least one fishing spot
+    if ([self.location fishingSpotCount] <= 0) {
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Please add at least one fishing spot." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+        [alertView show];
+        return NO;
+    }
+    
+    [aLocation setName:[self.locationNameTextField.text mutableCopy]];
+    [aLocation setFishingSpots:self.location.fishingSpots];
+    
+    return YES;
 }
 
 #pragma mark - Events
@@ -148,11 +189,20 @@ NSInteger const SECTION_ADD = 2;
         } else
             [[self journal] addUserDefine:SET_LOCATIONS objectToAdd:locationToAdd];
         
+        if (!self.previousViewID == CMAViewControllerID_SingleLocation)
+            [self setLocation:nil];
+        
         [self performSegueToPreviousView];
     }
 }
 
 - (IBAction)clickedCancel:(id)sender {
+    self.location = self.nonEditedLocation;
+    self.nonEditedLocation = nil;
+    
+    if (!self.previousViewID == CMAViewControllerID_SingleLocation)
+        [self setLocation:nil];
+    
     [self performSegueToPreviousView];
 }
 
@@ -162,6 +212,10 @@ NSInteger const SECTION_ADD = 2;
     switch (self.previousViewID) {
         case CMAViewControllerID_EditSettings:
             [self performSegueWithIdentifier:@"unwindToEditSettings" sender:self];
+            break;
+            
+        case CMAViewControllerID_SingleLocation:
+            [self performSegueWithIdentifier:@"unwindToSingleLocation" sender:self];
             break;
             
         default:
@@ -190,6 +244,9 @@ NSInteger const SECTION_ADD = 2;
         
         if (!source.isEditingFishingSpot)
             [self.location addFishingSpot:source.fishingSpot];
+        
+        source.fishingSpot = nil;
+        source.locationFromAddLocation = nil;
         
         [self.tableView reloadData];
     }

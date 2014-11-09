@@ -54,6 +54,8 @@ NSInteger const INDEX_COORDINATES = 2;
         self.fishingSpotNameTextField.text = self.fishingSpot.name;
         self.isEditingFishingSpot = YES;
     }
+    
+    [self setMapRegion];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -118,6 +120,9 @@ NSInteger const INDEX_COORDINATES = 2;
 
 #pragma mark - Map Initializing
 
+#define AREA_X 800
+#define AREA_Y 800
+
 // Update Lat and Long text fields when the user moves the map.
 - (void)mapView:(MKMapView *)mapView regionDidChangeAnimated:(BOOL)animated {
     CLLocationCoordinate2D center = [mapView centerCoordinate];
@@ -125,15 +130,19 @@ NSInteger const INDEX_COORDINATES = 2;
     [self.longitudeLabel setText:[NSString stringWithFormat:@"%f", center.longitude]];
 }
 
-- (void)mapViewWillStartLoadingMap:(MKMapView *)mapView {
+- (void)setMapRegion {
     if (!self.mapHasLoaded) {
         MKCoordinateRegion region;
         
-        //
+        // display the correct are if we're editing an existing fishing spot
         if (self.isEditingFishingSpot)
-            region = MKCoordinateRegionMakeWithDistance(self.fishingSpot.coordinate, 800, 800);
-        else
-            region = MKCoordinateRegionMakeWithDistance([[self.locationManager location] coordinate], 800, 800);
+            region = MKCoordinateRegionMakeWithDistance(self.fishingSpot.coordinate, AREA_X, AREA_Y);
+        else {
+            if ([self.locationFromAddLocation fishingSpotCount] > 0)
+                region = [self.locationFromAddLocation mapRegion]; // set the correct region if there is already fishing spots for the location
+            else
+                region = MKCoordinateRegionMakeWithDistance([[self.locationManager location] coordinate], AREA_X, AREA_Y);
+        }
         
         [self.mapView setRegion:[self.mapView regionThatFits:region] animated:NO];
         self.mapHasLoaded = YES;
@@ -141,8 +150,8 @@ NSInteger const INDEX_COORDINATES = 2;
 }
 
 - (void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation {
-    if (!self.isEditingFishingSpot && !self.userLocationAdded) {
-        MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(userLocation.coordinate, 800, 800);
+    if (!self.isEditingFishingSpot && !self.userLocationAdded && [self.locationFromAddLocation fishingSpotCount] <= 0) {
+        MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(userLocation.coordinate, AREA_X, AREA_Y);
         [self.mapView setRegion:[self.mapView regionThatFits:region] animated:YES];
         self.userLocationAdded = YES;
     }

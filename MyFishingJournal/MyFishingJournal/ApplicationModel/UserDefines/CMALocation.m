@@ -48,6 +48,7 @@
         return NO;
     }
 
+    aFishingSpot.parentLocation = self;
     [self.fishingSpots addObject:aFishingSpot];
     return YES;
 }
@@ -80,6 +81,54 @@
             return spot;
     
     return nil;
+}
+
+// Returns a MKCoordinateRegion for this location. Used for display on a MKMapView.
+- (MKCoordinateRegion)mapRegion {
+    MKCoordinateRegion result;
+
+    if ([self fishingSpotCount] > 0) {
+        CMAFishingSpot *fishingSpot = [[self fishingSpots] objectAtIndex:0];
+        
+        CLLocationDegrees maxLatitude = fishingSpot.coordinate.latitude;
+        CLLocationDegrees minLatitude = fishingSpot.coordinate.latitude;
+        CLLocationDegrees maxLongitude = fishingSpot.coordinate.longitude;
+        CLLocationDegrees minLongitude = fishingSpot.coordinate.longitude;
+        
+        for (CMAFishingSpot *p in [self fishingSpots]) {
+            if (p.coordinate.latitude < minLatitude)
+                minLatitude = p.coordinate.latitude;
+            
+            if (p.coordinate.latitude > maxLatitude)
+                maxLatitude = p.coordinate.latitude;
+            
+            if (p.coordinate.longitude < minLongitude)
+                minLongitude = p.coordinate.longitude;
+            
+            if (p.coordinate.longitude > maxLongitude)
+                maxLongitude = p.coordinate.longitude;
+        }
+        
+        result.center.latitude = minLatitude + ((maxLatitude - minLatitude) / 2);
+        result.center.longitude = minLongitude + ((maxLongitude - minLongitude) / 2);
+        
+        // add some padding to the region
+        result.span.latitudeDelta = (maxLatitude - minLatitude) * 3.0;
+        result.span.longitudeDelta = (maxLongitude - minLongitude) * 3.0;
+    }
+
+    return result;
+}
+
+- (CMALocation *)copy {
+    CMALocation *result = [CMALocation new];
+    
+    [result setName:self.name];
+    
+    for (CMAFishingSpot *f in self.fishingSpots)
+        [result addFishingSpot:f];
+    
+    return result;
 }
 
 @end
