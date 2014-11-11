@@ -160,7 +160,7 @@
                                             </variation>
                                         </label>
                                         <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="Hfc-Hg-ucV">
-                                            <rect key="frame" x="469" y="8" width="123" height="29"/>
+                                            <rect key="frame" x="461" y="8" width="123" height="29"/>
                                             <segments>
                                                 <segment title="First"/>
                                                 <segment title="Second"/>
@@ -168,11 +168,11 @@
                                         </segmentedControl>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="Y4b-f5-jPA" firstAttribute="centerY" secondItem="Hfc-Hg-ucV" secondAttribute="centerY" id="X6c-Sn-YU5"/>
                                         <constraint firstItem="Y4b-f5-jPA" firstAttribute="leading" secondItem="G7q-4v-LvY" secondAttribute="leadingMargin" constant="8" id="aIh-r1-ycu"/>
                                         <constraint firstItem="Y4b-f5-jPA" firstAttribute="top" secondItem="G7q-4v-LvY" secondAttribute="topMargin" constant="-9" id="aJn-5F-bV9"/>
-                                        <constraint firstItem="Hfc-Hg-ucV" firstAttribute="trailing" secondItem="G7q-4v-LvY" secondAttribute="trailingMargin" id="auF-92-Tfa"/>
-                                        <constraint firstItem="Hfc-Hg-ucV" firstAttribute="top" secondItem="G7q-4v-LvY" secondAttribute="topMargin" id="cN4-8q-avG"/>
+                                        <constraint firstItem="Hfc-Hg-ucV" firstAttribute="centerY" secondItem="Y4b-f5-jPA" secondAttribute="centerY" id="dRe-vM-bWO"/>
+                                        <constraint firstItem="Hfc-Hg-ucV" firstAttribute="top" secondItem="G7q-4v-LvY" secondAttribute="topMargin" id="umU-Nn-c1G"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="Hfc-Hg-ucV" secondAttribute="trailing" constant="8" id="yiw-6K-lFb"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>

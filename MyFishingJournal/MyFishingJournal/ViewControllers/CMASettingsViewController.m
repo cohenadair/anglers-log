@@ -85,7 +85,7 @@
     if (indexPath.section == 1) {
         CMASegmentedControlTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"segmentedControlCell" forIndexPath:indexPath];
         
-        [cell.label setText:@"Measurement System"];
+        [cell.label setText:@"Units"];
         [cell.segmentedControl setTitle:@"Imperial" forSegmentAtIndex:0];
         [cell.segmentedControl setTitle:@"Metric" forSegmentAtIndex:1];
         [cell.segmentedControl setSelectedSegmentIndex:[[self journal] measurementSystem]];
