@@ -35,9 +35,14 @@
 #pragma Editing
 
 // Does nothing if an object with the same name already exists in self.objects.
-- (void)addObject: (id)anObject {
-    if ([self objectNamed:[anObject name]] == nil)
-        [self.objects addObject:anObject];
+- (BOOL)addObject: (id)anObject {
+    if ([self objectNamed:[anObject name]] != nil) {
+        NSLog(@"Duplicate object name.");
+        return NO;
+    }
+    
+    [self.objects addObject:anObject];
+    return YES;
 }
 
 - (void)removeObjectNamed: (NSString *)aName {

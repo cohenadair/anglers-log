@@ -8,10 +8,10 @@
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
-        <!--Home View Controller-->
+        <!--Home-->
         <scene sceneID="Ex8-kM-ahq">
             <objects>
-                <viewController id="yB5-2V-0Ji" customClass="CMAHomeViewController" sceneMemberID="viewController">
+                <viewController title="Home" id="yB5-2V-0Ji" customClass="CMAHomeViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="n7A-Xc-Drv"/>
                         <viewControllerLayoutGuide type="bottom" id="vOq-zF-Kmq"/>
@@ -82,6 +82,7 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="Ds4-rX-AbK">
+                        <barButtonItem key="backBarButtonItem" title="Home" id="m2d-NU-o9s"/>
                         <barButtonItem key="rightBarButtonItem" title="Help" id="3xI-SL-Znz">
                             <connections>
                                 <segue destination="1r1-P5-FcP" kind="show" id="Bvl-zK-WZX"/>
@@ -382,10 +383,10 @@
             </objects>
             <point key="canvasLocation" x="2028" y="-358"/>
         </scene>
-        <!--Navigation Controller-->
+        <!--Home-->
         <scene sceneID="ucU-GO-F5K">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="sKN-2s-l4h" sceneMemberID="viewController">
+                <navigationController title="Home" automaticallyAdjustsScrollViewInsets="NO" id="sKN-2s-l4h" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="2z4-Wy-Oih">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -468,26 +469,9 @@
                     <connections>
                         <outlet property="addButton" destination="q9u-dx-Xbo" id="RGi-PZ-DXq"/>
                         <outlet property="deleteButton" destination="gvN-2D-G0Q" id="8Pd-r7-Gay"/>
-                        <outlet property="searchDisplayController" destination="FPT-8r-Byj" id="AaB-T1-gHh"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="EcS-Oh-0t4" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <searchDisplayController id="g6M-fY-zd0">
-                    <connections>
-                        <outlet property="delegate" destination="t80-QM-oZt" id="yBn-SM-Cbo"/>
-                        <outlet property="searchContentsController" destination="t80-QM-oZt" id="xwG-oH-b8Y"/>
-                        <outlet property="searchResultsDataSource" destination="t80-QM-oZt" id="ozW-d7-bUp"/>
-                        <outlet property="searchResultsDelegate" destination="t80-QM-oZt" id="TWy-WT-ug1"/>
-                    </connections>
-                </searchDisplayController>
-                <searchDisplayController id="FPT-8r-Byj">
-                    <connections>
-                        <outlet property="delegate" destination="t80-QM-oZt" id="E60-3B-Bie"/>
-                        <outlet property="searchContentsController" destination="t80-QM-oZt" id="JJT-KB-weg"/>
-                        <outlet property="searchResultsDataSource" destination="t80-QM-oZt" id="TlS-dk-OG4"/>
-                        <outlet property="searchResultsDelegate" destination="t80-QM-oZt" id="xF6-kG-lPy"/>
-                    </connections>
-                </searchDisplayController>
             </objects>
             <point key="canvasLocation" x="1546" y="1304"/>
         </scene>
@@ -1194,8 +1178,8 @@
                         <outlet property="speciesDetailLabel" destination="iG0-tN-1ui" id="1dz-uF-Ukq"/>
                         <outlet property="weightLabel" destination="KmG-HQ-U4g" id="SuP-nT-NhA"/>
                         <outlet property="weightTextField" destination="Kiv-US-vyI" id="zWv-l9-M4D"/>
-                        <segue destination="gLf-px-n2a" kind="unwind" identifier="unwindToHome" unwindAction="unwindToHome:" id="y1Q-lf-imf"/>
-                        <segue destination="gLf-px-n2a" kind="unwind" identifier="unwindToViewEntries" unwindAction="unwindToViewEntries:" id="0cS-3g-Mnn"/>
+                        <segue destination="gLf-px-n2a" kind="unwind" identifier="unwindToHomeFromAddEntry" unwindAction="unwindToHome:" id="y1Q-lf-imf"/>
+                        <segue destination="gLf-px-n2a" kind="unwind" identifier="unwindToViewEntriesFromAddEntry" unwindAction="unwindToViewEntries:" id="0cS-3g-Mnn"/>
                         <segue destination="gLf-px-n2a" kind="unwind" identifier="unwindToSingleEntryFromAddEntry" unwindAction="unwindToSingleEntry:" id="TWG-6y-j1w"/>
                     </connections>
                 </tableViewController>
@@ -1357,8 +1341,8 @@
                     <connections>
                         <outlet property="cancelButton" destination="3bG-ba-joH" id="ItW-Ba-hN4"/>
                         <outlet property="doneButton" destination="Lkd-Ib-THA" id="ao9-Rp-XuT"/>
-                        <segue destination="3Dt-Rq-3tv" kind="unwind" identifier="unwindToEditSettings" unwindAction="unwindToEditSettings:" id="tdb-st-ZgE"/>
-                        <segue destination="3Dt-Rq-3tv" kind="unwind" identifier="unwindToSingleLocation" unwindAction="unwindToSingleLocation:" id="7rx-b8-kdI"/>
+                        <segue destination="3Dt-Rq-3tv" kind="unwind" identifier="unwindToEditSettingsFromAddLocation" unwindAction="unwindToEditSettings:" id="tdb-st-ZgE"/>
+                        <segue destination="3Dt-Rq-3tv" kind="unwind" identifier="unwindToSingleLocationFromAddLocation" unwindAction="unwindToSingleLocation:" id="7rx-b8-kdI"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="OFA-qW-P4d" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1539,7 +1523,7 @@
                         <outlet property="longitudeLabel" destination="64r-wH-OUX" id="p1e-3U-dHi"/>
                         <outlet property="mapView" destination="KWy-xh-Kse" id="9lC-yX-Z7O"/>
                         <outlet property="rectileImage" destination="Kfk-7j-5tf" id="bno-jH-pMD"/>
-                        <segue destination="a4R-R8-Ii2" kind="unwind" identifier="unwindToAddLocation" unwindAction="unwindToAddLocation:" id="m9c-cP-gro"/>
+                        <segue destination="a4R-R8-Ii2" kind="unwind" identifier="unwindToAddLocationFromAddFishingSpot" unwindAction="unwindToAddLocation:" id="m9c-cP-gro"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6gO-HC-kTD" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1680,9 +1664,9 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="gpK-ox-KiN"/>
-        <segue reference="qAO-gb-5Yr"/>
-        <segue reference="5ZT-8I-qr3"/>
-        <segue reference="Qcx-rg-dpe"/>
+        <segue reference="hIY-7h-4M5"/>
+        <segue reference="rQz-NV-wiY"/>
+        <segue reference="iOf-th-u5i"/>
         <segue reference="ij7-4o-wMK"/>
     </inferredMetricsTieBreakers>
 </document>

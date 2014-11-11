@@ -20,15 +20,10 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    // sets the back button text to "Home" when unwinding from a push segue
-    self.navigationItem.backBarButtonItem = [UIBarButtonItem new];
-    self.navigationItem.backBarButtonItem = [self.navigationItem.backBarButtonItem initWithTitle:@"Home" style:UIBarButtonItemStylePlain target:nil action:nil];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 #pragma mark - Navigation
@@ -37,8 +32,7 @@
     if ([segue.identifier isEqualToString:@"fromHomeToAddEntry"]) {
         CMAAddEntryViewController *destination = [[segue.destinationViewController viewControllers] objectAtIndex:0];
         destination.previousViewID = CMAViewControllerID_Home;
-    } else
-        self.navigationController.navigationBarHidden = NO;
+    }
 }
 
 - (IBAction)unwindToHome:(UIStoryboardSegue *)segue {

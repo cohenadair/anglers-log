@@ -24,7 +24,7 @@
 - (id)initWithName: (NSString *)aName;
 
 // editing
-- (void)addObject: (id)anObject;
+- (BOOL)addObject: (id)anObject;
 - (void)removeObjectNamed: (NSString *)aName;
 - (void)editObjectNamed: (NSString *)aName newObject: (id)aNewObject;
 

@@ -16,7 +16,6 @@
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *deleteButton;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *addButton;
 
-@property (strong, nonatomic)NSArray *entriesArray;
 @property (strong, nonatomic)NSDateFormatter *dateFormatter;
 
 @end
@@ -39,8 +38,7 @@
     self.dateFormatter = [NSDateFormatter new];
     [self.dateFormatter setDateFormat:@"MMM dd, yyyy 'at' h:mm a"];
     
-    [self setEntriesArray:[[self journal].entries allObjects]];
-    if ([self.entriesArray count] <= 0)
+    if ([[self journal] entryCount] <= 0)
         [self.deleteButton setEnabled:NO];
     
     [self.tableView setTableFooterView:[[UIView alloc] initWithFrame:CGRectZero]]; // removes empty cells at the end of the list
@@ -48,8 +46,6 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     self.navigationController.toolbarHidden = NO;
-    
-    [self setEntriesArray:[[self journal].entries allObjects]];
     [self.tableView reloadData];
 }
 
@@ -78,7 +74,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"entriesCell" forIndexPath:indexPath];
     
-    CMAEntry *entry = [self.entriesArray objectAtIndex:indexPath.item];
+    CMAEntry *entry = [[[self journal] entries] objectAtIndex:indexPath.item];
     
     cell.textLabel.text = [entry.fishSpecies name];
     cell.detailTextLabel.text = [self.dateFormatter stringFromDate:entry.date];
@@ -149,13 +145,13 @@
     
     if ([segue.identifier isEqualToString:@"fromViewEntriesToSingleEntry"]) {
         CMASingleEntryViewController *destination = [[segue.destinationViewController viewControllers] objectAtIndex:0];
-        CMAEntry *entryToDisplay = [self.entriesArray objectAtIndex:[self.tableView indexPathForSelectedRow].item];
+        CMAEntry *entryToDisplay = [[[self journal] entries] objectAtIndex:[self.tableView indexPathForSelectedRow].item];
         destination.entry = entryToDisplay;
     }
 }
 
 - (IBAction)unwindToViewEntries:(UIStoryboardSegue *)segue {
-    self.navigationController.toolbarHidden = NO;
+    
 }
 
 @end

@@ -13,12 +13,12 @@
 
 @interface CMAJournal : NSObject
 
-@property (strong, nonatomic)NSMutableSet *entries;
+@property (strong, nonatomic)NSMutableArray *entries;
 @property (strong, nonatomic)NSMutableDictionary *userDefines;
 @property (nonatomic)CMAMeasuringSystemType measurementSystem;
 
 // editing
-- (void)addEntry: (CMAEntry *)anEntry;
+- (BOOL)addEntry: (CMAEntry *)anEntry;
 - (void)removeEntryDated: (NSDate *)aDate;
 - (void)editEntryDated: (NSDate *)aDate newProperties: (CMAEntry *)aNewEntry;
 

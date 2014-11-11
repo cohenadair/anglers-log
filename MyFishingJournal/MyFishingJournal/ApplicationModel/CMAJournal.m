@@ -18,7 +18,7 @@
 #pragma mark - Initialization
 
 - (CMAJournal *)init {
-    _entries = [NSMutableSet set];
+    _entries = [NSMutableArray array];
     _userDefines = [NSMutableDictionary dictionary];
     
     [_userDefines setValue:[CMAUserDefine withName:SET_SPECIES] forKey:SET_SPECIES];
@@ -67,8 +67,14 @@
 
 #pragma mark - Editing
 
-- (void)addEntry: (CMAEntry *)anEntry {
+- (BOOL)addEntry: (CMAEntry *)anEntry {
+    if ([self entryDated:anEntry.date] != nil) {
+        NSLog(@"Duplicate entry date.");
+        return NO;
+    }
+    
     [self.entries addObject:anEntry];
+    return YES;
 }
 
 - (void)removeEntryDated: (NSDate *)aDate {

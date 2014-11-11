@@ -6,6 +6,9 @@
 //  Copyright (c) 2014 Cohen Adair. All rights reserved.
 //
 
+#ifndef MyFishingJournal_CMAConstants_h
+#define MyFishingJournal_CMAConstants_h
+
 typedef enum {
     CMAViewControllerID_Nil = 0,
     CMAViewControllerID_Home = 1,
@@ -32,3 +35,5 @@ extern NSString *const TOKEN_FISHING_METHODS;
 extern NSString *const TOKEN_LOCATION;
 
 extern CGFloat const TABLE_SECTION_SPACING;
+
+#endif

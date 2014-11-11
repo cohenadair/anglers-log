@@ -9,6 +9,7 @@
 #import "CMAAddLocationViewController.h"
 #import "CMAAddFishingSpotViewController.h"
 #import "CMAAppDelegate.h"
+#import "CMAAlerts.h"
 
 @interface CMAAddLocationViewController ()
 
@@ -121,16 +122,17 @@ NSInteger const SECTION_ADD = 2;
 }
 
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.section == SECTION_TITLE)
-        return UITableViewCellEditingStyleNone;
-    
-    if (indexPath.section == SECTION_FISHING_SPOTS)
-        return UITableViewCellEditingStyleDelete;
-    
-    if (indexPath.section == SECTION_ADD)
-        return UITableViewCellEditingStyleNone;
-    
-    return UITableViewCellEditingStyleDelete;
+    switch (indexPath.section) {
+        case SECTION_TITLE:
+        case SECTION_ADD:
+            return UITableViewCellEditingStyleNone;
+        
+        case SECTION_FISHING_SPOTS:
+            return UITableViewCellEditingStyleDelete;
+            
+        default:
+            return UITableViewCellEditingStyleDelete;
+    }
 }
 
 // Override to support editing the table view.
@@ -150,23 +152,20 @@ NSInteger const SECTION_ADD = 2;
 - (BOOL)checkUserInputAndSetLocation: (CMALocation *)aLocation {
     // validate fishing spot name
     if ([self.locationNameTextField.text isEqualToString:@""]) {
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Please enter a location name." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
-        [alertView show];
+        [CMAAlerts errorAlert:@"Please enter a location name."];
         return NO;
     }
     
     // make sure the location name doesn't already exist
     if (!self.isEditingLocation)
         if ([[[self journal] userDefineNamed:SET_LOCATIONS] objectNamed:self.locationNameTextField.text] != nil) {
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error" message:@"A location by that name already exists. Please choose a new name or edit the existing location." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
-            [alertView show];
+            [CMAAlerts errorAlert:@"A location by that name already exists. Please choose a new name or edit the existing location."];
             return NO;
         }
     
     // make sure there is at least one fishing spot
     if ([self.location fishingSpotCount] <= 0) {
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Please add at least one fishing spot." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
-        [alertView show];
+        [CMAAlerts errorAlert:@"Please add at least one fishing spot."];
         return NO;
     }
     
@@ -211,11 +210,11 @@ NSInteger const SECTION_ADD = 2;
 - (void)performSegueToPreviousView {
     switch (self.previousViewID) {
         case CMAViewControllerID_EditSettings:
-            [self performSegueWithIdentifier:@"unwindToEditSettings" sender:self];
+            [self performSegueWithIdentifier:@"unwindToEditSettingsFromAddLocation" sender:self];
             break;
             
         case CMAViewControllerID_SingleLocation:
-            [self performSegueWithIdentifier:@"unwindToSingleLocation" sender:self];
+            [self performSegueWithIdentifier:@"unwindToSingleLocationFromAddLocation" sender:self];
             break;
             
         default:
@@ -239,7 +238,7 @@ NSInteger const SECTION_ADD = 2;
 }
 
 - (IBAction)unwindToAddLocation:(UIStoryboardSegue *)segue {
-    if ([segue.identifier isEqualToString:@"unwindToAddLocation"]) {
+    if ([segue.identifier isEqualToString:@"unwindToAddLocationFromAddFishingSpot"]) {
         CMAAddFishingSpotViewController *source = [segue sourceViewController];
         
         if (!source.isEditingFishingSpot)

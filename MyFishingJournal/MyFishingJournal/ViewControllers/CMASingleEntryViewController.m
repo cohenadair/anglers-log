@@ -170,6 +170,8 @@
         [self setLabels];
         [self.tableView reloadData];
         [self.imageCollectionView reloadData];
+        
+        source.entry = nil;
     }
 }
 

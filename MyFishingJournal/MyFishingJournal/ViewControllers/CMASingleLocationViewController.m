@@ -150,7 +150,7 @@ NSInteger const FISHING_SPOT_SECTION = 2;
 }
 
 - (IBAction)unwindToSingleLocation:(UIStoryboardSegue *)segue {
-    if ([segue.identifier isEqualToString:@"unwindToSingleLocation"]) {
+    if ([segue.identifier isEqualToString:@"unwindToSingleLocationFromAddLocation"]) {
         CMAAddLocationViewController *source = segue.sourceViewController;
         self.location = source.location;
         source.location = nil;

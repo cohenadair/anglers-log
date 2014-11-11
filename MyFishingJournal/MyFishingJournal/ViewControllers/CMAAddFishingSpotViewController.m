@@ -9,6 +9,7 @@
 #import "CMAAddFishingSpotViewController.h"
 #import "CMAAppDelegate.h"
 #import "CMAConstants.h"
+#import "CMAAlerts.h"
 
 @interface CMAAddFishingSpotViewController () <MKMapViewDelegate, CLLocationManagerDelegate>
 
@@ -90,16 +91,14 @@ NSInteger const INDEX_COORDINATES = 2;
 - (IBAction)clickDoneButton:(UIBarButtonItem *)sender {
     // validate fishing spot name
     if ([[self.fishingSpotNameTextField text] isEqualToString:@""]) {
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Please enter a fishing spot name." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
-        [alertView show];
+        [CMAAlerts errorAlert:@"Please enter a fishing spot name."];
         return;
     }
     
     // make sure the fishing spot doesn't already exist
     if (!self.isEditingFishingSpot)
         if ([self.locationFromAddLocation fishingSpotNamed:self.fishingSpotNameTextField.text] != nil) {
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error" message:@"A fishing spot by that name already exists. Please choose a new name or edit the existing spot." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
-            [alertView show];
+            [CMAAlerts errorAlert:@"A fishing spot by that name already exists. Please choose a new name or edit the existing spot."];
             return;
         }
 
@@ -108,7 +107,7 @@ NSInteger const INDEX_COORDINATES = 2;
     [self.fishingSpot setName:[[self.fishingSpotNameTextField text] mutableCopy]];
     [self.fishingSpot setLocation:[[CLLocation alloc] initWithLatitude:mapCenter.latitude longitude:mapCenter.longitude]];
     
-    [self performSegueWithIdentifier:@"unwindToAddLocation" sender:self];
+    [self performSegueWithIdentifier:@"unwindToAddLocationFromAddFishingSpot" sender:self];
 }
 
 #pragma mark - Navigation

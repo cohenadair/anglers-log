@@ -10,6 +10,7 @@
 #import "CMAEditSettingsViewController.h"
 #import "CMASingleLocationViewController.h"
 #import "CMAAppDelegate.h"
+#import "CMAAlerts.h"
 
 @interface CMAAddEntryViewController ()
 
@@ -37,6 +38,7 @@
 @property (strong, nonatomic)NSDateFormatter *dateFormatter;
 @property (strong, nonatomic)NSIndexPath *indexPathForOptionsCell; // used after an unwind from selecting options
 @property (nonatomic)BOOL isEditingDateTime;
+@property (nonatomic)BOOL isEditingEntry;
 @property (nonatomic)BOOL hasEditedNotesTextView;
 
 @property (nonatomic)BOOL hasAttachedImages;
@@ -79,21 +81,21 @@ NSString *const NO_SELECT = @"Not Selected";
     // set date detail label to the current date and time
     [self.dateTimeDetailLabel setText:[self.dateFormatter stringFromDate:[NSDate new]]];
     
-    // set propert units for length and weight labels
+    // set proper units for length and weight labels
     [self.lengthLabel setText:[NSString stringWithFormat:@"Length (%@)", [[self journal] lengthUnitsAsString:NO]]];
     [self.weightLabel setText:[NSString stringWithFormat:@"Weight (%@)", [[self journal] weightUnitsAsString:NO]]];
     
     [self.imageCollection setAllowsSelection:NO];
     [self.imageCollection setAllowsMultipleSelection:NO];
     
+    self.isEditingEntry = self.previousViewID == CMAViewControllerID_SingleEntry;
     self.isEditingDateTime = NO;
     self.hasEditedNotesTextView = NO;
-    
     self.hasAttachedImages = NO;
     self.numberOfImages = 0;
     
     // if we're editing rather than adding an entry
-    if (self.previousViewID == CMAViewControllerID_SingleEntry)
+    if (self.isEditingEntry)
         [self initializeTableForEditing];
 }
 
@@ -239,19 +241,26 @@ NSString *const NO_SELECT = @"Not Selected";
     CMAEntry *entryToAdd = [CMAEntry new];
     
     if ([self checkUserInputAndSetEntry:entryToAdd]) {
-        if (self.previousViewID == CMAViewControllerID_SingleEntry) {
+        if (self.isEditingEntry) {
             [[self journal] editEntryDated:[self.entry date] newProperties:entryToAdd];
             [self setEntry:entryToAdd];
         } else
-            [[self journal] addEntry:entryToAdd];
+            if (![[self journal] addEntry:entryToAdd]) {
+                [CMAAlerts errorAlert:@"An entry with that date and time already exists. Please select a new date or edit the existing entry."];
+                return;
+            }
         
-        [self setEntry:nil];
+        if (!self.isEditingEntry)
+            [self setEntry:nil];
+        
         [self performSegueToPreviousView];
     }
 }
 
 - (IBAction)clickedCancel:(UIBarButtonItem *)sender {
-    [self setEntry:nil];
+    if (!self.isEditingEntry)
+        [self setEntry:nil];
+    
     [self performSegueToPreviousView];
 }
 
@@ -281,11 +290,6 @@ NSString *const NO_SELECT = @"Not Selected";
 
 #pragma mark - Alert View
 
-- (void)showInvalidInputAlert:(NSString *)aMessage {
-    UIAlertView *alertVew = [[UIAlertView alloc] initWithTitle:@"Error" message:aMessage delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
-    [alertVew show];
-}
-
 // handles all UIAlertViews results for this screen
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     // delete button
@@ -301,11 +305,11 @@ NSString *const NO_SELECT = @"Not Selected";
 - (void)performSegueToPreviousView {
     switch (self.previousViewID) {
         case CMAViewControllerID_Home:
-            [self performSegueWithIdentifier:@"unwindToHome" sender:self];
+            [self performSegueWithIdentifier:@"unwindToHomeFromAddEntry" sender:self];
             break;
             
         case CMAViewControllerID_ViewEntries:
-            [self performSegueWithIdentifier:@"unwindToViewEntries" sender:self];
+            [self performSegueWithIdentifier:@"unwindToViewEntriesFromAddEntry" sender:self];
             break;
             
         case CMAViewControllerID_SingleEntry:
@@ -373,6 +377,8 @@ NSString *const NO_SELECT = @"Not Selected";
         CMASingleLocationViewController *source = [segue sourceViewController];
         UITableViewCell *cellToEdit = [self.tableView cellForRowAtIndexPath:self.indexPathForOptionsCell];
         [[cellToEdit detailTextLabel] setText:source.addEntryLabelText];
+        
+        source.previousViewID = CMAViewControllerID_Nil;
     }
 }
 
@@ -389,7 +395,7 @@ NSString *const NO_SELECT = @"Not Selected";
         CMASpecies *species = [[[self journal] userDefineNamed:SET_SPECIES] objectNamed:[self.speciesDetailLabel text]];
         [anEntry setFishSpecies:species];
     } else {
-        [self showInvalidInputAlert:@"Please select a species."];
+        [CMAAlerts errorAlert:@"Please select a species."];
         return NO;
     }
     
@@ -400,7 +406,7 @@ NSString *const NO_SELECT = @"Not Selected";
         [anEntry setLocation:locationInfo[0]];
         [anEntry setFishingSpot:locationInfo[1]];
     } else {
-        [self showInvalidInputAlert:@"Please select a location."];
+        [CMAAlerts errorAlert:@"Please select a location."];
         return NO;
     }
     
@@ -501,8 +507,7 @@ NSString *const NO_SELECT = @"Not Selected";
 // If not, displays an alert to the user.
 - (BOOL)cameraAvailable {
     if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Device has no camera." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
-        [alert show];
+        [CMAAlerts errorAlert:@"Device has no camera."];
         return false;
     }
     
