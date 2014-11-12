@@ -34,6 +34,40 @@
     return self;
 }
 
+#pragma mark - Archiving
+
+- (id)initWithCoder:(NSCoder *)aDecoder {
+    if (self = [super init]) {
+        _date = [aDecoder decodeObjectForKey:@"CMAEntryDate"];
+        _fishSpecies = [aDecoder decodeObjectForKey:@"CMAEntryFishSpecies"];
+        _baitUsed = [aDecoder decodeObjectForKey:@"CMAEntryBaitUsed"];
+        _notes = [aDecoder decodeObjectForKey:@"CMAEntryNotes"];
+        _fishLength = [aDecoder decodeObjectForKey:@"CMAEntryFishLength"];
+        _fishWeight = [aDecoder decodeObjectForKey:@"CMAEntryFishWeight"];
+        _fishQuantity = [aDecoder decodeObjectForKey:@"CMAEntryFishQuantity"];
+        _images = [aDecoder decodeObjectForKey:@"CMAEntryImages"];
+        _fishingMethods = [aDecoder decodeObjectForKey:@"CMAEntryFishingMethods"];
+        _location = [aDecoder decodeObjectForKey:@"CMAEntryLocation"];
+        _fishingSpot = [aDecoder decodeObjectForKey:@"CMAEntryFishingSpot"];
+    }
+    
+    return self;
+}
+
+- (void)encodeWithCoder:(NSCoder *)aCoder {
+    [aCoder encodeObject:self.date forKey:@"CMAEntryDate"];
+    [aCoder encodeObject:self.fishSpecies forKey:@"CMAEntryFishSpecies"];
+    [aCoder encodeObject:self.baitUsed forKey:@"CMAEntryBaitUsed"];
+    [aCoder encodeObject:self.notes forKey:@"CMAEntryNotes"];
+    [aCoder encodeObject:self.fishLength forKey:@"CMAEntryFishLength"];
+    [aCoder encodeObject:self.fishWeight forKey:@"CMAEntryFishWeight"];
+    [aCoder encodeObject:self.fishQuantity forKey:@"CMAEntryFishQuantity"];
+    [aCoder encodeObject:self.images forKey:@"CMAEntryImages"];
+    [aCoder encodeObject:self.fishingMethods forKey:@"CMAEntryFishingMethods"];
+    [aCoder encodeObject:self.location forKey:@"CMAEntryLocation"];
+    [aCoder encodeObject:self.fishingSpot forKey:@"CMAEntryFishingSpot"];
+}
+
 #pragma mark - Accessing
 
 - (NSInteger)imageCount {

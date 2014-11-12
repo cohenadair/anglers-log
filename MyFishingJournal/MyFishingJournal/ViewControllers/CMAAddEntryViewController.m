@@ -253,6 +253,7 @@ NSString *const NO_SELECT = @"Not Selected";
         if (!self.isEditingEntry)
             [self setEntry:nil];
         
+        [[self journal] archive];
         [self performSegueToPreviousView];
     }
 }

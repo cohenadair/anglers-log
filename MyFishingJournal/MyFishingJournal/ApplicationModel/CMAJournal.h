@@ -11,11 +11,16 @@
 #import "CMAConstants.h"
 #import "CMAUserDefine.h"
 
-@interface CMAJournal : NSObject
+@interface CMAJournal : NSObject <NSCoding>
 
 @property (strong, nonatomic)NSMutableArray *entries;
 @property (strong, nonatomic)NSMutableDictionary *userDefines;
 @property (nonatomic)CMAMeasuringSystemType measurementSystem;
+
+// archiving
+- (id)initWithCoder:(NSCoder *)aDecoder;
+- (void)encodeWithCoder:(NSCoder *)aCoder;
+- (BOOL)archive;
 
 // editing
 - (BOOL)addEntry: (CMAEntry *)anEntry;

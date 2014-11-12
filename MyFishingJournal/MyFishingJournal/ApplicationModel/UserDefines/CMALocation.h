@@ -11,7 +11,7 @@
 #import <CoreLocation/CoreLocation.h>
 #import "CMAFishingSpot.h"
 
-@interface CMALocation : NSObject
+@interface CMALocation : NSObject <NSCoding>
 
 @property (strong, nonatomic)NSMutableString *name;
 @property (strong, nonatomic)NSMutableArray *fishingSpots;
@@ -21,6 +21,10 @@
 
 // initializing
 - (id)initWithName: (NSString *)aName;
+
+// archiving
+- (id)initWithCoder:(NSCoder *)aDecoder;
+- (void)encodeWithCoder:(NSCoder *)aCoder;
 
 // editing
 - (BOOL)addFishingSpot: (CMAFishingSpot *)aFishingSpot;

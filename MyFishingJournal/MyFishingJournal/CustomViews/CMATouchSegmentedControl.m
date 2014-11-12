@@ -24,6 +24,7 @@ NSInteger current = -1;
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
     [super touchesEnded:touches withEvent:event];
     
+    // only fire event if the segment touched is the one already selected
     if (current == self.selectedSegmentIndex)
         [self sendActionsForControlEvents:UIControlEventValueChanged];
 }

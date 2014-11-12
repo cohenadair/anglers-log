@@ -20,10 +20,10 @@ typedef enum {
 } CMAViewControllerID;
 
 // Each value represents the index for an item in a UISegmentedControlView.
-typedef enum {
+typedef NS_ENUM(NSInteger, CMAMeasuringSystemType) {
     CMAMeasuringSystemType_Imperial = 0,
     CMAMeasuringSystemType_Metric = 1
-} CMAMeasuringSystemType;
+};
 
 extern NSString *const SET_SPECIES;
 extern NSString *const SET_BAITS;
@@ -33,6 +33,9 @@ extern NSString *const SET_FISHING_METHODS;
 // Used for splitting up NSStrings.
 extern NSString *const TOKEN_FISHING_METHODS;
 extern NSString *const TOKEN_LOCATION;
+
+// User data file name.
+extern NSString *const ARCHIVE_FILE_NAME;
 
 extern CGFloat const TABLE_SECTION_SPACING;
 

@@ -9,17 +9,20 @@
 #import <Foundation/Foundation.h>
 #import <CoreLocation/CoreLocation.h>
 
-@interface CMAFishingSpot : NSObject
+@interface CMAFishingSpot : NSObject <NSCoding>
 
 @property (strong, nonatomic)NSMutableString *name;
 @property (strong, nonatomic)CLLocation *location;
-@property (strong, nonatomic)id parentLocation; // CMALocation *
 
 // instance creation
 + (CMAFishingSpot *)withName: (NSString *)aName;
 
 // initialization
 - (id)initWithName: (NSString *)aName;
+
+// archiving
+- (id)initWithCoder:(NSCoder *)aDecoder;
+- (void)encodeWithCoder:(NSCoder *)aCoder;
 
 // editing
 - (void)setCoordinates: (CLLocationCoordinate2D)coordinates;

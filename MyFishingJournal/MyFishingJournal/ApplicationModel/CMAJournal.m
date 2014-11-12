@@ -26,43 +26,41 @@
     [_userDefines setValue:[CMAUserDefine withName:SET_FISHING_METHODS] forKey:SET_FISHING_METHODS];
     [_userDefines setValue:[CMAUserDefine withName:SET_LOCATIONS] forKey:SET_LOCATIONS];
     
-    // TODO: Replace default defines with an Archiving file
-    [self addUserDefine:SET_SPECIES objectToAdd:[CMASpecies withName:@"Smallmouth Bass"]];
-    [self addUserDefine:SET_SPECIES objectToAdd:[CMASpecies withName:@"Largemouth Bass"]];
-    [self addUserDefine:SET_SPECIES objectToAdd:[CMASpecies withName:@"Steelhead"]];
-    [self addUserDefine:SET_SPECIES objectToAdd:[CMASpecies withName:@"Pike"]];
-    [self addUserDefine:SET_SPECIES objectToAdd:[CMASpecies withName:@"Walleye"]];
-    
-    [self addUserDefine:SET_BAITS objectToAdd:[CMABait withName:@"Yellow Twisty Tail"]];
-    [self addUserDefine:SET_BAITS objectToAdd:[CMABait withName:@"Crayfish"]];
-    [self addUserDefine:SET_BAITS objectToAdd:[CMABait withName:@"Giant Minnow"]];
-    
-    [self addUserDefine:SET_FISHING_METHODS objectToAdd:[CMAFishingMethod withName:@"Shore"]];
-    [self addUserDefine:SET_FISHING_METHODS objectToAdd:[CMAFishingMethod withName:@"Fly Fishing"]];
-    [self addUserDefine:SET_FISHING_METHODS objectToAdd:[CMAFishingMethod withName:@"Boat"]];
-    [self addUserDefine:SET_FISHING_METHODS objectToAdd:[CMAFishingMethod withName:@"Trolling"]];
-    
-    CMALocation *portAlbert = [CMALocation withName:@"Port Albert"];
-    [portAlbert addFishingSpot:[CMAFishingSpot withName:@"Little Hole"]];
-    [[portAlbert fishingSpotNamed:@"Little Hole"] setCoordinates:CLLocationCoordinate2DMake(43.878362, -81.717821)];
-    [portAlbert addFishingSpot:[CMAFishingSpot withName:@"Beaver Dam"]];
-    [[portAlbert fishingSpotNamed:@"Beaver Dam"] setCoordinates:CLLocationCoordinate2DMake(43.878702, -81.718722)];
-    [portAlbert addFishingSpot:[CMAFishingSpot withName:@"Baskets"]];
-    [[portAlbert fishingSpotNamed:@"Baskets"] setCoordinates:CLLocationCoordinate2DMake(43.879364, -81.720203)];
-    
-    CMALocation *silverLake = [CMALocation withName:@"Silver Lake"];
-    [silverLake addFishingSpot:[CMAFishingSpot withName:@"Walleye Way"]];
-    [[silverLake fishingSpotNamed:@"Walleye Way"] setCoordinates:CLLocationCoordinate2DMake(44.086182, -81.417250)];
-    [silverLake addFishingSpot:[CMAFishingSpot withName:@"Lillypad Lane"]];
-    [[silverLake fishingSpotNamed:@"Lillypad Lane"] setCoordinates:CLLocationCoordinate2DMake(44.081620, -81.416220)];
-    
-    [self addUserDefine:SET_LOCATIONS objectToAdd:portAlbert];
-    [self addUserDefine:SET_LOCATIONS objectToAdd:silverLake];
-
-    
     [self setMeasurementSystem:CMAMeasuringSystemType_Imperial];
     
     return self;
+}
+
+#pragma mark - Archiving
+
+- (id)initWithCoder:(NSCoder *)aDecoder {
+    if (self = [super init]) {
+        _entries = [aDecoder decodeObjectForKey:@"CMAJournalEntries"];
+        _userDefines = [aDecoder decodeObjectForKey:@"CMAJournalUserDefines"];
+        _measurementSystem = [aDecoder decodeIntegerForKey:@"CMAJournalMeasurmentSystem"];
+    }
+    
+    return self;
+}
+
+- (void)encodeWithCoder:(NSCoder *)aCoder {
+    [aCoder encodeObject:self.entries forKey:@"CMAJournalEntries"];
+    [aCoder encodeObject:self.userDefines forKey:@"CMAJournalUserDefines"];
+    [aCoder encodeInteger:self.measurementSystem forKey:@"CMAJournalMeasurmentSystem"];
+}
+
+- (BOOL)archive {
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *docsPath = [paths firstObject];
+    NSString *archivePath = [NSString stringWithFormat:@"%@%@", docsPath, ARCHIVE_FILE_NAME];
+    
+    if ([NSKeyedArchiver archiveRootObject:self toFile:archivePath]) {
+        NSLog(@"Successfully archived Journal.");
+        return YES;
+    } else
+        NSLog(@"Failed to archive Journal.");
+    
+    return NO;
 }
 
 #pragma mark - Editing

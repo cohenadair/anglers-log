@@ -12,7 +12,13 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    self.journal = [CMAJournal new];
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *docsPath = [paths firstObject];
+    NSString *archivePath = [NSString stringWithFormat:@"%@%@", docsPath, ARCHIVE_FILE_NAME];
+    self.journal = [NSKeyedUnarchiver unarchiveObjectWithFile:archivePath];
+    
+    if (self.journal == nil)
+        self.journal = [CMAJournal new];
     
     [[UINavigationBar appearance] setTranslucent:NO];
     [[UINavigationBar appearance] setBarTintColor:[UIColor colorWithWhite:0.97 alpha:1.0]];
@@ -28,6 +34,7 @@
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
+    [self.journal archive];
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later. 
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
 }

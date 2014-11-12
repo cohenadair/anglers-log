@@ -208,6 +208,7 @@
 // Used to exit out of editing mode.
 - (void)clickDoneButton {
     [self enableToolbarButtons];
+    [[self journal] archive];
 }
 
 - (IBAction)selectedOrganizeControl:(CMATouchSegmentedControl *)sender {

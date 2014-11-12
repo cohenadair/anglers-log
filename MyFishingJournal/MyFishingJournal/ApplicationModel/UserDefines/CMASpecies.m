@@ -26,6 +26,20 @@
     return self;
 }
 
+#pragma mark - Archiving
+
+- (id)initWithCoder:(NSCoder *)aDecoder {
+    if (self = [super init]) {
+        _name = [aDecoder decodeObjectForKey:@"CMASpeciesName"];
+    }
+    
+    return self;
+}
+
+- (void)encodeWithCoder:(NSCoder *)aCoder {
+    [aCoder encodeObject:self.name forKey:@"CMASpeciesName"];
+}
+
 #pragma mark - Editing
 
 - (void)edit: (CMASpecies *)aNewSpecies {

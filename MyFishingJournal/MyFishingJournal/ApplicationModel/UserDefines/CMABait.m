@@ -26,6 +26,20 @@
     return self;
 }
 
+#pragma mark - Archiving
+
+- (id)initWithCoder:(NSCoder *)aDecoder {
+    if (self = [super init]) {
+        _name = [aDecoder decodeObjectForKey:@"CMABaitName"];
+    }
+    
+    return self;
+}
+
+- (void)encodeWithCoder:(NSCoder *)aCoder {
+    [aCoder encodeObject:self.name forKey:@"CMABaitName"];
+}
+
 #pragma mark - Editing
 
 - (void)edit: (CMABait *)aNewBait {

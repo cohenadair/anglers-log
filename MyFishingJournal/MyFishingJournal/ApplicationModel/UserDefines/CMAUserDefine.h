@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface CMAUserDefine : NSObject
+@interface CMAUserDefine : NSObject <NSCoding>
 
 @property (strong, nonatomic)NSString *name;
 
@@ -22,6 +22,10 @@
 
 // initialization
 - (id)initWithName: (NSString *)aName;
+
+// archiving
+- (id)initWithCoder:(NSCoder *)aDecoder;
+- (void)encodeWithCoder:(NSCoder *)aCoder;
 
 // editing
 - (BOOL)addObject: (id)anObject;

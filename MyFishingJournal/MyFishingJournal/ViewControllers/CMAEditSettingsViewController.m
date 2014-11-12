@@ -251,15 +251,26 @@
     if (alertView == self.addItemAlert)
         if (buttonIndex == 1) { // add button
             NSString *enteredText = [[alertView textFieldAtIndex:0] text];
+            
+            if ([enteredText isEqualToString:@""])
+                return
+                
             [[alertView textFieldAtIndex:0] setText:@""];
             
             [self.userDefine addObject:[self.userDefine emptyObjectNamed:enteredText]];
+            [[self journal] archive];
         }
     
     if (alertView == self.editItemAlert)
         if (buttonIndex == 1) { // ok button
+            NSString *enteredText = [[alertView textFieldAtIndex:0] text];
+            
+            if ([enteredText isEqualToString:@""])
+                return;
+            
             id newProperties = [self.userDefine emptyObjectNamed:[[alertView textFieldAtIndex:0] text]];
             [[self journal] editUserDefine:[self.userDefine name] objectNamed:self.selectedCellLabelText newProperties:newProperties];
+            [[self journal] archive];
         }
     
     [self.tableView reloadData];
@@ -307,8 +318,10 @@
 - (IBAction)clickAddButton:(UIBarButtonItem *)sender {
     if ([[self.userDefine name] isEqualToString:SET_LOCATIONS])
         [self performSegueWithIdentifier:@"fromEditSettingsToAddLocation" sender:self];
-    else
+    else {
+        [[self.addItemAlert textFieldAtIndex:0] setText:@""];
         [self.addItemAlert show];
+    }
 }
 
 // Enter editing mode.
@@ -324,6 +337,7 @@
 // Used to exit out of editing mode.
 - (void)clickDoneButton {
     [self toggleEditMode:YES];
+    [[self journal] archive];
 }
 
 #pragma mark - Navigation

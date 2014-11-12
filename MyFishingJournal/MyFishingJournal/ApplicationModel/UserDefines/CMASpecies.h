@@ -8,7 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
-@interface CMASpecies : NSObject
+@interface CMASpecies : NSObject <NSCoding>
+
+@property (strong, nonatomic)NSString *name;
 
 // instance creation
 + (CMASpecies *)withName: (NSString *)aName;
@@ -16,9 +18,11 @@
 // initialization
 - (id)initWithName: (NSString *)aName;
 
+// archiving
+- (id)initWithCoder:(NSCoder *)aDecoder;
+- (void)encodeWithCoder:(NSCoder *)aCoder;
+
 // editing
 - (void)edit: (CMASpecies *)aNewSpecies;
-
-@property (strong, nonatomic)NSString *name;
 
 @end

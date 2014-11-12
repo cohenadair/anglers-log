@@ -11,7 +11,7 @@
 #import "CMASpecies.h"
 #import "CMABait.h"
 
-@interface CMAEntry : NSObject
+@interface CMAEntry : NSObject <NSCoding>
 
 @property (strong, nonatomic)NSDate *date;
 @property (strong, nonatomic)CMASpecies *fishSpecies;
@@ -33,6 +33,10 @@
 
 // initializing
 - (id)initWithDate: (NSDate *)aDate;
+
+// archiving
+- (id)initWithCoder:(NSCoder *)aDecoder;
+- (void)encodeWithCoder:(NSCoder *)aCoder;
 
 // accessing
 - (NSInteger)imageCount;

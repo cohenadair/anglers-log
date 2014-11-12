@@ -32,6 +32,22 @@
     return self;
 }
 
+#pragma mark - Archiving
+
+- (id)initWithCoder:(NSCoder *)aDecoder {
+    if (self = [super init]) {
+        _name = [aDecoder decodeObjectForKey:@"CMAUserDefineName"];
+        _objects = [aDecoder decodeObjectForKey:@"CMAUserDefineObjects"];
+    }
+    
+    return self;
+}
+
+- (void)encodeWithCoder:(NSCoder *)aCoder {
+    [aCoder encodeObject:self.name forKey:@"CMAUserDefineName"];
+    [aCoder encodeObject:self.objects forKey:@"CMAUserDefineObjects"];
+}
+
 #pragma Editing
 
 // Does nothing if an object with the same name already exists in self.objects.

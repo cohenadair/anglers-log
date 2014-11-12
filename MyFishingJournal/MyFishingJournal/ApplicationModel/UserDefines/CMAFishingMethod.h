@@ -8,7 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
-@interface CMAFishingMethod : NSObject
+@interface CMAFishingMethod : NSObject <NSCoding>
+
+@property (strong, nonatomic)NSString *name;
 
 // instance creation
 + (CMAFishingMethod *)withName: (NSString *)aName;
@@ -16,9 +18,11 @@
 // initialization
 - (id)initWithName: (NSString *)aName;
 
+// archiving
+- (id)initWithCoder:(NSCoder *)aDecoder;
+- (void)encodeWithCoder:(NSCoder *)aCoder;
+
 // editing
 - (void)edit: (CMAFishingMethod *)aNewFishingMethod;
-
-@property (strong, nonatomic)NSString *name;
 
 @end

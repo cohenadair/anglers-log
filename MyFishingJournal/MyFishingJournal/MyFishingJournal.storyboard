@@ -3,8 +3,6 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
-        <capability name="Alignment constraints to the first baseline" minToolsVersion="6.0"/>
-        <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
@@ -1073,13 +1071,13 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pictures" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fcl-MQ-yId">
-                                                    <rect key="frame" x="16" y="14" width="59" height="22"/>
+                                                    <rect key="frame" x="16" y="11" width="59" height="22"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EtH-3k-Rzk">
-                                                    <rect key="frame" x="477" y="9" width="54" height="30"/>
+                                                    <rect key="frame" x="477" y="7" width="54" height="30"/>
                                                     <state key="normal" title="Camera">
                                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
@@ -1088,7 +1086,7 @@
                                                     </connections>
                                                 </button>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xT8-NM-mlQ">
-                                                    <rect key="frame" x="539" y="9" width="45" height="30"/>
+                                                    <rect key="frame" x="539" y="7" width="45" height="30"/>
                                                     <state key="normal" title="Attach">
                                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
@@ -1098,13 +1096,13 @@
                                                 </button>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="Fcl-MQ-yId" firstAttribute="leading" secondItem="Lak-sh-fb4" secondAttribute="leadingMargin" constant="8" id="Cah-Dj-RSI"/>
-                                                <constraint firstItem="Fcl-MQ-yId" firstAttribute="top" secondItem="Lak-sh-fb4" secondAttribute="topMargin" constant="6" id="EgW-sX-nRq"/>
-                                                <constraint firstItem="xT8-NM-mlQ" firstAttribute="leading" secondItem="EtH-3k-Rzk" secondAttribute="trailing" constant="8" symbolic="YES" id="IR0-l0-eO9"/>
-                                                <constraint firstItem="EtH-3k-Rzk" firstAttribute="baseline" secondItem="Fcl-MQ-yId" secondAttribute="firstBaseline" id="QUO-Dw-p03"/>
-                                                <constraint firstAttribute="trailingMargin" secondItem="xT8-NM-mlQ" secondAttribute="trailing" constant="8" id="R6t-Jl-XBm"/>
-                                                <constraint firstItem="xT8-NM-mlQ" firstAttribute="baseline" secondItem="EtH-3k-Rzk" secondAttribute="baseline" id="hof-eW-uob"/>
-                                                <constraint firstAttribute="bottomMargin" secondItem="Fcl-MQ-yId" secondAttribute="bottom" constant="-1" id="rZP-md-PNz"/>
+                                                <constraint firstItem="Fcl-MQ-yId" firstAttribute="leading" secondItem="Lak-sh-fb4" secondAttribute="leadingMargin" constant="8" id="40i-bF-wgX"/>
+                                                <constraint firstItem="Fcl-MQ-yId" firstAttribute="top" secondItem="Lak-sh-fb4" secondAttribute="topMargin" constant="3" id="Eth-MF-b7U"/>
+                                                <constraint firstItem="xT8-NM-mlQ" firstAttribute="leading" secondItem="EtH-3k-Rzk" secondAttribute="trailing" constant="8" symbolic="YES" id="Pie-gt-BqU"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="xT8-NM-mlQ" secondAttribute="trailing" constant="8" id="VtQ-eS-UQl"/>
+                                                <constraint firstItem="EtH-3k-Rzk" firstAttribute="top" secondItem="Lak-sh-fb4" secondAttribute="topMargin" constant="-1" id="bbo-Uk-T8c"/>
+                                                <constraint firstItem="EtH-3k-Rzk" firstAttribute="baseline" secondItem="xT8-NM-mlQ" secondAttribute="baseline" id="i54-4f-e0V"/>
+                                                <constraint firstItem="Fcl-MQ-yId" firstAttribute="centerY" secondItem="EtH-3k-Rzk" secondAttribute="centerY" id="t1C-0f-nUf"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -1711,7 +1709,7 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="gpK-ox-KiN"/>
-        <segue reference="hIY-7h-4M5"/>
+        <segue reference="qAO-gb-5Yr"/>
         <segue reference="rQz-NV-wiY"/>
         <segue reference="iOf-th-u5i"/>
         <segue reference="ij7-4o-wMK"/>

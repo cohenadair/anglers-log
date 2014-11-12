@@ -191,6 +191,7 @@ NSInteger const SECTION_ADD = 2;
         if (!self.previousViewID == CMAViewControllerID_SingleLocation)
             [self setLocation:nil];
         
+        [[self journal] archive];
         [self performSegueToPreviousView];
     }
 }

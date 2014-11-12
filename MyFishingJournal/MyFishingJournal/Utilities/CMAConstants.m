@@ -16,4 +16,6 @@ NSString *const SET_FISHING_METHODS = @"Fishing Methods";
 NSString *const TOKEN_FISHING_METHODS = @", ";
 NSString *const TOKEN_LOCATION = @": ";
 
+NSString *const ARCHIVE_FILE_NAME = @"journal.db";
+
 CGFloat const TABLE_SECTION_SPACING = 20.0f;
