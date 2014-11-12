@@ -205,7 +205,9 @@ NSInteger const SECTION_FISHING_SPOT = 1;
 - (void)mapViewDidFinishRenderingMap:(MKMapView *)mapView fullyRendered:(BOOL)fullyRendered {
     [self.mapView setHidden:NO];
     [self.loadingMapView setHidden:YES];
-    [self configureForReadOnly];
+    
+    if (self.isReadOnly)
+        [self configureForReadOnly];
 }
 
 - (void)initializeMapView {

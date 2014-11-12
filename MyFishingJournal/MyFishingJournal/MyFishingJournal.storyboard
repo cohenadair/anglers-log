@@ -258,7 +258,7 @@
             <objects>
                 <tableViewController id="adr-BS-f2S" customClass="CMASingleLocationViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="eVA-Zu-3b5">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="556"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
@@ -338,6 +338,7 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <nil key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="editButton" destination="9gZ-tT-Mgi" id="dkm-M7-MWb"/>
                         <segue destination="aLM-pd-xcd" kind="unwind" identifier="unwindToAddEntryFromSingleLocation" unwindAction="unwindToAddEntry:" id="i4g-iX-B1F"/>
@@ -1622,6 +1623,7 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="IQ4-cE-Bal" sceneMemberID="viewController">
                     <toolbarItems/>
+                    <nil key="simulatedBottomBarMetrics"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="3aV-Fw-q8D">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -1694,10 +1696,10 @@
         <image name="rectile.png" width="92" height="93"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="iOf-th-u5i"/>
         <segue reference="hIY-7h-4M5"/>
         <segue reference="GZI-Xr-sAg"/>
-        <segue reference="y0h-hR-J5c"/>
-        <segue reference="iOf-th-u5i"/>
+        <segue reference="gpK-ox-KiN"/>
         <segue reference="ij7-4o-wMK"/>
     </inferredMetricsTieBreakers>
 </document>
