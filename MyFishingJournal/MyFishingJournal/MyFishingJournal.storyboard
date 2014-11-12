@@ -253,7 +253,7 @@
             </objects>
             <point key="canvasLocation" x="4126.5" y="1307"/>
         </scene>
-        <!--Single Location View Controller-->
+        <!--Single Location-->
         <scene sceneID="klA-32-wdo">
             <objects>
                 <tableViewController id="adr-BS-f2S" customClass="CMASingleLocationViewController" sceneMemberID="viewController">
@@ -262,20 +262,6 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="locationNameCell" textLabel="8Ta-5H-K1G" style="IBUITableViewCellStyleDefault" id="9BA-41-WTr">
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="9BA-41-WTr" id="H5b-7N-hQL">
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="8Ta-5H-K1G">
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                    </subviews>
-                                </tableViewCellContentView>
-                            </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="mapCell" rowHeight="215" id="c4R-x4-kUD">
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="c4R-x4-kUD" id="2LQ-3k-oks">
@@ -345,7 +331,7 @@
                             <outlet property="delegate" destination="adr-BS-f2S" id="CT5-K2-3xM"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="WzY-ql-Ziv">
+                    <navigationItem key="navigationItem" title="Single Location" id="WzY-ql-Ziv">
                         <barButtonItem key="rightBarButtonItem" title="Edit" id="9gZ-tT-Mgi">
                             <connections>
                                 <segue destination="Gid-I3-2h4" kind="presentation" identifier="fromSingleLocationToAddLocation" id="Qcx-rg-dpe"/>
@@ -1708,10 +1694,10 @@
         <image name="rectile.png" width="92" height="93"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="gpK-ox-KiN"/>
         <segue reference="qAO-gb-5Yr"/>
         <segue reference="rQz-NV-wiY"/>
-        <segue reference="iOf-th-u5i"/>
+        <segue reference="gpK-ox-KiN"/>
+        <segue reference="Qcx-rg-dpe"/>
         <segue reference="ij7-4o-wMK"/>
     </inferredMetricsTieBreakers>
 </document>
