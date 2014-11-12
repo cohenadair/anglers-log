@@ -1268,9 +1268,10 @@
                                         </textField>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="gaf-hb-amO" firstAttribute="centerY" secondItem="zKl-GC-REy" secondAttribute="centerY" id="Usz-fQ-Imk"/>
-                                        <constraint firstItem="gaf-hb-amO" firstAttribute="trailing" secondItem="zKl-GC-REy" secondAttribute="trailingMargin" id="dY0-nS-fsU"/>
-                                        <constraint firstItem="gaf-hb-amO" firstAttribute="leading" secondItem="zKl-GC-REy" secondAttribute="leadingMargin" id="eQV-Sj-uqP"/>
+                                        <constraint firstItem="gaf-hb-amO" firstAttribute="trailing" secondItem="zKl-GC-REy" secondAttribute="trailingMargin" id="C8p-cz-nSP"/>
+                                        <constraint firstItem="gaf-hb-amO" firstAttribute="top" secondItem="zKl-GC-REy" secondAttribute="topMargin" constant="-1" id="DXe-9V-abg"/>
+                                        <constraint firstItem="gaf-hb-amO" firstAttribute="leading" secondItem="zKl-GC-REy" secondAttribute="leadingMargin" id="VTe-gQ-Dp4"/>
+                                        <constraint firstAttribute="centerY" secondItem="gaf-hb-amO" secondAttribute="centerY" id="uCW-X5-wky"/>
                                     </constraints>
                                 </tableViewCellContentView>
                             </tableViewCell>
@@ -1303,18 +1304,12 @@
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="7NI-PI-kA8" id="3Nf-Lm-4Tg">
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add Fishing Spot" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="T4y-mZ-udA">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Add Fishing Spot" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="T4y-mZ-udA">
                                             <rect key="frame" x="15" y="11" width="543" height="21"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
-                                    <constraints>
-                                        <constraint firstItem="T4y-mZ-udA" firstAttribute="top" secondItem="3Nf-Lm-4Tg" secondAttribute="topMargin" constant="3" id="0DR-xk-k5h"/>
-                                        <constraint firstItem="T4y-mZ-udA" firstAttribute="leading" secondItem="3Nf-Lm-4Tg" secondAttribute="leadingMargin" constant="7" id="0jX-aW-xna"/>
-                                        <constraint firstAttribute="trailingMargin" secondItem="T4y-mZ-udA" secondAttribute="trailing" constant="1" id="FYr-8a-XLM"/>
-                                        <constraint firstItem="T4y-mZ-udA" firstAttribute="centerY" secondItem="3Nf-Lm-4Tg" secondAttribute="centerY" id="vZ2-99-150"/>
-                                    </constraints>
                                 </tableViewCellContentView>
                                 <connections>
                                     <segue destination="IuV-Wt-22U" kind="show" identifier="fromAddFishingSpotCellToAddFishingSpot" id="dOc-qe-cTC"/>
