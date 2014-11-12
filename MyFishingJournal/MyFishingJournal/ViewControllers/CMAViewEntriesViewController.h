@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface CMAViewEntriesViewController : UITableViewController
+@interface CMAViewEntriesViewController : UITableViewController <UIActionSheetDelegate>
 
 @end

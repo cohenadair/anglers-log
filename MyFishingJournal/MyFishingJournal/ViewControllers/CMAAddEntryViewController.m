@@ -283,17 +283,18 @@ NSString *const NO_SELECT = @"Not Selected";
         // referenced in the UIAlertView delegate protocol
         self.deleteImageIndexPath = [self.imageCollection indexPathForItemAtPoint:[sender locationInView:self.imageCollection]];
         
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Remove Picture" message:@"Do you want to remove this picture?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Delete", nil];
-        [alertView show];
+        UIActionSheet *actionSheet = [UIActionSheet new];
+        actionSheet = [actionSheet initWithTitle:@"Are you sure you want to remove this picture?" delegate:self cancelButtonTitle:@"No, keep it." destructiveButtonTitle:@"Yes, delete it." otherButtonTitles:nil];
+        [actionSheet showInView:self.view];
     }
 }
 
 #pragma mark - Alert View
 
-// handles all UIAlertViews results for this screen
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+// handles all UIActionSheets results for this screen
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
     // delete button
-    if (buttonIndex == 1)
+    if (buttonIndex == 0)
         if (self.deleteImageIndexPath != nil) {
             [self deleteImageFromCollectionAtIndexPath:self.deleteImageIndexPath];
             self.deleteImageIndexPath = nil;
