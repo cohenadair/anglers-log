@@ -82,16 +82,6 @@ NSInteger const SECTION_ADD = 2;
     return 1;
 }
 
-// Implemented to remove warning when view is displayed.
-- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 44;
-}
-
-// Implemented to remove warning when view is displayed.
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 44;
-}
-
 - (BOOL)tableView:(UITableView *)tableView shouldIndentWhileEditingRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == SECTION_FISHING_SPOTS)
         return YES;

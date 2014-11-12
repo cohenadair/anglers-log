@@ -35,6 +35,12 @@ NSInteger const FISHING_SPOT_SECTION = 2;
     [self.tableView setTableFooterView:[[UIView alloc] initWithFrame:CGRectZero]]; // removes empty cells at the end of the list
 }
 
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
+    [self initializeMapView];
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
 }
@@ -194,23 +200,20 @@ NSInteger const FISHING_SPOT_SECTION = 2;
     return [self.location mapRegion];
 }
 
-- (void)mapViewWillStartLoadingMap:(MKMapView *)mapView {
+- (void)mapViewDidFinishRenderingMap:(MKMapView *)mapView fullyRendered:(BOOL)fullyRendered {
+    if (self.previousViewID == CMAViewControllerID_SingleEntry)
+        [self configureForReadOnly];
+        
+    [self.mapView setHidden:NO];
+    [self.loadingMapView setHidden:YES];
+}
+
+- (void)initializeMapView {
     if ([self.mapView.annotations count] <= 0)
         [self addFishingSpotsToMap:self.mapView];
     
     if (!self.didSetRegion)
         [self.mapView setRegion:[self getMapRegion] animated:NO];
-}
-
-- (void)mapViewDidFinishLoadingMap:(MKMapView *)mapView {
-    if (self.previousViewID == CMAViewControllerID_SingleEntry) {
-        [self configureForReadOnly];
-    }
-}
-
-- (void)mapViewDidFinishRenderingMap:(MKMapView *)mapView fullyRendered:(BOOL)fullyRendered {
-    [self.mapView setHidden:NO];
-    [self.loadingMapView setHidden:YES];
 }
 
 @end

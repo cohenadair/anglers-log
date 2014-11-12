@@ -38,16 +38,6 @@ NSInteger const INDEX_COORDINATES = 2;
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.locationManager = [CLLocationManager new];
-    [self.locationManager setDelegate:self];
-    
-    // Check for iOS 8. Without this guard the code will crash with "unknown selector" on iOS 7.
-    if ([self.locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)]) {
-        [self.locationManager requestWhenInUseAuthorization];
-    }
-    
-    [self.locationManager startUpdatingLocation];
-    
     if (!self.fishingSpot) {
         self.fishingSpot = [CMAFishingSpot new];
         self.isEditingFishingSpot = NO;
@@ -55,8 +45,27 @@ NSInteger const INDEX_COORDINATES = 2;
         self.fishingSpotNameTextField.text = self.fishingSpot.name;
         self.isEditingFishingSpot = YES;
     }
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
     
-    [self setMapRegion];
+    self.locationManager = [CLLocationManager new];
+    self.locationManager.delegate = self;
+    
+    // Check for iOS 8. Without this guard the code will crash with "unknown selector" on iOS 7.
+    if ([self.locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)]) {
+        [self.locationManager requestWhenInUseAuthorization];
+    }
+    
+    [self.locationManager startUpdatingLocation];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
+    if ([self.locationFromAddLocation fishingSpotCount] > 0)
+        [self setMapRegion];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -139,8 +148,6 @@ NSInteger const INDEX_COORDINATES = 2;
         else {
             if ([self.locationFromAddLocation fishingSpotCount] > 0)
                 region = [self.locationFromAddLocation mapRegion]; // set the correct region if there is already fishing spots for the location
-            else
-                region = MKCoordinateRegionMakeWithDistance([[self.locationManager location] coordinate], AREA_X, AREA_Y);
         }
         
         [self.mapView setRegion:[self.mapView regionThatFits:region] animated:NO];
@@ -148,18 +155,26 @@ NSInteger const INDEX_COORDINATES = 2;
     }
 }
 
-- (void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation {
-    if (!self.isEditingFishingSpot && !self.userLocationAdded && [self.locationFromAddLocation fishingSpotCount] <= 0) {
-        MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(userLocation.coordinate, AREA_X, AREA_Y);
-        [self.mapView setRegion:[self.mapView regionThatFits:region] animated:YES];
-        self.userLocationAdded = YES;
-    }
-}
-
 - (void)mapViewDidFinishRenderingMap:(MKMapView *)mapView fullyRendered:(BOOL)fullyRendered {
     [self.mapView setHidden:NO];
     [self.rectileImage setHidden:NO];
     [self.loadingMapView setHidden:YES];
+}
+
+#pragma mark - Location Manager Delegate
+
+- (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations {
+    if (!self.isEditingFishingSpot && !self.userLocationAdded && [self.locationFromAddLocation fishingSpotCount] <= 0) {
+        MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(manager.location.coordinate, AREA_X, AREA_Y);
+        [self.mapView setRegion:[self.mapView regionThatFits:region] animated:YES];
+        
+        self.userLocationAdded = YES;
+        [manager stopUpdatingLocation];
+    }
+}
+
+- (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error {
+    [CMAAlerts errorAlert:[NSString stringWithFormat:@"Failed to get user location. Error: %@", error.localizedDescription]];
 }
 
 @end
