@@ -10,12 +10,14 @@
 #import "CMAAppDelegate.h"
 #import "CMAAddLocationViewController.h"
 #import "CMASingleLocationViewController.h"
+#import "SWRevealViewController.h"
 
 @interface CMAEditSettingsViewController ()
 
 @property (strong, nonatomic)UIBarButtonItem *editButton;
 @property (weak, nonatomic)IBOutlet UIBarButtonItem *addButton;
 @property (weak, nonatomic)IBOutlet UIBarButtonItem *doneSelectingButton;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *menuButton;
 
 @property (strong, nonatomic)UIAlertView *addItemAlert;
 @property (strong, nonatomic)UIAlertView *editItemAlert;
@@ -33,6 +35,15 @@
     return [((CMAAppDelegate *)[[UIApplication sharedApplication] delegate]) journal];
 }
 
+#pragma mark - Side Bar Navigation
+
+- (void)initSideBarMenu {
+    [self.menuButton setTarget:self.revealViewController];
+    [self.menuButton setAction:@selector(revealToggle:)];
+    
+    [self.view addGestureRecognizer:self.revealViewController.panGestureRecognizer];
+}
+
 #pragma mark - View Management
 
 - (void)viewDidLoad {
@@ -40,8 +51,6 @@
     
     self.navigationItem.title = [self.userDefine name]; // sets title according to the setting that was clicked in the previous view
     self.navigationController.toolbarHidden = NO;
-    
-    [self initializeToolbar];
     
     // used to populate cells
     if ([self.userDefine.objects count] <= 0)
@@ -56,6 +65,13 @@
     
     [self initAddItemAlert];
     [self initEditItemAlert];
+    [self initializeToolbar];
+    
+    // enable side bar navigation unless the user is adding an entry
+    if (!self.isSelectingForAddEntry)
+        [self initSideBarMenu];
+    else
+        self.menuButton = nil;
     
     [self.tableView setTableFooterView:[[UIView alloc] initWithFrame:CGRectZero]]; // removes empty cells at the end of the list
 }

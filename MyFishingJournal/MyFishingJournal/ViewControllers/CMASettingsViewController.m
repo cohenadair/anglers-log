@@ -9,11 +9,12 @@
 #import "CMASettingsViewController.h"
 #import "CMAEditSettingsViewController.h"
 #import "CMAAppDelegate.h"
-#import "CMASegmentedControlTableViewCell.h"
+#import "SWRevealViewController.h"
 
 @interface CMASettingsViewController ()
 
-@property (strong, nonatomic)NSArray *settingLabels;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *menuButton;
+@property (weak, nonatomic) IBOutlet UISegmentedControl *unitsSegmentedControl;
 
 @end
 
@@ -25,15 +26,25 @@
     return [((CMAAppDelegate *)[[UIApplication sharedApplication] delegate]) journal];
 }
 
+#pragma mark - Side Bar Navigation
+
+- (void)initSideBarMenu {
+    [self.menuButton setTarget:self.revealViewController];
+    [self.menuButton setAction:@selector(revealToggle:)];
+    
+    [self.view addGestureRecognizer:self.revealViewController.panGestureRecognizer];
+}
+
 #pragma mark - View Management
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    self.settingLabels = [NSArray arrayWithArray:[[[self journal] userDefines] allKeys]];
-    
-    [self.tableView setRowHeight:44.0];
-    [self.tableView setTableFooterView:[[UIView alloc] initWithFrame:CGRectZero]]; // removes empty cells at the end of the list
+    [self initSideBarMenu];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    self.navigationController.toolbarHidden = YES;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -54,64 +65,10 @@
     return CGFLOAT_MIN;
 }
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    // Return the number of sections.
-    return 2;
-}
-
-// Returns the number of rows in section.
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    switch (section) {
-        case 0:
-            return [self.settingLabels count];
-            
-        case 1:
-            return 1;
-            
-        default:
-            return 0;
-    }
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    // user defines
-    if (indexPath.section == 0) {
-        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"settingsDisclosureCell" forIndexPath:indexPath];
-        cell.textLabel.text = [self.settingLabels objectAtIndex:indexPath.item];
-        return cell;
-    }
-    
-    // other settings
-    if (indexPath.section == 1) {
-        CMASegmentedControlTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"segmentedControlCell" forIndexPath:indexPath];
-        
-        [cell.label setText:@"Units"];
-        [cell.segmentedControl setTitle:@"Imperial" forSegmentAtIndex:0];
-        [cell.segmentedControl setTitle:@"Metric" forSegmentAtIndex:1];
-        [cell.segmentedControl setSelectedSegmentIndex:[[self journal] measurementSystem]];
-        [cell.segmentedControl addTarget:self action:@selector(clickMeasurementSystemControl:) forControlEvents:UIControlEventAllEvents];
-        
-        return cell;
-    }
-    
-    return nil;
-}
-
 #pragma mark - Events
 
-- (void)clickMeasurementSystemControl:(UISegmentedControl *)sender {
+- (IBAction)clickUnitsSegmentedControl:(UISegmentedControl *)sender {
     [[self journal] setMeasurementSystem:(CMAMeasuringSystemType)[sender selectedSegmentIndex]];
-}
-
-#pragma mark - Navigation
-
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    if ([segue.identifier isEqualToString:@"fromSettingsToEditSettings"]) {
-        CMAEditSettingsViewController *destination = [[segue.destinationViewController viewControllers] objectAtIndex:0];
-        
-        // sets the proper user define to be displayed in the Edit Settings view
-        destination.userDefine = [[self journal] userDefineNamed:[[sender textLabel] text]];
-    }
 }
 
 @end

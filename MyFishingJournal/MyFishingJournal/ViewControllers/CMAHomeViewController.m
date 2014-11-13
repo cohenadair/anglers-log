@@ -9,17 +9,36 @@
 #import "CMAHomeViewController.h"
 #import "CMAAddEntryViewController.h"
 #import "CMAConstants.h"
+#import "SWRevealViewController.h"
 
 @interface CMAHomeViewController ()
+
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *menuButton;
 
 @end
 
 @implementation CMAHomeViewController
 
+#pragma mark - Side Bar Navigation
+
+- (void)initSideBarMenu {
+    [self.menuButton setTarget:self.revealViewController];
+    [self.menuButton setAction:@selector(revealToggle:)];
+    
+    [self.view addGestureRecognizer:self.revealViewController.panGestureRecognizer];
+}
+
 #pragma mark - View Management
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    [self initSideBarMenu];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    self.navigationController.toolbarHidden = YES;
 }
 
 - (void)didReceiveMemoryWarning {

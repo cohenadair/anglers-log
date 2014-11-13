@@ -44,10 +44,12 @@ NSInteger const SECTION_FISHING_SPOT = 1;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
     self.navigationItem.title = [self.location name];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
     [self initializeMapView];
 }
 

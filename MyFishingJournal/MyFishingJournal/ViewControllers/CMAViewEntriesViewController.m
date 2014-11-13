@@ -12,12 +12,14 @@
 #import "CMATouchSegmentedControl.h"
 #import "CMAEntryTableViewCell.h"
 #import "CMAAppDelegate.h"
+#import "SWRevealViewController.h"
 
 @interface CMAViewEntriesViewController ()
 
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *deleteButton;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *addButton;
 @property (weak, nonatomic) IBOutlet CMATouchSegmentedControl *organizeControl;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *menuButton;
 
 @property (strong, nonatomic)NSDateFormatter *dateFormatter;
 @property (strong, nonatomic)UIActionSheet *sortActionSheet;
@@ -30,6 +32,15 @@
 
 - (CMAJournal *)journal {
     return [((CMAAppDelegate *)[[UIApplication sharedApplication] delegate]) journal];
+}
+
+#pragma mark - Side Bar Navigation
+
+- (void)initSideBarMenu {
+    [self.menuButton setTarget:self.revealViewController];
+    [self.menuButton setAction:@selector(revealToggle:)];
+    
+    [self.view addGestureRecognizer:self.revealViewController.panGestureRecognizer];
 }
 
 #pragma mark - View Management
@@ -46,6 +57,7 @@
         [self.deleteButton setEnabled:NO];
     
     [self initSortActionSheet];
+    [self initSideBarMenu];
     
     [self.tableView setTableFooterView:[[UIView alloc] initWithFrame:CGRectZero]]; // removes empty cells at the end of the list
 }

@@ -53,7 +53,8 @@
 		E7A51EB219F4938C009BDC20 /* CMAAddLocationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7A51EB119F4938C009BDC20 /* CMAAddLocationViewController.m */; };
 		E7A51EBA19F4ADC2009BDC20 /* CMAConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = E7A51EB919F4ADC2009BDC20 /* CMAConstants.m */; };
 		E7A6883C19F610A100B032E3 /* CMASingleLocationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7A6883B19F610A100B032E3 /* CMASingleLocationViewController.m */; };
-		E7A6884619F73E0100B032E3 /* CMASegmentedControlTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E7A6884519F73E0100B032E3 /* CMASegmentedControlTableViewCell.m */; };
+		E7C29D101A143A1600015B42 /* SWRevealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7C29D0F1A143A1600015B42 /* SWRevealViewController.m */; };
+		E7C29D161A1445AE00015B42 /* CMASideMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7C29D151A1445AE00015B42 /* CMASideMenuViewController.m */; };
 		E7C926D319EE37750010A9FE /* MyFishingJournal.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E7C926D219EE37750010A9FE /* MyFishingJournal.storyboard */; };
 		E7C926D719EE3BC30010A9FE /* CMAHomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7C926D619EE3BC30010A9FE /* CMAHomeViewController.m */; };
 		E7C926DA19EEC7BC0010A9FE /* CMAAddEntryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7C926D919EEC7BC0010A9FE /* CMAAddEntryViewController.m */; };
@@ -132,8 +133,10 @@
 		E7A51EB919F4ADC2009BDC20 /* CMAConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAConstants.m; path = Utilities/CMAConstants.m; sourceTree = "<group>"; };
 		E7A6883A19F610A100B032E3 /* CMASingleLocationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMASingleLocationViewController.h; path = ViewControllers/CMASingleLocationViewController.h; sourceTree = "<group>"; };
 		E7A6883B19F610A100B032E3 /* CMASingleLocationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMASingleLocationViewController.m; path = ViewControllers/CMASingleLocationViewController.m; sourceTree = "<group>"; };
-		E7A6884419F73E0100B032E3 /* CMASegmentedControlTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMASegmentedControlTableViewCell.h; path = CustomViews/CMASegmentedControlTableViewCell.h; sourceTree = "<group>"; };
-		E7A6884519F73E0100B032E3 /* CMASegmentedControlTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMASegmentedControlTableViewCell.m; path = CustomViews/CMASegmentedControlTableViewCell.m; sourceTree = "<group>"; };
+		E7C29D0E1A143A1600015B42 /* SWRevealViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SWRevealViewController.h; sourceTree = "<group>"; };
+		E7C29D0F1A143A1600015B42 /* SWRevealViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SWRevealViewController.m; sourceTree = "<group>"; };
+		E7C29D141A1445AE00015B42 /* CMASideMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMASideMenuViewController.h; path = ViewControllers/CMASideMenuViewController.h; sourceTree = "<group>"; };
+		E7C29D151A1445AE00015B42 /* CMASideMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMASideMenuViewController.m; path = ViewControllers/CMASideMenuViewController.m; sourceTree = "<group>"; };
 		E7C926D219EE37750010A9FE /* MyFishingJournal.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MyFishingJournal.storyboard; sourceTree = "<group>"; };
 		E7C926D519EE3BC30010A9FE /* CMAHomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAHomeViewController.h; path = ViewControllers/CMAHomeViewController.h; sourceTree = "<group>"; };
 		E7C926D619EE3BC30010A9FE /* CMAHomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAHomeViewController.m; path = ViewControllers/CMAHomeViewController.m; sourceTree = "<group>"; };
@@ -206,6 +209,7 @@
 		E70B637B19D3A8E400DFBA85 /* MyFishingJournal */ = {
 			isa = PBXGroup;
 			children = (
+				E7C29D0C1A143A1600015B42 /* Libraries */,
 				E738583B19FCD49100FE122B /* Images */,
 				E7A6883D19F7321E00B032E3 /* CustomViews */,
 				E7C9272019EF90C00010A9FE /* Utilities */,
@@ -296,14 +300,29 @@
 		E7A6883D19F7321E00B032E3 /* CustomViews */ = {
 			isa = PBXGroup;
 			children = (
-				E7A6884419F73E0100B032E3 /* CMASegmentedControlTableViewCell.h */,
-				E7A6884519F73E0100B032E3 /* CMASegmentedControlTableViewCell.m */,
 				E78BB7E11A1309680082004B /* CMAEntryTableViewCell.h */,
 				E78BB7E21A1309680082004B /* CMAEntryTableViewCell.m */,
 				E78BB7E71A133A940082004B /* CMATouchSegmentedControl.h */,
 				E78BB7E81A133A940082004B /* CMATouchSegmentedControl.m */,
 			);
 			name = CustomViews;
+			sourceTree = "<group>";
+		};
+		E7C29D0C1A143A1600015B42 /* Libraries */ = {
+			isa = PBXGroup;
+			children = (
+				E7C29D0D1A143A1600015B42 /* SWRevealViewController */,
+			);
+			path = Libraries;
+			sourceTree = "<group>";
+		};
+		E7C29D0D1A143A1600015B42 /* SWRevealViewController */ = {
+			isa = PBXGroup;
+			children = (
+				E7C29D0E1A143A1600015B42 /* SWRevealViewController.h */,
+				E7C29D0F1A143A1600015B42 /* SWRevealViewController.m */,
+			);
+			path = SWRevealViewController;
 			sourceTree = "<group>";
 		};
 		E7C926D419EE3B320010A9FE /* ViewControllers */ = {
@@ -329,6 +348,8 @@
 				E7A6883B19F610A100B032E3 /* CMASingleLocationViewController.m */,
 				E738583E19FD930000FE122B /* CMASingleEntryViewController.h */,
 				E738583F19FD930000FE122B /* CMASingleEntryViewController.m */,
+				E7C29D141A1445AE00015B42 /* CMASideMenuViewController.h */,
+				E7C29D151A1445AE00015B42 /* CMASideMenuViewController.m */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -449,13 +470,14 @@
 				E78BB7E91A133A940082004B /* CMATouchSegmentedControl.m in Sources */,
 				E7C926DA19EEC7BC0010A9FE /* CMAAddEntryViewController.m in Sources */,
 				E78BB7D91A0BD9F80082004B /* CMAAddFishingSpotViewController.m in Sources */,
+				E7C29D161A1445AE00015B42 /* CMASideMenuViewController.m in Sources */,
 				E7C926E319EEC9DC0010A9FE /* CMAStatisticsViewController.m in Sources */,
 				E7A51E9E19EFAA0E009BDC20 /* CMASettingsViewController.m in Sources */,
 				E7A51EB219F4938C009BDC20 /* CMAAddLocationViewController.m in Sources */,
 				E7C9271F19EF4BEB0010A9FE /* CMAViewEntriesViewController.m in Sources */,
 				E72669C919E6F4A8003C8E0B /* CMAJournal.m in Sources */,
-				E7A6884619F73E0100B032E3 /* CMASegmentedControlTableViewCell.m in Sources */,
 				E738585A19FE0A3400FE122B /* CMAFishingMethod.m in Sources */,
+				E7C29D101A143A1600015B42 /* SWRevealViewController.m in Sources */,
 				E738585019FE093700FE122B /* CMAFishingSpot.m in Sources */,
 				E7A6883C19F610A100B032E3 /* CMASingleLocationViewController.m in Sources */,
 				E7C926D719EE3BC30010A9FE /* CMAHomeViewController.m in Sources */,
