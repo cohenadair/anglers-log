@@ -27,6 +27,8 @@
     [_userDefines setValue:[CMAUserDefine withName:SET_LOCATIONS] forKey:SET_LOCATIONS];
     
     [self setMeasurementSystem:CMAMeasuringSystemType_Imperial];
+    [self setEntrySortMethod:CMAEntrySortMethod_Date];
+    [self setEntrySortOrder:CMASortOrder_Ascending];
     
     return self;
 }
@@ -38,6 +40,8 @@
         _entries = [aDecoder decodeObjectForKey:@"CMAJournalEntries"];
         _userDefines = [aDecoder decodeObjectForKey:@"CMAJournalUserDefines"];
         _measurementSystem = [aDecoder decodeIntegerForKey:@"CMAJournalMeasurmentSystem"];
+        _entrySortMethod = [aDecoder decodeIntegerForKey:@"CMAJournalEntrySortMethod"];
+        _entrySortOrder = [aDecoder decodeIntegerForKey:@"CMAJournalEntrySortOrder"];
     }
     
     return self;
@@ -47,6 +51,8 @@
     [aCoder encodeObject:self.entries forKey:@"CMAJournalEntries"];
     [aCoder encodeObject:self.userDefines forKey:@"CMAJournalUserDefines"];
     [aCoder encodeInteger:self.measurementSystem forKey:@"CMAJournalMeasurmentSystem"];
+    [aCoder encodeInteger:self.entrySortMethod forKey:@"CMAJournalEntrySortMethod"];
+    [aCoder encodeInteger:self.entrySortOrder forKey:@"CMAJournalEntrySortOrder"];
 }
 
 - (BOOL)archive {
@@ -154,6 +160,15 @@
         return @" kg";
     else
         return @"Kilograms";
+}
+
+#pragma mark - Sorting
+
+- (void)sortEntriesBy: (CMAEntrySortMethod)aSortMethod order: (CMASortOrder)aSortOrder {
+    self.entrySortOrder = aSortOrder;
+    self.entrySortMethod = aSortMethod;
+    
+    NSLog(@"Sorting!");
 }
 
 @end

@@ -18,8 +18,8 @@
 
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *deleteButton;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *addButton;
-@property (weak, nonatomic) IBOutlet CMATouchSegmentedControl *organizeControl;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *menuButton;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *sortButton;
 
 @property (strong, nonatomic)NSDateFormatter *dateFormatter;
 @property (strong, nonatomic)UIActionSheet *sortActionSheet;
@@ -55,8 +55,7 @@
     
     if ([[self journal] entryCount] <= 0)
         [self.deleteButton setEnabled:NO];
-    
-    [self initSortActionSheet];
+
     [self initSideBarMenu];
     
     [self.tableView setTableFooterView:[[UIView alloc] initWithFrame:CGRectZero]]; // removes empty cells at the end of the list
@@ -66,7 +65,6 @@
     [super viewWillAppear:animated];
     
     self.navigationController.toolbarHidden = NO;
-    [self resetOrganizeControl];
     
     if ([[self journal] entryCount] > 0)
         self.deleteButton.enabled = YES;
@@ -125,69 +123,8 @@
         if ([tableView numberOfRowsInSection:0] == 0) {
             [self enableToolbarButtons];
             [self.deleteButton setEnabled:NO];
-            [self resetOrganizeControl];
         }
     }
-}
-
-#pragma mark - Action Sheet Delegate
-
-- (void)initSortActionSheet {
-    self.sortActionSheet = [UIActionSheet new];
-    self.sortActionSheet = [self.sortActionSheet initWithTitle:@"Sort By" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Date", @"Species", @"Location", @"Length", @"Weight", @"Bait Used", nil];
-}
-
-- (void)sortActionSheetButtonClick: (NSInteger)buttonIndex {
-    NSString *sortTitle = [self.organizeControl titleForSegmentAtIndex:0];
-    
-    switch (buttonIndex) {
-        case 0:
-            // date
-            NSLog(@"Clicked date.");
-            sortTitle = @"Sort By: Date";
-            break;
-            
-        case 1:
-            // species
-            NSLog(@"Clicked species.");
-            sortTitle = @"Sort By: Species";
-            break;
-            
-        case 2:
-            // location
-            NSLog(@"Clicked location.");
-            sortTitle = @"Sort By: Location";
-            break;
-            
-        case 3:
-            // length
-            NSLog(@"Clicked length.");
-            sortTitle = @"Sort By: Length";
-            break;
-            
-        case 4:
-            // weight
-            NSLog(@"Clicked weight.");
-            sortTitle = @"Sort By: Weight";
-            break;
-            
-        case 5:
-            // bait used
-            NSLog(@"Clicked bait used.");
-            sortTitle = @"Sort By: Bait Used";
-            break;
-            
-        default:
-            NSLog(@"Invalid action sheet button index.");
-            break;
-    }
-    
-    [self.organizeControl setTitle:sortTitle forSegmentAtIndex:0];
-}
-
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
-    if (actionSheet == self.sortActionSheet)
-        [self sortActionSheetButtonClick:buttonIndex];
 }
 
 #pragma mark - Events
@@ -196,16 +133,16 @@
     [self.tableView setEditing:NO animated:YES];
     [self.deleteButton setEnabled:YES];
     [self.addButton setEnabled:YES];
-    [self.organizeControl setEnabled:YES];
+    [self.sortButton setEnabled:YES];
     
-    self.navigationItem.rightBarButtonItem = nil;
+    self.navigationItem.rightBarButtonItem = self.sortButton;
 }
 
 - (void)disableToolbarButtons {
     [self.tableView setEditing:YES animated:YES];
     [self.deleteButton setEnabled:NO];
     [self.addButton setEnabled:NO];
-    [self.organizeControl setEnabled:NO];
+    [self.sortButton setEnabled:NO];
     
     // add a done button that will be used to exit editing mode
     UIBarButtonItem *doneButton = [UIBarButtonItem new];
@@ -221,11 +158,6 @@
 - (void)clickDoneButton {
     [self enableToolbarButtons];
     [[self journal] archive];
-}
-
-- (IBAction)selectedOrganizeControl:(CMATouchSegmentedControl *)sender {
-    if ([sender selectedSegmentIndex] == 0)
-        [self.sortActionSheet showInView:self.view];
 }
 
 #pragma mark - Navigation
@@ -244,15 +176,9 @@
 }
 
 - (IBAction)unwindToViewEntries:(UIStoryboardSegue *)segue {
-    
-}
+    if ([segue.identifier isEqualToString:@"unwindToViewEntriesFromEntrySorting"]) {
 
-#pragma mark - Organize Segmented Control
-
-- (void)resetOrganizeControl {
-    [self.organizeControl setEnabled:[[self journal] entryCount] > 0];
-    [self.organizeControl setSelectedSegmentIndex:-1];
-    [self.organizeControl setTitle:@"Sort" forSegmentAtIndex:0];
+    }
 }
 
 @end

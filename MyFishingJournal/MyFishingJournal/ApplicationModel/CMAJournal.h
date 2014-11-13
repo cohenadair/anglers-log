@@ -16,6 +16,8 @@
 @property (strong, nonatomic)NSMutableArray *entries;
 @property (strong, nonatomic)NSMutableDictionary *userDefines;
 @property (nonatomic)CMAMeasuringSystemType measurementSystem;
+@property (nonatomic)CMAEntrySortMethod entrySortMethod;
+@property (nonatomic)CMASortOrder entrySortOrder;
 
 // archiving
 - (id)initWithCoder:(NSCoder *)aDecoder;
@@ -37,5 +39,8 @@
 - (CMAEntry *)entryDated: (NSDate *)aDate;
 - (NSString *)lengthUnitsAsString: (BOOL)shorthand;
 - (NSString *)weightUnitsAsString: (BOOL)shorthand;
+
+// sorting
+- (void)sortEntriesBy: (CMAEntrySortMethod)aSortMethod order: (CMASortOrder)aSortOrder;
 
 @end
