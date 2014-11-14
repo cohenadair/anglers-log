@@ -28,7 +28,7 @@
     
     [self setMeasurementSystem:CMAMeasuringSystemType_Imperial];
     [self setEntrySortMethod:CMAEntrySortMethod_Date];
-    [self setEntrySortOrder:CMASortOrder_Ascending];
+    [self setEntrySortOrder:CMASortOrder_Descending];
     
     return self;
 }
@@ -168,7 +168,51 @@
     self.entrySortOrder = aSortOrder;
     self.entrySortMethod = aSortMethod;
     
-    NSLog(@"Sorting!");
+    switch (self.entrySortMethod) {
+        case CMAEntrySortMethod_Date:
+            self.entries = [[self.entries sortedArrayUsingComparator:^NSComparisonResult(CMAEntry *e1, CMAEntry *e2){
+                return [e1.date compare:e2.date];
+            }] mutableCopy];
+            break;
+            
+        case CMAEntrySortMethod_Species:
+            self.entries = [[self.entries sortedArrayUsingComparator:^NSComparisonResult(CMAEntry *e1, CMAEntry *e2){
+                return [e1.fishSpecies.name compare:e2.fishSpecies.name];
+            }] mutableCopy];
+            break;
+        
+        case CMAEntrySortMethod_Location:
+            self.entries = [[self.entries sortedArrayUsingComparator:^NSComparisonResult(CMAEntry *e1, CMAEntry *e2){
+                return [e1.location.name compare:e2.location.name];
+            }] mutableCopy];
+            break;
+        
+        case CMAEntrySortMethod_Length:
+            self.entries = [[self.entries sortedArrayUsingComparator:^NSComparisonResult(CMAEntry *e1, CMAEntry *e2){
+                return [e1.fishLength compare:e2.fishLength];
+            }] mutableCopy];
+            break;
+        
+        case CMAEntrySortMethod_Weight:
+            self.entries = [[self.entries sortedArrayUsingComparator:^NSComparisonResult(CMAEntry *e1, CMAEntry *e2){
+                return [e1.fishWeight compare:e2.fishWeight];
+            }] mutableCopy];
+            break;
+        
+        case CMAEntrySortMethod_BaitUsed:
+            self.entries = [[self.entries sortedArrayUsingComparator:^NSComparisonResult(CMAEntry *e1, CMAEntry *e2){
+                return [e1.baitUsed.name compare:e2.baitUsed.name];
+            }] mutableCopy];
+            break;
+            
+        default:
+            NSLog(@"Invalid CMASortMethod in [aCMAJournal sortEntriesBy].");
+            break;
+    }
+    
+    // reverse the array order if needed
+    if (self.entrySortOrder == CMASortOrder_Descending)
+       self.entries = [[[self.entries reverseObjectEnumerator] allObjects] mutableCopy];
 }
 
 @end

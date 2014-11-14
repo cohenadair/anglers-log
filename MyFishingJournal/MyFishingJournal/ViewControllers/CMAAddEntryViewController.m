@@ -138,12 +138,16 @@ NSString *const NO_SELECT = @"Not Selected";
         [self.quantityTextField setText:self.entry.fishQuantity.stringValue];
     
     // fish length
-    if (self.entry.fishLength)
+    if ([self.entry.fishLength integerValue] != -1)
         [self.lengthTextField setText:self.entry.fishLength.stringValue];
+    else
+        [self.lengthTextField setText:@"0"];
     
     // fish weight
-    if (self.entry.fishWeight)
+    if ([self.entry.fishWeight integerValue] != -1)
         [self.weightTextField setText:self.entry.fishWeight.stringValue];
+    else
+        [self.weightTextField setText:@"0"];
     
     // pictures
     [self.imageCollection reloadData];
@@ -253,6 +257,7 @@ NSString *const NO_SELECT = @"Not Selected";
         if (!self.isEditingEntry)
             [self setEntry:nil];
         
+        [[self journal] sortEntriesBy:[self journal].entrySortMethod order:[self journal].entrySortOrder];
         [[self journal] archive];
         [self performSegueToPreviousView];
     }
@@ -417,7 +422,7 @@ NSString *const NO_SELECT = @"Not Selected";
         CMABait *bait = [[[self journal] userDefineNamed:SET_BAITS] objectNamed:[self.baitUsedDetailLabel text]];
         [anEntry setBaitUsed:bait];
     } else {
-        [anEntry setBaitUsed:nil];
+        [anEntry setBaitUsed:[CMABait withName:@""]];
     }
     
     // fishing methods
@@ -440,7 +445,7 @@ NSString *const NO_SELECT = @"Not Selected";
         NSNumber *length = [NSNumber numberWithInteger:[[self.lengthTextField text] integerValue]];
         [anEntry setFishLength:length];
     } else {
-        [anEntry setFishLength:nil];
+        [anEntry setFishLength:[NSNumber numberWithInteger:-1]];
     }
     
     // fish weight
@@ -448,7 +453,7 @@ NSString *const NO_SELECT = @"Not Selected";
         NSNumber *weight = [NSNumber numberWithInteger:[[self.weightTextField text] integerValue]];
         [anEntry setFishWeight:weight];
     } else {
-        [anEntry setFishWeight:nil];
+        [anEntry setFishWeight:[NSNumber numberWithInteger:-1]];
     }
     
     // pictures

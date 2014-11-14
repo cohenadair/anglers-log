@@ -87,9 +87,11 @@
         return;
     }
     
+    // sort the journal's entries
     [self setSortMethod:selectedIndexPath.item];
     [self setSortOrder:(CMASortOrder)[self.sortOrderControl selectedSegmentIndex]];
     [[self journal] sortEntriesBy:self.sortMethod order:self.sortOrder];
+    [[self journal] archive];
     
     [self performUnwindToViewEntriesSegue];
 }

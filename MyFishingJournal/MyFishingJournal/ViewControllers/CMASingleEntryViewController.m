@@ -75,14 +75,14 @@
         [self.quantityDetailLabel setText:[self.entry.fishQuantity stringValue]];
     
     // length
-    if (self.entry.fishLength)
+    if ([self.entry.fishLength integerValue] > 0)
         temp = [NSString stringWithFormat:@"%@%@", self.entry.fishLength.stringValue, [[self journal] lengthUnitsAsString:YES]];
     else
         temp = naString;
     [self.lengthDetailLabel setText:temp];
     
     // weight
-    if (self.entry.fishWeight)
+    if ([self.entry.fishWeight integerValue] > 0)
         temp = [NSString stringWithFormat:@"%@%@", self.entry.fishWeight.stringValue, [[self journal] weightUnitsAsString:YES]];
     else
         temp = naString;
@@ -95,7 +95,7 @@
         [self.methodsDetailLabel setText:naString];
     
     // bait used
-    if (self.entry.baitUsed)
+    if (![self.entry.baitUsed.name isEqualToString:@""])
         [self.baitUsedDetailLabel setText:self.entry.baitUsed.name];
     else
         [self.baitUsedDetailLabel setText:naString];
