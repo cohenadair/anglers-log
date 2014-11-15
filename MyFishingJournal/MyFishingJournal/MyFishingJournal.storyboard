@@ -231,12 +231,6 @@
                         </connections>
                     </tableView>
                     <toolbarItems>
-                        <barButtonItem style="plain" systemItem="flexibleSpace" id="tgZ-wP-HI4"/>
-                        <barButtonItem enabled="NO" style="plain" id="NDN-bp-yma">
-                            <connections>
-                                <action selector="clickDoneSelectingButton:" destination="6A2-09-VCg" id="Y5I-u5-841"/>
-                            </connections>
-                        </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="s75-WA-yBg"/>
                         <barButtonItem systemItem="add" id="oAT-Nv-Fd9">
                             <connections>
@@ -251,7 +245,6 @@
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="addButton" destination="oAT-Nv-Fd9" id="X0S-ah-TEI"/>
-                        <outlet property="doneSelectingButton" destination="NDN-bp-yma" id="UjO-pi-I8k"/>
                         <outlet property="menuButton" destination="jB7-or-ZZq" id="fhy-Zm-Lld"/>
                         <segue destination="ei6-rd-qrR" kind="unwind" identifier="unwindToAddEntryFromEditSettings" unwindAction="unwindToAddEntry:" id="hnK-Ch-Ono"/>
                         <segue destination="IQ4-cE-Bal" kind="show" identifier="fromEditSettingsToSingleLocation" id="gpK-ox-KiN"/>

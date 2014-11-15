@@ -15,9 +15,9 @@
 @interface CMAEditSettingsViewController ()
 
 @property (strong, nonatomic)UIBarButtonItem *editButton;
+@property (strong, nonatomic)UIBarButtonItem *doneSelectingButton;
 @property (weak, nonatomic)IBOutlet UIBarButtonItem *addButton;
-@property (weak, nonatomic)IBOutlet UIBarButtonItem *doneSelectingButton;
-@property (weak, nonatomic) IBOutlet UIBarButtonItem *menuButton;
+@property (weak, nonatomic)IBOutlet UIBarButtonItem *menuButton;
 
 @property (strong, nonatomic)UIAlertView *addItemAlert;
 @property (strong, nonatomic)UIAlertView *editItemAlert;
@@ -93,15 +93,11 @@
 #pragma mark - Toolbar Initializing
 
 - (void)initializeToolbar {
-    UIBarButtonSystemItem editItem;
-    
     // remove editing button for non-string defines
-    if (![self.userDefine isSetOfStrings]) {
-        editItem = UIBarButtonSystemItemTrash;
-    } else
-        editItem = UIBarButtonSystemItemEdit;
-    
-    self.editButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:editItem target:self action:@selector(clickEditButton:)];
+    if (![self.userDefine isSetOfStrings])
+        self.editButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemTrash target:self action:@selector(clickEditButton:)];
+    else
+        self.editButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"edit.png"] style:UIBarButtonItemStylePlain target:self action:@selector(clickEditButton:)];
     
     NSMutableArray *barItems = [self.toolbarItems mutableCopy];
     [barItems insertObject:self.editButton atIndex:0];
@@ -236,16 +232,20 @@
     }
 }
 
-#pragma mark - Toolbar Manipulation
+#pragma mark - Navigation Bar Manipulation
 
-// Shows or hides the "Done Selecting" button in the UIToolBar.
+// Shows or hides the "Done Selecting" button in the UINavigationBar.
 // Method is only used when selecting cells for the Add Entry view.
 - (void)toggleDoneSelectingButton: (BOOL)show {
+    // initialize button if it hasn't been already
+    if (!self.doneSelectingButton)
+        self.doneSelectingButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"checkmark.png"] style:UIBarButtonItemStylePlain target:self action:@selector(clickDoneSelectingButton)];
+    
     if (show) {
-        [self.doneSelectingButton setTitle:@"Done Selecting"];
+        [self.navigationItem setRightBarButtonItem:self.doneSelectingButton];
         [self.doneSelectingButton setEnabled:YES];
     } else {
-        [self.doneSelectingButton setTitle:@""];
+        [self.navigationItem setRightBarButtonItem:nil];
         [self.doneSelectingButton setEnabled:NO];
     }
 }
@@ -298,7 +298,6 @@
     [self.tableView setEditing:YES animated:YES];
     [self.editButton setEnabled:NO];
     [self.addButton setEnabled:NO];
-    [self.doneSelectingButton setEnabled:NO];
     
     // add a done button that will be used to exit editing mode
     UIBarButtonItem *doneButton = [UIBarButtonItem new];
@@ -319,7 +318,7 @@
     if (self.isSelectingMultiple)
         [self.doneSelectingButton setEnabled:YES];
     
-    self.navigationItem.rightBarButtonItem = nil;
+    self.navigationItem.rightBarButtonItem = self.doneSelectingButton;
     
     [self toggleCellSelectionStyles:UITableViewCellSelectionStyleNone];
 }
@@ -345,7 +344,7 @@
     [self toggleEditMode:NO];
 }
 
-- (IBAction)clickDoneSelectingButton:(UIBarButtonItem *)sender {
+- (void)clickDoneSelectingButton {
     self.selectedCellLabelText = [self stringFromSelectedCells];
     [self performSegueWithIdentifier:@"unwindToAddEntryFromEditSettings" sender:self];
 }
