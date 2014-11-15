@@ -71,7 +71,7 @@
     if (!self.isSelectingForAddEntry)
         [self initSideBarMenu];
     else
-        self.menuButton = nil;
+        self.navigationItem.leftBarButtonItem = self.navigationItem.backBarButtonItem;
     
     [self.tableView setTableFooterView:[[UIView alloc] initWithFrame:CGRectZero]]; // removes empty cells at the end of the list
 }
@@ -239,7 +239,7 @@
 - (void)toggleDoneSelectingButton: (BOOL)show {
     // initialize button if it hasn't been already
     if (!self.doneSelectingButton)
-        self.doneSelectingButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"checkmark.png"] style:UIBarButtonItemStylePlain target:self action:@selector(clickDoneSelectingButton)];
+        self.doneSelectingButton = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleDone target:self action:@selector(clickDoneSelectingButton)];
     
     if (show) {
         [self.navigationItem setRightBarButtonItem:self.doneSelectingButton];

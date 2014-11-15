@@ -288,6 +288,7 @@
                     <navigationItem key="navigationItem" id="72O-DS-qB2">
                         <barButtonItem key="leftBarButtonItem" image="menu.png" id="oqK-m3-inL"/>
                     </navigationItem>
+                    <nil key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="menuButton" destination="oqK-m3-inL" id="E13-R9-IRN"/>
                     </connections>
@@ -1990,16 +1991,16 @@
         <image name="stats.png" width="50" height="50"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="5ZT-8I-qr3"/>
-        <segue reference="egX-OW-uSX"/>
-        <segue reference="gDt-Tw-gtk"/>
         <segue reference="FrY-gD-OPV"/>
+        <segue reference="egX-OW-uSX"/>
         <segue reference="Jyy-wS-dXA"/>
+        <segue reference="gDt-Tw-gtk"/>
         <segue reference="gt8-1C-AU6"/>
         <segue reference="05Z-4h-ivl"/>
-        <segue reference="y0h-hR-J5c"/>
-        <segue reference="Qcx-rg-dpe"/>
-        <segue reference="ij7-4o-wMK"/>
+        <segue reference="5ZT-8I-qr3"/>
         <segue reference="qAO-gb-5Yr"/>
+        <segue reference="gpK-ox-KiN"/>
+        <segue reference="iOf-th-u5i"/>
+        <segue reference="ij7-4o-wMK"/>
     </inferredMetricsTieBreakers>
 </document>

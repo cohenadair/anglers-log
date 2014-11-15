@@ -40,6 +40,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self initSideBarMenu];
+    [self.unitsSegmentedControl setSelectedSegmentIndex:[self journal].measurementSystem];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -69,6 +70,7 @@
 
 - (IBAction)clickUnitsSegmentedControl:(UISegmentedControl *)sender {
     [[self journal] setMeasurementSystem:(CMAMeasuringSystemType)[sender selectedSegmentIndex]];
+    [[self journal] archive];
 }
 
 @end
