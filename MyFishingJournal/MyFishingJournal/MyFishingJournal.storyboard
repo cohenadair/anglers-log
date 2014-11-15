@@ -1806,7 +1806,7 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <segue destination="6A2-09-VCg" kind="custom" identifier="fromSideMenuBaitsToEditSettings" customClass="SWRevealViewControllerSegue" id="05Z-4h-ivl"/>
+                                            <segue destination="6A2-09-VCg" kind="custom" identifier="fromSideMenuBaitsUsedToEditSettings" customClass="SWRevealViewControllerSegue" id="05Z-4h-ivl"/>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="8kx-8d-tQO">
