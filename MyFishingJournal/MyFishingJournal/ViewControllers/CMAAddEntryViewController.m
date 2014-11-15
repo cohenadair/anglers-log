@@ -32,8 +32,10 @@
 @property (weak, nonatomic)IBOutlet UILabel *lengthLabel;
 @property (weak, nonatomic)IBOutlet UILabel *weightLabel;
 
-@property (weak, nonatomic)IBOutlet UIButton *cameraButton;
-@property (weak, nonatomic)IBOutlet UIButton *attachButton;
+@property (weak, nonatomic)IBOutlet UIImageView *cameraImage;
+
+@property (strong, nonatomic)UIActionSheet *cameraActionSheet;
+@property (strong, nonatomic)UIActionSheet *deleteImageActionSheet;
 
 @property (strong, nonatomic)NSDateFormatter *dateFormatter;
 @property (strong, nonatomic)NSIndexPath *indexPathForOptionsCell; // used after an unwind from selecting options
@@ -96,6 +98,10 @@ NSString *const NO_SELECT = @"Not Selected";
     // if we're editing rather than adding an entry
     if (self.isEditingEntry)
         [self initializeTableForEditing];
+    
+    [self initCameraImage];
+    [self initCameraActionSheet];
+    [self initDeleteImageActionSheet];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -221,6 +227,19 @@ NSString *const NO_SELECT = @"Not Selected";
 
 #pragma mark - Text View Initializing
 
+- (void)initCameraImage {
+    // add tap gesture recognizer
+    UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(clickedCameraImage)];
+    singleTap.numberOfTapsRequired = 1;
+    [self.cameraImage setUserInteractionEnabled:YES];
+    [self.cameraImage addGestureRecognizer:singleTap];
+    
+    // add current tint
+    UIImage *image = [[UIImage imageNamed:@"camera.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    [self.cameraImage setImage:image];
+    [self.cameraImage setTintColor:[[[[UIApplication sharedApplication] delegate] window] tintColor]];
+}
+
 - (void)textViewDidBeginEditing:(UITextView *)textView {
     // clear the default "Notes" text
     if (!self.hasEditedNotesTextView) {
@@ -273,13 +292,8 @@ NSString *const NO_SELECT = @"Not Selected";
     [self.dateTimeDetailLabel setText:[self.dateFormatter stringFromDate:sender.date]];
 }
 
-- (IBAction)clickedCamera:(UIButton *)sender {
-    if ([self cameraAvailable])
-        [self presentImagePicker:UIImagePickerControllerSourceTypeCamera];
-}
-
-- (IBAction)clickedAttach:(UIButton *)sender {
-    [self presentImagePicker:UIImagePickerControllerSourceTypePhotoLibrary];
+- (void)clickedCameraImage {
+    [self.cameraActionSheet showInView:self.view];
 }
 
 - (IBAction)longPressedImageInCollection:(UILongPressGestureRecognizer *)sender {
@@ -287,23 +301,40 @@ NSString *const NO_SELECT = @"Not Selected";
     if (sender.state == UIGestureRecognizerStateBegan) {
         // referenced in the UIAlertView delegate protocol
         self.deleteImageIndexPath = [self.imageCollection indexPathForItemAtPoint:[sender locationInView:self.imageCollection]];
-        
-        UIActionSheet *actionSheet = [UIActionSheet new];
-        actionSheet = [actionSheet initWithTitle:@"Are you sure you want to remove this photo (it will not be removed from your device)?" delegate:self cancelButtonTitle:@"No, keep it." destructiveButtonTitle:@"Yes, delete it." otherButtonTitles:nil];
-        [actionSheet showInView:self.view];
+        [self.deleteImageActionSheet showInView:self.view];
     }
 }
 
-#pragma mark - Alert View
+#pragma mark - Action Sheets
 
-// handles all UIActionSheets results for this screen
+- (void)initCameraActionSheet {
+    self.cameraActionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Take Photo", @"Attach Photo", nil];
+}
+
+- (void)initDeleteImageActionSheet {
+    self.deleteImageActionSheet = [[UIActionSheet alloc] initWithTitle:@"Are you sure you want to remove this photo (it will not be removed from your device)?" delegate:self cancelButtonTitle:@"No, keep it." destructiveButtonTitle:@"Yes, delete it." otherButtonTitles:nil];
+}
+
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
-    // delete button
-    if (buttonIndex == 0)
-        if (self.deleteImageIndexPath != nil) {
-            [self deleteImageFromCollectionAtIndexPath:self.deleteImageIndexPath];
-            self.deleteImageIndexPath = nil;
-        }
+    if (actionSheet == self.cameraActionSheet) {
+        // take photo
+        if (buttonIndex == 0)
+            if ([self cameraAvailable])
+                [self presentImagePicker:UIImagePickerControllerSourceTypeCamera];
+        
+        // attach photo
+        if (buttonIndex == 1)
+            [self presentImagePicker:UIImagePickerControllerSourceTypePhotoLibrary];
+    }
+    
+    if (actionSheet == self.deleteImageActionSheet) {
+        // delete button
+        if (buttonIndex == 0)
+            if (self.deleteImageIndexPath != nil) {
+                [self deleteImageFromCollectionAtIndexPath:self.deleteImageIndexPath];
+                self.deleteImageIndexPath = nil;
+            }
+    }
 }
 
 #pragma mark - Navigation

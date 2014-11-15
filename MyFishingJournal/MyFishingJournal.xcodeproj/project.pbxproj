@@ -56,6 +56,12 @@
 		E7C29D101A143A1600015B42 /* SWRevealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7C29D0F1A143A1600015B42 /* SWRevealViewController.m */; };
 		E7C29D161A1445AE00015B42 /* CMASideMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7C29D151A1445AE00015B42 /* CMASideMenuViewController.m */; };
 		E7C29D1D1A155E1500015B42 /* CMAEntrySortingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7C29D1C1A155E1500015B42 /* CMAEntrySortingViewController.m */; };
+		E7C29D2E1A17E0C200015B42 /* menu@1x.png in Resources */ = {isa = PBXBuildFile; fileRef = E7C29D2B1A17E0C200015B42 /* menu@1x.png */; };
+		E7C29D2F1A17E0C200015B42 /* menu@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E7C29D2C1A17E0C200015B42 /* menu@2x.png */; };
+		E7C29D301A17E0C200015B42 /* menu@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = E7C29D2D1A17E0C200015B42 /* menu@3x.png */; };
+		E7C29D361A17EA4200015B42 /* camera@1x.png in Resources */ = {isa = PBXBuildFile; fileRef = E7C29D331A17EA4200015B42 /* camera@1x.png */; };
+		E7C29D371A17EA4200015B42 /* camera@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E7C29D341A17EA4200015B42 /* camera@2x.png */; };
+		E7C29D381A17EA4200015B42 /* camera@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = E7C29D351A17EA4200015B42 /* camera@3x.png */; };
 		E7C926D319EE37750010A9FE /* MyFishingJournal.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E7C926D219EE37750010A9FE /* MyFishingJournal.storyboard */; };
 		E7C926D719EE3BC30010A9FE /* CMAHomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7C926D619EE3BC30010A9FE /* CMAHomeViewController.m */; };
 		E7C926DA19EEC7BC0010A9FE /* CMAAddEntryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7C926D919EEC7BC0010A9FE /* CMAAddEntryViewController.m */; };
@@ -140,6 +146,12 @@
 		E7C29D151A1445AE00015B42 /* CMASideMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMASideMenuViewController.m; path = ViewControllers/CMASideMenuViewController.m; sourceTree = "<group>"; };
 		E7C29D1B1A155E1500015B42 /* CMAEntrySortingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAEntrySortingViewController.h; path = ViewControllers/CMAEntrySortingViewController.h; sourceTree = "<group>"; };
 		E7C29D1C1A155E1500015B42 /* CMAEntrySortingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAEntrySortingViewController.m; path = ViewControllers/CMAEntrySortingViewController.m; sourceTree = "<group>"; };
+		E7C29D2B1A17E0C200015B42 /* menu@1x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "menu@1x.png"; path = "Images/Icons/menu@1x.png"; sourceTree = "<group>"; };
+		E7C29D2C1A17E0C200015B42 /* menu@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "menu@2x.png"; path = "Images/Icons/menu@2x.png"; sourceTree = "<group>"; };
+		E7C29D2D1A17E0C200015B42 /* menu@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "menu@3x.png"; path = "Images/Icons/menu@3x.png"; sourceTree = "<group>"; };
+		E7C29D331A17EA4200015B42 /* camera@1x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "camera@1x.png"; path = "Images/Icons/camera@1x.png"; sourceTree = "<group>"; };
+		E7C29D341A17EA4200015B42 /* camera@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "camera@2x.png"; path = "Images/Icons/camera@2x.png"; sourceTree = "<group>"; };
+		E7C29D351A17EA4200015B42 /* camera@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "camera@3x.png"; path = "Images/Icons/camera@3x.png"; sourceTree = "<group>"; };
 		E7C926D219EE37750010A9FE /* MyFishingJournal.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MyFishingJournal.storyboard; sourceTree = "<group>"; };
 		E7C926D519EE3BC30010A9FE /* CMAHomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAHomeViewController.h; path = ViewControllers/CMAHomeViewController.h; sourceTree = "<group>"; };
 		E7C926D619EE3BC30010A9FE /* CMAHomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAHomeViewController.m; path = ViewControllers/CMAHomeViewController.m; sourceTree = "<group>"; };
@@ -294,6 +306,7 @@
 		E738583B19FCD49100FE122B /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				E7C29D1E1A17DD7E00015B42 /* Icons */,
 				E78BB7DA1A0C1B9B0082004B /* rectile.png */,
 				E738583C19FCD6DE00FE122B /* no-image.png */,
 			);
@@ -326,6 +339,19 @@
 				E7C29D0F1A143A1600015B42 /* SWRevealViewController.m */,
 			);
 			path = SWRevealViewController;
+			sourceTree = "<group>";
+		};
+		E7C29D1E1A17DD7E00015B42 /* Icons */ = {
+			isa = PBXGroup;
+			children = (
+				E7C29D331A17EA4200015B42 /* camera@1x.png */,
+				E7C29D341A17EA4200015B42 /* camera@2x.png */,
+				E7C29D351A17EA4200015B42 /* camera@3x.png */,
+				E7C29D2B1A17E0C200015B42 /* menu@1x.png */,
+				E7C29D2C1A17E0C200015B42 /* menu@2x.png */,
+				E7C29D2D1A17E0C200015B42 /* menu@3x.png */,
+			);
+			name = Icons;
 			sourceTree = "<group>";
 		};
 		E7C926D419EE3B320010A9FE /* ViewControllers */ = {
@@ -446,9 +472,15 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E7C29D301A17E0C200015B42 /* menu@3x.png in Resources */,
+				E7C29D371A17EA4200015B42 /* camera@2x.png in Resources */,
+				E7C29D2F1A17E0C200015B42 /* menu@2x.png in Resources */,
+				E7C29D361A17EA4200015B42 /* camera@1x.png in Resources */,
 				E70B638019D3A8E400DFBA85 /* InfoPlist.strings in Resources */,
+				E7C29D2E1A17E0C200015B42 /* menu@1x.png in Resources */,
 				E7C926D319EE37750010A9FE /* MyFishingJournal.storyboard in Resources */,
 				E78BB7DB1A0C1B9B0082004B /* rectile.png in Resources */,
+				E7C29D381A17EA4200015B42 /* camera@3x.png in Resources */,
 				E738583D19FCD6DE00FE122B /* no-image.png in Resources */,
 				E70B638819D3A8E400DFBA85 /* Images.xcassets in Resources */,
 			);
