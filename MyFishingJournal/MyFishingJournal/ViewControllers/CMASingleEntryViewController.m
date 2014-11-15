@@ -129,16 +129,16 @@
      [CMATableCellProperties withLabelText: self.entry.fishSpecies.name
                              andDetailText: [dateFormatter stringFromDate:self.entry.date]
                         andReuseIdentifier: @"subtitleCell"
-                                 andHeight:SUBTITLE_HEIGHT
-                              hasSeparator:YES]];
+                                 andHeight: SUBTITLE_HEIGHT
+                              hasSeparator: YES]];
     
     // location
     [self.tableCellProperties addObject:
      [CMATableCellProperties withLabelText: @"Location"
                              andDetailText: [NSString stringWithFormat:@"%@%@%@", self.entry.location.name, TOKEN_LOCATION, self.entry.fishingSpot.name]
                         andReuseIdentifier: @"locationCell"
-                                 andHeight:SUBTITLE_HEIGHT
-                              hasSeparator:YES]];
+                                 andHeight: SUBTITLE_HEIGHT
+                              hasSeparator: YES]];
     
     // quantity
     if ([self.entry.fishQuantity integerValue] >= 0)
@@ -146,8 +146,8 @@
          [CMATableCellProperties withLabelText: @"Quantity"
                                  andDetailText: [self.entry.fishQuantity stringValue]
                             andReuseIdentifier: @"rightDetailCell"
-                                     andHeight:RIGHT_DETAIL_HEIGHT
-                                  hasSeparator:NO]];
+                                     andHeight: RIGHT_DETAIL_HEIGHT
+                                  hasSeparator: NO]];
     
     // length
     if ([self.entry.fishLength integerValue] > 0)
@@ -155,8 +155,8 @@
          [CMATableCellProperties withLabelText: @"Length"
                                  andDetailText: [NSString stringWithFormat:@"%@%@", self.entry.fishLength.stringValue, [[self journal] lengthUnitsAsString:YES]]
                             andReuseIdentifier: @"rightDetailCell"
-                                     andHeight:RIGHT_DETAIL_HEIGHT
-                                  hasSeparator:NO]];
+                                     andHeight: RIGHT_DETAIL_HEIGHT
+                                  hasSeparator: NO]];
     
     // weight
     if ([self.entry.fishWeight integerValue] > 0)
@@ -164,8 +164,8 @@
          [CMATableCellProperties withLabelText: @"Weight"
                                  andDetailText: [NSString stringWithFormat:@"%@%@", self.entry.fishWeight.stringValue, [[self journal] weightUnitsAsString:YES]]
                             andReuseIdentifier: @"rightDetailCell"
-                                     andHeight:RIGHT_DETAIL_HEIGHT
-                                  hasSeparator:NO]];
+                                     andHeight: RIGHT_DETAIL_HEIGHT
+                                  hasSeparator: NO]];
     
     // fishing methods
     if (self.entry.fishingMethods)
@@ -173,8 +173,8 @@
          [CMATableCellProperties withLabelText: @"Methods"
                                  andDetailText: [self.entry concatinateFishingMethods]
                             andReuseIdentifier: @"rightDetailCell"
-                                     andHeight:RIGHT_DETAIL_HEIGHT
-                                  hasSeparator:NO]];
+                                     andHeight: RIGHT_DETAIL_HEIGHT
+                                  hasSeparator: NO]];
     
     // bait used
     if (![self.entry.baitUsed.name isEqualToString:@""])
@@ -182,8 +182,8 @@
          [CMATableCellProperties withLabelText: @"Bait Used"
                                  andDetailText: self.entry.baitUsed.name
                             andReuseIdentifier: @"rightDetailCell"
-                                     andHeight:RIGHT_DETAIL_HEIGHT
-                                  hasSeparator:YES]];
+                                     andHeight: RIGHT_DETAIL_HEIGHT
+                                  hasSeparator: YES]];
     
     // notes
     if (self.entry.notes)
