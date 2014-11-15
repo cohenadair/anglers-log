@@ -13,20 +13,71 @@
 #import "CMAConstants.h"
 #import "CMAFishingMethod.h"
 
+// Used to store information on the cells that will be shonw on the table.
+// See initTableSettings.
+@interface CMATableCellProperties : NSObject
+
+@property (strong, nonatomic)NSString *labelText;
+@property (strong, nonatomic)NSString *detailText;
+@property (strong, nonatomic)NSString *reuseIdentifier;
+@property (nonatomic)CGFloat height;
+@property (nonatomic)BOOL hasSeparator;
+
++ (CMATableCellProperties *)withLabelText:(NSString *)aLabelText
+                            andDetailText:(NSString *)aDetailText
+                       andReuseIdentifier:(NSString *)aReuseIdentifier
+                                andHeight:(CGFloat)aHeight
+                             hasSeparator:(BOOL)aBool;
+
+- (id)initWithLabelText:(NSString *)aLabelText
+          andDetailText:(NSString *)aDetailText
+     andReuseIdentifier:(NSString *)aReuseIdentifier
+              andHeight:(CGFloat)aHeight
+           hasSeparator:(BOOL)aBool;
+
+@end
+
+@implementation CMATableCellProperties
+
++ (CMATableCellProperties *)withLabelText:(NSString *)aLabelText
+                            andDetailText:(NSString *)aDetailText
+                       andReuseIdentifier:(NSString *)aReuseIdentifier
+                                andHeight:(CGFloat)aHeight
+                             hasSeparator:(BOOL)aBool {
+    
+    return [[self alloc] initWithLabelText:aLabelText
+                             andDetailText:aDetailText
+                        andReuseIdentifier:aReuseIdentifier
+                                 andHeight:aHeight
+                              hasSeparator:aBool];
+}
+
+- (id)initWithLabelText:(NSString *)aLabelText
+          andDetailText:(NSString *)aDetailText
+     andReuseIdentifier:(NSString *)aReuseIdentifier
+              andHeight:(CGFloat)aHeight
+           hasSeparator:(BOOL)aBool {
+    
+    if (self = [super init]) {
+        _labelText = aLabelText;
+        _detailText = aDetailText;
+        _reuseIdentifier = aReuseIdentifier;
+        _height = aHeight;
+        _hasSeparator = aBool;
+    }
+    
+    return self;
+}
+
+@end
+
 @interface CMASingleEntryViewController ()
 
+@property (weak, nonatomic)IBOutlet UIView *imagesView;
 @property (weak, nonatomic)IBOutlet UICollectionView *imageCollectionView;
-@property (weak, nonatomic)IBOutlet UILabel *fishSpeciesLabel;
-@property (weak, nonatomic)IBOutlet UILabel *entryDateDetailLabel;
-@property (weak, nonatomic)IBOutlet UILabel *locationDetailLabel;
-@property (weak, nonatomic)IBOutlet UILabel *quantityDetailLabel;
-@property (weak, nonatomic)IBOutlet UILabel *lengthDetailLabel;
-@property (weak, nonatomic)IBOutlet UILabel *weightDetailLabel;
-@property (weak, nonatomic)IBOutlet UILabel *methodsDetailLabel;
-@property (weak, nonatomic)IBOutlet UILabel *baitUsedDetailLabel;
-@property (weak, nonatomic)IBOutlet UILabel *notesDetailLabel;
 
 @property (strong, nonatomic)NSArray *entryImageArray;
+@property (strong, nonatomic)NSMutableArray *tableCellProperties;
 
 @end
 
@@ -43,10 +94,16 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    [self initTableSettings];
+    [self initRearImagesView];
     [self setEntryImageArray:[[self.entry images] allObjects]];
-    [self setLabels];
     
     [self.tableView setTableFooterView:[[UIView alloc] initWithFrame:CGRectZero]]; // removes empty cells at the end of the list
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self.tableView reloadData];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -54,74 +111,137 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void)setLabels {
-    NSString *temp = [NSString new];
-    NSString *naString = @"N/A";
+#pragma mark - Table View Initializing
+
+#define SUBTITLE_HEIGHT 60
+#define RIGHT_DETAIL_HEIGHT 32
+
+// Creates a CMATableCellProperties object for each cell that will be shown on the table.
+// Only self.entry properties that were specified by the user are shown.
+// Sets self.tableCellProperties property.
+- (void)initTableSettings {
+    self.tableCellProperties = [NSMutableArray array];
     
-    // species
-    [self.fishSpeciesLabel setText:[[self.entry fishSpecies] name]];
-    
-    // date
+    // species and date
     NSDateFormatter *dateFormatter = [NSDateFormatter new];
     [dateFormatter setDateFormat:@"MMMM dd, yyyy 'at' h:mm a"];
-    [self.entryDateDetailLabel setText:[dateFormatter stringFromDate:[self.entry date]]];
+    [self.tableCellProperties addObject:
+     [CMATableCellProperties withLabelText: self.entry.fishSpecies.name
+                             andDetailText: [dateFormatter stringFromDate:self.entry.date]
+                        andReuseIdentifier: @"subtitleCell"
+                                 andHeight:SUBTITLE_HEIGHT
+                              hasSeparator:YES]];
     
-    // location and fishing spot
-    NSString *locationString = [NSString stringWithFormat:@"%@: %@", self.entry.location.name, self.entry.fishingSpot.name];
-    [self.locationDetailLabel setText:locationString];
+    // location
+    [self.tableCellProperties addObject:
+     [CMATableCellProperties withLabelText: @"Location"
+                             andDetailText: [NSString stringWithFormat:@"%@%@%@", self.entry.location.name, TOKEN_LOCATION, self.entry.fishingSpot.name]
+                        andReuseIdentifier: @"locationCell"
+                                 andHeight:SUBTITLE_HEIGHT
+                              hasSeparator:YES]];
     
     // quantity
-    if (self.entry.fishQuantity)
-        [self.quantityDetailLabel setText:[self.entry.fishQuantity stringValue]];
+    if ([self.entry.fishQuantity integerValue] >= 0)
+        [self.tableCellProperties addObject:
+         [CMATableCellProperties withLabelText: @"Quantity"
+                                 andDetailText: [self.entry.fishQuantity stringValue]
+                            andReuseIdentifier: @"rightDetailCell"
+                                     andHeight:RIGHT_DETAIL_HEIGHT
+                                  hasSeparator:NO]];
     
     // length
     if ([self.entry.fishLength integerValue] > 0)
-        temp = [NSString stringWithFormat:@"%@%@", self.entry.fishLength.stringValue, [[self journal] lengthUnitsAsString:YES]];
-    else
-        temp = naString;
-    [self.lengthDetailLabel setText:temp];
+        [self.tableCellProperties addObject:
+         [CMATableCellProperties withLabelText: @"Length"
+                                 andDetailText: [NSString stringWithFormat:@"%@%@", self.entry.fishLength.stringValue, [[self journal] lengthUnitsAsString:YES]]
+                            andReuseIdentifier: @"rightDetailCell"
+                                     andHeight:RIGHT_DETAIL_HEIGHT
+                                  hasSeparator:NO]];
     
     // weight
     if ([self.entry.fishWeight integerValue] > 0)
-        temp = [NSString stringWithFormat:@"%@%@", self.entry.fishWeight.stringValue, [[self journal] weightUnitsAsString:YES]];
-    else
-        temp = naString;
-    [self.weightDetailLabel setText:temp];
+        [self.tableCellProperties addObject:
+         [CMATableCellProperties withLabelText: @"Weight"
+                                 andDetailText: [NSString stringWithFormat:@"%@%@", self.entry.fishWeight.stringValue, [[self journal] weightUnitsAsString:YES]]
+                            andReuseIdentifier: @"rightDetailCell"
+                                     andHeight:RIGHT_DETAIL_HEIGHT
+                                  hasSeparator:NO]];
     
     // fishing methods
     if (self.entry.fishingMethods)
-        [self.methodsDetailLabel setText:[self.entry concatinateFishingMethods]];
-    else
-        [self.methodsDetailLabel setText:naString];
+        [self.tableCellProperties addObject:
+         [CMATableCellProperties withLabelText: @"Methods"
+                                 andDetailText: [self.entry concatinateFishingMethods]
+                            andReuseIdentifier: @"rightDetailCell"
+                                     andHeight:RIGHT_DETAIL_HEIGHT
+                                  hasSeparator:NO]];
     
     // bait used
     if (![self.entry.baitUsed.name isEqualToString:@""])
-        [self.baitUsedDetailLabel setText:self.entry.baitUsed.name];
-    else
-        [self.baitUsedDetailLabel setText:naString];
+        [self.tableCellProperties addObject:
+         [CMATableCellProperties withLabelText: @"Bait Used"
+                                 andDetailText: self.entry.baitUsed.name
+                            andReuseIdentifier: @"rightDetailCell"
+                                     andHeight:RIGHT_DETAIL_HEIGHT
+                                  hasSeparator:YES]];
     
     // notes
     if (self.entry.notes)
-        [self.notesDetailLabel setText:self.entry.notes];
-    else
-        [self.notesDetailLabel setText:naString];
+        [self.tableCellProperties addObject:
+         [CMATableCellProperties withLabelText: @"Notes"
+                                 andDetailText: self.entry.notes
+                            andReuseIdentifier: @"subtitleCell"
+                                     andHeight:SUBTITLE_HEIGHT
+                                  hasSeparator:NO]];
 }
-
-#pragma mark - Table View
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.item == 0) {
-        if ([self.entry imageCount] == 0)
-            return 0;
-        else
-            return tableView.frame.size.width;
-    }
+    if (indexPath.item == [self.tableCellProperties count])
+        return 20;
     
-    // using the super class's implementation gets the height set in storyboard
-    return [super tableView:tableView heightForRowAtIndexPath:indexPath];
+    return [[self.tableCellProperties objectAtIndex:indexPath.item] height];
 }
 
-#pragma mark - Collection View
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return [self.tableCellProperties count] + 1; // +1 for the dummy cell
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    // dummy cell for some spacing at the end of the table
+    if (indexPath.item == [self.tableCellProperties count]) {
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"dummyCell"];
+        return cell;
+    }
+    
+    CMATableCellProperties *p = [self.tableCellProperties objectAtIndex:indexPath.item];
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:p.reuseIdentifier];
+    
+    cell.textLabel.text = p.labelText;
+    cell.detailTextLabel.text = p.detailText;
+    
+    // add separator to required cells
+    if (p.hasSeparator && !(indexPath.item == [self.tableCellProperties count] - 1)) {
+        UIView *line = [[UIView alloc] initWithFrame:CGRectMake(15, p.height, cell.frame.size.width - 15, 1)];
+        [line setBackgroundColor:[UIColor colorWithWhite:0.85 alpha:1.0]];
+        [cell addSubview:line];
+    }
+    
+    return cell;
+}
+
+#pragma mark - Images Views
+
+// The UIView whose subview is a UICollectionView.
+- (void)initRearImagesView {
+    CGRect newFrame = self.imagesView.frame;
+    
+    if ([self.entry imageCount] > 0)
+        newFrame.size.height = self.tableView.frame.size.width;
+    else
+        newFrame.size.height = 0;
+    
+    [self.imagesView setFrame:newFrame];
+}
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
     return [self.entry imageCount];
@@ -167,7 +287,7 @@
         CMAAddEntryViewController *source = segue.sourceViewController;
         [self setEntry:source.entry];
         [self setEntryImageArray:[[self.entry images] allObjects]];
-        [self setLabels];
+        [self initTableSettings];
         [self.tableView reloadData];
         [self.imageCollectionView reloadData];
         

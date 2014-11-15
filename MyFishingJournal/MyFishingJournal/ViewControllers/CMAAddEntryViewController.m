@@ -437,7 +437,7 @@ NSString *const NO_SELECT = @"Not Selected";
         NSNumber *quantity = [NSNumber numberWithInteger:[[self.quantityTextField text] integerValue]];
         [anEntry setFishQuantity:quantity];
     } else {
-        [anEntry setFishQuantity:nil];
+        [anEntry setFishQuantity:[NSNumber numberWithInteger:-1]];
     }
     
     // fish length

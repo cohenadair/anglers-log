@@ -183,7 +183,9 @@
         
         case CMAEntrySortMethod_Location:
             self.entries = [[self.entries sortedArrayUsingComparator:^NSComparisonResult(CMAEntry *e1, CMAEntry *e2){
-                return [e1.location.name compare:e2.location.name];
+                NSString *fullLoc1 = [NSString stringWithFormat:@"%@%@%@", e1.location.name, TOKEN_LOCATION, e1.fishingSpot.name];
+                NSString *fullLoc2 = [NSString stringWithFormat:@"%@%@%@", e2.location.name, TOKEN_LOCATION, e2.fishingSpot.name];
+                return [fullLoc1 compare:fullLoc2];
             }] mutableCopy];
             break;
         
