@@ -49,6 +49,7 @@
     [super viewDidLoad];
     
     self.navigationController.toolbarHidden = NO;
+    self.navigationController.toolbar.translucent = NO;
 
     self.dateFormatter = [NSDateFormatter new];
     [self.dateFormatter setDateFormat:@"MMM dd, yyyy 'at' h:mm a"];

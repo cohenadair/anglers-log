@@ -39,13 +39,12 @@ NSInteger const SECTION_FISHING_SPOT = 1;
         [self.editButton setTitle:@""];
         [self.editButton setEnabled:NO];
     }
-        
+    
     [self.tableView setTableFooterView:[[UIView alloc] initWithFrame:CGRectZero]]; // removes empty cells at the end of the list
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    self.navigationItem.title = [self.location name];
 }
 
 - (void)viewDidAppear:(BOOL)animated {

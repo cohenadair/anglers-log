@@ -1594,8 +1594,8 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <connections>
-                        <segue destination="Wkq-OL-xZB" kind="custom" identifier="sw_rear" customClass="SWRevealViewControllerSegue" id="tsI-8C-I9L"/>
                         <segue destination="sKN-2s-l4h" kind="custom" identifier="sw_front" customClass="SWRevealViewControllerSegue" id="Fle-GX-rUH"/>
+                        <segue destination="Wkq-OL-xZB" kind="custom" identifier="sw_rear" customClass="SWRevealViewControllerSegue" id="UT8-ap-eia"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vma-Yt-KJy" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1612,7 +1612,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                         <sections>
-                            <tableViewSection id="6WD-sT-87O">
+                            <tableViewSection id="a7b-GE-2ze">
                                 <cells>
                                     <tableViewCell userInteractionEnabled="NO" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" textLabel="NqD-4u-P8M" style="IBUITableViewCellStyleDefault" id="Od5-G8-AZC">
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -1780,10 +1780,12 @@
                             <outlet property="delegate" destination="Wkq-OL-xZB" id="fnu-pQ-SYN"/>
                         </connections>
                     </tableView>
+                    <navigationItem key="navigationItem" id="aVc-kw-DJA"/>
+                    <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JCQ-W3-6UJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1978" y="-390"/>
+            <point key="canvasLocation" x="2018" y="-390"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="mYr-7D-5eL">
@@ -1899,12 +1901,12 @@
         <image name="rectile.png" width="92" height="93"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="5ZT-8I-qr3"/>
+        <segue reference="rQz-NV-wiY"/>
         <segue reference="OaX-vS-laH"/>
-        <segue reference="93R-d4-gxG"/>
-        <segue reference="EYO-gB-ukh"/>
         <segue reference="AZU-Ne-NSp"/>
         <segue reference="US3-j1-Me4"/>
+        <segue reference="FrY-gD-OPV"/>
+        <segue reference="icA-Vv-0Tc"/>
         <segue reference="y0h-hR-J5c"/>
         <segue reference="Qcx-rg-dpe"/>
         <segue reference="ij7-4o-wMK"/>

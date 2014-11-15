@@ -39,14 +39,6 @@
 
 #pragma mark - Table View Initializing
 
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    return CGFLOAT_MIN;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-    return CGFLOAT_MIN;
-}
-
 - (CMAUserDefine *)userDefineFromSelectedCell {
     UITableViewCell *selectedCell = [self.tableView cellForRowAtIndexPath:[self.tableView indexPathForSelectedRow]];
     return [[self journal] userDefineNamed:selectedCell.textLabel.text];

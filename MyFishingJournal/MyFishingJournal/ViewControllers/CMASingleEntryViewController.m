@@ -278,6 +278,7 @@
         destination.previousViewID = CMAViewControllerID_SingleEntry;
         destination.location = self.entry.location;
         destination.fishingSpotFromSingleEntry = self.entry.fishingSpot;
+        destination.navigationItem.title = destination.location.name;
     }
 }
 

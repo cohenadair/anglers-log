@@ -368,6 +368,7 @@
         CMASingleLocationViewController *destination = [[segue.destinationViewController viewControllers] objectAtIndex:0];
         destination.location = [[[self journal] userDefineNamed:SET_LOCATIONS] objectNamed:self.selectedCellLabelText];
         destination.isSelectingForAddEntry = self.isSelectingForAddEntry;
+        destination.navigationItem.title = destination.location.name;
     }
 }
 
