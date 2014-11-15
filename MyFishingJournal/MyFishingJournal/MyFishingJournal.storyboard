@@ -256,6 +256,46 @@
             </objects>
             <point key="canvasLocation" x="3446" y="1251"/>
         </scene>
+        <!--Photos View Controller-->
+        <scene sceneID="PSO-ty-hvL">
+            <objects>
+                <collectionViewController id="Ikc-04-OhE" customClass="CMAPhotosViewController" sceneMemberID="viewController">
+                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="i2c-Nc-qGd">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="LWR-Bl-nK5">
+                            <size key="itemSize" width="50" height="50"/>
+                            <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                        </collectionViewFlowLayout>
+                        <cells>
+                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="13b-xs-Pc8">
+                                <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                    <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                </view>
+                            </collectionViewCell>
+                        </cells>
+                        <connections>
+                            <outlet property="dataSource" destination="Ikc-04-OhE" id="M84-OD-PQf"/>
+                            <outlet property="delegate" destination="Ikc-04-OhE" id="3li-d1-ZWM"/>
+                        </connections>
+                    </collectionView>
+                    <navigationItem key="navigationItem" id="72O-DS-qB2">
+                        <barButtonItem key="leftBarButtonItem" image="menu.png" id="oqK-m3-inL"/>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="menuButton" destination="oqK-m3-inL" id="E13-R9-IRN"/>
+                    </connections>
+                </collectionViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="HSf-X2-ejN" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4164" y="1249"/>
+        </scene>
         <!--Single Location View Controller-->
         <scene sceneID="klA-32-wdo">
             <objects>
@@ -335,7 +375,7 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" id="WzY-ql-Ziv">
-                        <barButtonItem key="rightBarButtonItem" title="Edit" id="9gZ-tT-Mgi">
+                        <barButtonItem key="rightBarButtonItem" image="edit.png" id="9gZ-tT-Mgi">
                             <connections>
                                 <segue destination="Gid-I3-2h4" kind="presentation" identifier="fromSingleLocationToAddLocation" id="Qcx-rg-dpe"/>
                             </connections>
@@ -350,7 +390,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1xd-Vw-zsy" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="aLM-pd-xcd" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="4258" y="2079"/>
+            <point key="canvasLocation" x="3446" y="2079"/>
         </scene>
         <!--Home-->
         <scene sceneID="ucU-GO-F5K">
@@ -462,7 +502,7 @@
                     </toolbarItems>
                     <navigationItem key="navigationItem" title="Entries" id="SyW-dX-zkA">
                         <barButtonItem key="leftBarButtonItem" image="menu.png" id="egA-Uh-9jg"/>
-                        <barButtonItem key="rightBarButtonItem" title="Sort" id="iTK-vI-Yql">
+                        <barButtonItem key="rightBarButtonItem" image="sort.png" id="iTK-vI-Yql">
                             <connections>
                                 <segue destination="wpl-p5-uAQ" kind="popoverPresentation" identifier="fromViewEntriesToEntrySorting" popoverAnchorBarButtonItem="iTK-vI-Yql" id="lmf-SC-sce">
                                     <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
@@ -772,7 +812,7 @@
                     </tableView>
                     <extendedEdge key="edgesForExtendedLayout"/>
                     <navigationItem key="navigationItem" id="fZu-E0-Ax7">
-                        <barButtonItem key="rightBarButtonItem" title="Edit" id="fGk-1Y-4eD">
+                        <barButtonItem key="rightBarButtonItem" image="edit.png" id="fGk-1Y-4eD">
                             <connections>
                                 <segue destination="laU-22-DA1" kind="popoverPresentation" identifier="fromSingleEntryToAddEntry" popoverAnchorBarButtonItem="fGk-1Y-4eD" id="5ZT-8I-qr3">
                                     <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
@@ -1350,7 +1390,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="OFA-qW-P4d" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="3Dt-Rq-3tv" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="4976" y="2079"/>
+            <point key="canvasLocation" x="4164" y="2079"/>
         </scene>
         <!--Add Fishing Spot-->
         <scene sceneID="h2c-XG-d8j">
@@ -1531,7 +1571,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6gO-HC-kTD" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="a4R-R8-Ii2" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="5694" y="2079"/>
+            <point key="canvasLocation" x="4882" y="2079"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="RL9-la-gtA">
@@ -1601,15 +1641,18 @@
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" textLabel="C4l-AW-qwM" style="IBUITableViewCellStyleDefault" id="drt-2m-WWH">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="drt-2m-WWH">
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="drt-2m-WWH" id="uhZ-w8-tya">
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Home" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="C4l-AW-qwM">
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                <imageView userInteractionEnabled="NO" alpha="0.40000000000000002" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="home.png" translatesAutoresizingMaskIntoConstraints="NO" id="Vvh-GM-VF6">
+                                                    <rect key="frame" x="18" y="9" width="25" height="25"/>
+                                                </imageView>
+                                                <label opaque="NO" userInteractionEnabled="NO" tag="100" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Home" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fLN-Rp-H21">
+                                                    <rect key="frame" x="65" y="14" width="46" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
@@ -1619,128 +1662,172 @@
                                             <segue destination="yB5-2V-0Ji" kind="custom" identifier="fromSideMenuToHome" customClass="SWRevealViewControllerSegue" id="FrY-gD-OPV"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" textLabel="IBp-Yq-81j" style="IBUITableViewCellStyleDefault" id="HWD-xr-CpG">
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="HWD-xr-CpG" id="z5a-pB-KWL">
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="All Entries" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="IBp-Yq-81j">
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                        </tableViewCellContentView>
-                                        <connections>
-                                            <segue destination="t80-QM-oZt" kind="custom" identifier="fromSideMenuToViewEntries" customClass="SWRevealViewControllerSegue" id="OaX-vS-laH"/>
-                                        </connections>
-                                    </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" textLabel="nJD-Pa-zsi" style="IBUITableViewCellStyleDefault" id="N2B-QU-mfJ">
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="N2B-QU-mfJ" id="zK6-0U-UM8">
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Statistics" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="nJD-Pa-zsi">
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                        </tableViewCellContentView>
-                                        <connections>
-                                            <segue destination="agx-TT-HCm" kind="custom" identifier="fromSideMenuToStatistics" customClass="SWRevealViewControllerSegue" id="AZU-Ne-NSp"/>
-                                        </connections>
-                                    </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" textLabel="ZWP-wZ-UGO" style="IBUITableViewCellStyleDefault" id="7wZ-A2-CN3">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="UfF-aT-SpT">
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="7wZ-A2-CN3" id="dTn-hT-F62">
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="UfF-aT-SpT" id="Dvw-XZ-KlJ">
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Species" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="ZWP-wZ-UGO">
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                <imageView userInteractionEnabled="NO" alpha="0.40000000000000002" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="literature.png" translatesAutoresizingMaskIntoConstraints="NO" id="7t8-bm-WQj">
+                                                    <rect key="frame" x="18" y="9" width="25" height="25"/>
+                                                </imageView>
+                                                <label opaque="NO" userInteractionEnabled="NO" tag="100" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="All Entries" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Gk6-r0-Dx9">
+                                                    <rect key="frame" x="65" y="11" width="77" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <segue destination="6A2-09-VCg" kind="custom" identifier="fromSideMenuSpeciesToEditSettings" customClass="SWRevealViewControllerSegue" id="ZSE-3c-9c2"/>
+                                            <segue destination="t80-QM-oZt" kind="custom" identifier="fromSideMenuToViewEntries" customClass="SWRevealViewControllerSegue" id="egX-OW-uSX"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" textLabel="WYu-4s-3mF" style="IBUITableViewCellStyleDefault" id="dyv-oh-uTr">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="V3H-Gn-4Ae">
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="dyv-oh-uTr" id="6pC-nv-a4r">
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="V3H-Gn-4Ae" id="joy-lG-FUS">
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Locations" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="WYu-4s-3mF">
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                <imageView userInteractionEnabled="NO" alpha="0.40000000596046448" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="photos.png" translatesAutoresizingMaskIntoConstraints="NO" id="maY-F6-gVg">
+                                                    <rect key="frame" x="18" y="9" width="25" height="25"/>
+                                                </imageView>
+                                                <label opaque="NO" userInteractionEnabled="NO" tag="100" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Photo Gallery" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XEf-UM-BFy">
+                                                    <rect key="frame" x="65" y="11" width="104" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <segue destination="6A2-09-VCg" kind="custom" identifier="fromSideMenuLocationsToEditSettings" customClass="SWRevealViewControllerSegue" id="Htz-6o-72M"/>
+                                            <segue destination="Ikc-04-OhE" kind="custom" identifier="fromSideMenuToPhotos" customClass="SWRevealViewControllerSegue" id="Jyy-wS-dXA"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" textLabel="GUc-bS-DCo" style="IBUITableViewCellStyleDefault" id="bAt-pH-Wra">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="D6G-9D-4dA">
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="bAt-pH-Wra" id="2cw-0E-zwY">
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="D6G-9D-4dA" id="yjs-dO-5F8">
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Fishing Methods" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="GUc-bS-DCo">
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                <imageView userInteractionEnabled="NO" alpha="0.40000000000000002" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="stats.png" translatesAutoresizingMaskIntoConstraints="NO" id="05n-uc-Ne6">
+                                                    <rect key="frame" x="18" y="9" width="25" height="25"/>
+                                                </imageView>
+                                                <label opaque="NO" userInteractionEnabled="NO" tag="100" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Statistics" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2rx-mv-Qpx">
+                                                    <rect key="frame" x="65" y="13" width="71" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <segue destination="6A2-09-VCg" kind="custom" identifier="fromSideMenuFishingMethodsToEditSettings" customClass="SWRevealViewControllerSegue" id="icA-Vv-0Tc"/>
+                                            <segue destination="agx-TT-HCm" kind="custom" identifier="fromSideMenuToStatistics" customClass="SWRevealViewControllerSegue" id="gt8-1C-AU6"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" textLabel="XzX-AH-OyC" style="IBUITableViewCellStyleDefault" id="5uA-he-lqS">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="2mr-vO-gpq">
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="5uA-he-lqS" id="cg2-qt-Pb7">
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="2mr-vO-gpq" id="6d1-vo-Tlx">
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Baits" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="XzX-AH-OyC">
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                <imageView userInteractionEnabled="NO" alpha="0.40000000596046448" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="species.png" translatesAutoresizingMaskIntoConstraints="NO" id="j31-XL-yXw">
+                                                    <rect key="frame" x="18" y="9" width="25" height="25"/>
+                                                </imageView>
+                                                <label opaque="NO" userInteractionEnabled="NO" tag="100" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Species" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="a7i-ec-Ii6">
+                                                    <rect key="frame" x="65" y="11" width="62" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <segue destination="6A2-09-VCg" kind="custom" identifier="fromSideMenuBaitsUsedToEditSettings" customClass="SWRevealViewControllerSegue" id="EYO-gB-ukh"/>
+                                            <segue destination="6A2-09-VCg" kind="custom" identifier="fromSideMenuSpeciesToEditSettings" customClass="SWRevealViewControllerSegue" id="8iL-u2-ZVl"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" textLabel="MAH-Ah-be4" style="IBUITableViewCellStyleDefault" id="lJI-Cc-ssc">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="giu-Fa-BF7">
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="lJI-Cc-ssc" id="14Z-pr-oM2">
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="giu-Fa-BF7" id="03b-tR-vXH">
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Settings" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="MAH-Ah-be4">
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                <imageView userInteractionEnabled="NO" alpha="0.40000000596046448" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="locations.png" translatesAutoresizingMaskIntoConstraints="NO" id="YrK-T6-XBy">
+                                                    <rect key="frame" x="18" y="9" width="25" height="25"/>
+                                                </imageView>
+                                                <label opaque="NO" userInteractionEnabled="NO" tag="100" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Locations" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IOm-6i-ZOl">
+                                                    <rect key="frame" x="65" y="11" width="75" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <segue destination="xYT-rV-mpH" kind="custom" identifier="fromSideMenuToSettings" customClass="SWRevealViewControllerSegue" id="US3-j1-Me4"/>
+                                            <segue destination="6A2-09-VCg" kind="custom" identifier="fromSideMenuLocationsToEditSettings" customClass="SWRevealViewControllerSegue" id="Q8L-vB-CaK"/>
+                                        </connections>
+                                    </tableViewCell>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="nQY-io-Ws9">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="nQY-io-Ws9" id="e6V-1A-MM3">
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView userInteractionEnabled="NO" alpha="0.40000000596046448" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="fishing_methods.png" translatesAutoresizingMaskIntoConstraints="NO" id="OBT-yv-vAm">
+                                                    <rect key="frame" x="18" y="9" width="25" height="25"/>
+                                                </imageView>
+                                                <label opaque="NO" userInteractionEnabled="NO" tag="100" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Fishing Methods" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xc7-Mh-taU">
+                                                    <rect key="frame" x="65" y="11" width="128" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="6A2-09-VCg" kind="custom" identifier="fromSideMenuFishingMethodsToEditSettings" customClass="SWRevealViewControllerSegue" id="aBE-xI-c3y"/>
+                                        </connections>
+                                    </tableViewCell>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="uVX-2H-Suf">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="uVX-2H-Suf" id="Ura-or-NUx">
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView userInteractionEnabled="NO" alpha="0.40000000596046448" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="bait.png" translatesAutoresizingMaskIntoConstraints="NO" id="AYF-7G-ExZ">
+                                                    <rect key="frame" x="18" y="9" width="25" height="25"/>
+                                                </imageView>
+                                                <label opaque="NO" userInteractionEnabled="NO" tag="100" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Baits" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4qm-5V-8eX">
+                                                    <rect key="frame" x="65" y="13" width="39" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="6A2-09-VCg" kind="custom" identifier="fromSideMenuBaitsToEditSettings" customClass="SWRevealViewControllerSegue" id="05Z-4h-ivl"/>
+                                        </connections>
+                                    </tableViewCell>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="8kx-8d-tQO">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="8kx-8d-tQO" id="3we-Ps-mSc">
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView userInteractionEnabled="NO" alpha="0.40000000000000002" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="settings.png" translatesAutoresizingMaskIntoConstraints="NO" id="YIZ-BU-Xqn">
+                                                    <rect key="frame" x="18" y="9" width="25" height="25"/>
+                                                </imageView>
+                                                <label opaque="NO" userInteractionEnabled="NO" tag="100" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Settings" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AGj-IG-FCM">
+                                                    <rect key="frame" x="65" y="11" width="63" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="xYT-rV-mpH" kind="custom" identifier="fromSideMenuToSettings" customClass="SWRevealViewControllerSegue" id="gDt-Tw-gtk"/>
                                         </connections>
                                     </tableViewCell>
                                 </cells>
@@ -1793,7 +1880,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eLm-Vk-vpY" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4213" y="2079"/>
+            <point key="canvasLocation" x="3401" y="2079"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="QJu-qR-WZ3">
@@ -1829,7 +1916,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Emv-7o-E4e" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4931" y="2079"/>
+            <point key="canvasLocation" x="4119" y="2079"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="pUe-xS-iNB">
@@ -1847,7 +1934,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="EPi-gw-Ryb" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5652" y="2079"/>
+            <point key="canvasLocation" x="4840" y="2079"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="JSx-pT-OBV">
@@ -1867,21 +1954,51 @@
             </objects>
             <point key="canvasLocation" x="1275" y="2079"/>
         </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="HOj-fX-GSJ">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="PAA-ty-Ouf" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="q53-p0-d9m">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="Ikc-04-OhE" kind="relationship" relationship="rootViewController" id="F91-a2-ToR"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="AAV-R6-1ii" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4119" y="1249"/>
+        </scene>
     </scenes>
     <resources>
+        <image name="bait.png" width="50" height="50"/>
         <image name="camera.png" width="25" height="25"/>
+        <image name="edit.png" width="25" height="25"/>
+        <image name="fishing_methods.png" width="50" height="50"/>
+        <image name="home.png" width="50" height="50"/>
+        <image name="literature.png" width="50" height="50"/>
+        <image name="locations.png" width="50" height="50"/>
         <image name="menu.png" width="25" height="25"/>
+        <image name="photos.png" width="50" height="50"/>
         <image name="rectile.png" width="92" height="93"/>
+        <image name="settings.png" width="50" height="50"/>
+        <image name="sort.png" width="25" height="25"/>
+        <image name="species.png" width="50" height="50"/>
+        <image name="stats.png" width="50" height="50"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="rQz-NV-wiY"/>
-        <segue reference="OaX-vS-laH"/>
-        <segue reference="AZU-Ne-NSp"/>
-        <segue reference="US3-j1-Me4"/>
+        <segue reference="5ZT-8I-qr3"/>
+        <segue reference="egX-OW-uSX"/>
+        <segue reference="gDt-Tw-gtk"/>
         <segue reference="FrY-gD-OPV"/>
-        <segue reference="icA-Vv-0Tc"/>
-        <segue reference="iOf-th-u5i"/>
-        <segue reference="gpK-ox-KiN"/>
+        <segue reference="Jyy-wS-dXA"/>
+        <segue reference="gt8-1C-AU6"/>
+        <segue reference="05Z-4h-ivl"/>
+        <segue reference="y0h-hR-J5c"/>
+        <segue reference="Qcx-rg-dpe"/>
         <segue reference="ij7-4o-wMK"/>
         <segue reference="qAO-gb-5Yr"/>
     </inferredMetricsTieBreakers>

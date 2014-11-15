@@ -41,7 +41,7 @@
 
 - (CMAUserDefine *)userDefineFromSelectedCell {
     UITableViewCell *selectedCell = [self.tableView cellForRowAtIndexPath:[self.tableView indexPathForSelectedRow]];
-    return [[self journal] userDefineNamed:selectedCell.textLabel.text];
+    return [[self journal] userDefineNamed:[(UILabel *)[selectedCell viewWithTag:100] text]];
 }
 
 #pragma mark - Navigation
