@@ -54,9 +54,8 @@ NSInteger const DATE_PICKER_ROW = 1;
 NSInteger const DATE_DISPLAY_SECTION = 0;
 NSInteger const DATE_DISPLAY_ROW = 0;
 
-NSInteger const IMAGES_HEIGHT = 121;
+NSInteger const IMAGES_HEIGHT = 150;
 NSInteger const IMAGES_SECTION = 2;
-NSInteger const IMAGES_ROW = 1;
 
 NSInteger const IMAGE_VIEW_TAG = 100;
 
@@ -199,11 +198,11 @@ NSString *const NO_SELECT = @"Not Selected";
     }
     
     // for the images collection cell
-    if (indexPath.section == IMAGES_SECTION && indexPath.row == IMAGES_ROW) {
+    if (indexPath.section == IMAGES_SECTION) {
         if (self.hasAttachedImages)
             return IMAGES_HEIGHT;
         else
-            return 0;
+            return 44;
     }
     
     // using the super class's implementation gets the height set in storyboard
@@ -290,7 +289,7 @@ NSString *const NO_SELECT = @"Not Selected";
         self.deleteImageIndexPath = [self.imageCollection indexPathForItemAtPoint:[sender locationInView:self.imageCollection]];
         
         UIActionSheet *actionSheet = [UIActionSheet new];
-        actionSheet = [actionSheet initWithTitle:@"Are you sure you want to remove this picture?" delegate:self cancelButtonTitle:@"No, keep it." destructiveButtonTitle:@"Yes, delete it." otherButtonTitles:nil];
+        actionSheet = [actionSheet initWithTitle:@"Are you sure you want to remove this photo (it will not be removed from your device)?" delegate:self cancelButtonTitle:@"No, keep it." destructiveButtonTitle:@"Yes, delete it." otherButtonTitles:nil];
         [actionSheet showInView:self.view];
     }
 }

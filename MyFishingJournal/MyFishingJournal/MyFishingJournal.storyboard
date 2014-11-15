@@ -1049,56 +1049,27 @@
                             </tableViewSection>
                             <tableViewSection id="XO1-gg-NUO">
                                 <cells>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="44" id="VMW-Bd-1Rj">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="150" id="VMW-Bd-1Rj">
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="VMW-Bd-1Rj" id="Lak-sh-fb4">
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pictures" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fcl-MQ-yId">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Photos" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fcl-MQ-yId">
                                                     <rect key="frame" x="16" y="11" width="59" height="22"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="59" id="N0V-h6-PuE"/>
+                                                        <constraint firstAttribute="height" constant="22" id="eeJ-Xf-fIQ"/>
+                                                    </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EtH-3k-Rzk">
-                                                    <rect key="frame" x="477" y="7" width="54" height="30"/>
-                                                    <state key="normal" title="Camera">
-                                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                                    </state>
-                                                    <connections>
-                                                        <action selector="clickedCamera:" destination="T1c-yJ-jzQ" eventType="touchUpInside" id="Kut-RV-g1e"/>
-                                                    </connections>
-                                                </button>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xT8-NM-mlQ">
-                                                    <rect key="frame" x="539" y="7" width="45" height="30"/>
-                                                    <state key="normal" title="Attach">
-                                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                                    </state>
-                                                    <connections>
-                                                        <action selector="clickedAttach:" destination="T1c-yJ-jzQ" eventType="touchUpInside" id="qqR-G4-BsW"/>
-                                                    </connections>
-                                                </button>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="Fcl-MQ-yId" firstAttribute="leading" secondItem="Lak-sh-fb4" secondAttribute="leadingMargin" constant="8" id="40i-bF-wgX"/>
-                                                <constraint firstItem="Fcl-MQ-yId" firstAttribute="top" secondItem="Lak-sh-fb4" secondAttribute="topMargin" constant="3" id="Eth-MF-b7U"/>
-                                                <constraint firstItem="xT8-NM-mlQ" firstAttribute="leading" secondItem="EtH-3k-Rzk" secondAttribute="trailing" constant="8" symbolic="YES" id="Pie-gt-BqU"/>
-                                                <constraint firstAttribute="trailingMargin" secondItem="xT8-NM-mlQ" secondAttribute="trailing" constant="8" id="VtQ-eS-UQl"/>
-                                                <constraint firstItem="EtH-3k-Rzk" firstAttribute="top" secondItem="Lak-sh-fb4" secondAttribute="topMargin" constant="-1" id="bbo-Uk-T8c"/>
-                                                <constraint firstItem="EtH-3k-Rzk" firstAttribute="baseline" secondItem="xT8-NM-mlQ" secondAttribute="baseline" id="i54-4f-e0V"/>
-                                                <constraint firstItem="Fcl-MQ-yId" firstAttribute="centerY" secondItem="EtH-3k-Rzk" secondAttribute="centerY" id="t1C-0f-nUf"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="121" id="0zs-SC-aHO">
-                                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="0zs-SC-aHO" id="njw-Vl-OYH">
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
                                                 <collectionView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="PbH-Fk-chE">
-                                                    <rect key="frame" x="15" y="0.0" width="570" height="120"/>
+                                                    <rect key="frame" x="15" y="41" width="585" height="100"/>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="100" id="UMN-dc-jSM"/>
+                                                    </constraints>
                                                     <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Gxg-lB-oZS">
                                                         <size key="itemSize" width="100" height="100"/>
                                                         <size key="headerReferenceSize" width="0.0" height="0.0"/>
@@ -1137,12 +1108,35 @@
                                                         <outlet property="delegate" destination="T1c-yJ-jzQ" id="uu5-o1-FsE"/>
                                                     </connections>
                                                 </collectionView>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pJc-nq-AOy">
+                                                    <rect key="frame" x="547" y="7" width="45" height="30"/>
+                                                    <state key="normal" title="Attach">
+                                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                                    </state>
+                                                    <connections>
+                                                        <action selector="clickedAttach:" destination="T1c-yJ-jzQ" eventType="touchUpInside" id="ip6-Z4-Siw"/>
+                                                    </connections>
+                                                </button>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BYZ-HO-q9N">
+                                                    <rect key="frame" x="485" y="7" width="54" height="30"/>
+                                                    <state key="normal" title="Camera">
+                                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                                    </state>
+                                                    <connections>
+                                                        <action selector="clickedCamera:" destination="T1c-yJ-jzQ" eventType="touchUpInside" id="YgG-AC-0Ty"/>
+                                                    </connections>
+                                                </button>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="PbH-Fk-chE" firstAttribute="leading" secondItem="njw-Vl-OYH" secondAttribute="leadingMargin" constant="7" id="3h4-eJ-ujJ"/>
-                                                <constraint firstItem="PbH-Fk-chE" firstAttribute="top" secondItem="njw-Vl-OYH" secondAttribute="top" id="MB0-g2-kVF"/>
-                                                <constraint firstAttribute="bottom" secondItem="PbH-Fk-chE" secondAttribute="bottom" id="SeQ-wA-s91"/>
-                                                <constraint firstItem="PbH-Fk-chE" firstAttribute="centerX" secondItem="njw-Vl-OYH" secondAttribute="centerX" id="pmQ-WW-NpB"/>
+                                                <constraint firstItem="pJc-nq-AOy" firstAttribute="trailing" secondItem="Lak-sh-fb4" secondAttribute="trailingMargin" id="8xc-5s-I9B"/>
+                                                <constraint firstItem="PbH-Fk-chE" firstAttribute="leading" secondItem="Lak-sh-fb4" secondAttribute="leadingMargin" constant="7" id="92m-p7-ioP"/>
+                                                <constraint firstItem="BYZ-HO-q9N" firstAttribute="top" secondItem="Lak-sh-fb4" secondAttribute="topMargin" constant="-1" id="AOg-3u-5y6"/>
+                                                <constraint firstItem="PbH-Fk-chE" firstAttribute="bottom" secondItem="Lak-sh-fb4" secondAttribute="bottomMargin" id="bll-AW-rvP"/>
+                                                <constraint firstItem="Fcl-MQ-yId" firstAttribute="leading" secondItem="Lak-sh-fb4" secondAttribute="leadingMargin" constant="8" id="ce9-rX-Aas"/>
+                                                <constraint firstItem="pJc-nq-AOy" firstAttribute="top" secondItem="Lak-sh-fb4" secondAttribute="topMargin" constant="-1" id="du6-Yj-Uea"/>
+                                                <constraint firstItem="pJc-nq-AOy" firstAttribute="leading" secondItem="BYZ-HO-q9N" secondAttribute="trailing" constant="8" id="hpX-hf-1yo"/>
+                                                <constraint firstAttribute="trailing" secondItem="PbH-Fk-chE" secondAttribute="trailing" id="nTR-JB-iWg"/>
+                                                <constraint firstItem="Fcl-MQ-yId" firstAttribute="top" secondItem="Lak-sh-fb4" secondAttribute="topMargin" constant="3" id="xfv-S4-rG2"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -1197,9 +1191,9 @@
                     </navigationItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <connections>
-                        <outlet property="attachButton" destination="xT8-NM-mlQ" id="eVi-fv-HpY"/>
+                        <outlet property="attachButton" destination="pJc-nq-AOy" id="b9J-JR-i7c"/>
                         <outlet property="baitUsedDetailLabel" destination="DKE-eF-o43" id="ChZ-pt-0nF"/>
-                        <outlet property="cameraButton" destination="EtH-3k-Rzk" id="Rgw-SH-6vs"/>
+                        <outlet property="cameraButton" destination="BYZ-HO-q9N" id="qSu-Cf-9zr"/>
                         <outlet property="cancelButton" destination="fUB-XX-lJa" id="Wwv-Eq-dhW"/>
                         <outlet property="datePicker" destination="63A-xe-zPt" id="CXw-ub-sLX"/>
                         <outlet property="dateTimeDetailLabel" destination="RLa-LE-c2q" id="Rqc-7Z-l7n"/>
@@ -1227,7 +1221,7 @@
                     </connections>
                 </pongPressGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="612" y="1249"/>
+            <point key="canvasLocation" x="615" y="1249"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="uHb-v9-W6m">
@@ -1901,11 +1895,11 @@
         <image name="rectile.png" width="92" height="93"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="rQz-NV-wiY"/>
+        <segue reference="GZI-Xr-sAg"/>
+        <segue reference="FrY-gD-OPV"/>
         <segue reference="OaX-vS-laH"/>
         <segue reference="AZU-Ne-NSp"/>
         <segue reference="US3-j1-Me4"/>
-        <segue reference="FrY-gD-OPV"/>
         <segue reference="icA-Vv-0Tc"/>
         <segue reference="y0h-hR-J5c"/>
         <segue reference="Qcx-rg-dpe"/>
