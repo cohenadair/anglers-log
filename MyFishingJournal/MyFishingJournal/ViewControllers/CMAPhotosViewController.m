@@ -8,16 +8,24 @@
 
 #import "CMAPhotosViewController.h"
 #import "SWRevealViewController.h"
+#import "CMAAppDelegate.h"
+#import "CMASinglePhotoViewController.h"
 
 @interface CMAPhotosViewController ()
 
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *menuButton;
 
+@property (strong, nonatomic) NSMutableArray *imagesArray;
+
 @end
 
 @implementation CMAPhotosViewController
 
-static NSString * const reuseIdentifier = @"Cell";
+#pragma mark - Global Accessing
+
+- (CMAJournal *)journal {
+    return [((CMAAppDelegate *)[[UIApplication sharedApplication] delegate]) journal];
+}
 
 #pragma mark - Side Bar Navigation
 
@@ -33,19 +41,13 @@ static NSString * const reuseIdentifier = @"Cell";
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self initSideBarMenu];
-    
-    // Uncomment the following line to preserve selection between presentations
-    // self.clearsSelectionOnViewWillAppear = NO;
-    
-    // Register cell classes
-    [self.collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:reuseIdentifier];
-    
-    // Do any additional setup after loading the view.
+    [self initImagesArray];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     self.navigationController.toolbarHidden = YES;
+    [self.collectionView reloadData];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -53,64 +55,75 @@ static NSString * const reuseIdentifier = @"Cell";
     // Dispose of any resources that can be recreated.
 }
 
-/*
-#pragma mark - Navigation
+#pragma mark - Colletion View Initializing
 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+#define CELL_SPACING 2
+#define CELLS_PER_ROW 4
+
+// Loops through the journal entries creating an array of UIImages.
+- (void)initImagesArray {
+    self.imagesArray = [NSMutableArray array];
+    NSMutableArray *entries = [[self journal] entries];
+    
+    for (CMAEntry *entry in entries)
+        for (UIImage *img in entry.images)
+            [self.imagesArray addObject:img];
 }
-*/
 
-#pragma mark <UICollectionViewDataSource>
+- (CGSize)cellSize {
+    CGSize result;
+    
+    result.width = (self.collectionView.frame.size.width - ((CELLS_PER_ROW - 1) * CELL_SPACING)) / CELLS_PER_ROW;
+    result.height = result.width;
+    
+    return result;
+}
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
-    return 0;
+    return 1;
 }
 
-
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    return 0;
+    return [self.imagesArray count];
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
+    UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"thumbnailCell" forIndexPath:indexPath];
     
-    // Configure the cell
+    UIImageView *imageView = (UIImageView *)[cell viewWithTag:100];
+    [imageView setImage:[self.imagesArray objectAtIndex:indexPath.item]];
     
     return cell;
 }
 
-#pragma mark <UICollectionViewDelegate>
-
-/*
-// Uncomment this method to specify if the specified item should be highlighted during tracking
-- (BOOL)collectionView:(UICollectionView *)collectionView shouldHighlightItemAtIndexPath:(NSIndexPath *)indexPath {
-	return YES;
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    [self performSegueWithIdentifier:@"fromPhotosToSinglePhoto" sender:self];
 }
-*/
 
-/*
-// Uncomment this method to specify if the specified item should be selected
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
+    return [self cellSize];
+}
+
+- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section {
+    return CELL_SPACING;
+}
+
+- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section {
+    return CELL_SPACING;
+}
+
 - (BOOL)collectionView:(UICollectionView *)collectionView shouldSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     return YES;
 }
-*/
 
-/*
-// Uncomment these methods to specify if an action menu should be displayed for the specified item, and react to actions performed on the item
-- (BOOL)collectionView:(UICollectionView *)collectionView shouldShowMenuForItemAtIndexPath:(NSIndexPath *)indexPath {
-	return NO;
-}
+#pragma mark - Navigation
 
-- (BOOL)collectionView:(UICollectionView *)collectionView canPerformAction:(SEL)action forItemAtIndexPath:(NSIndexPath *)indexPath withSender:(id)sender {
-	return NO;
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    if ([segue.identifier isEqualToString:@"fromPhotosToSinglePhoto"]) {
+        CMASinglePhotoViewController *destination = [[segue.destinationViewController viewControllers] objectAtIndex:0];
+        destination.imagesArray = self.imagesArray;
+        destination.startingImageIndexPath = [[self.collectionView indexPathsForSelectedItems] objectAtIndex:0];
+    }
 }
-
-- (void)collectionView:(UICollectionView *)collectionView performAction:(SEL)action forItemAtIndexPath:(NSIndexPath *)indexPath withSender:(id)sender {
-	
-}
-*/
 
 @end

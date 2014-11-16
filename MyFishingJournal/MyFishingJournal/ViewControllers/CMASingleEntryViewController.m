@@ -258,6 +258,7 @@
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout: (UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
     CGSize cellSize;
+    
     cellSize.width = collectionView.frame.size.width;
     cellSize.height = collectionView.frame.size.height;
     

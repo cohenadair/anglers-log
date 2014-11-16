@@ -81,6 +81,7 @@
 		E7C29D5B1A17FFE200015B42 /* sort@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = E7C29D531A17FFE200015B42 /* sort@3x.png */; };
 		E7C29D5C1A17FFE200015B42 /* species.png in Resources */ = {isa = PBXBuildFile; fileRef = E7C29D541A17FFE200015B42 /* species.png */; };
 		E7C29D5F1A18021F00015B42 /* CMAPhotosViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7C29D5E1A18021F00015B42 /* CMAPhotosViewController.m */; };
+		E7C29D621A1940DB00015B42 /* CMASinglePhotoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7C29D611A1940DB00015B42 /* CMASinglePhotoViewController.m */; };
 		E7C926D319EE37750010A9FE /* MyFishingJournal.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E7C926D219EE37750010A9FE /* MyFishingJournal.storyboard */; };
 		E7C926D719EE3BC30010A9FE /* CMAHomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7C926D619EE3BC30010A9FE /* CMAHomeViewController.m */; };
 		E7C926DA19EEC7BC0010A9FE /* CMAAddEntryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7C926D919EEC7BC0010A9FE /* CMAAddEntryViewController.m */; };
@@ -191,6 +192,8 @@
 		E7C29D541A17FFE200015B42 /* species.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = species.png; path = Images/Icons/species.png; sourceTree = "<group>"; };
 		E7C29D5D1A18021F00015B42 /* CMAPhotosViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAPhotosViewController.h; path = ViewControllers/CMAPhotosViewController.h; sourceTree = "<group>"; };
 		E7C29D5E1A18021F00015B42 /* CMAPhotosViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAPhotosViewController.m; path = ViewControllers/CMAPhotosViewController.m; sourceTree = "<group>"; };
+		E7C29D601A1940DB00015B42 /* CMASinglePhotoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMASinglePhotoViewController.h; path = ViewControllers/CMASinglePhotoViewController.h; sourceTree = "<group>"; };
+		E7C29D611A1940DB00015B42 /* CMASinglePhotoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMASinglePhotoViewController.m; path = ViewControllers/CMASinglePhotoViewController.m; sourceTree = "<group>"; };
 		E7C926D219EE37750010A9FE /* MyFishingJournal.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MyFishingJournal.storyboard; sourceTree = "<group>"; };
 		E7C926D519EE3BC30010A9FE /* CMAHomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAHomeViewController.h; path = ViewControllers/CMAHomeViewController.h; sourceTree = "<group>"; };
 		E7C926D619EE3BC30010A9FE /* CMAHomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAHomeViewController.m; path = ViewControllers/CMAHomeViewController.m; sourceTree = "<group>"; };
@@ -440,6 +443,8 @@
 				E7C29D151A1445AE00015B42 /* CMASideMenuViewController.m */,
 				E7C29D5D1A18021F00015B42 /* CMAPhotosViewController.h */,
 				E7C29D5E1A18021F00015B42 /* CMAPhotosViewController.m */,
+				E7C29D601A1940DB00015B42 /* CMASinglePhotoViewController.h */,
+				E7C29D611A1940DB00015B42 /* CMASinglePhotoViewController.m */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -596,6 +601,7 @@
 				E7A6883C19F610A100B032E3 /* CMASingleLocationViewController.m in Sources */,
 				E7C926D719EE3BC30010A9FE /* CMAHomeViewController.m in Sources */,
 				E7C29D5F1A18021F00015B42 /* CMAPhotosViewController.m in Sources */,
+				E7C29D621A1940DB00015B42 /* CMASinglePhotoViewController.m in Sources */,
 				E78BB7DF1A100A2C0082004B /* CMAAlerts.m in Sources */,
 				E78BB7E31A1309680082004B /* CMAEntryTableViewCell.m in Sources */,
 				E70B638619D3A8E400DFBA85 /* CMAAppDelegate.m in Sources */,

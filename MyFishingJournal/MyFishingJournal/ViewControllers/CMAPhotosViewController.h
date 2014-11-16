@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface CMAPhotosViewController : UICollectionViewController
+@interface CMAPhotosViewController : UICollectionViewController <UICollectionViewDelegateFlowLayout>
 
 @end
