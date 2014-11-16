@@ -360,8 +360,15 @@
                         </connections>
                     </collectionView>
                     <navigationItem key="navigationItem" id="YFh-Au-JEI">
-                        <barButtonItem key="rightBarButtonItem" systemItem="action" id="6wP-Ff-BnE"/>
+                        <barButtonItem key="rightBarButtonItem" systemItem="action" id="6wP-Ff-BnE">
+                            <connections>
+                                <action selector="clickActionButton:" destination="ld6-vl-IIs" id="lll-z0-HEv"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <outlet property="actionButton" destination="6wP-Ff-BnE" id="9CH-Cw-zXN"/>
+                    </connections>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="e7J-31-8iz" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

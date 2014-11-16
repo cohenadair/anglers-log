@@ -10,6 +10,8 @@
 
 @interface CMASinglePhotoViewController ()
 
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *actionButton;
+
 @end
 
 @implementation CMASinglePhotoViewController
@@ -62,6 +64,23 @@
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
     return [self cellSize];
+}
+
+#pragma mark - Events
+
+- (IBAction)clickActionButton:(UIBarButtonItem *)sender {
+    NSIndexPath *selectedIndexPath = [[self.collectionView indexPathsForVisibleItems] objectAtIndex:0];
+    UIImage *selectedImage = [self.imagesArray objectAtIndex:selectedIndexPath.item];
+    [self shareImage:selectedImage];
+}
+
+#pragma mark - Sharing
+
+- (void)shareImage:(UIImage *)anImage {
+    UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[anImage] applicationActivities:nil];
+    activityController.popoverPresentationController.sourceView = self.view;
+    
+    [self presentViewController:activityController animated:YES completion:nil];
 }
 
 @end
