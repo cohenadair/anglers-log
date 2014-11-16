@@ -54,6 +54,8 @@ extern NSString *const TOKEN_LOCATION;
 // User data file name.
 extern NSString *const ARCHIVE_FILE_NAME;
 
+extern NSString *const SHARE_MESSAGE;
+
 extern CGFloat const TABLE_SECTION_SPACING;
 
 #endif

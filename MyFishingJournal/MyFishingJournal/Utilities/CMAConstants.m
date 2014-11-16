@@ -18,4 +18,6 @@ NSString *const TOKEN_LOCATION = @": ";
 
 NSString *const ARCHIVE_FILE_NAME = @"journal.db";
 
+NSString *const SHARE_MESSAGE = @"Shared with MyFishingJournal mobile application.";
+
 CGFloat const TABLE_SECTION_SPACING = 20.0f;

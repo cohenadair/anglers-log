@@ -76,6 +76,9 @@
 @property (weak, nonatomic)IBOutlet UIView *imagesView;
 @property (weak, nonatomic)IBOutlet UICollectionView *imageCollectionView;
 
+@property (strong, nonatomic)UIBarButtonItem *actionButton;
+@property (strong, nonatomic)UIBarButtonItem *editButton;
+
 @property (strong, nonatomic)NSArray *entryImageArray;
 @property (strong, nonatomic)NSMutableArray *tableCellProperties;
 
@@ -94,6 +97,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    [self initNavigationBarItems];
     [self initTableSettings];
     [self initRearImagesView];
     [self setEntryImageArray:[[self.entry images] allObjects]];
@@ -265,7 +269,44 @@
     return cellSize;
 }
 
+#pragma mark - Events
+
+- (void)clickActionButton {
+    [self shareEntry];
+}
+
+- (void)clickEditButton {
+    [self performSegueWithIdentifier:@"fromSingleEntryToAddEntry" sender:self];
+}
+
+#pragma mark - Sharing
+
+- (void)shareEntry {
+    NSMutableArray *shareItems = [NSMutableArray array];
+    
+    [shareItems addObjectsFromArray:self.entryImageArray];
+    [shareItems addObject:[[[NSDateFormatter alloc] init] stringFromDate:self.entry.date]];
+    [shareItems addObject:[NSString stringWithFormat:@"Length: %@", [self.entry.fishLength stringValue]]];
+    [shareItems addObject:[NSString stringWithFormat:@"Weight: %@", [self.entry.fishLength stringValue]]];
+    [shareItems addObject:SHARE_MESSAGE];
+    
+    UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:shareItems applicationActivities:nil];
+    activityController.popoverPresentationController.sourceView = self.view;
+    activityController.excludedActivityTypes = @[UIActivityTypeAssignToContact,
+                                                 UIActivityTypePrint,
+                                                 UIActivityTypeAddToReadingList];
+    
+    [self presentViewController:activityController animated:YES completion:nil];
+}
+
 #pragma mark - Navigation
+
+- (void)initNavigationBarItems {
+    self.actionButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(clickActionButton)];
+    self.editButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"edit.png"] style:UIBarButtonItemStylePlain target:self action:@selector(clickEditButton)];
+    
+    self.navigationItem.rightBarButtonItems = @[self.editButton, self.actionButton];
+}
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([segue.identifier isEqualToString:@"fromSingleEntryToAddEntry"]) {

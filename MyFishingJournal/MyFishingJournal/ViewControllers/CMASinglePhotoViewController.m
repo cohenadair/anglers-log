@@ -7,6 +7,7 @@
 //
 
 #import "CMASinglePhotoViewController.h"
+#import "CMAConstants.h"
 
 @interface CMASinglePhotoViewController ()
 
@@ -77,8 +78,11 @@
 #pragma mark - Sharing
 
 - (void)shareImage:(UIImage *)anImage {
-    UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[anImage] applicationActivities:nil];
+    UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[anImage, SHARE_MESSAGE] applicationActivities:nil];
     activityController.popoverPresentationController.sourceView = self.view;
+    activityController.excludedActivityTypes = @[UIActivityTypeAssignToContact,
+                                                 UIActivityTypePrint,
+                                                 UIActivityTypeAddToReadingList];
     
     [self presentViewController:activityController animated:YES completion:nil];
 }

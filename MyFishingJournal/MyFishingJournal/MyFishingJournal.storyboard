@@ -889,19 +889,12 @@
                         </connections>
                     </tableView>
                     <extendedEdge key="edgesForExtendedLayout"/>
-                    <navigationItem key="navigationItem" id="fZu-E0-Ax7">
-                        <barButtonItem key="rightBarButtonItem" image="edit.png" id="fGk-1Y-4eD">
-                            <connections>
-                                <segue destination="laU-22-DA1" kind="popoverPresentation" identifier="fromSingleEntryToAddEntry" popoverAnchorBarButtonItem="fGk-1Y-4eD" id="5ZT-8I-qr3">
-                                    <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
-                                </segue>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" id="fZu-E0-Ax7"/>
                     <nil key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="imageCollectionView" destination="5tv-Cu-EOb" id="QoD-1O-sRC"/>
                         <outlet property="imagesView" destination="DNq-uO-hvF" id="CmN-PO-HZE"/>
+                        <segue destination="laU-22-DA1" kind="presentation" identifier="fromSingleEntryToAddEntry" id="RpT-ts-gTM"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yot-kI-9CO" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -2091,7 +2084,7 @@
         <segue reference="gDt-Tw-gtk"/>
         <segue reference="gt8-1C-AU6"/>
         <segue reference="05Z-4h-ivl"/>
-        <segue reference="5ZT-8I-qr3"/>
+        <segue reference="RpT-ts-gTM"/>
         <segue reference="y0h-hR-J5c"/>
         <segue reference="qAO-gb-5Yr"/>
         <segue reference="iOf-th-u5i"/>
