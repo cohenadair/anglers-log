@@ -38,4 +38,7 @@
 - (MKCoordinateRegion)mapRegion;
 - (CMALocation *)copy;
 
+// sorting
+- (void)sortFishingSpotsByName;
+
 @end

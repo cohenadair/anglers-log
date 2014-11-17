@@ -40,4 +40,7 @@
 // object types
 - (id)emptyObjectNamed: (NSString *)aName;
 
+// sorting
+- (void)sortByNameProperty;
+
 @end

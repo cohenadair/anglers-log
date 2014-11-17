@@ -65,6 +65,7 @@
     }
 
     [self.fishingSpots addObject:aFishingSpot];
+    [self sortFishingSpotsByName];
     return YES;
 }
 
@@ -144,6 +145,14 @@
         [result addFishingSpot:f];
     
     return result;
+}
+
+#pragma mark - Sorting
+
+- (void)sortFishingSpotsByName {
+    self.fishingSpots = [[self.fishingSpots sortedArrayUsingComparator:^NSComparisonResult(CMAFishingSpot *s1, CMAFishingSpot *s2){
+        return [s1.name compare:s2.name];
+    }] mutableCopy];
 }
 
 @end

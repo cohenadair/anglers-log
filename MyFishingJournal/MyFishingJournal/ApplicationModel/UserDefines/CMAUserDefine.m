@@ -58,6 +58,7 @@
     }
     
     [self.objects addObject:anObject];
+    [self sortByNameProperty];
     return YES;
 }
 
@@ -105,6 +106,14 @@
     
     NSLog(@"Invalid user define name in - [CMAUserDefine emptyObjectNamed]");
     return nil;
+}
+
+#pragma mark - Sorting
+
+- (void)sortByNameProperty {
+    self.objects = [[self.objects sortedArrayUsingComparator:^NSComparisonResult(id o1, id o2){
+        return [[o1 name] compare:[o2 name]];
+    }] mutableCopy];
 }
 
 @end
