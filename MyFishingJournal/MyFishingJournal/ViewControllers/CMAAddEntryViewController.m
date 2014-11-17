@@ -315,7 +315,7 @@ NSString *const NO_SELECT = @"Not Selected";
     self.deleteImageActionSheet = [[UIActionSheet alloc] initWithTitle:@"Are you sure you want to remove this photo (it will not be removed from your device)?" delegate:self cancelButtonTitle:@"No, keep it." destructiveButtonTitle:@"Yes, delete it." otherButtonTitles:nil];
 }
 
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
     if (actionSheet == self.cameraActionSheet) {
         // take photo
         if (buttonIndex == 0)
@@ -341,10 +341,6 @@ NSString *const NO_SELECT = @"Not Selected";
 
 - (void)performSegueToPreviousView {
     switch (self.previousViewID) {
-        case CMAViewControllerID_Home:
-            [self performSegueWithIdentifier:@"unwindToHomeFromAddEntry" sender:self];
-            break;
-            
         case CMAViewControllerID_ViewEntries:
             [self performSegueWithIdentifier:@"unwindToViewEntriesFromAddEntry" sender:self];
             break;

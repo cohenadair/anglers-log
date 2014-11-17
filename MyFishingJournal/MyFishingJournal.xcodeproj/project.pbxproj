@@ -83,7 +83,6 @@
 		E7C29D5F1A18021F00015B42 /* CMAPhotosViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7C29D5E1A18021F00015B42 /* CMAPhotosViewController.m */; };
 		E7C29D621A1940DB00015B42 /* CMASinglePhotoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7C29D611A1940DB00015B42 /* CMASinglePhotoViewController.m */; };
 		E7C926D319EE37750010A9FE /* MyFishingJournal.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E7C926D219EE37750010A9FE /* MyFishingJournal.storyboard */; };
-		E7C926D719EE3BC30010A9FE /* CMAHomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7C926D619EE3BC30010A9FE /* CMAHomeViewController.m */; };
 		E7C926DA19EEC7BC0010A9FE /* CMAAddEntryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7C926D919EEC7BC0010A9FE /* CMAAddEntryViewController.m */; };
 		E7C926E319EEC9DC0010A9FE /* CMAStatisticsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7C926E219EEC9DC0010A9FE /* CMAStatisticsViewController.m */; };
 		E7C9271F19EF4BEB0010A9FE /* CMAViewEntriesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7C9271E19EF4BEB0010A9FE /* CMAViewEntriesViewController.m */; };
@@ -195,8 +194,6 @@
 		E7C29D601A1940DB00015B42 /* CMASinglePhotoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMASinglePhotoViewController.h; path = ViewControllers/CMASinglePhotoViewController.h; sourceTree = "<group>"; };
 		E7C29D611A1940DB00015B42 /* CMASinglePhotoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMASinglePhotoViewController.m; path = ViewControllers/CMASinglePhotoViewController.m; sourceTree = "<group>"; };
 		E7C926D219EE37750010A9FE /* MyFishingJournal.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MyFishingJournal.storyboard; sourceTree = "<group>"; };
-		E7C926D519EE3BC30010A9FE /* CMAHomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAHomeViewController.h; path = ViewControllers/CMAHomeViewController.h; sourceTree = "<group>"; };
-		E7C926D619EE3BC30010A9FE /* CMAHomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAHomeViewController.m; path = ViewControllers/CMAHomeViewController.m; sourceTree = "<group>"; };
 		E7C926D819EEC7BC0010A9FE /* CMAAddEntryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAAddEntryViewController.h; path = ViewControllers/CMAAddEntryViewController.h; sourceTree = "<group>"; };
 		E7C926D919EEC7BC0010A9FE /* CMAAddEntryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAAddEntryViewController.m; path = ViewControllers/CMAAddEntryViewController.m; sourceTree = "<group>"; };
 		E7C926E119EEC9DC0010A9FE /* CMAStatisticsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAStatisticsViewController.h; path = ViewControllers/CMAStatisticsViewController.h; sourceTree = "<group>"; };
@@ -417,8 +414,6 @@
 		E7C926D419EE3B320010A9FE /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				E7C926D519EE3BC30010A9FE /* CMAHomeViewController.h */,
-				E7C926D619EE3BC30010A9FE /* CMAHomeViewController.m */,
 				E7C926D819EEC7BC0010A9FE /* CMAAddEntryViewController.h */,
 				E7C926D919EEC7BC0010A9FE /* CMAAddEntryViewController.m */,
 				E7C926E119EEC9DC0010A9FE /* CMAStatisticsViewController.h */,
@@ -599,7 +594,6 @@
 				E7C29D101A143A1600015B42 /* SWRevealViewController.m in Sources */,
 				E738585019FE093700FE122B /* CMAFishingSpot.m in Sources */,
 				E7A6883C19F610A100B032E3 /* CMASingleLocationViewController.m in Sources */,
-				E7C926D719EE3BC30010A9FE /* CMAHomeViewController.m in Sources */,
 				E7C29D5F1A18021F00015B42 /* CMAPhotosViewController.m in Sources */,
 				E7C29D621A1940DB00015B42 /* CMASinglePhotoViewController.m in Sources */,
 				E78BB7DF1A100A2C0082004B /* CMAAlerts.m in Sources */,

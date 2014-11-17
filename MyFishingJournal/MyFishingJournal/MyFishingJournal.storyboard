@@ -6,97 +6,6 @@
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
-        <!--Home-->
-        <scene sceneID="Ex8-kM-ahq">
-            <objects>
-                <viewController title="Home" id="yB5-2V-0Ji" customClass="CMAHomeViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="n7A-Xc-Drv"/>
-                        <viewControllerLayoutGuide type="bottom" id="vOq-zF-Kmq"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="fxX-fc-qIg">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zWJ-Op-VU3">
-                                <rect key="frame" x="266" y="365" width="68" height="30"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="30" id="eIz-Qd-2BN"/>
-                                </constraints>
-                                <state key="normal" title="Add Entry">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <segue destination="laU-22-DA1" kind="presentation" identifier="fromHomeToAddEntry" id="GZI-Xr-sAg"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WVm-d2-UN7">
-                                <rect key="frame" x="266" y="403" width="68" height="30"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="30" id="K6H-Tj-FzF"/>
-                                </constraints>
-                                <state key="normal" title="Feedback">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="E3g-qe-8tN">
-                                <rect key="frame" x="239" y="441" width="123" height="30"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="30" id="Mff-WA-Gou"/>
-                                </constraints>
-                                <state key="normal" title="App Store Review">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                            </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="My Fishing" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="q60-q8-RPd">
-                                <rect key="frame" x="191" y="129" width="218" height="100"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="100" id="ILS-q7-4lK"/>
-                                    <constraint firstAttribute="width" constant="218" id="g8z-HQ-2gi"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="40"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Journal" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vF0-0p-Eqh">
-                                <rect key="frame" x="224" y="221" width="152" height="73"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="152" id="5kq-aV-gB7"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="40"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="q60-q8-RPd" firstAttribute="centerX" secondItem="vF0-0p-Eqh" secondAttribute="centerX" id="1qN-jJ-t4x"/>
-                            <constraint firstItem="vOq-zF-Kmq" firstAttribute="top" secondItem="E3g-qe-8tN" secondAttribute="bottom" constant="129" id="2gt-5S-VAh"/>
-                            <constraint firstItem="E3g-qe-8tN" firstAttribute="centerX" secondItem="fxX-fc-qIg" secondAttribute="centerX" id="BFD-wm-jPS"/>
-                            <constraint firstItem="vF0-0p-Eqh" firstAttribute="top" secondItem="n7A-Xc-Drv" secondAttribute="bottom" constant="157" id="P0l-K7-xTM"/>
-                            <constraint firstItem="zWJ-Op-VU3" firstAttribute="centerX" secondItem="vF0-0p-Eqh" secondAttribute="centerX" id="XKR-7M-vvI"/>
-                            <constraint firstItem="E3g-qe-8tN" firstAttribute="top" secondItem="WVm-d2-UN7" secondAttribute="bottom" constant="8" symbolic="YES" id="ed0-lf-QFe"/>
-                            <constraint firstItem="E3g-qe-8tN" firstAttribute="centerX" secondItem="WVm-d2-UN7" secondAttribute="centerX" id="epv-cq-5Ri"/>
-                            <constraint firstItem="q60-q8-RPd" firstAttribute="top" secondItem="n7A-Xc-Drv" secondAttribute="bottom" constant="65" id="keV-93-RQc"/>
-                            <constraint firstItem="WVm-d2-UN7" firstAttribute="top" secondItem="zWJ-Op-VU3" secondAttribute="bottom" constant="8" symbolic="YES" id="lcc-ZH-cko"/>
-                            <constraint firstItem="zWJ-Op-VU3" firstAttribute="top" secondItem="vF0-0p-Eqh" secondAttribute="bottom" constant="71" id="mf8-cs-kge"/>
-                            <constraint firstItem="WVm-d2-UN7" firstAttribute="leading" secondItem="zWJ-Op-VU3" secondAttribute="leading" id="rbT-1w-X8d"/>
-                        </constraints>
-                    </view>
-                    <navigationItem key="navigationItem" id="Ds4-rX-AbK">
-                        <barButtonItem key="backBarButtonItem" title="Home" id="m2d-NU-o9s"/>
-                        <barButtonItem key="leftBarButtonItem" image="menu.png" style="done" id="22G-68-9sZ"/>
-                    </navigationItem>
-                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
-                    <nil key="simulatedBottomBarMetrics"/>
-                    <connections>
-                        <outlet property="menuButton" destination="22G-68-9sZ" id="mOS-xy-c2L"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="FVC-nC-FmP" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1316" y="401"/>
-        </scene>
         <!--Statistics-->
         <scene sceneID="IL0-Ib-UuN">
             <objects>
@@ -470,24 +379,6 @@
             </objects>
             <point key="canvasLocation" x="3446" y="2079"/>
         </scene>
-        <!--Home-->
-        <scene sceneID="ucU-GO-F5K">
-            <objects>
-                <navigationController title="Home" automaticallyAdjustsScrollViewInsets="NO" id="sKN-2s-l4h" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="2z4-Wy-Oih">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="yB5-2V-0Ji" kind="relationship" relationship="rootViewController" id="93R-d4-gxG"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="RnY-ja-E9C" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1275" y="401"/>
-        </scene>
         <!--Entries-->
         <scene sceneID="qbr-pc-l7U">
             <objects>
@@ -569,6 +460,14 @@
                                 <action selector="clickDeleteButton:" destination="t80-QM-oZt" id="DKU-L9-tDJ"/>
                             </connections>
                         </barButtonItem>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="Amw-il-AAo"/>
+                        <barButtonItem image="sort.png" id="iTK-vI-Yql">
+                            <connections>
+                                <segue destination="wpl-p5-uAQ" kind="popoverPresentation" identifier="fromViewEntriesToEntrySorting" popoverAnchorBarButtonItem="iTK-vI-Yql" id="lmf-SC-sce">
+                                    <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
+                                </segue>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="jqZ-3x-pby"/>
                         <barButtonItem systemItem="add" id="q9u-dx-Xbo">
                             <connections>
@@ -580,13 +479,6 @@
                     </toolbarItems>
                     <navigationItem key="navigationItem" title="Entries" id="SyW-dX-zkA">
                         <barButtonItem key="leftBarButtonItem" image="menu.png" id="egA-Uh-9jg"/>
-                        <barButtonItem key="rightBarButtonItem" image="sort.png" id="iTK-vI-Yql">
-                            <connections>
-                                <segue destination="wpl-p5-uAQ" kind="popoverPresentation" identifier="fromViewEntriesToEntrySorting" popoverAnchorBarButtonItem="iTK-vI-Yql" id="lmf-SC-sce">
-                                    <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
-                                </segue>
-                            </connections>
-                        </barButtonItem>
                     </navigationItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics" translucent="NO"/>
@@ -1296,7 +1188,6 @@
                         <outlet property="speciesDetailLabel" destination="iG0-tN-1ui" id="1dz-uF-Ukq"/>
                         <outlet property="weightLabel" destination="KmG-HQ-U4g" id="Ast-od-8IO"/>
                         <outlet property="weightTextField" destination="Kiv-US-vyI" id="zWv-l9-M4D"/>
-                        <segue destination="gLf-px-n2a" kind="unwind" identifier="unwindToHomeFromAddEntry" unwindAction="unwindToHome:" id="y1Q-lf-imf"/>
                         <segue destination="gLf-px-n2a" kind="unwind" identifier="unwindToViewEntriesFromAddEntry" unwindAction="unwindToViewEntries:" id="0cS-3g-Mnn"/>
                         <segue destination="gLf-px-n2a" kind="unwind" identifier="unwindToSingleEntryFromAddEntry" unwindAction="unwindToSingleEntry:" id="TWG-6y-j1w"/>
                     </connections>
@@ -1676,13 +1567,13 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <connections>
-                        <segue destination="sKN-2s-l4h" kind="custom" identifier="sw_front" customClass="SWRevealViewControllerSegue" id="Fle-GX-rUH"/>
                         <segue destination="Wkq-OL-xZB" kind="custom" identifier="sw_rear" customClass="SWRevealViewControllerSegue" id="UT8-ap-eia"/>
+                        <segue destination="9Xe-Ut-CPY" kind="custom" identifier="sw_front" customClass="SWRevealViewControllerSegue" id="O4P-6B-DHl"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vma-Yt-KJy" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1275" y="-390"/>
+            <point key="canvasLocation" x="2018" y="402"/>
         </scene>
         <!--Side Menu View Controller-->
         <scene sceneID="Cbv-Va-nu0">
@@ -1711,27 +1602,6 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                                    </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="drt-2m-WWH">
-                                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="drt-2m-WWH" id="uhZ-w8-tya">
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <imageView userInteractionEnabled="NO" alpha="0.40000000000000002" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="home.png" translatesAutoresizingMaskIntoConstraints="NO" id="Vvh-GM-VF6">
-                                                    <rect key="frame" x="18" y="9" width="25" height="25"/>
-                                                </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" tag="100" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Home" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fLN-Rp-H21">
-                                                    <rect key="frame" x="65" y="14" width="46" height="21"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                        </tableViewCellContentView>
-                                        <connections>
-                                            <segue destination="yB5-2V-0Ji" kind="custom" identifier="fromSideMenuToHome" customClass="SWRevealViewControllerSegue" id="FrY-gD-OPV"/>
-                                        </connections>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="UfF-aT-SpT">
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -1914,7 +1784,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JCQ-W3-6UJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2018" y="-390"/>
+            <point key="canvasLocation" x="2761" y="402"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="mYr-7D-5eL">
@@ -1932,7 +1802,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xct-5x-tQg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="574" y="1249"/>
+            <point key="canvasLocation" x="574" y="1241"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="1vk-wI-ZPw">
@@ -2067,7 +1937,6 @@
         <image name="camera.png" width="25" height="25"/>
         <image name="edit.png" width="25" height="25"/>
         <image name="fishing_methods.png" width="50" height="50"/>
-        <image name="home.png" width="50" height="50"/>
         <image name="literature.png" width="50" height="50"/>
         <image name="locations.png" width="50" height="50"/>
         <image name="menu.png" width="25" height="25"/>
@@ -2079,16 +1948,15 @@
         <image name="stats.png" width="50" height="50"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="FrY-gD-OPV"/>
+        <segue reference="rQz-NV-wiY"/>
         <segue reference="egX-OW-uSX"/>
+        <segue reference="Jyy-wS-dXA"/>
         <segue reference="gDt-Tw-gtk"/>
         <segue reference="gt8-1C-AU6"/>
         <segue reference="05Z-4h-ivl"/>
-        <segue reference="RpT-ts-gTM"/>
-        <segue reference="y0h-hR-J5c"/>
-        <segue reference="qAO-gb-5Yr"/>
         <segue reference="iOf-th-u5i"/>
         <segue reference="ij7-4o-wMK"/>
-        <segue reference="F91-a2-ToR"/>
+        <segue reference="y0h-hR-J5c"/>
+        <segue reference="qAO-gb-5Yr"/>
     </inferredMetricsTieBreakers>
 </document>

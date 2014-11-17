@@ -11,12 +11,11 @@
 
 typedef NS_ENUM(NSInteger, CMAViewControllerID) {
     CMAViewControllerID_Nil = -1,
-    CMAViewControllerID_Home = 0,
-    CMAViewControllerID_ViewEntries = 1,
-    CMAViewControllerID_EditSettings = 2,
-    CMAViewControllerID_AddEntry = 3,
-    CMAViewControllerID_SingleEntry = 4,
-    CMAViewControllerID_SingleLocation = 5
+    CMAViewControllerID_ViewEntries = 0,
+    CMAViewControllerID_EditSettings = 1,
+    CMAViewControllerID_AddEntry = 2,
+    CMAViewControllerID_SingleEntry = 3,
+    CMAViewControllerID_SingleLocation = 4
 };
 
 // Each value represents the index for an item in a UISegmentedControlView.
