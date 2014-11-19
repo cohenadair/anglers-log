@@ -275,7 +275,6 @@ NSString *const NO_SELECT = @"Not Selected";
         if (!self.isEditingEntry)
             [self setEntry:nil];
         
-        [[self journal] sortEntriesBy:[self journal].entrySortMethod order:[self journal].entrySortOrder];
         [[self journal] archive];
         [self performSegueToPreviousView];
     }

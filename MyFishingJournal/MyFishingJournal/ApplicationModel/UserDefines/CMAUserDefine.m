@@ -85,7 +85,8 @@
 }
 
 - (BOOL)isSetOfStrings {
-    return ![self.name isEqualToString:SET_LOCATIONS];
+    return ![self.name isEqualToString:SET_LOCATIONS] &&
+           ![self.name isEqualToString:SET_BAITS];
 }
 
 #pragma mark - Object Types

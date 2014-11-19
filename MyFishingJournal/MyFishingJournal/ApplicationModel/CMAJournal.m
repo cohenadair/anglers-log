@@ -78,6 +78,7 @@
     }
     
     [self.entries addObject:anEntry];
+    [self sortEntriesBy:self.entrySortMethod order:self.entrySortOrder];
     return YES;
 }
 

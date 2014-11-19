@@ -49,8 +49,7 @@
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([segue.identifier isEqualToString:@"fromSideMenuSpeciesToEditSettings"] ||
         [segue.identifier isEqualToString:@"fromSideMenuLocationsToEditSettings"] ||
-        [segue.identifier isEqualToString:@"fromSideMenuFishingMethodsToEditSettings"] ||
-        [segue.identifier isEqualToString:@"fromSideMenuBaitsUsedToEditSettings"])
+        [segue.identifier isEqualToString:@"fromSideMenuFishingMethodsToEditSettings"])
     {
         CMAEditSettingsViewController *destination = segue.destinationViewController;
         destination.userDefine = [self userDefineFromSelectedCell];

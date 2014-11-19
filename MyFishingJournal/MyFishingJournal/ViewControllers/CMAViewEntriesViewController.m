@@ -141,7 +141,7 @@
     [self.addButton setEnabled:YES];
     [self.sortButton setEnabled:YES];
     
-    self.navigationItem.rightBarButtonItem = self.sortButton;
+    self.navigationItem.rightBarButtonItem = nil;
 }
 
 - (void)disableToolbarButtons {
