@@ -2163,24 +2163,24 @@
                         <sections>
                             <tableViewSection id="iEM-Zx-7UZ">
                                 <cells>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="imageCell" rowHeight="210" id="BLt-Gi-VV7">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="imageCell" rowHeight="220" id="BLt-Gi-VV7">
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="BLt-Gi-VV7" id="k9l-EA-SQs">
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="fJp-4n-hJn">
-                                                    <rect key="frame" x="0.0" y="0.0" width="600" height="210"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="600" height="212"/>
                                                 </imageView>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstAttribute="bottom" secondItem="fJp-4n-hJn" secondAttribute="bottom" id="6QV-5b-gZM"/>
-                                                <constraint firstItem="fJp-4n-hJn" firstAttribute="leading" secondItem="k9l-EA-SQs" secondAttribute="leading" id="Bxq-1a-Oi9"/>
-                                                <constraint firstAttribute="trailing" secondItem="fJp-4n-hJn" secondAttribute="trailing" id="HB6-61-Y3Z"/>
-                                                <constraint firstItem="fJp-4n-hJn" firstAttribute="top" secondItem="k9l-EA-SQs" secondAttribute="top" id="lWp-CQ-Gkx"/>
+                                                <constraint firstItem="fJp-4n-hJn" firstAttribute="bottom" secondItem="k9l-EA-SQs" secondAttribute="bottomMargin" id="DZ7-Yk-egn"/>
+                                                <constraint firstAttribute="trailing" secondItem="fJp-4n-hJn" secondAttribute="trailing" id="dBm-MA-xQ9"/>
+                                                <constraint firstItem="fJp-4n-hJn" firstAttribute="leading" secondItem="k9l-EA-SQs" secondAttribute="leading" id="uO4-bV-Xeu"/>
+                                                <constraint firstItem="fJp-4n-hJn" firstAttribute="top" secondItem="k9l-EA-SQs" secondAttribute="top" id="vor-hc-6uu"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="nameCell" textLabel="w3r-3T-Eja" rowHeight="44" style="IBUITableViewCellStyleDefault" id="iKq-xJ-vYm">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="nameCell" textLabel="w3r-3T-Eja" rowHeight="35" style="IBUITableViewCellStyleDefault" id="iKq-xJ-vYm">
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="iKq-xJ-vYm" id="vvl-lR-jaF">
                                             <autoresizingMask key="autoresizingMask"/>
