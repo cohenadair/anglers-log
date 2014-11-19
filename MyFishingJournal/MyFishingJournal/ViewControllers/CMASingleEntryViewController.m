@@ -203,6 +203,15 @@
     if (indexPath.item == [self.tableCellProperties count])
         return 20;
     
+    if (indexPath.item == [self.tableCellProperties count] - 1) {
+        NSDictionary *attributes = @{NSFontAttributeName: [UIFont fontWithName:GLOBAL_FONT size:15]};
+        CGRect rect = [self.entry.notes boundingRectWithSize:CGSizeMake(self.tableView.frame.size.width, CGFLOAT_MAX)
+                                                     options:NSStringDrawingUsesLineFragmentOrigin
+                                                  attributes:attributes
+                                                     context:nil];
+        return rect.size.height + 40; // + 40 for the "Notes" title
+    }
+    
     return [[self.tableCellProperties objectAtIndex:indexPath.item] height];
 }
 

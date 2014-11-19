@@ -383,14 +383,14 @@
         <scene sceneID="8iS-mr-DEy">
             <objects>
                 <tableViewController id="hTK-uR-uLB" customClass="CMAAddBaitViewController" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="xhK-WL-S8i">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="xhK-WL-S8i">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <sections>
                             <tableViewSection id="lWe-23-nso">
                                 <cells>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="nameCell" rowHeight="44" id="Zbx-n9-bLe">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="nameCell" rowHeight="44" id="Zbx-n9-bLe">
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Zbx-n9-bLe" id="PYJ-9Q-4vt">
                                             <autoresizingMask key="autoresizingMask"/>
@@ -407,7 +407,7 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="descriptionCell" rowHeight="170" id="a6H-aV-6D9">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="descriptionCell" rowHeight="170" id="a6H-aV-6D9">
                                         <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="a6H-aV-6D9" id="GT4-rF-Qvb">
@@ -436,7 +436,7 @@
                             </tableViewSection>
                             <tableViewSection id="dHv-uK-LqV">
                                 <cells>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="photoCell" rowHeight="125" id="vYL-UN-4TQ">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="photoCell" rowHeight="125" id="vYL-UN-4TQ">
                                         <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="vYL-UN-4TQ" id="ZT1-gh-va6">
@@ -838,7 +838,7 @@
                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Subtite" lineBreakMode="wordWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="PaD-aY-UQ5">
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Subtite" lineBreakMode="wordWrap" numberOfLines="200" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="PaD-aY-UQ5">
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                             <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
@@ -2156,7 +2156,7 @@
         <scene sceneID="IyG-jE-Ue7">
             <objects>
                 <tableViewController id="Qdi-bC-STH" customClass="CMASingleBaitViewController" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="Azw-AT-uGe">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="Azw-AT-uGe">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -2292,17 +2292,17 @@
         <image name="stats.png" width="50" height="50"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="rQz-NV-wiY"/>
+        <segue reference="RpT-ts-gTM"/>
         <segue reference="egX-OW-uSX"/>
         <segue reference="aBE-xI-c3y"/>
         <segue reference="Jyy-wS-dXA"/>
         <segue reference="gDt-Tw-gtk"/>
         <segue reference="guB-6y-sIg"/>
         <segue reference="gt8-1C-AU6"/>
-        <segue reference="gpK-ox-KiN"/>
+        <segue reference="Mmt-ea-Rlu"/>
+        <segue reference="y0h-hR-J5c"/>
         <segue reference="Qcx-rg-dpe"/>
         <segue reference="ij7-4o-wMK"/>
-        <segue reference="wZB-7v-gkR"/>
         <segue reference="0XO-Us-bO6"/>
     </inferredMetricsTieBreakers>
 </document>

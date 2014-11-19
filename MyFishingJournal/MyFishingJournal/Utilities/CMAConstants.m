@@ -20,4 +20,6 @@ NSString *const ARCHIVE_FILE_NAME = @"journal.db";
 
 NSString *const SHARE_MESSAGE = @"Shared with MyFishingJournal mobile application.";
 
+NSString *const GLOBAL_FONT = @"HelveticaNeue";
+
 CGFloat const TABLE_SECTION_SPACING = 20.0f;

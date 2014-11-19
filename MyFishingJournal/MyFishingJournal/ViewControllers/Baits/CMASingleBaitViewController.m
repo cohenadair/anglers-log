@@ -45,9 +45,19 @@
     if (indexPath.row == 1 && !self.bait.name)
         return 0;
     
-    if (indexPath.row == 2 && !self.bait.baitDescription)
-        return 0;
-    
+    if (indexPath.row == 2) {
+        if (!self.bait.description)
+            return 0;
+        else {
+            NSDictionary *attributes = @{NSFontAttributeName: [UIFont fontWithName:GLOBAL_FONT size:17]};
+            CGRect rect = [self.bait.baitDescription boundingRectWithSize:CGSizeMake(self.tableView.frame.size.width, CGFLOAT_MAX)
+                                                                  options:NSStringDrawingUsesLineFragmentOrigin
+                                                               attributes:attributes
+                                                                  context:nil];
+            return rect.size.height;
+        }
+    }
+
     return [super tableView:tableView heightForRowAtIndexPath:indexPath];
 }
 

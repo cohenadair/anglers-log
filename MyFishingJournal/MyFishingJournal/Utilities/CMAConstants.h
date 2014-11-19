@@ -57,6 +57,8 @@ extern NSString *const ARCHIVE_FILE_NAME;
 
 extern NSString *const SHARE_MESSAGE;
 
+extern NSString *const GLOBAL_FONT;
+
 extern CGFloat const TABLE_SECTION_SPACING;
 
 #endif

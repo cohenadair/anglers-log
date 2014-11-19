@@ -24,7 +24,6 @@
 
 @property (strong, nonatomic) CMACameraActionSheet *cameraActionSheet;
 
-@property (nonatomic) BOOL hasEditedDescriptionTextView;
 @property (nonatomic) BOOL isEditingBait;
 @property (strong, nonatomic) CMABait *nonEditedBait;
 
@@ -108,17 +107,13 @@
 #pragma mark - Text View Initializing
 
 - (void)textViewDidBeginEditing:(UITextView *)textView {
-    if (!self.hasEditedDescriptionTextView || [textView.text isEqualToString:@"Description."]) {
+    if ([textView.text isEqualToString:@"Description."])
         [textView setText:@""];
-        self.hasEditedDescriptionTextView = YES;
-    }
 }
 
 - (void)textViewDidEndEditing:(UITextView *)textView {
-    if ([textView.text isEqualToString:@""]) {
+    if ([textView.text isEqualToString:@""])
         [textView setText:@"Description."];
-        self.hasEditedDescriptionTextView = NO;
-    }
 }
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
