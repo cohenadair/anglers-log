@@ -6,13 +6,13 @@
 //  Copyright (c) 2014 Cohen Adair. All rights reserved.
 //
 
-#import "CMAEditSettingsViewController.h"
+#import "CMAUserDefinesViewController.h"
 #import "CMAAppDelegate.h"
 #import "CMAAddLocationViewController.h"
 #import "CMASingleLocationViewController.h"
 #import "SWRevealViewController.h"
 
-@interface CMAEditSettingsViewController ()
+@interface CMAUserDefinesViewController ()
 
 @property (strong, nonatomic)UIBarButtonItem *editButton;
 @property (strong, nonatomic)UIBarButtonItem *doneSelectingButton;
@@ -27,7 +27,7 @@
 
 @end
 
-@implementation CMAEditSettingsViewController
+@implementation CMAUserDefinesViewController
 
 #pragma mark - Global Accessing
 

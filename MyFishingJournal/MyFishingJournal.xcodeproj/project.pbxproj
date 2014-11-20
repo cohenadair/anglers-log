@@ -30,7 +30,6 @@
 		E72669DE19E76B63003C8E0B /* CMAUserDefine.m in Sources */ = {isa = PBXBuildFile; fileRef = E72669DD19E76B63003C8E0B /* CMAUserDefine.m */; };
 		E72669DF19E76B64003C8E0B /* CMAUserDefine.m in Sources */ = {isa = PBXBuildFile; fileRef = E72669DD19E76B63003C8E0B /* CMAUserDefine.m */; };
 		E738583D19FCD6DE00FE122B /* no-image.png in Resources */ = {isa = PBXBuildFile; fileRef = E738583C19FCD6DE00FE122B /* no-image.png */; };
-		E738584019FD930000FE122B /* CMASingleEntryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E738583F19FD930000FE122B /* CMASingleEntryViewController.m */; };
 		E738584A19FDFCBF00FE122B /* CMASpecies.m in Sources */ = {isa = PBXBuildFile; fileRef = E738584919FDFCBF00FE122B /* CMASpecies.m */; };
 		E738584B19FDFCBF00FE122B /* CMASpecies.m in Sources */ = {isa = PBXBuildFile; fileRef = E738584919FDFCBF00FE122B /* CMASpecies.m */; };
 		E738585019FE093700FE122B /* CMAFishingSpot.m in Sources */ = {isa = PBXBuildFile; fileRef = E738584D19FE093700FE122B /* CMAFishingSpot.m */; };
@@ -43,19 +42,24 @@
 		E738585B19FE0A3400FE122B /* CMAFishingMethod.m in Sources */ = {isa = PBXBuildFile; fileRef = E738585919FE0A3400FE122B /* CMAFishingMethod.m */; };
 		E78BB7D41A0724290082004B /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E78BB7D31A0724290082004B /* MapKit.framework */; };
 		E78BB7D61A0724760082004B /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E78BB7D51A0724760082004B /* CoreLocation.framework */; };
-		E78BB7D91A0BD9F80082004B /* CMAAddFishingSpotViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E78BB7D81A0BD9F80082004B /* CMAAddFishingSpotViewController.m */; };
 		E78BB7DB1A0C1B9B0082004B /* rectile.png in Resources */ = {isa = PBXBuildFile; fileRef = E78BB7DA1A0C1B9B0082004B /* rectile.png */; };
 		E78BB7DF1A100A2C0082004B /* CMAAlerts.m in Sources */ = {isa = PBXBuildFile; fileRef = E78BB7DE1A100A2C0082004B /* CMAAlerts.m */; };
 		E78BB7E31A1309680082004B /* CMAEntryTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E78BB7E21A1309680082004B /* CMAEntryTableViewCell.m */; };
 		E78BB7E91A133A940082004B /* CMATouchSegmentedControl.m in Sources */ = {isa = PBXBuildFile; fileRef = E78BB7E81A133A940082004B /* CMATouchSegmentedControl.m */; };
+		E7A3311D1A1D706A00C1D3F1 /* CMAAddEntryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7A331161A1D706A00C1D3F1 /* CMAAddEntryViewController.m */; };
+		E7A3311E1A1D706A00C1D3F1 /* CMAEntrySortingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7A331181A1D706A00C1D3F1 /* CMAEntrySortingViewController.m */; };
+		E7A3311F1A1D706A00C1D3F1 /* CMASingleEntryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7A3311A1A1D706A00C1D3F1 /* CMASingleEntryViewController.m */; };
+		E7A331201A1D706A00C1D3F1 /* CMAViewEntriesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7A3311C1A1D706A00C1D3F1 /* CMAViewEntriesViewController.m */; };
+		E7A331281A1D70C200C1D3F1 /* CMAAddFishingSpotViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7A331231A1D70C200C1D3F1 /* CMAAddFishingSpotViewController.m */; };
+		E7A331291A1D70C200C1D3F1 /* CMAAddLocationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7A331251A1D70C200C1D3F1 /* CMAAddLocationViewController.m */; };
+		E7A3312A1A1D70C200C1D3F1 /* CMASingleLocationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7A331271A1D70C200C1D3F1 /* CMASingleLocationViewController.m */; };
+		E7A331301A1D710200C1D3F1 /* CMAPhotosViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7A3312D1A1D710200C1D3F1 /* CMAPhotosViewController.m */; };
+		E7A331311A1D710200C1D3F1 /* CMASinglePhotoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7A3312F1A1D710200C1D3F1 /* CMASinglePhotoViewController.m */; };
 		E7A51E9E19EFAA0E009BDC20 /* CMASettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7A51E9D19EFAA0E009BDC20 /* CMASettingsViewController.m */; };
-		E7A51EA819F4440F009BDC20 /* CMAEditSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7A51EA719F4440F009BDC20 /* CMAEditSettingsViewController.m */; };
-		E7A51EB219F4938C009BDC20 /* CMAAddLocationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7A51EB119F4938C009BDC20 /* CMAAddLocationViewController.m */; };
+		E7A51EA819F4440F009BDC20 /* CMAUserDefinesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7A51EA719F4440F009BDC20 /* CMAUserDefinesViewController.m */; };
 		E7A51EBA19F4ADC2009BDC20 /* CMAConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = E7A51EB919F4ADC2009BDC20 /* CMAConstants.m */; };
-		E7A6883C19F610A100B032E3 /* CMASingleLocationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7A6883B19F610A100B032E3 /* CMASingleLocationViewController.m */; };
 		E7C29D101A143A1600015B42 /* SWRevealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7C29D0F1A143A1600015B42 /* SWRevealViewController.m */; };
 		E7C29D161A1445AE00015B42 /* CMASideMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7C29D151A1445AE00015B42 /* CMASideMenuViewController.m */; };
-		E7C29D1D1A155E1500015B42 /* CMAEntrySortingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7C29D1C1A155E1500015B42 /* CMAEntrySortingViewController.m */; };
 		E7C29D2E1A17E0C200015B42 /* menu@1x.png in Resources */ = {isa = PBXBuildFile; fileRef = E7C29D2B1A17E0C200015B42 /* menu@1x.png */; };
 		E7C29D2F1A17E0C200015B42 /* menu@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E7C29D2C1A17E0C200015B42 /* menu@2x.png */; };
 		E7C29D301A17E0C200015B42 /* menu@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = E7C29D2D1A17E0C200015B42 /* menu@3x.png */; };
@@ -80,8 +84,6 @@
 		E7C29D5A1A17FFE200015B42 /* sort@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E7C29D521A17FFE200015B42 /* sort@2x.png */; };
 		E7C29D5B1A17FFE200015B42 /* sort@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = E7C29D531A17FFE200015B42 /* sort@3x.png */; };
 		E7C29D5C1A17FFE200015B42 /* species.png in Resources */ = {isa = PBXBuildFile; fileRef = E7C29D541A17FFE200015B42 /* species.png */; };
-		E7C29D5F1A18021F00015B42 /* CMAPhotosViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7C29D5E1A18021F00015B42 /* CMAPhotosViewController.m */; };
-		E7C29D621A1940DB00015B42 /* CMASinglePhotoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7C29D611A1940DB00015B42 /* CMASinglePhotoViewController.m */; };
 		E7C29D741A1BD38800015B42 /* CMAAddBaitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7C29D711A1BD38800015B42 /* CMAAddBaitViewController.m */; };
 		E7C29D751A1BD38800015B42 /* CMASingleBaitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7C29D731A1BD38800015B42 /* CMASingleBaitViewController.m */; };
 		E7C29D781A1BD3AA00015B42 /* CMAViewBaitsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7C29D771A1BD3AA00015B42 /* CMAViewBaitsViewController.m */; };
@@ -90,9 +92,7 @@
 		E7C29D811A1C1ED800015B42 /* CMACameraActionSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = E7C29D801A1C1ED800015B42 /* CMACameraActionSheet.m */; };
 		E7C29D841A1C210000015B42 /* CMAImagePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7C29D831A1C210000015B42 /* CMAImagePickerViewController.m */; };
 		E7C926D319EE37750010A9FE /* MyFishingJournal.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E7C926D219EE37750010A9FE /* MyFishingJournal.storyboard */; };
-		E7C926DA19EEC7BC0010A9FE /* CMAAddEntryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7C926D919EEC7BC0010A9FE /* CMAAddEntryViewController.m */; };
 		E7C926E319EEC9DC0010A9FE /* CMAStatisticsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7C926E219EEC9DC0010A9FE /* CMAStatisticsViewController.m */; };
-		E7C9271F19EF4BEB0010A9FE /* CMAViewEntriesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7C9271E19EF4BEB0010A9FE /* CMAViewEntriesViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -133,8 +133,6 @@
 		E72669DC19E76B63003C8E0B /* CMAUserDefine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAUserDefine.h; path = ApplicationModel/UserDefines/CMAUserDefine.h; sourceTree = "<group>"; };
 		E72669DD19E76B63003C8E0B /* CMAUserDefine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAUserDefine.m; path = ApplicationModel/UserDefines/CMAUserDefine.m; sourceTree = "<group>"; };
 		E738583C19FCD6DE00FE122B /* no-image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "no-image.png"; path = "Images/no-image.png"; sourceTree = "<group>"; };
-		E738583E19FD930000FE122B /* CMASingleEntryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMASingleEntryViewController.h; path = ViewControllers/CMASingleEntryViewController.h; sourceTree = "<group>"; };
-		E738583F19FD930000FE122B /* CMASingleEntryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMASingleEntryViewController.m; path = ViewControllers/CMASingleEntryViewController.m; sourceTree = "<group>"; };
 		E738584819FDFCBF00FE122B /* CMASpecies.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMASpecies.h; path = ApplicationModel/UserDefines/CMASpecies.h; sourceTree = "<group>"; };
 		E738584919FDFCBF00FE122B /* CMASpecies.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMASpecies.m; path = ApplicationModel/UserDefines/CMASpecies.m; sourceTree = "<group>"; };
 		E738584C19FE093700FE122B /* CMAFishingSpot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAFishingSpot.h; path = ApplicationModel/UserDefines/CMAFishingSpot.h; sourceTree = "<group>"; };
@@ -147,8 +145,6 @@
 		E738585919FE0A3400FE122B /* CMAFishingMethod.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAFishingMethod.m; path = ApplicationModel/UserDefines/CMAFishingMethod.m; sourceTree = "<group>"; };
 		E78BB7D31A0724290082004B /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		E78BB7D51A0724760082004B /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
-		E78BB7D71A0BD9F80082004B /* CMAAddFishingSpotViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAAddFishingSpotViewController.h; path = ViewControllers/CMAAddFishingSpotViewController.h; sourceTree = "<group>"; };
-		E78BB7D81A0BD9F80082004B /* CMAAddFishingSpotViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAAddFishingSpotViewController.m; path = ViewControllers/CMAAddFishingSpotViewController.m; sourceTree = "<group>"; };
 		E78BB7DA1A0C1B9B0082004B /* rectile.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = rectile.png; path = Images/rectile.png; sourceTree = "<group>"; };
 		E78BB7DE1A100A2C0082004B /* CMAAlerts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAAlerts.m; path = Utilities/CMAAlerts.m; sourceTree = "<group>"; };
 		E78BB7E01A100A3E0082004B /* CMAAlerts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMAAlerts.h; sourceTree = "<group>"; };
@@ -156,22 +152,34 @@
 		E78BB7E21A1309680082004B /* CMAEntryTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAEntryTableViewCell.m; path = CustomViews/CMAEntryTableViewCell.m; sourceTree = "<group>"; };
 		E78BB7E71A133A940082004B /* CMATouchSegmentedControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMATouchSegmentedControl.h; path = CustomViews/CMATouchSegmentedControl.h; sourceTree = "<group>"; };
 		E78BB7E81A133A940082004B /* CMATouchSegmentedControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMATouchSegmentedControl.m; path = CustomViews/CMATouchSegmentedControl.m; sourceTree = "<group>"; };
+		E7A331151A1D706A00C1D3F1 /* CMAAddEntryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAAddEntryViewController.h; path = ViewControllers/Entries/CMAAddEntryViewController.h; sourceTree = "<group>"; };
+		E7A331161A1D706A00C1D3F1 /* CMAAddEntryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAAddEntryViewController.m; path = ViewControllers/Entries/CMAAddEntryViewController.m; sourceTree = "<group>"; };
+		E7A331171A1D706A00C1D3F1 /* CMAEntrySortingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAEntrySortingViewController.h; path = ViewControllers/Entries/CMAEntrySortingViewController.h; sourceTree = "<group>"; };
+		E7A331181A1D706A00C1D3F1 /* CMAEntrySortingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAEntrySortingViewController.m; path = ViewControllers/Entries/CMAEntrySortingViewController.m; sourceTree = "<group>"; };
+		E7A331191A1D706A00C1D3F1 /* CMASingleEntryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMASingleEntryViewController.h; path = ViewControllers/Entries/CMASingleEntryViewController.h; sourceTree = "<group>"; };
+		E7A3311A1A1D706A00C1D3F1 /* CMASingleEntryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMASingleEntryViewController.m; path = ViewControllers/Entries/CMASingleEntryViewController.m; sourceTree = "<group>"; };
+		E7A3311B1A1D706A00C1D3F1 /* CMAViewEntriesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAViewEntriesViewController.h; path = ViewControllers/Entries/CMAViewEntriesViewController.h; sourceTree = "<group>"; };
+		E7A3311C1A1D706A00C1D3F1 /* CMAViewEntriesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAViewEntriesViewController.m; path = ViewControllers/Entries/CMAViewEntriesViewController.m; sourceTree = "<group>"; };
+		E7A331221A1D70C200C1D3F1 /* CMAAddFishingSpotViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAAddFishingSpotViewController.h; path = ViewControllers/Locations/CMAAddFishingSpotViewController.h; sourceTree = "<group>"; };
+		E7A331231A1D70C200C1D3F1 /* CMAAddFishingSpotViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAAddFishingSpotViewController.m; path = ViewControllers/Locations/CMAAddFishingSpotViewController.m; sourceTree = "<group>"; };
+		E7A331241A1D70C200C1D3F1 /* CMAAddLocationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAAddLocationViewController.h; path = ViewControllers/Locations/CMAAddLocationViewController.h; sourceTree = "<group>"; };
+		E7A331251A1D70C200C1D3F1 /* CMAAddLocationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAAddLocationViewController.m; path = ViewControllers/Locations/CMAAddLocationViewController.m; sourceTree = "<group>"; };
+		E7A331261A1D70C200C1D3F1 /* CMASingleLocationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMASingleLocationViewController.h; path = ViewControllers/Locations/CMASingleLocationViewController.h; sourceTree = "<group>"; };
+		E7A331271A1D70C200C1D3F1 /* CMASingleLocationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMASingleLocationViewController.m; path = ViewControllers/Locations/CMASingleLocationViewController.m; sourceTree = "<group>"; };
+		E7A3312C1A1D710200C1D3F1 /* CMAPhotosViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAPhotosViewController.h; path = ViewControllers/Photos/CMAPhotosViewController.h; sourceTree = "<group>"; };
+		E7A3312D1A1D710200C1D3F1 /* CMAPhotosViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAPhotosViewController.m; path = ViewControllers/Photos/CMAPhotosViewController.m; sourceTree = "<group>"; };
+		E7A3312E1A1D710200C1D3F1 /* CMASinglePhotoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMASinglePhotoViewController.h; path = ViewControllers/Photos/CMASinglePhotoViewController.h; sourceTree = "<group>"; };
+		E7A3312F1A1D710200C1D3F1 /* CMASinglePhotoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMASinglePhotoViewController.m; path = ViewControllers/Photos/CMASinglePhotoViewController.m; sourceTree = "<group>"; };
 		E7A51E9C19EFAA0E009BDC20 /* CMASettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMASettingsViewController.h; path = ViewControllers/CMASettingsViewController.h; sourceTree = "<group>"; };
 		E7A51E9D19EFAA0E009BDC20 /* CMASettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMASettingsViewController.m; path = ViewControllers/CMASettingsViewController.m; sourceTree = "<group>"; };
-		E7A51EA619F4440F009BDC20 /* CMAEditSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAEditSettingsViewController.h; path = ViewControllers/CMAEditSettingsViewController.h; sourceTree = "<group>"; };
-		E7A51EA719F4440F009BDC20 /* CMAEditSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAEditSettingsViewController.m; path = ViewControllers/CMAEditSettingsViewController.m; sourceTree = "<group>"; };
-		E7A51EB019F4938C009BDC20 /* CMAAddLocationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAAddLocationViewController.h; path = ViewControllers/CMAAddLocationViewController.h; sourceTree = "<group>"; };
-		E7A51EB119F4938C009BDC20 /* CMAAddLocationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAAddLocationViewController.m; path = ViewControllers/CMAAddLocationViewController.m; sourceTree = "<group>"; };
+		E7A51EA619F4440F009BDC20 /* CMAUserDefinesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAUserDefinesViewController.h; path = ViewControllers/CMAUserDefinesViewController.h; sourceTree = "<group>"; };
+		E7A51EA719F4440F009BDC20 /* CMAUserDefinesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAUserDefinesViewController.m; path = ViewControllers/CMAUserDefinesViewController.m; sourceTree = "<group>"; };
 		E7A51EB819F4ADC2009BDC20 /* CMAConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAConstants.h; path = Utilities/CMAConstants.h; sourceTree = "<group>"; };
 		E7A51EB919F4ADC2009BDC20 /* CMAConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAConstants.m; path = Utilities/CMAConstants.m; sourceTree = "<group>"; };
-		E7A6883A19F610A100B032E3 /* CMASingleLocationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMASingleLocationViewController.h; path = ViewControllers/CMASingleLocationViewController.h; sourceTree = "<group>"; };
-		E7A6883B19F610A100B032E3 /* CMASingleLocationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMASingleLocationViewController.m; path = ViewControllers/CMASingleLocationViewController.m; sourceTree = "<group>"; };
 		E7C29D0E1A143A1600015B42 /* SWRevealViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SWRevealViewController.h; sourceTree = "<group>"; };
 		E7C29D0F1A143A1600015B42 /* SWRevealViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SWRevealViewController.m; sourceTree = "<group>"; };
 		E7C29D141A1445AE00015B42 /* CMASideMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMASideMenuViewController.h; path = ViewControllers/CMASideMenuViewController.h; sourceTree = "<group>"; };
 		E7C29D151A1445AE00015B42 /* CMASideMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMASideMenuViewController.m; path = ViewControllers/CMASideMenuViewController.m; sourceTree = "<group>"; };
-		E7C29D1B1A155E1500015B42 /* CMAEntrySortingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAEntrySortingViewController.h; path = ViewControllers/CMAEntrySortingViewController.h; sourceTree = "<group>"; };
-		E7C29D1C1A155E1500015B42 /* CMAEntrySortingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAEntrySortingViewController.m; path = ViewControllers/CMAEntrySortingViewController.m; sourceTree = "<group>"; };
 		E7C29D2B1A17E0C200015B42 /* menu@1x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "menu@1x.png"; path = "Images/Icons/menu@1x.png"; sourceTree = "<group>"; };
 		E7C29D2C1A17E0C200015B42 /* menu@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "menu@2x.png"; path = "Images/Icons/menu@2x.png"; sourceTree = "<group>"; };
 		E7C29D2D1A17E0C200015B42 /* menu@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "menu@3x.png"; path = "Images/Icons/menu@3x.png"; sourceTree = "<group>"; };
@@ -196,10 +204,6 @@
 		E7C29D521A17FFE200015B42 /* sort@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "sort@2x.png"; path = "Images/Icons/sort@2x.png"; sourceTree = "<group>"; };
 		E7C29D531A17FFE200015B42 /* sort@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "sort@3x.png"; path = "Images/Icons/sort@3x.png"; sourceTree = "<group>"; };
 		E7C29D541A17FFE200015B42 /* species.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = species.png; path = Images/Icons/species.png; sourceTree = "<group>"; };
-		E7C29D5D1A18021F00015B42 /* CMAPhotosViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAPhotosViewController.h; path = ViewControllers/CMAPhotosViewController.h; sourceTree = "<group>"; };
-		E7C29D5E1A18021F00015B42 /* CMAPhotosViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAPhotosViewController.m; path = ViewControllers/CMAPhotosViewController.m; sourceTree = "<group>"; };
-		E7C29D601A1940DB00015B42 /* CMASinglePhotoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMASinglePhotoViewController.h; path = ViewControllers/CMASinglePhotoViewController.h; sourceTree = "<group>"; };
-		E7C29D611A1940DB00015B42 /* CMASinglePhotoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMASinglePhotoViewController.m; path = ViewControllers/CMASinglePhotoViewController.m; sourceTree = "<group>"; };
 		E7C29D701A1BD38800015B42 /* CMAAddBaitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAAddBaitViewController.h; path = ViewControllers/Baits/CMAAddBaitViewController.h; sourceTree = "<group>"; };
 		E7C29D711A1BD38800015B42 /* CMAAddBaitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAAddBaitViewController.m; path = ViewControllers/Baits/CMAAddBaitViewController.m; sourceTree = "<group>"; };
 		E7C29D721A1BD38800015B42 /* CMASingleBaitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMASingleBaitViewController.h; path = ViewControllers/Baits/CMASingleBaitViewController.h; sourceTree = "<group>"; };
@@ -215,12 +219,8 @@
 		E7C29D821A1C210000015B42 /* CMAImagePickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAImagePickerViewController.h; path = ViewControllers/CMAImagePickerViewController.h; sourceTree = "<group>"; };
 		E7C29D831A1C210000015B42 /* CMAImagePickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAImagePickerViewController.m; path = ViewControllers/CMAImagePickerViewController.m; sourceTree = "<group>"; };
 		E7C926D219EE37750010A9FE /* MyFishingJournal.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MyFishingJournal.storyboard; sourceTree = "<group>"; };
-		E7C926D819EEC7BC0010A9FE /* CMAAddEntryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAAddEntryViewController.h; path = ViewControllers/CMAAddEntryViewController.h; sourceTree = "<group>"; };
-		E7C926D919EEC7BC0010A9FE /* CMAAddEntryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAAddEntryViewController.m; path = ViewControllers/CMAAddEntryViewController.m; sourceTree = "<group>"; };
 		E7C926E119EEC9DC0010A9FE /* CMAStatisticsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAStatisticsViewController.h; path = ViewControllers/CMAStatisticsViewController.h; sourceTree = "<group>"; };
 		E7C926E219EEC9DC0010A9FE /* CMAStatisticsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAStatisticsViewController.m; path = ViewControllers/CMAStatisticsViewController.m; sourceTree = "<group>"; };
-		E7C9271D19EF4BEB0010A9FE /* CMAViewEntriesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAViewEntriesViewController.h; path = ViewControllers/CMAViewEntriesViewController.h; sourceTree = "<group>"; };
-		E7C9271E19EF4BEB0010A9FE /* CMAViewEntriesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAViewEntriesViewController.m; path = ViewControllers/CMAViewEntriesViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -373,6 +373,45 @@
 			name = Images;
 			sourceTree = "<group>";
 		};
+		E7A331141A1D6FC900C1D3F1 /* Entries */ = {
+			isa = PBXGroup;
+			children = (
+				E7A331151A1D706A00C1D3F1 /* CMAAddEntryViewController.h */,
+				E7A331161A1D706A00C1D3F1 /* CMAAddEntryViewController.m */,
+				E7A331171A1D706A00C1D3F1 /* CMAEntrySortingViewController.h */,
+				E7A331181A1D706A00C1D3F1 /* CMAEntrySortingViewController.m */,
+				E7A331191A1D706A00C1D3F1 /* CMASingleEntryViewController.h */,
+				E7A3311A1A1D706A00C1D3F1 /* CMASingleEntryViewController.m */,
+				E7A3311B1A1D706A00C1D3F1 /* CMAViewEntriesViewController.h */,
+				E7A3311C1A1D706A00C1D3F1 /* CMAViewEntriesViewController.m */,
+			);
+			name = Entries;
+			sourceTree = "<group>";
+		};
+		E7A331211A1D708300C1D3F1 /* Locations */ = {
+			isa = PBXGroup;
+			children = (
+				E7A331221A1D70C200C1D3F1 /* CMAAddFishingSpotViewController.h */,
+				E7A331231A1D70C200C1D3F1 /* CMAAddFishingSpotViewController.m */,
+				E7A331241A1D70C200C1D3F1 /* CMAAddLocationViewController.h */,
+				E7A331251A1D70C200C1D3F1 /* CMAAddLocationViewController.m */,
+				E7A331261A1D70C200C1D3F1 /* CMASingleLocationViewController.h */,
+				E7A331271A1D70C200C1D3F1 /* CMASingleLocationViewController.m */,
+			);
+			name = Locations;
+			sourceTree = "<group>";
+		};
+		E7A3312B1A1D70D400C1D3F1 /* Photos */ = {
+			isa = PBXGroup;
+			children = (
+				E7A3312C1A1D710200C1D3F1 /* CMAPhotosViewController.h */,
+				E7A3312D1A1D710200C1D3F1 /* CMAPhotosViewController.m */,
+				E7A3312E1A1D710200C1D3F1 /* CMASinglePhotoViewController.h */,
+				E7A3312F1A1D710200C1D3F1 /* CMASinglePhotoViewController.m */,
+			);
+			name = Photos;
+			sourceTree = "<group>";
+		};
 		E7A6883D19F7321E00B032E3 /* CustomViews */ = {
 			isa = PBXGroup;
 			children = (
@@ -454,33 +493,18 @@
 		E7C926D419EE3B320010A9FE /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				E7A3312B1A1D70D400C1D3F1 /* Photos */,
+				E7A331211A1D708300C1D3F1 /* Locations */,
+				E7A331141A1D6FC900C1D3F1 /* Entries */,
 				E7C29D6F1A1BD30E00015B42 /* Baits */,
-				E7C926D819EEC7BC0010A9FE /* CMAAddEntryViewController.h */,
-				E7C926D919EEC7BC0010A9FE /* CMAAddEntryViewController.m */,
 				E7C926E119EEC9DC0010A9FE /* CMAStatisticsViewController.h */,
 				E7C926E219EEC9DC0010A9FE /* CMAStatisticsViewController.m */,
-				E7C9271D19EF4BEB0010A9FE /* CMAViewEntriesViewController.h */,
-				E7C9271E19EF4BEB0010A9FE /* CMAViewEntriesViewController.m */,
-				E7C29D1B1A155E1500015B42 /* CMAEntrySortingViewController.h */,
-				E7C29D1C1A155E1500015B42 /* CMAEntrySortingViewController.m */,
 				E7A51E9C19EFAA0E009BDC20 /* CMASettingsViewController.h */,
 				E7A51E9D19EFAA0E009BDC20 /* CMASettingsViewController.m */,
-				E7A51EA619F4440F009BDC20 /* CMAEditSettingsViewController.h */,
-				E7A51EA719F4440F009BDC20 /* CMAEditSettingsViewController.m */,
-				E7A51EB019F4938C009BDC20 /* CMAAddLocationViewController.h */,
-				E7A51EB119F4938C009BDC20 /* CMAAddLocationViewController.m */,
-				E78BB7D71A0BD9F80082004B /* CMAAddFishingSpotViewController.h */,
-				E78BB7D81A0BD9F80082004B /* CMAAddFishingSpotViewController.m */,
-				E7A6883A19F610A100B032E3 /* CMASingleLocationViewController.h */,
-				E7A6883B19F610A100B032E3 /* CMASingleLocationViewController.m */,
-				E738583E19FD930000FE122B /* CMASingleEntryViewController.h */,
-				E738583F19FD930000FE122B /* CMASingleEntryViewController.m */,
+				E7A51EA619F4440F009BDC20 /* CMAUserDefinesViewController.h */,
+				E7A51EA719F4440F009BDC20 /* CMAUserDefinesViewController.m */,
 				E7C29D141A1445AE00015B42 /* CMASideMenuViewController.h */,
 				E7C29D151A1445AE00015B42 /* CMASideMenuViewController.m */,
-				E7C29D5D1A18021F00015B42 /* CMAPhotosViewController.h */,
-				E7C29D5E1A18021F00015B42 /* CMAPhotosViewController.m */,
-				E7C29D601A1940DB00015B42 /* CMASinglePhotoViewController.h */,
-				E7C29D611A1940DB00015B42 /* CMASinglePhotoViewController.m */,
 				E7C29D821A1C210000015B42 /* CMAImagePickerViewController.h */,
 				E7C29D831A1C210000015B42 /* CMAImagePickerViewController.m */,
 			);
@@ -622,40 +646,40 @@
 			buildActionMask = 2147483647;
 			files = (
 				E72669B719DF14DE003C8E0B /* CMAEntry.m in Sources */,
+				E7A331301A1D710200C1D3F1 /* CMAPhotosViewController.m in Sources */,
+				E7A3311D1A1D706A00C1D3F1 /* CMAAddEntryViewController.m in Sources */,
 				E7C29D7E1A1C183E00015B42 /* CMACameraButton.m in Sources */,
-				E738584019FD930000FE122B /* CMASingleEntryViewController.m in Sources */,
-				E7A51EA819F4440F009BDC20 /* CMAEditSettingsViewController.m in Sources */,
+				E7A51EA819F4440F009BDC20 /* CMAUserDefinesViewController.m in Sources */,
+				E7A331201A1D706A00C1D3F1 /* CMAViewEntriesViewController.m in Sources */,
 				E78BB7E91A133A940082004B /* CMATouchSegmentedControl.m in Sources */,
 				E7C29D841A1C210000015B42 /* CMAImagePickerViewController.m in Sources */,
-				E7C926DA19EEC7BC0010A9FE /* CMAAddEntryViewController.m in Sources */,
-				E78BB7D91A0BD9F80082004B /* CMAAddFishingSpotViewController.m in Sources */,
 				E7C29D741A1BD38800015B42 /* CMAAddBaitViewController.m in Sources */,
 				E7C29D161A1445AE00015B42 /* CMASideMenuViewController.m in Sources */,
 				E7C926E319EEC9DC0010A9FE /* CMAStatisticsViewController.m in Sources */,
 				E7C29D751A1BD38800015B42 /* CMASingleBaitViewController.m in Sources */,
 				E7A51E9E19EFAA0E009BDC20 /* CMASettingsViewController.m in Sources */,
-				E7A51EB219F4938C009BDC20 /* CMAAddLocationViewController.m in Sources */,
 				E7C29D7B1A1BE0BE00015B42 /* CMABaitTableViewCell.m in Sources */,
-				E7C9271F19EF4BEB0010A9FE /* CMAViewEntriesViewController.m in Sources */,
 				E72669C919E6F4A8003C8E0B /* CMAJournal.m in Sources */,
 				E738585A19FE0A3400FE122B /* CMAFishingMethod.m in Sources */,
+				E7A331291A1D70C200C1D3F1 /* CMAAddLocationViewController.m in Sources */,
+				E7A331311A1D710200C1D3F1 /* CMASinglePhotoViewController.m in Sources */,
+				E7A3312A1A1D70C200C1D3F1 /* CMASingleLocationViewController.m in Sources */,
 				E7C29D101A143A1600015B42 /* SWRevealViewController.m in Sources */,
 				E738585019FE093700FE122B /* CMAFishingSpot.m in Sources */,
-				E7A6883C19F610A100B032E3 /* CMASingleLocationViewController.m in Sources */,
-				E7C29D5F1A18021F00015B42 /* CMAPhotosViewController.m in Sources */,
 				E7C29D781A1BD3AA00015B42 /* CMAViewBaitsViewController.m in Sources */,
 				E7C29D811A1C1ED800015B42 /* CMACameraActionSheet.m in Sources */,
-				E7C29D621A1940DB00015B42 /* CMASinglePhotoViewController.m in Sources */,
 				E78BB7DF1A100A2C0082004B /* CMAAlerts.m in Sources */,
 				E78BB7E31A1309680082004B /* CMAEntryTableViewCell.m in Sources */,
 				E70B638619D3A8E400DFBA85 /* CMAAppDelegate.m in Sources */,
 				E72669DE19E76B63003C8E0B /* CMAUserDefine.m in Sources */,
 				E738585219FE093700FE122B /* CMALocation.m in Sources */,
+				E7A331281A1D70C200C1D3F1 /* CMAAddFishingSpotViewController.m in Sources */,
 				E70B638219D3A8E400DFBA85 /* main.m in Sources */,
+				E7A3311F1A1D706A00C1D3F1 /* CMASingleEntryViewController.m in Sources */,
+				E7A3311E1A1D706A00C1D3F1 /* CMAEntrySortingViewController.m in Sources */,
 				E738585619FE098A00FE122B /* CMABait.m in Sources */,
 				E738584A19FDFCBF00FE122B /* CMASpecies.m in Sources */,
 				E7A51EBA19F4ADC2009BDC20 /* CMAConstants.m in Sources */,
-				E7C29D1D1A155E1500015B42 /* CMAEntrySortingViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

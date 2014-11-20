@@ -10,7 +10,7 @@
 #import "CMAJournal.h"
 #import "CMAUserDefine.h"
 
-@interface CMAEditSettingsViewController : UITableViewController
+@interface CMAUserDefinesViewController : UITableViewController
 
 // a pointer to the journal's userDefine object for the cell clicked in the previous view
 @property (strong, nonatomic)CMAUserDefine *userDefine;

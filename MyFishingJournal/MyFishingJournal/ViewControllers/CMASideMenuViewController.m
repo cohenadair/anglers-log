@@ -7,7 +7,7 @@
 //
 
 #import "CMASideMenuViewController.h"
-#import "CMAEditSettingsViewController.h"
+#import "CMAUserDefinesViewController.h"
 #import "CMAAppDelegate.h"
 #import "SWRevealViewController.h"
 
@@ -51,7 +51,7 @@
         [segue.identifier isEqualToString:@"fromSideMenuLocationsToEditSettings"] ||
         [segue.identifier isEqualToString:@"fromSideMenuFishingMethodsToEditSettings"])
     {
-        CMAEditSettingsViewController *destination = segue.destinationViewController;
+        CMAUserDefinesViewController *destination = segue.destinationViewController;
         destination.userDefine = [self userDefineFromSelectedCell];
     }
     

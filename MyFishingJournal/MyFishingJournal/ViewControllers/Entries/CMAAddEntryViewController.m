@@ -7,7 +7,7 @@
 //
 
 #import "CMAAddEntryViewController.h"
-#import "CMAEditSettingsViewController.h"
+#import "CMAUserDefinesViewController.h"
 #import "CMASingleLocationViewController.h"
 #import "CMAAppDelegate.h"
 #import "CMAAlerts.h"
@@ -383,7 +383,7 @@ NSString *const NO_SELECT = @"Not Selected";
     }
     
     if (isSetting) {
-        CMAEditSettingsViewController *destination = [[segue.destinationViewController viewControllers] objectAtIndex:0];
+        CMAUserDefinesViewController *destination = [[segue.destinationViewController viewControllers] objectAtIndex:0];
         destination.userDefine = [[self journal] userDefineNamed:userDefineName];
         destination.previousViewID = CMAViewControllerID_AddEntry;
         
@@ -394,7 +394,7 @@ NSString *const NO_SELECT = @"Not Selected";
 - (IBAction)unwindToAddEntry:(UIStoryboardSegue *)segue {
     // set the detail label text after selecting an option from the Edit Settings view
     if ([segue.identifier isEqualToString:@"unwindToAddEntryFromEditSettings"]) {
-        CMAEditSettingsViewController *source = [segue sourceViewController];
+        CMAUserDefinesViewController *source = [segue sourceViewController];
         UITableViewCell *cellToEdit = [self.tableView cellForRowAtIndexPath:self.indexPathForOptionsCell];
         
         if ([source.selectedCellLabelText isEqualToString:@""])

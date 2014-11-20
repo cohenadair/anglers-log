@@ -7,7 +7,6 @@
 //
 
 #import "CMASettingsViewController.h"
-#import "CMAEditSettingsViewController.h"
 #import "CMAAppDelegate.h"
 #import "SWRevealViewController.h"
 

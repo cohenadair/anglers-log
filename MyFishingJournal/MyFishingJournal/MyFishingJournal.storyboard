@@ -105,10 +105,10 @@
             </objects>
             <point key="canvasLocation" x="2731" y="1249"/>
         </scene>
-        <!--Edit Settings View Controller-->
+        <!--User Defines View Controller-->
         <scene sceneID="ifO-ji-FnT">
             <objects>
-                <tableViewController id="6A2-09-VCg" customClass="CMAEditSettingsViewController" sceneMemberID="viewController">
+                <tableViewController id="6A2-09-VCg" customClass="CMAUserDefinesViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelectionDuringEditing="YES" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="H8C-A3-qVx">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -2295,14 +2295,14 @@
         <segue reference="RpT-ts-gTM"/>
         <segue reference="egX-OW-uSX"/>
         <segue reference="aBE-xI-c3y"/>
-        <segue reference="Jyy-wS-dXA"/>
         <segue reference="gDt-Tw-gtk"/>
-        <segue reference="guB-6y-sIg"/>
+        <segue reference="Jyy-wS-dXA"/>
         <segue reference="gt8-1C-AU6"/>
-        <segue reference="Mmt-ea-Rlu"/>
-        <segue reference="y0h-hR-J5c"/>
-        <segue reference="Qcx-rg-dpe"/>
+        <segue reference="guB-6y-sIg"/>
+        <segue reference="iOf-th-u5i"/>
+        <segue reference="gpK-ox-KiN"/>
         <segue reference="ij7-4o-wMK"/>
+        <segue reference="Mmt-ea-Rlu"/>
         <segue reference="0XO-Us-bO6"/>
     </inferredMetricsTieBreakers>
 </document>
