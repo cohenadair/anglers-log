@@ -35,10 +35,8 @@ NSInteger const SECTION_FISHING_SPOT = 1;
     self.didSetRegion = NO;
     self.isReadOnly = self.previousViewID == CMAViewControllerID_SingleEntry;
     
-    if (self.isReadOnly) {
-        [self.editButton setTitle:@""];
-        [self.editButton setEnabled:NO];
-    }
+    if (self.isReadOnly)
+        self.navigationItem.rightBarButtonItem = nil;
     
     [self.tableView setTableFooterView:[[UIView alloc] initWithFrame:CGRectZero]]; // removes empty cells at the end of the list
 }
