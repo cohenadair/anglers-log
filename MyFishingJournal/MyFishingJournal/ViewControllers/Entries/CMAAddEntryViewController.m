@@ -9,6 +9,7 @@
 #import "CMAAddEntryViewController.h"
 #import "CMAUserDefinesViewController.h"
 #import "CMASingleLocationViewController.h"
+#import "CMAViewBaitsViewController.h"
 #import "CMAAppDelegate.h"
 #import "CMAAlerts.h"
 
@@ -355,6 +356,15 @@ NSString *const NO_SELECT = @"Not Selected";
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    // bait used
+    if ([segue.identifier isEqualToString:@"fromAddEntryToViewBaits"]) {
+        CMAViewBaitsViewController *destination = [[segue.destinationViewController viewControllers] objectAtIndex:0];
+        destination.isSelectingForAddEntry = YES;
+        
+        self.indexPathForOptionsCell = [self.tableView indexPathForSelectedRow]; // so it knows which cell to edit after the unwind
+        return;
+    }
+    
     BOOL isSetting = NO;
     NSString *userDefineName;
     
@@ -368,12 +378,6 @@ NSString *const NO_SELECT = @"Not Selected";
     if ([segue.identifier isEqualToString:@"fromAddEntryLocationToEditSettings"]) {
         isSetting = YES;
         userDefineName = SET_LOCATIONS;
-    }
-    
-    // bait used
-    if ([segue.identifier isEqualToString:@"fromAddEntryBaitToEditSettings"]) {
-        isSetting = YES;
-        userDefineName = SET_BAITS;
     }
     
     // methods
@@ -411,6 +415,12 @@ NSString *const NO_SELECT = @"Not Selected";
         [[cellToEdit detailTextLabel] setText:source.addEntryLabelText];
         
         source.previousViewID = CMAViewControllerID_Nil;
+    }
+    
+    if ([segue.identifier isEqualToString:@"unwindToAddEntryFromViewBaits"]) {
+        CMAViewBaitsViewController *source = [segue sourceViewController];
+        UITableViewCell *cellToEdit = [self.tableView cellForRowAtIndexPath:self.indexPathForOptionsCell];
+        [[cellToEdit detailTextLabel] setText:source.baitForAddEntry.name];
     }
 }
 

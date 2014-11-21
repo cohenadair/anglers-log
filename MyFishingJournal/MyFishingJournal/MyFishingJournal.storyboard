@@ -2115,7 +2115,6 @@
                                 <connections>
                                     <outlet property="nameLabel" destination="dEj-pE-CHU" id="L6j-u9-Otk"/>
                                     <outlet property="thumbImage" destination="fLP-Ak-sq6" id="G1W-gs-anP"/>
-                                    <segue destination="oMU-hB-36K" kind="show" identifier="fromViewBaitsToSingleBait" id="ByX-hg-u2O"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -2146,9 +2145,12 @@
                         <outlet property="addButton" destination="EbO-P3-oA3" id="Mef-9L-uyj"/>
                         <outlet property="deleteButton" destination="rG5-eu-1yv" id="Ul2-DY-Gbs"/>
                         <outlet property="menuButton" destination="GOn-JB-tIy" id="4sQ-TT-fyW"/>
+                        <segue destination="oMU-hB-36K" kind="show" identifier="fromViewBaitsToSingleBait" id="bAG-il-Vyj"/>
+                        <segue destination="HFY-1D-kqx" kind="unwind" identifier="unwindToAddEntryFromViewBaits" unwindAction="unwindToAddEntry:" id="g9U-mE-g4I"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="l6k-dw-aLb" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="HFY-1D-kqx" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="3565" y="-232"/>
         </scene>
@@ -2302,7 +2304,7 @@
         <segue reference="iOf-th-u5i"/>
         <segue reference="gpK-ox-KiN"/>
         <segue reference="ij7-4o-wMK"/>
-        <segue reference="Mmt-ea-Rlu"/>
-        <segue reference="0XO-Us-bO6"/>
+        <segue reference="wZB-7v-gkR"/>
+        <segue reference="qAO-gb-5Yr"/>
     </inferredMetricsTieBreakers>
 </document>

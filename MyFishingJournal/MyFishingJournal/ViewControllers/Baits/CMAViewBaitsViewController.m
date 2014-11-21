@@ -20,7 +20,6 @@
 @property (weak, nonatomic)IBOutlet UIBarButtonItem *addButton;
 
 @property (strong, nonatomic)CMAUserDefine *userDefineBaits;
-@property (nonatomic)BOOL isSelectingForAddEntry;
 
 @end
 
@@ -46,7 +45,11 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    [self initSideBarMenu];
+    if (!self.isSelectingForAddEntry)
+        [self initSideBarMenu];
+    else
+        self.navigationItem.leftBarButtonItem = self.navigationItem.backBarButtonItem;
+    
     [self setUserDefineBaits:[[self journal] userDefineNamed:SET_BAITS]];
     
     [self.tableView setTableFooterView:[[UIView alloc] initWithFrame:CGRectZero]];
@@ -91,7 +94,18 @@
     
     [cell.nameLabel setText:bait.name];
     
+    if (self.isSelectingForAddEntry)
+        [cell setAccessoryType:UITableViewCellAccessoryNone];
+    
     return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (self.isSelectingForAddEntry) {
+        self.baitForAddEntry = [[self.userDefineBaits objects] objectAtIndex:indexPath.row];
+        [self performSegueWithIdentifier:@"unwindToAddEntryFromViewBaits" sender:self];
+    } else
+        [self performSegueWithIdentifier:@"fromViewBaitsToSingleBait" sender:self];
 }
 
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {

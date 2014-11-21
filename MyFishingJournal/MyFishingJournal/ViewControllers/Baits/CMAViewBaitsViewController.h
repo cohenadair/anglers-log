@@ -7,7 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "CMABait.h"
 
 @interface CMAViewBaitsViewController : UITableViewController
+
+@property (nonatomic)BOOL isSelectingForAddEntry;
+@property (strong, nonatomic)CMABait *baitForAddEntry;
 
 @end
