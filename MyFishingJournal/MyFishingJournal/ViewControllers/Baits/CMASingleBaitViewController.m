@@ -26,6 +26,8 @@
     [super viewDidLoad];
     
     [self initTableView];
+    if (self.isReadOnly)
+        self.navigationItem.rightBarButtonItem = nil;
 }
 
 - (void)didReceiveMemoryWarning {

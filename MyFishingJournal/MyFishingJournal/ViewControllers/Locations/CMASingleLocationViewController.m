@@ -64,6 +64,20 @@ NSInteger const SECTION_FISHING_SPOT = 1;
 
 #pragma mark - Table View Initializing
 
+- (NSIndexPath *)indexPathForLabelText:(NSString *)textLabelText {
+    NSIndexPath *result = nil;
+    
+    for (int i = 0; i < [self.tableView numberOfRowsInSection:SECTION_FISHING_SPOT]; i++) {
+        result = [NSIndexPath indexPathForItem:i inSection:SECTION_FISHING_SPOT];
+        UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:result];
+        
+        if ([cell.textLabel.text isEqualToString:textLabelText])
+            return result;
+    }
+    
+    return result;
+}
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 2;
 }
@@ -207,6 +221,10 @@ NSInteger const SECTION_FISHING_SPOT = 1;
     
     if (self.isReadOnly)
         [self configureForReadOnly];
+}
+
+- (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view {
+    [self.tableView selectRowAtIndexPath:[self indexPathForLabelText:view.annotation.title] animated:YES scrollPosition:UITableViewScrollPositionNone];
 }
 
 - (void)initializeMapView {

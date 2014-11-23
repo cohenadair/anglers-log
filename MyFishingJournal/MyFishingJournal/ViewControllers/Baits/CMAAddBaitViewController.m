@@ -29,7 +29,7 @@
 
 @end
 
-#define PHOTO_ROW_HEIGHT 125
+#define PHOTO_ROW_HEIGHT 135
 #define DESC_ROW_HEIGHT 170
 
 @implementation CMAAddBaitViewController
@@ -65,6 +65,9 @@
 #pragma mark - Table View Initializing
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    if (section == 0)
+        return TABLE_SECTION_SPACING;
+    
     return CGFLOAT_MIN;
 }
 

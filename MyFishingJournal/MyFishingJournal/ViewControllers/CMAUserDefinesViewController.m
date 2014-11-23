@@ -228,6 +228,8 @@
         if ([tableView numberOfRowsInSection:0] == 0) {
             [self toggleEditMode:YES];
             [self.editButton setEnabled:NO];
+            [[self journal] archive];
+            [self.tableView reloadData];
         }
     }
 }

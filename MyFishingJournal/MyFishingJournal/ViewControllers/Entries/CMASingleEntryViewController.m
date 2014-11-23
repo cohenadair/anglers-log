@@ -8,6 +8,7 @@
 
 #import "CMASingleEntryViewController.h"
 #import "CMASingleLocationViewController.h"
+#import "CMASingleBaitViewController.h"
 #import "CMAAddEntryViewController.h"
 #import "CMAAppDelegate.h"
 #import "CMAConstants.h"
@@ -117,8 +118,8 @@
 
 #pragma mark - Table View Initializing
 
-#define SUBTITLE_HEIGHT 60
-#define RIGHT_DETAIL_HEIGHT 32
+#define SUBTITLE_HEIGHT 55
+#define RIGHT_DETAIL_HEIGHT 35
 
 // Creates a CMATableCellProperties object for each cell that will be shown on the table.
 // Only self.entry properties that were specified by the user are shown.
@@ -143,6 +144,15 @@
                         andReuseIdentifier: @"locationCell"
                                  andHeight: SUBTITLE_HEIGHT
                               hasSeparator: YES]];
+    
+    // bait used
+    if (![self.entry.baitUsed.name isEqualToString:@""])
+        [self.tableCellProperties addObject:
+         [CMATableCellProperties withLabelText: @"Bait Used"
+                                 andDetailText: self.entry.baitUsed.name
+                            andReuseIdentifier: @"baitUsedCell"
+                                     andHeight: SUBTITLE_HEIGHT
+                                  hasSeparator: YES]];
     
     // quantity
     if ([self.entry.fishQuantity integerValue] >= 0)
@@ -178,15 +188,6 @@
                                  andDetailText: [self.entry concatinateFishingMethods]
                             andReuseIdentifier: @"rightDetailCell"
                                      andHeight: RIGHT_DETAIL_HEIGHT
-                                  hasSeparator: NO]];
-    
-    // bait used
-    if (![self.entry.baitUsed.name isEqualToString:@""])
-        [self.tableCellProperties addObject:
-         [CMATableCellProperties withLabelText: @"Bait Used"
-                                 andDetailText: self.entry.baitUsed.name
-                            andReuseIdentifier: @"rightDetailCell"
-                                     andHeight: RIGHT_DETAIL_HEIGHT
                                   hasSeparator: YES]];
     
     // notes
@@ -195,14 +196,12 @@
          [CMATableCellProperties withLabelText: @"Notes"
                                  andDetailText: self.entry.notes
                             andReuseIdentifier: @"subtitleCell"
-                                     andHeight:SUBTITLE_HEIGHT
-                                  hasSeparator:NO]];
+                                     andHeight: SUBTITLE_HEIGHT
+                                  hasSeparator: NO]];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.item == [self.tableCellProperties count])
-        return 20;
-    
+    // Notes cell; need to get the occupied space from the notes string
     if (indexPath.item == [self.tableCellProperties count] - 1) {
         NSDictionary *attributes = @{NSFontAttributeName: [UIFont fontWithName:GLOBAL_FONT size:15]};
         CGRect rect = [self.entry.notes boundingRectWithSize:CGSizeMake(self.tableView.frame.size.width, CGFLOAT_MAX)
@@ -216,7 +215,7 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [self.tableCellProperties count] + 1; // +1 for the dummy cell
+    return [self.tableCellProperties count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -235,7 +234,7 @@
     // add separator to required cells
     if (p.hasSeparator && !(indexPath.item == [self.tableCellProperties count] - 1)) {
         UIView *line = [[UIView alloc] initWithFrame:CGRectMake(15, p.height - 1, cell.frame.size.width - 15, 1)];
-        [line setBackgroundColor:[UIColor colorWithWhite:0.85 alpha:1.0]];
+        [line setBackgroundColor:[UIColor colorWithWhite:0.90 alpha:1.0]];
         [cell addSubview:line];
     }
     
@@ -330,6 +329,12 @@
         destination.location = self.entry.location;
         destination.fishingSpotFromSingleEntry = self.entry.fishingSpot;
         destination.navigationItem.title = destination.location.name;
+    }
+    
+    if ([segue.identifier isEqualToString:@"fromSingleEntryToSingleBait"]) {
+        CMASingleBaitViewController *destination = [[segue.destinationViewController viewControllers] objectAtIndex:0];
+        destination.bait = self.entry.baitUsed;
+        destination.isReadOnly = YES;
     }
 }
 

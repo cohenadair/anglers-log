@@ -57,7 +57,7 @@ NSInteger const DATE_PICKER_ROW = 1;
 NSInteger const DATE_DISPLAY_SECTION = 0;
 NSInteger const DATE_DISPLAY_ROW = 0;
 
-NSInteger const IMAGES_HEIGHT = 150;
+NSInteger const IMAGES_HEIGHT = 160;
 NSInteger const IMAGES_SECTION = 2;
 
 NSInteger const IMAGE_VIEW_TAG = 100;
@@ -140,20 +140,16 @@ NSString *const NO_SELECT = @"Not Selected";
         [self.methodsDetailLabel setText:[self.entry concatinateFishingMethods]];
     
     // fish quantity
-    if (self.entry.fishQuantity)
+    if ([self.entry.fishQuantity integerValue] != -1)
         [self.quantityTextField setText:self.entry.fishQuantity.stringValue];
     
     // fish length
     if ([self.entry.fishLength integerValue] != -1)
         [self.lengthTextField setText:self.entry.fishLength.stringValue];
-    else
-        [self.lengthTextField setText:@"0"];
     
     // fish weight
     if ([self.entry.fishWeight integerValue] != -1)
         [self.weightTextField setText:self.entry.fishWeight.stringValue];
-    else
-        [self.weightTextField setText:@"0"];
     
     // pictures
     [self.imageCollection reloadData];
@@ -468,7 +464,7 @@ NSString *const NO_SELECT = @"Not Selected";
     }
     
     // fish quantity
-    if (![[self.quantityTextField text] isEqualToString:@"0"]) {
+    if (![[self.quantityTextField text] isEqualToString:@""]) {
         NSNumber *quantity = [NSNumber numberWithInteger:[[self.quantityTextField text] integerValue]];
         [anEntry setFishQuantity:quantity];
     } else {
@@ -476,7 +472,7 @@ NSString *const NO_SELECT = @"Not Selected";
     }
     
     // fish length
-    if (![[self.lengthTextField text] isEqualToString:@"0"]) {
+    if (![[self.lengthTextField text] isEqualToString:@""]) {
         NSNumber *length = [NSNumber numberWithInteger:[[self.lengthTextField text] integerValue]];
         [anEntry setFishLength:length];
     } else {
@@ -484,7 +480,7 @@ NSString *const NO_SELECT = @"Not Selected";
     }
     
     // fish weight
-    if (![[self.weightTextField text] isEqualToString:@"0"]) {
+    if (![[self.weightTextField text] isEqualToString:@""]) {
         NSNumber *weight = [NSNumber numberWithInteger:[[self.weightTextField text] integerValue]];
         [anEntry setFishWeight:weight];
     } else {

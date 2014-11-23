@@ -7,6 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E705AD6C1A229AD20077F16C /* fishing_methods_large.png in Resources */ = {isa = PBXBuildFile; fileRef = E705AD6B1A229AD20077F16C /* fishing_methods_large.png */; };
+		E705AD731A229E0B0077F16C /* baits_large.png in Resources */ = {isa = PBXBuildFile; fileRef = E705AD6D1A229E0B0077F16C /* baits_large.png */; };
+		E705AD741A229E0B0077F16C /* entries_large.png in Resources */ = {isa = PBXBuildFile; fileRef = E705AD6E1A229E0B0077F16C /* entries_large.png */; };
+		E705AD751A229E0B0077F16C /* locations_large.png in Resources */ = {isa = PBXBuildFile; fileRef = E705AD6F1A229E0B0077F16C /* locations_large.png */; };
+		E705AD761A229E0B0077F16C /* photos_large.png in Resources */ = {isa = PBXBuildFile; fileRef = E705AD701A229E0B0077F16C /* photos_large.png */; };
+		E705AD771A229E0B0077F16C /* species_large.png in Resources */ = {isa = PBXBuildFile; fileRef = E705AD711A229E0B0077F16C /* species_large.png */; };
+		E705AD781A229E0B0077F16C /* stats_large.png in Resources */ = {isa = PBXBuildFile; fileRef = E705AD721A229E0B0077F16C /* stats_large.png */; };
 		E70B637619D3A8E400DFBA85 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E70B637519D3A8E400DFBA85 /* Foundation.framework */; };
 		E70B637819D3A8E400DFBA85 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E70B637719D3A8E400DFBA85 /* CoreGraphics.framework */; };
 		E70B637A19D3A8E400DFBA85 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E70B637919D3A8E400DFBA85 /* UIKit.framework */; };
@@ -55,6 +62,8 @@
 		E7A3312A1A1D70C200C1D3F1 /* CMASingleLocationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7A331271A1D70C200C1D3F1 /* CMASingleLocationViewController.m */; };
 		E7A331301A1D710200C1D3F1 /* CMAPhotosViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7A3312D1A1D710200C1D3F1 /* CMAPhotosViewController.m */; };
 		E7A331311A1D710200C1D3F1 /* CMASinglePhotoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7A3312F1A1D710200C1D3F1 /* CMASinglePhotoViewController.m */; };
+		E7A331331A22855F00C1D3F1 /* CMANoXView.xib in Resources */ = {isa = PBXBuildFile; fileRef = E7A331321A22855F00C1D3F1 /* CMANoXView.xib */; };
+		E7A331361A2286E200C1D3F1 /* CMANoXView.m in Sources */ = {isa = PBXBuildFile; fileRef = E7A331351A2286E200C1D3F1 /* CMANoXView.m */; };
 		E7A51E9E19EFAA0E009BDC20 /* CMASettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7A51E9D19EFAA0E009BDC20 /* CMASettingsViewController.m */; };
 		E7A51EA819F4440F009BDC20 /* CMAUserDefinesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7A51EA719F4440F009BDC20 /* CMAUserDefinesViewController.m */; };
 		E7A51EBA19F4ADC2009BDC20 /* CMAConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = E7A51EB919F4ADC2009BDC20 /* CMAConstants.m */; };
@@ -106,6 +115,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		E705AD6B1A229AD20077F16C /* fishing_methods_large.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = fishing_methods_large.png; path = Images/LargeIcons/fishing_methods_large.png; sourceTree = "<group>"; };
+		E705AD6D1A229E0B0077F16C /* baits_large.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = baits_large.png; path = Images/LargeIcons/baits_large.png; sourceTree = "<group>"; };
+		E705AD6E1A229E0B0077F16C /* entries_large.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = entries_large.png; path = Images/LargeIcons/entries_large.png; sourceTree = "<group>"; };
+		E705AD6F1A229E0B0077F16C /* locations_large.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = locations_large.png; path = Images/LargeIcons/locations_large.png; sourceTree = "<group>"; };
+		E705AD701A229E0B0077F16C /* photos_large.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = photos_large.png; path = Images/LargeIcons/photos_large.png; sourceTree = "<group>"; };
+		E705AD711A229E0B0077F16C /* species_large.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = species_large.png; path = Images/LargeIcons/species_large.png; sourceTree = "<group>"; };
+		E705AD721A229E0B0077F16C /* stats_large.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = stats_large.png; path = Images/LargeIcons/stats_large.png; sourceTree = "<group>"; };
 		E70B637219D3A8E400DFBA85 /* MyFishingJournal.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyFishingJournal.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E70B637519D3A8E400DFBA85 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		E70B637719D3A8E400DFBA85 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -170,6 +186,9 @@
 		E7A3312D1A1D710200C1D3F1 /* CMAPhotosViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAPhotosViewController.m; path = ViewControllers/Photos/CMAPhotosViewController.m; sourceTree = "<group>"; };
 		E7A3312E1A1D710200C1D3F1 /* CMASinglePhotoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMASinglePhotoViewController.h; path = ViewControllers/Photos/CMASinglePhotoViewController.h; sourceTree = "<group>"; };
 		E7A3312F1A1D710200C1D3F1 /* CMASinglePhotoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMASinglePhotoViewController.m; path = ViewControllers/Photos/CMASinglePhotoViewController.m; sourceTree = "<group>"; };
+		E7A331321A22855F00C1D3F1 /* CMANoXView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CMANoXView.xib; sourceTree = "<group>"; };
+		E7A331341A2286E200C1D3F1 /* CMANoXView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMANoXView.h; path = CustomViews/CMANoXView.h; sourceTree = "<group>"; };
+		E7A331351A2286E200C1D3F1 /* CMANoXView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMANoXView.m; path = CustomViews/CMANoXView.m; sourceTree = "<group>"; };
 		E7A51E9C19EFAA0E009BDC20 /* CMASettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMASettingsViewController.h; path = ViewControllers/CMASettingsViewController.h; sourceTree = "<group>"; };
 		E7A51E9D19EFAA0E009BDC20 /* CMASettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMASettingsViewController.m; path = ViewControllers/CMASettingsViewController.m; sourceTree = "<group>"; };
 		E7A51EA619F4440F009BDC20 /* CMAUserDefinesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAUserDefinesViewController.h; path = ViewControllers/CMAUserDefinesViewController.h; sourceTree = "<group>"; };
@@ -249,6 +268,20 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		E705AD6A1A229ABD0077F16C /* LargeIcons */ = {
+			isa = PBXGroup;
+			children = (
+				E705AD6D1A229E0B0077F16C /* baits_large.png */,
+				E705AD6E1A229E0B0077F16C /* entries_large.png */,
+				E705AD6F1A229E0B0077F16C /* locations_large.png */,
+				E705AD701A229E0B0077F16C /* photos_large.png */,
+				E705AD711A229E0B0077F16C /* species_large.png */,
+				E705AD721A229E0B0077F16C /* stats_large.png */,
+				E705AD6B1A229AD20077F16C /* fishing_methods_large.png */,
+			);
+			name = LargeIcons;
+			sourceTree = "<group>";
+		};
 		E70B636919D3A8E400DFBA85 = {
 			isa = PBXGroup;
 			children = (
@@ -366,6 +399,7 @@
 		E738583B19FCD49100FE122B /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				E705AD6A1A229ABD0077F16C /* LargeIcons */,
 				E7C29D1E1A17DD7E00015B42 /* Icons */,
 				E78BB7DA1A0C1B9B0082004B /* rectile.png */,
 				E738583C19FCD6DE00FE122B /* no-image.png */,
@@ -425,6 +459,9 @@
 				E7C29D7D1A1C183E00015B42 /* CMACameraButton.m */,
 				E7C29D7F1A1C1ED800015B42 /* CMACameraActionSheet.h */,
 				E7C29D801A1C1ED800015B42 /* CMACameraActionSheet.m */,
+				E7A331321A22855F00C1D3F1 /* CMANoXView.xib */,
+				E7A331341A2286E200C1D3F1 /* CMANoXView.h */,
+				E7A331351A2286E200C1D3F1 /* CMANoXView.m */,
 			);
 			name = CustomViews;
 			sourceTree = "<group>";
@@ -604,13 +641,17 @@
 				E7C29D2F1A17E0C200015B42 /* menu@2x.png in Resources */,
 				E7C29D561A17FFE200015B42 /* fishing_methods.png in Resources */,
 				E7C29D5C1A17FFE200015B42 /* species.png in Resources */,
+				E705AD751A229E0B0077F16C /* locations_large.png in Resources */,
+				E705AD781A229E0B0077F16C /* stats_large.png in Resources */,
 				E7C29D4C1A17FC6200015B42 /* stats.png in Resources */,
 				E7C29D361A17EA4200015B42 /* camera@1x.png in Resources */,
 				E7C29D421A17F8BB00015B42 /* checkmark@1x.png in Resources */,
+				E705AD6C1A229AD20077F16C /* fishing_methods_large.png in Resources */,
 				E7C29D551A17FFE200015B42 /* bait.png in Resources */,
 				E70B638019D3A8E400DFBA85 /* InfoPlist.strings in Resources */,
 				E7C29D571A17FFE200015B42 /* literature.png in Resources */,
 				E7C29D4A1A17FC6200015B42 /* photos.png in Resources */,
+				E705AD741A229E0B0077F16C /* entries_large.png in Resources */,
 				E7C29D431A17F8BB00015B42 /* checkmark@2x.png in Resources */,
 				E7C29D2E1A17E0C200015B42 /* menu@1x.png in Resources */,
 				E7C926D319EE37750010A9FE /* MyFishingJournal.storyboard in Resources */,
@@ -618,8 +659,10 @@
 				E7C29D381A17EA4200015B42 /* camera@3x.png in Resources */,
 				E7C29D5B1A17FFE200015B42 /* sort@3x.png in Resources */,
 				E7C29D3C1A17F5A500015B42 /* edit@1x.png in Resources */,
+				E7A331331A22855F00C1D3F1 /* CMANoXView.xib in Resources */,
 				E7C29D3D1A17F5A500015B42 /* edit@2x.png in Resources */,
 				E7C29D591A17FFE200015B42 /* sort@1x.png in Resources */,
+				E705AD771A229E0B0077F16C /* species_large.png in Resources */,
 				E738583D19FCD6DE00FE122B /* no-image.png in Resources */,
 				E7C29D4B1A17FC6200015B42 /* settings.png in Resources */,
 				E70B638819D3A8E400DFBA85 /* Images.xcassets in Resources */,
@@ -627,6 +670,8 @@
 				E7C29D441A17F8BB00015B42 /* checkmark@3x.png in Resources */,
 				E7C29D5A1A17FFE200015B42 /* sort@2x.png in Resources */,
 				E7C29D3E1A17F5A500015B42 /* edit@3x.png in Resources */,
+				E705AD731A229E0B0077F16C /* baits_large.png in Resources */,
+				E705AD761A229E0B0077F16C /* photos_large.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -677,6 +722,7 @@
 				E70B638219D3A8E400DFBA85 /* main.m in Sources */,
 				E7A3311F1A1D706A00C1D3F1 /* CMASingleEntryViewController.m in Sources */,
 				E7A3311E1A1D706A00C1D3F1 /* CMAEntrySortingViewController.m in Sources */,
+				E7A331361A2286E200C1D3F1 /* CMANoXView.m in Sources */,
 				E738585619FE098A00FE122B /* CMABait.m in Sources */,
 				E738584A19FDFCBF00FE122B /* CMASpecies.m in Sources */,
 				E7A51EBA19F4ADC2009BDC20 /* CMAConstants.m in Sources */,

@@ -88,6 +88,9 @@ NSInteger const INDEX_COORDINATES = 2;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.item == 0)
+        return 44;
+    
     if (indexPath.item == INDEX_MAP)
         return tableView.frame.size.width * 0.75;
     

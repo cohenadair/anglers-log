@@ -12,5 +12,6 @@
 @interface CMASingleBaitViewController : UITableViewController
 
 @property (strong, nonatomic)CMABait *bait;
+@property (nonatomic)BOOL isReadOnly;
 
 @end
