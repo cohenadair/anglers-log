@@ -12,6 +12,7 @@
 #import "CMABaitTableViewCell.h"
 #import "SWRevealViewController.h"
 #import "CMAAppDelegate.h"
+#import "CMANoXView.h"
 
 @interface CMAViewBaitsViewController ()
 
@@ -20,6 +21,7 @@
 @property (weak, nonatomic)IBOutlet UIBarButtonItem *addButton;
 
 @property (strong, nonatomic)CMAUserDefine *userDefineBaits;
+@property (strong, nonatomic)CMANoXView *noBaitsView;
 
 @end
 
@@ -42,6 +44,25 @@
 
 #pragma mark - View Management
 
+- (void)initNoBaitView {
+    self.noBaitsView = (CMANoXView *)[[[NSBundle mainBundle] loadNibNamed:@"CMANoXView" owner:self options:nil] objectAtIndex:0];
+    
+    self.noBaitsView.imageView.image = [UIImage imageNamed:@"baits_large.png"];
+    self.noBaitsView.titleView.text = @"Baits.";
+    
+    [self.noBaitsView setFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+    [self.view addSubview:self.noBaitsView];
+}
+
+- (void)handleNoBaitView {
+    if ([self.userDefineBaits count] <= 0)
+        [self initNoBaitView];
+    else {
+        [self.noBaitsView removeFromSuperview];
+        self.noBaitsView = nil;
+    }
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -57,6 +78,8 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    
+    [self handleNoBaitView];
     
     [self.deleteButton setEnabled:([self.userDefineBaits count] > 0)];
     [self.navigationController setToolbarHidden:NO];
@@ -124,6 +147,9 @@
     if ([tableView numberOfRowsInSection:0] == 0) {
         [self exitEditMode];
         [self.deleteButton setEnabled:NO];
+        [[self journal] archive];
+        [self initNoBaitView];
+        [self.tableView reloadData];
     }
 }
 
@@ -173,6 +199,7 @@
 }
 
 - (IBAction)unwindToViewBaits:(UIStoryboardSegue *)segue {
+    [self setUserDefineBaits:[[self journal] userDefineNamed:SET_BAITS]];
     [self.tableView reloadData];
 }
 

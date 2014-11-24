@@ -10,12 +10,14 @@
 #import "SWRevealViewController.h"
 #import "CMAAppDelegate.h"
 #import "CMASinglePhotoViewController.h"
+#import "CMANoXView.h"
 
 @interface CMAPhotosViewController ()
 
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *menuButton;
 
 @property (strong, nonatomic) NSMutableArray *imagesArray;
+@property (strong, nonatomic) CMANoXView *noImagesView;
 
 @end
 
@@ -38,6 +40,26 @@
 
 #pragma mark - View Management
 
+- (void)initNoImagesView {
+    self.noImagesView = (CMANoXView *)[[[NSBundle mainBundle] loadNibNamed:@"CMANoXView" owner:self options:nil] objectAtIndex:0];
+    
+    self.noImagesView.imageView.image = [UIImage imageNamed:@"photos_large.png"];
+    self.noImagesView.titleView.text = @"Entries with photos.";
+    self.noImagesView.subtitleView.text = @"Please add a photo to a new or existing Entry.";
+    
+    [self.noImagesView setFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+    [self.view addSubview:self.noImagesView];
+}
+
+- (void)handleNoImagesView {
+    if ([self.imagesArray count] <= 0)
+        [self initNoImagesView];
+    else {
+        [self.noImagesView removeFromSuperview];
+        self.noImagesView = nil;
+    }
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self initSideBarMenu];
@@ -47,6 +69,7 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     self.navigationController.toolbarHidden = YES;
+    [self handleNoImagesView];
     [self.collectionView reloadData];
 }
 

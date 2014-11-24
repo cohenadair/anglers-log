@@ -1195,17 +1195,13 @@
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="VMW-Bd-1Rj" id="Lak-sh-fb4">
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Photos" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fcl-MQ-yId">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Photos" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fcl-MQ-yId">
                                                     <rect key="frame" x="15" y="12" width="65" height="22"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="22" id="3Dd-a1-rGy"/>
-                                                        <constraint firstAttribute="width" constant="65" id="OI4-LZ-ygF"/>
-                                                    </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <collectionView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="PbH-Fk-chE">
+                                                <collectionView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="PbH-Fk-chE">
                                                     <rect key="frame" x="14" y="42" width="585" height="100"/>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                     <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Gxg-lB-oZS">
@@ -1251,9 +1247,6 @@
                                                 </imageView>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="Fcl-MQ-yId" firstAttribute="top" secondItem="Lak-sh-fb4" secondAttribute="topMargin" constant="4" id="18r-ok-MGt"/>
-                                                <constraint firstItem="Fcl-MQ-yId" firstAttribute="leading" secondItem="Lak-sh-fb4" secondAttribute="leadingMargin" constant="7" id="2xF-bL-9dz"/>
-                                                <constraint firstItem="PbH-Fk-chE" firstAttribute="top" secondItem="Fcl-MQ-yId" secondAttribute="bottom" constant="8" symbolic="YES" id="Dcb-4z-kHk"/>
                                                 <constraint firstItem="PbH-Fk-chE" firstAttribute="leading" secondItem="Lak-sh-fb4" secondAttribute="leadingMargin" constant="6" id="EqD-PN-GOD"/>
                                                 <constraint firstItem="AjM-HM-sGP" firstAttribute="top" secondItem="Lak-sh-fb4" secondAttribute="topMargin" constant="2" id="H4k-hi-Req"/>
                                                 <constraint firstAttribute="bottomMargin" secondItem="PbH-Fk-chE" secondAttribute="bottom" constant="4" id="VyJ-bq-Obq"/>

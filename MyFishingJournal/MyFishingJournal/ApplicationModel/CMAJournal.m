@@ -58,7 +58,7 @@
 - (BOOL)archive {
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *docsPath = [paths firstObject];
-    NSString *archivePath = [NSString stringWithFormat:@"%@%@", docsPath, ARCHIVE_FILE_NAME];
+    NSString *archivePath = [NSString stringWithFormat:@"%@/%@", docsPath, ARCHIVE_FILE_NAME];
     
     if ([NSKeyedArchiver archiveRootObject:self toFile:archivePath]) {
         NSLog(@"Successfully archived Journal.");

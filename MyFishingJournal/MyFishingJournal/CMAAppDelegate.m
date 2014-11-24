@@ -12,9 +12,11 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    NSLog(@"Documents: %@", [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0]);
+    
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *docsPath = [paths firstObject];
-    NSString *archivePath = [NSString stringWithFormat:@"%@%@", docsPath, ARCHIVE_FILE_NAME];
+    NSString *archivePath = [NSString stringWithFormat:@"%@/%@", docsPath, ARCHIVE_FILE_NAME];
     self.journal = [NSKeyedUnarchiver unarchiveObjectWithFile:archivePath];
     
     if (self.journal == nil)

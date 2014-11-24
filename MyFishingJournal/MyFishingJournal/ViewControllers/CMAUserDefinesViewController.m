@@ -10,6 +10,7 @@
 #import "CMAAppDelegate.h"
 #import "CMAAddLocationViewController.h"
 #import "CMASingleLocationViewController.h"
+#import "CMANoXView.h"
 #import "SWRevealViewController.h"
 
 @interface CMAUserDefinesViewController ()
@@ -21,6 +22,7 @@
 
 @property (strong, nonatomic)UIAlertView *addItemAlert;
 @property (strong, nonatomic)UIAlertView *editItemAlert;
+@property (strong, nonatomic)CMANoXView *noXView;
 
 @property (nonatomic)BOOL isSelectingForAddEntry;
 @property (nonatomic)BOOL isSelectingMultiple;
@@ -45,6 +47,34 @@
 }
 
 #pragma mark - View Management
+
+- (void)initNoXView {
+    self.noXView = (CMANoXView *)[[[NSBundle mainBundle] loadNibNamed:@"CMANoXView" owner:self options:nil] objectAtIndex:0];
+    
+    NSString *imageName = @"";
+    
+    if ([self.userDefine.name isEqualToString:SET_LOCATIONS])
+        imageName = @"locations_large.png";
+    else if ([self.userDefine.name isEqualToString:SET_FISHING_METHODS])
+        imageName = @"fishing_methods_large.png";
+    else if ([self.userDefine.name isEqualToString:SET_SPECIES])
+        imageName = @"species_large.png";
+    
+    self.noXView.imageView.image = [UIImage imageNamed:imageName];
+    self.noXView.titleView.text = [NSString stringWithFormat:@"%@.", self.userDefine.name];
+    
+    [self.noXView setFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+    [self.view addSubview:self.noXView];
+}
+
+- (void)handleNoXView {
+    if ([self.userDefine count] <= 0)
+        [self initNoXView];
+    else {
+        [self.noXView removeFromSuperview];
+        self.noXView = nil;
+    }
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -78,6 +108,9 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewDidAppear:animated];
+    
+    [self handleNoXView];
+    [self.editButton setEnabled:[self.userDefine count] > 0];
     
     // show the toolbar when navigating back from a push segue
     self.navigationController.toolbarHidden = NO;
@@ -228,6 +261,7 @@
         if ([tableView numberOfRowsInSection:0] == 0) {
             [self toggleEditMode:YES];
             [self.editButton setEnabled:NO];
+            [self initNoXView];
             [[self journal] archive];
             [self.tableView reloadData];
         }
@@ -276,6 +310,7 @@
             [[alertView textFieldAtIndex:0] setText:@""];
             
             [self.userDefine addObject:[self.userDefine emptyObjectNamed:enteredText]];
+            [self handleNoXView];
             [[self journal] archive];
         }
     

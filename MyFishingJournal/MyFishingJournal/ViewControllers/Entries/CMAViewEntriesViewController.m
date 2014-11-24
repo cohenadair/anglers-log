@@ -12,6 +12,7 @@
 #import "CMATouchSegmentedControl.h"
 #import "CMAEntryTableViewCell.h"
 #import "CMAAppDelegate.h"
+#import "CMANoXView.h"
 #import "SWRevealViewController.h"
 
 @interface CMAViewEntriesViewController ()
@@ -23,6 +24,7 @@
 
 @property (strong, nonatomic)NSDateFormatter *dateFormatter;
 @property (strong, nonatomic)UIActionSheet *sortActionSheet;
+@property (strong, nonatomic)CMANoXView *noEntriesView;
 
 @end
 
@@ -45,6 +47,25 @@
 
 #pragma mark - View Management
 
+- (void)initNoEntriesView {
+    self.noEntriesView = (CMANoXView *)[[[NSBundle mainBundle] loadNibNamed:@"CMANoXView" owner:self options:nil] objectAtIndex:0];
+    
+    self.noEntriesView.imageView.image = [UIImage imageNamed:@"entries_large.png"];
+    self.noEntriesView.titleView.text = @"Entries.";
+    
+    [self.noEntriesView setFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+    [self.view addSubview:self.noEntriesView];
+}
+
+- (void)handleNoEntriesView {
+    if ([[self journal] entryCount] <= 0)
+        [self initNoEntriesView];
+    else {
+        [self.noEntriesView removeFromSuperview];
+        self.noEntriesView = nil;
+    }
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -66,6 +87,8 @@
     [super viewWillAppear:animated];
     
     self.navigationController.toolbarHidden = NO;
+    
+    [self handleNoEntriesView];
     
     if ([[self journal] entryCount] > 0)
         self.deleteButton.enabled = YES;
@@ -128,6 +151,7 @@
         
         if ([tableView numberOfRowsInSection:0] == 0) {
             [self enableToolbarButtons];
+            [self initNoEntriesView];
             [self.deleteButton setEnabled:NO];
         }
     }
