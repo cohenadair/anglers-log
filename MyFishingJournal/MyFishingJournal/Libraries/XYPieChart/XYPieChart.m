@@ -543,6 +543,9 @@ static CGPathRef CGPathCreateArc(CGPoint center, CGFloat radius, CGFloat startAn
 
 - (void)notifyDelegateOfSelectionChangeFrom:(NSUInteger)previousSelection to:(NSUInteger)newSelection
 {
+    if (previousSelection == newSelection)
+        return;
+    
     if (previousSelection != newSelection){
         if(previousSelection != -1){
             NSUInteger tempPre = previousSelection;
@@ -597,6 +600,7 @@ static CGPathRef CGPathCreateArc(CGPoint center, CGFloat radius, CGFloat startAn
         layer.position = newPos;
         layer.isSelected = YES;
     }
+    _selectedSliceIndex = index;
 }
 
 - (void)setSliceDeselectedAtIndex:(NSInteger)index

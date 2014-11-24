@@ -24,8 +24,8 @@
 @property (strong, nonatomic) NSDictionary *speciesDictionary;
 @property (strong, nonatomic) NSArray *speciesKeys;
 @property (strong, nonatomic) NSMutableArray *colorsArray;
-@property (strong, nonatomic) NSString *initialSelectedKey;
-@property (nonatomic) NSInteger initialSelectedIndex;
+@property (strong, nonatomic) NSString *initialSelectedKey; // used to select the slice displyed in the UITableViewCell
+@property (nonatomic) NSInteger initialSelectedIndex; // used to deselect initially selected slice
 @property (nonatomic) BOOL didUnwind;
 
 @end
@@ -81,6 +81,8 @@
         
         [self initChartView];
     }
+    
+    [self.tableView setTableFooterView:[[UIView alloc] initWithFrame:CGRectZero]]; // removes empty cells at the end of the list
 }
 
 - (void)viewWillAppear:(BOOL)animated {
