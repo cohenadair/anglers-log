@@ -168,7 +168,7 @@
         <!--Photo Gallery-->
         <scene sceneID="PSO-ty-hvL">
             <objects>
-                <collectionViewController id="Ikc-04-OhE" customClass="CMAPhotosViewController" sceneMemberID="viewController">
+                <collectionViewController id="Ikc-04-OhE" customClass="CMAViewPhotosViewController" sceneMemberID="viewController">
                     <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="i2c-Nc-qGd">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1192,15 +1192,22 @@
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Photos" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fcl-MQ-yId">
                                                     <rect key="frame" x="15" y="12" width="65" height="22"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="height" constant="22" id="9KR-Qb-Gyp"/>
-                                                        <constraint firstAttribute="width" constant="65" id="kr4-Jg-5J4"/>
+                                                        <constraint firstAttribute="height" constant="22" id="Q2R-HX-7BQ"/>
+                                                        <constraint firstAttribute="width" constant="65" id="SUw-76-p0p"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <collectionView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="PbH-Fk-chE">
-                                                    <rect key="frame" x="14" y="42" width="585" height="100"/>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="camera.png" translatesAutoresizingMaskIntoConstraints="NO" id="AjM-HM-sGP">
+                                                    <rect key="frame" x="561" y="11" width="25" height="25"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="25" id="q8n-KE-TRH"/>
+                                                        <constraint firstAttribute="width" constant="25" id="yod-Pd-Lya"/>
+                                                    </constraints>
+                                                </imageView>
+                                                <collectionView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="PbH-Fk-chE">
+                                                    <rect key="frame" x="15" y="44" width="577" height="100"/>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                     <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Gxg-lB-oZS">
                                                         <size key="itemSize" width="100" height="100"/>
@@ -1240,23 +1247,15 @@
                                                         <outlet property="delegate" destination="T1c-yJ-jzQ" id="uu5-o1-FsE"/>
                                                     </connections>
                                                 </collectionView>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="camera.png" translatesAutoresizingMaskIntoConstraints="NO" id="AjM-HM-sGP">
-                                                    <rect key="frame" x="561" y="10" width="25" height="25"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" constant="25" id="Fj3-7i-7va"/>
-                                                        <constraint firstAttribute="height" constant="25" id="thK-QQ-wTL"/>
-                                                    </constraints>
-                                                </imageView>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="PbH-Fk-chE" firstAttribute="top" secondItem="Fcl-MQ-yId" secondAttribute="bottom" constant="8" symbolic="YES" id="8B7-Vu-Aa1"/>
-                                                <constraint firstAttribute="bottomMargin" secondItem="PbH-Fk-chE" secondAttribute="bottom" constant="4" id="AFj-TY-kzN"/>
-                                                <constraint firstItem="AjM-HM-sGP" firstAttribute="top" secondItem="Lak-sh-fb4" secondAttribute="topMargin" constant="2" id="Qa2-Il-lhg"/>
-                                                <constraint firstAttribute="trailingMargin" secondItem="PbH-Fk-chE" secondAttribute="trailing" constant="-7" id="W98-sc-BJb"/>
-                                                <constraint firstItem="PbH-Fk-chE" firstAttribute="leading" secondItem="Lak-sh-fb4" secondAttribute="leadingMargin" constant="6" id="b2F-cZ-U2W"/>
-                                                <constraint firstItem="Fcl-MQ-yId" firstAttribute="top" secondItem="Lak-sh-fb4" secondAttribute="topMargin" constant="4" id="sUH-qE-peQ"/>
-                                                <constraint firstAttribute="trailingMargin" secondItem="AjM-HM-sGP" secondAttribute="trailing" constant="6" id="uKO-vl-jud"/>
-                                                <constraint firstItem="Fcl-MQ-yId" firstAttribute="leading" secondItem="Lak-sh-fb4" secondAttribute="leadingMargin" constant="7" id="uME-bK-hFr"/>
+                                                <constraint firstItem="Fcl-MQ-yId" firstAttribute="leading" secondItem="Lak-sh-fb4" secondAttribute="leadingMargin" constant="7" id="5yN-BF-jOQ"/>
+                                                <constraint firstItem="Fcl-MQ-yId" firstAttribute="top" secondItem="Lak-sh-fb4" secondAttribute="topMargin" constant="4" id="R9H-xh-4hw"/>
+                                                <constraint firstItem="PbH-Fk-chE" firstAttribute="leading" secondItem="Fcl-MQ-yId" secondAttribute="leading" id="b9l-eE-93x"/>
+                                                <constraint firstItem="PbH-Fk-chE" firstAttribute="trailing" secondItem="Lak-sh-fb4" secondAttribute="trailingMargin" id="chq-YY-KEO"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="PbH-Fk-chE" secondAttribute="bottom" constant="2" id="nC1-wo-5Hx"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="AjM-HM-sGP" secondAttribute="trailing" constant="6" id="no0-jz-5ZX"/>
+                                                <constraint firstItem="AjM-HM-sGP" firstAttribute="top" secondItem="Lak-sh-fb4" secondAttribute="topMargin" constant="3" id="v3x-Rr-hfo"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -1339,7 +1338,7 @@
                     </connections>
                 </pongPressGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="615" y="1241"/>
+            <point key="canvasLocation" x="615" y="1240"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="uHb-v9-W6m">
@@ -2312,6 +2311,8 @@
         <segue reference="aBE-xI-c3y"/>
         <segue reference="gt8-1C-AU6"/>
         <segue reference="egX-OW-uSX"/>
+        <segue reference="guB-6y-sIg"/>
+        <segue reference="Jyy-wS-dXA"/>
         <segue reference="iOf-th-u5i"/>
         <segue reference="gpK-ox-KiN"/>
         <segue reference="ij7-4o-wMK"/>
@@ -2319,7 +2320,5 @@
         <segue reference="RpT-ts-gTM"/>
         <segue reference="Mmt-ea-Rlu"/>
         <segue reference="qAO-gb-5Yr"/>
-        <segue reference="hzw-aH-h0R"/>
-        <segue reference="F91-a2-ToR"/>
     </inferredMetricsTieBreakers>
 </document>

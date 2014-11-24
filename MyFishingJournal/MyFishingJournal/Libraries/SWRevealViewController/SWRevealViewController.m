@@ -860,7 +860,14 @@ const int FrontViewPositionNone = 0xff;
 #pragma mark - Provided acction methods
 
 - (IBAction)revealToggle:(id)sender
-{    
+{
+    UIToolbar *toolbar = [[[[self.frontViewController childViewControllers] objectAtIndex:0] navigationController] toolbar];
+    
+    if (!toolbar.userInteractionEnabled)
+        [toolbar setUserInteractionEnabled:YES];
+    else
+        [toolbar setUserInteractionEnabled:NO];
+    
     [self revealToggleAnimated:YES];
 }
 
@@ -1074,6 +1081,10 @@ const int FrontViewPositionNone = 0xff;
 {
     NSTimeInterval duration = _toggleAnimationDuration;
     [self _setFrontViewPosition:FrontViewPositionLeft withDuration:duration];
+    
+    UIToolbar *toolbar = [[[[self.frontViewController childViewControllers] objectAtIndex:0] navigationController] toolbar];
+    
+    [toolbar setUserInteractionEnabled:YES];
 }
 
 

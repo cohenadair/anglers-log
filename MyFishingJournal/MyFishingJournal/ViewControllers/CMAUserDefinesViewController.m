@@ -43,7 +43,7 @@
     [self.menuButton setTarget:self.revealViewController];
     [self.menuButton setAction:@selector(revealToggle:)];
     
-    [self.view addGestureRecognizer:self.revealViewController.panGestureRecognizer];
+    [self.view addGestureRecognizer:self.revealViewController.tapGestureRecognizer];
 }
 
 #pragma mark - View Management
@@ -114,6 +114,7 @@
     
     // show the toolbar when navigating back from a push segue
     self.navigationController.toolbarHidden = NO;
+    self.navigationController.toolbar.userInteractionEnabled = YES;
     
     [self.tableView reloadData];
 }

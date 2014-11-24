@@ -6,13 +6,13 @@
 //  Copyright (c) 2014 Cohen Adair. All rights reserved.
 //
 
-#import "CMAPhotosViewController.h"
+#import "CMAViewPhotosViewController.h"
 #import "SWRevealViewController.h"
 #import "CMAAppDelegate.h"
 #import "CMASinglePhotoViewController.h"
 #import "CMANoXView.h"
 
-@interface CMAPhotosViewController ()
+@interface CMAViewPhotosViewController ()
 
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *menuButton;
 
@@ -21,7 +21,7 @@
 
 @end
 
-@implementation CMAPhotosViewController
+@implementation CMAViewPhotosViewController
 
 #pragma mark - Global Accessing
 
@@ -35,7 +35,7 @@
     [self.menuButton setTarget:self.revealViewController];
     [self.menuButton setAction:@selector(revealToggle:)];
     
-    [self.view addGestureRecognizer:self.revealViewController.panGestureRecognizer];
+    [self.view addGestureRecognizer:self.revealViewController.tapGestureRecognizer];
 }
 
 #pragma mark - View Management

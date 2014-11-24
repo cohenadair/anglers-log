@@ -31,7 +31,7 @@
     [self.menuButton setTarget:self.revealViewController];
     [self.menuButton setAction:@selector(revealToggle:)];
     
-    [self.view addGestureRecognizer:self.revealViewController.panGestureRecognizer];
+    [self.view addGestureRecognizer:self.revealViewController.tapGestureRecognizer];
 }
 
 #pragma mark - View Management

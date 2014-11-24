@@ -39,7 +39,7 @@
     [self.menuButton setTarget:self.revealViewController];
     [self.menuButton setAction:@selector(revealToggle:)];
     
-    [self.view addGestureRecognizer:self.revealViewController.panGestureRecognizer];
+    [self.view addGestureRecognizer:self.revealViewController.tapGestureRecognizer];
 }
 
 #pragma mark - View Management
@@ -83,6 +83,7 @@
     
     [self.deleteButton setEnabled:([self.userDefineBaits count] > 0)];
     [self.navigationController setToolbarHidden:NO];
+    [self.navigationController.toolbar setUserInteractionEnabled:YES];
     
     [self.tableView reloadData];
 }
