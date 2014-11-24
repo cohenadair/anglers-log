@@ -448,13 +448,8 @@
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <imageView userInteractionEnabled="NO" tag="100" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gbQ-wg-9sz">
+                                                <imageView userInteractionEnabled="NO" tag="100" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gbQ-wg-9sz">
                                                     <rect key="frame" x="15" y="43" width="75" height="75"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" constant="75" id="5YC-F9-64x"/>
-                                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="75" id="Y9g-sn-RDo"/>
-                                                        <constraint firstAttribute="height" constant="75" id="iiM-Uw-aIO"/>
-                                                    </constraints>
                                                 </imageView>
                                                 <imageView userInteractionEnabled="NO" tag="200" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="camera.png" translatesAutoresizingMaskIntoConstraints="NO" id="ucu-yo-GUe" customClass="CMACameraButton">
                                                     <rect key="frame" x="561" y="10" width="25" height="25"/>
@@ -465,7 +460,6 @@
                                                 <constraint firstItem="PhJ-eh-1Yf" firstAttribute="top" secondItem="ZT1-gh-va6" secondAttribute="topMargin" constant="4" id="IdI-ak-ybp"/>
                                                 <constraint firstItem="ucu-yo-GUe" firstAttribute="top" secondItem="ZT1-gh-va6" secondAttribute="topMargin" constant="2" id="LOY-tl-m92"/>
                                                 <constraint firstItem="PhJ-eh-1Yf" firstAttribute="leading" secondItem="ZT1-gh-va6" secondAttribute="leadingMargin" constant="7" id="opr-Sq-vE7"/>
-                                                <constraint firstAttribute="bottomMargin" secondItem="gbQ-wg-9sz" secondAttribute="bottom" constant="8" id="tEm-wm-hjt"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -1195,13 +1189,17 @@
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="VMW-Bd-1Rj" id="Lak-sh-fb4">
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Photos" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fcl-MQ-yId">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Photos" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fcl-MQ-yId">
                                                     <rect key="frame" x="15" y="12" width="65" height="22"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="22" id="9KR-Qb-Gyp"/>
+                                                        <constraint firstAttribute="width" constant="65" id="kr4-Jg-5J4"/>
+                                                    </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <collectionView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="PbH-Fk-chE">
+                                                <collectionView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="PbH-Fk-chE">
                                                     <rect key="frame" x="14" y="42" width="585" height="100"/>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                     <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Gxg-lB-oZS">
@@ -1244,14 +1242,17 @@
                                                 </collectionView>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="camera.png" translatesAutoresizingMaskIntoConstraints="NO" id="AjM-HM-sGP">
                                                     <rect key="frame" x="561" y="10" width="25" height="25"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="25" id="Fj3-7i-7va"/>
+                                                        <constraint firstAttribute="height" constant="25" id="thK-QQ-wTL"/>
+                                                    </constraints>
                                                 </imageView>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="PbH-Fk-chE" firstAttribute="leading" secondItem="Lak-sh-fb4" secondAttribute="leadingMargin" constant="6" id="EqD-PN-GOD"/>
-                                                <constraint firstItem="AjM-HM-sGP" firstAttribute="top" secondItem="Lak-sh-fb4" secondAttribute="topMargin" constant="2" id="H4k-hi-Req"/>
-                                                <constraint firstAttribute="bottomMargin" secondItem="PbH-Fk-chE" secondAttribute="bottom" constant="4" id="VyJ-bq-Obq"/>
-                                                <constraint firstAttribute="trailingMargin" secondItem="PbH-Fk-chE" secondAttribute="trailing" constant="-7" id="rUY-ge-t5Z"/>
-                                                <constraint firstAttribute="trailingMargin" secondItem="AjM-HM-sGP" secondAttribute="trailing" constant="6" id="uF9-1w-1fc"/>
+                                                <constraint firstItem="AjM-HM-sGP" firstAttribute="top" secondItem="Lak-sh-fb4" secondAttribute="topMargin" constant="2" id="Qa2-Il-lhg"/>
+                                                <constraint firstItem="Fcl-MQ-yId" firstAttribute="top" secondItem="Lak-sh-fb4" secondAttribute="topMargin" constant="4" id="sUH-qE-peQ"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="AjM-HM-sGP" secondAttribute="trailing" constant="6" id="uKO-vl-jud"/>
+                                                <constraint firstItem="Fcl-MQ-yId" firstAttribute="leading" secondItem="Lak-sh-fb4" secondAttribute="leadingMargin" constant="7" id="uME-bK-hFr"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -2303,18 +2304,18 @@
         <image name="stats.png" width="50" height="50"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="RpT-ts-gTM"/>
-        <segue reference="egX-OW-uSX"/>
-        <segue reference="aBE-xI-c3y"/>
         <segue reference="gDt-Tw-gtk"/>
-        <segue reference="Jyy-wS-dXA"/>
+        <segue reference="aBE-xI-c3y"/>
         <segue reference="gt8-1C-AU6"/>
-        <segue reference="guB-6y-sIg"/>
+        <segue reference="egX-OW-uSX"/>
         <segue reference="iOf-th-u5i"/>
+        <segue reference="gpK-ox-KiN"/>
         <segue reference="ij7-4o-wMK"/>
-        <segue reference="y0h-hR-J5c"/>
         <segue reference="2ub-xD-2JF"/>
+        <segue reference="RpT-ts-gTM"/>
         <segue reference="Mmt-ea-Rlu"/>
         <segue reference="qAO-gb-5Yr"/>
+        <segue reference="hzw-aH-h0R"/>
+        <segue reference="F91-a2-ToR"/>
     </inferredMetricsTieBreakers>
 </document>
