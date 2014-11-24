@@ -146,6 +146,8 @@
     
     [self.bait setImage:chosenImage];
     [self.tableView reloadData];
+    [self.bait setName:self.nameTextField.text];
+    [self.bait setBaitDescription:self.descriptionTextView.text];
     [self initTableView];
     
     [picker dismissViewControllerAnimated:YES completion:NULL];

@@ -1199,7 +1199,7 @@
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <collectionView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="PbH-Fk-chE">
+                                                <collectionView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="PbH-Fk-chE">
                                                     <rect key="frame" x="14" y="42" width="585" height="100"/>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                     <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Gxg-lB-oZS">
@@ -1249,7 +1249,11 @@
                                                 </imageView>
                                             </subviews>
                                             <constraints>
+                                                <constraint firstItem="PbH-Fk-chE" firstAttribute="top" secondItem="Fcl-MQ-yId" secondAttribute="bottom" constant="8" symbolic="YES" id="8B7-Vu-Aa1"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="PbH-Fk-chE" secondAttribute="bottom" constant="4" id="AFj-TY-kzN"/>
                                                 <constraint firstItem="AjM-HM-sGP" firstAttribute="top" secondItem="Lak-sh-fb4" secondAttribute="topMargin" constant="2" id="Qa2-Il-lhg"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="PbH-Fk-chE" secondAttribute="trailing" constant="-7" id="W98-sc-BJb"/>
+                                                <constraint firstItem="PbH-Fk-chE" firstAttribute="leading" secondItem="Lak-sh-fb4" secondAttribute="leadingMargin" constant="6" id="b2F-cZ-U2W"/>
                                                 <constraint firstItem="Fcl-MQ-yId" firstAttribute="top" secondItem="Lak-sh-fb4" secondAttribute="topMargin" constant="4" id="sUH-qE-peQ"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="AjM-HM-sGP" secondAttribute="trailing" constant="6" id="uKO-vl-jud"/>
                                                 <constraint firstItem="Fcl-MQ-yId" firstAttribute="leading" secondItem="Lak-sh-fb4" secondAttribute="leadingMargin" constant="7" id="uME-bK-hFr"/>

@@ -13,7 +13,7 @@
 #pragma mark - Instance Creation
 
 + (CMAFishingMethod *)withName: (NSString *)aName {
-    return [[self alloc] initWithName:aName];
+    return [[self alloc] initWithName:[aName capitalizedString]];
 }
 
 #pragma mark - Initialization
