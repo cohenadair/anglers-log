@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "XYPieChart.h"
 
-@interface CMAStatisticsViewController : UIViewController
+@interface CMAStatisticsViewController : UITableViewController <XYPieChartDataSource, XYPieChartDelegate>
 
 @end

@@ -14,6 +14,8 @@
 		E705AD761A229E0B0077F16C /* photos_large.png in Resources */ = {isa = PBXBuildFile; fileRef = E705AD701A229E0B0077F16C /* photos_large.png */; };
 		E705AD771A229E0B0077F16C /* species_large.png in Resources */ = {isa = PBXBuildFile; fileRef = E705AD711A229E0B0077F16C /* species_large.png */; };
 		E705AD781A229E0B0077F16C /* stats_large.png in Resources */ = {isa = PBXBuildFile; fileRef = E705AD721A229E0B0077F16C /* stats_large.png */; };
+		E705AD7C1A22DD420077F16C /* XYPieChart.m in Sources */ = {isa = PBXBuildFile; fileRef = E705AD7B1A22DD420077F16C /* XYPieChart.m */; };
+		E705AD7E1A22DD5C0077F16C /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E705AD7D1A22DD5C0077F16C /* QuartzCore.framework */; };
 		E70B637619D3A8E400DFBA85 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E70B637519D3A8E400DFBA85 /* Foundation.framework */; };
 		E70B637819D3A8E400DFBA85 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E70B637719D3A8E400DFBA85 /* CoreGraphics.framework */; };
 		E70B637A19D3A8E400DFBA85 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E70B637919D3A8E400DFBA85 /* UIKit.framework */; };
@@ -122,6 +124,9 @@
 		E705AD701A229E0B0077F16C /* photos_large.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = photos_large.png; path = Images/LargeIcons/photos_large.png; sourceTree = "<group>"; };
 		E705AD711A229E0B0077F16C /* species_large.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = species_large.png; path = Images/LargeIcons/species_large.png; sourceTree = "<group>"; };
 		E705AD721A229E0B0077F16C /* stats_large.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = stats_large.png; path = Images/LargeIcons/stats_large.png; sourceTree = "<group>"; };
+		E705AD7A1A22DD420077F16C /* XYPieChart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XYPieChart.h; path = XYPieChart/XYPieChart.h; sourceTree = "<group>"; };
+		E705AD7B1A22DD420077F16C /* XYPieChart.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = XYPieChart.m; path = XYPieChart/XYPieChart.m; sourceTree = "<group>"; };
+		E705AD7D1A22DD5C0077F16C /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		E70B637219D3A8E400DFBA85 /* MyFishingJournal.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyFishingJournal.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E70B637519D3A8E400DFBA85 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		E70B637719D3A8E400DFBA85 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -247,6 +252,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E705AD7E1A22DD5C0077F16C /* QuartzCore.framework in Frameworks */,
 				E78BB7D61A0724760082004B /* CoreLocation.framework in Frameworks */,
 				E78BB7D41A0724290082004B /* MapKit.framework in Frameworks */,
 				E70B637819D3A8E400DFBA85 /* CoreGraphics.framework in Frameworks */,
@@ -282,6 +288,15 @@
 			name = LargeIcons;
 			sourceTree = "<group>";
 		};
+		E705AD791A22DD2F0077F16C /* XYPieChart */ = {
+			isa = PBXGroup;
+			children = (
+				E705AD7A1A22DD420077F16C /* XYPieChart.h */,
+				E705AD7B1A22DD420077F16C /* XYPieChart.m */,
+			);
+			name = XYPieChart;
+			sourceTree = "<group>";
+		};
 		E70B636919D3A8E400DFBA85 = {
 			isa = PBXGroup;
 			children = (
@@ -304,6 +319,7 @@
 		E70B637419D3A8E400DFBA85 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				E705AD7D1A22DD5C0077F16C /* QuartzCore.framework */,
 				E78BB7D51A0724760082004B /* CoreLocation.framework */,
 				E78BB7D31A0724290082004B /* MapKit.framework */,
 				E70B637519D3A8E400DFBA85 /* Foundation.framework */,
@@ -469,6 +485,7 @@
 		E7C29D0C1A143A1600015B42 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				E705AD791A22DD2F0077F16C /* XYPieChart */,
 				E7C29D0D1A143A1600015B42 /* SWRevealViewController */,
 			);
 			path = Libraries;
@@ -695,6 +712,7 @@
 				E7A3311D1A1D706A00C1D3F1 /* CMAAddEntryViewController.m in Sources */,
 				E7C29D7E1A1C183E00015B42 /* CMACameraButton.m in Sources */,
 				E7A51EA819F4440F009BDC20 /* CMAUserDefinesViewController.m in Sources */,
+				E705AD7C1A22DD420077F16C /* XYPieChart.m in Sources */,
 				E7A331201A1D706A00C1D3F1 /* CMAViewEntriesViewController.m in Sources */,
 				E78BB7E91A133A940082004B /* CMATouchSegmentedControl.m in Sources */,
 				E7C29D841A1C210000015B42 /* CMAImagePickerViewController.m in Sources */,

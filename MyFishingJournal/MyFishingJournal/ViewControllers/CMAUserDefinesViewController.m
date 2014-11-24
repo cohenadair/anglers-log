@@ -26,6 +26,7 @@
 
 @property (nonatomic)BOOL isSelectingForAddEntry;
 @property (nonatomic)BOOL isSelectingMultiple;
+@property (nonatomic)BOOL isSelectingForStatistics;
 
 @end
 
@@ -89,6 +90,8 @@
     self.isSelectingForAddEntry = (self.previousViewID == CMAViewControllerID_AddEntry);
     self.isSelectingMultiple = (self.isSelectingForAddEntry && [[self.userDefine name] isEqualToString:SET_FISHING_METHODS]);
     
+    self.isSelectingForStatistics = (self.previousViewID == CMAViewControllerID_Statistics);
+    
     // for selecting multiple fishing methods
     if (self.isSelectingMultiple)
         [self configureTableForMutipleSelection];
@@ -115,6 +118,9 @@
     // show the toolbar when navigating back from a push segue
     self.navigationController.toolbarHidden = NO;
     self.navigationController.toolbar.userInteractionEnabled = YES;
+    
+    if (self.isSelectingForStatistics)
+        self.navigationController.toolbarHidden = YES;
     
     [self.tableView reloadData];
 }
@@ -239,6 +245,12 @@
     if (self.isSelectingForAddEntry) {
         self.selectedCellLabelText = [[[tableView cellForRowAtIndexPath:indexPath] textLabel] text];
         [self performSegueWithIdentifier:@"unwindToAddEntryFromEditSettings" sender:self];
+        return;
+    }
+    
+    if (self.isSelectingForStatistics) {
+        self.selectedCellLabelText = [[[tableView cellForRowAtIndexPath:indexPath] textLabel] text];
+        [self performSegueWithIdentifier:@"unwindToStatisticsFromUserDefines" sender:self];
         return;
     }
 }
