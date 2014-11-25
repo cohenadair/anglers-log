@@ -1185,6 +1185,9 @@
                                                 <collectionView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="PbH-Fk-chE">
                                                     <rect key="frame" x="8" y="46" width="584" height="100"/>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="100" id="rGL-wV-HD2"/>
+                                                    </constraints>
                                                     <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Gxg-lB-oZS">
                                                         <size key="itemSize" width="100" height="100"/>
                                                         <size key="headerReferenceSize" width="0.0" height="0.0"/>
@@ -1238,6 +1241,7 @@
                                             <variation key="default">
                                                 <mask key="constraints">
                                                     <exclude reference="orN-au-EZH"/>
+                                                    <exclude reference="s0v-eq-bPG"/>
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>
