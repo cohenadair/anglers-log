@@ -101,7 +101,7 @@
     [self initializeToolbar];
     
     // enable side bar navigation unless the user is adding an entry
-    if (!self.isSelectingForAddEntry)
+    if (!self.isSelectingForAddEntry && !self.isSelectingForStatistics)
         [self initSideBarMenu];
     else
         self.navigationItem.leftBarButtonItem = self.navigationItem.backBarButtonItem;

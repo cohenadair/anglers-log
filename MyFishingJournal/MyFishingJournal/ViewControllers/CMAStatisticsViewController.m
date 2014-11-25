@@ -157,7 +157,7 @@
 - (void)updatePieCenterLabelsForTotal {
     if (self.pieChartType == kPieChartTypeCaught) {
         self.pieChartPercentLabel.text = [NSString stringWithFormat:@"%ld", self.journalStats.totalFishCaught];
-        self.pieChartSpeciesLabel.text = @"Total Fish Caught";
+        self.pieChartSpeciesLabel.text = @"Fish Caught";
     }
     
     if (self.pieChartType == kPieChartTypeWeight) {
