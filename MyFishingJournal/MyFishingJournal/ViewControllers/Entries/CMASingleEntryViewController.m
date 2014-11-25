@@ -146,7 +146,7 @@
                               hasSeparator: YES]];
     
     // bait used
-    if (![self.entry.baitUsed.name isEqualToString:@""])
+    if (self.entry.baitUsed)
         [self.tableCellProperties addObject:
          [CMATableCellProperties withLabelText: @"Bait Used"
                                  andDetailText: self.entry.baitUsed.name
@@ -201,8 +201,10 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    CMATableCellProperties *properties = [self.tableCellProperties objectAtIndex:indexPath.row];
+    
     // Notes cell; need to get the occupied space from the notes string
-    if (indexPath.item == [self.tableCellProperties count] - 1) {
+    if ([properties.labelText isEqualToString:@"Notes"]) {
         NSDictionary *attributes = @{NSFontAttributeName: [UIFont fontWithName:GLOBAL_FONT size:15]};
         CGRect rect = [self.entry.notes boundingRectWithSize:CGSizeMake(self.tableView.frame.size.width, CGFLOAT_MAX)
                                                      options:NSStringDrawingUsesLineFragmentOrigin

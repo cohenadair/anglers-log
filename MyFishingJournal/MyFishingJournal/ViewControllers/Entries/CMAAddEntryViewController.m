@@ -453,7 +453,7 @@ NSString *const NO_SELECT = @"Not Selected";
         CMABait *bait = [[[self journal] userDefineNamed:SET_BAITS] objectNamed:[self.baitUsedDetailLabel text]];
         [anEntry setBaitUsed:bait];
     } else {
-        [anEntry setBaitUsed:[CMABait withName:@""]];
+        [anEntry setBaitUsed:nil];
     }
     
     // fishing methods
