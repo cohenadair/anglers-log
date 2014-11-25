@@ -15,6 +15,8 @@
 @property (strong, nonatomic)CMAJournal *journal;
 @property (strong, nonatomic)NSArray *speciesCaughtStats;
 @property (nonatomic)NSInteger totalFishCaught;
+@property (nonatomic)NSInteger totalFishWeight;
+@property (nonatomic)NSInteger mostWeightSpeciesIndex;
 @property (nonatomic)NSInteger mostCaughtSpeciesIndex; // index in self.speciesCaughtStats
 
 + (CMAJournalStats *)withJournal: (CMAJournal *)aJournal;

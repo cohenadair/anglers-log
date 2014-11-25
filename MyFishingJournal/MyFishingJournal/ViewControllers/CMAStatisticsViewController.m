@@ -22,6 +22,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *pieChartPercentLabel;
 @property (weak, nonatomic) IBOutlet UILabel *pieChartSpeciesLabel;
 @property (weak, nonatomic) IBOutlet UILabel *pieChartCaughtLabel;
+@property (weak, nonatomic) IBOutlet UISegmentedControl *piChartControl;
 @property (weak, nonatomic) IBOutlet UIButton *totalButton;
 
 @property (strong, nonatomic) CMANoXView *noStatsView;
@@ -30,8 +31,15 @@
 @property (strong, nonatomic) CMAJournalStats *journalStats;
 
 @property (nonatomic) NSInteger initialSelectedIndex;
+@property (nonatomic) NSInteger pieChartType;
 
 @end
+
+// Indexes of pie chart segmented control.
+#define kPieChartTypeCaught 0
+#define kPieChartTypeWeight 1
+#define kPieChartTypeBait 2
+#define kPieChartTypeLocation 3
 
 @implementation CMAStatisticsViewController
 
@@ -79,6 +87,7 @@
     
     if ([[self journal] entryCount] > 0) {
         [self setJournalStats:[CMAJournalStats withJournal:[self journal]]];
+        [self setPieChartType:kPieChartTypeCaught];
         [self initColorsArray];
         [self initChartView];
         [self setInitialSelectedIndex:self.journalStats.mostCaughtSpeciesIndex];
@@ -107,26 +116,64 @@
 
 #pragma mark - Chart View Initializing
 
-- (NSString *)speciesNameLabelForIndex:(NSInteger)anIndex {
-    return [NSString stringWithFormat:@"%@", [[self.journalStats speciesStatsAtIndex:anIndex] name]];
+- (NSArray *)pieCenterLabelsForIndex:(NSInteger)anIndex {
+    NSMutableArray *result = [NSMutableArray array];
+    NSInteger percentValue = 0;
+    NSString *detailText = @"";
+    NSString *nameLabel = @"";
+    
+    switch (self.pieChartType) {
+        case kPieChartTypeCaught:
+            percentValue = [[self.journalStats speciesStatsAtIndex:anIndex] percentOfTotalCaught];
+            nameLabel = [NSString stringWithFormat:@"%@", [[self.journalStats speciesStatsAtIndex:anIndex] name]];
+            detailText = [NSString stringWithFormat:@"%ld Caught", [[self.journalStats speciesStatsAtIndex:anIndex] numberCaught]];
+            break;
+            
+        case kPieChartTypeWeight:
+            percentValue = [[self.journalStats speciesStatsAtIndex:anIndex] percentOfTotalWeight];
+            nameLabel = [NSString stringWithFormat:@"%@", [[self.journalStats speciesStatsAtIndex:anIndex] name]];
+            detailText = [NSString stringWithFormat:@"%ld %@", [[self.journalStats speciesStatsAtIndex:anIndex] weightCaught], [[self journal] weightUnitsAsString:NO]];
+            break;
+            
+        default:
+            NSLog(@"Invalid pieChartType in pieCenterDetailLabelForIndex");
+            break;
+    }
+    
+    [result addObject:[NSString stringWithFormat:@"%ld%%", percentValue]]; // percent label
+    [result addObject:nameLabel]; // name; middle label
+    [result addObject:detailText]; // detail label
+    
+    return result;
 }
 
-- (NSString *)speciesCaughtLabelForIndex:(NSInteger)anIndex {
-    return [NSString stringWithFormat:@"%ld Caught", [[self.journalStats speciesStatsAtIndex:anIndex] numberCaught]];
-}
-
-- (NSString *)speciesPercentLabelForIndex:(NSInteger)anIndex {
-    return [NSString stringWithFormat:@"%ld%%", [[self.journalStats speciesStatsAtIndex:anIndex] percentOfTotalCaught]];
+- (void)updatePieCenterLabelsForIndex:(NSInteger)anIndex {
+    NSArray *labelTexts = [self pieCenterLabelsForIndex:anIndex];
+    self.pieChartPercentLabel.text = [labelTexts objectAtIndex:0];
+    self.pieChartSpeciesLabel.text = [labelTexts objectAtIndex:1];
+    self.pieChartCaughtLabel.text = [labelTexts objectAtIndex:2];
 }
 
 - (void)selectPieChartSliceAtIndex:(NSInteger)anIndex {
     [self.pieChart setSliceSelectedAtIndex:anIndex];
-    
-    self.pieChartPercentLabel.text = [self speciesPercentLabelForIndex:anIndex];
-    self.pieChartSpeciesLabel.text = [self speciesNameLabelForIndex:anIndex];
-    self.pieChartCaughtLabel.text = [self speciesCaughtLabelForIndex:anIndex];
-    
+    [self updatePieCenterLabelsForIndex:anIndex];
     self.initialSelectedIndex = anIndex;
+}
+
+- (void)selectInitialSliceForPieChartType:(NSInteger)aPieChartType {
+    switch (aPieChartType) {
+        case kPieChartTypeCaught:
+            [self selectPieChartSliceAtIndex:[self.journalStats mostCaughtSpeciesIndex]];
+            break;
+            
+        case kPieChartTypeWeight:
+            [self selectPieChartSliceAtIndex:[self.journalStats mostWeightSpeciesIndex]];
+            break;
+            
+        default:
+            NSLog(@"Invalid pie chart type in selectInitialSliceForPieChartType");
+            break;
+    }
 }
 
 - (void)initColorsArray {
@@ -163,22 +210,21 @@
     }
 }
 
-#define CHART_RADUIS 125
-#define CHART_FRAME_HEIGHT 290
-#define CHART_FRAME_WIDTH 270
-
 - (void)initChartView {
-    CGRect frame = CGRectMake((self.view.frame.size.width - CHART_FRAME_WIDTH) / 2, 0, CHART_FRAME_WIDTH, CHART_FRAME_HEIGHT);
+    NSInteger chartRadius = 125;
+    NSInteger chartHeight = 290;
+    NSInteger chartWidth  = 270;
+    
+    CGRect frame = CGRectMake((self.view.frame.size.width - chartWidth) / 2, 0, chartWidth, chartHeight);
     CGPoint center = CGPointMake(frame.size.width / 2, (frame.size.height / 2));
-    self.pieChart = [[XYPieChart alloc] initWithFrame:frame Center:center Radius:CHART_RADUIS];
+    self.pieChart = [[XYPieChart alloc] initWithFrame:frame Center:center Radius:chartRadius];
     
     [self.pieChart setDelegate:self];
     [self.pieChart setDataSource:self];
     [self.pieChart setStartPieAngle:M_PI_2];
-    [self.pieChart setAnimationSpeed:1.0];
     [self.pieChart setLabelColor:[UIColor blackColor]];
     [self.pieChart setShowLabel:NO];
-    [self.pieChart setLabelRadius:CHART_RADUIS - 15];
+    [self.pieChart setLabelRadius:chartRadius - 15];
     [self.pieChart setShowPercentage:NO];
     
     [self.chartView setFrame:frame];
@@ -190,7 +236,14 @@
 }
 
 - (CGFloat)pieChart:(XYPieChart *)pieChart valueForSliceAtIndex:(NSUInteger)index {
-    return [[self.journalStats speciesStatsAtIndex:index] numberCaught];
+    if (self.pieChartType == kPieChartTypeCaught)
+        return [[self.journalStats speciesStatsAtIndex:index] numberCaught];
+    
+    if (self.pieChartType == kPieChartTypeWeight)
+        return [[self.journalStats speciesStatsAtIndex:index] weightCaught];
+    
+    NSLog(@"Invalid pie chart type in valueForSliceAtIndex.");
+    return 0.0;
 }
 
 - (UIColor *)pieChart:(XYPieChart *)pieChart colorForSliceAtIndex:(NSUInteger)index {
@@ -207,9 +260,7 @@
         self.initialSelectedIndex = -1;
     }
     
-    self.pieChartPercentLabel.text = [self speciesPercentLabelForIndex:index];
-    self.pieChartSpeciesLabel.text = [self speciesNameLabelForIndex:index];
-    self.pieChartCaughtLabel.text = [self speciesCaughtLabelForIndex:index];
+    [self updatePieCenterLabelsForIndex:index];
 }
 
 #pragma mark - Events
@@ -230,6 +281,12 @@
     [dateFormatter setDateFormat:@"MM/dd/yyyy"];
     
     self.pieChartCaughtLabel.text = [NSString stringWithFormat:@"Since %@", [dateFormatter stringFromDate:earliestDate]];
+}
+
+- (IBAction)changePieChartControl:(UISegmentedControl *)sender {
+    self.pieChartType = sender.selectedSegmentIndex;
+    [self.pieChart reloadData];
+    [self selectInitialSliceForPieChartType:self.pieChartType];
 }
 
 #pragma mark - Navigation

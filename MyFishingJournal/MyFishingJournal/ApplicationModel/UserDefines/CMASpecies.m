@@ -22,6 +22,7 @@
     if (self = [super init]) {
         _name = aName;
         _numberCaught = [NSNumber numberWithInteger:0];
+        _weightCaught = [NSNumber numberWithInteger:0];
     }
     
     return self;
@@ -33,6 +34,7 @@
     if (self = [super init]) {
         _name = [aDecoder decodeObjectForKey:@"CMASpeciesName"];
         _numberCaught = [aDecoder decodeObjectForKey:@"CMASpeciesNumberCaught"];
+        _weightCaught = [aDecoder decodeObjectForKey:@"CMASpeciesWeightCaught"];
     }
     
     return self;
@@ -41,6 +43,7 @@
 - (void)encodeWithCoder:(NSCoder *)aCoder {
     [aCoder encodeObject:self.name forKey:@"CMASpeciesName"];
     [aCoder encodeObject:self.numberCaught forKey:@"CMASpeciesNumberCaught"];
+    [aCoder encodeObject:self.weightCaught forKey:@"CMASpeciesWeightCaught"];
 }
 
 #pragma mark - Editing
@@ -61,6 +64,20 @@
     count -= decBy;
     
     [self setNumberCaught:[NSNumber numberWithInteger:count]];
+}
+
+- (void)incWeightCaught: (NSInteger)incBy {
+    NSInteger count = [self.weightCaught integerValue];
+    count += incBy;
+    
+    [self setWeightCaught:[NSNumber numberWithInteger:count]];
+}
+
+- (void)decWeightCaught: (NSInteger)decBy {
+    NSInteger count = [self.weightCaught integerValue];
+    count -= decBy;
+    
+    [self setWeightCaught:[NSNumber numberWithInteger:count]];
 }
 
 @end

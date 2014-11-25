@@ -20,8 +20,10 @@
     if (self = [super init]) {
         _journal = aJournal;
         _totalFishCaught = [self initTotalFishCaught];
+        _totalFishWeight = [self initTotalFishWeight];
         _speciesCaughtStats = [self getSpeciesCaughtStats];
         _mostCaughtSpeciesIndex = [self initMostCaughtSpeciesIndex];
+        _mostWeightSpeciesIndex = [self initMostWeightSpeciesIndex];
     }
     
     return self;
@@ -48,30 +50,31 @@
     return [self.speciesCaughtStats count];
 }
 
-#pragma mark - Species Caught Stats
+#pragma mark - Species Stats
 
 // returns an array of CMASpeciesStats objects for the species that have > 0 numberCaught
 - (NSArray *)getSpeciesCaughtStats {
     NSMutableArray *result = [NSMutableArray array];
     
     for (CMASpecies *species in [[self.journal userDefineNamed:SET_SPECIES] objects]) {
-        if ([species.numberCaught integerValue] > 0) {
-            CMASpeciesStats *obj = [CMASpeciesStats new];
-            [obj setName:species.name];
-            [obj setNumberCaught:[species.numberCaught integerValue]];
-            [result addObject:obj];
-        }
+        CMASpeciesStats *obj = [CMASpeciesStats new];
+        [obj setName:species.name];
+        [obj setNumberCaught:[species.numberCaught integerValue]];
+        [obj setWeightCaught:[species.weightCaught integerValue]];
+        [result addObject:obj];
     }
     
-    return [self setSpeciesCaughtPercentages:result];
+    return [self setSpeciesPercentages:result];
 }
 
 // sets the percent of total fix caught for each CMASpeciesStats in anArray
-- (NSArray *)setSpeciesCaughtPercentages: (NSArray *)anArray {
+- (NSArray *)setSpeciesPercentages: (NSArray *)anArray {
     NSArray *result = [anArray copy];
     
-    for (CMASpeciesStats *s in result)
+    for (CMASpeciesStats *s in result) {
         [s setPercentOfTotalCaught:round((float)s.numberCaught / (float)self.totalFishCaught * 100.0f)];
+        [s setPercentOfTotalWeight:round((float)s.weightCaught / (float)self.totalFishWeight * 100.0f)];
+    }
     
     return result;
 }
@@ -96,6 +99,32 @@
     for (CMASpeciesStats *s in self.speciesCaughtStats) {
         if (s.numberCaught > highest) {
             highest = s.numberCaught;
+            result = i;
+        }
+        
+        i++;
+    }
+    
+    return result;
+}
+
+- (NSInteger)initTotalFishWeight {
+    NSInteger result = 0;
+    
+    for (CMASpecies *s in [[self.journal userDefineNamed:SET_SPECIES] objects])
+        result += [s.weightCaught integerValue];
+    
+    return result;
+}
+
+- (NSInteger)initMostWeightSpeciesIndex {
+    NSInteger highest = 0;
+    NSInteger result = 0;
+    int i = 0;
+    
+    for (CMASpeciesStats *s in self.speciesCaughtStats) {
+        if (s.weightCaught > highest) {
+            highest = s.weightCaught;
             result = i;
         }
         

@@ -12,6 +12,8 @@
 
 @property (strong, nonatomic)NSString *name;
 @property (nonatomic)NSInteger numberCaught;
+@property (nonatomic)NSInteger weightCaught;
 @property (nonatomic)NSInteger percentOfTotalCaught;
+@property (nonatomic)NSInteger percentOfTotalWeight;
 
 @end

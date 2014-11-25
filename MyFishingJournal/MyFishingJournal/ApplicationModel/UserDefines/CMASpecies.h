@@ -12,6 +12,7 @@
 
 @property (strong, nonatomic)NSString *name;
 @property (strong, nonatomic)NSNumber *numberCaught;
+@property (strong, nonatomic)NSNumber *weightCaught;
 
 // instance creation
 + (CMASpecies *)withName: (NSString *)aName;
@@ -27,5 +28,7 @@
 - (void)edit: (CMASpecies *)aNewSpecies;
 - (void)incNumberCaught: (NSInteger)incBy;
 - (void)decNumberCaught: (NSInteger)decBy;
+- (void)incWeightCaught: (NSInteger)incBy;
+- (void)decWeightCaught: (NSInteger)decBy;
 
 @end

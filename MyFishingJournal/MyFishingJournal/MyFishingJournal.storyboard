@@ -1376,7 +1376,7 @@
                                     </connections>
                                 </view>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="G0V-31-RvQ">
-                                    <rect key="frame" x="559" y="262" width="33" height="30"/>
+                                    <rect key="frame" x="559" y="270" width="33" height="30"/>
                                     <state key="normal" title="Total">
                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                     </state>
@@ -1387,15 +1387,42 @@
                             </subviews>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>
+                                <constraint firstItem="G0V-31-RvQ" firstAttribute="trailing" secondItem="eLE-Xl-OXn" secondAttribute="trailingMargin" id="OPU-m6-YrW"/>
                                 <constraint firstAttribute="centerY" secondItem="rWc-Mp-Ves" secondAttribute="centerY" id="Pee-7p-Hjw"/>
+                                <constraint firstAttribute="bottom" secondItem="G0V-31-RvQ" secondAttribute="bottom" id="ctM-WF-5Fh"/>
                                 <constraint firstAttribute="centerX" secondItem="rWc-Mp-Ves" secondAttribute="centerX" id="hba-Qz-NzK"/>
-                                <constraint firstAttribute="bottom" secondItem="G0V-31-RvQ" secondAttribute="bottom" constant="8" id="nvP-vM-Asn"/>
-                                <constraint firstAttribute="trailing" secondItem="G0V-31-RvQ" secondAttribute="trailing" constant="8" id="xzI-Vu-Eck"/>
                             </constraints>
                         </view>
                         <sections>
                             <tableViewSection id="Z3A-zI-04T">
-                                <cells/>
+                                <cells>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="Cfv-i5-EW0">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Cfv-i5-EW0" id="d6I-9b-rY0">
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="Bor-hE-GA1">
+                                                    <rect key="frame" x="8" y="8" width="584" height="29"/>
+                                                    <segments>
+                                                        <segment title="Caught"/>
+                                                        <segment title="Weight"/>
+                                                        <segment title="Bait"/>
+                                                        <segment title="Location"/>
+                                                    </segments>
+                                                    <connections>
+                                                        <action selector="changePieChartControl:" destination="BYv-3d-Jds" eventType="valueChanged" id="82D-mK-wDa"/>
+                                                    </connections>
+                                                </segmentedControl>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="Bor-hE-GA1" firstAttribute="top" secondItem="d6I-9b-rY0" secondAttribute="topMargin" id="C7M-Sa-w4R"/>
+                                                <constraint firstItem="Bor-hE-GA1" firstAttribute="trailing" secondItem="d6I-9b-rY0" secondAttribute="trailingMargin" id="OGZ-Nq-sz7"/>
+                                                <constraint firstItem="Bor-hE-GA1" firstAttribute="leading" secondItem="d6I-9b-rY0" secondAttribute="leadingMargin" id="zjN-33-EAo"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </cells>
                             </tableViewSection>
                         </sections>
                         <connections>
@@ -1410,6 +1437,7 @@
                     <connections>
                         <outlet property="chartView" destination="eLE-Xl-OXn" id="D4V-pm-yNh"/>
                         <outlet property="menuButton" destination="5AJ-OJ-g4m" id="vbR-KX-ZQs"/>
+                        <outlet property="piChartControl" destination="Bor-hE-GA1" id="NjF-Ov-02Q"/>
                         <outlet property="pieChartCaughtLabel" destination="EFH-ly-eEh" id="9Zj-6v-yUz"/>
                         <outlet property="pieChartCenterView" destination="rWc-Mp-Ves" id="FaE-5q-bB3"/>
                         <outlet property="pieChartPercentLabel" destination="nww-cN-0b9" id="ixa-6D-3n0"/>
@@ -1425,7 +1453,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="2018" y="1249"/>
+            <point key="canvasLocation" x="2018" y="1247"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="uHb-v9-W6m">
