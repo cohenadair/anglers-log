@@ -12,6 +12,8 @@
 #import "CMAViewBaitsViewController.h"
 #import "CMAAppDelegate.h"
 #import "CMAAlerts.h"
+#import "CMACameraButton.h"
+#import "CMACameraActionSheet.h"
 
 @interface CMAAddEntryViewController ()
 
@@ -33,9 +35,9 @@
 @property (weak, nonatomic)IBOutlet UILabel *lengthLabel;
 @property (weak, nonatomic)IBOutlet UILabel *weightLabel;
 
-@property (weak, nonatomic)IBOutlet UIImageView *cameraImage;
+@property (weak, nonatomic)IBOutlet CMACameraButton *cameraImage;
 
-@property (strong, nonatomic)UIActionSheet *cameraActionSheet;
+@property (strong, nonatomic)CMACameraActionSheet *cameraActionSheet;
 @property (strong, nonatomic)UIActionSheet *deleteImageActionSheet;
 
 @property (strong, nonatomic)NSDateFormatter *dateFormatter;
@@ -57,7 +59,7 @@ NSInteger const DATE_PICKER_ROW = 1;
 NSInteger const DATE_DISPLAY_SECTION = 0;
 NSInteger const DATE_DISPLAY_ROW = 0;
 
-NSInteger const IMAGES_HEIGHT = 160;
+NSInteger const IMAGES_HEIGHT = 150;
 NSInteger const IMAGES_SECTION = 2;
 
 NSInteger const IMAGE_VIEW_TAG = 100;
@@ -100,8 +102,9 @@ NSString *const NO_SELECT = @"Not Selected";
     if (self.isEditingEntry)
         [self initializeTableForEditing];
     
-    [self initCameraImage];
-    [self initCameraActionSheet];
+    self.cameraActionSheet = [CMACameraActionSheet withDelegate:self];
+    [self.cameraImage myInit:self action:@selector(tapCameraImage)];
+    
     [self initDeleteImageActionSheet];
 }
 
@@ -224,19 +227,6 @@ NSString *const NO_SELECT = @"Not Selected";
 
 #pragma mark - Text View Initializing
 
-- (void)initCameraImage {
-    // add tap gesture recognizer
-    UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(clickedCameraImage)];
-    singleTap.numberOfTapsRequired = 1;
-    [self.cameraImage setUserInteractionEnabled:YES];
-    [self.cameraImage addGestureRecognizer:singleTap];
-    
-    // add current tint
-    UIImage *image = [[UIImage imageNamed:@"camera.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    [self.cameraImage setImage:image];
-    [self.cameraImage setTintColor:[[[[UIApplication sharedApplication] delegate] window] tintColor]];
-}
-
 - (void)textViewDidBeginEditing:(UITextView *)textView {
     // clear the default "Notes" text
     if (!self.hasEditedNotesTextView) {
@@ -288,7 +278,7 @@ NSString *const NO_SELECT = @"Not Selected";
     [self.dateTimeDetailLabel setText:[self.dateFormatter stringFromDate:sender.date]];
 }
 
-- (void)clickedCameraImage {
+- (void)tapCameraImage {
     [self.cameraActionSheet showInView:self.view];
 }
 
@@ -302,10 +292,6 @@ NSString *const NO_SELECT = @"Not Selected";
 }
 
 #pragma mark - Action Sheets
-
-- (void)initCameraActionSheet {
-    self.cameraActionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Take Photo", @"Attach Photo", nil];
-}
 
 - (void)initDeleteImageActionSheet {
     self.deleteImageActionSheet = [[UIActionSheet alloc] initWithTitle:@"Are you sure you want to remove this photo (it will not be removed from your device)?" delegate:self cancelButtonTitle:@"No, keep it." destructiveButtonTitle:@"Yes, delete it." otherButtonTitles:nil];

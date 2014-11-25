@@ -311,22 +311,9 @@
 }
 
 - (IBAction)unwindToStatistics:(UIStoryboardSegue *)segue {
-    // set the detail label text after selecting an option from the Edit Settings view
     if ([segue.identifier isEqualToString:@"unwindToStatisticsFromUserDefines"]) {
         CMAUserDefinesViewController *source = [segue sourceViewController];
-        
-        NSInteger index = [self.journalStats speciesCaughtStatsIndexForName:source.selectedCellLabelText];
-        
-        if (index != -1) {
-            self.initialSelectedIndex = index;
-        } else {
-            self.pieChartPercentLabel.text = @"0%";
-            self.pieChartSpeciesLabel.text = source.selectedCellLabelText;
-            self.pieChartCaughtLabel.text = @"0 Caught";
-            
-            self.initialSelectedIndex = -1;
-        }
-        
+        self.initialSelectedIndex = [self.journalStats speciesCaughtStatsIndexForName:source.selectedCellLabelText]; // this property is used in viewWillAppear
         source.previousViewID = CMAViewControllerID_Nil;
     }
 }
