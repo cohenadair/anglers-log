@@ -77,12 +77,27 @@
         return NO;
     }
     
+    // increment species caught
+    if ([anEntry.fishQuantity integerValue] > 0)
+        [anEntry.fishSpecies incNumberCaught:[anEntry.fishQuantity integerValue]];
+    else
+        [anEntry.fishSpecies incNumberCaught:1];
+    
     [self.entries addObject:anEntry];
     [self sortEntriesBy:self.entrySortMethod order:self.entrySortOrder];
+    
     return YES;
 }
 
 - (void)removeEntryDated: (NSDate *)aDate {
+    CMAEntry *entry = [self entryDated:aDate];
+    
+    // increment species caught
+    if ([entry.fishQuantity integerValue] > 0)
+        [entry.fishSpecies decNumberCaught:[entry.fishQuantity integerValue]];
+    else
+        [entry.fishSpecies decNumberCaught:1];
+    
     [self.entries removeObject:[self entryDated:aDate]];
 }
 

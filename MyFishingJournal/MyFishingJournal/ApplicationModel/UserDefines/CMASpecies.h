@@ -11,6 +11,7 @@
 @interface CMASpecies : NSObject <NSCoding>
 
 @property (strong, nonatomic)NSString *name;
+@property (strong, nonatomic)NSNumber *numberCaught;
 
 // instance creation
 + (CMASpecies *)withName: (NSString *)aName;
@@ -24,5 +25,7 @@
 
 // editing
 - (void)edit: (CMASpecies *)aNewSpecies;
+- (void)incNumberCaught: (NSInteger)incBy;
+- (void)decNumberCaught: (NSInteger)decBy;
 
 @end

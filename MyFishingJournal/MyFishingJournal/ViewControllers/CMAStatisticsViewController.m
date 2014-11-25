@@ -10,23 +10,26 @@
 #import "CMAUserDefinesViewController.h"
 #import "CMANoXView.h"
 #import "CMAAppDelegate.h"
+#import "CMAJournalStats.h"
 #import "SWRevealViewController.h"
 
 @interface CMAStatisticsViewController ()
 
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *menuButton;
+
 @property (weak, nonatomic) IBOutlet UIView *chartView;
-@property (weak, nonatomic) IBOutlet UILabel *selectSpeciesLabel;
-@property (weak, nonatomic) IBOutlet UILabel *selectSpeciesDetailLabel;
+@property (weak, nonatomic) IBOutlet UIView *pieChartCenterView;
+@property (weak, nonatomic) IBOutlet UILabel *pieChartPercentLabel;
+@property (weak, nonatomic) IBOutlet UILabel *pieChartSpeciesLabel;
+@property (weak, nonatomic) IBOutlet UILabel *pieChartCaughtLabel;
+@property (weak, nonatomic) IBOutlet UIButton *totalButton;
 
 @property (strong, nonatomic) CMANoXView *noStatsView;
 @property (strong, nonatomic) XYPieChart *pieChart;
-@property (strong, nonatomic) NSDictionary *speciesDictionary;
-@property (strong, nonatomic) NSArray *speciesKeys;
 @property (strong, nonatomic) NSMutableArray *colorsArray;
-@property (strong, nonatomic) NSString *initialSelectedKey; // used to select the slice displyed in the UITableViewCell
-@property (nonatomic) NSInteger initialSelectedIndex; // used to deselect initially selected slice
-@property (nonatomic) BOOL didUnwind;
+@property (strong, nonatomic) CMAJournalStats *journalStats;
+
+@property (nonatomic) NSInteger initialSelectedIndex;
 
 @end
 
@@ -75,11 +78,14 @@
     [self handleNoStatsView];
     
     if ([[self journal] entryCount] > 0) {
-        self.speciesDictionary = [self setSpeciesCounts];
-        self.speciesKeys = [self.speciesDictionary allKeys];
+        [self setJournalStats:[CMAJournalStats withJournal:[self journal]]];
         [self initColorsArray];
-        
         [self initChartView];
+        [self setInitialSelectedIndex:self.journalStats.mostCaughtSpeciesIndex];
+        
+        [self.pieChartCenterView.layer setCornerRadius:self.pieChartCenterView.frame.size.height / 2];
+        [self.chartView bringSubviewToFront:self.pieChartCenterView];
+        [self.chartView bringSubviewToFront:self.totalButton];
     }
     
     [self.tableView setTableFooterView:[[UIView alloc] initWithFrame:CGRectZero]]; // removes empty cells at the end of the list
@@ -91,47 +97,36 @@
     
     [self.pieChart reloadData];
     
-    if (self.initialSelectedKey != nil)
-        [self selectPieChartSliceForKey:self.initialSelectedKey];
-    
-    if (!self.didUnwind)
-        self.didUnwind = NO;
+    if (self.initialSelectedIndex != -1)
+        [self selectPieChartSliceAtIndex:self.initialSelectedIndex];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-#pragma mark - Table View Initializing
-
-- (NSString *)speciesLabelForIndex:(NSInteger)anIndex {
-    return [NSString stringWithFormat:@"%@ Caught", [self.speciesKeys objectAtIndex:anIndex]];
-}
-
-- (NSString *)speciesCountLabelForIndex:(NSInteger)anIndex {
-    return [[self.speciesDictionary objectForKey:[self.speciesKeys objectAtIndex:anIndex]] stringValue];
 }
 
 #pragma mark - Chart View Initializing
 
-- (NSInteger)sliceIndexForKey:(NSString *)aKey {
-    for (NSInteger i = 0; i < [self.speciesKeys count]; i++)
-        if ([self.speciesKeys[i] isEqualToString:aKey])
-            return i;
-    
-    return -1;
+- (NSString *)speciesNameLabelForIndex:(NSInteger)anIndex {
+    return [NSString stringWithFormat:@"%@", [[self.journalStats speciesStatsAtIndex:anIndex] name]];
+}
+
+- (NSString *)speciesCaughtLabelForIndex:(NSInteger)anIndex {
+    return [NSString stringWithFormat:@"%ld Caught", [[self.journalStats speciesStatsAtIndex:anIndex] numberCaught]];
+}
+
+- (NSString *)speciesPercentLabelForIndex:(NSInteger)anIndex {
+    return [NSString stringWithFormat:@"%ld%%", [[self.journalStats speciesStatsAtIndex:anIndex] percentOfTotalCaught]];
 }
 
 - (void)selectPieChartSliceAtIndex:(NSInteger)anIndex {
     [self.pieChart setSliceSelectedAtIndex:anIndex];
-    self.selectSpeciesLabel.text = [self speciesLabelForIndex:anIndex];
-    self.selectSpeciesDetailLabel.text = [self speciesCountLabelForIndex:anIndex];
+    
+    self.pieChartPercentLabel.text = [self speciesPercentLabelForIndex:anIndex];
+    self.pieChartSpeciesLabel.text = [self speciesNameLabelForIndex:anIndex];
+    self.pieChartCaughtLabel.text = [self speciesCaughtLabelForIndex:anIndex];
+    
     self.initialSelectedIndex = anIndex;
-}
-
-- (void)selectPieChartSliceForKey:(NSString *)aKey {
-    [self selectPieChartSliceAtIndex:[self sliceIndexForKey:aKey]];
 }
 
 - (void)initColorsArray {
@@ -140,9 +135,9 @@
     float INCREMENT = 0.05;
     for (float hue = 0.0; hue < 1.0; hue += INCREMENT) {
         UIColor *color = [UIColor colorWithHue:hue
-                                    saturation:1.0
+                                    saturation:0.5
                                     brightness:1.0
-                                         alpha:0.5];
+                                         alpha:1.0];
         [colors addObject:color];
     }
     
@@ -156,57 +151,16 @@
     
     self.colorsArray = [NSMutableArray array];
     NSInteger colorsIndex = 0;
-    NSInteger keyIndex = 0;
+    NSInteger speciesIndex = 0;
     
-    for (keyIndex = 0; keyIndex < [self.speciesKeys count]; keyIndex++) {
+    // cycle through "colors" until there's a color for every species
+    for (speciesIndex = 0; speciesIndex < [self.journalStats speciesCaughtStatsCount]; speciesIndex++) {
         [self.colorsArray addObject:[colors objectAtIndex:colorsIndex]];
         
         colorsIndex++;
         if (colorsIndex == [colors count])
             colorsIndex = 0;
     }
-}
-
-- (NSDictionary *)setSpeciesCounts {
-    NSArray *allEntries = [[self journal] entries];
-    NSArray *allSpecies = [[[self journal] userDefineNamed:SET_SPECIES] objects];
-    NSMutableDictionary *allSpeciesCounts = [NSMutableDictionary dictionary];
-    NSMutableDictionary *result = [NSMutableDictionary dictionary];
-    
-    // initialize a dictionary will all species names with value of 0
-    for (CMASpecies *species in allSpecies)
-        [allSpeciesCounts setObject:[NSNumber numberWithInteger:0] forKey:species.name];
-    
-    // count number of catches by iterating through the journal's entries
-    for (CMAEntry *entry in allEntries) {
-        NSInteger oldCount = [[allSpeciesCounts objectForKey:entry.fishSpecies.name] integerValue];
-        
-        NSInteger temp = 0;
-        if ([entry.fishQuantity integerValue] <= 0)
-            temp = 1;
-        else
-            temp = [entry.fishQuantity integerValue];
-        
-        NSNumber *newCount = [NSNumber numberWithInteger:oldCount + temp];
-        [allSpeciesCounts setObject:newCount forKey:entry.fishSpecies.name];
-    }
-    
-    NSInteger highest = 0;
-    
-    // get species that only have more that 0 catches
-    for (NSString *key in allSpeciesCounts) {
-        NSInteger c = [[allSpeciesCounts objectForKey:key] integerValue];
-        
-        if (c > 0)
-            [result setObject:[NSNumber numberWithInteger:c] forKey:key];
-        
-        if (c > highest) {
-            highest = c;
-            self.initialSelectedKey = key;
-        }
-    }
-    
-    return result;
 }
 
 #define CHART_RADUIS 125
@@ -232,11 +186,11 @@
 }
 
 - (NSUInteger)numberOfSlicesInPieChart:(XYPieChart *)pieChart {
-    return [self.speciesKeys count];
+    return [self.journalStats.speciesCaughtStats count];
 }
 
 - (CGFloat)pieChart:(XYPieChart *)pieChart valueForSliceAtIndex:(NSUInteger)index {
-    return [[self.speciesDictionary objectForKey:[self.speciesKeys objectAtIndex:index]] floatValue];
+    return [[self.journalStats speciesStatsAtIndex:index] numberCaught];
 }
 
 - (UIColor *)pieChart:(XYPieChart *)pieChart colorForSliceAtIndex:(NSUInteger)index {
@@ -244,7 +198,7 @@
 }
 
 - (NSString *)pieChart:(XYPieChart *)pieChart textForSliceAtIndex:(NSUInteger)index {
-    return [self.speciesKeys objectAtIndex:index];
+    return [[self.journalStats speciesStatsAtIndex:index] name];
 }
 
 - (void)pieChart:(XYPieChart *)pieChart didSelectSliceAtIndex:(NSUInteger)index {
@@ -253,8 +207,29 @@
         self.initialSelectedIndex = -1;
     }
     
-    self.selectSpeciesLabel.text = [self speciesLabelForIndex:index];
-    self.selectSpeciesDetailLabel.text = [self speciesCountLabelForIndex:index];
+    self.pieChartPercentLabel.text = [self speciesPercentLabelForIndex:index];
+    self.pieChartSpeciesLabel.text = [self speciesNameLabelForIndex:index];
+    self.pieChartCaughtLabel.text = [self speciesCaughtLabelForIndex:index];
+}
+
+#pragma mark - Events
+
+- (IBAction)tapPieChartCenter:(UITapGestureRecognizer *)sender {
+    [self performSegueWithIdentifier:@"fromStatisticsToUserDefines" sender:self];
+}
+
+- (IBAction)tapTotalButton:(UIButton *)sender {
+    [self.pieChart reloadData];
+    
+    self.pieChartPercentLabel.text = [NSString stringWithFormat:@"%ld", self.journalStats.totalFishCaught];
+    self.pieChartSpeciesLabel.text = @"Total Fish Caught";
+    
+    // get the earliest entry date
+    NSDate *earliestDate = [self.journalStats earliestEntryDate];
+    NSDateFormatter *dateFormatter = [NSDateFormatter new];
+    [dateFormatter setDateFormat:@"MM/dd/yyyy"];
+    
+    self.pieChartCaughtLabel.text = [NSString stringWithFormat:@"Since %@", [dateFormatter stringFromDate:earliestDate]];
 }
 
 #pragma mark - Navigation
@@ -273,15 +248,15 @@
     if ([segue.identifier isEqualToString:@"unwindToStatisticsFromUserDefines"]) {
         CMAUserDefinesViewController *source = [segue sourceViewController];
         
-        NSInteger index = [self sliceIndexForKey:source.selectedCellLabelText];
+        NSInteger index = [self.journalStats speciesCaughtStatsIndexForName:source.selectedCellLabelText];
         
         if (index != -1) {
-            self.initialSelectedKey = source.selectedCellLabelText;
-            self.didUnwind = YES;
+            self.initialSelectedIndex = index;
         } else {
-            self.initialSelectedKey = nil;
-            self.selectSpeciesLabel.text = source.selectedCellLabelText;
-            self.selectSpeciesDetailLabel.text = @"0";
+            self.pieChartPercentLabel.text = @"0%";
+            self.pieChartSpeciesLabel.text = source.selectedCellLabelText;
+            self.pieChartCaughtLabel.text = @"0 Caught";
+            
             self.initialSelectedIndex = -1;
         }
         

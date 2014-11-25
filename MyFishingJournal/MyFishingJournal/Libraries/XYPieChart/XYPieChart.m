@@ -103,7 +103,7 @@
     NSMutableArray *_animations;
 }
 
-static NSUInteger kDefaultSliceZOrder = 100;
+//static NSUInteger kDefaultSliceZOrder = 100;
 
 @synthesize dataSource = _dataSource;
 @synthesize delegate = _delegate;
@@ -402,7 +402,7 @@ static CGPathRef CGPathCreateArc(CGPoint center, CGFloat radius, CGFloat startAn
         {
             [layer setFillColor:[self backgroundColor].CGColor];
             [layer setDelegate:nil];
-            [layer setZPosition:0];
+            //[layer setZPosition:0];
             CATextLayer *textLayer = [[layer sublayers] objectAtIndex:0];
             [textLayer setHidden:YES];
         }
@@ -413,10 +413,12 @@ static CGPathRef CGPathCreateArc(CGPoint center, CGFloat radius, CGFloat startAn
         
         [layersToRemove removeAllObjects];
         
+        /*
         for(SliceLayer *layer in _pieView.layer.sublayers)
         {
             [layer setZPosition:kDefaultSliceZOrder];
         }
+        */
         
         [_pieView setUserInteractionEnabled:YES];
         
@@ -494,14 +496,14 @@ static CGPathRef CGPathCreateArc(CGPoint center, CGFloat radius, CGFloat startAn
         CGPathRef path = [pieLayer path];
         
         if (CGPathContainsPoint(path, &transform, point, 0)) {
-            [pieLayer setLineWidth:_selectedSliceStroke];
-            [pieLayer setStrokeColor:[UIColor whiteColor].CGColor];
-            [pieLayer setLineJoin:kCALineJoinBevel];
-            [pieLayer setZPosition:MAXFLOAT];
+            //[pieLayer setLineWidth:_selectedSliceStroke];
+            //[pieLayer setStrokeColor:[UIColor whiteColor].CGColor];
+            //[pieLayer setLineJoin:kCALineJoinBevel];
+            //[pieLayer setZPosition:0.0];
             selectedIndex = idx;
         } else {
-            [pieLayer setZPosition:kDefaultSliceZOrder];
-            [pieLayer setLineWidth:0.0];
+            //[pieLayer setZPosition:kDefaultSliceZOrder];
+            //[pieLayer setLineWidth:0.0];
         }
     }];
     return selectedIndex;
@@ -534,7 +536,7 @@ static CGPathRef CGPathCreateArc(CGPoint center, CGFloat radius, CGFloat startAn
     NSArray *pieLayers = [parentLayer sublayers];
     
     for (SliceLayer *pieLayer in pieLayers) {
-        [pieLayer setZPosition:kDefaultSliceZOrder];
+        //[pieLayer setZPosition:kDefaultSliceZOrder];
         [pieLayer setLineWidth:0.0];
     }
 }
@@ -551,7 +553,8 @@ static CGPathRef CGPathCreateArc(CGPoint center, CGFloat radius, CGFloat startAn
             NSUInteger tempPre = previousSelection;
             if ([_delegate respondsToSelector:@selector(pieChart:willDeselectSliceAtIndex:)])
                 [_delegate pieChart:self willDeselectSliceAtIndex:tempPre];
-            [self setSliceDeselectedAtIndex:tempPre];
+            if (newSelection != -1)
+                [self setSliceDeselectedAtIndex:tempPre];
             previousSelection = newSelection;
             if([_delegate respondsToSelector:@selector(pieChart:didDeselectSliceAtIndex:)])
                 [_delegate pieChart:self didDeselectSliceAtIndex:tempPre];
@@ -565,6 +568,8 @@ static CGPathRef CGPathCreateArc(CGPoint center, CGFloat radius, CGFloat startAn
             if([_delegate respondsToSelector:@selector(pieChart:didSelectSliceAtIndex:)])
                 [_delegate pieChart:self didSelectSliceAtIndex:newSelection];
         }
+        
+    // if newSelection == previousSelection
     }else if (newSelection != -1){
         SliceLayer *layer = [_pieView.layer.sublayers objectAtIndex:newSelection];
         if(_selectedSliceOffsetRadius > 0 && layer){
@@ -594,10 +599,19 @@ static CGPathRef CGPathCreateArc(CGPoint center, CGFloat radius, CGFloat startAn
         return;
     SliceLayer *layer = [_pieView.layer.sublayers objectAtIndex:index];
     if (layer && !layer.isSelected) {
-        CGPoint currPos = layer.position;
+        // bevel
+        /*CGPoint currPos = layer.position;
         double middleAngle = (layer.startAngle + layer.endAngle)/2.0;
         CGPoint newPos = CGPointMake(currPos.x + _selectedSliceOffsetRadius*cos(middleAngle), currPos.y + _selectedSliceOffsetRadius*sin(middleAngle));
-        layer.position = newPos;
+        layer.position = newPos;*/
+        
+        // shadow
+        [layer setShadowColor:[UIColor blackColor].CGColor];
+        [layer setShadowOpacity:0.8];
+        [layer setShadowRadius:5.0];
+        [layer setShadowOffset:CGSizeMake(0.0, 0.0)];
+        
+        [layer setZPosition:10000.0];
         layer.isSelected = YES;
     }
     _selectedSliceIndex = index;
@@ -609,7 +623,9 @@ static CGPathRef CGPathCreateArc(CGPoint center, CGFloat radius, CGFloat startAn
         return;
     SliceLayer *layer = [_pieView.layer.sublayers objectAtIndex:index];
     if (layer && layer.isSelected) {
-        layer.position = CGPointMake(0, 0);
+        //layer.position = CGPointMake(0, 0);
+        [layer setShadowOpacity:0.0];
+        [layer setZPosition:0];
         layer.isSelected = NO;
     }
 }
