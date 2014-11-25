@@ -154,6 +154,25 @@
     self.pieChartCaughtLabel.text = [labelTexts objectAtIndex:2];
 }
 
+- (void)updatePieCenterLabelsForTotal {
+    if (self.pieChartType == kPieChartTypeCaught) {
+        self.pieChartPercentLabel.text = [NSString stringWithFormat:@"%ld", self.journalStats.totalFishCaught];
+        self.pieChartSpeciesLabel.text = @"Total Fish Caught";
+    }
+    
+    if (self.pieChartType == kPieChartTypeWeight) {
+        self.pieChartPercentLabel.text = [NSString stringWithFormat:@"%ld", self.journalStats.totalFishWeight];
+        self.pieChartSpeciesLabel.text = [NSString stringWithFormat:@"%@ Caught", [[self journal] weightUnitsAsString:NO]];
+    }
+    
+    // get the earliest entry date
+    NSDate *earliestDate = [self.journalStats earliestEntryDate];
+    NSDateFormatter *dateFormatter = [NSDateFormatter new];
+    [dateFormatter setDateFormat:@"MM/dd/yyyy"];
+    
+    self.pieChartCaughtLabel.text = [NSString stringWithFormat:@"Since %@", [dateFormatter stringFromDate:earliestDate]];
+}
+
 - (void)selectPieChartSliceAtIndex:(NSInteger)anIndex {
     [self.pieChart setSliceSelectedAtIndex:anIndex];
     [self updatePieCenterLabelsForIndex:anIndex];
@@ -271,16 +290,7 @@
 
 - (IBAction)tapTotalButton:(UIButton *)sender {
     [self.pieChart reloadData];
-    
-    self.pieChartPercentLabel.text = [NSString stringWithFormat:@"%ld", self.journalStats.totalFishCaught];
-    self.pieChartSpeciesLabel.text = @"Total Fish Caught";
-    
-    // get the earliest entry date
-    NSDate *earliestDate = [self.journalStats earliestEntryDate];
-    NSDateFormatter *dateFormatter = [NSDateFormatter new];
-    [dateFormatter setDateFormat:@"MM/dd/yyyy"];
-    
-    self.pieChartCaughtLabel.text = [NSString stringWithFormat:@"Since %@", [dateFormatter stringFromDate:earliestDate]];
+    [self updatePieCenterLabelsForTotal];
 }
 
 - (IBAction)changePieChartControl:(UISegmentedControl *)sender {
