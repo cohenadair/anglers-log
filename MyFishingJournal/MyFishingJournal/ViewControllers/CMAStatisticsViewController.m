@@ -238,6 +238,7 @@
     if (sender.selectedSegmentIndex == CMAPieChartDataTypeLocation)
         self.stats = [CMAStats forLocationWithJournal:[self journal]];
     
+    [self initColorsArray];
     [self.pieChart reloadData];
     [self selectPieChartSliceAtIndex:[self.stats highestValueIndex]];
 }
