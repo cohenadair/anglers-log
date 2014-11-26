@@ -190,7 +190,7 @@
     
     [aBait setName:[self.nameTextField.text mutableCopy]];
     
-    if ([self.descriptionTextView.text isEqualToString:@"Description"])
+    if ([self.descriptionTextView.text isEqualToString:@"Description."])
         [aBait setBaitDescription:nil];
     else
         [aBait setBaitDescription:self.descriptionTextView.text];

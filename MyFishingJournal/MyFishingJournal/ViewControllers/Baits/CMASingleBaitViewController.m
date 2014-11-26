@@ -15,8 +15,11 @@
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;
 @property (weak, nonatomic) IBOutlet UILabel *baitNameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *baitDescriptionLabel;
+@property (weak, nonatomic) IBOutlet UILabel *baitFishCaughtLabel;
 
 @end
+
+#define kDefaultCellHeight 30
 
 @implementation CMASingleBaitViewController
 
@@ -41,36 +44,32 @@
         if (self.bait.image)
             return self.tableView.frame.size.width;
         else
-            return 0;
+            return 10;
     }
     
-    if (indexPath.row == 1 && !self.bait.name)
-        return 0;
-    
     if (indexPath.row == 2) {
-        if (!self.bait.description)
-            return 0;
-        else {
-            NSDictionary *attributes = @{NSFontAttributeName: [UIFont fontWithName:GLOBAL_FONT size:17]};
+        if (self.bait.description) {
+            NSDictionary *attributes = @{NSFontAttributeName: [UIFont fontWithName:GLOBAL_FONT size:16]};
             CGRect rect = [self.bait.baitDescription boundingRectWithSize:CGSizeMake(self.tableView.frame.size.width, CGFLOAT_MAX)
                                                                   options:NSStringDrawingUsesLineFragmentOrigin
                                                                attributes:attributes
                                                                   context:nil];
-            return rect.size.height;
+            
+            if (rect.size.height > kDefaultCellHeight)
+                return rect.size.height + 20;
         }
     }
-
-    return [super tableView:tableView heightForRowAtIndexPath:indexPath];
+    
+    return kDefaultCellHeight;
 }
 
 - (void)initTableView {
+    [self.navigationItem setTitle:self.bait.name];
     [self.imageView setImage:self.bait.image];
-    [self.baitNameLabel setText:self.bait.name];
+    [self.baitFishCaughtLabel setText:[self.bait.fishCaught stringValue]];
     
     if (self.bait.baitDescription)
         [self.baitDescriptionLabel setText:self.bait.baitDescription];
-    else
-        [self.baitDescriptionLabel setText:@"No description provided."];
 }
 
 #pragma mark - Navigation

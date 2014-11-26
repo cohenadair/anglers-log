@@ -120,6 +120,7 @@
         [cell.thumbImage setImage:[UIImage imageNamed:@"no-image.png"]];
     
     [cell.nameLabel setText:bait.name];
+    [cell.fishCaughtLabel setText:[NSString stringWithFormat:@"%@ Fish Caught", [bait.fishCaught stringValue]]];
     
     if (self.isSelectingForAddEntry || self.isSelectingForStatistics)
         [cell setAccessoryType:UITableViewCellAccessoryNone];

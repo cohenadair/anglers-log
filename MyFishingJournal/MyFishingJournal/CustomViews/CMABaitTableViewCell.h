@@ -11,6 +11,7 @@
 @interface CMABaitTableViewCell : UITableViewCell
 
 @property (weak, nonatomic) IBOutlet UILabel *nameLabel;
+@property (weak, nonatomic) IBOutlet UILabel *fishCaughtLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *thumbImage;
 
 @end

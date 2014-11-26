@@ -85,7 +85,6 @@
         [self initChartView];
         [self setInitialSelectedIndex:[self.stats highestValueIndex]];
         
-        [self.pieChartCenterView.layer setCornerRadius:self.pieChartCenterView.frame.size.height / 2];
         [self.chartView bringSubviewToFront:self.pieChartCenterView];
         [self.chartView bringSubviewToFront:self.totalButton];
     }
@@ -168,11 +167,13 @@
 }
 
 - (void)initChartView {
-    NSInteger chartRadius = 125;
-    NSInteger chartHeight = 290;
-    NSInteger chartWidth  = 270;
+    CGFloat screenWidth = self.view.frame.size.width;
     
-    CGRect frame = CGRectMake((self.view.frame.size.width - chartWidth) / 2, 0, chartWidth, chartHeight);
+    NSInteger chartRadius = screenWidth * 0.40;
+    NSInteger chartViewHeight = screenWidth * 0.90;
+    NSInteger chartViewWidth  = screenWidth * 0.85;
+    
+    CGRect frame = CGRectMake((screenWidth - chartViewWidth) / 2, 0, chartViewWidth, chartViewHeight);
     CGPoint center = CGPointMake(frame.size.width / 2, (frame.size.height / 2));
     self.pieChart = [[XYPieChart alloc] initWithFrame:frame Center:center Radius:chartRadius];
     
@@ -186,6 +187,8 @@
     
     [self.chartView setFrame:frame];
     [self.chartView addSubview:self.pieChart];
+    
+    [self.pieChartCenterView.layer setCornerRadius:self.pieChartCenterView.frame.size.width / 2];
 }
 
 - (NSUInteger)numberOfSlicesInPieChart:(XYPieChart *)pieChart {
