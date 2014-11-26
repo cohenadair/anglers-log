@@ -102,6 +102,12 @@
         else
             [anEntry.baitUsed incFishCaught:1];
     }
+    
+    // location
+    if ([anEntry.fishQuantity integerValue] > 0)
+        [anEntry.fishingSpot incFishCaught:[anEntry.fishQuantity integerValue]];
+    else
+        [anEntry.fishingSpot incFishCaught:1];
 }
 
 - (void)removeEntryDated: (NSDate *)aDate {
@@ -129,6 +135,12 @@
         else
             [anEntry.baitUsed decFishCaught:1];
     }
+    
+    // location
+    if ([anEntry.fishQuantity integerValue] > 0)
+        [anEntry.fishingSpot decFishCaught:[anEntry.fishQuantity integerValue]];
+    else
+        [anEntry.fishingSpot decFishCaught:1];
 }
 
 // removes entry with aDate and adds aNewEntry

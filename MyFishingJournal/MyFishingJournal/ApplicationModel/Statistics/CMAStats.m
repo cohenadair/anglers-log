@@ -98,7 +98,21 @@
 }
 
 - (void)initForLocation {
+    NSMutableArray *result = [NSMutableArray array];
     
+    for (CMALocation *loc in [[self.journal userDefineNamed:SET_LOCATIONS] objects]) {
+        CMAStatsObject *obj = [CMAStatsObject new];
+        
+        for (CMAFishingSpot *spot in loc.fishingSpots)
+            obj.value += [spot.fishCaught integerValue];
+        
+        [obj setName:loc.name];
+        self.totalValue += obj.value;
+        
+        [result addObject:obj];
+    }
+    
+    self.sliceObjects = result;
 }
 
 - (void)initForBait {

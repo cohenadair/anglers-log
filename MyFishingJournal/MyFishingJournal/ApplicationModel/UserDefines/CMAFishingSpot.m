@@ -42,6 +42,7 @@
     if (self = [super init]) {
         _name = [aDecoder decodeObjectForKey:@"CMAFishingSpotName"];
         _location = [aDecoder decodeObjectForKey:@"CMAFishingSpotLocation"];
+        _fishCaught = [aDecoder decodeObjectForKey:@"CMAFishingSpotFishCaught"];
     }
     
     return self;
@@ -50,6 +51,7 @@
 - (void)encodeWithCoder:(NSCoder *)aCoder {
     [aCoder encodeObject:self.name forKey:@"CMAFishingSpotName"];
     [aCoder encodeObject:self.location forKey:@"CMAFishingSpotLocation"];
+    [aCoder encodeObject:self.fishCaught forKey:@"CMAFishingSpotFishCaught"];
 }
 
 #pragma mark - Editing
@@ -66,6 +68,20 @@
 - (void)edit: (CMAFishingSpot *)aNewFishingSpot {
     self.name = [[aNewFishingSpot.name capitalizedString] mutableCopy];
     self.location = aNewFishingSpot.location;
+}
+
+- (void)incFishCaught: (NSInteger)incBy {
+    NSInteger count = [self.fishCaught integerValue];
+    count += incBy;
+    
+    [self setFishCaught:[NSNumber numberWithInteger:count]];
+}
+
+- (void)decFishCaught: (NSInteger)decBy {
+    NSInteger count = [self.fishCaught integerValue];
+    count -= decBy;
+    
+    [self setFishCaught:[NSNumber numberWithInteger:count]];
 }
 
 #pragma mark - Accessing

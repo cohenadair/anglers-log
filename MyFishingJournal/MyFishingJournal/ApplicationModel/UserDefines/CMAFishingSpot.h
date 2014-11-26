@@ -13,6 +13,7 @@
 
 @property (strong, nonatomic)NSMutableString *name;
 @property (strong, nonatomic)CLLocation *location;
+@property (strong, nonatomic)NSNumber *fishCaught;
 
 // instance creation
 + (CMAFishingSpot *)withName: (NSString *)aName;
@@ -27,6 +28,8 @@
 // editing
 - (void)setCoordinates: (CLLocationCoordinate2D)coordinates;
 - (void)edit: (CMAFishingSpot *)aNewFishingSpot;
+- (void)incFishCaught: (NSInteger)incBy;
+- (void)decFishCaught: (NSInteger)decBy;
 
 // accessing
 - (CLLocationCoordinate2D)coordinate;
