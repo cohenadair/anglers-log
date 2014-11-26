@@ -37,7 +37,7 @@
         _name = [aDecoder decodeObjectForKey:@"CMABaitName"];
         _baitDescription = [aDecoder decodeObjectForKey:@"CMABaitDescription"];
         _image = [aDecoder decodeObjectForKey:@"CMABaitImage"];
-        //_fishCaught = [aDecoder decodeObjectForKey:@"CMABaitFishCaught"];
+        _fishCaught = [aDecoder decodeObjectForKey:@"CMABaitFishCaught"];
     }
     
     return self;
@@ -47,7 +47,7 @@
     [aCoder encodeObject:self.name forKey:@"CMABaitName"];
     [aCoder encodeObject:self.baitDescription forKey:@"CMABaitDescription"];
     [aCoder encodeObject:self.image forKey:@"CMABaitImage"];
-    //[aCoder encodeObject:self.fishCaught forKey:@"CMABaitFishCaught"];
+    [aCoder encodeObject:self.fishCaught forKey:@"CMABaitFishCaught"];
 }
 
 #pragma mark - Editing
