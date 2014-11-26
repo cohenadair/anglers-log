@@ -64,7 +64,7 @@ NSInteger const SECTION_FISHING_SPOT = 1;
 
 #pragma mark - Table View Initializing
 
-- (NSIndexPath *)indexPathForLabelText:(NSString *)textLabelText {
+- (NSIndexPath *)indexPathForName:(NSString *)textLabelText {
     NSIndexPath *result = nil;
     
     for (int i = 0; i < [self.tableView numberOfRowsInSection:SECTION_FISHING_SPOT]; i++) {
@@ -141,7 +141,7 @@ NSInteger const SECTION_FISHING_SPOT = 1;
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     // unwind to Add Entry view after selecting a fishing spot
     if (indexPath.section == SECTION_FISHING_SPOT && self.isSelectingForAddEntry) {
-        self.addEntryLabelText = [NSString stringWithFormat:@"%@%@%@", [self.location name], TOKEN_LOCATION, [[[self.tableView cellForRowAtIndexPath:indexPath] textLabel] text]];
+        self.addEntryLabelText = [NSString stringWithFormat:@"%@%@%@", [self.location name], TOKEN_LOCATION, [[self.tableView cellForRowAtIndexPath:indexPath] textLabel].text];
         [self performSegueWithIdentifier:@"unwindToAddEntryFromSingleLocation" sender:self];
     }
     
@@ -200,10 +200,11 @@ NSInteger const SECTION_FISHING_SPOT = 1;
 
 // Adds an annotation to the map for each fishing spot in the location.
 - (void)addFishingSpotsToMap: (MKMapView *)mapView {
-    for (int i = 0; i < [self.location.fishingSpots count]; i++) {
+    for (CMAFishingSpot *spot in self.location.fishingSpots) {
         MKPointAnnotation *p = [MKPointAnnotation new];
-        [p setCoordinate:[self.location.fishingSpots[i] coordinate]];
-        [p setTitle:[self.location.fishingSpots[i] name]];
+        [p setCoordinate:spot.coordinate];
+        [p setTitle:spot.name];
+        [p setSubtitle:[NSString stringWithFormat:@"%@ Fish Caught", [spot.fishCaught stringValue]]];
         
         [mapView addAnnotation:p];
     }
@@ -224,7 +225,7 @@ NSInteger const SECTION_FISHING_SPOT = 1;
 }
 
 - (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view {
-    [self.tableView selectRowAtIndexPath:[self indexPathForLabelText:view.annotation.title] animated:YES scrollPosition:UITableViewScrollPositionNone];
+    [self.tableView selectRowAtIndexPath:[self indexPathForName:view.annotation.title] animated:YES scrollPosition:UITableViewScrollPositionNone];
 }
 
 - (void)initializeMapView {

@@ -272,7 +272,7 @@
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="c4R-x4-kUD" id="2LQ-3k-oks">
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <mapView hidden="YES" clipsSubviews="YES" multipleTouchEnabled="YES" tag="100" contentMode="scaleToFill" mapType="standard" zoomEnabled="NO" scrollEnabled="NO" rotateEnabled="NO" pitchEnabled="NO" showsPointsOfInterest="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nmb-S3-Ku0">
+                                        <mapView hidden="YES" clipsSubviews="YES" multipleTouchEnabled="YES" tag="100" contentMode="scaleToFill" mapType="standard" rotateEnabled="NO" pitchEnabled="NO" showsUserLocation="YES" showsPointsOfInterest="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nmb-S3-Ku0">
                                             <rect key="frame" x="0.0" y="-1" width="600" height="216"/>
                                             <connections>
                                                 <outlet property="delegate" destination="adr-BS-f2S" id="kRK-6Z-3uB"/>
@@ -309,18 +309,18 @@
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                             </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="detailButton" indentationWidth="10" reuseIdentifier="fishingSpotCell" textLabel="3yU-Zd-VuP" detailTextLabel="moq-TB-Gzk" style="IBUITableViewCellStyleSubtitle" id="kVS-U5-0b3">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="detailButton" indentationWidth="10" reuseIdentifier="fishingSpotCell" textLabel="U66-30-Ou4" detailTextLabel="Vmp-XE-8I3" style="IBUITableViewCellStyleSubtitle" id="kVS-U5-0b3">
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="kVS-U5-0b3" id="9Na-tF-EnN">
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Fishing Spot" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="3yU-Zd-VuP">
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Fishing Spot Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="U66-30-Ou4">
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Coordinates" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="moq-TB-Gzk">
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Coordinates" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Vmp-XE-8I3">
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="11"/>
                                             <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
@@ -2457,11 +2457,11 @@
         <segue reference="Jyy-wS-dXA"/>
         <segue reference="DIu-nR-jUP"/>
         <segue reference="77U-eo-oVF"/>
-        <segue reference="iOf-th-u5i"/>
-        <segue reference="ij7-4o-wMK"/>
+        <segue reference="rQz-NV-wiY"/>
         <segue reference="y0h-hR-J5c"/>
-        <segue reference="RpT-ts-gTM"/>
-        <segue reference="bAG-il-Vyj"/>
+        <segue reference="2ub-xD-2JF"/>
+        <segue reference="Qcx-rg-dpe"/>
+        <segue reference="ij7-4o-wMK"/>
         <segue reference="Mmt-ea-Rlu"/>
     </inferredMetricsTieBreakers>
 </document>
