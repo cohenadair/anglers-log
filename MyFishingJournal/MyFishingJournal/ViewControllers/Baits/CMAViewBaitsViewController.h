@@ -12,6 +12,8 @@
 @interface CMAViewBaitsViewController : UITableViewController
 
 @property (nonatomic)BOOL isSelectingForAddEntry;
+@property (nonatomic)BOOL isSelectingForStatistics;
 @property (strong, nonatomic)CMABait *baitForAddEntry;
+@property (strong, nonatomic)NSString *baitNameForStatistics; // used for unwind to statistics
 
 @end

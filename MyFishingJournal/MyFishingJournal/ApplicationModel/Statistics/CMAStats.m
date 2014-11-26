@@ -38,21 +38,25 @@
         
         switch (_pieChartDataType) {
             case CMAPieChartDataTypeCaught:
+                self.userDefineName = SET_SPECIES;
                 [self initForCaught];
                 break;
                 
             case CMAPieChartDataTypeWeight:
+                self.userDefineName = SET_SPECIES;
                 _totalDescription = [NSString stringWithFormat:@"%@ Caught", [self.journal weightUnitsAsString:NO]];
                 _detailDescription = [self.journal weightUnitsAsString:NO];
                 [self initForWeight];
                 break;
                 
             case CMAPieChartDataTypeBait:
+                self.userDefineName = SET_BAITS;
                 _detailDescription = @"Fish Caught";
                 [self initForBait];
                 break;
                 
             case CMAPieChartDataTypeLocation:
+                self.userDefineName = SET_LOCATIONS;
                 [self initForLocation];
                 break;
                 

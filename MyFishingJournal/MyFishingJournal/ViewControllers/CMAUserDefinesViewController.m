@@ -209,7 +209,7 @@
     cell.textLabel.text = [[self.userDefine.objects objectAtIndex:indexPath.item] name];
     
     // enable chevron for non-strings
-    if (![self.userDefine isSetOfStrings])
+    if (![self.userDefine isSetOfStrings] && !self.isSelectingForStatistics)
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     else
         if ((!self.isSelectingForAddEntry || self.isSelectingMultiple) && !self.tableView.editing)
@@ -220,6 +220,12 @@
 
 // NO NOT CHANGE ORDER OF IF STATEMENTS!
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (self.isSelectingForStatistics) {
+        self.selectedCellLabelText = [[[tableView cellForRowAtIndexPath:indexPath] textLabel] text];
+        [self performSegueWithIdentifier:@"unwindToStatisticsFromUserDefines" sender:self];
+        return;
+    }
+    
     // if it's a location, show Single Location View
     if ([[self.userDefine name] isEqualToString:SET_LOCATIONS]) {
         self.selectedCellLabelText = [[[tableView cellForRowAtIndexPath:indexPath] textLabel] text];
@@ -245,12 +251,6 @@
     if (self.isSelectingForAddEntry) {
         self.selectedCellLabelText = [[[tableView cellForRowAtIndexPath:indexPath] textLabel] text];
         [self performSegueWithIdentifier:@"unwindToAddEntryFromEditSettings" sender:self];
-        return;
-    }
-    
-    if (self.isSelectingForStatistics) {
-        self.selectedCellLabelText = [[[tableView cellForRowAtIndexPath:indexPath] textLabel] text];
-        [self performSegueWithIdentifier:@"unwindToStatisticsFromUserDefines" sender:self];
         return;
     }
 }

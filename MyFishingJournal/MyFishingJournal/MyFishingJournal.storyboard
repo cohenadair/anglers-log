@@ -1456,6 +1456,7 @@
                         <outlet property="pieChartSpeciesLabel" destination="lG8-pV-3gq" id="cs1-Y6-Zod"/>
                         <outlet property="totalButton" destination="G0V-31-RvQ" id="KyQ-Xm-gk6"/>
                         <segue destination="brF-Rc-1Et" kind="show" identifier="fromStatisticsToUserDefines" id="77U-eo-oVF"/>
+                        <segue destination="BZk-e6-FYf" kind="show" identifier="fromStatisticsToViewBaits" id="DIu-nR-jUP"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Pga-V1-ill" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -2287,6 +2288,7 @@
                         <outlet property="menuButton" destination="GOn-JB-tIy" id="4sQ-TT-fyW"/>
                         <segue destination="oMU-hB-36K" kind="show" identifier="fromViewBaitsToSingleBait" id="bAG-il-Vyj"/>
                         <segue destination="HFY-1D-kqx" kind="unwind" identifier="unwindToAddEntryFromViewBaits" unwindAction="unwindToAddEntry:" id="g9U-mE-g4I"/>
+                        <segue destination="HFY-1D-kqx" kind="unwind" identifier="unwindToStatisticsFromViewBaits" unwindAction="unwindToStatistics:" id="Ygi-vD-WTJ"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="l6k-dw-aLb" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -2440,12 +2442,13 @@
         <segue reference="egX-OW-uSX"/>
         <segue reference="guB-6y-sIg"/>
         <segue reference="Jyy-wS-dXA"/>
+        <segue reference="DIu-nR-jUP"/>
         <segue reference="77U-eo-oVF"/>
         <segue reference="iOf-th-u5i"/>
         <segue reference="ij7-4o-wMK"/>
         <segue reference="y0h-hR-J5c"/>
-        <segue reference="2ub-xD-2JF"/>
         <segue reference="RpT-ts-gTM"/>
-        <segue reference="Mmt-ea-Rlu"/>
+        <segue reference="wZB-7v-gkR"/>
+        <segue reference="bAG-il-Vyj"/>
     </inferredMetricsTieBreakers>
 </document>

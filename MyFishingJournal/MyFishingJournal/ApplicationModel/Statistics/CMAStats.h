@@ -23,6 +23,7 @@ typedef NS_ENUM(NSInteger, CMAPieChartDataType) {
 @property (strong, nonatomic)NSArray *sliceObjects;
 @property (strong, nonatomic)NSString *totalDescription;
 @property (strong, nonatomic)NSString *detailDescription;
+@property (strong, nonatomic)NSString *userDefineName;
 @property (nonatomic)NSInteger totalValue;
 @property (nonatomic)CMAPieChartDataType pieChartDataType;
 

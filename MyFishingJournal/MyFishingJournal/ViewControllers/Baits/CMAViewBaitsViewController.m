@@ -66,7 +66,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    if (!self.isSelectingForAddEntry)
+    if (!self.isSelectingForAddEntry && !self.isSelectingForStatistics)
         [self initSideBarMenu];
     else
         self.navigationItem.leftBarButtonItem = self.navigationItem.backBarButtonItem;
@@ -84,6 +84,9 @@
     [self.deleteButton setEnabled:([self.userDefineBaits count] > 0)];
     [self.navigationController setToolbarHidden:NO];
     [self.navigationController.toolbar setUserInteractionEnabled:YES];
+    
+    if (self.isSelectingForStatistics)
+        self.navigationController.toolbarHidden = YES;
     
     [self.tableView reloadData];
 }
@@ -118,7 +121,7 @@
     
     [cell.nameLabel setText:bait.name];
     
-    if (self.isSelectingForAddEntry)
+    if (self.isSelectingForAddEntry || self.isSelectingForStatistics)
         [cell setAccessoryType:UITableViewCellAccessoryNone];
     
     return cell;
@@ -128,8 +131,16 @@
     if (self.isSelectingForAddEntry) {
         self.baitForAddEntry = [[self.userDefineBaits objects] objectAtIndex:indexPath.row];
         [self performSegueWithIdentifier:@"unwindToAddEntryFromViewBaits" sender:self];
-    } else
-        [self performSegueWithIdentifier:@"fromViewBaitsToSingleBait" sender:self];
+        return;
+    }
+    
+    if (self.isSelectingForStatistics) {
+        self.baitNameForStatistics = [[[self.userDefineBaits objects] objectAtIndex:indexPath.row] name];
+        [self performSegueWithIdentifier:@"unwindToStatisticsFromViewBaits" sender:self];
+        return;
+    }
+    
+    [self performSegueWithIdentifier:@"fromViewBaitsToSingleBait" sender:self];
 }
 
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {

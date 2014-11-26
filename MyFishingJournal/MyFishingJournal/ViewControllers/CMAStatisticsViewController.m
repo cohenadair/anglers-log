@@ -8,6 +8,7 @@
 
 #import "CMAStatisticsViewController.h"
 #import "CMAUserDefinesViewController.h"
+#import "CMAViewBaitsViewController.h"
 #import "CMANoXView.h"
 #import "CMAAppDelegate.h"
 #import "CMAStats.h"
@@ -215,7 +216,10 @@
 #pragma mark - Events
 
 - (IBAction)tapPieChartCenter:(UITapGestureRecognizer *)sender {
-    [self performSegueWithIdentifier:@"fromStatisticsToUserDefines" sender:self];
+    if (self.stats.pieChartDataType == CMAPieChartDataTypeBait)
+        [self performSegueWithIdentifier:@"fromStatisticsToViewBaits" sender:self];
+    else
+        [self performSegueWithIdentifier:@"fromStatisticsToUserDefines" sender:self];
 }
 
 - (IBAction)tapTotalButton:(UIButton *)sender {
@@ -247,9 +251,14 @@
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     // bait used
+    if ([segue.identifier isEqualToString:@"fromStatisticsToViewBaits"]){
+        CMAViewBaitsViewController *destination = [[segue.destinationViewController viewControllers] objectAtIndex:0];
+        destination.isSelectingForStatistics = YES;
+    }
+    
     if ([segue.identifier isEqualToString:@"fromStatisticsToUserDefines"]) {
         CMAUserDefinesViewController *destination = [[segue.destinationViewController viewControllers] objectAtIndex:0];
-        destination.userDefine = [[self journal] userDefineNamed:SET_SPECIES];
+        destination.userDefine = [[self journal] userDefineNamed:self.stats.userDefineName];
         destination.previousViewID = CMAViewControllerID_Statistics;
     }
 }
@@ -259,6 +268,12 @@
         CMAUserDefinesViewController *source = [segue sourceViewController];
         self.initialSelectedIndex = [self.stats indexForName:source.selectedCellLabelText]; // this property is used in viewWillAppear
         source.previousViewID = CMAViewControllerID_Nil;
+    }
+    
+    if ([segue.identifier isEqualToString:@"unwindToStatisticsFromViewBaits"]) {
+        CMAViewBaitsViewController *source = [segue sourceViewController];
+        self.initialSelectedIndex = [self.stats indexForName:source.baitNameForStatistics]; // this property is used in viewWillAppear
+        source.isSelectingForStatistics = NO;
     }
 }
 
