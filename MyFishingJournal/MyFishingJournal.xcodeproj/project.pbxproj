@@ -134,7 +134,6 @@
 		E705AD801A2400270077F16C /* CMACircleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMACircleView.m; path = CustomViews/CMACircleView.m; sourceTree = "<group>"; };
 		E705AD8C1A2581400077F16C /* CMAStats.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAStats.h; path = ApplicationModel/Statistics/CMAStats.h; sourceTree = "<group>"; };
 		E705AD8D1A2581400077F16C /* CMAStats.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAStats.m; path = ApplicationModel/Statistics/CMAStats.m; sourceTree = "<group>"; };
-		E705AD921A2593A70077F16C /* CMAPieChartProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAPieChartProtocol.h; path = ApplicationModel/Statistics/CMAPieChartProtocol.h; sourceTree = "<group>"; };
 		E705AD931A2595EE0077F16C /* CMAStatsObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAStatsObject.h; path = ApplicationModel/Statistics/CMAStatsObject.h; sourceTree = "<group>"; };
 		E705AD941A2595EE0077F16C /* CMAStatsObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAStatsObject.m; path = ApplicationModel/Statistics/CMAStatsObject.m; sourceTree = "<group>"; };
 		E70B637219D3A8E400DFBA85 /* MyFishingJournal.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyFishingJournal.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -314,7 +313,6 @@
 				E705AD8D1A2581400077F16C /* CMAStats.m */,
 				E705AD931A2595EE0077F16C /* CMAStatsObject.h */,
 				E705AD941A2595EE0077F16C /* CMAStatsObject.m */,
-				E705AD921A2593A70077F16C /* CMAPieChartProtocol.h */,
 			);
 			name = Statistics;
 			sourceTree = "<group>";

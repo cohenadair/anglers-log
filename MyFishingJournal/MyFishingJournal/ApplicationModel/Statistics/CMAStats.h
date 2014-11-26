@@ -7,11 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "CMAPieChartProtocol.h"
 #import "CMAStatsObject.h"
 #import "CMAJournal.h"
 
-@interface CMAStats : NSObject <CMAPieChartProtocol>
+@interface CMAStats : NSObject
 
 typedef NS_ENUM(NSInteger, CMAPieChartDataType) {
     CMAPieChartDataTypeCaught = 0,
@@ -36,5 +35,13 @@ typedef NS_ENUM(NSInteger, CMAPieChartDataType) {
 // accessing
 - (NSInteger)sliceObjectCount;
 - (NSDate *)earliestEntryDate;
+
+- (NSInteger)highestValueIndex;
+- (NSInteger)indexForName:(NSString *)aName;
+- (NSInteger)valueForSliceAtIndex:(NSInteger)anIndex;
+- (NSInteger)valueForPercentAtIndex:(NSInteger)anIndex;
+- (NSString *)stringForPercentAtIndex:(NSInteger)anIndex;
+- (NSString *)nameAtIndex:(NSInteger)anIndex;
+- (NSString *)detailTextAtIndex:(NSInteger)anIndex;
 
 @end
