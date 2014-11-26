@@ -17,8 +17,8 @@
 		E705AD7C1A22DD420077F16C /* XYPieChart.m in Sources */ = {isa = PBXBuildFile; fileRef = E705AD7B1A22DD420077F16C /* XYPieChart.m */; };
 		E705AD7E1A22DD5C0077F16C /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E705AD7D1A22DD5C0077F16C /* QuartzCore.framework */; };
 		E705AD811A2400270077F16C /* CMACircleView.m in Sources */ = {isa = PBXBuildFile; fileRef = E705AD801A2400270077F16C /* CMACircleView.m */; };
-		E705AD881A240FDF0077F16C /* CMAJournalStats.m in Sources */ = {isa = PBXBuildFile; fileRef = E705AD871A240FDF0077F16C /* CMAJournalStats.m */; };
-		E705AD8B1A240FFA0077F16C /* CMASpeciesStats.m in Sources */ = {isa = PBXBuildFile; fileRef = E705AD8A1A240FFA0077F16C /* CMASpeciesStats.m */; };
+		E705AD8E1A2581400077F16C /* CMAStats.m in Sources */ = {isa = PBXBuildFile; fileRef = E705AD8D1A2581400077F16C /* CMAStats.m */; };
+		E705AD951A2595EE0077F16C /* CMAStatsObject.m in Sources */ = {isa = PBXBuildFile; fileRef = E705AD941A2595EE0077F16C /* CMAStatsObject.m */; };
 		E70B637619D3A8E400DFBA85 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E70B637519D3A8E400DFBA85 /* Foundation.framework */; };
 		E70B637819D3A8E400DFBA85 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E70B637719D3A8E400DFBA85 /* CoreGraphics.framework */; };
 		E70B637A19D3A8E400DFBA85 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E70B637919D3A8E400DFBA85 /* UIKit.framework */; };
@@ -132,10 +132,11 @@
 		E705AD7D1A22DD5C0077F16C /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		E705AD7F1A2400270077F16C /* CMACircleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMACircleView.h; path = CustomViews/CMACircleView.h; sourceTree = "<group>"; };
 		E705AD801A2400270077F16C /* CMACircleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMACircleView.m; path = CustomViews/CMACircleView.m; sourceTree = "<group>"; };
-		E705AD861A240FDF0077F16C /* CMAJournalStats.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAJournalStats.h; path = ApplicationModel/Statistics/CMAJournalStats.h; sourceTree = "<group>"; };
-		E705AD871A240FDF0077F16C /* CMAJournalStats.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAJournalStats.m; path = ApplicationModel/Statistics/CMAJournalStats.m; sourceTree = "<group>"; };
-		E705AD891A240FFA0077F16C /* CMASpeciesStats.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMASpeciesStats.h; path = ApplicationModel/Statistics/CMASpeciesStats.h; sourceTree = "<group>"; };
-		E705AD8A1A240FFA0077F16C /* CMASpeciesStats.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMASpeciesStats.m; path = ApplicationModel/Statistics/CMASpeciesStats.m; sourceTree = "<group>"; };
+		E705AD8C1A2581400077F16C /* CMAStats.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAStats.h; path = ApplicationModel/Statistics/CMAStats.h; sourceTree = "<group>"; };
+		E705AD8D1A2581400077F16C /* CMAStats.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAStats.m; path = ApplicationModel/Statistics/CMAStats.m; sourceTree = "<group>"; };
+		E705AD921A2593A70077F16C /* CMAPieChartProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAPieChartProtocol.h; path = ApplicationModel/Statistics/CMAPieChartProtocol.h; sourceTree = "<group>"; };
+		E705AD931A2595EE0077F16C /* CMAStatsObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAStatsObject.h; path = ApplicationModel/Statistics/CMAStatsObject.h; sourceTree = "<group>"; };
+		E705AD941A2595EE0077F16C /* CMAStatsObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAStatsObject.m; path = ApplicationModel/Statistics/CMAStatsObject.m; sourceTree = "<group>"; };
 		E70B637219D3A8E400DFBA85 /* MyFishingJournal.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyFishingJournal.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E70B637519D3A8E400DFBA85 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		E70B637719D3A8E400DFBA85 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -309,10 +310,11 @@
 		E705AD851A240F990077F16C /* Statistics */ = {
 			isa = PBXGroup;
 			children = (
-				E705AD861A240FDF0077F16C /* CMAJournalStats.h */,
-				E705AD871A240FDF0077F16C /* CMAJournalStats.m */,
-				E705AD891A240FFA0077F16C /* CMASpeciesStats.h */,
-				E705AD8A1A240FFA0077F16C /* CMASpeciesStats.m */,
+				E705AD8C1A2581400077F16C /* CMAStats.h */,
+				E705AD8D1A2581400077F16C /* CMAStats.m */,
+				E705AD931A2595EE0077F16C /* CMAStatsObject.h */,
+				E705AD941A2595EE0077F16C /* CMAStatsObject.m */,
+				E705AD921A2593A70077F16C /* CMAPieChartProtocol.h */,
 			);
 			name = Statistics;
 			sourceTree = "<group>";
@@ -730,6 +732,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E705AD951A2595EE0077F16C /* CMAStatsObject.m in Sources */,
 				E72669B719DF14DE003C8E0B /* CMAEntry.m in Sources */,
 				E7A331301A1D710200C1D3F1 /* CMAViewPhotosViewController.m in Sources */,
 				E7A3311D1A1D706A00C1D3F1 /* CMAAddEntryViewController.m in Sources */,
@@ -738,7 +741,6 @@
 				E7A51EA819F4440F009BDC20 /* CMAUserDefinesViewController.m in Sources */,
 				E705AD7C1A22DD420077F16C /* XYPieChart.m in Sources */,
 				E7A331201A1D706A00C1D3F1 /* CMAViewEntriesViewController.m in Sources */,
-				E705AD881A240FDF0077F16C /* CMAJournalStats.m in Sources */,
 				E78BB7E91A133A940082004B /* CMATouchSegmentedControl.m in Sources */,
 				E7C29D841A1C210000015B42 /* CMAImagePickerViewController.m in Sources */,
 				E7C29D741A1BD38800015B42 /* CMAAddBaitViewController.m in Sources */,
@@ -746,7 +748,6 @@
 				E7C926E319EEC9DC0010A9FE /* CMAStatisticsViewController.m in Sources */,
 				E7C29D751A1BD38800015B42 /* CMASingleBaitViewController.m in Sources */,
 				E7A51E9E19EFAA0E009BDC20 /* CMASettingsViewController.m in Sources */,
-				E705AD8B1A240FFA0077F16C /* CMASpeciesStats.m in Sources */,
 				E7C29D7B1A1BE0BE00015B42 /* CMABaitTableViewCell.m in Sources */,
 				E72669C919E6F4A8003C8E0B /* CMAJournal.m in Sources */,
 				E738585A19FE0A3400FE122B /* CMAFishingMethod.m in Sources */,
@@ -759,6 +760,7 @@
 				E7C29D811A1C1ED800015B42 /* CMACameraActionSheet.m in Sources */,
 				E78BB7DF1A100A2C0082004B /* CMAAlerts.m in Sources */,
 				E78BB7E31A1309680082004B /* CMAEntryTableViewCell.m in Sources */,
+				E705AD8E1A2581400077F16C /* CMAStats.m in Sources */,
 				E70B638619D3A8E400DFBA85 /* CMAAppDelegate.m in Sources */,
 				E72669DE19E76B63003C8E0B /* CMAUserDefine.m in Sources */,
 				E738585219FE093700FE122B /* CMALocation.m in Sources */,

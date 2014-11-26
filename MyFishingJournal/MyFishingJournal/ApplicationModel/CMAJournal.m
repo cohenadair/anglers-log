@@ -77,34 +77,58 @@
         return NO;
     }
     
-    // increment stats stuff
-    if ([anEntry.fishQuantity integerValue] > 0)
-        [anEntry.fishSpecies incNumberCaught:[anEntry.fishQuantity integerValue]];
-    else
-        [anEntry.fishSpecies incNumberCaught:1];
-    
-    if ([anEntry.fishWeight integerValue] > 0)
-        [anEntry.fishSpecies incWeightCaught:[anEntry.fishWeight integerValue]];
-    
+    [self incStatsForEntry:anEntry];
     [self.entries addObject:anEntry];
     [self sortEntriesBy:self.entrySortMethod order:self.entrySortOrder];
     
     return YES;
 }
 
+- (void)incStatsForEntry: (CMAEntry *)anEntry {
+    // fish quantity
+    if ([anEntry.fishQuantity integerValue] > 0)
+        [anEntry.fishSpecies incNumberCaught:[anEntry.fishQuantity integerValue]];
+    else
+        [anEntry.fishSpecies incNumberCaught:1];
+    
+    // fish weight
+    if ([anEntry.fishWeight integerValue] > 0)
+        [anEntry.fishSpecies incWeightCaught:[anEntry.fishWeight integerValue]];
+    
+    // bait used
+    if (anEntry.baitUsed) {
+        if ([anEntry.fishQuantity integerValue] > 0)
+            [anEntry.baitUsed incFishCaught:[anEntry.fishQuantity integerValue]];
+        else
+            [anEntry.baitUsed incFishCaught:1];
+    }
+}
+
 - (void)removeEntryDated: (NSDate *)aDate {
     CMAEntry *entry = [self entryDated:aDate];
     
-    // decrement stats stuff
-    if ([entry.fishQuantity integerValue] > 0)
-        [entry.fishSpecies decNumberCaught:[entry.fishQuantity integerValue]];
-    else
-        [entry.fishSpecies decNumberCaught:1];
-    
-    if ([entry.fishWeight integerValue] > 0)
-        [entry.fishSpecies decWeightCaught:[entry.fishWeight integerValue]];
-    
+    [self decStatsForEntry:entry];
     [self.entries removeObject:[self entryDated:aDate]];
+}
+
+- (void)decStatsForEntry: (CMAEntry *)anEntry {
+    // quantity
+    if ([anEntry.fishQuantity integerValue] > 0)
+        [anEntry.fishSpecies decNumberCaught:[anEntry.fishQuantity integerValue]];
+    else
+        [anEntry.fishSpecies decNumberCaught:1];
+    
+    // weight
+    if ([anEntry.fishWeight integerValue] > 0)
+        [anEntry.fishSpecies decWeightCaught:[anEntry.fishWeight integerValue]];
+    
+    // bait used
+    if (anEntry.baitUsed) {
+        if ([anEntry.fishQuantity integerValue] > 0)
+            [anEntry.baitUsed decFishCaught:[anEntry.fishQuantity integerValue]];
+        else
+            [anEntry.baitUsed decFishCaught:1];
+    }
 }
 
 // removes entry with aDate and adds aNewEntry

@@ -13,6 +13,7 @@
 @property (strong, nonatomic)NSString *name;
 @property (strong, nonatomic)NSString *baitDescription;
 @property (strong, nonatomic)UIImage *image;
+@property (strong, nonatomic)NSNumber *fishCaught;
 
 // instance creation
 + (CMABait *)withName: (NSString *)aName;
@@ -27,6 +28,8 @@
 // editing
 - (void)edit: (CMABait *)aNewBait;
 - (CMABait *)copy;
+- (void)incFishCaught: (NSInteger)incBy;
+- (void)decFishCaught: (NSInteger)decBy;
 
 // other
 - (BOOL)removedFromUserDefines;

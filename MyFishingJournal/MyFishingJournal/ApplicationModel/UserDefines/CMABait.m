@@ -24,6 +24,7 @@
         _name = aName;
         _baitDescription = nil;
         _image = nil;
+        _fishCaught = [NSNumber numberWithInteger:0];
     }
     
     return self;
@@ -36,6 +37,7 @@
         _name = [aDecoder decodeObjectForKey:@"CMABaitName"];
         _baitDescription = [aDecoder decodeObjectForKey:@"CMABaitDescription"];
         _image = [aDecoder decodeObjectForKey:@"CMABaitImage"];
+        //_fishCaught = [aDecoder decodeObjectForKey:@"CMABaitFishCaught"];
     }
     
     return self;
@@ -45,6 +47,7 @@
     [aCoder encodeObject:self.name forKey:@"CMABaitName"];
     [aCoder encodeObject:self.baitDescription forKey:@"CMABaitDescription"];
     [aCoder encodeObject:self.image forKey:@"CMABaitImage"];
+    //[aCoder encodeObject:self.fishCaught forKey:@"CMABaitFishCaught"];
 }
 
 #pragma mark - Editing
@@ -63,6 +66,20 @@
     [result setImage:self.image];
     
     return result;
+}
+
+- (void)incFishCaught: (NSInteger)incBy {
+    NSInteger count = [self.fishCaught integerValue];
+    count += incBy;
+    
+    [self setFishCaught:[NSNumber numberWithInteger:count]];
+}
+
+- (void)decFishCaught: (NSInteger)decBy {
+    NSInteger count = [self.fishCaught integerValue];
+    count -= decBy;
+    
+    [self setFishCaught:[NSNumber numberWithInteger:count]];
 }
 
 #pragma mark - Other
