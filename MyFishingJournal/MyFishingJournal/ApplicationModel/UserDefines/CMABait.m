@@ -7,6 +7,7 @@
 //
 
 #import "CMABait.h"
+#import "CMAConstants.h"
 
 @implementation CMABait
 
@@ -62,6 +63,13 @@
     [result setImage:self.image];
     
     return result;
+}
+
+#pragma mark - Other
+
+// other
+- (BOOL)removedFromUserDefines {
+    return [self.name isEqualToString:REMOVED_TEXT];
 }
 
 @end

@@ -28,4 +28,7 @@
 - (void)edit: (CMABait *)aNewBait;
 - (CMABait *)copy;
 
+// other
+- (BOOL)removedFromUserDefines;
+
 @end

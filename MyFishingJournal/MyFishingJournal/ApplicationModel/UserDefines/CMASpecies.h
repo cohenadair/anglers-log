@@ -31,4 +31,7 @@
 - (void)incWeightCaught: (NSInteger)incBy;
 - (void)decWeightCaught: (NSInteger)decBy;
 
+// other
+- (BOOL)removedFromUserDefines;
+
 @end

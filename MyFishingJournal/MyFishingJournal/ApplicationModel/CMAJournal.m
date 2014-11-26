@@ -120,6 +120,45 @@
 
 - (void)removeUserDefine: (NSString *)aDefineName objectNamed: (NSString *)anObjectName {
     [[self userDefineNamed:aDefineName] removeObjectNamed:anObjectName];
+    [self removeUserDefineFromEntries:aDefineName objectNamed:anObjectName];
+}
+
+// Helper method called when a user defined is deleted by the user.
+// Removes the user define, anObjectName (i.e. species, location, bait, etc.) from any entries that reference it.
+- (void)removeUserDefineFromEntries: (NSString *)aDefineName objectNamed: (NSString *)anObjectName {
+    for (CMAEntry *entry in self.entries) {
+        if ([aDefineName isEqualToString:SET_SPECIES])
+            if ([entry.fishSpecies.name isEqualToString:anObjectName]) {
+                entry.fishSpecies = nil;
+                entry.fishSpecies = [CMASpecies withName:REMOVED_TEXT];
+            }
+        
+        if ([aDefineName isEqualToString:SET_LOCATIONS])
+            if ([entry.location.name isEqualToString:anObjectName]) {
+                entry.location = nil;
+                entry.fishingSpot = nil;
+                entry.location = [CMALocation withName:REMOVED_TEXT];
+            }
+        
+        if ([aDefineName isEqualToString:SET_BAITS])
+            if ([entry.baitUsed.name isEqualToString:anObjectName]) {
+                entry.baitUsed = nil;
+                entry.baitUsed = [CMABait withName:REMOVED_TEXT];
+            }
+        
+        if ([aDefineName isEqualToString:SET_FISHING_METHODS]) {
+            NSMutableSet *tempSet = [entry.fishingMethods mutableCopy];
+            
+            for (CMAFishingMethod *method in entry.fishingMethods)
+                if ([method.name isEqualToString:anObjectName])
+                    [tempSet removeObject:method];
+            
+            if ([tempSet count] <= 0)
+                entry.fishingMethods = nil;
+            else
+                entry.fishingMethods = tempSet;
+        }
+    }
 }
 
 - (void)editUserDefine: (NSString *)aDefineName objectNamed: (NSString *)objectName newProperties: (id)aNewObject {

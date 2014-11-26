@@ -7,6 +7,7 @@
 //
 
 #import "CMASpecies.h"
+#import "CMAConstants.h"
 
 @implementation CMASpecies
 
@@ -78,6 +79,13 @@
     count -= decBy;
     
     [self setWeightCaught:[NSNumber numberWithInteger:count]];
+}
+
+#pragma mark - Other
+
+// other
+- (BOOL)removedFromUserDefines {
+    return [self.name isEqualToString:REMOVED_TEXT];
 }
 
 @end

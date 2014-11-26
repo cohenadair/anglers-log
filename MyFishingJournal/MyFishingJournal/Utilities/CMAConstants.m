@@ -19,6 +19,7 @@ NSString *const TOKEN_LOCATION = @": ";
 NSString *const ARCHIVE_FILE_NAME = @"journal.db";
 
 NSString *const SHARE_MESSAGE = @"Shared with MyFishingJournal mobile application.";
+NSString *const REMOVED_TEXT = @"Removed By User";
 
 NSString *const GLOBAL_FONT = @"HelveticaNeue";
 

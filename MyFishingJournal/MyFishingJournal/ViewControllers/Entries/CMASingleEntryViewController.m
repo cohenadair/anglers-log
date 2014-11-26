@@ -138,15 +138,17 @@
                               hasSeparator: YES]];
     
     // location
-    [self.tableCellProperties addObject:
-     [CMATableCellProperties withLabelText: @"Location"
-                             andDetailText: [NSString stringWithFormat:@"%@%@%@", self.entry.location.name, TOKEN_LOCATION, self.entry.fishingSpot.name]
-                        andReuseIdentifier: @"locationCell"
-                                 andHeight: SUBTITLE_HEIGHT
-                              hasSeparator: YES]];
+    if (self.entry.location && ![self.entry.location removedFromUserDefines]) {
+        [self.tableCellProperties addObject:
+         [CMATableCellProperties withLabelText: @"Location"
+                                 andDetailText: [self.entry locationAsString]
+                            andReuseIdentifier: @"locationCell"
+                                     andHeight: SUBTITLE_HEIGHT
+                                  hasSeparator: YES]];
+    }
     
     // bait used
-    if (self.entry.baitUsed)
+    if (self.entry.baitUsed && ![self.entry.baitUsed removedFromUserDefines])
         [self.tableCellProperties addObject:
          [CMATableCellProperties withLabelText: @"Bait Used"
                                  andDetailText: self.entry.baitUsed.name
@@ -185,7 +187,7 @@
     if (self.entry.fishingMethods)
         [self.tableCellProperties addObject:
          [CMATableCellProperties withLabelText: @"Methods"
-                                 andDetailText: [self.entry concatinateFishingMethods]
+                                 andDetailText: [self.entry fishingMethodsAsString]
                             andReuseIdentifier: @"rightDetailCell"
                                      andHeight: RIGHT_DETAIL_HEIGHT
                                   hasSeparator: YES]];

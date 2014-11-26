@@ -139,7 +139,7 @@
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     // delete from data source
     CMABaitTableViewCell *cell = (CMABaitTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
-    [[[self journal] userDefineNamed:SET_BAITS] removeObjectNamed:cell.nameLabel.text];
+    [[self journal] removeUserDefine:SET_BAITS objectNamed:cell.nameLabel.text];
     
     // delete from table
     [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];

@@ -266,7 +266,7 @@
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         // delete from data source
         UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-        [self.userDefine removeObjectNamed:cell.textLabel.text];
+        [[self journal] removeUserDefine:self.userDefine.name objectNamed:cell.textLabel.text];
         
         // delete from table
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];

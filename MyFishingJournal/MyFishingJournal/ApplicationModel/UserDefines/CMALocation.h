@@ -41,4 +41,7 @@
 // sorting
 - (void)sortFishingSpotsByName;
 
+// other
+- (BOOL)removedFromUserDefines;
+
 @end

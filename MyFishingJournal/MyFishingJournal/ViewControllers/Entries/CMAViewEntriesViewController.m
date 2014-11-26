@@ -125,7 +125,7 @@
     
     cell.speciesLabel.text = [entry.fishSpecies name];
     cell.dateLabel.text = [self.dateFormatter stringFromDate:entry.date];
-    cell.locationLabel.text = [NSString stringWithFormat:@"%@: %@", entry.location.name, entry.fishingSpot.name];
+    cell.locationLabel.text = [entry locationAsString];
     
     if ([entry.images count] > 0)
         cell.thumbImage.image = [entry.images anyObject];

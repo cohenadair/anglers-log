@@ -7,6 +7,7 @@
 //
 
 #import "CMAEntry.h"
+#import "CMAConstants.h"
 
 @implementation CMAEntry
 
@@ -78,7 +79,7 @@
     return [self.fishingMethods count];
 }
 
-- (NSString *)concatinateFishingMethods {
+- (NSString *)fishingMethodsAsString {
     NSString *result = [NSString new];
     NSArray *fishingMethods = [self.fishingMethods allObjects];
     
@@ -89,10 +90,21 @@
         }
         
         result = [result stringByAppendingString:[fishingMethods[i] name]];
-        result = [result stringByAppendingString:@", "];
+        result = [result stringByAppendingString:TOKEN_FISHING_METHODS];
     }
     
     return result;
+}
+
+- (NSString *)locationAsString {
+    NSString *fishingSpotText;
+    
+    if (self.fishingSpot)
+        fishingSpotText = [NSString stringWithFormat:@"%@%@", TOKEN_LOCATION, self.fishingSpot.name];
+    else
+        fishingSpotText = @"";
+    
+    return [NSString stringWithFormat:@"%@%@", self.location.name, fishingSpotText];
 }
 
 #pragma mark - Editing

@@ -23,7 +23,7 @@
 @property (strong, nonatomic)NSNumber *fishQuantity;
 
 @property (strong, nonatomic)NSMutableSet *images;
-@property (strong, nonatomic)NSSet *fishingMethods;
+@property (strong, nonatomic)NSMutableSet *fishingMethods;
 
 @property (strong, nonatomic)CMALocation *location;
 @property (strong, nonatomic)CMAFishingSpot *fishingSpot;
@@ -41,7 +41,8 @@
 // accessing
 - (NSInteger)imageCount;
 - (NSInteger)fishingMethodCount;
-- (NSString *)concatinateFishingMethods;
+- (NSString *)locationAsString;
+- (NSString *)fishingMethodsAsString;
 
 // editing
 - (void)addImage: (UIImage *)anImage;

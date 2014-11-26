@@ -7,8 +7,16 @@
 //
 
 #import "CMALocation.h"
+#import "CMAConstants.h"
+#import "CMAAppDelegate.h"
 
 @implementation CMALocation
+
+#pragma mark - Global Accessing
+
+- (CMAJournal *)journal {
+    return [((CMAAppDelegate *)[[UIApplication sharedApplication] delegate]) journal];
+}
 
 #pragma mark - Instance Creation
 
@@ -71,6 +79,13 @@
 
 - (void)removeFishingSpotNamed: (NSString *)aName {
     [self.fishingSpots removeObject:[self fishingSpotNamed:aName]];
+    
+    // remove entry references to the fishing spot that was removed
+    for (CMAEntry *entry in [[self journal] entries])
+        if ([entry.fishingSpot.name isEqualToString:aName]) {
+            entry.fishingSpot = nil;
+            entry.fishingSpot = [CMAFishingSpot withName:REMOVED_TEXT];
+        }
 }
 
 - (void)editFishingSpotNamed: (NSString *)aName newProperties: (CMAFishingSpot *)aNewFishingSpot; {
@@ -153,6 +168,13 @@
     self.fishingSpots = [[self.fishingSpots sortedArrayUsingComparator:^NSComparisonResult(CMAFishingSpot *s1, CMAFishingSpot *s2){
         return [s1.name compare:s2.name];
     }] mutableCopy];
+}
+
+#pragma mark - Other
+
+// other
+- (BOOL)removedFromUserDefines {
+    return [self.name isEqualToString:REMOVED_TEXT];
 }
 
 @end

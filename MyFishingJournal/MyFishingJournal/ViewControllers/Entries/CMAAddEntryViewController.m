@@ -129,18 +129,30 @@ NSString *const NO_SELECT = @"Not Selected";
     [self.dateTimeDetailLabel setText:[self.dateFormatter stringFromDate:[self.entry date]]];
     
     // species
-    [self.speciesDetailLabel setText:self.entry.fishSpecies.name];
+    if (![self.entry.fishSpecies removedFromUserDefines])
+        [self.speciesDetailLabel setText:self.entry.fishSpecies.name];
+    else
+        [self.speciesDetailLabel setText:@"Not Selected"];
     
     // location and fishing spot
-    [self.locationDetailLabel setText:[NSString stringWithFormat:@"%@: %@", self.entry.location.name, self.entry.fishingSpot.name]];
+    if (self.entry.location) {
+        if (![self.entry.location removedFromUserDefines])
+            [self.locationDetailLabel setText:[self.entry locationAsString]];
+        else
+            [self.locationDetailLabel setText:@"Not Selected"];
+    }
     
     // bait used
-    if (self.entry.baitUsed)
-        [self.baitUsedDetailLabel setText:self.entry.baitUsed.name];
+    if (self.entry.baitUsed) {
+        if (![self.entry.baitUsed removedFromUserDefines])
+            [self.baitUsedDetailLabel setText:self.entry.baitUsed.name];
+        else
+            [self.baitUsedDetailLabel setText:@"Not Selected"];
+    }
     
     // fishing methods
     if (self.entry.fishingMethods)
-        [self.methodsDetailLabel setText:[self.entry concatinateFishingMethods]];
+        [self.methodsDetailLabel setText:[self.entry fishingMethodsAsString]];
     
     // fish quantity
     if ([self.entry.fishQuantity integerValue] != -1)
@@ -505,7 +517,7 @@ NSString *const NO_SELECT = @"Not Selected";
 }
 
 // Returns an NSSet of fishing methods from [[self journal] userDefines].
-- (NSSet *)parseMethodsDetailText {
+- (NSMutableSet *)parseMethodsDetailText {
     NSMutableSet *result = [NSMutableSet set];
     NSArray *fishingMethodStrings = [[self.methodsDetailLabel text] componentsSeparatedByString:TOKEN_FISHING_METHODS];
     
