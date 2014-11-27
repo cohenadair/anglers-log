@@ -33,5 +33,6 @@
 
 // accessing
 - (CLLocationCoordinate2D)coordinate;
+- (NSString *)locationAsString;
 
 @end

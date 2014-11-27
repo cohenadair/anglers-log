@@ -19,8 +19,6 @@
 		E705AD811A2400270077F16C /* CMACircleView.m in Sources */ = {isa = PBXBuildFile; fileRef = E705AD801A2400270077F16C /* CMACircleView.m */; };
 		E705AD8E1A2581400077F16C /* CMAStats.m in Sources */ = {isa = PBXBuildFile; fileRef = E705AD8D1A2581400077F16C /* CMAStats.m */; };
 		E705AD951A2595EE0077F16C /* CMAStatsObject.m in Sources */ = {isa = PBXBuildFile; fileRef = E705AD941A2595EE0077F16C /* CMAStatsObject.m */; };
-		E705AD9A1A2679DB0077F16C /* CMAFishingSpotAnnotationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = E705AD991A2679DB0077F16C /* CMAFishingSpotAnnotationView.xib */; };
-		E705AD9D1A267BCC0077F16C /* CMAFishingSpotAnnotationView.m in Sources */ = {isa = PBXBuildFile; fileRef = E705AD9C1A267BCC0077F16C /* CMAFishingSpotAnnotationView.m */; };
 		E705ADA01A26D7710077F16C /* CMASelectFishingSpotViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E705AD9F1A26D7710077F16C /* CMASelectFishingSpotViewController.m */; };
 		E70B637619D3A8E400DFBA85 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E70B637519D3A8E400DFBA85 /* Foundation.framework */; };
 		E70B637819D3A8E400DFBA85 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E70B637719D3A8E400DFBA85 /* CoreGraphics.framework */; };
@@ -139,9 +137,6 @@
 		E705AD8D1A2581400077F16C /* CMAStats.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAStats.m; path = ApplicationModel/Statistics/CMAStats.m; sourceTree = "<group>"; };
 		E705AD931A2595EE0077F16C /* CMAStatsObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAStatsObject.h; path = ApplicationModel/Statistics/CMAStatsObject.h; sourceTree = "<group>"; };
 		E705AD941A2595EE0077F16C /* CMAStatsObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAStatsObject.m; path = ApplicationModel/Statistics/CMAStatsObject.m; sourceTree = "<group>"; };
-		E705AD991A2679DB0077F16C /* CMAFishingSpotAnnotationView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CMAFishingSpotAnnotationView.xib; sourceTree = "<group>"; };
-		E705AD9B1A267BCC0077F16C /* CMAFishingSpotAnnotationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAFishingSpotAnnotationView.h; path = CustomViews/CMAFishingSpotAnnotationView.h; sourceTree = "<group>"; };
-		E705AD9C1A267BCC0077F16C /* CMAFishingSpotAnnotationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAFishingSpotAnnotationView.m; path = CustomViews/CMAFishingSpotAnnotationView.m; sourceTree = "<group>"; };
 		E705AD9E1A26D7710077F16C /* CMASelectFishingSpotViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMASelectFishingSpotViewController.h; path = ViewControllers/Locations/CMASelectFishingSpotViewController.h; sourceTree = "<group>"; };
 		E705AD9F1A26D7710077F16C /* CMASelectFishingSpotViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMASelectFishingSpotViewController.m; path = ViewControllers/Locations/CMASelectFishingSpotViewController.m; sourceTree = "<group>"; };
 		E70B637219D3A8E400DFBA85 /* MyFishingJournal.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyFishingJournal.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -511,9 +506,6 @@
 				E7A331351A2286E200C1D3F1 /* CMANoXView.m */,
 				E705AD7F1A2400270077F16C /* CMACircleView.h */,
 				E705AD801A2400270077F16C /* CMACircleView.m */,
-				E705AD991A2679DB0077F16C /* CMAFishingSpotAnnotationView.xib */,
-				E705AD9B1A267BCC0077F16C /* CMAFishingSpotAnnotationView.h */,
-				E705AD9C1A267BCC0077F16C /* CMAFishingSpotAnnotationView.m */,
 			);
 			name = CustomViews;
 			sourceTree = "<group>";
@@ -710,7 +702,6 @@
 				E7C926D319EE37750010A9FE /* MyFishingJournal.storyboard in Resources */,
 				E78BB7DB1A0C1B9B0082004B /* rectile.png in Resources */,
 				E7C29D381A17EA4200015B42 /* camera@3x.png in Resources */,
-				E705AD9A1A2679DB0077F16C /* CMAFishingSpotAnnotationView.xib in Resources */,
 				E7C29D5B1A17FFE200015B42 /* sort@3x.png in Resources */,
 				E7C29D3C1A17F5A500015B42 /* edit@1x.png in Resources */,
 				E7A331331A22855F00C1D3F1 /* CMANoXView.xib in Resources */,
@@ -749,7 +740,6 @@
 				E7A331301A1D710200C1D3F1 /* CMAViewPhotosViewController.m in Sources */,
 				E705ADA01A26D7710077F16C /* CMASelectFishingSpotViewController.m in Sources */,
 				E7A3311D1A1D706A00C1D3F1 /* CMAAddEntryViewController.m in Sources */,
-				E705AD9D1A267BCC0077F16C /* CMAFishingSpotAnnotationView.m in Sources */,
 				E705AD811A2400270077F16C /* CMACircleView.m in Sources */,
 				E7C29D7E1A1C183E00015B42 /* CMACameraButton.m in Sources */,
 				E7A51EA819F4440F009BDC20 /* CMAUserDefinesViewController.m in Sources */,

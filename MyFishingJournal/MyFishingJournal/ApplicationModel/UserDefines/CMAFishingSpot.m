@@ -93,4 +93,8 @@
     return [self.location coordinate];
 }
 
+- (NSString *)locationAsString {
+    return [NSString stringWithFormat:@"Latitude %f, Longitude %f", self.location.coordinate.latitude, self.location.coordinate.longitude];
+}
+
 @end

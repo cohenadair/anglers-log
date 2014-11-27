@@ -270,24 +270,46 @@
                         <sections>
                             <tableViewSection id="02r-2a-y3h">
                                 <cells>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="selectFishingSpotCell" textLabel="U66-30-Ou4" detailTextLabel="Vmp-XE-8I3" style="IBUITableViewCellStyleValue1" id="kVS-U5-0b3">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="selectFishingSpotCell" rowHeight="72" id="kVS-U5-0b3">
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="kVS-U5-0b3" id="9Na-tF-EnN">
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Fishing Spot" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="U66-30-Ou4">
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Fishing Spot" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mMI-sH-N3r">
+                                                    <rect key="frame" x="15" y="8" width="544" height="21"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="21" id="mzi-7x-TY3"/>
+                                                    </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Selected Fishing Spot Name" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Vmp-XE-8I3">
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                                    <color key="textColor" red="0.55686274509803924" green="0.55686274509803924" blue="0.57647058823529407" alpha="1" colorSpace="calibratedRGB"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Latitude 1.00000; Longitude 1.00000" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2Uf-Lt-Lix">
+                                                    <rect key="frame" x="15" y="28" width="544" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                                    <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Fish Caught" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2ey-Yi-aJi">
+                                                    <rect key="frame" x="15" y="46" width="544" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                                    <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="bottomMargin" secondItem="2ey-Yi-aJi" secondAttribute="bottom" constant="-3" id="Aj7-NR-InR"/>
+                                                <constraint firstItem="mMI-sH-N3r" firstAttribute="leading" secondItem="2Uf-Lt-Lix" secondAttribute="leading" id="D24-Fz-tMZ"/>
+                                                <constraint firstItem="mMI-sH-N3r" firstAttribute="top" secondItem="9Na-tF-EnN" secondAttribute="topMargin" id="FIm-sM-hO5"/>
+                                                <constraint firstItem="2Uf-Lt-Lix" firstAttribute="top" secondItem="9Na-tF-EnN" secondAttribute="topMargin" constant="20" id="HLB-ws-YhA"/>
+                                                <constraint firstItem="mMI-sH-N3r" firstAttribute="trailing" secondItem="9Na-tF-EnN" secondAttribute="trailingMargin" id="HQM-Zp-v5v"/>
+                                                <constraint firstItem="mMI-sH-N3r" firstAttribute="leading" secondItem="9Na-tF-EnN" secondAttribute="leadingMargin" constant="7" id="Hd5-1y-RIO"/>
+                                                <constraint firstItem="2ey-Yi-aJi" firstAttribute="top" secondItem="mMI-sH-N3r" secondAttribute="bottom" constant="17" id="I9O-fO-K4N"/>
+                                                <constraint firstItem="mMI-sH-N3r" firstAttribute="trailing" secondItem="2Uf-Lt-Lix" secondAttribute="trailing" id="Nyi-b0-sXJ"/>
+                                                <constraint firstItem="2Uf-Lt-Lix" firstAttribute="leading" secondItem="2ey-Yi-aJi" secondAttribute="leading" id="fBi-6H-nII"/>
+                                                <constraint firstItem="2Uf-Lt-Lix" firstAttribute="trailing" secondItem="2ey-Yi-aJi" secondAttribute="trailing" id="ljZ-A6-NI5"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="2Uf-Lt-Lix" secondAttribute="bottom" constant="15" id="nts-Ma-LeV"/>
+                                            </constraints>
                                         </tableViewCellContentView>
                                         <connections>
                                             <segue destination="Kmf-ol-gmN" kind="show" identifier="fromSingleLocationToSelectFishingSpot" id="uUK-tT-jvg"/>
@@ -356,8 +378,10 @@
                     </navigationItem>
                     <nil key="simulatedBottomBarMetrics"/>
                     <connections>
+                        <outlet property="coordinateLabel" destination="2Uf-Lt-Lix" id="Sua-p9-Tq6"/>
                         <outlet property="editButton" destination="9gZ-tT-Mgi" id="dkm-M7-MWb"/>
-                        <outlet property="fishingSpotLabel" destination="Vmp-XE-8I3" id="feQ-yh-TB6"/>
+                        <outlet property="fishCaughtLabel" destination="2ey-Yi-aJi" id="5c1-KN-GjT"/>
+                        <outlet property="fishingSpotLabel" destination="mMI-sH-N3r" id="ErN-ag-1DI"/>
                         <outlet property="loadingMapView" destination="Lyv-5X-Xve" id="sXG-ab-tDq"/>
                         <outlet property="mapView" destination="3ya-dt-qqn" id="nvp-91-UhT"/>
                         <segue destination="aLM-pd-xcd" kind="unwind" identifier="unwindToAddEntryFromSingleLocation" unwindAction="unwindToAddEntry:" id="i4g-iX-B1F"/>

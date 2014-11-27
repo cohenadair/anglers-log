@@ -7,17 +7,22 @@
 //
 
 #import "CMASingleLocationViewController.h"
+#import "CMAFishingSpotAnnotationView.h"
 #import "CMAAddLocationViewController.h"
 #import "CMASelectFishingSpotViewController.h"
 #import "CMAConstants.h"
 
 @interface CMASingleLocationViewController ()
 
-@property (weak, nonatomic)IBOutlet UIBarButtonItem *editButton;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *editButton;
 @property (weak, nonatomic) IBOutlet UILabel *fishingSpotLabel;
+@property (weak, nonatomic) IBOutlet UILabel *coordinateLabel;
+@property (weak, nonatomic) IBOutlet UILabel *fishCaughtLabel;
 
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
 @property (weak, nonatomic) IBOutlet UIView *loadingMapView;
+
+@property (strong, nonatomic)CMAFishingSpot *currentFishingSpot;
 
 @property (nonatomic)BOOL didSetRegion;
 @property (nonatomic)BOOL isReadOnly;
@@ -27,7 +32,7 @@
 #define kSectionSelectFishingSpot 0
 #define kSectionMap 1
 
-#define kDefaultCellHeight 44
+#define kDefaultCellHeight 72
 
 @implementation CMASingleLocationViewController
 
@@ -49,6 +54,11 @@
     if (self.isReadOnly)
         [self configureForReadOnly];
     
+    if (self.fishingSpotFromSingleEntry)
+        [self initCurrentFishingSpot:self.fishingSpotFromSingleEntry];
+    else if (!self.currentFishingSpot)
+        [self initCurrentFishingSpot:[self.location.fishingSpots objectAtIndex:0]];
+    
     [self initializeMapView];
 }
 
@@ -57,7 +67,6 @@
 }
 
 - (void)configureForReadOnly {
-    [self.fishingSpotLabel setText:self.fishingSpotFromSingleEntry.name];
     [self.mapView setUserInteractionEnabled:NO];
     [self.tableView setAllowsSelection:NO];
     
@@ -65,6 +74,20 @@
 }
 
 #pragma mark - Table View Initializing
+
+- (void)initCurrentFishingSpot:(CMAFishingSpot *)currentFishingSpot {
+    self.currentFishingSpot = currentFishingSpot;
+    
+    if (currentFishingSpot) {
+        self.fishingSpotLabel.text = self.currentFishingSpot.name;
+        self.coordinateLabel.text = [self.currentFishingSpot locationAsString];
+        self.fishCaughtLabel.text = [NSString stringWithFormat:@"%@ Fish Caught", [self.currentFishingSpot.fishCaught stringValue]];
+    } else {
+        self.fishingSpotLabel.text = @"No Fishing Spot Selected";
+        self.coordinateLabel.text = @"Latitude 0.00000, Longitude 0.00000";
+        self.fishCaughtLabel.text = @"0 Fish Caught";
+    }
+}
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == kSectionMap)
@@ -101,9 +124,7 @@
     
     if ([segue.identifier isEqualToString:@"unwindToSingleLocationFromSelectFishingSpot"]) {
         CMASelectFishingSpotViewController *source = segue.sourceViewController;
-        
-        [self.fishingSpotLabel setText:source.selectedCellLabelText];
-        [self.mapView selectAnnotation:[self annotationWithTitle:source.selectedCellLabelText] animated:YES];
+        [self initCurrentFishingSpot:[self.location fishingSpotNamed:source.selectedCellLabelText]];
         
         source.location = nil;
         source.selectedCellLabelText = nil;
@@ -111,10 +132,6 @@
 }
 
 #pragma mark - Map Initializing
-
-- (void)selectInitialAnnotation {
-    
-}
 
 // Used to reset the map after editing the location.
 - (void)mapViewReset {
@@ -138,8 +155,7 @@
         MKPointAnnotation *p = [MKPointAnnotation new];
         [p setCoordinate:spot.coordinate];
         [p setTitle:spot.name];
-        [p setSubtitle:[NSString stringWithFormat:@"%@ Fish Caught", [spot.fishCaught stringValue]]];
-        
+
         [mapView addAnnotation:p];
     }
 }
@@ -156,7 +172,11 @@
 }
 
 - (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view {
-    self.fishingSpotLabel.text = view.annotation.title;
+    [self initCurrentFishingSpot:[self.location fishingSpotNamed:view.annotation.title]];
+}
+
+- (void)mapView:(MKMapView *)mapView didDeselectAnnotationView:(MKAnnotationView *)view {
+    [self initCurrentFishingSpot:nil];
 }
 
 - (void)initializeMapView {
@@ -167,10 +187,7 @@
         [self.mapView setRegion:[self getMapRegion] animated:NO];
     
     // select initial annotation
-    if (self.fishingSpotFromSingleEntry)
-        [self.mapView selectAnnotation:[self annotationWithTitle:self.fishingSpotFromSingleEntry.name] animated:YES];
-    else
-        [self.mapView selectAnnotation:[self.mapView.annotations objectAtIndex:0] animated:YES];
+    [self.mapView selectAnnotation:[self annotationWithTitle:self.currentFishingSpot.name] animated:YES];
 }
 
 @end
