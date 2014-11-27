@@ -27,9 +27,12 @@
 
 @end
 
-NSInteger const INDEX_TITLE = 0;
-NSInteger const INDEX_MAP = 1;
-NSInteger const INDEX_COORDINATES = 2;
+#define kIndexTitle 0
+#define kIndexMap 1
+#define kIndexCoordinates 2
+
+#define kHeightTitle 44
+#define kHeightCoordinates 70
 
 @implementation CMAAddFishingSpotViewController
 
@@ -88,11 +91,15 @@ NSInteger const INDEX_COORDINATES = 2;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.item == 0)
+    if (indexPath.row == kIndexTitle)
         return 44;
     
-    if (indexPath.item == INDEX_MAP)
-        return tableView.frame.size.width * 0.75;
+    // so the map covers the remainder of the screen
+    if (indexPath.row == kIndexMap)
+        return tableView.frame.size.height - kHeightCoordinates - kHeightTitle;
+    
+    if (indexPath.row == kIndexCoordinates)
+        return kHeightCoordinates;
     
     // using the super class's implementation gets the height set in storyboard
     return [super tableView:tableView heightForRowAtIndexPath:indexPath];
@@ -106,7 +113,7 @@ NSInteger const INDEX_COORDINATES = 2;
         [CMAAlerts errorAlert:@"Please enter a fishing spot name."];
         return;
     }
-    
+
     // make sure the fishing spot doesn't already exist
     if (!self.isEditingFishingSpot)
         if ([self.locationFromAddLocation fishingSpotNamed:self.fishingSpotNameTextField.text] != nil) {

@@ -8,22 +8,26 @@
 
 #import "CMASingleLocationViewController.h"
 #import "CMAAddLocationViewController.h"
+#import "CMASelectFishingSpotViewController.h"
 #import "CMAConstants.h"
 
 @interface CMASingleLocationViewController ()
 
 @property (weak, nonatomic)IBOutlet UIBarButtonItem *editButton;
+@property (weak, nonatomic) IBOutlet UILabel *fishingSpotLabel;
 
-@property (weak, nonatomic)MKMapView *mapView;
-@property (weak, nonatomic)UIView *loadingMapView;
+@property (weak, nonatomic) IBOutlet MKMapView *mapView;
+@property (weak, nonatomic) IBOutlet UIView *loadingMapView;
 
 @property (nonatomic)BOOL didSetRegion;
 @property (nonatomic)BOOL isReadOnly;
 
 @end
 
-NSInteger const SECTION_MAP = 0;
-NSInteger const SECTION_FISHING_SPOT = 1;
+#define kSectionSelectFishingSpot 0
+#define kSectionMap 1
+
+#define kDefaultCellHeight 44
 
 @implementation CMASingleLocationViewController
 
@@ -37,16 +41,14 @@ NSInteger const SECTION_FISHING_SPOT = 1;
     
     if (self.isReadOnly)
         self.navigationItem.rightBarButtonItem = nil;
-    
-    [self.tableView setTableFooterView:[[UIView alloc] initWithFrame:CGRectZero]]; // removes empty cells at the end of the list
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-}
-
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
+    
+    if (self.isReadOnly)
+        [self configureForReadOnly];
+    
     [self initializeMapView];
 }
 
@@ -55,109 +57,20 @@ NSInteger const SECTION_FISHING_SPOT = 1;
 }
 
 - (void)configureForReadOnly {
-    [self.mapView selectAnnotation:[self annotationWithTitle:self.fishingSpotFromSingleEntry.name] animated:YES];
+    [self.fishingSpotLabel setText:self.fishingSpotFromSingleEntry.name];
     [self.mapView setUserInteractionEnabled:NO];
-    
-    [self.tableView selectRowAtIndexPath:self.selectedFishingSpotFromSingleEntry animated:NO scrollPosition:UITableViewScrollPositionMiddle];
     [self.tableView setAllowsSelection:NO];
+    
+    [[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:kSectionSelectFishingSpot]] setAccessoryType:UITableViewCellAccessoryNone];
 }
 
 #pragma mark - Table View Initializing
 
-- (NSIndexPath *)indexPathForName:(NSString *)textLabelText {
-    NSIndexPath *result = nil;
-    
-    for (int i = 0; i < [self.tableView numberOfRowsInSection:SECTION_FISHING_SPOT]; i++) {
-        result = [NSIndexPath indexPathForItem:i inSection:SECTION_FISHING_SPOT];
-        UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:result];
-        
-        if ([cell.textLabel.text isEqualToString:textLabelText])
-            return result;
-    }
-    
-    return result;
-}
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 2;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    return CGFLOAT_MIN;
-}
-
-- (CGFloat) tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-    return CGFLOAT_MIN;
-}
-
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.section == 0) {
-        return tableView.frame.size.width * 0.75;
-    }
+    if (indexPath.section == kSectionMap)
+        return tableView.frame.size.height - kDefaultCellHeight;
     
-    // using the super class's implementation gets the height set in storyboard
-    return [super tableView:tableView heightForRowAtIndexPath:indexPath];
-}
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if (section == SECTION_MAP)
-        return 1;
-    
-    if (section == SECTION_FISHING_SPOT)
-        return [self.location fishingSpotCount];
-    
-    return 0;
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    // map
-    if (indexPath.section == SECTION_MAP) {
-        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"mapCell" forIndexPath:indexPath];
-        self.mapView = (MKMapView *)[cell viewWithTag:100];
-        self.loadingMapView = (UIView *)[cell viewWithTag:200];
-        
-        return cell;
-    }
-    
-    // fishing spots
-    if (indexPath.section == SECTION_FISHING_SPOT) {
-        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"fishingSpotCell" forIndexPath:indexPath];
-        
-        CMAFishingSpot *fishingSpot = [self.location.fishingSpots objectAtIndex:indexPath.item];
-        [cell.textLabel setText:fishingSpot.name];
-        
-        if (self.previousViewID == CMAViewControllerID_SingleEntry && [fishingSpot.name isEqualToString:self.fishingSpotFromSingleEntry.name])
-            self.selectedFishingSpotFromSingleEntry = indexPath;
-        
-        NSString *coordinateText = [NSString stringWithFormat:@"Latitude: %f, Longitude: %f", fishingSpot.location.coordinate.latitude, fishingSpot.location.coordinate.longitude];
-        [cell.detailTextLabel setText:coordinateText];
-        
-        return cell;
-    }
-    
-    return nil;
-}
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    // unwind to Add Entry view after selecting a fishing spot
-    if (indexPath.section == SECTION_FISHING_SPOT && self.isSelectingForAddEntry) {
-        self.addEntryLabelText = [NSString stringWithFormat:@"%@%@%@", [self.location name], TOKEN_LOCATION, [[self.tableView cellForRowAtIndexPath:indexPath] textLabel].text];
-        [self performSegueWithIdentifier:@"unwindToAddEntryFromSingleLocation" sender:self];
-    }
-    
-    if (indexPath.section == SECTION_FISHING_SPOT && !self.isSelectingForAddEntry) {
-        UITableViewCell *cell = [tableView cellForRowAtIndexPath:[tableView indexPathForSelectedRow]];
-        [self.mapView selectAnnotation:[self annotationWithTitle:cell.textLabel.text] animated:YES];
-    }
-}
-
-- (void) tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
-    if (!(self.previousViewID == CMAViewControllerID_SingleEntry)) {
-        [tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionMiddle];
-        
-        UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-        [self.mapView selectAnnotation:[self annotationWithTitle:cell.textLabel.text] animated:YES];
-    }
+    return kDefaultCellHeight;
 }
 
 #pragma mark - Navigation
@@ -168,19 +81,40 @@ NSInteger const SECTION_FISHING_SPOT = 1;
         destination.previousViewID = CMAViewControllerID_SingleLocation;
         destination.location = self.location;
     }
+    
+    if ([segue.identifier isEqualToString:@"fromSingleLocationToSelectFishingSpot"]) {
+        CMASelectFishingSpotViewController *destination = [[segue.destinationViewController viewControllers] objectAtIndex:0];
+        destination.previousViewID = CMAViewControllerID_SingleLocation;
+        destination.location = self.location;
+    }
 }
 
 - (IBAction)unwindToSingleLocation:(UIStoryboardSegue *)segue {
     if ([segue.identifier isEqualToString:@"unwindToSingleLocationFromAddLocation"]) {
         CMAAddLocationViewController *source = segue.sourceViewController;
+        
         self.location = source.location;
-        source.location = nil;
-        [self.tableView reloadData];
         [self mapViewReset];
+        
+        source.location = nil;
+    }
+    
+    if ([segue.identifier isEqualToString:@"unwindToSingleLocationFromSelectFishingSpot"]) {
+        CMASelectFishingSpotViewController *source = segue.sourceViewController;
+        
+        [self.fishingSpotLabel setText:source.selectedCellLabelText];
+        [self.mapView selectAnnotation:[self annotationWithTitle:source.selectedCellLabelText] animated:YES];
+        
+        source.location = nil;
+        source.selectedCellLabelText = nil;
     }
 }
 
 #pragma mark - Map Initializing
+
+- (void)selectInitialAnnotation {
+    
+}
 
 // Used to reset the map after editing the location.
 - (void)mapViewReset {
@@ -219,13 +153,10 @@ NSInteger const SECTION_FISHING_SPOT = 1;
 - (void)mapViewDidFinishRenderingMap:(MKMapView *)mapView fullyRendered:(BOOL)fullyRendered {
     [self.mapView setHidden:NO];
     [self.loadingMapView setHidden:YES];
-    
-    if (self.isReadOnly)
-        [self configureForReadOnly];
 }
 
 - (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view {
-    [self.tableView selectRowAtIndexPath:[self indexPathForName:view.annotation.title] animated:YES scrollPosition:UITableViewScrollPositionNone];
+    self.fishingSpotLabel.text = view.annotation.title;
 }
 
 - (void)initializeMapView {
@@ -234,6 +165,12 @@ NSInteger const SECTION_FISHING_SPOT = 1;
     
     if (!self.didSetRegion)
         [self.mapView setRegion:[self getMapRegion] animated:NO];
+    
+    // select initial annotation
+    if (self.fishingSpotFromSingleEntry)
+        [self.mapView selectAnnotation:[self annotationWithTitle:self.fishingSpotFromSingleEntry.name] animated:YES];
+    else
+        [self.mapView selectAnnotation:[self.mapView.annotations objectAtIndex:0] animated:YES];
 }
 
 @end

@@ -21,6 +21,7 @@
 		E705AD951A2595EE0077F16C /* CMAStatsObject.m in Sources */ = {isa = PBXBuildFile; fileRef = E705AD941A2595EE0077F16C /* CMAStatsObject.m */; };
 		E705AD9A1A2679DB0077F16C /* CMAFishingSpotAnnotationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = E705AD991A2679DB0077F16C /* CMAFishingSpotAnnotationView.xib */; };
 		E705AD9D1A267BCC0077F16C /* CMAFishingSpotAnnotationView.m in Sources */ = {isa = PBXBuildFile; fileRef = E705AD9C1A267BCC0077F16C /* CMAFishingSpotAnnotationView.m */; };
+		E705ADA01A26D7710077F16C /* CMASelectFishingSpotViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E705AD9F1A26D7710077F16C /* CMASelectFishingSpotViewController.m */; };
 		E70B637619D3A8E400DFBA85 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E70B637519D3A8E400DFBA85 /* Foundation.framework */; };
 		E70B637819D3A8E400DFBA85 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E70B637719D3A8E400DFBA85 /* CoreGraphics.framework */; };
 		E70B637A19D3A8E400DFBA85 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E70B637919D3A8E400DFBA85 /* UIKit.framework */; };
@@ -141,6 +142,8 @@
 		E705AD991A2679DB0077F16C /* CMAFishingSpotAnnotationView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CMAFishingSpotAnnotationView.xib; sourceTree = "<group>"; };
 		E705AD9B1A267BCC0077F16C /* CMAFishingSpotAnnotationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAFishingSpotAnnotationView.h; path = CustomViews/CMAFishingSpotAnnotationView.h; sourceTree = "<group>"; };
 		E705AD9C1A267BCC0077F16C /* CMAFishingSpotAnnotationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAFishingSpotAnnotationView.m; path = CustomViews/CMAFishingSpotAnnotationView.m; sourceTree = "<group>"; };
+		E705AD9E1A26D7710077F16C /* CMASelectFishingSpotViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMASelectFishingSpotViewController.h; path = ViewControllers/Locations/CMASelectFishingSpotViewController.h; sourceTree = "<group>"; };
+		E705AD9F1A26D7710077F16C /* CMASelectFishingSpotViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMASelectFishingSpotViewController.m; path = ViewControllers/Locations/CMASelectFishingSpotViewController.m; sourceTree = "<group>"; };
 		E70B637219D3A8E400DFBA85 /* MyFishingJournal.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyFishingJournal.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E70B637519D3A8E400DFBA85 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		E70B637719D3A8E400DFBA85 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -473,6 +476,8 @@
 				E7A331251A1D70C200C1D3F1 /* CMAAddLocationViewController.m */,
 				E7A331261A1D70C200C1D3F1 /* CMASingleLocationViewController.h */,
 				E7A331271A1D70C200C1D3F1 /* CMASingleLocationViewController.m */,
+				E705AD9E1A26D7710077F16C /* CMASelectFishingSpotViewController.h */,
+				E705AD9F1A26D7710077F16C /* CMASelectFishingSpotViewController.m */,
 			);
 			name = Locations;
 			sourceTree = "<group>";
@@ -742,6 +747,7 @@
 				E705AD951A2595EE0077F16C /* CMAStatsObject.m in Sources */,
 				E72669B719DF14DE003C8E0B /* CMAEntry.m in Sources */,
 				E7A331301A1D710200C1D3F1 /* CMAViewPhotosViewController.m in Sources */,
+				E705ADA01A26D7710077F16C /* CMASelectFishingSpotViewController.m in Sources */,
 				E7A3311D1A1D706A00C1D3F1 /* CMAAddEntryViewController.m in Sources */,
 				E705AD9D1A267BCC0077F16C /* CMAFishingSpotAnnotationView.m in Sources */,
 				E705AD811A2400270077F16C /* CMACircleView.m in Sources */,

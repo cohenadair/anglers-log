@@ -10,6 +10,7 @@
 #import "CMAAppDelegate.h"
 #import "CMAAddLocationViewController.h"
 #import "CMASingleLocationViewController.h"
+#import "CMASelectFishingSpotViewController.h"
 #import "CMANoXView.h"
 #import "SWRevealViewController.h"
 
@@ -226,10 +227,15 @@
         return;
     }
     
-    // if it's a location, show Single Location View
+    // if it's a location
     if ([[self.userDefine name] isEqualToString:SET_LOCATIONS]) {
         self.selectedCellLabelText = [[[tableView cellForRowAtIndexPath:indexPath] textLabel] text];
-        [self performSegueWithIdentifier:@"fromEditSettingsToSingleLocation" sender:self];
+
+        if (self.isSelectingForAddEntry)
+            [self performSegueWithIdentifier:@"fromUserDefinesToSelectFishingSpot" sender:self];
+        else
+            [self performSegueWithIdentifier:@"fromUserDefinesToSingleLocation" sender:self];
+    
         return;
     }
     
@@ -413,11 +419,20 @@
         destination.previousViewID = CMAViewControllerID_EditSettings;
     }
     
-    if ([segue.identifier isEqualToString:@"fromEditSettingsToSingleLocation"]) {
+    if ([segue.identifier isEqualToString:@"fromUserDefinesToSelectFishingSpot"]) {
+        CMASelectFishingSpotViewController *destination = [[segue.destinationViewController viewControllers] objectAtIndex:0];
+        CMALocation *loc = [[[self journal] userDefineNamed:SET_LOCATIONS] objectNamed:self.selectedCellLabelText];
+        destination.location = loc;
+        destination.previousViewID = CMAViewControllerID_EditSettings;
+        destination.navigationItem.title = loc.name;
+    }
+    
+    if ([segue.identifier isEqualToString:@"fromUserDefinesToSingleLocation"]) {
         CMASingleLocationViewController *destination = [[segue.destinationViewController viewControllers] objectAtIndex:0];
-        destination.location = [[[self journal] userDefineNamed:SET_LOCATIONS] objectNamed:self.selectedCellLabelText];
-        destination.isSelectingForAddEntry = self.isSelectingForAddEntry;
-        destination.navigationItem.title = destination.location.name;
+        CMALocation *loc = [[[self journal] userDefineNamed:SET_LOCATIONS] objectNamed:self.selectedCellLabelText];
+        destination.location = loc;
+        destination.previousViewID = CMAViewControllerID_EditSettings;
+        destination.navigationItem.title = loc.name;
     }
 }
 

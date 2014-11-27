@@ -22,6 +22,7 @@
     if (self = [super init]) {
         _name = [NSMutableString stringWithString:[aName capitalizedString]];
         _location = [CLLocation new];
+        _fishCaught = [NSNumber numberWithInteger:0];
     }
     
     return self;
@@ -31,6 +32,7 @@
     if (self = [super init]) {
         _name = [NSMutableString string];
         _location = [CLLocation new];
+        _fishCaught = [NSNumber numberWithInteger:0];
     }
     
     return self;

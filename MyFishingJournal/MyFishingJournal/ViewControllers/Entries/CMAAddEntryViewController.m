@@ -9,6 +9,7 @@
 #import "CMAAddEntryViewController.h"
 #import "CMAUserDefinesViewController.h"
 #import "CMASingleLocationViewController.h"
+#import "CMASelectFishingSpotViewController.h"
 #import "CMAViewBaitsViewController.h"
 #import "CMAAppDelegate.h"
 #import "CMAAlerts.h"
@@ -400,14 +401,18 @@ NSString *const NO_SELECT = @"Not Selected";
         else
             [[cellToEdit detailTextLabel] setText:source.selectedCellLabelText];
         
+        source.selectedCellLabelText = nil;
         source.previousViewID = CMAViewControllerID_Nil;
     }
     
-    if ([segue.identifier isEqualToString:@"unwindToAddEntryFromSingleLocation"]) {
-        CMASingleLocationViewController *source = [segue sourceViewController];
+    if ([segue.identifier isEqualToString:@"unwindToAddEntryFromSelectFishingSpot"]) {
+        CMASelectFishingSpotViewController *source = [segue sourceViewController];
         UITableViewCell *cellToEdit = [self.tableView cellForRowAtIndexPath:self.indexPathForOptionsCell];
-        [[cellToEdit detailTextLabel] setText:source.addEntryLabelText];
         
+        [[cellToEdit detailTextLabel] setText:source.selectedCellLabelText];
+        
+        source.location = nil;
+        source.selectedCellLabelText = nil;
         source.previousViewID = CMAViewControllerID_Nil;
     }
     
@@ -415,6 +420,8 @@ NSString *const NO_SELECT = @"Not Selected";
         CMAViewBaitsViewController *source = [segue sourceViewController];
         UITableViewCell *cellToEdit = [self.tableView cellForRowAtIndexPath:self.indexPathForOptionsCell];
         [[cellToEdit detailTextLabel] setText:source.baitForAddEntry.name];
+        
+        source.baitForAddEntry = nil;
     }
 }
 
