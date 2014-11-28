@@ -12,6 +12,9 @@
 
 @interface CMAStats : NSObject
 
+#define kHighCatchEntryLength 0
+#define kHighCatchEntryWeight 1
+
 typedef NS_ENUM(NSInteger, CMAPieChartDataType) {
     CMAPieChartDataTypeCaught = 0,
     CMAPieChartDataTypeWeight = 1,
@@ -36,6 +39,7 @@ typedef NS_ENUM(NSInteger, CMAPieChartDataType) {
 // accessing
 - (NSInteger)sliceObjectCount;
 - (NSDate *)earliestEntryDate;
+- (CMAEntry *)highCatchEntryFor:(NSInteger)lengthOrWeight;
 
 - (NSInteger)highestValueIndex;
 - (NSInteger)indexForName:(NSString *)aName;

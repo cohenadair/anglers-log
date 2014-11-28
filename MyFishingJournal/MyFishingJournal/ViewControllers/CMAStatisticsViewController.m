@@ -9,6 +9,7 @@
 #import "CMAStatisticsViewController.h"
 #import "CMAUserDefinesViewController.h"
 #import "CMAViewBaitsViewController.h"
+#import "CMASingleEntryViewController.h"
 #import "CMANoXView.h"
 #import "CMAAppDelegate.h"
 #import "CMAStats.h"
@@ -23,17 +24,31 @@
 @property (weak, nonatomic) IBOutlet UILabel *pieChartPercentLabel;
 @property (weak, nonatomic) IBOutlet UILabel *pieChartSpeciesLabel;
 @property (weak, nonatomic) IBOutlet UILabel *pieChartCaughtLabel;
-@property (weak, nonatomic) IBOutlet UISegmentedControl *piChartControl;
+@property (weak, nonatomic) IBOutlet UISegmentedControl *pieChartControl;
 @property (weak, nonatomic) IBOutlet UIButton *totalButton;
+@property (weak, nonatomic) IBOutlet UIImageView *longestCatchImage;
+@property (weak, nonatomic) IBOutlet UILabel *longestCatchNameLabel;
+@property (weak, nonatomic) IBOutlet UILabel *longestCatchValueLabel;
+@property (weak, nonatomic) IBOutlet UIImageView *heaviestCatchImage;
+@property (weak, nonatomic) IBOutlet UILabel *heaviestCatchNameLabel;
+@property (weak, nonatomic) IBOutlet UILabel *heaviestCatchValueLabel;
 
 @property (strong, nonatomic) CMANoXView *noStatsView;
 @property (strong, nonatomic) XYPieChart *pieChart;
 @property (strong, nonatomic) NSMutableArray *colorsArray;
 @property (strong, nonatomic) CMAStats *stats;
+@property (strong, nonatomic) CMAEntry *longestCatchEntry;
+@property (strong, nonatomic) CMAEntry *heaviestCatchEntry;
+@property (strong, nonatomic) CMAEntry *entryForSingleEntry;
 
 @property (nonatomic) NSInteger initialSelectedIndex;
 
 @end
+
+#define kSectionLongestFish 1
+#define kSectionHeaviestFish 2
+
+#define kDefaultHeaderHeight 30
 
 @implementation CMAStatisticsViewController
 
@@ -87,6 +102,9 @@
         
         [self.chartView bringSubviewToFront:self.pieChartCenterView];
         [self.chartView bringSubviewToFront:self.totalButton];
+        [self.chartView bringSubviewToFront:self.pieChartControl];
+        
+        [self initTableView];
     }
     
     [self.tableView setTableFooterView:[[UIView alloc] initWithFrame:CGRectZero]]; // removes empty cells at the end of the list
@@ -104,6 +122,52 @@
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
+}
+
+#pragma mark - Table View Initializing
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    if (section == kSectionLongestFish || section == kSectionHeaviestFish)
+        return kDefaultHeaderHeight;
+    
+    return 0;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+    return CGFLOAT_MIN;
+}
+
+- (void)initTableView {
+    self.longestCatchEntry = [self.stats highCatchEntryFor:kHighCatchEntryLength];
+    self.heaviestCatchEntry = [self.stats highCatchEntryFor:kHighCatchEntryWeight];
+    
+    if ([self.longestCatchEntry imageCount] > 0)
+        [self.longestCatchImage setImage:[self.longestCatchEntry.images anyObject]];
+    else
+        [self.longestCatchImage setImage:[UIImage imageNamed:@"no-image.png"]];
+    
+    [self.longestCatchNameLabel setText:self.longestCatchEntry.fishSpecies.name];
+    [self.longestCatchValueLabel setText:[NSString stringWithFormat:@"%@ %@", [self.longestCatchEntry.fishLength stringValue], [[self journal] lengthUnitsAsString:NO]]];
+    
+    if ([self.heaviestCatchEntry imageCount] > 0)
+        [self.heaviestCatchImage setImage:[self.heaviestCatchEntry.images anyObject]];
+    else
+        [self.heaviestCatchImage setImage:[UIImage imageNamed:@"no-image.png"]];
+    
+    [self.heaviestCatchNameLabel setText:self.heaviestCatchEntry.fishSpecies.name];
+    [self.heaviestCatchValueLabel setText:[NSString stringWithFormat:@"%@ %@", [self.heaviestCatchEntry.fishWeight stringValue], [[self journal] weightUnitsAsString:NO]]];
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.section == kSectionLongestFish) {
+        self.entryForSingleEntry = self.longestCatchEntry;
+        [self performSegueWithIdentifier:@"fromStatisticsToSingleEntry" sender:self];
+    }
+    
+    if (indexPath.section == kSectionHeaviestFish) {
+        self.entryForSingleEntry = self.heaviestCatchEntry;
+        [self performSegueWithIdentifier:@"fromStatisticsToSingleEntry" sender:self];
+    }
 }
 
 #pragma mark - Chart View Initializing
@@ -170,11 +234,11 @@
     CGFloat screenWidth = self.view.frame.size.width;
     
     NSInteger chartRadius = screenWidth * 0.40;
-    NSInteger chartViewHeight = screenWidth * 0.90;
+    NSInteger chartViewHeight = 335;
     NSInteger chartViewWidth  = screenWidth * 0.85;
     
     CGRect frame = CGRectMake((screenWidth - chartViewWidth) / 2, 0, chartViewWidth, chartViewHeight);
-    CGPoint center = CGPointMake(frame.size.width / 2, (frame.size.height / 2));
+    CGPoint center = CGPointMake(frame.size.width / 2, self.pieChartCenterView.center.y);
     self.pieChart = [[XYPieChart alloc] initWithFrame:frame Center:center Radius:chartRadius];
     
     [self.pieChart setDelegate:self];
@@ -187,7 +251,7 @@
     
     [self.chartView setFrame:frame];
     [self.chartView addSubview:self.pieChart];
-    
+
     [self.pieChartCenterView.layer setCornerRadius:self.pieChartCenterView.frame.size.width / 2];
 }
 
@@ -263,6 +327,11 @@
         CMAUserDefinesViewController *destination = [[segue.destinationViewController viewControllers] objectAtIndex:0];
         destination.userDefine = [[self journal] userDefineNamed:self.stats.userDefineName];
         destination.previousViewID = CMAViewControllerID_Statistics;
+    }
+    
+    if ([segue.identifier isEqualToString:@"fromStatisticsToSingleEntry"]) {
+        CMASingleEntryViewController *destination = [[segue.destinationViewController viewControllers] objectAtIndex:0];
+        destination.entry = self.entryForSingleEntry;
     }
 }
 

@@ -199,4 +199,24 @@
     return result;
 }
 
+- (CMAEntry *)highCatchEntryFor:(NSInteger)lengthOrWeight {
+    CMAEntry *result = nil;
+    NSInteger high = -1;
+    NSInteger val = 0;
+    
+    for (CMAEntry *entry in self.journal.entries) {
+        if (lengthOrWeight == kHighCatchEntryLength)
+            val = [entry.fishLength integerValue];
+        else
+            val = [entry.fishWeight integerValue];
+        
+        if (val > high) {
+            high = val;
+            result = entry;
+        }
+    }
+    
+    return result;
+}
+
 @end
