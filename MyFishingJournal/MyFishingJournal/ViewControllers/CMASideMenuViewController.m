@@ -13,6 +13,8 @@
 
 @interface CMASideMenuViewController ()
 
+@property (weak, nonatomic) IBOutlet UIView *titleView;
+
 @end
 
 @implementation CMASideMenuViewController
@@ -30,11 +32,19 @@
     
     // Uncomment the following line to preserve selection between presentations.
     self.clearsSelectionOnViewWillAppear = NO;
+    
+    [self initTitleView];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)initTitleView {
+    UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0, self.titleView.frame.size.height - 1, self.titleView.frame.size.width, 1)];
+    [line setBackgroundColor:[UIColor blackColor]];
+    [self.titleView addSubview:line];
 }
 
 #pragma mark - Table View Initializing

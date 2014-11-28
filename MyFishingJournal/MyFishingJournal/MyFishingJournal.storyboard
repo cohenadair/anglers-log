@@ -2023,15 +2023,13 @@
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Od5-G8-AZC" id="Usv-0f-D5O">
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="My Fishing Journal" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="NqD-4u-P8M">
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="MY FISHING JOURNAL" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="NqD-4u-P8M">
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="20"/>
-                                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="15"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
                                         </tableViewCellContentView>
-                                        <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="UfF-aT-SpT">
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -2211,6 +2209,9 @@
                     </tableView>
                     <navigationItem key="navigationItem" id="aVc-kw-DJA"/>
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
+                    <connections>
+                        <outlet property="titleView" destination="Usv-0f-D5O" id="Klx-os-Ryj"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JCQ-W3-6UJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -2630,21 +2631,21 @@
         <image name="stats.png" width="50" height="50"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="0It-ub-fzN"/>
         <segue reference="gDt-Tw-gtk"/>
+        <segue reference="aBE-xI-c3y"/>
         <segue reference="egX-OW-uSX"/>
         <segue reference="guB-6y-sIg"/>
         <segue reference="Jyy-wS-dXA"/>
-        <segue reference="rQz-NV-wiY"/>
-        <segue reference="uUK-tT-jvg"/>
-        <segue reference="b63-Bg-tWk"/>
-        <segue reference="dyy-eh-4UZ"/>
-        <segue reference="77U-eo-oVF"/>
-        <segue reference="niX-TX-CGD"/>
         <segue reference="DIu-nR-jUP"/>
         <segue reference="OHB-Pt-9SF"/>
+        <segue reference="77U-eo-oVF"/>
         <segue reference="2ub-xD-2JF"/>
         <segue reference="Mmt-ea-Rlu"/>
+        <segue reference="b63-Bg-tWk"/>
+        <segue reference="uUK-tT-jvg"/>
         <segue reference="Qcx-rg-dpe"/>
         <segue reference="ij7-4o-wMK"/>
+        <segue reference="rQz-NV-wiY"/>
     </inferredMetricsTieBreakers>
 </document>
