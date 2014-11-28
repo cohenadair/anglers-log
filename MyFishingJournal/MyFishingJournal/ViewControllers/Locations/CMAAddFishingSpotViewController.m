@@ -48,6 +48,10 @@
         self.fishingSpotNameTextField.text = self.fishingSpot.name;
         self.isEditingFishingSpot = YES;
     }
+    
+    UIImage *image = [[UIImage imageNamed:@"rectile.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    [self.rectileImage setImage:image];
+    [self.rectileImage setTintColor:[UIColor whiteColor]];
 }
 
 - (void)viewWillAppear:(BOOL)animated {

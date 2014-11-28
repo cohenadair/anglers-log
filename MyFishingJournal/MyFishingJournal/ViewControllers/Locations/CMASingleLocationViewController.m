@@ -7,7 +7,6 @@
 //
 
 #import "CMASingleLocationViewController.h"
-#import "CMAFishingSpotAnnotationView.h"
 #import "CMAAddLocationViewController.h"
 #import "CMASelectFishingSpotViewController.h"
 #import "CMAConstants.h"
