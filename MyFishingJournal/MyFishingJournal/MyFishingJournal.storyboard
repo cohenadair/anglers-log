@@ -10,12 +10,12 @@
         <scene sceneID="9jA-04-5A4">
             <objects>
                 <tableViewController id="xYT-rV-mpH" customClass="CMASettingsViewController" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="yn2-cm-8GV">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="yn2-cm-8GV">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <sections>
-                            <tableViewSection id="OUe-P2-Aba">
+                            <tableViewSection headerTitle="Measurement" id="OUe-P2-Aba">
                                 <cells>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="segmentedControlCell" id="M1f-EG-IkT">
                                         <autoresizingMask key="autoresizingMask"/>
@@ -37,7 +37,7 @@
                                                 <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="Hfc-Hg-ucV">
                                                     <rect key="frame" x="461" y="8" width="123" height="29"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="123" id="Ljs-zl-uVx"/>
+                                                        <constraint firstAttribute="width" constant="123" id="qUU-dV-ZAX"/>
                                                     </constraints>
                                                     <segments>
                                                         <segment title="Imperial"/>
@@ -49,10 +49,10 @@
                                                 </segmentedControl>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="Y4b-f5-jPA" firstAttribute="centerY" secondItem="Hfc-Hg-ucV" secondAttribute="centerY" id="2Oq-3j-1AK"/>
-                                                <constraint firstAttribute="trailingMargin" secondItem="Hfc-Hg-ucV" secondAttribute="trailing" constant="8" id="2y1-JX-h5R"/>
                                                 <constraint firstItem="Y4b-f5-jPA" firstAttribute="top" secondItem="G7q-4v-LvY" secondAttribute="topMargin" constant="-9" id="93C-Nr-pXy"/>
-                                                <constraint firstItem="Hfc-Hg-ucV" firstAttribute="top" secondItem="G7q-4v-LvY" secondAttribute="topMargin" id="Jyp-Vt-jR6"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="Hfc-Hg-ucV" secondAttribute="trailing" constant="8" id="FhY-8z-aTG"/>
+                                                <constraint firstItem="Hfc-Hg-ucV" firstAttribute="centerY" secondItem="Y4b-f5-jPA" secondAttribute="centerY" id="NgK-b7-jKR"/>
+                                                <constraint firstItem="Hfc-Hg-ucV" firstAttribute="top" secondItem="G7q-4v-LvY" secondAttribute="topMargin" id="Ngw-S5-67a"/>
                                                 <constraint firstItem="Y4b-f5-jPA" firstAttribute="leading" secondItem="G7q-4v-LvY" secondAttribute="leadingMargin" constant="8" id="nV5-LA-vTW"/>
                                             </constraints>
                                         </tableViewCellContentView>

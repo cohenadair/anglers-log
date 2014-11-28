@@ -137,6 +137,13 @@
     return CGFLOAT_MIN;
 }
 
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    if ([[self journal] entryCount] <= 0)
+        return 0;
+    
+    return 3;
+}
+
 - (void)initTableView {
     self.longestCatchEntry = [self.stats highCatchEntryFor:kHighCatchEntryLength];
     self.heaviestCatchEntry = [self.stats highCatchEntryFor:kHighCatchEntryWeight];

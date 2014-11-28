@@ -45,7 +45,7 @@
     
     self.noImagesView.imageView.image = [UIImage imageNamed:@"photos_large.png"];
     self.noImagesView.titleView.text = @"Entries with photos.";
-    self.noImagesView.subtitleView.text = @"Please add a photo to a new or existing Entry.";
+    self.noImagesView.subtitleView.text = @"Add a photo to a new or existing Entry to begin.";
     
     [self.noImagesView setFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
     [self.view addSubview:self.noImagesView];

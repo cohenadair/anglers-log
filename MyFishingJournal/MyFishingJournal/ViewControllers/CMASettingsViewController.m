@@ -54,14 +54,11 @@
 
 #pragma mark - Table View Initializing
 
-- (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    return TABLE_SECTION_SPACING;
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    return 31;
 }
 
 - (CGFloat) tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-    if (section == ([self numberOfSectionsInTableView:tableView] - 1))
-        return TABLE_SECTION_SPACING;
-    
     return CGFLOAT_MIN;
 }
 
