@@ -189,6 +189,9 @@ typedef enum
 - (void)revealToggleAnimated:(BOOL)animated;
 - (void)rightRevealToggleAnimated:(BOOL)animated; // <-- simetric implementation of the above for the rightViewController
 
+// Toggles overlay UIView when the menu is hidden/shown.
+- (void)toggleOverlay;
+
 // The following methods are meant to be directly connected to the action method of a button
 // to perform user triggered postion change of the controller views. This is ussually added to a
 // button on top left or right of the frontViewController

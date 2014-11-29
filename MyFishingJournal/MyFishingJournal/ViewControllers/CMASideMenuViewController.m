@@ -42,7 +42,7 @@
 }
 
 - (void)initTitleView {
-    UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0, self.titleView.frame.size.height - 1, self.titleView.frame.size.width, 1)];
+    UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0, self.titleView.frame.size.height - 1, self.titleView.frame.size.width, 0.5)];
     [line setBackgroundColor:[UIColor blackColor]];
     [self.titleView addSubview:line];
 }
@@ -67,6 +67,8 @@
     
     // Manage the view transition and tell SWRevealViewController the new front view controller for display. We reuse the navigation controller and replace the view controller with destination view controller.
     if ([segue isKindOfClass: [SWRevealViewControllerSegue class]]) {
+        [self.revealViewController toggleOverlay];
+        
         SWRevealViewControllerSegue *swSegue = (SWRevealViewControllerSegue*)segue;
         
         swSegue.performBlock = ^(SWRevealViewControllerSegue *rvc_segue, UIViewController *svc, UIViewController *dvc) {

@@ -171,11 +171,11 @@ static CGFloat scaledValue( CGFloat v1, CGFloat min2, CGFloat max2, CGFloat min1
 
 - (void)reloadShadow
 {
-    CALayer *frontViewLayer = _frontView.layer;
+    /*CALayer *frontViewLayer = _frontView.layer;
     frontViewLayer.shadowColor = [UIColor blackColor].CGColor;
     frontViewLayer.shadowOpacity = 1.0;
     frontViewLayer.shadowOffset = _c.frontViewShadowOffset;
-    frontViewLayer.shadowRadius = 1.0;
+    frontViewLayer.shadowRadius = 1.0;*/
 }
 
 
@@ -767,7 +767,25 @@ const int FrontViewPositionNone = 0xff;
     if (_frontViewPosition <= FrontViewPositionLeft)
         toogledFrontViewPosition = FrontViewPositionRight;
     
+    [self toggleOverlay];
+    
     [self setFrontViewPosition:toogledFrontViewPosition animated:animated];
+}
+
+- (void)toggleOverlay {
+    id frontVC = self.frontViewController;
+    BOOL hasOverlay = [[frontVC view] viewWithTag:123] != nil;
+    
+    if (hasOverlay) {
+        UIView *overlay = [[frontVC view] viewWithTag:123];
+        [overlay removeFromSuperview];
+    } else {
+        UIView *overlay = [[UIView alloc] initWithFrame:CGRectMake(0, 0, [frontVC view].frame.size.width, [frontVC view].frame.size.height)];
+        [overlay setTag:123];
+        [overlay setBackgroundColor:[UIColor colorWithWhite:0.0 alpha:0.60]];
+        [overlay addGestureRecognizer:self.tapGestureRecognizer];
+        [[frontVC view] addSubview:overlay];
+    }
 }
 
 
@@ -1085,6 +1103,7 @@ const int FrontViewPositionNone = 0xff;
     UIToolbar *toolbar = [[[[self.frontViewController childViewControllers] objectAtIndex:0] navigationController] toolbar];
     
     [toolbar setUserInteractionEnabled:YES];
+    [self toggleOverlay];
 }
 
 
