@@ -125,6 +125,11 @@
     if (self.isSelectingForAddEntry || self.isSelectingForStatistics)
         [cell setAccessoryType:UITableViewCellAccessoryNone];
     
+    if (indexPath.item % 2 == 0)
+        [cell setBackgroundColor:[UIColor colorWithWhite:0.95 alpha:1.0]];
+    else
+        [cell setBackgroundColor:[UIColor whiteColor]];
+    
     return cell;
 }
 

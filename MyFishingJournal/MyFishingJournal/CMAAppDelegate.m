@@ -24,6 +24,8 @@
     
     [[UINavigationBar appearance] setTranslucent:NO];
     [[UINavigationBar appearance] setBarTintColor:[UIColor colorWithWhite:0.97 alpha:1.0]];
+    [[UIToolbar appearance] setTranslucent:NO];
+    [[UIToolbar appearance] setBarTintColor:[UIColor colorWithWhite:0.97 alpha:1.0]];
     
     return YES;
 }
