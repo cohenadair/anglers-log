@@ -7,8 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		E700E4641A29B61D00BB6337 /* wood-texture.png in Resources */ = {isa = PBXBuildFile; fileRef = E700E4631A29B61D00BB6337 /* wood-texture.png */; };
-		E700E4661A29BE1600BB6337 /* wood-texture-dark.png in Resources */ = {isa = PBXBuildFile; fileRef = E700E4651A29BE1600BB6337 /* wood-texture-dark.png */; };
+		E700E46E1A29CF2600BB6337 /* no_image.png in Resources */ = {isa = PBXBuildFile; fileRef = E700E46D1A29CF2600BB6337 /* no_image.png */; };
 		E705AD6C1A229AD20077F16C /* fishing_methods_large.png in Resources */ = {isa = PBXBuildFile; fileRef = E705AD6B1A229AD20077F16C /* fishing_methods_large.png */; };
 		E705AD731A229E0B0077F16C /* baits_large.png in Resources */ = {isa = PBXBuildFile; fileRef = E705AD6D1A229E0B0077F16C /* baits_large.png */; };
 		E705AD741A229E0B0077F16C /* entries_large.png in Resources */ = {isa = PBXBuildFile; fileRef = E705AD6E1A229E0B0077F16C /* entries_large.png */; };
@@ -44,7 +43,6 @@
 		E72669D219E6F569003C8E0B /* CMAUserDefinesTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = E72669D119E6F569003C8E0B /* CMAUserDefinesTestCase.m */; };
 		E72669DE19E76B63003C8E0B /* CMAUserDefine.m in Sources */ = {isa = PBXBuildFile; fileRef = E72669DD19E76B63003C8E0B /* CMAUserDefine.m */; };
 		E72669DF19E76B64003C8E0B /* CMAUserDefine.m in Sources */ = {isa = PBXBuildFile; fileRef = E72669DD19E76B63003C8E0B /* CMAUserDefine.m */; };
-		E738583D19FCD6DE00FE122B /* no-image.png in Resources */ = {isa = PBXBuildFile; fileRef = E738583C19FCD6DE00FE122B /* no-image.png */; };
 		E738584A19FDFCBF00FE122B /* CMASpecies.m in Sources */ = {isa = PBXBuildFile; fileRef = E738584919FDFCBF00FE122B /* CMASpecies.m */; };
 		E738584B19FDFCBF00FE122B /* CMASpecies.m in Sources */ = {isa = PBXBuildFile; fileRef = E738584919FDFCBF00FE122B /* CMASpecies.m */; };
 		E738585019FE093700FE122B /* CMAFishingSpot.m in Sources */ = {isa = PBXBuildFile; fileRef = E738584D19FE093700FE122B /* CMAFishingSpot.m */; };
@@ -123,8 +121,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		E700E4631A29B61D00BB6337 /* wood-texture.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "wood-texture.png"; path = "Images/wood-texture.png"; sourceTree = "<group>"; };
-		E700E4651A29BE1600BB6337 /* wood-texture-dark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "wood-texture-dark.png"; path = "Images/wood-texture-dark.png"; sourceTree = "<group>"; };
+		E700E46D1A29CF2600BB6337 /* no_image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = no_image.png; path = Images/no_image.png; sourceTree = "<group>"; };
 		E705AD6B1A229AD20077F16C /* fishing_methods_large.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = fishing_methods_large.png; path = Images/LargeIcons/fishing_methods_large.png; sourceTree = "<group>"; };
 		E705AD6D1A229E0B0077F16C /* baits_large.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = baits_large.png; path = Images/LargeIcons/baits_large.png; sourceTree = "<group>"; };
 		E705AD6E1A229E0B0077F16C /* entries_large.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = entries_large.png; path = Images/LargeIcons/entries_large.png; sourceTree = "<group>"; };
@@ -169,7 +166,6 @@
 		E72669D119E6F569003C8E0B /* CMAUserDefinesTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CMAUserDefinesTestCase.m; sourceTree = "<group>"; };
 		E72669DC19E76B63003C8E0B /* CMAUserDefine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAUserDefine.h; path = ApplicationModel/UserDefines/CMAUserDefine.h; sourceTree = "<group>"; };
 		E72669DD19E76B63003C8E0B /* CMAUserDefine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAUserDefine.m; path = ApplicationModel/UserDefines/CMAUserDefine.m; sourceTree = "<group>"; };
-		E738583C19FCD6DE00FE122B /* no-image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "no-image.png"; path = "Images/no-image.png"; sourceTree = "<group>"; };
 		E738584819FDFCBF00FE122B /* CMASpecies.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMASpecies.h; path = ApplicationModel/UserDefines/CMASpecies.h; sourceTree = "<group>"; };
 		E738584919FDFCBF00FE122B /* CMASpecies.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMASpecies.m; path = ApplicationModel/UserDefines/CMASpecies.m; sourceTree = "<group>"; };
 		E738584C19FE093700FE122B /* CMAFishingSpot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAFishingSpot.h; path = ApplicationModel/UserDefines/CMAFishingSpot.h; sourceTree = "<group>"; };
@@ -443,12 +439,10 @@
 		E738583B19FCD49100FE122B /* Images */ = {
 			isa = PBXGroup;
 			children = (
-				E700E4651A29BE1600BB6337 /* wood-texture-dark.png */,
-				E700E4631A29B61D00BB6337 /* wood-texture.png */,
+				E700E46D1A29CF2600BB6337 /* no_image.png */,
 				E705AD6A1A229ABD0077F16C /* LargeIcons */,
 				E7C29D1E1A17DD7E00015B42 /* Icons */,
 				E78BB7DA1A0C1B9B0082004B /* rectile.png */,
-				E738583C19FCD6DE00FE122B /* no-image.png */,
 			);
 			name = Images;
 			sourceTree = "<group>";
@@ -692,6 +686,7 @@
 				E7C29D2F1A17E0C200015B42 /* menu@2x.png in Resources */,
 				E7C29D561A17FFE200015B42 /* fishing_methods.png in Resources */,
 				E7C29D5C1A17FFE200015B42 /* species.png in Resources */,
+				E700E46E1A29CF2600BB6337 /* no_image.png in Resources */,
 				E705AD751A229E0B0077F16C /* locations_large.png in Resources */,
 				E705AD781A229E0B0077F16C /* stats_large.png in Resources */,
 				E7C29D4C1A17FC6200015B42 /* stats.png in Resources */,
@@ -714,14 +709,11 @@
 				E7C29D3D1A17F5A500015B42 /* edit@2x.png in Resources */,
 				E7C29D591A17FFE200015B42 /* sort@1x.png in Resources */,
 				E705AD771A229E0B0077F16C /* species_large.png in Resources */,
-				E738583D19FCD6DE00FE122B /* no-image.png in Resources */,
-				E700E4661A29BE1600BB6337 /* wood-texture-dark.png in Resources */,
 				E7C29D4B1A17FC6200015B42 /* settings.png in Resources */,
 				E70B638819D3A8E400DFBA85 /* Images.xcassets in Resources */,
 				E7C29D581A17FFE200015B42 /* locations.png in Resources */,
 				E7C29D441A17F8BB00015B42 /* checkmark@3x.png in Resources */,
 				E7C29D5A1A17FFE200015B42 /* sort@2x.png in Resources */,
-				E700E4641A29B61D00BB6337 /* wood-texture.png in Resources */,
 				E7C29D3E1A17F5A500015B42 /* edit@3x.png in Resources */,
 				E705AD731A229E0B0077F16C /* baits_large.png in Resources */,
 				E705AD761A229E0B0077F16C /* photos_large.png in Resources */,

@@ -130,7 +130,7 @@
     if ([entry.images count] > 0)
         cell.thumbImage.image = [entry.images anyObject];
     else
-        cell.thumbImage.image = [UIImage imageNamed:@"no-image.png"];
+        cell.thumbImage.image = [UIImage imageNamed:@"no_image.png"];
     
     if (indexPath.item % 2 == 0)
         [cell setBackgroundColor:[UIColor colorWithWhite:0.95 alpha:1.0]];

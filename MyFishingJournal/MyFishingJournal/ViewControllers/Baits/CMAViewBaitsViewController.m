@@ -117,7 +117,7 @@
     if (bait.image)
         [cell.thumbImage setImage:bait.image];
     else
-        [cell.thumbImage setImage:[UIImage imageNamed:@"no-image.png"]];
+        [cell.thumbImage setImage:[UIImage imageNamed:@"no_image.png"]];
     
     [cell.nameLabel setText:bait.name];
     [cell.fishCaughtLabel setText:[NSString stringWithFormat:@"%@ Fish Caught", [bait.fishCaught stringValue]]];
