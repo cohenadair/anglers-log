@@ -237,7 +237,7 @@
     
     // add separator to required cells
     if (p.hasSeparator && !(indexPath.item == [self.tableCellProperties count] - 1)) {
-        UIView *line = [[UIView alloc] initWithFrame:CGRectMake(15, p.height - 1, cell.frame.size.width - 15, 1)];
+        UIView *line = [[UIView alloc] initWithFrame:CGRectMake(15, p.height - 1, self.view.frame.size.width - 15, 1)];
         [line setBackgroundColor:[UIColor colorWithWhite:0.90 alpha:1.0]];
         [cell addSubview:line];
     }
