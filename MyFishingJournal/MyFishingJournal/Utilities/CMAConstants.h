@@ -63,4 +63,7 @@ extern NSString *const GLOBAL_FONT;
 
 extern CGFloat const TABLE_SECTION_SPACING;
 
+UIColor *CELL_COLOR_DARK; // initialized in AppDelegate.m
+UIColor *CELL_COLOR_LIGHT; // initialized in AppDelegate.m
+
 #endif

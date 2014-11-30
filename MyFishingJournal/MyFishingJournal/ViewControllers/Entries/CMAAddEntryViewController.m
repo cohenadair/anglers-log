@@ -60,7 +60,7 @@ NSInteger const DATE_PICKER_ROW = 1;
 NSInteger const DATE_DISPLAY_SECTION = 0;
 NSInteger const DATE_DISPLAY_ROW = 0;
 
-NSInteger const IMAGES_HEIGHT = 150;
+NSInteger const IMAGES_HEIGHT = 160;
 NSInteger const IMAGES_SECTION = 2;
 
 NSInteger const IMAGE_VIEW_TAG = 100;

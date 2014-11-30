@@ -126,9 +126,9 @@
         [cell setAccessoryType:UITableViewCellAccessoryNone];
     
     if (indexPath.item % 2 == 0)
-        [cell setBackgroundColor:[UIColor colorWithWhite:0.95 alpha:1.0]];
+        [cell setBackgroundColor:CELL_COLOR_DARK];
     else
-        [cell setBackgroundColor:[UIColor whiteColor]];
+        [cell setBackgroundColor:CELL_COLOR_LIGHT];
     
     return cell;
 }
