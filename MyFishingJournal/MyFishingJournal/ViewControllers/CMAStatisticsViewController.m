@@ -240,7 +240,7 @@
 - (void)initChartView {
     CGFloat screenWidth = self.view.frame.size.width;
     
-    NSInteger chartRadius = screenWidth * 0.40;
+    NSInteger chartRadius = 125;
     NSInteger chartViewHeight = 335;
     NSInteger chartViewWidth  = screenWidth * 0.85;
     

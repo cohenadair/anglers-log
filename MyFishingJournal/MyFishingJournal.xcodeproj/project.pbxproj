@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		E700E46E1A29CF2600BB6337 /* no_image.png in Resources */ = {isa = PBXBuildFile; fileRef = E700E46D1A29CF2600BB6337 /* no_image.png */; };
+		E700E4761A2AA71A00BB6337 /* CMALaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = E700E4751A2AA71A00BB6337 /* CMALaunchScreen.xib */; };
 		E705AD6C1A229AD20077F16C /* fishing_methods_large.png in Resources */ = {isa = PBXBuildFile; fileRef = E705AD6B1A229AD20077F16C /* fishing_methods_large.png */; };
 		E705AD731A229E0B0077F16C /* baits_large.png in Resources */ = {isa = PBXBuildFile; fileRef = E705AD6D1A229E0B0077F16C /* baits_large.png */; };
 		E705AD741A229E0B0077F16C /* entries_large.png in Resources */ = {isa = PBXBuildFile; fileRef = E705AD6E1A229E0B0077F16C /* entries_large.png */; };
@@ -122,6 +123,7 @@
 
 /* Begin PBXFileReference section */
 		E700E46D1A29CF2600BB6337 /* no_image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = no_image.png; path = Images/no_image.png; sourceTree = "<group>"; };
+		E700E4751A2AA71A00BB6337 /* CMALaunchScreen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CMALaunchScreen.xib; sourceTree = "<group>"; };
 		E705AD6B1A229AD20077F16C /* fishing_methods_large.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = fishing_methods_large.png; path = Images/LargeIcons/fishing_methods_large.png; sourceTree = "<group>"; };
 		E705AD6D1A229E0B0077F16C /* baits_large.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = baits_large.png; path = Images/LargeIcons/baits_large.png; sourceTree = "<group>"; };
 		E705AD6E1A229E0B0077F16C /* entries_large.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = entries_large.png; path = Images/LargeIcons/entries_large.png; sourceTree = "<group>"; };
@@ -367,6 +369,7 @@
 				E70B638719D3A8E400DFBA85 /* Images.xcassets */,
 				E70B637C19D3A8E400DFBA85 /* Supporting Files */,
 				E7C926D219EE37750010A9FE /* MyFishingJournal.storyboard */,
+				E700E4751A2AA71A00BB6337 /* CMALaunchScreen.xib */,
 			);
 			path = MyFishingJournal;
 			sourceTree = "<group>";
@@ -652,6 +655,9 @@
 				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = "Cohen Adair";
 				TargetAttributes = {
+					E70B637119D3A8E400DFBA85 = {
+						DevelopmentTeam = RQ74DU9PML;
+					};
 					E70B638C19D3A8E400DFBA85 = {
 						TestTargetID = E70B637119D3A8E400DFBA85;
 					};
@@ -706,6 +712,7 @@
 				E7C29D5B1A17FFE200015B42 /* sort@3x.png in Resources */,
 				E7C29D3C1A17F5A500015B42 /* edit@1x.png in Resources */,
 				E7A331331A22855F00C1D3F1 /* CMANoXView.xib in Resources */,
+				E700E4761A2AA71A00BB6337 /* CMALaunchScreen.xib in Resources */,
 				E7C29D3D1A17F5A500015B42 /* edit@2x.png in Resources */,
 				E7C29D591A17FFE200015B42 /* sort@1x.png in Resources */,
 				E705AD771A229E0B0077F16C /* species_large.png in Resources */,

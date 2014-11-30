@@ -26,6 +26,8 @@
 	<true/>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Location services required to load current location.</string>
+	<key>UILaunchStoryboardName</key>
+	<string>CMALaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
 	<string>MyFishingJournal</string>
 	<key>UIRequiredDeviceCapabilities</key>
