@@ -10,4 +10,8 @@
 
 @interface CMACircleView : UIView
 
+@property (weak, nonatomic) IBOutlet UILabel *bigLabel;
+@property (weak, nonatomic) IBOutlet UILabel *subLabel;
+@property (weak, nonatomic) IBOutlet UILabel *detailLabel;
+
 @end

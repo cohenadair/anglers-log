@@ -54,6 +54,7 @@
 		E738585719FE098A00FE122B /* CMABait.m in Sources */ = {isa = PBXBuildFile; fileRef = E738585519FE098A00FE122B /* CMABait.m */; };
 		E738585A19FE0A3400FE122B /* CMAFishingMethod.m in Sources */ = {isa = PBXBuildFile; fileRef = E738585919FE0A3400FE122B /* CMAFishingMethod.m */; };
 		E738585B19FE0A3400FE122B /* CMAFishingMethod.m in Sources */ = {isa = PBXBuildFile; fileRef = E738585919FE0A3400FE122B /* CMAFishingMethod.m */; };
+		E748527A1A2BEB73002BF1C6 /* CMACircleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = E74852791A2BEB73002BF1C6 /* CMACircleView.xib */; };
 		E78BB7D41A0724290082004B /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E78BB7D31A0724290082004B /* MapKit.framework */; };
 		E78BB7D61A0724760082004B /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E78BB7D51A0724760082004B /* CoreLocation.framework */; };
 		E78BB7DB1A0C1B9B0082004B /* rectile.png in Resources */ = {isa = PBXBuildFile; fileRef = E78BB7DA1A0C1B9B0082004B /* rectile.png */; };
@@ -178,6 +179,7 @@
 		E738585519FE098A00FE122B /* CMABait.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMABait.m; path = ApplicationModel/UserDefines/CMABait.m; sourceTree = "<group>"; };
 		E738585819FE0A3400FE122B /* CMAFishingMethod.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAFishingMethod.h; path = ApplicationModel/UserDefines/CMAFishingMethod.h; sourceTree = "<group>"; };
 		E738585919FE0A3400FE122B /* CMAFishingMethod.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAFishingMethod.m; path = ApplicationModel/UserDefines/CMAFishingMethod.m; sourceTree = "<group>"; };
+		E74852791A2BEB73002BF1C6 /* CMACircleView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CMACircleView.xib; sourceTree = "<group>"; };
 		E78BB7D31A0724290082004B /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		E78BB7D51A0724760082004B /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		E78BB7DA1A0C1B9B0082004B /* rectile.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = rectile.png; path = Images/rectile.png; sourceTree = "<group>"; };
@@ -509,6 +511,7 @@
 				E7A331351A2286E200C1D3F1 /* CMANoXView.m */,
 				E705AD7F1A2400270077F16C /* CMACircleView.h */,
 				E705AD801A2400270077F16C /* CMACircleView.m */,
+				E74852791A2BEB73002BF1C6 /* CMACircleView.xib */,
 			);
 			name = CustomViews;
 			sourceTree = "<group>";
@@ -692,6 +695,7 @@
 				E7C29D2F1A17E0C200015B42 /* menu@2x.png in Resources */,
 				E7C29D561A17FFE200015B42 /* fishing_methods.png in Resources */,
 				E7C29D5C1A17FFE200015B42 /* species.png in Resources */,
+				E748527A1A2BEB73002BF1C6 /* CMACircleView.xib in Resources */,
 				E700E46E1A29CF2600BB6337 /* no_image.png in Resources */,
 				E705AD751A229E0B0077F16C /* locations_large.png in Resources */,
 				E705AD781A229E0B0077F16C /* stats_large.png in Resources */,

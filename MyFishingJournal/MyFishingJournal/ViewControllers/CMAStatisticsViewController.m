@@ -14,16 +14,14 @@
 #import "CMAAppDelegate.h"
 #import "CMAStats.h"
 #import "SWRevealViewController.h"
+#import "CMACircleView.h"
 
 @interface CMAStatisticsViewController ()
 
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *menuButton;
 
 @property (weak, nonatomic) IBOutlet UIView *chartView;
-@property (weak, nonatomic) IBOutlet UIView *pieChartCenterView;
-@property (weak, nonatomic) IBOutlet UILabel *pieChartPercentLabel;
-@property (weak, nonatomic) IBOutlet UILabel *pieChartSpeciesLabel;
-@property (weak, nonatomic) IBOutlet UILabel *pieChartCaughtLabel;
+@property (strong, nonatomic) CMACircleView *pieChartCenterView;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *pieChartControl;
 @property (weak, nonatomic) IBOutlet UIButton *totalButton;
 @property (weak, nonatomic) IBOutlet UIImageView *longestCatchImage;
@@ -180,21 +178,21 @@
 #pragma mark - Chart View Initializing
 
 - (void)updatePieCenterLabelsForIndex:(NSInteger)anIndex {
-    self.pieChartPercentLabel.text = [self.stats stringForPercentAtIndex:anIndex];
-    self.pieChartSpeciesLabel.text = [self.stats nameAtIndex:anIndex];
-    self.pieChartCaughtLabel.text = [self.stats detailTextAtIndex:anIndex];
+    self.pieChartCenterView.bigLabel.text = [self.stats stringForPercentAtIndex:anIndex];
+    self.pieChartCenterView.subLabel.text = [self.stats nameAtIndex:anIndex];
+    self.pieChartCenterView.detailLabel.text = [self.stats detailTextAtIndex:anIndex];
 }
 
 - (void)updatePieCenterLabelsForTotal {
-    self.pieChartPercentLabel.text = [NSString stringWithFormat:@"%ld", [self.stats totalValue]];
-    self.pieChartSpeciesLabel.text = [self.stats totalDescription];
+    self.pieChartCenterView.bigLabel.text = [NSString stringWithFormat:@"%ld", [self.stats totalValue]];
+    self.pieChartCenterView.subLabel.text = [self.stats totalDescription];
     
     // get the earliest entry date
     NSDate *earliestDate = [self.stats earliestEntryDate];
     NSDateFormatter *dateFormatter = [NSDateFormatter new];
     [dateFormatter setDateFormat:@"MM/dd/yyyy"];
     
-    self.pieChartCaughtLabel.text = [NSString stringWithFormat:@"Since %@", [dateFormatter stringFromDate:earliestDate]];
+    self.pieChartCenterView.detailLabel.text = [NSString stringWithFormat:@"Since %@", [dateFormatter stringFromDate:earliestDate]];
 }
 
 - (void)selectPieChartSliceAtIndex:(NSInteger)anIndex {
@@ -237,29 +235,41 @@
     }
 }
 
+- (void)initChartCenterViewAtCenter:(CGPoint)center pieChartRadius:(NSInteger)radius {
+    self.pieChartCenterView = (CMACircleView *)[[[NSBundle mainBundle] loadNibNamed:@"CMACircleView" owner:self options:nil] objectAtIndex:0];
+    [self.pieChartCenterView setFrame:CGRectMake(0, 0, radius * 2 - 50, radius * 2 - 50)];
+    [self.pieChartCenterView setCenter:center];
+    [self.pieChartCenterView.layer setCornerRadius:self.pieChartCenterView.frame.size.width / 2];
+    [self.pieChartCenterView setBackgroundColor:[UIColor whiteColor]];
+    
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapPieChartCenter)];
+    [tap setNumberOfTapsRequired:1];
+    
+    [self.pieChartCenterView addGestureRecognizer:tap];
+}
+
 - (void)initChartView {
     CGFloat screenWidth = self.view.frame.size.width;
+    CGFloat controlHeight = self.pieChartControl.frame.size.height;
+    CGRect chartFrame = CGRectMake(0, 0, screenWidth, screenWidth + controlHeight);
+    NSInteger chartRadius = screenWidth / 2 - 40;
+    CGPoint center = CGPointMake(chartFrame.size.width / 2, (chartFrame.size.height - controlHeight) / 2 - 5);
     
-    NSInteger chartRadius = 125;
-    NSInteger chartViewHeight = 335;
-    NSInteger chartViewWidth  = screenWidth * 0.85;
-    
-    CGRect frame = CGRectMake((screenWidth - chartViewWidth) / 2, 0, chartViewWidth, chartViewHeight);
-    CGPoint center = CGPointMake(frame.size.width / 2, self.pieChartCenterView.center.y);
-    self.pieChart = [[XYPieChart alloc] initWithFrame:frame Center:center Radius:chartRadius];
+    self.pieChart = [[XYPieChart alloc] initWithFrame:chartFrame Center:center Radius:chartRadius];
     
     [self.pieChart setDelegate:self];
     [self.pieChart setDataSource:self];
     [self.pieChart setStartPieAngle:M_PI_2];
-    [self.pieChart setLabelColor:[UIColor blackColor]];
     [self.pieChart setShowLabel:NO];
-    [self.pieChart setLabelRadius:chartRadius - 15];
     [self.pieChart setShowPercentage:NO];
     
-    [self.chartView setFrame:frame];
+    [self.chartView setFrame:chartFrame];
+    
+    // pie chart center
+    [self initChartCenterViewAtCenter:center pieChartRadius:chartRadius];
+    
     [self.chartView addSubview:self.pieChart];
-
-    [self.pieChartCenterView.layer setCornerRadius:self.pieChartCenterView.frame.size.width / 2];
+    [self.chartView addSubview:self.pieChartCenterView];
 }
 
 - (NSUInteger)numberOfSlicesInPieChart:(XYPieChart *)pieChart {
@@ -289,7 +299,7 @@
 
 #pragma mark - Events
 
-- (IBAction)tapPieChartCenter:(UITapGestureRecognizer *)sender {
+- (void)tapPieChartCenter {
     if (self.stats.pieChartDataType == CMAPieChartDataTypeBait)
         [self performSegueWithIdentifier:@"fromStatisticsToViewBaits" sender:self];
     else
