@@ -10,12 +10,8 @@
 
 @implementation CMANoXView
 
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect {
-    // Drawing code
+- (void)centerInParent:(UIView *)aParentView {
+    [self setFrame:CGRectMake(0, 0, aParentView.frame.size.width, aParentView.frame.size.height)];
 }
-*/
 
 @end

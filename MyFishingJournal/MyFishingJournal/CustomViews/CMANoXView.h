@@ -13,5 +13,8 @@
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;
 @property (weak, nonatomic) IBOutlet UILabel *titleView;
 @property (weak, nonatomic) IBOutlet UILabel *subtitleView;
+@property (weak, nonatomic) IBOutlet UIView *subView;
+
+- (void)centerInParent:(UIView *)aParentView;
 
 @end
