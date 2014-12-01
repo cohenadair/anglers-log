@@ -27,10 +27,8 @@
     
     UIColor *buttonTintColor = [UIColor redColor];
     
-    [[UINavigationBar appearance] setTranslucent:NO];
     [[UINavigationBar appearance] setBarTintColor:[UIColor colorWithWhite:0.97 alpha:1.0]];
     [[UINavigationBar appearance] setTintColor:buttonTintColor];
-    [[UIToolbar appearance] setTranslucent:NO];
     [[UIToolbar appearance] setBarTintColor:[UIColor colorWithWhite:0.97 alpha:1.0]];
     [[UIToolbar appearance] setTintColor:buttonTintColor];
     [[UITableViewCell appearance] setTintColor:buttonTintColor];

@@ -80,6 +80,9 @@ NSString *const NO_SELECT = @"Not Selected";
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    // needed so the navigation bar doesn't change color after the view has loaded (not sure why the latter happens)
+    [self.navigationController.navigationBar setTranslucent:NO];
+    
     self.dateFormatter = [NSDateFormatter new];
     [self.dateFormatter setDateFormat:@"MMM dd, yyyy 'at' h:mm a"];
     

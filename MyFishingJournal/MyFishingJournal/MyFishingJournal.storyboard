@@ -11,7 +11,7 @@
             <objects>
                 <tableViewController id="xYT-rV-mpH" customClass="CMASettingsViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="yn2-cm-8GV">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="536"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <sections>
@@ -68,7 +68,7 @@
                     <navigationItem key="navigationItem" title="Settings" id="Tqn-ua-d8b">
                         <barButtonItem key="leftBarButtonItem" image="menu.png" id="dIN-2n-lvB"/>
                     </navigationItem>
-                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
                     <nil key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="menuButton" destination="dIN-2n-lvB" id="MWr-ke-4b2"/>
@@ -84,7 +84,7 @@
             <objects>
                 <tableViewController id="6A2-09-VCg" customClass="CMAUserDefinesViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelectionDuringEditing="YES" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="H8C-A3-qVx">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="492"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
@@ -125,8 +125,8 @@
                     <navigationItem key="navigationItem" id="5ct-CG-ULC">
                         <barButtonItem key="leftBarButtonItem" image="menu.png" id="jB7-or-ZZq"/>
                     </navigationItem>
-                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
-                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics" translucent="NO"/>
                     <connections>
                         <outlet property="addButton" destination="oAT-Nv-Fd9" id="X0S-ah-TEI"/>
                         <outlet property="menuButton" destination="jB7-or-ZZq" id="fhy-Zm-Lld"/>
@@ -147,7 +147,7 @@
             <objects>
                 <collectionViewController id="Ikc-04-OhE" customClass="CMAViewPhotosViewController" sceneMemberID="viewController">
                     <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="i2c-Nc-qGd">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="536"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="2" minimumInteritemSpacing="2" id="LWR-Bl-nK5">
@@ -186,6 +186,7 @@
                     <navigationItem key="navigationItem" title="Photo Gallery" id="72O-DS-qB2">
                         <barButtonItem key="leftBarButtonItem" image="menu.png" id="oqK-m3-inL"/>
                     </navigationItem>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
                     <nil key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="menuButton" destination="oqK-m3-inL" id="E13-R9-IRN"/>
@@ -201,7 +202,7 @@
             <objects>
                 <collectionViewController id="ld6-vl-IIs" customClass="CMASinglePhotoViewController" sceneMemberID="viewController">
                     <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" dataMode="prototypes" id="WVo-Yh-t3z">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="536"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="vQo-By-ZzZ">
@@ -252,6 +253,8 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
+                    <nil key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="actionButton" destination="6wP-Ff-BnE" id="9CH-Cw-zXN"/>
                     </connections>
@@ -265,7 +268,7 @@
             <objects>
                 <tableViewController id="adr-BS-f2S" customClass="CMASingleLocationViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="1" sectionFooterHeight="1" id="eVA-Zu-3b5">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="536"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <sections>
@@ -377,6 +380,7 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
                     <nil key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="coordinateLabel" destination="2Uf-Lt-Lix" id="Sua-p9-Tq6"/>
@@ -398,7 +402,7 @@
             <objects>
                 <tableViewController id="2nW-M9-1OZ" customClass="CMASelectFishingSpotViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="2Rl-ym-sf4">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="536"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
@@ -423,6 +427,8 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" id="UzF-hD-R7n"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
+                    <nil key="simulatedBottomBarMetrics"/>
                     <connections>
                         <segue destination="fau-sB-z1s" kind="unwind" identifier="unwindToAddEntryFromSelectFishingSpot" unwindAction="unwindToAddEntry:" id="hE0-cc-TQm"/>
                         <segue destination="fau-sB-z1s" kind="unwind" identifier="unwindToSingleLocationFromSelectFishingSpot" unwindAction="unwindToSingleLocation:" id="PrZ-rc-Jc9"/>
@@ -438,7 +444,7 @@
             <objects>
                 <tableViewController id="hTK-uR-uLB" customClass="CMAAddBaitViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="xhK-WL-S8i">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="536"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <sections>
@@ -537,6 +543,8 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
+                    <nil key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="cameraImageButton" destination="ucu-yo-GUe" id="kHA-5H-pfw"/>
                         <outlet property="cancelButton" destination="ZNj-1S-nCE" id="yFP-gM-6g3"/>
@@ -558,7 +566,7 @@
             <objects>
                 <tableViewController id="t80-QM-oZt" customClass="CMAViewEntriesViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelectionDuringEditing="YES" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="sto-jE-hWR">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="556"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="492"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <inset key="separatorInset" minX="92" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -654,7 +662,7 @@
                     <navigationItem key="navigationItem" title="Entries" id="SyW-dX-zkA">
                         <barButtonItem key="leftBarButtonItem" image="menu.png" id="egA-Uh-9jg"/>
                     </navigationItem>
-                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics" translucent="NO"/>
                     <connections>
                         <outlet property="addButton" destination="q9u-dx-Xbo" id="RGi-PZ-DXq"/>
@@ -672,7 +680,7 @@
             <objects>
                 <tableViewController id="Y9b-VK-mzA" customClass="CMAEntrySortingViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="7aT-aY-8rS">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="536"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <view key="tableHeaderView" contentMode="scaleToFill" id="gV6-y0-xQV">
@@ -803,7 +811,8 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
-                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
+                    <nil key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="cancelButton" destination="Pih-RJ-GNE" id="Rhc-EC-gas"/>
                         <outlet property="doneButton" destination="are-Cj-ZFQ" id="qVJ-av-KLD"/>
@@ -973,6 +982,7 @@
                     </tableView>
                     <extendedEdge key="edgesForExtendedLayout"/>
                     <navigationItem key="navigationItem" id="fZu-E0-Ax7"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
                     <nil key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="imageCollectionView" destination="5tv-Cu-EOb" id="QoD-1O-sRC"/>
@@ -1374,7 +1384,8 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
-                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
+                    <nil key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="baitUsedDetailLabel" destination="DKE-eF-o43" id="ChZ-pt-0nF"/>
                         <outlet property="cameraImage" destination="AjM-HM-sGP" id="XhV-ar-WgA"/>
@@ -1411,7 +1422,7 @@
             <objects>
                 <tableViewController id="BYv-3d-Jds" customClass="CMAStatisticsViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="1" id="JDz-8f-fBd">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="536"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <view key="tableHeaderView" contentMode="scaleToFill" id="eLE-Xl-OXn">
@@ -1549,7 +1560,8 @@
                     <navigationItem key="navigationItem" title="Statistics" id="Cq5-v6-7WE">
                         <barButtonItem key="leftBarButtonItem" image="menu.png" id="5AJ-OJ-g4m"/>
                     </navigationItem>
-                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
+                    <nil key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="chartView" destination="eLE-Xl-OXn" id="D4V-pm-yNh"/>
                         <outlet property="heaviestCatchImage" destination="h94-9Q-cnu" id="oVr-6A-nvW"/>
@@ -1634,7 +1646,7 @@
             <objects>
                 <tableViewController id="wdM-fv-DrJ" customClass="CMAAddLocationViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" allowsSelectionDuringEditing="YES" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="mwQ-Sh-lp1">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="536"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <prototypes>
@@ -1715,6 +1727,8 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
+                    <nil key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="cancelButton" destination="3bG-ba-joH" id="ItW-Ba-hN4"/>
                         <outlet property="doneButton" destination="Lkd-Ib-THA" id="ao9-Rp-XuT"/>
@@ -1732,7 +1746,7 @@
             <objects>
                 <tableViewController id="4io-XD-WCS" customClass="CMAAddFishingSpotViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="yE4-h0-iWi">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="536"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <sections>
@@ -1893,6 +1907,8 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
+                    <nil key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="doneButton" destination="6zi-Ba-2lv" id="4Ri-VQ-woV"/>
                         <outlet property="fishingSpotNameTextField" destination="0Pc-wS-1HL" id="f1A-Db-CGE"/>
@@ -2338,7 +2354,7 @@
             <objects>
                 <tableViewController id="McS-f2-jt7" customClass="CMAViewBaitsViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="VjT-B1-Kfw">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="64" width="600" height="492"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <inset key="separatorInset" minX="85" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -2408,8 +2424,8 @@
                     <navigationItem key="navigationItem" title="Baits" id="ddg-1w-R32">
                         <barButtonItem key="leftBarButtonItem" image="menu.png" id="GOn-JB-tIy"/>
                     </navigationItem>
-                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
-                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics" translucent="NO"/>
                     <connections>
                         <outlet property="addButton" destination="EbO-P3-oA3" id="Mef-9L-uyj"/>
                         <outlet property="deleteButton" destination="rG5-eu-1yv" id="Ul2-DY-Gbs"/>
@@ -2429,7 +2445,7 @@
             <objects>
                 <tableViewController id="Qdi-bC-STH" customClass="CMASingleBaitViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="35" sectionHeaderHeight="22" sectionFooterHeight="22" id="Azw-AT-uGe">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="64" width="600" height="536"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <sections>
@@ -2502,6 +2518,7 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
                     <nil key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="baitDescriptionLabel" destination="xQd-fe-uhp" id="cr0-Oi-5xu"/>
@@ -2584,21 +2601,21 @@
         <image name="stats.png" width="50" height="50"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="DIu-nR-jUP"/>
-        <segue reference="0It-ub-fzN"/>
-        <segue reference="Jyy-wS-dXA"/>
-        <segue reference="egX-OW-uSX"/>
         <segue reference="aBE-xI-c3y"/>
+        <segue reference="Jyy-wS-dXA"/>
         <segue reference="gDt-Tw-gtk"/>
         <segue reference="guB-6y-sIg"/>
-        <segue reference="rQz-NV-wiY"/>
-        <segue reference="b63-Bg-tWk"/>
-        <segue reference="iOf-th-u5i"/>
-        <segue reference="9XR-fI-0eS"/>
-        <segue reference="ij7-4o-wMK"/>
-        <segue reference="wZB-7v-gkR"/>
+        <segue reference="egX-OW-uSX"/>
+        <segue reference="0It-ub-fzN"/>
         <segue reference="bAG-il-Vyj"/>
+        <segue reference="Mmt-ea-Rlu"/>
+        <segue reference="DIu-nR-jUP"/>
         <segue reference="OHB-Pt-9SF"/>
         <segue reference="77U-eo-oVF"/>
+        <segue reference="y0h-hR-J5c"/>
+        <segue reference="RpT-ts-gTM"/>
+        <segue reference="uUK-tT-jvg"/>
+        <segue reference="Qcx-rg-dpe"/>
+        <segue reference="ij7-4o-wMK"/>
     </inferredMetricsTieBreakers>
 </document>
