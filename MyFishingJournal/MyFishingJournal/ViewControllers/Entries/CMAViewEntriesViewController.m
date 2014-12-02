@@ -74,8 +74,10 @@
     self.dateFormatter = [NSDateFormatter new];
     [self.dateFormatter setDateFormat:@"MMM dd, yyyy 'at' h:mm a"];
     
-    if ([[self journal] entryCount] <= 0)
+    if ([[self journal] entryCount] <= 0) {
         [self.deleteButton setEnabled:NO];
+        [self.sortButton setEnabled:NO];
+    }
 
     [self initSideBarMenu];
     
@@ -90,8 +92,10 @@
     
     [self handleNoEntriesView];
     
-    if ([[self journal] entryCount] > 0)
+    if ([[self journal] entryCount] > 0) {
         self.deleteButton.enabled = YES;
+        self.sortButton.enabled = YES;
+    }
     
     [self.tableView reloadData];
 }
@@ -158,6 +162,7 @@
             [self enableToolbarButtons];
             [self initNoEntriesView];
             [self.deleteButton setEnabled:NO];
+            [self.sortButton setEnabled:NO];
         }
     }
 }
