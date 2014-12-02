@@ -7,6 +7,7 @@
 //
 
 #import "CMASelectFishingSpotViewController.h"
+#import "CMAAddLocationViewController.h"
 
 @interface CMASelectFishingSpotViewController ()
 
@@ -47,7 +48,6 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-    
     if (self.previousViewID == CMAViewControllerIDEditSettings) {
         self.selectedCellLabelText = [NSString stringWithFormat:@"%@%@%@", self.location.name, TOKEN_LOCATION, cell.textLabel.text];
         [self performSegueWithIdentifier:@"unwindToAddEntryFromSelectFishingSpot" sender:self];
@@ -57,6 +57,26 @@
         self.selectedCellLabelText = cell.textLabel.text;
         [self performSegueWithIdentifier:@"unwindToSingleLocationFromSelectFishingSpot" sender:self];
     }
+}
+
+#pragma mark - Navigation
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    if ([segue.identifier isEqualToString:@"fromSelectFishingSpotToAddLocation"]) {
+        CMAAddLocationViewController *destination = [[segue.destinationViewController viewControllers] objectAtIndex:0];
+        destination.location = self.location;
+        destination.previousViewID = CMAViewControllerIDSelectFishingSpot;
+    }
+}
+
+- (IBAction)unwindToSelectFishingSpot:(UIStoryboardSegue *)segue {
+    CMAAddLocationViewController *source = segue.sourceViewController;
+    
+    self.location = source.location;
+    source.location = nil;
+    source.previousViewID = CMAViewControllerIDNil;
+    
+    [self.tableView reloadData];
 }
 
 @end

@@ -42,7 +42,7 @@ NSInteger const SECTION_ADD = 2;
     [self.tableView setEditing:YES];
     [self.tableView setTableFooterView:[[UIView alloc] initWithFrame:CGRectZero]]; // removes empty cells at the end of the list
     
-    self.isEditingLocation = (self.previousViewID == CMAViewControllerIDSingleLocation);
+    self.isEditingLocation = (self.previousViewID == CMAViewControllerIDSingleLocation || self.previousViewID == CMAViewControllerIDSelectFishingSpot);
     
     if (!self.isEditingLocation)
         self.location = [CMALocation new];
@@ -186,13 +186,13 @@ NSInteger const SECTION_ADD = 2;
     CMALocation *locationToAdd = [CMALocation new];
     
     if ([self checkUserInputAndSetLocation:locationToAdd]) {
-        if (self.previousViewID == CMAViewControllerIDSingleLocation) {
+        if (self.isEditingLocation) {
             [[self journal] editUserDefine:SET_LOCATIONS objectNamed:self.location.name newProperties:locationToAdd];
             [self setLocation:locationToAdd];
         } else
             [[self journal] addUserDefine:SET_LOCATIONS objectToAdd:locationToAdd];
         
-        if (!self.previousViewID == CMAViewControllerIDSingleLocation)
+        if (!self.isEditingLocation)
             [self setLocation:nil];
         
         [[self journal] archive];
@@ -204,7 +204,7 @@ NSInteger const SECTION_ADD = 2;
     self.location = self.nonEditedLocation;
     self.nonEditedLocation = nil;
     
-    if (!self.previousViewID == CMAViewControllerIDSingleLocation)
+    if (!self.isEditingLocation)
         [self setLocation:nil];
     
     [self performSegueToPreviousView];
@@ -220,6 +220,10 @@ NSInteger const SECTION_ADD = 2;
             
         case CMAViewControllerIDSingleLocation:
             [self performSegueWithIdentifier:@"unwindToSingleLocationFromAddLocation" sender:self];
+            break;
+            
+        case CMAViewControllerIDSelectFishingSpot:
+            [self performSegueWithIdentifier:@"unwindToSelectFishingSpotFromAddLocation" sender:self];
             break;
             
         default:

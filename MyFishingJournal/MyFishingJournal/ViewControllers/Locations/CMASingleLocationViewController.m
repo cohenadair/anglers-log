@@ -22,9 +22,8 @@
 @property (weak, nonatomic) IBOutlet UIView *loadingMapView;
 
 @property (strong, nonatomic)CMAFishingSpot *currentFishingSpot;
-
-@property (nonatomic)BOOL didSetRegion;
 @property (nonatomic)BOOL isReadOnly;
+@property (nonatomic)BOOL didUnwind;
 
 @end
 
@@ -40,7 +39,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.didSetRegion = NO;
     self.isReadOnly = self.previousViewID == CMAViewControllerIDSingleEntry;
     
     if (self.isReadOnly)
@@ -52,6 +50,8 @@
     
     if (self.isReadOnly)
         [self configureForReadOnly];
+    
+    [self.mapView setSelectedAnnotations:nil];
     
     if (self.fishingSpotFromSingleEntry)
         [self initCurrentFishingSpot:self.fishingSpotFromSingleEntry];
@@ -116,8 +116,6 @@
         CMAAddLocationViewController *source = segue.sourceViewController;
         
         self.location = source.location;
-        [self mapViewReset];
-        
         source.location = nil;
     }
     
@@ -128,16 +126,11 @@
         source.location = nil;
         source.selectedCellLabelText = nil;
     }
+    
+    self.didUnwind = YES;
 }
 
 #pragma mark - Map Initializing
-
-// Used to reset the map after editing the location.
-- (void)mapViewReset {
-    [self.mapView removeAnnotations:[self.mapView annotations]]; // remove old annotations
-    [self addFishingSpotsToMap:self.mapView];                    // add new annotations
-    [self.mapView setRegion:[self getMapRegion] animated:NO];    // reset map's region
-}
 
 // Returns an MKPointAnnotation with aTitle.
 - (MKPointAnnotation *)annotationWithTitle:(NSString *)aTitle {
@@ -161,7 +154,6 @@
 
 // Returns the map's region based on the location's fishing spot coordinates.
 - (MKCoordinateRegion)getMapRegion {
-    self.didSetRegion = YES;
     return [self.location mapRegion];
 }
 
@@ -175,15 +167,15 @@
 }
 
 - (void)mapView:(MKMapView *)mapView didDeselectAnnotationView:(MKAnnotationView *)view {
-    [self initCurrentFishingSpot:nil];
+    if (!self.didUnwind)
+        [self initCurrentFishingSpot:nil];
 }
 
 - (void)initializeMapView {
-    if ([self.mapView.annotations count] <= 0)
-        [self addFishingSpotsToMap:self.mapView];
+    [self.mapView removeAnnotations:[self.mapView annotations]];
+    [self addFishingSpotsToMap:self.mapView];
     
-    if (!self.didSetRegion)
-        [self.mapView setRegion:[self getMapRegion] animated:NO];
+    [self.mapView setRegion:[self getMapRegion] animated:NO];
     
     // select initial annotation
     [self.mapView selectAnnotation:[self annotationWithTitle:self.currentFishingSpot.name] animated:YES];
