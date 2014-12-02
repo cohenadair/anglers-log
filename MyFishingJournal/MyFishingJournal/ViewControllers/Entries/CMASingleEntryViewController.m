@@ -74,8 +74,7 @@
 
 @interface CMASingleEntryViewController ()
 
-@property (weak, nonatomic)IBOutlet UIView *imagesView;
-@property (weak, nonatomic)IBOutlet UICollectionView *imageCollectionView;
+@property (strong, nonatomic)UICollectionView *imageCollectionView;
 
 @property (strong, nonatomic)UIBarButtonItem *actionButton;
 @property (strong, nonatomic)UIBarButtonItem *editButton;
@@ -100,7 +99,6 @@
     
     [self initNavigationBarItems];
     [self initTableSettings];
-    [self initRearImagesView];
     [self setEntryImageArray:[[self.entry images] allObjects]];
     
     [self.tableView setTableFooterView:[[UIView alloc] initWithFrame:CGRectZero]]; // removes empty cells at the end of the list
@@ -109,6 +107,7 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self.tableView reloadData];
+    [self.imageCollectionView reloadData];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -120,12 +119,21 @@
 
 #define SUBTITLE_HEIGHT 55
 #define RIGHT_DETAIL_HEIGHT 35
+#define kImageCollectionIndex 0
 
 // Creates a CMATableCellProperties object for each cell that will be shown on the table.
 // Only self.entry properties that were specified by the user are shown.
 // Sets self.tableCellProperties property.
 - (void)initTableSettings {
     self.tableCellProperties = [NSMutableArray array];
+    
+    // images
+    [self.tableCellProperties addObject:
+     [CMATableCellProperties withLabelText: nil
+                             andDetailText: nil
+                        andReuseIdentifier: @"collectionViewCell"
+                                 andHeight: 0
+                              hasSeparator: NO]];
     
     // species and date
     NSDateFormatter *dateFormatter = [NSDateFormatter new];
@@ -205,6 +213,13 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     CMATableCellProperties *properties = [self.tableCellProperties objectAtIndex:indexPath.row];
     
+    if (indexPath.item == kImageCollectionIndex) {
+        if ([self.entry imageCount] > 0)
+            return self.tableView.frame.size.width;
+        else
+            return 0;
+    }
+    
     // Notes cell; need to get the occupied space from the notes string
     if ([properties.labelText isEqualToString:@"Notes"]) {
         NSDictionary *attributes = @{NSFontAttributeName: [UIFont fontWithName:GLOBAL_FONT size:15]};
@@ -223,14 +238,14 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    // dummy cell for some spacing at the end of the table
-    if (indexPath.item == [self.tableCellProperties count]) {
-        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"dummyCell"];
-        return cell;
-    }
-    
     CMATableCellProperties *p = [self.tableCellProperties objectAtIndex:indexPath.item];
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:p.reuseIdentifier];
+    
+    // images collection view
+    if (indexPath.item == kImageCollectionIndex) {
+        self.imageCollectionView = (UICollectionView *)[cell viewWithTag:100];
+        return cell;
+    }
     
     cell.textLabel.text = p.labelText;
     cell.detailTextLabel.text = p.detailText;
@@ -246,18 +261,6 @@
 }
 
 #pragma mark - Images Views
-
-// The UIView whose subview is a UICollectionView.
-- (void)initRearImagesView {
-    CGRect newFrame = self.imagesView.frame;
-    
-    if ([self.entry imageCount] > 0)
-        newFrame.size.height = self.tableView.frame.size.width;
-    else
-        newFrame.size.height = 0;
-    
-    [self.imagesView setFrame:newFrame];
-}
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
     return [self.entry imageCount];
@@ -348,9 +351,8 @@
         CMAAddEntryViewController *source = segue.sourceViewController;
         [self setEntry:source.entry];
         [self setEntryImageArray:[[self.entry images] allObjects]];
+        
         [self initTableSettings];
-        [self.tableView reloadData];
-        [self.imageCollectionView reloadData];
         
         source.entry = nil;
     }
