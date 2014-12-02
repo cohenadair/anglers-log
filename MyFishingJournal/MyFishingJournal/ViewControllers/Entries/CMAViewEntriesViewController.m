@@ -53,7 +53,7 @@
     self.noEntriesView.imageView.image = [UIImage imageNamed:@"entries_large.png"];
     self.noEntriesView.titleView.text = @"Entries.";
     
-    [self.noEntriesView setFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+    [self.noEntriesView centerInParent:self.view navigationController:self.navigationController];
     [self.view addSubview:self.noEntriesView];
 }
 

@@ -47,7 +47,7 @@
     self.noImagesView.titleView.text = @"Entries with photos.";
     self.noImagesView.subtitleView.text = @"Add a photo to a new or existing Entry to begin.";
     
-    [self.noImagesView setFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+    [self.noImagesView setFrame:CGRectMake(0, -60, self.view.frame.size.width, self.view.frame.size.height + 60)];
     [self.view addSubview:self.noImagesView];
 }
 
@@ -62,6 +62,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self.navigationController.navigationBar setTranslucent:NO];
     [self initSideBarMenu];
     [self initImagesArray];
 }

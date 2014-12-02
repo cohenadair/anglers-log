@@ -10,8 +10,15 @@
 
 @implementation CMANoXView
 
-- (void)centerInParent:(UIView *)aParentView {
-    [self setFrame:CGRectMake(0, 0, aParentView.frame.size.width, aParentView.frame.size.height)];
+- (void)centerInParent:(UIView *)aParentView navigationController:(UINavigationController *)aNavigationController {
+    CGRect screenFrame = [UIScreen mainScreen].bounds;
+    
+    CGRect newFrame;
+    newFrame.origin.x = aParentView.frame.origin.x;
+    newFrame.origin.y = -aNavigationController.navigationBar.frame.size.height - [UIApplication sharedApplication].statusBarFrame.size.height;
+    newFrame.size.width = aParentView.frame.size.width;
+    newFrame.size.height = screenFrame.size.height;
+    [self setFrame:newFrame];
 }
 
 @end

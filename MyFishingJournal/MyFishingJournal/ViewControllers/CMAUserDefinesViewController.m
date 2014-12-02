@@ -65,7 +65,7 @@
     self.noXView.imageView.image = [UIImage imageNamed:imageName];
     self.noXView.titleView.text = [NSString stringWithFormat:@"%@.", self.userDefine.name];
     
-    [self.noXView setFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+    [self.noXView centerInParent:self.view navigationController:self.navigationController];
     [self.view addSubview:self.noXView];
 }
 

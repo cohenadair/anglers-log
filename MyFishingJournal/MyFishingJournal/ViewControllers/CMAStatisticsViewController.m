@@ -74,7 +74,7 @@
     self.noStatsView.titleView.text = @"Entries.";
     self.noStatsView.subtitleView.text = @"Visit the \"All Entries\" page to begin.";
     
-    [self.noStatsView setFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+    [self.noStatsView setFrame:CGRectMake(0, -60, self.view.frame.size.width, self.view.frame.size.height + 60)];
     [self.view addSubview:self.noStatsView];
 }
 
@@ -105,6 +105,7 @@
         [self initTableView];
     }
     
+    [self.navigationController.navigationBar setTranslucent:NO];
     [self.tableView setTableFooterView:[[UIView alloc] initWithFrame:CGRectZero]]; // removes empty cells at the end of the list
 }
 

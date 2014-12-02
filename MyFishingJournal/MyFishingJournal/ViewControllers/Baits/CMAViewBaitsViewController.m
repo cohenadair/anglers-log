@@ -50,7 +50,7 @@
     self.noBaitsView.imageView.image = [UIImage imageNamed:@"baits_large.png"];
     self.noBaitsView.titleView.text = @"Baits.";
     
-    [self.noBaitsView setFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+    [self.noBaitsView centerInParent:self.view navigationController:self.navigationController];
     [self.view addSubview:self.noBaitsView];
 }
 

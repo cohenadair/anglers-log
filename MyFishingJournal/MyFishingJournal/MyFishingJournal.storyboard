@@ -1417,7 +1417,7 @@
         <scene sceneID="0CA-ia-Kux">
             <objects>
                 <tableViewController id="BYv-3d-Jds" customClass="CMAStatisticsViewController" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="1" id="JDz-8f-fBd">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="JDz-8f-fBd">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="536"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
@@ -2600,18 +2600,18 @@
         <segue reference="aBE-xI-c3y"/>
         <segue reference="nlb-Sg-N5a"/>
         <segue reference="rQz-NV-wiY"/>
-        <segue reference="Gww-wH-Tkw"/>
-        <segue reference="ooh-Eu-Ug2"/>
-        <segue reference="qAO-gb-5Yr"/>
-        <segue reference="y0h-hR-J5c"/>
-        <segue reference="uUK-tT-jvg"/>
-        <segue reference="Qcx-rg-dpe"/>
-        <segue reference="ij7-4o-wMK"/>
         <segue reference="Jyy-wS-dXA"/>
         <segue reference="gDt-Tw-gtk"/>
         <segue reference="guB-6y-sIg"/>
         <segue reference="0It-ub-fzN"/>
         <segue reference="bAG-il-Vyj"/>
         <segue reference="Mmt-ea-Rlu"/>
+        <segue reference="DIu-nR-jUP"/>
+        <segue reference="OHB-Pt-9SF"/>
+        <segue reference="77U-eo-oVF"/>
+        <segue reference="y0h-hR-J5c"/>
+        <segue reference="uUK-tT-jvg"/>
+        <segue reference="Qcx-rg-dpe"/>
+        <segue reference="ij7-4o-wMK"/>
     </inferredMetricsTieBreakers>
 </document>
