@@ -21,7 +21,7 @@
 
 - (id)initWithName: (NSString *)aName {
     if (self = [super init]) {
-        _name = aName;
+        _name = [aName capitalizedString];
         _baitDescription = nil;
         _image = nil;
         _fishCaught = [NSNumber numberWithInteger:0];
@@ -51,6 +51,10 @@
 }
 
 #pragma mark - Editing
+
+- (void)setName:(NSMutableString *)name {
+    _name = [[name capitalizedString] mutableCopy];
+}
 
 - (void)edit: (CMABait *)aNewBait {
     [self setName:[aNewBait.name capitalizedString]];
