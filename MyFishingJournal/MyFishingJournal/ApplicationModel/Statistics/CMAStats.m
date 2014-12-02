@@ -175,7 +175,7 @@
 }
 
 - (NSString *)stringForPercentAtIndex:(NSInteger)anIndex {
-    return [NSString stringWithFormat:@"%ld%%", [self valueForPercentAtIndex:anIndex]];
+    return [NSString stringWithFormat:@"%ld%%", (long)[self valueForPercentAtIndex:anIndex]];
 }
 
 - (NSString *)nameAtIndex:(NSInteger)anIndex {
@@ -184,7 +184,7 @@
 
 - (NSString *)detailTextAtIndex:(NSInteger)anIndex {
     CMAStatsObject *baitObj = (CMAStatsObject *)[self.sliceObjects objectAtIndex:anIndex];
-    return [NSString stringWithFormat:@"%ld %@", baitObj.value, self.detailDescription];
+    return [NSString stringWithFormat:@"%ld %@", (long)baitObj.value, self.detailDescription];
 }
 
 - (NSInteger)sliceObjectCount {
