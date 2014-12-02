@@ -40,6 +40,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    self.navigationController.navigationBar.translucent = NO;
+    
     self.didSetRegion = NO;
     self.isReadOnly = self.previousViewID == CMAViewControllerID_SingleEntry;
     

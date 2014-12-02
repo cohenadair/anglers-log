@@ -645,17 +645,13 @@
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="Amw-il-AAo"/>
                         <barButtonItem image="sort.png" id="iTK-vI-Yql">
                             <connections>
-                                <segue destination="wpl-p5-uAQ" kind="popoverPresentation" identifier="fromViewEntriesToEntrySorting" popoverAnchorBarButtonItem="iTK-vI-Yql" id="lmf-SC-sce">
-                                    <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
-                                </segue>
+                                <segue destination="wpl-p5-uAQ" kind="presentation" identifier="fromViewEntriesToEntrySorting" id="lmf-SC-sce"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="jqZ-3x-pby"/>
                         <barButtonItem systemItem="add" id="q9u-dx-Xbo">
                             <connections>
-                                <segue destination="laU-22-DA1" kind="popoverPresentation" identifier="fromViewEntriesToAddEntry" popoverAnchorBarButtonItem="q9u-dx-Xbo" id="rQz-NV-wiY">
-                                    <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
-                                </segue>
+                                <segue destination="laU-22-DA1" kind="presentation" identifier="fromViewEntriesToAddEntry" id="rQz-NV-wiY"/>
                             </connections>
                         </barButtonItem>
                     </toolbarItems>
@@ -1415,7 +1411,7 @@
                     </connections>
                 </pongPressGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="615" y="1235"/>
+            <point key="canvasLocation" x="615" y="1251"/>
         </scene>
         <!--Statistics-->
         <scene sceneID="0CA-ia-Kux">
@@ -2202,7 +2198,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xct-5x-tQg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="574" y="1241"/>
+            <point key="canvasLocation" x="574" y="1251"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="1vk-wI-ZPw">
@@ -2602,20 +2598,20 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="aBE-xI-c3y"/>
-        <segue reference="Jyy-wS-dXA"/>
-        <segue reference="gDt-Tw-gtk"/>
-        <segue reference="guB-6y-sIg"/>
-        <segue reference="egX-OW-uSX"/>
-        <segue reference="0It-ub-fzN"/>
-        <segue reference="bAG-il-Vyj"/>
-        <segue reference="Mmt-ea-Rlu"/>
-        <segue reference="DIu-nR-jUP"/>
-        <segue reference="OHB-Pt-9SF"/>
-        <segue reference="77U-eo-oVF"/>
+        <segue reference="nlb-Sg-N5a"/>
+        <segue reference="rQz-NV-wiY"/>
+        <segue reference="Gww-wH-Tkw"/>
+        <segue reference="ooh-Eu-Ug2"/>
+        <segue reference="qAO-gb-5Yr"/>
         <segue reference="y0h-hR-J5c"/>
-        <segue reference="RpT-ts-gTM"/>
         <segue reference="uUK-tT-jvg"/>
         <segue reference="Qcx-rg-dpe"/>
         <segue reference="ij7-4o-wMK"/>
+        <segue reference="Jyy-wS-dXA"/>
+        <segue reference="gDt-Tw-gtk"/>
+        <segue reference="guB-6y-sIg"/>
+        <segue reference="0It-ub-fzN"/>
+        <segue reference="bAG-il-Vyj"/>
+        <segue reference="Mmt-ea-Rlu"/>
     </inferredMetricsTieBreakers>
 </document>

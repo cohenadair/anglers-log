@@ -385,7 +385,11 @@ NSString *const NO_SELECT = @"Not Selected";
     }
     
     if (isSetting) {
-        CMAUserDefinesViewController *destination = [[segue.destinationViewController viewControllers] objectAtIndex:0];
+        CMAUserDefinesViewController *destination = segue.destinationViewController;
+        
+        if ([destination isKindOfClass:[UINavigationController class]])
+            destination = [[segue.destinationViewController viewControllers] objectAtIndex:0];
+
         destination.userDefine = [[self journal] userDefineNamed:userDefineName];
         destination.previousViewID = CMAViewControllerID_AddEntry;
         

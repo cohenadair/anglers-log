@@ -83,6 +83,7 @@
     
     self.navigationItem.title = [self.userDefine name]; // sets title according to the setting that was clicked in the previous view
     self.navigationController.toolbarHidden = NO;
+    self.navigationController.navigationBar.translucent = NO;
     
     // used to populate cells
     if ([self.userDefine.objects count] <= 0)

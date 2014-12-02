@@ -66,6 +66,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    self.navigationController.navigationBar.translucent = NO;
+    
     if (!self.isSelectingForAddEntry && !self.isSelectingForStatistics)
         [self initSideBarMenu];
     else
