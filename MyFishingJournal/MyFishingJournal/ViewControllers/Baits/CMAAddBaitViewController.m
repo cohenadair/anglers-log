@@ -46,7 +46,7 @@
     [super viewDidLoad];
     
     self.cameraActionSheet = [CMACameraActionSheet withDelegate:self];
-    self.isEditingBait = self.previousViewID == CMAViewControllerID_SingleBait;
+    self.isEditingBait = self.previousViewID == CMAViewControllerIDSingleBait;
     
     if (!self.isEditingBait)
         self.bait = [CMABait new];
@@ -214,13 +214,13 @@
     CMABait *baitToAdd = [CMABait new];
     
     if ([self checkUserInputAndSetBait:baitToAdd]) {
-        if (self.previousViewID == CMAViewControllerID_SingleBait) {
+        if (self.previousViewID == CMAViewControllerIDSingleBait) {
             [[self journal] editUserDefine:SET_BAITS objectNamed:self.bait.name newProperties:baitToAdd];
             [self setBait:baitToAdd];
         } else
             [[self journal] addUserDefine:SET_BAITS objectToAdd:baitToAdd];
         
-        if (!self.previousViewID == CMAViewControllerID_SingleBait)
+        if (!self.previousViewID == CMAViewControllerIDSingleBait)
             [self setBait:nil];
         
         [[self journal] archive];
@@ -242,16 +242,16 @@
 
 - (void)performSegueToPreviousView {
     switch (self.previousViewID) {
-        case CMAViewControllerID_ViewBaits:
+        case CMAViewControllerIDViewBaits:
             [self performSegueWithIdentifier:@"unwindToViewBaitsFromAddBait" sender:self];
             break;
             
-        case CMAViewControllerID_SingleBait:
+        case CMAViewControllerIDSingleBait:
             [self performSegueWithIdentifier:@"unwindToSingleBaitFromAddBait" sender:self];
             break;
             
         default:
-            NSLog(@"Invalid previousViewID value: %d", self.previousViewID);
+            NSLog(@"Invalid previousViewID value: %ld", self.previousViewID);
             break;
     }
 }

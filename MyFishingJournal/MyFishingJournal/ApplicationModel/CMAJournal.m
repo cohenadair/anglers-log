@@ -26,9 +26,9 @@
     [_userDefines setValue:[CMAUserDefine withName:SET_FISHING_METHODS] forKey:SET_FISHING_METHODS];
     [_userDefines setValue:[CMAUserDefine withName:SET_LOCATIONS] forKey:SET_LOCATIONS];
     
-    [self setMeasurementSystem:CMAMeasuringSystemType_Imperial];
-    [self setEntrySortMethod:CMAEntrySortMethod_Date];
-    [self setEntrySortOrder:CMASortOrder_Descending];
+    [self setMeasurementSystem:CMAMeasuringSystemTypeImperial];
+    [self setEntrySortMethod:CMAEntrySortMethodDate];
+    [self setEntrySortOrder:CMASortOrderDescending];
     
     return self;
 }
@@ -215,7 +215,7 @@
 - (CMAEntry *)entryDated: (NSDate *)aDate {
     // calender stuff is needed so only certain date units are compared
     NSCalendar *calendar = [NSCalendar currentCalendar];
-    NSInteger calendarComponents = (NSDayCalendarUnit | NSMonthCalendarUnit | NSYearCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit);
+    NSInteger calendarComponents = (NSCalendarUnitDay | NSCalendarUnitMonth | NSCalendarUnitYear | NSCalendarUnitHour | NSCalendarUnitMinute);
     
     NSDateComponents *aDateComponents = [calendar components:calendarComponents fromDate:aDate];
     aDate = [calendar dateFromComponents:aDateComponents];
@@ -232,7 +232,7 @@
 }
 
 - (NSString *)lengthUnitsAsString: (BOOL)shorthand {
-    if (self.measurementSystem == CMAMeasuringSystemType_Imperial) {
+    if (self.measurementSystem == CMAMeasuringSystemTypeImperial) {
         if (shorthand)
             return @"\"";
         else
@@ -246,7 +246,7 @@
 }
 
 - (NSString *)weightUnitsAsString: (BOOL)shorthand {
-    if (self.measurementSystem == CMAMeasuringSystemType_Imperial) {
+    if (self.measurementSystem == CMAMeasuringSystemTypeImperial) {
         if (shorthand)
             return @" lbs.";
         else
@@ -266,19 +266,19 @@
     self.entrySortMethod = aSortMethod;
     
     switch (self.entrySortMethod) {
-        case CMAEntrySortMethod_Date:
+        case CMAEntrySortMethodDate:
             self.entries = [[self.entries sortedArrayUsingComparator:^NSComparisonResult(CMAEntry *e1, CMAEntry *e2){
                 return [e1.date compare:e2.date];
             }] mutableCopy];
             break;
             
-        case CMAEntrySortMethod_Species:
+        case CMAEntrySortMethodSpecies:
             self.entries = [[self.entries sortedArrayUsingComparator:^NSComparisonResult(CMAEntry *e1, CMAEntry *e2){
                 return [e1.fishSpecies.name compare:e2.fishSpecies.name];
             }] mutableCopy];
             break;
         
-        case CMAEntrySortMethod_Location:
+        case CMAEntrySortMethodLocation:
             self.entries = [[self.entries sortedArrayUsingComparator:^NSComparisonResult(CMAEntry *e1, CMAEntry *e2){
                 NSString *fullLoc1 = [NSString stringWithFormat:@"%@%@%@", e1.location.name, TOKEN_LOCATION, e1.fishingSpot.name];
                 NSString *fullLoc2 = [NSString stringWithFormat:@"%@%@%@", e2.location.name, TOKEN_LOCATION, e2.fishingSpot.name];
@@ -286,19 +286,19 @@
             }] mutableCopy];
             break;
         
-        case CMAEntrySortMethod_Length:
+        case CMAEntrySortMethodLength:
             self.entries = [[self.entries sortedArrayUsingComparator:^NSComparisonResult(CMAEntry *e1, CMAEntry *e2){
                 return [e1.fishLength compare:e2.fishLength];
             }] mutableCopy];
             break;
         
-        case CMAEntrySortMethod_Weight:
+        case CMAEntrySortMethodWeight:
             self.entries = [[self.entries sortedArrayUsingComparator:^NSComparisonResult(CMAEntry *e1, CMAEntry *e2){
                 return [e1.fishWeight compare:e2.fishWeight];
             }] mutableCopy];
             break;
         
-        case CMAEntrySortMethod_BaitUsed:
+        case CMAEntrySortMethodBaitUsed:
             self.entries = [[self.entries sortedArrayUsingComparator:^NSComparisonResult(CMAEntry *e1, CMAEntry *e2){
                 return [e1.baitUsed.name compare:e2.baitUsed.name];
             }] mutableCopy];
@@ -310,7 +310,7 @@
     }
     
     // reverse the array order if needed
-    if (self.entrySortOrder == CMASortOrder_Descending)
+    if (self.entrySortOrder == CMASortOrderDescending)
        self.entries = [[[self.entries reverseObjectEnumerator] allObjects] mutableCopy];
 }
 

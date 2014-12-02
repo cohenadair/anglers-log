@@ -10,38 +10,38 @@
 #define MyFishingJournal_CMAConstants_h
 
 typedef NS_ENUM(NSInteger, CMAViewControllerID) {
-    CMAViewControllerID_Nil = -1,
-    CMAViewControllerID_ViewEntries = 0,
-    CMAViewControllerID_EditSettings = 1,
-    CMAViewControllerID_AddEntry = 2,
-    CMAViewControllerID_SingleEntry = 3,
-    CMAViewControllerID_SingleLocation = 4,
-    CMAViewControllerID_SingleBait = 5,
-    CMAViewControllerID_ViewBaits = 6,
-    CMAViewControllerID_Statistics = 7
+    CMAViewControllerIDNil = -1,
+    CMAViewControllerIDViewEntries = 0,
+    CMAViewControllerIDEditSettings = 1,
+    CMAViewControllerIDAddEntry = 2,
+    CMAViewControllerIDSingleEntry = 3,
+    CMAViewControllerIDSingleLocation = 4,
+    CMAViewControllerIDSingleBait = 5,
+    CMAViewControllerIDViewBaits = 6,
+    CMAViewControllerIDStatistics = 7
 };
 
 // Each value represents the index for an item in a UISegmentedControlView.
 typedef NS_ENUM(NSInteger, CMAMeasuringSystemType) {
-    CMAMeasuringSystemType_Imperial = 0,
-    CMAMeasuringSystemType_Metric = 1
+    CMAMeasuringSystemTypeImperial = 0,
+    CMAMeasuringSystemTypeMetric = 1
 };
 
 // Each value represents the index for an item in a UISegmentedControlView.
 typedef NS_ENUM(NSInteger, CMASortOrder) {
-    CMASortOrder_Ascending = 0,
-    CMASortOrder_Descending = 1
+    CMASortOrderAscending = 0,
+    CMASortOrderDescending = 1
 };
 
 // Each value >= 0 represents an index for a row in a UITableView.
 typedef NS_ENUM(NSInteger, CMAEntrySortMethod) {
-    CMAEntrySortMethod_Nil = -1,
-    CMAEntrySortMethod_Date = 0,
-    CMAEntrySortMethod_Species = 1,
-    CMAEntrySortMethod_Location = 2,
-    CMAEntrySortMethod_Length = 3,
-    CMAEntrySortMethod_Weight = 4,
-    CMAEntrySortMethod_BaitUsed = 5
+    CMAEntrySortMethodNil = -1,
+    CMAEntrySortMethodDate = 0,
+    CMAEntrySortMethodSpecies = 1,
+    CMAEntrySortMethodLocation = 2,
+    CMAEntrySortMethodLength = 3,
+    CMAEntrySortMethodWeight = 4,
+    CMAEntrySortMethodBaitUsed = 5
 };
 
 extern NSString *const SET_SPECIES;

@@ -323,13 +323,13 @@
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([segue.identifier isEqualToString:@"fromSingleEntryToAddEntry"]) {
         CMAAddEntryViewController *destination = [[segue.destinationViewController viewControllers] objectAtIndex:0];
-        destination.previousViewID = CMAViewControllerID_SingleEntry;
+        destination.previousViewID = CMAViewControllerIDSingleEntry;
         destination.entry = self.entry;
     }
     
     if ([segue.identifier isEqualToString:@"fromSingleEntryToSingleLocation"]) {
         CMASingleLocationViewController *destination = [[segue.destinationViewController viewControllers] objectAtIndex:0];
-        destination.previousViewID = CMAViewControllerID_SingleEntry;
+        destination.previousViewID = CMAViewControllerIDSingleEntry;
         destination.location = self.entry.location;
         destination.fishingSpotFromSingleEntry = self.entry.fishingSpot;
         destination.navigationItem.title = destination.location.name;

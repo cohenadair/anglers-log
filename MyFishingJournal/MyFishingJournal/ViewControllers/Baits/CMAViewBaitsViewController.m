@@ -66,8 +66,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.navigationController.navigationBar.translucent = NO;
-    
     if (!self.isSelectingForAddEntry && !self.isSelectingForStatistics)
         [self initSideBarMenu];
     else
@@ -208,7 +206,7 @@
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([segue.identifier isEqualToString:@"fromViewBaitsToAddBait"]) {
         CMAAddBaitViewController *destination = [[segue.destinationViewController viewControllers] objectAtIndex:0];
-        destination.previousViewID = CMAViewControllerID_ViewBaits;
+        destination.previousViewID = CMAViewControllerIDViewBaits;
     }
     
     if ([segue.identifier isEqualToString:@"fromViewBaitsToSingleBait"]) {

@@ -80,9 +80,6 @@ NSString *const NO_SELECT = @"Not Selected";
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    // needed so the navigation bar doesn't change color after the view has loaded (not sure why the latter happens)
-    [self.navigationController.navigationBar setTranslucent:NO];
-    
     self.dateFormatter = [NSDateFormatter new];
     [self.dateFormatter setDateFormat:@"MMM dd, yyyy 'at' h:mm a"];
     
@@ -96,7 +93,7 @@ NSString *const NO_SELECT = @"Not Selected";
     [self.imageCollection setAllowsSelection:NO];
     [self.imageCollection setAllowsMultipleSelection:NO];
     
-    self.isEditingEntry = self.previousViewID == CMAViewControllerID_SingleEntry;
+    self.isEditingEntry = self.previousViewID == CMAViewControllerIDSingleEntry;
     self.isEditingDateTime = NO;
     self.hasEditedNotesTextView = NO;
     self.hasAttachedImages = NO;
@@ -339,11 +336,11 @@ NSString *const NO_SELECT = @"Not Selected";
 
 - (void)performSegueToPreviousView {
     switch (self.previousViewID) {
-        case CMAViewControllerID_ViewEntries:
+        case CMAViewControllerIDViewEntries:
             [self performSegueWithIdentifier:@"unwindToViewEntriesFromAddEntry" sender:self];
             break;
             
-        case CMAViewControllerID_SingleEntry:
+        case CMAViewControllerIDSingleEntry:
             [self performSegueWithIdentifier:@"unwindToSingleEntryFromAddEntry" sender:self];
             break;
             
@@ -391,7 +388,7 @@ NSString *const NO_SELECT = @"Not Selected";
             destination = [[segue.destinationViewController viewControllers] objectAtIndex:0];
 
         destination.userDefine = [[self journal] userDefineNamed:userDefineName];
-        destination.previousViewID = CMAViewControllerID_AddEntry;
+        destination.previousViewID = CMAViewControllerIDAddEntry;
         
         self.indexPathForOptionsCell = [self.tableView indexPathForSelectedRow]; // so it knows which cell to edit after the unwind
     }
@@ -409,7 +406,7 @@ NSString *const NO_SELECT = @"Not Selected";
             [[cellToEdit detailTextLabel] setText:source.selectedCellLabelText];
         
         source.selectedCellLabelText = nil;
-        source.previousViewID = CMAViewControllerID_Nil;
+        source.previousViewID = CMAViewControllerIDNil;
     }
     
     if ([segue.identifier isEqualToString:@"unwindToAddEntryFromSelectFishingSpot"]) {
@@ -420,7 +417,7 @@ NSString *const NO_SELECT = @"Not Selected";
         
         source.location = nil;
         source.selectedCellLabelText = nil;
-        source.previousViewID = CMAViewControllerID_Nil;
+        source.previousViewID = CMAViewControllerIDNil;
     }
     
     if ([segue.identifier isEqualToString:@"unwindToAddEntryFromViewBaits"]) {

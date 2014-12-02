@@ -48,12 +48,12 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     
-    if (self.previousViewID == CMAViewControllerID_EditSettings) {
+    if (self.previousViewID == CMAViewControllerIDEditSettings) {
         self.selectedCellLabelText = [NSString stringWithFormat:@"%@%@%@", self.location.name, TOKEN_LOCATION, cell.textLabel.text];
         [self performSegueWithIdentifier:@"unwindToAddEntryFromSelectFishingSpot" sender:self];
     }
     
-    if (self.previousViewID == CMAViewControllerID_SingleLocation) {
+    if (self.previousViewID == CMAViewControllerIDSingleLocation) {
         self.selectedCellLabelText = cell.textLabel.text;
         [self performSegueWithIdentifier:@"unwindToSingleLocationFromSelectFishingSpot" sender:self];
     }

@@ -42,7 +42,7 @@ NSInteger const SECTION_ADD = 2;
     [self.tableView setEditing:YES];
     [self.tableView setTableFooterView:[[UIView alloc] initWithFrame:CGRectZero]]; // removes empty cells at the end of the list
     
-    self.isEditingLocation = (self.previousViewID == CMAViewControllerID_SingleLocation);
+    self.isEditingLocation = (self.previousViewID == CMAViewControllerIDSingleLocation);
     
     if (!self.isEditingLocation)
         self.location = [CMALocation new];
@@ -186,13 +186,13 @@ NSInteger const SECTION_ADD = 2;
     CMALocation *locationToAdd = [CMALocation new];
     
     if ([self checkUserInputAndSetLocation:locationToAdd]) {
-        if (self.previousViewID == CMAViewControllerID_SingleLocation) {
+        if (self.previousViewID == CMAViewControllerIDSingleLocation) {
             [[self journal] editUserDefine:SET_LOCATIONS objectNamed:self.location.name newProperties:locationToAdd];
             [self setLocation:locationToAdd];
         } else
             [[self journal] addUserDefine:SET_LOCATIONS objectToAdd:locationToAdd];
         
-        if (!self.previousViewID == CMAViewControllerID_SingleLocation)
+        if (!self.previousViewID == CMAViewControllerIDSingleLocation)
             [self setLocation:nil];
         
         [[self journal] archive];
@@ -204,7 +204,7 @@ NSInteger const SECTION_ADD = 2;
     self.location = self.nonEditedLocation;
     self.nonEditedLocation = nil;
     
-    if (!self.previousViewID == CMAViewControllerID_SingleLocation)
+    if (!self.previousViewID == CMAViewControllerIDSingleLocation)
         [self setLocation:nil];
     
     [self performSegueToPreviousView];
@@ -214,11 +214,11 @@ NSInteger const SECTION_ADD = 2;
 
 - (void)performSegueToPreviousView {
     switch (self.previousViewID) {
-        case CMAViewControllerID_EditSettings:
+        case CMAViewControllerIDEditSettings:
             [self performSegueWithIdentifier:@"unwindToEditSettingsFromAddLocation" sender:self];
             break;
             
-        case CMAViewControllerID_SingleLocation:
+        case CMAViewControllerIDSingleLocation:
             [self performSegueWithIdentifier:@"unwindToSingleLocationFromAddLocation" sender:self];
             break;
             

@@ -78,7 +78,7 @@
     if ([segue.identifier isEqualToString:@"fromSingleBaitToAddBait"]) {
         CMAAddBaitViewController *destination = [[segue.destinationViewController viewControllers] objectAtIndex:0];
         destination.bait = self.bait;
-        destination.previousViewID = CMAViewControllerID_SingleBait;
+        destination.previousViewID = CMAViewControllerIDSingleBait;
     }
 }
 

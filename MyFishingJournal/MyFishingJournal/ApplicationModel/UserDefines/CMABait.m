@@ -19,6 +19,10 @@
 
 #pragma mark - Initialization
 
+- (id)init {
+    return [self initWithName:@""];
+}
+
 - (id)initWithName: (NSString *)aName {
     if (self = [super init]) {
         _name = [aName capitalizedString];

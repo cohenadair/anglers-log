@@ -83,16 +83,15 @@
     
     self.navigationItem.title = [self.userDefine name]; // sets title according to the setting that was clicked in the previous view
     self.navigationController.toolbarHidden = NO;
-    self.navigationController.navigationBar.translucent = NO;
     
     // used to populate cells
     if ([self.userDefine.objects count] <= 0)
         [self.editButton setEnabled:NO];
     
-    self.isSelectingForAddEntry = (self.previousViewID == CMAViewControllerID_AddEntry);
+    self.isSelectingForAddEntry = (self.previousViewID == CMAViewControllerIDAddEntry);
     self.isSelectingMultiple = (self.isSelectingForAddEntry && [[self.userDefine name] isEqualToString:SET_FISHING_METHODS]);
     
-    self.isSelectingForStatistics = (self.previousViewID == CMAViewControllerID_Statistics);
+    self.isSelectingForStatistics = (self.previousViewID == CMAViewControllerIDStatistics);
     
     // for selecting multiple fishing methods
     if (self.isSelectingMultiple)
@@ -422,14 +421,14 @@
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([segue.identifier isEqualToString:@"fromEditSettingsToAddLocation"]) {
         CMAAddLocationViewController *destination = [[segue.destinationViewController viewControllers] objectAtIndex:0];
-        destination.previousViewID = CMAViewControllerID_EditSettings;
+        destination.previousViewID = CMAViewControllerIDEditSettings;
     }
     
     if ([segue.identifier isEqualToString:@"fromUserDefinesToSelectFishingSpot"]) {
         CMASelectFishingSpotViewController *destination = [[segue.destinationViewController viewControllers] objectAtIndex:0];
         CMALocation *loc = [[[self journal] userDefineNamed:SET_LOCATIONS] objectNamed:self.selectedCellLabelText];
         destination.location = loc;
-        destination.previousViewID = CMAViewControllerID_EditSettings;
+        destination.previousViewID = CMAViewControllerIDEditSettings;
         destination.navigationItem.title = loc.name;
     }
     
@@ -437,7 +436,7 @@
         CMASingleLocationViewController *destination = [[segue.destinationViewController viewControllers] objectAtIndex:0];
         CMALocation *loc = [[[self journal] userDefineNamed:SET_LOCATIONS] objectNamed:self.selectedCellLabelText];
         destination.location = loc;
-        destination.previousViewID = CMAViewControllerID_EditSettings;
+        destination.previousViewID = CMAViewControllerIDEditSettings;
         destination.navigationItem.title = loc.name;
     }
 }

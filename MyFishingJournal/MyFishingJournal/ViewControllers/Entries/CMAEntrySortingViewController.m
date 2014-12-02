@@ -75,7 +75,7 @@
 #pragma mark - Events
 
 - (IBAction)clickedCancalButton:(UIBarButtonItem *)sender {
-    self.sortMethod = CMAEntrySortMethod_Nil;
+    self.sortMethod = CMAEntrySortMethodNil;
     [self performUnwindToViewEntriesSegue];
 }
 

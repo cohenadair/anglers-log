@@ -105,7 +105,6 @@
         [self initTableView];
     }
     
-    [self.navigationController.navigationBar setTranslucent:NO];
     [self.tableView setTableFooterView:[[UIView alloc] initWithFrame:CGRectZero]]; // removes empty cells at the end of the list
 }
 
@@ -344,7 +343,7 @@
     if ([segue.identifier isEqualToString:@"fromStatisticsToUserDefines"]) {
         CMAUserDefinesViewController *destination = [[segue.destinationViewController viewControllers] objectAtIndex:0];
         destination.userDefine = [[self journal] userDefineNamed:self.stats.userDefineName];
-        destination.previousViewID = CMAViewControllerID_Statistics;
+        destination.previousViewID = CMAViewControllerIDStatistics;
     }
     
     if ([segue.identifier isEqualToString:@"fromStatisticsToSingleEntry"]) {
@@ -357,7 +356,7 @@
     if ([segue.identifier isEqualToString:@"unwindToStatisticsFromUserDefines"]) {
         CMAUserDefinesViewController *source = [segue sourceViewController];
         self.initialSelectedIndex = [self.stats indexForName:source.selectedCellLabelText]; // this property is used in viewWillAppear
-        source.previousViewID = CMAViewControllerID_Nil;
+        source.previousViewID = CMAViewControllerIDNil;
     }
     
     if ([segue.identifier isEqualToString:@"unwindToStatisticsFromViewBaits"]) {

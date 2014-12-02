@@ -40,10 +40,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.navigationController.navigationBar.translucent = NO;
-    
     self.didSetRegion = NO;
-    self.isReadOnly = self.previousViewID == CMAViewControllerID_SingleEntry;
+    self.isReadOnly = self.previousViewID == CMAViewControllerIDSingleEntry;
     
     if (self.isReadOnly)
         self.navigationItem.rightBarButtonItem = nil;
@@ -102,13 +100,13 @@
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([segue.identifier isEqualToString:@"fromSingleLocationToAddLocation"]) {
         CMAAddLocationViewController *destination = [[segue.destinationViewController viewControllers] objectAtIndex:0];
-        destination.previousViewID = CMAViewControllerID_SingleLocation;
+        destination.previousViewID = CMAViewControllerIDSingleLocation;
         destination.location = self.location;
     }
     
     if ([segue.identifier isEqualToString:@"fromSingleLocationToSelectFishingSpot"]) {
         CMASelectFishingSpotViewController *destination = [[segue.destinationViewController viewControllers] objectAtIndex:0];
-        destination.previousViewID = CMAViewControllerID_SingleLocation;
+        destination.previousViewID = CMAViewControllerIDSingleLocation;
         destination.location = self.location;
     }
 }

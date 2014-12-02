@@ -70,7 +70,6 @@
     [super viewDidLoad];
     
     self.navigationController.toolbarHidden = NO;
-    self.navigationController.toolbar.translucent = NO;
 
     self.dateFormatter = [NSDateFormatter new];
     [self.dateFormatter setDateFormat:@"MMM dd, yyyy 'at' h:mm a"];
@@ -201,7 +200,7 @@
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([segue.identifier isEqualToString:@"fromViewEntriesToAddEntry"]) {
         CMAAddEntryViewController *destination = [[segue.destinationViewController viewControllers] objectAtIndex:0];
-        destination.previousViewID = CMAViewControllerID_ViewEntries;
+        destination.previousViewID = CMAViewControllerIDViewEntries;
     }
     
     if ([segue.identifier isEqualToString:@"fromViewEntriesToSingleEntry"]) {
