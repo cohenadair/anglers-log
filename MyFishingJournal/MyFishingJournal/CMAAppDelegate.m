@@ -34,6 +34,8 @@
     [[UIToolbar appearance] setBarTintColor:[UIColor colorWithWhite:0.97 alpha:1.0]];
     [[UIToolbar appearance] setTintColor:buttonTintColor];
     [[UITableViewCell appearance] setTintColor:buttonTintColor];
+    [[UIButton appearance] setTintColor:buttonTintColor];
+    [[UISegmentedControl appearance] setTintColor:buttonTintColor];
     
     return YES;
 }

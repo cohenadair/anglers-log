@@ -101,8 +101,6 @@
         [self.chartView bringSubviewToFront:self.pieChartCenterView];
         [self.chartView bringSubviewToFront:self.totalButton];
         [self.chartView bringSubviewToFront:self.pieChartControl];
-        
-        [self initTableView];
     }
     
     [self.tableView setTableFooterView:[[UIView alloc] initWithFrame:CGRectZero]]; // removes empty cells at the end of the list
@@ -112,10 +110,14 @@
     [super viewWillAppear:animated];
     self.navigationController.toolbarHidden = YES;
     
-    [self.pieChart reloadData];
+    if ([[self journal] entryCount] > 0) {
+        [self initTableView];
     
-    if (self.initialSelectedIndex != -1)
-        [self selectPieChartSliceAtIndex:self.initialSelectedIndex];
+        [self.pieChart reloadData];
+        
+        if (self.initialSelectedIndex != -1)
+            [self selectPieChartSliceAtIndex:self.initialSelectedIndex];
+    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -146,21 +148,41 @@
     self.longestCatchEntry = [self.stats highCatchEntryFor:kHighCatchEntryLength];
     self.heaviestCatchEntry = [self.stats highCatchEntryFor:kHighCatchEntryWeight];
     
-    if ([self.longestCatchEntry imageCount] > 0)
-        [self.longestCatchImage setImage:[self.longestCatchEntry.images anyObject]];
-    else
-        [self.longestCatchImage setImage:[UIImage imageNamed:@"no-image.png"]];
+    if (self.longestCatchEntry) {
+        if ([self.longestCatchEntry imageCount] > 0)
+            [self.longestCatchImage setImage:[self.longestCatchEntry.images anyObject]];
+        else
+            [self.longestCatchImage setImage:[UIImage imageNamed:@"no_image.png"]];
+        
+        [self.longestCatchNameLabel setText:self.longestCatchEntry.fishSpecies.name];
+        [self.longestCatchValueLabel setText:[NSString stringWithFormat:@"%@ %@", [self.longestCatchEntry.fishLength stringValue], [[self journal] lengthUnitsAsString:NO]]];
+    } else {
+        [self.longestCatchImage setImage:[UIImage imageNamed:@"no_image.png"]];
+        [self.longestCatchNameLabel setText:@"No Recorded Length"];
+        [self.longestCatchValueLabel setText:[NSString stringWithFormat:@"0 %@", [[self journal] lengthUnitsAsString:NO]]];
+        
+        UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:1]];
+        [cell setAccessoryType:UITableViewCellAccessoryNone];
+        [cell setUserInteractionEnabled:NO];
+    }
     
-    [self.longestCatchNameLabel setText:self.longestCatchEntry.fishSpecies.name];
-    [self.longestCatchValueLabel setText:[NSString stringWithFormat:@"%@ %@", [self.longestCatchEntry.fishLength stringValue], [[self journal] lengthUnitsAsString:NO]]];
-    
-    if ([self.heaviestCatchEntry imageCount] > 0)
-        [self.heaviestCatchImage setImage:[self.heaviestCatchEntry.images anyObject]];
-    else
-        [self.heaviestCatchImage setImage:[UIImage imageNamed:@"no-image.png"]];
-    
-    [self.heaviestCatchNameLabel setText:self.heaviestCatchEntry.fishSpecies.name];
-    [self.heaviestCatchValueLabel setText:[NSString stringWithFormat:@"%@ %@", [self.heaviestCatchEntry.fishWeight stringValue], [[self journal] weightUnitsAsString:NO]]];
+    if (self.heaviestCatchEntry) {
+        if ([self.heaviestCatchEntry imageCount] > 0)
+            [self.heaviestCatchImage setImage:[self.heaviestCatchEntry.images anyObject]];
+        else
+            [self.heaviestCatchImage setImage:[UIImage imageNamed:@"no_image.png"]];
+        
+        [self.heaviestCatchNameLabel setText:self.heaviestCatchEntry.fishSpecies.name];
+        [self.heaviestCatchValueLabel setText:[NSString stringWithFormat:@"%@ %@", [self.heaviestCatchEntry.fishWeight stringValue], [[self journal] weightUnitsAsString:NO]]];
+    } else {
+        [self.heaviestCatchImage setImage:[UIImage imageNamed:@"no_image.png"]];
+        [self.heaviestCatchNameLabel setText:@"No Recorded Weight"];
+        [self.heaviestCatchValueLabel setText:[NSString stringWithFormat:@"0 %@", [[self journal] weightUnitsAsString:NO]]];
+        
+        UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:2]];
+        [cell setAccessoryType:UITableViewCellAccessoryNone];
+        [cell setUserInteractionEnabled:NO];
+    }
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {

@@ -170,8 +170,15 @@
 }
 
 - (NSInteger)valueForPercentAtIndex:(NSInteger)anIndex {
+    NSInteger result;
+    
     CMAStatsObject *baitObj = (CMAStatsObject *)[self.sliceObjects objectAtIndex:anIndex];
-    return round((float)baitObj.value / (float)self.totalValue * 100.0f);
+    result = round((float)baitObj.value / (float)self.totalValue * 100.0f);
+    
+    if (result > 0)
+        return result;
+    
+    return 0;
 }
 
 - (NSString *)stringForPercentAtIndex:(NSInteger)anIndex {
