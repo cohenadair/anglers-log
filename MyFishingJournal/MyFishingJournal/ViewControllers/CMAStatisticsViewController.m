@@ -15,6 +15,7 @@
 #import "CMAStats.h"
 #import "SWRevealViewController.h"
 #import "CMACircleView.h"
+#import "CMAStatisticsTableViewCell.h"
 
 @interface CMAStatisticsViewController ()
 
@@ -24,12 +25,6 @@
 @property (strong, nonatomic) CMACircleView *pieChartCenterView;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *pieChartControl;
 @property (weak, nonatomic) IBOutlet UIButton *totalButton;
-@property (weak, nonatomic) IBOutlet UIImageView *longestCatchImage;
-@property (weak, nonatomic) IBOutlet UILabel *longestCatchNameLabel;
-@property (weak, nonatomic) IBOutlet UILabel *longestCatchValueLabel;
-@property (weak, nonatomic) IBOutlet UIImageView *heaviestCatchImage;
-@property (weak, nonatomic) IBOutlet UILabel *heaviestCatchNameLabel;
-@property (weak, nonatomic) IBOutlet UILabel *heaviestCatchValueLabel;
 
 @property (strong, nonatomic) CMANoXView *noStatsView;
 @property (strong, nonatomic) XYPieChart *pieChart;
@@ -44,10 +39,11 @@
 
 @end
 
-#define kSectionLongestFish 1
-#define kSectionHeaviestFish 2
+#define kSectionLongestFish 0
+#define kSectionHeaviestFish 1
 
 #define kDefaultHeaderHeight 30
+#define kTableCellHeight 76
 
 @implementation CMAStatisticsViewController
 
@@ -113,8 +109,6 @@
     self.navigationController.toolbarHidden = YES;
     
     if (self.journalHasEntries) {
-        [self initTableView];
-    
         [self.pieChart reloadData];
         
         if (self.initialSelectedIndex != -1)
@@ -129,10 +123,7 @@
 #pragma mark - Table View Initializing
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    if (section == kSectionLongestFish || section == kSectionHeaviestFish)
-        return kDefaultHeaderHeight;
-    
-    return 0;
+    return kDefaultHeaderHeight;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
@@ -140,50 +131,78 @@
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    if (!self.journalHasEntries)
-        return 0;
-    
-    return 3;
+    return 2;
 }
 
-- (void)initTableView {
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+    if (section == kSectionHeaviestFish)
+        return @"Heaviest Catch";
+    
+    if (section == kSectionLongestFish)
+        return @"Longest Catch";
+    
+    return @"";
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return 1;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return kTableCellHeight;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    CMAStatisticsTableViewCell *cell = (CMAStatisticsTableViewCell *)[tableView dequeueReusableCellWithIdentifier:@"statisticsCell"];
+    
+    if (indexPath.section == kSectionLongestFish)
+        [self initLongestCatchCell:cell];
+    
+    if (indexPath.section == kSectionHeaviestFish)
+        [self initHeaviestCatchCell:cell];
+    
+    return cell;
+}
+
+- (void)initLongestCatchCell: (CMAStatisticsTableViewCell *)aCell {
     self.longestCatchEntry = [self.stats highCatchEntryFor:kHighCatchEntryLength];
-    self.heaviestCatchEntry = [self.stats highCatchEntryFor:kHighCatchEntryWeight];
     
     if (self.longestCatchEntry) {
         if ([self.longestCatchEntry imageCount] > 0)
-            [self.longestCatchImage setImage:[self.longestCatchEntry.images anyObject]];
+            [aCell.thumbImage setImage:[self.longestCatchEntry.images anyObject]];
         else
-            [self.longestCatchImage setImage:[UIImage imageNamed:@"no_image.png"]];
+            [aCell.thumbImage setImage:[UIImage imageNamed:@"no_image.png"]];
         
-        [self.longestCatchNameLabel setText:self.longestCatchEntry.fishSpecies.name];
-        [self.longestCatchValueLabel setText:[NSString stringWithFormat:@"%@ %@", [self.longestCatchEntry.fishLength stringValue], [[self journal] lengthUnitsAsString:NO]]];
+        [aCell.speciesLabel setText:self.longestCatchEntry.fishSpecies.name];
+        [aCell.valueLabel setText:[NSString stringWithFormat:@"%@ %@", [self.longestCatchEntry.fishLength stringValue], [[self journal] lengthUnitsAsString:NO]]];
     } else {
-        [self.longestCatchImage setImage:[UIImage imageNamed:@"no_image.png"]];
-        [self.longestCatchNameLabel setText:@"No Recorded Length"];
-        [self.longestCatchValueLabel setText:[NSString stringWithFormat:@"0 %@", [[self journal] lengthUnitsAsString:NO]]];
+        [aCell.thumbImage setImage:[UIImage imageNamed:@"no_image.png"]];
+        [aCell.speciesLabel setText:@"No Recorded Length"];
+        [aCell.valueLabel setText:[NSString stringWithFormat:@"0 %@", [[self journal] lengthUnitsAsString:NO]]];
         
-        UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:1]];
-        [cell setAccessoryType:UITableViewCellAccessoryNone];
-        [cell setUserInteractionEnabled:NO];
+        [aCell setAccessoryType:UITableViewCellAccessoryNone];
+        [aCell setUserInteractionEnabled:NO];
     }
+}
+
+- (void)initHeaviestCatchCell: (CMAStatisticsTableViewCell *)aCell {
+    self.heaviestCatchEntry = [self.stats highCatchEntryFor:kHighCatchEntryWeight];
     
     if (self.heaviestCatchEntry) {
         if ([self.heaviestCatchEntry imageCount] > 0)
-            [self.heaviestCatchImage setImage:[self.heaviestCatchEntry.images anyObject]];
+            [aCell.thumbImage setImage:[self.heaviestCatchEntry.images anyObject]];
         else
-            [self.heaviestCatchImage setImage:[UIImage imageNamed:@"no_image.png"]];
+            [aCell.thumbImage setImage:[UIImage imageNamed:@"no_image.png"]];
         
-        [self.heaviestCatchNameLabel setText:self.heaviestCatchEntry.fishSpecies.name];
-        [self.heaviestCatchValueLabel setText:[NSString stringWithFormat:@"%@ %@", [self.heaviestCatchEntry.fishWeight stringValue], [[self journal] weightUnitsAsString:NO]]];
+        [aCell.speciesLabel setText:self.heaviestCatchEntry.fishSpecies.name];
+        [aCell.valueLabel setText:[NSString stringWithFormat:@"%@ %@", [self.heaviestCatchEntry.fishWeight stringValue], [[self journal] weightUnitsAsString:NO]]];
     } else {
-        [self.heaviestCatchImage setImage:[UIImage imageNamed:@"no_image.png"]];
-        [self.heaviestCatchNameLabel setText:@"No Recorded Weight"];
-        [self.heaviestCatchValueLabel setText:[NSString stringWithFormat:@"0 %@", [[self journal] weightUnitsAsString:NO]]];
+        [aCell.thumbImage setImage:[UIImage imageNamed:@"no_image.png"]];
+        [aCell.speciesLabel setText:@"No Recorded Weight"];
+        [aCell.valueLabel setText:[NSString stringWithFormat:@"0 %@", [[self journal] weightUnitsAsString:NO]]];
         
-        UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:2]];
-        [cell setAccessoryType:UITableViewCellAccessoryNone];
-        [cell setUserInteractionEnabled:NO];
+        [aCell setAccessoryType:UITableViewCellAccessoryNone];
+        [aCell setUserInteractionEnabled:NO];
     }
 }
 

@@ -55,6 +55,7 @@
 		E738585A19FE0A3400FE122B /* CMAFishingMethod.m in Sources */ = {isa = PBXBuildFile; fileRef = E738585919FE0A3400FE122B /* CMAFishingMethod.m */; };
 		E738585B19FE0A3400FE122B /* CMAFishingMethod.m in Sources */ = {isa = PBXBuildFile; fileRef = E738585919FE0A3400FE122B /* CMAFishingMethod.m */; };
 		E748527A1A2BEB73002BF1C6 /* CMACircleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = E74852791A2BEB73002BF1C6 /* CMACircleView.xib */; };
+		E78A1F911A2FC40200FDA5E2 /* CMAStatisticsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E78A1F901A2FC40200FDA5E2 /* CMAStatisticsTableViewCell.m */; };
 		E78BB7D41A0724290082004B /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E78BB7D31A0724290082004B /* MapKit.framework */; };
 		E78BB7D61A0724760082004B /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E78BB7D51A0724760082004B /* CoreLocation.framework */; };
 		E78BB7DB1A0C1B9B0082004B /* rectile.png in Resources */ = {isa = PBXBuildFile; fileRef = E78BB7DA1A0C1B9B0082004B /* rectile.png */; };
@@ -180,6 +181,8 @@
 		E738585819FE0A3400FE122B /* CMAFishingMethod.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAFishingMethod.h; path = ApplicationModel/UserDefines/CMAFishingMethod.h; sourceTree = "<group>"; };
 		E738585919FE0A3400FE122B /* CMAFishingMethod.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAFishingMethod.m; path = ApplicationModel/UserDefines/CMAFishingMethod.m; sourceTree = "<group>"; };
 		E74852791A2BEB73002BF1C6 /* CMACircleView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CMACircleView.xib; sourceTree = "<group>"; };
+		E78A1F8F1A2FC40200FDA5E2 /* CMAStatisticsTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAStatisticsTableViewCell.h; path = CustomViews/CMAStatisticsTableViewCell.h; sourceTree = "<group>"; };
+		E78A1F901A2FC40200FDA5E2 /* CMAStatisticsTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAStatisticsTableViewCell.m; path = CustomViews/CMAStatisticsTableViewCell.m; sourceTree = "<group>"; };
 		E78BB7D31A0724290082004B /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		E78BB7D51A0724760082004B /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		E78BB7DA1A0C1B9B0082004B /* rectile.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = rectile.png; path = Images/rectile.png; sourceTree = "<group>"; };
@@ -498,6 +501,8 @@
 			children = (
 				E78BB7E11A1309680082004B /* CMAEntryTableViewCell.h */,
 				E78BB7E21A1309680082004B /* CMAEntryTableViewCell.m */,
+				E78A1F8F1A2FC40200FDA5E2 /* CMAStatisticsTableViewCell.h */,
+				E78A1F901A2FC40200FDA5E2 /* CMAStatisticsTableViewCell.m */,
 				E78BB7E71A133A940082004B /* CMATouchSegmentedControl.h */,
 				E78BB7E81A133A940082004B /* CMATouchSegmentedControl.m */,
 				E7C29D791A1BE0BE00015B42 /* CMABaitTableViewCell.h */,
@@ -768,6 +773,7 @@
 				E738585A19FE0A3400FE122B /* CMAFishingMethod.m in Sources */,
 				E7A331291A1D70C200C1D3F1 /* CMAAddLocationViewController.m in Sources */,
 				E7A331311A1D710200C1D3F1 /* CMASinglePhotoViewController.m in Sources */,
+				E78A1F911A2FC40200FDA5E2 /* CMAStatisticsTableViewCell.m in Sources */,
 				E7A3312A1A1D70C200C1D3F1 /* CMASingleLocationViewController.m in Sources */,
 				E7C29D101A143A1600015B42 /* SWRevealViewController.m in Sources */,
 				E738585019FE093700FE122B /* CMAFishingSpot.m in Sources */,
