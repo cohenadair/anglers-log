@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
@@ -12,45 +11,45 @@
             <rect key="frame" x="0.0" y="0.0" width="250" height="250"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="14 Caught" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5rC-nw-adN">
-                    <rect key="frame" x="8" y="165" width="234" height="27"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="27" id="mtQ-Wq-8yN"/>
-                    </constraints>
-                    <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                    <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                    <nil key="highlightedColor"/>
-                </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="29%" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Oz4-LC-nhl">
-                    <rect key="frame" x="8" y="58" width="234" height="68"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="75"/>
+                    <rect key="frame" x="8" y="61" width="234" height="80"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="70"/>
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
                     <color key="shadowColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                     <size key="shadowOffset" width="1" height="1"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Largemouth Bass" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hPx-nE-Cdz">
-                    <rect key="frame" x="8" y="131" width="234" height="30"/>
+                    <rect key="frame" x="8" y="146" width="234" height="30"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="30" id="xau-gh-lVj"/>
+                        <constraint firstAttribute="height" constant="30" id="C9h-Lw-KnT"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="25"/>
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
                 </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="14 Caught" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5rC-nw-adN">
+                    <rect key="frame" x="8" y="179" width="234" height="27"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="27" id="0bS-Mp-2SZ"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                    <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                    <nil key="highlightedColor"/>
+                </label>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstAttribute="bottom" secondItem="5rC-nw-adN" secondAttribute="bottom" constant="58" id="0V4-jL-B14"/>
-                <constraint firstItem="5rC-nw-adN" firstAttribute="top" secondItem="hPx-nE-Cdz" secondAttribute="bottom" constant="4" id="0Wt-9v-Osy"/>
-                <constraint firstItem="hPx-nE-Cdz" firstAttribute="leading" secondItem="Oz4-LC-nhl" secondAttribute="leading" id="H7k-Op-GGN"/>
-                <constraint firstItem="5rC-nw-adN" firstAttribute="trailing" secondItem="iN0-l3-epB" secondAttribute="trailingMargin" id="RVX-9f-5gg"/>
-                <constraint firstItem="Oz4-LC-nhl" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="58" id="Tmh-ou-Q7o"/>
-                <constraint firstItem="hPx-nE-Cdz" firstAttribute="trailing" secondItem="5rC-nw-adN" secondAttribute="trailing" id="cUp-Ek-gOy"/>
-                <constraint firstItem="5rC-nw-adN" firstAttribute="leading" secondItem="hPx-nE-Cdz" secondAttribute="leading" id="dg5-8M-YHF"/>
-                <constraint firstItem="Oz4-LC-nhl" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leadingMargin" id="gzV-oh-Jih"/>
-                <constraint firstItem="hPx-nE-Cdz" firstAttribute="top" secondItem="Oz4-LC-nhl" secondAttribute="bottom" constant="5" id="jId-vg-u5k"/>
-                <constraint firstItem="hPx-nE-Cdz" firstAttribute="trailing" secondItem="Oz4-LC-nhl" secondAttribute="trailing" id="m3A-8H-9Nu"/>
+                <constraint firstItem="Oz4-LC-nhl" firstAttribute="trailing" secondItem="hPx-nE-Cdz" secondAttribute="trailing" id="0a5-yH-Bib"/>
+                <constraint firstItem="hPx-nE-Cdz" firstAttribute="top" secondItem="Oz4-LC-nhl" secondAttribute="bottom" constant="5" id="2j9-FG-FkM"/>
+                <constraint firstAttribute="bottom" secondItem="5rC-nw-adN" secondAttribute="bottom" constant="44" id="D0u-GJ-xGF"/>
+                <constraint firstItem="Oz4-LC-nhl" firstAttribute="leading" secondItem="hPx-nE-Cdz" secondAttribute="leading" id="DlE-ud-y2b"/>
+                <constraint firstItem="5rC-nw-adN" firstAttribute="top" secondItem="hPx-nE-Cdz" secondAttribute="bottom" constant="3" id="SEi-VI-YTf"/>
+                <constraint firstItem="5rC-nw-adN" firstAttribute="trailing" secondItem="hPx-nE-Cdz" secondAttribute="trailing" id="TMA-PA-CrI"/>
+                <constraint firstItem="5rC-nw-adN" firstAttribute="leading" secondItem="hPx-nE-Cdz" secondAttribute="leading" id="dEt-Bc-Y19"/>
+                <constraint firstItem="Oz4-LC-nhl" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="61" id="h0K-ov-s2b"/>
+                <constraint firstItem="Oz4-LC-nhl" firstAttribute="trailing" secondItem="iN0-l3-epB" secondAttribute="trailingMargin" id="i3O-Sh-jsr"/>
+                <constraint firstItem="5rC-nw-adN" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leadingMargin" id="kOo-ym-Pwj"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>

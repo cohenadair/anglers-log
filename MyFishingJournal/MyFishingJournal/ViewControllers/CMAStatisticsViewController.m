@@ -295,7 +295,7 @@
     CGFloat screenWidth = self.view.frame.size.width;
     CGFloat controlHeight = self.pieChartControl.frame.size.height;
     CGRect chartFrame = CGRectMake(0, 0, screenWidth, screenWidth + controlHeight);
-    NSInteger chartRadius = screenWidth / 2 - 40;
+    NSInteger chartRadius = screenWidth / 2 - 20;
     CGPoint center = CGPointMake(chartFrame.size.width / 2, (chartFrame.size.height - controlHeight) / 2 - 5);
     
     self.pieChart = [[XYPieChart alloc] initWithFrame:chartFrame Center:center Radius:chartRadius];

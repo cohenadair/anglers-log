@@ -170,10 +170,12 @@
 }
 
 - (NSInteger)valueForPercentAtIndex:(NSInteger)anIndex {
-    NSInteger result;
+    NSInteger result = 0;
     
-    CMAStatsObject *baitObj = (CMAStatsObject *)[self.sliceObjects objectAtIndex:anIndex];
-    result = round((float)baitObj.value / (float)self.totalValue * 100.0f);
+    if ([self.sliceObjects count] > 0) {
+        CMAStatsObject *obj = (CMAStatsObject *)[self.sliceObjects objectAtIndex:anIndex];
+        result = round((float)obj.value / (float)self.totalValue * 100.0f);
+    }
     
     if (result > 0)
         return result;
@@ -186,12 +188,23 @@
 }
 
 - (NSString *)nameAtIndex:(NSInteger)anIndex {
-    return [(CMAStatsObject *)[self.sliceObjects objectAtIndex:anIndex] name];
+    if ([self.sliceObjects count] > 0)
+        return [(CMAStatsObject *)[self.sliceObjects objectAtIndex:anIndex] name];
+    
+    return [NSString stringWithFormat:@"No Recorded %@", self.userDefineName];
 }
 
 - (NSString *)detailTextAtIndex:(NSInteger)anIndex {
-    CMAStatsObject *baitObj = (CMAStatsObject *)[self.sliceObjects objectAtIndex:anIndex];
-    return [NSString stringWithFormat:@"%ld %@", (long)baitObj.value, self.detailDescription];
+    CMAStatsObject *obj;
+    
+    if ([self.sliceObjects count] > 0)
+        obj = (CMAStatsObject *)[self.sliceObjects objectAtIndex:anIndex];
+    else {
+        obj = [CMAStatsObject new];
+        obj.value = 0;
+    }
+    
+    return [NSString stringWithFormat:@"%ld %@", (long)obj.value, self.detailDescription];
 }
 
 - (NSInteger)sliceObjectCount {
