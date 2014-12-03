@@ -40,6 +40,7 @@
 @property (strong, nonatomic) CMAEntry *entryForSingleEntry;
 
 @property (nonatomic) NSInteger initialSelectedIndex;
+@property (nonatomic) BOOL journalHasEntries;
 
 @end
 
@@ -91,8 +92,9 @@
     [super viewDidLoad];
     [self initSideBarMenu];
     [self handleNoStatsView];
+    [self setJournalHasEntries:[[self journal] entryCount] > 0];
     
-    if ([[self journal] entryCount] > 0) {
+    if (self.journalHasEntries) {
         [self setStats:[CMAStats forCaughtWithJournal:[self journal]]];
         [self initColorsArray];
         [self initChartView];
@@ -110,7 +112,7 @@
     [super viewWillAppear:animated];
     self.navigationController.toolbarHidden = YES;
     
-    if ([[self journal] entryCount] > 0) {
+    if (self.journalHasEntries) {
         [self initTableView];
     
         [self.pieChart reloadData];
@@ -138,7 +140,7 @@
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    if ([[self journal] entryCount] <= 0)
+    if (!self.journalHasEntries)
         return 0;
     
     return 3;
