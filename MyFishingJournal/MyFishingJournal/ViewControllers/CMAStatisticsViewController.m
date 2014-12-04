@@ -284,6 +284,7 @@
     [self.pieChartCenterView setCenter:center];
     [self.pieChartCenterView.layer setCornerRadius:self.pieChartCenterView.frame.size.width / 2];
     [self.pieChartCenterView setBackgroundColor:[UIColor whiteColor]];
+    [self.pieChartCenterView.wrapperView.layer setCornerRadius:self.pieChartCenterView.wrapperView.frame.size.height];
     
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapPieChartCenter)];
     [tap setNumberOfTapsRequired:1];

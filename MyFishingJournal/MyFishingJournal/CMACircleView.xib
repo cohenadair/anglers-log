@@ -2,7 +2,6 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -11,51 +10,48 @@
             <rect key="frame" x="0.0" y="0.0" width="250" height="250"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="29%" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Oz4-LC-nhl">
-                    <rect key="frame" x="8" y="61" width="234" height="80"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="70"/>
-                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                    <nil key="highlightedColor"/>
-                    <color key="shadowColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
-                    <size key="shadowOffset" width="1" height="1"/>
-                </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Largemouth Bass" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hPx-nE-Cdz">
-                    <rect key="frame" x="8" y="146" width="234" height="30"/>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Owj-w0-KDs">
+                    <rect key="frame" x="0.0" y="42" width="250" height="165"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="14 Caught" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5rC-nw-adN">
+                            <rect key="frame" x="8" y="128" width="234" height="27"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                            <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Largemouth Bass" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hPx-nE-Cdz">
+                            <rect key="frame" x="8" y="95" width="234" height="30"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="25"/>
+                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="29%" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Oz4-LC-nhl">
+                            <rect key="frame" x="8" y="30" width="234" height="60"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="70"/>
+                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                            <nil key="highlightedColor"/>
+                            <color key="shadowColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                            <size key="shadowOffset" width="1" height="1"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="30" id="C9h-Lw-KnT"/>
+                        <constraint firstAttribute="width" constant="250" id="4s8-Ih-1aQ"/>
+                        <constraint firstAttribute="height" constant="165" id="yyd-Zb-dNh"/>
                     </constraints>
-                    <fontDescription key="fontDescription" type="system" pointSize="25"/>
-                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="14 Caught" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5rC-nw-adN">
-                    <rect key="frame" x="8" y="179" width="234" height="27"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="27" id="0bS-Mp-2SZ"/>
-                    </constraints>
-                    <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                    <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                    <nil key="highlightedColor"/>
-                </label>
+                </view>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstItem="Oz4-LC-nhl" firstAttribute="trailing" secondItem="hPx-nE-Cdz" secondAttribute="trailing" id="0a5-yH-Bib"/>
-                <constraint firstItem="hPx-nE-Cdz" firstAttribute="top" secondItem="Oz4-LC-nhl" secondAttribute="bottom" constant="5" id="2j9-FG-FkM"/>
-                <constraint firstAttribute="bottom" secondItem="5rC-nw-adN" secondAttribute="bottom" constant="44" id="D0u-GJ-xGF"/>
-                <constraint firstItem="Oz4-LC-nhl" firstAttribute="leading" secondItem="hPx-nE-Cdz" secondAttribute="leading" id="DlE-ud-y2b"/>
-                <constraint firstItem="5rC-nw-adN" firstAttribute="top" secondItem="hPx-nE-Cdz" secondAttribute="bottom" constant="3" id="SEi-VI-YTf"/>
-                <constraint firstItem="5rC-nw-adN" firstAttribute="trailing" secondItem="hPx-nE-Cdz" secondAttribute="trailing" id="TMA-PA-CrI"/>
-                <constraint firstItem="5rC-nw-adN" firstAttribute="leading" secondItem="hPx-nE-Cdz" secondAttribute="leading" id="dEt-Bc-Y19"/>
-                <constraint firstItem="Oz4-LC-nhl" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="61" id="h0K-ov-s2b"/>
-                <constraint firstItem="Oz4-LC-nhl" firstAttribute="trailing" secondItem="iN0-l3-epB" secondAttribute="trailingMargin" id="i3O-Sh-jsr"/>
-                <constraint firstItem="5rC-nw-adN" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leadingMargin" id="kOo-ym-Pwj"/>
+                <constraint firstAttribute="centerX" secondItem="Owj-w0-KDs" secondAttribute="centerX" id="ePA-xe-Fia"/>
+                <constraint firstAttribute="centerY" secondItem="Owj-w0-KDs" secondAttribute="centerY" id="zYq-uG-GN5"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
                 <outlet property="bigLabel" destination="Oz4-LC-nhl" id="AI7-0I-MQ0"/>
                 <outlet property="detailLabel" destination="5rC-nw-adN" id="d2P-ui-x2O"/>
                 <outlet property="subLabel" destination="hPx-nE-Cdz" id="oZI-if-ejg"/>
+                <outlet property="wrapperView" destination="Owj-w0-KDs" id="UJD-Y1-0UI"/>
             </connections>
         </view>
     </objects>

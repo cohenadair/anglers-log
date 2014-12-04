@@ -13,5 +13,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *bigLabel;
 @property (weak, nonatomic) IBOutlet UILabel *subLabel;
 @property (weak, nonatomic) IBOutlet UILabel *detailLabel;
+@property (weak, nonatomic) IBOutlet UIView *wrapperView;
 
 @end
