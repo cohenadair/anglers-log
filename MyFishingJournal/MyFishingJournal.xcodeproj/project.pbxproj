@@ -56,6 +56,16 @@
 		E738585B19FE0A3400FE122B /* CMAFishingMethod.m in Sources */ = {isa = PBXBuildFile; fileRef = E738585919FE0A3400FE122B /* CMAFishingMethod.m */; };
 		E748527A1A2BEB73002BF1C6 /* CMACircleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = E74852791A2BEB73002BF1C6 /* CMACircleView.xib */; };
 		E78A1F911A2FC40200FDA5E2 /* CMAStatisticsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E78A1F901A2FC40200FDA5E2 /* CMAStatisticsTableViewCell.m */; };
+		E78A1F951A3002EB00FDA5E2 /* app_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = E78A1F931A3002EB00FDA5E2 /* app_icon.png */; };
+		E78A1F961A3002EB00FDA5E2 /* app_icon.xcf in Resources */ = {isa = PBXBuildFile; fileRef = E78A1F941A3002EB00FDA5E2 /* app_icon.xcf */; };
+		E78A1FA51A3007E700FDA5E2 /* app_icon_40.png in Resources */ = {isa = PBXBuildFile; fileRef = E78A1F9F1A3007E700FDA5E2 /* app_icon_40.png */; };
+		E78A1FA61A3007E700FDA5E2 /* app_icon_76.png in Resources */ = {isa = PBXBuildFile; fileRef = E78A1FA01A3007E700FDA5E2 /* app_icon_76.png */; };
+		E78A1FA71A3007E700FDA5E2 /* app_icon_80.png in Resources */ = {isa = PBXBuildFile; fileRef = E78A1FA11A3007E700FDA5E2 /* app_icon_80.png */; };
+		E78A1FA81A3007E700FDA5E2 /* app_icon_120.png in Resources */ = {isa = PBXBuildFile; fileRef = E78A1FA21A3007E700FDA5E2 /* app_icon_120.png */; };
+		E78A1FA91A3007E700FDA5E2 /* app_icon_152.png in Resources */ = {isa = PBXBuildFile; fileRef = E78A1FA31A3007E700FDA5E2 /* app_icon_152.png */; };
+		E78A1FAA1A3007E700FDA5E2 /* app_icon_180.png in Resources */ = {isa = PBXBuildFile; fileRef = E78A1FA41A3007E700FDA5E2 /* app_icon_180.png */; };
+		E78A1FAC1A30084400FDA5E2 /* app_icon_58.png in Resources */ = {isa = PBXBuildFile; fileRef = E78A1FAB1A30084400FDA5E2 /* app_icon_58.png */; };
+		E78A1FAE1A3008DD00FDA5E2 /* app_icon_29.png in Resources */ = {isa = PBXBuildFile; fileRef = E78A1FAD1A3008DD00FDA5E2 /* app_icon_29.png */; };
 		E78BB7D41A0724290082004B /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E78BB7D31A0724290082004B /* MapKit.framework */; };
 		E78BB7D61A0724760082004B /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E78BB7D51A0724760082004B /* CoreLocation.framework */; };
 		E78BB7DB1A0C1B9B0082004B /* rectile.png in Resources */ = {isa = PBXBuildFile; fileRef = E78BB7DA1A0C1B9B0082004B /* rectile.png */; };
@@ -183,6 +193,16 @@
 		E74852791A2BEB73002BF1C6 /* CMACircleView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CMACircleView.xib; sourceTree = "<group>"; };
 		E78A1F8F1A2FC40200FDA5E2 /* CMAStatisticsTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAStatisticsTableViewCell.h; path = CustomViews/CMAStatisticsTableViewCell.h; sourceTree = "<group>"; };
 		E78A1F901A2FC40200FDA5E2 /* CMAStatisticsTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAStatisticsTableViewCell.m; path = CustomViews/CMAStatisticsTableViewCell.m; sourceTree = "<group>"; };
+		E78A1F931A3002EB00FDA5E2 /* app_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = app_icon.png; path = Images/AppIcons/app_icon.png; sourceTree = "<group>"; };
+		E78A1F941A3002EB00FDA5E2 /* app_icon.xcf */ = {isa = PBXFileReference; lastKnownFileType = file; name = app_icon.xcf; path = Images/AppIcons/app_icon.xcf; sourceTree = "<group>"; };
+		E78A1F9F1A3007E700FDA5E2 /* app_icon_40.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = app_icon_40.png; path = Images/AppIcons/app_icon_40.png; sourceTree = "<group>"; };
+		E78A1FA01A3007E700FDA5E2 /* app_icon_76.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = app_icon_76.png; path = Images/AppIcons/app_icon_76.png; sourceTree = "<group>"; };
+		E78A1FA11A3007E700FDA5E2 /* app_icon_80.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = app_icon_80.png; path = Images/AppIcons/app_icon_80.png; sourceTree = "<group>"; };
+		E78A1FA21A3007E700FDA5E2 /* app_icon_120.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = app_icon_120.png; path = Images/AppIcons/app_icon_120.png; sourceTree = "<group>"; };
+		E78A1FA31A3007E700FDA5E2 /* app_icon_152.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = app_icon_152.png; path = Images/AppIcons/app_icon_152.png; sourceTree = "<group>"; };
+		E78A1FA41A3007E700FDA5E2 /* app_icon_180.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = app_icon_180.png; path = Images/AppIcons/app_icon_180.png; sourceTree = "<group>"; };
+		E78A1FAB1A30084400FDA5E2 /* app_icon_58.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = app_icon_58.png; path = Images/AppIcons/app_icon_58.png; sourceTree = "<group>"; };
+		E78A1FAD1A3008DD00FDA5E2 /* app_icon_29.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = app_icon_29.png; path = Images/AppIcons/app_icon_29.png; sourceTree = "<group>"; };
 		E78BB7D31A0724290082004B /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		E78BB7D51A0724760082004B /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		E78BB7DA1A0C1B9B0082004B /* rectile.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = rectile.png; path = Images/rectile.png; sourceTree = "<group>"; };
@@ -447,12 +467,30 @@
 		E738583B19FCD49100FE122B /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				E78A1F921A3002CC00FDA5E2 /* AppIcons */,
 				E700E46D1A29CF2600BB6337 /* no_image.png */,
 				E705AD6A1A229ABD0077F16C /* LargeIcons */,
 				E7C29D1E1A17DD7E00015B42 /* Icons */,
 				E78BB7DA1A0C1B9B0082004B /* rectile.png */,
 			);
 			name = Images;
+			sourceTree = "<group>";
+		};
+		E78A1F921A3002CC00FDA5E2 /* AppIcons */ = {
+			isa = PBXGroup;
+			children = (
+				E78A1FAD1A3008DD00FDA5E2 /* app_icon_29.png */,
+				E78A1FAB1A30084400FDA5E2 /* app_icon_58.png */,
+				E78A1F9F1A3007E700FDA5E2 /* app_icon_40.png */,
+				E78A1FA01A3007E700FDA5E2 /* app_icon_76.png */,
+				E78A1FA11A3007E700FDA5E2 /* app_icon_80.png */,
+				E78A1FA21A3007E700FDA5E2 /* app_icon_120.png */,
+				E78A1FA31A3007E700FDA5E2 /* app_icon_152.png */,
+				E78A1FA41A3007E700FDA5E2 /* app_icon_180.png */,
+				E78A1F931A3002EB00FDA5E2 /* app_icon.png */,
+				E78A1F941A3002EB00FDA5E2 /* app_icon.xcf */,
+			);
+			name = AppIcons;
 			sourceTree = "<group>";
 		};
 		E7A331141A1D6FC900C1D3F1 /* Entries */ = {
@@ -699,12 +737,15 @@
 				E7C29D491A17FC6200015B42 /* home.png in Resources */,
 				E7C29D2F1A17E0C200015B42 /* menu@2x.png in Resources */,
 				E7C29D561A17FFE200015B42 /* fishing_methods.png in Resources */,
+				E78A1FA61A3007E700FDA5E2 /* app_icon_76.png in Resources */,
 				E7C29D5C1A17FFE200015B42 /* species.png in Resources */,
 				E748527A1A2BEB73002BF1C6 /* CMACircleView.xib in Resources */,
 				E700E46E1A29CF2600BB6337 /* no_image.png in Resources */,
+				E78A1F951A3002EB00FDA5E2 /* app_icon.png in Resources */,
 				E705AD751A229E0B0077F16C /* locations_large.png in Resources */,
 				E705AD781A229E0B0077F16C /* stats_large.png in Resources */,
 				E7C29D4C1A17FC6200015B42 /* stats.png in Resources */,
+				E78A1FAE1A3008DD00FDA5E2 /* app_icon_29.png in Resources */,
 				E7C29D361A17EA4200015B42 /* camera@1x.png in Resources */,
 				E7C29D421A17F8BB00015B42 /* checkmark@1x.png in Resources */,
 				E705AD6C1A229AD20077F16C /* fishing_methods_large.png in Resources */,
@@ -713,9 +754,14 @@
 				E7C29D571A17FFE200015B42 /* literature.png in Resources */,
 				E7C29D4A1A17FC6200015B42 /* photos.png in Resources */,
 				E705AD741A229E0B0077F16C /* entries_large.png in Resources */,
+				E78A1FA91A3007E700FDA5E2 /* app_icon_152.png in Resources */,
 				E7C29D431A17F8BB00015B42 /* checkmark@2x.png in Resources */,
 				E7C29D2E1A17E0C200015B42 /* menu@1x.png in Resources */,
+				E78A1F961A3002EB00FDA5E2 /* app_icon.xcf in Resources */,
 				E7C926D319EE37750010A9FE /* MyFishingJournal.storyboard in Resources */,
+				E78A1FA51A3007E700FDA5E2 /* app_icon_40.png in Resources */,
+				E78A1FAA1A3007E700FDA5E2 /* app_icon_180.png in Resources */,
+				E78A1FA71A3007E700FDA5E2 /* app_icon_80.png in Resources */,
 				E78BB7DB1A0C1B9B0082004B /* rectile.png in Resources */,
 				E7C29D381A17EA4200015B42 /* camera@3x.png in Resources */,
 				E7C29D5B1A17FFE200015B42 /* sort@3x.png in Resources */,
@@ -726,9 +772,11 @@
 				E7C29D591A17FFE200015B42 /* sort@1x.png in Resources */,
 				E705AD771A229E0B0077F16C /* species_large.png in Resources */,
 				E7C29D4B1A17FC6200015B42 /* settings.png in Resources */,
+				E78A1FAC1A30084400FDA5E2 /* app_icon_58.png in Resources */,
 				E70B638819D3A8E400DFBA85 /* Images.xcassets in Resources */,
 				E7C29D581A17FFE200015B42 /* locations.png in Resources */,
 				E7C29D441A17F8BB00015B42 /* checkmark@3x.png in Resources */,
+				E78A1FA81A3007E700FDA5E2 /* app_icon_120.png in Resources */,
 				E7C29D5A1A17FFE200015B42 /* sort@2x.png in Resources */,
 				E7C29D3E1A17F5A500015B42 /* edit@3x.png in Resources */,
 				E705AD731A229E0B0077F16C /* baits_large.png in Resources */,

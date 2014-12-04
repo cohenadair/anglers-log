@@ -22,10 +22,11 @@
     if (self.journal == nil)
         self.journal = [CMAJournal new];
     
+    // Used to alternate background color of UITableViewCells
     CELL_COLOR_DARK = [UIColor colorWithWhite:0.95 alpha:1.0];
     CELL_COLOR_LIGHT = [UIColor clearColor];
     
-    UIColor *buttonTintColor = [UIColor redColor];
+    UIColor *buttonTintColor = [UIColor colorWithRed:21.0/255 green:165.0/255 blue:231.0/255 alpha:1.0];
     
     [[UINavigationBar appearance] setTranslucent:NO];
     [[UINavigationBar appearance] setBarTintColor:[UIColor colorWithWhite:0.97 alpha:1.0]];
