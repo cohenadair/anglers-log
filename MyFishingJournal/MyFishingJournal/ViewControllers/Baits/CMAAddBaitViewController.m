@@ -251,7 +251,7 @@
             break;
             
         default:
-            NSLog(@"Invalid previousViewID value: %ld", self.previousViewID);
+            NSLog(@"Invalid previousViewID value: %ld", (long)self.previousViewID);
             break;
     }
 }
