@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6250" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="XOe-jZ-fVU">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="XOe-jZ-fVU">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
@@ -1005,7 +1005,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <sections>
-                            <tableViewSection id="jzj-rH-4CA">
+                            <tableViewSection headerTitle="Date and Time" id="jzj-rH-4CA">
                                 <cells>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="Yva-eh-OdD" detailTextLabel="RLa-LE-c2q" style="IBUITableViewCellStyleValue1" id="Eas-P7-cEg">
                                         <autoresizingMask key="autoresizingMask"/>
@@ -1248,7 +1248,7 @@
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
-                            <tableViewSection id="XO1-gg-NUO">
+                            <tableViewSection headerTitle="Photos" id="XO1-gg-NUO">
                                 <cells>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="155" id="VMW-Bd-1Rj">
                                         <autoresizingMask key="autoresizingMask"/>
@@ -1339,7 +1339,7 @@
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
-                            <tableViewSection id="LOk-AE-fy3">
+                            <tableViewSection headerTitle="Notes" id="LOk-AE-fy3">
                                 <cells>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="175" id="EME-Nz-fVJ">
                                         <autoresizingMask key="autoresizingMask"/>
@@ -2546,21 +2546,21 @@
         <image name="stats.png" width="50" height="50"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="egX-OW-uSX"/>
-        <segue reference="guB-6y-sIg"/>
+        <segue reference="RpT-ts-gTM"/>
+        <segue reference="OHB-Pt-9SF"/>
         <segue reference="0It-ub-fzN"/>
+        <segue reference="guB-6y-sIg"/>
         <segue reference="aBE-xI-c3y"/>
+        <segue reference="egX-OW-uSX"/>
         <segue reference="Jyy-wS-dXA"/>
         <segue reference="gDt-Tw-gtk"/>
-        <segue reference="OHB-Pt-9SF"/>
-        <segue reference="77U-eo-oVF"/>
-        <segue reference="DIu-nR-jUP"/>
-        <segue reference="2ub-xD-2JF"/>
         <segue reference="y0h-hR-J5c"/>
-        <segue reference="RpT-ts-gTM"/>
-        <segue reference="Mmt-ea-Rlu"/>
+        <segue reference="2ub-xD-2JF"/>
         <segue reference="uUK-tT-jvg"/>
         <segue reference="xJw-cV-13t"/>
         <segue reference="ij7-4o-wMK"/>
+        <segue reference="Mmt-ea-Rlu"/>
+        <segue reference="qAO-gb-5Yr"/>
+        <segue reference="ooh-Eu-Ug2"/>
     </inferredMetricsTieBreakers>
 </document>
