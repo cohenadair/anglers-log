@@ -1043,6 +1043,10 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
+                                </cells>
+                            </tableViewSection>
+                            <tableViewSection headerTitle="Fish Details" id="Wz4-jv-CXO">
+                                <cells>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="YBD-SV-Aim" detailTextLabel="iG0-tN-1ui" rowHeight="44" style="IBUITableViewCellStyleValue1" id="60i-cP-niG">
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
@@ -1113,10 +1117,6 @@
                                             <segue destination="BZk-e6-FYf" kind="show" identifier="fromAddEntryToViewBaits" id="ooh-Eu-Ug2"/>
                                         </connections>
                                     </tableViewCell>
-                                </cells>
-                            </tableViewSection>
-                            <tableViewSection id="Wz4-jv-CXO">
-                                <cells>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="yPF-ba-gKi" detailTextLabel="6dp-Ea-mmb" rowHeight="44" style="IBUITableViewCellStyleValue1" id="OGk-eU-OtJ">
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="OGk-eU-OtJ" id="Dil-4x-bCE">
@@ -1360,6 +1360,9 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                 </cells>
+                            </tableViewSection>
+                            <tableViewSection headerTitle="Fish Details" id="pgs-jR-9Yt">
+                                <cells/>
                             </tableViewSection>
                         </sections>
                         <connections>

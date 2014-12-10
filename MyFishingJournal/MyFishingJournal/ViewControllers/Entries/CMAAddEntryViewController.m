@@ -216,6 +216,14 @@ NSString *const NO_SELECT = @"Not Selected";
     return [super tableView:tableView heightForRowAtIndexPath:indexPath];
 }
 
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.section == 0 && indexPath.row == 0) {
+        [cell setSeparatorInset:UIEdgeInsetsZero];
+        [cell setPreservesSuperviewLayoutMargins:NO];
+        [cell setLayoutMargins:UIEdgeInsetsZero];
+    }
+}
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     // show the date picker cell when the date display cell is selected
     if (indexPath.section == DATE_DISPLAY_SECTION && indexPath.row == DATE_DISPLAY_ROW)
