@@ -81,7 +81,7 @@ NSString *const NO_SELECT = @"Not Selected";
     [super viewDidLoad];
     
     self.dateFormatter = [NSDateFormatter new];
-    [self.dateFormatter setDateFormat:@"MMM dd, yyyy 'at' h:mm a"];
+    [self.dateFormatter setDateFormat:@"MMMM dd, yyyy 'at' h:mm a"];
     
     // set date detail label to the current date and time
     [self.dateTimeDetailLabel setText:[self.dateFormatter stringFromDate:[NSDate new]]];
@@ -175,36 +175,24 @@ NSString *const NO_SELECT = @"Not Selected";
         [self.notesTextView setText:self.entry.notes];
 }
 
-- (void)toggleDatePickerCellHidden:(UITableView *)aTableView {
+- (void)toggleDatePickerCellHidden:(UITableView *)aTableView selectedPath:(NSIndexPath *)anIndexPath {
     self.isEditingDateTime = !self.isEditingDateTime;
-    
-    // use begin/endUpdates to animate changes
-    [aTableView beginUpdates];
     
     if (self.isEditingDateTime)
         [UIView animateWithDuration:0.5 animations:^{
             [self.datePicker setAlpha:1.0f];
         }];
-    else
+    else {
         [UIView animateWithDuration:0.15 animations:^{
             [self.datePicker setAlpha:0.0f];
         }];
+        
+        [aTableView deselectRowAtIndexPath:anIndexPath animated:NO];
+    }
     
-    [aTableView reloadData];
-    
+    // use begin/endUpdates to animate changes
+    [aTableView beginUpdates];
     [aTableView endUpdates];
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    return TABLE_SECTION_SPACING;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-    // only set a footer for the last cell in the table
-    if (section == ([self numberOfSectionsInTableView:tableView] - 1))
-        return TABLE_SECTION_SPACING;
-
-    return CGFLOAT_MIN;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -231,11 +219,11 @@ NSString *const NO_SELECT = @"Not Selected";
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     // show the date picker cell when the date display cell is selected
     if (indexPath.section == DATE_DISPLAY_SECTION && indexPath.row == DATE_DISPLAY_ROW)
-        [self toggleDatePickerCellHidden:tableView];
+        [self toggleDatePickerCellHidden:tableView selectedPath:indexPath];
     else
         // hide the date picker cell when any other cell is selected
         if (self.isEditingDateTime)
-            [self toggleDatePickerCellHidden:tableView];
+            [self toggleDatePickerCellHidden:tableView selectedPath:indexPath];
 }
 
 #pragma mark - Text View Initializing
