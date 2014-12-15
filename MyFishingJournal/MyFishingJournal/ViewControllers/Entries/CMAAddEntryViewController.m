@@ -54,16 +54,17 @@
 
 @end
 
-NSInteger const DATE_PICKER_HEIGHT = 225;
-NSInteger const DATE_PICKER_SECTION = 0;
-NSInteger const DATE_PICKER_ROW = 1;
-NSInteger const DATE_DISPLAY_SECTION = 0;
-NSInteger const DATE_DISPLAY_ROW = 0;
+#define kDateCellSection 0
+#define kDateCellRow 0
 
-NSInteger const IMAGES_HEIGHT = 160;
-NSInteger const IMAGES_SECTION = 2;
+#define kDatePickerHeight 225
+#define kDatePickerCellSection 0
+#define kDatePickerCellRow 1
 
-NSInteger const IMAGE_VIEW_TAG = 100;
+#define kImagesCellHeightExpanded 160
+#define kImagesCellSection 1
+
+#define kImageViewTag 100
 
 NSString *const NO_SELECT = @"Not Selected";
 
@@ -208,17 +209,17 @@ NSString *const NO_SELECT = @"Not Selected";
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     // set height of the date picker cell
-    if (indexPath.section == DATE_PICKER_SECTION && indexPath.row == DATE_PICKER_ROW) {
+    if (indexPath.section == kDatePickerCellSection && indexPath.row == kDatePickerCellRow) {
         if (self.isEditingDateTime)
-            return DATE_PICKER_HEIGHT;
+            return kDatePickerHeight;
         else
             return 0;
     }
     
     // for the images collection cell
-    if (indexPath.section == IMAGES_SECTION) {
+    if (indexPath.section == kImagesCellSection) {
         if (self.hasAttachedImages)
-            return IMAGES_HEIGHT;
+            return kImagesCellHeightExpanded;
         else
             return 44;
     }
@@ -237,7 +238,7 @@ NSString *const NO_SELECT = @"Not Selected";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     // show the date picker cell when the date display cell is selected
-    if (indexPath.section == DATE_DISPLAY_SECTION && indexPath.row == DATE_DISPLAY_ROW)
+    if (indexPath.section == kDateCellSection && indexPath.row == kDateCellRow)
         [self toggleDatePickerCellHidden:tableView selectedPath:indexPath];
     else
         // hide the date picker cell when any other cell is selected
@@ -507,7 +508,7 @@ NSString *const NO_SELECT = @"Not Selected";
     if ([self.imageCollection numberOfItemsInSection:0] > 0) {
         for (int i = 0; i < [self.imageCollection numberOfItemsInSection:0]; i++) {
             UICollectionViewCell *cell = [self.imageCollection cellForItemAtIndexPath:[NSIndexPath indexPathForItem:i inSection:0]];
-            UIImage *image = [(UIImageView *)[cell viewWithTag:IMAGE_VIEW_TAG] image];
+            UIImage *image = [(UIImageView *)[cell viewWithTag:kImageViewTag] image];
             
             [anEntry addImage:image];
         }
@@ -589,7 +590,7 @@ NSString *const NO_SELECT = @"Not Selected";
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"thumbnailImageCell" forIndexPath:indexPath];
     
     if ([self.entryImages count] > 0) {
-        UIImageView *imageView = (UIImageView *)[cell viewWithTag:IMAGE_VIEW_TAG];
+        UIImageView *imageView = (UIImageView *)[cell viewWithTag:kImageViewTag];
         [imageView setImage:[self.entryImages objectAtIndex:indexPath.item]];
     }
         
@@ -612,7 +613,7 @@ NSString *const NO_SELECT = @"Not Selected";
     
     UICollectionViewCell *insertedCell = [self.imageCollection cellForItemAtIndexPath:indexPath];
     
-    UIImageView *imageView = (UIImageView *)[insertedCell viewWithTag:IMAGE_VIEW_TAG];
+    UIImageView *imageView = (UIImageView *)[insertedCell viewWithTag:kImageViewTag];
     [imageView setImage:anImage];
 }
 
