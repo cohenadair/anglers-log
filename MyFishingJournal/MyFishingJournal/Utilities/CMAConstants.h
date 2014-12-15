@@ -67,4 +67,7 @@ extern CGFloat const TABLE_SECTION_SPACING;
 UIColor *CELL_COLOR_DARK; // initialized in AppDelegate.m
 UIColor *CELL_COLOR_LIGHT; // initialized in AppDelegate.m
 
+#define kTableSectionHeaderHeight 40
+#define kTableFooterHeight 25
+
 #endif

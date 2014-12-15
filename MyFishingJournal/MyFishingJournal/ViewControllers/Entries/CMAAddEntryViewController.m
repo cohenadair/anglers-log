@@ -195,6 +195,17 @@ NSString *const NO_SELECT = @"Not Selected";
     [aTableView endUpdates];
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    return kTableSectionHeaderHeight;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+    if (section == [tableView numberOfSections] - 1)
+        return kTableFooterHeight;
+    
+    return CGFLOAT_MIN;
+}
+
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     // set height of the date picker cell
     if (indexPath.section == DATE_PICKER_SECTION && indexPath.row == DATE_PICKER_ROW) {

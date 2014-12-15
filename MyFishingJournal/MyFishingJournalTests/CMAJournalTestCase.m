@@ -36,7 +36,7 @@
     result.baitUsed = [CMABait withName:@"Black twisty tail"];
     result.fishLength = [NSNumber numberWithInt:15];
     result.fishWeight = [NSNumber numberWithInt:3];
-    result.fishingMethods = [NSSet setWithObjects:@"Shore", @"Casting", nil];
+    result.fishingMethods = [NSMutableSet setWithObjects:@"Shore", @"Casting", nil];
     result.location = [CMALocation withName:@"The Nine Mile River"];
     [result.location addFishingSpot:[CMAFishingSpot withName:@"Beaver Dam"]];
     
@@ -50,7 +50,7 @@
     result.baitUsed = [CMABait withName:@"Minnow Fly (Giant)"];
     result.fishLength = [NSNumber numberWithInt:43];
     result.fishWeight = [NSNumber numberWithInt:20];
-    result.fishingMethods = [NSSet setWithObjects:@"Boat", @"Fly", nil];
+    result.fishingMethods = [NSMutableSet setWithObjects:@"Boat", @"Fly", nil];
     result.location = [CMALocation withName:@"Wildwood Lake"];
     [result.location addFishingSpot:[CMAFishingSpot withName:@"Dam"]];
     
