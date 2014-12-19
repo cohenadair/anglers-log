@@ -48,6 +48,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    
     if (self.previousViewID == CMAViewControllerIDEditSettings) {
         self.selectedCellLabelText = [NSString stringWithFormat:@"%@%@%@", self.location.name, TOKEN_LOCATION, cell.textLabel.text];
         [self performSegueWithIdentifier:@"unwindToAddEntryFromSelectFishingSpot" sender:self];

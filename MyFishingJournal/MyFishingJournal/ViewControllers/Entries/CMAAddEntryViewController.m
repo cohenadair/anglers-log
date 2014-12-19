@@ -10,6 +10,7 @@
 #import "CMAUserDefinesViewController.h"
 #import "CMASingleLocationViewController.h"
 #import "CMASelectFishingSpotViewController.h"
+#import "CMASelectionTableViewController.h"
 #import "CMAViewBaitsViewController.h"
 #import "CMAAppDelegate.h"
 #import "CMAAlerts.h"
@@ -367,6 +368,18 @@ NSString *const NO_SELECT = @"Not Selected";
         return;
     }
     
+    // water  clarity
+    if ([segue.identifier isEqualToString:@"fromAddEntryWaterClarityToSelectionTable"]) {
+        CMASelectionTableViewController *destination = [[segue.destinationViewController viewControllers] objectAtIndex:0];
+        
+        destination.navigationItem.title = @"Water Clarities";
+        destination.previousViewID = CMAViewControllerIDAddEntry;
+        destination.tableDataArray = @[@"Clear", @"Stained", @"Dark"];
+        self.indexPathForOptionsCell = [self.tableView indexPathForSelectedRow];
+        
+        return;
+    }
+    
     BOOL isSetting = NO;
     NSString *userDefineName;
     
@@ -433,6 +446,16 @@ NSString *const NO_SELECT = @"Not Selected";
         [[cellToEdit detailTextLabel] setText:source.baitForAddEntry.name];
         
         source.baitForAddEntry = nil;
+    }
+    
+    if ([segue.identifier isEqualToString:@"unwindToAddEntryFromSelectionTable"]) {
+        CMASelectionTableViewController *source = [segue sourceViewController];
+        UITableViewCell *cellToEdit = [self.tableView cellForRowAtIndexPath:self.indexPathForOptionsCell];
+        [[cellToEdit detailTextLabel] setText:source.selectedCellLabelText];
+        
+        source.previousViewID = CMAViewControllerIDNil;
+        source.selectedCellLabelText = nil;
+        source.tableDataArray = nil;
     }
 }
 

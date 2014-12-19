@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0D34EF4F1A44D03F00764F18 /* CMASelectionTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D34EF4E1A44D03F00764F18 /* CMASelectionTableViewController.m */; };
 		E700E46E1A29CF2600BB6337 /* no_image.png in Resources */ = {isa = PBXBuildFile; fileRef = E700E46D1A29CF2600BB6337 /* no_image.png */; };
 		E700E4761A2AA71A00BB6337 /* CMALaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = E700E4751A2AA71A00BB6337 /* CMALaunchScreen.xib */; };
 		E705AD6C1A229AD20077F16C /* fishing_methods_large.png in Resources */ = {isa = PBXBuildFile; fileRef = E705AD6B1A229AD20077F16C /* fishing_methods_large.png */; };
@@ -133,6 +134,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0D34EF4D1A44D03F00764F18 /* CMASelectionTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMASelectionTableViewController.h; path = ViewControllers/CMASelectionTableViewController.h; sourceTree = "<group>"; };
+		0D34EF4E1A44D03F00764F18 /* CMASelectionTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMASelectionTableViewController.m; path = ViewControllers/CMASelectionTableViewController.m; sourceTree = "<group>"; };
 		E700E46D1A29CF2600BB6337 /* no_image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = no_image.png; path = Images/no_image.png; sourceTree = "<group>"; };
 		E700E4751A2AA71A00BB6337 /* CMALaunchScreen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CMALaunchScreen.xib; sourceTree = "<group>"; };
 		E705AD6B1A229AD20077F16C /* fishing_methods_large.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = fishing_methods_large.png; path = Images/LargeIcons/fishing_methods_large.png; sourceTree = "<group>"; };
@@ -635,6 +638,8 @@
 				E7C29D151A1445AE00015B42 /* CMASideMenuViewController.m */,
 				E7C29D821A1C210000015B42 /* CMAImagePickerViewController.h */,
 				E7C29D831A1C210000015B42 /* CMAImagePickerViewController.m */,
+				0D34EF4D1A44D03F00764F18 /* CMASelectionTableViewController.h */,
+				0D34EF4E1A44D03F00764F18 /* CMASelectionTableViewController.m */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -827,6 +832,7 @@
 				E78BB7E31A1309680082004B /* CMAEntryTableViewCell.m in Sources */,
 				E705AD8E1A2581400077F16C /* CMAStats.m in Sources */,
 				E70B638619D3A8E400DFBA85 /* CMAAppDelegate.m in Sources */,
+				0D34EF4F1A44D03F00764F18 /* CMASelectionTableViewController.m in Sources */,
 				E72669DE19E76B63003C8E0B /* CMAUserDefine.m in Sources */,
 				E738585219FE093700FE122B /* CMALocation.m in Sources */,
 				E7A331281A1D70C200C1D3F1 /* CMAAddFishingSpotViewController.m in Sources */,
