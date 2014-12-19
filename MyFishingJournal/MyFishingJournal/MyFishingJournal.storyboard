@@ -1063,7 +1063,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="camera.png" translatesAutoresizingMaskIntoConstraints="NO" id="AjM-HM-sGP" customClass="CMACameraButton">
-                                                    <rect key="frame" x="561" y="9" width="25" height="25"/>
+                                                    <rect key="frame" x="561" y="10" width="25" height="25"/>
                                                     <gestureRecognizers/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="25" id="c8z-Hx-shm"/>
@@ -1116,7 +1116,7 @@
                                                 </collectionView>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="AjM-HM-sGP" firstAttribute="top" secondItem="Lak-sh-fb4" secondAttribute="topMargin" constant="1" id="4mg-fD-aPs"/>
+                                                <constraint firstItem="AjM-HM-sGP" firstAttribute="top" secondItem="Lak-sh-fb4" secondAttribute="topMargin" constant="2" id="4mg-fD-aPs"/>
                                                 <constraint firstItem="Fcl-MQ-yId" firstAttribute="leading" secondItem="Lak-sh-fb4" secondAttribute="leadingMargin" constant="7" id="K5Z-fJ-rW7"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="AjM-HM-sGP" secondAttribute="trailing" constant="6" id="M3w-y4-bJo"/>
                                                 <constraint firstItem="PbH-Fk-chE" firstAttribute="top" secondItem="Lak-sh-fb4" secondAttribute="topMargin" constant="33" id="PTn-Kd-Qfu"/>
