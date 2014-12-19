@@ -39,6 +39,8 @@
 - (CMAEntry *)entryDated: (NSDate *)aDate;
 - (NSString *)lengthUnitsAsString: (BOOL)shorthand;
 - (NSString *)weightUnitsAsString: (BOOL)shorthand;
+- (NSString *)depthUnitsAsString: (BOOL)shorthand;
+- (NSString *)temperatureUnitsAsString: (BOOL)shorthand;
 
 // sorting
 - (void)sortEntriesBy: (CMAEntrySortMethod)aSortMethod order: (CMASortOrder)aSortOrder;

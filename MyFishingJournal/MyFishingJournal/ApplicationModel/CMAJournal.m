@@ -259,6 +259,34 @@
         return @"Kilograms";
 }
 
+- (NSString *)depthUnitsAsString: (BOOL)shorthand {
+    if (self.measurementSystem == CMAMeasuringSystemTypeImperial) {
+        if (shorthand)
+            return @" ft.";
+        else
+            return @"Feet";
+    }
+    
+    if (shorthand)
+        return @" m";
+    else
+        return @"Meters";
+}
+
+- (NSString *)temperatureUnitsAsString: (BOOL)shorthand {
+    if (self.measurementSystem == CMAMeasuringSystemTypeImperial) {
+        if (shorthand)
+            return @" \u00B0 F";
+        else
+            return @"Ferinheight";
+    }
+    
+    if (shorthand)
+        return @" \u00B0 C";
+    else
+        return @"Celsius";
+}
+
 #pragma mark - Sorting
 
 - (void)sortEntriesBy: (CMAEntrySortMethod)aSortMethod order: (CMASortOrder)aSortOrder {

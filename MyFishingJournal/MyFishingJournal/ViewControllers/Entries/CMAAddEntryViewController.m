@@ -106,9 +106,11 @@ NSString *const NO_SELECT = @"Not Selected";
     // set date detail label to the current date and time
     [self.dateTimeDetailLabel setText:[self.dateFormatter stringFromDate:[NSDate new]]];
     
-    // set proper units for length and weight labels
+    // set proper units for length, weight, depth, and temperature
     [self.lengthLabel setText:[NSString stringWithFormat:@"Length (%@)", [[self journal] lengthUnitsAsString:NO]]];
     [self.weightLabel setText:[NSString stringWithFormat:@"Weight (%@)", [[self journal] weightUnitsAsString:NO]]];
+    [self.waterDepthLabel setText:[NSString stringWithFormat:@"Depth (%@)", [[self journal] depthUnitsAsString:NO]]];
+    [self.waterTemperatureLabel setText:[NSString stringWithFormat:@"Temperature (%@)", [[self journal] temperatureUnitsAsString:NO]]];
     
     [self.imageCollection setAllowsSelection:NO];
     [self.imageCollection setAllowsMultipleSelection:NO];
