@@ -117,8 +117,8 @@
 
 #pragma mark - Table View Initializing
 
-#define SUBTITLE_HEIGHT 55
-#define RIGHT_DETAIL_HEIGHT 35
+#define kSubtitleCellHeight 55
+#define kRightDetailCellHeight 35
 #define kImageCollectionIndex 0
 
 // Creates a CMATableCellProperties object for each cell that will be shown on the table.
@@ -142,7 +142,7 @@
      [CMATableCellProperties withLabelText: self.entry.fishSpecies.name
                              andDetailText: [dateFormatter stringFromDate:self.entry.date]
                         andReuseIdentifier: @"subtitleCell"
-                                 andHeight: SUBTITLE_HEIGHT
+                                 andHeight: kSubtitleCellHeight
                               hasSeparator: YES]];
     
     // location
@@ -151,7 +151,7 @@
          [CMATableCellProperties withLabelText: @"Location"
                                  andDetailText: [self.entry locationAsString]
                             andReuseIdentifier: @"locationCell"
-                                     andHeight: SUBTITLE_HEIGHT
+                                     andHeight: kSubtitleCellHeight
                                   hasSeparator: YES]];
     }
     
@@ -161,17 +161,10 @@
          [CMATableCellProperties withLabelText: @"Bait Used"
                                  andDetailText: self.entry.baitUsed.name
                             andReuseIdentifier: @"baitUsedCell"
-                                     andHeight: SUBTITLE_HEIGHT
+                                     andHeight: kSubtitleCellHeight
                                   hasSeparator: YES]];
     
-    // quantity
-    if ([self.entry.fishQuantity integerValue] >= 0)
-        [self.tableCellProperties addObject:
-         [CMATableCellProperties withLabelText: @"Quantity"
-                                 andDetailText: [self.entry.fishQuantity stringValue]
-                            andReuseIdentifier: @"rightDetailCell"
-                                     andHeight: RIGHT_DETAIL_HEIGHT
-                                  hasSeparator: NO]];
+    // weather conditions
     
     // length
     if ([self.entry.fishLength integerValue] > 0)
@@ -179,7 +172,7 @@
          [CMATableCellProperties withLabelText: @"Length"
                                  andDetailText: [NSString stringWithFormat:@"%@%@", self.entry.fishLength.stringValue, [[self journal] lengthUnitsAsString:YES]]
                             andReuseIdentifier: @"rightDetailCell"
-                                     andHeight: RIGHT_DETAIL_HEIGHT
+                                     andHeight: kRightDetailCellHeight
                                   hasSeparator: NO]];
     
     // weight
@@ -188,7 +181,16 @@
          [CMATableCellProperties withLabelText: @"Weight"
                                  andDetailText: [NSString stringWithFormat:@"%@%@", self.entry.fishWeight.stringValue, [[self journal] weightUnitsAsString:YES]]
                             andReuseIdentifier: @"rightDetailCell"
-                                     andHeight: RIGHT_DETAIL_HEIGHT
+                                     andHeight: kRightDetailCellHeight
+                                  hasSeparator: NO]];
+    
+    // quantity
+    if ([self.entry.fishQuantity integerValue] >= 0)
+        [self.tableCellProperties addObject:
+         [CMATableCellProperties withLabelText: @"Quantity"
+                                 andDetailText: [self.entry.fishQuantity stringValue]
+                            andReuseIdentifier: @"rightDetailCell"
+                                     andHeight: kRightDetailCellHeight
                                   hasSeparator: NO]];
     
     // fishing methods
@@ -197,8 +199,14 @@
          [CMATableCellProperties withLabelText: @"Methods"
                                  andDetailText: [self.entry fishingMethodsAsString]
                             andReuseIdentifier: @"rightDetailCell"
-                                     andHeight: RIGHT_DETAIL_HEIGHT
+                                     andHeight: kRightDetailCellHeight
                                   hasSeparator: YES]];
+    
+    // water clarity
+    
+    // water depth
+    
+    // water temperature
     
     // notes
     if (self.entry.notes)
@@ -206,7 +214,7 @@
          [CMATableCellProperties withLabelText: @"Notes"
                                  andDetailText: self.entry.notes
                             andReuseIdentifier: @"subtitleCell"
-                                     andHeight: SUBTITLE_HEIGHT
+                                     andHeight: kSubtitleCellHeight
                                   hasSeparator: NO]];
 }
 

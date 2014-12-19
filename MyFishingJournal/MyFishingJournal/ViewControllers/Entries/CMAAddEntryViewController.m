@@ -21,31 +21,49 @@
 @property (weak, nonatomic)IBOutlet UIBarButtonItem *doneButton;
 @property (weak, nonatomic)IBOutlet UIBarButtonItem *cancelButton;
 
+#pragma mark - Date and Time
 @property (weak, nonatomic)IBOutlet UILabel *dateTimeDetailLabel;
 @property (weak, nonatomic)IBOutlet UIDatePicker *datePicker;
+
+#pragma mark - Photos
+@property (weak, nonatomic)IBOutlet UICollectionView *imageCollection;
+
+#pragma mark - Fish Details
 @property (weak, nonatomic)IBOutlet UILabel *speciesDetailLabel;
-@property (weak, nonatomic)IBOutlet UILabel *locationDetailLabel;
-@property (weak, nonatomic)IBOutlet UILabel *baitUsedDetailLabel;
-@property (weak, nonatomic)IBOutlet UILabel *methodsDetailLabel;
 @property (weak, nonatomic)IBOutlet UITextField *quantityTextField;
 @property (weak, nonatomic)IBOutlet UITextField *lengthTextField;
 @property (weak, nonatomic)IBOutlet UITextField *weightTextField;
-@property (weak, nonatomic)IBOutlet UICollectionView *imageCollection;
-@property (weak, nonatomic)IBOutlet UITextView *notesTextView;
-
 @property (weak, nonatomic)IBOutlet UILabel *lengthLabel;
 @property (weak, nonatomic)IBOutlet UILabel *weightLabel;
 
-@property (weak, nonatomic)IBOutlet CMACameraButton *cameraImage;
+#pragma mark - Catch Details
+@property (weak, nonatomic)IBOutlet UILabel *locationDetailLabel;
+@property (weak, nonatomic)IBOutlet UILabel *baitUsedDetailLabel;
+@property (weak, nonatomic)IBOutlet UILabel *methodsDetailLabel;
 
+#pragma mark - Weather Conditions
+
+#pragma mark - Water Conditions
+@property (weak, nonatomic) IBOutlet UILabel *waterClarityLabel;
+@property (weak, nonatomic) IBOutlet UITextField *waterDepthTextField;
+@property (weak, nonatomic) IBOutlet UITextField *waterTemperatureTextField;
+@property (weak, nonatomic) IBOutlet UILabel *waterDepthLabel;
+@property (weak, nonatomic) IBOutlet UILabel *waterTemperatureLabel;
+
+#pragma mark - Notes
+@property (weak, nonatomic)IBOutlet UITextView *notesTextView;
+
+#pragma mark - Camera
+@property (weak, nonatomic)IBOutlet CMACameraButton *cameraImage;
 @property (strong, nonatomic)CMACameraActionSheet *cameraActionSheet;
 @property (strong, nonatomic)UIActionSheet *deleteImageActionSheet;
+
+#pragma mark - Miscellaneous
 
 @property (strong, nonatomic)NSDateFormatter *dateFormatter;
 @property (strong, nonatomic)NSIndexPath *indexPathForOptionsCell; // used after an unwind from selecting options
 @property (nonatomic)BOOL isEditingDateTime;
 @property (nonatomic)BOOL isEditingEntry;
-@property (nonatomic)BOOL hasEditedNotesTextView;
 
 @property (nonatomic)BOOL hasAttachedImages;
 @property (nonatomic)NSInteger numberOfImages;
@@ -61,7 +79,7 @@
 #define kDatePickerCellSection 0
 #define kDatePickerCellRow 1
 
-#define kImagesCellHeightExpanded 160
+#define kImagesCellHeightExpanded 150
 #define kImagesCellSection 1
 
 #define kImageViewTag 100
@@ -96,7 +114,6 @@ NSString *const NO_SELECT = @"Not Selected";
     
     self.isEditingEntry = self.previousViewID == CMAViewControllerIDSingleEntry;
     self.isEditingDateTime = NO;
-    self.hasEditedNotesTextView = NO;
     self.hasAttachedImages = NO;
     self.numberOfImages = 0;
     
@@ -244,24 +261,6 @@ NSString *const NO_SELECT = @"Not Selected";
         // hide the date picker cell when any other cell is selected
         if (self.isEditingDateTime)
             [self toggleDatePickerCellHidden:tableView selectedPath:indexPath];
-}
-
-#pragma mark - Text View Initializing
-
-- (void)textViewDidBeginEditing:(UITextView *)textView {
-    // clear the default "Notes" text
-    if (!self.hasEditedNotesTextView) {
-        [textView setText:@""];
-        self.hasEditedNotesTextView = YES;
-    }
-}
-
-- (void)textViewDidEndEditing:(UITextView *)textView {
-    // if nothing was added while editing, reset the text to "Notes"
-    if ([textView.text isEqualToString:@""]) {
-        [textView setText:@"Notes"];
-        self.hasEditedNotesTextView = NO;
-    }
 }
 
 #pragma mark - Events
@@ -440,10 +439,20 @@ NSString *const NO_SELECT = @"Not Selected";
 #pragma mark - Entry Creation
 
 // Returns true if all the user input is valid. Sets anEntry's properties after validation.
-// Used as a loop condition to validate user input.
-- (BOOL)checkUserInputAndSetEntry: (CMAEntry *)anEntry {
+- (BOOL)checkUserInputAndSetEntry:(CMAEntry *)anEntry {
     // date
     [anEntry setDate:[self.datePicker date]];
+    
+    // photos
+    if ([self.imageCollection numberOfItemsInSection:0] > 0) {
+        for (int i = 0; i < [self.imageCollection numberOfItemsInSection:0]; i++) {
+            UICollectionViewCell *cell = [self.imageCollection cellForItemAtIndexPath:[NSIndexPath indexPathForItem:i inSection:0]];
+            UIImage *image = [(UIImageView *)[cell viewWithTag:kImageViewTag] image];
+            
+            [anEntry addImage:image];
+        }
+    } else
+        [anEntry setImages:nil];
     
     // species
     if (![[self.speciesDetailLabel text] isEqualToString:NO_SELECT]) {
@@ -452,32 +461,6 @@ NSString *const NO_SELECT = @"Not Selected";
     } else {
         [CMAAlerts errorAlert:@"Please select a species."];
         return NO;
-    }
-    
-    // location and fishing spot
-    if (![[self.locationDetailLabel text] isEqualToString:NO_SELECT]) {
-        NSArray *locationInfo = [self parseLocationDetailText];
-        
-        [anEntry setLocation:locationInfo[0]];
-        [anEntry setFishingSpot:locationInfo[1]];
-    } else {
-        [CMAAlerts errorAlert:@"Please select a location."];
-        return NO;
-    }
-    
-    // bait used
-    if (![[self.baitUsedDetailLabel text] isEqualToString:NO_SELECT]) {
-        CMABait *bait = [[[self journal] userDefineNamed:SET_BAITS] objectNamed:[self.baitUsedDetailLabel text]];
-        [anEntry setBaitUsed:bait];
-    } else {
-        [anEntry setBaitUsed:nil];
-    }
-    
-    // fishing methods
-    if (![[self.methodsDetailLabel text] isEqualToString:NO_SELECT]) {
-        [anEntry setFishingMethods:[self parseMethodsDetailText]];
-    } else {
-        [anEntry setFishingMethods:nil];
     }
     
     // fish quantity
@@ -504,16 +487,35 @@ NSString *const NO_SELECT = @"Not Selected";
         [anEntry setFishWeight:[NSNumber numberWithInteger:-1]];
     }
     
-    // pictures
-    if ([self.imageCollection numberOfItemsInSection:0] > 0) {
-        for (int i = 0; i < [self.imageCollection numberOfItemsInSection:0]; i++) {
-            UICollectionViewCell *cell = [self.imageCollection cellForItemAtIndexPath:[NSIndexPath indexPathForItem:i inSection:0]];
-            UIImage *image = [(UIImageView *)[cell viewWithTag:kImageViewTag] image];
-            
-            [anEntry addImage:image];
-        }
-    } else
-        [anEntry setImages:nil];
+    // location and fishing spot
+    if (![[self.locationDetailLabel text] isEqualToString:NO_SELECT]) {
+        NSArray *locationInfo = [self parseLocationDetailText];
+        
+        [anEntry setLocation:locationInfo[0]];
+        [anEntry setFishingSpot:locationInfo[1]];
+    } else {
+        [anEntry setLocation:nil];
+        [anEntry setFishingSpot:nil];
+    }
+    
+    // bait used
+    if (![[self.baitUsedDetailLabel text] isEqualToString:NO_SELECT]) {
+        CMABait *bait = [[[self journal] userDefineNamed:SET_BAITS] objectNamed:[self.baitUsedDetailLabel text]];
+        [anEntry setBaitUsed:bait];
+    } else {
+        [anEntry setBaitUsed:nil];
+    }
+    
+    // fishing methods
+    if (![[self.methodsDetailLabel text] isEqualToString:NO_SELECT]) {
+        [anEntry setFishingMethods:[self parseMethodsDetailText]];
+    } else {
+        [anEntry setFishingMethods:nil];
+    }
+    
+    // weather conditions
+    
+    // water conditions
     
     // notes
     if (![[self.notesTextView text] isEqualToString:@"Notes"]) {
@@ -551,6 +553,7 @@ NSString *const NO_SELECT = @"Not Selected";
 // Presents an image picker with sourceType.
 - (void)presentImagePicker:(UIImagePickerControllerSourceType)sourceType {
     UIImagePickerController *imagePicker = [UIImagePickerController new];
+    
     [imagePicker setDelegate:self];
     [imagePicker setAllowsEditing:YES];
     [imagePicker setSourceType:sourceType];
@@ -627,7 +630,6 @@ NSString *const NO_SELECT = @"Not Selected";
         self.hasAttachedImages = NO;
         
         [self.tableView beginUpdates];
-        [self.tableView reloadData];
         [self.tableView endUpdates];
     }
 }
