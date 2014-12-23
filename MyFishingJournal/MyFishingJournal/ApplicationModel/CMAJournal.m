@@ -7,8 +7,6 @@
 //
 
 #import "CMAJournal.h"
-#import "CMAConstants.h"
-#import "CMAUserDefine.h"
 #import "CMASpecies.h"
 #import "CMABait.h"
 #import "CMAFishingMethod.h"

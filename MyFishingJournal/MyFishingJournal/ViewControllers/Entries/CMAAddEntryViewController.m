@@ -43,6 +43,7 @@
 @property (weak, nonatomic)IBOutlet UILabel *methodsDetailLabel;
 
 #pragma mark - Weather Conditions
+@property (strong, nonatomic)CMAWeatherData *weatherData;
 
 #pragma mark - Water Conditions
 @property (weak, nonatomic) IBOutlet UILabel *waterClarityLabel;
@@ -99,6 +100,8 @@ NSString *const NO_SELECT = @"Not Selected";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    self.weatherData = [CMAWeatherData withCoordinates:CLLocationCoordinate2DMake(43.379866, -80.985793) andJournal:[[self journal] measurementSystem]];
     
     self.dateFormatter = [NSDateFormatter new];
     [self.dateFormatter setDateFormat:@"MMMM dd, yyyy 'at' h:mm a"];

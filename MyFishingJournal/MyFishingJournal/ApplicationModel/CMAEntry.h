@@ -10,23 +10,38 @@
 #import "CMALocation.h"
 #import "CMASpecies.h"
 #import "CMABait.h"
+#import "CMAWeatherData.h"
 
 @interface CMAEntry : NSObject <NSCoding>
 
+// date and time
 @property (strong, nonatomic)NSDate *date;
-@property (strong, nonatomic)CMASpecies *fishSpecies;
-@property (strong, nonatomic)CMABait *baitUsed;
-@property (strong, nonatomic)NSString *notes;
 
+// photos
+@property (strong, nonatomic)NSMutableSet *images;
+
+// fish details
+@property (strong, nonatomic)CMASpecies *fishSpecies;
 @property (strong, nonatomic)NSNumber *fishLength;
 @property (strong, nonatomic)NSNumber *fishWeight;
 @property (strong, nonatomic)NSNumber *fishQuantity;
 
-@property (strong, nonatomic)NSMutableSet *images;
+// catch details
+@property (strong, nonatomic)CMABait *baitUsed;
 @property (strong, nonatomic)NSMutableSet *fishingMethods;
-
 @property (strong, nonatomic)CMALocation *location;
 @property (strong, nonatomic)CMAFishingSpot *fishingSpot;
+
+// weather conditions
+@property (strong, nonatomic)CMAWeatherData *weatherData;
+
+// water conditions
+@property (strong, nonatomic)NSNumber *waterTemperature;
+@property (strong, nonatomic)NSString *waterClarity;
+@property (strong, nonatomic)NSNumber *waterDepth;
+
+// notes
+@property (strong, nonatomic)NSString *notes;
 
 // instance creation
 + (CMAEntry *)onDate: (NSDate *)aDate;
