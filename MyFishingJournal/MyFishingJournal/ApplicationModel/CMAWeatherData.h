@@ -10,10 +10,10 @@
 #import "OWMWeatherAPI.h"   
 #import "CMAConstants.h"
 
-@interface CMAWeatherData : NSObject
+@interface CMAWeatherData : NSObject <NSCoding>
 
-@property (strong, nonatomic)OWMWeatherAPI *_weatherAPI;
-@property (nonatomic)CMAMeasuringSystemType *measurementSystem;
+@property (strong, nonatomic)OWMWeatherAPI *weatherAPI;
+@property (nonatomic)CLLocationCoordinate2D coordinate;
 
 @property (strong, nonatomic)NSNumber *temperature;
 @property (strong, nonatomic)NSString *windSpeed;

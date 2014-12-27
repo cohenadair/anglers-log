@@ -41,6 +41,7 @@
 - (NSString *)weightUnitsAsString: (BOOL)shorthand;
 - (NSString *)depthUnitsAsString: (BOOL)shorthand;
 - (NSString *)temperatureUnitsAsString: (BOOL)shorthand;
+- (NSString *)speedUnitsAsString: (BOOL)shorthand;
 
 // sorting
 - (void)sortEntriesBy: (CMAEntrySortMethod)aSortMethod order: (CMASortOrder)aSortOrder;

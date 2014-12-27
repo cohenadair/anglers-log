@@ -139,7 +139,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mRj-jc-hEB" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="ei6-rd-qrR" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="4375" y="719"/>
+            <point key="canvasLocation" x="3563" y="769"/>
         </scene>
         <!--Photo Gallery-->
         <scene sceneID="PSO-ty-hvL">
@@ -394,7 +394,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1xd-Vw-zsy" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="aLM-pd-xcd" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="5079" y="719"/>
+            <point key="canvasLocation" x="4267" y="769"/>
         </scene>
         <!--Select Fishing Spot View Controller-->
         <scene sceneID="nCx-1L-RVp">
@@ -443,7 +443,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bLU-vg-VYc" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="fau-sB-z1s" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="7250" y="720"/>
+            <point key="canvasLocation" x="6438" y="770"/>
         </scene>
         <!--Add Bait-->
         <scene sceneID="8iS-mr-DEy">
@@ -565,7 +565,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="c7W-kT-PFn" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="JuO-8y-Hr1" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="5790" y="-233"/>
+            <point key="canvasLocation" x="4978" y="-183"/>
         </scene>
         <!--Entries-->
         <scene sceneID="qbr-pc-l7U">
@@ -1047,7 +1047,7 @@
                             </tableViewSection>
                             <tableViewSection headerTitle="Photos" id="XO1-gg-NUO">
                                 <cells>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="150" id="VMW-Bd-1Rj">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="150" id="VMW-Bd-1Rj">
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="VMW-Bd-1Rj" id="Lak-sh-fb4">
                                             <autoresizingMask key="autoresizingMask"/>
@@ -1339,10 +1339,33 @@
                             </tableViewSection>
                             <tableViewSection headerTitle="Weather Conditions" id="RwS-lq-qVJ">
                                 <cells>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="b7C-9c-8jc">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="b7C-9c-8jc">
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="b7C-9c-8jc" id="HzB-Lw-9xN">
                                             <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <button opaque="NO" tag="100" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JXO-ne-uRf">
+                                                    <rect key="frame" x="566" y="3" width="20" height="30"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="20" id="5Qb-gR-DiC"/>
+                                                        <constraint firstAttribute="height" constant="30" id="fb1-5d-aAP"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="35"/>
+                                                    <state key="normal" title="+"/>
+                                                    <connections>
+                                                        <action selector="tapToggleWeatherButton:" destination="T1c-yJ-jzQ" eventType="touchUpInside" id="2Uy-Ib-dRP"/>
+                                                    </connections>
+                                                </button>
+                                                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="Ger-es-abj">
+                                                    <rect key="frame" x="16" y="12" width="20" height="20"/>
+                                                </activityIndicatorView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="Ger-es-abj" firstAttribute="leading" secondItem="HzB-Lw-9xN" secondAttribute="leadingMargin" constant="8" id="Hqm-RN-EU9"/>
+                                                <constraint firstItem="Ger-es-abj" firstAttribute="top" secondItem="HzB-Lw-9xN" secondAttribute="topMargin" constant="4" id="N4K-8V-xn5"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="JXO-ne-uRf" secondAttribute="trailing" constant="6" id="b9G-cs-57x"/>
+                                                <constraint firstItem="JXO-ne-uRf" firstAttribute="top" secondItem="HzB-Lw-9xN" secondAttribute="topMargin" constant="-5" id="drd-c9-1tf"/>
+                                            </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                 </cells>
@@ -1509,11 +1532,13 @@
                         <outlet property="notesTextView" destination="TtB-VP-hHv" id="mgy-aH-AeV"/>
                         <outlet property="quantityTextField" destination="7gR-XQ-cyh" id="eAH-so-S1b"/>
                         <outlet property="speciesDetailLabel" destination="iG0-tN-1ui" id="1dz-uF-Ukq"/>
+                        <outlet property="toggleWeatherButton" destination="JXO-ne-uRf" id="hkm-w2-xuW"/>
                         <outlet property="waterClarityLabel" destination="BqD-Ll-G6W" id="05K-sd-b1f"/>
                         <outlet property="waterDepthLabel" destination="7PU-5r-alg" id="BAF-39-VC5"/>
                         <outlet property="waterDepthTextField" destination="fT5-nn-XwO" id="6gP-Ch-3Hg"/>
                         <outlet property="waterTemperatureLabel" destination="uyP-zS-zly" id="EBh-Ip-s85"/>
                         <outlet property="waterTemperatureTextField" destination="D2I-a9-qqJ" id="rTc-Fb-vQz"/>
+                        <outlet property="weatherIndicator" destination="Ger-es-abj" id="JZU-BO-8OB"/>
                         <outlet property="weightLabel" destination="KmG-HQ-U4g" id="Ast-od-8IO"/>
                         <outlet property="weightTextField" destination="Kiv-US-vyI" id="zWv-l9-M4D"/>
                         <segue destination="gLf-px-n2a" kind="unwind" identifier="unwindToViewEntriesFromAddEntry" unwindAction="unwindToViewEntries:" id="0cS-3g-Mnn"/>
@@ -1528,7 +1553,7 @@
                     </connections>
                 </pongPressGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="4976" y="-1105"/>
+            <point key="canvasLocation" x="4976" y="-1107"/>
         </scene>
         <!--Statistics-->
         <scene sceneID="0CA-ia-Kux">
@@ -1802,7 +1827,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="OFA-qW-P4d" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="3Dt-Rq-3tv" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="5792" y="719"/>
+            <point key="canvasLocation" x="4980" y="769"/>
         </scene>
         <!--Add Fishing Spot-->
         <scene sceneID="h2c-XG-d8j">
@@ -1986,7 +2011,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6gO-HC-kTD" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="a4R-R8-Ii2" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="6517" y="720"/>
+            <point key="canvasLocation" x="5705" y="770"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="RL9-la-gtA">
@@ -2004,7 +2029,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iLY-gH-DaL" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4330" y="719"/>
+            <point key="canvasLocation" x="3518" y="769"/>
         </scene>
         <!--Selection Table View Controller-->
         <scene sceneID="hVi-vG-7mz">
@@ -2316,7 +2341,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eLm-Vk-vpY" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5034" y="719"/>
+            <point key="canvasLocation" x="4222" y="769"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="QJu-qR-WZ3">
@@ -2352,7 +2377,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Emv-7o-E4e" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5747" y="720"/>
+            <point key="canvasLocation" x="4935" y="770"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="pUe-xS-iNB">
@@ -2370,7 +2395,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="EPi-gw-Ryb" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="6475" y="720"/>
+            <point key="canvasLocation" x="5663" y="770"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="JSx-pT-OBV">
@@ -2442,7 +2467,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="F6Y-PU-e3d" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5747" y="-233"/>
+            <point key="canvasLocation" x="4935" y="-183"/>
         </scene>
         <!--Baits-->
         <scene sceneID="yBo-l8-V7p">
@@ -2533,7 +2558,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="l6k-dw-aLb" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="HFY-1D-kqx" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="4377" y="-233"/>
+            <point key="canvasLocation" x="3565" y="-183"/>
         </scene>
         <!--Single Bait-->
         <scene sceneID="IyG-jE-Ue7">
@@ -2623,7 +2648,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ku7-Ye-KWG" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5082" y="-233"/>
+            <point key="canvasLocation" x="4270" y="-183"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="PzW-p4-YF7">
@@ -2641,7 +2666,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vGP-Vm-IBv" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5034" y="-233"/>
+            <point key="canvasLocation" x="4222" y="-183"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="6Qi-1N-CJl">
@@ -2659,7 +2684,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="nbO-LD-y3G" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4330" y="-233"/>
+            <point key="canvasLocation" x="3518" y="-183"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="8hU-9B-JKN">
@@ -2677,7 +2702,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kFU-lA-JVu" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="7205" y="720"/>
+            <point key="canvasLocation" x="6393" y="770"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="X7T-pB-WcR">
@@ -2714,21 +2739,21 @@
         <image name="stats.png" width="50" height="50"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="RpT-ts-gTM"/>
-        <segue reference="OHB-Pt-9SF"/>
         <segue reference="0It-ub-fzN"/>
-        <segue reference="guB-6y-sIg"/>
-        <segue reference="aBE-xI-c3y"/>
+        <segue reference="gDt-Tw-gtk"/>
         <segue reference="egX-OW-uSX"/>
         <segue reference="Jyy-wS-dXA"/>
-        <segue reference="gDt-Tw-gtk"/>
-        <segue reference="y0h-hR-J5c"/>
-        <segue reference="2ub-xD-2JF"/>
+        <segue reference="OHB-Pt-9SF"/>
+        <segue reference="RpT-ts-gTM"/>
+        <segue reference="ooh-Eu-Ug2"/>
+        <segue reference="qAO-gb-5Yr"/>
+        <segue reference="hzw-aH-h0R"/>
+        <segue reference="bAG-il-Vyj"/>
+        <segue reference="Mmt-ea-Rlu"/>
+        <segue reference="dyy-eh-4UZ"/>
+        <segue reference="b63-Bg-tWk"/>
         <segue reference="uUK-tT-jvg"/>
         <segue reference="xJw-cV-13t"/>
         <segue reference="ij7-4o-wMK"/>
-        <segue reference="Mmt-ea-Rlu"/>
-        <segue reference="qAO-gb-5Yr"/>
-        <segue reference="ooh-Eu-Ug2"/>
     </inferredMetricsTieBreakers>
 </document>

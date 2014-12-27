@@ -274,15 +274,29 @@
 - (NSString *)temperatureUnitsAsString: (BOOL)shorthand {
     if (self.measurementSystem == CMAMeasuringSystemTypeImperial) {
         if (shorthand)
-            return @" \u00B0 F";
+            return @"\u00B0F";
         else
             return @"Ferinheight";
     }
     
     if (shorthand)
-        return @" \u00B0 C";
+        return @"\u00B0C";
     else
         return @"Celsius";
+}
+
+- (NSString *)speedUnitsAsString: (BOOL)shorthand {
+    if (self.measurementSystem == CMAMeasuringSystemTypeImperial) {
+        if (shorthand)
+            return @" mph";
+        else
+            return @"Miles Per Hour";
+    }
+    
+    if (shorthand)
+        return @" km/h";
+    else
+        return @"Kilometers Per Hour";
 }
 
 #pragma mark - Sorting

@@ -16,6 +16,7 @@
 #import "CMAAlerts.h"
 #import "CMACameraButton.h"
 #import "CMACameraActionSheet.h"
+#import "CMAWeatherDataView.h"
 
 @interface CMAAddEntryViewController ()
 
@@ -43,14 +44,18 @@
 @property (weak, nonatomic)IBOutlet UILabel *methodsDetailLabel;
 
 #pragma mark - Weather Conditions
+@property (strong, nonatomic)CMAWeatherDataView *weatherDataView;
 @property (strong, nonatomic)CMAWeatherData *weatherData;
+@property (weak, nonatomic)IBOutlet UIButton *toggleWeatherButton;
+@property (weak, nonatomic)IBOutlet UIActivityIndicatorView *weatherIndicator;
+@property (strong, nonatomic)CLLocationManager *locationManager;
 
 #pragma mark - Water Conditions
-@property (weak, nonatomic) IBOutlet UILabel *waterClarityLabel;
-@property (weak, nonatomic) IBOutlet UITextField *waterDepthTextField;
-@property (weak, nonatomic) IBOutlet UITextField *waterTemperatureTextField;
-@property (weak, nonatomic) IBOutlet UILabel *waterDepthLabel;
-@property (weak, nonatomic) IBOutlet UILabel *waterTemperatureLabel;
+@property (weak, nonatomic)IBOutlet UILabel *waterClarityLabel;
+@property (weak, nonatomic)IBOutlet UITextField *waterDepthTextField;
+@property (weak, nonatomic)IBOutlet UITextField *waterTemperatureTextField;
+@property (weak, nonatomic)IBOutlet UILabel *waterDepthLabel;
+@property (weak, nonatomic)IBOutlet UILabel *waterTemperatureLabel;
 
 #pragma mark - Notes
 @property (weak, nonatomic)IBOutlet UITextView *notesTextView;
@@ -66,6 +71,7 @@
 @property (strong, nonatomic)NSIndexPath *indexPathForOptionsCell; // used after an unwind from selecting options
 @property (nonatomic)BOOL isEditingDateTime;
 @property (nonatomic)BOOL isEditingEntry;
+@property (nonatomic)BOOL isWeatherInitialized;
 
 @property (nonatomic)BOOL hasAttachedImages;
 @property (nonatomic)NSInteger numberOfImages;
@@ -77,6 +83,8 @@
 #define kDateCellSection 0
 #define kDateCellRow 0
 
+#define kPhotoCellSection 1
+
 #define kDatePickerHeight 225
 #define kDatePickerCellSection 0
 #define kDatePickerCellRow 1
@@ -84,9 +92,12 @@
 #define kImagesCellHeightExpanded 150
 #define kImagesCellSection 1
 
+#define kWeatherCellHeightExpanded 140
+#define kWeatherCellSection 4
+
 #define kImageViewTag 100
 
-NSString *const NO_SELECT = @"Not Selected";
+NSString *const kNotSelectedString = @"Not Selected";
 
 @implementation CMAAddEntryViewController
 
@@ -101,7 +112,7 @@ NSString *const NO_SELECT = @"Not Selected";
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.weatherData = [CMAWeatherData withCoordinates:CLLocationCoordinate2DMake(43.379866, -80.985793) andJournal:[[self journal] measurementSystem]];
+    [self.weatherIndicator setHidden:YES];
     
     self.dateFormatter = [NSDateFormatter new];
     [self.dateFormatter setDateFormat:@"MMMM dd, yyyy 'at' h:mm a"];
@@ -130,6 +141,10 @@ NSString *const NO_SELECT = @"Not Selected";
     self.cameraActionSheet = [CMACameraActionSheet withDelegate:self];
     [self.cameraImage myInit:self action:@selector(tapCameraImage)];
     
+    // location manager
+    self.locationManager = [CLLocationManager new];
+    self.locationManager.delegate = self;
+    
     [self initDeleteImageActionSheet];
 }
 
@@ -153,50 +168,70 @@ NSString *const NO_SELECT = @"Not Selected";
     [self.datePicker setDate:[self.entry date]];
     [self.dateTimeDetailLabel setText:[self.dateFormatter stringFromDate:[self.entry date]]];
     
+    // pictures
+    [self.imageCollection reloadData];
+    
     // species
     if (![self.entry.fishSpecies removedFromUserDefines])
         [self.speciesDetailLabel setText:self.entry.fishSpecies.name];
     else
-        [self.speciesDetailLabel setText:@"Not Selected"];
+        [self.speciesDetailLabel setText:kNotSelectedString];
     
-    // location and fishing spot
-    if (self.entry.location) {
-        if (![self.entry.location removedFromUserDefines])
-            [self.locationDetailLabel setText:[self.entry locationAsString]];
-        else
-            [self.locationDetailLabel setText:@"Not Selected"];
-    }
+    // fish quantity
+    if (self.entry.fishQuantity || ([self.entry.fishQuantity integerValue] != -1))
+        [self.quantityTextField setText:self.entry.fishQuantity.stringValue];
+    
+    // fish length
+    if (self.entry.fishLength || ([self.entry.fishLength integerValue] != -1))
+        [self.lengthTextField setText:self.entry.fishLength.stringValue];
+    
+    // fish weight
+    if (self.entry.fishWeight || ([self.entry.fishWeight integerValue] != -1))
+        [self.weightTextField setText:self.entry.fishWeight.stringValue];
     
     // bait used
     if (self.entry.baitUsed) {
         if (![self.entry.baitUsed removedFromUserDefines])
             [self.baitUsedDetailLabel setText:self.entry.baitUsed.name];
         else
-            [self.baitUsedDetailLabel setText:@"Not Selected"];
+            [self.baitUsedDetailLabel setText:kNotSelectedString];
     }
     
     // fishing methods
     if (self.entry.fishingMethods)
         [self.methodsDetailLabel setText:[self.entry fishingMethodsAsString]];
     
-    // fish quantity
-    if ([self.entry.fishQuantity integerValue] != -1)
-        [self.quantityTextField setText:self.entry.fishQuantity.stringValue];
+    // location and fishing spot
+    if (self.entry.location) {
+        if (![self.entry.location removedFromUserDefines])
+            [self.locationDetailLabel setText:[self.entry locationAsString]];
+        else
+            [self.locationDetailLabel setText:kNotSelectedString];
+    }
     
-    // fish length
-    if ([self.entry.fishLength integerValue] != -1)
-        [self.lengthTextField setText:self.entry.fishLength.stringValue];
+    // weather conditions
+    if (self.entry.weatherData)
+        [self initWeatherCellWithData:self.entry.weatherData];
     
-    // fish weight
-    if ([self.entry.fishWeight integerValue] != -1)
-        [self.weightTextField setText:self.entry.fishWeight.stringValue];
+    // water temperature
+    if (self.entry.waterTemperature || ([self.entry.waterTemperature integerValue] != -1))
+        [self.waterTemperatureTextField setText:self.entry.waterTemperature.stringValue];
     
-    // pictures
-    [self.imageCollection reloadData];
+    // water clarity
+    if (self.entry.waterClarity || ([self.entry.waterClarity integerValue] != -1))
+        [self.waterClarityLabel setText:self.entry.waterClarity];
+    
+    // water depth
+    if (self.entry.waterDepth || ([self.entry.waterDepth integerValue] != -1))
+        [self.waterDepthTextField setText:self.entry.waterDepth.stringValue];
     
     // notes
     if (self.entry.notes)
         [self.notesTextView setText:self.entry.notes];
+}
+
+- (void)initWeatherCellWithData:(CMAWeatherData *)someWeatherData {
+    
 }
 
 - (void)toggleDatePickerCellHidden:(UITableView *)aTableView selectedPath:(NSIndexPath *)anIndexPath {
@@ -247,8 +282,34 @@ NSString *const NO_SELECT = @"Not Selected";
             return 44;
     }
     
+    // if weather data is added
+    if (indexPath.section == kWeatherCellSection) {
+        if (self.isWeatherInitialized)
+            return kWeatherCellHeightExpanded;
+        else
+            return 44;
+    }
+    
     // using the super class's implementation gets the height set in storyboard
     return [super tableView:tableView heightForRowAtIndexPath:indexPath];
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    UITableViewCell *cell = [super tableView:tableView cellForRowAtIndexPath:indexPath];
+    
+    if (indexPath.section == kWeatherCellSection) {
+        NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"CMAWeatherDataView" owner:self options:nil];
+        self.weatherDataView = (CMAWeatherDataView *)[nib objectAtIndex:0];
+        [self.weatherDataView setFrame:CGRectMake(0, 0, 0, cell.frame.size.height)];
+        [self.weatherDataView setAlpha:0.0];
+        
+        UIView *bgView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, cell.frame.size.width - 50, cell.frame.size.height)];
+        [bgView addSubview:self.weatherDataView];
+
+        [cell addSubview:bgView];
+    }
+    
+    return cell;
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -306,6 +367,10 @@ NSString *const NO_SELECT = @"Not Selected";
 
 - (void)tapCameraImage {
     [self.cameraActionSheet showInView:self.view];
+}
+
+- (IBAction)tapToggleWeatherButton:(UIButton *)sender {
+    [self toggleWeatherData];
 }
 
 - (IBAction)longPressedImageInCollection:(UILongPressGestureRecognizer *)sender {
@@ -426,7 +491,7 @@ NSString *const NO_SELECT = @"Not Selected";
         UITableViewCell *cellToEdit = [self.tableView cellForRowAtIndexPath:self.indexPathForOptionsCell];
         
         if ([source.selectedCellLabelText isEqualToString:@""])
-            [[cellToEdit detailTextLabel] setText:NO_SELECT];
+            [[cellToEdit detailTextLabel] setText:kNotSelectedString];
         else
             [[cellToEdit detailTextLabel] setText:source.selectedCellLabelText];
         
@@ -483,7 +548,7 @@ NSString *const NO_SELECT = @"Not Selected";
         [anEntry setImages:nil];
     
     // species
-    if (![[self.speciesDetailLabel text] isEqualToString:NO_SELECT]) {
+    if (![[self.speciesDetailLabel text] isEqualToString:kNotSelectedString]) {
         CMASpecies *species = [[[self journal] userDefineNamed:SET_SPECIES] objectNamed:[self.speciesDetailLabel text]];
         [anEntry setFishSpecies:species];
     } else {
@@ -516,7 +581,7 @@ NSString *const NO_SELECT = @"Not Selected";
     }
     
     // location and fishing spot
-    if (![[self.locationDetailLabel text] isEqualToString:NO_SELECT]) {
+    if (![[self.locationDetailLabel text] isEqualToString:kNotSelectedString]) {
         NSArray *locationInfo = [self parseLocationDetailText];
         
         [anEntry setLocation:locationInfo[0]];
@@ -527,7 +592,7 @@ NSString *const NO_SELECT = @"Not Selected";
     }
     
     // bait used
-    if (![[self.baitUsedDetailLabel text] isEqualToString:NO_SELECT]) {
+    if (![[self.baitUsedDetailLabel text] isEqualToString:kNotSelectedString]) {
         CMABait *bait = [[[self journal] userDefineNamed:SET_BAITS] objectNamed:[self.baitUsedDetailLabel text]];
         [anEntry setBaitUsed:bait];
     } else {
@@ -535,15 +600,37 @@ NSString *const NO_SELECT = @"Not Selected";
     }
     
     // fishing methods
-    if (![[self.methodsDetailLabel text] isEqualToString:NO_SELECT]) {
+    if (![[self.methodsDetailLabel text] isEqualToString:kNotSelectedString]) {
         [anEntry setFishingMethods:[self parseMethodsDetailText]];
     } else {
         [anEntry setFishingMethods:nil];
     }
     
     // weather conditions
+    [anEntry setWeatherData:[self weatherDataFromCell]];
     
-    // water conditions
+    // water temperature
+    if (![[self.waterTemperatureTextField text] isEqualToString:@""]) {
+        NSNumber *temp = [NSNumber numberWithInteger:[[self.waterTemperatureTextField text] integerValue]];
+        [anEntry setWaterTemperature:temp];
+    } else {
+        [anEntry setWaterTemperature:[NSNumber numberWithInteger:-1]];
+    }
+    
+    // water clarity
+    if (![[self.waterClarityLabel text] isEqualToString:kNotSelectedString]) {
+        [anEntry setWaterClarity:self.waterClarityLabel.text];
+    } else {
+        [anEntry setWaterClarity:nil];
+    }
+    
+    // water depth
+    if (![[self.waterDepthTextField text] isEqualToString:@""]) {
+        NSNumber *depth = [NSNumber numberWithInteger:[[self.waterDepthTextField text] integerValue]];
+        [anEntry setWaterDepth:depth];
+    } else {
+        [anEntry setWaterDepth:[NSNumber numberWithInteger:-1]];
+    }
     
     // notes
     if (![[self.notesTextView text] isEqualToString:@"Notes"]) {
@@ -574,6 +661,11 @@ NSString *const NO_SELECT = @"Not Selected";
         [result addObject:[[[self journal] userDefineNamed:SET_FISHING_METHODS] objectNamed:str]];
     
     return result;
+}
+
+// Checks the weather data UI components and returns a CMAWeatherData object. Returns nil if there is no weather data.
+- (CMAWeatherData *)weatherDataFromCell {
+    return nil;
 }
 
 #pragma mark - Image Picker
@@ -635,7 +727,6 @@ NSString *const NO_SELECT = @"Not Selected";
     if (!self.hasAttachedImages) {
         self.hasAttachedImages = YES;
         [self.tableView beginUpdates];
-        [self.tableView reloadData];
         [self.tableView endUpdates];
     }
     
@@ -660,6 +751,87 @@ NSString *const NO_SELECT = @"Not Selected";
         [self.tableView beginUpdates];
         [self.tableView endUpdates];
     }
+}
+
+#pragma mark - Location Manager Delegate
+
+- (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations {
+    [self initWeatherDataWithCoordinate:manager.location.coordinate];
+    [manager stopUpdatingLocation];
+}
+
+- (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error {
+    [CMAAlerts errorAlert:[NSString stringWithFormat:@"Failed to get user location. Error: %@", error.localizedDescription]];
+}
+
+#pragma mark - Weather 
+
+- (void)toggleWeatherDataCell {
+    if (self.isWeatherInitialized) {
+        [self.toggleWeatherButton setTitle:@"-" forState:UIControlStateNormal];
+        [self.weatherIndicator stopAnimating];
+        [self.weatherIndicator setHidden:YES];
+        
+        [UIView animateWithDuration:0.5 animations:^{
+            [self.weatherDataView setAlpha:1.0f];
+        }];
+    } else {
+        // remove weather data
+        [UIView animateWithDuration:0.15 animations:^{
+            [self.weatherDataView setAlpha:0.0f];
+        }];
+        
+        [self.toggleWeatherButton setTitle:@"+" forState:UIControlStateNormal];
+    }
+    
+    [self.tableView beginUpdates];
+    [self.tableView endUpdates];
+}
+
+- (void)toggleWeatherData {
+    self.isWeatherInitialized = !self.isWeatherInitialized;
+    
+    if (self.isWeatherInitialized) {
+        [self.weatherIndicator setHidden:NO];
+        [self.weatherIndicator startAnimating];
+        
+        [self.locationManager requestWhenInUseAuthorization];
+        [self.locationManager startUpdatingLocation];
+    } else
+        [self toggleWeatherDataCell];
+}
+
+// Sets self.weatherData from data gathered from the OpenWeatherMapAPI.
+- (void)initWeatherDataWithCoordinate:(CLLocationCoordinate2D)coordinate {
+    self.weatherData = [CMAWeatherData withCoordinates:coordinate andJournal:[[self journal] measurementSystem]];
+    
+    [self.weatherData.weatherAPI currentWeatherByCoordinate:self.weatherData.coordinate withCallback:^(NSError *error, NSDictionary *result) {
+        if (error) {
+            NSLog(@"Error getting weather data: %@", error.localizedDescription);
+            return;
+        }
+        
+        NSArray *weatherArray = result[@"weather"];
+        
+        if ([weatherArray count] > 0) {
+            NSString *imageString = [NSString stringWithFormat:@"http://openweathermap.org/img/w/%@.png", result[@"weather"][0][@"icon"]];
+            [self.weatherData setWeatherImage:[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:imageString]]]];
+            [self.weatherData setSkyConditions:result[@"weather"][0][@"main"]];
+        } else {
+            [self.weatherData setWeatherImage:[UIImage imageNamed:@"no_image.png"]];
+            [self.weatherData setSkyConditions:@"N/A"];
+        }
+        
+        [self.weatherData setTemperature:(NSNumber *)result[@"main"][@"temp"]]; // [3][3]
+        [self.weatherData setWindSpeed:result[@"wind"][@"speed"]]; // [1][0]
+        
+        [self.weatherDataView.weatherImageView setImage:self.weatherData.weatherImage];
+        [self.weatherDataView.temperatureLabel setText:[NSString stringWithFormat:@"%ld%@", (long)[self.weatherData.temperature integerValue], [[self journal] temperatureUnitsAsString:YES]]];
+        [self.weatherDataView.windSpeedLabel setText:[NSString stringWithFormat:@"Wind Speed: %@%@", self.weatherData.windSpeed, [[self journal] speedUnitsAsString:YES]]];
+        [self.weatherDataView.skyConditionsLabel setText:[NSString stringWithFormat:@"Sky: %@", self.weatherData.skyConditions]];
+        
+        [self toggleWeatherDataCell];
+    }];
 }
 
 @end

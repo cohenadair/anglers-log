@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		0D34EF4F1A44D03F00764F18 /* CMASelectionTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D34EF4E1A44D03F00764F18 /* CMASelectionTableViewController.m */; };
 		0D34EF521A44EB2C00764F18 /* CMAWeatherData.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D34EF511A44EB2C00764F18 /* CMAWeatherData.m */; };
+		0D7F777F1A4E540E0010674C /* CMAWeatherDataView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0D7F777E1A4E540E0010674C /* CMAWeatherDataView.xib */; };
+		0D7F77821A4E54770010674C /* CMAWeatherDataView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D7F77811A4E54770010674C /* CMAWeatherDataView.m */; };
 		2C8474D879B7047FC7BE08DF /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 836B2B4A31EDB77286F0FE9D /* libPods.a */; };
 		59178D9BE62FDF1B68A276EA /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 836B2B4A31EDB77286F0FE9D /* libPods.a */; };
 		5B310B05AAF503582BC33502 /* libPods-MyFishingJournal.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 580D11321076E69452D567AA /* libPods-MyFishingJournal.a */; };
@@ -142,6 +144,9 @@
 		0D34EF4E1A44D03F00764F18 /* CMASelectionTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMASelectionTableViewController.m; path = ViewControllers/CMASelectionTableViewController.m; sourceTree = "<group>"; };
 		0D34EF501A44EB2C00764F18 /* CMAWeatherData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAWeatherData.h; path = ApplicationModel/CMAWeatherData.h; sourceTree = "<group>"; };
 		0D34EF511A44EB2C00764F18 /* CMAWeatherData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAWeatherData.m; path = ApplicationModel/CMAWeatherData.m; sourceTree = "<group>"; };
+		0D7F777E1A4E540E0010674C /* CMAWeatherDataView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CMAWeatherDataView.xib; sourceTree = "<group>"; };
+		0D7F77801A4E54770010674C /* CMAWeatherDataView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAWeatherDataView.h; path = CustomViews/CMAWeatherDataView.h; sourceTree = "<group>"; };
+		0D7F77811A4E54770010674C /* CMAWeatherDataView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAWeatherDataView.m; path = CustomViews/CMAWeatherDataView.m; sourceTree = "<group>"; };
 		580D11321076E69452D567AA /* libPods-MyFishingJournal.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MyFishingJournal.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		836B2B4A31EDB77286F0FE9D /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		8C7E1C0C3F08E34FF446385D /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
@@ -583,6 +588,9 @@
 				E705AD7F1A2400270077F16C /* CMACircleView.h */,
 				E705AD801A2400270077F16C /* CMACircleView.m */,
 				E74852791A2BEB73002BF1C6 /* CMACircleView.xib */,
+				0D7F77801A4E54770010674C /* CMAWeatherDataView.h */,
+				0D7F77811A4E54770010674C /* CMAWeatherDataView.m */,
+				0D7F777E1A4E540E0010674C /* CMAWeatherDataView.xib */,
 			);
 			name = CustomViews;
 			sourceTree = "<group>";
@@ -775,6 +783,7 @@
 				E700E46E1A29CF2600BB6337 /* no_image.png in Resources */,
 				E78A1F951A3002EB00FDA5E2 /* app_icon.png in Resources */,
 				E705AD751A229E0B0077F16C /* locations_large.png in Resources */,
+				0D7F777F1A4E540E0010674C /* CMAWeatherDataView.xib in Resources */,
 				E705AD781A229E0B0077F16C /* stats_large.png in Resources */,
 				E7C29D4C1A17FC6200015B42 /* stats.png in Resources */,
 				E78A1FAE1A3008DD00FDA5E2 /* app_icon_29.png in Resources */,
@@ -912,6 +921,7 @@
 				E7C926E319EEC9DC0010A9FE /* CMAStatisticsViewController.m in Sources */,
 				E7C29D751A1BD38800015B42 /* CMASingleBaitViewController.m in Sources */,
 				E7A51E9E19EFAA0E009BDC20 /* CMASettingsViewController.m in Sources */,
+				0D7F77821A4E54770010674C /* CMAWeatherDataView.m in Sources */,
 				E7C29D7B1A1BE0BE00015B42 /* CMABaitTableViewCell.m in Sources */,
 				E72669C919E6F4A8003C8E0B /* CMAJournal.m in Sources */,
 				E738585A19FE0A3400FE122B /* CMAFishingMethod.m in Sources */,

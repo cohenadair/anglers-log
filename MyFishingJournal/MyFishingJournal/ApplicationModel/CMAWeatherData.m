@@ -21,55 +21,46 @@ NSString *const API_KEY = @"35f69a23678dead2c75e0599eadbb4e1";
     return [[self alloc] initWithCoordinates:coordinate andJournal:aMeasurementSystemType];
 }
 
-#pragma mark - Initialization
+#pragma mark - Archiving
 
-- (id)initWithCoordinates:(CLLocationCoordinate2D)coordinate andJournal:(CMAMeasuringSystemType)aMeasurementSystemType {
+- (id)initWithCoder:(NSCoder *)aDecoder {
     if (self = [super init]) {
-        [self initOpenWeatherMapAPIForJournal:aMeasurementSystemType];
-        [self initWeatherPropertiesWithCoordinate:coordinate];
+        _temperature = [aDecoder decodeObjectForKey:@"CMAWeatherDataTemperature"];
+        _windSpeed = [aDecoder decodeObjectForKey:@"CMAWeatherDataWindSpeed"];
+        _skyConditions = [aDecoder decodeObjectForKey:@"CMAWeatherDataSkyConditions"];
+        _weatherImage = [aDecoder decodeObjectForKey:@"CMAWeatherDataWeatherImage"];
     }
     
     return self;
 }
 
-- (void)initOpenWeatherMapAPIForJournal:(CMAMeasuringSystemType)aMeasurementSystemType {
-    self._weatherAPI = [[OWMWeatherAPI alloc] initWithAPIKey:API_KEY];
-    
-    if (aMeasurementSystemType == CMAMeasuringSystemTypeImperial)
-        self._weatherAPI.temperatureFormat = kOWMTempFahrenheit;
-    else
-        self._weatherAPI.temperatureFormat = kOWMTempCelcius;
+- (void)encodeWithCoder:(NSCoder *)aCoder {
+    [aCoder encodeObject:self.temperature forKey:@"CMAWeatherDataTemperature"];
+    [aCoder encodeObject:self.windSpeed forKey:@"CMAWeatherDataWindSpeed"];
+    [aCoder encodeObject:self.skyConditions forKey:@"CMAWeatherDataSkyConditions"];
+    [aCoder encodeObject:self.weatherImage forKey:@"CMAWeatherDataWeatherImage"];
 }
 
-- (void)initWeatherPropertiesWithCoordinate:(CLLocationCoordinate2D)coordinate {
-    [self._weatherAPI currentWeatherByCoordinate:coordinate withCallback:^(NSError *error, NSDictionary *result) {
-        if (error) {
-            NSLog(@"Error in initWeatherPropertiesWithCoordinates");
-            return;
-        }
+#pragma mark - Initialization
 
-        NSArray *weatherArray = result[@"weather"];
+- (id)initWithCoordinates:(CLLocationCoordinate2D)coordinate andJournal:(CMAMeasuringSystemType)aMeasurementSystemType {
+    if (self = [super init]) {
+        _weatherAPI = [[OWMWeatherAPI alloc] initWithAPIKey:API_KEY];
+        _coordinate = coordinate;
         
-        if ([weatherArray count] > 0) {
-            NSString *imageString = [NSString stringWithFormat:@"http://openweathermap.org/img/w/%@.png", result[@"weather"][0][@"icon"]];
-            [self setWeatherImage:[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:imageString]]]];
-            [self setSkyConditions:result[@"weather"][0][@"main"]];
-        } else {
-            [self setWeatherImage:[UIImage imageNamed:@"no_image.png"]];
-            [self setSkyConditions:@"N/A"];
-        }
-        
-        [self setTemperature:(NSNumber *)result[@"main"][@"temp"]]; // [3][3]
-        [self setWindSpeed:result[@"wind"][@"speed"]]; // [1][0]
-        
-        [self print];
-    }];
+        if (aMeasurementSystemType == CMAMeasuringSystemTypeImperial)
+            _weatherAPI.temperatureFormat = kOWMTempFahrenheit;
+        else
+            _weatherAPI.temperatureFormat = kOWMTempCelcius;
+    }
+    
+    return self;
 }
 
 #pragma mark - Debugging
 
 - (void)print {
-    NSLog(@"Temperature: %ld\nWindSpeed: %@\n@Sky: %@", (long)[self.temperature integerValue], self.windSpeed, self.skyConditions);
+    NSLog(@"\nTemperature: %ld\nWind Speed: %@\nSky Conditions: %@", (long)[self.temperature integerValue], self.windSpeed, self.skyConditions);
 }
 
 @end
