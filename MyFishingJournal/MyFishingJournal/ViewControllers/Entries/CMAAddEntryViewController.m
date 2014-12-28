@@ -134,6 +134,12 @@ NSString *const kNotSelectedString = @"Not Selected";
     self.hasAttachedImages = NO;
     self.numberOfImages = 0;
     
+    // set weather data view (needs to be called before [self initializeTableForEditing], below)
+    NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"CMAWeatherDataView" owner:self options:nil];
+    self.weatherDataView = (CMAWeatherDataView *)[nib objectAtIndex:0];
+    [self.weatherDataView setFrame:CGRectMake(0, 0, 0, kWeatherCellHeightExpanded)];
+    [self.weatherDataView setAlpha:0.0];
+    
     // if we're editing rather than adding an entry
     if (self.isEditingEntry)
         [self initializeTableForEditing];
@@ -178,15 +184,15 @@ NSString *const kNotSelectedString = @"Not Selected";
         [self.speciesDetailLabel setText:kNotSelectedString];
     
     // fish quantity
-    if (self.entry.fishQuantity || ([self.entry.fishQuantity integerValue] != -1))
+    if (self.entry.fishQuantity && ([self.entry.fishQuantity integerValue] != -1))
         [self.quantityTextField setText:self.entry.fishQuantity.stringValue];
     
     // fish length
-    if (self.entry.fishLength || ([self.entry.fishLength integerValue] != -1))
+    if (self.entry.fishLength && ([self.entry.fishLength integerValue] != -1))
         [self.lengthTextField setText:self.entry.fishLength.stringValue];
     
     // fish weight
-    if (self.entry.fishWeight || ([self.entry.fishWeight integerValue] != -1))
+    if (self.entry.fishWeight && ([self.entry.fishWeight integerValue] != -1))
         [self.weightTextField setText:self.entry.fishWeight.stringValue];
     
     // bait used
@@ -210,28 +216,27 @@ NSString *const kNotSelectedString = @"Not Selected";
     }
     
     // weather conditions
-    if (self.entry.weatherData)
-        [self initWeatherCellWithData:self.entry.weatherData];
+    if (self.entry.weatherData) {
+        [self setIsWeatherInitialized:YES];
+        [self initWeatherDataViewWithData:self.entry.weatherData];
+        [self toggleWeatherDataCell];
+    }
     
     // water temperature
-    if (self.entry.waterTemperature || ([self.entry.waterTemperature integerValue] != -1))
+    if (self.entry.waterTemperature && ([self.entry.waterTemperature integerValue] != -1))
         [self.waterTemperatureTextField setText:self.entry.waterTemperature.stringValue];
     
     // water clarity
-    if (self.entry.waterClarity || ([self.entry.waterClarity integerValue] != -1))
+    if (self.entry.waterClarity && ([self.entry.waterClarity integerValue] != -1))
         [self.waterClarityLabel setText:self.entry.waterClarity];
     
     // water depth
-    if (self.entry.waterDepth || ([self.entry.waterDepth integerValue] != -1))
+    if (self.entry.waterDepth && ([self.entry.waterDepth integerValue] != -1))
         [self.waterDepthTextField setText:self.entry.waterDepth.stringValue];
     
     // notes
     if (self.entry.notes)
         [self.notesTextView setText:self.entry.notes];
-}
-
-- (void)initWeatherCellWithData:(CMAWeatherData *)someWeatherData {
-    
 }
 
 - (void)toggleDatePickerCellHidden:(UITableView *)aTableView selectedPath:(NSIndexPath *)anIndexPath {
@@ -298,11 +303,6 @@ NSString *const kNotSelectedString = @"Not Selected";
     UITableViewCell *cell = [super tableView:tableView cellForRowAtIndexPath:indexPath];
     
     if (indexPath.section == kWeatherCellSection) {
-        NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"CMAWeatherDataView" owner:self options:nil];
-        self.weatherDataView = (CMAWeatherDataView *)[nib objectAtIndex:0];
-        [self.weatherDataView setFrame:CGRectMake(0, 0, 0, cell.frame.size.height)];
-        [self.weatherDataView setAlpha:0.0];
-        
         UIView *bgView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, cell.frame.size.width - 50, cell.frame.size.height)];
         [bgView addSubview:self.weatherDataView];
 
@@ -607,7 +607,10 @@ NSString *const kNotSelectedString = @"Not Selected";
     }
     
     // weather conditions
-    [anEntry setWeatherData:[self weatherDataFromCell]];
+    if (self.isWeatherInitialized)
+        [anEntry setWeatherData:[self weatherData]];
+    else
+        [anEntry setWeatherData:nil];
     
     // water temperature
     if (![[self.waterTemperatureTextField text] isEqualToString:@""]) {
@@ -661,11 +664,6 @@ NSString *const kNotSelectedString = @"Not Selected";
         [result addObject:[[[self journal] userDefineNamed:SET_FISHING_METHODS] objectNamed:str]];
     
     return result;
-}
-
-// Checks the weather data UI components and returns a CMAWeatherData object. Returns nil if there is no weather data.
-- (CMAWeatherData *)weatherDataFromCell {
-    return nil;
 }
 
 #pragma mark - Image Picker
@@ -825,13 +823,16 @@ NSString *const kNotSelectedString = @"Not Selected";
         [self.weatherData setTemperature:(NSNumber *)result[@"main"][@"temp"]]; // [3][3]
         [self.weatherData setWindSpeed:result[@"wind"][@"speed"]]; // [1][0]
         
-        [self.weatherDataView.weatherImageView setImage:self.weatherData.weatherImage];
-        [self.weatherDataView.temperatureLabel setText:[NSString stringWithFormat:@"%ld%@", (long)[self.weatherData.temperature integerValue], [[self journal] temperatureUnitsAsString:YES]]];
-        [self.weatherDataView.windSpeedLabel setText:[NSString stringWithFormat:@"Wind Speed: %@%@", self.weatherData.windSpeed, [[self journal] speedUnitsAsString:YES]]];
-        [self.weatherDataView.skyConditionsLabel setText:[NSString stringWithFormat:@"Sky: %@", self.weatherData.skyConditions]];
-        
+        [self initWeatherDataViewWithData:self.weatherData];
         [self toggleWeatherDataCell];
     }];
+}
+
+- (void)initWeatherDataViewWithData:(CMAWeatherData *)someWeatherData {
+    [self.weatherDataView.weatherImageView setImage:someWeatherData.weatherImage];
+    [self.weatherDataView.temperatureLabel setText:[NSString stringWithFormat:@"%ld%@", (long)[someWeatherData.temperature integerValue], [[self journal] temperatureUnitsAsString:YES]]];
+    [self.weatherDataView.windSpeedLabel setText:[NSString stringWithFormat:@"Wind Speed: %@%@", someWeatherData.windSpeed, [[self journal] speedUnitsAsString:YES]]];
+    [self.weatherDataView.skyConditionsLabel setText:[NSString stringWithFormat:@"Sky: %@", someWeatherData.skyConditions]];
 }
 
 @end

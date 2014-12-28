@@ -128,7 +128,11 @@
     
     cell.speciesLabel.text = [entry.fishSpecies name];
     cell.dateLabel.text = [self.dateFormatter stringFromDate:entry.date];
-    cell.locationLabel.text = [entry locationAsString];
+    
+    if (entry.location)
+        cell.locationLabel.text = [entry locationAsString];
+    else
+        cell.locationLabel.text = @"";
     
     if ([entry.images count] > 0)
         cell.thumbImage.image = [entry.images anyObject];
