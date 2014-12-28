@@ -10,7 +10,6 @@
 #import "CMAUserDefinesViewController.h"
 #import "CMASingleLocationViewController.h"
 #import "CMASelectFishingSpotViewController.h"
-#import "CMASelectionTableViewController.h"
 #import "CMAViewBaitsViewController.h"
 #import "CMAAppDelegate.h"
 #import "CMAAlerts.h"
@@ -623,7 +622,7 @@ NSString *const kNotSelectedString = @"Not Selected";
     }
     
     // notes
-    if (![[self.notesTextView text] isEqualToString:@"Notes"]) {
+    if (![[self.notesTextView text] isEqualToString:@""]) {
         [anEntry setNotes:[self.notesTextView text]];
     } else {
         [anEntry setNotes:nil];
