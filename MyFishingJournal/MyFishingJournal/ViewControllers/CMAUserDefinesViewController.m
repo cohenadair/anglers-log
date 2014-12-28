@@ -69,12 +69,19 @@
     
     [self.noXView centerInParent:self.view navigationController:self.navigationController];
     [self.view addSubview:self.noXView];
+    
+    [self.noXView setAlpha:0.0f];
+    [UIView animateWithDuration:0.5 animations:^{
+        [self.noXView setAlpha:1.0f];
+    }];
 }
 
 - (void)handleNoXView {
-    if ([self.userDefine count] <= 0)
+    if ([self.userDefine count] <= 0) {
         [self initNoXView];
-    else {
+        [self.editButton setEnabled:NO];
+    } else {
+        [self.editButton setEnabled:YES];
         [self.noXView removeFromSuperview];
         self.noXView = nil;
     }
@@ -286,8 +293,7 @@
         
         if ([tableView numberOfRowsInSection:0] == 0) {
             [self toggleEditMode:YES];
-            [self.editButton setEnabled:NO];
-            [self initNoXView];
+            [self handleNoXView];
             [[self journal] archive];
             [self.tableView reloadData];
         }
@@ -331,12 +337,13 @@
             NSString *enteredText = [[alertView textFieldAtIndex:0] text];
             
             if ([enteredText isEqualToString:@""])
-                return
+                return;
                 
             [[alertView textFieldAtIndex:0] setText:@""];
             
             [self.userDefine addObject:[self.userDefine emptyObjectNamed:enteredText]];
             [self handleNoXView];
+
             [[self journal] archive];
         }
     
