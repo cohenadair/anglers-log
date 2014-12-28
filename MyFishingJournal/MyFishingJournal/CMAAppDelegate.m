@@ -21,6 +21,8 @@
     
     if (self.journal == nil)
         self.journal = [CMAJournal new];
+    else
+        [self.journal validateUserDefines];
     
     // Used to alternate background color of UITableViewCells
     CELL_COLOR_DARK = [UIColor colorWithWhite:0.95 alpha:1.0];

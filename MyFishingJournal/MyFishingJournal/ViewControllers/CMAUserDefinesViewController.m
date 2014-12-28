@@ -61,6 +61,8 @@
         imageName = @"fishing_methods_large.png";
     else if ([self.userDefine.name isEqualToString:SET_SPECIES])
         imageName = @"species_large.png";
+    else if ([self.userDefine.name isEqualToString:SET_WATER_CLARITIES])
+        imageName = @"water_clarities_large.png";
     
     self.noXView.imageView.image = [UIImage imageNamed:imageName];
     self.noXView.titleView.text = [NSString stringWithFormat:@"%@.", self.userDefine.name];

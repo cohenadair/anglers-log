@@ -45,10 +45,12 @@ typedef NS_ENUM(NSInteger, CMAEntrySortMethod) {
     CMAEntrySortMethodBaitUsed = 5
 };
 
+// user defines
 extern NSString *const SET_SPECIES;
 extern NSString *const SET_BAITS;
 extern NSString *const SET_LOCATIONS;
 extern NSString *const SET_FISHING_METHODS;
+extern NSString *const SET_WATER_CLARITIES;
 
 // Used for splitting up NSStrings.
 extern NSString *const TOKEN_FISHING_METHODS;

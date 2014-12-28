@@ -11,6 +11,7 @@
 #import "CMABait.h"
 #import "CMASpecies.h"
 #import "CMAFishingMethod.h"
+#import "CMAWaterClarity.h"
 #import "CMAConstants.h"
 
 @implementation CMAUserDefine
@@ -104,6 +105,9 @@
     
     if ([self.name isEqualToString:SET_FISHING_METHODS])
         return [CMAFishingMethod withName:[aName capitalizedString]];
+    
+    if ([self.name isEqualToString:SET_WATER_CLARITIES])
+        return [CMAWaterClarity withName:[aName capitalizedString]];
     
     NSLog(@"Invalid user define name in - [CMAUserDefine emptyObjectNamed]");
     return nil;

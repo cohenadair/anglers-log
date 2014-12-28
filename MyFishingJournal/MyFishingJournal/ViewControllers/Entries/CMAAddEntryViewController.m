@@ -227,8 +227,10 @@ NSString *const kNotSelectedString = @"Not Selected";
         [self.waterTemperatureTextField setText:self.entry.waterTemperature.stringValue];
     
     // water clarity
-    if (self.entry.waterClarity && ([self.entry.waterClarity integerValue] != -1))
-        [self.waterClarityLabel setText:self.entry.waterClarity];
+    if (self.entry.waterClarity)
+        [self.waterClarityLabel setText:self.entry.waterClarity.name];
+    else
+        [self.speciesDetailLabel setText:kNotSelectedString];
     
     // water depth
     if (self.entry.waterDepth && ([self.entry.waterDepth integerValue] != -1))
@@ -438,18 +440,6 @@ NSString *const kNotSelectedString = @"Not Selected";
         return;
     }
     
-    // water  clarity
-    if ([segue.identifier isEqualToString:@"fromAddEntryWaterClarityToSelectionTable"]) {
-        CMASelectionTableViewController *destination = [[segue.destinationViewController viewControllers] objectAtIndex:0];
-        
-        destination.navigationItem.title = @"Water Clarities";
-        destination.previousViewID = CMAViewControllerIDAddEntry;
-        destination.tableDataArray = @[@"Clear", @"Stained", @"Dark"];
-        self.indexPathForOptionsCell = [self.tableView indexPathForSelectedRow];
-        
-        return;
-    }
-    
     BOOL isSetting = NO;
     NSString *userDefineName;
     
@@ -469,6 +459,12 @@ NSString *const kNotSelectedString = @"Not Selected";
     if ([segue.identifier isEqualToString:@"fromAddEntryMethodsToEditSettings"]) {
         isSetting = YES;
         userDefineName = SET_FISHING_METHODS;
+    }
+    
+    // water clarities
+    if ([segue.identifier isEqualToString:@"fromAddEntryWaterClarityToEditSettings"]) {
+        isSetting = YES;
+        userDefineName = SET_WATER_CLARITIES;
     }
     
     if (isSetting) {
@@ -516,16 +512,6 @@ NSString *const kNotSelectedString = @"Not Selected";
         [[cellToEdit detailTextLabel] setText:source.baitForAddEntry.name];
         
         source.baitForAddEntry = nil;
-    }
-    
-    if ([segue.identifier isEqualToString:@"unwindToAddEntryFromSelectionTable"]) {
-        CMASelectionTableViewController *source = [segue sourceViewController];
-        UITableViewCell *cellToEdit = [self.tableView cellForRowAtIndexPath:self.indexPathForOptionsCell];
-        [[cellToEdit detailTextLabel] setText:source.selectedCellLabelText];
-        
-        source.previousViewID = CMAViewControllerIDNil;
-        source.selectedCellLabelText = nil;
-        source.tableDataArray = nil;
     }
 }
 
@@ -622,7 +608,8 @@ NSString *const kNotSelectedString = @"Not Selected";
     
     // water clarity
     if (![[self.waterClarityLabel text] isEqualToString:kNotSelectedString]) {
-        [anEntry setWaterClarity:self.waterClarityLabel.text];
+        CMAWaterClarity *waterClarity = [[[self journal] userDefineNamed:SET_WATER_CLARITIES] objectNamed:[self.waterClarityLabel text]];
+        [anEntry setWaterClarity:waterClarity];
     } else {
         [anEntry setWaterClarity:nil];
     }

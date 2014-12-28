@@ -7,10 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0D34EF4F1A44D03F00764F18 /* CMASelectionTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D34EF4E1A44D03F00764F18 /* CMASelectionTableViewController.m */; };
 		0D34EF521A44EB2C00764F18 /* CMAWeatherData.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D34EF511A44EB2C00764F18 /* CMAWeatherData.m */; };
 		0D7F777F1A4E540E0010674C /* CMAWeatherDataView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0D7F777E1A4E540E0010674C /* CMAWeatherDataView.xib */; };
 		0D7F77821A4E54770010674C /* CMAWeatherDataView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D7F77811A4E54770010674C /* CMAWeatherDataView.m */; };
+		0D81A3B51A4F845E001FF9FA /* CMAWaterClarity.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D81A3B41A4F845E001FF9FA /* CMAWaterClarity.m */; };
+		0D81A3B61A4F845E001FF9FA /* CMAWaterClarity.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D81A3B41A4F845E001FF9FA /* CMAWaterClarity.m */; };
+		0D81A3B81A4F898D001FF9FA /* water_clarities_large.png in Resources */ = {isa = PBXBuildFile; fileRef = 0D81A3B71A4F898D001FF9FA /* water_clarities_large.png */; };
+		0D81A3BA1A4F899C001FF9FA /* water_clarities.png in Resources */ = {isa = PBXBuildFile; fileRef = 0D81A3B91A4F899C001FF9FA /* water_clarities.png */; };
 		2C8474D879B7047FC7BE08DF /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 836B2B4A31EDB77286F0FE9D /* libPods.a */; };
 		59178D9BE62FDF1B68A276EA /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 836B2B4A31EDB77286F0FE9D /* libPods.a */; };
 		5B310B05AAF503582BC33502 /* libPods-MyFishingJournal.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 580D11321076E69452D567AA /* libPods-MyFishingJournal.a */; };
@@ -140,13 +143,15 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		0D34EF4D1A44D03F00764F18 /* CMASelectionTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMASelectionTableViewController.h; path = ViewControllers/CMASelectionTableViewController.h; sourceTree = "<group>"; };
-		0D34EF4E1A44D03F00764F18 /* CMASelectionTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMASelectionTableViewController.m; path = ViewControllers/CMASelectionTableViewController.m; sourceTree = "<group>"; };
 		0D34EF501A44EB2C00764F18 /* CMAWeatherData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAWeatherData.h; path = ApplicationModel/CMAWeatherData.h; sourceTree = "<group>"; };
 		0D34EF511A44EB2C00764F18 /* CMAWeatherData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAWeatherData.m; path = ApplicationModel/CMAWeatherData.m; sourceTree = "<group>"; };
 		0D7F777E1A4E540E0010674C /* CMAWeatherDataView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CMAWeatherDataView.xib; sourceTree = "<group>"; };
 		0D7F77801A4E54770010674C /* CMAWeatherDataView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAWeatherDataView.h; path = CustomViews/CMAWeatherDataView.h; sourceTree = "<group>"; };
 		0D7F77811A4E54770010674C /* CMAWeatherDataView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAWeatherDataView.m; path = CustomViews/CMAWeatherDataView.m; sourceTree = "<group>"; };
+		0D81A3B31A4F845E001FF9FA /* CMAWaterClarity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAWaterClarity.h; path = ApplicationModel/UserDefines/CMAWaterClarity.h; sourceTree = "<group>"; };
+		0D81A3B41A4F845E001FF9FA /* CMAWaterClarity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAWaterClarity.m; path = ApplicationModel/UserDefines/CMAWaterClarity.m; sourceTree = "<group>"; };
+		0D81A3B71A4F898D001FF9FA /* water_clarities_large.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = water_clarities_large.png; path = Images/LargeIcons/water_clarities_large.png; sourceTree = "<group>"; };
+		0D81A3B91A4F899C001FF9FA /* water_clarities.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = water_clarities.png; path = Images/Icons/water_clarities.png; sourceTree = "<group>"; };
 		580D11321076E69452D567AA /* libPods-MyFishingJournal.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MyFishingJournal.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		836B2B4A31EDB77286F0FE9D /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		8C7E1C0C3F08E34FF446385D /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
@@ -344,6 +349,7 @@
 		E705AD6A1A229ABD0077F16C /* LargeIcons */ = {
 			isa = PBXGroup;
 			children = (
+				0D81A3B71A4F898D001FF9FA /* water_clarities_large.png */,
 				E705AD6D1A229E0B0077F16C /* baits_large.png */,
 				E705AD6E1A229E0B0077F16C /* entries_large.png */,
 				E705AD6F1A229E0B0077F16C /* locations_large.png */,
@@ -493,6 +499,8 @@
 				E738585519FE098A00FE122B /* CMABait.m */,
 				E738585819FE0A3400FE122B /* CMAFishingMethod.h */,
 				E738585919FE0A3400FE122B /* CMAFishingMethod.m */,
+				0D81A3B31A4F845E001FF9FA /* CMAWaterClarity.h */,
+				0D81A3B41A4F845E001FF9FA /* CMAWaterClarity.m */,
 			);
 			name = UserDefines;
 			sourceTree = "<group>";
@@ -616,6 +624,7 @@
 		E7C29D1E1A17DD7E00015B42 /* Icons */ = {
 			isa = PBXGroup;
 			children = (
+				0D81A3B91A4F899C001FF9FA /* water_clarities.png */,
 				E7C29D4D1A17FFE200015B42 /* bait.png */,
 				E7C29D4E1A17FFE200015B42 /* fishing_methods.png */,
 				E7C29D4F1A17FFE200015B42 /* literature.png */,
@@ -673,8 +682,6 @@
 				E7C29D151A1445AE00015B42 /* CMASideMenuViewController.m */,
 				E7C29D821A1C210000015B42 /* CMAImagePickerViewController.h */,
 				E7C29D831A1C210000015B42 /* CMAImagePickerViewController.m */,
-				0D34EF4D1A44D03F00764F18 /* CMASelectionTableViewController.h */,
-				0D34EF4E1A44D03F00764F18 /* CMASelectionTableViewController.m */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -787,7 +794,9 @@
 				E705AD781A229E0B0077F16C /* stats_large.png in Resources */,
 				E7C29D4C1A17FC6200015B42 /* stats.png in Resources */,
 				E78A1FAE1A3008DD00FDA5E2 /* app_icon_29.png in Resources */,
+				0D81A3B81A4F898D001FF9FA /* water_clarities_large.png in Resources */,
 				E7C29D361A17EA4200015B42 /* camera@1x.png in Resources */,
+				0D81A3BA1A4F899C001FF9FA /* water_clarities.png in Resources */,
 				E7C29D421A17F8BB00015B42 /* checkmark@1x.png in Resources */,
 				E705AD6C1A229AD20077F16C /* fishing_methods_large.png in Resources */,
 				E7C29D551A17FFE200015B42 /* bait.png in Resources */,
@@ -911,6 +920,7 @@
 				E705AD811A2400270077F16C /* CMACircleView.m in Sources */,
 				0D34EF521A44EB2C00764F18 /* CMAWeatherData.m in Sources */,
 				E7C29D7E1A1C183E00015B42 /* CMACameraButton.m in Sources */,
+				0D81A3B51A4F845E001FF9FA /* CMAWaterClarity.m in Sources */,
 				E7A51EA819F4440F009BDC20 /* CMAUserDefinesViewController.m in Sources */,
 				E705AD7C1A22DD420077F16C /* XYPieChart.m in Sources */,
 				E7A331201A1D706A00C1D3F1 /* CMAViewEntriesViewController.m in Sources */,
@@ -937,7 +947,6 @@
 				E78BB7E31A1309680082004B /* CMAEntryTableViewCell.m in Sources */,
 				E705AD8E1A2581400077F16C /* CMAStats.m in Sources */,
 				E70B638619D3A8E400DFBA85 /* CMAAppDelegate.m in Sources */,
-				0D34EF4F1A44D03F00764F18 /* CMASelectionTableViewController.m in Sources */,
 				E72669DE19E76B63003C8E0B /* CMAUserDefine.m in Sources */,
 				E738585219FE093700FE122B /* CMALocation.m in Sources */,
 				E7A331281A1D70C200C1D3F1 /* CMAAddFishingSpotViewController.m in Sources */,
@@ -961,6 +970,7 @@
 				E72669DF19E76B64003C8E0B /* CMAUserDefine.m in Sources */,
 				E72669C619E34471003C8E0B /* CMAFishingSpotTestCase.m in Sources */,
 				E72669CA19E6F4A8003C8E0B /* CMAJournal.m in Sources */,
+				0D81A3B61A4F845E001FF9FA /* CMAWaterClarity.m in Sources */,
 				E738585719FE098A00FE122B /* CMABait.m in Sources */,
 				E72669BA19DF150F003C8E0B /* CMAEntryTestCase.m in Sources */,
 				E738585319FE093700FE122B /* CMALocation.m in Sources */,

@@ -19,6 +19,9 @@
 @property (nonatomic)CMAEntrySortMethod entrySortMethod;
 @property (nonatomic)CMASortOrder entrySortOrder;
 
+// initializing
+- (void)validateUserDefines;
+
 // archiving
 - (id)initWithCoder:(NSCoder *)aDecoder;
 - (void)encodeWithCoder:(NSCoder *)aCoder;

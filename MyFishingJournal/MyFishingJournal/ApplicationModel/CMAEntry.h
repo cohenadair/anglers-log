@@ -10,6 +10,7 @@
 #import "CMALocation.h"
 #import "CMASpecies.h"
 #import "CMABait.h"
+#import "CMAWaterClarity.h"
 #import "CMAWeatherData.h"
 
 @interface CMAEntry : NSObject <NSCoding>
@@ -37,7 +38,7 @@
 
 // water conditions
 @property (strong, nonatomic)NSNumber *waterTemperature;
-@property (strong, nonatomic)NSString *waterClarity;
+@property (strong, nonatomic)CMAWaterClarity *waterClarity;
 @property (strong, nonatomic)NSNumber *waterDepth;
 
 // notes

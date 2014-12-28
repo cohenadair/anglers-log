@@ -19,16 +19,31 @@
     _entries = [NSMutableArray array];
     _userDefines = [NSMutableDictionary dictionary];
     
-    [_userDefines setValue:[CMAUserDefine withName:SET_SPECIES] forKey:SET_SPECIES];
-    [_userDefines setValue:[CMAUserDefine withName:SET_BAITS] forKey:SET_BAITS];
-    [_userDefines setValue:[CMAUserDefine withName:SET_FISHING_METHODS] forKey:SET_FISHING_METHODS];
-    [_userDefines setValue:[CMAUserDefine withName:SET_LOCATIONS] forKey:SET_LOCATIONS];
+    [self validateUserDefines];
     
     [self setMeasurementSystem:CMAMeasuringSystemTypeImperial];
     [self setEntrySortMethod:CMAEntrySortMethodDate];
     [self setEntrySortOrder:CMASortOrderDescending];
     
     return self;
+}
+
+// Initializes user define objects if they don't already exist. Used so the same CMAJournal object can be used if new defines are added.
+- (void)validateUserDefines {
+    if (![_userDefines objectForKey:SET_SPECIES])
+        [_userDefines setValue:[CMAUserDefine withName:SET_SPECIES] forKey:SET_SPECIES];
+    
+    if (![_userDefines objectForKey:SET_BAITS])
+        [_userDefines setValue:[CMAUserDefine withName:SET_BAITS] forKey:SET_BAITS];
+    
+    if (![_userDefines objectForKey:SET_FISHING_METHODS])
+        [_userDefines setValue:[CMAUserDefine withName:SET_FISHING_METHODS] forKey:SET_FISHING_METHODS];
+    
+    if (![_userDefines objectForKey:SET_LOCATIONS])
+        [_userDefines setValue:[CMAUserDefine withName:SET_LOCATIONS] forKey:SET_LOCATIONS];
+    
+    if (![_userDefines objectForKey:SET_WATER_CLARITIES])
+        [_userDefines setValue:[CMAUserDefine withName:SET_WATER_CLARITIES] forKey:SET_WATER_CLARITIES];
 }
 
 #pragma mark - Archiving

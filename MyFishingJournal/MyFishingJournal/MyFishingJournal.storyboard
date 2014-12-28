@@ -1393,7 +1393,7 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <segue destination="mi1-aE-4aT" kind="show" identifier="fromAddEntryWaterClarityToSelectionTable" id="n0d-U6-0jK"/>
+                                            <segue destination="brF-Rc-1Et" kind="show" identifier="fromAddEntryWaterClarityToEditSettings" id="6TR-gK-zWN"/>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationLevel="1" indentationWidth="10" rowHeight="44" id="zMp-92-p7d">
@@ -2031,45 +2031,6 @@
             </objects>
             <point key="canvasLocation" x="3518" y="769"/>
         </scene>
-        <!--Selection Table View Controller-->
-        <scene sceneID="hVi-vG-7mz">
-            <objects>
-                <tableViewController id="b6m-ML-OkE" customClass="CMASelectionTableViewController" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="fls-CC-x1y">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="selectCell" textLabel="cKx-GB-aEC" style="IBUITableViewCellStyleDefault" id="DVg-a0-b41">
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="DVg-a0-b41" id="p04-jB-BKr">
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="cKx-GB-aEC">
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                    </subviews>
-                                </tableViewCellContentView>
-                            </tableViewCell>
-                        </prototypes>
-                        <connections>
-                            <outlet property="dataSource" destination="b6m-ML-OkE" id="RDy-gY-gPg"/>
-                            <outlet property="delegate" destination="b6m-ML-OkE" id="AOf-o4-S82"/>
-                        </connections>
-                    </tableView>
-                    <navigationItem key="navigationItem" id="O0W-r1-4vM"/>
-                    <connections>
-                        <segue destination="8SA-XE-GOG" kind="unwind" identifier="unwindToAddEntryFromSelectionTable" unwindAction="unwindToAddEntry:" id="wp1-D4-jre"/>
-                    </connections>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="OM9-NB-Ham" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <exit id="8SA-XE-GOG" userLabel="Exit" sceneMemberID="exit"/>
-            </objects>
-            <point key="canvasLocation" x="2489" y="277"/>
-        </scene>
         <!--Reveal View Controller-->
         <scene sceneID="MSp-fZ-sZ6">
             <objects>
@@ -2244,6 +2205,27 @@
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <connections>
                                             <segue destination="6A2-09-VCg" kind="custom" identifier="fromSideMenuFishingMethodsToEditSettings" customClass="SWRevealViewControllerSegue" id="aBE-xI-c3y"/>
+                                        </connections>
+                                    </tableViewCell>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="6h5-Un-lVt">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="6h5-Un-lVt" id="dHS-k6-4bf">
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView userInteractionEnabled="NO" alpha="0.40000000596046448" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="water_clarities.png" translatesAutoresizingMaskIntoConstraints="NO" id="dnV-b6-vEv">
+                                                    <rect key="frame" x="20" y="12" width="20" height="20"/>
+                                                </imageView>
+                                                <label opaque="NO" userInteractionEnabled="NO" tag="100" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Water Clarities" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QMJ-ta-HBG">
+                                                    <rect key="frame" x="65" y="11" width="112" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <connections>
+                                            <segue destination="6A2-09-VCg" kind="custom" identifier="fromSideMenuWaterClaritiesToEditSettings" customClass="SWRevealViewControllerSegue" id="Usd-Jw-Xr5"/>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="uVX-2H-Suf">
@@ -2704,24 +2686,6 @@
             </objects>
             <point key="canvasLocation" x="6393" y="770"/>
         </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="X7T-pB-WcR">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="mi1-aE-4aT" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="EiD-8t-6AT">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="b6m-ML-OkE" kind="relationship" relationship="rootViewController" id="mDZ-QW-zyX"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Qrj-e5-jX3" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2402" y="277"/>
-        </scene>
     </scenes>
     <resources>
         <image name="bait.png" width="50" height="50"/>
@@ -2737,21 +2701,22 @@
         <image name="sort.png" width="25" height="25"/>
         <image name="species.png" width="50" height="50"/>
         <image name="stats.png" width="50" height="50"/>
+        <image name="water_clarities.png" width="50" height="50"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="0It-ub-fzN"/>
-        <segue reference="gDt-Tw-gtk"/>
+        <segue reference="b63-Bg-tWk"/>
+        <segue reference="Usd-Jw-Xr5"/>
         <segue reference="egX-OW-uSX"/>
+        <segue reference="0It-ub-fzN"/>
         <segue reference="Jyy-wS-dXA"/>
+        <segue reference="gDt-Tw-gtk"/>
+        <segue reference="guB-6y-sIg"/>
         <segue reference="OHB-Pt-9SF"/>
         <segue reference="RpT-ts-gTM"/>
         <segue reference="ooh-Eu-Ug2"/>
         <segue reference="qAO-gb-5Yr"/>
-        <segue reference="hzw-aH-h0R"/>
         <segue reference="bAG-il-Vyj"/>
         <segue reference="Mmt-ea-Rlu"/>
-        <segue reference="dyy-eh-4UZ"/>
-        <segue reference="b63-Bg-tWk"/>
         <segue reference="uUK-tT-jvg"/>
         <segue reference="xJw-cV-13t"/>
         <segue reference="ij7-4o-wMK"/>
