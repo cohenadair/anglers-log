@@ -24,7 +24,6 @@
 @property (strong, nonatomic)CMAFishingSpot *currentFishingSpot;
 @property (nonatomic)BOOL isReadOnly;
 @property (nonatomic)BOOL didUnwind;
-@property (nonatomic)BOOL hasSetRegion;
 
 @end
 
@@ -57,7 +56,6 @@
     else if (!self.currentFishingSpot)
         [self initCurrentFishingSpot:[self.location.fishingSpots objectAtIndex:0]];
     
-    [self setHasSetRegion:NO];
     [self initializeMapView];
 }
 
@@ -128,7 +126,6 @@
     }
     
     [self.mapView setRegion:[self getMapRegion] animated:NO];
-    [self setHasSetRegion:YES];
     [self setDidUnwind:YES];
 }
 
@@ -159,13 +156,6 @@
     return [self.location mapRegion];
 }
 
-- (void)mapViewWillStartRenderingMap:(MKMapView *)mapView {
-    if (!self.hasSetRegion) {
-        [mapView setRegion:[self getMapRegion] animated:NO];
-        [self setHasSetRegion:YES];
-    }
-}
-
 - (void)mapViewDidFinishRenderingMap:(MKMapView *)mapView fullyRendered:(BOOL)fullyRendered {
     [self.mapView setHidden:NO];
     [self.loadingMapView setHidden:YES];
@@ -186,6 +176,7 @@
     
     // select initial annotation
     [self.mapView selectAnnotation:[self annotationWithTitle:self.currentFishingSpot.name] animated:YES];
+    [self.mapView setRegion:[self getMapRegion] animated:NO];
 }
 
 @end

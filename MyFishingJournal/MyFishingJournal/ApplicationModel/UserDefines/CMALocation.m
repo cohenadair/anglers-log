@@ -146,6 +146,12 @@
         // add some padding to the region
         result.span.latitudeDelta = (maxLatitude - minLatitude) * 2.0;
         result.span.longitudeDelta = (maxLongitude - minLongitude) * 2.0;
+        
+        if (result.span.latitudeDelta < 0.001220)
+            result.span.latitudeDelta = 0.001220;
+        
+        if (result.span.longitudeDelta < 0.001120)
+            result.span.longitudeDelta = 0.001120;
     }
 
     return result;
