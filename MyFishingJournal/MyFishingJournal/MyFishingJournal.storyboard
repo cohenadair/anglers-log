@@ -372,23 +372,17 @@
                             <outlet property="delegate" destination="adr-BS-f2S" id="CT5-K2-3xM"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="WzY-ql-Ziv">
-                        <barButtonItem key="rightBarButtonItem" image="edit.png" id="9gZ-tT-Mgi">
-                            <connections>
-                                <segue destination="Gid-I3-2h4" kind="presentation" identifier="fromSingleLocationToAddLocation" id="Qcx-rg-dpe"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" id="WzY-ql-Ziv"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
                     <nil key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="coordinateLabel" destination="2Uf-Lt-Lix" id="Sua-p9-Tq6"/>
-                        <outlet property="editButton" destination="9gZ-tT-Mgi" id="dkm-M7-MWb"/>
                         <outlet property="fishCaughtLabel" destination="2ey-Yi-aJi" id="5c1-KN-GjT"/>
                         <outlet property="fishingSpotLabel" destination="mMI-sH-N3r" id="ErN-ag-1DI"/>
                         <outlet property="loadingMapView" destination="Lyv-5X-Xve" id="sXG-ab-tDq"/>
                         <outlet property="mapView" destination="3ya-dt-qqn" id="nvp-91-UhT"/>
                         <segue destination="aLM-pd-xcd" kind="unwind" identifier="unwindToAddEntryFromSingleLocation" unwindAction="unwindToAddEntry:" id="i4g-iX-B1F"/>
+                        <segue destination="Gid-I3-2h4" kind="presentation" identifier="fromSingleLocationToAddLocation" id="1Kg-jf-Myf"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1xd-Vw-zsy" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -2704,21 +2698,21 @@
         <image name="water_clarities.png" width="50" height="50"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="uUK-tT-jvg"/>
         <segue reference="b63-Bg-tWk"/>
         <segue reference="Usd-Jw-Xr5"/>
+        <segue reference="guB-6y-sIg"/>
+        <segue reference="Jyy-wS-dXA"/>
         <segue reference="egX-OW-uSX"/>
         <segue reference="0It-ub-fzN"/>
-        <segue reference="Jyy-wS-dXA"/>
         <segue reference="gDt-Tw-gtk"/>
-        <segue reference="guB-6y-sIg"/>
+        <segue reference="bAG-il-Vyj"/>
+        <segue reference="Mmt-ea-Rlu"/>
         <segue reference="OHB-Pt-9SF"/>
         <segue reference="RpT-ts-gTM"/>
         <segue reference="ooh-Eu-Ug2"/>
         <segue reference="qAO-gb-5Yr"/>
-        <segue reference="bAG-il-Vyj"/>
-        <segue reference="Mmt-ea-Rlu"/>
-        <segue reference="uUK-tT-jvg"/>
-        <segue reference="xJw-cV-13t"/>
+        <segue reference="1Kg-jf-Myf"/>
         <segue reference="ij7-4o-wMK"/>
     </inferredMetricsTieBreakers>
 </document>
