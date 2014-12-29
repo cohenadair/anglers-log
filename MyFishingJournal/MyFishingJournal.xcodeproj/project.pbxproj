@@ -14,6 +14,8 @@
 		0D81A3B61A4F845E001FF9FA /* CMAWaterClarity.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D81A3B41A4F845E001FF9FA /* CMAWaterClarity.m */; };
 		0D81A3B81A4F898D001FF9FA /* water_clarities_large.png in Resources */ = {isa = PBXBuildFile; fileRef = 0D81A3B71A4F898D001FF9FA /* water_clarities_large.png */; };
 		0D81A3BA1A4F899C001FF9FA /* water_clarities.png in Resources */ = {isa = PBXBuildFile; fileRef = 0D81A3B91A4F899C001FF9FA /* water_clarities.png */; };
+		0DCC26551A520C0800738F04 /* CMAUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DCC26541A520C0800738F04 /* CMAUtilities.m */; };
+		0DCC26571A520DD300738F04 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DCC26561A520DD300738F04 /* SystemConfiguration.framework */; };
 		2C8474D879B7047FC7BE08DF /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 836B2B4A31EDB77286F0FE9D /* libPods.a */; };
 		59178D9BE62FDF1B68A276EA /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 836B2B4A31EDB77286F0FE9D /* libPods.a */; };
 		5B310B05AAF503582BC33502 /* libPods-MyFishingJournal.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 580D11321076E69452D567AA /* libPods-MyFishingJournal.a */; };
@@ -152,6 +154,9 @@
 		0D81A3B41A4F845E001FF9FA /* CMAWaterClarity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAWaterClarity.m; path = ApplicationModel/UserDefines/CMAWaterClarity.m; sourceTree = "<group>"; };
 		0D81A3B71A4F898D001FF9FA /* water_clarities_large.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = water_clarities_large.png; path = Images/LargeIcons/water_clarities_large.png; sourceTree = "<group>"; };
 		0D81A3B91A4F899C001FF9FA /* water_clarities.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = water_clarities.png; path = Images/Icons/water_clarities.png; sourceTree = "<group>"; };
+		0DCC26531A520C0800738F04 /* CMAUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAUtilities.h; path = Utilities/CMAUtilities.h; sourceTree = "<group>"; };
+		0DCC26541A520C0800738F04 /* CMAUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAUtilities.m; path = Utilities/CMAUtilities.m; sourceTree = "<group>"; };
+		0DCC26561A520DD300738F04 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		580D11321076E69452D567AA /* libPods-MyFishingJournal.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MyFishingJournal.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		836B2B4A31EDB77286F0FE9D /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		8C7E1C0C3F08E34FF446385D /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
@@ -312,6 +317,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0DCC26571A520DD300738F04 /* SystemConfiguration.framework in Frameworks */,
 				E705AD7E1A22DD5C0077F16C /* QuartzCore.framework in Frameworks */,
 				E78BB7D61A0724760082004B /* CoreLocation.framework in Frameworks */,
 				E78BB7D41A0724290082004B /* MapKit.framework in Frameworks */,
@@ -404,6 +410,7 @@
 		E70B637419D3A8E400DFBA85 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				0DCC26561A520DD300738F04 /* SystemConfiguration.framework */,
 				E705AD7D1A22DD5C0077F16C /* QuartzCore.framework */,
 				E78BB7D51A0724760082004B /* CoreLocation.framework */,
 				E78BB7D31A0724290082004B /* MapKit.framework */,
@@ -693,6 +700,8 @@
 				E7A51EB919F4ADC2009BDC20 /* CMAConstants.m */,
 				E78BB7E01A100A3E0082004B /* CMAAlerts.h */,
 				E78BB7DE1A100A2C0082004B /* CMAAlerts.m */,
+				0DCC26531A520C0800738F04 /* CMAUtilities.h */,
+				0DCC26541A520C0800738F04 /* CMAUtilities.m */,
 			);
 			name = Utilities;
 			sourceTree = "<group>";
@@ -938,6 +947,7 @@
 				E7A331291A1D70C200C1D3F1 /* CMAAddLocationViewController.m in Sources */,
 				E7A331311A1D710200C1D3F1 /* CMASinglePhotoViewController.m in Sources */,
 				E78A1F911A2FC40200FDA5E2 /* CMAStatisticsTableViewCell.m in Sources */,
+				0DCC26551A520C0800738F04 /* CMAUtilities.m in Sources */,
 				E7A3312A1A1D70C200C1D3F1 /* CMASingleLocationViewController.m in Sources */,
 				E7C29D101A143A1600015B42 /* SWRevealViewController.m in Sources */,
 				E738585019FE093700FE122B /* CMAFishingSpot.m in Sources */,

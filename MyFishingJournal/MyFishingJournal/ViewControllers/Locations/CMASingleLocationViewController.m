@@ -112,7 +112,7 @@
     [self performSegueWithIdentifier:@"fromSingleLocationToAddLocation" sender:self];
 }
 
-// shares a screenshot of the current map view canvas
+// Shares a screenshot of the current map view canvas.
 - (void)shareLocation {
     NSMutableArray *shareItems = [NSMutableArray array];
     

@@ -16,6 +16,7 @@
 #import "CMACameraButton.h"
 #import "CMACameraActionSheet.h"
 #import "CMAWeatherDataView.h"
+#import "CMAUtilities.h"
 
 @interface CMAAddEntryViewController ()
 
@@ -787,6 +788,12 @@ NSString *const kNotSelectedString = @"Not Selected";
 
 // Sets self.weatherData from data gathered from the OpenWeatherMapAPI.
 - (void)initWeatherDataWithCoordinate:(CLLocationCoordinate2D)coordinate {
+    if (![CMAUtilities validConnection]) {
+        [CMAAlerts errorAlert:@"You do not have a valid network connection. Please connect and try again."];
+        [self.weatherIndicator setHidden:YES];
+        return;
+    }
+    
     self.weatherData = [CMAWeatherData withCoordinates:coordinate andJournal:[[self journal] measurementSystem]];
     
     [self.weatherData.weatherAPI currentWeatherByCoordinate:self.weatherData.coordinate withCallback:^(NSError *error, NSDictionary *result) {
@@ -817,7 +824,7 @@ NSString *const kNotSelectedString = @"Not Selected";
 - (void)initWeatherDataViewWithData:(CMAWeatherData *)someWeatherData {
     [self.weatherDataView.weatherImageView setImage:someWeatherData.weatherImage];
     [self.weatherDataView.temperatureLabel setText:[NSString stringWithFormat:@"%ld%@", (long)[someWeatherData.temperature integerValue], [[self journal] temperatureUnitsAsString:YES]]];
-    [self.weatherDataView.windSpeedLabel setText:[NSString stringWithFormat:@"Wind Speed: %@%@", someWeatherData.windSpeed, [[self journal] speedUnitsAsString:YES]]];
+    [self.weatherDataView.windSpeedLabel setText:[NSString stringWithFormat:@"Wind Speed: %ld%@", (long)[someWeatherData.windSpeed integerValue], [[self journal] speedUnitsAsString:YES]]];
     [self.weatherDataView.skyConditionsLabel setText:[NSString stringWithFormat:@"Sky: %@", someWeatherData.skyConditions]];
 }
 
