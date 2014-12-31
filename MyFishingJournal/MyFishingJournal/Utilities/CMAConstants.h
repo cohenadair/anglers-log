@@ -72,4 +72,6 @@ UIColor *CELL_COLOR_LIGHT; // initialized in AppDelegate.m
 #define kTableSectionHeaderHeight 40
 #define kTableFooterHeight 25
 
+#define kWeatherCellHeightExpanded 90
+
 #endif

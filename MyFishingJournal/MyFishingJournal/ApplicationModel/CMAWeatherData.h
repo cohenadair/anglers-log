@@ -25,4 +25,8 @@
 - (id)initWithCoordinates:(CLLocationCoordinate2D)coordinate andJournal:(CMAMeasuringSystemType)aMeasurementSystemType;
 - (void)print;
 
+- (NSString *)temperatureAsStringWithUnits:(NSString *)aUnitString;
+- (NSString *)windSpeedAsStringWithUnits:(NSString *)aUnitString;
+- (NSString *)skyConditionsAsString;
+
 @end

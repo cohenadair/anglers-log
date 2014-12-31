@@ -13,6 +13,7 @@
 #import "CMAAppDelegate.h"
 #import "CMAConstants.h"
 #import "CMAFishingMethod.h"
+#import "CMAWeatherDataView.h"
 
 // Used to store information on the cells that will be shonw on the table.
 // See initTableSettings.
@@ -101,6 +102,7 @@
     [self initTableSettings];
     [self setEntryImageArray:[[self.entry images] allObjects]];
     
+    [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     [self.tableView setTableFooterView:[[UIView alloc] initWithFrame:CGRectZero]]; // removes empty cells at the end of the list
 }
 
@@ -165,9 +167,16 @@
                                   hasSeparator: YES]];
     
     // weather conditions
+    if (self.entry.weatherData)
+        [self.tableCellProperties addObject:
+         [CMATableCellProperties withLabelText: nil
+                                 andDetailText: nil
+                            andReuseIdentifier: @"weatherDataCell"
+                                     andHeight: kWeatherCellHeightExpanded
+                                  hasSeparator: YES]];
     
     // length
-    if ([self.entry.fishLength integerValue] > 0)
+    if (self.entry.fishLength && [self.entry.fishLength integerValue] > 0)
         [self.tableCellProperties addObject:
          [CMATableCellProperties withLabelText: @"Length"
                                  andDetailText: [NSString stringWithFormat:@"%@%@", self.entry.fishLength.stringValue, [[self journal] lengthUnitsAsString:YES]]
@@ -176,7 +185,7 @@
                                   hasSeparator: NO]];
     
     // weight
-    if ([self.entry.fishWeight integerValue] > 0)
+    if (self.entry.fishWeight && [self.entry.fishWeight integerValue] > 0)
         [self.tableCellProperties addObject:
          [CMATableCellProperties withLabelText: @"Weight"
                                  andDetailText: [NSString stringWithFormat:@"%@%@", self.entry.fishWeight.stringValue, [[self journal] weightUnitsAsString:YES]]
@@ -185,7 +194,7 @@
                                   hasSeparator: NO]];
     
     // quantity
-    if ([self.entry.fishQuantity integerValue] >= 0)
+    if (self.entry.fishQuantity && [self.entry.fishQuantity integerValue] >= 0)
         [self.tableCellProperties addObject:
          [CMATableCellProperties withLabelText: @"Quantity"
                                  andDetailText: [self.entry.fishQuantity stringValue]
@@ -203,10 +212,31 @@
                                   hasSeparator: YES]];
     
     // water clarity
+    if (self.entry.waterClarity)
+        [self.tableCellProperties addObject:
+         [CMATableCellProperties withLabelText: @"Water Clarity"
+                                 andDetailText: [self.entry.waterClarity name]
+                            andReuseIdentifier: @"rightDetailCell"
+                                     andHeight: kRightDetailCellHeight
+                                  hasSeparator: NO]];
     
     // water depth
+    if (self.entry.waterDepth && [self.entry.waterDepth integerValue] > 0)
+        [self.tableCellProperties addObject:
+         [CMATableCellProperties withLabelText: @"Water Depth"
+                                 andDetailText: [self.entry.waterDepth stringValue]
+                            andReuseIdentifier: @"rightDetailCell"
+                                     andHeight: kRightDetailCellHeight
+                                  hasSeparator: NO]];
     
     // water temperature
+    if (self.entry.waterTemperature && [self.entry.waterTemperature integerValue] > 0)
+        [self.tableCellProperties addObject:
+         [CMATableCellProperties withLabelText: @"Water Temperature"
+                                 andDetailText: [NSString stringWithFormat:@"%ld%@", (long)[self.entry.waterTemperature integerValue], [[self journal] temperatureUnitsAsString:YES]]
+                            andReuseIdentifier: @"rightDetailCell"
+                                     andHeight: kRightDetailCellHeight
+                                  hasSeparator: YES]];
     
     // notes
     if (self.entry.notes)
@@ -255,13 +285,27 @@
         return cell;
     }
     
-    cell.textLabel.text = p.labelText;
-    cell.detailTextLabel.text = p.detailText;
+    // weather data cell
+    if ([p.reuseIdentifier isEqualToString:@"weatherDataCell"]) {
+        NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"CMAWeatherDataView" owner:self options:nil];
+        CMAWeatherDataView *view = (CMAWeatherDataView *)[nib objectAtIndex:0];
+        [view setFrame:CGRectMake(0, 0, 0, kWeatherCellHeightExpanded)];
+        
+        [view.weatherImageView setImage:self.entry.weatherData.weatherImage];
+        [view.temperatureLabel setText:[self.entry.weatherData temperatureAsStringWithUnits:[[self journal] temperatureUnitsAsString:YES]]];
+        [view.windSpeedLabel setText:[self.entry.weatherData windSpeedAsStringWithUnits:[[self journal] speedUnitsAsString:YES]]];
+        [view.skyConditionsLabel setText:[self.entry.weatherData skyConditionsAsString]];
+        
+        [cell addSubview:view];
+    } else {    
+        cell.textLabel.text = p.labelText;
+        cell.detailTextLabel.text = p.detailText;
+    }
     
     // add separator to required cells
     if (p.hasSeparator && !(indexPath.item == [self.tableCellProperties count] - 1)) {
-        UIView *line = [[UIView alloc] initWithFrame:CGRectMake(15, p.height - 1, self.view.frame.size.width - 15, 1)];
-        [line setBackgroundColor:[UIColor colorWithWhite:0.90 alpha:1.0]];
+        UIView *line = [[UIView alloc] initWithFrame:CGRectMake(15, p.height - 0.5, self.view.frame.size.width - 15, 0.5)];
+        [line setBackgroundColor:[UIColor colorWithWhite:0.80 alpha:1.0]];
         [cell addSubview:line];
     }
     

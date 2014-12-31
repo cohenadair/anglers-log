@@ -132,7 +132,7 @@
     if (entry.location)
         cell.locationLabel.text = [entry locationAsString];
     else
-        cell.locationLabel.text = @"";
+        cell.locationLabel.text = @"No Location";
     
     if ([entry.images count] > 0)
         cell.thumbImage.image = [entry.images anyObject];

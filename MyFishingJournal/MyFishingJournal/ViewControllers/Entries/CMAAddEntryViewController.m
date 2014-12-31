@@ -10,6 +10,7 @@
 #import "CMAUserDefinesViewController.h"
 #import "CMASingleLocationViewController.h"
 #import "CMASelectFishingSpotViewController.h"
+#import "CMAImagePickerViewController.h"
 #import "CMAViewBaitsViewController.h"
 #import "CMAAppDelegate.h"
 #import "CMAAlerts.h"
@@ -92,7 +93,6 @@
 #define kImagesCellHeightExpanded 150
 #define kImagesCellSection 1
 
-#define kWeatherCellHeightExpanded 140
 #define kWeatherCellSection 4
 
 #define kImageViewTag 100
@@ -167,6 +167,11 @@ NSString *const kNotSelectedString = @"Not Selected";
     self.entryImages = [self.entry.images allObjects];
     self.numberOfImages = [self.entryImages count];
     self.hasAttachedImages = (self.numberOfImages > 0);
+    
+    if (self.entry.weatherData) {
+        self.isWeatherInitialized = YES;
+        self.weatherData = self.entry.weatherData;
+    }
 }
 
 - (void)initializeCellsForEditing {
@@ -394,7 +399,7 @@ NSString *const kNotSelectedString = @"Not Selected";
     if (actionSheet == self.cameraActionSheet) {
         // take photo
         if (buttonIndex == 0)
-            if ([self cameraAvailable])
+            if ([CMAImagePickerViewController cameraAvailable])
                 [self presentImagePicker:UIImagePickerControllerSourceTypeCamera];
         
         // attach photo
@@ -657,24 +662,12 @@ NSString *const kNotSelectedString = @"Not Selected";
 
 // Presents an image picker with sourceType.
 - (void)presentImagePicker:(UIImagePickerControllerSourceType)sourceType {
-    UIImagePickerController *imagePicker = [UIImagePickerController new];
+    CMAImagePickerViewController *imagePicker = [CMAImagePickerViewController new];
     
     [imagePicker setDelegate:self];
-    [imagePicker setAllowsEditing:YES];
     [imagePicker setSourceType:sourceType];
     
     [self presentViewController:imagePicker animated:YES completion:NULL];
-}
-
-// Returns whether or not the device has a camera.
-// If not, displays an alert to the user.
-- (BOOL)cameraAvailable {
-    if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
-        [CMAAlerts errorAlert:@"Device has no camera."];
-        return false;
-    }
-    
-    return true;
 }
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
@@ -799,6 +792,8 @@ NSString *const kNotSelectedString = @"Not Selected";
     [self.weatherData.weatherAPI currentWeatherByCoordinate:self.weatherData.coordinate withCallback:^(NSError *error, NSDictionary *result) {
         if (error) {
             NSLog(@"Error getting weather data: %@", error.localizedDescription);
+            [CMAAlerts errorAlert:@"Oops! There was an error getting weather data. Please try again later."];
+            [self.weatherIndicator setHidden:YES];
             return;
         }
         
@@ -823,9 +818,9 @@ NSString *const kNotSelectedString = @"Not Selected";
 
 - (void)initWeatherDataViewWithData:(CMAWeatherData *)someWeatherData {
     [self.weatherDataView.weatherImageView setImage:someWeatherData.weatherImage];
-    [self.weatherDataView.temperatureLabel setText:[NSString stringWithFormat:@"%ld%@", (long)[someWeatherData.temperature integerValue], [[self journal] temperatureUnitsAsString:YES]]];
-    [self.weatherDataView.windSpeedLabel setText:[NSString stringWithFormat:@"Wind Speed: %ld%@", (long)[someWeatherData.windSpeed integerValue], [[self journal] speedUnitsAsString:YES]]];
-    [self.weatherDataView.skyConditionsLabel setText:[NSString stringWithFormat:@"Sky: %@", someWeatherData.skyConditions]];
+    [self.weatherDataView.temperatureLabel setText:[someWeatherData temperatureAsStringWithUnits:[[self journal] temperatureUnitsAsString:YES]]];
+    [self.weatherDataView.windSpeedLabel setText:[someWeatherData windSpeedAsStringWithUnits:[[self journal] speedUnitsAsString:YES]]];
+    [self.weatherDataView.skyConditionsLabel setText:[someWeatherData skyConditionsAsString]];
 }
 
 @end

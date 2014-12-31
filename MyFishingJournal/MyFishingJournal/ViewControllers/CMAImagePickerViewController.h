@@ -10,8 +10,6 @@
 
 @interface CMAImagePickerViewController : UIImagePickerController
 
-@property (nonatomic) SEL onFinishPickingMedia;
-
 + (BOOL)cameraAvailable;
 
 @end
