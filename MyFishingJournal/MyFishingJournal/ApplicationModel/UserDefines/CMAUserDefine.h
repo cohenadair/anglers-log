@@ -12,9 +12,7 @@
 
 @property (strong, nonatomic)NSString *name;
 
-// Objects within this array have to implement the following:
-//   @property (strong, nonatomic)NSString *name;
-//   - (void)edit: (ClassType *)aNewObjectOfClassType; // Resets the name property to aNewObjectOfClassType's name property
+// Objects within this array have to abide by the CMAUserDefineProtocol
 @property (strong, nonatomic)NSMutableArray *objects;
 
 // instance creation
@@ -22,6 +20,7 @@
 
 // initialization
 - (id)initWithName: (NSString *)aName;
+- (void)validateObjects;
 
 // archiving
 - (id)initWithCoder:(NSCoder *)aDecoder;

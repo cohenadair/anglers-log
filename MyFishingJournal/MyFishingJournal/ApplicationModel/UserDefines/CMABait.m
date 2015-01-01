@@ -34,6 +34,15 @@
     return self;
 }
 
+// Used to initialize objects created from an archive. For compatibility purposes.
+- (void)validateProperties {
+    if (!self.name)
+        self.name = [NSMutableString string];
+    
+    if (!self.fishCaught)
+        self.fishCaught = [NSNumber numberWithInteger:0];
+}
+
 #pragma mark - Archiving
 
 - (id)initWithCoder:(NSCoder *)aDecoder {

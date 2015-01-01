@@ -62,6 +62,31 @@ extern NSString *const ARCHIVE_FILE_NAME;
 extern NSString *const SHARE_MESSAGE;
 extern NSString *const REMOVED_TEXT; // text displayed in an entry when a user define has been removed
 
+// measurement units
+extern NSString *const UNIT_IMPERIAL_LENGTH;
+extern NSString *const UNIT_IMPERIAL_LENGTH_SHORTHAND;
+extern NSString *const UNIT_IMPERIAL_WEIGHT;
+extern NSString *const UNIT_IMPERIAL_WEIGHT_SHORTHAND;
+extern NSString *const UNIT_IMPERIAL_WEIGHT_SMALL;
+extern NSString *const UNIT_IMPERIAL_WEIGHT_SMALL_SHORTHAND;
+extern NSString *const UNIT_IMPERIAL_DEPTH;
+extern NSString *const UNIT_IMPERIAL_DEPTH_SHORTHAND;
+extern NSString *const UNIT_IMPERIAL_TEMPERATURE;
+extern NSString *const UNIT_IMPERIAL_TEMPERATURE_SHORTHAND;
+extern NSString *const UNIT_IMPERIAL_SPEED;
+extern NSString *const UNIT_IMPERIAL_SPEED_SHORTHAND;
+
+extern NSString *const UNIT_METRIC_LENGTH;
+extern NSString *const UNIT_METRIC_LENGTH_SHORTHAND;
+extern NSString *const UNIT_METRIC_WEIGHT;
+extern NSString *const UNIT_METRIC_WEIGHT_SHORTHAND;
+extern NSString *const UNIT_METRIC_DEPTH;
+extern NSString *const UNIT_METRIC_DEPTH_SHORTHAND;
+extern NSString *const UNIT_METRIC_TEMPERATURE;
+extern NSString *const UNIT_METRIC_TEMPERATURE_SHORTHAND;
+extern NSString *const UNIT_METRIC_SPEED;
+extern NSString *const UNIT_METRIC_SPEED_SHORTHAND;
+
 extern NSString *const GLOBAL_FONT;
 
 extern CGFloat const TABLE_SECTION_SPACING;
@@ -73,5 +98,7 @@ UIColor *CELL_COLOR_LIGHT; // initialized in AppDelegate.m
 #define kTableFooterHeight 25
 
 #define kWeatherCellHeightExpanded 90
+
+#define kOuncesInAPound 16
 
 #endif

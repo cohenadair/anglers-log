@@ -198,7 +198,7 @@
             [aCell.thumbImage setImage:[UIImage imageNamed:@"no_image.png"]];
         
         [aCell.speciesLabel setText:self.heaviestCatchEntry.fishSpecies.name];
-        [aCell.valueLabel setText:[NSString stringWithFormat:@"%@ %@", [self.heaviestCatchEntry.fishWeight stringValue], [[self journal] weightUnitsAsString:NO]]];
+        [aCell.valueLabel setText:[self.heaviestCatchEntry weightAsStringWithMeasurementSystem:[[self journal] measurementSystem] shorthand:NO]];
     } else {
         [aCell.thumbImage setImage:[UIImage imageNamed:@"no_image.png"]];
         [aCell.speciesLabel setText:@"No Recorded Weight"];

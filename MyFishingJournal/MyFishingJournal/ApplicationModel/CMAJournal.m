@@ -44,6 +44,31 @@
     
     if (![_userDefines objectForKey:SET_WATER_CLARITIES])
         [_userDefines setValue:[CMAUserDefine withName:SET_WATER_CLARITIES] forKey:SET_WATER_CLARITIES];
+    
+    for (NSString *defineKey in _userDefines) {
+        CMAUserDefine *define = [_userDefines objectForKey:defineKey];
+        [define validateObjects];
+    }
+    
+    [self countStatistics];
+}
+
+// Loops through entries and recounts statistical information. Used for compatibility with old archives.
+- (void)countStatistics {
+    CMAUserDefine *species = [self userDefineNamed:SET_SPECIES];
+    for (CMASpecies *s in [species objects]) {
+        [s setNumberCaught:0];
+        [s setWeightCaught:0];
+        [s setOuncesCaught:0];
+    }
+    
+    CMAUserDefine *baits = [self userDefineNamed:SET_BAITS];
+    for (CMABait *s in [baits objects]) {
+        [s setFishCaught:0];
+    }
+    
+    for (CMAEntry *e in self.entries)
+        [self incStatsForEntry:e];
 }
 
 #pragma mark - Archiving
@@ -105,8 +130,21 @@
         [anEntry.fishSpecies incNumberCaught:1];
     
     // fish weight
-    if ([anEntry.fishWeight integerValue] > 0)
+    if ([anEntry.fishWeight integerValue] > 0) {
         [anEntry.fishSpecies incWeightCaught:[anEntry.fishWeight integerValue]];
+    
+        // handle ounces for imperial users
+        if (self.measurementSystem == CMAMeasuringSystemTypeImperial) {
+            if ([anEntry.fishOunces integerValue] > 0) {
+                [anEntry.fishSpecies incOuncesCaught:[anEntry.fishOunces integerValue]];
+                
+                if ([anEntry.fishSpecies.ouncesCaught integerValue] >= kOuncesInAPound) {
+                    [anEntry.fishSpecies incWeightCaught:1];
+                    [anEntry.fishSpecies decNumberCaught:kOuncesInAPound];
+                }
+            }
+        }
+    }
     
     // bait used
     if (anEntry.baitUsed) {
@@ -140,6 +178,23 @@
     // weight
     if ([anEntry.fishWeight integerValue] > 0)
         [anEntry.fishSpecies decWeightCaught:[anEntry.fishWeight integerValue]];
+    
+    // fish weight
+    if ([anEntry.fishWeight integerValue] > 0) {
+        [anEntry.fishSpecies decWeightCaught:[anEntry.fishWeight integerValue]];
+        
+        // handle ounces for imperial users
+        if (self.measurementSystem == CMAMeasuringSystemTypeImperial) {
+            if ([anEntry.fishOunces integerValue] > 0) {
+                [anEntry.fishSpecies decOuncesCaught:[anEntry.fishOunces integerValue]];
+                
+                if ([anEntry.fishSpecies.ouncesCaught integerValue] < 0) {
+                    [anEntry.fishSpecies decWeightCaught:1];
+                    [anEntry.fishSpecies incNumberCaught:kOuncesInAPound];
+                }
+            }
+        }
+    }
     
     // bait used
     if (anEntry.baitUsed) {
@@ -247,71 +302,71 @@
 - (NSString *)lengthUnitsAsString: (BOOL)shorthand {
     if (self.measurementSystem == CMAMeasuringSystemTypeImperial) {
         if (shorthand)
-            return @"\"";
+            return UNIT_IMPERIAL_LENGTH_SHORTHAND;
         else
-            return @"Inches";
+            return UNIT_IMPERIAL_LENGTH;
     }
     
     if (shorthand)
-        return @" cm";
+        return UNIT_METRIC_LENGTH_SHORTHAND;
     else
-        return @"Centimeters";
+        return UNIT_METRIC_LENGTH;
 }
 
 - (NSString *)weightUnitsAsString: (BOOL)shorthand {
     if (self.measurementSystem == CMAMeasuringSystemTypeImperial) {
         if (shorthand)
-            return @" lbs.";
+            return UNIT_IMPERIAL_WEIGHT_SHORTHAND;
         else
-            return @"Pounds";
+            return UNIT_IMPERIAL_WEIGHT;
     }
     
     if (shorthand)
-        return @" kg";
+        return UNIT_METRIC_WEIGHT_SHORTHAND;
     else
-        return @"Kilograms";
+        return UNIT_METRIC_WEIGHT;
 }
 
 - (NSString *)depthUnitsAsString: (BOOL)shorthand {
     if (self.measurementSystem == CMAMeasuringSystemTypeImperial) {
         if (shorthand)
-            return @" ft.";
+            return UNIT_IMPERIAL_DEPTH_SHORTHAND;
         else
-            return @"Feet";
+            return UNIT_IMPERIAL_DEPTH;
     }
     
     if (shorthand)
-        return @" m";
+        return UNIT_METRIC_DEPTH_SHORTHAND;
     else
-        return @"Meters";
+        return UNIT_METRIC_DEPTH;
 }
 
 - (NSString *)temperatureUnitsAsString: (BOOL)shorthand {
     if (self.measurementSystem == CMAMeasuringSystemTypeImperial) {
         if (shorthand)
-            return @"\u00B0F";
+            return UNIT_IMPERIAL_TEMPERATURE_SHORTHAND;
         else
-            return @"Ferinheight";
+            return UNIT_IMPERIAL_TEMPERATURE;
     }
     
     if (shorthand)
-        return @"\u00B0C";
+        return UNIT_METRIC_TEMPERATURE_SHORTHAND;
     else
-        return @"Celsius";
+        return UNIT_METRIC_TEMPERATURE;
 }
 
 - (NSString *)speedUnitsAsString: (BOOL)shorthand {
     if (self.measurementSystem == CMAMeasuringSystemTypeImperial) {
         if (shorthand)
-            return @" mph";
+            return UNIT_IMPERIAL_SPEED_SHORTHAND;
         else
-            return @"Miles Per Hour";
+            return UNIT_IMPERIAL_SPEED;
     }
     
     if (shorthand)
-        return @" km/h";
+        return UNIT_METRIC_SPEED_SHORTHAND;
     else
-        return @"Kilometers Per Hour";
+        return UNIT_METRIC_SPEED;
 }
 
 #pragma mark - Sorting

@@ -45,7 +45,11 @@
             case CMAPieChartDataTypeWeight:
                 self.userDefineName = SET_SPECIES;
                 _totalDescription = [NSString stringWithFormat:@"%@ Caught", [self.journal weightUnitsAsString:NO]];
-                _detailDescription = [self.journal weightUnitsAsString:NO];
+                _detailDescription = [self.journal weightUnitsAsString:YES];
+                
+                if (self.journal.measurementSystem == CMAMeasuringSystemTypeImperial)
+                    _detailDescription2 = UNIT_IMPERIAL_WEIGHT_SMALL_SHORTHAND;
+                
                 [self initForWeight];
                 break;
                 
@@ -87,13 +91,21 @@
 
 - (void)initForWeight {
     NSMutableArray *result = [NSMutableArray array];
+    NSInteger ounces = 0;
     
     for (CMASpecies *species in [[self.journal userDefineNamed:SET_SPECIES] objects]) {
         CMAStatsObject *obj = [CMAStatsObject new];
         
         [obj setName:species.name];
         [obj setValue:[species.weightCaught integerValue]];
+        [obj setDetailValue:[species.ouncesCaught integerValue]];
         self.totalValue += [species.weightCaught integerValue];
+        
+        ounces += [species.ouncesCaught integerValue];
+        if (ounces >= kOuncesInAPound) {
+            self.totalValue += 1;
+            ounces -= kOuncesInAPound;
+        }
         
         [result addObject:obj];
     }
@@ -204,7 +216,10 @@
         obj.value = 0;
     }
     
-    return [NSString stringWithFormat:@"%ld %@", (long)obj.value, self.detailDescription];
+    if (self.detailDescription2)
+        return [NSString stringWithFormat:@"%ld%@ %ld%@", (long)obj.value, self.detailDescription, (long)obj.detailValue, self.detailDescription2];
+    else
+        return [NSString stringWithFormat:@"%ld %@", (long)obj.value, self.detailDescription];
 }
 
 - (NSInteger)sliceObjectCount {
@@ -212,7 +227,7 @@
 }
 
 - (NSDate *)earliestEntryDate {
-    [self.journal sortEntriesBy:CMAEntrySortMethodDate order:CMASortOrderDescending];
+    [self.journal sortEntriesBy:CMAEntrySortMethodDate order:CMASortOrderAscending];
     NSDate *result = [[self.journal.entries objectAtIndex:0] date];
     [self.journal sortEntriesBy:self.journal.entrySortMethod order:self.journal.entrySortOrder];
     

@@ -48,6 +48,15 @@
     _name = [[name capitalizedString] mutableCopy];
 }
 
+// Used to initialize objects created from an archive. For compatibility purposes.
+- (void)validateProperties {
+    if (!self.name)
+        self.name = [NSMutableString string];
+    
+    if (!self.fishingSpots)
+        self.fishingSpots = [NSMutableArray array];
+}
+
 #pragma mark - Archiving
 
 - (id)initWithCoder:(NSCoder *)aDecoder {

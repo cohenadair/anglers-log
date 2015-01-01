@@ -154,6 +154,7 @@
 		0D81A3B41A4F845E001FF9FA /* CMAWaterClarity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAWaterClarity.m; path = ApplicationModel/UserDefines/CMAWaterClarity.m; sourceTree = "<group>"; };
 		0D81A3B71A4F898D001FF9FA /* water_clarities_large.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = water_clarities_large.png; path = Images/LargeIcons/water_clarities_large.png; sourceTree = "<group>"; };
 		0D81A3B91A4F899C001FF9FA /* water_clarities.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = water_clarities.png; path = Images/Icons/water_clarities.png; sourceTree = "<group>"; };
+		0DC690AB1A55F70F006C8202 /* CMAUserDefineProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAUserDefineProtocol.h; path = ApplicationModel/UserDefines/CMAUserDefineProtocol.h; sourceTree = "<group>"; };
 		0DCC26531A520C0800738F04 /* CMAUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAUtilities.h; path = Utilities/CMAUtilities.h; sourceTree = "<group>"; };
 		0DCC26541A520C0800738F04 /* CMAUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAUtilities.m; path = Utilities/CMAUtilities.m; sourceTree = "<group>"; };
 		0DCC26561A520DD300738F04 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
@@ -508,6 +509,7 @@
 				E738585919FE0A3400FE122B /* CMAFishingMethod.m */,
 				0D81A3B31A4F845E001FF9FA /* CMAWaterClarity.h */,
 				0D81A3B41A4F845E001FF9FA /* CMAWaterClarity.m */,
+				0DC690AB1A55F70F006C8202 /* CMAUserDefineProtocol.h */,
 			);
 			name = UserDefines;
 			sourceTree = "<group>";

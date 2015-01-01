@@ -24,9 +24,25 @@
         _name = aName;
         _numberCaught = [NSNumber numberWithInteger:0];
         _weightCaught = [NSNumber numberWithInteger:0];
+        _ouncesCaught = [NSNumber numberWithInteger:0];
     }
     
     return self;
+}
+
+// Used to initialize objects created from an archive. For compatibility purposes.
+- (void)validateProperties {
+    if (!self.name)
+        self.name = [NSMutableString string];
+    
+    if (!self.numberCaught)
+        self.numberCaught = [NSNumber numberWithInteger:0];
+    
+    if (!self.weightCaught)
+        self.weightCaught = [NSNumber numberWithInteger:0];
+    
+    if (!self.ouncesCaught)
+        self.ouncesCaught = [NSNumber numberWithInteger:0];
 }
 
 #pragma mark - Archiving
@@ -36,6 +52,7 @@
         _name = [aDecoder decodeObjectForKey:@"CMASpeciesName"];
         _numberCaught = [aDecoder decodeObjectForKey:@"CMASpeciesNumberCaught"];
         _weightCaught = [aDecoder decodeObjectForKey:@"CMASpeciesWeightCaught"];
+        _ouncesCaught = [aDecoder decodeObjectForKey:@"CMASpeciesOuncesCaught"];
     }
     
     return self;
@@ -45,6 +62,7 @@
     [aCoder encodeObject:self.name forKey:@"CMASpeciesName"];
     [aCoder encodeObject:self.numberCaught forKey:@"CMASpeciesNumberCaught"];
     [aCoder encodeObject:self.weightCaught forKey:@"CMASpeciesWeightCaught"];
+    [aCoder encodeObject:self.ouncesCaught forKey:@"CMASpeciesOuncesCaught"];
 }
 
 #pragma mark - Editing
@@ -79,6 +97,20 @@
     count -= decBy;
     
     [self setWeightCaught:[NSNumber numberWithInteger:count]];
+}
+
+- (void)incOuncesCaught: (NSInteger)incBy {
+    NSInteger count = [self.ouncesCaught integerValue];
+    count += incBy;
+    
+    [self setOuncesCaught:[NSNumber numberWithInteger:count]];
+}
+
+- (void)decOuncesCaught: (NSInteger)decBy {
+    NSInteger count = [self.ouncesCaught integerValue];
+    count -= decBy;
+    
+    [self setOuncesCaught:[NSNumber numberWithInteger:count]];
 }
 
 #pragma mark - Other

@@ -10,8 +10,9 @@
 #import <Foundation/Foundation.h>
 #import <CoreLocation/CoreLocation.h>
 #import "CMAFishingSpot.h"
+#import "CMAUserDefineProtocol.h"
 
-@interface CMALocation : NSObject <NSCoding>
+@interface CMALocation : NSObject <NSCoding, CMAUserDefineProtocol>
 
 @property (strong, nonatomic)NSMutableString *name;
 @property (strong, nonatomic)NSMutableArray *fishingSpots;
@@ -21,6 +22,7 @@
 
 // initializing
 - (id)initWithName: (NSString *)aName;
+- (void)validateProperties;
 
 // archiving
 - (id)initWithCoder:(NSCoder *)aDecoder;

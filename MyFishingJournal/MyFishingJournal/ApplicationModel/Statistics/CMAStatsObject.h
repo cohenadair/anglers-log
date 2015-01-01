@@ -12,5 +12,6 @@
 
 @property (strong, nonatomic)NSString *name;
 @property (nonatomic)NSInteger value;
+@property (nonatomic)NSInteger detailValue; // used for ounces, for example
 
 @end

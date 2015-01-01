@@ -46,6 +46,7 @@
         _fishSpecies = [aDecoder decodeObjectForKey:@"CMAEntryFishSpecies"];
         _fishLength = [aDecoder decodeObjectForKey:@"CMAEntryFishLength"];
         _fishWeight = [aDecoder decodeObjectForKey:@"CMAEntryFishWeight"];
+        _fishOunces = [aDecoder decodeObjectForKey:@"CMAEntryFishOunces"];
         _fishQuantity = [aDecoder decodeObjectForKey:@"CMAEntryFishQuantity"];
         
         _baitUsed = [aDecoder decodeObjectForKey:@"CMAEntryBaitUsed"];
@@ -73,6 +74,7 @@
     [aCoder encodeObject:self.fishSpecies forKey:@"CMAEntryFishSpecies"];
     [aCoder encodeObject:self.fishLength forKey:@"CMAEntryFishLength"];
     [aCoder encodeObject:self.fishWeight forKey:@"CMAEntryFishWeight"];
+    [aCoder encodeObject:self.fishOunces forKey:@"CMAEntryFishOunces"];
     [aCoder encodeObject:self.fishQuantity forKey:@"CMAEntryFishQuantity"];
     
     [aCoder encodeObject:self.baitUsed forKey:@"CMAEntryBaitUsed"];
@@ -125,6 +127,42 @@
         fishingSpotText = @"";
     
     return [NSString stringWithFormat:@"%@%@", self.location.name, fishingSpotText];
+}
+
+- (NSString *)weightAsStringWithMeasurementSystem:(CMAMeasuringSystemType)aMeasurementSystem shorthand:(BOOL)useShorthand {
+    NSString *result = [NSString string];
+    
+    NSString *weightString;
+    NSString *ounceString;
+    
+    if (aMeasurementSystem == CMAMeasuringSystemTypeImperial) {
+        if (useShorthand) {
+            weightString = UNIT_IMPERIAL_WEIGHT_SHORTHAND;
+            ounceString = UNIT_IMPERIAL_WEIGHT_SMALL_SHORTHAND;
+        } else {
+            weightString = [@" " stringByAppendingString:UNIT_IMPERIAL_WEIGHT];
+            ounceString = [@" " stringByAppendingString:UNIT_IMPERIAL_WEIGHT_SMALL];
+        }
+    } else {
+        if (useShorthand)
+            weightString = UNIT_METRIC_WEIGHT_SHORTHAND;
+        else
+            weightString = [@" " stringByAppendingString:UNIT_METRIC_WEIGHT];
+    }
+    
+    if (aMeasurementSystem == CMAMeasuringSystemTypeImperial) {
+        NSString *ounces;
+        
+        if (self.fishOunces)
+            ounces = [NSString stringWithFormat:@"%ld", (long)[self.fishOunces integerValue]];
+        else
+            ounces = @"0";
+        
+        result = [NSString stringWithFormat:@"%ld%@ %ld%@", (long)[self.fishWeight integerValue], weightString, (long)[self.fishOunces integerValue], ounceString];
+    } else
+        result = [NSString stringWithFormat:@"%ld%@", (long)[self.fishWeight integerValue], weightString];
+    
+    return result;
 }
 
 #pragma mark - Editing

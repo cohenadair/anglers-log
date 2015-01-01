@@ -35,9 +35,13 @@
 @property (weak, nonatomic)IBOutlet UILabel *speciesDetailLabel;
 @property (weak, nonatomic)IBOutlet UITextField *quantityTextField;
 @property (weak, nonatomic)IBOutlet UITextField *lengthTextField;
-@property (weak, nonatomic)IBOutlet UITextField *weightTextField;
+@property (weak, nonatomic)IBOutlet UITextField *metricWeightTextField;
+@property (weak, nonatomic)IBOutlet UITextField *poundsTextField;
+@property (weak, nonatomic)IBOutlet UITextField *ouncesTextField;
 @property (weak, nonatomic)IBOutlet UILabel *lengthLabel;
 @property (weak, nonatomic)IBOutlet UILabel *weightLabel;
+@property (weak, nonatomic)IBOutlet UITableViewCell *metricWeightCell;
+@property (weak, nonatomic)IBOutlet UITableViewCell *imperialWeightCell;
 
 #pragma mark - Catch Details
 @property (weak, nonatomic)IBOutlet UILabel *locationDetailLabel;
@@ -95,6 +99,10 @@
 
 #define kWeatherCellSection 4
 
+#define kFishDetailsSection 2
+#define kMetricFishWeightRow 3
+#define kImperialFishWeightRow 4
+
 #define kImageViewTag 100
 
 NSString *const kNotSelectedString = @"Not Selected";
@@ -121,10 +129,7 @@ NSString *const kNotSelectedString = @"Not Selected";
     [self.dateTimeDetailLabel setText:[self.dateFormatter stringFromDate:[NSDate new]]];
     
     // set proper units for length, weight, depth, and temperature
-    [self.lengthLabel setText:[NSString stringWithFormat:@"Length (%@)", [[self journal] lengthUnitsAsString:NO]]];
-    [self.weightLabel setText:[NSString stringWithFormat:@"Weight (%@)", [[self journal] weightUnitsAsString:NO]]];
-    [self.waterDepthLabel setText:[NSString stringWithFormat:@"Depth (%@)", [[self journal] depthUnitsAsString:NO]]];
-    [self.waterTemperatureLabel setText:[NSString stringWithFormat:@"Temperature (%@)", [[self journal] temperatureUnitsAsString:NO]]];
+    [self initUnitCells];
     
     [self.imageCollection setAllowsSelection:NO];
     [self.imageCollection setAllowsMultipleSelection:NO];
@@ -141,8 +146,19 @@ NSString *const kNotSelectedString = @"Not Selected";
     [self.weatherDataView setAlpha:0.0];
     
     // if we're editing rather than adding an entry
-    if (self.isEditingEntry)
+    if (self.isEditingEntry) {
         [self initializeTableForEditing];
+    
+        // NO IDEA why this needs to be called here (it's already called in initializeCellsForEditing)
+        // After a stupid amount of debugging I couldn't figure this out so this is left here as a temporary solution
+        // The species detail label will only when editing an entry that required a new species to be added
+        // This only happens with species; no other properties
+        // Also, this bug came out of no where (worked one day, and not the next); checked logs but found nothing that would cause this
+        if (![self.entry.fishSpecies removedFromUserDefines])
+            [self.speciesDetailLabel setText:self.entry.fishSpecies.name];
+        else
+            [self.speciesDetailLabel setText:kNotSelectedString];
+    }
     
     self.cameraActionSheet = [CMACameraActionSheet withDelegate:self];
     [self.cameraImage myInit:self action:@selector(tapCameraImage)];
@@ -154,6 +170,10 @@ NSString *const kNotSelectedString = @"Not Selected";
     [self initDeleteImageActionSheet];
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -161,9 +181,21 @@ NSString *const kNotSelectedString = @"Not Selected";
 
 #pragma mark - Table View Initializing
 
+- (void)initUnitCells {
+    [self.lengthLabel setText:[NSString stringWithFormat:@"Length (%@)", [[self journal] lengthUnitsAsString:NO]]];
+    [self.waterDepthLabel setText:[NSString stringWithFormat:@"Depth (%@)", [[self journal] depthUnitsAsString:NO]]];
+    [self.waterTemperatureLabel setText:[NSString stringWithFormat:@"Temperature (%@)", [[self journal] temperatureUnitsAsString:NO]]];
+    
+    if ([[self journal] measurementSystem] == CMAMeasuringSystemTypeImperial)
+        [self.metricWeightCell setHidden:YES];
+    else
+        [self.imperialWeightCell setHidden:YES];
+}
+
 - (void)initializeTableForEditing {
-    self.navigationItem.title = @"Edit Entry";
     [self initializeCellsForEditing];
+    
+    self.navigationItem.title = @"Edit Entry";
     self.entryImages = [self.entry.images allObjects];
     self.numberOfImages = [self.entryImages count];
     self.hasAttachedImages = (self.numberOfImages > 0);
@@ -187,7 +219,7 @@ NSString *const kNotSelectedString = @"Not Selected";
         [self.speciesDetailLabel setText:self.entry.fishSpecies.name];
     else
         [self.speciesDetailLabel setText:kNotSelectedString];
-    
+
     // fish quantity
     if (self.entry.fishQuantity && ([self.entry.fishQuantity integerValue] != -1))
         [self.quantityTextField setText:self.entry.fishQuantity.stringValue];
@@ -197,8 +229,18 @@ NSString *const kNotSelectedString = @"Not Selected";
         [self.lengthTextField setText:self.entry.fishLength.stringValue];
     
     // fish weight
-    if (self.entry.fishWeight && ([self.entry.fishWeight integerValue] != -1))
-        [self.weightTextField setText:self.entry.fishWeight.stringValue];
+    if (self.entry.fishWeight && ([self.entry.fishWeight integerValue] != -1)) {
+        if ([[self journal] measurementSystem] == CMAMeasuringSystemTypeMetric)
+            [self.metricWeightTextField setText:self.entry.fishWeight.stringValue];
+        else {
+            [self.poundsTextField setText:self.entry.fishWeight.stringValue];
+            
+            if (self.entry.fishOunces)
+                [self.ouncesTextField setText:self.entry.fishOunces.stringValue];
+            else
+                [self.ouncesTextField setText:@"0"];
+        }
+    }
     
     // bait used
     if (self.entry.baitUsed) {
@@ -302,6 +344,15 @@ NSString *const kNotSelectedString = @"Not Selected";
             return 44;
     }
     
+    // fish weight cell
+    if (indexPath.section == kFishDetailsSection) {
+        if (indexPath.row == kMetricFishWeightRow && [[self journal] measurementSystem] == CMAMeasuringSystemTypeImperial)
+            return 0;
+        
+        if (indexPath.row == kImperialFishWeightRow && [[self journal] measurementSystem] == CMAMeasuringSystemTypeMetric)
+            return 0;
+    }
+    
     // using the super class's implementation gets the height set in storyboard
     return [super tableView:tableView heightForRowAtIndexPath:indexPath];
 }
@@ -309,6 +360,7 @@ NSString *const kNotSelectedString = @"Not Selected";
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [super tableView:tableView cellForRowAtIndexPath:indexPath];
     
+    // weather cell
     if (indexPath.section == kWeatherCellSection) {
         UIView *bgView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, cell.frame.size.width - 50, cell.frame.size.height)];
         [bgView addSubview:self.weatherDataView];
@@ -320,7 +372,9 @@ NSString *const kNotSelectedString = @"Not Selected";
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.section == 0 && indexPath.row == 0) {
+    if ((indexPath.section == 0 && indexPath.row == 0) ||
+        (indexPath.section == kFishDetailsSection && indexPath.row == kMetricFishWeightRow && [[self journal] measurementSystem] == CMAMeasuringSystemTypeMetric)) {
+        
         [cell setSeparatorInset:UIEdgeInsetsZero];
         [cell setPreservesSuperviewLayoutMargins:NO];
         [cell setLayoutMargins:UIEdgeInsetsZero];
@@ -564,11 +618,27 @@ NSString *const kNotSelectedString = @"Not Selected";
     }
     
     // fish weight
-    if (![[self.weightTextField text] isEqualToString:@""]) {
-        NSNumber *weight = [NSNumber numberWithInteger:[[self.weightTextField text] integerValue]];
-        [anEntry setFishWeight:weight];
+    if ([[self journal] measurementSystem] == CMAMeasuringSystemTypeMetric) {
+        if (![[self.metricWeightTextField text] isEqualToString:@""]) {
+            NSNumber *weight = [NSNumber numberWithInteger:[[self.metricWeightTextField text] integerValue]];
+            [anEntry setFishWeight:weight];
+        } else {
+            [anEntry setFishWeight:[NSNumber numberWithInteger:-1]];
+        }
     } else {
-        [anEntry setFishWeight:[NSNumber numberWithInteger:-1]];
+        if (([self.poundsTextField.text isEqualToString:@""] && ![self.ouncesTextField.text isEqualToString:@""]) ||
+            (![self.poundsTextField.text isEqualToString:@""] && [self.ouncesTextField.text isEqualToString:@""]))
+            [CMAAlerts errorAlert:@"You must fill out both the pounds and ounces fields!"];
+        
+        if (![[self.poundsTextField text] isEqualToString:@""]) {
+            NSNumber *pounds = [NSNumber numberWithInteger:[[self.poundsTextField text] integerValue]];
+            NSNumber *ounces = [NSNumber numberWithInteger:[[self.ouncesTextField text] integerValue]];
+            [anEntry setFishWeight:pounds];
+            [anEntry setFishOunces:ounces];
+        } else {
+            [anEntry setFishWeight:[NSNumber numberWithInteger:-1]];
+            [anEntry setFishOunces:[NSNumber numberWithInteger:-1]];
+        }
     }
     
     // location and fishing spot

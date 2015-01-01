@@ -7,18 +7,21 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "CMAUserDefineProtocol.h"
 
-@interface CMASpecies : NSObject <NSCoding>
+@interface CMASpecies : NSObject <NSCoding, CMAUserDefineProtocol>
 
 @property (strong, nonatomic)NSString *name;
 @property (strong, nonatomic)NSNumber *numberCaught;
 @property (strong, nonatomic)NSNumber *weightCaught;
+@property (strong, nonatomic)NSNumber *ouncesCaught;
 
 // instance creation
 + (CMASpecies *)withName: (NSString *)aName;
 
 // initialization
 - (id)initWithName: (NSString *)aName;
+- (void)validateProperties;
 
 // archiving
 - (id)initWithCoder:(NSCoder *)aDecoder;
@@ -30,6 +33,8 @@
 - (void)decNumberCaught: (NSInteger)decBy;
 - (void)incWeightCaught: (NSInteger)incBy;
 - (void)decWeightCaught: (NSInteger)decBy;
+- (void)incOuncesCaught: (NSInteger)incBy;
+- (void)decOuncesCaught: (NSInteger)decBy;
 
 // other
 - (BOOL)removedFromUserDefines;

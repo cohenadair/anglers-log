@@ -7,8 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "CMAUserDefineProtocol.h"
 
-@interface CMAWaterClarity : NSObject <NSCoding>
+@interface CMAWaterClarity : NSObject <NSCoding, CMAUserDefineProtocol>
 
 @property (strong, nonatomic)NSString *name;
 
@@ -17,6 +18,7 @@
 
 // initialization
 - (id)initWithName: (NSString *)aName;
+- (void)validateProperties;
 
 // archiving
 - (id)initWithCoder:(NSCoder *)aDecoder;

@@ -7,8 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "CMAUserDefineProtocol.h"
 
-@interface CMABait : NSObject <NSCoding>
+@interface CMABait : NSObject <NSCoding, CMAUserDefineProtocol>
 
 @property (strong, nonatomic)NSString *name;
 @property (strong, nonatomic)NSString *baitDescription;
@@ -20,6 +21,7 @@
 
 // initialization
 - (id)initWithName: (NSString *)aName;
+- (void)validateProperties;
 
 // archiving
 - (id)initWithCoder:(NSCoder *)aDecoder;

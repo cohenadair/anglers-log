@@ -26,6 +26,12 @@
     return self;
 }
 
+// Used to initialize objects created from an archive. For compatibility purposes.
+- (void)validateProperties {
+    if (!self.name)
+        self.name = [NSMutableString string];
+}
+
 #pragma mark - Archiving
 
 - (id)initWithCoder:(NSCoder *)aDecoder {

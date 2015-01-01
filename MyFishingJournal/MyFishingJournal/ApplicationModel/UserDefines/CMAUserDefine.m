@@ -33,6 +33,11 @@
     return self;
 }
 
+- (void)validateObjects {
+    for (id o in self.objects)
+        [o validateProperties];
+}
+
 #pragma mark - Archiving
 
 - (id)initWithCoder:(NSCoder *)aDecoder {
