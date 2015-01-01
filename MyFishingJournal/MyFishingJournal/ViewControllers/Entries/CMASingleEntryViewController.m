@@ -122,6 +122,7 @@
 #define kSubtitleCellHeight 55
 #define kRightDetailCellHeight 35
 #define kImageCollectionIndex 0
+#define kWeatherCellTitlePadding 25
 
 // Creates a CMATableCellProperties object for each cell that will be shown on the table.
 // Only self.entry properties that were specified by the user are shown.
@@ -172,7 +173,7 @@
          [CMATableCellProperties withLabelText: nil
                                  andDetailText: nil
                             andReuseIdentifier: @"weatherDataCell"
-                                     andHeight: kWeatherCellHeightExpanded
+                                     andHeight: kWeatherCellHeightExpanded + kWeatherCellTitlePadding
                                   hasSeparator: YES]];
     
     // length
@@ -289,7 +290,8 @@
     if ([p.reuseIdentifier isEqualToString:@"weatherDataCell"]) {
         NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"CMAWeatherDataView" owner:self options:nil];
         CMAWeatherDataView *view = (CMAWeatherDataView *)[nib objectAtIndex:0];
-        [view setFrame:CGRectMake(0, 0, 0, kWeatherCellHeightExpanded)];
+        [view setFrame:CGRectMake(0, kWeatherCellTitlePadding, 0, kWeatherCellHeightExpanded)];
+        [view setBackgroundColor:[UIColor redColor]];
         
         [view.weatherImageView setImage:self.entry.weatherData.weatherImage];
         [view.temperatureLabel setText:[self.entry.weatherData temperatureAsStringWithUnits:[[self journal] temperatureUnitsAsString:YES]]];
