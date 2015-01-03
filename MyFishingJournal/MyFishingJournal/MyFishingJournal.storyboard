@@ -1248,13 +1248,13 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Weight (Kilograms)" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KmG-HQ-U4g">
-                                                    <rect key="frame" x="16" y="12" width="460" height="21"/>
+                                                    <rect key="frame" x="16" y="11" width="460" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Not Specified" textAlignment="right" clearsOnBeginEditing="YES" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Kiv-US-vyI">
-                                                    <rect key="frame" x="484" y="7" width="100" height="30"/>
+                                                    <rect key="frame" x="484" y="6" width="100" height="30"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="30" id="T94-8U-nta"/>
                                                         <constraint firstAttribute="width" constant="100" id="V7P-4l-30K"/>
@@ -1265,7 +1265,9 @@
                                                 </textField>
                                             </subviews>
                                             <constraints>
+                                                <constraint firstItem="KmG-HQ-U4g" firstAttribute="top" secondItem="J9n-CN-uOV" secondAttribute="topMargin" constant="3" id="TEq-8G-9mu"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="Kiv-US-vyI" secondAttribute="trailing" constant="8" id="TFs-Id-oWw"/>
+                                                <constraint firstItem="Kiv-US-vyI" firstAttribute="top" secondItem="J9n-CN-uOV" secondAttribute="topMargin" constant="-2" id="csw-g7-35J"/>
                                                 <constraint firstItem="Kiv-US-vyI" firstAttribute="leading" secondItem="KmG-HQ-U4g" secondAttribute="trailing" constant="8" symbolic="YES" id="gOE-Hd-0mA"/>
                                                 <constraint firstItem="Kiv-US-vyI" firstAttribute="centerY" secondItem="KmG-HQ-U4g" secondAttribute="centerY" id="rlR-kr-QQZ"/>
                                                 <constraint firstItem="KmG-HQ-U4g" firstAttribute="top" secondItem="J9n-CN-uOV" secondAttribute="topMargin" constant="4" id="rzB-l7-kvC"/>
@@ -1273,6 +1275,12 @@
                                                 <constraint firstItem="KmG-HQ-U4g" firstAttribute="leading" secondItem="J9n-CN-uOV" secondAttribute="leadingMargin" constant="8" id="v6n-WP-ahz"/>
                                                 <constraint firstAttribute="bottomMargin" secondItem="KmG-HQ-U4g" secondAttribute="bottom" constant="2" id="v95-ej-uXB"/>
                                             </constraints>
+                                            <variation key="default">
+                                                <mask key="constraints">
+                                                    <exclude reference="rzB-l7-kvC"/>
+                                                    <exclude reference="v95-ej-uXB"/>
+                                                </mask>
+                                            </variation>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="27o-7a-hw6">
@@ -1344,6 +1352,11 @@
                                                 <constraint firstItem="2vu-Ed-ttz" firstAttribute="firstBaseline" secondItem="K7J-Yv-8mz" secondAttribute="baseline" id="ouM-yM-byn"/>
                                                 <constraint firstItem="MIr-pJ-Ge6" firstAttribute="baseline" secondItem="96I-fZ-25l" secondAttribute="baseline" id="tTa-r4-1wS"/>
                                             </constraints>
+                                            <variation key="default">
+                                                <mask key="constraints">
+                                                    <exclude reference="Nf3-4b-Kg0"/>
+                                                </mask>
+                                            </variation>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                 </cells>

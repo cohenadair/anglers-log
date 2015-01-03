@@ -305,9 +305,20 @@
     }
     
     // add separator to required cells
-    if (p.hasSeparator && !(indexPath.item == [self.tableCellProperties count] - 1)) {
+    if ((p.hasSeparator && !(indexPath.item == [self.tableCellProperties count] - 1)) || // if property has a separator AND the index path isn't the last
+        
+        // OR the indexPath isn't the last AND the next property contains "Water" OR "Notes"
+        (!(indexPath.item == [self.tableCellProperties count] - 1) &&
+        (([[[self.tableCellProperties objectAtIndex:indexPath.row + 1] labelText] containsString:@"Water"] && ![[[self.tableCellProperties objectAtIndex:indexPath.row] labelText] containsString:@"Water"]) ||
+        [[[self.tableCellProperties objectAtIndex:indexPath.row + 1] labelText] isEqualToString:@"Notes"])))
+    {
         UIView *line = [[UIView alloc] initWithFrame:CGRectMake(15, p.height - 0.5, self.view.frame.size.width - 15, 0.5)];
         [line setBackgroundColor:[UIColor colorWithWhite:0.80 alpha:1.0]];
+        [cell addSubview:line];
+    } else {
+        // needed for proper rendering after an unwind from Add Entry Scene
+        UIView *line = [[UIView alloc] initWithFrame:CGRectMake(15, p.height - 0.5, self.view.frame.size.width - 15, 0.5)];
+        [line setBackgroundColor:[UIColor whiteColor]];
         [cell addSubview:line];
     }
     
