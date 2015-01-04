@@ -122,8 +122,9 @@
     if ([segue.identifier isEqualToString:@"unwindToSingleBaitFromAddBait"]) {
         CMAAddBaitViewController *source = segue.sourceViewController;
         self.bait = source.bait;
-        source.bait = nil;
         [self initTableView];
+        
+        source.bait = nil;
     }
 }
 

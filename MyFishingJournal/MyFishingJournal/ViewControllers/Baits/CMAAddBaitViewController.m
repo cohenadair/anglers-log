@@ -55,7 +55,8 @@
         self.bait = [CMABait new];
     else {
         self.navigationItem.title = @"Edit Bait";
-        self.nonEditedBait = [self.bait copy];
+        self.nonEditedBait = self.bait;
+        self.bait = [self.nonEditedBait copy];
     }
     
     [self initTableView];
