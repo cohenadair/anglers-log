@@ -29,6 +29,7 @@
         _baitDescription = nil;
         _image = nil;
         _fishCaught = [NSNumber numberWithInteger:0];
+        _baitType = [NSNumber numberWithInteger:CMABaitTypeArtificial];
     }
     
     return self;
@@ -41,6 +42,9 @@
     
     if (!self.fishCaught)
         self.fishCaught = [NSNumber numberWithInteger:0];
+    
+    if (!self.baitType)
+        self.baitType = [NSNumber numberWithInt:CMABaitTypeArtificial];
 }
 
 #pragma mark - Archiving
@@ -51,6 +55,8 @@
         _baitDescription = [aDecoder decodeObjectForKey:@"CMABaitDescription"];
         _image = [aDecoder decodeObjectForKey:@"CMABaitImage"];
         _fishCaught = [aDecoder decodeObjectForKey:@"CMABaitFishCaught"];
+        _size = [aDecoder decodeObjectForKey:@"CMABaitSize"];
+        _baitType = [aDecoder decodeObjectForKey:@"CMABaitType"];
     }
     
     return self;
@@ -61,6 +67,8 @@
     [aCoder encodeObject:self.baitDescription forKey:@"CMABaitDescription"];
     [aCoder encodeObject:self.image forKey:@"CMABaitImage"];
     [aCoder encodeObject:self.fishCaught forKey:@"CMABaitFishCaught"];
+    [aCoder encodeObject:self.size forKey:@"CMABaitSize"];
+    [aCoder encodeObject:self.baitType forKey:@"CMABaitType"];
 }
 
 #pragma mark - Editing
@@ -73,6 +81,8 @@
     [self setName:[aNewBait.name capitalizedString]];
     [self setBaitDescription:aNewBait.baitDescription];
     [self setImage:aNewBait.image];
+    [self setSize:[aNewBait.size capitalizedString]];
+    [self setBaitType:aNewBait.baitType];
 }
 
 - (CMABait *)copy {
@@ -81,6 +91,9 @@
     [result setName:self.name];
     [result setBaitDescription:self.baitDescription];
     [result setImage:self.image];
+    [result setBaitType:self.baitType];
+    [result setSize:self.size];
+    [result setFishCaught:self.fishCaught];
     
     return result;
 }

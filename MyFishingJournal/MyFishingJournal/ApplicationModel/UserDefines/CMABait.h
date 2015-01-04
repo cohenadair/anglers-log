@@ -15,6 +15,8 @@
 @property (strong, nonatomic)NSString *baitDescription;
 @property (strong, nonatomic)UIImage *image;
 @property (strong, nonatomic)NSNumber *fishCaught;
+@property (strong, nonatomic)NSString *size;
+@property (strong, nonatomic)NSNumber *baitType;
 
 // instance creation
 + (CMABait *)withName: (NSString *)aName;

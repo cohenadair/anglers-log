@@ -21,8 +21,11 @@
 @property (weak, nonatomic) IBOutlet CMACameraButton *cameraImageButton;
 @property (weak, nonatomic) IBOutlet UITextView *descriptionTextView;
 @property (weak, nonatomic) IBOutlet UITextField *nameTextField;
+@property (weak, nonatomic) IBOutlet UITextField *sizeTextField;
+@property (weak, nonatomic) IBOutlet UISegmentedControl *baitTypeControl;
 
 @property (strong, nonatomic) CMACameraActionSheet *cameraActionSheet;
+@property (strong, nonatomic) UIActionSheet *removeImageActionSheet;
 
 @property (nonatomic) BOOL isEditingBait;
 @property (strong, nonatomic) CMABait *nonEditedBait;
@@ -56,6 +59,7 @@
     }
     
     [self initTableView];
+    [self initRemoveImageActionSheet];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -65,14 +69,14 @@
 #pragma mark - Table View Initializing
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    if (section == 0)
-        return TABLE_SECTION_SPACING;
-    
-    return CGFLOAT_MIN;
+    return kTableSectionHeaderHeight;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-    return TABLE_SECTION_SPACING;
+    if (section == [tableView numberOfSections] - 1)
+        return kTableFooterHeight;
+    
+    return CGFLOAT_MIN;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -80,7 +84,7 @@
         if (self.bait && self.bait.image)
             return PHOTO_ROW_HEIGHT;
     
-    if (indexPath.section == 0 && indexPath.row == 1)
+    if (indexPath.section == 0 && indexPath.row == 3)
         return DESC_ROW_HEIGHT;
     
     return 44;
@@ -90,6 +94,14 @@
     if (self.isEditingBait) {
         // name
         [self.nameTextField setText:self.bait.name];
+        
+        // size
+        if (self.bait.size)
+            if (![self.bait.size isEqualToString:@""])
+                [self.sizeTextField setText:self.bait.size];
+        
+        // artificial
+        [self.baitTypeControl setSelectedSegmentIndex:[self.bait.baitType integerValue]];
     
         // description
         if (self.bait.baitDescription) {
@@ -159,6 +171,10 @@
 
 #pragma mark - Action Sheets
 
+- (void)initRemoveImageActionSheet {
+    self.removeImageActionSheet = [[UIActionSheet alloc] initWithTitle:@"Are you sure you want to remove this photo?" delegate:self cancelButtonTitle:@"No, keep it." destructiveButtonTitle:@"Yes, delete it." otherButtonTitles:nil];
+}
+
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
     if (actionSheet == self.cameraActionSheet) {
         // take photo
@@ -169,6 +185,28 @@
         // attach photo
         if (buttonIndex == 1)
             [self presentImagePicker:UIImagePickerControllerSourceTypePhotoLibrary];
+    }
+    
+    if (actionSheet == self.removeImageActionSheet) {
+        // delete button
+        if (buttonIndex == 0) {
+            self.bait.image = nil;
+            
+            // Why CATransaction is used: http://stackoverflow.com/questions/7623771/how-to-detect-that-animation-has-ended-on-uitableview-beginupdates-endupdates
+            [CATransaction begin];
+            [CATransaction setCompletionBlock:^{
+                [self.imageView setImage:nil];
+            }];
+            
+            [UIView animateWithDuration:0.15 animations:^{
+                [self.imageView setAlpha:0.0f];
+            }];
+            
+            [self.tableView beginUpdates];
+            [self.tableView endUpdates];
+            
+            [CATransaction commit];
+        }
     }
 }
 
@@ -188,13 +226,25 @@
             return NO;
         }
     
+    // name
     [aBait setName:[self.nameTextField.text mutableCopy]];
     
+    // size
+    if ([self.sizeTextField.text isEqualToString:@""])
+        [aBait setSize:nil];
+    else
+        [aBait setSize:self.sizeTextField.text];
+    
+    // artificial
+    [aBait setBaitType:[NSNumber numberWithInteger:self.baitTypeControl.selectedSegmentIndex]];
+    
+    // description
     if ([self.descriptionTextView.text isEqualToString:@"Description."])
         [aBait setBaitDescription:nil];
     else
         [aBait setBaitDescription:self.descriptionTextView.text];
     
+    // photo
     if (self.imageView)
         [aBait setImage:self.imageView.image];
     else
@@ -216,11 +266,10 @@
     if ([self checkUserInputAndSetBait:baitToAdd]) {
         if (self.previousViewID == CMAViewControllerIDSingleBait) {
             [[self journal] editUserDefine:SET_BAITS objectNamed:self.bait.name newProperties:baitToAdd];
-            [self setBait:baitToAdd];
         } else
             [[self journal] addUserDefine:SET_BAITS objectToAdd:baitToAdd];
         
-        if (!self.previousViewID == CMAViewControllerIDSingleBait)
+        if (!(self.previousViewID == CMAViewControllerIDSingleBait))
             [self setBait:nil];
         
         [[self journal] archive];
@@ -236,6 +285,12 @@
         self.bait = nil;
     
     [self performSegueToPreviousView];
+}
+
+- (IBAction)longPressedImage:(UILongPressGestureRecognizer *)sender {
+    // only show at the beginning of the gesture
+    if (sender.state == UIGestureRecognizerStateBegan)
+        [self.removeImageActionSheet showInView:self.view];
 }
 
 #pragma mark - Navigation

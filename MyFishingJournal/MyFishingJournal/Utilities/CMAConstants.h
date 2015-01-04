@@ -34,6 +34,12 @@ typedef NS_ENUM(NSInteger, CMASortOrder) {
     CMASortOrderDescending = 1
 };
 
+// Each value represents the index for an item in a UISegmentedControlView.
+typedef NS_ENUM(NSInteger, CMABaitType) {
+    CMABaitTypeArtificial = 0,
+    CMABaitTypeLive = 1
+};
+
 // Each value >= 0 represents an index for a row in a UITableView.
 typedef NS_ENUM(NSInteger, CMAEntrySortMethod) {
     CMAEntrySortMethodNil = -1,

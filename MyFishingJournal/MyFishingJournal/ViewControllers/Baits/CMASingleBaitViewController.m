@@ -13,13 +13,18 @@
 @interface CMASingleBaitViewController ()
 
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;
-@property (weak, nonatomic) IBOutlet UILabel *baitNameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *baitDescriptionLabel;
 @property (weak, nonatomic) IBOutlet UILabel *baitFishCaughtLabel;
+@property (weak, nonatomic) IBOutlet UILabel *baitTypeLabel;
+@property (weak, nonatomic) IBOutlet UILabel *baitSizeLabel;
 
 @end
 
 #define kDefaultCellHeight 30
+
+#define kPhotoCellRow 0
+#define kSizeRow 3
+#define kDescriptionCellRow 4
 
 @implementation CMASingleBaitViewController
 
@@ -33,6 +38,11 @@
         self.navigationItem.rightBarButtonItem = nil;
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self.tableView reloadData];
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
 }
@@ -40,36 +50,62 @@
 #pragma mark - Table View Initializing
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.row == 0) {
+    if (indexPath.row == kPhotoCellRow) {
         if (self.bait.image)
             return self.tableView.frame.size.width;
         else
             return 10;
     }
     
-    if (indexPath.row == 2) {
+    if (indexPath.row == kSizeRow && !self.bait.size)
+        return 0;
+    
+    if (indexPath.row == kDescriptionCellRow) {
         if (self.bait.description) {
             NSDictionary *attributes = @{NSFontAttributeName: [UIFont fontWithName:GLOBAL_FONT size:16]};
-            CGRect rect = [self.bait.baitDescription boundingRectWithSize:CGSizeMake(self.tableView.frame.size.width, CGFLOAT_MAX)
+            CGRect rect = [self.bait.baitDescription boundingRectWithSize:CGSizeMake(self.tableView.frame.size.width - 40, CGFLOAT_MAX)
                                                                   options:NSStringDrawingUsesLineFragmentOrigin
                                                                attributes:attributes
                                                                   context:nil];
-            
+        
             if (rect.size.height > kDefaultCellHeight)
-                return rect.size.height + 20;
-        }
+                return rect.size.height + 18;
+        } else
+            return 0;
     }
     
     return kDefaultCellHeight;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    UITableViewCell *cell = [super tableView:tableView cellForRowAtIndexPath:indexPath];
+    
+    [cell setHidden:(indexPath.row == kSizeRow && !self.bait.size)];
+    
+    return cell;
 }
 
 - (void)initTableView {
     [self.navigationItem setTitle:self.bait.name];
     [self.imageView setImage:self.bait.image];
     [self.baitFishCaughtLabel setText:[self.bait.fishCaught stringValue]];
+
+    if (self.bait.baitType == CMABaitTypeArtificial)
+        [self.baitTypeLabel setText:@"Artificial"];
+    else
+        [self.baitTypeLabel setText:@"Live"];
     
-    if (self.bait.baitDescription)
+    if (self.bait.size)
+        [self.baitSizeLabel setText:self.bait.size];
+    
+    if (self.bait.baitDescription) {
         [self.baitDescriptionLabel setText:self.bait.baitDescription];
+        
+        // a hack to get hide a mysterious horizontal line that appears when the description is on multiple lines
+        UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, 1)];
+        [line setBackgroundColor:[UIColor whiteColor]];
+        [self.baitDescriptionLabel addSubview:line];
+    }
 }
 
 #pragma mark - Navigation
