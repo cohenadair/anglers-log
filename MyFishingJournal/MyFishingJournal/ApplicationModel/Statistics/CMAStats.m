@@ -227,9 +227,11 @@
 }
 
 - (NSDate *)earliestEntryDate {
+    CMASortOrder oldOrder = [self.journal entrySortOrder];
+    
     [self.journal sortEntriesBy:CMAEntrySortMethodDate order:CMASortOrderAscending];
     NSDate *result = [[self.journal.entries objectAtIndex:0] date];
-    [self.journal sortEntriesBy:self.journal.entrySortMethod order:self.journal.entrySortOrder];
+    [self.journal sortEntriesBy:self.journal.entrySortMethod order:oldOrder];
     
     return result;
 }

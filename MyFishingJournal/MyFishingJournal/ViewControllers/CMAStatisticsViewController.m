@@ -42,7 +42,7 @@
 #define kSectionLongestFish 0
 #define kSectionHeaviestFish 1
 
-#define kDefaultHeaderHeight 30
+#define kDefaultHeaderHeight 40
 #define kTableCellHeight 76
 
 @implementation CMAStatisticsViewController
