@@ -14,13 +14,10 @@
 		0D81A3B61A4F845E001FF9FA /* CMAWaterClarity.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D81A3B41A4F845E001FF9FA /* CMAWaterClarity.m */; };
 		0D81A3B81A4F898D001FF9FA /* water_clarities_large.png in Resources */ = {isa = PBXBuildFile; fileRef = 0D81A3B71A4F898D001FF9FA /* water_clarities_large.png */; };
 		0D81A3BA1A4F899C001FF9FA /* water_clarities.png in Resources */ = {isa = PBXBuildFile; fileRef = 0D81A3B91A4F899C001FF9FA /* water_clarities.png */; };
-		0DC690AF1A5C4E07006C8202 /* CMAJournalDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DC690AE1A5C4E07006C8202 /* CMAJournalDocument.m */; };
 		0DC690B21A5CA630006C8202 /* CMARemoveImageActionSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DC690B11A5CA630006C8202 /* CMARemoveImageActionSheet.m */; };
+		0DC690B51A5CE45D006C8202 /* CMAJournalDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DC690B41A5CE45D006C8202 /* CMAJournalDocument.m */; };
 		0DCC26551A520C0800738F04 /* CMAUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DCC26541A520C0800738F04 /* CMAUtilities.m */; };
 		0DCC26571A520DD300738F04 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DCC26561A520DD300738F04 /* SystemConfiguration.framework */; };
-		2C8474D879B7047FC7BE08DF /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 836B2B4A31EDB77286F0FE9D /* libPods.a */; };
-		59178D9BE62FDF1B68A276EA /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 836B2B4A31EDB77286F0FE9D /* libPods.a */; };
-		5B310B05AAF503582BC33502 /* libPods-MyFishingJournal.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 580D11321076E69452D567AA /* libPods-MyFishingJournal.a */; };
 		E700E46E1A29CF2600BB6337 /* no_image.png in Resources */ = {isa = PBXBuildFile; fileRef = E700E46D1A29CF2600BB6337 /* no_image.png */; };
 		E700E4761A2AA71A00BB6337 /* CMALaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = E700E4751A2AA71A00BB6337 /* CMALaunchScreen.xib */; };
 		E705AD6C1A229AD20077F16C /* fishing_methods_large.png in Resources */ = {isa = PBXBuildFile; fileRef = E705AD6B1A229AD20077F16C /* fishing_methods_large.png */; };
@@ -158,16 +155,13 @@
 		0D81A3B91A4F899C001FF9FA /* water_clarities.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = water_clarities.png; path = Images/Icons/water_clarities.png; sourceTree = "<group>"; };
 		0DC690AB1A55F70F006C8202 /* CMAUserDefineProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAUserDefineProtocol.h; path = ApplicationModel/UserDefines/CMAUserDefineProtocol.h; sourceTree = "<group>"; };
 		0DC690AC1A5B56C6006C8202 /* MyFishingJournal.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = MyFishingJournal.entitlements; sourceTree = "<group>"; };
-		0DC690AD1A5C4E07006C8202 /* CMAJournalDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAJournalDocument.h; path = ApplicationModel/CMAJournalDocument.h; sourceTree = "<group>"; };
-		0DC690AE1A5C4E07006C8202 /* CMAJournalDocument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAJournalDocument.m; path = ApplicationModel/CMAJournalDocument.m; sourceTree = "<group>"; };
 		0DC690B01A5CA630006C8202 /* CMARemoveImageActionSheet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMARemoveImageActionSheet.h; path = CustomViews/CMARemoveImageActionSheet.h; sourceTree = "<group>"; };
 		0DC690B11A5CA630006C8202 /* CMARemoveImageActionSheet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMARemoveImageActionSheet.m; path = CustomViews/CMARemoveImageActionSheet.m; sourceTree = "<group>"; };
+		0DC690B31A5CE45D006C8202 /* CMAJournalDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAJournalDocument.h; path = ApplicationModel/CMAJournalDocument.h; sourceTree = "<group>"; };
+		0DC690B41A5CE45D006C8202 /* CMAJournalDocument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAJournalDocument.m; path = ApplicationModel/CMAJournalDocument.m; sourceTree = "<group>"; };
 		0DCC26531A520C0800738F04 /* CMAUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAUtilities.h; path = Utilities/CMAUtilities.h; sourceTree = "<group>"; };
 		0DCC26541A520C0800738F04 /* CMAUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAUtilities.m; path = Utilities/CMAUtilities.m; sourceTree = "<group>"; };
 		0DCC26561A520DD300738F04 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
-		580D11321076E69452D567AA /* libPods-MyFishingJournal.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MyFishingJournal.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		836B2B4A31EDB77286F0FE9D /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		8C7E1C0C3F08E34FF446385D /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		E700E46D1A29CF2600BB6337 /* no_image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = no_image.png; path = Images/no_image.png; sourceTree = "<group>"; };
 		E700E4751A2AA71A00BB6337 /* CMALaunchScreen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CMALaunchScreen.xib; sourceTree = "<group>"; };
 		E705AD6B1A229AD20077F16C /* fishing_methods_large.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = fishing_methods_large.png; path = Images/LargeIcons/fishing_methods_large.png; sourceTree = "<group>"; };
@@ -317,7 +311,6 @@
 		E7C926D219EE37750010A9FE /* MyFishingJournal.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MyFishingJournal.storyboard; sourceTree = "<group>"; };
 		E7C926E119EEC9DC0010A9FE /* CMAStatisticsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAStatisticsViewController.h; path = ViewControllers/CMAStatisticsViewController.h; sourceTree = "<group>"; };
 		E7C926E219EEC9DC0010A9FE /* CMAStatisticsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAStatisticsViewController.m; path = ViewControllers/CMAStatisticsViewController.m; sourceTree = "<group>"; };
-		F530FED45CF391820F7FC6AC /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -332,8 +325,6 @@
 				E70B637819D3A8E400DFBA85 /* CoreGraphics.framework in Frameworks */,
 				E70B637A19D3A8E400DFBA85 /* UIKit.framework in Frameworks */,
 				E70B637619D3A8E400DFBA85 /* Foundation.framework in Frameworks */,
-				5B310B05AAF503582BC33502 /* libPods-MyFishingJournal.a in Frameworks */,
-				59178D9BE62FDF1B68A276EA /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -344,22 +335,12 @@
 				E70B638F19D3A8E400DFBA85 /* XCTest.framework in Frameworks */,
 				E70B639119D3A8E400DFBA85 /* UIKit.framework in Frameworks */,
 				E70B639019D3A8E400DFBA85 /* Foundation.framework in Frameworks */,
-				2C8474D879B7047FC7BE08DF /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		7B7AAFC2590C6A0E54537207 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				8C7E1C0C3F08E34FF446385D /* Pods.debug.xcconfig */,
-				F530FED45CF391820F7FC6AC /* Pods.release.xcconfig */,
-			);
-			name = Pods;
-			sourceTree = "<group>";
-		};
 		E705AD6A1A229ABD0077F16C /* LargeIcons */ = {
 			isa = PBXGroup;
 			children = (
@@ -402,7 +383,6 @@
 				E70B639419D3A8E400DFBA85 /* MyFishingJournalTests */,
 				E70B637419D3A8E400DFBA85 /* Frameworks */,
 				E70B637319D3A8E400DFBA85 /* Products */,
-				7B7AAFC2590C6A0E54537207 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -426,8 +406,6 @@
 				E70B637719D3A8E400DFBA85 /* CoreGraphics.framework */,
 				E70B637919D3A8E400DFBA85 /* UIKit.framework */,
 				E70B638E19D3A8E400DFBA85 /* XCTest.framework */,
-				580D11321076E69452D567AA /* libPods-MyFishingJournal.a */,
-				836B2B4A31EDB77286F0FE9D /* libPods.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -496,8 +474,8 @@
 				0D34EF511A44EB2C00764F18 /* CMAWeatherData.m */,
 				E72669C719E6F4A8003C8E0B /* CMAJournal.h */,
 				E72669C819E6F4A8003C8E0B /* CMAJournal.m */,
-				0DC690AD1A5C4E07006C8202 /* CMAJournalDocument.h */,
-				0DC690AE1A5C4E07006C8202 /* CMAJournalDocument.m */,
+				0DC690B31A5CE45D006C8202 /* CMAJournalDocument.h */,
+				0DC690B41A5CE45D006C8202 /* CMAJournalDocument.m */,
 			);
 			name = ApplicationModel;
 			sourceTree = "<group>";
@@ -727,11 +705,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = E70B639E19D3A8E400DFBA85 /* Build configuration list for PBXNativeTarget "MyFishingJournal" */;
 			buildPhases = (
-				657DD2E35FEFE22BCC18C1CE /* Check Pods Manifest.lock */,
 				E70B636E19D3A8E400DFBA85 /* Sources */,
 				E70B636F19D3A8E400DFBA85 /* Frameworks */,
 				E70B637019D3A8E400DFBA85 /* Resources */,
-				2C22A4E109AAA09450761F93 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -746,11 +722,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = E70B63A119D3A8E500DFBA85 /* Build configuration list for PBXNativeTarget "MyFishingJournalTests" */;
 			buildPhases = (
-				BF815AC12965E2BCEE748C62 /* Check Pods Manifest.lock */,
 				E70B638919D3A8E400DFBA85 /* Sources */,
 				E70B638A19D3A8E400DFBA85 /* Frameworks */,
 				E70B638B19D3A8E400DFBA85 /* Resources */,
-				578F053E79FE33B1EF4DC67E /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -872,69 +846,6 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
-/* Begin PBXShellScriptBuildPhase section */
-		2C22A4E109AAA09450761F93 /* Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		578F053E79FE33B1EF4DC67E /* Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		657DD2E35FEFE22BCC18C1CE /* Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Check Pods Manifest.lock";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
-			showEnvVarsInLog = 0;
-		};
-		BF815AC12965E2BCEE748C62 /* Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Check Pods Manifest.lock";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
-			showEnvVarsInLog = 0;
-		};
-/* End PBXShellScriptBuildPhase section */
-
 /* Begin PBXSourcesBuildPhase section */
 		E70B636E19D3A8E400DFBA85 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -956,7 +867,6 @@
 				E7C29D841A1C210000015B42 /* CMAImagePickerViewController.m in Sources */,
 				E7C29D741A1BD38800015B42 /* CMAAddBaitViewController.m in Sources */,
 				0DC690B21A5CA630006C8202 /* CMARemoveImageActionSheet.m in Sources */,
-				0DC690AF1A5C4E07006C8202 /* CMAJournalDocument.m in Sources */,
 				E7C29D161A1445AE00015B42 /* CMASideMenuViewController.m in Sources */,
 				E7C926E319EEC9DC0010A9FE /* CMAStatisticsViewController.m in Sources */,
 				E7C29D751A1BD38800015B42 /* CMASingleBaitViewController.m in Sources */,
@@ -983,6 +893,7 @@
 				E7A331281A1D70C200C1D3F1 /* CMAAddFishingSpotViewController.m in Sources */,
 				E70B638219D3A8E400DFBA85 /* main.m in Sources */,
 				E7A3311F1A1D706A00C1D3F1 /* CMASingleEntryViewController.m in Sources */,
+				0DC690B51A5CE45D006C8202 /* CMAJournalDocument.m in Sources */,
 				E7A3311E1A1D706A00C1D3F1 /* CMAEntrySortingViewController.m in Sources */,
 				E7A331361A2286E200C1D3F1 /* CMANoXView.m in Sources */,
 				E738585619FE098A00FE122B /* CMABait.m in Sources */,
@@ -1116,7 +1027,6 @@
 		};
 		E70B639F19D3A8E400DFBA85 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8C7E1C0C3F08E34FF446385D /* Pods.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -1135,7 +1045,6 @@
 		};
 		E70B63A019D3A8E400DFBA85 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F530FED45CF391820F7FC6AC /* Pods.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -1154,7 +1063,6 @@
 		};
 		E70B63A219D3A8E500DFBA85 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8C7E1C0C3F08E34FF446385D /* Pods.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/MyFishingJournal.app/MyFishingJournal";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1177,7 +1085,6 @@
 		};
 		E70B63A319D3A8E500DFBA85 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F530FED45CF391820F7FC6AC /* Pods.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/MyFishingJournal.app/MyFishingJournal";
 				FRAMEWORK_SEARCH_PATHS = (

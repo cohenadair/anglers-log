@@ -45,13 +45,13 @@ NSString *const API_KEY = @"35f69a23678dead2c75e0599eadbb4e1";
 
 - (id)initWithCoordinates:(CLLocationCoordinate2D)coordinate andJournal:(CMAMeasuringSystemType)aMeasurementSystemType {
     if (self = [super init]) {
-        _weatherAPI = [[OWMWeatherAPI alloc] initWithAPIKey:API_KEY];
+        //_weatherAPI = [[OWMWeatherAPI alloc] initWithAPIKey:API_KEY];
         _coordinate = coordinate;
         
-        if (aMeasurementSystemType == CMAMeasuringSystemTypeImperial)
+        /*if (aMeasurementSystemType == CMAMeasuringSystemTypeImperial)
             _weatherAPI.temperatureFormat = kOWMTempFahrenheit;
         else
-            _weatherAPI.temperatureFormat = kOWMTempCelcius;
+            _weatherAPI.temperatureFormat = kOWMTempCelcius;*/
     }
     
     return self;
