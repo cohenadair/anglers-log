@@ -16,14 +16,16 @@
 #pragma mark - Initialization
 
 - (CMAJournal *)init {
-    _entries = [NSMutableArray array];
-    _userDefines = [NSMutableDictionary dictionary];
-    
-    [self validateUserDefines];
-    
-    [self setMeasurementSystem:CMAMeasuringSystemTypeImperial];
-    [self setEntrySortMethod:CMAEntrySortMethodDate];
-    [self setEntrySortOrder:CMASortOrderDescending];
+    if (self = [super init]) {
+        _entries = [NSMutableArray array];
+        _userDefines = [NSMutableDictionary dictionary];
+        
+        [self validateUserDefines];
+        
+        [self setMeasurementSystem:CMAMeasuringSystemTypeImperial];
+        [self setEntrySortMethod:CMAEntrySortMethodDate];
+        [self setEntrySortOrder:CMASortOrderDescending];
+    }
     
     return self;
 }
@@ -94,15 +96,27 @@
 }
 
 - (BOOL)archive {
+    BOOL result = NO;
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *docsPath = [paths firstObject];
     NSString *archivePath = [NSString stringWithFormat:@"%@/%@", docsPath, ARCHIVE_FILE_NAME];
     
     if ([NSKeyedArchiver archiveRootObject:self toFile:archivePath]) {
-        NSLog(@"Successfully archived Journal.");
-        return YES;
+        NSLog(@"Successfully archived Journal locally.");
+        result = YES;
     } else
-        NSLog(@"Failed to archive Journal.");
+        NSLog(@"Failed to archive Journal locally.");
+    
+    // move file to iCloud directory
+    if (result && self.cloudURL) {
+        NSError *error;
+        [[NSFileManager defaultManager] setUbiquitous:YES itemAtURL:[NSURL URLWithString:archivePath] destinationURL:self.cloudURL error:&error];
+        
+        if (error)
+            NSLog(@"Error moving file to iCloud: %@", error.localizedDescription);
+        
+        return result;
+    }
     
     return NO;
 }
