@@ -9,6 +9,7 @@
 #import "CMAAddBaitViewController.h"
 #import "CMACameraButton.h"
 #import "CMACameraActionSheet.h"
+#import "CMARemoveImageActionSheet.h"
 #import "CMAImagePickerViewController.h"
 #import "CMAAlerts.h"
 #import "CMAAppDelegate.h"
@@ -25,7 +26,7 @@
 @property (weak, nonatomic) IBOutlet UISegmentedControl *baitTypeControl;
 
 @property (strong, nonatomic) CMACameraActionSheet *cameraActionSheet;
-@property (strong, nonatomic) UIActionSheet *removeImageActionSheet;
+@property (strong, nonatomic) CMARemoveImageActionSheet *removeImageActionSheet;
 
 @property (nonatomic) BOOL isEditingBait;
 @property (strong, nonatomic) CMABait *nonEditedBait;
@@ -48,7 +49,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.cameraActionSheet = [CMACameraActionSheet withDelegate:self];
     self.isEditingBait = self.previousViewID == CMAViewControllerIDSingleBait;
     
     if (!self.isEditingBait)
@@ -60,6 +60,7 @@
     }
     
     [self initTableView];
+    [self initCameraActionSheet];
     [self initRemoveImageActionSheet];
 }
 
@@ -132,16 +133,6 @@
         [textView setText:@"Description."];
 }
 
-- (void)textFieldDidBeginEditing:(UITextField *)textField {
-    if ([textField.text isEqualToString:@"Name"])
-        textField.text = @"";
-}
-
-- (void)textFieldDidEndEditing:(UITextField *)textField {
-    if ([textField.text isEqualToString:@""])
-        [textField setText:@"Name"];
-}
-
 #pragma mark - Image Picker
 
 // Presents an image picker with sourceType.
@@ -172,43 +163,52 @@
 
 #pragma mark - Action Sheets
 
-- (void)initRemoveImageActionSheet {
-    self.removeImageActionSheet = [[UIActionSheet alloc] initWithTitle:@"Are you sure you want to remove this photo?" delegate:self cancelButtonTitle:@"No, keep it." destructiveButtonTitle:@"Yes, delete it." otherButtonTitles:nil];
+- (void)initCameraActionSheet {
+    __weak id weakSelf = self;
+    
+    self.cameraActionSheet =
+        [CMACameraActionSheet alertControllerWithTitle:nil
+                                               message:nil
+                                        preferredStyle:UIAlertControllerStyleActionSheet];
+    
+    self.cameraActionSheet.attachPhotoBlock = ^void(UIAlertAction *action) {
+        [weakSelf presentImagePicker:UIImagePickerControllerSourceTypePhotoLibrary];
+    };
+    
+    self.cameraActionSheet.takePhotoBlock = ^void(UIAlertAction *action) {
+        if ([CMAImagePickerViewController cameraAvailable:weakSelf])
+            [weakSelf presentImagePicker:UIImagePickerControllerSourceTypeCamera];
+    };
+    
+    [self.cameraActionSheet addActions];
 }
 
-- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
-    if (actionSheet == self.cameraActionSheet) {
-        // take photo
-        if (buttonIndex == 0)
-            if ([CMAImagePickerViewController cameraAvailable])
-                [self presentImagePicker:UIImagePickerControllerSourceTypeCamera];
-        
-        // attach photo
-        if (buttonIndex == 1)
-            [self presentImagePicker:UIImagePickerControllerSourceTypePhotoLibrary];
-    }
+- (void)initRemoveImageActionSheet {
+    __weak typeof(self) weakSelf = self;
     
-    if (actionSheet == self.removeImageActionSheet) {
-        // delete button
-        if (buttonIndex == 0) {
-            self.bait.image = nil;
-            
-            // Why CATransaction is used: http://stackoverflow.com/questions/7623771/how-to-detect-that-animation-has-ended-on-uitableview-beginupdates-endupdates
-            [CATransaction begin];
-            [CATransaction setCompletionBlock:^{
-                [self.imageView setImage:nil];
-            }];
-            
-            [UIView animateWithDuration:0.15 animations:^{
-                [self.imageView setAlpha:0.0f];
-            }];
-            
-            [self.tableView beginUpdates];
-            [self.tableView endUpdates];
-            
-            [CATransaction commit];
-        }
-    }
+    self.removeImageActionSheet =
+        [CMARemoveImageActionSheet alertControllerWithTitle:nil
+                                                    message:nil
+                                             preferredStyle:UIAlertControllerStyleActionSheet];
+    
+    self.removeImageActionSheet.deleteActionBlock = ^void(UIAlertAction *action) {
+        weakSelf.bait.image = nil;
+        
+        // Why CATransaction is used: http://stackoverflow.com/questions/7623771/how-to-detect-that-animation-has-ended-on-uitableview-beginupdates-endupdates
+        [CATransaction begin];
+        [CATransaction setCompletionBlock:^{
+            [weakSelf.imageView setImage:nil];
+        }];
+        
+        [UIView animateWithDuration:0.15 animations:^{
+            [weakSelf.imageView setAlpha:0.0f];
+        }];
+        
+        [weakSelf.tableView beginUpdates];
+        [weakSelf.tableView endUpdates];
+        
+        [CATransaction commit];
+    };
 }
 
 #pragma mark - Bait Creation
@@ -216,14 +216,14 @@
 - (BOOL)checkUserInputAndSetBait:(CMABait *)aBait {
     // validate bait name
     if ([self.nameTextField.text isEqualToString:@""] || [self.nameTextField.text isEqualToString:@"Name"]) {
-        [CMAAlerts errorAlert:@"Please enter a bait name."];
+        [CMAAlerts errorAlert:@"Please enter a bait name." presentationViewController:self];
         return NO;
     }
     
     // make sure the bait name doesn't already exist
     if (!self.isEditingBait)
         if ([[[self journal] userDefineNamed:SET_LOCATIONS] objectNamed:self.nameTextField.text] != nil) {
-            [CMAAlerts errorAlert:@"A bait by that name already exists. Please choose a new name or edit the existing bait."];
+            [CMAAlerts errorAlert:@"A bait by that name already exists. Please choose a new name or edit the existing bait." presentationViewController:self];
             return NO;
         }
     
@@ -257,7 +257,7 @@
 #pragma mark - Events
 
 - (void)tapCameraButton {
-    [self.cameraActionSheet showInView:self.view];
+    [self presentViewController:self.cameraActionSheet animated:YES completion:nil];
 }
 
 - (IBAction)clickedDoneButton:(UIBarButtonItem *)sender {
@@ -291,7 +291,7 @@
 - (IBAction)longPressedImage:(UILongPressGestureRecognizer *)sender {
     // only show at the beginning of the gesture
     if (sender.state == UIGestureRecognizerStateBegan)
-        [self.removeImageActionSheet showInView:self.view];
+        [self presentViewController:self.removeImageActionSheet animated:YES completion:nil];
 }
 
 #pragma mark - Navigation

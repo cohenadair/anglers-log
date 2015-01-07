@@ -110,14 +110,14 @@
 - (IBAction)clickDoneButton:(UIBarButtonItem *)sender {
     // validate fishing spot name
     if ([[self.fishingSpotNameTextField text] isEqualToString:@""]) {
-        [CMAAlerts errorAlert:@"Please enter a fishing spot name."];
+        [CMAAlerts errorAlert:@"Please enter a fishing spot name." presentationViewController:self];
         return;
     }
 
     // make sure the fishing spot doesn't already exist
     if (!self.isEditingFishingSpot)
         if ([self.locationFromAddLocation fishingSpotNamed:self.fishingSpotNameTextField.text] != nil) {
-            [CMAAlerts errorAlert:@"A fishing spot by that name already exists. Please choose a new name or edit the existing spot."];
+            [CMAAlerts errorAlert:@"A fishing spot by that name already exists. Please choose a new name or edit the existing spot." presentationViewController:self];
             return;
         }
 
@@ -184,7 +184,7 @@
 }
 
 - (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error {
-    [CMAAlerts errorAlert:[NSString stringWithFormat:@"Failed to get user location. Error: %@", error.localizedDescription]];
+    [CMAAlerts errorAlert:[NSString stringWithFormat:@"Failed to get user location. Error: %@", error.localizedDescription] presentationViewController:self];
 }
 
 @end

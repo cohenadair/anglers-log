@@ -35,9 +35,9 @@
     [super didReceiveMemoryWarning];
 }
 
-+ (BOOL)cameraAvailable {
++ (BOOL)cameraAvailable:(UIViewController *)displayViewController {
     if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
-        [CMAAlerts errorAlert:@"Device has no camera."];
+        [CMAAlerts errorAlert:@"Device has no camera." presentationViewController:displayViewController];
         return false;
     }
     

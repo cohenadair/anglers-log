@@ -10,6 +10,6 @@
 
 @interface CMAImagePickerViewController : UIImagePickerController
 
-+ (BOOL)cameraAvailable;
++ (BOOL)cameraAvailable:(UIViewController *)displayViewController;
 
 @end

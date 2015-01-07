@@ -10,13 +10,31 @@
 
 @implementation CMACameraActionSheet
 
-+ (CMACameraActionSheet *)withDelegate:(id<UIActionSheetDelegate>)aDelegate {
-    return (CMACameraActionSheet *)
-    [[UIActionSheet alloc] initWithTitle:nil
-                                delegate:aDelegate
-                       cancelButtonTitle:@"Cancel"
-                  destructiveButtonTitle:nil
-                       otherButtonTitles:@"Take Photo", @"Attach Photo", nil];
+- (void)addActions {
+    [self setTitle:@"Add Photo"];
+    
+    UIAlertAction *takePhotoAction =
+        [UIAlertAction actionWithTitle:@"Take Photo"
+                                 style:UIAlertActionStyleDefault
+                               handler:self.takePhotoBlock];
+    
+    UIAlertAction *attachPhotoAction =
+        [UIAlertAction actionWithTitle:@"Attach Photo"
+                                 style:UIAlertActionStyleDefault
+                               handler:self.attachPhotoBlock];
+    
+    UIAlertAction *cancelAction =
+        [UIAlertAction actionWithTitle:@"Cancel"
+                                 style:UIAlertActionStyleDestructive
+                               handler:nil];
+    
+    [self addAction:takePhotoAction];
+    [self addAction:attachPhotoAction];
+    [self addAction:cancelAction];
+}
+
+- (void)showInViewController:(UIViewController *)aViewController {
+    [aViewController presentViewController:self animated:YES completion:nil];
 }
 
 @end

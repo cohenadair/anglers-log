@@ -11,9 +11,13 @@
 
 @implementation CMAAlerts
 
-+ (void)errorAlert: (NSString *)msg {
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error" message:msg delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-    [alertView show];
++ (void)errorAlert:(NSString *)msg presentationViewController:(UIViewController *)aViewController {
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Error" message:msg preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction *OKAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:nil];
+    [alert addAction:OKAction];
+    
+    [aViewController presentViewController:alert animated:YES completion:nil];
 }
 
 @end

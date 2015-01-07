@@ -14,6 +14,8 @@
 		0D81A3B61A4F845E001FF9FA /* CMAWaterClarity.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D81A3B41A4F845E001FF9FA /* CMAWaterClarity.m */; };
 		0D81A3B81A4F898D001FF9FA /* water_clarities_large.png in Resources */ = {isa = PBXBuildFile; fileRef = 0D81A3B71A4F898D001FF9FA /* water_clarities_large.png */; };
 		0D81A3BA1A4F899C001FF9FA /* water_clarities.png in Resources */ = {isa = PBXBuildFile; fileRef = 0D81A3B91A4F899C001FF9FA /* water_clarities.png */; };
+		0DC690AF1A5C4E07006C8202 /* CMAJournalDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DC690AE1A5C4E07006C8202 /* CMAJournalDocument.m */; };
+		0DC690B21A5CA630006C8202 /* CMARemoveImageActionSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DC690B11A5CA630006C8202 /* CMARemoveImageActionSheet.m */; };
 		0DCC26551A520C0800738F04 /* CMAUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DCC26541A520C0800738F04 /* CMAUtilities.m */; };
 		0DCC26571A520DD300738F04 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DCC26561A520DD300738F04 /* SystemConfiguration.framework */; };
 		2C8474D879B7047FC7BE08DF /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 836B2B4A31EDB77286F0FE9D /* libPods.a */; };
@@ -155,6 +157,11 @@
 		0D81A3B71A4F898D001FF9FA /* water_clarities_large.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = water_clarities_large.png; path = Images/LargeIcons/water_clarities_large.png; sourceTree = "<group>"; };
 		0D81A3B91A4F899C001FF9FA /* water_clarities.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = water_clarities.png; path = Images/Icons/water_clarities.png; sourceTree = "<group>"; };
 		0DC690AB1A55F70F006C8202 /* CMAUserDefineProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAUserDefineProtocol.h; path = ApplicationModel/UserDefines/CMAUserDefineProtocol.h; sourceTree = "<group>"; };
+		0DC690AC1A5B56C6006C8202 /* MyFishingJournal.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = MyFishingJournal.entitlements; sourceTree = "<group>"; };
+		0DC690AD1A5C4E07006C8202 /* CMAJournalDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAJournalDocument.h; path = ApplicationModel/CMAJournalDocument.h; sourceTree = "<group>"; };
+		0DC690AE1A5C4E07006C8202 /* CMAJournalDocument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAJournalDocument.m; path = ApplicationModel/CMAJournalDocument.m; sourceTree = "<group>"; };
+		0DC690B01A5CA630006C8202 /* CMARemoveImageActionSheet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMARemoveImageActionSheet.h; path = CustomViews/CMARemoveImageActionSheet.h; sourceTree = "<group>"; };
+		0DC690B11A5CA630006C8202 /* CMARemoveImageActionSheet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMARemoveImageActionSheet.m; path = CustomViews/CMARemoveImageActionSheet.m; sourceTree = "<group>"; };
 		0DCC26531A520C0800738F04 /* CMAUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAUtilities.h; path = Utilities/CMAUtilities.h; sourceTree = "<group>"; };
 		0DCC26541A520C0800738F04 /* CMAUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAUtilities.m; path = Utilities/CMAUtilities.m; sourceTree = "<group>"; };
 		0DCC26561A520DD300738F04 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
@@ -428,6 +435,7 @@
 		E70B637B19D3A8E400DFBA85 /* MyFishingJournal */ = {
 			isa = PBXGroup;
 			children = (
+				0DC690AC1A5B56C6006C8202 /* MyFishingJournal.entitlements */,
 				E7C29D0C1A143A1600015B42 /* Libraries */,
 				E738583B19FCD49100FE122B /* Images */,
 				E7A6883D19F7321E00B032E3 /* CustomViews */,
@@ -484,10 +492,12 @@
 				E72669D719E76AC1003C8E0B /* UserDefines */,
 				E72669B519DF14DE003C8E0B /* CMAEntry.h */,
 				E72669B619DF14DE003C8E0B /* CMAEntry.m */,
-				E72669C719E6F4A8003C8E0B /* CMAJournal.h */,
-				E72669C819E6F4A8003C8E0B /* CMAJournal.m */,
 				0D34EF501A44EB2C00764F18 /* CMAWeatherData.h */,
 				0D34EF511A44EB2C00764F18 /* CMAWeatherData.m */,
+				E72669C719E6F4A8003C8E0B /* CMAJournal.h */,
+				E72669C819E6F4A8003C8E0B /* CMAJournal.m */,
+				0DC690AD1A5C4E07006C8202 /* CMAJournalDocument.h */,
+				0DC690AE1A5C4E07006C8202 /* CMAJournalDocument.m */,
 			);
 			name = ApplicationModel;
 			sourceTree = "<group>";
@@ -599,6 +609,8 @@
 				E7C29D7D1A1C183E00015B42 /* CMACameraButton.m */,
 				E7C29D7F1A1C1ED800015B42 /* CMACameraActionSheet.h */,
 				E7C29D801A1C1ED800015B42 /* CMACameraActionSheet.m */,
+				0DC690B01A5CA630006C8202 /* CMARemoveImageActionSheet.h */,
+				0DC690B11A5CA630006C8202 /* CMARemoveImageActionSheet.m */,
 				E7A331321A22855F00C1D3F1 /* CMANoXView.xib */,
 				E7A331341A2286E200C1D3F1 /* CMANoXView.h */,
 				E7A331351A2286E200C1D3F1 /* CMANoXView.m */,
@@ -762,6 +774,11 @@
 				TargetAttributes = {
 					E70B637119D3A8E400DFBA85 = {
 						DevelopmentTeam = RQ74DU9PML;
+						SystemCapabilities = {
+							com.apple.iCloud = {
+								enabled = 1;
+							};
+						};
 					};
 					E70B638C19D3A8E400DFBA85 = {
 						TestTargetID = E70B637119D3A8E400DFBA85;
@@ -938,6 +955,8 @@
 				E78BB7E91A133A940082004B /* CMATouchSegmentedControl.m in Sources */,
 				E7C29D841A1C210000015B42 /* CMAImagePickerViewController.m in Sources */,
 				E7C29D741A1BD38800015B42 /* CMAAddBaitViewController.m in Sources */,
+				0DC690B21A5CA630006C8202 /* CMARemoveImageActionSheet.m in Sources */,
+				0DC690AF1A5C4E07006C8202 /* CMAJournalDocument.m in Sources */,
 				E7C29D161A1445AE00015B42 /* CMASideMenuViewController.m in Sources */,
 				E7C926E319EEC9DC0010A9FE /* CMAStatisticsViewController.m in Sources */,
 				E7C29D751A1BD38800015B42 /* CMASingleBaitViewController.m in Sources */,
@@ -1101,12 +1120,15 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_ENTITLEMENTS = MyFishingJournal/MyFishingJournal.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "MyFishingJournal/MyFishingJournal-Prefix.pch";
 				INFOPLIST_FILE = "MyFishingJournal/MyFishingJournal-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1117,12 +1139,15 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_ENTITLEMENTS = MyFishingJournal/MyFishingJournal.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "MyFishingJournal/MyFishingJournal-Prefix.pch";
 				INFOPLIST_FILE = "MyFishingJournal/MyFishingJournal-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

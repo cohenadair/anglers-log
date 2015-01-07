@@ -8,8 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
-@interface CMACameraActionSheet : UIActionSheet
+@interface CMACameraActionSheet : UIAlertController
 
-+ (CMACameraActionSheet *)withDelegate:(id<UIActionSheetDelegate>)aDelegate;
+@property (strong, nonatomic) void (^takePhotoBlock)(UIAlertAction *);
+@property (strong, nonatomic) void (^attachPhotoBlock)(UIAlertAction *);
+
+- (void)addActions;
+- (void)showInViewController:(UIViewController *)aViewController;
 
 @end

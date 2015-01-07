@@ -156,20 +156,20 @@ NSInteger const SECTION_ADD = 2;
 - (BOOL)checkUserInputAndSetLocation: (CMALocation *)aLocation {
     // validate fishing spot name
     if ([self.locationNameTextField.text isEqualToString:@""]) {
-        [CMAAlerts errorAlert:@"Please enter a location name."];
+        [CMAAlerts errorAlert:@"Please enter a location name." presentationViewController:self];
         return NO;
     }
     
     // make sure the location name doesn't already exist
     if (!self.isEditingLocation)
         if ([[[self journal] userDefineNamed:SET_LOCATIONS] objectNamed:self.locationNameTextField.text] != nil) {
-            [CMAAlerts errorAlert:@"A location by that name already exists. Please choose a new name or edit the existing location."];
+            [CMAAlerts errorAlert:@"A location by that name already exists. Please choose a new name or edit the existing location." presentationViewController:self];
             return NO;
         }
     
     // make sure there is at least one fishing spot
     if ([self.location fishingSpotCount] <= 0) {
-        [CMAAlerts errorAlert:@"Please add at least one fishing spot."];
+        [CMAAlerts errorAlert:@"Please add at least one fishing spot." presentationViewController:self];
         return NO;
     }
     

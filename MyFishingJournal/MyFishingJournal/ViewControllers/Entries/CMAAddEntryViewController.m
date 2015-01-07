@@ -16,6 +16,7 @@
 #import "CMAAlerts.h"
 #import "CMACameraButton.h"
 #import "CMACameraActionSheet.h"
+#import "CMARemoveImageActionSheet.h"
 #import "CMAWeatherDataView.h"
 #import "CMAUtilities.h"
 
@@ -68,7 +69,7 @@
 #pragma mark - Camera
 @property (weak, nonatomic)IBOutlet CMACameraButton *cameraImage;
 @property (strong, nonatomic)CMACameraActionSheet *cameraActionSheet;
-@property (strong, nonatomic)UIActionSheet *deleteImageActionSheet;
+@property (strong, nonatomic)CMARemoveImageActionSheet *removeImageActionSheet;
 
 #pragma mark - Miscellaneous
 
@@ -160,14 +161,14 @@ NSString *const kNotSelectedString = @"Not Selected";
             [self.speciesDetailLabel setText:kNotSelectedString];
     }
     
-    self.cameraActionSheet = [CMACameraActionSheet withDelegate:self];
     [self.cameraImage myInit:self action:@selector(tapCameraImage)];
     
     // location manager
     self.locationManager = [CLLocationManager new];
     self.locationManager.delegate = self;
     
-    [self initDeleteImageActionSheet];
+    [self initCameraActionSheet];
+    [self initRemoveImageActionSheet];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -403,7 +404,7 @@ NSString *const kNotSelectedString = @"Not Selected";
             [self setEntry:entryToAdd];
         } else
             if (![[self journal] addEntry:entryToAdd]) {
-                [CMAAlerts errorAlert:@"An entry with that date and time already exists. Please select a new date or edit the existing entry."];
+                [CMAAlerts errorAlert:@"An entry with that date and time already exists. Please select a new date or edit the existing entry." presentationViewController:self];
                 return;
             }
         
@@ -427,7 +428,7 @@ NSString *const kNotSelectedString = @"Not Selected";
 }
 
 - (void)tapCameraImage {
-    [self.cameraActionSheet showInView:self.view];
+    [self.cameraActionSheet showInViewController:self];
 }
 
 - (IBAction)tapToggleWeatherButton:(UIButton *)sender {
@@ -439,36 +440,46 @@ NSString *const kNotSelectedString = @"Not Selected";
     if (sender.state == UIGestureRecognizerStateBegan) {
         // referenced in the UIAlertView delegate protocol
         self.deleteImageIndexPath = [self.imageCollection indexPathForItemAtPoint:[sender locationInView:self.imageCollection]];
-        [self.deleteImageActionSheet showInView:self.view];
+        [self.removeImageActionSheet showInViewController:self];
     }
 }
 
 #pragma mark - Action Sheets
 
-- (void)initDeleteImageActionSheet {
-    self.deleteImageActionSheet = [[UIActionSheet alloc] initWithTitle:@"Are you sure you want to remove this photo (it will not be removed from your device)?" delegate:self cancelButtonTitle:@"No, keep it." destructiveButtonTitle:@"Yes, delete it." otherButtonTitles:nil];
+- (void)initCameraActionSheet {
+    __weak id weakSelf = self;
+    
+    self.cameraActionSheet =
+        [CMACameraActionSheet alertControllerWithTitle:nil
+                                               message:nil
+                                        preferredStyle:UIAlertControllerStyleActionSheet];
+    
+    self.cameraActionSheet.attachPhotoBlock = ^void(UIAlertAction *action) {
+        [weakSelf presentImagePicker:UIImagePickerControllerSourceTypePhotoLibrary];
+    };
+    
+    self.cameraActionSheet.takePhotoBlock = ^void(UIAlertAction *action) {
+        if ([CMAImagePickerViewController cameraAvailable:weakSelf])
+            [weakSelf presentImagePicker:UIImagePickerControllerSourceTypeCamera];
+    };
+    
+    [self.cameraActionSheet addActions];
 }
 
-- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
-    if (actionSheet == self.cameraActionSheet) {
-        // take photo
-        if (buttonIndex == 0)
-            if ([CMAImagePickerViewController cameraAvailable])
-                [self presentImagePicker:UIImagePickerControllerSourceTypeCamera];
-        
-        // attach photo
-        if (buttonIndex == 1)
-            [self presentImagePicker:UIImagePickerControllerSourceTypePhotoLibrary];
-    }
+- (void)initRemoveImageActionSheet {
+    __weak typeof(self) weakSelf = self;
     
-    if (actionSheet == self.deleteImageActionSheet) {
-        // delete button
-        if (buttonIndex == 0)
-            if (self.deleteImageIndexPath != nil) {
-                [self deleteImageFromCollectionAtIndexPath:self.deleteImageIndexPath];
-                self.deleteImageIndexPath = nil;
-            }
-    }
+    self.removeImageActionSheet =
+        [CMARemoveImageActionSheet alertControllerWithTitle:nil
+                                                    message:nil
+                                             preferredStyle:UIAlertControllerStyleActionSheet];
+    
+    self.removeImageActionSheet.deleteActionBlock = ^void(UIAlertAction *action) {
+        if (weakSelf.deleteImageIndexPath != nil) {
+            [weakSelf deleteImageFromCollectionAtIndexPath:weakSelf.deleteImageIndexPath];
+            weakSelf.deleteImageIndexPath = nil;
+        }
+    };
 }
 
 #pragma mark - Navigation
@@ -597,7 +608,7 @@ NSString *const kNotSelectedString = @"Not Selected";
         CMASpecies *species = [[[self journal] userDefineNamed:SET_SPECIES] objectNamed:[self.speciesDetailLabel text]];
         [anEntry setFishSpecies:species];
     } else {
-        [CMAAlerts errorAlert:@"Please select a species."];
+        [CMAAlerts errorAlert:@"Please select a species." presentationViewController:self];
         return NO;
     }
     
@@ -628,7 +639,7 @@ NSString *const kNotSelectedString = @"Not Selected";
     } else {
         if (([self.poundsTextField.text isEqualToString:@""] && ![self.ouncesTextField.text isEqualToString:@""]) ||
             (![self.poundsTextField.text isEqualToString:@""] && [self.ouncesTextField.text isEqualToString:@""]))
-            [CMAAlerts errorAlert:@"You must fill out both the pounds and ounces fields!"];
+            [CMAAlerts errorAlert:@"You must fill out both the pounds and ounces fields!" presentationViewController:self];
         
         if (![[self.poundsTextField text] isEqualToString:@""]) {
             NSNumber *pounds = [NSNumber numberWithInteger:[[self.poundsTextField text] integerValue]];
@@ -809,7 +820,7 @@ NSString *const kNotSelectedString = @"Not Selected";
 }
 
 - (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error {
-    [CMAAlerts errorAlert:[NSString stringWithFormat:@"Failed to get user location. Error: %@", error.localizedDescription]];
+    [CMAAlerts errorAlert:[NSString stringWithFormat:@"Failed to get user location. Error: %@", error.localizedDescription] presentationViewController:self];
 }
 
 #pragma mark - Weather 
@@ -852,7 +863,7 @@ NSString *const kNotSelectedString = @"Not Selected";
 // Sets self.weatherData from data gathered from the OpenWeatherMapAPI.
 - (void)initWeatherDataWithCoordinate:(CLLocationCoordinate2D)coordinate {
     if (![CMAUtilities validConnection]) {
-        [CMAAlerts errorAlert:@"You do not have a valid network connection. Please connect and try again."];
+        [CMAAlerts errorAlert:@"You do not have a valid network connection. Please connect and try again." presentationViewController:self];
         [self.weatherIndicator setHidden:YES];
         return;
     }
@@ -862,7 +873,7 @@ NSString *const kNotSelectedString = @"Not Selected";
     [self.weatherData.weatherAPI currentWeatherByCoordinate:self.weatherData.coordinate withCallback:^(NSError *error, NSDictionary *result) {
         if (error) {
             NSLog(@"Error getting weather data: %@", error.localizedDescription);
-            [CMAAlerts errorAlert:@"Oops! There was an error getting weather data. Please try again later."];
+            [CMAAlerts errorAlert:@"Oops! There was an error getting weather data. Please try again later." presentationViewController:self];
             [self.weatherIndicator setHidden:YES];
             return;
         }
