@@ -873,8 +873,9 @@ NSString *const kNotSelectedString = @"Not Selected";
     [self.weatherData.weatherAPI currentWeatherByCoordinate:self.weatherData.coordinate withCallback:^(NSError *error, NSDictionary *result) {
         if (error) {
             NSLog(@"Error getting weather data: %@", error.localizedDescription);
-            [CMAAlerts errorAlert:@"Oops! There was an error getting weather data. Please try again later." presentationViewController:self];
+            [CMAAlerts errorAlert:@"There was an error getting weather data. Please try again later." presentationViewController:self];
             [self.weatherIndicator setHidden:YES];
+            [self setWeatherData:nil];
             return;
         }
         
