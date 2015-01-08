@@ -93,6 +93,9 @@ extern NSString *const UNIT_METRIC_TEMPERATURE_SHORTHAND;
 extern NSString *const UNIT_METRIC_SPEED;
 extern NSString *const UNIT_METRIC_SPEED_SHORTHAND;
 
+// notifications
+extern NSString *const NOTIFICATION_CHANGE_JOURNAL;
+
 extern NSString *const GLOBAL_FONT;
 
 extern CGFloat const TABLE_SECTION_SPACING;

@@ -17,7 +17,9 @@
     
     [self iCloudUbiquityTokenHandler];
     [self iCloudAccountChangeHandler];
-    [self iCloudRequestHandler];
+    [self iCloudRequestHandlerOverrideFirstLaunch:NO withCallback:nil];
+    
+    //[self iCloudDisableHandler];
     
     [self initAppearances];
     
@@ -45,11 +47,14 @@
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
+    [self initJournal]; // will post a notification for view controllers to refresh
+    
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application
 {
+    [self.journal archive];
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
 
@@ -75,34 +80,35 @@
 
 #pragma mark - iCloud Handlers
 
-#define kUbiquityTokenIDKey         @"CMA.MyFishingJournal.UbiquityIdentityToken"
-#define kFirstLaunchWithCloudKey    @"CMA.MyFishingJournal.FirstLaunchStringKey"
-#define kUsingCloudBackupKey        @"CMA.MyFishingJournal.UsingCloudBackup"
-
-#define kNil 0
-#define kYES 1
-#define kNO  2
-
+NSString *const kUbiquityTokenIDKey = @"CMA.MyFishingJournal.UbiquityIdentityToken";
 NSString *const kFirstLaunchKey = @"CMA.MyFishingJournal.firstLaunchWithCloudAvailableKey";
 NSString *const kCloudBackupEnabledKey = @"CMA.MyFishingJournal.cloudBackupEnabledKey";
+
+NSInteger const kNil = 0;
+NSInteger const kYES = 1;
+NSInteger const kNO = 2;
 
 // Checks to see if iCloud is available. Save the current Ubiquity Token ID if an account is logged in.
 - (void)iCloudUbiquityTokenHandler {
     // gets the current devices iCloud token and archives it, or removes it from the archive if it doesn't exist
     id currentCloudToken = [[NSFileManager defaultManager] ubiquityIdentityToken];
-    id previousCloudToken = [[NSUserDefaults standardUserDefaults] objectForKey:kUbiquityTokenIDKey];
+    
+    // gets previously saved token
+    id previousCloudTokenData = [[NSUserDefaults standardUserDefaults] objectForKey:kUbiquityTokenIDKey];
+    id previousCloudToken;
+    
+    if (previousCloudTokenData)
+        previousCloudToken = [NSKeyedUnarchiver unarchiveObjectWithData:previousCloudTokenData];
     
     if (currentCloudToken && ![currentCloudToken isEqualToData:previousCloudToken]) { // if the current ID is different
         NSData *newTokenData = [NSKeyedArchiver archivedDataWithRootObject:currentCloudToken];
         
         [[NSUserDefaults standardUserDefaults] setObject:newTokenData forKey:kUbiquityTokenIDKey];
-        [[NSUserDefaults standardUserDefaults] setInteger:kYES forKey:kFirstLaunchWithCloudKey];
-        [[NSUserDefaults standardUserDefaults] setBool:NO forKey:kUsingCloudBackupKey];
+        [[NSUserDefaults standardUserDefaults] setInteger:kYES forKey:kFirstLaunchKey];
+        [[NSUserDefaults standardUserDefaults] setBool:NO forKey:kCloudBackupEnabledKey];
         
-    } else if (!currentCloudToken) { // if no iCloud account is signed in, remove stored key
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:kUbiquityTokenIDKey];
-        [[NSUserDefaults standardUserDefaults] setBool:NO forKey:kUsingCloudBackupKey];
-    }
+    } else if (!currentCloudToken) // if no iCloud account is signed in, remove stored key
+        [self iCloudDisableHandler];
 }
 
 // sets up a listener for when the ubiquity identity token changes.
@@ -122,21 +128,21 @@ NSString *const kCloudBackupEnabledKey = @"CMA.MyFishingJournal.cloudBackupEnabl
         [CMAAlerts errorAlert:@"iCloud has been disabled. Your journal entries will no longer update on all your devices." presentationViewController:self.window.rootViewController];
     
     [self iCloudUbiquityTokenHandler];
-    [self iCloudRequestHandler];
+    [self iCloudRequestHandlerOverrideFirstLaunch:NO withCallback:nil];
 }
 
 // Asks the user if they want to use iCloud or local storage (if an iCloud account is logged in).
 // Uses local storage if no account is logged in.
-- (void)iCloudRequestHandler {
+- (void)iCloudRequestHandlerOverrideFirstLaunch:(BOOL)overrideFirstLaunch withCallback:(void(^)())aCallbackBlock {
     NSInteger firstLaunchWithCloudAvailable = [[NSUserDefaults standardUserDefaults] integerForKey:kFirstLaunchKey];
     
-    if (firstLaunchWithCloudAvailable == 0) {
-        [[NSUserDefaults standardUserDefaults] setInteger:1 forKey:kFirstLaunchKey];
-        firstLaunchWithCloudAvailable = 1;
+    if (firstLaunchWithCloudAvailable == kNil) {
+        [[NSUserDefaults standardUserDefaults] setInteger:kYES forKey:kFirstLaunchKey];
+        firstLaunchWithCloudAvailable = kYES;
     }
     
     // ask the user if they want to use iCloud
-    if ([[NSFileManager defaultManager] ubiquityIdentityToken] && (firstLaunchWithCloudAvailable == 1)) { // if this is the first launch with an iCloud account
+    if ([[NSFileManager defaultManager] ubiquityIdentityToken] && (firstLaunchWithCloudAvailable == kYES || overrideFirstLaunch)) { // if this is the first launch with an iCloud account
         UIAlertController *alert =
             [UIAlertController alertControllerWithTitle:@"Choose Storage Option"
                                                 message:@"Should journal entries be stored in iCloud and be available on all your devices (recommended)?"
@@ -147,7 +153,10 @@ NSString *const kCloudBackupEnabledKey = @"CMA.MyFishingJournal.cloudBackupEnabl
                                      style:UIAlertActionStyleDefault
                                    handler:^(UIAlertAction *action) {
                                        [[NSUserDefaults standardUserDefaults] setBool:NO forKey:kCloudBackupEnabledKey];
-                                       [self initJournalFromLocalStorage];
+                                       [self initJournal];
+                                       
+                                       if (aCallbackBlock)
+                                           aCallbackBlock();
                                    }];
         
         UIAlertAction *useCloudAction =
@@ -156,6 +165,9 @@ NSString *const kCloudBackupEnabledKey = @"CMA.MyFishingJournal.cloudBackupEnabl
                                    handler:^(UIAlertAction *action) {
                                        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kCloudBackupEnabledKey];
                                        [self initJournal];
+                                       
+                                       if (aCallbackBlock)
+                                           aCallbackBlock();
                                    }];
         
         [alert addAction:localOnlyAction];
@@ -165,11 +177,9 @@ NSString *const kCloudBackupEnabledKey = @"CMA.MyFishingJournal.cloudBackupEnabl
         [self.window makeKeyAndVisible];
         [self.window.rootViewController presentViewController:alert animated:YES completion:nil];
         
-        [[NSUserDefaults standardUserDefaults] setInteger:2 forKey:kFirstLaunchKey]; // first launch is no longer available
+        [[NSUserDefaults standardUserDefaults] setInteger:kNO forKey:kFirstLaunchKey]; // first launch is no longer available
     } else
         [self initJournal];
-    
-    //[[NSUserDefaults standardUserDefaults] removeObjectForKey:@"CMA.MyFishingJournal.firstLaunchWithCloudAvailableKey"];
 }
 
 #pragma mark - Journal Initializing
@@ -214,8 +224,21 @@ NSString *const kCloudBackupEnabledKey = @"CMA.MyFishingJournal.cloudBackupEnabl
                 });
             }
         });
-    } else
+    }
+    
+    if (!self.journal)
         [self initJournalFromLocalStorage];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:NOTIFICATION_CHANGE_JOURNAL object:nil];
+}
+
+- (void)iCloudDisableHandler {
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:kUbiquityTokenIDKey];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:kFirstLaunchKey];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:kCloudBackupEnabledKey];
+    
+    if (self.journal)
+        [self.journal setCloudURL:nil];
 }
 
 @end

@@ -57,6 +57,14 @@
     [self.view addSubview:self.noEntriesView];
 }
 
+- (void)registerForNotifications {
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onJournalChange:) name:NOTIFICATION_CHANGE_JOURNAL object:nil];
+}
+
+- (void)onJournalChange:(NSNotification *)aNotification {
+    [self setupView];
+}
+
 - (void)handleNoEntriesView {
     if ([[self journal] entryCount] <= 0)
         [self initNoEntriesView];
@@ -64,6 +72,20 @@
         [self.noEntriesView removeFromSuperview];
         self.noEntriesView = nil;
     }
+}
+
+- (void)setupView {
+    self.navigationController.toolbarHidden = NO;
+    self.navigationController.toolbar.userInteractionEnabled = YES;
+    
+    [self handleNoEntriesView];
+    
+    if ([[self journal] entryCount] > 0) {
+        self.deleteButton.enabled = YES;
+        self.sortButton.enabled = YES;
+    }
+    
+    [self.tableView reloadData];
 }
 
 - (void)viewDidLoad {
@@ -80,24 +102,14 @@
     }
 
     [self initSideBarMenu];
+    [self registerForNotifications];
     
     [self.tableView setTableFooterView:[[UIView alloc] initWithFrame:CGRectZero]]; // removes empty cells at the end of the list
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    
-    self.navigationController.toolbarHidden = NO;
-    self.navigationController.toolbar.userInteractionEnabled = YES;
-    
-    [self handleNoEntriesView];
-    
-    if ([[self journal] entryCount] > 0) {
-        self.deleteButton.enabled = YES;
-        self.sortButton.enabled = YES;
-    }
-    
-    [self.tableView reloadData];
+    [self setupView];
 }
 
 - (void)didReceiveMemoryWarning {

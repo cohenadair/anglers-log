@@ -18,6 +18,7 @@
 @property (nonatomic)CMAMeasuringSystemType measurementSystem;
 @property (nonatomic)CMAEntrySortMethod entrySortMethod;
 @property (nonatomic)CMASortOrder entrySortOrder;
+@property (nonatomic)BOOL cloudBackupEnabled;
 @property (strong, nonatomic)NSURL *cloudURL;
 
 // initializing

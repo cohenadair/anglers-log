@@ -123,6 +123,15 @@
 
 #pragma mark - Editing
 
+- (void)setCloudURL:(NSURL *)cloudURL {
+    if (cloudURL)
+        self.cloudBackupEnabled = YES;
+    else
+        self.cloudBackupEnabled = NO;
+    
+    _cloudURL = cloudURL;
+}
+
 - (BOOL)addEntry: (CMAEntry *)anEntry {
     if ([self entryDated:anEntry.date] != nil) {
         NSLog(@"Duplicate entry date.");

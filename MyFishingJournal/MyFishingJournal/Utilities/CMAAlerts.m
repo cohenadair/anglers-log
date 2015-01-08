@@ -20,4 +20,13 @@
     [aViewController presentViewController:alert animated:YES completion:nil];
 }
 
++ (void)alertAlert:(NSString *)msg presentationViewController:(UIViewController *)aViewController {
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Alert" message:msg preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction *OKAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:nil];
+    [alert addAction:OKAction];
+    
+    [aViewController presentViewController:alert animated:YES completion:nil];
+}
+
 @end

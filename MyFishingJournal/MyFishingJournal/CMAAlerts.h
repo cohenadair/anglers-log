@@ -9,5 +9,6 @@
 @interface CMAAlerts : NSObject
 
 + (void)errorAlert:(NSString *)msg presentationViewController:(UIViewController *)aViewController;
++ (void)alertAlert:(NSString *)msg presentationViewController:(UIViewController *)aViewController;
 
 @end

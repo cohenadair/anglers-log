@@ -15,4 +15,8 @@
 
 @property (strong, nonatomic)CMAJournal *journal;
 
+- (void)iCloudUbiquityTokenHandler;
+- (void)iCloudRequestHandlerOverrideFirstLaunch:(BOOL)overrideFirstLaunch withCallback:(void(^)())aCallbackBlock;
+- (void)iCloudDisableHandler;
+
 @end
