@@ -25,6 +25,7 @@
 @property (strong, nonatomic)NSDateFormatter *dateFormatter;
 @property (strong, nonatomic)UIActionSheet *sortActionSheet;
 @property (strong, nonatomic)CMANoXView *noEntriesView;
+@property (strong, nonatomic)UIView *loadingJournalView;
 
 @end
 
@@ -57,12 +58,30 @@
     [self.view addSubview:self.noEntriesView];
 }
 
+// Used to indicate to the user that the journal data is loading (in case it takes a few seconds getting data from iCloud).
+- (void)initLoadingJournalView {
+    self.loadingJournalView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, self.tableView.frame.size.height)];
+    [self.loadingJournalView setBackgroundColor:[UIColor whiteColor]];
+    
+    UIActivityIndicatorView *indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    [indicator setAlpha:1.0];
+    [indicator setCenter:self.loadingJournalView.center];
+    [indicator startAnimating];
+    [self.loadingJournalView addSubview:indicator];
+
+    [self.tableView addSubview:self.loadingJournalView];
+}
+
 - (void)registerForNotifications {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onJournalChange:) name:NOTIFICATION_CHANGE_JOURNAL object:nil];
 }
 
 - (void)onJournalChange:(NSNotification *)aNotification {
+    NSLog(@"Received journal change notification.");
     [self setupView];
+    
+    if (self.loadingJournalView)
+        [self.loadingJournalView setHidden:YES];
 }
 
 - (void)handleNoEntriesView {
@@ -79,6 +98,9 @@
     self.navigationController.toolbar.userInteractionEnabled = YES;
     
     [self handleNoEntriesView];
+    
+    if (![self journal])
+        [self initLoadingJournalView];
     
     if ([[self journal] entryCount] > 0) {
         self.deleteButton.enabled = YES;
