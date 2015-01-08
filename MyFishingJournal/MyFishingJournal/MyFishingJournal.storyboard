@@ -57,40 +57,6 @@
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
-                            <tableViewSection headerTitle="Backup" id="OBc-Kl-7pY">
-                                <cells>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="segmentedControlCell" id="SvY-5F-sG4">
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="SvY-5F-sG4" id="SRm-JP-4RV">
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="iCloud" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="52r-mj-IHG">
-                                                    <rect key="frame" x="15" y="-2" width="301" height="47"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" constant="301" id="Xqz-QP-W3F"/>
-                                                    </constraints>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tCx-Bd-gWl">
-                                                    <rect key="frame" x="536" y="6" width="51" height="31"/>
-                                                    <connections>
-                                                        <action selector="toggleCloudSwitch:" destination="xYT-rV-mpH" eventType="valueChanged" id="6F0-87-fuV"/>
-                                                    </connections>
-                                                </switch>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="52r-mj-IHG" firstAttribute="leading" secondItem="SRm-JP-4RV" secondAttribute="leadingMargin" constant="7" id="97R-0w-JYX"/>
-                                                <constraint firstItem="52r-mj-IHG" firstAttribute="top" secondItem="SRm-JP-4RV" secondAttribute="topMargin" constant="-10" id="PfQ-Pu-93n"/>
-                                                <constraint firstItem="52r-mj-IHG" firstAttribute="centerY" secondItem="SRm-JP-4RV" secondAttribute="centerY" id="aQd-QF-414"/>
-                                                <constraint firstAttribute="trailingMargin" secondItem="tCx-Bd-gWl" secondAttribute="trailing" constant="7" id="fDq-GC-ya1"/>
-                                                <constraint firstItem="tCx-Bd-gWl" firstAttribute="centerY" secondItem="52r-mj-IHG" secondAttribute="centerY" id="pg6-wT-jv3"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                </cells>
-                            </tableViewSection>
                         </sections>
                         <connections>
                             <outlet property="dataSource" destination="xYT-rV-mpH" id="aai-yT-KPP"/>
@@ -103,7 +69,6 @@
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
                     <nil key="simulatedBottomBarMetrics"/>
                     <connections>
-                        <outlet property="cloudSwitch" destination="tCx-Bd-gWl" id="omI-YH-aCb"/>
                         <outlet property="menuButton" destination="dIN-2n-lvB" id="MWr-ke-4b2"/>
                         <outlet property="unitsSegmentedControl" destination="Hfc-Hg-ucV" id="ILd-xg-wt4"/>
                     </connections>

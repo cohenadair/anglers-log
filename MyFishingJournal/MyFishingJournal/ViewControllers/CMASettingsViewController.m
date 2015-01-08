@@ -15,7 +15,6 @@
 
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *menuButton;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *unitsSegmentedControl;
-@property (weak, nonatomic) IBOutlet UISwitch *cloudSwitch;
 
 @end
 
@@ -42,7 +41,6 @@
     [super viewDidLoad];
     [self initSideBarMenu];
     [self.unitsSegmentedControl setSelectedSegmentIndex:[self journal].measurementSystem];
-    [self.cloudSwitch setOn:[self journal].cloudBackupEnabled];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -74,25 +72,6 @@
 - (IBAction)clickUnitsSegmentedControl:(UISegmentedControl *)sender {
     [[self journal] setMeasurementSystem:(CMAMeasuringSystemType)[sender selectedSegmentIndex]];
     [[self journal] archive];
-}
-
-- (IBAction)toggleCloudSwitch:(UISwitch *)sender {
-    CMAAppDelegate *delegate = ((CMAAppDelegate *)[[UIApplication sharedApplication] delegate]);
-    
-    if (sender.on) {
-        if (![[NSFileManager defaultManager] ubiquityIdentityToken]) {
-            [CMAAlerts errorAlert:@"No iCloud account enabled. Please enable iCloud in your devices settings and try again." presentationViewController:self];
-            sender.on = NO;
-        } else {
-            [delegate iCloudUbiquityTokenHandler];
-            [delegate iCloudRequestHandlerOverrideFirstLaunch:YES withCallback:^(void) {
-                [sender setOn:[self journal].cloudBackupEnabled animated:YES];
-            }];
-        }
-    } else {
-        [delegate iCloudDisableHandler];
-        [CMAAlerts alertAlert:@"Your journal entries will no longer be backed up by iCloud." presentationViewController:self];
-    }
 }
 
 @end
