@@ -47,7 +47,8 @@
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
-    [self initJournal]; // will post a notification for view controllers to refresh
+    if (self.journal)
+        [self initJournal]; // will post a notification for view controllers to refresh
     
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
 }
@@ -222,14 +223,17 @@ NSInteger const kNO = 2;
                 dispatch_async (dispatch_get_main_queue (), ^(void) {
                     // On the main thread, update UI and state as appropriate
                 });
+            } else {
+                NSLog(@"Error getting iCloud container.");
+                [self initJournalFromLocalStorage];
             }
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:NOTIFICATION_CHANGE_JOURNAL object:nil];
         });
-    }
-    
-    if (!self.journal)
+    } else {
         [self initJournalFromLocalStorage];
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName:NOTIFICATION_CHANGE_JOURNAL object:nil];
+        [[NSNotificationCenter defaultCenter] postNotificationName:NOTIFICATION_CHANGE_JOURNAL object:nil];
+    }
 }
 
 - (void)iCloudDisableHandler {
