@@ -14,6 +14,16 @@
 		0D81A3B61A4F845E001FF9FA /* CMAWaterClarity.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D81A3B41A4F845E001FF9FA /* CMAWaterClarity.m */; };
 		0D81A3B81A4F898D001FF9FA /* water_clarities_large.png in Resources */ = {isa = PBXBuildFile; fileRef = 0D81A3B71A4F898D001FF9FA /* water_clarities_large.png */; };
 		0D81A3BA1A4F899C001FF9FA /* water_clarities.png in Resources */ = {isa = PBXBuildFile; fileRef = 0D81A3B91A4F899C001FF9FA /* water_clarities.png */; };
+		0DAC57721A5E286C003D412E /* AFHTTPRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DAC57601A5E286C003D412E /* AFHTTPRequestOperation.m */; };
+		0DAC57731A5E286C003D412E /* AFHTTPRequestOperationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DAC57621A5E286C003D412E /* AFHTTPRequestOperationManager.m */; };
+		0DAC57741A5E286C003D412E /* AFHTTPSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DAC57641A5E286C003D412E /* AFHTTPSessionManager.m */; };
+		0DAC57751A5E286C003D412E /* AFNetworkReachabilityManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DAC57671A5E286C003D412E /* AFNetworkReachabilityManager.m */; };
+		0DAC57761A5E286C003D412E /* AFSecurityPolicy.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DAC57691A5E286C003D412E /* AFSecurityPolicy.m */; };
+		0DAC57771A5E286C003D412E /* AFURLConnectionOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DAC576B1A5E286C003D412E /* AFURLConnectionOperation.m */; };
+		0DAC57781A5E286C003D412E /* AFURLRequestSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DAC576D1A5E286C003D412E /* AFURLRequestSerialization.m */; };
+		0DAC57791A5E286C003D412E /* AFURLResponseSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DAC576F1A5E286C003D412E /* AFURLResponseSerialization.m */; };
+		0DAC577A1A5E286C003D412E /* AFURLSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DAC57711A5E286C003D412E /* AFURLSessionManager.m */; };
+		0DAC577D1A5E287C003D412E /* OWMWeatherAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DAC577C1A5E287C003D412E /* OWMWeatherAPI.m */; };
 		0DC690B21A5CA630006C8202 /* CMARemoveImageActionSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DC690B11A5CA630006C8202 /* CMARemoveImageActionSheet.m */; };
 		0DC690B51A5CE45D006C8202 /* CMAJournalDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DC690B41A5CE45D006C8202 /* CMAJournalDocument.m */; };
 		0DCC26551A520C0800738F04 /* CMAUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DCC26541A520C0800738F04 /* CMAUtilities.m */; };
@@ -153,6 +163,27 @@
 		0D81A3B41A4F845E001FF9FA /* CMAWaterClarity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAWaterClarity.m; path = ApplicationModel/UserDefines/CMAWaterClarity.m; sourceTree = "<group>"; };
 		0D81A3B71A4F898D001FF9FA /* water_clarities_large.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = water_clarities_large.png; path = Images/LargeIcons/water_clarities_large.png; sourceTree = "<group>"; };
 		0D81A3B91A4F899C001FF9FA /* water_clarities.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = water_clarities.png; path = Images/Icons/water_clarities.png; sourceTree = "<group>"; };
+		0DAC575F1A5E286C003D412E /* AFHTTPRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AFHTTPRequestOperation.h; path = AFNetworking/AFHTTPRequestOperation.h; sourceTree = "<group>"; };
+		0DAC57601A5E286C003D412E /* AFHTTPRequestOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AFHTTPRequestOperation.m; path = AFNetworking/AFHTTPRequestOperation.m; sourceTree = "<group>"; };
+		0DAC57611A5E286C003D412E /* AFHTTPRequestOperationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AFHTTPRequestOperationManager.h; path = AFNetworking/AFHTTPRequestOperationManager.h; sourceTree = "<group>"; };
+		0DAC57621A5E286C003D412E /* AFHTTPRequestOperationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AFHTTPRequestOperationManager.m; path = AFNetworking/AFHTTPRequestOperationManager.m; sourceTree = "<group>"; };
+		0DAC57631A5E286C003D412E /* AFHTTPSessionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AFHTTPSessionManager.h; path = AFNetworking/AFHTTPSessionManager.h; sourceTree = "<group>"; };
+		0DAC57641A5E286C003D412E /* AFHTTPSessionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AFHTTPSessionManager.m; path = AFNetworking/AFHTTPSessionManager.m; sourceTree = "<group>"; };
+		0DAC57651A5E286C003D412E /* AFNetworking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AFNetworking.h; path = AFNetworking/AFNetworking.h; sourceTree = "<group>"; };
+		0DAC57661A5E286C003D412E /* AFNetworkReachabilityManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AFNetworkReachabilityManager.h; path = AFNetworking/AFNetworkReachabilityManager.h; sourceTree = "<group>"; };
+		0DAC57671A5E286C003D412E /* AFNetworkReachabilityManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AFNetworkReachabilityManager.m; path = AFNetworking/AFNetworkReachabilityManager.m; sourceTree = "<group>"; };
+		0DAC57681A5E286C003D412E /* AFSecurityPolicy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AFSecurityPolicy.h; path = AFNetworking/AFSecurityPolicy.h; sourceTree = "<group>"; };
+		0DAC57691A5E286C003D412E /* AFSecurityPolicy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AFSecurityPolicy.m; path = AFNetworking/AFSecurityPolicy.m; sourceTree = "<group>"; };
+		0DAC576A1A5E286C003D412E /* AFURLConnectionOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AFURLConnectionOperation.h; path = AFNetworking/AFURLConnectionOperation.h; sourceTree = "<group>"; };
+		0DAC576B1A5E286C003D412E /* AFURLConnectionOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AFURLConnectionOperation.m; path = AFNetworking/AFURLConnectionOperation.m; sourceTree = "<group>"; };
+		0DAC576C1A5E286C003D412E /* AFURLRequestSerialization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AFURLRequestSerialization.h; path = AFNetworking/AFURLRequestSerialization.h; sourceTree = "<group>"; };
+		0DAC576D1A5E286C003D412E /* AFURLRequestSerialization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AFURLRequestSerialization.m; path = AFNetworking/AFURLRequestSerialization.m; sourceTree = "<group>"; };
+		0DAC576E1A5E286C003D412E /* AFURLResponseSerialization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AFURLResponseSerialization.h; path = AFNetworking/AFURLResponseSerialization.h; sourceTree = "<group>"; };
+		0DAC576F1A5E286C003D412E /* AFURLResponseSerialization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AFURLResponseSerialization.m; path = AFNetworking/AFURLResponseSerialization.m; sourceTree = "<group>"; };
+		0DAC57701A5E286C003D412E /* AFURLSessionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AFURLSessionManager.h; path = AFNetworking/AFURLSessionManager.h; sourceTree = "<group>"; };
+		0DAC57711A5E286C003D412E /* AFURLSessionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AFURLSessionManager.m; path = AFNetworking/AFURLSessionManager.m; sourceTree = "<group>"; };
+		0DAC577B1A5E287C003D412E /* OWMWeatherAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OWMWeatherAPI.h; path = OWMWeatherAPI/OWMWeatherAPI.h; sourceTree = "<group>"; };
+		0DAC577C1A5E287C003D412E /* OWMWeatherAPI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = OWMWeatherAPI.m; path = OWMWeatherAPI/OWMWeatherAPI.m; sourceTree = "<group>"; };
 		0DC690AB1A55F70F006C8202 /* CMAUserDefineProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAUserDefineProtocol.h; path = ApplicationModel/UserDefines/CMAUserDefineProtocol.h; sourceTree = "<group>"; };
 		0DC690AC1A5B56C6006C8202 /* MyFishingJournal.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = MyFishingJournal.entitlements; sourceTree = "<group>"; };
 		0DC690B01A5CA630006C8202 /* CMARemoveImageActionSheet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMARemoveImageActionSheet.h; path = CustomViews/CMARemoveImageActionSheet.h; sourceTree = "<group>"; };
@@ -341,6 +372,41 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0DAC575D1A5E284C003D412E /* AFNetworking */ = {
+			isa = PBXGroup;
+			children = (
+				0DAC575F1A5E286C003D412E /* AFHTTPRequestOperation.h */,
+				0DAC57601A5E286C003D412E /* AFHTTPRequestOperation.m */,
+				0DAC57611A5E286C003D412E /* AFHTTPRequestOperationManager.h */,
+				0DAC57621A5E286C003D412E /* AFHTTPRequestOperationManager.m */,
+				0DAC57631A5E286C003D412E /* AFHTTPSessionManager.h */,
+				0DAC57641A5E286C003D412E /* AFHTTPSessionManager.m */,
+				0DAC57651A5E286C003D412E /* AFNetworking.h */,
+				0DAC57661A5E286C003D412E /* AFNetworkReachabilityManager.h */,
+				0DAC57671A5E286C003D412E /* AFNetworkReachabilityManager.m */,
+				0DAC57681A5E286C003D412E /* AFSecurityPolicy.h */,
+				0DAC57691A5E286C003D412E /* AFSecurityPolicy.m */,
+				0DAC576A1A5E286C003D412E /* AFURLConnectionOperation.h */,
+				0DAC576B1A5E286C003D412E /* AFURLConnectionOperation.m */,
+				0DAC576C1A5E286C003D412E /* AFURLRequestSerialization.h */,
+				0DAC576D1A5E286C003D412E /* AFURLRequestSerialization.m */,
+				0DAC576E1A5E286C003D412E /* AFURLResponseSerialization.h */,
+				0DAC576F1A5E286C003D412E /* AFURLResponseSerialization.m */,
+				0DAC57701A5E286C003D412E /* AFURLSessionManager.h */,
+				0DAC57711A5E286C003D412E /* AFURLSessionManager.m */,
+			);
+			name = AFNetworking;
+			sourceTree = "<group>";
+		};
+		0DAC575E1A5E2853003D412E /* OWMWeatherAPI */ = {
+			isa = PBXGroup;
+			children = (
+				0DAC577B1A5E287C003D412E /* OWMWeatherAPI.h */,
+				0DAC577C1A5E287C003D412E /* OWMWeatherAPI.m */,
+			);
+			name = OWMWeatherAPI;
+			sourceTree = "<group>";
+		};
 		E705AD6A1A229ABD0077F16C /* LargeIcons */ = {
 			isa = PBXGroup;
 			children = (
@@ -605,6 +671,8 @@
 		E7C29D0C1A143A1600015B42 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				0DAC575E1A5E2853003D412E /* OWMWeatherAPI */,
+				0DAC575D1A5E284C003D412E /* AFNetworking */,
 				E705AD791A22DD2F0077F16C /* XYPieChart */,
 				E7C29D0D1A143A1600015B42 /* SWRevealViewController */,
 			);
@@ -855,16 +923,22 @@
 				E72669B719DF14DE003C8E0B /* CMAEntry.m in Sources */,
 				E7A331301A1D710200C1D3F1 /* CMAViewPhotosViewController.m in Sources */,
 				E705ADA01A26D7710077F16C /* CMASelectFishingSpotViewController.m in Sources */,
+				0DAC57771A5E286C003D412E /* AFURLConnectionOperation.m in Sources */,
 				E7A3311D1A1D706A00C1D3F1 /* CMAAddEntryViewController.m in Sources */,
 				E705AD811A2400270077F16C /* CMACircleView.m in Sources */,
+				0DAC577D1A5E287C003D412E /* OWMWeatherAPI.m in Sources */,
+				0DAC57781A5E286C003D412E /* AFURLRequestSerialization.m in Sources */,
 				0D34EF521A44EB2C00764F18 /* CMAWeatherData.m in Sources */,
 				E7C29D7E1A1C183E00015B42 /* CMACameraButton.m in Sources */,
 				0D81A3B51A4F845E001FF9FA /* CMAWaterClarity.m in Sources */,
 				E7A51EA819F4440F009BDC20 /* CMAUserDefinesViewController.m in Sources */,
 				E705AD7C1A22DD420077F16C /* XYPieChart.m in Sources */,
 				E7A331201A1D706A00C1D3F1 /* CMAViewEntriesViewController.m in Sources */,
+				0DAC57731A5E286C003D412E /* AFHTTPRequestOperationManager.m in Sources */,
 				E78BB7E91A133A940082004B /* CMATouchSegmentedControl.m in Sources */,
+				0DAC57751A5E286C003D412E /* AFNetworkReachabilityManager.m in Sources */,
 				E7C29D841A1C210000015B42 /* CMAImagePickerViewController.m in Sources */,
+				0DAC57741A5E286C003D412E /* AFHTTPSessionManager.m in Sources */,
 				E7C29D741A1BD38800015B42 /* CMAAddBaitViewController.m in Sources */,
 				0DC690B21A5CA630006C8202 /* CMARemoveImageActionSheet.m in Sources */,
 				E7C29D161A1445AE00015B42 /* CMASideMenuViewController.m in Sources */,
@@ -873,11 +947,13 @@
 				E7A51E9E19EFAA0E009BDC20 /* CMASettingsViewController.m in Sources */,
 				0D7F77821A4E54770010674C /* CMAWeatherDataView.m in Sources */,
 				E7C29D7B1A1BE0BE00015B42 /* CMABaitTableViewCell.m in Sources */,
+				0DAC57761A5E286C003D412E /* AFSecurityPolicy.m in Sources */,
 				E72669C919E6F4A8003C8E0B /* CMAJournal.m in Sources */,
 				E738585A19FE0A3400FE122B /* CMAFishingMethod.m in Sources */,
 				E7A331291A1D70C200C1D3F1 /* CMAAddLocationViewController.m in Sources */,
 				E7A331311A1D710200C1D3F1 /* CMASinglePhotoViewController.m in Sources */,
 				E78A1F911A2FC40200FDA5E2 /* CMAStatisticsTableViewCell.m in Sources */,
+				0DAC57721A5E286C003D412E /* AFHTTPRequestOperation.m in Sources */,
 				0DCC26551A520C0800738F04 /* CMAUtilities.m in Sources */,
 				E7A3312A1A1D70C200C1D3F1 /* CMASingleLocationViewController.m in Sources */,
 				E7C29D101A143A1600015B42 /* SWRevealViewController.m in Sources */,
@@ -892,12 +968,14 @@
 				E738585219FE093700FE122B /* CMALocation.m in Sources */,
 				E7A331281A1D70C200C1D3F1 /* CMAAddFishingSpotViewController.m in Sources */,
 				E70B638219D3A8E400DFBA85 /* main.m in Sources */,
+				0DAC577A1A5E286C003D412E /* AFURLSessionManager.m in Sources */,
 				E7A3311F1A1D706A00C1D3F1 /* CMASingleEntryViewController.m in Sources */,
 				0DC690B51A5CE45D006C8202 /* CMAJournalDocument.m in Sources */,
 				E7A3311E1A1D706A00C1D3F1 /* CMAEntrySortingViewController.m in Sources */,
 				E7A331361A2286E200C1D3F1 /* CMANoXView.m in Sources */,
 				E738585619FE098A00FE122B /* CMABait.m in Sources */,
 				E738584A19FDFCBF00FE122B /* CMASpecies.m in Sources */,
+				0DAC57791A5E286C003D412E /* AFURLResponseSerialization.m in Sources */,
 				E7A51EBA19F4ADC2009BDC20 /* CMAConstants.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

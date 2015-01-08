@@ -11,7 +11,7 @@
 
 #import "CMAWeatherData.h"
 
-NSString *const API_KEY = @"35f69a23678dead2c75e0599eadbb4e1";
+NSString *const kAPIKey = @"35f69a23678dead2c75e0599eadbb4e1";
 
 @implementation CMAWeatherData
 
@@ -45,13 +45,13 @@ NSString *const API_KEY = @"35f69a23678dead2c75e0599eadbb4e1";
 
 - (id)initWithCoordinates:(CLLocationCoordinate2D)coordinate andJournal:(CMAMeasuringSystemType)aMeasurementSystemType {
     if (self = [super init]) {
-        //_weatherAPI = [[OWMWeatherAPI alloc] initWithAPIKey:API_KEY];
+        _weatherAPI = [[OWMWeatherAPI alloc] initWithAPIKey:kAPIKey];
         _coordinate = coordinate;
         
-        /*if (aMeasurementSystemType == CMAMeasuringSystemTypeImperial)
+        if (aMeasurementSystemType == CMAMeasuringSystemTypeImperial)
             _weatherAPI.temperatureFormat = kOWMTempFahrenheit;
         else
-            _weatherAPI.temperatureFormat = kOWMTempCelcius;*/
+            _weatherAPI.temperatureFormat = kOWMTempCelcius;
     }
     
     return self;
@@ -70,7 +70,7 @@ NSString *const API_KEY = @"35f69a23678dead2c75e0599eadbb4e1";
 }
 
 - (NSString *)windSpeedAsStringWithUnits:(NSString *)aUnitString {
-    return [NSString stringWithFormat:@"Wind Speed: %ld%@", (long)[self.windSpeed integerValue], aUnitString];
+    return [NSString stringWithFormat:@"Wind Speed: %ld %@", (long)[self.windSpeed integerValue], aUnitString];
 }
 
 - (NSString *)skyConditionsAsString {

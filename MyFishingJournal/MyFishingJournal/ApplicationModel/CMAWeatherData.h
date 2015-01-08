@@ -7,12 +7,12 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <CoreLocation/CoreLocation.h>
+#import "OWMWeatherAPI.h"   
 #import "CMAConstants.h"
 
 @interface CMAWeatherData : NSObject <NSCoding>
 
-//@property (strong, nonatomic)OWMWeatherAPI *weatherAPI;
+@property (strong, nonatomic)OWMWeatherAPI *weatherAPI;
 @property (nonatomic)CLLocationCoordinate2D coordinate;
 
 @property (strong, nonatomic)NSNumber *temperature;

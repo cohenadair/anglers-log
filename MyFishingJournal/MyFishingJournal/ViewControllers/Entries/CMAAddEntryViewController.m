@@ -821,6 +821,8 @@ NSString *const kNotSelectedString = @"Not Selected";
 
 - (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error {
     [CMAAlerts errorAlert:[NSString stringWithFormat:@"Failed to get user location. Error: %@", error.localizedDescription] presentationViewController:self];
+    [self.weatherIndicator stopAnimating];
+    [self.weatherIndicator setHidden:YES];
 }
 
 #pragma mark - Weather 
@@ -867,7 +869,7 @@ NSString *const kNotSelectedString = @"Not Selected";
         [self.weatherIndicator setHidden:YES];
         return;
     }
-    /*
+    
     self.weatherData = [CMAWeatherData withCoordinates:coordinate andJournal:[[self journal] measurementSystem]];
     
     [self.weatherData.weatherAPI currentWeatherByCoordinate:self.weatherData.coordinate withCallback:^(NSError *error, NSDictionary *result) {
@@ -896,7 +898,6 @@ NSString *const kNotSelectedString = @"Not Selected";
         [self initWeatherDataViewWithData:self.weatherData];
         [self toggleWeatherDataCell];
     }];
-     */
 }
 
 - (void)initWeatherDataViewWithData:(CMAWeatherData *)someWeatherData {
