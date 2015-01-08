@@ -219,16 +219,18 @@ NSInteger const kNO = 2;
                     [self.journal validateUserDefines];
                 
                 self.journal.cloudURL = myContainer;
-                
-                dispatch_async (dispatch_get_main_queue (), ^(void) {
-                    // On the main thread, update UI and state as appropriate
-                });
-            } else {
-                NSLog(@"Error getting iCloud container.");
-                [self initJournalFromLocalStorage];
             }
             
-            [[NSNotificationCenter defaultCenter] postNotificationName:NOTIFICATION_CHANGE_JOURNAL object:nil];
+            dispatch_async (dispatch_get_main_queue (), ^(void) {
+                // On the main thread, update UI and state as appropriate
+            
+                if (!myContainer) {
+                    NSLog(@"Error getting iCloud container.");
+                    [self initJournalFromLocalStorage];
+                }
+                
+                [[NSNotificationCenter defaultCenter] postNotificationName:NOTIFICATION_CHANGE_JOURNAL object:nil];
+            });
         });
     } else {
         [self initJournalFromLocalStorage];
