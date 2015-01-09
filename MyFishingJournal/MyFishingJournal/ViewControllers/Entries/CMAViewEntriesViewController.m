@@ -65,7 +65,7 @@
     
     UIActivityIndicatorView *indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     [indicator setAlpha:1.0];
-    [indicator setCenter:self.loadingJournalView.center];
+    [indicator setCenter:CGPointMake(self.loadingJournalView.center.x, 50)];
     [indicator startAnimating];
     [self.loadingJournalView addSubview:indicator];
 
@@ -77,7 +77,6 @@
 }
 
 - (void)onJournalChange:(NSNotification *)aNotification {
-    NSLog(@"Received journal change notification.");
     [self setupView];
     
     if (self.loadingJournalView)

@@ -25,7 +25,6 @@
 		0DAC577A1A5E286C003D412E /* AFURLSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DAC57711A5E286C003D412E /* AFURLSessionManager.m */; };
 		0DAC577D1A5E287C003D412E /* OWMWeatherAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DAC577C1A5E287C003D412E /* OWMWeatherAPI.m */; };
 		0DC690B21A5CA630006C8202 /* CMARemoveImageActionSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DC690B11A5CA630006C8202 /* CMARemoveImageActionSheet.m */; };
-		0DC690B51A5CE45D006C8202 /* CMAJournalDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DC690B41A5CE45D006C8202 /* CMAJournalDocument.m */; };
 		0DCC26551A520C0800738F04 /* CMAUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DCC26541A520C0800738F04 /* CMAUtilities.m */; };
 		0DCC26571A520DD300738F04 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DCC26561A520DD300738F04 /* SystemConfiguration.framework */; };
 		E700E46E1A29CF2600BB6337 /* no_image.png in Resources */ = {isa = PBXBuildFile; fileRef = E700E46D1A29CF2600BB6337 /* no_image.png */; };
@@ -188,8 +187,6 @@
 		0DC690AC1A5B56C6006C8202 /* MyFishingJournal.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = MyFishingJournal.entitlements; sourceTree = "<group>"; };
 		0DC690B01A5CA630006C8202 /* CMARemoveImageActionSheet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMARemoveImageActionSheet.h; path = CustomViews/CMARemoveImageActionSheet.h; sourceTree = "<group>"; };
 		0DC690B11A5CA630006C8202 /* CMARemoveImageActionSheet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMARemoveImageActionSheet.m; path = CustomViews/CMARemoveImageActionSheet.m; sourceTree = "<group>"; };
-		0DC690B31A5CE45D006C8202 /* CMAJournalDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAJournalDocument.h; path = ApplicationModel/CMAJournalDocument.h; sourceTree = "<group>"; };
-		0DC690B41A5CE45D006C8202 /* CMAJournalDocument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAJournalDocument.m; path = ApplicationModel/CMAJournalDocument.m; sourceTree = "<group>"; };
 		0DCC26531A520C0800738F04 /* CMAUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAUtilities.h; path = Utilities/CMAUtilities.h; sourceTree = "<group>"; };
 		0DCC26541A520C0800738F04 /* CMAUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAUtilities.m; path = Utilities/CMAUtilities.m; sourceTree = "<group>"; };
 		0DCC26561A520DD300738F04 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
@@ -540,8 +537,6 @@
 				0D34EF511A44EB2C00764F18 /* CMAWeatherData.m */,
 				E72669C719E6F4A8003C8E0B /* CMAJournal.h */,
 				E72669C819E6F4A8003C8E0B /* CMAJournal.m */,
-				0DC690B31A5CE45D006C8202 /* CMAJournalDocument.h */,
-				0DC690B41A5CE45D006C8202 /* CMAJournalDocument.m */,
 			);
 			name = ApplicationModel;
 			sourceTree = "<group>";
@@ -970,7 +965,6 @@
 				E70B638219D3A8E400DFBA85 /* main.m in Sources */,
 				0DAC577A1A5E286C003D412E /* AFURLSessionManager.m in Sources */,
 				E7A3311F1A1D706A00C1D3F1 /* CMASingleEntryViewController.m in Sources */,
-				0DC690B51A5CE45D006C8202 /* CMAJournalDocument.m in Sources */,
 				E7A3311E1A1D706A00C1D3F1 /* CMAEntrySortingViewController.m in Sources */,
 				E7A331361A2286E200C1D3F1 /* CMANoXView.m in Sources */,
 				E738585619FE098A00FE122B /* CMABait.m in Sources */,

@@ -102,21 +102,19 @@
     NSString *archivePath = [NSString stringWithFormat:@"%@/%@", docsPath, ARCHIVE_FILE_NAME];
     
     if ([NSKeyedArchiver archiveRootObject:self toFile:archivePath]) {
-        NSLog(@"Successfully archived Journal locally.");
+        NSLog(@"Archived journal locally.");
+        
+        // archive to iCloud if needed
+        if (self.cloudBackupEnabled) {
+            if ([NSKeyedArchiver archiveRootObject:self toFile:[NSString stringWithFormat:@"%@/%@", self.cloudURL.path, ARCHIVE_FILE_NAME]])
+                NSLog(@"Archived journal to iCloud.");
+            else
+                NSLog(@"Failed to archive journal to iCloud.");
+        }
+        
         result = YES;
     } else
-        NSLog(@"Failed to archive Journal locally.");
-    
-    // move file to iCloud directory
-    if (result && self.cloudURL) {
-        NSError *error;
-        [[NSFileManager defaultManager] setUbiquitous:YES itemAtURL:[NSURL URLWithString:archivePath] destinationURL:self.cloudURL error:&error];
-        
-        if (error)
-            NSLog(@"Error moving file to iCloud: %@", error.localizedDescription);
-        
-        return result;
-    }
+        NSLog(@"Failed to archive journal locally.");
     
     return NO;
 }

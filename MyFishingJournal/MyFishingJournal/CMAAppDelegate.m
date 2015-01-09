@@ -35,6 +35,7 @@
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
     [self.journal archive];
+    [self setDidEnterBackground:YES];
     
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later. 
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
@@ -47,9 +48,10 @@
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
-    if (self.journal) {
+    // reload journal incase the database was updated in iCloud
+    if (self.didEnterBackground) {
         [self setJournal:nil];
-        [self initJournal]; // will post a notification for view controllers to refresh
+        [self initJournal];
     }
     
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
@@ -203,6 +205,11 @@ NSInteger const kNO = 2;
 }
 
 - (void)initJournal {
+    if (self.journal) {
+        NSLog(@"Journal already initialized.");
+        return;
+    }
+    
     BOOL iCloudBackupEnabled = [[NSUserDefaults standardUserDefaults] boolForKey:kCloudBackupEnabledKey];
     
     if (iCloudBackupEnabled) {
@@ -215,18 +222,22 @@ NSInteger const kNO = 2;
                 self.journal = [NSKeyedUnarchiver unarchiveObjectWithFile:filePath];
                 
                 // initialize journal from local storage if there's no iCloud archive
-                if (self.journal == nil)
+                if (self.journal == nil) {
+                    NSLog(@"No journal archive in iCloud, loading from local storage.");
                     [self initJournalFromLocalStorage];
-                else
+                } else {
+                    NSLog(@"Journal loaded from iCloud.");
                     [self.journal validateUserDefines];
+                }
                 
                 self.journal.cloudURL = myContainer;
+                //NSLog(@"%@", self.journal.cloudURL.path);
             }
             
             // On the main thread, update UI and state as appropriate
             dispatch_async (dispatch_get_main_queue (), ^(void) {
                 if (!myContainer) {
-                    NSLog(@"Error getting iCloud container.");
+                    NSLog(@"Error getting iCloud container, loading from local storage.");
                     [self initJournalFromLocalStorage];
                 }
                 
@@ -234,6 +245,7 @@ NSInteger const kNO = 2;
             });
         });
     } else {
+        NSLog(@"iCloud disabled, loading from local storage.");
         [self initJournalFromLocalStorage];
         [self postJournalChangeNotification];
     }
