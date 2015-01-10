@@ -21,8 +21,8 @@
 @property (weak, nonatomic)IBOutlet UIBarButtonItem *addButton;
 @property (weak, nonatomic)IBOutlet UIBarButtonItem *menuButton;
 
-@property (strong, nonatomic)UIAlertView *addItemAlert;
-@property (strong, nonatomic)UIAlertView *editItemAlert;
+@property (strong, nonatomic)UIAlertController *addItemAlert;
+@property (strong, nonatomic)UIAlertController *editItemAlert;
 @property (strong, nonatomic)CMANoXView *noXView;
 
 @property (nonatomic)BOOL isSelectingForAddEntry;
@@ -256,8 +256,8 @@
     // if in editing mode
     if (tableView.editing) {
         self.selectedCellLabelText = [[[tableView cellForRowAtIndexPath:indexPath] textLabel] text];
-        [[self.editItemAlert textFieldAtIndex:0] setText:self.selectedCellLabelText];
-        [self.editItemAlert show];
+        [[[self.editItemAlert textFields] objectAtIndex:0] setText:self.selectedCellLabelText];
+        [self presentViewController:self.editItemAlert animated:YES completion:nil];
         return;
     }
     
@@ -321,45 +321,65 @@
 #pragma mark - Alert Views
 
 - (void)initAddItemAlert {
-    self.addItemAlert = [[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"Add to %@:", [self.userDefine name]] message:@"" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Add", nil];
-    self.addItemAlert.alertViewStyle = UIAlertViewStylePlainTextInput;
+    self.addItemAlert = [UIAlertController alertControllerWithTitle:[NSString stringWithFormat:@"Add to %@:", [self.userDefine name]]
+                                                            message:nil
+                                                     preferredStyle:UIAlertControllerStyleAlert];
+    
+    [self.addItemAlert addTextFieldWithConfigurationHandler:nil];
+    
+    UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Cancel"
+                                                     style:UIAlertActionStyleCancel
+                                                   handler:nil];
+    
+    UIAlertAction *add = [UIAlertAction actionWithTitle:@"Add"
+                                                  style:UIAlertActionStyleDefault
+                                                handler:^(UIAlertAction *action) {
+                                                    NSString *enteredText = [[[self.addItemAlert textFields] objectAtIndex:0] text];
+                                                    
+                                                    if ([enteredText isEqualToString:@""])
+                                                        return;
+                                                    
+                                                    [[[self.addItemAlert textFields] objectAtIndex:0] setText:@""];
+                                                    
+                                                    [self.userDefine addObject:[self.userDefine emptyObjectNamed:enteredText]];
+                                                    [self handleNoXView];
+                                                    
+                                                    [[self journal] archive];
+                                                    [self.tableView reloadData];
+                                                }];
+    
+    [self.addItemAlert addAction:cancel];
+    [self.addItemAlert addAction:add];
 }
 
 - (void)initEditItemAlert {
-    self.editItemAlert = [[UIAlertView alloc] initWithTitle:@"Edit Item" message:nil delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Done", nil];
-    self.editItemAlert.alertViewStyle = UIAlertViewStylePlainTextInput;
-}
-
-// handles all UIAlertViews results for this screen
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    if (alertView == self.addItemAlert)
-        if (buttonIndex == 1) { // add button
-            NSString *enteredText = [[alertView textFieldAtIndex:0] text];
-            
-            if ([enteredText isEqualToString:@""])
-                return;
-                
-            [[alertView textFieldAtIndex:0] setText:@""];
-            
-            [self.userDefine addObject:[self.userDefine emptyObjectNamed:enteredText]];
-            [self handleNoXView];
-
-            [[self journal] archive];
-        }
+    self.editItemAlert = [UIAlertController alertControllerWithTitle:@"Edit Item"
+                                                             message:nil
+                                                      preferredStyle:UIAlertControllerStyleAlert];
     
-    if (alertView == self.editItemAlert)
-        if (buttonIndex == 1) { // ok button
-            NSString *enteredText = [[alertView textFieldAtIndex:0] text];
-            
-            if ([enteredText isEqualToString:@""])
-                return;
-            
-            id newProperties = [self.userDefine emptyObjectNamed:[[alertView textFieldAtIndex:0] text]];
-            [[self journal] editUserDefine:[self.userDefine name] objectNamed:self.selectedCellLabelText newProperties:newProperties];
-            [[self journal] archive];
-        }
+    [self.editItemAlert addTextFieldWithConfigurationHandler:nil];
     
-    [self.tableView reloadData];
+    UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Cancel"
+                                                     style:UIAlertActionStyleCancel
+                                                   handler:nil];
+    
+    UIAlertAction *done = [UIAlertAction actionWithTitle:@"Done"
+                                                   style:UIAlertActionStyleDefault
+                                                 handler:^(UIAlertAction *action) {
+                                                     NSString *enteredText = [[[self.editItemAlert textFields] objectAtIndex:0] text];
+                                                     
+                                                     if ([enteredText isEqualToString:@""])
+                                                         return;
+                                                     
+                                                     id newProperties = [self.userDefine emptyObjectNamed:[[[self.editItemAlert textFields] objectAtIndex:0] text]];
+                                                     [[self journal] editUserDefine:[self.userDefine name] objectNamed:self.selectedCellLabelText newProperties:newProperties];
+                                                     [[self journal] archive];
+                                                     
+                                                     [self.tableView reloadData];
+                                                 }];
+    
+    [self.editItemAlert addAction:cancel];
+    [self.editItemAlert addAction:done];
 }
 
 #pragma mark - Events
@@ -404,8 +424,8 @@
     if ([[self.userDefine name] isEqualToString:SET_LOCATIONS])
         [self performSegueWithIdentifier:@"fromEditSettingsToAddLocation" sender:self];
     else {
-        [[self.addItemAlert textFieldAtIndex:0] setText:@""];
-        [self.addItemAlert show];
+        [[[self.addItemAlert textFields] objectAtIndex:0] setText:@""];
+        [self presentViewController:self.addItemAlert animated:YES completion:nil];
     }
 }
 

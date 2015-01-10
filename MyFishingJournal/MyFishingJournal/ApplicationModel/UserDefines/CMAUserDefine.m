@@ -74,6 +74,7 @@
 
 - (void)editObjectNamed: (NSString *)aName newObject: (id)aNewObject {
     [[self objectNamed:aName] edit:aNewObject];
+    [self sortByNameProperty];
 }
 
 #pragma mark - Accessing

@@ -27,6 +27,8 @@
 		0DC690B21A5CA630006C8202 /* CMARemoveImageActionSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DC690B11A5CA630006C8202 /* CMARemoveImageActionSheet.m */; };
 		0DCC26551A520C0800738F04 /* CMAUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DCC26541A520C0800738F04 /* CMAUtilities.m */; };
 		0DCC26571A520DD300738F04 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DCC26561A520DD300738F04 /* SystemConfiguration.framework */; };
+		0DFAC7991A604ADA00E6092E /* CMAStorageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DFAC7981A604ADA00E6092E /* CMAStorageManager.m */; };
+		0DFAC79C1A60552200E6092E /* CMAJournalDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DFAC79B1A60552200E6092E /* CMAJournalDocument.m */; };
 		E700E46E1A29CF2600BB6337 /* no_image.png in Resources */ = {isa = PBXBuildFile; fileRef = E700E46D1A29CF2600BB6337 /* no_image.png */; };
 		E700E4761A2AA71A00BB6337 /* CMALaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = E700E4751A2AA71A00BB6337 /* CMALaunchScreen.xib */; };
 		E705AD6C1A229AD20077F16C /* fishing_methods_large.png in Resources */ = {isa = PBXBuildFile; fileRef = E705AD6B1A229AD20077F16C /* fishing_methods_large.png */; };
@@ -190,6 +192,10 @@
 		0DCC26531A520C0800738F04 /* CMAUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAUtilities.h; path = Utilities/CMAUtilities.h; sourceTree = "<group>"; };
 		0DCC26541A520C0800738F04 /* CMAUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAUtilities.m; path = Utilities/CMAUtilities.m; sourceTree = "<group>"; };
 		0DCC26561A520DD300738F04 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		0DFAC7971A604ADA00E6092E /* CMAStorageManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAStorageManager.h; path = ApplicationModel/CMAStorageManager.h; sourceTree = "<group>"; };
+		0DFAC7981A604ADA00E6092E /* CMAStorageManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAStorageManager.m; path = ApplicationModel/CMAStorageManager.m; sourceTree = "<group>"; };
+		0DFAC79A1A60552200E6092E /* CMAJournalDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAJournalDocument.h; path = ApplicationModel/CMAJournalDocument.h; sourceTree = "<group>"; };
+		0DFAC79B1A60552200E6092E /* CMAJournalDocument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAJournalDocument.m; path = ApplicationModel/CMAJournalDocument.m; sourceTree = "<group>"; };
 		E700E46D1A29CF2600BB6337 /* no_image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = no_image.png; path = Images/no_image.png; sourceTree = "<group>"; };
 		E700E4751A2AA71A00BB6337 /* CMALaunchScreen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CMALaunchScreen.xib; sourceTree = "<group>"; };
 		E705AD6B1A229AD20077F16C /* fishing_methods_large.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = fishing_methods_large.png; path = Images/LargeIcons/fishing_methods_large.png; sourceTree = "<group>"; };
@@ -537,6 +543,10 @@
 				0D34EF511A44EB2C00764F18 /* CMAWeatherData.m */,
 				E72669C719E6F4A8003C8E0B /* CMAJournal.h */,
 				E72669C819E6F4A8003C8E0B /* CMAJournal.m */,
+				0DFAC79A1A60552200E6092E /* CMAJournalDocument.h */,
+				0DFAC79B1A60552200E6092E /* CMAJournalDocument.m */,
+				0DFAC7971A604ADA00E6092E /* CMAStorageManager.h */,
+				0DFAC7981A604ADA00E6092E /* CMAStorageManager.m */,
 			);
 			name = ApplicationModel;
 			sourceTree = "<group>";
@@ -923,6 +933,7 @@
 				E705AD811A2400270077F16C /* CMACircleView.m in Sources */,
 				0DAC577D1A5E287C003D412E /* OWMWeatherAPI.m in Sources */,
 				0DAC57781A5E286C003D412E /* AFURLRequestSerialization.m in Sources */,
+				0DFAC7991A604ADA00E6092E /* CMAStorageManager.m in Sources */,
 				0D34EF521A44EB2C00764F18 /* CMAWeatherData.m in Sources */,
 				E7C29D7E1A1C183E00015B42 /* CMACameraButton.m in Sources */,
 				0D81A3B51A4F845E001FF9FA /* CMAWaterClarity.m in Sources */,
@@ -931,6 +942,7 @@
 				E7A331201A1D706A00C1D3F1 /* CMAViewEntriesViewController.m in Sources */,
 				0DAC57731A5E286C003D412E /* AFHTTPRequestOperationManager.m in Sources */,
 				E78BB7E91A133A940082004B /* CMATouchSegmentedControl.m in Sources */,
+				0DFAC79C1A60552200E6092E /* CMAJournalDocument.m in Sources */,
 				0DAC57751A5E286C003D412E /* AFNetworkReachabilityManager.m in Sources */,
 				E7C29D841A1C210000015B42 /* CMAImagePickerViewController.m in Sources */,
 				0DAC57741A5E286C003D412E /* AFHTTPSessionManager.m in Sources */,

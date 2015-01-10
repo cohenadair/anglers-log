@@ -14,6 +14,7 @@
 #import "CMAAppDelegate.h"
 #import "CMANoXView.h"
 #import "SWRevealViewController.h"
+#import "CMAStorageManager.h"
 
 @interface CMAViewEntriesViewController ()
 
@@ -23,7 +24,6 @@
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *sortButton;
 
 @property (strong, nonatomic)NSDateFormatter *dateFormatter;
-@property (strong, nonatomic)UIActionSheet *sortActionSheet;
 @property (strong, nonatomic)CMANoXView *noEntriesView;
 @property (strong, nonatomic)UIView *loadingJournalView;
 

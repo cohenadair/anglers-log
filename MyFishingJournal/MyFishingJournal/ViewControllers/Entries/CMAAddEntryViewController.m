@@ -438,7 +438,6 @@ NSString *const kNotSelectedString = @"Not Selected";
 - (IBAction)longPressedImageInCollection:(UILongPressGestureRecognizer *)sender {
     // only show at the beginning of the gesture
     if (sender.state == UIGestureRecognizerStateBegan) {
-        // referenced in the UIAlertView delegate protocol
         self.deleteImageIndexPath = [self.imageCollection indexPathForItemAtPoint:[sender locationInView:self.imageCollection]];
         [self.removeImageActionSheet showInViewController:self];
     }
