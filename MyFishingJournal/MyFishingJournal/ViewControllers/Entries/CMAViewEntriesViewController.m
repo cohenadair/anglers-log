@@ -34,7 +34,7 @@
 #pragma mark - Global Accessing
 
 - (CMAJournal *)journal {
-    return [((CMAAppDelegate *)[[UIApplication sharedApplication] delegate]) journal];
+    return [[CMAStorageManager sharedManager] sharedJournal];
 }
 
 #pragma mark - Side Bar Navigation
@@ -77,34 +77,34 @@
 }
 
 - (void)onJournalChange:(NSNotification *)aNotification {
-    [self setupView];
-    
-    if (self.loadingJournalView)
-        [self.loadingJournalView setHidden:YES];
+    if (self.isViewLoaded && self.view.window) {
+        NSLog(@"Received journal changed notification.");
+        [self setupView];
+    }
 }
 
 - (void)handleNoEntriesView {
-    if ([[self journal] entryCount] <= 0)
-        [self initNoEntriesView];
-    else {
-        [self.noEntriesView removeFromSuperview];
-        self.noEntriesView = nil;
-    }
+    [self.noEntriesView setHidden:[[self journal] entryCount] > 0];
 }
 
 - (void)setupView {
     self.navigationController.toolbarHidden = NO;
     self.navigationController.toolbar.userInteractionEnabled = YES;
     
-    [self handleNoEntriesView];
-    
-    if (![self journal])
-        [self initLoadingJournalView];
-    
     if ([[self journal] entryCount] > 0) {
         self.deleteButton.enabled = YES;
         self.sortButton.enabled = YES;
     }
+    
+    if (!self.noEntriesView)
+        [self initNoEntriesView];
+    
+    [self handleNoEntriesView];
+    
+    if (![self journal])
+        [self initLoadingJournalView];
+    else if (self.loadingJournalView)
+        [self.loadingJournalView setHidden:YES];
     
     [self.tableView reloadData];
 }
@@ -121,7 +121,7 @@
         [self.deleteButton setEnabled:NO];
         [self.sortButton setEnabled:NO];
     }
-
+    
     [self initSideBarMenu];
     [self registerForNotifications];
     

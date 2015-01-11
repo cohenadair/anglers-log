@@ -11,6 +11,7 @@
 #import "CMAAppDelegate.h"
 #import "CMASinglePhotoViewController.h"
 #import "CMANoXView.h"
+#import "CMAStorageManager.h"
 
 @interface CMAViewPhotosViewController ()
 
@@ -26,7 +27,7 @@
 #pragma mark - Global Accessing
 
 - (CMAJournal *)journal {
-    return [((CMAAppDelegate *)[[UIApplication sharedApplication] delegate]) journal];
+    return [[CMAStorageManager sharedManager] sharedJournal];
 }
 
 #pragma mark - Side Bar Navigation

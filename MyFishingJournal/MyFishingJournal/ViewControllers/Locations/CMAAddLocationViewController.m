@@ -10,6 +10,7 @@
 #import "CMAAddFishingSpotViewController.h"
 #import "CMAAppDelegate.h"
 #import "CMAAlerts.h"
+#import "CMAStorageManager.h"
 
 @interface CMAAddLocationViewController ()
 
@@ -31,7 +32,7 @@ NSInteger const SECTION_ADD = 2;
 #pragma mark - Global Accessing
 
 - (CMAJournal *)journal {
-    return [((CMAAppDelegate *)[[UIApplication sharedApplication] delegate]) journal];
+    return [[CMAStorageManager sharedManager] sharedJournal];
 }
 
 #pragma mark - View Management

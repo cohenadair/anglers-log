@@ -10,6 +10,7 @@
 #import "CMASpecies.h"
 #import "CMABait.h"
 #import "CMAFishingMethod.h"
+#import "CMAStorageManager.h"
 
 @implementation CMAJournal
 
@@ -95,40 +96,11 @@
     [aCoder encodeInteger:self.entrySortOrder forKey:@"CMAJournalEntrySortOrder"];
 }
 
-- (BOOL)archive {
-    BOOL result = NO;
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *docsPath = [paths firstObject];
-    NSString *archivePath = [NSString stringWithFormat:@"%@/%@", docsPath, ARCHIVE_FILE_NAME];
-    
-    if ([NSKeyedArchiver archiveRootObject:self toFile:archivePath]) {
-        NSLog(@"Archived journal locally.");
-        
-        // archive to iCloud if needed
-        if (self.cloudBackupEnabled) {
-            if ([NSKeyedArchiver archiveRootObject:self toFile:[NSString stringWithFormat:@"%@/%@", self.cloudURL.path, ARCHIVE_FILE_NAME]])
-                NSLog(@"Archived journal to iCloud.");
-            else
-                NSLog(@"Failed to archive journal to iCloud.");
-        }
-        
-        result = YES;
-    } else
-        NSLog(@"Failed to archive journal locally.");
-    
-    return NO;
+- (void)archive {
+    [[CMAStorageManager sharedManager] saveJournal:self withFileName:ARCHIVE_FILE_NAME];
 }
 
 #pragma mark - Editing
-
-- (void)setCloudURL:(NSURL *)cloudURL {
-    if (cloudURL)
-        self.cloudBackupEnabled = YES;
-    else
-        self.cloudBackupEnabled = NO;
-    
-    _cloudURL = cloudURL;
-}
 
 - (BOOL)addEntry: (CMAEntry *)anEntry {
     if ([self entryDated:anEntry.date] != nil) {

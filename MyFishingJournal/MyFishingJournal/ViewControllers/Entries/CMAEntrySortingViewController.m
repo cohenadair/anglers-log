@@ -9,6 +9,7 @@
 #import "CMAEntrySortingViewController.h"
 #import "CMAAppDelegate.h"
 #import "CMAAlerts.h"
+#import "CMAStorageManager.h"
 
 @interface CMAEntrySortingViewController ()
 
@@ -26,7 +27,7 @@
 #pragma mark - Global Accessing
 
 - (CMAJournal *)journal {
-    return [((CMAAppDelegate *)[[UIApplication sharedApplication] delegate]) journal];
+    return [[CMAStorageManager sharedManager] sharedJournal];
 }
 
 #pragma mark - View Management

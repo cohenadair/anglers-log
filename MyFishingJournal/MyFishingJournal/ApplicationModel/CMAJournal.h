@@ -18,8 +18,6 @@
 @property (nonatomic)CMAMeasuringSystemType measurementSystem;
 @property (nonatomic)CMAEntrySortMethod entrySortMethod;
 @property (nonatomic)CMASortOrder entrySortOrder;
-@property (nonatomic)BOOL cloudBackupEnabled;
-@property (strong, nonatomic)NSURL *cloudURL;
 
 // initializing
 - (void)validateUserDefines;
@@ -27,7 +25,7 @@
 // archiving
 - (id)initWithCoder:(NSCoder *)aDecoder;
 - (void)encodeWithCoder:(NSCoder *)aCoder;
-- (BOOL)archive;
+- (void)archive;
 
 // editing
 - (BOOL)addEntry: (CMAEntry *)anEntry;

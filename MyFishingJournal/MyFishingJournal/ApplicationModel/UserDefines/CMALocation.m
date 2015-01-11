@@ -9,13 +9,14 @@
 #import "CMALocation.h"
 #import "CMAConstants.h"
 #import "CMAAppDelegate.h"
+#import "CMAStorageManager.h"
 
 @implementation CMALocation
 
 #pragma mark - Global Accessing
 
 - (CMAJournal *)journal {
-    return [((CMAAppDelegate *)[[UIApplication sharedApplication] delegate]) journal];
+    return [[CMAStorageManager sharedManager] sharedJournal];
 }
 
 #pragma mark - Instance Creation

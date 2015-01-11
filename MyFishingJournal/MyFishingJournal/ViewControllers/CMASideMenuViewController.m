@@ -10,6 +10,7 @@
 #import "CMAUserDefinesViewController.h"
 #import "CMAAppDelegate.h"
 #import "SWRevealViewController.h"
+#import "CMAStorageManager.h"
 
 @interface CMASideMenuViewController ()
 
@@ -22,7 +23,7 @@
 #pragma mark - Global Accessing
 
 - (CMAJournal *)journal {
-    return [((CMAAppDelegate *)[[UIApplication sharedApplication] delegate]) journal];
+    return [[CMAStorageManager sharedManager] sharedJournal];
 }
 
 #pragma mark - View Management

@@ -13,7 +13,6 @@
 
 @property (strong, nonatomic)UIWindow *window;
 
-@property (strong, nonatomic)CMAJournal *journal;
 @property (nonatomic)BOOL didEnterBackground;
 
 - (void)iCloudUbiquityTokenHandler;

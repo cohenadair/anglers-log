@@ -14,6 +14,7 @@
 #import "CMAConstants.h"
 #import "CMAFishingMethod.h"
 #import "CMAWeatherDataView.h"
+#import "CMAStorageManager.h"
 
 // Used to store information on the cells that will be shonw on the table.
 // See initTableSettings.
@@ -90,7 +91,7 @@
 #pragma mark - Global Accessing
 
 - (CMAJournal *)journal {
-    return [((CMAAppDelegate *)[[UIApplication sharedApplication] delegate]) journal];
+    return [[CMAStorageManager sharedManager] sharedJournal];
 }
 
 #pragma mark - View Management

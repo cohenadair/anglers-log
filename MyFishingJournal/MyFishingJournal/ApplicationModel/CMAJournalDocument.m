@@ -12,6 +12,7 @@
 
 #define kArchiveKey @"CMAJournalDocument"
 
+// Called by the OS when the document is opened.
 - (BOOL)loadFromContents:(id)contents ofType:(NSString *)typeName error:(NSError *__autoreleasing *)outError {
     // unarchive the journal object if it exists
     if ([contents length] > 0) {
@@ -24,6 +25,7 @@
     return YES;
 }
 
+// Called by the OS when the document is saved.
 - (id)contentsForType:(NSString *)typeName error:(NSError *__autoreleasing *)outError {
     NSMutableData *data = [NSMutableData new];
     NSKeyedArchiver *archiver = [[NSKeyedArchiver alloc] initForWritingWithMutableData:data];

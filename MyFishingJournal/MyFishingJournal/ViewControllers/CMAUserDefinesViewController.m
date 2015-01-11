@@ -13,6 +13,7 @@
 #import "CMASelectFishingSpotViewController.h"
 #import "CMANoXView.h"
 #import "SWRevealViewController.h"
+#import "CMAStorageManager.h"
 
 @interface CMAUserDefinesViewController ()
 
@@ -36,7 +37,7 @@
 #pragma mark - Global Accessing
 
 - (CMAJournal *)journal {
-    return [((CMAAppDelegate *)[[UIApplication sharedApplication] delegate]) journal];
+    return [[CMAStorageManager sharedManager] sharedJournal];
 }
 
 #pragma mark - Side Bar Navigation
@@ -69,21 +70,25 @@
     
     [self.noXView centerInParent:self.view navigationController:self.navigationController];
     [self.view addSubview:self.noXView];
-    
-    [self.noXView setAlpha:0.0f];
-    [UIView animateWithDuration:0.5 animations:^{
-        [self.noXView setAlpha:1.0f];
-    }];
 }
 
 - (void)handleNoXView {
     if ([self.userDefine count] <= 0) {
-        [self initNoXView];
+        if (!self.noXView)
+            [self initNoXView];
+        else {
+            [UIView animateWithDuration:0.5 animations:^{
+                [self.noXView setAlpha:1.0f];
+            }];
+        }
+        
         [self.editButton setEnabled:NO];
     } else {
         [self.editButton setEnabled:YES];
-        [self.noXView removeFromSuperview];
-        self.noXView = nil;
+        
+        [UIView animateWithDuration:0.5 animations:^{
+            [self.noXView setAlpha:0.0f];
+        }];
     }
 }
 
@@ -327,26 +332,27 @@
     
     [self.addItemAlert addTextFieldWithConfigurationHandler:nil];
     
-    UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Cancel"
-                                                     style:UIAlertActionStyleCancel
-                                                   handler:nil];
+    UIAlertAction *cancel =
+        [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
     
-    UIAlertAction *add = [UIAlertAction actionWithTitle:@"Add"
-                                                  style:UIAlertActionStyleDefault
-                                                handler:^(UIAlertAction *action) {
-                                                    NSString *enteredText = [[[self.addItemAlert textFields] objectAtIndex:0] text];
+    UIAlertAction *add =
+        [UIAlertAction actionWithTitle:@"Add"
+                                 style:UIAlertActionStyleDefault
+                               handler:^(UIAlertAction *action) {
+                                        NSString *enteredText = [[[self.addItemAlert textFields] objectAtIndex:0] text];
                                                     
-                                                    if ([enteredText isEqualToString:@""])
-                                                        return;
-                                                    
-                                                    [[[self.addItemAlert textFields] objectAtIndex:0] setText:@""];
-                                                    
-                                                    [self.userDefine addObject:[self.userDefine emptyObjectNamed:enteredText]];
-                                                    [self handleNoXView];
-                                                    
-                                                    [[self journal] archive];
-                                                    [self.tableView reloadData];
-                                                }];
+                                        if ([enteredText isEqualToString:@""])
+                                            return;
+                                        
+                                        [[[self.addItemAlert textFields] objectAtIndex:0] setText:@""];
+                                        
+                                        [self.userDefine addObject:[self.userDefine emptyObjectNamed:enteredText]];
+                                        
+                                        [[self journal] archive];
+                                        [self.tableView reloadData];
+                                        
+                                        [self handleNoXView];
+                               }];
     
     [self.addItemAlert addAction:cancel];
     [self.addItemAlert addAction:add];
@@ -359,24 +365,24 @@
     
     [self.editItemAlert addTextFieldWithConfigurationHandler:nil];
     
-    UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Cancel"
-                                                     style:UIAlertActionStyleCancel
-                                                   handler:nil];
+    UIAlertAction *cancel =
+        [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
     
-    UIAlertAction *done = [UIAlertAction actionWithTitle:@"Done"
-                                                   style:UIAlertActionStyleDefault
-                                                 handler:^(UIAlertAction *action) {
-                                                     NSString *enteredText = [[[self.editItemAlert textFields] objectAtIndex:0] text];
-                                                     
-                                                     if ([enteredText isEqualToString:@""])
-                                                         return;
-                                                     
-                                                     id newProperties = [self.userDefine emptyObjectNamed:[[[self.editItemAlert textFields] objectAtIndex:0] text]];
-                                                     [[self journal] editUserDefine:[self.userDefine name] objectNamed:self.selectedCellLabelText newProperties:newProperties];
-                                                     [[self journal] archive];
-                                                     
-                                                     [self.tableView reloadData];
-                                                 }];
+    UIAlertAction *done =
+        [UIAlertAction actionWithTitle:@"Done"
+                                 style:UIAlertActionStyleDefault
+                               handler:^(UIAlertAction *action) {
+                                        NSString *enteredText = [[[self.editItemAlert textFields] objectAtIndex:0] text];
+                                   
+                                        if ([enteredText isEqualToString:@""])
+                                            return;
+                                         
+                                        id newProperties = [self.userDefine emptyObjectNamed:[[[self.editItemAlert textFields] objectAtIndex:0] text]];
+                                        [[self journal] editUserDefine:[self.userDefine name] objectNamed:self.selectedCellLabelText newProperties:newProperties];
+                                        [[self journal] archive];
+                                         
+                                        [self.tableView reloadData];
+                               }];
     
     [self.editItemAlert addAction:cancel];
     [self.editItemAlert addAction:done];

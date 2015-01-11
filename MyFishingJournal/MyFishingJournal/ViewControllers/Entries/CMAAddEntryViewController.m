@@ -19,6 +19,7 @@
 #import "CMARemoveImageActionSheet.h"
 #import "CMAWeatherDataView.h"
 #import "CMAUtilities.h"
+#import "CMAStorageManager.h"
 
 @interface CMAAddEntryViewController ()
 
@@ -113,7 +114,7 @@ NSString *const kNotSelectedString = @"Not Selected";
 #pragma mark - Global Accessing
 
 - (CMAJournal *)journal {
-    return [((CMAAppDelegate *)[[UIApplication sharedApplication] delegate]) journal];
+    return [[CMAStorageManager sharedManager] sharedJournal];
 }
 
 #pragma mark - View Management
