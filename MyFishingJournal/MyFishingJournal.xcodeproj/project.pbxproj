@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		0D34EF521A44EB2C00764F18 /* CMAWeatherData.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D34EF511A44EB2C00764F18 /* CMAWeatherData.m */; };
-		0D7F777F1A4E540E0010674C /* CMAWeatherDataView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0D7F777E1A4E540E0010674C /* CMAWeatherDataView.xib */; };
 		0D7F77821A4E54770010674C /* CMAWeatherDataView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D7F77811A4E54770010674C /* CMAWeatherDataView.m */; };
 		0D81A3B51A4F845E001FF9FA /* CMAWaterClarity.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D81A3B41A4F845E001FF9FA /* CMAWaterClarity.m */; };
 		0D81A3B61A4F845E001FF9FA /* CMAWaterClarity.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D81A3B41A4F845E001FF9FA /* CMAWaterClarity.m */; };
@@ -27,6 +26,9 @@
 		0DC690B21A5CA630006C8202 /* CMARemoveImageActionSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DC690B11A5CA630006C8202 /* CMARemoveImageActionSheet.m */; };
 		0DCC26551A520C0800738F04 /* CMAUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DCC26541A520C0800738F04 /* CMAUtilities.m */; };
 		0DCC26571A520DD300738F04 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DCC26561A520DD300738F04 /* SystemConfiguration.framework */; };
+		0DCD64481A6255E700CF04E8 /* CMACircleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0DCD64451A6255E700CF04E8 /* CMACircleView.xib */; };
+		0DCD64491A6255E700CF04E8 /* CMANoXView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0DCD64461A6255E700CF04E8 /* CMANoXView.xib */; };
+		0DCD644A1A6255E700CF04E8 /* CMAWeatherDataView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0DCD64471A6255E700CF04E8 /* CMAWeatherDataView.xib */; };
 		0DFAC7991A604ADA00E6092E /* CMAStorageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DFAC7981A604ADA00E6092E /* CMAStorageManager.m */; };
 		0DFAC79C1A60552200E6092E /* CMAJournalDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DFAC79B1A60552200E6092E /* CMAJournalDocument.m */; };
 		E700E46E1A29CF2600BB6337 /* no_image.png in Resources */ = {isa = PBXBuildFile; fileRef = E700E46D1A29CF2600BB6337 /* no_image.png */; };
@@ -76,7 +78,6 @@
 		E738585719FE098A00FE122B /* CMABait.m in Sources */ = {isa = PBXBuildFile; fileRef = E738585519FE098A00FE122B /* CMABait.m */; };
 		E738585A19FE0A3400FE122B /* CMAFishingMethod.m in Sources */ = {isa = PBXBuildFile; fileRef = E738585919FE0A3400FE122B /* CMAFishingMethod.m */; };
 		E738585B19FE0A3400FE122B /* CMAFishingMethod.m in Sources */ = {isa = PBXBuildFile; fileRef = E738585919FE0A3400FE122B /* CMAFishingMethod.m */; };
-		E748527A1A2BEB73002BF1C6 /* CMACircleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = E74852791A2BEB73002BF1C6 /* CMACircleView.xib */; };
 		E78A1F911A2FC40200FDA5E2 /* CMAStatisticsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E78A1F901A2FC40200FDA5E2 /* CMAStatisticsTableViewCell.m */; };
 		E78A1F951A3002EB00FDA5E2 /* app_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = E78A1F931A3002EB00FDA5E2 /* app_icon.png */; };
 		E78A1F961A3002EB00FDA5E2 /* app_icon.xcf in Resources */ = {isa = PBXBuildFile; fileRef = E78A1F941A3002EB00FDA5E2 /* app_icon.xcf */; };
@@ -103,7 +104,6 @@
 		E7A3312A1A1D70C200C1D3F1 /* CMASingleLocationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7A331271A1D70C200C1D3F1 /* CMASingleLocationViewController.m */; };
 		E7A331301A1D710200C1D3F1 /* CMAViewPhotosViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7A3312D1A1D710200C1D3F1 /* CMAViewPhotosViewController.m */; };
 		E7A331311A1D710200C1D3F1 /* CMASinglePhotoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7A3312F1A1D710200C1D3F1 /* CMASinglePhotoViewController.m */; };
-		E7A331331A22855F00C1D3F1 /* CMANoXView.xib in Resources */ = {isa = PBXBuildFile; fileRef = E7A331321A22855F00C1D3F1 /* CMANoXView.xib */; };
 		E7A331361A2286E200C1D3F1 /* CMANoXView.m in Sources */ = {isa = PBXBuildFile; fileRef = E7A331351A2286E200C1D3F1 /* CMANoXView.m */; };
 		E7A51E9E19EFAA0E009BDC20 /* CMASettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7A51E9D19EFAA0E009BDC20 /* CMASettingsViewController.m */; };
 		E7A51EA819F4440F009BDC20 /* CMAUserDefinesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7A51EA719F4440F009BDC20 /* CMAUserDefinesViewController.m */; };
@@ -157,7 +157,6 @@
 /* Begin PBXFileReference section */
 		0D34EF501A44EB2C00764F18 /* CMAWeatherData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAWeatherData.h; path = ApplicationModel/CMAWeatherData.h; sourceTree = "<group>"; };
 		0D34EF511A44EB2C00764F18 /* CMAWeatherData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAWeatherData.m; path = ApplicationModel/CMAWeatherData.m; sourceTree = "<group>"; };
-		0D7F777E1A4E540E0010674C /* CMAWeatherDataView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CMAWeatherDataView.xib; sourceTree = "<group>"; };
 		0D7F77801A4E54770010674C /* CMAWeatherDataView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAWeatherDataView.h; path = CustomViews/CMAWeatherDataView.h; sourceTree = "<group>"; };
 		0D7F77811A4E54770010674C /* CMAWeatherDataView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAWeatherDataView.m; path = CustomViews/CMAWeatherDataView.m; sourceTree = "<group>"; };
 		0D81A3B31A4F845E001FF9FA /* CMAWaterClarity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAWaterClarity.h; path = ApplicationModel/UserDefines/CMAWaterClarity.h; sourceTree = "<group>"; };
@@ -192,6 +191,10 @@
 		0DCC26531A520C0800738F04 /* CMAUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAUtilities.h; path = Utilities/CMAUtilities.h; sourceTree = "<group>"; };
 		0DCC26541A520C0800738F04 /* CMAUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAUtilities.m; path = Utilities/CMAUtilities.m; sourceTree = "<group>"; };
 		0DCC26561A520DD300738F04 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		0DCD64441A62559D00CF04E8 /* CMAAlerts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAAlerts.h; path = Utilities/CMAAlerts.h; sourceTree = "<group>"; };
+		0DCD64451A6255E700CF04E8 /* CMACircleView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = CMACircleView.xib; path = CustomViews/CMACircleView.xib; sourceTree = "<group>"; };
+		0DCD64461A6255E700CF04E8 /* CMANoXView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = CMANoXView.xib; path = CustomViews/CMANoXView.xib; sourceTree = "<group>"; };
+		0DCD64471A6255E700CF04E8 /* CMAWeatherDataView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = CMAWeatherDataView.xib; path = CustomViews/CMAWeatherDataView.xib; sourceTree = "<group>"; };
 		0DFAC7971A604ADA00E6092E /* CMAStorageManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAStorageManager.h; path = ApplicationModel/CMAStorageManager.h; sourceTree = "<group>"; };
 		0DFAC7981A604ADA00E6092E /* CMAStorageManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAStorageManager.m; path = ApplicationModel/CMAStorageManager.m; sourceTree = "<group>"; };
 		0DFAC79A1A60552200E6092E /* CMAJournalDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAJournalDocument.h; path = ApplicationModel/CMAJournalDocument.h; sourceTree = "<group>"; };
@@ -252,7 +255,6 @@
 		E738585519FE098A00FE122B /* CMABait.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMABait.m; path = ApplicationModel/UserDefines/CMABait.m; sourceTree = "<group>"; };
 		E738585819FE0A3400FE122B /* CMAFishingMethod.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAFishingMethod.h; path = ApplicationModel/UserDefines/CMAFishingMethod.h; sourceTree = "<group>"; };
 		E738585919FE0A3400FE122B /* CMAFishingMethod.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAFishingMethod.m; path = ApplicationModel/UserDefines/CMAFishingMethod.m; sourceTree = "<group>"; };
-		E74852791A2BEB73002BF1C6 /* CMACircleView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CMACircleView.xib; sourceTree = "<group>"; };
 		E78A1F8F1A2FC40200FDA5E2 /* CMAStatisticsTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAStatisticsTableViewCell.h; path = CustomViews/CMAStatisticsTableViewCell.h; sourceTree = "<group>"; };
 		E78A1F901A2FC40200FDA5E2 /* CMAStatisticsTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAStatisticsTableViewCell.m; path = CustomViews/CMAStatisticsTableViewCell.m; sourceTree = "<group>"; };
 		E78A1F931A3002EB00FDA5E2 /* app_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = app_icon.png; path = Images/AppIcons/app_icon.png; sourceTree = "<group>"; };
@@ -269,7 +271,6 @@
 		E78BB7D51A0724760082004B /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		E78BB7DA1A0C1B9B0082004B /* rectile.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = rectile.png; path = Images/rectile.png; sourceTree = "<group>"; };
 		E78BB7DE1A100A2C0082004B /* CMAAlerts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAAlerts.m; path = Utilities/CMAAlerts.m; sourceTree = "<group>"; };
-		E78BB7E01A100A3E0082004B /* CMAAlerts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMAAlerts.h; sourceTree = "<group>"; };
 		E78BB7E11A1309680082004B /* CMAEntryTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAEntryTableViewCell.h; path = CustomViews/CMAEntryTableViewCell.h; sourceTree = "<group>"; };
 		E78BB7E21A1309680082004B /* CMAEntryTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAEntryTableViewCell.m; path = CustomViews/CMAEntryTableViewCell.m; sourceTree = "<group>"; };
 		E78BB7E71A133A940082004B /* CMATouchSegmentedControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMATouchSegmentedControl.h; path = CustomViews/CMATouchSegmentedControl.h; sourceTree = "<group>"; };
@@ -292,7 +293,6 @@
 		E7A3312D1A1D710200C1D3F1 /* CMAViewPhotosViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAViewPhotosViewController.m; path = ViewControllers/Photos/CMAViewPhotosViewController.m; sourceTree = "<group>"; };
 		E7A3312E1A1D710200C1D3F1 /* CMASinglePhotoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMASinglePhotoViewController.h; path = ViewControllers/Photos/CMASinglePhotoViewController.h; sourceTree = "<group>"; };
 		E7A3312F1A1D710200C1D3F1 /* CMASinglePhotoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMASinglePhotoViewController.m; path = ViewControllers/Photos/CMASinglePhotoViewController.m; sourceTree = "<group>"; };
-		E7A331321A22855F00C1D3F1 /* CMANoXView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CMANoXView.xib; sourceTree = "<group>"; };
 		E7A331341A2286E200C1D3F1 /* CMANoXView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMANoXView.h; path = CustomViews/CMANoXView.h; sourceTree = "<group>"; };
 		E7A331351A2286E200C1D3F1 /* CMANoXView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMANoXView.m; path = CustomViews/CMANoXView.m; sourceTree = "<group>"; };
 		E7A51E9C19EFAA0E009BDC20 /* CMASettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMASettingsViewController.h; path = ViewControllers/CMASettingsViewController.h; sourceTree = "<group>"; };
@@ -660,15 +660,15 @@
 				E7C29D801A1C1ED800015B42 /* CMACameraActionSheet.m */,
 				0DC690B01A5CA630006C8202 /* CMARemoveImageActionSheet.h */,
 				0DC690B11A5CA630006C8202 /* CMARemoveImageActionSheet.m */,
-				E7A331321A22855F00C1D3F1 /* CMANoXView.xib */,
 				E7A331341A2286E200C1D3F1 /* CMANoXView.h */,
 				E7A331351A2286E200C1D3F1 /* CMANoXView.m */,
+				0DCD64461A6255E700CF04E8 /* CMANoXView.xib */,
 				E705AD7F1A2400270077F16C /* CMACircleView.h */,
 				E705AD801A2400270077F16C /* CMACircleView.m */,
-				E74852791A2BEB73002BF1C6 /* CMACircleView.xib */,
+				0DCD64451A6255E700CF04E8 /* CMACircleView.xib */,
 				0D7F77801A4E54770010674C /* CMAWeatherDataView.h */,
 				0D7F77811A4E54770010674C /* CMAWeatherDataView.m */,
-				0D7F777E1A4E540E0010674C /* CMAWeatherDataView.xib */,
+				0DCD64471A6255E700CF04E8 /* CMAWeatherDataView.xib */,
 			);
 			name = CustomViews;
 			sourceTree = "<group>";
@@ -763,7 +763,7 @@
 			children = (
 				E7A51EB819F4ADC2009BDC20 /* CMAConstants.h */,
 				E7A51EB919F4ADC2009BDC20 /* CMAConstants.m */,
-				E78BB7E01A100A3E0082004B /* CMAAlerts.h */,
+				0DCD64441A62559D00CF04E8 /* CMAAlerts.h */,
 				E78BB7DE1A100A2C0082004B /* CMAAlerts.m */,
 				0DCC26531A520C0800738F04 /* CMAUtilities.h */,
 				0DCC26541A520C0800738F04 /* CMAUtilities.m */,
@@ -861,11 +861,9 @@
 				E7C29D561A17FFE200015B42 /* fishing_methods.png in Resources */,
 				E78A1FA61A3007E700FDA5E2 /* app_icon_76.png in Resources */,
 				E7C29D5C1A17FFE200015B42 /* species.png in Resources */,
-				E748527A1A2BEB73002BF1C6 /* CMACircleView.xib in Resources */,
 				E700E46E1A29CF2600BB6337 /* no_image.png in Resources */,
 				E78A1F951A3002EB00FDA5E2 /* app_icon.png in Resources */,
 				E705AD751A229E0B0077F16C /* locations_large.png in Resources */,
-				0D7F777F1A4E540E0010674C /* CMAWeatherDataView.xib in Resources */,
 				E705AD781A229E0B0077F16C /* stats_large.png in Resources */,
 				E7C29D4C1A17FC6200015B42 /* stats.png in Resources */,
 				E78A1FAE1A3008DD00FDA5E2 /* app_icon_29.png in Resources */,
@@ -887,12 +885,13 @@
 				E78A1FA51A3007E700FDA5E2 /* app_icon_40.png in Resources */,
 				E78A1FAA1A3007E700FDA5E2 /* app_icon_180.png in Resources */,
 				E78A1FA71A3007E700FDA5E2 /* app_icon_80.png in Resources */,
+				0DCD64491A6255E700CF04E8 /* CMANoXView.xib in Resources */,
 				E78BB7DB1A0C1B9B0082004B /* rectile.png in Resources */,
 				E7C29D381A17EA4200015B42 /* camera@3x.png in Resources */,
 				E7C29D5B1A17FFE200015B42 /* sort@3x.png in Resources */,
 				E7C29D3C1A17F5A500015B42 /* edit@1x.png in Resources */,
-				E7A331331A22855F00C1D3F1 /* CMANoXView.xib in Resources */,
 				E700E4761A2AA71A00BB6337 /* CMALaunchScreen.xib in Resources */,
+				0DCD64481A6255E700CF04E8 /* CMACircleView.xib in Resources */,
 				E7C29D3D1A17F5A500015B42 /* edit@2x.png in Resources */,
 				E7C29D591A17FFE200015B42 /* sort@1x.png in Resources */,
 				E705AD771A229E0B0077F16C /* species_large.png in Resources */,
@@ -902,6 +901,7 @@
 				E7C29D581A17FFE200015B42 /* locations.png in Resources */,
 				E7C29D441A17F8BB00015B42 /* checkmark@3x.png in Resources */,
 				E78A1FA81A3007E700FDA5E2 /* app_icon_120.png in Resources */,
+				0DCD644A1A6255E700CF04E8 /* CMAWeatherDataView.xib in Resources */,
 				E7C29D5A1A17FFE200015B42 /* sort@2x.png in Resources */,
 				E7C29D3E1A17F5A500015B42 /* edit@3x.png in Resources */,
 				E705AD731A229E0B0077F16C /* baits_large.png in Resources */,
