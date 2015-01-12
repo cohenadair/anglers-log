@@ -106,6 +106,7 @@
 #define kImperialFishWeightRow 4
 
 #define kImageViewTag 100
+#define kSavePhotoTag 500
 
 NSString *const kNotSelectedString = @"Not Selected";
 
@@ -600,6 +601,10 @@ NSString *const kNotSelectedString = @"Not Selected";
             UICollectionViewCell *cell = [self.imageCollection cellForItemAtIndexPath:[NSIndexPath indexPathForItem:i inSection:0]];
             UIImage *image = [(UIImageView *)[cell viewWithTag:kImageViewTag] image];
             
+            // save photos that were taken with the camera
+            if (cell.tag == kSavePhotoTag)
+                UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil);
+            
             [anEntry addImage:image];
         }
     } else
@@ -755,7 +760,7 @@ NSString *const kNotSelectedString = @"Not Selected";
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
     UIImage *chosenImage = info[UIImagePickerControllerEditedImage];
-    [self insertImageIntoCollection:chosenImage];
+    [self insertImageIntoCollection:chosenImage saveToGallery:(picker.sourceType == UIImagePickerControllerSourceTypeCamera)];
     
     [picker dismissViewControllerAnimated:YES completion:NULL];
 }
@@ -781,7 +786,7 @@ NSString *const kNotSelectedString = @"Not Selected";
     return cell;
 }
 
-- (void)insertImageIntoCollection: (UIImage *)anImage {
+- (void)insertImageIntoCollection:(UIImage *)anImage saveToGallery:(BOOL)saveToGallery {
     self.numberOfImages++;
     
     // reload table if adding the first image
@@ -795,6 +800,9 @@ NSString *const kNotSelectedString = @"Not Selected";
     [self.imageCollection insertItemsAtIndexPaths:@[indexPath]];
     
     UICollectionViewCell *insertedCell = [self.imageCollection cellForItemAtIndexPath:indexPath];
+    
+    if (saveToGallery)
+        [insertedCell setTag:kSavePhotoTag];
     
     UIImageView *imageView = (UIImageView *)[insertedCell viewWithTag:kImageViewTag];
     [imageView setImage:anImage];
