@@ -64,6 +64,23 @@
     }
 }
 
+- (void)registerForNotifications {
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onJournalChange:) name:NOTIFICATION_CHANGE_JOURNAL object:nil];
+}
+
+- (void)onJournalChange:(NSNotification *)aNotification {
+    if (self.isViewLoaded && self.view.window) {
+        NSLog(@"Received journal changed notification in view baits scene.");
+        [self setupView];
+    }
+}
+
+- (void)setupView {
+    [self setUserDefineBaits:[[self journal] userDefineNamed:SET_BAITS]];
+    [self handleNoBaitView];
+    [self.tableView reloadData];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -72,15 +89,13 @@
     else
         self.navigationItem.leftBarButtonItem = self.navigationItem.backBarButtonItem;
     
-    [self setUserDefineBaits:[[self journal] userDefineNamed:SET_BAITS]];
+    [self registerForNotifications];
     
     [self.tableView setTableFooterView:[[UIView alloc] initWithFrame:CGRectZero]];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    
-    [self handleNoBaitView];
     
     [self.deleteButton setEnabled:([self.userDefineBaits count] > 0)];
     [self.navigationController setToolbarHidden:NO];
@@ -89,7 +104,7 @@
     if (self.isSelectingForStatistics)
         self.navigationController.toolbarHidden = YES;
     
-    [self.tableView reloadData];
+    [self setupView];
 }
 
 - (void)didReceiveMemoryWarning {

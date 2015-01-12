@@ -61,17 +61,33 @@
     }
 }
 
+- (void)registerForNotifications {
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onJournalChange:) name:NOTIFICATION_CHANGE_JOURNAL object:nil];
+}
+
+- (void)onJournalChange:(NSNotification *)aNotification {
+    if (self.isViewLoaded && self.view.window) {
+        NSLog(@"Received journal changed notification in photo gallery scene.");
+        [self setupView];
+    }
+}
+
+- (void)setupView {
+    [self initImagesArray];
+    [self handleNoImagesView];
+    [self.collectionView reloadData];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self initSideBarMenu];
-    [self initImagesArray];
+    [self registerForNotifications];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     self.navigationController.toolbarHidden = YES;
-    [self handleNoImagesView];
-    [self.collectionView reloadData];
+    [self setupView];
 }
 
 - (void)didReceiveMemoryWarning {

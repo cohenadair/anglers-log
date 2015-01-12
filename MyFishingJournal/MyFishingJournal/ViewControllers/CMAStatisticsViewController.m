@@ -85,10 +85,31 @@
     }
 }
 
+- (void)registerForNotifications {
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onJournalChange:) name:NOTIFICATION_CHANGE_JOURNAL object:nil];
+}
+
+- (void)onJournalChange:(NSNotification *)aNotification {
+    if (self.isViewLoaded && self.view.window) {
+        NSLog(@"Received journal changed notification in statistics scene.");
+        [self setupView];
+    }
+}
+
+- (void)setupView {
+    [self handleNoStatsView];
+    [self setJournalHasEntries:[[self journal] entryCount] > 0];
+    
+    if (self.journalHasEntries)
+        [self setStatsForControlIndex:self.pieChartControl.selectedSegmentIndex];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
     [self initSideBarMenu];
-    [self handleNoStatsView];
+    [self registerForNotifications];
+    
     [self setJournalHasEntries:[[self journal] entryCount] > 0];
     
     if (self.journalHasEntries) {
@@ -361,18 +382,22 @@
 }
 
 - (IBAction)changePieChartControl:(UISegmentedControl *)sender {
+    [self setStatsForControlIndex:sender.selectedSegmentIndex];
+}
+
+- (void)setStatsForControlIndex:(NSInteger)anIndex {
     self.stats = nil;
     
-    if (sender.selectedSegmentIndex == CMAPieChartDataTypeCaught)
+    if (anIndex == CMAPieChartDataTypeCaught)
         self.stats = [CMAStats forCaughtWithJournal:[self journal]];
     
-    if (sender.selectedSegmentIndex == CMAPieChartDataTypeWeight)
+    if (anIndex == CMAPieChartDataTypeWeight)
         self.stats = [CMAStats forWeightWithJournal:[self journal]];
     
-    if (sender.selectedSegmentIndex == CMAPieChartDataTypeBait)
+    if (anIndex == CMAPieChartDataTypeBait)
         self.stats = [CMAStats forBaitWithJournal:[self journal]];
     
-    if (sender.selectedSegmentIndex == CMAPieChartDataTypeLocation)
+    if (anIndex == CMAPieChartDataTypeLocation)
         self.stats = [CMAStats forLocationWithJournal:[self journal]];
     
     [self initColorsArray];

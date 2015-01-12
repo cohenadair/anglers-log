@@ -11,9 +11,10 @@
 
 @interface CMAStorageManager : NSObject
 
+@property (nonatomic) __block BOOL _fileDidDownload;
+
 @property (strong, nonatomic)CMAJournal *sharedJournal;
 @property (strong, nonatomic)NSMetadataQuery *cloudQuery;
-@property (strong, nonatomic)NSFileCoordinator *journalCoordinator;
 @property (nonatomic)BOOL isCloudBackupEnabled;
 
 + (id)sharedManager;

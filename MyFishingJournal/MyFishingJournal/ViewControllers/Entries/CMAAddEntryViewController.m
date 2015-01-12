@@ -480,6 +480,8 @@ NSString *const kNotSelectedString = @"Not Selected";
             weakSelf.deleteImageIndexPath = nil;
         }
     };
+    
+    [self.removeImageActionSheet addActions];
 }
 
 #pragma mark - Navigation

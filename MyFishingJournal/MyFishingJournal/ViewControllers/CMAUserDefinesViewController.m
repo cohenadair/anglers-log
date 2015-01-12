@@ -92,6 +92,32 @@
     }
 }
 
+- (void)registerForNotifications {
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onJournalChange:) name:NOTIFICATION_CHANGE_JOURNAL object:nil];
+}
+
+- (void)onJournalChange:(NSNotification *)aNotification {
+    if (self.isViewLoaded && self.view.window) {
+        NSLog(@"Received journal changed notification in user defines scene.");
+        [self setUserDefine:[[self journal] userDefineNamed:self.userDefine.name]];
+        [self setupView];
+    }
+}
+
+- (void)setupView {
+    [self handleNoXView];
+    [self.editButton setEnabled:[self.userDefine count] > 0];
+    
+    // show the toolbar when navigating back from a push segue
+    self.navigationController.toolbarHidden = NO;
+    self.navigationController.toolbar.userInteractionEnabled = YES;
+    
+    if (self.isSelectingForStatistics)
+        self.navigationController.toolbarHidden = YES;
+    
+    [self.tableView reloadData];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -114,6 +140,7 @@
     [self initAddItemAlert];
     [self initEditItemAlert];
     [self initializeToolbar];
+    [self registerForNotifications];
     
     // enable side bar navigation unless the user is adding an entry
     if (!self.isSelectingForAddEntry && !self.isSelectingForStatistics)
@@ -126,18 +153,7 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    
-    [self handleNoXView];
-    [self.editButton setEnabled:[self.userDefine count] > 0];
-    
-    // show the toolbar when navigating back from a push segue
-    self.navigationController.toolbarHidden = NO;
-    self.navigationController.toolbar.userInteractionEnabled = YES;
-    
-    if (self.isSelectingForStatistics)
-        self.navigationController.toolbarHidden = YES;
-    
-    [self.tableView reloadData];
+    [self setupView];
 }
 
 - (void)didReceiveMemoryWarning {

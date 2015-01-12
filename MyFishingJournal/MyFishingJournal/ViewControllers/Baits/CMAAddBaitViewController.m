@@ -210,6 +210,8 @@
         
         [CATransaction commit];
     };
+    
+    [self.removeImageActionSheet addActions];
 }
 
 #pragma mark - Bait Creation

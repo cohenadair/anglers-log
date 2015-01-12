@@ -44,12 +44,15 @@
 // If saving to local storage, will simply archive the journal object.
 
 - (void)saveJournal:(CMAJournal *)aJournal withFileName:(NSString *)aFileName {
-    if (self.isCloudBackupEnabled)
-        [self archiveJournal:aJournal toURL:[self cloudURL] withFileName:aFileName isLocal:NO];
-    else
-        [self archiveJournal:aJournal toURL:[self localURL] withFileName:aFileName isLocal:YES];
-    
     [self setSharedJournal:aJournal];
+    
+    // archive the journal in a separate thread
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        if (self.isCloudBackupEnabled)
+            [self archiveJournal:aJournal toURL:[self cloudURL] withFileName:aFileName isLocal:NO];
+        else
+            [self archiveJournal:aJournal toURL:[self localURL] withFileName:aFileName isLocal:YES];
+    });
 }
 
 - (void)archiveJournal:(CMAJournal *)aJournal toURL:(NSURL *)aURL withFileName:(NSString *)aFileName isLocal:(BOOL)isLocal {
@@ -57,12 +60,12 @@
         if (isLocal)
             [self archiveJournalToLocalStorage:aJournal toURL:aURL withFileName:aFileName];
         else
-            [self archiveJournalToCloud:aJournal toURL:aURL withFileName:aFileName];
+            [self archiveJournalToCloudStorage:aJournal toURL:aURL withFileName:aFileName];
     } else
         NSLog(@"%@ URL = NULL", isLocal ? @"Local" : @"iCloud");
 }
 
-- (void)archiveJournalToCloud:(CMAJournal *)aJournal toURL:(NSURL *)aURL withFileName:(NSString *)aFileName {
+- (void)archiveJournalToCloudStorage:(CMAJournal *)aJournal toURL:(NSURL *)aURL withFileName:(NSString *)aFileName {
     NSURL *documentURL = [aURL URLByAppendingPathComponent:aFileName];
     
     CMAJournalDocument *document = [[CMAJournalDocument alloc] initWithFileURL:documentURL];
@@ -105,9 +108,11 @@
 
 #pragma mark - Journal Loading
 
-// Initializing this property allows the app to receive updates about the iCloud container.
-// Required to receive iCloud updates.
+// An NSMetadataQuery allows the app to receive notifications when the file is updated on iCloud.
 // Reference: http://code.tutsplus.com/tutorials/working-with-icloud-document-storage--pre-37952
+
+// Using an NSMetadataQuery is required according to the Apple Documentation because the URL can be changed at any time.
+
 - (void)initCloudQuery {
     NSURL *cloudURL = [self cloudURL];
     
@@ -123,36 +128,62 @@
     }
 }
 
-- (void)cloudQueryDidFinish:(NSNotification *)notification {
-    NSLog(@"Cloud query finished.");
+- (void)cloudQueryDidFinish:(NSNotification *)aNotification {
+    [self.cloudQuery disableUpdates];
     
-    NSMetadataQuery *cloudQuery = [notification object];
-    [cloudQuery disableUpdates];
-    [cloudQuery stopQuery];
+    NSLog(@"Cloud query finished.");
+    [self loadJournalFromQueryNotification:aNotification forLiveUpdates:NO];
+    
+    [self.cloudQuery enableUpdates];
+}
 
+- (void)cloudQueryDidUpdate:(NSNotification *)aNotification {
+    [self.cloudQuery disableUpdates];
+    
+    NSLog(@"Cloud query updated.");
+    [self loadJournalFromQueryNotification:aNotification forLiveUpdates:YES];
+    
+    [self.cloudQuery enableUpdates];
+}
+
+- (void)loadJournalFromQueryNotification:(NSNotification *)aNotification forLiveUpdates:(BOOL)aBool {
+    NSMetadataQuery *cloudQuery = [aNotification object];
+    __block BOOL didUpdate = aBool;
+    
     [cloudQuery.results enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        NSURL *documentURL = [(NSMetadataItem *)obj valueForAttribute:NSMetadataItemURLKey];
-        CMAJournalDocument *document = [[CMAJournalDocument alloc] initWithFileURL:documentURL];
+        NSMetadataItem *item = (NSMetadataItem *)obj;
         
-        [document openWithCompletionHandler:^(BOOL success) {
-            if (success) {
-                [self setSharedJournal:document.journal];
-                [self postJournalChangeNotification];
-            } else
-                NSLog(@"Failed to load journal from iCloud.");
-        }];
+        // self._fileDidDownload is used so the journal data isn't updated several times during the initial query
+        if (didUpdate && !self._fileDidDownload)
+            self._fileDidDownload = [[item valueForAttribute:NSMetadataUbiquitousItemDownloadingStatusKey] isEqualToString:NSMetadataUbiquitousItemDownloadingStatusDownloaded];
+        else
+            self._fileDidDownload = YES;
+        
+        // only update journal data if there is a working local copy (NSMetadataUbiquitousItemDownloadingStatusCurrent)
+        if (self._fileDidDownload && [[item valueForAttribute:NSMetadataUbiquitousItemDownloadingStatusKey] isEqualToString:NSMetadataUbiquitousItemDownloadingStatusCurrent]) {
+            NSLog(@"File downloaded, updating journal data.");
+            [self loadJournalFromMetadataItem:item];
+            [self set_fileDidDownload:NO];
+        }
     }];
     
     if (cloudQuery.resultCount <= 0) {
         NSLog(@"No journal data found in iCloud, initializing from local storage.");
         [self loadJournalFromLocalStorage];
     }
-    
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (void)cloudQueryDidUpdate:(NSNotification *)notification {
-    NSLog(@"Cloud query update.");
+- (void)loadJournalFromMetadataItem:(NSMetadataItem *)item {
+    NSURL *documentURL = [item valueForAttribute:NSMetadataItemURLKey];
+    CMAJournalDocument *document = [[CMAJournalDocument alloc] initWithFileURL:documentURL];
+    
+    [document openWithCompletionHandler:^(BOOL success) {
+        if (success) {
+            [self setSharedJournal:document.journal];
+            [self postJournalChangeNotification];
+        } else
+            NSLog(@"Failed to load journal from iCloud.");
+    }];
 }
 
 - (void)loadJournalWithCloudEnabled:(BOOL)isCloudEnabled {
