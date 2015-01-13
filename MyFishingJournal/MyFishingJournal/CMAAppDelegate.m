@@ -147,7 +147,7 @@ NSInteger const kNO = 2;
     
     // ask the user if they want to use iCloud
     if ([[NSFileManager defaultManager] ubiquityIdentityToken] && (firstLaunchWithCloudAvailable == kYES || overrideFirstLaunch)) { // if this is the first launch with an iCloud account
-        UIAlertController *alert =
+        self.iCloudAlert =
             [UIAlertController alertControllerWithTitle:@"Choose Storage Option"
                                                 message:@"Should journal entries be stored in iCloud and be available on all your devices (recommended)?"
                                          preferredStyle:UIAlertControllerStyleAlert];
@@ -174,17 +174,14 @@ NSInteger const kNO = 2;
                                            aCallbackBlock();
                                    }];
         
-        [alert addAction:localOnlyAction];
-        [alert addAction:useCloudAction];
-        
-        [self.window addSubview:self.window.rootViewController.view];
-        [self.window makeKeyAndVisible];
-        [self.window.rootViewController presentViewController:alert animated:YES completion:nil];
+        [self.iCloudAlert addAction:localOnlyAction];
+        [self.iCloudAlert addAction:useCloudAction];
         
         [[NSUserDefaults standardUserDefaults] setInteger:kNO forKey:kFirstLaunchKey]; // first launch is no longer available
-        [[CMAStorageManager sharedManager] postJournalChangeNotification];
-    } else
+    } else {
         [[CMAStorageManager sharedManager] loadJournalWithCloudEnabled:[self iCloudEnabled]];
+        self.iCloudAlert = nil;
+    }
 }
 
 - (void)iCloudDisableHandler {

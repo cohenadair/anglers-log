@@ -37,6 +37,10 @@
     return [[CMAStorageManager sharedManager] sharedJournal];
 }
 
+- (CMAAppDelegate *)appDelegate {
+    return (CMAAppDelegate *)[[UIApplication sharedApplication] delegate];
+}
+
 #pragma mark - Side Bar Navigation
 
 - (void)initSideBarMenu {
@@ -109,8 +113,19 @@
     [self.tableView reloadData];
 }
 
+- (void)handleCloudAlert {
+    UIAlertController *iCloudAlert = [[self appDelegate] iCloudAlert];
+    
+    if (iCloudAlert) {
+        [self.parentViewController presentViewController:iCloudAlert animated:YES completion:nil];
+        [[self appDelegate] setICloudAlert:nil];
+    }
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    [self handleCloudAlert];
     
     self.navigationController.toolbarHidden = NO;
 

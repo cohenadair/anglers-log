@@ -11,6 +11,8 @@
 
 @interface CMAAppDelegate : UIResponder <UIApplicationDelegate>
 
+@property (strong, nonatomic)UIAlertController *iCloudAlert;
+
 @property (strong, nonatomic)UIWindow *window;
 
 @property (nonatomic)BOOL didEnterBackground;
