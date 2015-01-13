@@ -12,6 +12,7 @@
 @interface CMAAppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic)UIAlertController *iCloudAlert;
+@property (nonatomic)BOOL presentCloudAccountChangedAlert;
 
 @property (strong, nonatomic)UIWindow *window;
 

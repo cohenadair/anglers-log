@@ -15,6 +15,7 @@
 #import "CMANoXView.h"
 #import "SWRevealViewController.h"
 #import "CMAStorageManager.h"
+#import "CMAAlerts.h"
 
 @interface CMAViewEntriesViewController ()
 
@@ -126,6 +127,12 @@
     [super viewDidLoad];
     
     [self handleCloudAlert];
+    
+    // show alert if iCloud account has changed
+    if ([[self appDelegate] presentCloudAccountChangedAlert]) {
+        [CMAAlerts errorAlert:[NSString stringWithFormat:@"Your iCloud account is no longer signed in or has been disabled for %@. Your journal entries will no longer update on all your devices.", APP_NAME] presentationViewController:self.parentViewController];
+        [[self appDelegate] setPresentCloudAccountChangedAlert:NO];
+    }
     
     self.navigationController.toolbarHidden = NO;
 

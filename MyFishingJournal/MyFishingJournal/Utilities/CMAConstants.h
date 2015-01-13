@@ -51,6 +51,8 @@ typedef NS_ENUM(NSInteger, CMAEntrySortMethod) {
     CMAEntrySortMethodBaitUsed = 5
 };
 
+extern NSString *const APP_NAME;
+
 // user defines
 extern NSString *const SET_SPECIES;
 extern NSString *const SET_BAITS;

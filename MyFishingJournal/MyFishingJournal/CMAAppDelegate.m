@@ -8,7 +8,7 @@
 
 #import "CMAAppDelegate.h"
 #import "CMAStorageManager.h"
-#import "CMAAlerts.h"
+#import "CMAConstants.h"
 
 @implementation CMAAppDelegate
 
@@ -49,6 +49,8 @@
 {
     // reload journal incase the database was updated in iCloud
     if (self.didEnterBackground) {
+        [self iCloudUbiquityTokenHandler]; // see if the last account was logged out/changed
+
         [[CMAStorageManager sharedManager] setSharedJournal:nil];
         [[CMAStorageManager sharedManager] loadJournalWithCloudEnabled:[self iCloudEnabled]];
     }
@@ -111,7 +113,10 @@ NSInteger const kNO = 2;
         [[NSUserDefaults standardUserDefaults] setInteger:kYES forKey:kFirstLaunchKey];
         [[NSUserDefaults standardUserDefaults] setBool:NO forKey:kCloudBackupEnabledKey];
         
-    } else if (!currentCloudToken) // if no iCloud account is signed in, remove stored key
+    } else if (!currentCloudToken && previousCloudToken) { // if no iCloud account is signed in, but there used to be
+        self.presentCloudAccountChangedAlert = YES;
+        [self iCloudDisableHandler];
+    } else if (!currentCloudToken)
         [self iCloudDisableHandler];
 }
 
@@ -128,8 +133,7 @@ NSInteger const kNO = 2;
 - (void)iCloudAccountAvailabilityChanged {
     id currentCloudToken = [[NSFileManager defaultManager] ubiquityIdentityToken];
     
-    if (!currentCloudToken)
-        [CMAAlerts errorAlert:@"iCloud has been disabled. Your journal entries will no longer update on all your devices." presentationViewController:self.window.rootViewController];
+    self.presentCloudAccountChangedAlert = !currentCloudToken;
     
     [self iCloudUbiquityTokenHandler];
     [self iCloudRequestHandlerOverrideFirstLaunch:NO withCallback:nil];

@@ -50,8 +50,8 @@
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         if (self.isCloudBackupEnabled)
             [self archiveJournal:aJournal toURL:[self cloudURL] withFileName:aFileName isLocal:NO];
-        else
-            [self archiveJournal:aJournal toURL:[self localURL] withFileName:aFileName isLocal:YES];
+
+        [self archiveJournal:aJournal toURL:[self localURL] withFileName:aFileName isLocal:YES]; // always save locally just in case iCloud is disabled at some point
     });
 }
 
@@ -177,13 +177,26 @@
     NSURL *documentURL = [item valueForAttribute:NSMetadataItemURLKey];
     CMAJournalDocument *document = [[CMAJournalDocument alloc] initWithFileURL:documentURL];
     
-    [document openWithCompletionHandler:^(BOOL success) {
-        if (success) {
-            [self setSharedJournal:document.journal];
-            [self postJournalChangeNotification];
-        } else
-            NSLog(@"Failed to load journal from iCloud.");
-    }];
+    // gets data from the most recently updated data file, whether it's from iCloud or local storage
+    // this is done so the user's data isn't lost if iCloud was disabled for a period time
+    
+    NSDictionary *localFileAttributes = [[NSFileManager defaultManager] attributesOfItemAtPath:[[self localURL] URLByAppendingPathComponent:ARCHIVE_FILE_NAME].path error:NULL];
+    NSDictionary *cloudFileAttributes = [[NSFileManager defaultManager] attributesOfItemAtPath:[[self cloudURL] URLByAppendingPathComponent:ARCHIVE_FILE_NAME].path error:NULL];
+    NSDate *localLastModified = [localFileAttributes fileModificationDate];
+    NSDate *cloudLastModified = [cloudFileAttributes fileModificationDate];
+    
+    if ([localLastModified compare:cloudLastModified] == NSOrderedDescending) { // if local is newer than cloud
+        NSLog(@"iCloud data found, but it's older than local data. Loading local data.");
+        [self loadJournalFromLocalStorage];
+        [[self sharedJournal] archive]; // save the newer, local data to iCloud
+    } else
+        [document openWithCompletionHandler:^(BOOL success) {
+            if (success) {
+                [self setSharedJournal:document.journal];
+                [self postJournalChangeNotification];
+            } else
+                NSLog(@"Failed to load journal from iCloud.");
+        }];
 }
 
 - (void)loadJournalWithCloudEnabled:(BOOL)isCloudEnabled {

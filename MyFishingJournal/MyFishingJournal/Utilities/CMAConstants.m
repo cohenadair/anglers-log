@@ -8,6 +8,8 @@
 
 #import "CMAConstants.h"
 
+NSString *const APP_NAME = @"My Fishing Journal";
+
 NSString *const SET_SPECIES = @"Species";
 NSString *const SET_BAITS = @"Baits";
 NSString *const SET_LOCATIONS = @"Locations";
