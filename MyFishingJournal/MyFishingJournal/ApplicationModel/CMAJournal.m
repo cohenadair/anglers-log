@@ -54,6 +54,14 @@
     }
     
     [self countStatistics];
+    [self validateEntries];
+}
+
+// Used for compatibility purposes if the class of a property changes.
+- (void)validateEntries {
+    for (CMAEntry *e in self.entries)
+        if (![e.images isKindOfClass:[NSMutableOrderedSet class]])
+            e.images = [NSMutableOrderedSet orderedSetWithSet:(NSSet *)e.images];
 }
 
 // Loops through entries and recounts statistical information. Used for compatibility with old archives.

@@ -22,7 +22,7 @@
 - (id)initWithDate: (NSDate *)aDate {
     if (self = [super init]) {
         _date = aDate;
-        _images = [NSMutableSet set];
+        _images = [NSMutableOrderedSet orderedSet];
     }
     
     return self;
@@ -30,7 +30,7 @@
 
 - (id)init {
     if (self = [super init])
-        _images = [NSMutableSet set];
+        _images = [NSMutableOrderedSet orderedSet];
     
     return self;
 }

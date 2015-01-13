@@ -81,7 +81,7 @@
 @property (strong, nonatomic)UIBarButtonItem *actionButton;
 @property (strong, nonatomic)UIBarButtonItem *editButton;
 
-@property (strong, nonatomic)NSArray *entryImageArray;
+@property (strong, nonatomic)NSOrderedSet *entryImageArray;
 @property (strong, nonatomic)NSMutableArray *tableCellProperties;
 
 @end
@@ -101,7 +101,7 @@
     
     [self initNavigationBarItems];
     [self initTableSettings];
-    [self setEntryImageArray:[[self.entry images] allObjects]];
+    [self setEntryImageArray:[self.entry images]];
     
     [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     [self.tableView setTableFooterView:[[UIView alloc] initWithFrame:CGRectZero]]; // removes empty cells at the end of the list
@@ -365,7 +365,7 @@
 - (void)shareEntry {
     NSMutableArray *shareItems = [NSMutableArray array];
     
-    [shareItems addObjectsFromArray:self.entryImageArray];
+    [shareItems addObjectsFromArray:(NSArray *)self.entryImageArray];
     [shareItems addObject:[[[NSDateFormatter alloc] init] stringFromDate:self.entry.date]];
     [shareItems addObject:[NSString stringWithFormat:@"Length: %@", [self.entry.fishLength stringValue]]];
     [shareItems addObject:[NSString stringWithFormat:@"Weight: %@", [self.entry.fishLength stringValue]]];
@@ -416,7 +416,7 @@
     if ([segue.identifier isEqualToString:@"unwindToSingleEntryFromAddEntry"]) {
         CMAAddEntryViewController *source = segue.sourceViewController;
         [self setEntry:source.entry];
-        [self setEntryImageArray:[[self.entry images] allObjects]];
+        [self setEntryImageArray:[self.entry images]];
         
         [self initTableSettings];
         
