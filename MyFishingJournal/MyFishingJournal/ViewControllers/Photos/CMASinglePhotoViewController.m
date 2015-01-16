@@ -26,11 +26,16 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self.collectionView scrollToItemAtIndexPath:self.startingImageIndexPath atScrollPosition:UICollectionViewScrollPositionNone animated:NO];
+    [self setNavigationTitleForIndexPath:self.startingImageIndexPath];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)setNavigationTitleForIndexPath:(NSIndexPath *)anIndexPath {
+    [self.navigationItem setTitle:[NSString stringWithFormat:@"Photos (%ld of %lu)", anIndexPath.item + 1, (unsigned long)[self.imagesArray count]]];
 }
 
 #pragma mark - Collection View Initializing
@@ -65,6 +70,10 @@
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
     return [self cellSize];
+}
+
+- (void)collectionView:(UICollectionView *)collectionView willDisplayCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath {
+    [self setNavigationTitleForIndexPath:indexPath];
 }
 
 #pragma mark - Events

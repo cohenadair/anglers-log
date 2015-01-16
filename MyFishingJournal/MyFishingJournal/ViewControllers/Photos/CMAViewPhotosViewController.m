@@ -75,6 +75,7 @@
 - (void)setupView {
     [self initImagesArray];
     [self handleNoImagesView];
+    [self.navigationItem setTitle:[NSString stringWithFormat:@"Photos (%lu)", (unsigned long)[self.imagesArray count]]];
     [self.collectionView reloadData];
 }
 
@@ -82,6 +83,7 @@
     [super viewDidLoad];
     [self initSideBarMenu];
     [self registerForNotifications];
+    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Photos" style:UIBarButtonItemStylePlain target:nil action:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated {

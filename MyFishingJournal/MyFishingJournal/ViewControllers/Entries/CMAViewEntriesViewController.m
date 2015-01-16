@@ -83,7 +83,7 @@
 
 - (void)onJournalChange:(NSNotification *)aNotification {
     if (self.isViewLoaded && self.view.window) {
-        NSLog(@"Received journal changed notification.");
+        NSLog(@"Received journal changed notification in view entries scene.");
         [self setupView];
     }
 }
@@ -100,6 +100,8 @@
         self.deleteButton.enabled = YES;
         self.sortButton.enabled = YES;
     }
+    
+    self.navigationItem.title = [NSString stringWithFormat:@"Entries (%ld)", (long)[[self journal] entryCount]];
     
     if (!self.noEntriesView)
         [self initNoEntriesView];
@@ -135,6 +137,7 @@
     }
     
     self.navigationController.toolbarHidden = NO;
+    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Entries" style:UIBarButtonItemStylePlain target:nil action:nil];
 
     self.dateFormatter = [NSDateFormatter new];
     [self.dateFormatter setDateFormat:@"MMM dd, yyyy 'at' h:mm a"];
