@@ -199,7 +199,7 @@ NSString *const kNotSelectedString = @"Not Selected";
     [self initializeCellsForEditing];
     
     self.navigationItem.title = @"Edit Entry";
-    self.entryImages = [self.entry.images objectAtIndex:0];
+    self.entryImages = [self.entry.images array];
     self.numberOfImages = [self.entryImages count];
     self.hasAttachedImages = (self.numberOfImages > 0);
     

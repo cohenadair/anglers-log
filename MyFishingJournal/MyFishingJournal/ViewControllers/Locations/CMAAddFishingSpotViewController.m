@@ -129,6 +129,11 @@
     [self performSegueWithIdentifier:@"unwindToAddLocationFromAddFishingSpot" sender:self];
 }
 
+- (IBAction)dismissKeyboard:(UITextField *)textField {
+    [textField becomeFirstResponder];
+    [textField resignFirstResponder];
+}
+
 #pragma mark - Navigation
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {

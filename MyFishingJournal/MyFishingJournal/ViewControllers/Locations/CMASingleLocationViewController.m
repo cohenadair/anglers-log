@@ -50,7 +50,6 @@
     
     // map view stuff
     [self addFishingSpotsToMap:self.mapView];
-    [self initCurrentFishingSpot:[self.location.fishingSpots objectAtIndex:0]];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -70,7 +69,6 @@
 }
 
 - (void)configureForReadOnly {
-    [self.mapView setUserInteractionEnabled:NO];
     [self.tableView setAllowsSelection:NO];
     
     [[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:kSectionSelectFishingSpot]] setAccessoryType:UITableViewCellAccessoryNone];
@@ -228,6 +226,9 @@
 }
 
 - (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view {
+    if (self.isReadOnly)
+        return;
+    
     [self initCurrentFishingSpot:[self.location fishingSpotNamed:view.annotation.title]];
 }
 

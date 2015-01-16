@@ -77,6 +77,10 @@
     _name = [[name capitalizedString] mutableCopy];
 }
 
+- (void)setSize:(NSString *)size {
+    _size = [size capitalizedString];
+}
+
 - (void)edit: (CMABait *)aNewBait {
     [self setName:[aNewBait.name capitalizedString]];
     [self setBaitDescription:aNewBait.baitDescription];
