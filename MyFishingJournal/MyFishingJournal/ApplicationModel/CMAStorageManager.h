@@ -22,5 +22,7 @@
 - (void)saveJournal:(CMAJournal *)aJournal withFileName:(NSString *)aFileName;
 - (void)loadJournalWithCloudEnabled:(BOOL)isCloudEnabled;
 - (void)postJournalChangeNotification;
+- (NSURL *)cloudURLWithFileName;
+- (NSURL *)localURLWithFileName;
 
 @end

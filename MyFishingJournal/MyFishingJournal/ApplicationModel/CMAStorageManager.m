@@ -51,7 +51,7 @@
         if (self.isCloudBackupEnabled)
             [self archiveJournal:aJournal toURL:[self cloudURL] withFileName:aFileName isLocal:NO];
 
-        [self archiveJournal:aJournal toURL:[self localURL] withFileName:aFileName isLocal:YES]; // always save locally just in case iCloud is disabled at some point
+        [self archiveJournal:aJournal toURL:[self localURL] withFileName:aFileName isLocal:YES]; // always save locally as well incase iCloud is disabled later
     });
 }
 
@@ -104,6 +104,14 @@
         NSLog(@"Local URL is nil.");
     
     return result;
+}
+
+- (NSURL *)cloudURLWithFileName {
+    return [[self cloudURL] URLByAppendingPathComponent:ARCHIVE_FILE_NAME];
+}
+
+- (NSURL *)localURLWithFileName {
+    return [[self localURL] URLByAppendingPathComponent:ARCHIVE_FILE_NAME];
 }
 
 #pragma mark - Journal Loading
@@ -160,6 +168,7 @@
             NSLog(@"Downloading data from iCloud...");
             [[NSFileManager defaultManager] startDownloadingUbiquitousItemAtURL:[item valueForAttribute:NSMetadataItemURLKey] error:&error];
             self.cloudDownloadInitiated = YES;
+            self.cloudFileDidDownload = YES;
         }
         
         // self.cloudFileDidDownload is used so the journal data isn't updated several times during the initial query
@@ -180,6 +189,14 @@
     if (cloudQuery.resultCount <= 0) {
         NSLog(@"No journal data found in iCloud, initializing from local storage.");
         [self loadJournalFromLocalStorage];
+        
+        // move data file to iCloud
+        NSError *error;
+        [[NSFileManager defaultManager] setUbiquitous:YES itemAtURL:[self localURLWithFileName] destinationURL:[self cloudURLWithFileName] error:&error];
+        if (error)
+            NSLog(@"Error moving file to iCloud: %@", error.localizedDescription);
+        else
+            NSLog(@"Successfully moved data file to iCloud.");
     }
 }
 
@@ -219,9 +236,9 @@
 }
 
 - (void)loadJournalFromLocalStorage {
-    NSLog(@"Local path: %@", [[self localURL] URLByAppendingPathComponent:ARCHIVE_FILE_NAME].path);
+    NSLog(@"Local path: %@", [self localURLWithFileName].path);
     
-    self.sharedJournal = [NSKeyedUnarchiver unarchiveObjectWithFile:[[self localURL] URLByAppendingPathComponent:ARCHIVE_FILE_NAME].path];
+    self.sharedJournal = [NSKeyedUnarchiver unarchiveObjectWithFile:[self localURLWithFileName].path];
     
     if (!self.sharedJournal) {
         NSLog(@"No local data found, initializing new journal.");
