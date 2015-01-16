@@ -152,18 +152,28 @@
     
     [cloudQuery.results enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         NSMetadataItem *item = (NSMetadataItem *)obj;
+        NSString *downloadingKey = [item valueForAttribute:NSMetadataUbiquitousItemDownloadingStatusKey];
+        NSError *error;
         
-        // self._fileDidDownload is used so the journal data isn't updated several times during the initial query
-        if (didUpdate && !self._fileDidDownload)
-            self._fileDidDownload = [[item valueForAttribute:NSMetadataUbiquitousItemDownloadingStatusKey] isEqualToString:NSMetadataUbiquitousItemDownloadingStatusDownloaded];
+        // download the file if it isn't already downloaded or being downloaded
+        if (!self.cloudDownloadInitiated && [downloadingKey isEqualToString:NSMetadataUbiquitousItemDownloadingStatusNotDownloaded]) {
+            NSLog(@"Downloading data from iCloud...");
+            [[NSFileManager defaultManager] startDownloadingUbiquitousItemAtURL:[item valueForAttribute:NSMetadataItemURLKey] error:&error];
+            self.cloudDownloadInitiated = YES;
+        }
+        
+        // self.cloudFileDidDownload is used so the journal data isn't updated several times during the initial query
+        if (didUpdate && !self.cloudFileDidDownload)
+            self.cloudFileDidDownload = [downloadingKey isEqualToString:NSMetadataUbiquitousItemDownloadingStatusDownloaded];
         else
-            self._fileDidDownload = YES;
+            self.cloudFileDidDownload = YES;
         
         // only update journal data if there is a working local copy (NSMetadataUbiquitousItemDownloadingStatusCurrent)
-        if (self._fileDidDownload && [[item valueForAttribute:NSMetadataUbiquitousItemDownloadingStatusKey] isEqualToString:NSMetadataUbiquitousItemDownloadingStatusCurrent]) {
+        if (self.cloudFileDidDownload && [downloadingKey isEqualToString:NSMetadataUbiquitousItemDownloadingStatusCurrent]) {
             NSLog(@"File downloaded, updating journal data.");
             [self loadJournalFromMetadataItem:item];
-            [self set_fileDidDownload:NO];
+            self.cloudFileDidDownload = NO;
+            self.cloudDownloadInitiated = NO;
         }
     }];
     
