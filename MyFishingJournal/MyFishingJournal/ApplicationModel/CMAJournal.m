@@ -110,6 +110,18 @@
 
 #pragma mark - Editing
 
+- (CMAJournal *)copy {
+    CMAJournal *result = [CMAJournal new];
+    
+    result.entries = [self.entries mutableCopy];
+    result.userDefines = [self.userDefines mutableCopy];
+    result.measurementSystem = self.measurementSystem;
+    result.entrySortMethod = self.entrySortMethod;
+    result.entrySortOrder = self.entrySortOrder;
+    
+    return result;
+}
+
 - (BOOL)addEntry: (CMAEntry *)anEntry {
     if ([self entryDated:anEntry.date] != nil) {
         NSLog(@"Duplicate entry date.");

@@ -45,13 +45,15 @@
 
 - (void)saveJournal:(CMAJournal *)aJournal withFileName:(NSString *)aFileName {
     [self setSharedJournal:aJournal];
+    __block CMAJournal *journal = [aJournal copy];
     
     // archive the journal in a separate thread
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         if (self.isCloudBackupEnabled)
-            [self archiveJournal:aJournal toURL:[self cloudURL] withFileName:aFileName isLocal:NO];
+            [self archiveJournal:journal toURL:[self cloudURL] withFileName:aFileName isLocal:NO];
 
-        [self archiveJournal:aJournal toURL:[self localURL] withFileName:aFileName isLocal:YES]; // always save locally as well incase iCloud is disabled later
+        [self archiveJournal:journal toURL:[self localURL] withFileName:aFileName isLocal:YES]; // always save locally as well incase iCloud is disabled later
+        journal = nil;
     });
 }
 
