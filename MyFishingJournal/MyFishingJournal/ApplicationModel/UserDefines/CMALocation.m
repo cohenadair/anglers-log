@@ -56,6 +56,9 @@
     
     if (!self.fishingSpots)
         self.fishingSpots = [NSMutableArray array];
+    
+    for (CMAFishingSpot *f in self.fishingSpots)
+        [f validateProperties];
 }
 
 #pragma mark - Archiving

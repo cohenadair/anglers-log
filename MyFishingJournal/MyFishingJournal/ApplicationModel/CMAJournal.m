@@ -66,17 +66,25 @@
 
 // Loops through entries and recounts statistical information. Used for compatibility with old archives.
 - (void)countStatistics {
+    // reset species
     CMAUserDefine *species = [self userDefineNamed:SET_SPECIES];
     for (CMASpecies *s in [species objects]) {
-        [s setNumberCaught:0];
-        [s setWeightCaught:0];
-        [s setOuncesCaught:0];
+        [s setNumberCaught:[NSNumber numberWithInteger:0]];
+        [s setWeightCaught:[NSNumber numberWithInteger:0]];
+        [s setOuncesCaught:[NSNumber numberWithInteger:0]];
     }
     
+    // reset baits
     CMAUserDefine *baits = [self userDefineNamed:SET_BAITS];
     for (CMABait *s in [baits objects]) {
-        [s setFishCaught:0];
+        [s setFishCaught:[NSNumber numberWithInteger:0]];
     }
+    
+    // reset fishing spots
+    CMAUserDefine *locations = [self userDefineNamed:SET_LOCATIONS];
+    for (CMALocation *l in [locations objects])
+        for (CMAFishingSpot *f in [l fishingSpots])
+            [f setFishCaught:[NSNumber numberWithInteger:0]];
     
     for (CMAEntry *e in self.entries)
         [self incStatsForEntry:e];
@@ -135,93 +143,11 @@
     return YES;
 }
 
-- (void)incStatsForEntry: (CMAEntry *)anEntry {
-    // fish quantity
-    if ([anEntry.fishQuantity integerValue] > 0)
-        [anEntry.fishSpecies incNumberCaught:[anEntry.fishQuantity integerValue]];
-    else
-        [anEntry.fishSpecies incNumberCaught:1];
-    
-    // fish weight
-    if ([anEntry.fishWeight integerValue] > 0) {
-        [anEntry.fishSpecies incWeightCaught:[anEntry.fishWeight integerValue]];
-    
-        // handle ounces for imperial users
-        if (self.measurementSystem == CMAMeasuringSystemTypeImperial) {
-            if ([anEntry.fishOunces integerValue] > 0) {
-                [anEntry.fishSpecies incOuncesCaught:[anEntry.fishOunces integerValue]];
-                
-                if ([anEntry.fishSpecies.ouncesCaught integerValue] >= kOuncesInAPound) {
-                    [anEntry.fishSpecies incWeightCaught:1];
-                    [anEntry.fishSpecies decNumberCaught:kOuncesInAPound];
-                }
-            }
-        }
-    }
-    
-    // bait used
-    if (anEntry.baitUsed) {
-        if ([anEntry.fishQuantity integerValue] > 0)
-            [anEntry.baitUsed incFishCaught:[anEntry.fishQuantity integerValue]];
-        else
-            [anEntry.baitUsed incFishCaught:1];
-    }
-    
-    // location
-    if ([anEntry.fishQuantity integerValue] > 0)
-        [anEntry.fishingSpot incFishCaught:[anEntry.fishQuantity integerValue]];
-    else
-        [anEntry.fishingSpot incFishCaught:1];
-}
-
 - (void)removeEntryDated: (NSDate *)aDate {
     CMAEntry *entry = [self entryDated:aDate];
     
     [self decStatsForEntry:entry];
     [self.entries removeObject:[self entryDated:aDate]];
-}
-
-- (void)decStatsForEntry: (CMAEntry *)anEntry {
-    // quantity
-    if ([anEntry.fishQuantity integerValue] > 0)
-        [anEntry.fishSpecies decNumberCaught:[anEntry.fishQuantity integerValue]];
-    else
-        [anEntry.fishSpecies decNumberCaught:1];
-    
-    // weight
-    if ([anEntry.fishWeight integerValue] > 0)
-        [anEntry.fishSpecies decWeightCaught:[anEntry.fishWeight integerValue]];
-    
-    // fish weight
-    if ([anEntry.fishWeight integerValue] > 0) {
-        [anEntry.fishSpecies decWeightCaught:[anEntry.fishWeight integerValue]];
-        
-        // handle ounces for imperial users
-        if (self.measurementSystem == CMAMeasuringSystemTypeImperial) {
-            if ([anEntry.fishOunces integerValue] > 0) {
-                [anEntry.fishSpecies decOuncesCaught:[anEntry.fishOunces integerValue]];
-                
-                if ([anEntry.fishSpecies.ouncesCaught integerValue] < 0) {
-                    [anEntry.fishSpecies decWeightCaught:1];
-                    [anEntry.fishSpecies incNumberCaught:kOuncesInAPound];
-                }
-            }
-        }
-    }
-    
-    // bait used
-    if (anEntry.baitUsed) {
-        if ([anEntry.fishQuantity integerValue] > 0)
-            [anEntry.baitUsed decFishCaught:[anEntry.fishQuantity integerValue]];
-        else
-            [anEntry.baitUsed decFishCaught:1];
-    }
-    
-    // location
-    if ([anEntry.fishQuantity integerValue] > 0)
-        [anEntry.fishingSpot decFishCaught:[anEntry.fishQuantity integerValue]];
-    else
-        [anEntry.fishingSpot decFishCaught:1];
 }
 
 // removes entry with aDate and adds aNewEntry
@@ -280,6 +206,88 @@
 
 - (void)editUserDefine: (NSString *)aDefineName objectNamed: (NSString *)objectName newProperties: (id)aNewObject {
     [[self userDefineNamed:aDefineName] editObjectNamed:objectName newObject:aNewObject];
+}
+
+- (void)incStatsForEntry: (CMAEntry *)anEntry {
+    // fish quantity
+    if ([anEntry.fishQuantity integerValue] > 0)
+        [anEntry.fishSpecies incNumberCaught:[anEntry.fishQuantity integerValue]];
+    else
+        [anEntry.fishSpecies incNumberCaught:1];
+    
+    // fish weight
+    if ([anEntry.fishWeight integerValue] > 0) {
+        [anEntry.fishSpecies incWeightCaught:[anEntry.fishWeight integerValue]];
+        
+        // handle ounces for imperial users
+        if (self.measurementSystem == CMAMeasuringSystemTypeImperial) {
+            if ([anEntry.fishOunces integerValue] > 0) {
+                [anEntry.fishSpecies incOuncesCaught:[anEntry.fishOunces integerValue]];
+                
+                if ([anEntry.fishSpecies.ouncesCaught integerValue] >= kOuncesInAPound) {
+                    [anEntry.fishSpecies incWeightCaught:1];
+                    [anEntry.fishSpecies decNumberCaught:kOuncesInAPound];
+                }
+            }
+        }
+    }
+    
+    // bait used
+    if (anEntry.baitUsed) {
+        if ([anEntry.fishQuantity integerValue] > 0)
+            [anEntry.baitUsed incFishCaught:[anEntry.fishQuantity integerValue]];
+        else
+            [anEntry.baitUsed incFishCaught:1];
+    }
+    
+    // location
+    if ([anEntry.fishQuantity integerValue] > 0)
+        [anEntry.fishingSpot incFishCaught:[anEntry.fishQuantity integerValue]];
+    else
+        [anEntry.fishingSpot incFishCaught:1];
+}
+
+- (void)decStatsForEntry: (CMAEntry *)anEntry {
+    // quantity
+    if ([anEntry.fishQuantity integerValue] > 0)
+        [anEntry.fishSpecies decNumberCaught:[anEntry.fishQuantity integerValue]];
+    else
+        [anEntry.fishSpecies decNumberCaught:1];
+    
+    // weight
+    if ([anEntry.fishWeight integerValue] > 0)
+        [anEntry.fishSpecies decWeightCaught:[anEntry.fishWeight integerValue]];
+    
+    // fish weight
+    if ([anEntry.fishWeight integerValue] > 0) {
+        [anEntry.fishSpecies decWeightCaught:[anEntry.fishWeight integerValue]];
+        
+        // handle ounces for imperial users
+        if (self.measurementSystem == CMAMeasuringSystemTypeImperial) {
+            if ([anEntry.fishOunces integerValue] > 0) {
+                [anEntry.fishSpecies decOuncesCaught:[anEntry.fishOunces integerValue]];
+                
+                if ([anEntry.fishSpecies.ouncesCaught integerValue] < 0) {
+                    [anEntry.fishSpecies decWeightCaught:1];
+                    [anEntry.fishSpecies incNumberCaught:kOuncesInAPound];
+                }
+            }
+        }
+    }
+    
+    // bait used
+    if (anEntry.baitUsed) {
+        if ([anEntry.fishQuantity integerValue] > 0)
+            [anEntry.baitUsed decFishCaught:[anEntry.fishQuantity integerValue]];
+        else
+            [anEntry.baitUsed decFishCaught:1];
+    }
+    
+    // location
+    if ([anEntry.fishQuantity integerValue] > 0)
+        [anEntry.fishingSpot decFishCaught:[anEntry.fishQuantity integerValue]];
+    else
+        [anEntry.fishingSpot decFishCaught:1];
 }
 
 #pragma mark - Accessing

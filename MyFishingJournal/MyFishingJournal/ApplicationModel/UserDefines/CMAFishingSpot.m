@@ -56,7 +56,6 @@
     if (self = [super init]) {
         _name = [aDecoder decodeObjectForKey:@"CMAFishingSpotName"];
         _location = [aDecoder decodeObjectForKey:@"CMAFishingSpotLocation"];
-        _fishCaught = [aDecoder decodeObjectForKey:@"CMAFishingSpotFishCaught"];
     }
     
     return self;
@@ -65,7 +64,6 @@
 - (void)encodeWithCoder:(NSCoder *)aCoder {
     [aCoder encodeObject:self.name forKey:@"CMAFishingSpotName"];
     [aCoder encodeObject:self.location forKey:@"CMAFishingSpotLocation"];
-    [aCoder encodeObject:self.fishCaught forKey:@"CMAFishingSpotFishCaught"];
 }
 
 #pragma mark - Editing

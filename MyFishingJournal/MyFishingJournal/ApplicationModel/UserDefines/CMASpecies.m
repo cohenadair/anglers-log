@@ -50,9 +50,6 @@
 - (id)initWithCoder:(NSCoder *)aDecoder {
     if (self = [super init]) {
         _name = [aDecoder decodeObjectForKey:@"CMASpeciesName"];
-        _numberCaught = [aDecoder decodeObjectForKey:@"CMASpeciesNumberCaught"];
-        _weightCaught = [aDecoder decodeObjectForKey:@"CMASpeciesWeightCaught"];
-        _ouncesCaught = [aDecoder decodeObjectForKey:@"CMASpeciesOuncesCaught"];
     }
     
     return self;
@@ -60,9 +57,6 @@
 
 - (void)encodeWithCoder:(NSCoder *)aCoder {
     [aCoder encodeObject:self.name forKey:@"CMASpeciesName"];
-    [aCoder encodeObject:self.numberCaught forKey:@"CMASpeciesNumberCaught"];
-    [aCoder encodeObject:self.weightCaught forKey:@"CMASpeciesWeightCaught"];
-    [aCoder encodeObject:self.ouncesCaught forKey:@"CMASpeciesOuncesCaught"];
 }
 
 #pragma mark - Editing

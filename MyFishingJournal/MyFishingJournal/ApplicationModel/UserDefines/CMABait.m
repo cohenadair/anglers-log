@@ -54,7 +54,6 @@
         _name = [aDecoder decodeObjectForKey:@"CMABaitName"];
         _baitDescription = [aDecoder decodeObjectForKey:@"CMABaitDescription"];
         _image = [aDecoder decodeObjectForKey:@"CMABaitImage"];
-        _fishCaught = [aDecoder decodeObjectForKey:@"CMABaitFishCaught"];
         _size = [aDecoder decodeObjectForKey:@"CMABaitSize"];
         _baitType = [aDecoder decodeObjectForKey:@"CMABaitType"];
     }
@@ -66,7 +65,6 @@
     [aCoder encodeObject:self.name forKey:@"CMABaitName"];
     [aCoder encodeObject:self.baitDescription forKey:@"CMABaitDescription"];
     [aCoder encodeObject:self.image forKey:@"CMABaitImage"];
-    [aCoder encodeObject:self.fishCaught forKey:@"CMABaitFishCaught"];
     [aCoder encodeObject:self.size forKey:@"CMABaitSize"];
     [aCoder encodeObject:self.baitType forKey:@"CMABaitType"];
 }

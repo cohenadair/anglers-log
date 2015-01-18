@@ -35,7 +35,7 @@
 }
 
 - (void)setNavigationTitleForIndexPath:(NSIndexPath *)anIndexPath {
-    [self.navigationItem setTitle:[NSString stringWithFormat:@"Photos (%ld of %lu)", anIndexPath.item + 1, (unsigned long)[self.imagesArray count]]];
+    [self.navigationItem setTitle:[NSString stringWithFormat:@"Photos (%d of %lu)", anIndexPath.item + 1, (unsigned long)[self.imagesArray count]]];
 }
 
 #pragma mark - Collection View Initializing
