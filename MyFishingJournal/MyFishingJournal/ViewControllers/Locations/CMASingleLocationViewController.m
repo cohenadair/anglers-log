@@ -173,6 +173,7 @@
         CMAAddLocationViewController *source = segue.sourceViewController;
         
         self.location = source.location;
+        self.navigationItem.title = self.location.name;
         source.location = nil;
     }
     
