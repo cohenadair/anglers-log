@@ -182,16 +182,22 @@
     [self toggleDoneSelectingButton:YES];
     [self.tableView setAllowsMultipleSelection:YES];
     [self setIsSelectingForAddEntry:YES];
+    
+    if (!self.selectedCellsArray)
+        [self setSelectedCellsArray:[NSMutableArray array]];
 }
 
 // Hides/shows a checkmark inside aCell.
 - (void)toggleCellAccessoryCheckmarkAtIndexPath: (NSIndexPath *)anIndexPath {
     UITableViewCell *selectedCell = [self.tableView cellForRowAtIndexPath:anIndexPath];
 
-    if (selectedCell.accessoryType == UITableViewCellAccessoryCheckmark)
+    if (selectedCell.accessoryType == UITableViewCellAccessoryCheckmark) {
         [selectedCell setAccessoryType:UITableViewCellAccessoryNone];
-    else
+        [self.selectedCellsArray removeObject:selectedCell.textLabel.text];
+    } else {
         [selectedCell setAccessoryType:UITableViewCellAccessoryCheckmark];
+        [self.selectedCellsArray addObject:selectedCell.textLabel.text];
+    }
 }
 
 // Sets each cell's selection style to selectionStyle.
@@ -206,11 +212,8 @@
 - (NSString *)stringFromSelectedCells {
     NSMutableString *result = [NSMutableString string];
     
-    for (int i = 0; i < [self.tableView numberOfRowsInSection:0]; i++) {
-        UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0]];
-        
-        if (cell.accessoryType == UITableViewCellAccessoryCheckmark)
-            [result appendFormat:@"%@%@", [cell.textLabel text], TOKEN_FISHING_METHODS];
+    for (int i = 0; i < [self.selectedCellsArray count]; i++) {
+        [result appendFormat:@"%@%@", [self.selectedCellsArray objectAtIndex:i], TOKEN_FISHING_METHODS];
     }
     
     // remove the last comma and space
@@ -245,6 +248,13 @@
     else
         if ((!self.isSelectingForAddEntry || self.isSelectingMultiple) && !self.tableView.editing)
             [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+    
+    if (self.isSelectingMultiple) {
+        if ([self.selectedCellsArray containsObject:cell.textLabel.text])
+            [cell setAccessoryType:UITableViewCellAccessoryCheckmark];
+        else
+            [cell setAccessoryType:UITableViewCellAccessoryNone];
+    }
     
     if (indexPath.item % 2 == 0)
         [cell setBackgroundColor:CELL_COLOR_DARK];
@@ -298,8 +308,9 @@
 
 - (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath {
     // if selecting multiple
-    if (self.isSelectingMultiple)
+    if (self.isSelectingMultiple) {
         [self toggleCellAccessoryCheckmarkAtIndexPath:indexPath];
+    }
 }
 
 // Override to support editing the table view.

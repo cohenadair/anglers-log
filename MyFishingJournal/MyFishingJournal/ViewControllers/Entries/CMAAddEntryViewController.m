@@ -549,6 +549,16 @@ NSString *const kNotSelectedString = @"Not Selected";
         destination.userDefine = [[self journal] userDefineNamed:userDefineName];
         destination.previousViewID = CMAViewControllerIDAddEntry;
         
+        if ([destination.userDefine.name isEqualToString:SET_FISHING_METHODS]) {
+            NSMutableArray *stringArray = [NSMutableArray array];
+            
+            NSMutableSet *methods = [self parseMethodsDetailText];
+            for (id m in methods)
+                [stringArray addObject:[m name]];
+            
+            destination.selectedCellsArray = [stringArray mutableCopy];
+        }
+        
         self.indexPathForOptionsCell = [self.tableView indexPathForSelectedRow]; // so it knows which cell to edit after the unwind
     }
 }

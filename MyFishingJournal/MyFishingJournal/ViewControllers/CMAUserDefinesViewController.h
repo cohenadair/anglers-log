@@ -19,4 +19,7 @@
 // used for communication to the Add Entry view
 @property (strong, nonatomic)NSString *selectedCellLabelText;
 
+// used to check off cells when editing
+@property (strong, nonatomic)NSMutableArray *selectedCellsArray;
+
 @end
