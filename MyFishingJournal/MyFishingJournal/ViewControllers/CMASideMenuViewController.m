@@ -11,12 +11,21 @@
 #import "CMAAppDelegate.h"
 #import "SWRevealViewController.h"
 #import "CMAStorageManager.h"
+#import "CMAAlerts.h"
 
 @interface CMASideMenuViewController ()
 
 @property (weak, nonatomic) IBOutlet UIView *titleView;
+@property (weak, nonatomic) IBOutlet UITableViewCell *instagramCell;
+@property (weak, nonatomic) IBOutlet UITableViewCell *twitterCell;
 
 @end
+
+#define kInstagramCell 9
+#define kTwitterCell 10
+
+#define kInstagram 1
+#define kTwitter 2
 
 @implementation CMASideMenuViewController
 
@@ -53,6 +62,22 @@
 - (CMAUserDefine *)userDefineFromSelectedCell {
     UITableViewCell *selectedCell = [self.tableView cellForRowAtIndexPath:[self.tableView indexPathForSelectedRow]];
     return [[self journal] userDefineNamed:[(UILabel *)[selectedCell viewWithTag:100] text]];
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    if ([tableView cellForRowAtIndexPath:indexPath] == self.instagramCell) {
+        if (![[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"instagram://tag?name=MyFishingJournal"]])
+            [CMAAlerts errorAlert:@"Please install the Instagram app to use this feature." presentationViewController:self];
+
+        [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    }
+    
+    if ([tableView cellForRowAtIndexPath:indexPath] == self.twitterCell) {
+        if (![[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"twitter://search?query=%23MyFishingJournal"]])
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://twitter.com/search?f=realtime&q=%23MyFishingJournal&src=typd&lang=en"]];
+        
+        [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    }
 }
 
 #pragma mark - Navigation

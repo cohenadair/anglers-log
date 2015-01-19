@@ -2455,6 +2455,42 @@
                                             <segue destination="xYT-rV-mpH" kind="custom" identifier="fromSideMenuToSettings" customClass="SWRevealViewControllerSegue" id="gDt-Tw-gtk"/>
                                         </connections>
                                     </tableViewCell>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="id4-YK-BCj">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="id4-YK-BCj" id="MX8-9I-c7L">
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="instagram.png" translatesAutoresizingMaskIntoConstraints="NO" id="xuY-XC-IoP">
+                                                    <rect key="frame" x="18" y="9" width="25" height="25"/>
+                                                </imageView>
+                                                <label opaque="NO" userInteractionEnabled="NO" tag="100" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="#MyFishingJournal" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vMS-gH-RCd">
+                                                    <rect key="frame" x="65" y="11" width="527" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                    </tableViewCell>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="PHn-8a-B3Q">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="PHn-8a-B3Q" id="Q3r-Ax-KRm">
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="twitter_blue.png" translatesAutoresizingMaskIntoConstraints="NO" id="WhX-hV-ynT">
+                                                    <rect key="frame" x="18" y="12" width="25" height="20"/>
+                                                </imageView>
+                                                <label opaque="NO" userInteractionEnabled="NO" tag="100" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="#MyFishingJournal" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PFL-Mf-ORG">
+                                                    <rect key="frame" x="65" y="11" width="251" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                    </tableViewCell>
                                 </cells>
                             </tableViewSection>
                         </sections>
@@ -2466,7 +2502,9 @@
                     <navigationItem key="navigationItem" id="aVc-kw-DJA"/>
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
                     <connections>
+                        <outlet property="instagramCell" destination="id4-YK-BCj" id="T40-qe-BG9"/>
                         <outlet property="titleView" destination="Usv-0f-D5O" id="Klx-os-Ryj"/>
+                        <outlet property="twitterCell" destination="PHn-8a-B3Q" id="zOz-Fn-hLD"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JCQ-W3-6UJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -2921,6 +2959,7 @@
         <image name="camera.png" width="25" height="25"/>
         <image name="edit.png" width="25" height="25"/>
         <image name="fishing_methods.png" width="50" height="50"/>
+        <image name="instagram.png" width="50" height="50"/>
         <image name="literature.png" width="50" height="50"/>
         <image name="locations.png" width="50" height="50"/>
         <image name="menu.png" width="25" height="25"/>
@@ -2930,11 +2969,16 @@
         <image name="sort.png" width="25" height="25"/>
         <image name="species.png" width="50" height="50"/>
         <image name="stats.png" width="50" height="50"/>
+        <image name="twitter_blue.png" width="50" height="41"/>
         <image name="water_clarities.png" width="50" height="50"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="gDt-Tw-gtk"/>
         <segue reference="0It-ub-fzN"/>
-        <segue reference="nlb-Sg-N5a"/>
+        <segue reference="egX-OW-uSX"/>
+        <segue reference="guB-6y-sIg"/>
+        <segue reference="8iL-u2-ZVl"/>
+        <segue reference="Jyy-wS-dXA"/>
         <segue reference="Gww-wH-Tkw"/>
         <segue reference="rQz-NV-wiY"/>
         <segue reference="y0h-hR-J5c"/>
@@ -2943,11 +2987,7 @@
         <segue reference="ij7-4o-wMK"/>
         <segue reference="qAO-gb-5Yr"/>
         <segue reference="ooh-Eu-Ug2"/>
-        <segue reference="guB-6y-sIg"/>
-        <segue reference="Jyy-wS-dXA"/>
-        <segue reference="gDt-Tw-gtk"/>
-        <segue reference="Usd-Jw-Xr5"/>
-        <segue reference="bAG-il-Vyj"/>
         <segue reference="wZB-7v-gkR"/>
+        <segue reference="bAG-il-Vyj"/>
     </inferredMetricsTieBreakers>
 </document>
