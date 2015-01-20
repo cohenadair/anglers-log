@@ -10,6 +10,7 @@
 #import "CMAAddLocationViewController.h"
 #import "CMASelectFishingSpotViewController.h"
 #import "CMAConstants.h"
+#import "CMAInstagramActivity.h"
 
 @interface CMASingleLocationViewController ()
 
@@ -132,7 +133,10 @@
     [shareItems addObject:[NSString stringWithFormat:@"Location: %@", self.location.name]];
     [shareItems addObject:SHARE_MESSAGE];
     
-    UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:shareItems applicationActivities:nil];
+    CMAInstagramActivity *instagramActivity = [CMAInstagramActivity new];
+    [instagramActivity setPresentView:self.view];
+    
+    UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:shareItems applicationActivities:@[instagramActivity]];
     activityController.popoverPresentationController.sourceView = self.view;
     activityController.excludedActivityTypes = @[UIActivityTypeAssignToContact,
                                                  UIActivityTypePrint,

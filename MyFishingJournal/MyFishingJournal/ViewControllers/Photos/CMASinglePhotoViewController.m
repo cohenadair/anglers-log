@@ -8,6 +8,7 @@
 
 #import "CMASinglePhotoViewController.h"
 #import "CMAConstants.h"
+#import "CMAInstagramActivity.h"
 
 @interface CMASinglePhotoViewController ()
 
@@ -87,7 +88,10 @@
 #pragma mark - Sharing
 
 - (void)shareImage:(UIImage *)anImage {
-    UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[anImage, SHARE_MESSAGE] applicationActivities:nil];
+    CMAInstagramActivity *instagramActivity = [CMAInstagramActivity new];
+    [instagramActivity setPresentView:self.view];
+    
+    UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[anImage, SHARE_MESSAGE] applicationActivities:@[instagramActivity]];
     activityController.popoverPresentationController.sourceView = self.view;
     activityController.excludedActivityTypes = @[UIActivityTypeAssignToContact,
                                                  UIActivityTypePrint,

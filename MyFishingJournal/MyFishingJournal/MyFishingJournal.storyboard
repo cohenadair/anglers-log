@@ -2461,7 +2461,7 @@
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="id4-YK-BCj" id="MX8-9I-c7L">
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="instagram.png" translatesAutoresizingMaskIntoConstraints="NO" id="xuY-XC-IoP">
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="instagram_small.png" translatesAutoresizingMaskIntoConstraints="NO" id="xuY-XC-IoP">
                                                     <rect key="frame" x="18" y="9" width="25" height="25"/>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" tag="100" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="#MyFishingJournal" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vMS-gH-RCd">
@@ -2479,7 +2479,7 @@
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="PHn-8a-B3Q" id="Q3r-Ax-KRm">
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="twitter_blue.png" translatesAutoresizingMaskIntoConstraints="NO" id="WhX-hV-ynT">
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="twitter_blue_small.png" translatesAutoresizingMaskIntoConstraints="NO" id="WhX-hV-ynT">
                                                     <rect key="frame" x="18" y="12" width="25" height="20"/>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" tag="100" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="#MyFishingJournal" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PFL-Mf-ORG">
@@ -2959,7 +2959,7 @@
         <image name="camera.png" width="25" height="25"/>
         <image name="edit.png" width="25" height="25"/>
         <image name="fishing_methods.png" width="50" height="50"/>
-        <image name="instagram.png" width="50" height="50"/>
+        <image name="instagram_small.png" width="50" height="50"/>
         <image name="literature.png" width="50" height="50"/>
         <image name="locations.png" width="50" height="50"/>
         <image name="menu.png" width="25" height="25"/>
@@ -2969,7 +2969,7 @@
         <image name="sort.png" width="25" height="25"/>
         <image name="species.png" width="50" height="50"/>
         <image name="stats.png" width="50" height="50"/>
-        <image name="twitter_blue.png" width="50" height="41"/>
+        <image name="twitter_blue_small.png" width="50" height="41"/>
         <image name="water_clarities.png" width="50" height="50"/>
     </resources>
     <inferredMetricsTieBreakers>

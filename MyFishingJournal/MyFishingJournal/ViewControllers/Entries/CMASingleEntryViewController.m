@@ -15,6 +15,7 @@
 #import "CMAFishingMethod.h"
 #import "CMAWeatherDataView.h"
 #import "CMAStorageManager.h"
+#import "CMAInstagramActivity.h"
 
 // Used to store information on the cells that will be shonw on the table.
 // See initTableSettings.
@@ -365,13 +366,18 @@
 - (void)shareEntry {
     NSMutableArray *shareItems = [NSMutableArray array];
     
-    [shareItems addObjectsFromArray:(NSArray *)self.entryImageArray];
+    UIImage *currentImage = [(UIImageView *)[[[self.imageCollectionView visibleCells] objectAtIndex:0] viewWithTag:100] image];
+    
+    [shareItems addObject:currentImage];
     [shareItems addObject:[[[NSDateFormatter alloc] init] stringFromDate:self.entry.date]];
     [shareItems addObject:[NSString stringWithFormat:@"Length: %@", [self.entry.fishLength stringValue]]];
     [shareItems addObject:[NSString stringWithFormat:@"Weight: %@", [self.entry.fishLength stringValue]]];
     [shareItems addObject:SHARE_MESSAGE];
     
-    UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:shareItems applicationActivities:nil];
+    CMAInstagramActivity *instagramActivity = [CMAInstagramActivity new];
+    [instagramActivity setPresentView:self.view];
+    
+    UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:shareItems applicationActivities:@[instagramActivity]];
     activityController.popoverPresentationController.sourceView = self.view;
     activityController.excludedActivityTypes = @[UIActivityTypeAssignToContact,
                                                  UIActivityTypePrint,
