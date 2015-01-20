@@ -22,7 +22,6 @@
     
     [self initAppearances];
     
-    
     return YES;
 }
 
