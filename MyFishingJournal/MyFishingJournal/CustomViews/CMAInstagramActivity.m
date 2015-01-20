@@ -77,10 +77,6 @@ NSString *const kTempFileName = @"instagram.igo";
     [self activityDidFinish:NO];
 }
 
-- (void)activityDidFinish:(BOOL)didFinish {
-    [super activityDidFinish:didFinish];
-}
-
 #pragma mark - Helper Methods
 
 - (BOOL)isActivityItemValid:(UIActivityItemProvider *)activityItem {
@@ -102,7 +98,7 @@ NSString *const kTempFileName = @"instagram.igo";
 }
 
 - (NSString *)tempImagePath {
-    return [NSTemporaryDirectory() stringByAppendingString:kTempFileName];
+    return [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) firstObject] stringByAppendingString:kTempFileName];
 }
 
 #pragma mark - Document Interaction Delegate
