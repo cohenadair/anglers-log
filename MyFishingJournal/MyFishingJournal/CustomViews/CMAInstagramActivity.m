@@ -77,6 +77,16 @@ NSString *const kTempFileName = @"instagram.igo";
     [self activityDidFinish:NO];
 }
 
+- (void)activityDidFinish:(BOOL)completed {
+    if (completed) {
+        NSError *error;
+        if (![[NSFileManager defaultManager] removeItemAtPath:[self tempImagePath] error:&error])
+            NSLog(@"CMAInstagramActivity: Error removing temporary image: %@", error.localizedDescription);
+    }
+    
+    [super activityDidFinish:completed];
+}
+
 #pragma mark - Helper Methods
 
 - (BOOL)isActivityItemValid:(UIActivityItemProvider *)activityItem {
@@ -98,12 +108,12 @@ NSString *const kTempFileName = @"instagram.igo";
 }
 
 - (NSString *)tempImagePath {
-    return [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) firstObject] stringByAppendingString:kTempFileName];
+    return [NSTemporaryDirectory() stringByAppendingString:kTempFileName];
 }
 
 #pragma mark - Document Interaction Delegate
 
--(void)documentInteractionController:(UIDocumentInteractionController *)controller willBeginSendingToApplication:(NSString *)application {
+-(void)documentInteractionController:(UIDocumentInteractionController *)controller didEndSendingToApplication:(NSString *)application {
     [self activityDidFinish:YES];
 }
 
