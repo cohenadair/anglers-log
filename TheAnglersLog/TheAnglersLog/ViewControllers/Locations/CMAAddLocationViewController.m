@@ -163,7 +163,7 @@ NSInteger const SECTION_ADD = 2;
     
     // make sure the location name doesn't already exist
     if (!self.isEditingLocation)
-        if ([[[self journal] userDefineNamed:SET_LOCATIONS] objectNamed:self.locationNameTextField.text] != nil) {
+        if ([[[self journal] userDefineNamed:UDN_LOCATIONS] objectNamed:self.locationNameTextField.text] != nil) {
             [CMAAlerts errorAlert:@"A location by that name already exists. Please choose a new name or edit the existing location." presentationViewController:self];
             return NO;
         }
@@ -188,10 +188,10 @@ NSInteger const SECTION_ADD = 2;
     
     if ([self checkUserInputAndSetLocation:locationToAdd]) {
         if (self.isEditingLocation) {
-            [[self journal] editUserDefine:SET_LOCATIONS objectNamed:self.location.name newProperties:locationToAdd];
+            [[self journal] editUserDefine:UDN_LOCATIONS objectNamed:self.location.name newProperties:locationToAdd];
             [self setLocation:locationToAdd];
         } else
-            [[self journal] addUserDefine:SET_LOCATIONS objectToAdd:locationToAdd];
+            [[self journal] addUserDefine:UDN_LOCATIONS objectToAdd:locationToAdd];
         
         if (!self.isEditingLocation)
             [self setLocation:nil];

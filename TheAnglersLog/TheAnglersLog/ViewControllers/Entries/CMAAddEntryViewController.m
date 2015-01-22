@@ -519,25 +519,25 @@ NSString *const kNotSelectedString = @"Not Selected";
     // species
     if ([segue.identifier isEqualToString:@"fromAddEntrySpeciesToEditSettings"]) {
         isSetting = YES;
-        userDefineName = SET_SPECIES;
+        userDefineName = UDN_SPECIES;
     }
     
     // location
     if ([segue.identifier isEqualToString:@"fromAddEntryLocationToEditSettings"]) {
         isSetting = YES;
-        userDefineName = SET_LOCATIONS;
+        userDefineName = UDN_LOCATIONS;
     }
     
     // methods
     if ([segue.identifier isEqualToString:@"fromAddEntryMethodsToEditSettings"]) {
         isSetting = YES;
-        userDefineName = SET_FISHING_METHODS;
+        userDefineName = UDN_FISHING_METHODS;
     }
     
     // water clarities
     if ([segue.identifier isEqualToString:@"fromAddEntryWaterClarityToEditSettings"]) {
         isSetting = YES;
-        userDefineName = SET_WATER_CLARITIES;
+        userDefineName = UDN_WATER_CLARITIES;
     }
     
     if (isSetting) {
@@ -549,7 +549,7 @@ NSString *const kNotSelectedString = @"Not Selected";
         destination.userDefine = [[self journal] userDefineNamed:userDefineName];
         destination.previousViewID = CMAViewControllerIDAddEntry;
         
-        if ([destination.userDefine.name isEqualToString:SET_FISHING_METHODS]) {
+        if ([destination.userDefine.name isEqualToString:UDN_FISHING_METHODS]) {
             NSMutableArray *stringArray = [NSMutableArray array];
             
             NSMutableSet *methods = [self parseMethodsDetailText];
@@ -622,7 +622,7 @@ NSString *const kNotSelectedString = @"Not Selected";
     
     // species
     if (![[self.speciesDetailLabel text] isEqualToString:kNotSelectedString]) {
-        CMASpecies *species = [[[self journal] userDefineNamed:SET_SPECIES] objectNamed:[self.speciesDetailLabel text]];
+        CMASpecies *species = [[[self journal] userDefineNamed:UDN_SPECIES] objectNamed:[self.speciesDetailLabel text]];
         [anEntry setFishSpecies:species];
     } else {
         [CMAAlerts errorAlert:@"Please select a species." presentationViewController:self];
@@ -682,7 +682,7 @@ NSString *const kNotSelectedString = @"Not Selected";
     
     // bait used
     if (![[self.baitUsedDetailLabel text] isEqualToString:kNotSelectedString]) {
-        CMABait *bait = [[[self journal] userDefineNamed:SET_BAITS] objectNamed:[self.baitUsedDetailLabel text]];
+        CMABait *bait = [[[self journal] userDefineNamed:UDN_BAITS] objectNamed:[self.baitUsedDetailLabel text]];
         [anEntry setBaitUsed:bait];
     } else {
         [anEntry setBaitUsed:nil];
@@ -711,7 +711,7 @@ NSString *const kNotSelectedString = @"Not Selected";
     
     // water clarity
     if (![[self.waterClarityLabel text] isEqualToString:kNotSelectedString]) {
-        CMAWaterClarity *waterClarity = [[[self journal] userDefineNamed:SET_WATER_CLARITIES] objectNamed:[self.waterClarityLabel text]];
+        CMAWaterClarity *waterClarity = [[[self journal] userDefineNamed:UDN_WATER_CLARITIES] objectNamed:[self.waterClarityLabel text]];
         [anEntry setWaterClarity:waterClarity];
     } else {
         [anEntry setWaterClarity:nil];
@@ -739,7 +739,7 @@ NSString *const kNotSelectedString = @"Not Selected";
 - (NSArray *)parseLocationDetailText {
     NSArray *stringLocationInfo = [[self.locationDetailLabel text] componentsSeparatedByString:TOKEN_LOCATION];
     
-    CMALocation *location = [[[self journal] userDefineNamed:SET_LOCATIONS] objectNamed:stringLocationInfo[0]];
+    CMALocation *location = [[[self journal] userDefineNamed:UDN_LOCATIONS] objectNamed:stringLocationInfo[0]];
     CMAFishingSpot *fishingSpot = [location fishingSpotNamed:stringLocationInfo[1]];
 
     return [NSArray arrayWithObjects:location, fishingSpot, nil];
@@ -751,7 +751,7 @@ NSString *const kNotSelectedString = @"Not Selected";
     NSArray *fishingMethodStrings = [[self.methodsDetailLabel text] componentsSeparatedByString:TOKEN_FISHING_METHODS];
     
     for (NSString *str in fishingMethodStrings)
-        [result addObject:[[[self journal] userDefineNamed:SET_FISHING_METHODS] objectNamed:str]];
+        [result addObject:[[[self journal] userDefineNamed:UDN_FISHING_METHODS] objectNamed:str]];
     
     return result;
 }

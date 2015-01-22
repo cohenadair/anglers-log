@@ -51,14 +51,28 @@ typedef NS_ENUM(NSInteger, CMAEntrySortMethod) {
     CMAEntrySortMethodBaitUsed = 5
 };
 
-extern NSString *const APP_NAME;
+#pragma mark - User Define Name (UDN)
 
-// user defines
-extern NSString *const SET_SPECIES;
-extern NSString *const SET_BAITS;
-extern NSString *const SET_LOCATIONS;
-extern NSString *const SET_FISHING_METHODS;
-extern NSString *const SET_WATER_CLARITIES;
+extern NSString *const UDN_SPECIES;
+extern NSString *const UDN_BAITS;
+extern NSString *const UDN_LOCATIONS;
+extern NSString *const UDN_FISHING_METHODS;
+extern NSString *const UDN_WATER_CLARITIES;
+
+#pragma mark - Core Data Entities (CDE)
+
+extern NSString *const CDE_JOURNAL;
+extern NSString *const CDE_ENTRY;
+extern NSString *const CDE_USER_DEFINE;
+extern NSString *const CDE_SPECIES;
+extern NSString *const CDE_BAIT;
+extern NSString *const CDE_LOCATION;
+extern NSString *const CDE_FISHING_METHOD;
+extern NSString *const CDE_WATER_CLARITY;
+extern NSString *const CDE_WEATHER_DATA;
+extern NSString *const CDE_FISHING_SPOT;
+
+extern NSString *const APP_NAME;
 
 // Used for splitting up NSStrings.
 extern NSString *const TOKEN_FISHING_METHODS;

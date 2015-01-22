@@ -7,24 +7,25 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <CoreData/CoreData.h>
 #import "CMAEntry.h"
 #import "CMAConstants.h"
 #import "CMAUserDefine.h"
 
-@interface CMAJournal : NSObject <NSCoding>
+@interface CMAJournal : NSManagedObject /*<NSCoding>*/
 
 @property (strong, nonatomic)NSMutableArray *entries;
-@property (strong, nonatomic)NSMutableDictionary *userDefines;
+@property (strong, nonatomic)NSMutableArray *userDefines;
 @property (nonatomic)CMAMeasuringSystemType measurementSystem;
 @property (nonatomic)CMAEntrySortMethod entrySortMethod;
 @property (nonatomic)CMASortOrder entrySortOrder;
 
 // initializing
-- (void)validateUserDefines;
+- (void)validateProperties;
 
 // archiving
-- (id)initWithCoder:(NSCoder *)aDecoder;
-- (void)encodeWithCoder:(NSCoder *)aCoder;
+//- (id)initWithCoder:(NSCoder *)aDecoder;
+//- (void)encodeWithCoder:(NSCoder *)aCoder;
 - (void)archive;
 
 // editing

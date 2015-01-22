@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="6254" systemVersion="14B25" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
+    <entity name="CMABait" representedClassName="CMABait" syncable="YES"/>
+    <entity name="CMAEntry" representedClassName="CMAEntry" syncable="YES">
+        <attribute name="date" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="fishingMethods" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="fishLength" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="fishOunces" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="fishQuantity" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="fishWeight" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="images" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="notes" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="waterDepth" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="waterTemperature" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <relationship name="baitUsed" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CMABait" syncable="YES"/>
+        <relationship name="fishingSpot" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CMAFishingSpot" syncable="YES"/>
+        <relationship name="fishSpecies" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CMAFishSpecies" syncable="YES"/>
+        <relationship name="journal" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CMAJournal" inverseName="entries" inverseEntity="CMAJournal" syncable="YES"/>
+        <relationship name="location" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CMALocation" syncable="YES"/>
+        <relationship name="waterClarity" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CMAWaterClarity" syncable="YES"/>
+        <relationship name="weatherData" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CMAWeatherData" syncable="YES"/>
+    </entity>
+    <entity name="CMAFishingSpot" representedClassName="CMAFishingSpot" syncable="YES"/>
+    <entity name="CMAFishSpecies" representedClassName="CMAFishSpecies" syncable="YES"/>
+    <entity name="CMAJournal" representedClassName="CMAJournal" syncable="YES">
+        <attribute name="entrySortMethod" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="entrySortOrder" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="measurementSystem" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <relationship name="entries" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="CMAEntry" inverseName="journal" inverseEntity="CMAEntry" syncable="YES"/>
+        <relationship name="userDefines" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CMAUserDefine" inverseName="journal" inverseEntity="CMAUserDefine" syncable="YES"/>
+    </entity>
+    <entity name="CMALocation" representedClassName="CMALocation" syncable="YES"/>
+    <entity name="CMAUserDefine" representedClassName="CMAUserDefine" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="objects" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <relationship name="journal" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CMAJournal" inverseName="userDefines" inverseEntity="CMAJournal" syncable="YES"/>
+    </entity>
+    <entity name="CMAWaterClarity" representedClassName="CMAWaterClarity" syncable="YES"/>
+    <entity name="CMAWeatherData" representedClassName="CMAWeatherData" syncable="YES"/>
+    <elements>
+        <element name="CMABait" positionX="-6005" positionY="-1683" width="128" height="43"/>
+        <element name="CMAEntry" positionX="-6165" positionY="-1449" width="128" height="298"/>
+        <element name="CMAFishingSpot" positionX="-5985" positionY="-1618" width="128" height="43"/>
+        <element name="CMAFishSpecies" positionX="-5960" positionY="-1555" width="128" height="43"/>
+        <element name="CMAJournal" positionX="-6336" positionY="-1261" width="128" height="118"/>
+        <element name="CMALocation" positionX="-5940" positionY="-1485" width="128" height="43"/>
+        <element name="CMAUserDefine" positionX="-6167" positionY="-1134" width="128" height="88"/>
+        <element name="CMAWaterClarity" positionX="-5922" positionY="-1422" width="128" height="43"/>
+        <element name="CMAWeatherData" positionX="-5895" positionY="-1350" width="128" height="43"/>
+    </elements>
+</model>

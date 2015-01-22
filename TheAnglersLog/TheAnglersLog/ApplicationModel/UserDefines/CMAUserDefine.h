@@ -7,24 +7,24 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <CoreData/CoreData.h>
 
-@interface CMAUserDefine : NSObject <NSCoding>
+@class CMAJournal;
+
+@interface CMAUserDefine : NSManagedObject /*<NSCoding>*/
 
 @property (strong, nonatomic)NSString *name;
+@property (strong, nonatomic)CMAJournal *journal;
 
 // Objects within this array have to abide by the CMAUserDefineProtocol
-@property (strong, nonatomic)NSMutableArray *objects;
+@property (strong, nonatomic)NSMutableOrderedSet *objects;
 
-// instance creation
-+ (CMAUserDefine *)withName: (NSString *)aName;
-
-// initialization
-- (id)initWithName: (NSString *)aName;
+// validation
 - (void)validateObjects;
 
 // archiving
-- (id)initWithCoder:(NSCoder *)aDecoder;
-- (void)encodeWithCoder:(NSCoder *)aCoder;
+//- (id)initWithCoder:(NSCoder *)aDecoder;
+//- (void)encodeWithCoder:(NSCoder *)aCoder;
 
 // editing
 - (BOOL)addObject: (id)anObject;

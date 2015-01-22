@@ -38,12 +38,12 @@
         
         switch (_pieChartDataType) {
             case CMAPieChartDataTypeCaught:
-                self.userDefineName = SET_SPECIES;
+                self.userDefineName = UDN_SPECIES;
                 [self initForCaught];
                 break;
                 
             case CMAPieChartDataTypeWeight:
-                self.userDefineName = SET_SPECIES;
+                self.userDefineName = UDN_SPECIES;
                 _totalDescription = [NSString stringWithFormat:@"%@ Caught", [self.journal weightUnitsAsString:NO]];
                 _detailDescription = [self.journal weightUnitsAsString:YES];
                 
@@ -54,13 +54,13 @@
                 break;
                 
             case CMAPieChartDataTypeBait:
-                self.userDefineName = SET_BAITS;
+                self.userDefineName = UDN_BAITS;
                 _detailDescription = @"Fish Caught";
                 [self initForBait];
                 break;
                 
             case CMAPieChartDataTypeLocation:
-                self.userDefineName = SET_LOCATIONS;
+                self.userDefineName = UDN_LOCATIONS;
                 [self initForLocation];
                 break;
                 
@@ -76,7 +76,7 @@
 - (void)initForCaught {
     NSMutableArray *result = [NSMutableArray array];
     
-    for (CMASpecies *species in [[self.journal userDefineNamed:SET_SPECIES] objects]) {
+    for (CMASpecies *species in [[self.journal userDefineNamed:UDN_SPECIES] objects]) {
         CMAStatsObject *obj = [CMAStatsObject new];
         
         [obj setName:species.name];
@@ -93,7 +93,7 @@
     NSMutableArray *result = [NSMutableArray array];
     NSInteger ounces = 0;
     
-    for (CMASpecies *species in [[self.journal userDefineNamed:SET_SPECIES] objects]) {
+    for (CMASpecies *species in [[self.journal userDefineNamed:UDN_SPECIES] objects]) {
         CMAStatsObject *obj = [CMAStatsObject new];
         
         [obj setName:species.name];
@@ -116,7 +116,7 @@
 - (void)initForLocation {
     NSMutableArray *result = [NSMutableArray array];
     
-    for (CMALocation *loc in [[self.journal userDefineNamed:SET_LOCATIONS] objects]) {
+    for (CMALocation *loc in [[self.journal userDefineNamed:UDN_LOCATIONS] objects]) {
         CMAStatsObject *obj = [CMAStatsObject new];
         
         for (CMAFishingSpot *spot in loc.fishingSpots)
@@ -134,7 +134,7 @@
 - (void)initForBait {
     NSMutableArray *result = [NSMutableArray array];
     
-    for (CMABait *bait in [[self.journal userDefineNamed:SET_BAITS] objects]) {
+    for (CMABait *bait in [[self.journal userDefineNamed:UDN_BAITS] objects]) {
         CMAStatsObject *obj = [CMAStatsObject new];
         
         [obj setName:bait.name];

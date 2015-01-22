@@ -11,6 +11,24 @@
 
 @implementation CMAEntry
 
+@dynamic date;
+@dynamic images;
+@dynamic fishSpecies;
+@dynamic fishLength;
+@dynamic fishWeight;
+@dynamic fishOunces;
+@dynamic fishQuantity;
+@dynamic baitUsed;
+@dynamic fishingMethods;
+@dynamic location;
+@dynamic fishingSpot;
+@dynamic weatherData;
+@dynamic waterTemperature;
+@dynamic waterClarity;
+@dynamic waterDepth;
+@dynamic notes;
+@dynamic journal;
+
 #pragma mark - Instance Creation
 
 + (CMAEntry *)onDate: (NSDate *)aDate {
@@ -21,8 +39,8 @@
 
 - (id)initWithDate: (NSDate *)aDate {
     if (self = [super init]) {
-        _date = aDate;
-        _images = [NSMutableOrderedSet orderedSet];
+        self.date = aDate;
+        self.images = [NSMutableOrderedSet orderedSet];
     }
     
     return self;
@@ -30,37 +48,42 @@
 
 - (id)init {
     if (self = [super init])
-        _images = [NSMutableOrderedSet orderedSet];
+        self.images = [NSMutableOrderedSet orderedSet];
     
     return self;
 }
 
-#pragma mark - Archiving
+// Used for compatibility purposes.
+- (void)validateProperties {
+    
+}
 
+#pragma mark - Archiving
+/*
 - (id)initWithCoder:(NSCoder *)aDecoder {
     if (self = [super init]) {
-        _date = [aDecoder decodeObjectForKey:@"CMAEntryDate"];
+        self.date = [aDecoder decodeObjectForKey:@"CMAEntryDate"];
         
-        _images = [aDecoder decodeObjectForKey:@"CMAEntryImages"];
+        self.images = [aDecoder decodeObjectForKey:@"CMAEntryImages"];
         
-        _fishSpecies = [aDecoder decodeObjectForKey:@"CMAEntryFishSpecies"];
-        _fishLength = [aDecoder decodeObjectForKey:@"CMAEntryFishLength"];
-        _fishWeight = [aDecoder decodeObjectForKey:@"CMAEntryFishWeight"];
-        _fishOunces = [aDecoder decodeObjectForKey:@"CMAEntryFishOunces"];
-        _fishQuantity = [aDecoder decodeObjectForKey:@"CMAEntryFishQuantity"];
+        self.fishSpecies = [aDecoder decodeObjectForKey:@"CMAEntryFishSpecies"];
+        self.fishLength = [aDecoder decodeObjectForKey:@"CMAEntryFishLength"];
+        self.fishWeight = [aDecoder decodeObjectForKey:@"CMAEntryFishWeight"];
+        self.fishOunces = [aDecoder decodeObjectForKey:@"CMAEntryFishOunces"];
+        self.fishQuantity = [aDecoder decodeObjectForKey:@"CMAEntryFishQuantity"];
         
-        _baitUsed = [aDecoder decodeObjectForKey:@"CMAEntryBaitUsed"];
-        _fishingMethods = [aDecoder decodeObjectForKey:@"CMAEntryFishingMethods"];
-        _location = [aDecoder decodeObjectForKey:@"CMAEntryLocation"];
-        _fishingSpot = [aDecoder decodeObjectForKey:@"CMAEntryFishingSpot"];
+        self.baitUsed = [aDecoder decodeObjectForKey:@"CMAEntryBaitUsed"];
+        self.fishingMethods = [aDecoder decodeObjectForKey:@"CMAEntryFishingMethods"];
+        self.location = [aDecoder decodeObjectForKey:@"CMAEntryLocation"];
+        self.fishingSpot = [aDecoder decodeObjectForKey:@"CMAEntryFishingSpot"];
         
-        _weatherData = [aDecoder decodeObjectForKey:@"CMAEntryWeatherData"];
+        self.weatherData = [aDecoder decodeObjectForKey:@"CMAEntryWeatherData"];
         
-        _waterTemperature = [aDecoder decodeObjectForKey:@"CMAEntryWaterTemerature"];
-        _waterClarity = [aDecoder decodeObjectForKey:@"CMAEntryWaterClarity"];
-        _waterDepth = [aDecoder decodeObjectForKey:@"CMAEntryWaterDeptch"];
+        self.waterTemperature = [aDecoder decodeObjectForKey:@"CMAEntryWaterTemerature"];
+        self.waterClarity = [aDecoder decodeObjectForKey:@"CMAEntryWaterClarity"];
+        self.waterDepth = [aDecoder decodeObjectForKey:@"CMAEntryWaterDeptch"];
         
-        _notes = [aDecoder decodeObjectForKey:@"CMAEntryNotes"];
+        self.notes = [aDecoder decodeObjectForKey:@"CMAEntryNotes"];
     }
     
     return self;
@@ -90,7 +113,7 @@
     
     [aCoder encodeObject:self.notes forKey:@"CMAEntryNotes"];
 }
-
+*/
 #pragma mark - Accessing
 
 - (NSInteger)imageCount {

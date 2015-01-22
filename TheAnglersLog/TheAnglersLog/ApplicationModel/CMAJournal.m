@@ -14,60 +14,77 @@
 
 @implementation CMAJournal
 
+@dynamic entries;
+@dynamic userDefines;
+@dynamic measurementSystem;
+@dynamic entrySortMethod;
+@dynamic entrySortOrder;
+
 #pragma mark - Initialization
 
 - (CMAJournal *)init {
     if (self = [super init]) {
-        _entries = [NSMutableArray array];
-        _userDefines = [NSMutableDictionary dictionary];
-        
-        [self validateUserDefines];
+        self.entries = [NSMutableArray array];
+        self.userDefines = [NSMutableArray array];
         
         [self setMeasurementSystem:CMAMeasuringSystemTypeImperial];
         [self setEntrySortMethod:CMAEntrySortMethodDate];
         [self setEntrySortOrder:CMASortOrderDescending];
+        
+        [self validateProperties];
     }
     
     return self;
 }
 
-// Initializes user define objects if they don't already exist. Used so the same CMAJournal object can be used if new defines are added.
-- (void)validateUserDefines {
-    if (![_userDefines objectForKey:SET_SPECIES])
-        [_userDefines setValue:[CMAUserDefine withName:SET_SPECIES] forKey:SET_SPECIES];
+- (void)validateProperties {
+    [self initUserDefines];
+    [self initEntries];
+    [self initStatistics];
+}
+
+// Initializes user define objects if they don't already exist. Used so the same CMAJournal object can be used if new defines are added later.
+- (void)initUserDefines {
+    if (![self userDefineNamed:UDN_SPECIES])
+        [self addUserDefineNamed:UDN_SPECIES];
     
-    if (![_userDefines objectForKey:SET_BAITS])
-        [_userDefines setValue:[CMAUserDefine withName:SET_BAITS] forKey:SET_BAITS];
+    if (![self userDefineNamed:UDN_BAITS])
+        [self addUserDefineNamed:UDN_BAITS];
     
-    if (![_userDefines objectForKey:SET_FISHING_METHODS])
-        [_userDefines setValue:[CMAUserDefine withName:SET_FISHING_METHODS] forKey:SET_FISHING_METHODS];
+    if (![self userDefineNamed:UDN_FISHING_METHODS])
+        [self addUserDefineNamed:UDN_FISHING_METHODS];
     
-    if (![_userDefines objectForKey:SET_LOCATIONS])
-        [_userDefines setValue:[CMAUserDefine withName:SET_LOCATIONS] forKey:SET_LOCATIONS];
+    if (![self userDefineNamed:UDN_LOCATIONS])
+        [self addUserDefineNamed:UDN_BAITS];
     
-    if (![_userDefines objectForKey:SET_WATER_CLARITIES])
-        [_userDefines setValue:[CMAUserDefine withName:SET_WATER_CLARITIES] forKey:SET_WATER_CLARITIES];
+    if (![self userDefineNamed:UDN_WATER_CLARITIES])
+        [self addUserDefineNamed:UDN_WATER_CLARITIES];
     
-    for (NSString *defineKey in _userDefines) {
-        CMAUserDefine *define = [_userDefines objectForKey:defineKey];
+    for (CMAUserDefine *define in self.userDefines)
         [define validateObjects];
-    }
+}
+
+// Adds a new CMAUserDefine object to [self userDefines].
+- (void)addUserDefineNamed:(NSString *)aName {
+    NSManagedObjectContext *context = [[CMAStorageManager sharedManager] managedObjectContext];
     
-    [self countStatistics];
-    [self validateEntries];
+    CMAUserDefine *define = [NSEntityDescription insertNewObjectForEntityForName:CDE_USER_DEFINE inManagedObjectContext:context];
+    [define setName:UDN_SPECIES];
+    [define setJournal:self];
+    
+    [self.userDefines addObject:define];
 }
 
 // Used for compatibility purposes if the class of a property changes.
-- (void)validateEntries {
+- (void)initEntries {
     for (CMAEntry *e in self.entries)
-        if (![e.images isKindOfClass:[NSMutableOrderedSet class]])
-            e.images = [NSMutableOrderedSet orderedSetWithSet:(NSSet *)e.images];
+        [e validateProperties];
 }
 
 // Loops through entries and recounts statistical information. Used for compatibility with old archives.
-- (void)countStatistics {
+- (void)initStatistics {
     // reset species
-    CMAUserDefine *species = [self userDefineNamed:SET_SPECIES];
+    CMAUserDefine *species = [self userDefineNamed:UDN_SPECIES];
     for (CMASpecies *s in [species objects]) {
         [s setNumberCaught:[NSNumber numberWithInteger:0]];
         [s setWeightCaught:[NSNumber numberWithInteger:0]];
@@ -75,13 +92,13 @@
     }
     
     // reset baits
-    CMAUserDefine *baits = [self userDefineNamed:SET_BAITS];
+    CMAUserDefine *baits = [self userDefineNamed:UDN_BAITS];
     for (CMABait *s in [baits objects]) {
         [s setFishCaught:[NSNumber numberWithInteger:0]];
     }
     
     // reset fishing spots
-    CMAUserDefine *locations = [self userDefineNamed:SET_LOCATIONS];
+    CMAUserDefine *locations = [self userDefineNamed:UDN_LOCATIONS];
     for (CMALocation *l in [locations objects])
         for (CMAFishingSpot *f in [l fishingSpots])
             [f setFishCaught:[NSNumber numberWithInteger:0]];
@@ -91,14 +108,14 @@
 }
 
 #pragma mark - Archiving
-
+/*
 - (id)initWithCoder:(NSCoder *)aDecoder {
     if (self = [super init]) {
-        _entries = [aDecoder decodeObjectForKey:@"CMAJournalEntries"];
-        _userDefines = [aDecoder decodeObjectForKey:@"CMAJournalUserDefines"];
-        _measurementSystem = [aDecoder decodeIntegerForKey:@"CMAJournalMeasurmentSystem"];
-        _entrySortMethod = [aDecoder decodeIntegerForKey:@"CMAJournalEntrySortMethod"];
-        _entrySortOrder = [aDecoder decodeIntegerForKey:@"CMAJournalEntrySortOrder"];
+        self.entries = [aDecoder decodeObjectForKey:@"CMAJournalEntries"];
+        self.userDefines = [aDecoder decodeObjectForKey:@"CMAJournalUserDefines"];
+        self.measurementSystem = [aDecoder decodeIntegerForKey:@"CMAJournalMeasurmentSystem"];
+        self.entrySortMethod = [aDecoder decodeIntegerForKey:@"CMAJournalEntrySortMethod"];
+        self.entrySortOrder = [aDecoder decodeIntegerForKey:@"CMAJournalEntrySortOrder"];
     }
     
     return self;
@@ -111,7 +128,7 @@
     [aCoder encodeInteger:self.entrySortMethod forKey:@"CMAJournalEntrySortMethod"];
     [aCoder encodeInteger:self.entrySortOrder forKey:@"CMAJournalEntrySortOrder"];
 }
-
+*/
 - (void)archive {
     [[CMAStorageManager sharedManager] saveJournal:self withFileName:ARCHIVE_FILE_NAME];
 }
@@ -170,26 +187,26 @@
 // Removes the user define, anObjectName (i.e. species, location, bait, etc.) from any entries that reference it.
 - (void)removeUserDefineFromEntries: (NSString *)aDefineName objectNamed: (NSString *)anObjectName {
     for (CMAEntry *entry in self.entries) {
-        if ([aDefineName isEqualToString:SET_SPECIES])
+        if ([aDefineName isEqualToString:UDN_SPECIES])
             if ([entry.fishSpecies.name isEqualToString:anObjectName]) {
                 entry.fishSpecies = nil;
                 entry.fishSpecies = [CMASpecies withName:REMOVED_TEXT];
             }
         
-        if ([aDefineName isEqualToString:SET_LOCATIONS])
+        if ([aDefineName isEqualToString:UDN_LOCATIONS])
             if ([entry.location.name isEqualToString:anObjectName]) {
                 entry.location = nil;
                 entry.fishingSpot = nil;
                 entry.location = [CMALocation withName:REMOVED_TEXT];
             }
         
-        if ([aDefineName isEqualToString:SET_BAITS])
+        if ([aDefineName isEqualToString:UDN_BAITS])
             if ([entry.baitUsed.name isEqualToString:anObjectName]) {
                 entry.baitUsed = nil;
                 entry.baitUsed = [CMABait withName:REMOVED_TEXT];
             }
         
-        if ([aDefineName isEqualToString:SET_FISHING_METHODS]) {
+        if ([aDefineName isEqualToString:UDN_FISHING_METHODS]) {
             NSMutableSet *tempSet = [entry.fishingMethods mutableCopy];
             
             for (CMAFishingMethod *method in entry.fishingMethods)
@@ -293,7 +310,11 @@
 #pragma mark - Accessing
 
 - (CMAUserDefine *)userDefineNamed: (NSString *)aName {
-    return [self.userDefines objectForKey:aName];
+    for (CMAUserDefine *define in [self userDefines])
+        if ([[define name] isEqualToString:aName])
+            return define;
+        
+    return nil;
 }
 
 - (NSInteger)entryCount {

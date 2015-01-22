@@ -10,11 +10,26 @@
 
 NSString *const APP_NAME = @"My Fishing Journal";
 
-NSString *const SET_SPECIES = @"Species";
-NSString *const SET_BAITS = @"Baits";
-NSString *const SET_LOCATIONS = @"Locations";
-NSString *const SET_FISHING_METHODS = @"Fishing Methods";
-NSString *const SET_WATER_CLARITIES = @"Water Clarities";
+#pragma mark - User Define Name (UDN)
+
+NSString *const UDN_SPECIES = @"Species";
+NSString *const UDN_BAITS = @"Baits";
+NSString *const UDN_LOCATIONS = @"Locations";
+NSString *const UDN_FISHING_METHODS = @"Fishing Methods";
+NSString *const UDN_WATER_CLARITIES = @"Water Clarities";
+
+#pragma mark - Core Data Entities (CDE)
+
+NSString *const CDE_JOURNAL = @"CMAJournal";
+NSString *const CDE_ENTRY = @"CMAEntry";
+NSString *const CDE_USER_DEFINE = @"CMAUserDefine";
+NSString *const CDE_SPECIES = @"CMASpecies";
+NSString *const CDE_BAIT = @"CMABait";
+NSString *const CDE_LOCATION = @"CMALocation";
+NSString *const CDE_FISHING_METHOD = @"CMAFishingMethod";
+NSString *const CDE_WATER_CLARITY = @"CMAWaterClarity";
+NSString *const CDE_WEATHER_DATA = @"CMAWeatherData";
+NSString *const CDE_FISHING_SPOT = @"CMAFishingSPot";
 
 NSString *const TOKEN_FISHING_METHODS = @", ";
 NSString *const TOKEN_LOCATION = @": ";

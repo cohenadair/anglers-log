@@ -225,7 +225,7 @@
     
     // make sure the bait name doesn't already exist
     if (!self.isEditingBait)
-        if ([[[self journal] userDefineNamed:SET_LOCATIONS] objectNamed:self.nameTextField.text] != nil) {
+        if ([[[self journal] userDefineNamed:UDN_LOCATIONS] objectNamed:self.nameTextField.text] != nil) {
             [CMAAlerts errorAlert:@"A bait by that name already exists. Please choose a new name or edit the existing bait." presentationViewController:self];
             return NO;
         }
@@ -269,9 +269,9 @@
     
     if ([self checkUserInputAndSetBait:baitToAdd]) {
         if (self.previousViewID == CMAViewControllerIDSingleBait) {
-            [[self journal] editUserDefine:SET_BAITS objectNamed:self.bait.name newProperties:baitToAdd];
+            [[self journal] editUserDefine:UDN_BAITS objectNamed:self.bait.name newProperties:baitToAdd];
         } else
-            [[self journal] addUserDefine:SET_BAITS objectToAdd:baitToAdd];
+            [[self journal] addUserDefine:UDN_BAITS objectToAdd:baitToAdd];
         
         if (!(self.previousViewID == CMAViewControllerIDSingleBait))
             [self setBait:nil];

@@ -7,13 +7,16 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <CoreData/CoreData.h>
 #import "CMALocation.h"
 #import "CMASpecies.h"
 #import "CMABait.h"
 #import "CMAWaterClarity.h"
 #import "CMAWeatherData.h"
 
-@interface CMAEntry : NSObject <NSCoding>
+@class CMAJournal;
+
+@interface CMAEntry : NSManagedObject /*<NSCoding>*/
 
 // date and time
 @property (strong, nonatomic)NSDate *date;
@@ -45,15 +48,19 @@
 // notes
 @property (strong, nonatomic)NSString *notes;
 
+// journal
+@property (strong, nonatomic)CMAJournal *journal;
+
 // instance creation
 + (CMAEntry *)onDate: (NSDate *)aDate;
 
 // initializing
 - (id)initWithDate: (NSDate *)aDate;
+- (void)validateProperties;
 
 // archiving
-- (id)initWithCoder:(NSCoder *)aDecoder;
-- (void)encodeWithCoder:(NSCoder *)aCoder;
+//- (id)initWithCoder:(NSCoder *)aDecoder;
+//- (void)encodeWithCoder:(NSCoder *)aCoder;
 
 // accessing
 - (NSInteger)imageCount;

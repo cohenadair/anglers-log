@@ -76,7 +76,7 @@
 }
 
 - (void)setupView {
-    [self setUserDefineBaits:[[self journal] userDefineNamed:SET_BAITS]];
+    [self setUserDefineBaits:[[self journal] userDefineNamed:UDN_BAITS]];
     [self handleNoBaitView];
     [self.tableView reloadData];
 }
@@ -122,7 +122,7 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [[[self journal] userDefineNamed:SET_BAITS] count];
+    return [[[self journal] userDefineNamed:UDN_BAITS] count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -176,7 +176,7 @@
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     // delete from data source
     CMABaitTableViewCell *cell = (CMABaitTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
-    [[self journal] removeUserDefine:SET_BAITS objectNamed:cell.nameLabel.text];
+    [[self journal] removeUserDefine:UDN_BAITS objectNamed:cell.nameLabel.text];
     
     // delete from table
     [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
@@ -237,7 +237,7 @@
 }
 
 - (IBAction)unwindToViewBaits:(UIStoryboardSegue *)segue {
-    [self setUserDefineBaits:[[self journal] userDefineNamed:SET_BAITS]];
+    [self setUserDefineBaits:[[self journal] userDefineNamed:UDN_BAITS]];
     [self.tableView reloadData];
 }
 

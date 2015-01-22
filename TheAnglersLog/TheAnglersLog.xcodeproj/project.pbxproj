@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0D2CF5A11A6F16B300C0113E /* TheAnglersLog.xcdatamodel in Sources */ = {isa = PBXBuildFile; fileRef = 0D2CF5A01A6F16B300C0113E /* TheAnglersLog.xcdatamodel */; };
+		0D5608121A6F0F3000EE0437 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D5608111A6F0F3000EE0437 /* CoreData.framework */; };
 		0D8F838B1A6EC10800AABAEA /* CMAEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D8F836D1A6EC10800AABAEA /* CMAEntry.m */; };
 		0D8F838C1A6EC10800AABAEA /* CMAJournal.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D8F836F1A6EC10800AABAEA /* CMAJournal.m */; };
 		0D8F838D1A6EC10800AABAEA /* CMAJournalDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D8F83711A6EC10800AABAEA /* CMAJournalDocument.m */; };
@@ -132,6 +134,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0D2CF5A01A6F16B300C0113E /* TheAnglersLog.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; name = TheAnglersLog.xcdatamodel; path = TheAnglersLog/TheAnglersLog.xcdatamodel; sourceTree = SOURCE_ROOT; };
+		0D5608111A6F0F3000EE0437 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		0D8F836C1A6EC10800AABAEA /* CMAEntry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAEntry.h; path = TheAnglersLog/ApplicationModel/CMAEntry.h; sourceTree = SOURCE_ROOT; };
 		0D8F836D1A6EC10800AABAEA /* CMAEntry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAEntry.m; path = TheAnglersLog/ApplicationModel/CMAEntry.m; sourceTree = SOURCE_ROOT; };
 		0D8F836E1A6EC10800AABAEA /* CMAJournal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAJournal.h; path = TheAnglersLog/ApplicationModel/CMAJournal.h; sourceTree = SOURCE_ROOT; };
@@ -326,6 +330,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0D5608121A6F0F3000EE0437 /* CoreData.framework in Frameworks */,
 				0DCC26571A520DD300738F04 /* SystemConfiguration.framework in Frameworks */,
 				E705AD7E1A22DD5C0077F16C /* QuartzCore.framework in Frameworks */,
 				E78BB7D61A0724760082004B /* CoreLocation.framework in Frameworks */,
@@ -579,6 +584,7 @@
 		E70B637419D3A8E400DFBA85 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				0D5608111A6F0F3000EE0437 /* CoreData.framework */,
 				0DCC26561A520DD300738F04 /* SystemConfiguration.framework */,
 				E705AD7D1A22DD5C0077F16C /* QuartzCore.framework */,
 				E78BB7D51A0724760082004B /* CoreLocation.framework */,
@@ -593,6 +599,7 @@
 		E70B637B19D3A8E400DFBA85 /* TheAnglersLog */ = {
 			isa = PBXGroup;
 			children = (
+				0D2CF5A01A6F16B300C0113E /* TheAnglersLog.xcdatamodel */,
 				0D8F84A41A6EC31500AABAEA /* TheAnglersLog.entitlements */,
 				E7C29D0C1A143A1600015B42 /* Libraries */,
 				E738583B19FCD49100FE122B /* Images */,
@@ -909,6 +916,7 @@
 				0D8F849D1A6EC2D900AABAEA /* AFURLConnectionOperation.m in Sources */,
 				0D8F849E1A6EC2D900AABAEA /* AFURLRequestSerialization.m in Sources */,
 				0D8F84A31A6EC2D900AABAEA /* XYPieChart.m in Sources */,
+				0D2CF5A11A6F16B300C0113E /* TheAnglersLog.xcdatamodel in Sources */,
 				0D8F838D1A6EC10800AABAEA /* CMAJournalDocument.m in Sources */,
 				0D8F83921A6EC10800AABAEA /* CMABait.m in Sources */,
 				0D8F84101A6EC29A00AABAEA /* CMAInstagramActivity.m in Sources */,

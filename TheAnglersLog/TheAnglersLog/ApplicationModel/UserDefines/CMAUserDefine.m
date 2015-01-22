@@ -16,22 +16,11 @@
 
 @implementation CMAUserDefine
 
-#pragma mark - Instance Creation
+@dynamic name;
+@dynamic objects;
+@dynamic journal;
 
-+ (CMAUserDefine *)withName: (NSString *)aName {
-    return [[self alloc] initWithName:aName];
-}
-
-#pragma mark - Initialization
-
-- (id)initWithName: (NSString *)aName {
-    if (self = [super init]) {
-        _name = [NSMutableString stringWithString:aName];
-        _objects = [NSMutableArray array];
-    }
-    
-    return self;
-}
+#pragma mark - Validation
 
 - (void)validateObjects {
     for (id o in self.objects)
@@ -39,7 +28,7 @@
 }
 
 #pragma mark - Archiving
-
+/*
 - (id)initWithCoder:(NSCoder *)aDecoder {
     if (self = [super init]) {
         _name = [aDecoder decodeObjectForKey:@"CMAUserDefineName"];
@@ -53,7 +42,7 @@
     [aCoder encodeObject:self.name forKey:@"CMAUserDefineName"];
     [aCoder encodeObject:self.objects forKey:@"CMAUserDefineObjects"];
 }
-
+*/
 #pragma Editing
 
 // Does nothing if an object with the same name already exists in self.objects.
@@ -92,27 +81,27 @@
 }
 
 - (BOOL)isSetOfStrings {
-    return ![self.name isEqualToString:SET_LOCATIONS] &&
-           ![self.name isEqualToString:SET_BAITS];
+    return ![self.name isEqualToString:UDN_LOCATIONS] &&
+           ![self.name isEqualToString:UDN_BAITS];
 }
 
 #pragma mark - Object Types
 
 // Returns an object of correct type with the name property set to aName.
 - (id)emptyObjectNamed: (NSString *)aName {
-    if ([self.name isEqualToString:SET_LOCATIONS])
+    if ([self.name isEqualToString:UDN_LOCATIONS])
         return [CMALocation withName:[aName capitalizedString]];
     
-    if ([self.name isEqualToString:SET_SPECIES])
+    if ([self.name isEqualToString:UDN_SPECIES])
         return [CMASpecies withName:[aName capitalizedString]];
     
-    if ([self.name isEqualToString:SET_BAITS])
+    if ([self.name isEqualToString:UDN_BAITS])
         return [CMABait withName:[aName capitalizedString]];
     
-    if ([self.name isEqualToString:SET_FISHING_METHODS])
+    if ([self.name isEqualToString:UDN_FISHING_METHODS])
         return [CMAFishingMethod withName:[aName capitalizedString]];
     
-    if ([self.name isEqualToString:SET_WATER_CLARITIES])
+    if ([self.name isEqualToString:UDN_WATER_CLARITIES])
         return [CMAWaterClarity withName:[aName capitalizedString]];
     
     NSLog(@"Invalid user define name in - [CMAUserDefine emptyObjectNamed]");

@@ -56,13 +56,13 @@
     
     NSString *imageName = @"";
     
-    if ([self.userDefine.name isEqualToString:SET_LOCATIONS])
+    if ([self.userDefine.name isEqualToString:UDN_LOCATIONS])
         imageName = @"locations_large.png";
-    else if ([self.userDefine.name isEqualToString:SET_FISHING_METHODS])
+    else if ([self.userDefine.name isEqualToString:UDN_FISHING_METHODS])
         imageName = @"fishing_methods_large.png";
-    else if ([self.userDefine.name isEqualToString:SET_SPECIES])
+    else if ([self.userDefine.name isEqualToString:UDN_SPECIES])
         imageName = @"species_large.png";
-    else if ([self.userDefine.name isEqualToString:SET_WATER_CLARITIES])
+    else if ([self.userDefine.name isEqualToString:UDN_WATER_CLARITIES])
         imageName = @"water_clarities_large.png";
     
     self.noXView.imageView.image = [UIImage imageNamed:imageName];
@@ -129,7 +129,7 @@
         [self.editButton setEnabled:NO];
     
     self.isSelectingForAddEntry = (self.previousViewID == CMAViewControllerIDAddEntry);
-    self.isSelectingMultiple = (self.isSelectingForAddEntry && [[self.userDefine name] isEqualToString:SET_FISHING_METHODS]);
+    self.isSelectingMultiple = (self.isSelectingForAddEntry && [[self.userDefine name] isEqualToString:UDN_FISHING_METHODS]);
     
     self.isSelectingForStatistics = (self.previousViewID == CMAViewControllerIDStatistics);
     
@@ -273,7 +273,7 @@
     }
     
     // if it's a location
-    if ([[self.userDefine name] isEqualToString:SET_LOCATIONS]) {
+    if ([[self.userDefine name] isEqualToString:UDN_LOCATIONS]) {
         self.selectedCellLabelText = [[[tableView cellForRowAtIndexPath:indexPath] textLabel] text];
 
         if (self.isSelectingForAddEntry)
@@ -454,7 +454,7 @@
 }
 
 - (IBAction)clickAddButton:(UIBarButtonItem *)sender {
-    if ([[self.userDefine name] isEqualToString:SET_LOCATIONS])
+    if ([[self.userDefine name] isEqualToString:UDN_LOCATIONS])
         [self performSegueWithIdentifier:@"fromEditSettingsToAddLocation" sender:self];
     else {
         [[[self.addItemAlert textFields] objectAtIndex:0] setText:@""];
@@ -488,7 +488,7 @@
     
     if ([segue.identifier isEqualToString:@"fromUserDefinesToSelectFishingSpot"]) {
         CMASelectFishingSpotViewController *destination = [[segue.destinationViewController viewControllers] objectAtIndex:0];
-        CMALocation *loc = [[[self journal] userDefineNamed:SET_LOCATIONS] objectNamed:self.selectedCellLabelText];
+        CMALocation *loc = [[[self journal] userDefineNamed:UDN_LOCATIONS] objectNamed:self.selectedCellLabelText];
         destination.location = loc;
         destination.previousViewID = CMAViewControllerIDEditSettings;
         destination.navigationItem.title = loc.name;
@@ -496,7 +496,7 @@
     
     if ([segue.identifier isEqualToString:@"fromUserDefinesToSingleLocation"]) {
         CMASingleLocationViewController *destination = [[segue.destinationViewController viewControllers] objectAtIndex:0];
-        CMALocation *loc = [[[self journal] userDefineNamed:SET_LOCATIONS] objectNamed:self.selectedCellLabelText];
+        CMALocation *loc = [[[self journal] userDefineNamed:UDN_LOCATIONS] objectNamed:self.selectedCellLabelText];
         destination.location = loc;
         destination.previousViewID = CMAViewControllerIDEditSettings;
         destination.navigationItem.title = loc.name;
