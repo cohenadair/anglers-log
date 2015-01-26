@@ -238,14 +238,28 @@
 }
 
 - (void)loadJournalFromLocalStorage {
-    NSLog(@"Local path: %@", [self localURLWithFileName].path);
+    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:CDE_JOURNAL];
+    
+    NSError *e;
+    NSArray *results = [[self managedObjectContext] executeFetchRequest:fetchRequest error:&e];
+    
+    NSLog(@"CMAJournal fetch request, objects found: %ld", [results count]);
+    
+    if ([results count] > 0) {
+        self.sharedJournal = [results objectAtIndex:0];
+    } else {
+        NSLog(@"No local data found, initializing new journal.");
+        self.sharedJournal = [self managedJournal];
+    }
+    
+    /*NSLog(@"Local path: %@", [self localURLWithFileName].path);
     
     self.sharedJournal = [NSKeyedUnarchiver unarchiveObjectWithFile:[self localURLWithFileName].path];
     
     if (!self.sharedJournal) {
         NSLog(@"No local data found, initializing new journal.");
         self.sharedJournal = [CMAJournal new];
-    }
+    }*/
     
     [self postJournalChangeNotification];
 }
@@ -266,7 +280,7 @@
     // The directory the application uses to store the Core Data store file.
     NSURL *result = [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
     result = [result URLByAppendingPathComponent:@"com.theanglerslog.coredata"];
-    NSLog(@"%@", result.path);
+    NSLog(@"Core Data path: %@", result.path);
     
     return result;
 }
@@ -339,7 +353,8 @@
                 NSLog(@"Failed to save data %@, %@.", error, [error userInfo]);
             } else
                 NSLog(@"Saved library data.");
-        }
+        } else
+            NSLog(@"No changes made.");
     }
 }
 
@@ -362,6 +377,11 @@
 - (NSEntityDescription *)entityNamed:(NSString *)aCDEString {
     return [NSEntityDescription entityForName:aCDEString
                        inManagedObjectContext:self.managedObjectContext];
+}
+
+- (CMAJournal *)managedJournal {
+    CMAJournal *result = [[CMAJournal alloc] initWithEntity:[self entityNamed:CDE_JOURNAL] insertIntoManagedObjectContext:nil];
+    return [result initWithName:@"log_1"];
 }
 
 - (CMABait *)managedBait {

@@ -11,7 +11,6 @@
 @protocol CMAUserDefineProtocol <NSObject>
 
 @required
-@property (strong, nonatomic)NSString *name;
 - (void)validateProperties;
 - (void)edit:(id)aNewObject;
 

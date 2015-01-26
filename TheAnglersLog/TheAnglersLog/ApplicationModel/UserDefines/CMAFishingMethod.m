@@ -10,8 +10,6 @@
 
 @implementation CMAFishingMethod
 
-@dynamic name;
-
 #pragma mark - Initialization
 
 - (CMAFishingMethod *)initWithName: (NSString *)aName {
@@ -41,12 +39,6 @@
 }
 */
 #pragma mark - Editing
-
-- (void)setName:(NSString *)name {
-    [self willChangeValueForKey:@"name"];
-    [self setPrimitiveValue:[[name capitalizedString] mutableCopy] forKey:@"name"];
-    [self didChangeValueForKey:@"name"];
-}
 
 - (void)edit:(CMAFishingMethod *)aNewFishingMethod {
     [self setName:[aNewFishingMethod.name capitalizedString]];

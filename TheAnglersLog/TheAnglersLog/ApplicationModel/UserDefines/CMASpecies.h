@@ -7,12 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <CoreData/CoreData.h>
 #import "CMAUserDefineProtocol.h"
+#import "CMAUserDefineObject.h"
 
-@interface CMASpecies : NSManagedObject </*NSCoding, */CMAUserDefineProtocol>
+@interface CMASpecies : CMAUserDefineObject </*NSCoding, */CMAUserDefineProtocol>
 
-@property (strong, nonatomic)NSString *name;
 @property (strong, nonatomic)NSNumber *numberCaught;
 @property (strong, nonatomic)NSNumber *weightCaught;
 @property (strong, nonatomic)NSNumber *ouncesCaught;

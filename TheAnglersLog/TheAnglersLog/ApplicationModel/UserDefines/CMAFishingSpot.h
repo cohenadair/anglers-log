@@ -8,12 +8,16 @@
 
 #import <Foundation/Foundation.h>
 #import <CoreLocation/CoreLocation.h>
-#import <CoreData/CoreData.h>
 #import "CMAUserDefineProtocol.h"
+#import "CMAUserDefineObject.h"
 
-@interface CMAFishingSpot : NSManagedObject </*NSCoding, */CMAUserDefineProtocol>
+@class CMALocation;
+@class CMAEntry;
 
-@property (strong, nonatomic)NSMutableString *name;
+@interface CMAFishingSpot : CMAUserDefineObject </*NSCoding, */CMAUserDefineProtocol>
+
+@property (strong, nonatomic)CMAEntry *entry;
+@property (strong, nonatomic)CMALocation *myLocation;
 @property (strong, nonatomic)CLLocation *location;
 @property (strong, nonatomic)NSNumber *fishCaught;
 

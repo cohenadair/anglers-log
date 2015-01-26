@@ -40,6 +40,7 @@
 
 #pragma mark - Core Data Object Initializers
 
+- (CMAJournal *)managedJournal;
 - (CMABait *)managedBait;
 - (CMALocation *)managedLocation;
 - (CMAFishingSpot *)managedFishingSpot;

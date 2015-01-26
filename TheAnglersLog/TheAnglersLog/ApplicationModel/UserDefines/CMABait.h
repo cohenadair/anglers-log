@@ -7,16 +7,15 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <CoreData/CoreData.h>
 #import "CMAUserDefineProtocol.h"
 #import "CMAConstants.h"
+#import "CMAUserDefineObject.h"
 
 @class CMAEntry;
 
-@interface CMABait : NSManagedObject </*NSCoding, */CMAUserDefineProtocol>
+@interface CMABait : CMAUserDefineObject </*NSCoding, */CMAUserDefineProtocol>
 
 @property (strong, nonatomic)CMAEntry *entry;
-@property (strong, nonatomic)NSString *name;
 @property (strong, nonatomic)NSString *baitDescription;
 @property (strong, nonatomic)NSData *image;
 @property (strong, nonatomic)NSNumber *fishCaught;

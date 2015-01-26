@@ -13,7 +13,7 @@
 
 @implementation CMALocation
 
-@dynamic name;
+@dynamic entry;
 @dynamic fishingSpots;
 
 #pragma mark - Global Accessing
@@ -61,12 +61,6 @@
 */
 #pragma mark - Editing
 
-- (void)setName:(NSString *)name {
-    [self willChangeValueForKey:@"name"];
-    [self setPrimitiveValue:[[name capitalizedString] mutableCopy] forKey:@"name"];
-    [self didChangeValueForKey:@"name"];
-}
-
 - (BOOL)addFishingSpot: (CMAFishingSpot *)aFishingSpot {
     if ([self fishingSpotNamed:aFishingSpot.name] != nil) {
         NSLog(@"Fishing spot with name %@ already exists", aFishingSpot.name);
@@ -75,11 +69,17 @@
 
     [self.fishingSpots addObject:aFishingSpot];
     [self sortFishingSpotsByName];
+    
+    // insert to core data
+    [[CMAStorageManager sharedManager] insertManagedObject:aFishingSpot];
+    
     return YES;
 }
 
 - (void)removeFishingSpotNamed: (NSString *)aName {
-    [self.fishingSpots removeObject:[self fishingSpotNamed:aName]];
+    CMAFishingSpot *spot = [self fishingSpotNamed:aName];
+    
+    [self.fishingSpots removeObject:spot];
     
     // remove entry references to the fishing spot that was removed
     for (CMAEntry *entry in [[self journal] entries])
@@ -87,6 +87,9 @@
             entry.fishingSpot = nil;
             entry.fishingSpot = [entry.fishingSpot initWithName:REMOVED_TEXT];
         }
+    
+    // remove from core data
+    [[CMAStorageManager sharedManager] deleteManagedObject:spot];
 }
 
 - (void)editFishingSpotNamed: (NSString *)aName newProperties: (CMAFishingSpot *)aNewFishingSpot; {
@@ -95,7 +98,7 @@
 
 // updates self's properties with aNewLocation's properties
 - (void)edit: (CMALocation *)aNewLocation {
-    [self.name setString:aNewLocation.name];
+    [self setName:[aNewLocation.name capitalizedString]];
     
     // no need to mess with fishing spots since there are separate methods for that
 }

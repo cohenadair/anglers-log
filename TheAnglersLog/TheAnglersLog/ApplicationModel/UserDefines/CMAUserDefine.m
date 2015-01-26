@@ -17,7 +17,6 @@
 
 @implementation CMAUserDefine
 
-@dynamic name;
 @dynamic objects;
 @dynamic journal;
 

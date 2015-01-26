@@ -7,16 +7,15 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <CoreData/CoreData.h>
+#import "CMAUserDefineObject.h"
 
 @class CMAJournal;
 
-@interface CMAUserDefine : NSManagedObject /*<NSCoding>*/
+@interface CMAUserDefine : CMAUserDefineObject /*<NSCoding>*/
 
-@property (strong, nonatomic)NSString *name;
 @property (strong, nonatomic)CMAJournal *journal;
 
-// Objects within this array have to abide by the CMAUserDefineProtocol
+// Objects within this array have to extend CMAUserDefineObject and abide by the CMAUserDefineProtocol
 @property (strong, nonatomic)NSMutableOrderedSet *objects;
 
 // initialization

@@ -7,12 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <CoreData/CoreData.h>
 #import "CMAUserDefineProtocol.h"
+#import "CMAUserDefineObject.h"
 
-@interface CMAFishingMethod : NSManagedObject </*NSCoding, */CMAUserDefineProtocol>
-
-@property (strong, nonatomic)NSString *name;
+@interface CMAFishingMethod : CMAUserDefineObject </*NSCoding, */CMAUserDefineProtocol>
 
 // initialization
 - (CMAFishingMethod *)initWithName:(NSString *)aName;

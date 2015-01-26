@@ -12,7 +12,6 @@
 @implementation CMABait
 
 @dynamic entry;
-@dynamic name;
 @dynamic baitDescription;
 @dynamic image;
 @dynamic fishCaught;
@@ -66,12 +65,6 @@
 }
 */
 #pragma mark - Editing
-
-- (void)setName:(NSMutableString *)name {
-    [self willChangeValueForKey:@"name"];
-    [self setPrimitiveValue:[[name capitalizedString] mutableCopy] forKey:@"name"];
-    [self didChangeValueForKey:@"name"];
-}
 
 - (void)setSize:(NSString *)size {
     [self willChangeValueForKey:@"size"];

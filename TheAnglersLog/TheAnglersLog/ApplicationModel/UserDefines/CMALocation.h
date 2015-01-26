@@ -9,13 +9,15 @@
 #import <MapKit/MapKit.h>
 #import <Foundation/Foundation.h>
 #import <CoreLocation/CoreLocation.h>
-#import <CoreData/CoreData.h>
 #import "CMAFishingSpot.h"
 #import "CMAUserDefineProtocol.h"
+#import "CMAUserDefineObject.h"
 
-@interface CMALocation : NSManagedObject </*NSCoding, */CMAUserDefineProtocol>
+@class CMAEntry;
 
-@property (strong, nonatomic)NSMutableString *name;
+@interface CMALocation : CMAUserDefineObject </*NSCoding, */CMAUserDefineProtocol>
+
+@property (strong, nonatomic)CMAEntry *entry;
 @property (strong, nonatomic)NSMutableArray *fishingSpots;
 
 // initializing

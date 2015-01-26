@@ -10,7 +10,8 @@
 
 @implementation CMAFishingSpot
 
-@dynamic name;
+@dynamic entry;
+@dynamic myLocation;
 @dynamic location;
 @dynamic fishCaught;
 
@@ -53,12 +54,6 @@
 }
 */
 #pragma mark - Editing
-
-- (void)setName:(NSMutableString *)name {
-    [self willChangeValueForKey:@"name"];
-    [self setPrimitiveValue:[[name capitalizedString] mutableCopy] forKey:@"name"];
-    [self didChangeValueForKey:@"name"];
-}
 
 - (void)setCoordinates: (CLLocationCoordinate2D)coordinates {
     self.location = [self.location initWithLatitude:coordinates.latitude longitude:coordinates.longitude];

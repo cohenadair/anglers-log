@@ -139,7 +139,7 @@
 }
 
 - (CMAJournal *)copy {
-    CMAJournal *result = [CMAJournal new];
+    CMAJournal *result = [[CMAStorageManager sharedManager] managedJournal];
     
     result.entries = [self.entries mutableCopy];
     result.userDefines = [self.userDefines mutableCopy];

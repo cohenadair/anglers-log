@@ -10,7 +10,7 @@
 
 @implementation CMAWaterClarity
 
-@dynamic name;
+@dynamic entry;
 
 #pragma mark - Initialization
 
@@ -41,12 +41,6 @@
 }
 */
 #pragma mark - Editing
-
-- (void)setName:(NSString *)name {
-    [self willChangeValueForKey:@"name"];
-    [self setPrimitiveValue:[[name capitalizedString] mutableCopy] forKey:@"name"];
-    [self didChangeValueForKey:@"name"];
-}
 
 - (void)edit:(CMAWaterClarity *)aNewWaterClarity {
     [self setName:[aNewWaterClarity.name capitalizedString]];

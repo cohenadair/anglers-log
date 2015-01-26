@@ -7,12 +7,14 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <CoreData/CoreData.h>
 #import "CMAUserDefineProtocol.h"
+#import "CMAUserDefineObject.h"
 
-@interface CMAWaterClarity : NSManagedObject </*NSCoding, */CMAUserDefineProtocol>
+@class CMAEntry;
 
-@property (strong, nonatomic)NSString *name;
+@interface CMAWaterClarity : CMAUserDefineObject </*NSCoding, */CMAUserDefineProtocol>
+
+@property (strong, nonatomic)CMAEntry *entry;
 
 // initialization
 - (CMAWaterClarity *)initWithName:(NSString *)aName;

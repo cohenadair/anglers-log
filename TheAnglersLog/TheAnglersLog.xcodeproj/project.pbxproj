@@ -124,6 +124,7 @@
 		0D8F84A11A6EC2D900AABAEA /* OWMWeatherAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D8F84911A6EC2D900AABAEA /* OWMWeatherAPI.m */; };
 		0D8F84A21A6EC2D900AABAEA /* SWRevealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D8F84941A6EC2D900AABAEA /* SWRevealViewController.m */; };
 		0D8F84A31A6EC2D900AABAEA /* XYPieChart.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D8F84971A6EC2D900AABAEA /* XYPieChart.m */; };
+		0D9B76101A76C4C100553177 /* CMAUserDefineObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D9B760F1A76C4C100553177 /* CMAUserDefineObject.m */; };
 		0DCC26571A520DD300738F04 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DCC26561A520DD300738F04 /* SystemConfiguration.framework */; };
 		E705AD7E1A22DD5C0077F16C /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E705AD7D1A22DD5C0077F16C /* QuartzCore.framework */; };
 		E70B637619D3A8E400DFBA85 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E70B637519D3A8E400DFBA85 /* Foundation.framework */; };
@@ -315,6 +316,8 @@
 		0D8F84961A6EC2D900AABAEA /* XYPieChart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XYPieChart.h; sourceTree = "<group>"; };
 		0D8F84971A6EC2D900AABAEA /* XYPieChart.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XYPieChart.m; sourceTree = "<group>"; };
 		0D8F84A41A6EC31500AABAEA /* TheAnglersLog.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = TheAnglersLog.entitlements; path = TheAnglersLog/TheAnglersLog.entitlements; sourceTree = SOURCE_ROOT; };
+		0D9B760E1A76C4C100553177 /* CMAUserDefineObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMAUserDefineObject.h; sourceTree = "<group>"; };
+		0D9B760F1A76C4C100553177 /* CMAUserDefineObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CMAUserDefineObject.m; sourceTree = "<group>"; };
 		0DCC26561A520DD300738F04 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		E705AD7D1A22DD5C0077F16C /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		E70B637219D3A8E400DFBA85 /* TheAnglersLog.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TheAnglersLog.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -374,6 +377,8 @@
 				0D8F83881A6EC10800AABAEA /* CMAUserDefineProtocol.h */,
 				0D8F83891A6EC10800AABAEA /* CMAWaterClarity.h */,
 				0D8F838A1A6EC10800AABAEA /* CMAWaterClarity.m */,
+				0D9B760E1A76C4C100553177 /* CMAUserDefineObject.h */,
+				0D9B760F1A76C4C100553177 /* CMAUserDefineObject.m */,
 			);
 			name = UserDefines;
 			path = TheAnglersLog/ApplicationModel/UserDefines;
@@ -912,6 +917,7 @@
 				0D8F849C1A6EC2D900AABAEA /* AFSecurityPolicy.m in Sources */,
 				0D8F83D71A6EC25200AABAEA /* CMASingleBaitViewController.m in Sources */,
 				0D8F84981A6EC2D900AABAEA /* AFHTTPRequestOperation.m in Sources */,
+				0D9B76101A76C4C100553177 /* CMAUserDefineObject.m in Sources */,
 				0D8F840F1A6EC29A00AABAEA /* CMAEntryTableViewCell.m in Sources */,
 				0D8F849D1A6EC2D900AABAEA /* AFURLConnectionOperation.m in Sources */,
 				0D8F849E1A6EC2D900AABAEA /* AFURLRequestSerialization.m in Sources */,
