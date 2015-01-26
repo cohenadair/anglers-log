@@ -14,6 +14,7 @@
 
 @interface CMAJournal : NSManagedObject /*<NSCoding>*/
 
+@property (strong, nonatomic)NSString *name;
 @property (strong, nonatomic)NSMutableArray *entries;
 @property (strong, nonatomic)NSMutableArray *userDefines;
 @property (nonatomic)CMAMeasuringSystemType measurementSystem;
@@ -21,6 +22,7 @@
 @property (nonatomic)CMASortOrder entrySortOrder;
 
 // initializing
+- (CMAJournal *)initWithName:(NSString *)aName;
 - (void)validateProperties;
 
 // archiving

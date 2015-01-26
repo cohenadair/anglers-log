@@ -7,30 +7,26 @@
 //
 
 #import "CMABait.h"
-#import "CMAConstants.h"
+#import "CMAStorageManager.h"
 
 @implementation CMABait
 
-#pragma mark - Instance Creation
-
-+ (CMABait *)withName: (NSString *)aName {
-    return [[self alloc] initWithName:[aName capitalizedString]];
-}
+@dynamic entry;
+@dynamic name;
+@dynamic baitDescription;
+@dynamic image;
+@dynamic fishCaught;
+@dynamic size;
+@dynamic baitType;
 
 #pragma mark - Initialization
 
-- (id)init {
-    return [self initWithName:@""];
-}
-
-- (id)initWithName: (NSString *)aName {
-    if (self = [super init]) {
-        _name = [aName capitalizedString];
-        _baitDescription = nil;
-        _image = nil;
-        _fishCaught = [NSNumber numberWithInteger:0];
-        _baitType = [NSNumber numberWithInteger:CMABaitTypeArtificial];
-    }
+- (CMABait *)initWithName:(NSString *)aName {
+    self.name = [aName capitalizedString];
+    self.baitDescription = nil;
+    self.image = nil;
+    self.fishCaught = [NSNumber numberWithInteger:0];
+    self.baitType = CMABaitTypeArtificial;
     
     return self;
 }
@@ -44,11 +40,11 @@
         self.fishCaught = [NSNumber numberWithInteger:0];
     
     if (!self.baitType)
-        self.baitType = [NSNumber numberWithInt:CMABaitTypeArtificial];
+        self.baitType = CMABaitTypeArtificial;
 }
 
 #pragma mark - Archiving
-
+/*
 - (id)initWithCoder:(NSCoder *)aDecoder {
     if (self = [super init]) {
         _name = [aDecoder decodeObjectForKey:@"CMABaitName"];
@@ -68,15 +64,19 @@
     [aCoder encodeObject:self.size forKey:@"CMABaitSize"];
     [aCoder encodeObject:self.baitType forKey:@"CMABaitType"];
 }
-
+*/
 #pragma mark - Editing
 
 - (void)setName:(NSMutableString *)name {
-    _name = [[name capitalizedString] mutableCopy];
+    [self willChangeValueForKey:@"name"];
+    [self setPrimitiveValue:[[name capitalizedString] mutableCopy] forKey:@"name"];
+    [self didChangeValueForKey:@"name"];
 }
 
 - (void)setSize:(NSString *)size {
-    _size = [size capitalizedString];
+    [self willChangeValueForKey:@"size"];
+    [self setPrimitiveValue:[size capitalizedString] forKey:@"size"];
+    [self didChangeValueForKey:@"size"];
 }
 
 - (void)edit: (CMABait *)aNewBait {
@@ -88,7 +88,7 @@
 }
 
 - (CMABait *)copy {
-    CMABait *result = [CMABait new];
+    CMABait *result = [[CMAStorageManager sharedManager] managedBait];
     
     [result setName:self.name];
     [result setBaitDescription:self.baitDescription];

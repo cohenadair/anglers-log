@@ -10,18 +10,12 @@
 
 @implementation CMAFishingMethod
 
-#pragma mark - Instance Creation
-
-+ (CMAFishingMethod *)withName: (NSString *)aName {
-    return [[self alloc] initWithName:[aName capitalizedString]];
-}
+@dynamic name;
 
 #pragma mark - Initialization
 
-- (id)initWithName: (NSString *)aName {
-    if (self = [super init]) {
-        _name = aName;
-    }
+- (CMAFishingMethod *)initWithName: (NSString *)aName {
+    self.name = aName;
     
     return self;
 }
@@ -33,7 +27,7 @@
 }
 
 #pragma mark - Archiving
-
+/*
 - (id)initWithCoder:(NSCoder *)aDecoder {
     if (self = [super init]) {
         _name = [aDecoder decodeObjectForKey:@"CMAFishingMethodName"];
@@ -45,10 +39,16 @@
 - (void)encodeWithCoder:(NSCoder *)aCoder {
     [aCoder encodeObject:self.name forKey:@"CMAFishingMethodName"];
 }
-
+*/
 #pragma mark - Editing
 
-- (void)edit: (CMAFishingMethod *)aNewFishingMethod {
+- (void)setName:(NSString *)name {
+    [self willChangeValueForKey:@"name"];
+    [self setPrimitiveValue:[[name capitalizedString] mutableCopy] forKey:@"name"];
+    [self didChangeValueForKey:@"name"];
+}
+
+- (void)edit:(CMAFishingMethod *)aNewFishingMethod {
     [self setName:[aNewFishingMethod.name capitalizedString]];
 }
 

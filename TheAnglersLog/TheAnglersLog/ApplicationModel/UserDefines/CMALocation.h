@@ -9,24 +9,22 @@
 #import <MapKit/MapKit.h>
 #import <Foundation/Foundation.h>
 #import <CoreLocation/CoreLocation.h>
+#import <CoreData/CoreData.h>
 #import "CMAFishingSpot.h"
 #import "CMAUserDefineProtocol.h"
 
-@interface CMALocation : NSObject <NSCoding, CMAUserDefineProtocol>
+@interface CMALocation : NSManagedObject </*NSCoding, */CMAUserDefineProtocol>
 
 @property (strong, nonatomic)NSMutableString *name;
 @property (strong, nonatomic)NSMutableArray *fishingSpots;
 
-// instance creation
-+ (CMALocation *)withName: (NSString *)aName;
-
 // initializing
-- (id)initWithName: (NSString *)aName;
+- (CMALocation *)initWithName:(NSString *)aName;
 - (void)validateProperties;
 
 // archiving
-- (id)initWithCoder:(NSCoder *)aDecoder;
-- (void)encodeWithCoder:(NSCoder *)aCoder;
+//- (id)initWithCoder:(NSCoder *)aDecoder;
+//- (void)encodeWithCoder:(NSCoder *)aCoder;
 
 // editing
 - (BOOL)addFishingSpot: (CMAFishingSpot *)aFishingSpot;

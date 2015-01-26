@@ -10,30 +10,16 @@
 
 @implementation CMAFishingSpot
 
-#pragma mark - Instance Creation
-
-+ (CMAFishingSpot *)withName: (NSString *)aName {
-    return [[self alloc] initWithName:aName];
-}
+@dynamic name;
+@dynamic location;
+@dynamic fishCaught;
 
 #pragma mark - Initialization
 
-- (id)initWithName: (NSString *)aName {
-    if (self = [super init]) {
-        _name = [NSMutableString stringWithString:[aName capitalizedString]];
-        _location = [CLLocation new];
-        _fishCaught = [NSNumber numberWithInteger:0];
-    }
-    
-    return self;
-}
-
-- (id)init {
-    if (self = [super init]) {
-        _name = [NSMutableString string];
-        _location = [CLLocation new];
-        _fishCaught = [NSNumber numberWithInteger:0];
-    }
+- (CMAFishingSpot *)initWithName:(NSString *)aName {
+    self.name = [NSMutableString stringWithString:[aName capitalizedString]];
+    self.location = [CLLocation new];
+    self.fishCaught = [NSNumber numberWithInteger:0];
     
     return self;
 }
@@ -51,7 +37,7 @@
 }
 
 #pragma mark - Archiving
-
+/*
 - (id)initWithCoder:(NSCoder *)aDecoder {
     if (self = [super init]) {
         _name = [aDecoder decodeObjectForKey:@"CMAFishingSpotName"];
@@ -65,11 +51,13 @@
     [aCoder encodeObject:self.name forKey:@"CMAFishingSpotName"];
     [aCoder encodeObject:self.location forKey:@"CMAFishingSpotLocation"];
 }
-
+*/
 #pragma mark - Editing
 
 - (void)setName:(NSMutableString *)name {
-    _name = [[name capitalizedString] mutableCopy];
+    [self willChangeValueForKey:@"name"];
+    [self setPrimitiveValue:[[name capitalizedString] mutableCopy] forKey:@"name"];
+    [self didChangeValueForKey:@"name"];
 }
 
 - (void)setCoordinates: (CLLocationCoordinate2D)coordinates {

@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "CMAJournalDocument.h"
+#import "CMAFishingMethod.h"
 
 @interface CMAStorageManager : NSObject
 
@@ -31,5 +32,21 @@
 
 - (NSURL *)coreDataURL;
 - (void)saveContext;
+
+#pragma mark - Core Data Inserting/Deleting
+
+- (void)insertManagedObject:(NSManagedObject *)aManagedObject;
+- (void)deleteManagedObject:(NSManagedObject *)aManagedObject;
+
+#pragma mark - Core Data Object Initializers
+
+- (CMABait *)managedBait;
+- (CMALocation *)managedLocation;
+- (CMAFishingSpot *)managedFishingSpot;
+- (CMASpecies *)managedSpecies;
+- (CMAFishingMethod *)managedFishingMethod;
+- (CMAWaterClarity *)managedWaterClarity;
+- (CMAUserDefine *)managedUserDefine;
+- (CMAWeatherData *)managedWeatherData;
 
 @end

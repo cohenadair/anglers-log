@@ -14,6 +14,7 @@
 
 @implementation CMAJournal
 
+@dynamic name;
 @dynamic entries;
 @dynamic userDefines;
 @dynamic measurementSystem;
@@ -22,17 +23,15 @@
 
 #pragma mark - Initialization
 
-- (CMAJournal *)init {
-    if (self = [super init]) {
-        self.entries = [NSMutableArray array];
-        self.userDefines = [NSMutableArray array];
-        
-        [self setMeasurementSystem:CMAMeasuringSystemTypeImperial];
-        [self setEntrySortMethod:CMAEntrySortMethodDate];
-        [self setEntrySortOrder:CMASortOrderDescending];
-        
-        [self validateProperties];
-    }
+- (CMAJournal *)initWithName:(NSString *)aName {
+    self.entries = [NSMutableArray array];
+    self.userDefines = [NSMutableArray array];
+    
+    [self setMeasurementSystem:CMAMeasuringSystemTypeImperial];
+    [self setEntrySortMethod:CMAEntrySortMethodDate];
+    [self setEntrySortOrder:CMASortOrderDescending];
+    
+    [self validateProperties];
     
     return self;
 }
@@ -66,13 +65,11 @@
 
 // Adds a new CMAUserDefine object to [self userDefines].
 - (void)addUserDefineNamed:(NSString *)aName {
-    NSManagedObjectContext *context = [[CMAStorageManager sharedManager] managedObjectContext];
+    CMAUserDefine *define = [[CMAStorageManager sharedManager] managedUserDefine];
+    [self.userDefines addObject:[define initWithName:aName andJournal:self]];
     
-    CMAUserDefine *define = [NSEntityDescription insertNewObjectForEntityForName:CDE_USER_DEFINE inManagedObjectContext:context];
-    [define setName:UDN_SPECIES];
-    [define setJournal:self];
-    
-    [self.userDefines addObject:define];
+    // add to core data
+    [[CMAStorageManager sharedManager] insertManagedObject:define];
 }
 
 // Used for compatibility purposes if the class of a property changes.
@@ -130,10 +127,16 @@
 }
 */
 - (void)archive {
-    [[CMAStorageManager sharedManager] saveJournal:self withFileName:ARCHIVE_FILE_NAME];
+    [[CMAStorageManager sharedManager] saveContext];
 }
 
 #pragma mark - Editing
+
+- (void)setName:(NSString *)name {
+    [self willChangeValueForKey:@"name"];
+    [self setPrimitiveValue:[[name capitalizedString] mutableCopy] forKey:@"name"];
+    [self didChangeValueForKey:@"name"];
+}
 
 - (CMAJournal *)copy {
     CMAJournal *result = [CMAJournal new];
@@ -147,7 +150,7 @@
     return result;
 }
 
-- (BOOL)addEntry: (CMAEntry *)anEntry {
+- (BOOL)addEntry:(CMAEntry *)anEntry {
     if ([self entryDated:anEntry.date] != nil) {
         NSLog(@"Duplicate entry date.");
         return NO;
@@ -157,6 +160,9 @@
     [self.entries addObject:anEntry];
     [self sortEntriesBy:self.entrySortMethod order:self.entrySortOrder];
     
+    // add to core data
+    [[CMAStorageManager sharedManager] insertManagedObject:anEntry];
+    
     return YES;
 }
 
@@ -164,7 +170,10 @@
     CMAEntry *entry = [self entryDated:aDate];
     
     [self decStatsForEntry:entry];
-    [self.entries removeObject:[self entryDated:aDate]];
+    [self.entries removeObject:entry];
+    
+    // remove from core data
+    [[CMAStorageManager sharedManager] deleteManagedObject:entry];
 }
 
 // removes entry with aDate and adds aNewEntry
@@ -176,34 +185,37 @@
 
 - (void)addUserDefine: (NSString *)aDefineName objectToAdd: (id)anObject {
     [[self userDefineNamed:aDefineName] addObject:anObject];
+    
+    // add to core data
+    [[CMAStorageManager sharedManager] insertManagedObject:anObject];
 }
 
 - (void)removeUserDefine: (NSString *)aDefineName objectNamed: (NSString *)anObjectName {
     [[self userDefineNamed:aDefineName] removeObjectNamed:anObjectName];
     [self removeUserDefineFromEntries:aDefineName objectNamed:anObjectName];
+    
+    // remove from core data
+    [[CMAStorageManager sharedManager] deleteManagedObject:[[self userDefineNamed:aDefineName] objectNamed:anObjectName]];
 }
 
 // Helper method called when a user defined is deleted by the user.
 // Removes the user define, anObjectName (i.e. species, location, bait, etc.) from any entries that reference it.
-- (void)removeUserDefineFromEntries: (NSString *)aDefineName objectNamed: (NSString *)anObjectName {
+- (void)removeUserDefineFromEntries:(NSString *)aDefineName objectNamed:(NSString *)anObjectName {
     for (CMAEntry *entry in self.entries) {
         if ([aDefineName isEqualToString:UDN_SPECIES])
             if ([entry.fishSpecies.name isEqualToString:anObjectName]) {
-                entry.fishSpecies = nil;
-                entry.fishSpecies = [CMASpecies withName:REMOVED_TEXT];
+                entry.fishSpecies = [entry.fishSpecies initWithName:REMOVED_TEXT];
             }
         
         if ([aDefineName isEqualToString:UDN_LOCATIONS])
             if ([entry.location.name isEqualToString:anObjectName]) {
-                entry.location = nil;
                 entry.fishingSpot = nil;
-                entry.location = [CMALocation withName:REMOVED_TEXT];
+                entry.location = [entry.location initWithName:REMOVED_TEXT];
             }
         
         if ([aDefineName isEqualToString:UDN_BAITS])
             if ([entry.baitUsed.name isEqualToString:anObjectName]) {
-                entry.baitUsed = nil;
-                entry.baitUsed = [CMABait withName:REMOVED_TEXT];
+                entry.baitUsed = [entry.baitUsed initWithName:REMOVED_TEXT];
             }
         
         if ([aDefineName isEqualToString:UDN_FISHING_METHODS]) {
@@ -218,6 +230,11 @@
             else
                 entry.fishingMethods = tempSet;
         }
+        
+        if ([aDefineName isEqualToString:UDN_WATER_CLARITIES])
+            if ([entry.waterClarity.name isEqualToString:anObjectName]) {
+                entry.waterClarity = [entry.waterClarity initWithName:REMOVED_TEXT];
+            }
     }
 }
 

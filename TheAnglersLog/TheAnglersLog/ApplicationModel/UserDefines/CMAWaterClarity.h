@@ -7,24 +7,22 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <CoreData/CoreData.h>
 #import "CMAUserDefineProtocol.h"
 
-@interface CMAWaterClarity : NSObject <NSCoding, CMAUserDefineProtocol>
+@interface CMAWaterClarity : NSManagedObject </*NSCoding, */CMAUserDefineProtocol>
 
 @property (strong, nonatomic)NSString *name;
 
-// instance creation
-+ (CMAWaterClarity *)withName: (NSString *)aName;
-
 // initialization
-- (id)initWithName: (NSString *)aName;
+- (CMAWaterClarity *)initWithName:(NSString *)aName;
 - (void)validateProperties;
 
 // archiving
-- (id)initWithCoder:(NSCoder *)aDecoder;
-- (void)encodeWithCoder:(NSCoder *)aCoder;
+//- (id)initWithCoder:(NSCoder *)aDecoder;
+//- (void)encodeWithCoder:(NSCoder *)aCoder;
 
 // editing
-- (void)edit: (CMAWaterClarity *)aNewWaterClarity;
+- (void)edit:(CMAWaterClarity *)aNewWaterClarity;
 
 @end

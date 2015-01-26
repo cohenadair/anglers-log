@@ -51,11 +51,8 @@
 // journal
 @property (strong, nonatomic)CMAJournal *journal;
 
-// instance creation
-+ (CMAEntry *)onDate: (NSDate *)aDate;
-
 // initializing
-- (id)initWithDate: (NSDate *)aDate;
+- (id)initWithDate:(NSDate *)aDate;
 - (void)validateProperties;
 
 // archiving
@@ -70,7 +67,7 @@
 - (NSString *)weightAsStringWithMeasurementSystem:(CMAMeasuringSystemType)aMeasurementSystem shorthand:(BOOL)useShorthand;
 
 // editing
-- (void)addImage: (UIImage *)anImage;
-- (void)removeImage: (UIImage *)anImage;
+- (void)addImage:(NSData *)anImage;
+- (void)removeImage:(NSData *)anImage;
 
 @end

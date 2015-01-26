@@ -13,40 +13,22 @@
 
 @implementation CMALocation
 
+@dynamic name;
+@dynamic fishingSpots;
+
 #pragma mark - Global Accessing
 
 - (CMAJournal *)journal {
     return [[CMAStorageManager sharedManager] sharedJournal];
 }
 
-#pragma mark - Instance Creation
-
-+ (CMALocation *)withName: (NSString *)aName {
-    return [[self alloc] initWithName:aName];
-}
-
 #pragma mark - Initialization
 
-- (id)initWithName: (NSString *)aName {
-    if (self = [super init]) {
-        _name = [NSMutableString stringWithString:[aName capitalizedString]];
-        _fishingSpots = [NSMutableArray array];
-    }
+- (CMALocation *)initWithName:(NSString *)aName {
+    self.name = [NSMutableString stringWithString:[aName capitalizedString]];
+    self.fishingSpots = [NSMutableArray array];
     
     return self;
-}
-
-- (id)init {
-    if (self = [super init]) {
-        _name = [NSMutableString string];
-        _fishingSpots = [NSMutableArray array];
-    }
-    
-    return self;
-}
-
-- (void)setName:(NSMutableString *)name {
-    _name = [[name capitalizedString] mutableCopy];
 }
 
 // Used to initialize objects created from an archive. For compatibility purposes.
@@ -62,7 +44,7 @@
 }
 
 #pragma mark - Archiving
-
+/*
 - (id)initWithCoder:(NSCoder *)aDecoder {
     if (self = [super init]) {
         _name = [aDecoder decodeObjectForKey:@"CMALocationName"];
@@ -76,8 +58,14 @@
     [aCoder encodeObject:self.name forKey:@"CMALocationName"];
     [aCoder encodeObject:self.fishingSpots forKey:@"CMALocationFishingSpots"];
 }
-
+*/
 #pragma mark - Editing
+
+- (void)setName:(NSString *)name {
+    [self willChangeValueForKey:@"name"];
+    [self setPrimitiveValue:[[name capitalizedString] mutableCopy] forKey:@"name"];
+    [self didChangeValueForKey:@"name"];
+}
 
 - (BOOL)addFishingSpot: (CMAFishingSpot *)aFishingSpot {
     if ([self fishingSpotNamed:aFishingSpot.name] != nil) {
@@ -97,7 +85,7 @@
     for (CMAEntry *entry in [[self journal] entries])
         if ([entry.fishingSpot.name isEqualToString:aName]) {
             entry.fishingSpot = nil;
-            entry.fishingSpot = [CMAFishingSpot withName:REMOVED_TEXT];
+            entry.fishingSpot = [entry.fishingSpot initWithName:REMOVED_TEXT];
         }
 }
 
@@ -171,7 +159,7 @@
 }
 
 - (CMALocation *)copy {
-    CMALocation *result = [CMALocation new];
+    CMALocation *result = [[CMAStorageManager sharedManager] managedLocation];
     
     [result setName:self.name];
     

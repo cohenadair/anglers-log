@@ -7,22 +7,20 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <CoreData/CoreData.h>
 #import "CMAUserDefineProtocol.h"
 
-@interface CMAFishingMethod : NSObject <NSCoding, CMAUserDefineProtocol>
+@interface CMAFishingMethod : NSManagedObject </*NSCoding, */CMAUserDefineProtocol>
 
 @property (strong, nonatomic)NSString *name;
 
-// instance creation
-+ (CMAFishingMethod *)withName: (NSString *)aName;
-
 // initialization
-- (id)initWithName: (NSString *)aName;
+- (CMAFishingMethod *)initWithName:(NSString *)aName;
 - (void)validateProperties;
 
 // archiving
-- (id)initWithCoder:(NSCoder *)aDecoder;
-- (void)encodeWithCoder:(NSCoder *)aCoder;
+//- (id)initWithCoder:(NSCoder *)aDecoder;
+//- (void)encodeWithCoder:(NSCoder *)aCoder;
 
 // editing
 - (void)edit: (CMAFishingMethod *)aNewFishingMethod;

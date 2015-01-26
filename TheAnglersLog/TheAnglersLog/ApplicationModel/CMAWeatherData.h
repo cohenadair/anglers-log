@@ -7,22 +7,24 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <CoreData/CoreData.h>
 #import "OWMWeatherAPI.h"   
 #import "CMAConstants.h"
 
-@interface CMAWeatherData : NSObject <NSCoding>
+@class CMAEntry;
+
+@interface CMAWeatherData : NSManagedObject /*<NSCoding>*/
 
 @property (strong, nonatomic)OWMWeatherAPI *weatherAPI;
 @property (nonatomic)CLLocationCoordinate2D coordinate;
 
+@property (strong, nonatomic)CMAEntry *entry;
 @property (strong, nonatomic)NSNumber *temperature;
 @property (strong, nonatomic)NSString *windSpeed;
 @property (strong, nonatomic)NSString *skyConditions;
-@property (strong, nonatomic)UIImage *weatherImage;
+@property (strong, nonatomic)NSData *weatherImage;
 
-+ (CMAWeatherData *)withCoordinates:(CLLocationCoordinate2D)coordinate andJournal:(CMAMeasuringSystemType)aMeasurementSystemType;
-
-- (id)initWithCoordinates:(CLLocationCoordinate2D)coordinate andJournal:(CMAMeasuringSystemType)aMeasurementSystemType;
+- (id)initWithCoordinates:(CLLocationCoordinate2D)aCoordinate andJournal:(CMAMeasuringSystemType)aMeasurementSystemType;
 - (void)print;
 
 - (NSString *)temperatureAsStringWithUnits:(NSString *)aUnitString;

@@ -13,12 +13,23 @@
 #import "CMAFishingMethod.h"
 #import "CMAWaterClarity.h"
 #import "CMAConstants.h"
+#import "CMAStorageManager.h"
 
 @implementation CMAUserDefine
 
 @dynamic name;
 @dynamic objects;
 @dynamic journal;
+
+#pragma mark - Initialization
+
+- (CMAUserDefine *)initWithName:(NSString *)aName andJournal:(CMAJournal *)aJournal {
+    self.name = aName;
+    self.journal = aJournal;
+    self.objects = [NSMutableOrderedSet orderedSet];
+    
+    return self;
+}
 
 #pragma mark - Validation
 
@@ -46,7 +57,7 @@
 #pragma Editing
 
 // Does nothing if an object with the same name already exists in self.objects.
-- (BOOL)addObject: (id)anObject {
+- (BOOL)addObject:(id)anObject {
     if ([self objectNamed:[anObject name]] != nil) {
         NSLog(@"Duplicate object name.");
         return NO;
@@ -57,11 +68,11 @@
     return YES;
 }
 
-- (void)removeObjectNamed: (NSString *)aName {
+- (void)removeObjectNamed:(NSString *)aName {
     [self.objects removeObject:[self objectNamed:aName]];
 }
 
-- (void)editObjectNamed: (NSString *)aName newObject: (id)aNewObject {
+- (void)editObjectNamed:(NSString *)aName newObject: (id)aNewObject {
     [[self objectNamed:aName] edit:aNewObject];
     [self sortByNameProperty];
 }
@@ -72,7 +83,7 @@
     return [self.objects count];
 }
 
-- (id)objectNamed: (NSString *)aName {
+- (id)objectNamed:(NSString *)aName {
     for (id obj in self.objects)
         if ([[obj name] isEqualToString:aName])
             return obj;
@@ -88,23 +99,19 @@
 #pragma mark - Object Types
 
 // Returns an object of correct type with the name property set to aName.
-- (id)emptyObjectNamed: (NSString *)aName {
-    if ([self.name isEqualToString:UDN_LOCATIONS])
-        return [CMALocation withName:[aName capitalizedString]];
+- (id)emptyObjectNamed:(NSString *)aName {
+    CMAStorageManager *manager = [CMAStorageManager sharedManager];
     
     if ([self.name isEqualToString:UDN_SPECIES])
-        return [CMASpecies withName:[aName capitalizedString]];
-    
-    if ([self.name isEqualToString:UDN_BAITS])
-        return [CMABait withName:[aName capitalizedString]];
+        return [[manager managedSpecies] initWithName:aName];
     
     if ([self.name isEqualToString:UDN_FISHING_METHODS])
-        return [CMAFishingMethod withName:[aName capitalizedString]];
+        return [[manager managedFishingMethod] initWithName:aName];
     
     if ([self.name isEqualToString:UDN_WATER_CLARITIES])
-        return [CMAWaterClarity withName:[aName capitalizedString]];
+        return [[manager managedWaterClarity] initWithName:aName];
     
-    NSLog(@"Invalid user define name in - [CMAUserDefine emptyObjectNamed]");
+    NSLog(@"Invalid user define name in [CMAUserDefine emptyObjectNamed].");
     return nil;
 }
 

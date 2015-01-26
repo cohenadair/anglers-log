@@ -29,26 +29,11 @@
 @dynamic notes;
 @dynamic journal;
 
-#pragma mark - Instance Creation
-
-+ (CMAEntry *)onDate: (NSDate *)aDate {
-    return [[self alloc] initWithDate:aDate];
-}
-
 #pragma mark - Initialization
 
-- (id)initWithDate: (NSDate *)aDate {
-    if (self = [super init]) {
-        self.date = aDate;
-        self.images = [NSMutableOrderedSet orderedSet];
-    }
-    
-    return self;
-}
-
-- (id)init {
-    if (self = [super init])
-        self.images = [NSMutableOrderedSet orderedSet];
+- (id)initWithDate:(NSDate *)aDate {
+    self.date = aDate;
+    self.images = [NSMutableOrderedSet orderedSet];
     
     return self;
 }
@@ -190,11 +175,11 @@
 
 #pragma mark - Editing
 
-- (void)addImage: (UIImage *)anImage {
+- (void)addImage:(NSData *)anImage {
     [self.images addObject:anImage];
 }
 
-- (void)removeImage: (UIImage *)anImage {
+- (void)removeImage:(NSData *)anImage {
     [self.images removeObject:anImage];
 }
 

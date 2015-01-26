@@ -19,6 +19,9 @@
 // Objects within this array have to abide by the CMAUserDefineProtocol
 @property (strong, nonatomic)NSMutableOrderedSet *objects;
 
+// initialization
+- (CMAUserDefine *)initWithName:(NSString *)aName andJournal:(CMAJournal *)aJournal;
+
 // validation
 - (void)validateObjects;
 
@@ -27,17 +30,17 @@
 //- (void)encodeWithCoder:(NSCoder *)aCoder;
 
 // editing
-- (BOOL)addObject: (id)anObject;
-- (void)removeObjectNamed: (NSString *)aName;
-- (void)editObjectNamed: (NSString *)aName newObject: (id)aNewObject;
+- (BOOL)addObject:(id)anObject;
+- (void)removeObjectNamed:(NSString *)aName;
+- (void)editObjectNamed:(NSString *)aName newObject: (id)aNewObject;
 
 // accessing
 - (NSInteger)count;
-- (id)objectNamed: (NSString *)aName;
+- (id)objectNamed:(NSString *)aName;
 - (BOOL)isSetOfStrings;
 
 // object types
-- (id)emptyObjectNamed: (NSString *)aName;
+- (id)emptyObjectNamed:(NSString *)aName;
 
 // sorting
 - (void)sortByNameProperty;

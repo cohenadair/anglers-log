@@ -15,14 +15,17 @@ NSString *const kAPIKey = @"35f69a23678dead2c75e0599eadbb4e1";
 
 @implementation CMAWeatherData
 
-#pragma mark - Instance Creation
+@synthesize weatherAPI;
+@synthesize coordinate;
 
-+ (CMAWeatherData *)withCoordinates:(CLLocationCoordinate2D)coordinate andJournal:(CMAMeasuringSystemType)aMeasurementSystemType {
-    return [[self alloc] initWithCoordinates:coordinate andJournal:aMeasurementSystemType];
-}
+@dynamic entry;
+@dynamic temperature;
+@dynamic windSpeed;
+@dynamic skyConditions;
+@dynamic weatherImage;
 
 #pragma mark - Archiving
-
+/*
 - (id)initWithCoder:(NSCoder *)aDecoder {
     if (self = [super init]) {
         _temperature = [aDecoder decodeObjectForKey:@"CMAWeatherDataTemperature"];
@@ -40,19 +43,17 @@ NSString *const kAPIKey = @"35f69a23678dead2c75e0599eadbb4e1";
     [aCoder encodeObject:self.skyConditions forKey:@"CMAWeatherDataSkyConditions"];
     [aCoder encodeObject:self.weatherImage forKey:@"CMAWeatherDataWeatherImage"];
 }
-
+*/
 #pragma mark - Initialization
 
-- (id)initWithCoordinates:(CLLocationCoordinate2D)coordinate andJournal:(CMAMeasuringSystemType)aMeasurementSystemType {
-    if (self = [super init]) {
-        _weatherAPI = [[OWMWeatherAPI alloc] initWithAPIKey:kAPIKey];
-        _coordinate = coordinate;
-        
-        if (aMeasurementSystemType == CMAMeasuringSystemTypeImperial)
-            _weatherAPI.temperatureFormat = kOWMTempFahrenheit;
-        else
-            _weatherAPI.temperatureFormat = kOWMTempCelcius;
-    }
+- (id)initWithCoordinates:(CLLocationCoordinate2D)aCoordinate andJournal:(CMAMeasuringSystemType)aMeasurementSystemType {
+    self.weatherAPI = [[OWMWeatherAPI alloc] initWithAPIKey:kAPIKey];
+    self.coordinate = aCoordinate;
+    
+    if (aMeasurementSystemType == CMAMeasuringSystemTypeImperial)
+        self.weatherAPI.temperatureFormat = kOWMTempFahrenheit;
+    else
+        self.weatherAPI.temperatureFormat = kOWMTempCelcius;
     
     return self;
 }

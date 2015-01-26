@@ -343,4 +343,63 @@
     }
 }
 
+#pragma mark - Core Data Inserting/Deleting
+
+- (void)insertManagedObject:(NSManagedObject *)aManagedObject {
+    [self.managedObjectContext insertObject:aManagedObject];
+}
+
+- (void)deleteManagedObject:(NSManagedObject *)aManagedObject {
+    [self.managedObjectContext deleteObject:aManagedObject];
+}
+
+#pragma mark - Core Data Object Initializers
+// These methods are used to make initializing Core Data manged objects easier.
+// The managed objects are NOT added to self.managedObjectContext.
+// Example:
+//   self.bait = [[CMAStorageManager sharedManager] managedBait];
+
+- (NSEntityDescription *)entityNamed:(NSString *)aCDEString {
+    return [NSEntityDescription entityForName:aCDEString
+                       inManagedObjectContext:self.managedObjectContext];
+}
+
+- (CMABait *)managedBait {
+    CMABait *result = [[CMABait alloc] initWithEntity:[self entityNamed:CDE_BAIT] insertIntoManagedObjectContext:nil];
+    return [result initWithName:@""];
+}
+
+- (CMALocation *)managedLocation {
+    CMALocation *result = [[CMALocation alloc] initWithEntity:[self entityNamed:CDE_LOCATION] insertIntoManagedObjectContext:nil];
+    return [result initWithName:@""];
+}
+
+- (CMAFishingSpot *)managedFishingSpot {
+    CMAFishingSpot *result = [[CMAFishingSpot alloc] initWithEntity:[self entityNamed:CDE_FISHING_SPOT] insertIntoManagedObjectContext:nil];
+    return [result initWithName:@""];
+}
+
+- (CMASpecies *)managedSpecies {
+    CMASpecies *result = [[CMASpecies alloc] initWithEntity:[self entityNamed:CDE_SPECIES] insertIntoManagedObjectContext:nil];
+    return [result initWithName:@""];
+}
+
+- (CMAFishingMethod *)managedFishingMethod {
+    CMAFishingMethod *result = [[CMAFishingMethod alloc] initWithEntity:[self entityNamed:CDE_FISHING_METHOD] insertIntoManagedObjectContext:nil];
+    return [result initWithName:@""];
+}
+
+- (CMAWaterClarity *)managedWaterClarity {
+    CMAWaterClarity *result = [[CMAWaterClarity alloc] initWithEntity:[self entityNamed:CDE_WATER_CLARITY] insertIntoManagedObjectContext:nil];
+    return [result initWithName:@""];
+}
+
+- (CMAUserDefine *)managedUserDefine {
+    return [[CMAUserDefine alloc] initWithEntity:[self entityNamed:CDE_USER_DEFINE] insertIntoManagedObjectContext:nil];
+}
+
+- (CMAWeatherData *)managedWeatherData {
+    return [[CMAWeatherData alloc] initWithEntity:[self entityNamed:CDE_USER_DEFINE] insertIntoManagedObjectContext:nil];
+}
+
 @end

@@ -10,6 +10,7 @@
 #import "CMAAppDelegate.h"
 #import "CMAConstants.h"
 #import "CMAAlerts.h"
+#import "CMAStorageManager.h"
 
 @interface CMAAddFishingSpotViewController () <MKMapViewDelegate, CLLocationManagerDelegate>
 
@@ -42,7 +43,7 @@
     [super viewDidLoad];
     
     if (!self.fishingSpot) {
-        self.fishingSpot = [CMAFishingSpot new];
+        self.fishingSpot = [[CMAStorageManager sharedManager] managedFishingSpot];
         self.isEditingFishingSpot = NO;
     } else {
         self.fishingSpotNameTextField.text = self.fishingSpot.name;

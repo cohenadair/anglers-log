@@ -46,7 +46,7 @@ NSInteger const SECTION_ADD = 2;
     self.isEditingLocation = (self.previousViewID == CMAViewControllerIDSingleLocation || self.previousViewID == CMAViewControllerIDSelectFishingSpot);
     
     if (!self.isEditingLocation)
-        self.location = [CMALocation new];
+        self.location = [[CMAStorageManager sharedManager] managedLocation];
     else {
         self.navigationItem.title = @"Edit Location";
         self.nonEditedLocation = [self.location copy];
@@ -184,7 +184,7 @@ NSInteger const SECTION_ADD = 2;
 
 - (IBAction)clickedDone:(id)sender {
     // add new event to journal
-    CMALocation *locationToAdd = [CMALocation new];
+    CMALocation *locationToAdd = [[CMAStorageManager sharedManager] managedLocation];
     
     if ([self checkUserInputAndSetLocation:locationToAdd]) {
         if (self.isEditingLocation) {

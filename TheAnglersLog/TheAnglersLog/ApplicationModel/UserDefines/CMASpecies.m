@@ -11,21 +11,18 @@
 
 @implementation CMASpecies
 
-#pragma mark - Instance Creation
-
-+ (CMASpecies *)withName: (NSString *)aName {
-    return [[self alloc] initWithName:[aName capitalizedString]];
-}
+@dynamic name;
+@dynamic numberCaught;
+@dynamic weightCaught;
+@dynamic ouncesCaught;
 
 #pragma mark - Initialization
 
-- (id)initWithName: (NSString *)aName {
-    if (self = [super init]) {
-        _name = aName;
-        _numberCaught = [NSNumber numberWithInteger:0];
-        _weightCaught = [NSNumber numberWithInteger:0];
-        _ouncesCaught = [NSNumber numberWithInteger:0];
-    }
+- (CMASpecies *)initWithName: (NSString *)aName {
+    self.name = aName;
+    self.numberCaught = [NSNumber numberWithInteger:0];
+    self.weightCaught = [NSNumber numberWithInteger:0];
+    self.ouncesCaught = [NSNumber numberWithInteger:0];
     
     return self;
 }
@@ -46,7 +43,7 @@
 }
 
 #pragma mark - Archiving
-
+/*
 - (id)initWithCoder:(NSCoder *)aDecoder {
     if (self = [super init]) {
         _name = [aDecoder decodeObjectForKey:@"CMASpeciesName"];
@@ -58,8 +55,14 @@
 - (void)encodeWithCoder:(NSCoder *)aCoder {
     [aCoder encodeObject:self.name forKey:@"CMASpeciesName"];
 }
-
+*/
 #pragma mark - Editing
+
+- (void)setName:(NSString *)name {
+    [self willChangeValueForKey:@"name"];
+    [self setPrimitiveValue:[[name capitalizedString] mutableCopy] forKey:@"name"];
+    [self didChangeValueForKey:@"name"];
+}
 
 - (void)edit: (CMASpecies *)aNewSpecies {
     [self setName:[aNewSpecies.name capitalizedString]];

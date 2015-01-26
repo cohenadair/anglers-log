@@ -615,7 +615,7 @@ NSString *const kNotSelectedString = @"Not Selected";
             if (cell.tag == kSavePhotoTag)
                 UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil);
             
-            [anEntry addImage:image];
+            [anEntry addImage:UIImagePNGRepresentation(image)];
         }
     } else
         [anEntry setImages:nil];
@@ -790,7 +790,7 @@ NSString *const kNotSelectedString = @"Not Selected";
     
     if ([self.entryImages count] > 0) {
         UIImageView *imageView = (UIImageView *)[cell viewWithTag:kImageViewTag];
-        [imageView setImage:[self.entryImages objectAtIndex:indexPath.item]];
+        [imageView setImage:[UIImage imageWithData:[self.entryImages objectAtIndex:indexPath.item]]];
     }
         
     return cell;
@@ -890,7 +890,8 @@ NSString *const kNotSelectedString = @"Not Selected";
         return;
     }
     
-    self.weatherData = [CMAWeatherData withCoordinates:coordinate andJournal:[[self journal] measurementSystem]];
+    self.weatherData = [[CMAStorageManager sharedManager] managedWeatherData];
+    self.weatherData = [self.weatherData initWithCoordinates:coordinate andJournal:[[self journal] measurementSystem]];
     
     [self.weatherData.weatherAPI currentWeatherByCoordinate:self.weatherData.coordinate withCallback:^(NSError *error, NSDictionary *result) {
         if (error) {
@@ -905,10 +906,10 @@ NSString *const kNotSelectedString = @"Not Selected";
         
         if ([weatherArray count] > 0) {
             NSString *imageString = [NSString stringWithFormat:@"http://openweathermap.org/img/w/%@.png", result[@"weather"][0][@"icon"]];
-            [self.weatherData setWeatherImage:[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:imageString]]]];
+            [self.weatherData setWeatherImage:[NSData dataWithContentsOfURL:[NSURL URLWithString:imageString]]];
             [self.weatherData setSkyConditions:result[@"weather"][0][@"main"]];
         } else {
-            [self.weatherData setWeatherImage:[UIImage imageNamed:@"no_image.png"]];
+            [self.weatherData setWeatherImage:UIImagePNGRepresentation([UIImage imageNamed:@"no_image.png"])];
             [self.weatherData setSkyConditions:@"N/A"];
         }
         
@@ -921,7 +922,7 @@ NSString *const kNotSelectedString = @"Not Selected";
 }
 
 - (void)initWeatherDataViewWithData:(CMAWeatherData *)someWeatherData {
-    [self.weatherDataView.weatherImageView setImage:someWeatherData.weatherImage];
+    [self.weatherDataView.weatherImageView setImage:[UIImage imageWithData:someWeatherData.weatherImage]];
     [self.weatherDataView.temperatureLabel setText:[someWeatherData temperatureAsStringWithUnits:[[self journal] temperatureUnitsAsString:YES]]];
     [self.weatherDataView.windSpeedLabel setText:[someWeatherData windSpeedAsStringWithUnits:[[self journal] speedUnitsAsString:YES]]];
     [self.weatherDataView.skyConditionsLabel setText:[someWeatherData skyConditionsAsString]];

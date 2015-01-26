@@ -52,9 +52,9 @@
     
     self.isEditingBait = self.previousViewID == CMAViewControllerIDSingleBait;
     
-    if (!self.isEditingBait)
-        self.bait = [CMABait new];
-    else {
+    if (!self.isEditingBait) {
+        self.bait = [[CMAStorageManager sharedManager] managedBait];
+    } else {
         self.navigationItem.title = @"Edit Bait";
         self.nonEditedBait = self.bait;
         self.bait = [self.nonEditedBait copy];
@@ -117,7 +117,7 @@
     
     // photo
     if (self.bait.image)
-        [self.imageView setImage:self.bait.image];
+        [self.imageView setImage:[UIImage imageWithData:self.bait.image]];
 
     [self.cameraImageButton myInit:self action:@selector(tapCameraButton)];
 }
@@ -149,7 +149,7 @@
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
     UIImage *chosenImage = info[UIImagePickerControllerEditedImage];
     
-    [self.bait setImage:chosenImage];
+    [self.bait setImage:UIImagePNGRepresentation(chosenImage)];
     [self.tableView reloadData];
     [self.bait setName:self.nameTextField.text];
     [self.bait setBaitDescription:self.descriptionTextView.text];
@@ -250,7 +250,7 @@
     
     // photo
     if (self.imageView)
-        [aBait setImage:self.imageView.image];
+        [aBait setImage:UIImagePNGRepresentation(self.imageView.image)];
     else
         [aBait setImage:nil];
     
@@ -265,7 +265,7 @@
 
 - (IBAction)clickedDoneButton:(UIBarButtonItem *)sender {
     // add new event to journal
-    CMABait *baitToAdd = [CMABait new];
+    CMABait *baitToAdd = [[CMAStorageManager sharedManager] managedBait];
     
     if ([self checkUserInputAndSetBait:baitToAdd]) {
         if (self.previousViewID == CMAViewControllerIDSingleBait) {
