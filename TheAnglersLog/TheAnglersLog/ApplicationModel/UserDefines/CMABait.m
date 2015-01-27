@@ -11,7 +11,7 @@
 
 @implementation CMABait
 
-@dynamic entry;
+@dynamic entries;
 @dynamic baitDescription;
 @dynamic image;
 @dynamic fishCaught;
@@ -26,6 +26,7 @@
     self.image = nil;
     self.fishCaught = [NSNumber numberWithInteger:0];
     self.baitType = CMABaitTypeArtificial;
+    self.entries = [NSMutableSet set];
     
     return self;
 }
@@ -37,9 +38,6 @@
     
     if (!self.fishCaught)
         self.fishCaught = [NSNumber numberWithInteger:0];
-    
-    if (!self.baitType)
-        self.baitType = CMABaitTypeArtificial;
 }
 
 #pragma mark - Archiving

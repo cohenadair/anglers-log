@@ -13,12 +13,10 @@
 #import "CMAUserDefineProtocol.h"
 #import "CMAUserDefineObject.h"
 
-@class CMAEntry;
-
 @interface CMALocation : CMAUserDefineObject </*NSCoding, */CMAUserDefineProtocol>
 
-@property (strong, nonatomic)CMAEntry *entry;
-@property (strong, nonatomic)NSMutableArray *fishingSpots;
+@property (strong, nonatomic)NSMutableSet *entries;
+@property (strong, nonatomic)NSMutableOrderedSet *fishingSpots;
 
 // initializing
 - (CMALocation *)initWithName:(NSString *)aName;

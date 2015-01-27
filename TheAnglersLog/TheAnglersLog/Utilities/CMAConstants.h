@@ -9,7 +9,7 @@
 #ifndef MyFishingJournal_CMAConstants_h
 #define MyFishingJournal_CMAConstants_h
 
-typedef NS_ENUM(NSInteger, CMAViewControllerID) {
+typedef enum cvID_e : int16_t {
     CMAViewControllerIDNil = -1,
     CMAViewControllerIDViewEntries = 0,
     CMAViewControllerIDEditSettings = 1,
@@ -20,28 +20,28 @@ typedef NS_ENUM(NSInteger, CMAViewControllerID) {
     CMAViewControllerIDViewBaits = 6,
     CMAViewControllerIDStatistics = 7,
     CMAViewControllerIDSelectFishingSpot = 8
-};
+} CMAViewControllerID;
 
 // Each value represents the index for an item in a UISegmentedControlView.
-typedef NS_ENUM(NSInteger, CMAMeasuringSystemType) {
+typedef enum msID_e : int16_t {
     CMAMeasuringSystemTypeImperial = 0,
     CMAMeasuringSystemTypeMetric = 1
-};
+} CMAMeasuringSystemType;
 
 // Each value represents the index for an item in a UISegmentedControlView.
-typedef NS_ENUM(NSInteger, CMASortOrder) {
+typedef enum soID_e : int16_t {
     CMASortOrderAscending = 0,
     CMASortOrderDescending = 1
-};
+} CMASortOrder;
 
 // Each value represents the index for an item in a UISegmentedControlView.
-typedef NS_ENUM(NSInteger, CMABaitType) {
+typedef enum btID_e : int16_t {
     CMABaitTypeArtificial = 0,
     CMABaitTypeLive = 1
-};
+} CMABaitType;
 
 // Each value >= 0 represents an index for a row in a UITableView.
-typedef NS_ENUM(NSInteger, CMAEntrySortMethod) {
+typedef enum smID_e : int16_t {
     CMAEntrySortMethodNil = -1,
     CMAEntrySortMethodDate = 0,
     CMAEntrySortMethodSpecies = 1,
@@ -49,7 +49,7 @@ typedef NS_ENUM(NSInteger, CMAEntrySortMethod) {
     CMAEntrySortMethodLength = 3,
     CMAEntrySortMethodWeight = 4,
     CMAEntrySortMethodBaitUsed = 5
-};
+} CMAEntrySortMethod;
 
 #pragma mark - User Define Name (UDN)
 

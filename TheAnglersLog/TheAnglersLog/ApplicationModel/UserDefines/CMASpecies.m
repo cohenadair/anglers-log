@@ -11,6 +11,7 @@
 
 @implementation CMASpecies
 
+@dynamic entries;
 @dynamic numberCaught;
 @dynamic weightCaught;
 @dynamic ouncesCaught;
@@ -22,6 +23,7 @@
     self.numberCaught = [NSNumber numberWithInteger:0];
     self.weightCaught = [NSNumber numberWithInteger:0];
     self.ouncesCaught = [NSNumber numberWithInteger:0];
+    self.entries = [NSMutableSet set];
     
     return self;
 }
@@ -42,10 +44,10 @@
 }
 
 #pragma mark - Archiving
-/*
+
 - (id)initWithCoder:(NSCoder *)aDecoder {
     if (self = [super init]) {
-        _name = [aDecoder decodeObjectForKey:@"CMASpeciesName"];
+        self.name = [aDecoder decodeObjectForKey:@"CMASpeciesName"];
     }
     
     return self;
@@ -54,7 +56,7 @@
 - (void)encodeWithCoder:(NSCoder *)aCoder {
     [aCoder encodeObject:self.name forKey:@"CMASpeciesName"];
 }
-*/
+
 #pragma mark - Editing
 
 - (void)edit: (CMASpecies *)aNewSpecies {

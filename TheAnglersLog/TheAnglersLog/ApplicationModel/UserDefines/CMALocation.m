@@ -13,7 +13,7 @@
 
 @implementation CMALocation
 
-@dynamic entry;
+@dynamic entries;
 @dynamic fishingSpots;
 
 #pragma mark - Global Accessing
@@ -26,7 +26,8 @@
 
 - (CMALocation *)initWithName:(NSString *)aName {
     self.name = [NSMutableString stringWithString:[aName capitalizedString]];
-    self.fishingSpots = [NSMutableArray array];
+    self.fishingSpots = [NSMutableOrderedSet orderedSet];
+    self.entries = [NSMutableSet set];
     
     return self;
 }
@@ -37,7 +38,7 @@
         self.name = [NSMutableString string];
     
     if (!self.fishingSpots)
-        self.fishingSpots = [NSMutableArray array];
+        self.fishingSpots = [NSMutableOrderedSet orderedSet];
     
     for (CMAFishingSpot *f in self.fishingSpots)
         [f validateProperties];

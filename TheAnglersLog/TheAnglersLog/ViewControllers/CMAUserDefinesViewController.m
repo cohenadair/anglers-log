@@ -460,6 +460,8 @@
         [[[self.addItemAlert textFields] objectAtIndex:0] setText:@""];
         [self presentViewController:self.addItemAlert animated:YES completion:nil];
     }
+    
+    [[self journal] archive];
 }
 
 // Enter editing mode.

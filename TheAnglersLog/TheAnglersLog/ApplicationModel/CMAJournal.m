@@ -24,8 +24,9 @@
 #pragma mark - Initialization
 
 - (CMAJournal *)initWithName:(NSString *)aName {
-    self.entries = [NSMutableArray array];
-    self.userDefines = [NSMutableArray array];
+    self.name = [aName capitalizedString];
+    self.entries = [NSMutableOrderedSet orderedSet];
+    self.userDefines = [NSMutableSet set];
     
     [self setMeasurementSystem:CMAMeasuringSystemTypeImperial];
     [self setEntrySortMethod:CMAEntrySortMethodDate];
@@ -54,7 +55,7 @@
         [self addUserDefineNamed:UDN_FISHING_METHODS];
     
     if (![self userDefineNamed:UDN_LOCATIONS])
-        [self addUserDefineNamed:UDN_BAITS];
+        [self addUserDefineNamed:UDN_LOCATIONS];
     
     if (![self userDefineNamed:UDN_WATER_CLARITIES])
         [self addUserDefineNamed:UDN_WATER_CLARITIES];

@@ -10,12 +10,13 @@
 
 @implementation CMAWaterClarity
 
-@dynamic entry;
+@dynamic entries;
 
 #pragma mark - Initialization
 
 - (CMAWaterClarity *)initWithName: (NSString *)aName {
     self.name = aName;
+    self.entries = [NSMutableSet set];
     
     return self;
 }

@@ -238,7 +238,8 @@
 }
 
 - (void)loadJournalFromLocalStorage {
-    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:CDE_JOURNAL];
+    NSFetchRequest *fetchRequest = [NSFetchRequest new];
+    [fetchRequest setEntity:[self entityNamed:CDE_JOURNAL]];
     
     NSError *e;
     NSArray *results = [[self managedObjectContext] executeFetchRequest:fetchRequest error:&e];
@@ -250,6 +251,8 @@
     } else {
         NSLog(@"No local data found, initializing new journal.");
         self.sharedJournal = [self managedJournal];
+        [self insertManagedObject:self.sharedJournal];
+        [self saveContext];
     }
     
     /*NSLog(@"Local path: %@", [self localURLWithFileName].path);
@@ -279,7 +282,17 @@
 - (NSURL *)coreDataURL {
     // The directory the application uses to store the Core Data store file.
     NSURL *result = [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
-    result = [result URLByAppendingPathComponent:@"com.theanglerslog.coredata"];
+    
+    result = [result URLByAppendingPathComponent:@"TheAnglersLog"];
+    
+    NSError *e;
+    if (![[NSFileManager defaultManager] fileExistsAtPath:result.path])
+        // create TheAnglersLog directory if it doesn't exist
+        [[NSFileManager defaultManager] createDirectoryAtPath:result.path
+                                  withIntermediateDirectories:NO
+                                                   attributes:nil
+                                                        error:&e];
+    
     NSLog(@"Core Data path: %@", result.path);
     
     return result;
@@ -350,7 +363,14 @@
             NSLog(@"Saving data...");
             
             if (![managedObjectContext save:&error]) {
-                NSLog(@"Failed to save data %@, %@.", error, [error userInfo]);
+                NSLog(@"Failed to save data: %@.", [error localizedDescription]);
+                
+                NSArray* detailedErrors = [[error userInfo] objectForKey:NSDetailedErrorsKey];
+                if (detailedErrors != nil && [detailedErrors count] > 0) {
+                    for (NSError* detailedError in detailedErrors) {
+                        NSLog(@"DetailedError: %@", [detailedError userInfo]);
+                    }
+                }
             } else
                 NSLog(@"Saved library data.");
         } else

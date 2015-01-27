@@ -12,11 +12,10 @@
 #import "CMAUserDefineObject.h"
 
 @class CMALocation;
-@class CMAEntry;
 
 @interface CMAFishingSpot : CMAUserDefineObject </*NSCoding, */CMAUserDefineProtocol>
 
-@property (strong, nonatomic)CMAEntry *entry;
+@property (strong, nonatomic)NSMutableSet *entries;
 @property (strong, nonatomic)CMALocation *myLocation;
 @property (strong, nonatomic)CLLocation *location;
 @property (strong, nonatomic)NSNumber *fishCaught;

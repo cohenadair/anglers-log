@@ -11,16 +11,14 @@
 #import "CMAConstants.h"
 #import "CMAUserDefineObject.h"
 
-@class CMAEntry;
-
 @interface CMABait : CMAUserDefineObject </*NSCoding, */CMAUserDefineProtocol>
 
-@property (strong, nonatomic)CMAEntry *entry;
+@property (strong, nonatomic)NSMutableSet *entries;
 @property (strong, nonatomic)NSString *baitDescription;
 @property (strong, nonatomic)NSData *image;
 @property (strong, nonatomic)NSNumber *fishCaught;
 @property (strong, nonatomic)NSString *size;
-@property (nonatomic)CMABaitType *baitType;
+@property (nonatomic)CMABaitType baitType;
 
 // initialization
 - (CMABait *)initWithName:(NSString *)aName;

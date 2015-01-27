@@ -15,8 +15,8 @@
 @interface CMAJournal : NSManagedObject /*<NSCoding>*/
 
 @property (strong, nonatomic)NSString *name;
-@property (strong, nonatomic)NSMutableArray *entries;
-@property (strong, nonatomic)NSMutableArray *userDefines;
+@property (strong, nonatomic)NSMutableOrderedSet *entries;
+@property (strong, nonatomic)NSMutableSet *userDefines;
 @property (nonatomic)CMAMeasuringSystemType measurementSystem;
 @property (nonatomic)CMAEntrySortMethod entrySortMethod;
 @property (nonatomic)CMASortOrder entrySortOrder;

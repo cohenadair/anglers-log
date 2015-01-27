@@ -105,7 +105,7 @@
 // Loops through the journal entries creating an array of UIImages.
 - (void)initImagesArray {
     self.imagesArray = [NSMutableArray array];
-    NSMutableArray *entries = [[self journal] entries];
+    NSMutableOrderedSet *entries = [[self journal] entries];
     
     for (CMAEntry *entry in entries)
         for (UIImage *img in entry.images)

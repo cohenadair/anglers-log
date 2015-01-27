@@ -10,7 +10,7 @@
 
 @implementation CMAFishingSpot
 
-@dynamic entry;
+@dynamic entries;
 @dynamic myLocation;
 @dynamic location;
 @dynamic fishCaught;
@@ -21,6 +21,7 @@
     self.name = [NSMutableString stringWithString:[aName capitalizedString]];
     self.location = [CLLocation new];
     self.fishCaught = [NSNumber numberWithInteger:0];
+    self.entries = [NSMutableSet set];
     
     return self;
 }

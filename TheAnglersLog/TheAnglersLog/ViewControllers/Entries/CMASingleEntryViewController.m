@@ -295,7 +295,7 @@
         [view setFrame:CGRectMake(0, kWeatherCellTitlePadding, 0, kWeatherCellHeightExpanded)];
         [view setBackgroundColor:[UIColor redColor]];
         
-        [view.weatherImageView setImage:self.entry.weatherData.weatherImage];
+        [view.weatherImageView setImage:[UIImage imageWithData:self.entry.weatherData.weatherImage]];
         [view.temperatureLabel setText:[self.entry.weatherData temperatureAsStringWithUnits:[[self journal] temperatureUnitsAsString:YES]]];
         [view.windSpeedLabel setText:[self.entry.weatherData windSpeedAsStringWithUnits:[[self journal] speedUnitsAsString:YES]]];
         [view.skyConditionsLabel setText:[self.entry.weatherData skyConditionsAsString]];

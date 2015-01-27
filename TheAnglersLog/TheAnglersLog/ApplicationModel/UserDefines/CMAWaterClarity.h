@@ -10,11 +10,9 @@
 #import "CMAUserDefineProtocol.h"
 #import "CMAUserDefineObject.h"
 
-@class CMAEntry;
-
 @interface CMAWaterClarity : CMAUserDefineObject </*NSCoding, */CMAUserDefineProtocol>
 
-@property (strong, nonatomic)CMAEntry *entry;
+@property (strong, nonatomic)NSMutableSet *entries;
 
 // initialization
 - (CMAWaterClarity *)initWithName:(NSString *)aName;

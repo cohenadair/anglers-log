@@ -12,6 +12,7 @@
 
 @interface CMASpecies : CMAUserDefineObject </*NSCoding, */CMAUserDefineProtocol>
 
+@property (strong, nonatomic)NSMutableSet *entries;
 @property (strong, nonatomic)NSNumber *numberCaught;
 @property (strong, nonatomic)NSNumber *weightCaught;
 @property (strong, nonatomic)NSNumber *ouncesCaught;

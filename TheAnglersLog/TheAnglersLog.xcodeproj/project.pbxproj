@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0D2CF5A11A6F16B300C0113E /* TheAnglersLog.xcdatamodel in Sources */ = {isa = PBXBuildFile; fileRef = 0D2CF5A01A6F16B300C0113E /* TheAnglersLog.xcdatamodel */; };
+		0D23B2711A7713C900E89736 /* TheAnglersLog.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 0D23B26F1A7713C900E89736 /* TheAnglersLog.xcdatamodeld */; };
 		0D5608121A6F0F3000EE0437 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D5608111A6F0F3000EE0437 /* CoreData.framework */; };
 		0D8F838B1A6EC10800AABAEA /* CMAEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D8F836D1A6EC10800AABAEA /* CMAEntry.m */; };
 		0D8F838C1A6EC10800AABAEA /* CMAJournal.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D8F836F1A6EC10800AABAEA /* CMAJournal.m */; };
@@ -135,7 +135,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		0D2CF5A01A6F16B300C0113E /* TheAnglersLog.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; name = TheAnglersLog.xcdatamodel; path = TheAnglersLog/TheAnglersLog.xcdatamodel; sourceTree = SOURCE_ROOT; };
+		0D23B2701A7713C900E89736 /* TheAnglersLog.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = TheAnglersLog.xcdatamodel; sourceTree = "<group>"; };
 		0D5608111A6F0F3000EE0437 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		0D8F836C1A6EC10800AABAEA /* CMAEntry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAEntry.h; path = TheAnglersLog/ApplicationModel/CMAEntry.h; sourceTree = SOURCE_ROOT; };
 		0D8F836D1A6EC10800AABAEA /* CMAEntry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAEntry.m; path = TheAnglersLog/ApplicationModel/CMAEntry.m; sourceTree = SOURCE_ROOT; };
@@ -604,7 +604,7 @@
 		E70B637B19D3A8E400DFBA85 /* TheAnglersLog */ = {
 			isa = PBXGroup;
 			children = (
-				0D2CF5A01A6F16B300C0113E /* TheAnglersLog.xcdatamodel */,
+				0D23B26F1A7713C900E89736 /* TheAnglersLog.xcdatamodeld */,
 				0D8F84A41A6EC31500AABAEA /* TheAnglersLog.entitlements */,
 				E7C29D0C1A143A1600015B42 /* Libraries */,
 				E738583B19FCD49100FE122B /* Images */,
@@ -619,8 +619,7 @@
 				0D8F839F1A6EC1AE00AABAEA /* CMAStoryboard.storyboard */,
 				0D8F839B1A6EC15D00AABAEA /* CMALaunchScreen.xib */,
 			);
-			name = TheAnglersLog;
-			path = MyFishingJournal;
+			path = TheAnglersLog;
 			sourceTree = "<group>";
 		};
 		E70B637C19D3A8E400DFBA85 /* Supporting Files */ = {
@@ -884,6 +883,7 @@
 				0D8F839C1A6EC15D00AABAEA /* CMAAppDelegate.m in Sources */,
 				0D8F83D91A6EC25200AABAEA /* CMAImagePickerViewController.m in Sources */,
 				0D8F83E21A6EC25200AABAEA /* CMAAddFishingSpotViewController.m in Sources */,
+				0D23B2711A7713C900E89736 /* TheAnglersLog.xcdatamodeld in Sources */,
 				0D8F83941A6EC10800AABAEA /* CMAFishingSpot.m in Sources */,
 				0D8F840A1A6EC29A00AABAEA /* CMABaitTableViewCell.m in Sources */,
 				0D8F83951A6EC10800AABAEA /* CMALocation.m in Sources */,
@@ -922,7 +922,6 @@
 				0D8F849D1A6EC2D900AABAEA /* AFURLConnectionOperation.m in Sources */,
 				0D8F849E1A6EC2D900AABAEA /* AFURLRequestSerialization.m in Sources */,
 				0D8F84A31A6EC2D900AABAEA /* XYPieChart.m in Sources */,
-				0D2CF5A11A6F16B300C0113E /* TheAnglersLog.xcdatamodel in Sources */,
 				0D8F838D1A6EC10800AABAEA /* CMAJournalDocument.m in Sources */,
 				0D8F83921A6EC10800AABAEA /* CMABait.m in Sources */,
 				0D8F84101A6EC29A00AABAEA /* CMAInstagramActivity.m in Sources */,
@@ -1080,6 +1079,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		0D23B26F1A7713C900E89736 /* TheAnglersLog.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				0D23B2701A7713C900E89736 /* TheAnglersLog.xcdatamodel */,
+			);
+			currentVersion = 0D23B2701A7713C900E89736 /* TheAnglersLog.xcdatamodel */;
+			path = TheAnglersLog.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = E70B636A19D3A8E400DFBA85 /* Project object */;
 }

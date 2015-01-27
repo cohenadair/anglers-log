@@ -104,7 +104,7 @@
                 [self.sizeTextField setText:self.bait.size];
         
         // artificial
-        [self.baitTypeControl setSelectedSegmentIndex:[self.bait.baitType integerValue]];
+        [self.baitTypeControl setSelectedSegmentIndex:self.bait.baitType];
     
         // description
         if (self.bait.baitDescription) {
@@ -240,7 +240,7 @@
         [aBait setSize:self.sizeTextField.text];
     
     // artificial
-    [aBait setBaitType:[NSNumber numberWithInteger:self.baitTypeControl.selectedSegmentIndex]];
+    [aBait setBaitType:(CMABaitType)[self.baitTypeControl selectedSegmentIndex]];
     
     // description
     if ([self.descriptionTextView.text isEqualToString:@"Description."])

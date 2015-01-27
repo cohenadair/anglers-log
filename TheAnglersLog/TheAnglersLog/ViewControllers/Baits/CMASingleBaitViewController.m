@@ -87,7 +87,7 @@
 
 - (void)initTableView {
     [self.navigationItem setTitle:self.bait.name];
-    [self.imageView setImage:self.bait.image];
+    [self.imageView setImage:[UIImage imageWithData:self.bait.image]];
     [self.baitFishCaughtLabel setText:[self.bait.fishCaught stringValue]];
 
     if (self.bait.baitType == CMABaitTypeArtificial)
