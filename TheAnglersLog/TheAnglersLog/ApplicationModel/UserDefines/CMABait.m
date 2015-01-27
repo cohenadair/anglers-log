@@ -12,6 +12,8 @@
 @implementation CMABait
 
 @dynamic entries;
+@dynamic userDefine;
+
 @dynamic baitDescription;
 @dynamic image;
 @dynamic fishCaught;
@@ -20,13 +22,14 @@
 
 #pragma mark - Initialization
 
-- (CMABait *)initWithName:(NSString *)aName {
+- (CMABait *)initWithName:(NSString *)aName andUserDefine:(CMAUserDefine *)aUserDefine {
     self.name = [aName capitalizedString];
     self.baitDescription = nil;
     self.image = nil;
     self.fishCaught = [NSNumber numberWithInteger:0];
     self.baitType = CMABaitTypeArtificial;
     self.entries = [NSMutableSet set];
+    self.userDefine = aUserDefine;
     
     return self;
 }

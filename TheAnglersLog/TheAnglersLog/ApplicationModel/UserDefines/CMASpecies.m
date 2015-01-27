@@ -12,18 +12,20 @@
 @implementation CMASpecies
 
 @dynamic entries;
+@dynamic userDefine;
 @dynamic numberCaught;
 @dynamic weightCaught;
 @dynamic ouncesCaught;
 
 #pragma mark - Initialization
 
-- (CMASpecies *)initWithName: (NSString *)aName {
+- (CMASpecies *)initWithName:(NSString *)aName andUserDefine:(CMAUserDefine *)aUserDefine {
     self.name = aName;
     self.numberCaught = [NSNumber numberWithInteger:0];
     self.weightCaught = [NSNumber numberWithInteger:0];
     self.ouncesCaught = [NSNumber numberWithInteger:0];
     self.entries = [NSMutableSet set];
+    self.userDefine = aUserDefine;
     
     return self;
 }

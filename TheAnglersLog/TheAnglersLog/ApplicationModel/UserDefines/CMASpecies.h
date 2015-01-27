@@ -10,15 +10,19 @@
 #import "CMAUserDefineProtocol.h"
 #import "CMAUserDefineObject.h"
 
+@class CMAUserDefine;
+
 @interface CMASpecies : CMAUserDefineObject </*NSCoding, */CMAUserDefineProtocol>
 
 @property (strong, nonatomic)NSMutableSet *entries;
+@property (strong, nonatomic)CMAUserDefine *userDefine;
+
 @property (strong, nonatomic)NSNumber *numberCaught;
 @property (strong, nonatomic)NSNumber *weightCaught;
 @property (strong, nonatomic)NSNumber *ouncesCaught;
 
 // initialization
-- (CMASpecies *)initWithName:(NSString *)aName;
+- (CMASpecies *)initWithName:(NSString *)aName andUserDefine:(CMAUserDefine *)aUserDefine;
 - (void)validateProperties;
 
 // archiving

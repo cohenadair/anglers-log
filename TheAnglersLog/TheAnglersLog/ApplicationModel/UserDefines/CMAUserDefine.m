@@ -17,15 +17,29 @@
 
 @implementation CMAUserDefine
 
-@dynamic objects;
 @dynamic journal;
+@dynamic baits;
+@dynamic locations;
+@dynamic fishingMethods;
+@dynamic species;
+@dynamic waterClarities;
 
 #pragma mark - Initialization
 
 - (CMAUserDefine *)initWithName:(NSString *)aName andJournal:(CMAJournal *)aJournal {
     self.name = aName;
     self.journal = aJournal;
-    self.objects = [NSMutableOrderedSet orderedSet];
+    
+    if ([aName isEqualToString:UDN_BAITS])
+        self.baits = [NSMutableOrderedSet orderedSet];
+    else if ([aName isEqualToString:UDN_FISHING_METHODS])
+        self.fishingMethods = [NSMutableOrderedSet orderedSet];
+    else if ([aName isEqualToString:UDN_LOCATIONS])
+        self.locations = [NSMutableOrderedSet orderedSet];
+    else if ([aName isEqualToString:UDN_SPECIES])
+        self.species = [NSMutableOrderedSet orderedSet];
+    else if ([aName isEqualToString:UDN_WATER_CLARITIES])
+        self.waterClarities = [NSMutableOrderedSet orderedSet];
     
     return self;
 }
@@ -33,7 +47,7 @@
 #pragma mark - Validation
 
 - (void)validateObjects {
-    for (id o in self.objects)
+    for (id o in [self activeSet])
         [o validateProperties];
 }
 
@@ -62,13 +76,13 @@
         return NO;
     }
     
-    [self.objects addObject:anObject];
+    [[self activeSet] addObject:anObject];
     [self sortByNameProperty];
     return YES;
 }
 
 - (void)removeObjectNamed:(NSString *)aName {
-    [self.objects removeObject:[self objectNamed:aName]];
+    [[self activeSet] removeObject:[self objectNamed:aName]];
 }
 
 - (void)editObjectNamed:(NSString *)aName newObject: (id)aNewObject {
@@ -78,16 +92,49 @@
 
 #pragma mark - Accessing
 
+- (NSMutableOrderedSet *)activeSet {
+    if (self.baits)
+        return self.baits;
+    else if (self.fishingMethods)
+        return self.fishingMethods;
+    else if (self.locations)
+        return self.locations;
+    else if (self.species)
+        return self.species;
+    else if (self.waterClarities)
+        return self.waterClarities;
+    
+    NSLog(@"All user defines are NULL!");
+    return nil;
+}
+
+- (void)setActiveSet:(NSMutableOrderedSet *)aMutableOrderedSet {
+    if (self.baits)
+        self.baits = aMutableOrderedSet;
+    else if (self.fishingMethods)
+        self.fishingMethods = aMutableOrderedSet;
+    else if (self.locations)
+        self.locations = aMutableOrderedSet;
+    else if (self.species)
+        self.species = aMutableOrderedSet;
+    else if (self.waterClarities)
+        self.waterClarities = aMutableOrderedSet;
+}
+
 - (NSInteger)count {
-    return [self.objects count];
+    return [[self activeSet] count];
 }
 
 - (id)objectNamed:(NSString *)aName {
-    for (id obj in self.objects)
+    for (id obj in [self activeSet])
         if ([[obj name] isEqualToString:aName])
             return obj;
     
     return nil;
+}
+
+- (id)objectAtIndex:(NSInteger)anIndex {
+    return [[self activeSet] objectAtIndex:anIndex];
 }
 
 - (BOOL)isSetOfStrings {
@@ -102,13 +149,13 @@
     CMAStorageManager *manager = [CMAStorageManager sharedManager];
     
     if ([self.name isEqualToString:UDN_SPECIES])
-        return [[manager managedSpecies] initWithName:aName];
+        return [[manager managedSpecies] initWithName:aName andUserDefine:self];
     
     if ([self.name isEqualToString:UDN_FISHING_METHODS])
-        return [[manager managedFishingMethod] initWithName:aName];
+        return [[manager managedFishingMethod] initWithName:aName andUserDefine:self];
     
     if ([self.name isEqualToString:UDN_WATER_CLARITIES])
-        return [[manager managedWaterClarity] initWithName:aName];
+        return [[manager managedWaterClarity] initWithName:aName andUserDefine:self];
     
     NSLog(@"Invalid user define name in [CMAUserDefine emptyObjectNamed].");
     return nil;
@@ -117,9 +164,13 @@
 #pragma mark - Sorting
 
 - (void)sortByNameProperty {
-    self.objects = [[self.objects sortedArrayUsingComparator:^NSComparisonResult(id o1, id o2){
+    NSMutableOrderedSet *activeSet = [self activeSet];
+    
+    NSArray *sortedArray = [activeSet sortedArrayUsingComparator:^NSComparisonResult(id o1, id o2){
         return [[o1 name] compare:[o2 name]];
-    }] mutableCopy];
+    }];
+    
+    [self setActiveSet:[NSMutableOrderedSet orderedSetWithArray:sortedArray]];
 }
 
 @end

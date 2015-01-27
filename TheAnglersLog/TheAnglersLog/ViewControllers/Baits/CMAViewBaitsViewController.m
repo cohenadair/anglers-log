@@ -128,7 +128,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     CMABaitTableViewCell *cell = (CMABaitTableViewCell *)[tableView dequeueReusableCellWithIdentifier:@"baitCell" forIndexPath:indexPath];
     
-    CMABait *bait = [[self.userDefineBaits objects] objectAtIndex:indexPath.row];
+    CMABait *bait = [self.userDefineBaits objectAtIndex:indexPath.row];
     
     if (bait.image)
         [cell.thumbImage setImage:[UIImage imageWithData:bait.image]];
@@ -155,13 +155,13 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (self.isSelectingForAddEntry) {
-        self.baitForAddEntry = [[self.userDefineBaits objects] objectAtIndex:indexPath.row];
+        self.baitForAddEntry = [self.userDefineBaits objectAtIndex:indexPath.row];
         [self performSegueWithIdentifier:@"unwindToAddEntryFromViewBaits" sender:self];
         return;
     }
     
     if (self.isSelectingForStatistics) {
-        self.baitNameForStatistics = [[[self.userDefineBaits objects] objectAtIndex:indexPath.row] name];
+        self.baitNameForStatistics = [[self.userDefineBaits objectAtIndex:indexPath.row] name];
         [self performSegueWithIdentifier:@"unwindToStatisticsFromViewBaits" sender:self];
         return;
     }
@@ -231,7 +231,7 @@
     
     if ([segue.identifier isEqualToString:@"fromViewBaitsToSingleBait"]) {
         CMASingleBaitViewController *destination = [[segue.destinationViewController viewControllers] objectAtIndex:0];
-        CMABait *baitToDisplay = [[self.userDefineBaits objects] objectAtIndex:[self.tableView indexPathForSelectedRow].row];
+        CMABait *baitToDisplay = [self.userDefineBaits objectAtIndex:[self.tableView indexPathForSelectedRow].row];
         destination.bait = baitToDisplay;
     }
 }

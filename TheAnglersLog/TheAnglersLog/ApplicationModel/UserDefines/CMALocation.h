@@ -13,13 +13,17 @@
 #import "CMAUserDefineProtocol.h"
 #import "CMAUserDefineObject.h"
 
+@class CMAUserDefine;
+
 @interface CMALocation : CMAUserDefineObject </*NSCoding, */CMAUserDefineProtocol>
 
 @property (strong, nonatomic)NSMutableSet *entries;
+@property (strong, nonatomic)CMAUserDefine *userDefine;
+
 @property (strong, nonatomic)NSMutableOrderedSet *fishingSpots;
 
 // initializing
-- (CMALocation *)initWithName:(NSString *)aName;
+- (CMALocation *)initWithName:(NSString *)aName andUserDefine:(CMAUserDefine *)aUserDefine;
 - (void)validateProperties;
 
 // archiving

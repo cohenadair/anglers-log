@@ -76,7 +76,7 @@
 - (void)initForCaught {
     NSMutableArray *result = [NSMutableArray array];
     
-    for (CMASpecies *species in [[self.journal userDefineNamed:UDN_SPECIES] objects]) {
+    for (CMASpecies *species in [[self.journal userDefineNamed:UDN_SPECIES] activeSet]) {
         CMAStatsObject *obj = [CMAStatsObject new];
         
         [obj setName:species.name];
@@ -93,7 +93,7 @@
     NSMutableArray *result = [NSMutableArray array];
     NSInteger ounces = 0;
     
-    for (CMASpecies *species in [[self.journal userDefineNamed:UDN_SPECIES] objects]) {
+    for (CMASpecies *species in [[self.journal userDefineNamed:UDN_SPECIES] activeSet]) {
         CMAStatsObject *obj = [CMAStatsObject new];
         
         [obj setName:species.name];
@@ -116,7 +116,7 @@
 - (void)initForLocation {
     NSMutableArray *result = [NSMutableArray array];
     
-    for (CMALocation *loc in [[self.journal userDefineNamed:UDN_LOCATIONS] objects]) {
+    for (CMALocation *loc in [[self.journal userDefineNamed:UDN_LOCATIONS] activeSet]) {
         CMAStatsObject *obj = [CMAStatsObject new];
         
         for (CMAFishingSpot *spot in loc.fishingSpots)
@@ -134,7 +134,7 @@
 - (void)initForBait {
     NSMutableArray *result = [NSMutableArray array];
     
-    for (CMABait *bait in [[self.journal userDefineNamed:UDN_BAITS] objects]) {
+    for (CMABait *bait in [[self.journal userDefineNamed:UDN_BAITS] activeSet]) {
         CMAStatsObject *obj = [CMAStatsObject new];
         
         [obj setName:bait.name];

@@ -10,10 +10,13 @@
 
 @implementation CMAFishingMethod
 
+@dynamic userDefine;
+
 #pragma mark - Initialization
 
-- (CMAFishingMethod *)initWithName: (NSString *)aName {
+- (CMAFishingMethod *)initWithName:(NSString *)aName andUserDefine:(CMAUserDefine *)aUserDefine {
     self.name = aName;
+    self.userDefine = aUserDefine;
     
     return self;
 }

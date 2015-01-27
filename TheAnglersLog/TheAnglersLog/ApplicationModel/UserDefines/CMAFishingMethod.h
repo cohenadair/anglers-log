@@ -10,10 +10,14 @@
 #import "CMAUserDefineProtocol.h"
 #import "CMAUserDefineObject.h"
 
+@class CMAUserDefine;
+
 @interface CMAFishingMethod : CMAUserDefineObject </*NSCoding, */CMAUserDefineProtocol>
 
+@property (strong, nonatomic)CMAUserDefine *userDefine;
+
 // initialization
-- (CMAFishingMethod *)initWithName:(NSString *)aName;
+- (CMAFishingMethod *)initWithName:(NSString *)aName andUserDefine:(CMAUserDefine *)aUserDefine;
 - (void)validateProperties;
 
 // archiving

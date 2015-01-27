@@ -10,12 +10,15 @@
 #import "CMAUserDefineProtocol.h"
 #import "CMAUserDefineObject.h"
 
+@class CMAUserDefine;
+
 @interface CMAWaterClarity : CMAUserDefineObject </*NSCoding, */CMAUserDefineProtocol>
 
 @property (strong, nonatomic)NSMutableSet *entries;
+@property (strong, nonatomic)CMAUserDefine *userDefine;
 
 // initialization
-- (CMAWaterClarity *)initWithName:(NSString *)aName;
+- (CMAWaterClarity *)initWithName:(NSString *)aName andUserDefine:(CMAUserDefine *)aUserDefine;
 - (void)validateProperties;
 
 // archiving

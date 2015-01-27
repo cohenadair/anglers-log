@@ -14,6 +14,8 @@
 @implementation CMALocation
 
 @dynamic entries;
+@dynamic userDefine;
+
 @dynamic fishingSpots;
 
 #pragma mark - Global Accessing
@@ -24,10 +26,11 @@
 
 #pragma mark - Initialization
 
-- (CMALocation *)initWithName:(NSString *)aName {
+- (CMALocation *)initWithName:(NSString *)aName andUserDefine:(CMAUserDefine *)aUserDefine {
     self.name = [NSMutableString stringWithString:[aName capitalizedString]];
     self.fishingSpots = [NSMutableOrderedSet orderedSet];
     self.entries = [NSMutableSet set];
+    self.userDefine = aUserDefine;
     
     return self;
 }

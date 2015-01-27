@@ -83,7 +83,7 @@
 - (void)initStatistics {
     // reset species
     CMAUserDefine *species = [self userDefineNamed:UDN_SPECIES];
-    for (CMASpecies *s in [species objects]) {
+    for (CMASpecies *s in [species activeSet]) {
         [s setNumberCaught:[NSNumber numberWithInteger:0]];
         [s setWeightCaught:[NSNumber numberWithInteger:0]];
         [s setOuncesCaught:[NSNumber numberWithInteger:0]];
@@ -91,13 +91,13 @@
     
     // reset baits
     CMAUserDefine *baits = [self userDefineNamed:UDN_BAITS];
-    for (CMABait *s in [baits objects]) {
+    for (CMABait *s in [baits activeSet]) {
         [s setFishCaught:[NSNumber numberWithInteger:0]];
     }
     
     // reset fishing spots
     CMAUserDefine *locations = [self userDefineNamed:UDN_LOCATIONS];
-    for (CMALocation *l in [locations objects])
+    for (CMALocation *l in [locations activeSet])
         for (CMAFishingSpot *f in [l fishingSpots])
             [f setFishCaught:[NSNumber numberWithInteger:0]];
     
@@ -205,18 +205,18 @@
     for (CMAEntry *entry in self.entries) {
         if ([aDefineName isEqualToString:UDN_SPECIES])
             if ([entry.fishSpecies.name isEqualToString:anObjectName]) {
-                entry.fishSpecies = [entry.fishSpecies initWithName:REMOVED_TEXT];
+                [entry.fishSpecies setName:REMOVED_TEXT];
             }
         
         if ([aDefineName isEqualToString:UDN_LOCATIONS])
             if ([entry.location.name isEqualToString:anObjectName]) {
                 entry.fishingSpot = nil;
-                entry.location = [entry.location initWithName:REMOVED_TEXT];
+                [entry.location setName:REMOVED_TEXT];
             }
         
         if ([aDefineName isEqualToString:UDN_BAITS])
             if ([entry.baitUsed.name isEqualToString:anObjectName]) {
-                entry.baitUsed = [entry.baitUsed initWithName:REMOVED_TEXT];
+                [entry.baitUsed setName:REMOVED_TEXT];
             }
         
         if ([aDefineName isEqualToString:UDN_FISHING_METHODS]) {
@@ -234,7 +234,7 @@
         
         if ([aDefineName isEqualToString:UDN_WATER_CLARITIES])
             if ([entry.waterClarity.name isEqualToString:anObjectName]) {
-                entry.waterClarity = [entry.waterClarity initWithName:REMOVED_TEXT];
+                [entry.waterClarity setName:REMOVED_TEXT];
             }
     }
 }

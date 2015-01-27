@@ -11,12 +11,14 @@
 @implementation CMAWaterClarity
 
 @dynamic entries;
+@dynamic userDefine;
 
 #pragma mark - Initialization
 
-- (CMAWaterClarity *)initWithName: (NSString *)aName {
+- (CMAWaterClarity *)initWithName:(NSString *)aName andUserDefine:(CMAUserDefine *)aUserDefine; {
     self.name = aName;
     self.entries = [NSMutableSet set];
+    self.userDefine = aUserDefine;
     
     return self;
 }

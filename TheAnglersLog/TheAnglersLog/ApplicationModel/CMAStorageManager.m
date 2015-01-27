@@ -406,12 +406,12 @@
 
 - (CMABait *)managedBait {
     CMABait *result = [[CMABait alloc] initWithEntity:[self entityNamed:CDE_BAIT] insertIntoManagedObjectContext:nil];
-    return [result initWithName:@""];
+    return [result initWithName:@"" andUserDefine:[self.sharedJournal userDefineNamed:UDN_BAITS]];
 }
 
 - (CMALocation *)managedLocation {
     CMALocation *result = [[CMALocation alloc] initWithEntity:[self entityNamed:CDE_LOCATION] insertIntoManagedObjectContext:nil];
-    return [result initWithName:@""];
+    return [result initWithName:@"" andUserDefine:[self.sharedJournal userDefineNamed:UDN_LOCATIONS]];
 }
 
 - (CMAFishingSpot *)managedFishingSpot {
@@ -421,17 +421,17 @@
 
 - (CMASpecies *)managedSpecies {
     CMASpecies *result = [[CMASpecies alloc] initWithEntity:[self entityNamed:CDE_SPECIES] insertIntoManagedObjectContext:nil];
-    return [result initWithName:@""];
+    return [result initWithName:@"" andUserDefine:[self.sharedJournal userDefineNamed:UDN_SPECIES]];
 }
 
 - (CMAFishingMethod *)managedFishingMethod {
     CMAFishingMethod *result = [[CMAFishingMethod alloc] initWithEntity:[self entityNamed:CDE_FISHING_METHOD] insertIntoManagedObjectContext:nil];
-    return [result initWithName:@""];
+    return [result initWithName:@"" andUserDefine:[self.sharedJournal userDefineNamed:UDN_FISHING_METHODS]];
 }
 
 - (CMAWaterClarity *)managedWaterClarity {
     CMAWaterClarity *result = [[CMAWaterClarity alloc] initWithEntity:[self entityNamed:CDE_WATER_CLARITY] insertIntoManagedObjectContext:nil];
-    return [result initWithName:@""];
+    return [result initWithName:@"" andUserDefine:[self.sharedJournal userDefineNamed:UDN_WATER_CLARITIES]];
 }
 
 - (CMAUserDefine *)managedUserDefine {
