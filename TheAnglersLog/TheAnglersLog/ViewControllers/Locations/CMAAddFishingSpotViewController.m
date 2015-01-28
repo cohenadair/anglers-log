@@ -25,6 +25,7 @@
 @property (strong, nonatomic)CLLocationManager *locationManager;
 @property (nonatomic)BOOL userLocationAdded;
 @property (nonatomic)BOOL mapHasLoaded;
+@property (nonatomic)BOOL tappedDoneButton;
 
 @end
 
@@ -63,6 +64,8 @@
     
     [self.locationManager requestWhenInUseAuthorization];
     [self.locationManager startUpdatingLocation];
+    
+    self.tappedDoneButton = NO;
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -70,6 +73,16 @@
     
     if ([self.locationFromAddLocation fishingSpotCount] > 0)
         [self setMapRegion];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    
+    // if back is tapped and and we're not editing, clean up core data obejct
+    if (!self.tappedDoneButton && !self.isEditingFishingSpot) {
+        [[CMAStorageManager sharedManager] deleteManagedObject:self.fishingSpot];
+        self.fishingSpot = nil;
+    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -127,6 +140,7 @@
     [self.fishingSpot setName:[[self.fishingSpotNameTextField text] mutableCopy]];
     [self.fishingSpot setLocation:[[CLLocation alloc] initWithLatitude:mapCenter.latitude longitude:mapCenter.longitude]];
     
+    self.tappedDoneButton = YES;
     [self performSegueWithIdentifier:@"unwindToAddLocationFromAddFishingSpot" sender:self];
 }
 
@@ -190,7 +204,9 @@
 }
 
 - (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error {
-    [CMAAlerts errorAlert:[NSString stringWithFormat:@"Failed to get user location. Error: %@", error.localizedDescription] presentationViewController:self];
+    [CMAAlerts errorAlert:@"Failed to get location. Try again later or manually drag the map to your location." presentationViewController:self];
+    NSLog(@"Failed to get user location. Error: %@", error.localizedDescription);
+    [self.loadingMapView setHidden:YES];
 }
 
 @end

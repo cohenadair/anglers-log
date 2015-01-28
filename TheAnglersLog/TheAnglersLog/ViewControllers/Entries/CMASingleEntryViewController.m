@@ -206,7 +206,7 @@
                                   hasSeparator: NO]];
     
     // fishing methods
-    if (self.entry.fishingMethods)
+    if ([self.entry.fishingMethods count] > 0)
         [self.tableCellProperties addObject:
          [CMATableCellProperties withLabelText: @"Methods"
                                  andDetailText: [self.entry fishingMethodsAsString]
@@ -337,7 +337,7 @@
     UICollectionViewCell * cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"imageCollectionCell" forIndexPath:indexPath];
     
     UIImageView *imageView = (UIImageView *)[cell viewWithTag:100];
-    [imageView setImage:[self.entryImageArray objectAtIndex:indexPath.item]];
+    [imageView setImage:[[self.entryImageArray objectAtIndex:indexPath.item] dataAsUIImage]];
 
     return cell;
 }

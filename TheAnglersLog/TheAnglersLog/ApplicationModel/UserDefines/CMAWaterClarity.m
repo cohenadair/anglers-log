@@ -49,4 +49,8 @@
     [self setName:[aNewWaterClarity.name capitalizedString]];
 }
 
+- (void)addEntry:(CMAEntry *)anEntry {
+    [self.entries addObject:anEntry];
+}
+
 @end

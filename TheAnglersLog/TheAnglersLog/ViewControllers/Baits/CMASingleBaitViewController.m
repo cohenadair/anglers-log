@@ -9,6 +9,7 @@
 #import "CMASingleBaitViewController.h"
 #import "CMAAddBaitViewController.h"
 #import "CMAConstants.h"
+#import "CMAImage.h"
 
 @interface CMASingleBaitViewController ()
 
@@ -51,7 +52,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.row == kPhotoCellRow) {
-        if (self.bait.image)
+        if (self.bait.imageData)
             return self.tableView.frame.size.width;
         else
             return 10;
@@ -87,7 +88,7 @@
 
 - (void)initTableView {
     [self.navigationItem setTitle:self.bait.name];
-    [self.imageView setImage:[UIImage imageWithData:self.bait.image]];
+    [self.imageView setImage:[self.bait.imageData dataAsUIImage]];
     [self.baitFishCaughtLabel setText:[self.bait.fishCaught stringValue]];
 
     if (self.bait.baitType == CMABaitTypeArtificial)

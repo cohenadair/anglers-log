@@ -29,7 +29,8 @@ NSString *const CDE_LOCATION = @"CMALocation";
 NSString *const CDE_FISHING_METHOD = @"CMAFishingMethod";
 NSString *const CDE_WATER_CLARITY = @"CMAWaterClarity";
 NSString *const CDE_WEATHER_DATA = @"CMAWeatherData";
-NSString *const CDE_FISHING_SPOT = @"CMAFishingSPot";
+NSString *const CDE_FISHING_SPOT = @"CMAFishingSpot";
+NSString *const CDE_IMAGE = @"CMAImage";
 
 NSString *const TOKEN_FISHING_METHODS = @", ";
 NSString *const TOKEN_LOCATION = @": ";

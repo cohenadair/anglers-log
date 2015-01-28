@@ -251,7 +251,7 @@
     } else {
         NSLog(@"No local data found, initializing new journal.");
         self.sharedJournal = [self managedJournal];
-        [self insertManagedObject:self.sharedJournal];
+        //[self insertManagedObject:self.sharedJournal];
         [self saveContext];
     }
     
@@ -378,19 +378,97 @@
     }
 }
 
-#pragma mark - Core Data Inserting/Deleting
-
-- (void)insertManagedObject:(NSManagedObject *)aManagedObject {
-    [self.managedObjectContext insertObject:aManagedObject];
-}
-
 - (void)deleteManagedObject:(NSManagedObject *)aManagedObject {
     [self.managedObjectContext deleteObject:aManagedObject];
+    
+    NSLog(@"Initializing save after delete...");
+    [self saveContext];
+}
+
+#pragma mark - Core Data Debugging
+
+- (void)debugCoreDataObjects {
+    NSLog(@"Analyzing Core Data objects...");
+    
+    [self debugCMAImageFetch];
+    [self debugCMAUserDefineFetchNamed:UDN_BAITS andEntityName:CDE_BAIT];
+    [self debugCMAUserDefineFetchNamed:UDN_LOCATIONS andEntityName:CDE_LOCATION];
+    [self debugCMAUserDefineFetchNamed:UDN_FISHING_METHODS andEntityName:CDE_FISHING_METHOD];
+    [self debugCMAUserDefineFetchNamed:UDN_WATER_CLARITIES andEntityName:CDE_WATER_CLARITY];
+    [self debugCMAUserDefineFetchNamed:UDN_SPECIES andEntityName:CDE_SPECIES];
+    [self debugCMAFishingSpotFetch];
+    [self debugCMAEntryFetch];
+    [self debugCMAWeatherDataFetch];
+}
+
+- (void)debugCMAImageFetch {
+    NSArray *results = [self fetchEntityNamed:CDE_IMAGE];
+    NSInteger journalImageCount = 0;
+    
+    for (CMAEntry *e in self.sharedJournal.entries)
+        journalImageCount += [e imageCount];
+    
+    for (CMABait *b in [[self.sharedJournal userDefineNamed:UDN_BAITS] activeSet])
+        if ([b imageData])
+            journalImageCount++;
+    
+    [self printEntityFetchResultsNamed:CDE_IMAGE withCount:[results count] andExpectedCount:journalImageCount];
+}
+
+- (void)debugCMAUserDefineFetchNamed:(NSString *)aName andEntityName:(NSString *)anEntityName {
+    NSArray *results = [self fetchEntityNamed:anEntityName];
+    NSInteger objCount = [[self.sharedJournal userDefineNamed:aName] count];
+    [self printEntityFetchResultsNamed:anEntityName withCount:[results count] andExpectedCount:objCount];
+}
+
+- (void)debugCMAFishingSpotFetch {
+    NSArray *results = [self fetchEntityNamed:CDE_FISHING_SPOT];
+    NSInteger journalFishingSpotCount = 0;
+    
+    for (CMALocation *l in [[self.sharedJournal userDefineNamed:UDN_LOCATIONS] activeSet])
+        journalFishingSpotCount += [l fishingSpotCount];
+    
+    [self printEntityFetchResultsNamed:CDE_FISHING_SPOT withCount:[results count] andExpectedCount:journalFishingSpotCount];
+}
+
+- (void)debugCMAEntryFetch {
+    NSArray *results = [self fetchEntityNamed:CDE_ENTRY];
+    NSInteger journalEntryCount = [self.sharedJournal entryCount];
+    [self printEntityFetchResultsNamed:CDE_ENTRY withCount:[results count] andExpectedCount:journalEntryCount];
+}
+
+- (void)debugCMAWeatherDataFetch {
+    NSArray *results = [self fetchEntityNamed:CDE_WEATHER_DATA];
+    NSInteger journalWeatherCount = 0;
+    
+    for (CMAEntry *e in [self.sharedJournal entries])
+        if (e.weatherData)
+            journalWeatherCount++;
+    
+    [self printEntityFetchResultsNamed:CDE_WEATHER_DATA withCount:[results count] andExpectedCount:journalWeatherCount];
+}
+
+- (NSArray *)fetchEntityNamed:(NSString *)anEntity {
+    NSFetchRequest *fetchRequest = [NSFetchRequest new];
+    [fetchRequest setEntity:[self entityNamed:anEntity]];
+    
+    NSError *e;
+    return [[self managedObjectContext] executeFetchRequest:fetchRequest error:&e];
+}
+
+- (void)printEntityFetchResultsNamed:(NSString *)anEntity withCount:(NSInteger)count andExpectedCount:(NSInteger)expectedCount {
+    NSString *fetched = [NSString stringWithFormat:@"Fetched: %ld", (long)count];
+    fetched = [fetched stringByPaddingToLength:14 withString:@" " startingAtIndex:0];
+    
+    NSString *expected = [NSString stringWithFormat:@"Expected: %ld", (long)expectedCount];
+    expected = [expected stringByPaddingToLength:15 withString:@" " startingAtIndex:0];
+    
+    NSLog(@"    %@%@Entity: %@", fetched, expected, anEntity);
 }
 
 #pragma mark - Core Data Object Initializers
 // These methods are used to make initializing Core Data manged objects easier.
-// The managed objects are NOT added to self.managedObjectContext.
+// The managed objects are added to self.managedObjectContext, so they need to be removed when necessary.
 // Example:
 //   self.bait = [[CMAStorageManager sharedManager] managedBait];
 
@@ -400,46 +478,55 @@
 }
 
 - (CMAJournal *)managedJournal {
-    CMAJournal *result = [[CMAJournal alloc] initWithEntity:[self entityNamed:CDE_JOURNAL] insertIntoManagedObjectContext:nil];
+    CMAJournal *result = [NSEntityDescription insertNewObjectForEntityForName:CDE_JOURNAL inManagedObjectContext:self.managedObjectContext];
     return [result initWithName:@"log_1"];
 }
 
+- (CMAEntry *)managedEntry {
+    CMAEntry *result = [NSEntityDescription insertNewObjectForEntityForName:CDE_ENTRY inManagedObjectContext:self.managedObjectContext];
+    return [result initWithDate:[NSDate date]];
+}
+
 - (CMABait *)managedBait {
-    CMABait *result = [[CMABait alloc] initWithEntity:[self entityNamed:CDE_BAIT] insertIntoManagedObjectContext:nil];
+    CMABait *result = [NSEntityDescription insertNewObjectForEntityForName:CDE_BAIT inManagedObjectContext:self.managedObjectContext];
     return [result initWithName:@"" andUserDefine:[self.sharedJournal userDefineNamed:UDN_BAITS]];
 }
 
 - (CMALocation *)managedLocation {
-    CMALocation *result = [[CMALocation alloc] initWithEntity:[self entityNamed:CDE_LOCATION] insertIntoManagedObjectContext:nil];
+    CMALocation *result = [NSEntityDescription insertNewObjectForEntityForName:CDE_LOCATION inManagedObjectContext:self.managedObjectContext];
     return [result initWithName:@"" andUserDefine:[self.sharedJournal userDefineNamed:UDN_LOCATIONS]];
 }
 
 - (CMAFishingSpot *)managedFishingSpot {
-    CMAFishingSpot *result = [[CMAFishingSpot alloc] initWithEntity:[self entityNamed:CDE_FISHING_SPOT] insertIntoManagedObjectContext:nil];
+    CMAFishingSpot *result = [NSEntityDescription insertNewObjectForEntityForName:CDE_FISHING_SPOT inManagedObjectContext:self.managedObjectContext];
     return [result initWithName:@""];
 }
 
 - (CMASpecies *)managedSpecies {
-    CMASpecies *result = [[CMASpecies alloc] initWithEntity:[self entityNamed:CDE_SPECIES] insertIntoManagedObjectContext:nil];
+    CMASpecies *result = [NSEntityDescription insertNewObjectForEntityForName:CDE_SPECIES inManagedObjectContext:self.managedObjectContext];
     return [result initWithName:@"" andUserDefine:[self.sharedJournal userDefineNamed:UDN_SPECIES]];
 }
 
 - (CMAFishingMethod *)managedFishingMethod {
-    CMAFishingMethod *result = [[CMAFishingMethod alloc] initWithEntity:[self entityNamed:CDE_FISHING_METHOD] insertIntoManagedObjectContext:nil];
+    CMAFishingMethod *result = [NSEntityDescription insertNewObjectForEntityForName:CDE_FISHING_METHOD inManagedObjectContext:self.managedObjectContext];
     return [result initWithName:@"" andUserDefine:[self.sharedJournal userDefineNamed:UDN_FISHING_METHODS]];
 }
 
 - (CMAWaterClarity *)managedWaterClarity {
-    CMAWaterClarity *result = [[CMAWaterClarity alloc] initWithEntity:[self entityNamed:CDE_WATER_CLARITY] insertIntoManagedObjectContext:nil];
+    CMAWaterClarity *result = [NSEntityDescription insertNewObjectForEntityForName:CDE_WATER_CLARITY inManagedObjectContext:self.managedObjectContext];
     return [result initWithName:@"" andUserDefine:[self.sharedJournal userDefineNamed:UDN_WATER_CLARITIES]];
 }
 
 - (CMAUserDefine *)managedUserDefine {
-    return [[CMAUserDefine alloc] initWithEntity:[self entityNamed:CDE_USER_DEFINE] insertIntoManagedObjectContext:nil];
+    return [NSEntityDescription insertNewObjectForEntityForName:CDE_USER_DEFINE inManagedObjectContext:self.managedObjectContext];
 }
 
 - (CMAWeatherData *)managedWeatherData {
-    return [[CMAWeatherData alloc] initWithEntity:[self entityNamed:CDE_USER_DEFINE] insertIntoManagedObjectContext:nil];
+    return [NSEntityDescription insertNewObjectForEntityForName:CDE_WEATHER_DATA inManagedObjectContext:self.managedObjectContext];
+}
+
+- (CMAImage *)managedImage {
+    return [NSEntityDescription insertNewObjectForEntityForName:CDE_IMAGE inManagedObjectContext:self.managedObjectContext];
 }
 
 @end

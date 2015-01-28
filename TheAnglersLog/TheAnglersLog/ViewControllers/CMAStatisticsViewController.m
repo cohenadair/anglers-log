@@ -129,6 +129,7 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     self.navigationController.toolbarHidden = YES;
+    [self setupView];
     
     if (self.journalHasEntries) {
         [self.pieChart reloadData];

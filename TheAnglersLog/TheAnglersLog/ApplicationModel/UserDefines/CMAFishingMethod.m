@@ -10,6 +10,7 @@
 
 @implementation CMAFishingMethod
 
+@dynamic entries;
 @dynamic userDefine;
 
 #pragma mark - Initialization
@@ -45,6 +46,10 @@
 
 - (void)edit:(CMAFishingMethod *)aNewFishingMethod {
     [self setName:[aNewFishingMethod.name capitalizedString]];
+}
+
+- (void)addEntry:(CMAEntry *)anEntry {
+    [self.entries addObject:anEntry];
 }
 
 @end

@@ -20,6 +20,21 @@
     
     //[self iCloudDisableHandler];
     
+    /*
+    NSFetchRequest *fetchRequest = [NSFetchRequest new];
+    [fetchRequest setEntity:[NSEntityDescription entityForName:CDE_IMAGE inManagedObjectContext:[[CMAStorageManager sharedManager] managedObjectContext]]];
+    
+    NSError *e;
+    NSArray *results = [[[CMAStorageManager sharedManager] managedObjectContext] executeFetchRequest:fetchRequest error:&e];
+    
+    for (CMAImage *obj in results)
+        [[[CMAStorageManager sharedManager] managedObjectContext] deleteObject:obj];
+    
+    [[CMAStorageManager sharedManager] saveContext];
+    */
+    
+    [[CMAStorageManager sharedManager] debugCoreDataObjects];
+    
     [self initAppearances];
     
     return YES;

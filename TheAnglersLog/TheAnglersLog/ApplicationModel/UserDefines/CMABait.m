@@ -15,7 +15,7 @@
 @dynamic userDefine;
 
 @dynamic baitDescription;
-@dynamic image;
+@dynamic imageData;
 @dynamic fishCaught;
 @dynamic size;
 @dynamic baitType;
@@ -25,7 +25,7 @@
 - (CMABait *)initWithName:(NSString *)aName andUserDefine:(CMAUserDefine *)aUserDefine {
     self.name = [aName capitalizedString];
     self.baitDescription = nil;
-    self.image = nil;
+    self.imageData = nil;
     self.fishCaught = [NSNumber numberWithInteger:0];
     self.baitType = CMABaitTypeArtificial;
     self.entries = [NSMutableSet set];
@@ -76,22 +76,9 @@
 - (void)edit: (CMABait *)aNewBait {
     [self setName:[aNewBait.name capitalizedString]];
     [self setBaitDescription:aNewBait.baitDescription];
-    [self setImage:aNewBait.image];
+    [self setImageData:aNewBait.imageData];
     [self setSize:[aNewBait.size capitalizedString]];
     [self setBaitType:aNewBait.baitType];
-}
-
-- (CMABait *)copy {
-    CMABait *result = [[CMAStorageManager sharedManager] managedBait];
-    
-    [result setName:self.name];
-    [result setBaitDescription:self.baitDescription];
-    [result setImage:self.image];
-    [result setBaitType:self.baitType];
-    [result setSize:self.size];
-    [result setFishCaught:self.fishCaught];
-    
-    return result;
 }
 
 - (void)incFishCaught: (NSInteger)incBy {
@@ -106,6 +93,10 @@
     count -= decBy;
     
     [self setFishCaught:[NSNumber numberWithInteger:count]];
+}
+
+- (void)addEntry:(CMAEntry *)anEntry {
+    [self.entries addObject:anEntry];
 }
 
 #pragma mark - Other

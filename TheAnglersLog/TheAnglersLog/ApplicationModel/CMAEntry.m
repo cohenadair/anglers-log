@@ -175,11 +175,30 @@
 
 #pragma mark - Editing
 
-- (void)addImage:(NSData *)anImage {
+- (void)edit:(CMAEntry *)aNewEntry {
+    self.date = aNewEntry.date;
+    self.images = aNewEntry.images;
+    self.fishSpecies = aNewEntry.fishSpecies;
+    self.fishLength = aNewEntry.fishLength;
+    self.fishWeight = aNewEntry.fishWeight;
+    self.fishOunces = aNewEntry.fishOunces;
+    self.fishQuantity = aNewEntry.fishQuantity;
+    self.baitUsed = aNewEntry.baitUsed;
+    self.fishingMethods = aNewEntry.fishingMethods;
+    self.location = aNewEntry.location;
+    self.fishingSpot = aNewEntry.fishingSpot;
+    self.weatherData = aNewEntry.weatherData;
+    self.waterTemperature = aNewEntry.waterTemperature;
+    self.waterClarity = aNewEntry.waterClarity;
+    self.waterDepth = aNewEntry.waterDepth;
+    self.notes = aNewEntry.notes;
+}
+
+- (void)addImage:(CMAImage *)anImage {
     [self.images addObject:anImage];
 }
 
-- (void)removeImage:(NSData *)anImage {
+- (void)removeImage:(CMAImage *)anImage {
     [self.images removeObject:anImage];
 }
 

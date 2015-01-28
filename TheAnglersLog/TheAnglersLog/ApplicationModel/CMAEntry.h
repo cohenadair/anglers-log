@@ -13,6 +13,7 @@
 #import "CMABait.h"
 #import "CMAWaterClarity.h"
 #import "CMAWeatherData.h"
+#import "CMAImage.h"
 
 @class CMAJournal;
 
@@ -67,7 +68,8 @@
 - (NSString *)weightAsStringWithMeasurementSystem:(CMAMeasuringSystemType)aMeasurementSystem shorthand:(BOOL)useShorthand;
 
 // editing
-- (void)addImage:(NSData *)anImage;
-- (void)removeImage:(NSData *)anImage;
+- (void)edit:(CMAEntry *)aNewEntry;
+- (void)addImage:(CMAImage *)anImage;
+- (void)removeImage:(CMAImage *)anImage;
 
 @end

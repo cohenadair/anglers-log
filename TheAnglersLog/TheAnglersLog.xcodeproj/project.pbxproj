@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0D23B2711A7713C900E89736 /* TheAnglersLog.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 0D23B26F1A7713C900E89736 /* TheAnglersLog.xcdatamodeld */; };
+		0D23B2741A78102B00E89736 /* CMAImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D23B2731A78102B00E89736 /* CMAImage.m */; };
 		0D5608121A6F0F3000EE0437 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D5608111A6F0F3000EE0437 /* CoreData.framework */; };
 		0D8F838B1A6EC10800AABAEA /* CMAEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D8F836D1A6EC10800AABAEA /* CMAEntry.m */; };
 		0D8F838C1A6EC10800AABAEA /* CMAJournal.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D8F836F1A6EC10800AABAEA /* CMAJournal.m */; };
@@ -136,6 +137,8 @@
 
 /* Begin PBXFileReference section */
 		0D23B2701A7713C900E89736 /* TheAnglersLog.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = TheAnglersLog.xcdatamodel; sourceTree = "<group>"; };
+		0D23B2721A78102B00E89736 /* CMAImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAImage.h; path = ApplicationModel/CMAImage.h; sourceTree = "<group>"; };
+		0D23B2731A78102B00E89736 /* CMAImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAImage.m; path = ApplicationModel/CMAImage.m; sourceTree = "<group>"; };
 		0D5608111A6F0F3000EE0437 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		0D8F836C1A6EC10800AABAEA /* CMAEntry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAEntry.h; path = TheAnglersLog/ApplicationModel/CMAEntry.h; sourceTree = SOURCE_ROOT; };
 		0D8F836D1A6EC10800AABAEA /* CMAEntry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAEntry.m; path = TheAnglersLog/ApplicationModel/CMAEntry.m; sourceTree = SOURCE_ROOT; };
@@ -648,6 +651,8 @@
 				0D8F83731A6EC10800AABAEA /* CMAStorageManager.m */,
 				0D8F83741A6EC10800AABAEA /* CMAWeatherData.h */,
 				0D8F83751A6EC10800AABAEA /* CMAWeatherData.m */,
+				0D23B2721A78102B00E89736 /* CMAImage.h */,
+				0D23B2731A78102B00E89736 /* CMAImage.m */,
 			);
 			name = ApplicationModel;
 			sourceTree = "<group>";
@@ -868,6 +873,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0D23B2741A78102B00E89736 /* CMAImage.m in Sources */,
 				0D8F83931A6EC10800AABAEA /* CMAFishingMethod.m in Sources */,
 				0D8F83DA1A6EC25200AABAEA /* CMASettingsViewController.m in Sources */,
 				0D8F83D81A6EC25200AABAEA /* CMAViewBaitsViewController.m in Sources */,

@@ -20,6 +20,7 @@
 #import "CMAWeatherDataView.h"
 #import "CMAUtilities.h"
 #import "CMAStorageManager.h"
+#import "CMAImage.h"
 
 @interface CMAAddEntryViewController ()
 
@@ -83,7 +84,7 @@
 @property (nonatomic)BOOL hasAttachedImages;
 @property (nonatomic)NSInteger numberOfImages;
 @property (strong, nonatomic)NSIndexPath *deleteImageIndexPath;
-@property (strong, nonatomic)NSArray *entryImages;
+@property (strong, nonatomic)NSMutableArray *entryImages;
 
 @end
 
@@ -199,7 +200,7 @@ NSString *const kNotSelectedString = @"Not Selected";
     [self initializeCellsForEditing];
     
     self.navigationItem.title = @"Edit Entry";
-    self.entryImages = [self.entry.images array];
+    self.entryImages = [[self.entry.images array] mutableCopy];
     self.numberOfImages = [self.entryImages count];
     self.hasAttachedImages = (self.numberOfImages > 0);
     
@@ -254,7 +255,7 @@ NSString *const kNotSelectedString = @"Not Selected";
     }
     
     // fishing methods
-    if (self.entry.fishingMethods)
+    if ([self.entry.fishingMethods count] > 0)
         [self.methodsDetailLabel setText:[self.entry fishingMethodsAsString]];
     
     // location and fishing spot
@@ -398,29 +399,37 @@ NSString *const kNotSelectedString = @"Not Selected";
 
 - (IBAction)clickedDone:(UIBarButtonItem *)sender {
     // add new event to journal
-    CMAEntry *entryToAdd = [CMAEntry new];
+    CMAEntry *entryToAdd = [[CMAStorageManager sharedManager] managedEntry];
     
     if ([self checkUserInputAndSetEntry:entryToAdd]) {
         if (self.isEditingEntry) {
             [[self journal] editEntryDated:[self.entry date] newProperties:entryToAdd];
-            [self setEntry:entryToAdd];
-        } else
+            [[CMAStorageManager sharedManager] deleteManagedObject:entryToAdd];
+        } else {
             if (![[self journal] addEntry:entryToAdd]) {
                 [CMAAlerts errorAlert:@"An entry with that date and time already exists. Please select a new date or edit the existing entry." presentationViewController:self];
+                [[CMAStorageManager sharedManager] deleteManagedObject:entryToAdd];
                 return;
             }
-        
-        if (!self.isEditingEntry)
-            [self setEntry:nil];
+
+            self.entry = nil;
+        }
         
         [[self journal] archive];
         [self performSegueToPreviousView];
-    }
+    } else
+        [[CMAStorageManager sharedManager] deleteManagedObject:entryToAdd];
 }
 
 - (IBAction)clickedCancel:(UIBarButtonItem *)sender {
-    if (!self.isEditingEntry)
+    if (!self.isEditingEntry) {
+        if (self.weatherData) {
+            [[CMAStorageManager sharedManager] deleteManagedObject:self.weatherData];
+            self.weatherData = nil;
+        }
+        
         [self setEntry:nil];
+    }
     
     [self performSegueToPreviousView];
 }
@@ -606,6 +615,15 @@ NSString *const kNotSelectedString = @"Not Selected";
     [anEntry setDate:[self.datePicker date]];
     
     // photos
+    // delete current images from core data as they'll be restored later
+    if (self.entry) {
+        for (int i = 0; i < [self.entry.images count]; i++)
+            if ([self.entryImages objectAtIndex:i])
+                [[CMAStorageManager sharedManager] deleteManagedObject:[self.entryImages objectAtIndex:i]];
+        
+        self.entry.images = [NSMutableOrderedSet orderedSet];
+    }
+    
     if ([self.imageCollection numberOfItemsInSection:0] > 0) {
         for (int i = 0; i < [self.imageCollection numberOfItemsInSection:0]; i++) {
             UICollectionViewCell *cell = [self.imageCollection cellForItemAtIndexPath:[NSIndexPath indexPathForItem:i inSection:0]];
@@ -615,7 +633,9 @@ NSString *const kNotSelectedString = @"Not Selected";
             if (cell.tag == kSavePhotoTag)
                 UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil);
             
-            [anEntry addImage:UIImagePNGRepresentation(image)];
+            CMAImage *img = [[CMAStorageManager sharedManager] managedImage];
+            img.data = UIImagePNGRepresentation(image);
+            img.entry = anEntry;
         }
     } else
         [anEntry setImages:nil];
@@ -623,6 +643,7 @@ NSString *const kNotSelectedString = @"Not Selected";
     // species
     if (![[self.speciesDetailLabel text] isEqualToString:kNotSelectedString]) {
         CMASpecies *species = [[[self journal] userDefineNamed:UDN_SPECIES] objectNamed:[self.speciesDetailLabel text]];
+        [species addEntry:anEntry];
         [anEntry setFishSpecies:species];
     } else {
         [CMAAlerts errorAlert:@"Please select a species." presentationViewController:self];
@@ -654,18 +675,23 @@ NSString *const kNotSelectedString = @"Not Selected";
             [anEntry setFishWeight:[NSNumber numberWithInteger:-1]];
         }
     } else {
-        if (([self.poundsTextField.text isEqualToString:@""] && ![self.ouncesTextField.text isEqualToString:@""]) ||
-            (![self.poundsTextField.text isEqualToString:@""] && [self.ouncesTextField.text isEqualToString:@""]))
-            [CMAAlerts errorAlert:@"You must fill out both the pounds and ounces fields!" presentationViewController:self];
+        NSString *poundsStr = [self.poundsTextField text];
+        NSString *ouncesStr = [self.ouncesTextField text];
         
-        if (![[self.poundsTextField text] isEqualToString:@""]) {
-            NSNumber *pounds = [NSNumber numberWithInteger:[[self.poundsTextField text] integerValue]];
-            NSNumber *ounces = [NSNumber numberWithInteger:[[self.ouncesTextField text] integerValue]];
-            [anEntry setFishWeight:pounds];
-            [anEntry setFishOunces:ounces];
-        } else {
-            [anEntry setFishWeight:[NSNumber numberWithInteger:-1]];
-            [anEntry setFishOunces:[NSNumber numberWithInteger:-1]];
+        // if the user filled one of them out
+        if (!([poundsStr isEqualToString:@""] && [ouncesStr isEqualToString:@""])) {
+            if ([poundsStr isEqualToString:@""]) poundsStr = @"0";
+            if ([ouncesStr isEqualToString:@""]) ouncesStr = @"0";
+            
+            if (![[self.poundsTextField text] isEqualToString:@""]) {
+                NSNumber *pounds = [NSNumber numberWithInteger:[poundsStr integerValue]];
+                NSNumber *ounces = [NSNumber numberWithInteger:[ouncesStr integerValue]];
+                [anEntry setFishWeight:pounds];
+                [anEntry setFishOunces:ounces];
+            } else {
+                [anEntry setFishWeight:[NSNumber numberWithInteger:-1]];
+                [anEntry setFishOunces:[NSNumber numberWithInteger:-1]];
+            }
         }
     }
     
@@ -675,6 +701,9 @@ NSString *const kNotSelectedString = @"Not Selected";
         
         [anEntry setLocation:locationInfo[0]];
         [anEntry setFishingSpot:locationInfo[1]];
+        
+        [anEntry.location addEntry:anEntry];
+        [anEntry.fishingSpot addEntry:anEntry];
     } else {
         [anEntry setLocation:nil];
         [anEntry setFishingSpot:nil];
@@ -683,6 +712,7 @@ NSString *const kNotSelectedString = @"Not Selected";
     // bait used
     if (![[self.baitUsedDetailLabel text] isEqualToString:kNotSelectedString]) {
         CMABait *bait = [[[self journal] userDefineNamed:UDN_BAITS] objectNamed:[self.baitUsedDetailLabel text]];
+        [bait addEntry:anEntry];
         [anEntry setBaitUsed:bait];
     } else {
         [anEntry setBaitUsed:nil];
@@ -690,15 +720,20 @@ NSString *const kNotSelectedString = @"Not Selected";
     
     // fishing methods
     if (![[self.methodsDetailLabel text] isEqualToString:kNotSelectedString]) {
-        [anEntry setFishingMethods:[self parseMethodsDetailText]];
+        NSMutableSet *methods = [self parseMethodsDetailText];
+        for (CMAFishingMethod *m in methods)
+            [m addEntry:anEntry];
+        
+        [anEntry setFishingMethods:methods];
     } else {
         [anEntry setFishingMethods:nil];
     }
     
     // weather conditions
-    if (self.isWeatherInitialized)
-        [anEntry setWeatherData:[self weatherData]];
-    else
+    if (self.isWeatherInitialized) {
+        [anEntry setWeatherData:self.weatherData];
+        [anEntry.weatherData setEntry:anEntry];
+    } else
         [anEntry setWeatherData:nil];
     
     // water temperature
@@ -712,6 +747,7 @@ NSString *const kNotSelectedString = @"Not Selected";
     // water clarity
     if (![[self.waterClarityLabel text] isEqualToString:kNotSelectedString]) {
         CMAWaterClarity *waterClarity = [[[self journal] userDefineNamed:UDN_WATER_CLARITIES] objectNamed:[self.waterClarityLabel text]];
+        [waterClarity addEntry:anEntry];
         [anEntry setWaterClarity:waterClarity];
     } else {
         [anEntry setWaterClarity:nil];
@@ -750,8 +786,12 @@ NSString *const kNotSelectedString = @"Not Selected";
     NSMutableSet *result = [NSMutableSet set];
     NSArray *fishingMethodStrings = [[self.methodsDetailLabel text] componentsSeparatedByString:TOKEN_FISHING_METHODS];
     
-    for (NSString *str in fishingMethodStrings)
-        [result addObject:[[[self journal] userDefineNamed:UDN_FISHING_METHODS] objectNamed:str]];
+    for (NSString *str in fishingMethodStrings) {
+        id obj = [[[self journal] userDefineNamed:UDN_FISHING_METHODS] objectNamed:str];
+        
+        if (obj)
+            [result addObject:obj];
+    }
     
     return result;
 }
@@ -790,7 +830,8 @@ NSString *const kNotSelectedString = @"Not Selected";
     
     if ([self.entryImages count] > 0) {
         UIImageView *imageView = (UIImageView *)[cell viewWithTag:kImageViewTag];
-        [imageView setImage:[UIImage imageWithData:[self.entryImages objectAtIndex:indexPath.item]]];
+        CMAImage *img = [self.entryImages objectAtIndex:indexPath.item];
+        [imageView setImage:[img dataAsUIImage]];
     }
         
     return cell;
@@ -820,6 +861,13 @@ NSString *const kNotSelectedString = @"Not Selected";
 
 - (void)deleteImageFromCollectionAtIndexPath:(NSIndexPath *)anIndexPath {
     self.numberOfImages--;
+    
+    // delete image from core data if it's a core data obejct
+    CMAImage *img = [self.entryImages objectAtIndex:anIndexPath.item];
+    if (img) {
+        [self.entryImages removeObject:img];
+        [[CMAStorageManager sharedManager] deleteManagedObject:img];
+    }
     
     [self.imageCollection deleteItemsAtIndexPaths:@[anIndexPath]];
     
@@ -898,6 +946,7 @@ NSString *const kNotSelectedString = @"Not Selected";
             NSLog(@"Error getting weather data: %@", error.localizedDescription);
             [CMAAlerts errorAlert:@"There was an error getting weather data. Please try again later." presentationViewController:self];
             [self.weatherIndicator setHidden:YES];
+            [[CMAStorageManager sharedManager] deleteManagedObject:self.weatherData];
             [self setWeatherData:nil];
             return;
         }

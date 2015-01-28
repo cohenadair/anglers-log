@@ -10,7 +10,7 @@
 #import "CMAUserDefineProtocol.h"
 #import "CMAUserDefineObject.h"
 
-@class CMAUserDefine;
+@class CMAUserDefine, CMAEntry;
 
 @interface CMASpecies : CMAUserDefineObject </*NSCoding, */CMAUserDefineProtocol>
 
@@ -37,6 +37,7 @@
 - (void)decWeightCaught: (NSInteger)decBy;
 - (void)incOuncesCaught: (NSInteger)incBy;
 - (void)decOuncesCaught: (NSInteger)decBy;
+- (void)addEntry:(CMAEntry *)anEntry;
 
 // other
 - (BOOL)removedFromUserDefines;

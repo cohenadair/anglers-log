@@ -11,7 +11,7 @@
 #import "CMAUserDefineProtocol.h"
 #import "CMAUserDefineObject.h"
 
-@class CMALocation;
+@class CMALocation, CMAEntry;
 
 @interface CMAFishingSpot : CMAUserDefineObject </*NSCoding, */CMAUserDefineProtocol>
 
@@ -33,6 +33,7 @@
 - (void)edit: (CMAFishingSpot *)aNewFishingSpot;
 - (void)incFishCaught: (NSInteger)incBy;
 - (void)decFishCaught: (NSInteger)decBy;
+- (void)addEntry:(CMAEntry *)anEntry;
 
 // accessing
 - (CLLocationCoordinate2D)coordinate;

@@ -97,14 +97,14 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
+    [self setupView];
+    
     [self.deleteButton setEnabled:([self.userDefineBaits count] > 0)];
     [self.navigationController setToolbarHidden:NO];
     [self.navigationController.toolbar setUserInteractionEnabled:YES];
     
     if (self.isSelectingForStatistics)
         self.navigationController.toolbarHidden = YES;
-    
-    [self setupView];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -130,8 +130,8 @@
     
     CMABait *bait = [self.userDefineBaits objectAtIndex:indexPath.row];
     
-    if (bait.image)
-        [cell.thumbImage setImage:[UIImage imageWithData:bait.image]];
+    if (bait.imageData)
+        [cell.thumbImage setImage:[bait.imageData dataAsUIImage]];
     else
         [cell.thumbImage setImage:[UIImage imageNamed:@"no_image.png"]];
     

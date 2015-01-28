@@ -10,10 +10,11 @@
 #import "CMAUserDefineProtocol.h"
 #import "CMAUserDefineObject.h"
 
-@class CMAUserDefine;
+@class CMAUserDefine, CMAEntry;
 
 @interface CMAFishingMethod : CMAUserDefineObject </*NSCoding, */CMAUserDefineProtocol>
 
+@property (strong, nonatomic)NSMutableSet *entries;
 @property (strong, nonatomic)CMAUserDefine *userDefine;
 
 // initialization
@@ -26,5 +27,6 @@
 
 // editing
 - (void)edit: (CMAFishingMethod *)aNewFishingMethod;
+- (void)addEntry:(CMAEntry *)anEntry;
 
 @end

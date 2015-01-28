@@ -107,6 +107,10 @@
     [self setOuncesCaught:[NSNumber numberWithInteger:count]];
 }
 
+- (void)addEntry:(CMAEntry *)anEntry {
+    [self.entries addObject:anEntry];
+}
+
 #pragma mark - Other
 
 // other

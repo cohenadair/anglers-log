@@ -193,7 +193,7 @@
         cell.locationLabel.text = @"No Location";
     
     if ([entry.images count] > 0)
-        cell.thumbImage.image = [entry.images objectAtIndex:0];
+        cell.thumbImage.image = [[entry.images objectAtIndex:0] dataAsUIImage];
     else
         cell.thumbImage.image = [UIImage imageNamed:@"no_image.png"];
     

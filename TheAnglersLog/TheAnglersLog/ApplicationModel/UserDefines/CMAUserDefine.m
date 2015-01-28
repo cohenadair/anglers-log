@@ -29,7 +29,7 @@
 - (CMAUserDefine *)initWithName:(NSString *)aName andJournal:(CMAJournal *)aJournal {
     self.name = aName;
     self.journal = aJournal;
-    
+    /*
     if ([aName isEqualToString:UDN_BAITS])
         self.baits = [NSMutableOrderedSet orderedSet];
     else if ([aName isEqualToString:UDN_FISHING_METHODS])
@@ -40,7 +40,7 @@
         self.species = [NSMutableOrderedSet orderedSet];
     else if ([aName isEqualToString:UDN_WATER_CLARITIES])
         self.waterClarities = [NSMutableOrderedSet orderedSet];
-    
+    */
     return self;
 }
 
@@ -71,10 +71,8 @@
 
 // Does nothing if an object with the same name already exists in self.objects.
 - (BOOL)addObject:(id)anObject {
-    if ([self objectNamed:[anObject name]] != nil) {
-        NSLog(@"Duplicate object name.");
+    if (anObject == nil)
         return NO;
-    }
     
     [[self activeSet] addObject:anObject];
     [self sortByNameProperty];
@@ -93,31 +91,31 @@
 #pragma mark - Accessing
 
 - (NSMutableOrderedSet *)activeSet {
-    if (self.baits)
+    if ([self.name isEqualToString:UDN_BAITS])
         return self.baits;
-    else if (self.fishingMethods)
+    else if ([self.name isEqualToString:UDN_FISHING_METHODS])
         return self.fishingMethods;
-    else if (self.locations)
+    else if ([self.name isEqualToString:UDN_LOCATIONS])
         return self.locations;
-    else if (self.species)
+    else if ([self.name isEqualToString:UDN_SPECIES])
         return self.species;
-    else if (self.waterClarities)
+    else if ([self.name isEqualToString:UDN_WATER_CLARITIES])
         return self.waterClarities;
     
-    NSLog(@"All user defines are NULL!");
+    NSLog(@"Invalid user define name!");
     return nil;
 }
 
 - (void)setActiveSet:(NSMutableOrderedSet *)aMutableOrderedSet {
-    if (self.baits)
+    if ([self.name isEqualToString:UDN_BAITS])
         self.baits = aMutableOrderedSet;
-    else if (self.fishingMethods)
+    else if ([self.name isEqualToString:UDN_FISHING_METHODS])
         self.fishingMethods = aMutableOrderedSet;
-    else if (self.locations)
+    else if ([self.name isEqualToString:UDN_LOCATIONS])
         self.locations = aMutableOrderedSet;
-    else if (self.species)
+    else if ([self.name isEqualToString:UDN_SPECIES])
         self.species = aMutableOrderedSet;
-    else if (self.waterClarities)
+    else if ([self.name isEqualToString:UDN_WATER_CLARITIES])
         self.waterClarities = aMutableOrderedSet;
 }
 
@@ -127,7 +125,7 @@
 
 - (id)objectNamed:(NSString *)aName {
     for (id obj in [self activeSet])
-        if ([[obj name] isEqualToString:aName])
+        if ([[obj name] isEqualToString:[aName capitalizedString]])
             return obj;
     
     return nil;
@@ -146,6 +144,11 @@
 
 // Returns an object of correct type with the name property set to aName.
 - (id)emptyObjectNamed:(NSString *)aName {
+    if ([self objectNamed:aName] != nil) {
+        NSLog(@"Duplicate object name.");
+        return nil;
+    }
+    
     CMAStorageManager *manager = [CMAStorageManager sharedManager];
     
     if ([self.name isEqualToString:UDN_SPECIES])

@@ -70,7 +70,7 @@
     [self.userDefines addObject:[define initWithName:aName andJournal:self]];
     
     // add to core data
-    [[CMAStorageManager sharedManager] insertManagedObject:define];
+    //[[CMAStorageManager sharedManager] insertManagedObject:define];
 }
 
 // Used for compatibility purposes if the class of a property changes.
@@ -158,11 +158,9 @@
     }
     
     [self incStatsForEntry:anEntry];
-    [self.entries addObject:anEntry];
+    //[self.entries addObject:anEntry];
+    [anEntry setJournal:self];
     [self sortEntriesBy:self.entrySortMethod order:self.entrySortOrder];
-    
-    // add to core data
-    [[CMAStorageManager sharedManager] insertManagedObject:anEntry];
     
     return YES;
 }
@@ -170,33 +168,34 @@
 - (void)removeEntryDated: (NSDate *)aDate {
     CMAEntry *entry = [self entryDated:aDate];
     
-    [self decStatsForEntry:entry];
-    [self.entries removeObject:entry];
-    
     // remove from core data
     [[CMAStorageManager sharedManager] deleteManagedObject:entry];
+    
+    [self decStatsForEntry:entry];
+    [self.entries removeObject:entry];
 }
 
 // removes entry with aDate and adds aNewEntry
 // no need to keep the same instance since the reference doesn't need to be kept track of
 - (void)editEntryDated: (NSDate *)aDate newProperties: (CMAEntry *)aNewEntry {
-    [self removeEntryDated:aDate];
-    [self addEntry:aNewEntry];
+    [[self entryDated:aDate] edit:aNewEntry];
 }
 
-- (void)addUserDefine: (NSString *)aDefineName objectToAdd: (id)anObject {
-    [[self userDefineNamed:aDefineName] addObject:anObject];
-    
-    // add to core data
-    [[CMAStorageManager sharedManager] insertManagedObject:anObject];
+- (BOOL)addUserDefine: (NSString *)aDefineName objectToAdd: (id)anObject {
+    return [[self userDefineNamed:aDefineName] addObject:anObject];
 }
 
 - (void)removeUserDefine: (NSString *)aDefineName objectNamed: (NSString *)anObjectName {
-    [[self userDefineNamed:aDefineName] removeObjectNamed:anObjectName];
-    [self removeUserDefineFromEntries:aDefineName objectNamed:anObjectName];
+    id obj = [[self userDefineNamed:aDefineName] objectNamed:anObjectName];
     
     // remove from core data
-    [[CMAStorageManager sharedManager] deleteManagedObject:[[self userDefineNamed:aDefineName] objectNamed:anObjectName]];
+    if ([aDefineName isEqualToString:UDN_BAITS] && [obj imageData])
+        [[CMAStorageManager sharedManager] deleteManagedObject:[obj imageData]];
+    
+    [[CMAStorageManager sharedManager] deleteManagedObject:obj];
+    
+    [[self userDefineNamed:aDefineName] removeObjectNamed:anObjectName];
+    [self removeUserDefineFromEntries:aDefineName objectNamed:anObjectName];
 }
 
 // Helper method called when a user defined is deleted by the user.
@@ -435,43 +434,45 @@
     self.entrySortOrder = aSortOrder;
     self.entrySortMethod = aSortMethod;
     
+    NSArray *sortedArray = nil;
+    
     switch (self.entrySortMethod) {
         case CMAEntrySortMethodDate:
-            self.entries = [[self.entries sortedArrayUsingComparator:^NSComparisonResult(CMAEntry *e1, CMAEntry *e2){
+            sortedArray = [self.entries sortedArrayUsingComparator:^NSComparisonResult(CMAEntry *e1, CMAEntry *e2){
                 return [e1.date compare:e2.date];
-            }] mutableCopy];
+            }];
             break;
             
         case CMAEntrySortMethodSpecies:
-            self.entries = [[self.entries sortedArrayUsingComparator:^NSComparisonResult(CMAEntry *e1, CMAEntry *e2){
+            sortedArray = [self.entries sortedArrayUsingComparator:^NSComparisonResult(CMAEntry *e1, CMAEntry *e2){
                 return [e1.fishSpecies.name compare:e2.fishSpecies.name];
-            }] mutableCopy];
+            }];
             break;
         
         case CMAEntrySortMethodLocation:
-            self.entries = [[self.entries sortedArrayUsingComparator:^NSComparisonResult(CMAEntry *e1, CMAEntry *e2){
+            sortedArray = [self.entries sortedArrayUsingComparator:^NSComparisonResult(CMAEntry *e1, CMAEntry *e2){
                 NSString *fullLoc1 = [NSString stringWithFormat:@"%@%@%@", e1.location.name, TOKEN_LOCATION, e1.fishingSpot.name];
                 NSString *fullLoc2 = [NSString stringWithFormat:@"%@%@%@", e2.location.name, TOKEN_LOCATION, e2.fishingSpot.name];
                 return [fullLoc1 compare:fullLoc2];
-            }] mutableCopy];
+            }];
             break;
         
         case CMAEntrySortMethodLength:
-            self.entries = [[self.entries sortedArrayUsingComparator:^NSComparisonResult(CMAEntry *e1, CMAEntry *e2){
+            sortedArray = [self.entries sortedArrayUsingComparator:^NSComparisonResult(CMAEntry *e1, CMAEntry *e2){
                 return [e1.fishLength compare:e2.fishLength];
-            }] mutableCopy];
+            }];
             break;
         
         case CMAEntrySortMethodWeight:
-            self.entries = [[self.entries sortedArrayUsingComparator:^NSComparisonResult(CMAEntry *e1, CMAEntry *e2){
+            sortedArray = [self.entries sortedArrayUsingComparator:^NSComparisonResult(CMAEntry *e1, CMAEntry *e2){
                 return [e1.fishWeight compare:e2.fishWeight];
-            }] mutableCopy];
+            }];
             break;
         
         case CMAEntrySortMethodBaitUsed:
-            self.entries = [[self.entries sortedArrayUsingComparator:^NSComparisonResult(CMAEntry *e1, CMAEntry *e2){
+            sortedArray = [self.entries sortedArrayUsingComparator:^NSComparisonResult(CMAEntry *e1, CMAEntry *e2){
                 return [e1.baitUsed.name compare:e2.baitUsed.name];
-            }] mutableCopy];
+            }];
             break;
             
         default:
@@ -479,9 +480,13 @@
             break;
     }
     
+    if (sortedArray)
+        self.entries = [NSMutableOrderedSet orderedSetWithArray:sortedArray];
+    
     // reverse the array order if needed
-    if (self.entrySortOrder == CMASortOrderDescending)
-       self.entries = [[[self.entries reverseObjectEnumerator] allObjects] mutableCopy];
+    if (self.entrySortOrder == CMASortOrderDescending) {
+        self.entries = [[self.entries reversedOrderedSet] mutableCopy];
+    }
 }
 
 @end

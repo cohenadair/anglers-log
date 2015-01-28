@@ -13,7 +13,7 @@
 #import "CMAUserDefineProtocol.h"
 #import "CMAUserDefineObject.h"
 
-@class CMAUserDefine;
+@class CMAUserDefine, CMAEntry;
 
 @interface CMALocation : CMAUserDefineObject </*NSCoding, */CMAUserDefineProtocol>
 
@@ -34,13 +34,13 @@
 - (BOOL)addFishingSpot: (CMAFishingSpot *)aFishingSpot;
 - (void)removeFishingSpotNamed: (NSString *)aName;
 - (void)editFishingSpotNamed: (NSString *)aName newProperties: (CMAFishingSpot *)aNewFishingSpot;
-- (void)edit: (CMALocation *)aNewLocation;
+- (void)edit:(CMALocation *)aNewLocation;
+- (void)addEntry:(CMAEntry *)anEntry;
 
 // accessing
 - (NSInteger)fishingSpotCount;
 - (CMAFishingSpot *)fishingSpotNamed: (NSString *)aName;
 - (MKCoordinateRegion)mapRegion;
-- (CMALocation *)copy;
 
 // sorting
 - (void)sortFishingSpotsByName;

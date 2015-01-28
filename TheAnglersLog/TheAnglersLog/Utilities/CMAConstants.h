@@ -71,6 +71,7 @@ extern NSString *const CDE_FISHING_METHOD;
 extern NSString *const CDE_WATER_CLARITY;
 extern NSString *const CDE_WEATHER_DATA;
 extern NSString *const CDE_FISHING_SPOT;
+extern NSString *const CDE_IMAGE;
 
 extern NSString *const APP_NAME;
 

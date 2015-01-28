@@ -35,7 +35,7 @@
 - (void)removeEntryDated: (NSDate *)aDate;
 - (void)editEntryDated: (NSDate *)aDate newProperties: (CMAEntry *)aNewEntry;
 
-- (void)addUserDefine: (NSString *)aDefineName objectToAdd: (id)anObject;
+- (BOOL)addUserDefine: (NSString *)aDefineName objectToAdd: (id)anObject;
 - (void)removeUserDefine: (NSString *)aDefineName objectNamed: (NSString *)anObjectName;
 - (void)editUserDefine: (NSString *)aDefineName objectNamed: (id)aName newProperties: (id)aNewObject;
 

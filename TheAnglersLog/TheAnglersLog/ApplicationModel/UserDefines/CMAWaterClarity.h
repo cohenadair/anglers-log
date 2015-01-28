@@ -10,7 +10,7 @@
 #import "CMAUserDefineProtocol.h"
 #import "CMAUserDefineObject.h"
 
-@class CMAUserDefine;
+@class CMAUserDefine, CMAEntry;
 
 @interface CMAWaterClarity : CMAUserDefineObject </*NSCoding, */CMAUserDefineProtocol>
 
@@ -27,5 +27,6 @@
 
 // editing
 - (void)edit:(CMAWaterClarity *)aNewWaterClarity;
+- (void)addEntry:(CMAEntry *)anEntry;
 
 @end

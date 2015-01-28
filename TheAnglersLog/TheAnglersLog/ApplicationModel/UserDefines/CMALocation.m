@@ -74,14 +74,14 @@
     [self.fishingSpots addObject:aFishingSpot];
     [self sortFishingSpotsByName];
     
-    // insert to core data
-    [[CMAStorageManager sharedManager] insertManagedObject:aFishingSpot];
-    
     return YES;
 }
 
 - (void)removeFishingSpotNamed: (NSString *)aName {
     CMAFishingSpot *spot = [self fishingSpotNamed:aName];
+    
+    // remove from core data
+    [[CMAStorageManager sharedManager] deleteManagedObject:spot];
     
     [self.fishingSpots removeObject:spot];
     
@@ -91,9 +91,6 @@
             entry.fishingSpot = nil;
             entry.fishingSpot = [entry.fishingSpot initWithName:REMOVED_TEXT];
         }
-    
-    // remove from core data
-    [[CMAStorageManager sharedManager] deleteManagedObject:spot];
 }
 
 - (void)editFishingSpotNamed: (NSString *)aName newProperties: (CMAFishingSpot *)aNewFishingSpot; {
@@ -101,10 +98,13 @@
 }
 
 // updates self's properties with aNewLocation's properties
-- (void)edit: (CMALocation *)aNewLocation {
+- (void)edit:(CMALocation *)aNewLocation {
     [self setName:[aNewLocation.name capitalizedString]];
-    
-    // no need to mess with fishing spots since there are separate methods for that
+    [self setFishingSpots:aNewLocation.fishingSpots];
+}
+
+- (void)addEntry:(CMAEntry *)anEntry {
+    [self.entries addObject:anEntry];
 }
 
 #pragma mark - Accessing
@@ -116,7 +116,7 @@
 // returns nil if a fishing spot with aName does not exist, otherwise returns a pointer to the existing fishing spot
 - (CMAFishingSpot *)fishingSpotNamed: (NSString *)aName {
     for (CMAFishingSpot *spot in self.fishingSpots)
-        if ([spot.name isEqualToString:aName])
+        if ([spot.name isEqualToString:[aName capitalizedString]])
             return spot;
     
     return nil;
@@ -165,23 +165,14 @@
     return result;
 }
 
-- (CMALocation *)copy {
-    CMALocation *result = [[CMAStorageManager sharedManager] managedLocation];
-    
-    [result setName:self.name];
-    
-    for (CMAFishingSpot *f in self.fishingSpots)
-        [result addFishingSpot:f];
-    
-    return result;
-}
-
 #pragma mark - Sorting
 
 - (void)sortFishingSpotsByName {
-    self.fishingSpots = [[self.fishingSpots sortedArrayUsingComparator:^NSComparisonResult(CMAFishingSpot *s1, CMAFishingSpot *s2){
+    NSArray *sortedArray = [self.fishingSpots sortedArrayUsingComparator:^NSComparisonResult(CMAFishingSpot *s1, CMAFishingSpot *s2){
         return [s1.name compare:s2.name];
-    }] mutableCopy];
+    }];
+    
+    self.fishingSpots = [NSMutableOrderedSet orderedSetWithArray:sortedArray];
 }
 
 #pragma mark - Other

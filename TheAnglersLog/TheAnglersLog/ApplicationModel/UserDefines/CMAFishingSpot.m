@@ -80,6 +80,10 @@
     [self setFishCaught:[NSNumber numberWithInteger:count]];
 }
 
+- (void)addEntry:(CMAEntry *)anEntry {
+    [self.entries addObject:anEntry];
+}
+
 #pragma mark - Accessing
 
 // returns the coordinates of the location

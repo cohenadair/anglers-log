@@ -14,6 +14,7 @@
 #import "CMANoXView.h"
 #import "SWRevealViewController.h"
 #import "CMAStorageManager.h"
+#import "CMAAlerts.h"
 
 @interface CMAUserDefinesViewController ()
 
@@ -372,9 +373,15 @@
                                             return;
                                         
                                         [[[self.addItemAlert textFields] objectAtIndex:0] setText:@""];
-                                        
-                                        [self.userDefine addObject:[self.userDefine emptyObjectNamed:enteredText]];
-                                        
+                                   
+                                        id objectToAdd = [self.userDefine emptyObjectNamed:enteredText];
+                                   
+                                        if (![[self journal] addUserDefine:self.userDefine.name objectToAdd:objectToAdd]) {
+                                            [CMAAlerts errorAlert:@"An item that name already exists. Please select a new item or edit the existing item." presentationViewController:self];
+                                            [[CMAStorageManager sharedManager] deleteManagedObject:objectToAdd];
+                                            return;
+                                        }
+                                   
                                         [[self journal] archive];
                                         [self.tableView reloadData];
                                         
@@ -406,7 +413,7 @@
                                          
                                         id newProperties = [self.userDefine emptyObjectNamed:[[[self.editItemAlert textFields] objectAtIndex:0] text]];
                                         [[self journal] editUserDefine:[self.userDefine name] objectNamed:self.selectedCellLabelText newProperties:newProperties];
-                                        [[self journal] archive];
+                                        [[CMAStorageManager sharedManager] deleteManagedObject:newProperties];
                                          
                                         [self.tableView reloadData];
                                }];
@@ -460,8 +467,6 @@
         [[[self.addItemAlert textFields] objectAtIndex:0] setText:@""];
         [self presentViewController:self.addItemAlert animated:YES completion:nil];
     }
-    
-    [[self journal] archive];
 }
 
 // Enter editing mode.

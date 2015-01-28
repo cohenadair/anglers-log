@@ -18,8 +18,9 @@
 @property (weak, nonatomic)IBOutlet UIBarButtonItem *cancelButton;
 
 @property (weak, nonatomic)UITextField *locationNameTextField;
+
+@property (strong, nonatomic)NSMutableOrderedSet *addedFishingSpots;
 @property (nonatomic)BOOL isEditingLocation;
-@property (strong, nonatomic)CMALocation *nonEditedLocation;
 
 @end
 
@@ -45,12 +46,13 @@ NSInteger const SECTION_ADD = 2;
     
     self.isEditingLocation = (self.previousViewID == CMAViewControllerIDSingleLocation || self.previousViewID == CMAViewControllerIDSelectFishingSpot);
     
-    if (!self.isEditingLocation)
-        self.location = [[CMAStorageManager sharedManager] managedLocation];
-    else {
+    if (self.isEditingLocation) {
         self.navigationItem.title = @"Edit Location";
-        self.nonEditedLocation = [self.location copy];
+    } else {
+        self.location = [[CMAStorageManager sharedManager] managedLocation];
     }
+    
+    self.addedFishingSpots = [NSMutableOrderedSet orderedSet];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -108,7 +110,7 @@ NSInteger const SECTION_ADD = 2;
     
     if (indexPath.section == SECTION_FISHING_SPOTS) {
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"fishingSpotCell" forIndexPath:indexPath];
-        
+
         CMAFishingSpot *fishingSpot = [self.location.fishingSpots objectAtIndex:indexPath.item];
         NSString *coordinateText = [NSString stringWithFormat:@"Lat: %f, Long: %f", fishingSpot.location.coordinate.latitude, fishingSpot.location.coordinate.longitude];
         
@@ -145,6 +147,20 @@ NSInteger const SECTION_ADD = 2;
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         // delete from data source
         UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+        
+        NSLog(@"addedFishingSpots: %ld before delete.", (long)[self.addedFishingSpots count]);
+        
+        // remove fishing spot from addedFishingSpots if needed
+        id obj;
+        for (CMAFishingSpot *s in self.addedFishingSpots)
+            if ([s.name isEqualToString:[cell.textLabel.text capitalizedString]]) {
+                obj = s;
+                break;
+            }
+        
+        [self.addedFishingSpots removeObject:obj];
+        NSLog(@"addedFishingSpots: %ld after delete.", (long)[self.addedFishingSpots count]);
+        
         [self.location removeFishingSpotNamed:cell.textLabel.text];
         
         // delete from table
@@ -154,7 +170,7 @@ NSInteger const SECTION_ADD = 2;
 
 #pragma mark - Location Creation
 
-- (BOOL)checkUserInputAndSetLocation: (CMALocation *)aLocation {
+- (BOOL)checkUserInputAndSetLocation:(CMALocation *)aLocation {
     // validate fishing spot name
     if ([self.locationNameTextField.text isEqualToString:@""]) {
         [CMAAlerts errorAlert:@"Please enter a location name." presentationViewController:self];
@@ -189,24 +205,39 @@ NSInteger const SECTION_ADD = 2;
     if ([self checkUserInputAndSetLocation:locationToAdd]) {
         if (self.isEditingLocation) {
             [[self journal] editUserDefine:UDN_LOCATIONS objectNamed:self.location.name newProperties:locationToAdd];
-            [self setLocation:locationToAdd];
-        } else
-            [[self journal] addUserDefine:UDN_LOCATIONS objectToAdd:locationToAdd];
+            [[CMAStorageManager sharedManager] deleteManagedObject:locationToAdd];
+        } else {
+            if (![[self journal] addUserDefine:UDN_LOCATIONS objectToAdd:locationToAdd]) {
+                [CMAAlerts errorAlert:@"A location with that name already exists. Please select a new name or edit the existing location." presentationViewController:self];
+                [[CMAStorageManager sharedManager] deleteManagedObject:locationToAdd];
+                return;
+            }
         
-        if (!self.isEditingLocation)
-            [self setLocation:nil];
+            [[CMAStorageManager sharedManager] deleteManagedObject:self.location];
+            self.location = nil;
+        }
         
-        [[self journal] archive];
         [self performSegueToPreviousView];
-    }
+    } else
+        [[CMAStorageManager sharedManager] deleteManagedObject:locationToAdd];
 }
 
 - (IBAction)clickedCancel:(id)sender {
-    self.location = self.nonEditedLocation;
-    self.nonEditedLocation = nil;
+    // clean up core data
+    if (!self.isEditingLocation) {
+        [[CMAStorageManager sharedManager] deleteManagedObject:self.location];
+        self.location = nil;
+    }
     
-    if (!self.isEditingLocation)
-        [self setLocation:nil];
+    // remove all added fishing spots
+    for (CMAFishingSpot *s in self.addedFishingSpots) {
+        if (self.isEditingLocation)
+            [self.location removeFishingSpotNamed:s.name]; // removeFishingSpot deletes core data
+        else
+            [[CMAStorageManager sharedManager] deleteManagedObject:s];
+    }
+    
+    self.addedFishingSpots = nil;
     
     [self performSegueToPreviousView];
 }
@@ -251,8 +282,12 @@ NSInteger const SECTION_ADD = 2;
     if ([segue.identifier isEqualToString:@"unwindToAddLocationFromAddFishingSpot"]) {
         CMAAddFishingSpotViewController *source = [segue sourceViewController];
         
-        if (!source.isEditingFishingSpot)
-            [self.location addFishingSpot:source.fishingSpot];
+        if (source.fishingSpot) {
+            // making this connection automatically adds source.fishingSpot to self.location
+            source.fishingSpot.myLocation = self.location;
+            
+            [self.addedFishingSpots addObject:source.fishingSpot];
+        }
         
         source.fishingSpot = nil;
         source.locationFromAddLocation = nil;

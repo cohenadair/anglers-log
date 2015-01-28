@@ -29,8 +29,9 @@
 @property (strong, nonatomic) CMACameraActionSheet *cameraActionSheet;
 @property (strong, nonatomic) CMARemoveImageActionSheet *removeImageActionSheet;
 
+@property (strong, nonatomic) CMAImage *imageData;
+
 @property (nonatomic) BOOL isEditingBait;
-@property (strong, nonatomic) CMABait *nonEditedBait;
 
 @end
 
@@ -52,12 +53,11 @@
     
     self.isEditingBait = self.previousViewID == CMAViewControllerIDSingleBait;
     
-    if (!self.isEditingBait) {
-        self.bait = [[CMAStorageManager sharedManager] managedBait];
-    } else {
+    if (self.isEditingBait) {
         self.navigationItem.title = @"Edit Bait";
-        self.nonEditedBait = self.bait;
-        self.bait = [self.nonEditedBait copy];
+        self.imageData = self.bait.imageData;
+    } else {
+        self.bait = [[CMAStorageManager sharedManager] managedBait];
     }
     
     [self initTableView];
@@ -84,7 +84,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == 1 && indexPath.row == 0)
-        if (self.bait && self.bait.image)
+        if (self.imageData)
             return PHOTO_ROW_HEIGHT;
     
     if (indexPath.section == 0 && indexPath.row == 3)
@@ -116,8 +116,8 @@
     }
     
     // photo
-    if (self.bait.image)
-        [self.imageView setImage:[UIImage imageWithData:self.bait.image]];
+    if (self.imageData)
+        [self.imageView setImage:[self.imageData dataAsUIImage]];
 
     [self.cameraImageButton myInit:self action:@selector(tapCameraButton)];
 }
@@ -149,11 +149,17 @@
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
     UIImage *chosenImage = info[UIImagePickerControllerEditedImage];
     
-    [self.bait setImage:UIImagePNGRepresentation(chosenImage)];
-    [self.tableView reloadData];
-    [self.bait setName:self.nameTextField.text];
-    [self.bait setBaitDescription:self.descriptionTextView.text];
-    [self initTableView];
+    // remove old image if there was one
+    if (self.imageData)
+        [[CMAStorageManager sharedManager] deleteManagedObject:self.imageData];
+    
+    CMAImage *img = [[CMAStorageManager sharedManager] managedImage];
+    [img setDataFromUIImage:chosenImage];
+    [self setImageData:img];
+    
+    [self.imageView setImage:chosenImage];
+    [self.tableView beginUpdates];
+    [self.tableView endUpdates];
     
     [picker dismissViewControllerAnimated:YES completion:NULL];
 }
@@ -193,7 +199,7 @@
                                              preferredStyle:UIAlertControllerStyleActionSheet];
     
     self.removeImageActionSheet.deleteActionBlock = ^void(UIAlertAction *action) {
-        weakSelf.bait.image = nil;
+        weakSelf.bait.imageData = nil;
         
         // Why CATransaction is used: http://stackoverflow.com/questions/7623771/how-to-detect-that-animation-has-ended-on-uitableview-beginupdates-endupdates
         [CATransaction begin];
@@ -249,10 +255,10 @@
         [aBait setBaitDescription:self.descriptionTextView.text];
     
     // photo
-    if (self.imageView)
-        [aBait setImage:UIImagePNGRepresentation(self.imageView.image)];
+    if (self.imageData)
+        [aBait setImageData:self.imageData];
     else
-        [aBait setImage:nil];
+        [aBait setImageData:nil];
     
     return YES;
 }
@@ -268,25 +274,34 @@
     CMABait *baitToAdd = [[CMAStorageManager sharedManager] managedBait];
     
     if ([self checkUserInputAndSetBait:baitToAdd]) {
-        if (self.previousViewID == CMAViewControllerIDSingleBait) {
+        if (self.isEditingBait) {
             [[self journal] editUserDefine:UDN_BAITS objectNamed:self.bait.name newProperties:baitToAdd];
-        } else
-            [[self journal] addUserDefine:UDN_BAITS objectToAdd:baitToAdd];
-        
-        if (!(self.previousViewID == CMAViewControllerIDSingleBait))
+            [[CMAStorageManager sharedManager] deleteManagedObject:baitToAdd];
+        } else {
+            if (![[self journal] addUserDefine:UDN_BAITS objectToAdd:baitToAdd]) {
+                [CMAAlerts errorAlert:@"A bait with that name already exists. Please select a new name or edit the existing bait." presentationViewController:self];
+                [[CMAStorageManager sharedManager] deleteManagedObject:baitToAdd];
+                return;
+            }
+            
+            [[CMAStorageManager sharedManager] deleteManagedObject:self.bait];
             [self setBait:nil];
+        }
         
-        [[self journal] archive];
         [self performSegueToPreviousView];
-    }
+    } else
+        [[CMAStorageManager sharedManager] deleteManagedObject:baitToAdd];
 }
 
 - (IBAction)clickedCancelButton:(UIBarButtonItem *)sender {
-    self.bait = self.nonEditedBait;
-    self.nonEditedBait = nil;
-    
-    if (!self.isEditingBait)
+    // clean up core data
+    if (!self.isEditingBait) {
+        [[CMAStorageManager sharedManager] deleteManagedObject:self.bait];
         self.bait = nil;
+        
+        if (self.imageData)
+            [[CMAStorageManager sharedManager] deleteManagedObject:self.imageData];
+    }
     
     [self performSegueToPreviousView];
 }
