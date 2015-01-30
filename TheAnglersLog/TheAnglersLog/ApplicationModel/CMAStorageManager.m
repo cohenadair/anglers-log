@@ -45,7 +45,7 @@
 
 - (void)saveJournal:(CMAJournal *)aJournal withFileName:(NSString *)aFileName {
     [self setSharedJournal:aJournal];
-    __block CMAJournal *journal = [aJournal copy];
+    __block CMAJournal *journal = aJournal;
     
     // archive the journal in a separate thread
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
@@ -60,7 +60,7 @@
 - (void)archiveJournal:(CMAJournal *)aJournal toURL:(NSURL *)aURL withFileName:(NSString *)aFileName isLocal:(BOOL)isLocal {
     if (aURL) {
         if (isLocal)
-            [self archiveJournalToLocalStorage:aJournal toURL:aURL withFileName:aFileName];
+            [self saveContext];
         else
             [self archiveJournalToCloudStorage:aJournal toURL:aURL withFileName:aFileName];
     } else

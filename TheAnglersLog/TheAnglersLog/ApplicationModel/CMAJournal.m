@@ -106,7 +106,7 @@
 }
 
 - (void)archive {
-    [[CMAStorageManager sharedManager] saveContext];
+    [[CMAStorageManager sharedManager] saveJournal:self withFileName:ARCHIVE_FILE_NAME];
 }
 
 #pragma mark - Editing
