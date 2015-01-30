@@ -1,13 +1,13 @@
 //
 //  CMAConstants.h
-//  MyFishingJournal
+//  TheAnglersLog
 //
 //  Created by Cohen Adair on 10/19/14.
 //  Copyright (c) 2014 Cohen Adair. All rights reserved.
 //
 
-#ifndef MyFishingJournal_CMAConstants_h
-#define MyFishingJournal_CMAConstants_h
+#ifndef TheAnglersLog_CMAConstants_h
+#define TheAnglersLog_CMAConstants_h
 
 typedef enum cvID_e : int16_t {
     CMAViewControllerIDNil = -1,

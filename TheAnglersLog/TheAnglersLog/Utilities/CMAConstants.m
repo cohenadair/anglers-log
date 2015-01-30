@@ -1,6 +1,6 @@
 //
 //  CMAConstants.m
-//  MyFishingJournal
+//  TheAnglersLog
 //
 //  Created by Cohen Adair on 10/19/14.
 //  Copyright (c) 2014 Cohen Adair. All rights reserved.
@@ -8,7 +8,7 @@
 
 #import "CMAConstants.h"
 
-NSString *const APP_NAME = @"My Fishing Journal";
+NSString *const APP_NAME = @"The Anglers' Log";
 
 #pragma mark - User Define Name (UDN)
 
@@ -37,7 +37,7 @@ NSString *const TOKEN_LOCATION = @": ";
 
 NSString *const ARCHIVE_FILE_NAME = @"journal.db";
 
-NSString *const SHARE_MESSAGE = @"Shared with #MyFishingJournal app.";
+NSString *const SHARE_MESSAGE = @"Shared with #TheAnglersLog app.";
 
 NSString *const GLOBAL_FONT = @"HelveticaNeue";
 

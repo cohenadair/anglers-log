@@ -1,6 +1,6 @@
 //
 //  CMASingleEntryViewController.m
-//  MyFishingJournal
+//  TheAnglersLog
 //
 //  Created by Cohen Adair on 10/26/14.
 //  Copyright (c) 2014 Cohen Adair. All rights reserved.
@@ -370,8 +370,13 @@
     
     [shareItems addObject:currentImage];
     [shareItems addObject:[[[NSDateFormatter alloc] init] stringFromDate:self.entry.date]];
-    [shareItems addObject:[NSString stringWithFormat:@"Length: %@", [self.entry.fishLength stringValue]]];
-    [shareItems addObject:[NSString stringWithFormat:@"Weight: %@", [self.entry.fishLength stringValue]]];
+    
+    if ([self.entry.fishLength integerValue] > 0)
+        [shareItems addObject:[NSString stringWithFormat:@"Length: %@", [self.entry.fishLength stringValue]]];
+    
+    if ([self.entry.fishWeight integerValue] > 0)
+        [shareItems addObject:[NSString stringWithFormat:@"Weight: %@", [self.entry.fishLength stringValue]]];
+    
     [shareItems addObject:SHARE_MESSAGE];
     
     CMAInstagramActivity *instagramActivity = [CMAInstagramActivity new];
