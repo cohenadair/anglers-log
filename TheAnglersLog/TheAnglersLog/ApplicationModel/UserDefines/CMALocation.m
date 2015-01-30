@@ -47,22 +47,6 @@
         [f validateProperties];
 }
 
-#pragma mark - Archiving
-/*
-- (id)initWithCoder:(NSCoder *)aDecoder {
-    if (self = [super init]) {
-        _name = [aDecoder decodeObjectForKey:@"CMALocationName"];
-        _fishingSpots = [aDecoder decodeObjectForKey:@"CMALocationFishingSpots"];
-    }
-    
-    return self;
-}
-
-- (void)encodeWithCoder:(NSCoder *)aCoder {
-    [aCoder encodeObject:self.name forKey:@"CMALocationName"];
-    [aCoder encodeObject:self.fishingSpots forKey:@"CMALocationFishingSpots"];
-}
-*/
 #pragma mark - Editing
 
 - (BOOL)addFishingSpot: (CMAFishingSpot *)aFishingSpot {

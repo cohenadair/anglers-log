@@ -28,10 +28,6 @@
 - (CMABait *)initWithName:(NSString *)aName andUserDefine:(CMAUserDefine *)aUserDefine;
 - (void)validateProperties;
 
-// archiving
-//- (id)initWithCoder:(NSCoder *)aDecoder;
-//- (void)encodeWithCoder:(NSCoder *)aCoder;
-
 // editing
 - (void)edit: (CMABait *)aNewBait;
 - (void)incFishCaught: (NSInteger)incBy;

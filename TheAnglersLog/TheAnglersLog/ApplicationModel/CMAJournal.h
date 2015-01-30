@@ -25,9 +25,6 @@
 - (CMAJournal *)initWithName:(NSString *)aName;
 - (void)validateProperties;
 
-// archiving
-//- (id)initWithCoder:(NSCoder *)aDecoder;
-//- (void)encodeWithCoder:(NSCoder *)aCoder;
 - (void)archive;
 
 // editing

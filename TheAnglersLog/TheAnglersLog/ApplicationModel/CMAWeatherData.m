@@ -24,26 +24,6 @@ NSString *const kAPIKey = @"35f69a23678dead2c75e0599eadbb4e1";
 @dynamic skyConditions;
 @dynamic weatherImage;
 
-#pragma mark - Archiving
-/*
-- (id)initWithCoder:(NSCoder *)aDecoder {
-    if (self = [super init]) {
-        _temperature = [aDecoder decodeObjectForKey:@"CMAWeatherDataTemperature"];
-        _windSpeed = [aDecoder decodeObjectForKey:@"CMAWeatherDataWindSpeed"];
-        _skyConditions = [aDecoder decodeObjectForKey:@"CMAWeatherDataSkyConditions"];
-        _weatherImage = [aDecoder decodeObjectForKey:@"CMAWeatherDataWeatherImage"];
-    }
-    
-    return self;
-}
-
-- (void)encodeWithCoder:(NSCoder *)aCoder {
-    [aCoder encodeObject:self.temperature forKey:@"CMAWeatherDataTemperature"];
-    [aCoder encodeObject:self.windSpeed forKey:@"CMAWeatherDataWindSpeed"];
-    [aCoder encodeObject:self.skyConditions forKey:@"CMAWeatherDataSkyConditions"];
-    [aCoder encodeObject:self.weatherImage forKey:@"CMAWeatherDataWeatherImage"];
-}
-*/
 #pragma mark - Initialization
 
 - (id)initWithCoordinates:(CLLocationCoordinate2D)aCoordinate andJournal:(CMAMeasuringSystemType)aMeasurementSystemType {

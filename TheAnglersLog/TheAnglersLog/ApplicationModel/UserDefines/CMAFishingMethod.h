@@ -21,10 +21,6 @@
 - (CMAFishingMethod *)initWithName:(NSString *)aName andUserDefine:(CMAUserDefine *)aUserDefine;
 - (void)validateProperties;
 
-// archiving
-//- (id)initWithCoder:(NSCoder *)aDecoder;
-//- (void)encodeWithCoder:(NSCoder *)aCoder;
-
 // editing
 - (void)edit: (CMAFishingMethod *)aNewFishingMethod;
 - (void)addEntry:(CMAEntry *)anEntry;

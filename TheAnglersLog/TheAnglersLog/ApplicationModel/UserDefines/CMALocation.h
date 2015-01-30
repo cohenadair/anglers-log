@@ -26,10 +26,6 @@
 - (CMALocation *)initWithName:(NSString *)aName andUserDefine:(CMAUserDefine *)aUserDefine;
 - (void)validateProperties;
 
-// archiving
-//- (id)initWithCoder:(NSCoder *)aDecoder;
-//- (void)encodeWithCoder:(NSCoder *)aCoder;
-
 // editing
 - (BOOL)addFishingSpot: (CMAFishingSpot *)aFishingSpot;
 - (void)removeFishingSpotNamed: (NSString *)aName;

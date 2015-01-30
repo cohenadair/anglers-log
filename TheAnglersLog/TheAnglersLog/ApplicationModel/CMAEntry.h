@@ -56,10 +56,6 @@
 - (id)initWithDate:(NSDate *)aDate;
 - (void)validateProperties;
 
-// archiving
-//- (id)initWithCoder:(NSCoder *)aDecoder;
-//- (void)encodeWithCoder:(NSCoder *)aCoder;
-
 // accessing
 - (NSInteger)imageCount;
 - (NSInteger)fishingMethodCount;

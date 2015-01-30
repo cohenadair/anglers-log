@@ -105,28 +105,6 @@
         [self incStatsForEntry:e];
 }
 
-#pragma mark - Archiving
-/*
-- (id)initWithCoder:(NSCoder *)aDecoder {
-    if (self = [super init]) {
-        self.entries = [aDecoder decodeObjectForKey:@"CMAJournalEntries"];
-        self.userDefines = [aDecoder decodeObjectForKey:@"CMAJournalUserDefines"];
-        self.measurementSystem = [aDecoder decodeIntegerForKey:@"CMAJournalMeasurmentSystem"];
-        self.entrySortMethod = [aDecoder decodeIntegerForKey:@"CMAJournalEntrySortMethod"];
-        self.entrySortOrder = [aDecoder decodeIntegerForKey:@"CMAJournalEntrySortOrder"];
-    }
-    
-    return self;
-}
-
-- (void)encodeWithCoder:(NSCoder *)aCoder {
-    [aCoder encodeObject:self.entries forKey:@"CMAJournalEntries"];
-    [aCoder encodeObject:self.userDefines forKey:@"CMAJournalUserDefines"];
-    [aCoder encodeInteger:self.measurementSystem forKey:@"CMAJournalMeasurmentSystem"];
-    [aCoder encodeInteger:self.entrySortMethod forKey:@"CMAJournalEntrySortMethod"];
-    [aCoder encodeInteger:self.entrySortOrder forKey:@"CMAJournalEntrySortOrder"];
-}
-*/
 - (void)archive {
     [[CMAStorageManager sharedManager] saveContext];
 }

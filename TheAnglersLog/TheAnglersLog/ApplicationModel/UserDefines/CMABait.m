@@ -43,28 +43,6 @@
         self.fishCaught = [NSNumber numberWithInteger:0];
 }
 
-#pragma mark - Archiving
-/*
-- (id)initWithCoder:(NSCoder *)aDecoder {
-    if (self = [super init]) {
-        _name = [aDecoder decodeObjectForKey:@"CMABaitName"];
-        _baitDescription = [aDecoder decodeObjectForKey:@"CMABaitDescription"];
-        _image = [aDecoder decodeObjectForKey:@"CMABaitImage"];
-        _size = [aDecoder decodeObjectForKey:@"CMABaitSize"];
-        _baitType = [aDecoder decodeObjectForKey:@"CMABaitType"];
-    }
-    
-    return self;
-}
-
-- (void)encodeWithCoder:(NSCoder *)aCoder {
-    [aCoder encodeObject:self.name forKey:@"CMABaitName"];
-    [aCoder encodeObject:self.baitDescription forKey:@"CMABaitDescription"];
-    [aCoder encodeObject:self.image forKey:@"CMABaitImage"];
-    [aCoder encodeObject:self.size forKey:@"CMABaitSize"];
-    [aCoder encodeObject:self.baitType forKey:@"CMABaitType"];
-}
-*/
 #pragma mark - Editing
 
 - (void)setSize:(NSString *)size {

@@ -24,10 +24,6 @@
 - (CMAFishingSpot *)initWithName:(NSString *)aName;
 - (void)validateProperties;
 
-// archiving
-//- (id)initWithCoder:(NSCoder *)aDecoder;
-//- (void)encodeWithCoder:(NSCoder *)aCoder;
-
 // editing
 - (void)setCoordinates: (CLLocationCoordinate2D)coordinates;
 - (void)edit: (CMAFishingSpot *)aNewFishingSpot;

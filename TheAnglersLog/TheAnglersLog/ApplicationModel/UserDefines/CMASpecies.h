@@ -25,10 +25,6 @@
 - (CMASpecies *)initWithName:(NSString *)aName andUserDefine:(CMAUserDefine *)aUserDefine;
 - (void)validateProperties;
 
-// archiving
-//- (id)initWithCoder:(NSCoder *)aDecoder;
-//- (void)encodeWithCoder:(NSCoder *)aCoder;
-
 // editing
 - (void)edit: (CMASpecies *)aNewSpecies;
 - (void)incNumberCaught: (NSInteger)incBy;

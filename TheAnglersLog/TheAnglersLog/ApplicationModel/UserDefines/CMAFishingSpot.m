@@ -38,22 +38,6 @@
         self.fishCaught = [NSNumber numberWithInteger:0];
 }
 
-#pragma mark - Archiving
-/*
-- (id)initWithCoder:(NSCoder *)aDecoder {
-    if (self = [super init]) {
-        _name = [aDecoder decodeObjectForKey:@"CMAFishingSpotName"];
-        _location = [aDecoder decodeObjectForKey:@"CMAFishingSpotLocation"];
-    }
-    
-    return self;
-}
-
-- (void)encodeWithCoder:(NSCoder *)aCoder {
-    [aCoder encodeObject:self.name forKey:@"CMAFishingSpotName"];
-    [aCoder encodeObject:self.location forKey:@"CMAFishingSpotLocation"];
-}
-*/
 #pragma mark - Editing
 
 - (void)setCoordinates: (CLLocationCoordinate2D)coordinates {

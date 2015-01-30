@@ -21,10 +21,6 @@
 - (CMAWaterClarity *)initWithName:(NSString *)aName andUserDefine:(CMAUserDefine *)aUserDefine;
 - (void)validateProperties;
 
-// archiving
-//- (id)initWithCoder:(NSCoder *)aDecoder;
-//- (void)encodeWithCoder:(NSCoder *)aCoder;
-
 // editing
 - (void)edit:(CMAWaterClarity *)aNewWaterClarity;
 - (void)addEntry:(CMAEntry *)anEntry;

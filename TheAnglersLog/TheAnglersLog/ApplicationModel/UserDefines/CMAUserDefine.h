@@ -30,10 +30,6 @@
 // validation
 - (void)validateObjects;
 
-// archiving
-//- (id)initWithCoder:(NSCoder *)aDecoder;
-//- (void)encodeWithCoder:(NSCoder *)aCoder;
-
 // editing
 - (BOOL)addObject:(id)anObject;
 - (void)removeObjectNamed:(NSString *)aName;
