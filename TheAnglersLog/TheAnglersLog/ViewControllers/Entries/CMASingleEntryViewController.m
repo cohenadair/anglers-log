@@ -151,7 +151,7 @@
                               hasSeparator: YES]];
     
     // location
-    if (self.entry.location && ![self.entry.location removedFromUserDefines]) {
+    if (self.entry.location) {
         [self.tableCellProperties addObject:
          [CMATableCellProperties withLabelText: @"Location"
                                  andDetailText: [self.entry locationAsString]
@@ -161,7 +161,7 @@
     }
     
     // bait used
-    if (self.entry.baitUsed && ![self.entry.baitUsed removedFromUserDefines])
+    if (self.entry.baitUsed)
         [self.tableCellProperties addObject:
          [CMATableCellProperties withLabelText: @"Bait Used"
                                  andDetailText: self.entry.baitUsed.name

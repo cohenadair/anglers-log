@@ -39,7 +39,4 @@
 - (void)decOuncesCaught: (NSInteger)decBy;
 - (void)addEntry:(CMAEntry *)anEntry;
 
-// other
-- (BOOL)removedFromUserDefines;
-
 @end

@@ -83,7 +83,6 @@ extern NSString *const TOKEN_LOCATION;
 extern NSString *const ARCHIVE_FILE_NAME;
 
 extern NSString *const SHARE_MESSAGE;
-extern NSString *const REMOVED_TEXT; // text displayed in an entry when a user define has been removed
 
 // measurement units
 extern NSString *const UNIT_IMPERIAL_LENGTH;

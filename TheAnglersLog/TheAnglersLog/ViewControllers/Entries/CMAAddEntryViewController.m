@@ -158,7 +158,7 @@ NSString *const kNotSelectedString = @"Not Selected";
         // The species detail label will only when editing an entry that required a new species to be added
         // This only happens with species; no other properties
         // Also, this bug came out of no where (worked one day, and not the next); checked logs but found nothing that would cause this
-        if (![self.entry.fishSpecies removedFromUserDefines])
+        if (self.entry.fishSpecies)
             [self.speciesDetailLabel setText:self.entry.fishSpecies.name];
         else
             [self.speciesDetailLabel setText:kNotSelectedString];
@@ -219,7 +219,7 @@ NSString *const kNotSelectedString = @"Not Selected";
     [self.imageCollection reloadData];
     
     // species
-    if (![self.entry.fishSpecies removedFromUserDefines])
+    if (self.entry.fishSpecies)
         [self.speciesDetailLabel setText:self.entry.fishSpecies.name];
     else
         [self.speciesDetailLabel setText:kNotSelectedString];
@@ -247,24 +247,20 @@ NSString *const kNotSelectedString = @"Not Selected";
     }
     
     // bait used
-    if (self.entry.baitUsed) {
-        if (![self.entry.baitUsed removedFromUserDefines])
-            [self.baitUsedDetailLabel setText:self.entry.baitUsed.name];
-        else
-            [self.baitUsedDetailLabel setText:kNotSelectedString];
-    }
+    if (self.entry.baitUsed)
+        [self.baitUsedDetailLabel setText:self.entry.baitUsed.name];
+    else
+        [self.baitUsedDetailLabel setText:kNotSelectedString];
     
     // fishing methods
     if ([self.entry.fishingMethods count] > 0)
         [self.methodsDetailLabel setText:[self.entry fishingMethodsAsString]];
     
     // location and fishing spot
-    if (self.entry.location) {
-        if (![self.entry.location removedFromUserDefines])
-            [self.locationDetailLabel setText:[self.entry locationAsString]];
-        else
-            [self.locationDetailLabel setText:kNotSelectedString];
-    }
+    if (self.entry.location)
+        [self.locationDetailLabel setText:[self.entry locationAsString]];
+    else
+        [self.locationDetailLabel setText:kNotSelectedString];
     
     // weather conditions
     if (self.entry.weatherData) {
@@ -700,10 +696,12 @@ NSString *const kNotSelectedString = @"Not Selected";
         NSArray *locationInfo = [self parseLocationDetailText];
         
         [anEntry setLocation:locationInfo[0]];
-        [anEntry setFishingSpot:locationInfo[1]];
-        
         [anEntry.location addEntry:anEntry];
-        [anEntry.fishingSpot addEntry:anEntry];
+        
+        if ([locationInfo count] > 1) {
+            [anEntry setFishingSpot:locationInfo[1]];
+            [anEntry.fishingSpot addEntry:anEntry];
+        }
     } else {
         [anEntry setLocation:nil];
         [anEntry setFishingSpot:nil];
@@ -776,7 +774,10 @@ NSString *const kNotSelectedString = @"Not Selected";
     NSArray *stringLocationInfo = [[self.locationDetailLabel text] componentsSeparatedByString:TOKEN_LOCATION];
     
     CMALocation *location = [[[self journal] userDefineNamed:UDN_LOCATIONS] objectNamed:stringLocationInfo[0]];
-    CMAFishingSpot *fishingSpot = [location fishingSpotNamed:stringLocationInfo[1]];
+    
+    CMAFishingSpot *fishingSpot = nil;
+    if ([stringLocationInfo count] > 1)
+        fishingSpot = [location fishingSpotNamed:stringLocationInfo[1]];
 
     return [NSArray arrayWithObjects:location, fishingSpot, nil];
 }

@@ -99,11 +99,4 @@
     [self.entries addObject:anEntry];
 }
 
-#pragma mark - Other
-
-// other
-- (BOOL)removedFromUserDefines {
-    return [self.name isEqualToString:REMOVED_TEXT];
-}
-
 @end

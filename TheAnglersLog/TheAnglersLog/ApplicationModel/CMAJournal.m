@@ -195,47 +195,6 @@
     [[CMAStorageManager sharedManager] deleteManagedObject:obj];
     
     [[self userDefineNamed:aDefineName] removeObjectNamed:anObjectName];
-    [self removeUserDefineFromEntries:aDefineName objectNamed:anObjectName];
-}
-
-// Helper method called when a user defined is deleted by the user.
-// Removes the user define, anObjectName (i.e. species, location, bait, etc.) from any entries that reference it.
-- (void)removeUserDefineFromEntries:(NSString *)aDefineName objectNamed:(NSString *)anObjectName {
-    for (CMAEntry *entry in self.entries) {
-        if ([aDefineName isEqualToString:UDN_SPECIES])
-            if ([entry.fishSpecies.name isEqualToString:anObjectName]) {
-                [entry.fishSpecies setName:REMOVED_TEXT];
-            }
-        
-        if ([aDefineName isEqualToString:UDN_LOCATIONS])
-            if ([entry.location.name isEqualToString:anObjectName]) {
-                entry.fishingSpot = nil;
-                [entry.location setName:REMOVED_TEXT];
-            }
-        
-        if ([aDefineName isEqualToString:UDN_BAITS])
-            if ([entry.baitUsed.name isEqualToString:anObjectName]) {
-                [entry.baitUsed setName:REMOVED_TEXT];
-            }
-        
-        if ([aDefineName isEqualToString:UDN_FISHING_METHODS]) {
-            NSMutableSet *tempSet = [entry.fishingMethods mutableCopy];
-            
-            for (CMAFishingMethod *method in entry.fishingMethods)
-                if ([method.name isEqualToString:anObjectName])
-                    [tempSet removeObject:method];
-            
-            if ([tempSet count] <= 0)
-                entry.fishingMethods = nil;
-            else
-                entry.fishingMethods = tempSet;
-        }
-        
-        if ([aDefineName isEqualToString:UDN_WATER_CLARITIES])
-            if ([entry.waterClarity.name isEqualToString:anObjectName]) {
-                [entry.waterClarity setName:REMOVED_TEXT];
-            }
-    }
 }
 
 - (void)editUserDefine: (NSString *)aDefineName objectNamed: (NSString *)objectName newProperties: (id)aNewObject {

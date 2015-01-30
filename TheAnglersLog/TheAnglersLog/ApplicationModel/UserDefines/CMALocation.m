@@ -84,13 +84,6 @@
     [[CMAStorageManager sharedManager] deleteManagedObject:spot];
     
     [self.fishingSpots removeObject:spot];
-    
-    // remove entry references to the fishing spot that was removed
-    for (CMAEntry *entry in [[self journal] entries])
-        if ([entry.fishingSpot.name isEqualToString:aName]) {
-            entry.fishingSpot = nil;
-            entry.fishingSpot = [entry.fishingSpot initWithName:REMOVED_TEXT];
-        }
 }
 
 - (void)editFishingSpotNamed: (NSString *)aName newProperties: (CMAFishingSpot *)aNewFishingSpot; {
@@ -173,13 +166,6 @@
     }];
     
     self.fishingSpots = [NSMutableOrderedSet orderedSetWithArray:sortedArray];
-}
-
-#pragma mark - Other
-
-// other
-- (BOOL)removedFromUserDefines {
-    return [self.name isEqualToString:REMOVED_TEXT];
 }
 
 @end
