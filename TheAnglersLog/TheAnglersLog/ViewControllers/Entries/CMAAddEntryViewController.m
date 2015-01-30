@@ -911,6 +911,12 @@ NSString *const kNotSelectedString = @"Not Selected";
         }];
         
         [self.toggleWeatherButton setTitle:@"+" forState:UIControlStateNormal];
+        
+        // remove from core data
+        if (self.weatherData) {
+            [[CMAStorageManager sharedManager] deleteManagedObject:self.weatherData];
+            self.weatherData = nil;
+        }
     }
     
     [self.tableView beginUpdates];
@@ -963,7 +969,7 @@ NSString *const kNotSelectedString = @"Not Selected";
         }
         
         [self.weatherData setTemperature:(NSNumber *)result[@"main"][@"temp"]]; // [3][3]
-        [self.weatherData setWindSpeed:result[@"wind"][@"speed"]]; // [1][0]
+        [self.weatherData setWindSpeed:[NSString stringWithFormat:@"%@", result[@"wind"][@"speed"]]]; // [1][0]
         
         [self initWeatherDataViewWithData:self.weatherData];
         [self toggleWeatherDataCell];

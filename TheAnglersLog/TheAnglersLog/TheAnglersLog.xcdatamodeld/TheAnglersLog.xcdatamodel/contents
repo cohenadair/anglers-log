@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="6254" systemVersion="14B25" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="6254" systemVersion="14C109" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="CMABait" representedClassName="CMABait" syncable="YES">
         <attribute name="baitDescription" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="baitType" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
@@ -28,7 +28,7 @@
         <relationship name="journal" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CMAJournal" inverseName="entries" inverseEntity="CMAJournal" syncable="YES"/>
         <relationship name="location" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CMALocation" inverseName="entries" inverseEntity="CMALocation" syncable="YES"/>
         <relationship name="waterClarity" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CMAWaterClarity" inverseName="entries" inverseEntity="CMAWaterClarity" syncable="YES"/>
-        <relationship name="weatherData" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="CMAWeatherData" inverseName="entry" inverseEntity="CMAWeatherData" syncable="YES"/>
+        <relationship name="weatherData" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CMAWeatherData" inverseName="entry" inverseEntity="CMAWeatherData" syncable="YES"/>
     </entity>
     <entity name="CMAFishingMethod" representedClassName="CMAFishingMethod" syncable="YES">
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
@@ -94,14 +94,14 @@
     <elements>
         <element name="CMABait" positionX="-5976" positionY="-1773" width="128" height="163"/>
         <element name="CMAEntry" positionX="-6167" positionY="-1501" width="128" height="313"/>
+        <element name="CMAFishingMethod" positionX="-5886" positionY="-1224" width="128" height="88"/>
         <element name="CMAFishingSpot" positionX="-5753" positionY="-1476" width="128" height="118"/>
+        <element name="CMAImage" positionX="-6336" positionY="-1620" width="128" height="88"/>
         <element name="CMAJournal" positionX="-6336" positionY="-1261" width="128" height="133"/>
         <element name="CMALocation" positionX="-5960" positionY="-1359" width="128" height="103"/>
         <element name="CMASpecies" positionX="-5924" positionY="-1584" width="128" height="133"/>
         <element name="CMAUserDefine" positionX="-6167" positionY="-1138" width="128" height="148"/>
         <element name="CMAWaterClarity" positionX="-5913" positionY="-1096" width="128" height="88"/>
         <element name="CMAWeatherData" positionX="-5985" positionY="-972" width="128" height="133"/>
-        <element name="CMAFishingMethod" positionX="-5886" positionY="-1224" width="128" height="88"/>
-        <element name="CMAImage" positionX="-6336" positionY="-1620" width="128" height="88"/>
     </elements>
 </model>

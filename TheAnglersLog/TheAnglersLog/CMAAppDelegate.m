@@ -22,12 +22,12 @@
     
     /*
     NSFetchRequest *fetchRequest = [NSFetchRequest new];
-    [fetchRequest setEntity:[NSEntityDescription entityForName:CDE_IMAGE inManagedObjectContext:[[CMAStorageManager sharedManager] managedObjectContext]]];
+    [fetchRequest setEntity:[NSEntityDescription entityForName:CDE_WEATHER_DATA inManagedObjectContext:[[CMAStorageManager sharedManager] managedObjectContext]]];
     
     NSError *e;
     NSArray *results = [[[CMAStorageManager sharedManager] managedObjectContext] executeFetchRequest:fetchRequest error:&e];
     
-    for (CMAImage *obj in results)
+    for (CMAWeatherData *obj in results)
         [[[CMAStorageManager sharedManager] managedObjectContext] deleteObject:obj];
     
     [[CMAStorageManager sharedManager] saveContext];
