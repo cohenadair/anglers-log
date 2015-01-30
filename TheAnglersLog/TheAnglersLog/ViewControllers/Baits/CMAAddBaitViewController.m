@@ -231,7 +231,7 @@
     
     // make sure the bait name doesn't already exist
     if (!self.isEditingBait)
-        if ([[[self journal] userDefineNamed:UDN_LOCATIONS] objectNamed:self.nameTextField.text] != nil) {
+        if ([[[self journal] userDefineNamed:UDN_BAITS] objectNamed:self.nameTextField.text] != nil) {
             [CMAAlerts errorAlert:@"A bait by that name already exists. Please choose a new name or edit the existing bait." presentationViewController:self];
             return NO;
         }

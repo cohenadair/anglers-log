@@ -57,10 +57,17 @@
 
 - (void)handleNoBaitView {
     if ([self.userDefineBaits count] <= 0)
-        [self initNoBaitView];
+        if (!self.noBaitsView)
+            [self initNoBaitView];
+        else {
+            [UIView animateWithDuration:0.5 animations:^{
+                [self.noBaitsView setAlpha:1.0f];
+            }];
+        }
     else {
-        [self.noBaitsView removeFromSuperview];
-        self.noBaitsView = nil;
+        [UIView animateWithDuration:0.5 animations:^{
+            [self.noBaitsView setAlpha:0.0f];
+        }];
     }
 }
 
@@ -186,7 +193,7 @@
         [self exitEditMode];
         [self.deleteButton setEnabled:NO];
         [[self journal] archive];
-        [self initNoBaitView];
+        [self handleNoBaitView];
         [self.tableView reloadData];
     }
 }

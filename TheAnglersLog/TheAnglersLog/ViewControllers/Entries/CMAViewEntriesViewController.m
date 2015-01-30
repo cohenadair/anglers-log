@@ -89,7 +89,19 @@
 }
 
 - (void)handleNoEntriesView {
-    [self.noEntriesView setHidden:[[self journal] entryCount] > 0];
+    if ([[self journal] entryCount] <= 0)
+        if (!self.noEntriesView)
+            [self noEntriesView];
+        else {
+            [UIView animateWithDuration:0.5 animations:^{
+                [self.noEntriesView setAlpha:1.0f];
+            }];
+        }
+        else {
+            [UIView animateWithDuration:0.5 animations:^{
+                [self.noEntriesView setAlpha:0.0f];
+            }];
+        }
 }
 
 - (void)setupView {
@@ -219,10 +231,11 @@
         
         // delete from table
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+        self.navigationItem.title = [NSString stringWithFormat:@"Entries (%ld)", (long)[[self journal] entryCount]];
         
         if ([tableView numberOfRowsInSection:0] == 0) {
             [self enableToolbarButtons];
-            [self initNoEntriesView];
+            [self handleNoEntriesView];
             [self.deleteButton setEnabled:NO];
             [self.sortButton setEnabled:NO];
         }
