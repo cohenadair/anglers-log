@@ -776,17 +776,42 @@ const int FrontViewPositionNone = 0xff;
 
 - (void)toggleOverlay {
     id frontVC = self.frontViewController;
+    
     BOOL hasOverlay = [[frontVC view] viewWithTag:123] != nil;
     
     if (hasOverlay) {
         UIView *overlay = [[frontVC view] viewWithTag:123];
-        [overlay removeFromSuperview];
+        UIView *status = [[frontVC view] viewWithTag:122];
+        
+        [UIView animateWithDuration:0.5 animations:^{
+            [status setAlpha:0.0f];
+            [overlay setAlpha:0.0f];
+        } completion:^(BOOL finished) {
+            [overlay removeFromSuperview];
+            [status removeFromSuperview];
+        }];
+        
+        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
     } else {
         UIView *overlay = [[UIView alloc] initWithFrame:CGRectMake(0, 0, [frontVC view].frame.size.width, [frontVC view].frame.size.height)];
         [overlay setTag:123];
+        [overlay setAlpha:0.0f];
         [overlay setBackgroundColor:[UIColor colorWithWhite:0.0 alpha:0.60]];
         [overlay addGestureRecognizer:self.tapGestureRecognizer];
+        
+        UIView *status = [[UIView alloc] initWithFrame:CGRectMake(0, 0, [frontVC view].frame.size.width, 20)];
+        [status setTag:122];
+        [overlay setAlpha:0.0f];
+        [status setBackgroundColor:[UIColor blackColor]];
+        
+        [[frontVC view] addSubview:status];
         [[frontVC view] addSubview:overlay];
+        
+        [UIView animateWithDuration:0.25 animations:^{
+            [overlay setAlpha:1.0f];
+            [status setAlpha:1.0f];
+            [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+        }];
     }
 }
 

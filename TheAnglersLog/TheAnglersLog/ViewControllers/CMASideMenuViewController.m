@@ -19,6 +19,8 @@
 @property (weak, nonatomic) IBOutlet UITableViewCell *instagramCell;
 @property (weak, nonatomic) IBOutlet UITableViewCell *twitterCell;
 
+@property (strong, nonatomic)UIView *statusBar;
+
 @end
 
 #define kInstagramCell 9
@@ -42,6 +44,10 @@
     
     // Uncomment the following line to preserve selection between presentations.
     self.clearsSelectionOnViewWillAppear = NO;
+    
+    self.statusBar = [[UIView alloc] initWithFrame:CGRectMake(0, -20, self.view.frame.size.width, 20)];
+    [self.statusBar setBackgroundColor:[UIColor blackColor]];
+    [self.view addSubview:self.statusBar];
     
     [self initTitleView];
 }
@@ -78,6 +84,12 @@
         
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
     }
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    CGRect fixedFrame = self.statusBar.frame;
+    fixedFrame.origin.y = 0 + scrollView.contentOffset.y;
+    self.statusBar.frame = fixedFrame;
 }
 
 #pragma mark - Navigation
