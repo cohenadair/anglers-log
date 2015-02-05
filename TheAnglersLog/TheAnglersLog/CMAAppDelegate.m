@@ -68,6 +68,7 @@
     
     [[UINavigationBar appearance] setTranslucent:NO];
     [[UIToolbar appearance] setTranslucent:NO];
+    [self.window setTintColor:[UIColor redColor]];
 }
 
 @end

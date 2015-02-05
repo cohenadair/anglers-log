@@ -238,7 +238,7 @@
 
 - (CMAEntry *)highCatchEntryFor:(NSInteger)lengthOrWeight {
     CMAEntry *result = nil;
-    NSInteger high = -1;
+    NSInteger high = 0;
     NSInteger val = 0;
     
     for (CMAEntry *entry in self.journal.entries) {
