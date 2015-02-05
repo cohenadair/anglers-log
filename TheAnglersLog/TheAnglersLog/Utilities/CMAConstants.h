@@ -9,47 +9,60 @@
 #ifndef TheAnglersLog_CMAConstants_h
 #define TheAnglersLog_CMAConstants_h
 
+#define mark = Typedefs
+
 typedef enum cvID_e : int16_t {
-    CMAViewControllerIDNil = -1,
-    CMAViewControllerIDViewEntries = 0,
-    CMAViewControllerIDEditSettings = 1,
-    CMAViewControllerIDAddEntry = 2,
-    CMAViewControllerIDSingleEntry = 3,
-    CMAViewControllerIDSingleLocation = 4,
-    CMAViewControllerIDSingleBait = 5,
-    CMAViewControllerIDViewBaits = 6,
-    CMAViewControllerIDStatistics = 7,
-    CMAViewControllerIDSelectFishingSpot = 8
+    CMAViewControllerIDNil                  = -1,
+    CMAViewControllerIDViewEntries          = 0,
+    CMAViewControllerIDEditSettings         = 1,
+    CMAViewControllerIDAddEntry             = 2,
+    CMAViewControllerIDSingleEntry          = 3,
+    CMAViewControllerIDSingleLocation       = 4,
+    CMAViewControllerIDSingleBait           = 5,
+    CMAViewControllerIDViewBaits            = 6,
+    CMAViewControllerIDStatistics           = 7,
+    CMAViewControllerIDSelectFishingSpot    = 8
 } CMAViewControllerID;
 
 // Each value represents the index for an item in a UISegmentedControlView.
 typedef enum msID_e : int16_t {
-    CMAMeasuringSystemTypeImperial = 0,
-    CMAMeasuringSystemTypeMetric = 1
+    CMAMeasuringSystemTypeImperial  = 0,
+    CMAMeasuringSystemTypeMetric    = 1
 } CMAMeasuringSystemType;
 
 // Each value represents the index for an item in a UISegmentedControlView.
 typedef enum soID_e : int16_t {
-    CMASortOrderAscending = 0,
-    CMASortOrderDescending = 1
+    CMASortOrderAscending   = 0,
+    CMASortOrderDescending  = 1
 } CMASortOrder;
 
 // Each value represents the index for an item in a UISegmentedControlView.
 typedef enum btID_e : int16_t {
-    CMABaitTypeArtificial = 0,
-    CMABaitTypeLive = 1
+    CMABaitTypeArtificial   = 0,
+    CMABaitTypeLive         = 1
 } CMABaitType;
 
 // Each value >= 0 represents an index for a row in a UITableView.
 typedef enum smID_e : int16_t {
-    CMAEntrySortMethodNil = -1,
-    CMAEntrySortMethodDate = 0,
-    CMAEntrySortMethodSpecies = 1,
-    CMAEntrySortMethodLocation = 2,
-    CMAEntrySortMethodLength = 3,
-    CMAEntrySortMethodWeight = 4,
-    CMAEntrySortMethodBaitUsed = 5
+    CMAEntrySortMethodNil       = -1,
+    CMAEntrySortMethodDate      = 0,
+    CMAEntrySortMethodSpecies   = 1,
+    CMAEntrySortMethodLocation  = 2,
+    CMAEntrySortMethodLength    = 3,
+    CMAEntrySortMethodWeight    = 4,
+    CMAEntrySortMethodBaitUsed  = 5
 } CMAEntrySortMethod;
+
+#pragma mark - Global Variables
+
+// initialized in CMAAppDelegate.m
+UIColor *CELL_COLOR_DARK;
+UIColor *CELL_COLOR_LIGHT;
+
+#pragma mark - Application Constants
+
+extern NSString *const APP_NAME;
+extern NSString *const SHARE_MESSAGE;
 
 #pragma mark - User Define Name (UDN)
 
@@ -73,18 +86,13 @@ extern NSString *const CDE_WEATHER_DATA;
 extern NSString *const CDE_FISHING_SPOT;
 extern NSString *const CDE_IMAGE;
 
-extern NSString *const APP_NAME;
+#pragma mark - Token Separators
 
-// Used for splitting up NSStrings.
 extern NSString *const TOKEN_FISHING_METHODS;
 extern NSString *const TOKEN_LOCATION;
 
-// User data file name.
-extern NSString *const ARCHIVE_FILE_NAME;
+#pragma mark - Unit Constants
 
-extern NSString *const SHARE_MESSAGE;
-
-// measurement units
 extern NSString *const UNIT_IMPERIAL_LENGTH;
 extern NSString *const UNIT_IMPERIAL_LENGTH_SHORTHAND;
 extern NSString *const UNIT_IMPERIAL_WEIGHT;
@@ -109,21 +117,17 @@ extern NSString *const UNIT_METRIC_TEMPERATURE_SHORTHAND;
 extern NSString *const UNIT_METRIC_SPEED;
 extern NSString *const UNIT_METRIC_SPEED_SHORTHAND;
 
-// notifications
-extern NSString *const NOTIFICATION_CHANGE_JOURNAL;
-
 extern NSString *const GLOBAL_FONT;
 
+#pragma mark - UI Constants
+
 extern CGFloat const TABLE_SECTION_SPACING;
+extern CGFloat const TABLE_HEIGHT_FOOTER;
+extern CGFloat const TABLE_HEIGHT_HEADER;
+extern CGFloat const TABLE_HEIGHT_WEATHER_CELL;
 
-UIColor *CELL_COLOR_DARK; // initialized in AppDelegate.m
-UIColor *CELL_COLOR_LIGHT; // initialized in AppDelegate.m
+#pragma mark - Math Constants
 
-#define kTableSectionHeaderHeight 40
-#define kTableFooterHeight 25
-
-#define kWeatherCellHeightExpanded 90
-
-#define kOuncesInAPound 16
+extern NSInteger const OUNCES_PER_POUND;
 
 #endif

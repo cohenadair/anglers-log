@@ -57,7 +57,7 @@
 #pragma mark - Table View Initializing
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    return kTableSectionHeaderHeight;
+    return TABLE_HEIGHT_HEADER;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {

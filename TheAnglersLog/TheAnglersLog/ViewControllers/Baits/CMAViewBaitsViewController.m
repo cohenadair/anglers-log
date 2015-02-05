@@ -71,17 +71,6 @@
     }
 }
 
-- (void)registerForNotifications {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onJournalChange:) name:NOTIFICATION_CHANGE_JOURNAL object:nil];
-}
-
-- (void)onJournalChange:(NSNotification *)aNotification {
-    if (self.isViewLoaded && self.view.window) {
-        NSLog(@"Received journal changed notification in view baits scene.");
-        [self setupView];
-    }
-}
-
 - (void)setupView {
     [self setUserDefineBaits:[[self journal] userDefineNamed:UDN_BAITS]];
     [self handleNoBaitView];
@@ -95,8 +84,6 @@
         [self initSideBarMenu];
     else
         self.navigationItem.leftBarButtonItem = self.navigationItem.backBarButtonItem;
-    
-    [self registerForNotifications];
     
     [self.tableView setTableFooterView:[[UIView alloc] initWithFrame:CGRectZero]];
 }

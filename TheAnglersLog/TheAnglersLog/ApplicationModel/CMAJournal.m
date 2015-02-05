@@ -106,7 +106,7 @@
 }
 
 - (void)archive {
-    [[CMAStorageManager sharedManager] saveJournal:self withFileName:ARCHIVE_FILE_NAME];
+    [[CMAStorageManager sharedManager] saveJournal];
 }
 
 #pragma mark - Editing
@@ -115,18 +115,6 @@
     [self willChangeValueForKey:@"name"];
     [self setPrimitiveValue:[[name capitalizedString] mutableCopy] forKey:@"name"];
     [self didChangeValueForKey:@"name"];
-}
-
-- (CMAJournal *)copy {
-    CMAJournal *result = [[CMAStorageManager sharedManager] managedJournal];
-    
-    result.entries = [self.entries mutableCopy];
-    result.userDefines = [self.userDefines mutableCopy];
-    result.measurementSystem = self.measurementSystem;
-    result.entrySortMethod = self.entrySortMethod;
-    result.entrySortOrder = self.entrySortOrder;
-    
-    return result;
 }
 
 - (BOOL)addEntry:(CMAEntry *)anEntry {
@@ -195,9 +183,9 @@
             if ([anEntry.fishOunces integerValue] > 0) {
                 [anEntry.fishSpecies incOuncesCaught:[anEntry.fishOunces integerValue]];
                 
-                if ([anEntry.fishSpecies.ouncesCaught integerValue] >= kOuncesInAPound) {
+                if ([anEntry.fishSpecies.ouncesCaught integerValue] >= OUNCES_PER_POUND) {
                     [anEntry.fishSpecies incWeightCaught:1];
-                    [anEntry.fishSpecies decNumberCaught:kOuncesInAPound];
+                    [anEntry.fishSpecies decNumberCaught:OUNCES_PER_POUND];
                 }
             }
         }
@@ -240,7 +228,7 @@
                 
                 if ([anEntry.fishSpecies.ouncesCaught integerValue] < 0) {
                     [anEntry.fishSpecies decWeightCaught:1];
-                    [anEntry.fishSpecies incNumberCaught:kOuncesInAPound];
+                    [anEntry.fishSpecies incNumberCaught:OUNCES_PER_POUND];
                 }
             }
         }

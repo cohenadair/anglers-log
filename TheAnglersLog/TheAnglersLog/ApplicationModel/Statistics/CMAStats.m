@@ -102,9 +102,9 @@
         self.totalValue += [species.weightCaught integerValue];
         
         ounces += [species.ouncesCaught integerValue];
-        if (ounces >= kOuncesInAPound) {
+        if (ounces >= OUNCES_PER_POUND) {
             self.totalValue += 1;
-            ounces -= kOuncesInAPound;
+            ounces -= OUNCES_PER_POUND;
         }
         
         [result addObject:obj];

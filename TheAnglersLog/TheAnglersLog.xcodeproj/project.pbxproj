@@ -12,7 +12,6 @@
 		0D5608121A6F0F3000EE0437 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D5608111A6F0F3000EE0437 /* CoreData.framework */; };
 		0D8F838B1A6EC10800AABAEA /* CMAEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D8F836D1A6EC10800AABAEA /* CMAEntry.m */; };
 		0D8F838C1A6EC10800AABAEA /* CMAJournal.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D8F836F1A6EC10800AABAEA /* CMAJournal.m */; };
-		0D8F838D1A6EC10800AABAEA /* CMAJournalDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D8F83711A6EC10800AABAEA /* CMAJournalDocument.m */; };
 		0D8F838E1A6EC10800AABAEA /* CMAStorageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D8F83731A6EC10800AABAEA /* CMAStorageManager.m */; };
 		0D8F838F1A6EC10800AABAEA /* CMAWeatherData.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D8F83751A6EC10800AABAEA /* CMAWeatherData.m */; };
 		0D8F83901A6EC10800AABAEA /* CMAStats.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D8F83781A6EC10800AABAEA /* CMAStats.m */; };
@@ -144,8 +143,6 @@
 		0D8F836D1A6EC10800AABAEA /* CMAEntry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAEntry.m; path = TheAnglersLog/ApplicationModel/CMAEntry.m; sourceTree = SOURCE_ROOT; };
 		0D8F836E1A6EC10800AABAEA /* CMAJournal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAJournal.h; path = TheAnglersLog/ApplicationModel/CMAJournal.h; sourceTree = SOURCE_ROOT; };
 		0D8F836F1A6EC10800AABAEA /* CMAJournal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAJournal.m; path = TheAnglersLog/ApplicationModel/CMAJournal.m; sourceTree = SOURCE_ROOT; };
-		0D8F83701A6EC10800AABAEA /* CMAJournalDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAJournalDocument.h; path = TheAnglersLog/ApplicationModel/CMAJournalDocument.h; sourceTree = SOURCE_ROOT; };
-		0D8F83711A6EC10800AABAEA /* CMAJournalDocument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAJournalDocument.m; path = TheAnglersLog/ApplicationModel/CMAJournalDocument.m; sourceTree = SOURCE_ROOT; };
 		0D8F83721A6EC10800AABAEA /* CMAStorageManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAStorageManager.h; path = TheAnglersLog/ApplicationModel/CMAStorageManager.h; sourceTree = SOURCE_ROOT; };
 		0D8F83731A6EC10800AABAEA /* CMAStorageManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAStorageManager.m; path = TheAnglersLog/ApplicationModel/CMAStorageManager.m; sourceTree = SOURCE_ROOT; };
 		0D8F83741A6EC10800AABAEA /* CMAWeatherData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAWeatherData.h; path = TheAnglersLog/ApplicationModel/CMAWeatherData.h; sourceTree = SOURCE_ROOT; };
@@ -645,8 +642,6 @@
 				0D8F836D1A6EC10800AABAEA /* CMAEntry.m */,
 				0D8F836E1A6EC10800AABAEA /* CMAJournal.h */,
 				0D8F836F1A6EC10800AABAEA /* CMAJournal.m */,
-				0D8F83701A6EC10800AABAEA /* CMAJournalDocument.h */,
-				0D8F83711A6EC10800AABAEA /* CMAJournalDocument.m */,
 				0D8F83721A6EC10800AABAEA /* CMAStorageManager.h */,
 				0D8F83731A6EC10800AABAEA /* CMAStorageManager.m */,
 				0D8F83741A6EC10800AABAEA /* CMAWeatherData.h */,
@@ -928,7 +923,6 @@
 				0D8F849D1A6EC2D900AABAEA /* AFURLConnectionOperation.m in Sources */,
 				0D8F849E1A6EC2D900AABAEA /* AFURLRequestSerialization.m in Sources */,
 				0D8F84A31A6EC2D900AABAEA /* XYPieChart.m in Sources */,
-				0D8F838D1A6EC10800AABAEA /* CMAJournalDocument.m in Sources */,
 				0D8F83921A6EC10800AABAEA /* CMABait.m in Sources */,
 				0D8F84101A6EC29A00AABAEA /* CMAInstagramActivity.m in Sources */,
 				0D8F840D1A6EC29A00AABAEA /* CMACircleView.m in Sources */,

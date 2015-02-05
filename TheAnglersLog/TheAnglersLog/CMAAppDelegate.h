@@ -11,15 +11,7 @@
 
 @interface CMAAppDelegate : UIResponder <UIApplicationDelegate>
 
-@property (strong, nonatomic)UIAlertController *iCloudAlert;
-@property (nonatomic)BOOL presentCloudAccountChangedAlert;
-
 @property (strong, nonatomic)UIWindow *window;
-
 @property (nonatomic)BOOL didEnterBackground;
-
-- (void)iCloudUbiquityTokenHandler;
-- (void)iCloudRequestHandlerOverrideFirstLaunch:(BOOL)overrideFirstLaunch withCallback:(void(^)())aCallbackBlock;
-- (void)iCloudDisableHandler;
 
 @end

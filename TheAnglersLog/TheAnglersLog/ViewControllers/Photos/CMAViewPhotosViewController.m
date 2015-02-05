@@ -61,17 +61,6 @@
     }
 }
 
-- (void)registerForNotifications {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onJournalChange:) name:NOTIFICATION_CHANGE_JOURNAL object:nil];
-}
-
-- (void)onJournalChange:(NSNotification *)aNotification {
-    if (self.isViewLoaded && self.view.window) {
-        NSLog(@"Received journal changed notification in photo gallery scene.");
-        [self setupView];
-    }
-}
-
 - (void)setupView {
     [self initImagesArray];
     [self handleNoImagesView];
@@ -82,7 +71,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self initSideBarMenu];
-    [self registerForNotifications];
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Photos" style:UIBarButtonItemStylePlain target:nil action:nil];
 }
 

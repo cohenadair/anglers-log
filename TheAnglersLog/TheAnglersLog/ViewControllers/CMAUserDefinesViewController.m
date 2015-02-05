@@ -93,18 +93,6 @@
     }
 }
 
-- (void)registerForNotifications {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onJournalChange:) name:NOTIFICATION_CHANGE_JOURNAL object:nil];
-}
-
-- (void)onJournalChange:(NSNotification *)aNotification {
-    if (self.isViewLoaded && self.view.window) {
-        NSLog(@"Received journal changed notification in user defines scene.");
-        [self setUserDefine:[[self journal] userDefineNamed:self.userDefine.name]];
-        [self setupView];
-    }
-}
-
 - (void)setupView {
     [self handleNoXView];
     [self.editButton setEnabled:[self.userDefine count] > 0];
@@ -141,7 +129,6 @@
     [self initAddItemAlert];
     [self initEditItemAlert];
     [self initializeToolbar];
-    [self registerForNotifications];
     
     // enable side bar navigation unless the user is adding an entry
     if (!self.isSelectingForAddEntry && !self.isSelectingForStatistics)

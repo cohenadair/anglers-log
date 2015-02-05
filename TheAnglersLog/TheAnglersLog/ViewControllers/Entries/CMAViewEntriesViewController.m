@@ -26,7 +26,6 @@
 
 @property (strong, nonatomic)NSDateFormatter *dateFormatter;
 @property (strong, nonatomic)CMANoXView *noEntriesView;
-@property (strong, nonatomic)UIView *loadingJournalView;
 
 @end
 
@@ -64,31 +63,6 @@
     [self.view addSubview:self.noEntriesView];
 }
 
-// Used to indicate to the user that the journal data is loading (in case it takes a few seconds getting data from iCloud).
-- (void)initLoadingJournalView {
-    self.loadingJournalView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, self.tableView.frame.size.height)];
-    [self.loadingJournalView setBackgroundColor:[UIColor whiteColor]];
-    
-    UIActivityIndicatorView *indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-    [indicator setAlpha:1.0];
-    [indicator setCenter:CGPointMake(self.loadingJournalView.center.x, 50)];
-    [indicator startAnimating];
-    [self.loadingJournalView addSubview:indicator];
-
-    [self.tableView addSubview:self.loadingJournalView];
-}
-
-- (void)registerForNotifications {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onJournalChange:) name:NOTIFICATION_CHANGE_JOURNAL object:nil];
-}
-
-- (void)onJournalChange:(NSNotification *)aNotification {
-    if (self.isViewLoaded && self.view.window) {
-        NSLog(@"Received journal changed notification in view entries scene.");
-        [self setupView];
-    }
-}
-
 - (void)handleNoEntriesView {
     if (!self.noEntriesView)
         [self initNoEntriesView];
@@ -115,34 +89,11 @@
     self.navigationItem.title = [NSString stringWithFormat:@"Entries (%ld)", (long)[[self journal] entryCount]];
     
     [self handleNoEntriesView];
-    /*
-    if (![self journal])
-        [self initLoadingJournalView];
-    else if (self.loadingJournalView)
-        [self.loadingJournalView setHidden:YES];
-    */
     [self.tableView reloadData];
-}
-
-- (void)handleCloudAlert {
-    UIAlertController *iCloudAlert = [[self appDelegate] iCloudAlert];
-    
-    if (iCloudAlert) {
-        [self.parentViewController presentViewController:iCloudAlert animated:YES completion:nil];
-        [[self appDelegate] setICloudAlert:nil];
-    }
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    [self handleCloudAlert];
-    
-    // show alert if iCloud account has changed
-    if ([[self appDelegate] presentCloudAccountChangedAlert]) {
-        [CMAAlerts errorAlert:[NSString stringWithFormat:@"Your iCloud account is no longer signed in or has been disabled for %@. Your journal entries will no longer update on all your devices.", APP_NAME] presentationViewController:self.parentViewController];
-        [[self appDelegate] setPresentCloudAccountChangedAlert:NO];
-    }
     
     self.navigationController.toolbarHidden = NO;
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Entries" style:UIBarButtonItemStylePlain target:nil action:nil];
@@ -156,8 +107,6 @@
     }
     
     [self initSideBarMenu];
-    [self registerForNotifications];
-    
     [self.tableView setTableFooterView:[[UIView alloc] initWithFrame:CGRectZero]]; // removes empty cells at the end of the list
 }
 

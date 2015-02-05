@@ -146,7 +146,7 @@ NSString *const kNotSelectedString = @"Not Selected";
     // set weather data view (needs to be called before [self initializeTableForEditing], below)
     NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"CMAWeatherDataView" owner:self options:nil];
     self.weatherDataView = (CMAWeatherDataView *)[nib objectAtIndex:0];
-    [self.weatherDataView setFrame:CGRectMake(0, 0, 0, kWeatherCellHeightExpanded)];
+    [self.weatherDataView setFrame:CGRectMake(0, 0, 0, TABLE_HEIGHT_WEATHER_CELL)];
     [self.weatherDataView setAlpha:0.0];
     
     // if we're editing rather than adding an entry
@@ -309,12 +309,12 @@ NSString *const kNotSelectedString = @"Not Selected";
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    return kTableSectionHeaderHeight;
+    return TABLE_HEIGHT_HEADER;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
     if (section == [tableView numberOfSections] - 1)
-        return kTableFooterHeight;
+        return TABLE_HEIGHT_FOOTER;
     
     return CGFLOAT_MIN;
 }
@@ -339,7 +339,7 @@ NSString *const kNotSelectedString = @"Not Selected";
     // if weather data is added
     if (indexPath.section == kWeatherCellSection) {
         if (self.isWeatherInitialized)
-            return kWeatherCellHeightExpanded;
+            return TABLE_HEIGHT_WEATHER_CELL;
         else
             return 44;
     }

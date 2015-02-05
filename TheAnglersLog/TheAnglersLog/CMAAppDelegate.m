@@ -14,27 +14,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    [self iCloudUbiquityTokenHandler];
-    [self iCloudAccountChangeHandler];
-    [self iCloudRequestHandlerOverrideFirstLaunch:NO withCallback:nil];
-    
-    //[self iCloudDisableHandler];
-    
-    /*
-    NSFetchRequest *fetchRequest = [NSFetchRequest new];
-    [fetchRequest setEntity:[NSEntityDescription entityForName:CDE_WEATHER_DATA inManagedObjectContext:[[CMAStorageManager sharedManager] managedObjectContext]]];
-    
-    NSError *e;
-    NSArray *results = [[[CMAStorageManager sharedManager] managedObjectContext] executeFetchRequest:fetchRequest error:&e];
-    
-    for (CMAWeatherData *obj in results)
-        [[[CMAStorageManager sharedManager] managedObjectContext] deleteObject:obj];
-    
-    [[CMAStorageManager sharedManager] saveContext];
-    */
-    
-    [[CMAStorageManager sharedManager] debugCoreDataObjects];
-    
+    [[CMAStorageManager sharedManager] loadJournal];
     [self initAppearances];
     
     return YES;
@@ -64,10 +44,10 @@
 {
     // reload journal incase the database was updated in iCloud
     if (self.didEnterBackground) {
-        [self iCloudUbiquityTokenHandler]; // see if the last account was logged out/changed
+        //[self iCloudUbiquityTokenHandler]; // see if the last account was logged out/changed
 
         [[CMAStorageManager sharedManager] setSharedJournal:nil];
-        [[CMAStorageManager sharedManager] loadJournalWithCloudEnabled:[self iCloudEnabled]];
+        [[CMAStorageManager sharedManager] loadJournal];
     }
     
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
@@ -88,120 +68,6 @@
     
     [[UINavigationBar appearance] setTranslucent:NO];
     [[UIToolbar appearance] setTranslucent:NO];
-}
-
-#pragma mark - iCloud Handlers
-
-NSString *const kUbiquityTokenIDKey = @"CMA.MyFishingJournal.UbiquityIdentityToken";
-NSString *const kFirstLaunchKey = @"CMA.MyFishingJournal.firstLaunchWithCloudAvailableKey";
-NSString *const kCloudBackupEnabledKey = @"CMA.MyFishingJournal.cloudBackupEnabledKey";
-
-NSInteger const kNil = 0;
-NSInteger const kYES = 1;
-NSInteger const kNO = 2;
-
-// Checks to see if iCloud is available. Save the current Ubiquity Token ID if an account is logged in.
-- (void)iCloudUbiquityTokenHandler {
-    // gets the current devices iCloud token and archives it, or removes it from the archive if it doesn't exist
-    id currentCloudToken = [[NSFileManager defaultManager] ubiquityIdentityToken];
-    
-    // gets previously saved token
-    id previousCloudTokenData = [[NSUserDefaults standardUserDefaults] objectForKey:kUbiquityTokenIDKey];
-    id previousCloudToken;
-    
-    if (previousCloudTokenData)
-        previousCloudToken = [NSKeyedUnarchiver unarchiveObjectWithData:previousCloudTokenData];
-    
-    if (currentCloudToken && ![currentCloudToken isEqualToData:previousCloudToken]) { // if the current ID is different
-        NSData *newTokenData = [NSKeyedArchiver archivedDataWithRootObject:currentCloudToken];
-        
-        [[NSUserDefaults standardUserDefaults] setObject:newTokenData forKey:kUbiquityTokenIDKey];
-        [[NSUserDefaults standardUserDefaults] setInteger:kYES forKey:kFirstLaunchKey];
-        [[NSUserDefaults standardUserDefaults] setBool:NO forKey:kCloudBackupEnabledKey];
-        
-    } else if (!currentCloudToken && previousCloudToken) { // if no iCloud account is signed in, but there used to be
-        self.presentCloudAccountChangedAlert = YES;
-        [self iCloudDisableHandler];
-    } else if (!currentCloudToken)
-        [self iCloudDisableHandler];
-}
-
-// sets up a listener for when the ubiquity identity token changes.
-- (void)iCloudAccountChangeHandler {
-    // register an observer to detect if a user signs in or out of iCloud
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(iCloudAccountAvailabilityChanged)
-                                                 name:NSUbiquityIdentityDidChangeNotification
-                                               object:nil];
-}
-
-// Is executed when the ubiquity identity token changes.
-- (void)iCloudAccountAvailabilityChanged {
-    id currentCloudToken = [[NSFileManager defaultManager] ubiquityIdentityToken];
-    
-    self.presentCloudAccountChangedAlert = !currentCloudToken;
-    
-    [self iCloudUbiquityTokenHandler];
-    [self iCloudRequestHandlerOverrideFirstLaunch:NO withCallback:nil];
-}
-
-// Asks the user if they want to use iCloud or local storage (if an iCloud account is logged in).
-// Uses local storage if no account is logged in.
-- (void)iCloudRequestHandlerOverrideFirstLaunch:(BOOL)overrideFirstLaunch withCallback:(void(^)())aCallbackBlock {
-    NSInteger firstLaunchWithCloudAvailable = [[NSUserDefaults standardUserDefaults] integerForKey:kFirstLaunchKey];
-    
-    if (firstLaunchWithCloudAvailable == kNil) {
-        [[NSUserDefaults standardUserDefaults] setInteger:kYES forKey:kFirstLaunchKey];
-        firstLaunchWithCloudAvailable = kYES;
-    }
-    
-    // ask the user if they want to use iCloud
-    if ([[NSFileManager defaultManager] ubiquityIdentityToken] && (firstLaunchWithCloudAvailable == kYES || overrideFirstLaunch)) { // if this is the first launch with an iCloud account
-        self.iCloudAlert =
-            [UIAlertController alertControllerWithTitle:@"Choose Storage Option"
-                                                message:@"Should journal entries be stored in iCloud and be available on all your devices (recommended)?"
-                                         preferredStyle:UIAlertControllerStyleAlert];
-        
-        UIAlertAction *localOnlyAction =
-            [UIAlertAction actionWithTitle:@"Local Only"
-                                     style:UIAlertActionStyleDefault
-                                   handler:^(UIAlertAction *action) {
-                                       [[NSUserDefaults standardUserDefaults] setBool:NO forKey:kCloudBackupEnabledKey];
-                                       [[CMAStorageManager sharedManager] loadJournalWithCloudEnabled:NO];
-                                       
-                                       if (aCallbackBlock)
-                                           aCallbackBlock();
-                                   }];
-        
-        UIAlertAction *useCloudAction =
-            [UIAlertAction actionWithTitle:@"Use iCloud"
-                                     style:UIAlertActionStyleDefault
-                                   handler:^(UIAlertAction *action) {
-                                       [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kCloudBackupEnabledKey];
-                                       [[CMAStorageManager sharedManager] loadJournalWithCloudEnabled:YES];
-                                       
-                                       if (aCallbackBlock)
-                                           aCallbackBlock();
-                                   }];
-        
-        [self.iCloudAlert addAction:localOnlyAction];
-        [self.iCloudAlert addAction:useCloudAction];
-        
-        [[NSUserDefaults standardUserDefaults] setInteger:kNO forKey:kFirstLaunchKey]; // first launch is no longer available
-    } else {
-        [[CMAStorageManager sharedManager] loadJournalWithCloudEnabled:[self iCloudEnabled]];
-        self.iCloudAlert = nil;
-    }
-}
-
-- (void)iCloudDisableHandler {
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:kUbiquityTokenIDKey];
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:kFirstLaunchKey];
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:kCloudBackupEnabledKey];
-}
-
-- (BOOL)iCloudEnabled {
-    return [[NSUserDefaults standardUserDefaults] boolForKey:kCloudBackupEnabledKey];
 }
 
 @end

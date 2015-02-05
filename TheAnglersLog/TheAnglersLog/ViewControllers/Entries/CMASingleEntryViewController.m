@@ -175,7 +175,7 @@
          [CMATableCellProperties withLabelText: nil
                                  andDetailText: nil
                             andReuseIdentifier: @"weatherDataCell"
-                                     andHeight: kWeatherCellHeightExpanded + kWeatherCellTitlePadding
+                                     andHeight: TABLE_HEIGHT_WEATHER_CELL + kWeatherCellTitlePadding
                                   hasSeparator: YES]];
     
     // length
@@ -292,7 +292,7 @@
     if ([p.reuseIdentifier isEqualToString:@"weatherDataCell"]) {
         NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"CMAWeatherDataView" owner:self options:nil];
         CMAWeatherDataView *view = (CMAWeatherDataView *)[nib objectAtIndex:0];
-        [view setFrame:CGRectMake(0, kWeatherCellTitlePadding, 0, kWeatherCellHeightExpanded)];
+        [view setFrame:CGRectMake(0, kWeatherCellTitlePadding, 0, TABLE_HEIGHT_WEATHER_CELL)];
         [view setBackgroundColor:[UIColor redColor]];
         
         [view.weatherImageView setImage:[UIImage imageWithData:self.entry.weatherData.weatherImage]];
