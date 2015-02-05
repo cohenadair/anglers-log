@@ -60,6 +60,7 @@
     self.noEntriesView.titleView.text = @"Entries.";
     
     [self.noEntriesView centerInParent:self.view navigationController:self.navigationController];
+    [self.noEntriesView setAlpha:0.0f];
     [self.view addSubview:self.noEntriesView];
 }
 
@@ -89,19 +90,17 @@
 }
 
 - (void)handleNoEntriesView {
+    if (!self.noEntriesView)
+        [self initNoEntriesView];
+    
     if ([[self journal] entryCount] <= 0)
-        if (!self.noEntriesView)
-            [self noEntriesView];
-        else {
-            [UIView animateWithDuration:0.5 animations:^{
-                [self.noEntriesView setAlpha:1.0f];
-            }];
-        }
-        else {
-            [UIView animateWithDuration:0.5 animations:^{
-                [self.noEntriesView setAlpha:0.0f];
-            }];
-        }
+        [UIView animateWithDuration:0.5 animations:^{
+            [self.noEntriesView setAlpha:1.0f];
+        }];
+    else
+        [UIView animateWithDuration:0.5 animations:^{
+            [self.noEntriesView setAlpha:0.0f];
+        }];
 }
 
 - (void)setupView {
@@ -115,16 +114,13 @@
     
     self.navigationItem.title = [NSString stringWithFormat:@"Entries (%ld)", (long)[[self journal] entryCount]];
     
-    if (!self.noEntriesView)
-        [self initNoEntriesView];
-    
     [self handleNoEntriesView];
-    
+    /*
     if (![self journal])
         [self initLoadingJournalView];
     else if (self.loadingJournalView)
         [self.loadingJournalView setHidden:YES];
-    
+    */
     [self.tableView reloadData];
 }
 

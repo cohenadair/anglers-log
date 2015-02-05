@@ -29,18 +29,13 @@
 - (CMAUserDefine *)initWithName:(NSString *)aName andJournal:(CMAJournal *)aJournal {
     self.name = aName;
     self.journal = aJournal;
-    /*
-    if ([aName isEqualToString:UDN_BAITS])
-        self.baits = [NSMutableOrderedSet orderedSet];
-    else if ([aName isEqualToString:UDN_FISHING_METHODS])
-        self.fishingMethods = [NSMutableOrderedSet orderedSet];
-    else if ([aName isEqualToString:UDN_LOCATIONS])
-        self.locations = [NSMutableOrderedSet orderedSet];
-    else if ([aName isEqualToString:UDN_SPECIES])
-        self.species = [NSMutableOrderedSet orderedSet];
-    else if ([aName isEqualToString:UDN_WATER_CLARITIES])
-        self.waterClarities = [NSMutableOrderedSet orderedSet];
-    */
+    
+    self.baits = [NSMutableOrderedSet orderedSet];
+    self.fishingMethods = [NSMutableOrderedSet orderedSet];
+    self.locations = [NSMutableOrderedSet orderedSet];
+    self.species = [NSMutableOrderedSet orderedSet];
+    self.waterClarities = [NSMutableOrderedSet orderedSet];
+    
     return self;
 }
 

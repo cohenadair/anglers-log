@@ -24,7 +24,7 @@
     
     CGRect newFrame;
     newFrame.origin.x = aParentView.frame.origin.x;
-    newFrame.origin.y = yOffset;
+    newFrame.origin.y = yOffset + 10;
     newFrame.size.width = aParentView.frame.size.width;
     newFrame.size.height = screenFrame.size.height;
 

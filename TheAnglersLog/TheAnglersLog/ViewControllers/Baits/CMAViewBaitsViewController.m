@@ -56,7 +56,7 @@
 }
 
 - (void)handleNoBaitView {
-    if ([self.userDefineBaits count] <= 0)
+    if ([self.userDefineBaits count] <= 0) {
         if (!self.noBaitsView)
             [self initNoBaitView];
         else {
@@ -64,7 +64,7 @@
                 [self.noBaitsView setAlpha:1.0f];
             }];
         }
-    else {
+    } else {
         [UIView animateWithDuration:0.5 animations:^{
             [self.noBaitsView setAlpha:0.0f];
         }];
