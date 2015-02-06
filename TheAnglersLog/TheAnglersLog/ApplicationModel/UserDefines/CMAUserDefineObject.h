@@ -8,8 +8,14 @@
 
 #import <CoreData/CoreData.h>
 
+@class CMAUserDefine, CMAEntry;
+
 @interface CMAUserDefineObject : NSManagedObject
 
 @property (strong, nonatomic)NSString *name;
+@property (strong, nonatomic)NSMutableSet *entries;
+@property (strong, nonatomic)CMAUserDefine *userDefine;
+
+- (void)addEntry:(CMAEntry *)anEntry;
 
 @end

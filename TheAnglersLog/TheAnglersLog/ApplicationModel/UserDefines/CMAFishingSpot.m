@@ -10,7 +10,6 @@
 
 @implementation CMAFishingSpot
 
-@dynamic entries;
 @dynamic myLocation;
 @dynamic location;
 @dynamic fishCaught;
@@ -24,18 +23,6 @@
     self.entries = [NSMutableSet set];
     
     return self;
-}
-
-// Used to initialize objects created from an archive. For compatibility purposes.
-- (void)validateProperties {
-    if (!self.name)
-        self.name = [NSMutableString string];
-    
-    if (!self.location)
-        self.location = [CLLocation new];
-    
-    if (!self.fishCaught)
-        self.fishCaught = [NSNumber numberWithInteger:0];
 }
 
 #pragma mark - Editing
@@ -62,10 +49,6 @@
     count -= decBy;
     
     [self setFishCaught:[NSNumber numberWithInteger:count]];
-}
-
-- (void)addEntry:(CMAEntry *)anEntry {
-    [self.entries addObject:anEntry];
 }
 
 #pragma mark - Accessing

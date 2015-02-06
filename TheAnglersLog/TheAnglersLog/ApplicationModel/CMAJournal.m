@@ -32,14 +32,13 @@
     [self setEntrySortMethod:CMAEntrySortMethodDate];
     [self setEntrySortOrder:CMASortOrderDescending];
     
-    [self validateProperties];
+    [self initProperties];
     
     return self;
 }
 
-- (void)validateProperties {
+- (void)initProperties {
     [self initUserDefines];
-    [self initEntries];
     [self initStatistics];
 }
 
@@ -59,24 +58,12 @@
     
     if (![self userDefineNamed:UDN_WATER_CLARITIES])
         [self addUserDefineNamed:UDN_WATER_CLARITIES];
-    
-    for (CMAUserDefine *define in self.userDefines)
-        [define validateObjects];
 }
 
 // Adds a new CMAUserDefine object to [self userDefines].
 - (void)addUserDefineNamed:(NSString *)aName {
     CMAUserDefine *define = [[CMAStorageManager sharedManager] managedUserDefine];
     [self.userDefines addObject:[define initWithName:aName andJournal:self]];
-    
-    // add to core data
-    //[[CMAStorageManager sharedManager] insertManagedObject:define];
-}
-
-// Used for compatibility purposes if the class of a property changes.
-- (void)initEntries {
-    for (CMAEntry *e in self.entries)
-        [e validateProperties];
 }
 
 // Loops through entries and recounts statistical information. Used for compatibility with old archives.

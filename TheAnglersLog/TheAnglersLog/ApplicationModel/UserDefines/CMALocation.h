@@ -13,25 +13,18 @@
 #import "CMAUserDefineProtocol.h"
 #import "CMAUserDefineObject.h"
 
-@class CMAUserDefine, CMAEntry;
-
-@interface CMALocation : CMAUserDefineObject </*NSCoding, */CMAUserDefineProtocol>
-
-@property (strong, nonatomic)NSMutableSet *entries;
-@property (strong, nonatomic)CMAUserDefine *userDefine;
+@interface CMALocation : CMAUserDefineObject <CMAUserDefineProtocol>
 
 @property (strong, nonatomic)NSMutableOrderedSet *fishingSpots;
 
 // initializing
 - (CMALocation *)initWithName:(NSString *)aName andUserDefine:(CMAUserDefine *)aUserDefine;
-- (void)validateProperties;
 
 // editing
 - (BOOL)addFishingSpot: (CMAFishingSpot *)aFishingSpot;
 - (void)removeFishingSpotNamed: (NSString *)aName;
 - (void)editFishingSpotNamed: (NSString *)aName newProperties: (CMAFishingSpot *)aNewFishingSpot;
 - (void)edit:(CMALocation *)aNewLocation;
-- (void)addEntry:(CMAEntry *)anEntry;
 
 // accessing
 - (NSInteger)fishingSpotCount;

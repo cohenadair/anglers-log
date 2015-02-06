@@ -11,7 +11,6 @@
 @protocol CMAUserDefineProtocol <NSObject>
 
 @required
-- (void)validateProperties;
 - (void)edit:(id)aNewObject;
 
 @end

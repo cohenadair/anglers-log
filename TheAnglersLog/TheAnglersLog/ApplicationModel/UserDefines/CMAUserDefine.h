@@ -11,9 +11,10 @@
 
 @class CMAJournal;
 
-@interface CMAUserDefine : CMAUserDefineObject /*<NSCoding>*/
+@interface CMAUserDefine : NSManagedObject
 
 @property (strong, nonatomic)CMAJournal *journal;
+@property (strong, nonatomic)NSString *name;
 
 // Objects within these sets have to extend CMAUserDefineObject and abide by the CMAUserDefineProtocol
 // There is a different property for each user define to map the Core Data model.
@@ -26,9 +27,6 @@
 
 // initialization
 - (CMAUserDefine *)initWithName:(NSString *)aName andJournal:(CMAJournal *)aJournal;
-
-// validation
-- (void)validateObjects;
 
 // editing
 - (BOOL)addObject:(id)anObject;

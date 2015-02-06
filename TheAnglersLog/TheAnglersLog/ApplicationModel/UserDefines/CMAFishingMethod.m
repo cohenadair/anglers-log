@@ -10,9 +10,6 @@
 
 @implementation CMAFishingMethod
 
-@dynamic entries;
-@dynamic userDefine;
-
 #pragma mark - Initialization
 
 - (CMAFishingMethod *)initWithName:(NSString *)aName andUserDefine:(CMAUserDefine *)aUserDefine {
@@ -22,20 +19,10 @@
     return self;
 }
 
-// Used to initialize objects created from an archive. For compatibility purposes.
-- (void)validateProperties {
-    if (!self.name)
-        self.name = [NSMutableString string];
-}
-
 #pragma mark - Editing
 
 - (void)edit:(CMAFishingMethod *)aNewFishingMethod {
     [self setName:[aNewFishingMethod.name capitalizedString]];
-}
-
-- (void)addEntry:(CMAEntry *)anEntry {
-    [self.entries addObject:anEntry];
 }
 
 @end

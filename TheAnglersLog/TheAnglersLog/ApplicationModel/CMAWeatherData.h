@@ -13,7 +13,7 @@
 
 @class CMAEntry;
 
-@interface CMAWeatherData : NSManagedObject /*<NSCoding>*/
+@interface CMAWeatherData : NSManagedObject
 
 @property (strong, nonatomic)OWMWeatherAPI *weatherAPI;
 @property (nonatomic)CLLocationCoordinate2D coordinate;

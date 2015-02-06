@@ -15,7 +15,7 @@
 
 - (void)setSharedJournal:(CMAJournal *)sharedJournal {
     _sharedJournal = sharedJournal;
-    [_sharedJournal validateProperties];
+    [_sharedJournal initProperties];
 }
 
 #pragma mark - Singleton Methods

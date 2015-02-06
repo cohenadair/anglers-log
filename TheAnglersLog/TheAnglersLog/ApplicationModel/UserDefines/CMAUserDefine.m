@@ -18,6 +18,7 @@
 @implementation CMAUserDefine
 
 @dynamic journal;
+@dynamic name;
 @dynamic baits;
 @dynamic locations;
 @dynamic fishingMethods;
@@ -37,13 +38,6 @@
     self.waterClarities = [NSMutableOrderedSet orderedSet];
     
     return self;
-}
-
-#pragma mark - Validation
-
-- (void)validateObjects {
-    for (id o in [self activeSet])
-        [o validateProperties];
 }
 
 #pragma Editing

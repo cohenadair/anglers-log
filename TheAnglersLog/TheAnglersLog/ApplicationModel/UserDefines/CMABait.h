@@ -11,12 +11,9 @@
 #import "CMAConstants.h"
 #import "CMAUserDefineObject.h"
 
-@class CMAUserDefine, CMAImage, CMAEntry;
+@class CMAImage;
 
-@interface CMABait : CMAUserDefineObject </*NSCoding, */CMAUserDefineProtocol>
-
-@property (strong, nonatomic)NSMutableSet *entries;
-@property (strong, nonatomic)CMAUserDefine *userDefine;
+@interface CMABait : CMAUserDefineObject <CMAUserDefineProtocol>
 
 @property (strong, nonatomic)NSString *baitDescription;
 @property (strong, nonatomic)CMAImage *imageData;
@@ -26,12 +23,10 @@
 
 // initialization
 - (CMABait *)initWithName:(NSString *)aName andUserDefine:(CMAUserDefine *)aUserDefine;
-- (void)validateProperties;
 
 // editing
-- (void)edit: (CMABait *)aNewBait;
-- (void)incFishCaught: (NSInteger)incBy;
-- (void)decFishCaught: (NSInteger)decBy;
-- (void)addEntry:(CMAEntry *)anEntry;
+- (void)edit:(CMABait *)aNewBait;
+- (void)incFishCaught:(NSInteger)incBy;
+- (void)decFishCaught:(NSInteger)decBy;
 
 @end

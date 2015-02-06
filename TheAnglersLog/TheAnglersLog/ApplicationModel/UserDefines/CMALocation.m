@@ -13,9 +13,6 @@
 
 @implementation CMALocation
 
-@dynamic entries;
-@dynamic userDefine;
-
 @dynamic fishingSpots;
 
 #pragma mark - Global Accessing
@@ -33,18 +30,6 @@
     self.userDefine = aUserDefine;
     
     return self;
-}
-
-// Used to initialize objects created from an archive. For compatibility purposes.
-- (void)validateProperties {
-    if (!self.name)
-        self.name = [NSMutableString string];
-    
-    if (!self.fishingSpots)
-        self.fishingSpots = [NSMutableOrderedSet orderedSet];
-    
-    for (CMAFishingSpot *f in self.fishingSpots)
-        [f validateProperties];
 }
 
 #pragma mark - Editing
@@ -78,10 +63,6 @@
 - (void)edit:(CMALocation *)aNewLocation {
     [self setName:[aNewLocation.name capitalizedString]];
     [self setFishingSpots:aNewLocation.fishingSpots];
-}
-
-- (void)addEntry:(CMAEntry *)anEntry {
-    [self.entries addObject:anEntry];
 }
 
 #pragma mark - Accessing

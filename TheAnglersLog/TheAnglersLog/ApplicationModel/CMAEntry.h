@@ -17,7 +17,7 @@
 
 @class CMAJournal;
 
-@interface CMAEntry : NSManagedObject /*<NSCoding>*/
+@interface CMAEntry : NSManagedObject
 
 // date and time
 @property (strong, nonatomic)NSDate *date;

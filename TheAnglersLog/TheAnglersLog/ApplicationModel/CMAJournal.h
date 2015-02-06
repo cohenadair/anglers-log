@@ -12,7 +12,7 @@
 #import "CMAConstants.h"
 #import "CMAUserDefine.h"
 
-@interface CMAJournal : NSManagedObject /*<NSCoding>*/
+@interface CMAJournal : NSManagedObject
 
 @property (strong, nonatomic)NSString *name;
 @property (strong, nonatomic)NSMutableOrderedSet *entries;
@@ -23,7 +23,7 @@
 
 // initializing
 - (CMAJournal *)initWithName:(NSString *)aName;
-- (void)validateProperties;
+- (void)initProperties;
 
 - (void)archive;
 

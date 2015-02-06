@@ -10,9 +10,6 @@
 
 @implementation CMAWaterClarity
 
-@dynamic entries;
-@dynamic userDefine;
-
 #pragma mark - Initialization
 
 - (CMAWaterClarity *)initWithName:(NSString *)aName andUserDefine:(CMAUserDefine *)aUserDefine; {
@@ -21,12 +18,6 @@
     self.userDefine = aUserDefine;
     
     return self;
-}
-
-// Used to initialize objects created from an archive. For compatibility purposes.
-- (void)validateProperties {
-    if (!self.name)
-        self.name = [NSMutableString string];
 }
 
 #pragma mark - Editing

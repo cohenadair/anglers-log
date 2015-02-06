@@ -11,9 +11,6 @@
 
 @implementation CMABait
 
-@dynamic entries;
-@dynamic userDefine;
-
 @dynamic baitDescription;
 @dynamic imageData;
 @dynamic fishCaught;
@@ -34,15 +31,6 @@
     return self;
 }
 
-// Used to initialize objects created from an archive. For compatibility purposes.
-- (void)validateProperties {
-    if (!self.name)
-        self.name = [NSMutableString string];
-    
-    if (!self.fishCaught)
-        self.fishCaught = [NSNumber numberWithInteger:0];
-}
-
 #pragma mark - Editing
 
 - (void)setSize:(NSString *)size {
@@ -51,7 +39,7 @@
     [self didChangeValueForKey:@"size"];
 }
 
-- (void)edit: (CMABait *)aNewBait {
+- (void)edit:(CMABait *)aNewBait {
     [self setName:[aNewBait.name capitalizedString]];
     [self setBaitDescription:aNewBait.baitDescription];
     [self setImageData:aNewBait.imageData];
@@ -59,22 +47,18 @@
     [self setBaitType:aNewBait.baitType];
 }
 
-- (void)incFishCaught: (NSInteger)incBy {
+- (void)incFishCaught:(NSInteger)incBy {
     NSInteger count = [self.fishCaught integerValue];
     count += incBy;
     
     [self setFishCaught:[NSNumber numberWithInteger:count]];
 }
 
-- (void)decFishCaught: (NSInteger)decBy {
+- (void)decFishCaught:(NSInteger)decBy {
     NSInteger count = [self.fishCaught integerValue];
     count -= decBy;
     
     [self setFishCaught:[NSNumber numberWithInteger:count]];
-}
-
-- (void)addEntry:(CMAEntry *)anEntry {
-    [self.entries addObject:anEntry];
 }
 
 @end

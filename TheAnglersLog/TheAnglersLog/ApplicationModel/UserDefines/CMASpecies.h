@@ -10,12 +10,7 @@
 #import "CMAUserDefineProtocol.h"
 #import "CMAUserDefineObject.h"
 
-@class CMAUserDefine, CMAEntry;
-
-@interface CMASpecies : CMAUserDefineObject </*NSCoding, */CMAUserDefineProtocol>
-
-@property (strong, nonatomic)NSMutableSet *entries;
-@property (strong, nonatomic)CMAUserDefine *userDefine;
+@interface CMASpecies : CMAUserDefineObject <CMAUserDefineProtocol>
 
 @property (strong, nonatomic)NSNumber *numberCaught;
 @property (strong, nonatomic)NSNumber *weightCaught;
@@ -23,16 +18,14 @@
 
 // initialization
 - (CMASpecies *)initWithName:(NSString *)aName andUserDefine:(CMAUserDefine *)aUserDefine;
-- (void)validateProperties;
 
 // editing
-- (void)edit: (CMASpecies *)aNewSpecies;
-- (void)incNumberCaught: (NSInteger)incBy;
-- (void)decNumberCaught: (NSInteger)decBy;
-- (void)incWeightCaught: (NSInteger)incBy;
-- (void)decWeightCaught: (NSInteger)decBy;
-- (void)incOuncesCaught: (NSInteger)incBy;
-- (void)decOuncesCaught: (NSInteger)decBy;
-- (void)addEntry:(CMAEntry *)anEntry;
+- (void)edit:(CMASpecies *)aNewSpecies;
+- (void)incNumberCaught:(NSInteger)incBy;
+- (void)decNumberCaught:(NSInteger)decBy;
+- (void)incWeightCaught:(NSInteger)incBy;
+- (void)decWeightCaught:(NSInteger)decBy;
+- (void)incOuncesCaught:(NSInteger)incBy;
+- (void)decOuncesCaught:(NSInteger)decBy;
 
 @end
