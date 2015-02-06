@@ -621,7 +621,7 @@
                                 <action selector="clickedCancelButton:" destination="hTK-uR-uLB" id="5ud-CX-zy2"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="zOA-iT-fqY">
+                        <barButtonItem key="rightBarButtonItem" title="Done" style="done" id="zOA-iT-fqY">
                             <connections>
                                 <action selector="clickedDoneButton:" destination="hTK-uR-uLB" id="Af1-Cr-1kE"/>
                             </connections>
@@ -893,7 +893,7 @@
                                 <action selector="clickedCancalButton:" destination="Y9b-VK-mzA" id="vFz-9U-ga6"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" style="done" systemItem="done" id="are-Cj-ZFQ">
+                        <barButtonItem key="rightBarButtonItem" title="Done" style="done" id="are-Cj-ZFQ">
                             <connections>
                                 <action selector="clickedDoneButton:" destination="Y9b-VK-mzA" id="cFB-JI-wNx"/>
                             </connections>
@@ -1686,7 +1686,7 @@
                                 <action selector="clickedCancel:" destination="T1c-yJ-jzQ" id="XVG-DW-8pb"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="dty-g7-z94">
+                        <barButtonItem key="rightBarButtonItem" title="Done" style="done" id="dty-g7-z94">
                             <connections>
                                 <action selector="clickedDone:" destination="T1c-yJ-jzQ" id="eGl-XO-rWa"/>
                             </connections>
@@ -1989,7 +1989,7 @@
                                 <action selector="clickedCancel:" destination="wdM-fv-DrJ" id="JTB-um-mJv"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="Lkd-Ib-THA">
+                        <barButtonItem key="rightBarButtonItem" title="Done" style="done" id="Lkd-Ib-THA">
                             <connections>
                                 <action selector="clickedDone:" destination="wdM-fv-DrJ" id="Xj3-k0-0Do"/>
                             </connections>
@@ -2174,7 +2174,7 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Add Fishing Spot" id="t1R-rF-kMy">
-                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="6zi-Ba-2lv">
+                        <barButtonItem key="rightBarButtonItem" title="Done" style="done" id="6zi-Ba-2lv">
                             <connections>
                                 <action selector="clickDoneButton:" destination="4io-XD-WCS" id="eAd-CQ-IGK"/>
                             </connections>
