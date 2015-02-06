@@ -26,7 +26,7 @@
         <relationship name="fishingSpot" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CMAFishingSpot" inverseName="entries" inverseEntity="CMAFishingSpot" syncable="YES"/>
         <relationship name="fishSpecies" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CMASpecies" inverseName="entries" inverseEntity="CMASpecies" syncable="YES"/>
         <relationship name="images" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="CMAImage" inverseName="entry" inverseEntity="CMAImage" syncable="YES"/>
-        <relationship name="journal" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="CMAJournal" inverseName="entries" inverseEntity="CMAJournal" syncable="YES"/>
+        <relationship name="journal" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CMAJournal" inverseName="entries" inverseEntity="CMAJournal" syncable="YES"/>
         <relationship name="location" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CMALocation" inverseName="entries" inverseEntity="CMALocation" syncable="YES"/>
         <relationship name="waterClarity" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CMAWaterClarity" inverseName="entries" inverseEntity="CMAWaterClarity" syncable="YES"/>
         <relationship name="weatherData" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CMAWeatherData" inverseName="entry" inverseEntity="CMAWeatherData" syncable="YES"/>
