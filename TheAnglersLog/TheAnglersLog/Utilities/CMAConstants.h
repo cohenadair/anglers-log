@@ -54,6 +54,12 @@ typedef enum smID_e : int16_t {
     CMAEntrySortMethodBaitUsed  = 5
 } CMAEntrySortMethod;
 
+// Each value represents the index for an item in a UISegmentedControlView.
+typedef enum frID_e : int16_t {
+    CMAFishResultReleased   = 0,
+    CMAFishResultKept       = 1
+} CMAFishResult;
+
 #pragma mark - Global Variables
 
 // initialized in CMAAppDelegate.m

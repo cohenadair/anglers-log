@@ -205,6 +205,13 @@
                                      andHeight: kRightDetailCellHeight
                                   hasSeparator: NO]];
     
+    [self.tableCellProperties addObject:
+     [CMATableCellProperties withLabelText:@"Result"
+                             andDetailText:[self.entry fishResultAsString]
+                        andReuseIdentifier:@"rightDetailCell"
+                                 andHeight:kRightDetailCellHeight
+                              hasSeparator:NO]];
+    
     // fishing methods
     if ([self.entry.fishingMethods count] > 0)
         [self.tableCellProperties addObject:

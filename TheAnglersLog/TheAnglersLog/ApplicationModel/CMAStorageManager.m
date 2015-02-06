@@ -93,7 +93,7 @@
         NSLog(@"Error in persistentStoreCoordinator: %@, %@", error, [error userInfo]);
     }
     
-    //NSLog(@"Core Data URL: %@", [store URL]);
+    NSLog(@"%@", [store URL]);
     
     return _persistentStoreCoordinator;
 }

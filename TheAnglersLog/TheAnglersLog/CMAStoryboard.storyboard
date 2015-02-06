@@ -1427,6 +1427,47 @@
                                             </variation>
                                         </tableViewCellContentView>
                                     </tableViewCell>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="PY0-3B-fxj">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="PY0-3B-fxj" id="jDu-wl-sRB">
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Result" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HtH-5a-cMd">
+                                                    <rect key="frame" x="16" y="10" width="53" height="21"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="53" id="Hp2-rn-OCW"/>
+                                                        <constraint firstAttribute="height" constant="21" id="MA3-zw-0yB"/>
+                                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="53" id="xiQ-Ec-jZp"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                    <variation key="default">
+                                                        <mask key="constraints">
+                                                            <exclude reference="xiQ-Ec-jZp"/>
+                                                        </mask>
+                                                    </variation>
+                                                </label>
+                                                <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="6Pt-hN-lKu">
+                                                    <rect key="frame" x="415" y="7" width="170" height="29"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="170" id="A7f-Hg-6Ue"/>
+                                                    </constraints>
+                                                    <segments>
+                                                        <segment title="Released"/>
+                                                        <segment title="Kept"/>
+                                                    </segments>
+                                                </segmentedControl>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="centerY" secondItem="6Pt-hN-lKu" secondAttribute="centerY" constant="1" id="Gto-lE-O4D"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="6Pt-hN-lKu" secondAttribute="trailing" constant="7" id="J7Y-43-mrQ"/>
+                                                <constraint firstItem="HtH-5a-cMd" firstAttribute="leading" secondItem="jDu-wl-sRB" secondAttribute="leadingMargin" constant="8" id="L5r-Ei-z28"/>
+                                                <constraint firstAttribute="centerY" secondItem="HtH-5a-cMd" secondAttribute="centerY" constant="1.5" id="eCV-5L-3vm"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
                                 </cells>
                             </tableViewSection>
                             <tableViewSection headerTitle="Catch Details" id="pgs-jR-9Yt">
@@ -1701,6 +1742,7 @@
                         <outlet property="ouncesTextField" destination="K7J-Yv-8mz" id="O6y-uI-VmO"/>
                         <outlet property="poundsTextField" destination="96I-fZ-25l" id="tH2-vt-l0h"/>
                         <outlet property="quantityTextField" destination="7gR-XQ-cyh" id="eAH-so-S1b"/>
+                        <outlet property="resultSegmentedControl" destination="6Pt-hN-lKu" id="Vhg-WB-cxQ"/>
                         <outlet property="speciesDetailLabel" destination="iG0-tN-1ui" id="Nx9-qJ-Phf"/>
                         <outlet property="toggleWeatherButton" destination="JXO-ne-uRf" id="hkm-w2-xuW"/>
                         <outlet property="waterClarityLabel" destination="BqD-Ll-G6W" id="05K-sd-b1f"/>
@@ -1722,7 +1764,7 @@
                     </connections>
                 </pongPressGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="4978" y="-1105"/>
+            <point key="canvasLocation" x="4978" y="-1106"/>
         </scene>
         <!--Statistics-->
         <scene sceneID="0CA-ia-Kux">
@@ -2961,21 +3003,21 @@
         <image name="water_clarities.png" width="50" height="50"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="gDt-Tw-gtk"/>
-        <segue reference="0It-ub-fzN"/>
-        <segue reference="egX-OW-uSX"/>
-        <segue reference="guB-6y-sIg"/>
-        <segue reference="8iL-u2-ZVl"/>
-        <segue reference="Jyy-wS-dXA"/>
+        <segue reference="ooh-Eu-Ug2"/>
+        <segue reference="RpT-ts-gTM"/>
         <segue reference="Gww-wH-Tkw"/>
-        <segue reference="rQz-NV-wiY"/>
+        <segue reference="egX-OW-uSX"/>
+        <segue reference="0It-ub-fzN"/>
+        <segue reference="8iL-u2-ZVl"/>
+        <segue reference="guB-6y-sIg"/>
+        <segue reference="gDt-Tw-gtk"/>
+        <segue reference="Jyy-wS-dXA"/>
+        <segue reference="wZB-7v-gkR"/>
         <segue reference="y0h-hR-J5c"/>
-        <segue reference="1Kg-jf-Myf"/>
+        <segue reference="2ub-xD-2JF"/>
         <segue reference="uUK-tT-jvg"/>
+        <segue reference="1Kg-jf-Myf"/>
         <segue reference="ij7-4o-wMK"/>
         <segue reference="qAO-gb-5Yr"/>
-        <segue reference="ooh-Eu-Ug2"/>
-        <segue reference="wZB-7v-gkR"/>
-        <segue reference="bAG-il-Vyj"/>
     </inferredMetricsTieBreakers>
 </document>

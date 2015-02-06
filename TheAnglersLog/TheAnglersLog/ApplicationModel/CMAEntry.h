@@ -31,6 +31,7 @@
 @property (strong, nonatomic)NSNumber *fishWeight;
 @property (strong, nonatomic)NSNumber *fishOunces;
 @property (strong, nonatomic)NSNumber *fishQuantity;
+@property (nonatomic)CMAFishResult fishResult;
 
 // catch details
 @property (strong, nonatomic)CMABait *baitUsed;
@@ -62,6 +63,7 @@
 - (NSString *)locationAsString;
 - (NSString *)fishingMethodsAsString;
 - (NSString *)weightAsStringWithMeasurementSystem:(CMAMeasuringSystemType)aMeasurementSystem shorthand:(BOOL)useShorthand;
+- (NSString *)fishResultAsString;
 
 // editing
 - (void)edit:(CMAEntry *)aNewEntry;

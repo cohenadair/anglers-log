@@ -45,6 +45,7 @@
 @property (weak, nonatomic)IBOutlet UILabel *weightLabel;
 @property (weak, nonatomic)IBOutlet UITableViewCell *metricWeightCell;
 @property (weak, nonatomic)IBOutlet UITableViewCell *imperialWeightCell;
+@property (weak, nonatomic)IBOutlet UISegmentedControl *resultSegmentedControl;
 
 #pragma mark - Catch Details
 @property (weak, nonatomic)IBOutlet UILabel *locationDetailLabel;
@@ -245,6 +246,9 @@ NSString *const kNotSelectedString = @"Not Selected";
                 [self.ouncesTextField setText:@"0"];
         }
     }
+    
+    // fish result
+    [self.resultSegmentedControl setSelectedSegmentIndex:self.entry.fishResult];
     
     // bait used
     if (self.entry.baitUsed)
@@ -690,6 +694,9 @@ NSString *const kNotSelectedString = @"Not Selected";
             }
         }
     }
+    
+    // fish result
+    [anEntry setFishResult:[self.resultSegmentedControl selectedSegmentIndex]];
     
     // location and fishing spot
     if (![[self.locationDetailLabel text] isEqualToString:kNotSelectedString]) {

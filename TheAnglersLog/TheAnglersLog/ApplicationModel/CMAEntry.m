@@ -18,6 +18,7 @@
 @dynamic fishWeight;
 @dynamic fishOunces;
 @dynamic fishQuantity;
+@dynamic fishResult;
 @dynamic baitUsed;
 @dynamic fishingMethods;
 @dynamic location;
@@ -117,6 +118,17 @@
     return result;
 }
 
+- (NSString *)fishResultAsString {
+    if (self.fishResult == CMAFishResultKept)
+        return @"Kept";
+    else if (self.fishResult == CMAFishResultReleased)
+        return @"Released";
+    else
+        NSLog(@"Invalid CMAFishResult in [CMAEntryInstance fishResultAsString].");
+    
+    return @"";
+}
+
 #pragma mark - Editing
 
 - (void)edit:(CMAEntry *)aNewEntry {
@@ -127,6 +139,7 @@
     self.fishWeight = aNewEntry.fishWeight;
     self.fishOunces = aNewEntry.fishOunces;
     self.fishQuantity = aNewEntry.fishQuantity;
+    self.fishResult = aNewEntry.fishResult;
     self.baitUsed = aNewEntry.baitUsed;
     self.fishingMethods = aNewEntry.fishingMethods;
     self.location = aNewEntry.location;
