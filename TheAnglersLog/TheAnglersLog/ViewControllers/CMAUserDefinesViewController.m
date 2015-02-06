@@ -228,7 +228,7 @@
 // Initialize each cell.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"editSettingsCell" forIndexPath:indexPath];
-    cell.textLabel.text = [[self.userDefine objectAtIndex:indexPath.item] name];
+    cell.textLabel.text = [[self.userDefine objectAtIndex:indexPath.row] name];
     
     // enable chevron for non-strings
     if (![self.userDefine isSetOfStrings] && !self.isSelectingForStatistics)

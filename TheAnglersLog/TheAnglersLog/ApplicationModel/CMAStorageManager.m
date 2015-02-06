@@ -116,30 +116,28 @@
 #pragma mark - Core Data Management
 
 - (void)saveJournal {
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        NSManagedObjectContext *managedObjectContext = self.managedObjectContext;
+    NSManagedObjectContext *managedObjectContext = self.managedObjectContext;
+    
+    if (managedObjectContext != nil) {
+        NSError *error = nil;
         
-        if (managedObjectContext != nil) {
-            NSError *error = nil;
+        if ([managedObjectContext hasChanges]) {
+            NSLog(@"Saving data...");
             
-            if ([managedObjectContext hasChanges]) {
-                NSLog(@"Saving data...");
+            if (![managedObjectContext save:&error]) {
+                NSLog(@"Failed to save data: %@.", [error localizedDescription]);
                 
-                if (![managedObjectContext save:&error]) {
-                    NSLog(@"Failed to save data: %@.", [error localizedDescription]);
-                    
-                    NSArray* detailedErrors = [[error userInfo] objectForKey:NSDetailedErrorsKey];
-                    if (detailedErrors != nil && [detailedErrors count] > 0) {
-                        for (NSError* detailedError in detailedErrors) {
-                            NSLog(@"DetailedError: %@", [detailedError userInfo]);
-                        }
+                NSArray* detailedErrors = [[error userInfo] objectForKey:NSDetailedErrorsKey];
+                if (detailedErrors != nil && [detailedErrors count] > 0) {
+                    for (NSError* detailedError in detailedErrors) {
+                        NSLog(@"DetailedError: %@", [detailedError userInfo]);
                     }
-                } else
-                    NSLog(@"Saved library data.");
+                }
             } else
-                NSLog(@"No changes made.");
-        }
-    });
+                NSLog(@"Saved library data.");
+        } else
+            NSLog(@"No changes made.");
+    }
 }
 
 - (void)loadJournal {
@@ -161,10 +159,12 @@
 }
 
 - (void)deleteManagedObject:(NSManagedObject *)aManagedObject {
-    [self.managedObjectContext deleteObject:aManagedObject];
-    
-    NSLog(@"Initializing save after delete...");
-    [self saveJournal];
+    if (aManagedObject) {
+        [self.managedObjectContext deleteObject:aManagedObject];
+        
+        NSLog(@"Initializing save after delete...");
+        [self saveJournal];
+    }
 }
 
 - (void)deleteAllObjectsForEntityName:(NSString *)anEntityName {

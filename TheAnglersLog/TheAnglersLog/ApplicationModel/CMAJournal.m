@@ -118,7 +118,7 @@
     return YES;
 }
 
-- (void)removeEntryDated: (NSDate *)aDate {
+- (void)removeEntryDated:(NSDate *)aDate {
     CMAEntry *entry = [self entryDated:aDate];
     
     // remove from core data
@@ -130,15 +130,15 @@
 
 // removes entry with aDate and adds aNewEntry
 // no need to keep the same instance since the reference doesn't need to be kept track of
-- (void)editEntryDated: (NSDate *)aDate newProperties: (CMAEntry *)aNewEntry {
+- (void)editEntryDated:(NSDate *)aDate newProperties: (CMAEntry *)aNewEntry {
     [[self entryDated:aDate] edit:aNewEntry];
 }
 
-- (BOOL)addUserDefine: (NSString *)aDefineName objectToAdd: (id)anObject {
+- (BOOL)addUserDefine:(NSString *)aDefineName objectToAdd: (id)anObject {
     return [[self userDefineNamed:aDefineName] addObject:anObject];
 }
 
-- (void)removeUserDefine: (NSString *)aDefineName objectNamed: (NSString *)anObjectName {
+- (void)removeUserDefine:(NSString *)aDefineName objectNamed: (NSString *)anObjectName {
     id obj = [[self userDefineNamed:aDefineName] objectNamed:anObjectName];
     
     // remove from core data
@@ -150,11 +150,11 @@
     [[self userDefineNamed:aDefineName] removeObjectNamed:anObjectName];
 }
 
-- (void)editUserDefine: (NSString *)aDefineName objectNamed: (NSString *)objectName newProperties: (id)aNewObject {
+- (void)editUserDefine:(NSString *)aDefineName objectNamed: (NSString *)objectName newProperties: (id)aNewObject {
     [[self userDefineNamed:aDefineName] editObjectNamed:objectName newObject:aNewObject];
 }
 
-- (void)incStatsForEntry: (CMAEntry *)anEntry {
+- (void)incStatsForEntry:(CMAEntry *)anEntry {
     // fish quantity
     if ([anEntry.fishQuantity integerValue] > 0)
         [anEntry.fishSpecies incNumberCaught:[anEntry.fishQuantity integerValue]];
@@ -193,7 +193,7 @@
         [anEntry.fishingSpot incFishCaught:1];
 }
 
-- (void)decStatsForEntry: (CMAEntry *)anEntry {
+- (void)decStatsForEntry:(CMAEntry *)anEntry {
     // quantity
     if ([anEntry.fishQuantity integerValue] > 0)
         [anEntry.fishSpecies decNumberCaught:[anEntry.fishQuantity integerValue]];
@@ -238,7 +238,7 @@
 
 #pragma mark - Accessing
 
-- (CMAUserDefine *)userDefineNamed: (NSString *)aName {
+- (CMAUserDefine *)userDefineNamed:(NSString *)aName {
     for (CMAUserDefine *define in [self userDefines])
         if ([[define name] isEqualToString:aName])
             return define;
