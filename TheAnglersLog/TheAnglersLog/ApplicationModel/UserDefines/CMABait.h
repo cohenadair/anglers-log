@@ -29,4 +29,7 @@
 - (void)incFishCaught:(NSInteger)incBy;
 - (void)decFishCaught:(NSInteger)decBy;
 
+// accessing
+- (NSString *)typeAsString;
+
 @end

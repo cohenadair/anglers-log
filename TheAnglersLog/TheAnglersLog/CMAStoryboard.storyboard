@@ -511,40 +511,28 @@
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="WIY-aX-7zE" id="WzG-Af-ebX">
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Bait Type" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Epv-0K-sTI">
-                                                    <rect key="frame" x="16" y="11" width="85" height="21"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="21" id="2Il-zs-DZL"/>
-                                                        <constraint firstAttribute="width" constant="85" id="PBU-gN-XvE"/>
-                                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="85" id="UYy-W1-rOa"/>
-                                                    </constraints>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                    <variation key="default">
-                                                        <mask key="constraints">
-                                                            <exclude reference="UYy-W1-rOa"/>
-                                                        </mask>
-                                                    </variation>
-                                                </label>
                                                 <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="cFu-pL-GsC">
-                                                    <rect key="frame" x="433" y="7" width="151" height="29"/>
+                                                    <rect key="frame" x="16" y="7" width="569" height="29"/>
                                                     <segments>
-                                                        <segment title="Artificial" width="75"/>
-                                                        <segment title="Live" width="75"/>
+                                                        <segment title="Artificial"/>
+                                                        <segment title="Live"/>
+                                                        <segment title="Real"/>
                                                     </segments>
                                                 </segmentedControl>
                                             </subviews>
                                             <constraints>
+                                                <constraint firstItem="cFu-pL-GsC" firstAttribute="leading" secondItem="WzG-Af-ebX" secondAttribute="leadingMargin" constant="8" id="C2E-WO-bGD"/>
+                                                <constraint firstItem="cFu-pL-GsC" firstAttribute="centerX" secondItem="WzG-Af-ebX" secondAttribute="centerX" id="DHP-yn-y6K"/>
+                                                <constraint firstItem="cFu-pL-GsC" firstAttribute="bottom" secondItem="WzG-Af-ebX" secondAttribute="bottomMargin" id="OW1-TM-yzv"/>
                                                 <constraint firstAttribute="centerY" secondItem="cFu-pL-GsC" secondAttribute="centerY" constant="-0.5" id="ZOT-hh-GyS"/>
-                                                <constraint firstItem="Epv-0K-sTI" firstAttribute="leading" secondItem="WzG-Af-ebX" secondAttribute="leadingMargin" constant="8" id="cEg-lQ-e06"/>
-                                                <constraint firstAttribute="trailingMargin" secondItem="cFu-pL-GsC" secondAttribute="trailing" constant="8" id="eA6-2Q-pqJ"/>
-                                                <constraint firstAttribute="centerY" secondItem="cFu-pL-GsC" secondAttribute="centerY" constant="0.5" id="fS4-As-rJJ"/>
-                                                <constraint firstAttribute="centerY" secondItem="Epv-0K-sTI" secondAttribute="centerY" id="foW-yo-Mwe"/>
+                                                <constraint firstItem="cFu-pL-GsC" firstAttribute="leading" secondItem="WzG-Af-ebX" secondAttribute="leadingMargin" constant="8" id="hHX-Cy-sRB"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="cFu-pL-GsC" secondAttribute="trailing" constant="7" id="r5P-AR-NvW"/>
                                             </constraints>
                                             <variation key="default">
                                                 <mask key="constraints">
+                                                    <exclude reference="C2E-WO-bGD"/>
                                                     <exclude reference="ZOT-hh-GyS"/>
+                                                    <exclude reference="r5P-AR-NvW"/>
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>
@@ -651,7 +639,7 @@
                     </connections>
                 </pongPressGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="4978" y="-183"/>
+            <point key="canvasLocation" x="4978" y="-186"/>
         </scene>
         <!--Entries-->
         <scene sceneID="qbr-pc-l7U">

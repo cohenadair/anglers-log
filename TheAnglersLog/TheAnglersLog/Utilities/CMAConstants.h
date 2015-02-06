@@ -39,7 +39,8 @@ typedef enum soID_e : int16_t {
 // Each value represents the index for an item in a UISegmentedControlView.
 typedef enum btID_e : int16_t {
     CMABaitTypeArtificial   = 0,
-    CMABaitTypeLive         = 1
+    CMABaitTypeLive         = 1,
+    CMABaitTypeReal         = 2
 } CMABaitType;
 
 // Each value >= 0 represents an index for a row in a UITableView.

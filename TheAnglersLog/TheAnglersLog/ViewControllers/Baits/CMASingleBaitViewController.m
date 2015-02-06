@@ -90,11 +90,7 @@
     [self.navigationItem setTitle:self.bait.name];
     [self.imageView setImage:[self.bait.imageData dataAsUIImage]];
     [self.baitFishCaughtLabel setText:[self.bait.fishCaught stringValue]];
-
-    if (self.bait.baitType == CMABaitTypeArtificial)
-        [self.baitTypeLabel setText:@"Artificial"];
-    else
-        [self.baitTypeLabel setText:@"Live"];
+    [self.baitTypeLabel setText:[self.bait typeAsString]];
     
     if (self.bait.size)
         [self.baitSizeLabel setText:self.bait.size];

@@ -61,4 +61,19 @@
     [self setFishCaught:[NSNumber numberWithInteger:count]];
 }
 
+#pragma mark - Accessing
+
+- (NSString *)typeAsString {
+    if (self.baitType == CMABaitTypeArtificial)
+        return @"Atrificial";
+    else if (self.baitType == CMABaitTypeLive)
+        return @"Live";
+    else if (self.baitType == CMABaitTypeReal)
+        return @"Real";
+    else
+        NSLog(@"Invalid baitType in [CMABaitInstance typeAsString]");
+    
+    return @"";
+}
+
 @end
