@@ -9,6 +9,7 @@
 #import "CMASinglePhotoViewController.h"
 #import "CMAConstants.h"
 #import "CMAInstagramActivity.h"
+#import "CMAImage.h"
 
 @interface CMASinglePhotoViewController ()
 
@@ -64,7 +65,7 @@
     [cell setBackgroundColor:[UIColor redColor]];
     
     UIImageView *imageView = (UIImageView *)[cell viewWithTag:100];
-    [imageView setImage:[self.imagesArray objectAtIndex:indexPath.item]];
+    [imageView setImage:[[self.imagesArray objectAtIndex:indexPath.item] dataAsUIImage]];
     
     return cell;
 }

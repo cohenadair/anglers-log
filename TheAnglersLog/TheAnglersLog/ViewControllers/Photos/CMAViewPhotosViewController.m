@@ -121,7 +121,7 @@
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"thumbnailCell" forIndexPath:indexPath];
     
     UIImageView *imageView = (UIImageView *)[cell viewWithTag:100];
-    [imageView setImage:[self.imagesArray objectAtIndex:indexPath.item]];
+    [imageView setImage:[[self.imagesArray objectAtIndex:indexPath.item] dataAsUIImage]];
     
     return cell;
 }

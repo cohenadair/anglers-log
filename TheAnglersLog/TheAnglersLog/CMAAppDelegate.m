@@ -17,6 +17,8 @@
     [[CMAStorageManager sharedManager] loadJournal];
     [self initAppearances];
     
+    [[CMAStorageManager sharedManager] debugCoreDataObjects];
+    
     return YES;
 }
 
