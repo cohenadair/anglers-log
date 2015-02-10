@@ -387,6 +387,12 @@
             }];
             break;
             
+        case CMAEntrySortMethodResult:
+            sortedArray = [self.entries sortedArrayUsingComparator:^NSComparisonResult(CMAEntry *e1, CMAEntry *e2){
+                return [[NSNumber numberWithInteger:e1.fishResult] compare:[NSNumber numberWithInteger:e2.fishResult]];
+            }];
+            break;
+            
         default:
             NSLog(@"Invalid CMASortMethod in [aCMAJournal sortEntriesBy].");
             break;

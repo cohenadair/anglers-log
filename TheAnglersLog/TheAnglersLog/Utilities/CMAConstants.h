@@ -51,7 +51,8 @@ typedef enum smID_e : int16_t {
     CMAEntrySortMethodLocation  = 2,
     CMAEntrySortMethodLength    = 3,
     CMAEntrySortMethodWeight    = 4,
-    CMAEntrySortMethodBaitUsed  = 5
+    CMAEntrySortMethodBaitUsed  = 5,
+    CMAEntrySortMethodResult    = 6
 } CMAEntrySortMethod;
 
 // Each value represents the index for an item in a UISegmentedControlView.
