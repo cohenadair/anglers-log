@@ -54,6 +54,13 @@
     return [self.fishingMethods count];
 }
 
+- (NSString *)dateAsString {
+    NSDateFormatter *format = [NSDateFormatter new];
+    [format setDateFormat:@"MMMM dd, yyyy 'at' h:mm a"];
+    
+    return [format stringFromDate:self.date];
+}
+
 - (NSString *)fishingMethodsAsString {
     NSString *result = [NSString new];
     NSArray *fishingMethods = [self.fishingMethods allObjects];

@@ -28,25 +28,28 @@
 - (void)archive;
 
 // editing
-- (BOOL)addEntry: (CMAEntry *)anEntry;
-- (void)removeEntryDated: (NSDate *)aDate;
-- (void)editEntryDated: (NSDate *)aDate newProperties: (CMAEntry *)aNewEntry;
+- (BOOL)addEntry:(CMAEntry *)anEntry;
+- (void)removeEntryDated:(NSDate *)aDate;
+- (void)editEntryDated:(NSDate *)aDate newProperties:(CMAEntry *)aNewEntry;
 
-- (BOOL)addUserDefine: (NSString *)aDefineName objectToAdd: (id)anObject;
-- (void)removeUserDefine: (NSString *)aDefineName objectNamed: (NSString *)anObjectName;
-- (void)editUserDefine: (NSString *)aDefineName objectNamed: (id)aName newProperties: (id)aNewObject;
+- (BOOL)addUserDefine:(NSString *)aDefineName objectToAdd:(id)anObject;
+- (void)removeUserDefine:(NSString *)aDefineName objectNamed:(NSString *)anObjectName;
+- (void)editUserDefine:(NSString *)aDefineName objectNamed:(id)aName newProperties:(id)aNewObject;
 
 // accessing
-- (CMAUserDefine *)userDefineNamed: (NSString *)aName;
+- (CMAUserDefine *)userDefineNamed:(NSString *)aName;
 - (NSInteger)entryCount;
-- (CMAEntry *)entryDated: (NSDate *)aDate;
-- (NSString *)lengthUnitsAsString: (BOOL)shorthand;
-- (NSString *)weightUnitsAsString: (BOOL)shorthand;
-- (NSString *)depthUnitsAsString: (BOOL)shorthand;
-- (NSString *)temperatureUnitsAsString: (BOOL)shorthand;
-- (NSString *)speedUnitsAsString: (BOOL)shorthand;
+- (CMAEntry *)entryDated:(NSDate *)aDate;
+- (NSString *)lengthUnitsAsString:(BOOL)shorthand;
+- (NSString *)weightUnitsAsString:(BOOL)shorthand;
+- (NSString *)depthUnitsAsString:(BOOL)shorthand;
+- (NSString *)temperatureUnitsAsString:(BOOL)shorthand;
+- (NSString *)speedUnitsAsString:(BOOL)shorthand;
 
 // sorting
-- (void)sortEntriesBy: (CMAEntrySortMethod)aSortMethod order: (CMASortOrder)aSortOrder;
+- (void)sortEntriesBy:(CMAEntrySortMethod)aSortMethod order:(CMASortOrder)aSortOrder;
+
+// filtering
+- (NSMutableOrderedSet *)filterEntries:(NSString *)searchText;
 
 @end

@@ -189,7 +189,7 @@ NSString *const kNotSelectedString = @"Not Selected";
 - (void)initUnitCells {
     [self.lengthLabel setText:[NSString stringWithFormat:@"Length (%@)", [[self journal] lengthUnitsAsString:NO]]];
     [self.waterDepthLabel setText:[NSString stringWithFormat:@"Depth (%@)", [[self journal] depthUnitsAsString:NO]]];
-    [self.waterTemperatureLabel setText:[NSString stringWithFormat:@"Temperature (%@)", [[self journal] temperatureUnitsAsString:NO]]];
+    [self.waterTemperatureLabel setText:[NSString stringWithFormat:@"Temperature (%@)", [[self journal] temperatureUnitsAsString:YES]]];
     
     if ([[self journal] measurementSystem] == CMAMeasuringSystemTypeImperial)
         [self.metricWeightCell setHidden:YES];

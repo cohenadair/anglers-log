@@ -17,7 +17,7 @@
     [[CMAStorageManager sharedManager] loadJournal];
     [self initAppearances];
     
-    [[CMAStorageManager sharedManager] debugCoreDataObjects];
+    //[[CMAStorageManager sharedManager] debugCoreDataObjects];
     
     return YES;
 }
@@ -70,7 +70,6 @@
     
     [[UINavigationBar appearance] setTranslucent:NO];
     [[UIToolbar appearance] setTranslucent:NO];
-    [self.window setTintColor:[UIColor redColor]];
 }
 
 @end

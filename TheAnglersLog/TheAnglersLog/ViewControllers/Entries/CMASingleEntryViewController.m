@@ -141,11 +141,9 @@
                               hasSeparator: NO]];
     
     // species and date
-    NSDateFormatter *dateFormatter = [NSDateFormatter new];
-    [dateFormatter setDateFormat:@"MMMM dd, yyyy 'at' h:mm a"];
     [self.tableCellProperties addObject:
      [CMATableCellProperties withLabelText: self.entry.fishSpecies.name
-                             andDetailText: [dateFormatter stringFromDate:self.entry.date]
+                             andDetailText: [self.entry dateAsString]
                         andReuseIdentifier: @"subtitleCell"
                                  andHeight: kSubtitleCellHeight
                               hasSeparator: YES]];

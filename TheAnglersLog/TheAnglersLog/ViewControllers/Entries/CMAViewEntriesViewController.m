@@ -26,8 +26,15 @@
 
 @property (strong, nonatomic)NSDateFormatter *dateFormatter;
 @property (strong, nonatomic)CMANoXView *noEntriesView;
+@property (strong, nonatomic)UISearchBar *searchBar;
+@property (strong, nonatomic)UIView *searchResultView;
+
+@property (strong, nonatomic)NSMutableOrderedSet *entries;
+@property (nonatomic)BOOL isSearchBarInView;
 
 @end
+
+#define kSearchBarHeight 44
 
 @implementation CMAViewEntriesViewController
 
@@ -67,7 +74,7 @@
     if (!self.noEntriesView)
         [self initNoEntriesView];
     
-    if ([[self journal] entryCount] <= 0)
+    if ([self.entries count] <= 0)
         [UIView animateWithDuration:0.5 animations:^{
             [self.noEntriesView setAlpha:1.0f];
         }];
@@ -81,7 +88,7 @@
     self.navigationController.toolbarHidden = NO;
     self.navigationController.toolbar.userInteractionEnabled = YES;
     
-    if ([[self journal] entryCount] > 0) {
+    if ([self.entries count] > 0) {
         self.deleteButton.enabled = YES;
         self.sortButton.enabled = YES;
     }
@@ -101,18 +108,34 @@
     self.dateFormatter = [NSDateFormatter new];
     [self.dateFormatter setDateFormat:@"MMM dd, yyyy 'at' h:mm a"];
     
-    if ([[self journal] entryCount] <= 0) {
+    self.entries = [[self journal] entries];
+    self.isSearchBarInView = NO;
+    
+    if ([self.entries count] <= 0) {
         [self.deleteButton setEnabled:NO];
         [self.sortButton setEnabled:NO];
     }
     
     [self initSideBarMenu];
+    [self initSearchBar];
     [self.tableView setTableFooterView:[[UIView alloc] initWithFrame:CGRectZero]]; // removes empty cells at the end of the list
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self setupView];
+    
+    if (!self.isSearchBarInView) {
+        [self.tableView setContentOffset:CGPointMake(0, kSearchBarHeight)];
+        [self setIsSearchBarInView:NO];
+    }
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+
+    if (!self.isSearchBarInView)
+        [self.tableView setContentOffset:CGPointMake(0, kSearchBarHeight)];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -128,7 +151,7 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [[self journal] entryCount];
+    return [self.entries count];
 }
 
 // Sets the height of each cell.
@@ -139,7 +162,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     CMAEntryTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"entriesCell" forIndexPath:indexPath];
     
-    CMAEntry *entry = [[[self journal] entries] objectAtIndex:indexPath.item];
+    CMAEntry *entry = [self.entries objectAtIndex:indexPath.item];
     
     cell.speciesLabel.text = [entry.fishSpecies name];
     cell.dateLabel.text = [self.dateFormatter stringFromDate:entry.date];
@@ -184,6 +207,41 @@
             [self.deleteButton setEnabled:NO];
             [self.sortButton setEnabled:NO];
         }
+    }
+}
+
+#pragma mark - Search Bar Initializing
+
+- (void)initSearchBar {
+    self.searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, kSearchBarHeight)];
+    self.searchBar.delegate = self;
+    self.tableView.tableHeaderView = self.searchBar;
+    
+    self.searchResultView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+    [self.searchResultView setBackgroundColor:[UIColor redColor]];
+    [self.view addSubview:self.searchResultView];
+    [self.searchResultView setHidden:YES];
+}
+
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
+    NSMutableOrderedSet *searchResults = [[self journal] filterEntries:searchBar.text];
+    
+    if ([searchResults count] <= 0) {
+        self.searchResultView.hidden = NO;
+        return;
+    }
+    
+    self.entries = searchResults;
+    [self.tableView reloadData];
+    [self.searchResultView setHidden:YES];
+}
+
+- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
+    if ([searchText isEqualToString:@""]) {
+        NSLog(@"Search was cleared, resetting table...");
+        self.entries = [[self journal] entries];
+        [self.tableView reloadData];
+        [self.searchResultView setHidden:YES];
     }
 }
 
@@ -232,6 +290,8 @@
         CMASingleEntryViewController *destination = [[segue.destinationViewController viewControllers] objectAtIndex:0];
         CMAEntry *entryToDisplay = [[[self journal] entries] objectAtIndex:[self.tableView indexPathForSelectedRow].item];
         destination.entry = entryToDisplay;
+        
+        self.isSearchBarInView = (self.tableView.contentOffset.y == 0.0f);
     }
 }
 

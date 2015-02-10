@@ -60,6 +60,7 @@
 // accessing
 - (NSInteger)imageCount;
 - (NSInteger)fishingMethodCount;
+- (NSString *)dateAsString;
 - (NSString *)locationAsString;
 - (NSString *)fishingMethodsAsString;
 - (NSString *)weightAsStringWithMeasurementSystem:(CMAMeasuringSystemType)aMeasurementSystem shorthand:(BOOL)useShorthand;
