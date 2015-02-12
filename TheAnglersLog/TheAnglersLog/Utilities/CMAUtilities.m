@@ -66,4 +66,40 @@
     return NO;
 }
 
+// Called when the "Done" button is tapped in the different "add scenes" throughout the app.
+// For example, called in CMAAddEntryViewController.m's clickDoneButton event.
++ (void)addSceneConfirmWithObject:(id)anObjToAdd
+                        objToEdit:(id)anObjToEdit
+                  checkInputBlock:(BOOL(^)())aCheckInputBlock
+                   isEditingBlock:(BOOL(^)())anIsEditingBlock
+                  editObjectBlock:(void(^)())anEditBlock
+                   addObjectBlock:(BOOL(^)())anAddObjectBlock
+                    errorAlertMsg:(NSString *)anErrorMsg
+                   viewController:(id)aVC
+                       segueBlock:(void(^)())aSegueBlock
+                  removeObjToEdit:(BOOL)rmObjToEdit
+{
+    if (aCheckInputBlock()) {
+        if (anIsEditingBlock()) {
+            anEditBlock();
+            [[CMAStorageManager sharedManager] deleteManagedObject:anObjToAdd];
+        } else {
+            if (!anAddObjectBlock()) {
+                [CMAAlerts errorAlert:anErrorMsg presentationViewController:aVC];
+                [[CMAStorageManager sharedManager] deleteManagedObject:anObjToAdd];
+                return;
+            }
+            
+            if (rmObjToEdit)
+                [[CMAStorageManager sharedManager] deleteManagedObject:anObjToEdit];
+            
+            anObjToEdit = nil;
+        }
+        
+        [[[CMAStorageManager sharedManager] sharedJournal] archive];
+        aSegueBlock();
+    } else
+        [[CMAStorageManager sharedManager] deleteManagedObject:anObjToAdd];
+}
+
 @end

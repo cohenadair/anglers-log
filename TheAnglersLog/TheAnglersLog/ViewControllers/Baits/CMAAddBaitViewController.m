@@ -11,9 +11,8 @@
 #import "CMACameraActionSheet.h"
 #import "CMARemoveImageActionSheet.h"
 #import "CMAImagePickerViewController.h"
-#import "CMAAlerts.h"
 #import "CMAAppDelegate.h"
-#import "CMAStorageManager.h"
+#import "CMAUtilities.h"
 
 @interface CMAAddBaitViewController ()
 
@@ -270,27 +269,18 @@
 }
 
 - (IBAction)clickedDoneButton:(UIBarButtonItem *)sender {
-    // add new event to journal
     CMABait *baitToAdd = [[CMAStorageManager sharedManager] managedBait];
     
-    if ([self checkUserInputAndSetBait:baitToAdd]) {
-        if (self.isEditingBait) {
-            [[self journal] editUserDefine:UDN_BAITS objectNamed:self.bait.name newProperties:baitToAdd];
-            [[CMAStorageManager sharedManager] deleteManagedObject:baitToAdd];
-        } else {
-            if (![[self journal] addUserDefine:UDN_BAITS objectToAdd:baitToAdd]) {
-                [CMAAlerts errorAlert:@"A bait with that name already exists. Please select a new name or edit the existing bait." presentationViewController:self];
-                [[CMAStorageManager sharedManager] deleteManagedObject:baitToAdd];
-                return;
-            }
-            
-            [[CMAStorageManager sharedManager] deleteManagedObject:self.bait];
-            [self setBait:nil];
-        }
-        
-        [self performSegueToPreviousView];
-    } else
-        [[CMAStorageManager sharedManager] deleteManagedObject:baitToAdd];
+    [CMAUtilities addSceneConfirmWithObject:baitToAdd
+                                  objToEdit:self.bait
+                            checkInputBlock:^BOOL () { return [self checkUserInputAndSetBait:baitToAdd]; }
+                             isEditingBlock:^BOOL () { return self.isEditingBait; }
+                            editObjectBlock:^void () { [[self journal] editUserDefine:UDN_BAITS objectNamed:self.bait.name newProperties:baitToAdd]; }
+                             addObjectBlock:^BOOL () { return [[self journal] addUserDefine:UDN_BAITS objectToAdd:baitToAdd]; }
+                              errorAlertMsg:@"A bait with that name already exists. Please select a new name or edit the existing bait."
+                             viewController:self
+                                 segueBlock:^void () { [self performSegueToPreviousView]; }
+                            removeObjToEdit:YES];
 }
 
 - (IBAction)clickedCancelButton:(UIBarButtonItem *)sender {

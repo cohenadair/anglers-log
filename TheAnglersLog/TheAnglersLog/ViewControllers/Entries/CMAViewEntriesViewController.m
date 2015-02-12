@@ -296,11 +296,9 @@
 }
 
 - (IBAction)unwindToViewEntries:(UIStoryboardSegue *)segue {
-    if ([segue.identifier isEqualToString:@"unwindToViewEntriesFromEntrySorting"]) {
-        // reload data to show the newly sorted array
-        self.entries = [[self journal] entries];
-        [self.tableView reloadData];
-    }
+    // reload data to show the newly sorted array
+    self.entries = [[self journal] entries];
+    [self.tableView reloadData];
 }
 
 @end

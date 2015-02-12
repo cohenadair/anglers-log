@@ -111,7 +111,6 @@
     }
     
     [self incStatsForEntry:anEntry];
-    //[self.entries addObject:anEntry];
     [anEntry setJournal:self];
     [self sortEntriesBy:self.entrySortMethod order:self.entrySortOrder];
     

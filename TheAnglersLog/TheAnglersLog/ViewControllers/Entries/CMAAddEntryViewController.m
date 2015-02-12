@@ -398,27 +398,18 @@ NSString *const kNotSelectedString = @"Not Selected";
 #pragma mark - Events
 
 - (IBAction)clickedDone:(UIBarButtonItem *)sender {
-    // add new event to journal
     CMAEntry *entryToAdd = [[CMAStorageManager sharedManager] managedEntry];
     
-    if ([self checkUserInputAndSetEntry:entryToAdd]) {
-        if (self.isEditingEntry) {
-            [[self journal] editEntryDated:[self.entry date] newProperties:entryToAdd];
-            [[CMAStorageManager sharedManager] deleteManagedObject:entryToAdd];
-        } else {
-            if (![[self journal] addEntry:entryToAdd]) {
-                [CMAAlerts errorAlert:@"An entry with that date and time already exists. Please select a new date or edit the existing entry." presentationViewController:self];
-                [[CMAStorageManager sharedManager] deleteManagedObject:entryToAdd];
-                return;
-            }
-
-            self.entry = nil;
-        }
-        
-        [[self journal] archive];
-        [self performSegueToPreviousView];
-    } else
-        [[CMAStorageManager sharedManager] deleteManagedObject:entryToAdd];
+    [CMAUtilities addSceneConfirmWithObject:entryToAdd
+                                  objToEdit:self.entry
+                            checkInputBlock:^BOOL () { return [self checkUserInputAndSetEntry:entryToAdd]; }
+                             isEditingBlock:^BOOL () { return self.isEditingEntry; }
+                            editObjectBlock:^void () { [[self journal] editEntryDated:[self.entry date] newProperties:entryToAdd]; }
+                             addObjectBlock:^BOOL () { return [[self journal] addEntry:entryToAdd]; }
+                              errorAlertMsg:@"An entry with that date and time already exists. Please select a new date or edit the existing entry."
+                             viewController:self
+                                 segueBlock:^void () { [self performSegueToPreviousView]; }
+                            removeObjToEdit:NO];
 }
 
 - (IBAction)clickedCancel:(UIBarButtonItem *)sender {

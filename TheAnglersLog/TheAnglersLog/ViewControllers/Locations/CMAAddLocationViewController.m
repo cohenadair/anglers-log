@@ -10,7 +10,7 @@
 #import "CMAAddFishingSpotViewController.h"
 #import "CMAAppDelegate.h"
 #import "CMAAlerts.h"
-#import "CMAStorageManager.h"
+#import "CMAUtilities.h"
 
 @interface CMAAddLocationViewController ()
 
@@ -199,27 +199,18 @@ NSInteger const SECTION_ADD = 2;
 #pragma mark - Events
 
 - (IBAction)clickedDone:(id)sender {
-    // add new event to journal
     CMALocation *locationToAdd = [[CMAStorageManager sharedManager] managedLocation];
     
-    if ([self checkUserInputAndSetLocation:locationToAdd]) {
-        if (self.isEditingLocation) {
-            [[self journal] editUserDefine:UDN_LOCATIONS objectNamed:self.location.name newProperties:locationToAdd];
-            [[CMAStorageManager sharedManager] deleteManagedObject:locationToAdd];
-        } else {
-            if (![[self journal] addUserDefine:UDN_LOCATIONS objectToAdd:locationToAdd]) {
-                [CMAAlerts errorAlert:@"A location with that name already exists. Please select a new name or edit the existing location." presentationViewController:self];
-                [[CMAStorageManager sharedManager] deleteManagedObject:locationToAdd];
-                return;
-            }
-        
-            [[CMAStorageManager sharedManager] deleteManagedObject:self.location];
-            self.location = nil;
-        }
-        
-        [self performSegueToPreviousView];
-    } else
-        [[CMAStorageManager sharedManager] deleteManagedObject:locationToAdd];
+    [CMAUtilities addSceneConfirmWithObject:locationToAdd
+                                  objToEdit:self.location
+                            checkInputBlock:^BOOL () { return [self checkUserInputAndSetLocation:locationToAdd]; }
+                             isEditingBlock:^BOOL () { return self.isEditingLocation; }
+                            editObjectBlock:^void () { [[self journal] editUserDefine:UDN_LOCATIONS objectNamed:self.location.name newProperties:locationToAdd]; }
+                             addObjectBlock:^BOOL () { return [[self journal] addUserDefine:UDN_LOCATIONS objectToAdd:locationToAdd]; }
+                              errorAlertMsg:@"A location with that name already exists. Please select a new name or edit the existing location."
+                             viewController:self
+                                 segueBlock:^void () { [self performSegueToPreviousView]; }
+                            removeObjToEdit:YES];
 }
 
 - (IBAction)clickedCancel:(id)sender {
