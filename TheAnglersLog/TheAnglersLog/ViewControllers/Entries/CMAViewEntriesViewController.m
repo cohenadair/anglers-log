@@ -65,7 +65,7 @@
     self.noEntriesView.imageView.image = [UIImage imageNamed:@"entries_large.png"];
     self.noEntriesView.titleView.text = @"Entries.";
     
-    [self.noEntriesView centerInParent:self.view navigationController:self.navigationController];
+    [self.noEntriesView centerInParent:self.view];
     [self.noEntriesView setAlpha:0.0f];
     [self.view addSubview:self.noEntriesView];
 }
@@ -79,9 +79,7 @@
             [self.noEntriesView setAlpha:1.0f];
         }];
     else
-        [UIView animateWithDuration:0.5 animations:^{
-            [self.noEntriesView setAlpha:0.0f];
-        }];
+        [self.noEntriesView setAlpha:0.0f];
 }
 
 - (void)setupView {
@@ -91,6 +89,7 @@
     if ([self.entries count] > 0) {
         self.deleteButton.enabled = YES;
         self.sortButton.enabled = YES;
+        [self initSearchBar];
     }
     
     self.navigationItem.title = [NSString stringWithFormat:@"Entries (%ld)", (long)[[self journal] entryCount]];
@@ -117,7 +116,6 @@
     }
     
     [self initSideBarMenu];
-    [self initSearchBar];
     [self.tableView setTableFooterView:[[UIView alloc] initWithFrame:CGRectZero]]; // removes empty cells at the end of the list
 }
 
@@ -125,7 +123,7 @@
     [super viewWillAppear:animated];
     [self setupView];
     
-    if (!self.isSearchBarInView) {
+    if (self.searchBar && !self.isSearchBarInView) {
         [self.tableView setContentOffset:CGPointMake(0, kSearchBarHeight)];
         [self setIsSearchBarInView:NO];
     }
@@ -134,7 +132,7 @@
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
 
-    if (!self.isSearchBarInView)
+    if (self.searchBar && !self.isSearchBarInView)
         [self.tableView setContentOffset:CGPointMake(0, kSearchBarHeight)];
 }
 
@@ -206,6 +204,9 @@
             [self handleNoEntriesView];
             [self.deleteButton setEnabled:NO];
             [self.sortButton setEnabled:NO];
+            [self.searchBar removeFromSuperview];
+            self.searchBar = nil;
+            [self.tableView setContentOffset:CGPointMake(0, 0)];
         }
     }
 }

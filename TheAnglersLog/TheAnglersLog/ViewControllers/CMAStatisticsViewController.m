@@ -72,7 +72,9 @@
     self.noStatsView.titleView.text = @"Entries.";
     self.noStatsView.subtitleView.text = @"Visit the \"All Entries\" page to begin.";
     
-    [self.noStatsView setFrame:CGRectMake(0, -60, self.view.frame.size.width, self.view.frame.size.height + 60)];
+    CGRect f = self.view.frame;
+    [self.noStatsView centerInParent:self.view];
+    [self.noStatsView setFrame:CGRectMake(f.origin.x, -10, f.size.width, f.size.height)];
     [self.view addSubview:self.noStatsView];
 }
 

@@ -51,24 +51,21 @@
     self.noBaitsView.imageView.image = [UIImage imageNamed:@"baits_large.png"];
     self.noBaitsView.titleView.text = @"Baits.";
     
-    [self.noBaitsView centerInParent:self.view navigationController:self.navigationController];
+    [self.noBaitsView centerInParent:self.view];
+    [self.noBaitsView setAlpha:0.0f];
     [self.view addSubview:self.noBaitsView];
 }
 
 - (void)handleNoBaitView {
-    if ([self.userDefineBaits count] <= 0) {
-        if (!self.noBaitsView)
-            [self initNoBaitView];
-        else {
-            [UIView animateWithDuration:0.5 animations:^{
-                [self.noBaitsView setAlpha:1.0f];
-            }];
-        }
-    } else {
+    if (!self.noBaitsView)
+        [self initNoBaitView];
+    
+    if ([self.userDefineBaits count] <= 0)
         [UIView animateWithDuration:0.5 animations:^{
-            [self.noBaitsView setAlpha:0.0f];
+            [self.noBaitsView setAlpha:1.0f];
         }];
-    }
+    else
+        [self.noBaitsView setAlpha:0.0f];
 }
 
 - (void)setupView {

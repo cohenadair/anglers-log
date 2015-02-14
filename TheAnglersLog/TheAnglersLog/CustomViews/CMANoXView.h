@@ -15,6 +15,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *subtitleView;
 @property (weak, nonatomic) IBOutlet UIView *subView;
 
-- (void)centerInParent:(UIView *)aParentView navigationController:(UINavigationController *)aNavigationController;
+- (void)centerInParent:(UIView *)aParentView;
 
 @end

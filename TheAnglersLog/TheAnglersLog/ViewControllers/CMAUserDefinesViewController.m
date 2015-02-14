@@ -69,27 +69,24 @@
     self.noXView.imageView.image = [UIImage imageNamed:imageName];
     self.noXView.titleView.text = [NSString stringWithFormat:@"%@.", self.userDefine.name];
     
-    [self.noXView centerInParent:self.view navigationController:self.navigationController];
+    [self.noXView centerInParent:self.view];
+    [self.noXView setAlpha:0.0f];
     [self.view addSubview:self.noXView];
 }
 
 - (void)handleNoXView {
+    if (!self.noXView)
+        [self initNoXView];
+    
     if ([self.userDefine count] <= 0) {
-        if (!self.noXView)
-            [self initNoXView];
-        else {
-            [UIView animateWithDuration:0.5 animations:^{
-                [self.noXView setAlpha:1.0f];
-            }];
-        }
+        [UIView animateWithDuration:0.5 animations:^{
+            [self.noXView setAlpha:1.0f];
+        }];
         
         [self.editButton setEnabled:NO];
     } else {
         [self.editButton setEnabled:YES];
-        
-        [UIView animateWithDuration:0.5 animations:^{
-            [self.noXView setAlpha:0.0f];
-        }];
+        [self.noXView setAlpha:0.0f];
     }
 }
 
