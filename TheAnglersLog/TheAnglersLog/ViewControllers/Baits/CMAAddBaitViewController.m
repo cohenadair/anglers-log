@@ -9,7 +9,7 @@
 #import "CMAAddBaitViewController.h"
 #import "CMACameraButton.h"
 #import "CMACameraActionSheet.h"
-#import "CMARemoveImageActionSheet.h"
+#import "CMADeleteActionSheet.h"
 #import "CMAImagePickerViewController.h"
 #import "CMAAppDelegate.h"
 #import "CMAUtilities.h"
@@ -26,7 +26,7 @@
 @property (weak, nonatomic) IBOutlet UISegmentedControl *baitTypeControl;
 
 @property (strong, nonatomic) CMACameraActionSheet *cameraActionSheet;
-@property (strong, nonatomic) CMARemoveImageActionSheet *removeImageActionSheet;
+@property (strong, nonatomic) CMADeleteActionSheet *removeImageActionSheet;
 
 @property (strong, nonatomic) CMAImage *imageData;
 
@@ -193,9 +193,9 @@
     __weak typeof(self) weakSelf = self;
     
     self.removeImageActionSheet =
-        [CMARemoveImageActionSheet alertControllerWithTitle:nil
-                                                    message:nil
-                                             preferredStyle:UIAlertControllerStyleActionSheet];
+        [CMADeleteActionSheet alertControllerWithTitle:@"Remove Image"
+                                               message:@"Are you sure you want to remove this image?"
+                                        preferredStyle:UIAlertControllerStyleActionSheet];
     
     self.removeImageActionSheet.deleteActionBlock = ^void(UIAlertAction *action) {
         weakSelf.bait.imageData = nil;

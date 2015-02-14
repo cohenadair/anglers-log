@@ -6,14 +6,11 @@
 //  Copyright (c) 2015 Cohen Adair. All rights reserved.
 //
 
-#import "CMARemoveImageActionSheet.h"
+#import "CMADeleteActionSheet.h"
 
-@implementation CMARemoveImageActionSheet
+@implementation CMADeleteActionSheet
 
 - (void)addActions {
-    [self setTitle:@"Remove Photo"];
-    [self setMessage:@"Are you sure you want to remove this photo?"];
-    
     UIAlertAction *deleteAction =
         [UIAlertAction actionWithTitle:@"Yes, delete it."
                                  style:UIAlertActionStyleDestructive
@@ -22,7 +19,7 @@
     UIAlertAction *cancelAction =
         [UIAlertAction actionWithTitle:@"No, keep it."
                                  style:UIAlertActionStyleCancel
-                               handler:^(UIAlertAction *action) {}];
+                               handler:self.cancelActionBlock];
     
     [self addAction:deleteAction];
     [self addAction:cancelAction];

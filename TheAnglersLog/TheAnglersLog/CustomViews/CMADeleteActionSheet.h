@@ -8,9 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-@interface CMARemoveImageActionSheet : UIAlertController
+@interface CMADeleteActionSheet : UIAlertController
 
 @property (strong, nonatomic) void (^deleteActionBlock)(UIAlertAction *);
+@property (strong, nonatomic) void (^cancelActionBlock)(UIAlertAction *);
 
 - (void)addActions;
 - (void)showInViewController:(UIViewController *)aViewController;

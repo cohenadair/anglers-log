@@ -16,7 +16,7 @@
 #import "CMAAlerts.h"
 #import "CMACameraButton.h"
 #import "CMACameraActionSheet.h"
-#import "CMARemoveImageActionSheet.h"
+#import "CMADeleteActionSheet.h"
 #import "CMAWeatherDataView.h"
 #import "CMAUtilities.h"
 #import "CMAStorageManager.h"
@@ -72,7 +72,9 @@
 #pragma mark - Camera
 @property (weak, nonatomic)IBOutlet CMACameraButton *cameraImage;
 @property (strong, nonatomic)CMACameraActionSheet *cameraActionSheet;
-@property (strong, nonatomic)CMARemoveImageActionSheet *removeImageActionSheet;
+@property (strong, nonatomic)CMADeleteActionSheet *removeImageActionSheet;
+
+@property (strong, nonatomic)CMADeleteActionSheet *deleteEntryActionSheet;
 
 #pragma mark - Miscellaneous
 
@@ -88,6 +90,8 @@
 @property (strong, nonatomic)NSMutableArray *entryImages;
 
 @end
+
+#define kNumberOfSectionsWithoutDelete 7
 
 #define kDateCellSection 0
 #define kDateCellRow 0
@@ -171,6 +175,7 @@ NSString *const kNotSelectedString = @"Not Selected";
     self.locationManager = [CLLocationManager new];
     self.locationManager.delegate = self;
     
+    [self initDeleteEntryActionSheet];
     [self initCameraActionSheet];
     [self initRemoveImageActionSheet];
 }
@@ -312,7 +317,14 @@ NSString *const kNotSelectedString = @"Not Selected";
     [aTableView endUpdates];
 }
 
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return kNumberOfSectionsWithoutDelete + self.isEditingEntry;
+}
+
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    if (self.isEditingEntry && section == [tableView numberOfSections] - 1)
+        return TABLE_HEIGHT_FOOTER; // there's no header for this cell
+    
     return TABLE_HEIGHT_HEADER;
 }
 
@@ -386,6 +398,12 @@ NSString *const kNotSelectedString = @"Not Selected";
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    // delete cell
+    if (indexPath.section == [self.tableView numberOfSections] - 1 && indexPath.row == 0) {
+        [self.deleteEntryActionSheet showInViewController:self];
+        return;
+    }
+    
     // show the date picker cell when the date display cell is selected
     if (indexPath.section == kDateCellSection && indexPath.row == kDateCellRow)
         [self toggleDatePickerCellHidden:tableView selectedPath:indexPath];
@@ -447,6 +465,26 @@ NSString *const kNotSelectedString = @"Not Selected";
 
 #pragma mark - Action Sheets
 
+- (void)initDeleteEntryActionSheet {
+    __weak typeof(self) weakSelf = self;
+    
+    self.deleteEntryActionSheet =
+    [CMADeleteActionSheet alertControllerWithTitle:@"Delete Entry"
+                                           message:@"Are you sure you want to delete this entry? It cannot be undone."
+                                    preferredStyle:UIAlertControllerStyleActionSheet];
+    
+    self.deleteEntryActionSheet.deleteActionBlock = ^void(UIAlertAction *action) {
+        [[weakSelf journal] removeEntryDated:weakSelf.entry.date];
+        [weakSelf performSegueWithIdentifier:@"unwindToViewEntriesFromAddEntry" sender:weakSelf];
+    };
+    
+    self.deleteEntryActionSheet.cancelActionBlock = ^void(UIAlertAction *action) {
+        [weakSelf.tableView deselectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:weakSelf.tableView.numberOfSections - 1] animated:YES];
+    };
+    
+    [self.deleteEntryActionSheet addActions];
+}
+
 - (void)initCameraActionSheet {
     __weak id weakSelf = self;
     
@@ -471,9 +509,9 @@ NSString *const kNotSelectedString = @"Not Selected";
     __weak typeof(self) weakSelf = self;
     
     self.removeImageActionSheet =
-        [CMARemoveImageActionSheet alertControllerWithTitle:nil
-                                                    message:nil
-                                             preferredStyle:UIAlertControllerStyleActionSheet];
+        [CMADeleteActionSheet alertControllerWithTitle:@"Remove Image"
+                                               message:@"Are you sure you want to remove this image?"
+                                        preferredStyle:UIAlertControllerStyleActionSheet];
     
     self.removeImageActionSheet.deleteActionBlock = ^void(UIAlertAction *action) {
         if (weakSelf.deleteImageIndexPath != nil) {
@@ -860,13 +898,6 @@ NSString *const kNotSelectedString = @"Not Selected";
 
 - (void)deleteImageFromCollectionAtIndexPath:(NSIndexPath *)anIndexPath {
     self.numberOfImages--;
-    
-    // delete image from core data if it's a core data obejct
-    CMAImage *img = [self.entryImages objectAtIndex:anIndexPath.item];
-    if (img) {
-        [self.entryImages removeObject:img];
-        [[CMAStorageManager sharedManager] deleteManagedObject:img];
-    }
     
     [self.imageCollection deleteItemsAtIndexPaths:@[anIndexPath]];
     

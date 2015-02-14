@@ -59,7 +59,7 @@
 		0D8F84101A6EC29A00AABAEA /* CMAInstagramActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D8F83FD1A6EC29A00AABAEA /* CMAInstagramActivity.m */; };
 		0D8F84111A6EC29A00AABAEA /* CMANoXView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D8F83FF1A6EC29A00AABAEA /* CMANoXView.m */; };
 		0D8F84121A6EC29A00AABAEA /* CMANoXView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0D8F84001A6EC29A00AABAEA /* CMANoXView.xib */; };
-		0D8F84131A6EC29A00AABAEA /* CMARemoveImageActionSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D8F84021A6EC29A00AABAEA /* CMARemoveImageActionSheet.m */; };
+		0D8F84131A6EC29A00AABAEA /* CMADeleteActionSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D8F84021A6EC29A00AABAEA /* CMADeleteActionSheet.m */; };
 		0D8F84141A6EC29A00AABAEA /* CMAStatisticsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D8F84041A6EC29A00AABAEA /* CMAStatisticsTableViewCell.m */; };
 		0D8F84151A6EC29A00AABAEA /* CMATouchSegmentedControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D8F84061A6EC29A00AABAEA /* CMATouchSegmentedControl.m */; };
 		0D8F84161A6EC29A00AABAEA /* CMAWeatherDataView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D8F84081A6EC29A00AABAEA /* CMAWeatherDataView.m */; };
@@ -233,8 +233,8 @@
 		0D8F83FE1A6EC29A00AABAEA /* CMANoXView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMANoXView.h; path = TheAnglersLog/CustomViews/CMANoXView.h; sourceTree = SOURCE_ROOT; };
 		0D8F83FF1A6EC29A00AABAEA /* CMANoXView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMANoXView.m; path = TheAnglersLog/CustomViews/CMANoXView.m; sourceTree = SOURCE_ROOT; };
 		0D8F84001A6EC29A00AABAEA /* CMANoXView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = CMANoXView.xib; path = TheAnglersLog/CustomViews/CMANoXView.xib; sourceTree = SOURCE_ROOT; };
-		0D8F84011A6EC29A00AABAEA /* CMARemoveImageActionSheet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMARemoveImageActionSheet.h; path = TheAnglersLog/CustomViews/CMARemoveImageActionSheet.h; sourceTree = SOURCE_ROOT; };
-		0D8F84021A6EC29A00AABAEA /* CMARemoveImageActionSheet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMARemoveImageActionSheet.m; path = TheAnglersLog/CustomViews/CMARemoveImageActionSheet.m; sourceTree = SOURCE_ROOT; };
+		0D8F84011A6EC29A00AABAEA /* CMADeleteActionSheet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMADeleteActionSheet.h; path = TheAnglersLog/CustomViews/CMADeleteActionSheet.h; sourceTree = SOURCE_ROOT; };
+		0D8F84021A6EC29A00AABAEA /* CMADeleteActionSheet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMADeleteActionSheet.m; path = TheAnglersLog/CustomViews/CMADeleteActionSheet.m; sourceTree = SOURCE_ROOT; };
 		0D8F84031A6EC29A00AABAEA /* CMAStatisticsTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAStatisticsTableViewCell.h; path = TheAnglersLog/CustomViews/CMAStatisticsTableViewCell.h; sourceTree = SOURCE_ROOT; };
 		0D8F84041A6EC29A00AABAEA /* CMAStatisticsTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAStatisticsTableViewCell.m; path = TheAnglersLog/CustomViews/CMAStatisticsTableViewCell.m; sourceTree = SOURCE_ROOT; };
 		0D8F84051A6EC29A00AABAEA /* CMATouchSegmentedControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMATouchSegmentedControl.h; path = TheAnglersLog/CustomViews/CMATouchSegmentedControl.h; sourceTree = SOURCE_ROOT; };
@@ -671,6 +671,8 @@
 				0D8F83F21A6EC29A00AABAEA /* CMABaitTableViewCell.m */,
 				0D8F83F31A6EC29A00AABAEA /* CMACameraActionSheet.h */,
 				0D8F83F41A6EC29A00AABAEA /* CMACameraActionSheet.m */,
+				0D8F84011A6EC29A00AABAEA /* CMADeleteActionSheet.h */,
+				0D8F84021A6EC29A00AABAEA /* CMADeleteActionSheet.m */,
 				0D8F83F51A6EC29A00AABAEA /* CMACameraButton.h */,
 				0D8F83F61A6EC29A00AABAEA /* CMACameraButton.m */,
 				0D8F83F71A6EC29A00AABAEA /* CMACircleView.h */,
@@ -683,8 +685,6 @@
 				0D8F83FE1A6EC29A00AABAEA /* CMANoXView.h */,
 				0D8F83FF1A6EC29A00AABAEA /* CMANoXView.m */,
 				0D8F84001A6EC29A00AABAEA /* CMANoXView.xib */,
-				0D8F84011A6EC29A00AABAEA /* CMARemoveImageActionSheet.h */,
-				0D8F84021A6EC29A00AABAEA /* CMARemoveImageActionSheet.m */,
 				0D8F84031A6EC29A00AABAEA /* CMAStatisticsTableViewCell.h */,
 				0D8F84041A6EC29A00AABAEA /* CMAStatisticsTableViewCell.m */,
 				0D8F84051A6EC29A00AABAEA /* CMATouchSegmentedControl.h */,
@@ -913,7 +913,7 @@
 				0D8F83911A6EC10800AABAEA /* CMAStatsObject.m in Sources */,
 				0D8F83DB1A6EC25200AABAEA /* CMASideMenuViewController.m in Sources */,
 				0D8F84A11A6EC2D900AABAEA /* OWMWeatherAPI.m in Sources */,
-				0D8F84131A6EC29A00AABAEA /* CMARemoveImageActionSheet.m in Sources */,
+				0D8F84131A6EC29A00AABAEA /* CMADeleteActionSheet.m in Sources */,
 				0D8F838F1A6EC10800AABAEA /* CMAWeatherData.m in Sources */,
 				0D8F849C1A6EC2D900AABAEA /* AFSecurityPolicy.m in Sources */,
 				0D8F83D71A6EC25200AABAEA /* CMASingleBaitViewController.m in Sources */,

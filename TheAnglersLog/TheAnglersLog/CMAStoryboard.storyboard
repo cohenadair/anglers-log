@@ -1716,6 +1716,38 @@
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
+                            <tableViewSection id="jym-dq-WTZ">
+                                <cells>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="44" id="kn7-2a-jna">
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="kn7-2a-jna" id="Hau-an-rue">
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Delete Entry" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="du1-1a-FhO">
+                                                    <rect key="frame" x="253" y="11" width="94" height="21"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="94" id="JTG-TZ-VfS"/>
+                                                        <constraint firstAttribute="height" constant="21" id="X2T-2A-lX9"/>
+                                                        <constraint firstAttribute="width" constant="94" id="b2e-6l-PrQ"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                    <variation key="default">
+                                                        <mask key="constraints">
+                                                            <exclude reference="JTG-TZ-VfS"/>
+                                                        </mask>
+                                                    </variation>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="centerY" secondItem="du1-1a-FhO" secondAttribute="centerY" id="4sf-S6-Ecg"/>
+                                                <constraint firstAttribute="centerX" secondItem="du1-1a-FhO" secondAttribute="centerX" id="AeM-O8-swd"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
                         </sections>
                         <connections>
                             <outlet property="dataSource" destination="T1c-yJ-jzQ" id="0jc-FY-uox"/>
@@ -1778,7 +1810,7 @@
                     </connections>
                 </pongPressGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="4978" y="-1106"/>
+            <point key="canvasLocation" x="4978" y="-1107"/>
         </scene>
         <!--Statistics-->
         <scene sceneID="0CA-ia-Kux">
