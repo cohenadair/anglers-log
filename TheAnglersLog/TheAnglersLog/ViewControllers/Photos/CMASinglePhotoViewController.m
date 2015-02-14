@@ -82,7 +82,7 @@
 
 - (IBAction)clickActionButton:(UIBarButtonItem *)sender {
     NSIndexPath *selectedIndexPath = [[self.collectionView indexPathsForVisibleItems] objectAtIndex:0];
-    UIImage *selectedImage = [self.imagesArray objectAtIndex:selectedIndexPath.item];
+    UIImage *selectedImage = [[self.imagesArray objectAtIndex:selectedIndexPath.item] dataAsUIImage];
     [self shareImage:selectedImage];
 }
 

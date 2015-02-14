@@ -374,7 +374,9 @@
     UIImage *currentImage = [(UIImageView *)[[[self.imageCollectionView visibleCells] objectAtIndex:0] viewWithTag:100] image];
     
     [shareItems addObject:currentImage];
-    [shareItems addObject:[[[NSDateFormatter alloc] init] stringFromDate:self.entry.date]];
+    NSDateFormatter *f = [NSDateFormatter new];
+    [f setDateFormat:@"MMM dd, yyyy 'at' h:mm a"];
+    [shareItems addObject:[NSString stringWithFormat:@"Caught on %@.", [f stringFromDate:self.entry.date]]];
     
     if ([self.entry.fishLength integerValue] > 0)
         [shareItems addObject:[NSString stringWithFormat:@"Length: %@", [self.entry.fishLength stringValue]]];

@@ -11,7 +11,7 @@
 #pragma mark - Application Constants
 
 NSString *const APP_NAME        = @"The Anglers' Log";
-NSString *const SHARE_MESSAGE   = @"Shared with #TheAnglersLog app.";
+NSString *const SHARE_MESSAGE   = @"Shared with #TheAnglersLogApp.";
 NSString *const GLOBAL_FONT     = @"HelveticaNeue";
 
 #pragma mark - User Define Name (UDN)
