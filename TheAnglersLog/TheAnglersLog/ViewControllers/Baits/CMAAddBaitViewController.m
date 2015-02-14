@@ -277,7 +277,7 @@
                              isEditingBlock:^BOOL () { return self.isEditingBait; }
                             editObjectBlock:^void () { [[self journal] editUserDefine:UDN_BAITS objectNamed:self.bait.name newProperties:baitToAdd]; }
                              addObjectBlock:^BOOL () { return [[self journal] addUserDefine:UDN_BAITS objectToAdd:baitToAdd]; }
-                              errorAlertMsg:@"A bait with that name already exists. Please select a new name or edit the existing bait."
+                              errorAlertMsg:@"There was an error adding a bait. Please try again."
                              viewController:self
                                  segueBlock:^void () { [self performSegueToPreviousView]; }
                             removeObjToEdit:YES];

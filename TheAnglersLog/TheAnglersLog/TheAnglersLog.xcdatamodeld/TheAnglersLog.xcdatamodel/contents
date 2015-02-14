@@ -29,7 +29,7 @@
         <relationship name="journal" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CMAJournal" inverseName="entries" inverseEntity="CMAJournal" syncable="YES"/>
         <relationship name="location" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CMALocation" inverseName="entries" inverseEntity="CMALocation" syncable="YES"/>
         <relationship name="waterClarity" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CMAWaterClarity" inverseName="entries" inverseEntity="CMAWaterClarity" syncable="YES"/>
-        <relationship name="weatherData" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CMAWeatherData" inverseName="entry" inverseEntity="CMAWeatherData" syncable="YES"/>
+        <relationship name="weatherData" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="CMAWeatherData" inverseName="entry" inverseEntity="CMAWeatherData" syncable="YES"/>
     </entity>
     <entity name="CMAFishingMethod" representedClassName="CMAFishingMethod" syncable="YES">
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>

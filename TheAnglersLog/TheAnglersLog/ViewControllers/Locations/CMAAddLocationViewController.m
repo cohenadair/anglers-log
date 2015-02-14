@@ -207,7 +207,7 @@ NSInteger const SECTION_ADD = 2;
                              isEditingBlock:^BOOL () { return self.isEditingLocation; }
                             editObjectBlock:^void () { [[self journal] editUserDefine:UDN_LOCATIONS objectNamed:self.location.name newProperties:locationToAdd]; }
                              addObjectBlock:^BOOL () { return [[self journal] addUserDefine:UDN_LOCATIONS objectToAdd:locationToAdd]; }
-                              errorAlertMsg:@"A location with that name already exists. Please select a new name or edit the existing location."
+                              errorAlertMsg:@"There was an error adding a location. Please try again."
                              viewController:self
                                  segueBlock:^void () { [self performSegueToPreviousView]; }
                             removeObjToEdit:YES];

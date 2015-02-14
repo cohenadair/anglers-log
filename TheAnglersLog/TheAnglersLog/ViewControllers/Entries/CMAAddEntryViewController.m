@@ -424,7 +424,7 @@ NSString *const kNotSelectedString = @"Not Selected";
                              isEditingBlock:^BOOL () { return self.isEditingEntry; }
                             editObjectBlock:^void () { [[self journal] editEntryDated:[self.entry date] newProperties:entryToAdd]; }
                              addObjectBlock:^BOOL () { return [[self journal] addEntry:entryToAdd]; }
-                              errorAlertMsg:@"An entry with that date and time already exists. Please select a new date or edit the existing entry."
+                              errorAlertMsg:@"There was an error adding an entry. Please try again."
                              viewController:self
                                  segueBlock:^void () { [self performSegueToPreviousView]; }
                             removeObjToEdit:NO];
@@ -641,7 +641,14 @@ NSString *const kNotSelectedString = @"Not Selected";
 // Returns true if all the user input is valid. Sets anEntry's properties after validation.
 - (BOOL)checkUserInputAndSetEntry:(CMAEntry *)anEntry {
     // date
-    [anEntry setDate:[self.datePicker date]];
+    if (![[self journal] entryDated:[self.datePicker date]])
+        [anEntry setDate:[self.datePicker date]];
+    else {
+        if (!self.isEditingEntry) {
+            [CMAAlerts errorAlert:@"An entry with that date and time already exists. Please select a new date or edit the existing entry." presentationViewController:self];
+            return NO;
+        }
+    }
     
     // photos
     // delete current images from core data as they'll be restored later
