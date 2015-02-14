@@ -11,6 +11,7 @@
 #import "CMAAppDelegate.h"
 #import "CMAAlerts.h"
 #import "CMAUtilities.h"
+#import "CMADeleteActionSheet.h"
 
 @interface CMAAddLocationViewController ()
 
@@ -19,6 +20,7 @@
 
 @property (weak, nonatomic)UITextField *locationNameTextField;
 
+@property (strong, nonatomic)CMADeleteActionSheet *deleteLocationActionSheet;
 @property (strong, nonatomic)NSMutableOrderedSet *addedFishingSpots;
 @property (nonatomic)BOOL isEditingLocation;
 
@@ -27,6 +29,7 @@
 NSInteger const SECTION_TITLE = 0;
 NSInteger const SECTION_FISHING_SPOTS = 1;
 NSInteger const SECTION_ADD = 2;
+NSInteger const SECTION_DELETE = 3;
 
 @implementation CMAAddLocationViewController
 
@@ -53,6 +56,7 @@ NSInteger const SECTION_ADD = 2;
     }
     
     self.addedFishingSpots = [NSMutableOrderedSet orderedSet];
+    [self initDeleteLocationActionSheet];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -75,7 +79,7 @@ NSInteger const SECTION_ADD = 2;
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     // Return the number of sections.
-    return 3;
+    return 3 + self.isEditingLocation;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -125,6 +129,13 @@ NSInteger const SECTION_ADD = 2;
         return cell;
     }
     
+    if (indexPath.section == SECTION_DELETE) {
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"deleteCell" forIndexPath:indexPath];
+        UIButton *delete = (UIButton *)[cell viewWithTag:100];
+        [delete addTarget:self action:@selector(tapDeleteButton) forControlEvents:UIControlEventTouchUpInside];
+        return cell;
+    }
+    
     return nil;
 }
 
@@ -132,6 +143,7 @@ NSInteger const SECTION_ADD = 2;
     switch (indexPath.section) {
         case SECTION_TITLE:
         case SECTION_ADD:
+        case SECTION_DELETE:
             return UITableViewCellEditingStyleNone;
         
         case SECTION_FISHING_SPOTS:
@@ -196,7 +208,29 @@ NSInteger const SECTION_ADD = 2;
     return YES;
 }
 
+#pragma mark - Action Sheets
+
+- (void)initDeleteLocationActionSheet {
+    __weak typeof(self) weakSelf = self;
+    
+    self.deleteLocationActionSheet =
+    [CMADeleteActionSheet alertControllerWithTitle:@"Delete Location"
+                                           message:@"Are you sure you want to delete this location? It cannot be undone."
+                                    preferredStyle:UIAlertControllerStyleActionSheet];
+    
+    self.deleteLocationActionSheet.deleteActionBlock = ^void(UIAlertAction *action) {
+        [[weakSelf journal] removeUserDefine:UDN_LOCATIONS objectNamed:weakSelf.location.name];
+        [weakSelf performSegueWithIdentifier:@"unwindToEditSettingsFromAddLocation" sender:weakSelf];
+    };
+    
+    [self.deleteLocationActionSheet addActions];
+}
+
 #pragma mark - Events
+
+- (void)tapDeleteButton {
+    [self.deleteLocationActionSheet showInViewController:self];
+}
 
 - (IBAction)clickedDone:(id)sender {
     CMALocation *locationToAdd = [[CMAStorageManager sharedManager] managedLocation];

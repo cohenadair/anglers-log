@@ -477,10 +477,6 @@ NSString *const kNotSelectedString = @"Not Selected";
         [weakSelf performSegueWithIdentifier:@"unwindToViewEntriesFromAddEntry" sender:weakSelf];
     };
     
-    self.deleteEntryActionSheet.cancelActionBlock = ^void(UIAlertAction *action) {
-        [weakSelf.tableView deselectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:weakSelf.tableView.numberOfSections - 1] animated:YES];
-    };
-    
     [self.deleteEntryActionSheet addActions];
 }
 

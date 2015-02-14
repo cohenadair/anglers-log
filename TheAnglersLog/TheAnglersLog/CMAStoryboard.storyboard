@@ -2084,21 +2084,26 @@
                                     <segue destination="IuV-Wt-22U" kind="show" identifier="fromAddFishingSpotCellToAddFishingSpot" id="dOc-qe-cTC"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" shouldIndentWhileEditing="NO" reuseIdentifier="deleteCell" editingAccessoryType="disclosureIndicator" id="zHZ-d4-UIT">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" shouldIndentWhileEditing="NO" reuseIdentifier="deleteCell" id="zHZ-d4-UIT">
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="zHZ-d4-UIT" id="tia-QF-4NV">
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Delete Location" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jr1-r6-dVn">
-                                            <rect key="frame" x="240" y="11" width="121" height="21"/>
+                                        <button opaque="NO" tag="100" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OWY-E6-wZ9">
+                                            <rect key="frame" x="239" y="7" width="122" height="30"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="30" id="rl7-1i-4LP"/>
+                                                <constraint firstAttribute="width" constant="122" id="xRm-FH-Mp5"/>
+                                            </constraints>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                            <color key="textColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
+                                            <state key="normal" title="Delete Location">
+                                                <color key="titleColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            </state>
+                                        </button>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="Jr1-r6-dVn" firstAttribute="centerX" secondItem="tia-QF-4NV" secondAttribute="centerX" id="a2n-4E-pp8"/>
-                                        <constraint firstItem="Jr1-r6-dVn" firstAttribute="centerY" secondItem="tia-QF-4NV" secondAttribute="centerY" id="tP3-Rn-pDb"/>
+                                        <constraint firstAttribute="centerX" secondItem="OWY-E6-wZ9" secondAttribute="centerX" id="Dxm-Mz-ow1"/>
+                                        <constraint firstAttribute="centerY" secondItem="OWY-E6-wZ9" secondAttribute="centerY" id="Yys-Hi-QX0"/>
                                     </constraints>
                                 </tableViewCellContentView>
                             </tableViewCell>
@@ -2133,7 +2138,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="OFA-qW-P4d" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="3Dt-Rq-3tv" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="4980" y="769"/>
+            <point key="canvasLocation" x="4980" y="768"/>
         </scene>
         <!--Add Fishing Spot-->
         <scene sceneID="h2c-XG-d8j">
@@ -2652,7 +2657,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xct-5x-tQg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4935" y="-1105"/>
+            <point key="canvasLocation" x="4935" y="-1108"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="1vk-wI-ZPw">

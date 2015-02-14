@@ -194,10 +194,6 @@
         [weakSelf performSegueWithIdentifier:@"unwindToViewBaitsFromAddBait" sender:weakSelf];
     };
     
-    self.deleteBaitActionSheet.cancelActionBlock = ^void(UIAlertAction *action) {
-        [weakSelf.tableView deselectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:weakSelf.tableView.numberOfSections - 1] animated:YES];
-    };
-    
     [self.deleteBaitActionSheet addActions];
 }
 
