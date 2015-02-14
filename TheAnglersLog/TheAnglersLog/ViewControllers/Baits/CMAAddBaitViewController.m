@@ -24,9 +24,11 @@
 @property (weak, nonatomic) IBOutlet UITextField *nameTextField;
 @property (weak, nonatomic) IBOutlet UITextField *sizeTextField;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *baitTypeControl;
+@property (weak, nonatomic) IBOutlet UIButton *deleteBaitButton;
 
 @property (strong, nonatomic) CMACameraActionSheet *cameraActionSheet;
 @property (strong, nonatomic) CMADeleteActionSheet *removeImageActionSheet;
+@property (strong, nonatomic) CMADeleteActionSheet *deleteBaitActionSheet;
 
 @property (strong, nonatomic) CMAImage *imageData;
 
@@ -36,6 +38,8 @@
 
 #define PHOTO_ROW_HEIGHT 135
 #define DESC_ROW_HEIGHT 170
+
+#define kNumberOfSectionsWithoutDelete 2
 
 @implementation CMAAddBaitViewController
 
@@ -60,6 +64,7 @@
     }
     
     [self initTableView];
+    [self initDeleteBaitActionSheet];
     [self initCameraActionSheet];
     [self initRemoveImageActionSheet];
 }
@@ -70,7 +75,14 @@
 
 #pragma mark - Table View Initializing
 
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return kNumberOfSectionsWithoutDelete + self.isEditingBait;
+}
+
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    if (self.isEditingBait && section == [tableView numberOfSections] - 1)
+        return TABLE_HEIGHT_FOOTER; // there's no header for this cell
+    
     return TABLE_HEIGHT_HEADER;
 }
 
@@ -169,6 +181,26 @@
 
 #pragma mark - Action Sheets
 
+- (void)initDeleteBaitActionSheet {
+    __weak typeof(self) weakSelf = self;
+    
+    self.deleteBaitActionSheet =
+    [CMADeleteActionSheet alertControllerWithTitle:@"Delete Bait"
+                                           message:@"Are you sure you want to delete this bait? It cannot be undone."
+                                    preferredStyle:UIAlertControllerStyleActionSheet];
+    
+    self.deleteBaitActionSheet.deleteActionBlock = ^void(UIAlertAction *action) {
+        [[weakSelf journal] removeUserDefine:UDN_BAITS objectNamed:weakSelf.bait.name];
+        [weakSelf performSegueWithIdentifier:@"unwindToViewBaitsFromAddBait" sender:weakSelf];
+    };
+    
+    self.deleteBaitActionSheet.cancelActionBlock = ^void(UIAlertAction *action) {
+        [weakSelf.tableView deselectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:weakSelf.tableView.numberOfSections - 1] animated:YES];
+    };
+    
+    [self.deleteBaitActionSheet addActions];
+}
+
 - (void)initCameraActionSheet {
     __weak id weakSelf = self;
     
@@ -263,6 +295,10 @@
 }
 
 #pragma mark - Events
+
+- (IBAction)tapDeleteBaitButton:(UIButton *)sender {
+    [self.deleteBaitActionSheet showInViewController:self];
+}
 
 - (void)tapCameraButton {
     [self presentViewController:self.cameraActionSheet animated:YES completion:nil];

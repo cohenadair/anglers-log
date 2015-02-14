@@ -224,6 +224,7 @@
         CMASingleBaitViewController *destination = [[segue.destinationViewController viewControllers] objectAtIndex:0];
         CMABait *baitToDisplay = [self.userDefineBaits objectAtIndex:[self.tableView indexPathForSelectedRow].row];
         destination.bait = baitToDisplay;
+        [destination.navigationItem setTitle:baitToDisplay.name];
     }
 }
 

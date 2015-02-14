@@ -17,6 +17,7 @@
     [[CMAStorageManager sharedManager] loadJournal];
     [self initAppearances];
     
+    [[CMAStorageManager sharedManager] deleteAllObjectsForEntityName:CDE_WEATHER_DATA];
     [[CMAStorageManager sharedManager] debugCoreDataObjects];
     
     return YES;

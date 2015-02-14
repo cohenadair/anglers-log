@@ -204,9 +204,7 @@
             [self handleNoEntriesView];
             [self.deleteButton setEnabled:NO];
             [self.sortButton setEnabled:NO];
-            [self.searchBar removeFromSuperview];
-            self.searchBar = nil;
-            [self.tableView setContentOffset:CGPointMake(0, 0)];
+            [self deleteSearchBar];
         }
     }
 }
@@ -222,6 +220,13 @@
     [self.searchResultView setBackgroundColor:[UIColor redColor]];
     [self.view addSubview:self.searchResultView];
     [self.searchResultView setHidden:YES];
+}
+
+- (void)deleteSearchBar {
+    [self.searchBar removeFromSuperview];
+    self.searchBar = nil;
+    self.tableView.tableHeaderView = nil;
+    [self.tableView setContentOffset:CGPointMake(0, 0)];
 }
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
@@ -299,6 +304,11 @@
 - (IBAction)unwindToViewEntries:(UIStoryboardSegue *)segue {
     // reload data to show the newly sorted array
     self.entries = [[self journal] entries];
+    
+    if ([self.entries count] <= 0) {
+        [self deleteSearchBar];
+    }
+    
     [self.tableView reloadData];
 }
 

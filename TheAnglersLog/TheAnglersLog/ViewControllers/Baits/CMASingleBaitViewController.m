@@ -87,7 +87,6 @@
 }
 
 - (void)initTableView {
-    [self.navigationItem setTitle:self.bait.name];
     [self.imageView setImage:[self.bait.imageData dataAsUIImage]];
     [self.baitFishCaughtLabel setText:[self.bait.fishCaught stringValue]];
     [self.baitTypeLabel setText:[self.bait typeAsString]];

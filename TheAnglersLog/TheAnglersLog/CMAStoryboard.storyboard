@@ -472,7 +472,7 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="FSv-5M-Mab">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="FSv-5M-Mab">
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="FSv-5M-Mab" id="yOh-sB-Juc">
@@ -597,6 +597,37 @@
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
+                            <tableViewSection id="d8E-ES-0hM">
+                                <cells>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="DI9-0b-C1t">
+                                        <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="DI9-0b-C1t" id="JJQ-Ng-gJo">
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="K7Q-X8-Odh">
+                                                    <rect key="frame" x="258" y="7" width="85" height="30"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="85" id="FqK-m9-lqA"/>
+                                                        <constraint firstAttribute="height" constant="30" id="LWf-Ni-A0l"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <state key="normal" title="Delete Bait">
+                                                        <color key="titleColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    </state>
+                                                    <connections>
+                                                        <action selector="tapDeleteBaitButton:" destination="hTK-uR-uLB" eventType="touchUpInside" id="VR8-8N-gD2"/>
+                                                    </connections>
+                                                </button>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="centerY" secondItem="K7Q-X8-Odh" secondAttribute="centerY" id="Bkp-cd-D5K"/>
+                                                <constraint firstAttribute="centerX" secondItem="K7Q-X8-Odh" secondAttribute="centerX" constant="-0.5" id="V5n-2W-iWG"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
                         </sections>
                         <connections>
                             <outlet property="dataSource" destination="hTK-uR-uLB" id="t8C-oe-PHW"/>
@@ -621,6 +652,7 @@
                         <outlet property="baitTypeControl" destination="cFu-pL-GsC" id="qVB-NF-kcI"/>
                         <outlet property="cameraImageButton" destination="ucu-yo-GUe" id="kHA-5H-pfw"/>
                         <outlet property="cancelButton" destination="ZNj-1S-nCE" id="yFP-gM-6g3"/>
+                        <outlet property="deleteBaitButton" destination="K7Q-X8-Odh" id="mM2-Og-9MA"/>
                         <outlet property="descriptionTextView" destination="3KK-85-2zF" id="F1z-eD-zCL"/>
                         <outlet property="doneButton" destination="zOA-iT-fqY" id="fhr-g1-2M5"/>
                         <outlet property="imageView" destination="gbQ-wg-9sz" id="fFF-HZ-D40"/>
@@ -639,7 +671,7 @@
                     </connections>
                 </pongPressGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="4978" y="-186"/>
+            <point key="canvasLocation" x="4978" y="-184"/>
         </scene>
         <!--Entries-->
         <scene sceneID="qbr-pc-l7U">
@@ -1718,31 +1750,29 @@
                             </tableViewSection>
                             <tableViewSection id="jym-dq-WTZ">
                                 <cells>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="44" id="kn7-2a-jna">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="44" id="kn7-2a-jna">
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="kn7-2a-jna" id="Hau-an-rue">
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Delete Entry" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="du1-1a-FhO">
-                                                    <rect key="frame" x="253" y="11" width="94" height="21"/>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sgc-X9-EaH">
+                                                    <rect key="frame" x="250" y="7" width="100" height="30"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="94" id="JTG-TZ-VfS"/>
-                                                        <constraint firstAttribute="height" constant="21" id="X2T-2A-lX9"/>
-                                                        <constraint firstAttribute="width" constant="94" id="b2e-6l-PrQ"/>
+                                                        <constraint firstAttribute="height" constant="30" id="EFJ-9W-3B7"/>
+                                                        <constraint firstAttribute="width" constant="100" id="b24-pu-IWa"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <color key="textColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <nil key="highlightedColor"/>
-                                                    <variation key="default">
-                                                        <mask key="constraints">
-                                                            <exclude reference="JTG-TZ-VfS"/>
-                                                        </mask>
-                                                    </variation>
-                                                </label>
+                                                    <state key="normal" title="Delete Entry">
+                                                        <color key="titleColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    </state>
+                                                    <connections>
+                                                        <action selector="tapDeleteEntryButton:" destination="T1c-yJ-jzQ" eventType="touchUpInside" id="rdh-pO-zBU"/>
+                                                    </connections>
+                                                </button>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstAttribute="centerY" secondItem="du1-1a-FhO" secondAttribute="centerY" id="4sf-S6-Ecg"/>
-                                                <constraint firstAttribute="centerX" secondItem="du1-1a-FhO" secondAttribute="centerX" id="AeM-O8-swd"/>
+                                                <constraint firstAttribute="centerY" secondItem="sgc-X9-EaH" secondAttribute="centerY" id="i4Z-Fc-sm8"/>
+                                                <constraint firstAttribute="centerX" secondItem="sgc-X9-EaH" secondAttribute="centerX" id="yTS-rl-m28"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -1775,6 +1805,7 @@
                         <outlet property="cancelButton" destination="fUB-XX-lJa" id="Wwv-Eq-dhW"/>
                         <outlet property="datePicker" destination="63A-xe-zPt" id="CXw-ub-sLX"/>
                         <outlet property="dateTimeDetailLabel" destination="Yva-eh-OdD" id="QJt-xh-Mhs"/>
+                        <outlet property="deleteEntryButton" destination="sgc-X9-EaH" id="fpD-gj-s1w"/>
                         <outlet property="doneButton" destination="dty-g7-z94" id="TwA-Kd-bET"/>
                         <outlet property="imageCollection" destination="PbH-Fk-chE" id="wag-Si-cxy"/>
                         <outlet property="imperialWeightCell" destination="27o-7a-hw6" id="baf-18-OL8"/>
@@ -1810,7 +1841,7 @@
                     </connections>
                 </pongPressGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="4978" y="-1107"/>
+            <point key="canvasLocation" x="4978" y="-1108"/>
         </scene>
         <!--Statistics-->
         <scene sceneID="0CA-ia-Kux">
@@ -2052,6 +2083,24 @@
                                 <connections>
                                     <segue destination="IuV-Wt-22U" kind="show" identifier="fromAddFishingSpotCellToAddFishingSpot" id="dOc-qe-cTC"/>
                                 </connections>
+                            </tableViewCell>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" shouldIndentWhileEditing="NO" reuseIdentifier="deleteCell" editingAccessoryType="disclosureIndicator" id="zHZ-d4-UIT">
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="zHZ-d4-UIT" id="tia-QF-4NV">
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Delete Location" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jr1-r6-dVn">
+                                            <rect key="frame" x="240" y="11" width="121" height="21"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="Jr1-r6-dVn" firstAttribute="centerX" secondItem="tia-QF-4NV" secondAttribute="centerX" id="a2n-4E-pp8"/>
+                                        <constraint firstItem="Jr1-r6-dVn" firstAttribute="centerY" secondItem="tia-QF-4NV" secondAttribute="centerY" id="tP3-Rn-pDb"/>
+                                    </constraints>
+                                </tableViewCellContentView>
                             </tableViewCell>
                         </prototypes>
                         <connections>

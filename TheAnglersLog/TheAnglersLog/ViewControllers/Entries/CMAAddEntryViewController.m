@@ -77,6 +77,7 @@
 @property (strong, nonatomic)CMADeleteActionSheet *deleteEntryActionSheet;
 
 #pragma mark - Miscellaneous
+@property (weak, nonatomic)IBOutlet UIButton *deleteEntryButton;
 
 @property (strong, nonatomic)NSDateFormatter *dateFormatter;
 @property (strong, nonatomic)NSIndexPath *indexPathForOptionsCell; // used after an unwind from selecting options
@@ -398,12 +399,6 @@ NSString *const kNotSelectedString = @"Not Selected";
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    // delete cell
-    if (indexPath.section == [self.tableView numberOfSections] - 1 && indexPath.row == 0) {
-        [self.deleteEntryActionSheet showInViewController:self];
-        return;
-    }
-    
     // show the date picker cell when the date display cell is selected
     if (indexPath.section == kDateCellSection && indexPath.row == kDateCellRow)
         [self toggleDatePickerCellHidden:tableView selectedPath:indexPath];
@@ -414,6 +409,10 @@ NSString *const kNotSelectedString = @"Not Selected";
 }
 
 #pragma mark - Events
+
+- (IBAction)tapDeleteEntryButton:(UIButton *)sender {
+    [self.deleteEntryActionSheet showInViewController:self];
+}
 
 - (IBAction)clickedDone:(UIBarButtonItem *)sender {
     CMAEntry *entryToAdd = [[CMAStorageManager sharedManager] managedEntry];
