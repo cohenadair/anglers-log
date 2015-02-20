@@ -117,7 +117,10 @@
 - (IBAction)unwindToSingleBait:(UIStoryboardSegue *)segue {
     if ([segue.identifier isEqualToString:@"unwindToSingleBaitFromAddBait"]) {
         CMAAddBaitViewController *source = segue.sourceViewController;
+        
         self.bait = source.bait;
+        self.navigationItem.title = self.bait.name;
+        
         [self initTableView];
         
         source.bait = nil;
