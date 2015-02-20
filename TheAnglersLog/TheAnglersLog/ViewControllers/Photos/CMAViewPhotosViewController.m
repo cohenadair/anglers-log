@@ -67,7 +67,6 @@
     [self initImagesArray];
     [self handleNoImagesView];
     [self.navigationItem setTitle:[NSString stringWithFormat:@"Photos (%lu)", (unsigned long)[self.imagesArray count]]];
-    [self.collectionView reloadData];
 }
 
 - (void)viewDidLoad {

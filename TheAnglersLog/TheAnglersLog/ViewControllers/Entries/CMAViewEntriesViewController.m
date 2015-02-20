@@ -31,6 +31,7 @@
 
 @property (strong, nonatomic)NSMutableOrderedSet *entries;
 @property (nonatomic)BOOL isSearchBarInView;
+@property (nonatomic)CGFloat currentOffsetY;
 
 @end
 
@@ -95,7 +96,6 @@
     self.navigationItem.title = [NSString stringWithFormat:@"Entries (%ld)", (long)[[self journal] entryCount]];
     
     [self handleNoEntriesView];
-    [self.tableView reloadData];
 }
 
 - (void)viewDidLoad {
@@ -109,6 +109,7 @@
     
     self.entries = [[self journal] entries];
     self.isSearchBarInView = NO;
+    self.currentOffsetY = 0.0f;
     
     if ([self.entries count] <= 0) {
         [self.deleteButton setEnabled:NO];
@@ -122,6 +123,8 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self setupView];
+    
+    [self.tableView setContentOffset:CGPointMake(0, self.currentOffsetY)];
     
     if (self.searchBar && !self.isSearchBarInView) {
         [self.tableView setContentOffset:CGPointMake(0, kSearchBarHeight)];
@@ -298,6 +301,7 @@
         destination.entry = entryToDisplay;
         
         self.isSearchBarInView = (self.tableView.contentOffset.y == 0.0f);
+        self.currentOffsetY = self.tableView.contentOffset.y;
     }
 }
 

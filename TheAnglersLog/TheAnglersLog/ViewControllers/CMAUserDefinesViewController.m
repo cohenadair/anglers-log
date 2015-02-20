@@ -100,8 +100,6 @@
     
     if (self.isSelectingForStatistics)
         self.navigationController.toolbarHidden = YES;
-    
-    [self.tableView reloadData];
 }
 
 - (void)viewDidLoad {
@@ -496,6 +494,7 @@
 
 - (IBAction)unwindToEditSettings:(UIStoryboardSegue *)segue {
     self.navigationController.toolbarHidden = NO;
+    [self.tableView reloadData];
 }
 
 @end

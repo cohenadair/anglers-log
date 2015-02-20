@@ -71,7 +71,6 @@
 - (void)setupView {
     [self setUserDefineBaits:[[self journal] userDefineNamed:UDN_BAITS]];
     [self handleNoBaitView];
-    [self.tableView reloadData];
 }
 
 - (void)viewDidLoad {
