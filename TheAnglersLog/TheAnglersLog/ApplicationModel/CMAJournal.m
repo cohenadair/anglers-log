@@ -414,20 +414,21 @@
     for (CMAEntry *e in self.entries) {
         NSMutableArray *searchStrings = [NSMutableArray array];
         
-        if (e.date)             [searchStrings addObject:[e dateAsString]];
-        if (e.fishSpecies)      [searchStrings addObject:e.fishSpecies.name];
-        if (e.fishLength)       [searchStrings addObject:[e.fishLength stringValue]];
-        if (e.fishWeight)       [searchStrings addObject:[e.fishWeight stringValue]];
-        if (e.fishOunces)       [searchStrings addObject:[e.fishOunces stringValue]];
-        if (e.fishQuantity)     [searchStrings addObject:[e.fishQuantity stringValue]];
-        if (e.baitUsed)         [searchStrings addObject:e.baitUsed.name];
-        if (e.baitUsed)         [searchStrings addObject:e.baitUsed.baitDescription];
-        if (e.location)         [searchStrings addObject:e.location.name];
-        if (e.fishingSpot)      [searchStrings addObject:e.fishingSpot.name];
-        if (e.waterTemperature) [searchStrings addObject:[e.waterTemperature stringValue]];
-        if (e.waterClarity)     [searchStrings addObject:e.waterClarity.name];
-        if (e.waterDepth)       [searchStrings addObject:[e.waterDepth stringValue]];
-        if (e.notes)            [searchStrings addObject:e.notes];
+        if (e.date)                     [searchStrings addObject:[e dateAsString]];
+        if (e.fishSpecies)              [searchStrings addObject:e.fishSpecies.name];
+        if (e.fishLength)               [searchStrings addObject:[e.fishLength stringValue]];
+        if (e.fishWeight)               [searchStrings addObject:[e.fishWeight stringValue]];
+        if (e.fishOunces)               [searchStrings addObject:[e.fishOunces stringValue]];
+        if (e.fishQuantity)             [searchStrings addObject:[e.fishQuantity stringValue]];
+        if (e.baitUsed)                 [searchStrings addObject:e.baitUsed.name];
+        if (e.baitUsed &&
+            e.baitUsed.baitDescription) [searchStrings addObject:e.baitUsed.baitDescription];
+        if (e.location)                 [searchStrings addObject:e.location.name];
+        if (e.fishingSpot)              [searchStrings addObject:e.fishingSpot.name];
+        if (e.waterTemperature)         [searchStrings addObject:[e.waterTemperature stringValue]];
+        if (e.waterClarity)             [searchStrings addObject:e.waterClarity.name];
+        if (e.waterDepth)               [searchStrings addObject:[e.waterDepth stringValue]];
+        if (e.notes)                    [searchStrings addObject:e.notes];
         [searchStrings addObject:(e.fishResult == CMAFishResultKept) ? @"Kept" : @"Released"];
         
         for (CMAFishingMethod *m in e.fishingMethods)
