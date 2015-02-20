@@ -185,7 +185,7 @@
     
     if (self.longestCatchEntry) {
         if ([self.longestCatchEntry imageCount] > 0)
-            [aCell.thumbImage setImage:[self.longestCatchEntry.images objectAtIndex:0]];
+            [aCell.thumbImage setImage:[[self.longestCatchEntry.images objectAtIndex:0] dataAsUIImage]];
         else
             [aCell.thumbImage setImage:[UIImage imageNamed:@"no_image.png"]];
         
@@ -206,7 +206,7 @@
     
     if (self.heaviestCatchEntry) {
         if ([self.heaviestCatchEntry imageCount] > 0)
-            [aCell.thumbImage setImage:[self.heaviestCatchEntry.images objectAtIndex:0]];
+            [aCell.thumbImage setImage:[[self.heaviestCatchEntry.images objectAtIndex:0] dataAsUIImage]];
         else
             [aCell.thumbImage setImage:[UIImage imageNamed:@"no_image.png"]];
         
