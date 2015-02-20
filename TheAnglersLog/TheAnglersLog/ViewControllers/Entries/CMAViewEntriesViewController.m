@@ -127,9 +127,14 @@
     [self.tableView setContentOffset:CGPointMake(0, self.currentOffsetY)];
     
     if (self.searchBar && !self.isSearchBarInView) {
-        [self.tableView setContentOffset:CGPointMake(0, kSearchBarHeight)];
+        if (self.currentOffsetY > 0)
+            [self.tableView setContentOffset:CGPointMake(0, self.currentOffsetY)];
+        else
+            [self.tableView setContentOffset:CGPointMake(0, kSearchBarHeight)];
+        
         [self setIsSearchBarInView:NO];
-    }
+    } else
+        [self.tableView setContentOffset:CGPointMake(0, self.currentOffsetY)];
     
     [self.tableView reloadData];
 }
