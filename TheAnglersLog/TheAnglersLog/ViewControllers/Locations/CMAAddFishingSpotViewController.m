@@ -158,8 +158,13 @@
 
 #pragma mark - Map Initializing
 
-#define AREA_X 800
-#define AREA_Y 800
+#define kMapAreaX 800
+#define kMapAreaY 800
+
+- (void)mapView:(MKMapView *)mapView regionWillChangeAnimated:(BOOL)animated {
+    // dismiss keyboard if the map changes
+    [self.view endEditing:YES];
+}
 
 // Update Lat and Long text fields when the user moves the map.
 - (void)mapView:(MKMapView *)mapView regionDidChangeAnimated:(BOOL)animated {
@@ -174,7 +179,7 @@
         
         // display the correct are if we're editing an existing fishing spot
         if (self.isEditingFishingSpot)
-            region = MKCoordinateRegionMakeWithDistance(self.fishingSpot.coordinate, AREA_X, AREA_Y);
+            region = MKCoordinateRegionMakeWithDistance(self.fishingSpot.coordinate, kMapAreaX, kMapAreaY);
         else {
             if ([self.locationFromAddLocation fishingSpotCount] > 0)
                 region = [self.locationFromAddLocation mapRegion]; // set the correct region if there is already fishing spots for the location
@@ -195,7 +200,7 @@
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations {
     if (!self.isEditingFishingSpot && !self.userLocationAdded && [self.locationFromAddLocation fishingSpotCount] <= 0) {
-        MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(manager.location.coordinate, AREA_X, AREA_Y);
+        MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(manager.location.coordinate, kMapAreaX, kMapAreaY);
         [self.mapView setRegion:[self.mapView regionThatFits:region] animated:YES];
         
         self.userLocationAdded = YES;
