@@ -648,7 +648,7 @@ NSString *const kNotSelectedString = @"Not Selected";
     // photos
     // delete current images from core data as they'll be restored later
     if (self.entry) {
-        for (int i = 0; i < [self.entry.images count]; i++)
+        for (int i = 0; i < [self.entryImages count]; i++)
             if ([self.entryImages objectAtIndex:i])
                 [[CMAStorageManager sharedManager] deleteManagedObject:[self.entryImages objectAtIndex:i]];
         
@@ -665,8 +665,8 @@ NSString *const kNotSelectedString = @"Not Selected";
                 UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil);
             
             CMAImage *img = [[CMAStorageManager sharedManager] managedImage];
-            img.data = UIImagePNGRepresentation(image);
-            img.entry = anEntry;
+            [img setDataFromUIImage:image];
+            [img setEntry:anEntry];
         }
     } else
         [anEntry setImages:nil];
@@ -894,6 +894,10 @@ NSString *const kNotSelectedString = @"Not Selected";
     if (saveToGallery)
         [insertedCell setTag:kSavePhotoTag];
     
+    CMAImage *img = [[CMAStorageManager sharedManager] managedImage];
+    [img setDataFromUIImage:anImage];
+    [self.entryImages insertObject:img atIndex:0];
+    
     UIImageView *imageView = (UIImageView *)[insertedCell viewWithTag:kImageViewTag];
     [imageView setImage:anImage];
 }
@@ -901,6 +905,8 @@ NSString *const kNotSelectedString = @"Not Selected";
 - (void)deleteImageFromCollectionAtIndexPath:(NSIndexPath *)anIndexPath {
     self.numberOfImages--;
     
+    [[CMAStorageManager sharedManager] deleteManagedObject:[self.entryImages objectAtIndex:anIndexPath.item]];
+    [self.entryImages removeObjectAtIndex:anIndexPath.item];
     [self.imageCollection deleteItemsAtIndexPaths:@[anIndexPath]];
     
     // reload table to hide collection cell if there are no more images
