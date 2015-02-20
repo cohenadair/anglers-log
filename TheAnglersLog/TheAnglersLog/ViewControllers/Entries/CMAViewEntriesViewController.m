@@ -130,6 +130,8 @@
         [self.tableView setContentOffset:CGPointMake(0, kSearchBarHeight)];
         [self setIsSearchBarInView:NO];
     }
+    
+    [self.tableView reloadData];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {

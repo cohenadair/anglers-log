@@ -100,6 +100,8 @@
     
     if (self.isSelectingForStatistics)
         self.navigationController.toolbarHidden = YES;
+    
+    [self.tableView reloadData];
 }
 
 - (void)viewDidLoad {
