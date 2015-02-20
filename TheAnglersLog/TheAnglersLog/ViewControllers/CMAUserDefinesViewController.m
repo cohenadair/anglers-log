@@ -30,6 +30,7 @@
 @property (nonatomic)BOOL isSelectingForAddEntry;
 @property (nonatomic)BOOL isSelectingMultiple;
 @property (nonatomic)BOOL isSelectingForStatistics;
+@property (nonatomic)CGFloat currentOffsetY;
 
 @end
 
@@ -93,6 +94,7 @@
 - (void)setupView {
     [self handleNoXView];
     [self.editButton setEnabled:[self.userDefine count] > 0];
+    [self.tableView setContentOffset:CGPointMake(0, self.currentOffsetY)];
     
     // show the toolbar when navigating back from a push segue
     self.navigationController.toolbarHidden = NO;
@@ -491,6 +493,8 @@
         destination.location = loc;
         destination.previousViewID = CMAViewControllerIDEditSettings;
         destination.navigationItem.title = loc.name;
+        
+        self.currentOffsetY = self.tableView.contentOffset.y;
     }
 }
 

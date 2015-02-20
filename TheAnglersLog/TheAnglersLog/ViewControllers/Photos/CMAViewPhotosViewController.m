@@ -20,6 +20,8 @@
 @property (strong, nonatomic) NSMutableArray *imagesArray;
 @property (strong, nonatomic) CMANoXView *noImagesView;
 
+@property (nonatomic)CGFloat currentOffsetY;
+
 @end
 
 @implementation CMAViewPhotosViewController
@@ -66,6 +68,7 @@
 - (void)setupView {
     [self initImagesArray];
     [self handleNoImagesView];
+    [self.collectionView setContentOffset:CGPointMake(0, self.currentOffsetY)];
     [self.navigationItem setTitle:[NSString stringWithFormat:@"Photos (%lu)", (unsigned long)[self.imagesArray count]]];
 }
 
@@ -122,7 +125,8 @@
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"thumbnailCell" forIndexPath:indexPath];
     
     UIImageView *imageView = (UIImageView *)[cell viewWithTag:100];
-    [imageView setImage:[[self.imagesArray objectAtIndex:indexPath.item] dataAsUIImage]];
+    [imageView setImage:[UIImage imageNamed:@"no_image.png"]];
+    //[imageView setImage:[[self.imagesArray objectAtIndex:indexPath.item] dataAsUIImage]];
     
     return cell;
 }
@@ -155,6 +159,8 @@
         destination.imagesArray = self.imagesArray;
         destination.startingImageIndexPath = [[self.collectionView indexPathsForSelectedItems] objectAtIndex:0];
     }
+    
+    self.currentOffsetY = self.collectionView.contentOffset.y;
 }
 
 @end

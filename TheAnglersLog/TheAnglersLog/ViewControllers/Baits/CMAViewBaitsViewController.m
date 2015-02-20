@@ -24,6 +24,8 @@
 @property (strong, nonatomic)CMAUserDefine *userDefineBaits;
 @property (strong, nonatomic)CMANoXView *noBaitsView;
 
+@property (nonatomic)CGFloat currentOffsetY;
+
 @end
 
 @implementation CMAViewBaitsViewController
@@ -70,6 +72,7 @@
 
 - (void)setupView {
     [self setUserDefineBaits:[[self journal] userDefineNamed:UDN_BAITS]];
+    [self.tableView setContentOffset:CGPointMake(0, self.currentOffsetY)];
     [self handleNoBaitView];
     [self.tableView reloadData];
 }
@@ -226,6 +229,8 @@
         destination.bait = baitToDisplay;
         [destination.navigationItem setTitle:baitToDisplay.name];
     }
+    
+    self.currentOffsetY = self.tableView.contentOffset.y;
 }
 
 - (IBAction)unwindToViewBaits:(UIStoryboardSegue *)segue {
