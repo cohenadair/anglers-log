@@ -136,6 +136,7 @@
     } else
         [self.tableView setContentOffset:CGPointMake(0, self.currentOffsetY)];
     
+    self.entries = [[self journal] entries]; // need to reset in case an entry was edited and the order changed
     [self.tableView reloadData];
 }
 

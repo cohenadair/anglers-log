@@ -147,6 +147,7 @@
 // no need to keep the same instance since the reference doesn't need to be kept track of
 - (void)editEntryDated:(NSDate *)aDate newProperties: (CMAEntry *)aNewEntry {
     [[self entryDated:aDate] edit:aNewEntry];
+    [self sortEntriesBy:self.entrySortMethod order:self.entrySortOrder];
 }
 
 - (BOOL)addUserDefine:(NSString *)aDefineName objectToAdd: (id)anObject {
