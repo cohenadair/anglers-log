@@ -228,8 +228,18 @@
     self.searchBar.delegate = self;
     self.tableView.tableHeaderView = self.searchBar;
     
-    self.searchResultView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
-    [self.searchResultView setBackgroundColor:[UIColor redColor]];
+    [self initSearchResultView];
+}
+
+- (void)initSearchResultView {
+    self.searchResultView = [[UIView alloc] initWithFrame:CGRectMake(0, kSearchBarHeight, self.view.frame.size.width, self.view.frame.size.height)];
+    
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 10, self.view.frame.size.width, 50)];
+    [label setTextAlignment:NSTextAlignmentCenter];
+    [label setText:@"No results found."];
+    
+    [self.searchResultView addSubview:label];
+    
     [self.view addSubview:self.searchResultView];
     [self.searchResultView setHidden:YES];
 }
@@ -244,14 +254,13 @@
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
     NSMutableOrderedSet *searchResults = [[self journal] filterEntries:searchBar.text];
     
-    if ([searchResults count] <= 0) {
+    if ([searchResults count] <= 0)
         self.searchResultView.hidden = NO;
-        return;
-    }
+    else
+        self.searchResultView.hidden = YES;
     
     self.entries = searchResults;
     [self.tableView reloadData];
-    [self.searchResultView setHidden:YES];
 }
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
