@@ -452,7 +452,7 @@
             [searchStrings addObject:m.name];
         
         for (NSString *str in searchStrings)
-            if ([str containsString:searchText])
+            if ([[str lowercaseString] containsString:[searchText lowercaseString]])
                 [result addObject:e];
     }
     
