@@ -18,7 +18,7 @@
     [self initAppearances];
     
     //[[CMAStorageManager sharedManager] deleteAllObjectsForEntityName:CDE_WEATHER_DATA];
-    [[CMAStorageManager sharedManager] debugCoreDataObjects];
+    //[[CMAStorageManager sharedManager] debugCoreDataObjects];
     
     return YES;
 }

@@ -113,17 +113,17 @@
         [self.chartView bringSubviewToFront:self.pieChartControl];
     }
     
+    [self setupView];
     [self.tableView setTableFooterView:[[UIView alloc] initWithFrame:CGRectZero]]; // removes empty cells at the end of the list
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     self.navigationController.toolbarHidden = YES;
-    [self setupView];
     
     if (self.journalHasEntries) {
-        [self.pieChart reloadData];
-        
+        [self.pieChart reloadData]; // needed to deselect the current pie chart segment
+    
         if (self.initialSelectedIndex != -1)
             [self selectPieChartSliceAtIndex:self.initialSelectedIndex];
     }
