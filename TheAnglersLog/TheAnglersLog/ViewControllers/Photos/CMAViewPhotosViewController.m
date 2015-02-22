@@ -68,7 +68,7 @@
 
 - (void)setupView {
     [self.collectionView setContentOffset:CGPointMake(0, self.currentOffsetY)];
-    [self.navigationItem setTitle:[NSString stringWithFormat:@"Photos (%lu)", (unsigned long)[self.thumbnails count]]];
+    [self.navigationItem setTitle:@"Photos (0)"];
 }
 
 - (void)viewDidLoad {
@@ -106,11 +106,12 @@
         
         dispatch_async(dispatch_get_main_queue(), ^{
             // block is for animation
-            [self.collectionView performBatchUpdates:^{
-                [self.collectionView reloadSections:[NSIndexSet indexSetWithIndex:0]];
+            [weakSelf.collectionView performBatchUpdates:^{
+                [weakSelf.collectionView reloadSections:[NSIndexSet indexSetWithIndex:0]];
             } completion:nil];
             
             [weakSelf handleNoImagesView];
+            [self.navigationItem setTitle:[NSString stringWithFormat:@"Photos (%lu)", (unsigned long)[self.thumbnails count]]];
         });
     });
 }
