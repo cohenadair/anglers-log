@@ -2814,41 +2814,41 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <inset key="separatorInset" minX="85" minY="0.0" maxX="0.0" maxY="0.0"/>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="detailDisclosureButton" indentationWidth="10" reuseIdentifier="baitCell" rowHeight="75" id="8C2-N7-nF0" customClass="CMABaitTableViewCell">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="detailDisclosureButton" indentationWidth="10" reuseIdentifier="baitCell" rowHeight="85" id="8C2-N7-nF0" customClass="CMABaitTableViewCell">
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="8C2-N7-nF0" id="DdQ-oh-h98">
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" tag="100" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="fLP-Ak-sq6">
-                                            <rect key="frame" x="0.0" y="0.0" width="75" height="75"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="85" height="85"/>
                                             <constraints>
-                                                <constraint firstAttribute="width" constant="75" id="vlq-qN-EWL"/>
+                                                <constraint firstAttribute="width" constant="85" id="e4J-ok-GTI"/>
                                             </constraints>
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" tag="200" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Bait Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dEj-pE-CHU">
-                                            <rect key="frame" x="83" y="17" width="442" height="21"/>
+                                            <rect key="frame" x="93" y="23" width="442" height="21"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="# Caught" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uS1-V0-nc7">
-                                            <rect key="frame" x="83" y="36" width="442" height="21"/>
+                                            <rect key="frame" x="93" y="41" width="442" height="21"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="uS1-V0-nc7" firstAttribute="trailing" secondItem="dEj-pE-CHU" secondAttribute="trailing" id="1Hw-Mb-VNj"/>
-                                        <constraint firstItem="uS1-V0-nc7" firstAttribute="top" secondItem="DdQ-oh-h98" secondAttribute="topMargin" constant="28" id="65t-3h-Wd6"/>
-                                        <constraint firstAttribute="bottomMargin" secondItem="uS1-V0-nc7" secondAttribute="bottom" constant="10" id="avm-mi-Vd6"/>
-                                        <constraint firstItem="fLP-Ak-sq6" firstAttribute="leading" secondItem="DdQ-oh-h98" secondAttribute="leading" id="cFe-dJ-JeZ"/>
-                                        <constraint firstItem="dEj-pE-CHU" firstAttribute="top" secondItem="DdQ-oh-h98" secondAttribute="topMargin" constant="9" id="d7H-rf-XGU"/>
-                                        <constraint firstItem="uS1-V0-nc7" firstAttribute="trailing" secondItem="DdQ-oh-h98" secondAttribute="trailingMargin" id="j29-yq-CJ0"/>
-                                        <constraint firstItem="fLP-Ak-sq6" firstAttribute="top" secondItem="DdQ-oh-h98" secondAttribute="top" id="kbB-br-6zt"/>
-                                        <constraint firstItem="uS1-V0-nc7" firstAttribute="leading" secondItem="dEj-pE-CHU" secondAttribute="leading" id="lnI-cV-8wl"/>
-                                        <constraint firstItem="dEj-pE-CHU" firstAttribute="leading" secondItem="fLP-Ak-sq6" secondAttribute="trailing" constant="8" symbolic="YES" id="p8U-5I-dWE"/>
-                                        <constraint firstAttribute="bottom" secondItem="fLP-Ak-sq6" secondAttribute="bottom" id="twa-RR-lWC"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="dEj-pE-CHU" secondAttribute="trailing" constant="-10" id="1MC-Ar-rb1"/>
+                                        <constraint firstItem="fLP-Ak-sq6" firstAttribute="leading" secondItem="DdQ-oh-h98" secondAttribute="leading" id="784-tg-o2T"/>
+                                        <constraint firstAttribute="bottom" secondItem="fLP-Ak-sq6" secondAttribute="bottom" id="KEB-dW-kc1"/>
+                                        <constraint firstItem="dEj-pE-CHU" firstAttribute="top" secondItem="DdQ-oh-h98" secondAttribute="topMargin" constant="15" id="NuX-t6-WOr"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="uS1-V0-nc7" secondAttribute="bottom" constant="15" id="PI3-db-DYc"/>
+                                        <constraint firstItem="fLP-Ak-sq6" firstAttribute="top" secondItem="DdQ-oh-h98" secondAttribute="top" id="WOg-8U-RIf"/>
+                                        <constraint firstItem="dEj-pE-CHU" firstAttribute="leading" secondItem="fLP-Ak-sq6" secondAttribute="trailing" constant="8" symbolic="YES" id="Xme-JJ-ieu"/>
+                                        <constraint firstItem="uS1-V0-nc7" firstAttribute="leading" secondItem="dEj-pE-CHU" secondAttribute="leading" id="iKp-7y-mAK"/>
+                                        <constraint firstItem="dEj-pE-CHU" firstAttribute="trailing" secondItem="uS1-V0-nc7" secondAttribute="trailing" id="rJ2-qT-EeV"/>
+                                        <constraint firstItem="uS1-V0-nc7" firstAttribute="top" secondItem="DdQ-oh-h98" secondAttribute="topMargin" constant="33" id="ty7-SS-MNW"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
@@ -3103,21 +3103,21 @@
         <image name="water_clarities.png" width="50" height="50"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="ooh-Eu-Ug2"/>
-        <segue reference="RpT-ts-gTM"/>
         <segue reference="Gww-wH-Tkw"/>
         <segue reference="egX-OW-uSX"/>
-        <segue reference="0It-ub-fzN"/>
         <segue reference="8iL-u2-ZVl"/>
-        <segue reference="guB-6y-sIg"/>
-        <segue reference="gDt-Tw-gtk"/>
+        <segue reference="0It-ub-fzN"/>
         <segue reference="Jyy-wS-dXA"/>
+        <segue reference="gDt-Tw-gtk"/>
+        <segue reference="guB-6y-sIg"/>
+        <segue reference="bAG-il-Vyj"/>
         <segue reference="wZB-7v-gkR"/>
-        <segue reference="y0h-hR-J5c"/>
-        <segue reference="2ub-xD-2JF"/>
-        <segue reference="uUK-tT-jvg"/>
-        <segue reference="1Kg-jf-Myf"/>
-        <segue reference="ij7-4o-wMK"/>
+        <segue reference="rQz-NV-wiY"/>
+        <segue reference="ooh-Eu-Ug2"/>
         <segue reference="qAO-gb-5Yr"/>
+        <segue reference="y0h-hR-J5c"/>
+        <segue reference="1Kg-jf-Myf"/>
+        <segue reference="uUK-tT-jvg"/>
+        <segue reference="ij7-4o-wMK"/>
     </inferredMetricsTieBreakers>
 </document>
