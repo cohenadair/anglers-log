@@ -66,11 +66,14 @@ typedef enum frID_e : int16_t {
 // initialized in CMAAppDelegate.m
 UIColor *CELL_COLOR_DARK;
 UIColor *CELL_COLOR_LIGHT;
+CGSize CELL_SIZE_GALLERY;
 
 #pragma mark - Application Constants
 
 extern NSString *const APP_NAME;
 extern NSString *const SHARE_MESSAGE;
+extern NSString *const GLOBAL_FONT;
+extern NSInteger const MODEL_VERSION;
 
 #pragma mark - User Define Name (UDN)
 
@@ -125,14 +128,14 @@ extern NSString *const UNIT_METRIC_TEMPERATURE_SHORTHAND;
 extern NSString *const UNIT_METRIC_SPEED;
 extern NSString *const UNIT_METRIC_SPEED_SHORTHAND;
 
-extern NSString *const GLOBAL_FONT;
-
 #pragma mark - UI Constants
 
 extern CGFloat const TABLE_SECTION_SPACING;
 extern CGFloat const TABLE_HEIGHT_FOOTER;
 extern CGFloat const TABLE_HEIGHT_HEADER;
 extern CGFloat const TABLE_HEIGHT_WEATHER_CELL;
+extern NSInteger const GALLERY_CELL_SPACING;
+extern NSInteger const TABLE_THUMB_SIZE;
 
 #pragma mark - Math Constants
 

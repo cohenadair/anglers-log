@@ -102,4 +102,24 @@
         [[CMAStorageManager sharedManager] deleteManagedObject:anObjToAdd];
 }
 
+// From http://stackoverflow.com/questions/2658738/the-simplest-way-to-resize-an-uiimage
++ (UIImage *)imageWithImage:(UIImage *)image scaledToSize:(CGSize)newSize {
+    UIGraphicsBeginImageContextWithOptions(newSize, NO, 0.0);
+    [image drawInRect:CGRectMake(0, 0, newSize.width, newSize.height)];
+    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return newImage;
+}
+
++ (CGSize)galleryCellSize {
+    CGSize result;
+    int cellsPerRow = 4;
+    
+    result.width = ([[UIApplication sharedApplication] delegate].window.frame.size.width - ((cellsPerRow - 1) * GALLERY_CELL_SPACING)) / cellsPerRow;
+    result.height = result.width;
+    
+    return result;
+}
+
 @end

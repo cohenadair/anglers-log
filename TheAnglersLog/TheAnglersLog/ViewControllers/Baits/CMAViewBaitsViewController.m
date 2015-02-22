@@ -108,7 +108,7 @@
 #pragma mark - Table View Initializing
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 75;
+    return TABLE_THUMB_SIZE;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -125,7 +125,7 @@
     CMABait *bait = [self.userDefineBaits objectAtIndex:indexPath.row];
     
     if (bait.imageData)
-        [cell.thumbImage setImage:[bait.imageData dataAsUIImage]];
+        [cell.thumbImage setImage:[bait.imageData dataAsUIImage:bait.imageData.tableThumbnailData]];
     else
         [cell.thumbImage setImage:[UIImage imageNamed:@"no_image.png"]];
     

@@ -23,7 +23,7 @@
 
 // initializing
 - (CMAJournal *)initWithName:(NSString *)aName;
-- (void)initProperties;
+- (void)handleModelUpdate;
 
 - (void)archive;
 

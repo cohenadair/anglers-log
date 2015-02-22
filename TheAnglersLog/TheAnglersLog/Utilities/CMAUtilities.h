@@ -23,5 +23,7 @@
                    viewController:(id)aVC
                        segueBlock:(void(^)())aSegueBlock
                   removeObjToEdit:(BOOL)rmObjToEdit;
++ (UIImage *)imageWithImage:(UIImage *)image scaledToSize:(CGSize)newSize;
++ (CGSize)galleryCellSize;
 
 @end

@@ -12,12 +12,13 @@
 #import "CMASinglePhotoViewController.h"
 #import "CMANoXView.h"
 #import "CMAStorageManager.h"
+#import "CMAUtilities.h"
 
 @interface CMAViewPhotosViewController ()
 
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *menuButton;
 
-@property (strong, nonatomic) NSMutableArray *imagesArray;
+@property (strong, nonatomic) NSMutableArray *thumbnails;
 @property (strong, nonatomic) CMANoXView *noImagesView;
 
 @property (nonatomic)CGFloat currentOffsetY;
@@ -57,23 +58,22 @@
 }
 
 - (void)handleNoImagesView {
-    if ([self.imagesArray count] <= 0)
+    if ([self.thumbnails count] <= 0)
         [self initNoImagesView];
-    else {
+    else if (self.noImagesView != nil) {
         [self.noImagesView removeFromSuperview];
         self.noImagesView = nil;
     }
 }
 
 - (void)setupView {
-    [self initImagesArray];
-    [self handleNoImagesView];
     [self.collectionView setContentOffset:CGPointMake(0, self.currentOffsetY)];
-    [self.navigationItem setTitle:[NSString stringWithFormat:@"Photos (%lu)", (unsigned long)[self.imagesArray count]]];
+    [self.navigationItem setTitle:[NSString stringWithFormat:@"Photos (%lu)", (unsigned long)[self.thumbnails count]]];
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self initThumbnails];
     [self initSideBarMenu];
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Photos" style:UIBarButtonItemStylePlain target:nil action:nil];
 }
@@ -91,26 +91,32 @@
 
 #pragma mark - Colletion View Initializing
 
-#define CELL_SPACING 2
-#define CELLS_PER_ROW 4
-
 // Loops through the journal entries creating an array of UIImages.
-- (void)initImagesArray {
-    self.imagesArray = [NSMutableArray array];
+- (void)initThumbnails {
+    __weak typeof(self) weakSelf = self;
+    
+    self.thumbnails = [NSMutableArray array];
     NSMutableOrderedSet *entries = [[self journal] entries];
     
-    for (CMAEntry *entry in entries)
-        for (UIImage *img in entry.images)
-            [self.imagesArray addObject:img];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+        for (CMAEntry *entry in entries)
+            for (CMAImage *img in entry.images) {
+                [[weakSelf thumbnails] addObject:[img dataAsUIImage:img.galleryThumbnailData]];
+            }
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            // block is for animation
+            [self.collectionView performBatchUpdates:^{
+                [self.collectionView reloadSections:[NSIndexSet indexSetWithIndex:0]];
+            } completion:nil];
+            
+            [weakSelf handleNoImagesView];
+        });
+    });
 }
 
 - (CGSize)cellSize {
-    CGSize result;
-    
-    result.width = (self.collectionView.frame.size.width - ((CELLS_PER_ROW - 1) * CELL_SPACING)) / CELLS_PER_ROW;
-    result.height = result.width;
-    
-    return result;
+    return [CMAUtilities galleryCellSize];
 }
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
@@ -118,15 +124,14 @@
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    return [self.imagesArray count];
+    return [self.thumbnails count];
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"thumbnailCell" forIndexPath:indexPath];
     
     UIImageView *imageView = (UIImageView *)[cell viewWithTag:100];
-    [imageView setImage:[UIImage imageNamed:@"no_image.png"]];
-    //[imageView setImage:[[self.imagesArray objectAtIndex:indexPath.item] dataAsUIImage]];
+    [imageView setImage:[self.thumbnails objectAtIndex:indexPath.item]];
     
     return cell;
 }
@@ -140,11 +145,11 @@
 }
 
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section {
-    return CELL_SPACING;
+    return GALLERY_CELL_SPACING;
 }
 
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section {
-    return CELL_SPACING;
+    return GALLERY_CELL_SPACING;
 }
 
 - (BOOL)collectionView:(UICollectionView *)collectionView shouldSelectItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -156,7 +161,7 @@
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([segue.identifier isEqualToString:@"fromPhotosToSinglePhoto"]) {
         CMASinglePhotoViewController *destination = [[segue.destinationViewController viewControllers] objectAtIndex:0];
-        destination.imagesArray = self.imagesArray;
+        destination.imagesArray = self.thumbnails;
         destination.startingImageIndexPath = [[self.collectionView indexPathsForSelectedItems] objectAtIndex:0];
     }
     

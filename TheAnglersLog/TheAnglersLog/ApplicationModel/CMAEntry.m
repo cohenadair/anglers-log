@@ -40,8 +40,9 @@
 }
 
 // Used for compatibility purposes.
-- (void)validateProperties {
-    
+- (void)handleModelUpdate {
+    for (CMAImage *img in self.images)
+        [img handleModelUpdate];
 }
 
 #pragma mark - Accessing

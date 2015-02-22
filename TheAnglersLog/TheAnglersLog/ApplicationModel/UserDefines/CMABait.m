@@ -31,6 +31,11 @@
     return self;
 }
 
+- (void)handleModelUpdate {
+    if (self.imageData)
+        [self.imageData handleModelUpdate];
+}
+
 #pragma mark - Editing
 
 - (void)setSize:(NSString *)size {

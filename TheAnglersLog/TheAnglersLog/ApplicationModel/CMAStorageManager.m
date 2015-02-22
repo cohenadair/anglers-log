@@ -15,7 +15,7 @@
 
 - (void)setSharedJournal:(CMAJournal *)sharedJournal {
     _sharedJournal = sharedJournal;
-    [_sharedJournal initProperties];
+    [_sharedJournal handleModelUpdate];
 }
 
 #pragma mark - Singleton Methods
@@ -78,7 +78,9 @@
     NSError *error = nil;
     NSString *failureReason = @"There was an error creating or loading the application's saved data.";
     
-    NSDictionary *options = @{NSSQLitePragmasOption: @{@"journal_mode" : @"DELETE"}};
+    NSDictionary *options = @{NSSQLitePragmasOption: @{@"journal_mode" : @"DELETE"},
+                              NSMigratePersistentStoresAutomaticallyOption : @YES,
+                              NSInferMappingModelAutomaticallyOption : @YES};
     
     NSPersistentStore *store;
     

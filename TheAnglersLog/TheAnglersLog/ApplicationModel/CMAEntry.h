@@ -55,7 +55,7 @@
 
 // initializing
 - (id)initWithDate:(NSDate *)aDate;
-- (void)validateProperties;
+- (void)handleModelUpdate;
 
 // accessing
 - (NSInteger)imageCount;

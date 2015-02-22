@@ -62,10 +62,8 @@
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"imageCell" forIndexPath:indexPath];
     
-    [cell setBackgroundColor:[UIColor redColor]];
-    
     UIImageView *imageView = (UIImageView *)[cell viewWithTag:100];
-    [imageView setImage:[[self.imagesArray objectAtIndex:indexPath.item] dataAsUIImage]];
+    [imageView setImage:[self.imagesArray objectAtIndex:indexPath.item]];
     
     return cell;
 }

@@ -164,7 +164,7 @@
 
 // Sets the height of each cell.
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 85;
+    return TABLE_THUMB_SIZE;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -180,9 +180,10 @@
     else
         cell.locationLabel.text = @"No Location";
     
-    if ([entry.images count] > 0)
-        cell.thumbImage.image = [[entry.images objectAtIndex:0] dataAsUIImage];
-    else
+    if ([entry imageCount] > 0) {
+        CMAImage *img = [entry.images objectAtIndex:0];
+        cell.thumbImage.image = [img dataAsUIImage:img.tableThumbnailData];
+    } else
         cell.thumbImage.image = [UIImage imageNamed:@"no_image.png"];
     
     if (indexPath.item % 2 == 0)
@@ -319,8 +320,6 @@
     if ([self.entries count] <= 0) {
         [self deleteSearchBar];
     }
-    
-    [self.tableView reloadData];
 }
 
 @end

@@ -13,6 +13,7 @@
 NSString *const APP_NAME        = @"The Anglers' Log";
 NSString *const SHARE_MESSAGE   = @"Shared with #TheAnglersLogApp.";
 NSString *const GLOBAL_FONT     = @"HelveticaNeue";
+NSInteger const MODEL_VERSION   = 3;
 
 #pragma mark - User Define Name (UDN)
 
@@ -73,6 +74,8 @@ CGFloat const TABLE_SECTION_SPACING     = 20.0f;
 CGFloat const TABLE_HEIGHT_FOOTER       = 25.0f;
 CGFloat const TABLE_HEIGHT_HEADER       = 40.0f;
 CGFloat const TABLE_HEIGHT_WEATHER_CELL = 90.0f;
+NSInteger const GALLERY_CELL_SPACING    = 2;
+NSInteger const TABLE_THUMB_SIZE        = 85;
 
 #pragma mark - Math Constants
 
