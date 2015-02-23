@@ -14,25 +14,21 @@
 
 @implementation CMAImage
 
-@dynamic data;
+@dynamic imagePath;
 @dynamic entry;
 @dynamic bait;
-@dynamic tableThumbnailData;
-@dynamic galleryThumbnailData;
 
-@synthesize fullImage = _fullImage;
-@synthesize tableThumbnailImage = _tableThumbnailImage;
-@synthesize galleryThumbnailImage = _galleryThumbnailImage;
+@synthesize image = _image;
+@synthesize tableCellImage = _tableCellImage;
+@synthesize galleryCellImage = _galleryCellImage;
 
 #pragma mark - Model Updating
 
 - (void)handleModelUpdate {
-    if (!self.tableThumbnailData)
-        [self initTableThumbnailDataForSize];
-    
-    if (!self.galleryThumbnailData)
-        [self initGalleryThumbnailDataForSize];
+
 }
+
+#pragma mark - Initializers
 
 // Done in a background thread upon startup.
 - (void)initProperties {
@@ -40,79 +36,91 @@
 }
 
 - (void)initUIImages {
+    CFAbsoluteTime start = CFAbsoluteTimeGetCurrent();
+    
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-        _fullImage = [self dataAsUIImage];
-        _tableThumbnailImage = [self dataAsUIImage:self.tableThumbnailData];
-        _galleryThumbnailImage = [self dataAsUIImage:self.galleryThumbnailData];
+        [self initImage];
+        [self initTableCellImage];
+        [self initGalleryCellImage];
         
         dispatch_async(dispatch_get_main_queue(), ^{
-            
+            NSLog(@"Initialized image in %f ms.", CFAbsoluteTimeGetCurrent() - start);
         });
     });
 }
 
-#pragma mark - Coversion Methods
-
-- (CGFloat)scale {
-    return [UIScreen mainScreen].scale;
+- (void)initImage {
+    _image = [UIImage imageWithContentsOfFile:self.imagePath];
 }
 
-- (UIImage *)dataAsUIImage {
-    return [UIImage imageWithData:self.data];
+- (void)initTableCellImage {
+    _tableCellImage = [CMAUtilities imageWithImage:self.image scaledToSize:CGSizeMake(TABLE_THUMB_SIZE, TABLE_THUMB_SIZE)];
 }
 
-- (UIImage *)dataAsUIImage:(NSData *)data {
-    return [UIImage imageWithData:data];
+- (void)initGalleryCellImage {
+    _galleryCellImage = [CMAUtilities imageWithImage:self.tableCellImage scaledToSize:[CMAUtilities galleryCellSize]];
 }
 
-- (NSData *)dataFromUIImage:(UIImage *)anImage {
-    return UIImagePNGRepresentation(anImage);
-}
+#pragma mark - Saving
 
-#pragma mark - Setters
+// NOTE: Deleting images is done in [[CMAStorageManager sharedManager] deleteManagedObject].
 
-- (void)setDataFromUIImage:(UIImage *)anImage {
-    self.data = [self dataFromUIImage:anImage];
+- (void)saveWithImage:(UIImage *)anImage andFileName:(NSString *)aFileName {
+    NSString *subDirectory = @"Images";
+    NSString *fileName = [aFileName stringByAppendingString:@".png"];
     
-    [self initTableThumbnailDataForSize];
-    [self initGalleryThumbnailDataForSize];
+    NSString *documentsPath = [[CMAStorageManager sharedManager] documentsSubDirectory:subDirectory].path;
+    NSString *path = [documentsPath stringByAppendingPathComponent:fileName];
+    NSString *imagePath = [subDirectory stringByAppendingPathComponent:fileName];
+    
+    NSData *data = UIImagePNGRepresentation(anImage);
+    
+    if ([data writeToFile:path atomically:YES])
+        self.imagePath = imagePath; // stored path has to be relative, not absolute (iOS8 changes UUID every run)
+    else
+        NSLog(@"Error saving image to path: %@", path);
 }
 
-- (void)initTableThumbnailDataForSize {
-    CGSize size = CGSizeMake(TABLE_THUMB_SIZE, TABLE_THUMB_SIZE);
-    self.tableThumbnailData = [self dataFromUIImage:[CMAUtilities imageWithImage:[self dataAsUIImage] scaledToSize:size]];
-}
-
-- (void)initGalleryThumbnailDataForSize {
-    CGSize sizeInPoints = [CMAUtilities galleryCellSize];
-    CGSize size = CGSizeMake(sizeInPoints.width, sizeInPoints.height);
-    self.galleryThumbnailData = [self dataFromUIImage:[CMAUtilities imageWithImage:[self dataAsUIImage] scaledToSize:size]];
+// This method should only be called when adding an image to the journal (ex. adding an entry or bait).
+// This method MUST be called. It sets the CMAImage's imagePath property which is needed to access the image later.
+- (void)save {
+    if (!self.image)
+        NSLog(@"WARNING: Trying to save CMAImage with NULL image value.");
+    
+    if (!self.entry)
+        NSLog(@"WARNING: Trying to save CMAImage with NILL entry value.");
+    
+    [self saveWithImage:self.image andFileName:[self.entry dateAsFileNameString]];
 }
 
 #pragma mark - Getters
 
-- (UIImage *)fullImage {
-    if (_fullImage)
-        return _fullImage;
-    
-    _fullImage = [self dataAsUIImage];
-    return _fullImage;
+- (NSString *)imagePath {
+    return [[[CMAStorageManager sharedManager] documentsDirectory].path stringByAppendingPathComponent:[self primitiveValueForKey:@"imagePath"]];
 }
 
-- (UIImage *)tableThumbnailImage {
-    if (_tableThumbnailImage)
-        return _tableThumbnailImage;
+- (UIImage *)image {
+    if (_image)
+        return _image;
     
-    _tableThumbnailImage = [self dataAsUIImage:self.tableThumbnailData];
-    return _tableThumbnailImage;
+    [self initImage];
+    return _image;
 }
 
-- (UIImage *)galleryThumbnailImage {
-    if (_galleryThumbnailImage)
-        return _galleryThumbnailImage;
+- (UIImage *)tableCellImage {
+    if (_tableCellImage)
+        return _tableCellImage;
     
-    _galleryThumbnailImage = [self dataAsUIImage:self.galleryThumbnailData];
-    return _galleryThumbnailImage;
+    [self initTableCellImage];
+    return _tableCellImage;
+}
+
+- (UIImage *)galleryCellImage {
+    if (_galleryCellImage)
+        return _galleryCellImage;
+    
+    [self initGalleryCellImage];
+    return _galleryCellImage;
 }
 
 @end

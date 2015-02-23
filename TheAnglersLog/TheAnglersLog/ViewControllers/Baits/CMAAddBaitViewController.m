@@ -128,7 +128,7 @@
     
     // photo
     if (self.imageData)
-        [self.imageView setImage:[self.imageData fullImage]];
+        [self.imageView setImage:[self.imageData image]];
 
     [self.cameraImageButton myInit:self action:@selector(tapCameraButton)];
 }
@@ -165,7 +165,7 @@
         [[CMAStorageManager sharedManager] deleteManagedObject:self.imageData];
     
     CMAImage *img = [[CMAStorageManager sharedManager] managedImage];
-    [img setDataFromUIImage:chosenImage];
+    [img setImage:chosenImage];
     [self setImageData:img];
     
     [self.imageView setImage:chosenImage];
@@ -282,9 +282,10 @@
         [aBait setBaitDescription:self.descriptionTextView.text];
     
     // photo
-    if (self.imageData)
+    if (self.imageData) {
         [aBait setImageData:self.imageData];
-    else
+        [aBait.imageData save];
+    } else
         [aBait setImageData:nil];
     
     return YES;

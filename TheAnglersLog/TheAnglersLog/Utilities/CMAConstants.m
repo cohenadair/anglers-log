@@ -13,7 +13,7 @@
 NSString *const APP_NAME        = @"The Anglers' Log";
 NSString *const SHARE_MESSAGE   = @"Shared with #TheAnglersLogApp.";
 NSString *const GLOBAL_FONT     = @"HelveticaNeue";
-NSInteger const MODEL_VERSION   = 3;
+NSInteger const MODEL_VERSION   = 4;
 
 #pragma mark - User Define Name (UDN)
 

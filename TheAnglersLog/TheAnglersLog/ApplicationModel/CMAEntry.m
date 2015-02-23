@@ -68,6 +68,13 @@
     return [format stringFromDate:self.date];
 }
 
+- (NSString *)dateAsFileNameString {
+    NSDateFormatter *format = [NSDateFormatter new];
+    [format setDateFormat:@"MM-dd-yyyy_h-mm_a"];
+    
+    return [format stringFromDate:self.date];
+}
+
 - (NSString *)fishingMethodsAsString {
     NSString *result = [NSString new];
     NSArray *fishingMethods = [self.fishingMethods allObjects];

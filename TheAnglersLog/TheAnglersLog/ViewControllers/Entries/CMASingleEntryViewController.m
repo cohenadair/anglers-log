@@ -342,7 +342,7 @@
     UICollectionViewCell * cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"imageCollectionCell" forIndexPath:indexPath];
     
     UIImageView *imageView = (UIImageView *)[cell viewWithTag:100];
-    [imageView setImage:[[self.entryImageArray objectAtIndex:indexPath.item] fullImage]];
+    [imageView setImage:[[self.entryImageArray objectAtIndex:indexPath.item] image]];
 
     return cell;
 }

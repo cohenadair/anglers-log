@@ -13,20 +13,18 @@
 
 @interface CMAImage : NSManagedObject
 
-@property (strong, nonatomic)NSData *data;
-@property (strong, nonatomic)NSData *tableThumbnailData;
-@property (strong, nonatomic)NSData *galleryThumbnailData;
+@property (strong, nonatomic)NSString *imagePath;
 @property (strong, nonatomic)CMAEntry *entry;
 @property (strong, nonatomic)CMABait *bait;
 
-@property (strong, nonatomic)UIImage *fullImage;
-@property (strong, nonatomic)UIImage *tableThumbnailImage;
-@property (strong, nonatomic)UIImage *galleryThumbnailImage;
+@property (strong, nonatomic)UIImage *image;
+@property (strong, nonatomic)UIImage *tableCellImage;
+@property (strong, nonatomic)UIImage *galleryCellImage;
 
 - (void)handleModelUpdate;
 - (void)initProperties;
 
-- (void)setDataFromUIImage:(UIImage *)anImage;
-- (NSData *)dataFromUIImage:(UIImage *)anImage;
+- (void)saveWithImage:(UIImage *)anImage andFileName:(NSString *)aFileName;
+- (void)save;
 
 @end

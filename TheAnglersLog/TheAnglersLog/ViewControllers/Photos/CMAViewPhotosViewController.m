@@ -107,8 +107,8 @@
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
         for (CMAEntry *entry in entries)
             for (CMAImage *img in entry.images) {
-                [[weakSelf thumbnails] addObject:[img galleryThumbnailImage]];
-                [[weakSelf fullImages] addObject:[img fullImage]];
+                [[weakSelf thumbnails] addObject:img.galleryCellImage];
+                [[weakSelf fullImages] addObject:img.image];
             }
         
         dispatch_async(dispatch_get_main_queue(), ^{

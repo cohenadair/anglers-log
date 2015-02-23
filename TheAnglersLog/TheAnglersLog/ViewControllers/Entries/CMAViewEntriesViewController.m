@@ -183,7 +183,7 @@
     
     if ([entry imageCount] > 0) {
         CMAImage *img = [entry.images objectAtIndex:0];
-        cell.thumbImage.image = [img tableThumbnailImage];
+        cell.thumbImage.image = img.tableCellImage;
     } else
         cell.thumbImage.image = [UIImage imageNamed:@"no_image.png"];
     

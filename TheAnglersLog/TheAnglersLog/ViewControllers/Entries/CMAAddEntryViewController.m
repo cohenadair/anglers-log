@@ -666,9 +666,10 @@ NSString *const kNotSelectedString = @"Not Selected";
         for (int i = 0; i < [self.entryImages count]; i++) {
             CMAImage *img = [self.entryImages objectAtIndex:i];
             [img setEntry:anEntry];
+            [img save];
 
             if ([[self.saveEntryImagesToGallery objectAtIndex:i] boolValue])
-                UIImageWriteToSavedPhotosAlbum([img fullImage], nil, nil, nil);
+                UIImageWriteToSavedPhotosAlbum([img image], nil, nil, nil);
         }
     } else
         [anEntry setImages:nil];
@@ -867,7 +868,7 @@ NSString *const kNotSelectedString = @"Not Selected";
     if ([self.entryImages count] > 0) {
         UIImageView *imageView = (UIImageView *)[cell viewWithTag:kImageViewTag];
         CMAImage *img = [self.entryImages objectAtIndex:indexPath.item];
-        [imageView setImage:[img fullImage]];
+        [imageView setImage:[img image]];
     }
         
     return cell;
@@ -889,8 +890,9 @@ NSString *const kNotSelectedString = @"Not Selected";
     UICollectionViewCell *insertedCell = [self.imageCollection cellForItemAtIndexPath:indexPath];
     
     CMAImage *img = [[CMAStorageManager sharedManager] managedImage];
-    [img setDataFromUIImage:anImage];
+    [img setImage:anImage];
     [self.entryImages insertObject:img atIndex:0];
+    
     if (saveToGallery)
         [self.saveEntryImagesToGallery insertObject:[NSNumber numberWithBool:YES] atIndex:0];
     else

@@ -18,7 +18,13 @@
 @property (readonly, strong, nonatomic)NSPersistentStoreCoordinator *persistentStoreCoordinator;
 
 #pragma mark - Singleton Methods
+
 + (id)sharedManager;
+
+#pragma mark - Directories
+
+- (NSURL *)documentsSubDirectory:(NSString *)aString;
+- (NSURL *)documentsDirectory;
 
 #pragma mark - Core Data Management
 
@@ -29,6 +35,7 @@
 - (void)deleteAllObjectsForEntityName:(NSString *)anEntityName;
 
 #pragma mark - Core Data Debugging
+
 - (void)debugCoreDataObjects;
 
 #pragma mark - Core Data Object Initializers

@@ -32,6 +32,26 @@
     return sharedStorageManager;
 }
 
+#pragma mark - Directories
+
+// Returns the storage directory of aString where aString is a subdirectory in the application's Documents directory.
+// If the directory doesn't exist, one is created.
+- (NSURL *)documentsSubDirectory:(NSString *)aString {
+    NSURL *result = [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
+    
+    result = [result URLByAppendingPathComponent:aString];
+    
+    NSError *e;
+    if (![[NSFileManager defaultManager] fileExistsAtPath:result.path])
+        [[NSFileManager defaultManager] createDirectoryAtPath:result.path withIntermediateDirectories:NO attributes:nil error:&e];
+    
+    return result;
+}
+
+- (NSURL *)documentsDirectory {
+    return [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
+}
+
 #pragma mark - Core Data Stack
 
 @synthesize managedObjectContext = _managedObjectContext;
@@ -163,6 +183,12 @@
 
 - (void)deleteManagedObject:(NSManagedObject *)aManagedObject {
     if (aManagedObject) {
+        if ([aManagedObject isKindOfClass:[CMAImage class]]) {
+            NSError *e;
+            if (![[NSFileManager defaultManager] removeItemAtPath:[(CMAImage *)aManagedObject imagePath] error:&e])
+                NSLog(@"Failed to delete image: %@", e.localizedDescription);
+        }
+        
         [self.managedObjectContext deleteObject:aManagedObject];
         
         NSLog(@"Initializing save after delete...");
