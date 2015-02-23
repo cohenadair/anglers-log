@@ -657,7 +657,7 @@ NSString *const kNotSelectedString = @"Not Selected";
             CMAImage *img = [self.entryImages objectAtIndex:i];
             [img setEntry:anEntry];
             
-            if ([self.saveEntryImagesToGallery objectAtIndex:i])
+            if ([[self.saveEntryImagesToGallery objectAtIndex:i] boolValue])
                 UIImageWriteToSavedPhotosAlbum([img dataAsUIImage], nil, nil, nil);
         }
     } else
