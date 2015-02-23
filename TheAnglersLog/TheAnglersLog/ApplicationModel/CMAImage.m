@@ -36,15 +36,13 @@
 }
 
 - (void)initUIImages {
-    CFAbsoluteTime start = CFAbsoluteTimeGetCurrent();
-    
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
         [self initImage];
         [self initTableCellImage];
         [self initGalleryCellImage];
         
         dispatch_async(dispatch_get_main_queue(), ^{
-            NSLog(@"Initialized image in %f ms.", CFAbsoluteTimeGetCurrent() - start);
+            
         });
     });
 }

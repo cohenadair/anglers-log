@@ -227,6 +227,7 @@
     
     self.removeImageActionSheet.deleteActionBlock = ^void(UIAlertAction *action) {
         weakSelf.bait.imageData = nil;
+        weakSelf.imageData = nil;
         
         // Why CATransaction is used: http://stackoverflow.com/questions/7623771/how-to-detect-that-animation-has-ended-on-uitableview-beginupdates-endupdates
         [CATransaction begin];
