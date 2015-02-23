@@ -1116,7 +1116,7 @@
 				0DCC43271A99A3AD0019DB2E /* TheAnglersLog 2.xcdatamodel */,
 				0D23B2701A7713C900E89736 /* TheAnglersLog.xcdatamodel */,
 			);
-			currentVersion = 0DC75FE61A9BD9090045030C /* TheAnglersLog 4.xcdatamodel */;
+			currentVersion = 0DC75FE71A9BE8320045030C /* TheAnglersLog 5.xcdatamodel */;
 			path = TheAnglersLog.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
