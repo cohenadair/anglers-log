@@ -19,10 +19,12 @@
 @property (strong, nonatomic)CMAEntry *entry;
 @property (strong, nonatomic)CMABait *bait;
 
-- (void)handleModelUpdate;
+@property (strong, nonatomic)UIImage *fullImage;
+@property (strong, nonatomic)UIImage *tableThumbnailImage;
+@property (strong, nonatomic)UIImage *galleryThumbnailImage;
 
-- (UIImage *)dataAsUIImage;
-- (UIImage *)dataAsUIImage:(NSData *)data;
+- (void)handleModelUpdate;
+- (void)initProperties;
 
 - (void)setDataFromUIImage:(UIImage *)anImage;
 - (NSData *)dataFromUIImage:(UIImage *)anImage;

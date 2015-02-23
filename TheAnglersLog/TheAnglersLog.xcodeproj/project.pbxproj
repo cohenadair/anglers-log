@@ -125,6 +125,9 @@
 		0D8F84A21A6EC2D900AABAEA /* SWRevealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D8F84941A6EC2D900AABAEA /* SWRevealViewController.m */; };
 		0D8F84A31A6EC2D900AABAEA /* XYPieChart.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D8F84971A6EC2D900AABAEA /* XYPieChart.m */; };
 		0D9B76101A76C4C100553177 /* CMAUserDefineObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D9B760F1A76C4C100553177 /* CMAUserDefineObject.m */; };
+		0DC75FDD1A9AEDCE0045030C /* CMASinglePhotoCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DC75FDC1A9AEDCE0045030C /* CMASinglePhotoCollectionViewCell.m */; };
+		0DC75FE01A9AF8E80045030C /* issues.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0DC75FDF1A9AF8E80045030C /* issues.txt */; };
+		0DC75FE41A9AF9280045030C /* use_cases.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0DC75FE31A9AF9280045030C /* use_cases.txt */; };
 		0DCC26571A520DD300738F04 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DCC26561A520DD300738F04 /* SystemConfiguration.framework */; };
 		E705AD7E1A22DD5C0077F16C /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E705AD7D1A22DD5C0077F16C /* QuartzCore.framework */; };
 		E70B637619D3A8E400DFBA85 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E70B637519D3A8E400DFBA85 /* Foundation.framework */; };
@@ -318,6 +321,10 @@
 		0D8F84A41A6EC31500AABAEA /* TheAnglersLog.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = TheAnglersLog.entitlements; path = TheAnglersLog/TheAnglersLog.entitlements; sourceTree = SOURCE_ROOT; };
 		0D9B760E1A76C4C100553177 /* CMAUserDefineObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMAUserDefineObject.h; sourceTree = "<group>"; };
 		0D9B760F1A76C4C100553177 /* CMAUserDefineObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CMAUserDefineObject.m; sourceTree = "<group>"; };
+		0DC75FDB1A9AEDCE0045030C /* CMASinglePhotoCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMASinglePhotoCollectionViewCell.h; path = CustomViews/CMASinglePhotoCollectionViewCell.h; sourceTree = "<group>"; };
+		0DC75FDC1A9AEDCE0045030C /* CMASinglePhotoCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMASinglePhotoCollectionViewCell.m; path = CustomViews/CMASinglePhotoCollectionViewCell.m; sourceTree = "<group>"; };
+		0DC75FDF1A9AF8E80045030C /* issues.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = issues.txt; path = DevNotes/issues.txt; sourceTree = "<group>"; };
+		0DC75FE31A9AF9280045030C /* use_cases.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = use_cases.txt; path = DevNotes/use_cases.txt; sourceTree = "<group>"; };
 		0DCC26561A520DD300738F04 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		0DCC43271A99A3AD0019DB2E /* TheAnglersLog 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "TheAnglersLog 2.xcdatamodel"; sourceTree = "<group>"; };
 		0DCC43281A99B0D00019DB2E /* TheAnglersLog 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "TheAnglersLog 3.xcdatamodel"; sourceTree = "<group>"; };
@@ -571,6 +578,15 @@
 			path = TheAnglersLog/Libraries/XYPieChart;
 			sourceTree = SOURCE_ROOT;
 		};
+		0DC75FDE1A9AF8A40045030C /* DevNotes */ = {
+			isa = PBXGroup;
+			children = (
+				0DC75FE31A9AF9280045030C /* use_cases.txt */,
+				0DC75FDF1A9AF8E80045030C /* issues.txt */,
+			);
+			name = DevNotes;
+			sourceTree = "<group>";
+		};
 		E70B636919D3A8E400DFBA85 = {
 			isa = PBXGroup;
 			children = (
@@ -606,6 +622,7 @@
 		E70B637B19D3A8E400DFBA85 /* TheAnglersLog */ = {
 			isa = PBXGroup;
 			children = (
+				0DC75FDE1A9AF8A40045030C /* DevNotes */,
 				0D23B26F1A7713C900E89736 /* TheAnglersLog.xcdatamodeld */,
 				0D8F84A41A6EC31500AABAEA /* TheAnglersLog.entitlements */,
 				E7C29D0C1A143A1600015B42 /* Libraries */,
@@ -694,6 +711,8 @@
 				0D8F84071A6EC29A00AABAEA /* CMAWeatherDataView.h */,
 				0D8F84081A6EC29A00AABAEA /* CMAWeatherDataView.m */,
 				0D8F84091A6EC29A00AABAEA /* CMAWeatherDataView.xib */,
+				0DC75FDB1A9AEDCE0045030C /* CMASinglePhotoCollectionViewCell.h */,
+				0DC75FDC1A9AEDCE0045030C /* CMASinglePhotoCollectionViewCell.m */,
 			);
 			name = CustomViews;
 			sourceTree = "<group>";
@@ -805,6 +824,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0DC75FE41A9AF9280045030C /* use_cases.txt in Resources */,
 				0D8F845B1A6EC2C300AABAEA /* checkmark@3x.png in Resources */,
 				0D8F84711A6EC2C300AABAEA /* baits_large.png in Resources */,
 				0D8F844F1A6EC2C300AABAEA /* app_icon_180.png in Resources */,
@@ -847,6 +867,7 @@
 				0D8F84501A6EC2C300AABAEA /* app_icon_29.png in Resources */,
 				0D8F846A1A6EC2C300AABAEA /* sort@1x.png in Resources */,
 				0D8F844B1A6EC2C300AABAEA /* app_icon.png in Resources */,
+				0DC75FE01A9AF8E80045030C /* issues.txt in Resources */,
 				0D8F84721A6EC2C300AABAEA /* entries_large.png in Resources */,
 				0D8F84791A6EC2C300AABAEA /* no_image.png in Resources */,
 				0D8F839D1A6EC15D00AABAEA /* CMALaunchScreen.xib in Resources */,
@@ -901,6 +922,7 @@
 				0D8F84A21A6EC2D900AABAEA /* SWRevealViewController.m in Sources */,
 				0D8F83D61A6EC25200AABAEA /* CMAAddBaitViewController.m in Sources */,
 				0D8F83971A6EC10800AABAEA /* CMAUserDefine.m in Sources */,
+				0DC75FDD1A9AEDCE0045030C /* CMASinglePhotoCollectionViewCell.m in Sources */,
 				0D8F83E01A6EC25200AABAEA /* CMASingleEntryViewController.m in Sources */,
 				0D8F83F01A6EC28300AABAEA /* CMAUtilities.m in Sources */,
 				0D8F84141A6EC29A00AABAEA /* CMAStatisticsTableViewCell.m in Sources */,

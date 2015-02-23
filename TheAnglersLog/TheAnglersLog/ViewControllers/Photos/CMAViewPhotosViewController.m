@@ -19,6 +19,7 @@
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *menuButton;
 
 @property (strong, nonatomic) NSMutableArray *thumbnails;
+@property (strong, nonatomic) NSMutableArray *fullImages;
 @property (strong, nonatomic) CMANoXView *noImagesView;
 
 @property (nonatomic)CGFloat currentOffsetY;
@@ -68,7 +69,7 @@
 
 - (void)setupView {
     [self.collectionView setContentOffset:CGPointMake(0, self.currentOffsetY)];
-    [self.navigationItem setTitle:@"Photos (0)"];
+    [self.navigationItem setTitle:[NSString stringWithFormat:@"Photos (%lu)", (unsigned long)[self.thumbnails count]]];
 }
 
 - (void)viewDidLoad {
@@ -84,6 +85,10 @@
     [self setupView];
 }
 
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -96,20 +101,18 @@
     __weak typeof(self) weakSelf = self;
     
     self.thumbnails = [NSMutableArray array];
+    self.fullImages = [NSMutableArray array];
     NSMutableOrderedSet *entries = [[self journal] entries];
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
         for (CMAEntry *entry in entries)
             for (CMAImage *img in entry.images) {
-                [[weakSelf thumbnails] addObject:[img dataAsUIImage:img.galleryThumbnailData]];
+                [[weakSelf thumbnails] addObject:[img galleryThumbnailImage]];
+                [[weakSelf fullImages] addObject:[img fullImage]];
             }
         
         dispatch_async(dispatch_get_main_queue(), ^{
-            // block is for animation
-            [weakSelf.collectionView performBatchUpdates:^{
-                [weakSelf.collectionView reloadSections:[NSIndexSet indexSetWithIndex:0]];
-            } completion:nil];
-            
+            [weakSelf.collectionView reloadData];
             [weakSelf handleNoImagesView];
             [self.navigationItem setTitle:[NSString stringWithFormat:@"Photos (%lu)", (unsigned long)[self.thumbnails count]]];
         });
@@ -130,10 +133,8 @@
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"thumbnailCell" forIndexPath:indexPath];
-    
     UIImageView *imageView = (UIImageView *)[cell viewWithTag:100];
     [imageView setImage:[self.thumbnails objectAtIndex:indexPath.item]];
-    
     return cell;
 }
 
@@ -162,7 +163,7 @@
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([segue.identifier isEqualToString:@"fromPhotosToSinglePhoto"]) {
         CMASinglePhotoViewController *destination = [[segue.destinationViewController viewControllers] objectAtIndex:0];
-        destination.imagesArray = self.thumbnails;
+        destination.imagesArray = self.fullImages;
         destination.startingImageIndexPath = [[self.collectionView indexPathsForSelectedItems] objectAtIndex:0];
     }
     

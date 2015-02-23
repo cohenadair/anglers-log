@@ -125,7 +125,7 @@
     CMABait *bait = [self.userDefineBaits objectAtIndex:indexPath.row];
     
     if (bait.imageData)
-        [cell.thumbImage setImage:[bait.imageData dataAsUIImage:bait.imageData.tableThumbnailData]];
+        [cell.thumbImage setImage:[bait.imageData tableThumbnailImage]];
     else
         [cell.thumbImage setImage:[UIImage imageNamed:@"no_image.png"]];
     

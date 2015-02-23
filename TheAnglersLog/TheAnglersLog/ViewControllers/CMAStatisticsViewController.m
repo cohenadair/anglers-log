@@ -44,7 +44,6 @@
 #define kSectionHeaviestFish 1
 
 #define kDefaultHeaderHeight 40
-#define kTableCellHeight 76
 
 @implementation CMAStatisticsViewController
 
@@ -165,7 +164,7 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return kTableCellHeight;
+    return TABLE_THUMB_SIZE;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -185,7 +184,7 @@
     
     if (self.longestCatchEntry) {
         if ([self.longestCatchEntry imageCount] > 0)
-            [aCell.thumbImage setImage:[[self.longestCatchEntry.images objectAtIndex:0] dataAsUIImage]];
+            [aCell.thumbImage setImage:[[self.longestCatchEntry.images objectAtIndex:0] tableThumbnailImage]];
         else
             [aCell.thumbImage setImage:[UIImage imageNamed:@"no_image.png"]];
         
@@ -206,7 +205,7 @@
     
     if (self.heaviestCatchEntry) {
         if ([self.heaviestCatchEntry imageCount] > 0)
-            [aCell.thumbImage setImage:[[self.heaviestCatchEntry.images objectAtIndex:0] dataAsUIImage]];
+            [aCell.thumbImage setImage:[[self.heaviestCatchEntry.images objectAtIndex:0] tableThumbnailImage]];
         else
             [aCell.thumbImage setImage:[UIImage imageNamed:@"no_image.png"]];
         

@@ -210,7 +210,7 @@
                             <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                         </collectionViewFlowLayout>
                         <cells>
-                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="imageCell" id="n2l-Gz-Qt3">
+                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="imageCell" id="n2l-Gz-Qt3" customClass="CMASinglePhotoCollectionViewCell">
                                 <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -237,6 +237,9 @@
                                         <exclude reference="VVo-8A-bNK"/>
                                     </mask>
                                 </variation>
+                                <connections>
+                                    <outlet property="imageView" destination="2D8-cb-4Zm" id="W9v-Ak-55k"/>
+                                </connections>
                             </collectionViewCell>
                         </cells>
                         <connections>
@@ -1888,42 +1891,28 @@
                             </constraints>
                         </view>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="detailDisclosureButton" indentationWidth="10" reuseIdentifier="statisticsCell" rowHeight="76" id="hdm-wq-DdV" customClass="CMAStatisticsTableViewCell">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="detailDisclosureButton" indentationWidth="10" reuseIdentifier="statisticsCell" rowHeight="85" id="hdm-wq-DdV" customClass="CMAStatisticsTableViewCell">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="hdm-wq-DdV" id="hZw-Fz-xxM">
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="h94-9Q-cnu">
-                                            <rect key="frame" x="0.0" y="1" width="73" height="73"/>
-                                            <constraints>
-                                                <constraint firstAttribute="width" constant="73" id="e7A-pS-UcR"/>
-                                            </constraints>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="h94-9Q-cnu">
+                                            <rect key="frame" x="0.0" y="0.0" width="85" height="85"/>
                                         </imageView>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="King Salmon" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zFM-RG-cL0">
-                                            <rect key="frame" x="83" y="17" width="442" height="21"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="King Salmon" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zFM-RG-cL0">
+                                            <rect key="frame" x="93" y="21" width="442" height="21"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="25 Pounds" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3bi-V8-xOX">
-                                            <rect key="frame" x="83" y="39" width="442" height="21"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="25 Pounds" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3bi-V8-xOX">
+                                            <rect key="frame" x="93" y="43" width="442" height="21"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
-                                    <constraints>
-                                        <constraint firstItem="3bi-V8-xOX" firstAttribute="trailing" secondItem="zFM-RG-cL0" secondAttribute="trailing" id="03b-cG-arm"/>
-                                        <constraint firstItem="zFM-RG-cL0" firstAttribute="leading" secondItem="h94-9Q-cnu" secondAttribute="trailing" constant="10" id="54B-D7-ea7"/>
-                                        <constraint firstItem="3bi-V8-xOX" firstAttribute="leading" secondItem="zFM-RG-cL0" secondAttribute="leading" id="5IU-B5-0Ag"/>
-                                        <constraint firstItem="3bi-V8-xOX" firstAttribute="top" secondItem="zFM-RG-cL0" secondAttribute="bottom" constant="1" id="6lq-k6-vux"/>
-                                        <constraint firstItem="h94-9Q-cnu" firstAttribute="centerY" secondItem="hZw-Fz-xxM" secondAttribute="centerY" id="71g-Rd-DIf"/>
-                                        <constraint firstItem="zFM-RG-cL0" firstAttribute="top" secondItem="hZw-Fz-xxM" secondAttribute="topMargin" constant="9" id="BGh-rc-pCp"/>
-                                        <constraint firstItem="h94-9Q-cnu" firstAttribute="leading" secondItem="hZw-Fz-xxM" secondAttribute="leading" id="n2m-A0-9EY"/>
-                                        <constraint firstItem="h94-9Q-cnu" firstAttribute="top" secondItem="hZw-Fz-xxM" secondAttribute="topMargin" constant="-7" id="qzp-ja-ud6"/>
-                                        <constraint firstItem="3bi-V8-xOX" firstAttribute="trailing" secondItem="hZw-Fz-xxM" secondAttribute="trailingMargin" id="vQU-Zz-77a"/>
-                                    </constraints>
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="speciesLabel" destination="zFM-RG-cL0" id="2hQ-Rc-xTr"/>
@@ -3103,21 +3092,21 @@
         <image name="water_clarities.png" width="50" height="50"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="Gww-wH-Tkw"/>
-        <segue reference="egX-OW-uSX"/>
-        <segue reference="8iL-u2-ZVl"/>
+        <segue reference="DIu-nR-jUP"/>
         <segue reference="0It-ub-fzN"/>
         <segue reference="Jyy-wS-dXA"/>
-        <segue reference="gDt-Tw-gtk"/>
         <segue reference="guB-6y-sIg"/>
+        <segue reference="gDt-Tw-gtk"/>
+        <segue reference="egX-OW-uSX"/>
         <segue reference="bAG-il-Vyj"/>
         <segue reference="wZB-7v-gkR"/>
         <segue reference="rQz-NV-wiY"/>
-        <segue reference="ooh-Eu-Ug2"/>
-        <segue reference="qAO-gb-5Yr"/>
-        <segue reference="y0h-hR-J5c"/>
-        <segue reference="1Kg-jf-Myf"/>
-        <segue reference="uUK-tT-jvg"/>
+        <segue reference="OHB-Pt-9SF"/>
+        <segue reference="77U-eo-oVF"/>
+        <segue reference="dyy-eh-4UZ"/>
+        <segue reference="9XR-fI-0eS"/>
+        <segue reference="iOf-th-u5i"/>
+        <segue reference="b63-Bg-tWk"/>
         <segue reference="ij7-4o-wMK"/>
     </inferredMetricsTieBreakers>
 </document>

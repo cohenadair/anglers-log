@@ -651,18 +651,6 @@ NSString *const kNotSelectedString = @"Not Selected";
         }
     }
     
-    // photos
-    if ([self.entryImages count] > 0) {
-        for (int i = 0; i < [self.entryImages count]; i++) {
-            CMAImage *img = [self.entryImages objectAtIndex:i];
-            [img setEntry:anEntry];
-            
-            if ([[self.saveEntryImagesToGallery objectAtIndex:i] boolValue])
-                UIImageWriteToSavedPhotosAlbum([img dataAsUIImage], nil, nil, nil);
-        }
-    } else
-        [anEntry setImages:nil];
-    
     // species
     if (![[self.speciesDetailLabel text] isEqualToString:kNotSelectedString]) {
         CMASpecies *species = [[[self journal] userDefineNamed:UDN_SPECIES] objectNamed:[self.speciesDetailLabel text]];
@@ -672,6 +660,18 @@ NSString *const kNotSelectedString = @"Not Selected";
         [CMAAlerts errorAlert:@"Please select a species." presentationViewController:self];
         return NO;
     }
+    
+    // photos
+    if ([self.entryImages count] > 0) {
+        for (int i = 0; i < [self.entryImages count]; i++) {
+            CMAImage *img = [self.entryImages objectAtIndex:i];
+            [img setEntry:anEntry];
+
+            if ([[self.saveEntryImagesToGallery objectAtIndex:i] boolValue])
+                UIImageWriteToSavedPhotosAlbum([img fullImage], nil, nil, nil);
+        }
+    } else
+        [anEntry setImages:nil];
     
     // fish quantity
     if (![[self.quantityTextField text] isEqualToString:@""]) {
@@ -841,7 +841,12 @@ NSString *const kNotSelectedString = @"Not Selected";
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
     UIImage *chosenImage = info[UIImagePickerControllerEditedImage];
-    [self insertImageIntoCollection:chosenImage saveToGallery:(picker.sourceType == UIImagePickerControllerSourceTypeCamera)];
+
+    // resize the image so it is the same size as the screen's width
+    CGSize screenSize = [[UIApplication sharedApplication] delegate].window.frame.size;
+    UIImage *scaledImage = [CMAUtilities imageWithImage:chosenImage scaledToSize:CGSizeMake(screenSize.width, screenSize.width)];
+    
+    [self insertImageIntoCollection:scaledImage saveToGallery:(picker.sourceType == UIImagePickerControllerSourceTypeCamera)];
     
     [picker dismissViewControllerAnimated:YES completion:NULL];
 }
@@ -862,7 +867,7 @@ NSString *const kNotSelectedString = @"Not Selected";
     if ([self.entryImages count] > 0) {
         UIImageView *imageView = (UIImageView *)[cell viewWithTag:kImageViewTag];
         CMAImage *img = [self.entryImages objectAtIndex:indexPath.item];
-        [imageView setImage:[img dataAsUIImage]];
+        [imageView setImage:[img fullImage]];
     }
         
     return cell;

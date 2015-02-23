@@ -32,8 +32,6 @@
     [self setEntrySortMethod:CMAEntrySortMethodDate];
     [self setEntrySortOrder:CMASortOrderDescending];
     
-    [self handleModelUpdate];
-    
     return self;
 }
 
@@ -42,9 +40,6 @@
         return;
     
     NSLog(@"Updating journal for new model...");
-    
-    [self initUserDefines];
-    [self initStatistics];
     
     for (CMAEntry *e in self.entries)
         [e handleModelUpdate];
@@ -56,6 +51,14 @@
     [[NSUserDefaults standardUserDefaults] setInteger:MODEL_VERSION forKey:@"ModelVersion"];
     
     NSLog(@"Done updating journal.");
+}
+
+- (void)initProperties {
+    [self initUserDefines];
+    [self initStatistics];
+    
+    for (CMAEntry *e in self.entries)
+        [e initProperties];
 }
 
 // Initializes user define objects if they don't already exist. Used so the same CMAJournal object can be used if new defines are added later.

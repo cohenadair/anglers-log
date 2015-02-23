@@ -128,7 +128,7 @@
     
     // photo
     if (self.imageData)
-        [self.imageView setImage:[self.imageData dataAsUIImage]];
+        [self.imageView setImage:[self.imageData fullImage]];
 
     [self.cameraImageButton myInit:self action:@selector(tapCameraButton)];
 }

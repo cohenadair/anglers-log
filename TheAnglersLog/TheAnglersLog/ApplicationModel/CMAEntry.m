@@ -45,6 +45,12 @@
         [img handleModelUpdate];
 }
 
+// Used to save memory later.
+- (void)initProperties {
+    for (CMAImage *img in self.images)
+        [img initProperties];
+}
+
 #pragma mark - Accessing
 
 - (NSInteger)imageCount {
