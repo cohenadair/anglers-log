@@ -1,0 +1,3 @@
+- save bait photo to camera roll
+- removing an image from a bait/entry and clicking cancel will still delete the image
+- removing an image from a bait doesn't refresh the table view cell

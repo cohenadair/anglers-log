@@ -1,0 +1,3 @@
+saving photos to gallyer
+    - add entry
+    - add bait
