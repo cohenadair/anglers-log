@@ -140,6 +140,7 @@
 
 - (void)cleanImages {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+        
         CFAbsoluteTime start = CFAbsoluteTimeGetCurrent();
         BOOL found;
         int removeCount = 0;
@@ -179,6 +180,7 @@
         dispatch_async(dispatch_get_main_queue(), ^{
             NSLog(@"Removed %d images in %f ms.", removeCount, CFAbsoluteTimeGetCurrent() - start);
         });
+        
     });
 }
 
