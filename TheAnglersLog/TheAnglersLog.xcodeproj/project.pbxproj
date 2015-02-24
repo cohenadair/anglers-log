@@ -11,6 +11,7 @@
 		0D23B2741A78102B00E89736 /* CMAImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D23B2731A78102B00E89736 /* CMAImage.m */; };
 		0D4461191A9D3024006C34D2 /* issues.md in Sources */ = {isa = PBXBuildFile; fileRef = 0D4461171A9D3024006C34D2 /* issues.md */; };
 		0D44611A1A9D3024006C34D2 /* use_cases.md in Sources */ = {isa = PBXBuildFile; fileRef = 0D4461181A9D3024006C34D2 /* use_cases.md */; };
+		0D4461291A9D321B006C34D2 /* docs_link.md in Resources */ = {isa = PBXBuildFile; fileRef = 0D4461281A9D321B006C34D2 /* docs_link.md */; };
 		0D5608121A6F0F3000EE0437 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D5608111A6F0F3000EE0437 /* CoreData.framework */; };
 		0D8F838B1A6EC10800AABAEA /* CMAEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D8F836D1A6EC10800AABAEA /* CMAEntry.m */; };
 		0D8F838C1A6EC10800AABAEA /* CMAJournal.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D8F836F1A6EC10800AABAEA /* CMAJournal.m */; };
@@ -143,6 +144,7 @@
 		0D23B2731A78102B00E89736 /* CMAImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAImage.m; path = ApplicationModel/CMAImage.m; sourceTree = "<group>"; };
 		0D4461171A9D3024006C34D2 /* issues.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = issues.md; path = ../DevNotes/issues.md; sourceTree = "<group>"; };
 		0D4461181A9D3024006C34D2 /* use_cases.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = use_cases.md; path = ../DevNotes/use_cases.md; sourceTree = "<group>"; };
+		0D4461281A9D321B006C34D2 /* docs_link.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = docs_link.md; path = ../Docs/docs_link.md; sourceTree = "<group>"; };
 		0D5608111A6F0F3000EE0437 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		0D8F836C1A6EC10800AABAEA /* CMAEntry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAEntry.h; path = TheAnglersLog/ApplicationModel/CMAEntry.h; sourceTree = SOURCE_ROOT; };
 		0D8F836D1A6EC10800AABAEA /* CMAEntry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAEntry.m; path = TheAnglersLog/ApplicationModel/CMAEntry.m; sourceTree = SOURCE_ROOT; };
@@ -365,6 +367,14 @@
 				0D4461181A9D3024006C34D2 /* use_cases.md */,
 			);
 			name = DevNotes;
+			sourceTree = "<group>";
+		};
+		0D4461271A9D3209006C34D2 /* Docs */ = {
+			isa = PBXGroup;
+			children = (
+				0D4461281A9D321B006C34D2 /* docs_link.md */,
+			);
+			name = Docs;
 			sourceTree = "<group>";
 		};
 		0D8F83761A6EC10800AABAEA /* Statistics */ = {
@@ -592,6 +602,7 @@
 		E70B636919D3A8E400DFBA85 = {
 			isa = PBXGroup;
 			children = (
+				0D4461271A9D3209006C34D2 /* Docs */,
 				0D4461161A9D3011006C34D2 /* DevNotes */,
 				E70B637B19D3A8E400DFBA85 /* TheAnglersLog */,
 				E70B637419D3A8E400DFBA85 /* Frameworks */,
@@ -870,6 +881,7 @@
 				0D8F844B1A6EC2C300AABAEA /* app_icon.png in Resources */,
 				0D8F84721A6EC2C300AABAEA /* entries_large.png in Resources */,
 				0D8F84791A6EC2C300AABAEA /* no_image.png in Resources */,
+				0D4461291A9D321B006C34D2 /* docs_link.md in Resources */,
 				0D8F839D1A6EC15D00AABAEA /* CMALaunchScreen.xib in Resources */,
 				0D8F845C1A6EC2C300AABAEA /* edit@1x.png in Resources */,
 				0D8F84741A6EC2C300AABAEA /* locations_large.png in Resources */,
