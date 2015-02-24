@@ -139,43 +139,47 @@
 #pragma mark - Core Data Management
 
 - (void)cleanImages {
-    CFAbsoluteTime start = CFAbsoluteTimeGetCurrent();
-    BOOL found;
-    int removeCount = 0;
-    NSMutableArray *entryPaths = [NSMutableArray array];
-    NSString *imagesPath = [self documentsSubDirectory:@"Images"].path;
-    
-    NSArray *imageFiles = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:imagesPath error:nil];
-    
-    // get all imagePaths
-    for (CMAEntry *e in self.sharedJournal.entries)
-        for (CMAImage *img in [e images])
-            [entryPaths addObject:img.imagePath];
-    
-    if ([entryPaths count] == [imageFiles count]) {
-        NSLog(@"No excess images.");
-        return;
-    }
-    
-    for (NSString *filePath in imageFiles) {
-        found = NO;
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+        CFAbsoluteTime start = CFAbsoluteTimeGetCurrent();
+        BOOL found;
+        int removeCount = 0;
+        NSMutableArray *entryPaths = [NSMutableArray array];
+        NSString *imagesPath = [self documentsSubDirectory:@"Images"].path;
         
-        for (NSString *imgPath in entryPaths)
-            if ([imgPath containsString:filePath]) {
-                found = YES;
-                break;
-            }
+        NSArray *imageFiles = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:imagesPath error:nil];
         
-        if (!found) {
-            NSError *e;
-            if (![[NSFileManager defaultManager] removeItemAtPath:[imagesPath stringByAppendingPathComponent:filePath] error:&e])
-                NSLog(@"Failed to delete image: %@", e.localizedDescription);
-            else
-                removeCount++;
+        // get all imagePaths
+        for (CMAEntry *e in self.sharedJournal.entries)
+            for (CMAImage *img in [e images])
+                [entryPaths addObject:img.imagePath];
+        
+        if ([entryPaths count] == [imageFiles count]) {
+            NSLog(@"No excess images.");
+            return;
         }
-    }
-    
-    NSLog(@"Removed %d images in %f ms.", removeCount, CFAbsoluteTimeGetCurrent() - start);
+        
+        for (NSString *filePath in imageFiles) {
+            found = NO;
+            
+            for (NSString *imgPath in entryPaths)
+                if ([imgPath containsString:filePath]) {
+                    found = YES;
+                    break;
+                }
+            
+            if (!found) {
+                NSError *e;
+                if (![[NSFileManager defaultManager] removeItemAtPath:[imagesPath stringByAppendingPathComponent:filePath] error:&e])
+                    NSLog(@"Failed to delete image: %@", e.localizedDescription);
+                else
+                    removeCount++;
+            }
+        }
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            NSLog(@"Removed %d images in %f ms.", removeCount, CFAbsoluteTimeGetCurrent() - start);
+        });
+    });
 }
 
 - (void)saveJournal {
