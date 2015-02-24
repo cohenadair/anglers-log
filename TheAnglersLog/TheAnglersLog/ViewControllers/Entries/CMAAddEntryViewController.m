@@ -674,8 +674,6 @@ NSString *const kNotSelectedString = @"Not Selected";
         
         self.entry.images = nil;
         self.entry.images = [NSMutableOrderedSet orderedSet];
-        
-        [[self journal] archive];
     }
 
     if ([self.entryImages count] > 0) {
