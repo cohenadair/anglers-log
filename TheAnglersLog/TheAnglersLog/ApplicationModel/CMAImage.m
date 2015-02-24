@@ -64,19 +64,25 @@
 // NOTE: Deleting images is done in [[CMAStorageManager sharedManager] deleteManagedObject].
 
 - (void)saveWithImage:(UIImage *)anImage andFileName:(NSString *)aFileName {
-    NSString *subDirectory = @"Images";
-    NSString *fileName = [aFileName stringByAppendingString:@".png"];
-    
-    NSString *documentsPath = [[CMAStorageManager sharedManager] documentsSubDirectory:subDirectory].path;
-    NSString *path = [documentsPath stringByAppendingPathComponent:fileName];
-    NSString *imagePath = [subDirectory stringByAppendingPathComponent:fileName];
-    
-    NSData *data = UIImagePNGRepresentation(anImage);
-    
-    if ([data writeToFile:path atomically:YES])
-        self.imagePath = imagePath; // stored path has to be relative, not absolute (iOS8 changes UUID every run)
-    else
-        NSLog(@"Error saving image to path: %@", path);
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+        NSString *subDirectory = @"Images";
+        NSString *fileName = [aFileName stringByAppendingString:@".png"];
+        
+        NSString *documentsPath = [[CMAStorageManager sharedManager] documentsSubDirectory:subDirectory].path;
+        NSString *path = [documentsPath stringByAppendingPathComponent:fileName];
+        NSString *imagePath = [subDirectory stringByAppendingPathComponent:fileName];
+        
+        NSData *data = UIImagePNGRepresentation(anImage);
+        
+        if ([data writeToFile:path atomically:YES])
+            self.imagePath = imagePath; // stored path has to be relative, not absolute (iOS8 changes UUID every run)
+        else
+            NSLog(@"Error saving image to path: %@", path);
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            
+        });
+    });
 }
 
 // This method should only be called when adding an image to the journal (ex. adding an entry or bait).
