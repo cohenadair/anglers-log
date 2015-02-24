@@ -154,6 +154,10 @@
             for (CMAImage *img in [e images])
                 [entryPaths addObject:img.imagePath];
         
+        for (CMABait *b in [[self.sharedJournal userDefineNamed:UDN_BAITS] baits])
+            if (b.imageData)
+                [entryPaths addObject:b.imageData.imagePath];
+        
         if ([entryPaths count] == [imageFiles count]) {
             NSLog(@"No excess images.");
             return;

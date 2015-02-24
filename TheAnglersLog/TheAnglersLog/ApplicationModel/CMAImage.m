@@ -86,10 +86,17 @@
     if (!self.image)
         NSLog(@"WARNING: Trying to save CMAImage with NULL image value.");
     
-    if (!self.entry)
-        NSLog(@"WARNING: Trying to save CMAImage with NILL entry value.");
+    if (!self.entry && !self.bait)
+        NSLog(@"WARNING: Trying to save CMAImage with NILL entry/bait value.");
     
-    [self saveWithImage:self.image andFileName:[[self.entry dateAsFileNameString] stringByAppendingString:[NSString stringWithFormat:@"-%d", anIndex]]];
+    NSString *fileName;
+    
+    if (self.entry)
+        fileName = [[self.entry dateAsFileNameString] stringByAppendingString:[NSString stringWithFormat:@"-%d", anIndex]];
+    else if (self.bait)
+        fileName = self.bait.name;
+    
+    [self saveWithImage:self.image andFileName:fileName];
 }
 
 #pragma mark - Getters
