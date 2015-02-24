@@ -12,6 +12,7 @@ ADDITIONS
 ---------
 
 **Settings scene:**
+
 - backup
     - for conversion to/from Android
         - export (to JSON/XML) via email
@@ -28,6 +29,7 @@ ADDITIONS
         - segue to "Request A Feature" form
 
 **Stats scene:**
+
 - chart data for live vs. artifical bait
 - chart data for fishing methods
 - create model view to select chart data (similar to the sort menu in View Entries)
