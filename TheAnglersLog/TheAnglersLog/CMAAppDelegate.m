@@ -16,9 +16,6 @@
 {
     [[CMAStorageManager sharedManager] loadJournal];
     [self initAppearances];
-
-    //[[CMAStorageManager sharedManager] deleteAllObjectsForEntityName:CDE_WEATHER_DATA];
-    //[[CMAStorageManager sharedManager] debugCoreDataObjects];
     
     //[[CMAStorageManager sharedManager] deleteAllObjectsForEntityName:CDE_WEATHER_DATA];
     //[[CMAStorageManager sharedManager] debugCoreDataObjects];
@@ -35,6 +32,7 @@
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
     [[[CMAStorageManager sharedManager] sharedJournal] archive];
+    [[CMAStorageManager sharedManager] cleanImages];
     [self setDidEnterBackground:YES];
     
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later. 
@@ -55,6 +53,8 @@
         [[CMAStorageManager sharedManager] setSharedJournal:nil];
         [[CMAStorageManager sharedManager] loadJournal];
     }
+    
+    [[CMAStorageManager sharedManager] cleanImages];
     
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
 }
