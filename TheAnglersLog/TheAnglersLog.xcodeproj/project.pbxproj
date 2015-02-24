@@ -126,8 +126,8 @@
 		0D8F84A31A6EC2D900AABAEA /* XYPieChart.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D8F84971A6EC2D900AABAEA /* XYPieChart.m */; };
 		0D9B76101A76C4C100553177 /* CMAUserDefineObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D9B760F1A76C4C100553177 /* CMAUserDefineObject.m */; };
 		0DC75FDD1A9AEDCE0045030C /* CMASinglePhotoCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DC75FDC1A9AEDCE0045030C /* CMASinglePhotoCollectionViewCell.m */; };
-		0DC75FE91A9BEDCE0045030C /* issues.md in Resources */ = {isa = PBXBuildFile; fileRef = 0DC75FE81A9BEDCE0045030C /* issues.md */; };
-		0DC75FEB1A9BEDE20045030C /* use_cases.md in Resources */ = {isa = PBXBuildFile; fileRef = 0DC75FEA1A9BEDE20045030C /* use_cases.md */; };
+		0DC75FE91A9BEDCE0045030C /* issues.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0DC75FE81A9BEDCE0045030C /* issues.txt */; };
+		0DC75FEB1A9BEDE20045030C /* use_cases.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0DC75FEA1A9BEDE20045030C /* use_cases.txt */; };
 		0DCC26571A520DD300738F04 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DCC26561A520DD300738F04 /* SystemConfiguration.framework */; };
 		E705AD7E1A22DD5C0077F16C /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E705AD7D1A22DD5C0077F16C /* QuartzCore.framework */; };
 		E70B637619D3A8E400DFBA85 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E70B637519D3A8E400DFBA85 /* Foundation.framework */; };
@@ -325,8 +325,8 @@
 		0DC75FDC1A9AEDCE0045030C /* CMASinglePhotoCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMASinglePhotoCollectionViewCell.m; path = CustomViews/CMASinglePhotoCollectionViewCell.m; sourceTree = "<group>"; };
 		0DC75FE61A9BD9090045030C /* TheAnglersLog 4.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "TheAnglersLog 4.xcdatamodel"; sourceTree = "<group>"; };
 		0DC75FE71A9BE8320045030C /* TheAnglersLog 5.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "TheAnglersLog 5.xcdatamodel"; sourceTree = "<group>"; };
-		0DC75FE81A9BEDCE0045030C /* issues.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = issues.md; path = DevNotes/issues.md; sourceTree = "<group>"; };
-		0DC75FEA1A9BEDE20045030C /* use_cases.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = use_cases.md; path = DevNotes/use_cases.md; sourceTree = "<group>"; };
+		0DC75FE81A9BEDCE0045030C /* issues.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = issues.txt; path = DevNotes/issues.txt; sourceTree = "<group>"; };
+		0DC75FEA1A9BEDE20045030C /* use_cases.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = use_cases.txt; path = DevNotes/use_cases.txt; sourceTree = "<group>"; };
 		0DCC26561A520DD300738F04 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		0DCC43271A99A3AD0019DB2E /* TheAnglersLog 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "TheAnglersLog 2.xcdatamodel"; sourceTree = "<group>"; };
 		0DCC43281A99B0D00019DB2E /* TheAnglersLog 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "TheAnglersLog 3.xcdatamodel"; sourceTree = "<group>"; };
@@ -583,8 +583,8 @@
 		0DC75FDE1A9AF8A40045030C /* DevNotes */ = {
 			isa = PBXGroup;
 			children = (
-				0DC75FE81A9BEDCE0045030C /* issues.md */,
-				0DC75FEA1A9BEDE20045030C /* use_cases.md */,
+				0DC75FE81A9BEDCE0045030C /* issues.txt */,
+				0DC75FEA1A9BEDE20045030C /* use_cases.txt */,
 			);
 			name = DevNotes;
 			sourceTree = "<group>";
@@ -856,7 +856,7 @@
 				0D8F84541A6EC2C300AABAEA /* app_icon_80.png in Resources */,
 				0D8F84631A6EC2C300AABAEA /* literature.png in Resources */,
 				0D8F84751A6EC2C300AABAEA /* photos_large.png in Resources */,
-				0DC75FEB1A9BEDE20045030C /* use_cases.md in Resources */,
+				0DC75FEB1A9BEDE20045030C /* use_cases.txt in Resources */,
 				0D8F83A11A6EC1AE00AABAEA /* CMAStoryboard.storyboard in Resources */,
 				0D8F844D1A6EC2C300AABAEA /* app_icon_120.png in Resources */,
 				0D8F845F1A6EC2C300AABAEA /* fishing_methods.png in Resources */,
@@ -871,7 +871,7 @@
 				0D8F844B1A6EC2C300AABAEA /* app_icon.png in Resources */,
 				0D8F84721A6EC2C300AABAEA /* entries_large.png in Resources */,
 				0D8F84791A6EC2C300AABAEA /* no_image.png in Resources */,
-				0DC75FE91A9BEDCE0045030C /* issues.md in Resources */,
+				0DC75FE91A9BEDCE0045030C /* issues.txt in Resources */,
 				0D8F839D1A6EC15D00AABAEA /* CMALaunchScreen.xib in Resources */,
 				0D8F845C1A6EC2C300AABAEA /* edit@1x.png in Resources */,
 				0D8F84741A6EC2C300AABAEA /* locations_large.png in Resources */,
