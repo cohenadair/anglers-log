@@ -33,6 +33,7 @@
 @property (strong, nonatomic) CMAImage *imageData;
 
 @property (nonatomic) BOOL isEditingBait;
+@property (nonatomic) BOOL saveImageToCameraRoll;
 
 @end
 
@@ -167,7 +168,7 @@
     CMAImage *img = [[CMAStorageManager sharedManager] managedImage];
     [img setImage:chosenImage];
     [self setImageData:img];
-    
+    [self setSaveImageToCameraRoll:(picker.sourceType == UIImagePickerControllerSourceTypeCamera)];
     [self.imageView setImage:chosenImage];
     [self.tableView beginUpdates];
     [self.tableView endUpdates];
@@ -285,6 +286,9 @@
     if (self.imageData) {
         [aBait setImageData:self.imageData];
         [aBait.imageData saveWithIndex:0];
+        
+        if (self.saveImageToCameraRoll)
+            UIImageWriteToSavedPhotosAlbum([self.imageData image], nil, nil, nil);
     } else
         [aBait setImageData:nil];
     
