@@ -80,7 +80,7 @@
     
     // if back is tapped and and we're not editing, clean up core data obejct
     if (!self.tappedDoneButton && !self.isEditingFishingSpot) {
-        [[CMAStorageManager sharedManager] deleteManagedObject:self.fishingSpot];
+        [[CMAStorageManager sharedManager] deleteManagedObject:self.fishingSpot saveContext:YES];
         self.fishingSpot = nil;
     }
 }

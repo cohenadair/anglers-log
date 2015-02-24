@@ -250,7 +250,7 @@ NSInteger const SECTION_DELETE = 3;
 - (IBAction)clickedCancel:(id)sender {
     // clean up core data
     if (!self.isEditingLocation) {
-        [[CMAStorageManager sharedManager] deleteManagedObject:self.location];
+        [[CMAStorageManager sharedManager] deleteManagedObject:self.location saveContext:YES];
         self.location = nil;
     }
     
@@ -259,7 +259,7 @@ NSInteger const SECTION_DELETE = 3;
         if (self.isEditingLocation)
             [self.location removeFishingSpotNamed:s.name]; // removeFishingSpot deletes core data
         else
-            [[CMAStorageManager sharedManager] deleteManagedObject:s];
+            [[CMAStorageManager sharedManager] deleteManagedObject:s saveContext:YES];
     }
     
     self.addedFishingSpots = nil;

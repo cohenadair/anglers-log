@@ -100,6 +100,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [[CMAStorageManager sharedManager] cleanImages];
     
     self.navigationController.toolbarHidden = NO;
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Entries" style:UIBarButtonItemStylePlain target:nil action:nil];

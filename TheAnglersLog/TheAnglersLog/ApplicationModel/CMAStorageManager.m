@@ -138,6 +138,46 @@
 
 #pragma mark - Core Data Management
 
+- (void)cleanImages {
+    CFAbsoluteTime start = CFAbsoluteTimeGetCurrent();
+    BOOL found;
+    int removeCount = 0;
+    NSMutableArray *entryPaths = [NSMutableArray array];
+    NSString *imagesPath = [self documentsSubDirectory:@"Images"].path;
+    
+    NSArray *imageFiles = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:imagesPath error:nil];
+    
+    // get all imagePaths
+    for (CMAEntry *e in self.sharedJournal.entries)
+        for (CMAImage *img in [e images])
+            [entryPaths addObject:img.imagePath];
+    
+    if ([entryPaths count] == [imageFiles count]) {
+        NSLog(@"No excess images.");
+        return;
+    }
+    
+    for (NSString *filePath in imageFiles) {
+        found = NO;
+        
+        for (NSString *imgPath in entryPaths)
+            if ([imgPath containsString:filePath]) {
+                found = YES;
+                break;
+            }
+        
+        if (!found) {
+            NSError *e;
+            if (![[NSFileManager defaultManager] removeItemAtPath:[imagesPath stringByAppendingPathComponent:filePath] error:&e])
+                NSLog(@"Failed to delete image: %@", e.localizedDescription);
+            else
+                removeCount++;
+        }
+    }
+    
+    NSLog(@"Removed %d images in %f ms.", removeCount, CFAbsoluteTimeGetCurrent() - start);
+}
+
 - (void)saveJournal {
     NSManagedObjectContext *managedObjectContext = self.managedObjectContext;
     
@@ -181,18 +221,15 @@
     }
 }
 
-- (void)deleteManagedObject:(NSManagedObject *)aManagedObject {
+// Deletes aManagedObject from the context. Will apply changes to context if aBool is true.
+- (void)deleteManagedObject:(NSManagedObject *)aManagedObject saveContext:(BOOL)aBool {
     if (aManagedObject) {
-        if ([aManagedObject isKindOfClass:[CMAImage class]]) {
-            NSError *e;
-            if (![[NSFileManager defaultManager] removeItemAtPath:[(CMAImage *)aManagedObject imagePath] error:&e])
-                NSLog(@"Failed to delete image: %@", e.localizedDescription);
-        }
-        
         [self.managedObjectContext deleteObject:aManagedObject];
         
-        NSLog(@"Initializing save after delete...");
-        [self saveJournal];
+        if (aBool) {
+            [self saveJournal];
+             NSLog(@"Initializing save after delete...");
+        }
     }
 }
 
@@ -223,6 +260,7 @@
     [self debugCMAFishingSpotFetch];
     [self debugCMAEntryFetch];
     [self debugCMAWeatherDataFetch];
+    [self debugSavedImages];
 }
 
 - (void)debugCMAImageFetch {
@@ -270,6 +308,19 @@
             journalWeatherCount++;
     
     [self printEntityFetchResultsNamed:CDE_WEATHER_DATA withCount:[results count] andExpectedCount:journalWeatherCount];
+}
+
+- (void)debugSavedImages {
+    int expectedCount = 0;
+    int actualCount = 0;
+    
+    for (CMAEntry *e in [self.sharedJournal entries])
+        expectedCount += e.imageCount;
+    
+    NSArray *imageFiles = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:[self documentsSubDirectory:@"Images"].path error:nil];
+    actualCount = [imageFiles count];
+    
+    [self printEntityFetchResultsNamed:@"Saved Images" withCount:actualCount andExpectedCount:expectedCount];
 }
 
 - (NSArray *)fetchEntityNamed:(NSString *)anEntity {

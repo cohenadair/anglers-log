@@ -364,7 +364,7 @@
                                    
                                         if (![[self journal] addUserDefine:self.userDefine.name objectToAdd:objectToAdd]) {
                                             [CMAAlerts errorAlert:@"An item that name already exists. Please select a new item or edit the existing item." presentationViewController:self];
-                                            [[CMAStorageManager sharedManager] deleteManagedObject:objectToAdd];
+                                            [[CMAStorageManager sharedManager] deleteManagedObject:objectToAdd saveContext:YES];
                                             return;
                                         }
                                    
@@ -399,7 +399,7 @@
                                          
                                         id newProperties = [self.userDefine emptyObjectNamed:[[[self.editItemAlert textFields] objectAtIndex:0] text]];
                                         [[self journal] editUserDefine:[self.userDefine name] objectNamed:self.selectedCellLabelText newProperties:newProperties];
-                                        [[CMAStorageManager sharedManager] deleteManagedObject:newProperties];
+                                        [[CMAStorageManager sharedManager] deleteManagedObject:newProperties saveContext:YES];
                                          
                                         [self.tableView reloadData];
                                }];

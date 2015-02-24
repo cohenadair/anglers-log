@@ -162,7 +162,7 @@
     
     // remove old image if there was one
     if (self.imageData)
-        [[CMAStorageManager sharedManager] deleteManagedObject:self.imageData];
+        [[CMAStorageManager sharedManager] deleteManagedObject:self.imageData saveContext:YES];
     
     CMAImage *img = [[CMAStorageManager sharedManager] managedImage];
     [img setImage:chosenImage];
@@ -285,7 +285,7 @@
     // photo
     if (self.imageData) {
         [aBait setImageData:self.imageData];
-        [aBait.imageData save];
+        [aBait.imageData saveWithIndex:0];
     } else
         [aBait setImageData:nil];
     
@@ -320,11 +320,11 @@
 - (IBAction)clickedCancelButton:(UIBarButtonItem *)sender {
     // clean up core data
     if (!self.isEditingBait) {
-        [[CMAStorageManager sharedManager] deleteManagedObject:self.bait];
+        [[CMAStorageManager sharedManager] deleteManagedObject:self.bait saveContext:YES];
         self.bait = nil;
         
         if (self.imageData)
-            [[CMAStorageManager sharedManager] deleteManagedObject:self.imageData];
+            [[CMAStorageManager sharedManager] deleteManagedObject:self.imageData saveContext:YES];
     }
     
     [self performSegueToPreviousView];

@@ -140,7 +140,7 @@
     CMAEntry *entry = [self entryDated:aDate];
     
     // remove from core data
-    [[CMAStorageManager sharedManager] deleteManagedObject:entry];
+    [[CMAStorageManager sharedManager] deleteManagedObject:entry saveContext:YES];
     
     [self decStatsForEntry:entry];
     [self.entries removeObject:entry];
@@ -162,9 +162,9 @@
     
     // remove from core data
     if ([aDefineName isEqualToString:UDN_BAITS] && [obj imageData])
-        [[CMAStorageManager sharedManager] deleteManagedObject:[obj imageData]];
+        [[CMAStorageManager sharedManager] deleteManagedObject:[obj imageData] saveContext:YES];
     
-    [[CMAStorageManager sharedManager] deleteManagedObject:obj];
+    [[CMAStorageManager sharedManager] deleteManagedObject:obj saveContext:YES];
     
     [[self userDefineNamed:aDefineName] removeObjectNamed:anObjectName];
 }

@@ -50,7 +50,7 @@
     CMAFishingSpot *spot = [self fishingSpotNamed:aName];
     
     // remove from core data
-    [[CMAStorageManager sharedManager] deleteManagedObject:spot];
+    [[CMAStorageManager sharedManager] deleteManagedObject:spot saveContext:YES];
     
     [self.fishingSpots removeObject:spot];
 }

@@ -81,14 +81,15 @@
 
 // This method should only be called when adding an image to the journal (ex. adding an entry or bait).
 // This method MUST be called. It sets the CMAImage's imagePath property which is needed to access the image later.
-- (void)save {
+// anIndex is the index of the image in an images array. It's added to create a unique file name.
+- (void)saveWithIndex:(NSInteger)anIndex {
     if (!self.image)
         NSLog(@"WARNING: Trying to save CMAImage with NULL image value.");
     
     if (!self.entry)
         NSLog(@"WARNING: Trying to save CMAImage with NILL entry value.");
     
-    [self saveWithImage:self.image andFileName:[self.entry dateAsFileNameString]];
+    [self saveWithImage:self.image andFileName:[[self.entry dateAsFileNameString] stringByAppendingString:[NSString stringWithFormat:@"-%d", anIndex]]];
 }
 
 #pragma mark - Getters

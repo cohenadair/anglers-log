@@ -28,10 +28,11 @@
 
 #pragma mark - Core Data Management
 
+- (void)cleanImages;
 - (NSURL *)coreDataLocalURL;
 - (void)saveJournal;
 - (void)loadJournal;
-- (void)deleteManagedObject:(NSManagedObject *)aManagedObject;
+- (void)deleteManagedObject:(NSManagedObject *)aManagedObject saveContext:(BOOL)aBool;
 - (void)deleteAllObjectsForEntityName:(NSString *)anEntityName;
 
 #pragma mark - Core Data Debugging

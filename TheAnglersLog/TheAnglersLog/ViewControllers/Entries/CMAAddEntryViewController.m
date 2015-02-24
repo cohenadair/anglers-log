@@ -88,7 +88,7 @@
 @property (nonatomic)BOOL hasAttachedImages;
 @property (nonatomic)NSInteger numberOfImages;
 @property (strong, nonatomic)NSIndexPath *deleteImageIndexPath;
-@property (strong, nonatomic)NSMutableArray *entryImages;
+@property (strong, nonatomic)NSMutableArray *entryImages; // array of UIImage
 @property (strong, nonatomic)NSMutableArray *saveEntryImagesToGallery;
 
 @end
@@ -213,7 +213,11 @@ NSString *const kNotSelectedString = @"Not Selected";
     [self initializeCellsForEditing];
     
     self.navigationItem.title = @"Edit Entry";
-    self.entryImages = [[self.entry.images array] mutableCopy];
+    
+    self.entryImages = [NSMutableArray array];
+    for (CMAImage *img in self.entry.images)
+        [self.entryImages addObject:[img.image copy]];
+    
     self.numberOfImages = [self.entryImages count];
     self.hasAttachedImages = (self.numberOfImages > 0);
     
@@ -438,7 +442,7 @@ NSString *const kNotSelectedString = @"Not Selected";
 - (IBAction)clickedCancel:(UIBarButtonItem *)sender {
     if (!self.isEditingEntry) {
         if (self.weatherData) {
-            [[CMAStorageManager sharedManager] deleteManagedObject:self.weatherData];
+            [[CMAStorageManager sharedManager] deleteManagedObject:self.weatherData saveContext:YES];
             self.weatherData = nil;
         }
         
@@ -662,11 +666,24 @@ NSString *const kNotSelectedString = @"Not Selected";
     }
     
     // photos
+    
+    // delete the old images as they are no longer needed
+    if ([self.entry imageCount] > 0) {
+        for (CMAImage *img in self.entry.images)
+            [[CMAStorageManager sharedManager] deleteManagedObject:img saveContext:NO];
+        
+        self.entry.images = nil;
+        self.entry.images = [NSMutableOrderedSet orderedSet];
+        
+        [[self journal] archive];
+    }
+
     if ([self.entryImages count] > 0) {
         for (int i = 0; i < [self.entryImages count]; i++) {
-            CMAImage *img = [self.entryImages objectAtIndex:i];
+            CMAImage *img = [[CMAStorageManager sharedManager] managedImage];
+            [img setImage:[self.entryImages objectAtIndex:i]];
             [img setEntry:anEntry];
-            [img save];
+            [img saveWithIndex:i];
 
             if ([[self.saveEntryImagesToGallery objectAtIndex:i] boolValue])
                 UIImageWriteToSavedPhotosAlbum([img image], nil, nil, nil);
@@ -867,8 +884,7 @@ NSString *const kNotSelectedString = @"Not Selected";
     
     if ([self.entryImages count] > 0) {
         UIImageView *imageView = (UIImageView *)[cell viewWithTag:kImageViewTag];
-        CMAImage *img = [self.entryImages objectAtIndex:indexPath.item];
-        [imageView setImage:[img image]];
+        [imageView setImage:[self.entryImages objectAtIndex:indexPath.item]];
     }
         
     return cell;
@@ -889,9 +905,7 @@ NSString *const kNotSelectedString = @"Not Selected";
     
     UICollectionViewCell *insertedCell = [self.imageCollection cellForItemAtIndexPath:indexPath];
     
-    CMAImage *img = [[CMAStorageManager sharedManager] managedImage];
-    [img setImage:anImage];
-    [self.entryImages insertObject:img atIndex:0];
+    [self.entryImages insertObject:anImage atIndex:0];
     
     if (saveToGallery)
         [self.saveEntryImagesToGallery insertObject:[NSNumber numberWithBool:YES] atIndex:0];
@@ -905,7 +919,6 @@ NSString *const kNotSelectedString = @"Not Selected";
 - (void)deleteImageFromCollectionAtIndexPath:(NSIndexPath *)anIndexPath {
     self.numberOfImages--;
     
-    [[CMAStorageManager sharedManager] deleteManagedObject:[self.entryImages objectAtIndex:anIndexPath.item]];
     [self.entryImages removeObjectAtIndex:anIndexPath.item];
     [self.saveEntryImagesToGallery removeObjectAtIndex:anIndexPath.item];
     [self.imageCollection deleteItemsAtIndexPaths:@[anIndexPath]];
@@ -953,7 +966,7 @@ NSString *const kNotSelectedString = @"Not Selected";
         
         // remove from core data
         if (self.weatherData) {
-            [[CMAStorageManager sharedManager] deleteManagedObject:self.weatherData];
+            [[CMAStorageManager sharedManager] deleteManagedObject:self.weatherData saveContext:YES];
             self.weatherData = nil;
         }
     }
@@ -991,7 +1004,7 @@ NSString *const kNotSelectedString = @"Not Selected";
             NSLog(@"Error getting weather data: %@", error.localizedDescription);
             [CMAAlerts errorAlert:@"There was an error getting weather data. Please try again later." presentationViewController:self];
             [self.weatherIndicator setHidden:YES];
-            [[CMAStorageManager sharedManager] deleteManagedObject:self.weatherData];
+            [[CMAStorageManager sharedManager] deleteManagedObject:self.weatherData saveContext:YES];
             [self setWeatherData:nil];
             return;
         }

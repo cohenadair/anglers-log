@@ -82,16 +82,16 @@
     if (aCheckInputBlock()) {
         if (anIsEditingBlock()) {
             anEditBlock();
-            [[CMAStorageManager sharedManager] deleteManagedObject:anObjToAdd];
+            [[CMAStorageManager sharedManager] deleteManagedObject:anObjToAdd saveContext:YES];
         } else {
             if (!anAddObjectBlock()) {
                 [CMAAlerts errorAlert:anErrorMsg presentationViewController:aVC];
-                [[CMAStorageManager sharedManager] deleteManagedObject:anObjToAdd];
+                [[CMAStorageManager sharedManager] deleteManagedObject:anObjToAdd saveContext:YES];
                 return;
             }
             
             if (rmObjToEdit)
-                [[CMAStorageManager sharedManager] deleteManagedObject:anObjToEdit];
+                [[CMAStorageManager sharedManager] deleteManagedObject:anObjToEdit saveContext:YES];
             
             anObjToEdit = nil;
         }
@@ -99,7 +99,7 @@
         [[[CMAStorageManager sharedManager] sharedJournal] archive];
         aSegueBlock();
     } else
-        [[CMAStorageManager sharedManager] deleteManagedObject:anObjToAdd];
+        [[CMAStorageManager sharedManager] deleteManagedObject:anObjToAdd saveContext:YES];
 }
 
 // From http://stackoverflow.com/questions/2658738/the-simplest-way-to-resize-an-uiimage

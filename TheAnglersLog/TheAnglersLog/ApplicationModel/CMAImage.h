@@ -25,6 +25,6 @@
 - (void)initProperties;
 
 - (void)saveWithImage:(UIImage *)anImage andFileName:(NSString *)aFileName;
-- (void)save;
+- (void)saveWithIndex:(NSInteger)anIndex;
 
 @end
