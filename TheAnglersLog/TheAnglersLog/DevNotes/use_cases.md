@@ -1,3 +1,3 @@
-saving photos to gallyer
+saving photos to gallery
     - add entry
     - add bait
