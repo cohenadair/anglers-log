@@ -9,6 +9,10 @@
 /* Begin PBXBuildFile section */
 		0D23B2711A7713C900E89736 /* TheAnglersLog.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 0D23B26F1A7713C900E89736 /* TheAnglersLog.xcdatamodeld */; };
 		0D23B2741A78102B00E89736 /* CMAImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D23B2731A78102B00E89736 /* CMAImage.m */; };
+		0D44612F1A9D8762006C34D2 /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 0D44612B1A9D8762006C34D2 /* icon.png */; };
+		0D4461301A9D8762006C34D2 /* icon.xcf in Resources */ = {isa = PBXBuildFile; fileRef = 0D44612C1A9D8762006C34D2 /* icon.xcf */; };
+		0D4461311A9D8762006C34D2 /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 0D44612D1A9D8762006C34D2 /* logo.png */; };
+		0D4461321A9D8762006C34D2 /* logo.xcf in Resources */ = {isa = PBXBuildFile; fileRef = 0D44612E1A9D8762006C34D2 /* logo.xcf */; };
 		0D5608121A6F0F3000EE0437 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D5608111A6F0F3000EE0437 /* CoreData.framework */; };
 		0D8F838B1A6EC10800AABAEA /* CMAEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D8F836D1A6EC10800AABAEA /* CMAEntry.m */; };
 		0D8F838C1A6EC10800AABAEA /* CMAJournal.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D8F836F1A6EC10800AABAEA /* CMAJournal.m */; };
@@ -65,7 +69,6 @@
 		0D8F84161A6EC29A00AABAEA /* CMAWeatherDataView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D8F84081A6EC29A00AABAEA /* CMAWeatherDataView.m */; };
 		0D8F84171A6EC29A00AABAEA /* CMAWeatherDataView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0D8F84091A6EC29A00AABAEA /* CMAWeatherDataView.xib */; };
 		0D8F844B1A6EC2C300AABAEA /* app_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 0D8F84191A6EC2C300AABAEA /* app_icon.png */; };
-		0D8F844C1A6EC2C300AABAEA /* app_icon.xcf in Resources */ = {isa = PBXBuildFile; fileRef = 0D8F841A1A6EC2C300AABAEA /* app_icon.xcf */; };
 		0D8F844D1A6EC2C300AABAEA /* app_icon_120.png in Resources */ = {isa = PBXBuildFile; fileRef = 0D8F841B1A6EC2C300AABAEA /* app_icon_120.png */; };
 		0D8F844E1A6EC2C300AABAEA /* app_icon_152.png in Resources */ = {isa = PBXBuildFile; fileRef = 0D8F841C1A6EC2C300AABAEA /* app_icon_152.png */; };
 		0D8F844F1A6EC2C300AABAEA /* app_icon_180.png in Resources */ = {isa = PBXBuildFile; fileRef = 0D8F841D1A6EC2C300AABAEA /* app_icon_180.png */; };
@@ -142,6 +145,10 @@
 		0D4461171A9D3024006C34D2 /* issues.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = issues.md; path = ../DevNotes/issues.md; sourceTree = "<group>"; };
 		0D4461181A9D3024006C34D2 /* use_cases.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = use_cases.md; path = ../DevNotes/use_cases.md; sourceTree = "<group>"; };
 		0D4461281A9D321B006C34D2 /* docs_link.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = docs_link.md; path = ../Docs/docs_link.md; sourceTree = "<group>"; };
+		0D44612B1A9D8762006C34D2 /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon.png; path = ../Images/icon.png; sourceTree = "<group>"; };
+		0D44612C1A9D8762006C34D2 /* icon.xcf */ = {isa = PBXFileReference; lastKnownFileType = file; name = icon.xcf; path = ../Images/icon.xcf; sourceTree = "<group>"; };
+		0D44612D1A9D8762006C34D2 /* logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = logo.png; path = ../Images/logo.png; sourceTree = "<group>"; };
+		0D44612E1A9D8762006C34D2 /* logo.xcf */ = {isa = PBXFileReference; lastKnownFileType = file; name = logo.xcf; path = ../Images/logo.xcf; sourceTree = "<group>"; };
 		0D5608111A6F0F3000EE0437 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		0D8F836C1A6EC10800AABAEA /* CMAEntry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAEntry.h; path = TheAnglersLog/ApplicationModel/CMAEntry.h; sourceTree = SOURCE_ROOT; };
 		0D8F836D1A6EC10800AABAEA /* CMAEntry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAEntry.m; path = TheAnglersLog/ApplicationModel/CMAEntry.m; sourceTree = SOURCE_ROOT; };
@@ -247,7 +254,6 @@
 		0D8F84081A6EC29A00AABAEA /* CMAWeatherDataView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAWeatherDataView.m; path = TheAnglersLog/CustomViews/CMAWeatherDataView.m; sourceTree = SOURCE_ROOT; };
 		0D8F84091A6EC29A00AABAEA /* CMAWeatherDataView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = CMAWeatherDataView.xib; path = TheAnglersLog/CustomViews/CMAWeatherDataView.xib; sourceTree = SOURCE_ROOT; };
 		0D8F84191A6EC2C300AABAEA /* app_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = app_icon.png; sourceTree = "<group>"; };
-		0D8F841A1A6EC2C300AABAEA /* app_icon.xcf */ = {isa = PBXFileReference; lastKnownFileType = file; path = app_icon.xcf; sourceTree = "<group>"; };
 		0D8F841B1A6EC2C300AABAEA /* app_icon_120.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = app_icon_120.png; sourceTree = "<group>"; };
 		0D8F841C1A6EC2C300AABAEA /* app_icon_152.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = app_icon_152.png; sourceTree = "<group>"; };
 		0D8F841D1A6EC2C300AABAEA /* app_icon_180.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = app_icon_180.png; sourceTree = "<group>"; };
@@ -374,6 +380,17 @@
 			name = Docs;
 			sourceTree = "<group>";
 		};
+		0D44612A1A9D8754006C34D2 /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				0D44612B1A9D8762006C34D2 /* icon.png */,
+				0D44612C1A9D8762006C34D2 /* icon.xcf */,
+				0D44612D1A9D8762006C34D2 /* logo.png */,
+				0D44612E1A9D8762006C34D2 /* logo.xcf */,
+			);
+			name = Images;
+			sourceTree = "<group>";
+		};
 		0D8F83761A6EC10800AABAEA /* Statistics */ = {
 			isa = PBXGroup;
 			children = (
@@ -473,7 +490,6 @@
 			isa = PBXGroup;
 			children = (
 				0D8F84191A6EC2C300AABAEA /* app_icon.png */,
-				0D8F841A1A6EC2C300AABAEA /* app_icon.xcf */,
 				0D8F841B1A6EC2C300AABAEA /* app_icon_120.png */,
 				0D8F841C1A6EC2C300AABAEA /* app_icon_152.png */,
 				0D8F841D1A6EC2C300AABAEA /* app_icon_180.png */,
@@ -599,6 +615,7 @@
 		E70B636919D3A8E400DFBA85 = {
 			isa = PBXGroup;
 			children = (
+				0D44612A1A9D8754006C34D2 /* Images */,
 				0D4461271A9D3209006C34D2 /* Docs */,
 				0D4461161A9D3011006C34D2 /* DevNotes */,
 				E70B637B19D3A8E400DFBA85 /* TheAnglersLog */,
@@ -839,6 +856,7 @@
 				0D8F844F1A6EC2C300AABAEA /* app_icon_180.png in Resources */,
 				0D8F84691A6EC2C300AABAEA /* settings.png in Resources */,
 				0D8F84771A6EC2C300AABAEA /* stats_large.png in Resources */,
+				0D4461301A9D8762006C34D2 /* icon.xcf in Resources */,
 				0D8F84571A6EC2C300AABAEA /* camera@2x.png in Resources */,
 				0D8F83AD1A6EC22900AABAEA /* InfoPlist.strings in Resources */,
 				0D8F84671A6EC2C300AABAEA /* menu@3x.png in Resources */,
@@ -849,12 +867,12 @@
 				0D8F845E1A6EC2C300AABAEA /* edit@3x.png in Resources */,
 				0D8F845A1A6EC2C300AABAEA /* checkmark@2x.png in Resources */,
 				0D8F846D1A6EC2C300AABAEA /* species.png in Resources */,
+				0D4461311A9D8762006C34D2 /* logo.png in Resources */,
 				0D8F84521A6EC2C300AABAEA /* app_icon_58.png in Resources */,
 				0D8F847A1A6EC2C300AABAEA /* rectile.png in Resources */,
 				0D8F83A51A6EC1E600AABAEA /* Images.xcassets in Resources */,
 				0D8F84641A6EC2C300AABAEA /* locations.png in Resources */,
 				0D8F84591A6EC2C300AABAEA /* checkmark@1x.png in Resources */,
-				0D8F844C1A6EC2C300AABAEA /* app_icon.xcf in Resources */,
 				0D8F84561A6EC2C300AABAEA /* camera@1x.png in Resources */,
 				0D8F840E1A6EC29A00AABAEA /* CMACircleView.xib in Resources */,
 				0D8F845D1A6EC2C300AABAEA /* edit@2x.png in Resources */,
@@ -868,8 +886,10 @@
 				0D8F844D1A6EC2C300AABAEA /* app_icon_120.png in Resources */,
 				0D8F845F1A6EC2C300AABAEA /* fishing_methods.png in Resources */,
 				0D8F84551A6EC2C300AABAEA /* bait.png in Resources */,
+				0D4461321A9D8762006C34D2 /* logo.xcf in Resources */,
 				0D8F846B1A6EC2C300AABAEA /* sort@2x.png in Resources */,
 				0D8F84731A6EC2C300AABAEA /* fishing_methods_large.png in Resources */,
+				0D44612F1A9D8762006C34D2 /* icon.png in Resources */,
 				0D8F84121A6EC29A00AABAEA /* CMANoXView.xib in Resources */,
 				0D8F84661A6EC2C300AABAEA /* menu@2x.png in Resources */,
 				0D8F84511A6EC2C300AABAEA /* app_icon_40.png in Resources */,
