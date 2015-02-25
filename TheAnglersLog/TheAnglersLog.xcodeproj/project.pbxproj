@@ -9,9 +9,6 @@
 /* Begin PBXBuildFile section */
 		0D23B2711A7713C900E89736 /* TheAnglersLog.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 0D23B26F1A7713C900E89736 /* TheAnglersLog.xcdatamodeld */; };
 		0D23B2741A78102B00E89736 /* CMAImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D23B2731A78102B00E89736 /* CMAImage.m */; };
-		0D4461191A9D3024006C34D2 /* issues.md in Sources */ = {isa = PBXBuildFile; fileRef = 0D4461171A9D3024006C34D2 /* issues.md */; };
-		0D44611A1A9D3024006C34D2 /* use_cases.md in Sources */ = {isa = PBXBuildFile; fileRef = 0D4461181A9D3024006C34D2 /* use_cases.md */; };
-		0D4461291A9D321B006C34D2 /* docs_link.md in Resources */ = {isa = PBXBuildFile; fileRef = 0D4461281A9D321B006C34D2 /* docs_link.md */; };
 		0D5608121A6F0F3000EE0437 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D5608111A6F0F3000EE0437 /* CoreData.framework */; };
 		0D8F838B1A6EC10800AABAEA /* CMAEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D8F836D1A6EC10800AABAEA /* CMAEntry.m */; };
 		0D8F838C1A6EC10800AABAEA /* CMAJournal.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D8F836F1A6EC10800AABAEA /* CMAJournal.m */; };
@@ -881,7 +878,6 @@
 				0D8F844B1A6EC2C300AABAEA /* app_icon.png in Resources */,
 				0D8F84721A6EC2C300AABAEA /* entries_large.png in Resources */,
 				0D8F84791A6EC2C300AABAEA /* no_image.png in Resources */,
-				0D4461291A9D321B006C34D2 /* docs_link.md in Resources */,
 				0D8F839D1A6EC15D00AABAEA /* CMALaunchScreen.xib in Resources */,
 				0D8F845C1A6EC2C300AABAEA /* edit@1x.png in Resources */,
 				0D8F84741A6EC2C300AABAEA /* locations_large.png in Resources */,
@@ -906,7 +902,6 @@
 				0D23B2741A78102B00E89736 /* CMAImage.m in Sources */,
 				0D8F83931A6EC10800AABAEA /* CMAFishingMethod.m in Sources */,
 				0D8F83DA1A6EC25200AABAEA /* CMASettingsViewController.m in Sources */,
-				0D44611A1A9D3024006C34D2 /* use_cases.md in Sources */,
 				0D8F83D81A6EC25200AABAEA /* CMAViewBaitsViewController.m in Sources */,
 				0D8F83901A6EC10800AABAEA /* CMAStats.m in Sources */,
 				0D8F838C1A6EC10800AABAEA /* CMAJournal.m in Sources */,
@@ -940,7 +935,6 @@
 				0D8F83F01A6EC28300AABAEA /* CMAUtilities.m in Sources */,
 				0D8F84141A6EC29A00AABAEA /* CMAStatisticsTableViewCell.m in Sources */,
 				0D8F84A01A6EC2D900AABAEA /* AFURLSessionManager.m in Sources */,
-				0D4461191A9D3024006C34D2 /* issues.md in Sources */,
 				0D8F83DF1A6EC25200AABAEA /* CMAEntrySortingViewController.m in Sources */,
 				0D8F83E31A6EC25200AABAEA /* CMAAddLocationViewController.m in Sources */,
 				0D8F84991A6EC2D900AABAEA /* AFHTTPRequestOperationManager.m in Sources */,
