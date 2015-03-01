@@ -6,6 +6,8 @@
 //  Copyright (c) 2015 Cohen Adair. All rights reserved.
 //
 
+#import <ImageIO/ImageIO.h>
+#import <MobileCoreServices/MobileCoreServices.h>
 #import "CMAImage.h"
 #import "CMABait.h"
 #import "CMAEntry.h"
@@ -48,7 +50,8 @@
 }
 
 - (void)initImage {
-    _image = [UIImage imageWithContentsOfFile:self.imagePath];
+    // DO NOT use UIImage's imageWithContentsOfFile. It keeps the file open so it can't be overridden (i.e. can't be edited).
+    _image = [UIImage imageWithData:[NSData dataWithContentsOfFile:self.imagePath]];
 }
 
 - (void)initTableCellImage {
@@ -61,30 +64,45 @@
 
 #pragma mark - Saving
 
-// NOTE: Deleting images is done in [[CMAStorageManager sharedManager] deleteManagedObject].
+// NOTE: Deleting images is done in [[CMAStorageManager sharedManager] cleanImages].
 
 - (void)saveWithImage:(UIImage *)anImage andFileName:(NSString *)aFileName {
-    __weak typeof(self) weakSelf = self;
+    NSString *subDirectory = @"Images";
+    NSString *fileName = [aFileName stringByAppendingString:@".png"];
+    
+    NSString *documentsPath = [[CMAStorageManager sharedManager] documentsSubDirectory:subDirectory].path;
+    NSString *imagePath = [subDirectory stringByAppendingPathComponent:fileName];
+    NSString *path = [documentsPath stringByAppendingPathComponent:fileName];
+    __block NSURL *saveURL = [NSURL fileURLWithPath:path];
+    __block UIImage *img = anImage;
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-        NSString *subDirectory = @"Images";
-        NSString *fileName = [aFileName stringByAppendingString:@".png"];
+        CGImageDestinationRef imgDestination = CGImageDestinationCreateWithURL((__bridge CFURLRef)saveURL, kUTTypePNG, 1, NULL);
         
-        NSString *documentsPath = [[CMAStorageManager sharedManager] documentsSubDirectory:subDirectory].path;
-        NSString *path = [documentsPath stringByAppendingPathComponent:fileName];
-        NSString *imagePath = [subDirectory stringByAppendingPathComponent:fileName];
+        if (imgDestination == NULL) {
+            NSLog(@"ERROR in saveWithImage:andFileName: -> failed to create image destination.");
+            return;
+        }
         
-        NSData *data = UIImagePNGRepresentation(anImage);
+        CGImageDestinationAddImage(imgDestination, img.CGImage, NULL);
         
-        if ([data writeToFile:path atomically:YES])
-            weakSelf.imagePath = imagePath; // stored path has to be relative, not absolute (iOS8 changes UUID every run)
-        else
-            NSLog(@"Error saving image to path: %@", path);
+        if (CGImageDestinationFinalize(imgDestination) == NO) {
+            NSLog(@"ERROR in saveWithImage:andFileName: -> failed to finailize image.");
+            CFRelease(imgDestination);
+            return;
+        }
+        
+        CFRelease(imgDestination);
         
         dispatch_async(dispatch_get_main_queue(), ^{
-            [self.entry.journal archive];
+            
         });
     });
+
+    self.image = anImage;
+    self.tableCellImage = anImage;
+    self.galleryCellImage = anImage;
+    self.imagePath = imagePath; // stored path has to be relative, not absolute (iOS8 changes UUID every run)
 }
 
 // This method should only be called when adding an image to the journal (ex. adding an entry or bait).
@@ -100,7 +118,7 @@
     NSString *fileName;
     
     if (self.entry)
-        fileName = [[self.entry dateAsFileNameString] stringByAppendingString:[NSString stringWithFormat:@"-%d", anIndex]];
+        fileName = [[self.entry dateAsFileNameString] stringByAppendingString:[NSString stringWithFormat:@"-%ld", (long)anIndex]];
     else if (self.bait)
         fileName = self.bait.name;
     
