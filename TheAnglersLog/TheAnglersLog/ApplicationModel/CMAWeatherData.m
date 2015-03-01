@@ -26,7 +26,7 @@ NSString *const kAPIKey = @"35f69a23678dead2c75e0599eadbb4e1";
 
 #pragma mark - Initialization
 
-- (id)initWithCoordinates:(CLLocationCoordinate2D)aCoordinate andJournal:(CMAMeasuringSystemType)aMeasurementSystemType {
+- (void)withCoordinates:(CLLocationCoordinate2D)aCoordinate andJournal:(CMAMeasuringSystemType)aMeasurementSystemType {
     self.weatherAPI = [[OWMWeatherAPI alloc] initWithAPIKey:kAPIKey];
     self.coordinate = aCoordinate;
     
@@ -34,8 +34,6 @@ NSString *const kAPIKey = @"35f69a23678dead2c75e0599eadbb4e1";
         self.weatherAPI.temperatureFormat = kOWMTempFahrenheit;
     else
         self.weatherAPI.temperatureFormat = kOWMTempCelcius;
-    
-    return self;
 }
 
 #pragma mark - Debugging

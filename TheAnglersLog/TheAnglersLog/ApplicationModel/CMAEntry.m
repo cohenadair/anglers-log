@@ -104,7 +104,7 @@
 }
 
 - (NSString *)weightAsStringWithMeasurementSystem:(CMAMeasuringSystemType)aMeasurementSystem shorthand:(BOOL)useShorthand {
-    NSString *result = [NSString string];
+    NSString *result = @"";
     
     NSString *weightString;
     NSString *ounceString;
@@ -124,16 +124,9 @@
             weightString = [@" " stringByAppendingString:UNIT_METRIC_WEIGHT];
     }
     
-    if (aMeasurementSystem == CMAMeasuringSystemTypeImperial) {
-        NSString *ounces;
-        
-        if (self.fishOunces)
-            ounces = [NSString stringWithFormat:@"%ld", (long)[self.fishOunces integerValue]];
-        else
-            ounces = @"0";
-        
+    if (aMeasurementSystem == CMAMeasuringSystemTypeImperial)
         result = [NSString stringWithFormat:@"%ld%@ %ld%@", (long)[self.fishWeight integerValue], weightString, (long)[self.fishOunces integerValue], ounceString];
-    } else
+    else
         result = [NSString stringWithFormat:@"%ld%@", (long)[self.fishWeight integerValue], weightString];
     
     return result;

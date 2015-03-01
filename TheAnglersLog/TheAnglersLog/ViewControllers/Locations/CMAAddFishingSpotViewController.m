@@ -175,7 +175,7 @@
 
 - (void)setMapRegion {
     if (!self.mapHasLoaded) {
-        MKCoordinateRegion region;
+        MKCoordinateRegion region = MKCoordinateRegionMake(CLLocationCoordinate2DMake(0, 0), MKCoordinateSpanMake(0, 0));
         
         // display the correct are if we're editing an existing fishing spot
         if (self.isEditingFishingSpot)

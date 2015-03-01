@@ -993,7 +993,7 @@ NSString *const kNotSelectedString = @"Not Selected";
     }
     
     self.weatherData = [[CMAStorageManager sharedManager] managedWeatherData];
-    self.weatherData = [self.weatherData initWithCoordinates:coordinate andJournal:[[self journal] measurementSystem]];
+    [self.weatherData withCoordinates:coordinate andJournal:[[self journal] measurementSystem]];
     
     [self.weatherData.weatherAPI currentWeatherByCoordinate:self.weatherData.coordinate withCallback:^(NSError *error, NSDictionary *result) {
         if (error) {

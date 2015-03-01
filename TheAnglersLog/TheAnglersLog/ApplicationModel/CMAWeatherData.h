@@ -24,7 +24,7 @@
 @property (strong, nonatomic)NSString *skyConditions;
 @property (strong, nonatomic)NSData *weatherImage;
 
-- (id)initWithCoordinates:(CLLocationCoordinate2D)aCoordinate andJournal:(CMAMeasuringSystemType)aMeasurementSystemType;
+- (void)withCoordinates:(CLLocationCoordinate2D)aCoordinate andJournal:(CMAMeasuringSystemType)aMeasurementSystemType;
 - (void)print;
 
 - (NSString *)temperatureAsStringWithUnits:(NSString *)aUnitString;
