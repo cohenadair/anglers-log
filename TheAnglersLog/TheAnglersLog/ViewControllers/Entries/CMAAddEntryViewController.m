@@ -646,13 +646,11 @@ NSString *const kNotSelectedString = @"Not Selected";
 // Returns true if all the user input is valid. Sets anEntry's properties after validation.
 - (BOOL)checkUserInputAndSetEntry:(CMAEntry *)anEntry {
     // date
-    if (![[self journal] entryDated:[self.datePicker date]])
+    if (![[self journal] entryDated:[self.datePicker date]] || self.isEditingEntry)
         [anEntry setDate:[self.datePicker date]];
     else {
-        if (!self.isEditingEntry) {
-            [CMAAlerts errorAlert:@"An entry with that date and time already exists. Please select a new date or edit the existing entry." presentationViewController:self];
-            return NO;
-        }
+        [CMAAlerts errorAlert:@"An entry with that date and time already exists. Please select a new date or edit the existing entry." presentationViewController:self];
+        return NO;
     }
     
     // species
