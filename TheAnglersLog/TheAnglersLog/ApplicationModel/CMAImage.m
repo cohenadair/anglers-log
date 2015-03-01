@@ -64,6 +64,8 @@
 // NOTE: Deleting images is done in [[CMAStorageManager sharedManager] deleteManagedObject].
 
 - (void)saveWithImage:(UIImage *)anImage andFileName:(NSString *)aFileName {
+    __weak typeof(self) weakSelf = self;
+    
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
         NSString *subDirectory = @"Images";
         NSString *fileName = [aFileName stringByAppendingString:@".png"];
@@ -75,12 +77,12 @@
         NSData *data = UIImagePNGRepresentation(anImage);
         
         if ([data writeToFile:path atomically:YES])
-            self.imagePath = imagePath; // stored path has to be relative, not absolute (iOS8 changes UUID every run)
+            weakSelf.imagePath = imagePath; // stored path has to be relative, not absolute (iOS8 changes UUID every run)
         else
             NSLog(@"Error saving image to path: %@", path);
         
         dispatch_async(dispatch_get_main_queue(), ^{
-            
+            [self.entry.journal archive];
         });
     });
 }
