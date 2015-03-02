@@ -10,6 +10,7 @@
 #import "CMAConstants.h"
 #import "CMAAppDelegate.h"
 #import "CMAStorageManager.h"
+#import "CMAUtilities.h"
 
 @implementation CMALocation
 
@@ -74,7 +75,7 @@
 // returns nil if a fishing spot with aName does not exist, otherwise returns a pointer to the existing fishing spot
 - (CMAFishingSpot *)fishingSpotNamed: (NSString *)aName {
     for (CMAFishingSpot *spot in self.fishingSpots)
-        if ([spot.name isEqualToString:[aName capitalizedString]])
+        if ([spot.name isEqualToString:[CMAUtilities capitalizedString:aName]])
             return spot;
     
     return nil;

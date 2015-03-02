@@ -169,7 +169,7 @@ NSInteger const SECTION_DELETE = 3;
         // remove fishing spot from addedFishingSpots if needed
         id obj;
         for (CMAFishingSpot *s in self.addedFishingSpots)
-            if ([s.name isEqualToString:[cell.textLabel.text capitalizedString]]) {
+            if ([s.name isEqualToString:[CMAUtilities capitalizedString:cell.textLabel.text]]) {
                 obj = s;
                 break;
             }

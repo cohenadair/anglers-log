@@ -122,4 +122,25 @@
     return result;
 }
 
+// Works for strings like "1st and 2nd" so the 's' and 'n' aren't capitalized.
++ (NSString *)capitalizedString:(NSString *)aString {
+    NSArray *words = [aString componentsSeparatedByString:@" "];
+    NSMutableArray *newWords = [[NSMutableArray alloc] init];
+    NSNumberFormatter *num = [[NSNumberFormatter alloc] init];
+    
+    for (NSString *item in words) {
+        NSString *word = item;
+        
+        if ([word isEqualToString:@""])
+            continue;
+        
+        if ([num numberFromString:[item substringWithRange:NSMakeRange(0, 1)]] == nil)
+            word = [item capitalizedString]; // capitalize that word.
+
+        [newWords addObject:word];
+    }
+    
+    return [newWords componentsJoinedByString:@" "];
+}
+
 @end

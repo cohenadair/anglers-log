@@ -25,5 +25,6 @@
                   removeObjToEdit:(BOOL)rmObjToEdit;
 + (UIImage *)imageWithImage:(UIImage *)image scaledToSize:(CGSize)newSize;
 + (CGSize)galleryCellSize;
++ (NSString *)capitalizedString:(NSString *)aString;
 
 @end

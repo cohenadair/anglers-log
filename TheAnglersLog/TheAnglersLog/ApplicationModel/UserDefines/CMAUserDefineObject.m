@@ -7,6 +7,7 @@
 //
 
 #import "CMAUserDefineObject.h"
+#import "CMAUtilities.h"
 
 @implementation CMAUserDefineObject
 
@@ -16,7 +17,7 @@
 
 - (void)setName:(NSString *)name {
     [self willChangeValueForKey:@"name"];
-    [self setPrimitiveValue:[[name capitalizedString] mutableCopy] forKey:@"name"];
+    [self setPrimitiveValue:[[CMAUtilities capitalizedString:name] mutableCopy] forKey:@"name"];
     [self didChangeValueForKey:@"name"];
 }
 

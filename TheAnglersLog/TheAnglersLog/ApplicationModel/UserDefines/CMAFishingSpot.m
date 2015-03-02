@@ -7,6 +7,7 @@
 //
 
 #import "CMAFishingSpot.h"
+#import "CMAUtilities.h"
 
 @implementation CMAFishingSpot
 
@@ -17,7 +18,7 @@
 #pragma mark - Initialization
 
 - (CMAFishingSpot *)initWithName:(NSString *)aName {
-    self.name = [NSMutableString stringWithString:[aName capitalizedString]];
+    self.name = [NSMutableString stringWithString:[CMAUtilities capitalizedString: aName]];
     self.location = [CLLocation new];
     self.fishCaught = [NSNumber numberWithInteger:0];
     self.entries = [NSMutableSet set];
@@ -33,7 +34,7 @@
 
 // updates self's properties with aNewFishinSpot's attributes
 - (void)edit: (CMAFishingSpot *)aNewFishingSpot {
-    self.name = [[aNewFishingSpot.name capitalizedString] mutableCopy];
+    self.name = [[CMAUtilities capitalizedString:aNewFishingSpot.name] mutableCopy];
     self.location = aNewFishingSpot.location;
 }
 
