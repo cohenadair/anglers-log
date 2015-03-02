@@ -191,7 +191,7 @@
                 
                 if ([anEntry.fishSpecies.ouncesCaught integerValue] >= OUNCES_PER_POUND) {
                     [anEntry.fishSpecies incWeightCaught:1];
-                    [anEntry.fishSpecies decNumberCaught:OUNCES_PER_POUND];
+                    [anEntry.fishSpecies decOuncesCaught:OUNCES_PER_POUND];
                 }
             }
         }
