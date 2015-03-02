@@ -23,6 +23,7 @@
 @property (strong, nonatomic)CMADeleteActionSheet *deleteLocationActionSheet;
 @property (strong, nonatomic)NSMutableOrderedSet *addedFishingSpots;
 @property (nonatomic)BOOL isEditingLocation;
+@property (nonatomic)BOOL tappedAddFishingSpot;
 
 @end
 
@@ -30,6 +31,8 @@ NSInteger const SECTION_TITLE = 0;
 NSInteger const SECTION_FISHING_SPOTS = 1;
 NSInteger const SECTION_ADD = 2;
 NSInteger const SECTION_DELETE = 3;
+
+#define kAddFishingSpotText @"Add Fishing Spot"
 
 @implementation CMAAddLocationViewController
 
@@ -126,6 +129,7 @@ NSInteger const SECTION_DELETE = 3;
     
     if (indexPath.section == SECTION_ADD) {
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"addFishingSpotCell" forIndexPath:indexPath];
+        [cell.textLabel setText:kAddFishingSpotText];
         return cell;
     }
     
@@ -178,6 +182,12 @@ NSInteger const SECTION_DELETE = 3;
         // delete from table
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
     }
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    if ([[[cell textLabel] text] isEqualToString:kAddFishingSpotText])
+        self.tappedAddFishingSpot = YES;
 }
 
 #pragma mark - Location Creation
@@ -307,11 +317,12 @@ NSInteger const SECTION_DELETE = 3;
     if ([segue.identifier isEqualToString:@"unwindToAddLocationFromAddFishingSpot"]) {
         CMAAddFishingSpotViewController *source = [segue sourceViewController];
         
-        if (source.fishingSpot) {
+        if (source.fishingSpot && self.tappedAddFishingSpot) {
             // making this connection automatically adds source.fishingSpot to self.location
             source.fishingSpot.myLocation = self.location;
             
             [self.addedFishingSpots addObject:source.fishingSpot];
+            [self setTappedAddFishingSpot:NO];
         }
         
         source.fishingSpot = nil;
