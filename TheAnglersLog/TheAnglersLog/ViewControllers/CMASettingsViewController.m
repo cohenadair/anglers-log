@@ -19,6 +19,9 @@
 
 @end
 
+#define kSectionFeedback 1
+#define kRowRate 0
+
 @implementation CMASettingsViewController
 
 #pragma mark - Global Accessing
@@ -60,12 +63,13 @@
     return TABLE_HEIGHT_HEADER;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-    return CGFLOAT_MIN;
-}
-
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     return 44;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.section == kSectionFeedback && indexPath.row == kRowRate)
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:APP_STORE_LINK]];
 }
 
 #pragma mark - Events
