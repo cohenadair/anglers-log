@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 Cohen Adair. All rights reserved.
 //
 
+#import <Instabug/Instabug.h>
 #import "CMAAppDelegate.h"
 #import "CMAStorageManager.h"
 #import "CMAConstants.h"
@@ -14,11 +15,14 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    [Instabug startWithToken:@"00957cd4e3f99f77e904c7bb54cc93dc" captureSource:IBGCaptureSourceUIKit invocationEvent:IBGInvocationEventRightEdgePan];
+    [Instabug setFeedbackSentAlertText:[NSString stringWithFormat:@"Thank you for helping improve %@!", APP_NAME]];
+    
     [[CMAStorageManager sharedManager] loadJournal];
     [self initAppearances];
     
     //[[CMAStorageManager sharedManager] deleteAllObjectsForEntityName:CDE_WEATHER_DATA];
-    [[CMAStorageManager sharedManager] debugCoreDataObjects];
+    //[[CMAStorageManager sharedManager] debugCoreDataObjects];
     
     return YES;
 }
