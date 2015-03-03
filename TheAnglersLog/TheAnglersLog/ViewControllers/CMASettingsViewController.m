@@ -16,6 +16,7 @@
 
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *menuButton;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *unitsSegmentedControl;
+@property (weak, nonatomic) IBOutlet UIButton *rateButton;
 
 @end
 
@@ -67,16 +68,15 @@
     return 44;
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.section == kSectionFeedback && indexPath.row == kRowRate)
-        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:APP_STORE_LINK]];
-}
-
 #pragma mark - Events
 
 - (IBAction)clickUnitsSegmentedControl:(UISegmentedControl *)sender {
     [[self journal] setMeasurementSystem:(CMAMeasuringSystemType)[sender selectedSegmentIndex]];
     [[self journal] archive];
+}
+
+- (IBAction)clickRateButton:(UIButton *)sender {
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:APP_STORE_LINK]];
 }
 
 @end

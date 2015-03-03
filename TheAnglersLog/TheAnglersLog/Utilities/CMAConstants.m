@@ -11,6 +11,7 @@
 #pragma mark - Application Constants
 
 NSString *const APP_NAME        = @"The Anglers' Log";
+NSString *const APP_STORE_LINK  = @"itms-apps://itunes.apple.com/app/id959989008";
 NSString *const SHARE_MESSAGE   = @"Shared with #TheAnglersLogApp.";
 NSString *const GLOBAL_FONT     = @"HelveticaNeue";
 NSInteger const MODEL_VERSION   = 4;

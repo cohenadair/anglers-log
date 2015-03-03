@@ -57,6 +57,33 @@
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
+                            <tableViewSection headerTitle="Feedback" id="L0o-6T-nKx">
+                                <string key="footerTitle">Report a bug or request a feature by swiping from the right edge of the screen toward the middle on any page in the The Anglers' Log.</string>
+                                <cells>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="bEJ-Fh-DSS">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="bEJ-Fh-DSS" id="Vj7-vo-di9">
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eEW-Oy-fAR">
+                                                    <rect key="frame" x="11" y="7" width="170" height="30"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                    <state key="normal" title="Rate The Anglers' Log">
+                                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                                    </state>
+                                                    <connections>
+                                                        <action selector="clickRateButton:" destination="xYT-rV-mpH" eventType="touchUpInside" id="ISZ-aB-BQo"/>
+                                                    </connections>
+                                                </button>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
+                            <tableViewSection headerTitle="Backup" footerTitle="Visit device settings to automatically backup with iCloud." id="RNq-S6-VGh">
+                                <cells/>
+                            </tableViewSection>
                         </sections>
                         <connections>
                             <outlet property="dataSource" destination="xYT-rV-mpH" id="aai-yT-KPP"/>
@@ -70,12 +97,13 @@
                     <nil key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="menuButton" destination="dIN-2n-lvB" id="MWr-ke-4b2"/>
+                        <outlet property="rateButton" destination="eEW-Oy-fAR" id="bIM-bg-iOC"/>
                         <outlet property="unitsSegmentedControl" destination="Hfc-Hg-ucV" id="ILd-xg-wt4"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rTH-ZQ-8CI" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3578" y="3386"/>
+            <point key="canvasLocation" x="3575" y="3387"/>
         </scene>
         <!--User Defines View Controller-->
         <scene sceneID="ifO-ji-FnT">
@@ -2701,7 +2729,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Emv-7o-E4e" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4935" y="770"/>
+            <point key="canvasLocation" x="4935" y="768"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="pUe-xS-iNB">

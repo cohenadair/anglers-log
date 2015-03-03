@@ -71,6 +71,7 @@ CGSize CELL_SIZE_GALLERY;
 #pragma mark - Application Constants
 
 extern NSString *const APP_NAME;
+extern NSString *const APP_STORE_LINK;
 extern NSString *const SHARE_MESSAGE;
 extern NSString *const GLOBAL_FONT;
 extern NSInteger const MODEL_VERSION;

@@ -37,7 +37,6 @@
 		0D8F83D71A6EC25200AABAEA /* CMASingleBaitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D8F83B21A6EC25200AABAEA /* CMASingleBaitViewController.m */; };
 		0D8F83D81A6EC25200AABAEA /* CMAViewBaitsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D8F83B41A6EC25200AABAEA /* CMAViewBaitsViewController.m */; };
 		0D8F83D91A6EC25200AABAEA /* CMAImagePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D8F83B61A6EC25200AABAEA /* CMAImagePickerViewController.m */; };
-		0D8F83DA1A6EC25200AABAEA /* CMASettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D8F83B81A6EC25200AABAEA /* CMASettingsViewController.m */; };
 		0D8F83DB1A6EC25200AABAEA /* CMASideMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D8F83BA1A6EC25200AABAEA /* CMASideMenuViewController.m */; };
 		0D8F83DC1A6EC25200AABAEA /* CMAStatisticsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D8F83BC1A6EC25200AABAEA /* CMAStatisticsViewController.m */; };
 		0D8F83DD1A6EC25200AABAEA /* CMAUserDefinesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D8F83BE1A6EC25200AABAEA /* CMAUserDefinesViewController.m */; };
@@ -131,6 +130,16 @@
 		0DC75FDD1A9AEDCE0045030C /* CMASinglePhotoCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DC75FDC1A9AEDCE0045030C /* CMASinglePhotoCollectionViewCell.m */; };
 		0DCAD63A1AA37D160040B03B /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DCAD6391AA37D160040B03B /* ImageIO.framework */; };
 		0DCAD63C1AA37D230040B03B /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DCAD63B1AA37D230040B03B /* MobileCoreServices.framework */; };
+		0DCAD6431AA4FF540040B03B /* Instabug.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 0DCAD6411AA4FF540040B03B /* Instabug.bundle */; };
+		0DCAD6441AA4FF540040B03B /* Instabug.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DCAD6421AA4FF540040B03B /* Instabug.framework */; };
+		0DCAD6461AA4FFBA0040B03B /* libc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DCAD6451AA4FFBA0040B03B /* libc++.dylib */; };
+		0DCAD6481AA4FFC80040B03B /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DCAD6471AA4FFC80040B03B /* CoreMotion.framework */; };
+		0DCAD64A1AA4FFD20040B03B /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DCAD6491AA4FFD20040B03B /* CoreTelephony.framework */; };
+		0DCAD64C1AA4FFDD0040B03B /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DCAD64B1AA4FFDD0040B03B /* AudioToolbox.framework */; };
+		0DCAD64E1AA4FFF00040B03B /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DCAD64D1AA4FFF00040B03B /* MessageUI.framework */; };
+		0DCAD6501AA4FFFE0040B03B /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DCAD64F1AA4FFFE0040B03B /* OpenGLES.framework */; };
+		0DCAD6521AA5000A0040B03B /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DCAD6511AA5000A0040B03B /* GLKit.framework */; };
+		0DCAD6551AA5069E0040B03B /* CMASettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DCAD6541AA5069E0040B03B /* CMASettingsViewController.m */; };
 		0DCC26571A520DD300738F04 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DCC26561A520DD300738F04 /* SystemConfiguration.framework */; };
 		E705AD7E1A22DD5C0077F16C /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E705AD7D1A22DD5C0077F16C /* QuartzCore.framework */; };
 		E70B637619D3A8E400DFBA85 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E70B637519D3A8E400DFBA85 /* Foundation.framework */; };
@@ -144,7 +153,6 @@
 		0D23B2701A7713C900E89736 /* TheAnglersLog.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = TheAnglersLog.xcdatamodel; sourceTree = "<group>"; };
 		0D23B2721A78102B00E89736 /* CMAImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAImage.h; path = ApplicationModel/CMAImage.h; sourceTree = "<group>"; };
 		0D23B2731A78102B00E89736 /* CMAImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAImage.m; path = ApplicationModel/CMAImage.m; sourceTree = "<group>"; };
-		0D4461171A9D3024006C34D2 /* issues.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = issues.md; path = ../DevNotes/issues.md; sourceTree = "<group>"; };
 		0D4461181A9D3024006C34D2 /* use_cases.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = use_cases.md; path = ../DevNotes/use_cases.md; sourceTree = "<group>"; };
 		0D4461281A9D321B006C34D2 /* docs_link.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = docs_link.md; path = ../Docs/docs_link.md; sourceTree = "<group>"; };
 		0D44612B1A9D8762006C34D2 /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon.png; path = ../Images/icon.png; sourceTree = "<group>"; };
@@ -196,8 +204,6 @@
 		0D8F83B41A6EC25200AABAEA /* CMAViewBaitsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CMAViewBaitsViewController.m; sourceTree = "<group>"; };
 		0D8F83B51A6EC25200AABAEA /* CMAImagePickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAImagePickerViewController.h; path = TheAnglersLog/ViewControllers/CMAImagePickerViewController.h; sourceTree = SOURCE_ROOT; };
 		0D8F83B61A6EC25200AABAEA /* CMAImagePickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAImagePickerViewController.m; path = TheAnglersLog/ViewControllers/CMAImagePickerViewController.m; sourceTree = SOURCE_ROOT; };
-		0D8F83B71A6EC25200AABAEA /* CMASettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMASettingsViewController.h; path = TheAnglersLog/ViewControllers/CMASettingsViewController.h; sourceTree = SOURCE_ROOT; };
-		0D8F83B81A6EC25200AABAEA /* CMASettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMASettingsViewController.m; path = TheAnglersLog/ViewControllers/CMASettingsViewController.m; sourceTree = SOURCE_ROOT; };
 		0D8F83B91A6EC25200AABAEA /* CMASideMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMASideMenuViewController.h; path = TheAnglersLog/ViewControllers/CMASideMenuViewController.h; sourceTree = SOURCE_ROOT; };
 		0D8F83BA1A6EC25200AABAEA /* CMASideMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMASideMenuViewController.m; path = TheAnglersLog/ViewControllers/CMASideMenuViewController.m; sourceTree = SOURCE_ROOT; };
 		0D8F83BB1A6EC25200AABAEA /* CMAStatisticsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAStatisticsViewController.h; path = TheAnglersLog/ViewControllers/CMAStatisticsViewController.h; sourceTree = SOURCE_ROOT; };
@@ -336,6 +342,17 @@
 		0DC75FE71A9BE8320045030C /* TheAnglersLog 5.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "TheAnglersLog 5.xcdatamodel"; sourceTree = "<group>"; };
 		0DCAD6391AA37D160040B03B /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		0DCAD63B1AA37D230040B03B /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
+		0DCAD6411AA4FF540040B03B /* Instabug.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Instabug.bundle; sourceTree = "<group>"; };
+		0DCAD6421AA4FF540040B03B /* Instabug.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Instabug.framework; sourceTree = "<group>"; };
+		0DCAD6451AA4FFBA0040B03B /* libc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++.dylib"; path = "usr/lib/libc++.dylib"; sourceTree = SDKROOT; };
+		0DCAD6471AA4FFC80040B03B /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
+		0DCAD6491AA4FFD20040B03B /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
+		0DCAD64B1AA4FFDD0040B03B /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		0DCAD64D1AA4FFF00040B03B /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
+		0DCAD64F1AA4FFFE0040B03B /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
+		0DCAD6511AA5000A0040B03B /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
+		0DCAD6531AA5069E0040B03B /* CMASettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMASettingsViewController.h; path = ViewControllers/CMASettingsViewController.h; sourceTree = "<group>"; };
+		0DCAD6541AA5069E0040B03B /* CMASettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMASettingsViewController.m; path = ViewControllers/CMASettingsViewController.m; sourceTree = "<group>"; };
 		0DCC26561A520DD300738F04 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		0DCC43271A99A3AD0019DB2E /* TheAnglersLog 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "TheAnglersLog 2.xcdatamodel"; sourceTree = "<group>"; };
 		0DCC43281A99B0D00019DB2E /* TheAnglersLog 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "TheAnglersLog 3.xcdatamodel"; sourceTree = "<group>"; };
@@ -353,7 +370,15 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0DCAD6521AA5000A0040B03B /* GLKit.framework in Frameworks */,
+				0DCAD6501AA4FFFE0040B03B /* OpenGLES.framework in Frameworks */,
+				0DCAD64E1AA4FFF00040B03B /* MessageUI.framework in Frameworks */,
+				0DCAD64C1AA4FFDD0040B03B /* AudioToolbox.framework in Frameworks */,
+				0DCAD64A1AA4FFD20040B03B /* CoreTelephony.framework in Frameworks */,
+				0DCAD6481AA4FFC80040B03B /* CoreMotion.framework in Frameworks */,
+				0DCAD6461AA4FFBA0040B03B /* libc++.dylib in Frameworks */,
 				0DCAD63C1AA37D230040B03B /* MobileCoreServices.framework in Frameworks */,
+				0DCAD6441AA4FF540040B03B /* Instabug.framework in Frameworks */,
 				0DCAD63A1AA37D160040B03B /* ImageIO.framework in Frameworks */,
 				0D5608121A6F0F3000EE0437 /* CoreData.framework in Frameworks */,
 				0DCC26571A520DD300738F04 /* SystemConfiguration.framework in Frameworks */,
@@ -372,7 +397,6 @@
 		0D4461161A9D3011006C34D2 /* DevNotes */ = {
 			isa = PBXGroup;
 			children = (
-				0D4461171A9D3024006C34D2 /* issues.md */,
 				0D4461181A9D3024006C34D2 /* use_cases.md */,
 			);
 			name = DevNotes;
@@ -641,6 +665,15 @@
 		E70B637419D3A8E400DFBA85 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				0DCAD6511AA5000A0040B03B /* GLKit.framework */,
+				0DCAD64F1AA4FFFE0040B03B /* OpenGLES.framework */,
+				0DCAD64D1AA4FFF00040B03B /* MessageUI.framework */,
+				0DCAD64B1AA4FFDD0040B03B /* AudioToolbox.framework */,
+				0DCAD6491AA4FFD20040B03B /* CoreTelephony.framework */,
+				0DCAD6471AA4FFC80040B03B /* CoreMotion.framework */,
+				0DCAD6451AA4FFBA0040B03B /* libc++.dylib */,
+				0DCAD6411AA4FF540040B03B /* Instabug.bundle */,
+				0DCAD6421AA4FF540040B03B /* Instabug.framework */,
 				0DCAD63B1AA37D230040B03B /* MobileCoreServices.framework */,
 				0DCAD6391AA37D160040B03B /* ImageIO.framework */,
 				0D5608111A6F0F3000EE0437 /* CoreData.framework */,
@@ -772,8 +805,8 @@
 				0D8F83AE1A6EC25200AABAEA /* Baits */,
 				0D8F83B51A6EC25200AABAEA /* CMAImagePickerViewController.h */,
 				0D8F83B61A6EC25200AABAEA /* CMAImagePickerViewController.m */,
-				0D8F83B71A6EC25200AABAEA /* CMASettingsViewController.h */,
-				0D8F83B81A6EC25200AABAEA /* CMASettingsViewController.m */,
+				0DCAD6531AA5069E0040B03B /* CMASettingsViewController.h */,
+				0DCAD6541AA5069E0040B03B /* CMASettingsViewController.m */,
 				0D8F83B91A6EC25200AABAEA /* CMASideMenuViewController.h */,
 				0D8F83BA1A6EC25200AABAEA /* CMASideMenuViewController.m */,
 				0D8F83BB1A6EC25200AABAEA /* CMAStatisticsViewController.h */,
@@ -896,6 +929,7 @@
 				0D8F84551A6EC2C300AABAEA /* bait.png in Resources */,
 				0D4461321A9D8762006C34D2 /* logo.xcf in Resources */,
 				0D8F846B1A6EC2C300AABAEA /* sort@2x.png in Resources */,
+				0DCAD6431AA4FF540040B03B /* Instabug.bundle in Resources */,
 				0D8F84731A6EC2C300AABAEA /* fishing_methods_large.png in Resources */,
 				0D44612F1A9D8762006C34D2 /* icon.png in Resources */,
 				0D8F84121A6EC29A00AABAEA /* CMANoXView.xib in Resources */,
@@ -929,7 +963,6 @@
 			files = (
 				0D23B2741A78102B00E89736 /* CMAImage.m in Sources */,
 				0D8F83931A6EC10800AABAEA /* CMAFishingMethod.m in Sources */,
-				0D8F83DA1A6EC25200AABAEA /* CMASettingsViewController.m in Sources */,
 				0D8F83D81A6EC25200AABAEA /* CMAViewBaitsViewController.m in Sources */,
 				0D8F83901A6EC10800AABAEA /* CMAStats.m in Sources */,
 				0D8F838C1A6EC10800AABAEA /* CMAJournal.m in Sources */,
@@ -987,6 +1020,7 @@
 				0D8F84101A6EC29A00AABAEA /* CMAInstagramActivity.m in Sources */,
 				0D8F840D1A6EC29A00AABAEA /* CMACircleView.m in Sources */,
 				0D8F83EF1A6EC28300AABAEA /* CMAConstants.m in Sources */,
+				0DCAD6551AA5069E0040B03B /* CMASettingsViewController.m in Sources */,
 				0D8F83E11A6EC25200AABAEA /* CMAViewEntriesViewController.m in Sources */,
 				0D8F83E41A6EC25200AABAEA /* CMASelectFishingSpotViewController.m in Sources */,
 				0D8F83A91A6EC20800AABAEA /* main.m in Sources */,
@@ -1087,6 +1121,10 @@
 				CODE_SIGN_ENTITLEMENTS = TheAnglersLog/TheAnglersLog.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "TheAnglersLog/TheAnglersLog-Prefix.pch";
 				INFOPLIST_FILE = "$(SRCROOT)/TheAnglersLog/TheAnglersLog-Info.plist";
@@ -1106,6 +1144,10 @@
 				CODE_SIGN_ENTITLEMENTS = TheAnglersLog/TheAnglersLog.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "TheAnglersLog/TheAnglersLog-Prefix.pch";
 				INFOPLIST_FILE = "$(SRCROOT)/TheAnglersLog/TheAnglersLog-Info.plist";
