@@ -17,6 +17,9 @@
 {
     [Instabug startWithToken:@"00957cd4e3f99f77e904c7bb54cc93dc" captureSource:IBGCaptureSourceUIKit invocationEvent:IBGInvocationEventRightEdgePan];
     [Instabug setFeedbackSentAlertText:[NSString stringWithFormat:@"Thank you for helping improve %@!", APP_NAME]];
+    [Instabug setIsTrackingCrashes:YES];
+    [Instabug setBugHeaderText:@"Report a Bug"];
+    [Instabug setFeedbackHeaderText:@"Send Feedback"];
     
     [[CMAStorageManager sharedManager] loadJournal];
     [self initAppearances];
