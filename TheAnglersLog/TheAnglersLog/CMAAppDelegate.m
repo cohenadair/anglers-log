@@ -19,7 +19,7 @@
     [Instabug setFeedbackSentAlertText:[NSString stringWithFormat:@"Thank you for helping improve %@!", APP_NAME]];
     [Instabug setIsTrackingCrashes:YES];
     [Instabug setBugHeaderText:@"Report a Bug"];
-    [Instabug setFeedbackHeaderText:@"Send Feedback"];
+    [Instabug setFeedbackHeaderText:@"Requests and Feedback"];
     
     [[CMAStorageManager sharedManager] loadJournal];
     [self initAppearances];

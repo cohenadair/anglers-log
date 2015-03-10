@@ -321,8 +321,8 @@
 }
 
 - (void)debugSavedImages {
-    int expectedCount = 0;
-    int actualCount = 0;
+    NSInteger expectedCount = 0;
+    NSInteger actualCount = 0;
     
     for (CMAEntry *e in [self.sharedJournal entries])
         expectedCount += e.imageCount;
