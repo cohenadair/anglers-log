@@ -6,10 +6,11 @@
 //  Copyright (c) 2014 Cohen Adair. All rights reserved.
 //
 
+#import <iAd/iAd.h>
 #import <UIKit/UIKit.h>
 #import "CMABait.h"
 
-@interface CMAViewBaitsViewController : UITableViewController
+@interface CMAViewBaitsViewController : UITableViewController <ADBannerViewDelegate>
 
 @property (nonatomic)BOOL isSelectingForAddEntry;
 @property (nonatomic)BOOL isSelectingForStatistics;
