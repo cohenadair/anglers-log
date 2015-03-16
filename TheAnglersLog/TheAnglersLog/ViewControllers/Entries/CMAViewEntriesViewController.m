@@ -16,10 +16,11 @@
 #import "SWRevealViewController.h"
 #import "CMAStorageManager.h"
 #import "CMAAlerts.h"
+#import "CMAUtilities.h"
 
 @interface CMAViewEntriesViewController ()
 
-@property (weak, nonatomic) IBOutlet ADBannerView *adBanner;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *tableViewTop;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *deleteButton;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *addButton;
@@ -30,6 +31,9 @@
 @property (strong, nonatomic)CMANoXView *noEntriesView;
 @property (strong, nonatomic)UISearchBar *searchBar;
 @property (strong, nonatomic)UIView *searchResultView;
+
+@property (strong, nonatomic)ADBannerView *adBanner;
+@property (nonatomic)BOOL bannerIsVisible;
 
 @property (strong, nonatomic)NSMutableOrderedSet *entries;
 @property (nonatomic)BOOL isSearchBarInView;
@@ -158,29 +162,47 @@
 #pragma mark - Ad Banner Initializing
 
 - (void)initAdBanner {
+    self.adBanner = [[ADBannerView alloc] initWithFrame:CGRectMake(0, -50, self.view.frame.size.width, 50)];
     self.adBanner.delegate = self;
-    //self.adBanner.alpha = 0.0;
+    [self.view addSubview:self.adBanner];
 }
 
-- (void)showAdBanner {
+- (void)showAdBanner:(ADBannerView *)banner {
+    if (self.bannerIsVisible)
+        return;
+    
+    if (self.adBanner.superview == nil)
+        [self.view addSubview:banner];
+    
+    self.tableViewTop.constant += banner.frame.size.height;
     [UIView animateWithDuration:0.5 animations:^{
-        self.adBanner.alpha = 1.0;
+        banner.frame = CGRectOffset(banner.frame, 0, banner.frame.size.height);
+        [self.view layoutIfNeeded];
     }];
+    
+    self.bannerIsVisible = YES;
 }
 
-- (void)hideAdBanner {
+- (void)hideAdBanner:(ADBannerView *)banner {
+    if (!self.bannerIsVisible)
+        return;
+    
+    self.tableViewTop.constant -= banner.frame.size.height;
     [UIView animateWithDuration:0.5 animations:^{
-        self.adBanner.alpha = 0.0;
+        banner.frame = CGRectOffset(banner.frame, 0, -banner.frame.size.height);
+        [self.view layoutIfNeeded];
     }];
+    
+    self.bannerIsVisible = NO;
 }
 
 - (void)bannerViewWillLoadAd:(ADBannerView *)banner {
     NSLog(@"Banner will load ad.");
-    [self showAdBanner];
 }
 
 - (void)bannerViewDidLoadAd:(ADBannerView *)banner {
     NSLog(@"Banner did load ad.");
+    [self showAdBanner:self.adBanner];
 }
 
 // pause any UI stuff that needs to be paused
@@ -196,7 +218,7 @@
 
 - (void)bannerView:(ADBannerView *)banner didFailToReceiveAdWithError:(NSError *)error {
     NSLog(@"Failed to load ads. Error: %@", error.localizedDescription);
-    [self hideAdBanner];
+    [self hideAdBanner:self.adBanner];
 }
 
 #pragma mark - Table View Initializing
