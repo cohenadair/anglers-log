@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		0D23B2711A7713C900E89736 /* TheAnglersLog.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 0D23B26F1A7713C900E89736 /* TheAnglersLog.xcdatamodeld */; };
 		0D23B2741A78102B00E89736 /* CMAImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D23B2731A78102B00E89736 /* CMAImage.m */; };
+		0D248B0F1AB0C82200093290 /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D248B0E1AB0C82200093290 /* iAd.framework */; };
 		0D44612F1A9D8762006C34D2 /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 0D44612B1A9D8762006C34D2 /* icon.png */; };
 		0D4461301A9D8762006C34D2 /* icon.xcf in Resources */ = {isa = PBXBuildFile; fileRef = 0D44612C1A9D8762006C34D2 /* icon.xcf */; };
 		0D4461311A9D8762006C34D2 /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 0D44612D1A9D8762006C34D2 /* logo.png */; };
@@ -153,6 +154,7 @@
 		0D23B2701A7713C900E89736 /* TheAnglersLog.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = TheAnglersLog.xcdatamodel; sourceTree = "<group>"; };
 		0D23B2721A78102B00E89736 /* CMAImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAImage.h; path = ApplicationModel/CMAImage.h; sourceTree = "<group>"; };
 		0D23B2731A78102B00E89736 /* CMAImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAImage.m; path = ApplicationModel/CMAImage.m; sourceTree = "<group>"; };
+		0D248B0E1AB0C82200093290 /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
 		0D4461181A9D3024006C34D2 /* use_cases.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = use_cases.md; path = ../DevNotes/use_cases.md; sourceTree = "<group>"; };
 		0D4461281A9D321B006C34D2 /* docs_link.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = docs_link.md; path = ../Docs/docs_link.md; sourceTree = "<group>"; };
 		0D44612B1A9D8762006C34D2 /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon.png; path = ../Images/icon.png; sourceTree = "<group>"; };
@@ -160,6 +162,7 @@
 		0D44612D1A9D8762006C34D2 /* logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = logo.png; path = ../Images/logo.png; sourceTree = "<group>"; };
 		0D44612E1A9D8762006C34D2 /* logo.xcf */ = {isa = PBXFileReference; lastKnownFileType = file; name = logo.xcf; path = ../Images/logo.xcf; sourceTree = "<group>"; };
 		0D5608111A6F0F3000EE0437 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		0D766CC01AB66B05001EED90 /* tutorials.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = tutorials.md; path = ../DevNotes/tutorials.md; sourceTree = "<group>"; };
 		0D8F836C1A6EC10800AABAEA /* CMAEntry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAEntry.h; path = TheAnglersLog/ApplicationModel/CMAEntry.h; sourceTree = SOURCE_ROOT; };
 		0D8F836D1A6EC10800AABAEA /* CMAEntry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAEntry.m; path = TheAnglersLog/ApplicationModel/CMAEntry.m; sourceTree = SOURCE_ROOT; };
 		0D8F836E1A6EC10800AABAEA /* CMAJournal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAJournal.h; path = TheAnglersLog/ApplicationModel/CMAJournal.h; sourceTree = SOURCE_ROOT; };
@@ -370,6 +373,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0D248B0F1AB0C82200093290 /* iAd.framework in Frameworks */,
 				0DCAD6521AA5000A0040B03B /* GLKit.framework in Frameworks */,
 				0DCAD6501AA4FFFE0040B03B /* OpenGLES.framework in Frameworks */,
 				0DCAD64E1AA4FFF00040B03B /* MessageUI.framework in Frameworks */,
@@ -398,6 +402,7 @@
 			isa = PBXGroup;
 			children = (
 				0D4461181A9D3024006C34D2 /* use_cases.md */,
+				0D766CC01AB66B05001EED90 /* tutorials.md */,
 			);
 			name = DevNotes;
 			sourceTree = "<group>";
@@ -665,6 +670,7 @@
 		E70B637419D3A8E400DFBA85 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				0D248B0E1AB0C82200093290 /* iAd.framework */,
 				0DCAD6511AA5000A0040B03B /* GLKit.framework */,
 				0DCAD64F1AA4FFFE0040B03B /* OpenGLES.framework */,
 				0DCAD64D1AA4FFF00040B03B /* MessageUI.framework */,

@@ -20,6 +20,7 @@
 @property (weak, nonatomic)IBOutlet UIBarButtonItem *menuButton;
 @property (weak, nonatomic)IBOutlet UIBarButtonItem *deleteButton;
 @property (weak, nonatomic)IBOutlet UIBarButtonItem *addButton;
+@property (weak, nonatomic)IBOutlet ADBannerView *adBanner;
 
 @property (strong, nonatomic)CMAUserDefine *userDefineBaits;
 @property (strong, nonatomic)CMANoXView *noBaitsView;
@@ -85,6 +86,7 @@
     else
         self.navigationItem.leftBarButtonItem = self.navigationItem.backBarButtonItem;
     
+    [self initAdBanner];
     [self.tableView setTableFooterView:[[UIView alloc] initWithFrame:CGRectZero]];
 }
 
@@ -104,6 +106,51 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
 }
+
+#pragma mark - Ad Banner Initializing
+
+- (void)initAdBanner {
+    self.adBanner.delegate = self;
+    self.adBanner.alpha = 0.0;
+}
+
+- (void)showAdBanner {
+    [UIView animateWithDuration:0.5 animations:^{
+        self.adBanner.alpha = 1.0;
+    }];
+}
+
+- (void)hideAdBanner {
+    [UIView animateWithDuration:0.5 animations:^{
+        self.adBanner.alpha = 0.0;
+    }];
+}
+
+- (void)bannerViewWillLoadAd:(ADBannerView *)banner {
+    NSLog(@"Banner will load ad.");
+    [self showAdBanner];
+}
+
+- (void)bannerViewDidLoadAd:(ADBannerView *)banner {
+    NSLog(@"Banner did load ad.");
+}
+
+// pause any UI stuff that needs to be paused
+- (BOOL)bannerViewActionShouldBegin:(ADBannerView *)banner willLeaveApplication:(BOOL)willLeave {
+    NSLog(@"Banner view action should begin.");
+    return YES;
+}
+
+// continue any UI stuff that was paused in bannerViewActionShouldBegin
+- (void)bannerViewActionDidFinish:(ADBannerView *)banner {
+    NSLog(@"Banner view action did finish.");
+}
+
+- (void)bannerView:(ADBannerView *)banner didFailToReceiveAdWithError:(NSError *)error {
+    NSLog(@"Failed to load ads. Error: %@", error.localizedDescription);
+    [self hideAdBanner];
+}
+
 
 #pragma mark - Table View Initializing
 

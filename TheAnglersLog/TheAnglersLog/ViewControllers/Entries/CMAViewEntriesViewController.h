@@ -6,8 +6,9 @@
 //  Copyright (c) 2014 Cohen Adair. All rights reserved.
 //
 
+#import <iAd/iAd.h>
 #import <UIKit/UIKit.h>
 
-@interface CMAViewEntriesViewController : UITableViewController <UISearchBarDelegate>
+@interface CMAViewEntriesViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate, ADBannerViewDelegate>
 
 @end
