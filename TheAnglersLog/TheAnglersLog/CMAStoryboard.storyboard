@@ -770,40 +770,16 @@
                                                 <constraint firstAttribute="bottomMargin" secondItem="x0p-dd-nt3" secondAttribute="bottom" constant="22" id="sgu-wc-gsg"/>
                                                 <constraint firstItem="x0p-dd-nt3" firstAttribute="trailing" secondItem="0FR-BG-DwB" secondAttribute="trailing" id="viN-vl-CVD"/>
                                             </constraints>
-                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Date" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5oP-yx-Cam">
-                                            <rect key="frame" x="93" y="33" width="434" height="21"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                            <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Location" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IRG-R4-Mut">
-                                            <rect key="frame" x="93" y="50" width="434" height="21"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                            <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                    </subviews>
-                                    <constraints>
-                                        <constraint firstItem="5oP-yx-Cam" firstAttribute="top" secondItem="7DJ-bU-WwA" secondAttribute="topMargin" constant="25" id="2VT-yv-8ye"/>
-                                        <constraint firstItem="IRG-R4-Mut" firstAttribute="leading" secondItem="5oP-yx-Cam" secondAttribute="leading" id="3r3-xZ-SyA"/>
-                                        <constraint firstItem="tj8-BE-oka" firstAttribute="leading" secondItem="bHo-xO-DQj" secondAttribute="trailing" constant="8" symbolic="YES" id="5Ai-r9-kn3"/>
-                                        <constraint firstAttribute="bottomMargin" secondItem="IRG-R4-Mut" secondAttribute="bottom" constant="6" id="BoB-Vy-lEl"/>
-                                        <constraint firstItem="tj8-BE-oka" firstAttribute="top" secondItem="7DJ-bU-WwA" secondAttribute="topMargin" constant="5" id="CJV-Lg-EMn"/>
-                                        <constraint firstItem="bHo-xO-DQj" firstAttribute="leading" secondItem="7DJ-bU-WwA" secondAttribute="leading" id="Igt-7H-gNi"/>
-                                        <constraint firstItem="5oP-yx-Cam" firstAttribute="leading" secondItem="tj8-BE-oka" secondAttribute="leading" id="OLV-cW-yz5"/>
-                                        <constraint firstAttribute="bottom" secondItem="bHo-xO-DQj" secondAttribute="bottom" id="Qib-YD-PeR"/>
-                                        <constraint firstAttribute="bottomMargin" secondItem="5oP-yx-Cam" secondAttribute="bottom" constant="23" id="XJ1-NU-UEz"/>
-                                        <constraint firstItem="5oP-yx-Cam" firstAttribute="trailing" secondItem="IRG-R4-Mut" secondAttribute="trailing" id="XlC-yD-KEE"/>
-                                        <constraint firstItem="bHo-xO-DQj" firstAttribute="top" secondItem="7DJ-bU-WwA" secondAttribute="top" id="a2m-1O-EO1"/>
-                                        <constraint firstItem="IRG-R4-Mut" firstAttribute="top" secondItem="tj8-BE-oka" secondAttribute="bottom" constant="16" id="ocH-3V-ztS"/>
-                                        <constraint firstAttribute="trailingMargin" secondItem="tj8-BE-oka" secondAttribute="trailing" constant="-2" id="x1I-fF-xQ0"/>
-                                        <constraint firstItem="5oP-yx-Cam" firstAttribute="trailing" secondItem="tj8-BE-oka" secondAttribute="trailing" id="xxG-hJ-r5e"/>
-                                    </constraints>
-                                </tableViewCellContentView>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="dateLabel" destination="x0p-dd-nt3" id="oIZ-cQ-RKl"/>
+                                            <outlet property="locationLabel" destination="L3s-QT-8if" id="f2r-vI-Yd6"/>
+                                            <outlet property="speciesLabel" destination="0FR-BG-DwB" id="6EC-ea-wYv"/>
+                                            <outlet property="thumbImage" destination="8wV-ub-3iA" id="ju5-2L-HKa"/>
+                                            <segue destination="5Te-0Q-Zs8" kind="show" identifier="fromViewEntriesToSingleEntry" id="exN-Q3-TGx"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
                                 <connections>
                                     <outlet property="dataSource" destination="cgx-lm-1wU" id="Yse-OR-n6E"/>
                                     <outlet property="delegate" destination="cgx-lm-1wU" id="eWM-kd-XTQ"/>
