@@ -70,7 +70,7 @@
 
 - (NSString *)typeAsString {
     if (self.baitType == CMABaitTypeArtificial)
-        return @"Atrificial";
+        return @"Artificial";
     else if (self.baitType == CMABaitTypeLive)
         return @"Live";
     else if (self.baitType == CMABaitTypeReal)
