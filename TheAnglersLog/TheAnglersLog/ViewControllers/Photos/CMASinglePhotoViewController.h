@@ -6,9 +6,10 @@
 //  Copyright (c) 2014 Cohen Adair. All rights reserved.
 //
 
+#import <iAd/iAd.h>
 #import <UIKit/UIKit.h>
 
-@interface CMASinglePhotoViewController : UICollectionViewController <UICollectionViewDelegateFlowLayout>
+@interface CMASinglePhotoViewController : UIViewController <UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UICollectionViewDelegate, ADBannerViewDelegate>
 
 @property (strong, nonatomic)NSArray *imagesArray;
 @property (strong, nonatomic)NSIndexPath *startingImageIndexPath;

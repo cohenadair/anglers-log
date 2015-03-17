@@ -14,8 +14,12 @@
 
 @interface CMASinglePhotoViewController ()
 
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *collectionViewBottom;
+@property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *actionButton;
 
+@property (strong, nonatomic)ADBannerView *adBanner;
+@property (nonatomic)BOOL bannerIsVisible;
 @property (nonatomic)CGSize cellSizeInPoints;
 
 @end
@@ -26,6 +30,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    [self initAdBanner];
     
     CGSize screenSize = [[UIApplication sharedApplication] delegate].window.frame.size;
     self.cellSizeInPoints = CGSizeMake(screenSize.width, screenSize.width);
@@ -44,6 +50,57 @@
 
 - (void)setNavigationTitleForIndexPath:(NSIndexPath *)anIndexPath {
     [self.navigationItem setTitle:[NSString stringWithFormat:@"Photos (%ld of %lu)", (unsigned long)anIndexPath.item + 1, (unsigned long)[self.imagesArray count]]];
+}
+
+#pragma mark - Ad Banner Initializing
+
+- (void)initAdBanner {
+    // the height of the view excluding the navigation bar and status bar
+    CGFloat y = self.view.frame.size.height - self.navigationController.navigationBar.frame.size.height - [UIApplication sharedApplication].statusBarFrame.size.height;
+    
+    self.adBanner = [[ADBannerView alloc] initWithFrame:CGRectMake(0, y, self.view.frame.size.width, 50)];
+    self.adBanner.delegate = self;
+    
+    [self.view addSubview:self.adBanner];
+}
+
+- (void)showAdBanner:(ADBannerView *)banner {
+    if (self.bannerIsVisible)
+        return;
+    
+    if (self.adBanner.superview == nil)
+        [self.view addSubview:banner];
+    
+    self.collectionViewBottom.constant -= banner.frame.size.height;
+    [UIView animateWithDuration:0.5 animations:^{
+        banner.frame = CGRectOffset(banner.frame, 0, -banner.frame.size.height);
+        [self.view layoutIfNeeded];
+    }];
+    
+    self.bannerIsVisible = YES;
+}
+
+- (void)hideAdBanner:(ADBannerView *)banner {
+    if (!self.bannerIsVisible)
+        return;
+    
+    self.collectionViewBottom.constant += banner.frame.size.height;
+    [UIView animateWithDuration:0.5 animations:^{
+        banner.frame = CGRectOffset(banner.frame, 0, banner.frame.size.height);
+        [self.view layoutIfNeeded];
+    }];
+    
+    self.bannerIsVisible = NO;
+}
+
+- (void)bannerViewDidLoadAd:(ADBannerView *)banner {
+    NSLog(@"Banner did load");
+    [self showAdBanner:self.adBanner];
+}
+
+- (void)bannerView:(ADBannerView *)banner didFailToReceiveAdWithError:(NSError *)error {
+    NSLog(@"Failed to load banner");
+    [self hideAdBanner:self.adBanner];
 }
 
 #pragma mark - Collection View Initializing

@@ -216,7 +216,7 @@
                     <nil key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="menuButton" destination="oqK-m3-inL" id="E13-R9-IRN"/>
-                        <segue destination="kBO-W6-gMI" kind="show" identifier="fromPhotosToSinglePhoto" id="epV-yV-Gqb"/>
+                        <segue destination="hFU-th-a6H" kind="show" identifier="fromPhotosToSinglePhoto" id="8PC-lS-XdF"/>
                     </connections>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HSf-X2-ejN" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -224,73 +224,91 @@
             <point key="canvasLocation" x="3563" y="1649"/>
         </scene>
         <!--Single Photo View Controller-->
-        <scene sceneID="GE8-K9-8Oc">
+        <scene sceneID="c1O-vT-f5L">
             <objects>
-                <collectionViewController storyboardIdentifier="singlePhotoScene" id="ld6-vl-IIs" customClass="CMASinglePhotoViewController" sceneMemberID="viewController">
-                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" dataMode="prototypes" id="WVo-Yh-t3z">
-                        <rect key="frame" x="0.0" y="64" width="600" height="556"/>
+                <viewController id="N0k-1m-x4Y" customClass="CMASinglePhotoViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Uwj-p9-FMl"/>
+                        <viewControllerLayoutGuide type="bottom" id="1Kh-Qr-TrS"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="wJr-HM-yBg">
+                        <rect key="frame" x="0.0" y="44" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="vQo-By-ZzZ">
-                            <size key="itemSize" width="200" height="200"/>
-                            <size key="headerReferenceSize" width="0.0" height="0.0"/>
-                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                        </collectionViewFlowLayout>
-                        <cells>
-                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="imageCell" id="n2l-Gz-Qt3" customClass="CMASinglePhotoCollectionViewCell">
-                                <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                    <rect key="frame" x="0.0" y="0.0" width="200" height="200"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <imageView userInteractionEnabled="NO" tag="100" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="2D8-cb-4Zm">
+                        <subviews>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="UAh-Hk-Qa3">
+                                <rect key="frame" x="0.0" y="64" width="600" height="536"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="ky2-zz-5Dh">
+                                    <size key="itemSize" width="50" height="50"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="imageCell" id="Pwl-n5-2UZ" customClass="CMASinglePhotoCollectionViewCell">
+                                        <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                             <rect key="frame" x="0.0" y="0.0" width="200" height="200"/>
-                                        </imageView>
-                                    </subviews>
-                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                </view>
-                                <constraints>
-                                    <constraint firstItem="2D8-cb-4Zm" firstAttribute="top" secondItem="n2l-Gz-Qt3" secondAttribute="top" id="9Hj-p8-gmK"/>
-                                    <constraint firstAttribute="bottom" secondItem="2D8-cb-4Zm" secondAttribute="bottom" id="KpI-V5-hRf"/>
-                                    <constraint firstAttribute="trailing" secondItem="2D8-cb-4Zm" secondAttribute="trailing" id="Nob-5Q-pwJ"/>
-                                    <constraint firstItem="2D8-cb-4Zm" firstAttribute="leading" secondItem="n2l-Gz-Qt3" secondAttribute="leading" id="TSh-g1-BIx"/>
-                                    <constraint firstAttribute="bottom" secondItem="2D8-cb-4Zm" secondAttribute="bottom" id="VVo-8A-bNK"/>
-                                    <constraint firstItem="2D8-cb-4Zm" firstAttribute="top" secondItem="n2l-Gz-Qt3" secondAttribute="top" id="iah-a6-Kzw"/>
-                                </constraints>
-                                <variation key="default">
-                                    <mask key="constraints">
-                                        <exclude reference="9Hj-p8-gmK"/>
-                                        <exclude reference="VVo-8A-bNK"/>
-                                    </mask>
-                                </variation>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView userInteractionEnabled="NO" tag="100" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="GOP-pp-mSk">
+                                                    <rect key="frame" x="0.0" y="0.0" width="200" height="200"/>
+                                                </imageView>
+                                            </subviews>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        </view>
+                                        <constraints>
+                                            <constraint firstItem="GOP-pp-mSk" firstAttribute="top" secondItem="Pwl-n5-2UZ" secondAttribute="top" id="0vr-sz-KY7"/>
+                                            <constraint firstAttribute="trailing" secondItem="GOP-pp-mSk" secondAttribute="trailing" id="2uU-VB-isg"/>
+                                            <constraint firstAttribute="bottom" secondItem="GOP-pp-mSk" secondAttribute="bottom" id="9sv-2i-oqA"/>
+                                            <constraint firstItem="GOP-pp-mSk" firstAttribute="leading" secondItem="Pwl-n5-2UZ" secondAttribute="leading" id="KyB-am-0Py"/>
+                                            <constraint firstAttribute="bottom" secondItem="GOP-pp-mSk" secondAttribute="bottom" id="MxW-ur-L0R"/>
+                                            <constraint firstItem="GOP-pp-mSk" firstAttribute="top" secondItem="Pwl-n5-2UZ" secondAttribute="top" id="gfR-1Z-9TE"/>
+                                        </constraints>
+                                        <size key="customSize" width="200" height="200"/>
+                                        <variation key="default">
+                                            <mask key="constraints">
+                                                <exclude reference="gfR-1Z-9TE"/>
+                                                <exclude reference="MxW-ur-L0R"/>
+                                            </mask>
+                                        </variation>
+                                        <connections>
+                                            <outlet property="imageView" destination="GOP-pp-mSk" id="Cfn-or-SPv"/>
+                                        </connections>
+                                    </collectionViewCell>
+                                </cells>
                                 <connections>
-                                    <outlet property="imageView" destination="2D8-cb-4Zm" id="W9v-Ak-55k"/>
+                                    <outlet property="dataSource" destination="N0k-1m-x4Y" id="FWB-3T-owf"/>
+                                    <outlet property="delegate" destination="N0k-1m-x4Y" id="0og-et-Bbc"/>
                                 </connections>
-                            </collectionViewCell>
-                        </cells>
-                        <connections>
-                            <outlet property="dataSource" destination="ld6-vl-IIs" id="fut-46-cDo"/>
-                            <outlet property="delegate" destination="ld6-vl-IIs" id="9Rk-lm-jFc"/>
-                        </connections>
-                    </collectionView>
-                    <navigationItem key="navigationItem" id="YFh-Au-JEI">
-                        <barButtonItem key="rightBarButtonItem" systemItem="action" id="6wP-Ff-BnE">
+                            </collectionView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="UAh-Hk-Qa3" secondAttribute="trailing" id="Bqc-3h-A0T"/>
+                            <constraint firstItem="UAh-Hk-Qa3" firstAttribute="bottom" secondItem="1Kh-Qr-TrS" secondAttribute="top" id="MhN-eT-ocq"/>
+                            <constraint firstItem="UAh-Hk-Qa3" firstAttribute="leading" secondItem="wJr-HM-yBg" secondAttribute="leading" id="QvY-ZI-T07"/>
+                            <constraint firstItem="UAh-Hk-Qa3" firstAttribute="top" secondItem="Uwj-p9-FMl" secondAttribute="bottom" id="fCe-A0-YbT"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="Yn5-3g-Nal">
+                        <barButtonItem key="rightBarButtonItem" systemItem="action" id="8nR-KK-R1Z">
                             <connections>
-                                <action selector="clickActionButton:" destination="ld6-vl-IIs" id="lll-z0-HEv"/>
+                                <action selector="clickActionButton:" destination="N0k-1m-x4Y" id="7dg-fT-UA5"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
-                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
-                    <nil key="simulatedBottomBarMetrics"/>
+                    <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
                     <connections>
-                        <outlet property="actionButton" destination="6wP-Ff-BnE" id="9CH-Cw-zXN"/>
+                        <outlet property="actionButton" destination="8nR-KK-R1Z" id="Tpb-2b-0Zs"/>
+                        <outlet property="collectionView" destination="UAh-Hk-Qa3" id="pLB-Xh-SKP"/>
+                        <outlet property="collectionViewBottom" destination="MhN-eT-ocq" id="Puy-aY-b6X"/>
                     </connections>
-                </collectionViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="e7J-31-8iz" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="eq5-sW-Loj" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4267" y="1649"/>
+            <point key="canvasLocation" x="4318" y="1649"/>
         </scene>
         <!--Single Location View Controller-->
         <scene sceneID="klA-32-wdo">
@@ -2785,24 +2803,6 @@
             <point key="canvasLocation" x="3518" y="1649"/>
         </scene>
         <!--Navigation Controller-->
-        <scene sceneID="9Nj-Ht-WZ9">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="kBO-W6-gMI" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="bEC-rV-kan">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="ld6-vl-IIs" kind="relationship" relationship="rootViewController" id="kdf-di-F4K"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="3L9-4j-SBw" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="4225" y="1649"/>
-        </scene>
-        <!--Navigation Controller-->
         <scene sceneID="wEZ-dz-JSZ">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="MDE-66-o6G" sceneMemberID="viewController">
@@ -3117,6 +3117,24 @@
             </objects>
             <point key="canvasLocation" x="3518" y="-1102"/>
         </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="gek-Qn-uv2">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="hFU-th-a6H" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="UuC-uv-Jq5">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="N0k-1m-x4Y" kind="relationship" relationship="rootViewController" id="ZCo-eB-EMV"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="QY0-8m-bpJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4275" y="1649"/>
+        </scene>
     </scenes>
     <resources>
         <image name="bait.png" width="50" height="50"/>
@@ -3140,18 +3158,18 @@
         <segue reference="ij7-4o-wMK"/>
         <segue reference="iOf-th-u5i"/>
         <segue reference="aBE-xI-c3y"/>
-        <segue reference="guB-6y-sIg"/>
-        <segue reference="0It-ub-fzN"/>
-        <segue reference="gDt-Tw-gtk"/>
-        <segue reference="Jyy-wS-dXA"/>
-        <segue reference="wZB-7v-gkR"/>
-        <segue reference="9XR-fI-0eS"/>
-        <segue reference="bOr-hP-Xzw"/>
         <segue reference="wUY-7j-U9z"/>
         <segue reference="exN-Q3-TGx"/>
+        <segue reference="bOr-hP-Xzw"/>
         <segue reference="y0h-hR-J5c"/>
         <segue reference="2ub-xD-2JF"/>
         <segue reference="qAO-gb-5Yr"/>
         <segue reference="ooh-Eu-Ug2"/>
+        <segue reference="guB-6y-sIg"/>
+        <segue reference="Jyy-wS-dXA"/>
+        <segue reference="0It-ub-fzN"/>
+        <segue reference="gDt-Tw-gtk"/>
+        <segue reference="wZB-7v-gkR"/>
+        <segue reference="9XR-fI-0eS"/>
     </inferredMetricsTieBreakers>
 </document>
