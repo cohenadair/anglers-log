@@ -269,8 +269,8 @@
                                         <size key="customSize" width="200" height="200"/>
                                         <variation key="default">
                                             <mask key="constraints">
-                                                <exclude reference="gfR-1Z-9TE"/>
                                                 <exclude reference="MxW-ur-L0R"/>
+                                                <exclude reference="gfR-1Z-9TE"/>
                                             </mask>
                                         </variation>
                                         <connections>
@@ -492,7 +492,7 @@
             <objects>
                 <tableViewController storyboardIdentifier="addBaitScene" id="hTK-uR-uLB" customClass="CMAAddBaitViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="onDrag" dataMode="static" style="grouped" separatorStyle="default" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="xhK-WL-S8i">
-                        <rect key="frame" x="0.0" y="64" width="600" height="556"/>
+                        <rect key="frame" x="0.0" y="44" width="600" height="536"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
                         <sections>
@@ -721,6 +721,120 @@
                 </pongPressGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="4978" y="-184"/>
+        </scene>
+        <!--View Baits-->
+        <scene sceneID="Etg-TT-Jp6">
+            <objects>
+                <viewController id="nf3-lH-9zk" customClass="CMAViewBaitsViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="nCu-lc-pHv"/>
+                        <viewControllerLayoutGuide type="bottom" id="bJX-7O-QuC"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="ssY-SQ-fHC">
+                        <rect key="frame" x="0.0" y="44" width="600" height="492"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="WhS-WX-XaN">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="492"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <prototypes>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="detailDisclosureButton" indentationWidth="10" reuseIdentifier="baitCell" rowHeight="85" id="oTw-u1-f6g" customClass="CMABaitTableViewCell">
+                                        <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="oTw-u1-f6g" id="Axt-SE-j32">
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="pRD-k4-Jjk">
+                                                    <rect key="frame" x="0.0" y="0.0" width="85" height="85"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="85" id="S5r-a4-IVA"/>
+                                                    </constraints>
+                                                </imageView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Black Spoon" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fQc-4x-c4A">
+                                                    <rect key="frame" x="93" y="20" width="99" height="21"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="21" id="nLe-UV-dn2"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="5 Fish Caught" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AzF-o7-dmR">
+                                                    <rect key="frame" x="93" y="42" width="107" height="21"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="107" id="vhH-rQ-UIF"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                    <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="AzF-o7-dmR" firstAttribute="leading" secondItem="fQc-4x-c4A" secondAttribute="leading" id="CvY-CJ-voZ"/>
+                                                <constraint firstItem="pRD-k4-Jjk" firstAttribute="centerY" secondItem="Axt-SE-j32" secondAttribute="centerY" id="PJZ-kA-08l"/>
+                                                <constraint firstItem="pRD-k4-Jjk" firstAttribute="top" secondItem="Axt-SE-j32" secondAttribute="top" id="VgE-9g-tfn"/>
+                                                <constraint firstItem="pRD-k4-Jjk" firstAttribute="leading" secondItem="Axt-SE-j32" secondAttribute="leading" id="Ygs-R9-7RY"/>
+                                                <constraint firstItem="fQc-4x-c4A" firstAttribute="top" secondItem="Axt-SE-j32" secondAttribute="topMargin" constant="12" id="dDV-tj-Fvx"/>
+                                                <constraint firstItem="AzF-o7-dmR" firstAttribute="top" secondItem="fQc-4x-c4A" secondAttribute="bottom" constant="1" id="iz8-KK-LLT"/>
+                                                <constraint firstItem="fQc-4x-c4A" firstAttribute="leading" secondItem="pRD-k4-Jjk" secondAttribute="trailing" constant="8" symbolic="YES" id="l5p-GH-zcm"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="AzF-o7-dmR" secondAttribute="bottom" constant="13" id="pnM-VV-bXz"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="fishCaughtLabel" destination="AzF-o7-dmR" id="SDX-Wy-zuN"/>
+                                            <outlet property="nameLabel" destination="fQc-4x-c4A" id="NHC-lZ-2fQ"/>
+                                            <outlet property="thumbImage" destination="pRD-k4-Jjk" id="F5F-l0-Vnn"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="nf3-lH-9zk" id="PRB-1r-8Po"/>
+                                    <outlet property="delegate" destination="nf3-lH-9zk" id="RQA-AC-FcO"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="WhS-WX-XaN" firstAttribute="leading" secondItem="ssY-SQ-fHC" secondAttribute="leading" id="Bas-cH-KWT"/>
+                            <constraint firstAttribute="trailing" secondItem="WhS-WX-XaN" secondAttribute="trailing" id="Pzj-EV-MXL"/>
+                            <constraint firstItem="WhS-WX-XaN" firstAttribute="bottom" secondItem="bJX-7O-QuC" secondAttribute="top" id="QFL-pp-Lb0"/>
+                            <constraint firstItem="WhS-WX-XaN" firstAttribute="top" secondItem="nCu-lc-pHv" secondAttribute="bottom" id="Td7-Gi-dnj"/>
+                        </constraints>
+                    </view>
+                    <toolbarItems>
+                        <barButtonItem systemItem="trash" id="M8M-ab-HpT">
+                            <connections>
+                                <action selector="tapDeleteButton:" destination="nf3-lH-9zk" id="eLG-6U-KGH"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="Xdb-af-G8c"/>
+                        <barButtonItem systemItem="add" id="Q55-RX-1xz">
+                            <connections>
+                                <segue destination="MDE-66-o6G" kind="presentation" identifier="fromViewBaitsToAddBait" id="Twf-fj-9Lv"/>
+                            </connections>
+                        </barButtonItem>
+                    </toolbarItems>
+                    <navigationItem key="navigationItem" title="View Baits" id="b5T-cQ-QUb">
+                        <barButtonItem key="leftBarButtonItem" image="menu.png" id="MQZ-Rl-72z"/>
+                    </navigationItem>
+                    <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics" translucent="NO"/>
+                    <connections>
+                        <outlet property="addButton" destination="Q55-RX-1xz" id="opL-SM-Tdn"/>
+                        <outlet property="deleteButton" destination="M8M-ab-HpT" id="oRm-hl-2w7"/>
+                        <outlet property="menuButton" destination="MQZ-Rl-72z" id="LLv-F6-53G"/>
+                        <outlet property="tableView" destination="WhS-WX-XaN" id="Jdb-FN-C8p"/>
+                        <outlet property="tableViewTop" destination="Td7-Gi-dnj" id="TdJ-eA-X4S"/>
+                        <segue destination="ely-5b-fCM" kind="unwind" identifier="unwindToStatisticsFromViewBaits" unwindAction="unwindToStatistics:" id="Zai-FL-cIm"/>
+                        <segue destination="ely-5b-fCM" kind="unwind" identifier="unwindToAddEntryFromViewBaits" unwindAction="unwindToAddEntry:" id="7wd-ZI-k0k"/>
+                        <segue destination="oMU-hB-36K" kind="show" identifier="fromViewBaitsToSingleBait" id="N6N-0S-koD"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Ioi-Vb-N0C" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="ely-5b-fCM" userLabel="Exit" sceneMemberID="exit"/>
+            </objects>
+            <point key="canvasLocation" x="3531" y="-184"/>
         </scene>
         <!--Entries-->
         <scene sceneID="M3s-T9-soz">
@@ -1650,7 +1764,7 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <segue destination="BZk-e6-FYf" kind="show" identifier="fromAddEntryToViewBaits" id="ooh-Eu-Ug2"/>
+                                            <segue destination="NYm-a2-gae" kind="show" identifier="fromAddEntryToViewBaits" id="ig3-ax-MeI"/>
                                         </connections>
                                     </tableViewCell>
                                 </cells>
@@ -2001,8 +2115,8 @@
                         <outlet property="pieChartControl" destination="Bor-hE-GA1" id="stS-Se-rvA"/>
                         <outlet property="totalButton" destination="G0V-31-RvQ" id="KyQ-Xm-gk6"/>
                         <segue destination="brF-Rc-1Et" kind="show" identifier="fromStatisticsToUserDefines" id="77U-eo-oVF"/>
-                        <segue destination="BZk-e6-FYf" kind="show" identifier="fromStatisticsToViewBaits" id="DIu-nR-jUP"/>
                         <segue destination="5Te-0Q-Zs8" kind="show" identifier="fromStatisticsToSingleEntry" id="OHB-Pt-9SF"/>
+                        <segue destination="NYm-a2-gae" kind="show" identifier="fromStatisticsToViewBaits" id="oZ4-IM-BL8"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Pga-V1-ill" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -2595,7 +2709,7 @@
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <connections>
-                                            <segue destination="McS-f2-jt7" kind="custom" identifier="fromSideMenuToViewBaits" customClass="SWRevealViewControllerSegue" id="guB-6y-sIg"/>
+                                            <segue destination="nf3-lH-9zk" kind="custom" identifier="fromSideMenuToViewBaits" customClass="SWRevealViewControllerSegue" id="mBP-Qv-19k"/>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="8kx-8d-tQO">
@@ -2818,105 +2932,14 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="F6Y-PU-e3d" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4935" y="-183"/>
-        </scene>
-        <!--Baits-->
-        <scene sceneID="yBo-l8-V7p">
-            <objects>
-                <tableViewController storyboardIdentifier="baitNameScene" id="McS-f2-jt7" customClass="CMAViewBaitsViewController" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="VjT-B1-Kfw">
-                        <rect key="frame" x="0.0" y="64" width="600" height="512"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <inset key="separatorInset" minX="85" minY="0.0" maxX="0.0" maxY="0.0"/>
-                        <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="detailDisclosureButton" indentationWidth="10" reuseIdentifier="baitCell" rowHeight="85" id="8C2-N7-nF0" customClass="CMABaitTableViewCell">
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="8C2-N7-nF0" id="DdQ-oh-h98">
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <imageView userInteractionEnabled="NO" tag="100" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="fLP-Ak-sq6">
-                                            <rect key="frame" x="0.0" y="0.0" width="85" height="85"/>
-                                            <constraints>
-                                                <constraint firstAttribute="width" constant="85" id="e4J-ok-GTI"/>
-                                            </constraints>
-                                        </imageView>
-                                        <label opaque="NO" userInteractionEnabled="NO" tag="200" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Bait Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dEj-pE-CHU">
-                                            <rect key="frame" x="93" y="23" width="442" height="21"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="# Caught" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uS1-V0-nc7">
-                                            <rect key="frame" x="93" y="41" width="442" height="21"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                            <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                    </subviews>
-                                    <constraints>
-                                        <constraint firstAttribute="trailingMargin" secondItem="dEj-pE-CHU" secondAttribute="trailing" constant="-10" id="1MC-Ar-rb1"/>
-                                        <constraint firstItem="fLP-Ak-sq6" firstAttribute="leading" secondItem="DdQ-oh-h98" secondAttribute="leading" id="784-tg-o2T"/>
-                                        <constraint firstAttribute="bottom" secondItem="fLP-Ak-sq6" secondAttribute="bottom" id="KEB-dW-kc1"/>
-                                        <constraint firstItem="dEj-pE-CHU" firstAttribute="top" secondItem="DdQ-oh-h98" secondAttribute="topMargin" constant="15" id="NuX-t6-WOr"/>
-                                        <constraint firstAttribute="bottomMargin" secondItem="uS1-V0-nc7" secondAttribute="bottom" constant="15" id="PI3-db-DYc"/>
-                                        <constraint firstItem="fLP-Ak-sq6" firstAttribute="top" secondItem="DdQ-oh-h98" secondAttribute="top" id="WOg-8U-RIf"/>
-                                        <constraint firstItem="dEj-pE-CHU" firstAttribute="leading" secondItem="fLP-Ak-sq6" secondAttribute="trailing" constant="8" symbolic="YES" id="Xme-JJ-ieu"/>
-                                        <constraint firstItem="uS1-V0-nc7" firstAttribute="leading" secondItem="dEj-pE-CHU" secondAttribute="leading" id="iKp-7y-mAK"/>
-                                        <constraint firstItem="dEj-pE-CHU" firstAttribute="trailing" secondItem="uS1-V0-nc7" secondAttribute="trailing" id="rJ2-qT-EeV"/>
-                                        <constraint firstItem="uS1-V0-nc7" firstAttribute="top" secondItem="DdQ-oh-h98" secondAttribute="topMargin" constant="33" id="ty7-SS-MNW"/>
-                                    </constraints>
-                                </tableViewCellContentView>
-                                <connections>
-                                    <outlet property="fishCaughtLabel" destination="uS1-V0-nc7" id="avu-qv-P6e"/>
-                                    <outlet property="nameLabel" destination="dEj-pE-CHU" id="L6j-u9-Otk"/>
-                                    <outlet property="thumbImage" destination="fLP-Ak-sq6" id="G1W-gs-anP"/>
-                                </connections>
-                            </tableViewCell>
-                        </prototypes>
-                        <connections>
-                            <outlet property="dataSource" destination="McS-f2-jt7" id="r1Q-9c-fFi"/>
-                            <outlet property="delegate" destination="McS-f2-jt7" id="IeX-07-HPH"/>
-                        </connections>
-                    </tableView>
-                    <toolbarItems>
-                        <barButtonItem systemItem="trash" id="rG5-eu-1yv">
-                            <connections>
-                                <action selector="tapDeleteButton:" destination="McS-f2-jt7" id="gX0-8I-gWl"/>
-                            </connections>
-                        </barButtonItem>
-                        <barButtonItem style="plain" systemItem="flexibleSpace" id="ATd-Pw-cBX"/>
-                        <barButtonItem systemItem="add" id="EbO-P3-oA3">
-                            <connections>
-                                <segue destination="MDE-66-o6G" kind="presentation" identifier="fromViewBaitsToAddBait" id="wZB-7v-gkR"/>
-                            </connections>
-                        </barButtonItem>
-                    </toolbarItems>
-                    <navigationItem key="navigationItem" title="Baits" id="ddg-1w-R32">
-                        <barButtonItem key="leftBarButtonItem" image="menu.png" id="GOn-JB-tIy"/>
-                    </navigationItem>
-                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
-                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics" translucent="NO"/>
-                    <connections>
-                        <outlet property="addButton" destination="EbO-P3-oA3" id="Mef-9L-uyj"/>
-                        <outlet property="deleteButton" destination="rG5-eu-1yv" id="Ul2-DY-Gbs"/>
-                        <outlet property="menuButton" destination="GOn-JB-tIy" id="4sQ-TT-fyW"/>
-                        <segue destination="oMU-hB-36K" kind="show" identifier="fromViewBaitsToSingleBait" id="bAG-il-Vyj"/>
-                        <segue destination="HFY-1D-kqx" kind="unwind" identifier="unwindToAddEntryFromViewBaits" unwindAction="unwindToAddEntry:" id="g9U-mE-g4I"/>
-                        <segue destination="HFY-1D-kqx" kind="unwind" identifier="unwindToStatisticsFromViewBaits" unwindAction="unwindToStatistics:" id="Ygi-vD-WTJ"/>
-                    </connections>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="l6k-dw-aLb" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <exit id="HFY-1D-kqx" userLabel="Exit" sceneMemberID="exit"/>
-            </objects>
-            <point key="canvasLocation" x="3565" y="-183"/>
+            <point key="canvasLocation" x="4945" y="-184"/>
         </scene>
         <!--Single Bait-->
         <scene sceneID="IyG-jE-Ue7">
             <objects>
                 <tableViewController storyboardIdentifier="singleBaitScene" id="Qdi-bC-STH" customClass="CMASingleBaitViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="35" sectionHeaderHeight="22" sectionFooterHeight="22" id="Azw-AT-uGe">
-                        <rect key="frame" x="0.0" y="64" width="600" height="556"/>
+                        <rect key="frame" x="0.0" y="44" width="600" height="536"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <sections>
@@ -3064,24 +3087,6 @@
             <point key="canvasLocation" x="4222" y="-183"/>
         </scene>
         <!--Navigation Controller-->
-        <scene sceneID="6Qi-1N-CJl">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="BZk-e6-FYf" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="b53-Lr-5ag">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="McS-f2-jt7" kind="relationship" relationship="rootViewController" id="hzw-aH-h0R"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="nbO-LD-y3G" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="3518" y="-183"/>
-        </scene>
-        <!--Navigation Controller-->
         <scene sceneID="8hU-9B-JKN">
             <objects>
                 <navigationController storyboardIdentifier="selectFishingSpotNav" automaticallyAdjustsScrollViewInsets="NO" id="Kmf-ol-gmN" sceneMemberID="viewController">
@@ -3135,6 +3140,24 @@
             </objects>
             <point key="canvasLocation" x="4275" y="1649"/>
         </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="42f-KS-nW3">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="NYm-a2-gae" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="HOG-oZ-nv8">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="nf3-lH-9zk" kind="relationship" relationship="rootViewController" id="ueR-TK-HrQ"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Rxo-cr-3Dz" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3497" y="-184"/>
+        </scene>
     </scenes>
     <resources>
         <image name="bait.png" width="50" height="50"/>
@@ -3155,21 +3178,21 @@
         <image name="water_clarities.png" width="50" height="50"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="ij7-4o-wMK"/>
-        <segue reference="iOf-th-u5i"/>
-        <segue reference="aBE-xI-c3y"/>
-        <segue reference="wUY-7j-U9z"/>
-        <segue reference="exN-Q3-TGx"/>
-        <segue reference="bOr-hP-Xzw"/>
         <segue reference="y0h-hR-J5c"/>
-        <segue reference="2ub-xD-2JF"/>
-        <segue reference="qAO-gb-5Yr"/>
-        <segue reference="ooh-Eu-Ug2"/>
-        <segue reference="guB-6y-sIg"/>
-        <segue reference="Jyy-wS-dXA"/>
+        <segue reference="OHB-Pt-9SF"/>
         <segue reference="0It-ub-fzN"/>
         <segue reference="gDt-Tw-gtk"/>
-        <segue reference="wZB-7v-gkR"/>
+        <segue reference="Jyy-wS-dXA"/>
+        <segue reference="5d5-Lp-R9Q"/>
+        <segue reference="aBE-xI-c3y"/>
+        <segue reference="mBP-Qv-19k"/>
+        <segue reference="bOr-hP-Xzw"/>
+        <segue reference="ig3-ax-MeI"/>
         <segue reference="9XR-fI-0eS"/>
+        <segue reference="iOf-th-u5i"/>
+        <segue reference="ij7-4o-wMK"/>
+        <segue reference="N6N-0S-koD"/>
+        <segue reference="Twf-fj-9Lv"/>
+        <segue reference="77U-eo-oVF"/>
     </inferredMetricsTieBreakers>
 </document>

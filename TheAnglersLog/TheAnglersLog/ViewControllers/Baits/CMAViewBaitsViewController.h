@@ -10,7 +10,7 @@
 #import <UIKit/UIKit.h>
 #import "CMABait.h"
 
-@interface CMAViewBaitsViewController : UITableViewController <ADBannerViewDelegate>
+@interface CMAViewBaitsViewController : UIViewController <ADBannerViewDelegate, UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic)BOOL isSelectingForAddEntry;
 @property (nonatomic)BOOL isSelectingForStatistics;
