@@ -94,12 +94,10 @@
 }
 
 - (void)bannerViewDidLoadAd:(ADBannerView *)banner {
-    NSLog(@"Banner did load");
     [self showAdBanner:self.adBanner];
 }
 
 - (void)bannerView:(ADBannerView *)banner didFailToReceiveAdWithError:(NSError *)error {
-    NSLog(@"Failed to load banner");
     [self hideAdBanner:self.adBanner];
 }
 
