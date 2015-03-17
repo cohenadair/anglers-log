@@ -39,6 +39,8 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    
+    [self.view layoutIfNeeded]; // needed for the scroll to work properly (not exactly sure why)
     [self.collectionView scrollToItemAtIndexPath:self.startingImageIndexPath atScrollPosition:UICollectionViewScrollPositionNone animated:NO];
     [self setNavigationTitleForIndexPath:self.startingImageIndexPath];
 }
