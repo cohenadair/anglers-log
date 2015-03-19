@@ -24,6 +24,10 @@
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
 @property (weak, nonatomic) IBOutlet UIView *loadingMapView;
 
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *mapViewBottom;
+@property (strong, nonatomic)ADBannerView *adBanner;
+@property (nonatomic)BOOL bannerIsVisible;
+
 @property (strong, nonatomic)CMAFishingSpot *currentFishingSpot;
 @property (nonatomic)BOOL isReadOnly;
 @property (nonatomic)BOOL didSetMapRegion;
@@ -34,6 +38,7 @@
 #define kSectionMap 1
 
 #define kDefaultCellHeight 72
+#define kBannerHeight 50
 
 @implementation CMASingleLocationViewController
 
@@ -51,6 +56,8 @@
     
     // map view stuff
     [self addFishingSpotsToMap:self.mapView];
+    
+    [self initAdBanner];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -75,6 +82,59 @@
     [[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:kSectionSelectFishingSpot]] setAccessoryType:UITableViewCellAccessoryNone];
 }
 
+#pragma mark - Ad Banner Initializing
+
+- (void)initAdBanner {
+    // the height of the view excluding the navigation bar and status bar
+    CGFloat y = self.view.frame.size.height - self.navigationController.navigationBar.frame.size.height - [UIApplication sharedApplication].statusBarFrame.size.height;
+    
+    self.adBanner = [[ADBannerView alloc] initWithFrame:CGRectMake(0, y, self.view.frame.size.width, kBannerHeight)];
+    self.adBanner.delegate = self;
+    
+    [self.view addSubview:self.adBanner];
+}
+
+- (void)showAdBanner:(ADBannerView *)banner {
+    if (self.bannerIsVisible)
+        return;
+    
+    if (self.adBanner.superview == nil)
+        [self.view addSubview:banner];
+    
+    [UIView animateWithDuration:0.25 animations:^{
+        banner.frame = CGRectOffset(banner.frame, 0, -banner.frame.size.height);
+    }];
+    
+    self.bannerIsVisible = YES;
+    
+    // so map cell's height is reset
+    [self.tableView beginUpdates];
+    [self.tableView endUpdates];
+}
+
+- (void)hideAdBanner:(ADBannerView *)banner {
+    if (!self.bannerIsVisible)
+        return;
+    
+    [UIView animateWithDuration:0.50 animations:^{
+        banner.frame = CGRectOffset(banner.frame, 0, banner.frame.size.height);
+    }];
+    
+    self.bannerIsVisible = NO;
+    
+    // so map cell's height is reset
+    [self.tableView beginUpdates];
+    [self.tableView endUpdates];
+}
+
+- (void)bannerViewDidLoadAd:(ADBannerView *)banner {
+    [self showAdBanner:self.adBanner];
+}
+
+- (void)bannerView:(ADBannerView *)banner didFailToReceiveAdWithError:(NSError *)error {
+    [self hideAdBanner:self.adBanner];
+}
+
 #pragma mark - Table View Initializing
 
 - (void)initCurrentFishingSpot:(CMAFishingSpot *)currentFishingSpot {
@@ -96,7 +156,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == kSectionMap)
-        return tableView.frame.size.height - kDefaultCellHeight;
+        return tableView.frame.size.height - kDefaultCellHeight - (self.bannerIsVisible * kBannerHeight);
     
     return kDefaultCellHeight;
 }

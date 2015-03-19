@@ -6,12 +6,13 @@
 //  Copyright (c) 2014 Cohen Adair. All rights reserved.
 //
 
+#import <iAd/iAd.h>
 #import <UIKit/UIKit.h>
 #import <MapKit/MapKit.h>
 #import "CMALocation.h"
 #import "CMAConstants.h"
 
-@interface CMASingleLocationViewController : UITableViewController <MKMapViewDelegate>
+@interface CMASingleLocationViewController : UITableViewController <MKMapViewDelegate, ADBannerViewDelegate>
 
 @property (nonatomic)CMAViewControllerID previousViewID;
 @property (strong, nonatomic)CMALocation *location;
