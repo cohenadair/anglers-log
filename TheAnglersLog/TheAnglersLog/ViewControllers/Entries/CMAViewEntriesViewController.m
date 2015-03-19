@@ -256,9 +256,10 @@
 - (void)initSearchResultView {
     self.searchResultView = [[UIView alloc] initWithFrame:CGRectMake(0, kSearchBarHeight, self.view.frame.size.width, self.view.frame.size.height)];
     
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 10, self.view.frame.size.width, 50)];
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, self.searchBar.frame.size.height + 10, self.view.frame.size.width, 50)];
     [label setTextAlignment:NSTextAlignmentCenter];
     [label setText:@"No results found."];
+    [label setTextColor:[UIColor lightGrayColor]];
     
     [self.searchResultView addSubview:label];
     
