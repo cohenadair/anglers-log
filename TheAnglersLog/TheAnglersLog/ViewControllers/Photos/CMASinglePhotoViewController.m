@@ -11,6 +11,7 @@
 #import "CMAConstants.h"
 #import "CMAInstagramActivity.h"
 #import "CMAImage.h"
+#import "CMAAdBanner.h"
 
 @interface CMASinglePhotoViewController ()
 
@@ -18,8 +19,7 @@
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *actionButton;
 
-@property (strong, nonatomic)ADBannerView *adBanner;
-@property (nonatomic)BOOL bannerIsVisible;
+@property (strong, nonatomic)CMAAdBanner *adBanner;
 @property (nonatomic)CGSize cellSizeInPoints;
 
 @end
@@ -59,48 +59,19 @@
 - (void)initAdBanner {
     // the height of the view excluding the navigation bar and status bar
     CGFloat y = self.view.frame.size.height - self.navigationController.navigationBar.frame.size.height - [UIApplication sharedApplication].statusBarFrame.size.height;
+    CGRect f = CGRectMake(0, y, self.view.frame.size.width, 50);
     
-    self.adBanner = [[ADBannerView alloc] initWithFrame:CGRectMake(0, y, self.view.frame.size.width, 50)];
-    self.adBanner.delegate = self;
-    
-    [self.view addSubview:self.adBanner];
-}
-
-- (void)showAdBanner:(ADBannerView *)banner {
-    if (self.bannerIsVisible)
-        return;
-    
-    if (self.adBanner.superview == nil)
-        [self.view addSubview:banner];
-    
-    self.collectionViewBottom.constant -= banner.frame.size.height;
-    [UIView animateWithDuration:0.5 animations:^{
-        banner.frame = CGRectOffset(banner.frame, 0, -banner.frame.size.height);
-        [self.view layoutIfNeeded];
-    }];
-    
-    self.bannerIsVisible = YES;
-}
-
-- (void)hideAdBanner:(ADBannerView *)banner {
-    if (!self.bannerIsVisible)
-        return;
-    
-    self.collectionViewBottom.constant += banner.frame.size.height;
-    [UIView animateWithDuration:0.5 animations:^{
-        banner.frame = CGRectOffset(banner.frame, 0, banner.frame.size.height);
-        [self.view layoutIfNeeded];
-    }];
-    
-    self.bannerIsVisible = NO;
+    self.adBanner = [CMAAdBanner withFrame:f delegate:self superView:self.view];
+    self.adBanner.bannerIsOnBottom = YES;
+    self.adBanner.constraint = self.collectionViewBottom;
 }
 
 - (void)bannerViewDidLoadAd:(ADBannerView *)banner {
-    [self showAdBanner:self.adBanner];
+    [self.adBanner showWithCompletion:nil];
 }
 
 - (void)bannerView:(ADBannerView *)banner didFailToReceiveAdWithError:(NSError *)error {
-    [self hideAdBanner:self.adBanner];
+    [self.adBanner hideWithCompletion:nil];
 }
 
 #pragma mark - Collection View Initializing

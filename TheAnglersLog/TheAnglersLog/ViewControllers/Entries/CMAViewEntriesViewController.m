@@ -17,6 +17,7 @@
 #import "CMAStorageManager.h"
 #import "CMAAlerts.h"
 #import "CMAUtilities.h"
+#import "CMAAdBanner.h"
 
 @interface CMAViewEntriesViewController ()
 
@@ -32,8 +33,7 @@
 @property (strong, nonatomic)UISearchBar *searchBar;
 @property (strong, nonatomic)UIView *searchResultView;
 
-@property (strong, nonatomic)ADBannerView *adBanner;
-@property (nonatomic)BOOL bannerIsVisible;
+@property (strong, nonatomic)CMAAdBanner *adBanner;
 
 @property (strong, nonatomic)NSMutableOrderedSet *entries;
 @property (nonatomic)BOOL isSearchBarInView;
@@ -162,46 +162,16 @@
 #pragma mark - Ad Banner Initializing
 
 - (void)initAdBanner {
-    self.adBanner = [[ADBannerView alloc] initWithFrame:CGRectMake(0, -50, self.view.frame.size.width, 50)];
-    self.adBanner.delegate = self;
-    [self.view addSubview:self.adBanner];
-}
-
-- (void)showAdBanner:(ADBannerView *)banner {
-    if (self.bannerIsVisible)
-        return;
-    
-    if (self.adBanner.superview == nil)
-        [self.view addSubview:banner];
-    
-    self.tableViewTop.constant += banner.frame.size.height;
-    [UIView animateWithDuration:0.5 animations:^{
-        banner.frame = CGRectOffset(banner.frame, 0, banner.frame.size.height);
-        [self.view layoutIfNeeded];
-    }];
-    
-    self.bannerIsVisible = YES;
-}
-
-- (void)hideAdBanner:(ADBannerView *)banner {
-    if (!self.bannerIsVisible)
-        return;
-    
-    self.tableViewTop.constant -= banner.frame.size.height;
-    [UIView animateWithDuration:0.5 animations:^{
-        banner.frame = CGRectOffset(banner.frame, 0, -banner.frame.size.height);
-        [self.view layoutIfNeeded];
-    }];
-    
-    self.bannerIsVisible = NO;
+    self.adBanner = [CMAAdBanner withFrame:CGRectMake(0, -50, self.view.frame.size.width, 50) delegate:self superView:self.view];
+    self.adBanner.constraint = self.tableViewTop;
 }
 
 - (void)bannerViewDidLoadAd:(ADBannerView *)banner {
-    [self showAdBanner:self.adBanner];
+    [self.adBanner showWithCompletion:nil];
 }
 
 - (void)bannerView:(ADBannerView *)banner didFailToReceiveAdWithError:(NSError *)error {
-    [self hideAdBanner:self.adBanner];
+    [self.adBanner hideWithCompletion:nil];
 }
 
 #pragma mark - Table View Initializing

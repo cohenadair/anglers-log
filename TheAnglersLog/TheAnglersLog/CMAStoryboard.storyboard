@@ -441,7 +441,6 @@
                         <outlet property="fishingSpotLabel" destination="mMI-sH-N3r" id="ErN-ag-1DI"/>
                         <outlet property="loadingMapView" destination="Lyv-5X-Xve" id="sXG-ab-tDq"/>
                         <outlet property="mapView" destination="3ya-dt-qqn" id="nvp-91-UhT"/>
-                        <outlet property="mapViewBottom" destination="dXI-f9-0WS" id="dcl-Za-0is"/>
                         <segue destination="aLM-pd-xcd" kind="unwind" identifier="unwindToAddEntryFromSingleLocation" unwindAction="unwindToAddEntry:" id="i4g-iX-B1F"/>
                         <segue destination="Gid-I3-2h4" kind="presentation" identifier="fromSingleLocationToAddLocation" id="1Kg-jf-Myf"/>
                     </connections>
