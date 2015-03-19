@@ -17,16 +17,18 @@
 #import "CMACircleView.h"
 #import "CMAStatisticsTableViewCell.h"
 #import "CMAStorageManager.h"
+#import "CMAAdBanner.h"
 
 @interface CMAStatisticsViewController ()
 
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *menuButton;
-
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *tableViewTop;
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UIView *chartView;
-@property (strong, nonatomic) CMACircleView *pieChartCenterView;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *pieChartControl;
 @property (weak, nonatomic) IBOutlet UIButton *totalButton;
 
+@property (strong, nonatomic) CMACircleView *pieChartCenterView;
 @property (strong, nonatomic) CMANoXView *noStatsView;
 @property (strong, nonatomic) XYPieChart *pieChart;
 @property (strong, nonatomic) NSMutableArray *colorsArray;
@@ -34,6 +36,7 @@
 @property (strong, nonatomic) CMAEntry *longestCatchEntry;
 @property (strong, nonatomic) CMAEntry *heaviestCatchEntry;
 @property (strong, nonatomic) CMAEntry *entryForSingleEntry;
+@property (strong, nonatomic) CMAAdBanner *adBanner;
 
 @property (nonatomic) NSInteger initialSelectedIndex;
 @property (nonatomic) BOOL journalHasEntries;
@@ -112,6 +115,7 @@
         [self.chartView bringSubviewToFront:self.pieChartControl];
     }
     
+    [self initAdBanner];
     [self setupView];
     [self.tableView setTableFooterView:[[UIView alloc] initWithFrame:CGRectZero]]; // removes empty cells at the end of the list
 }
@@ -126,10 +130,27 @@
         if (self.initialSelectedIndex != -1)
             [self selectPieChartSliceAtIndex:self.initialSelectedIndex];
     }
+    
+    [self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:YES];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
+}
+
+#pragma mark - Ad Banner Initializing
+
+- (void)initAdBanner {
+    self.adBanner = [CMAAdBanner withFrame:CGRectMake(0, -50, self.view.frame.size.width, 50) delegate:self superView:self.view];
+    self.adBanner.constraint = self.tableViewTop;
+}
+
+- (void)bannerViewDidLoadAd:(ADBannerView *)banner {
+    [self.adBanner showWithCompletion:nil];
+}
+
+- (void)bannerView:(ADBannerView *)banner didFailToReceiveAdWithError:(NSError *)error {
+    [self.adBanner hideWithCompletion:nil];
 }
 
 #pragma mark - Table View Initializing

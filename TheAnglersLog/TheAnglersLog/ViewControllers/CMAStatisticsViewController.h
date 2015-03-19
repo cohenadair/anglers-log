@@ -6,10 +6,11 @@
 //  Copyright (c) 2014 Cohen Adair. All rights reserved.
 //
 
+#import <iAd/iAd.h>
 #import <UIKit/UIKit.h>
 #import "XYPieChart.h"
 #import "CMAEntry.h"
 
-@interface CMAStatisticsViewController : UITableViewController <XYPieChartDataSource, XYPieChartDelegate>
+@interface CMAStatisticsViewController : UIViewController <XYPieChartDataSource, XYPieChartDelegate, ADBannerViewDelegate, UITableViewDataSource, UITableViewDelegate>
 
 @end
