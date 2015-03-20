@@ -143,4 +143,10 @@
     return [newWords componentsJoinedByString:@" "];
 }
 
+// Returns true if the app should display iAd banners.
+// Returns false if the user has paid to remove ads.
++ (BOOL)shouldDisplayBanners {
+    return YES;
+}
+
 @end

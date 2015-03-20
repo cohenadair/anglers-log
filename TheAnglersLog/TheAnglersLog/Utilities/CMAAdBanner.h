@@ -18,6 +18,7 @@
 @property (nonatomic)BOOL bannerIsVisible;
 @property (nonatomic)CGFloat showTime;
 @property (nonatomic)CGFloat hideTime;
+@property (nonatomic)BOOL isNil;
 
 + (CMAAdBanner *)withFrame:(CGRect)aFrame delegate:(id<ADBannerViewDelegate>)aDelegate superView:(UIView *)aSuperview;
 - (id)initWithFrame:(CGRect)aFrame delegate:(id<ADBannerViewDelegate>)aDelegate superView:(UIView *)aSuperview;

@@ -7,6 +7,7 @@
 //
 
 #import "CMAAdBanner.h"
+#import "CMAUtilities.h"
 
 @implementation CMAAdBanner
 
@@ -16,11 +17,18 @@
 
 - (id)initWithFrame:(CGRect)aFrame delegate:(id<ADBannerViewDelegate>)aDelegate superView:(UIView *)aSuperview {
     if (self = [super init]) {
+        if (![CMAUtilities shouldDisplayBanners]) {
+            NSLog(@"[CMAAdBanner withFrame:] - User has paid to remove ads.");
+            self.isNil = YES;
+            return self;
+        }
+        
         self.adBanner = [[ADBannerView alloc] initWithFrame:aFrame];
         self.adBanner.delegate = aDelegate;
         self.showTime = 0.5;
         self.hideTime = 0.5;
         self.mySuperview = aSuperview;
+        
         [aSuperview addSubview:self.adBanner];
     }
     
@@ -28,7 +36,7 @@
 }
 
 - (void)showWithCompletion:(void (^)())completionBlock {
-    if (self.bannerIsVisible)
+    if (self.isNil || self.bannerIsVisible)
         return;
     
     if (self.constraint) {
@@ -54,7 +62,7 @@
 }
 
 - (void)hideWithCompletion:(void (^)())completionBlock {
-    if (!self.bannerIsVisible)
+    if (self.isNil || !self.bannerIsVisible)
         return;
     
     if (self.constraint) {
