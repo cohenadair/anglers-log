@@ -112,6 +112,7 @@
     return newImage;
 }
 
+// Uses the current window size to return a CGSize for the photo gallery collection view cells.
 + (CGSize)galleryCellSize {
     CGSize result;
     int cellsPerRow = 4;
@@ -143,10 +144,16 @@
     return [newWords componentsJoinedByString:@" "];
 }
 
+#define kAdsRemovedKey @"TheAnglersLogAreAdsRemoved"
+
 // Returns true if the app should display iAd banners.
 // Returns false if the user has paid to remove ads.
 + (BOOL)shouldDisplayBanners {
-    return YES;
+    return ![[NSUserDefaults standardUserDefaults] boolForKey:kAdsRemovedKey];
+}
+
++ (void)setShouldDisplayBanners:(BOOL)aBool {
+    [[NSUserDefaults standardUserDefaults] setBool:!aBool forKey:kAdsRemovedKey];
 }
 
 @end

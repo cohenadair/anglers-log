@@ -18,7 +18,7 @@
 - (id)initWithFrame:(CGRect)aFrame delegate:(id<ADBannerViewDelegate>)aDelegate superView:(UIView *)aSuperview {
     if (self = [super init]) {
         if (![CMAUtilities shouldDisplayBanners]) {
-            NSLog(@"[CMAAdBanner withFrame:] - User has paid to remove ads.");
+            NSLog(@"User has paid to remove ads.");
             self.isNil = YES;
             return self;
         }

@@ -9,6 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "CMAJournal.h"
 
-@interface CMASettingsViewController : UITableViewController
+@interface CMASettingsViewController : UITableViewController <SKProductsRequestDelegate, SKPaymentTransactionObserver>
 
 @end

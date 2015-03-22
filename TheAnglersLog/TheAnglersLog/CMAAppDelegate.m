@@ -10,6 +10,7 @@
 #import "CMAAppDelegate.h"
 #import "CMAStorageManager.h"
 #import "CMAConstants.h"
+#import "CMAUtilities.h"
 
 @implementation CMAAppDelegate
 

@@ -28,5 +28,6 @@
 + (NSString *)capitalizedString:(NSString *)aString;
 
 + (BOOL)shouldDisplayBanners;
++ (void)setShouldDisplayBanners:(BOOL)aBool;
 
 @end

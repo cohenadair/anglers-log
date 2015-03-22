@@ -15,6 +15,8 @@
 		0D4461301A9D8762006C34D2 /* icon.xcf in Resources */ = {isa = PBXBuildFile; fileRef = 0D44612C1A9D8762006C34D2 /* icon.xcf */; };
 		0D4461311A9D8762006C34D2 /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 0D44612D1A9D8762006C34D2 /* logo.png */; };
 		0D4461321A9D8762006C34D2 /* logo.xcf in Resources */ = {isa = PBXBuildFile; fileRef = 0D44612E1A9D8762006C34D2 /* logo.xcf */; };
+		0D5584CC1ABF578D00719554 /* icon.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0D5584CB1ABF578D00719554 /* icon.jpg */; };
+		0D5584CE1ABF59C200719554 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D5584CD1ABF59C200719554 /* StoreKit.framework */; };
 		0D5608121A6F0F3000EE0437 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D5608111A6F0F3000EE0437 /* CoreData.framework */; };
 		0D8F838B1A6EC10800AABAEA /* CMAEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D8F836D1A6EC10800AABAEA /* CMAEntry.m */; };
 		0D8F838C1A6EC10800AABAEA /* CMAJournal.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D8F836F1A6EC10800AABAEA /* CMAJournal.m */; };
@@ -164,6 +166,8 @@
 		0D44612C1A9D8762006C34D2 /* icon.xcf */ = {isa = PBXFileReference; lastKnownFileType = file; name = icon.xcf; path = ../Images/icon.xcf; sourceTree = "<group>"; };
 		0D44612D1A9D8762006C34D2 /* logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = logo.png; path = ../Images/logo.png; sourceTree = "<group>"; };
 		0D44612E1A9D8762006C34D2 /* logo.xcf */ = {isa = PBXFileReference; lastKnownFileType = file; name = logo.xcf; path = ../Images/logo.xcf; sourceTree = "<group>"; };
+		0D5584CB1ABF578D00719554 /* icon.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = icon.jpg; path = ../Images/icon.jpg; sourceTree = "<group>"; };
+		0D5584CD1ABF59C200719554 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		0D5608111A6F0F3000EE0437 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		0D766CC01AB66B05001EED90 /* tutorials.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = tutorials.md; path = ../DevNotes/tutorials.md; sourceTree = "<group>"; };
 		0D8F836C1A6EC10800AABAEA /* CMAEntry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAEntry.h; path = TheAnglersLog/ApplicationModel/CMAEntry.h; sourceTree = SOURCE_ROOT; };
@@ -376,6 +380,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0D5584CE1ABF59C200719554 /* StoreKit.framework in Frameworks */,
 				0D248B0F1AB0C82200093290 /* iAd.framework in Frameworks */,
 				0DCAD6521AA5000A0040B03B /* GLKit.framework in Frameworks */,
 				0DCAD6501AA4FFFE0040B03B /* OpenGLES.framework in Frameworks */,
@@ -421,6 +426,7 @@
 		0D44612A1A9D8754006C34D2 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				0D5584CB1ABF578D00719554 /* icon.jpg */,
 				0D44612B1A9D8762006C34D2 /* icon.png */,
 				0D44612C1A9D8762006C34D2 /* icon.xcf */,
 				0D44612D1A9D8762006C34D2 /* logo.png */,
@@ -673,6 +679,7 @@
 		E70B637419D3A8E400DFBA85 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				0D5584CD1ABF59C200719554 /* StoreKit.framework */,
 				0D248B0E1AB0C82200093290 /* iAd.framework */,
 				0DCAD6511AA5000A0040B03B /* GLKit.framework */,
 				0DCAD64F1AA4FFFE0040B03B /* OpenGLES.framework */,
@@ -919,6 +926,7 @@
 				0D8F845E1A6EC2C300AABAEA /* edit@3x.png in Resources */,
 				0D8F845A1A6EC2C300AABAEA /* checkmark@2x.png in Resources */,
 				0D8F846D1A6EC2C300AABAEA /* species.png in Resources */,
+				0D5584CC1ABF578D00719554 /* icon.jpg in Resources */,
 				0D4461311A9D8762006C34D2 /* logo.png in Resources */,
 				0D8F84521A6EC2C300AABAEA /* app_icon_58.png in Resources */,
 				0D8F847A1A6EC2C300AABAEA /* rectile.png in Resources */,
