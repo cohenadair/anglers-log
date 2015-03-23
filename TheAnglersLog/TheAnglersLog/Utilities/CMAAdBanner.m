@@ -47,6 +47,12 @@
     }
     
     [UIView animateWithDuration:self.showTime animations:^{
+        if (self.noXView) {
+            CGRect f = self.noXView.frame;
+            CGFloat h = self.adBanner.frame.size.height;
+            self.noXView.frame = CGRectMake(f.origin.x, f.origin.y + (!self.bannerIsOnBottom * h), f.size.width, f.size.height - h);
+        }
+        
         if (self.bannerIsOnBottom)
             self.adBanner.frame = CGRectOffset(self.adBanner.frame, 0, -self.adBanner.frame.size.height);
         else
@@ -73,6 +79,12 @@
     }
     
     [UIView animateWithDuration:self.hideTime animations:^{
+        if (self.noXView) {
+            CGRect f = self.noXView.frame;
+            CGFloat h = self.adBanner.frame.size.height;
+            self.noXView.frame = CGRectMake(f.origin.x, f.origin.y - (!self.bannerIsOnBottom * h), f.size.width, f.size.height + h);
+        }
+        
         if (self.bannerIsOnBottom)
             self.adBanner.frame = CGRectOffset(self.adBanner.frame, 0, self.adBanner.frame.size.height);
         else

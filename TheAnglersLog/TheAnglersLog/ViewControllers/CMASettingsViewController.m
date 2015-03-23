@@ -150,7 +150,7 @@
 
 - (void)paymentQueueRestoreCompletedTransactionsFinished:(SKPaymentQueue *)queue {
     NSInteger numberOfPreviousPurchases = queue.transactions.count;
-    NSLog(@"Number of previous purchanges: %i.", numberOfPreviousPurchases);
+    NSLog(@"Number of previous purchanges: %li.", (long)numberOfPreviousPurchases);
     
     if (numberOfPreviousPurchases <= 0) {
         [CMAAlerts errorAlert:@"You have no previous purchases to restore." presentationViewController:self];

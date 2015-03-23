@@ -8,12 +8,14 @@
 
 #import <iAd/iAd.h>
 #import <Foundation/Foundation.h>
+#import "CMANoXView.h"
 
 @interface CMAAdBanner : NSObject
 
 @property (strong, nonatomic)ADBannerView *adBanner;
 @property (strong, nonatomic)UIView *mySuperview;
 @property (strong, nonatomic)NSLayoutConstraint *constraint;
+@property (strong, nonatomic)CMANoXView *noXView;
 @property (nonatomic)BOOL bannerIsOnBottom;
 @property (nonatomic)BOOL bannerIsVisible;
 @property (nonatomic)CGFloat showTime;

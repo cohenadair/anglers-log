@@ -102,6 +102,7 @@
     self.navigationItem.title = [NSString stringWithFormat:@"Entries (%ld)", (long)[[self journal] entryCount]];
     
     [self handleNoEntriesView];
+    [self initAdBanner];
 }
 
 - (void)viewDidLoad {
@@ -122,7 +123,6 @@
         [self.sortButton setEnabled:NO];
     }
     
-    [self initAdBanner];
     [self initSideBarMenu];
     [self.tableView setTableFooterView:[[UIView alloc] initWithFrame:CGRectZero]]; // removes empty cells at the end of the list
 }
@@ -162,8 +162,11 @@
 #pragma mark - Ad Banner Initializing
 
 - (void)initAdBanner {
-    self.adBanner = [CMAAdBanner withFrame:CGRectMake(0, -50, self.view.frame.size.width, 50) delegate:self superView:self.view];
-    self.adBanner.constraint = self.tableViewTop;
+    if (self.adBanner == nil) {
+        self.adBanner = [CMAAdBanner withFrame:CGRectMake(0, -50, self.view.frame.size.width, 50) delegate:self superView:self.view];
+        self.adBanner.constraint = self.tableViewTop;
+        self.adBanner.noXView = self.noEntriesView;
+    }
 }
 
 - (void)bannerViewDidLoadAd:(ADBannerView *)banner {

@@ -79,6 +79,7 @@
     [self setUserDefineBaits:[[self journal] userDefineNamed:UDN_BAITS]];
     [self.tableView setContentOffset:CGPointMake(0, self.currentOffsetY)];
     [self handleNoBaitView];
+    [self initAdBanner];
     [self.tableView reloadData];
 }
 
@@ -90,7 +91,6 @@
     else
         self.navigationItem.leftBarButtonItem = self.navigationItem.backBarButtonItem;
     
-    [self initAdBanner];
     [self.tableView setTableFooterView:[[UIView alloc] initWithFrame:CGRectZero]];
 }
 
@@ -114,8 +114,11 @@
 #pragma mark - Ad Banner Initializing
 
 - (void)initAdBanner {
-    self.adBanner = [CMAAdBanner withFrame:CGRectMake(0, -50, self.view.frame.size.width, 50) delegate:self superView:self.view];
-    self.adBanner.constraint = self.tableViewTop;
+    if (self.adBanner == nil) {
+        self.adBanner = [CMAAdBanner withFrame:CGRectMake(0, -50, self.view.frame.size.width, 50) delegate:self superView:self.view];
+        self.adBanner.constraint = self.tableViewTop;
+        self.adBanner.noXView = self.noBaitsView;
+    }
 }
 
 - (void)bannerViewDidLoadAd:(ADBannerView *)banner {

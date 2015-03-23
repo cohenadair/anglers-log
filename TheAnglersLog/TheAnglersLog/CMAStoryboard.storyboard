@@ -344,7 +344,7 @@
             <objects>
                 <tableViewController storyboardIdentifier="singleLocationScene" id="adr-BS-f2S" customClass="CMASingleLocationViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" dataMode="static" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="1" sectionFooterHeight="1" id="eVA-Zu-3b5">
-                        <rect key="frame" x="0.0" y="44" width="600" height="536"/>
+                        <rect key="frame" x="0.0" y="64" width="600" height="556"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <sections>
@@ -484,7 +484,7 @@
             <objects>
                 <tableViewController storyboardIdentifier="selectFishingSpotScene" id="2nW-M9-1OZ" customClass="CMASelectFishingSpotViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="2Rl-ym-sf4">
-                        <rect key="frame" x="0.0" y="44" width="600" height="536"/>
+                        <rect key="frame" x="0.0" y="64" width="600" height="556"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
@@ -1173,7 +1173,7 @@
             <objects>
                 <tableViewController storyboardIdentifier="singleEntryScene" id="ykp-IC-WEk" customClass="CMASingleEntryViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="xOe-rz-B5N">
-                        <rect key="frame" x="0.0" y="44" width="600" height="536"/>
+                        <rect key="frame" x="0.0" y="64" width="600" height="556"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
@@ -1357,7 +1357,7 @@
             <objects>
                 <tableViewController storyboardIdentifier="addEntryScene" id="T1c-yJ-jzQ" customClass="CMAAddEntryViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="onDrag" dataMode="static" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="5" id="teF-Xk-Zy6">
-                        <rect key="frame" x="0.0" y="44" width="600" height="536"/>
+                        <rect key="frame" x="0.0" y="64" width="600" height="556"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
                         <sections>
@@ -2218,7 +2218,7 @@
             <objects>
                 <tableViewController storyboardIdentifier="addLocationScene" id="wdM-fv-DrJ" customClass="CMAAddLocationViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="onDrag" dataMode="prototypes" style="grouped" separatorStyle="default" allowsSelectionDuringEditing="YES" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="mwQ-Sh-lp1">
-                        <rect key="frame" x="0.0" y="44" width="600" height="536"/>
+                        <rect key="frame" x="0.0" y="64" width="600" height="556"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
                         <prototypes>
@@ -2342,7 +2342,7 @@
             <objects>
                 <tableViewController storyboardIdentifier="addFishingSpotScene" id="4io-XD-WCS" customClass="CMAAddFishingSpotViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" keyboardDismissMode="interactive" dataMode="static" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="yE4-h0-iWi">
-                        <rect key="frame" x="0.0" y="44" width="600" height="536"/>
+                        <rect key="frame" x="0.0" y="64" width="600" height="556"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <sections>
@@ -3245,21 +3245,21 @@
         <image name="water_clarities.png" width="50" height="50"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="aBE-xI-c3y"/>
-        <segue reference="wUY-7j-U9z"/>
-        <segue reference="gDt-Tw-gtk"/>
+        <segue reference="N6N-0S-koD"/>
         <segue reference="mBP-Qv-19k"/>
-        <segue reference="Jyy-wS-dXA"/>
-        <segue reference="Twf-fj-9Lv"/>
-        <segue reference="RpT-ts-gTM"/>
-        <segue reference="u6X-Aw-ztq"/>
-        <segue reference="nLS-I8-ZPO"/>
-        <segue reference="hdA-bN-TMh"/>
-        <segue reference="tz7-VS-vMB"/>
-        <segue reference="2ub-xD-2JF"/>
+        <segue reference="wUY-7j-U9z"/>
+        <segue reference="bOr-hP-Xzw"/>
+        <segue reference="exN-Q3-TGx"/>
         <segue reference="y0h-hR-J5c"/>
         <segue reference="1Kg-jf-Myf"/>
         <segue reference="uUK-tT-jvg"/>
         <segue reference="ij7-4o-wMK"/>
+        <segue reference="gDt-Tw-gtk"/>
+        <segue reference="Jyy-wS-dXA"/>
+        <segue reference="aBE-xI-c3y"/>
+        <segue reference="Twf-fj-9Lv"/>
+        <segue reference="nLS-I8-ZPO"/>
+        <segue reference="tz7-VS-vMB"/>
+        <segue reference="hdA-bN-TMh"/>
     </inferredMetricsTieBreakers>
 </document>
