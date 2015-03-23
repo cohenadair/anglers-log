@@ -36,15 +36,8 @@
 #pragma mark - Editing
 
 - (BOOL)addFishingSpot: (CMAFishingSpot *)aFishingSpot {
-    if ([self fishingSpotNamed:aFishingSpot.name] != nil) {
-        NSLog(@"Fishing spot with name %@ already exists", aFishingSpot.name);
-        return NO;
-    }
-
-    [self.fishingSpots addObject:aFishingSpot];
-    [self sortFishingSpotsByName];
-    
-    return YES;
+    NSLog(@"CMALocation's addFishingSpot should never be called. Setting a CMAFishingSpot's myLocation property automatically adds said fishing spot to the location. This is thanks to Core Data.");
+    return NO;
 }
 
 - (void)removeFishingSpotNamed: (NSString *)aName {

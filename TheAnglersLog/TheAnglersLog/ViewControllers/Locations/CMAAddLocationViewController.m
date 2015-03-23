@@ -320,6 +320,7 @@ NSInteger const SECTION_DELETE = 3;
         if (source.fishingSpot && self.tappedAddFishingSpot) {
             // making this connection automatically adds source.fishingSpot to self.location
             source.fishingSpot.myLocation = self.location;
+            [self.location sortFishingSpotsByName];
             
             [self.addedFishingSpots addObject:source.fishingSpot];
             [self setTappedAddFishingSpot:NO];
