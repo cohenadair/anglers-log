@@ -6,7 +6,7 @@ The Anglers' Log is a mobile application that enables users to track and analyze
 Status
 ------
 
-The Anglers' Log is in its pre-testing stage. The source code can be built into a usable version, but there are missing features and a lot more testing is required.
+The Anglers' Log is in the testing stage. A little more testing and it will be ready for release.
 
 Origins
 -------
