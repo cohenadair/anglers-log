@@ -1810,7 +1810,7 @@
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
-                            <tableViewSection headerTitle="Weather Conditions" id="RwS-lq-qVJ">
+                            <tableViewSection headerTitle="Weather Conditions" footerTitle="Gets weather conditions for your current location." id="RwS-lq-qVJ">
                                 <cells>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="b7C-9c-8jc">
                                         <autoresizingMask key="autoresizingMask"/>
@@ -3250,21 +3250,21 @@
         <image name="water_clarities.png" width="50" height="50"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="N6N-0S-koD"/>
-        <segue reference="mBP-Qv-19k"/>
+        <segue reference="u6X-Aw-ztq"/>
+        <segue reference="nLS-I8-ZPO"/>
+        <segue reference="y0h-hR-J5c"/>
+        <segue reference="uUK-tT-jvg"/>
+        <segue reference="1Kg-jf-Myf"/>
+        <segue reference="ij7-4o-wMK"/>
+        <segue reference="aBE-xI-c3y"/>
         <segue reference="wUY-7j-U9z"/>
         <segue reference="bOr-hP-Xzw"/>
-        <segue reference="gDt-Tw-gtk"/>
+        <segue reference="ig3-ax-MeI"/>
+        <segue reference="qAO-gb-5Yr"/>
+        <segue reference="mBP-Qv-19k"/>
         <segue reference="Jyy-wS-dXA"/>
-        <segue reference="aBE-xI-c3y"/>
+        <segue reference="gDt-Tw-gtk"/>
         <segue reference="Twf-fj-9Lv"/>
-        <segue reference="nLS-I8-ZPO"/>
-        <segue reference="u6X-Aw-ztq"/>
-        <segue reference="tz7-VS-vMB"/>
-        <segue reference="hdA-bN-TMh"/>
-        <segue reference="y0h-hR-J5c"/>
-        <segue reference="1Kg-jf-Myf"/>
-        <segue reference="uUK-tT-jvg"/>
-        <segue reference="ij7-4o-wMK"/>
+        <segue reference="N6N-0S-koD"/>
     </inferredMetricsTieBreakers>
 </document>

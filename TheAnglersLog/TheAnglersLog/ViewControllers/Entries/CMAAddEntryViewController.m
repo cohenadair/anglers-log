@@ -340,6 +340,10 @@ NSString *const kNotSelectedString = @"Not Selected";
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+    // weather section
+    if (section == 4)
+        return 45;
+    
     if (section == [tableView numberOfSections] - 1)
         return TABLE_HEIGHT_FOOTER;
     
