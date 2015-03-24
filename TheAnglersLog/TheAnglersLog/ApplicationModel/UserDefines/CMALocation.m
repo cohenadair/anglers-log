@@ -104,14 +104,15 @@
         result.center.longitude = minLongitude + ((maxLongitude - minLongitude) / 2);
         
         // add some padding to the region
-        result.span.latitudeDelta = (maxLatitude - minLatitude) * 2.0;
-        result.span.longitudeDelta = (maxLongitude - minLongitude) * 2.0;
+        result.span.latitudeDelta = (maxLatitude - minLatitude) * 3.0;
+        result.span.longitudeDelta = (maxLongitude - minLongitude) * 3.0;
         
+        // handle really small spans
         if (result.span.latitudeDelta < 0.001220)
-            result.span.latitudeDelta = 0.001220;
+            result.span.latitudeDelta = 0.009220;
         
         if (result.span.longitudeDelta < 0.001120)
-            result.span.longitudeDelta = 0.001120;
+            result.span.longitudeDelta = 0.009120;
     }
 
     return result;

@@ -54,9 +54,7 @@
     else
         [self initNavigationBarItems];
     
-    // map view stuff
-    [self addFishingSpotsToMap:self.mapView];
-    
+    [self initMapView];
     [self initAdBanner];
 }
 
@@ -244,6 +242,11 @@
 
 #pragma mark - Map Initializing
 
+- (void)initMapView {
+    [self addFishingSpotsToMap:self.mapView];
+    [self.mapView setRegion:[self getMapRegion] animated:NO];
+}
+
 // Returns an MKPointAnnotation with aTitle.
 - (MKPointAnnotation *)annotationWithTitle:(NSString *)aTitle {
     for (MKPointAnnotation *annotation in [self.mapView annotations])
@@ -270,11 +273,6 @@
 }
 
 - (void)mapViewDidFinishRenderingMap:(MKMapView *)mapView fullyRendered:(BOOL)fullyRendered {
-    if (!self.didSetMapRegion) {
-        [self.mapView setRegion:[self getMapRegion] animated:NO];
-        [self setDidSetMapRegion:YES];
-    }
-    
     [self.mapView setHidden:NO];
     [self.loadingMapView setHidden:YES];
 }

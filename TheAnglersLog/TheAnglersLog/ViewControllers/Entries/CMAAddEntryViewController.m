@@ -181,6 +181,7 @@ NSString *const kNotSelectedString = @"Not Selected";
     // location manager
     self.locationManager = [CLLocationManager new];
     self.locationManager.delegate = self;
+    [self.locationManager requestWhenInUseAuthorization];
     
     [self initDeleteEntryActionSheet];
     [self initCameraActionSheet];
