@@ -77,6 +77,9 @@ NSInteger const SECTION_DELETE = 3;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+    if (section == [tableView numberOfSections] - 1)
+        return TABLE_HEIGHT_FOOTER;
+    
     return CGFLOAT_MIN;
 }
 
