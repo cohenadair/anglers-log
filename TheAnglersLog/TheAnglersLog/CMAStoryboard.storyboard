@@ -429,7 +429,7 @@
                                                         <constraint firstAttribute="width" constant="140" id="rrk-qf-U4C"/>
                                                     </constraints>
                                                 </view>
-                                                <mapView hidden="YES" clipsSubviews="YES" multipleTouchEnabled="YES" tag="100" contentMode="scaleToFill" mapType="satellite" rotateEnabled="NO" pitchEnabled="NO" showsUserLocation="YES" showsPointsOfInterest="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3ya-dt-qqn">
+                                                <mapView hidden="YES" clipsSubviews="YES" multipleTouchEnabled="YES" tag="100" contentMode="scaleToFill" mapType="hybrid" rotateEnabled="NO" pitchEnabled="NO" showsUserLocation="YES" showsPointsOfInterest="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3ya-dt-qqn">
                                                     <rect key="frame" x="0.0" y="-1" width="600" height="216"/>
                                                     <connections>
                                                         <outlet property="delegate" destination="adr-BS-f2S" id="bbN-zS-hrp"/>
