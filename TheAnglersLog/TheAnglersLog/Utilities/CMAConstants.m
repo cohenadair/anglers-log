@@ -1,6 +1,6 @@
 //
 //  CMAConstants.m
-//  TheAnglersLog
+//  AnglersLog
 //
 //  Created by Cohen Adair on 10/19/14.
 //  Copyright (c) 2014 Cohen Adair. All rights reserved.
@@ -10,9 +10,10 @@
 
 #pragma mark - Application Constants
 
-NSString *const APP_NAME        = @"The Anglers' Log";
+NSString *const APP_NAME        = @"Anglers' Log";
 NSString *const APP_STORE_LINK  = @"itms-apps://itunes.apple.com/app/id959989008";
-NSString *const SHARE_MESSAGE   = @"Shared with #TheAnglersLogApp.";
+NSString *const SHARE_MESSAGE   = @"Shared with #AnglersLogApp.";
+NSString *const HASHTAG_TEXT    = @"AnglersLogApp";
 NSString *const GLOBAL_FONT     = @"HelveticaNeue";
 NSInteger const MODEL_VERSION   = 4;
 

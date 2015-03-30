@@ -1,6 +1,6 @@
 //
 //  CMAUtilities.m
-//  TheAnglersLog
+//  AnglersLog
 //
 //  Created by Cohen Adair on 2014-12-29.
 //  Copyright (c) 2014 Cohen Adair. All rights reserved.
@@ -144,7 +144,7 @@
     return [newWords componentsJoinedByString:@" "];
 }
 
-#define kAdsRemovedKey @"TheAnglersLogAreAdsRemoved"
+#define kAdsRemovedKey @"AnglersLogAreAdsRemoved"
 
 // Returns true if the app should display iAd banners.
 // Returns false if the user has paid to remove ads.

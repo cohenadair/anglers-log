@@ -1,13 +1,13 @@
 //
 //  CMAConstants.h
-//  TheAnglersLog
+//  AnglersLog
 //
 //  Created by Cohen Adair on 10/19/14.
 //  Copyright (c) 2014 Cohen Adair. All rights reserved.
 //
 
-#ifndef TheAnglersLog_CMAConstants_h
-#define TheAnglersLog_CMAConstants_h
+#ifndef AnglersLog_CMAConstants_h
+#define AnglersLog_CMAConstants_h
 
 #define mark = Typedefs
 
@@ -73,6 +73,7 @@ CGSize CELL_SIZE_GALLERY;
 extern NSString *const APP_NAME;
 extern NSString *const APP_STORE_LINK;
 extern NSString *const SHARE_MESSAGE;
+extern NSString *const HASHTAG_TEXT;
 extern NSString *const GLOBAL_FONT;
 extern NSInteger const MODEL_VERSION;
 

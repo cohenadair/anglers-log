@@ -1,6 +1,6 @@
 //
 //  CMAEntrySortingViewController.h
-//  TheAnglersLog
+//  AnglersLog
 //
 //  Created by Cohen Adair on 11/13/14.
 //  Copyright (c) 2014 Cohen Adair. All rights reserved.

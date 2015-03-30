@@ -1,6 +1,6 @@
 //
 //  CMASinglePhotoCollectionViewCell.m
-//  TheAnglersLog
+//  AnglersLog
 //
 //  Created by Cohen Adair on 2015-02-23.
 //  Copyright (c) 2015 Cohen Adair. All rights reserved.

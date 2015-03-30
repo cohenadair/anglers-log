@@ -1,6 +1,6 @@
 //
 //  CMASideMenuViewController.m
-//  TheAnglersLog
+//  AnglersLog
 //
 //  Created by Cohen Adair on 11/12/14.
 //  Copyright (c) 2014 Cohen Adair. All rights reserved.
@@ -72,15 +72,21 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if ([tableView cellForRowAtIndexPath:indexPath] == self.instagramCell) {
-        if (![[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"instagram://tag?name=TheAnglersLogApp"]])
+        NSString *instagramString = [NSString stringWithFormat:@"instagram://tag?name=%@", HASHTAG_TEXT];
+        
+        if (![[UIApplication sharedApplication] openURL:[NSURL URLWithString:instagramString]])
             [CMAAlerts errorAlert:@"Please install the Instagram app to use this feature." presentationViewController:self];
 
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
     }
     
     if ([tableView cellForRowAtIndexPath:indexPath] == self.twitterCell) {
-        if (![[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"twitter://search?query=%23TheAnglersLogApp"]])
-            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://twitter.com/search?f=realtime&q=%23TheAnglersLogApp&src=typd&lang=en"]];
+        NSString *appText = [@"twitter://search?query=%23" stringByAppendingString:HASHTAG_TEXT];
+        NSString *webText = [@"https://twitter.com/search?f=realtime&q=%23" stringByAppendingString:HASHTAG_TEXT];
+        webText = [webText stringByAppendingString:@"&src=typd&lang=en"];
+        
+        if (![[UIApplication sharedApplication] openURL:[NSURL URLWithString:appText]])
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:webText]];
         
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
     }
