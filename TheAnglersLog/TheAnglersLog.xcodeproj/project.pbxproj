@@ -11,6 +11,7 @@
 		0D23B2741A78102B00E89736 /* CMAImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D23B2731A78102B00E89736 /* CMAImage.m */; };
 		0D248B0F1AB0C82200093290 /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D248B0E1AB0C82200093290 /* iAd.framework */; };
 		0D28AAB11ABB44F9009E8184 /* CMAAdBanner.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D28AAB01ABB44F9009E8184 /* CMAAdBanner.m */; };
+		0D3AD6541ACA17DE00FE5204 /* ios_icon_set.sh in Resources */ = {isa = PBXBuildFile; fileRef = 0D3AD6531ACA17DE00FE5204 /* ios_icon_set.sh */; };
 		0D44612F1A9D8762006C34D2 /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 0D44612B1A9D8762006C34D2 /* icon.png */; };
 		0D4461301A9D8762006C34D2 /* icon.xcf in Resources */ = {isa = PBXBuildFile; fileRef = 0D44612C1A9D8762006C34D2 /* icon.xcf */; };
 		0D4461311A9D8762006C34D2 /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 0D44612D1A9D8762006C34D2 /* logo.png */; };
@@ -160,6 +161,7 @@
 		0D248B0E1AB0C82200093290 /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
 		0D28AAAF1ABB44F9009E8184 /* CMAAdBanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAAdBanner.h; path = Utilities/CMAAdBanner.h; sourceTree = "<group>"; };
 		0D28AAB01ABB44F9009E8184 /* CMAAdBanner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAAdBanner.m; path = Utilities/CMAAdBanner.m; sourceTree = "<group>"; };
+		0D3AD6531ACA17DE00FE5204 /* ios_icon_set.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; name = ios_icon_set.sh; path = ../Images/ios_icon_set.sh; sourceTree = "<group>"; };
 		0D4461181A9D3024006C34D2 /* use_cases.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = use_cases.md; path = ../DevNotes/use_cases.md; sourceTree = "<group>"; };
 		0D4461281A9D321B006C34D2 /* docs_link.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = docs_link.md; path = ../Docs/docs_link.md; sourceTree = "<group>"; };
 		0D44612B1A9D8762006C34D2 /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon.png; path = ../Images/icon.png; sourceTree = "<group>"; };
@@ -426,6 +428,7 @@
 		0D44612A1A9D8754006C34D2 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				0D3AD6531ACA17DE00FE5204 /* ios_icon_set.sh */,
 				0D5584CB1ABF578D00719554 /* icon.jpg */,
 				0D44612B1A9D8762006C34D2 /* icon.png */,
 				0D44612C1A9D8762006C34D2 /* icon.xcf */,
@@ -938,6 +941,7 @@
 				0D8F845D1A6EC2C300AABAEA /* edit@2x.png in Resources */,
 				0D8F846E1A6EC2C300AABAEA /* stats.png in Resources */,
 				0D8F84611A6EC2C300AABAEA /* instagram@2x.png in Resources */,
+				0D3AD6541ACA17DE00FE5204 /* ios_icon_set.sh in Resources */,
 				0D8F84621A6EC2C300AABAEA /* instagram_small.png in Resources */,
 				0D8F84541A6EC2C300AABAEA /* app_icon_80.png in Resources */,
 				0D8F84631A6EC2C300AABAEA /* literature.png in Resources */,
