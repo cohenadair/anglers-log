@@ -77,7 +77,7 @@
     
     CGRect f = self.view.frame;
     [self.noStatsView centerInParent:self.view];
-    [self.noStatsView setFrame:CGRectMake(f.origin.x, -10, f.size.width, f.size.height)];
+    [self.noStatsView setFrame:CGRectMake(f.origin.x, -10, f.size.width, f.size.height + 10)];
     [self.view addSubview:self.noStatsView];
 }
 
