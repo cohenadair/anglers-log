@@ -16,6 +16,8 @@
 		0D4461301A9D8762006C34D2 /* icon.xcf in Resources */ = {isa = PBXBuildFile; fileRef = 0D44612C1A9D8762006C34D2 /* icon.xcf */; };
 		0D4461311A9D8762006C34D2 /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 0D44612D1A9D8762006C34D2 /* logo.png */; };
 		0D4461321A9D8762006C34D2 /* logo.xcf in Resources */ = {isa = PBXBuildFile; fileRef = 0D44612E1A9D8762006C34D2 /* logo.xcf */; };
+		0D4ECDF91ACB3A37008B55E6 /* rapala.png in Resources */ = {isa = PBXBuildFile; fileRef = 0D4ECDF71ACB3A37008B55E6 /* rapala.png */; };
+		0D4ECDFA1ACB3A37008B55E6 /* spinner.png in Resources */ = {isa = PBXBuildFile; fileRef = 0D4ECDF81ACB3A37008B55E6 /* spinner.png */; };
 		0D5584CC1ABF578D00719554 /* icon.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0D5584CB1ABF578D00719554 /* icon.jpg */; };
 		0D5584CE1ABF59C200719554 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D5584CD1ABF59C200719554 /* StoreKit.framework */; };
 		0D5608121A6F0F3000EE0437 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D5608111A6F0F3000EE0437 /* CoreData.framework */; };
@@ -168,6 +170,9 @@
 		0D44612C1A9D8762006C34D2 /* icon.xcf */ = {isa = PBXFileReference; lastKnownFileType = file; name = icon.xcf; path = ../Images/icon.xcf; sourceTree = "<group>"; };
 		0D44612D1A9D8762006C34D2 /* logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = logo.png; path = ../Images/logo.png; sourceTree = "<group>"; };
 		0D44612E1A9D8762006C34D2 /* logo.xcf */ = {isa = PBXFileReference; lastKnownFileType = file; name = logo.xcf; path = ../Images/logo.xcf; sourceTree = "<group>"; };
+		0D4ECDF51ACB383C008B55E6 /* TheAnglersLog 6.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "TheAnglersLog 6.xcdatamodel"; sourceTree = "<group>"; };
+		0D4ECDF71ACB3A37008B55E6 /* rapala.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = rapala.png; path = ApplicationModel/UserDefines/Defaults/rapala.png; sourceTree = "<group>"; };
+		0D4ECDF81ACB3A37008B55E6 /* spinner.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = spinner.png; path = ApplicationModel/UserDefines/Defaults/spinner.png; sourceTree = "<group>"; };
 		0D5584CB1ABF578D00719554 /* icon.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = icon.jpg; path = ../Images/icon.jpg; sourceTree = "<group>"; };
 		0D5584CD1ABF59C200719554 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		0D5608111A6F0F3000EE0437 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
@@ -436,6 +441,15 @@
 				0D44612E1A9D8762006C34D2 /* logo.xcf */,
 			);
 			name = Images;
+			sourceTree = "<group>";
+		};
+		0D4ECDF61ACB3A27008B55E6 /* Defaults */ = {
+			isa = PBXGroup;
+			children = (
+				0D4ECDF71ACB3A37008B55E6 /* rapala.png */,
+				0D4ECDF81ACB3A37008B55E6 /* spinner.png */,
+			);
+			name = Defaults;
 			sourceTree = "<group>";
 		};
 		0D8F83761A6EC10800AABAEA /* Statistics */ = {
@@ -743,6 +757,7 @@
 		E72669B119DF1350003C8E0B /* ApplicationModel */ = {
 			isa = PBXGroup;
 			children = (
+				0D4ECDF61ACB3A27008B55E6 /* Defaults */,
 				0D8F83761A6EC10800AABAEA /* Statistics */,
 				0D8F837B1A6EC10800AABAEA /* UserDefines */,
 				0D8F836C1A6EC10800AABAEA /* CMAEntry.h */,
@@ -942,6 +957,7 @@
 				0D8F845D1A6EC2C300AABAEA /* edit@2x.png in Resources */,
 				0D8F846E1A6EC2C300AABAEA /* stats.png in Resources */,
 				0D8F84611A6EC2C300AABAEA /* instagram@2x.png in Resources */,
+				0D4ECDFA1ACB3A37008B55E6 /* spinner.png in Resources */,
 				0D3AD6541ACA17DE00FE5204 /* ios_icon_set.sh in Resources */,
 				0D8F84621A6EC2C300AABAEA /* instagram_small.png in Resources */,
 				0D8F84541A6EC2C300AABAEA /* app_icon_80.png in Resources */,
@@ -952,6 +968,7 @@
 				0D8F845F1A6EC2C300AABAEA /* fishing_methods.png in Resources */,
 				0D8F84551A6EC2C300AABAEA /* bait.png in Resources */,
 				0D4461321A9D8762006C34D2 /* logo.xcf in Resources */,
+				0D4ECDF91ACB3A37008B55E6 /* rapala.png in Resources */,
 				0D8F846B1A6EC2C300AABAEA /* sort@2x.png in Resources */,
 				0DCAD6431AA4FF540040B03B /* Instabug.bundle in Resources */,
 				0D8F84731A6EC2C300AABAEA /* fishing_methods_large.png in Resources */,
@@ -1211,13 +1228,14 @@
 		0D23B26F1A7713C900E89736 /* TheAnglersLog.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				0D4ECDF51ACB383C008B55E6 /* TheAnglersLog 6.xcdatamodel */,
 				0DC75FE71A9BE8320045030C /* TheAnglersLog 5.xcdatamodel */,
 				0DC75FE61A9BD9090045030C /* TheAnglersLog 4.xcdatamodel */,
 				0DCC43281A99B0D00019DB2E /* TheAnglersLog 3.xcdatamodel */,
 				0DCC43271A99A3AD0019DB2E /* TheAnglersLog 2.xcdatamodel */,
 				0D23B2701A7713C900E89736 /* TheAnglersLog.xcdatamodel */,
 			);
-			currentVersion = 0DC75FE71A9BE8320045030C /* TheAnglersLog 5.xcdatamodel */;
+			currentVersion = 0D4ECDF51ACB383C008B55E6 /* TheAnglersLog 6.xcdatamodel */;
 			path = TheAnglersLog.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

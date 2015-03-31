@@ -120,8 +120,11 @@
     
     if (self.entry)
         fileName = [[self.entry dateAsFileNameString] stringByAppendingString:[NSString stringWithFormat:@"-%ld", (long)anIndex]];
-    else if (self.bait)
-        fileName = self.bait.name;
+    else if (self.bait) {
+        NSDateFormatter *formatter = [NSDateFormatter new];
+        [formatter setDateFormat:[NSString stringWithFormat:@"ddmmyyyyHHmmssSSS_%ld", (long)anIndex]];
+        fileName = [formatter stringFromDate:[NSDate date]];
+    }
     
     [self saveWithImage:self.image andFileName:fileName];
 }

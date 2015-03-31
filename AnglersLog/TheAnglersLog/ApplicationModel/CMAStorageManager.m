@@ -225,11 +225,61 @@
     
     if ([results count] > 0) {
         self.sharedJournal = [results objectAtIndex:0];
+        [self cleanImages];
     } else {
         NSLog(@"No local data found, initializing new journal.");
         self.sharedJournal = [self managedJournal];
+        [self addJournalDefaults];
         [self saveJournal];
     }
+}
+
+- (CMABait *)rapalaBait {
+    CMABait *result = [[CMAStorageManager sharedManager] managedBait];
+    CMAImage *img = [[CMAStorageManager sharedManager] managedImage];
+    [img setImage:[UIImage imageNamed:@"rapala.png"]];
+    
+    [result setName:@"Rippin' Rap"];
+    [result setColor:@"Blue Chrome"];
+    [result setSize:@"2"];
+    [result setBaitType:CMABaitTypeArtificial];
+    [result setImageData:img];
+    [result.imageData saveWithIndex:0];
+
+    return result;
+}
+
+- (CMABait *)spinnerBait {
+    CMABait *result = [[CMAStorageManager sharedManager] managedBait];
+    CMAImage *img = [[CMAStorageManager sharedManager] managedImage];
+    [img setImage:[UIImage imageNamed:@"spinner.png"]];
+    
+    [result setName:@"Spinner - Blue Fox"];
+    [result setColor:@"Silver"];
+    [result setSize:@"6"];
+    [result setBaitType:CMABaitTypeArtificial];
+    [result setImageData:img];
+    [result.imageData saveWithIndex:1];
+    
+    return result;
+}
+
+- (void)addJournalDefaults {
+    NSArray *species = @[@"Bass - Smallmouth", @"Trout - Rainbow", @"Walleye", @"Bass - Largemouth", @"Salmon - King"];
+    NSArray *methods = @[@"Boat", @"Ice", @"Casting", @"Fly", @"Shore", @"Trolling"];
+    NSArray *clarities = @[@"Clear", @"Crystal", @"Cloudy", @"3 Feet", @"Dirty"];
+    
+    for (NSString *s in species)
+        [self.sharedJournal addUserDefine:UDN_SPECIES objectToAdd:[[self.sharedJournal userDefineNamed:UDN_SPECIES] emptyObjectNamed:s]];
+    
+    for (NSString *s in methods)
+        [self.sharedJournal addUserDefine:UDN_FISHING_METHODS objectToAdd:[[self.sharedJournal userDefineNamed:UDN_FISHING_METHODS] emptyObjectNamed:s]];
+    
+    for (NSString *s in clarities)
+        [self.sharedJournal addUserDefine:UDN_WATER_CLARITIES objectToAdd:[[self.sharedJournal userDefineNamed:UDN_WATER_CLARITIES] emptyObjectNamed:s]];
+    
+    [self.sharedJournal addUserDefine:UDN_BAITS objectToAdd:[self rapalaBait]];
+    [self.sharedJournal addUserDefine:UDN_BAITS objectToAdd:[self spinnerBait]];
 }
 
 // Deletes aManagedObject from the context. Will apply changes to context if aBool is true.
