@@ -12,13 +12,15 @@
 
 @implementation CMAAdBanner
 
+#pragma mark - Initializing
+
 + (CMAAdBanner *)withFrame:(CGRect)aFrame delegate:(id<ADBannerViewDelegate>)aDelegate superView:(UIView *)aSuperview {
     return [[self alloc] initWithFrame:aFrame delegate:aDelegate superView:aSuperview];
 }
 
 - (id)initWithFrame:(CGRect)aFrame delegate:(id<ADBannerViewDelegate>)aDelegate superView:(UIView *)aSuperview {
     if (self = [super init]) {
-        if (![CMAUtilities shouldDisplayBanners]) {
+        if (![CMAAdBanner shouldDisplayBanners]) {
             NSLog(@"User has paid to remove ads.");
             self.isNil = YES;
             return self;
@@ -35,6 +37,8 @@
     
     return self;
 }
+
+#pragma mark - Showing/Hiding
 
 - (void)showWithCompletion:(void (^)())completionBlock {
     if (self.isNil || self.bannerIsVisible)
@@ -98,6 +102,18 @@
     
     if (completionBlock)
         completionBlock();
+}
+
+#define kAdsRemovedKey @"AnglersLogAreAdsRemoved"
+
+// Returns true if the app should display iAd banners.
+// Returns false if the user has paid to remove ads.
++ (BOOL)shouldDisplayBanners {
+    return ![[NSUserDefaults standardUserDefaults] boolForKey:kAdsRemovedKey];
+}
+
++ (void)setShouldDisplayBanners:(BOOL)aBool {
+    [[NSUserDefaults standardUserDefaults] setBool:!aBool forKey:kAdsRemovedKey];
 }
 
 @end

@@ -145,16 +145,4 @@
     return [newWords componentsJoinedByString:@" "];
 }
 
-#define kAdsRemovedKey @"AnglersLogAreAdsRemoved"
-
-// Returns true if the app should display iAd banners.
-// Returns false if the user has paid to remove ads.
-+ (BOOL)shouldDisplayBanners {
-    return ![[NSUserDefaults standardUserDefaults] boolForKey:kAdsRemovedKey];
-}
-
-+ (void)setShouldDisplayBanners:(BOOL)aBool {
-    [[NSUserDefaults standardUserDefaults] setBool:!aBool forKey:kAdsRemovedKey];
-}
-
 @end

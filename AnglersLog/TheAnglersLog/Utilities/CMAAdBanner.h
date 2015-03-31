@@ -28,5 +28,7 @@
 
 - (void)showWithCompletion:(void (^)())completionBlock;
 - (void)hideWithCompletion:(void (^)())completionBlock;
++ (BOOL)shouldDisplayBanners;
++ (void)setShouldDisplayBanners:(BOOL)aBool;
 
 @end

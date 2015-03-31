@@ -14,6 +14,7 @@
 #import "CMAAlerts.h"
 #import "CMAStorageManager.h"
 #import "CMAUtilities.h"
+#import "CMAAdBanner.h"
 
 @interface CMASettingsViewController ()
 
@@ -75,7 +76,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if (section == kSectionIAP)
-        return 1 + [CMAUtilities shouldDisplayBanners];
+        return 1 + [CMAAdBanner shouldDisplayBanners];
     
     return [super tableView:tableView numberOfRowsInSection:section];
 }
@@ -131,7 +132,7 @@
 }
 
 - (void)doRemoveAds {
-    [CMAUtilities setShouldDisplayBanners:NO];
+    [CMAAdBanner setShouldDisplayBanners:NO];
     [self.tableView reloadData];
 }
 
