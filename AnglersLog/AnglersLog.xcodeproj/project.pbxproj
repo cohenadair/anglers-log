@@ -665,7 +665,7 @@
 				0D44612A1A9D8754006C34D2 /* Images */,
 				0D4461271A9D3209006C34D2 /* Docs */,
 				0D4461161A9D3011006C34D2 /* DevNotes */,
-				E70B637B19D3A8E400DFBA85 /* TheAnglersLog */,
+				E70B637B19D3A8E400DFBA85 /* AnglersLog */,
 				E70B637419D3A8E400DFBA85 /* Frameworks */,
 				E70B637319D3A8E400DFBA85 /* Products */,
 			);
@@ -707,7 +707,7 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		E70B637B19D3A8E400DFBA85 /* TheAnglersLog */ = {
+		E70B637B19D3A8E400DFBA85 /* AnglersLog */ = {
 			isa = PBXGroup;
 			children = (
 				0D23B26F1A7713C900E89736 /* TheAnglersLog.xcdatamodeld */,
@@ -725,6 +725,7 @@
 				0D8F839F1A6EC1AE00AABAEA /* CMAStoryboard.storyboard */,
 				0D8F839B1A6EC15D00AABAEA /* CMALaunchScreen.xib */,
 			);
+			name = AnglersLog;
 			path = TheAnglersLog;
 			sourceTree = "<group>";
 		};
