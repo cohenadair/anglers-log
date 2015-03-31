@@ -171,6 +171,8 @@
 		0D5584CB1ABF578D00719554 /* icon.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = icon.jpg; path = ../Images/icon.jpg; sourceTree = "<group>"; };
 		0D5584CD1ABF59C200719554 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		0D5608111A6F0F3000EE0437 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		0D6994B31ACA21BA008D6A0D /* AnglersLog-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AnglersLog-Prefix.pch"; sourceTree = "<group>"; };
+		0D6994B51ACA21DE008D6A0D /* AnglersLog-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "AnglersLog-Info.plist"; sourceTree = "<group>"; };
 		0D766CC01AB66B05001EED90 /* tutorials.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = tutorials.md; path = ../DevNotes/tutorials.md; sourceTree = "<group>"; };
 		0D8F836C1A6EC10800AABAEA /* CMAEntry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAEntry.h; path = TheAnglersLog/ApplicationModel/CMAEntry.h; sourceTree = SOURCE_ROOT; };
 		0D8F836D1A6EC10800AABAEA /* CMAEntry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAEntry.m; path = TheAnglersLog/ApplicationModel/CMAEntry.m; sourceTree = SOURCE_ROOT; };
@@ -205,8 +207,6 @@
 		0D8F839F1A6EC1AE00AABAEA /* CMAStoryboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = CMAStoryboard.storyboard; path = TheAnglersLog/CMAStoryboard.storyboard; sourceTree = SOURCE_ROOT; };
 		0D8F83A41A6EC1E600AABAEA /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = TheAnglersLog/Images.xcassets; sourceTree = SOURCE_ROOT; };
 		0D8F83A61A6EC20800AABAEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = TheAnglersLog/main.m; sourceTree = SOURCE_ROOT; };
-		0D8F83A71A6EC20800AABAEA /* TheAnglersLog-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "TheAnglersLog-Info.plist"; path = "TheAnglersLog/TheAnglersLog-Info.plist"; sourceTree = SOURCE_ROOT; };
-		0D8F83A81A6EC20800AABAEA /* TheAnglersLog-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "TheAnglersLog-Prefix.pch"; path = "TheAnglersLog/TheAnglersLog-Prefix.pch"; sourceTree = SOURCE_ROOT; };
 		0D8F83AC1A6EC22900AABAEA /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = TheAnglersLog/en.lproj/InfoPlist.strings; sourceTree = SOURCE_ROOT; };
 		0D8F83AF1A6EC25200AABAEA /* CMAAddBaitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMAAddBaitViewController.h; sourceTree = "<group>"; };
 		0D8F83B01A6EC25200AABAEA /* CMAAddBaitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CMAAddBaitViewController.m; sourceTree = "<group>"; };
@@ -369,7 +369,7 @@
 		0DCC43271A99A3AD0019DB2E /* TheAnglersLog 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "TheAnglersLog 2.xcdatamodel"; sourceTree = "<group>"; };
 		0DCC43281A99B0D00019DB2E /* TheAnglersLog 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "TheAnglersLog 3.xcdatamodel"; sourceTree = "<group>"; };
 		E705AD7D1A22DD5C0077F16C /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
-		E70B637219D3A8E400DFBA85 /* TheAnglersLog.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TheAnglersLog.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E70B637219D3A8E400DFBA85 /* AnglersLog.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AnglersLog.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E70B637519D3A8E400DFBA85 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		E70B637719D3A8E400DFBA85 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		E70B637919D3A8E400DFBA85 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
@@ -674,7 +674,7 @@
 		E70B637319D3A8E400DFBA85 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				E70B637219D3A8E400DFBA85 /* TheAnglersLog.app */,
+				E70B637219D3A8E400DFBA85 /* AnglersLog.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -721,22 +721,22 @@
 				0D8F83A41A6EC1E600AABAEA /* Images.xcassets */,
 				0D8F83991A6EC15D00AABAEA /* CMAAppDelegate.h */,
 				0D8F839A1A6EC15D00AABAEA /* CMAAppDelegate.m */,
-				E70B637C19D3A8E400DFBA85 /* Supporting Files */,
+				E70B637C19D3A8E400DFBA85 /* SupportingFiles */,
 				0D8F839F1A6EC1AE00AABAEA /* CMAStoryboard.storyboard */,
 				0D8F839B1A6EC15D00AABAEA /* CMALaunchScreen.xib */,
 			);
 			path = TheAnglersLog;
 			sourceTree = "<group>";
 		};
-		E70B637C19D3A8E400DFBA85 /* Supporting Files */ = {
+		E70B637C19D3A8E400DFBA85 /* SupportingFiles */ = {
 			isa = PBXGroup;
 			children = (
+				0D6994B51ACA21DE008D6A0D /* AnglersLog-Info.plist */,
+				0D6994B31ACA21BA008D6A0D /* AnglersLog-Prefix.pch */,
 				0D8F83AB1A6EC22900AABAEA /* InfoPlist.strings */,
 				0D8F83A61A6EC20800AABAEA /* main.m */,
-				0D8F83A71A6EC20800AABAEA /* TheAnglersLog-Info.plist */,
-				0D8F83A81A6EC20800AABAEA /* TheAnglersLog-Prefix.pch */,
 			);
-			name = "Supporting Files";
+			name = SupportingFiles;
 			sourceTree = "<group>";
 		};
 		E72669B119DF1350003C8E0B /* ApplicationModel */ = {
@@ -854,9 +854,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		E70B637119D3A8E400DFBA85 /* TheAnglersLog */ = {
+		E70B637119D3A8E400DFBA85 /* AnglersLog */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = E70B639E19D3A8E400DFBA85 /* Build configuration list for PBXNativeTarget "TheAnglersLog" */;
+			buildConfigurationList = E70B639E19D3A8E400DFBA85 /* Build configuration list for PBXNativeTarget "AnglersLog" */;
 			buildPhases = (
 				E70B636E19D3A8E400DFBA85 /* Sources */,
 				E70B636F19D3A8E400DFBA85 /* Frameworks */,
@@ -866,9 +866,9 @@
 			);
 			dependencies = (
 			);
-			name = TheAnglersLog;
+			name = AnglersLog;
 			productName = MyFishingJournal;
-			productReference = E70B637219D3A8E400DFBA85 /* TheAnglersLog.app */;
+			productReference = E70B637219D3A8E400DFBA85 /* AnglersLog.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -891,7 +891,7 @@
 					};
 				};
 			};
-			buildConfigurationList = E70B636D19D3A8E400DFBA85 /* Build configuration list for PBXProject "TheAnglersLog" */;
+			buildConfigurationList = E70B636D19D3A8E400DFBA85 /* Build configuration list for PBXProject "AnglersLog" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -903,7 +903,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				E70B637119D3A8E400DFBA85 /* TheAnglersLog */,
+				E70B637119D3A8E400DFBA85 /* AnglersLog */,
 			);
 		};
 /* End PBXProject section */
@@ -1150,10 +1150,10 @@
 					"$(PROJECT_DIR)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "TheAnglersLog/TheAnglersLog-Prefix.pch";
-				INFOPLIST_FILE = "$(SRCROOT)/TheAnglersLog/TheAnglersLog-Info.plist";
+				GCC_PREFIX_HEADER = "TheAnglersLog/AnglersLog-Prefix.pch";
+				INFOPLIST_FILE = "TheAnglersLog/AnglersLog-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				PRODUCT_NAME = TheAnglersLog;
+				PRODUCT_NAME = AnglersLog;
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
@@ -1173,10 +1173,10 @@
 					"$(PROJECT_DIR)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "TheAnglersLog/TheAnglersLog-Prefix.pch";
-				INFOPLIST_FILE = "$(SRCROOT)/TheAnglersLog/TheAnglersLog-Info.plist";
+				GCC_PREFIX_HEADER = "TheAnglersLog/AnglersLog-Prefix.pch";
+				INFOPLIST_FILE = "TheAnglersLog/AnglersLog-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				PRODUCT_NAME = TheAnglersLog;
+				PRODUCT_NAME = AnglersLog;
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
@@ -1186,7 +1186,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		E70B636D19D3A8E400DFBA85 /* Build configuration list for PBXProject "TheAnglersLog" */ = {
+		E70B636D19D3A8E400DFBA85 /* Build configuration list for PBXProject "AnglersLog" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				E70B639C19D3A8E400DFBA85 /* Debug */,
@@ -1195,7 +1195,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		E70B639E19D3A8E400DFBA85 /* Build configuration list for PBXNativeTarget "TheAnglersLog" */ = {
+		E70B639E19D3A8E400DFBA85 /* Build configuration list for PBXNativeTarget "AnglersLog" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				E70B639F19D3A8E400DFBA85 /* Debug */,
