@@ -24,6 +24,7 @@
 @property (weak, nonatomic) IBOutlet UITextView *descriptionTextView;
 @property (weak, nonatomic) IBOutlet UITextField *nameTextField;
 @property (weak, nonatomic) IBOutlet UITextField *sizeTextField;
+@property (weak, nonatomic) IBOutlet UITextField *colorTextField;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *baitTypeControl;
 @property (weak, nonatomic) IBOutlet UIButton *deleteBaitButton;
 
@@ -100,7 +101,7 @@
         if (self.imageData)
             return PHOTO_ROW_HEIGHT;
     
-    if (indexPath.section == 0 && indexPath.row == 3)
+    if (indexPath.section == 0 && indexPath.row == 4)
         return DESC_ROW_HEIGHT;
     
     return 44;
@@ -115,6 +116,11 @@
         if (self.bait.size)
             if (![self.bait.size isEqualToString:@""])
                 [self.sizeTextField setText:self.bait.size];
+        
+        // color
+        if (self.bait.color)
+            if (![self.bait.color isEqualToString:@""])
+                [self.colorTextField setText:self.bait.color];
         
         // artificial
         [self.baitTypeControl setSelectedSegmentIndex:self.bait.baitType];
@@ -273,6 +279,12 @@
         [aBait setSize:nil];
     else
         [aBait setSize:self.sizeTextField.text];
+    
+    // color
+    if ([self.colorTextField.text isEqualToString:@""])
+        [aBait setColor:nil];
+    else
+        [aBait setColor:self.colorTextField.text];
     
     // artificial
     [aBait setBaitType:(CMABaitType)[self.baitTypeControl selectedSegmentIndex]];

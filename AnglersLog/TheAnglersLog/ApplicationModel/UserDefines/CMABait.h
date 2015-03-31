@@ -20,6 +20,7 @@
 @property (strong, nonatomic)CMAImage *imageData;
 @property (strong, nonatomic)NSNumber *fishCaught;
 @property (strong, nonatomic)NSString *size;
+@property (strong, nonatomic)NSString *color;
 @property (nonatomic)CMABaitType baitType;
 
 // initialization

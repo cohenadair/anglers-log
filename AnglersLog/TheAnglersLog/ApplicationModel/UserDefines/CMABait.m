@@ -16,6 +16,7 @@
 @dynamic imageData;
 @dynamic fishCaught;
 @dynamic size;
+@dynamic color;
 @dynamic baitType;
 
 #pragma mark - Initialization
@@ -45,11 +46,18 @@
     [self didChangeValueForKey:@"size"];
 }
 
+- (void)setColor:(NSString *)color {
+    [self willChangeValueForKey:@"color"];
+    [self setPrimitiveValue:[color capitalizedString] forKey:@"color"];
+    [self didChangeValueForKey:@"color"];
+}
+
 - (void)edit:(CMABait *)aNewBait {
     [self setName:[aNewBait.name capitalizedString]];
     [self setBaitDescription:aNewBait.baitDescription];
     [self setImageData:aNewBait.imageData];
     [self setSize:[aNewBait.size capitalizedString]];
+    [self setColor:[aNewBait.color capitalizedString]];
     [self setBaitType:aNewBait.baitType];
 }
 

@@ -19,6 +19,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *baitFishCaughtLabel;
 @property (weak, nonatomic) IBOutlet UILabel *baitTypeLabel;
 @property (weak, nonatomic) IBOutlet UILabel *baitSizeLabel;
+@property (weak, nonatomic) IBOutlet UILabel *baitColorLabel;
 
 @end
 
@@ -26,7 +27,8 @@
 
 #define kPhotoCellRow 0
 #define kSizeRow 3
-#define kDescriptionCellRow 4
+#define kColorRow 4
+#define kDescriptionRow 5
 
 @implementation CMASingleBaitViewController
 
@@ -59,11 +61,11 @@
             return 10;
     }
     
-    if (indexPath.row == kSizeRow && !self.bait.size)
+    if ((indexPath.row == kSizeRow && !self.bait.size) || (indexPath.row == kColorRow && !self.bait.color))
         return 0;
     
-    if (indexPath.row == kDescriptionCellRow) {
-        if (self.bait.description) {
+    if (indexPath.row == kDescriptionRow) {
+        if (self.bait.baitDescription) {
             NSDictionary *attributes = @{NSFontAttributeName: [UIFont fontWithName:GLOBAL_FONT size:16]};
             CGRect rect = [self.bait.baitDescription boundingRectWithSize:CGSizeMake(self.tableView.frame.size.width - 40, CGFLOAT_MAX)
                                                                   options:NSStringDrawingUsesLineFragmentOrigin
@@ -82,7 +84,10 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [super tableView:tableView cellForRowAtIndexPath:indexPath];
     
-    [cell setHidden:(indexPath.row == kSizeRow && !self.bait.size)];
+    [cell setHidden:
+     (indexPath.row == kSizeRow && !self.bait.size) ||
+     (indexPath.row == kColorRow && !self.bait.color) ||
+     (indexPath.row == kDescriptionRow && !self.bait.baitDescription)];
     
     return cell;
 }
@@ -94,6 +99,9 @@
     
     if (self.bait.size)
         [self.baitSizeLabel setText:self.bait.size];
+    
+    if (self.bait.color)
+        [self.baitColorLabel setText:self.bait.color];
     
     if (self.bait.baitDescription) {
         [self.baitDescriptionLabel setText:self.bait.baitDescription];
