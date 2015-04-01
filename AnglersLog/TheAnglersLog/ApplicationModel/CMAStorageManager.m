@@ -465,4 +465,16 @@
     return [NSEntityDescription insertNewObjectForEntityForName:CDE_IMAGE inManagedObjectContext:self.managedObjectContext];
 }
 
+#pragma mark - User Settings
+
+#define kUserSettingMapType @"UserMapType"
+
+- (void)setUserMapType:(MKMapType)mapType {
+    [[NSUserDefaults standardUserDefaults] setInteger:mapType forKey:kUserSettingMapType];
+}
+
+- (MKMapType)getUserMapType {
+    return [[NSUserDefaults standardUserDefaults] integerForKey:kUserSettingMapType];
+}
+
 @end

@@ -13,6 +13,7 @@
 #import "CMAConstants.h"
 #import "CMAInstagramActivity.h"
 #import "CMAAdBanner.h"
+#import "CMAStorageManager.h"
 
 @interface CMASingleLocationViewController ()
 
@@ -25,13 +26,13 @@
 
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
 @property (weak, nonatomic) IBOutlet UIView *loadingMapView;
+@property (weak, nonatomic) IBOutlet UISegmentedControl *mapTypeControl;
 
 @property (strong, nonatomic)CMAAdBanner *adBanner;
 @property (nonatomic)BOOL bannerIsVisible;
 
 @property (strong, nonatomic)CMAFishingSpot *currentFishingSpot;
 @property (nonatomic)BOOL isReadOnly;
-@property (nonatomic)BOOL didSetMapRegion;
 
 @end
 
@@ -159,6 +160,11 @@
     [self performSegueWithIdentifier:@"fromSingleLocationToAddLocation" sender:self];
 }
 
+- (IBAction)mapTypeControlChange:(UISegmentedControl *)sender {
+    [self.mapView setMapType:sender.selectedSegmentIndex];
+    [[CMAStorageManager sharedManager] setUserMapType:sender.selectedSegmentIndex];
+}
+
 // Shares a screenshot of the current map view canvas.
 - (void)shareLocation {
     NSMutableArray *shareItems = [NSMutableArray array];
@@ -237,15 +243,31 @@
         source.selectedCellLabelText = nil;
     }
     
-    [self.mapView setRegion:[self getMapRegion] animated:NO];
-    [self setDidSetMapRegion:YES];
+    [self setMapRegion];
 }
 
 #pragma mark - Map Initializing
 
 - (void)initMapView {
+    [self.mapTypeControl.layer setCornerRadius:5.0f];
+    [self.mapTypeControl setSelectedSegmentIndex:[[CMAStorageManager sharedManager] getUserMapType]];
+    [self.mapView setAlpha:0.0];
+    [self.mapView setMapType:self.mapTypeControl.selectedSegmentIndex];
+    [self.mapTypeControl setAlpha:0.0];
+    [self.loadingMapView setAlpha:1.0];
+    
+    [self.mapTypeControl.superview bringSubviewToFront:self.mapTypeControl];
+    
     [self addFishingSpotsToMap:self.mapView];
-    [self.mapView setRegion:[self getMapRegion] animated:NO];
+    [self setMapRegion];
+}
+
+- (void)showMapView {
+    [UIView animateWithDuration:0.3 animations:^() {
+        [self.mapView setAlpha:1.0];
+        [self.mapTypeControl setAlpha:0.85];
+        [self.loadingMapView setAlpha:0.0];
+    }];
 }
 
 // Returns an MKPointAnnotation with aTitle.
@@ -268,14 +290,12 @@
     }
 }
 
-// Returns the map's region based on the location's fishing spot coordinates.
-- (MKCoordinateRegion)getMapRegion {
-    return [self.location mapRegion];
+- (void)setMapRegion {
+    [self.mapView setRegion:[self.location mapRegion] animated:NO];
 }
 
 - (void)mapViewDidFinishRenderingMap:(MKMapView *)mapView fullyRendered:(BOOL)fullyRendered {
-    [self.mapView setHidden:NO];
-    [self.loadingMapView setHidden:YES];
+    [self showMapView];
 }
 
 - (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view {

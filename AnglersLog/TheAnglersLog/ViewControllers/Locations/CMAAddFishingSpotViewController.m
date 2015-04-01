@@ -22,6 +22,7 @@
 @property (weak, nonatomic)IBOutlet UILabel *longitudeLabel;
 @property (weak, nonatomic)IBOutlet UIImageView *rectileImage;
 @property (weak, nonatomic)IBOutlet UIView *loadingMapView;
+@property (weak, nonatomic)IBOutlet UISegmentedControl *mapTypeControl;
 
 @property (strong, nonatomic)CLLocationManager *locationManager;
 @property (nonatomic)BOOL userLocationAdded;
@@ -52,9 +53,7 @@
         self.isEditingFishingSpot = YES;
     }
     
-    UIImage *image = [[UIImage imageNamed:@"rectile.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    [self.rectileImage setImage:image];
-    [self.rectileImage setTintColor:[UIColor whiteColor]];
+    [self initMapView];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -150,6 +149,11 @@
     [textField resignFirstResponder];
 }
 
+- (IBAction)mapTypeControlChange:(UISegmentedControl *)sender {
+    [self.mapView setMapType:sender.selectedSegmentIndex];
+    [[CMAStorageManager sharedManager] setUserMapType:sender.selectedSegmentIndex];
+}
+
 #pragma mark - Navigation
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
@@ -161,6 +165,32 @@
 
 #define kMapAreaX 800
 #define kMapAreaY 800
+
+- (void)initMapView {
+    UIImage *image = [[UIImage imageNamed:@"rectile.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    [self.rectileImage setImage:image];
+    [self.rectileImage setTintColor:[UIColor whiteColor]];
+    
+    [self.mapTypeControl.layer setCornerRadius:5.0f];
+    [self.mapTypeControl setSelectedSegmentIndex:[[CMAStorageManager sharedManager] getUserMapType]];
+    [self.mapView setAlpha:0.0];
+    [self.mapView setMapType:self.mapTypeControl.selectedSegmentIndex];
+    [self.mapTypeControl setAlpha:0.0];
+    [self.rectileImage setAlpha:0.0];
+    [self.loadingMapView setAlpha:1.0];
+    
+    [self.mapTypeControl.superview bringSubviewToFront:self.mapTypeControl];
+    [self.mapTypeControl.superview bringSubviewToFront:self.rectileImage];
+}
+
+- (void)showMapView {
+    [UIView animateWithDuration:0.3 animations:^() {
+        [self.mapView setAlpha:1.0];
+        [self.mapTypeControl setAlpha:0.85];
+        [self.rectileImage setAlpha:1.0];
+        [self.loadingMapView setAlpha:0.0];
+    }];
+}
 
 - (void)mapView:(MKMapView *)mapView regionWillChangeAnimated:(BOOL)animated {
     // dismiss keyboard if the map changes
@@ -192,9 +222,7 @@
 }
 
 - (void)mapViewDidFinishRenderingMap:(MKMapView *)mapView fullyRendered:(BOOL)fullyRendered {
-    [self.mapView setHidden:NO];
-    [self.rectileImage setHidden:NO];
-    [self.loadingMapView setHidden:YES];
+    [self showMapView];
 }
 
 #pragma mark - Location Manager Delegate
@@ -212,7 +240,7 @@
 - (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error {
     [CMAAlerts errorAlert:@"Failed to get location. Try again later or manually drag the map to your location." presentationViewController:self];
     NSLog(@"Failed to get user location. Error: %@", error.localizedDescription);
-    [self.loadingMapView setHidden:YES];
+    [self showMapView];
 }
 
 @end

@@ -54,4 +54,9 @@
 - (CMAWeatherData *)managedWeatherData;
 - (CMAImage *)managedImage;
 
+#pragma mark - User Settings
+
+- (void)setUserMapType:(MKMapType)mapType;
+- (MKMapType)getUserMapType;
+
 @end
