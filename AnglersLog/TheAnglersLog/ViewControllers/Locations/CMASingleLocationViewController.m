@@ -72,6 +72,12 @@
         [self initCurrentFishingSpot:[self.location.fishingSpots objectAtIndex:0]];
 }
 
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    UILabel *legal = [self.mapView.subviews objectAtIndex:1];
+    legal.center = CGPointMake(legal.center.x, legal.center.y - self.mapTypeControl.frame.size.height);
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
 }

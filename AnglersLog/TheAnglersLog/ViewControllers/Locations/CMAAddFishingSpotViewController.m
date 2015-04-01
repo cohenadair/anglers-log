@@ -73,6 +73,9 @@
     
     if ([self.locationFromAddLocation fishingSpotCount] > 0)
         [self setMapRegion];
+    
+    UILabel *legal = [self.mapView.subviews objectAtIndex:1];
+    legal.center = CGPointMake(legal.center.x, legal.center.y - self.mapTypeControl.frame.size.height);
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
