@@ -13,6 +13,7 @@
 
 NSString *const APP_NAME        = @"Anglers' Log";
 NSString *const APP_STORE_LINK  = @"itms-apps://itunes.apple.com/app/id959989008";
+NSString *const FAQ_LINK        = @"http://cohenadair.com/AnglersLog/FAQ/";
 NSString *const SHARE_MESSAGE   = @"Shared with #AnglersLogApp.";
 NSString *const HASHTAG_TEXT    = @"AnglersLogApp";
 NSString *const GLOBAL_FONT     = @"HelveticaNeue";

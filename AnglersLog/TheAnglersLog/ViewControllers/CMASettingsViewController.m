@@ -24,7 +24,8 @@
 @end
 
 #define kSectionFeedback 1
-    #define kRowRate 0
+    #define kRowFAQ 0
+    #define kRowRate 1
 #define kSectionIAP 3
     #define kRowRestore 0
     #define kRowRemoveAds 1
@@ -85,6 +86,9 @@
     if (indexPath.section == kSectionFeedback) {
         if (indexPath.row == kRowRate)
             [self handleRateEvent];
+        
+        if (indexPath.row == kRowFAQ)
+            [self handleFAQEvent];
     }
     
     if (indexPath.section == kSectionIAP) {
@@ -108,6 +112,11 @@
 - (void)handleRateEvent {
     [self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:kRowRate inSection:kSectionFeedback] animated:YES scrollPosition:UITableViewScrollPositionNone];
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:APP_STORE_LINK]];
+}
+
+- (void)handleFAQEvent {
+    [self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:kRowFAQ inSection:kSectionFeedback] animated:YES scrollPosition:UITableViewScrollPositionNone];
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:FAQ_LINK]];
 }
 
 #pragma mark - In-App Purchases

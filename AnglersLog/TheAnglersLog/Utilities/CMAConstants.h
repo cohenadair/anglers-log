@@ -73,6 +73,7 @@ CGSize CELL_SIZE_GALLERY;
 
 extern NSString *const APP_NAME;
 extern NSString *const APP_STORE_LINK;
+extern NSString *const FAQ_LINK;
 extern NSString *const SHARE_MESSAGE;
 extern NSString *const HASHTAG_TEXT;
 extern NSString *const GLOBAL_FONT;
