@@ -12,6 +12,7 @@
 #import "CMAConstants.h"
 #import "CMAInstagramActivity.h"
 #import "CMAImage.h"
+#import "CMAEntry.h"
 #import "CMAAdBanner.h"
 
 @interface CMASinglePhotoViewController ()
@@ -87,7 +88,8 @@
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     CMASinglePhotoCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"imageCell" forIndexPath:indexPath];
-    [cell.imageView setImage:[self.imagesArray objectAtIndex:indexPath.item]];
+    UIImage *img = [[self.imagesArray objectAtIndex:indexPath.item] image];
+    [cell.imageView setImage:img];
     return cell;
 }
 
@@ -104,17 +106,19 @@
 
 - (IBAction)clickActionButton:(UIBarButtonItem *)sender {
     NSIndexPath *selectedIndexPath = [[self.collectionView indexPathsForVisibleItems] objectAtIndex:0];
-    UIImage *selectedImage = [[self.imagesArray objectAtIndex:selectedIndexPath.item] image];
+    CMAImage *selectedImage = [self.imagesArray objectAtIndex:selectedIndexPath.item];
     [self shareImage:selectedImage];
 }
 
 #pragma mark - Sharing
 
-- (void)shareImage:(UIImage *)anImage {
+- (void)shareImage:(CMAImage *)anImage {
     CMAInstagramActivity *instagramActivity = [CMAInstagramActivity new];
     [instagramActivity setPresentView:self.view];
     
-    UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[anImage, SHARE_MESSAGE] applicationActivities:@[instagramActivity]];
+    NSArray *shareItems = @[[anImage image], [anImage.entry shareString]];
+    
+    UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:shareItems applicationActivities:@[instagramActivity]];
     activityController.popoverPresentationController.sourceView = self.view;
     activityController.excludedActivityTypes = @[UIActivityTypeAssignToContact,
                                                  UIActivityTypePrint,

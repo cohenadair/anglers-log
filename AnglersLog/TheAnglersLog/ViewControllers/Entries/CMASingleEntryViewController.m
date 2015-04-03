@@ -371,23 +371,16 @@
 
 #pragma mark - Sharing
 
+// Should share:
+//      Image
+//      Text: "Steelhead Length: 32" Weight: 3 lbs. 9 oz. #AnglersLogApp."
 - (void)shareEntry {
     NSMutableArray *shareItems = [NSMutableArray array];
     
     UIImage *currentImage = [(UIImageView *)[[[self.imageCollectionView visibleCells] objectAtIndex:0] viewWithTag:100] image];
     
     [shareItems addObject:currentImage];
-    NSDateFormatter *f = [NSDateFormatter new];
-    [f setDateFormat:@"MMM dd, yyyy 'at' h:mm a"];
-    [shareItems addObject:[NSString stringWithFormat:@"Caught on %@.", [f stringFromDate:self.entry.date]]];
-    
-    if ([self.entry.fishLength integerValue] > 0)
-        [shareItems addObject:[NSString stringWithFormat:@"Length: %@", [self.entry.fishLength stringValue]]];
-    
-    if ([self.entry.fishWeight integerValue] > 0)
-        [shareItems addObject:[NSString stringWithFormat:@"Weight: %@", [self.entry.fishLength stringValue]]];
-    
-    [shareItems addObject:SHARE_MESSAGE];
+    [shareItems addObject:[self.entry shareString]];
     
     CMAInstagramActivity *instagramActivity = [CMAInstagramActivity new];
     [instagramActivity setPresentView:self.view];

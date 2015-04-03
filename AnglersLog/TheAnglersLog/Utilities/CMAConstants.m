@@ -14,7 +14,7 @@
 NSString *const APP_NAME        = @"Anglers' Log";
 NSString *const APP_STORE_LINK  = @"itms-apps://itunes.apple.com/app/id959989008";
 NSString *const FAQ_LINK        = @"http://cohenadair.com/AnglersLog/FAQ/";
-NSString *const SHARE_MESSAGE   = @"Shared with #AnglersLogApp.";
+NSString *const SHARE_MESSAGE   = @"#AnglersLogApp";
 NSString *const HASHTAG_TEXT    = @"AnglersLogApp";
 NSString *const GLOBAL_FONT     = @"HelveticaNeue";
 NSInteger const MODEL_VERSION   = 4;
@@ -54,6 +54,8 @@ NSString *const UNIT_IMPERIAL_WEIGHT                    = @"Pounds";
 NSString *const UNIT_IMPERIAL_WEIGHT_SHORTHAND          = @" lbs.";
 NSString *const UNIT_IMPERIAL_WEIGHT_SMALL              = @"Ounces";
 NSString *const UNIT_IMPERIAL_WEIGHT_SMALL_SHORTHAND    = @" oz.";
+NSString *const UNIT_IMPERIAL_WEIGHT_SINGLE             = @"Pound";
+NSString *const UNIT_IMPERIAL_WEIGHT_SINGLE_SHORTHAND   = @" lb.";
 NSString *const UNIT_IMPERIAL_DEPTH                     = @"Feet";
 NSString *const UNIT_IMPERIAL_DEPTH_SHORTHAND           = @" ft.";
 NSString *const UNIT_IMPERIAL_TEMPERATURE               = @"Ferinheight";

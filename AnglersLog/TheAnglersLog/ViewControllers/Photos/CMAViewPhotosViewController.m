@@ -109,7 +109,7 @@
         for (CMAEntry *entry in entries)
             for (CMAImage *img in entry.images) {
                 [[weakSelf thumbnails] addObject:img.galleryCellImage];
-                [[weakSelf fullImages] addObject:img.image];
+                [[weakSelf fullImages] addObject:img];
             }
         
         dispatch_async(dispatch_get_main_queue(), ^{

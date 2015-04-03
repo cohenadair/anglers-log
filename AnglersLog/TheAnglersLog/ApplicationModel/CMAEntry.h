@@ -67,7 +67,9 @@
 - (NSString *)locationAsString;
 - (NSString *)fishingMethodsAsString;
 - (NSString *)weightAsStringWithMeasurementSystem:(CMAMeasuringSystemType)aMeasurementSystem shorthand:(BOOL)useShorthand;
+- (NSString *)lengthAsStringWithMeasurementSystem:(CMAMeasuringSystemType)aMeasurementSystem shorthand:(BOOL)useShorthand;
 - (NSString *)fishResultAsString;
+- (NSString *)shareString;
 
 // editing
 - (void)edit:(CMAEntry *)aNewEntry;

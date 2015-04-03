@@ -9,6 +9,7 @@
 
 #import "CMAEntry.h"
 #import "CMAConstants.h"
+#import "CMAJournal.h"
 
 @implementation CMAEntry
 
@@ -104,6 +105,7 @@
     return [NSString stringWithFormat:@"%@%@", self.location.name, fishingSpotText];
 }
 
+// Returns "15 lbs. 8 oz." or "1 lb. 2 oz." or "2.4 kg"
 - (NSString *)weightAsStringWithMeasurementSystem:(CMAMeasuringSystemType)aMeasurementSystem shorthand:(BOOL)useShorthand {
     NSString *result = @"";
     
@@ -112,10 +114,18 @@
     
     if (aMeasurementSystem == CMAMeasuringSystemTypeImperial) {
         if (useShorthand) {
-            weightString = UNIT_IMPERIAL_WEIGHT_SHORTHAND;
+            if ([self.fishWeight integerValue] == 1)
+                weightString = UNIT_IMPERIAL_WEIGHT_SINGLE_SHORTHAND;
+            else
+                weightString = UNIT_IMPERIAL_WEIGHT_SHORTHAND;
+            
             ounceString = UNIT_IMPERIAL_WEIGHT_SMALL_SHORTHAND;
         } else {
-            weightString = [@" " stringByAppendingString:UNIT_IMPERIAL_WEIGHT];
+            if ([self.fishWeight integerValue] == 1)
+                weightString = [@" " stringByAppendingString:UNIT_IMPERIAL_WEIGHT_SINGLE];
+            else
+                weightString = [@" " stringByAppendingString:UNIT_IMPERIAL_WEIGHT];
+            
             ounceString = [@" " stringByAppendingString:UNIT_IMPERIAL_WEIGHT_SMALL];
         }
     } else {
@@ -133,6 +143,24 @@
     return result;
 }
 
+- (NSString *)lengthAsStringWithMeasurementSystem:(CMAMeasuringSystemType)aMeasurementSystem shorthand:(BOOL)useShorthand {
+    NSString *unitString;
+    
+    if (aMeasurementSystem == CMAMeasuringSystemTypeImperial) {
+        if (useShorthand)
+            unitString = UNIT_IMPERIAL_LENGTH_SHORTHAND;
+        else
+            unitString = UNIT_IMPERIAL_LENGTH;
+    } else {
+        if (useShorthand)
+            unitString = UNIT_METRIC_LENGTH_SHORTHAND;
+        else
+            unitString = UNIT_METRIC_LENGTH;
+    }
+    
+    return [NSString stringWithFormat:@"%ld%@", (long)[self.fishLength integerValue], unitString];
+}
+
 - (NSString *)fishResultAsString {
     if (self.fishResult == CMAFishResultKept)
         return @"Kept";
@@ -142,6 +170,28 @@
         NSLog(@"Invalid CMAFishResult in [CMAEntryInstance fishResultAsString].");
     
     return @"";
+}
+
+// Returns a string to be shared when sharing entries via social media.
+- (NSString *)shareString {
+    NSString *result = [NSString stringWithFormat:@"%@ ", self.fishSpecies.name];
+    
+    if ([self.fishLength integerValue] > 0) {
+        NSString *lengthString = [NSString stringWithFormat:@"Length: %@ ", [self lengthAsStringWithMeasurementSystem:self.journal.measurementSystem shorthand:YES]];
+        result = [result stringByAppendingString:lengthString];
+    }
+    
+    if ([self.fishWeight integerValue] > 0) {
+        NSString *weightString = [NSString stringWithFormat:@"Weight: %@ ", [self weightAsStringWithMeasurementSystem:self.journal.measurementSystem shorthand:YES]];
+        result = [result stringByAppendingString:weightString];
+    }
+    
+    if (self.baitUsed) {
+        NSString *baitString = [NSString stringWithFormat:@"Bait: %@ ", self.baitUsed.name];
+        result = [result stringByAppendingString:baitString];
+    }
+    
+    return [result stringByAppendingString:SHARE_MESSAGE];
 }
 
 #pragma mark - Editing
