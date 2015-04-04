@@ -53,9 +53,8 @@
     
     if (self.isReadOnly)
         self.navigationItem.rightBarButtonItems = nil;
-    else
-        [self initNavigationBarItems];
     
+    [self initNavigationBarItems];
     [self initMapView];
     [self initAdBanner];
 }
@@ -84,7 +83,7 @@
 
 - (void)configureForReadOnly {
     [self.tableView setAllowsSelection:NO];
-    
+    [self disableTapRecognizerForMapView:self.mapView];
     [[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:kSectionSelectFishingSpot]] setAccessoryType:UITableViewCellAccessoryNone];
 }
 
@@ -209,9 +208,12 @@
 
 - (void)initNavigationBarItems {
     self.actionButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(clickActionButton)];
-    self.editButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"edit.png"] style:UIBarButtonItemStylePlain target:self action:@selector(clickEditButton)];
     
-    self.navigationItem.rightBarButtonItems = @[self.editButton, self.actionButton];
+    if (!self.isReadOnly) {
+        self.editButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"edit.png"] style:UIBarButtonItemStylePlain target:self action:@selector(clickEditButton)];
+        self.navigationItem.rightBarButtonItems = @[self.editButton, self.actionButton];
+    } else
+        self.navigationItem.rightBarButtonItem = self.actionButton;
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
@@ -268,6 +270,15 @@
     [self setMapRegion];
 }
 
+// Completely disables the default UITapGestureRecogizer in mapView.
+- (void)disableTapRecognizerForMapView:(MKMapView *)mapView {
+    NSArray *a = [[self.mapView.subviews objectAtIndex:0] gestureRecognizers];
+    
+    for (id gesture in a)
+        if ([gesture isKindOfClass:[UITapGestureRecognizer class]])
+            [gesture setEnabled:NO];
+}
+
 - (void)showMapView {
     [UIView animateWithDuration:0.3 animations:^() {
         [self.mapView setAlpha:1.0];
@@ -302,6 +313,11 @@
 
 - (void)mapViewDidFinishRenderingMap:(MKMapView *)mapView fullyRendered:(BOOL)fullyRendered {
     [self showMapView];
+    
+    for (id<MKAnnotation> a in mapView.annotations) {
+        MKAnnotationView *v = [mapView viewForAnnotation:a];
+        [v setEnabled:!self.isReadOnly];
+    }
 }
 
 - (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view {
@@ -312,6 +328,9 @@
 }
 
 - (void)mapView:(MKMapView *)mapView didDeselectAnnotationView:(MKAnnotationView *)view {
+    if (self.isReadOnly)
+        return;
+    
     if ([[mapView selectedAnnotations] count] == 0)
         [self initCurrentFishingSpot:nil];
 }
