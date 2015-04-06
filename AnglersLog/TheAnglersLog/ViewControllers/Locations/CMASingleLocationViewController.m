@@ -14,6 +14,7 @@
 #import "CMAInstagramActivity.h"
 #import "CMAAdBanner.h"
 #import "CMAStorageManager.h"
+#import "CMAAlerts.h"
 
 @interface CMASingleLocationViewController ()
 
@@ -25,7 +26,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *fishCaughtLabel;
 
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
-@property (weak, nonatomic) IBOutlet UIView *loadingMapView;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *mapTypeControl;
 
 @property (strong, nonatomic)CMAAdBanner *adBanner;
@@ -33,6 +33,8 @@
 
 @property (strong, nonatomic)CMAFishingSpot *currentFishingSpot;
 @property (nonatomic)BOOL isReadOnly;
+@property (nonatomic)BOOL mapDidRender;
+@property (nonatomic)BOOL showRenderError;
 
 @end
 
@@ -49,6 +51,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    self.mapDidRender = NO;
+    self.showRenderError = YES;
     self.isReadOnly = self.previousViewID == CMAViewControllerIDSingleEntry;
     
     if (self.isReadOnly)
@@ -168,6 +172,8 @@
 - (IBAction)mapTypeControlChange:(UISegmentedControl *)sender {
     [self.mapView setMapType:sender.selectedSegmentIndex];
     [[CMAStorageManager sharedManager] setUserMapType:sender.selectedSegmentIndex];
+    self.mapDidRender = NO;
+    self.showRenderError = YES;
 }
 
 // Shares a screenshot of the current map view canvas.
@@ -259,10 +265,7 @@
 - (void)initMapView {
     [self.mapTypeControl.layer setCornerRadius:5.0f];
     [self.mapTypeControl setSelectedSegmentIndex:[[CMAStorageManager sharedManager] getUserMapType]];
-    [self.mapView setAlpha:0.0];
     [self.mapView setMapType:self.mapTypeControl.selectedSegmentIndex];
-    [self.mapTypeControl setAlpha:0.0];
-    [self.loadingMapView setAlpha:1.0];
     
     [self.mapTypeControl.superview bringSubviewToFront:self.mapTypeControl];
     
@@ -277,14 +280,6 @@
     for (id gesture in a)
         if ([gesture isKindOfClass:[UITapGestureRecognizer class]])
             [gesture setEnabled:NO];
-}
-
-- (void)showMapView {
-    [UIView animateWithDuration:0.3 animations:^() {
-        [self.mapView setAlpha:1.0];
-        [self.mapTypeControl setAlpha:0.85];
-        [self.loadingMapView setAlpha:0.0];
-    }];
 }
 
 // Returns an MKPointAnnotation with aTitle.
@@ -312,12 +307,12 @@
 }
 
 - (void)mapViewDidFinishRenderingMap:(MKMapView *)mapView fullyRendered:(BOOL)fullyRendered {
-    [self showMapView];
-    
     for (id<MKAnnotation> a in mapView.annotations) {
         MKAnnotationView *v = [mapView viewForAnnotation:a];
         [v setEnabled:!self.isReadOnly];
     }
+    
+    self.mapDidRender = YES;
 }
 
 - (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view {
@@ -333,6 +328,15 @@
     
     if ([[mapView selectedAnnotations] count] == 0)
         [self initCurrentFishingSpot:nil];
+}
+
+- (void)mapViewDidFailLoadingMap:(MKMapView *)mapView withError:(NSError *)error {
+    NSLog(@"Failed to load map: %@.", error.localizedDescription);
+    
+    if (!self.mapDidRender && self.showRenderError) {
+        [CMAAlerts errorAlert:@"Failed to render map. Please try again later, zoom out, or select a different map type." presentationViewController:self];
+        self.showRenderError = NO;
+    }
 }
 
 @end

@@ -419,33 +419,8 @@
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="zco-K0-oVl" id="R8n-TW-yoj">
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <view tag="200" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Lyv-5X-Xve">
-                                                    <rect key="frame" x="230" y="63" width="140" height="89"/>
-                                                    <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Loading map..." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HPg-am-asO">
-                                                            <rect key="frame" x="20" y="20" width="100" height="21"/>
-                                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
-                                                        <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="mwW-6r-xcF">
-                                                            <rect key="frame" x="60" y="49" width="20" height="20"/>
-                                                        </activityIndicatorView>
-                                                    </subviews>
-                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                                    <constraints>
-                                                        <constraint firstItem="HPg-am-asO" firstAttribute="centerX" secondItem="Lyv-5X-Xve" secondAttribute="centerX" id="0b9-jV-Maf"/>
-                                                        <constraint firstAttribute="bottom" secondItem="mwW-6r-xcF" secondAttribute="bottom" constant="20" id="2dX-F5-Uf5"/>
-                                                        <constraint firstItem="mwW-6r-xcF" firstAttribute="centerX" secondItem="HPg-am-asO" secondAttribute="centerX" id="AxG-SW-380"/>
-                                                        <constraint firstAttribute="height" constant="89" id="FwP-lx-ni7"/>
-                                                        <constraint firstItem="HPg-am-asO" firstAttribute="top" secondItem="Lyv-5X-Xve" secondAttribute="top" constant="20" id="cbb-hH-Bzj"/>
-                                                        <constraint firstItem="HPg-am-asO" firstAttribute="leading" secondItem="Lyv-5X-Xve" secondAttribute="leading" constant="20" id="fDf-O3-PUO"/>
-                                                        <constraint firstItem="mwW-6r-xcF" firstAttribute="top" secondItem="HPg-am-asO" secondAttribute="bottom" constant="8" symbolic="YES" id="jWc-A3-ktG"/>
-                                                        <constraint firstAttribute="width" constant="140" id="rrk-qf-U4C"/>
-                                                    </constraints>
-                                                </view>
                                                 <mapView clipsSubviews="YES" multipleTouchEnabled="YES" tag="100" contentMode="scaleToFill" mapType="hybrid" rotateEnabled="NO" pitchEnabled="NO" showsUserLocation="YES" showsPointsOfInterest="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3ya-dt-qqn">
-                                                    <rect key="frame" x="0.0" y="-1" width="600" height="216"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="600" height="215"/>
                                                     <connections>
                                                         <outlet property="delegate" destination="adr-BS-f2S" id="bbN-zS-hrp"/>
                                                     </connections>
@@ -465,16 +440,15 @@
                                                 </segmentedControl>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstAttribute="centerY" secondItem="Lyv-5X-Xve" secondAttribute="centerY" id="0eu-71-AwH"/>
-                                                <constraint firstItem="3ya-dt-qqn" firstAttribute="centerX" secondItem="Lyv-5X-Xve" secondAttribute="centerX" id="5pW-x1-3w7"/>
-                                                <constraint firstItem="3ya-dt-qqn" firstAttribute="centerY" secondItem="Lyv-5X-Xve" secondAttribute="centerY" id="7y7-Ml-gQO"/>
-                                                <constraint firstAttribute="centerX" secondItem="Lyv-5X-Xve" secondAttribute="centerX" id="JO1-R7-Gh2"/>
-                                                <constraint firstItem="3ya-dt-qqn" firstAttribute="leading" secondItem="R8n-TW-yoj" secondAttribute="leading" id="RmS-x2-cB1"/>
+                                                <constraint firstItem="3ya-dt-qqn" firstAttribute="leading" secondItem="R8n-TW-yoj" secondAttribute="leading" id="0Wz-yd-Qyv"/>
+                                                <constraint firstAttribute="trailing" secondItem="3ya-dt-qqn" secondAttribute="trailing" id="9FY-iB-nJb"/>
+                                                <constraint firstItem="3ya-dt-qqn" firstAttribute="centerX" secondItem="UJ7-g1-YbQ" secondAttribute="centerX" id="H6I-JV-HDw"/>
+                                                <constraint firstAttribute="bottom" secondItem="3ya-dt-qqn" secondAttribute="bottom" id="PHR-IU-ATd"/>
                                                 <constraint firstItem="UJ7-g1-YbQ" firstAttribute="bottom" secondItem="R8n-TW-yoj" secondAttribute="bottomMargin" id="VRF-OD-ix5"/>
+                                                <constraint firstItem="3ya-dt-qqn" firstAttribute="top" secondItem="R8n-TW-yoj" secondAttribute="top" id="bjy-4h-iQo"/>
                                                 <constraint firstItem="3ya-dt-qqn" firstAttribute="top" secondItem="R8n-TW-yoj" secondAttribute="topMargin" constant="-9" id="dEU-Mf-rBm"/>
-                                                <constraint firstAttribute="bottom" secondItem="3ya-dt-qqn" secondAttribute="bottom" id="dXI-f9-0WS"/>
                                                 <constraint firstItem="UJ7-g1-YbQ" firstAttribute="leading" secondItem="R8n-TW-yoj" secondAttribute="leadingMargin" id="rlh-2F-rQH"/>
-                                                <constraint firstItem="UJ7-g1-YbQ" firstAttribute="centerX" secondItem="Lyv-5X-Xve" secondAttribute="centerX" id="yGv-4L-a0x"/>
+                                                <constraint firstAttribute="centerY" secondItem="3ya-dt-qqn" secondAttribute="centerY" id="zzl-Kj-6NJ"/>
                                             </constraints>
                                             <variation key="default">
                                                 <mask key="constraints">
@@ -499,7 +473,6 @@
                         <outlet property="coordinateLabel" destination="2Uf-Lt-Lix" id="Sua-p9-Tq6"/>
                         <outlet property="fishCaughtLabel" destination="2ey-Yi-aJi" id="5c1-KN-GjT"/>
                         <outlet property="fishingSpotLabel" destination="mMI-sH-N3r" id="ErN-ag-1DI"/>
-                        <outlet property="loadingMapView" destination="Lyv-5X-Xve" id="sXG-ab-tDq"/>
                         <outlet property="mapTypeControl" destination="UJ7-g1-YbQ" id="RQC-RQ-2pa"/>
                         <outlet property="mapView" destination="3ya-dt-qqn" id="nvp-91-UhT"/>
                         <segue destination="aLM-pd-xcd" kind="unwind" identifier="unwindToAddEntryFromSingleLocation" unwindAction="unwindToAddEntry:" id="i4g-iX-B1F"/>
@@ -2461,33 +2434,6 @@
                                                         <constraint firstAttribute="height" constant="25" id="vfr-Qn-V7L"/>
                                                     </constraints>
                                                 </imageView>
-                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Bzk-8g-TMI">
-                                                    <rect key="frame" x="230" y="55" width="140" height="89"/>
-                                                    <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Loading map..." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qYo-ci-ivJ">
-                                                            <rect key="frame" x="20" y="20" width="100" height="21"/>
-                                                            <constraints>
-                                                                <constraint firstAttribute="height" constant="21" id="6Xv-O5-wk5"/>
-                                                                <constraint firstAttribute="width" constant="100" id="7la-e3-4vS"/>
-                                                            </constraints>
-                                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
-                                                        <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="Tpr-u2-2XR">
-                                                            <rect key="frame" x="60" y="49" width="20" height="20"/>
-                                                        </activityIndicatorView>
-                                                    </subviews>
-                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                                    <constraints>
-                                                        <constraint firstItem="Tpr-u2-2XR" firstAttribute="centerX" secondItem="Bzk-8g-TMI" secondAttribute="centerX" id="50Z-Y4-jpy"/>
-                                                        <constraint firstAttribute="bottom" secondItem="Tpr-u2-2XR" secondAttribute="bottom" constant="20" id="HiA-ws-oCC"/>
-                                                        <constraint firstItem="qYo-ci-ivJ" firstAttribute="top" secondItem="Bzk-8g-TMI" secondAttribute="top" constant="20" id="MnT-s8-3a4"/>
-                                                        <constraint firstItem="Tpr-u2-2XR" firstAttribute="centerX" secondItem="qYo-ci-ivJ" secondAttribute="centerX" id="dyw-Ir-WmW"/>
-                                                        <constraint firstItem="Tpr-u2-2XR" firstAttribute="top" secondItem="qYo-ci-ivJ" secondAttribute="bottom" constant="8" symbolic="YES" id="gOq-Tq-Evk"/>
-                                                        <constraint firstItem="qYo-ci-ivJ" firstAttribute="leading" secondItem="Bzk-8g-TMI" secondAttribute="leading" constant="20" id="gec-z7-1Yc"/>
-                                                    </constraints>
-                                                </view>
                                                 <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="2" translatesAutoresizingMaskIntoConstraints="NO" id="eoP-RZ-Mua">
                                                     <rect key="frame" x="8" y="164" width="584" height="29"/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -2501,7 +2447,7 @@
                                                     </connections>
                                                 </segmentedControl>
                                                 <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="hybrid" pitchEnabled="NO" showsUserLocation="YES" showsPointsOfInterest="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KWy-xh-Kse">
-                                                    <rect key="frame" x="0.0" y="0.0" width="600" height="199"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="600" height="200"/>
                                                     <connections>
                                                         <outlet property="delegate" destination="4io-XD-WCS" id="cuR-2p-JlM"/>
                                                     </connections>
@@ -2512,12 +2458,10 @@
                                                 <constraint firstItem="KWy-xh-Kse" firstAttribute="top" secondItem="ubF-mw-eUH" secondAttribute="top" id="6M1-cH-T6t"/>
                                                 <constraint firstItem="eoP-RZ-Mua" firstAttribute="centerX" secondItem="Kfk-7j-5tf" secondAttribute="centerX" id="LPt-0r-2Bp"/>
                                                 <constraint firstItem="eoP-RZ-Mua" firstAttribute="bottom" secondItem="ubF-mw-eUH" secondAttribute="bottomMargin" id="UCs-Qa-2Ks"/>
-                                                <constraint firstAttribute="centerY" secondItem="Bzk-8g-TMI" secondAttribute="centerY" id="aNZ-dn-rjS"/>
                                                 <constraint firstItem="KWy-xh-Kse" firstAttribute="centerX" secondItem="Kfk-7j-5tf" secondAttribute="centerX" id="brk-yQ-10I"/>
                                                 <constraint firstItem="KWy-xh-Kse" firstAttribute="leading" secondItem="ubF-mw-eUH" secondAttribute="leading" id="goJ-XW-dN5"/>
                                                 <constraint firstAttribute="centerY" secondItem="Kfk-7j-5tf" secondAttribute="centerY" id="jYC-Z7-N9s"/>
                                                 <constraint firstItem="eoP-RZ-Mua" firstAttribute="leading" secondItem="ubF-mw-eUH" secondAttribute="leadingMargin" id="plD-vU-AgN"/>
-                                                <constraint firstAttribute="centerX" secondItem="Bzk-8g-TMI" secondAttribute="centerX" id="wcJ-ac-1ep"/>
                                                 <constraint firstAttribute="centerX" secondItem="Kfk-7j-5tf" secondAttribute="centerX" id="zoq-hz-5uB"/>
                                             </constraints>
                                         </tableViewCellContentView>
@@ -2608,7 +2552,6 @@
                         <outlet property="doneButton" destination="6zi-Ba-2lv" id="4Ri-VQ-woV"/>
                         <outlet property="fishingSpotNameTextField" destination="0Pc-wS-1HL" id="f1A-Db-CGE"/>
                         <outlet property="latitudeLabel" destination="lvS-dh-6bS" id="wnl-fc-MeI"/>
-                        <outlet property="loadingMapView" destination="Bzk-8g-TMI" id="nPz-vc-zvC"/>
                         <outlet property="longitudeLabel" destination="64r-wH-OUX" id="p1e-3U-dHi"/>
                         <outlet property="mapTypeControl" destination="eoP-RZ-Mua" id="yQo-lP-kTh"/>
                         <outlet property="mapView" destination="KWy-xh-Kse" id="9lC-yX-Z7O"/>
@@ -3363,21 +3306,21 @@
         <image name="water_clarities.png" width="50" height="50"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="N6N-0S-koD"/>
-        <segue reference="mBP-Qv-19k"/>
+        <segue reference="gDt-Tw-gtk"/>
         <segue reference="wUY-7j-U9z"/>
         <segue reference="bOr-hP-Xzw"/>
         <segue reference="exN-Q3-TGx"/>
-        <segue reference="y0h-hR-J5c"/>
+        <segue reference="Jyy-wS-dXA"/>
+        <segue reference="mBP-Qv-19k"/>
+        <segue reference="2gI-zo-GiY"/>
+        <segue reference="aBE-xI-c3y"/>
+        <segue reference="Twf-fj-9Lv"/>
+        <segue reference="N6N-0S-koD"/>
+        <segue reference="tz7-VS-vMB"/>
+        <segue reference="hdA-bN-TMh"/>
+        <segue reference="b63-Bg-tWk"/>
         <segue reference="1Kg-jf-Myf"/>
         <segue reference="uUK-tT-jvg"/>
         <segue reference="ij7-4o-wMK"/>
-        <segue reference="aBE-xI-c3y"/>
-        <segue reference="Jyy-wS-dXA"/>
-        <segue reference="2gI-zo-GiY"/>
-        <segue reference="gDt-Tw-gtk"/>
-        <segue reference="tz7-VS-vMB"/>
-        <segue reference="hdA-bN-TMh"/>
-        <segue reference="Twf-fj-9Lv"/>
     </inferredMetricsTieBreakers>
 </document>

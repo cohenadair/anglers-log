@@ -469,12 +469,18 @@
 
 #define kUserSettingMapType @"UserMapType"
 
+// Uses + and - 1 because if the key doesn't exist the default is 0 and the default needs to be 1.
+// The type integers are MKMapType and are used in a UISegmentedControl.
+// So 1, 2, and 3 are stored rather than 0, 1, 2.
 - (void)setUserMapType:(MKMapType)mapType {
-    [[NSUserDefaults standardUserDefaults] setInteger:mapType forKey:kUserSettingMapType];
+    [[NSUserDefaults standardUserDefaults] setInteger:mapType + 1 forKey:kUserSettingMapType];
 }
 
 - (MKMapType)getUserMapType {
-    return [[NSUserDefaults standardUserDefaults] integerForKey:kUserSettingMapType];
+    NSInteger type = [[NSUserDefaults standardUserDefaults] integerForKey:kUserSettingMapType];
+    if (type == 0)
+        [self setUserMapType:MKMapTypeSatellite];
+    return [[NSUserDefaults standardUserDefaults] integerForKey:kUserSettingMapType] - 1;
 }
 
 @end

@@ -21,13 +21,14 @@
 @property (weak, nonatomic)IBOutlet UILabel *latitudeLabel;
 @property (weak, nonatomic)IBOutlet UILabel *longitudeLabel;
 @property (weak, nonatomic)IBOutlet UIImageView *rectileImage;
-@property (weak, nonatomic)IBOutlet UIView *loadingMapView;
 @property (weak, nonatomic)IBOutlet UISegmentedControl *mapTypeControl;
 
 @property (strong, nonatomic)CLLocationManager *locationManager;
 @property (nonatomic)BOOL userLocationAdded;
 @property (nonatomic)BOOL mapHasLoaded;
 @property (nonatomic)BOOL tappedDoneButton;
+@property (nonatomic)BOOL mapDidRender;
+@property (nonatomic)BOOL showRenderError;
 
 @end
 
@@ -53,6 +54,9 @@
         self.isEditingFishingSpot = YES;
     }
     
+    self.mapDidRender = NO;
+    self.showRenderError = YES;
+    
     [self initMapView];
 }
 
@@ -70,9 +74,6 @@
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    
-    if ([self.locationFromAddLocation fishingSpotCount] > 0)
-        [self setMapRegion];
     
     UILabel *legal = [self.mapView.subviews objectAtIndex:1];
     legal.center = CGPointMake(legal.center.x, legal.center.y - self.mapTypeControl.frame.size.height);
@@ -155,6 +156,8 @@
 - (IBAction)mapTypeControlChange:(UISegmentedControl *)sender {
     [self.mapView setMapType:sender.selectedSegmentIndex];
     [[CMAStorageManager sharedManager] setUserMapType:sender.selectedSegmentIndex];
+    self.mapDidRender = NO;
+    self.showRenderError = YES;
 }
 
 #pragma mark - Navigation
@@ -176,23 +179,22 @@
     
     [self.mapTypeControl.layer setCornerRadius:5.0f];
     [self.mapTypeControl setSelectedSegmentIndex:[[CMAStorageManager sharedManager] getUserMapType]];
-    [self.mapView setAlpha:0.0];
     [self.mapView setMapType:self.mapTypeControl.selectedSegmentIndex];
-    [self.mapTypeControl setAlpha:0.0];
-    [self.rectileImage setAlpha:0.0];
-    [self.loadingMapView setAlpha:1.0];
     
     [self.mapTypeControl.superview bringSubviewToFront:self.mapTypeControl];
     [self.mapTypeControl.superview bringSubviewToFront:self.rectileImage];
-}
-
-- (void)showMapView {
-    [UIView animateWithDuration:0.3 animations:^() {
-        [self.mapView setAlpha:1.0];
-        [self.mapTypeControl setAlpha:0.85];
-        [self.rectileImage setAlpha:1.0];
-        [self.loadingMapView setAlpha:0.0];
-    }];
+    
+    if ([self.locationFromAddLocation fishingSpotCount] > 0)
+        [self setMapRegion];
+    
+    // added existing fishing spots
+    for (CMAFishingSpot *spot in self.locationFromAddLocation.fishingSpots) {
+        MKPointAnnotation *p = [MKPointAnnotation new];
+        [p setCoordinate:spot.coordinate];
+        [p setTitle:spot.name];
+        
+        [self.mapView addAnnotation:p];
+    }
 }
 
 - (void)mapView:(MKMapView *)mapView regionWillChangeAnimated:(BOOL)animated {
@@ -225,7 +227,16 @@
 }
 
 - (void)mapViewDidFinishRenderingMap:(MKMapView *)mapView fullyRendered:(BOOL)fullyRendered {
-    [self showMapView];
+    self.mapDidRender = YES;
+}
+
+- (void)mapViewDidFailLoadingMap:(MKMapView *)mapView withError:(NSError *)error {
+    NSLog(@"Failed to load map: %@.", error.localizedDescription);
+    
+    if (!self.mapDidRender && self.showRenderError) {
+        [CMAAlerts errorAlert:@"Failed to render map. Please try again later, zoom out, or select a different map type." presentationViewController:self];
+        self.showRenderError = NO;
+    }
 }
 
 #pragma mark - Location Manager Delegate
@@ -243,7 +254,6 @@
 - (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error {
     [CMAAlerts errorAlert:@"Failed to get location. Try again later or manually drag the map to your location." presentationViewController:self];
     NSLog(@"Failed to get user location. Error: %@", error.localizedDescription);
-    [self showMapView];
 }
 
 @end
