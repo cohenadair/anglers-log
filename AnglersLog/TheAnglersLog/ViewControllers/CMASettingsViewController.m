@@ -75,11 +75,18 @@
     return 44;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if (section == kSectionIAP)
-        return 1 + [CMAAdBanner shouldDisplayBanners];
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    UITableViewCell *cell = [super tableView:tableView cellForRowAtIndexPath:indexPath];
     
-    return [super tableView:tableView numberOfRowsInSection:section];
+    if (indexPath.section == kSectionIAP && indexPath.row == kRowRemoveAds && ![CMAAdBanner shouldDisplayBanners]) {
+        cell.accessoryType = UITableViewCellAccessoryCheckmark;
+        cell.userInteractionEnabled = NO;
+        cell.tintColor = [UIColor lightGrayColor];
+        UILabel *label = (UILabel *)[cell viewWithTag:100];
+        label.enabled = NO;
+    }
+    
+    return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
