@@ -73,6 +73,7 @@
     
     [[UINavigationBar appearance] setTranslucent:NO];
     [[UIToolbar appearance] setTranslucent:NO];
+    [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(-200.0, 0) forBarMetrics:UIBarMetricsDefault];
 }
 
 @end
