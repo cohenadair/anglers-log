@@ -267,7 +267,7 @@
 }
 
 - (void)updatePieCenterLabelsForTotal {
-    self.pieChartCenterView.bigLabel.text = [NSString stringWithFormat:@"%ld", (long)[self.stats totalValue]];
+    self.pieChartCenterView.bigLabel.text = [NSString stringWithFormat:@"%ld", (long)[self.stats totalButtonLabelValue]];
     self.pieChartCenterView.subLabel.text = [self.stats totalDescription];
     
     // get the earliest entry date

@@ -56,12 +56,14 @@
                 
             case CMAPieChartDataTypeBait:
                 self.userDefineName = UDN_BAITS;
+                _totalDescription = @"Baits Used";
                 _detailDescription = @"Fish Caught";
                 [self initForBait];
                 break;
                 
             case CMAPieChartDataTypeLocation:
                 self.userDefineName = UDN_LOCATIONS;
+                _totalDescription = @"Locations";
                 [self initForLocation];
                 break;
                 
@@ -87,6 +89,7 @@
         [result addObject:obj];
     }
     
+    self.totalButtonLabelValue = self.totalValue;
     self.sliceObjects = result;
 }
 
@@ -111,13 +114,15 @@
         [result addObject:obj];
     }
     
+    self.totalButtonLabelValue = self.totalValue;
     self.sliceObjects = result;
 }
 
 - (void)initForLocation {
     NSMutableArray *result = [NSMutableArray array];
+    CMAUserDefine *userDefine = [self.journal userDefineNamed:UDN_LOCATIONS];
     
-    for (CMALocation *loc in [[self.journal userDefineNamed:UDN_LOCATIONS] activeSet]) {
+    for (CMALocation *loc in [userDefine activeSet]) {
         CMAStatsObject *obj = [CMAStatsObject new];
         
         for (CMAFishingSpot *spot in loc.fishingSpots)
@@ -129,13 +134,15 @@
         [result addObject:obj];
     }
     
+    self.totalButtonLabelValue = [userDefine count];
     self.sliceObjects = result;
 }
 
 - (void)initForBait {
     NSMutableArray *result = [NSMutableArray array];
+    CMAUserDefine *userDefine = [self.journal userDefineNamed:UDN_BAITS];
     
-    for (CMABait *bait in [[self.journal userDefineNamed:UDN_BAITS] activeSet]) {
+    for (CMABait *bait in [userDefine activeSet]) {
         CMAStatsObject *obj = [CMAStatsObject new];
         
         [obj setName:bait.name];
@@ -145,6 +152,7 @@
         [result addObject:obj];
     }
     
+    self.totalButtonLabelValue = [userDefine count];
     self.sliceObjects = result;
 }
 

@@ -29,7 +29,8 @@ typedef NS_ENUM(NSInteger, CMAPieChartDataType) {
 @property (strong, nonatomic)NSString *detailDescription;
 @property (strong, nonatomic)NSString *detailDescription2;
 @property (strong, nonatomic)NSString *userDefineName;
-@property (nonatomic)NSInteger totalValue;
+@property (nonatomic)NSInteger totalValue;                  // used to calculate percentages
+@property (nonatomic)NSInteger totalButtonLabelValue;       // displayed when the "Total" button is clicked
 @property (nonatomic)CMAPieChartDataType pieChartDataType;
 
 // initializing
