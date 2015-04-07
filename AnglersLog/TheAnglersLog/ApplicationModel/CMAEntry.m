@@ -174,20 +174,20 @@
 
 // Returns a string to be shared when sharing entries via social media.
 - (NSString *)shareString {
-    NSString *result = [NSString stringWithFormat:@"%@ ", self.fishSpecies.name];
+    NSString *result = [NSString stringWithFormat:@"%@\n", self.fishSpecies.name];
     
     if ([self.fishLength integerValue] > 0) {
-        NSString *lengthString = [NSString stringWithFormat:@"Length: %@ ", [self lengthAsStringWithMeasurementSystem:self.journal.measurementSystem shorthand:YES]];
+        NSString *lengthString = [NSString stringWithFormat:@"Length: %@\n", [self lengthAsStringWithMeasurementSystem:self.journal.measurementSystem shorthand:YES]];
         result = [result stringByAppendingString:lengthString];
     }
     
     if ([self.fishWeight integerValue] > 0) {
-        NSString *weightString = [NSString stringWithFormat:@"Weight: %@ ", [self weightAsStringWithMeasurementSystem:self.journal.measurementSystem shorthand:YES]];
+        NSString *weightString = [NSString stringWithFormat:@"Weight: %@\n", [self weightAsStringWithMeasurementSystem:self.journal.measurementSystem shorthand:YES]];
         result = [result stringByAppendingString:weightString];
     }
     
     if (self.baitUsed) {
-        NSString *baitString = [NSString stringWithFormat:@"Bait: %@ ", self.baitUsed.name];
+        NSString *baitString = [NSString stringWithFormat:@"Bait: %@\n", self.baitUsed.name];
         result = [result stringByAppendingString:baitString];
     }
     
