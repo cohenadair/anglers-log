@@ -37,6 +37,11 @@
     // archive entire images and JSON
     [SSZipArchive createZipFileAtPath:zipFilePath withContentsOfDirectory:[documentsDirectory stringByAppendingPathComponent:@"Images/"]];
     
+    // remove .json file as it's no longer needed
+    NSError *e;
+    if (![[NSFileManager defaultManager] removeItemAtPath:jsonFilePath error:&e])
+        NSLog(@"Error deleting .json file");
+    
     return [NSURL URLWithString:zipFilePath];
 }
 
