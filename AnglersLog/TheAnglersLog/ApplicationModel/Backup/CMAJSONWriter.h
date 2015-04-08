@@ -14,6 +14,7 @@
 
 @property (strong, nonatomic)NSFileHandle *outFile;
 @property (nonatomic)NSInteger currentTab;
+@property (nonatomic)BOOL addComma; // used for some user defines (i.e. check if fishing method is last in an entry)
 
 + (void)journalToJSON:(CMAJournal *)aJournal;
 

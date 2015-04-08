@@ -16,11 +16,9 @@
 + (void)journalToJSON:(CMAJournal *)aJournal {
     CMAJSONWriter *writer = [self new];
     
-    [writer writeString:@"{\n"];
-    [writer tabIn];
+    [writer writeOpen];
     [aJournal accept:writer];
-    [writer tabOut];
-    [writer writeString:@"}"];
+    [writer writeCloseWithComma:NO];
     
     [writer.outFile closeFile];
 }
@@ -203,8 +201,10 @@
     [self writeKeyValueString:@"baitUsed" andString:anEntry.baitUsed.name andComma:YES];
     
     [self writeArrayKey:@"fishingMethods"];
-    for (CMAFishingMethod *m in anEntry.fishingMethods)
+    for (CMAFishingMethod *m in anEntry.fishingMethods) {
+        self.addComma = (m != [[anEntry.fishingMethods allObjects] lastObject]);
         [m accept:self];
+    }
     [self writeArrayCloseWithComma:YES];
     
     [self writeKeyValueString:@"location" andString:anEntry.location.name andComma:YES];
@@ -230,7 +230,8 @@
 
 - (void)visitFishingMethod:(CMAFishingMethod *)aFishingMethod {
     [self writeOpen];
-    [self writeCloseWithComma:aFishingMethod != [aFishingMethod.userDefine.fishingMethods lastObject]];
+    [self writeKeyValueString:@"name" andString:aFishingMethod.name andComma:NO];
+    [self writeCloseWithComma:self.addComma];
 }
 
 - (void)visitWeatherData:(CMAWeatherData *)someWeatherData {
