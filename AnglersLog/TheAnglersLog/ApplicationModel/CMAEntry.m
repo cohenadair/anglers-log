@@ -11,6 +11,7 @@
 #import "CMAConstants.h"
 #import "CMAJournal.h"
 #import "CMAJSONWriter.h"
+#import "CMAStorageManager.h"
 
 @implementation CMAEntry
 
@@ -218,11 +219,12 @@
 }
 
 - (void)addImage:(CMAImage *)anImage {
-    [self.images addObject:anImage];
+    [anImage setEntry:self]; // thanks to core data, making this connection adds anImage to self.images
 }
 
 - (void)removeImage:(CMAImage *)anImage {
-    [self.images removeObject:anImage];
+    // removing the managed object removes it from the array as well
+    [[CMAStorageManager sharedManager] deleteManagedObject:anImage saveContext:NO];
 }
 
 #pragma mark - Visiting

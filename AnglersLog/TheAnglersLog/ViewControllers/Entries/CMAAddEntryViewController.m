@@ -674,7 +674,7 @@ NSString *const kNotSelectedString = @"Not Selected";
     // delete the old images as they are no longer needed
     if ([self.entry imageCount] > 0) {
         for (CMAImage *img in self.entry.images)
-            [[CMAStorageManager sharedManager] deleteManagedObject:img saveContext:NO];
+            [self.entry removeImage:img];
         
         self.entry.images = nil;
         self.entry.images = [NSMutableOrderedSet orderedSet];
@@ -684,7 +684,7 @@ NSString *const kNotSelectedString = @"Not Selected";
         for (int i = 0; i < [self.entryImages count]; i++) {
             CMAImage *img = [[CMAStorageManager sharedManager] managedImage];
             [img setImage:[self.entryImages objectAtIndex:i]];
-            [img setEntry:anEntry];
+            [anEntry addImage:img];
             [img saveWithIndex:i];
 
             if ([[self.saveEntryImagesToGallery objectAtIndex:i] boolValue])
