@@ -1,0 +1,107 @@
+// *1: use as reference to actual object so it can be loaded during import.
+// *2: needs to be parsed by iOS and Android into their respective Date objects.
+// *3: enum type.
+// *4: only one "user define" array will be populated; the rest will be empty.
+//     there will be a new "userDefine_i" for each user define.
+
+{
+    "journal": {
+        "name": "aName",
+        "entries": [
+            {
+                "date": "aParsableDateString",                      // *2
+                "images": [
+                    {
+                        "data": "someData",
+                        "entryDate": "aDateOrNil",                  // *1
+                        "baitName": "aNameOrNil"                    // *1 
+                    }
+                ],
+                "fishSpecies": "aSpeciesName",                      // *1
+                "fishLength": 0,
+                "fishWeight": 0,
+                "fishOunces": 0,
+                "fishQuantity": 0,
+                "fishResult": 0,                                    // *3
+                "baitUsed": "aNameOrNil",                           // *1
+                "fishingMethods": [
+                    {
+                        "name": "aFishingMethodName"                // *1
+                    }
+                ],
+                "location": "aLocationName",                        // *1
+                "fishingSpot": "aFishingSpotName",                  // *1
+                "weatherData": {
+                    "entry": "anEntryDate",                         // *1
+                    "temperature": 0,
+                    "windSpeed": "windSpeed",
+                    "skyConditions": "skyConditions",
+                    "imageURL": "aURLString"
+                },
+                "waterTemperature": 0,
+                "waterClarity": "aName",                            // *1
+                "waterDepth": 0,
+                "notes" : "someNotes",
+                "journal": "aJournalName"                           // *1
+            }
+        ],
+        "userDefines": [
+            {                                                       // *4                         
+                "name": "aString",
+                "journal": "aJournalName",                          // *1
+                "baits": [
+                    {
+                        "name": "aString",
+                        "baitDescription": "aString",
+                        "image": {
+                            "data": "someData",
+                            "entryDate": "aDateOrNil",              // *1
+                            "baitName": "aNameOrNil"                // *1 
+                        },
+                        "fishCaught": 0,
+                        "size": "aString",
+                        "color": "aString",
+                        "baitType": 0                               // *3
+                    }
+                ],
+                "fishingMethods": [
+                    {
+                        "name": "aString"
+                    }
+                ],
+                "locations": [
+                    {
+                        "name": "aString",
+                        "fishingSpots": [
+                            {
+                                "name": "aString",
+                                "fishCaught": 0,
+                                "coordinates": {
+                                    "latitude": 0.00000,
+                                    "longitude": 0.00000
+                                },
+                                "location": "aLocationName"         // *1
+                            }
+                        ]
+                    }
+                ],
+                "species": [
+                    {
+                        "name": "aString",
+                        "numberCaught": 0,
+                        "weightCaught": 0,
+                        "ouncesCaught": 0
+                    }
+                ],
+                "waterClarities": [
+                    {
+                        "name": "aString"
+                    }
+                ],
+            }
+        ],
+        "measurementSystem": 0,                                     // *3
+        "entrySortMethod": 0,                                       // *3
+        "entrySortOrder": 0                                         // *3
+    }  
+}

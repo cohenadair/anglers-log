@@ -76,4 +76,7 @@
 - (void)addImage:(CMAImage *)anImage;
 - (void)removeImage:(CMAImage *)anImage;
 
+// visiting
+- (void)accept:(id)aVisitor;
+
 @end

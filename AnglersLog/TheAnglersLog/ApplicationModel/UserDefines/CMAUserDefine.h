@@ -48,4 +48,7 @@
 // sorting
 - (void)sortByNameProperty;
 
+// visiting
+- (void)accept:(id)aVisitor;
+
 @end

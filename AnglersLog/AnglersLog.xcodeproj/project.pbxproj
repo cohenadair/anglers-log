@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0D128F501AD472340004CABE /* CMAJSONWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D128F4E1AD472340004CABE /* CMAJSONWriter.m */; };
+		0D128F511AD472340004CABE /* json_example.json in Resources */ = {isa = PBXBuildFile; fileRef = 0D128F4F1AD472340004CABE /* json_example.json */; };
 		0D23B2711A7713C900E89736 /* TheAnglersLog.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 0D23B26F1A7713C900E89736 /* TheAnglersLog.xcdatamodeld */; };
 		0D23B2741A78102B00E89736 /* CMAImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D23B2731A78102B00E89736 /* CMAImage.m */; };
 		0D248B0F1AB0C82200093290 /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D248B0E1AB0C82200093290 /* iAd.framework */; };
@@ -157,6 +159,11 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0D128F4D1AD472340004CABE /* CMAJSONWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAJSONWriter.h; path = ApplicationModel/Backup/CMAJSONWriter.h; sourceTree = "<group>"; };
+		0D128F4E1AD472340004CABE /* CMAJSONWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAJSONWriter.m; path = ApplicationModel/Backup/CMAJSONWriter.m; sourceTree = "<group>"; };
+		0D128F4F1AD472340004CABE /* json_example.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = json_example.json; path = ApplicationModel/Backup/json_example.json; sourceTree = "<group>"; };
+		0D128F541AD4C4A80004CABE /* TheAnglersLog 7.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "TheAnglersLog 7.xcdatamodel"; sourceTree = "<group>"; };
+		0D128F551AD4C6890004CABE /* TheAnglersLog 8.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "TheAnglersLog 8.xcdatamodel"; sourceTree = "<group>"; };
 		0D23B2701A7713C900E89736 /* TheAnglersLog.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = TheAnglersLog.xcdatamodel; sourceTree = "<group>"; };
 		0D23B2721A78102B00E89736 /* CMAImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAImage.h; path = ApplicationModel/CMAImage.h; sourceTree = "<group>"; };
 		0D23B2731A78102B00E89736 /* CMAImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAImage.m; path = ApplicationModel/CMAImage.m; sourceTree = "<group>"; };
@@ -413,6 +420,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0D128F441AD436220004CABE /* Backup */ = {
+			isa = PBXGroup;
+			children = (
+				0D128F4D1AD472340004CABE /* CMAJSONWriter.h */,
+				0D128F4E1AD472340004CABE /* CMAJSONWriter.m */,
+				0D128F4F1AD472340004CABE /* json_example.json */,
+			);
+			name = Backup;
+			sourceTree = "<group>";
+		};
 		0D4461161A9D3011006C34D2 /* DevNotes */ = {
 			isa = PBXGroup;
 			children = (
@@ -719,10 +736,6 @@
 				0D8F84A41A6EC31500AABAEA /* TheAnglersLog.entitlements */,
 				E7C29D0C1A143A1600015B42 /* Libraries */,
 				E738583B19FCD49100FE122B /* Images */,
-				0D8F84491A6EC2C300AABAEA /* no_image.png */,
-				0D8F844A1A6EC2C300AABAEA /* rectile.png */,
-				0D4ECDFB1ACB663B008B55E6 /* rapala.png */,
-				0D4ECDFC1ACB663B008B55E6 /* spinner.png */,
 				E7A6883D19F7321E00B032E3 /* CustomViews */,
 				E7C9272019EF90C00010A9FE /* Utilities */,
 				E7C926D419EE3B320010A9FE /* ViewControllers */,
@@ -752,6 +765,7 @@
 		E72669B119DF1350003C8E0B /* ApplicationModel */ = {
 			isa = PBXGroup;
 			children = (
+				0D128F441AD436220004CABE /* Backup */,
 				0D8F83761A6EC10800AABAEA /* Statistics */,
 				0D8F837B1A6EC10800AABAEA /* UserDefines */,
 				0D8F836C1A6EC10800AABAEA /* CMAEntry.h */,
@@ -774,6 +788,10 @@
 				0D8F84181A6EC2C300AABAEA /* AppIcons */,
 				0D8F84231A6EC2C300AABAEA /* Icons */,
 				0D8F84401A6EC2C300AABAEA /* LargeIcons */,
+				0D8F84491A6EC2C300AABAEA /* no_image.png */,
+				0D8F844A1A6EC2C300AABAEA /* rectile.png */,
+				0D4ECDFB1ACB663B008B55E6 /* rapala.png */,
+				0D4ECDFC1ACB663B008B55E6 /* spinner.png */,
 			);
 			name = Images;
 			sourceTree = "<group>";
@@ -983,6 +1001,7 @@
 				0D8F84651A6EC2C300AABAEA /* menu@1x.png in Resources */,
 				0D8F846F1A6EC2C300AABAEA /* twitter_blue_small.png in Resources */,
 				0D8F84601A6EC2C300AABAEA /* instagram@1x.png in Resources */,
+				0D128F511AD472340004CABE /* json_example.json in Resources */,
 				0D8F846C1A6EC2C300AABAEA /* sort@3x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1046,6 +1065,7 @@
 				0D8F84981A6EC2D900AABAEA /* AFHTTPRequestOperation.m in Sources */,
 				0D9B76101A76C4C100553177 /* CMAUserDefineObject.m in Sources */,
 				0D8F840F1A6EC29A00AABAEA /* CMAEntryTableViewCell.m in Sources */,
+				0D128F501AD472340004CABE /* CMAJSONWriter.m in Sources */,
 				0D28AAB11ABB44F9009E8184 /* CMAAdBanner.m in Sources */,
 				0D8F849D1A6EC2D900AABAEA /* AFURLConnectionOperation.m in Sources */,
 				0D8F849E1A6EC2D900AABAEA /* AFURLRequestSerialization.m in Sources */,
@@ -1220,6 +1240,8 @@
 		0D23B26F1A7713C900E89736 /* TheAnglersLog.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				0D128F551AD4C6890004CABE /* TheAnglersLog 8.xcdatamodel */,
+				0D128F541AD4C4A80004CABE /* TheAnglersLog 7.xcdatamodel */,
 				0D4ECDF51ACB383C008B55E6 /* TheAnglersLog 6.xcdatamodel */,
 				0DC75FE71A9BE8320045030C /* TheAnglersLog 5.xcdatamodel */,
 				0DC75FE61A9BD9090045030C /* TheAnglersLog 4.xcdatamodel */,
@@ -1227,7 +1249,7 @@
 				0DCC43271A99A3AD0019DB2E /* TheAnglersLog 2.xcdatamodel */,
 				0D23B2701A7713C900E89736 /* TheAnglersLog.xcdatamodel */,
 			);
-			currentVersion = 0D4ECDF51ACB383C008B55E6 /* TheAnglersLog 6.xcdatamodel */;
+			currentVersion = 0D128F551AD4C6890004CABE /* TheAnglersLog 8.xcdatamodel */;
 			path = TheAnglersLog.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

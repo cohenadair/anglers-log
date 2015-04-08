@@ -12,6 +12,7 @@
 #import "CMABait.h"
 #import "CMAFishingMethod.h"
 #import "CMAStorageManager.h"
+#import "CMAJSONWriter.h"
 
 @implementation CMAJournal
 
@@ -461,6 +462,12 @@
     }
     
     return result;
+}
+
+#pragma mark - Visiting
+
+- (void)accept:(id)aVisitor {
+    [aVisitor visitJournal:self];
 }
 
 @end

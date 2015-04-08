@@ -10,6 +10,7 @@
 #import "CMAEntry.h"
 #import "CMAConstants.h"
 #import "CMAJournal.h"
+#import "CMAJSONWriter.h"
 
 @implementation CMAEntry
 
@@ -222,6 +223,12 @@
 
 - (void)removeImage:(CMAImage *)anImage {
     [self.images removeObject:anImage];
+}
+
+#pragma mark - Visiting
+
+- (void)accept:(id)aVisitor {
+    [aVisitor visitEntry:self];
 }
 
 @end

@@ -28,4 +28,7 @@
 - (void)saveWithImage:(UIImage *)anImage andFileName:(NSString *)aFileName;
 - (void)saveWithIndex:(NSInteger)anIndex;
 
+// visiting
+- (void)accept:(id)aVisitor;
+
 @end

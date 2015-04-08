@@ -8,6 +8,7 @@
 //
 
 #import "CMAFishingMethod.h"
+#import "CMAJSONWriter.h"
 
 @implementation CMAFishingMethod
 
@@ -24,6 +25,12 @@
 
 - (void)edit:(CMAFishingMethod *)aNewFishingMethod {
     [self setName:[aNewFishingMethod.name capitalizedString]];
+}
+
+#pragma mark - Visiting
+
+- (void)accept:(id)aVisitor {
+    [aVisitor visitFishingMethod:self];
 }
 
 @end

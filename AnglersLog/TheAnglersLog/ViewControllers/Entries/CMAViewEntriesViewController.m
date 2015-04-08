@@ -126,13 +126,17 @@
     
     [self initSideBarMenu];
     [self.tableView setTableFooterView:[[UIView alloc] initWithFrame:CGRectZero]]; // removes empty cells at the end of the list
+    
+    // contentOffset will not change before the main runloop ends without queueing it, for iPad that is
+    dispatch_async(dispatch_get_main_queue(), ^{
+        // The search bar is hidden when the view becomes visible the first time
+        self.tableView.contentOffset = CGPointMake(0, CGRectGetHeight(self.searchBar.bounds));
+    });
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self setupView];
-    
-    [self.tableView setContentOffset:CGPointMake(0, self.currentOffsetY)];
     
     if (self.searchBar && !self.isSearchBarInView) {
         if (self.currentOffsetY > 0)

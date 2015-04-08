@@ -11,6 +11,7 @@
 //
 
 #import "CMAWeatherData.h"
+#import "CMAJSONWriter.h"
 
 NSString *const kAPIKey = @"35f69a23678dead2c75e0599eadbb4e1";
 
@@ -23,7 +24,7 @@ NSString *const kAPIKey = @"35f69a23678dead2c75e0599eadbb4e1";
 @dynamic temperature;
 @dynamic windSpeed;
 @dynamic skyConditions;
-@dynamic weatherImage;
+@dynamic imageURL;
 
 #pragma mark - Initialization
 
@@ -55,6 +56,16 @@ NSString *const kAPIKey = @"35f69a23678dead2c75e0599eadbb4e1";
 
 - (NSString *)skyConditionsAsString {
     return [NSString stringWithFormat:@"Sky: %@", self.skyConditions];
+}
+
+- (UIImage *)imageURLAsUIImage {
+    return [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:self.imageURL]]];
+}
+
+#pragma mark - Visiting
+
+- (void)accept:(id)aVisitor {
+    [aVisitor visitWeatherData:self];
 }
 
 @end

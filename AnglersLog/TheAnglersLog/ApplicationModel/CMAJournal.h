@@ -17,7 +17,7 @@
 
 @property (strong, nonatomic)NSString *name;
 @property (strong, nonatomic)NSMutableOrderedSet *entries;
-@property (strong, nonatomic)NSMutableSet *userDefines;
+@property (strong, nonatomic)NSMutableSet *userDefines;         // set of CMAUserDefine objects
 @property (nonatomic)CMAMeasuringSystemType measurementSystem;
 @property (nonatomic)CMAEntrySortMethod entrySortMethod;
 @property (nonatomic)CMASortOrder entrySortOrder;
@@ -53,5 +53,8 @@
 
 // filtering
 - (NSMutableOrderedSet *)filterEntries:(NSString *)searchText;
+
+// visiting
+- (void)accept:(id)aVisitor;
 
 @end

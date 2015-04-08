@@ -23,7 +23,7 @@
 @property (strong, nonatomic)NSNumber *temperature;
 @property (strong, nonatomic)NSString *windSpeed;
 @property (strong, nonatomic)NSString *skyConditions;
-@property (strong, nonatomic)NSData *weatherImage;
+@property (strong, nonatomic)NSString *imageURL;
 
 - (void)withCoordinates:(CLLocationCoordinate2D)aCoordinate andJournal:(CMAMeasuringSystemType)aMeasurementSystemType;
 - (void)print;
@@ -31,5 +31,9 @@
 - (NSString *)temperatureAsStringWithUnits:(NSString *)aUnitString;
 - (NSString *)windSpeedAsStringWithUnits:(NSString *)aUnitString;
 - (NSString *)skyConditionsAsString;
+- (UIImage *)imageURLAsUIImage;
+
+// visiting
+- (void)accept:(id)aVisitor;
 
 @end

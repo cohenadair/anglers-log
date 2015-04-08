@@ -15,6 +15,7 @@
 #import "CMAWaterClarity.h"
 #import "CMAConstants.h"
 #import "CMAStorageManager.h"
+#import "CMAJSONWriter.h"
 
 @implementation CMAUserDefine
 
@@ -148,6 +149,12 @@
     }];
     
     [self setActiveSet:[NSMutableOrderedSet orderedSetWithArray:sortedArray]];
+}
+
+#pragma mark - Visiting
+
+- (void)accept:(id)aVisitor {
+    [aVisitor visitUserDefne:self];
 }
 
 @end

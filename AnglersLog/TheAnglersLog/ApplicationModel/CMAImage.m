@@ -1,4 +1,4 @@
-//
+ //
 //  CMAImage.m
 //  AnglersLog
 //
@@ -14,6 +14,7 @@
 #import "CMAEntry.h"
 #import "CMAConstants.h"
 #import "CMAUtilities.h"
+#import "CMAJSONWriter.h"
 
 @implementation CMAImage
 
@@ -39,15 +40,15 @@
 }
 
 - (void)initUIImages {
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+    //dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
         [self initImage];
         [self initTableCellImage];
         [self initGalleryCellImage];
         
-        dispatch_async(dispatch_get_main_queue(), ^{
+        //dispatch_async(dispatch_get_main_queue(), ^{
             
-        });
-    });
+        //});
+    //});
 }
 
 - (void)initImage {
@@ -157,6 +158,12 @@
     
     [self initGalleryCellImage];
     return _galleryCellImage;
+}
+
+#pragma mark - Visiting
+
+- (void)accept:(id)aVisitor {
+    [aVisitor visitImage:self];
 }
 
 @end

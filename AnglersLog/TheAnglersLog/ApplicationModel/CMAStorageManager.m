@@ -183,7 +183,7 @@
         }
         
         dispatch_async(dispatch_get_main_queue(), ^{
-            NSLog(@"Removed %d images in %f ms.", removeCount, CFAbsoluteTimeGetCurrent() - start);
+           NSLog(@"Removed %d images in %f ms.", removeCount, CFAbsoluteTimeGetCurrent() - start);
         });
         
     });
