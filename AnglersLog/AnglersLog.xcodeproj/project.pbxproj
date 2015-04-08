@@ -8,7 +8,14 @@
 
 /* Begin PBXBuildFile section */
 		0D128F501AD472340004CABE /* CMAJSONWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D128F4E1AD472340004CABE /* CMAJSONWriter.m */; };
-		0D128F511AD472340004CABE /* json_example.json in Resources */ = {isa = PBXBuildFile; fileRef = 0D128F4F1AD472340004CABE /* json_example.json */; };
+		0D128F571AD5C1510004CABE /* CMAJSONWriter.json in Resources */ = {isa = PBXBuildFile; fileRef = 0D128F561AD5C1510004CABE /* CMAJSONWriter.json */; };
+		0D128F5A1AD5C1BC0004CABE /* CMADataExporter.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D128F591AD5C1BC0004CABE /* CMADataExporter.m */; };
+		0D128FB01AD5D7490004CABE /* ioapi.c in Sources */ = {isa = PBXBuildFile; fileRef = 0D128FA61AD5D7490004CABE /* ioapi.c */; };
+		0D128FB11AD5D7490004CABE /* mztools.c in Sources */ = {isa = PBXBuildFile; fileRef = 0D128FA81AD5D7490004CABE /* mztools.c */; };
+		0D128FB21AD5D7490004CABE /* unzip.c in Sources */ = {isa = PBXBuildFile; fileRef = 0D128FAA1AD5D7490004CABE /* unzip.c */; };
+		0D128FB31AD5D7490004CABE /* zip.c in Sources */ = {isa = PBXBuildFile; fileRef = 0D128FAC1AD5D7490004CABE /* zip.c */; };
+		0D128FB41AD5D7490004CABE /* SSZipArchive.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D128FAF1AD5D7490004CABE /* SSZipArchive.m */; };
+		0D128FB61AD5D7600004CABE /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D128FB51AD5D7600004CABE /* libz.dylib */; };
 		0D23B2711A7713C900E89736 /* TheAnglersLog.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 0D23B26F1A7713C900E89736 /* TheAnglersLog.xcdatamodeld */; };
 		0D23B2741A78102B00E89736 /* CMAImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D23B2731A78102B00E89736 /* CMAImage.m */; };
 		0D248B0F1AB0C82200093290 /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D248B0E1AB0C82200093290 /* iAd.framework */; };
@@ -161,9 +168,23 @@
 /* Begin PBXFileReference section */
 		0D128F4D1AD472340004CABE /* CMAJSONWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAJSONWriter.h; path = ApplicationModel/Backup/CMAJSONWriter.h; sourceTree = "<group>"; };
 		0D128F4E1AD472340004CABE /* CMAJSONWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAJSONWriter.m; path = ApplicationModel/Backup/CMAJSONWriter.m; sourceTree = "<group>"; };
-		0D128F4F1AD472340004CABE /* json_example.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = json_example.json; path = ApplicationModel/Backup/json_example.json; sourceTree = "<group>"; };
 		0D128F541AD4C4A80004CABE /* TheAnglersLog 7.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "TheAnglersLog 7.xcdatamodel"; sourceTree = "<group>"; };
 		0D128F551AD4C6890004CABE /* TheAnglersLog 8.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "TheAnglersLog 8.xcdatamodel"; sourceTree = "<group>"; };
+		0D128F561AD5C1510004CABE /* CMAJSONWriter.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = CMAJSONWriter.json; path = ApplicationModel/Backup/CMAJSONWriter.json; sourceTree = "<group>"; };
+		0D128F581AD5C1BC0004CABE /* CMADataExporter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMADataExporter.h; path = ApplicationModel/Backup/CMADataExporter.h; sourceTree = "<group>"; };
+		0D128F591AD5C1BC0004CABE /* CMADataExporter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMADataExporter.m; path = ApplicationModel/Backup/CMADataExporter.m; sourceTree = "<group>"; };
+		0D128FA51AD5D7490004CABE /* crypt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = crypt.h; sourceTree = "<group>"; };
+		0D128FA61AD5D7490004CABE /* ioapi.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ioapi.c; sourceTree = "<group>"; };
+		0D128FA71AD5D7490004CABE /* ioapi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ioapi.h; sourceTree = "<group>"; };
+		0D128FA81AD5D7490004CABE /* mztools.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = mztools.c; sourceTree = "<group>"; };
+		0D128FA91AD5D7490004CABE /* mztools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mztools.h; sourceTree = "<group>"; };
+		0D128FAA1AD5D7490004CABE /* unzip.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = unzip.c; sourceTree = "<group>"; };
+		0D128FAB1AD5D7490004CABE /* unzip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = unzip.h; sourceTree = "<group>"; };
+		0D128FAC1AD5D7490004CABE /* zip.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip.c; sourceTree = "<group>"; };
+		0D128FAD1AD5D7490004CABE /* zip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zip.h; sourceTree = "<group>"; };
+		0D128FAE1AD5D7490004CABE /* SSZipArchive.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SSZipArchive.h; path = SSZipArchive/SSZipArchive.h; sourceTree = "<group>"; };
+		0D128FAF1AD5D7490004CABE /* SSZipArchive.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SSZipArchive.m; path = SSZipArchive/SSZipArchive.m; sourceTree = "<group>"; };
+		0D128FB51AD5D7600004CABE /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		0D23B2701A7713C900E89736 /* TheAnglersLog.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = TheAnglersLog.xcdatamodel; sourceTree = "<group>"; };
 		0D23B2721A78102B00E89736 /* CMAImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAImage.h; path = ApplicationModel/CMAImage.h; sourceTree = "<group>"; };
 		0D23B2731A78102B00E89736 /* CMAImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAImage.m; path = ApplicationModel/CMAImage.m; sourceTree = "<group>"; };
@@ -394,6 +415,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0D128FB61AD5D7600004CABE /* libz.dylib in Frameworks */,
 				0D5584CE1ABF59C200719554 /* StoreKit.framework in Frameworks */,
 				0D248B0F1AB0C82200093290 /* iAd.framework in Frameworks */,
 				0DCAD6521AA5000A0040B03B /* GLKit.framework in Frameworks */,
@@ -423,11 +445,40 @@
 		0D128F441AD436220004CABE /* Backup */ = {
 			isa = PBXGroup;
 			children = (
+				0D128F561AD5C1510004CABE /* CMAJSONWriter.json */,
 				0D128F4D1AD472340004CABE /* CMAJSONWriter.h */,
 				0D128F4E1AD472340004CABE /* CMAJSONWriter.m */,
-				0D128F4F1AD472340004CABE /* json_example.json */,
+				0D128F581AD5C1BC0004CABE /* CMADataExporter.h */,
+				0D128F591AD5C1BC0004CABE /* CMADataExporter.m */,
 			);
 			name = Backup;
+			sourceTree = "<group>";
+		};
+		0D128FA31AD5D73B0004CABE /* SSZipArchive */ = {
+			isa = PBXGroup;
+			children = (
+				0D128FA41AD5D7490004CABE /* minizip */,
+				0D128FAE1AD5D7490004CABE /* SSZipArchive.h */,
+				0D128FAF1AD5D7490004CABE /* SSZipArchive.m */,
+			);
+			name = SSZipArchive;
+			sourceTree = "<group>";
+		};
+		0D128FA41AD5D7490004CABE /* minizip */ = {
+			isa = PBXGroup;
+			children = (
+				0D128FA51AD5D7490004CABE /* crypt.h */,
+				0D128FA61AD5D7490004CABE /* ioapi.c */,
+				0D128FA71AD5D7490004CABE /* ioapi.h */,
+				0D128FA81AD5D7490004CABE /* mztools.c */,
+				0D128FA91AD5D7490004CABE /* mztools.h */,
+				0D128FAA1AD5D7490004CABE /* unzip.c */,
+				0D128FAB1AD5D7490004CABE /* unzip.h */,
+				0D128FAC1AD5D7490004CABE /* zip.c */,
+				0D128FAD1AD5D7490004CABE /* zip.h */,
+			);
+			name = minizip;
+			path = SSZipArchive/minizip;
 			sourceTree = "<group>";
 		};
 		0D4461161A9D3011006C34D2 /* DevNotes */ = {
@@ -704,6 +755,7 @@
 		E70B637419D3A8E400DFBA85 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				0D128FB51AD5D7600004CABE /* libz.dylib */,
 				0D5584CD1ABF59C200719554 /* StoreKit.framework */,
 				0D248B0E1AB0C82200093290 /* iAd.framework */,
 				0DCAD6511AA5000A0040B03B /* GLKit.framework */,
@@ -833,6 +885,7 @@
 		E7C29D0C1A143A1600015B42 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				0D128FA31AD5D73B0004CABE /* SSZipArchive */,
 				0D8F847B1A6EC2D900AABAEA /* AFNetworking */,
 				0D8F848F1A6EC2D900AABAEA /* OWMWeatherAPI */,
 				0D8F84921A6EC2D900AABAEA /* SWRevealViewController */,
@@ -941,6 +994,7 @@
 			files = (
 				0D8F845B1A6EC2C300AABAEA /* checkmark@3x.png in Resources */,
 				0D8F84711A6EC2C300AABAEA /* baits_large.png in Resources */,
+				0D128F571AD5C1510004CABE /* CMAJSONWriter.json in Resources */,
 				0D8F844F1A6EC2C300AABAEA /* app_icon_180.png in Resources */,
 				0D8F84691A6EC2C300AABAEA /* settings.png in Resources */,
 				0D8F84771A6EC2C300AABAEA /* stats_large.png in Resources */,
@@ -1001,7 +1055,6 @@
 				0D8F84651A6EC2C300AABAEA /* menu@1x.png in Resources */,
 				0D8F846F1A6EC2C300AABAEA /* twitter_blue_small.png in Resources */,
 				0D8F84601A6EC2C300AABAEA /* instagram@1x.png in Resources */,
-				0D128F511AD472340004CABE /* json_example.json in Resources */,
 				0D8F846C1A6EC2C300AABAEA /* sort@3x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1024,6 +1077,7 @@
 				0D8F849B1A6EC2D900AABAEA /* AFNetworkReachabilityManager.m in Sources */,
 				0D8F83DE1A6EC25200AABAEA /* CMAAddEntryViewController.m in Sources */,
 				0D8F83E51A6EC25200AABAEA /* CMASingleLocationViewController.m in Sources */,
+				0D128F5A1AD5C1BC0004CABE /* CMADataExporter.m in Sources */,
 				0D8F83E71A6EC25200AABAEA /* CMAViewPhotosViewController.m in Sources */,
 				0D8F839C1A6EC15D00AABAEA /* CMAAppDelegate.m in Sources */,
 				0D8F83D91A6EC25200AABAEA /* CMAImagePickerViewController.m in Sources */,
@@ -1033,6 +1087,7 @@
 				0D8F840A1A6EC29A00AABAEA /* CMABaitTableViewCell.m in Sources */,
 				0D8F83951A6EC10800AABAEA /* CMALocation.m in Sources */,
 				0D8F84111A6EC29A00AABAEA /* CMANoXView.m in Sources */,
+				0D128FB21AD5D7490004CABE /* unzip.c in Sources */,
 				0D8F838E1A6EC10800AABAEA /* CMAStorageManager.m in Sources */,
 				0D8F838B1A6EC10800AABAEA /* CMAEntry.m in Sources */,
 				0D8F840B1A6EC29A00AABAEA /* CMACameraActionSheet.m in Sources */,
@@ -1049,6 +1104,7 @@
 				0D8F84141A6EC29A00AABAEA /* CMAStatisticsTableViewCell.m in Sources */,
 				0D8F84A01A6EC2D900AABAEA /* AFURLSessionManager.m in Sources */,
 				0D8F83DF1A6EC25200AABAEA /* CMAEntrySortingViewController.m in Sources */,
+				0D128FB41AD5D7490004CABE /* SSZipArchive.m in Sources */,
 				0D8F83E31A6EC25200AABAEA /* CMAAddLocationViewController.m in Sources */,
 				0D8F84991A6EC2D900AABAEA /* AFHTTPRequestOperationManager.m in Sources */,
 				0D8F83DC1A6EC25200AABAEA /* CMAStatisticsViewController.m in Sources */,
@@ -1061,14 +1117,17 @@
 				0D8F84131A6EC29A00AABAEA /* CMADeleteActionSheet.m in Sources */,
 				0D8F838F1A6EC10800AABAEA /* CMAWeatherData.m in Sources */,
 				0D8F849C1A6EC2D900AABAEA /* AFSecurityPolicy.m in Sources */,
+				0D128FB01AD5D7490004CABE /* ioapi.c in Sources */,
 				0D8F83D71A6EC25200AABAEA /* CMASingleBaitViewController.m in Sources */,
 				0D8F84981A6EC2D900AABAEA /* AFHTTPRequestOperation.m in Sources */,
+				0D128FB31AD5D7490004CABE /* zip.c in Sources */,
 				0D9B76101A76C4C100553177 /* CMAUserDefineObject.m in Sources */,
 				0D8F840F1A6EC29A00AABAEA /* CMAEntryTableViewCell.m in Sources */,
 				0D128F501AD472340004CABE /* CMAJSONWriter.m in Sources */,
 				0D28AAB11ABB44F9009E8184 /* CMAAdBanner.m in Sources */,
 				0D8F849D1A6EC2D900AABAEA /* AFURLConnectionOperation.m in Sources */,
 				0D8F849E1A6EC2D900AABAEA /* AFURLRequestSerialization.m in Sources */,
+				0D128FB11AD5D7490004CABE /* mztools.c in Sources */,
 				0D8F84A31A6EC2D900AABAEA /* XYPieChart.m in Sources */,
 				0D8F83921A6EC10800AABAEA /* CMABait.m in Sources */,
 				0D8F84101A6EC29A00AABAEA /* CMAInstagramActivity.m in Sources */,

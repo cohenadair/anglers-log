@@ -40,15 +40,9 @@
 }
 
 - (void)initUIImages {
-    //dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-        [self initImage];
-        [self initTableCellImage];
-        [self initGalleryCellImage];
-        
-        //dispatch_async(dispatch_get_main_queue(), ^{
-            
-        //});
-    //});
+    [self initImage];
+    [self initTableCellImage];
+    [self initGalleryCellImage];
 }
 
 - (void)initImage {

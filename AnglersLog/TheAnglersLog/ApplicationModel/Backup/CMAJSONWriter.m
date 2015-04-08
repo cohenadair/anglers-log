@@ -13,8 +13,8 @@
 
 #pragma mark - Class Methods
 
-+ (void)journalToJSON:(CMAJournal *)aJournal {
-    CMAJSONWriter *writer = [self new];
++ (void)journalToJSON:(CMAJournal *)aJournal atFilePath:(NSString *)aFilePath {
+    CMAJSONWriter *writer = [[self alloc] initWithFilePath:aFilePath];
     
     [writer writeOpen];
     [aJournal accept:writer];
@@ -25,30 +25,20 @@
 
 #pragma mark - Initializing
 
-- (id)init {
+- (id)initWithFilePath:(NSString *)aFilePath {
     if (self = [super init]) {
-        _outFile = [self getFileForWriting];
+        _outFile = [self getFileForWritingAtPath:aFilePath];
         _currentTab = 0;
     }
     
     return self;
 }
 
-- (NSFileHandle *)getFileForWriting {
-    NSDateFormatter *dateFormatter = [NSDateFormatter new];
-    dateFormatter.dateFormat = @"MM-dd-yyyy_h-mm_a";
+- (NSFileHandle *)getFileForWritingAtPath:(NSString *)aFilePath {
+    if (![[NSFileManager defaultManager] fileExistsAtPath:aFilePath])
+        [[NSFileManager defaultManager] createFileAtPath:aFilePath contents:nil attributes:nil];
     
-    NSString *fileName = [dateFormatter stringFromDate:[NSDate date]];
-    fileName = [fileName stringByAppendingString:@".json"];
-    
-    NSString *filePath = [[[CMAStorageManager sharedManager] documentsDirectory].path stringByAppendingPathComponent:fileName];
-    
-    NSLog(@"JSON file path: %@", filePath);
-    
-    if (![[NSFileManager defaultManager] fileExistsAtPath:filePath])
-        [[NSFileManager defaultManager] createFileAtPath:filePath contents:nil attributes:nil];
-    
-    return [NSFileHandle fileHandleForWritingAtPath:filePath];
+    return [NSFileHandle fileHandleForWritingAtPath:aFilePath];
 }
 
 #pragma mark - Writing
