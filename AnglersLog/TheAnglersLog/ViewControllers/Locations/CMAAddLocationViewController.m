@@ -322,8 +322,7 @@ NSInteger const SECTION_DELETE = 3;
         CMAAddFishingSpotViewController *source = [segue sourceViewController];
         
         if (source.fishingSpot && self.tappedAddFishingSpot) {
-            // making this connection automatically adds source.fishingSpot to self.location
-            source.fishingSpot.myLocation = self.location;
+            [self.location addFishingSpot:source.fishingSpot];
             [self.location sortFishingSpotsByName];
             
             [self.addedFishingSpots addObject:source.fishingSpot];

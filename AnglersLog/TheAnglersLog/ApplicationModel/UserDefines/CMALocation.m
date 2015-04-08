@@ -37,8 +37,8 @@
 #pragma mark - Editing
 
 - (BOOL)addFishingSpot: (CMAFishingSpot *)aFishingSpot {
-    NSLog(@"CMALocation's addFishingSpot should never be called. Setting a CMAFishingSpot's myLocation property automatically adds said fishing spot to the location. This is thanks to Core Data.");
-    return NO;
+    [aFishingSpot setMyLocation:self];
+    return YES;
 }
 
 - (void)removeFishingSpotNamed: (NSString *)aName {
