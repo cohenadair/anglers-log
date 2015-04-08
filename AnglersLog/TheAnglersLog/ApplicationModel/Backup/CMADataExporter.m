@@ -10,10 +10,13 @@
 #import "CMAStorageManager.h"
 #import "CMAJSONWriter.h"
 #import "SSZipArchive.h"
+#import "CMAUtilities.h"
 
 @implementation CMADataExporter
 
 + (NSURL *)exportJournal:(CMAJournal *)aJournal {
+    CFAbsoluteTime start = CFAbsoluteTimeGetCurrent();
+    
     NSString *documentsDirectory = [[CMAStorageManager sharedManager] documentsDirectory].path;
     
     NSDateFormatter *dateFormatter = [NSDateFormatter new];
@@ -38,11 +41,11 @@
     [SSZipArchive createZipFileAtPath:zipFilePath withContentsOfDirectory:[documentsDirectory stringByAppendingPathComponent:@"Images/"]];
     
     // remove .json file as it's no longer needed
-    NSError *e;
-    if (![[NSFileManager defaultManager] removeItemAtPath:jsonFilePath error:&e])
-        NSLog(@"Error deleting .json file");
+    [CMAUtilities deleteFileAtPath:jsonFilePath];
     
-    return [NSURL URLWithString:zipFilePath];
+    NSLog(@"Exported data in %f seconds.", CFAbsoluteTimeGetCurrent() - start);
+    
+    return [NSURL fileURLWithPath:zipFilePath];
 }
 
 @end

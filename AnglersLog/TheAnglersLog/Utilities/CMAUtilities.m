@@ -145,4 +145,11 @@
     return [newWords componentsJoinedByString:@" "];
 }
 
+// Deletes a file at the given path.
++ (void)deleteFileAtPath:(NSString *)aPath {
+    NSError *e;
+    if (![[NSFileManager defaultManager] removeItemAtPath:aPath error:&e])
+        NSLog(@"Failed to delete file %@: %@", aPath, e.localizedDescription);
+}
+
 @end

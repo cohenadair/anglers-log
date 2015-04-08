@@ -15,17 +15,23 @@
 #import "CMAStorageManager.h"
 #import "CMAUtilities.h"
 #import "CMAAdBanner.h"
+#import "CMADataExporter.h"
 
 @interface CMASettingsViewController ()
 
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *menuButton;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *unitsSegmentedControl;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *exportToCloudIndicator;
+
+@property (strong, nonatomic) NSURL *archiveURL;
 
 @end
 
 #define kSectionFeedback 1
     #define kRowFAQ 0
     #define kRowRate 1
+#define kSectionBackup 2
+    #define kRowExport 0
 #define kSectionIAP 3
     #define kRowRestore 0
     #define kRowRemoveAds 1
@@ -53,6 +59,7 @@
     [super viewDidLoad];
     [self initSideBarMenu];
     [self.unitsSegmentedControl setSelectedSegmentIndex:[self journal].measurementSystem];
+    [self.exportToCloudIndicator setHidden:YES];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -98,6 +105,11 @@
             [self handleFAQEvent];
     }
     
+    if (indexPath.section == kSectionBackup) {
+        if (indexPath.row == kRowExport)
+            [self handleExportEvent];
+    }
+    
     if (indexPath.section == kSectionIAP) {
         if (indexPath.row == kRowRemoveAds)
             [self handleRemoveAdsEvent];
@@ -117,13 +129,72 @@
 }
 
 - (void)handleRateEvent {
-    [self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:kRowRate inSection:kSectionFeedback] animated:YES scrollPosition:UITableViewScrollPositionNone];
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:APP_STORE_LINK]];
 }
 
 - (void)handleFAQEvent {
-    [self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:kRowFAQ inSection:kSectionFeedback] animated:YES scrollPosition:UITableViewScrollPositionNone];
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:FAQ_LINK]];
+}
+
+- (void)handleExportEvent {
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Export Data"
+                                                                   message:@"Exporting will not delete any of your data. This process may take several minutes."
+                                                            preferredStyle:UIAlertControllerStyleActionSheet];
+    
+    UIAlertAction *exportAction =
+    [UIAlertAction actionWithTitle:@"Export"
+                             style:UIAlertActionStyleDefault
+                           handler:^(UIAlertAction *action) {
+                               [self documentPickerExport];
+                           }];
+    
+    UIAlertAction *cancelAction =
+    [UIAlertAction actionWithTitle:@"Cancel"
+                             style:UIAlertActionStyleCancel
+                           handler:^(UIAlertAction *action) {
+                               [self.exportToCloudIndicator setHidden:YES];
+                           }];
+    
+    [alert addAction:exportAction];
+    [alert addAction:cancelAction];
+    
+    [self presentViewController:alert animated:YES completion:^(void) {
+        [self.exportToCloudIndicator startAnimating];
+        [self.exportToCloudIndicator setHidden:NO];
+    }];
+}
+
+#pragma mark - Document Picker
+
+- (void)documentPickerExport {
+    self.archiveURL = [CMADataExporter exportJournal:[self journal]];
+    
+    UIDocumentPickerViewController *picker = [[UIDocumentPickerViewController alloc] initWithURL:self.archiveURL inMode:UIDocumentPickerModeExportToService];
+    picker.delegate = self;
+    picker.modalPresentationStyle = UIModalPresentationFormSheet;
+    
+    [self presentViewController:picker animated:YES completion:nil];
+}
+
+- (void)documentPicker:(UIDocumentPickerViewController *)controller didPickDocumentAtURL:(NSURL *)url {
+    if (controller.documentPickerMode == UIDocumentPickerModeExportToService) {
+        NSLog(@"Export successful, deleting archive...");
+        [self deleteArchiveFile];
+        [self.exportToCloudIndicator setHidden:YES];
+    }
+}
+
+- (void)documentPickerWasCancelled:(UIDocumentPickerViewController *)controller {
+    if (controller.documentPickerMode == UIDocumentPickerModeExportToService) {
+        NSLog(@"Export cancelled! Deleting archive...");
+        [self deleteArchiveFile];
+        [self.exportToCloudIndicator setHidden:YES];
+    }
+}
+
+- (void)deleteArchiveFile {
+    [CMAUtilities deleteFileAtPath:self.archiveURL.path];
+    self.archiveURL = nil;
 }
 
 #pragma mark - In-App Purchases

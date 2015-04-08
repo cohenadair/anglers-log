@@ -14,6 +14,8 @@
 #pragma mark - Class Methods
 
 + (void)journalToJSON:(CMAJournal *)aJournal atFilePath:(NSString *)aFilePath {
+    CFAbsoluteTime start = CFAbsoluteTimeGetCurrent();
+    
     CMAJSONWriter *writer = [[self alloc] initWithFilePath:aFilePath];
     
     [writer writeOpen];
@@ -21,6 +23,8 @@
     [writer writeCloseWithComma:NO];
     
     [writer.outFile closeFile];
+    
+    NSLog(@"Write JSON in %f seconds.", CFAbsoluteTimeGetCurrent() - start);
 }
 
 #pragma mark - Initializing

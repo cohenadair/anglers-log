@@ -27,5 +27,6 @@
 + (UIImage *)imageWithImage:(UIImage *)image scaledToSize:(CGSize)newSize;
 + (CGSize)galleryCellSize;
 + (NSString *)capitalizedString:(NSString *)aString;
++ (void)deleteFileAtPath:(NSString *)aPath;
 
 @end
