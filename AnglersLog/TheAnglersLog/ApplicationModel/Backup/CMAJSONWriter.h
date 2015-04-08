@@ -22,8 +22,13 @@
 - (void)visitJournal:(CMAJournal *)aJournal;
 - (void)visitEntry:(CMAEntry *)anEntry;
 - (void)visitImage:(CMAImage *)anImage;
-- (void)visitFishingMethod:(CMAFishingMethod *)aFishingMethod;
 - (void)visitWeatherData:(CMAWeatherData *)someWeatherData;
 - (void)visitUserDefne:(CMAUserDefine *)aUserDefine;
+- (void)visitBait:(CMABait *)aBait;
+- (void)visitFishingMethod:(CMAFishingMethod *)aFishingMethod;
+- (void)visitLocation:(CMALocation *)aLocation;
+- (void)visitFishingSpot:(CMAFishingSpot *)aFishingSpot;
+- (void)visitSpecies:(CMASpecies *)aSpecies;
+- (void)visitWaterClarity:(CMAWaterClarity *)aWaterClarity;
 
 @end

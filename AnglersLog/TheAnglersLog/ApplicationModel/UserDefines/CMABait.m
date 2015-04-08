@@ -9,6 +9,7 @@
 
 #import "CMABait.h"
 #import "CMAStorageManager.h"
+#import "CMAJSONWriter.h"
 
 @implementation CMABait
 
@@ -88,6 +89,12 @@
         NSLog(@"Invalid baitType in [CMABaitInstance typeAsString]");
     
     return @"";
+}
+
+#pragma mark - Visiting
+
+- (void)accept:(id)aVisitor {
+    [aVisitor visitBait:self];
 }
 
 @end

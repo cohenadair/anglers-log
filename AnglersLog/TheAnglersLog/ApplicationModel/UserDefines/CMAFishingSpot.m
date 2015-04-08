@@ -9,6 +9,7 @@
 
 #import "CMAFishingSpot.h"
 #import "CMAUtilities.h"
+#import "CMAJSONWriter.h"
 
 @implementation CMAFishingSpot
 
@@ -62,6 +63,12 @@
 
 - (NSString *)locationAsString {
     return [NSString stringWithFormat:@"Latitude %f, Longitude %f", self.location.coordinate.latitude, self.location.coordinate.longitude];
+}
+
+#pragma mark - Visiting
+
+- (void)accept:(id)aVisitor {
+    [aVisitor visitFishingSpot:self];
 }
 
 @end

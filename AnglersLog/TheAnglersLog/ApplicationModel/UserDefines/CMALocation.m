@@ -12,6 +12,7 @@
 #import "CMAAppDelegate.h"
 #import "CMAStorageManager.h"
 #import "CMAUtilities.h"
+#import "CMAJSONWriter.h"
 
 @implementation CMALocation
 
@@ -127,6 +128,12 @@
     }];
     
     self.fishingSpots = [NSMutableOrderedSet orderedSetWithArray:sortedArray];
+}
+
+#pragma mark - Visiting
+
+- (void)accept:(id)aVisitor {
+    [aVisitor visitLocation:self];
 }
 
 @end

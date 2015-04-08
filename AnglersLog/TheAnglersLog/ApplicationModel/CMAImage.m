@@ -136,6 +136,11 @@
     return [[[CMAStorageManager sharedManager] documentsDirectory].path stringByAppendingPathComponent:[self primitiveValueForKey:@"imagePath"]];
 }
 
+// Path relative to /Documents/
+- (NSString *)localImagePath {
+    return [self primitiveValueForKey:@"imagePath"];
+}
+
 - (UIImage *)image {
     if (_image)
         return _image;

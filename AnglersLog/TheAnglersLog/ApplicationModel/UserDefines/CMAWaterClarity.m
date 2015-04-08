@@ -8,6 +8,7 @@
 //
 
 #import "CMAWaterClarity.h"
+#import "CMAJSONWriter.h"
 
 @implementation CMAWaterClarity
 
@@ -29,6 +30,12 @@
 
 - (void)addEntry:(CMAEntry *)anEntry {
     [self.entries addObject:anEntry];
+}
+
+#pragma mark - Visiting
+
+- (void)accept:(id)aVisitor {
+    [aVisitor visitWaterClarity:self];
 }
 
 @end

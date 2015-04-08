@@ -9,6 +9,7 @@
 
 #import "CMASpecies.h"
 #import "CMAConstants.h"
+#import "CMAJSONWriter.h"
 
 @implementation CMASpecies
 
@@ -77,6 +78,12 @@
     count -= decBy;
     
     [self setOuncesCaught:[NSNumber numberWithInteger:count]];
+}
+
+#pragma mark - Visiting
+
+- (void)accept:(id)aVisitor {
+    [aVisitor visitSpecies:self];
 }
 
 @end

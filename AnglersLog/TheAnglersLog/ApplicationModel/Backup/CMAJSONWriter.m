@@ -89,10 +89,14 @@
     [self writeKeyValueNumber:aKey andNumber:[NSNumber numberWithInteger:anInteger] andComma:comma];
 }
 
+- (void)writeKeyValueFloat:(NSString *)aKey andFloat:(CGFloat)aFloat andComma:(BOOL)comma {
+    [self writeKeyValueString:aKey andString:[NSString stringWithFormat:@"%f", aFloat] andComma:comma];
+}
+
 - (void)writeKeyValueData:(NSString *)aKey andData:(NSData *)data andComma:(BOOL)comma {
     NSString *valueString = @"";
     if (data != nil) {
-        valueString = [[NSString alloc] initWithData:data encoding:NSASCIIStringEncoding];
+        valueString = [data base64EncodedStringWithOptions:NSDataBase64EncodingEndLineWithCarriageReturn];
     }
     [self writeKeyValueString:aKey andString:valueString andComma:comma];
 }
@@ -120,6 +124,15 @@
 // "aKey": [
 - (void)writeArrayKey:(NSString *)aKey {
     [self writeKey:aKey withOpenToken:@"["];
+}
+
+// "aString"
+// adds new line
+- (void)writeValueString:(NSString *)aString withComma:(BOOL)comma {
+    [self writeString:[NSString stringWithFormat:@"\"%@\"", aString]];
+    if (comma)
+        [self writeComma];
+    [self writeNewLine];
 }
 
 // }
@@ -188,8 +201,11 @@
     [self writeKeyValueString:@"date" andString:[anEntry dateAsFileNameString] andComma:YES];
     
     [self writeArrayKey:@"images"];
-    for (CMAImage *i in anEntry.images)
+    for (CMAImage *i in anEntry.images) { // open and close need to be here because images aren't always written as an array (see visitBait:)
+        [self writeOpen];
         [i accept:self];
+        [self writeCloseWithComma:i != [i.entry.images lastObject]];
+    }
     [self writeArrayCloseWithComma:YES];
     
     [self writeKeyValueString:@"fishSpecies" andString:anEntry.fishSpecies.name andComma:YES];
@@ -200,11 +216,9 @@
     [self writeKeyValueInteger:@"fishResult" andInteger:anEntry.fishResult andComma:YES];
     [self writeKeyValueString:@"baitUsed" andString:anEntry.baitUsed.name andComma:YES];
     
-    [self writeArrayKey:@"fishingMethods"];
-    for (CMAFishingMethod *m in anEntry.fishingMethods) {
-        self.addComma = (m != [[anEntry.fishingMethods allObjects] lastObject]);
-        [m accept:self];
-    }
+    [self writeArrayKey:@"fishingMethodNames"];
+    for (CMAFishingMethod *m in anEntry.fishingMethods)
+        [self writeValueString:m.name withComma:(m != [[anEntry.fishingMethods allObjects] lastObject])];
     [self writeArrayCloseWithComma:YES];
     
     [self writeKeyValueString:@"location" andString:anEntry.location.name andComma:YES];
@@ -224,14 +238,9 @@
 }
 
 - (void)visitImage:(CMAImage *)anImage {
-    [self writeOpen];
-    [self writeCloseWithComma:anImage != [anImage.entry.images lastObject]];
-}
-
-- (void)visitFishingMethod:(CMAFishingMethod *)aFishingMethod {
-    [self writeOpen];
-    [self writeKeyValueString:@"name" andString:aFishingMethod.name andComma:NO];
-    [self writeCloseWithComma:self.addComma];
+    [self writeKeyValueString:@"imagePath" andString:[anImage localImagePath] andComma:YES];
+    [self writeKeyValueString:@"entryDate" andString:[anImage.entry dateAsFileNameString] andComma:YES];
+    [self writeKeyValueString:@"baitName" andString:anImage.bait.name andComma:NO];
 }
 
 - (void)visitWeatherData:(CMAWeatherData *)someWeatherData {
@@ -244,7 +253,106 @@
 
 - (void)visitUserDefne:(CMAUserDefine *)aUserDefine {
     [self writeOpen];
+    
+    [self writeKeyValueString:@"name" andString:aUserDefine.name andComma:YES];
+    [self writeKeyValueString:@"journal" andString:aUserDefine.journal.name andComma:YES];
+    
+    [self writeArrayKey:@"baits"];
+    for (CMABait *b in aUserDefine.baits)
+        [b accept:self];
+    [self writeArrayCloseWithComma:YES];
+    
+    [self writeArrayKey:@"fishingMethods"];
+    for (CMAFishingMethod *m in aUserDefine.fishingMethods)
+        [m accept:self];
+    [self writeArrayCloseWithComma:YES];
+    
+    [self writeArrayKey:@"locations"];
+    for (CMALocation *l in aUserDefine.locations)
+        [l accept:self];
+    [self writeArrayCloseWithComma:YES];
+    
+    [self writeArrayKey:@"species"];
+    for (CMASpecies *s in aUserDefine.species)
+        [s accept:self];
+    [self writeArrayCloseWithComma:YES];
+    
+    [self writeArrayKey:@"waterClarities"];
+    for (CMAWaterClarity *c in aUserDefine.waterClarities)
+        [c accept:self];
+    [self writeArrayCloseWithComma:NO];
+    
     [self writeCloseWithComma:aUserDefine != [[aUserDefine.journal.userDefines allObjects] lastObject]];
+}
+
+- (void)visitBait:(CMABait *)aBait {
+    [self writeOpen];
+    
+    [self writeKeyValueString:@"name" andString:aBait.name andComma:YES];
+    [self writeKeyValueString:@"baitDescription" andString:aBait.baitDescription andComma:YES];
+    
+    [self writeKey:@"image"];
+    [aBait.imageData accept:self];
+    [self writeCloseWithComma:YES];
+    
+    [self writeKeyValueNumber:@"fishCaught" andNumber:aBait.fishCaught andComma:YES];
+    [self writeKeyValueString:@"size" andString:aBait.size andComma:YES];
+    [self writeKeyValueString:@"color" andString:aBait.color andComma:YES];
+    [self writeKeyValueInteger:@"baitType" andInteger:aBait.baitType andComma:NO];
+    
+    [self writeCloseWithComma:aBait != [aBait.userDefine.baits lastObject]];
+}
+
+- (void)visitFishingMethod:(CMAFishingMethod *)aFishingMethod {
+    [self writeOpen];
+    [self writeKeyValueString:@"name" andString:aFishingMethod.name andComma:NO];
+    [self writeCloseWithComma:aFishingMethod != [aFishingMethod.userDefine.fishingMethods lastObject]];
+}
+
+- (void)visitLocation:(CMALocation *)aLocation {
+    [self writeOpen];
+    
+    [self writeKeyValueString:@"name" andString:aLocation.name andComma:YES];
+    
+    [self writeArrayKey:@"fishingSpots"];
+    for (CMAFishingSpot *s in aLocation.fishingSpots)
+        [s accept:self];
+    [self writeArrayCloseWithComma:NO];
+    
+    [self writeCloseWithComma:aLocation != [aLocation.userDefine.locations lastObject]];
+}
+
+- (void)visitFishingSpot:(CMAFishingSpot *)aFishingSpot {
+    [self writeOpen];
+    
+    [self writeKeyValueString:@"name" andString:aFishingSpot.name andComma:YES];
+    [self writeKeyValueNumber:@"fishCaught" andNumber:aFishingSpot.fishCaught andComma:YES];
+    
+    [self writeKey:@"coordinates"];
+    [self writeKeyValueFloat:@"latitude" andFloat:aFishingSpot.location.coordinate.latitude andComma:YES];
+    [self writeKeyValueFloat:@"longitude" andFloat:aFishingSpot.location.coordinate.longitude andComma:NO];
+    [self writeCloseWithComma:YES];
+    
+    [self writeKeyValueString:@"location" andString:aFishingSpot.myLocation.name andComma:NO];
+    
+    [self writeCloseWithComma:aFishingSpot != [aFishingSpot.myLocation.fishingSpots lastObject]];
+}
+
+- (void)visitSpecies:(CMASpecies *)aSpecies {
+    [self writeOpen];
+    
+    [self writeKeyValueString:@"name" andString:aSpecies.name andComma:YES];
+    [self writeKeyValueNumber:@"numberCaught" andNumber:aSpecies.numberCaught andComma:YES];
+    [self writeKeyValueNumber:@"weightCaught" andNumber:aSpecies.weightCaught andComma:YES];
+    [self writeKeyValueNumber:@"ouncesCaught" andNumber:aSpecies.ouncesCaught andComma:NO];
+    
+    [self writeCloseWithComma:aSpecies != [aSpecies.userDefine.species lastObject]];
+}
+
+- (void)visitWaterClarity:(CMAWaterClarity *)aWaterClarity {
+    [self writeOpen];
+    [self writeKeyValueString:@"name" andString:aWaterClarity.name andComma:NO];
+    [self writeCloseWithComma:aWaterClarity != [aWaterClarity.userDefine.waterClarities lastObject]];
 }
 
 @end
