@@ -53,10 +53,8 @@
     
     // check for the " character
     for (int i = 0; i < str.length; i++)
-        if ([str characterAtIndex:i] == '"') {
+        if ([str characterAtIndex:i] == '"')
             [quotePositions addObject:[NSNumber numberWithInt:i]];
-            NSLog(@"Pos: %d", i);
-        }
     
     // insert a \ where necessary
     for (int i = 0; i < [quotePositions count]; i++)

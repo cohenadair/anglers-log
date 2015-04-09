@@ -40,14 +40,26 @@
 }
 
 - (void)initUIImages {
-    [self initImage];
-    [self initTableCellImage];
-    [self initGalleryCellImage];
+    __block NSString *imagePath = [self.imagePath copy];
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^ {
+        [self initImageFromPath:imagePath];
+        [self initTableCellImage];
+        [self initGalleryCellImage];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            
+        });
+    });
 }
 
 - (void)initImage {
-    // DO NOT use UIImage's imageWithContentsOfFile. It keeps the file open so it can't be overridden (i.e. can't be edited).
     _image = [UIImage imageWithData:[NSData dataWithContentsOfFile:self.imagePath]];
+}
+
+- (void)initImageFromPath:(NSString *)aPath {
+    // DO NOT use UIImage's imageWithContentsOfFile. It keeps the file open so it can't be overridden (i.e. can't be edited).
+    _image = [UIImage imageWithData:[NSData dataWithContentsOfFile:aPath]];
 }
 
 - (void)initTableCellImage {
