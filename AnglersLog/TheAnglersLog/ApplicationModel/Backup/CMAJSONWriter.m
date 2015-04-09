@@ -47,6 +47,24 @@
 
 #pragma mark - Writing
 
+- (NSString *)escapeQuotesInString:(NSString *)aString {
+    NSMutableString *str = [aString mutableCopy];
+    NSMutableArray *quotePositions = [NSMutableArray array];
+    
+    // check for the " character
+    for (int i = 0; i < str.length; i++)
+        if ([str characterAtIndex:i] == '"') {
+            [quotePositions addObject:[NSNumber numberWithInt:i]];
+            NSLog(@"Pos: %d", i);
+        }
+    
+    // insert a \ where necessary
+    for (int i = 0; i < [quotePositions count]; i++)
+        [str insertString:@"\\" atIndex:[[quotePositions objectAtIndex:i] integerValue] + i];
+    
+    return str;
+}
+
 // does not add new line; adds tabs
 - (void)writeString:(NSString *)aString {
     NSMutableString *tabs = [NSMutableString string];
@@ -62,6 +80,9 @@
 - (void)writeKeyValueString:(NSString *)aKey andString:(NSString *)aString andComma:(BOOL)comma {
     if (aString == nil)
         aString = @"";
+    else
+        aString = [self escapeQuotesInString:aString];
+    
     [self writeString:[NSString stringWithFormat:@"\"%@\": \"%@\"", aKey, aString]];
     if (comma)
         [self writeComma];
