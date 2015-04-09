@@ -61,8 +61,8 @@
     [super viewDidLoad];
     [self initSideBarMenu];
     [self.unitsSegmentedControl setSelectedSegmentIndex:[self journal].measurementSystem];
-    [self.exportToCloudIndicator setHidden:YES];
-    [self.exportToOtherIndicator setHidden:YES];
+    [self.exportToCloudIndicator setAlpha:0.0];
+    [self.exportToOtherIndicator setAlpha:0.0];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -175,11 +175,11 @@
                 [self documentPickerExport];
             }
             cancelBlock:^(void) {
-                [self.exportToCloudIndicator setHidden:YES];
+                [self hideIndicatorView:self.exportToCloudIndicator];
             }
             completionBlock:^(void) {
                 [self.exportToCloudIndicator startAnimating];
-                [self.exportToCloudIndicator setHidden:NO];
+                [self showIndicatorView:self.exportToCloudIndicator];
             }];
 }
 
@@ -189,11 +189,11 @@
              [self otherExport];
          }
          cancelBlock:^(void) {
-             [self.exportToOtherIndicator setHidden:YES];
+             [self hideIndicatorView:self.exportToOtherIndicator];
          }
          completionBlock:^(void) {
              [self.exportToOtherIndicator startAnimating];
-             [self.exportToOtherIndicator setHidden:NO];
+             [self showIndicatorView:self.exportToOtherIndicator];
          }];
 }
 
@@ -213,7 +213,7 @@
     if (controller.documentPickerMode == UIDocumentPickerModeExportToService) {
         NSLog(@"Export successful, deleting archive...");
         [self deleteArchiveFile];
-        [self.exportToCloudIndicator setHidden:YES];
+        [self hideIndicatorView:self.exportToCloudIndicator];
     }
 }
 
@@ -221,7 +221,7 @@
     if (controller.documentPickerMode == UIDocumentPickerModeExportToService) {
         NSLog(@"Export cancelled! Deleting archive...");
         [self deleteArchiveFile];
-        [self.exportToCloudIndicator setHidden:YES];
+        [self hideIndicatorView:self.exportToCloudIndicator];
     }
 }
 
@@ -240,10 +240,22 @@
                 NSLog(@"Error: %@", activityError.localizedDescription);
         }
         
-        [self.exportToOtherIndicator setHidden:YES];
+        [self hideIndicatorView:self.exportToOtherIndicator];
     }];
     
     [self presentViewController:activityController animated:YES completion:nil];
+}
+
+- (void)showIndicatorView:(UIActivityIndicatorView *)activityIndicator {
+    [UIView animateWithDuration:0.25 animations:^{
+        [activityIndicator setAlpha:1.0];
+    }];
+}
+
+- (void)hideIndicatorView:(UIActivityIndicatorView *)activityIndicator {
+    [UIView animateWithDuration:0.25 animations:^{
+        [activityIndicator setAlpha:0.0];
+    }];
 }
 
 - (void)deleteArchiveFile {
