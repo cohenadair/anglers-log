@@ -91,7 +91,7 @@
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
-                            <tableViewSection headerTitle="Backup" footerTitle="Visit device settings to automatically backup with iCloud." id="RNq-S6-VGh">
+                            <tableViewSection headerTitle="Backup" footerTitle="Visit device settings to automatically backup your entire device with iCloud." id="RNq-S6-VGh">
                                 <cells>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="Ssi-98-C3r">
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -135,7 +135,7 @@
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="155" id="vl3-3g-o08"/>
                                                     </constraints>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                     <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
