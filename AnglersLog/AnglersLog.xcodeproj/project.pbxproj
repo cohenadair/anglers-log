@@ -32,6 +32,7 @@
 		0D5608121A6F0F3000EE0437 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D5608111A6F0F3000EE0437 /* CoreData.framework */; };
 		0D87D0691AD6E3FB008E732A /* CMADataImporter.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D87D0681AD6E3FB008E732A /* CMADataImporter.m */; };
 		0D87D06C1AD6E69C008E732A /* CMAAlertController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D87D06B1AD6E69C008E732A /* CMAAlertController.m */; };
+		0D87D06F1AD7158A008E732A /* CMAJSONReader.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D87D06E1AD7158A008E732A /* CMAJSONReader.m */; };
 		0D8F838B1A6EC10800AABAEA /* CMAEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D8F836D1A6EC10800AABAEA /* CMAEntry.m */; };
 		0D8F838C1A6EC10800AABAEA /* CMAJournal.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D8F836F1A6EC10800AABAEA /* CMAJournal.m */; };
 		0D8F838E1A6EC10800AABAEA /* CMAStorageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D8F83731A6EC10800AABAEA /* CMAStorageManager.m */; };
@@ -213,6 +214,8 @@
 		0D87D0681AD6E3FB008E732A /* CMADataImporter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMADataImporter.m; path = ApplicationModel/Backup/CMADataImporter.m; sourceTree = "<group>"; };
 		0D87D06A1AD6E69C008E732A /* CMAAlertController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAAlertController.h; path = CustomViews/CMAAlertController.h; sourceTree = "<group>"; };
 		0D87D06B1AD6E69C008E732A /* CMAAlertController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAAlertController.m; path = CustomViews/CMAAlertController.m; sourceTree = "<group>"; };
+		0D87D06D1AD7158A008E732A /* CMAJSONReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAJSONReader.h; path = ApplicationModel/Backup/CMAJSONReader.h; sourceTree = "<group>"; };
+		0D87D06E1AD7158A008E732A /* CMAJSONReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAJSONReader.m; path = ApplicationModel/Backup/CMAJSONReader.m; sourceTree = "<group>"; };
 		0D8F836C1A6EC10800AABAEA /* CMAEntry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAEntry.h; path = TheAnglersLog/ApplicationModel/CMAEntry.h; sourceTree = SOURCE_ROOT; };
 		0D8F836D1A6EC10800AABAEA /* CMAEntry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAEntry.m; path = TheAnglersLog/ApplicationModel/CMAEntry.m; sourceTree = SOURCE_ROOT; };
 		0D8F836E1A6EC10800AABAEA /* CMAJournal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAJournal.h; path = TheAnglersLog/ApplicationModel/CMAJournal.h; sourceTree = SOURCE_ROOT; };
@@ -454,6 +457,8 @@
 				0D128F561AD5C1510004CABE /* CMAJSONWriter.json */,
 				0D128F4D1AD472340004CABE /* CMAJSONWriter.h */,
 				0D128F4E1AD472340004CABE /* CMAJSONWriter.m */,
+				0D87D06D1AD7158A008E732A /* CMAJSONReader.h */,
+				0D87D06E1AD7158A008E732A /* CMAJSONReader.m */,
 				0D128F581AD5C1BC0004CABE /* CMADataExporter.h */,
 				0D128F591AD5C1BC0004CABE /* CMADataExporter.m */,
 				0D87D0671AD6E3FB008E732A /* CMADataImporter.h */,
@@ -1100,6 +1105,7 @@
 				0D8F84111A6EC29A00AABAEA /* CMANoXView.m in Sources */,
 				0D128FB21AD5D7490004CABE /* unzip.c in Sources */,
 				0D8F838E1A6EC10800AABAEA /* CMAStorageManager.m in Sources */,
+				0D87D06F1AD7158A008E732A /* CMAJSONReader.m in Sources */,
 				0D8F838B1A6EC10800AABAEA /* CMAEntry.m in Sources */,
 				0D8F840B1A6EC29A00AABAEA /* CMACameraActionSheet.m in Sources */,
 				0D8F83E61A6EC25200AABAEA /* CMASinglePhotoViewController.m in Sources */,

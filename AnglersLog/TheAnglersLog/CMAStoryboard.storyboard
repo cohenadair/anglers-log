@@ -158,10 +158,10 @@
                                                 <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="pIP-9E-aUJ">
                                                     <rect key="frame" x="565" y="12" width="20" height="20"/>
                                                 </activityIndicatorView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Import from iCloud" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ARM-Mb-elF">
-                                                    <rect key="frame" x="15" y="11" width="155" height="21"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Import from iCloud Drive" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ARM-Mb-elF">
+                                                    <rect key="frame" x="15" y="11" width="200" height="21"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="155" id="T1t-qb-lQk"/>
+                                                        <constraint firstAttribute="width" constant="200" id="K9P-WD-SJ6"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                     <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -170,10 +170,10 @@
                                             </subviews>
                                             <constraints>
                                                 <constraint firstAttribute="trailingMargin" secondItem="pIP-9E-aUJ" secondAttribute="trailing" constant="7" id="8rv-4u-zY9"/>
-                                                <constraint firstItem="ARM-Mb-elF" firstAttribute="top" secondItem="BcM-rf-1RD" secondAttribute="topMargin" constant="3" id="O2l-a4-gyA"/>
-                                                <constraint firstItem="ARM-Mb-elF" firstAttribute="leading" secondItem="BcM-rf-1RD" secondAttribute="leadingMargin" constant="7" id="Omv-LZ-e6R"/>
-                                                <constraint firstItem="ARM-Mb-elF" firstAttribute="centerY" secondItem="BcM-rf-1RD" secondAttribute="centerY" id="amX-9L-QBg"/>
-                                                <constraint firstItem="pIP-9E-aUJ" firstAttribute="bottom" secondItem="ARM-Mb-elF" secondAttribute="bottom" id="jS8-Qk-VmV"/>
+                                                <constraint firstItem="ARM-Mb-elF" firstAttribute="centerY" secondItem="BcM-rf-1RD" secondAttribute="centerY" id="Olr-V8-Uyi"/>
+                                                <constraint firstItem="ARM-Mb-elF" firstAttribute="top" secondItem="BcM-rf-1RD" secondAttribute="topMargin" constant="3" id="Ymv-LP-zQN"/>
+                                                <constraint firstItem="ARM-Mb-elF" firstAttribute="bottom" secondItem="pIP-9E-aUJ" secondAttribute="bottom" id="htk-be-jAi"/>
+                                                <constraint firstItem="ARM-Mb-elF" firstAttribute="leading" secondItem="BcM-rf-1RD" secondAttribute="leadingMargin" constant="7" id="uXe-ve-kBN"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>

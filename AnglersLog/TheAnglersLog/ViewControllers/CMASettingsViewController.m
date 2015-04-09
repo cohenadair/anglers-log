@@ -16,6 +16,7 @@
 #import "CMAUtilities.h"
 #import "CMAAdBanner.h"
 #import "CMADataExporter.h"
+#import "CMADataImporter.h"
 #import "CMAAlertController.h"
 
 @interface CMASettingsViewController ()
@@ -193,10 +194,10 @@
 - (void)handleImportCloudEvent {
     CMAAlertController *alert = [CMAAlertController new];
     alert = [alert initWithTitle:@"Import Data"
-                         message:@"Exporting will not delete any of your data. This process may take several minutes."
+                         message:@"Importing data will add to your current data, not overwrite it. This process may take a few minutes."
                actionButtonTitle:@"Import"
                      actionBlock:^(void) {
-                         [self importFromCloudIndicator];
+                         [self documentPickerImport];
                      }
                      cancelBlock:^(void) {
                          [self hideIndicatorView:self.importFromCloudIndicator];
@@ -220,11 +221,26 @@
     [self presentViewController:picker animated:YES completion:nil];
 }
 
-- (void)documentPicker:(UIDocumentPickerViewController *)controller didPickDocumentAtURL:(NSURL *)url {
+- (void)documentPickerImport {
+    UIDocumentPickerViewController *picker = [[UIDocumentPickerViewController alloc] initWithDocumentTypes:@[@"com.pkware.zip-archive"] inMode:UIDocumentPickerModeImport];
+    picker.delegate = self;
+    picker.modalPresentationStyle = UIModalPresentationFormSheet;
+    
+    [self presentViewController:picker animated:YES completion:nil];
+}
+
+- (void)documentPicker:(UIDocumentPickerViewController *)controller didPickDocumentAtURL:(NSURL *)aURL {
+    // exporting
     if (controller.documentPickerMode == UIDocumentPickerModeExportToService) {
         NSLog(@"Export successful, deleting archive...");
         [self deleteArchiveFile];
         [self hideIndicatorView:self.exportToCloudIndicator];
+    }
+    
+    // importing
+    if (controller.documentPickerMode == UIDocumentPickerModeImport) {
+        NSLog(@"Picked URL: %@", aURL.path);
+        [self importFromURL:aURL];
     }
 }
 
@@ -233,6 +249,11 @@
         NSLog(@"Export cancelled! Deleting archive...");
         [self deleteArchiveFile];
         [self hideIndicatorView:self.exportToCloudIndicator];
+    }
+    
+    if (controller.documentPickerMode == UIDocumentPickerModeImport) {
+        NSLog(@"Import cancelled!");
+        [self hideIndicatorView:self.importFromCloudIndicator];
     }
 }
 
@@ -259,8 +280,11 @@
 
 #pragma mark - Importing
 
-- (void)importFromCloud {
-    
+- (void)importFromURL:(NSURL *)aURL {
+    NSLog(@"Importing from URL: %@", aURL.path);
+    [CMADataImporter importToJournal:[self journal] fromFilePath:aURL.path];
+    [self hideIndicatorView:self.importFromCloudIndicator];
+    [CMAAlerts alertAlert:@"Successfully imported data." presentationViewController:self];
 }
 
 #pragma mark - Hide/Show Views
