@@ -16,6 +16,7 @@
 #import "CMAUtilities.h"
 #import "CMAAdBanner.h"
 #import "CMADataExporter.h"
+#import "CMAAlertController.h"
 
 @interface CMASettingsViewController ()
 
@@ -23,6 +24,7 @@
 @property (weak, nonatomic) IBOutlet UISegmentedControl *unitsSegmentedControl;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *exportToCloudIndicator;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *exportToOtherIndicator;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *importFromCloudIndicator;
 
 @property (strong, nonatomic) NSURL *archiveURL;
 
@@ -34,6 +36,7 @@
 #define kSectionBackup 2
     #define kRowExportCloud 0
     #define kRowExportOther 1
+    #define kRowImportCloud 2
 #define kSectionIAP 3
     #define kRowRestore 0
     #define kRowRemoveAds 1
@@ -63,6 +66,7 @@
     [self.unitsSegmentedControl setSelectedSegmentIndex:[self journal].measurementSystem];
     [self.exportToCloudIndicator setAlpha:0.0];
     [self.exportToOtherIndicator setAlpha:0.0];
+    [self.importFromCloudIndicator setAlpha:0.0];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -114,6 +118,9 @@
         
         if (indexPath.row == kRowExportOther)
             [self handleExportOtherEvent];
+        
+        if (indexPath.row == kRowImportCloud)
+            [self handleImportCloudEvent];
     }
     
     if (indexPath.section == kSectionIAP) {
@@ -143,26 +150,12 @@
 }
 
 - (void)handleExportEventWithBlock:(void (^)())anExportBlock cancelBlock:(void (^)())aCancelBlock completionBlock:(void (^)())aCompletionBlock {
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Export Data"
-                                                                   message:@"Exporting will not delete any of your data. This process may take several minutes."
-                                                            preferredStyle:UIAlertControllerStyleActionSheet];
-    
-    UIAlertAction *exportAction =
-    [UIAlertAction actionWithTitle:@"Export"
-                             style:UIAlertActionStyleDefault
-                           handler:^(UIAlertAction *action) {
-                               anExportBlock();
-                           }];
-    
-    UIAlertAction *cancelAction =
-    [UIAlertAction actionWithTitle:@"Cancel"
-                             style:UIAlertActionStyleCancel
-                           handler:^(UIAlertAction *action) {
-                               aCancelBlock();
-                           }];
-    
-    [alert addAction:exportAction];
-    [alert addAction:cancelAction];
+    CMAAlertController *alert = [CMAAlertController new];
+    alert = [alert initWithTitle:@"Export Data"
+                         message:@"Exporting will not delete any of your data. This process may take several minutes."
+               actionButtonTitle:@"Export"
+                     actionBlock:anExportBlock
+                     cancelBlock:aCancelBlock];
     
     [self presentViewController:alert animated:YES completion:^(void) {
         aCompletionBlock();
@@ -195,6 +188,24 @@
              [self.exportToOtherIndicator startAnimating];
              [self showIndicatorView:self.exportToOtherIndicator];
          }];
+}
+
+- (void)handleImportCloudEvent {
+    CMAAlertController *alert = [CMAAlertController new];
+    alert = [alert initWithTitle:@"Import Data"
+                         message:@"Exporting will not delete any of your data. This process may take several minutes."
+               actionButtonTitle:@"Import"
+                     actionBlock:^(void) {
+                         [self importFromCloudIndicator];
+                     }
+                     cancelBlock:^(void) {
+                         [self hideIndicatorView:self.importFromCloudIndicator];
+                     }];
+    
+    [self presentViewController:alert animated:YES completion:^(void) {
+        [self.importFromCloudIndicator startAnimating];
+        [self showIndicatorView:self.importFromCloudIndicator];
+    }];
 }
 
 #pragma mark - Exporting
@@ -245,6 +256,14 @@
     
     [self presentViewController:activityController animated:YES completion:nil];
 }
+
+#pragma mark - Importing
+
+- (void)importFromCloud {
+    
+}
+
+#pragma mark - Hide/Show Views
 
 - (void)showIndicatorView:(UIActivityIndicatorView *)activityIndicator {
     [UIView animateWithDuration:0.25 animations:^{

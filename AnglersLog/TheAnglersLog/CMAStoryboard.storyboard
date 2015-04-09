@@ -149,6 +149,34 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="4Aq-Rc-dsr">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="4Aq-Rc-dsr" id="BcM-rf-1RD">
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="pIP-9E-aUJ">
+                                                    <rect key="frame" x="565" y="12" width="20" height="20"/>
+                                                </activityIndicatorView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Import from iCloud" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ARM-Mb-elF">
+                                                    <rect key="frame" x="15" y="11" width="155" height="21"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="155" id="T1t-qb-lQk"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                    <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="trailingMargin" secondItem="pIP-9E-aUJ" secondAttribute="trailing" constant="7" id="8rv-4u-zY9"/>
+                                                <constraint firstItem="ARM-Mb-elF" firstAttribute="top" secondItem="BcM-rf-1RD" secondAttribute="topMargin" constant="3" id="O2l-a4-gyA"/>
+                                                <constraint firstItem="ARM-Mb-elF" firstAttribute="leading" secondItem="BcM-rf-1RD" secondAttribute="leadingMargin" constant="7" id="Omv-LZ-e6R"/>
+                                                <constraint firstItem="ARM-Mb-elF" firstAttribute="centerY" secondItem="BcM-rf-1RD" secondAttribute="centerY" id="amX-9L-QBg"/>
+                                                <constraint firstItem="pIP-9E-aUJ" firstAttribute="bottom" secondItem="ARM-Mb-elF" secondAttribute="bottom" id="jS8-Qk-VmV"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
                                 </cells>
                             </tableViewSection>
                             <tableViewSection headerTitle="In-App Purchases" id="ra7-Cs-ljj">
@@ -199,6 +227,7 @@
                     <connections>
                         <outlet property="exportToCloudIndicator" destination="P43-aM-ibn" id="PpX-r1-Y0f"/>
                         <outlet property="exportToOtherIndicator" destination="74e-vd-yq1" id="epS-Gw-aAy"/>
+                        <outlet property="importFromCloudIndicator" destination="pIP-9E-aUJ" id="hCV-sk-HZo"/>
                         <outlet property="menuButton" destination="dIN-2n-lvB" id="MWr-ke-4b2"/>
                         <outlet property="unitsSegmentedControl" destination="Hfc-Hg-ucV" id="ILd-xg-wt4"/>
                     </connections>
