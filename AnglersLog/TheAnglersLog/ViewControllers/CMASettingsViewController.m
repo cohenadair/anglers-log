@@ -22,6 +22,7 @@
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *menuButton;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *unitsSegmentedControl;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *exportToCloudIndicator;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *exportToOtherIndicator;
 
 @property (strong, nonatomic) NSURL *archiveURL;
 
@@ -31,7 +32,8 @@
     #define kRowFAQ 0
     #define kRowRate 1
 #define kSectionBackup 2
-    #define kRowExport 0
+    #define kRowExportCloud 0
+    #define kRowExportOther 1
 #define kSectionIAP 3
     #define kRowRestore 0
     #define kRowRemoveAds 1
@@ -60,6 +62,7 @@
     [self initSideBarMenu];
     [self.unitsSegmentedControl setSelectedSegmentIndex:[self journal].measurementSystem];
     [self.exportToCloudIndicator setHidden:YES];
+    [self.exportToOtherIndicator setHidden:YES];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -106,8 +109,11 @@
     }
     
     if (indexPath.section == kSectionBackup) {
-        if (indexPath.row == kRowExport)
-            [self handleExportEvent];
+        if (indexPath.row == kRowExportCloud)
+            [self handleExportCloudEvent];
+        
+        if (indexPath.row == kRowExportOther)
+            [self handleExportOtherEvent];
     }
     
     if (indexPath.section == kSectionIAP) {
@@ -136,7 +142,7 @@
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:FAQ_LINK]];
 }
 
-- (void)handleExportEvent {
+- (void)handleExportEventWithBlock:(void (^)())anExportBlock cancelBlock:(void (^)())aCancelBlock completionBlock:(void (^)())aCompletionBlock {
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Export Data"
                                                                    message:@"Exporting will not delete any of your data. This process may take several minutes."
                                                             preferredStyle:UIAlertControllerStyleActionSheet];
@@ -145,26 +151,53 @@
     [UIAlertAction actionWithTitle:@"Export"
                              style:UIAlertActionStyleDefault
                            handler:^(UIAlertAction *action) {
-                               [self documentPickerExport];
+                               anExportBlock();
                            }];
     
     UIAlertAction *cancelAction =
     [UIAlertAction actionWithTitle:@"Cancel"
                              style:UIAlertActionStyleCancel
                            handler:^(UIAlertAction *action) {
-                               [self.exportToCloudIndicator setHidden:YES];
+                               aCancelBlock();
                            }];
     
     [alert addAction:exportAction];
     [alert addAction:cancelAction];
     
     [self presentViewController:alert animated:YES completion:^(void) {
-        [self.exportToCloudIndicator startAnimating];
-        [self.exportToCloudIndicator setHidden:NO];
+        aCompletionBlock();
     }];
 }
 
-#pragma mark - Document Picker
+- (void)handleExportCloudEvent {
+    [self handleExportEventWithBlock:
+            ^(void) {
+                [self documentPickerExport];
+            }
+            cancelBlock:^(void) {
+                [self.exportToCloudIndicator setHidden:YES];
+            }
+            completionBlock:^(void) {
+                [self.exportToCloudIndicator startAnimating];
+                [self.exportToCloudIndicator setHidden:NO];
+            }];
+}
+
+- (void)handleExportOtherEvent {
+    [self handleExportEventWithBlock:
+         ^(void) {
+             [self otherExport];
+         }
+         cancelBlock:^(void) {
+             [self.exportToOtherIndicator setHidden:YES];
+         }
+         completionBlock:^(void) {
+             [self.exportToOtherIndicator startAnimating];
+             [self.exportToOtherIndicator setHidden:NO];
+         }];
+}
+
+#pragma mark - Exporting
 
 - (void)documentPickerExport {
     self.archiveURL = [CMADataExporter exportJournal:[self journal]];
@@ -190,6 +223,27 @@
         [self deleteArchiveFile];
         [self.exportToCloudIndicator setHidden:YES];
     }
+}
+
+- (void)otherExport {
+    self.archiveURL = [CMADataExporter exportJournal:[self journal]];
+    
+    UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[self.archiveURL] applicationActivities:nil];
+    activityController.popoverPresentationController.sourceView = self.view;
+   
+    [activityController setCompletionWithItemsHandler:^(NSString *activityType, BOOL completed, NSArray *returnedItems, NSError *activityError) {
+        if (!completed || activityError) {
+            NSLog(@"Activity not completed! Deleting archive...");
+            [self deleteArchiveFile];
+            
+            if (activityError)
+                NSLog(@"Error: %@", activityError.localizedDescription);
+        }
+        
+        [self.exportToOtherIndicator setHidden:YES];
+    }];
+    
+    [self presentViewController:activityController animated:YES completion:nil];
 }
 
 - (void)deleteArchiveFile {

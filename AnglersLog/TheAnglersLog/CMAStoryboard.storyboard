@@ -121,6 +121,34 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="gpb-5D-fuN">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="gpb-5D-fuN" id="txR-zX-pCJ">
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="74e-vd-yq1">
+                                                    <rect key="frame" x="565" y="12" width="20" height="20"/>
+                                                </activityIndicatorView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Export to Other" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SVg-K1-6xu">
+                                                    <rect key="frame" x="15" y="11" width="155" height="21"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="155" id="vl3-3g-o08"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="trailingMargin" secondItem="74e-vd-yq1" secondAttribute="trailing" constant="7" id="As5-Cd-aPZ"/>
+                                                <constraint firstItem="74e-vd-yq1" firstAttribute="bottom" secondItem="SVg-K1-6xu" secondAttribute="bottom" id="GXC-tv-FCD"/>
+                                                <constraint firstItem="SVg-K1-6xu" firstAttribute="leading" secondItem="txR-zX-pCJ" secondAttribute="leadingMargin" constant="7" id="OoT-Ze-4m3"/>
+                                                <constraint firstItem="SVg-K1-6xu" firstAttribute="top" secondItem="txR-zX-pCJ" secondAttribute="topMargin" constant="3" id="bjv-fj-ZxG"/>
+                                                <constraint firstItem="SVg-K1-6xu" firstAttribute="centerY" secondItem="txR-zX-pCJ" secondAttribute="centerY" id="pQu-OA-VmM"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
                                 </cells>
                             </tableViewSection>
                             <tableViewSection headerTitle="In-App Purchases" id="ra7-Cs-ljj">
@@ -170,6 +198,7 @@
                     <nil key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="exportToCloudIndicator" destination="P43-aM-ibn" id="PpX-r1-Y0f"/>
+                        <outlet property="exportToOtherIndicator" destination="74e-vd-yq1" id="epS-Gw-aAy"/>
                         <outlet property="menuButton" destination="dIN-2n-lvB" id="MWr-ke-4b2"/>
                         <outlet property="unitsSegmentedControl" destination="Hfc-Hg-ucV" id="ILd-xg-wt4"/>
                     </connections>

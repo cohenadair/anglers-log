@@ -24,7 +24,7 @@
     
     [writer.outFile closeFile];
     
-    NSLog(@"Write JSON in %f seconds.", CFAbsoluteTimeGetCurrent() - start);
+    NSLog(@"Wrote JSON in %f seconds.", CFAbsoluteTimeGetCurrent() - start);
 }
 
 #pragma mark - Initializing
