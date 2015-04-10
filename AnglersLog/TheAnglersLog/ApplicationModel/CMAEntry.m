@@ -64,11 +64,6 @@
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     id obj = [object primitiveValueForKey:keyPath];
     
-    if ([keyPath isEqualToString:@"weatherData"]) {
-        [(CMAWeatherData *)obj setEntry:self];
-        return;
-    }
-    
     if ([obj isKindOfClass:[NSMutableSet class]]) // for fishing methods
         for (id o in obj)
             [(CMAUserDefineObject *)o addEntry:self];
@@ -87,9 +82,6 @@
     [self addObserver:self forKeyPath:@"fishingSpot" options:NSKeyValueObservingOptionNew context:nil];
     [self addObserver:self forKeyPath:@"fishingMethods" options:NSKeyValueObservingOptionNew context:nil];
     [self addObserver:self forKeyPath:@"waterClarity" options:NSKeyValueObservingOptionNew context:nil];
-    
-    // require a "entry" property to be set
-    [self addObserver:self forKeyPath:@"weatherData" options:NSKeyValueObservingOptionNew context:nil];
     
     self.__observersWereAdded = YES;
 }
