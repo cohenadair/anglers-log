@@ -86,3 +86,12 @@ NSInteger const TABLE_THUMB_SIZE        = 85;
 #pragma mark - Math Constants
 
 NSInteger const OUNCES_PER_POUND = 16;
+
+#pragma mark - Errors
+
+NSString *const ERROR_INVALID_FILE      = @"1";
+NSString *const ERROR_FILE_NOT_FOUND    = @"2";
+NSString *const ERROR_JSON_READ         = @"3";
+
+
+

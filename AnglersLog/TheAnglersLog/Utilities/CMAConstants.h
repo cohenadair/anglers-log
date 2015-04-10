@@ -147,4 +147,10 @@ extern NSInteger const TABLE_THUMB_SIZE;
 
 extern NSInteger const OUNCES_PER_POUND;
 
+#pragma mark - Errors
+
+extern NSString *const ERROR_INVALID_FILE;
+extern NSString *const ERROR_FILE_NOT_FOUND;
+extern NSString *const ERROR_JSON_READ;
+
 #endif

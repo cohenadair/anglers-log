@@ -11,6 +11,10 @@
 
 @interface CMAJSONReader : NSObject
 
-+ (void)JSONToJournal:(CMAJournal *)aJournal jsonFilePath:(NSString *)aFilePath;
+@property (strong, nonatomic)CMAJournal *journal;
+
++ (BOOL)JSONToJournal:(CMAJournal *)aJournal jsonFilePath:(NSString *)aFilePath error:(NSString **)errorMsg;
+
+- (CMAJSONReader *)initWithJournal:(CMAJournal *)aJournal;
 
 @end

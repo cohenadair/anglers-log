@@ -28,6 +28,9 @@
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *importFromCloudIndicator;
 
 @property (strong, nonatomic) NSURL *archiveURL;
+@property (strong, nonatomic) NSString *backupAlertText;
+@property (nonatomic) BOOL showBackupAlert;
+@property (nonatomic) BOOL backupError;
 
 @end
 
@@ -73,6 +76,22 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     self.navigationController.toolbarHidden = YES;
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
+    // needed so alerts are displayed AFTER UIDocumentPicker is closed
+    if (self.showBackupAlert) {
+        if (self.backupError)
+            [CMAAlerts errorAlert:self.backupAlertText presentationViewController:self];
+        else
+            [CMAAlerts alertAlert:self.backupAlertText presentationViewController:self];
+    
+        self.backupAlertText = nil;
+        self.backupError = NO;
+        self.showBackupAlert = NO;
+    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -194,7 +213,7 @@
 - (void)handleImportCloudEvent {
     CMAAlertController *alert = [CMAAlertController new];
     alert = [alert initWithTitle:@"Import Data"
-                         message:@"Importing data will add to your current data, not overwrite it. This process may take a few minutes."
+                         message:@"Importing will add to your current log; it will not delete anything. Conflicts are resolved in favor of the importing file. This process may take a few minutes."
                actionButtonTitle:@"Import"
                      actionBlock:^(void) {
                          [self documentPickerImport];
@@ -235,13 +254,12 @@
         NSLog(@"Export successful, deleting archive...");
         [self deleteArchiveFile];
         [self hideIndicatorView:self.exportToCloudIndicator];
+        [self backupAlert:@"Data exported successfully." error:NO];
     }
     
     // importing
-    if (controller.documentPickerMode == UIDocumentPickerModeImport) {
-        NSLog(@"Picked URL: %@", aURL.path);
+    if (controller.documentPickerMode == UIDocumentPickerModeImport)
         [self importFromURL:aURL];
-    }
 }
 
 - (void)documentPickerWasCancelled:(UIDocumentPickerViewController *)controller {
@@ -269,7 +287,7 @@
             [self deleteArchiveFile];
             
             if (activityError)
-                NSLog(@"Error: %@", activityError.localizedDescription);
+                [self backupAlert:[NSString stringWithFormat:@"Error exporting: %@.", activityError.localizedDescription] error:YES];
         }
         
         [self hideIndicatorView:self.exportToOtherIndicator];
@@ -281,10 +299,14 @@
 #pragma mark - Importing
 
 - (void)importFromURL:(NSURL *)aURL {
-    NSLog(@"Importing from URL: %@", aURL.path);
-    [CMADataImporter importToJournal:[self journal] fromFilePath:aURL.path];
+    NSString *errorMsg;
+    
+    if (![CMADataImporter importToJournal:[self journal] fromFilePath:aURL.path error:&errorMsg]) {
+        [self backupAlert:[NSString stringWithFormat:@"Error importing data: %@\n\nSee Frequently Asked Questions for details.", errorMsg] error:YES];
+    } else
+        [self backupAlert:@"Data imported successfully." error:NO];
+    
     [self hideIndicatorView:self.importFromCloudIndicator];
-    [CMAAlerts alertAlert:@"Successfully imported data." presentationViewController:self];
 }
 
 #pragma mark - Hide/Show Views
@@ -304,6 +326,12 @@
 - (void)deleteArchiveFile {
     [CMAUtilities deleteFileAtPath:self.archiveURL.path];
     self.archiveURL = nil;
+}
+
+- (void)backupAlert:(NSString *)msg error:(BOOL)isError {
+    self.backupError = isError;
+    self.showBackupAlert = YES;
+    self.backupAlertText = msg;
 }
 
 #pragma mark - In-App Purchases

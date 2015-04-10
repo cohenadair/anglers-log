@@ -49,6 +49,7 @@
     if (anObject == nil)
         return NO;
     
+    //[anObject setUserDefine:self];
     [[self activeSet] addObject:anObject];
     [self sortByNameProperty];
     return YES;
@@ -137,6 +138,26 @@
     
     NSLog(@"Invalid user define name in [CMAUserDefine emptyObjectNamed].");
     return nil;
+}
+
+- (BOOL)isSetOfBaits {
+    return [self.name isEqualToString:UDN_BAITS];
+}
+
+- (BOOL)isSetOfLocations {
+    return [self.name isEqualToString:UDN_LOCATIONS];
+}
+
+- (BOOL)isSetOfFishingMethods {
+    return [self.name isEqualToString:UDN_FISHING_METHODS];
+}
+
+- (BOOL)isSetOfWaterClarities {
+    return [self.name isEqualToString:UDN_WATER_CLARITIES];
+}
+
+- (BOOL)isSetOfSpecies {
+    return [self.name isEqualToString:UDN_SPECIES];
 }
 
 #pragma mark - Sorting

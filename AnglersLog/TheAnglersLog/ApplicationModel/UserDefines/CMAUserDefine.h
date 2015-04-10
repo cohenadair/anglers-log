@@ -44,6 +44,11 @@
 
 // object types
 - (id)emptyObjectNamed:(NSString *)aName;
+- (BOOL)isSetOfBaits;
+- (BOOL)isSetOfLocations;
+- (BOOL)isSetOfFishingMethods;
+- (BOOL)isSetOfWaterClarities;
+- (BOOL)isSetOfSpecies;
 
 // sorting
 - (void)sortByNameProperty;

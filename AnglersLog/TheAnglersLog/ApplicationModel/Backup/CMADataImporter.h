@@ -11,6 +11,6 @@
 
 @interface CMADataImporter : NSObject
 
-+ (void)importToJournal:(CMAJournal *)aJournal fromFilePath:(NSString *)aPath;
++ (BOOL)importToJournal:(CMAJournal *)aJournal fromFilePath:(NSString *)aPath error:(NSString **)anErrorMsg;
 
 @end
