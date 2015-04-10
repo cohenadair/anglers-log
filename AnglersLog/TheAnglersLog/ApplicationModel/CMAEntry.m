@@ -34,11 +34,15 @@
 @dynamic notes;
 @dynamic journal;
 
+@synthesize __observersWereAdded;
+
 #pragma mark - Initialization
 
 - (id)initWithDate:(NSDate *)aDate {
     self.date = aDate;
     self.images = [NSMutableOrderedSet orderedSet];
+    
+    [self addObservers];
     
     return self;
 }
@@ -53,6 +57,41 @@
 - (void)initProperties {
     for (CMAImage *img in self.images)
         [img initProperties];
+    
+    [self addObservers];
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+    id obj = [object primitiveValueForKey:keyPath];
+    
+    if ([keyPath isEqualToString:@"weatherData"]) {
+        [(CMAWeatherData *)obj setEntry:self];
+        return;
+    }
+    
+    if ([obj isKindOfClass:[NSMutableSet class]]) // for fishing methods
+        for (id o in obj)
+            [(CMAUserDefineObject *)o addEntry:self];
+    else
+        [(CMAUserDefineObject *)obj addEntry:self];
+}
+
+- (void)addObservers {
+    if (self.__observersWereAdded)
+        return;
+    
+    // all these observers CMAUserDefineObjects, requiring each entry they are associated with to be added to their "entries" array
+    [self addObserver:self forKeyPath:@"fishSpecies" options:NSKeyValueObservingOptionNew context:nil];
+    [self addObserver:self forKeyPath:@"baitUsed" options:NSKeyValueObservingOptionNew context:nil];
+    [self addObserver:self forKeyPath:@"location" options:NSKeyValueObservingOptionNew context:nil];
+    [self addObserver:self forKeyPath:@"fishingSpot" options:NSKeyValueObservingOptionNew context:nil];
+    [self addObserver:self forKeyPath:@"fishingMethods" options:NSKeyValueObservingOptionNew context:nil];
+    [self addObserver:self forKeyPath:@"waterClarity" options:NSKeyValueObservingOptionNew context:nil];
+    
+    // require a "entry" property to be set
+    [self addObserver:self forKeyPath:@"weatherData" options:NSKeyValueObservingOptionNew context:nil];
+    
+    self.__observersWereAdded = YES;
 }
 
 #pragma mark - Accessing

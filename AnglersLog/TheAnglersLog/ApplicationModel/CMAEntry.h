@@ -20,6 +20,8 @@
 
 @interface CMAEntry : NSManagedObject
 
+@property (nonatomic)BOOL __observersWereAdded;
+
 // date and time
 @property (strong, nonatomic)NSDate *date;
 

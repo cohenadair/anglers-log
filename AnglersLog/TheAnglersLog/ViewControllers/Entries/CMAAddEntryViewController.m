@@ -662,7 +662,6 @@ NSString *const kNotSelectedString = @"Not Selected";
     // species
     if (![[self.speciesDetailLabel text] isEqualToString:kNotSelectedString]) {
         CMASpecies *species = [[[self journal] userDefineNamed:UDN_SPECIES] objectNamed:[self.speciesDetailLabel text]];
-        [species addEntry:anEntry];
         [anEntry setFishSpecies:species];
     } else {
         [CMAAlerts errorAlert:@"Please select a species." presentationViewController:self];
@@ -746,11 +745,9 @@ NSString *const kNotSelectedString = @"Not Selected";
         NSArray *locationInfo = [self parseLocationDetailText];
         
         [anEntry setLocation:locationInfo[0]];
-        [anEntry.location addEntry:anEntry];
         
         if ([locationInfo count] > 1) {
             [anEntry setFishingSpot:locationInfo[1]];
-            [anEntry.fishingSpot addEntry:anEntry];
         }
     } else {
         [anEntry setLocation:nil];
@@ -760,7 +757,6 @@ NSString *const kNotSelectedString = @"Not Selected";
     // bait used
     if (![[self.baitUsedDetailLabel text] isEqualToString:kNotSelectedString]) {
         CMABait *bait = [[[self journal] userDefineNamed:UDN_BAITS] objectNamed:[self.baitUsedDetailLabel text]];
-        [bait addEntry:anEntry];
         [anEntry setBaitUsed:bait];
     } else {
         [anEntry setBaitUsed:nil];
@@ -768,20 +764,15 @@ NSString *const kNotSelectedString = @"Not Selected";
     
     // fishing methods
     if (![[self.methodsDetailLabel text] isEqualToString:kNotSelectedString]) {
-        NSMutableSet *methods = [self parseMethodsDetailText];
-        for (CMAFishingMethod *m in methods)
-            [m addEntry:anEntry];
-        
-        [anEntry setFishingMethods:methods];
+        [anEntry setFishingMethods:[self parseMethodsDetailText]];
     } else {
         [anEntry setFishingMethods:nil];
     }
     
     // weather conditions
-    if (self.isWeatherInitialized) {
+    if (self.isWeatherInitialized)
         [anEntry setWeatherData:self.weatherData];
-        [anEntry.weatherData setEntry:anEntry];
-    } else
+    else
         [anEntry setWeatherData:nil];
     
     // water temperature
@@ -795,7 +786,6 @@ NSString *const kNotSelectedString = @"Not Selected";
     // water clarity
     if (![[self.waterClarityLabel text] isEqualToString:kNotSelectedString]) {
         CMAWaterClarity *waterClarity = [[[self journal] userDefineNamed:UDN_WATER_CLARITIES] objectNamed:[self.waterClarityLabel text]];
-        [waterClarity addEntry:anEntry];
         [anEntry setWaterClarity:waterClarity];
     } else {
         [anEntry setWaterClarity:nil];
