@@ -9,6 +9,8 @@
 
 #import "CMAConstants.h"
 
+NSString *const DATE_FILE_STRING = @"MM-dd-yyyy_h-mm_a";
+
 #pragma mark - Application Constants
 
 NSString *const APP_NAME        = @"Anglers' Log";

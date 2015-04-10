@@ -69,6 +69,8 @@ UIColor *CELL_COLOR_DARK;
 UIColor *CELL_COLOR_LIGHT;
 CGSize CELL_SIZE_GALLERY;
 
+extern NSString *const DATE_FILE_STRING;
+
 #pragma mark - Application Constants
 
 extern NSString *const APP_NAME;

@@ -53,7 +53,64 @@
 }
 
 - (void)addEntry:(id)anEntry {
+    NSDateFormatter *formatter = [NSDateFormatter new];
+    [formatter setDateFormat:DATE_FILE_STRING];
+    
+    NSDate *date = [formatter dateFromString:[anEntry valueForKey:@"date"]];
+    CMAEntry *e = [self.journal entryDated:date];
+    if (e == nil) {
+        e = [[CMAStorageManager sharedManager] managedEntry];
+        [self.journal addEntry:e];
+    }
+    
+    e.date = date;
+    
+    NSArray *images = [anEntry objectForKey:@"images"];
+    for (id img in images)
+        [self addImage:img toEntry:e];
+    
+    e.fishSpecies = [[self.journal userDefineNamed:UDN_SPECIES] objectNamed:[anEntry valueForKey:@"fishSpecies"]];
+    e.baitUsed = [[self.journal userDefineNamed:UDN_BAITS] objectNamed:[anEntry valueForKey:@"baitUsed"]];
+    e.location = [[self.journal userDefineNamed:UDN_LOCATIONS] objectNamed:[anEntry valueForKey:@"location"]];
+    e.fishingSpot = [e.location fishingSpotNamed:[anEntry objectForKey:@"fishingSpot"]];
+    e.waterClarity = [[self.journal userDefineNamed:UDN_WATER_CLARITIES] objectNamed:[anEntry valueForKey:@"waterClarity"]];
+    
+    CMAUserDefine *ud = [self.journal userDefineNamed:UDN_FISHING_METHODS];
+    [self doArrayFromJSON:anEntry key:@"fishingMethodNames" func:^(id obj) {
+        [e addFishingMethod:[ud objectNamed:obj]];
+    }];
+    
+    e.weatherData = [self weatherFromJSON:[anEntry objectForKey:@"weatherData"]];
+    e.fishLength = (NSNumber *)[anEntry valueForKey:@"fishLength"];
+    e.fishWeight = (NSNumber *)[anEntry valueForKey:@"fishWeight"];
+    e.fishOunces = (NSNumber *)[anEntry valueForKey:@"fishOunces"];
+    e.fishQuantity = (NSNumber *)[anEntry valueForKey:@"fishQuantity"];
+    e.fishResult = [[anEntry valueForKey:@"fishResult"] integerValue];
+    e.waterTemperature = (NSNumber *)[anEntry valueForKey:@"waterTemperature"];
+    e.waterDepth = (NSNumber *)[anEntry valueForKey:@"waterDepth"];
+    
+    e.notes = [anEntry valueForKey:@"notes"];
+    if ([e.notes isEqualToString:@""])
+        e.notes = nil;
+}
 
+- (CMAWeatherData *)weatherFromJSON:(id)someWeatherData {
+    if ([someWeatherData count] > 0) {
+        CMAWeatherData *w = [[CMAStorageManager sharedManager] managedWeatherData];
+        
+        w.temperature = (NSNumber *)[someWeatherData valueForKey:@"temperature"];
+        w.windSpeed = [someWeatherData valueForKey:@"windSpeed"];
+        w.skyConditions = [someWeatherData valueForKey:@"skyConditions"];
+        w.imageURL = [someWeatherData valueForKey:@"imageURL"];
+        
+        return w;
+    }
+    
+    return nil;
+}
+
+- (void)addImage:(id)anImage toEntry:(CMAEntry *)anEntry {
+    [anEntry addImage:[self imageFromJSON:anImage]];
 }
 
 - (CMAImage *)imageFromJSON:(id)anImage {

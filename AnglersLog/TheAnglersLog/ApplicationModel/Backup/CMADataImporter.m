@@ -45,7 +45,10 @@
     }
     
     // parse JSON
-    return [CMAJSONReader JSONToJournal:aJournal jsonFilePath:jsonPath error:anErrorMsg];
+    BOOL success = [CMAJSONReader JSONToJournal:aJournal jsonFilePath:jsonPath error:anErrorMsg];
+    [aJournal archive];
+    
+    return success;
 }
 
 @end

@@ -15,6 +15,7 @@
 #import "CMAWaterClarity.h"
 #import "CMAWeatherData.h"
 #import "CMAImage.h"
+#import "CMAFishingMethod.h"
 
 @class CMAJournal;
 
@@ -77,6 +78,7 @@
 - (void)edit:(CMAEntry *)aNewEntry;
 - (void)addImage:(CMAImage *)anImage;
 - (void)removeImage:(CMAImage *)anImage;
+- (void)addFishingMethod:(CMAFishingMethod *)aFishingMethod;
 
 // visiting
 - (void)accept:(id)aVisitor;

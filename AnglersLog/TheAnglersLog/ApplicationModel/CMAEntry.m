@@ -105,7 +105,7 @@
 
 - (NSString *)dateAsFileNameString {
     NSDateFormatter *format = [NSDateFormatter new];
-    [format setDateFormat:@"MM-dd-yyyy_h-mm_a"];
+    [format setDateFormat:DATE_FILE_STRING];
     
     return [format stringFromDate:self.date];
 }
@@ -256,6 +256,14 @@
 - (void)removeImage:(CMAImage *)anImage {
     // removing the managed object removes it from the array as well
     [[CMAStorageManager sharedManager] deleteManagedObject:anImage saveContext:NO];
+}
+
+- (void)addFishingMethod:(CMAFishingMethod *)aFishingMethod {
+    if (aFishingMethod == nil)
+        return;
+    
+    [aFishingMethod addEntry:self];
+    [self.fishingMethods addObject:aFishingMethod];
 }
 
 #pragma mark - Visiting
