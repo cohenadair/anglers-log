@@ -14,6 +14,8 @@
 @implementation CMADataImporter
 
 + (BOOL)importToJournal:(CMAJournal *)aJournal fromFilePath:(NSString *)aPath error:(NSString **)anErrorMsg  {
+    CFAbsoluteTime start = CFAbsoluteTimeGetCurrent();
+    
     // extract archive
     NSString *zipDestPath = [[CMAStorageManager sharedManager] documentsDirectory].path;
     zipDestPath = [zipDestPath stringByAppendingPathComponent:@"Images/"];
@@ -28,8 +30,10 @@
     // make sure files are valid/get .json file path
     for (int i = 0; i < [files count]; i++) {
         NSString *f = [files objectAtIndex:i];
-        if ([f hasSuffix:@".json"])
+        if ([f hasSuffix:@".json"]) {
             jsonPath = [jsonPath stringByAppendingPathComponent:f];
+            break;
+        }
     }
     
     // if there is no json file in the archive
@@ -46,7 +50,10 @@
     
     // parse JSON
     BOOL success = [CMAJSONReader JSONToJournal:aJournal jsonFilePath:jsonPath error:anErrorMsg];
+    [aJournal sortEntriesBy:aJournal.entrySortMethod order:aJournal.entrySortOrder];
     [aJournal archive];
+    
+    NSLog(@"Imported data in %f seconds.", CFAbsoluteTimeGetCurrent() - start);
     
     return success;
 }

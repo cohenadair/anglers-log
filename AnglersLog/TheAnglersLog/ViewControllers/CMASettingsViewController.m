@@ -28,6 +28,7 @@
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *importFromCloudIndicator;
 
 @property (strong, nonatomic) NSURL *archiveURL;
+@property (strong, nonatomic) NSURL *importURL;
 @property (strong, nonatomic) NSString *backupAlertText;
 @property (nonatomic) BOOL showBackupAlert;
 @property (nonatomic) BOOL backupError;
@@ -68,9 +69,12 @@
     [super viewDidLoad];
     [self initSideBarMenu];
     [self.unitsSegmentedControl setSelectedSegmentIndex:[self journal].measurementSystem];
+    
     [self.exportToCloudIndicator setAlpha:0.0];
     [self.exportToOtherIndicator setAlpha:0.0];
     [self.importFromCloudIndicator setAlpha:0.0];
+    
+    self.importURL = nil;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -92,6 +96,10 @@
         self.backupError = NO;
         self.showBackupAlert = NO;
     }
+    
+    // start import after UIDocumentPicker has been dismissed
+    if (self.importURL)
+        [self importFromURL:self.importURL];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -259,7 +267,7 @@
     
     // importing
     if (controller.documentPickerMode == UIDocumentPickerModeImport)
-        [self importFromURL:aURL];
+        self.importURL = aURL;
 }
 
 - (void)documentPickerWasCancelled:(UIDocumentPickerViewController *)controller {
@@ -301,10 +309,10 @@
 - (void)importFromURL:(NSURL *)aURL {
     NSString *errorMsg;
     
-    if (![CMADataImporter importToJournal:[self journal] fromFilePath:aURL.path error:&errorMsg]) {
-        [self backupAlert:[NSString stringWithFormat:@"Error importing data: %@\n\nSee Frequently Asked Questions for details.", errorMsg] error:YES];
-    } else
-        [self backupAlert:@"Data imported successfully." error:NO];
+    if (![CMADataImporter importToJournal:[self journal] fromFilePath:aURL.path error:&errorMsg])
+        [CMAAlerts errorAlert:[NSString stringWithFormat:@"Error importing data: %@\n\nSee Frequently Asked Questions for details.", errorMsg] presentationViewController:self];
+    else
+        [CMAAlerts alertAlert:@"Data imported successfully." presentationViewController:self];
     
     [self hideIndicatorView:self.importFromCloudIndicator];
 }
