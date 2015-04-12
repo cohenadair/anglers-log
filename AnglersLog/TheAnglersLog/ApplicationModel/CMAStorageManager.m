@@ -378,6 +378,9 @@
     for (CMAEntry *e in [self.sharedJournal entries])
         expectedCount += e.imageCount;
     
+    for (CMABait *b in [[self.sharedJournal userDefineNamed:UDN_BAITS] activeSet])
+        expectedCount += (b.imageData != nil);
+    
     NSArray *imageFiles = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:[self documentsSubDirectory:@"Images"].path error:nil];
     actualCount = [imageFiles count];
     

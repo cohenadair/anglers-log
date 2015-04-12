@@ -187,6 +187,7 @@ NSString *const kNotSelectedString = @"Not Selected";
     [self initDeleteEntryActionSheet];
     [self initCameraActionSheet];
     [self initRemoveImageActionSheet];
+    [self.notesTextView setContentInset:UIEdgeInsetsMake(-4, -5, 4, 5)];
 }
 
 - (void)viewWillAppear:(BOOL)animated {

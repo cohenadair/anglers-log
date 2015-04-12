@@ -10,6 +10,7 @@
 #import "CMAStorageManager.h"
 #import "SSZipArchive.h"
 #import "CMAJSONReader.h"
+#import "CMAUtilities.h"
 
 @implementation CMADataImporter
 
@@ -27,7 +28,7 @@
     
     NSString *jsonPath = zipDestPath;
     
-    // make sure files are valid/get .json file path
+    // get .json file path
     for (int i = 0; i < [files count]; i++) {
         NSString *f = [files objectAtIndex:i];
         if ([f hasSuffix:@".json"]) {
@@ -50,10 +51,16 @@
     
     // parse JSON
     BOOL success = [CMAJSONReader JSONToJournal:aJournal jsonFilePath:jsonPath error:anErrorMsg];
-    [aJournal sortEntriesBy:aJournal.entrySortMethod order:aJournal.entrySortOrder];
-    [aJournal archive];
-    
-    NSLog(@"Imported data in %f seconds.", CFAbsoluteTimeGetCurrent() - start);
+    if (success) {
+        [aJournal initProperties];
+        [aJournal sortEntriesBy:aJournal.entrySortMethod order:aJournal.entrySortOrder];
+        [aJournal archive];
+        
+        // remove .json file as it's no longer needed
+        [CMAUtilities deleteFileAtPath:jsonPath];
+        
+        NSLog(@"Imported data in %f seconds.", CFAbsoluteTimeGetCurrent() - start);
+    }
     
     return success;
 }

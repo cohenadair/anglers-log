@@ -12,7 +12,7 @@
 @implementation CMACameraActionSheet
 
 - (void)addActions {
-    [self setTitle:@"Add Photo"];
+    [self setTitle:nil];
     
     UIAlertAction *takePhotoAction =
         [UIAlertAction actionWithTitle:@"Take Photo"

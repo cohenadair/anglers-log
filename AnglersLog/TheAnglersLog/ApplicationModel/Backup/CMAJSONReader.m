@@ -12,12 +12,17 @@
 @implementation CMAJSONReader
 
 + (BOOL)JSONToJournal:(CMAJournal *)aJournal jsonFilePath:(NSString *)aFilePath error:(NSString **)errorMsg {
-    NSData *jsonData = [NSData dataWithContentsOfFile:aFilePath];
-    
     NSError *e;
-    id json = [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingAllowFragments error:&e];
+    NSData *jsonData = [NSData dataWithContentsOfFile:aFilePath options:kNilOptions error:&e];
     if (e) {
         *errorMsg = ERROR_JSON_READ;
+        NSLog(@"Failed read JSON file: %@", e.localizedDescription);
+        return NO;
+    }
+    
+    id json = [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingAllowFragments error:&e];
+    if (e) {
+        *errorMsg = ERROR_JSON_PARSE;
         NSLog(@"Failed to parse JSON: %@", e.localizedDescription);
         return NO;
     }
@@ -110,7 +115,8 @@
 }
 
 - (void)addImage:(id)anImage toEntry:(CMAEntry *)anEntry {
-    [anEntry addImage:[self imageFromJSON:anImage]];
+    if (![anEntry hasImageNamed:[anImage valueForKey:@"imagePath"]]) // no duplicate images
+        [anEntry addImage:[self imageFromJSON:anImage]];
 }
 
 - (CMAImage *)imageFromJSON:(id)anImage {
@@ -149,6 +155,10 @@
     b.baitDescription = [aBait valueForKey:@"baitDescription"];
     if ([b.baitDescription isEqualToString:@""])
         b.baitDescription = nil;
+    
+    // overwrite image data
+    if (b.imageData)
+        [[CMAStorageManager sharedManager] deleteManagedObject:b.imageData saveContext:NO];
     
     b.imageData = [self imageFromJSON:[aBait objectForKey:@"image"]];
     

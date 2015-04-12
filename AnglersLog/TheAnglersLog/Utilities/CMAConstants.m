@@ -93,7 +93,8 @@ NSInteger const OUNCES_PER_POUND = 16;
 
 NSString *const ERROR_INVALID_FILE      = @"1";
 NSString *const ERROR_FILE_NOT_FOUND    = @"2";
-NSString *const ERROR_JSON_READ         = @"3";
+NSString *const ERROR_JSON_PARSE        = @"3";
+NSString *const ERROR_JSON_READ         = @"4"; // Couldn't read JSON file
 
 
 

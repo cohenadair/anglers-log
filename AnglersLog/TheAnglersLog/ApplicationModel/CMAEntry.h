@@ -64,6 +64,7 @@
 
 // accessing
 - (NSInteger)imageCount;
+- (BOOL)hasImageNamed:(NSString *)aFileName;
 - (NSInteger)fishingMethodCount;
 - (NSString *)dateAsString;
 - (NSString *)dateAsFileNameString;

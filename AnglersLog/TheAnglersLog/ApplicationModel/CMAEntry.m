@@ -92,6 +92,14 @@
     return [self.images count];
 }
 
+- (BOOL)hasImageNamed:(NSString *)aFileName {
+    for (CMAImage *img in self.images)
+        if ([[img localImagePath] isEqualToString:aFileName])
+            return YES;
+    
+    return NO;
+}
+
 - (NSInteger)fishingMethodCount {
     return [self.fishingMethods count];
 }
@@ -250,7 +258,10 @@
 }
 
 - (void)addImage:(CMAImage *)anImage {
-    [anImage setEntry:self]; // thanks to core data, making this connection adds anImage to self.images
+    if (![self hasImageNamed:anImage.imagePath])
+        [anImage setEntry:self]; // thanks to core data, making this connection adds anImage to self.images
+    else
+        NSLog(@"An image at path already exists in this entry.");
 }
 
 - (void)removeImage:(CMAImage *)anImage {

@@ -23,15 +23,10 @@
 
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *menuButton;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *unitsSegmentedControl;
-@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *exportToCloudIndicator;
-@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *exportToOtherIndicator;
-@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *importFromCloudIndicator;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *exportIndicator;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *importIndicator;
 
 @property (strong, nonatomic) NSURL *archiveURL;
-@property (strong, nonatomic) NSURL *importURL;
-@property (strong, nonatomic) NSString *backupAlertText;
-@property (nonatomic) BOOL showBackupAlert;
-@property (nonatomic) BOOL backupError;
 
 @end
 
@@ -39,9 +34,8 @@
     #define kRowFAQ 0
     #define kRowRate 1
 #define kSectionBackup 2
-    #define kRowExportCloud 0
-    #define kRowExportOther 1
-    #define kRowImportCloud 2
+    #define kRowExport 0
+    #define kRowImport 1
 #define kSectionIAP 3
     #define kRowRestore 0
     #define kRowRemoveAds 1
@@ -70,11 +64,8 @@
     [self initSideBarMenu];
     [self.unitsSegmentedControl setSelectedSegmentIndex:[self journal].measurementSystem];
     
-    [self.exportToCloudIndicator setAlpha:0.0];
-    [self.exportToOtherIndicator setAlpha:0.0];
-    [self.importFromCloudIndicator setAlpha:0.0];
-    
-    self.importURL = nil;
+    [self.exportIndicator setAlpha:0.0];
+    [self.importIndicator setAlpha:0.0];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -84,22 +75,6 @@
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    
-    // needed so alerts are displayed AFTER UIDocumentPicker is closed
-    if (self.showBackupAlert) {
-        if (self.backupError)
-            [CMAAlerts errorAlert:self.backupAlertText presentationViewController:self];
-        else
-            [CMAAlerts alertAlert:self.backupAlertText presentationViewController:self];
-    
-        self.backupAlertText = nil;
-        self.backupError = NO;
-        self.showBackupAlert = NO;
-    }
-    
-    // start import after UIDocumentPicker has been dismissed
-    if (self.importURL)
-        [self importFromURL:self.importURL];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -141,14 +116,11 @@
     }
     
     if (indexPath.section == kSectionBackup) {
-        if (indexPath.row == kRowExportCloud)
-            [self handleExportCloudEvent];
+        if (indexPath.row == kRowExport)
+            [self handleExportEvent];
         
-        if (indexPath.row == kRowExportOther)
-            [self handleExportOtherEvent];
-        
-        if (indexPath.row == kRowImportCloud)
-            [self handleImportCloudEvent];
+        if (indexPath.row == kRowImport)
+            [self handleImportEvent];
     }
     
     if (indexPath.section == kSectionIAP) {
@@ -190,121 +162,68 @@
     }];
 }
 
-- (void)handleExportCloudEvent {
-    [self handleExportEventWithBlock:
-            ^(void) {
-                [self documentPickerExport];
-            }
-            cancelBlock:^(void) {
-                [self hideIndicatorView:self.exportToCloudIndicator];
-            }
-            completionBlock:^(void) {
-                [self.exportToCloudIndicator startAnimating];
-                [self showIndicatorView:self.exportToCloudIndicator];
-            }];
-}
-
-- (void)handleExportOtherEvent {
-    [self handleExportEventWithBlock:
-         ^(void) {
-             [self otherExport];
-         }
-         cancelBlock:^(void) {
-             [self hideIndicatorView:self.exportToOtherIndicator];
-         }
-         completionBlock:^(void) {
-             [self.exportToOtherIndicator startAnimating];
-             [self showIndicatorView:self.exportToOtherIndicator];
-         }];
-}
-
-- (void)handleImportCloudEvent {
+- (void)backupSheetWithTitle:(NSString *)aTitle
+                     message:(NSString *)aMessage
+           actionButtonTitle:(NSString *)aButtonTitle
+                 actionBlock:(void (^)())anActionBlock
+                 cancelBlock:(void (^)())aCancelBlock
+             completionBlock:(void (^)())aCompletionBlock {
+    
     CMAAlertController *alert = [CMAAlertController new];
-    alert = [alert initWithTitle:@"Import Data"
-                         message:@"Importing will add to your current log; it will not delete anything. Conflicts are resolved in favor of the importing file. This process may take a few minutes."
-               actionButtonTitle:@"Import"
-                     actionBlock:^(void) {
-                         [self documentPickerImport];
+    
+    alert = [alert initWithTitle:aTitle
+                         message:aMessage
+               actionButtonTitle:aButtonTitle
+                     actionBlock:^{
+                         anActionBlock();
                      }
-                     cancelBlock:^(void) {
-                         [self hideIndicatorView:self.importFromCloudIndicator];
+                     cancelBlock:^{
+                         aCancelBlock();
                      }];
     
-    [self presentViewController:alert animated:YES completion:^(void) {
-        [self.importFromCloudIndicator startAnimating];
-        [self showIndicatorView:self.importFromCloudIndicator];
-    }];
+    [self presentViewController:alert animated:YES completion:^(void) { aCompletionBlock(); }];
 }
 
-#pragma mark - Exporting
-
-- (void)documentPickerExport {
-    self.archiveURL = [CMADataExporter exportJournal:[self journal]];
-    
-    UIDocumentPickerViewController *picker = [[UIDocumentPickerViewController alloc] initWithURL:self.archiveURL inMode:UIDocumentPickerModeExportToService];
-    picker.delegate = self;
-    picker.modalPresentationStyle = UIModalPresentationFormSheet;
-    
-    [self presentViewController:picker animated:YES completion:nil];
+- (void)handleExportEvent {
+    [self backupSheetWithTitle:nil
+                       message:@"Exporting will not delete any of your data. This process may take several minutes."
+             actionButtonTitle:@"Export"
+                   actionBlock:^{
+                       [self export];
+                   }
+                   cancelBlock:^{
+                       [self hideIndicatorView:self.exportIndicator];
+                   }
+                   completionBlock:^{
+                       [self.exportIndicator startAnimating];
+                       [self showIndicatorView:self.exportIndicator];
+                   }];
 }
 
-- (void)documentPickerImport {
-    UIDocumentPickerViewController *picker = [[UIDocumentPickerViewController alloc] initWithDocumentTypes:@[@"com.pkware.zip-archive"] inMode:UIDocumentPickerModeImport];
-    picker.delegate = self;
-    picker.modalPresentationStyle = UIModalPresentationFormSheet;
-    
-    [self presentViewController:picker animated:YES completion:nil];
+- (void)handleImportEvent {
+    [self backupSheetWithTitle:nil
+                       message:@"Importing will add to your current log; it will not delete anything. Conflicts are resolved in favor of the importing file. This process may take a few minutes."
+             actionButtonTitle:@"Import"
+                   actionBlock:^{
+                       [self import];
+                   }
+                   cancelBlock:^{
+                       [self hideIndicatorView:self.importIndicator];
+                   }
+               completionBlock:^{
+                   [self.importIndicator startAnimating];
+                   [self showIndicatorView:self.importIndicator];
+               }];
 }
 
-- (void)documentPicker:(UIDocumentPickerViewController *)controller didPickDocumentAtURL:(NSURL *)aURL {
-    // exporting
-    if (controller.documentPickerMode == UIDocumentPickerModeExportToService) {
-        NSLog(@"Export successful, deleting archive...");
-        [self deleteArchiveFile];
-        [self hideIndicatorView:self.exportToCloudIndicator];
-        [self backupAlert:@"Data exported successfully." error:NO];
-    }
-    
-    // importing
-    if (controller.documentPickerMode == UIDocumentPickerModeImport)
-        self.importURL = aURL;
-}
+#pragma mark - Exporting and Importing
 
-- (void)documentPickerWasCancelled:(UIDocumentPickerViewController *)controller {
-    if (controller.documentPickerMode == UIDocumentPickerModeExportToService) {
-        NSLog(@"Export cancelled! Deleting archive...");
-        [self deleteArchiveFile];
-        [self hideIndicatorView:self.exportToCloudIndicator];
-    }
+- (void)import {
+    UIDocumentMenuViewController *menuController = [[UIDocumentMenuViewController alloc] initWithDocumentTypes:@[@"com.pkware.zip-archive"] inMode:UIDocumentPickerModeImport];
+    [menuController setDelegate:self];
     
-    if (controller.documentPickerMode == UIDocumentPickerModeImport) {
-        NSLog(@"Import cancelled!");
-        [self hideIndicatorView:self.importFromCloudIndicator];
-    }
+    [self presentViewController:menuController animated:YES completion:nil];
 }
-
-- (void)otherExport {
-    self.archiveURL = [CMADataExporter exportJournal:[self journal]];
-    
-    UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[self.archiveURL] applicationActivities:nil];
-    activityController.popoverPresentationController.sourceView = self.view;
-   
-    [activityController setCompletionWithItemsHandler:^(NSString *activityType, BOOL completed, NSArray *returnedItems, NSError *activityError) {
-        if (!completed || activityError) {
-            NSLog(@"Activity not completed! Deleting archive...");
-            [self deleteArchiveFile];
-            
-            if (activityError)
-                [self backupAlert:[NSString stringWithFormat:@"Error exporting: %@.", activityError.localizedDescription] error:YES];
-        }
-        
-        [self hideIndicatorView:self.exportToOtherIndicator];
-    }];
-    
-    [self presentViewController:activityController animated:YES completion:nil];
-}
-
-#pragma mark - Importing
 
 - (void)importFromURL:(NSURL *)aURL {
     NSString *errorMsg;
@@ -314,7 +233,82 @@
     else
         [CMAAlerts alertAlert:@"Data imported successfully." presentationViewController:self];
     
-    [self hideIndicatorView:self.importFromCloudIndicator];
+    [self hideIndicatorView:self.importIndicator];
+}
+
+- (void)export {
+    self.archiveURL = [CMADataExporter exportJournal:[self journal]];
+    
+    UIDocumentMenuViewController *menuController = [[UIDocumentMenuViewController alloc] initWithURL:self.archiveURL inMode:UIDocumentPickerModeExportToService];
+    [menuController setDelegate:self];
+    
+    // options for built in activites like messages and mail
+    [menuController addOptionWithTitle:@"Other" image:nil order:UIDocumentMenuOrderFirst handler:^{
+        UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[self.archiveURL] applicationActivities:nil];
+        activityController.popoverPresentationController.sourceView = self.view;
+
+        [activityController setCompletionWithItemsHandler:^(NSString *activityType, BOOL completed, NSArray *returnedItems, NSError *activityError) {
+            if (!completed || activityError) {
+                NSLog(@"Activity not completed! Deleting archive...");
+                [self deleteArchiveFile];
+
+                if (activityError)
+                    [self performSelector:@selector(backupError:) withObject:[NSString stringWithFormat:@"Error exporting: %@.", activityError.localizedDescription] afterDelay:0];
+            }
+
+            [self hideIndicatorView:self.exportIndicator];
+        }];
+
+        [self presentViewController:activityController animated:YES completion:nil];
+    }];
+    
+    [self presentViewController:menuController animated:YES completion:nil];
+}
+
+#pragma mark - Document Picker Delegate
+
+- (void)documentPicker:(UIDocumentPickerViewController *)controller didPickDocumentAtURL:(NSURL *)aURL {
+    // exporting
+    if (controller.documentPickerMode == UIDocumentPickerModeExportToService) {
+        NSLog(@"Export successful, deleting archive...");
+        [self deleteArchiveFile];
+        [self hideIndicatorView:self.exportIndicator];
+        [self performSelector:@selector(backupSuccess:) withObject:@"Data exported successfully." afterDelay:0];
+    }
+    
+    // importing
+    if (controller.documentPickerMode == UIDocumentPickerModeImport) {
+        NSLog(@"Import file picked...");
+        [self performSelector:@selector(importFromURL:) withObject:aURL afterDelay:0];
+    }
+}
+
+- (void)documentPickerWasCancelled:(UIDocumentPickerViewController *)controller {
+    // exporting
+    if (controller.documentPickerMode == UIDocumentPickerModeExportToService) {
+        NSLog(@"Export cancelled! Deleting archive...");
+        [self deleteArchiveFile];
+        [self hideIndicatorView:self.exportIndicator];
+    }
+    
+    // importing
+    if (controller.documentPickerMode == UIDocumentPickerModeImport) {
+        NSLog(@"Import cancelled!");
+        [self hideIndicatorView:self.importIndicator];
+    }
+}
+
+- (void)documentMenu:(UIDocumentMenuViewController *)documentMenu didPickDocumentPicker:(UIDocumentPickerViewController *)documentPicker {
+    // show the document picker
+    [documentPicker setDelegate:self];
+    [self presentViewController:documentPicker animated:YES completion:nil];
+}
+
+- (void)documentMenuWasCancelled:(UIDocumentMenuViewController *)documentMenu {
+    NSLog(@"Document menu cancelled. Deleting archive...");
+    [self deleteArchiveFile];
+    [self hideIndicatorView:self.importIndicator];
+    [self hideIndicatorView:self.exportIndicator];
 }
 
 #pragma mark - Hide/Show Views
@@ -336,10 +330,12 @@
     self.archiveURL = nil;
 }
 
-- (void)backupAlert:(NSString *)msg error:(BOOL)isError {
-    self.backupError = isError;
-    self.showBackupAlert = YES;
-    self.backupAlertText = msg;
+- (void)backupError:(NSString *)msg {
+    [CMAAlerts errorAlert:msg presentationViewController:self];
+}
+
+- (void)backupSuccess:(NSString *)msg {
+    [CMAAlerts alertAlert:msg presentationViewController:self];
 }
 
 #pragma mark - In-App Purchases

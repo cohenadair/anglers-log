@@ -70,6 +70,7 @@
     [self initDeleteBaitActionSheet];
     [self initCameraActionSheet];
     [self initRemoveImageActionSheet];
+    [self.descriptionTextView setContentInset:UIEdgeInsetsMake(-4, -5, 4, 5)];
 }
 
 - (void)didReceiveMemoryWarning {
