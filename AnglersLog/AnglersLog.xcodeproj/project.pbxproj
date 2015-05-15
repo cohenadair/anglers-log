@@ -20,7 +20,6 @@
 		0D23B2741A78102B00E89736 /* CMAImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D23B2731A78102B00E89736 /* CMAImage.m */; };
 		0D248B0F1AB0C82200093290 /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D248B0E1AB0C82200093290 /* iAd.framework */; };
 		0D28AAB11ABB44F9009E8184 /* CMAAdBanner.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D28AAB01ABB44F9009E8184 /* CMAAdBanner.m */; };
-		0D3AD6541ACA17DE00FE5204 /* ios_icon_set.sh in Resources */ = {isa = PBXBuildFile; fileRef = 0D3AD6531ACA17DE00FE5204 /* ios_icon_set.sh */; };
 		0D44612F1A9D8762006C34D2 /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 0D44612B1A9D8762006C34D2 /* icon.png */; };
 		0D4461301A9D8762006C34D2 /* icon.xcf in Resources */ = {isa = PBXBuildFile; fileRef = 0D44612C1A9D8762006C34D2 /* icon.xcf */; };
 		0D4461311A9D8762006C34D2 /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 0D44612D1A9D8762006C34D2 /* logo.png */; };
@@ -1037,7 +1036,6 @@
 				0D8F846E1A6EC2C300AABAEA /* stats.png in Resources */,
 				0D8F84611A6EC2C300AABAEA /* instagram@2x.png in Resources */,
 				0D4ECDFE1ACB663B008B55E6 /* spinner.png in Resources */,
-				0D3AD6541ACA17DE00FE5204 /* ios_icon_set.sh in Resources */,
 				0D8F84621A6EC2C300AABAEA /* instagram_small.png in Resources */,
 				0D8F84541A6EC2C300AABAEA /* app_icon_80.png in Resources */,
 				0D8F84631A6EC2C300AABAEA /* literature.png in Resources */,

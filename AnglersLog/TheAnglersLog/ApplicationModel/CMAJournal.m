@@ -79,6 +79,9 @@
     
     if (![self userDefineNamed:UDN_WATER_CLARITIES])
         [self addUserDefineNamed:UDN_WATER_CLARITIES];
+    
+    for (id define in self.userDefines)
+        [define sortByNameProperty];
 }
 
 // Adds a new CMAUserDefine object to [self userDefines].
