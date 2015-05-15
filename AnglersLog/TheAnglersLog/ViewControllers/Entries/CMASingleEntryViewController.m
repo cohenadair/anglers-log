@@ -379,8 +379,10 @@
     
     UIImage *currentImage = [(UIImageView *)[[[self.imageCollectionView visibleCells] objectAtIndex:0] viewWithTag:100] image];
     
-    [shareItems addObject:currentImage];
-    [shareItems addObject:[self.entry shareString]];
+    if (currentImage)
+        [shareItems addObject:currentImage];
+    
+    [shareItems addObject:[self.entry shareString]]; // shareString is never nil
     
     CMAInstagramActivity *instagramActivity = [CMAInstagramActivity new];
     [instagramActivity setPresentView:self.view];
