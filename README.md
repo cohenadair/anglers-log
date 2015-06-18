@@ -1,21 +1,22 @@
-TheAnglersLog-iOS
-=================
+AnglersLog-iOS
+==============
 
-The Anglers' Log is a mobile application that enables users to track and analyze their catches in the sport of fishing.
+Anglers' Log is a mobile application that enables users to track and analyze their catches in the sport of fishing.
 
 Status
 ------
 
-The Anglers' Log is in the testing stage. A little more testing and it will be ready for release.
+Anglers' Log has been released for iPhone; it can be found on the [App Store].
 
 Origins
 -------
 
-The Anglers' Log originated as a project for an iOS/iPhone Development course at Northern Michigan University.
+Anglers' Log originated as a project for an iOS/iPhone Development course at Northern Michigan University.
 
 Licence
 -------
 
-The Anglers' Log is licensed under the [GNU GPL v2.0].
+Anglers' Log is licensed under the [GNU GPL v2.0].
 
 [GNU GPL v2.0]:http://www.gnu.org/licenses/gpl-2.0.html
+[App Store]:https://itunes.apple.com/us/app/the-anglers-log/id959989008
