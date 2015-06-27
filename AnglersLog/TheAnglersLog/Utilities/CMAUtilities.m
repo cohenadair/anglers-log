@@ -137,7 +137,7 @@
             continue;
         
         if ([num numberFromString:[item substringWithRange:NSMakeRange(0, 1)]] == nil)
-            word = [item capitalizedString]; // capitalize that word.
+            word = [item stringByReplacingCharactersInRange:NSMakeRange(0, 1) withString:[[item substringToIndex:1] capitalizedString]]; // capitalize that word.
 
         [newWords addObject:word];
     }
