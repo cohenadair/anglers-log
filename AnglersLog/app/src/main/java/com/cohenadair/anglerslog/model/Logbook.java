@@ -33,30 +33,31 @@ public class Logbook {
         this.name = name;
     }
 
-    public ArrayList<Catch> getEntries() {
+    public ArrayList<Catch> getCatches() {
         return catches;
     }
 
-    public void setEntries(ArrayList<Catch> entries) {
-        this.catches = entries;
+    public void setCatches(ArrayList<Catch> catches) {
+        this.catches = catches;
     }
+
     //endregion
 
     //region Catch Manipulation
-    public void addEntry(Catch aCatch) {
+    public void addCatch(Catch aCatch) {
         this.catches.add(aCatch);
     }
 
-    public void removeEntry(Catch aCatch) {
+    public void removeCatch(Catch aCatch) {
         this.catches.remove(aCatch);
     }
 
     /**
-     * Looks for existing entries with aDate.
-     * @param aDate the date of the resulting entry.
-     * @return the entry with aDate or null if no such entry exists.
+     * Looks for existing catches with aDate.
+     * @param aDate the date of the resulting catch.
+     * @return the catch with aDate or null if no such catch exists.
      */
-    public Catch entryDated(Date aDate) {
+    public Catch catchDated(Date aDate) {
         for (Catch aCatch : this.catches) {
             if (aCatch.getDate().equals(aDate))
                 return aCatch;
@@ -66,7 +67,7 @@ public class Logbook {
     }
 
     /**
-     * @return the number of entries in the Logbook.
+     * @return the number of catches in the Logbook.
      */
     public int catchCount() {
         return this.catches.size();

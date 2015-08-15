@@ -11,9 +11,9 @@ import com.cohenadair.anglerslog.R;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class AllEntriesFragment extends Fragment {
+public class AllCatchesFragment extends Fragment {
 
-    public AllEntriesFragment() {
+    public AllCatchesFragment() {
     }
 
     @Override

@@ -15,14 +15,14 @@ public class LogbookTest {
     private Catch testCatch = new Catch(new Date());
 
     @Test
-    public void testAddEntry() {
-        Logbook.getSharedLogbook().addEntry(this.testCatch);
+    public void testAddCatch() {
+        Logbook.getSharedLogbook().addCatch(this.testCatch);
         assertTrue(Logbook.getSharedLogbook().catchCount() == 1);
     }
 
     @Test
-    public void testRemoveEntry() {
-        Logbook.getSharedLogbook().removeEntry(this.testCatch);
+    public void testRemoveCatch() {
+        Logbook.getSharedLogbook().removeCatch(this.testCatch);
         assertTrue(Logbook.getSharedLogbook().catchCount() == 0);
     }
 
