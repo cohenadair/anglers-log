@@ -17,13 +17,13 @@ public class LogbookTest {
     @Test
     public void testAddEntry() {
         Logbook.getSharedLogbook().addEntry(this.testCatch);
-        assertTrue(Logbook.getSharedLogbook().entryCount() == 1);
+        assertTrue(Logbook.getSharedLogbook().catchCount() == 1);
     }
 
     @Test
     public void testRemoveEntry() {
         Logbook.getSharedLogbook().removeEntry(this.testCatch);
-        assertTrue(Logbook.getSharedLogbook().entryCount() == 0);
+        assertTrue(Logbook.getSharedLogbook().catchCount() == 0);
     }
 
 }

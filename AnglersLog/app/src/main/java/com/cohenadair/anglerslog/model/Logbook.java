@@ -22,7 +22,7 @@ public class Logbook {
     //endregion
 
     private String name;
-    private ArrayList<Catch> entries = new ArrayList<Catch>();
+    private ArrayList<Catch> catches = new ArrayList<Catch>();
 
     //region Getters & Setters
     public String getName() {
@@ -34,21 +34,21 @@ public class Logbook {
     }
 
     public ArrayList<Catch> getEntries() {
-        return entries;
+        return catches;
     }
 
     public void setEntries(ArrayList<Catch> entries) {
-        this.entries = entries;
+        this.catches = entries;
     }
     //endregion
 
     //region Catch Manipulation
     public void addEntry(Catch aCatch) {
-        this.entries.add(aCatch);
+        this.catches.add(aCatch);
     }
 
     public void removeEntry(Catch aCatch) {
-        this.entries.remove(aCatch);
+        this.catches.remove(aCatch);
     }
 
     /**
@@ -57,7 +57,7 @@ public class Logbook {
      * @return the entry with aDate or null if no such entry exists.
      */
     public Catch entryDated(Date aDate) {
-        for (Catch aCatch : this.entries) {
+        for (Catch aCatch : this.catches) {
             if (aCatch.getDate().equals(aDate))
                 return aCatch;
         }
@@ -68,8 +68,8 @@ public class Logbook {
     /**
      * @return the number of entries in the Logbook.
      */
-    public int entryCount() {
-        return this.entries.size();
+    public int catchCount() {
+        return this.catches.size();
     }
     //endregion
 
