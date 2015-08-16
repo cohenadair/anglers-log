@@ -6,6 +6,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.cohenadair.anglerslog.R;
+import com.cohenadair.anglerslog.model.Catch;
+import com.cohenadair.anglerslog.model.Logbook;
+import com.cohenadair.anglerslog.model.user_defines.Species;
+
+import java.util.Calendar;
+import java.util.Date;
 
 public class MainActivity extends Activity {
 
@@ -13,8 +19,18 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-    }
 
+        for (int i = 0; i < 12; i++) {
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(Calendar.MONTH, i);
+            Date aDate = calendar.getTime();
+
+            Catch aCatch = new Catch(aDate);
+            aCatch.setSpecies(new Species("Species" + i));
+
+            Logbook.getSharedLogbook().addCatch(aCatch);
+        }
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

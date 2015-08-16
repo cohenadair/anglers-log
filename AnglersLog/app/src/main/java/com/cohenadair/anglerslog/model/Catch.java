@@ -11,7 +11,7 @@ import java.util.Date;
 public class Catch {
 
     private Date date;
-    private Species fishSpecies;
+    private Species species;
 
     public Catch(Date date) {
         this.date = date;
@@ -26,12 +26,17 @@ public class Catch {
         this.date = date;
     }
 
-    public Species getFishSpecies() {
-        return fishSpecies;
+    public Species getSpecies() {
+        return species;
     }
 
-    public void setFishSpecies(Species fishSpecies) {
-        this.fishSpecies = fishSpecies;
+    public void setSpecies(Species species) {
+        this.species = species;
     }
     //endregion
+
+    @Override
+    public String toString() {
+        return this.species.getName() + ", " + this.date.toString();
+    }
 }

@@ -1,5 +1,7 @@
 <fragment xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:id="@+id/fragment"
-    android:name="com.cohenadair.anglerslog.fragments.AllCatchesFragment"
-    tools:layout="@layout/fragment_main" android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fragment"
+    android:name="com.cohenadair.anglerslog.fragments.CatchesFragment"
+    tools:layout="@layout/fragment_catches"
+    android:layout_width="match_parent"
     android:layout_height="match_parent" />
