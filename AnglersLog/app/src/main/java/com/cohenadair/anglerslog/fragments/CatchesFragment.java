@@ -2,6 +2,7 @@ package com.cohenadair.anglerslog.fragments;
 
 import android.app.ListFragment;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +23,7 @@ public class CatchesFragment extends ListFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View aView = super.onCreateView(inflater, container, savedInstanceState);
 
         // set the list's adapter
@@ -33,7 +34,7 @@ public class CatchesFragment extends ListFragment {
     }
 
     @Override
-    public void onListItemClick(ListView aListView, View aView, int aPos, long id) {
+    public void onListItemClick(ListView listView, View view, int pos, long id) {
         Toast.makeText(getActivity(), "Test", Toast.LENGTH_SHORT).show();
     }
 }
