@@ -3,6 +3,7 @@ package com.cohenadair.anglerslog.fragments;
 import android.app.ListFragment;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +15,7 @@ import com.cohenadair.anglerslog.model.Catch;
 import com.cohenadair.anglerslog.model.Logbook;
 
 /**
- * A placeholder fragment containing a simple view.
+ * The fragment showing the list of catches.
  */
 public class CatchesFragment extends ListFragment {
 
@@ -36,5 +37,6 @@ public class CatchesFragment extends ListFragment {
     @Override
     public void onListItemClick(ListView listView, View view, int pos, long id) {
         Toast.makeText(getActivity(), "Test", Toast.LENGTH_SHORT).show();
+        Log.d("onListItemClick", "Clicked item!");
     }
 }
