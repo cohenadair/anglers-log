@@ -37,6 +37,14 @@ public class Catch {
 
     @Override
     public String toString() {
-        return this.species.getName() + ", " + this.date.toString();
+        return this.speciesAsString() + ", " + this.dateAsString();
+    }
+
+    public String speciesAsString() {
+        return this.species.getName();
+    }
+
+    public String dateAsString() {
+        return this.date.toString();
     }
 }

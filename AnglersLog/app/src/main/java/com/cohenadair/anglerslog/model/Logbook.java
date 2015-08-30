@@ -24,6 +24,8 @@ public class Logbook {
     private String name;
     private ArrayList<Catch> catches = new ArrayList<Catch>();
 
+    private int currentCatchPos; // used to persist user catch selection over orientation changes
+
     //region Getters & Setters
     public String getName() {
         return name;
@@ -39,6 +41,14 @@ public class Logbook {
 
     public void setCatches(ArrayList<Catch> catches) {
         this.catches = catches;
+    }
+
+    public int getCurrentCatchPos() {
+        return currentCatchPos;
+    }
+
+    public void setCurrentCatchPos(int currentCatchPos) {
+        this.currentCatchPos = currentCatchPos;
     }
 
     //endregion
@@ -64,6 +74,10 @@ public class Logbook {
         }
 
         return null;
+    }
+
+    public Catch catchAtPos(int pos) {
+        return this.catches.get(pos);
     }
 
     /**
