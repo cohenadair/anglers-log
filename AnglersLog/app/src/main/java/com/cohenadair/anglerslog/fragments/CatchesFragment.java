@@ -23,7 +23,7 @@ public class CatchesFragment extends ListFragment {
 
     // callback interface for the fragment's activity
     public interface OnListItemSelectedListener {
-        void onCatchSelected(int pos);
+        void onItemSelected(int pos);
     }
     //endregion
 
@@ -44,7 +44,7 @@ public class CatchesFragment extends ListFragment {
 
     @Override
     public void onListItemClick(ListView listView, View view, int pos, long id) {
-        this.callback.onCatchSelected(pos);
+        this.callback.onItemSelected(pos);
     }
 
     @Override

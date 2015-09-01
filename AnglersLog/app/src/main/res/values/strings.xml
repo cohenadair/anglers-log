@@ -1,4 +1,10 @@
 <resources>
-    <string name="app_name">Anglers Log</string>
+    <string name="app_name">Anglers\' Log</string>
     <string name="action_settings">Settings</string>
+
+    <string name="species">Species</string>
+    <string name="date">Date</string>
+
+    <string name="drawer_open">Open Navigation Drawer</string>
+    <string name="drawer_close">Close Navigation Drawer</string>
 </resources>

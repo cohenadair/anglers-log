@@ -24,7 +24,8 @@ public class Logbook {
     private String name;
     private ArrayList<Catch> catches = new ArrayList<Catch>();
 
-    private int currentCatchPos; // used to persist user catch selection over orientation changes
+    // used to persist user catch selection over orientation and activity changes
+    private int currentCatchPos;
 
     //region Getters & Setters
     public String getName() {

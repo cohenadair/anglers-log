@@ -1,26 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<android.support.v4.widget.DrawerLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
+    android:id="@+id/main_drawer"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/fragment_catches"
-        android:name="com.cohenadair.anglerslog.fragments.CatchesFragment"
-        tools:layout="@layout/fragment_catches"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight=".40"/>
+    <!-- Main layout -->
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/fragment_catch"
-        android:name="com.cohenadair.anglerslog.fragments.CatchFragment"
-        tools:layout="@layout/fragment_catch"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight=".60"/>
+        <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/fragment_catches"
+            android:name="com.cohenadair.anglerslog.fragments.CatchesFragment"
+            tools:layout="@layout/fragment_catches"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight=".40"/>
 
-</LinearLayout>
+        <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/fragment_catch"
+            android:name="com.cohenadair.anglerslog.fragments.CatchFragment"
+            tools:layout="@layout/fragment_catch"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight=".60"/>
+
+    </LinearLayout>
+
+    <!-- The navigation drawer -->
+    <ListView
+        android:id="@+id/left_drawer"
+        android:layout_width="320dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:choiceMode="singleChoice"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="0dp"
+        android:background="#FFFFFF"/>
+
+</android.support.v4.widget.DrawerLayout>

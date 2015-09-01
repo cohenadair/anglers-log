@@ -28,4 +28,5 @@ dependencies {
     // Set this dependency if you want to use Hamcrest matching
     androidTestCompile 'org.hamcrest:hamcrest-library:1.1'
     compile 'com.android.support:support-annotations:23.0.0'
+    compile 'com.android.support:support-v4:19.0.+'
 }

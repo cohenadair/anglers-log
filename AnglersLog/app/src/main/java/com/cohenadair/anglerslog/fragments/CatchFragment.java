@@ -1,6 +1,5 @@
 package com.cohenadair.anglerslog.fragments;
 
-
 import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -33,7 +32,11 @@ public class CatchFragment extends Fragment {
         this.speciesTextView = (TextView)view.findViewById(R.id.species_text_view);
         this.dateTextView = (TextView)view.findViewById(R.id.date_text_view);
 
-        this.updateCatch(Logbook.getSharedLogbook().getCurrentCatchPos());
+        if (Logbook.getSharedLogbook().catchCount() <= 0) {
+            this.speciesTextView.setText("There are 0 catches in your log.");
+            this.dateTextView.setText("");
+        } else
+            this.updateCatch(Logbook.getSharedLogbook().getCurrentCatchPos());
 
         // Inflate the layout for this fragment
         return view;

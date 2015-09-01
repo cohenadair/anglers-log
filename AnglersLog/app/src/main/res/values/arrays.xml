@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="navigation_items">
+        <item>Catches</item>
+        <item>Trips</item>
+        <item>Locations</item>
+        <item>Baits</item>
+    </string-array>
+</resources>
