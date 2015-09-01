@@ -77,7 +77,7 @@ public class MainActivity extends Activity implements CatchesFragment.OnListItem
 
         // pop the next item off the back stack
         if (id == android.R.id.home) {
-            this.getFragmentManager().popBackStack();
+            this.onClickBack();
             return true;
         }
 
@@ -113,6 +113,9 @@ public class MainActivity extends Activity implements CatchesFragment.OnListItem
         if (catchFragment != null && catchFragment.isVisible()) // if two-pane
             catchFragment.updateCatch(pos);
         else {
+            // hide navigation drawer
+            this.drawerToggle.setDrawerIndicatorEnabled(false);
+
             // show the single catch fragment
             catchFragment = new CatchFragment();
 
@@ -128,7 +131,7 @@ public class MainActivity extends Activity implements CatchesFragment.OnListItem
     public void initBackNavigation() {
         if (!this.isTwoPane()) {
             this.getFragmentManager().addOnBackStackChangedListener(this);
-            Utilities.handleDisplayBackButton(this);
+            Utilities.handleDisplayBackButton(this, this.canGoBack());
         } else
             Utilities.handleDisplayBackButton(this, false); // remove back button for landscape
     }
@@ -177,14 +180,24 @@ public class MainActivity extends Activity implements CatchesFragment.OnListItem
         this.drawerLayout.closeDrawer(this.navList);
     }
 
+    private void onClickBack() {
+        this.getFragmentManager().popBackStack();
+    }
+
     @Override
     public void onBackStackChanged() {
-        Utilities.handleDisplayBackButton(this);
+        // show drawer button if there are no more navigation items on the stack
+        if (!this.canGoBack())
+            this.drawerToggle.setDrawerIndicatorEnabled(true);
     }
     //endregion
 
     public boolean isTwoPane() {
         return this.getResources().getBoolean(R.bool.has_two_panes);
+    }
+
+    public boolean canGoBack() {
+        return this.getFragmentManager().getBackStackEntryCount() > 0;
     }
 
 }
