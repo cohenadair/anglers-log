@@ -13,12 +13,12 @@ import android.view.MenuItem;
 
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.fragments.CatchFragment;
-import com.cohenadair.anglerslog.fragments.CatchesFragment;
+import com.cohenadair.anglerslog.fragments.MyListFragment;
 import com.cohenadair.anglerslog.fragments.DrawerFragment;
 import com.cohenadair.anglerslog.model.Logbook;
 
 public class MainActivity extends ActionBarActivity implements
-        CatchesFragment.OnListItemSelectedListener,
+        MyListFragment.OnListItemSelectedListener,
         DrawerFragment.DrawerFragmentCallbacks,
         FragmentManager.OnBackStackChangedListener
 {
@@ -31,7 +31,8 @@ public class MainActivity extends ActionBarActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_layout);
 
-        initFragments(savedInstanceState);
+        showFragment(savedInstanceState, Logbook.DATA_CATCHES);
+
         initBackNavigation();
         initDrawerNavigation();
 
@@ -88,23 +89,19 @@ public class MainActivity extends ActionBarActivity implements
         return super.onOptionsItemSelected(item);
     }
 
-    // fragments can't be replaced unless added to the layout programmatically
-    // see http://stackoverflow.com/questions/14810348/android-fragment-replace-doesnt-replace-content-puts-it-on-top
-    private void initFragments(Bundle savedInstanceState) {
+    private void showFragment(Bundle savedInstanceState, int logbookDataId) {
         // add the catches fragment to the layout
         if (findViewById(R.id.main_container) != null) {
             // avoid multiple fragments stacked on top of one another
             if (savedInstanceState != null)
                 return;
 
-            CatchesFragment fragment = new CatchesFragment();
-            fragment.setArguments(getIntent().getExtras());
-
+            MyListFragment fragment = MyListFragment.newInstance(logbookDataId);
             getFragmentManager().beginTransaction().add(R.id.main_container, fragment).commit();
         }
     }
 
-    //region CatchesFragment.OnListItemSelectedListener interface
+    //region MyListFragment.OnListItemSelectedListener interface
     @Override
     public void onItemSelected(int pos) {
         Logbook.getInstance().setCurrentCatchPos(pos);

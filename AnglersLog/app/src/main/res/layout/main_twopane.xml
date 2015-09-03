@@ -16,7 +16,7 @@
         <fragment xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:tools="http://schemas.android.com/tools"
             android:id="@+id/fragment_catches"
-            android:name="com.cohenadair.anglerslog.fragments.CatchesFragment"
+            android:name="com.cohenadair.anglerslog.fragments.MyListFragment"
             tools:layout="@layout/fragment_catches"
             android:layout_width="0dp"
             android:layout_height="match_parent"

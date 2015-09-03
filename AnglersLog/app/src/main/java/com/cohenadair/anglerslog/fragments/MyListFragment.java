@@ -1,34 +1,50 @@
 package com.cohenadair.anglerslog.fragments;
 
 import android.app.Activity;
-import android.app.ListFragment;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.cohenadair.anglerslog.model.Catch;
 import com.cohenadair.anglerslog.model.Logbook;
 
 /**
  * The fragment showing the list of catches.
  */
-public class CatchesFragment extends ListFragment {
+public class MyListFragment extends android.app.ListFragment {
 
     //region Callback Interface
-    OnListItemSelectedListener callbacks;
+    OnListItemSelectedListener mCallbacks;
 
     // callback interface for the fragment's activity
     public interface OnListItemSelectedListener {
         void onItemSelected(int pos);
     }
     //endregion
+    
+    // used to keep fragment state through attach/detach
+    private static final String ARG_LOGBOOK_DATA = "arg_logbook_data";
 
-    public CatchesFragment() {
+    /**
+     * Creates a new instance with a data id used to show different array data.
+     * @param logbookDataId the Logbook.DATA_* id for the new instance
+     * @return a MyListFragment instance with associated data id.
+     */
+    public static MyListFragment newInstance(int logbookDataId) {
+        MyListFragment fragment = new MyListFragment();
+        
+        // add data id to bundle so save through orientation changes
+        Bundle args = new Bundle();
+        args.putInt(MyListFragment.ARG_LOGBOOK_DATA, logbookDataId);
+        
+        fragment.setArguments(args);
+        return fragment;
+    }
 
+    public MyListFragment() {
+        // default constructor required
     }
 
     @Override
@@ -36,15 +52,15 @@ public class CatchesFragment extends ListFragment {
         View aView = super.onCreateView(inflater, container, savedInstanceState);
 
         // set the list's adapter
-        ArrayAdapter adapter = new ArrayAdapter<Catch>(this.getActivity(), android.R.layout.simple_list_item_1, Logbook.getInstance().getCatches());
-        this.setListAdapter(adapter);
+        int dataId = getArguments().getInt(ARG_LOGBOOK_DATA);
+        this.setListAdapter(Logbook.getInstance().adapterForData(getActivity(), dataId));
 
         return aView;
     }
 
     @Override
     public void onListItemClick(ListView listView, View view, int pos, long id) {
-        this.callbacks.onItemSelected(pos);
+        mCallbacks.onItemSelected(pos);
     }
 
     @Override
@@ -53,7 +69,7 @@ public class CatchesFragment extends ListFragment {
 
         // make sure the container activity has implemented the callback interface
         try {
-            this.callbacks = (OnListItemSelectedListener)anActivity;
+            mCallbacks = (OnListItemSelectedListener)anActivity;
         } catch (ClassCastException e) {
             throw new ClassCastException(anActivity.toString() + " must implement OnListItemSelectedListener");
         }
@@ -62,6 +78,6 @@ public class CatchesFragment extends ListFragment {
     @Override
     public void onDetach() {
         super.onDetach();
-        this.callbacks = null;
+        mCallbacks = null;
     }
 }
