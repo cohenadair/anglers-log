@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v4.widget.DrawerLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_drawer"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -19,7 +20,7 @@
             tools:layout="@layout/fragment_catches"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight=".40"/>
+            android:layout_weight=".45"/>
 
         <fragment xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:tools="http://schemas.android.com/tools"
@@ -28,19 +29,17 @@
             tools:layout="@layout/fragment_catch"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight=".60"/>
+            android:layout_weight=".55"/>
 
     </LinearLayout>
 
     <!-- The navigation drawer -->
-    <ListView
-        android:id="@+id/left_drawer"
-        android:layout_width="320dp"
+    <fragment
+        android:id="@+id/navigation_drawer"
+        android:layout_width="@dimen/navigation_drawer_width"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:choiceMode="singleChoice"
-        android:divider="@android:color/transparent"
-        android:dividerHeight="0dp"
-        android:background="#FFFFFF"/>
+        android:name="com.cohenadair.anglerslog.fragments.DrawerFragment"
+        tools:layout="@layout/fragment_drawer" />
 
 </android.support.v4.widget.DrawerLayout>

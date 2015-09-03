@@ -10,41 +10,41 @@ import java.util.Date;
  */
 public class Catch {
 
-    private Date date;
-    private Species species;
+    private Date mDate;
+    private Species mSpecies;
 
     public Catch(Date date) {
-        this.date = date;
+        mDate = date;
     }
 
     //region Getters & Setters
     public Date getDate() {
-        return date;
+        return mDate;
     }
 
     public void setDate(Date date) {
-        this.date = date;
+        mDate = date;
     }
 
     public Species getSpecies() {
-        return species;
+        return mSpecies;
     }
 
     public void setSpecies(Species species) {
-        this.species = species;
+        mSpecies = species;
     }
     //endregion
 
     @Override
     public String toString() {
-        return this.speciesAsString() + ", " + this.dateAsString();
+        return speciesAsString() + ", " + dateAsString();
     }
 
     public String speciesAsString() {
-        return this.species.getName();
+        return mSpecies.getName();
     }
 
     public String dateAsString() {
-        return this.date.toString();
+        return mDate.toString();
     }
 }

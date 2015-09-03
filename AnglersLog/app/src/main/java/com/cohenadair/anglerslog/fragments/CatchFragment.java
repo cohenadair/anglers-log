@@ -32,18 +32,18 @@ public class CatchFragment extends Fragment {
         this.speciesTextView = (TextView)view.findViewById(R.id.species_text_view);
         this.dateTextView = (TextView)view.findViewById(R.id.date_text_view);
 
-        if (Logbook.getSharedLogbook().catchCount() <= 0) {
+        if (Logbook.getInstance().catchCount() <= 0) {
             this.speciesTextView.setText("There are 0 catches in your log.");
             this.dateTextView.setText("");
         } else
-            this.updateCatch(Logbook.getSharedLogbook().getCurrentCatchPos());
+            this.updateCatch(Logbook.getInstance().getCurrentCatchPos());
 
         // Inflate the layout for this fragment
         return view;
     }
 
     public void updateCatch(int pos) {
-        Catch aCatch = Logbook.getSharedLogbook().catchAtPos(pos);
+        Catch aCatch = Logbook.getInstance().catchAtPos(pos);
 
         this.speciesTextView.setText(aCatch.speciesAsString());
         this.dateTextView.setText(aCatch.dateAsString());

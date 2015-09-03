@@ -23,5 +23,4 @@
         android:name="com.cohenadair.anglerslog.fragments.DrawerFragment"
         tools:layout="@layout/fragment_drawer" />
 
-
 </android.support.v4.widget.DrawerLayout>

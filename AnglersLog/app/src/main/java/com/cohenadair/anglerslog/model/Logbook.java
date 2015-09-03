@@ -12,7 +12,7 @@ public class Logbook {
     //region Singleton Methods
     private static Logbook _sharedLogbook = new Logbook();
 
-    public static Logbook getSharedLogbook() {
+    public static Logbook getInstance() {
         return _sharedLogbook;
     }
 

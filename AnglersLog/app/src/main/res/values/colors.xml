@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="anglers_log_theme">#e3c165</color>
+    <color name="anglers_log_theme">#EBD493</color>
+    <color name="drawer_background">#F5F5F5</color>
+
+    <color name="list_selected">#ddd</color>
 
 </resources>

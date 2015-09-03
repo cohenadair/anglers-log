@@ -1,5 +1,7 @@
 package com.cohenadair.anglerslog.activities;
 
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
@@ -15,47 +17,49 @@ import com.cohenadair.anglerslog.fragments.CatchesFragment;
 import com.cohenadair.anglerslog.fragments.DrawerFragment;
 import com.cohenadair.anglerslog.model.Logbook;
 
-public class MainActivity extends ActionBarActivity implements CatchesFragment.OnListItemSelectedListener, DrawerFragment.DrawerFragmentCallbacks {
+public class MainActivity extends ActionBarActivity implements
+        CatchesFragment.OnListItemSelectedListener,
+        DrawerFragment.DrawerFragmentCallbacks,
+        FragmentManager.OnBackStackChangedListener
+{
 
-    /**
-     * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
-     */
     private DrawerFragment mDrawerFragment;
-
-    /**
-     * Used to store the last screen title. For use in {@link #restoreActionBar()}.
-     */
-    private CharSequence mTitle;
+    private CharSequence mCurrentTitle; // for use in {@link #restoreActionBar()}
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.setContentView(R.layout.main_layout);
+        setContentView(R.layout.main_layout);
 
-        this.initFragments(savedInstanceState);
-        //this.initBackNavigation();
+        initFragments(savedInstanceState);
+        initBackNavigation();
+        initDrawerNavigation();
 
-        mDrawerFragment = (DrawerFragment)getFragmentManager().findFragmentById(R.id.navigation_drawer);
-        mTitle = getTitle();
-
-        mDrawerFragment.setUp(R.id.navigation_drawer, (DrawerLayout)findViewById(R.id.main_drawer));
+        // adds a small shadow to the bottom of the actionbar
+        getSupportActionBar().setElevation(5);
     }
 
     @Override
     public void onDrawerItemSelected(int position) {
-        Log.d("OnDrawerItemSelected", "Selected position: " + position);
-    }
+        // update action bar title
+        if (mDrawerFragment != null)
+            mCurrentTitle = mDrawerFragment.getNavItems()[position];
 
-    public void onSectionAttached(int position) {
-        mTitle = mDrawerFragment.getNavItems()[position];
+        Log.d("OnDrawerItemSelected", "Selected position: " + position);
     }
 
     public void restoreActionBar() {
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayShowTitleEnabled(true);
-            actionBar.setTitle(mTitle);
+            actionBar.setTitle(mCurrentTitle);
         }
+    }
+
+    public void setActionBarTitle(String title) {
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null)
+            actionBar.setTitle(title);
     }
 
     @Override
@@ -74,13 +78,11 @@ public class MainActivity extends ActionBarActivity implements CatchesFragment.O
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        if (id == R.id.action_settings) {
-            return true;
+        if (id == android.R.id.home) {
+            handleBackPress();
+            // no return because the DrawerFragment's onOptionsItemSelected needs to fire
         }
 
         return super.onOptionsItemSelected(item);
@@ -90,7 +92,7 @@ public class MainActivity extends ActionBarActivity implements CatchesFragment.O
     // see http://stackoverflow.com/questions/14810348/android-fragment-replace-doesnt-replace-content-puts-it-on-top
     private void initFragments(Bundle savedInstanceState) {
         // add the catches fragment to the layout
-        if (this.findViewById(R.id.main_container) != null) {
+        if (findViewById(R.id.main_container) != null) {
             // avoid multiple fragments stacked on top of one another
             if (savedInstanceState != null)
                 return;
@@ -98,62 +100,79 @@ public class MainActivity extends ActionBarActivity implements CatchesFragment.O
             CatchesFragment fragment = new CatchesFragment();
             fragment.setArguments(getIntent().getExtras());
 
-            this.getFragmentManager().beginTransaction().add(R.id.main_container, fragment).commit();
+            getFragmentManager().beginTransaction().add(R.id.main_container, fragment).commit();
         }
     }
 
-    private CatchFragment findCatchFragment() {
-        return (CatchFragment)this.getFragmentManager().findFragmentById(R.id.fragment_catch);
-    }
-
     //region CatchesFragment.OnListItemSelectedListener interface
+    @Override
     public void onItemSelected(int pos) {
-        Logbook.getSharedLogbook().setCurrentCatchPos(pos);
+        Logbook.getInstance().setCurrentCatchPos(pos);
 
-        CatchFragment catchFragment = this.findCatchFragment();
+        CatchFragment catchFragment = (CatchFragment)findFragment(R.id.fragment_catch);
 
-        if (catchFragment != null && catchFragment.isVisible()) // if two-pane
+        if (isTwoPane())
             catchFragment.updateCatch(pos);
         else {
             // show the single catch fragment
             catchFragment = new CatchFragment();
 
-            FragmentTransaction transaction = this.getFragmentManager().beginTransaction();
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
             transaction.replace(R.id.main_container, catchFragment)
                        .addToBackStack(null)
                        .commit();
+
+            setActionBarTitle("");
         }
     }
     //endregion
 
     //region Navigation
-    /*
-    public void initBackNavigation() {
-        if (!this.isTwoPane()) {
-            this.getFragmentManager().addOnBackStackChangedListener(this);
-            Utilities.handleDisplayBackButton(this, this.canGoBack());
-        } else
-            Utilities.handleDisplayBackButton(this, false); // remove back button for landscape
+    private void initBackNavigation() {
+        if (!isTwoPane())
+            getFragmentManager().addOnBackStackChangedListener(this);
     }
 
-    private void onClickBack() {
-        this.getFragmentManager().popBackStack();
+    private void handleBackPress() {
+        if (!mDrawerFragment.isHamburgerVisible()) {
+            getFragmentManager().popBackStack();
+            restoreActionBar();
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (canGoBack())
+            handleBackPress();
+        else
+            super.onBackPressed();
     }
 
     @Override
     public void onBackStackChanged() {
-        // show drawer button if there are no more navigation items on the stack
-        if (!this.canGoBack())
-            this.drawerToggle.setDrawerIndicatorEnabled(true);
-    }
-    //endregion
-    */
-    public boolean isTwoPane() {
-        return this.getResources().getBoolean(R.bool.has_two_panes);
+        if (canGoBack())
+            mDrawerFragment.hideHamburger();
+        else
+            mDrawerFragment.showHamburger();
     }
 
     public boolean canGoBack() {
-        return this.getFragmentManager().getBackStackEntryCount() > 0;
+        return getFragmentManager().getBackStackEntryCount() > 0;
+    }
+
+    private void initDrawerNavigation() {
+        mDrawerFragment = (DrawerFragment)getFragmentManager().findFragmentById(R.id.navigation_drawer);
+        mDrawerFragment.setUp(R.id.navigation_drawer, (DrawerLayout)findViewById(R.id.main_drawer));
+        mCurrentTitle = mDrawerFragment.getNavItems()[mDrawerFragment.getCurrentSelectedPosition()];
+    }
+    //endregion
+
+    public boolean isTwoPane() {
+        return getResources().getBoolean(R.bool.has_two_panes);
+    }
+
+    public Fragment findFragment(int resId) {
+        return getFragmentManager().findFragmentById(resId);
     }
 
 }

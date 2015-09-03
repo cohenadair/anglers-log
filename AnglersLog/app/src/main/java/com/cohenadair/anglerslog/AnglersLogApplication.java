@@ -20,7 +20,7 @@ public class AnglersLogApplication extends Application {
         super.onCreate();
 
         // initialize some dummy catches
-        if (Logbook.getSharedLogbook().catchCount() <= 0)
+        if (Logbook.getInstance().catchCount() <= 0)
             for (int i = 0; i < 12; i++) {
                 Calendar calendar = Calendar.getInstance();
                 calendar.set(Calendar.MONTH, i);
@@ -29,7 +29,7 @@ public class AnglersLogApplication extends Application {
                 Catch aCatch = new Catch(aDate);
                 aCatch.setSpecies(new Species("Species " + i));
 
-                Logbook.getSharedLogbook().addCatch(aCatch);
+                Logbook.getInstance().addCatch(aCatch);
             }
     }
 

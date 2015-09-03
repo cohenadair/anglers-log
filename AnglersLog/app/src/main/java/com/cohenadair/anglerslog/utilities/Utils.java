@@ -10,7 +10,7 @@ import android.widget.Toast;
  * A set of utility methods used throughout the project.
  * @author Cohen Adair
  */
-public class Utilities {
+public class Utils {
 
     public static void showToast(Context context, String msg) {
         Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
@@ -41,11 +41,11 @@ public class Utilities {
     }
 
     public static boolean isOrientationLandscape(Context context) {
-        return  Utilities.getOrientation(context) == Configuration.ORIENTATION_LANDSCAPE;
+        return  Utils.getOrientation(context) == Configuration.ORIENTATION_LANDSCAPE;
     }
 
     public static boolean isOrientationPortrait(Context context) {
-        return  Utilities.getOrientation(context) == Configuration.ORIENTATION_PORTRAIT;
+        return  Utils.getOrientation(context) == Configuration.ORIENTATION_PORTRAIT;
     }
 
 }

@@ -19,7 +19,7 @@ import com.cohenadair.anglerslog.model.Logbook;
 public class CatchesFragment extends ListFragment {
 
     //region Callback Interface
-    OnListItemSelectedListener callback;
+    OnListItemSelectedListener callbacks;
 
     // callback interface for the fragment's activity
     public interface OnListItemSelectedListener {
@@ -36,15 +36,15 @@ public class CatchesFragment extends ListFragment {
         View aView = super.onCreateView(inflater, container, savedInstanceState);
 
         // set the list's adapter
-        ArrayAdapter adapter = new ArrayAdapter<Catch>(this.getActivity(), android.R.layout.simple_list_item_1, Logbook.getSharedLogbook().getCatches());
-        setListAdapter(adapter);
+        ArrayAdapter adapter = new ArrayAdapter<Catch>(this.getActivity(), android.R.layout.simple_list_item_1, Logbook.getInstance().getCatches());
+        this.setListAdapter(adapter);
 
         return aView;
     }
 
     @Override
     public void onListItemClick(ListView listView, View view, int pos, long id) {
-        this.callback.onItemSelected(pos);
+        this.callbacks.onItemSelected(pos);
     }
 
     @Override
@@ -53,9 +53,15 @@ public class CatchesFragment extends ListFragment {
 
         // make sure the container activity has implemented the callback interface
         try {
-            this.callback = (OnListItemSelectedListener)anActivity;
+            this.callbacks = (OnListItemSelectedListener)anActivity;
         } catch (ClassCastException e) {
             throw new ClassCastException(anActivity.toString() + " must implement OnListItemSelectedListener");
         }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        this.callbacks = null;
     }
 }

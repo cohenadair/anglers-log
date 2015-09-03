@@ -6,6 +6,9 @@
 
         <item name="android:actionBarStyle">@style/ActionBar</item>
         <item name="actionBarStyle">@style/ActionBar</item>
+
+        <!-- For activated list items -->
+        <item name="android:activatedBackgroundIndicator">@drawable/list_item_selected</item>
     </style>
 
     <style name="ActionBar" parent="@style/Widget.AppCompat.Light.ActionBar">
