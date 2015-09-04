@@ -10,6 +10,10 @@ import android.app.Fragment;
  */
 public abstract class DetailFragment extends Fragment {
 
+    /**
+     * The method that updates the view using the object at the corresponding ListView position.
+     * @param position the position of the clicked ListItem in the master view.
+     */
     public abstract void update(int position);
 
 }
