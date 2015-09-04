@@ -1,4 +1,4 @@
 <resources>
-    <item name="main_layout" type="layout">@layout/main_twopane</item>
+    <item name="main_layout" type="layout">@layout/main</item>
     <bool name="has_two_panes">true</bool>
 </resources>
