@@ -4,6 +4,8 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Configuration;
+import android.content.res.Resources;
+import android.util.TypedValue;
 import android.widget.Toast;
 
 /**
@@ -46,6 +48,12 @@ public class Utils {
 
     public static boolean isOrientationPortrait(Context context) {
         return  Utils.getOrientation(context) == Configuration.ORIENTATION_PORTRAIT;
+    }
+
+    public static float getFloat(Resources resources, int resId) {
+        TypedValue out = new TypedValue();
+        resources.getValue(resId, out, true);
+        return out.getFloat();
     }
 
 }

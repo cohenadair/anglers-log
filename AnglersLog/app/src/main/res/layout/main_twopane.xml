@@ -9,28 +9,10 @@
     <!-- Main layout -->
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/main_container"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
-        <fragment xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:tools="http://schemas.android.com/tools"
-            android:id="@+id/fragment_catches"
-            android:name="com.cohenadair.anglerslog.fragments.MyListFragment"
-            tools:layout="@layout/fragment_catches"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight=".45"/>
-
-        <fragment xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:tools="http://schemas.android.com/tools"
-            android:id="@+id/fragment_catch"
-            android:name="com.cohenadair.anglerslog.fragments.CatchFragment"
-            tools:layout="@layout/fragment_catch"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight=".55"/>
-
     </LinearLayout>
 
     <!-- The navigation drawer -->

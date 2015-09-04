@@ -8,16 +8,20 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.cohenadair.anglerslog.R;
+import com.cohenadair.anglerslog.activities.MainActivity;
 import com.cohenadair.anglerslog.model.Catch;
 import com.cohenadair.anglerslog.model.Logbook;
+import com.cohenadair.anglerslog.utilities.FragmentUtils;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class CatchFragment extends Fragment {
+public class CatchFragment extends DetailFragment {
 
-    private TextView speciesTextView;
-    private TextView dateTextView;
+    public static final String TAG = "catch_fragment";
+
+    private TextView mSpeciesTextView;
+    private TextView mDateTextView;
 
     public CatchFragment() {
         // Required empty public constructor
@@ -25,28 +29,33 @@ public class CatchFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        super.onCreateView(inflater, container, savedInstanceState);
-
         View view = inflater.inflate(R.layout.fragment_catch, container, false);
 
-        this.speciesTextView = (TextView)view.findViewById(R.id.species_text_view);
-        this.dateTextView = (TextView)view.findViewById(R.id.date_text_view);
+        mSpeciesTextView = (TextView)view.findViewById(R.id.species_text_view);
+        mDateTextView = (TextView)view.findViewById(R.id.date_text_view);
 
         if (Logbook.getInstance().catchCount() <= 0) {
-            this.speciesTextView.setText("There are 0 catches in your log.");
-            this.dateTextView.setText("");
+            mSpeciesTextView.setText("There are 0 catches in your log.");
+            mDateTextView.setText("");
         } else
-            this.updateCatch(Logbook.getInstance().getCurrentCatchPos());
+            update(Logbook.getInstance().getCurrentCatchPos());
+
+        MainActivity activity = (MainActivity)getActivity();
+
+        // apply required LayoutParams for two-pane layout
+        if (activity.isTwoPane())
+            view.setLayoutParams(FragmentUtils.standardLayoutParams(getResources(), R.dimen.right_panel_weight));
 
         // Inflate the layout for this fragment
         return view;
     }
 
-    public void updateCatch(int pos) {
+    @Override
+    public void update(int pos) {
         Catch aCatch = Logbook.getInstance().catchAtPos(pos);
 
-        this.speciesTextView.setText(aCatch.speciesAsString());
-        this.dateTextView.setText(aCatch.dateAsString());
+        mSpeciesTextView.setText(aCatch.speciesAsString());
+        mDateTextView.setText(aCatch.dateAsString());
     }
 
 }

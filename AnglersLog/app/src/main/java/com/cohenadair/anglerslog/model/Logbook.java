@@ -1,9 +1,5 @@
 package com.cohenadair.anglerslog.model;
 
-import android.app.Activity;
-import android.util.Log;
-import android.widget.ArrayAdapter;
-
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -24,8 +20,6 @@ public class Logbook {
 
     }
     //endregion
-    
-    public static final int DATA_CATCHES = 0;
 
     private String mName;
     private ArrayList<Catch> mCatches = new ArrayList<Catch>();
@@ -94,24 +88,5 @@ public class Logbook {
         return mCatches.size();
     }
     //endregion
-
-    /**
-     * Used for communication between activities and fragments. An id is passed in a Bundle between
-     * the activity and fragment.
-     * @param anActivity the activity the adapter is applied to.
-     * @param aDataId the id of the data to create an adapter from. See {@link #DATA_CATCHES}
-     * @return an ArrayAdapter based off the data id provided.
-     */
-    public ArrayAdapter adapterForData(Activity anActivity, int aDataId) {
-        switch (aDataId) {
-            case DATA_CATCHES:
-                return new ArrayAdapter<Catch>(anActivity, android.R.layout.simple_list_item_1, mCatches);
-            default:
-                Log.e("Logbook.arrayForData", "Invalid dataId");
-                break;
-        }
-
-        return null;
-    }
 
 }

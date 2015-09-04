@@ -10,12 +10,15 @@ import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.LinearLayout;
 
 import com.cohenadair.anglerslog.R;
-import com.cohenadair.anglerslog.fragments.CatchFragment;
-import com.cohenadair.anglerslog.fragments.MyListFragment;
+import com.cohenadair.anglerslog.fragments.DetailFragment;
 import com.cohenadair.anglerslog.fragments.DrawerFragment;
+import com.cohenadair.anglerslog.fragments.MyListFragment;
 import com.cohenadair.anglerslog.model.Logbook;
+import com.cohenadair.anglerslog.utilities.FragmentInfo;
+import com.cohenadair.anglerslog.utilities.FragmentUtils;
 
 public class MainActivity extends ActionBarActivity implements
         MyListFragment.OnListItemSelectedListener,
@@ -23,6 +26,7 @@ public class MainActivity extends ActionBarActivity implements
         FragmentManager.OnBackStackChangedListener
 {
 
+    private FragmentInfo mFragmentInfo;
     private DrawerFragment mDrawerFragment;
     private CharSequence mCurrentTitle; // for use in {@link #restoreActionBar()}
 
@@ -31,7 +35,7 @@ public class MainActivity extends ActionBarActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_layout);
 
-        showFragment(savedInstanceState, Logbook.DATA_CATCHES);
+        showFragment(savedInstanceState, FragmentUtils.FRAGMENT_CATCHES);
 
         initBackNavigation();
         initDrawerNavigation();
@@ -89,15 +93,30 @@ public class MainActivity extends ActionBarActivity implements
         return super.onOptionsItemSelected(item);
     }
 
-    private void showFragment(Bundle savedInstanceState, int logbookDataId) {
-        // add the catches fragment to the layout
-        if (findViewById(R.id.main_container) != null) {
+    private void showFragment(Bundle savedInstanceState, int fragmentId) {
+        LinearLayout container = (LinearLayout)findViewById(R.id.main_container);
+
+        // add the fragment(s) to the layout
+        if (container != null) {
+            mFragmentInfo = FragmentUtils.fragmentInfo(this, FragmentUtils.FRAGMENT_CATCHES);
+
             // avoid multiple fragments stacked on top of one another
             if (savedInstanceState != null)
                 return;
 
-            MyListFragment fragment = MyListFragment.newInstance(logbookDataId);
-            getFragmentManager().beginTransaction().add(R.id.main_container, fragment).commit();
+            if (mFragmentInfo != null) {
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+
+                // add left panel
+                transaction.add(R.id.main_container, mFragmentInfo.getFragment(), mFragmentInfo.getTag());
+
+                // add the right panel if needed
+                if (isTwoPane())
+                    transaction.add(R.id.main_container, mFragmentInfo.detailFragment(), mFragmentInfo.detailTag());
+
+                // commit changes
+                transaction.commit();
+            }
         }
     }
 
@@ -106,16 +125,16 @@ public class MainActivity extends ActionBarActivity implements
     public void onItemSelected(int pos) {
         Logbook.getInstance().setCurrentCatchPos(pos);
 
-        CatchFragment catchFragment = (CatchFragment)findFragment(R.id.fragment_catch);
+        DetailFragment detailFragment = (DetailFragment)findFragment(mFragmentInfo.detailTag());
 
         if (isTwoPane())
-            catchFragment.updateCatch(pos);
+            detailFragment.update(pos);
         else {
             // show the single catch fragment
-            catchFragment = new CatchFragment();
+            detailFragment = (DetailFragment)mFragmentInfo.detailFragment();
 
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
-            transaction.replace(R.id.main_container, catchFragment)
+            transaction.replace(R.id.main_container, detailFragment)
                        .addToBackStack(null)
                        .commit();
 
@@ -168,8 +187,8 @@ public class MainActivity extends ActionBarActivity implements
         return getResources().getBoolean(R.bool.has_two_panes);
     }
 
-    public Fragment findFragment(int resId) {
-        return getFragmentManager().findFragmentById(resId);
+    public Fragment findFragment(String aTag) {
+        return getFragmentManager().findFragmentByTag(aTag);
     }
 
 }

@@ -33,6 +33,7 @@ public class DrawerFragment extends Fragment {
      * Remember the position of the selected item.
      */
     private static final String STATE_SELECTED_POSITION = "selected_navigation_drawer_position";
+    private static final String STATE_HAMBURGER_SHOWN = "is_hamburger_shown";
 
     /**
      * Per the design guidelines, you should show the drawer on launch until the user manually
@@ -55,6 +56,7 @@ public class DrawerFragment extends Fragment {
     private View mFragmentContainerView;
     private String[] mNavItems;
 
+    private boolean mIsHamburgerShown = true;
     private int mCurrentSelectedPosition = 0;
     private boolean mFromSavedInstanceState;
     private boolean mUserLearnedDrawer;
@@ -74,6 +76,7 @@ public class DrawerFragment extends Fragment {
 
         if (savedInstanceState != null) {
             mCurrentSelectedPosition = savedInstanceState.getInt(STATE_SELECTED_POSITION);
+            mIsHamburgerShown = savedInstanceState.getBoolean(STATE_HAMBURGER_SHOWN);
             mFromSavedInstanceState = true;
         }
 
@@ -125,10 +128,12 @@ public class DrawerFragment extends Fragment {
 
     public void hideHamburger() {
         mDrawerToggle.setDrawerIndicatorEnabled(false);
+        mIsHamburgerShown = false;
     }
 
     public void showHamburger() {
         mDrawerToggle.setDrawerIndicatorEnabled(true);
+        mIsHamburgerShown = true;
     }
 
     public boolean isHamburgerVisible() {
@@ -187,6 +192,10 @@ public class DrawerFragment extends Fragment {
             mDrawerLayout.openDrawer(mFragmentContainerView);
         }
 
+        // hide the hamburger if needed
+        if (!mIsHamburgerShown)
+            hideHamburger();
+
         // Defer code dependent on restoration of previous instance state.
         mDrawerLayout.post(new Runnable() {
             @Override
@@ -235,6 +244,7 @@ public class DrawerFragment extends Fragment {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt(STATE_SELECTED_POSITION, mCurrentSelectedPosition);
+        outState.putBoolean(STATE_HAMBURGER_SHOWN, mIsHamburgerShown);
     }
 
     @Override
