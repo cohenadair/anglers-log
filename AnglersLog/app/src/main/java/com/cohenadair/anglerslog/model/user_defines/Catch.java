@@ -1,6 +1,4 @@
-package com.cohenadair.anglerslog.model;
-
-import com.cohenadair.anglerslog.model.user_defines.Species;
+package com.cohenadair.anglerslog.model.user_defines;
 
 import java.util.Date;
 

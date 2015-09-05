@@ -2,9 +2,9 @@ package com.cohenadair.anglerslog;
 
 import android.app.Application;
 
-import com.cohenadair.anglerslog.model.Catch;
+import com.cohenadair.anglerslog.model.user_defines.Catch;
 import com.cohenadair.anglerslog.model.Logbook;
-import com.cohenadair.anglerslog.model.Trip;
+import com.cohenadair.anglerslog.model.user_defines.Trip;
 import com.cohenadair.anglerslog.model.user_defines.Species;
 
 import java.util.Calendar;

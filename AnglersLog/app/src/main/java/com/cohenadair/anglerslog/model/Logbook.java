@@ -1,5 +1,8 @@
 package com.cohenadair.anglerslog.model;
 
+import com.cohenadair.anglerslog.model.user_defines.Catch;
+import com.cohenadair.anglerslog.model.user_defines.Trip;
+
 import java.util.ArrayList;
 import java.util.Date;
 

@@ -8,9 +8,9 @@ import android.widget.ArrayAdapter;
 import com.cohenadair.anglerslog.fragments.CatchFragment;
 import com.cohenadair.anglerslog.fragments.MyListFragment;
 import com.cohenadair.anglerslog.fragments.TripFragment;
-import com.cohenadair.anglerslog.model.Catch;
+import com.cohenadair.anglerslog.model.user_defines.Catch;
 import com.cohenadair.anglerslog.model.Logbook;
-import com.cohenadair.anglerslog.model.Trip;
+import com.cohenadair.anglerslog.model.user_defines.Trip;
 
 /**
  * FragmentUtils is used for manipulating fragments throughout the application.
