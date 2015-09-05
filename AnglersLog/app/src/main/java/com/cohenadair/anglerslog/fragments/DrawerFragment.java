@@ -96,7 +96,6 @@ public class DrawerFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
         mDrawerListView = (ListView)inflater.inflate(R.layout.fragment_drawer, container, false);
 
         mDrawerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

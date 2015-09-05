@@ -35,7 +35,7 @@ public class MainActivity extends ActionBarActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_layout);
 
-        showFragment(savedInstanceState, FragmentUtils.FRAGMENT_CATCHES);
+        showFragment(savedInstanceState, Logbook.getInstance().getCurrentFragmentId());
 
         initBackNavigation();
         initDrawerNavigation();
@@ -49,6 +49,8 @@ public class MainActivity extends ActionBarActivity implements
         // update action bar title
         if (mDrawerFragment != null)
             mCurrentTitle = mDrawerFragment.getNavItems()[position];
+
+        Logbook.getInstance().setCurrentFragmentId(position);
 
         Log.d("OnDrawerItemSelected", "Selected position: " + position);
     }
@@ -98,7 +100,7 @@ public class MainActivity extends ActionBarActivity implements
 
         // add the fragment(s) to the layout
         if (container != null) {
-            mFragmentInfo = FragmentUtils.fragmentInfo(this, FragmentUtils.FRAGMENT_CATCHES);
+            mFragmentInfo = FragmentUtils.fragmentInfo(this, fragmentId);
 
             // avoid multiple fragments stacked on top of one another
             if (savedInstanceState != null)

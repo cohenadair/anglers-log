@@ -1,5 +1,7 @@
 package com.cohenadair.anglerslog.model;
 
+import com.cohenadair.anglerslog.utilities.FragmentUtils;
+
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -24,8 +26,9 @@ public class Logbook {
     private String mName;
     private ArrayList<Catch> mCatches = new ArrayList<Catch>();
 
-    // used to persist user catch selection over orientation and activity changes
-    private int currentCatchPos;
+    // used to persist user selection
+    private int mCurrentCatchPos = 0;
+    private int mCurrentFragmentId = FragmentUtils.FRAGMENT_CATCHES; // default starting fragment
 
     //region Getters & Setters
     public String getName() {
@@ -45,11 +48,19 @@ public class Logbook {
     }
 
     public int getCurrentCatchPos() {
-        return currentCatchPos;
+        return mCurrentCatchPos;
     }
 
     public void setCurrentCatchPos(int currentCatchPos) {
-        this.currentCatchPos = currentCatchPos;
+        this.mCurrentCatchPos = currentCatchPos;
+    }
+
+    public int getCurrentFragmentId() {
+        return mCurrentFragmentId;
+    }
+
+    public void setCurrentFragmentId(int currentFragmentId) {
+        mCurrentFragmentId = currentFragmentId;
     }
 
     //endregion
