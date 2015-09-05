@@ -1,7 +1,5 @@
 package com.cohenadair.anglerslog.model;
 
-import com.cohenadair.anglerslog.utilities.FragmentUtils;
-
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -24,11 +22,8 @@ public class Logbook {
     //endregion
 
     private String mName;
-    private ArrayList<Catch> mCatches = new ArrayList<Catch>();
-
-    // used to persist user selection
-    private int mCurrentCatchPos = 0;
-    private int mCurrentFragmentId = FragmentUtils.FRAGMENT_CATCHES; // default starting fragment
+    private ArrayList<Catch> mCatches = new ArrayList<>();
+    private ArrayList<Trip> mTrips = new ArrayList<>();
 
     //region Getters & Setters
     public String getName() {
@@ -47,31 +42,27 @@ public class Logbook {
         mCatches = catches;
     }
 
-    public int getCurrentCatchPos() {
-        return mCurrentCatchPos;
+    public ArrayList<Trip> getTrips() {
+        return mTrips;
     }
 
-    public void setCurrentCatchPos(int currentCatchPos) {
-        this.mCurrentCatchPos = currentCatchPos;
-    }
-
-    public int getCurrentFragmentId() {
-        return mCurrentFragmentId;
-    }
-
-    public void setCurrentFragmentId(int currentFragmentId) {
-        mCurrentFragmentId = currentFragmentId;
+    public void setTrips(ArrayList<Trip> trips) {
+        mTrips = trips;
     }
 
     //endregion
 
+    //region General Manipulation
+
+    //endregion
+
     //region Catch Manipulation
-    public void addCatch(Catch aCatch) {
-        mCatches.add(aCatch);
+    public boolean addCatch(Catch aCatch) {
+        return mCatches.add(aCatch);
     }
 
-    public void removeCatch(Catch aCatch) {
-        mCatches.remove(aCatch);
+    public boolean removeCatch(Catch aCatch) {
+        return mCatches.remove(aCatch);
     }
 
     /**
@@ -88,8 +79,8 @@ public class Logbook {
         return null;
     }
 
-    public Catch catchAtPos(int pos) {
-        return mCatches.get(pos);
+    public Catch catchAtPos(int position) {
+        return mCatches.get(position);
     }
 
     /**
@@ -97,6 +88,24 @@ public class Logbook {
      */
     public int catchCount() {
         return mCatches.size();
+    }
+    //endregion
+
+    //region Trip Manipulation
+    public boolean addTrip(Trip aTrip) {
+        return mTrips.add(aTrip);
+    }
+
+    public boolean removeTrip(Trip aTrip) {
+        return mTrips.remove(aTrip);
+    }
+
+    public int tripCount() {
+        return mTrips.size();
+    }
+
+    public Trip tripAtPos(int position) {
+        return mTrips.get(position);
     }
     //endregion
 

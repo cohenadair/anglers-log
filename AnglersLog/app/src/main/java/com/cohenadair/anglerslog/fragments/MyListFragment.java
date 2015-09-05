@@ -9,8 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-import com.cohenadair.anglerslog.R;
-import com.cohenadair.anglerslog.activities.MainActivity;
 import com.cohenadair.anglerslog.utilities.FragmentInfo;
 import com.cohenadair.anglerslog.utilities.FragmentUtils;
 
@@ -61,11 +59,6 @@ public class MyListFragment extends ListFragment {
 
         if (info != null) {
             setListAdapter(info.getArrayAdapter());
-
-            MainActivity activity = (MainActivity)getActivity();
-
-            if (aView != null && activity.isTwoPane())
-                aView.setLayoutParams(FragmentUtils.standardLayoutParams(getResources(), R.dimen.left_panel_weight));
         }
 
         return aView;

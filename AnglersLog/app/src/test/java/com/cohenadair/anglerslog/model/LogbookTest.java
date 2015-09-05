@@ -13,29 +13,43 @@ import static org.junit.Assert.assertTrue;
  */
 public class LogbookTest {
 
-    private Catch testCatch = new Catch(new Date());
-
+    //region Catch Tests
     @Test
-    public void testAddCatch() {
-        Logbook.getSharedLogbook().addCatch(this.testCatch);
-        assertTrue(Logbook.getSharedLogbook().catchCount() == 1);
-    }
+    public void testAddRemoveCatch() {
+        Catch testCatch = new Catch(new Date());
 
-    @Test
-    public void testRemoveCatch() {
-        Logbook.getSharedLogbook().removeCatch(this.testCatch);
-        assertTrue(Logbook.getSharedLogbook().catchCount() == 0);
+        Logbook.getInstance().addCatch(testCatch);
+        assertTrue(Logbook.getInstance().catchCount() == 1);
+
+        Logbook.getInstance().removeCatch(testCatch);
+        assertTrue(Logbook.getInstance().catchCount() == 0);
     }
 
     @Test
     public void testCatchDated() {
-        Date aDate = new Date(testCatch.getDate().getTime());
-        Logbook.getSharedLogbook().addCatch(testCatch);
+        Catch testCatch = new Catch(new Date());
+        Date testDate = new Date(testCatch.getDate().getTime());
 
-        assertFalse(aDate == testCatch.getDate()); // date references are different
-        assertTrue(Logbook.getSharedLogbook().catchDated(aDate) != null); // date values are the same
+        Logbook.getInstance().addCatch(testCatch);
 
-        Logbook.getSharedLogbook().removeCatch(testCatch);
+        assertFalse(testDate == testCatch.getDate()); // date references are different
+        assertTrue(Logbook.getInstance().catchDated(testDate) != null); // date values are the same
+
+        Logbook.getInstance().removeCatch(testCatch);
     }
+    //endregion
+
+    //region Trip Tests
+    @Test
+    public void testAddRemoveTrip() {
+        Trip testTrip = new Trip("Example Trip");
+
+        Logbook.getInstance().addTrip(testTrip);
+        assertTrue(Logbook.getInstance().tripCount() == 1);
+
+        Logbook.getInstance().removeTrip(testTrip);
+        assertTrue(Logbook.getInstance().tripCount() == 0);
+    }
+    //endregion
 
 }

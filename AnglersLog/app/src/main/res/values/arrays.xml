@@ -3,6 +3,8 @@
     <string-array name="navigation_items">
         <item>Catches</item>
         <item>Trips</item>
+        <item>Photo Gallery</item>
+        <item>Statistics</item>
         <item>Locations</item>
         <item>Baits</item>
     </string-array>

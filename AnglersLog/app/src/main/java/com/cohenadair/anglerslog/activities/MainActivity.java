@@ -1,22 +1,20 @@
 package com.cohenadair.anglerslog.activities;
 
-import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.LinearLayout;
 
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.fragments.DetailFragment;
 import com.cohenadair.anglerslog.fragments.DrawerFragment;
 import com.cohenadair.anglerslog.fragments.MyListFragment;
-import com.cohenadair.anglerslog.model.Logbook;
 import com.cohenadair.anglerslog.utilities.FragmentInfo;
 import com.cohenadair.anglerslog.utilities.FragmentUtils;
 
@@ -35,7 +33,7 @@ public class MainActivity extends ActionBarActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_layout);
 
-        showFragment(savedInstanceState, Logbook.getInstance().getCurrentFragmentId());
+        showFragment(savedInstanceState);
 
         initBackNavigation();
         initDrawerNavigation();
@@ -50,7 +48,8 @@ public class MainActivity extends ActionBarActivity implements
         if (mDrawerFragment != null)
             mCurrentTitle = mDrawerFragment.getNavItems()[position];
 
-        Logbook.getInstance().setCurrentFragmentId(position);
+        FragmentUtils.setCurrentFragmentId(position);
+        showFragment(null);
 
         Log.d("OnDrawerItemSelected", "Selected position: " + position);
     }
@@ -95,48 +94,43 @@ public class MainActivity extends ActionBarActivity implements
         return super.onOptionsItemSelected(item);
     }
 
-    private void showFragment(Bundle savedInstanceState, int fragmentId) {
-        LinearLayout container = (LinearLayout)findViewById(R.id.main_container);
+    private void showFragment(@Nullable Bundle savedInstanceState) {
+        mFragmentInfo = FragmentUtils.fragmentInfo(this, FragmentUtils.getCurrentFragmentId());
 
-        // add the fragment(s) to the layout
-        if (container != null) {
-            mFragmentInfo = FragmentUtils.fragmentInfo(this, fragmentId);
+        // avoid multiple fragments stacked on top of one another
+        if (savedInstanceState != null)
+            return;
 
-            // avoid multiple fragments stacked on top of one another
-            if (savedInstanceState != null)
-                return;
+        if (mFragmentInfo != null) {
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
 
-            if (mFragmentInfo != null) {
-                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            // add left panel
+            transaction.replace(R.id.master_container, mFragmentInfo.getFragment(), mFragmentInfo.getTag());
 
-                // add left panel
-                transaction.add(R.id.main_container, mFragmentInfo.getFragment(), mFragmentInfo.getTag());
+            // add the right panel if needed
+            if (isTwoPane())
+                transaction.replace(R.id.detail_container, mFragmentInfo.detailFragment(), mFragmentInfo.detailTag());
 
-                // add the right panel if needed
-                if (isTwoPane())
-                    transaction.add(R.id.main_container, mFragmentInfo.detailFragment(), mFragmentInfo.detailTag());
-
-                // commit changes
-                transaction.commit();
-            }
+            // commit changes
+            transaction.commit();
         }
     }
 
     //region MyListFragment.OnListItemSelectedListener interface
     @Override
-    public void onItemSelected(int pos) {
-        Logbook.getInstance().setCurrentCatchPos(pos);
+    public void onItemSelected(int position) {
+        FragmentUtils.selectionPos(FragmentUtils.getCurrentFragmentId(), position);
 
-        DetailFragment detailFragment = (DetailFragment)findFragment(mFragmentInfo.detailTag());
+        DetailFragment detailFragment = (DetailFragment)getFragmentManager().findFragmentByTag(mFragmentInfo.detailTag());
 
         if (isTwoPane())
-            detailFragment.update(pos);
+            detailFragment.update(position);
         else {
             // show the single catch fragment
             detailFragment = (DetailFragment)mFragmentInfo.detailFragment();
 
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
-            transaction.replace(R.id.main_container, detailFragment)
+            transaction.replace(R.id.master_container, detailFragment)
                        .addToBackStack(null)
                        .commit();
 
@@ -187,10 +181,6 @@ public class MainActivity extends ActionBarActivity implements
 
     public boolean isTwoPane() {
         return getResources().getBoolean(R.bool.has_two_panes);
-    }
-
-    public Fragment findFragment(String aTag) {
-        return getFragmentManager().findFragmentByTag(aTag);
     }
 
 }

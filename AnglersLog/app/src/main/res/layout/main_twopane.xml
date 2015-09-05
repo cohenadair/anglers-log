@@ -8,10 +8,23 @@
     <!-- The main content view -->
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/master_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="@dimen/left_panel_weight"
+            android:id="@+id/master_container">
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="@dimen/right_panel_weight"
+            android:id="@+id/detail_container">
+        </LinearLayout>
     </LinearLayout>
 
     <!-- The navigation drawer -->

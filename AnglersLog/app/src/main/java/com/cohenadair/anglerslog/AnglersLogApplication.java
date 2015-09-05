@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.cohenadair.anglerslog.model.Catch;
 import com.cohenadair.anglerslog.model.Logbook;
+import com.cohenadair.anglerslog.model.Trip;
 import com.cohenadair.anglerslog.model.user_defines.Species;
 
 import java.util.Calendar;
@@ -31,6 +32,11 @@ public class AnglersLogApplication extends Application {
 
                 Logbook.getInstance().addCatch(aCatch);
             }
+
+        // initialize some dummy trips
+        if (Logbook.getInstance().tripCount() <= 0)
+            for (int i = 0; i < 10; i++)
+                Logbook.getInstance().addTrip(new Trip("Trip " + i));
     }
 
 }
