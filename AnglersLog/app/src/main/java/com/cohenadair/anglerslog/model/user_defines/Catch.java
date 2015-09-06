@@ -6,12 +6,13 @@ import java.util.Date;
  * The Catch class stores relative information for a single fishing catch.
  * @author Cohen Adair
  */
-public class Catch {
+public class Catch extends UserDefineObject {
 
     private Date mDate;
     private Species mSpecies;
 
     public Catch(Date date) {
+        super(date.toString());
         mDate = date;
     }
 

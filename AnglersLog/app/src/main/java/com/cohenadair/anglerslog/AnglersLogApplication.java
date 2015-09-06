@@ -22,9 +22,9 @@ public class AnglersLogApplication extends Application {
 
         // initialize some dummy catches
         if (Logbook.getInstance().catchCount() <= 0)
-            for (int i = 0; i < 12; i++) {
+            for (int i = 0; i < 24; i++) {
                 Calendar calendar = Calendar.getInstance();
-                calendar.set(Calendar.MONTH, i);
+                calendar.set(Calendar.MONTH, i % 12);
                 Date aDate = calendar.getTime();
 
                 Catch aCatch = new Catch(aDate);

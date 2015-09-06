@@ -6,6 +6,7 @@
 
         <item name="colorPrimary">@color/anglers_log_light</item>
         <item name="colorPrimaryDark">@color/anglers_log_dark</item>
+        <item name="colorAccent">@color/anglers_log_light</item>
 
         <!-- For activated list items -->
         <item name="android:activatedBackgroundIndicator">@drawable/list_item_selected</item>

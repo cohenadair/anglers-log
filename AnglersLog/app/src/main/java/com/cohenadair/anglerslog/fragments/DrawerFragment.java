@@ -222,6 +222,9 @@ public class DrawerFragment extends Fragment {
         }
     }
 
+    // required until issue resolved
+    // https://code.google.com/p/android/issues/detail?id=183358
+    // TODO update to onAttach(Context context)
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
