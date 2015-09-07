@@ -1,0 +1,42 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.cohenadair.anglerslog.fragments.ManageFragment">
+
+    <LinearLayout
+        android:id="@+id/manage_buttons"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
+
+        <Button
+            style="?android:attr/buttonStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/button_cancel"
+            android:id="@+id/cancel_button"
+            android:layout_weight=".5"/>
+
+        <Button
+            style="?android:attr/buttonStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/button_done"
+            android:id="@+id/confirm_button"
+            android:layout_weight=".5"/>
+
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_above="@id/manage_buttons"
+        android:id="@+id/content_scroll_view">
+
+    </ScrollView>
+
+</RelativeLayout>

@@ -1,27 +1,30 @@
 package com.cohenadair.anglerslog.activities;
 
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.fragments.DetailFragment;
 import com.cohenadair.anglerslog.fragments.DrawerFragment;
+import com.cohenadair.anglerslog.fragments.ManageFragment;
 import com.cohenadair.anglerslog.fragments.MyListFragment;
-import com.cohenadair.anglerslog.utilities.FragmentInfo;
-import com.cohenadair.anglerslog.utilities.FragmentUtils;
+import com.cohenadair.anglerslog.utilities.Utils;
+import com.cohenadair.anglerslog.utilities.fragment.FragmentInfo;
+import com.cohenadair.anglerslog.utilities.fragment.FragmentUtils;
 
 public class MainActivity extends AppCompatActivity implements
-        MyListFragment.OnListItemSelectedListener,
+        MyListFragment.OnMyListFragmentInteractionListener,
+        ManageFragment.OnManageFragmentInteractionListener,
         DrawerFragment.DrawerFragmentCallbacks,
-        FragmentManager.OnBackStackChangedListener
+        android.support.v4.app.FragmentManager.OnBackStackChangedListener
 {
 
     private FragmentInfo mFragmentInfo;
@@ -104,7 +107,7 @@ public class MainActivity extends AppCompatActivity implements
             return;
 
         if (mFragmentInfo != null) {
-            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
             // add left panel
             transaction.replace(R.id.master_container, mFragmentInfo.getFragment(), mFragmentInfo.getTag());
@@ -123,7 +126,7 @@ public class MainActivity extends AppCompatActivity implements
     public void onItemSelected(int position) {
         FragmentUtils.selectionPos(FragmentUtils.getCurrentFragmentId(), position);
 
-        DetailFragment detailFragment = (DetailFragment)getFragmentManager().findFragmentByTag(mFragmentInfo.detailTag());
+        DetailFragment detailFragment = (DetailFragment)getSupportFragmentManager().findFragmentByTag(mFragmentInfo.detailTag());
 
         if (isTwoPane())
             detailFragment.update(position);
@@ -131,7 +134,7 @@ public class MainActivity extends AppCompatActivity implements
             // show the single catch fragment
             detailFragment = (DetailFragment)mFragmentInfo.detailFragment();
 
-            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             transaction.replace(R.id.master_container, detailFragment)
                        .addToBackStack(null)
                        .commit();
@@ -139,17 +142,47 @@ public class MainActivity extends AppCompatActivity implements
             setActionBarTitle("");
         }
     }
+
+    @Override
+    public void onClickNewButton(View v) {
+        ManageFragment manageFragment = mFragmentInfo.manageFragment();
+
+        if (isTwoPane()) {
+            // show as popup
+            manageFragment.show(getSupportFragmentManager(), "dialog");
+        } else {
+            // show normally
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.master_container, manageFragment)
+                       .addToBackStack(null)
+                       .commit();
+
+            setActionBarTitle("New " + mFragmentInfo.getName());
+        }
+    }
+    //endregion
+
+    //region ManageFragment.OnManageFragmentInteractionListener interface
+    @Override
+    public void onClickCancel(View v) {
+        Utils.showToast(this, "Clicked Cancel!");
+    }
+
+    @Override
+    public void onClickConfirm(View v) {
+        Utils.showToast(this, "Clicked Done!");
+    }
     //endregion
 
     //region Navigation
     private void initBackNavigation() {
         if (!isTwoPane())
-            getFragmentManager().addOnBackStackChangedListener(this);
+            getSupportFragmentManager().addOnBackStackChangedListener(this);
     }
 
     private void handleBackPress() {
         if (!mDrawerFragment.isHamburgerVisible()) {
-            getFragmentManager().popBackStack();
+            getSupportFragmentManager().popBackStack();
             restoreActionBar();
         }
     }
@@ -164,6 +197,7 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public void onBackStackChanged() {
+        Log.d("onBackStackChanged", "Back stack changed.");
         if (canGoBack())
             mDrawerFragment.hideHamburger();
         else
@@ -171,11 +205,11 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     public boolean canGoBack() {
-        return getFragmentManager().getBackStackEntryCount() > 0;
+        return getSupportFragmentManager().getBackStackEntryCount() > 0;
     }
 
     private void initDrawerNavigation() {
-        mDrawerFragment = (DrawerFragment)getFragmentManager().findFragmentById(R.id.navigation_drawer);
+        mDrawerFragment = (DrawerFragment)getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
         mDrawerFragment.setUp(R.id.navigation_drawer, (DrawerLayout)findViewById(R.id.main_drawer));
         mCurrentTitle = mDrawerFragment.getNavItems()[mDrawerFragment.getCurrentSelectedPosition()];
     }

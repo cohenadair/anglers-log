@@ -1,4 +1,4 @@
-package com.cohenadair.anglerslog.utilities;
+package com.cohenadair.anglerslog.utilities.fragment;
 
 import android.app.Activity;
 import android.support.annotation.Nullable;
@@ -6,11 +6,11 @@ import android.util.Log;
 import android.widget.ArrayAdapter;
 
 import com.cohenadair.anglerslog.fragments.CatchFragment;
+import com.cohenadair.anglerslog.fragments.ManageCatchFragment;
+import com.cohenadair.anglerslog.fragments.ManageFragment;
 import com.cohenadair.anglerslog.fragments.MyListFragment;
 import com.cohenadair.anglerslog.fragments.TripFragment;
-import com.cohenadair.anglerslog.model.user_defines.Catch;
 import com.cohenadair.anglerslog.model.Logbook;
-import com.cohenadair.anglerslog.model.user_defines.Trip;
 
 /**
  * FragmentUtils is used for manipulating fragments throughout the application.
@@ -76,15 +76,20 @@ public class FragmentUtils {
     }
 
     private static FragmentInfo catchesFragmentInfo(Activity activity) {
+        int id = FRAGMENT_CATCHES;
+
         FragmentInfo info = new FragmentInfo("fragment_catches");
         FragmentInfo detailInfo = new FragmentInfo("fragment_catch");
+        ManageFragmentInfo manageInfo = new ManageFragmentInfo(ManageFragment.newInstance(id), new ManageCatchFragment());
 
         detailInfo.setFragment(new CatchFragment());
 
         info.setDetailInfo(detailInfo);
-        info.setArrayAdapter(new ArrayAdapter<Catch>(activity, android.R.layout.simple_list_item_1, Logbook.getInstance().getCatches()));
-        info.setId(FRAGMENT_CATCHES);
-        info.setFragment(MyListFragment.newInstance(info.getId()));
+        info.setManageInfo(manageInfo);
+        info.setArrayAdapter(new ArrayAdapter<>(activity, android.R.layout.simple_list_item_1, Logbook.getInstance().getCatches()));
+        info.setFragment(MyListFragment.newInstance(id));
+        info.setName("Catch");
+        info.setId(id);
 
         return info;
     }
@@ -96,7 +101,7 @@ public class FragmentUtils {
         detailInfo.setFragment(new TripFragment());
 
         info.setDetailInfo(detailInfo);
-        info.setArrayAdapter(new ArrayAdapter<Trip>(activity, android.R.layout.simple_list_item_1, Logbook.getInstance().getTrips()));
+        info.setArrayAdapter(new ArrayAdapter<>(activity, android.R.layout.simple_list_item_1, Logbook.getInstance().getTrips()));
         info.setId(FRAGMENT_TRIPS);
         info.setFragment(MyListFragment.newInstance(info.getId()));
 

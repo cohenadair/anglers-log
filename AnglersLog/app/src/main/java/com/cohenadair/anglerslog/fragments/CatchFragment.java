@@ -9,7 +9,7 @@ import android.widget.TextView;
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.model.user_defines.Catch;
 import com.cohenadair.anglerslog.model.Logbook;
-import com.cohenadair.anglerslog.utilities.FragmentUtils;
+import com.cohenadair.anglerslog.utilities.fragment.FragmentUtils;
 
 /**
  * A {@link DetailFragment} subclass used to show the details of a single catch.

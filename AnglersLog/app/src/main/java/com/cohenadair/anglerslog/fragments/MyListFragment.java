@@ -1,7 +1,7 @@
 package com.cohenadair.anglerslog.fragments;
 
 import android.app.Activity;
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -13,9 +13,8 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.cohenadair.anglerslog.R;
-import com.cohenadair.anglerslog.utilities.FragmentInfo;
-import com.cohenadair.anglerslog.utilities.FragmentUtils;
-import com.cohenadair.anglerslog.utilities.Utils;
+import com.cohenadair.anglerslog.utilities.fragment.FragmentInfo;
+import com.cohenadair.anglerslog.utilities.fragment.FragmentUtils;
 
 /**
  * The fragment showing the list of catches.
@@ -26,11 +25,12 @@ public class MyListFragment extends Fragment {
     private FloatingActionButton mNewButton;
 
     //region Callback Interface
-    OnListItemSelectedListener mCallbacks;
+    OnMyListFragmentInteractionListener mCallbacks;
 
     // callback interface for the fragment's activity
-    public interface OnListItemSelectedListener {
-        void onItemSelected(int pos);
+    public interface OnMyListFragmentInteractionListener {
+        void onItemSelected(int position);
+        void onClickNewButton(View v);
     }
     //endregion
     
@@ -38,8 +38,8 @@ public class MyListFragment extends Fragment {
     private static final String ARG_FRAGMENT_ID = "arg_fragment_id";
 
     /**
-     * Creates a new instance with a data id used to show different array data.
-     * @param aFragmentId the Logbook.DATA_* id for the new instance
+     * Creates a new instance with a fragment id used to show different array data.
+     * @param aFragmentId the fragment id.
      * @return a MyListFragment instance with associated data id.
      */
     public static MyListFragment newInstance(int aFragmentId) {
@@ -61,9 +61,8 @@ public class MyListFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_mylist, container, false);
 
-        // set the list's adapter
-        int dataId = getArguments().getInt(ARG_FRAGMENT_ID);
-        FragmentInfo info = FragmentUtils.fragmentInfo(getActivity(), dataId);
+        int fragmentId = getArguments().getInt(ARG_FRAGMENT_ID);
+        FragmentInfo info = FragmentUtils.fragmentInfo(getActivity(), fragmentId);
 
         if (view != null) {
             initNewButton(view);
@@ -82,9 +81,9 @@ public class MyListFragment extends Fragment {
 
         // make sure the container activity has implemented the callback interface
         try {
-            mCallbacks = (OnListItemSelectedListener)activity;
+            mCallbacks = (OnMyListFragmentInteractionListener)activity;
         } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString() + " must implement OnListItemSelectedListener");
+            throw new ClassCastException(activity.toString() + " must implement OnMyListFragmentInteractionListener");
         }
     }
 
@@ -139,7 +138,7 @@ public class MyListFragment extends Fragment {
         mNewButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Utils.showToast(getActivity(), "New list item!");
+                mCallbacks.onClickNewButton(v);
             }
         });
     }

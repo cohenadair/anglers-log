@@ -1,6 +1,6 @@
 package com.cohenadair.anglerslog.fragments;
 
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 
 /**
  * The DetailFragment class is meant to be extended by any "detail" fragments.
