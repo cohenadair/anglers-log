@@ -57,7 +57,7 @@ public class Logbook {
         mTrips = trips;
     }
 
-    public ArrayList getSpecies() {
+    public ArrayList<UserDefineObject> getSpecies() {
         return mSpecies.getItems();
     }
 
@@ -134,6 +134,10 @@ public class Logbook {
 
     public int speciesCount() {
         return mSpecies.size();
+    }
+
+    public Species speciesAtPos(int position) {
+        return (Species)mSpecies.get(position);
     }
 
     public ArrayList<CharSequence> speciesNames() {

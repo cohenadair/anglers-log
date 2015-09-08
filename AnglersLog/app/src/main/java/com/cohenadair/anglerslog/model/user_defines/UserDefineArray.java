@@ -62,4 +62,13 @@ public class UserDefineArray {
         return names;
     }
 
+    /**
+     * Retrives the item at a certain position.
+     * @param position the position or index of the item to be found.
+     * @return a UserDefineObject at the given position.
+     */
+    public UserDefineObject get(int position) {
+        return mItems.get(position);
+    }
+
 }

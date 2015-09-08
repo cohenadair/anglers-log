@@ -10,34 +10,23 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:background="@color/light_grey">
+        android:layout_alignParentBottom="true">
 
         <Button
             style="?android:attr/buttonStyle"
-            android:background="@drawable/button_default"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/button_cancel"
             android:id="@+id/cancel_button"
-            android:layout_weight=".5"
-            android:layout_marginLeft="@dimen/spacing_small"
-            android:layout_marginTop="@dimen/spacing_small"
-            android:layout_marginRight="@dimen/spacing_small_half"
-            android:layout_marginBottom="@dimen/spacing_small"/>
+            android:layout_weight=".5"/>
 
         <Button
             style="?android:attr/buttonStyle"
-            android:background="@drawable/button_default"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/button_done"
             android:id="@+id/confirm_button"
-            android:layout_weight=".5"
-            android:layout_marginLeft="@dimen/spacing_small_half"
-            android:layout_marginTop="@dimen/spacing_small"
-            android:layout_marginRight="@dimen/spacing_small"
-            android:layout_marginBottom="@dimen/spacing_small"/>
+            android:layout_weight=".5"/>
 
     </LinearLayout>
 

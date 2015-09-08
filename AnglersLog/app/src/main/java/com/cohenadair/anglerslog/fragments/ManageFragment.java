@@ -1,6 +1,7 @@
 package com.cohenadair.anglerslog.fragments;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
@@ -77,6 +78,8 @@ public class ManageFragment extends DialogFragment {
         });
 
         if (info != null) {
+            setDialogTitle(getResources().getString(R.string.new_text) + info.getName());
+
             FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
             transaction.add(R.id.content_scroll_view, info.manageContentFragment());
             transaction.commit();
@@ -104,5 +107,11 @@ public class ManageFragment extends DialogFragment {
     public void onDetach() {
         super.onDetach();
         mCallbacks = null;
+    }
+
+    private void setDialogTitle(String title) {
+        Dialog dialog = getDialog();
+        if (dialog != null)
+            dialog.setTitle(title);
     }
 }

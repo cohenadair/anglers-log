@@ -22,4 +22,8 @@ public class UserDefineObject {
     }
     //endregion
 
+    public String toString() {
+        return mName;
+    }
+
 }

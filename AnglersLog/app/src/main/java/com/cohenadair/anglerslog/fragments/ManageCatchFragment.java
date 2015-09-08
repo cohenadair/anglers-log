@@ -5,18 +5,18 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.cohenadair.anglerslog.R;
-import com.cohenadair.anglerslog.model.Logbook;
+import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
+import com.cohenadair.anglerslog.utilities.fragment.FragmentUtils;
 
 /**
  * The ManageCatchFragment is used to add and edit catches.
  */
 public class ManageCatchFragment extends Fragment {
 
-    private Spinner mSpeciesSpinner;
+    private TextView mSpeciesTextView;
 
     public ManageCatchFragment() {
         // Required empty public constructor
@@ -26,11 +26,21 @@ public class ManageCatchFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_manage_catch, container, false);
 
-        ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>(getContext(), android.R.layout.simple_spinner_item, Logbook.getInstance().speciesNames());
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mSpeciesTextView = (TextView)view.findViewById(R.id.species_text_view);
+        mSpeciesTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final ManagePrimitiveFragment fragment = ManagePrimitiveFragment.newInstance(FragmentUtils.PRIMITIVE_SPECIES);
+                fragment.setOnDismissInterface(new ManagePrimitiveFragment.OnDismissInterface() {
+                    @Override
+                    public void onDismiss(UserDefineObject selectedItem) {
+                        mSpeciesTextView.setText(selectedItem.getName());
+                    }
+                });
 
-        mSpeciesSpinner = (Spinner)view.findViewById(R.id.species_spinner);
-        mSpeciesSpinner.setAdapter(adapter);
+                fragment.show(getFragmentManager(), "dialog");
+            }
+        });
 
         return view;
     }

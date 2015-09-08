@@ -16,7 +16,7 @@
 
     <!-- Spinners -->
     <style name="spinner_style" parent="Widget.AppCompat.Spinner">
-        <item name="android:background">@drawable/spinner_default</item>
+        <item name="android:background">@drawable/white_with_outline</item>
         <item name="android:paddingTop">@dimen/spacing_medium</item>
         <item name="android:paddingBottom">@dimen/spacing_medium</item>
     </style>
@@ -26,6 +26,16 @@
         <item name="android:padding">@dimen/spacing_small</item>
         <item name="android:textAllCaps">true</item>
         <item name="android:textSize">12sp</item>
+    </style>
+
+    <!-- Clickable TextViews -->
+    <style name="clickable_text_view">
+        <item name="android:paddingLeft">@dimen/spacing_medium</item>
+        <item name="android:paddingRight">@dimen/spacing_medium</item>
+        <item name="android:paddingTop">@dimen/spacing_medium</item>
+        <item name="android:paddingBottom">@dimen/spacing_medium</item>
+        <item name="android:clickable">true</item>
+        <item name="android:background">@drawable/white_with_outline</item>
     </style>
 
 </resources>

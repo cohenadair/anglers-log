@@ -11,6 +11,8 @@ import com.cohenadair.anglerslog.fragments.ManageFragment;
 import com.cohenadair.anglerslog.fragments.MyListFragment;
 import com.cohenadair.anglerslog.fragments.TripFragment;
 import com.cohenadair.anglerslog.model.Logbook;
+import com.cohenadair.anglerslog.model.user_defines.Species;
+import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 
 /**
  * FragmentUtils is used for manipulating fragments throughout the application.
@@ -32,6 +34,14 @@ public class FragmentUtils {
     public static final int FRAGMENT_LOCATIONS  = 4;
     public static final int FRAGMENT_BAITS      = 5;
 
+    /**
+     * Primitive fragments for simple lists displaying objects with only a name attribute.
+     * These fragments are used when adding more complex user defines. They do not show in the
+     * navigation drawer.
+     */
+    public static final int PRIMITIVE_SPECIES   = 0;
+
+    //region Navigation Drawer Fragments
     /**
      * Used to store previous selections for MyListFragment instances.
      */
@@ -107,5 +117,48 @@ public class FragmentUtils {
 
         return info;
     }
+    //endregion
+
+    //region Primitive Fragments
+    @Nullable
+    public static PrimitiveFragmentInfo primitiveInfo(Activity activity, int primitiveId) {
+        switch (primitiveId) {
+            case PRIMITIVE_SPECIES:
+                return speciesPrimitiveInfo(activity);
+
+            default:
+                Log.e("FragmentUtils", "Invalid primitive id in primitiveInfo()");
+                break;
+        }
+
+        return null;
+    }
+
+    private static PrimitiveFragmentInfo speciesPrimitiveInfo(Activity activity) {
+        final PrimitiveFragmentInfo info = new PrimitiveFragmentInfo();
+
+        info.setName("species");
+        info.setCapitalizedName("Species");
+        info.setArrayAdapter(new ArrayAdapter<>(activity, android.R.layout.simple_list_item_1, Logbook.getInstance().getSpecies()));
+        info.setInterface(new PrimitiveFragmentInfo.Interface() {
+            @Override
+            public boolean onAddItem(String name) {
+                if (Logbook.getInstance().addSpecies(new Species(name))) {
+                    info.getArrayAdapter().notifyDataSetChanged();
+                    return true;
+                }
+
+                return false;
+            }
+
+            @Override
+            public UserDefineObject onClickItem(int position) {
+                return Logbook.getInstance().speciesAtPos(position);
+            }
+        });
+
+        return info;
+    }
+    //endregion
 
 }

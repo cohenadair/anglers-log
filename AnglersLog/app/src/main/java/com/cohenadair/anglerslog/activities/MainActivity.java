@@ -157,7 +157,7 @@ public class MainActivity extends AppCompatActivity implements
                        .addToBackStack(null)
                        .commit();
 
-            setActionBarTitle("New " + mFragmentInfo.getName());
+            setActionBarTitle(getResources().getString(R.string.new_text) + " " + mFragmentInfo.getName());
         }
     }
     //endregion
