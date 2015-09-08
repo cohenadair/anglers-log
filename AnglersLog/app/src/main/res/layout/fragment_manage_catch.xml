@@ -4,13 +4,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.cohenadair.anglerslog.fragments.ManageCatchFragment"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="@dimen/spacing_medium">
 
-    <Button
+    <TextView
+        style="@style/header_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Click Me!"
-        android:id="@+id/test_button"
+        android:text="@string/user_define_species"
+        android:id="@+id/textView"/>
+
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/species_spinner"
         android:layout_gravity="center_horizontal"
-        android:layout_margin="15dp"/>
+        android:spinnerMode="dialog"/>
+
 </LinearLayout>

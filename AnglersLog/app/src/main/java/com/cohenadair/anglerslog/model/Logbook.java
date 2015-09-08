@@ -1,7 +1,10 @@
 package com.cohenadair.anglerslog.model;
 
 import com.cohenadair.anglerslog.model.user_defines.Catch;
+import com.cohenadair.anglerslog.model.user_defines.Species;
 import com.cohenadair.anglerslog.model.user_defines.Trip;
+import com.cohenadair.anglerslog.model.user_defines.UserDefineArray;
+import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -27,6 +30,7 @@ public class Logbook {
     private String mName;
     private ArrayList<Catch> mCatches = new ArrayList<>();
     private ArrayList<Trip> mTrips = new ArrayList<>();
+    private UserDefineArray mSpecies = new UserDefineArray();
 
     //region Getters & Setters
     public String getName() {
@@ -53,6 +57,13 @@ public class Logbook {
         mTrips = trips;
     }
 
+    public ArrayList getSpecies() {
+        return mSpecies.getItems();
+    }
+
+    public void setSpecies(ArrayList<UserDefineObject> species) {
+        mSpecies.setItems(species);
+    }
     //endregion
 
     //region General Manipulation
@@ -112,4 +123,21 @@ public class Logbook {
     }
     //endregion
 
+    //region Species Manipulation
+    public boolean addSpecies(Species species) {
+        return mSpecies.add(species);
+    }
+
+    public boolean removeSpecies(Species species) {
+        return mSpecies.remove(species);
+    }
+
+    public int speciesCount() {
+        return mSpecies.size();
+    }
+
+    public ArrayList<CharSequence> speciesNames() {
+        return mSpecies.nameList();
+    }
+    //endregion
 }

@@ -10,6 +10,22 @@
 
         <!-- For activated list items -->
         <item name="android:activatedBackgroundIndicator">@drawable/list_item_selected</item>
+
+        <item name="android:spinnerStyle">@style/spinner_style</item>
+    </style>
+
+    <!-- Spinners -->
+    <style name="spinner_style" parent="Widget.AppCompat.Spinner">
+        <item name="android:background">@drawable/spinner_default</item>
+        <item name="android:paddingTop">@dimen/spacing_medium</item>
+        <item name="android:paddingBottom">@dimen/spacing_medium</item>
+    </style>
+
+    <!-- Header TextViews -->
+    <style name="header_text_view">
+        <item name="android:padding">@dimen/spacing_small</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textSize">12sp</item>
     </style>
 
 </resources>

@@ -2,10 +2,10 @@ package com.cohenadair.anglerslog;
 
 import android.app.Application;
 
-import com.cohenadair.anglerslog.model.user_defines.Catch;
 import com.cohenadair.anglerslog.model.Logbook;
-import com.cohenadair.anglerslog.model.user_defines.Trip;
+import com.cohenadair.anglerslog.model.user_defines.Catch;
 import com.cohenadair.anglerslog.model.user_defines.Species;
+import com.cohenadair.anglerslog.model.user_defines.Trip;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -37,6 +37,11 @@ public class AnglersLogApplication extends Application {
         if (Logbook.getInstance().tripCount() <= 0)
             for (int i = 0; i < 10; i++)
                 Logbook.getInstance().addTrip(new Trip("Trip " + i));
+
+        // initialize some dummy species
+        if (Logbook.getInstance().speciesCount() <= 0)
+            for (int i = 0; i < 25; i++)
+                Logbook.getInstance().addSpecies(new Species("Species " + i));
     }
 
 }

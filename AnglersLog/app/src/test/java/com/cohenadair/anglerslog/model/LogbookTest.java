@@ -1,5 +1,9 @@
 package com.cohenadair.anglerslog.model;
 
+import com.cohenadair.anglerslog.model.user_defines.Catch;
+import com.cohenadair.anglerslog.model.user_defines.Species;
+import com.cohenadair.anglerslog.model.user_defines.Trip;
+
 import org.junit.Test;
 
 import java.util.Date;
@@ -49,6 +53,19 @@ public class LogbookTest {
 
         Logbook.getInstance().removeTrip(testTrip);
         assertTrue(Logbook.getInstance().tripCount() == 0);
+    }
+    //endregion
+
+    //region Species Tests
+    @Test
+    public void testAddRemoveSpecies() {
+        Species testSpecies = new Species("Example Species");
+
+        Logbook.getInstance().addSpecies(testSpecies);
+        assertTrue(Logbook.getInstance().speciesCount() == 1);
+
+        Logbook.getInstance().removeSpecies(testSpecies);
+        assertTrue(Logbook.getInstance().speciesCount() == 0);
     }
     //endregion
 
