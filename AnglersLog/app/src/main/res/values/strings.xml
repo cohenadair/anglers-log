@@ -14,9 +14,13 @@
     <string name="button_add">Add</string>
 
     <string name="user_define_species">Species</string>
+    <string name="species_hint">Tap to add or select species</string>
 
     <string name="hint_new_item">Enter new</string>
     <string name="new_text">New</string>
     <string name="selection_text">Select</string>
+
+    <string name="action_edit">Edit</string>
+    <string name="action_delete">Delete</string>
 
 </resources>

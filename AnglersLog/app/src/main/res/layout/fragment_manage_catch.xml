@@ -3,22 +3,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_margin="@dimen/spacing_large"
     tools:context="com.cohenadair.anglerslog.fragments.ManageCatchFragment"
-    android:orientation="vertical"
-    android:padding="@dimen/spacing_medium">
+    android:orientation="vertical">
 
     <TextView
         style="@style/header_text_view"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/user_define_species"
-        android:id="@+id/species_header_text_view"/>
+        android:id="@+id/species_header_text_view" />
 
     <TextView
         style="@style/clickable_text_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:id="@+id/species_text_view"/>
+        android:textAppearance="?android:attr/textAppearance"
+        android:id="@+id/species_text_view"
+        android:hint="@string/species_hint" />
 
 </LinearLayout>

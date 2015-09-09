@@ -2,7 +2,10 @@ package com.cohenadair.anglerslog.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -25,6 +28,7 @@ public class ManagePrimitiveFragment extends DialogFragment {
     private ListView mContentListView;
     private EditText mNewItemEdit;
     private Button mAddButton;
+    private Toolbar mToolbar;
     private OnDismissInterface mOnDismissInterface;
 
     public interface OnDismissInterface {
@@ -98,6 +102,16 @@ public class ManagePrimitiveFragment extends DialogFragment {
                     info.getInterface().onAddItem(name);
 
                 mNewItemEdit.setText("");
+            }
+        });
+
+        mToolbar = (Toolbar)view.findViewById(R.id.toolbar);
+        mToolbar.inflateMenu(R.menu.menu_manage_primitive);
+        mToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                Log.d("OnMenuClick", item.toString());
+                return false;
             }
         });
     }
