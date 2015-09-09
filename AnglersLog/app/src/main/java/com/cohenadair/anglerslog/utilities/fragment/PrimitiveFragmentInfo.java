@@ -1,8 +1,8 @@
 package com.cohenadair.anglerslog.utilities.fragment;
 
-import android.widget.ArrayAdapter;
-
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
+
+import java.util.List;
 
 /**
  * The PrimitiveFragmentInfo is used to store information on "primitive" fragments. Primitive
@@ -13,7 +13,7 @@ import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
  */
 public class PrimitiveFragmentInfo {
 
-    ArrayAdapter mArrayAdapter;
+    List<UserDefineObject> mItems;
     Interface mInterface;
 
     /**
@@ -31,12 +31,12 @@ public class PrimitiveFragmentInfo {
     }
 
     //region Getters & Setters
-    public ArrayAdapter getArrayAdapter() {
-        return mArrayAdapter;
+    public List<UserDefineObject> getItems() {
+        return mItems;
     }
 
-    public void setArrayAdapter(ArrayAdapter arrayAdapter) {
-        mArrayAdapter = arrayAdapter;
+    public void setItems(List<UserDefineObject> items) {
+        mItems = items;
     }
 
     public Interface getInterface() {

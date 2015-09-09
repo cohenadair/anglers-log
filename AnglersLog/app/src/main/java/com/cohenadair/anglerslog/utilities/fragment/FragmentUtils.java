@@ -139,16 +139,11 @@ public class FragmentUtils {
 
         info.setName("species");
         info.setCapitalizedName("Species");
-        info.setArrayAdapter(new ArrayAdapter<>(activity, android.R.layout.simple_list_item_1, Logbook.getInstance().getSpecies()));
+        info.setItems(Logbook.getInstance().getSpecies());
         info.setInterface(new PrimitiveFragmentInfo.Interface() {
             @Override
             public boolean onAddItem(String name) {
-                if (Logbook.getInstance().addSpecies(new Species(name))) {
-                    info.getArrayAdapter().notifyDataSetChanged();
-                    return true;
-                }
-
-                return false;
+                return Logbook.getInstance().addSpecies(new Species(name));
             }
 
             @Override
