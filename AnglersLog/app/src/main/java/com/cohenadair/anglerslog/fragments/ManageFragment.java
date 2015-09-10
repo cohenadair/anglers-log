@@ -78,7 +78,7 @@ public class ManageFragment extends DialogFragment {
         });
 
         if (info != null) {
-            setDialogTitle(getResources().getString(R.string.new_text) + " " + info.getName());
+            setDialogTitle(getString(R.string.new_text) + " " + info.getName());
 
             FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
             transaction.add(R.id.content_scroll_view, info.manageContentFragment());

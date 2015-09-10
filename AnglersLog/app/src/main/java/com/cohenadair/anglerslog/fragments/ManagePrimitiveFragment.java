@@ -107,7 +107,7 @@ public class ManagePrimitiveFragment extends DialogFragment {
 
     private void initBottomBar(View view) {
         mNewItemEdit = (EditText)view.findViewById(R.id.new_item_edit);
-        mNewItemEdit.setHint(getResources().getString(R.string.hint_new_item) + " " + mPrimitiveInfo.getName());
+        mNewItemEdit.setHint(getText(R.string.hint_new_item) + " " + mPrimitiveInfo.getName());
 
         mAddButton = (Button)view.findViewById(R.id.add_button);
         mAddButton.setOnClickListener(new View.OnClickListener() {
