@@ -7,6 +7,7 @@ package com.cohenadair.anglerslog.model.user_defines;
 public class UserDefineObject {
 
     private String mName;
+    private boolean mShouldDelete; // toggled on UI selection for deleting multiple items
 
     public UserDefineObject(String name) {
         setName(name);
@@ -20,10 +21,22 @@ public class UserDefineObject {
     public void setName(String name) {
         mName = name;
     }
+
+    public boolean getShouldDelete() {
+        return mShouldDelete;
+    }
+
+    public void setShouldDelete(boolean shouldDelete) {
+        mShouldDelete = shouldDelete;
+    }
     //endregion
 
     public String toString() {
         return mName;
+    }
+
+    public void edit(UserDefineObject newObj) {
+        mName = newObj.getName();
     }
 
 }

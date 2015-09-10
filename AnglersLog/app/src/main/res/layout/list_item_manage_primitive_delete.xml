@@ -2,9 +2,9 @@
 
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
     android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     style="@style/recycler_layout">
 
     <TextView
@@ -13,5 +13,10 @@
         android:layout_weight="1"
         android:layout_height="wrap_content"
         android:id="@+id/name_text_view"/>
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/delete_check_box"/>
 
 </LinearLayout>

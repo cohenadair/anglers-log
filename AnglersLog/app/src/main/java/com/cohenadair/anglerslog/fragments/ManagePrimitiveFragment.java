@@ -5,7 +5,8 @@ import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,10 +14,12 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.cohenadair.anglerslog.R;
+import com.cohenadair.anglerslog.model.Logbook;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import com.cohenadair.anglerslog.utilities.fragment.FragmentUtils;
 import com.cohenadair.anglerslog.utilities.fragment.PrimitiveFragmentInfo;
@@ -35,6 +38,12 @@ public class ManagePrimitiveFragment extends DialogFragment {
     private Toolbar mToolbar;
     private OnDismissInterface mOnDismissInterface;
     private PrimitiveFragmentInfo mPrimitiveInfo;
+
+    private enum ManageType {
+        Normal,
+        Edit,
+        Delete
+    }
 
     public interface OnDismissInterface {
         void onDismiss(UserDefineObject selectedItem);
@@ -83,11 +92,20 @@ public class ManagePrimitiveFragment extends DialogFragment {
         return view;
     }
 
+    //region View Initialization
     private void initViews(View view) {
+        initRecyclerView(view);
+        initBottomBar(view);
+        initToolbar(view);
+    }
+
+    private void initRecyclerView(View view) {
         mContentRecyclerView = (RecyclerView)view.findViewById(R.id.content_recycler_view);
         mContentRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mContentRecyclerView.setAdapter(new ManagePrimitiveAdapter(mPrimitiveInfo.getItems()));
+        restoreAdapter(ManageType.Normal);
+    }
 
+    private void initBottomBar(View view) {
         mNewItemEdit = (EditText)view.findViewById(R.id.new_item_edit);
         mNewItemEdit.setHint(getResources().getString(R.string.hint_new_item) + " " + mPrimitiveInfo.getName());
 
@@ -104,32 +122,118 @@ public class ManagePrimitiveFragment extends DialogFragment {
                 mNewItemEdit.setText("");
             }
         });
+    }
 
+    private void initToolbar(View view) {
         mToolbar = (Toolbar)view.findViewById(R.id.toolbar);
+        restoreToolbar();
+    }
+    //endregion
+
+    //region Item Management
+    private void beginEdit() {
+        showEditMenu(false);
+        restoreAdapter(ManageType.Edit);
+    }
+
+    private void beginDelete() {
+        showEditMenu(true);
+        restoreAdapter(ManageType.Delete);
+    }
+
+    private void restoreToolbar() {
+        mToolbar.getMenu().clear();
         mToolbar.inflateMenu(R.menu.menu_manage_primitive);
         mToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                Log.d("OnMenuClick", item.toString());
+                int id = item.getItemId();
+
+                if (id == R.id.action_edit) {
+                    beginEdit();
+                    return true;
+                }
+
+                if (id == R.id.action_trash) {
+                    beginDelete();
+                    return true;
+                }
+
                 return false;
             }
         });
     }
 
-    //region List View Item ViewHolder
+    private void restoreAdapter(ManageType manageType) {
+        mContentRecyclerView.setAdapter(new ManagePrimitiveAdapter(mPrimitiveInfo.getItems(), manageType));
+    }
+
+    private void showEditMenu(final boolean deleting) {
+        mToolbar.getMenu().clear();
+        mToolbar.inflateMenu(R.menu.menu_manage_primitive_edit);
+        mToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                if (item.getItemId() == R.id.action_check) {
+                    if (deleting)
+                        mPrimitiveInfo.getInterface().onConfirmDelete();
+
+                    restoreToolbar();
+                    restoreAdapter(ManageType.Normal);
+                    return true;
+                }
+                return false;
+            }
+        });
+    }
+    //endregion
+
+    //region RecyclerView Stuff
     private class ManagePrimitiveHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private EditText mNameEditText;
         private TextView mNameTextView;
         private CheckBox mDeleteCheckBox;
+        private ManageType mManageType;
 
-        public ManagePrimitiveHolder(View view) {
+        public ManagePrimitiveHolder(View view, ManageType manageType) {
             super(view);
             view.setOnClickListener(this);
+            mManageType = manageType;
 
-            mNameEditText = (EditText)view.findViewById(R.id.name_edit_text);
-            mNameTextView = (TextView)view.findViewById(R.id.name_text_view);
-            mDeleteCheckBox = (CheckBox)view.findViewById(R.id.delete_check_box);
+            if (manageType == ManageType.Edit) {
+                mNameEditText = (EditText) view.findViewById(R.id.name_edit_text);
+                mNameEditText.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        if (mNameEditText.isFocused())
+                            mPrimitiveInfo.getInterface().onEditItem(getAdapterPosition(), s.toString());
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable s) {
+
+                    }
+                });
+            }
+
+            if (mManageType == ManageType.Normal || manageType == ManageType.Delete)
+                mNameTextView = (TextView)view.findViewById(R.id.name_text_view);
+
+            if (manageType == ManageType.Delete) {
+                mDeleteCheckBox = (CheckBox) view.findViewById(R.id.delete_check_box);
+                mDeleteCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                        Logbook.getInstance().speciesAtPos(getAdapterPosition()).setShouldDelete(isChecked);
+                    }
+                });
+            }
         }
 
         @Override
@@ -162,31 +266,53 @@ public class ManagePrimitiveFragment extends DialogFragment {
         public void setDeleteCheckBox(CheckBox deleteCheckBox) {
             mDeleteCheckBox = deleteCheckBox;
         }
+
+        public ManageType getManageType() {
+            return mManageType;
+        }
+
+        public void setManageType(ManageType manageType) {
+            mManageType = manageType;
+        }
         //endregion
     }
-    //endregion
 
-    //region RecyclerView Adapter
     private class ManagePrimitiveAdapter extends RecyclerView.Adapter<ManagePrimitiveHolder> {
 
         private List<UserDefineObject> mItems;
+        private ManageType mManageType;
 
-        public ManagePrimitiveAdapter(List<UserDefineObject> items) {
+        public ManagePrimitiveAdapter(List<UserDefineObject> items, ManageType manageType) {
             mItems = items;
+            mManageType = manageType;
         }
 
         @Override
         public ManagePrimitiveHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             LayoutInflater inflater = LayoutInflater.from(getActivity());
-            View view = inflater.inflate(R.layout.list_item_manage_primitive, parent, false);
-            return new ManagePrimitiveHolder(view);
+            int layoutId = 0;
+
+            if      (mManageType == ManageType.Delete)  layoutId = R.layout.list_item_manage_primitive_delete;
+            else if (mManageType == ManageType.Normal)  layoutId = R.layout.list_item_manage_primitive;
+            else if (mManageType == ManageType.Edit)    layoutId = R.layout.list_item_manage_primitive_edit;
+
+            View view = inflater.inflate(layoutId, parent, false);
+
+            return new ManagePrimitiveHolder(view, mManageType);
         }
 
         @Override
         public void onBindViewHolder(ManagePrimitiveHolder holder, int position) {
             UserDefineObject obj = mItems.get(position);
-            holder.getNameEditText().setText(obj.getName());
-            holder.getNameTextView().setText(obj.getName());
+
+            if (mManageType == ManageType.Edit)
+                holder.getNameEditText().setText(obj.getName());
+
+            if (mManageType == ManageType.Normal || mManageType == ManageType.Delete)
+                holder.getNameTextView().setText(obj.getName());
+
+            if (mManageType == ManageType.Delete)
+                holder.getDeleteCheckBox().setChecked(obj.getShouldDelete());
         }
 
         @Override

@@ -32,6 +32,10 @@ public class UserDefineArray {
         return mItems.remove(item);
     }
 
+    public void remove(int position) {
+        mItems.remove(position);
+    }
+
     public int size() {
         return mItems.size();
     }

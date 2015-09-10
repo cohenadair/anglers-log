@@ -64,8 +64,23 @@ public class LogbookTest {
         Logbook.getInstance().addSpecies(testSpecies);
         assertTrue(Logbook.getInstance().speciesCount() == 1);
 
-        Logbook.getInstance().removeSpecies(testSpecies);
+        Logbook.getInstance().removeSpecies(0);
         assertTrue(Logbook.getInstance().speciesCount() == 0);
+    }
+
+    @Test
+    public void testEditSpecies() {
+        Species species1 = new Species("Bass");
+        Species species2 = new Species("Largemouth Bass");
+
+        // references aren't equal
+        assertFalse(species1 == species2);
+
+        Logbook.getInstance().addSpecies(species1);
+        Logbook.getInstance().editSpeciesAtPos(0, species2);
+
+        // names are equal
+        assertTrue(species1.getName().equals(species2.getName()));
     }
     //endregion
 

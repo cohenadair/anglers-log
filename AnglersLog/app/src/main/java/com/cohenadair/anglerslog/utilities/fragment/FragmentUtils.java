@@ -150,6 +150,16 @@ public class FragmentUtils {
             public UserDefineObject onClickItem(int position) {
                 return Logbook.getInstance().speciesAtPos(position);
             }
+
+            @Override
+            public void onConfirmDelete() {
+                Logbook.getInstance().cleanSpecies();
+            }
+
+            @Override
+            public void onEditItem(int position, String newName) {
+                Logbook.getInstance().editSpecies(position, newName);
+            }
         });
 
         return info;

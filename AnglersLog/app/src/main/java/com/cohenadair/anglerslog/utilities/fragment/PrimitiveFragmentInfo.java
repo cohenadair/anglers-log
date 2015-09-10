@@ -28,6 +28,8 @@ public class PrimitiveFragmentInfo {
     public interface Interface {
         boolean onAddItem(String name);
         UserDefineObject onClickItem(int position);
+        void onConfirmDelete();
+        void onEditItem(int position, String newName);
     }
 
     //region Getters & Setters

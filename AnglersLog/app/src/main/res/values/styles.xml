@@ -28,14 +28,27 @@
         <item name="android:textSize">12sp</item>
     </style>
 
+    <!-- RecyclerView LinearLayout -->
+    <style name="recycler_layout">
+        <item name="android:paddingLeft">@dimen/spacing_medium</item>
+        <item name="android:paddingRight">@dimen/spacing_medium</item>
+    </style>
+
     <!-- RecyclerView TextView -->
     <style name="recycler_text_view">
         <item name="android:paddingBottom">@dimen/spacing_medium</item>
         <item name="android:paddingTop">@dimen/spacing_medium</item>
-        <item name="android:paddingLeft">@dimen/spacing_large</item>
-        <item name="android:paddingRight">@dimen/spacing_large</item>
-        <item name="android:textSize">15sp</item>
+        <item name="android:paddingLeft">@dimen/spacing_small</item>
+        <item name="android:paddingRight">@dimen/spacing_small</item>
+        <item name="android:textSize">@dimen/text_size_list_item</item>
         <item name="android:textColor">@android:color/black</item>
+    </style>
+
+    <!-- RecyclerView EditText -->
+    <style name="recycler_exit_text">
+        <item name="android:textSize">@dimen/text_size_list_item</item>
+        <item name="android:paddingLeft">@dimen/spacing_small</item>
+        <item name="android:paddingRight">@dimen/spacing_small</item>
     </style>
 
     <!-- Clickable TextViews -->

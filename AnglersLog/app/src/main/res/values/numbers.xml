@@ -9,4 +9,6 @@
     <dimen name="spacing_small_half">3dp</dimen>
     <dimen name="spacing_medium">10dp</dimen>
     <dimen name="spacing_large">16dp</dimen>
+
+    <dimen name="text_size_list_item">15sp</dimen>
 </resources>

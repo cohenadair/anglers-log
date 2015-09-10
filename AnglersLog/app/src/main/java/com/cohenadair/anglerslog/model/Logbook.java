@@ -128,8 +128,22 @@ public class Logbook {
         return mSpecies.add(species);
     }
 
-    public boolean removeSpecies(Species species) {
-        return mSpecies.remove(species);
+    public void removeSpecies(int position) {
+        mSpecies.remove(position);
+    }
+
+    /**
+     * Iterates through all the species and removes ones where getShouldDelete() returns true.
+     */
+    public void cleanSpecies() {
+        for (int i = speciesCount() - 1; i >= 0; i--) {
+            if (speciesAtPos(i).getShouldDelete())
+                removeSpecies(i);
+        }
+    }
+
+    public void editSpecies(int position, String newName) {
+        speciesAtPos(position).edit(new Species(newName));
     }
 
     public int speciesCount() {
