@@ -40,7 +40,7 @@ public class ManagePrimitiveFragment extends DialogFragment {
     private PrimitiveFragmentInfo mPrimitiveInfo;
 
     private enum ManageType {
-        Normal,
+        Selection,
         Edit,
         Delete
     }
@@ -102,12 +102,12 @@ public class ManagePrimitiveFragment extends DialogFragment {
     private void initRecyclerView(View view) {
         mContentRecyclerView = (RecyclerView)view.findViewById(R.id.content_recycler_view);
         mContentRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        restoreAdapter(ManageType.Normal);
+        restoreAdapter(ManageType.Selection);
     }
 
     private void initBottomBar(View view) {
         mNewItemEdit = (EditText)view.findViewById(R.id.new_item_edit);
-        mNewItemEdit.setHint(getText(R.string.hint_new_item) + " " + mPrimitiveInfo.getName());
+        mNewItemEdit.setHint(getResources().getString(R.string.hint_new_item) + " " + mPrimitiveInfo.getName());
 
         mAddButton = (Button)view.findViewById(R.id.add_button);
         mAddButton.setOnClickListener(new View.OnClickListener() {
@@ -179,7 +179,7 @@ public class ManagePrimitiveFragment extends DialogFragment {
                         mPrimitiveInfo.getInterface().onConfirmDelete();
 
                     restoreToolbar();
-                    restoreAdapter(ManageType.Normal);
+                    restoreAdapter(ManageType.Selection);
                     return true;
                 }
                 return false;
@@ -201,39 +201,14 @@ public class ManagePrimitiveFragment extends DialogFragment {
             view.setOnClickListener(this);
             mManageType = manageType;
 
-            if (manageType == ManageType.Edit) {
-                mNameEditText = (EditText) view.findViewById(R.id.name_edit_text);
-                mNameEditText.addTextChangedListener(new TextWatcher() {
-                    @Override
-                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            if (mManageType == ManageType.Edit)
+                initForEditing(view);
 
-                    }
+            if (mManageType == ManageType.Selection)
+                initForSelection(view);
 
-                    @Override
-                    public void onTextChanged(CharSequence s, int start, int before, int count) {
-                        if (mNameEditText.isFocused())
-                            mPrimitiveInfo.getInterface().onEditItem(getAdapterPosition(), s.toString());
-                    }
-
-                    @Override
-                    public void afterTextChanged(Editable s) {
-
-                    }
-                });
-            }
-
-            if (mManageType == ManageType.Normal || manageType == ManageType.Delete)
-                mNameTextView = (TextView)view.findViewById(R.id.name_text_view);
-
-            if (manageType == ManageType.Delete) {
-                mDeleteCheckBox = (CheckBox) view.findViewById(R.id.delete_check_box);
-                mDeleteCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                    @Override
-                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                        Logbook.getInstance().speciesAtPos(getAdapterPosition()).setShouldDelete(isChecked);
-                    }
-                });
-            }
+            if (mManageType == ManageType.Delete)
+                initForDeleting(view);
         }
 
         @Override
@@ -241,6 +216,45 @@ public class ManagePrimitiveFragment extends DialogFragment {
             mOnDismissInterface.onDismiss(mPrimitiveInfo.getInterface().onClickItem(getLayoutPosition()));
             getDialog().dismiss();
         }
+
+        //region View Initialization
+        private void initForEditing(View view) {
+            mNameEditText = (EditText) view.findViewById(R.id.name_edit_text);
+            mNameEditText.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    if (mNameEditText.isFocused())
+                        mPrimitiveInfo.getInterface().onEditItem(getAdapterPosition(), s.toString());
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {}
+            });
+        }
+
+        private void initForDeleting(View view) {
+            initNameTextView(view);
+
+            mDeleteCheckBox = (CheckBox) view.findViewById(R.id.delete_check_box);
+            mDeleteCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    Logbook.getInstance().speciesAtPos(getAdapterPosition()).setShouldDelete(isChecked);
+                }
+            });
+        }
+
+        private void initForSelection(View view) {
+            initNameTextView(view);
+        }
+
+        private void initNameTextView(View view) {
+            mNameTextView = (TextView)view.findViewById(R.id.name_text_view);
+        }
+        //endregion
 
         //region Getters & Setters
         public EditText getNameEditText() {
@@ -293,7 +307,7 @@ public class ManagePrimitiveFragment extends DialogFragment {
             int layoutId = 0;
 
             if      (mManageType == ManageType.Delete)  layoutId = R.layout.list_item_manage_primitive_delete;
-            else if (mManageType == ManageType.Normal)  layoutId = R.layout.list_item_manage_primitive;
+            else if (mManageType == ManageType.Selection)  layoutId = R.layout.list_item_manage_primitive;
             else if (mManageType == ManageType.Edit)    layoutId = R.layout.list_item_manage_primitive_edit;
 
             View view = inflater.inflate(layoutId, parent, false);
@@ -308,7 +322,7 @@ public class ManagePrimitiveFragment extends DialogFragment {
             if (mManageType == ManageType.Edit)
                 holder.getNameEditText().setText(obj.getName());
 
-            if (mManageType == ManageType.Normal || mManageType == ManageType.Delete)
+            if (mManageType == ManageType.Selection || mManageType == ManageType.Delete)
                 holder.getNameTextView().setText(obj.getName());
 
             if (mManageType == ManageType.Delete)
