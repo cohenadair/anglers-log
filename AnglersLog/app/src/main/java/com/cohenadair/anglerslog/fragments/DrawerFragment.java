@@ -1,11 +1,11 @@
 package com.cohenadair.anglerslog.fragments;
 
-import android.app.Activity;
-import android.support.v4.app.Fragment;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -222,15 +222,12 @@ public class DrawerFragment extends Fragment {
         }
     }
 
-    // required until issue resolved
-    // https://code.google.com/p/android/issues/detail?id=183358
-    // TODO update to onAttach(Context context)
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    public void onAttach(Context context) {
+        super.onAttach(context);
 
         try {
-            mCallbacks = (DrawerFragmentCallbacks)activity;
+            mCallbacks = (DrawerFragmentCallbacks)context;
         } catch (ClassCastException e) {
             throw new ClassCastException("Activity must implement NavigationDrawerCallbacks.");
         }

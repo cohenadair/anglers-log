@@ -1,10 +1,10 @@
 package com.cohenadair.anglerslog.fragments;
 
-import android.app.Activity;
 import android.app.Dialog;
+import android.content.Context;
+import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentTransaction;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -88,18 +88,15 @@ public class ManageFragment extends DialogFragment {
         return view;
     }
 
-    // required until issue resolved
-    // https://code.google.com/p/android/issues/detail?id=183358
-    // TODO update to onAttach(Context context)
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    public void onAttach(Context context) {
+        super.onAttach(context);
 
         // make sure the container activity has implemented the callback interface
         try {
-            mCallbacks = (OnManageFragmentInteractionListener)activity;
+            mCallbacks = (OnManageFragmentInteractionListener)context;
         } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString() + " must implement OnManageFragmentInteractionListener");
+            throw new ClassCastException(context.toString() + " must implement OnManageFragmentInteractionListener");
         }
     }
 
