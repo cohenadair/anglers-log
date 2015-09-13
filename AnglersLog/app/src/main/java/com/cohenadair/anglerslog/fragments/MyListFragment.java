@@ -8,7 +8,6 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
@@ -99,28 +98,6 @@ public class MyListFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 mCallbacks.onItemSelected(position);
-            }
-        });
-
-        // on scroll
-        // TODO fix scrolling for "unscrollable" list
-        mListView.setOnScrollListener(new AbsListView.OnScrollListener() {
-            // used for proper hiding/showing for a list that isn't "scrollable"
-            private boolean mDidScroll = false;
-
-            @Override
-            public void onScrollStateChanged(AbsListView view, int scrollState) {
-                if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE)
-                    mNewButton.show();
-                else if (mDidScroll) {
-                    mNewButton.hide();
-                    mDidScroll = false;
-                }
-            }
-
-            @Override
-            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                mDidScroll = true;
             }
         });
 
