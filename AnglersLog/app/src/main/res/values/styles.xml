@@ -36,17 +36,17 @@
 
     <!-- RecyclerView TextView -->
     <style name="recycler_text_view">
+        <item name="android:textAppearance">@android:style/TextAppearance.Medium</item>
         <item name="android:paddingBottom">@dimen/spacing_medium</item>
         <item name="android:paddingTop">@dimen/spacing_medium</item>
         <item name="android:paddingLeft">@dimen/spacing_small</item>
         <item name="android:paddingRight">@dimen/spacing_small</item>
-        <item name="android:textSize">@dimen/text_size_list_item</item>
         <item name="android:textColor">@android:color/black</item>
     </style>
 
     <!-- RecyclerView EditText -->
     <style name="recycler_exit_text">
-        <item name="android:textSize">@dimen/text_size_list_item</item>
+        <item name="android:textAppearance">@android:style/TextAppearance.Medium</item>
         <item name="android:paddingLeft">@dimen/spacing_small</item>
         <item name="android:paddingRight">@dimen/spacing_small</item>
     </style>

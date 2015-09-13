@@ -106,6 +106,7 @@ public class MyListFragment extends Fragment {
         });
 
         // on scroll
+        // TODO fix scrolling for "unscrollable" list
         mListView.setOnScrollListener(new AbsListView.OnScrollListener() {
             // used for proper hiding/showing for a list that isn't "scrollable"
             private boolean mDidScroll = false;
