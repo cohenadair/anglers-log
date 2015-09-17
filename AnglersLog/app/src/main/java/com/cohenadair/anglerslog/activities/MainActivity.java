@@ -17,8 +17,8 @@ import com.cohenadair.anglerslog.fragments.ManageFragment;
 import com.cohenadair.anglerslog.fragments.MyListFragment;
 import com.cohenadair.anglerslog.utilities.NavigationManager;
 import com.cohenadair.anglerslog.utilities.Utils;
+import com.cohenadair.anglerslog.utilities.fragment.FragmentData;
 import com.cohenadair.anglerslog.utilities.fragment.FragmentInfo;
-import com.cohenadair.anglerslog.utilities.fragment.FragmentUtils;
 
 // TODO rename themes for convention
 
@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     public void showFragment(@Nullable Bundle savedInstanceState) {
-        mFragmentInfo = FragmentUtils.fragmentInfo(this, FragmentUtils.getCurrentFragmentId());
+        mFragmentInfo = FragmentData.fragmentInfo(this, FragmentData.getCurrentFragmentId());
 
         // avoid multiple fragments stacked on top of one another
         if (savedInstanceState != null)
@@ -93,7 +93,7 @@ public class MainActivity extends AppCompatActivity implements
     //region MyListFragment.OnListItemSelectedListener interface
     @Override
     public void onItemSelected(int position) {
-        FragmentUtils.selectionPos(FragmentUtils.getCurrentFragmentId(), position);
+        FragmentData.selectionPos(FragmentData.getCurrentFragmentId(), position);
 
         DetailFragment detailFragment = (DetailFragment)getSupportFragmentManager().findFragmentByTag(mFragmentInfo.detailTag());
 

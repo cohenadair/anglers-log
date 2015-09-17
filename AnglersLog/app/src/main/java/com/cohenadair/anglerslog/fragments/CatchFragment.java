@@ -9,7 +9,7 @@ import android.widget.TextView;
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.model.user_defines.Catch;
 import com.cohenadair.anglerslog.model.Logbook;
-import com.cohenadair.anglerslog.utilities.fragment.FragmentUtils;
+import com.cohenadair.anglerslog.utilities.fragment.FragmentData;
 
 /**
  * A {@link DetailFragment} subclass used to show the details of a single catch.
@@ -34,7 +34,7 @@ public class CatchFragment extends DetailFragment {
             mSpeciesTextView.setText("There are 0 catches in your log.");
             mDateTextView.setText("");
         } else
-            update(FragmentUtils.selectionPos(FragmentUtils.FRAGMENT_CATCHES));
+            update(FragmentData.selectionPos(FragmentData.FRAGMENT_CATCHES));
 
         // Inflate the layout for this fragment
         return view;

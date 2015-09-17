@@ -12,8 +12,8 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.cohenadair.anglerslog.R;
+import com.cohenadair.anglerslog.utilities.fragment.FragmentData;
 import com.cohenadair.anglerslog.utilities.fragment.FragmentInfo;
-import com.cohenadair.anglerslog.utilities.fragment.FragmentUtils;
 
 /**
  * The fragment showing the list of catches.
@@ -61,7 +61,7 @@ public class MyListFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_mylist, container, false);
 
         int fragmentId = getArguments().getInt(ARG_FRAGMENT_ID);
-        FragmentInfo info = FragmentUtils.fragmentInfo(getActivity(), fragmentId);
+        FragmentInfo info = FragmentData.fragmentInfo(getActivity(), fragmentId);
 
         if (view != null) {
             initNewButton(view);

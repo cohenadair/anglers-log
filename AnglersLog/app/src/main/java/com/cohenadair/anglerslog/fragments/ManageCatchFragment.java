@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
-import com.cohenadair.anglerslog.utilities.fragment.FragmentUtils;
+import com.cohenadair.anglerslog.utilities.fragment.FragmentData;
 
 /**
  * The ManageCatchFragment is used to add and edit catches.
@@ -30,7 +30,7 @@ public class ManageCatchFragment extends Fragment {
         mSpeciesTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final ManagePrimitiveFragment fragment = ManagePrimitiveFragment.newInstance(FragmentUtils.PRIMITIVE_SPECIES);
+                final ManagePrimitiveFragment fragment = ManagePrimitiveFragment.newInstance(FragmentData.PRIMITIVE_SPECIES);
                 fragment.setOnDismissInterface(new ManagePrimitiveFragment.OnDismissInterface() {
                     @Override
                     public void onDismiss(UserDefineObject selectedItem) {

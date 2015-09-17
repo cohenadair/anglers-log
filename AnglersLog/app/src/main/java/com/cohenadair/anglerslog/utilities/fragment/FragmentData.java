@@ -18,10 +18,10 @@ import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import java.util.HashMap;
 
 /**
- * FragmentUtils is used for manipulating fragments throughout the application.
+ * FragmentData is used for manipulating fragments throughout the application.
  * Created by Cohen Adair on 2015-09-03.
  */
-public class FragmentUtils {
+public class FragmentData {
 
     public static final int FRAGMENT_CATCHES    = R.id.nav_catches;
     public static final int FRAGMENT_TRIPS      = R.id.nav_trips;
@@ -58,7 +58,7 @@ public class FragmentUtils {
                 return tripsFragmentInfo(activity);
 
             default:
-                Log.e("FragmentUtils", "Invalid fragment id in fragmentInfo()");
+                Log.e("FragmentData", "Invalid fragment id in fragmentInfo()");
                 break;
         }
 
@@ -126,7 +126,7 @@ public class FragmentUtils {
                 return speciesPrimitiveInfo(activity);
 
             default:
-                Log.e("FragmentUtils", "Invalid primitive id in primitiveInfo()");
+                Log.e("FragmentData", "Invalid primitive id in primitiveInfo()");
                 break;
         }
 

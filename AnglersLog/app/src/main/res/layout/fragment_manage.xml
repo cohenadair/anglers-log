@@ -6,7 +6,7 @@
     tools:context="com.cohenadair.anglerslog.fragments.ManageFragment">
 
     <LinearLayout
-        style="@android:style/ButtonBar"
+        style="@style/Widget.ButtonBar"
         android:id="@+id/manage_buttons"
         android:orientation="horizontal"
         android:layout_width="match_parent"

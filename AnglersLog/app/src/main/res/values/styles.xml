@@ -13,6 +13,11 @@
         <item name="colorAccent">@color/anglers_log_light</item>
     </style>
 
+    <!-- Button Bars -->
+    <style name="Widget.ButtonBar" parent="@android:style/DeviceDefault.ButtonBar">
+
+    </style>
+
     <!-- Header TextViews -->
     <style name="header_text_view">
         <item name="android:padding">@dimen/spacing_small</item>

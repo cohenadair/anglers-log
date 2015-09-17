@@ -13,7 +13,7 @@ import android.widget.ScrollView;
 
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.utilities.fragment.FragmentInfo;
-import com.cohenadair.anglerslog.utilities.fragment.FragmentUtils;
+import com.cohenadair.anglerslog.utilities.fragment.FragmentData;
 
 /**
  * The ManageFragment is used for add and edit views for the various user defines.
@@ -57,7 +57,7 @@ public class ManageFragment extends DialogFragment {
         View view = inflater.inflate(R.layout.fragment_manage, container, false);
 
         int fragmentId = getArguments().getInt(ARG_FRAGMENT_ID);
-        FragmentInfo info = FragmentUtils.fragmentInfo(getActivity(), fragmentId);
+        FragmentInfo info = FragmentData.fragmentInfo(getActivity(), fragmentId);
 
         mScrollView = (ScrollView)view.findViewById(R.id.content_scroll_view);
 

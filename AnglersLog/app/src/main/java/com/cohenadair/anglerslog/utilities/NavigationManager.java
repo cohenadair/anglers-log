@@ -9,7 +9,7 @@ import android.view.MenuItem;
 
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.activities.MainActivity;
-import com.cohenadair.anglerslog.utilities.fragment.FragmentUtils;
+import com.cohenadair.anglerslog.utilities.fragment.FragmentData;
 
 /**
  * A wrapper class to manage drawer navigation.
@@ -96,7 +96,7 @@ public class NavigationManager implements FragmentManager.OnBackStackChangedList
     }
 
     private void onDrawerItemSelected(MenuItem menuItem) {
-        FragmentUtils.setCurrentFragmentId(menuItem.getItemId());
+        FragmentData.setCurrentFragmentId(menuItem.getItemId());
         mActivity.showFragment(null);
 
         menuItem.setChecked(true);
