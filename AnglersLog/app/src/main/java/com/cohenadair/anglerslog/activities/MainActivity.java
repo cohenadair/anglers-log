@@ -17,9 +17,7 @@ import com.cohenadair.anglerslog.utilities.NavigationManager;
 import com.cohenadair.anglerslog.utilities.fragment.FragmentData;
 import com.cohenadair.anglerslog.utilities.fragment.FragmentInfo;
 
-// TODO create FragmentManager utility class
 // TODO rename themes for convention
-// TODO rename fragment interface methods to be more specific
 
 public class MainActivity extends AppCompatActivity implements
         MyListFragment.InteractionListener,
@@ -36,6 +34,7 @@ public class MainActivity extends AppCompatActivity implements
 
         showFragment(savedInstanceState);
 
+        // needed so the navigation view extends above and on top of the app bar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -60,12 +59,6 @@ public class MainActivity extends AppCompatActivity implements
 
         return super.onOptionsItemSelected(item);
     }
-
-    //region Getters & Setters
-    public NavigationManager getNavigationManager() {
-        return mNavigationManager;
-    }
-    //endregion
 
     public void showFragment(@Nullable Bundle savedInstanceState) {
         mFragmentInfo = FragmentData.fragmentInfo(this, FragmentData.getCurrentFragmentId());
@@ -92,11 +85,14 @@ public class MainActivity extends AppCompatActivity implements
     //region MyListFragment.InteractionListener interface
     @Override
     public void onMyListItemSelected(int position) {
+        // update the current item for later
         FragmentData.selectionPos(FragmentData.getCurrentFragmentId(), position);
 
-        DetailFragment detailFragment = (DetailFragment)getSupportFragmentManager().findFragmentByTag(mFragmentInfo.detailTag());
+        DetailFragment detailFragment =
+                (DetailFragment)getSupportFragmentManager().findFragmentByTag(mFragmentInfo.detailTag());
 
-        if (isTwoPane())
+        if (isTwoPane() && detailFragment != null)
+            // update the right panel detail fragment
             detailFragment.update(position);
         else {
             // show the single catch fragment
@@ -116,7 +112,7 @@ public class MainActivity extends AppCompatActivity implements
         ManageFragment manageFragment = mFragmentInfo.manageFragment();
 
         if (isTwoPane()) {
-            // show as popup
+            // show as popup dialog
             manageFragment.show(getSupportFragmentManager(), "dialog");
         } else {
             // show normally
