@@ -2,34 +2,33 @@ package com.cohenadair.anglerslog.activities;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.fragments.DetailFragment;
-import com.cohenadair.anglerslog.fragments.DrawerFragment;
 import com.cohenadair.anglerslog.fragments.ManageFragment;
 import com.cohenadair.anglerslog.fragments.MyListFragment;
+import com.cohenadair.anglerslog.utilities.NavigationManager;
 import com.cohenadair.anglerslog.utilities.Utils;
 import com.cohenadair.anglerslog.utilities.fragment.FragmentInfo;
 import com.cohenadair.anglerslog.utilities.fragment.FragmentUtils;
 
+// TODO rename themes for convention
+
 public class MainActivity extends AppCompatActivity implements
         MyListFragment.OnMyListFragmentInteractionListener,
-        ManageFragment.OnManageFragmentInteractionListener,
-        DrawerFragment.DrawerFragmentCallbacks,
-        android.support.v4.app.FragmentManager.OnBackStackChangedListener
+        ManageFragment.OnManageFragmentInteractionListener
 {
 
     private FragmentInfo mFragmentInfo;
-    private DrawerFragment mDrawerFragment;
-    private CharSequence mCurrentTitle; // for use in {@link #restoreActionBar()}
+    private NavigationManager mNavigationManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,52 +37,22 @@ public class MainActivity extends AppCompatActivity implements
 
         showFragment(savedInstanceState);
 
-        initBackNavigation();
-        initDrawerNavigation();
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
-        // adds a small shadow to the bottom of the actionbar
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null)
-            actionBar.setElevation(5);
-    }
+        mNavigationManager = new NavigationManager(
+                (DrawerLayout)findViewById(R.id.main_drawer),
+                (NavigationView)findViewById(R.id.navigation_view),
+                getSupportActionBar(),
+                this
+        );
 
-    @Override
-    public void onDrawerItemSelected(int position) {
-        // update action bar title
-        if (mDrawerFragment != null)
-            mCurrentTitle = mDrawerFragment.getNavItems()[position];
-
-        FragmentUtils.setCurrentFragmentId(position);
-        showFragment(null);
-
-        Log.d("OnDrawerItemSelected", "Selected position: " + position);
-    }
-
-    public void restoreActionBar() {
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayShowTitleEnabled(true);
-            actionBar.setTitle(mCurrentTitle);
-        }
-    }
-
-    public void setActionBarTitle(String title) {
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null)
-            actionBar.setTitle(title);
+        mNavigationManager.setUp();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if (!mDrawerFragment.isDrawerOpen()) {
-            // Only show items in the action bar relevant to this screen
-            // if the drawer is not showing. Otherwise, let the drawer
-            // decide what to show in the action bar.
-            getMenuInflater().inflate(R.menu.menu_main, menu);
-            restoreActionBar();
-            return true;
-        }
-
+        getMenuInflater().inflate(R.menu.menu_main, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -92,14 +61,14 @@ public class MainActivity extends AppCompatActivity implements
         int id = item.getItemId();
 
         if (id == android.R.id.home) {
-            handleBackPress();
-            // no return because the DrawerFragment's onOptionsItemSelected needs to fire
+            mNavigationManager.onClickUpButton();
+            return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
 
-    private void showFragment(@Nullable Bundle savedInstanceState) {
+    public void showFragment(@Nullable Bundle savedInstanceState) {
         mFragmentInfo = FragmentUtils.fragmentInfo(this, FragmentUtils.getCurrentFragmentId());
 
         // avoid multiple fragments stacked on top of one another
@@ -139,7 +108,7 @@ public class MainActivity extends AppCompatActivity implements
                        .addToBackStack(null)
                        .commit();
 
-            setActionBarTitle("");
+            mNavigationManager.setActionBarTitle("");
         }
     }
 
@@ -157,7 +126,7 @@ public class MainActivity extends AppCompatActivity implements
                        .addToBackStack(null)
                        .commit();
 
-            setActionBarTitle(getResources().getString(R.string.new_text) + " " + mFragmentInfo.getName());
+            mNavigationManager.setActionBarTitle(getResources().getString(R.string.new_text) + " " + mFragmentInfo.getName());
         }
     }
     //endregion
@@ -175,48 +144,16 @@ public class MainActivity extends AppCompatActivity implements
     //endregion
 
     //region Navigation
-    private void initBackNavigation() {
-        if (!isTwoPane())
-            getSupportFragmentManager().addOnBackStackChangedListener(this);
-    }
-
-    private void handleBackPress() {
-        if (!mDrawerFragment.isHamburgerVisible()) {
-            getSupportFragmentManager().popBackStack();
-            restoreActionBar();
-        }
-    }
-
     @Override
     public void onBackPressed() {
-        if (canGoBack())
-            handleBackPress();
+        if (mNavigationManager.canGoBack())
+            mNavigationManager.onBackPressed();
         else
             super.onBackPressed();
-    }
-
-    @Override
-    public void onBackStackChanged() {
-        Log.d("onBackStackChanged", "Back stack changed.");
-        if (canGoBack())
-            mDrawerFragment.hideHamburger();
-        else
-            mDrawerFragment.showHamburger();
-    }
-
-    public boolean canGoBack() {
-        return getSupportFragmentManager().getBackStackEntryCount() > 0;
-    }
-
-    private void initDrawerNavigation() {
-        mDrawerFragment = (DrawerFragment)getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
-        mDrawerFragment.setUp(R.id.navigation_drawer, (DrawerLayout)findViewById(R.id.main_drawer));
-        mCurrentTitle = mDrawerFragment.getNavItems()[mDrawerFragment.getCurrentSelectedPosition()];
     }
     //endregion
 
     public boolean isTwoPane() {
         return getResources().getBoolean(R.bool.has_two_panes);
     }
-
 }

@@ -10,5 +10,7 @@
     <dimen name="spacing_medium">10dp</dimen>
     <dimen name="spacing_large">16dp</dimen>
 
+    <dimen name="nav_header_height">192dp</dimen>
+
     <dimen name="text_size_list_item">15sp</dimen>
 </resources>

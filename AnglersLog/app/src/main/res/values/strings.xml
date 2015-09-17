@@ -7,6 +7,12 @@
 
     <string name="drawer_open">Open Navigation Drawer</string>
     <string name="drawer_close">Close Navigation Drawer</string>
+    <string name="drawer_catches">Catches</string>
+    <string name="drawer_trips">Trips</string>
+    <string name="drawer_photos">Photo Gallery</string>
+    <string name="drawer_locations">Locations</string>
+    <string name="drawer_baits">Baits</string>
+    <string name="drawer_stats">Statistics</string>
 
     <string name="button_cancel">Cancel</string>
     <string name="button_save">Save</string>
@@ -23,5 +29,6 @@
     <string name="action_edit">Edit</string>
     <string name="action_delete">Delete</string>
     <string name="action_confirm">Confirm</string>
+    <string name="action_close">Close</string>
 
 </resources>

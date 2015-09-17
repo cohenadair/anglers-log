@@ -39,9 +39,15 @@ public class AnglersLogApplication extends Application {
                 Logbook.getInstance().addTrip(new Trip("Trip " + i));
 
         // initialize some dummy species
-        if (Logbook.getInstance().speciesCount() <= 0)
-            for (int i = 0; i < 25; i++)
-                Logbook.getInstance().addSpecies(new Species("Species " + i));
+        Logbook logbook = Logbook.getInstance();
+
+        if (logbook.speciesCount() <= 0) {
+            logbook.addSpecies(new Species("Smallmouth Bass"));
+            logbook.addSpecies(new Species("Largemouth Bass"));
+            logbook.addSpecies(new Species("Walleye"));
+            logbook.addSpecies(new Species("Steelhead"));
+            logbook.addSpecies(new Species("Atlantic Salmon"));
+        }
     }
 
 }

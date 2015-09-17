@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 
+import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.fragments.CatchFragment;
 import com.cohenadair.anglerslog.fragments.ManageCatchFragment;
 import com.cohenadair.anglerslog.fragments.ManageFragment;
@@ -14,25 +15,20 @@ import com.cohenadair.anglerslog.model.Logbook;
 import com.cohenadair.anglerslog.model.user_defines.Species;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 
+import java.util.HashMap;
+
 /**
  * FragmentUtils is used for manipulating fragments throughout the application.
  * Created by Cohen Adair on 2015-09-03.
  */
 public class FragmentUtils {
 
-    /**
-     * These constants represent the index for each fragment in the navigation drawer.
-     * These ids are used to hide/show the correct fragments when a navigation item is clicked.
-     * The actual string values for the navigation items can be found in the arrays resource files.
-     */
-    public static final int FRAGMENT_COUNT      = 6;
-
-    public static final int FRAGMENT_CATCHES    = 0;
-    public static final int FRAGMENT_TRIPS      = 1;
-    public static final int FRAGMENT_GALLERY    = 2;
-    public static final int FRAGMENT_STATS      = 3;
-    public static final int FRAGMENT_LOCATIONS  = 4;
-    public static final int FRAGMENT_BAITS      = 5;
+    public static final int FRAGMENT_CATCHES    = R.id.nav_catches;
+    public static final int FRAGMENT_TRIPS      = R.id.nav_trips;
+    public static final int FRAGMENT_GALLERY    = R.id.nav_photos;
+    public static final int FRAGMENT_STATS      = R.id.nav_stats;
+    public static final int FRAGMENT_LOCATIONS  = R.id.nav_locations;
+    public static final int FRAGMENT_BAITS      = R.id.nav_baits;
 
     /**
      * Primitive fragments for simple lists displaying objects with only a name attribute.
@@ -45,7 +41,7 @@ public class FragmentUtils {
     /**
      * Used to store previous selections for MyListFragment instances.
      */
-    private static int[] mSelectionPositions = new int[FRAGMENT_COUNT];
+    private static HashMap<Integer, Integer> mSelectionPositions = new HashMap<>();
 
     /**
      * Used to keep track of the current master-detail fragment pair.
@@ -70,11 +66,14 @@ public class FragmentUtils {
     }
 
     public static int selectionPos(int fragmentId) {
-        return mSelectionPositions[fragmentId];
+        if (mSelectionPositions.containsKey(fragmentId))
+            return mSelectionPositions.get(fragmentId);
+
+        return 0;
     }
 
-    public static void selectionPos(int fragmentId, int selectedPos) {
-        mSelectionPositions[fragmentId] = selectedPos;
+    public static void selectionPos(int fragmentPos, int selectedPos) {
+        mSelectionPositions.put(fragmentPos, selectedPos);
     }
 
     public static int getCurrentFragmentId() {
