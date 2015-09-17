@@ -20,16 +20,13 @@ import com.cohenadair.anglerslog.utilities.fragment.FragmentInfo;
  */
 public class MyListFragment extends Fragment {
 
-    private ListView mListView;
-    private FloatingActionButton mNewButton;
-
     //region Callback Interface
-    OnMyListFragmentInteractionListener mCallbacks;
+    InteractionListener mCallbacks;
 
     // callback interface for the fragment's activity
-    public interface OnMyListFragmentInteractionListener {
-        void onItemSelected(int position);
-        void onClickNewButton(View v);
+    public interface InteractionListener {
+        void onMyListItemSelected(int position);
+        void onMyListClickNewButton(View v);
     }
     //endregion
     
@@ -77,9 +74,9 @@ public class MyListFragment extends Fragment {
 
         // make sure the container activity has implemented the callback interface
         try {
-            mCallbacks = (OnMyListFragmentInteractionListener)context;
+            mCallbacks = (InteractionListener)context;
         } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString() + " must implement OnMyListFragmentInteractionListener");
+            throw new ClassCastException(context.toString() + " must implement MyListFragment.InteractionListener.");
         }
     }
 
@@ -91,29 +88,27 @@ public class MyListFragment extends Fragment {
 
     //region View Initializing
     private void initListView(View view, FragmentInfo fragmentInfo) {
-        mListView = (ListView)view.findViewById(R.id.main_list_view);
+        ListView listView = (ListView)view.findViewById(R.id.main_list_view);
 
         // on click item
-        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                mCallbacks.onItemSelected(position);
+                mCallbacks.onMyListItemSelected(position);
             }
         });
 
         // adapter
         if (fragmentInfo != null)
-            mListView.setAdapter(fragmentInfo.getArrayAdapter());
+            listView.setAdapter(fragmentInfo.getArrayAdapter());
     }
 
     private void initNewButton(View view) {
-        mNewButton = (FloatingActionButton)view.findViewById(R.id.new_button);
-
-        // on click
-        mNewButton.setOnClickListener(new View.OnClickListener() {
+        FloatingActionButton newButton = (FloatingActionButton)view.findViewById(R.id.new_button);
+        newButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mCallbacks.onClickNewButton(v);
+                mCallbacks.onMyListClickNewButton(v);
             }
         });
     }

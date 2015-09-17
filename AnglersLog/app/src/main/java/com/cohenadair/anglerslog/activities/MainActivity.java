@@ -22,7 +22,8 @@ import com.cohenadair.anglerslog.utilities.fragment.FragmentInfo;
 // TODO rename fragment interface methods to be more specific
 
 public class MainActivity extends AppCompatActivity implements
-        MyListFragment.OnMyListFragmentInteractionListener
+        MyListFragment.InteractionListener,
+        ManageFragment.InteractionListener
 {
 
     private FragmentInfo mFragmentInfo;
@@ -88,9 +89,9 @@ public class MainActivity extends AppCompatActivity implements
         }
     }
 
-    //region MyListFragment.OnListItemSelectedListener interface
+    //region MyListFragment.InteractionListener interface
     @Override
-    public void onItemSelected(int position) {
+    public void onMyListItemSelected(int position) {
         FragmentData.selectionPos(FragmentData.getCurrentFragmentId(), position);
 
         DetailFragment detailFragment = (DetailFragment)getSupportFragmentManager().findFragmentByTag(mFragmentInfo.detailTag());
@@ -111,7 +112,7 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onClickNewButton(View v) {
+    public void onMyListClickNewButton(View v) {
         ManageFragment manageFragment = mFragmentInfo.manageFragment();
 
         if (isTwoPane()) {
@@ -126,6 +127,19 @@ public class MainActivity extends AppCompatActivity implements
 
             mNavigationManager.setActionBarTitle(getResources().getString(R.string.new_text) + " " + mFragmentInfo.getName());
         }
+    }
+    //endregion
+
+    //region ManageFragment.InteractionListener interface
+    @Override
+    public void onManageCancel() {
+        mNavigationManager.goBack();
+    }
+
+    @Override
+    public void onManageConfirm() {
+        mFragmentInfo.callAddNew(null);
+        mNavigationManager.goBack();
     }
     //endregion
 

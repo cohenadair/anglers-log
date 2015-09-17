@@ -1,6 +1,7 @@
 package com.cohenadair.anglerslog.fragments;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentTransaction;
@@ -8,10 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ScrollView;
 
 import com.cohenadair.anglerslog.R;
-import com.cohenadair.anglerslog.activities.MainActivity;
 import com.cohenadair.anglerslog.utilities.fragment.FragmentData;
 import com.cohenadair.anglerslog.utilities.fragment.FragmentInfo;
 
@@ -20,9 +19,15 @@ import com.cohenadair.anglerslog.utilities.fragment.FragmentInfo;
  */
 public class ManageFragment extends DialogFragment {
 
-    private ScrollView mScrollView;
-    private Button mCancelButton;
-    private Button mManageButton; // either Add or Save
+    //region Callback Interface
+    InteractionListener mCallbacks;
+
+    // callback interface for the fragment's activity
+    public interface InteractionListener {
+        void onManageCancel();
+        void onManageConfirm();
+    }
+    //endregion
 
     // used to keep fragment state through attach/detach
     private static final String ARG_FRAGMENT_ID = "arg_fragment_id";
@@ -49,27 +54,23 @@ public class ManageFragment extends DialogFragment {
         int fragmentId = getArguments().getInt(ARG_FRAGMENT_ID);
         final FragmentInfo info = FragmentData.fragmentInfo(getActivity(), fragmentId);
 
-        mScrollView = (ScrollView)view.findViewById(R.id.content_scroll_view);
-
-        mCancelButton = (Button)view.findViewById(R.id.cancel_button);
-        mCancelButton.setOnClickListener(new View.OnClickListener() {
+        Button cancelButton = (Button)view.findViewById(R.id.cancel_button);
+        cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                goBack();
+                mCallbacks.onManageCancel();
             }
         });
 
-        mManageButton = (Button)view.findViewById(R.id.confirm_button);
-        mManageButton.setOnClickListener(new View.OnClickListener() {
+        Button manageButton = (Button)view.findViewById(R.id.confirm_button);
+        manageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (info != null)
-                    info.callAddNew(null);
-
-                goBack();
+                mCallbacks.onManageConfirm();
             }
         });
 
+        // add the actual content to the scroll view
         if (info != null) {
             setDialogTitle(getString(R.string.new_text) + " " + info.getName());
 
@@ -81,14 +82,27 @@ public class ManageFragment extends DialogFragment {
         return view;
     }
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        // make sure the container activity has implemented the callback interface
+        try {
+            mCallbacks = (InteractionListener)context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString() + " must implement ManageFragment.InteractionListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mCallbacks = null;
+    }
+
     private void setDialogTitle(String title) {
         Dialog dialog = getDialog();
         if (dialog != null)
             dialog.setTitle(title);
-    }
-
-    private void goBack() {
-        MainActivity activity = (MainActivity)getActivity();
-        activity.getNavigationManager().goBack();
     }
 }
