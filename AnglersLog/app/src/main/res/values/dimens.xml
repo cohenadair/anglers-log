@@ -3,4 +3,13 @@
     <dimen name="margin_default">16dp</dimen>
 
     <dimen name="navigation_drawer_width">320dp</dimen>
+
+    <dimen name="spacing_small">6dp</dimen>
+    <dimen name="spacing_small_half">3dp</dimen>
+    <dimen name="spacing_medium">10dp</dimen>
+    <dimen name="spacing_large">16dp</dimen>
+
+    <dimen name="nav_header_height">192dp</dimen>
+
+    <dimen name="text_size_list_item">15sp</dimen>
 </resources>

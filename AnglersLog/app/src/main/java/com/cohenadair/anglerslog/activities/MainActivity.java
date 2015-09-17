@@ -3,6 +3,7 @@ package com.cohenadair.anglerslog.activities;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -35,8 +36,13 @@ public class MainActivity extends AppCompatActivity implements
         showFragment(savedInstanceState);
 
         // needed so the navigation view extends above and on top of the app bar
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        // give the action bar a little bottom shadow
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null)
+            actionBar.setElevation(5);
 
         mNavigationManager = new NavigationManager(this);
         mNavigationManager.setUp();
