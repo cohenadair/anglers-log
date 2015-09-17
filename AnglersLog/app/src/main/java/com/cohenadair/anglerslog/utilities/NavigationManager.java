@@ -23,11 +23,11 @@ public class NavigationManager implements FragmentManager.OnBackStackChangedList
     private MainActivity mActivity;
     private String mCurrentTitle;
 
-    public NavigationManager(DrawerLayout drawerLayout, NavigationView navigationView, ActionBar actionBar, MainActivity activity) {
-        mDrawerLayout = drawerLayout;
-        mActionBar = actionBar;
-        mNavigationView = navigationView;
+    public NavigationManager(MainActivity activity) {
         mActivity = activity;
+        mDrawerLayout = (DrawerLayout)mActivity.findViewById(R.id.main_drawer);
+        mNavigationView = (NavigationView)mActivity.findViewById(R.id.navigation_view);
+        mActionBar = mActivity.getSupportActionBar();
         mCurrentTitle = mActivity.getResources().getString(R.string.app_name);
     }
 

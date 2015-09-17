@@ -14,6 +14,7 @@ import com.cohenadair.anglerslog.fragments.TripFragment;
 import com.cohenadair.anglerslog.model.Logbook;
 import com.cohenadair.anglerslog.model.user_defines.Species;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
+import com.cohenadair.anglerslog.utilities.Utils;
 
 import java.util.HashMap;
 
@@ -84,12 +85,21 @@ public class FragmentData {
         mCurrentFragmentId = currentFragmentId;
     }
 
-    private static FragmentInfo catchesFragmentInfo(Activity activity) {
+    private static FragmentInfo catchesFragmentInfo(final Activity activity) {
         int id = FRAGMENT_CATCHES;
 
         FragmentInfo info = new FragmentInfo("fragment_catches");
         FragmentInfo detailInfo = new FragmentInfo("fragment_catch");
+
         ManageFragmentInfo manageInfo = new ManageFragmentInfo(ManageFragment.newInstance(id), new ManageCatchFragment());
+        manageInfo.setInterface(new ManageFragmentInfo.Interface() {
+            @Override
+            public void onAddNew(UserDefineObject obj) {
+                Utils.showToast(activity, "Added new Catch!");
+                // TODO actually add object
+                //Logbook.getInstance().addCatch((Catch)obj);
+            }
+        });
 
         detailInfo.setFragment(new CatchFragment());
 

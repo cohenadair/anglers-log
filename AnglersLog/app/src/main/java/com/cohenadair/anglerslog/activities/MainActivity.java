@@ -2,9 +2,7 @@ package com.cohenadair.anglerslog.activities;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -16,15 +14,15 @@ import com.cohenadair.anglerslog.fragments.DetailFragment;
 import com.cohenadair.anglerslog.fragments.ManageFragment;
 import com.cohenadair.anglerslog.fragments.MyListFragment;
 import com.cohenadair.anglerslog.utilities.NavigationManager;
-import com.cohenadair.anglerslog.utilities.Utils;
 import com.cohenadair.anglerslog.utilities.fragment.FragmentData;
 import com.cohenadair.anglerslog.utilities.fragment.FragmentInfo;
 
+// TODO create FragmentManager utility class
 // TODO rename themes for convention
+// TODO rename fragment interface methods to be more specific
 
 public class MainActivity extends AppCompatActivity implements
-        MyListFragment.OnMyListFragmentInteractionListener,
-        ManageFragment.OnManageFragmentInteractionListener
+        MyListFragment.OnMyListFragmentInteractionListener
 {
 
     private FragmentInfo mFragmentInfo;
@@ -40,13 +38,7 @@ public class MainActivity extends AppCompatActivity implements
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        mNavigationManager = new NavigationManager(
-                (DrawerLayout)findViewById(R.id.main_drawer),
-                (NavigationView)findViewById(R.id.navigation_view),
-                getSupportActionBar(),
-                this
-        );
-
+        mNavigationManager = new NavigationManager(this);
         mNavigationManager.setUp();
     }
 
@@ -67,6 +59,12 @@ public class MainActivity extends AppCompatActivity implements
 
         return super.onOptionsItemSelected(item);
     }
+
+    //region Getters & Setters
+    public NavigationManager getNavigationManager() {
+        return mNavigationManager;
+    }
+    //endregion
 
     public void showFragment(@Nullable Bundle savedInstanceState) {
         mFragmentInfo = FragmentData.fragmentInfo(this, FragmentData.getCurrentFragmentId());
@@ -128,18 +126,6 @@ public class MainActivity extends AppCompatActivity implements
 
             mNavigationManager.setActionBarTitle(getResources().getString(R.string.new_text) + " " + mFragmentInfo.getName());
         }
-    }
-    //endregion
-
-    //region ManageFragment.OnManageFragmentInteractionListener interface
-    @Override
-    public void onClickCancel(View v) {
-        Utils.showToast(this, "Clicked Cancel!");
-    }
-
-    @Override
-    public void onClickConfirm(View v) {
-        Utils.showToast(this, "Clicked Done!");
     }
     //endregion
 
