@@ -5,7 +5,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.support.design.widget.Snackbar;
 import android.util.TypedValue;
+import android.view.View;
 import android.widget.Toast;
 
 /**
@@ -16,6 +18,10 @@ public class Utils {
 
     public static void showToast(Context context, String msg) {
         Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
+    }
+
+    public static void showSnackbar(View view, String msg) {
+        Snackbar.make(view, msg, Snackbar.LENGTH_LONG).show();
     }
 
     public static void handleDisplayBackButton(Activity anActivity, boolean show) {

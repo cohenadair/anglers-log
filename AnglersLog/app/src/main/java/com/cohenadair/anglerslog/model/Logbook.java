@@ -132,6 +132,10 @@ public class Logbook {
         mSpecies.remove(position);
     }
 
+    public void editSpecies(int position, String newName) {
+        speciesAtPos(position).edit(new Species(newName));
+    }
+
     /**
      * Iterates through all the species and removes ones where getShouldDelete() returns true.
      */
@@ -140,10 +144,6 @@ public class Logbook {
             if (speciesAtPos(i).getShouldDelete())
                 removeSpecies(i);
         }
-    }
-
-    public void editSpecies(int position, String newName) {
-        speciesAtPos(position).edit(new Species(newName));
     }
 
     public int speciesCount() {
