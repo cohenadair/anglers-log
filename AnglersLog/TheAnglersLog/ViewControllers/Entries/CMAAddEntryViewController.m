@@ -471,7 +471,7 @@ NSString *const kNotSelectedString = @"Not Selected";
     [self toggleWeatherData];
 }
 
-- (IBAction)longPressedImageInCollection:(UILongPressGestureRecognizer *)sender {
+- (void)longPressedImageInCollection:(UILongPressGestureRecognizer *)sender {
     // only show at the beginning of the gesture
     if (sender.state == UIGestureRecognizerStateBegan) {
         self.deleteImageIndexPath = [self.imageCollection indexPathForItemAtPoint:[sender locationInView:self.imageCollection]];
@@ -879,6 +879,9 @@ NSString *const kNotSelectedString = @"Not Selected";
         UIImageView *imageView = (UIImageView *)[cell viewWithTag:kImageViewTag];
         [imageView setImage:[self.entryImages objectAtIndex:indexPath.item]];
     }
+    
+    UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressedImageInCollection:)];
+    [cell addGestureRecognizer:longPress];
         
     return cell;
 }
