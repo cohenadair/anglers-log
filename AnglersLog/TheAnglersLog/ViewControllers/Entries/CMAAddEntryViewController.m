@@ -192,6 +192,7 @@ NSString *const kNotSelectedString = @"Not Selected";
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    [self.navigationController setToolbarHidden:YES];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -556,7 +557,7 @@ NSString *const kNotSelectedString = @"Not Selected";
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     // bait used
     if ([segue.identifier isEqualToString:@"fromAddEntryToViewBaits"]) {
-        CMAViewBaitsViewController *destination = [[segue.destinationViewController viewControllers] objectAtIndex:0];
+        CMAViewBaitsViewController *destination = segue.destinationViewController;
         destination.isSelectingForAddEntry = YES;
         
         self.indexPathForOptionsCell = [self.tableView indexPathForSelectedRow]; // so it knows which cell to edit after the unwind

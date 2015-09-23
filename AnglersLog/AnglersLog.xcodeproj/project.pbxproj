@@ -971,7 +971,7 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = CMA;
-				LastUpgradeCheck = 0510;
+				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = "Cohen Adair";
 				TargetAttributes = {
 					E70B637119D3A8E400DFBA85 = {
@@ -1188,6 +1188,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -1258,6 +1259,7 @@
 				GCC_PREFIX_HEADER = "TheAnglersLog/AnglersLog-Prefix.pch";
 				INFOPLIST_FILE = "TheAnglersLog/AnglersLog-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
+				PRODUCT_BUNDLE_IDENTIFIER = "CMA.The$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = AnglersLog;
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 1;
@@ -1281,6 +1283,7 @@
 				GCC_PREFIX_HEADER = "TheAnglersLog/AnglersLog-Prefix.pch";
 				INFOPLIST_FILE = "TheAnglersLog/AnglersLog-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
+				PRODUCT_BUNDLE_IDENTIFIER = "CMA.The$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = AnglersLog;
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 1;

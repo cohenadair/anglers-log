@@ -163,7 +163,7 @@
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([segue.identifier isEqualToString:@"fromPhotosToSinglePhoto"]) {
-        CMASinglePhotoViewController *destination = [[segue.destinationViewController viewControllers] objectAtIndex:0];
+        CMASinglePhotoViewController *destination = segue.destinationViewController;
         destination.imagesArray = self.fullImages;
         destination.startingImageIndexPath = [[self.collectionView indexPathsForSelectedItems] objectAtIndex:0];
     }

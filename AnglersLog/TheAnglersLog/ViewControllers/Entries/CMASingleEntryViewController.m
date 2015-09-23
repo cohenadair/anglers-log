@@ -107,6 +107,8 @@
     
     [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     [self.tableView setTableFooterView:[[UIView alloc] initWithFrame:CGRectZero]]; // removes empty cells at the end of the list
+    
+    [self.navigationController setToolbarHidden:YES];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -345,7 +347,7 @@
     UICollectionViewCell * cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"imageCollectionCell" forIndexPath:indexPath];
     
     UIImageView *imageView = (UIImageView *)[cell viewWithTag:100];
-    [imageView setImage:[[self.entryImageArray objectAtIndex:indexPath.item] image]];
+    [imageView setImage:[(CMAImage *)[self.entryImageArray objectAtIndex:indexPath.item] image]];
 
     return cell;
 }
@@ -413,7 +415,7 @@
     }
     
     if ([segue.identifier isEqualToString:@"fromSingleEntryToSingleLocation"]) {
-        CMASingleLocationViewController *destination = [[segue.destinationViewController viewControllers] objectAtIndex:0];
+        CMASingleLocationViewController *destination = segue.destinationViewController;
         destination.previousViewID = CMAViewControllerIDSingleEntry;
         destination.location = self.entry.location;
         destination.fishingSpotFromSingleEntry = self.entry.fishingSpot;
@@ -421,7 +423,7 @@
     }
     
     if ([segue.identifier isEqualToString:@"fromSingleEntryToSingleBait"]) {
-        CMASingleBaitViewController *destination = [[segue.destinationViewController viewControllers] objectAtIndex:0];
+        CMASingleBaitViewController *destination = segue.destinationViewController;
         destination.bait = self.entry.baitUsed;
         destination.isReadOnly = YES;
         destination.navigationItem.title = destination.bait.name;

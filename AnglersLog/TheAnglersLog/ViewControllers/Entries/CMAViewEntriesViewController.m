@@ -360,7 +360,7 @@
     }
     
     if ([segue.identifier isEqualToString:@"fromViewEntriesToSingleEntry"]) {
-        CMASingleEntryViewController *destination = [[segue.destinationViewController viewControllers] objectAtIndex:0];
+        CMASingleEntryViewController *destination = segue.destinationViewController;
         CMAEntry *entryToDisplay = [[[self journal] entries] objectAtIndex:[self.tableView indexPathForSelectedRow].item];
         destination.entry = entryToDisplay;
         

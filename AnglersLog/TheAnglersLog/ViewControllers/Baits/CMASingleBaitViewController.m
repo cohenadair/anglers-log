@@ -40,6 +40,8 @@
     [self initTableView];
     if (self.isReadOnly)
         self.navigationItem.rightBarButtonItem = nil;
+    
+    [self.navigationController setToolbarHidden:YES];
 }
 
 - (void)viewWillAppear:(BOOL)animated {

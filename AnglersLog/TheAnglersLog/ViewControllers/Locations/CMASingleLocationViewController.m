@@ -73,6 +73,8 @@
         [self initCurrentFishingSpot:self.fishingSpotFromSingleEntry];
     else if (!self.currentFishingSpot)
         [self initCurrentFishingSpot:[self.location.fishingSpots objectAtIndex:0]];
+    
+    [self.navigationController setToolbarHidden:YES];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -230,7 +232,7 @@
     }
     
     if ([segue.identifier isEqualToString:@"fromSingleLocationToSelectFishingSpot"]) {
-        CMASelectFishingSpotViewController *destination = [[segue.destinationViewController viewControllers] objectAtIndex:0];
+        CMASelectFishingSpotViewController *destination = segue.destinationViewController;
         destination.previousViewID = CMAViewControllerIDSingleLocation;
         destination.location = self.location;
     }

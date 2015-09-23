@@ -305,14 +305,14 @@ NSInteger const SECTION_DELETE = 3;
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([segue.identifier isEqualToString:@"fromFishingSpotCellToAddFishingSpot"]) {
-        CMAAddFishingSpotViewController *destination = [[segue.destinationViewController viewControllers] objectAtIndex:0];
+        CMAAddFishingSpotViewController *destination = segue.destinationViewController;
         NSString *selectedCellText = [[[self.tableView cellForRowAtIndexPath:[self.tableView indexPathForSelectedRow]] textLabel] text];
         destination.fishingSpot = [self.location fishingSpotNamed:selectedCellText];
         destination.locationFromAddLocation = self.location;
     }
     
     if ([segue.identifier isEqualToString:@"fromAddFishingSpotCellToAddFishingSpot"]) {
-        CMAAddFishingSpotViewController *destination = [[segue.destinationViewController viewControllers] objectAtIndex:0];
+        CMAAddFishingSpotViewController *destination = segue.destinationViewController;
         destination.locationFromAddLocation = self.location;
     }
 }

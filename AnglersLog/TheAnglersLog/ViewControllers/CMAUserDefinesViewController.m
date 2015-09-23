@@ -481,7 +481,7 @@
     }
     
     if ([segue.identifier isEqualToString:@"fromUserDefinesToSelectFishingSpot"]) {
-        CMASelectFishingSpotViewController *destination = [[segue.destinationViewController viewControllers] objectAtIndex:0];
+        CMASelectFishingSpotViewController *destination = segue.destinationViewController;
         CMALocation *loc = [[[self journal] userDefineNamed:UDN_LOCATIONS] objectNamed:self.selectedCellLabelText];
         destination.location = loc;
         destination.previousViewID = CMAViewControllerIDEditSettings;
@@ -489,7 +489,7 @@
     }
     
     if ([segue.identifier isEqualToString:@"fromUserDefinesToSingleLocation"]) {
-        CMASingleLocationViewController *destination = [[segue.destinationViewController viewControllers] objectAtIndex:0];
+        CMASingleLocationViewController *destination = segue.destinationViewController;
         CMALocation *loc = [[[self journal] userDefineNamed:UDN_LOCATIONS] objectNamed:self.selectedCellLabelText];
         destination.location = loc;
         destination.previousViewID = CMAViewControllerIDEditSettings;

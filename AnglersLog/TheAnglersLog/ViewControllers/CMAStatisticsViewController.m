@@ -425,18 +425,18 @@
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     // bait used
     if ([segue.identifier isEqualToString:@"fromStatisticsToViewBaits"]){
-        CMAViewBaitsViewController *destination = [[segue.destinationViewController viewControllers] objectAtIndex:0];
+        CMAViewBaitsViewController *destination = segue.destinationViewController;
         destination.isSelectingForStatistics = YES;
     }
     
     if ([segue.identifier isEqualToString:@"fromStatisticsToUserDefines"]) {
-        CMAUserDefinesViewController *destination = [[segue.destinationViewController viewControllers] objectAtIndex:0];
+        CMAUserDefinesViewController *destination = segue.destinationViewController;
         destination.userDefine = [[self journal] userDefineNamed:self.stats.userDefineName];
         destination.previousViewID = CMAViewControllerIDStatistics;
     }
     
     if ([segue.identifier isEqualToString:@"fromStatisticsToSingleEntry"]) {
-        CMASingleEntryViewController *destination = [[segue.destinationViewController viewControllers] objectAtIndex:0];
+        CMASingleEntryViewController *destination = segue.destinationViewController;
         destination.entry = self.entryForSingleEntry;
     }
 }
