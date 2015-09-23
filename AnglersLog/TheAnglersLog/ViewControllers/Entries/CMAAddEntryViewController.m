@@ -105,7 +105,7 @@
 #define kDatePickerCellSection 0
 #define kDatePickerCellRow 1
 
-#define kImagesCellHeightExpanded 150
+#define kImagesCellHeightExpanded 157
 #define kImagesCellSection 1
 
 #define kWeatherCellSection 4
@@ -343,17 +343,6 @@ NSString *const kNotSelectedString = @"Not Selected";
     return TABLE_HEIGHT_HEADER;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-    // weather section
-    if (section == 4)
-        return 45;
-    
-    if (section == [tableView numberOfSections] - 1)
-        return TABLE_HEIGHT_FOOTER;
-    
-    return CGFLOAT_MIN;
-}
-
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     // set height of the date picker cell
     if (indexPath.section == kDatePickerCellSection && indexPath.row == kDatePickerCellRow) {
@@ -397,7 +386,7 @@ NSString *const kNotSelectedString = @"Not Selected";
     
     // weather cell
     if (indexPath.section == kWeatherCellSection) {
-        UIView *bgView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, cell.frame.size.width - 50, cell.frame.size.height)];
+        UIView *bgView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width - 50, cell.frame.size.height)];
         [bgView addSubview:self.weatherDataView];
 
         [cell addSubview:bgView];
@@ -424,6 +413,8 @@ NSString *const kNotSelectedString = @"Not Selected";
         // hide the date picker cell when any other cell is selected
         if (self.isEditingDateTime)
             [self toggleDatePickerCellHidden:tableView selectedPath:indexPath];
+    
+    NSLog(@"Selected");
 }
 
 #pragma mark - Events
@@ -1009,7 +1000,7 @@ NSString *const kNotSelectedString = @"Not Selected";
         NSArray *weatherArray = result[@"weather"];
         
         if ([weatherArray count] > 0) {
-            NSString *imageString = [NSString stringWithFormat:@"http://openweathermap.org/img/w/%@.png", result[@"weather"][0][@"icon"]];
+            NSString *imageString = [NSString stringWithFormat:@"https://openweathermap.org/img/w/%@.png", result[@"weather"][0][@"icon"]];
             [self.weatherData setImageURL:imageString];
             [self.weatherData setSkyConditions:result[@"weather"][0][@"main"]];
         } else {
