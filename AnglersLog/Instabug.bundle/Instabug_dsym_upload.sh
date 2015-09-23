@@ -34,17 +34,17 @@ if [ ! "${APP_TOKEN}" ] || [ -z "${APP_TOKEN}" ];then
 fi
 echo "Instabug: found APP_TOKEN=${APP_TOKEN}"
 
-# Check internet connection
-if [ ! "`ping -c 1 instabug.com`" ]; then
-  exit 0
-fi
-
 # Check for simulator builds
 if [ "$EFFECTIVE_PLATFORM_NAME" == "-iphonesimulator" ]; then
   if [ "${SKIP_SIMULATOR_BUILDS}" ] && [ "${SKIP_SIMULATOR_BUILDS}" -eq 1 ]; then
     echo "Instabug: Skipping simulator build"
     exit 0
   fi
+fi
+
+# Check internet connection
+if [ ! "`ping -c 1 api.instabug.com`" ]; then
+  exit 0
 fi
 
 # Create temp directory if not exists
@@ -60,7 +60,7 @@ fi
 
 # Check dSYM file
 DSYM_PATH=${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}
-DSYM_UUIDs=$(dwarfdump --uuid ${DSYM_PATH} | cut -d' ' -f2)
+DSYM_UUIDs=$(dwarfdump --uuid "${DSYM_PATH}" | cut -d' ' -f2)
 
 # Check if UUIDs exists
 DSYM_UUIDs_PATH="${TEMP_DIRECTORY}/UUIDs.dat"
@@ -81,7 +81,7 @@ echo "Instabug: Compressing dSYM file..."
 
 # Upload dSYM
 echo "Instabug: Uploading dSYM file..."
-ENDPOINT="https://www.instabug.com/api/ios/v1/dsym"
+ENDPOINT="https://api.instabug.com/api/ios/v1/dsym"
 STATUS=$(curl "${ENDPOINT}" --write-out %{http_code} --silent --output /dev/null -F dsym=@"${DSYM_PATH_ZIP}" -F token="${APP_TOKEN}")
 if [ $STATUS -ne 200 ]; then
   echo "Instabug: err: dSYM archive not succesfully uploaded."
