@@ -181,6 +181,11 @@ static inline BOOL AFStateTransitionIsValid(AFOperationState fromState, AFOperat
     return _networkRequestThread;
 }
 
+// should never be called
+- (instancetype)init {
+    return [self initWithRequest:NULL];
+}
+
 - (instancetype)initWithRequest:(NSURLRequest *)urlRequest {
     NSParameterAssert(urlRequest);
 

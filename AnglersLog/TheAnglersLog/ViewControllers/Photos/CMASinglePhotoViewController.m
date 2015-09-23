@@ -88,7 +88,7 @@
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     CMASinglePhotoCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"imageCell" forIndexPath:indexPath];
-    UIImage *img = [[self.imagesArray objectAtIndex:indexPath.item] image];
+    UIImage *img = [(CMAImage *)[self.imagesArray objectAtIndex:indexPath.item] image];
     [cell.imageView setImage:img];
     return cell;
 }

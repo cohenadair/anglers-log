@@ -2075,7 +2075,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <button opaque="NO" tag="100" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JXO-ne-uRf">
-                                                    <rect key="frame" x="565" y="4" width="20" height="30"/>
+                                                    <rect key="frame" x="565" y="3" width="20" height="30"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="20" id="JPX-Gx-l9R"/>
                                                         <constraint firstAttribute="height" constant="30" id="TV6-Ir-Wgu"/>
@@ -2098,7 +2098,7 @@
                                                 <constraint firstItem="Ger-es-abj" firstAttribute="leading" secondItem="HzB-Lw-9xN" secondAttribute="leadingMargin" id="XFx-2v-5qe"/>
                                                 <constraint firstItem="JXO-ne-uRf" firstAttribute="top" secondItem="HzB-Lw-9xN" secondAttribute="topMargin" constant="-6" id="lcA-yO-cd1"/>
                                                 <constraint firstAttribute="bottomMargin" secondItem="JXO-ne-uRf" secondAttribute="bottom" constant="-1" id="mKi-fS-5at"/>
-                                                <constraint firstItem="JXO-ne-uRf" firstAttribute="top" secondItem="HzB-Lw-9xN" secondAttribute="topMargin" constant="-6" id="nVI-vm-qt0"/>
+                                                <constraint firstItem="JXO-ne-uRf" firstAttribute="top" secondItem="HzB-Lw-9xN" secondAttribute="topMargin" constant="-7" id="nVI-vm-qt0"/>
                                                 <constraint firstItem="Ger-es-abj" firstAttribute="centerY" secondItem="HzB-Lw-9xN" secondAttribute="centerY" id="sn3-z5-ad4"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="JXO-ne-uRf" secondAttribute="trailing" id="xKS-3o-MEI"/>
                                             </constraints>
