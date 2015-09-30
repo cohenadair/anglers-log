@@ -1,0 +1,30 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_catches"
+            android:title="@string/drawer_catches"
+            android:checked="true" />
+
+        <item
+            android:id="@+id/nav_trips"
+            android:title="@string/drawer_trips" />
+
+        <item
+            android:id="@+id/nav_photos"
+            android:title="@string/drawer_photos" />
+
+        <item
+            android:id="@+id/nav_stats"
+            android:title="@string/drawer_stats" />
+
+        <item
+            android:id="@+id/nav_locations"
+            android:title="@string/drawer_locations" />
+
+        <item
+            android:id="@+id/nav_baits"
+            android:title="@string/drawer_baits" />
+    </group>
+
+</menu>

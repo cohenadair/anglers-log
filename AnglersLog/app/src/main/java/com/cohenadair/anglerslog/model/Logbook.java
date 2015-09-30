@@ -1,5 +1,7 @@
 package com.cohenadair.anglerslog.model;
 
+import android.util.Log;
+
 import com.cohenadair.anglerslog.model.user_defines.Catch;
 import com.cohenadair.anglerslog.model.user_defines.Species;
 import com.cohenadair.anglerslog.model.user_defines.Trip;
@@ -15,6 +17,8 @@ import java.util.Date;
  */
 public class Logbook {
 
+    private static final String TAG = "Logbook";
+
     //region Singleton Methods
     private static Logbook _sharedLogbook = new Logbook();
 
@@ -28,8 +32,8 @@ public class Logbook {
     //endregion
 
     private String mName;
-    private ArrayList<Catch> mCatches = new ArrayList<>();
-    private ArrayList<Trip> mTrips = new ArrayList<>();
+    private UserDefineArray mCatches = new UserDefineArray();
+    private UserDefineArray mTrips = new UserDefineArray();
     private UserDefineArray mSpecies = new UserDefineArray();
 
     //region Getters & Setters
@@ -41,20 +45,20 @@ public class Logbook {
         mName = name;
     }
 
-    public ArrayList<Catch> getCatches() {
-        return mCatches;
+    public ArrayList<UserDefineObject> getCatches() {
+        return mCatches.getItems();
     }
 
-    public void setCatches(ArrayList<Catch> catches) {
-        mCatches = catches;
+    public void setCatches(ArrayList<UserDefineObject> catches) {
+        mCatches.setItems(catches);
     }
 
-    public ArrayList<Trip> getTrips() {
-        return mTrips;
+    public ArrayList<UserDefineObject> getTrips() {
+        return mTrips.getItems();
     }
 
-    public void setTrips(ArrayList<Trip> trips) {
-        mTrips = trips;
+    public void setTrips(ArrayList<UserDefineObject> trips) {
+        mTrips.setItems(trips);
     }
 
     public ArrayList<UserDefineObject> getSpecies() {
@@ -72,6 +76,11 @@ public class Logbook {
 
     //region Catch Manipulation
     public boolean addCatch(Catch aCatch) {
+        if (catchDated(aCatch.getDate()) != null) {
+            Log.e(TAG, "A catch with date " + aCatch.dateAsString() + " already exists!");
+            return false;
+        }
+
         return mCatches.add(aCatch);
     }
 
@@ -85,7 +94,8 @@ public class Logbook {
      * @return the catch with aDate or null if no such catch exists.
      */
     public Catch catchDated(Date aDate) {
-        for (Catch aCatch : mCatches) {
+        for (UserDefineObject obj : mCatches.getItems()) {
+            Catch aCatch = (Catch)obj;
             if (aCatch.getDate().equals(aDate))
                 return aCatch;
         }
@@ -94,7 +104,7 @@ public class Logbook {
     }
 
     public Catch catchAtPos(int position) {
-        return mCatches.get(position);
+        return (Catch)mCatches.get(position);
     }
 
     /**
@@ -119,7 +129,7 @@ public class Logbook {
     }
 
     public Trip tripAtPos(int position) {
-        return mTrips.get(position);
+        return (Trip)mTrips.get(position);
     }
     //endregion
 

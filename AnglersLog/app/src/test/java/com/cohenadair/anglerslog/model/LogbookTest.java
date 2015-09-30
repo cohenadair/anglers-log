@@ -21,8 +21,13 @@ public class LogbookTest {
     @Test
     public void testAddRemoveCatch() {
         Catch testCatch = new Catch(new Date());
+        Catch testCatch2 = new Catch(testCatch.getDate()); // equal dates
 
         Logbook.getInstance().addCatch(testCatch);
+        assertTrue(Logbook.getInstance().catchCount() == 1);
+
+        // a Catch with a duplicate date shouldn't be added
+        Logbook.getInstance().addCatch(testCatch2);
         assertTrue(Logbook.getInstance().catchCount() == 1);
 
         Logbook.getInstance().removeCatch(testCatch);
@@ -77,7 +82,7 @@ public class LogbookTest {
         assertFalse(species1 == species2);
 
         Logbook.getInstance().addSpecies(species1);
-        Logbook.getInstance().editSpeciesAtPos(0, species2);
+        Logbook.getInstance().editSpecies(0, species2.getName());
 
         // names are equal
         assertTrue(species1.getName().equals(species2.getName()));
