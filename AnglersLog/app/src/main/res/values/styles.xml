@@ -10,19 +10,12 @@
 
         <item name="colorPrimary">@color/anglers_log_light</item>
         <item name="colorPrimaryDark">@color/anglers_log_dark</item>
-        <item name="colorAccent">@color/anglers_log_light</item>
+        <item name="colorAccent">@color/anglers_log_accent</item>
     </style>
 
     <!-- Button Bars -->
     <style name="Widget.ButtonBar" parent="@android:style/DeviceDefault.ButtonBar">
-
-    </style>
-
-    <!-- Header TextViews -->
-    <style name="header_text_view">
-        <item name="android:padding">@dimen/spacing_small</item>
-        <item name="android:textAllCaps">true</item>
-        <item name="android:textSize">12sp</item>
+        <item name="android:background">@android:color/white</item>
     </style>
 
     <!-- RecyclerView LinearLayout -->
@@ -38,24 +31,27 @@
         <item name="android:paddingTop">@dimen/spacing_medium</item>
         <item name="android:paddingLeft">@dimen/spacing_small</item>
         <item name="android:paddingRight">@dimen/spacing_small</item>
-        <item name="android:textColor">@android:color/black</item>
     </style>
 
     <!-- RecyclerView EditText -->
-    <style name="recycler_exit_text">
+    <style name="Widget.EditText.RecyclerView" parent="Theme.AppCompat.Light">
         <item name="android:textAppearance">@android:style/TextAppearance.Medium</item>
+        <item name="android:paddingBottom">@dimen/spacing_medium</item>
+        <item name="android:paddingTop">@dimen/spacing_medium</item>
         <item name="android:paddingLeft">@dimen/spacing_small</item>
         <item name="android:paddingRight">@dimen/spacing_small</item>
     </style>
 
-    <!-- Clickable TextViews -->
-    <style name="clickable_text_view">
-        <item name="android:paddingLeft">@dimen/spacing_medium</item>
-        <item name="android:paddingRight">@dimen/spacing_medium</item>
-        <item name="android:paddingTop">@dimen/spacing_medium</item>
-        <item name="android:paddingBottom">@dimen/spacing_medium</item>
-        <item name="android:clickable">true</item>
-        <item name="android:background">@drawable/white_with_outline</item>
+    <!-- TextViews -->
+    <style name="Widget.TextView.FromSelection" parent="Theme.AppCompat.Light">
+        <item name="android:textAppearance">?android:attr/textAppearance</item>
     </style>
+
+    <style name="Widget.TextView.Header" parent="Theme.AppCompat.Light">
+        <item name="android:textAllCaps">true</item>
+        <item name="android:paddingBottom">@dimen/spacing_small_half</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
+    </style>
+    <!-- /TextViews -->
 
 </resources>

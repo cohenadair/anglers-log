@@ -8,7 +8,7 @@
     style="@style/recycler_layout">
 
     <EditText
-        style="@style/recycler_exit_text"
+        style="@style/Widget.EditText.RecyclerView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"

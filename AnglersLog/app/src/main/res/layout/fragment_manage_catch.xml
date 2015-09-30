@@ -3,23 +3,33 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="@dimen/spacing_large"
     tools:context="com.cohenadair.anglerslog.fragments.ManageCatchFragment"
     android:orientation="vertical">
 
-    <TextView
-        style="@style/header_text_view"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/user_define_species"
-        android:id="@+id/species_header_text_view" />
+        android:orientation="vertical"
+        android:layout_margin="@dimen/margin_default"
+        android:id="@+id/species_layout">
 
-    <TextView
-        style="@style/clickable_text_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearance"
-        android:id="@+id/species_text_view"
-        android:hint="@string/species_hint" />
+        <TextView
+            style="@style/Widget.TextView.Header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/user_define_species"
+            android:id="@+id/species_header_text_view" />
+
+        <TextView
+            style="@style/Widget.TextView.FromSelection"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/species_text_view"
+            android:hint="@string/species_hint" />
+
+    </LinearLayout>
+
+    <include layout="@layout/view_divider">
+    </include>
 
 </LinearLayout>

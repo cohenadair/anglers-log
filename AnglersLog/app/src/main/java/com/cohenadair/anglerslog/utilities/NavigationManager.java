@@ -43,8 +43,7 @@ public class NavigationManager implements FragmentManager.OnBackStackChangedList
             }
         });
 
-        //if (!mActivity.isTwoPane())
-            mActivity.getSupportFragmentManager().addOnBackStackChangedListener(this);
+        mActivity.getSupportFragmentManager().addOnBackStackChangedListener(this);
 
         mActionBar.setDisplayHomeAsUpEnabled(true);
         showMenuButton();

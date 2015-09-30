@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.cohenadair.anglerslog.R;
@@ -16,6 +17,7 @@ import com.cohenadair.anglerslog.utilities.fragment.FragmentData;
  */
 public class ManageCatchFragment extends Fragment {
 
+    private LinearLayout mSpeciesLayout;
     private TextView mSpeciesTextView;
 
     public ManageCatchFragment() {
@@ -27,7 +29,9 @@ public class ManageCatchFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_manage_catch, container, false);
 
         mSpeciesTextView = (TextView)view.findViewById(R.id.species_text_view);
-        mSpeciesTextView.setOnClickListener(new View.OnClickListener() {
+
+        mSpeciesLayout = (LinearLayout)view.findViewById(R.id.species_layout);
+        mSpeciesLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final ManagePrimitiveFragment fragment = ManagePrimitiveFragment.newInstance(FragmentData.PRIMITIVE_SPECIES);

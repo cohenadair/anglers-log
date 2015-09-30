@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="@dimen/spacing_small"
     android:orientation="vertical"
     tools:context="com.cohenadair.anglerslog.fragments.ManageFragment">
 
@@ -23,11 +22,19 @@
 
     </android.support.v7.widget.RecyclerView>
 
+    <include layout="@layout/view_divider">
+    </include>
+
     <LinearLayout
         android:id="@+id/add_item_layout"
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/spacing_small"
+        android:paddingStart="@dimen/spacing_small"
+        android:paddingRight="@dimen/spacing_small"
+        android:paddingEnd="@dimen/spacing_small"
+        android:paddingBottom="@dimen/spacing_small">
 
         <EditText
             android:layout_width="0dp"
@@ -37,7 +44,8 @@
             android:hint="@string/hint_new_item"/>
 
         <Button
-            android:layout_width="wrap_content"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="60dp"
             android:layout_height="wrap_content"
             android:text="@string/button_add"
             android:id="@+id/add_button"/>
