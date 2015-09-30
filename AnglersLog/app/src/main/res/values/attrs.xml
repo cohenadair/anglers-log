@@ -1,0 +1,7 @@
+<resources>
+    <declare-styleable name="SelectionView">
+        <attr name="titleText" format="string" />
+        <attr name="subtitleText" format="string" />
+        <attr name="subtitleHint" format="string" />
+    </declare-styleable>
+</resources>

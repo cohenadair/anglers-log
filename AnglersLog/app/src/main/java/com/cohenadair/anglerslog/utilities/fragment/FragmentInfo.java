@@ -3,6 +3,7 @@ package com.cohenadair.anglerslog.utilities.fragment;
 import android.support.v4.app.Fragment;
 import android.widget.ArrayAdapter;
 
+import com.cohenadair.anglerslog.fragments.ManageContentFragment;
 import com.cohenadair.anglerslog.fragments.ManageFragment;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 
@@ -101,7 +102,7 @@ public class FragmentInfo {
         mManageInfo.getInterface().onAddNew(obj);
     }
 
-    public Fragment manageContentFragment() {
+    public ManageContentFragment manageContentFragment() {
         return mManageInfo.getManageContentFragment();
     }
 }

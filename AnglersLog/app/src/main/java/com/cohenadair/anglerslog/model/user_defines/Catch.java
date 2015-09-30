@@ -1,5 +1,7 @@
 package com.cohenadair.anglerslog.model.user_defines;
 
+import android.text.format.DateFormat;
+
 import java.util.Date;
 
 /**
@@ -36,7 +38,7 @@ public class Catch extends UserDefineObject {
 
     @Override
     public String toString() {
-        return speciesAsString() + ", " + dateAsString();
+        return speciesAsString() + " - " + dateTimeAsString();
     }
 
     public String speciesAsString() {
@@ -44,6 +46,14 @@ public class Catch extends UserDefineObject {
     }
 
     public String dateAsString() {
-        return mDate.toString();
+        return DateFormat.format("MMMM dd, yyyy", mDate).toString();
+    }
+
+    public String timeAsString() {
+        return DateFormat.format("h:mm a", mDate).toString();
+    }
+
+    public String dateTimeAsString() {
+        return DateFormat.format("MMM dd, yyyy 'at' h:mm a", mDate).toString();
     }
 }

@@ -13,6 +13,7 @@ import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.fragments.DetailFragment;
 import com.cohenadair.anglerslog.fragments.ManageFragment;
 import com.cohenadair.anglerslog.fragments.MyListFragment;
+import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import com.cohenadair.anglerslog.utilities.NavigationManager;
 import com.cohenadair.anglerslog.utilities.fragment.FragmentData;
 import com.cohenadair.anglerslog.utilities.fragment.FragmentInfo;
@@ -133,8 +134,8 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onManageConfirm() {
-        mFragmentInfo.callAddNew(null);
+    public void onManageConfirm(UserDefineObject obj) {
+        mFragmentInfo.callAddNew(obj);
         mNavigationManager.goBack();
     }
     //endregion

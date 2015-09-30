@@ -1,7 +1,6 @@
 package com.cohenadair.anglerslog.utilities.fragment;
 
-import android.support.v4.app.Fragment;
-
+import com.cohenadair.anglerslog.fragments.ManageContentFragment;
 import com.cohenadair.anglerslog.fragments.ManageFragment;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 
@@ -12,14 +11,14 @@ import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 public class ManageFragmentInfo {
 
     private ManageFragment mManageFragment;
-    private Fragment mManageContentFragment; // fragment for the actual content
+    private ManageContentFragment mManageContentFragment; // fragment for the actual content
     private Interface mInterface;
 
     public interface Interface {
         void onAddNew(UserDefineObject obj);
     }
 
-    public ManageFragmentInfo(ManageFragment manageFragment, Fragment contentFragment) {
+    public ManageFragmentInfo(ManageFragment manageFragment, ManageContentFragment contentFragment) {
         mManageFragment = manageFragment;
         mManageContentFragment = contentFragment;
     }
@@ -33,11 +32,11 @@ public class ManageFragmentInfo {
         mManageFragment = manageFragment;
     }
 
-    public Fragment getManageContentFragment() {
+    public ManageContentFragment getManageContentFragment() {
         return mManageContentFragment;
     }
 
-    public void setManageContentFragment(Fragment manageContentFragment) {
+    public void setManageContentFragment(ManageContentFragment manageContentFragment) {
         mManageContentFragment = manageContentFragment;
     }
 

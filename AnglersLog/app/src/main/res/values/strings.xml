@@ -19,8 +19,9 @@
     <string name="button_done">Done</string>
     <string name="button_add">Add</string>
 
-    <string name="user_define_species">Species</string>
     <string name="species_hint">Tap to add or select species</string>
+    <string name="date_label">Date</string>
+    <string name="time_label">Time</string>
 
     <string name="hint_new_item">Enter new</string>
     <string name="new_text">New</string>
@@ -30,5 +31,8 @@
     <string name="action_delete">Delete</string>
     <string name="action_confirm">Confirm</string>
     <string name="action_close">Close</string>
+
+    <string name="success_catch">Successfully added catch!</string>
+    <string name="error_catch">Error adding catch!</string>
 
 </resources>

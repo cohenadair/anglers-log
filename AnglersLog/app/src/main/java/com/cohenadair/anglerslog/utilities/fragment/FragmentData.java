@@ -12,6 +12,7 @@ import com.cohenadair.anglerslog.fragments.ManageFragment;
 import com.cohenadair.anglerslog.fragments.MyListFragment;
 import com.cohenadair.anglerslog.fragments.TripFragment;
 import com.cohenadair.anglerslog.model.Logbook;
+import com.cohenadair.anglerslog.model.user_defines.Catch;
 import com.cohenadair.anglerslog.model.user_defines.Species;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import com.cohenadair.anglerslog.utilities.Utils;
@@ -95,9 +96,12 @@ public class FragmentData {
         manageInfo.setInterface(new ManageFragmentInfo.Interface() {
             @Override
             public void onAddNew(UserDefineObject obj) {
-                Utils.showToast(activity, "Added new Catch!");
-                // TODO actually add object
-                //Logbook.getInstance().addCatch((Catch)obj);
+                Catch aCatch = (Catch)obj;
+
+                if (Logbook.getInstance().addCatch(aCatch))
+                    Utils.showToast(activity, activity.getResources().getString(R.string.success_catch));
+                else
+                    Utils.showToast(activity, activity.getResources().getString(R.string.error_catch));
             }
         });
 
