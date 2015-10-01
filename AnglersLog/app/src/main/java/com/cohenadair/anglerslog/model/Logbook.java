@@ -7,6 +7,7 @@ import com.cohenadair.anglerslog.model.user_defines.Species;
 import com.cohenadair.anglerslog.model.user_defines.Trip;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineArray;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
+import com.cohenadair.anglerslog.utilities.Utils;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -77,7 +78,7 @@ public class Logbook {
     //region Catch Manipulation
     public boolean addCatch(Catch aCatch) {
         if (catchDated(aCatch.getDate()) != null) {
-            Log.e(TAG, "A catch with date " + aCatch.dateAsString() + " already exists!");
+            Log.e(TAG, "A catch with date already exists!");
             return false;
         }
 
@@ -96,7 +97,7 @@ public class Logbook {
     public Catch catchDated(Date aDate) {
         for (UserDefineObject obj : mCatches.getItems()) {
             Catch aCatch = (Catch)obj;
-            if (aCatch.getDate().equals(aDate))
+            if (Utils.datesEqualNoSeconds(aCatch.getDate(), aDate))
                 return aCatch;
         }
 

@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.cohenadair.anglerslog.R;
-import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import com.cohenadair.anglerslog.utilities.fragment.FragmentData;
 import com.cohenadair.anglerslog.utilities.fragment.FragmentInfo;
 
@@ -26,7 +25,7 @@ public class ManageFragment extends DialogFragment {
     // callback interface for the fragment's activity
     public interface InteractionListener {
         void onManageCancel();
-        void onManageConfirm(UserDefineObject obj);
+        void onManageConfirm();
     }
     //endregion
 
@@ -67,7 +66,11 @@ public class ManageFragment extends DialogFragment {
         manageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mCallbacks.onManageConfirm(info.manageContentFragment().getObject());
+                if (info != null) {
+                    ManageContentFragment fragment = info.manageContentFragment();
+                    if (fragment.addObjectToLogbook())
+                        mCallbacks.onManageConfirm();
+                }
             }
         });
 

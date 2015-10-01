@@ -10,9 +10,11 @@ import android.widget.DatePicker;
 import android.widget.TimePicker;
 
 import com.cohenadair.anglerslog.R;
+import com.cohenadair.anglerslog.model.Logbook;
 import com.cohenadair.anglerslog.model.user_defines.Catch;
 import com.cohenadair.anglerslog.model.user_defines.Species;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
+import com.cohenadair.anglerslog.utilities.Utils;
 import com.cohenadair.anglerslog.utilities.fragment.FragmentData;
 import com.cohenadair.anglerslog.views.SelectionView;
 
@@ -64,8 +66,32 @@ public class ManageCatchFragment extends ManageContentFragment {
     }
 
     @Override
-    public UserDefineObject getObject() {
-        return mCatch;
+    public boolean addObjectToLogbook() {
+        if (verifyUserInput()) {
+            boolean success = Logbook.getInstance().addCatch(mCatch);
+            int msgId = success ? R.string.success_catch : R.string.error_catch;
+            Utils.showToast(getActivity(), getResources().getString(msgId));
+            return success;
+        }
+        return false;
+    }
+
+    private boolean verifyUserInput() {
+        Logbook log = Logbook.getInstance();
+
+        // date and time
+        if (log.catchDated(mCatch.getDate()) != null) {
+            Utils.showErrorAlert(getActivity(), R.string.error_catch_date);
+            return false;
+        }
+
+        // species
+        if (mCatch.getSpecies() == null) {
+            Utils.showErrorAlert(getActivity(), R.string.error_catch_species);
+            return false;
+        }
+
+        return true;
     }
 
     //region Date & Time

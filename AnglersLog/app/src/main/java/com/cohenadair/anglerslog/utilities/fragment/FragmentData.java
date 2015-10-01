@@ -12,10 +12,8 @@ import com.cohenadair.anglerslog.fragments.ManageFragment;
 import com.cohenadair.anglerslog.fragments.MyListFragment;
 import com.cohenadair.anglerslog.fragments.TripFragment;
 import com.cohenadair.anglerslog.model.Logbook;
-import com.cohenadair.anglerslog.model.user_defines.Catch;
 import com.cohenadair.anglerslog.model.user_defines.Species;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
-import com.cohenadair.anglerslog.utilities.Utils;
 
 import java.util.HashMap;
 
@@ -91,19 +89,7 @@ public class FragmentData {
 
         FragmentInfo info = new FragmentInfo("fragment_catches");
         FragmentInfo detailInfo = new FragmentInfo("fragment_catch");
-
         ManageFragmentInfo manageInfo = new ManageFragmentInfo(ManageFragment.newInstance(id), new ManageCatchFragment());
-        manageInfo.setInterface(new ManageFragmentInfo.Interface() {
-            @Override
-            public void onAddNew(UserDefineObject obj) {
-                Catch aCatch = (Catch)obj;
-
-                if (Logbook.getInstance().addCatch(aCatch))
-                    Utils.showToast(activity, activity.getResources().getString(R.string.success_catch));
-                else
-                    Utils.showToast(activity, activity.getResources().getString(R.string.error_catch));
-            }
-        });
 
         detailInfo.setFragment(new CatchFragment());
 

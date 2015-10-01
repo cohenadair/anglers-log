@@ -5,7 +5,6 @@ import android.widget.ArrayAdapter;
 
 import com.cohenadair.anglerslog.fragments.ManageContentFragment;
 import com.cohenadair.anglerslog.fragments.ManageFragment;
-import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 
 /**
  * FragmentInfo is used to store everything the UI needs to know about a fragment to properly
@@ -96,10 +95,6 @@ public class FragmentInfo {
 
     public ManageFragment manageFragment() {
         return mManageInfo.getManageFragment();
-    }
-
-    public void callAddNew(UserDefineObject obj) {
-        mManageInfo.getInterface().onAddNew(obj);
     }
 
     public ManageContentFragment manageContentFragment() {
