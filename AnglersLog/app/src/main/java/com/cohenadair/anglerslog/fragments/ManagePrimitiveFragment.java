@@ -214,6 +214,10 @@ public class ManagePrimitiveFragment extends DialogFragment {
 
         @Override
         public void onClick(View view) {
+            // reset should delete if the delete selection was never confirmed
+            for (UserDefineObject obj : mPrimitiveInfo.getItems())
+                obj.setShouldDelete(false);
+
             mOnDismissInterface.onDismiss(mPrimitiveInfo.getInterface().onClickItem(getLayoutPosition()));
             getDialog().dismiss();
         }
@@ -307,9 +311,9 @@ public class ManagePrimitiveFragment extends DialogFragment {
             LayoutInflater inflater = LayoutInflater.from(getActivity());
             int layoutId = 0;
 
-            if      (mManageType == ManageType.Delete)  layoutId = R.layout.list_item_manage_primitive_delete;
-            else if (mManageType == ManageType.Selection)  layoutId = R.layout.list_item_manage_primitive;
-            else if (mManageType == ManageType.Edit)    layoutId = R.layout.list_item_manage_primitive_edit;
+            if      (mManageType == ManageType.Delete) layoutId = R.layout.list_item_manage_primitive_delete;
+            else if (mManageType == ManageType.Selection) layoutId = R.layout.list_item_manage_primitive;
+            else if (mManageType == ManageType.Edit) layoutId = R.layout.list_item_manage_primitive_edit;
 
             View view = inflater.inflate(layoutId, parent, false);
 
