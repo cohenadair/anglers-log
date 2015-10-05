@@ -1,10 +1,7 @@
 package com.cohenadair.anglerslog.utilities;
 
-import android.app.ActionBar;
-import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
@@ -44,46 +41,21 @@ public class Utils {
                 .show();
     }
 
-    public static void handleDisplayBackButton(Activity anActivity, boolean show) {
-        ActionBar actionBar = anActivity.getActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(show);
-            actionBar.setHomeButtonEnabled(show);
-        }
-    }
-
-    public static void setActionBarTitle(Activity anActivity, int resId) {
-        ActionBar actionBar = anActivity.getActionBar();
-        if (actionBar != null)
-            actionBar.setTitle(resId);
-    }
-
-    public static void setActionBarTitle(Activity anActivity, String title) {
-        ActionBar actionBar = anActivity.getActionBar();
-        if (actionBar != null)
-            actionBar.setTitle(title);
-    }
-
-    public static int getOrientation(Context context) {
-        return context.getResources().getConfiguration().orientation;
-    }
-
-    public static boolean isOrientationLandscape(Context context) {
-        return  Utils.getOrientation(context) == Configuration.ORIENTATION_LANDSCAPE;
-    }
-
-    public static boolean isOrientationPortrait(Context context) {
-        return  Utils.getOrientation(context) == Configuration.ORIENTATION_PORTRAIT;
-    }
-
     public static float getFloat(Resources resources, int resId) {
         TypedValue out = new TypedValue();
         resources.getValue(resId, out, true);
         return out.getFloat();
     }
 
+    /**
+     * Checks to see if two dates are equal, excluding seconds from the comparison.
+     * @param date1 The first date to compare.
+     * @param date2 The second date to compare.
+     * @return True if the dates are equal, false otherwise.
+     */
     public static boolean datesEqualNoSeconds(Date date1, Date date2) {
         Calendar c = Calendar.getInstance();
+
         c.setTime(date1);
         int year1 = c.get(Calendar.YEAR);
         int month1 = c.get(Calendar.MONTH);

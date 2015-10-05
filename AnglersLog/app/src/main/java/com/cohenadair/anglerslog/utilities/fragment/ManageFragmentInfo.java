@@ -9,7 +9,7 @@ import com.cohenadair.anglerslog.fragments.ManageFragment;
  */
 public class ManageFragmentInfo {
 
-    private ManageFragment mManageFragment;
+    private ManageFragment mManageFragment; // outer fragment
     private ManageContentFragment mManageContentFragment; // fragment for the actual content
 
     public ManageFragmentInfo(ManageFragment manageFragment, ManageContentFragment contentFragment) {

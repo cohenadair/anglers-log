@@ -8,17 +8,16 @@ import android.view.ViewGroup;
 
 /**
  * A wrapper class for {@link LinearLayoutManager} that calculates the height of the associated
- * {@link RecyclerView} to act wrap its contents. Class derived from:
+ * {@link RecyclerView} to wrap its contents. Class derived from:
  * http://stackoverflow.com/questions/27475178/how-do-i-make-wrap-content-work-on-a-recyclerview
- * Created by Cohen Adair on 2015-09-13.
+ *
+ * @author Cohen Adair
  */
 public class WrappedLinearLayoutManager extends LinearLayoutManager {
 
     public WrappedLinearLayoutManager(Context context)    {
         super(context);
     }
-
-    private int[] mMeasuredDimension = new int[2];
 
     @Override
     public void onMeasure(RecyclerView.Recycler recycler, RecyclerView.State state, int widthSpec, int heightSpec) {

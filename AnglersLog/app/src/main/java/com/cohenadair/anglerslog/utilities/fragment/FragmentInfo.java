@@ -9,7 +9,7 @@ import com.cohenadair.anglerslog.fragments.ManageFragment;
 /**
  * FragmentInfo is used to store everything the UI needs to know about a fragment to properly
  * display it on the screen.  Having this class makes it extremely easy to display different
- * fragments interchangeably throughout the application's lifecycle.
+ * fragments (that have a similar UI) interchangeably throughout the application's lifecycle.
  *
  * Created by Cohen Adair on 2015-09-03.
  */

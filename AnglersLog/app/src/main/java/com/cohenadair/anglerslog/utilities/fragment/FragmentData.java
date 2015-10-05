@@ -23,6 +23,9 @@ import java.util.HashMap;
  */
 public class FragmentData {
 
+    /**
+     * Top level fragments that are normally displayed from the navigation drawer.
+     */
     public static final int FRAGMENT_CATCHES    = R.id.nav_catches;
     public static final int FRAGMENT_TRIPS      = R.id.nav_trips;
     public static final int FRAGMENT_GALLERY    = R.id.nav_photos;
@@ -35,7 +38,7 @@ public class FragmentData {
      * These fragments are used when adding more complex user defines. They do not show in the
      * navigation drawer.
      */
-    public static final int PRIMITIVE_SPECIES   = 0;
+    public static final int PRIMITIVE_SPECIES = 0;
 
     //region Navigation Drawer Fragments
     /**
@@ -65,6 +68,12 @@ public class FragmentData {
         return null;
     }
 
+    /**
+     * Gets the current selection (or scrolling) position for returning to a list from a detail
+     * fragment.
+     * @param fragmentId The fragment that's being displayed.
+     * @return The position of the most recent selected item.
+     */
     public static int selectionPos(int fragmentId) {
         if (mSelectionPositions.containsKey(fragmentId))
             return mSelectionPositions.get(fragmentId);
@@ -72,8 +81,13 @@ public class FragmentData {
         return 0;
     }
 
-    public static void selectionPos(int fragmentPos, int selectedPos) {
-        mSelectionPositions.put(fragmentPos, selectedPos);
+    /**
+     * Sets the current selection or scroll position for the current fragment.
+     * @param fragmentId The id of the fragment position to set.
+     * @param selectedPos The position of the most recent selected item in the list.
+     */
+    public static void selectionPos(int fragmentId, int selectedPos) {
+        mSelectionPositions.put(fragmentId, selectedPos);
     }
 
     public static int getCurrentFragmentId() {
@@ -119,11 +133,16 @@ public class FragmentData {
     //endregion
 
     //region Primitive Fragments
+    /**
+     * Loads information for displaying "primitive" user defines in a DialogFragment.
+     * @param primitiveId The id of the primitive user define to retrieve.
+     * @return A PrimitiveFragmentInfo instance for the associated user define.
+     */
     @Nullable
-    public static PrimitiveFragmentInfo primitiveInfo(Activity activity, int primitiveId) {
+    public static PrimitiveFragmentInfo primitiveInfo(int primitiveId) {
         switch (primitiveId) {
             case PRIMITIVE_SPECIES:
-                return speciesPrimitiveInfo(activity);
+                return speciesPrimitiveInfo();
 
             default:
                 Log.e("FragmentData", "Invalid primitive id in primitiveInfo()");
@@ -133,13 +152,13 @@ public class FragmentData {
         return null;
     }
 
-    private static PrimitiveFragmentInfo speciesPrimitiveInfo(Activity activity) {
+    private static PrimitiveFragmentInfo speciesPrimitiveInfo() {
         final PrimitiveFragmentInfo info = new PrimitiveFragmentInfo();
 
         info.setName("species");
         info.setCapitalizedName("Species");
         info.setItems(Logbook.getInstance().getSpecies());
-        info.setInterface(new PrimitiveFragmentInfo.Interface() {
+        info.setManageInterface(new PrimitiveFragmentInfo.ManageInterface() {
             @Override
             public boolean onAddItem(String name) {
                 return Logbook.getInstance().addSpecies(new Species(name));

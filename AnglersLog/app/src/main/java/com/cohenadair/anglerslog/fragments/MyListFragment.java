@@ -23,14 +23,18 @@ public class MyListFragment extends Fragment {
     //region Callback Interface
     InteractionListener mCallbacks;
 
-    // callback interface for the fragment's activity
+    /**
+     * Callback interface must be implemented by any Activity implementing MyListFragment.
+     */
     public interface InteractionListener {
         void onMyListItemSelected(int position);
-        void onMyListClickNewButton(View v);
+        void onMyListClickNewButton();
     }
     //endregion
-    
-    // used to keep fragment state through attach/detach
+
+    /**
+     * Used to keep fragment state through attach/detach.
+     */
     private static final String ARG_FRAGMENT_ID = "arg_fragment_id";
 
     /**
@@ -108,7 +112,7 @@ public class MyListFragment extends Fragment {
         newButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mCallbacks.onMyListClickNewButton(v);
+                mCallbacks.onMyListClickNewButton();
             }
         });
     }

@@ -34,22 +34,29 @@ public class ManagePrimitiveFragment extends DialogFragment {
 
     private RecyclerView mContentRecyclerView;
     private EditText mNewItemEdit;
-    private Button mAddButton;
     private Toolbar mToolbar;
     private OnDismissInterface mOnDismissInterface;
     private PrimitiveFragmentInfo mPrimitiveInfo;
 
+    /**
+     * Different "management" types for this fragment. Used to display different list item layotus.
+     */
     private enum ManageType {
         Selection,
         Edit,
         Delete
     }
 
+    /**
+     * OnDismissInterface must be implemented by any view utilizing a ManagePrimitiveFragment.
+     */
     public interface OnDismissInterface {
         void onDismiss(UserDefineObject selectedItem);
     }
 
-    // used to keep fragment state through attach/detach
+    /**
+     * Used to keep fragment state through attach/detach.
+     */
     private static final String ARG_PRIMITIVE_ID = "arg_primitive_id";
 
     public static ManagePrimitiveFragment newInstance(int primitiveId) {
@@ -68,10 +75,6 @@ public class ManagePrimitiveFragment extends DialogFragment {
     }
 
     //region Getters & Setters
-    public OnDismissInterface getOnDismissInterface() {
-        return mOnDismissInterface;
-    }
-
     public void setOnDismissInterface(OnDismissInterface onDismissInterface) {
         mOnDismissInterface = onDismissInterface;
     }
@@ -82,7 +85,7 @@ public class ManagePrimitiveFragment extends DialogFragment {
         View view = inflater.inflate(R.layout.fragment_manage_primitive, container, false);
 
         int primitiveId = getArguments().getInt(ARG_PRIMITIVE_ID);
-        mPrimitiveInfo = FragmentData.primitiveInfo(getActivity(), primitiveId);
+        mPrimitiveInfo = FragmentData.primitiveInfo(primitiveId);
 
         if (mPrimitiveInfo != null) {
             initViews(view);
@@ -110,14 +113,14 @@ public class ManagePrimitiveFragment extends DialogFragment {
         mNewItemEdit = (EditText)view.findViewById(R.id.new_item_edit);
         mNewItemEdit.setHint(getResources().getString(R.string.hint_new_item) + " " + mPrimitiveInfo.getName());
 
-        mAddButton = (Button)view.findViewById(R.id.add_button);
-        mAddButton.setOnClickListener(new View.OnClickListener() {
+        Button addButton = (Button)view.findViewById(R.id.add_button);
+        addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String name = mNewItemEdit.getText().toString();
 
                 if (!name.equals(""))
-                    if (mPrimitiveInfo.getInterface().onAddItem(name))
+                    if (mPrimitiveInfo.getManageInterface().onAddItem(name))
                         mContentRecyclerView.getAdapter().notifyDataSetChanged();
 
                 mNewItemEdit.setText("");
@@ -132,16 +135,25 @@ public class ManagePrimitiveFragment extends DialogFragment {
     //endregion
 
     //region Item Management
+    /**
+     * Begins the editing process.
+     */
     private void beginEdit() {
         showEditMenu(false);
         restoreAdapter(ManageType.Edit);
     }
 
+    /**
+     * Begins the deleting process.
+     */
     private void beginDelete() {
         showEditMenu(true);
         restoreAdapter(ManageType.Delete);
     }
 
+    /**
+     * Restores the toolbar to it's default state.
+     */
     private void restoreToolbar() {
         mToolbar.getMenu().clear();
         mToolbar.inflateMenu(R.menu.menu_manage_primitive);
@@ -165,10 +177,18 @@ public class ManagePrimitiveFragment extends DialogFragment {
         });
     }
 
+    /**
+     * Updates the RecyclerView's adapter to display different item layouts.
+     * @param manageType The type of management item to display.
+     */
     private void restoreAdapter(ManageType manageType) {
         mContentRecyclerView.setAdapter(new ManagePrimitiveAdapter(mPrimitiveInfo.getItems(), manageType));
     }
 
+    /**
+     * Shows the editing menu on the toolbar.
+     * @param deleting If true, the ManagePrimitiveInfo's onConfirmDelete callback will be called.
+     */
     private void showEditMenu(final boolean deleting) {
         mToolbar.getMenu().clear();
         mToolbar.inflateMenu(R.menu.menu_manage_primitive_edit);
@@ -177,7 +197,7 @@ public class ManagePrimitiveFragment extends DialogFragment {
             public boolean onMenuItemClick(MenuItem item) {
                 if (item.getItemId() == R.id.action_check) {
                     if (deleting)
-                        mPrimitiveInfo.getInterface().onConfirmDelete();
+                        mPrimitiveInfo.getManageInterface().onConfirmDelete();
 
                     restoreToolbar();
                     restoreAdapter(ManageType.Selection);
@@ -189,6 +209,7 @@ public class ManagePrimitiveFragment extends DialogFragment {
     }
     //endregion
 
+    // TODO factor holder and adapter code to it's own class
     //region RecyclerView Stuff
     private class ManagePrimitiveHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
@@ -218,7 +239,7 @@ public class ManagePrimitiveFragment extends DialogFragment {
             for (UserDefineObject obj : mPrimitiveInfo.getItems())
                 obj.setShouldDelete(false);
 
-            mOnDismissInterface.onDismiss(mPrimitiveInfo.getInterface().onClickItem(getLayoutPosition()));
+            mOnDismissInterface.onDismiss(mPrimitiveInfo.getManageInterface().onClickItem(getLayoutPosition()));
             getDialog().dismiss();
         }
 
@@ -232,7 +253,7 @@ public class ManagePrimitiveFragment extends DialogFragment {
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
                     if (mNameEditText.isFocused())
-                        mPrimitiveInfo.getInterface().onEditItem(getAdapterPosition(), s.toString());
+                        mPrimitiveInfo.getManageInterface().onEditItem(getAdapterPosition(), s.toString());
                 }
 
                 @Override
@@ -266,32 +287,12 @@ public class ManagePrimitiveFragment extends DialogFragment {
             return mNameEditText;
         }
 
-        public void setNameEditText(EditText nameEditText) {
-            mNameEditText = nameEditText;
-        }
-
         public TextView getNameTextView() {
             return mNameTextView;
         }
 
-        public void setNameTextView(TextView nameTextView) {
-            mNameTextView = nameTextView;
-        }
-
         public CheckBox getDeleteCheckBox() {
             return mDeleteCheckBox;
-        }
-
-        public void setDeleteCheckBox(CheckBox deleteCheckBox) {
-            mDeleteCheckBox = deleteCheckBox;
-        }
-
-        public ManageType getManageType() {
-            return mManageType;
-        }
-
-        public void setManageType(ManageType manageType) {
-            mManageType = manageType;
         }
         //endregion
     }

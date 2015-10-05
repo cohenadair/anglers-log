@@ -22,14 +22,18 @@ public class ManageFragment extends DialogFragment {
     //region Callback Interface
     InteractionListener mCallbacks;
 
-    // callback interface for the fragment's activity
+    /**
+     * Must be implemented by the fragment's Activity.
+     */
     public interface InteractionListener {
         void onManageCancel();
         void onManageConfirm();
     }
     //endregion
 
-    // used to keep fragment state through attach/detach
+    /**
+     * Used to keep fragment state through attach/detach.
+     */
     private static final String ARG_FRAGMENT_ID = "arg_fragment_id";
 
     public static ManageFragment newInstance(int fragmentId) {

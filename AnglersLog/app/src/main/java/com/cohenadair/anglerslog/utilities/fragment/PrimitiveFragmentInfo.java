@@ -14,18 +14,15 @@ import java.util.List;
 public class PrimitiveFragmentInfo {
 
     List<UserDefineObject> mItems;
-    Interface mInterface;
+    ManageInterface mManageInterface;
+
+    String mName; // for TextEdit hint
+    String mCapitalizedName; // for dialog title
 
     /**
-     * Used for displaying titles and hint
+     * An interface for managing items in the RecyclerView.
      */
-    String mName;
-    String mCapitalizedName;
-
-    /**
-     * An interface for managing items in the ListView.
-     */
-    public interface Interface {
+    public interface ManageInterface {
         boolean onAddItem(String name);
         UserDefineObject onClickItem(int position);
         void onConfirmDelete();
@@ -41,12 +38,12 @@ public class PrimitiveFragmentInfo {
         mItems = items;
     }
 
-    public Interface getInterface() {
-        return mInterface;
+    public ManageInterface getManageInterface() {
+        return mManageInterface;
     }
 
-    public void setInterface(Interface anInterface) {
-        mInterface = anInterface;
+    public void setManageInterface(ManageInterface anInterface) {
+        mManageInterface = anInterface;
     }
 
     public String getName() {

@@ -76,6 +76,10 @@ public class ManageCatchFragment extends ManageContentFragment {
         return false;
     }
 
+    /**
+     * Validates the user's input.
+     * @return True if the input is valid, false otherwise.
+     */
     private boolean verifyUserInput() {
         Logbook log = Logbook.getInstance();
 
@@ -140,6 +144,10 @@ public class ManageCatchFragment extends ManageContentFragment {
         updateTimeView(null);
     }
 
+    /**
+     * Updates the date view's text.
+     * @param date The date to display in the view. Only looks at the date portion.
+     */
     private void updateDateView(Date date) {
         if (date != null)
             mCatch.setDate(date);
@@ -147,6 +155,10 @@ public class ManageCatchFragment extends ManageContentFragment {
         mDateView.setSubtitle(mCatch.dateAsString());
     }
 
+    /**
+     * Updates the time view's text.
+     * @param date The date to display in the view. Only looks at the time portion.
+     */
     private void updateTimeView(Date date) {
         if (date != null)
             mCatch.setDate(date);
@@ -154,6 +166,9 @@ public class ManageCatchFragment extends ManageContentFragment {
         mTimeView.setSubtitle(mCatch.timeAsString());
     }
 
+    /**
+     * Resets the calendar's time to the current catch's time.
+     */
     private void updateCalendar() {
         Calendar.getInstance().setTime(mCatch.getDate());
     }

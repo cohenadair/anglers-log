@@ -7,7 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.fragments.DetailFragment;
@@ -83,6 +82,9 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     //region MyListFragment.InteractionListener interface
+    /**
+     * Either show the detail fragment or update if it's already shown.
+     */
     @Override
     public void onMyListItemSelected(int position) {
         // update the current item for later
@@ -101,14 +103,18 @@ public class MainActivity extends AppCompatActivity implements
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             transaction.replace(R.id.master_container, detailFragment)
                        .addToBackStack(null)
-                       .commit();
+                    .commit();
 
             mNavigationManager.setActionBarTitle("");
         }
     }
 
+    /**
+     * When the "new" FloatingActionButton is clicked. This button may not appear on all navigation
+     * fragments.
+     */
     @Override
-    public void onMyListClickNewButton(View v) {
+    public void onMyListClickNewButton() {
         ManageFragment manageFragment = mFragmentInfo.manageFragment();
 
         if (isTwoPane()) {
@@ -148,6 +154,10 @@ public class MainActivity extends AppCompatActivity implements
     }
     //endregion
 
+    /**
+     * Checks to see if the current layout has two-panes (i.e. master-detail layout).
+     * @return True if there are two-panes; false otherwise.
+     */
     public boolean isTwoPane() {
         return getResources().getBoolean(R.bool.has_two_panes);
     }
