@@ -32,7 +32,7 @@ public class Utils {
         new AlertDialog.Builder(context)
                 .setTitle("Error")
                 .setMessage(msgId)
-                .setNeutralButton(R.string.OK, new DialogInterface.OnClickListener() {
+                .setPositiveButton(R.string.OK, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();

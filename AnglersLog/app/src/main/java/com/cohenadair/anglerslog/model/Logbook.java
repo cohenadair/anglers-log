@@ -1,5 +1,6 @@
 package com.cohenadair.anglerslog.model;
 
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.cohenadair.anglerslog.model.user_defines.Catch;
@@ -136,6 +137,11 @@ public class Logbook {
 
     //region Species Manipulation
     public boolean addSpecies(Species species) {
+        if (speciesNamed(species.getName()) != null) {
+            Log.e(TAG, "A species with name already exists!");
+            return false;
+        }
+
         return mSpecies.add(species);
     }
 
@@ -145,6 +151,15 @@ public class Logbook {
 
     public void editSpecies(int position, String newName) {
         speciesAtPos(position).edit(new Species(newName));
+    }
+
+    /**
+     * Looks for existing species with aName.
+     * @param name the name of the species to add.
+     * @return the catch with aDate or null if no such catch exists.
+     */
+    public Species speciesNamed(String name) {
+        return (Species)userDefineNamed(mSpecies, name);
     }
 
     /**
@@ -169,4 +184,20 @@ public class Logbook {
         return mSpecies.nameList();
     }
     //endregion
+
+    /**
+     * Looks for a UserDefineObject with a specified name.
+     * @param arr The UserDefineArray to look for the name.
+     * @param name The name to look for.
+     * @return The UserDefineObject with the given name or null if no such object exists.
+     */
+    @Nullable
+    private UserDefineObject userDefineNamed(UserDefineArray arr, String name) {
+        for (UserDefineObject obj : arr.getItems()) {
+            if (name.equalsIgnoreCase(obj.getName()))
+                return obj;
+        }
+
+        return null;
+    }
 }

@@ -65,8 +65,13 @@ public class LogbookTest {
     @Test
     public void testAddRemoveSpecies() {
         Species testSpecies = new Species("Example Species");
+        Species testSpecies2 = new Species(testSpecies.getName());
 
         Logbook.getInstance().addSpecies(testSpecies);
+        assertTrue(Logbook.getInstance().speciesCount() == 1);
+
+        // a Species with a duplicate name shouldn't be added
+        Logbook.getInstance().addSpecies(testSpecies2);
         assertTrue(Logbook.getInstance().speciesCount() == 1);
 
         Logbook.getInstance().removeSpecies(0);

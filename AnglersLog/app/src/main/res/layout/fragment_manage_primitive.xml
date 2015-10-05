@@ -22,8 +22,7 @@
 
     </android.support.v7.widget.RecyclerView>
 
-    <include layout="@layout/view_divider">
-    </include>
+    
 
     <LinearLayout
         android:id="@+id/add_item_layout"
