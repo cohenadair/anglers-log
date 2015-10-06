@@ -12,6 +12,7 @@ public class Catch extends UserDefineObject {
 
     private Date mDate;
     private Species mSpecies;
+    private boolean mIsFavorite;
 
     public Catch(Date date) {
         super(date.toString());
@@ -33,6 +34,14 @@ public class Catch extends UserDefineObject {
 
     public void setSpecies(Species species) {
         mSpecies = species;
+    }
+
+    public boolean isFavorite() {
+        return mIsFavorite;
+    }
+
+    public void setIsFavorite(boolean isFavorite) {
+        mIsFavorite = isFavorite;
     }
     //endregion
 

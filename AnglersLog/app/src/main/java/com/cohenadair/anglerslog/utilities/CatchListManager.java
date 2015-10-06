@@ -48,12 +48,8 @@ public class CatchListManager {
                 public boolean onTouch(View v, MotionEvent event) {
                     // TODO make custom view for FavoriteStar
                     if (event.getAction() == MotionEvent.ACTION_UP) {
-                        if (mFavorite.getRating() <= 0)
-                            mFavorite.setRating((float)1.0);
-                        else
-                            mFavorite.setRating((float)0.0);
-
-                        Log.d("", "Rating: " + mFavorite.getRating());
+                        mFavorite.setRating(mFavorite.getRating() <= 0 ? (float)1.0 : (float)0.0);
+                        mCatch.setIsFavorite(mFavorite.getRating() > 0);
                     }
                     return true;
                 }
@@ -81,6 +77,7 @@ public class CatchListManager {
             mCatch = aCatch;
             mSpeciesTextView.setText(aCatch.speciesAsString());
             mDateTextView.setText(aCatch.dateTimeAsString());
+            mFavorite.setRating(mCatch.isFavorite() ? (float)1.0 : (float)0.0);
         }
     }
     //endregion
