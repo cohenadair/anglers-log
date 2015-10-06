@@ -7,11 +7,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.fragments.DetailFragment;
 import com.cohenadair.anglerslog.fragments.ManageFragment;
 import com.cohenadair.anglerslog.fragments.MyListFragment;
+import com.cohenadair.anglerslog.interfaces.OnClickInterface;
 import com.cohenadair.anglerslog.utilities.NavigationManager;
 import com.cohenadair.anglerslog.utilities.fragment.FragmentData;
 import com.cohenadair.anglerslog.utilities.fragment.FragmentInfo;
@@ -23,6 +25,7 @@ public class MainActivity extends AppCompatActivity implements
         ManageFragment.InteractionListener
 {
 
+    private OnClickInterface mOnMyListViewItemClick;
     private FragmentInfo mFragmentInfo;
     private NavigationManager mNavigationManager;
 
@@ -39,6 +42,14 @@ public class MainActivity extends AppCompatActivity implements
 
         mNavigationManager = new NavigationManager(this);
         mNavigationManager.setUp();
+
+        // this is passed to MyListFragment's RecyclerView's Adapter and ViewHolder objects
+        mOnMyListViewItemClick = new OnClickInterface() {
+            @Override
+            public void onClick(View view, int position) {
+                onMyListItemSelected(position);
+            }
+        };
     }
 
     @Override
@@ -57,6 +68,10 @@ public class MainActivity extends AppCompatActivity implements
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public OnClickInterface getOnMyListViewItemClick() {
+        return mOnMyListViewItemClick;
     }
 
     public void showFragment(@Nullable Bundle savedInstanceState) {
@@ -81,11 +96,9 @@ public class MainActivity extends AppCompatActivity implements
         }
     }
 
-    //region MyListFragment.InteractionListener interface
     /**
      * Either show the detail fragment or update if it's already shown.
      */
-    @Override
     public void onMyListItemSelected(int position) {
         // update the current item for later
         FragmentData.selectionPos(FragmentData.getCurrentFragmentId(), position);
@@ -103,12 +116,13 @@ public class MainActivity extends AppCompatActivity implements
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             transaction.replace(R.id.master_container, detailFragment)
                        .addToBackStack(null)
-                    .commit();
+                       .commit();
 
             mNavigationManager.setActionBarTitle("");
         }
     }
 
+    //region MyListFragment.InteractionListener interface
     /**
      * When the "new" FloatingActionButton is clicked. This button may not appear on all navigation
      * fragments.

@@ -22,8 +22,6 @@
 
     </android.support.v7.widget.RecyclerView>
 
-    
-
     <LinearLayout
         android:id="@+id/add_item_layout"
         android:orientation="horizontal"

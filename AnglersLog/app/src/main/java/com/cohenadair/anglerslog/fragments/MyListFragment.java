@@ -5,11 +5,11 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ListView;
 
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.utilities.fragment.FragmentData;
@@ -27,7 +27,6 @@ public class MyListFragment extends Fragment {
      * Callback interface must be implemented by any Activity implementing MyListFragment.
      */
     public interface InteractionListener {
-        void onMyListItemSelected(int position);
         void onMyListClickNewButton();
     }
     //endregion
@@ -66,7 +65,7 @@ public class MyListFragment extends Fragment {
 
         if (view != null) {
             initNewButton(view);
-            initListView(view, info);
+            initRecyclerView(view, info);
         }
 
         return view;
@@ -91,20 +90,12 @@ public class MyListFragment extends Fragment {
     }
 
     //region View Initializing
-    private void initListView(View view, FragmentInfo fragmentInfo) {
-        ListView listView = (ListView)view.findViewById(R.id.main_list_view);
+    private void initRecyclerView(View view, FragmentInfo fragmentInfo) {
+        RecyclerView recyclerView = (RecyclerView)view.findViewById(R.id.main_recycler_view);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        // on click item
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                mCallbacks.onMyListItemSelected(position);
-            }
-        });
-
-        // adapter
         if (fragmentInfo != null)
-            listView.setAdapter(fragmentInfo.getArrayAdapter());
+            recyclerView.setAdapter(fragmentInfo.getArrayAdapter());
     }
 
     private void initNewButton(View view) {

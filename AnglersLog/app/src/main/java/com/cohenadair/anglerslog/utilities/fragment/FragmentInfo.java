@@ -1,10 +1,10 @@
 package com.cohenadair.anglerslog.utilities.fragment;
 
 import android.support.v4.app.Fragment;
-import android.widget.ArrayAdapter;
 
 import com.cohenadair.anglerslog.fragments.ManageContentFragment;
 import com.cohenadair.anglerslog.fragments.ManageFragment;
+import com.cohenadair.anglerslog.utilities.ListManager;
 
 /**
  * FragmentInfo is used to store everything the UI needs to know about a fragment to properly
@@ -17,7 +17,7 @@ public class FragmentInfo {
 
     private ManageFragmentInfo mManageInfo;
     private FragmentInfo mDetailInfo;
-    private ArrayAdapter mArrayAdapter;
+    private ListManager.Adapter mArrayAdapter;
     private Fragment mFragment;
     private String mTag;
     private String mName; // used to set the ActionBar title
@@ -44,11 +44,11 @@ public class FragmentInfo {
         mDetailInfo = detailInfo;
     }
 
-    public ArrayAdapter getArrayAdapter() {
+    public ListManager.Adapter getArrayAdapter() {
         return mArrayAdapter;
     }
 
-    public void setArrayAdapter(ArrayAdapter arrayAdapter) {
+    public void setArrayAdapter(ListManager.Adapter arrayAdapter) {
         mArrayAdapter = arrayAdapter;
     }
 
