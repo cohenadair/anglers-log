@@ -23,6 +23,7 @@
     <string name="species_hint">Tap to add or select species</string>
     <string name="date_label">Date</string>
     <string name="time_label">Time</string>
+    <string name="location_label">Location</string>
 
     <string name="hint_new_item">Enter new</string>
     <string name="new_text">New</string>
@@ -38,4 +39,5 @@
     <string name="error_catch_date">A catch with that date and time already exists.  Please choose another date or edit the current catch.</string>
     <string name="error_catch_species">Please select a species.</string>
 
+    <string name="catch_photo_description">A photo of the current catch.</string>
 </resources>

@@ -12,4 +12,7 @@
     <dimen name="nav_header_height">192dp</dimen>
 
     <dimen name="text_size_list_item">15sp</dimen>
+
+    <dimen name="rating_size">16dp</dimen>
+    <dimen name="thumbnail_size">90dp</dimen>
 </resources>

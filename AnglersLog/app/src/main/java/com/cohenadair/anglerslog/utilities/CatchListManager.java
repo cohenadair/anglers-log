@@ -1,15 +1,18 @@
 package com.cohenadair.anglerslog.utilities;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.interfaces.OnClickInterface;
 import com.cohenadair.anglerslog.model.user_defines.Catch;
-import com.cohenadair.anglerslog.model.user_defines.Species;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 
 import java.util.ArrayList;
@@ -23,15 +26,42 @@ public class CatchListManager {
     //region View Holder
     public static class ViewHolder extends ListManager.ViewHolder {
 
+        private ImageView mImageView;
         private TextView mSpeciesTextView;
+        private TextView mDateTextView;
+        private RatingBar mFavorite;
+
+        private Catch mCatch;
 
         public ViewHolder(View view, OnClickInterface callbacks) {
             super(view, callbacks);
-            mSpeciesTextView = (TextView)view.findViewById(R.id.catch_species);
+
+            mImageView = (ImageView)view.findViewById(R.id.image_view);
+            mSpeciesTextView = (TextView)view.findViewById(R.id.species_label);
+            mDateTextView = (TextView)view.findViewById(R.id.date_label);
+
+            mFavorite = (RatingBar)view.findViewById(R.id.favorite_star);
+            mFavorite.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    // TODO make custom view for FavoriteStar
+                    if (event.getAction() == MotionEvent.ACTION_UP) {
+                        if (mFavorite.getRating() <= 0)
+                            mFavorite.setRating((float)1.0);
+                        else
+                            mFavorite.setRating((float)0.0);
+
+                        Log.d("", "Rating: " + mFavorite.getRating());
+                    }
+                    return true;
+                }
+            });
         }
 
-        public void speciesName(Species species) {
-            mSpeciesTextView.setText(species.getName());
+        public void setCatch(Catch aCatch) {
+            mCatch = aCatch;
+            mSpeciesTextView.setText(aCatch.speciesAsString());
+            mDateTextView.setText(aCatch.dateAsString());
         }
     }
     //endregion
@@ -43,6 +73,7 @@ public class CatchListManager {
             super(context, items, callbacks);
         }
 
+        // can't be overridden in the superclass because it needs to return a CatchListManager.ViewHolder
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             LayoutInflater inflater = LayoutInflater.from(getContext());
@@ -55,9 +86,7 @@ public class CatchListManager {
             super.onBind(holder, position);
 
             ViewHolder catchHolder = (ViewHolder)holder;
-            Catch aCatch = (Catch)itemAtPos(position);
-
-            catchHolder.speciesName(aCatch.getSpecies());
+            catchHolder.setCatch((Catch) itemAtPos(position));
         }
     }
     //endregion
