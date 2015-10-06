@@ -1,0 +1,8 @@
+<resources>
+
+    <array name="manage_options">
+        <item>Edit</item>
+        <item>Delete</item>
+    </array>
+
+</resources>

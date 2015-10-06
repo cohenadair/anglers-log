@@ -70,7 +70,7 @@ public class ManageCatchFragment extends ManageContentFragment {
         if (verifyUserInput()) {
             boolean success = Logbook.getInstance().addCatch(mCatch);
             int msgId = success ? R.string.success_catch : R.string.error_catch;
-            Utils.showToast(getActivity(), getResources().getString(msgId));
+            Utils.showToast(getActivity(), msgId);
             return success;
         }
         return false;

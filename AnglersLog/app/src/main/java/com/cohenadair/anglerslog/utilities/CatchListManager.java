@@ -1,6 +1,7 @@
 package com.cohenadair.anglerslog.utilities;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.interfaces.OnClickInterface;
+import com.cohenadair.anglerslog.model.Logbook;
 import com.cohenadair.anglerslog.model.user_defines.Catch;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 
@@ -33,8 +35,8 @@ public class CatchListManager {
 
         private Catch mCatch;
 
-        public ViewHolder(View view, OnClickInterface callbacks) {
-            super(view, callbacks);
+        public ViewHolder(View view, ListManager.Adapter adapter) {
+            super(view, adapter);
 
             mImageView = (ImageView)view.findViewById(R.id.image_view);
             mSpeciesTextView = (TextView)view.findViewById(R.id.species_label);
@@ -58,10 +60,27 @@ public class CatchListManager {
             });
         }
 
+        @Override
+        public void onItemEdit(int position) {
+            Log.d("", "Clicked edit! " + position);
+        }
+
+        @Override
+        public void onItemDelete(int position) {
+            Utils.showDeleteConfirm(context(), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    Logbook.getInstance().removeCatch(mCatch);
+                    getAdapter().notifyDataSetChanged();
+                    Utils.showToast(context(), R.string.success_catch_delete);
+                }
+            });
+        }
+
         public void setCatch(Catch aCatch) {
             mCatch = aCatch;
             mSpeciesTextView.setText(aCatch.speciesAsString());
-            mDateTextView.setText(aCatch.dateAsString());
+            mDateTextView.setText(aCatch.dateTimeAsString());
         }
     }
     //endregion
@@ -78,7 +97,7 @@ public class CatchListManager {
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             LayoutInflater inflater = LayoutInflater.from(getContext());
             View view = inflater.inflate(R.layout.list_item_catch, parent, false);
-            return new ViewHolder(view, getCallbacks());
+            return new ViewHolder(view, this);
         }
 
         @Override

@@ -20,8 +20,14 @@ import java.util.Date;
  */
 public class Utils {
 
-    public static void showToast(Context context, String msg) {
-        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
+    /**
+     * The index of items that appear in a ManageAlert.
+     */
+    public static final int MANAGE_ALERT_EDIT = 0;
+    public static final int MANAGE_ALERT_DELETE = 1;
+
+    public static void showToast(Context context, int resId) {
+        Toast.makeText(context, resId, Toast.LENGTH_SHORT).show();
     }
 
     public static void showSnackbar(View view, String msg) {
@@ -38,6 +44,37 @@ public class Utils {
                         dialog.cancel();
                     }
                 })
+                .show();
+    }
+
+    /**
+     * An alert that shows managing options such as "Edit" and "Delete".
+     * @param context The context in which to show the dialog.
+     * @param onItemClick The on item click listener.
+     */
+    public static void showManageAlert(Context context, DialogInterface.OnClickListener onItemClick) {
+        new AlertDialog.Builder(context)
+                .setPositiveButton(R.string.button_cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                })
+                .setItems(R.array.manage_options, onItemClick)
+                .show();
+    }
+
+    public static void showDeleteConfirm(Context context, DialogInterface.OnClickListener onConfirm) {
+        new AlertDialog.Builder(context)
+                .setTitle(R.string.action_confirm)
+                .setMessage(R.string.msg_confirm_delete)
+                .setNegativeButton(R.string.button_cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                })
+                .setPositiveButton(R.string.action_delete, onConfirm)
                 .show();
     }
 

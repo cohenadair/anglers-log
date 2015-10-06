@@ -1,6 +1,7 @@
 package com.cohenadair.anglerslog.utilities;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
@@ -17,25 +18,61 @@ import java.util.ArrayList;
 public class ListManager {
 
     //region View Holder
-    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public static abstract class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
 
-        private OnClickInterface mCallbacks;
+        private Adapter mAdapter;
         private int mItemPosition;
 
-        public ViewHolder(View view, OnClickInterface callbacks) {
+        /**
+         * Must be implemented by subclasses.
+         * @param position The position of the item to edit or delete.
+         */
+        public abstract void onItemEdit(int position);
+        public abstract void onItemDelete(int position);
+
+        public ViewHolder(View view, Adapter adapter) {
             super(view);
+
             view.setOnClickListener(this);
-            mCallbacks = callbacks;
+            view.setOnLongClickListener(this);
+
+            mAdapter = adapter;
         }
 
         @Override
         public void onClick(View view) {
-            if (mCallbacks != null)
-                mCallbacks.onClick(view, mItemPosition);
+            mAdapter.getCallbacks().onClick(view, mItemPosition);
+        }
+
+        @Override
+        public boolean onLongClick(View view) {
+            Utils.showManageAlert(mAdapter.getContext(), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    switch (which) {
+                        case Utils.MANAGE_ALERT_EDIT:
+                            onItemEdit(mItemPosition);
+                            break;
+
+                        case Utils.MANAGE_ALERT_DELETE:
+                            onItemDelete(mItemPosition);
+                            break;
+                    }
+                }
+            });
+            return true;
         }
 
         public void setItemPosition(int itemPosition) {
             mItemPosition = itemPosition;
+        }
+
+        public Adapter getAdapter() {
+            return mAdapter;
+        }
+
+        public Context context() {
+            return mAdapter.getContext();
         }
     }
     //endregion

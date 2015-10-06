@@ -19,6 +19,7 @@ import com.cohenadair.anglerslog.utilities.fragment.FragmentData;
 import com.cohenadair.anglerslog.utilities.fragment.FragmentInfo;
 
 // TODO rename themes for convention
+// TODO hide FAB unless user is at the top of the list (blocks rating star)
 
 public class MainActivity extends AppCompatActivity implements
         MyListFragment.InteractionListener,
