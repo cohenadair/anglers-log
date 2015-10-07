@@ -66,8 +66,8 @@ public class ManageFragment extends DialogFragment {
             }
         });
 
-        Button manageButton = (Button)view.findViewById(R.id.confirm_button);
-        manageButton.setOnClickListener(new View.OnClickListener() {
+        Button saveButton = (Button)view.findViewById(R.id.confirm_button);
+        saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (info != null) {
@@ -80,7 +80,8 @@ public class ManageFragment extends DialogFragment {
 
         // add the actual content to the scroll view
         if (info != null) {
-            setDialogTitle(getString(R.string.new_text) + " " + info.getName());
+            int preTextId = info.manageContentIsEditing() ? R.string.action_edit : R.string.new_text;
+            setDialogTitle(preTextId + " " + info.getName());
 
             FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
             transaction.add(R.id.content_scroll_view, info.manageContentFragment());

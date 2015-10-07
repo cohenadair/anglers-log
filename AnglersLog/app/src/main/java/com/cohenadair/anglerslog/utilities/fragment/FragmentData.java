@@ -1,6 +1,5 @@
 package com.cohenadair.anglerslog.utilities.fragment;
 
-import android.app.Activity;
 import android.content.Context;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -25,15 +24,19 @@ import java.util.HashMap;
  */
 public class FragmentData {
 
+    private static final String TAG = "FragmentData";
+
     /**
      * Top level fragments that are normally displayed from the navigation drawer.
      */
     public static final int FRAGMENT_CATCHES    = R.id.nav_catches;
     public static final int FRAGMENT_TRIPS      = R.id.nav_trips;
+    /*
     public static final int FRAGMENT_GALLERY    = R.id.nav_photos;
     public static final int FRAGMENT_STATS      = R.id.nav_stats;
     public static final int FRAGMENT_LOCATIONS  = R.id.nav_locations;
     public static final int FRAGMENT_BAITS      = R.id.nav_baits;
+    */
 
     /**
      * Primitive fragments for simple lists displaying objects with only a name attribute.
@@ -42,32 +45,27 @@ public class FragmentData {
      */
     public static final int PRIMITIVE_SPECIES = 0;
 
-    //region Navigation Drawer Fragments
     /**
-     * Used to store previous selections for MyListFragment instances.
+     * Used to store all fragment and primitive fragment information for reuse.
      */
-    private static HashMap<Integer, Integer> mSelectionPositions = new HashMap<>();
+    private static HashMap<Integer, FragmentInfo> mFragmentInfoMap = null;
+    private static HashMap<Integer, PrimitiveFragmentInfo> mSpeciesPrimitiveInfo = null;
 
+    //region Master Fragment Initializing
     /**
      * Used to keep track of the current master-detail fragment pair.
      */
     private static int mCurrentFragmentId = FRAGMENT_CATCHES; // default starting fragment
 
-    @Nullable
-    public static FragmentInfo fragmentInfo(Activity activity, int fragmentId) {
-        switch (fragmentId) {
-            case FRAGMENT_CATCHES:
-                return catchesFragmentInfo(activity);
+    public static FragmentInfo fragmentInfo(Context context, int fragmentId) {
+        if (mFragmentInfoMap == null)
+            initFragmentInfoMap(context);
 
-            case FRAGMENT_TRIPS:
-                return tripsFragmentInfo(activity);
+        return mFragmentInfoMap.get(fragmentId);
+    }
 
-            default:
-                Log.e("FragmentData", "Invalid fragment id in fragmentInfo()");
-                break;
-        }
-
-        return null;
+    public static FragmentInfo fragmentInfo(int fragmentId) {
+        return fragmentInfo(null, fragmentId);
     }
 
     /**
@@ -77,10 +75,10 @@ public class FragmentData {
      * @return The position of the most recent selected item.
      */
     public static int selectionPos(int fragmentId) {
-        if (mSelectionPositions.containsKey(fragmentId))
-            return mSelectionPositions.get(fragmentId);
+        if (mFragmentInfoMap == null)
+            return 0;
 
-        return 0;
+        return mFragmentInfoMap.get(fragmentId).getPrevSelectionPosition();
     }
 
     /**
@@ -89,7 +87,8 @@ public class FragmentData {
      * @param selectedPos The position of the most recent selected item in the list.
      */
     public static void selectionPos(int fragmentId, int selectedPos) {
-        mSelectionPositions.put(fragmentId, selectedPos);
+        if (mFragmentInfoMap != null)
+            mFragmentInfoMap.get(fragmentId).setPrevSelectionPosition(selectedPos);
     }
 
     public static int getCurrentFragmentId() {
@@ -100,9 +99,19 @@ public class FragmentData {
         mCurrentFragmentId = currentFragmentId;
     }
 
-    private static FragmentInfo catchesFragmentInfo(Context context) {
-        MainActivity activity = (MainActivity)context;
+    private static void initFragmentInfoMap(Context context) {
+        if (context == null) {
+            Log.e(TAG, "Context must not be NULL in initFragmentInfoMap().");
+            return;
+        }
 
+        mFragmentInfoMap = new HashMap<>();
+        mFragmentInfoMap.put(FRAGMENT_CATCHES, getCatchesFragmentInfo(context));
+        mFragmentInfoMap.put(FRAGMENT_TRIPS, getTripsFragmentInfo(context));
+    }
+
+    private static FragmentInfo getCatchesFragmentInfo(Context context) {
+        MainActivity activity = (MainActivity)context;
         int id = FRAGMENT_CATCHES;
 
         FragmentInfo info = new FragmentInfo("fragment_catches");
@@ -121,7 +130,7 @@ public class FragmentData {
         return info;
     }
 
-    private static FragmentInfo tripsFragmentInfo(Context context) {
+    private static FragmentInfo getTripsFragmentInfo(Context context) {
         MainActivity activity = (MainActivity)context;
 
         FragmentInfo info = new FragmentInfo("fragment_trips");
@@ -146,19 +155,18 @@ public class FragmentData {
      */
     @Nullable
     public static PrimitiveFragmentInfo primitiveInfo(int primitiveId) {
-        switch (primitiveId) {
-            case PRIMITIVE_SPECIES:
-                return speciesPrimitiveInfo();
+        if (mSpeciesPrimitiveInfo == null)
+            initPrimitiveFragmentInfoMap();
 
-            default:
-                Log.e("FragmentData", "Invalid primitive id in primitiveInfo()");
-                break;
-        }
-
-        return null;
+        return mSpeciesPrimitiveInfo.get(primitiveId);
     }
 
-    private static PrimitiveFragmentInfo speciesPrimitiveInfo() {
+    private static void initPrimitiveFragmentInfoMap() {
+        mSpeciesPrimitiveInfo = new HashMap<>();
+        mSpeciesPrimitiveInfo.put(PRIMITIVE_SPECIES, getSpeciesPrimitiveInfo());
+    }
+
+    private static PrimitiveFragmentInfo getSpeciesPrimitiveInfo() {
         final PrimitiveFragmentInfo info = new PrimitiveFragmentInfo();
 
         info.setName("species");

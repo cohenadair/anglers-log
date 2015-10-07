@@ -35,8 +35,6 @@ public class MainActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_layout);
 
-        showFragment(savedInstanceState);
-
         // needed so the navigation view extends above and on top of the app bar
         Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -51,6 +49,9 @@ public class MainActivity extends AppCompatActivity implements
                 onMyListItemSelected(position);
             }
         };
+
+        // needs to be called after MainActivity's initialization code
+        showFragment(savedInstanceState);
     }
 
     @Override
@@ -98,6 +99,15 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     /**
+     * A method called when the user wants to edit and object in the current MyListFragment
+     * instance.
+     */
+    public void onMyListViewItemEdit(int position) {
+        mFragmentInfo.setManageContentIsEditing(true, position);
+        goToListManagerView();
+    }
+
+    /**
      * Either show the detail fragment or update if it's already shown.
      */
     public void onMyListItemSelected(int position) {
@@ -116,8 +126,8 @@ public class MainActivity extends AppCompatActivity implements
 
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             transaction.replace(R.id.master_container, detailFragment)
-                       .addToBackStack(null)
-                       .commit();
+                    .addToBackStack(null)
+                    .commit();
 
             mNavigationManager.setActionBarTitle("");
         }
@@ -130,20 +140,7 @@ public class MainActivity extends AppCompatActivity implements
      */
     @Override
     public void onMyListClickNewButton() {
-        ManageFragment manageFragment = mFragmentInfo.manageFragment();
-
-        if (isTwoPane()) {
-            // show as popup dialog
-            manageFragment.show(getSupportFragmentManager(), "dialog");
-        } else {
-            // show normally
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.master_container, manageFragment)
-                       .addToBackStack(null)
-                       .commit();
-
-            mNavigationManager.setActionBarTitle(getResources().getString(R.string.new_text) + " " + mFragmentInfo.getName());
-        }
+        goToListManagerView();
     }
     //endregion
 
@@ -166,6 +163,28 @@ public class MainActivity extends AppCompatActivity implements
             mNavigationManager.onBackPressed();
         else
             super.onBackPressed();
+    }
+
+    /**
+     * Will open or display the manager view associated with the current master detail fragment.
+     * For example, when the Catches list is open, this method will display the ManageCatchFragment.
+     */
+    private void goToListManagerView() {
+        ManageFragment manageFragment = mFragmentInfo.manageFragment();
+
+        if (isTwoPane()) {
+            // show as popup dialog
+            manageFragment.show(getSupportFragmentManager(), "dialog");
+        } else {
+            // show normally
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.master_container, manageFragment)
+                    .addToBackStack(null)
+                    .commit();
+
+            int preTextId = mFragmentInfo.manageContentIsEditing() ? R.string.action_edit : R.string.new_text;
+            mNavigationManager.setActionBarTitle(getResources().getString(preTextId) + " " + mFragmentInfo.getName());
+        }
     }
     //endregion
 

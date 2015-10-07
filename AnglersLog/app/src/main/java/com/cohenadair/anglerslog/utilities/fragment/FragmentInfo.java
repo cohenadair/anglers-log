@@ -21,6 +21,7 @@ public class FragmentInfo {
     private Fragment mFragment;
     private String mTag;
     private String mName; // used to set the ActionBar title
+    private int prevSelectionPosition = 0;
     private int id;
 
     public FragmentInfo(String aTag) {
@@ -76,6 +77,14 @@ public class FragmentInfo {
         mName = name;
     }
 
+    public int getPrevSelectionPosition() {
+        return prevSelectionPosition;
+    }
+
+    public void setPrevSelectionPosition(int prevSelectionPosition) {
+        this.prevSelectionPosition = prevSelectionPosition;
+    }
+
     public int getId() {
         return id;
     }
@@ -99,5 +108,13 @@ public class FragmentInfo {
 
     public ManageContentFragment manageContentFragment() {
         return mManageInfo.getManageContentFragment();
+    }
+
+    public void setManageContentIsEditing(boolean isEditing, int itemPosition) {
+        manageContentFragment().setIsEditing(isEditing, itemPosition);
+    }
+
+    public boolean manageContentIsEditing() {
+        return manageContentFragment().isEditing();
     }
 }

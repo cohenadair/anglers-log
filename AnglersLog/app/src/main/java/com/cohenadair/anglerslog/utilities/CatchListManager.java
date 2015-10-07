@@ -2,7 +2,6 @@ package com.cohenadair.anglerslog.utilities;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -12,6 +11,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.cohenadair.anglerslog.R;
+import com.cohenadair.anglerslog.activities.MainActivity;
 import com.cohenadair.anglerslog.interfaces.OnClickInterface;
 import com.cohenadair.anglerslog.model.Logbook;
 import com.cohenadair.anglerslog.model.user_defines.Catch;
@@ -48,7 +48,7 @@ public class CatchListManager {
                 public boolean onTouch(View v, MotionEvent event) {
                     // TODO make custom view for FavoriteStar
                     if (event.getAction() == MotionEvent.ACTION_UP) {
-                        mFavorite.setRating(mFavorite.getRating() <= 0 ? (float)1.0 : (float)0.0);
+                        mFavorite.setRating(mFavorite.getRating() <= 0 ? (float) 1.0 : (float) 0.0);
                         mCatch.setIsFavorite(mFavorite.getRating() > 0);
                     }
                     return true;
@@ -58,7 +58,8 @@ public class CatchListManager {
 
         @Override
         public void onItemEdit(int position) {
-            Log.d("", "Clicked edit! " + position);
+            MainActivity activity = (MainActivity)context();
+            activity.onMyListViewItemEdit(position);
         }
 
         @Override
