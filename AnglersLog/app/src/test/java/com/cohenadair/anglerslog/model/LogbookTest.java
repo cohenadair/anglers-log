@@ -23,15 +23,15 @@ public class LogbookTest {
         Catch testCatch = new Catch(new Date());
         Catch testCatch2 = new Catch(testCatch.getDate()); // equal dates
 
-        Logbook.getInstance().addCatch(testCatch);
-        assertTrue(Logbook.getInstance().catchCount() == 1);
+        Logbook.addCatch(testCatch);
+        assertTrue(Logbook.catchCount() == 1);
 
         // a Catch with a duplicate date shouldn't be added
-        Logbook.getInstance().addCatch(testCatch2);
-        assertTrue(Logbook.getInstance().catchCount() == 1);
+        Logbook.addCatch(testCatch2);
+        assertTrue(Logbook.catchCount() == 1);
 
-        Logbook.getInstance().removeCatch(testCatch);
-        assertTrue(Logbook.getInstance().catchCount() == 0);
+        Logbook.removeCatch(testCatch);
+        assertTrue(Logbook.catchCount() == 0);
     }
 
     @Test
@@ -39,12 +39,21 @@ public class LogbookTest {
         Catch testCatch = new Catch(new Date());
         Date testDate = new Date(testCatch.getDate().getTime());
 
-        Logbook.getInstance().addCatch(testCatch);
+        Logbook.addCatch(testCatch);
 
         assertFalse(testDate == testCatch.getDate()); // date references are different
-        assertTrue(Logbook.getInstance().catchDated(testDate) != null); // date values are the same
+        assertTrue(Logbook.catchDated(testDate) != null); // date values are the same
 
-        Logbook.getInstance().removeCatch(testCatch);
+        Logbook.removeCatch(testCatch);
+    }
+
+    @Test
+    public void testCloneCatch() {
+        Catch testCatch = new Catch(new Date());
+        Catch clonedCatch = testCatch.clone();
+
+        assertFalse(testCatch == clonedCatch); // different references
+        assertTrue(testCatch.getDate().equals(clonedCatch.getDate())); // equal dates
     }
     //endregion
 
@@ -53,11 +62,11 @@ public class LogbookTest {
     public void testAddRemoveTrip() {
         Trip testTrip = new Trip("Example Trip");
 
-        Logbook.getInstance().addTrip(testTrip);
-        assertTrue(Logbook.getInstance().tripCount() == 1);
+        Logbook.addTrip(testTrip);
+        assertTrue(Logbook.tripCount() == 1);
 
-        Logbook.getInstance().removeTrip(testTrip);
-        assertTrue(Logbook.getInstance().tripCount() == 0);
+        Logbook.removeTrip(testTrip);
+        assertTrue(Logbook.tripCount() == 0);
     }
     //endregion
 
@@ -67,15 +76,15 @@ public class LogbookTest {
         Species testSpecies = new Species("Example Species");
         Species testSpecies2 = new Species(testSpecies.getName());
 
-        Logbook.getInstance().addSpecies(testSpecies);
-        assertTrue(Logbook.getInstance().speciesCount() == 1);
+        Logbook.addSpecies(testSpecies);
+        assertTrue(Logbook.speciesCount() == 1);
 
         // a Species with a duplicate name shouldn't be added
-        Logbook.getInstance().addSpecies(testSpecies2);
-        assertTrue(Logbook.getInstance().speciesCount() == 1);
+        Logbook.addSpecies(testSpecies2);
+        assertTrue(Logbook.speciesCount() == 1);
 
-        Logbook.getInstance().removeSpecies(0);
-        assertTrue(Logbook.getInstance().speciesCount() == 0);
+        Logbook.removeSpecies(0);
+        assertTrue(Logbook.speciesCount() == 0);
     }
 
     @Test
@@ -86,8 +95,8 @@ public class LogbookTest {
         // references aren't equal
         assertFalse(species1 == species2);
 
-        Logbook.getInstance().addSpecies(species1);
-        Logbook.getInstance().editSpecies(0, species2.getName());
+        Logbook.addSpecies(species1);
+        Logbook.editSpecies(0, species2.getName());
 
         // names are equal
         assertTrue(species1.getName().equals(species2.getName()));

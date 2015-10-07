@@ -67,7 +67,7 @@ public class CatchListManager {
             Utils.showDeleteConfirm(context(), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    Logbook.getInstance().removeCatch(mCatch);
+                    Logbook.removeCatch(mCatch);
                     getAdapter().notifyDataSetChanged();
                     Utils.showToast(context(), R.string.success_catch_delete);
                 }

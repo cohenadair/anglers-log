@@ -28,7 +28,7 @@ public class TripFragment extends DetailFragment {
 
         mNameTextView = (TextView)view.findViewById(R.id.name_text_view);
 
-        if (Logbook.getInstance().catchCount() <= 0) {
+        if (Logbook.catchCount() <= 0) {
             mNameTextView.setText("There are 0 trips in your log.");
         } else
             update(FragmentData.selectionPos(FragmentData.FRAGMENT_TRIPS));
@@ -39,7 +39,7 @@ public class TripFragment extends DetailFragment {
 
     @Override
     public void update(int position) {
-        Trip trip = Logbook.getInstance().tripAtPos(position);
+        Trip trip = Logbook.tripAtPos(position);
 
         mNameTextView.setText(trip.getName());
     }

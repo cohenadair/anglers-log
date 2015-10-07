@@ -67,12 +67,21 @@ public class UserDefineArray {
     }
 
     /**
-     * Retrives the item at a certain position.
+     * Retrieves the item at a certain position.
      * @param position the position or index of the item to be found.
      * @return a UserDefineObject at the given position.
      */
     public UserDefineObject get(int position) {
         return mItems.get(position);
+    }
+
+    /**
+     * Replaces the element at the specified location with the specified object.
+     * @param position The position of the object to replace.
+     * @param obj The object doing the replacing.
+     */
+    public void set(int position, UserDefineObject obj) {
+        mItems.set(position, obj);
     }
 
 }

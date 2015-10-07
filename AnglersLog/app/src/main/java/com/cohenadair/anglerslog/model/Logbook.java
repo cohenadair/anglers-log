@@ -14,60 +14,43 @@ import java.util.ArrayList;
 import java.util.Date;
 
 /**
- * The Logbook class is a singleton class storing all of the user's log data.
+ * The Logbook class is a monostate class storing all of the user's log data.
  * @author Cohen Adair
  */
 public class Logbook {
 
+    /**
+     * For Log calls.
+     */
     private static final String TAG = "Logbook";
 
-    //region Singleton Methods
-    private static Logbook _sharedLogbook = new Logbook();
-
-    public static Logbook getInstance() {
-        return _sharedLogbook;
-    }
-
-    private Logbook() {
-
-    }
-    //endregion
-
-    private String mName;
-    private UserDefineArray mCatches = new UserDefineArray();
-    private UserDefineArray mTrips = new UserDefineArray();
-    private UserDefineArray mSpecies = new UserDefineArray();
+    private static String mName;
+    private static UserDefineArray mCatches = new UserDefineArray();
+    private static UserDefineArray mTrips = new UserDefineArray();
+    private static UserDefineArray mSpecies = new UserDefineArray();
 
     //region Getters & Setters
-    public String getName() {
+    public static String getName() {
         return mName;
     }
 
-    public void setName(String name) {
+    public static void setName(String name) {
         mName = name;
     }
 
-    public ArrayList<UserDefineObject> getCatches() {
+    public static ArrayList<UserDefineObject> getCatches() {
         return mCatches.getItems();
     }
 
-    public void setCatches(ArrayList<UserDefineObject> catches) {
-        mCatches.setItems(catches);
-    }
-
-    public ArrayList<UserDefineObject> getTrips() {
+    public static ArrayList<UserDefineObject> getTrips() {
         return mTrips.getItems();
     }
 
-    public void setTrips(ArrayList<UserDefineObject> trips) {
-        mTrips.setItems(trips);
-    }
-
-    public ArrayList<UserDefineObject> getSpecies() {
+    public static ArrayList<UserDefineObject> getSpecies() {
         return mSpecies.getItems();
     }
 
-    public void setSpecies(ArrayList<UserDefineObject> species) {
+    public static void setSpecies(ArrayList<UserDefineObject> species) {
         mSpecies.setItems(species);
     }
     //endregion
@@ -77,7 +60,7 @@ public class Logbook {
     //endregion
 
     //region Catch Manipulation
-    public boolean addCatch(Catch aCatch) {
+    public static boolean addCatch(Catch aCatch) {
         if (catchDated(aCatch.getDate()) != null) {
             Log.e(TAG, "A catch with date already exists!");
             return false;
@@ -86,8 +69,12 @@ public class Logbook {
         return mCatches.add(aCatch);
     }
 
-    public boolean removeCatch(Catch aCatch) {
+    public static boolean removeCatch(Catch aCatch) {
         return mCatches.remove(aCatch);
+    }
+
+    public static void editCatchAtPos(int position, Catch newCatch) {
+        mCatches.set(position, newCatch);
     }
 
     /**
@@ -95,7 +82,7 @@ public class Logbook {
      * @param aDate the date of the resulting catch.
      * @return the catch with aDate or null if no such catch exists.
      */
-    public Catch catchDated(Date aDate) {
+    public static Catch catchDated(Date aDate) {
         for (UserDefineObject obj : mCatches.getItems()) {
             Catch aCatch = (Catch)obj;
             if (Utils.datesEqualNoSeconds(aCatch.getDate(), aDate))
@@ -105,38 +92,38 @@ public class Logbook {
         return null;
     }
 
-    public Catch catchAtPos(int position) {
+    public static Catch catchAtPos(int position) {
         return (Catch)mCatches.get(position);
     }
 
     /**
      * @return the number of catches in the Logbook.
      */
-    public int catchCount() {
+    public static int catchCount() {
         return mCatches.size();
     }
     //endregion
 
     //region Trip Manipulation
-    public boolean addTrip(Trip aTrip) {
+    public static boolean addTrip(Trip aTrip) {
         return mTrips.add(aTrip);
     }
 
-    public boolean removeTrip(Trip aTrip) {
+    public static boolean removeTrip(Trip aTrip) {
         return mTrips.remove(aTrip);
     }
 
-    public int tripCount() {
+    public static int tripCount() {
         return mTrips.size();
     }
 
-    public Trip tripAtPos(int position) {
+    public static Trip tripAtPos(int position) {
         return (Trip)mTrips.get(position);
     }
     //endregion
 
     //region Species Manipulation
-    public boolean addSpecies(Species species) {
+    public static boolean addSpecies(Species species) {
         if (speciesNamed(species.getName()) != null) {
             Log.e(TAG, "A species with name already exists!");
             return false;
@@ -145,11 +132,11 @@ public class Logbook {
         return mSpecies.add(species);
     }
 
-    public void removeSpecies(int position) {
+    public static void removeSpecies(int position) {
         mSpecies.remove(position);
     }
 
-    public void editSpecies(int position, String newName) {
+    public static void editSpecies(int position, String newName) {
         speciesAtPos(position).edit(new Species(newName));
     }
 
@@ -158,30 +145,26 @@ public class Logbook {
      * @param name the name of the species to add.
      * @return the catch with aDate or null if no such catch exists.
      */
-    public Species speciesNamed(String name) {
+    public static Species speciesNamed(String name) {
         return (Species)userDefineNamed(mSpecies, name);
     }
 
     /**
      * Iterates through all the species and removes ones where getShouldDelete() returns true.
      */
-    public void cleanSpecies() {
+    public static void cleanSpecies() {
         for (int i = speciesCount() - 1; i >= 0; i--) {
             if (speciesAtPos(i).getShouldDelete())
                 removeSpecies(i);
         }
     }
 
-    public int speciesCount() {
+    public static int speciesCount() {
         return mSpecies.size();
     }
 
-    public Species speciesAtPos(int position) {
+    public static Species speciesAtPos(int position) {
         return (Species)mSpecies.get(position);
-    }
-
-    public ArrayList<CharSequence> speciesNames() {
-        return mSpecies.nameList();
     }
     //endregion
 
@@ -192,7 +175,7 @@ public class Logbook {
      * @return The UserDefineObject with the given name or null if no such object exists.
      */
     @Nullable
-    private UserDefineObject userDefineNamed(UserDefineArray arr, String name) {
+    private static UserDefineObject userDefineNamed(UserDefineArray arr, String name) {
         for (UserDefineObject obj : arr.getItems()) {
             if (name.equalsIgnoreCase(obj.getName()))
                 return obj;

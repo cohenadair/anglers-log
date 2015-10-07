@@ -140,6 +140,7 @@ public class MainActivity extends AppCompatActivity implements
      */
     @Override
     public void onMyListClickNewButton() {
+        mFragmentInfo.setManageContentIsEditing(false);
         goToListManagerView();
     }
     //endregion

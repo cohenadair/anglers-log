@@ -268,7 +268,7 @@ public class ManagePrimitiveFragment extends DialogFragment {
             mDeleteCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    Logbook.getInstance().speciesAtPos(getAdapterPosition()).setShouldDelete(isChecked);
+                    Logbook.speciesAtPos(getAdapterPosition()).setShouldDelete(isChecked);
                 }
             });
         }

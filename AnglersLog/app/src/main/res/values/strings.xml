@@ -36,6 +36,7 @@
 
     <string name="success_catch">Successfully added catch!</string>
     <string name="success_catch_delete">Successfully deleted catch.</string>
+    <string name="success_catch_edit">Successfully updated catch.</string>
     <string name="error_catch">Error adding catch!</string>
     <string name="error_catch_date">A catch with that date and time already exists.  Please choose another date or edit the current catch.</string>
     <string name="error_catch_species">Please select a species.</string>

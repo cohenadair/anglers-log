@@ -8,7 +8,7 @@ import java.util.Date;
  * The Catch class stores relative information for a single fishing catch.
  * @author Cohen Adair
  */
-public class Catch extends UserDefineObject {
+public class Catch extends UserDefineObject implements Cloneable {
 
     private Date mDate;
     private Species mSpecies;
@@ -64,5 +64,15 @@ public class Catch extends UserDefineObject {
 
     public String dateTimeAsString() {
         return DateFormat.format("MMM dd, yyyy 'at' h:mm a", mDate).toString();
+    }
+
+    @Override
+    public Catch clone() {
+        try {
+            return (Catch)super.clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+            throw new RuntimeException();
+        }
     }
 }

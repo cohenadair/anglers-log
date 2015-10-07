@@ -1,7 +1,6 @@
 package com.cohenadair.anglerslog.fragments;
 
 import android.support.v4.app.Fragment;
-import android.util.Log;
 
 /**
  * The ManageContentFragment is the superclass of the content fragments used in ManageFragment
@@ -22,16 +21,6 @@ public abstract class ManageContentFragment extends Fragment {
      */
     public abstract boolean addObjectToLogbook();
 
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        if (isEditing())
-            Log.d("", "We are editing!");
-        else
-            Log.d("", "We are not editing!");
-    }
-
     public boolean isEditing() {
         return mIsEditing;
     }
@@ -39,5 +28,9 @@ public abstract class ManageContentFragment extends Fragment {
     public void setIsEditing(boolean isEditing, int itemPosition) {
         mIsEditing = isEditing;
         mEditingPosition = itemPosition;
+    }
+
+    public int getEditingPosition() {
+        return mEditingPosition;
     }
 }

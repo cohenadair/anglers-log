@@ -4,7 +4,7 @@ package com.cohenadair.anglerslog.model.user_defines;
  * A UserDefineObject is the superclass for all "user defined" data such as species and locations.
  * @author Cohen Adair
  */
-public class UserDefineObject {
+public class UserDefineObject implements Cloneable {
 
     private String mName;
     private boolean mShouldDelete; // toggled on UI selection for deleting multiple items
@@ -39,4 +39,8 @@ public class UserDefineObject {
         mName = newObj.getName();
     }
 
+    @Override
+    public UserDefineObject clone() throws CloneNotSupportedException {
+        return (UserDefineObject)super.clone();
+    }
 }

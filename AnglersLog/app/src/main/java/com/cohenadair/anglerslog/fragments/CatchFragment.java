@@ -30,7 +30,7 @@ public class CatchFragment extends DetailFragment {
         mSpeciesTextView = (TextView)view.findViewById(R.id.species_text_view);
         mDateTextView = (TextView)view.findViewById(R.id.date_text_view);
 
-        if (Logbook.getInstance().catchCount() <= 0) {
+        if (Logbook.catchCount() <= 0) {
             mSpeciesTextView.setText("There are 0 catches in your log.");
             mDateTextView.setText("");
         } else
@@ -42,7 +42,7 @@ public class CatchFragment extends DetailFragment {
 
     @Override
     public void update(int position) {
-        Catch aCatch = Logbook.getInstance().catchAtPos(position);
+        Catch aCatch = Logbook.catchAtPos(position);
 
         mSpeciesTextView.setText(aCatch.speciesAsString());
         mDateTextView.setText(aCatch.dateAsString());

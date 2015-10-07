@@ -26,7 +26,8 @@ import java.util.Date;
  */
 public class ManageCatchFragment extends ManageContentFragment {
 
-    private Catch mCatch;
+    private Catch mNewCatch;
+    private Catch mOldCatch;
 
     private SelectionView mDateView;
     private SelectionView mTimeView;
@@ -40,38 +41,45 @@ public class ManageCatchFragment extends ManageContentFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_manage_catch, container, false);
 
-        mCatch = new Catch(new Date());
-
         initDateTimeView(view);
-
-        mSpeciesView = (SelectionView)view.findViewById(R.id.species_layout);
-        mSpeciesView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final ManagePrimitiveFragment fragment = ManagePrimitiveFragment.newInstance(FragmentData.PRIMITIVE_SPECIES);
-
-                fragment.setOnDismissInterface(new ManagePrimitiveFragment.OnDismissInterface() {
-                    @Override
-                    public void onDismiss(UserDefineObject selectedItem) {
-                        mCatch.setSpecies((Species)selectedItem);
-                        mSpeciesView.setSubtitle(mCatch.speciesAsString());
-                    }
-                });
-
-                fragment.show(getFragmentManager(), "dialog");
-            }
-        });
+        initSpeciesView(view);
 
         return view;
+    }
+
+    /**
+     * Needed to initialize Catch and editing settings because there is ever only one instance of
+     * this fragment that is reused throughout the application's lifecycle.
+     */
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if (isEditing()) {
+            mOldCatch = Logbook.catchAtPos(getEditingPosition());
+            mNewCatch = mOldCatch.clone();
+        } else {
+            mOldCatch = null;
+            mNewCatch = new Catch(new Date());
+        }
+
+        updateViews();
     }
 
     @Override
     public boolean addObjectToLogbook() {
         if (verifyUserInput()) {
-            boolean success = Logbook.getInstance().addCatch(mCatch);
-            int msgId = success ? R.string.success_catch : R.string.error_catch;
-            Utils.showToast(getActivity(), msgId);
-            return success;
+            if (isEditing()) {
+                Logbook.editCatchAtPos(getEditingPosition(), mNewCatch);
+                Utils.showToast(getActivity(), R.string.success_catch_edit);
+                return true;
+            } else {
+                // add catch
+                boolean success = Logbook.addCatch(mNewCatch);
+                int msgId = success ? R.string.success_catch : R.string.error_catch;
+                Utils.showToast(getActivity(), msgId);
+                return success;
+            }
         }
         return false;
     }
@@ -81,16 +89,14 @@ public class ManageCatchFragment extends ManageContentFragment {
      * @return True if the input is valid, false otherwise.
      */
     private boolean verifyUserInput() {
-        Logbook log = Logbook.getInstance();
-
         // date and time
-        if (log.catchDated(mCatch.getDate()) != null) {
+        if (Logbook.catchDated(mNewCatch.getDate()) != null && !isEditing()) {
             Utils.showErrorAlert(getActivity(), R.string.error_catch_date);
             return false;
         }
 
         // species
-        if (mCatch.getSpecies() == null) {
+        if (mNewCatch.getSpecies() == null) {
             Utils.showErrorAlert(getActivity(), R.string.error_catch_species);
             return false;
         }
@@ -119,7 +125,6 @@ public class ManageCatchFragment extends ManageContentFragment {
                 datePicker.show(getFragmentManager(), "datePicker");
             }
         });
-        updateDateView(null);
 
         mTimeView = (SelectionView)view.findViewById(R.id.time_layout);
         mTimeView.setOnClickListener(new View.OnClickListener() {
@@ -141,7 +146,26 @@ public class ManageCatchFragment extends ManageContentFragment {
                 timePicker.show(getFragmentManager(), "timePicker");
             }
         });
-        updateTimeView(null);
+    }
+
+    private void initSpeciesView(View view) {
+        mSpeciesView = (SelectionView)view.findViewById(R.id.species_layout);
+        mSpeciesView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final ManagePrimitiveFragment fragment = ManagePrimitiveFragment.newInstance(FragmentData.PRIMITIVE_SPECIES);
+
+                fragment.setOnDismissInterface(new ManagePrimitiveFragment.OnDismissInterface() {
+                    @Override
+                    public void onDismiss(UserDefineObject selectedItem) {
+                        mNewCatch.setSpecies((Species) selectedItem);
+                        mSpeciesView.setSubtitle(mNewCatch.speciesAsString());
+                    }
+                });
+
+                fragment.show(getFragmentManager(), "dialog");
+            }
+        });
     }
 
     /**
@@ -149,10 +173,8 @@ public class ManageCatchFragment extends ManageContentFragment {
      * @param date The date to display in the view. Only looks at the date portion.
      */
     private void updateDateView(Date date) {
-        if (date != null)
-            mCatch.setDate(date);
-
-        mDateView.setSubtitle(mCatch.dateAsString());
+        mNewCatch.setDate(date);
+        mDateView.setSubtitle(mNewCatch.dateAsString());
     }
 
     /**
@@ -160,17 +182,26 @@ public class ManageCatchFragment extends ManageContentFragment {
      * @param date The date to display in the view. Only looks at the time portion.
      */
     private void updateTimeView(Date date) {
-        if (date != null)
-            mCatch.setDate(date);
+        mNewCatch.setDate(date);
+        mTimeView.setSubtitle(mNewCatch.timeAsString());
+    }
 
-        mTimeView.setSubtitle(mCatch.timeAsString());
+    /**
+     * Update the different views based on the current Catch object to display.
+     */
+    private void updateViews() {
+        mDateView.setSubtitle(mNewCatch.dateAsString());
+        mTimeView.setSubtitle(mNewCatch.timeAsString());
+
+        if (mNewCatch.getSpecies() != null)
+            mSpeciesView.setSubtitle(mNewCatch.speciesAsString());
     }
 
     /**
      * Resets the calendar's time to the current catch's time.
      */
     private void updateCalendar() {
-        Calendar.getInstance().setTime(mCatch.getDate());
+        Calendar.getInstance().setTime(mNewCatch.getDate());
     }
     //endregion
 

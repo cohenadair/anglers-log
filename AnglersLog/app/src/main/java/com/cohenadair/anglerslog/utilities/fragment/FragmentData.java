@@ -122,7 +122,7 @@ public class FragmentData {
 
         info.setDetailInfo(detailInfo);
         info.setManageInfo(manageInfo);
-        info.setArrayAdapter(new CatchListManager.Adapter(context, Logbook.getInstance().getCatches(), activity.getOnMyListViewItemClick()));
+        info.setArrayAdapter(new CatchListManager.Adapter(context, Logbook.getCatches(), activity.getOnMyListViewItemClick()));
         info.setFragment(MyListFragment.newInstance(id));
         info.setName("Catch");
         info.setId(id);
@@ -139,7 +139,7 @@ public class FragmentData {
         detailInfo.setFragment(new TripFragment());
 
         info.setDetailInfo(detailInfo);
-        info.setArrayAdapter(new CatchListManager.Adapter(context, Logbook.getInstance().getTrips(), activity.getOnMyListViewItemClick()));
+        info.setArrayAdapter(new CatchListManager.Adapter(context, Logbook.getTrips(), activity.getOnMyListViewItemClick()));
         info.setId(FRAGMENT_TRIPS);
         info.setFragment(MyListFragment.newInstance(info.getId()));
 
@@ -171,26 +171,26 @@ public class FragmentData {
 
         info.setName("species");
         info.setCapitalizedName("Species");
-        info.setItems(Logbook.getInstance().getSpecies());
+        info.setItems(Logbook.getSpecies());
         info.setManageInterface(new PrimitiveFragmentInfo.ManageInterface() {
             @Override
             public boolean onAddItem(String name) {
-                return Logbook.getInstance().addSpecies(new Species(name));
+                return Logbook.addSpecies(new Species(name));
             }
 
             @Override
             public UserDefineObject onClickItem(int position) {
-                return Logbook.getInstance().speciesAtPos(position);
+                return Logbook.speciesAtPos(position);
             }
 
             @Override
             public void onConfirmDelete() {
-                Logbook.getInstance().cleanSpecies();
+                Logbook.cleanSpecies();
             }
 
             @Override
             public void onEditItem(int position, String newName) {
-                Logbook.getInstance().editSpecies(position, newName);
+                Logbook.editSpecies(position, newName);
             }
         });
 
