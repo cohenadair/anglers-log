@@ -156,7 +156,7 @@ public class ManagePrimitiveFragment extends DialogFragment {
      */
     private void restoreToolbar() {
         mToolbar.getMenu().clear();
-        mToolbar.inflateMenu(R.menu.menu_manage_primitive);
+        mToolbar.inflateMenu(R.menu.menu_manage);
         mToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {

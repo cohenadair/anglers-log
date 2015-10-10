@@ -1,7 +1,6 @@
 package com.cohenadair.anglerslog.utilities;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -11,9 +10,8 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.cohenadair.anglerslog.R;
-import com.cohenadair.anglerslog.activities.MainActivity;
 import com.cohenadair.anglerslog.interfaces.OnClickInterface;
-import com.cohenadair.anglerslog.model.Logbook;
+import com.cohenadair.anglerslog.interfaces.OnClickManageMenuListener;
 import com.cohenadair.anglerslog.model.user_defines.Catch;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 
@@ -58,20 +56,12 @@ public class CatchListManager {
 
         @Override
         public void onItemEdit(int position) {
-            MainActivity activity = (MainActivity)context();
-            activity.onMyListViewItemEdit(position);
+            ((OnClickManageMenuListener)context()).onClickMenuEdit(position);
         }
 
         @Override
         public void onItemDelete(int position) {
-            Utils.showDeleteConfirm(context(), new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    Logbook.removeCatch(mCatch);
-                    getAdapter().notifyDataSetChanged();
-                    Utils.showToast(context(), R.string.success_catch_delete);
-                }
-            });
+            ((OnClickManageMenuListener)context()).onClickMenuTrash(position);
         }
 
         public void setCatch(Catch aCatch) {

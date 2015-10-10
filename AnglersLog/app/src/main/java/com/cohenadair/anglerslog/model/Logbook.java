@@ -73,6 +73,10 @@ public class Logbook {
         return mCatches.remove(aCatch);
     }
 
+    public static boolean removeCatchAtPos(int position) {
+        return removeCatch(catchAtPos(position));
+    }
+
     public static void editCatchAtPos(int position, Catch newCatch) {
         mCatches.set(position, newCatch);
     }

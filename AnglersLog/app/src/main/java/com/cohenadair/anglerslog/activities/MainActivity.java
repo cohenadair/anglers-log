@@ -1,5 +1,6 @@
 package com.cohenadair.anglerslog.activities;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
@@ -14,7 +15,9 @@ import com.cohenadair.anglerslog.fragments.DetailFragment;
 import com.cohenadair.anglerslog.fragments.ManageFragment;
 import com.cohenadair.anglerslog.fragments.MyListFragment;
 import com.cohenadair.anglerslog.interfaces.OnClickInterface;
+import com.cohenadair.anglerslog.interfaces.OnClickManageMenuListener;
 import com.cohenadair.anglerslog.utilities.NavigationManager;
+import com.cohenadair.anglerslog.utilities.Utils;
 import com.cohenadair.anglerslog.utilities.fragment.FragmentData;
 import com.cohenadair.anglerslog.utilities.fragment.FragmentInfo;
 
@@ -23,7 +26,8 @@ import com.cohenadair.anglerslog.utilities.fragment.FragmentInfo;
 
 public class MainActivity extends AppCompatActivity implements
         MyListFragment.InteractionListener,
-        ManageFragment.InteractionListener
+        ManageFragment.InteractionListener,
+        OnClickManageMenuListener
 {
 
     private OnClickInterface mOnMyListViewItemClick;
@@ -95,9 +99,25 @@ public class MainActivity extends AppCompatActivity implements
      * A method called when the user wants to edit and object in the current MyListFragment
      * instance.
      */
-    public void onMyListViewItemEdit(int position) {
+    @Override
+    public void onClickMenuEdit(int position) {
         mFragmentInfo.setManageContentIsEditing(true, position);
         goToListManagerView();
+    }
+
+    /**
+     * A method called when the user deletes an item from the list.
+     * @param position The position of the item to be deleted.
+     */
+    @Override
+    public void onClickMenuTrash(final int position) {
+        Utils.showDeleteConfirm(this, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                mFragmentInfo.getOnUserDefineRemove().remove(position);
+                mNavigationManager.goBack();
+            }
+        });
     }
 
     /**

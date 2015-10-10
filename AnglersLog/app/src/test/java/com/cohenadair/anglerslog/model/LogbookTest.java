@@ -32,6 +32,10 @@ public class LogbookTest {
 
         Logbook.removeCatch(testCatch);
         assertTrue(Logbook.catchCount() == 0);
+
+        Logbook.addCatch(testCatch);
+        Logbook.removeCatchAtPos(0);
+        assertTrue(Logbook.catchCount() == 0);
     }
 
     @Test

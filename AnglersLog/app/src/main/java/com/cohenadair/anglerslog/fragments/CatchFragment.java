@@ -7,14 +7,17 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.cohenadair.anglerslog.R;
-import com.cohenadair.anglerslog.model.user_defines.Catch;
 import com.cohenadair.anglerslog.model.Logbook;
+import com.cohenadair.anglerslog.model.user_defines.Catch;
 import com.cohenadair.anglerslog.utilities.fragment.FragmentData;
 
 /**
  * A {@link DetailFragment} subclass used to show the details of a single catch.
  */
 public class CatchFragment extends DetailFragment {
+
+    private Catch mCatch;
+    private int mPosition;
 
     private TextView mSpeciesTextView;
     private TextView mDateTextView;
@@ -42,10 +45,10 @@ public class CatchFragment extends DetailFragment {
 
     @Override
     public void update(int position) {
-        Catch aCatch = Logbook.catchAtPos(position);
+        setItemPosition(position);
+        mCatch = Logbook.catchAtPos(position);
 
-        mSpeciesTextView.setText(aCatch.speciesAsString());
-        mDateTextView.setText(aCatch.dateAsString());
+        mSpeciesTextView.setText(mCatch.speciesAsString());
+        mDateTextView.setText(mCatch.dateAsString());
     }
-
 }

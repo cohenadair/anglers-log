@@ -15,6 +15,7 @@ import com.cohenadair.anglerslog.model.Logbook;
 import com.cohenadair.anglerslog.model.user_defines.Species;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import com.cohenadair.anglerslog.utilities.CatchListManager;
+import com.cohenadair.anglerslog.utilities.Utils;
 
 import java.util.HashMap;
 
@@ -111,10 +112,10 @@ public class FragmentData {
     }
 
     private static FragmentInfo getCatchesFragmentInfo(Context context) {
-        MainActivity activity = (MainActivity)context;
+        final MainActivity activity = (MainActivity)context;
         int id = FRAGMENT_CATCHES;
 
-        FragmentInfo info = new FragmentInfo("fragment_catches");
+        final FragmentInfo info = new FragmentInfo("fragment_catches");
         FragmentInfo detailInfo = new FragmentInfo("fragment_catch");
         ManageFragmentInfo manageInfo = new ManageFragmentInfo(ManageFragment.newInstance(id), new ManageCatchFragment());
 
@@ -126,6 +127,15 @@ public class FragmentData {
         info.setFragment(MyListFragment.newInstance(id));
         info.setName("Catch");
         info.setId(id);
+
+        info.setOnUserDefineRemove(new FragmentInfo.OnUserDefineRemoveListener() {
+            @Override
+            public void remove(int position) {
+                Logbook.removeCatchAtPos(position);
+                info.getArrayAdapter().notifyDataSetChanged();
+                Utils.showToast(activity, R.string.success_catch_delete);
+            }
+        });
 
         return info;
     }

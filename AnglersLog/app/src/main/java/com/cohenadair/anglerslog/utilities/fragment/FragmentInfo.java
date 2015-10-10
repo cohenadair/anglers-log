@@ -19,10 +19,18 @@ public class FragmentInfo {
     private FragmentInfo mDetailInfo;
     private ListManager.Adapter mArrayAdapter;
     private Fragment mFragment;
+    private OnUserDefineRemoveListener mOnUserDefineRemove;
     private String mTag;
     private String mName; // used to set the ActionBar title
     private int prevSelectionPosition = 0;
     private int id;
+
+    /**
+     * Used to delete a user define. Editing is done in the Manage*Fragment for that user define.
+     */
+    public interface OnUserDefineRemoveListener {
+        void remove(int position);
+    }
 
     public FragmentInfo(String aTag) {
         setTag(aTag);
@@ -59,6 +67,14 @@ public class FragmentInfo {
 
     public void setFragment(Fragment fragment) {
         mFragment = fragment;
+    }
+
+    public OnUserDefineRemoveListener getOnUserDefineRemove() {
+        return mOnUserDefineRemove;
+    }
+
+    public void setOnUserDefineRemove(OnUserDefineRemoveListener onUserDefineRemove) {
+        mOnUserDefineRemove = onUserDefineRemove;
     }
 
     public String getTag() {
