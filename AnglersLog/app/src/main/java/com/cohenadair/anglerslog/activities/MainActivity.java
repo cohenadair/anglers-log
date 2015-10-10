@@ -78,24 +78,17 @@ public class MainActivity extends AppCompatActivity implements
 
     public void showFragment(@Nullable Bundle savedInstanceState) {
         mFragmentInfo = FragmentData.fragmentInfo(this, FragmentData.getCurrentFragmentId());
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
-        // avoid multiple fragments stacked on top of one another
-        if (savedInstanceState != null)
-            return;
+        // add left panel
+        transaction.replace(R.id.master_container, mFragmentInfo.getFragment(), mFragmentInfo.getTag());
 
-        if (mFragmentInfo != null) {
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        // add the right panel if needed
+        if (isTwoPane())
+            transaction.replace(R.id.detail_container, mFragmentInfo.detailFragment(), mFragmentInfo.detailTag());
 
-            // add left panel
-            transaction.replace(R.id.master_container, mFragmentInfo.getFragment(), mFragmentInfo.getTag());
-
-            // add the right panel if needed
-            if (isTwoPane())
-                transaction.replace(R.id.detail_container, mFragmentInfo.detailFragment(), mFragmentInfo.detailTag());
-
-            // commit changes
-            transaction.commit();
-        }
+        // commit changes
+        transaction.commit();
     }
 
     /**
