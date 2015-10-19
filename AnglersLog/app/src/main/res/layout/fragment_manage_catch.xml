@@ -1,42 +1,57 @@
-<LinearLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:custom="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:layout_height="wrap_content">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
-        <com.cohenadair.anglerslog.views.SelectionView
-            android:id="@+id/date_layout"
-            android:layout_width="0dp"
+        <!-- Date and Time -->
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
-            custom:titleText="@string/date_label"
-            custom:subtitleText="May 22, 2015"/>
+            android:orientation="horizontal">
 
+            <com.cohenadair.anglerslog.views.SelectionView
+                android:id="@+id/date_layout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                custom:titleText="@string/date_label"
+                custom:subtitleText="May 22, 2015"/>
+
+            <com.cohenadair.anglerslog.views.SelectionView
+                android:id="@+id/time_layout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                custom:titleText="@string/time_label"
+                custom:subtitleText="6:00 AM"/>
+
+        </LinearLayout>
+
+        <include layout="@layout/view_divider"/>
+
+        <!-- Photos -->
+        <com.cohenadair.anglerslog.views.SelectPhotosView
+            android:id="@+id/select_photos_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <include layout="@layout/view_divider"/>
+
+        <!-- Species -->
         <com.cohenadair.anglerslog.views.SelectionView
-            android:id="@+id/time_layout"
-            android:layout_width="0dp"
+            android:id="@+id/species_layout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            custom:titleText="@string/time_label"
-            custom:subtitleText="6:00 AM"/>
+            custom:titleText="@string/species"
+            custom:subtitleHint="@string/species_hint"/>
+
+        <include layout="@layout/view_divider"/>
 
     </LinearLayout>
-
-    <include layout="@layout/view_divider"/>
-
-    <com.cohenadair.anglerslog.views.SelectionView
-        android:id="@+id/species_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        custom:titleText="@string/species"
-        custom:subtitleHint="@string/species_hint"/>
-
-    <include layout="@layout/view_divider"/>
-
-</LinearLayout>
+</ScrollView>

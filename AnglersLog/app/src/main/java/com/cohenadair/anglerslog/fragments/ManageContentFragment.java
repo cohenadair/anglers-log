@@ -12,14 +12,21 @@ import android.support.v4.app.Fragment;
  */
 public abstract class ManageContentFragment extends Fragment {
 
-    public boolean mIsEditing;
-    public int mEditingPosition;
+    private boolean mDidPause; // used for keeping data if the app is sent to the background
+    private boolean mIsEditing;
+    private int mEditingPosition;
 
     /**
      * Adds a UserDefineObject to the Logbook. This method must be implemented by all subclasses.
      * @return True if the object was successfully added to the Logbook, false otherwise.
      */
     public abstract boolean addObjectToLogbook();
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mDidPause = true;
+    }
 
     public boolean isEditing() {
         return mIsEditing;
@@ -32,5 +39,13 @@ public abstract class ManageContentFragment extends Fragment {
 
     public int getEditingPosition() {
         return mEditingPosition;
+    }
+
+    public boolean getDidPause() {
+        return mDidPause;
+    }
+
+    public void setDidPause(boolean didPause) {
+        mDidPause = didPause;
     }
 }

@@ -59,6 +59,32 @@ public class LogbookTest {
         assertFalse(testCatch == clonedCatch); // different references
         assertTrue(testCatch.getDate().equals(clonedCatch.getDate())); // equal dates
     }
+
+    @Test
+    public void testNextCatchPhotoName() {
+        Catch testCatch = new Catch(new Date());
+
+        testCatch.addPhoto();
+        assertTrue(testCatch.photoCount() == 1);
+
+        testCatch.addPhoto();
+        assertTrue(testCatch.photoCount() == 2);
+
+        // references should be different
+        String strCopy = new String(testCatch.getPhotoFileNames().get(0));
+        assertTrue(strCopy != testCatch.getPhotoFileNames().get(0));
+
+        testCatch.removePhoto(strCopy);
+        assertTrue(testCatch.photoCount() == 1);
+
+        // should end in ...0.png now that the original 0th index was removed
+        testCatch.addPhoto();
+        String s = testCatch.getPhotoFileNames().get(1);
+        assertTrue(s.substring(s.length() - 5, s.length()).equals("0.png"));
+
+        testCatch.addPhoto();
+        assertTrue(testCatch.photoCount() == 3);
+    }
     //endregion
 
     //region Trip Tests

@@ -1,5 +1,6 @@
 package com.cohenadair.anglerslog.model;
 
+import android.content.Context;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
@@ -8,8 +9,10 @@ import com.cohenadair.anglerslog.model.user_defines.Species;
 import com.cohenadair.anglerslog.model.user_defines.Trip;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineArray;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
+import com.cohenadair.anglerslog.utilities.PhotoUtils;
 import com.cohenadair.anglerslog.utilities.Utils;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -24,12 +27,18 @@ public class Logbook {
      */
     private static final String TAG = "Logbook";
 
+    private static Context mContext;
     private static String mName;
     private static UserDefineArray mCatches = new UserDefineArray();
     private static UserDefineArray mTrips = new UserDefineArray();
     private static UserDefineArray mSpecies = new UserDefineArray();
 
     //region Getters & Setters
+
+    public static void setContext(Context mContext) {
+        Logbook.mContext = mContext;
+    }
+
     public static String getName() {
         return mName;
     }
@@ -86,6 +95,7 @@ public class Logbook {
      * @param aDate the date of the resulting catch.
      * @return the catch with aDate or null if no such catch exists.
      */
+    @Nullable
     public static Catch catchDated(Date aDate) {
         for (UserDefineObject obj : mCatches.getItems()) {
             Catch aCatch = (Catch)obj;
@@ -105,6 +115,10 @@ public class Logbook {
      */
     public static int catchCount() {
         return mCatches.size();
+    }
+
+    public static File catchPhotoFile(Catch aCatch) {
+        return PhotoUtils.photoFile(mContext, aCatch.nextPhotoFileName());
     }
     //endregion
 

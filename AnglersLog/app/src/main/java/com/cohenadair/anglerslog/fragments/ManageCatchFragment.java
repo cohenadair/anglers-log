@@ -1,7 +1,10 @@
 package com.cohenadair.anglerslog.fragments;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,10 +17,13 @@ import com.cohenadair.anglerslog.model.Logbook;
 import com.cohenadair.anglerslog.model.user_defines.Catch;
 import com.cohenadair.anglerslog.model.user_defines.Species;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
+import com.cohenadair.anglerslog.utilities.PhotoUtils;
 import com.cohenadair.anglerslog.utilities.Utils;
 import com.cohenadair.anglerslog.utilities.fragment.FragmentData;
+import com.cohenadair.anglerslog.views.SelectPhotosView;
 import com.cohenadair.anglerslog.views.SelectionView;
 
+import java.io.File;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -33,6 +39,8 @@ public class ManageCatchFragment extends ManageContentFragment {
     private SelectionView mTimeView;
     private SelectionView mSpeciesView;
 
+    private SelectPhotosView mSelectPhotosView;
+
     public ManageCatchFragment() {
         // Required empty public constructor
     }
@@ -43,6 +51,7 @@ public class ManageCatchFragment extends ManageContentFragment {
 
         initDateTimeView(view);
         initSpeciesView(view);
+        initSelectPhotosView(view);
 
         return view;
     }
@@ -55,15 +64,18 @@ public class ManageCatchFragment extends ManageContentFragment {
     public void onResume() {
         super.onResume();
 
-        if (isEditing()) {
-            mOldCatch = Logbook.catchAtPos(getEditingPosition());
-            mNewCatch = mOldCatch.clone();
-        } else {
-            mOldCatch = null;
-            mNewCatch = new Catch(new Date());
-        }
+        // do not initialize Catches if we were paused
+        if (!getDidPause() || mNewCatch == null)
+            if (isEditing()) {
+                mOldCatch = Logbook.catchAtPos(getEditingPosition());
+                mNewCatch = mOldCatch.clone();
+            } else {
+                mOldCatch = null;
+                mNewCatch = new Catch(new Date());
+            }
 
         updateViews();
+        setDidPause(false);
     }
 
     @Override
@@ -148,26 +160,6 @@ public class ManageCatchFragment extends ManageContentFragment {
         });
     }
 
-    private void initSpeciesView(View view) {
-        mSpeciesView = (SelectionView)view.findViewById(R.id.species_layout);
-        mSpeciesView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final ManagePrimitiveFragment fragment = ManagePrimitiveFragment.newInstance(FragmentData.PRIMITIVE_SPECIES);
-
-                fragment.setOnDismissInterface(new ManagePrimitiveFragment.OnDismissInterface() {
-                    @Override
-                    public void onDismiss(UserDefineObject selectedItem) {
-                        mNewCatch.setSpecies((Species) selectedItem);
-                        mSpeciesView.setSubtitle(mNewCatch.speciesAsString());
-                    }
-                });
-
-                fragment.show(getFragmentManager(), "dialog");
-            }
-        });
-    }
-
     /**
      * Updates the date view's text.
      * @param date The date to display in the view. Only looks at the date portion.
@@ -193,8 +185,7 @@ public class ManageCatchFragment extends ManageContentFragment {
         mDateView.setSubtitle(mNewCatch.dateAsString());
         mTimeView.setSubtitle(mNewCatch.timeAsString());
 
-        if (mNewCatch.getSpecies() != null)
-            mSpeciesView.setSubtitle(mNewCatch.speciesAsString());
+        mSpeciesView.setSubtitle(mNewCatch.getSpecies() != null ? mNewCatch.speciesAsString() : "");
     }
 
     /**
@@ -204,5 +195,69 @@ public class ManageCatchFragment extends ManageContentFragment {
         Calendar.getInstance().setTime(mNewCatch.getDate());
     }
     //endregion
+
+    private void initSpeciesView(View view) {
+        mSpeciesView = (SelectionView)view.findViewById(R.id.species_layout);
+        mSpeciesView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final ManagePrimitiveFragment fragment = ManagePrimitiveFragment.newInstance(FragmentData.PRIMITIVE_SPECIES);
+
+                fragment.setOnDismissInterface(new ManagePrimitiveFragment.OnDismissInterface() {
+                    @Override
+                    public void onDismiss(UserDefineObject selectedItem) {
+                        mNewCatch.setSpecies((Species) selectedItem);
+                        mSpeciesView.setSubtitle(mNewCatch.speciesAsString());
+                    }
+                });
+
+                fragment.show(getFragmentManager(), "dialog");
+            }
+        });
+    }
+
+    private void initSelectPhotosView(View view) {
+        mSelectPhotosView = (SelectPhotosView)view.findViewById(R.id.select_photos_view);
+        mSelectPhotosView.setSelectPhotosInteraction(new SelectPhotosView.SelectPhotosInteraction() {
+            @Override
+            public PackageManager getPackageManager() {
+                return getActivity().getPackageManager();
+            }
+
+            @Override
+            public File onGetPhotoFile() {
+                return Logbook.catchPhotoFile(mNewCatch);
+            }
+
+            @Override
+            public void onStartSelectionActivity(Intent intent, int requestCode) {
+                getParentFragment().startActivityForResult(intent, requestCode);
+            }
+
+            @Override
+            public void onAddImage() {
+                mNewCatch.addPhoto();
+            }
+
+            @Override
+            public void onRemoveImage(int position) {
+                PhotoUtils.deletePhoto(getContext(), mNewCatch.photoAtPos(position));
+                mNewCatch.removePhoto(position);
+            }
+        });
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode != Activity.RESULT_OK)
+            return;
+
+        if (requestCode == SelectPhotosView.REQUEST_PHOTO) {
+            mSelectPhotosView.onPhotoIntentResult(data);
+            return;
+        }
+
+        super.onActivityResult(requestCode, resultCode, data);
+    }
 
 }

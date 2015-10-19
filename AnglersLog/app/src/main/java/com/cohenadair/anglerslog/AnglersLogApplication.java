@@ -20,6 +20,8 @@ public class AnglersLogApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
+        Logbook.setContext(getApplicationContext());
+
         // initialize some dummy catches
         if (Logbook.catchCount() <= 0)
             for (int i = 0; i < 24; i++) {

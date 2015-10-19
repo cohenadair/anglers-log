@@ -1,6 +1,9 @@
 <resources>
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="margin_default">16dp</dimen>
+    <dimen name="margin_half">8dp</dimen>
+    <dimen name="margin_quarter">4dp</dimen>
+    <dimen name="margin_three_quarters">12dp</dimen>
 
     <dimen name="navigation_drawer_width">320dp</dimen>
 
@@ -15,4 +18,5 @@
 
     <dimen name="rating_size">16dp</dimen>
     <dimen name="thumbnail_size">90dp</dimen>
+    <dimen name="thumbnail_cell_size">92dp</dimen>
 </resources>

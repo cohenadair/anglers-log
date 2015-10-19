@@ -1,6 +1,7 @@
 package com.cohenadair.anglerslog.activities;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
@@ -59,6 +60,11 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return super.onCreateOptionsMenu(menu);
@@ -102,6 +108,7 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void onClickMenuEdit(int position) {
         mFragmentInfo.setManageContentIsEditing(true, position);
+        mFragmentInfo.setManageContentDidPause(false);
         goToListManagerView();
     }
 
@@ -154,6 +161,7 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void onMyListClickNewButton() {
         mFragmentInfo.setManageContentIsEditing(false);
+        mFragmentInfo.setManageContentDidPause(false);
         goToListManagerView();
     }
     //endregion

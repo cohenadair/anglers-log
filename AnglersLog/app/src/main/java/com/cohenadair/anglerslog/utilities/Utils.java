@@ -3,14 +3,21 @@ package com.cohenadair.anglerslog.utilities;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.Resources;
+import android.net.Uri;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.Toast;
 
 import com.cohenadair.anglerslog.R;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.channels.FileChannel;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -19,6 +26,8 @@ import java.util.Date;
  * @author Cohen Adair
  */
 public class Utils {
+
+    private static final String TAG = "Utils";
 
     /**
      * The index of items that appear in a ManageAlert.
@@ -78,6 +87,20 @@ public class Utils {
                 .show();
     }
 
+    public static void showDeleteOption(Context context, int msgId, DialogInterface.OnClickListener onConfirm) {
+        new AlertDialog.Builder(context)
+                .setTitle(R.string.action_delete)
+                .setMessage(msgId)
+                .setNegativeButton(R.string.button_cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                })
+                .setPositiveButton(R.string.action_delete, onConfirm)
+                .show();
+    }
+
     public static float getFloat(Resources resources, int resId) {
         TypedValue out = new TypedValue();
         resources.getValue(resId, out, true);
@@ -108,6 +131,56 @@ public class Utils {
         int minutes2 = c.get(Calendar.MINUTE);
 
         return (year1 == year2) && (month1 == month2) && (day1 == day2) && (hours1 == hours2) && (minutes1 == minutes2);
+    }
+
+    /**
+     * This method converts device specific pixels to density independent pixels.
+     * @param px A value in px (pixels) unit. Which we need to convert into db.
+     * @return A float value to represent dp equivalent to px value.
+     */
+    public static float pxToDp(float px){
+        return px / Resources.getSystem().getDisplayMetrics().density;
+    }
+
+    /**
+     * This method converts density independent pixels to device specific pixels.
+     * @param dp A value in px (pixels) unit. Which we need to convert into db.
+     * @return A float value to represent dp equivalent to px value.
+     */
+    public static float dpToPx(float dp){
+        return dp * Resources.getSystem().getDisplayMetrics().density;
+    }
+
+    /**
+     * Copies content from source Uri to destination file.
+     * Derived from http://stackoverflow.com/questions/21496894/copy-the-image-from-one-folder-to-another-in-gallery.
+     * @param context The Context in which to copy the file.
+     * @param srcUri The file to be copied.
+     * @param destFile The file to be copied to.
+     */
+    public static void copyFile(Context context, Uri srcUri, File destFile) {
+        FileChannel source;
+        FileChannel destination;
+
+        try {
+            source = ((FileInputStream)(context.getContentResolver().openInputStream(srcUri))).getChannel();
+            destination = new FileOutputStream(destFile).getChannel();
+
+            destination.transferFrom(source, 0, source.size());
+            source.close();
+            destination.close();
+        } catch (IOException e) {
+            Log.e(TAG, "Error copying file " + srcUri.getPath() + " to " + destFile.getPath());
+        }
+    }
+
+    /**
+     * Deletes a file.
+     * @param file The File object to delete.
+     * @return True if the file was deleted, false otherwise.
+     */
+    public static boolean deleteFile(File file) {
+        return file.delete();
     }
 
 }

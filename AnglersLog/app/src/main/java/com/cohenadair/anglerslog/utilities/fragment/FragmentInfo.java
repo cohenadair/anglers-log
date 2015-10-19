@@ -129,10 +129,14 @@ public class FragmentInfo {
     public void setManageContentIsEditing(boolean isEditing, int itemPosition) {
         manageContentFragment().setIsEditing(isEditing, itemPosition);
     }
+
     public void setManageContentIsEditing(boolean isEditing) {
         manageContentFragment().setIsEditing(isEditing, -1);
     }
 
+    public void setManageContentDidPause(boolean didPause) {
+        manageContentFragment().setDidPause(didPause);
+    }
 
     public boolean manageContentIsEditing() {
         return manageContentFragment().isEditing();

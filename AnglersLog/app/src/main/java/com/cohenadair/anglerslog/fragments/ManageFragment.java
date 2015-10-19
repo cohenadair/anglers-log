@@ -2,8 +2,10 @@ package com.cohenadair.anglerslog.fragments;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +15,8 @@ import android.widget.Button;
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.utilities.fragment.FragmentData;
 import com.cohenadair.anglerslog.utilities.fragment.FragmentInfo;
+
+import java.util.List;
 
 /**
  * The ManageFragment is used for add and edit views for the various user defines.
@@ -107,6 +111,18 @@ public class ManageFragment extends DialogFragment {
     public void onDetach() {
         super.onDetach();
         mCallbacks = null;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        // pass the onActivityResult calls to the child fragments
+        List<Fragment> fragments = getChildFragmentManager().getFragments();
+        if (fragments != null)
+            for (Fragment fragment : fragments)
+                if (fragment != null)
+                    fragment.onActivityResult(requestCode, resultCode, data);
     }
 
     private void setDialogTitle(String title) {

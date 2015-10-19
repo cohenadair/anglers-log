@@ -5,4 +5,9 @@
         <item>Delete</item>
     </array>
 
+    <array name="add_photo_options">
+        <item>Attach Photo</item>
+        <item>Take Photo</item>
+    </array>
+
 </resources>

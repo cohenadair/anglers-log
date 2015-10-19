@@ -49,7 +49,6 @@
 
     <style name="Widget.TextView.Header" parent="Theme.AppCompat.Light">
         <item name="android:textAllCaps">true</item>
-        <item name="android:paddingBottom">@dimen/spacing_small_half</item>
         <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
     </style>
 
