@@ -69,9 +69,9 @@
             android:layout_alignParentBottom="true"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_marginLeft="@dimen/spacing_small"
-            android:layout_marginStart="@dimen/spacing_small"
-            android:background="@color/grey"/>
+            android:layout_marginLeft="@dimen/margin_default"
+            android:layout_marginStart="@dimen/margin_default"
+            android:background="@color/light_grey"/>
 
     </RelativeLayout>
 </LinearLayout>
