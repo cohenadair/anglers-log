@@ -121,7 +121,6 @@ public class SelectPhotosView extends LinearLayout {
 
         final ImageView img = new ImageView(getContext());
         img.setLayoutParams(layoutParams);
-        img.setImageBitmap(PhotoUtils.thumbnail(path, size));
         img.setBackgroundResource(R.color.anglers_log_dark);
         img.setOnLongClickListener(new OnLongClickListener() {
             @Override
@@ -135,6 +134,7 @@ public class SelectPhotosView extends LinearLayout {
                 return false;
             }
         });
+        PhotoUtils.thumbnailToImageView(getContext(), img, path, size, R.drawable.no_catch_photo);
 
         mImageViews.add(img);
         updateImageMargins();

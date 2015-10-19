@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -91,6 +92,9 @@ public class ManagePrimitiveFragment extends DialogFragment {
             initViews(view);
             getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         }
+
+        // resize the Dialog's height when the soft keyboard is shown
+        getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
         return view;
     }

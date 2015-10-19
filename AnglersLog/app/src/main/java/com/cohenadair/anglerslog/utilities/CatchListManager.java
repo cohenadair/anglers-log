@@ -1,7 +1,6 @@
 package com.cohenadair.anglerslog.utilities;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -91,8 +90,7 @@ public class CatchListManager {
 
             if (fileExists) {
                 int thumbSize = context().getResources().getDimensionPixelSize(R.dimen.thumbnail_size);
-                Bitmap thumb = PhotoUtils.thumbnail(randomPhotoPath, thumbSize);
-                mImageView.setImageBitmap(thumb);
+                PhotoUtils.thumbnailToImageView(context(), mImageView, randomPhotoPath, thumbSize, R.drawable.no_catch_photo);
             } else
                 mImageView.setImageResource(R.drawable.no_catch_photo);
 
