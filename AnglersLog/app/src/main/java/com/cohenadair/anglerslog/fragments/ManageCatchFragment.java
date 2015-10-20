@@ -244,7 +244,6 @@ public class ManageCatchFragment extends ManageContentFragment {
 
             @Override
             public void onRemoveImage(int position) {
-                PhotoUtils.deletePhoto(getContext(), mNewCatch.photoAtPos(position));
                 mNewCatch.removePhoto(position);
             }
         });
