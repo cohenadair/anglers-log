@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.cohenadair.anglerslog.R;
@@ -92,7 +93,7 @@ public class CatchFragment extends DetailFragment {
             int imageSize = photoPagerSize();
 
             mImageView = (ImageView)viewGroup.findViewById(R.id.image_pager_view);
-            mImageView.setLayoutParams(new LinearLayout.LayoutParams(imageSize, imageSize));
+            mImageView.setLayoutParams(new RelativeLayout.LayoutParams(imageSize, imageSize));
             PhotoUtils.thumbnailToImageView(mContext, mImageView, path, imageSize, R.drawable.no_catch_photo);
 
             collection.addView(viewGroup);

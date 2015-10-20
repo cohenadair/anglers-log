@@ -20,6 +20,9 @@ import android.util.Log;
 import android.widget.ImageView;
 
 import com.cohenadair.anglerslog.R;
+import com.cohenadair.anglerslog.model.Logbook;
+import com.cohenadair.anglerslog.model.user_defines.Catch;
+import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -214,6 +217,10 @@ public class PhotoUtils {
         return Bitmap.createBitmap(bmp, 0, 0, bmp.getWidth(), bmp.getHeight(), matrix, true);
     }
 
+    private static File privatePhotoDirectory(Context context) {
+        return context.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+    }
+
     /**
      * Gets a pointer to a file where a new photo can be saved. This location is private to this
      * application.
@@ -224,7 +231,7 @@ public class PhotoUtils {
      */
     @Nullable
     public static File privatePhotoFile(Context context, String fileName) {
-        File externalFilesDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File externalFilesDir = privatePhotoDirectory(context);
 
         if (externalFilesDir == null)
             return null;
@@ -311,6 +318,54 @@ public class PhotoUtils {
                 e.printStackTrace();
             }
         }
+    }
+
+    /**
+     * Cross references the photo files in private storage with the names of photos used throughout
+     * the application and deletes photos that aren't used.
+     *
+     * @param context The Context in which to do the cleaning.
+     */
+    private static void cleanPhotos(Context context) {
+        File photosDir = privatePhotoDirectory(context);
+        boolean found;
+        int numDeleted = 0;
+
+        if (photosDir != null && photosDir.isDirectory()) {
+            File[] photoFiles = photosDir.listFiles();
+
+            for (int i = photoFiles.length - 1; i >= 0; i--) {
+                found = false;
+
+                // check all Catch objects for the current File
+                for (UserDefineObject aCatch : Logbook.getCatches()) {
+                    if (((Catch) aCatch).getPhotoFileNames().indexOf(photoFiles[i].getName()) >= 0) {
+                        found = true;
+                        break;
+                    }
+                }
+
+                if (!found)
+                    numDeleted += (photoFiles[i].delete()) ? 1 : 0;
+            }
+        }
+
+        Log.i(TAG, "Cleaned " + numDeleted + " photo files from private storage.");
+    }
+
+    /**
+     * Cleans up photo files in another thread. See `cleanPhotos(...)`.
+     *
+     * @param context The Context in which to do the cleaning.
+     */
+    public static void cleanPhotosAsync(final Context context) {
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                cleanPhotos(context);
+            }
+        });
+        thread.start();
     }
 
     //region Async Bitmap Utilities

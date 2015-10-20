@@ -6,6 +6,7 @@ import com.cohenadair.anglerslog.model.Logbook;
 import com.cohenadair.anglerslog.model.user_defines.Catch;
 import com.cohenadair.anglerslog.model.user_defines.Species;
 import com.cohenadair.anglerslog.model.user_defines.Trip;
+import com.cohenadair.anglerslog.utilities.PhotoUtils;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -48,6 +49,8 @@ public class AnglersLogApplication extends Application {
             Logbook.addSpecies(new Species("Steelhead"));
             Logbook.addSpecies(new Species("Atlantic Salmon"));
         }
+
+        PhotoUtils.cleanPhotosAsync(getApplicationContext());
     }
 
 }

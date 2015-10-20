@@ -1,6 +1,5 @@
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -11,4 +10,4 @@
         android:contentDescription="@string/catch_photo_description"
         android:src="@drawable/no_catch_photo"/>
 
-</LinearLayout>
+</RelativeLayout>
