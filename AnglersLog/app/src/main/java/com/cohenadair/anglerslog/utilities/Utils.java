@@ -1,11 +1,12 @@
 package com.cohenadair.anglerslog.utilities;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.Resources;
+import android.graphics.Point;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
-import android.util.TypedValue;
 import android.view.View;
 import android.widget.Toast;
 
@@ -95,12 +96,6 @@ public class Utils {
                 .show();
     }
 
-    public static float getFloat(Resources resources, int resId) {
-        TypedValue out = new TypedValue();
-        resources.getValue(resId, out, true);
-        return out.getFloat();
-    }
-
     /**
      * Checks to see if two dates are equal, excluding seconds from the comparison.
      * @param date1 The first date to compare.
@@ -143,6 +138,17 @@ public class Utils {
      */
     public static float dpToPx(float dp){
         return dp * Resources.getSystem().getDisplayMetrics().density;
+    }
+
+    /**
+     * Gets the screen size in pixels.
+     * @param activity The activity used to get the screen size.
+     * @return A Point object representing the screen size, in pixels.
+     */
+    public static Point getScreenSize(Activity activity) {
+        Point size = new Point();
+        activity.getWindowManager().getDefaultDisplay().getSize(size);
+        return size;
     }
 
     /**
