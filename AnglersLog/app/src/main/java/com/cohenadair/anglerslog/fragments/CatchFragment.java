@@ -43,7 +43,6 @@ public class CatchFragment extends DetailFragment {
         mDateTextView = (TextView)view.findViewById(R.id.date_text_view);
 
         mPhotoViewPager = (ViewPager)view.findViewById(R.id.photo_view_pager);
-        mPhotoViewPager.setScrollIndicators(View.SCROLL_INDICATOR_BOTTOM);
 
         if (Logbook.catchCount() <= 0) {
             // TODO replace with "NoUserDefineView"
