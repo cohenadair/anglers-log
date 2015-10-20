@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,7 +32,6 @@ import java.util.Date;
 public class ManageCatchFragment extends ManageContentFragment {
 
     private Catch mNewCatch;
-    private Catch mOldCatch;
 
     private SelectionView mDateView;
     private SelectionView mTimeView;
@@ -53,6 +51,14 @@ public class ManageCatchFragment extends ManageContentFragment {
         initSpeciesView(view);
         initSelectPhotosView(view);
 
+        ManageFragment parent = (ManageFragment)getParentFragment();
+        parent.setOnChildCancelInterface(new ManageFragment.OnChildCancelInterface() {
+            @Override
+            public void onCancel() {
+                mNewCatch = null;
+            }
+        });
+
         return view;
     }
 
@@ -67,12 +73,14 @@ public class ManageCatchFragment extends ManageContentFragment {
         // do not initialize Catches if we were paused
         if (!getDidPause() || mNewCatch == null)
             if (isEditing()) {
-                mOldCatch = Logbook.catchAtPos(getEditingPosition());
-                mNewCatch = mOldCatch.clone();
-            } else {
-                mOldCatch = null;
+                mNewCatch = new Catch(Logbook.catchAtPos(getEditingPosition()));
+
+                // populate the photos view with the existing photos
+                for (int i = 0; i < mNewCatch.photoCount(); i++)
+                    mSelectPhotosView.addImage(PhotoUtils.privatePhotoPath(getContext(), mNewCatch.photoAtPos(i)));
+
+            } else
                 mNewCatch = new Catch(new Date());
-            }
 
         updateViews();
         setDidPause(false);
@@ -219,11 +227,6 @@ public class ManageCatchFragment extends ManageContentFragment {
     private void initSelectPhotosView(View view) {
         mSelectPhotosView = (SelectPhotosView)view.findViewById(R.id.select_photos_view);
         mSelectPhotosView.setSelectPhotosInteraction(new SelectPhotosView.SelectPhotosInteraction() {
-            @Override
-            public PackageManager getPackageManager() {
-                return getActivity().getPackageManager();
-            }
-
             @Override
             public File onGetPhotoFile() {
                 return Logbook.catchPhotoFile(mNewCatch);

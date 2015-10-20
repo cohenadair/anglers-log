@@ -24,7 +24,7 @@ import java.util.List;
 public class ManageFragment extends DialogFragment {
 
     //region Callback Interface
-    InteractionListener mCallbacks;
+    private InteractionListener mCallbacks;
 
     /**
      * Must be implemented by the fragment's Activity.
@@ -34,6 +34,13 @@ public class ManageFragment extends DialogFragment {
         void onManageConfirm();
     }
     //endregion
+
+    // set by child fragments
+    private OnChildCancelInterface mOnChildCancelInterface;
+
+    public interface OnChildCancelInterface {
+        void onCancel();
+    }
 
     /**
      * Used to keep fragment state through attach/detach.
@@ -66,6 +73,9 @@ public class ManageFragment extends DialogFragment {
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (mOnChildCancelInterface != null)
+                    mOnChildCancelInterface.onCancel();
+
                 mCallbacks.onManageCancel();
             }
         });
@@ -123,6 +133,10 @@ public class ManageFragment extends DialogFragment {
             for (Fragment fragment : fragments)
                 if (fragment != null)
                     fragment.onActivityResult(requestCode, resultCode, data);
+    }
+
+    public void setOnChildCancelInterface(OnChildCancelInterface onChildCancelInterface) {
+        mOnChildCancelInterface = onChildCancelInterface;
     }
 
     private void setDialogTitle(String title) {

@@ -10,4 +10,8 @@ public class Species extends UserDefineObject {
         super(name);
     }
 
+    public Species(Species species) {
+        super(species);
+    }
+
 }

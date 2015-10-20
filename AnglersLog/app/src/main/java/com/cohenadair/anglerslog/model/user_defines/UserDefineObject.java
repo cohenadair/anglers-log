@@ -6,7 +6,7 @@ import java.util.UUID;
  * A UserDefineObject is the superclass for all "user defined" data such as species and locations.
  * @author Cohen Adair
  */
-public class UserDefineObject implements Cloneable {
+public class UserDefineObject {
 
     private UUID mId;
     private String mName;
@@ -15,6 +15,14 @@ public class UserDefineObject implements Cloneable {
     public UserDefineObject(String name) {
         setId(UUID.randomUUID());
         setName(name);
+    }
+
+    public UserDefineObject(UserDefineObject obj) {
+        if (obj != null) {
+            mId = obj.mId;
+            mName = obj.getName();
+            mShouldDelete = obj.getShouldDelete();
+        }
     }
 
     //region Getters & Setters
@@ -49,10 +57,5 @@ public class UserDefineObject implements Cloneable {
 
     public void edit(UserDefineObject newObj) {
         mName = newObj.getName();
-    }
-
-    @Override
-    public UserDefineObject clone() throws CloneNotSupportedException {
-        return (UserDefineObject)super.clone();
     }
 }

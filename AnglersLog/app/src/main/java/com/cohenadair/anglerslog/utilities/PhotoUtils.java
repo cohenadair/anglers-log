@@ -10,6 +10,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.ExifInterface;
 import android.media.ThumbnailUtils;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -21,7 +22,10 @@ import android.widget.ImageView;
 import com.cohenadair.anglerslog.R;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.lang.ref.WeakReference;
 
 /**
@@ -51,7 +55,8 @@ public class PhotoUtils {
 
     /**
      * Scales the image at the specified path to the specified dimension. This method should be
-     * executed away from the UI thread.
+     * executed away from the UI thread. Keeps aspect ratio.
+     *
      * @param path The path to the image to scale.
      * @param destWidth The destination width.
      * @param destHeight The destination height.
@@ -63,22 +68,81 @@ public class PhotoUtils {
         options.inJustDecodeBounds = true;
         BitmapFactory.decodeFile(path, options);
 
-        float srcWidth = options.outWidth;
-        float srcHeight = options.outHeight;
+        options = scaledBitmapSampleSize(options.outWidth, options.outHeight, destWidth, destHeight);
 
+        // read in and create the final bitmap
+        return BitmapFactory.decodeFile(path, options);
+    }
+
+    /**
+     * Scales the photo at the given Uri to the specified size. Keeps aspect ratio. The longest
+     * dimension of the photo will be scaled down to `longestDestLength`.
+     *
+     * @param context The Context at which the photo will be scaled.
+     * @param uri The Uri of the photo to be scaled.
+     * @param longestDestLength The longest side length for the destination photo, in pixels.
+     * @return A scaled Bitmap version of the photo at the specified Uri, or null if the scale
+     * failed.
+     */
+    @Nullable
+    private static Bitmap scaledBitmap(Context context, Uri uri, int longestDestLength) {
+        InputStream in = null;
+
+        // create InputStream from Uri
+        try {
+            in = context.getContentResolver().openInputStream(uri);
+
+            // read in the dimensions of the image on disk
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inJustDecodeBounds = true;
+            BitmapFactory.decodeStream(in, null, options);
+
+            if (in != null)
+                in.close();
+
+            options = scaledBitmapSampleSize(options.outWidth, options.outHeight, longestDestLength, longestDestLength);
+
+            // reset InputStream as it cannot be used more than once
+            in = context.getContentResolver().openInputStream(uri);
+
+            // read in and create the final bitmap
+            return BitmapFactory.decodeStream(in, null, options);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (in != null)
+                    in.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Gets the scale factor to scale the source size to the destination size.
+     * @param srcWidth Original width, in pixels.
+     * @param srcHeight Original height, in pixels.
+     * @param destWidth New width, in pixels.
+     * @param destHeight New height, in pixels.
+     * @return A BitmapFactory.Options object with the `inSampleSize` field set.
+     */
+    private static BitmapFactory.Options scaledBitmapSampleSize(int srcWidth, int srcHeight, int destWidth, int destHeight) {
         // figure out how much to scale by
         int inSampleSize = 1;
         if (srcHeight > destHeight || srcWidth > destWidth)
-            if (srcWidth > srcHeight)
-                inSampleSize = Math.round(srcHeight / destHeight);
+            if (srcWidth < srcHeight)
+                inSampleSize = (int)Math.ceil((double) srcHeight / (double) destHeight);
             else
-                inSampleSize = Math.round(srcWidth / destWidth);
+                inSampleSize = (int)Math.ceil((double) srcWidth / (double) destWidth);
 
-        options = new BitmapFactory.Options();
+        BitmapFactory.Options options = new BitmapFactory.Options();
         options.inSampleSize = inSampleSize;
 
-        // read in and create the final bitmap
-        return fixOrientation(path, BitmapFactory.decodeFile(path, options));
+        return options;
     }
 
     /**
@@ -111,6 +175,12 @@ public class PhotoUtils {
         }
     }
 
+    /**
+     * Rotates the specified bitmap to the correct orientation.
+     * @param path The path to the photo file.
+     * @param bmp The Bitmap representative of the photo file.
+     * @return A correctly rotated Bitmap.
+     */
     private static Bitmap fixOrientation(String path, Bitmap bmp) {
         try {
             ExifInterface exif = new ExifInterface(path);
@@ -145,13 +215,15 @@ public class PhotoUtils {
     }
 
     /**
-     * Gets a pointer to a file where a new photo can be saved.
+     * Gets a pointer to a file where a new photo can be saved. This location is private to this
+     * application.
+     *
      * @param context The Context used to find the new file location.
      * @param fileName The name of the new photo.
      * @return A File object pointing to the photo's storage location.
      */
     @Nullable
-    public static File photoFile(Context context, String fileName) {
+    public static File privatePhotoFile(Context context, String fileName) {
         File externalFilesDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
 
         if (externalFilesDir == null)
@@ -161,13 +233,32 @@ public class PhotoUtils {
     }
 
     /**
+     * Gets a pointer to a file location in the devices public storage.
+     *
+     * @param context The Context in which the File will be made.
+     * @param fileName The name of the file to to be created.
+     * @return A File object if the directory exists, null otherwise.
+     */
+    @Nullable
+    public static File publicPhotoFile(Context context, String fileName) {
+        String photosPath = Environment.DIRECTORY_PICTURES + context.getResources().getString(R.string.app_photos_dir);
+        File publicDirectory = Environment.getExternalStoragePublicDirectory(photosPath);
+
+        if (publicDirectory.mkdirs() || publicDirectory.isDirectory())
+            return new File(publicDirectory, fileName);
+
+        return null;
+    }
+
+    /**
      * Gets the full path to the specified file name.
+     *
      * @param context The context in which to create the path.
      * @param fileName The name of the file to get.
      * @return A String of the file's path.
      */
-    public static String photoPath(Context context, String fileName) {
-        File f = photoFile(context, fileName);
+    public static String privatePhotoPath(Context context, String fileName) {
+        File f = privatePhotoFile(context, fileName);
         return (f == null) ? null : f.getPath();
     }
 
@@ -178,8 +269,48 @@ public class PhotoUtils {
      * @return True if the photo was deleted, false otherwise.
      */
     public static boolean deletePhoto(Context context, String path) {
-        File f = photoFile(context, path);
+        File f = privatePhotoFile(context, path);
         return (f == null) || f.delete();
+    }
+
+    /**
+     * Copies a photo to a new location and scales it down to `R.dimen.max_photo_size` pixels.
+     *
+     * @param context The Context in which to perform the manipulation.
+     * @param srcUri The source Uri of the photo.
+     * @param destFile The destination file the Bitmap will be written to.
+     */
+    public static void copyAndResizePhoto(Context context, Uri srcUri, File destFile) {
+        // if copy was successful
+        if (destFile != null) {
+            int longestSideLength = context.getResources().getInteger(R.integer.max_photo_size);
+            Bitmap scaledBitmap = fixOrientation(srcUri.getPath(), scaledBitmap(context, srcUri, longestSideLength));
+            savePhoto(scaledBitmap, destFile);
+        }
+    }
+
+    /**
+     * Saves the specified bitmap to the specified File object.
+     * @param bitmap The Bitmap object to save.
+     * @param file The File object to be written to.
+     */
+    public static void savePhoto(Bitmap bitmap, File file) {
+        FileOutputStream out = null;
+
+        try {
+            out = new FileOutputStream(file);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
+        } catch (FileNotFoundException e) {
+            Log.e(TAG, "File not found: " + file.getPath());
+            e.printStackTrace();
+        } finally {
+            try {
+                if (out != null)
+                    out.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     //region Async Bitmap Utilities

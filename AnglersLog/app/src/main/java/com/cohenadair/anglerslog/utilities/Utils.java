@@ -3,10 +3,8 @@ package com.cohenadair.anglerslog.utilities;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.Resources;
-import android.net.Uri;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.Toast;
@@ -14,10 +12,6 @@ import android.widget.Toast;
 import com.cohenadair.anglerslog.R;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.nio.channels.FileChannel;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -149,29 +143,6 @@ public class Utils {
      */
     public static float dpToPx(float dp){
         return dp * Resources.getSystem().getDisplayMetrics().density;
-    }
-
-    /**
-     * Copies content from source Uri to destination file.
-     * Derived from http://stackoverflow.com/questions/21496894/copy-the-image-from-one-folder-to-another-in-gallery.
-     * @param context The Context in which to copy the file.
-     * @param srcUri The file to be copied.
-     * @param destFile The file to be copied to.
-     */
-    public static void copyFile(Context context, Uri srcUri, File destFile) {
-        FileChannel source;
-        FileChannel destination;
-
-        try {
-            source = ((FileInputStream)(context.getContentResolver().openInputStream(srcUri))).getChannel();
-            destination = new FileOutputStream(destFile).getChannel();
-
-            destination.transferFrom(source, 0, source.size());
-            source.close();
-            destination.close();
-        } catch (IOException e) {
-            Log.e(TAG, "Error copying file " + srcUri.getPath() + " to " + destFile.getPath());
-        }
     }
 
     /**

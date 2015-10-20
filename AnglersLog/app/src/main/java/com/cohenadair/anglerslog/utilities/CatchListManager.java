@@ -81,7 +81,8 @@ public class CatchListManager {
             String randomPhotoPath = "";
 
             if (randomPhoto != null)
-                randomPhotoPath = PhotoUtils.photoPath(context(), randomPhoto);
+                randomPhotoPath = PhotoUtils.privatePhotoPath(context(), randomPhoto);
+                //randomPhotoPath = PhotoUtils.photoPath(context(), "IMG_0fcc5c46-579f-4c6f-ae4b-7819148c7e6f_0.png");
 
             if (randomPhotoPath != null)
                 fileExists = new File(randomPhotoPath).exists();

@@ -3,7 +3,7 @@ package com.cohenadair.anglerslog.views;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
+import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
@@ -21,7 +21,19 @@ import java.io.File;
 import java.util.ArrayList;
 
 /**
- * The SelectPhotosView is used to attach or take photos.
+ * The SelectPhotosView is used to attach or take photos. All image manipulation is done in the
+ * {@link PhotoUtils} class.
+ *
+ * Selected or taken photos are dynamically added to a horizontal scrolling ScrollView, and can be
+ * removed with a long click.
+ *
+ * Photos taken with the user's Camera app are saved to public device storage and can be manipulated
+ * by the user outside this application. This is done so the user has a full-resolution version of
+ * the photo, and so the photo is kept if the user was to uninstall this application.
+ *
+ * All photos (taken or selected) are downsized and copied to private application storage where
+ * they are used by this application.
+ *
  * Created by Cohen Adair on 2015-10-18.
  */
 public class SelectPhotosView extends LinearLayout {
@@ -34,10 +46,10 @@ public class SelectPhotosView extends LinearLayout {
     private LinearLayout mPhotosWrapper;
     private ArrayList<ImageView> mImageViews = new ArrayList<>();
     private SelectPhotosInteraction mSelectPhotosInteraction;
-    private File mPhotoFile;
+    private File mPrivatePhotoFile; // used to save a version of the photo used by this application
+    private File mPublicPhotoFile; // used to save a full resolution version of the photo for the user
 
     public interface SelectPhotosInteraction {
-        PackageManager getPackageManager();
         File onGetPhotoFile();
         void onStartSelectionActivity(Intent intent, int requestCode);
         void onAddImage();
@@ -88,7 +100,10 @@ public class SelectPhotosView extends LinearLayout {
     //endregion
 
     private void openPhotoIntent(int takeOrAttach) {
-        mPhotoFile = mSelectPhotosInteraction.onGetPhotoFile();
+        mPrivatePhotoFile = mSelectPhotosInteraction.onGetPhotoFile();
+
+        // photos taken from the camera are saved here
+        mPublicPhotoFile = PhotoUtils.publicPhotoFile(getContext(), mPrivatePhotoFile.getName());
 
         if (takeOrAttach == PHOTO_ATTACH)
             mSelectPhotosInteraction.onStartSelectionActivity(PhotoUtils.pickPhotoIntent(getContext()), REQUEST_PHOTO);
@@ -98,7 +113,7 @@ public class SelectPhotosView extends LinearLayout {
 
             // make sure the camera is available on this device
             if (canTakePicture(photoIntent)) {
-                photoIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(mPhotoFile));
+                photoIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(mPublicPhotoFile));
                 mSelectPhotosInteraction.onStartSelectionActivity(photoIntent, REQUEST_PHOTO);
             } else
                 Utils.showErrorAlert(getContext(), R.string.error_camera_unavailable);
@@ -106,15 +121,20 @@ public class SelectPhotosView extends LinearLayout {
     }
 
     public void onPhotoIntentResult(Intent data) {
-        // if the user didn't use the camera, copy the selected photo
-        if (data != null)
-            Utils.copyFile(getContext(), data.getData(), mPhotoFile);
+        // scale down selected/taken photo and copy it to a private directory
+        Uri photoUri = (data == null) ? Uri.fromFile(mPublicPhotoFile) : data.getData();
+        PhotoUtils.copyAndResizePhoto(getContext(), photoUri, mPrivatePhotoFile);
 
-        addImage(mPhotoFile.getPath());
+        // make sure photo taken shows up in the user's gallery
+        if (mPublicPhotoFile.exists())
+            MediaScannerConnection.scanFile(getContext(), new String[] { mPublicPhotoFile.toString() }, null, null);
+
+        addImage(mPrivatePhotoFile.getPath());
+        mSelectPhotosInteraction.onAddImage();
     }
 
-    private void addImage(String path) {
-        int size = (int)Utils.dpToPx(100);
+    public void addImage(String path) {
+        int size = getContext().getResources().getDimensionPixelSize(R.dimen.thumbnail_size);
 
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(size, size);
         layoutParams.setMargins(0, getResources().getDimensionPixelSize(R.dimen.spacing_small_half), 0, 0);
@@ -140,7 +160,6 @@ public class SelectPhotosView extends LinearLayout {
         updateImageMargins();
 
         mPhotosWrapper.addView(img);
-        mSelectPhotosInteraction.onAddImage();
     }
 
     private void removeImage(ImageView img) {
@@ -157,7 +176,7 @@ public class SelectPhotosView extends LinearLayout {
     }
 
     private boolean canTakePicture(Intent intent) {
-        return (mPhotoFile != null) && (intent.resolveActivity(mSelectPhotosInteraction.getPackageManager()) != null);
+        return (mPrivatePhotoFile != null) && (intent.resolveActivity(getContext().getPackageManager()) != null);
     }
 
 }

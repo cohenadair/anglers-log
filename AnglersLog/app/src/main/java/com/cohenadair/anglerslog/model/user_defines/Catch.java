@@ -11,7 +11,7 @@ import java.util.Random;
  * The Catch class stores relative information for a single fishing catch.
  * @author Cohen Adair
  */
-public class Catch extends UserDefineObject implements Cloneable {
+public class Catch extends UserDefineObject {
 
     private final String TAG = "Catch";
 
@@ -23,6 +23,14 @@ public class Catch extends UserDefineObject implements Cloneable {
     public Catch(Date date) {
         super(date.toString());
         mDate = date;
+    }
+
+    public Catch(Catch aCatch) {
+        super(aCatch);
+        mDate = new Date(aCatch.getDate().getTime());
+        mSpecies = new Species(aCatch.getSpecies());
+        mIsFavorite = aCatch.isFavorite();
+        mPhotoFileNames = new ArrayList<>(aCatch.getPhotoFileNames());
     }
 
     //region Getters & Setters
@@ -76,16 +84,6 @@ public class Catch extends UserDefineObject implements Cloneable {
         return DateFormat.format("MMM dd, yyyy 'at' h:mm a", mDate).toString();
     }
 
-    @Override
-    public Catch clone() {
-        try {
-            return (Catch)super.clone();
-        } catch (CloneNotSupportedException e) {
-            e.printStackTrace();
-            throw new RuntimeException();
-        }
-    }
-
     //region Photo Manipulation
     public void addPhoto() {
         String next = nextPhotoFileName();
@@ -131,12 +129,12 @@ public class Catch extends UserDefineObject implements Cloneable {
      */
     public String nextPhotoFileName() {
         for (int i = 0; i < mPhotoFileNames.size(); i++) {
-            String name = "IMG_" + getId().toString() + "_" + i + ".png";
+            String name = "IMG_" + getId().toString() + "_" + i + ".jpg";
             if (mPhotoFileNames.indexOf(name) == -1)
                 return name;
         }
 
-        return "IMG_" + getId().toString() + "_" + mPhotoFileNames.size() + ".png";
+        return "IMG_" + getId().toString() + "_" + mPhotoFileNames.size() + ".jpg";
     }
     //endregion
 }
