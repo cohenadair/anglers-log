@@ -306,8 +306,8 @@ public class PhotoUtils {
         if (isMinKitKat) {
             Uri contentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
 
-            final String selection = "_id=?";
-            final String[] selectionArgs = new String[] { devicePhotoId(context, uri) };
+            String selection = "_id=?";
+            String[] selectionArgs = new String[] { devicePhotoId(context, uri) };
 
             return dataColumnValue(context, contentUri, selection, selectionArgs);
         } else
