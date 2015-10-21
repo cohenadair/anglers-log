@@ -33,6 +33,10 @@ public class Logbook {
     private static UserDefineArray mTrips = new UserDefineArray();
     private static UserDefineArray mSpecies = new UserDefineArray();
 
+    private Logbook() {
+
+    }
+
     //region Getters & Setters
 
     public static void setContext(Context mContext) {

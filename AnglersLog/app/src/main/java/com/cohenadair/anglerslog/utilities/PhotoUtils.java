@@ -3,6 +3,7 @@ package com.cohenadair.anglerslog.utilities;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
@@ -12,6 +13,7 @@ import android.media.ExifInterface;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
@@ -240,6 +242,18 @@ public class PhotoUtils {
     }
 
     /**
+     * Gets the full path to the specified file name.
+     *
+     * @param context The context in which to create the path.
+     * @param fileName The name of the file to get.
+     * @return A String of the file's path.
+     */
+    public static String privatePhotoPath(Context context, String fileName) {
+        File f = privatePhotoFile(context, fileName);
+        return (f == null) ? null : f.getPath();
+    }
+
+    /**
      * Gets a pointer to a file location in the devices public storage.
      *
      * @param context The Context in which the File will be made.
@@ -258,29 +272,6 @@ public class PhotoUtils {
     }
 
     /**
-     * Gets the full path to the specified file name.
-     *
-     * @param context The context in which to create the path.
-     * @param fileName The name of the file to get.
-     * @return A String of the file's path.
-     */
-    public static String privatePhotoPath(Context context, String fileName) {
-        File f = privatePhotoFile(context, fileName);
-        return (f == null) ? null : f.getPath();
-    }
-
-    /**
-     * Deletes the photo at the specified path.
-     * @param context The context in which to delete the photo.
-     * @param path The path of the photo to delete.
-     * @return True if the photo was deleted, false otherwise.
-     */
-    public static boolean deletePhoto(Context context, String path) {
-        File f = privatePhotoFile(context, path);
-        return (f == null) || f.delete();
-    }
-
-    /**
      * Copies a photo to a new location and scales it down to `R.dimen.max_photo_size` pixels.
      *
      * @param context The Context in which to perform the manipulation.
@@ -288,12 +279,97 @@ public class PhotoUtils {
      * @param destFile The destination file the Bitmap will be written to.
      */
     public static void copyAndResizePhoto(Context context, Uri srcUri, File destFile) {
-        // if copy was successful
+        // if the Uri is content (in public storage), extract the actual path
+        String path = srcUri.getScheme().equals("content") ? actualUriPath(context, srcUri) : srcUri.getPath();
+
         if (destFile != null) {
             int longestSideLength = context.getResources().getInteger(R.integer.max_photo_size);
-            Bitmap scaledBitmap = fixOrientation(srcUri.getPath(), scaledBitmap(context, srcUri, longestSideLength));
+            Bitmap scaledBitmap = fixOrientation(path, scaledBitmap(context, srcUri, longestSideLength));
             savePhoto(scaledBitmap, destFile);
         }
+    }
+
+    /**
+     * Get a file path from a Uri. This will get the the path for Storage Access Framework
+     * Documents, as well as the _data field for the MediaStore and other file-based
+     * ContentProviders.
+     *
+     * This method was derived from the `getPath` method in <a href="https://github.com/iPaulPro/aFileChooser/blob/master/aFileChooser/src/com/ipaulpro/afilechooser/utils/FileUtils.java">iPaulPro's aFileChooser FileUtils.java</a>
+     *
+     * @param context The context.
+     * @param uri The Uri to query.
+     * @return A String representing the actual Uri path.
+     */
+    public static String actualUriPath(Context context, final Uri uri) {
+        boolean isMinKitKat = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
+
+        if (isMinKitKat) {
+            Uri contentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+
+            final String selection = "_id=?";
+            final String[] selectionArgs = new String[] { devicePhotoId(context, uri) };
+
+            return dataColumnValue(context, contentUri, selection, selectionArgs);
+        } else
+            return dataColumnValue(context, uri, null, null);
+    }
+
+    /**
+     * Get the value of the data column for this Uri. This is useful for MediaStore Uris, and other
+     * file-based ContentProviders.
+     *
+     * This method was extracted from <a href="https://github.com/iPaulPro/aFileChooser/blob/master/aFileChooser/src/com/ipaulpro/afilechooser/utils/FileUtils.java">iPaulPro's aFileChooser FileUtils.java</a>
+     *
+     * @param context The context.
+     * @param uri The Uri to query.
+     * @param selection (Optional) Filter used in the query.
+     * @param selectionArgs (Optional) Selection arguments used in the query.
+     * @return The value of the _data column, which is typically a file path.
+     */
+    @Nullable
+    private static String dataColumnValue(Context context, Uri uri, String selection, String[] selectionArgs) {
+        Cursor cursor = null;
+        final String column = MediaStore.Images.Media.DATA;
+        final String[] projection = { column };
+
+        try {
+            cursor = context.getContentResolver().query(uri, projection, selection, selectionArgs, null);
+            if (cursor != null && cursor.moveToFirst()) {
+                final int column_index = cursor.getColumnIndexOrThrow(column);
+                return cursor.getString(column_index);
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "Invalid Uri passed to dataColumnValue, returning null.");
+        } finally {
+            if (cursor != null)
+                cursor.close();
+        }
+
+        return null;
+    }
+
+    /**
+     * Gets the id of the photo at the specified Uri. This only works in API level 19+. For example,
+     * a Uri with path: `content://com.android.providers.media.documents/document/image:62` would
+     * result with a photo id of "62".
+     *
+     * @param context The Context.
+     * @param uri The Uri of the photo.
+     * @return A String of the photo's id.
+     */
+    private static String devicePhotoId(Context context, Uri uri) {
+        String photoId = null;
+        Cursor cursor = context.getContentResolver().query(uri, null, null, null, null);
+
+        if (cursor != null && cursor.moveToFirst()) {
+            photoId = cursor.getString(0);
+            photoId = photoId.substring(photoId.lastIndexOf(":") + 1);
+        }
+
+        if (cursor != null)
+            cursor.close();
+
+        return photoId;
     }
 
     /**
