@@ -7,11 +7,9 @@ import android.content.res.Resources;
 import android.graphics.Point;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
-import com.cohenadair.anglerslog.BuildConfig;
 import com.cohenadair.anglerslog.R;
 
 import java.io.File;
@@ -31,11 +29,6 @@ public class Utils {
      */
     public static final int MANAGE_ALERT_EDIT = 0;
     public static final int MANAGE_ALERT_DELETE = 1;
-
-    public static void debug(String tag, String msg) {
-        if (BuildConfig.DEBUG)
-            Log.d(tag, msg);
-    }
 
     public static void showToast(Context context, int resId) {
         Toast.makeText(context, resId, Toast.LENGTH_SHORT).show();

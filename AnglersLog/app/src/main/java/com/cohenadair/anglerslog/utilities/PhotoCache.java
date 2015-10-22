@@ -14,6 +14,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -128,6 +129,22 @@ public class PhotoCache {
     }
 
     /**
+     * Cleans the disk cache, keeping the files associated with the specified keys.
+     *
+     * @param keysToKeep An array of keys to keep.
+     */
+    public void cleanDisk(ArrayList<String> keysToKeep) {
+        mDiskCache.clean(keysToKeep);
+    }
+
+    /**
+     * Completely clears the disk cache.
+     */
+    public void clearDisk() {
+        mDiskCache.clear();
+    }
+
+    /**
      * Provides a unique cache key for different bitmap sizes.
      *
      * @param path The path of the bitmap to be cached.
@@ -185,7 +202,7 @@ public class PhotoCache {
     public BitmapDiskCache openBitmapDiskCache(File cacheDir, long maxByteSize) {
         if (!cacheDir.exists())
             if (cacheDir.mkdir())
-                Utils.debug(TAG, "Created cache directory.");
+                Log.i(TAG, "Created cache directory.");
 
         if (cacheDir.isDirectory() && cacheDir.canWrite())
             return new BitmapDiskCache(cacheDir, maxByteSize);
@@ -197,8 +214,6 @@ public class PhotoCache {
      * A simple disk cache implementation for Bitmaps. Code derived from <a href="https://code.google.com/p/android/issues/detail?id=29400">here</a>.
      */
     public class BitmapDiskCache {
-        private static final String TAG = "DiskLruCache";
-
         private static final int INITIAL_CAPACITY = 32;
         private static final float LOAD_FACTOR = 0.75f;
 
@@ -269,7 +284,7 @@ public class PhotoCache {
 
                 if (eldestFile.delete()) {
                     mCacheByteSize -= eldestFileSize;
-                    Utils.debug(TAG, "Flushed cache file: " + eldestFile + ", " + eldestFileSize);
+                    Log.i(TAG, "Flushed cache file: " + eldestFile + ", " + eldestFileSize);
                 }
             }
         }
@@ -290,7 +305,7 @@ public class PhotoCache {
          * Removes any files that aren't in the specified Strings.
          * @param keysToKeep An array of substrings of the keys to keep.
          */
-        public void clean(final String[] keysToKeep) {
+        public void clean(final ArrayList<String> keysToKeep) {
             deleteFiles(new FilenameFilter() {
                 @Override
                 public boolean accept(File dir, String name) {
@@ -298,7 +313,7 @@ public class PhotoCache {
                         if (name.contains(str))
                             return true;
 
-                    return false;
+                    return keysToKeep.size() <= 0;
                 }
             });
         }
@@ -314,7 +329,7 @@ public class PhotoCache {
             for (File file : files)
                 numDeleted += file.delete() ? 1 : 0;
 
-            Utils.debug(TAG, "Deleted " + numDeleted + " cached photos.");
+            Log.i(TAG, "Deleted " + numDeleted + " cached photos.");
         }
 
         /**

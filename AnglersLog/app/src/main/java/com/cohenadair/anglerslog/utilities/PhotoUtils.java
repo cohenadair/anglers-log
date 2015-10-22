@@ -30,6 +30,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 
 /**
  * Any utility functions that have anything to do with photos/photo manipulation.
@@ -167,7 +168,7 @@ public class PhotoUtils {
         Bitmap fromCache = mCache.bitmapFromMemory(path, size);
 
         if (fromCache != null) {
-            Utils.debug(TAG, "Found bitmap in MEMORY cache!");
+            Log.i(TAG, "Found bitmap in MEMORY cache!");
             imageView.setImageBitmap(fromCache);
         } else if (cancelPotentialWork(path, imageView)) {
             final BitmapAsyncTask task = new BitmapAsyncTask(imageView, size, size, true);
@@ -378,7 +379,6 @@ public class PhotoUtils {
     /**
      * Cross references the photo files in private storage with the names of photos used throughout
      * the application and deletes photos that aren't used.
-     *
      */
     private static void cleanPhotos() {
         File photosDir = privatePhotoDirectory();
@@ -409,6 +409,14 @@ public class PhotoUtils {
         Log.i(TAG, "Cleaned " + numDeleted + " photo files from private storage.");
     }
 
+    private static void cleanCache() {
+        ArrayList<String> photoNames = new ArrayList<>();
+        for (UserDefineObject aCatch : Logbook.getCatches())
+            photoNames.addAll(((Catch)aCatch).getPhotoFileNames());
+
+        mCache.cleanDisk(photoNames);
+    }
+
     /**
      * Cleans up photo files in another thread. See `cleanPhotos(...)`.
      */
@@ -417,6 +425,7 @@ public class PhotoUtils {
             @Override
             public void run() {
                 cleanPhotos();
+                cleanCache();
             }
         });
         thread.start();
@@ -469,7 +478,7 @@ public class PhotoUtils {
                     scaledBitmap = ThumbnailUtils.extractThumbnail(scaledBitmap, size, size);
                 }
             } else
-                Utils.debug(TAG, "Bitmap found in DISK cache!");
+                Log.i(TAG, "Bitmap found in DISK cache!");
 
             // cache bitmap to use later
             mCache.addBitmap(mPath, mWidth, scaledBitmap);
