@@ -77,6 +77,7 @@ public class ManageFragment extends DialogFragment {
                     mOnChildCancelInterface.onCancel();
 
                 mCallbacks.onManageCancel();
+                closeDialog();
             }
         });
 
@@ -86,8 +87,10 @@ public class ManageFragment extends DialogFragment {
             public void onClick(View v) {
                 if (info != null) {
                     ManageContentFragment fragment = info.manageContentFragment();
-                    if (fragment.addObjectToLogbook())
+                    if (fragment.addObjectToLogbook()) {
                         mCallbacks.onManageConfirm();
+                        closeDialog();
+                    }
                 }
             }
         });
@@ -95,7 +98,7 @@ public class ManageFragment extends DialogFragment {
         // add the actual content to the scroll view
         if (info != null) {
             int preTextId = info.manageContentIsEditing() ? R.string.action_edit : R.string.new_text;
-            setDialogTitle(preTextId + " " + info.getName());
+            setDialogTitle(getResources().getString(preTextId) + " " + info.getName());
 
             FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
             transaction.add(R.id.content_scroll_view, info.manageContentFragment());
@@ -143,5 +146,11 @@ public class ManageFragment extends DialogFragment {
         Dialog dialog = getDialog();
         if (dialog != null)
             dialog.setTitle(title);
+    }
+
+    private void closeDialog() {
+        Dialog dialog = getDialog();
+        if (dialog != null)
+            dialog.dismiss();
     }
 }

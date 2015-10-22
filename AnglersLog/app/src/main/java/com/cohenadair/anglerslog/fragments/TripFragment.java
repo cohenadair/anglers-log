@@ -43,4 +43,9 @@ public class TripFragment extends DetailFragment {
 
         mNameTextView.setText(trip.getName());
     }
+
+    @Override
+    public void update() {
+
+    }
 }

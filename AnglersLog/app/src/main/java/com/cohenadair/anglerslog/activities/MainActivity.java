@@ -175,6 +175,7 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void onManageConfirm() {
         mNavigationManager.goBack();
+        mFragmentInfo.updateViews();
     }
     //endregion
 

@@ -378,7 +378,8 @@ public class PhotoUtils {
 
     /**
      * Cross references the photo files in private storage with the names of photos used throughout
-     * the application and deletes photos that aren't used.
+     * the application and deletes photos that aren't used. This method should never be called on
+     * the UI thread. Use {@link #cleanPhotosAsync()} instead.
      */
     private static void cleanPhotos() {
         File photosDir = privatePhotoDirectory();
@@ -409,6 +410,10 @@ public class PhotoUtils {
         Log.i(TAG, "Cleaned " + numDeleted + " photo files from private storage.");
     }
 
+    /**
+     * Similar to {@link #cleanPhotos()} except it cleans the disk cache. This method should never
+     * be called on the UI thread. Use {@link #cleanPhotosAsync()} instead.
+     */
     private static void cleanCache() {
         ArrayList<String> photoNames = new ArrayList<>();
         for (UserDefineObject aCatch : Logbook.getCatches())

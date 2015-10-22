@@ -2,6 +2,7 @@ package com.cohenadair.anglerslog.utilities.fragment;
 
 import android.support.v4.app.Fragment;
 
+import com.cohenadair.anglerslog.fragments.DetailFragment;
 import com.cohenadair.anglerslog.fragments.ManageContentFragment;
 import com.cohenadair.anglerslog.fragments.ManageFragment;
 import com.cohenadair.anglerslog.utilities.ListManager;
@@ -140,5 +141,14 @@ public class FragmentInfo {
 
     public boolean manageContentIsEditing() {
         return manageContentFragment().isEditing();
+    }
+
+    /**
+     * Updates the views for the master and detail fragments. This is called when changes were made
+     * to the associated data sets.
+     */
+    public void updateViews() {
+        mArrayAdapter.notifyDataSetChanged();
+        ((DetailFragment)mDetailInfo.getFragment()).update();
     }
 }

@@ -68,6 +68,11 @@ public class CatchFragment extends DetailFragment {
         mPhotoViewPager.setLayoutParams(new LinearLayout.LayoutParams(photoPagerSize(), photoPagerSize()));
     }
 
+    @Override
+    public void update() {
+        update(getItemPosition());
+    }
+
     private int photoPagerSize() {
         Point screenSize = Utils.getScreenSize(getActivity());
         // the image size will be the smaller of the screen width/height

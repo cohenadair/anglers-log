@@ -29,6 +29,7 @@ public abstract class DetailFragment extends Fragment {
      * @param position the position of the clicked ListItem in the master view.
      */
     public abstract void update(int position);
+    public abstract void update();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
