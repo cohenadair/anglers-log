@@ -22,6 +22,7 @@ public class AnglersLogApplication extends Application {
         super.onCreate();
 
         Logbook.setContext(getApplicationContext());
+        PhotoUtils.init(getApplicationContext());
 
         // initialize some dummy catches
         if (Logbook.catchCount() <= 0)
@@ -50,7 +51,7 @@ public class AnglersLogApplication extends Application {
             Logbook.addSpecies(new Species("Atlantic Salmon"));
         }
 
-        PhotoUtils.cleanPhotosAsync(getApplicationContext());
+        PhotoUtils.cleanPhotosAsync();
     }
 
 }

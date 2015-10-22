@@ -122,7 +122,7 @@ public class Logbook {
     }
 
     public static File catchPhotoFile(Catch aCatch) {
-        return PhotoUtils.privatePhotoFile(mContext, aCatch.nextPhotoFileName());
+        return PhotoUtils.privatePhotoFile(aCatch.nextPhotoFileName());
     }
     //endregion
 

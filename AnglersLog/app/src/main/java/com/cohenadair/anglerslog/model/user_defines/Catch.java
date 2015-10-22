@@ -128,13 +128,16 @@ public class Catch extends UserDefineObject {
      * @return The file name as String. Example "IMG_<mId>_0.png".
      */
     public String nextPhotoFileName() {
+        // this loop ensures that the smallest index possible is used in the name
+        // it's possible a user removed index 0 and some point, so a new image should use that index
+        // since a photo with .size() may already exist
         for (int i = 0; i < mPhotoFileNames.size(); i++) {
-            String name = "IMG_" + getId().toString() + "_" + i + ".jpg";
+            String name = "CATCH_" + getId().toString() + "_" + i + ".jpg";
             if (mPhotoFileNames.indexOf(name) == -1)
                 return name;
         }
 
-        return "IMG_" + getId().toString() + "_" + mPhotoFileNames.size() + ".jpg";
+        return "CATCH_" + getId().toString() + "_" + mPhotoFileNames.size() + ".jpg";
     }
     //endregion
 }

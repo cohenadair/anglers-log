@@ -103,10 +103,10 @@ public class SelectPhotosView extends LinearLayout {
         mPrivatePhotoFile = mSelectPhotosInteraction.onGetPhotoFile();
 
         // photos taken from the camera are saved here
-        mPublicPhotoFile = PhotoUtils.publicPhotoFile(getContext(), mPrivatePhotoFile.getName());
+        mPublicPhotoFile = PhotoUtils.publicPhotoFile(mPrivatePhotoFile.getName());
 
         if (takeOrAttach == PHOTO_ATTACH)
-            mSelectPhotosInteraction.onStartSelectionActivity(PhotoUtils.pickPhotoIntent(getContext()), REQUEST_PHOTO);
+            mSelectPhotosInteraction.onStartSelectionActivity(PhotoUtils.pickPhotoIntent(), REQUEST_PHOTO);
 
         if (takeOrAttach == PHOTO_TAKE) {
             Intent photoIntent = PhotoUtils.takePhotoIntent();
@@ -123,11 +123,11 @@ public class SelectPhotosView extends LinearLayout {
     public void onPhotoIntentResult(Intent data) {
         // scale down selected/taken photo and copy it to a private directory
         Uri photoUri = (data == null) ? Uri.fromFile(mPublicPhotoFile) : data.getData();
-        PhotoUtils.copyAndResizePhoto(getContext(), photoUri, mPrivatePhotoFile);
+        PhotoUtils.copyAndResizePhoto(photoUri, mPrivatePhotoFile);
 
         // make sure photo taken shows up in the user's gallery
         if (mPublicPhotoFile.exists())
-            MediaScannerConnection.scanFile(getContext(), new String[] { mPublicPhotoFile.toString() }, null, null);
+            MediaScannerConnection.scanFile(getContext(), new String[]{mPublicPhotoFile.toString()}, null, null);
 
         addImage(mPrivatePhotoFile.getPath());
         mSelectPhotosInteraction.onAddImage();
@@ -154,7 +154,7 @@ public class SelectPhotosView extends LinearLayout {
                 return false;
             }
         });
-        PhotoUtils.thumbnailToImageView(getContext(), img, path, size, R.drawable.no_catch_photo);
+        PhotoUtils.thumbnailToImageView(img, path, size, R.drawable.no_catch_photo);
 
         mImageViews.add(img);
         updateImageMargins();

@@ -26,7 +26,6 @@ import com.cohenadair.anglerslog.utilities.fragment.FragmentData;
 public class CatchFragment extends DetailFragment {
 
     private Catch mCatch;
-    private int mPosition;
 
     private ViewPager mPhotoViewPager;
     private TextView mSpeciesTextView;
@@ -89,12 +88,12 @@ public class CatchFragment extends DetailFragment {
             LayoutInflater inflater = LayoutInflater.from(mContext);
             ViewGroup viewGroup = (ViewGroup)inflater.inflate(R.layout.view_image_pager, collection, false);
 
-            String path = PhotoUtils.privatePhotoPath(mContext, mCatch.photoAtPos(position));
+            String path = PhotoUtils.privatePhotoPath(mCatch.photoAtPos(position));
             int imageSize = photoPagerSize();
 
             mImageView = (ImageView)viewGroup.findViewById(R.id.image_pager_view);
             mImageView.setLayoutParams(new RelativeLayout.LayoutParams(imageSize, imageSize));
-            PhotoUtils.thumbnailToImageView(mContext, mImageView, path, imageSize, R.drawable.no_catch_photo);
+            PhotoUtils.thumbnailToImageView(mImageView, path, imageSize, R.drawable.no_catch_photo);
 
             collection.addView(viewGroup);
             return viewGroup;

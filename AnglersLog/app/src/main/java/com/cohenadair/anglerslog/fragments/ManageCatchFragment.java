@@ -77,7 +77,7 @@ public class ManageCatchFragment extends ManageContentFragment {
 
                 // populate the photos view with the existing photos
                 for (int i = 0; i < mNewCatch.photoCount(); i++)
-                    mSelectPhotosView.addImage(PhotoUtils.privatePhotoPath(getContext(), mNewCatch.photoAtPos(i)));
+                    mSelectPhotosView.addImage(PhotoUtils.privatePhotoPath(mNewCatch.photoAtPos(i)));
 
             } else
                 mNewCatch = new Catch(new Date());
@@ -92,12 +92,14 @@ public class ManageCatchFragment extends ManageContentFragment {
             if (isEditing()) {
                 Logbook.editCatchAtPos(getEditingPosition(), mNewCatch);
                 Utils.showToast(getActivity(), R.string.success_catch_edit);
+                mNewCatch = null;
                 return true;
             } else {
                 // add catch
                 boolean success = Logbook.addCatch(mNewCatch);
                 int msgId = success ? R.string.success_catch : R.string.error_catch;
                 Utils.showToast(getActivity(), msgId);
+                mNewCatch = null;
                 return success;
             }
         }
