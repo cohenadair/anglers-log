@@ -77,7 +77,8 @@ public class CatchFragment extends DetailFragment {
 
     /**
      * Calculates the view's width based on the percent specified in R.integer.detail_percent for
-     * two-pane layouts. For single-pane layouts, uses the screen's width.
+     * two-pane layouts. For single-pane layouts, uses the screen's width. This is also needed to
+     * create thumbnail bitmaps for each photo.
      *
      * @return The size used for image pager.
      */
