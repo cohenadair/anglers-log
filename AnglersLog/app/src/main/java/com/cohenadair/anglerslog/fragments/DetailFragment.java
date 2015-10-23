@@ -10,6 +10,7 @@ import android.view.MenuItem;
 
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.interfaces.OnClickManageMenuListener;
+import com.cohenadair.anglerslog.utilities.Utils;
 
 /**
  * The DetailFragment class is meant to be extended by any "detail" fragments.
@@ -22,7 +23,7 @@ public abstract class DetailFragment extends Fragment {
     private static final String TAG = "DetailFragment";
 
     private int mItemPosition = 0;
-    private OnClickManageMenuListener mCallbacks;
+    private OnClickManageMenuListener mMenuListener;
 
     /**
      * The method that updates the view using the object at the corresponding ListView position.
@@ -47,16 +48,16 @@ public abstract class DetailFragment extends Fragment {
 
         // make sure the container activity has implemented the callback interface
         try {
-            mCallbacks = (OnClickManageMenuListener)context;
+            mMenuListener = (OnClickManageMenuListener)context;
         } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString() + " must implement DetailFragment.Interface.");
+            throw new ClassCastException(context.toString() + " must implement OnClickManageMenuListener.");
         }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mCallbacks = null;
+        mMenuListener = null;
     }
 
     @Override
@@ -73,10 +74,10 @@ public abstract class DetailFragment extends Fragment {
 
         switch (id) {
             case R.id.action_edit:
-                mCallbacks.onClickMenuEdit(mItemPosition);
+                mMenuListener.onClickMenuEdit(mItemPosition);
                 break;
             case R.id.action_trash:
-                mCallbacks.onClickMenuTrash(mItemPosition);
+                mMenuListener.onClickMenuTrash(mItemPosition);
                 break;
             default:
                 Log.e(TAG, "Menu item id: " + id + " is not supported.");
@@ -87,6 +88,10 @@ public abstract class DetailFragment extends Fragment {
 
     public boolean isAttached() {
         return getActivity() != null;
+    }
+
+    public boolean isTwoPane() {
+        return Utils.isTwoPane(getContext());
     }
 
     //region Getters & Setters

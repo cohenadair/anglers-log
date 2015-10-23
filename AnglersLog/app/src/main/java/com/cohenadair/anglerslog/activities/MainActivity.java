@@ -209,6 +209,6 @@ public class MainActivity extends AppCompatActivity implements
      * @return True if there are two-panes; false otherwise.
      */
     public boolean isTwoPane() {
-        return getResources().getBoolean(R.bool.has_two_panes);
+        return Utils.isTwoPane(this);
     }
 }

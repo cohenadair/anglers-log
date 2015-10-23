@@ -153,6 +153,15 @@ public class Utils {
     }
 
     /**
+     * Checks to see if the current context is two-pane.
+     * @param context The Context to check.
+     * @return True if two-pane; false otherwise.
+     */
+    public static boolean isTwoPane(Context context) {
+        return context.getResources().getBoolean(R.bool.has_two_panes);
+    }
+
+    /**
      * Deletes a file.
      * @param file The File object to delete.
      * @return True if the file was deleted, false otherwise.

@@ -16,9 +16,9 @@ import android.widget.TextView;
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.model.Logbook;
 import com.cohenadair.anglerslog.model.user_defines.Catch;
+import com.cohenadair.anglerslog.utilities.LayoutController;
 import com.cohenadair.anglerslog.utilities.PhotoUtils;
 import com.cohenadair.anglerslog.utilities.Utils;
-import com.cohenadair.anglerslog.utilities.LayoutController;
 
 /**
  * A {@link DetailFragment} subclass used to show the details of a single catch.
@@ -75,10 +75,16 @@ public class CatchFragment extends DetailFragment {
         update(getItemPosition());
     }
 
+    /**
+     * Calculates the view's width based on the percent specified in R.integer.detail_percent for
+     * two-pane layouts. For single-pane layouts, uses the screen's width.
+     *
+     * @return The size used for image pager.
+     */
     private int photoPagerSize() {
         Point screenSize = Utils.getScreenSize(getActivity());
-        // the image size will be the smaller of the screen width/height
-        return (screenSize.x >= screenSize.y) ? screenSize.y : screenSize.x;
+        int percent = getResources().getInteger(R.integer.detail_percent);
+        return isTwoPane() ? Math.round((float)screenSize.x * ((float)percent / 100)) : screenSize.x;
     }
 
     private class CatchPagerAdapter extends PagerAdapter {
