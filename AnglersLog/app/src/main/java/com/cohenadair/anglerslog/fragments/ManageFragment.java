@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.cohenadair.anglerslog.R;
-import com.cohenadair.anglerslog.utilities.fragment.LayoutController;
+import com.cohenadair.anglerslog.utilities.LayoutController;
 
 import java.util.List;
 
@@ -21,10 +21,10 @@ import java.util.List;
  */
 public class ManageFragment extends DialogFragment {
 
-    private static final String CONTENT_FRAGMENT = "content_fragment";
+    private static final String TAG_CONTENT_FRAGMENT = "content_fragment";
 
-    //region Callback Interface
     private InteractionListener mCallbacks;
+    private ManageContentFragment mContentFragment;
 
     /**
      * Must be implemented by the fragment's Activity.
@@ -33,7 +33,6 @@ public class ManageFragment extends DialogFragment {
         void onManageCancel();
         void onManageConfirm();
     }
-    //endregion
 
     // set by child fragments
     private OnChildCancelInterface mOnChildCancelInterface;
@@ -78,9 +77,9 @@ public class ManageFragment extends DialogFragment {
         // add the actual content to the scroll view
         setDialogTitle(LayoutController.getViewTitle(getContext()));
 
-        if (getChildFragmentManager().findFragmentByTag(CONTENT_FRAGMENT) == null)
+        if (getChildFragmentManager().findFragmentByTag(TAG_CONTENT_FRAGMENT) == null)
             getChildFragmentManager().beginTransaction()
-                    .replace(R.id.content_scroll_view, LayoutController.getManageContentFragment(), CONTENT_FRAGMENT)
+                    .replace(R.id.content_scroll_view, mContentFragment, TAG_CONTENT_FRAGMENT)
                     .commit();
 
         return view;
@@ -118,6 +117,14 @@ public class ManageFragment extends DialogFragment {
 
     public void setOnChildCancelInterface(OnChildCancelInterface onChildCancelInterface) {
         mOnChildCancelInterface = onChildCancelInterface;
+    }
+
+    public void setContentFragment(ManageContentFragment contentFragment) {
+        mContentFragment = contentFragment;
+    }
+
+    public ManageContentFragment getContentFragment() {
+        return mContentFragment;
     }
 
     private void setDialogTitle(String title) {

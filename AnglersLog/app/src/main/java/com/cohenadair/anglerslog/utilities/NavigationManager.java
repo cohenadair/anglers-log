@@ -9,7 +9,6 @@ import android.view.MenuItem;
 
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.activities.MainActivity;
-import com.cohenadair.anglerslog.utilities.fragment.LayoutController;
 
 /**
  * A wrapper class to manage drawer navigation.

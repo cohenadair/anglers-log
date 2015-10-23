@@ -12,8 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.cohenadair.anglerslog.R;
-import com.cohenadair.anglerslog.utilities.fragment.LayoutController;
-import com.cohenadair.anglerslog.utilities.fragment.LayoutSpec;
+import com.cohenadair.anglerslog.utilities.LayoutController;
 
 /**
  * The fragment showing the list of catches.
@@ -41,7 +40,7 @@ public class MyListFragment extends Fragment {
 
         if (view != null) {
             initNewButton(view);
-            initRecyclerView(view, LayoutController.getCurrent());
+            initRecyclerView(view);
         }
 
         return view;
@@ -66,12 +65,10 @@ public class MyListFragment extends Fragment {
     }
 
     //region View Initializing
-    private void initRecyclerView(View view, LayoutSpec layoutSpec) {
+    private void initRecyclerView(View view) {
         RecyclerView recyclerView = (RecyclerView)view.findViewById(R.id.main_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-
-        if (layoutSpec != null)
-            recyclerView.setAdapter(layoutSpec.getArrayAdapter());
+        recyclerView.setAdapter(LayoutController.getMasterAdapter());
     }
 
     private void initNewButton(View view) {

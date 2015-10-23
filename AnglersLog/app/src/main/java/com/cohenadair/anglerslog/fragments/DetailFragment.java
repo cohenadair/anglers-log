@@ -85,6 +85,10 @@ public abstract class DetailFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
+    public boolean isAttached() {
+        return getActivity() != null;
+    }
+
     //region Getters & Setters
     public int getItemPosition() {
         return mItemPosition;

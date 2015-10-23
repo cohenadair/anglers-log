@@ -22,8 +22,8 @@ import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.model.Logbook;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import com.cohenadair.anglerslog.utilities.WrappedLinearLayoutManager;
-import com.cohenadair.anglerslog.utilities.fragment.LayoutController;
-import com.cohenadair.anglerslog.utilities.fragment.PrimitiveFragmentInfo;
+import com.cohenadair.anglerslog.utilities.PrimitiveController;
+import com.cohenadair.anglerslog.utilities.PrimitiveSpec;
 
 import java.util.List;
 
@@ -37,7 +37,7 @@ public class ManagePrimitiveFragment extends DialogFragment {
     private EditText mNewItemEdit;
     private Toolbar mToolbar;
     private OnDismissInterface mOnDismissInterface;
-    private PrimitiveFragmentInfo mPrimitiveInfo;
+    private PrimitiveSpec mPrimitiveSpec;
 
     /**
      * Different "management" types for this fragment. Used to display different list item layotus.
@@ -85,13 +85,10 @@ public class ManagePrimitiveFragment extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_manage_primitive, container, false);
 
-        int primitiveId = getArguments().getInt(ARG_PRIMITIVE_ID);
-        mPrimitiveInfo = LayoutController.primitiveInfo(primitiveId);
+        mPrimitiveSpec = PrimitiveController.getSpec(getArguments().getInt(ARG_PRIMITIVE_ID));
 
-        if (mPrimitiveInfo != null) {
-            initViews(view);
-            getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
-        }
+        initViews(view);
+        getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
 
         // resize the Dialog's height when the soft keyboard is shown
         getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
@@ -115,7 +112,7 @@ public class ManagePrimitiveFragment extends DialogFragment {
 
     private void initBottomBar(View view) {
         mNewItemEdit = (EditText)view.findViewById(R.id.new_item_edit);
-        mNewItemEdit.setHint(getResources().getString(R.string.hint_new_item) + " " + mPrimitiveInfo.getName());
+        mNewItemEdit.setHint(getResources().getString(R.string.hint_new_item) + " " + mPrimitiveSpec.getName());
 
         Button addButton = (Button)view.findViewById(R.id.add_button);
         addButton.setOnClickListener(new View.OnClickListener() {
@@ -124,7 +121,7 @@ public class ManagePrimitiveFragment extends DialogFragment {
                 String name = mNewItemEdit.getText().toString();
 
                 if (!name.equals(""))
-                    if (mPrimitiveInfo.getManageInterface().onAddItem(name))
+                    if (mPrimitiveSpec.getListener().onAddItem(name))
                         mContentRecyclerView.getAdapter().notifyDataSetChanged();
 
                 mNewItemEdit.setText("");
@@ -186,7 +183,7 @@ public class ManagePrimitiveFragment extends DialogFragment {
      * @param manageType The type of management item to display.
      */
     private void restoreAdapter(ManageType manageType) {
-        mContentRecyclerView.setAdapter(new ManagePrimitiveAdapter(mPrimitiveInfo.getItems(), manageType));
+        mContentRecyclerView.setAdapter(new ManagePrimitiveAdapter(mPrimitiveSpec.getItems(), manageType));
     }
 
     /**
@@ -201,7 +198,7 @@ public class ManagePrimitiveFragment extends DialogFragment {
             public boolean onMenuItemClick(MenuItem item) {
                 if (item.getItemId() == R.id.action_check) {
                     if (deleting)
-                        mPrimitiveInfo.getManageInterface().onConfirmDelete();
+                        mPrimitiveSpec.getListener().onConfirmDelete();
 
                     restoreToolbar();
                     restoreAdapter(ManageType.Selection);
@@ -240,10 +237,10 @@ public class ManagePrimitiveFragment extends DialogFragment {
         @Override
         public void onClick(View view) {
             // reset should delete if the delete selection was never confirmed
-            for (UserDefineObject obj : mPrimitiveInfo.getItems())
+            for (UserDefineObject obj : mPrimitiveSpec.getItems())
                 obj.setShouldDelete(false);
 
-            mOnDismissInterface.onDismiss(mPrimitiveInfo.getManageInterface().onClickItem(getLayoutPosition()));
+            mOnDismissInterface.onDismiss(mPrimitiveSpec.getListener().onClickItem(getLayoutPosition()));
             getDialog().dismiss();
         }
 
@@ -257,7 +254,7 @@ public class ManagePrimitiveFragment extends DialogFragment {
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
                     if (mNameEditText.isFocused())
-                        mPrimitiveInfo.getManageInterface().onEditItem(getAdapterPosition(), s.toString());
+                        mPrimitiveSpec.getListener().onEditItem(getAdapterPosition(), s.toString());
                 }
 
                 @Override

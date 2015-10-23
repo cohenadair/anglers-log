@@ -18,7 +18,7 @@ import com.cohenadair.anglerslog.model.user_defines.Species;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import com.cohenadair.anglerslog.utilities.PhotoUtils;
 import com.cohenadair.anglerslog.utilities.Utils;
-import com.cohenadair.anglerslog.utilities.fragment.LayoutController;
+import com.cohenadair.anglerslog.utilities.LayoutController;
 import com.cohenadair.anglerslog.views.SelectPhotosView;
 import com.cohenadair.anglerslog.views.SelectionView;
 

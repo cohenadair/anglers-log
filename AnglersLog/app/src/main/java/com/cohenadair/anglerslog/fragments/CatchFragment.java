@@ -18,7 +18,7 @@ import com.cohenadair.anglerslog.model.Logbook;
 import com.cohenadair.anglerslog.model.user_defines.Catch;
 import com.cohenadair.anglerslog.utilities.PhotoUtils;
 import com.cohenadair.anglerslog.utilities.Utils;
-import com.cohenadair.anglerslog.utilities.fragment.LayoutController;
+import com.cohenadair.anglerslog.utilities.LayoutController;
 
 /**
  * A {@link DetailFragment} subclass used to show the details of a single catch.
@@ -57,15 +57,17 @@ public class CatchFragment extends DetailFragment {
 
     @Override
     public void update(int position) {
-        setItemPosition(position);
-        mCatch = Logbook.catchAtPos(position);
+        if (isAttached()) {
+            setItemPosition(position);
+            mCatch = Logbook.catchAtPos(position);
 
-        mSpeciesTextView.setText(mCatch.speciesAsString());
-        mDateTextView.setText(mCatch.dateAsString());
+            mSpeciesTextView.setText(mCatch.speciesAsString());
+            mDateTextView.setText(mCatch.dateAsString());
 
-        mPhotoViewPager.setVisibility((mCatch.photoCount() > 0) ? View.VISIBLE : View.GONE);
-        mPhotoViewPager.setAdapter(new CatchPagerAdapter(getContext()));
-        mPhotoViewPager.setLayoutParams(new LinearLayout.LayoutParams(photoPagerSize(), photoPagerSize()));
+            mPhotoViewPager.setVisibility((mCatch.photoCount() > 0) ? View.VISIBLE : View.GONE);
+            mPhotoViewPager.setAdapter(new CatchPagerAdapter(getContext()));
+            mPhotoViewPager.setLayoutParams(new LinearLayout.LayoutParams(photoPagerSize(), photoPagerSize()));
+        }
     }
 
     @Override

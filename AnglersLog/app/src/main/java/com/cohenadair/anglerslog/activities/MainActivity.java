@@ -18,8 +18,7 @@ import com.cohenadair.anglerslog.interfaces.OnClickInterface;
 import com.cohenadair.anglerslog.interfaces.OnClickManageMenuListener;
 import com.cohenadair.anglerslog.utilities.NavigationManager;
 import com.cohenadair.anglerslog.utilities.Utils;
-import com.cohenadair.anglerslog.utilities.fragment.LayoutController;
-import com.cohenadair.anglerslog.utilities.fragment.LayoutSpec;
+import com.cohenadair.anglerslog.utilities.LayoutController;
 
 // TODO rename themes for convention
 // TODO hide FAB unless user is at the top of the list (blocks rating star)
@@ -27,10 +26,10 @@ import com.cohenadair.anglerslog.utilities.fragment.LayoutSpec;
 public class MainActivity extends AppCompatActivity implements
         MyListFragment.InteractionListener,
         ManageFragment.InteractionListener,
+        LayoutController.InteractionListener,
         OnClickManageMenuListener
 {
 
-    private OnClickInterface mOnMyListViewItemClick;
     private NavigationManager mNavigationManager;
 
     @Override
@@ -44,14 +43,6 @@ public class MainActivity extends AppCompatActivity implements
 
         mNavigationManager = new NavigationManager(this);
         mNavigationManager.setUp();
-
-        // this is passed to MyListFragment's RecyclerView's Adapter and ViewHolder objects
-        mOnMyListViewItemClick = new OnClickInterface() {
-            @Override
-            public void onClick(View view, int position) {
-                onMyListItemSelected(position);
-            }
-        };
 
         // needs to be called after MainActivity's initialization code
         showFragment();
@@ -80,24 +71,18 @@ public class MainActivity extends AppCompatActivity implements
         return super.onOptionsItemSelected(item);
     }
 
-    //region Getters & Setters
-    public OnClickInterface getOnMyListViewItemClick() {
-        return mOnMyListViewItemClick;
-    }
-    //endregion
-
     public void showFragment() {
+        // update the current layout
         LayoutController.setCurrent(this, LayoutController.getCurrentId());
-        LayoutSpec spec = LayoutController.getCurrent();
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
         // add left panel
-        transaction.replace(R.id.master_container, spec.getFragment(), spec.getTag());
+        transaction.replace(R.id.master_container, LayoutController.getMasterFragment(), LayoutController.getMasterTag());
 
         // add the right panel if needed
         if (isTwoPane())
-            transaction.replace(R.id.detail_container, spec.detailFragment(), spec.detailTag());
+            transaction.replace(R.id.detail_container, LayoutController.getDetailFragment(), LayoutController.getDetailTag());
 
         // commit changes
         transaction.commit();
@@ -128,6 +113,16 @@ public class MainActivity extends AppCompatActivity implements
         });
     }
 
+    @Override
+    public OnClickInterface getOnMyListFragmentItemClick() {
+        return new OnClickInterface() {
+            @Override
+            public void onClick(View view, int position) {
+                onMyListItemSelected(position);
+            }
+        };
+    }
+
     /**
      * Either show the detail fragment or update if it's already shown.
      */
@@ -135,7 +130,7 @@ public class MainActivity extends AppCompatActivity implements
         LayoutController.setSelectionPosition(position);
 
         DetailFragment detailFragment =
-                (DetailFragment)getSupportFragmentManager().findFragmentByTag(LayoutController.getDetailFragmentTag());
+                (DetailFragment)getSupportFragmentManager().findFragmentByTag(LayoutController.getDetailTag());
 
         if (isTwoPane() && detailFragment != null)
             // update the right panel detail fragment
