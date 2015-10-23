@@ -12,8 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.cohenadair.anglerslog.R;
-import com.cohenadair.anglerslog.utilities.fragment.FragmentData;
-import com.cohenadair.anglerslog.utilities.fragment.FragmentInfo;
+import com.cohenadair.anglerslog.utilities.fragment.LayoutController;
+import com.cohenadair.anglerslog.utilities.fragment.LayoutSpec;
 
 /**
  * The fragment showing the list of catches.
@@ -31,27 +31,6 @@ public class MyListFragment extends Fragment {
     }
     //endregion
 
-    /**
-     * Used to keep fragment state through attach/detach.
-     */
-    private static final String ARG_FRAGMENT_ID = "arg_fragment_id";
-
-    /**
-     * Creates a new instance with a fragment id used to show different array data.
-     * @param aFragmentId the fragment id.
-     * @return a MyListFragment instance with associated data id.
-     */
-    public static MyListFragment newInstance(int aFragmentId) {
-        MyListFragment fragment = new MyListFragment();
-        
-        // add data id to bundle so save through orientation changes
-        Bundle args = new Bundle();
-        args.putInt(MyListFragment.ARG_FRAGMENT_ID, aFragmentId);
-        
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     public MyListFragment() {
         // default constructor required
     }
@@ -60,12 +39,9 @@ public class MyListFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_mylist, container, false);
 
-        int fragmentId = getArguments().getInt(ARG_FRAGMENT_ID);
-        FragmentInfo info = FragmentData.fragmentInfo(getActivity(), fragmentId);
-
         if (view != null) {
             initNewButton(view);
-            initRecyclerView(view, info);
+            initRecyclerView(view, LayoutController.getCurrent());
         }
 
         return view;
@@ -90,12 +66,12 @@ public class MyListFragment extends Fragment {
     }
 
     //region View Initializing
-    private void initRecyclerView(View view, FragmentInfo fragmentInfo) {
+    private void initRecyclerView(View view, LayoutSpec layoutSpec) {
         RecyclerView recyclerView = (RecyclerView)view.findViewById(R.id.main_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        if (fragmentInfo != null)
-            recyclerView.setAdapter(fragmentInfo.getArrayAdapter());
+        if (layoutSpec != null)
+            recyclerView.setAdapter(layoutSpec.getArrayAdapter());
     }
 
     private void initNewButton(View view) {

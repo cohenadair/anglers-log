@@ -22,7 +22,7 @@ import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.model.Logbook;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import com.cohenadair.anglerslog.utilities.WrappedLinearLayoutManager;
-import com.cohenadair.anglerslog.utilities.fragment.FragmentData;
+import com.cohenadair.anglerslog.utilities.fragment.LayoutController;
 import com.cohenadair.anglerslog.utilities.fragment.PrimitiveFragmentInfo;
 
 import java.util.List;
@@ -86,7 +86,7 @@ public class ManagePrimitiveFragment extends DialogFragment {
         View view = inflater.inflate(R.layout.fragment_manage_primitive, container, false);
 
         int primitiveId = getArguments().getInt(ARG_PRIMITIVE_ID);
-        mPrimitiveInfo = FragmentData.primitiveInfo(primitiveId);
+        mPrimitiveInfo = LayoutController.primitiveInfo(primitiveId);
 
         if (mPrimitiveInfo != null) {
             initViews(view);

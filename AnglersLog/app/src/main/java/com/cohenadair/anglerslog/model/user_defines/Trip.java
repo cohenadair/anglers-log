@@ -16,4 +16,9 @@ public class Trip extends UserDefineObject {
     public String toString() {
         return getName();
     }
+
+    @Override
+    public String displayName() {
+        return getName();
+    }
 }

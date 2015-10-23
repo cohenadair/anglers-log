@@ -4,6 +4,7 @@
     <string name="OK">Okay</string>
     <string name="action_settings">Settings</string>
 
+    <string name="error">Error</string>
     <string name="photos">Photos</string>
     <string name="species">Species</string>
     <string name="date">Date</string>
@@ -35,7 +36,7 @@
 
     <string name="action_edit">Edit</string>
     <string name="action_delete">Delete</string>
-    <string name="action_confirm">Confirm</string>
+    <string name="action_confirm">Confirm Delete</string>
     <string name="action_close">Close</string>
     <string name="action_add_photo">Add Photo</string>
 

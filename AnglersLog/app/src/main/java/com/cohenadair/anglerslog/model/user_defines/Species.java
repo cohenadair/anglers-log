@@ -14,4 +14,8 @@ public class Species extends UserDefineObject {
         super(species);
     }
 
+    @Override
+    public String displayName() {
+        return getName();
+    }
 }

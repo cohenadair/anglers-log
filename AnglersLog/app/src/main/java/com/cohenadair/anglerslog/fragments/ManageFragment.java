@@ -6,15 +6,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.cohenadair.anglerslog.R;
-import com.cohenadair.anglerslog.utilities.fragment.FragmentData;
-import com.cohenadair.anglerslog.utilities.fragment.FragmentInfo;
+import com.cohenadair.anglerslog.utilities.fragment.LayoutController;
 
 import java.util.List;
 
@@ -22,6 +20,8 @@ import java.util.List;
  * The ManageFragment is used for add and edit views for the various user defines.
  */
 public class ManageFragment extends DialogFragment {
+
+    private static final String CONTENT_FRAGMENT = "content_fragment";
 
     //region Callback Interface
     private InteractionListener mCallbacks;
@@ -42,32 +42,13 @@ public class ManageFragment extends DialogFragment {
         void onCancel();
     }
 
-    /**
-     * Used to keep fragment state through attach/detach.
-     */
-    private static final String ARG_FRAGMENT_ID = "arg_fragment_id";
-
-    public static ManageFragment newInstance(int fragmentId) {
-        ManageFragment fragment = new ManageFragment();
-
-        // add data id to bundle so save through orientation changes
-        Bundle args = new Bundle();
-        args.putInt(ManageFragment.ARG_FRAGMENT_ID, fragmentId);
-
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     public ManageFragment() {
-        // Required empty public constructor
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_manage, container, false);
-
-        int fragmentId = getArguments().getInt(ARG_FRAGMENT_ID);
-        final FragmentInfo info = FragmentData.fragmentInfo(getActivity(), fragmentId);
 
         Button cancelButton = (Button)view.findViewById(R.id.cancel_button);
         cancelButton.setOnClickListener(new View.OnClickListener() {
@@ -85,25 +66,22 @@ public class ManageFragment extends DialogFragment {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (info != null) {
-                    ManageContentFragment fragment = info.manageContentFragment();
-                    if (fragment.addObjectToLogbook()) {
-                        mCallbacks.onManageConfirm();
-                        closeDialog();
-                    }
+                ManageContentFragment fragment = LayoutController.getManageContentFragment();
+
+                if (fragment.addObjectToLogbook()) {
+                    mCallbacks.onManageConfirm();
+                    closeDialog();
                 }
             }
         });
 
         // add the actual content to the scroll view
-        if (info != null) {
-            int preTextId = info.manageContentIsEditing() ? R.string.action_edit : R.string.new_text;
-            setDialogTitle(getResources().getString(preTextId) + " " + info.getName());
+        setDialogTitle(LayoutController.getViewTitle(getContext()));
 
-            FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-            transaction.add(R.id.content_scroll_view, info.manageContentFragment());
-            transaction.commit();
-        }
+        if (getChildFragmentManager().findFragmentByTag(CONTENT_FRAGMENT) == null)
+            getChildFragmentManager().beginTransaction()
+                    .replace(R.id.content_scroll_view, LayoutController.getManageContentFragment(), CONTENT_FRAGMENT)
+                    .commit();
 
         return view;
     }

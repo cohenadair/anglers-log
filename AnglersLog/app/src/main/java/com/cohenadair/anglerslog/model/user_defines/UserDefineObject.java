@@ -6,11 +6,13 @@ import java.util.UUID;
  * A UserDefineObject is the superclass for all "user defined" data such as species and locations.
  * @author Cohen Adair
  */
-public class UserDefineObject {
+public abstract class UserDefineObject {
 
     private UUID mId;
     private String mName;
     private boolean mShouldDelete; // toggled on UI selection for deleting multiple items
+
+    public abstract String displayName();
 
     public UserDefineObject(String name) {
         setId(UUID.randomUUID());

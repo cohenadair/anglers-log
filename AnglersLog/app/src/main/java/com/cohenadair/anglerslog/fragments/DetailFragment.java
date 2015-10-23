@@ -31,6 +31,10 @@ public abstract class DetailFragment extends Fragment {
     public abstract void update(int position);
     public abstract void update();
 
+    public DetailFragment() {
+
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,7 +62,9 @@ public abstract class DetailFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.menu_manage, menu);
+
+        if (isVisible())
+            inflater.inflate(R.menu.menu_manage, menu);
     }
 
     @Override

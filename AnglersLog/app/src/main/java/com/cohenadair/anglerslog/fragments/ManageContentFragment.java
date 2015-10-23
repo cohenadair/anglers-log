@@ -12,7 +12,6 @@ import android.support.v4.app.Fragment;
  */
 public abstract class ManageContentFragment extends Fragment {
 
-    private boolean mDidPause; // used for keeping data if the app is sent to the background
     private boolean mIsEditing;
     private int mEditingPosition;
 
@@ -25,7 +24,6 @@ public abstract class ManageContentFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        mDidPause = true;
     }
 
     public boolean isEditing() {
@@ -39,13 +37,5 @@ public abstract class ManageContentFragment extends Fragment {
 
     public int getEditingPosition() {
         return mEditingPosition;
-    }
-
-    public boolean getDidPause() {
-        return mDidPause;
-    }
-
-    public void setDidPause(boolean didPause) {
-        mDidPause = didPause;
     }
 }

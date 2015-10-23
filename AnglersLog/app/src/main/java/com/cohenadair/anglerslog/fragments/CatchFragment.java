@@ -18,7 +18,7 @@ import com.cohenadair.anglerslog.model.Logbook;
 import com.cohenadair.anglerslog.model.user_defines.Catch;
 import com.cohenadair.anglerslog.utilities.PhotoUtils;
 import com.cohenadair.anglerslog.utilities.Utils;
-import com.cohenadair.anglerslog.utilities.fragment.FragmentData;
+import com.cohenadair.anglerslog.utilities.fragment.LayoutController;
 
 /**
  * A {@link DetailFragment} subclass used to show the details of a single catch.
@@ -49,7 +49,7 @@ public class CatchFragment extends DetailFragment {
             mSpeciesTextView.setText("Select a catch to view it here.");
             mDateTextView.setText("");
         } else
-            update(FragmentData.selectionPos(FragmentData.FRAGMENT_CATCHES));
+            update(LayoutController.getSelectionPosition());
 
         // Inflate the layout for this fragment
         return view;

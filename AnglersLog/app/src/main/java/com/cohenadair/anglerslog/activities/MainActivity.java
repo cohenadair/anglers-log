@@ -3,7 +3,6 @@ package com.cohenadair.anglerslog.activities;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -19,8 +18,8 @@ import com.cohenadair.anglerslog.interfaces.OnClickInterface;
 import com.cohenadair.anglerslog.interfaces.OnClickManageMenuListener;
 import com.cohenadair.anglerslog.utilities.NavigationManager;
 import com.cohenadair.anglerslog.utilities.Utils;
-import com.cohenadair.anglerslog.utilities.fragment.FragmentData;
-import com.cohenadair.anglerslog.utilities.fragment.FragmentInfo;
+import com.cohenadair.anglerslog.utilities.fragment.LayoutController;
+import com.cohenadair.anglerslog.utilities.fragment.LayoutSpec;
 
 // TODO rename themes for convention
 // TODO hide FAB unless user is at the top of the list (blocks rating star)
@@ -32,7 +31,6 @@ public class MainActivity extends AppCompatActivity implements
 {
 
     private OnClickInterface mOnMyListViewItemClick;
-    private FragmentInfo mFragmentInfo;
     private NavigationManager mNavigationManager;
 
     @Override
@@ -56,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements
         };
 
         // needs to be called after MainActivity's initialization code
-        showFragment(savedInstanceState);
+        showFragment();
     }
 
     @Override
@@ -82,20 +80,24 @@ public class MainActivity extends AppCompatActivity implements
         return super.onOptionsItemSelected(item);
     }
 
+    //region Getters & Setters
     public OnClickInterface getOnMyListViewItemClick() {
         return mOnMyListViewItemClick;
     }
+    //endregion
 
-    public void showFragment(@Nullable Bundle savedInstanceState) {
-        mFragmentInfo = FragmentData.fragmentInfo(this, FragmentData.getCurrentFragmentId());
+    public void showFragment() {
+        LayoutController.setCurrent(this, LayoutController.getCurrentId());
+        LayoutSpec spec = LayoutController.getCurrent();
+
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
         // add left panel
-        transaction.replace(R.id.master_container, mFragmentInfo.getFragment(), mFragmentInfo.getTag());
+        transaction.replace(R.id.master_container, spec.getFragment(), spec.getTag());
 
         // add the right panel if needed
         if (isTwoPane())
-            transaction.replace(R.id.detail_container, mFragmentInfo.detailFragment(), mFragmentInfo.detailTag());
+            transaction.replace(R.id.detail_container, spec.detailFragment(), spec.detailTag());
 
         // commit changes
         transaction.commit();
@@ -107,8 +109,7 @@ public class MainActivity extends AppCompatActivity implements
      */
     @Override
     public void onClickMenuEdit(int position) {
-        mFragmentInfo.setManageContentIsEditing(true, position);
-        mFragmentInfo.setManageContentDidPause(false);
+        LayoutController.setIsEditing(true, position);
         goToListManagerView();
     }
 
@@ -121,7 +122,7 @@ public class MainActivity extends AppCompatActivity implements
         Utils.showDeleteConfirm(this, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                mFragmentInfo.getOnUserDefineRemove().remove(position);
+                LayoutController.removeUserDefine(position);
                 mNavigationManager.goBack();
             }
         });
@@ -131,18 +132,17 @@ public class MainActivity extends AppCompatActivity implements
      * Either show the detail fragment or update if it's already shown.
      */
     public void onMyListItemSelected(int position) {
-        // update the current item for later
-        FragmentData.selectionPos(FragmentData.getCurrentFragmentId(), position);
+        LayoutController.setSelectionPosition(position);
 
         DetailFragment detailFragment =
-                (DetailFragment)getSupportFragmentManager().findFragmentByTag(mFragmentInfo.detailTag());
+                (DetailFragment)getSupportFragmentManager().findFragmentByTag(LayoutController.getDetailFragmentTag());
 
         if (isTwoPane() && detailFragment != null)
             // update the right panel detail fragment
             detailFragment.update(position);
         else {
             // show the single catch fragment
-            detailFragment = (DetailFragment)mFragmentInfo.detailFragment();
+            detailFragment = LayoutController.getDetailFragment();
 
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             transaction.replace(R.id.master_container, detailFragment)
@@ -160,8 +160,7 @@ public class MainActivity extends AppCompatActivity implements
      */
     @Override
     public void onMyListClickNewButton() {
-        mFragmentInfo.setManageContentIsEditing(false);
-        mFragmentInfo.setManageContentDidPause(false);
+        LayoutController.setIsEditing(false);
         goToListManagerView();
     }
     //endregion
@@ -175,7 +174,7 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void onManageConfirm() {
         mNavigationManager.goBack();
-        mFragmentInfo.updateViews();
+        LayoutController.updateViews();
     }
     //endregion
 
@@ -193,7 +192,7 @@ public class MainActivity extends AppCompatActivity implements
      * For example, when the Catches list is open, this method will display the ManageCatchFragment.
      */
     private void goToListManagerView() {
-        ManageFragment manageFragment = mFragmentInfo.manageFragment();
+        ManageFragment manageFragment = LayoutController.getManageFragment();
 
         if (isTwoPane()) {
             // show as popup dialog
@@ -205,8 +204,7 @@ public class MainActivity extends AppCompatActivity implements
                     .addToBackStack(null)
                     .commit();
 
-            int preTextId = mFragmentInfo.manageContentIsEditing() ? R.string.action_edit : R.string.new_text;
-            mNavigationManager.setActionBarTitle(getResources().getString(preTextId) + " " + mFragmentInfo.getName());
+            mNavigationManager.setActionBarTitle(LayoutController.getViewTitle(this));
         }
     }
     //endregion

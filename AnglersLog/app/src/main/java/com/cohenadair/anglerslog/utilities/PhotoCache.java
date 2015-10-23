@@ -134,7 +134,8 @@ public class PhotoCache {
      * @param keysToKeep An array of keys to keep.
      */
     public void cleanDisk(ArrayList<String> keysToKeep) {
-        mDiskCache.clean(keysToKeep);
+        if (mDiskCache != null)
+            mDiskCache.clean(keysToKeep);
     }
 
     /**

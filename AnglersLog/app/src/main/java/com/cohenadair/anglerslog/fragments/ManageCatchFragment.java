@@ -18,7 +18,7 @@ import com.cohenadair.anglerslog.model.user_defines.Species;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import com.cohenadair.anglerslog.utilities.PhotoUtils;
 import com.cohenadair.anglerslog.utilities.Utils;
-import com.cohenadair.anglerslog.utilities.fragment.FragmentData;
+import com.cohenadair.anglerslog.utilities.fragment.LayoutController;
 import com.cohenadair.anglerslog.views.SelectPhotosView;
 import com.cohenadair.anglerslog.views.SelectionView;
 
@@ -71,7 +71,7 @@ public class ManageCatchFragment extends ManageContentFragment {
         super.onResume();
 
         // do not initialize Catches if we were paused
-        if (!getDidPause() || mNewCatch == null)
+        if (mNewCatch == null)
             if (isEditing()) {
                 mNewCatch = new Catch(Logbook.catchAtPos(getEditingPosition()));
 
@@ -83,7 +83,6 @@ public class ManageCatchFragment extends ManageContentFragment {
                 mNewCatch = new Catch(new Date());
 
         updateViews();
-        setDidPause(false);
     }
 
     @Override
@@ -211,7 +210,7 @@ public class ManageCatchFragment extends ManageContentFragment {
         mSpeciesView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final ManagePrimitiveFragment fragment = ManagePrimitiveFragment.newInstance(FragmentData.PRIMITIVE_SPECIES);
+                final ManagePrimitiveFragment fragment = ManagePrimitiveFragment.newInstance(LayoutController.PRIMITIVE_SPECIES);
 
                 fragment.setOnDismissInterface(new ManagePrimitiveFragment.OnDismissInterface() {
                     @Override

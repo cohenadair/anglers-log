@@ -8,16 +8,16 @@ import com.cohenadair.anglerslog.fragments.ManageFragment;
 import com.cohenadair.anglerslog.utilities.ListManager;
 
 /**
- * FragmentInfo is used to store everything the UI needs to know about a fragment to properly
+ * LayoutSpec is used to store everything the UI needs to know about a fragment to properly
  * display it on the screen.  Having this class makes it extremely easy to display different
  * fragments (that have a similar UI) interchangeably throughout the application's lifecycle.
  *
  * Created by Cohen Adair on 2015-09-03.
  */
-public class FragmentInfo {
+public class LayoutSpec {
 
     private ManageFragmentInfo mManageInfo;
-    private FragmentInfo mDetailInfo;
+    private LayoutSpec mDetailInfo;
     private ListManager.Adapter mArrayAdapter;
     private Fragment mFragment;
     private OnUserDefineRemoveListener mOnUserDefineRemove;
@@ -33,7 +33,7 @@ public class FragmentInfo {
         void remove(int position);
     }
 
-    public FragmentInfo(String aTag) {
+    public LayoutSpec(String aTag) {
         setTag(aTag);
     }
 
@@ -46,11 +46,11 @@ public class FragmentInfo {
         mManageInfo = manageInfo;
     }
 
-    public FragmentInfo getDetailInfo() {
+    public LayoutSpec getDetailInfo() {
         return mDetailInfo;
     }
 
-    public void setDetailInfo(FragmentInfo detailInfo) {
+    public void setDetailInfo(LayoutSpec detailInfo) {
         mDetailInfo = detailInfo;
     }
 
@@ -133,10 +133,6 @@ public class FragmentInfo {
 
     public void setManageContentIsEditing(boolean isEditing) {
         manageContentFragment().setIsEditing(isEditing, -1);
-    }
-
-    public void setManageContentDidPause(boolean didPause) {
-        manageContentFragment().setDidPause(didPause);
     }
 
     public boolean manageContentIsEditing() {

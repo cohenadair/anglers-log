@@ -68,6 +68,11 @@ public class Catch extends UserDefineObject {
         return speciesAsString() + " - " + dateTimeAsString();
     }
 
+    @Override
+    public String displayName() {
+        return dateTimeAsString();
+    }
+
     public String speciesAsString() {
         return mSpecies.getName();
     }

@@ -40,7 +40,7 @@ public class Utils {
 
     public static void showErrorAlert(Context context, int msgId) {
         new AlertDialog.Builder(context)
-                .setTitle("Error")
+                .setTitle(context.getResources().getString(R.string.error))
                 .setMessage(msgId)
                 .setPositiveButton(R.string.OK, new DialogInterface.OnClickListener() {
                     @Override
@@ -56,8 +56,9 @@ public class Utils {
      * @param context The context in which to show the dialog.
      * @param onItemClick The on item click listener.
      */
-    public static void showManageAlert(Context context, DialogInterface.OnClickListener onItemClick) {
+    public static void showManageAlert(Context context, String title, DialogInterface.OnClickListener onItemClick) {
         new AlertDialog.Builder(context)
+                .setTitle(title)
                 .setPositiveButton(R.string.button_cancel, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -70,7 +71,7 @@ public class Utils {
 
     public static void showDeleteConfirm(Context context, DialogInterface.OnClickListener onConfirm) {
         new AlertDialog.Builder(context)
-                .setTitle(R.string.action_confirm)
+                .setTitle(context.getResources().getString(R.string.action_confirm))
                 .setMessage(R.string.msg_confirm_delete)
                 .setNegativeButton(R.string.button_cancel, new DialogInterface.OnClickListener() {
                     @Override
