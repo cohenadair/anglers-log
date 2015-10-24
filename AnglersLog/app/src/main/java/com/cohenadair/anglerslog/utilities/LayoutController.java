@@ -16,7 +16,10 @@ import com.cohenadair.anglerslog.interfaces.OnClickInterface;
 import com.cohenadair.anglerslog.model.Logbook;
 
 /**
- * LayoutController is used for manipulating fragments throughout the application.
+ * LayoutController is used to modify and control the current layout spec.  Most of the
+ * application's layouts are similar; they just show different content.  This class, in
+ * conjunction with {@link LayoutSpec} are used to make that process much easier.
+ *
  * Created by Cohen Adair on 2015-09-03.
  */
 public class LayoutController {
@@ -36,16 +39,9 @@ public class LayoutController {
     public static final int LAYOUT_CATCHES = R.id.nav_catches;
 
     /**
-     * Primitive fragments for simple lists displaying objects with only a name attribute.
-     * These fragments are used when adding more complex user defines. They do not show in the
-     * navigation drawer.
-     */
-    public static final int PRIMITIVE_SPECIES = 0;
-
-    /**
      * Used to keep track of the current master-detail fragment pair.
      */
-    private static int mCurrentId = LAYOUT_CATCHES; // default starting fragment
+    private static int mCurrentId = LAYOUT_CATCHES; // default starting fragment TODO cache the current selection for app closing/opening
     private static LayoutSpec mCurrent;
 
     public static void setCurrent(Context context, int id) {

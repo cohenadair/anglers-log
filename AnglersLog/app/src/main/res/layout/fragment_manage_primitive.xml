@@ -10,9 +10,7 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/anglers_log_light">
-
-    </android.support.v7.widget.Toolbar>
+        android:background="@color/anglers_log_light" />
 
     <android.support.v7.widget.RecyclerView
         android:layout_width="wrap_content"
@@ -21,6 +19,8 @@
         android:id="@+id/content_recycler_view">
 
     </android.support.v7.widget.RecyclerView>
+
+    <include layout="@layout/view_break"/>
 
     <LinearLayout
         android:id="@+id/add_item_layout"

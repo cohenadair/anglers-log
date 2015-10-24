@@ -21,9 +21,9 @@ import android.widget.TextView;
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.model.Logbook;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
-import com.cohenadair.anglerslog.utilities.WrappedLinearLayoutManager;
 import com.cohenadair.anglerslog.utilities.PrimitiveController;
 import com.cohenadair.anglerslog.utilities.PrimitiveSpec;
+import com.cohenadair.anglerslog.utilities.WrappedLinearLayoutManager;
 
 import java.util.List;
 

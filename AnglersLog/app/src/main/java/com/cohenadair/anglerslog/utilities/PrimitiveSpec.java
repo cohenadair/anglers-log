@@ -18,19 +18,16 @@ public class PrimitiveSpec {
 
     List<UserDefineObject> mItems;
     InteractionListener mListener;
-
-    String mName; // for TextEdit hint
-    String mCapitalizedName; // for dialog title
+    String mName;
 
     public PrimitiveSpec(String name, List<UserDefineObject> items, InteractionListener listener) {
         mName = name;
-        mCapitalizedName = name.substring(0, 1).toUpperCase() + name.substring(1);
         mItems = items;
         mListener = listener;
     }
 
     /**
-     * An interface for managing items in the RecyclerView.
+     * An interface for managing items in a RecyclerView.
      */
     public interface InteractionListener {
         UserDefineObject onClickItem(int position);
@@ -50,10 +47,6 @@ public class PrimitiveSpec {
 
     public String getName() {
         return mName;
-    }
-
-    public String getCapitalizedName() {
-        return mCapitalizedName;
     }
     //endregion
 

@@ -20,6 +20,11 @@ public class PrimitiveController {
     // force singleton
     private PrimitiveController() { }
 
+    /**
+     * Gets a {@link PrimitiveSpec} object associated with a specified id.
+     * @param id The id of the spec.
+     * @return A PrimitiveSpec object associated with id or null if one doesn't exist.
+     */
     @Nullable
     public static PrimitiveSpec getSpec(int id) {
         switch (id) {
