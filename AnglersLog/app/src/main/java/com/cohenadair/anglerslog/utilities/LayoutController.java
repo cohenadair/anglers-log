@@ -15,6 +15,8 @@ import com.cohenadair.anglerslog.fragments.MyListFragment;
 import com.cohenadair.anglerslog.interfaces.OnClickInterface;
 import com.cohenadair.anglerslog.model.Logbook;
 
+import java.util.UUID;
+
 /**
  * LayoutController is used to modify and control the current layout spec.  Most of the
  * application's layouts are similar; they just show different content.  This class, in
@@ -59,23 +61,23 @@ public class LayoutController {
     }
 
     public static void setIsEditing(boolean isEditing) {
-        mCurrent.getManageFragment().getContentFragment().setIsEditing(isEditing, -1);
+        mCurrent.getManageFragment().getContentFragment().setIsEditing(isEditing, null);
     }
 
-    public static void setIsEditing(boolean isEditing, int position) {
-        mCurrent.getManageFragment().getContentFragment().setIsEditing(isEditing, position);
+    public static void setIsEditing(boolean isEditing, UUID id) {
+        mCurrent.getManageFragment().getContentFragment().setIsEditing(isEditing, id);
     }
 
-    public static void setSelectionPosition(int position) {
-        mCurrent.setSelectionPosition(position);
+    public static void setSelectionId(UUID id) {
+        mCurrent.setSelectionId(id);
     }
 
-    public static int getSelectionPosition() {
-        return mCurrent.getSelectionPosition();
+    public static UUID getSelectionId() {
+        return mCurrent.getSelectionId();
     }
 
-    public static void removeUserDefine(int position) {
-        mCurrent.getOnUserDefineRemove().remove(position);
+    public static void removeUserDefine(UUID id) {
+        mCurrent.getOnUserDefineRemove().remove(id);
     }
 
     public static Fragment getMasterFragment() {
@@ -138,8 +140,8 @@ public class LayoutController {
         spec.setId(LAYOUT_CATCHES);
         spec.setOnUserDefineRemove(new LayoutSpec.OnUserDefineRemoveListener() {
             @Override
-            public void remove(int position) {
-                Logbook.removeCatchAtPos(position);
+            public void remove(UUID id) {
+                Logbook.removeCatch(id);
                 spec.getMasterAdapter().notifyDataSetChanged();
                 Utils.showToast(context, R.string.success_catch_delete);
             }

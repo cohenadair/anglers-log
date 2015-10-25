@@ -2,7 +2,8 @@ package com.cohenadair.anglerslog.utilities;
 
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 
-import java.util.List;
+import java.util.ArrayList;
+import java.util.UUID;
 
 /**
  * LayoutSpec is used to store layout information to utilize similar code throughout the
@@ -16,11 +17,11 @@ import java.util.List;
  */
 public class PrimitiveSpec {
 
-    List<UserDefineObject> mItems;
+    ArrayList<UserDefineObject> mItems;
     InteractionListener mListener;
     String mName;
 
-    public PrimitiveSpec(String name, List<UserDefineObject> items, InteractionListener listener) {
+    public PrimitiveSpec(String name, ArrayList<UserDefineObject> items, InteractionListener listener) {
         mName = name;
         mItems = items;
         mListener = listener;
@@ -30,14 +31,14 @@ public class PrimitiveSpec {
      * An interface for managing items in a RecyclerView.
      */
     public interface InteractionListener {
-        UserDefineObject onClickItem(int position);
+        UserDefineObject onClickItem(UUID id);
         boolean onAddItem(String name);
-        void onEditItem(int position, String newName);
+        void onEditItem(UUID id, UserDefineObject newObj);
         void onConfirmDelete();
     }
 
     //region Getters & Setters
-    public List<UserDefineObject> getItems() {
+    public ArrayList<UserDefineObject> getItems() {
         return mItems;
     }
 

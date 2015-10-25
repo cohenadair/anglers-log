@@ -7,6 +7,8 @@ import com.cohenadair.anglerslog.model.Logbook;
 import com.cohenadair.anglerslog.model.user_defines.Species;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 
+import java.util.UUID;
+
 /**
  * A controller object used to retrieve managing information for a primitive
  * {@link UserDefineObject} such as {@link Species}.
@@ -15,7 +17,7 @@ import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
  */
 public class PrimitiveController {
 
-    private static final int SPECIES = 0;
+    public static final int SPECIES = 0;
 
     // force singleton
     private PrimitiveController() { }
@@ -39,8 +41,8 @@ public class PrimitiveController {
     private static PrimitiveSpec getSpeciesSpec() {
         return new PrimitiveSpec("species", Logbook.getSpecies(), new PrimitiveSpec.InteractionListener() {
             @Override
-            public UserDefineObject onClickItem(int position) {
-                return Logbook.speciesAtPos(position);
+            public UserDefineObject onClickItem(UUID id) {
+                return Logbook.getSpecies(id);
             }
 
             @Override
@@ -49,8 +51,8 @@ public class PrimitiveController {
             }
 
             @Override
-            public void onEditItem(int position, String newName) {
-                Logbook.editSpecies(position, newName);
+            public void onEditItem(UUID id, UserDefineObject newObj) {
+                Logbook.editSpecies(id, (Species)newObj);
             }
 
             @Override

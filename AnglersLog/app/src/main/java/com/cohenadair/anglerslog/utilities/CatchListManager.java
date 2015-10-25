@@ -18,6 +18,7 @@ import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.UUID;
 
 /**
  * The CatchListManager is a utility class for managing the catches list.
@@ -59,12 +60,12 @@ public class CatchListManager {
         }
 
         @Override
-        public void onItemEdit(int position) {
+        public void onItemEdit(UUID position) {
             ((OnClickManageMenuListener)context()).onClickMenuEdit(position);
         }
 
         @Override
-        public void onItemDelete(int position) {
+        public void onItemDelete(UUID position) {
             ((OnClickManageMenuListener)context()).onClickMenuTrash(position);
         }
 
@@ -96,7 +97,7 @@ public class CatchListManager {
                 mImageView.setImageResource(R.drawable.no_catch_photo);
 
             // hide the separator for the last row
-            mSeparator.setVisibility((position == Logbook.catchCount() - 1) ? View.INVISIBLE : View.VISIBLE);
+            mSeparator.setVisibility((position == Logbook.getCatchCount() - 1) ? View.INVISIBLE : View.VISIBLE);
         }
     }
     //endregion
@@ -121,7 +122,7 @@ public class CatchListManager {
             super.onBind(holder, position);
 
             ViewHolder catchHolder = (ViewHolder)holder;
-            catchHolder.setCatch((Catch)itemAtPos(position), position);
+            catchHolder.setCatch((Catch)getItem(position), position);
         }
     }
     //endregion

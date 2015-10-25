@@ -2,6 +2,8 @@ package com.cohenadair.anglerslog.fragments;
 
 import android.support.v4.app.Fragment;
 
+import java.util.UUID;
+
 /**
  * The ManageContentFragment is the superclass of the content fragments used in ManageFragment
  * instances.
@@ -11,7 +13,7 @@ import android.support.v4.app.Fragment;
 public abstract class ManageContentFragment extends Fragment {
 
     private boolean mIsEditing;
-    private int mEditingPosition;
+    private UUID mEditingId;
 
     /**
      * Adds a UserDefineObject to the Logbook. This method must be implemented by all subclasses.
@@ -28,12 +30,12 @@ public abstract class ManageContentFragment extends Fragment {
         return mIsEditing;
     }
 
-    public void setIsEditing(boolean isEditing, int itemPosition) {
+    public void setIsEditing(boolean isEditing, UUID itemId) {
         mIsEditing = isEditing;
-        mEditingPosition = itemPosition;
+        mEditingId = itemId;
     }
 
-    public int getEditingPosition() {
-        return mEditingPosition;
+    public UUID getEditingId() {
+        return mEditingId;
     }
 }

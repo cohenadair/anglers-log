@@ -6,6 +6,8 @@ import com.cohenadair.anglerslog.fragments.DetailFragment;
 import com.cohenadair.anglerslog.fragments.ManageContentFragment;
 import com.cohenadair.anglerslog.fragments.ManageFragment;
 
+import java.util.UUID;
+
 /**
  * LayoutSpec is used to store layout information to utilize similar code throughout the
  * application.  For example, viewing and managing complex
@@ -31,14 +33,14 @@ public class LayoutSpec {
     private String mDetailFragmentTag;
     private String mName;
 
-    private int selectionPosition = 0;
+    private UUID mSelectionId;
     private int id;
 
     /**
      * Used to delete a user define. Editing is done in the Manage*Fragment for that user define.
      */
     public interface OnUserDefineRemoveListener {
-        void remove(int position);
+        void remove(UUID id);
     }
 
     public LayoutSpec(String masterTag, String detailTag, String name) {
@@ -98,12 +100,12 @@ public class LayoutSpec {
         return mName;
     }
 
-    public int getSelectionPosition() {
-        return selectionPosition;
+    public UUID getSelectionId() {
+        return mSelectionId;
     }
 
-    public void setSelectionPosition(int selectionPosition) {
-        this.selectionPosition = selectionPosition;
+    public void setSelectionId(UUID selectionId) {
+        this.mSelectionId = selectionId;
     }
 
     public int getId() {

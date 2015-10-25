@@ -8,8 +8,9 @@ import android.widget.TextView;
 
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.model.Logbook;
-import com.cohenadair.anglerslog.model.user_defines.Trip;
 import com.cohenadair.anglerslog.utilities.LayoutController;
+
+import java.util.UUID;
 
 /**
  * A simple {@link DetailFragment} subclass used to show details of a single trip.
@@ -28,20 +29,18 @@ public class TripFragment extends DetailFragment {
 
         mNameTextView = (TextView)view.findViewById(R.id.name_text_view);
 
-        if (Logbook.catchCount() <= 0) {
+        if (Logbook.getCatchCount() <= 0) {
             mNameTextView.setText("There are 0 trips in your log.");
         } else
-            update(LayoutController.getSelectionPosition());
+            update(LayoutController.getSelectionId());
 
         // Inflate the layout for this fragment
         return view;
     }
 
     @Override
-    public void update(int position) {
-        Trip trip = Logbook.tripAtPos(position);
-
-        mNameTextView.setText(trip.getName());
+    public void update(UUID position) {
+        mNameTextView.setText("Trip");
     }
 
     @Override

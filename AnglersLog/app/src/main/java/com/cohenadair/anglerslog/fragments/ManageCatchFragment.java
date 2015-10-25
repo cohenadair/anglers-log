@@ -17,12 +17,13 @@ import com.cohenadair.anglerslog.model.user_defines.Catch;
 import com.cohenadair.anglerslog.model.user_defines.Species;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import com.cohenadair.anglerslog.utilities.PhotoUtils;
+import com.cohenadair.anglerslog.utilities.PrimitiveController;
 import com.cohenadair.anglerslog.utilities.Utils;
-import com.cohenadair.anglerslog.utilities.LayoutController;
 import com.cohenadair.anglerslog.views.SelectPhotosView;
 import com.cohenadair.anglerslog.views.SelectionView;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -73,11 +74,12 @@ public class ManageCatchFragment extends ManageContentFragment {
         // do not initialize Catches if we were paused
         if (mNewCatch == null)
             if (isEditing()) {
-                mNewCatch = new Catch(Logbook.catchAtPos(getEditingPosition()));
+                mNewCatch = new Catch(Logbook.getCatch(getEditingId()));
 
                 // populate the photos view with the existing photos
-                for (int i = 0; i < mNewCatch.photoCount(); i++)
-                    mSelectPhotosView.addImage(PhotoUtils.privatePhotoPath(mNewCatch.photoAtPos(i)));
+                ArrayList<String> photos = mNewCatch.getPhotos();
+                for (String str : photos)
+                    mSelectPhotosView.addImage(PhotoUtils.privatePhotoPath(str));
 
             } else
                 mNewCatch = new Catch(new Date());
@@ -89,7 +91,7 @@ public class ManageCatchFragment extends ManageContentFragment {
     public boolean addObjectToLogbook() {
         if (verifyUserInput()) {
             if (isEditing()) {
-                Logbook.editCatchAtPos(getEditingPosition(), mNewCatch);
+                Logbook.editCatch(getEditingId(), mNewCatch);
                 Utils.showToast(getActivity(), R.string.success_catch_edit);
                 mNewCatch = null;
                 return true;
@@ -111,7 +113,7 @@ public class ManageCatchFragment extends ManageContentFragment {
      */
     private boolean verifyUserInput() {
         // date and time
-        if (Logbook.catchDated(mNewCatch.getDate()) != null && !isEditing()) {
+        if (!Logbook.catchExists(mNewCatch.getDate()) && !isEditing()) {
             Utils.showErrorAlert(getActivity(), R.string.error_catch_date);
             return false;
         }
@@ -210,7 +212,7 @@ public class ManageCatchFragment extends ManageContentFragment {
         mSpeciesView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final ManagePrimitiveFragment fragment = ManagePrimitiveFragment.newInstance(LayoutController.PRIMITIVE_SPECIES);
+                final ManagePrimitiveFragment fragment = ManagePrimitiveFragment.newInstance(PrimitiveController.SPECIES);
 
                 fragment.setOnDismissInterface(new ManagePrimitiveFragment.OnDismissInterface() {
                     @Override
@@ -230,7 +232,7 @@ public class ManageCatchFragment extends ManageContentFragment {
         mSelectPhotosView.setSelectPhotosInteraction(new SelectPhotosView.SelectPhotosInteraction() {
             @Override
             public File onGetPhotoFile() {
-                return Logbook.catchPhotoFile(mNewCatch);
+                return PhotoUtils.privatePhotoFile(mNewCatch.getNextPhotoName());
             }
 
             @Override
@@ -239,13 +241,13 @@ public class ManageCatchFragment extends ManageContentFragment {
             }
 
             @Override
-            public void onAddImage() {
-                mNewCatch.addPhoto();
+            public void onAddImage(String fileName) {
+                mNewCatch.addPhoto(fileName);
             }
 
             @Override
-            public void onRemoveImage(int position) {
-                mNewCatch.removePhoto(position);
+            public void onRemoveImage(String fileName) {
+                mNewCatch.removePhoto(fileName);
             }
         });
     }

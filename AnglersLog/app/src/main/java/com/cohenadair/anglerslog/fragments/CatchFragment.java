@@ -20,12 +20,16 @@ import com.cohenadair.anglerslog.utilities.LayoutController;
 import com.cohenadair.anglerslog.utilities.PhotoUtils;
 import com.cohenadair.anglerslog.utilities.Utils;
 
+import java.util.ArrayList;
+import java.util.UUID;
+
 /**
  * A {@link DetailFragment} subclass used to show the details of a single catch.
  */
 public class CatchFragment extends DetailFragment {
 
     private Catch mCatch;
+    private ArrayList<String> mCatchPhotos;
 
     private ViewPager mPhotoViewPager;
     private TextView mSpeciesTextView;
@@ -44,27 +48,28 @@ public class CatchFragment extends DetailFragment {
 
         mPhotoViewPager = (ViewPager)view.findViewById(R.id.photo_view_pager);
 
-        if (Logbook.catchCount() <= 0) {
+        if (Logbook.getCatchCount() <= 0) {
             // TODO replace with "NoUserDefineView"
             mSpeciesTextView.setText("Select a catch to view it here.");
             mDateTextView.setText("");
         } else
-            update(LayoutController.getSelectionPosition());
+            update(LayoutController.getSelectionId());
 
         // Inflate the layout for this fragment
         return view;
     }
 
     @Override
-    public void update(int position) {
+    public void update(UUID id) {
         if (isAttached()) {
-            setItemPosition(position);
-            mCatch = Logbook.catchAtPos(position);
+            setItemId(id);
+            mCatch = Logbook.getCatch(id);
+            mCatchPhotos = mCatch.getPhotos();
 
             mSpeciesTextView.setText(mCatch.speciesAsString());
             mDateTextView.setText(mCatch.dateAsString());
 
-            mPhotoViewPager.setVisibility((mCatch.photoCount() > 0) ? View.VISIBLE : View.GONE);
+            mPhotoViewPager.setVisibility((mCatchPhotos.size() > 0) ? View.VISIBLE : View.GONE);
             mPhotoViewPager.setAdapter(new CatchPagerAdapter(getContext()));
             mPhotoViewPager.setLayoutParams(new LinearLayout.LayoutParams(photoPagerSize(), photoPagerSize()));
         }
@@ -72,7 +77,7 @@ public class CatchFragment extends DetailFragment {
 
     @Override
     public void update() {
-        update(getItemPosition());
+        update(getItemId());
     }
 
     /**
@@ -102,7 +107,7 @@ public class CatchFragment extends DetailFragment {
             LayoutInflater inflater = LayoutInflater.from(mContext);
             ViewGroup viewGroup = (ViewGroup)inflater.inflate(R.layout.view_image_pager, collection, false);
 
-            String path = PhotoUtils.privatePhotoPath(mCatch.photoAtPos(position));
+            String path = PhotoUtils.privatePhotoPath(mCatchPhotos.get(position));
             int imageSize = photoPagerSize();
 
             mImageView = (ImageView)viewGroup.findViewById(R.id.image_pager_view);
@@ -120,7 +125,7 @@ public class CatchFragment extends DetailFragment {
 
         @Override
         public int getCount() {
-            return mCatch.photoCount();
+            return mCatchPhotos.size();
         }
 
         @Override

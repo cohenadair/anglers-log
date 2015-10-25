@@ -394,7 +394,7 @@ public class PhotoUtils {
 
                 // check all Catch objects for the current File
                 for (UserDefineObject aCatch : Logbook.getCatches()) {
-                    if (((Catch) aCatch).getPhotoFileNames().indexOf(photoFiles[i].getName()) >= 0) {
+                    if (((Catch) aCatch).getPhotos().indexOf(photoFiles[i].getName()) >= 0) {
                         found = true;
                         break;
                     }
@@ -417,7 +417,7 @@ public class PhotoUtils {
     private static void cleanCache() {
         ArrayList<String> photoNames = new ArrayList<>();
         for (UserDefineObject aCatch : Logbook.getCatches())
-            photoNames.addAll(((Catch)aCatch).getPhotoFileNames());
+            photoNames.addAll(((Catch)aCatch).getPhotos());
 
         mCache.cleanDisk(photoNames);
     }

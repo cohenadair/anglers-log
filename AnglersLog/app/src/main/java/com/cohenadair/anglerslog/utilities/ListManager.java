@@ -9,6 +9,7 @@ import com.cohenadair.anglerslog.interfaces.OnClickInterface;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 /**
  * The ListManager is a utility class for managing the catches list. This class should never be
@@ -21,14 +22,14 @@ public class ListManager {
     public static abstract class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
 
         private Adapter mAdapter;
-        private int mItemPosition;
+        private UUID mId;
 
         /**
          * Must be implemented by subclasses.
          * @param position The position of the item to edit or delete.
          */
-        public abstract void onItemEdit(int position);
-        public abstract void onItemDelete(int position);
+        public abstract void onItemEdit(UUID position);
+        public abstract void onItemDelete(UUID position);
 
         public ViewHolder(View view, Adapter adapter) {
             super(view);
@@ -41,36 +42,33 @@ public class ListManager {
 
         @Override
         public void onClick(View view) {
-            mAdapter.getCallbacks().onClick(view, mItemPosition);
+            mAdapter.getCallbacks().onClick(view, mId);
         }
 
         @Override
         public boolean onLongClick(View view) {
-            UserDefineObject obj = mAdapter.itemAtPos(mItemPosition);
+            UserDefineObject obj = mAdapter.getItem(mId);
 
-            Utils.showManageAlert(mAdapter.getContext(), obj.displayName(), new DialogInterface.OnClickListener() {
+            Utils.showManageAlert(mAdapter.getContext(), obj.getName(), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     switch (which) {
                         case Utils.MANAGE_ALERT_EDIT:
-                            onItemEdit(mItemPosition);
+                            onItemEdit(mId);
                             break;
 
                         case Utils.MANAGE_ALERT_DELETE:
-                            onItemDelete(mItemPosition);
+                            onItemDelete(mId);
                             break;
                     }
                 }
             });
+
             return true;
         }
 
-        public void setItemPosition(int itemPosition) {
-            mItemPosition = itemPosition;
-        }
-
-        public Adapter getAdapter() {
-            return mAdapter;
+        public void setId(UUID id) {
+            mId = id;
         }
 
         public Context context() {
@@ -98,7 +96,7 @@ public class ListManager {
         }
 
         public void onBind(ViewHolder holder, int position) {
-            holder.setItemPosition(position);
+            holder.setId(mItems.get(position).getId());
         }
 
         public OnClickInterface getCallbacks() {
@@ -109,7 +107,15 @@ public class ListManager {
             return mContext;
         }
 
-        public UserDefineObject itemAtPos(int position) {
+        public UserDefineObject getItem(UUID id) {
+            for (UserDefineObject obj : mItems)
+                if (obj.getId().equals(id))
+                    return obj;
+
+            return null;
+        }
+
+        public UserDefineObject getItem(int position) {
             return mItems.get(position);
         }
     }

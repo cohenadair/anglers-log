@@ -20,6 +20,8 @@ import com.cohenadair.anglerslog.utilities.NavigationManager;
 import com.cohenadair.anglerslog.utilities.Utils;
 import com.cohenadair.anglerslog.utilities.LayoutController;
 
+import java.util.UUID;
+
 // TODO rename themes for convention
 // TODO hide FAB unless user is at the top of the list (blocks rating star)
 
@@ -93,21 +95,21 @@ public class MainActivity extends AppCompatActivity implements
      * instance.
      */
     @Override
-    public void onClickMenuEdit(int position) {
-        LayoutController.setIsEditing(true, position);
+    public void onClickMenuEdit(UUID id) {
+        LayoutController.setIsEditing(true, id);
         goToListManagerView();
     }
 
     /**
      * A method called when the user deletes an item from the list.
-     * @param position The position of the item to be deleted.
+     * @param id The UUID of the item to be deleted.
      */
     @Override
-    public void onClickMenuTrash(final int position) {
+    public void onClickMenuTrash(final UUID id) {
         Utils.showDeleteConfirm(this, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                LayoutController.removeUserDefine(position);
+                LayoutController.removeUserDefine(id);
                 mNavigationManager.goBack();
             }
         });
@@ -117,7 +119,7 @@ public class MainActivity extends AppCompatActivity implements
     public OnClickInterface getOnMyListFragmentItemClick() {
         return new OnClickInterface() {
             @Override
-            public void onClick(View view, int position) {
+            public void onClick(View view, UUID position) {
                 onMyListItemSelected(position);
             }
         };
@@ -126,8 +128,8 @@ public class MainActivity extends AppCompatActivity implements
     /**
      * Either show the detail fragment or update if it's already shown.
      */
-    public void onMyListItemSelected(int position) {
-        LayoutController.setSelectionPosition(position);
+    public void onMyListItemSelected(UUID position) {
+        LayoutController.setSelectionId(position);
 
         DetailFragment detailFragment =
                 (DetailFragment)getSupportFragmentManager().findFragmentByTag(LayoutController.getDetailTag());

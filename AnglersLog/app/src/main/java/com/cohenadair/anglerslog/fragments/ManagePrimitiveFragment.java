@@ -26,6 +26,7 @@ import com.cohenadair.anglerslog.utilities.PrimitiveSpec;
 import com.cohenadair.anglerslog.utilities.WrappedLinearLayoutManager;
 
 import java.util.List;
+import java.util.UUID;
 
 /**
  * The ManagePrimitiveFragment is used for selecting user defines from a list when adding Catches or
@@ -214,6 +215,8 @@ public class ManagePrimitiveFragment extends DialogFragment {
     //region RecyclerView Stuff
     private class ManagePrimitiveHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
+        private UUID mId;
+
         private EditText mNameEditText;
         private TextView mNameTextView;
         private CheckBox mDeleteCheckBox;
@@ -240,7 +243,7 @@ public class ManagePrimitiveFragment extends DialogFragment {
             for (UserDefineObject obj : mPrimitiveSpec.getItems())
                 obj.setShouldDelete(false);
 
-            mOnDismissInterface.onDismiss(mPrimitiveSpec.getListener().onClickItem(getLayoutPosition()));
+            mOnDismissInterface.onDismiss(mPrimitiveSpec.getListener().onClickItem(mId));
             getDialog().dismiss();
         }
 
@@ -254,7 +257,7 @@ public class ManagePrimitiveFragment extends DialogFragment {
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
                     if (mNameEditText.isFocused())
-                        mPrimitiveSpec.getListener().onEditItem(getAdapterPosition(), s.toString());
+                        mPrimitiveSpec.getListener().onEditItem(mId, new UserDefineObject(s.toString()));
                 }
 
                 @Override
@@ -269,7 +272,7 @@ public class ManagePrimitiveFragment extends DialogFragment {
             mDeleteCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    Logbook.speciesAtPos(getAdapterPosition()).setShouldDelete(isChecked);
+                    Logbook.getSpecies(mId).setShouldDelete(isChecked);
                 }
             });
         }
@@ -284,6 +287,10 @@ public class ManagePrimitiveFragment extends DialogFragment {
         //endregion
 
         //region Getters & Setters
+        public void setId(UUID id) {
+            mId = id;
+        }
+
         public EditText getNameEditText() {
             return mNameEditText;
         }
@@ -325,6 +332,7 @@ public class ManagePrimitiveFragment extends DialogFragment {
         @Override
         public void onBindViewHolder(ManagePrimitiveHolder holder, int position) {
             UserDefineObject obj = mItems.get(position);
+            holder.setId(obj.getId());
 
             if (mManageType == ManageType.Edit)
                 holder.getNameEditText().setText(obj.getName());

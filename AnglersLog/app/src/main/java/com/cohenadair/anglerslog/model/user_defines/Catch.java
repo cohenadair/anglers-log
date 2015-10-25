@@ -1,11 +1,17 @@
 package com.cohenadair.anglerslog.model.user_defines;
 
+import android.content.ContentValues;
 import android.text.format.DateFormat;
-import android.util.Log;
+
+import com.cohenadair.anglerslog.database.QueryHelper;
+import com.cohenadair.anglerslog.model.Logbook;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Random;
+
+import static com.cohenadair.anglerslog.database.LogbookSchema.CatchPhotoTable;
+import static com.cohenadair.anglerslog.database.LogbookSchema.CatchTable;
 
 /**
  * The Catch class stores relative information for a single fishing catch.
@@ -13,12 +19,9 @@ import java.util.Random;
  */
 public class Catch extends UserDefineObject {
 
-    private final String TAG = "Catch";
-
     private Date mDate;
     private Species mSpecies;
     private boolean mIsFavorite;
-    private ArrayList<String> mPhotoFileNames = new ArrayList<>();
 
     public Catch(Date date) {
         super(date.toString());
@@ -30,7 +33,10 @@ public class Catch extends UserDefineObject {
         mDate = new Date(aCatch.getDate().getTime());
         mSpecies = new Species(aCatch.getSpecies());
         mIsFavorite = aCatch.isFavorite();
-        mPhotoFileNames = new ArrayList<>(aCatch.getPhotoFileNames());
+    }
+
+    public Catch(UserDefineObject obj) {
+        super(obj);
     }
 
     //region Getters & Setters
@@ -57,19 +63,10 @@ public class Catch extends UserDefineObject {
     public void setIsFavorite(boolean isFavorite) {
         mIsFavorite = isFavorite;
     }
-
-    public ArrayList<String> getPhotoFileNames() {
-        return mPhotoFileNames;
-    }
     //endregion
 
     @Override
-    public String toString() {
-        return speciesAsString() + " - " + dateTimeAsString();
-    }
-
-    @Override
-    public String displayName() {
+    public String getName() {
         return dateTimeAsString();
     }
 
@@ -90,31 +87,20 @@ public class Catch extends UserDefineObject {
     }
 
     //region Photo Manipulation
-    public void addPhoto() {
-        String next = nextPhotoFileName();
-
-        if (mPhotoFileNames.indexOf(next) > -1) {
-            Log.e(TAG, "Photo path already exists in Catch.");
-            return;
-        }
-
-        mPhotoFileNames.add(nextPhotoFileName());
+    public ArrayList<String> getPhotos() {
+        return QueryHelper.queryPhotos(CatchPhotoTable.NAME, CatchPhotoTable.Columns.NAME + " LIKE ?", new String[] { "%" + getId().toString() + "%" });
     }
 
-    public void removePhoto(String fileName) {
-        mPhotoFileNames.remove(fileName);
+    public boolean addPhoto(String fileName) {
+        return Logbook.getDatabase().insert(CatchPhotoTable.NAME, null, getPhotoContentValues(fileName)) != -1;
     }
 
-    public void removePhoto(int position) {
-        mPhotoFileNames.remove(position);
+    public boolean removePhoto(String fileName) {
+        return Logbook.getDatabase().delete(CatchPhotoTable.NAME, CatchPhotoTable.Columns.NAME + " = ?", new String[] { fileName }) == 1;
     }
 
-    public int photoCount() {
-        return mPhotoFileNames.size();
-    }
-
-    public String photoAtPos(int position) {
-        return mPhotoFileNames.get(position);
+    public int getPhotoCount() {
+        return QueryHelper.queryCount(CatchPhotoTable.NAME, CatchPhotoTable.Columns.USER_DEFINE_ID + " = ?", new String[] { getId().toString() });
     }
 
     /**
@@ -122,27 +108,52 @@ public class Catch extends UserDefineObject {
      * @return The name of a random photo.
      */
     public String randomPhoto() {
-        if (photoCount() <= 0)
+        ArrayList<String> photos = getPhotos();
+
+        if (photos.size() <= 0)
             return null;
 
-        return photoAtPos(new Random().nextInt(photoCount()));
+        return photos.get(new Random().nextInt(photos.size()));
     }
 
     /**
      * Generates a file name for the next photo to be added to the Catch's photos.
      * @return The file name as String. Example "IMG_<mId>_0.png".
      */
-    public String nextPhotoFileName() {
-        // this loop ensures that the smallest index possible is used in the name
-        // it's possible a user removed index 0 and some point, so a new image should use that index
-        // since a photo with .size() may already exist
-        for (int i = 0; i < mPhotoFileNames.size(); i++) {
-            String name = "CATCH_" + getId().toString() + "_" + i + ".jpg";
-            if (mPhotoFileNames.indexOf(name) == -1)
-                return name;
-        }
+    public String getNextPhotoName() {
+        ArrayList<String> photos = getPhotos();
+        int postfix = 0;
 
-        return "CATCH_" + getId().toString() + "_" + mPhotoFileNames.size() + ".jpg";
+        while (true) {
+            String name = "CATCH_" + getId().toString() + "_" + postfix + ".jpg";
+
+            if (photos.size() <= 0 || photos.indexOf(name) == -1)
+                return name;
+
+            postfix++;
+        }
     }
     //endregion
+
+    public ContentValues getContentValues() {
+        ContentValues values = super.getContentValues();
+
+        values.put(CatchTable.Columns.DATE, mDate.getTime());
+        values.put(CatchTable.Columns.IS_FAVORITE, mIsFavorite ? 1 : 0);
+
+        if ((mSpecies != null))
+            values.put(CatchTable.Columns.SPECIES_ID, mSpecies.getId().toString());
+
+        return values;
+    }
+
+    public ContentValues getPhotoContentValues(String fileName) {
+        ContentValues values = new ContentValues();
+
+        values.put(CatchPhotoTable.Columns.USER_DEFINE_ID, getId().toString());
+        values.put(CatchPhotoTable.Columns.NAME, fileName);
+
+        return values;
+    }
+
 }

@@ -12,6 +12,8 @@ import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.interfaces.OnClickManageMenuListener;
 import com.cohenadair.anglerslog.utilities.Utils;
 
+import java.util.UUID;
+
 /**
  * The DetailFragment class is meant to be extended by any "detail" fragments.
  * A detail fragment is a fragment that shows details after a user selects an item from a list view.
@@ -22,14 +24,14 @@ public abstract class DetailFragment extends Fragment {
 
     private static final String TAG = "DetailFragment";
 
-    private int mItemPosition = 0;
+    private UUID mItemId;
     private OnClickManageMenuListener mMenuListener;
 
     /**
      * The method that updates the view using the object at the corresponding ListView position.
-     * @param position the position of the clicked ListItem in the master view.
+     * @param id the UUID of the clicked ListItem in the master view.
      */
-    public abstract void update(int position);
+    public abstract void update(UUID id);
     public abstract void update();
 
     public DetailFragment() {
@@ -74,10 +76,10 @@ public abstract class DetailFragment extends Fragment {
 
         switch (id) {
             case R.id.action_edit:
-                mMenuListener.onClickMenuEdit(mItemPosition);
+                mMenuListener.onClickMenuEdit(mItemId);
                 break;
             case R.id.action_trash:
-                mMenuListener.onClickMenuTrash(mItemPosition);
+                mMenuListener.onClickMenuTrash(mItemId);
                 break;
             default:
                 Log.e(TAG, "Menu item id: " + id + " is not supported.");
@@ -95,12 +97,12 @@ public abstract class DetailFragment extends Fragment {
     }
 
     //region Getters & Setters
-    public int getItemPosition() {
-        return mItemPosition;
+    public UUID getItemId() {
+        return mItemId;
     }
 
-    public void setItemPosition(int itemPosition) {
-        mItemPosition = itemPosition;
+    public void setItemId(UUID itemId) {
+        mItemId = itemId;
     }
     //endregion
 }

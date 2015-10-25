@@ -45,6 +45,7 @@ public class SelectPhotosView extends LinearLayout {
 
     private LinearLayout mPhotosWrapper;
     private ArrayList<ImageView> mImageViews = new ArrayList<>();
+    private ArrayList<String> mImagePaths = new ArrayList<>();
     private SelectPhotosInteraction mSelectPhotosInteraction;
     private File mPrivatePhotoFile; // used to save a version of the photo used by this application
     private File mPublicPhotoFile; // used to save a full resolution version of the photo for the user
@@ -52,8 +53,8 @@ public class SelectPhotosView extends LinearLayout {
     public interface SelectPhotosInteraction {
         File onGetPhotoFile();
         void onStartSelectionActivity(Intent intent, int requestCode);
-        void onAddImage();
-        void onRemoveImage(int position);
+        void onAddImage(String fileName);
+        void onRemoveImage(String fileName);
     }
 
     public SelectPhotosView(Context context) {
@@ -130,7 +131,7 @@ public class SelectPhotosView extends LinearLayout {
             MediaScannerConnection.scanFile(getContext(), new String[]{mPublicPhotoFile.toString()}, null, null);
 
         addImage(mPrivatePhotoFile.getPath());
-        mSelectPhotosInteraction.onAddImage();
+        mSelectPhotosInteraction.onAddImage(mPrivatePhotoFile.getName());
     }
 
     public void addImage(String path) {
@@ -157,13 +158,14 @@ public class SelectPhotosView extends LinearLayout {
         PhotoUtils.thumbnailToImageView(img, path, size, R.drawable.no_catch_photo);
 
         mImageViews.add(img);
+        mImagePaths.add(path);
         updateImageMargins();
 
         mPhotosWrapper.addView(img);
     }
 
     private void removeImage(ImageView img) {
-        mSelectPhotosInteraction.onRemoveImage(mImageViews.indexOf(img));
+        mSelectPhotosInteraction.onRemoveImage(mImagePaths.get(mImageViews.indexOf(img)));
         mImageViews.remove(img);
         mPhotosWrapper.removeView(img);
     }

@@ -1,20 +1,24 @@
 package com.cohenadair.anglerslog.model;
 
 import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.Nullable;
-import android.util.Log;
 
+import com.cohenadair.anglerslog.database.LogbookHelper;
+import com.cohenadair.anglerslog.database.QueryHelper;
+import com.cohenadair.anglerslog.database.cursors.CatchCursor;
+import com.cohenadair.anglerslog.database.cursors.UserDefineCursor;
 import com.cohenadair.anglerslog.model.user_defines.Catch;
 import com.cohenadair.anglerslog.model.user_defines.Species;
-import com.cohenadair.anglerslog.model.user_defines.Trip;
-import com.cohenadair.anglerslog.model.user_defines.UserDefineArray;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
-import com.cohenadair.anglerslog.utilities.PhotoUtils;
-import com.cohenadair.anglerslog.utilities.Utils;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.UUID;
+
+import static com.cohenadair.anglerslog.database.LogbookSchema.CatchTable;
+import static com.cohenadair.anglerslog.database.LogbookSchema.SpeciesTable;
 
 /**
  * The Logbook class is a monostate class storing all of the user's log data.
@@ -22,187 +26,135 @@ import java.util.Date;
  */
 public class Logbook {
 
-    /**
-     * For Log calls.
-     */
     private static final String TAG = "Logbook";
 
+    private static SQLiteDatabase mDatabase;
     private static Context mContext;
-    private static String mName;
-    private static UserDefineArray mCatches = new UserDefineArray();
-    private static UserDefineArray mTrips = new UserDefineArray();
-    private static UserDefineArray mSpecies = new UserDefineArray();
 
-    private Logbook() {
+    private Logbook() { }
 
+    public static void init(Context context) {
+        mContext = context;
+        mDatabase = new LogbookHelper(mContext).getWritableDatabase();
+        QueryHelper.setDatabase(mDatabase);
+    }
+
+    public static void init(Context context, SQLiteDatabase database) {
+        mContext = context;
+        mDatabase = database;
+        QueryHelper.setDatabase(mDatabase);
     }
 
     //region Getters & Setters
-
-    public static void setContext(Context mContext) {
-        Logbook.mContext = mContext;
+    public static SQLiteDatabase getDatabase() {
+        return mDatabase;
     }
-
-    public static String getName() {
-        return mName;
-    }
-
-    public static void setName(String name) {
-        mName = name;
-    }
-
-    public static ArrayList<UserDefineObject> getCatches() {
-        return mCatches.getItems();
-    }
-
-    public static ArrayList<UserDefineObject> getTrips() {
-        return mTrips.getItems();
-    }
-
-    public static ArrayList<UserDefineObject> getSpecies() {
-        return mSpecies.getItems();
-    }
-
-    public static void setSpecies(ArrayList<UserDefineObject> species) {
-        mSpecies.setItems(species);
-    }
-    //endregion
-
-    //region General Manipulation
-
     //endregion
 
     //region Catch Manipulation
-    public static boolean addCatch(Catch aCatch) {
-        if (catchDated(aCatch.getDate()) != null) {
-            Log.e(TAG, "A catch with date already exists!");
-            return false;
-        }
+    public static ArrayList<UserDefineObject> getCatches() {
+        ArrayList<UserDefineObject> catches = new ArrayList<>();
+        CatchCursor cursor = QueryHelper.queryCatches(null, null);
 
-        return mCatches.add(aCatch);
+        if (cursor.moveToFirst())
+            while (!cursor.isAfterLast()) {
+                catches.add(cursor.getCatch());
+                cursor.moveToNext();
+            }
+
+        cursor.close();
+        return catches;
     }
 
-    public static boolean removeCatch(Catch aCatch) {
-        return mCatches.remove(aCatch);
-    }
-
-    public static boolean removeCatchAtPos(int position) {
-        return removeCatch(catchAtPos(position));
-    }
-
-    public static void editCatchAtPos(int position, Catch newCatch) {
-        mCatches.set(position, newCatch);
-    }
-
-    /**
-     * Looks for existing catches with aDate.
-     * @param aDate the date of the resulting catch.
-     * @return the catch with aDate or null if no such catch exists.
-     */
     @Nullable
-    public static Catch catchDated(Date aDate) {
-        for (UserDefineObject obj : mCatches.getItems()) {
-            Catch aCatch = (Catch)obj;
-            if (Utils.datesEqualNoSeconds(aCatch.getDate(), aDate))
-                return aCatch;
-        }
+    public static Catch getCatch(UUID id) {
+        Catch aCatch = null;
+        CatchCursor cursor = QueryHelper.queryCatches(CatchTable.Columns.ID + " = ?", new String[]{id.toString()});
 
-        return null;
+        if (cursor.moveToFirst())
+            aCatch = cursor.getCatch();
+
+        cursor.close();
+        return aCatch;
     }
 
-    public static Catch catchAtPos(int position) {
-        return (Catch)mCatches.get(position);
+    public static boolean catchExists(Date date) {
+        Cursor cursor = QueryHelper.queryCatches(CatchTable.Columns.DATE + " = ?", new String[] { Long.toString(date.getTime()) });
+        boolean result = cursor.getCount() > 0;
+        cursor.close();
+        return result;
     }
 
-    /**
-     * @return the number of catches in the Logbook.
-     */
-    public static int catchCount() {
-        return mCatches.size();
+    public static boolean addCatch(Catch aCatch) {
+        return mDatabase.insert(CatchTable.NAME, null, aCatch.getContentValues()) != -1;
     }
 
-    public static File catchPhotoFile(Catch aCatch) {
-        return PhotoUtils.privatePhotoFile(aCatch.nextPhotoFileName());
-    }
-    //endregion
-
-    //region Trip Manipulation
-    public static boolean addTrip(Trip aTrip) {
-        return mTrips.add(aTrip);
+    public static boolean removeCatch(UUID id) {
+        return mDatabase.delete(CatchTable.NAME, CatchTable.Columns.ID + " = ?", new String[]{id.toString()}) == 1;
     }
 
-    public static boolean removeTrip(Trip aTrip) {
-        return mTrips.remove(aTrip);
+    public static boolean editCatch(UUID id, Catch newCatch) {
+        newCatch.setId(id); // id needs to stay the same
+        return mDatabase.update(CatchTable.NAME, newCatch.getContentValues(), CatchTable.Columns.ID + " = ?", new String[] { id.toString() }) == 1;
     }
 
-    public static int tripCount() {
-        return mTrips.size();
-    }
-
-    public static Trip tripAtPos(int position) {
-        return (Trip)mTrips.get(position);
+    public static int getCatchCount() {
+        return QueryHelper.queryCount(CatchTable.NAME);
     }
     //endregion
 
     //region Species Manipulation
+    public static ArrayList<UserDefineObject> getSpecies() {
+        ArrayList<UserDefineObject> species = new ArrayList<>();
+        UserDefineCursor cursor = QueryHelper.queryUserDefines(SpeciesTable.NAME, null, null);
+
+        if (cursor.moveToFirst())
+            while (!cursor.isAfterLast()) {
+                species.add(cursor.getObject());
+                cursor.moveToNext();
+            }
+
+        cursor.close();
+        return species;
+    }
+
+    @Nullable
+    public static Species getSpecies(UUID id) {
+        Species species = null;
+        UserDefineCursor cursor = QueryHelper.queryUserDefines(SpeciesTable.NAME, CatchTable.Columns.ID + " = ?", new String[]{id.toString()});
+
+        if (cursor.moveToFirst())
+            species = new Species(cursor.getObject());
+
+        cursor.close();
+        return species;
+    }
+
     public static boolean addSpecies(Species species) {
-        if (speciesNamed(species.getName()) != null) {
-            Log.e(TAG, "A species with name already exists!");
-            return false;
-        }
-
-        return mSpecies.add(species);
+        return mDatabase.insert(SpeciesTable.NAME, null, species.getContentValues()) != -1;
     }
 
-    public static void removeSpecies(int position) {
-        mSpecies.remove(position);
+    public static boolean removeSpecies(UUID id) {
+        return mDatabase.delete(SpeciesTable.NAME, SpeciesTable.Columns.ID + " = ?", new String[]{id.toString()}) == 1;
     }
 
-    public static void editSpecies(int position, String newName) {
-        speciesAtPos(position).edit(new Species(newName));
+    public static boolean editSpecies(UUID id, Species newSpecies) {
+        newSpecies.setId(id); // id needs to stay the same
+        return mDatabase.update(SpeciesTable.NAME, newSpecies.getContentValues(), SpeciesTable.Columns.ID + " = ?", new String[]{id.toString()}) == 1;
     }
 
-    /**
-     * Looks for existing species with aName.
-     * @param name the name of the species to add.
-     * @return the catch with aDate or null if no such catch exists.
-     */
-    public static Species speciesNamed(String name) {
-        return (Species)userDefineNamed(mSpecies, name);
+    public static int getSpeciesCount() {
+        return QueryHelper.queryCount(SpeciesTable.NAME);
     }
 
     /**
      * Iterates through all the species and removes ones where getShouldDelete() returns true.
      */
     public static void cleanSpecies() {
-        for (int i = speciesCount() - 1; i >= 0; i--) {
-            if (speciesAtPos(i).getShouldDelete())
-                removeSpecies(i);
-        }
-    }
-
-    public static int speciesCount() {
-        return mSpecies.size();
-    }
-
-    public static Species speciesAtPos(int position) {
-        return (Species)mSpecies.get(position);
+        ArrayList<UserDefineObject> species = getSpecies();
+        for (int i = species.size() - 1; i >= 0; i--)
+            if (species.get(i).getShouldDelete())
+                removeSpecies(species.get(i).getId());
     }
     //endregion
-
-    /**
-     * Looks for a UserDefineObject with a specified name.
-     * @param arr The UserDefineArray to look for the name.
-     * @param name The name to look for.
-     * @return The UserDefineObject with the given name or null if no such object exists.
-     */
-    @Nullable
-    private static UserDefineObject userDefineNamed(UserDefineArray arr, String name) {
-        for (UserDefineObject obj : arr.getItems()) {
-            if (name.equalsIgnoreCase(obj.getName()))
-                return obj;
-        }
-
-        return null;
-    }
 }
