@@ -44,6 +44,8 @@ public class MyListFragment extends MasterFragment {
             initRecyclerView(view);
         }
 
+        update();
+
         return view;
     }
 
@@ -77,7 +79,6 @@ public class MyListFragment extends MasterFragment {
     private void initRecyclerView(View view) {
         mRecyclerView = (RecyclerView)view.findViewById(R.id.main_recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mRecyclerView.setAdapter(LayoutController.getMasterAdapter());
     }
 
     private void initNewButton(View view) {
