@@ -10,6 +10,7 @@ import com.cohenadair.anglerslog.model.Logbook;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Random;
+import java.util.UUID;
 
 import static com.cohenadair.anglerslog.database.LogbookSchema.CatchPhotoTable;
 import static com.cohenadair.anglerslog.database.LogbookSchema.CatchTable;
@@ -96,7 +97,11 @@ public class Catch extends UserDefineObject {
 
     //region Photo Manipulation
     public ArrayList<String> getPhotos() {
-        return QueryHelper.queryPhotos(CatchPhotoTable.NAME, CatchPhotoTable.Columns.NAME + " LIKE ?", new String[] { "%" + getId().toString() + "%" });
+        return getPhotos(getId());
+    }
+
+    public ArrayList<String> getPhotos(UUID id) {
+        return QueryHelper.queryPhotos(CatchPhotoTable.NAME, CatchPhotoTable.Columns.NAME + " LIKE ?", new String[] { "%" + id.toString() + "%" });
     }
 
     public boolean addPhoto(String fileName) {
@@ -126,14 +131,17 @@ public class Catch extends UserDefineObject {
 
     /**
      * Generates a file name for the next photo to be added to the Catch's photos.
+     * @param id The id to use for the name, or null to use this Catch's id. Useful for Catch
+     *           editing.
      * @return The file name as String. Example "IMG_<mId>_0.png".
      */
-    public String getNextPhotoName() {
-        ArrayList<String> photos = getPhotos();
+    public String getNextPhotoName(UUID id) {
+        id = (id == null) ? getId() : id;
+        ArrayList<String> photos = getPhotos(id);
         int postfix = 0;
 
         while (true) {
-            String name = "CATCH_" + getId().toString() + "_" + postfix + ".jpg";
+            String name = "CATCH_" + id.toString() + "_" + postfix + ".jpg";
 
             if (photos.size() <= 0 || photos.indexOf(name) == -1)
                 return name;

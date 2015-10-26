@@ -26,6 +26,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.UUID;
 
 /**
  * The ManageCatchFragment is used to add and edit catches.
@@ -67,13 +68,15 @@ public class ManageCatchFragment extends ManageContentFragment {
         if (mNewCatch == null)
             if (isEditing()) {
                 Catch oldCatch = Logbook.getCatch(getEditingId());
+
+                if (oldCatch != null) {
+                    // populate the photos view with the existing photos
+                    ArrayList<String> photos = oldCatch.getPhotos();
+                    for (String str : photos)
+                        mSelectPhotosView.addImage(PhotoUtils.privatePhotoPath(str));
+                }
+
                 mNewCatch = new Catch(oldCatch);
-
-                // populate the photos view with the existing photos
-                ArrayList<String> photos = oldCatch.getPhotos();
-                for (String str : photos)
-                    mSelectPhotosView.addImage(PhotoUtils.privatePhotoPath(str));
-
             } else
                 mNewCatch = new Catch(new Date());
 
@@ -231,7 +234,8 @@ public class ManageCatchFragment extends ManageContentFragment {
         mSelectPhotosView.setSelectPhotosInteraction(new SelectPhotosView.SelectPhotosInteraction() {
             @Override
             public File onGetPhotoFile() {
-                return PhotoUtils.privatePhotoFile(mNewCatch.getNextPhotoName());
+                UUID id = isEditing() ? getEditingId() : null;
+                return PhotoUtils.privatePhotoFile(mNewCatch.getNextPhotoName(id));
             }
 
             @Override
@@ -240,15 +244,13 @@ public class ManageCatchFragment extends ManageContentFragment {
             }
 
             @Override
-            public void onAddImage(String fileName) {
-                if (!mNewCatch.addPhoto(fileName))
-                    Utils.showToast(getContext(), R.string.error_add_photo);
+            public boolean onAddImage(String fileName) {
+                return mNewCatch.addPhoto(fileName);
             }
 
             @Override
-            public void onRemoveImage(String fileName) {
-                if (!mNewCatch.removePhoto(fileName))
-                    Utils.showToast(getContext(), R.string.error_remove_photo);
+            public boolean onRemoveImage(String fileName) {
+                return mNewCatch.removePhoto(fileName);
             }
         });
     }

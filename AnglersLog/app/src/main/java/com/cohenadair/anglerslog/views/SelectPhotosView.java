@@ -53,8 +53,8 @@ public class SelectPhotosView extends LinearLayout {
     public interface SelectPhotosInteraction {
         File onGetPhotoFile();
         void onStartSelectionActivity(Intent intent, int requestCode);
-        void onAddImage(String fileName);
-        void onRemoveImage(String fileName);
+        boolean onAddImage(String fileName);
+        boolean onRemoveImage(String fileName);
     }
 
     public SelectPhotosView(Context context) {
@@ -130,8 +130,10 @@ public class SelectPhotosView extends LinearLayout {
         if (mPublicPhotoFile.exists())
             MediaScannerConnection.scanFile(getContext(), new String[]{mPublicPhotoFile.toString()}, null, null);
 
-        addImage(mPrivatePhotoFile.getPath());
-        mSelectPhotosInteraction.onAddImage(mPrivatePhotoFile.getName());
+        if (mSelectPhotosInteraction.onAddImage(mPrivatePhotoFile.getName()))
+            addImage(mPrivatePhotoFile.getPath());
+        else
+            Utils.showToast(getContext(), R.string.error_add_photo);
     }
 
     public void addImage(String path) {
@@ -165,9 +167,13 @@ public class SelectPhotosView extends LinearLayout {
     }
 
     private void removeImage(ImageView img) {
-        mSelectPhotosInteraction.onRemoveImage(mImagePaths.get(mImageViews.indexOf(img)));
-        mImageViews.remove(img);
-        mPhotosWrapper.removeView(img);
+        String name = new File(mImagePaths.get(mImageViews.indexOf(img))).getName();
+
+        if (mSelectPhotosInteraction.onRemoveImage(name)) {
+            mImageViews.remove(img);
+            mPhotosWrapper.removeView(img);
+        } else
+            Utils.showToast(getContext(), R.string.error_remove_photo);
     }
 
     private void updateImageMargins() {
