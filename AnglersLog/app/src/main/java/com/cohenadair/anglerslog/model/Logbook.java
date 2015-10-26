@@ -2,6 +2,7 @@ package com.cohenadair.anglerslog.model;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.Nullable;
 
@@ -34,14 +35,13 @@ public class Logbook {
     private Logbook() { }
 
     public static void init(Context context) {
-        mContext = context;
-        mDatabase = new LogbookHelper(mContext).getWritableDatabase();
-        QueryHelper.setDatabase(mDatabase);
+        init(context, new LogbookHelper(context).getWritableDatabase());
     }
 
     public static void init(Context context, SQLiteDatabase database) {
         mContext = context;
         mDatabase = database;
+        mDatabase.setForeignKeyConstraintsEnabled(true);
         QueryHelper.setDatabase(mDatabase);
     }
 
@@ -69,7 +69,7 @@ public class Logbook {
     @Nullable
     public static Catch getCatch(UUID id) {
         Catch aCatch = null;
-        CatchCursor cursor = QueryHelper.queryCatches(CatchTable.Columns.ID + " = ?", new String[]{id.toString()});
+        CatchCursor cursor = QueryHelper.queryCatches(CatchTable.Columns.ID + " = ?", new String[] { id.toString() });
 
         if (cursor.moveToFirst())
             aCatch = cursor.getCatch();
@@ -121,10 +121,10 @@ public class Logbook {
     @Nullable
     public static Species getSpecies(UUID id) {
         Species species = null;
-        UserDefineCursor cursor = QueryHelper.queryUserDefines(SpeciesTable.NAME, CatchTable.Columns.ID + " = ?", new String[]{id.toString()});
+        UserDefineCursor cursor = QueryHelper.queryUserDefines(SpeciesTable.NAME, SpeciesTable.Columns.ID + " = ?", new String[]{ id.toString() });
 
         if (cursor.moveToFirst())
-            species = new Species(cursor.getObject());
+            species = new Species(cursor.getObject(), true);
 
         cursor.close();
         return species;
@@ -135,26 +135,24 @@ public class Logbook {
     }
 
     public static boolean removeSpecies(UUID id) {
-        return mDatabase.delete(SpeciesTable.NAME, SpeciesTable.Columns.ID + " = ?", new String[]{id.toString()}) == 1;
+        boolean result = false;
+
+        try {
+            result =  mDatabase.delete(SpeciesTable.NAME, SpeciesTable.Columns.ID + " = ?", new String[] { id.toString() }) == 1;
+        } catch (SQLiteConstraintException e) {
+            e.printStackTrace();
+        }
+
+        return result;
     }
 
     public static boolean editSpecies(UUID id, Species newSpecies) {
         newSpecies.setId(id); // id needs to stay the same
-        return mDatabase.update(SpeciesTable.NAME, newSpecies.getContentValues(), SpeciesTable.Columns.ID + " = ?", new String[]{id.toString()}) == 1;
+        return mDatabase.update(SpeciesTable.NAME, newSpecies.getContentValues(), SpeciesTable.Columns.ID + " = ?", new String[] { id.toString() }) == 1;
     }
 
     public static int getSpeciesCount() {
         return QueryHelper.queryCount(SpeciesTable.NAME);
-    }
-
-    /**
-     * Iterates through all the species and removes ones where getShouldDelete() returns true.
-     */
-    public static void cleanSpecies() {
-        ArrayList<UserDefineObject> species = getSpecies();
-        for (int i = species.size() - 1; i >= 0; i--)
-            if (species.get(i).getShouldDelete())
-                removeSpecies(species.get(i).getId());
     }
     //endregion
 }

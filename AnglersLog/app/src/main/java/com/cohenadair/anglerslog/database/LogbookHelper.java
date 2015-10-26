@@ -26,13 +26,13 @@ public class LogbookHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE " + SpeciesTable.NAME + "(" +
-            SpeciesTable.Columns.ID + " TEXT, " +
+            SpeciesTable.Columns.ID + " TEXT PRIMARY KEY NOT NULL, " +
             SpeciesTable.Columns.NAME + " TEXT UNIQUE NOT NULL" +
             ")"
         );
 
         db.execSQL("CREATE TABLE " + CatchTable.NAME + "(" +
-            CatchTable.Columns.ID + " TEXT, " +
+            CatchTable.Columns.ID + " TEXT PRIMARY KEY NOT NULL, " +
             CatchTable.Columns.NAME + " TEXT UNIQUE NOT NULL, " +
             CatchTable.Columns.DATE + " INTEGER UNIQUE NOT NULL, " +
             CatchTable.Columns.SPECIES_ID + " TEXT REFERENCES " + SpeciesTable.NAME + "(" + SpeciesTable.Columns.ID + "), " +

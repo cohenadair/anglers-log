@@ -1,6 +1,7 @@
 package com.cohenadair.anglerslog.model.user_defines;
 
 import android.content.ContentValues;
+import android.database.Cursor;
 import android.text.format.DateFormat;
 
 import com.cohenadair.anglerslog.database.QueryHelper;
@@ -31,7 +32,7 @@ public class Catch extends UserDefineObject {
     public Catch(Catch aCatch) {
         super(aCatch);
         mDate = new Date(aCatch.getDate().getTime());
-        mSpecies = new Species(aCatch.getSpecies());
+        mSpecies = new Species(aCatch.getSpecies(), true); // keep the EXACT same species
         mIsFavorite = aCatch.isFavorite();
     }
 
@@ -57,11 +58,18 @@ public class Catch extends UserDefineObject {
     }
 
     public boolean isFavorite() {
+        Cursor cursor = QueryHelper.queryCatches(new String[] { CatchTable.Columns.IS_FAVORITE }, CatchTable.Columns.ID + " = ?", new String[] { getId().toString() });
+
+        if (cursor.moveToFirst())
+            mIsFavorite = cursor.getInt(cursor.getColumnIndex(CatchTable.Columns.IS_FAVORITE)) == 1;
+
+        cursor.close();
         return mIsFavorite;
     }
 
     public void setIsFavorite(boolean isFavorite) {
         mIsFavorite = isFavorite;
+        Logbook.editCatch(getId(), this);
     }
     //endregion
 

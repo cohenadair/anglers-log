@@ -7,6 +7,7 @@ import com.cohenadair.anglerslog.model.Logbook;
 import com.cohenadair.anglerslog.model.user_defines.Species;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 /**
@@ -39,7 +40,12 @@ public class PrimitiveController {
 
     @NonNull
     private static PrimitiveSpec getSpeciesSpec() {
-        return new PrimitiveSpec("species", Logbook.getSpecies(), new PrimitiveSpec.InteractionListener() {
+        return new PrimitiveSpec("species", new PrimitiveSpec.InteractionListener() {
+            @Override
+            public ArrayList<UserDefineObject> onGetItems() {
+                return Logbook.getSpecies();
+            }
+
             @Override
             public UserDefineObject onClickItem(UUID id) {
                 return Logbook.getSpecies(id);
@@ -52,12 +58,7 @@ public class PrimitiveController {
 
             @Override
             public void onEditItem(UUID id, UserDefineObject newObj) {
-                Logbook.editSpecies(id, (Species)newObj);
-            }
-
-            @Override
-            public void onConfirmDelete() {
-                Logbook.cleanSpecies();
+                Logbook.editSpecies(id, new Species(newObj));
             }
         });
     }

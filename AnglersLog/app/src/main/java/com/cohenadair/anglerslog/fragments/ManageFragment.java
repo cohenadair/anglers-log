@@ -34,13 +34,6 @@ public class ManageFragment extends DialogFragment {
         void onManageConfirm();
     }
 
-    // set by child fragments
-    private OnChildCancelInterface mOnChildCancelInterface;
-
-    public interface OnChildCancelInterface {
-        void onCancel();
-    }
-
     public ManageFragment() {
 
     }
@@ -53,9 +46,6 @@ public class ManageFragment extends DialogFragment {
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mOnChildCancelInterface != null)
-                    mOnChildCancelInterface.onCancel();
-
                 mCallbacks.onManageCancel();
                 closeDialog();
             }
@@ -113,10 +103,6 @@ public class ManageFragment extends DialogFragment {
             for (Fragment fragment : fragments)
                 if (fragment != null)
                     fragment.onActivityResult(requestCode, resultCode, data);
-    }
-
-    public void setOnChildCancelInterface(OnChildCancelInterface onChildCancelInterface) {
-        mOnChildCancelInterface = onChildCancelInterface;
     }
 
     public void setContentFragment(ManageContentFragment contentFragment) {

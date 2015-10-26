@@ -17,4 +17,8 @@ public class Species extends UserDefineObject {
     public Species(UserDefineObject obj) {
         super(obj);
     }
+
+    public Species(UserDefineObject obj, boolean keepId) {
+        super(obj, keepId);
+    }
 }

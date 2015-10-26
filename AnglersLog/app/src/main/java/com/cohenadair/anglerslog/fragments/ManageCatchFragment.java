@@ -52,14 +52,6 @@ public class ManageCatchFragment extends ManageContentFragment {
         initSpeciesView(view);
         initSelectPhotosView(view);
 
-        ManageFragment parent = (ManageFragment)getParentFragment();
-        parent.setOnChildCancelInterface(new ManageFragment.OnChildCancelInterface() {
-            @Override
-            public void onCancel() {
-                mNewCatch = null;
-            }
-        });
-
         return view;
     }
 
@@ -88,23 +80,29 @@ public class ManageCatchFragment extends ManageContentFragment {
     }
 
     @Override
+    public void onDetach() {
+        super.onDetach();
+        mNewCatch = null;
+    }
+
+    @Override
     public boolean addObjectToLogbook() {
-        if (verifyUserInput()) {
+        boolean result = false;
+
+        if (verifyUserInput())
             if (isEditing()) {
-                Logbook.editCatch(getEditingId(), mNewCatch);
-                Utils.showToast(getActivity(), R.string.success_catch_edit);
-                mNewCatch = null;
-                return true;
+                // edit catch
+                result = Logbook.editCatch(getEditingId(), mNewCatch);
+                int msgId = result ? R.string.success_catch_edit : R.string.error_catch_edit;
+                Utils.showToast(getActivity(), msgId);
             } else {
                 // add catch
-                boolean success = Logbook.addCatch(mNewCatch);
-                int msgId = success ? R.string.success_catch : R.string.error_catch;
+                result = Logbook.addCatch(mNewCatch);
+                int msgId = result ? R.string.success_catch : R.string.error_catch;
                 Utils.showToast(getActivity(), msgId);
-                mNewCatch = null;
-                return success;
             }
-        }
-        return false;
+
+        return result;
     }
 
     /**
@@ -113,7 +111,7 @@ public class ManageCatchFragment extends ManageContentFragment {
      */
     private boolean verifyUserInput() {
         // date and time
-        if (!Logbook.catchExists(mNewCatch.getDate()) && !isEditing()) {
+        if (Logbook.catchExists(mNewCatch.getDate()) && !isEditing()) {
             Utils.showErrorAlert(getActivity(), R.string.error_catch_date);
             return false;
         }

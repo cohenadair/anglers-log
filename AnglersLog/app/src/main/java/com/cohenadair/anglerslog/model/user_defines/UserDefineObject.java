@@ -2,9 +2,9 @@ package com.cohenadair.anglerslog.model.user_defines;
 
 import android.content.ContentValues;
 
-import com.cohenadair.anglerslog.database.LogbookSchema;
-
 import java.util.UUID;
+
+import static com.cohenadair.anglerslog.database.LogbookSchema.UserDefineTable;
 
 /**
  * A UserDefineObject is the superclass for all "user defined" data such as species and locations.
@@ -22,8 +22,16 @@ public class UserDefineObject {
     }
 
     public UserDefineObject(UserDefineObject obj) {
+        initFromObj(obj, false);
+    }
+
+    public UserDefineObject(UserDefineObject obj, boolean keepId) {
+        initFromObj(obj, keepId);
+    }
+
+    private void initFromObj(UserDefineObject obj, boolean keepId) {
         if (obj != null) {
-            mId = UUID.randomUUID(); // a clong needs a new id for database management
+            mId = keepId ? obj.getId() : UUID.randomUUID();
             mName = obj.getName();
             mShouldDelete = obj.getShouldDelete();
         }
@@ -66,8 +74,8 @@ public class UserDefineObject {
     public ContentValues getContentValues() {
         ContentValues values = new ContentValues();
 
-        values.put(LogbookSchema.UserDefineTable.Columns.ID, mId.toString());
-        values.put(LogbookSchema.UserDefineTable.Columns.NAME, mName);
+        values.put(UserDefineTable.Columns.ID, mId.toString());
+        values.put(UserDefineTable.Columns.NAME, mName);
 
         return values;
     }

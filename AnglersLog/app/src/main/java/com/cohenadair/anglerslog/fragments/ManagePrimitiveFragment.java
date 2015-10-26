@@ -23,6 +23,7 @@ import com.cohenadair.anglerslog.model.Logbook;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import com.cohenadair.anglerslog.utilities.PrimitiveController;
 import com.cohenadair.anglerslog.utilities.PrimitiveSpec;
+import com.cohenadair.anglerslog.utilities.Utils;
 import com.cohenadair.anglerslog.utilities.WrappedLinearLayoutManager;
 
 import java.util.List;
@@ -35,6 +36,7 @@ import java.util.UUID;
 public class ManagePrimitiveFragment extends DialogFragment {
 
     private RecyclerView mContentRecyclerView;
+    private ManagePrimitiveAdapter mAdapter;
     private EditText mNewItemEdit;
     private Toolbar mToolbar;
     private OnDismissInterface mOnDismissInterface;
@@ -123,7 +125,7 @@ public class ManagePrimitiveFragment extends DialogFragment {
 
                 if (!name.equals(""))
                     if (mPrimitiveSpec.getListener().onAddItem(name))
-                        mContentRecyclerView.getAdapter().notifyDataSetChanged();
+                        restoreAdapter(ManageType.Selection);
 
                 mNewItemEdit.setText("");
             }
@@ -184,7 +186,8 @@ public class ManagePrimitiveFragment extends DialogFragment {
      * @param manageType The type of management item to display.
      */
     private void restoreAdapter(ManageType manageType) {
-        mContentRecyclerView.setAdapter(new ManagePrimitiveAdapter(mPrimitiveSpec.getItems(), manageType));
+        mAdapter = new ManagePrimitiveAdapter(mPrimitiveSpec.getItems(), manageType);
+        mContentRecyclerView.setAdapter(mAdapter);
     }
 
     /**
@@ -199,7 +202,7 @@ public class ManagePrimitiveFragment extends DialogFragment {
             public boolean onMenuItemClick(MenuItem item) {
                 if (item.getItemId() == R.id.action_check) {
                     if (deleting)
-                        mPrimitiveSpec.getListener().onConfirmDelete();
+                        mAdapter.cleanUp();
 
                     restoreToolbar();
                     restoreAdapter(ManageType.Selection);
@@ -216,16 +219,18 @@ public class ManagePrimitiveFragment extends DialogFragment {
     private class ManagePrimitiveHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private UUID mId;
+        private int mPosition;
 
         private EditText mNameEditText;
         private TextView mNameTextView;
         private CheckBox mDeleteCheckBox;
         private ManageType mManageType;
 
-        public ManagePrimitiveHolder(View view, ManageType manageType) {
+        public ManagePrimitiveHolder(View view, ManageType manageType, ManagePrimitiveAdapter adapter) {
             super(view);
             view.setOnClickListener(this);
             mManageType = manageType;
+            mAdapter = adapter;
 
             if (mManageType == ManageType.Edit)
                 initForEditing(view);
@@ -272,7 +277,7 @@ public class ManagePrimitiveFragment extends DialogFragment {
             mDeleteCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    Logbook.getSpecies(mId).setShouldDelete(isChecked);
+                    mAdapter.getItem(mPosition).setShouldDelete(isChecked);
                 }
             });
         }
@@ -289,6 +294,10 @@ public class ManagePrimitiveFragment extends DialogFragment {
         //region Getters & Setters
         public void setId(UUID id) {
             mId = id;
+        }
+
+        public void setPosition(int position) {
+            mPosition = position;
         }
 
         public EditText getNameEditText() {
@@ -326,13 +335,14 @@ public class ManagePrimitiveFragment extends DialogFragment {
 
             View view = inflater.inflate(layoutId, parent, false);
 
-            return new ManagePrimitiveHolder(view, mManageType);
+            return new ManagePrimitiveHolder(view, mManageType, this);
         }
 
         @Override
         public void onBindViewHolder(ManagePrimitiveHolder holder, int position) {
             UserDefineObject obj = mItems.get(position);
             holder.setId(obj.getId());
+            holder.setPosition(position);
 
             if (mManageType == ManageType.Edit)
                 holder.getNameEditText().setText(obj.getName());
@@ -347,6 +357,25 @@ public class ManagePrimitiveFragment extends DialogFragment {
         @Override
         public int getItemCount() {
             return mItems.size();
+        }
+
+        public UserDefineObject getItem(int position) {
+            return mItems.get(position);
+        }
+
+        /**
+         * Iterates through all the species and removes ones where getShouldDelete() returns true.
+         */
+        public void cleanUp() {
+            for (int i = mItems.size() - 1; i >= 0; i--)
+                if (mItems.get(i).getShouldDelete()) {
+                    if (Logbook.removeSpecies(mItems.get(i).getId()))
+                        mItems.remove(i);
+                    else {
+                        String msg = mItems.get(i).getName() + " " + getResources().getString(R.string.error_delete_primitive);
+                        Utils.showErrorAlert(getContext(), msg);
+                    }
+                }
         }
 
     }

@@ -32,9 +32,7 @@ public class CatchCursor extends UserDefineCursor {
         aCatch.setDate(new Date(date));
         aCatch.setId(UUID.fromString(id));
         aCatch.setIsFavorite(isFavorite == 1);
-
-        if (speciesId != null)
-            aCatch.setSpecies(Logbook.getSpecies(UUID.fromString(speciesId)));
+        aCatch.setSpecies(Logbook.getSpecies(UUID.fromString(speciesId)));
 
         return aCatch;
     }

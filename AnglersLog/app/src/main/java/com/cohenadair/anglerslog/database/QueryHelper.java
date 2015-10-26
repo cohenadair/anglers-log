@@ -3,7 +3,6 @@ package com.cohenadair.anglerslog.database;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.cohenadair.anglerslog.database.cursors.CatchCursor;
 import com.cohenadair.anglerslog.database.cursors.UserDefineCursor;
@@ -35,6 +34,11 @@ public class QueryHelper {
     }
 
     @NonNull
+    public static CatchCursor queryCatches(String[] cols, String whereClause, String[] args) {
+        return new CatchCursor(mDatabase.query(CatchTable.NAME, cols, whereClause, args, null, null, null));
+    }
+
+    @NonNull
     public static UserDefineCursor queryUserDefines(String table, String whereClause, String[] args) {
         return new UserDefineCursor(mDatabase.query(table, null, whereClause, args, null, null, null));
     }
@@ -45,8 +49,6 @@ public class QueryHelper {
 
         if (cursor.moveToFirst())
             count = cursor.getInt(cursor.getColumnIndex(COUNT));
-
-        Log.d("queryCount", "Count: " + count);
 
         cursor.close();
         return count;

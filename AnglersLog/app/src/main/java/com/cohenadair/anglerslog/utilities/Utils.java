@@ -39,9 +39,13 @@ public class Utils {
     }
 
     public static void showErrorAlert(Context context, int msgId) {
+        showErrorAlert(context, context.getResources().getString(msgId));
+    }
+
+    public static void showErrorAlert(Context context, String msg) {
         new AlertDialog.Builder(context)
                 .setTitle(context.getResources().getString(R.string.error))
-                .setMessage(msgId)
+                .setMessage(msg)
                 .setPositiveButton(R.string.OK, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {

@@ -64,14 +64,17 @@ public class CatchFragment extends DetailFragment {
         if (isAttached()) {
             setItemId(id);
             mCatch = Logbook.getCatch(id);
-            mCatchPhotos = mCatch.getPhotos();
 
-            mSpeciesTextView.setText(mCatch.speciesAsString());
-            mDateTextView.setText(mCatch.dateAsString());
+            if (mCatch != null) {
+                mCatchPhotos = mCatch.getPhotos();
 
-            mPhotoViewPager.setVisibility((mCatchPhotos.size() > 0) ? View.VISIBLE : View.GONE);
-            mPhotoViewPager.setAdapter(new CatchPagerAdapter(getContext()));
-            mPhotoViewPager.setLayoutParams(new LinearLayout.LayoutParams(photoPagerSize(), photoPagerSize()));
+                mSpeciesTextView.setText(mCatch.speciesAsString());
+                mDateTextView.setText(mCatch.dateAsString());
+
+                mPhotoViewPager.setVisibility((mCatchPhotos.size() > 0) ? View.VISIBLE : View.GONE);
+                mPhotoViewPager.setAdapter(new CatchPagerAdapter(getContext()));
+                mPhotoViewPager.setLayoutParams(new LinearLayout.LayoutParams(photoPagerSize(), photoPagerSize()));
+            }
         }
     }
 

@@ -17,13 +17,11 @@ import java.util.UUID;
  */
 public class PrimitiveSpec {
 
-    ArrayList<UserDefineObject> mItems;
     InteractionListener mListener;
     String mName;
 
-    public PrimitiveSpec(String name, ArrayList<UserDefineObject> items, InteractionListener listener) {
+    public PrimitiveSpec(String name, InteractionListener listener) {
         mName = name;
-        mItems = items;
         mListener = listener;
     }
 
@@ -31,23 +29,23 @@ public class PrimitiveSpec {
      * An interface for managing items in a RecyclerView.
      */
     public interface InteractionListener {
+        ArrayList<UserDefineObject> onGetItems();
         UserDefineObject onClickItem(UUID id);
         boolean onAddItem(String name);
         void onEditItem(UUID id, UserDefineObject newObj);
-        void onConfirmDelete();
     }
 
     //region Getters & Setters
-    public ArrayList<UserDefineObject> getItems() {
-        return mItems;
-    }
-
     public InteractionListener getListener() {
         return mListener;
     }
 
     public String getName() {
         return mName;
+    }
+
+    public ArrayList<UserDefineObject> getItems() {
+        return mListener.onGetItems();
     }
     //endregion
 

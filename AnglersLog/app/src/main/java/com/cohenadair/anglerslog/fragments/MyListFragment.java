@@ -19,6 +19,8 @@ import com.cohenadair.anglerslog.utilities.LayoutController;
  */
 public class MyListFragment extends Fragment {
 
+    private RecyclerView mRecyclerView;
+
     //region Callback Interface
     InteractionListener mCallbacks;
 
@@ -66,9 +68,9 @@ public class MyListFragment extends Fragment {
 
     //region View Initializing
     private void initRecyclerView(View view) {
-        RecyclerView recyclerView = (RecyclerView)view.findViewById(R.id.main_recycler_view);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        recyclerView.setAdapter(LayoutController.getMasterAdapter());
+        mRecyclerView = (RecyclerView)view.findViewById(R.id.main_recycler_view);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mRecyclerView.setAdapter(LayoutController.getMasterAdapter());
     }
 
     private void initNewButton(View view) {

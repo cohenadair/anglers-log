@@ -77,7 +77,7 @@ public class LayoutController {
     }
 
     public static void removeUserDefine(UUID id) {
-        mCurrent.getOnUserDefineRemove().remove(id);
+        mCurrent.getListener().onUserDefineRemove(id);
     }
 
     public static Fragment getMasterFragment() {
@@ -130,22 +130,27 @@ public class LayoutController {
     }
 
     private static LayoutSpec getCatchesFragmentInfo(final Context context) {
-        OnClickInterface onMasterItemClick = ((InteractionListener)context).getOnMyListFragmentItemClick();
-
+        final OnClickInterface onMasterItemClick = ((InteractionListener)context).getOnMyListFragmentItemClick();
         final LayoutSpec spec = new LayoutSpec("catches", "catch", "Catch");
 
-        spec.setMasterFragment(new MyListFragment(), new CatchListManager.Adapter(context, Logbook.getCatches(), onMasterItemClick));
-        spec.setDetailFragment(new CatchFragment());
-        spec.setManageFragment(new ManageCatchFragment());
-        spec.setId(LAYOUT_CATCHES);
-        spec.setOnUserDefineRemove(new LayoutSpec.OnUserDefineRemoveListener() {
+        spec.setListener(new LayoutSpec.InteractionListener() {
             @Override
-            public void remove(UUID id) {
+            public ListManager.Adapter onGetMasterAdapter() {
+                return new CatchListManager.Adapter(context, Logbook.getCatches(), onMasterItemClick);
+            }
+
+            @Override
+            public void onUserDefineRemove(UUID id) {
                 Logbook.removeCatch(id);
-                spec.getMasterAdapter().notifyDataSetChanged();
+                spec.updateViews();
                 Utils.showToast(context, R.string.success_catch_delete);
             }
         });
+
+        spec.setMasterFragment(new MyListFragment());
+        spec.setDetailFragment(new CatchFragment());
+        spec.setManageFragment(new ManageCatchFragment());
+        spec.setId(LAYOUT_CATCHES);
 
         return spec;
     }

@@ -27,7 +27,7 @@ public class LayoutSpec {
     private DetailFragment mDetailFragment;
     private ManageFragment mManageFragment;
 
-    private OnUserDefineRemoveListener mOnUserDefineRemove;
+    private InteractionListener mListener;
 
     private String mMasterFragmentTag;
     private String mDetailFragmentTag;
@@ -39,8 +39,9 @@ public class LayoutSpec {
     /**
      * Used to delete a user define. Editing is done in the Manage*Fragment for that user define.
      */
-    public interface OnUserDefineRemoveListener {
-        void remove(UUID id);
+    public interface InteractionListener {
+        ListManager.Adapter onGetMasterAdapter();
+        void onUserDefineRemove(UUID id);
     }
 
     public LayoutSpec(String masterTag, String detailTag, String name) {
@@ -59,9 +60,9 @@ public class LayoutSpec {
         return mMasterFragment;
     }
 
-    public void setMasterFragment(Fragment masterFragment, ListManager.Adapter adapter) {
+    public void setMasterFragment(Fragment masterFragment) {
         mMasterFragment = masterFragment;
-        mMasterAdapter = adapter;
+        mMasterAdapter = mListener.onGetMasterAdapter();
     }
 
     public DetailFragment getDetailFragment() {
@@ -80,12 +81,12 @@ public class LayoutSpec {
         return mMasterAdapter;
     }
 
-    public OnUserDefineRemoveListener getOnUserDefineRemove() {
-        return mOnUserDefineRemove;
+    public InteractionListener getListener() {
+        return mListener;
     }
 
-    public void setOnUserDefineRemove(OnUserDefineRemoveListener onUserDefineRemove) {
-        mOnUserDefineRemove = onUserDefineRemove;
+    public void setListener(InteractionListener listener) {
+        mListener = listener;
     }
 
     public String getMasterFragmentTag() {
@@ -122,7 +123,7 @@ public class LayoutSpec {
      * to the associated data sets.
      */
     public void updateViews() {
-        mMasterAdapter.notifyDataSetChanged();
+        mMasterAdapter = mListener.onGetMasterAdapter();
         mDetailFragment.update();
     }
 }

@@ -110,6 +110,8 @@ public class LogbookTest {
         Logbook.addSpecies(testSpecies);
         assertTrue(Logbook.getSpeciesCount() == 1);
 
+        assertTrue(Logbook.getSpecies(testSpecies.getId()) != null);
+
         // a Species with a duplicate name shouldn't be added
         assertFalse(Logbook.addSpecies(testSpecies2));
 

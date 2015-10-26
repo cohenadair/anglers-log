@@ -16,9 +16,9 @@ import com.cohenadair.anglerslog.fragments.ManageFragment;
 import com.cohenadair.anglerslog.fragments.MyListFragment;
 import com.cohenadair.anglerslog.interfaces.OnClickInterface;
 import com.cohenadair.anglerslog.interfaces.OnClickManageMenuListener;
+import com.cohenadair.anglerslog.utilities.LayoutController;
 import com.cohenadair.anglerslog.utilities.NavigationManager;
 import com.cohenadair.anglerslog.utilities.Utils;
-import com.cohenadair.anglerslog.utilities.LayoutController;
 
 import java.util.UUID;
 
@@ -67,6 +67,7 @@ public class MainActivity extends AppCompatActivity implements
 
         if (id == android.R.id.home) {
             mNavigationManager.onClickUpButton();
+            LayoutController.updateViews();
             return true;
         }
 
@@ -166,6 +167,7 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void onManageCancel() {
         mNavigationManager.goBack();
+        LayoutController.updateViews();
     }
 
     @Override
