@@ -66,10 +66,11 @@ public class ManageCatchFragment extends ManageContentFragment {
         // do not initialize Catches if we were paused
         if (mNewCatch == null)
             if (isEditing()) {
-                mNewCatch = new Catch(Logbook.getCatch(getEditingId()));
+                Catch oldCatch = Logbook.getCatch(getEditingId());
+                mNewCatch = new Catch(oldCatch);
 
                 // populate the photos view with the existing photos
-                ArrayList<String> photos = mNewCatch.getPhotos();
+                ArrayList<String> photos = oldCatch.getPhotos();
                 for (String str : photos)
                     mSelectPhotosView.addImage(PhotoUtils.privatePhotoPath(str));
 
