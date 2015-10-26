@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -17,7 +16,7 @@ import com.cohenadair.anglerslog.utilities.LayoutController;
 /**
  * The fragment showing the list of catches.
  */
-public class MyListFragment extends Fragment {
+public class MyListFragment extends MasterFragment {
 
     private RecyclerView mRecyclerView;
 
@@ -64,6 +63,14 @@ public class MyListFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mCallbacks = null;
+    }
+
+    /**
+     * Updates the UI.
+     */
+    @Override
+    public void update() {
+        mRecyclerView.setAdapter(LayoutController.getMasterAdapter());
     }
 
     //region View Initializing

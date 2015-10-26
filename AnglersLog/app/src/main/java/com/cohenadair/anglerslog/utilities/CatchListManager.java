@@ -34,12 +34,14 @@ public class CatchListManager {
         private TextView mDateTextView;
         private RatingBar mFavorite;
         private View mSeparator;
+        private View mView;
 
         private Catch mCatch;
 
         public ViewHolder(View view, ListManager.Adapter adapter) {
             super(view, adapter);
 
+            mView = view;
             mImageView = (ImageView)view.findViewById(R.id.image_view);
             mSpeciesTextView = (TextView)view.findViewById(R.id.species_label);
             mDateTextView = (TextView)view.findViewById(R.id.date_label);
@@ -71,6 +73,7 @@ public class CatchListManager {
 
         public void setCatch(Catch aCatch, int position) {
             mCatch = aCatch;
+
             mSpeciesTextView.setText(aCatch.speciesAsString());
             mDateTextView.setText(aCatch.dateTimeAsString());
             mFavorite.setRating(mCatch.isFavorite() ? (float) 1.0 : (float) 0.0);
@@ -83,12 +86,9 @@ public class CatchListManager {
 
             if (randomPhoto != null)
                 randomPhotoPath = PhotoUtils.privatePhotoPath(randomPhoto);
-                //randomPhotoPath = PhotoUtils.photoPath(context(), "IMG_0fcc5c46-579f-4c6f-ae4b-7819148c7e6f_0.png");
 
             if (randomPhotoPath != null)
                 fileExists = new File(randomPhotoPath).exists();
-            else
-                mCatch.removePhoto(randomPhoto); // remove photo name from the Catch if the file doesn't exist
 
             if (fileExists) {
                 int thumbSize = context().getResources().getDimensionPixelSize(R.dimen.thumbnail_size);
@@ -98,6 +98,7 @@ public class CatchListManager {
 
             // hide the separator for the last row
             mSeparator.setVisibility((position == Logbook.getCatchCount() - 1) ? View.INVISIBLE : View.VISIBLE);
+            mView.setBackgroundResource(mCatch.isSelected() ? R.color.light_grey : android.R.color.transparent);
         }
     }
     //endregion

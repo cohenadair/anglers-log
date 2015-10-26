@@ -23,13 +23,14 @@ public class ListManager {
 
         private Adapter mAdapter;
         private UUID mId;
+        private int mPosition;
 
         /**
          * Must be implemented by subclasses.
-         * @param position The position of the item to edit or delete.
+         * @param id The id of the item to edit or delete.
          */
-        public abstract void onItemEdit(UUID position);
-        public abstract void onItemDelete(UUID position);
+        public abstract void onItemEdit(UUID id);
+        public abstract void onItemDelete(UUID id);
 
         public ViewHolder(View view, Adapter adapter) {
             super(view);
@@ -43,6 +44,7 @@ public class ListManager {
         @Override
         public void onClick(View view) {
             mAdapter.getCallbacks().onClick(view, mId);
+            mAdapter.setSelected(getAdapterPosition());
         }
 
         @Override
@@ -93,6 +95,14 @@ public class ListManager {
         @Override
         public int getItemCount() {
             return mItems.size();
+        }
+
+        public void setSelected(int position) {
+            for (UserDefineObject obj : mItems)
+                obj.setIsSelected(false);
+
+            mItems.get(position).setIsSelected(true);
+            notifyDataSetChanged();
         }
 
         public void onBind(ViewHolder holder, int position) {

@@ -165,13 +165,7 @@ public class MainActivity extends AppCompatActivity implements
 
     //region ManageFragment.InteractionListener interface
     @Override
-    public void onManageCancel() {
-        mNavigationManager.goBack();
-        LayoutController.updateViews();
-    }
-
-    @Override
-    public void onManageConfirm() {
+    public void onManageDismiss() {
         mNavigationManager.goBack();
         LayoutController.updateViews();
     }
@@ -180,9 +174,10 @@ public class MainActivity extends AppCompatActivity implements
     //region Navigation
     @Override
     public void onBackPressed() {
-        if (mNavigationManager.canGoBack())
+        if (mNavigationManager.canGoBack()) {
             mNavigationManager.onBackPressed();
-        else
+            LayoutController.updateViews();
+        } else
             super.onBackPressed();
     }
 

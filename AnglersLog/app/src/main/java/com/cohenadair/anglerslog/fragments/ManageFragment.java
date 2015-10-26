@@ -30,8 +30,7 @@ public class ManageFragment extends DialogFragment {
      * Must be implemented by the fragment's Activity.
      */
     public interface InteractionListener {
-        void onManageCancel();
-        void onManageConfirm();
+        void onManageDismiss();
     }
 
     public ManageFragment() {
@@ -46,7 +45,7 @@ public class ManageFragment extends DialogFragment {
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mCallbacks.onManageCancel();
+                mCallbacks.onManageDismiss();
                 closeDialog();
             }
         });
@@ -58,7 +57,7 @@ public class ManageFragment extends DialogFragment {
                 ManageContentFragment fragment = LayoutController.getManageContentFragment();
 
                 if (fragment.addObjectToLogbook()) {
-                    mCallbacks.onManageConfirm();
+                    mCallbacks.onManageDismiss();
                     closeDialog();
                 }
             }

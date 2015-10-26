@@ -48,12 +48,7 @@ public class CatchFragment extends DetailFragment {
 
         mPhotoViewPager = (ViewPager)view.findViewById(R.id.photo_view_pager);
 
-        if (Logbook.getCatchCount() <= 0) {
-            // TODO replace with "NoUserDefineView"
-            mSpeciesTextView.setText("Select a catch to view it here.");
-            mDateTextView.setText("");
-        } else
-            update(LayoutController.getSelectionId());
+        update(LayoutController.getSelectionId());
 
         // Inflate the layout for this fragment
         return view;
@@ -62,25 +57,31 @@ public class CatchFragment extends DetailFragment {
     @Override
     public void update(UUID id) {
         if (isAttached()) {
-            setItemId(id);
-            mCatch = Logbook.getCatch(id);
+            if (Logbook.getCatchCount() <= 0) {
+                // TODO replace with "NoUserDefineView"
+                mSpeciesTextView.setText("Select a catch to view it here.");
+                mDateTextView.setText("");
+            } else {
+                setItemId(id);
+                mCatch = Logbook.getCatch(id);
 
-            if (mCatch != null) {
-                mCatchPhotos = mCatch.getPhotos();
+                if (mCatch != null) {
+                    mCatchPhotos = mCatch.getPhotos();
 
-                mSpeciesTextView.setText(mCatch.speciesAsString());
-                mDateTextView.setText(mCatch.dateAsString());
+                    mSpeciesTextView.setText(mCatch.speciesAsString());
+                    mDateTextView.setText(mCatch.dateAsString());
 
-                mPhotoViewPager.setVisibility((mCatchPhotos.size() > 0) ? View.VISIBLE : View.GONE);
-                mPhotoViewPager.setAdapter(new CatchPagerAdapter(getContext()));
-                mPhotoViewPager.setLayoutParams(new LinearLayout.LayoutParams(photoPagerSize(), photoPagerSize()));
+                    mPhotoViewPager.setVisibility((mCatchPhotos.size() > 0) ? View.VISIBLE : View.GONE);
+                    mPhotoViewPager.setAdapter(new CatchPagerAdapter(getContext()));
+                    mPhotoViewPager.setLayoutParams(new LinearLayout.LayoutParams(photoPagerSize(), photoPagerSize()));
+                }
             }
         }
     }
 
     @Override
     public void update() {
-        update(getItemId());
+        update(LayoutController.getSelectionId());
     }
 
     /**

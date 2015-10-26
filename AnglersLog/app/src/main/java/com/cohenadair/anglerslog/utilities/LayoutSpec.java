@@ -1,10 +1,9 @@
 package com.cohenadair.anglerslog.utilities;
 
-import android.support.v4.app.Fragment;
-
 import com.cohenadair.anglerslog.fragments.DetailFragment;
 import com.cohenadair.anglerslog.fragments.ManageContentFragment;
 import com.cohenadair.anglerslog.fragments.ManageFragment;
+import com.cohenadair.anglerslog.fragments.MasterFragment;
 
 import java.util.UUID;
 
@@ -22,7 +21,7 @@ import java.util.UUID;
  */
 public class LayoutSpec {
 
-    private Fragment mMasterFragment;
+    private MasterFragment mMasterFragment;
     private ListManager.Adapter mMasterAdapter;
     private DetailFragment mDetailFragment;
     private ManageFragment mManageFragment;
@@ -56,11 +55,11 @@ public class LayoutSpec {
         mManageFragment.setContentFragment(contentFragment);
     }
 
-    public Fragment getMasterFragment() {
+    public MasterFragment getMasterFragment() {
         return mMasterFragment;
     }
 
-    public void setMasterFragment(Fragment masterFragment) {
+    public void setMasterFragment(MasterFragment masterFragment) {
         mMasterFragment = masterFragment;
         mMasterAdapter = mListener.onGetMasterAdapter();
     }
@@ -102,6 +101,10 @@ public class LayoutSpec {
     }
 
     public UUID getSelectionId() {
+        // set a default if it hasn't been set yet
+        if (mSelectionId == null && mMasterAdapter.getItemCount() > 0)
+            mSelectionId = mMasterAdapter.getItem(0).getId();
+
         return mSelectionId;
     }
 
@@ -124,6 +127,7 @@ public class LayoutSpec {
      */
     public void updateViews() {
         mMasterAdapter = mListener.onGetMasterAdapter();
+        mMasterFragment.update();
         mDetailFragment.update();
     }
 }

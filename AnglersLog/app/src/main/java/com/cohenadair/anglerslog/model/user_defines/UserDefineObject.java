@@ -15,6 +15,7 @@ public class UserDefineObject {
     private UUID mId;
     private String mName;
     private boolean mShouldDelete; // toggled on UI selection for deleting multiple items
+    private boolean mIsSelected; // used to show selection in RecyclerView layouts
 
     public UserDefineObject(String name) {
         setId(UUID.randomUUID());
@@ -60,6 +61,14 @@ public class UserDefineObject {
 
     public void setShouldDelete(boolean shouldDelete) {
         mShouldDelete = shouldDelete;
+    }
+
+    public boolean isSelected() {
+        return mIsSelected;
+    }
+
+    public void setIsSelected(boolean isSelected) {
+        mIsSelected = isSelected;
     }
     //endregion
 
