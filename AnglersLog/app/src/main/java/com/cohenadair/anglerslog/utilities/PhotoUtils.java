@@ -416,7 +416,9 @@ public class PhotoUtils {
      */
     private static void cleanCache() {
         ArrayList<String> photoNames = new ArrayList<>();
-        for (UserDefineObject aCatch : Logbook.getCatches())
+        ArrayList<UserDefineObject> catches = Logbook.getCatches();
+
+        for (UserDefineObject aCatch : catches)
             photoNames.addAll(((Catch)aCatch).getPhotos());
 
         mCache.cleanDisk(photoNames);

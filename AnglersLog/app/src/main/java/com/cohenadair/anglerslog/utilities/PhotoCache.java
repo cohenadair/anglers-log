@@ -228,6 +228,10 @@ public class PhotoCache {
         public BitmapDiskCache(File cacheDir, long maxByteSize) {
             mCacheDir = cacheDir;
             mMaxCacheByteSize = maxByteSize;
+
+            // load up the existing files into cache
+            for (File file : mCacheDir.listFiles())
+                put(file.getName(), filePath(file.getName()));
         }
 
         /**
@@ -237,15 +241,18 @@ public class PhotoCache {
          * @param data The Bitmap object to store.
          */
         public void put(String key, Bitmap data) {
+            String filePath = filePath(key);
+
+            if (savePhoto(data, new File(filePath)))
+                put(key, filePath);
+        }
+
+        public void put(String key, String filePath) {
             synchronized (mLinkedHashMap) {
                 if (mLinkedHashMap.get(key) == null) {
-                    String file = filePath(key);
-
-                    if (savePhoto(data, new File(file))) {
-                        mLinkedHashMap.put(key, file);
-                        mCacheByteSize += new File(file).length();
-                        flush();
-                    }
+                    mLinkedHashMap.put(key, filePath);
+                    mCacheByteSize += new File(filePath).length();
+                    flush();
                 }
             }
         }
@@ -312,9 +319,9 @@ public class PhotoCache {
                 public boolean accept(File dir, String name) {
                     for (String str : keysToKeep)
                         if (name.contains(str))
-                            return true;
+                            return false;
 
-                    return keysToKeep.size() <= 0;
+                    return true;
                 }
             });
         }

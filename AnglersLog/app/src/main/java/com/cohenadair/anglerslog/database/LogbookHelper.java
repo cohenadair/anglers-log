@@ -41,7 +41,7 @@ public class LogbookHelper extends SQLiteOpenHelper {
         );
 
         db.execSQL("CREATE TABLE " + CatchPhotoTable.NAME + "(" +
-            CatchPhotoTable.Columns.USER_DEFINE_ID + " TEXT REFERENCES " + CatchTable.NAME + "(" + CatchTable.Columns.ID + "), " +
+            CatchPhotoTable.Columns.USER_DEFINE_ID + " TEXT, " +
             CatchPhotoTable.Columns.NAME + " TEXT NOT NULL" +
             ")"
         );

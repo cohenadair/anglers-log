@@ -240,12 +240,14 @@ public class ManageCatchFragment extends ManageContentFragment {
 
             @Override
             public void onAddImage(String fileName) {
-                mNewCatch.addPhoto(fileName);
+                if (!mNewCatch.addPhoto(fileName))
+                    Utils.showToast(getContext(), R.string.error_add_photo);
             }
 
             @Override
             public void onRemoveImage(String fileName) {
-                mNewCatch.removePhoto(fileName);
+                if (!mNewCatch.removePhoto(fileName))
+                    Utils.showToast(getContext(), R.string.error_remove_photo);
             }
         });
     }
