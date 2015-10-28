@@ -14,6 +14,7 @@ import com.cohenadair.anglerslog.model.user_defines.Catch;
 import com.cohenadair.anglerslog.model.user_defines.Species;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.UUID;
@@ -30,6 +31,7 @@ public class Logbook {
     private static final String TAG = "Logbook";
 
     private static SQLiteDatabase mDatabase;
+    private static File mDatabaseFile;
     private static Context mContext;
 
     private Logbook() { }
@@ -40,6 +42,7 @@ public class Logbook {
 
     public static void init(Context context, SQLiteDatabase database) {
         mContext = context;
+        mDatabaseFile = context.getDatabasePath(LogbookHelper.DATABASE_NAME);
         mDatabase = database;
         mDatabase.setForeignKeyConstraintsEnabled(true);
         QueryHelper.setDatabase(mDatabase);
@@ -48,6 +51,10 @@ public class Logbook {
     //region Getters & Setters
     public static SQLiteDatabase getDatabase() {
         return mDatabase;
+    }
+
+    public static File getDatabaseFile() {
+        return mDatabaseFile;
     }
     //endregion
 

@@ -230,7 +230,7 @@ public class PhotoUtils {
      *
      * @return A File object of the storage directory.
      */
-    private static File privatePhotoDirectory() {
+    public static File privatePhotoDirectory() {
         return mContext.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
     }
 
@@ -381,7 +381,7 @@ public class PhotoUtils {
      * the application and deletes photos that aren't used. This method should never be called on
      * the UI thread. Use {@link #cleanPhotosAsync()} instead.
      */
-    private static void cleanPhotos() {
+    public static void cleanPhotos() {
         File photosDir = privatePhotoDirectory();
         boolean found;
         int numDeleted = 0;
