@@ -2,7 +2,6 @@
     <string name="app_name">Anglers\' Log</string>
     <string name="app_photos_dir">/AnglersLog</string>
     <string name="OK">Okay</string>
-    <string name="action_settings">Settings</string>
 
     <string name="backup_alert_title">Backup</string>
     <string name="backup_alert_msg">Would you like to backup and sync Anglers\' Log data with Google?</string>
@@ -46,7 +45,8 @@
     <string name="action_confirm">Confirm Delete</string>
     <string name="action_close">Close</string>
     <string name="action_add_photo">Add Photo</string>
-    <string name="action_sync">Sync</string>
+    <string name="action_settings">Settings</string>
+    <string name="action_sort">Sort</string>
 
     <string name="success_catch">Successfully added catch!</string>
     <string name="success_catch_delete">Successfully deleted catch.</string>

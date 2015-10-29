@@ -66,8 +66,10 @@ public abstract class DetailFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
 
-        if (isVisible())
+        if (isVisible()) {
+            menu.clear();
             inflater.inflate(R.menu.menu_manage, menu);
+        }
     }
 
     @Override
