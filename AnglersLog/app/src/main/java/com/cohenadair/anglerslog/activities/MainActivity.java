@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,13 +16,9 @@ import com.cohenadair.anglerslog.fragments.ManageFragment;
 import com.cohenadair.anglerslog.fragments.MyListFragment;
 import com.cohenadair.anglerslog.interfaces.OnClickInterface;
 import com.cohenadair.anglerslog.interfaces.OnClickManageMenuListener;
-import com.cohenadair.anglerslog.utilities.DriveConnection;
-import com.cohenadair.anglerslog.utilities.DriveUtils;
 import com.cohenadair.anglerslog.utilities.LayoutController;
 import com.cohenadair.anglerslog.utilities.NavigationManager;
 import com.cohenadair.anglerslog.utilities.Utils;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
 
 import java.util.UUID;
 
@@ -34,15 +29,12 @@ public class MainActivity extends AppCompatActivity implements
         MyListFragment.InteractionListener,
         ManageFragment.InteractionListener,
         LayoutController.InteractionListener,
-        OnClickManageMenuListener,
-        GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener
+        OnClickManageMenuListener
 {
 
     private static final String TAG = "MainActivity";
 
     private NavigationManager mNavigationManager;
-    private DriveConnection mDriveConnection;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,35 +48,13 @@ public class MainActivity extends AppCompatActivity implements
         mNavigationManager = new NavigationManager(this);
         mNavigationManager.setUp();
 
-        mDriveConnection = new DriveConnection(this, new DriveUtils.OnSyncListener() {
-            @Override
-            public void onFinish() {
-                Log.i(TAG, "Sync finished.");
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        LayoutController.updateViews();
-                    }
-                });
-            }
-        });
-
         // needs to be called after MainActivity's initialization code
         showFragment();
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-        mDriveConnection.setUp();
-    }
-
-    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-        if (resultCode == RESULT_OK && requestCode == DriveConnection.RESOLVE_CONNECTION_REQUEST)
-            mDriveConnection.connect();
     }
 
     @Override
@@ -103,32 +73,8 @@ public class MainActivity extends AppCompatActivity implements
             return true;
         }
 
-        if (id == R.id.action_sync) {
-            mDriveConnection.sync();
-            return true;
-        }
-
         return super.onOptionsItemSelected(item);
     }
-
-    //region Google API Client Callbacks
-    @Override
-    public void onConnected(Bundle bundle) {
-        Log.i(TAG, "Google API Client connected!");
-        DriveUtils.onConnected();
-        mDriveConnection.setIsConnected(true);
-    }
-
-    @Override
-    public void onConnectionSuspended(int i) {
-
-    }
-
-    @Override
-    public void onConnectionFailed(ConnectionResult connectionResult) {
-        mDriveConnection.resolveConnection(connectionResult);
-    }
-    //endregion
 
     public void showFragment() {
         // update the current layout

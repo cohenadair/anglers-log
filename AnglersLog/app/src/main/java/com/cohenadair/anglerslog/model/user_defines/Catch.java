@@ -104,12 +104,10 @@ public class Catch extends UserDefineObject {
     }
 
     public boolean addPhoto(String fileName) {
-        Logbook.updateModificationDate();
         return Logbook.getDatabase().insert(CatchPhotoTable.NAME, null, getPhotoContentValues(fileName)) != -1;
     }
 
     public boolean removePhoto(String fileName) {
-        Logbook.updateModificationDate();
         return Logbook.getDatabase().delete(CatchPhotoTable.NAME, CatchPhotoTable.Columns.NAME + " = ?", new String[] { fileName }) == 1;
     }
 
