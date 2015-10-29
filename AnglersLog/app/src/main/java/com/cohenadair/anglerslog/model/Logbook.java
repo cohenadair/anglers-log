@@ -34,15 +34,21 @@ public class Logbook {
     private static File mDatabaseFile;
     private static Context mContext;
 
+    private static long mDatabaseInitialDate;
+    private static long mModificationDate;
+
     private Logbook() { }
 
     public static void init(Context context) {
+        mDatabaseFile = context.getDatabasePath(LogbookHelper.DATABASE_NAME);
         init(context, new LogbookHelper(context).getWritableDatabase());
     }
 
     public static void init(Context context, SQLiteDatabase database) {
         mContext = context;
         mDatabaseFile = context.getDatabasePath(LogbookHelper.DATABASE_NAME);
+        mDatabaseInitialDate = mDatabaseFile.lastModified();
+        mModificationDate = mDatabaseInitialDate;
         mDatabase = database;
         mDatabase.setForeignKeyConstraintsEnabled(true);
         QueryHelper.setDatabase(mDatabase);
@@ -56,7 +62,23 @@ public class Logbook {
     public static File getDatabaseFile() {
         return mDatabaseFile;
     }
+
+    public static long getDatabaseInitialDate() {
+        return mDatabaseInitialDate;
+    }
+
+    public static long getModificationDate() {
+        return mModificationDate;
+    }
     //endregion
+
+    /**
+     * Used to keep database files from local storage and Drive in sync. This method should be
+     * called in all database insert/delete/update calls.
+     */
+    public static void updateModificationDate() {
+        mModificationDate = new Date().getTime();
+    }
 
     //region Catch Manipulation
     public static ArrayList<UserDefineObject> getCatches() {
@@ -93,15 +115,18 @@ public class Logbook {
     }
 
     public static boolean addCatch(Catch aCatch) {
+        updateModificationDate();
         return mDatabase.insert(CatchTable.NAME, null, aCatch.getContentValues()) != -1;
     }
 
     public static boolean removeCatch(UUID id) {
+        updateModificationDate();
         return mDatabase.delete(CatchTable.NAME, CatchTable.Columns.ID + " = ?", new String[]{id.toString()}) == 1;
     }
 
     public static boolean editCatch(UUID id, Catch newCatch) {
         newCatch.setId(id); // id needs to stay the same
+        updateModificationDate();
         return mDatabase.update(CatchTable.NAME, newCatch.getContentValues(), CatchTable.Columns.ID + " = ?", new String[] { id.toString() }) == 1;
     }
 
@@ -138,6 +163,7 @@ public class Logbook {
     }
 
     public static boolean addSpecies(Species species) {
+        updateModificationDate();
         return mDatabase.insert(SpeciesTable.NAME, null, species.getContentValues()) != -1;
     }
 
@@ -146,6 +172,7 @@ public class Logbook {
 
         try {
             result =  mDatabase.delete(SpeciesTable.NAME, SpeciesTable.Columns.ID + " = ?", new String[] { id.toString() }) == 1;
+            updateModificationDate();
         } catch (SQLiteConstraintException e) {
             e.printStackTrace();
         }
@@ -155,6 +182,7 @@ public class Logbook {
 
     public static boolean editSpecies(UUID id, Species newSpecies) {
         newSpecies.setId(id); // id needs to stay the same
+        updateModificationDate();
         return mDatabase.update(SpeciesTable.NAME, newSpecies.getContentValues(), SpeciesTable.Columns.ID + " = ?", new String[] { id.toString() }) == 1;
     }
 

@@ -17,6 +17,7 @@ import com.cohenadair.anglerslog.database.LogbookSchema.SpeciesTable;
 public class LogbookHelper extends SQLiteOpenHelper {
 
     public static final int VERSION = 1;
+    public static final String DATABASE_EXT = ".db";
     public static final String DATABASE_NAME = "AnglersLogData.db";
 
     public LogbookHelper(Context context) {

@@ -25,14 +25,15 @@ public class DriveConnection {
 
     private GoogleApiClient mDriveClient;
     private Activity mActivity;
+    private boolean mIsConnected = false;
 
-    public DriveConnection(Activity activity) {
+    public DriveConnection(Activity activity, DriveUtils.OnSyncListener onSyncListener) {
         if (!(activity instanceof GoogleApiClient.ConnectionCallbacks) || !(activity instanceof GoogleApiClient.OnConnectionFailedListener)) {
             Log.e(TAG, "Activity must implement GoogleApiClient.ConnectionCallbacks and GoogleApiClient.OnConnectionFailedListener.");
             throw new InputMismatchException();
         }
         mActivity = activity;
-        DriveUtils.init(mActivity);
+        DriveUtils.init(mActivity, onSyncListener);
     }
 
     public void setUp() {
@@ -69,6 +70,11 @@ public class DriveConnection {
     }
 
     public void sync() {
-        DriveUtils.sync();
+        if (mIsConnected)
+            DriveUtils.sync();
+    }
+
+    public void setIsConnected(boolean isConnected) {
+        mIsConnected = isConnected;
     }
 }

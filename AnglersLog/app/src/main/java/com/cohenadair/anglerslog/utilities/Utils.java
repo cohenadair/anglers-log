@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.graphics.Point;
+import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
@@ -133,6 +134,16 @@ public class Utils {
      */
     public static boolean isTwoPane(Context context) {
         return context.getResources().getBoolean(R.bool.has_two_panes);
+    }
+
+    /**
+     * Gets the extension from a given file name.
+     * @param fileName The file name.
+     * @return A String representing the file's extension.
+     */
+    @NonNull
+    public static String extractExtension(String fileName) {
+        return fileName.substring(fileName.lastIndexOf('.') + 1);
     }
 
 }

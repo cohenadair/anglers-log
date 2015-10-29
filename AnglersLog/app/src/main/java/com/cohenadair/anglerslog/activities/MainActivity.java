@@ -18,6 +18,7 @@ import com.cohenadair.anglerslog.fragments.MyListFragment;
 import com.cohenadair.anglerslog.interfaces.OnClickInterface;
 import com.cohenadair.anglerslog.interfaces.OnClickManageMenuListener;
 import com.cohenadair.anglerslog.utilities.DriveConnection;
+import com.cohenadair.anglerslog.utilities.DriveUtils;
 import com.cohenadair.anglerslog.utilities.LayoutController;
 import com.cohenadair.anglerslog.utilities.NavigationManager;
 import com.cohenadair.anglerslog.utilities.Utils;
@@ -55,7 +56,18 @@ public class MainActivity extends AppCompatActivity implements
         mNavigationManager = new NavigationManager(this);
         mNavigationManager.setUp();
 
-        mDriveConnection = new DriveConnection(this);
+        mDriveConnection = new DriveConnection(this, new DriveUtils.OnSyncListener() {
+            @Override
+            public void onFinish() {
+                Log.i(TAG, "Sync finished.");
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        LayoutController.updateViews();
+                    }
+                });
+            }
+        });
 
         // needs to be called after MainActivity's initialization code
         showFragment();
@@ -91,6 +103,11 @@ public class MainActivity extends AppCompatActivity implements
             return true;
         }
 
+        if (id == R.id.action_sync) {
+            mDriveConnection.sync();
+            return true;
+        }
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -98,7 +115,8 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void onConnected(Bundle bundle) {
         Log.i(TAG, "Google API Client connected!");
-        mDriveConnection.sync();
+        DriveUtils.onConnected();
+        mDriveConnection.setIsConnected(true);
     }
 
     @Override

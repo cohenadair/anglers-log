@@ -46,6 +46,7 @@
     <string name="action_confirm">Confirm Delete</string>
     <string name="action_close">Close</string>
     <string name="action_add_photo">Add Photo</string>
+    <string name="action_sync">Sync</string>
 
     <string name="success_catch">Successfully added catch!</string>
     <string name="success_catch_delete">Successfully deleted catch.</string>
