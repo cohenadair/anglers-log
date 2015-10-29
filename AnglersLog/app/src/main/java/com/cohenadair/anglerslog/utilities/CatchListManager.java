@@ -55,6 +55,7 @@ public class CatchListManager {
                     if (event.getAction() == MotionEvent.ACTION_UP) {
                         mFavorite.setRating(mFavorite.getRating() <= 0 ? (float) 1.0 : (float) 0.0);
                         mCatch.setIsFavorite(mFavorite.getRating() > 0);
+                        Logbook.editCatch(mCatch.getId(), mCatch);
                     }
                     return true;
                 }

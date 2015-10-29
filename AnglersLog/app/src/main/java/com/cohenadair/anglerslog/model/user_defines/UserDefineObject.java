@@ -76,10 +76,6 @@ public class UserDefineObject {
         return mName;
     }
 
-    public void edit(UserDefineObject newObj) {
-        mName = newObj.getName();
-    }
-
     public ContentValues getContentValues() {
         ContentValues values = new ContentValues();
 
