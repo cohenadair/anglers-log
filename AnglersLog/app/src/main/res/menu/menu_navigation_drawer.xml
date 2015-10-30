@@ -1,11 +1,16 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <group android:checkableBehavior="single">
+    <group
+        android:id="@+id/group_logbook"
+        android:checkableBehavior="single">
+
         <item
             android:id="@+id/nav_catches"
+            android:icon="@drawable/ic_catches"
             android:title="@string/drawer_catches"
             android:checked="true" />
 
+        <!--
         <item
             android:id="@+id/nav_trips"
             android:title="@string/drawer_trips" />
@@ -25,6 +30,22 @@
         <item
             android:id="@+id/nav_baits"
             android:title="@string/drawer_baits" />
+        -->
     </group>
+    <!--
+    <group
+        android:id="@+id/group_other"
+        android:checkableBehavior="single">
 
+        <item
+            android:id="@+id/nav_settings"
+            android:icon="@drawable/ic_settings"
+            android:title="@string/drawer_settings" />
+
+        <item
+            android:id="@+id/nav_about"
+            android:icon="@drawable/ic_about"
+            android:title="@string/drawer_about" />
+    </group>
+    -->
 </menu>

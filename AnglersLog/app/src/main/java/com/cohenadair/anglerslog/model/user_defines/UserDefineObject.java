@@ -84,4 +84,8 @@ public class UserDefineObject {
 
         return values;
     }
+
+    public void remove() {
+        // remove stuff from database if necessary
+    }
 }

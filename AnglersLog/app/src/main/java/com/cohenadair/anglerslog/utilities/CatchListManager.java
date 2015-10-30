@@ -75,14 +75,14 @@ public class CatchListManager {
         public void setCatch(Catch aCatch, int position) {
             mCatch = aCatch;
 
-            mSpeciesTextView.setText(aCatch.speciesAsString());
-            mDateTextView.setText(aCatch.dateTimeAsString());
+            mSpeciesTextView.setText(aCatch.getSpeciesAsString());
+            mDateTextView.setText(aCatch.getDateTimeAsString());
             mFavorite.setRating(mCatch.isFavorite() ? (float) 1.0 : (float) 0.0);
 
             // thumbnail stuff
             // if the image doesn't exist or can't be read, a default icon is shown
             boolean fileExists = false;
-            String randomPhoto = mCatch.randomPhoto();
+            String randomPhoto = mCatch.getRandomPhoto();
             String randomPhotoPath = "";
 
             if (randomPhoto != null)

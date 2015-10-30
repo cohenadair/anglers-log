@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.fragments.DetailFragment;
@@ -44,6 +45,8 @@ public class MainActivity extends AppCompatActivity implements
         // needed so the navigation view extends above and on top of the app bar
         Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        ImageView cover = (ImageView)findViewById(R.id.nav_header_cover);
 
         mNavigationManager = new NavigationManager(this);
         mNavigationManager.setUp();

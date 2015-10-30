@@ -17,8 +17,10 @@ import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Random;
 import java.util.UUID;
 
+import static com.cohenadair.anglerslog.database.LogbookSchema.CatchPhotoTable;
 import static com.cohenadair.anglerslog.database.LogbookSchema.CatchTable;
 import static com.cohenadair.anglerslog.database.LogbookSchema.SpeciesTable;
 
@@ -54,6 +56,22 @@ public class Logbook {
 
     public static File getDatabaseFile() {
         return mDatabaseFile;
+    }
+    //endregion
+
+    //region Miscellaneous
+    /**
+     * Gets a random Catch photo to use in the NavigationView.
+     * @return A String representing a random photo name, or null if no photos exist.
+     */
+    @Nullable
+    public static String getRandomCatchPhoto() {
+        ArrayList<String> photoNames = QueryHelper.queryPhotos(CatchPhotoTable.NAME, null, null);
+
+        if (photoNames.size() <= 0)
+            return null;
+
+        return photoNames.get(new Random().nextInt(photoNames.size()));
     }
     //endregion
 
@@ -96,7 +114,11 @@ public class Logbook {
     }
 
     public static boolean removeCatch(UUID id) {
-        return mDatabase.delete(CatchTable.NAME, CatchTable.Columns.ID + " = ?", new String[]{id.toString()}) == 1;
+        Catch aCatch = getCatch(id);
+        if (aCatch != null)
+            aCatch.remove();
+
+        return mDatabase.delete(CatchTable.NAME, CatchTable.Columns.ID + " = ?", new String[]{ id.toString() }) == 1;
     }
 
     public static boolean editCatch(UUID id, Catch newCatch) {

@@ -68,8 +68,8 @@ public class CatchFragment extends DetailFragment {
                 if (mCatch != null) {
                     mCatchPhotos = mCatch.getPhotos();
 
-                    mSpeciesTextView.setText(mCatch.speciesAsString());
-                    mDateTextView.setText(mCatch.dateAsString());
+                    mSpeciesTextView.setText(mCatch.getSpeciesAsString());
+                    mDateTextView.setText(mCatch.getDateAsString());
 
                     mPhotoViewPager.setVisibility((mCatchPhotos.size() > 0) ? View.VISIBLE : View.GONE);
                     mPhotoViewPager.setAdapter(new CatchPagerAdapter(getContext()));

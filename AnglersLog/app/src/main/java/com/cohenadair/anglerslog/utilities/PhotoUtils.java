@@ -178,6 +178,12 @@ public class PhotoUtils {
         }
     }
 
+    public static void photoToImageView(final ImageView imageView, final String path, final int width, final int height) {
+        Bitmap scaledBitmap = scaledBitmap(path, width, height);
+        scaledBitmap = ThumbnailUtils.extractThumbnail(scaledBitmap, width, height);
+        imageView.setImageBitmap(scaledBitmap);
+    }
+
     /**
      * Rotates the specified bitmap to the correct orientation.
      *

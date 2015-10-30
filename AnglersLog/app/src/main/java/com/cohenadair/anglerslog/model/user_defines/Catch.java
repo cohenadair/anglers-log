@@ -75,22 +75,22 @@ public class Catch extends UserDefineObject {
 
     @Override
     public String getName() {
-        return dateTimeAsString();
+        return getDateTimeAsString();
     }
 
-    public String speciesAsString() {
+    public String getSpeciesAsString() {
         return mSpecies.getName();
     }
 
-    public String dateAsString() {
+    public String getDateAsString() {
         return DateFormat.format("MMMM dd, yyyy", mDate).toString();
     }
 
-    public String timeAsString() {
+    public String getTimeAsString() {
         return DateFormat.format("h:mm a", mDate).toString();
     }
 
-    public String dateTimeAsString() {
+    public String getDateTimeAsString() {
         return DateFormat.format("MMM dd, yyyy 'at' h:mm a", mDate).toString();
     }
 
@@ -119,7 +119,7 @@ public class Catch extends UserDefineObject {
      * Gets a random photo name that represents the entire Catch.
      * @return The name of a random photo.
      */
-    public String randomPhoto() {
+    public String getRandomPhoto() {
         ArrayList<String> photos = getPhotos();
 
         if (photos.size() <= 0)
@@ -169,6 +169,15 @@ public class Catch extends UserDefineObject {
         values.put(CatchPhotoTable.Columns.NAME, fileName);
 
         return values;
+    }
+
+    /**
+     * Removes database stuff for this Catch.
+     */
+    @Override
+    public void remove() {
+        for (String str : getPhotos())
+            removePhoto(str);
     }
 
 }

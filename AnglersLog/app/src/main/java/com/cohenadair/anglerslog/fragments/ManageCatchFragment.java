@@ -179,7 +179,7 @@ public class ManageCatchFragment extends ManageContentFragment {
      */
     private void updateDateView(Date date) {
         mNewCatch.setDate(date);
-        mDateView.setSubtitle(mNewCatch.dateAsString());
+        mDateView.setSubtitle(mNewCatch.getDateAsString());
     }
 
     /**
@@ -188,17 +188,17 @@ public class ManageCatchFragment extends ManageContentFragment {
      */
     private void updateTimeView(Date date) {
         mNewCatch.setDate(date);
-        mTimeView.setSubtitle(mNewCatch.timeAsString());
+        mTimeView.setSubtitle(mNewCatch.getTimeAsString());
     }
 
     /**
      * Update the different views based on the current Catch object to display.
      */
     private void updateViews() {
-        mDateView.setSubtitle(mNewCatch.dateAsString());
-        mTimeView.setSubtitle(mNewCatch.timeAsString());
+        mDateView.setSubtitle(mNewCatch.getDateAsString());
+        mTimeView.setSubtitle(mNewCatch.getTimeAsString());
 
-        mSpeciesView.setSubtitle(mNewCatch.getSpecies() != null ? mNewCatch.speciesAsString() : "");
+        mSpeciesView.setSubtitle(mNewCatch.getSpecies() != null ? mNewCatch.getSpeciesAsString() : "");
     }
 
     /**
@@ -220,7 +220,7 @@ public class ManageCatchFragment extends ManageContentFragment {
                     @Override
                     public void onDismiss(UserDefineObject selectedItem) {
                         mNewCatch.setSpecies((Species) selectedItem);
-                        mSpeciesView.setSubtitle(mNewCatch.speciesAsString());
+                        mSpeciesView.setSubtitle(mNewCatch.getSpeciesAsString());
                     }
                 });
 
