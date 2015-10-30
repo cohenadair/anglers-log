@@ -79,6 +79,8 @@ public class Logbook {
 
     //region Catch Manipulation
     public static void cleanDatabasePhotos() {
+        // TODO delete photos from BaitPhotoTable
+
         int numDeleted = mDatabase.delete(
                 CatchPhotoTable.NAME,
                 CatchPhotoTable.Columns.USER_DEFINE_ID + " NOT IN(SELECT " + CatchTable.Columns.ID + " FROM " + CatchTable.NAME + ")",

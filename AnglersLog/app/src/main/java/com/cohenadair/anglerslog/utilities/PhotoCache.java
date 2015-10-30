@@ -133,7 +133,16 @@ public class PhotoCache {
      *
      * @param keysToKeep An array of keys to keep.
      */
-    public void cleanDisk(ArrayList<String> keysToKeep) {
+    public void clean(ArrayList<String> keysToKeep) {
+        // clean memory cache
+        Map<String, Bitmap> memorySnapshot = mMemoryCache.snapshot();
+        for (String key : memorySnapshot.keySet())
+            if (!Utils.stringContainsArray(key, keysToKeep)) {
+                Log.d(TAG, "Removed " + key + " from memory cache!");
+                mMemoryCache.remove(key);
+            }
+
+        // clean disk cache
         if (mDiskCache != null)
             mDiskCache.clean(keysToKeep);
     }
@@ -334,8 +343,11 @@ public class PhotoCache {
             int numDeleted = 0;
 
             File[] files = mCacheDir.listFiles(filter);
-            for (File file : files)
+            for (File file : files) {
+                String key = file.getName();
+                mLinkedHashMap.remove(key);
                 numDeleted += file.delete() ? 1 : 0;
+            }
 
             Log.i(TAG, "Deleted " + numDeleted + " cached photos.");
         }

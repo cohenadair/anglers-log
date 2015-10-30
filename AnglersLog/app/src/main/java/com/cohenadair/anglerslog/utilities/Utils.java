@@ -13,6 +13,8 @@ import android.widget.Toast;
 
 import com.cohenadair.anglerslog.R;
 
+import java.util.ArrayList;
+
 /**
  * A set of utility methods used throughout the project.
  * @author Cohen Adair
@@ -144,6 +146,21 @@ public class Utils {
     @NonNull
     public static String extractExtension(String fileName) {
         return fileName.substring(fileName.lastIndexOf('.') + 1);
+    }
+
+    /**
+     * Checks to see if the specified String contains a substring of one of the Strings in the
+     * specified array.
+     *
+     * @param str The String on which to look for substrings.
+     * @param arr The Array of substrings.
+     * @return True if `str` contains an element of `arr`, false otherwise.
+     */
+    public static boolean stringContainsArray(String str, ArrayList<String> arr) {
+        for (String s : arr)
+            if (str.contains(s))
+                return true;
+        return false;
     }
 
 }

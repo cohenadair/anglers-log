@@ -3,7 +3,6 @@ package com.cohenadair.anglerslog.utilities;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
@@ -13,7 +12,6 @@ import android.media.ExifInterface;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
@@ -25,7 +23,13 @@ import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.model.Logbook;
 import com.cohenadair.anglerslog.model.user_defines.Catch;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
+import com.drew.imaging.ImageMetadataReader;
+import com.drew.imaging.ImageProcessingException;
+import com.drew.metadata.Metadata;
+import com.drew.metadata.MetadataException;
+import com.drew.metadata.exif.ExifIFD0Directory;
 
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -185,33 +189,56 @@ public class PhotoUtils {
     }
 
     /**
-     * Rotates the specified bitmap to the correct orientation.
+     * Rotates the specified bitmap to the correct orientation. Note that this library requires
+     * the following two libraries:
+     * 1. <a href="https://code.google.com/p/metadata-extractor/downloads/list">metadata-extractor-2.6.4</a>
+     * 2. <a href="https://github.com/drewfarris/metadata-extractor/tree/master/Libraries">xmpcore-5.1.2.jar</a>
      *
-     * @param path The path to the photo file.
+     * @param uri The Uri to the photo file.
      * @param bmp The Bitmap representative of the photo file.
      * @return A correctly rotated Bitmap.
      */
-    private static Bitmap fixOrientation(String path, Bitmap bmp) {
+    private static Bitmap fixOrientation(Uri uri, Bitmap bmp) {
         try {
-            ExifInterface exif = new ExifInterface(path);
-            int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_UNDEFINED);
+            InputStream inputStream = mContext.getContentResolver().openInputStream(uri);
+            Metadata meta = null;
 
-            switch (orientation) {
-                case ExifInterface.ORIENTATION_ROTATE_90:
-                    bmp = rotateBitmap(bmp, 90);
-                    break;
+            if (inputStream != null) {
+                try {
+                    meta = ImageMetadataReader.readMetadata(new BufferedInputStream(inputStream), false);
+                } catch (ImageProcessingException e) {
+                    e.printStackTrace();
+                }
 
-                case ExifInterface.ORIENTATION_ROTATE_180:
-                    bmp = rotateBitmap(bmp, 180);
-                    break;
+                if (meta != null) {
+                    int orientation = 0;
+                    ExifIFD0Directory exifIFD0Directory = meta.getDirectory(ExifIFD0Directory.class);
 
-                case ExifInterface.ORIENTATION_ROTATE_270:
-                    bmp = rotateBitmap(bmp, 270);
-                    break;
+                    if (exifIFD0Directory.containsTag(ExifIFD0Directory.TAG_ORIENTATION))
+                        try {
+                            orientation = exifIFD0Directory.getInt(ExifIFD0Directory.TAG_ORIENTATION);
+                        } catch (MetadataException e){
+                            e.printStackTrace();
+                        }
+
+                    switch (orientation) {
+                        case ExifInterface.ORIENTATION_ROTATE_90:
+                            bmp = rotateBitmap(bmp, 90);
+                            break;
+
+                        case ExifInterface.ORIENTATION_ROTATE_180:
+                            bmp = rotateBitmap(bmp, 180);
+                            break;
+
+                        case ExifInterface.ORIENTATION_ROTATE_270:
+                            bmp = rotateBitmap(bmp, 270);
+                            break;
+                    }
+                }
             }
 
         } catch (IOException e) {
-            Log.d(TAG, "Error extracting ExifInterface from file: " + path);
+            Log.d(TAG, "Error opening InputStream from uri: " + uri.toString());
             e.printStackTrace();
         }
 
@@ -292,102 +319,11 @@ public class PhotoUtils {
      * @param destFile The destination file the Bitmap will be written to.
      */
     public static void copyAndResizePhoto(Uri srcUri, File destFile) {
-        // if the Uri is content (in public storage), extract the actual path
-        String path = srcUri.getScheme().equals("content") ? actualUriPath(srcUri) : srcUri.getPath();
-
         if (destFile != null) {
             int longestSideLength = mContext.getResources().getInteger(R.integer.max_photo_size);
-            Bitmap scaledBitmap = scaledBitmap(srcUri, longestSideLength);
-
-            // TODO figure out how to get path names for any Uri
-            if (path != null)
-                scaledBitmap = fixOrientation(path, scaledBitmap);
-
+            Bitmap scaledBitmap = fixOrientation(srcUri, scaledBitmap(srcUri, longestSideLength));
             PhotoCache.savePhoto(scaledBitmap, destFile);
         }
-    }
-
-    /**
-     * Get a file path from a Uri. This will get the the path for Storage Access Framework
-     * Documents, as well as the _data field for the MediaStore and other file-based
-     * ContentProviders.
-     *
-     * This method was derived from the `getPath` method in <a href="https://github.com/iPaulPro/aFileChooser/blob/master/aFileChooser/src/com/ipaulpro/afilechooser/utils/FileUtils.java">iPaulPro's aFileChooser FileUtils.java</a>
-     *
-     * @param uri The Uri to query.
-     * @return A String representing the actual Uri path.
-     */
-    private static String actualUriPath(final Uri uri) {
-        boolean isMinKitKat = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
-
-        Log.d(TAG, "Uri authority: " + uri.getAuthority());
-
-        if (isMinKitKat) {
-            // TODO update for more content providers
-            Uri contentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
-
-            String selection = "_id=?";
-            String[] selectionArgs = new String[] { devicePhotoId(uri) };
-
-            return dataColumnValue(contentUri, selection, selectionArgs);
-        } else
-            return dataColumnValue(uri, null, null);
-    }
-
-    /**
-     * Get the value of the data column for this Uri. This is useful for MediaStore Uris, and other
-     * file-based ContentProviders.
-     *
-     * This method was extracted from <a href="https://github.com/iPaulPro/aFileChooser/blob/master/aFileChooser/src/com/ipaulpro/afilechooser/utils/FileUtils.java">iPaulPro's aFileChooser FileUtils.java</a>
-     *
-     * @param uri The Uri to query.
-     * @param selection (Optional) Filter used in the query.
-     * @param selectionArgs (Optional) Selection arguments used in the query.
-     * @return The value of the _data column, which is typically a file path.
-     */
-    @Nullable
-    private static String dataColumnValue(Uri uri, String selection, String[] selectionArgs) {
-        Cursor cursor = null;
-        final String column = MediaStore.Images.Media.DATA;
-        final String[] projection = { column };
-
-        try {
-            cursor = mContext.getContentResolver().query(uri, projection, selection, selectionArgs, null);
-            if (cursor != null && cursor.moveToFirst()) {
-                final int column_index = cursor.getColumnIndexOrThrow(column);
-                return cursor.getString(column_index);
-            }
-        } catch (Exception e) {
-            Log.e(TAG, "Invalid Uri passed to dataColumnValue, returning null.");
-        } finally {
-            if (cursor != null)
-                cursor.close();
-        }
-
-        return null;
-    }
-
-    /**
-     * Gets the id of the photo at the specified Uri. This only works in API level 19+. For example,
-     * a Uri with path: `content://com.android.providers.media.documents/document/image:62` would
-     * result with a photo id of "62".
-     *
-     * @param uri The Uri of the photo.
-     * @return A String of the photo's id.
-     */
-    private static String devicePhotoId(Uri uri) {
-        String photoId = null;
-        Cursor cursor = mContext.getContentResolver().query(uri, null, null, null, null);
-
-        if (cursor != null && cursor.moveToFirst()) {
-            photoId = cursor.getString(0);
-            photoId = photoId.substring(photoId.lastIndexOf(":") + 1);
-        }
-
-        if (cursor != null)
-            cursor.close();
-
-        return photoId;
     }
 
     /**
@@ -435,7 +371,7 @@ public class PhotoUtils {
         for (UserDefineObject aCatch : catches)
             photoNames.addAll(((Catch)aCatch).getPhotos());
 
-        mCache.cleanDisk(photoNames);
+        mCache.clean(photoNames);
     }
 
     /**

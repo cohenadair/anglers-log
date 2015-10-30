@@ -32,5 +32,4 @@ dependencies {
     compile 'com.android.support:design:23.1.0'
     compile 'com.android.support:recyclerview-v7:23.1.0'
     compile 'com.google.android.gms:play-services-drive:8.1.0'
-    compile files('libs/commons-io-2.4.jar')
 }

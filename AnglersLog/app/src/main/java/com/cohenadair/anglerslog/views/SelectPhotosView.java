@@ -170,6 +170,7 @@ public class SelectPhotosView extends LinearLayout {
         String name = new File(mImagePaths.get(mImageViews.indexOf(img))).getName();
 
         if (mSelectPhotosInteraction.onRemoveImage(name)) {
+            PhotoUtils.cleanPhotosAsync();
             mImageViews.remove(img);
             mPhotosWrapper.removeView(img);
         } else
