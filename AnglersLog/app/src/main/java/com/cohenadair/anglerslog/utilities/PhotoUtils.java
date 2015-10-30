@@ -297,7 +297,12 @@ public class PhotoUtils {
 
         if (destFile != null) {
             int longestSideLength = mContext.getResources().getInteger(R.integer.max_photo_size);
-            Bitmap scaledBitmap = fixOrientation(path, scaledBitmap(srcUri, longestSideLength));
+            Bitmap scaledBitmap = scaledBitmap(srcUri, longestSideLength);
+
+            // TODO figure out how to get path names for any Uri
+            if (path != null)
+                scaledBitmap = fixOrientation(path, scaledBitmap);
+
             PhotoCache.savePhoto(scaledBitmap, destFile);
         }
     }
@@ -315,7 +320,10 @@ public class PhotoUtils {
     private static String actualUriPath(final Uri uri) {
         boolean isMinKitKat = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
 
+        Log.d(TAG, "Uri authority: " + uri.getAuthority());
+
         if (isMinKitKat) {
+            // TODO update for more content providers
             Uri contentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
 
             String selection = "_id=?";

@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import com.cohenadair.anglerslog.database.LogbookHelper;
 import com.cohenadair.anglerslog.database.QueryHelper;
@@ -47,6 +48,7 @@ public class Logbook {
         mDatabase = database;
         mDatabase.setForeignKeyConstraintsEnabled(true);
         QueryHelper.setDatabase(mDatabase);
+        cleanDatabasePhotos();
     }
 
     //region Getters & Setters
@@ -76,6 +78,15 @@ public class Logbook {
     //endregion
 
     //region Catch Manipulation
+    public static void cleanDatabasePhotos() {
+        int numDeleted = mDatabase.delete(
+                CatchPhotoTable.NAME,
+                CatchPhotoTable.Columns.USER_DEFINE_ID + " NOT IN(SELECT " + CatchTable.Columns.ID + " FROM " + CatchTable.NAME + ")",
+                null);
+
+        Log.i(TAG, "Deleted " + numDeleted + " photos from the database.");
+    }
+
     public static ArrayList<UserDefineObject> getCatches() {
         ArrayList<UserDefineObject> catches = new ArrayList<>();
         CatchCursor cursor = QueryHelper.queryCatches(null, null);
@@ -114,10 +125,6 @@ public class Logbook {
     }
 
     public static boolean removeCatch(UUID id) {
-        Catch aCatch = getCatch(id);
-        if (aCatch != null)
-            aCatch.remove();
-
         return mDatabase.delete(CatchTable.NAME, CatchTable.Columns.ID + " = ?", new String[]{ id.toString() }) == 1;
     }
 

@@ -170,14 +170,4 @@ public class Catch extends UserDefineObject {
 
         return values;
     }
-
-    /**
-     * Removes database stuff for this Catch.
-     */
-    @Override
-    public void remove() {
-        for (String str : getPhotos())
-            removePhoto(str);
-    }
-
 }
