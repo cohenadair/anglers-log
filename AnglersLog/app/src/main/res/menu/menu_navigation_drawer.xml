@@ -46,6 +46,11 @@
             android:id="@+id/nav_about"
             android:icon="@drawable/ic_about"
             android:title="@string/drawer_about" />
+
+        <item
+            android:id="@+id/nav_help"
+            android:icon="@drawable/ic_help"
+            android:title="@string/drawer_help" />
     </group>
     -->
 </menu>
