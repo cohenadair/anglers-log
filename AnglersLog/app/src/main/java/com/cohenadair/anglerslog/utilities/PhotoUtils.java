@@ -188,62 +188,74 @@ public class PhotoUtils {
         imageView.setImageBitmap(scaledBitmap);
     }
 
-    /**
-     * Rotates the specified bitmap to the correct orientation. Note that this library requires
-     * the following two libraries:
-     * 1. <a href="https://code.google.com/p/metadata-extractor/downloads/list">metadata-extractor-2.6.4</a>
-     * 2. <a href="https://github.com/drewfarris/metadata-extractor/tree/master/Libraries">xmpcore-5.1.2.jar</a>
-     *
-     * @param uri The Uri to the photo file.
-     * @param bmp The Bitmap representative of the photo file.
-     * @return A correctly rotated Bitmap.
-     */
-    private static Bitmap fixOrientation(Uri uri, Bitmap bmp) {
-        try {
-            InputStream inputStream = mContext.getContentResolver().openInputStream(uri);
-            Metadata meta = null;
+/**
+ * Rotates the specified bitmap to the correct orientation. The specified Uri is used to get the
+ * exif information (i.e. orientation) so the Bitmap can be properly rotated. Note that this library
+ * requires the following two libraries:
+ * 1. <a href="https://code.google.com/p/metadata-extractor/downloads/list">metadata-extractor-2.6.4</a>
+ * 2. <a href="https://github.com/drewfarris/metadata-extractor/tree/master/Libraries">xmpcore-5.1.2.jar</a>
+ *
+ * @param uri The Uri to the photo file.
+ * @param bmp The Bitmap representative of the photo file.
+ * @return A correctly rotated Bitmap.
+ */
+private static Bitmap fixOrientation(Uri uri, Bitmap bmp) {
+    String methodName = "fixOrientation()";
+    BufferedInputStream bufferStream = null;
+    Metadata metadata = null;
 
-            if (inputStream != null) {
-                try {
-                    meta = ImageMetadataReader.readMetadata(new BufferedInputStream(inputStream), false);
-                } catch (ImageProcessingException e) {
-                    e.printStackTrace();
-                }
-
-                if (meta != null) {
-                    int orientation = 0;
-                    ExifIFD0Directory exifIFD0Directory = meta.getDirectory(ExifIFD0Directory.class);
-
-                    if (exifIFD0Directory.containsTag(ExifIFD0Directory.TAG_ORIENTATION))
-                        try {
-                            orientation = exifIFD0Directory.getInt(ExifIFD0Directory.TAG_ORIENTATION);
-                        } catch (MetadataException e){
-                            e.printStackTrace();
-                        }
-
-                    switch (orientation) {
-                        case ExifInterface.ORIENTATION_ROTATE_90:
-                            bmp = rotateBitmap(bmp, 90);
-                            break;
-
-                        case ExifInterface.ORIENTATION_ROTATE_180:
-                            bmp = rotateBitmap(bmp, 180);
-                            break;
-
-                        case ExifInterface.ORIENTATION_ROTATE_270:
-                            bmp = rotateBitmap(bmp, 270);
-                            break;
-                    }
-                }
-            }
-
-        } catch (IOException e) {
-            Log.d(TAG, "Error opening InputStream from uri: " + uri.toString());
-            e.printStackTrace();
-        }
-
+    try {
+        InputStream inputStream = mContext.getContentResolver().openInputStream(uri);
+        if (inputStream != null)
+            bufferStream = new BufferedInputStream(inputStream);
+    } catch (IOException e) {
+        Log.e(TAG, "Error opening stream from Uri in " + methodName + ": " + uri.toString());
+        e.printStackTrace();
         return bmp;
     }
+
+    if (bufferStream != null) {
+        try {
+            metadata = ImageMetadataReader.readMetadata(bufferStream, false);
+        } catch (ImageProcessingException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            Log.e(TAG, "Error reading Metadata in " + methodName + " from Uri: " + uri.toString());
+            e.printStackTrace();
+            return bmp;
+        }
+
+        if (metadata != null) {
+            int orientation = 0;
+            ExifIFD0Directory exifIFD0Directory = metadata.getDirectory(ExifIFD0Directory.class);
+
+            if (exifIFD0Directory.containsTag(ExifIFD0Directory.TAG_ORIENTATION))
+                try {
+                    orientation = exifIFD0Directory.getInt(ExifIFD0Directory.TAG_ORIENTATION);
+                } catch (MetadataException e){
+                    Log.e(TAG, "Error getting orientation in " + methodName + " from Uri: " + uri.toString());
+                    e.printStackTrace();
+                    return bmp;
+                }
+
+            switch (orientation) {
+                case ExifInterface.ORIENTATION_ROTATE_90:
+                    bmp = rotateBitmap(bmp, 90);
+                    break;
+
+                case ExifInterface.ORIENTATION_ROTATE_180:
+                    bmp = rotateBitmap(bmp, 180);
+                    break;
+
+                case ExifInterface.ORIENTATION_ROTATE_270:
+                    bmp = rotateBitmap(bmp, 270);
+                    break;
+            }
+        }
+    }
+
+    return bmp;
+}
 
     /**
      * Rotates the specified bitmap by the specified degrees.
