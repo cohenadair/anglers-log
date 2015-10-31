@@ -8,7 +8,7 @@
             android:id="@+id/nav_catches"
             android:icon="@drawable/ic_catches"
             android:title="@string/drawer_catches"
-            android:checked="true" />
+            android:checked="true"/>
 
         <!--
         <item

@@ -33,7 +33,6 @@ public class NavigationManager implements FragmentManager.OnBackStackChangedList
         mActionBar = mActivity.getSupportActionBar();
 
         mNavigationView = (NavigationView)mActivity.findViewById(R.id.navigation_view);
-        mNavigationView.setItemIconTintList(null);
         initHeaderView();
 
         Menu menu = mNavigationView.getMenu();

@@ -7,4 +7,5 @@
     android:layout_gravity="start"
     android:fitsSystemWindows="true"
     app:menu="@menu/menu_navigation_drawer"
-    app:itemTextColor="@color/list_item" />
+    app:itemTextColor="@color/list_item"
+    app:itemIconTint="@color/drawer_item"/>
