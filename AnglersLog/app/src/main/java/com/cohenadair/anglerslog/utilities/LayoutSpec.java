@@ -14,7 +14,7 @@ import java.util.UUID;
  * master-detail layout with a {@link ManageFragment} for adding and editing.  This utility class
  * allows all that code to be recycled for any complex UserDefineObject subclass.
  *
- * The current layout is controlled by a {@link LayoutController} singleton class, and should never
+ * The current layout is controlled by a {@link LayoutSpecManager} singleton class, and should never
  * be instantiated outside that instance.
  *
  * Created by Cohen Adair on 2015-09-03.

@@ -26,6 +26,7 @@ public class NavigationManager implements FragmentManager.OnBackStackChangedList
     private ActionBar mActionBar;
     private MainActivity mActivity;
     private String mCurrentTitle;
+    private int mCurrentLayoutId = LayoutSpecManager.LAYOUT_CATCHES;
 
     public NavigationManager(MainActivity activity) {
         mActivity = activity;
@@ -128,13 +129,16 @@ public class NavigationManager implements FragmentManager.OnBackStackChangedList
     }
 
     private void onDrawerItemSelected(MenuItem menuItem) {
-        LayoutController.setCurrent(mActivity, menuItem.getItemId());
-        mActivity.showFragment();
+        mCurrentLayoutId = menuItem.getItemId();
         mCurrentTitle = menuItem.getTitle().toString();
+        mActivity.showFragment();
         restoreActionBar();
 
         menuItem.setChecked(true);
         mDrawerLayout.closeDrawers();
     }
 
+    public int getCurrentLayoutId() {
+        return mCurrentLayoutId;
+    }
 }

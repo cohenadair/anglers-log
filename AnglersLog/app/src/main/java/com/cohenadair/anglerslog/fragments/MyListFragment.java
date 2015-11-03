@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.cohenadair.anglerslog.R;
-import com.cohenadair.anglerslog.utilities.LayoutController;
 
 /**
  * The fragment showing the list of catches.
@@ -33,6 +32,11 @@ public class MyListFragment extends MasterFragment {
 
     public MyListFragment() {
         // default constructor required
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
     }
 
     @Override
@@ -72,7 +76,7 @@ public class MyListFragment extends MasterFragment {
      */
     @Override
     public void update() {
-        mRecyclerView.setAdapter(LayoutController.getMasterAdapter());
+        mRecyclerView.setAdapter(getRealActivity().getMasterAdapter());
     }
 
     //region View Initializing

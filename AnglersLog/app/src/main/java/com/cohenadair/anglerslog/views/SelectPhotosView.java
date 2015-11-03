@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.cohenadair.anglerslog.R;
+import com.cohenadair.anglerslog.fragments.ManageCatchFragment;
 import com.cohenadair.anglerslog.utilities.PhotoUtils;
 import com.cohenadair.anglerslog.utilities.Utils;
 
@@ -37,8 +38,6 @@ import java.util.ArrayList;
  * Created by Cohen Adair on 2015-10-18.
  */
 public class SelectPhotosView extends LinearLayout {
-
-    public static final int REQUEST_PHOTO = 0;
 
     private static final int PHOTO_ATTACH = 0;
     private static final int PHOTO_TAKE = 1;
@@ -107,7 +106,7 @@ public class SelectPhotosView extends LinearLayout {
         mPublicPhotoFile = PhotoUtils.publicPhotoFile(mPrivatePhotoFile.getName());
 
         if (takeOrAttach == PHOTO_ATTACH)
-            mSelectPhotosInteraction.onStartSelectionActivity(PhotoUtils.pickPhotoIntent(), REQUEST_PHOTO);
+            mSelectPhotosInteraction.onStartSelectionActivity(PhotoUtils.pickPhotoIntent(), ManageCatchFragment.REQUEST_PHOTO);
 
         if (takeOrAttach == PHOTO_TAKE) {
             Intent photoIntent = PhotoUtils.takePhotoIntent();
@@ -115,7 +114,7 @@ public class SelectPhotosView extends LinearLayout {
             // make sure the camera is available on this device
             if (canTakePicture(photoIntent)) {
                 photoIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(mPublicPhotoFile));
-                mSelectPhotosInteraction.onStartSelectionActivity(photoIntent, REQUEST_PHOTO);
+                mSelectPhotosInteraction.onStartSelectionActivity(photoIntent, ManageCatchFragment.REQUEST_PHOTO);
             } else
                 Utils.showErrorAlert(getContext(), R.string.error_camera_unavailable);
         }

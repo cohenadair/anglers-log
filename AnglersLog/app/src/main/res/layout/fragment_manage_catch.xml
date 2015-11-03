@@ -53,5 +53,15 @@
 
         <include layout="@layout/view_divider"/>
 
+        <!-- Bait -->
+        <com.cohenadair.anglerslog.views.SelectionView
+            android:id="@+id/bait_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            custom:titleText="@string/bait"
+            custom:subtitleHint="@string/bait_hint"/>
+
+        <include layout="@layout/view_divider"/>
+
     </LinearLayout>
 </ScrollView>

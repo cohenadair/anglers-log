@@ -12,6 +12,9 @@ import java.util.UUID;
  */
 public abstract class ManageContentFragment extends Fragment {
 
+    public static final int REQUEST_PHOTO = 0;
+    public static final int REQUEST_SELECTION = 1;
+
     private boolean mIsEditing;
     private UUID mEditingId;
 

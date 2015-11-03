@@ -9,6 +9,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.cohenadair.anglerslog.R;
+import com.cohenadair.anglerslog.activities.LayoutSpecActivity;
 import com.cohenadair.anglerslog.interfaces.OnClickManageMenuListener;
 import com.cohenadair.anglerslog.utilities.Utils;
 
@@ -105,6 +106,10 @@ public abstract class DetailFragment extends Fragment {
 
     public void setItemId(UUID itemId) {
         mItemId = itemId;
+    }
+
+    public LayoutSpecActivity getRealActivity() {
+        return (LayoutSpecActivity)getActivity();
     }
     //endregion
 }

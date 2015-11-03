@@ -2,6 +2,8 @@ package com.cohenadair.anglerslog.fragments;
 
 import android.support.v4.app.Fragment;
 
+import com.cohenadair.anglerslog.activities.LayoutSpecActivity;
+
 /**
  * An abstract class for master fragments used throughout the application.
  *
@@ -13,5 +15,9 @@ public abstract class MasterFragment extends Fragment {
      * Updates the fragment's UI.
      */
     public abstract void update();
+
+    public LayoutSpecActivity getRealActivity() {
+        return (LayoutSpecActivity)getActivity();
+    }
 
 }

@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.cohenadair.anglerslog.R;
-import com.cohenadair.anglerslog.utilities.LayoutController;
+import com.cohenadair.anglerslog.activities.LayoutSpecActivity;
 
 import java.util.List;
 
@@ -57,9 +57,7 @@ public class ManageFragment extends DialogFragment {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ManageContentFragment fragment = LayoutController.getManageContentFragment();
-
-                if (fragment.addObjectToLogbook()) {
+                if (mContentFragment.addObjectToLogbook()) {
                     mCallbacks.onManageDismiss();
                     closeDialog();
                 }
@@ -67,7 +65,7 @@ public class ManageFragment extends DialogFragment {
         });
 
         // add the actual content to the scroll view
-        setDialogTitle(LayoutController.getViewTitle(getContext()));
+        setDialogTitle(getRealActivity().getViewTitle());
 
         if (getChildFragmentManager().findFragmentByTag(TAG_CONTENT_FRAGMENT) == null)
             getChildFragmentManager().beginTransaction()
@@ -121,6 +119,10 @@ public class ManageFragment extends DialogFragment {
 
     public ManageContentFragment getContentFragment() {
         return mContentFragment;
+    }
+
+    public LayoutSpecActivity getRealActivity() {
+        return (LayoutSpecActivity)getActivity();
     }
 
     private void setDialogTitle(String title) {

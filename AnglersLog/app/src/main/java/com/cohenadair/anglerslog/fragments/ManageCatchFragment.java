@@ -3,8 +3,10 @@ package com.cohenadair.anglerslog.fragments;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,10 +14,12 @@ import android.widget.DatePicker;
 import android.widget.TimePicker;
 
 import com.cohenadair.anglerslog.R;
+import com.cohenadair.anglerslog.activities.MyListSelectionActivity;
 import com.cohenadair.anglerslog.model.Logbook;
 import com.cohenadair.anglerslog.model.user_defines.Catch;
 import com.cohenadair.anglerslog.model.user_defines.Species;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
+import com.cohenadair.anglerslog.utilities.LayoutSpecManager;
 import com.cohenadair.anglerslog.utilities.PhotoUtils;
 import com.cohenadair.anglerslog.utilities.PrimitiveController;
 import com.cohenadair.anglerslog.utilities.Utils;
@@ -38,6 +42,7 @@ public class ManageCatchFragment extends ManageContentFragment {
     private SelectionView mDateView;
     private SelectionView mTimeView;
     private SelectionView mSpeciesView;
+    private SelectionView mBaitView;
 
     private SelectPhotosView mSelectPhotosView;
 
@@ -51,6 +56,7 @@ public class ManageCatchFragment extends ManageContentFragment {
 
         initDateTimeView(view);
         initSpeciesView(view);
+        initBaitView(view);
         initSelectPhotosView(view);
 
         return view;
@@ -81,6 +87,11 @@ public class ManageCatchFragment extends ManageContentFragment {
                 mNewCatch = new Catch(new Date());
 
         updateViews();
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
     }
 
     @Override
@@ -229,6 +240,19 @@ public class ManageCatchFragment extends ManageContentFragment {
         });
     }
 
+    private void initBaitView(View view) {
+        mBaitView = (SelectionView)view.findViewById(R.id.bait_layout);
+        mBaitView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), MyListSelectionActivity.class);
+                intent.putExtra(MyListSelectionActivity.EXTRA_LAYOUT_ID, LayoutSpecManager.LAYOUT_CATCHES);
+                intent.putExtra(MyListSelectionActivity.EXTRA_TWO_PANE, Utils.isTwoPane(getActivity()));
+                getParentFragment().startActivityForResult(intent, REQUEST_SELECTION);
+            }
+        });
+    }
+
     private void initSelectPhotosView(View view) {
         mSelectPhotosView = (SelectPhotosView)view.findViewById(R.id.select_photos_view);
         mSelectPhotosView.setSelectPhotosInteraction(new SelectPhotosView.SelectPhotosInteraction() {
@@ -260,8 +284,14 @@ public class ManageCatchFragment extends ManageContentFragment {
         if (resultCode != Activity.RESULT_OK)
             return;
 
-        if (requestCode == SelectPhotosView.REQUEST_PHOTO) {
+        if (requestCode == REQUEST_PHOTO) {
             mSelectPhotosView.onPhotoIntentResult(data);
+            return;
+        }
+
+        if (requestCode == REQUEST_SELECTION) {
+            UUID id = UUID.fromString(data.getStringExtra(MyListSelectionActivity.EXTRA_SELECTED_ID));
+            Log.d("ManageCatchFragment", "Selected ID: " + id.toString());
             return;
         }
 

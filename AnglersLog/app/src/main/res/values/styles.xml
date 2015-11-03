@@ -12,6 +12,10 @@
         <item name="colorAccent">@color/anglers_log_accent</item>
     </style>
 
+    <style name="Theme.Dialog.NoTitle" parent="android:style/Theme.Dialog">
+        <item name="android:windowNoTitle">true</item>
+    </style>
+
     <!-- Button Bars -->
     <style name="Widget.ButtonBar" parent="@android:style/DeviceDefault.ButtonBar">
         <item name="android:background">@android:color/white</item>

@@ -13,6 +13,7 @@
     <string name="error">Error</string>
     <string name="photos">Photos</string>
     <string name="species">Species</string>
+    <string name="bait">Bait</string>
     <string name="date">Date</string>
 
     <string name="drawer_open">Open Navigation Drawer</string>
@@ -34,6 +35,7 @@
 
     <string name="photos_hint">Tap to add photos</string>
     <string name="species_hint">Tap to add or select species</string>
+    <string name="bait_hint">Tap to add or select bait</string>
     <string name="date_label">Date</string>
     <string name="time_label">Time</string>
     <string name="location_label">Location</string>
