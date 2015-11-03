@@ -98,7 +98,7 @@ public abstract class LayoutSpecActivity extends AppCompatActivity implements
     }
 
     public void updateViews() {
-        mLayoutSpec.updateViews();
+        mLayoutSpec.updateViews(this);
     }
 
     @NonNull

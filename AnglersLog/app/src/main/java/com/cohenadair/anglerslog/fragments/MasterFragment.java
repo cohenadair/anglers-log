@@ -14,7 +14,7 @@ public abstract class MasterFragment extends Fragment {
     /**
      * Updates the fragment's UI.
      */
-    public abstract void update();
+    public abstract void update(LayoutSpecActivity activity);
 
     public LayoutSpecActivity getRealActivity() {
         return (LayoutSpecActivity)getActivity();

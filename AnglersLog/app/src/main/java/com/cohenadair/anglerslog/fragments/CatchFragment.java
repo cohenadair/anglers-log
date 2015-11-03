@@ -14,6 +14,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.cohenadair.anglerslog.R;
+import com.cohenadair.anglerslog.activities.LayoutSpecActivity;
 import com.cohenadair.anglerslog.model.Logbook;
 import com.cohenadair.anglerslog.model.user_defines.Catch;
 import com.cohenadair.anglerslog.utilities.PhotoUtils;
@@ -47,14 +48,14 @@ public class CatchFragment extends DetailFragment {
 
         mPhotoViewPager = (ViewPager)view.findViewById(R.id.photo_view_pager);
 
-        update(getRealActivity().getSelectionId());
+        update(getRealActivity());
 
         // Inflate the layout for this fragment
         return view;
     }
 
     @Override
-    public void update(UUID id) {
+    public void update(LayoutSpecActivity activity, UUID id) {
         if (isAttached()) {
             if (Logbook.getCatchCount() <= 0) {
                 // TODO replace with "NoUserDefineView"
@@ -79,8 +80,8 @@ public class CatchFragment extends DetailFragment {
     }
 
     @Override
-    public void update() {
-        update(getRealActivity().getSelectionId());
+    public void update(LayoutSpecActivity activity) {
+        update(activity, activity.getSelectionId());
     }
 
     /**

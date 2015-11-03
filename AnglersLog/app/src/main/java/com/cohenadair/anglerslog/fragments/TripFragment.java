@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.cohenadair.anglerslog.R;
+import com.cohenadair.anglerslog.activities.LayoutSpecActivity;
 import com.cohenadair.anglerslog.model.Logbook;
 
 import java.util.UUID;
@@ -31,19 +32,19 @@ public class TripFragment extends DetailFragment {
         if (Logbook.getCatchCount() <= 0) {
             mNameTextView.setText("There are 0 trips in your log.");
         } else
-            update(getRealActivity().getSelectionId());
+            update(getRealActivity());
 
         // Inflate the layout for this fragment
         return view;
     }
 
     @Override
-    public void update(UUID position) {
+    public void update(LayoutSpecActivity activity, UUID position) {
         mNameTextView.setText("Trip");
     }
 
     @Override
-    public void update() {
+    public void update(LayoutSpecActivity activity) {
 
     }
 }

@@ -129,7 +129,7 @@ public class MainActivity extends LayoutSpecActivity implements OnClickManageMen
 
         if (isTwoPane() && detailFragment != null)
             // update the right panel detail fragment
-            detailFragment.update(id);
+            detailFragment.update(this, id);
         else {
             // show the detail fragment
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();

@@ -32,8 +32,8 @@ public abstract class DetailFragment extends Fragment {
      * The method that updates the view using the object at the corresponding ListView position.
      * @param id the UUID of the clicked ListItem in the master view.
      */
-    public abstract void update(UUID id);
-    public abstract void update();
+    public abstract void update(LayoutSpecActivity activity, UUID id);
+    public abstract void update(LayoutSpecActivity activity);
 
     public DetailFragment() {
 

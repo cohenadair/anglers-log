@@ -1,5 +1,6 @@
 package com.cohenadair.anglerslog.utilities;
 
+import com.cohenadair.anglerslog.activities.LayoutSpecActivity;
 import com.cohenadair.anglerslog.fragments.DetailFragment;
 import com.cohenadair.anglerslog.fragments.ManageContentFragment;
 import com.cohenadair.anglerslog.fragments.ManageFragment;
@@ -125,9 +126,9 @@ public class LayoutSpec {
      * Updates the views for the master and detail fragments. This is called when changes were made
      * to the associated data sets.
      */
-    public void updateViews() {
+    public void updateViews(LayoutSpecActivity activity) {
         mMasterAdapter = mListener.onGetMasterAdapter();
-        mMasterFragment.update();
-        mDetailFragment.update();
+        mMasterFragment.update(activity);
+        mDetailFragment.update(activity);
     }
 }

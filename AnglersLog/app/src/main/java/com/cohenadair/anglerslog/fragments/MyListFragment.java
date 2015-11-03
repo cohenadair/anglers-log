@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.cohenadair.anglerslog.R;
+import com.cohenadair.anglerslog.activities.LayoutSpecActivity;
 
 /**
  * The fragment showing the list of catches.
@@ -48,7 +49,7 @@ public class MyListFragment extends MasterFragment {
             initRecyclerView(view);
         }
 
-        update();
+        update(getRealActivity());
 
         return view;
     }
@@ -75,8 +76,8 @@ public class MyListFragment extends MasterFragment {
      * Updates the UI.
      */
     @Override
-    public void update() {
-        mRecyclerView.setAdapter(getRealActivity().getMasterAdapter());
+    public void update(LayoutSpecActivity activity) {
+        mRecyclerView.setAdapter(activity.getMasterAdapter());
     }
 
     //region View Initializing

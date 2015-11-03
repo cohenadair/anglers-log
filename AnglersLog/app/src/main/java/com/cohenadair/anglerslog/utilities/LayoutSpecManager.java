@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.annotation.Nullable;
 
 import com.cohenadair.anglerslog.R;
+import com.cohenadair.anglerslog.activities.LayoutSpecActivity;
 import com.cohenadair.anglerslog.fragments.CatchFragment;
 import com.cohenadair.anglerslog.fragments.ManageCatchFragment;
 import com.cohenadair.anglerslog.fragments.MyListFragment;
@@ -59,7 +60,7 @@ public class LayoutSpecManager {
             @Override
             public void onUserDefineRemove(UUID id) {
                 Logbook.removeCatch(id);
-                spec.updateViews();
+                spec.updateViews((LayoutSpecActivity)context);
                 Utils.showToast(context, R.string.success_catch_delete);
             }
         });
