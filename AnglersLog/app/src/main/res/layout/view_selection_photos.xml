@@ -37,15 +37,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
-            <!--
-            <ImageView
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_marginTop="@dimen/spacing_small_half"
-                android:background="@android:color/black"
-                android:layout_marginRight="10dp"/>
-            -->
         </LinearLayout>
 
     </HorizontalScrollView>
+
 </LinearLayout>

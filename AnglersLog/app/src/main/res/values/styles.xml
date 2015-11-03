@@ -16,6 +16,13 @@
         <item name="android:windowNoTitle">true</item>
     </style>
 
+    <style name="Theme.FullScreen" parent="Theme.AnglersLog">
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
+
     <!-- Button Bars -->
     <style name="Widget.ButtonBar" parent="@android:style/DeviceDefault.ButtonBar">
         <item name="android:background">@android:color/white</item>
