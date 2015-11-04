@@ -1,4 +1,4 @@
-package com.cohenadair.anglerslog.fragments;
+package com.cohenadair.anglerslog.baits;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
@@ -15,6 +15,10 @@ import android.widget.TimePicker;
 
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.activities.MyListSelectionActivity;
+import com.cohenadair.anglerslog.fragments.DatePickerFragment;
+import com.cohenadair.anglerslog.fragments.ManageContentFragment;
+import com.cohenadair.anglerslog.fragments.ManagePrimitiveFragment;
+import com.cohenadair.anglerslog.fragments.TimePickerFragment;
 import com.cohenadair.anglerslog.model.Logbook;
 import com.cohenadair.anglerslog.model.user_defines.Catch;
 import com.cohenadair.anglerslog.model.user_defines.Species;
@@ -33,9 +37,9 @@ import java.util.Date;
 import java.util.UUID;
 
 /**
- * The ManageCatchFragment is used to add and edit catches.
+ * The ManageBaitFragment is used to add and edit baits.
  */
-public class ManageCatchFragment extends ManageContentFragment {
+public class ManageBaitFragment extends ManageContentFragment {
 
     private Catch mNewCatch;
 
@@ -46,7 +50,7 @@ public class ManageCatchFragment extends ManageContentFragment {
 
     private SelectPhotosView mSelectPhotosView;
 
-    public ManageCatchFragment() {
+    public ManageBaitFragment() {
         // Required empty public constructor
     }
 
@@ -253,10 +257,7 @@ public class ManageCatchFragment extends ManageContentFragment {
         mBaitView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getContext(), MyListSelectionActivity.class);
-                intent.putExtra(MyListSelectionActivity.EXTRA_LAYOUT_ID, LayoutSpecManager.LAYOUT_CATCHES);
-                intent.putExtra(MyListSelectionActivity.EXTRA_TWO_PANE, Utils.isTwoPane(getActivity()));
-                getParentFragment().startActivityForResult(intent, REQUEST_SELECTION);
+                startSelectionActivity(LayoutSpecManager.LAYOUT_BAITS);
             }
         });
     }
@@ -289,7 +290,7 @@ public class ManageCatchFragment extends ManageContentFragment {
 
         if (requestCode == REQUEST_SELECTION) {
             UUID id = UUID.fromString(data.getStringExtra(MyListSelectionActivity.EXTRA_SELECTED_ID));
-            Log.d("ManageCatchFragment", "Selected ID: " + id.toString());
+            Log.d("ManageBaitFragment", "Selected ID: " + id.toString());
             return;
         }
 

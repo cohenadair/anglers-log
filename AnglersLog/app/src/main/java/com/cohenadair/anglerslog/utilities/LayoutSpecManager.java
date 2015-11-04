@@ -5,8 +5,12 @@ import android.support.annotation.Nullable;
 
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.activities.LayoutSpecActivity;
-import com.cohenadair.anglerslog.fragments.CatchFragment;
-import com.cohenadair.anglerslog.fragments.ManageCatchFragment;
+import com.cohenadair.anglerslog.baits.BaitFragment;
+import com.cohenadair.anglerslog.baits.BaitListManager;
+import com.cohenadair.anglerslog.baits.ManageBaitFragment;
+import com.cohenadair.anglerslog.catches.CatchFragment;
+import com.cohenadair.anglerslog.catches.CatchListManager;
+import com.cohenadair.anglerslog.catches.ManageCatchFragment;
 import com.cohenadair.anglerslog.fragments.MyListFragment;
 import com.cohenadair.anglerslog.interfaces.OnClickInterface;
 import com.cohenadair.anglerslog.model.Logbook;
@@ -35,19 +39,22 @@ public class LayoutSpecManager {
      * Top level fragments that are normally displayed from the navigation drawer.
      */
     public static final int LAYOUT_CATCHES = R.id.nav_catches;
+    public static final int LAYOUT_BAITS = R.id.nav_baits;
 
     //region Layout Spec Definitions
     @Nullable
     public static LayoutSpec layoutSpec(Context context, int id) {
         switch (id) {
             case LAYOUT_CATCHES:
-                return getCatchesFragmentInfo(context);
+                return getCatchesLayoutSpec(context);
+            case LAYOUT_BAITS:
+                return getBaitsLayoutSpec(context);
         }
 
         return null;
     }
 
-    private static LayoutSpec getCatchesFragmentInfo(final Context context) {
+    private static LayoutSpec getCatchesLayoutSpec(final Context context) {
         final OnClickInterface onMasterItemClick = ((InteractionListener)context).getOnMyListFragmentItemClick();
         final LayoutSpec spec = new LayoutSpec("catches", "catch", "Catch");
 
@@ -69,6 +76,32 @@ public class LayoutSpecManager {
         spec.setMasterFragment(new MyListFragment());
         spec.setDetailFragment(new CatchFragment());
         spec.setManageFragment(new ManageCatchFragment());
+
+        return spec;
+    }
+
+    private static LayoutSpec getBaitsLayoutSpec(final Context context) {
+        final OnClickInterface onMasterItemClick = ((InteractionListener)context).getOnMyListFragmentItemClick();
+        final LayoutSpec spec = new LayoutSpec("baits", "bait", "Bait");
+
+        spec.setListener(new LayoutSpec.InteractionListener() {
+            @Override
+            public ListManager.Adapter onGetMasterAdapter() {
+                return new BaitListManager.Adapter(context, Logbook.getCatches(), onMasterItemClick);
+            }
+
+            @Override
+            public void onUserDefineRemove(UUID id) {
+                Logbook.removeCatch(id);
+                spec.updateViews((LayoutSpecActivity)context);
+                Utils.showToast(context, R.string.success_bait_delete);
+            }
+        });
+
+        spec.setId(LAYOUT_BAITS);
+        spec.setMasterFragment(new MyListFragment());
+        spec.setDetailFragment(new BaitFragment());
+        spec.setManageFragment(new ManageBaitFragment());
 
         return spec;
     }

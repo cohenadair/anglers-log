@@ -26,11 +26,13 @@
         <item
             android:id="@+id/nav_locations"
             android:title="@string/drawer_locations" />
+        -->
 
         <item
             android:id="@+id/nav_baits"
+            android:icon="@drawable/ic_bait"
             android:title="@string/drawer_baits" />
-        -->
+
     </group>
     <!--
     <group

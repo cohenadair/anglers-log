@@ -1,4 +1,4 @@
-package com.cohenadair.anglerslog.utilities;
+package com.cohenadair.anglerslog.baits;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -15,16 +15,18 @@ import com.cohenadair.anglerslog.interfaces.OnClickManageMenuListener;
 import com.cohenadair.anglerslog.model.Logbook;
 import com.cohenadair.anglerslog.model.user_defines.Catch;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
+import com.cohenadair.anglerslog.utilities.ListManager;
+import com.cohenadair.anglerslog.utilities.PhotoUtils;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.UUID;
 
 /**
- * The CatchListManager is a utility class for managing the catches list.
+ * The BaitListManager is a utility class for managing the catches list.
  * Created by Cohen Adair on 2015-10-05.
  */
-public class CatchListManager {
+public class BaitListManager {
 
     //region View Holder
     public static class ViewHolder extends ListManager.ViewHolder {
@@ -111,7 +113,7 @@ public class CatchListManager {
             super(context, items, callbacks);
         }
 
-        // can't be overridden in the superclass because it needs to return a CatchListManager.ViewHolder
+        // can't be overridden in the superclass because it needs to return a BaitListManager.ViewHolder
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             LayoutInflater inflater = LayoutInflater.from(getContext());

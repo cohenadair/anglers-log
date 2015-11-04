@@ -1,6 +1,10 @@
 package com.cohenadair.anglerslog.fragments;
 
+import android.content.Intent;
 import android.support.v4.app.Fragment;
+
+import com.cohenadair.anglerslog.activities.MyListSelectionActivity;
+import com.cohenadair.anglerslog.utilities.Utils;
 
 import java.util.UUID;
 
@@ -45,5 +49,12 @@ public abstract class ManageContentFragment extends Fragment {
 
     public UUID getEditingId() {
         return mEditingId;
+    }
+
+    public void startSelectionActivity(int layoutId) {
+        Intent intent = new Intent(getContext(), MyListSelectionActivity.class);
+        intent.putExtra(MyListSelectionActivity.EXTRA_LAYOUT_ID, layoutId);
+        intent.putExtra(MyListSelectionActivity.EXTRA_TWO_PANE, Utils.isTwoPane(getActivity()));
+        getParentFragment().startActivityForResult(intent, REQUEST_SELECTION);
     }
 }

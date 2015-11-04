@@ -14,7 +14,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.cohenadair.anglerslog.R;
-import com.cohenadair.anglerslog.fragments.ManageCatchFragment;
+import com.cohenadair.anglerslog.catches.ManageCatchFragment;
 import com.cohenadair.anglerslog.utilities.PhotoUtils;
 import com.cohenadair.anglerslog.utilities.Utils;
 

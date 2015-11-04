@@ -1,4 +1,4 @@
-package com.cohenadair.anglerslog.fragments;
+package com.cohenadair.anglerslog.baits;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.activities.LayoutSpecActivity;
 import com.cohenadair.anglerslog.activities.PhotoViewerActivity;
+import com.cohenadair.anglerslog.fragments.DetailFragment;
 import com.cohenadair.anglerslog.model.Logbook;
 import com.cohenadair.anglerslog.model.user_defines.Catch;
 import com.cohenadair.anglerslog.views.ImageScrollView;
@@ -20,7 +21,7 @@ import java.util.UUID;
 /**
  * A {@link DetailFragment} subclass used to show the details of a single catch.
  */
-public class CatchFragment extends DetailFragment {
+public class BaitFragment extends DetailFragment {
 
     private Catch mCatch;
     private ArrayList<String> mCatchPhotos;
@@ -29,7 +30,7 @@ public class CatchFragment extends DetailFragment {
     private TextView mSpeciesTextView;
     private TextView mDateTextView;
 
-    public CatchFragment() {
+    public BaitFragment() {
         // Required empty public constructor
     }
 

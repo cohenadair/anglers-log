@@ -173,7 +173,7 @@ public class MainActivity extends LayoutSpecActivity implements OnClickManageMen
 
     /**
      * Will open or display the manager view associated with the current master detail fragment.
-     * For example, when the Catches list is open, this method will display the ManageCatchFragment.
+     * For example, when the Catches list is open, this method will display the ManageBaitFragment.
      */
     private void goToListManagerView() {
         if (isTwoPane()) {

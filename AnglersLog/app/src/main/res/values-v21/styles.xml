@@ -3,6 +3,7 @@
     <!-- Base application theme. -->
     <style name="Theme.AnglersLog" parent="Base.Theme.AnglersLog">
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
     </style>
 
 </resources>
