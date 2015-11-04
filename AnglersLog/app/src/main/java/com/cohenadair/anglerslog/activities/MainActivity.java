@@ -15,6 +15,7 @@ import com.cohenadair.anglerslog.interfaces.OnClickInterface;
 import com.cohenadair.anglerslog.interfaces.OnClickManageMenuListener;
 import com.cohenadair.anglerslog.utilities.LayoutSpecManager;
 import com.cohenadair.anglerslog.utilities.NavigationManager;
+import com.cohenadair.anglerslog.utilities.PhotoUtils;
 import com.cohenadair.anglerslog.utilities.Utils;
 
 import java.util.UUID;
@@ -156,6 +157,7 @@ public class MainActivity extends LayoutSpecActivity implements OnClickManageMen
     //region ManageFragment.InteractionListener interface
     @Override
     public void onManageDismiss() {
+        PhotoUtils.cleanPhotosAsync();
         mNavigationManager.goBack();
         updateViews();
     }

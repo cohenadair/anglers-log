@@ -82,7 +82,7 @@ public class ManageCatchFragment extends ManageContentFragment {
                         mSelectPhotosView.addImage(PhotoUtils.privatePhotoPath(str));
                 }
 
-                mNewCatch = new Catch(oldCatch);
+                mNewCatch = new Catch(oldCatch, true);
             } else
                 mNewCatch = new Catch(new Date());
 
@@ -104,7 +104,9 @@ public class ManageCatchFragment extends ManageContentFragment {
     public boolean addObjectToLogbook() {
         boolean result = false;
 
-        if (verifyUserInput())
+        if (verifyUserInput()) {
+            mNewCatch.setPhotos(mSelectPhotosView.getImageNames());
+
             if (isEditing()) {
                 // edit catch
                 result = Logbook.editCatch(getEditingId(), mNewCatch);
@@ -116,6 +118,7 @@ public class ManageCatchFragment extends ManageContentFragment {
                 int msgId = result ? R.string.success_catch : R.string.error_catch;
                 Utils.showToast(getActivity(), msgId);
             }
+        }
 
         return result;
     }
@@ -230,7 +233,7 @@ public class ManageCatchFragment extends ManageContentFragment {
                 fragment.setOnDismissInterface(new ManagePrimitiveFragment.OnDismissInterface() {
                     @Override
                     public void onDismiss(UserDefineObject selectedItem) {
-                        mNewCatch.setSpecies((Species) selectedItem);
+                        mNewCatch.setSpecies((Species)selectedItem);
                         mSpeciesView.setSubtitle(mNewCatch.getSpeciesAsString());
                     }
                 });
@@ -265,16 +268,6 @@ public class ManageCatchFragment extends ManageContentFragment {
             @Override
             public void onStartSelectionActivity(Intent intent, int requestCode) {
                 getParentFragment().startActivityForResult(intent, requestCode);
-            }
-
-            @Override
-            public boolean onAddImage(String fileName) {
-                return mNewCatch.addPhoto(fileName);
-            }
-
-            @Override
-            public boolean onRemoveImage(String fileName) {
-                return mNewCatch.removePhoto(fileName);
             }
         });
     }

@@ -52,8 +52,6 @@ public class SelectPhotosView extends LinearLayout {
     public interface SelectPhotosInteraction {
         File onGetPhotoFile();
         void onStartSelectionActivity(Intent intent, int requestCode);
-        boolean onAddImage(String fileName);
-        boolean onRemoveImage(String fileName);
     }
 
     public SelectPhotosView(Context context) {
@@ -97,6 +95,15 @@ public class SelectPhotosView extends LinearLayout {
     public void setSelectPhotosInteraction(SelectPhotosInteraction onSavePhotoListener) {
         mSelectPhotosInteraction = onSavePhotoListener;
     }
+
+    public ArrayList<String> getImageNames() {
+        ArrayList<String> names = new ArrayList<>();
+
+        for (String path : mImagePaths)
+            names.add(new File(path).getName());
+
+        return names;
+    }
     //endregion
 
     private void openPhotoIntent(int takeOrAttach) {
@@ -129,10 +136,7 @@ public class SelectPhotosView extends LinearLayout {
         if (mPublicPhotoFile.exists())
             MediaScannerConnection.scanFile(getContext(), new String[]{mPublicPhotoFile.toString()}, null, null);
 
-        if (mSelectPhotosInteraction.onAddImage(mPrivatePhotoFile.getName()))
-            addImage(mPrivatePhotoFile.getPath());
-        else
-            Utils.showToast(getContext(), R.string.error_add_photo);
+        addImage(mPrivatePhotoFile.getPath());
     }
 
     public void addImage(String path) {
@@ -166,14 +170,9 @@ public class SelectPhotosView extends LinearLayout {
     }
 
     private void removeImage(ImageView img) {
-        String name = new File(mImagePaths.get(mImageViews.indexOf(img))).getName();
-
-        if (mSelectPhotosInteraction.onRemoveImage(name)) {
-            PhotoUtils.cleanPhotosAsync();
-            mImageViews.remove(img);
-            mPhotosWrapper.removeView(img);
-        } else
-            Utils.showToast(getContext(), R.string.error_remove_photo);
+        mImagePaths.remove(mImageViews.indexOf(img));
+        mImageViews.remove(img);
+        mPhotosWrapper.removeView(img);
     }
 
     private void updateImageMargins() {

@@ -420,6 +420,19 @@ public class PhotoUtils {
         thread.start();
     }
 
+    /**
+     * Cleans up cache files in another thread. See `cleanPhotos(...)`.
+     */
+    public static void cleanCacheAsync() {
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                cleanCache();
+            }
+        });
+        thread.start();
+    }
+
     //region Async Bitmap Utilities
     /**
      * This section was created from the Android tutorial,

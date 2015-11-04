@@ -30,8 +30,8 @@ public class Catch extends UserDefineObject {
         mDate = date;
     }
 
-    public Catch(Catch aCatch) {
-        super(aCatch);
+    public Catch(Catch aCatch, boolean keepId) {
+        super(aCatch, keepId);
         mDate = new Date(aCatch.getDate().getTime());
         mSpecies = new Species(aCatch.getSpecies(), true); // keep the EXACT same species
         mIsFavorite = aCatch.isFavorite();
@@ -99,8 +99,18 @@ public class Catch extends UserDefineObject {
         return getPhotos(getId());
     }
 
+    public void setPhotos(ArrayList<String> newPhotos) {
+        ArrayList<String> oldPhotos = getPhotos();
+
+        for (String oldPhoto : oldPhotos)
+            removePhoto(oldPhoto);
+
+        for (String newPhoto : newPhotos)
+            addPhoto(newPhoto);
+    }
+
     public ArrayList<String> getPhotos(UUID id) {
-        return QueryHelper.queryPhotos(CatchPhotoTable.NAME, CatchPhotoTable.Columns.NAME + " LIKE ?", new String[] { "%" + id.toString() + "%" });
+        return QueryHelper.queryPhotos(CatchPhotoTable.NAME, CatchPhotoTable.Columns.NAME + " LIKE ?", new String[]{"%" + id.toString() + "%"});
     }
 
     public boolean addPhoto(String fileName) {
@@ -108,7 +118,7 @@ public class Catch extends UserDefineObject {
     }
 
     public boolean removePhoto(String fileName) {
-        return Logbook.getDatabase().delete(CatchPhotoTable.NAME, CatchPhotoTable.Columns.NAME + " = ?", new String[] { fileName }) == 1;
+        return Logbook.getDatabase().delete(CatchPhotoTable.NAME, CatchPhotoTable.Columns.NAME + " = ?", new String[]{fileName}) == 1;
     }
 
     public int getPhotoCount() {
@@ -137,7 +147,8 @@ public class Catch extends UserDefineObject {
     public String getNextPhotoName(UUID id) {
         id = (id == null) ? getId() : id;
         ArrayList<String> photos = getPhotos(id);
-        int postfix = 0;
+        Random random = new Random();
+        int postfix = random.nextInt();
 
         while (true) {
             String name = "CATCH_" + id.toString() + "_" + postfix + ".jpg";
@@ -145,7 +156,7 @@ public class Catch extends UserDefineObject {
             if (photos.size() <= 0 || photos.indexOf(name) == -1)
                 return name;
 
-            postfix++;
+            postfix = random.nextInt();
         }
     }
     //endregion
