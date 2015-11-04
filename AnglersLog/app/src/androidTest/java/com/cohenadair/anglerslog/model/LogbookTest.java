@@ -72,10 +72,12 @@ public class LogbookTest {
     @Test
     public void testCloneCatch() {
         Catch testCatch = new Catch(new Date());
-        Catch clonedCatch = new Catch(testCatch);
+        Catch clonedCatch = new Catch(testCatch, false);
+        Catch clonedCatch2 = new Catch(testCatch, true);
 
         assertTrue(testCatch.getDate().equals(clonedCatch.getDate())); // equal dates
         assertFalse(testCatch.getId().equals(clonedCatch.getId()));
+        assertTrue(testCatch.getId().equals(clonedCatch2.getId()));
 
         testCatch.addPhoto("test.jpg");
         assertFalse(testCatch.getPhotoCount() == clonedCatch.getPhotoCount());

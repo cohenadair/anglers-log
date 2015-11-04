@@ -51,8 +51,8 @@ public class LogbookHelper extends SQLiteOpenHelper {
 
         db.execSQL("CREATE TABLE " + BaitTable.NAME + "(" +
             BaitTable.Columns.ID + " TEXT PRIMARY KEY NOT NULL, " +
-            BaitTable.Columns.NAME + " TEXT UNIQUE NOT NULL" +
-            BaitTable.Columns.CATEGORY_ID + " TEXT REFERENCES " + BaitCategoryTable.NAME + "(" + BaitCategoryTable.Columns.ID + "), " +
+            BaitTable.Columns.NAME + " TEXT UNIQUE NOT NULL, " +
+            BaitTable.Columns.CATEGORY_ID + " TEXT REFERENCES " + BaitCategoryTable.NAME + "(" + BaitCategoryTable.Columns.ID + ")" +
             ")"
         );
 
