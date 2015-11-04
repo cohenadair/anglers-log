@@ -32,6 +32,18 @@ public class LogbookSchema {
         public static final String NAME = "Species";
     }
 
+    public static final class BaitCategoryTable extends UserDefineTable {
+        public static final String NAME = "BaitCategory";
+    }
+
+    public static final class BaitTable extends UserDefineTable {
+        public static final String NAME = "Bait";
+
+        public static final class Columns extends UserDefineTable.Columns {
+            public static final String CATEGORY_ID = "categoryId";
+        }
+    }
+
     /**
      * An actual table isn't created here; used as a superclass to specific photo tables.
      */

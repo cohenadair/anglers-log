@@ -9,8 +9,11 @@ import android.util.Log;
 
 import com.cohenadair.anglerslog.database.LogbookHelper;
 import com.cohenadair.anglerslog.database.QueryHelper;
+import com.cohenadair.anglerslog.database.cursors.BaitCursor;
 import com.cohenadair.anglerslog.database.cursors.CatchCursor;
 import com.cohenadair.anglerslog.database.cursors.UserDefineCursor;
+import com.cohenadair.anglerslog.model.user_defines.Bait;
+import com.cohenadair.anglerslog.model.user_defines.BaitCategory;
 import com.cohenadair.anglerslog.model.user_defines.Catch;
 import com.cohenadair.anglerslog.model.user_defines.Species;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
@@ -21,6 +24,8 @@ import java.util.Date;
 import java.util.Random;
 import java.util.UUID;
 
+import static com.cohenadair.anglerslog.database.LogbookSchema.BaitCategoryTable;
+import static com.cohenadair.anglerslog.database.LogbookSchema.BaitTable;
 import static com.cohenadair.anglerslog.database.LogbookSchema.CatchPhotoTable;
 import static com.cohenadair.anglerslog.database.LogbookSchema.CatchTable;
 import static com.cohenadair.anglerslog.database.LogbookSchema.SpeciesTable;
@@ -127,7 +132,7 @@ public class Logbook {
     }
 
     public static boolean removeCatch(UUID id) {
-        return mDatabase.delete(CatchTable.NAME, CatchTable.Columns.ID + " = ?", new String[]{ id.toString() }) == 1;
+        return mDatabase.delete(CatchTable.NAME, CatchTable.Columns.ID + " = ?", new String[]{id.toString()}) == 1;
     }
 
     public static boolean editCatch(UUID id, Catch newCatch) {
@@ -190,6 +195,77 @@ public class Logbook {
 
     public static int getSpeciesCount() {
         return QueryHelper.queryCount(SpeciesTable.NAME);
+    }
+    //endregion
+
+    //region BaitCategory Manipulation
+    public static ArrayList<UserDefineObject> getBaitCategories() {
+        return QueryHelper.queryUserDefines(QueryHelper.queryUserDefines(BaitCategoryTable.NAME, null, null), null);
+    }
+
+    public static BaitCategory getBaitCategory(UUID id) {
+        return (BaitCategory)QueryHelper.queryUserDefine(BaitCategoryTable.NAME, id, null);
+    }
+
+    public static boolean baitCategoryExists(String name) {
+        return QueryHelper.queryHasResults(QueryHelper.queryUserDefines(BaitCategoryTable.NAME, BaitCategoryTable.Columns.NAME + " = ?", new String[]{ name }));
+    }
+
+    public static boolean addBaitCategory(BaitCategory baitCategory) {
+        return QueryHelper.insertUserDefine(BaitTable.NAME, baitCategory.getContentValues());
+    }
+
+    public static boolean removeBaitCategory(UUID id) {
+        return QueryHelper.deleteUserDefine(BaitCategoryTable.NAME, id);
+    }
+
+    public static boolean editBaitCategory(UUID id, BaitCategory newBaitCategory) {
+        return QueryHelper.updateUserDefine(BaitCategoryTable.NAME, newBaitCategory.getContentValues(), id);
+    }
+
+    public static int getBaitCategoryCount() {
+        return QueryHelper.queryCount(BaitCategoryTable.NAME);
+    }
+    //endregion
+
+    //region Bait Manipulation
+    public static ArrayList<UserDefineObject> getBaits() {
+        return QueryHelper.queryUserDefines(QueryHelper.queryBaits(null, null), new QueryHelper.UserDefineQueryInterface() {
+            @Override
+            public UserDefineObject getObject(UserDefineCursor cursor) {
+                return ((BaitCursor) cursor).getBait();
+            }
+        });
+    }
+
+    @Nullable
+    public static Bait getBait(UUID id) {
+        return (Bait)QueryHelper.queryUserDefine(BaitTable.NAME, id, new QueryHelper.UserDefineQueryInterface() {
+            @Override
+            public UserDefineObject getObject(UserDefineCursor cursor) {
+                return ((BaitCursor)cursor).getBait();
+            }
+        });
+    }
+
+    public static boolean baitExists(BaitCategory category, String name) {
+        return QueryHelper.queryHasResults(QueryHelper.queryBaits(BaitTable.Columns.CATEGORY_ID + " = ? AND " + BaitTable.Columns.NAME + " = ?", new String[]{ category.getId().toString(), name }));
+    }
+
+    public static boolean addBait(Bait bait) {
+        return QueryHelper.insertUserDefine(BaitTable.NAME, bait.getContentValues());
+    }
+
+    public static boolean removeBait(UUID id) {
+        return QueryHelper.deleteUserDefine(BaitTable.NAME, id);
+    }
+
+    public static boolean editBait(UUID id, Bait newBait) {
+        return QueryHelper.updateUserDefine(BaitTable.NAME, newBait.getContentValues(), id);
+    }
+
+    public static int getBaitCount() {
+        return QueryHelper.queryCount(BaitTable.NAME);
     }
     //endregion
 }

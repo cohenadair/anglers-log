@@ -85,11 +85,11 @@ public class LogbookTest {
     public void testAddRemovePhoto() {
         Catch testCatch = new Catch(new Date());
 
-        String fileName1 = testCatch.getNextPhotoName();
+        String fileName1 = testCatch.getNextPhotoName(testCatch.getId());
         testCatch.addPhoto(fileName1);
         assertTrue(testCatch.getPhotoCount() == 1);
 
-        String fileName2 = testCatch.getNextPhotoName();
+        String fileName2 = testCatch.getNextPhotoName(testCatch.getId());
         testCatch.addPhoto(fileName2);
         assertTrue(testCatch.getPhotoCount() == 2);
 
