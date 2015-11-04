@@ -16,7 +16,6 @@ import com.cohenadair.anglerslog.model.user_defines.Catch;
 import com.cohenadair.anglerslog.model.user_defines.Species;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.UUID;
@@ -36,17 +35,16 @@ public class Logbook {
     private static final String TAG = "Logbook";
 
     private static SQLiteDatabase mDatabase;
-    private static File mDatabaseFile;
+    private static Context mContext;
 
     private Logbook() { }
 
     public static void init(Context context) {
-        mDatabaseFile = context.getDatabasePath(LogbookHelper.DATABASE_NAME);
         init(context, new LogbookHelper(context).getWritableDatabase());
     }
 
     public static void init(Context context, SQLiteDatabase database) {
-        mDatabaseFile = context.getDatabasePath(LogbookHelper.DATABASE_NAME);
+        mContext = context;
         mDatabase = database;
         mDatabase.setForeignKeyConstraintsEnabled(true);
         QueryHelper.setDatabase(mDatabase);
@@ -57,13 +55,8 @@ public class Logbook {
     public static SQLiteDatabase getDatabase() {
         return mDatabase;
     }
-
-    public static File getDatabaseFile() {
-        return mDatabaseFile;
-    }
     //endregion
 
-    //region Miscellaneous
     /**
      * Gets a random Catch photo to use in the NavigationView.
      * @return A String representing a random photo name, or null if no photos exist.
@@ -77,9 +70,11 @@ public class Logbook {
 
         return photoNames.get(new Random().nextInt(photoNames.size()));
     }
-    //endregion
 
-    //region Catch Manipulation
+    /**
+     * Deletes all database entries for photos that aren't associated with any UserDefineObject
+     * instances.
+     */
     public static void cleanDatabasePhotos() {
         // TODO delete photos from BaitPhotoTable
 
@@ -91,6 +86,7 @@ public class Logbook {
         Log.i(TAG, "Deleted " + numDeleted + " photos from the database.");
     }
 
+    //region Catch Manipulation
     public static ArrayList<UserDefineObject> getCatches() {
         return QueryHelper.queryUserDefines(QueryHelper.queryCatches(null, null), new QueryHelper.UserDefineQueryInterface() {
             @Override
