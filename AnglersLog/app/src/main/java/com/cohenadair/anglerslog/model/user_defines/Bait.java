@@ -22,12 +22,18 @@ public class Bait extends UserDefineObject {
         super(bait);
     }
 
+    public Bait(Bait bait, boolean keepId) {
+        super(bait, keepId);
+        mCategory = new BaitCategory(bait.getCategory(), true);
+    }
+
     public Bait(UserDefineObject obj) {
         super(obj);
     }
 
-    public Bait(UserDefineObject obj, boolean keepId) {
-        super(obj, keepId);
+
+    public BaitCategory getCategory() {
+        return mCategory;
     }
 
     public void setCategory(BaitCategory category) {
@@ -38,7 +44,7 @@ public class Bait extends UserDefineObject {
         ContentValues values = super.getContentValues();
 
         if (mCategory != null)
-            values.put(BaitTable.Columns.CATEGORY_ID, mCategory.getId().toString());
+            values.put(BaitTable.Columns.CATEGORY_ID, mCategory.idAsString());
 
         return values;
     }

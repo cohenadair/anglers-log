@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
@@ -203,8 +204,9 @@ public class Logbook {
         return QueryHelper.queryUserDefines(QueryHelper.queryUserDefines(BaitCategoryTable.NAME, null, null), null);
     }
 
+    @NonNull
     public static BaitCategory getBaitCategory(UUID id) {
-        return (BaitCategory)QueryHelper.queryUserDefine(BaitCategoryTable.NAME, id, null);
+        return new BaitCategory(QueryHelper.queryUserDefine(BaitCategoryTable.NAME, id, null));
     }
 
     public static boolean baitCategoryExists(String name) {
@@ -212,7 +214,7 @@ public class Logbook {
     }
 
     public static boolean addBaitCategory(BaitCategory baitCategory) {
-        return QueryHelper.insertUserDefine(BaitTable.NAME, baitCategory.getContentValues());
+        return QueryHelper.insertUserDefine(BaitCategoryTable.NAME, baitCategory.getContentValues());
     }
 
     public static boolean removeBaitCategory(UUID id) {
@@ -233,26 +235,30 @@ public class Logbook {
         return QueryHelper.queryUserDefines(QueryHelper.queryBaits(null, null), new QueryHelper.UserDefineQueryInterface() {
             @Override
             public UserDefineObject getObject(UserDefineCursor cursor) {
-                return ((BaitCursor) cursor).getBait();
+                return new BaitCursor(cursor).getBait();
             }
         });
     }
 
-    @Nullable
+    @NonNull
     public static Bait getBait(UUID id) {
-        return (Bait)QueryHelper.queryUserDefine(BaitTable.NAME, id, new QueryHelper.UserDefineQueryInterface() {
+        return new Bait(QueryHelper.queryUserDefine(BaitTable.NAME, id, new QueryHelper.UserDefineQueryInterface() {
             @Override
             public UserDefineObject getObject(UserDefineCursor cursor) {
-                return ((BaitCursor)cursor).getBait();
+                return new BaitCursor(cursor).getBait();
             }
-        });
+        }));
     }
 
-    public static boolean baitExists(BaitCategory category, String name) {
-        return QueryHelper.queryHasResults(QueryHelper.queryBaits(BaitTable.Columns.CATEGORY_ID + " = ? AND " + BaitTable.Columns.NAME + " = ?", new String[]{ category.getId().toString(), name }));
+    public static boolean baitExists(Bait bait) {
+        return QueryHelper.queryHasResults(QueryHelper.queryBaits(BaitTable.Columns.CATEGORY_ID + " = ? AND " + BaitTable.Columns.NAME + " = ?", new String[]{ bait.getCategory().idAsString(), bait.getName() }));
     }
 
     public static boolean addBait(Bait bait) {
+        // add the Bait's BaitCategory if it doesn't already exist in the Logbook
+        if (!baitCategoryExists(bait.getCategory().getName()))
+            addBaitCategory(bait.getCategory());
+
         return QueryHelper.insertUserDefine(BaitTable.NAME, bait.getContentValues());
     }
 

@@ -6,14 +6,18 @@ import android.test.RenamingDelegatingContext;
 import android.util.Log;
 
 import com.cohenadair.anglerslog.database.LogbookHelper;
+import com.cohenadair.anglerslog.model.user_defines.Bait;
+import com.cohenadair.anglerslog.model.user_defines.BaitCategory;
 import com.cohenadair.anglerslog.model.user_defines.Catch;
 import com.cohenadair.anglerslog.model.user_defines.Species;
+import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 import static android.support.test.InstrumentationRegistry.getTargetContext;
@@ -137,4 +141,67 @@ public class LogbookTest {
     }
     //endregion
 
+    @Test
+    public void testBaitCategory() {
+        BaitCategory category0 = new BaitCategory("Stone Fly");
+        BaitCategory category1 = new BaitCategory("Minnow");
+        BaitCategory category2 = new BaitCategory(category1, true);
+        category2.setName("Woolly Bugger");
+
+        // add
+        assertTrue(Logbook.addBaitCategory(category1));
+        assertFalse(Logbook.addBaitCategory(category1));
+        assertTrue(Logbook.getBaitCategoryCount() == 1);
+
+        // edit
+        assertTrue(Logbook.editBaitCategory(category1.getId(), category2));
+        assertTrue(Logbook.baitCategoryExists(category2.getName()));
+
+        // get single
+        BaitCategory category3 = Logbook.getBaitCategory(category1.getId());
+        assertTrue(category3.getName().equals(category2.getName()));
+
+        // delete
+        assertTrue(Logbook.removeBaitCategory(category1.getId()));
+        assertTrue(Logbook.getBaitCategoryCount() == 0);
+
+        // get multiple
+        Logbook.addBaitCategory(category0);
+        Logbook.addBaitCategory(category1);
+        ArrayList<UserDefineObject> categories = Logbook.getBaitCategories();
+        assertTrue(categories.size() == 2);
+    }
+
+    @Test
+    public void testBait() {
+        BaitCategory bugger = new BaitCategory("Woolly Bugger");
+        Bait bait0 = new Bait("Pink", bugger);
+        Bait bait1 = new Bait("Olive", bugger);
+        Bait bait2 = new Bait(bait1, true);
+        bait2.setName("Black");
+
+        // add
+        assertTrue(Logbook.addBait(bait1));
+        assertFalse(Logbook.addBait(bait1));
+        assertTrue(Logbook.getBaitCategoryCount() == 1);
+        assertTrue(Logbook.getBaitCount() == 1);
+
+        // edit
+        assertTrue(Logbook.editBait(bait1.getId(), bait2));
+        assertTrue(Logbook.baitExists(bait2));
+
+        // get single
+        Bait bait3 = Logbook.getBait(bait1.getId());
+        assertTrue(bait3.getName().equals(bait2.getName()));
+
+        // delete
+        assertTrue(Logbook.removeBait(bait1.getId()));
+        assertTrue(Logbook.getBaitCount() == 0);
+
+        // get multiple
+        Logbook.addBait(bait0);
+        Logbook.addBait(bait1);
+        ArrayList<UserDefineObject> baits = Logbook.getBaits();
+        assertTrue(baits.size() == 2);
+    }
 }

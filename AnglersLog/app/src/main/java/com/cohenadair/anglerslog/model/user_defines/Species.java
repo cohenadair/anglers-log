@@ -6,8 +6,6 @@ package com.cohenadair.anglerslog.model.user_defines;
  */
 public class Species extends UserDefineObject {
 
-    private BaitCategory mCategory;
-
     public Species(String name) {
         super(name);
     }

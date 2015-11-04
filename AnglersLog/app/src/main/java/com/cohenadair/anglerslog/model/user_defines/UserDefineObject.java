@@ -72,6 +72,10 @@ public class UserDefineObject {
     }
     //endregion
 
+    public String idAsString() {
+        return mId.toString();
+    }
+
     public String toString() {
         return mName;
     }
