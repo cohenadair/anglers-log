@@ -18,8 +18,8 @@ public class UserDefineObject {
     private boolean mIsSelected; // used to show selection in RecyclerView layouts
 
     public UserDefineObject(String name) {
-        setId(UUID.randomUUID());
-        setName(name);
+        mId = UUID.randomUUID();
+        mName = name;
     }
 
     public UserDefineObject(UserDefineObject obj) {

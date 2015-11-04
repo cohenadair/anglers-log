@@ -33,8 +33,8 @@ public class Catch extends UserDefineObject {
     public Catch(Catch aCatch, boolean keepId) {
         super(aCatch, keepId);
         mDate = new Date(aCatch.getDate().getTime());
-        mSpecies = new Species(aCatch.getSpecies(), true); // keep the EXACT same species
         mIsFavorite = aCatch.isFavorite();
+        mSpecies = new Species(aCatch.getSpecies(), true); // keep the EXACT same species
     }
 
     public Catch(UserDefineObject obj) {
@@ -122,7 +122,7 @@ public class Catch extends UserDefineObject {
     }
 
     public int getPhotoCount() {
-        return QueryHelper.queryCount(CatchPhotoTable.NAME, CatchPhotoTable.Columns.USER_DEFINE_ID + " = ?", new String[] { getId().toString() });
+        return QueryHelper.queryCount(CatchPhotoTable.NAME, CatchPhotoTable.Columns.USER_DEFINE_ID + " = ?", new String[]{getId().toString()});
     }
 
     /**
@@ -166,9 +166,7 @@ public class Catch extends UserDefineObject {
 
         values.put(CatchTable.Columns.DATE, mDate.getTime());
         values.put(CatchTable.Columns.IS_FAVORITE, mIsFavorite ? 1 : 0);
-
-        if ((mSpecies != null))
-            values.put(CatchTable.Columns.SPECIES_ID, mSpecies.getId().toString());
+        values.put(CatchTable.Columns.SPECIES_ID, mSpecies.idAsString());
 
         return values;
     }

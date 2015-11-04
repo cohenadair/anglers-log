@@ -1,10 +1,7 @@
 package com.cohenadair.anglerslog.model;
 
 import android.content.Context;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
@@ -21,7 +18,6 @@ import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Random;
 import java.util.UUID;
 
@@ -96,49 +92,35 @@ public class Logbook {
     }
 
     public static ArrayList<UserDefineObject> getCatches() {
-        ArrayList<UserDefineObject> catches = new ArrayList<>();
-        CatchCursor cursor = QueryHelper.queryCatches(null, null);
-
-        if (cursor.moveToFirst())
-            while (!cursor.isAfterLast()) {
-                catches.add(cursor.getCatch());
-                cursor.moveToNext();
+        return QueryHelper.queryUserDefines(QueryHelper.queryCatches(null, null), new QueryHelper.UserDefineQueryInterface() {
+            @Override
+            public UserDefineObject getObject(UserDefineCursor cursor) {
+                return new CatchCursor(cursor).getCatch();
             }
-
-        cursor.close();
-        return catches;
+        });
     }
 
-    @Nullable
     public static Catch getCatch(UUID id) {
-        Catch aCatch = null;
-        CatchCursor cursor = QueryHelper.queryCatches(CatchTable.Columns.ID + " = ?", new String[] { id.toString() });
+        UserDefineObject obj = QueryHelper.queryUserDefine(CatchTable.NAME, id, new QueryHelper.UserDefineQueryInterface() {
+            @Override
+            public UserDefineObject getObject(UserDefineCursor cursor) {
+                return new CatchCursor(cursor).getCatch();
+            }
+        });
 
-        if (cursor.moveToFirst())
-            aCatch = cursor.getCatch();
-
-        cursor.close();
-        return aCatch;
-    }
-
-    public static boolean catchExists(Date date) {
-        Cursor cursor = QueryHelper.queryCatches(CatchTable.Columns.DATE + " = ?", new String[] { Long.toString(date.getTime()) });
-        boolean result = cursor.getCount() > 0;
-        cursor.close();
-        return result;
+        return (obj == null) ? null : (Catch)obj;
     }
 
     public static boolean addCatch(Catch aCatch) {
-        return mDatabase.insert(CatchTable.NAME, null, aCatch.getContentValues()) != -1;
+        return QueryHelper.insertUserDefine(CatchTable.NAME, aCatch.getContentValues());
     }
 
     public static boolean removeCatch(UUID id) {
-        return mDatabase.delete(CatchTable.NAME, CatchTable.Columns.ID + " = ?", new String[]{id.toString()}) == 1;
+        return QueryHelper.deleteUserDefine(CatchTable.NAME, id);
     }
 
     public static boolean editCatch(UUID id, Catch newCatch) {
-        newCatch.setId(id); // id needs to stay the same
-        return mDatabase.update(CatchTable.NAME, newCatch.getContentValues(), CatchTable.Columns.ID + " = ?", new String[] { id.toString() }) == 1;
+        return QueryHelper.updateUserDefine(CatchTable.NAME, newCatch.getContentValues(), id);
     }
 
     public static int getCatchCount() {
@@ -148,50 +130,24 @@ public class Logbook {
 
     //region Species Manipulation
     public static ArrayList<UserDefineObject> getSpecies() {
-        ArrayList<UserDefineObject> species = new ArrayList<>();
-        UserDefineCursor cursor = QueryHelper.queryUserDefines(SpeciesTable.NAME, null, null);
-
-        if (cursor.moveToFirst())
-            while (!cursor.isAfterLast()) {
-                species.add(cursor.getObject());
-                cursor.moveToNext();
-            }
-
-        cursor.close();
-        return species;
+        return QueryHelper.queryUserDefines(QueryHelper.queryUserDefines(SpeciesTable.NAME, null, null), null);
     }
 
-    @Nullable
     public static Species getSpecies(UUID id) {
-        Species species = null;
-        UserDefineCursor cursor = QueryHelper.queryUserDefines(SpeciesTable.NAME, SpeciesTable.Columns.ID + " = ?", new String[]{ id.toString() });
-
-        if (cursor.moveToFirst())
-            species = new Species(cursor.getObject(), true);
-
-        cursor.close();
-        return species;
+        UserDefineObject obj = QueryHelper.queryUserDefine(SpeciesTable.NAME, id, null);
+        return (obj == null) ? null : new Species(obj);
     }
 
     public static boolean addSpecies(Species species) {
-        return mDatabase.insert(SpeciesTable.NAME, null, species.getContentValues()) != -1;
+        return QueryHelper.insertUserDefine(SpeciesTable.NAME, species.getContentValues());
     }
 
     public static boolean removeSpecies(UUID id) {
-        boolean result = false;
-
-        try {
-            result = mDatabase.delete(SpeciesTable.NAME, SpeciesTable.Columns.ID + " = ?", new String[] { id.toString() }) == 1;
-        } catch (SQLiteConstraintException e) {
-            e.printStackTrace();
-        }
-
-        return result;
+        return QueryHelper.deleteUserDefine(SpeciesTable.NAME, id);
     }
 
     public static boolean editSpecies(UUID id, Species newSpecies) {
-        newSpecies.setId(id); // id needs to stay the same
-        return mDatabase.update(SpeciesTable.NAME, newSpecies.getContentValues(), SpeciesTable.Columns.ID + " = ?", new String[] { id.toString() }) == 1;
+        return QueryHelper.updateUserDefine(SpeciesTable.NAME, newSpecies.getContentValues(), id);
     }
 
     public static int getSpeciesCount() {
@@ -204,13 +160,9 @@ public class Logbook {
         return QueryHelper.queryUserDefines(QueryHelper.queryUserDefines(BaitCategoryTable.NAME, null, null), null);
     }
 
-    @NonNull
     public static BaitCategory getBaitCategory(UUID id) {
-        return new BaitCategory(QueryHelper.queryUserDefine(BaitCategoryTable.NAME, id, null));
-    }
-
-    public static boolean baitCategoryExists(String name) {
-        return QueryHelper.queryHasResults(QueryHelper.queryUserDefines(BaitCategoryTable.NAME, BaitCategoryTable.Columns.NAME + " = ?", new String[]{ name }));
+        UserDefineObject obj = QueryHelper.queryUserDefine(BaitCategoryTable.NAME, id, null);
+        return (obj == null) ? null : new BaitCategory(obj);
     }
 
     public static boolean addBaitCategory(BaitCategory baitCategory) {
@@ -240,25 +192,18 @@ public class Logbook {
         });
     }
 
-    @NonNull
     public static Bait getBait(UUID id) {
-        return new Bait(QueryHelper.queryUserDefine(BaitTable.NAME, id, new QueryHelper.UserDefineQueryInterface() {
+        UserDefineObject obj = QueryHelper.queryUserDefine(BaitTable.NAME, id, new QueryHelper.UserDefineQueryInterface() {
             @Override
             public UserDefineObject getObject(UserDefineCursor cursor) {
                 return new BaitCursor(cursor).getBait();
             }
-        }));
-    }
+        });
 
-    public static boolean baitExists(Bait bait) {
-        return QueryHelper.queryHasResults(QueryHelper.queryBaits(BaitTable.Columns.CATEGORY_ID + " = ? AND " + BaitTable.Columns.NAME + " = ?", new String[]{ bait.getCategory().idAsString(), bait.getName() }));
+        return (obj == null) ? null : (Bait)obj;
     }
 
     public static boolean addBait(Bait bait) {
-        // add the Bait's BaitCategory if it doesn't already exist in the Logbook
-        if (!baitCategoryExists(bait.getCategory().getName()))
-            addBaitCategory(bait.getCategory());
-
         return QueryHelper.insertUserDefine(BaitTable.NAME, bait.getContentValues());
     }
 

@@ -48,98 +48,80 @@ public class LogbookTest {
         Log.d("", "TearDown");
     }
 
-    //region Catch Tests
     @Test
-    public void testAddRemoveCatch() {
-        Catch testCatch = new Catch(new Date());
-        Catch testCatch2 = new Catch(testCatch.getDate()); // equal dates
+    public void testSpecies() {
+        Species species0 = new Species("Steelhead");
+        Species species1 = new Species("Bass");
+        Species species2 = new Species(species1, true);
+        species2.setName("Largemouth Bass");
 
-        Logbook.addCatch(testCatch);
-        assertTrue(Logbook.getCatchCount() == 1);
-
-        // a Catch with a duplicate date shouldn't be added
-        assertFalse(Logbook.addCatch(testCatch2));
-
-        assertTrue(Logbook.removeCatch(testCatch.getId()));
-        assertTrue(Logbook.getCatchCount() == 0);
-    }
-
-    @Test
-    public void testCatchExists() {
-        Catch testCatch = new Catch(new Date());
-        Date testDate = new Date(testCatch.getDate().getTime());
-
-        Logbook.addCatch(testCatch);
-        assertTrue(Logbook.catchExists(testDate));
-    }
-
-    @Test
-    public void testCloneCatch() {
-        Catch testCatch = new Catch(new Date());
-        Catch clonedCatch = new Catch(testCatch, false);
-        Catch clonedCatch2 = new Catch(testCatch, true);
-
-        assertTrue(testCatch.getDate().equals(clonedCatch.getDate())); // equal dates
-        assertFalse(testCatch.getId().equals(clonedCatch.getId()));
-        assertTrue(testCatch.getId().equals(clonedCatch2.getId()));
-
-        testCatch.addPhoto("test.jpg");
-        assertFalse(testCatch.getPhotoCount() == clonedCatch.getPhotoCount());
-    }
-
-    @Test
-    public void testAddRemovePhoto() {
-        Catch testCatch = new Catch(new Date());
-
-        String fileName1 = testCatch.getNextPhotoName(testCatch.getId());
-        testCatch.addPhoto(fileName1);
-        assertTrue(testCatch.getPhotoCount() == 1);
-
-        String fileName2 = testCatch.getNextPhotoName(testCatch.getId());
-        testCatch.addPhoto(fileName2);
-        assertTrue(testCatch.getPhotoCount() == 2);
-
-        testCatch.removePhoto(fileName1);
-        assertTrue(testCatch.getPhotoCount() == 1);
-
-        testCatch.removePhoto(fileName2);
-        assertTrue(testCatch.getPhotoCount() == 0);
-    }
-    //endregion
-
-    //region Species Tests
-    @Test
-    public void testAddRemoveSpecies() {
-        Species testSpecies = new Species("Example Species");
-        Species testSpecies2 = new Species(testSpecies.getName());
-
-        Logbook.addSpecies(testSpecies);
+        // add
+        assertTrue(Logbook.addSpecies(species1));
+        assertFalse(Logbook.addSpecies(species1));
         assertTrue(Logbook.getSpeciesCount() == 1);
 
-        assertTrue(Logbook.getSpecies(testSpecies.getId()) != null);
+        // edit
+        assertTrue(Logbook.editSpecies(species1.getId(), species2));
+        assertTrue(Logbook.getSpecies(species1.getId()) != null);
 
-        // a Species with a duplicate name shouldn't be added
-        assertFalse(Logbook.addSpecies(testSpecies2));
+        // get single
+        Species species3 = Logbook.getSpecies(species1.getId());
+        assertTrue(species3.getName().equals(species2.getName()));
 
-        Logbook.removeSpecies(testSpecies.getId());
+        // delete
+        assertTrue(Logbook.removeSpecies(species1.getId()));
         assertTrue(Logbook.getSpeciesCount() == 0);
+
+        // get multiple
+        Logbook.addSpecies(species0);
+        Logbook.addSpecies(species1);
+        ArrayList<UserDefineObject> species = Logbook.getSpecies();
+        assertTrue(species.size() == 2);
     }
 
     @Test
-    public void testEditSpecies() {
-        Species species1 = new Species("Bass");
-        Species species2 = new Species("Largemouth Bass");
-
-        // references aren't equal
-        assertFalse(species1 == species2);
-
+    public void testCatch() {
+        Species species0 = new Species("Bass");
+        Species species1 = new Species("Pike");
+        Logbook.addSpecies(species0);
         Logbook.addSpecies(species1);
-        Logbook.editSpecies(species1.getId(), species2);
 
-        // names are equal
-        assertTrue(Logbook.getSpecies(species1.getId()).getName().equals(species2.getName()));
+        Catch catch0 = new Catch(new Date());
+        catch0.setSpecies(species0);
+
+        Catch catch1 = new Catch(new Date(1444000000));
+        catch1.setSpecies(species1);
+
+        Catch catch2 = new Catch(catch1, true);
+        catch2.setDate(new Date(1444777000));
+        assertTrue(catch2.getId().equals(catch1.getId()));
+        assertTrue(catch2.getSpecies() != null);
+
+        // add
+        assertTrue(Logbook.addCatch(catch1));
+        assertFalse(Logbook.addCatch(catch1));
+        assertTrue(Logbook.getCatchCount() == 1);
+
+        // edit
+        assertTrue(Logbook.editCatch(catch1.getId(), catch2));
+        assertTrue(Logbook.getCatch(catch1.getId()) != null);
+        assertTrue(Logbook.getCatch(catch1.getId()).getDate().equals(catch2.getDate()));
+        assertTrue(Logbook.getCatch(catch1.getId()).getSpecies().getName().equals("Pike"));
+
+        // get single
+        Catch catch3 = Logbook.getCatch(catch1.getId());
+        assertTrue(catch3.getDate().equals(catch2.getDate()));
+
+        // delete
+        assertTrue(Logbook.removeCatch(catch1.getId()));
+        assertTrue(Logbook.getCatchCount() == 0);
+
+        // get multiple
+        Logbook.addCatch(catch0);
+        Logbook.addCatch(catch1);
+        ArrayList<UserDefineObject> catches = Logbook.getCatches();
+        assertTrue(catches.size() == 2);
     }
-    //endregion
 
     @Test
     public void testBaitCategory() {
@@ -155,7 +137,7 @@ public class LogbookTest {
 
         // edit
         assertTrue(Logbook.editBaitCategory(category1.getId(), category2));
-        assertTrue(Logbook.baitCategoryExists(category2.getName()));
+        assertTrue(Logbook.getBaitCategory(category1.getId()) != null);
 
         // get single
         BaitCategory category3 = Logbook.getBaitCategory(category1.getId());
@@ -175,24 +157,34 @@ public class LogbookTest {
     @Test
     public void testBait() {
         BaitCategory bugger = new BaitCategory("Woolly Bugger");
+        BaitCategory stone = new BaitCategory("Stone Fly");
+        Logbook.addBaitCategory(bugger);
+        Logbook.addBaitCategory(stone);
+
         Bait bait0 = new Bait("Pink", bugger);
         Bait bait1 = new Bait("Olive", bugger);
         Bait bait2 = new Bait(bait1, true);
         bait2.setName("Black");
+        bait2.setCategory(stone);
+        Bait bait3 = new Bait("Black", stone);
 
         // add
         assertTrue(Logbook.addBait(bait1));
         assertFalse(Logbook.addBait(bait1));
-        assertTrue(Logbook.getBaitCategoryCount() == 1);
         assertTrue(Logbook.getBaitCount() == 1);
+
+        // add same name, different category
+        assertTrue(Logbook.addBait(bait3));
+        assertTrue(Logbook.removeBait(bait3.getId()));
 
         // edit
         assertTrue(Logbook.editBait(bait1.getId(), bait2));
-        assertTrue(Logbook.baitExists(bait2));
+        assertTrue(Logbook.getBait(bait1.getId()) != null);
+        assertTrue(Logbook.getBait(bait1.getId()).getCategory().getName().equals("Stone Fly"));
 
         // get single
-        Bait bait3 = Logbook.getBait(bait1.getId());
-        assertTrue(bait3.getName().equals(bait2.getName()));
+        Bait bait4 = Logbook.getBait(bait1.getId());
+        assertTrue(bait4.getName() .equals(bait2.getName()));
 
         // delete
         assertTrue(Logbook.removeBait(bait1.getId()));

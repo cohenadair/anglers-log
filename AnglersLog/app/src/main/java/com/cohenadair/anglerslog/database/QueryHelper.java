@@ -4,7 +4,6 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.cohenadair.anglerslog.database.cursors.BaitCursor;
 import com.cohenadair.anglerslog.database.cursors.CatchCursor;
@@ -111,10 +110,8 @@ public class QueryHelper {
         UserDefineObject obj = null;
         UserDefineCursor cursor = QueryHelper.queryUserDefines(table, UserDefineTable.Columns.ID + " = ?", new String[]{ id.toString() });
 
-        if (cursor.moveToFirst()) {
-            obj = new UserDefineObject((callbacks == null) ? cursor.getObject() : callbacks.getObject(cursor));
-            Log.d("", "MovedToFirst()");
-        }
+        if (cursor.moveToFirst())
+            obj = (callbacks == null) ? cursor.getObject() : callbacks.getObject(cursor);
 
         cursor.close();
         return obj;

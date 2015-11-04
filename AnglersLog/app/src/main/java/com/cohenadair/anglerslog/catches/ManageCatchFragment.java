@@ -137,12 +137,6 @@ public class ManageCatchFragment extends ManageContentFragment {
      * @return True if the input is valid, false otherwise.
      */
     private boolean verifyUserInput() {
-        // date and time
-        if (Logbook.catchExists(mNewCatch.getDate()) && !isEditing()) {
-            Utils.showErrorAlert(getActivity(), R.string.error_catch_date);
-            return false;
-        }
-
         // species
         if (mNewCatch.getSpecies() == null) {
             Utils.showErrorAlert(getActivity(), R.string.error_catch_species);
