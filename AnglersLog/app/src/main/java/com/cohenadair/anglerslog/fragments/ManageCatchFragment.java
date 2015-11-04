@@ -123,6 +123,11 @@ public class ManageCatchFragment extends ManageContentFragment {
         return result;
     }
 
+    @Override
+    public void onDismiss() {
+        PhotoUtils.cleanPhotosAsync();
+    }
+
     /**
      * Validates the user's input.
      * @return True if the input is valid, false otherwise.

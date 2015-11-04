@@ -24,6 +24,11 @@ public abstract class ManageContentFragment extends Fragment {
      */
     public abstract boolean addObjectToLogbook();
 
+    /**
+     * Anything that needs to be cleaned up when the fragment is dismissed.
+     */
+    public abstract void onDismiss();
+
     @Override
     public void onPause() {
         super.onPause();

@@ -49,6 +49,7 @@ public class ManageFragment extends DialogFragment {
             @Override
             public void onClick(View v) {
                 mCallbacks.onManageDismiss();
+                mContentFragment.onDismiss();
                 closeDialog();
             }
         });
@@ -59,6 +60,7 @@ public class ManageFragment extends DialogFragment {
             public void onClick(View v) {
                 if (mContentFragment.addObjectToLogbook()) {
                     mCallbacks.onManageDismiss();
+                    mContentFragment.onDismiss();
                     closeDialog();
                 }
             }
