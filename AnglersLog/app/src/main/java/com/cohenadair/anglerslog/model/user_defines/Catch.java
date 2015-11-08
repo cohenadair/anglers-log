@@ -18,6 +18,7 @@ public class Catch extends PhotoUserDefineObject {
     private Species mSpecies;
     private boolean mIsFavorite;
 
+    //region Constructors
     public Catch(Date date) {
         super(date.toString(), CatchPhotoTable.NAME);
         mDate = date;
@@ -27,13 +28,14 @@ public class Catch extends PhotoUserDefineObject {
         super(aCatch, keepId);
         mDate = new Date(aCatch.getDate().getTime());
         mIsFavorite = aCatch.isFavorite();
-        mSpecies = new Species(aCatch.getSpecies(), true); // keep the EXACT same species
+        mSpecies = new Species(aCatch.getSpecies(), true);
     }
 
     public Catch(UserDefineObject obj) {
         super(obj);
         setPhotoTable(CatchPhotoTable.NAME);
     }
+    //endregion
 
     //region Getters & Setters
     public Date getDate() {

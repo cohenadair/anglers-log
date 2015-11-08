@@ -53,6 +53,10 @@ public class LogbookHelper extends SQLiteOpenHelper {
             BaitTable.Columns.ID + " TEXT PRIMARY KEY NOT NULL, " +
             BaitTable.Columns.NAME + " TEXT NOT NULL, " +
             BaitTable.Columns.CATEGORY_ID + " TEXT REFERENCES " + BaitCategoryTable.NAME + "(" + BaitCategoryTable.Columns.ID + "), " +
+            BaitTable.Columns.COLOR + " TEXT, " +
+            BaitTable.Columns.SIZE + " TEXT, " +
+            BaitTable.Columns.DESCRIPTION + " TEXT, " +
+            BaitTable.Columns.TYPE + " INTEGER, " +
             "UNIQUE(" + BaitTable.Columns.NAME + ", " + BaitTable.Columns.CATEGORY_ID + ")" +
             ")"
         );

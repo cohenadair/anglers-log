@@ -41,6 +41,10 @@ public class LogbookSchema {
 
         public static final class Columns extends UserDefineTable.Columns {
             public static final String CATEGORY_ID = "categoryId";
+            public static final String COLOR = "color";
+            public static final String SIZE = "size";
+            public static final String DESCRIPTION = "description";
+            public static final String TYPE = "type";
         }
     }
 
