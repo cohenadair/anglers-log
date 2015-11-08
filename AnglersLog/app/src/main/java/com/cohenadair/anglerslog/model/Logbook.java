@@ -49,6 +49,30 @@ public class Logbook {
         mDatabase.setForeignKeyConstraintsEnabled(true);
         QueryHelper.setDatabase(mDatabase);
         cleanDatabasePhotos();
+
+        setDefaults();
+    }
+
+    /**
+     * Set some default UserDefineObjects if there aren't any.
+     */
+    private static void setDefaults() {
+        if (getBaitCategoryCount() <= 0) {
+            Log.d(TAG, "Adding default bait category");
+
+            addBaitCategory(new BaitCategory("Woolly Bugger"));
+            addBaitCategory(new BaitCategory("Yarn Fly"));
+            addBaitCategory(new BaitCategory("Bead"));
+        }
+
+        if (getSpeciesCount() <= 0) {
+            Log.d(TAG, "Adding default species.");
+
+            addSpecies(new Species("Steelhead"));
+            addSpecies(new Species("Pike"));
+            addSpecies(new Species("Bass - Smallmouth"));
+            addSpecies(new Species("Salmon - Coho"));
+        }
     }
 
     //region Getters & Setters

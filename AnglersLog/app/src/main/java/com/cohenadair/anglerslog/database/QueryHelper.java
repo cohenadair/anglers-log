@@ -55,7 +55,7 @@ public class QueryHelper {
 
     @NonNull
     public static UserDefineCursor queryUserDefines(String table, String whereClause, String[] args) {
-        return new UserDefineCursor(mDatabase.query(table, null, whereClause, args, null, null, null));
+        return new UserDefineCursor(mDatabase.query(table, null, whereClause, args, null, null, UserDefineTable.Columns.NAME));
     }
 
     public static int queryCount(String table, String whereClause, String[] args) {

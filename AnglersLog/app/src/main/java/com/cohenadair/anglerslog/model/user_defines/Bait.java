@@ -92,8 +92,7 @@ public class Bait extends PhotoUserDefineObject {
         values.put(BaitTable.Columns.DESCRIPTION, mDescription);
         values.put(BaitTable.Columns.SIZE, mSize);
         values.put(BaitTable.Columns.TYPE, mType);
-        if (mCategory != null)
-            values.put(BaitTable.Columns.CATEGORY_ID, mCategory.idAsString());
+        values.put(BaitTable.Columns.CATEGORY_ID, mCategory.idAsString());
 
         return values;
     }

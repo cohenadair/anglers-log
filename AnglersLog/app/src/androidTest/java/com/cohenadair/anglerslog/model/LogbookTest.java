@@ -186,7 +186,7 @@ public class LogbookTest {
 
         // get single
         Bait bait4 = Logbook.getBait(bait1.getId());
-        assertTrue(bait4.getName() .equals(bait2.getName()));
+        assertTrue(bait4.getName().equals(bait2.getName()));
 
         // delete
         assertTrue(Logbook.removeBait(bait1.getId()));
