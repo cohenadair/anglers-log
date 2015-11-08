@@ -62,6 +62,12 @@ public class LogbookHelper extends SQLiteOpenHelper {
             CatchPhotoTable.Columns.NAME + " TEXT NOT NULL" +
             ")"
         );
+
+        db.execSQL("CREATE TABLE " + BaitPhotoTable.NAME + "(" +
+            BaitPhotoTable.Columns.USER_DEFINE_ID + " TEXT, " +
+            BaitPhotoTable.Columns.NAME + " TEXT NOT NULL" +
+            ")"
+        );
     }
 
     @Override

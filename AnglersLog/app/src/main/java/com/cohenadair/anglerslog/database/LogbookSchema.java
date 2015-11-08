@@ -55,6 +55,10 @@ public class LogbookSchema {
     }
 
     public static final class CatchPhotoTable extends PhotoTable {
-        public static final String NAME = "CatchPhotoTable";
+        public static final String NAME = "CatchPhoto";
+    }
+
+    public static final class BaitPhotoTable extends PhotoTable {
+        public static final String NAME = "BaitPhoto";
     }
 }

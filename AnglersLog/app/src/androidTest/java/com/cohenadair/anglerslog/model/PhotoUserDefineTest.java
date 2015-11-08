@@ -26,7 +26,7 @@ import static org.junit.Assert.assertTrue;
  * Created by Cohen Adair on 2015-11-04.
  */
 @RunWith(AndroidJUnit4.class)
-public class CatchTest {
+public class PhotoUserDefineTest {
 
     private SQLiteDatabase mDatabase;
     private Catch mTestCatch;
