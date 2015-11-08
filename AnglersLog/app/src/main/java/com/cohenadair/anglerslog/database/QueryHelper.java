@@ -79,18 +79,41 @@ public class QueryHelper {
         return result;
     }
 
-    public static ArrayList<String> queryPhotos(String table, String whereClause, String[] args) {
-        ArrayList<String> catches = new ArrayList<>();
-        Cursor cursor = mDatabase.query(table, new String[] { PhotoTable.Columns.NAME }, whereClause, args, null, null, null);
+    public static boolean queryBoolean(Cursor cursor, String column) {
+        boolean result = false;
+
+        if (cursor.moveToFirst())
+            result = cursor.getInt(cursor.getColumnIndex(column)) == 1;
+
+        cursor.close();
+        return result;
+    }
+
+    /**
+     * Gets photo names from the specified table and id. If id is null, returns all photos in the
+     * specified table.
+     *
+     * @param table The photo table to query.
+     * @param id The object id to query.
+     * @return An ArrayList<String> of photo names.
+     */
+    public static ArrayList<String> queryPhotos(String table, UUID id) {
+        ArrayList<String> photos = new ArrayList<>();
+        Cursor cursor;
+
+        if (id != null)
+            cursor = mDatabase.query(table, new String[] { PhotoTable.Columns.NAME }, PhotoTable.Columns.USER_DEFINE_ID + " = ?", new String[]{ id.toString() }, null, null, null);
+        else
+            cursor = mDatabase.query(table, new String[] { PhotoTable.Columns.NAME }, null, null, null, null, null);
 
         if (cursor.moveToFirst())
             while (!cursor.isAfterLast()) {
-                catches.add(cursor.getString(cursor.getColumnIndex(PhotoTable.Columns.NAME)));
+                photos.add(cursor.getString(cursor.getColumnIndex(PhotoTable.Columns.NAME)));
                 cursor.moveToNext();
             }
 
         cursor.close();
-        return catches;
+        return photos;
     }
 
     public static ArrayList<UserDefineObject> queryUserDefines(UserDefineCursor cursor, UserDefineQueryInterface callbacks) {
@@ -108,7 +131,7 @@ public class QueryHelper {
 
     public static UserDefineObject queryUserDefine(String table, UUID id, UserDefineQueryInterface callbacks) {
         UserDefineObject obj = null;
-        UserDefineCursor cursor = QueryHelper.queryUserDefines(table, UserDefineTable.Columns.ID + " = ?", new String[]{ id.toString() });
+        UserDefineCursor cursor = queryUserDefines(table, UserDefineTable.Columns.ID + " = ?", new String[]{ id.toString() });
 
         if (cursor.moveToFirst())
             obj = (callbacks == null) ? cursor.getObject() : callbacks.getObject(cursor);
@@ -117,15 +140,33 @@ public class QueryHelper {
         return obj;
     }
 
-    public static boolean insertUserDefine(String table, ContentValues contentValues) {
+    public static boolean insertQuery(String table, ContentValues contentValues) {
         return mDatabase.insert(table, null, contentValues) != -1;
     }
 
+    public static boolean deleteQuery(String table, String whereClause, String[] args) {
+        return mDatabase.delete(table, whereClause, args) == 1;
+    }
+
+    public static boolean updateQuery(String table, ContentValues newContentValues, String whereClause, String[] args) {
+        return mDatabase.update(table, newContentValues, whereClause, args) == 1;
+    }
+
     public static boolean deleteUserDefine(String table, UUID id) {
-        return mDatabase.delete(table, UserDefineTable.Columns.ID + " = ?", new String[]{ id.toString() }) == 1;
+        return deleteQuery(table, UserDefineTable.Columns.ID + " = ?", new String[]{ id.toString() });
     }
 
     public static boolean updateUserDefine(String table, ContentValues contentValues, UUID id) {
-        return mDatabase.update(table, contentValues, UserDefineTable.Columns.ID + " = ?", new String[] { id.toString() }) == 1;
+        return updateQuery(table, contentValues, UserDefineTable.Columns.ID + " = ?", new String[]{id.toString()});
     }
+
+    public static boolean deletePhoto(String table, String fileName) {
+        return deleteQuery(table, PhotoTable.Columns.NAME + " = ?", new String[]{fileName});
+    }
+
+    public static int photoCount(String table, UUID id) {
+        return queryCount(table, PhotoTable.Columns.USER_DEFINE_ID + " = ?", new String[]{ id.toString() });
+
+    }
+
 }

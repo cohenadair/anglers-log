@@ -1,11 +1,9 @@
 package com.cohenadair.anglerslog.model.user_defines;
 
 import android.content.ContentValues;
-import android.database.Cursor;
 import android.text.format.DateFormat;
 
 import com.cohenadair.anglerslog.database.QueryHelper;
-import com.cohenadair.anglerslog.model.Logbook;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -59,12 +57,6 @@ public class Catch extends UserDefineObject {
     }
 
     public boolean isFavorite() {
-        Cursor cursor = QueryHelper.queryCatches(new String[] { CatchTable.Columns.IS_FAVORITE }, CatchTable.Columns.ID + " = ?", new String[] { getId().toString() });
-
-        if (cursor.moveToFirst())
-            mIsFavorite = cursor.getInt(cursor.getColumnIndex(CatchTable.Columns.IS_FAVORITE)) == 1;
-
-        cursor.close();
         return mIsFavorite;
     }
 
@@ -110,19 +102,19 @@ public class Catch extends UserDefineObject {
     }
 
     public ArrayList<String> getPhotos(UUID id) {
-        return QueryHelper.queryPhotos(CatchPhotoTable.NAME, CatchPhotoTable.Columns.NAME + " LIKE ?", new String[]{"%" + id.toString() + "%"});
+        return QueryHelper.queryPhotos(CatchPhotoTable.NAME, id);
     }
 
     public boolean addPhoto(String fileName) {
-        return Logbook.getDatabase().insert(CatchPhotoTable.NAME, null, getPhotoContentValues(fileName)) != -1;
+        return QueryHelper.insertQuery(CatchPhotoTable.NAME, getPhotoContentValues(fileName));
     }
 
     public boolean removePhoto(String fileName) {
-        return Logbook.getDatabase().delete(CatchPhotoTable.NAME, CatchPhotoTable.Columns.NAME + " = ?", new String[]{fileName}) == 1;
+        return QueryHelper.deletePhoto(CatchPhotoTable.NAME, fileName);
     }
 
     public int getPhotoCount() {
-        return QueryHelper.queryCount(CatchPhotoTable.NAME, CatchPhotoTable.Columns.USER_DEFINE_ID + " = ?", new String[]{getId().toString()});
+        return QueryHelper.photoCount(CatchPhotoTable.NAME, getId());
     }
 
     /**
@@ -142,7 +134,7 @@ public class Catch extends UserDefineObject {
      * Generates a file name for the next photo to be added to the Catch's photos.
      * @param id The id to use for the name, or null to use this Catch's id. Useful for Catch
      *           editing.
-     * @return The file name as String. Example "IMG_<mId>_0.png".
+     * @return The file name as String. Example "IMG_<mId>_<aRandomNumber>.png".
      */
     public String getNextPhotoName(UUID id) {
         id = (id == null) ? getId() : id;
@@ -158,6 +150,14 @@ public class Catch extends UserDefineObject {
 
             postfix = random.nextInt();
         }
+    }
+
+    /**
+     * See {@link #getNextPhotoName(UUID)}
+     * @return A String representing a new photo file name for the Catch instance.
+     */
+    public String getNextPhotoName() {
+        return getNextPhotoName(getId());
     }
     //endregion
 

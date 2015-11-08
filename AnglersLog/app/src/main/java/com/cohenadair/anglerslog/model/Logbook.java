@@ -63,7 +63,7 @@ public class Logbook {
      */
     @Nullable
     public static String getRandomCatchPhoto() {
-        ArrayList<String> photoNames = QueryHelper.queryPhotos(CatchPhotoTable.NAME, null, null);
+        ArrayList<String> photoNames = QueryHelper.queryPhotos(CatchPhotoTable.NAME, null);
 
         if (photoNames.size() <= 0)
             return null;
@@ -108,7 +108,7 @@ public class Logbook {
     }
 
     public static boolean addCatch(Catch aCatch) {
-        return QueryHelper.insertUserDefine(CatchTable.NAME, aCatch.getContentValues());
+        return QueryHelper.insertQuery(CatchTable.NAME, aCatch.getContentValues());
     }
 
     public static boolean removeCatch(UUID id) {
@@ -135,7 +135,7 @@ public class Logbook {
     }
 
     public static boolean addSpecies(Species species) {
-        return QueryHelper.insertUserDefine(SpeciesTable.NAME, species.getContentValues());
+        return QueryHelper.insertQuery(SpeciesTable.NAME, species.getContentValues());
     }
 
     public static boolean removeSpecies(UUID id) {
@@ -162,7 +162,7 @@ public class Logbook {
     }
 
     public static boolean addBaitCategory(BaitCategory baitCategory) {
-        return QueryHelper.insertUserDefine(BaitCategoryTable.NAME, baitCategory.getContentValues());
+        return QueryHelper.insertQuery(BaitCategoryTable.NAME, baitCategory.getContentValues());
     }
 
     public static boolean removeBaitCategory(UUID id) {
@@ -200,7 +200,7 @@ public class Logbook {
     }
 
     public static boolean addBait(Bait bait) {
-        return QueryHelper.insertUserDefine(BaitTable.NAME, bait.getContentValues());
+        return QueryHelper.insertQuery(BaitTable.NAME, bait.getContentValues());
     }
 
     public static boolean removeBait(UUID id) {

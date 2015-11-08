@@ -3,7 +3,6 @@ package com.cohenadair.anglerslog.model;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.RenamingDelegatingContext;
-import android.util.Log;
 
 import com.cohenadair.anglerslog.database.LogbookHelper;
 import com.cohenadair.anglerslog.model.user_defines.Bait;
@@ -39,13 +38,11 @@ public class LogbookTest {
         context.deleteDatabase(LogbookHelper.DATABASE_NAME);
         mDatabase = new LogbookHelper(context).getWritableDatabase();
         Logbook.init(context, mDatabase);
-        Log.d("", "Setup");
     }
 
     @After
     public void tearDown() throws Exception {
         mDatabase.close();
-        Log.d("", "TearDown");
     }
 
     @Test
@@ -121,6 +118,11 @@ public class LogbookTest {
         Logbook.addCatch(catch1);
         ArrayList<UserDefineObject> catches = Logbook.getCatches();
         assertTrue(catches.size() == 2);
+
+        // random photo
+        assertTrue(Logbook.getRandomCatchPhoto() == null);
+        catch0.addPhoto("Test.jpg");
+        assertTrue(Logbook.getRandomCatchPhoto() != null);
     }
 
     @Test
