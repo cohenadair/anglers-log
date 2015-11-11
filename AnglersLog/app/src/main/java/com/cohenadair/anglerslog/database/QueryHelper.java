@@ -18,6 +18,8 @@ import static com.cohenadair.anglerslog.database.LogbookSchema.CatchTable;
 import static com.cohenadair.anglerslog.database.LogbookSchema.PhotoTable;
 import static com.cohenadair.anglerslog.database.LogbookSchema.UserDefineTable;
 
+// TODO finish documentation for this file
+
 /**
  * A class for easy database querying.
  * Created by Cohen Adair on 2015-10-24.

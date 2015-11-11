@@ -7,13 +7,9 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.activities.MainActivity;
-import com.cohenadair.anglerslog.model.Logbook;
 
 /**
  * A wrapper class to manage drawer navigation.
@@ -64,23 +60,7 @@ public class NavigationManager implements FragmentManager.OnBackStackChangedList
     }
 
     public void initHeaderView() {
-        View headerLayout = mNavigationView.inflateHeaderView(R.layout.navigation_header);
-        ImageView cover = (ImageView)headerLayout.findViewById(R.id.nav_header_cover);
-        final TextView title = (TextView)headerLayout.findViewById(R.id.nav_header_title);
-
-        cover.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
-            @Override
-            public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
-                v.removeOnLayoutChangeListener(this);
-
-                String randomPhoto = Logbook.getRandomCatchPhoto();
-                if (randomPhoto != null) {
-                    String path = PhotoUtils.privatePhotoPath(randomPhoto);
-                    PhotoUtils.photoToImageView((ImageView) v, path, v.getWidth(), v.getHeight());
-                    title.setVisibility(View.INVISIBLE);
-                }
-            }
-        });
+        mNavigationView.inflateHeaderView(R.layout.navigation_header);
     }
 
     public void showMenuButton() {

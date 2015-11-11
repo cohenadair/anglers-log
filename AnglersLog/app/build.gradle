@@ -32,4 +32,6 @@ dependencies {
     compile 'com.android.support:design:23.1.0'
     compile 'com.android.support:recyclerview-v7:23.1.0'
     compile 'com.google.android.gms:play-services-drive:8.1.0'
+
+    compile 'de.hdodenhof:circleimageview:2.0.0'
 }
