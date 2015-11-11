@@ -39,9 +39,17 @@ public class MainActivity extends LayoutSpecActivity implements OnClickManageMen
         mNavigationManager.setUp();
 
         // needs to be called after MainActivity's initialization code
-        showFragment();
+        // update the current layout
+        setLayoutSpec(LayoutSpecManager.layoutSpec(this, mNavigationManager.getCurrentLayoutId()));
+
+        // keep layout on orientation change
+        if (savedInstanceState == null)
+            showFragment();
     }
 
+    /**
+     * Needs to be implemented for children to receive onActivityResult calls.
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -67,9 +75,6 @@ public class MainActivity extends LayoutSpecActivity implements OnClickManageMen
     }
 
     public void showFragment() {
-        // update the current layout
-        setLayoutSpec(LayoutSpecManager.layoutSpec(this, mNavigationManager.getCurrentLayoutId()));
-
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
         // add left panel

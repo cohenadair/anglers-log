@@ -49,10 +49,12 @@ public class MyListSelectionActivity extends LayoutSpecActivity {
         }
 
         setLayoutSpec(LayoutSpecManager.layoutSpec(this, layoutId));
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.container, getMasterFragment())
-                .commit();
+
+        if (savedInstanceState == null)
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.container, getMasterFragment())
+                    .commit();
     }
 
     @Override
