@@ -78,6 +78,8 @@
     <string name="error_bait_edit">Error updating bait.</string>
     <string name="error_bait">Error adding bait!</string>
     <string name="error_bait_name">Please enter a name.</string>
+    <string name="error_bait_category">Please select a category.</string>
+    <string name="error_bait_category_name">A bait with that name and category already exists.</string>
 
     <string name="error_camera_unavailable">The camera is currently unavailable on this device.</string>
     <string name="error_delete_primitive">is currently being used and cannot be deleted.</string>

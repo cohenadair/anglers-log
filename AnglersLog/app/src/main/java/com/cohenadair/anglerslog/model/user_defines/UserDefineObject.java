@@ -19,7 +19,7 @@ public class UserDefineObject {
 
     public UserDefineObject(String name) {
         mId = UUID.randomUUID();
-        mName = name == null ? null : name;
+        mName = name;
     }
 
     public UserDefineObject(UserDefineObject obj) {
@@ -78,6 +78,10 @@ public class UserDefineObject {
 
     public String toString() {
         return mName;
+    }
+
+    public boolean isNameNull() {
+        return mName == null || mName.equals("");
     }
 
     public ContentValues getContentValues() {

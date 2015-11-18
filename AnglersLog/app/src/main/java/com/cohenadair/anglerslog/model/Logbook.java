@@ -1,6 +1,7 @@
 package com.cohenadair.anglerslog.model;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -224,6 +225,17 @@ public class Logbook {
         });
 
         return (obj == null) ? null : (Bait)obj;
+    }
+
+    /**
+     * Checks to see if the Bait already exists in the database.
+     *
+     * @param bait The Bait object to look for.
+     * @return True if the Bait exists; false otherwise.
+     */
+    public static boolean baitExists(Bait bait) {
+        Cursor cursor = mDatabase.query(BaitTable.NAME, null, BaitTable.Columns.CATEGORY_ID + " = ? AND " + BaitTable.Columns.NAME + " = ?", new String[] { bait.getCategoryId().toString(), bait.getName() }, null, null, null);
+        return QueryHelper.queryHasResults(cursor);
     }
 
     public static boolean addBait(Bait bait) {

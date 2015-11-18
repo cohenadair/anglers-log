@@ -178,6 +178,12 @@ public class LogbookTest {
         assertFalse(Logbook.addBait(bait1));
         assertTrue(Logbook.getBaitCount() == 1);
 
+        // exists
+        Bait dupBait = new Bait("Olive", bugger);
+        assertTrue(Logbook.baitExists(dupBait));
+        Bait dupBait2 = new Bait("White", stone);
+        assertFalse(Logbook.baitExists(dupBait2));
+
         // add same name, different category
         assertTrue(Logbook.addBait(bait3));
         assertTrue(Logbook.removeBait(bait3.getId()));

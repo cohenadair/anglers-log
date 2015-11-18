@@ -127,13 +127,23 @@ public class ManageBaitFragment extends ManageContentFragment {
      * @return True if the input is valid, false otherwise.
      */
     private boolean verifyUserInput() {
+        // category
+        if (mNewBait.getCategory() == null) {
+            Utils.showErrorAlert(getActivity(), R.string.error_bait_category);
+            return false;
+        }
+
         // name
-        if (mNewBait.getName() == null) {
-            Utils.showErrorAlert(getActivity(), R.string.error_catch_species);
+        if (mNewBait.isNameNull()) {
+            Utils.showErrorAlert(getActivity(), R.string.error_bait_name);
             return false;
         }
 
         // name and category combo
+        if (Logbook.baitExists(mNewBait)) {
+            Utils.showErrorAlert(getActivity(), R.string.error_bait_category_name);
+            return false;
+        }
 
         return true;
     }
