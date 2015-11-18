@@ -19,4 +19,8 @@ public class BaitCategory extends UserDefineObject {
         super(obj);
     }
 
+    public BaitCategory(UserDefineObject obj, boolean keepId) {
+        super(obj, keepId);
+    }
+
 }

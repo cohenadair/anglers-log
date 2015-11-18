@@ -41,6 +41,7 @@ public class Logbook {
 
     public static void init(Context context) {
         init(context, new LogbookHelper(context).getWritableDatabase());
+        setDefaults();
     }
 
     public static void init(Context context, SQLiteDatabase database) {
@@ -49,8 +50,10 @@ public class Logbook {
         mDatabase.setForeignKeyConstraintsEnabled(true);
         QueryHelper.setDatabase(mDatabase);
         cleanDatabasePhotos();
+    }
 
-        setDefaults();
+    public static void initForTesting(Context context, SQLiteDatabase database) {
+        init(context, database);
     }
 
     /**
@@ -155,7 +158,7 @@ public class Logbook {
 
     public static Species getSpecies(UUID id) {
         UserDefineObject obj = QueryHelper.queryUserDefine(SpeciesTable.NAME, id, null);
-        return (obj == null) ? null : new Species(obj);
+        return (obj == null) ? null : new Species(obj, true);
     }
 
     public static boolean addSpecies(Species species) {
@@ -182,7 +185,7 @@ public class Logbook {
 
     public static BaitCategory getBaitCategory(UUID id) {
         UserDefineObject obj = QueryHelper.queryUserDefine(BaitCategoryTable.NAME, id, null);
-        return (obj == null) ? null : new BaitCategory(obj);
+        return (obj == null) ? null : new BaitCategory(obj, true);
     }
 
     public static boolean addBaitCategory(BaitCategory baitCategory) {

@@ -1,0 +1,56 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/thumbnail_cell_size">
+
+    <ImageView
+        android:layout_width="@dimen/thumbnail_size"
+        android:layout_height="@dimen/thumbnail_size"
+        android:layout_gravity="center_vertical"
+        android:id="@+id/image_view"
+        android:src="@drawable/no_catch_photo"
+        android:contentDescription="@string/bait_photo_description"/>
+
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:gravity="center_vertical"
+            android:padding="@dimen/margin_default"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/Widget.TextView.Medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/bait"
+                android:id="@+id/name_label"/>
+
+            <TextView
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="0 Catches"
+                android:id="@+id/number_caught_label"/>
+
+        </LinearLayout>
+
+        <View
+            android:id="@+id/cell_separator"
+            android:layout_alignParentBottom="true"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="@dimen/margin_default"
+            android:layout_marginStart="@dimen/margin_default"
+            android:background="@color/light_grey"/>
+
+    </RelativeLayout>
+</LinearLayout>

@@ -1,0 +1,42 @@
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Category -->
+        <com.cohenadair.anglerslog.views.SelectionView
+            android:id="@+id/category_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            custom:titleText="@string/category"
+            custom:subtitleHint="@string/category_hint"/>
+
+        <include layout="@layout/view_divider"/>
+
+        <!-- Name -->
+        <com.cohenadair.anglerslog.views.TextInputView
+            android:id="@+id/name_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            custom:titleText="@string/name"
+            custom:editTextHint="@string/name_hint"/>
+
+        <include layout="@layout/view_divider"/>
+
+        <!-- Photos -->
+        <com.cohenadair.anglerslog.views.SelectPhotosView
+            android:id="@+id/select_photos_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            custom:maxPhotos="1"/>
+
+        <include layout="@layout/view_divider"/>
+
+    </LinearLayout>
+</ScrollView>

@@ -3,6 +3,7 @@ package com.cohenadair.anglerslog.views;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.TypedArray;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.provider.MediaStore;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.catches.ManageCatchFragment;
@@ -43,11 +45,13 @@ public class SelectPhotosView extends LinearLayout {
     private static final int PHOTO_TAKE = 1;
 
     private LinearLayout mPhotosWrapper;
+    private ImageButton mCameraButton;
     private ArrayList<ImageView> mImageViews = new ArrayList<>();
     private ArrayList<String> mImagePaths = new ArrayList<>();
     private SelectPhotosInteraction mSelectPhotosInteraction;
     private File mPrivatePhotoFile; // used to save a version of the photo used by this application
     private File mPublicPhotoFile; // used to save a full resolution version of the photo for the user
+    private int mMaxPhotos = -1;
 
     public interface SelectPhotosInteraction {
         File onGetPhotoFile();
@@ -56,21 +60,21 @@ public class SelectPhotosView extends LinearLayout {
 
     public SelectPhotosView(Context context) {
         this(context, null);
-        init();
+        init(null);
     }
 
     public SelectPhotosView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init();
+        init(attrs);
     }
 
-    private void init() {
+    private void init(AttributeSet attrs) {
         View view = inflate(getContext(), R.layout.view_selection_photos, this);
 
         mPhotosWrapper = (LinearLayout)view.findViewById(R.id.photos_wrapper);
 
-        ImageButton cameraButton = (ImageButton)view.findViewById(R.id.camera_button);
-        cameraButton.setOnClickListener(new OnClickListener() {
+        mCameraButton = (ImageButton)view.findViewById(R.id.camera_button);
+        mCameraButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 new AlertDialog.Builder(getContext())
@@ -89,6 +93,18 @@ public class SelectPhotosView extends LinearLayout {
                         .show();
             }
         });
+
+        if (attrs != null) {
+            TypedArray arr = getContext().getTheme().obtainStyledAttributes(attrs, R.styleable.SelectPhotosView, 0, 0);
+            try {
+                mMaxPhotos = arr.getInt(R.styleable.SelectPhotosView_maxPhotos, -1);
+            } finally {
+                arr.recycle();
+            }
+        }
+
+        TextView titleTextView = (TextView)view.findViewById(R.id.title_text_view);
+        titleTextView.setText(mMaxPhotos == 1 ? "Photo" : "Photos");
     }
 
     //region Getters & Setters
@@ -167,12 +183,22 @@ public class SelectPhotosView extends LinearLayout {
         updateImageMargins();
 
         mPhotosWrapper.addView(img);
+
+        // manage max photos
+        if (mMaxPhotos != -1)
+            if (mPhotosWrapper.getChildCount() >= mMaxPhotos)
+                mCameraButton.setEnabled(false);
     }
 
     private void removeImage(ImageView img) {
         mImagePaths.remove(mImageViews.indexOf(img));
         mImageViews.remove(img);
         mPhotosWrapper.removeView(img);
+
+        // manage max photos
+        if (mMaxPhotos != -1)
+            if (mPhotosWrapper.getChildCount() < mMaxPhotos)
+                mCameraButton.setEnabled(true);
     }
 
     private void updateImageMargins() {

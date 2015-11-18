@@ -21,7 +21,7 @@ import android.widget.TextView;
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.model.Logbook;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
-import com.cohenadair.anglerslog.utilities.PrimitiveController;
+import com.cohenadair.anglerslog.utilities.PrimitiveSpecManager;
 import com.cohenadair.anglerslog.utilities.PrimitiveSpec;
 import com.cohenadair.anglerslog.utilities.Utils;
 import com.cohenadair.anglerslog.utilities.WrappedLinearLayoutManager;
@@ -88,7 +88,7 @@ public class ManagePrimitiveFragment extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_manage_primitive, container, false);
 
-        mPrimitiveSpec = PrimitiveController.getSpec(getArguments().getInt(ARG_PRIMITIVE_ID));
+        mPrimitiveSpec = PrimitiveSpecManager.getSpec(getArguments().getInt(ARG_PRIMITIVE_ID));
 
         initViews(view);
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);

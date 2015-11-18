@@ -16,6 +16,11 @@
     <string name="species">Species</string>
     <string name="bait">Bait</string>
     <string name="date">Date</string>
+    <string name="category">Category</string>
+    <string name="name">Name</string>
+    <string name="color">Color</string>
+    <string name="size">Size</string>
+    <string name="description">Description</string>
 
     <string name="drawer_open">Open Navigation Drawer</string>
     <string name="drawer_close">Close Navigation Drawer</string>
@@ -36,6 +41,8 @@
 
     <string name="photos_hint">Tap to add photos</string>
     <string name="species_hint">Tap to add or select species</string>
+    <string name="category_hint">Tap to add or select a category</string>
+    <string name="name_hint">Enter a name</string>
     <string name="bait_hint">Tap to add or select bait</string>
     <string name="date_label">Date</string>
     <string name="time_label">Time</string>
@@ -62,7 +69,12 @@
     <string name="error_catch_date">A catch with that date and time already exists.  Please choose another date or edit the current catch.</string>
     <string name="error_catch_species">Please select a species.</string>
 
+    <string name="success_bait">Successfully added bait!</string>
     <string name="success_bait_delete">Successfully deleted bait.</string>
+    <string name="success_bait_edit">Successfully updated bait.</string>
+    <string name="error_bait_edit">Error updating bait.</string>
+    <string name="error_bait">Error adding bait!</string>
+    <string name="error_bait_name">Please enter a name.</string>
 
     <string name="error_camera_unavailable">The camera is currently unavailable on this device.</string>
     <string name="error_delete_primitive">is currently being used and cannot be deleted.</string>
@@ -73,6 +85,7 @@
     <string name="msg_delete_photo">Are you sure you want to delete this photo? This action cannot be undone.</string>
 
     <string name="catch_photo_description">A photo of the current catch.</string>
+    <string name="bait_photo_description">A photo of the current bait.</string>
     <string name="camera_icon_description">A button to take or attach a photo.</string>
     <string name="header_photo_description">A photo of one of the user\'s catches.</string>
 </resources>

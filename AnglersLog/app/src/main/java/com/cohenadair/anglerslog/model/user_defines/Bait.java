@@ -23,6 +23,10 @@ public class Bait extends PhotoUserDefineObject {
     private int mType;
 
     //region Constructors
+    public Bait() {
+        this(null, null);
+    }
+
     public Bait(String name, BaitCategory category) {
         super(name, BaitPhotoTable.NAME);
         mCategory = category;
@@ -39,6 +43,11 @@ public class Bait extends PhotoUserDefineObject {
 
     public Bait(UserDefineObject obj) {
         super(obj);
+        setPhotoTable(BaitPhotoTable.NAME);
+    }
+
+    public Bait(UserDefineObject obj, boolean keepId) {
+        super(obj, keepId);
         setPhotoTable(BaitPhotoTable.NAME);
     }
     //endregion
@@ -84,6 +93,10 @@ public class Bait extends PhotoUserDefineObject {
         mType = type;
     }
     //endregion
+
+    public String getCategoryName() {
+        return mCategory.getName();
+    }
 
     public ContentValues getContentValues() {
         ContentValues values = super.getContentValues();

@@ -40,7 +40,7 @@ public class MainActivity extends LayoutSpecActivity implements OnClickManageMen
 
         // needs to be called after MainActivity's initialization code
         // update the current layout
-        setLayoutSpec(LayoutSpecManager.layoutSpec(this, mNavigationManager.getCurrentLayoutId()));
+        updateLayoutSpec();
 
         // keep layout on orientation change
         if (savedInstanceState == null)
@@ -72,6 +72,10 @@ public class MainActivity extends LayoutSpecActivity implements OnClickManageMen
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void updateLayoutSpec() {
+        setLayoutSpec(LayoutSpecManager.layoutSpec(this, mNavigationManager.getCurrentLayoutId()));
     }
 
     public void showFragment() {

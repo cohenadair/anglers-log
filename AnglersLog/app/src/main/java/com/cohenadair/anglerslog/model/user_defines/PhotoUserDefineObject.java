@@ -32,6 +32,10 @@ public abstract class PhotoUserDefineObject extends UserDefineObject {
     public PhotoUserDefineObject(UserDefineObject obj) {
         super(obj);
     }
+
+    public PhotoUserDefineObject(UserDefineObject obj, boolean keepId) {
+        super(obj, keepId);
+    }
     //endregion
 
     //region Getters & Setters

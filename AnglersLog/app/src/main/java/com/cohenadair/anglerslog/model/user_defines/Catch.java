@@ -35,6 +35,11 @@ public class Catch extends PhotoUserDefineObject {
         super(obj);
         setPhotoTable(CatchPhotoTable.NAME);
     }
+
+    public Catch(UserDefineObject obj, boolean keepId) {
+        super(obj, keepId);
+        setPhotoTable(CatchPhotoTable.NAME);
+    }
     //endregion
 
     //region Getters & Setters

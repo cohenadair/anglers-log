@@ -54,6 +54,9 @@ public class Utils {
                 .show();
     }
 
+    // TODO wrap AlertDialog instances in a DialogFragment to properly handle rotation
+    // see http://stackoverflow.com/questions/7557265/prevent-dialog-dismissal-on-screen-rotation-in-android
+
     /**
      * An alert that shows managing options such as "Edit" and "Delete".
      * @param context The context in which to show the dialog.

@@ -24,7 +24,7 @@ public class BaitCursor extends UserDefineCursor {
     public Bait getBait() {
         String categoryId = getString(getColumnIndex(BaitTable.Columns.CATEGORY_ID));
 
-        Bait bait = new Bait(getObject());
+        Bait bait = new Bait(getObject(), true);
         bait.setCategory(Logbook.getBaitCategory(UUID.fromString(categoryId)));
 
         return bait;

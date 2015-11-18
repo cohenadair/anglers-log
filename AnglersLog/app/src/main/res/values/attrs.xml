@@ -1,7 +1,18 @@
 <resources>
+    <attr name="titleText" format="string" />
+
     <declare-styleable name="SelectionView">
-        <attr name="titleText" format="string" />
+        <attr name="titleText" />
         <attr name="subtitleText" format="string" />
         <attr name="subtitleHint" format="string" />
+    </declare-styleable>
+
+    <declare-styleable name="TextInputView">
+        <attr name="titleText" />
+        <attr name="editTextHint" format="string" />
+    </declare-styleable>
+
+    <declare-styleable name="SelectPhotosView">
+        <attr name="maxPhotos" format="integer" />
     </declare-styleable>
 </resources>

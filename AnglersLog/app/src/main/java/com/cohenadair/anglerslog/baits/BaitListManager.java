@@ -2,18 +2,16 @@ package com.cohenadair.anglerslog.baits;
 
 import android.content.Context;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.interfaces.OnClickInterface;
 import com.cohenadair.anglerslog.interfaces.OnClickManageMenuListener;
 import com.cohenadair.anglerslog.model.Logbook;
-import com.cohenadair.anglerslog.model.user_defines.Catch;
+import com.cohenadair.anglerslog.model.user_defines.Bait;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import com.cohenadair.anglerslog.utilities.ListManager;
 import com.cohenadair.anglerslog.utilities.PhotoUtils;
@@ -32,36 +30,21 @@ public class BaitListManager {
     public static class ViewHolder extends ListManager.ViewHolder {
 
         private ImageView mImageView;
-        private TextView mSpeciesTextView;
-        private TextView mDateTextView;
-        private RatingBar mFavorite;
+        private TextView mNameTextView;
+        private TextView mNumberCaughtTextView;
         private View mSeparator;
         private View mView;
 
-        private Catch mCatch;
+        private Bait mBait;
 
         public ViewHolder(View view, ListManager.Adapter adapter) {
             super(view, adapter);
 
             mView = view;
             mImageView = (ImageView)view.findViewById(R.id.image_view);
-            mSpeciesTextView = (TextView)view.findViewById(R.id.species_label);
-            mDateTextView = (TextView)view.findViewById(R.id.date_label);
+            mNameTextView = (TextView)view.findViewById(R.id.name_label);
+            mNumberCaughtTextView = (TextView)view.findViewById(R.id.number_caught_label);
             mSeparator = view.findViewById(R.id.cell_separator);
-
-            mFavorite = (RatingBar)view.findViewById(R.id.favorite_star);
-            mFavorite.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    // TODO make custom view for FavoriteStar
-                    if (event.getAction() == MotionEvent.ACTION_UP) {
-                        mFavorite.setRating(mFavorite.getRating() <= 0 ? (float) 1.0 : (float) 0.0);
-                        mCatch.setIsFavorite(mFavorite.getRating() > 0);
-                        Logbook.editCatch(mCatch.getId(), mCatch);
-                    }
-                    return true;
-                }
-            });
         }
 
         @Override
@@ -74,17 +57,16 @@ public class BaitListManager {
             ((OnClickManageMenuListener)context()).onClickMenuTrash(position);
         }
 
-        public void setCatch(Catch aCatch, int position) {
-            mCatch = aCatch;
+        public void setBait(Bait bait, int position) {
+            mBait = bait;
 
-            mSpeciesTextView.setText(aCatch.getSpeciesAsString());
-            mDateTextView.setText(aCatch.getDateTimeAsString());
-            mFavorite.setRating(mCatch.isFavorite() ? (float) 1.0 : (float) 0.0);
+            mNameTextView.setText(bait.getName());
+            mNumberCaughtTextView.setText("0 Catches"); // TODO get actual stats here
 
             // thumbnail stuff
             // if the image doesn't exist or can't be read, a default icon is shown
             boolean fileExists = false;
-            String randomPhoto = mCatch.getRandomPhoto();
+            String randomPhoto = bait.getRandomPhoto();
             String randomPhotoPath = "";
 
             if (randomPhoto != null)
@@ -101,7 +83,7 @@ public class BaitListManager {
 
             // hide the separator for the last row
             mSeparator.setVisibility((position == Logbook.getCatchCount() - 1) ? View.INVISIBLE : View.VISIBLE);
-            mView.setBackgroundResource(mCatch.isSelected() ? R.color.light_grey : android.R.color.transparent);
+            mView.setBackgroundResource(bait.isSelected() ? R.color.light_grey : android.R.color.transparent);
         }
     }
     //endregion
@@ -117,7 +99,7 @@ public class BaitListManager {
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             LayoutInflater inflater = LayoutInflater.from(getContext());
-            View view = inflater.inflate(R.layout.list_item_catch, parent, false);
+            View view = inflater.inflate(R.layout.list_item_bait, parent, false);
             return new ViewHolder(view, this);
         }
 
@@ -125,8 +107,8 @@ public class BaitListManager {
         public void onBindViewHolder(ListManager.ViewHolder holder, int position) {
             super.onBind(holder, position);
 
-            ViewHolder catchHolder = (ViewHolder)holder;
-            catchHolder.setCatch((Catch)getItem(position), position);
+            ViewHolder baitHolder = (ViewHolder)holder;
+            baitHolder.setBait((Bait)getItem(position), position);
         }
     }
     //endregion

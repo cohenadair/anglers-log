@@ -25,7 +25,7 @@ import com.cohenadair.anglerslog.model.user_defines.Species;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import com.cohenadair.anglerslog.utilities.LayoutSpecManager;
 import com.cohenadair.anglerslog.utilities.PhotoUtils;
-import com.cohenadair.anglerslog.utilities.PrimitiveController;
+import com.cohenadair.anglerslog.utilities.PrimitiveSpecManager;
 import com.cohenadair.anglerslog.utilities.Utils;
 import com.cohenadair.anglerslog.views.SelectPhotosView;
 import com.cohenadair.anglerslog.views.SelectionView;
@@ -231,7 +231,7 @@ public class ManageCatchFragment extends ManageContentFragment {
         mSpeciesView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final ManagePrimitiveFragment fragment = ManagePrimitiveFragment.newInstance(PrimitiveController.SPECIES);
+                final ManagePrimitiveFragment fragment = ManagePrimitiveFragment.newInstance(PrimitiveSpecManager.SPECIES);
 
                 fragment.setOnDismissInterface(new ManagePrimitiveFragment.OnDismissInterface() {
                     @Override

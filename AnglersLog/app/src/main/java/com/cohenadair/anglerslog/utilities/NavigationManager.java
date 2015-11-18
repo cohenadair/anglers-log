@@ -111,6 +111,7 @@ public class NavigationManager implements FragmentManager.OnBackStackChangedList
     private void onDrawerItemSelected(MenuItem menuItem) {
         mCurrentLayoutId = menuItem.getItemId();
         mCurrentTitle = menuItem.getTitle().toString();
+        mActivity.updateLayoutSpec();
         mActivity.showFragment();
         restoreActionBar();
 

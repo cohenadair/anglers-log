@@ -37,7 +37,7 @@ public class LogbookTest {
         RenamingDelegatingContext context = new RenamingDelegatingContext(getTargetContext(), "test_");
         context.deleteDatabase(LogbookHelper.DATABASE_NAME);
         mDatabase = new LogbookHelper(context).getWritableDatabase();
-        Logbook.init(context, mDatabase);
+        Logbook.initForTesting(context, mDatabase);
     }
 
     @After
@@ -63,6 +63,7 @@ public class LogbookTest {
 
         // get single
         Species species3 = Logbook.getSpecies(species1.getId());
+        assertTrue(species3.getId().equals(species2.getId()));
         assertTrue(species3.getName().equals(species2.getName()));
 
         // delete
@@ -107,6 +108,7 @@ public class LogbookTest {
 
         // get single
         Catch catch3 = Logbook.getCatch(catch1.getId());
+        assertTrue(catch3.getId().equals(catch1.getId()));
         assertTrue(catch3.getDate().equals(catch2.getDate()));
 
         // delete
@@ -143,6 +145,7 @@ public class LogbookTest {
 
         // get single
         BaitCategory category3 = Logbook.getBaitCategory(category1.getId());
+        assertTrue(category3.getId().equals(category2.getId()));
         assertTrue(category3.getName().equals(category2.getName()));
 
         // delete
@@ -186,6 +189,7 @@ public class LogbookTest {
 
         // get single
         Bait bait4 = Logbook.getBait(bait1.getId());
+        assertTrue(bait4.getId().equals(bait1.getId()));
         assertTrue(bait4.getName().equals(bait2.getName()));
 
         // delete

@@ -87,12 +87,12 @@ public class LayoutSpecManager {
         spec.setListener(new LayoutSpec.InteractionListener() {
             @Override
             public ListManager.Adapter onGetMasterAdapter() {
-                return new BaitListManager.Adapter(context, Logbook.getCatches(), onMasterItemClick);
+                return new BaitListManager.Adapter(context, Logbook.getBaits(), onMasterItemClick);
             }
 
             @Override
             public void onUserDefineRemove(UUID id) {
-                Logbook.removeCatch(id);
+                Logbook.removeBait(id);
                 spec.updateViews((LayoutSpecActivity)context);
                 Utils.showToast(context, R.string.success_bait_delete);
             }

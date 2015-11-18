@@ -1,8 +1,6 @@
 package com.cohenadair.anglerslog.baits;
 
 import android.app.Activity;
-import android.app.DatePickerDialog;
-import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,30 +8,24 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.DatePicker;
-import android.widget.TimePicker;
 
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.activities.MyListSelectionActivity;
-import com.cohenadair.anglerslog.fragments.DatePickerFragment;
 import com.cohenadair.anglerslog.fragments.ManageContentFragment;
 import com.cohenadair.anglerslog.fragments.ManagePrimitiveFragment;
-import com.cohenadair.anglerslog.fragments.TimePickerFragment;
 import com.cohenadair.anglerslog.model.Logbook;
-import com.cohenadair.anglerslog.model.user_defines.Catch;
-import com.cohenadair.anglerslog.model.user_defines.Species;
+import com.cohenadair.anglerslog.model.user_defines.Bait;
+import com.cohenadair.anglerslog.model.user_defines.BaitCategory;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
-import com.cohenadair.anglerslog.utilities.LayoutSpecManager;
 import com.cohenadair.anglerslog.utilities.PhotoUtils;
-import com.cohenadair.anglerslog.utilities.PrimitiveController;
+import com.cohenadair.anglerslog.utilities.PrimitiveSpecManager;
 import com.cohenadair.anglerslog.utilities.Utils;
 import com.cohenadair.anglerslog.views.SelectPhotosView;
 import com.cohenadair.anglerslog.views.SelectionView;
+import com.cohenadair.anglerslog.views.TextInputView;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.UUID;
 
 /**
@@ -41,13 +33,10 @@ import java.util.UUID;
  */
 public class ManageBaitFragment extends ManageContentFragment {
 
-    private Catch mNewCatch;
+    private Bait mNewBait;
 
-    private SelectionView mDateView;
-    private SelectionView mTimeView;
-    private SelectionView mSpeciesView;
-    private SelectionView mBaitView;
-
+    private SelectionView mCategoryView;
+    private TextInputView mNameView;
     private SelectPhotosView mSelectPhotosView;
 
     public ManageBaitFragment() {
@@ -56,11 +45,10 @@ public class ManageBaitFragment extends ManageContentFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_manage_catch, container, false);
+        View view = inflater.inflate(R.layout.fragment_manage_bait, container, false);
 
-        initDateTimeView(view);
-        initSpeciesView(view);
-        initBaitView(view);
+        initCategoryView(view);
+        initNameView(view);
         initSelectPhotosView(view);
 
         return view;
@@ -75,20 +63,20 @@ public class ManageBaitFragment extends ManageContentFragment {
         super.onResume();
 
         // do not initialize Catches if we were paused
-        if (mNewCatch == null)
+        if (mNewBait == null)
             if (isEditing()) {
-                Catch oldCatch = Logbook.getCatch(getEditingId());
+                Bait oldBait = Logbook.getBait(getEditingId());
 
-                if (oldCatch != null) {
+                if (oldBait != null) {
                     // populate the photos view with the existing photos
-                    ArrayList<String> photos = oldCatch.getPhotos();
+                    ArrayList<String> photos = oldBait.getPhotos();
                     for (String str : photos)
                         mSelectPhotosView.addImage(PhotoUtils.privatePhotoPath(str));
                 }
 
-                mNewCatch = new Catch(oldCatch, true);
+                mNewBait = new Bait(oldBait, true);
             } else
-                mNewCatch = new Catch(new Date());
+                mNewBait = new Bait();
 
         updateViews();
     }
@@ -101,7 +89,7 @@ public class ManageBaitFragment extends ManageContentFragment {
     @Override
     public void onDetach() {
         super.onDetach();
-        mNewCatch = null;
+        mNewBait = null;
     }
 
     @Override
@@ -109,17 +97,17 @@ public class ManageBaitFragment extends ManageContentFragment {
         boolean result = false;
 
         if (verifyUserInput()) {
-            mNewCatch.setPhotos(mSelectPhotosView.getImageNames());
+            mNewBait.setPhotos(mSelectPhotosView.getImageNames());
 
             if (isEditing()) {
-                // edit catch
-                result = Logbook.editCatch(getEditingId(), mNewCatch);
-                int msgId = result ? R.string.success_catch_edit : R.string.error_catch_edit;
+                // edit bait
+                result = Logbook.editBait(getEditingId(), mNewBait);
+                int msgId = result ? R.string.success_bait_edit : R.string.error_bait_edit;
                 Utils.showToast(getActivity(), msgId);
             } else {
                 // add catch
-                result = Logbook.addCatch(mNewCatch);
-                int msgId = result ? R.string.success_catch : R.string.error_catch;
+                result = Logbook.addBait(mNewBait);
+                int msgId = result ? R.string.success_bait : R.string.error_bait;
                 Utils.showToast(getActivity(), msgId);
             }
         }
@@ -137,8 +125,8 @@ public class ManageBaitFragment extends ManageContentFragment {
      * @return True if the input is valid, false otherwise.
      */
     private boolean verifyUserInput() {
-        // species
-        if (mNewCatch.getSpecies() == null) {
+        // name
+        if (mNewBait.getName() == null) {
             Utils.showErrorAlert(getActivity(), R.string.error_catch_species);
             return false;
         }
@@ -146,98 +134,26 @@ public class ManageBaitFragment extends ManageContentFragment {
         return true;
     }
 
-    //region Date & Time
-    private void initDateTimeView(View view) {
-        mDateView = (SelectionView)view.findViewById(R.id.date_layout);
-        mDateView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DatePickerFragment datePicker = new DatePickerFragment();
-                datePicker.setOnDateSetListener(new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                        updateCalendar();
-                        Calendar c = Calendar.getInstance();
-                        int hours = c.get(Calendar.HOUR_OF_DAY);
-                        int minutes = c.get(Calendar.MINUTE);
-                        c.set(year, monthOfYear, dayOfMonth, hours, minutes);
-                        updateDateView(c.getTime());
-                    }
-                });
-                datePicker.show(getFragmentManager(), "datePicker");
-            }
-        });
-
-        mTimeView = (SelectionView)view.findViewById(R.id.time_layout);
-        mTimeView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                TimePickerFragment timePicker = new TimePickerFragment();
-                timePicker.setOnTimeSetListener(new TimePickerDialog.OnTimeSetListener() {
-                    @Override
-                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                        updateCalendar();
-                        Calendar c = Calendar.getInstance();
-                        int year = c.get(Calendar.YEAR);
-                        int month = c.get(Calendar.MONTH);
-                        int day = c.get(Calendar.DAY_OF_MONTH);
-                        c.set(year, month, day, hourOfDay, minute);
-                        updateTimeView(c.getTime());
-                    }
-                });
-                timePicker.show(getFragmentManager(), "timePicker");
-            }
-        });
-    }
-
-    /**
-     * Updates the date view's text.
-     * @param date The date to display in the view. Only looks at the date portion.
-     */
-    private void updateDateView(Date date) {
-        mNewCatch.setDate(date);
-        mDateView.setSubtitle(mNewCatch.getDateAsString());
-    }
-
-    /**
-     * Updates the time view's text.
-     * @param date The date to display in the view. Only looks at the time portion.
-     */
-    private void updateTimeView(Date date) {
-        mNewCatch.setDate(date);
-        mTimeView.setSubtitle(mNewCatch.getTimeAsString());
-    }
-
     /**
      * Update the different views based on the current Catch object to display.
      */
     private void updateViews() {
-        mDateView.setSubtitle(mNewCatch.getDateAsString());
-        mTimeView.setSubtitle(mNewCatch.getTimeAsString());
-
-        mSpeciesView.setSubtitle(mNewCatch.getSpecies() != null ? mNewCatch.getSpeciesAsString() : "");
+        mCategoryView.setSubtitle(mNewBait.getName() != null ? mNewBait.getCategoryName() : "");
+        mNameView.setInputText(mNewBait.getName() != null ? mNewBait.getName() : "");
     }
 
-    /**
-     * Resets the calendar's time to the current catch's time.
-     */
-    private void updateCalendar() {
-        Calendar.getInstance().setTime(mNewCatch.getDate());
-    }
-    //endregion
-
-    private void initSpeciesView(View view) {
-        mSpeciesView = (SelectionView)view.findViewById(R.id.species_layout);
-        mSpeciesView.setOnClickListener(new View.OnClickListener() {
+    private void initCategoryView(View view) {
+        mCategoryView = (SelectionView)view.findViewById(R.id.category_layout);
+        mCategoryView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final ManagePrimitiveFragment fragment = ManagePrimitiveFragment.newInstance(PrimitiveController.SPECIES);
+                final ManagePrimitiveFragment fragment = ManagePrimitiveFragment.newInstance(PrimitiveSpecManager.BAIT_CATEGORY);
 
                 fragment.setOnDismissInterface(new ManagePrimitiveFragment.OnDismissInterface() {
                     @Override
                     public void onDismiss(UserDefineObject selectedItem) {
-                        mNewCatch.setSpecies((Species)selectedItem);
-                        mSpeciesView.setSubtitle(mNewCatch.getSpeciesAsString());
+                        mNewBait.setCategory((BaitCategory)selectedItem);
+                        mCategoryView.setSubtitle(mNewBait.getCategoryName());
                     }
                 });
 
@@ -246,14 +162,14 @@ public class ManageBaitFragment extends ManageContentFragment {
         });
     }
 
-    private void initBaitView(View view) {
-        mBaitView = (SelectionView)view.findViewById(R.id.bait_layout);
-        mBaitView.setOnClickListener(new View.OnClickListener() {
+    private void initNameView(View view) {
+        mNameView = (TextInputView)view.findViewById(R.id.name_layout);
+        mNameView.setOnEditTextChangeListener(new TextInputView.TextInputWatcher(new TextInputView.OnEditTextChangeListener() {
             @Override
-            public void onClick(View v) {
-                startSelectionActivity(LayoutSpecManager.LAYOUT_BAITS);
+            public void onTextChanged(String s) {
+                mNewBait.setName(s);
             }
-        });
+        }));
     }
 
     private void initSelectPhotosView(View view) {
@@ -262,7 +178,7 @@ public class ManageBaitFragment extends ManageContentFragment {
             @Override
             public File onGetPhotoFile() {
                 UUID id = isEditing() ? getEditingId() : null;
-                return PhotoUtils.privatePhotoFile(mNewCatch.getNextPhotoName(id));
+                return PhotoUtils.privatePhotoFile(mNewBait.getNextPhotoName(id));
             }
 
             @Override
