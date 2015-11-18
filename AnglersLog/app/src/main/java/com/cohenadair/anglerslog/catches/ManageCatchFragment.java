@@ -63,6 +63,8 @@ public class ManageCatchFragment extends ManageContentFragment {
         initBaitView(view);
         initSelectPhotosView(view);
 
+        initCatch();
+
         return view;
     }
 
@@ -76,19 +78,7 @@ public class ManageCatchFragment extends ManageContentFragment {
 
         // do not initialize Catches if we were paused
         if (mNewCatch == null)
-            if (isEditing()) {
-                Catch oldCatch = Logbook.getCatch(getEditingId());
-
-                if (oldCatch != null) {
-                    // populate the photos view with the existing photos
-                    ArrayList<String> photos = oldCatch.getPhotos();
-                    for (String str : photos)
-                        mSelectPhotosView.addImage(PhotoUtils.privatePhotoPath(str));
-                }
-
-                mNewCatch = new Catch(oldCatch, true);
-            } else
-                mNewCatch = new Catch(new Date());
+            initCatch();
 
         updateViews();
     }
@@ -130,6 +120,22 @@ public class ManageCatchFragment extends ManageContentFragment {
     @Override
     public void onDismiss() {
         PhotoUtils.cleanPhotosAsync();
+    }
+
+    private void initCatch() {
+        if (isEditing()) {
+            Catch oldCatch = Logbook.getCatch(getEditingId());
+
+            if (oldCatch != null) {
+                // populate the photos view with the existing photos
+                ArrayList<String> photos = oldCatch.getPhotos();
+                for (String str : photos)
+                    mSelectPhotosView.addImage(PhotoUtils.privatePhotoPath(str));
+            }
+
+            mNewCatch = new Catch(oldCatch, true);
+        } else
+            mNewCatch = new Catch(new Date());
     }
 
     /**

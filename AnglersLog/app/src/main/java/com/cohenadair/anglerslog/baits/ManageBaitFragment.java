@@ -1,13 +1,15 @@
 package com.cohenadair.anglerslog.baits;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.activities.MyListSelectionActivity;
@@ -38,6 +40,7 @@ public class ManageBaitFragment extends ManageContentFragment {
     private SelectionView mCategoryView;
     private TextInputView mNameView;
     private SelectPhotosView mSelectPhotosView;
+    private Spinner mTypeSpinner;
 
     public ManageBaitFragment() {
         // Required empty public constructor
@@ -50,46 +53,29 @@ public class ManageBaitFragment extends ManageContentFragment {
         initCategoryView(view);
         initNameView(view);
         initSelectPhotosView(view);
+        initSpinner(view);
+        initColorView(view);
+        initSizeView(view);
+        initDescriptionView(view);
+
+        initBait();
 
         return view;
     }
 
     /**
-     * Needed to initialize Catch and editing settings because there is ever only one instance of
+     * Needed to initialize Bait and editing settings because there is ever only one instance of
      * this fragment that is reused throughout the application's lifecycle.
      */
     @Override
     public void onResume() {
         super.onResume();
 
-        // do not initialize Catches if we were paused
+        // do not initialize Bait if we were paused
         if (mNewBait == null)
-            if (isEditing()) {
-                Bait oldBait = Logbook.getBait(getEditingId());
-
-                if (oldBait != null) {
-                    // populate the photos view with the existing photos
-                    ArrayList<String> photos = oldBait.getPhotos();
-                    for (String str : photos)
-                        mSelectPhotosView.addImage(PhotoUtils.privatePhotoPath(str));
-                }
-
-                mNewBait = new Bait(oldBait, true);
-            } else
-                mNewBait = new Bait();
+            initBait();
 
         updateViews();
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mNewBait = null;
     }
 
     @Override
@@ -120,6 +106,22 @@ public class ManageBaitFragment extends ManageContentFragment {
         PhotoUtils.cleanPhotosAsync();
     }
 
+    private void initBait() {
+        if (isEditing()) {
+            Bait oldBait = Logbook.getBait(getEditingId());
+
+            if (oldBait != null) {
+                // populate the photos view with the existing photos
+                ArrayList<String> photos = oldBait.getPhotos();
+                for (String str : photos)
+                    mSelectPhotosView.addImage(PhotoUtils.privatePhotoPath(str));
+            }
+
+            mNewBait = new Bait(oldBait, true);
+        } else
+            mNewBait = new Bait();
+    }
+
     /**
      * Validates the user's input.
      * @return True if the input is valid, false otherwise.
@@ -131,6 +133,8 @@ public class ManageBaitFragment extends ManageContentFragment {
             return false;
         }
 
+        // name and category combo
+
         return true;
     }
 
@@ -138,12 +142,13 @@ public class ManageBaitFragment extends ManageContentFragment {
      * Update the different views based on the current Catch object to display.
      */
     private void updateViews() {
-        mCategoryView.setSubtitle(mNewBait.getName() != null ? mNewBait.getCategoryName() : "");
+        mCategoryView.setSubtitle(mNewBait.getCategoryName() != null ? mNewBait.getCategoryName() : "");
         mNameView.setInputText(mNewBait.getName() != null ? mNewBait.getName() : "");
+        mTypeSpinner.setSelection(mNewBait.getType());
     }
 
     private void initCategoryView(View view) {
-        mCategoryView = (SelectionView)view.findViewById(R.id.category_layout);
+        mCategoryView = (SelectionView)view.findViewById(R.id.category_view);
         mCategoryView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -152,7 +157,7 @@ public class ManageBaitFragment extends ManageContentFragment {
                 fragment.setOnDismissInterface(new ManagePrimitiveFragment.OnDismissInterface() {
                     @Override
                     public void onDismiss(UserDefineObject selectedItem) {
-                        mNewBait.setCategory((BaitCategory)selectedItem);
+                        mNewBait.setCategory((BaitCategory) selectedItem);
                         mCategoryView.setSubtitle(mNewBait.getCategoryName());
                     }
                 });
@@ -163,11 +168,41 @@ public class ManageBaitFragment extends ManageContentFragment {
     }
 
     private void initNameView(View view) {
-        mNameView = (TextInputView)view.findViewById(R.id.name_layout);
+        mNameView = (TextInputView)view.findViewById(R.id.name_view);
         mNameView.setOnEditTextChangeListener(new TextInputView.TextInputWatcher(new TextInputView.OnEditTextChangeListener() {
             @Override
             public void onTextChanged(String s) {
                 mNewBait.setName(s);
+            }
+        }));
+    }
+
+    private void initColorView(View view) {
+        TextInputView colorView = (TextInputView)view.findViewById(R.id.color_view);
+        colorView.setOnEditTextChangeListener(new TextInputView.TextInputWatcher(new TextInputView.OnEditTextChangeListener() {
+            @Override
+            public void onTextChanged(String s) {
+                mNewBait.setColor(s);
+            }
+        }));
+    }
+
+    private void initSizeView(View view) {
+        TextInputView sizeView = (TextInputView)view.findViewById(R.id.size_view);
+        sizeView.setOnEditTextChangeListener(new TextInputView.TextInputWatcher(new TextInputView.OnEditTextChangeListener() {
+            @Override
+            public void onTextChanged(String s) {
+                mNewBait.setSize(s);
+            }
+        }));
+    }
+
+    private void initDescriptionView(View view) {
+        TextInputView descriptionView = (TextInputView)view.findViewById(R.id.description_view);
+        descriptionView.setOnEditTextChangeListener(new TextInputView.TextInputWatcher(new TextInputView.OnEditTextChangeListener() {
+            @Override
+            public void onTextChanged(String s) {
+                mNewBait.setDescription(s);
             }
         }));
     }
@@ -184,6 +219,25 @@ public class ManageBaitFragment extends ManageContentFragment {
             @Override
             public void onStartSelectionActivity(Intent intent, int requestCode) {
                 getParentFragment().startActivityForResult(intent, requestCode);
+            }
+        });
+    }
+
+    private void initSpinner(View view) {
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(), R.array.bait_types, R.layout.list_item_spinner);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        mTypeSpinner = (Spinner)view.findViewById(R.id.type_spinner);
+        mTypeSpinner.setAdapter(adapter);
+        mTypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                mNewBait.setType(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
             }
         });
     }

@@ -20,7 +20,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
-                custom:titleText="@string/date_label"
+                custom:titleText="@string/date"
                 custom:subtitleText="May 22, 2015"/>
 
             <com.cohenadair.anglerslog.views.SelectionView
@@ -28,7 +28,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                custom:titleText="@string/time_label"
+                custom:titleText="@string/time"
                 custom:subtitleText="6:00 AM"/>
 
         </LinearLayout>

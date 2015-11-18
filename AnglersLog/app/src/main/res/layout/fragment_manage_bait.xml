@@ -2,7 +2,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:custom="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -11,7 +12,7 @@
 
         <!-- Category -->
         <com.cohenadair.anglerslog.views.SelectionView
-            android:id="@+id/category_layout"
+            android:id="@+id/category_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             custom:titleText="@string/category"
@@ -21,7 +22,7 @@
 
         <!-- Name -->
         <com.cohenadair.anglerslog.views.TextInputView
-            android:id="@+id/name_layout"
+            android:id="@+id/name_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             custom:titleText="@string/name"
@@ -37,6 +38,64 @@
             custom:maxPhotos="1"/>
 
         <include layout="@layout/view_divider"/>
+
+        <!-- Type -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_default"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/Widget.TextView.Header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/title_text_view"
+                android:text="@string/type"/>
+
+            <Spinner
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/type_spinner"/>
+
+        </LinearLayout>
+
+        <include layout="@layout/view_divider"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <!-- Color -->
+            <com.cohenadair.anglerslog.views.TextInputView
+                android:id="@+id/color_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                custom:titleText="@string/color"
+                custom:editTextHint="@string/color_hint"/>
+
+            <!-- Size -->
+            <com.cohenadair.anglerslog.views.TextInputView
+                android:id="@+id/size_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                custom:titleText="@string/size"
+                custom:editTextHint="@string/size_hint"/>
+
+        </LinearLayout>
+
+        <include layout="@layout/view_divider"/>
+
+        <!-- Description -->
+        <com.cohenadair.anglerslog.views.TextInputView
+            android:id="@+id/description_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            custom:titleText="@string/description"
+            custom:editTextHint="@string/description_hint"/>
 
     </LinearLayout>
 </ScrollView>

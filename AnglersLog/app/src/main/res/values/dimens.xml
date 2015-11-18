@@ -1,7 +1,8 @@
 <resources>
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="margin_default">16dp</dimen>
-    <dimen name="margin_edit_text_offset">13dp</dimen>
+    <dimen name="margin_edit_text_offset">12dp</dimen>
+    <dimen name="margin_spinner_offset">8dp</dimen>
     <dimen name="margin_half">8dp</dimen>
     <dimen name="margin_quarter">4dp</dimen>
     <dimen name="margin_three_quarters">12dp</dimen>

@@ -19,7 +19,7 @@ public class UserDefineObject {
 
     public UserDefineObject(String name) {
         mId = UUID.randomUUID();
-        mName = name;
+        mName = name == null ? null : name;
     }
 
     public UserDefineObject(UserDefineObject obj) {

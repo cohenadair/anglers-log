@@ -1,0 +1,8 @@
+<resources>
+    <!-- Correspond to constants found in Bait.java -->
+    <string-array name="bait_types">
+        <item>Artificial</item>
+        <item>Live</item>
+        <item>Real</item>
+    </string-array>
+</resources>

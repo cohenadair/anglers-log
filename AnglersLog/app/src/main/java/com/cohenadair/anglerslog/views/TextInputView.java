@@ -38,7 +38,7 @@ public class TextInputView extends LinearLayout {
         mEditText = (EditText)findViewById(R.id.edit_text);
 
         if (attrs != null) {
-            TypedArray arr = getContext().getTheme().obtainStyledAttributes(attrs, R.styleable.SelectionView, 0, 0);
+            TypedArray arr = getContext().getTheme().obtainStyledAttributes(attrs, R.styleable.TextInputView, 0, 0);
             try {
                 mTitle.setText(arr.getString(R.styleable.TextInputView_titleText));
                 mEditText.setHint(arr.getString(R.styleable.TextInputView_editTextHint));

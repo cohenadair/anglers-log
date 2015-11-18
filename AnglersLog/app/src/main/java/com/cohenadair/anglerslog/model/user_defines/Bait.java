@@ -12,6 +12,9 @@ import static com.cohenadair.anglerslog.database.LogbookSchema.BaitTable;
  */
 public class Bait extends PhotoUserDefineObject {
 
+    /**
+     * Correspond to resources array in bait_types.xml.
+     */
     public static final int TYPE_ARTIFICIAL = 0;
     public static final int TYPE_LIVE = 1;
     public static final int TYPE_REAL = 2;
@@ -20,7 +23,7 @@ public class Bait extends PhotoUserDefineObject {
     private String mColor;
     private String mSize;
     private String mDescription;
-    private int mType;
+    private int mType = 0;
 
     //region Constructors
     public Bait() {
@@ -95,7 +98,9 @@ public class Bait extends PhotoUserDefineObject {
     //endregion
 
     public String getCategoryName() {
-        return mCategory.getName();
+        if (mCategory != null)
+            return mCategory.getName();
+        return null;
     }
 
     public ContentValues getContentValues() {

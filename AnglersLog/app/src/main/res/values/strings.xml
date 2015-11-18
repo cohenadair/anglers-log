@@ -16,11 +16,14 @@
     <string name="species">Species</string>
     <string name="bait">Bait</string>
     <string name="date">Date</string>
+    <string name="time">Time</string>
     <string name="category">Category</string>
     <string name="name">Name</string>
     <string name="color">Color</string>
     <string name="size">Size</string>
     <string name="description">Description</string>
+    <string name="type">Type</string>
+    <string name="location">Location</string>
 
     <string name="drawer_open">Open Navigation Drawer</string>
     <string name="drawer_close">Close Navigation Drawer</string>
@@ -44,9 +47,9 @@
     <string name="category_hint">Tap to add or select a category</string>
     <string name="name_hint">Enter a name</string>
     <string name="bait_hint">Tap to add or select bait</string>
-    <string name="date_label">Date</string>
-    <string name="time_label">Time</string>
-    <string name="location_label">Location</string>
+    <string name="color_hint">Enter a color</string>
+    <string name="size_hint">Enter a size</string>
+    <string name="description_hint">Enter a description</string>
 
     <string name="hint_new_item">Enter new</string>
     <string name="new_text">New</string>

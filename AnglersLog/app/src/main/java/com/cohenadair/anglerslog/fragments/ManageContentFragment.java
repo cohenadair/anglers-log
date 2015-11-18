@@ -33,11 +33,6 @@ public abstract class ManageContentFragment extends Fragment {
      */
     public abstract void onDismiss();
 
-    @Override
-    public void onPause() {
-        super.onPause();
-    }
-
     public boolean isEditing() {
         return mIsEditing;
     }
