@@ -1,9 +1,6 @@
 package com.cohenadair.anglerslog.baits;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,38 +9,35 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
 import com.cohenadair.anglerslog.R;
-import com.cohenadair.anglerslog.activities.MyListSelectionActivity;
 import com.cohenadair.anglerslog.fragments.ManageContentFragment;
 import com.cohenadair.anglerslog.fragments.ManagePrimitiveFragment;
 import com.cohenadair.anglerslog.model.Logbook;
 import com.cohenadair.anglerslog.model.user_defines.Bait;
 import com.cohenadair.anglerslog.model.user_defines.BaitCategory;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
-import com.cohenadair.anglerslog.utilities.PhotoUtils;
 import com.cohenadair.anglerslog.utilities.PrimitiveSpecManager;
 import com.cohenadair.anglerslog.utilities.Utils;
-import com.cohenadair.anglerslog.views.SelectPhotosView;
 import com.cohenadair.anglerslog.views.SelectionView;
 import com.cohenadair.anglerslog.views.TextInputView;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.UUID;
 
 /**
  * The ManageBaitFragment is used to add and edit baits.
  */
 public class ManageBaitFragment extends ManageContentFragment {
 
-    private Bait mNewBait;
-
     private SelectionView mCategoryView;
     private TextInputView mNameView;
-    private SelectPhotosView mSelectPhotosView;
+    private TextInputView mColorView;
+    private TextInputView mSizeView;
+    private TextInputView mDescriptionView;
     private Spinner mTypeSpinner;
 
     public ManageBaitFragment() {
         // Required empty public constructor
+    }
+
+    private Bait getNewBait() {
+        return (Bait)getNewObject();
     }
 
     @Override
@@ -58,89 +52,69 @@ public class ManageBaitFragment extends ManageContentFragment {
         initSizeView(view);
         initDescriptionView(view);
 
-        initBait();
+        initSubclassObject();
 
         return view;
     }
 
-    /**
-     * Needed to initialize Bait and editing settings because there is ever only one instance of
-     * this fragment that is reused throughout the application's lifecycle.
-     */
     @Override
-    public void onResume() {
-        super.onResume();
-
-        // do not initialize Bait if we were paused
-        if (mNewBait == null)
-            initBait();
-
-        updateViews();
-    }
-
-    @Override
-    public boolean addObjectToLogbook() {
-        boolean result = false;
-
-        if (verifyUserInput()) {
-            mNewBait.setPhotos(mSelectPhotosView.getImageNames());
-
-            if (isEditing()) {
-                // edit bait
-                result = Logbook.editBait(getEditingId(), mNewBait);
-                int msgId = result ? R.string.success_bait_edit : R.string.error_bait_edit;
-                Utils.showToast(getActivity(), msgId);
-            } else {
-                // add catch
-                result = Logbook.addBait(mNewBait);
-                int msgId = result ? R.string.success_bait : R.string.error_bait;
-                Utils.showToast(getActivity(), msgId);
-            }
-        }
-
-        return result;
-    }
-
-    @Override
-    public void onDismiss() {
-        PhotoUtils.cleanPhotosAsync();
-    }
-
-    private void initBait() {
-        if (isEditing()) {
-            Bait oldBait = Logbook.getBait(getEditingId());
-
-            if (oldBait != null) {
-                // populate the photos view with the existing photos
-                ArrayList<String> photos = oldBait.getPhotos();
-                for (String str : photos)
-                    mSelectPhotosView.addImage(PhotoUtils.privatePhotoPath(str));
+    public ManageObjectSpec getManageObjectSpec() {
+        return new ManageObjectSpec(R.string.error_bait, R.string.success_bait, R.string.error_bait_edit, R.string.success_bait_edit, new ManageInterface() {
+            @Override
+            public boolean onEdit() {
+                return Logbook.editBait(getEditingId(), getNewBait());
             }
 
-            mNewBait = new Bait(oldBait, true);
-        } else
-            mNewBait = new Bait();
+            @Override
+            public boolean onAdd() {
+                return Logbook.addBait(getNewBait());
+            }
+        });
     }
 
-    /**
-     * Validates the user's input.
-     * @return True if the input is valid, false otherwise.
-     */
-    private boolean verifyUserInput() {
+    @Override
+    public void initSubclassObject() {
+        initObject(new InitializeInterface() {
+            @Override
+            public UserDefineObject onGetOldObject() {
+                return Logbook.getBait(getEditingId());
+            }
+
+            @Override
+            public UserDefineObject onGetNewEditObject(UserDefineObject oldObject) {
+                return new Bait((Bait)oldObject, true);
+            }
+
+            @Override
+            public UserDefineObject onGetNewBlankObject() {
+                return new Bait();
+            }
+        });
+    }
+
+    @Override
+    public boolean verifyUserInput() {
+        // category is set in the SelectionView interface
+        // type is set in the Spinner interface
+        getNewBait().setName(mNameView.getInputText());
+        getNewBait().setSize(mSizeView.getInputText());
+        getNewBait().setColor(mColorView.getInputText());
+        getNewBait().setDescription(mDescriptionView.getInputText());
+
         // category
-        if (mNewBait.getCategory() == null) {
+        if (getNewBait().getCategory() == null) {
             Utils.showErrorAlert(getActivity(), R.string.error_bait_category);
             return false;
         }
 
         // name
-        if (mNewBait.isNameNull()) {
+        if (getNewBait().isNameNull()) {
             Utils.showErrorAlert(getActivity(), R.string.error_bait_name);
             return false;
         }
 
         // name and category combo
-        if (Logbook.baitExists(mNewBait)) {
+        if (!isEditing() && Logbook.baitExists(getNewBait())) {
             Utils.showErrorAlert(getActivity(), R.string.error_bait_category_name);
             return false;
         }
@@ -148,13 +122,14 @@ public class ManageBaitFragment extends ManageContentFragment {
         return true;
     }
 
-    /**
-     * Update the different views based on the current Catch object to display.
-     */
-    private void updateViews() {
-        mCategoryView.setSubtitle(mNewBait.getCategoryName() != null ? mNewBait.getCategoryName() : "");
-        mNameView.setInputText(mNewBait.getName() != null ? mNewBait.getName() : "");
-        mTypeSpinner.setSelection(mNewBait.getType());
+    @Override
+    public void updateViews() {
+        mCategoryView.setSubtitle(getNewBait().getCategoryName() != null ? getNewBait().getCategoryName() : "");
+        mNameView.setInputText(getNewBait().getName() != null ? getNewBait().getName() : "");
+        mColorView.setInputText(getNewBait().getColor() != null ? getNewBait().getColor() : "");
+        mSizeView.setInputText(getNewBait().getSize() != null ? getNewBait().getSize() : "");
+        mDescriptionView.setInputText(getNewBait().getDescription() != null ? getNewBait().getDescription() : "");
+        mTypeSpinner.setSelection(getNewBait().getType());
     }
 
     private void initCategoryView(View view) {
@@ -167,8 +142,8 @@ public class ManageBaitFragment extends ManageContentFragment {
                 fragment.setOnDismissInterface(new ManagePrimitiveFragment.OnDismissInterface() {
                     @Override
                     public void onDismiss(UserDefineObject selectedItem) {
-                        mNewBait.setCategory((BaitCategory) selectedItem);
-                        mCategoryView.setSubtitle(mNewBait.getCategoryName());
+                        getNewBait().setCategory((BaitCategory) selectedItem);
+                        mCategoryView.setSubtitle(getNewBait().getCategoryName());
                     }
                 });
 
@@ -179,58 +154,18 @@ public class ManageBaitFragment extends ManageContentFragment {
 
     private void initNameView(View view) {
         mNameView = (TextInputView)view.findViewById(R.id.name_view);
-        mNameView.setOnEditTextChangeListener(new TextInputView.TextInputWatcher(new TextInputView.OnEditTextChangeListener() {
-            @Override
-            public void onTextChanged(String s) {
-                mNewBait.setName(s);
-            }
-        }));
     }
 
     private void initColorView(View view) {
-        TextInputView colorView = (TextInputView)view.findViewById(R.id.color_view);
-        colorView.setOnEditTextChangeListener(new TextInputView.TextInputWatcher(new TextInputView.OnEditTextChangeListener() {
-            @Override
-            public void onTextChanged(String s) {
-                mNewBait.setColor(s);
-            }
-        }));
+        mColorView = (TextInputView)view.findViewById(R.id.color_view);
     }
 
     private void initSizeView(View view) {
-        TextInputView sizeView = (TextInputView)view.findViewById(R.id.size_view);
-        sizeView.setOnEditTextChangeListener(new TextInputView.TextInputWatcher(new TextInputView.OnEditTextChangeListener() {
-            @Override
-            public void onTextChanged(String s) {
-                mNewBait.setSize(s);
-            }
-        }));
+        mSizeView = (TextInputView)view.findViewById(R.id.size_view);
     }
 
     private void initDescriptionView(View view) {
-        TextInputView descriptionView = (TextInputView)view.findViewById(R.id.description_view);
-        descriptionView.setOnEditTextChangeListener(new TextInputView.TextInputWatcher(new TextInputView.OnEditTextChangeListener() {
-            @Override
-            public void onTextChanged(String s) {
-                mNewBait.setDescription(s);
-            }
-        }));
-    }
-
-    private void initSelectPhotosView(View view) {
-        mSelectPhotosView = (SelectPhotosView)view.findViewById(R.id.select_photos_view);
-        mSelectPhotosView.setSelectPhotosInteraction(new SelectPhotosView.SelectPhotosInteraction() {
-            @Override
-            public File onGetPhotoFile() {
-                UUID id = isEditing() ? getEditingId() : null;
-                return PhotoUtils.privatePhotoFile(mNewBait.getNextPhotoName(id));
-            }
-
-            @Override
-            public void onStartSelectionActivity(Intent intent, int requestCode) {
-                getParentFragment().startActivityForResult(intent, requestCode);
-            }
-        });
+        mDescriptionView = (TextInputView)view.findViewById(R.id.description_view);
     }
 
     private void initSpinner(View view) {
@@ -242,7 +177,7 @@ public class ManageBaitFragment extends ManageContentFragment {
         mTypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                mNewBait.setType(position);
+                getNewBait().setType(position);
             }
 
             @Override
@@ -250,25 +185,6 @@ public class ManageBaitFragment extends ManageContentFragment {
 
             }
         });
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode != Activity.RESULT_OK)
-            return;
-
-        if (requestCode == REQUEST_PHOTO) {
-            mSelectPhotosView.onPhotoIntentResult(data);
-            return;
-        }
-
-        if (requestCode == REQUEST_SELECTION) {
-            UUID id = UUID.fromString(data.getStringExtra(MyListSelectionActivity.EXTRA_SELECTED_ID));
-            Log.d("ManageBaitFragment", "Selected ID: " + id.toString());
-            return;
-        }
-
-        super.onActivityResult(requestCode, resultCode, data);
     }
 
 }

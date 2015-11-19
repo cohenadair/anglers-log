@@ -2,10 +2,7 @@ package com.cohenadair.anglerslog.views;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -15,6 +12,11 @@ import com.cohenadair.anglerslog.R;
 /**
  * A TextInputView is a view with a title and EditText view for input from the user..
  * Created by Cohen Adair on 2015-11-17.
+ * <p>
+ * Note: An OnTextChangedListener shouldn't be used for the EditText in this class if the
+ * UserDefineObject will be edited. Due to the lifecycle of Fragments, the callbacks are called
+ * at odd times and will result in improper text values.
+ * </p>
  */
 public class TextInputView extends LinearLayout {
 
@@ -58,6 +60,8 @@ public class TextInputView extends LinearLayout {
     }
 
     public String getInputText() {
+        if (mEditText.getText().toString().equals(""))
+            return null;
         return mEditText.getText().toString();
     }
 
@@ -65,40 +69,4 @@ public class TextInputView extends LinearLayout {
         mEditText.setText(text);
     }
     //endregion
-
-    public void setOnEditTextChangeListener(TextInputWatcher watcher) {
-        mEditText.addTextChangedListener(watcher);
-    }
-
-    /**
-     * Convenience class/interface for TextInputView implementations.
-     */
-    public interface OnEditTextChangeListener {
-        void onTextChanged(String s);
-    }
-
-    public static class TextInputWatcher implements TextWatcher {
-
-        OnEditTextChangeListener mListener;
-
-        public TextInputWatcher(OnEditTextChangeListener listener) {
-            mListener = listener;
-        }
-
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-        }
-
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-            Log.d("", "Text changed!");
-            mListener.onTextChanged(s.toString());
-        }
-
-        @Override
-        public void afterTextChanged(Editable s) {
-
-        }
-    }
 }

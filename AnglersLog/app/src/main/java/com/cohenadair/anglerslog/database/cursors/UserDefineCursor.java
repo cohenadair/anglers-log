@@ -7,10 +7,10 @@ import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 
 import java.util.UUID;
 
-import static com.cohenadair.anglerslog.database.LogbookSchema.SpeciesTable;
+import static com.cohenadair.anglerslog.database.LogbookSchema.UserDefineTable;
 
 /**
- * A {@link Cursor} wrapper for the {@link com.cohenadair.anglerslog.model.user_defines.Species}
+ * A {@link Cursor} wrapper for the {@link com.cohenadair.anglerslog.model.user_defines.UserDefineObject}
  * object.
  *
  * Created by Cohen Adair on 2015-10-24.
@@ -22,8 +22,8 @@ public class UserDefineCursor extends CursorWrapper {
     }
 
     public UserDefineObject getObject() {
-        String id = getString(getColumnIndex(SpeciesTable.Columns.ID));
-        String name = getString(getColumnIndex(SpeciesTable.Columns.NAME));
+        String id = getString(getColumnIndex(UserDefineTable.Columns.ID));
+        String name = getString(getColumnIndex(UserDefineTable.Columns.NAME));
 
         UserDefineObject obj = new UserDefineObject(name);
         obj.setId(UUID.fromString(id));

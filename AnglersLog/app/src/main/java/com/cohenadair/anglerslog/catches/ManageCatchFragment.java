@@ -1,12 +1,8 @@
 package com.cohenadair.anglerslog.catches;
 
-import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +10,6 @@ import android.widget.DatePicker;
 import android.widget.TimePicker;
 
 import com.cohenadair.anglerslog.R;
-import com.cohenadair.anglerslog.activities.MyListSelectionActivity;
 import com.cohenadair.anglerslog.fragments.DatePickerFragment;
 import com.cohenadair.anglerslog.fragments.ManageContentFragment;
 import com.cohenadair.anglerslog.fragments.ManagePrimitiveFragment;
@@ -24,34 +19,29 @@ import com.cohenadair.anglerslog.model.user_defines.Catch;
 import com.cohenadair.anglerslog.model.user_defines.Species;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import com.cohenadair.anglerslog.utilities.LayoutSpecManager;
-import com.cohenadair.anglerslog.utilities.PhotoUtils;
 import com.cohenadair.anglerslog.utilities.PrimitiveSpecManager;
 import com.cohenadair.anglerslog.utilities.Utils;
-import com.cohenadair.anglerslog.views.SelectPhotosView;
 import com.cohenadair.anglerslog.views.SelectionView;
 
-import java.io.File;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.UUID;
 
 /**
  * The ManageBaitFragment is used to add and edit catches.
  */
 public class ManageCatchFragment extends ManageContentFragment {
 
-    private Catch mNewCatch;
-
     private SelectionView mDateView;
     private SelectionView mTimeView;
     private SelectionView mSpeciesView;
     private SelectionView mBaitView;
 
-    private SelectPhotosView mSelectPhotosView;
-
     public ManageCatchFragment() {
         // Required empty public constructor
+    }
+
+    private Catch getNewCatch() {
+        return (Catch)getNewObject();
     }
 
     @Override
@@ -63,93 +53,62 @@ public class ManageCatchFragment extends ManageContentFragment {
         initBaitView(view);
         initSelectPhotosView(view);
 
-        initCatch();
+        initSubclassObject();
 
         return view;
     }
 
-    /**
-     * Needed to initialize Catch and editing settings because there is ever only one instance of
-     * this fragment that is reused throughout the application's lifecycle.
-     */
     @Override
-    public void onResume() {
-        super.onResume();
-
-        // do not initialize Catches if we were paused
-        if (mNewCatch == null)
-            initCatch();
-
-        updateViews();
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mNewCatch = null;
-    }
-
-    @Override
-    public boolean addObjectToLogbook() {
-        boolean result = false;
-
-        if (verifyUserInput()) {
-            mNewCatch.setPhotos(mSelectPhotosView.getImageNames());
-
-            if (isEditing()) {
-                // edit catch
-                result = Logbook.editCatch(getEditingId(), mNewCatch);
-                int msgId = result ? R.string.success_catch_edit : R.string.error_catch_edit;
-                Utils.showToast(getActivity(), msgId);
-            } else {
-                // add catch
-                result = Logbook.addCatch(mNewCatch);
-                int msgId = result ? R.string.success_catch : R.string.error_catch;
-                Utils.showToast(getActivity(), msgId);
-            }
-        }
-
-        return result;
-    }
-
-    @Override
-    public void onDismiss() {
-        PhotoUtils.cleanPhotosAsync();
-    }
-
-    private void initCatch() {
-        if (isEditing()) {
-            Catch oldCatch = Logbook.getCatch(getEditingId());
-
-            if (oldCatch != null) {
-                // populate the photos view with the existing photos
-                ArrayList<String> photos = oldCatch.getPhotos();
-                for (String str : photos)
-                    mSelectPhotosView.addImage(PhotoUtils.privatePhotoPath(str));
+    public ManageObjectSpec getManageObjectSpec() {
+        return new ManageObjectSpec(R.string.error_catch, R.string.success_catch, R.string.error_catch_edit, R.string.success_catch_edit, new ManageInterface() {
+            @Override
+            public boolean onEdit() {
+                return Logbook.editCatch(getEditingId(), getNewCatch());
             }
 
-            mNewCatch = new Catch(oldCatch, true);
-        } else
-            mNewCatch = new Catch(new Date());
+            @Override
+            public boolean onAdd() {
+                return Logbook.addCatch(getNewCatch());
+            }
+        });
     }
 
-    /**
-     * Validates the user's input.
-     * @return True if the input is valid, false otherwise.
-     */
-    private boolean verifyUserInput() {
+    @Override
+    public void initSubclassObject() {
+        initObject(new InitializeInterface() {
+            @Override
+            public UserDefineObject onGetOldObject() {
+                return Logbook.getCatch(getEditingId());
+            }
+
+            @Override
+            public UserDefineObject onGetNewEditObject(UserDefineObject oldObject) {
+                return new Catch((Catch)oldObject, true);
+            }
+
+            @Override
+            public UserDefineObject onGetNewBlankObject() {
+                return new Catch(new Date());
+            }
+        });
+    }
+
+    @Override
+    public boolean verifyUserInput() {
         // species
-        if (mNewCatch.getSpecies() == null) {
+        if (getNewCatch().getSpecies() == null) {
             Utils.showErrorAlert(getActivity(), R.string.error_catch_species);
             return false;
         }
 
         return true;
+    }
+
+    @Override
+    public void updateViews() {
+        mDateView.setSubtitle(getNewCatch().getDateAsString());
+        mTimeView.setSubtitle(getNewCatch().getTimeAsString());
+        mSpeciesView.setSubtitle(getNewCatch().getSpecies() != null ? getNewCatch().getSpeciesAsString() : "");
     }
 
     //region Date & Time
@@ -201,8 +160,8 @@ public class ManageCatchFragment extends ManageContentFragment {
      * @param date The date to display in the view. Only looks at the date portion.
      */
     private void updateDateView(Date date) {
-        mNewCatch.setDate(date);
-        mDateView.setSubtitle(mNewCatch.getDateAsString());
+        getNewCatch().setDate(date);
+        mDateView.setSubtitle(getNewCatch().getDateAsString());
     }
 
     /**
@@ -210,25 +169,15 @@ public class ManageCatchFragment extends ManageContentFragment {
      * @param date The date to display in the view. Only looks at the time portion.
      */
     private void updateTimeView(Date date) {
-        mNewCatch.setDate(date);
-        mTimeView.setSubtitle(mNewCatch.getTimeAsString());
-    }
-
-    /**
-     * Update the different views based on the current Catch object to display.
-     */
-    private void updateViews() {
-        mDateView.setSubtitle(mNewCatch.getDateAsString());
-        mTimeView.setSubtitle(mNewCatch.getTimeAsString());
-
-        mSpeciesView.setSubtitle(mNewCatch.getSpecies() != null ? mNewCatch.getSpeciesAsString() : "");
+        getNewCatch().setDate(date);
+        mTimeView.setSubtitle(getNewCatch().getTimeAsString());
     }
 
     /**
      * Resets the calendar's time to the current catch's time.
      */
     private void updateCalendar() {
-        Calendar.getInstance().setTime(mNewCatch.getDate());
+        Calendar.getInstance().setTime(getNewCatch().getDate());
     }
     //endregion
 
@@ -242,8 +191,8 @@ public class ManageCatchFragment extends ManageContentFragment {
                 fragment.setOnDismissInterface(new ManagePrimitiveFragment.OnDismissInterface() {
                     @Override
                     public void onDismiss(UserDefineObject selectedItem) {
-                        mNewCatch.setSpecies((Species)selectedItem);
-                        mSpeciesView.setSubtitle(mNewCatch.getSpeciesAsString());
+                        getNewCatch().setSpecies((Species) selectedItem);
+                        mSpeciesView.setSubtitle(getNewCatch().getSpeciesAsString());
                     }
                 });
 
@@ -260,41 +209,6 @@ public class ManageCatchFragment extends ManageContentFragment {
                 startSelectionActivity(LayoutSpecManager.LAYOUT_BAITS);
             }
         });
-    }
-
-    private void initSelectPhotosView(View view) {
-        mSelectPhotosView = (SelectPhotosView)view.findViewById(R.id.select_photos_view);
-        mSelectPhotosView.setSelectPhotosInteraction(new SelectPhotosView.SelectPhotosInteraction() {
-            @Override
-            public File onGetPhotoFile() {
-                UUID id = isEditing() ? getEditingId() : null;
-                return PhotoUtils.privatePhotoFile(mNewCatch.getNextPhotoName(id));
-            }
-
-            @Override
-            public void onStartSelectionActivity(Intent intent, int requestCode) {
-                getParentFragment().startActivityForResult(intent, requestCode);
-            }
-        });
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode != Activity.RESULT_OK)
-            return;
-
-        if (requestCode == REQUEST_PHOTO) {
-            mSelectPhotosView.onPhotoIntentResult(data);
-            return;
-        }
-
-        if (requestCode == REQUEST_SELECTION) {
-            UUID id = UUID.fromString(data.getStringExtra(MyListSelectionActivity.EXTRA_SELECTED_ID));
-            Log.d("ManageBaitFragment", "Selected ID: " + id.toString());
-            return;
-        }
-
-        super.onActivityResult(requestCode, resultCode, data);
     }
 
 }

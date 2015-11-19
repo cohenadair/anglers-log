@@ -26,6 +26,10 @@ public class BaitCursor extends UserDefineCursor {
 
         Bait bait = new Bait(getObject(), true);
         bait.setCategory(Logbook.getBaitCategory(UUID.fromString(categoryId)));
+        bait.setColor(getString(getColumnIndex(BaitTable.Columns.COLOR)));
+        bait.setSize(getString(getColumnIndex(BaitTable.Columns.SIZE)));
+        bait.setDescription(getString(getColumnIndex(BaitTable.Columns.DESCRIPTION)));
+        bait.setType(getInt(getColumnIndex(BaitTable.Columns.TYPE)));
 
         return bait;
     }
