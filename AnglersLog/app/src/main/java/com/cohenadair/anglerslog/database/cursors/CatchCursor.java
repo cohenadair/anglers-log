@@ -25,12 +25,16 @@ public class CatchCursor extends UserDefineCursor {
     public Catch getCatch() {
         long date = getLong(getColumnIndex(CatchTable.Columns.DATE));
         String speciesId = getString(getColumnIndex(CatchTable.Columns.SPECIES_ID));
+        String baitId = getString(getColumnIndex(CatchTable.Columns.BAIT_ID));
         int isFavorite = getInt(getColumnIndex(CatchTable.Columns.IS_FAVORITE));
 
         Catch aCatch = new Catch(getObject(), true);
         aCatch.setDate(new Date(date));
         aCatch.setIsFavorite(isFavorite == 1);
         aCatch.setSpecies(Logbook.getSpecies(UUID.fromString(speciesId)));
+
+        if (baitId != null)
+            aCatch.setBait(Logbook.getBait(UUID.fromString(baitId)));
 
         return aCatch;
     }

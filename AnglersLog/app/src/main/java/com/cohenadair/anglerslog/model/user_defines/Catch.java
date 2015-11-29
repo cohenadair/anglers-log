@@ -17,6 +17,7 @@ public class Catch extends PhotoUserDefineObject {
     private Date mDate;
     private Species mSpecies;
     private boolean mIsFavorite;
+    private Bait mBait;
 
     //region Constructors
     public Catch(Date date) {
@@ -29,6 +30,9 @@ public class Catch extends PhotoUserDefineObject {
         mDate = new Date(aCatch.getDate().getTime());
         mIsFavorite = aCatch.isFavorite();
         mSpecies = new Species(aCatch.getSpecies(), true);
+
+        if (aCatch.getBait() != null)
+            mBait = new Bait(aCatch.getBait(), true);
     }
 
     public Catch(UserDefineObject obj) {
@@ -66,6 +70,14 @@ public class Catch extends PhotoUserDefineObject {
     public void setIsFavorite(boolean isFavorite) {
         mIsFavorite = isFavorite;
     }
+
+    public Bait getBait() {
+        return mBait;
+    }
+
+    public void setBait(Bait bait) {
+        mBait = bait;
+    }
     //endregion
 
     @Override
@@ -74,7 +86,11 @@ public class Catch extends PhotoUserDefineObject {
     }
 
     public String getSpeciesAsString() {
-        return mSpecies.getName();
+        return (mSpecies != null) ? mSpecies.getName() : "";
+    }
+
+    public String getBaitAsString() {
+        return (mBait != null) ? mBait.getDisplayName() : "";
     }
 
     public String getDateAsString() {
@@ -95,6 +111,9 @@ public class Catch extends PhotoUserDefineObject {
         values.put(CatchTable.Columns.DATE, mDate.getTime());
         values.put(CatchTable.Columns.IS_FAVORITE, mIsFavorite ? 1 : 0);
         values.put(CatchTable.Columns.SPECIES_ID, mSpecies.idAsString());
+
+        if (mBait != null)
+            values.put(CatchTable.Columns.BAIT_ID, mBait.idAsString());
 
         return values;
     }

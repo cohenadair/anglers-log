@@ -33,6 +33,7 @@ public abstract class ManageContentFragment extends Fragment {
 
     private boolean mIsEditing;
     private UUID mEditingId;
+    private OnSelectionActivityResult mOnSelectionActivityResult;
 
     /**
      * Updates each view; normally used for editing.
@@ -57,6 +58,13 @@ public abstract class ManageContentFragment extends Fragment {
      * @return True if everything is valid; false otherwise.
      */
     public abstract boolean verifyUserInput();
+
+    /**
+     * Used as a callback for {@link MyListSelectionActivity} instances.
+     */
+    public interface OnSelectionActivityResult {
+        void onSelect(UUID id);
+    }
 
     @Override
     public void onDetach() {
@@ -190,7 +198,9 @@ public abstract class ManageContentFragment extends Fragment {
         return result;
     }
 
-    public void startSelectionActivity(int layoutId) {
+    public void startSelectionActivity(int layoutId, OnSelectionActivityResult onSelect) {
+        mOnSelectionActivityResult = onSelect;
+
         Intent intent = new Intent(getContext(), MyListSelectionActivity.class);
         intent.putExtra(MyListSelectionActivity.EXTRA_LAYOUT_ID, layoutId);
         intent.putExtra(MyListSelectionActivity.EXTRA_TWO_PANE, Utils.isTwoPane(getActivity()));
@@ -204,6 +214,11 @@ public abstract class ManageContentFragment extends Fragment {
 
         if (requestCode == REQUEST_PHOTO) {
             mSelectPhotosView.onPhotoIntentResult(data);
+            return;
+        }
+
+        if (requestCode == REQUEST_SELECTION) {
+            mOnSelectionActivityResult.onSelect(UUID.fromString(data.getStringExtra(MyListSelectionActivity.EXTRA_SELECTED_ID)));
             return;
         }
 

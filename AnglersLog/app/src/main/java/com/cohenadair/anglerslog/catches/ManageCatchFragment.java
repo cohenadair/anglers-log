@@ -25,6 +25,7 @@ import com.cohenadair.anglerslog.views.SelectionView;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.UUID;
 
 /**
  * The ManageBaitFragment is used to add and edit catches.
@@ -34,6 +35,7 @@ public class ManageCatchFragment extends ManageContentFragment {
     private SelectionView mDateView;
     private SelectionView mTimeView;
     private SelectionView mSpeciesView;
+    private SelectionView mBaitView;
 
     public ManageCatchFragment() {
         // Required empty public constructor
@@ -107,7 +109,8 @@ public class ManageCatchFragment extends ManageContentFragment {
     public void updateViews() {
         mDateView.setSubtitle(getNewCatch().getDateAsString());
         mTimeView.setSubtitle(getNewCatch().getTimeAsString());
-        mSpeciesView.setSubtitle(getNewCatch().getSpecies() != null ? getNewCatch().getSpeciesAsString() : "");
+        mSpeciesView.setSubtitle(getNewCatch().getSpeciesAsString());
+        mBaitView.setSubtitle(getNewCatch().getBaitAsString());
     }
 
     //region Date & Time
@@ -201,13 +204,17 @@ public class ManageCatchFragment extends ManageContentFragment {
     }
 
     private void initBaitView(View view) {
-        SelectionView baitView = (SelectionView)view.findViewById(R.id.bait_layout);
-        baitView.setOnClickListener(new View.OnClickListener() {
+        mBaitView = (SelectionView)view.findViewById(R.id.bait_layout);
+        mBaitView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startSelectionActivity(LayoutSpecManager.LAYOUT_BAITS);
+                startSelectionActivity(LayoutSpecManager.LAYOUT_BAITS, new OnSelectionActivityResult() {
+                    @Override
+                    public void onSelect(UUID id) {
+                        getNewCatch().setBait(Logbook.getBait(id));
+                    }
+                });
             }
         });
     }
-
 }

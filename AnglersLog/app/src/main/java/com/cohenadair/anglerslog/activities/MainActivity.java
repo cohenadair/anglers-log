@@ -1,6 +1,5 @@
 package com.cohenadair.anglerslog.activities;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
@@ -12,7 +11,6 @@ import android.view.View;
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.fragments.DetailFragment;
 import com.cohenadair.anglerslog.interfaces.OnClickInterface;
-import com.cohenadair.anglerslog.interfaces.OnClickManageMenuListener;
 import com.cohenadair.anglerslog.utilities.LayoutSpecManager;
 import com.cohenadair.anglerslog.utilities.NavigationManager;
 import com.cohenadair.anglerslog.utilities.Utils;
@@ -22,7 +20,7 @@ import java.util.UUID;
 // TODO rename themes for convention
 // TODO hide FAB unless user is at the top of the list (blocks rating star)
 
-public class MainActivity extends LayoutSpecActivity implements OnClickManageMenuListener {
+public class MainActivity extends LayoutSpecActivity {
 
     private NavigationManager mNavigationManager;
 
@@ -92,31 +90,6 @@ public class MainActivity extends LayoutSpecActivity implements OnClickManageMen
         transaction.commit();
     }
 
-    /**
-     * A method called when the user wants to edit and object in the current MyListFragment
-     * instance.
-     */
-    @Override
-    public void onClickMenuEdit(UUID id) {
-        setIsEditing(true, id);
-        goToListManagerView();
-    }
-
-    /**
-     * A method called when the user deletes an item from the list.
-     * @param id The UUID of the item to be deleted.
-     */
-    @Override
-    public void onClickMenuTrash(final UUID id) {
-        Utils.showDeleteConfirm(this, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                removeUserDefine(id);
-                mNavigationManager.goBack();
-            }
-        });
-    }
-
     @Override
     public OnClickInterface getOnMyListFragmentItemClick() {
         return new OnClickInterface() {
@@ -150,41 +123,24 @@ public class MainActivity extends LayoutSpecActivity implements OnClickManageMen
         }
     }
 
-    //region MyListFragment.InteractionListener interface
-    /**
-     * When the "new" FloatingActionButton is clicked. This button may not appear on all navigation
-     * fragments.
-     */
     @Override
-    public void onMyListClickNewButton() {
-        setIsEditing(false);
-        goToListManagerView();
-    }
-    //endregion
-
-    //region ManageFragment.InteractionListener interface
-    @Override
-    public void onManageDismiss() {
+    public void goBack() {
         mNavigationManager.goBack();
-        updateViews();
     }
-    //endregion
 
     //region Navigation
     @Override
     public void onBackPressed() {
-        if (mNavigationManager.canGoBack()) {
+        super.onBackPressed();
+
+        if (mNavigationManager.canGoBack())
             mNavigationManager.onBackPressed();
-            updateViews();
-        } else
+        else
             super.onBackPressed();
     }
 
-    /**
-     * Will open or display the manager view associated with the current master detail fragment.
-     * For example, when the Catches list is open, this method will display the ManageBaitFragment.
-     */
-    private void goToListManagerView() {
+    @Override
+    public void goToListManagerView() {
         if (isTwoPane()) {
             // show as popup dialog
             getManageFragment().show(getSupportFragmentManager(), "dialog");

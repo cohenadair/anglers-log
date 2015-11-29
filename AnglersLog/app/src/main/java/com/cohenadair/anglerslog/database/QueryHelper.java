@@ -3,6 +3,7 @@ package com.cohenadair.anglerslog.database;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.support.annotation.NonNull;
 
 import com.cohenadair.anglerslog.database.cursors.BaitCursor;
@@ -147,7 +148,12 @@ public class QueryHelper {
     }
 
     public static boolean deleteQuery(String table, String whereClause, String[] args) {
-        return mDatabase.delete(table, whereClause, args) == 1;
+        try {
+            return mDatabase.delete(table, whereClause, args) == 1;
+        } catch (SQLiteException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     public static boolean updateQuery(String table, ContentValues newContentValues, String whereClause, String[] args) {
@@ -168,7 +174,6 @@ public class QueryHelper {
 
     public static int photoCount(String table, UUID id) {
         return queryCount(table, PhotoTable.Columns.USER_DEFINE_ID + " = ?", new String[]{ id.toString() });
-
     }
 
 }

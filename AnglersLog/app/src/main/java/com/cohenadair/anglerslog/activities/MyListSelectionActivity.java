@@ -88,18 +88,18 @@ public class MyListSelectionActivity extends LayoutSpecActivity {
     }
 
     @Override
-    public void onMyListClickNewButton() {
+    public void goToListManagerView() {
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.container, getManageFragment())
                 .addToBackStack(null)
                 .commit();
 
-        setActionBarTitle(getResources().getString(R.string.new_text) + " " + getName());
+        setActionBarTitle(getViewTitle());
     }
 
     @Override
-    public void onManageDismiss() {
+    public void goBack() {
         getSupportFragmentManager().popBackStack();
         setActionBarTitle("");
     }

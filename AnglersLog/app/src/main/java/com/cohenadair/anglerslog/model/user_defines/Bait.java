@@ -111,6 +111,10 @@ public class Bait extends PhotoUserDefineObject {
         return null;
     }
 
+    public String getDisplayName() {
+        return mCategory.getName() + " - " + getName();
+    }
+
     public ContentValues getContentValues() {
         ContentValues values = super.getContentValues();
 
