@@ -10,8 +10,8 @@ import android.widget.TextView;
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.interfaces.OnClickInterface;
 import com.cohenadair.anglerslog.interfaces.OnClickManageMenuListener;
-import com.cohenadair.anglerslog.model.Logbook;
 import com.cohenadair.anglerslog.model.user_defines.Bait;
+import com.cohenadair.anglerslog.model.user_defines.BaitCategory;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import com.cohenadair.anglerslog.utilities.ListManager;
 import com.cohenadair.anglerslog.utilities.PhotoUtils;
@@ -29,19 +29,21 @@ public class BaitListManager {
     //region View Holder
     public static class ViewHolder extends ListManager.ViewHolder {
 
+        private ListManager.Adapter mAdapter;
         private ImageView mImageView;
+        private TextView mCategoryTextView;
         private TextView mNameTextView;
         private TextView mNumberCaughtTextView;
         private View mSeparator;
         private View mView;
 
-        private Bait mBait;
-
         public ViewHolder(View view, ListManager.Adapter adapter) {
             super(view, adapter);
 
+            mAdapter = adapter;
             mView = view;
             mImageView = (ImageView)view.findViewById(R.id.image_view);
+            mCategoryTextView = (TextView)view.findViewById(R.id.category_text_view);
             mNameTextView = (TextView)view.findViewById(R.id.name_label);
             mNumberCaughtTextView = (TextView)view.findViewById(R.id.number_caught_label);
             mSeparator = view.findViewById(R.id.cell_separator);
@@ -58,8 +60,7 @@ public class BaitListManager {
         }
 
         public void setBait(Bait bait, int position) {
-            mBait = bait;
-
+            mCategoryTextView.setVisibility(View.GONE);
             mNameTextView.setText(bait.getName());
             mNumberCaughtTextView.setText("0 Catches"); // TODO get actual stats here
 
@@ -82,8 +83,15 @@ public class BaitListManager {
                 mImageView.setImageResource(R.drawable.no_catch_photo);
 
             // hide the separator for the last row
-            mSeparator.setVisibility((position == Logbook.getCatchCount() - 1) ? View.INVISIBLE : View.VISIBLE);
+            mSeparator.setVisibility((position == mAdapter.getItemCount() - 1) ? View.INVISIBLE : View.VISIBLE);
             mView.setBackgroundResource(bait.isSelected() ? R.color.light_grey : android.R.color.transparent);
+        }
+
+        public void setBaitCategory(BaitCategory category) {
+            mCategoryTextView.setText(category.getName());
+            mNameTextView.setVisibility(View.GONE);
+            mNumberCaughtTextView.setVisibility(View.GONE);
+            mImageView.setVisibility(View.GONE);
         }
     }
     //endregion
@@ -108,7 +116,12 @@ public class BaitListManager {
             super.onBind(holder, position);
 
             ViewHolder baitHolder = (ViewHolder)holder;
-            baitHolder.setBait((Bait)getItem(position), position);
+            UserDefineObject item = getItem(position);
+
+            if (item instanceof Bait)
+                baitHolder.setBait((Bait)item, position);
+            else
+                baitHolder.setBaitCategory((BaitCategory)item);
         }
     }
     //endregion

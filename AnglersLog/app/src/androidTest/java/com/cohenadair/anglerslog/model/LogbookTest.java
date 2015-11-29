@@ -208,4 +208,29 @@ public class LogbookTest {
         ArrayList<UserDefineObject> baits = Logbook.getBaits();
         assertTrue(baits.size() == 2);
     }
+
+    @Test
+    public void testGetBaitsAndCategories() {
+        BaitCategory bugger = new BaitCategory("Woolly Bugger");
+        BaitCategory stone = new BaitCategory("Stone Fly");
+        Logbook.addBaitCategory(bugger);
+        Logbook.addBaitCategory(stone);
+
+        Bait blackBugger = new Bait("Black", bugger);
+        Bait whiteBugger = new Bait("White", bugger);
+        Bait oliveBugger = new Bait("Olive", bugger);
+        Bait blackStone = new Bait("Black", stone);
+        Bait whiteStone = new Bait("White", stone);
+        Bait yellowStone = new Bait("Yellow", stone);
+
+        Logbook.addBait(blackBugger);
+        Logbook.addBait(whiteBugger);
+        Logbook.addBait(oliveBugger);
+        Logbook.addBait(blackStone);
+        Logbook.addBait(whiteStone);
+        Logbook.addBait(yellowStone);
+
+        ArrayList<UserDefineObject> baitsAndCategories = Logbook.getBaitsAndCategories();
+        assertTrue(baitsAndCategories.size() == 8);
+    }
 }

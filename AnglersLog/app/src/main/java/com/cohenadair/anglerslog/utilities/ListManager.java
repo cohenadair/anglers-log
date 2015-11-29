@@ -23,7 +23,6 @@ public class ListManager {
 
         private Adapter mAdapter;
         private UUID mId;
-        private int mPosition;
 
         /**
          * Must be implemented by subclasses.

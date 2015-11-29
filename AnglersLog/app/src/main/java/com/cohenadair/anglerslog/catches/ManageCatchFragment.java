@@ -34,7 +34,6 @@ public class ManageCatchFragment extends ManageContentFragment {
     private SelectionView mDateView;
     private SelectionView mTimeView;
     private SelectionView mSpeciesView;
-    private SelectionView mBaitView;
 
     public ManageCatchFragment() {
         // Required empty public constructor
@@ -202,8 +201,8 @@ public class ManageCatchFragment extends ManageContentFragment {
     }
 
     private void initBaitView(View view) {
-        mBaitView = (SelectionView)view.findViewById(R.id.bait_layout);
-        mBaitView.setOnClickListener(new View.OnClickListener() {
+        SelectionView baitView = (SelectionView)view.findViewById(R.id.bait_layout);
+        baitView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startSelectionActivity(LayoutSpecManager.LAYOUT_BAITS);

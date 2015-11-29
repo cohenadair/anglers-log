@@ -8,8 +8,10 @@ import android.util.Log;
 
 import com.cohenadair.anglerslog.database.LogbookHelper;
 import com.cohenadair.anglerslog.database.QueryHelper;
+import com.cohenadair.anglerslog.database.cursors.BaitCategoryCursor;
 import com.cohenadair.anglerslog.database.cursors.BaitCursor;
 import com.cohenadair.anglerslog.database.cursors.CatchCursor;
+import com.cohenadair.anglerslog.database.cursors.SpeciesCursor;
 import com.cohenadair.anglerslog.database.cursors.UserDefineCursor;
 import com.cohenadair.anglerslog.model.user_defines.Bait;
 import com.cohenadair.anglerslog.model.user_defines.BaitCategory;
@@ -154,12 +156,23 @@ public class Logbook {
 
     //region Species Manipulation
     public static ArrayList<UserDefineObject> getSpecies() {
-        return QueryHelper.queryUserDefines(QueryHelper.queryUserDefines(SpeciesTable.NAME, null, null), null);
+        return QueryHelper.queryUserDefines(QueryHelper.queryUserDefines(SpeciesTable.NAME, null, null), new QueryHelper.UserDefineQueryInterface() {
+            @Override
+            public UserDefineObject getObject(UserDefineCursor cursor) {
+                return new SpeciesCursor(cursor).getSpecies();
+            }
+        });
     }
 
     public static Species getSpecies(UUID id) {
-        UserDefineObject obj = QueryHelper.queryUserDefine(SpeciesTable.NAME, id, null);
-        return (obj == null) ? null : new Species(obj, true);
+        UserDefineObject obj = QueryHelper.queryUserDefine(SpeciesTable.NAME, id, new QueryHelper.UserDefineQueryInterface() {
+            @Override
+            public UserDefineObject getObject(UserDefineCursor cursor) {
+                return new SpeciesCursor(cursor).getSpecies();
+            }
+        });
+
+        return (obj == null) ? null : (Species)obj;
     }
 
     public static boolean addSpecies(Species species) {
@@ -181,12 +194,23 @@ public class Logbook {
 
     //region BaitCategory Manipulation
     public static ArrayList<UserDefineObject> getBaitCategories() {
-        return QueryHelper.queryUserDefines(QueryHelper.queryUserDefines(BaitCategoryTable.NAME, null, null), null);
+        return QueryHelper.queryUserDefines(QueryHelper.queryUserDefines(BaitCategoryTable.NAME, null, null), new QueryHelper.UserDefineQueryInterface() {
+            @Override
+            public UserDefineObject getObject(UserDefineCursor cursor) {
+                return new BaitCategoryCursor(cursor).getBaitCategory();
+            }
+        });
     }
 
     public static BaitCategory getBaitCategory(UUID id) {
-        UserDefineObject obj = QueryHelper.queryUserDefine(BaitCategoryTable.NAME, id, null);
-        return (obj == null) ? null : new BaitCategory(obj, true);
+        UserDefineObject obj = QueryHelper.queryUserDefine(BaitCategoryTable.NAME, id, new QueryHelper.UserDefineQueryInterface() {
+            @Override
+            public UserDefineObject getObject(UserDefineCursor cursor) {
+                return new BaitCategoryCursor(cursor).getBaitCategory();
+            }
+        });
+
+        return (obj == null) ? null : (BaitCategory)obj;
     }
 
     public static boolean addBaitCategory(BaitCategory baitCategory) {
@@ -234,7 +258,7 @@ public class Logbook {
      * @return True if the Bait exists; false otherwise.
      */
     public static boolean baitExists(Bait bait) {
-        Cursor cursor = mDatabase.query(BaitTable.NAME, null, BaitTable.Columns.CATEGORY_ID + " = ? AND " + BaitTable.Columns.NAME + " = ?", new String[] { bait.getCategoryId().toString(), bait.getName() }, null, null, null);
+        Cursor cursor = mDatabase.query(BaitTable.NAME, null, BaitTable.Columns.CATEGORY_ID + " = ? AND " + BaitTable.Columns.NAME + " = ?", new String[]{bait.getCategoryId().toString(), bait.getName()}, null, null, null);
         return QueryHelper.queryHasResults(cursor);
     }
 
@@ -252,6 +276,27 @@ public class Logbook {
 
     public static int getBaitCount() {
         return QueryHelper.queryCount(BaitTable.NAME);
+    }
+
+    /**
+     * Gets an ordered array of bait categories with their respective baits.
+     *
+     * @return An ArrayList of BaitCategory and Bait objects.
+     */
+    public static ArrayList<UserDefineObject> getBaitsAndCategories() {
+        ArrayList<UserDefineObject> result = new ArrayList<>();
+        ArrayList<UserDefineObject> categories = getBaitCategories();
+        ArrayList<UserDefineObject> baits = getBaits();
+
+        for (UserDefineObject category : categories) {
+            result.add(category);
+
+            for (UserDefineObject bait : baits)
+                if (((Bait)bait).getCategoryId().equals(category.getId()))
+                    result.add(bait);
+        }
+
+        return result;
     }
     //endregion
 }

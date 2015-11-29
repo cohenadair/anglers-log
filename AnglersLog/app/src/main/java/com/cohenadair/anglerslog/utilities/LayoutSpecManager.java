@@ -87,7 +87,7 @@ public class LayoutSpecManager {
         spec.setListener(new LayoutSpec.InteractionListener() {
             @Override
             public ListManager.Adapter onGetMasterAdapter() {
-                return new BaitListManager.Adapter(context, Logbook.getBaits(), onMasterItemClick);
+                return new BaitListManager.Adapter(context, Logbook.getBaitsAndCategories(), onMasterItemClick);
             }
 
             @Override

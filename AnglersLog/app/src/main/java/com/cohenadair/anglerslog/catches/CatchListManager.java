@@ -31,6 +31,7 @@ public class CatchListManager {
     //region View Holder
     public static class ViewHolder extends ListManager.ViewHolder {
 
+        private ListManager.Adapter mAdapter;
         private ImageView mImageView;
         private TextView mSpeciesTextView;
         private TextView mDateTextView;
@@ -43,6 +44,7 @@ public class CatchListManager {
         public ViewHolder(View view, ListManager.Adapter adapter) {
             super(view, adapter);
 
+            mAdapter = adapter;
             mView = view;
             mImageView = (ImageView)view.findViewById(R.id.image_view);
             mSpeciesTextView = (TextView)view.findViewById(R.id.species_label);
@@ -100,7 +102,7 @@ public class CatchListManager {
                 mImageView.setImageResource(R.drawable.no_catch_photo);
 
             // hide the separator for the last row
-            mSeparator.setVisibility((position == Logbook.getCatchCount() - 1) ? View.INVISIBLE : View.VISIBLE);
+            mSeparator.setVisibility((position == mAdapter.getItemCount() - 1) ? View.INVISIBLE : View.VISIBLE);
             mView.setBackgroundResource(mCatch.isSelected() ? R.color.light_grey : android.R.color.transparent);
         }
     }

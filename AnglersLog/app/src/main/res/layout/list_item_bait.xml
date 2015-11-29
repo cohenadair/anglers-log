@@ -3,11 +3,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/thumbnail_cell_size">
+    android:layout_height="wrap_content">
+
+    <TextView
+        style="?android:listSeparatorTextViewStyle"
+        android:id="@+id/category_text_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 
     <ImageView
         android:layout_width="@dimen/thumbnail_size"
         android:layout_height="@dimen/thumbnail_size"
+        android:layout_marginTop="1dp"
+        android:layout_marginBottom="1dp"
         android:layout_gravity="center_vertical"
         android:id="@+id/image_view"
         android:src="@drawable/no_catch_photo"
