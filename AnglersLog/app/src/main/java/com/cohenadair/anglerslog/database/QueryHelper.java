@@ -144,7 +144,12 @@ public class QueryHelper {
     }
 
     public static boolean insertQuery(String table, ContentValues contentValues) {
-        return mDatabase.insert(table, null, contentValues) != -1;
+        try {
+            return mDatabase.insert(table, null, contentValues) != -1;
+        } catch (SQLiteException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     public static boolean deleteQuery(String table, String whereClause, String[] args) {
@@ -157,7 +162,12 @@ public class QueryHelper {
     }
 
     public static boolean updateQuery(String table, ContentValues newContentValues, String whereClause, String[] args) {
-        return mDatabase.update(table, newContentValues, whereClause, args) == 1;
+        try {
+            return mDatabase.update(table, newContentValues, whereClause, args) == 1;
+        } catch (SQLiteException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     public static boolean deleteUserDefine(String table, UUID id) {

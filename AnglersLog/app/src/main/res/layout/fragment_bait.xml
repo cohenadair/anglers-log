@@ -1,37 +1,106 @@
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:custom="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-        <com.cohenadair.anglerslog.views.ImageScrollView
-            android:id="@+id/image_scroll_view"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"/>
+            android:layout_margin="@dimen/margin_default"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/bait_image_view"
+                android:layout_width="@dimen/thumbnail_size"
+                android:layout_height="@dimen/thumbnail_size"
+                android:layout_marginRight="@dimen/margin_default"
+                android:layout_marginEnd="@dimen/margin_default"
+                android:contentDescription="@string/bait_photo_description"
+                android:src="@drawable/no_catch_photo"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/bait_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:textAppearanceLarge"
+                    tools:text="Name"/>
+
+                <TextView
+                    android:id="@+id/bait_category"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:textAppearanceMedium"
+                    tools:text="Category"/>
+
+            </LinearLayout>
+        </LinearLayout>
 
         <TextView
-            android:layout_width="wrap_content"
+            style="?android:listSeparatorTextViewStyle"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/species"
-            android:id="@+id/species_text_view"
-            android:layout_gravity="center_horizontal"
-            android:padding="25dp"
-            android:textSize="20sp" />
+            android:layout_marginBottom="@dimen/margin_default"
+            android:text="@string/properties"/>
+
+        <com.cohenadair.anglerslog.views.PropertyDetailView
+            android:id="@+id/type_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            custom:propertyName="@string/type"/>
+
+        <com.cohenadair.anglerslog.views.PropertyDetailView
+            android:id="@+id/color_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            custom:propertyName="@string/color"/>
+
+        <com.cohenadair.anglerslog.views.PropertyDetailView
+            android:id="@+id/size_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            custom:propertyName="@string/size"/>
 
         <TextView
-            android:layout_width="wrap_content"
+            android:id="@+id/description_text_view"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/date"
-            android:id="@+id/date_text_view"
-            android:layout_gravity="center_horizontal"
-            android:textSize="15sp"
-            android:padding="10dp" />
+            android:layout_marginLeft="@dimen/margin_default"
+            android:layout_marginRight="@dimen/margin_default"
+            android:visibility="gone"/>
+
+        <TextView
+            style="?android:listSeparatorTextViewStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_default"
+            android:layout_marginTop="@dimen/margin_default"
+            android:text="@string/drawer_catches"/>
+
+        <TextView
+            android:id="@+id/no_catches_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_default"
+            android:layout_marginRight="@dimen/margin_default"
+            android:layout_marginBottom="@dimen/margin_default"
+            android:text="@string/bait_no_catches"/>
+
     </LinearLayout>
 
 </ScrollView>

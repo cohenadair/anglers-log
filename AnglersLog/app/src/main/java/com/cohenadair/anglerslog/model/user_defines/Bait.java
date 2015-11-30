@@ -2,6 +2,8 @@ package com.cohenadair.anglerslog.model.user_defines;
 
 import android.content.ContentValues;
 
+import com.cohenadair.anglerslog.R;
+
 import java.util.UUID;
 
 import static com.cohenadair.anglerslog.database.LogbookSchema.BaitPhotoTable;
@@ -113,6 +115,17 @@ public class Bait extends PhotoUserDefineObject {
 
     public String getDisplayName() {
         return mCategory.getName() + " - " + getName();
+    }
+
+    public int getTypeName() {
+        if (mType == TYPE_ARTIFICIAL)
+            return R.string.artificial;
+        else if (mType == TYPE_LIVE)
+            return R.string.live;
+        else if (mType == TYPE_REAL)
+            return R.string.real;
+
+        return -1;
     }
 
     public ContentValues getContentValues() {

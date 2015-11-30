@@ -51,8 +51,9 @@ public class ManageBaitFragment extends ManageContentFragment {
         initColorView(view);
         initSizeView(view);
         initDescriptionView(view);
-
         initSubclassObject();
+
+        getSelectPhotosView().setMaxPhotos(1);
 
         return view;
     }

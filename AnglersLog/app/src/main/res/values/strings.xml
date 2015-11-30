@@ -23,7 +23,11 @@
     <string name="size">Size</string>
     <string name="description">Description</string>
     <string name="type">Type</string>
+    <string name="artificial">Artificial</string>
+    <string name="live">Live</string>
+    <string name="real">Real</string>
     <string name="location">Location</string>
+    <string name="properties">Properties</string>
 
     <string name="drawer_open">Open Navigation Drawer</string>
     <string name="drawer_close">Close Navigation Drawer</string>
@@ -73,6 +77,7 @@
     <string name="error_catch_date">A catch with that date and time already exists.  Please choose another date or edit the current catch.</string>
     <string name="error_catch_species">Please select a species.</string>
 
+    <string name="bait_no_catches">No fish have been caught with this bait (feature coming soon).</string>
     <string name="success_bait">Successfully added bait!</string>
     <string name="success_bait_delete">Successfully deleted bait.</string>
     <string name="success_bait_edit">Successfully updated bait.</string>

@@ -15,4 +15,8 @@
     <declare-styleable name="SelectPhotosView">
         <attr name="maxPhotos" format="integer" />
     </declare-styleable>
+
+    <declare-styleable name="PropertyDetailView">
+        <attr name="propertyName" format="string" />
+    </declare-styleable>
 </resources>

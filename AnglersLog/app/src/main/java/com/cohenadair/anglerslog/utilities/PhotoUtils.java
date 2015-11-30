@@ -21,6 +21,7 @@ import android.widget.ImageView;
 
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.model.Logbook;
+import com.cohenadair.anglerslog.model.user_defines.Bait;
 import com.cohenadair.anglerslog.model.user_defines.Catch;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import com.drew.imaging.ImageMetadataReader;
@@ -376,13 +377,19 @@ public class PhotoUtils {
 
                 // check all Catch objects for the current File
                 for (UserDefineObject aCatch : Logbook.getCatches()) {
-                    if (((Catch) aCatch).getPhotos().indexOf(photoFiles[i].getName()) >= 0) {
+                    if (((Catch)aCatch).getPhotos().indexOf(photoFiles[i].getName()) >= 0) {
                         found = true;
                         break;
                     }
                 }
 
-                // TODO add Bait photos here
+                // check all Bait objects for the current file
+                for (UserDefineObject aBait : Logbook.getBaits()) {
+                    if (((Bait)aBait).getPhotos().indexOf(photoFiles[i].getName()) >= 0) {
+                        found = true;
+                        break;
+                    }
+                }
 
                 if (!found)
                     numDeleted += (photoFiles[i].delete()) ? 1 : 0;

@@ -179,6 +179,7 @@ public abstract class ManageContentFragment extends Fragment {
         ManageObjectSpec spec = getManageObjectSpec();
 
         if (verifyUserInput()) {
+            ArrayList<String> s = getSelectPhotosView().getImageNames();
             if (mSelectPhotosView != null)
                 ((PhotoUserDefineObject)mNewObject).setPhotos(getSelectPhotosView().getImageNames());
 
@@ -222,6 +223,7 @@ public abstract class ManageContentFragment extends Fragment {
             return;
         }
 
+        updateViews();
         super.onActivityResult(requestCode, resultCode, data);
     }
 

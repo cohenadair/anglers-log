@@ -120,6 +120,10 @@ public class SelectPhotosView extends LinearLayout {
 
         return names;
     }
+
+    public void setMaxPhotos(int maxPhotos) {
+        mMaxPhotos = maxPhotos;
+    }
     //endregion
 
     private void openPhotoIntent(int takeOrAttach) {
@@ -150,7 +154,7 @@ public class SelectPhotosView extends LinearLayout {
 
         // make sure photo taken shows up in the user's gallery
         if (mPublicPhotoFile.exists())
-            MediaScannerConnection.scanFile(getContext(), new String[]{mPublicPhotoFile.toString()}, null, null);
+            MediaScannerConnection.scanFile(getContext(), new String[]{ mPublicPhotoFile.toString() }, null, null);
 
         addImage(mPrivatePhotoFile.getPath());
     }
@@ -163,7 +167,6 @@ public class SelectPhotosView extends LinearLayout {
 
         final ImageView img = new ImageView(getContext());
         img.setLayoutParams(layoutParams);
-        img.setBackgroundResource(R.color.anglers_log_dark);
         img.setOnLongClickListener(new OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
@@ -186,8 +189,10 @@ public class SelectPhotosView extends LinearLayout {
 
         // manage max photos
         if (mMaxPhotos != -1)
-            if (mPhotosWrapper.getChildCount() >= mMaxPhotos)
+            if (mPhotosWrapper.getChildCount() >= mMaxPhotos) {
                 mCameraButton.setEnabled(false);
+                mCameraButton.setImageResource(R.drawable.ic_camera_disabled);
+            }
     }
 
     private void removeImage(ImageView img) {
@@ -197,8 +202,10 @@ public class SelectPhotosView extends LinearLayout {
 
         // manage max photos
         if (mMaxPhotos != -1)
-            if (mPhotosWrapper.getChildCount() < mMaxPhotos)
+            if (mPhotosWrapper.getChildCount() < mMaxPhotos) {
                 mCameraButton.setEnabled(true);
+                mCameraButton.setImageResource(R.drawable.ic_camera);
+            }
     }
 
     private void updateImageMargins() {
