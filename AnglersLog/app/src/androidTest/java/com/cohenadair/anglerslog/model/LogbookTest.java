@@ -8,6 +8,7 @@ import com.cohenadair.anglerslog.database.LogbookHelper;
 import com.cohenadair.anglerslog.model.user_defines.Bait;
 import com.cohenadair.anglerslog.model.user_defines.BaitCategory;
 import com.cohenadair.anglerslog.model.user_defines.Catch;
+import com.cohenadair.anglerslog.model.user_defines.Location;
 import com.cohenadair.anglerslog.model.user_defines.Species;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 
@@ -232,5 +233,44 @@ public class LogbookTest {
 
         ArrayList<UserDefineObject> baitsAndCategories = Logbook.getBaitsAndCategories();
         assertTrue(baitsAndCategories.size() == 8);
+    }
+
+    @Test
+    public void testLocation() {
+        Location loc0 = new Location("Port Albert");
+        Location loc1 = new Location("Goderich");
+        Location loc2 = new Location(loc1, true);
+        loc2.setName("River");
+
+        // add
+        assertTrue(Logbook.addLocation(loc1));
+        assertFalse(Logbook.addLocation(loc1));
+        assertTrue(Logbook.getLocationCount() == 1);
+
+        // exists
+        Location dupLoc = new Location("Goderich");
+        assertTrue(Logbook.locationExists(dupLoc));
+        Location dupLoc2 = new Location("Port Albert");
+        assertFalse(Logbook.locationExists(dupLoc2));
+
+        // edit
+        assertTrue(Logbook.editLocation(loc1.getId(), loc2));
+        assertTrue(Logbook.getLocation(loc1.getId()) != null);
+        assertTrue(Logbook.getLocation(loc1.getId()).getName().equals("River"));
+
+        // get single
+        Location loc4 = Logbook.getLocation(loc1.getId());
+        assertTrue(loc4.getId().equals(loc1.getId()));
+        assertTrue(loc4.getName().equals(loc2.getName()));
+
+        // delete
+        assertTrue(Logbook.removeLocation(loc1.getId()));
+        assertTrue(Logbook.getBaitCount() == 0);
+
+        // get multiple
+        Logbook.addLocation(loc0);
+        Logbook.addLocation(loc1);
+        ArrayList<UserDefineObject> locs = Logbook.getLocations();
+        assertTrue(locs.size() == 2);
     }
 }

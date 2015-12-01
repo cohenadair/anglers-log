@@ -11,11 +11,13 @@ import com.cohenadair.anglerslog.database.QueryHelper;
 import com.cohenadair.anglerslog.database.cursors.BaitCategoryCursor;
 import com.cohenadair.anglerslog.database.cursors.BaitCursor;
 import com.cohenadair.anglerslog.database.cursors.CatchCursor;
+import com.cohenadair.anglerslog.database.cursors.LocationCursor;
 import com.cohenadair.anglerslog.database.cursors.SpeciesCursor;
 import com.cohenadair.anglerslog.database.cursors.UserDefineCursor;
 import com.cohenadair.anglerslog.model.user_defines.Bait;
 import com.cohenadair.anglerslog.model.user_defines.BaitCategory;
 import com.cohenadair.anglerslog.model.user_defines.Catch;
+import com.cohenadair.anglerslog.model.user_defines.Location;
 import com.cohenadair.anglerslog.model.user_defines.Species;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 
@@ -27,6 +29,7 @@ import static com.cohenadair.anglerslog.database.LogbookSchema.BaitCategoryTable
 import static com.cohenadair.anglerslog.database.LogbookSchema.BaitTable;
 import static com.cohenadair.anglerslog.database.LogbookSchema.CatchPhotoTable;
 import static com.cohenadair.anglerslog.database.LogbookSchema.CatchTable;
+import static com.cohenadair.anglerslog.database.LogbookSchema.LocationTable;
 import static com.cohenadair.anglerslog.database.LogbookSchema.SpeciesTable;
 
 /**
@@ -258,7 +261,7 @@ public class Logbook {
      * @return True if the Bait exists; false otherwise.
      */
     public static boolean baitExists(Bait bait) {
-        Cursor cursor = mDatabase.query(BaitTable.NAME, null, BaitTable.Columns.CATEGORY_ID + " = ? AND " + BaitTable.Columns.NAME + " = ?", new String[]{bait.getCategoryId().toString(), bait.getName()}, null, null, null);
+        Cursor cursor = mDatabase.query(BaitTable.NAME, null, BaitTable.Columns.CATEGORY_ID + " = ? AND " + BaitTable.Columns.NAME + " = ?", new String[]{ bait.getCategoryId().toString(), bait.getName() }, null, null, null);
         return QueryHelper.queryHasResults(cursor);
     }
 
@@ -297,6 +300,55 @@ public class Logbook {
         }
 
         return result;
+    }
+    //endregion
+
+    //region Location Manipulation
+    public static ArrayList<UserDefineObject> getLocations() {
+        return QueryHelper.queryUserDefines(QueryHelper.queryUserDefines(LocationTable.NAME, null, null), new QueryHelper.UserDefineQueryInterface() {
+            @Override
+            public UserDefineObject getObject(UserDefineCursor cursor) {
+                return new LocationCursor(cursor).getLocation();
+            }
+        });
+    }
+
+    public static Location getLocation(UUID id) {
+        UserDefineObject obj = QueryHelper.queryUserDefine(LocationTable.NAME, id, new QueryHelper.UserDefineQueryInterface() {
+            @Override
+            public UserDefineObject getObject(UserDefineCursor cursor) {
+                return new LocationCursor(cursor).getLocation();
+            }
+        });
+
+        return (obj == null) ? null : (Location)obj;
+    }
+
+    /**
+     * Checks to see if the Location already exists in the database.
+     *
+     * @param location The Location object to look for.
+     * @return True if the Location exists; false otherwise.
+     */
+    public static boolean locationExists(Location location) {
+        Cursor cursor = mDatabase.query(LocationTable.NAME, null, LocationTable.Columns.NAME + " = ?", new String[]{ location.getName() }, null, null, null);
+        return QueryHelper.queryHasResults(cursor);
+    }
+
+    public static boolean addLocation(Location location) {
+        return QueryHelper.insertQuery(LocationTable.NAME, location.getContentValues());
+    }
+
+    public static boolean removeLocation(UUID id) {
+        return QueryHelper.deleteUserDefine(LocationTable.NAME, id);
+    }
+
+    public static boolean editLocation(UUID id, Location newLocation) {
+        return QueryHelper.updateUserDefine(LocationTable.NAME, newLocation.getContentValues(), id);
+    }
+
+    public static int getLocationCount() {
+        return QueryHelper.queryCount(LocationTable.NAME);
     }
     //endregion
 }

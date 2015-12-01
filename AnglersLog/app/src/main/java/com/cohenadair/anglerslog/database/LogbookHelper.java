@@ -4,11 +4,13 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.cohenadair.anglerslog.database.LogbookSchema.CatchPhotoTable;
-import com.cohenadair.anglerslog.database.LogbookSchema.CatchTable;
 import com.cohenadair.anglerslog.database.LogbookSchema.SpeciesTable;
 
 import static com.cohenadair.anglerslog.database.LogbookSchema.*;
+import static com.cohenadair.anglerslog.database.LogbookSchema.BaitCategoryTable;
+import static com.cohenadair.anglerslog.database.LogbookSchema.BaitPhotoTable;
+import static com.cohenadair.anglerslog.database.LogbookSchema.BaitTable;
+import static com.cohenadair.anglerslog.database.LogbookSchema.LocationTable;
 
 /**
  * The LogbookHelper is a {@link SQLiteOpenHelper} subclass that interacts with the application's
@@ -28,6 +30,21 @@ public class LogbookHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+        createCatchTable(db);
+        createSpeciesTable(db);
+        createBaitCategoryTable(db);
+        createBaitTable(db);
+        createPhotoTables(db);
+        createLocationTable(db);
+        createFishingSpotTable(db);
+    }
+
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+
+    }
+
+    private void createCatchTable(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE " + CatchTable.NAME + "(" +
             CatchTable.Columns.ID + " TEXT PRIMARY KEY NOT NULL, " +
             CatchTable.Columns.NAME + " TEXT NOT NULL, " +
@@ -37,19 +54,25 @@ public class LogbookHelper extends SQLiteOpenHelper {
             CatchTable.Columns.IS_FAVORITE + " INTEGER" +
             ")"
         );
+    }
 
+    private void createSpeciesTable(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE " + SpeciesTable.NAME + "(" +
             SpeciesTable.Columns.ID + " TEXT PRIMARY KEY NOT NULL, " +
             SpeciesTable.Columns.NAME + " TEXT UNIQUE NOT NULL" +
             ")"
         );
+    }
 
+    private void createBaitCategoryTable(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE " + BaitCategoryTable.NAME + "(" +
             BaitCategoryTable.Columns.ID + " TEXT PRIMARY KEY NOT NULL, " +
             BaitCategoryTable.Columns.NAME + " TEXT UNIQUE NOT NULL" +
             ")"
         );
+    }
 
+    private void createBaitTable(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE " + BaitTable.NAME + "(" +
             BaitTable.Columns.ID + " TEXT PRIMARY KEY NOT NULL, " +
             BaitTable.Columns.NAME + " TEXT NOT NULL, " +
@@ -61,7 +84,29 @@ public class LogbookHelper extends SQLiteOpenHelper {
             "UNIQUE(" + BaitTable.Columns.NAME + ", " + BaitTable.Columns.CATEGORY_ID + ")" +
             ")"
         );
+    }
 
+    private void createLocationTable(SQLiteDatabase db) {
+        db.execSQL("CREATE TABLE " + LocationTable.NAME + "(" +
+            LocationTable.Columns.ID + " TEXT PRIMARY KEY NOT NULL, " +
+            LocationTable.Columns.NAME + " TEXT UNIQUE NOT NULL" +
+            ")"
+        );
+    }
+
+    private void createFishingSpotTable(SQLiteDatabase db) {
+        db.execSQL("CREATE TABLE " + FishingSpotTable.NAME + "(" +
+            FishingSpotTable.Columns.ID + " TEXT PRIMARY KEY NOT NULL, " +
+            FishingSpotTable.Columns.NAME + " TEXT NOT NULL, " +
+            FishingSpotTable.Columns.LOCATION_ID + " TEXT NOT NULL REFERENCES " + LocationTable.NAME + "(" + LocationTable.Columns.ID + "), " +
+            FishingSpotTable.Columns.LATITUDE + " REAL," +
+            FishingSpotTable.Columns.LONGITUDE + " REAL, " +
+            "UNIQUE(" + FishingSpotTable.Columns.NAME + ", " + FishingSpotTable.Columns.LOCATION_ID + ")" +
+            ")"
+        );
+    }
+
+    private void createPhotoTables(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE " + CatchPhotoTable.NAME + "(" +
             CatchPhotoTable.Columns.USER_DEFINE_ID + " TEXT, " +
             CatchPhotoTable.Columns.NAME + " TEXT NOT NULL" +
@@ -73,10 +118,5 @@ public class LogbookHelper extends SQLiteOpenHelper {
             BaitPhotoTable.Columns.NAME + " TEXT NOT NULL" +
             ")"
         );
-    }
-
-    @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
     }
 }

@@ -1,7 +1,7 @@
 package com.cohenadair.anglerslog.model.user_defines;
 
 /**
- * The BaitCategory object stores information on a single Bait category;
+ * The BaitCategory object stores information on a single Bait category.
  *
  * Created by Cohen Adair on 2015-11-03.
  */

@@ -49,6 +49,20 @@ public class LogbookSchema {
         }
     }
 
+    public static final class LocationTable extends UserDefineTable {
+        public static final String NAME = "Location";
+    }
+
+    public static final class FishingSpotTable extends UserDefineTable {
+        public static final String NAME = "FishingSpot";
+
+        public static final class Columns extends UserDefineTable.Columns {
+            public static final String LOCATION_ID = "locationId";
+            public static final String LATITUDE = "latitude";
+            public static final String LONGITUDE = "longitude";
+        }
+    }
+
     /**
      * An actual table isn't created here; used as a superclass to specific photo tables.
      */
