@@ -1,10 +1,12 @@
 package com.cohenadair.anglerslog.utilities;
 
+import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.activities.LayoutSpecActivity;
 import com.cohenadair.anglerslog.fragments.DetailFragment;
 import com.cohenadair.anglerslog.fragments.ManageContentFragment;
 import com.cohenadair.anglerslog.fragments.ManageFragment;
 import com.cohenadair.anglerslog.fragments.MasterFragment;
+import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 
 import java.util.UUID;
 
@@ -130,5 +132,21 @@ public class LayoutSpec {
         mMasterAdapter = mListener.onGetMasterAdapter();
         mMasterFragment.update(activity);
         mDetailFragment.update(activity);
+    }
+
+    /**
+     * A helper function for removing user defines. Removes repeated code.
+     *
+     * @param context The Context.
+     * @param obj The UserDefineObject to be removed.
+     * @param didRemove Whether or not the object was removed.
+     * @param successId The success message id.
+     */
+    public void removeUserDefine(LayoutSpecActivity context, UserDefineObject obj, boolean didRemove, int successId) {
+        if (didRemove) {
+            updateViews(context);
+            Utils.showToast(context, successId);
+        } else
+            Utils.showErrorAlert(context, obj.getName() + " " + context.getResources().getString(R.string.error_delete_primitive));
     }
 }

@@ -8,12 +8,14 @@ import android.graphics.Point;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
+import android.text.format.DateFormat;
 import android.view.View;
 import android.widget.Toast;
 
 import com.cohenadair.anglerslog.R;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * A set of utility methods used throughout the project.
@@ -164,6 +166,16 @@ public class Utils {
             if (str.contains(s))
                 return true;
         return false;
+    }
+
+    @NonNull
+    public static String getDisplayDate(Date date) {
+        return DateFormat.format("MMMM dd, yyyy", date).toString();
+    }
+
+    @NonNull
+    public static String getDisplayTime(Date date) {
+        return DateFormat.format("h:mm a", date).toString();
     }
 
 }

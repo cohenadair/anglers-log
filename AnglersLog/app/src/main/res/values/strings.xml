@@ -71,17 +71,20 @@
     <string name="success_catch">Successfully added catch!</string>
     <string name="success_catch_delete">Successfully deleted catch.</string>
     <string name="success_catch_edit">Successfully updated catch.</string>
-    <string name="error_catch_delete">That catch is in use and cannot be deleted.</string>
+    <string name="error_catch_delete">Catch is in use and cannot be deleted.</string>
     <string name="error_catch_edit">Error updating catch.</string>
     <string name="error_catch">Error adding catch!</string>
     <string name="error_catch_date">A catch with that date and time already exists.  Please choose another date or edit the current catch.</string>
     <string name="error_catch_species">Please select a species.</string>
 
+    <string name="success_location_delete">Successfully deleted location.</string>
+    <string name="error_location_delete">Location is in use and cannot be deleted.</string>
+
     <string name="bait_no_catches">No fish have been caught with this bait (feature coming soon).</string>
     <string name="success_bait">Successfully added bait!</string>
     <string name="success_bait_delete">Successfully deleted bait.</string>
     <string name="success_bait_edit">Successfully updated bait.</string>
-    <string name="error_bait_delete">That bait is in use and cannot be deleted.</string>
+    <string name="error_bait_delete">Bait is in use and cannot be deleted.</string>
     <string name="error_bait_edit">Error updating bait.</string>
     <string name="error_bait">Error adding bait!</string>
     <string name="error_bait_name">Please enter a name.</string>
@@ -89,7 +92,7 @@
     <string name="error_bait_category_name">A bait with that name and category already exists.</string>
 
     <string name="error_camera_unavailable">The camera is currently unavailable on this device.</string>
-    <string name="error_delete_primitive">is currently being used and cannot be deleted.</string>
+    <string name="error_delete_primitive">is currently in use and cannot be deleted.</string>
     <string name="error_add_photo">Error adding photo.</string>
     <string name="error_remove_photo">Error removing photo.</string>
     <string name="error_resolve_google_connection">Failed to connect to Google Drive.</string>

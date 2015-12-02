@@ -3,6 +3,8 @@ package com.cohenadair.anglerslog.model.user_defines;
 import android.content.ContentValues;
 import android.text.format.DateFormat;
 
+import com.cohenadair.anglerslog.utilities.Utils;
+
 import java.util.Date;
 
 import static com.cohenadair.anglerslog.database.LogbookSchema.CatchPhotoTable;
@@ -21,7 +23,7 @@ public class Catch extends PhotoUserDefineObject {
 
     //region Constructors
     public Catch(Date date) {
-        super(date.toString(), CatchPhotoTable.NAME);
+        super(Utils.getDisplayDate(date), CatchPhotoTable.NAME);
         mDate = date;
     }
 
@@ -94,11 +96,11 @@ public class Catch extends PhotoUserDefineObject {
     }
 
     public String getDateAsString() {
-        return DateFormat.format("MMMM dd, yyyy", mDate).toString();
+        return Utils.getDisplayDate(mDate);
     }
 
     public String getTimeAsString() {
-        return DateFormat.format("h:mm a", mDate).toString();
+        return Utils.getDisplayTime(mDate);
     }
 
     public String getDateTimeAsString() {

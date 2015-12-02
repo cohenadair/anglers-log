@@ -212,8 +212,7 @@ public class ManagePrimitiveFragment extends DialogFragment {
         });
     }
     //endregion
-
-    // TODO factor holder and adapter code to it's own class
+    
     //region RecyclerView Stuff
     private class ManagePrimitiveHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
