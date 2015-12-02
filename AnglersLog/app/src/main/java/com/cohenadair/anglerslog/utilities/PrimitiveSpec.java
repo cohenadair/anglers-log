@@ -32,6 +32,7 @@ public class PrimitiveSpec {
         ArrayList<UserDefineObject> onGetItems();
         UserDefineObject onClickItem(UUID id);
         boolean onAddItem(String name);
+        boolean onRemoveItem(UUID id);
         void onEditItem(UUID id, UserDefineObject newObj);
     }
 

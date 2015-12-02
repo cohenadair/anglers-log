@@ -13,6 +13,9 @@ import com.cohenadair.anglerslog.catches.CatchListManager;
 import com.cohenadair.anglerslog.catches.ManageCatchFragment;
 import com.cohenadair.anglerslog.fragments.MyListFragment;
 import com.cohenadair.anglerslog.interfaces.OnClickInterface;
+import com.cohenadair.anglerslog.locations.LocationFragment;
+import com.cohenadair.anglerslog.locations.LocationListManager;
+import com.cohenadair.anglerslog.locations.ManageLocationFragment;
 import com.cohenadair.anglerslog.model.Logbook;
 
 import java.util.UUID;
@@ -39,6 +42,7 @@ public class LayoutSpecManager {
      * Top level fragments that are normally displayed from the navigation drawer.
      */
     public static final int LAYOUT_CATCHES = R.id.nav_catches;
+    public static final int LAYOUT_LOCATIONS = R.id.nav_locations;
     public static final int LAYOUT_BAITS = R.id.nav_baits;
 
     //region Layout Spec Definitions
@@ -47,6 +51,10 @@ public class LayoutSpecManager {
         switch (id) {
             case LAYOUT_CATCHES:
                 return getCatchesLayoutSpec(context);
+
+            case LAYOUT_LOCATIONS:
+                return getLocationsLayoutSpec(context);
+
             case LAYOUT_BAITS:
                 return getBaitsLayoutSpec(context);
         }
@@ -67,7 +75,7 @@ public class LayoutSpecManager {
             @Override
             public void onUserDefineRemove(UUID id) {
                 if (Logbook.removeCatch(id)) {
-                    spec.updateViews((LayoutSpecActivity) context);
+                    spec.updateViews((LayoutSpecActivity)context);
                     Utils.showToast(context, R.string.success_catch_delete);
                 } else
                     Utils.showErrorAlert(context, R.string.error_catch_delete);
@@ -78,6 +86,34 @@ public class LayoutSpecManager {
         spec.setMasterFragment(new MyListFragment());
         spec.setDetailFragment(new CatchFragment());
         spec.setManageFragment(new ManageCatchFragment());
+
+        return spec;
+    }
+
+    private static LayoutSpec getLocationsLayoutSpec(final Context context) {
+        final OnClickInterface onMasterItemClick = ((InteractionListener)context).getOnMyListFragmentItemClick();
+        final LayoutSpec spec = new LayoutSpec("locations", "location", "Location");
+
+        spec.setListener(new LayoutSpec.InteractionListener() {
+            @Override
+            public ListManager.Adapter onGetMasterAdapter() {
+                return new LocationListManager.Adapter(context, Logbook.getLocations(), onMasterItemClick);
+            }
+
+            @Override
+            public void onUserDefineRemove(UUID id) {
+                if (Logbook.removeLocation(id)) {
+                    spec.updateViews((LayoutSpecActivity)context);
+                    Utils.showToast(context, R.string.success_location_delete);
+                } else
+                    Utils.showErrorAlert(context, R.string.error_location_delete);
+            }
+        });
+
+        spec.setId(LAYOUT_LOCATIONS);
+        spec.setMasterFragment(new MyListFragment());
+        spec.setDetailFragment(new LocationFragment());
+        spec.setManageFragment(new ManageLocationFragment());
 
         return spec;
     }
@@ -95,7 +131,7 @@ public class LayoutSpecManager {
             @Override
             public void onUserDefineRemove(UUID id) {
                 if (Logbook.removeBait(id)) {
-                    spec.updateViews((LayoutSpecActivity) context);
+                    spec.updateViews((LayoutSpecActivity)context);
                     Utils.showToast(context, R.string.success_bait_delete);
                 } else
                     Utils.showErrorAlert(context, R.string.error_bait_delete);
@@ -109,6 +145,7 @@ public class LayoutSpecManager {
 
         return spec;
     }
+
     //endregion
 
 }

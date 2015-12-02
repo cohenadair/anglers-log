@@ -62,6 +62,11 @@ public class PrimitiveSpecManager {
             }
 
             @Override
+            public boolean onRemoveItem(UUID id) {
+                return Logbook.removeSpecies(id);
+            }
+
+            @Override
             public void onEditItem(UUID id, UserDefineObject newObj) {
                 Logbook.editSpecies(id, new Species(newObj));
             }
@@ -84,6 +89,11 @@ public class PrimitiveSpecManager {
             @Override
             public boolean onAddItem(String name) {
                 return Logbook.addBaitCategory(new BaitCategory(name));
+            }
+
+            @Override
+            public boolean onRemoveItem(UUID id) {
+                return Logbook.removeBaitCategory(id);
             }
 
             @Override
