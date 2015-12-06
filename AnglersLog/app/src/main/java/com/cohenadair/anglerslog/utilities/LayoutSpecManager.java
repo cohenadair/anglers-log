@@ -48,22 +48,24 @@ public class LayoutSpecManager {
     //region Layout Spec Definitions
     @Nullable
     public static LayoutSpec layoutSpec(Context context, int id) {
+        LayoutSpecActivity layoutSpecContext = (LayoutSpecActivity)context;
+
         switch (id) {
             case LAYOUT_CATCHES:
-                return getCatchesLayoutSpec(context);
+                return getCatchesLayoutSpec(layoutSpecContext);
 
             case LAYOUT_LOCATIONS:
-                return getLocationsLayoutSpec(context);
+                return getLocationsLayoutSpec(layoutSpecContext);
 
             case LAYOUT_BAITS:
-                return getBaitsLayoutSpec(context);
+                return getBaitsLayoutSpec(layoutSpecContext);
         }
 
         return null;
     }
 
-    private static LayoutSpec getCatchesLayoutSpec(final Context context) {
-        final OnClickInterface onMasterItemClick = ((InteractionListener)context).getOnMyListFragmentItemClick();
+    private static LayoutSpec getCatchesLayoutSpec(final LayoutSpecActivity context) {
+        final OnClickInterface onMasterItemClick = context.getOnMyListFragmentItemClick();
         final LayoutSpec spec = new LayoutSpec("catches", "catch", "Catch");
 
         spec.setListener(new LayoutSpec.InteractionListener() {
@@ -74,7 +76,7 @@ public class LayoutSpecManager {
 
             @Override
             public void onUserDefineRemove(UUID id) {
-                spec.removeUserDefine((LayoutSpecActivity)context, Logbook.getCatch(id), Logbook.removeCatch(id), R.string.success_catch_delete);
+                spec.removeUserDefine(context, Logbook.getCatch(id), Logbook.removeCatch(id), R.string.success_catch_delete);
             }
         });
 
@@ -86,8 +88,8 @@ public class LayoutSpecManager {
         return spec;
     }
 
-    private static LayoutSpec getLocationsLayoutSpec(final Context context) {
-        final OnClickInterface onMasterItemClick = ((InteractionListener)context).getOnMyListFragmentItemClick();
+    private static LayoutSpec getLocationsLayoutSpec(final LayoutSpecActivity context) {
+        final OnClickInterface onMasterItemClick = context.getOnMyListFragmentItemClick();
         final LayoutSpec spec = new LayoutSpec("locations", "location", "Location");
 
         spec.setListener(new LayoutSpec.InteractionListener() {
@@ -98,7 +100,7 @@ public class LayoutSpecManager {
 
             @Override
             public void onUserDefineRemove(UUID id) {
-                spec.removeUserDefine((LayoutSpecActivity)context, Logbook.getLocation(id), Logbook.removeLocation(id), R.string.success_location_delete);
+                spec.removeUserDefine(context, Logbook.getLocation(id), Logbook.removeLocation(id), R.string.success_location_delete);
             }
         });
 
@@ -110,8 +112,8 @@ public class LayoutSpecManager {
         return spec;
     }
 
-    private static LayoutSpec getBaitsLayoutSpec(final Context context) {
-        final OnClickInterface onMasterItemClick = ((InteractionListener)context).getOnMyListFragmentItemClick();
+    private static LayoutSpec getBaitsLayoutSpec(final LayoutSpecActivity context) {
+        final OnClickInterface onMasterItemClick = context.getOnMyListFragmentItemClick();
         final LayoutSpec spec = new LayoutSpec("baits", "bait", "Bait");
 
         spec.setListener(new LayoutSpec.InteractionListener() {
@@ -122,7 +124,7 @@ public class LayoutSpecManager {
 
             @Override
             public void onUserDefineRemove(UUID id) {
-                spec.removeUserDefine((LayoutSpecActivity)context, Logbook.getBait(id), Logbook.removeBait(id), R.string.success_bait_delete);
+                spec.removeUserDefine(context, Logbook.getBait(id), Logbook.removeBait(id), R.string.success_bait_delete);
             }
         });
 

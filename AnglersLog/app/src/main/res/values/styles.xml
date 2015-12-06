@@ -66,6 +66,15 @@
         <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
         <item name="android:textColor">@android:color/black</item>
     </style>
+
+    <style name="Widget.TextView.Small" parent="Theme.AppCompat.Light">
+        <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
+    </style>
+
+    <style name="Widget.TextView.SmallBlack" parent="Theme.AppCompat.Light">
+        <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
+        <item name="android:textColor">@android:color/black</item>
+    </style>
     <!-- /TextViews -->
 
 </resources>

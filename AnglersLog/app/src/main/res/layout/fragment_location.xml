@@ -1,0 +1,22 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    xmlns:custom="http://schemas.android.com/apk/res-auto">
+
+    <!-- Current Fishing Spot -->
+    <com.cohenadair.anglerslog.views.SelectionSpinnerView
+        android:id="@+id/fishing_spot_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        custom:titleText="@string/fishing_spot"/>
+
+    <!-- Google Map -->
+    <fragment
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+</LinearLayout>

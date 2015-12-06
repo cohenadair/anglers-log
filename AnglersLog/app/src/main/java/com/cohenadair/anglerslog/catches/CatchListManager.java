@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.interfaces.OnClickInterface;
-import com.cohenadair.anglerslog.interfaces.OnClickManageMenuListener;
 import com.cohenadair.anglerslog.model.Logbook;
 import com.cohenadair.anglerslog.model.user_defines.Catch;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
@@ -20,7 +19,6 @@ import com.cohenadair.anglerslog.utilities.PhotoUtils;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.UUID;
 
 /**
  * The BaitListManager is a utility class for managing the catches list.
@@ -64,16 +62,6 @@ public class CatchListManager {
                     return true;
                 }
             });
-        }
-
-        @Override
-        public void onItemEdit(UUID position) {
-            ((OnClickManageMenuListener)context()).onClickMenuEdit(position);
-        }
-
-        @Override
-        public void onItemDelete(UUID position) {
-            ((OnClickManageMenuListener)context()).onClickMenuTrash(position);
         }
 
         public void setCatch(Catch aCatch, int position) {

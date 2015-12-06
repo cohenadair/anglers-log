@@ -22,6 +22,7 @@
     <dimen name="thumbnail_size">90dp</dimen>
     <dimen name="thumbnail_cell_size">92dp</dimen>
     <dimen name="image_scroll_size">250dp</dimen>
+    <dimen name="image_button_size">24dp</dimen>
 
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>

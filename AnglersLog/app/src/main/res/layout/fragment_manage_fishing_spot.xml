@@ -40,11 +40,25 @@
         <include layout="@layout/view_divider"/>
 
         <!-- Type -->
-        <com.cohenadair.anglerslog.views.SelectionSpinnerView
-            android:id="@+id/type_spinner"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            custom:titleText="@string/type"/>
+            android:layout_margin="@dimen/margin_default"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/Widget.TextView.Header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/title_text_view"
+                android:text="@string/type"/>
+
+            <Spinner
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/type_spinner"/>
+
+        </LinearLayout>
 
         <include layout="@layout/view_divider"/>
 

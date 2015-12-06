@@ -1,7 +1,7 @@
 package com.cohenadair.anglerslog.model.user_defines;
 
 import com.cohenadair.anglerslog.database.QueryHelper;
-import com.cohenadair.anglerslog.database.cursors.LocationCursor;
+import com.cohenadair.anglerslog.database.cursors.FishingSpotCursor;
 import com.cohenadair.anglerslog.database.cursors.UserDefineCursor;
 
 import java.util.ArrayList;
@@ -16,6 +16,10 @@ import static com.cohenadair.anglerslog.database.LogbookSchema.FishingSpotTable;
  * Created by Cohen Adair on 2015-11-03.
  */
 public class Location extends UserDefineObject {
+
+    public Location() {
+        this("");
+    }
 
     public Location(String name) {
         super(name);
@@ -38,7 +42,7 @@ public class Location extends UserDefineObject {
         return getFishingSpots(getId());
     }
 
-    public void setFishingSpots(ArrayList<FishingSpot> newFishingSpots) {
+    public void setFishingSpots(ArrayList<UserDefineObject> newFishingSpots) {
         ArrayList<UserDefineObject> oldFishingSpots = getFishingSpots();
 
         for (UserDefineObject oldSpot : oldFishingSpots)
@@ -55,7 +59,7 @@ public class Location extends UserDefineObject {
             new QueryHelper.UserDefineQueryInterface() {
                 @Override
                 public UserDefineObject getObject(UserDefineCursor cursor) {
-                    return new LocationCursor(cursor).getLocation();
+                    return new FishingSpotCursor(cursor).getFishingSpot();
                 }
             }
         );

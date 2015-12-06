@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.cohenadair.anglerslog.interfaces.OnClickInterface;
+import com.cohenadair.anglerslog.interfaces.OnClickManageMenuListener;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 
 import java.util.ArrayList;
@@ -23,13 +24,6 @@ public class ListManager {
 
         private Adapter mAdapter;
         private UUID mId;
-
-        /**
-         * Must be implemented by subclasses.
-         * @param id The id of the item to edit or delete.
-         */
-        public abstract void onItemEdit(UUID id);
-        public abstract void onItemDelete(UUID id);
 
         public ViewHolder(View view, Adapter adapter) {
             super(view);
@@ -66,6 +60,14 @@ public class ListManager {
             });
 
             return true;
+        }
+
+        public void onItemEdit(UUID position) {
+            ((OnClickManageMenuListener)context()).onClickMenuEdit(position);
+        }
+
+        public void onItemDelete(UUID position) {
+            ((OnClickManageMenuListener)context()).onClickMenuTrash(position);
         }
 
         public void setId(UUID id) {

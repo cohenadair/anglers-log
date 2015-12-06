@@ -27,6 +27,8 @@
     <string name="live">Live</string>
     <string name="real">Real</string>
     <string name="location">Location</string>
+    <string name="fishing_spot">Fishing Spot</string>
+    <string name="fishing_spots">Fishing Spots</string>
     <string name="properties">Properties</string>
 
     <string name="drawer_open">Open Navigation Drawer</string>
@@ -78,7 +80,13 @@
     <string name="error_catch_species">Please select a species.</string>
 
     <string name="success_location_delete">Successfully deleted location.</string>
+    <string name="success_location_edit">Successfully updated location.</string>
+    <string name="success_location_add">Successfully added location.</string>
     <string name="error_location_delete">Location is in use and cannot be deleted.</string>
+    <string name="error_location_edit">Error updating location.</string>
+    <string name="error_location_add">Error adding location.</string>
+    <string name="error_location_name">A location with that name already exists.</string>
+    <string name="error_no_fishing_spots">Please add at least one fishing spot.</string>
 
     <string name="bait_no_catches">No fish have been caught with this bait (feature coming soon).</string>
     <string name="success_bait">Successfully added bait!</string>
@@ -102,5 +110,7 @@
     <string name="catch_photo_description">A photo of the current catch.</string>
     <string name="bait_photo_description">A photo of the current bait.</string>
     <string name="camera_icon_description">A button to take or attach a photo.</string>
+    <string name="remove_fishing_spot_description">Removes fishing spot from the current location.</string>
     <string name="header_photo_description">A photo of one of the user\'s catches.</string>
+    <string name="add_fishing_spot_description">Add fishing spot to location.</string>
 </resources>

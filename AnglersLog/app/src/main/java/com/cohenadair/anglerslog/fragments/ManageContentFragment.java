@@ -76,7 +76,7 @@ public abstract class ManageContentFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-        // do not initialize Catches if we were paused
+        // do not initialize if we were paused
         if (getNewObject() == null)
             initSubclassObject();
 
@@ -179,7 +179,6 @@ public abstract class ManageContentFragment extends Fragment {
         ManageObjectSpec spec = getManageObjectSpec();
 
         if (verifyUserInput()) {
-            ArrayList<String> s = getSelectPhotosView().getImageNames();
             if (mSelectPhotosView != null)
                 ((PhotoUserDefineObject)mNewObject).setPhotos(getSelectPhotosView().getImageNames());
 

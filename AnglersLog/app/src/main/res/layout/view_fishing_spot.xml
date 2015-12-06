@@ -1,0 +1,43 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="@dimen/margin_default"
+    android:layout_marginRight="@dimen/margin_default"
+    android:layout_marginTop="@dimen/spacing_small_half"
+    android:layout_marginBottom="@dimen/spacing_small_half"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            style="@style/Widget.TextView.SmallBlack"
+            android:id="@+id/title_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Fishing Spot Name"/>
+
+        <TextView
+            style="@style/Widget.TextView.Small"
+            android:id="@+id/subtitle_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Latitude, Longitude"/>
+
+    </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/remove_button"
+        android:background="#00000000"
+        android:layout_width="@dimen/image_button_size"
+        android:layout_height="@dimen/image_button_size"
+        android:layout_gravity="center_vertical"
+        android:src="@drawable/ic_remove"
+        android:contentDescription="@string/remove_fishing_spot_description"/>
+
+</LinearLayout>

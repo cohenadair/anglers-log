@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Spinner;
 
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.fragments.ManageContentFragment;
@@ -17,6 +16,7 @@ import com.cohenadair.anglerslog.model.user_defines.BaitCategory;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import com.cohenadair.anglerslog.utilities.PrimitiveSpecManager;
 import com.cohenadair.anglerslog.utilities.Utils;
+import com.cohenadair.anglerslog.views.SelectionSpinnerView;
 import com.cohenadair.anglerslog.views.SelectionView;
 import com.cohenadair.anglerslog.views.TextInputView;
 
@@ -30,7 +30,7 @@ public class ManageBaitFragment extends ManageContentFragment {
     private TextInputView mColorView;
     private TextInputView mSizeView;
     private TextInputView mDescriptionView;
-    private Spinner mTypeSpinner;
+    private SelectionSpinnerView mTypeSpinner;
 
     public ManageBaitFragment() {
         // Required empty public constructor
@@ -173,7 +173,7 @@ public class ManageBaitFragment extends ManageContentFragment {
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(), R.array.bait_types, R.layout.list_item_spinner);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-        mTypeSpinner = (Spinner)view.findViewById(R.id.type_spinner);
+        mTypeSpinner = (SelectionSpinnerView)view.findViewById(R.id.type_spinner);
         mTypeSpinner.setAdapter(adapter);
         mTypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override

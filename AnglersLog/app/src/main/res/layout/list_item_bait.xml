@@ -44,7 +44,7 @@
                 android:id="@+id/name_label"/>
 
             <TextView
-                android:textAppearance="?android:attr/textAppearanceSmall"
+                style="@style/Widget.TextView.Small"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 tools:text="0 Catches"
