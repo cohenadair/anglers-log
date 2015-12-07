@@ -98,7 +98,7 @@ public class LogbookHelper extends SQLiteOpenHelper {
         db.execSQL("CREATE TABLE " + FishingSpotTable.NAME + "(" +
             FishingSpotTable.Columns.ID + " TEXT PRIMARY KEY NOT NULL, " +
             FishingSpotTable.Columns.NAME + " TEXT NOT NULL, " +
-            FishingSpotTable.Columns.LOCATION_ID + " TEXT NOT NULL REFERENCES " + LocationTable.NAME + "(" + LocationTable.Columns.ID + "), " +
+            FishingSpotTable.Columns.LOCATION_ID + " TEXT NOT NULL, " +
             FishingSpotTable.Columns.LATITUDE + " REAL," +
             FishingSpotTable.Columns.LONGITUDE + " REAL, " +
             "UNIQUE(" + FishingSpotTable.Columns.NAME + ", " + FishingSpotTable.Columns.LOCATION_ID + ")" +

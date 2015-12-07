@@ -7,6 +7,7 @@ import android.test.RenamingDelegatingContext;
 import com.cohenadair.anglerslog.database.LogbookHelper;
 import com.cohenadair.anglerslog.model.user_defines.FishingSpot;
 import com.cohenadair.anglerslog.model.user_defines.Location;
+import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 
 import org.junit.After;
 import org.junit.Before;
@@ -51,7 +52,7 @@ public class LocationTest {
         FishingSpot spot0 = new FishingSpot("Mouth");
         FishingSpot spot1 = new FishingSpot("Baskets");
         FishingSpot spot2 = new FishingSpot("Beaver Dam");
-        ArrayList<FishingSpot> spots = new ArrayList<>();
+        ArrayList<UserDefineObject> spots = new ArrayList<>();
         spots.add(spot0);
         spots.add(spot1);
         spots.add(spot2);
@@ -68,13 +69,13 @@ public class LocationTest {
         mTestLocation.removeFishingSpot(spot0.getId());
         assertTrue(mTestLocation.getFishingSpotCount() == 0);
 
-        // setPhotos
+        // setFishingSpots
         mTestLocation.addFishingSpot(spot0);
         mTestLocation.addFishingSpot(spot1);
         mTestLocation.setFishingSpots(spots);
         assertTrue(mTestLocation.getFishingSpotCount() == 3);
 
-        // getPhotos
+        // getFishingSpots
         assertTrue(mTestLocation.getFishingSpots().size() == 3);
     }
 }

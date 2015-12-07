@@ -110,7 +110,7 @@ public class ManageBaitFragment extends ManageContentFragment {
 
         // name
         if (getNewBait().isNameNull()) {
-            Utils.showErrorAlert(getActivity(), R.string.error_bait_name);
+            Utils.showErrorAlert(getActivity(), R.string.error_name);
             return false;
         }
 

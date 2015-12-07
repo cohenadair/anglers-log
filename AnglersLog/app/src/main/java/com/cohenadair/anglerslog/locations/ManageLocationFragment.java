@@ -1,6 +1,7 @@
 package com.cohenadair.anglerslog.locations;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,7 @@ import android.widget.LinearLayout;
 
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.fragments.ManageContentFragment;
+import com.cohenadair.anglerslog.fragments.ManageFragment;
 import com.cohenadair.anglerslog.model.Logbook;
 import com.cohenadair.anglerslog.model.user_defines.FishingSpot;
 import com.cohenadair.anglerslog.model.user_defines.Location;
@@ -18,6 +20,7 @@ import com.cohenadair.anglerslog.views.FishingSpotView;
 import com.cohenadair.anglerslog.views.TextInputView;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 /**
  * The ManageLocationFragment is used to add and edit locations.
@@ -58,7 +61,12 @@ public class ManageLocationFragment extends ManageContentFragment {
         return new ManageObjectSpec(R.string.error_location_add, R.string.success_location_add, R.string.error_location_edit, R.string.success_location_edit, new ManageInterface() {
             @Override
             public boolean onEdit() {
-                return Logbook.editLocation(getEditingId(), getNewLocation());
+                if (Logbook.editLocation(getEditingId(), getNewLocation())) {
+                    getNewLocation().setFishingSpots(mFishingSpots);
+                    return true;
+                }
+
+                return false;
             }
 
             @Override
@@ -103,7 +111,7 @@ public class ManageLocationFragment extends ManageContentFragment {
 
         // name
         if (loc.isNameNull()) {
-            Utils.showErrorAlert(getActivity(), R.string.error_bait_name);
+            Utils.showErrorAlert(getActivity(), R.string.error_name);
             return false;
         }
 
@@ -125,11 +133,11 @@ public class ManageLocationFragment extends ManageContentFragment {
     @Override
     public void updateViews() {
         mNameView.setInputText(getNewLocation().getName() != null ? getNewLocation().getName() : "");
-        updateFishingSpots();
+        addAllFishingSpots();
     }
 
-    private void updateFishingSpots() {
-        for (UserDefineObject spot : getNewLocation().getFishingSpots())
+    private void addAllFishingSpots() {
+        for (UserDefineObject spot : mFishingSpots)
             addFishingSpot((FishingSpot)spot);
     }
 
@@ -142,19 +150,94 @@ public class ManageLocationFragment extends ManageContentFragment {
         mAddFishingSpotButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addFishingSpot(new FishingSpot("Fishing Spot Name"));
+                goToManageFishingSpot();
             }
         });
     }
 
-    private void addFishingSpot(FishingSpot spot) {
-        mFishingSpots.add(spot);
+    private void addFishingSpot(final FishingSpot spot) {
+        String lat = getContext().getResources().getString(R.string.latitude);
+        String lng = getContext().getResources().getString(R.string.longitude);
 
-        FishingSpotView fishingSpotView = new FishingSpotView(getContext());
+        final FishingSpotView fishingSpotView = new FishingSpotView(getContext());
         fishingSpotView.setTitle(spot.getName());
-        fishingSpotView.setSubtitle("0.000000, 0.000000");
+        fishingSpotView.setSubtitle(String.format(lat + ": %.6f, " + lng + ": %.6f", spot.getLatitude(), spot.getLongitude()));
+        fishingSpotView.setOnClickRemoveButton(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mFishingSpots.remove(spot);
+                mContainer.removeView(fishingSpotView);
+            }
+        });
 
         mContainer.addView(fishingSpotView);
+    }
+
+    private void goToManageFishingSpot() {
+        final ManageFishingSpotFragment fragment = new ManageFishingSpotFragment();
+
+        fragment.setOnVerifyInterface(new ManageFishingSpotFragment.OnVerifyInterface() {
+            @Override
+            public boolean isDuplicate(FishingSpot fishingSpot) {
+                for (UserDefineObject obj : mFishingSpots)
+                    if (obj.getName().equals(fishingSpot.getName()))
+                        return true;
+
+                return false;
+            }
+        });
+
+        fragment.setManageObjectSpec(new ManageObjectSpec(R.string.error_fishing_spot_add, R.string.success_fishing_spot_add, R.string.error_fishing_spot_edit, R.string.success_fishing_spot_edit, new ManageInterface() {
+            @Override
+            public boolean onEdit() {
+                for (int i = 0; i < mFishingSpots.size(); i++)
+                    // update the fishing spot if this is the one we're editing
+                    if (mFishingSpots.get(i).getId().equals(fragment.getNewFishingSpot().getId())) {
+                        mFishingSpots.set(i, new FishingSpot(fragment.getNewFishingSpot(), true));
+                        return true;
+                    }
+
+                return false;
+            }
+
+            @Override
+            public boolean onAdd() {
+                mFishingSpots.add(fragment.getNewFishingSpot());
+                addFishingSpot(fragment.getNewFishingSpot());
+                return true;
+            }
+        }));
+
+        fragment.setInitializeInterface(new InitializeInterface() {
+            @Override
+            public UserDefineObject onGetOldObject() {
+                return getFishingSpot(fragment.getEditingId());
+            }
+
+            @Override
+            public UserDefineObject onGetNewEditObject(UserDefineObject oldObject) {
+                return new FishingSpot((FishingSpot)oldObject, true);
+            }
+
+            @Override
+            public UserDefineObject onGetNewBlankObject() {
+                return new FishingSpot();
+            }
+        });
+
+        ManageFragment manageFragment = new ManageFragment();
+        manageFragment.setNoTitle(true);
+        manageFragment.setContentFragment(fragment);
+        manageFragment.show(getChildFragmentManager(), null);
+    }
+
+    @Nullable
+    private FishingSpot getFishingSpot(UUID id) {
+        for (UserDefineObject fishingSpot : mFishingSpots)
+            if (fishingSpot.getId().equals(id))
+                return (FishingSpot)fishingSpot;
+
+        return null;
     }
 
 }

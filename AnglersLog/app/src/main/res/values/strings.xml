@@ -30,6 +30,8 @@
     <string name="fishing_spot">Fishing Spot</string>
     <string name="fishing_spots">Fishing Spots</string>
     <string name="properties">Properties</string>
+    <string name="latitude">Latitude</string>
+    <string name="longitude">Longitude</string>
 
     <string name="drawer_open">Open Navigation Drawer</string>
     <string name="drawer_close">Close Navigation Drawer</string>
@@ -82,11 +84,16 @@
     <string name="success_location_delete">Successfully deleted location.</string>
     <string name="success_location_edit">Successfully updated location.</string>
     <string name="success_location_add">Successfully added location.</string>
+    <string name="success_fishing_spot_add">Successfully added fishing spot.</string>
+    <string name="success_fishing_spot_edit">Successfully updated fishing spot.</string>
     <string name="error_location_delete">Location is in use and cannot be deleted.</string>
     <string name="error_location_edit">Error updating location.</string>
     <string name="error_location_add">Error adding location.</string>
     <string name="error_location_name">A location with that name already exists.</string>
     <string name="error_no_fishing_spots">Please add at least one fishing spot.</string>
+    <string name="error_fishing_spot_name">A fishing spot with that name already exists.</string>
+    <string name="error_fishing_spot_add">Error adding fishing spot.</string>
+    <string name="error_fishing_spot_edit">Error updating fishing spot.</string>
 
     <string name="bait_no_catches">No fish have been caught with this bait (feature coming soon).</string>
     <string name="success_bait">Successfully added bait!</string>
@@ -95,7 +102,7 @@
     <string name="error_bait_delete">Bait is in use and cannot be deleted.</string>
     <string name="error_bait_edit">Error updating bait.</string>
     <string name="error_bait">Error adding bait!</string>
-    <string name="error_bait_name">Please enter a name.</string>
+    <string name="error_name">Please enter a name.</string>
     <string name="error_bait_category">Please select a category.</string>
     <string name="error_bait_category_name">A bait with that name and category already exists.</string>
 
@@ -113,4 +120,5 @@
     <string name="remove_fishing_spot_description">Removes fishing spot from the current location.</string>
     <string name="header_photo_description">A photo of one of the user\'s catches.</string>
     <string name="add_fishing_spot_description">Add fishing spot to location.</string>
+    <string name="crosshairs_description">The coordinates of the current fishing spot.</string>
 </resources>

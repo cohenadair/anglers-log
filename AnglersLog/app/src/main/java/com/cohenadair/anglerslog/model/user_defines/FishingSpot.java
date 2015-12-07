@@ -16,6 +16,10 @@ public class FishingSpot extends UserDefineObject {
     private double mLatitude = 0.0;
     private double mLongitude = 0.0;
 
+    public FishingSpot() {
+        this("");
+    }
+
     public FishingSpot(String name) {
         super(name);
     }

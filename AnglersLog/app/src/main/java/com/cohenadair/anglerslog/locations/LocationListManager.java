@@ -41,11 +41,12 @@ public class LocationListManager {
 
         public void setLocation(Location location, int position) {
             mNameTextView.setText(location.getName());
-            mNumberSpotsTextView.setText(String.format("%d " + context().getResources().getString(R.string.fishing_spots), location.getFishingSpotCount()));
+
+            int suffixId = location.getFishingSpotCount() == 1 ? R.string.fishing_spot : R.string.fishing_spots;
+            mNumberSpotsTextView.setText(String.format("%d " + context().getResources().getString(suffixId), location.getFishingSpotCount()));
 
             // hide the separator for the last row
             mSeparator.setVisibility((position == mAdapter.getItemCount() - 1) ? View.INVISIBLE : View.VISIBLE);
-            mView.setBackgroundResource(location.isSelected() ? R.color.light_grey : android.R.color.transparent);
         }
     }
     //endregion

@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 
 import com.cohenadair.anglerslog.R;
@@ -25,6 +26,7 @@ public class ManageFragment extends DialogFragment {
 
     private static final String TAG_CONTENT_FRAGMENT = "content_fragment";
 
+    private boolean mNoTitle;
     private InteractionListener mCallbacks;
     private ManageContentFragment mContentFragment;
 
@@ -32,7 +34,7 @@ public class ManageFragment extends DialogFragment {
      * Must be implemented by the fragment's Activity.
      */
     public interface InteractionListener {
-        void onManageDismiss();
+        void onManageDismiss(boolean isDialog);
     }
 
     public ManageFragment() {
@@ -44,13 +46,15 @@ public class ManageFragment extends DialogFragment {
         View view = inflater.inflate(R.layout.fragment_manage, container, false);
         setHasOptionsMenu(true);
 
+        if (mNoTitle && getDialog() != null)
+            getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+
         Button cancelButton = (Button)view.findViewById(R.id.cancel_button);
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mCallbacks.onManageDismiss();
+                mCallbacks.onManageDismiss(closeDialog());
                 mContentFragment.onDismiss();
-                closeDialog();
             }
         });
 
@@ -59,9 +63,8 @@ public class ManageFragment extends DialogFragment {
             @Override
             public void onClick(View v) {
                 if (mContentFragment.addObjectToLogbook()) {
-                    mCallbacks.onManageDismiss();
+                    mCallbacks.onManageDismiss(closeDialog());
                     mContentFragment.onDismiss();
-                    closeDialog();
                 }
             }
         });
@@ -75,6 +78,10 @@ public class ManageFragment extends DialogFragment {
                     .commit();
 
         return view;
+    }
+
+    public void setNoTitle(boolean noTitle) {
+        mNoTitle = noTitle;
     }
 
     @Override
@@ -133,9 +140,12 @@ public class ManageFragment extends DialogFragment {
             dialog.setTitle(title);
     }
 
-    private void closeDialog() {
+    private boolean closeDialog() {
         Dialog dialog = getDialog();
-        if (dialog != null)
+        if (dialog != null) {
             dialog.dismiss();
+            return true;
+        }
+        return false;
     }
 }

@@ -130,8 +130,9 @@ public abstract class LayoutSpecActivity extends AppCompatActivity implements
 
     //region ManageFragment.InteractionListener interface
     @Override
-    public void onManageDismiss() {
-        goBack();
+    public void onManageDismiss(boolean isDialog) {
+        if (!isDialog)
+            goBack();
         updateViews();
     }
     //endregion

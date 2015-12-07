@@ -131,8 +131,6 @@ public class MainActivity extends LayoutSpecActivity {
     //region Navigation
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-
         if (mNavigationManager.canGoBack())
             mNavigationManager.onBackPressed();
         else

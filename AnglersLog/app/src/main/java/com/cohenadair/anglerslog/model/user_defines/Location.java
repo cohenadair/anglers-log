@@ -74,7 +74,7 @@ public class Location extends UserDefineObject {
     }
 
     public int getFishingSpotCount() {
-        return QueryHelper.queryCount(FishingSpotTable.NAME, FishingSpotTable.Columns.LOCATION_ID + " = ?", new String[] { idAsString() });
+        return QueryHelper.queryCount(FishingSpotTable.NAME, FishingSpotTable.Columns.LOCATION_ID + " = ?", new String[]{idAsString()});
     }
     //endregion
 
