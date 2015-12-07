@@ -35,6 +35,7 @@ public class ManageCatchFragment extends ManageContentFragment {
     private SelectionView mDateView;
     private SelectionView mTimeView;
     private SelectionView mSpeciesView;
+    private SelectionView mLocationView;
     private SelectionView mBaitView;
 
     public ManageCatchFragment() {
@@ -51,6 +52,7 @@ public class ManageCatchFragment extends ManageContentFragment {
 
         initDateTimeView(view);
         initSpeciesView(view);
+        initLocationView(view);
         initBaitView(view);
         initSelectPhotosView(view);
 
@@ -111,6 +113,7 @@ public class ManageCatchFragment extends ManageContentFragment {
         mTimeView.setSubtitle(getNewCatch().getTimeAsString());
         mSpeciesView.setSubtitle(getNewCatch().getSpeciesAsString());
         mBaitView.setSubtitle(getNewCatch().getBaitAsString());
+        mLocationView.setSubtitle(getNewCatch().getFishingSpotAsString());
     }
 
     //region Date & Time
@@ -199,6 +202,21 @@ public class ManageCatchFragment extends ManageContentFragment {
                 });
 
                 fragment.show(getFragmentManager(), "dialog");
+            }
+        });
+    }
+
+    private void initLocationView(View view) {
+        mLocationView = (SelectionView)view.findViewById(R.id.location_layout);
+        mLocationView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startSelectionActivity(LayoutSpecManager.LAYOUT_LOCATIONS, new OnSelectionActivityResult() {
+                    @Override
+                    public void onSelect(UUID id) {
+                        getNewCatch().setFishingSpot(Logbook.getFishingSpot(id));
+                    }
+                });
             }
         });
     }

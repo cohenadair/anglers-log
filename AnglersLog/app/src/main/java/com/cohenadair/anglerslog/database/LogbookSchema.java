@@ -26,6 +26,7 @@ public class LogbookSchema {
             public static final String SPECIES_ID = "speciesId";
             public static final String IS_FAVORITE = "isFavorite";
             public static final String BAIT_ID = "baitId";
+            public static final String FISHING_SPOT_ID = "fishingSpotId";
         }
     }
 

@@ -53,6 +53,16 @@
 
         <include layout="@layout/view_divider"/>
 
+        <!-- Location -->
+        <com.cohenadair.anglerslog.views.SelectionView
+            android:id="@+id/location_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            custom:titleText="@string/location"
+            custom:subtitleHint="@string/location_hint"/>
+
+        <include layout="@layout/view_divider"/>
+
         <!-- Bait -->
         <com.cohenadair.anglerslog.views.SelectionView
             android:id="@+id/bait_layout"

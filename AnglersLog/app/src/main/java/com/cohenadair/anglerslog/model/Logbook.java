@@ -11,12 +11,14 @@ import com.cohenadair.anglerslog.database.QueryHelper;
 import com.cohenadair.anglerslog.database.cursors.BaitCategoryCursor;
 import com.cohenadair.anglerslog.database.cursors.BaitCursor;
 import com.cohenadair.anglerslog.database.cursors.CatchCursor;
+import com.cohenadair.anglerslog.database.cursors.FishingSpotCursor;
 import com.cohenadair.anglerslog.database.cursors.LocationCursor;
 import com.cohenadair.anglerslog.database.cursors.SpeciesCursor;
 import com.cohenadair.anglerslog.database.cursors.UserDefineCursor;
 import com.cohenadair.anglerslog.model.user_defines.Bait;
 import com.cohenadair.anglerslog.model.user_defines.BaitCategory;
 import com.cohenadair.anglerslog.model.user_defines.Catch;
+import com.cohenadair.anglerslog.model.user_defines.FishingSpot;
 import com.cohenadair.anglerslog.model.user_defines.Location;
 import com.cohenadair.anglerslog.model.user_defines.Species;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
@@ -29,6 +31,7 @@ import static com.cohenadair.anglerslog.database.LogbookSchema.BaitCategoryTable
 import static com.cohenadair.anglerslog.database.LogbookSchema.BaitTable;
 import static com.cohenadair.anglerslog.database.LogbookSchema.CatchPhotoTable;
 import static com.cohenadair.anglerslog.database.LogbookSchema.CatchTable;
+import static com.cohenadair.anglerslog.database.LogbookSchema.FishingSpotTable;
 import static com.cohenadair.anglerslog.database.LogbookSchema.LocationTable;
 import static com.cohenadair.anglerslog.database.LogbookSchema.SpeciesTable;
 
@@ -322,6 +325,17 @@ public class Logbook {
         });
 
         return (obj == null) ? null : (Location)obj;
+    }
+
+    public static FishingSpot getFishingSpot(UUID id) {
+        UserDefineObject obj = QueryHelper.queryUserDefine(FishingSpotTable.NAME, id, new QueryHelper.UserDefineQueryInterface() {
+            @Override
+            public UserDefineObject getObject(UserDefineCursor cursor) {
+                return new FishingSpotCursor(cursor).getFishingSpot();
+            }
+        });
+
+        return (obj == null) ? null : (FishingSpot)obj;
     }
 
     /**

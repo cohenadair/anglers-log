@@ -2,6 +2,7 @@ package com.cohenadair.anglerslog.utilities;
 
 import android.content.Context;
 import android.support.annotation.Nullable;
+import android.widget.ArrayAdapter;
 
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.activities.LayoutSpecActivity;
@@ -17,7 +18,9 @@ import com.cohenadair.anglerslog.locations.LocationFragment;
 import com.cohenadair.anglerslog.locations.LocationListManager;
 import com.cohenadair.anglerslog.locations.ManageLocationFragment;
 import com.cohenadair.anglerslog.model.Logbook;
+import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 /**
@@ -101,6 +104,24 @@ public class LayoutSpecManager {
             @Override
             public void onUserDefineRemove(UUID id) {
                 spec.removeUserDefine(context, Logbook.getLocation(id), Logbook.removeLocation(id), R.string.success_location_delete);
+            }
+        });
+
+        spec.setSelectionListener(new LayoutSpec.OnSelectionListener() {
+            @Override
+            public void onSelect(UUID selectionId, final LayoutSpec.OnSelectionFinishedCallback callback) {
+                final ArrayList<UserDefineObject> fishingSpots = Logbook.getLocation(selectionId).getFishingSpots();
+                final ArrayAdapter<String> adapter = new ArrayAdapter<>(context, android.R.layout.select_dialog_item);
+                for (UserDefineObject fishingSpot : fishingSpots)
+                    adapter.add(fishingSpot.getName());
+
+                Utils.showSelectionDialog(context, adapter, new Utils.OnSelectionDialogCallback() {
+                    @Override
+                    public void onSelect(int position) {
+                        if (callback != null)
+                            callback.onFinish(fishingSpots.get(position).getId());
+                    }
+                });
             }
         });
 

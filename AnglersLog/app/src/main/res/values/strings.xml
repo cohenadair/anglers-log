@@ -54,6 +54,7 @@
 
     <string name="photos_hint">Tap to add photos</string>
     <string name="species_hint">Tap to add or select species</string>
+    <string name="location_hint">Tap to add or select a location</string>
     <string name="category_hint">Tap to add or select a category</string>
     <string name="name_hint">Enter a name</string>
     <string name="bait_hint">Tap to add or select bait</string>

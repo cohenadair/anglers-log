@@ -2,6 +2,7 @@ package com.cohenadair.anglerslog.model.user_defines;
 
 import android.content.ContentValues;
 
+import com.cohenadair.anglerslog.model.Logbook;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.UUID;
@@ -17,6 +18,7 @@ public class FishingSpot extends UserDefineObject {
 
     private double mLatitude = 0.0;
     private double mLongitude = 0.0;
+    private UUID mLocationId;
 
     public FishingSpot() {
         this("");
@@ -56,10 +58,26 @@ public class FishingSpot extends UserDefineObject {
     public void setLongitude(double longitude) {
         mLongitude = longitude;
     }
+
+    public UUID getLocationId() {
+        return mLocationId;
+    }
+
+    public void setLocationId(UUID locationId) {
+        mLocationId = locationId;
+    }
     //endregion
 
     public LatLng getCoordinates() {
         return new LatLng(mLatitude, mLongitude);
+    }
+
+    public Location getLocation() {
+        return Logbook.getLocation(mLocationId);
+    }
+
+    public String getLocationName() {
+        return getLocation().getName();
     }
 
     /**

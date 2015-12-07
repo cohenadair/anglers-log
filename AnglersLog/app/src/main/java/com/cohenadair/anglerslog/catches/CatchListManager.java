@@ -35,7 +35,6 @@ public class CatchListManager {
         private TextView mDateTextView;
         private RatingBar mFavorite;
         private View mSeparator;
-        private View mView;
 
         private Catch mCatch;
 
@@ -43,7 +42,6 @@ public class CatchListManager {
             super(view, adapter);
 
             mAdapter = adapter;
-            mView = view;
             mImageView = (ImageView)view.findViewById(R.id.image_view);
             mSpeciesTextView = (TextView)view.findViewById(R.id.species_label);
             mDateTextView = (TextView)view.findViewById(R.id.date_label);
@@ -91,7 +89,6 @@ public class CatchListManager {
 
             // hide the separator for the last row
             mSeparator.setVisibility((position == mAdapter.getItemCount() - 1) ? View.INVISIBLE : View.VISIBLE);
-            mView.setBackgroundResource(mCatch.isSelected() ? R.color.light_grey : android.R.color.transparent);
         }
     }
     //endregion

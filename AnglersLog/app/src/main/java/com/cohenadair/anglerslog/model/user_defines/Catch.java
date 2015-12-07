@@ -20,6 +20,7 @@ public class Catch extends PhotoUserDefineObject {
     private Species mSpecies;
     private boolean mIsFavorite;
     private Bait mBait;
+    private FishingSpot mFishingSpot;
 
     //region Constructors
     public Catch(Date date) {
@@ -35,6 +36,9 @@ public class Catch extends PhotoUserDefineObject {
 
         if (aCatch.getBait() != null)
             mBait = new Bait(aCatch.getBait(), true);
+
+        if (aCatch.getFishingSpot() != null)
+            mFishingSpot = aCatch.getFishingSpot();
     }
 
     public Catch(UserDefineObject obj) {
@@ -80,6 +84,14 @@ public class Catch extends PhotoUserDefineObject {
     public void setBait(Bait bait) {
         mBait = bait;
     }
+
+    public FishingSpot getFishingSpot() {
+        return mFishingSpot;
+    }
+
+    public void setFishingSpot(FishingSpot fishingSpot) {
+        mFishingSpot = fishingSpot;
+    }
     //endregion
 
     @Override
@@ -107,6 +119,10 @@ public class Catch extends PhotoUserDefineObject {
         return DateFormat.format("MMM dd, yyyy 'at' h:mm a", mDate).toString();
     }
 
+    public String getFishingSpotAsString() {
+        return (mFishingSpot != null) ? mFishingSpot.getLocationName() + " - " + mFishingSpot.getName() : "";
+    }
+
     public ContentValues getContentValues() {
         ContentValues values = super.getContentValues();
 
@@ -116,6 +132,9 @@ public class Catch extends PhotoUserDefineObject {
 
         if (mBait != null)
             values.put(CatchTable.Columns.BAIT_ID, mBait.idAsString());
+
+        if (mFishingSpot != null)
+            values.put(CatchTable.Columns.FISHING_SPOT_ID, mFishingSpot.idAsString());
 
         return values;
     }

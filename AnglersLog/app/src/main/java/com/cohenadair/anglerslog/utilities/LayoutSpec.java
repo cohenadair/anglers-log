@@ -30,6 +30,7 @@ public class LayoutSpec {
     private ManageFragment mManageFragment;
 
     private InteractionListener mListener;
+    private OnSelectionListener mSelectionListener;
 
     private String mMasterFragmentTag;
     private String mDetailFragmentTag;
@@ -46,6 +47,22 @@ public class LayoutSpec {
         void onUserDefineRemove(UUID id);
     }
 
+    /**
+     * Used in {@link com.cohenadair.anglerslog.activities.MyListSelectionActivity} instances for
+     * specific behavior for different LayoutSpec instances.
+     */
+    public interface OnSelectionListener {
+        void onSelect(UUID selectionId, OnSelectionFinishedCallback callback);
+    }
+
+    /**
+     * Used in combination with {@link com.cohenadair.anglerslog.utilities.LayoutSpec.OnSelectionListener}
+     * as a callback for when the "sub" selection is finished.
+     */
+    public interface OnSelectionFinishedCallback {
+        void onFinish(UUID id);
+    }
+
     public LayoutSpec(String masterTag, String detailTag, String name) {
         mMasterFragmentTag = masterTag;
         mDetailFragmentTag = detailTag;
@@ -53,6 +70,14 @@ public class LayoutSpec {
     }
 
     //region Getters & Setters
+    public OnSelectionListener getSelectionListener() {
+        return mSelectionListener;
+    }
+
+    public void setSelectionListener(OnSelectionListener selectionListener) {
+        mSelectionListener = selectionListener;
+    }
+
     public void setManageFragment(ManageContentFragment contentFragment) {
         mManageFragment = new ManageFragment();
         mManageFragment.setContentFragment(contentFragment);

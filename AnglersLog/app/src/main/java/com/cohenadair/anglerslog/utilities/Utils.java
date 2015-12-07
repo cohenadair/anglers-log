@@ -13,6 +13,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.text.format.DateFormat;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import com.cohenadair.anglerslog.R;
@@ -105,6 +106,36 @@ public class Utils {
                     }
                 })
                 .setPositiveButton(R.string.action_delete, onConfirm)
+                .show();
+    }
+
+    public interface OnSelectionDialogCallback {
+        void onSelect(int position);
+    }
+
+    /**
+     * Shows a Dialog with a list of options to select.
+     *
+     * @param context The Context.
+     * @param adapter The adapter of selection items to show.
+     * @param callback The callback for when an option is selected.
+     */
+    public static void showSelectionDialog(Context context, ArrayAdapter<String> adapter, final OnSelectionDialogCallback callback) {
+        new AlertDialog.Builder(context)
+                .setNegativeButton(R.string.button_cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                })
+                .setAdapter(adapter, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (callback != null)
+                            callback.onSelect(which);
+                        dialog.dismiss();
+                    }
+                })
                 .show();
     }
 

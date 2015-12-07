@@ -51,6 +51,7 @@ public class LogbookHelper extends SQLiteOpenHelper {
             CatchTable.Columns.DATE + " INTEGER UNIQUE NOT NULL, " +
             CatchTable.Columns.SPECIES_ID + " TEXT REFERENCES " + SpeciesTable.NAME + "(" + SpeciesTable.Columns.ID + "), " +
             CatchTable.Columns.BAIT_ID + " TEXT REFERENCES " + BaitTable.NAME + "(" + BaitTable.Columns.ID + "), " +
+            CatchTable.Columns.FISHING_SPOT_ID + " TEXT REFERENCES " + FishingSpotTable.NAME + "(" + FishingSpotTable.Columns.ID + "), " +
             CatchTable.Columns.IS_FAVORITE + " INTEGER" +
             ")"
         );

@@ -9,6 +9,7 @@ import android.view.View;
 
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.interfaces.OnClickInterface;
+import com.cohenadair.anglerslog.utilities.LayoutSpec;
 import com.cohenadair.anglerslog.utilities.LayoutSpecManager;
 
 import java.util.UUID;
@@ -82,7 +83,16 @@ public class MyListSelectionActivity extends LayoutSpecActivity {
         return new OnClickInterface() {
             @Override
             public void onClick(View view, UUID id) {
-                finishWithResult(id);
+                LayoutSpec.OnSelectionListener listener = getLayoutSpec().getSelectionListener();
+                if (listener != null)
+                    listener.onSelect(id, new LayoutSpec.OnSelectionFinishedCallback() {
+                        @Override
+                        public void onFinish(UUID id) {
+                            finishWithResult(id);
+                        }
+                    });
+                else
+                    finishWithResult(id);
             }
         };
     }
