@@ -29,8 +29,8 @@ public class ManageLocationFragment extends ManageContentFragment {
 
     private LinearLayout mContainer;
     private TextInputView mNameView;
-    private ImageButton mAddFishingSpotButton;
 
+    private ArrayList<FishingSpotView> mFishingSpotViews;
     private ArrayList<UserDefineObject> mFishingSpots;
 
     public ManageLocationFragment() {
@@ -52,6 +52,9 @@ public class ManageLocationFragment extends ManageContentFragment {
 
         if (mFishingSpots == null)
             mFishingSpots = new ArrayList<>();
+
+        if (mFishingSpotViews == null)
+            mFishingSpotViews = new ArrayList<>();
 
         return view;
     }
@@ -133,10 +136,17 @@ public class ManageLocationFragment extends ManageContentFragment {
     @Override
     public void updateViews() {
         mNameView.setInputText(getNewLocation().getName() != null ? getNewLocation().getName() : "");
-        addAllFishingSpots();
+        updateAllFishingSpots();
     }
 
-    private void addAllFishingSpots() {
+    private void updateAllFishingSpots() {
+        // remove all old views
+        for (FishingSpotView fishingSpotView : mFishingSpotViews) {
+            ViewGroup parent = ((ViewGroup)fishingSpotView.getParent());
+            if (parent != null)
+                parent.removeView(fishingSpotView);
+        }
+
         for (UserDefineObject spot : mFishingSpots)
             addFishingSpot((FishingSpot)spot);
     }
@@ -146,11 +156,11 @@ public class ManageLocationFragment extends ManageContentFragment {
     }
 
     private void initAddFishingSpotButton(View view) {
-        mAddFishingSpotButton = (ImageButton)view.findViewById(R.id.add_button);
-        mAddFishingSpotButton.setOnClickListener(new View.OnClickListener() {
+        ImageButton fishingSpotButton = (ImageButton)view.findViewById(R.id.add_button);
+        fishingSpotButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                goToManageFishingSpot();
+                goToManageFishingSpot(null);
             }
         });
     }
@@ -161,7 +171,8 @@ public class ManageLocationFragment extends ManageContentFragment {
 
         final FishingSpotView fishingSpotView = new FishingSpotView(getContext());
         fishingSpotView.setTitle(spot.getName());
-        fishingSpotView.setSubtitle(String.format(lat + ": %.6f, " + lng + ": %.6f", spot.getLatitude(), spot.getLongitude()));
+        fishingSpotView.setSubtitle(spot.getCoordinatesAsString(lat, lng));
+
         fishingSpotView.setOnClickRemoveButton(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -170,11 +181,26 @@ public class ManageLocationFragment extends ManageContentFragment {
             }
         });
 
+        fishingSpotView.setOnClickContent(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToManageFishingSpot(spot.getId());
+            }
+        });
+
+        mFishingSpotViews.add(fishingSpotView);
         mContainer.addView(fishingSpotView);
     }
 
-    private void goToManageFishingSpot() {
+    /**
+     * Opens a ManageFishingSpotFragment dialog.
+     * @param editingId The editing id of the fishing spot, or null if a new spot is being added.
+     */
+    private void goToManageFishingSpot(UUID editingId) {
         final ManageFishingSpotFragment fragment = new ManageFishingSpotFragment();
+
+        if (editingId != null)
+            fragment.setIsEditing(true, editingId);
 
         fragment.setOnVerifyInterface(new ManageFishingSpotFragment.OnVerifyInterface() {
             @Override
@@ -194,6 +220,7 @@ public class ManageLocationFragment extends ManageContentFragment {
                     // update the fishing spot if this is the one we're editing
                     if (mFishingSpots.get(i).getId().equals(fragment.getNewFishingSpot().getId())) {
                         mFishingSpots.set(i, new FishingSpot(fragment.getNewFishingSpot(), true));
+                        updateViews();
                         return true;
                     }
 
@@ -216,7 +243,7 @@ public class ManageLocationFragment extends ManageContentFragment {
 
             @Override
             public UserDefineObject onGetNewEditObject(UserDefineObject oldObject) {
-                return new FishingSpot((FishingSpot)oldObject, true);
+                return new FishingSpot((FishingSpot) oldObject, true);
             }
 
             @Override

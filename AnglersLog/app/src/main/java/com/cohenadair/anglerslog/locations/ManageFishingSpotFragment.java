@@ -1,6 +1,11 @@
 package com.cohenadair.anglerslog.locations;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -12,6 +17,7 @@ import com.cohenadair.anglerslog.fragments.ManageContentFragment;
 import com.cohenadair.anglerslog.model.user_defines.FishingSpot;
 import com.cohenadair.anglerslog.utilities.GoogleMapLayout;
 import com.cohenadair.anglerslog.utilities.Utils;
+import com.cohenadair.anglerslog.views.SelectionView;
 import com.cohenadair.anglerslog.views.TextInputView;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -26,9 +32,12 @@ import com.google.android.gms.maps.model.LatLng;
  */
 public class ManageFishingSpotFragment extends ManageContentFragment implements OnMapReadyCallback {
 
+    private static final int REQUEST_LOCATION = 0;
+    private static final float ZOOM = 15;
+
     private TextInputView mNameView;
-    private TextInputView mLatitudeView;
-    private TextInputView mLongitudeView;
+    private SelectionView mLatitudeView;
+    private SelectionView mLongitudeView;
     private GoogleMap mMap;
 
     private ManageObjectSpec mManageObjectSpec;
@@ -53,10 +62,16 @@ public class ManageFishingSpotFragment extends ManageContentFragment implements 
 
         initNameView(view);
         initCoordinatesView(view);
-        initMapFragment(view);
+        initMapFragment();
         initSubclassObject();
 
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Utils.requestLocationServices(getContext());
     }
 
     @Override
@@ -111,8 +126,34 @@ public class ManageFishingSpotFragment extends ManageContentFragment implements 
     }
 
     @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == REQUEST_LOCATION) {
+            if (permissions.length == 1 && permissions[0].equals(Manifest.permission.ACCESS_FINE_LOCATION) && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+                mMap.setMyLocationEnabled(true);
+        } else
+            Utils.showErrorAlert(getContext(), R.string.error_location_permission);
+    }
+
+    @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+
+        if (!isEditing())
+            mMap.setOnMyLocationChangeListener(new GoogleMap.OnMyLocationChangeListener() {
+            @Override
+            public void onMyLocationChange(Location location) {
+                LatLng coordinates = new LatLng(location.getLatitude(), location.getLongitude());
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(coordinates, ZOOM), 2000, null);
+                mMap.setOnMyLocationChangeListener(null);
+                updateCoordinateViews(coordinates);
+            }
+        });
+
+        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED)
+            mMap.setMyLocationEnabled(true);
+        else
+            requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
+
         updateMap();
     }
 
@@ -123,7 +164,8 @@ public class ManageFishingSpotFragment extends ManageContentFragment implements 
         // move the camera to the current fishing spot
         if (isEditing()) {
             LatLng current = new LatLng(getNewFishingSpot().getLatitude(), getNewFishingSpot().getLongitude());
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(current));
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(current, ZOOM), 2000, null);
+            updateCoordinateViews(current);
         }
     }
 
@@ -132,23 +174,24 @@ public class ManageFishingSpotFragment extends ManageContentFragment implements 
     }
 
     private void initCoordinatesView(View view) {
-        mLatitudeView = (TextInputView)view.findViewById(R.id.latitude_layout);
-        mLongitudeView = (TextInputView)view.findViewById(R.id.longitude_layout);
+        mLatitudeView = (SelectionView)view.findViewById(R.id.latitude_layout);
+        mLongitudeView = (SelectionView)view.findViewById(R.id.longitude_layout);
     }
 
-    private void initMapFragment(View view) {
+    private void updateCoordinateViews(LatLng coordinates) {
+        mLatitudeView.setSubtitle(String.format("%.6f", coordinates.latitude));
+        mLongitudeView.setSubtitle(String.format("%.6f", coordinates.longitude));
+    }
+
+    private void initMapFragment() {
         DraggableMapFragment map = (DraggableMapFragment)getChildFragmentManager().findFragmentById(R.id.map);
         map.getMapAsync(this);
         map.setOnDragListener(new GoogleMapLayout.OnDragListener() {
             @Override
             public void onDrag(MotionEvent motionEvent) {
-                if (mMap != null) {
-                    LatLng coords = mMap.getCameraPosition().target;
-                    mLatitudeView.setInputText(String.format("%.6f", coords.latitude));
-                    mLongitudeView.setInputText(String.format("%.6f", coords.longitude));
-                }
+                if (mMap != null)
+                    updateCoordinateViews(mMap.getCameraPosition().target);
             }
         });
     }
-
 }

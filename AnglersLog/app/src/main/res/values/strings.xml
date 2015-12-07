@@ -32,6 +32,8 @@
     <string name="properties">Properties</string>
     <string name="latitude">Latitude</string>
     <string name="longitude">Longitude</string>
+    <string name="lat">Lat</string>
+    <string name="lng">Lng</string>
 
     <string name="drawer_open">Open Navigation Drawer</string>
     <string name="drawer_close">Close Navigation Drawer</string>
@@ -90,10 +92,14 @@
     <string name="error_location_edit">Error updating location.</string>
     <string name="error_location_add">Error adding location.</string>
     <string name="error_location_name">A location with that name already exists.</string>
+    <string name="error_location_permission">You have not given permission to use location services.</string>
+    <string name="error_location_disabled">Unable to get current location because the device\'s location services are disabled.</string>
+    <string name="open_location_settings">Open location settings</string>
     <string name="error_no_fishing_spots">Please add at least one fishing spot.</string>
     <string name="error_fishing_spot_name">A fishing spot with that name already exists.</string>
     <string name="error_fishing_spot_add">Error adding fishing spot.</string>
     <string name="error_fishing_spot_edit">Error updating fishing spot.</string>
+    <string name="number_caught">Fish Caught</string>
 
     <string name="bait_no_catches">No fish have been caught with this bait (feature coming soon).</string>
     <string name="success_bait">Successfully added bait!</string>

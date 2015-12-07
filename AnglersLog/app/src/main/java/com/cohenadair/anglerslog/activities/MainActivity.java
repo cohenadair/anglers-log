@@ -19,6 +19,7 @@ import java.util.UUID;
 
 // TODO rename themes for convention
 // TODO hide FAB unless user is at the top of the list (blocks rating star)
+// TODO add About page that includes Icons8 credit and Google Maps permissions
 
 public class MainActivity extends LayoutSpecActivity {
 
@@ -65,7 +66,6 @@ public class MainActivity extends LayoutSpecActivity {
 
         if (id == android.R.id.home) {
             mNavigationManager.onClickUpButton();
-            updateViews();
             return true;
         }
 

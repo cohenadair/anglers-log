@@ -2,6 +2,8 @@ package com.cohenadair.anglerslog.model.user_defines;
 
 import android.content.ContentValues;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import java.util.UUID;
 
 import static com.cohenadair.anglerslog.database.LogbookSchema.FishingSpotTable;
@@ -55,6 +57,24 @@ public class FishingSpot extends UserDefineObject {
         mLongitude = longitude;
     }
     //endregion
+
+    public LatLng getCoordinates() {
+        return new LatLng(mLatitude, mLongitude);
+    }
+
+    /**
+     * Gets a string representation of the FishingSpot's coordinates.
+     * @param lat "Latitude" string.
+     * @param lng "Longitude" string.
+     * @return A String of the FishingSpot's coordinates.
+     */
+    public String getCoordinatesAsString(String lat, String lng) {
+        return String.format(lat + ": %.6f, " + lng + ": %.6f", mLatitude, mLongitude);
+    }
+
+    public int getNumberOfCatches() {
+        return 0;
+    }
 
     public ContentValues getContentValues(UUID locationId) {
         ContentValues values = super.getContentValues();

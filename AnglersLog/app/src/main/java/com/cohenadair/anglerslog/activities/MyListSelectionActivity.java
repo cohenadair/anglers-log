@@ -111,7 +111,7 @@ public class MyListSelectionActivity extends LayoutSpecActivity {
         finish();
     }
 
-    private void setActionBarTitle(String title) {
+    public void setActionBarTitle(String title) {
         if (mActionBar != null)
             mActionBar.setTitle(title);
     }

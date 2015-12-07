@@ -44,21 +44,21 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <com.cohenadair.anglerslog.views.TextInputView
+        <com.cohenadair.anglerslog.views.SelectionView
             android:id="@+id/latitude_layout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             custom:titleText="@string/latitude"
-            custom:editTextHint="0.000000"/>
+            custom:subtitleText="0.000000"/>
 
-        <com.cohenadair.anglerslog.views.TextInputView
+        <com.cohenadair.anglerslog.views.SelectionView
             android:id="@+id/longitude_layout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             custom:titleText="@string/longitude"
-            custom:editTextHint="0.000000"/>
+            custom:subtitleText="0.000000"/>
 
     </LinearLayout>
 

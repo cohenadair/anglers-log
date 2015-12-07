@@ -17,6 +17,7 @@ public class FishingSpotView extends LinearLayout {
     private TextView mTitle;
     private TextView mSubtitle;
     private ImageButton mRemoveButton;
+    private LinearLayout mContentLayout;
 
     public FishingSpotView(Context context) {
         this(context, null);
@@ -34,6 +35,7 @@ public class FishingSpotView extends LinearLayout {
         mTitle = (TextView)findViewById(R.id.title_text_view);
         mSubtitle = (TextView)findViewById(R.id.subtitle_text_view);
         mRemoveButton = (ImageButton)findViewById(R.id.remove_button);
+        mContentLayout = (LinearLayout)findViewById(R.id.content_layout);
     }
 
     //region Getters & Setters
@@ -56,5 +58,9 @@ public class FishingSpotView extends LinearLayout {
 
     public void setOnClickRemoveButton(OnClickListener listener) {
         mRemoveButton.setOnClickListener(listener);
+    }
+
+    public void setOnClickContent(OnClickListener listener) {
+        mContentLayout.setOnClickListener(listener);
     }
 }
