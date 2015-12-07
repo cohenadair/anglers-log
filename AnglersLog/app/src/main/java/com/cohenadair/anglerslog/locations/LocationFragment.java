@@ -29,6 +29,8 @@ import java.util.UUID;
  */
 public class LocationFragment extends DetailFragment implements OnMapReadyCallback {
 
+    private static final String TAG_MAP = "fragment_map";
+
     private Location mLocation;
 
     private SelectionSpinnerView mFishingSpotSelection;
@@ -43,10 +45,7 @@ public class LocationFragment extends DetailFragment implements OnMapReadyCallba
         View view = inflater.inflate(R.layout.fragment_location, container, false);
 
         initFishingSpotSelection(view);
-
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        SupportMapFragment mapFragment = (SupportMapFragment)getChildFragmentManager().findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
+        initMapFragment();
 
         update(getRealActivity());
 
@@ -111,6 +110,22 @@ public class LocationFragment extends DetailFragment implements OnMapReadyCallba
         });
 
         selectFishingSpot(0);
+    }
+
+    private void initMapFragment() {
+        // check to see if the map fragment already exists
+        SupportMapFragment mapFragment = (SupportMapFragment)getChildFragmentManager().findFragmentByTag(TAG_MAP);
+        if (mapFragment != null)
+            return;
+
+        // obtain the SupportMapFragment and get notified when the map is ready to be used.
+        mapFragment = new SupportMapFragment();
+        mapFragment.getMapAsync(this);
+
+        getChildFragmentManager()
+                .beginTransaction()
+                .add(R.id.location_container, mapFragment, TAG_MAP)
+                .commit();
     }
 
     private void selectFishingSpot(int position) {
