@@ -44,10 +44,8 @@ public class MyListFragment extends MasterFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_mylist, container, false);
 
-        if (view != null) {
-            initNewButton(view);
-            initRecyclerView(view);
-        }
+        initNewButton(view);
+        initRecyclerView(view);
 
         update(getRealActivity());
 
@@ -77,7 +75,8 @@ public class MyListFragment extends MasterFragment {
      */
     @Override
     public void update(LayoutSpecActivity activity) {
-        mRecyclerView.setAdapter(activity.getMasterAdapter());
+        if (mRecyclerView != null)
+            mRecyclerView.setAdapter(activity.getMasterAdapter());
     }
 
     //region View Initializing

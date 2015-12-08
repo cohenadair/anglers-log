@@ -28,7 +28,8 @@
 
         <activity
             android:name=".activities.MyListSelectionActivity"
-            android:theme="@style/Theme.Dialog.NoTitle">
+            android:theme="@style/Theme.Dialog.NoTitle"
+            android:configChanges="orientation|keyboardHidden|screenSize">
         </activity>
 
         <activity

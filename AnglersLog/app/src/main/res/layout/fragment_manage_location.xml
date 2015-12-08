@@ -8,6 +8,7 @@
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_default"
         android:orientation="vertical">
 
         <!-- Name -->

@@ -3,9 +3,11 @@ package com.cohenadair.anglerslog.activities;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.fragments.DetailFragment;
@@ -18,6 +20,7 @@ import com.cohenadair.anglerslog.utilities.LayoutSpecManager;
 import com.cohenadair.anglerslog.utilities.ListManager;
 import com.cohenadair.anglerslog.utilities.Utils;
 
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -29,6 +32,7 @@ public abstract class LayoutSpecActivity extends AppCompatActivity implements
         LayoutSpecManager.InteractionListener,
         OnClickManageMenuListener
 {
+    private static final String TAG = "LayoutSpecActivity";
 
     /**
      * Will open or display the manager view associated with the current master detail fragment.
@@ -46,6 +50,31 @@ public abstract class LayoutSpecActivity extends AppCompatActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        closeDialogs();
+    }
+
+    /**
+     * Used to close any DialogFragment subclasses that are opened. This is to avoid a shit-ton of
+     * pointer issues on orientation change.
+     *
+     * A judgement call was made and the amount a user will rotate the device while a dialog is
+     * actually open is so small that it is not worth the trouble.  Also, it isn't likely that ever
+     * pointer issue will be found, so it's better to close the dialogs than have the app crash.
+     */
+    private void closeDialogs() {
+        int c = 0;
+        List<Fragment> fragments = getSupportFragmentManager().getFragments();
+        if (fragments != null)
+            for (Fragment f : fragments) {
+                Log.d(TAG, "" + f);
+                if (f instanceof DialogFragment) {
+                    c++;
+                    ((DialogFragment) f).dismiss();
+                }
+
+            }
+
+        Log.d(TAG, "Number of dialogs open: " + c);
     }
 
     public LayoutSpec getLayoutSpec() {

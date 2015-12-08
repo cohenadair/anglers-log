@@ -134,23 +134,27 @@ public class ManageBaitFragment extends ManageContentFragment {
     }
 
     private void initCategoryView(View view) {
+        final ManagePrimitiveFragment.OnDismissInterface onDismissInterface = new ManagePrimitiveFragment.OnDismissInterface() {
+            @Override
+            public void onDismiss(UserDefineObject selectedItem) {
+                getNewBait().setCategory((BaitCategory) selectedItem);
+                mCategoryView.setSubtitle(getNewBait().getCategoryName());
+            }
+        };
+
         mCategoryView = (SelectionView)view.findViewById(R.id.category_view);
         mCategoryView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final ManagePrimitiveFragment fragment = ManagePrimitiveFragment.newInstance(PrimitiveSpecManager.BAIT_CATEGORY);
-
-                fragment.setOnDismissInterface(new ManagePrimitiveFragment.OnDismissInterface() {
-                    @Override
-                    public void onDismiss(UserDefineObject selectedItem) {
-                        getNewBait().setCategory((BaitCategory) selectedItem);
-                        mCategoryView.setSubtitle(getNewBait().getCategoryName());
-                    }
-                });
-
-                fragment.show(getFragmentManager(), "dialog");
+                showCategoryDialog(onDismissInterface);
             }
         });
+    }
+
+    private void showCategoryDialog(ManagePrimitiveFragment.OnDismissInterface onDismissInterface) {
+        ManagePrimitiveFragment fragment = ManagePrimitiveFragment.newInstance(PrimitiveSpecManager.BAIT_CATEGORY);
+        fragment.setOnDismissInterface(onDismissInterface);
+        fragment.show(getFragmentManager(), "dialog");
     }
 
     private void initNameView(View view) {
