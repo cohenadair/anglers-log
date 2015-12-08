@@ -33,10 +33,12 @@ public class BaitListManager {
         private TextView mNameTextView;
         private TextView mNumberCaughtTextView;
         private View mSeparator;
+        private View mView;
 
         public ViewHolder(View view, ListManager.Adapter adapter) {
             super(view, adapter);
 
+            mView = view;
             mAdapter = adapter;
             mImageView = (ImageView)view.findViewById(R.id.image_view);
             mCategoryTextView = (TextView)view.findViewById(R.id.category_text_view);
@@ -70,6 +72,7 @@ public class BaitListManager {
 
             // hide the separator for the last row
             mSeparator.setVisibility((position == mAdapter.getItemCount() - 1) ? View.INVISIBLE : View.VISIBLE);
+            mView.setBackgroundResource(bait.isSelected() ? R.color.light_grey : android.R.color.transparent);
         }
 
         public void setBaitCategory(BaitCategory category) {

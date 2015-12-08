@@ -153,12 +153,4 @@ public class MainActivity extends LayoutSpecActivity {
         }
     }
     //endregion
-
-    /**
-     * Checks to see if the current layout has two-panes (i.e. master-detail layout).
-     * @return True if there are two-panes; false otherwise.
-     */
-    public boolean isTwoPane() {
-        return Utils.isTwoPane(this);
-    }
 }

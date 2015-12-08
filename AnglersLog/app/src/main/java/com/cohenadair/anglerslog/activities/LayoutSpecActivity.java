@@ -211,4 +211,12 @@ public abstract class LayoutSpecActivity extends AppCompatActivity implements
         if (actionBar != null)
             actionBar.setTitle(title);
     }
+
+    /**
+     * Checks to see if the current layout has two-panes (i.e. master-detail layout).
+     * @return True if there are two-panes; false otherwise.
+     */
+    public boolean isTwoPane() {
+        return Utils.isTwoPane(this);
+    }
 }

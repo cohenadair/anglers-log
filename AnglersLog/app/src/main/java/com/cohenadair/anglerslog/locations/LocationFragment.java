@@ -43,6 +43,7 @@ public class LocationFragment extends DetailFragment implements OnMapReadyCallba
 
     private Location mLocation;
 
+    private TextView mTitleTextView;
     private SelectionSpinnerView mFishingSpotSelection;
     private ArrayList<Marker> mMarkers;
     private HashMap<String, MarkerInfo> mMarkerInfo;
@@ -62,6 +63,7 @@ public class LocationFragment extends DetailFragment implements OnMapReadyCallba
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_location, container, false);
 
+        initTitle(view);
         initFishingSpotSelection(view);
         initMapFragment();
 
@@ -92,8 +94,11 @@ public class LocationFragment extends DetailFragment implements OnMapReadyCallba
             mFishingSpotSelection.setAdapter(adapter);
 
             // update title
-            getRealActivity().setActionBarTitle(mLocation.getName());
-
+            if (getRealActivity().isTwoPane())
+                mTitleTextView.setText(mLocation.getName());
+            else
+                getRealActivity().setActionBarTitle(mLocation.getName());
+            
             // update map
             updateMap();
         }
@@ -183,7 +188,7 @@ public class LocationFragment extends DetailFragment implements OnMapReadyCallba
         // move the camera to the current fishing spot
         // TODO calculate actual zoom depending on fishing spots
         float zoom = 15;
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(((FishingSpot)fishingSpots.get(selectedIndex)).getCoordinates(), zoom), 2000, new GoogleMap.CancelableCallback() {
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(((FishingSpot) fishingSpots.get(selectedIndex)).getCoordinates(), zoom), 2000, new GoogleMap.CancelableCallback() {
             @Override
             public void onFinish() {
                 // show the info window for the selected fishing spot
@@ -195,6 +200,11 @@ public class LocationFragment extends DetailFragment implements OnMapReadyCallba
 
             }
         });
+    }
+
+    private void initTitle(View view) {
+        mTitleTextView = (TextView)view.findViewById(R.id.title_text_view);
+        mTitleTextView.setVisibility(getRealActivity().isTwoPane() ? View.VISIBLE : View.GONE);
     }
 
     private void initFishingSpotSelection(View view) {

@@ -47,6 +47,7 @@ public class LocationListManager {
 
             // hide the separator for the last row
             mSeparator.setVisibility((position == mAdapter.getItemCount() - 1) ? View.INVISIBLE : View.VISIBLE);
+            mView.setBackgroundResource(location.isSelected() ? R.color.light_grey : android.R.color.transparent);
         }
     }
     //endregion

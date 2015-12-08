@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.cohenadair.anglerslog.R;
@@ -27,6 +28,7 @@ public class BaitFragment extends DetailFragment {
 
     private Bait mBait;
 
+    private LinearLayout mContainer;
     private ImageView mImageView;
     private TextView mNameTextView;
     private TextView mCategoryTextView;
@@ -45,6 +47,7 @@ public class BaitFragment extends DetailFragment {
 
         initImageView(view);
 
+        mContainer = (LinearLayout)view.findViewById(R.id.bait_container);
         mNameTextView = (TextView)view.findViewById(R.id.bait_name);
         mCategoryTextView = (TextView)view.findViewById(R.id.bait_category);
         mDescriptionTextView = (TextView)view.findViewById(R.id.description_text_view);
@@ -64,8 +67,12 @@ public class BaitFragment extends DetailFragment {
             setItemId(id);
             mBait = Logbook.getBait(id);
 
-            if (mBait == null)
+            if (mBait == null) {
+                mContainer.setVisibility(View.GONE);
                 return;
+            }
+
+            mContainer.setVisibility(View.VISIBLE);
 
             String photo = mBait.getRandomPhoto();
             if (photo != null) {
