@@ -3,6 +3,8 @@ package com.cohenadair.anglerslog.catches;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +27,7 @@ import com.cohenadair.anglerslog.views.SelectionView;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -187,23 +190,39 @@ public class ManageCatchFragment extends ManageContentFragment {
     //endregion
 
     private void initSpeciesView(View view) {
+        final ManagePrimitiveFragment.OnDismissInterface onDismissInterface = new ManagePrimitiveFragment.OnDismissInterface() {
+            @Override
+            public void onDismiss(UserDefineObject selectedItem) {
+                getNewCatch().setSpecies((Species) selectedItem);
+                mSpeciesView.setSubtitle(getNewCatch().getSpeciesAsString());
+            }
+        };
+
         mSpeciesView = (SelectionView)view.findViewById(R.id.species_layout);
         mSpeciesView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final ManagePrimitiveFragment fragment = ManagePrimitiveFragment.newInstance(PrimitiveSpecManager.SPECIES);
-
-                fragment.setOnDismissInterface(new ManagePrimitiveFragment.OnDismissInterface() {
-                    @Override
-                    public void onDismiss(UserDefineObject selectedItem) {
-                        getNewCatch().setSpecies((Species) selectedItem);
-                        mSpeciesView.setSubtitle(getNewCatch().getSpeciesAsString());
-                    }
-                });
-
-                fragment.show(getFragmentManager(), "dialog");
+                showSpeciesDialog(onDismissInterface);
             }
         });
+
+        List<Fragment> children = getChildFragmentManager().getFragments();
+
+        if (children != null) {
+            // set the ManagePrimitiveFragment's onDismissInterface if the fragment already exists (i.e. the device was rotated)
+            for (Fragment f : children)
+                if (f instanceof ManagePrimitiveFragment) {
+                    Log.d("ManageCatchFragment", "FOUND CHILD ManagePrimitiveFragment");
+                    ((ManagePrimitiveFragment)f).setOnDismissInterface(onDismissInterface);
+                    return;
+                }
+        }
+    }
+
+    private void showSpeciesDialog(ManagePrimitiveFragment.OnDismissInterface onDismissInterface) {
+        ManagePrimitiveFragment fragment = ManagePrimitiveFragment.newInstance(PrimitiveSpecManager.SPECIES);
+        fragment.setOnDismissInterface(onDismissInterface);
+        fragment.show(getChildFragmentManager(), "dialog");
     }
 
     private void initLocationView(View view) {

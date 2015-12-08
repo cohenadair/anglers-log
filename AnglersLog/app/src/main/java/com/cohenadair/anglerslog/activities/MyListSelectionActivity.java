@@ -29,8 +29,8 @@ public class MyListSelectionActivity extends LayoutSpecActivity {
         int layoutId = intent.getIntExtra(EXTRA_LAYOUT_ID, -1);
 
         // needs to be done before the calls the super.onCreate() and setContentView()
-        // show normally if we're not in two-pane mode
         if (!isTwoPane) {
+            // show normally if we're not in two-pane mode
             setTheme(R.style.Base_Theme_AnglersLog);
             setTitle("");
         }
@@ -38,8 +38,9 @@ public class MyListSelectionActivity extends LayoutSpecActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_list_selection);
 
+        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
+
         if (!isTwoPane) {
-            Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
             setSupportActionBar(toolbar);
             mActionBar = getSupportActionBar();
 
@@ -47,6 +48,9 @@ public class MyListSelectionActivity extends LayoutSpecActivity {
                 mActionBar.setDisplayHomeAsUpEnabled(true);
                 mActionBar.setHomeAsUpIndicator(R.drawable.ic_back);
             }
+        } else {
+            if (toolbar != null)
+                toolbar.setVisibility(View.GONE);
         }
 
         setLayoutSpec(LayoutSpecManager.layoutSpec(this, layoutId));
