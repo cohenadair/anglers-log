@@ -12,6 +12,7 @@ import com.cohenadair.anglerslog.baits.ManageBaitFragment;
 import com.cohenadair.anglerslog.catches.CatchFragment;
 import com.cohenadair.anglerslog.catches.CatchListManager;
 import com.cohenadair.anglerslog.catches.ManageCatchFragment;
+import com.cohenadair.anglerslog.fragments.DetailFragment;
 import com.cohenadair.anglerslog.fragments.MyListFragment;
 import com.cohenadair.anglerslog.interfaces.OnClickInterface;
 import com.cohenadair.anglerslog.locations.LocationFragment;
@@ -62,6 +63,19 @@ public class LayoutSpecManager {
 
             case LAYOUT_BAITS:
                 return getBaitsLayoutSpec(layoutSpecContext);
+        }
+
+        return null;
+    }
+
+    @Nullable
+    public static DetailFragment getDetailFragment(int layoutId) {
+        switch (layoutId) {
+            case LAYOUT_LOCATIONS:
+                return new LocationFragment();
+
+            case LAYOUT_BAITS:
+                return new BaitFragment();
         }
 
         return null;

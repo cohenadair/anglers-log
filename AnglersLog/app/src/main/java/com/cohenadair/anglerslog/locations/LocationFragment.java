@@ -13,7 +13,6 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.cohenadair.anglerslog.R;
-import com.cohenadair.anglerslog.activities.LayoutSpecActivity;
 import com.cohenadair.anglerslog.fragments.DetailFragment;
 import com.cohenadair.anglerslog.model.Logbook;
 import com.cohenadair.anglerslog.model.user_defines.FishingSpot;
@@ -73,40 +72,56 @@ public class LocationFragment extends DetailFragment implements OnMapReadyCallba
         if (mMarkerInfo == null)
             mMarkerInfo = new HashMap<>();
 
-        update(getRealActivity());
+        update(getActivity());
 
         // Inflate the layout for this fragment
         return view;
     }
 
     @Override
-    public void update(LayoutSpecActivity activity, UUID id) {
-        if (isAttached()) {
-            setItemId(id);
-            mLocation = Logbook.getLocation(id);
+    public void update(UUID id) {
+        if (!isAttached())
+            return;
 
-            if (mLocation == null)
+        setItemId(id);
+        mLocation = Logbook.getLocation(id);
+        FishingSpot fishingSpot = null;
+
+        // for DetailFragmentActivity, the fishing spot id is passed in
+        if (mLocation == null) {
+            fishingSpot = Logbook.getFishingSpot(id);
+            if (fishingSpot == null)
                 return;
 
-            // update spinner adapter
-            ArrayAdapter<UserDefineObject> adapter = new ArrayAdapter<>(getContext(), R.layout.list_item_spinner, mLocation.getFishingSpots());
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            mFishingSpotSelection.setAdapter(adapter);
-
-            // update title
-            if (getRealActivity().isTwoPane())
-                mTitleTextView.setText(mLocation.getName());
-            else
-                getRealActivity().setActionBarTitle(mLocation.getName());
-            
-            // update map
-            updateMap();
+            mLocation = Logbook.getLocation(fishingSpot.getLocationId());
+            if (mLocation == null)
+                return;
         }
-    }
 
-    @Override
-    public void update(LayoutSpecActivity activity) {
-        update(activity, activity.getSelectionId());
+        // update spinner adapter
+        ArrayAdapter<UserDefineObject> adapter = new ArrayAdapter<>(getContext(), R.layout.list_item_spinner, mLocation.getFishingSpots());
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mFishingSpotSelection.setAdapter(adapter);
+
+        // select the correct fishing spot if it exists
+        if (fishingSpot != null) {
+            for (int i = 0; i < mLocation.getFishingSpotCount(); i++) {
+                FishingSpot spot = (FishingSpot)mFishingSpotSelection.getAdapter().getItem(i);
+                if (spot.getName().equals(fishingSpot.getName())) {
+                    mFishingSpotSelection.setSelection(i);
+                    break;
+                }
+            }
+        }
+
+        // update title
+        if (shouldShowTitle())
+            mTitleTextView.setText(mLocation.getName());
+        else
+            setActionBarTitle(mLocation.getName());
+
+        // update map
+        updateMap();
     }
 
     @Override
@@ -204,7 +219,7 @@ public class LocationFragment extends DetailFragment implements OnMapReadyCallba
 
     private void initTitle(View view) {
         mTitleTextView = (TextView)view.findViewById(R.id.title_text_view);
-        mTitleTextView.setVisibility(getRealActivity().isTwoPane() ? View.VISIBLE : View.GONE);
+        mTitleTextView.setVisibility(shouldShowTitle() ? View.VISIBLE : View.GONE);
     }
 
     private void initFishingSpotSelection(View view) {
@@ -268,5 +283,9 @@ public class LocationFragment extends DetailFragment implements OnMapReadyCallba
 
             return view;
         }
+    }
+
+    private boolean shouldShowTitle() {
+        return isLayoutSpecChild() && getRealActivity().isTwoPane();
     }
 }

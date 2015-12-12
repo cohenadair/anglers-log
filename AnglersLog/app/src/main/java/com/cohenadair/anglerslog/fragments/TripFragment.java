@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.cohenadair.anglerslog.R;
-import com.cohenadair.anglerslog.activities.LayoutSpecActivity;
 import com.cohenadair.anglerslog.model.Logbook;
 
 import java.util.UUID;
@@ -39,12 +38,7 @@ public class TripFragment extends DetailFragment {
     }
 
     @Override
-    public void update(LayoutSpecActivity activity, UUID position) {
+    public void update(UUID position) {
         mNameTextView.setText("Trip");
-    }
-
-    @Override
-    public void update(LayoutSpecActivity activity) {
-
     }
 }

@@ -10,7 +10,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.cohenadair.anglerslog.R;
-import com.cohenadair.anglerslog.activities.LayoutSpecActivity;
 import com.cohenadair.anglerslog.activities.PhotoViewerActivity;
 import com.cohenadair.anglerslog.fragments.DetailFragment;
 import com.cohenadair.anglerslog.model.Logbook;
@@ -54,58 +53,54 @@ public class BaitFragment extends DetailFragment {
         mColorView = (PropertyDetailView)view.findViewById(R.id.color_view);
         mSizeView = (PropertyDetailView)view.findViewById(R.id.size_view);
 
-        update(getRealActivity());
+        update(getActivity());
 
         // Inflate the layout for this fragment
         return view;
     }
 
     @Override
-    public void update(LayoutSpecActivity activity, UUID id) {
-        if (isAttached()) {
-            setItemId(id);
-            mBait = Logbook.getBait(id);
+    public void update(UUID id) {
+        if (!isAttached())
+            return;
 
-            if (mBait == null) {
-                mContainer.setVisibility(View.GONE);
-                return;
-            }
+        setItemId(id);
+        mBait = Logbook.getBait(id);
 
-            mContainer.setVisibility(View.VISIBLE);
-
-            String photo = mBait.getRandomPhoto();
-            if (photo != null) {
-                int size = getRealActivity().getResources().getDimensionPixelSize(R.dimen.thumbnail_size);
-                PhotoUtils.thumbnailToImageView(mImageView, PhotoUtils.privatePhotoPath(photo), size, R.drawable.no_catch_photo);
-                mImageView.setVisibility(View.VISIBLE);
-            }
-
-            mTitleSubTitleView.setTitle(mBait.getName());
-            mTitleSubTitleView.setSubtitle(mBait.getCategoryName());
-
-            mTypeView.setDetail(getRealActivity().getResources().getString(mBait.getTypeName()));
-            mTypeView.setVisibility(View.VISIBLE);
-
-            if (mBait.getColor() != null) {
-                mColorView.setDetail(mBait.getColor());
-                mColorView.setVisibility(View.VISIBLE);
-            }
-
-            if (mBait.getSize() != null) {
-                mSizeView.setDetail(mBait.getSize());
-                mSizeView.setVisibility(View.VISIBLE);
-            }
-
-            if (mBait.getDescription() != null) {
-                mDescriptionTextView.setText(mBait.getDescription());
-                mDescriptionTextView.setVisibility(View.VISIBLE);
-            }
+        if (mBait == null) {
+            mContainer.setVisibility(View.GONE);
+            return;
         }
-    }
 
-    @Override
-    public void update(LayoutSpecActivity activity) {
-        update(activity, activity.getSelectionId());
+        mContainer.setVisibility(View.VISIBLE);
+
+        String photo = mBait.getRandomPhoto();
+        if (photo != null) {
+            int size = getActivity().getResources().getDimensionPixelSize(R.dimen.thumbnail_size);
+            PhotoUtils.thumbnailToImageView(mImageView, PhotoUtils.privatePhotoPath(photo), size, R.drawable.no_catch_photo);
+            mImageView.setVisibility(View.VISIBLE);
+        }
+
+        mTitleSubTitleView.setTitle(mBait.getName());
+        mTitleSubTitleView.setSubtitle(mBait.getCategoryName());
+
+        mTypeView.setDetail(getActivity().getResources().getString(mBait.getTypeName()));
+        mTypeView.setVisibility(View.VISIBLE);
+
+        if (mBait.getColor() != null) {
+            mColorView.setDetail(mBait.getColor());
+            mColorView.setVisibility(View.VISIBLE);
+        }
+
+        if (mBait.getSize() != null) {
+            mSizeView.setDetail(mBait.getSize());
+            mSizeView.setVisibility(View.VISIBLE);
+        }
+
+        if (mBait.getDescription() != null) {
+            mDescriptionTextView.setText(mBait.getDescription());
+            mDescriptionTextView.setVisibility(View.VISIBLE);
+        }
     }
 
     private void initImageView(View view) {

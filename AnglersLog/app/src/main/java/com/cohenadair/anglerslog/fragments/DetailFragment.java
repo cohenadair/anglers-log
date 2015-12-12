@@ -3,6 +3,8 @@ package com.cohenadair.anglerslog.fragments;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -32,8 +34,7 @@ public abstract class DetailFragment extends Fragment {
      * The method that updates the view using the object at the corresponding ListView position.
      * @param id the UUID of the clicked ListItem in the master view.
      */
-    public abstract void update(LayoutSpecActivity activity, UUID id);
-    public abstract void update(LayoutSpecActivity activity);
+    public abstract void update(UUID id);
 
     public DetailFragment() {
 
@@ -48,6 +49,9 @@ public abstract class DetailFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+
+        if (!shouldShowManageMenu())
+            return;
 
         // make sure the container activity has implemented the callback interface
         try {
@@ -67,7 +71,7 @@ public abstract class DetailFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
 
-        if (isVisible()) {
+        if (isVisible() && shouldShowManageMenu()) {
             menu.clear();
             inflater.inflate(R.menu.menu_manage, menu);
         }
@@ -91,6 +95,13 @@ public abstract class DetailFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
+    public void update(Context context) {
+        if (isLayoutSpecChild())
+            update(((LayoutSpecActivity)context).getSelectionId());
+        else
+            update(getItemId());
+    }
+
     public boolean isAttached() {
         return getActivity() != null;
     }
@@ -112,4 +123,24 @@ public abstract class DetailFragment extends Fragment {
         return (LayoutSpecActivity)getActivity();
     }
     //endregion
+
+    private boolean shouldShowManageMenu() {
+        return getContext() instanceof OnClickManageMenuListener;
+    }
+
+    /**
+     * @return True if this fragment is a child of a {@link LayoutSpecActivity}.
+     */
+    public boolean isLayoutSpecChild() {
+        return getActivity() instanceof LayoutSpecActivity;
+    }
+
+    public void setActionBarTitle(String title) {
+        if (!(getActivity() instanceof AppCompatActivity))
+            return;
+
+        ActionBar actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
+        if (actionBar != null)
+            actionBar.setTitle(title);
+    }
 }

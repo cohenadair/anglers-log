@@ -68,27 +68,27 @@
     </style>
 
     <style name="TextView.Large" parent="Theme.AppCompat.Light">
-        <item name="android:textSize">@dimen/Font.Large</item>
+        <item name="android:textSize">@dimen/font_large</item>
         <item name="android:textColor">@color/black</item>
     </style>
 
     <style name="TextView.MediumSubtitle" parent="Theme.AppCompat.Light">
-        <item name="android:textSize">@dimen/Font.Medium</item>
+        <item name="android:textSize">@dimen/font_medium</item>
         <item name="android:textColor">@color/medium_grey</item>
     </style>
 
     <style name="TextView.Medium" parent="Theme.AppCompat.Light">
-        <item name="android:textSize">@dimen/Font.Medium</item>
+        <item name="android:textSize">@dimen/font_medium</item>
         <item name="android:textColor">@color/black</item>
     </style>
 
     <style name="TextView.SmallSubtitle" parent="Theme.AppCompat.Light">
-        <item name="android:textSize">@dimen/Font.Small</item>
+        <item name="android:textSize">@dimen/font_small</item>
         <item name="android:textColor">@color/medium_grey</item>
     </style>
 
     <style name="TextView.Small" parent="Theme.AppCompat.Light">
-        <item name="android:textSize">@dimen/Font.Medium</item>
+        <item name="android:textSize">@dimen/font_small</item>
         <item name="android:textColor">@color/black</item>
     </style>
     <!-- /TextViews -->

@@ -6,7 +6,6 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import com.cohenadair.anglerslog.R;
@@ -26,7 +25,7 @@ import java.util.UUID;
 /**
  * A wrapper class to be used for any Activity that requires a {@link LayoutSpec} object.
  */
-public abstract class LayoutSpecActivity extends AppCompatActivity implements
+public abstract class LayoutSpecActivity extends DefaultActivity implements
         MyListFragment.InteractionListener,
         ManageFragment.InteractionListener,
         LayoutSpecManager.InteractionListener,

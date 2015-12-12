@@ -13,7 +13,6 @@ import com.cohenadair.anglerslog.fragments.DetailFragment;
 import com.cohenadair.anglerslog.interfaces.OnClickInterface;
 import com.cohenadair.anglerslog.utilities.LayoutSpecManager;
 import com.cohenadair.anglerslog.utilities.NavigationManager;
-import com.cohenadair.anglerslog.utilities.Utils;
 
 import java.util.UUID;
 
@@ -111,7 +110,7 @@ public class MainActivity extends LayoutSpecActivity {
 
         if (isTwoPane() && detailFragment != null)
             // update the right panel detail fragment
-            detailFragment.update(this, id);
+            detailFragment.update(id);
         else {
             // show the detail fragment
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();

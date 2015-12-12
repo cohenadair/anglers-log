@@ -35,6 +35,8 @@
     <string name="longitude">Longitude</string>
     <string name="lat">Lat</string>
     <string name="lng">Lng</string>
+    <string name="catch_details">Catch Details</string>
+    <string name="fish_details">Fish Details</string>
 
     <string name="drawer_open">Open Navigation Drawer</string>
     <string name="drawer_close">Close Navigation Drawer</string>
@@ -129,4 +131,6 @@
     <string name="header_photo_description">A photo of one of the user\'s catches.</string>
     <string name="add_fishing_spot_description">Add fishing spot to location.</string>
     <string name="crosshairs_description">The coordinates of the current fishing spot.</string>
+    <string name="location_description">More information about the catch\'s location.</string>
+    <string name="bait_description">More information about the catch\'s bait.</string>
 </resources>

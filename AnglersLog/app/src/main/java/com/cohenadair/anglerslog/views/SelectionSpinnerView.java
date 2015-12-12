@@ -68,6 +68,10 @@ public class SelectionSpinnerView extends LinearLayout {
         mSpinner.setAdapter(adapter);
     }
 
+    public SpinnerAdapter getAdapter() {
+        return mSpinner.getAdapter();
+    }
+
     public void setOnItemSelectedListener(AdapterView.OnItemSelectedListener listener) {
         mSpinner.setOnItemSelectedListener(listener);
     }

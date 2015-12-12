@@ -33,6 +33,11 @@
         </activity>
 
         <activity
+            android:name=".activities.DetailFragmentActivity"
+            android:theme="@style/Theme.Dialog.NoTitle"
+            android:configChanges="orientation|keyboardHidden|screenSize"/>
+
+        <activity
             android:name=".activities.PhotoViewerActivity"
             android:theme="@style/Theme.FullScreen">
         </activity>
