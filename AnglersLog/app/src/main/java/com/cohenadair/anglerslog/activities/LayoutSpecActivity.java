@@ -13,6 +13,7 @@ import com.cohenadair.anglerslog.fragments.DetailFragment;
 import com.cohenadair.anglerslog.fragments.ManageContentFragment;
 import com.cohenadair.anglerslog.fragments.ManageFragment;
 import com.cohenadair.anglerslog.fragments.MyListFragment;
+import com.cohenadair.anglerslog.interfaces.GlobalSettingsInterface;
 import com.cohenadair.anglerslog.interfaces.OnClickManageMenuListener;
 import com.cohenadair.anglerslog.utilities.LayoutSpec;
 import com.cohenadair.anglerslog.utilities.LayoutSpecManager;
@@ -29,7 +30,8 @@ public abstract class LayoutSpecActivity extends DefaultActivity implements
         MyListFragment.InteractionListener,
         ManageFragment.InteractionListener,
         LayoutSpecManager.InteractionListener,
-        OnClickManageMenuListener
+        OnClickManageMenuListener,
+        GlobalSettingsInterface
 {
     private static final String TAG = "LayoutSpecActivity";
 
@@ -215,6 +217,7 @@ public abstract class LayoutSpecActivity extends DefaultActivity implements
      * Checks to see if the current layout has two-panes (i.e. master-detail layout).
      * @return True if there are two-panes; false otherwise.
      */
+    @Override
     public boolean isTwoPane() {
         return Utils.isTwoPane(this);
     }

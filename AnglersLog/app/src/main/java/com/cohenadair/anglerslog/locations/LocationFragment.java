@@ -115,7 +115,7 @@ public class LocationFragment extends DetailFragment implements OnMapReadyCallba
         }
 
         // update title
-        if (shouldShowTitle())
+        if (isTwoPane())
             mTitleTextView.setText(mLocation.getName());
         else
             setActionBarTitle(mLocation.getName());
@@ -219,7 +219,7 @@ public class LocationFragment extends DetailFragment implements OnMapReadyCallba
 
     private void initTitle(View view) {
         mTitleTextView = (TextView)view.findViewById(R.id.title_text_view);
-        mTitleTextView.setVisibility(shouldShowTitle() ? View.VISIBLE : View.GONE);
+        mTitleTextView.setVisibility(isTwoPane() ? View.VISIBLE : View.GONE);
     }
 
     private void initFishingSpotSelection(View view) {
@@ -283,9 +283,5 @@ public class LocationFragment extends DetailFragment implements OnMapReadyCallba
 
             return view;
         }
-    }
-
-    private boolean shouldShowTitle() {
-        return isLayoutSpecChild() && getRealActivity().isTwoPane();
     }
 }

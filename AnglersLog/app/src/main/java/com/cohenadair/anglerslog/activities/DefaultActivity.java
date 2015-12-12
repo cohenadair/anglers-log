@@ -1,14 +1,19 @@
 package com.cohenadair.anglerslog.activities;
 
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.cohenadair.anglerslog.R;
+import com.cohenadair.anglerslog.interfaces.GlobalSettingsInterface;
+import com.cohenadair.anglerslog.utilities.Utils;
 
 /**
  * The DefaultActivity class is a normal Activity subclass that includes a toolbar with enabled
@@ -19,7 +24,7 @@ import com.cohenadair.anglerslog.R;
  *
  * Created by Cohen Adair on 2015-12-12.
  */
-public abstract class DefaultActivity extends AppCompatActivity {
+public abstract class DefaultActivity extends AppCompatActivity implements GlobalSettingsInterface {
 
     public static final String EXTRA_TWO_PANE = "extra_two_pane";
 
@@ -49,6 +54,12 @@ public abstract class DefaultActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        finish();
+    }
+
     /**
      * Initializes the navigation toolbar. ** This must be called by subclasses. **
      */
@@ -69,6 +80,19 @@ public abstract class DefaultActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * If the device is two-pane (and this activity is displayed as a dialog), set the dialog's
+     * width to the smaller of the device's width and height.
+     */
+    public void initDialogWidth() {
+        if (!isTwoPane())
+            return;
+
+        Point screenSize = Utils.getScreenSize(this);
+        getWindow().setLayout((screenSize.x < screenSize.y) ? screenSize.x : screenSize.y, ViewGroup.LayoutParams.WRAP_CONTENT);
+    }
+
+    @Override
     public boolean isTwoPane() {
         Intent intent = getIntent();
         return intent.getBooleanExtra(EXTRA_TWO_PANE, false);

@@ -23,6 +23,7 @@ public class DetailFragmentActivity extends DefaultActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_default);
         initToolbar();
+        initDialogWidth();
 
         Intent intent = getIntent();
         int layoutSpecId = intent.getIntExtra(EXTRA_LAYOUT_ID, -1);

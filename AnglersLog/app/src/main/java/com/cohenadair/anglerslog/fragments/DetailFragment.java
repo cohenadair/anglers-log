@@ -12,8 +12,8 @@ import android.view.MenuItem;
 
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.activities.LayoutSpecActivity;
+import com.cohenadair.anglerslog.interfaces.GlobalSettingsInterface;
 import com.cohenadair.anglerslog.interfaces.OnClickManageMenuListener;
-import com.cohenadair.anglerslog.utilities.Utils;
 
 import java.util.UUID;
 
@@ -106,10 +106,6 @@ public abstract class DetailFragment extends Fragment {
         return getActivity() != null;
     }
 
-    public boolean isTwoPane() {
-        return Utils.isTwoPane(getContext());
-    }
-
     //region Getters & Setters
     public UUID getItemId() {
         return mItemId;
@@ -133,6 +129,10 @@ public abstract class DetailFragment extends Fragment {
      */
     public boolean isLayoutSpecChild() {
         return getActivity() instanceof LayoutSpecActivity;
+    }
+
+    public boolean isTwoPane() {
+        return (getActivity() instanceof GlobalSettingsInterface) && ((GlobalSettingsInterface)getActivity()).isTwoPane();
     }
 
     public void setActionBarTitle(String title) {
