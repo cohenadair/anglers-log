@@ -1,31 +1,20 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <LinearLayout
+    <com.cohenadair.anglerslog.views.TitleSubTitleView
+        android:id="@+id/title_subtitle_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/margin_default"
-        android:orientation="vertical">
-
-        <TextView
-            style="@style/Widget.TextView.Medium"
-            android:id="@+id/location_name_text_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:text="Location Name"/>
-
-        <TextView
-            style="@style/Widget.TextView.Small"
-            android:id="@+id/spots_text_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:text="Number of fishing spots"/>
-
-    </LinearLayout>
+        custom:titleText="@string/location"
+        custom:subtitleText="@string/fishing_spots"
+        custom:titleStyle="@style/TextView.Medium"
+        custom:subtitleStyle="@style/TextView.SmallSubtitle"/>
 
     <include
         android:id="@+id/cell_separator"

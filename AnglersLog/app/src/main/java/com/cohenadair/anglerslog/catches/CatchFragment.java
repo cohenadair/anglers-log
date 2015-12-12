@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.activities.LayoutSpecActivity;
@@ -14,6 +13,7 @@ import com.cohenadair.anglerslog.fragments.DetailFragment;
 import com.cohenadair.anglerslog.model.Logbook;
 import com.cohenadair.anglerslog.model.user_defines.Catch;
 import com.cohenadair.anglerslog.views.ImageScrollView;
+import com.cohenadair.anglerslog.views.TitleSubTitleView;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -27,8 +27,7 @@ public class CatchFragment extends DetailFragment {
     private ArrayList<String> mCatchPhotos;
 
     private ImageScrollView mImageScrollView;
-    private TextView mSpeciesTextView;
-    private TextView mDateTextView;
+    private TitleSubTitleView mTitleView;
 
     public CatchFragment() {
         // Required empty public constructor
@@ -49,8 +48,7 @@ public class CatchFragment extends DetailFragment {
             }
         });
 
-        mSpeciesTextView = (TextView)view.findViewById(R.id.species_text_view);
-        mDateTextView = (TextView)view.findViewById(R.id.date_text_view);
+        mTitleView = (TitleSubTitleView)view.findViewById(R.id.title_view);
 
         update(getRealActivity());
 
@@ -60,22 +58,21 @@ public class CatchFragment extends DetailFragment {
 
     @Override
     public void update(LayoutSpecActivity activity, UUID id) {
-        if (isAttached()) {
-            if (Logbook.getCatchCount() <= 0) {
-                // TODO replace with "NoUserDefineView"
-                mSpeciesTextView.setText("Select a catch to view it here.");
-                mDateTextView.setText("");
-            } else {
-                setItemId(id);
-                mCatch = Logbook.getCatch(id);
+        if (!isAttached())
+            return;
 
-                if (mCatch != null) {
-                    mCatchPhotos = mCatch.getPhotos();
+        if (Logbook.getCatchCount() <= 0) {
+            mTitleView.setVisibility(View.GONE);
+        } else {
+            setItemId(id);
+            mCatch = Logbook.getCatch(id);
 
-                    mImageScrollView.setImages(mCatchPhotos);
-                    mSpeciesTextView.setText(mCatch.getSpeciesAsString());
-                    mDateTextView.setText(mCatch.getDateAsString());
-                }
+            if (mCatch != null) {
+                mCatchPhotos = mCatch.getPhotos();
+
+                mImageScrollView.setImages(mCatchPhotos);
+                mTitleView.setTitle(mCatch.getSpeciesAsString());
+                mTitleView.setSubtitle(mCatch.getDateAsString());
             }
         }
     }

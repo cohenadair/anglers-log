@@ -8,7 +8,7 @@
     android:orientation="vertical">
 
     <TextView
-        style="@style/Widget.TextView.Header"
+        style="@style/TextView.Header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/margin_default"
@@ -17,7 +17,7 @@
         tools:text="Title"/>
 
     <EditText
-        style="@style/Widget.TextView.FromSelection"
+        style="@style/TextView.FromSelection"
         android:id="@+id/edit_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

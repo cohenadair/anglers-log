@@ -6,7 +6,7 @@
     android:layout_height="wrap_content">
 
     <TextView
-        style="@style/Widget.TextView.Medium"
+        style="@style/TextView.Medium"
         android:id="@+id/location_name_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -16,7 +16,7 @@
         android:layout_marginRight="@dimen/margin_half"/>
 
     <TextView
-        style="@style/Widget.TextView.Small"
+        style="@style/TextView.SmallSubtitle"
         android:id="@+id/coordinates_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -25,7 +25,7 @@
         android:layout_marginRight="@dimen/margin_half"/>
 
     <TextView
-        style="@style/Widget.TextView.Small"
+        style="@style/TextView.SmallSubtitle"
         android:id="@+id/spots_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

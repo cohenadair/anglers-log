@@ -59,32 +59,37 @@
     </style>
 
     <!-- TextViews -->
-    <style name="Widget.TextView.FromSelection" parent="Theme.AppCompat.Light">
-        <item name="android:textAppearance">?android:attr/textAppearance</item>
+    <style name="TextView.FromSelection" parent="Theme.AppCompat.Light">
     </style>
 
-    <style name="Widget.TextView.Header" parent="Theme.AppCompat.Light">
+    <style name="TextView.Header" parent="TextView.SmallSubtitle">
         <item name="android:textAllCaps">true</item>
-        <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
+        <item name="android:textColor">@color/dark_grey</item>
     </style>
 
-    <style name="Widget.TextView.Large" parent="Theme.AppCompat.Light">
-        <item name="android:textAppearance">?android:attr/textAppearanceLarge</item>
-        <item name="android:textColor">@android:color/black</item>
+    <style name="TextView.Large" parent="Theme.AppCompat.Light">
+        <item name="android:textSize">@dimen/Font.Large</item>
+        <item name="android:textColor">@color/black</item>
     </style>
 
-    <style name="Widget.TextView.Medium" parent="Theme.AppCompat.Light">
-        <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
-        <item name="android:textColor">@android:color/black</item>
+    <style name="TextView.MediumSubtitle" parent="Theme.AppCompat.Light">
+        <item name="android:textSize">@dimen/Font.Medium</item>
+        <item name="android:textColor">@color/medium_grey</item>
     </style>
 
-    <style name="Widget.TextView.Small" parent="Theme.AppCompat.Light">
-        <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
+    <style name="TextView.Medium" parent="Theme.AppCompat.Light">
+        <item name="android:textSize">@dimen/Font.Medium</item>
+        <item name="android:textColor">@color/black</item>
     </style>
 
-    <style name="Widget.TextView.SmallBlack" parent="Theme.AppCompat.Light">
-        <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
-        <item name="android:textColor">@android:color/black</item>
+    <style name="TextView.SmallSubtitle" parent="Theme.AppCompat.Light">
+        <item name="android:textSize">@dimen/Font.Small</item>
+        <item name="android:textColor">@color/medium_grey</item>
+    </style>
+
+    <style name="TextView.Small" parent="Theme.AppCompat.Light">
+        <item name="android:textSize">@dimen/Font.Medium</item>
+        <item name="android:textColor">@color/black</item>
     </style>
     <!-- /TextViews -->
 

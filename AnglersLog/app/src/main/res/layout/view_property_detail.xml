@@ -20,7 +20,7 @@
         android:id="@+id/detail_text_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:text="Detail"
-        android:gravity="end"/>
+        android:gravity="end"
+        tools:text="Detail"/>
 
 </LinearLayout>

@@ -4,13 +4,13 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.interfaces.OnClickInterface;
 import com.cohenadair.anglerslog.model.user_defines.Location;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import com.cohenadair.anglerslog.utilities.ListManager;
+import com.cohenadair.anglerslog.views.TitleSubTitleView;
 
 import java.util.ArrayList;
 
@@ -24,8 +24,7 @@ public class LocationListManager {
     public static class ViewHolder extends ListManager.ViewHolder {
 
         private ListManager.Adapter mAdapter;
-        private TextView mNameTextView;
-        private TextView mNumberSpotsTextView;
+        private TitleSubTitleView mTitleSubTitleView;
         private View mSeparator;
         private View mView;
 
@@ -34,16 +33,15 @@ public class LocationListManager {
 
             mAdapter = adapter;
             mView = view;
-            mNameTextView = (TextView)view.findViewById(R.id.location_name_text_view);
-            mNumberSpotsTextView = (TextView)view.findViewById(R.id.spots_text_view);
+            mTitleSubTitleView = (TitleSubTitleView)view.findViewById(R.id.title_subtitle_view);
             mSeparator = view.findViewById(R.id.cell_separator);
         }
 
         public void setLocation(Location location, int position) {
-            mNameTextView.setText(location.getName());
+            mTitleSubTitleView.setTitle(location.getName());
 
             int suffixId = location.getFishingSpotCount() == 1 ? R.string.fishing_spot : R.string.fishing_spots;
-            mNumberSpotsTextView.setText(String.format("%d " + context().getResources().getString(suffixId), location.getFishingSpotCount()));
+            mTitleSubTitleView.setSubtitle(String.format("%d " + context().getResources().getString(suffixId), location.getFishingSpotCount()));
 
             // hide the separator for the last row
             mSeparator.setVisibility((position == mAdapter.getItemCount() - 1) ? View.INVISIBLE : View.VISIBLE);

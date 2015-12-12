@@ -17,14 +17,14 @@
         android:orientation="vertical">
 
         <TextView
-            style="@style/Widget.TextView.SmallBlack"
+            style="@style/TextView.Small"
             android:id="@+id/title_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="Fishing Spot Name"/>
 
         <TextView
-            style="@style/Widget.TextView.Small"
+            style="@style/TextView.SmallSubtitle"
             android:id="@+id/subtitle_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

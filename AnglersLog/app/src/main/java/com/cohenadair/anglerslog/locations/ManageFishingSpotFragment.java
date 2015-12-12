@@ -17,8 +17,8 @@ import com.cohenadair.anglerslog.fragments.ManageContentFragment;
 import com.cohenadair.anglerslog.model.user_defines.FishingSpot;
 import com.cohenadair.anglerslog.utilities.GoogleMapLayout;
 import com.cohenadair.anglerslog.utilities.Utils;
-import com.cohenadair.anglerslog.views.SelectionView;
 import com.cohenadair.anglerslog.views.TextInputView;
+import com.cohenadair.anglerslog.views.TitleSubTitleView;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -36,8 +36,8 @@ public class ManageFishingSpotFragment extends ManageContentFragment implements 
     private static final float ZOOM = 15;
 
     private TextInputView mNameView;
-    private SelectionView mLatitudeView;
-    private SelectionView mLongitudeView;
+    private TitleSubTitleView mLatitudeView;
+    private TitleSubTitleView mLongitudeView;
     private GoogleMap mMap;
 
     private ManageObjectSpec mManageObjectSpec;
@@ -101,8 +101,15 @@ public class ManageFishingSpotFragment extends ManageContentFragment implements 
         FishingSpot fishingSpot = getNewFishingSpot();
 
         fishingSpot.setName(mNameView.getInputText());
-        fishingSpot.setLatitude(mMap.getCameraPosition().target.latitude);
-        fishingSpot.setLongitude(mMap.getCameraPosition().target.longitude);
+
+        if (mMap != null) {
+            fishingSpot.setLatitude(mMap.getCameraPosition().target.latitude);
+            fishingSpot.setLongitude(mMap.getCameraPosition().target.longitude);
+        } else {
+            // in case Google Play Services isn't available, fishing spots can still be added and updated later
+            fishingSpot.setLatitude(0.0);
+            fishingSpot.setLongitude(0.0);
+        }
 
         // name
         if (fishingSpot.isNameNull()) {
@@ -174,8 +181,8 @@ public class ManageFishingSpotFragment extends ManageContentFragment implements 
     }
 
     private void initCoordinatesView(View view) {
-        mLatitudeView = (SelectionView)view.findViewById(R.id.latitude_layout);
-        mLongitudeView = (SelectionView)view.findViewById(R.id.longitude_layout);
+        mLatitudeView = (TitleSubTitleView)view.findViewById(R.id.latitude_layout);
+        mLongitudeView = (TitleSubTitleView)view.findViewById(R.id.longitude_layout);
     }
 
     private void updateCoordinateViews(LatLng coordinates) {

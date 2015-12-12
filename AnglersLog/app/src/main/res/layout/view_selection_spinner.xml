@@ -10,7 +10,7 @@
     android:orientation="vertical">
 
     <TextView
-        style="@style/Widget.TextView.Header"
+        style="@style/TextView.Header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/title_text_view"

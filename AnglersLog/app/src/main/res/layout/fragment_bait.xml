@@ -26,27 +26,16 @@
                 android:contentDescription="@string/bait_photo_description"
                 android:src="@drawable/no_catch_photo"/>
 
-            <LinearLayout
-                android:layout_width="wrap_content"
+            <com.cohenadair.anglerslog.views.TitleSubTitleView
+                android:id="@+id/title_view"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:orientation="vertical">
+                custom:titleText="@string/bait"
+                custom:subtitleText="@string/bait_category"
+                custom:titleStyle="@style/TextView.Large"
+                custom:subtitleStyle="@style/TextView.MediumSubtitle"/>
 
-                <TextView
-                    android:id="@+id/bait_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:textAppearanceLarge"
-                    tools:text="Name"/>
-
-                <TextView
-                    android:id="@+id/bait_category"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:textAppearanceMedium"
-                    tools:text="Category"/>
-
-            </LinearLayout>
         </LinearLayout>
 
         <TextView

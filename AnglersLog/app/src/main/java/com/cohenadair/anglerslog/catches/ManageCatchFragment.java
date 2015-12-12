@@ -21,7 +21,7 @@ import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import com.cohenadair.anglerslog.utilities.LayoutSpecManager;
 import com.cohenadair.anglerslog.utilities.PrimitiveSpecManager;
 import com.cohenadair.anglerslog.utilities.Utils;
-import com.cohenadair.anglerslog.views.SelectionView;
+import com.cohenadair.anglerslog.views.TitleSubTitleView;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -32,11 +32,11 @@ import java.util.UUID;
  */
 public class ManageCatchFragment extends ManageContentFragment {
 
-    private SelectionView mDateView;
-    private SelectionView mTimeView;
-    private SelectionView mSpeciesView;
-    private SelectionView mLocationView;
-    private SelectionView mBaitView;
+    private TitleSubTitleView mDateView;
+    private TitleSubTitleView mTimeView;
+    private TitleSubTitleView mSpeciesView;
+    private TitleSubTitleView mLocationView;
+    private TitleSubTitleView mBaitView;
 
     public ManageCatchFragment() {
         // Required empty public constructor
@@ -118,7 +118,7 @@ public class ManageCatchFragment extends ManageContentFragment {
 
     //region Date & Time
     private void initDateTimeView(View view) {
-        mDateView = (SelectionView)view.findViewById(R.id.date_layout);
+        mDateView = (TitleSubTitleView)view.findViewById(R.id.date_layout);
         mDateView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -138,7 +138,7 @@ public class ManageCatchFragment extends ManageContentFragment {
             }
         });
 
-        mTimeView = (SelectionView)view.findViewById(R.id.time_layout);
+        mTimeView = (TitleSubTitleView)view.findViewById(R.id.time_layout);
         mTimeView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -195,7 +195,7 @@ public class ManageCatchFragment extends ManageContentFragment {
             }
         };
 
-        mSpeciesView = (SelectionView)view.findViewById(R.id.species_layout);
+        mSpeciesView = (TitleSubTitleView)view.findViewById(R.id.species_layout);
         mSpeciesView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -211,7 +211,7 @@ public class ManageCatchFragment extends ManageContentFragment {
     }
 
     private void initLocationView(View view) {
-        mLocationView = (SelectionView)view.findViewById(R.id.location_layout);
+        mLocationView = (TitleSubTitleView)view.findViewById(R.id.location_layout);
         mLocationView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -226,7 +226,7 @@ public class ManageCatchFragment extends ManageContentFragment {
     }
 
     private void initBaitView(View view) {
-        mBaitView = (SelectionView)view.findViewById(R.id.bait_layout);
+        mBaitView = (TitleSubTitleView)view.findViewById(R.id.bait_layout);
         mBaitView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

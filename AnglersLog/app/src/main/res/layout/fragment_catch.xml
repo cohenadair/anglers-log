@@ -1,4 +1,5 @@
 <ScrollView
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -15,23 +16,16 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"/>
 
-        <TextView
-            android:layout_width="wrap_content"
+        <com.cohenadair.anglerslog.views.TitleSubTitleView
+            android:id="@+id/title_view"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/species"
-            android:id="@+id/species_text_view"
-            android:layout_gravity="center_horizontal"
-            android:padding="25dp"
-            android:textSize="20sp" />
+            android:layout_margin="@dimen/margin_default"
+            custom:titleText="@string/species"
+            custom:subtitleText="@string/date"
+            custom:titleStyle="@style/TextView.Large"
+            custom:subtitleStyle="@style/TextView.MediumSubtitle"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/date"
-            android:id="@+id/date_text_view"
-            android:layout_gravity="center_horizontal"
-            android:textSize="15sp"
-            android:padding="10dp" />
     </LinearLayout>
 
 </ScrollView>

@@ -1,11 +1,7 @@
 <resources>
     <attr name="titleText" format="string" />
-
-    <declare-styleable name="SelectionView">
-        <attr name="titleText" />
-        <attr name="subtitleText" format="string" />
-        <attr name="subtitleHint" format="string" />
-    </declare-styleable>
+    <attr name="subtitleText" format="string" />
+    <attr name="subtitleHint" format="string" />
 
     <declare-styleable name="TextInputView">
         <attr name="titleText" />
@@ -22,5 +18,13 @@
 
     <declare-styleable name="SelectionSpinnerView">
         <attr name="titleText" />
+    </declare-styleable>
+
+    <declare-styleable name="TitleSubTitleView">
+        <attr name="titleText" />
+        <attr name="subtitleText" />
+        <attr name="subtitleHint" />
+        <attr name="titleStyle" format="reference" />
+        <attr name="subtitleStyle" format="reference" />
     </declare-styleable>
 </resources>

@@ -99,6 +99,10 @@ public class ListManager {
         }
 
         public void setSelected(int position) {
+            // if we're int two-pane mode there shouldn't be any selection
+            if (!Utils.isTwoPane(mContext))
+                return;
+
             for (UserDefineObject obj : mItems)
                 obj.setIsSelected(false);
 

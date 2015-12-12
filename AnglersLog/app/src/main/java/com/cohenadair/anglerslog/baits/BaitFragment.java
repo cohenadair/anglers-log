@@ -17,6 +17,7 @@ import com.cohenadair.anglerslog.model.Logbook;
 import com.cohenadair.anglerslog.model.user_defines.Bait;
 import com.cohenadair.anglerslog.utilities.PhotoUtils;
 import com.cohenadair.anglerslog.views.PropertyDetailView;
+import com.cohenadair.anglerslog.views.TitleSubTitleView;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -30,8 +31,7 @@ public class BaitFragment extends DetailFragment {
 
     private LinearLayout mContainer;
     private ImageView mImageView;
-    private TextView mNameTextView;
-    private TextView mCategoryTextView;
+    private TitleSubTitleView mTitleSubTitleView;
     private TextView mDescriptionTextView;
     private PropertyDetailView mTypeView;
     private PropertyDetailView mColorView;
@@ -48,8 +48,7 @@ public class BaitFragment extends DetailFragment {
         initImageView(view);
 
         mContainer = (LinearLayout)view.findViewById(R.id.bait_container);
-        mNameTextView = (TextView)view.findViewById(R.id.bait_name);
-        mCategoryTextView = (TextView)view.findViewById(R.id.bait_category);
+        mTitleSubTitleView = (TitleSubTitleView)view.findViewById(R.id.title_view);
         mDescriptionTextView = (TextView)view.findViewById(R.id.description_text_view);
         mTypeView = (PropertyDetailView)view.findViewById(R.id.type_view);
         mColorView = (PropertyDetailView)view.findViewById(R.id.color_view);
@@ -81,8 +80,8 @@ public class BaitFragment extends DetailFragment {
                 mImageView.setVisibility(View.VISIBLE);
             }
 
-            mNameTextView.setText(mBait.getName());
-            mCategoryTextView.setText(mBait.getCategoryName());
+            mTitleSubTitleView.setTitle(mBait.getName());
+            mTitleSubTitleView.setSubtitle(mBait.getCategoryName());
 
             mTypeView.setDetail(getRealActivity().getResources().getString(mBait.getTypeName()));
             mTypeView.setVisibility(View.VISIBLE);

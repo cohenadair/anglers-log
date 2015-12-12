@@ -49,18 +49,25 @@
             android:orientation="vertical">
 
             <TextView
-                style="@style/Widget.TextView.Medium"
+                style="@style/TextView.Medium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/species"
                 android:id="@+id/species_label"/>
 
             <TextView
-                android:textAppearance="?android:attr/textAppearanceSmall"
+                style="@style/TextView.SmallSubtitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/date"
                 android:id="@+id/date_label"/>
+
+            <TextView
+                style="@style/TextView.SmallSubtitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/location"
+                android:id="@+id/location_label"/>
 
         </LinearLayout>
 

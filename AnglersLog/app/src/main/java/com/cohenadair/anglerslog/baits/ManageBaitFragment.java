@@ -17,15 +17,15 @@ import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import com.cohenadair.anglerslog.utilities.PrimitiveSpecManager;
 import com.cohenadair.anglerslog.utilities.Utils;
 import com.cohenadair.anglerslog.views.SelectionSpinnerView;
-import com.cohenadair.anglerslog.views.SelectionView;
 import com.cohenadair.anglerslog.views.TextInputView;
+import com.cohenadair.anglerslog.views.TitleSubTitleView;
 
 /**
  * The ManageBaitFragment is used to add and edit baits.
  */
 public class ManageBaitFragment extends ManageContentFragment {
 
-    private SelectionView mCategoryView;
+    private TitleSubTitleView mCategoryView;
     private TextInputView mNameView;
     private TextInputView mColorView;
     private TextInputView mSizeView;
@@ -95,7 +95,7 @@ public class ManageBaitFragment extends ManageContentFragment {
 
     @Override
     public boolean verifyUserInput() {
-        // category is set in the SelectionView interface
+        // category is set in the TitleSubtitleView interface
         // type is set in the Spinner interface
         getNewBait().setName(mNameView.getInputText());
         getNewBait().setSize(mSizeView.getInputText());
@@ -142,7 +142,7 @@ public class ManageBaitFragment extends ManageContentFragment {
             }
         };
 
-        mCategoryView = (SelectionView)view.findViewById(R.id.category_view);
+        mCategoryView = (TitleSubTitleView)view.findViewById(R.id.category_view);
         mCategoryView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

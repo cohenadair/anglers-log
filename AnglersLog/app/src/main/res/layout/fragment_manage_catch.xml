@@ -15,21 +15,25 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <com.cohenadair.anglerslog.views.SelectionView
+            <com.cohenadair.anglerslog.views.TitleSubTitleView
                 android:id="@+id/date_layout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
+                android:layout_margin="@dimen/margin_default"
                 custom:titleText="@string/date"
-                custom:subtitleText="May 22, 2015"/>
+                custom:subtitleText="May 22, 2015"
+                custom:titleStyle="@style/TextView.Header"/>
 
-            <com.cohenadair.anglerslog.views.SelectionView
+            <com.cohenadair.anglerslog.views.TitleSubTitleView
                 android:id="@+id/time_layout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:layout_margin="@dimen/margin_default"
                 custom:titleText="@string/time"
-                custom:subtitleText="6:00 AM"/>
+                custom:subtitleText="6:00 AM"
+                custom:titleStyle="@style/TextView.Header"/>
 
         </LinearLayout>
 
@@ -44,32 +48,38 @@
         <include layout="@layout/view_divider"/>
 
         <!-- Species -->
-        <com.cohenadair.anglerslog.views.SelectionView
+        <com.cohenadair.anglerslog.views.TitleSubTitleView
             android:id="@+id/species_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_default"
             custom:titleText="@string/species"
-            custom:subtitleHint="@string/species_hint"/>
+            custom:subtitleHint="@string/species_hint"
+            custom:titleStyle="@style/TextView.Header"/>
 
         <include layout="@layout/view_divider"/>
 
         <!-- Location -->
-        <com.cohenadair.anglerslog.views.SelectionView
+        <com.cohenadair.anglerslog.views.TitleSubTitleView
             android:id="@+id/location_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_default"
             custom:titleText="@string/location"
-            custom:subtitleHint="@string/location_hint"/>
+            custom:subtitleHint="@string/location_hint"
+            custom:titleStyle="@style/TextView.Header"/>
 
         <include layout="@layout/view_divider"/>
 
         <!-- Bait -->
-        <com.cohenadair.anglerslog.views.SelectionView
+        <com.cohenadair.anglerslog.views.TitleSubTitleView
             android:id="@+id/bait_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_default"
             custom:titleText="@string/bait"
-            custom:subtitleHint="@string/bait_hint"/>
+            custom:subtitleHint="@string/bait_hint"
+            custom:titleStyle="@style/TextView.Header"/>
 
         <include layout="@layout/view_divider"/>
 

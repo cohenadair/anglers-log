@@ -33,6 +33,7 @@ public class CatchListManager {
         private ImageView mImageView;
         private TextView mSpeciesTextView;
         private TextView mDateTextView;
+        private TextView mLocationTextView;
         private RatingBar mFavorite;
         private View mSeparator;
         private View mView;
@@ -47,6 +48,7 @@ public class CatchListManager {
             mImageView = (ImageView)view.findViewById(R.id.image_view);
             mSpeciesTextView = (TextView)view.findViewById(R.id.species_label);
             mDateTextView = (TextView)view.findViewById(R.id.date_label);
+            mLocationTextView = (TextView)view.findViewById(R.id.location_label);
             mSeparator = view.findViewById(R.id.cell_separator);
 
             mFavorite = (RatingBar)view.findViewById(R.id.favorite_star);
@@ -70,6 +72,11 @@ public class CatchListManager {
             mSpeciesTextView.setText(aCatch.getSpeciesAsString());
             mDateTextView.setText(aCatch.getDateTimeAsString());
             mFavorite.setRating(mCatch.isFavorite() ? (float) 1.0 : (float) 0.0);
+
+            if (aCatch.getFishingSpot() != null)
+                mLocationTextView.setText(aCatch.getFishingSpotAsString());
+            else
+                mLocationTextView.setVisibility(View.GONE);
 
             // thumbnail stuff
             // if the image doesn't exist or can't be read, a default icon is shown

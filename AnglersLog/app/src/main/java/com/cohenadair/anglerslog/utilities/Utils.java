@@ -1,5 +1,6 @@
 package com.cohenadair.anglerslog.utilities;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -7,6 +8,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Point;
 import android.location.LocationManager;
+import android.os.Build;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -14,6 +16,7 @@ import android.support.v7.app.AlertDialog;
 import android.text.format.DateFormat;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cohenadair.anglerslog.R;
@@ -235,6 +238,19 @@ public class Utils {
     @NonNull
     public static String getDisplayTime(Date date) {
         return DateFormat.format("h:mm a", date).toString();
+    }
+
+    public static boolean isMinMarshemellow() {
+        return (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M);
+    }
+
+    @TargetApi(Build.VERSION_CODES.M)
+    public static void setTextAppearance(Context context, TextView view, int resId) {
+        if (isMinMarshemellow())
+            view.setTextAppearance(resId);
+        else
+            view.setTextAppearance(context, resId);
+
     }
 
 }

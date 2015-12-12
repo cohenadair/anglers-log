@@ -6,6 +6,8 @@
     <color name="drawer_background">#F5F5F5</color>
     <color name="light_grey">#ddd</color>
     <color name="grey">#ccc</color>
-    <color name="dark_grey">#505050</color>
+    <color name="medium_grey">#999999</color>
+    <color name="dark_grey">#737373</color>
+    <color name="black">@android:color/black</color>
 
 </resources>
