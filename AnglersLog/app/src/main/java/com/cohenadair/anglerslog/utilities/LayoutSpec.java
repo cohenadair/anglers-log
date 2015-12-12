@@ -44,7 +44,7 @@ public class LayoutSpec {
      */
     public interface InteractionListener {
         ListManager.Adapter onGetMasterAdapter();
-        void onUserDefineRemove(UUID id);
+        boolean onUserDefineRemove(UUID id);
     }
 
     /**

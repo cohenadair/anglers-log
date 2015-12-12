@@ -111,8 +111,8 @@ public abstract class LayoutSpecActivity extends DefaultActivity implements
         return mLayoutSpec.getSelectionId();
     }
 
-    public void removeUserDefine(UUID id) {
-        mLayoutSpec.getListener().onUserDefineRemove(id);
+    public boolean removeUserDefine(UUID id) {
+        return mLayoutSpec.getListener().onUserDefineRemove(id);
     }
 
     public Fragment getMasterFragment() {
@@ -200,8 +200,8 @@ public abstract class LayoutSpecActivity extends DefaultActivity implements
         Utils.showDeleteConfirm(this, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                removeUserDefine(id);
-                goBack();
+                if (removeUserDefine(id))
+                    goBack();
             }
         });
     }

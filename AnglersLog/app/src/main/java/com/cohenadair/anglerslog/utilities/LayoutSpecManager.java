@@ -92,8 +92,10 @@ public class LayoutSpecManager {
             }
 
             @Override
-            public void onUserDefineRemove(UUID id) {
-                spec.removeUserDefine(context, Logbook.getCatch(id), Logbook.removeCatch(id), R.string.success_catch_delete);
+            public boolean onUserDefineRemove(UUID id) {
+                boolean removed = Logbook.removeCatch(id);
+                spec.removeUserDefine(context, Logbook.getCatch(id), removed, R.string.success_catch_delete);
+                return removed;
             }
         });
 
@@ -116,8 +118,10 @@ public class LayoutSpecManager {
             }
 
             @Override
-            public void onUserDefineRemove(UUID id) {
-                spec.removeUserDefine(context, Logbook.getLocation(id), Logbook.removeLocation(id), R.string.success_location_delete);
+            public boolean onUserDefineRemove(UUID id) {
+                boolean removed = Logbook.removeLocation(id);
+                spec.removeUserDefine(context, Logbook.getLocation(id), removed, R.string.success_location_delete);
+                return removed;
             }
         });
 
@@ -158,8 +162,10 @@ public class LayoutSpecManager {
             }
 
             @Override
-            public void onUserDefineRemove(UUID id) {
-                spec.removeUserDefine(context, Logbook.getBait(id), Logbook.removeBait(id), R.string.success_bait_delete);
+            public boolean onUserDefineRemove(UUID id) {
+                boolean removed = Logbook.removeBait(id);
+                spec.removeUserDefine(context, Logbook.getBait(id), removed, R.string.success_bait_delete);
+                return removed;
             }
         });
 

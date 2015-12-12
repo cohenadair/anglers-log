@@ -8,6 +8,7 @@ import com.cohenadair.anglerslog.database.LogbookHelper;
 import com.cohenadair.anglerslog.model.user_defines.Bait;
 import com.cohenadair.anglerslog.model.user_defines.BaitCategory;
 import com.cohenadair.anglerslog.model.user_defines.Catch;
+import com.cohenadair.anglerslog.model.user_defines.FishingSpot;
 import com.cohenadair.anglerslog.model.user_defines.Location;
 import com.cohenadair.anglerslog.model.user_defines.Species;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
@@ -264,7 +265,10 @@ public class LogbookTest {
         assertTrue(loc4.getName().equals(loc2.getName()));
 
         // delete
-        assertTrue(Logbook.removeLocation(loc1.getId()));
+        Location loc5 = Logbook.getLocation(loc1.getId());
+        loc5.addFishingSpot(new FishingSpot("Spot1"));
+        loc5.addFishingSpot(new FishingSpot("Spot2"));
+        assertTrue(Logbook.removeLocation(loc5.getId()));
         assertTrue(Logbook.getBaitCount() == 0);
 
         // get multiple

@@ -73,6 +73,15 @@ public class Location extends UserDefineObject {
         return QueryHelper.deleteUserDefine(FishingSpotTable.NAME, id);
     }
 
+    public boolean removeAllFishingSpots() {
+        ArrayList<UserDefineObject> fishingSpots = getFishingSpots();
+        for (UserDefineObject spot : fishingSpots)
+            if (!removeFishingSpot(spot.getId()))
+                return false;
+
+        return true;
+    }
+
     public int getFishingSpotCount() {
         return QueryHelper.queryCount(FishingSpotTable.NAME, FishingSpotTable.Columns.LOCATION_ID + " = ?", new String[]{idAsString()});
     }

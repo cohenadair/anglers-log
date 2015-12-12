@@ -77,5 +77,8 @@ public class LocationTest {
 
         // getFishingSpots
         assertTrue(mTestLocation.getFishingSpots().size() == 3);
+
+        // remove all
+        assertTrue(mTestLocation.removeAllFishingSpots());
     }
 }

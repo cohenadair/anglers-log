@@ -354,7 +354,7 @@ public class Logbook {
     }
 
     public static boolean removeLocation(UUID id) {
-        return QueryHelper.deleteUserDefine(LocationTable.NAME, id);
+        return getLocation(id).removeAllFishingSpots() && QueryHelper.deleteUserDefine(LocationTable.NAME, id);
     }
 
     public static boolean editLocation(UUID id, Location newLocation) {
