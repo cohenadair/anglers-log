@@ -100,6 +100,7 @@
 #define kDateCellRow 0
 
 #define kPhotoCellSection 1
+#define kPhotoCellRow 0
 
 #define kDatePickerHeight 225
 #define kDatePickerCellSection 0
@@ -177,7 +178,7 @@ NSString *const kNotSelectedString = @"Not Selected";
     for (int i = 0; i < [self.entryImages count]; i++)
         [self.saveEntryImagesToGallery addObject:[NSNumber numberWithBool:NO]];
     
-    [self.cameraImage myInit:self action:@selector(tapCameraImage)];
+    [self.cameraImage myInit:self action:NULL];
     
     // location manager
     self.locationManager = [CLLocationManager new];
@@ -414,7 +415,8 @@ NSString *const kNotSelectedString = @"Not Selected";
         if (self.isEditingDateTime)
             [self toggleDatePickerCellHidden:tableView selectedPath:indexPath];
     
-    NSLog(@"Selected");
+    if (indexPath.section == kPhotoCellSection && indexPath.row == kPhotoCellRow)
+        [self showCameraActionSheet];
 }
 
 #pragma mark - Events
@@ -455,7 +457,7 @@ NSString *const kNotSelectedString = @"Not Selected";
     [self.dateTimeDetailLabel setText:[self.dateFormatter stringFromDate:sender.date]];
 }
 
-- (void)tapCameraImage {
+- (void)showCameraActionSheet {
     [self.cameraActionSheet showInViewController:self];
 }
 

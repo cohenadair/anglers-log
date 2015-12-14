@@ -12,7 +12,9 @@
 @implementation CMACameraButton
 
 - (void)myInit:(id)aTarget action:(SEL)anAction {
-    [self addTapGesture:aTarget action:anAction];
+    if (anAction != NULL)
+        [self addTapGesture:aTarget action:anAction];
+    
     [self addTint];
 }
 
