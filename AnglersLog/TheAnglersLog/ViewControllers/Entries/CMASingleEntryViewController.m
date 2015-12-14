@@ -379,7 +379,11 @@
 - (void)shareEntry {
     NSMutableArray *shareItems = [NSMutableArray array];
     
-    UIImage *currentImage = [(UIImageView *)[[[self.imageCollectionView visibleCells] objectAtIndex:0] viewWithTag:100] image];
+    NSArray *images = [self.imageCollectionView visibleCells];
+    UIImage *currentImage = NULL;
+    
+    if (images.count > 0)
+        currentImage = [(UIImageView *)[[images objectAtIndex:0] viewWithTag:100] image];
     
     if (currentImage)
         [shareItems addObject:currentImage];
