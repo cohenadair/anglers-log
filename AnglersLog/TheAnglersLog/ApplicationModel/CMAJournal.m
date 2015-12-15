@@ -61,6 +61,9 @@
     
     for (CMAEntry *e in self.entries)
         [e initProperties];
+    
+    for (CMABait *b in [self userDefineNamed:UDN_BAITS].baits)
+        [b initProperties];
 }
 
 // Initializes user define objects if they don't already exist. Used so the same CMAJournal object can be used if new defines are added later.

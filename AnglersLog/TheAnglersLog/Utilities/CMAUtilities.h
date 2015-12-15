@@ -24,9 +24,12 @@
                    viewController:(id)aVC
                        segueBlock:(void(^)())aSegueBlock
                   removeObjToEdit:(BOOL)rmObjToEdit;
-+ (UIImage *)imageWithImage:(UIImage *)image scaledToSize:(CGSize)newSize;
++ (UIImage *)imageWithImage:(UIImage *)image scaledToSize:(CGSize)size;
++ (UIImage *)scaleImageToScreenSize:(UIImage *)anImage;
 + (CGSize)galleryCellSize;
 + (NSString *)capitalizedString:(NSString *)aString;
 + (void)deleteFileAtPath:(NSString *)aPath;
++ (CGSize)screenSize;
++ (CGSize)screenSizeInPixels;
 
 @end

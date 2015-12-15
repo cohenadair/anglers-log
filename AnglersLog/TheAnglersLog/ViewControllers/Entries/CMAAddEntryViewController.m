@@ -116,6 +116,7 @@
 #define kImperialFishWeightRow 4
 
 #define kImageViewTag 100
+#define kImageViewSize 100
 
 NSString *const kNotSelectedString = @"Not Selected";
 
@@ -677,12 +678,12 @@ NSString *const kNotSelectedString = @"Not Selected";
     if ([self.entryImages count] > 0) {
         for (int i = 0; i < [self.entryImages count]; i++) {
             CMAImage *img = [[CMAStorageManager sharedManager] managedImage];
-            [img setImage:[self.entryImages objectAtIndex:i]];
+            [img setFullImage:[self.entryImages objectAtIndex:i]];
             [anEntry addImage:img];
             [img saveWithIndex:i];
 
             if ([[self.saveEntryImagesToGallery objectAtIndex:i] boolValue])
-                UIImageWriteToSavedPhotosAlbum([img image], nil, nil, nil);
+                UIImageWriteToSavedPhotosAlbum([img fullImage], nil, nil, nil);
         }
     } else
         [anEntry setImages:nil];
@@ -845,14 +846,8 @@ NSString *const kNotSelectedString = @"Not Selected";
 }
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
-    UIImage *chosenImage = info[UIImagePickerControllerEditedImage];
-
-    // resize the image so it is the same size as the screen's width
-    CGSize screenSize = [[UIApplication sharedApplication] delegate].window.frame.size;
-    UIImage *scaledImage = [CMAUtilities imageWithImage:chosenImage scaledToSize:CGSizeMake(screenSize.width, screenSize.width)];
-    
-    [self insertImageIntoCollection:scaledImage saveToGallery:(picker.sourceType == UIImagePickerControllerSourceTypeCamera)];
-    
+    UIImage *chosenImage = info[UIImagePickerControllerOriginalImage];
+    [self insertImageIntoCollection:chosenImage saveToGallery:(picker.sourceType == UIImagePickerControllerSourceTypeCamera)];
     [picker dismissViewControllerAnimated:YES completion:NULL];
 }
 
@@ -895,15 +890,17 @@ NSString *const kNotSelectedString = @"Not Selected";
     
     UICollectionViewCell *insertedCell = [self.imageCollection cellForItemAtIndexPath:indexPath];
     
-    [self.entryImages insertObject:anImage atIndex:0];
+    UIImage *scaledImage = [CMAUtilities scaleImageToScreenSize:anImage];
+    [self.entryImages insertObject:scaledImage atIndex:0];
     
     if (saveToGallery)
         [self.saveEntryImagesToGallery insertObject:[NSNumber numberWithBool:YES] atIndex:0];
     else
         [self.saveEntryImagesToGallery insertObject:[NSNumber numberWithBool:NO] atIndex:0];
     
+    // image is scaled to the size of the UICollectionViewCell
     UIImageView *imageView = (UIImageView *)[insertedCell viewWithTag:kImageViewTag];
-    [imageView setImage:anImage];
+    [imageView setImage:[CMAUtilities imageWithImage:scaledImage scaledToSize:CGSizeMake(kImageViewSize, kImageViewSize)]];
 }
 
 - (void)deleteImageFromCollectionAtIndexPath:(NSIndexPath *)anIndexPath {

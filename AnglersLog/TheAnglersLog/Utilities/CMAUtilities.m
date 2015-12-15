@@ -11,6 +11,7 @@
 #import <sys/socket.h>
 #import <netinet/in.h>
 #import <SystemConfiguration/SystemConfiguration.h>
+#import "UIImage+ResizeMagick.h"
 
 @implementation CMAUtilities
 
@@ -109,13 +110,28 @@
 }
 
 // From http://stackoverflow.com/questions/2658738/the-simplest-way-to-resize-an-uiimage
-+ (UIImage *)imageWithImage:(UIImage *)image scaledToSize:(CGSize)newSize {
-    UIGraphicsBeginImageContextWithOptions(newSize, NO, 0.0);
-    [image drawInRect:CGRectMake(0, 0, newSize.width, newSize.height)];
+// Scales the given UIImage to the given size, keeping aspect ratio.
++ (UIImage *)imageWithImage:(UIImage *)image scaledToSize:(CGSize)size {
+    CGFloat scale = MAX(size.width / image.size.width, size.height / image.size.height);
+    CGFloat width = image.size.width * scale;
+    CGFloat height = image.size.height * scale;
+    CGRect imageRect = CGRectMake((size.width - width) / 2.0f, (size.height - height) / 2.0f, width, height);
+    
+    UIGraphicsBeginImageContextWithOptions(size, NO, 0);
+    [image drawInRect:imageRect];
     UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
-    
     return newImage;
+}
+
++ (UIImage *)scaleImageToScreenSize:(UIImage *)anImage {
+    NSString *widthStr = [NSString stringWithFormat:@"%f", [CMAUtilities screenSizeInPixels].width];
+    NSString *heightStr = [NSString stringWithFormat:@"x%f", [CMAUtilities screenSizeInPixels].height];
+    
+    if (anImage.size.width < anImage.size.height)
+        return [anImage resizedImageByMagick:widthStr];
+    else
+        return [anImage resizedImageByMagick:heightStr];
 }
 
 // Uses the current window size to return a CGSize for the photo gallery collection view cells.
@@ -155,6 +171,16 @@
     NSError *e;
     if (![[NSFileManager defaultManager] removeItemAtPath:aPath error:&e])
         NSLog(@"Failed to delete file %@: %@", aPath, e.localizedDescription);
+}
+
++ (CGSize)screenSizeInPixels {
+    CGRect screenBounds = [[UIScreen mainScreen] bounds];
+    CGFloat screenScale = [[UIScreen mainScreen] scale];
+    return CGSizeMake(screenBounds.size.width * screenScale, screenBounds.size.height * screenScale);
+}
+
++ (CGSize)screenSize {
+    return [[UIApplication sharedApplication] delegate].window.frame.size;
 }
 
 @end

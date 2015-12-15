@@ -26,6 +26,7 @@
 // initialization
 - (CMABait *)initWithName:(NSString *)aName andUserDefine:(CMAUserDefine *)aUserDefine;
 - (void)handleModelUpdate;
+- (void)initProperties;
 
 // editing
 - (void)edit:(CMABait *)aNewBait;

@@ -237,7 +237,7 @@
 - (CMABait *)rapalaBait {
     CMABait *result = [[CMAStorageManager sharedManager] managedBait];
     CMAImage *img = [[CMAStorageManager sharedManager] managedImage];
-    [img setImage:[UIImage imageNamed:@"rapala.png"]];
+    [img setFullImage:[UIImage imageNamed:@"rapala.png"]];
     
     [result setName:@"Rippin' Rap"];
     [result setColor:@"Blue Chrome"];
@@ -252,7 +252,7 @@
 - (CMABait *)spinnerBait {
     CMABait *result = [[CMAStorageManager sharedManager] managedBait];
     CMAImage *img = [[CMAStorageManager sharedManager] managedImage];
-    [img setImage:[UIImage imageNamed:@"spinner.png"]];
+    [img setFullImage:[UIImage imageNamed:@"spinner.png"]];
     
     [result setName:@"Spinner - Blue Fox"];
     [result setColor:@"Silver"];

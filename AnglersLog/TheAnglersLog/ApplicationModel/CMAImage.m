@@ -15,6 +15,7 @@
 #import "CMAConstants.h"
 #import "CMAUtilities.h"
 #import "CMAJSONWriter.h"
+#import "CMAUtilities.h"
 
 @implementation CMAImage
 
@@ -22,6 +23,7 @@
 @dynamic entry;
 @dynamic bait;
 
+@synthesize fullImage = _fullImage;
 @synthesize image = _image;
 @synthesize tableCellImage = _tableCellImage;
 @synthesize galleryCellImage = _galleryCellImage;
@@ -43,7 +45,8 @@
     __block NSString *imagePath = [self.imagePath copy];
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^ {
-        [self initImageFromPath:imagePath];
+        [self initFullImageFromPath:imagePath];
+        [self initImage];
         [self initTableCellImage];
         [self initGalleryCellImage];
         
@@ -53,13 +56,14 @@
     });
 }
 
-- (void)initImage {
-    _image = [UIImage imageWithData:[NSData dataWithContentsOfFile:self.imagePath]];
+- (void)initFullImageFromPath:(NSString *)aPath {
+    // DO NOT use UIImage's imageWithContentsOfFile. It keeps the file open so it can't be overridden (i.e. can't be edited).
+    _fullImage = [UIImage imageWithData:[NSData dataWithContentsOfFile:aPath]];
 }
 
-- (void)initImageFromPath:(NSString *)aPath {
-    // DO NOT use UIImage's imageWithContentsOfFile. It keeps the file open so it can't be overridden (i.e. can't be edited).
-    _image = [UIImage imageWithData:[NSData dataWithContentsOfFile:aPath]];
+- (void)initImage {
+    CGSize screenSize = [CMAUtilities screenSize];
+    _image = [CMAUtilities imageWithImage:self.fullImage scaledToSize:CGSizeMake(screenSize.width, screenSize.width)];
 }
 
 - (void)initTableCellImage {
@@ -80,44 +84,29 @@
     
     NSString *documentsPath = [[CMAStorageManager sharedManager] documentsSubDirectory:subDirectory].path;
     NSString *imagePath = [subDirectory stringByAppendingPathComponent:fileName];
-    NSString *path = [documentsPath stringByAppendingPathComponent:fileName];
-    __block NSURL *saveURL = [NSURL fileURLWithPath:path];
+    __block NSString *path = [documentsPath stringByAppendingPathComponent:fileName];
     __block UIImage *img = anImage;
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-        CGImageDestinationRef imgDestination = CGImageDestinationCreateWithURL((__bridge CFURLRef)saveURL, kUTTypePNG, 1, NULL);
-        
-        if (imgDestination == NULL) {
-            NSLog(@"ERROR in saveWithImage:andFileName: -> failed to create image destination.");
-            return;
-        }
-        
-        CGImageDestinationAddImage(imgDestination, img.CGImage, NULL);
-        
-        if (CGImageDestinationFinalize(imgDestination) == NO) {
-            NSLog(@"ERROR in saveWithImage:andFileName: -> failed to finailize image.");
-            CFRelease(imgDestination);
-            return;
-        }
-        
-        CFRelease(imgDestination);
+        [UIImageJPEGRepresentation(img, 0.50f) writeToFile:path atomically:YES];
         
         dispatch_async(dispatch_get_main_queue(), ^{
             
         });
     });
 
-    self.image = anImage;
-    self.tableCellImage = anImage;
-    self.galleryCellImage = anImage;
     self.imagePath = imagePath; // stored path has to be relative, not absolute (iOS8 changes UUID every run)
+    self.fullImage = anImage;
+    [self initImage];
+    [self initTableCellImage];
+    [self initGalleryCellImage];
 }
 
 // This method should only be called when adding an image to the journal (ex. adding an entry or bait).
 // This method MUST be called. It sets the CMAImage's imagePath property which is needed to access the image later.
 // anIndex is the index of the image in an images array. It's added to create a unique file name.
 - (void)saveWithIndex:(NSInteger)anIndex {
-    if (!self.image)
+    if (!self.fullImage)
         NSLog(@"WARNING: Trying to save CMAImage with NULL image value.");
     
     if (!self.entry && !self.bait)
@@ -133,7 +122,7 @@
         fileName = [formatter stringFromDate:[NSDate date]];
     }
     
-    [self saveWithImage:self.image andFileName:fileName];
+    [self saveWithImage:self.fullImage andFileName:fileName];
 }
 
 #pragma mark - Getters

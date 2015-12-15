@@ -39,6 +39,11 @@
         [self.imageData handleModelUpdate];
 }
 
+// Used to save memory later.
+- (void)initProperties {
+    [self.imageData initProperties];
+}
+
 #pragma mark - Editing
 
 - (void)setSize:(NSString *)size {

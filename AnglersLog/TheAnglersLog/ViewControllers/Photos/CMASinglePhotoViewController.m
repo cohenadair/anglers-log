@@ -14,6 +14,7 @@
 #import "CMAImage.h"
 #import "CMAEntry.h"
 #import "CMAAdBanner.h"
+#import "CMAUtilities.h"
 
 @interface CMASinglePhotoViewController ()
 
@@ -22,7 +23,6 @@
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *actionButton;
 
 @property (strong, nonatomic)CMAAdBanner *adBanner;
-@property (nonatomic)CGSize cellSizeInPoints;
 
 @end
 
@@ -32,11 +32,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
     [self initAdBanner];
-    
-    CGSize screenSize = [[UIApplication sharedApplication] delegate].window.frame.size;
-    self.cellSizeInPoints = CGSizeMake(screenSize.width, screenSize.width);
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -88,13 +84,14 @@
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     CMASinglePhotoCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"imageCell" forIndexPath:indexPath];
-    UIImage *img = [(CMAImage *)[self.imagesArray objectAtIndex:indexPath.item] image];
+    UIImage *img = [(CMAImage *)[self.imagesArray objectAtIndex:indexPath.item] fullImage];
+    [cell.imageView setContentMode:UIViewContentModeScaleAspectFit];
     [cell.imageView setImage:img];
     return cell;
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
-    return self.cellSizeInPoints;
+    return self.collectionView.frame.size;
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {

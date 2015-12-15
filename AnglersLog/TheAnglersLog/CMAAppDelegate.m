@@ -26,6 +26,7 @@
     [[CMAStorageManager sharedManager] loadJournal];
     [self initAppearances];
     
+    //NSLog(@"%@", [[CMAStorageManager sharedManager] documentsDirectory].path);
     //[[CMAStorageManager sharedManager] deleteAllObjectsForEntityName:CDE_WEATHER_DATA];
     //[[CMAStorageManager sharedManager] debugCoreDataObjects];
     

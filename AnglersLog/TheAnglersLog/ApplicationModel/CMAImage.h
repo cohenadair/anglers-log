@@ -18,6 +18,7 @@
 @property (strong, nonatomic)CMAEntry *entry;
 @property (strong, nonatomic)CMABait *bait;
 
+@property (strong, nonatomic)UIImage *fullImage;
 @property (strong, nonatomic)UIImage *image;
 @property (strong, nonatomic)UIImage *tableCellImage;
 @property (strong, nonatomic)UIImage *galleryCellImage;
@@ -27,6 +28,8 @@
 
 - (void)saveWithImage:(UIImage *)anImage andFileName:(NSString *)aFileName;
 - (void)saveWithIndex:(NSInteger)anIndex;
+
+- (void)initImage;
 
 // accessing
 - (NSString *)localImagePath;

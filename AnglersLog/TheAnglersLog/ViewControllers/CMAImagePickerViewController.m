@@ -20,7 +20,7 @@
 
 - (id)init {
     if (self = [super init]) {
-        [self setAllowsEditing:YES];
+        
     }
     
     return self;

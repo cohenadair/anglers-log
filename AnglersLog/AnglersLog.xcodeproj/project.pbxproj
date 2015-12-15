@@ -141,6 +141,7 @@
 		0D8F84A21A6EC2D900AABAEA /* SWRevealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D8F84941A6EC2D900AABAEA /* SWRevealViewController.m */; settings = {COMPILER_FLAGS = "-w"; }; };
 		0D8F84A31A6EC2D900AABAEA /* XYPieChart.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D8F84971A6EC2D900AABAEA /* XYPieChart.m */; };
 		0D9B76101A76C4C100553177 /* CMAUserDefineObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D9B760F1A76C4C100553177 /* CMAUserDefineObject.m */; };
+		0DC5ABD01C1F894B0047587E /* UIImage+ResizeMagick.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DC5ABCF1C1F894B0047587E /* UIImage+ResizeMagick.m */; };
 		0DC75FDD1A9AEDCE0045030C /* CMASinglePhotoCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DC75FDC1A9AEDCE0045030C /* CMASinglePhotoCollectionViewCell.m */; };
 		0DCAD63A1AA37D160040B03B /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DCAD6391AA37D160040B03B /* ImageIO.framework */; };
 		0DCAD63C1AA37D230040B03B /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DCAD63B1AA37D230040B03B /* MobileCoreServices.framework */; };
@@ -385,6 +386,8 @@
 		0D8F84A41A6EC31500AABAEA /* TheAnglersLog.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = TheAnglersLog.entitlements; path = TheAnglersLog/TheAnglersLog.entitlements; sourceTree = SOURCE_ROOT; };
 		0D9B760E1A76C4C100553177 /* CMAUserDefineObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMAUserDefineObject.h; sourceTree = "<group>"; };
 		0D9B760F1A76C4C100553177 /* CMAUserDefineObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CMAUserDefineObject.m; sourceTree = "<group>"; };
+		0DC5ABCE1C1F894B0047587E /* UIImage+ResizeMagick.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+ResizeMagick.h"; sourceTree = "<group>"; };
+		0DC5ABCF1C1F894B0047587E /* UIImage+ResizeMagick.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+ResizeMagick.m"; sourceTree = "<group>"; };
 		0DC75FDB1A9AEDCE0045030C /* CMASinglePhotoCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMASinglePhotoCollectionViewCell.h; path = CustomViews/CMASinglePhotoCollectionViewCell.h; sourceTree = "<group>"; };
 		0DC75FDC1A9AEDCE0045030C /* CMASinglePhotoCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMASinglePhotoCollectionViewCell.m; path = CustomViews/CMASinglePhotoCollectionViewCell.m; sourceTree = "<group>"; };
 		0DC75FE61A9BD9090045030C /* TheAnglersLog 4.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "TheAnglersLog 4.xcdatamodel"; sourceTree = "<group>"; };
@@ -740,6 +743,15 @@
 			path = TheAnglersLog/Libraries/XYPieChart;
 			sourceTree = SOURCE_ROOT;
 		};
+		0DC5ABCD1C1F892D0047587E /* ResizeMagick */ = {
+			isa = PBXGroup;
+			children = (
+				0DC5ABCE1C1F894B0047587E /* UIImage+ResizeMagick.h */,
+				0DC5ABCF1C1F894B0047587E /* UIImage+ResizeMagick.m */,
+			);
+			name = ResizeMagick;
+			sourceTree = "<group>";
+		};
 		E70B636919D3A8E400DFBA85 = {
 			isa = PBXGroup;
 			children = (
@@ -895,6 +907,7 @@
 		E7C29D0C1A143A1600015B42 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				0DC5ABCD1C1F892D0047587E /* ResizeMagick */,
 				0D128FA31AD5D73B0004CABE /* SSZipArchive */,
 				0D8F847B1A6EC2D900AABAEA /* AFNetworking */,
 				0D8F848F1A6EC2D900AABAEA /* OWMWeatherAPI */,
@@ -1112,6 +1125,7 @@
 				0D8F84A01A6EC2D900AABAEA /* AFURLSessionManager.m in Sources */,
 				0D8F83DF1A6EC25200AABAEA /* CMAEntrySortingViewController.m in Sources */,
 				0D128FB41AD5D7490004CABE /* SSZipArchive.m in Sources */,
+				0DC5ABD01C1F894B0047587E /* UIImage+ResizeMagick.m in Sources */,
 				0D8F83E31A6EC25200AABAEA /* CMAAddLocationViewController.m in Sources */,
 				0D8F84991A6EC2D900AABAEA /* AFHTTPRequestOperationManager.m in Sources */,
 				0D8F83DC1A6EC25200AABAEA /* CMAStatisticsViewController.m in Sources */,

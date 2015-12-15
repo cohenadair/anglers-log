@@ -44,6 +44,11 @@
 
 #define kNumberOfSectionsWithoutDelete 2
 
+#define kSectionPhoto 1
+#define kRowPhoto 0
+
+#define kImageViewSize 100
+
 @implementation CMAAddBaitViewController
 
 #pragma mark - Global Accessing
@@ -108,6 +113,13 @@
     return 44;
 }
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.section == kSectionPhoto && indexPath.row == kRowPhoto)
+        [self presentViewController:self.cameraActionSheet animated:YES completion:nil];
+    
+    NSLog(@"Tapped");
+}
+
 - (void)initTableView {
     if (self.isEditingBait) {
         // name
@@ -139,7 +151,7 @@
     if (self.imageData)
         [self.imageView setImage:[self.imageData image]];
 
-    [self.cameraImageButton myInit:self action:@selector(tapCameraButton)];
+    [self.cameraImageButton myInit:self action:NULL];
 }
 
 #pragma mark - Text View Initializing
@@ -167,17 +179,19 @@
 }
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
-    UIImage *chosenImage = info[UIImagePickerControllerEditedImage];
+    UIImage *chosenImage = info[UIImagePickerControllerOriginalImage];
     
     // remove old image if there was one
     if (self.imageData)
         [[CMAStorageManager sharedManager] deleteManagedObject:self.imageData saveContext:YES];
     
+    UIImage *scaledImage = [CMAUtilities scaleImageToScreenSize:chosenImage];
+    
     CMAImage *img = [[CMAStorageManager sharedManager] managedImage];
-    [img setImage:chosenImage];
+    [img setFullImage:scaledImage];
     [self setImageData:img];
     [self setSaveImageToCameraRoll:(picker.sourceType == UIImagePickerControllerSourceTypeCamera)];
-    [self.imageView setImage:chosenImage];
+    [self.imageView setImage:[CMAUtilities imageWithImage:scaledImage scaledToSize:CGSizeMake(kImageViewSize, kImageViewSize)]];
     [self.tableView beginUpdates];
     [self.tableView endUpdates];
     
@@ -302,7 +316,7 @@
         [aBait.imageData saveWithIndex:0];
         
         if (self.saveImageToCameraRoll)
-            UIImageWriteToSavedPhotosAlbum([self.imageData image], nil, nil, nil);
+            UIImageWriteToSavedPhotosAlbum([self.imageData fullImage], nil, nil, nil);
     } else
         [aBait setImageData:nil];
     
@@ -313,10 +327,6 @@
 
 - (IBAction)tapDeleteBaitButton:(UIButton *)sender {
     [self.deleteBaitActionSheet showInViewController:self];
-}
-
-- (void)tapCameraButton {
-    [self presentViewController:self.cameraActionSheet animated:YES completion:nil];
 }
 
 - (IBAction)clickedDoneButton:(UIBarButtonItem *)sender {
