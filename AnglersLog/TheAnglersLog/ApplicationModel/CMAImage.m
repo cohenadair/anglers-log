@@ -38,39 +38,15 @@
 
 // Done in a background thread upon startup.
 - (void)initProperties {
-    [self initUIImages];
+    [self initThumbnails];
 }
 
-- (void)initUIImages {
-    __block NSString *imagePath = [self.imagePath copy];
-    
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^ {
-        [self initFullImageFromPath:imagePath];
-        [self initImage];
-        [self initTableCellImage];
-        [self initGalleryCellImage];
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            
-        });
-    });
+- (void)initThumbnails {
+    [self initThumbnailsWithImage:self.fullImage];
 }
 
-- (void)initFullImageFromPath:(NSString *)aPath {
-    // DO NOT use UIImage's imageWithContentsOfFile. It keeps the file open so it can't be overridden (i.e. can't be edited).
-    _fullImage = [UIImage imageWithData:[NSData dataWithContentsOfFile:aPath]];
-}
-
-- (void)initImage {
-    CGSize screenSize = [CMAUtilities screenSize];
-    _image = [CMAUtilities imageWithImage:self.fullImage scaledToSize:CGSizeMake(screenSize.width, screenSize.width)];
-}
-
-- (void)initTableCellImage {
-    _tableCellImage = [CMAUtilities imageWithImage:self.image scaledToSize:CGSizeMake(TABLE_THUMB_SIZE, TABLE_THUMB_SIZE)];
-}
-
-- (void)initGalleryCellImage {
+- (void)initThumbnailsWithImage:(UIImage *)image {
+    _tableCellImage = [CMAUtilities imageWithImage:image scaledToSize:CGSizeMake(TABLE_THUMB_SIZE, TABLE_THUMB_SIZE)];
     _galleryCellImage = [CMAUtilities imageWithImage:self.tableCellImage scaledToSize:[CMAUtilities galleryCellSize]];
 }
 
@@ -96,10 +72,7 @@
     });
 
     self.imagePath = imagePath; // stored path has to be relative, not absolute (iOS8 changes UUID every run)
-    self.fullImage = anImage;
-    [self initImage];
-    [self initTableCellImage];
-    [self initGalleryCellImage];
+    [self initThumbnailsWithImage:anImage];
 }
 
 // This method should only be called when adding an image to the journal (ex. adding an entry or bait).
@@ -136,28 +109,16 @@
     return [self primitiveValueForKey:@"imagePath"];
 }
 
+- (UIImage *)fullImage {
+    if (_fullImage)
+        return _fullImage;
+    
+    return [UIImage imageWithData:[NSData dataWithContentsOfFile:self.imagePath]];
+}
+
 - (UIImage *)image {
-    if (_image)
-        return _image;
-    
-    [self initImage];
-    return _image;
-}
-
-- (UIImage *)tableCellImage {
-    if (_tableCellImage)
-        return _tableCellImage;
-    
-    [self initTableCellImage];
-    return _tableCellImage;
-}
-
-- (UIImage *)galleryCellImage {
-    if (_galleryCellImage)
-        return _galleryCellImage;
-    
-    [self initGalleryCellImage];
-    return _galleryCellImage;
+    CGSize screenSize = [CMAUtilities screenSize];
+    return [CMAUtilities imageWithImage:self.fullImage scaledToSize:CGSizeMake(screenSize.width, screenSize.width)];
 }
 
 #pragma mark - Visiting

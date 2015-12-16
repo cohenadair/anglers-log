@@ -29,8 +29,6 @@
 - (void)saveWithImage:(UIImage *)anImage andFileName:(NSString *)aFileName;
 - (void)saveWithIndex:(NSInteger)anIndex;
 
-- (void)initImage;
-
 // accessing
 - (NSString *)localImagePath;
 
