@@ -29,9 +29,12 @@
         <item name="android:windowContentOverlay">@null</item>
     </style>
 
-    <!-- Button Bars -->
+    <!-- Buttons -->
     <style name="Widget.ButtonBar" parent="@android:style/DeviceDefault.ButtonBar">
         <item name="android:background">@android:color/white</item>
+    </style>
+
+    <style name="Button.Borderless" parent="@android:style/Widget.DeviceDefault.Button.Borderless">
     </style>
 
     <!-- RecyclerView LinearLayout -->
