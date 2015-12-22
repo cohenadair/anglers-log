@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -46,8 +45,6 @@ public class ManageFragment extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_manage, container, false);
         setHasOptionsMenu(true);
-
-        Log.d("ManageFragment", "onCreateView() called.");
 
         if (mNoTitle && getDialog() != null)
             getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);

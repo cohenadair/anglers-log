@@ -19,5 +19,4 @@ public abstract class MasterFragment extends Fragment {
     public LayoutSpecActivity getRealActivity() {
         return (LayoutSpecActivity)getActivity();
     }
-
 }

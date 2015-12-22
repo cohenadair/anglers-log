@@ -155,6 +155,8 @@ public class LayoutSpec {
      */
     public void updateViews(LayoutSpecActivity activity) {
         mMasterAdapter = mListener.onGetMasterAdapter();
+        mMasterAdapter.notifyDataSetChanged();
+
         mMasterFragment.update(activity);
         mDetailFragment.update(activity);
     }
