@@ -260,7 +260,7 @@ public class ManagePrimitiveFragment extends DialogFragment {
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
                     if (mNameEditText.isFocused())
-                        mPrimitiveSpec.getListener().onEditItem(mId, new UserDefineObject(s.toString()));
+                        mPrimitiveSpec.getListener().onEditItem(mId, new UserDefineObject(s.toString(), mId));
                 }
 
                 @Override

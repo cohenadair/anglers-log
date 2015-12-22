@@ -22,6 +22,11 @@ public class UserDefineObject {
         mName = name;
     }
 
+    public UserDefineObject(String name, UUID id) {
+        mId = id;
+        mName = name;
+    }
+
     public UserDefineObject(UserDefineObject obj) {
         initFromObj(obj, false);
     }

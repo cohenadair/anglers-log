@@ -68,7 +68,7 @@ public class PrimitiveSpecManager {
 
             @Override
             public void onEditItem(UUID id, UserDefineObject newObj) {
-                Logbook.editSpecies(id, new Species(newObj));
+                Logbook.editSpecies(id, new Species(newObj, true));
             }
         });
     }
@@ -98,7 +98,7 @@ public class PrimitiveSpecManager {
 
             @Override
             public void onEditItem(UUID id, UserDefineObject newObj) {
-                Logbook.editBaitCategory(id, new BaitCategory(newObj));
+                Logbook.editBaitCategory(id, new BaitCategory(newObj, true));
             }
         });
     }
