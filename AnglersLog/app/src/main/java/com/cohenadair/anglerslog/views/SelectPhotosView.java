@@ -77,20 +77,15 @@ public class SelectPhotosView extends LinearLayout {
         mCameraButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                new AlertDialog.Builder(getContext())
-                        .setPositiveButton(R.string.button_cancel, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.cancel();
-                            }
-                        })
-                        .setItems(R.array.add_photo_options, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                openPhotoIntent(which);
-                            }
-                        })
-                        .show();
+                showPhotoOptions();
+            }
+        });
+
+        LinearLayout titleView = (LinearLayout)findViewById(R.id.title_view);
+        titleView.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showPhotoOptions();
             }
         });
 
@@ -189,10 +184,8 @@ public class SelectPhotosView extends LinearLayout {
 
         // manage max photos
         if (mMaxPhotos != -1)
-            if (mPhotosWrapper.getChildCount() >= mMaxPhotos) {
-                mCameraButton.setEnabled(false);
-                mCameraButton.setImageResource(R.drawable.ic_camera_disabled);
-            }
+            if (mPhotosWrapper.getChildCount() >= mMaxPhotos)
+                disableCamera();
     }
 
     private void removeImage(ImageView img) {
@@ -202,10 +195,8 @@ public class SelectPhotosView extends LinearLayout {
 
         // manage max photos
         if (mMaxPhotos != -1)
-            if (mPhotosWrapper.getChildCount() < mMaxPhotos) {
-                mCameraButton.setEnabled(true);
-                mCameraButton.setImageResource(R.drawable.ic_camera);
-            }
+            if (mPhotosWrapper.getChildCount() < mMaxPhotos)
+                enableCamera();
     }
 
     private void updateImageMargins() {
@@ -217,6 +208,36 @@ public class SelectPhotosView extends LinearLayout {
 
     private boolean canTakePicture(Intent intent) {
         return (mPrivatePhotoFile != null) && (intent.resolveActivity(getContext().getPackageManager()) != null);
+    }
+
+    private void enableCamera() {
+        mCameraButton.setEnabled(true);
+        mCameraButton.setImageResource(R.drawable.ic_camera);
+    }
+
+    private void disableCamera() {
+        mCameraButton.setEnabled(false);
+        mCameraButton.setImageResource(R.drawable.ic_camera_disabled);
+    }
+
+    private void showPhotoOptions() {
+        if (!mCameraButton.isEnabled())
+            return;
+
+        new AlertDialog.Builder(getContext())
+                .setPositiveButton(R.string.button_cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                })
+                .setItems(R.array.add_photo_options, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        openPhotoIntent(which);
+                    }
+                })
+                .show();
     }
 
 }
