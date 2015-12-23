@@ -29,16 +29,9 @@
         android:gravity="end">
 
         <Button
-            style="@style/Button.Borderless"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/button_cancel"
-            android:id="@+id/cancel_button"/>
-
-        <Button
-            style="@style/Button.Borderless"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/Button.BorderlessColored"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:text="@string/button_save"
             android:id="@+id/confirm_button"/>
     </LinearLayout>

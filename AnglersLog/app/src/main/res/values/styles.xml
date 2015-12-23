@@ -37,6 +37,14 @@
     <style name="Button.Borderless" parent="@android:style/Widget.DeviceDefault.Button.Borderless">
     </style>
 
+    <style name="Button.BorderlessMedium" parent="@android:style/Widget.DeviceDefault.Button.Borderless">
+        <item name="android:textSize">@dimen/font_medium</item>
+    </style>
+
+    <style name="Button.BorderlessColored" parent="@style/Button.BorderlessMedium">
+        <item name="android:background">@drawable/button_borderless</item>
+    </style>
+
     <!-- RecyclerView LinearLayout -->
     <style name="recycler_layout">
         <item name="android:paddingLeft">@dimen/spacing_medium</item>

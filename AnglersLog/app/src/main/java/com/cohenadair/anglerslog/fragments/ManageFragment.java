@@ -49,15 +49,6 @@ public class ManageFragment extends DialogFragment {
         if (mNoTitle && getDialog() != null)
             getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
 
-        Button cancelButton = (Button)view.findViewById(R.id.cancel_button);
-        cancelButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mCallbacks.onManageDismiss(closeDialog());
-                mContentFragment.onDismiss();
-            }
-        });
-
         Button saveButton = (Button)view.findViewById(R.id.confirm_button);
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
