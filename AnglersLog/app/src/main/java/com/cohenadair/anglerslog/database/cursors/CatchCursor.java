@@ -27,18 +27,24 @@ public class CatchCursor extends UserDefineCursor {
         String speciesId = getString(getColumnIndex(CatchTable.Columns.SPECIES_ID));
         String baitId = getString(getColumnIndex(CatchTable.Columns.BAIT_ID));
         String fishingSpotId = getString(getColumnIndex(CatchTable.Columns.FISHING_SPOT_ID));
+        String waterClarityId = getString(getColumnIndex(CatchTable.Columns.CLARITY_ID));
+        int catchResult = getInt(getColumnIndex(CatchTable.Columns.CATCH_RESULT));
         int isFavorite = getInt(getColumnIndex(CatchTable.Columns.IS_FAVORITE));
 
         Catch aCatch = new Catch(getObject(), true);
         aCatch.setDate(new Date(date));
         aCatch.setIsFavorite(isFavorite == 1);
         aCatch.setSpecies(Logbook.getSpecies(UUID.fromString(speciesId)));
+        aCatch.setCatchResult(Catch.CatchResult.fromInt(catchResult));
 
         if (baitId != null)
             aCatch.setBait(Logbook.getBait(UUID.fromString(baitId)));
 
         if (fishingSpotId != null)
             aCatch.setFishingSpot(Logbook.getFishingSpot(UUID.fromString(fishingSpotId)));
+
+        if (waterClarityId != null)
+            aCatch.setWaterClarity(Logbook.getWaterClarity(UUID.fromString(waterClarityId)));
 
         return aCatch;
     }

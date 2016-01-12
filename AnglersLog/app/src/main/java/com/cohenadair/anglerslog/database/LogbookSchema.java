@@ -27,6 +27,8 @@ public class LogbookSchema {
             public static final String IS_FAVORITE = "isFavorite";
             public static final String BAIT_ID = "baitId";
             public static final String FISHING_SPOT_ID = "fishingSpotId";
+            public static final String CLARITY_ID = "waterClarityId";
+            public static final String CATCH_RESULT = "catchResult";
         }
     }
 
@@ -88,6 +90,18 @@ public class LogbookSchema {
 
     public static final class BaitPhotoTable extends PhotoTable {
         public static final String NAME = "BaitPhoto";
+    }
+
+    /**
+     * Stores Catch to FishingMethod pairs. There can be multiple fishing methods per catch.
+     */
+    public static final class UsedFishingMethodsTable {
+        public static final String NAME = "UsedFishingMethod";
+
+        public static final class Columns {
+            public static final String CATCH_ID = "catchId";
+            public static final String FISHING_METHOD_ID = "fishingMethodId";
+        }
     }
 
     public static final class WeatherConditionsTable {

@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import com.cohenadair.anglerslog.database.LogbookSchema.SpeciesTable;
 
+import static com.cohenadair.anglerslog.database.LogbookSchema.*;
 import static com.cohenadair.anglerslog.database.LogbookSchema.BaitCategoryTable;
 import static com.cohenadair.anglerslog.database.LogbookSchema.BaitPhotoTable;
 import static com.cohenadair.anglerslog.database.LogbookSchema.BaitTable;
@@ -42,6 +43,7 @@ public class LogbookHelper extends SQLiteOpenHelper {
         createLocationTable(db);
         createFishingSpotTable(db);
         createFishingMethodTable(db);
+        createUsedFishingMethodTable(db);
         createWaterClarityTable(db);
     }
 
@@ -58,6 +60,8 @@ public class LogbookHelper extends SQLiteOpenHelper {
             CatchTable.Columns.SPECIES_ID + " TEXT REFERENCES " + SpeciesTable.NAME + "(" + SpeciesTable.Columns.ID + "), " +
             CatchTable.Columns.BAIT_ID + " TEXT REFERENCES " + BaitTable.NAME + "(" + BaitTable.Columns.ID + "), " +
             CatchTable.Columns.FISHING_SPOT_ID + " TEXT REFERENCES " + FishingSpotTable.NAME + "(" + FishingSpotTable.Columns.ID + "), " +
+            CatchTable.Columns.CLARITY_ID + " TEXT REFERENCES " + WaterClarityTable.NAME + "(" + WaterClarityTable.Columns.ID + "), " +
+            CatchTable.Columns.CATCH_RESULT + " INTEGER, " +
             CatchTable.Columns.IS_FAVORITE + " INTEGER" +
             ")"
         );
@@ -117,6 +121,15 @@ public class LogbookHelper extends SQLiteOpenHelper {
         db.execSQL("CREATE TABLE " + FishingMethodTable.NAME + "(" +
             FishingMethodTable.Columns.ID + " TEXT PRIMARY KEY NOT NULL, " +
             FishingMethodTable.Columns.NAME + " TEXT UNIQUE NOT NULL" +
+            ")"
+        );
+    }
+
+    private void createUsedFishingMethodTable(SQLiteDatabase db) {
+        db.execSQL("CREATE TABLE " + UsedFishingMethodsTable.NAME + "(" +
+            UsedFishingMethodsTable.Columns.CATCH_ID + " TEXT NOT NULL, " +
+            UsedFishingMethodsTable.Columns.FISHING_METHOD_ID + " TEXT NOT NULL REFERENCES " + FishingMethodTable.NAME + "(" + FishingMethodTable.Columns.ID + "), " +
+            "UNIQUE(" + UsedFishingMethodsTable.Columns.CATCH_ID + ", " + UsedFishingMethodsTable.Columns.FISHING_METHOD_ID + ")" +
             ")"
         );
     }

@@ -9,11 +9,14 @@ import android.support.annotation.NonNull;
 import com.cohenadair.anglerslog.database.cursors.BaitCursor;
 import com.cohenadair.anglerslog.database.cursors.CatchCursor;
 import com.cohenadair.anglerslog.database.cursors.UserDefineCursor;
+import com.cohenadair.anglerslog.model.Logbook;
+import com.cohenadair.anglerslog.model.user_defines.FishingMethod;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 
 import java.util.ArrayList;
 import java.util.UUID;
 
+import static com.cohenadair.anglerslog.database.LogbookSchema.*;
 import static com.cohenadair.anglerslog.database.LogbookSchema.BaitTable;
 import static com.cohenadair.anglerslog.database.LogbookSchema.CatchTable;
 import static com.cohenadair.anglerslog.database.LogbookSchema.PhotoTable;
@@ -39,6 +42,19 @@ public class QueryHelper {
 
     public static void setDatabase(SQLiteDatabase database) {
         mDatabase = database;
+    }
+
+    /**
+     * A simple single column query.
+     *
+     * @param table The table to query.
+     * @param column The column to query.
+     * @param whereClause The where conditions.
+     * @param args The where conditions arguments.
+     * @return A Cursor of the query.
+     */
+    public static Cursor simpleQuery(String table, String column, String whereClause, String[] args) {
+        return mDatabase.query(table, new String[] { column }, whereClause, args, null, null, null);
     }
 
     @NonNull
@@ -105,9 +121,9 @@ public class QueryHelper {
         Cursor cursor;
 
         if (id != null)
-            cursor = mDatabase.query(table, new String[] { PhotoTable.Columns.NAME }, PhotoTable.Columns.USER_DEFINE_ID + " = ?", new String[]{ id.toString() }, null, null, null);
+            cursor = simpleQuery(table, PhotoTable.Columns.NAME, PhotoTable.Columns.USER_DEFINE_ID + " = ?", new String[] { id.toString() });
         else
-            cursor = mDatabase.query(table, new String[] { PhotoTable.Columns.NAME }, null, null, null, null, null);
+            cursor = simpleQuery(table, PhotoTable.Columns.NAME, null, null);
 
         if (cursor.moveToFirst())
             while (!cursor.isAfterLast()) {
@@ -117,6 +133,34 @@ public class QueryHelper {
 
         cursor.close();
         return photos;
+    }
+
+    /**
+     * Get all the {@link FishingMethod} objects associated with the given
+     * {@link com.cohenadair.anglerslog.model.user_defines.Catch} id.
+     *
+     * @param catchId The UUID of the {@link com.cohenadair.anglerslog.model.user_defines.Catch} to look for.
+     * @return An ArrayList of {@link FishingMethod} objects.
+     */
+    public static ArrayList<FishingMethod> queryUsedFishingMethod(UUID catchId) {
+        ArrayList<FishingMethod> methods = new ArrayList<>();
+
+        Cursor cursor = simpleQuery(
+                UsedFishingMethodsTable.NAME,
+                UsedFishingMethodsTable.Columns.FISHING_METHOD_ID,
+                UsedFishingMethodsTable.Columns.CATCH_ID + " = ?",
+                new String[] { catchId.toString() }
+        );
+
+        if (cursor.moveToFirst())
+            while (!cursor.isAfterLast()) {
+                UUID methodId = UUID.fromString(cursor.getString(cursor.getColumnIndex(UsedFishingMethodsTable.Columns.FISHING_METHOD_ID)));
+                methods.add(Logbook.getFishingMethod(methodId));
+                cursor.moveToNext();
+            }
+
+        cursor.close();
+        return methods;
     }
 
     public static ArrayList<UserDefineObject> queryUserDefines(UserDefineCursor cursor, UserDefineQueryInterface callbacks) {
