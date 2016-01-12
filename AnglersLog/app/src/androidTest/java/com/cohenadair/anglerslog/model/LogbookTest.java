@@ -8,10 +8,12 @@ import com.cohenadair.anglerslog.database.LogbookHelper;
 import com.cohenadair.anglerslog.model.user_defines.Bait;
 import com.cohenadair.anglerslog.model.user_defines.BaitCategory;
 import com.cohenadair.anglerslog.model.user_defines.Catch;
+import com.cohenadair.anglerslog.model.user_defines.FishingMethod;
 import com.cohenadair.anglerslog.model.user_defines.FishingSpot;
 import com.cohenadair.anglerslog.model.user_defines.Location;
 import com.cohenadair.anglerslog.model.user_defines.Species;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
+import com.cohenadair.anglerslog.model.user_defines.WaterClarity;
 
 import org.junit.After;
 import org.junit.Before;
@@ -276,5 +278,69 @@ public class LogbookTest {
         Logbook.addLocation(loc1);
         ArrayList<UserDefineObject> locs = Logbook.getLocations();
         assertTrue(locs.size() == 2);
+    }
+
+    @Test
+    public void testWaterClarity() {
+        WaterClarity charity0 = new WaterClarity("Clear");
+        WaterClarity charity1 = new WaterClarity("Chocolate Milk");
+        WaterClarity charity2 = new WaterClarity(charity1, true);
+        charity2.setName("Crystal");
+
+        // add
+        assertTrue(Logbook.addWaterClarity(charity1));
+        assertFalse(Logbook.addWaterClarity(charity1));
+        assertTrue(Logbook.getWaterClarityCount() == 1);
+
+        // edit
+        assertTrue(Logbook.editWaterClarity(charity1.getId(), charity2));
+        assertTrue(Logbook.getWaterClarity(charity1.getId()) != null);
+
+        // get single
+        WaterClarity charity3 = Logbook.getWaterClarity(charity1.getId());
+        assertTrue(charity3.getId().equals(charity2.getId()));
+        assertTrue(charity3.getName().equals(charity2.getName()));
+
+        // delete
+        assertTrue(Logbook.removeWaterClarity(charity1.getId()));
+        assertTrue(Logbook.getWaterClarityCount() == 0);
+
+        // get multiple
+        Logbook.addWaterClarity(charity0);
+        Logbook.addWaterClarity(charity1);
+        ArrayList<UserDefineObject> clarities = Logbook.getWaterClarities();
+        assertTrue(clarities.size() == 2);
+    }
+
+    @Test
+    public void testFishingMethod() {
+        FishingMethod method0 = new FishingMethod("Drifting");
+        FishingMethod method1 = new FishingMethod("Trolling");
+        FishingMethod method2 = new FishingMethod(method1, true);
+        method2.setName("Fly");
+
+        // add
+        assertTrue(Logbook.addFishingMethod(method1));
+        assertFalse(Logbook.addFishingMethod(method1));
+        assertTrue(Logbook.getFishingMethodCount() == 1);
+
+        // edit
+        assertTrue(Logbook.editFishingMethod(method1.getId(), method2));
+        assertTrue(Logbook.getFishingMethod(method1.getId()) != null);
+
+        // get single
+        FishingMethod method3 = Logbook.getFishingMethod(method1.getId());
+        assertTrue(method3.getId().equals(method2.getId()));
+        assertTrue(method3.getName().equals(method2.getName()));
+
+        // delete
+        assertTrue(Logbook.removeFishingMethod(method1.getId()));
+        assertTrue(Logbook.getFishingMethodCount() == 0);
+
+        // get multiple
+        Logbook.addFishingMethod(method0);
+        Logbook.addFishingMethod(method1);
+        ArrayList<UserDefineObject> methods = Logbook.getFishingMethods();
+        assertTrue(methods.size() == 2);
     }
 }

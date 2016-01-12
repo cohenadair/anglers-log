@@ -6,11 +6,15 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import com.cohenadair.anglerslog.database.LogbookSchema.SpeciesTable;
 
-import static com.cohenadair.anglerslog.database.LogbookSchema.*;
 import static com.cohenadair.anglerslog.database.LogbookSchema.BaitCategoryTable;
 import static com.cohenadair.anglerslog.database.LogbookSchema.BaitPhotoTable;
 import static com.cohenadair.anglerslog.database.LogbookSchema.BaitTable;
+import static com.cohenadair.anglerslog.database.LogbookSchema.CatchPhotoTable;
+import static com.cohenadair.anglerslog.database.LogbookSchema.CatchTable;
+import static com.cohenadair.anglerslog.database.LogbookSchema.FishingMethodTable;
+import static com.cohenadair.anglerslog.database.LogbookSchema.FishingSpotTable;
 import static com.cohenadair.anglerslog.database.LogbookSchema.LocationTable;
+import static com.cohenadair.anglerslog.database.LogbookSchema.WaterClarityTable;
 
 /**
  * The LogbookHelper is a {@link SQLiteOpenHelper} subclass that interacts with the application's
@@ -37,6 +41,8 @@ public class LogbookHelper extends SQLiteOpenHelper {
         createPhotoTables(db);
         createLocationTable(db);
         createFishingSpotTable(db);
+        createFishingMethodTable(db);
+        createWaterClarityTable(db);
     }
 
     @Override
@@ -103,6 +109,22 @@ public class LogbookHelper extends SQLiteOpenHelper {
             FishingSpotTable.Columns.LATITUDE + " REAL," +
             FishingSpotTable.Columns.LONGITUDE + " REAL, " +
             "UNIQUE(" + FishingSpotTable.Columns.NAME + ", " + FishingSpotTable.Columns.LOCATION_ID + ")" +
+            ")"
+        );
+    }
+
+    private void createFishingMethodTable(SQLiteDatabase db) {
+        db.execSQL("CREATE TABLE " + FishingMethodTable.NAME + "(" +
+            FishingMethodTable.Columns.ID + " TEXT PRIMARY KEY NOT NULL, " +
+            FishingMethodTable.Columns.NAME + " TEXT UNIQUE NOT NULL" +
+            ")"
+        );
+    }
+
+    private void createWaterClarityTable(SQLiteDatabase db) {
+        db.execSQL("CREATE TABLE " + WaterClarityTable.NAME + "(" +
+            WaterClarityTable.Columns.ID + " TEXT PRIMARY KEY NOT NULL, " +
+            WaterClarityTable.Columns.NAME + " TEXT UNIQUE NOT NULL" +
             ")"
         );
     }

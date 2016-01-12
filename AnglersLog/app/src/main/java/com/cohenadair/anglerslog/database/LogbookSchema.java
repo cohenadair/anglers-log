@@ -64,6 +64,14 @@ public class LogbookSchema {
         }
     }
 
+    public static final class WaterClarityTable extends UserDefineTable {
+        public static final String NAME = "WaterClarity";
+    }
+
+    public static final class FishingMethodTable extends UserDefineTable {
+        public static final String NAME = "FishingMethod";
+    }
+
     /**
      * An actual table isn't created here; used as a superclass to specific photo tables.
      */
@@ -80,5 +88,13 @@ public class LogbookSchema {
 
     public static final class BaitPhotoTable extends PhotoTable {
         public static final String NAME = "BaitPhoto";
+    }
+
+    public static final class WeatherConditionsTable {
+        public static final String NAME = "WeatherConditionsTable";
+
+        public static final class Columns {
+            public static final String CATCH_ID = "catchId";
+        }
     }
 }

@@ -11,17 +11,21 @@ import com.cohenadair.anglerslog.database.QueryHelper;
 import com.cohenadair.anglerslog.database.cursors.BaitCategoryCursor;
 import com.cohenadair.anglerslog.database.cursors.BaitCursor;
 import com.cohenadair.anglerslog.database.cursors.CatchCursor;
+import com.cohenadair.anglerslog.database.cursors.FishingMethodCursor;
 import com.cohenadair.anglerslog.database.cursors.FishingSpotCursor;
 import com.cohenadair.anglerslog.database.cursors.LocationCursor;
 import com.cohenadair.anglerslog.database.cursors.SpeciesCursor;
 import com.cohenadair.anglerslog.database.cursors.UserDefineCursor;
+import com.cohenadair.anglerslog.database.cursors.WaterClarityCursor;
 import com.cohenadair.anglerslog.model.user_defines.Bait;
 import com.cohenadair.anglerslog.model.user_defines.BaitCategory;
 import com.cohenadair.anglerslog.model.user_defines.Catch;
+import com.cohenadair.anglerslog.model.user_defines.FishingMethod;
 import com.cohenadair.anglerslog.model.user_defines.FishingSpot;
 import com.cohenadair.anglerslog.model.user_defines.Location;
 import com.cohenadair.anglerslog.model.user_defines.Species;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
+import com.cohenadair.anglerslog.model.user_defines.WaterClarity;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -31,9 +35,11 @@ import static com.cohenadair.anglerslog.database.LogbookSchema.BaitCategoryTable
 import static com.cohenadair.anglerslog.database.LogbookSchema.BaitTable;
 import static com.cohenadair.anglerslog.database.LogbookSchema.CatchPhotoTable;
 import static com.cohenadair.anglerslog.database.LogbookSchema.CatchTable;
+import static com.cohenadair.anglerslog.database.LogbookSchema.FishingMethodTable;
 import static com.cohenadair.anglerslog.database.LogbookSchema.FishingSpotTable;
 import static com.cohenadair.anglerslog.database.LogbookSchema.LocationTable;
 import static com.cohenadair.anglerslog.database.LogbookSchema.SpeciesTable;
+import static com.cohenadair.anglerslog.database.LogbookSchema.WaterClarityTable;
 
 /**
  * The Logbook class is a monostate class storing all of the user's log data.
@@ -363,6 +369,82 @@ public class Logbook {
 
     public static int getLocationCount() {
         return QueryHelper.queryCount(LocationTable.NAME);
+    }
+    //endregion
+
+    //region WaterClarity Manipulation
+    public static ArrayList<UserDefineObject> getWaterClarities() {
+        return QueryHelper.queryUserDefines(QueryHelper.queryUserDefines(WaterClarityTable.NAME, null, null), new QueryHelper.UserDefineQueryInterface() {
+            @Override
+            public UserDefineObject getObject(UserDefineCursor cursor) {
+                return new WaterClarityCursor(cursor).getWaterClarity();
+            }
+        });
+    }
+
+    public static WaterClarity getWaterClarity(UUID id) {
+        UserDefineObject obj = QueryHelper.queryUserDefine(WaterClarityTable.NAME, id, new QueryHelper.UserDefineQueryInterface() {
+            @Override
+            public UserDefineObject getObject(UserDefineCursor cursor) {
+                return new WaterClarityCursor(cursor).getWaterClarity();
+            }
+        });
+
+        return (obj == null) ? null : (WaterClarity)obj;
+    }
+
+    public static boolean addWaterClarity(WaterClarity clarity) {
+        return QueryHelper.insertQuery(WaterClarityTable.NAME, clarity.getContentValues());
+    }
+
+    public static boolean removeWaterClarity(UUID id) {
+        return QueryHelper.deleteUserDefine(WaterClarityTable.NAME, id);
+    }
+
+    public static boolean editWaterClarity(UUID id, WaterClarity newClarity) {
+        return QueryHelper.updateUserDefine(WaterClarityTable.NAME, newClarity.getContentValues(), id);
+    }
+
+    public static int getWaterClarityCount() {
+        return QueryHelper.queryCount(WaterClarityTable.NAME);
+    }
+    //endregion
+
+    //region FishingMethod Manipulation
+    public static ArrayList<UserDefineObject> getFishingMethods() {
+        return QueryHelper.queryUserDefines(QueryHelper.queryUserDefines(FishingMethodTable.NAME, null, null), new QueryHelper.UserDefineQueryInterface() {
+            @Override
+            public UserDefineObject getObject(UserDefineCursor cursor) {
+                return new FishingMethodCursor(cursor).getFishingMethod();
+            }
+        });
+    }
+
+    public static FishingMethod getFishingMethod(UUID id) {
+        UserDefineObject obj = QueryHelper.queryUserDefine(FishingMethodTable.NAME, id, new QueryHelper.UserDefineQueryInterface() {
+            @Override
+            public UserDefineObject getObject(UserDefineCursor cursor) {
+                return new FishingMethodCursor(cursor).getFishingMethod();
+            }
+        });
+
+        return (obj == null) ? null : (FishingMethod)obj;
+    }
+
+    public static boolean addFishingMethod(FishingMethod method) {
+        return QueryHelper.insertQuery(FishingMethodTable.NAME, method.getContentValues());
+    }
+
+    public static boolean removeFishingMethod(UUID id) {
+        return QueryHelper.deleteUserDefine(FishingMethodTable.NAME, id);
+    }
+
+    public static boolean editFishingMethod(UUID id, FishingMethod newFishingMethod) {
+        return QueryHelper.updateUserDefine(FishingMethodTable.NAME, newFishingMethod.getContentValues(), id);
+    }
+
+    public static int getFishingMethodCount() {
+        return QueryHelper.queryCount(FishingMethodTable.NAME);
     }
     //endregion
 }
