@@ -32,6 +32,7 @@ public class FishingSpot extends UserDefineObject {
         super(fishingSpot, keepId);
         mLatitude = fishingSpot.getLatitude();
         mLongitude = fishingSpot.getLongitude();
+        mLocationId = fishingSpot.getLocationId();
     }
 
     public FishingSpot(UserDefineObject obj) {

@@ -23,7 +23,9 @@
             android:id="@+id/title_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/margin_default"
+            android:layout_marginLeft="@dimen/margin_default"
+            android:layout_marginRight="@dimen/margin_default"
+            android:layout_marginTop="@dimen/margin_default"
             custom:titleText="@string/species"
             custom:subtitleText="@string/date"
             custom:titleStyle="@style/TextView.Large"
@@ -35,6 +37,7 @@
             android:id="@+id/title_catch_details"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_default"
             android:layout_marginBottom="@dimen/margin_default"
             android:text="@string/catch_details"/>
 

@@ -113,6 +113,18 @@ public class CatchFragment extends DetailFragment {
             updateFishingMethodsView();
             updateWaterClarityView();
             updateResultView();
+
+            // hide catch details title if needed
+            if (mCatch.getBait() == null && mCatch.getFishingSpot() == null && mCatch.getFishingMethods().size() <= 0)
+                mCatchDetails.setVisibility(View.GONE);
+
+            // hide fish details title if needed
+            if (mCatch.getCatchResult() == null)
+                mFishDetails.setVisibility(View.GONE);
+
+            // hide water conditions title if needed
+            if (mCatch.getWaterClarity() == null)
+                mWaterConditions.setVisibility(View.GONE);
         }
     }
 
