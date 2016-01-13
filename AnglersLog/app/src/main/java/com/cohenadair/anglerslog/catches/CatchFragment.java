@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.activities.DetailFragmentActivity;
@@ -14,9 +15,12 @@ import com.cohenadair.anglerslog.activities.PhotoViewerActivity;
 import com.cohenadair.anglerslog.fragments.DetailFragment;
 import com.cohenadair.anglerslog.model.Logbook;
 import com.cohenadair.anglerslog.model.user_defines.Catch;
+import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import com.cohenadair.anglerslog.utilities.LayoutSpecManager;
+import com.cohenadair.anglerslog.utilities.UserDefineArrays;
 import com.cohenadair.anglerslog.utilities.Utils;
 import com.cohenadair.anglerslog.views.ImageScrollView;
+import com.cohenadair.anglerslog.views.PropertyDetailView;
 import com.cohenadair.anglerslog.views.TitleSubTitleView;
 
 import java.util.ArrayList;
@@ -36,8 +40,13 @@ public class CatchFragment extends DetailFragment {
     private LinearLayout mBaitLayout;
     private TitleSubTitleView mLocationView;
     private TitleSubTitleView mBaitView;
-    private ImageButton mLocationInfoButton;
-    private ImageButton mBaitInfoButton;
+    private PropertyDetailView mFishingMethodsView;
+    private PropertyDetailView mWaterClarityView;
+    private PropertyDetailView mResultView;
+
+    private TextView mCatchDetails;
+    private TextView mFishDetails;
+    private TextView mWaterConditions;
 
     public CatchFragment() {
         // Required empty public constructor
@@ -62,6 +71,13 @@ public class CatchFragment extends DetailFragment {
         initBaitLayout(view);
 
         mTitleView = (TitleSubTitleView)view.findViewById(R.id.title_view);
+        mFishingMethodsView = (PropertyDetailView)view.findViewById(R.id.fishing_methods_view);
+        mWaterClarityView = (PropertyDetailView)view.findViewById(R.id.water_clarity_view);
+        mResultView = (PropertyDetailView)view.findViewById(R.id.catch_result_view);
+
+        mCatchDetails = (TextView)view.findViewById(R.id.title_catch_details);
+        mFishDetails = (TextView)view.findViewById(R.id.title_fish_details);
+        mWaterConditions = (TextView)view.findViewById(R.id.title_water_conditions);
 
         update(getActivity());
 
@@ -74,36 +90,69 @@ public class CatchFragment extends DetailFragment {
         if (!isAttached())
             return;
 
+        // if there are not catches, there is nothing to display
+        // this really only applies to the two-pane view
         if (Logbook.getCatchCount() <= 0) {
-            mTitleView.setVisibility(View.GONE);
-        } else {
-            setItemId(id);
-            mCatch = Logbook.getCatch(id);
+            View container = getView();
+            if (container != null)
+                container.setVisibility(View.GONE);
 
-            if (mCatch != null) {
-                mCatchPhotos = mCatch.getPhotos();
-
-                mImageScrollView.setImages(mCatchPhotos);
-                mTitleView.setTitle(mCatch.getSpeciesAsString());
-                mTitleView.setSubtitle(mCatch.getDateTimeAsString());
-
-                mBaitLayout.setVisibility((mCatch.getBait() != null) ? View.VISIBLE : View.GONE);
-                if (mCatch.getBait() != null)
-                    mBaitView.setSubtitle(mCatch.getBaitAsString());
-
-                mLocationLayout.setVisibility((mCatch.getFishingSpot() != null) ? View.VISIBLE : View.GONE);
-                if (mCatch.getFishingSpot() != null)
-                    mLocationView.setSubtitle(mCatch.getFishingSpotAsString());
-            }
+            return;
         }
+
+        setItemId(id);
+        mCatch = Logbook.getCatch(id);
+
+        if (mCatch != null) {
+            mCatchPhotos = mCatch.getPhotos();
+            mImageScrollView.setImages(mCatchPhotos);
+
+            updateTitleView();
+            updateBaitView();
+            updateLocationView();
+            updateFishingMethodsView();
+            updateWaterClarityView();
+            updateResultView();
+        }
+    }
+
+    private void updateTitleView() {
+        mTitleView.setTitle(mCatch.getSpeciesAsString());
+        mTitleView.setSubtitle(mCatch.getDateTimeAsString());
+    }
+
+    private void updateBaitView() {
+        Utils.toggleVisibility(mBaitLayout, mCatch.getBait() != null);
+        mBaitView.setSubtitle(mCatch.getBaitAsString());
+    }
+
+    private void updateLocationView() {
+        Utils.toggleVisibility(mLocationLayout, mCatch.getFishingSpot() != null);
+        mLocationView.setSubtitle(mCatch.getFishingSpotAsString());
+    }
+
+    private void updateFishingMethodsView() {
+        ArrayList<UserDefineObject> fishingMethods = mCatch.getFishingMethods();
+        Utils.toggleVisibility(mFishingMethodsView, fishingMethods.size() > 0);
+        mFishingMethodsView.setDetail(UserDefineArrays.namesAsString(fishingMethods));
+    }
+
+    private void updateWaterClarityView() {
+        Utils.toggleVisibility(mWaterClarityView, mCatch.getWaterClarity() != null);
+        mWaterClarityView.setDetail(mCatch.getWaterClarityAsString());
+    }
+
+    private void updateResultView() {
+        Utils.toggleVisibility(mResultView, mCatch.getCatchResult() != null);
+        mResultView.setDetail(mCatch.getCatchResultAsString(getContext()));
     }
 
     private void initLocationLayout(View view) {
         mLocationLayout = (LinearLayout)view.findViewById(R.id.location_layout);
         mLocationView =(TitleSubTitleView)view.findViewById(R.id.location_view);
 
-        mLocationInfoButton = (ImageButton)view.findViewById(R.id.location_info_button);
-        mLocationInfoButton.setOnClickListener(new View.OnClickListener() {
+        ImageButton locationInfoButton = (ImageButton)view.findViewById(R.id.location_info_button);
+        locationInfoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startDetailActivity(LayoutSpecManager.LAYOUT_LOCATIONS, mCatch.getFishingSpot().getId());
@@ -115,8 +164,8 @@ public class CatchFragment extends DetailFragment {
         mBaitLayout = (LinearLayout)view.findViewById(R.id.bait_layout);
         mBaitView =(TitleSubTitleView)view.findViewById(R.id.bait_view);
 
-        mBaitInfoButton = (ImageButton)view.findViewById(R.id.bait_info_button);
-        mBaitInfoButton.setOnClickListener(new View.OnClickListener() {
+        ImageButton baitIntoButton = (ImageButton)view.findViewById(R.id.bait_info_button);
+        baitIntoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startDetailActivity(LayoutSpecManager.LAYOUT_BAITS, mCatch.getBait().getId());

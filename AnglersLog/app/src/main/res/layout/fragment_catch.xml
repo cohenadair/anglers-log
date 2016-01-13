@@ -6,16 +6,19 @@
 
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/container"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+        <!-- Images -->
         <com.cohenadair.anglerslog.views.ImageScrollView
             android:id="@+id/image_scroll_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"/>
 
+        <!-- Species & Date -->
         <com.cohenadair.anglerslog.views.TitleSubTitleView
             android:id="@+id/title_view"
             android:layout_width="match_parent"
@@ -26,17 +29,23 @@
             custom:titleStyle="@style/TextView.Large"
             custom:subtitleStyle="@style/TextView.MediumSubtitle"/>
 
+        <!-- Catch Details -->
         <TextView
             style="?android:listSeparatorTextViewStyle"
+            android:id="@+id/title_catch_details"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_default"
             android:text="@string/catch_details"/>
 
+        <!-- Location -->
         <LinearLayout
             android:id="@+id/location_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/margin_default"
+            android:layout_marginLeft="@dimen/margin_default"
+            android:layout_marginRight="@dimen/margin_default"
+            android:layout_marginBottom="@dimen/margin_default"
             android:orientation="horizontal">
 
             <com.cohenadair.anglerslog.views.TitleSubTitleView
@@ -59,6 +68,7 @@
 
         </LinearLayout>
 
+        <!-- Bait -->
         <LinearLayout
             android:id="@+id/bait_layout"
             android:layout_width="match_parent"
@@ -87,6 +97,47 @@
                 android:contentDescription="@string/bait_description"/>
 
         </LinearLayout>
+
+        <!-- Fishing Methods -->
+        <com.cohenadair.anglerslog.views.PropertyDetailView
+            android:id="@+id/fishing_methods_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            custom:propertyName="@string/methods"/>
+
+        <!-- Fish Details -->
+        <TextView
+            style="?android:listSeparatorTextViewStyle"
+            android:id="@+id/title_fish_details"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_default"
+            android:layout_marginBottom="@dimen/margin_default"
+            android:text="@string/fish_details"/>
+
+        <!-- Result -->
+        <com.cohenadair.anglerslog.views.PropertyDetailView
+            android:id="@+id/catch_result_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            custom:propertyName="@string/result"/>
+
+        <!-- Water Conditions -->
+        <TextView
+            style="?android:listSeparatorTextViewStyle"
+            android:id="@+id/title_water_conditions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_default"
+            android:layout_marginBottom="@dimen/margin_default"
+            android:text="@string/water_conditions"/>
+
+        <!-- Water Clarity -->
+        <com.cohenadair.anglerslog.views.PropertyDetailView
+            android:id="@+id/water_clarity_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            custom:propertyName="@string/clarity"/>
 
     </LinearLayout>
 

@@ -1,9 +1,11 @@
 package com.cohenadair.anglerslog.model.user_defines;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.text.format.DateFormat;
 import android.util.Log;
 
+import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.database.QueryHelper;
 import com.cohenadair.anglerslog.utilities.Utils;
 
@@ -56,6 +58,11 @@ public class Catch extends PhotoUserDefineObject {
             }
 
             return null;
+        }
+
+        public String getString(Context context) {
+            String[] arr = context.getResources().getStringArray(R.array.result_types);
+            return arr[value];
         }
     }
 
@@ -216,6 +223,17 @@ public class Catch extends PhotoUserDefineObject {
 
     public String getWaterClarityAsString() {
         return (mWaterClarity != null) ? mWaterClarity.getName() : "";
+    }
+
+    /**
+     * Gets the Catch's CatchResult as a String. A Context is needed to retrieve the String array
+     * resource.
+     *
+     * @param context The context.
+     * @return A String representing the catch result.
+     */
+    public String getCatchResultAsString(Context context) {
+        return (mCatchResult != null) ? mCatchResult.getString(context) : "";
     }
 
     public ContentValues getContentValues() {

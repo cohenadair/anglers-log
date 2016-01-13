@@ -16,7 +16,7 @@
     <string name="species">Species</string>
     <string name="bait">Bait</string>
     <string name="clarity">Clarity</string>
-    <string name="methods">Methods</string>
+    <string name="methods">Fishing Methods</string>
     <string name="result">Result</string>
     <string name="bait_category">Bait Category</string>
     <string name="date">Date</string>
@@ -40,6 +40,7 @@
     <string name="lng">Lng</string>
     <string name="catch_details">Catch Details</string>
     <string name="fish_details">Fish Details</string>
+    <string name="water_conditions">Water Conditions</string>
 
     <string name="drawer_open">Open Navigation Drawer</string>
     <string name="drawer_close">Close Navigation Drawer</string>

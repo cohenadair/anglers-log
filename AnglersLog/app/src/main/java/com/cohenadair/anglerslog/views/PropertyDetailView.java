@@ -56,8 +56,8 @@ public class PropertyDetailView extends LinearLayout {
         return mDetail.getText().toString();
     }
 
-    public void setDetail(String subtitle) {
-        mDetail.setText(subtitle);
+    public void setDetail(String detail) {
+        mDetail.setText(detail);
     }
     //endregion
 }
