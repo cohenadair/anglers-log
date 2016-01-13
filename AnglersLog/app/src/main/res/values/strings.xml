@@ -15,6 +15,9 @@
     <string name="photos">Photos</string>
     <string name="species">Species</string>
     <string name="bait">Bait</string>
+    <string name="clarity">Clarity</string>
+    <string name="methods">Methods</string>
+    <string name="result">Result</string>
     <string name="bait_category">Bait Category</string>
     <string name="date">Date</string>
     <string name="time">Time</string>
@@ -59,6 +62,8 @@
     <string name="species_hint">Tap to add or select species</string>
     <string name="location_hint">Tap to add or select a location</string>
     <string name="category_hint">Tap to add or select a category</string>
+    <string name="methods_hint">Tap to add or select fishing methods</string>
+    <string name="clarity_hint">Tap to add or select a water clarity</string>
     <string name="name_hint">Enter a name</string>
     <string name="bait_hint">Tap to add or select bait</string>
     <string name="color_hint">Enter a color</string>
@@ -72,6 +77,7 @@
 
     <string name="action_edit">Edit</string>
     <string name="action_delete">Delete</string>
+    <string name="action_done">Done</string>
     <string name="action_confirm">Confirm Delete</string>
     <string name="action_close">Close</string>
     <string name="action_add_photo">Add Photo</string>
@@ -133,4 +139,5 @@
     <string name="crosshairs_description">The coordinates of the current fishing spot.</string>
     <string name="location_description">More information about the catch\'s location.</string>
     <string name="bait_description">More information about the catch\'s bait.</string>
+    <string name="check_description">A check that signifies selection.</string>
 </resources>

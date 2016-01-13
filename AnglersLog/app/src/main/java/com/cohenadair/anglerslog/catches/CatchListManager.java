@@ -16,6 +16,7 @@ import com.cohenadair.anglerslog.model.user_defines.Catch;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import com.cohenadair.anglerslog.utilities.ListManager;
 import com.cohenadair.anglerslog.utilities.PhotoUtils;
+import com.cohenadair.anglerslog.utilities.Utils;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -98,7 +99,7 @@ public class CatchListManager {
 
             // hide the separator for the last row
             mSeparator.setVisibility((position == mAdapter.getItemCount() - 1) ? View.INVISIBLE : View.VISIBLE);
-            mView.setBackgroundResource(mCatch.isSelected() ? R.color.light_grey : android.R.color.transparent);
+            Utils.toggleViewSelected(mView, mCatch.getIsSelected());
         }
     }
     //endregion

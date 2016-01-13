@@ -20,6 +20,8 @@ import com.cohenadair.anglerslog.views.SelectionSpinnerView;
 import com.cohenadair.anglerslog.views.TextInputView;
 import com.cohenadair.anglerslog.views.TitleSubTitleView;
 
+import java.util.ArrayList;
+
 /**
  * The ManageBaitFragment is used to add and edit baits.
  */
@@ -136,8 +138,8 @@ public class ManageBaitFragment extends ManageContentFragment {
     private void initCategoryView(View view) {
         final ManagePrimitiveFragment.OnDismissInterface onDismissInterface = new ManagePrimitiveFragment.OnDismissInterface() {
             @Override
-            public void onDismiss(UserDefineObject selectedItem) {
-                getNewBait().setCategory((BaitCategory) selectedItem);
+            public void onDismiss(ArrayList<UserDefineObject> selectedItems) {
+                getNewBait().setCategory((BaitCategory)selectedItems.get(0));
                 mCategoryView.setSubtitle(getNewBait().getCategoryName());
             }
         };
@@ -152,7 +154,7 @@ public class ManageBaitFragment extends ManageContentFragment {
     }
 
     private void showCategoryDialog(ManagePrimitiveFragment.OnDismissInterface onDismissInterface) {
-        ManagePrimitiveFragment fragment = ManagePrimitiveFragment.newInstance(PrimitiveSpecManager.BAIT_CATEGORY);
+        ManagePrimitiveFragment fragment = ManagePrimitiveFragment.newInstance(PrimitiveSpecManager.BAIT_CATEGORY, false);
         fragment.setOnDismissInterface(onDismissInterface);
         fragment.show(getFragmentManager(), "dialog");
     }

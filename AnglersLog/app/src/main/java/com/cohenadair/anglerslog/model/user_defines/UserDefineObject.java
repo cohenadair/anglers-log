@@ -68,7 +68,7 @@ public class UserDefineObject {
         mShouldDelete = shouldDelete;
     }
 
-    public boolean isSelected() {
+    public boolean getIsSelected() {
         return mIsSelected;
     }
 

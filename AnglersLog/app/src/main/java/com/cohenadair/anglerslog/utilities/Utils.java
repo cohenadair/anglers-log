@@ -245,6 +245,7 @@ public class Utils {
     }
 
     @TargetApi(Build.VERSION_CODES.M)
+    @SuppressWarnings("deprecation")
     public static void setTextAppearance(Context context, TextView view, int resId) {
         if (isMinMarshemellow())
             view.setTextAppearance(resId);
@@ -253,4 +254,7 @@ public class Utils {
 
     }
 
+    public static void toggleViewSelected(View view, boolean selected) {
+        view.setBackgroundResource(selected ? R.color.light_grey : android.R.color.transparent);
+    }
 }

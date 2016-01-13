@@ -17,8 +17,9 @@ import static com.cohenadair.anglerslog.database.LogbookSchema.BaitTable;
 public class Bait extends PhotoUserDefineObject {
 
     /**
-     * Correspond to resources array in bait_types.xml.
+     * Correspond to resources array in arrays.xml.
      */
+    // TODO convert to enum (see Catch.java)
     public static final int TYPE_ARTIFICIAL = 0;
     public static final int TYPE_LIVE = 1;
     public static final int TYPE_REAL = 2;

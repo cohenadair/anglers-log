@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
 
@@ -18,11 +20,15 @@ import com.cohenadair.anglerslog.model.Logbook;
 import com.cohenadair.anglerslog.model.user_defines.Catch;
 import com.cohenadair.anglerslog.model.user_defines.Species;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
+import com.cohenadair.anglerslog.model.user_defines.WaterClarity;
 import com.cohenadair.anglerslog.utilities.LayoutSpecManager;
 import com.cohenadair.anglerslog.utilities.PrimitiveSpecManager;
+import com.cohenadair.anglerslog.utilities.UserDefineArrays;
 import com.cohenadair.anglerslog.utilities.Utils;
+import com.cohenadair.anglerslog.views.SelectionSpinnerView;
 import com.cohenadair.anglerslog.views.TitleSubTitleView;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.UUID;
@@ -37,6 +43,14 @@ public class ManageCatchFragment extends ManageContentFragment {
     private TitleSubTitleView mSpeciesView;
     private TitleSubTitleView mLocationView;
     private TitleSubTitleView mBaitView;
+    private TitleSubTitleView mWaterClarityView;
+    private TitleSubTitleView mFishingMethodsView;
+    private SelectionSpinnerView mResultSpinner;
+
+    /**
+     * Used so there is no database interaction until the user saves their changes.
+     */
+    private ArrayList<UserDefineObject> mSelectedFishingMethods;
 
     public ManageCatchFragment() {
         // Required empty public constructor
@@ -55,8 +69,15 @@ public class ManageCatchFragment extends ManageContentFragment {
         initLocationView(view);
         initBaitView(view);
         initSelectPhotosView(view);
+        initWaterClarityView(view);
+        initFishingMethodsView(view);
+        initResultView(view);
 
         initSubclassObject();
+
+        // reset for each time the view is created
+        if (!isEditing())
+            mSelectedFishingMethods = new ArrayList<>();
 
         return view;
     }
@@ -86,7 +107,9 @@ public class ManageCatchFragment extends ManageContentFragment {
 
             @Override
             public UserDefineObject onGetNewEditObject(UserDefineObject oldObject) {
-                return new Catch((Catch)oldObject, true);
+                Catch newCatch = new Catch((Catch)oldObject, true);
+                mSelectedFishingMethods = newCatch.getFishingMethods();
+                return newCatch;
             }
 
             @Override
@@ -104,6 +127,9 @@ public class ManageCatchFragment extends ManageContentFragment {
             return false;
         }
 
+        // update fishing methods
+        getNewCatch().setFishingMethods(mSelectedFishingMethods);
+
         return true;
     }
 
@@ -114,6 +140,8 @@ public class ManageCatchFragment extends ManageContentFragment {
         mSpeciesView.setSubtitle(getNewCatch().getSpeciesAsString());
         mBaitView.setSubtitle(getNewCatch().getBaitAsString());
         mLocationView.setSubtitle(getNewCatch().getFishingSpotAsString());
+        mWaterClarityView.setSubtitle(getNewCatch().getWaterClarityAsString());
+        mFishingMethodsView.setSubtitle(UserDefineArrays.namesAsString(mSelectedFishingMethods));
     }
 
     //region Date & Time
@@ -189,8 +217,8 @@ public class ManageCatchFragment extends ManageContentFragment {
     private void initSpeciesView(View view) {
         final ManagePrimitiveFragment.OnDismissInterface onDismissInterface = new ManagePrimitiveFragment.OnDismissInterface() {
             @Override
-            public void onDismiss(UserDefineObject selectedItem) {
-                getNewCatch().setSpecies((Species) selectedItem);
+            public void onDismiss(ArrayList<UserDefineObject> selectedItems) {
+                getNewCatch().setSpecies((Species)selectedItems.get(0));
                 mSpeciesView.setSubtitle(getNewCatch().getSpeciesAsString());
             }
         };
@@ -199,15 +227,9 @@ public class ManageCatchFragment extends ManageContentFragment {
         mSpeciesView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showSpeciesDialog(onDismissInterface);
+                showPrimitiveDialog(PrimitiveSpecManager.SPECIES, false, onDismissInterface);
             }
         });
-    }
-
-    private void showSpeciesDialog(ManagePrimitiveFragment.OnDismissInterface onDismissInterface) {
-        ManagePrimitiveFragment fragment = ManagePrimitiveFragment.newInstance(PrimitiveSpecManager.SPECIES);
-        fragment.setOnDismissInterface(onDismissInterface);
-        fragment.show(getChildFragmentManager(), "dialog");
     }
 
     private void initLocationView(View view) {
@@ -238,5 +260,70 @@ public class ManageCatchFragment extends ManageContentFragment {
                 });
             }
         });
+    }
+
+    private void initWaterClarityView(View view) {
+        final ManagePrimitiveFragment.OnDismissInterface onDismissInterface = new ManagePrimitiveFragment.OnDismissInterface() {
+            @Override
+            public void onDismiss(ArrayList<UserDefineObject> selectedItems) {
+                getNewCatch().setWaterClarity((WaterClarity)selectedItems.get(0));
+                mWaterClarityView.setSubtitle(getNewCatch().getWaterClarityAsString());
+            }
+        };
+
+        mWaterClarityView = (TitleSubTitleView)view.findViewById(R.id.clarity_layout);
+        mWaterClarityView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showPrimitiveDialog(PrimitiveSpecManager.WATER_CLARITY, false, onDismissInterface);
+            }
+        });
+    }
+
+    private void initFishingMethodsView(View view) {
+        final ManagePrimitiveFragment.OnDismissInterface onDismissInterface = new ManagePrimitiveFragment.OnDismissInterface() {
+            @Override
+            public void onDismiss(ArrayList<UserDefineObject> selectedItems) {
+                mSelectedFishingMethods = selectedItems;
+                mFishingMethodsView.setSubtitle(UserDefineArrays.namesAsString(mSelectedFishingMethods));
+            }
+        };
+
+        mFishingMethodsView = (TitleSubTitleView)view.findViewById(R.id.methods_layout);
+        mFishingMethodsView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showPrimitiveDialog(PrimitiveSpecManager.FISHING_METHODS, true, onDismissInterface);
+            }
+        });
+    }
+
+    private void initResultView(View view) {
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(), R.array.result_types, R.layout.list_item_spinner);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        mResultSpinner = (SelectionSpinnerView)view.findViewById(R.id.result_spinner);
+        mResultSpinner.setAdapter(adapter);
+        mResultSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                getNewCatch().setCatchResult(Catch.CatchResult.fromInt(position));
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+    }
+
+    private void showPrimitiveDialog(int primitiveId, boolean multiple, ManagePrimitiveFragment.OnDismissInterface onDismissInterface) {
+        ManagePrimitiveFragment fragment = ManagePrimitiveFragment.newInstance(primitiveId, multiple);
+
+        if (multiple)
+            fragment.setSelectedObjects(mSelectedFishingMethods);
+
+        fragment.setOnDismissInterface(onDismissInterface);
+        fragment.show(getChildFragmentManager(), "dialog");
     }
 }

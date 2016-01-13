@@ -10,6 +10,7 @@ import com.cohenadair.anglerslog.interfaces.OnClickInterface;
 import com.cohenadair.anglerslog.model.user_defines.Location;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import com.cohenadair.anglerslog.utilities.ListManager;
+import com.cohenadair.anglerslog.utilities.Utils;
 import com.cohenadair.anglerslog.views.TitleSubTitleView;
 
 import java.util.ArrayList;
@@ -45,7 +46,7 @@ public class LocationListManager {
 
             // hide the separator for the last row
             mSeparator.setVisibility((position == mAdapter.getItemCount() - 1) ? View.INVISIBLE : View.VISIBLE);
-            mView.setBackgroundResource(location.isSelected() ? R.color.light_grey : android.R.color.transparent);
+            Utils.toggleViewSelected(mView, location.getIsSelected());
         }
     }
     //endregion

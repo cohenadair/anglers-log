@@ -22,9 +22,11 @@ import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import com.cohenadair.anglerslog.utilities.PrimitiveSpec;
 import com.cohenadair.anglerslog.utilities.PrimitiveSpecManager;
+import com.cohenadair.anglerslog.utilities.UserDefineArrays;
 import com.cohenadair.anglerslog.utilities.Utils;
 import com.cohenadair.anglerslog.utilities.WrappedLinearLayoutManager;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -40,6 +42,9 @@ public class ManagePrimitiveFragment extends DialogFragment {
     private Toolbar mToolbar;
     private OnDismissInterface mOnDismissInterface;
     private PrimitiveSpec mPrimitiveSpec;
+    private boolean mCanSelectMultiple;
+
+    private ArrayList<UserDefineObject> mSelectedObjects = new ArrayList<>();
 
     /**
      * Different "management" types for this fragment. Used to display different list item layotus.
@@ -54,20 +59,22 @@ public class ManagePrimitiveFragment extends DialogFragment {
      * OnDismissInterface must be implemented by any view utilizing a ManagePrimitiveFragment.
      */
     public interface OnDismissInterface {
-        void onDismiss(UserDefineObject selectedItem);
+        void onDismiss(ArrayList<UserDefineObject> selectedItems);
     }
 
     /**
      * Used to keep fragment state through attach/detach.
      */
     private static final String ARG_PRIMITIVE_ID = "arg_primitive_id";
+    private static final String ARG_ALLOW_MULTIPLE = "arg_allow_multiple";
 
-    public static ManagePrimitiveFragment newInstance(int primitiveId) {
+    public static ManagePrimitiveFragment newInstance(int primitiveId, boolean allowMultipleSelection) {
         ManagePrimitiveFragment fragment = new ManagePrimitiveFragment();
 
         // add primitive id to bundle so save through orientation changes
         Bundle args = new Bundle();
-        args.putInt(ManagePrimitiveFragment.ARG_PRIMITIVE_ID, primitiveId);
+        args.putInt(ARG_PRIMITIVE_ID, primitiveId);
+        args.putBoolean(ARG_ALLOW_MULTIPLE, allowMultipleSelection);
 
         fragment.setArguments(args);
         return fragment;
@@ -81,6 +88,12 @@ public class ManagePrimitiveFragment extends DialogFragment {
     public void setOnDismissInterface(OnDismissInterface onDismissInterface) {
         mOnDismissInterface = onDismissInterface;
     }
+
+    public void setSelectedObjects(ArrayList<UserDefineObject> selectedObjects) {
+        mSelectedObjects = selectedObjects;
+        if (mSelectedObjects == null)
+            mSelectedObjects = new ArrayList<>();
+    }
     //endregion
 
     @Override
@@ -88,6 +101,7 @@ public class ManagePrimitiveFragment extends DialogFragment {
         View view = inflater.inflate(R.layout.fragment_manage_primitive, container, false);
 
         mPrimitiveSpec = PrimitiveSpecManager.getSpec(getArguments().getInt(ARG_PRIMITIVE_ID));
+        mCanSelectMultiple = getArguments().getBoolean(ARG_ALLOW_MULTIPLE);
 
         initViews(view);
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -96,6 +110,15 @@ public class ManagePrimitiveFragment extends DialogFragment {
         getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
         return view;
+    }
+
+    public void dismissFragment() {
+        // reset should delete if the delete selection was never confirmed
+        for (UserDefineObject obj : mPrimitiveSpec.getItems())
+            obj.setShouldDelete(false);
+
+        mOnDismissInterface.onDismiss(mSelectedObjects);
+        getDialog().dismiss();
     }
 
     //region View Initialization
@@ -178,6 +201,20 @@ public class ManagePrimitiveFragment extends DialogFragment {
                 return false;
             }
         });
+
+        // add the menu check mark when multiple selection is allowed
+        if (mCanSelectMultiple) {
+            MenuItem done = mToolbar.getMenu().add(R.string.action_done);
+            done.setIcon(R.drawable.ic_check);
+            done.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+            done.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem item) {
+                    dismissFragment();
+                    return true;
+                }
+            });
+        }
     }
 
     /**
@@ -223,12 +260,14 @@ public class ManagePrimitiveFragment extends DialogFragment {
         private TextView mNameTextView;
         private CheckBox mDeleteCheckBox;
         private ManageType mManageType;
+        private View mView;
 
         public ManagePrimitiveHolder(View view, ManageType manageType, ManagePrimitiveAdapter adapter) {
             super(view);
             view.setOnClickListener(this);
             mManageType = manageType;
             mAdapter = adapter;
+            mView = view;
 
             if (mManageType == ManageType.Edit)
                 initForEditing(view);
@@ -242,17 +281,26 @@ public class ManagePrimitiveFragment extends DialogFragment {
 
         @Override
         public void onClick(View view) {
-            // reset should delete if the delete selection was never confirmed
-            for (UserDefineObject obj : mPrimitiveSpec.getItems())
-                obj.setShouldDelete(false);
+            UserDefineObject selected = mPrimitiveSpec.getListener().onClickItem(mId);
 
-            mOnDismissInterface.onDismiss(mPrimitiveSpec.getListener().onClickItem(mId));
-            getDialog().dismiss();
+            if (mCanSelectMultiple) {
+                boolean alreadySelected = UserDefineArrays.hasObjectNamed(mSelectedObjects, selected.getName());
+
+                if (alreadySelected)
+                    mSelectedObjects = UserDefineArrays.removeObjectNamed(mSelectedObjects, selected.getName());
+                else
+                    mSelectedObjects.add(selected);
+
+                toggleSelected(!alreadySelected);
+            } else {
+                mSelectedObjects.add(selected);
+                dismissFragment();
+            }
         }
 
         //region View Initialization
         private void initForEditing(View view) {
-            mNameEditText = (EditText) view.findViewById(R.id.name_edit_text);
+            mNameEditText = (EditText)view.findViewById(R.id.name_edit_text);
             mNameEditText.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
@@ -289,6 +337,11 @@ public class ManagePrimitiveFragment extends DialogFragment {
         }
         //endregion
 
+        private void toggleSelected(boolean select) {
+            mNameTextView.setCompoundDrawablesWithIntrinsicBounds(0, 0, select ? R.drawable.ic_check : 0, 0);
+            Utils.toggleViewSelected(mView, select);
+        }
+
         //region Getters & Setters
         public void setId(UUID id) {
             mId = id;
@@ -298,12 +351,13 @@ public class ManagePrimitiveFragment extends DialogFragment {
             mPosition = position;
         }
 
-        public EditText getNameEditText() {
-            return mNameEditText;
+        public void setEditText(String text) {
+            mNameEditText.setText(text);
         }
 
-        public TextView getNameTextView() {
-            return mNameTextView;
+        public void setNameText(String text) {
+            mNameTextView.setText(text);
+            toggleSelected(UserDefineArrays.hasObjectNamed(mSelectedObjects, text));
         }
 
         public CheckBox getDeleteCheckBox() {
@@ -343,10 +397,10 @@ public class ManagePrimitiveFragment extends DialogFragment {
             holder.setPosition(position);
 
             if (mManageType == ManageType.Edit)
-                holder.getNameEditText().setText(obj.getName());
+                holder.setEditText(obj.getName());
 
             if (mManageType == ManageType.Selection || mManageType == ManageType.Delete)
-                holder.getNameTextView().setText(obj.getName());
+                holder.setNameText(obj.getName());
 
             if (mManageType == ManageType.Delete)
                 holder.getDeleteCheckBox().setChecked(obj.getShouldDelete());
@@ -362,7 +416,7 @@ public class ManagePrimitiveFragment extends DialogFragment {
         }
 
         /**
-         * Iterates through all the species and removes ones where getShouldDelete() returns true.
+         * Iterates through all the user defines and removes ones where getShouldDelete() returns true.
          */
         public void cleanUp() {
             for (int i = mItems.size() - 1; i >= 0; i--)

@@ -8,6 +8,7 @@ import com.cohenadair.anglerslog.database.LogbookHelper;
 import com.cohenadair.anglerslog.model.user_defines.Catch;
 import com.cohenadair.anglerslog.model.user_defines.FishingMethod;
 import com.cohenadair.anglerslog.model.user_defines.Species;
+import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 
 import org.junit.After;
 import org.junit.Before;
@@ -65,13 +66,13 @@ public class CatchTest {
             Logbook.addFishingMethod(m);
 
         // initial methods
-        ArrayList<FishingMethod> methods1 = new ArrayList<>();
+        ArrayList<UserDefineObject> methods1 = new ArrayList<>();
         methods1.add(methods0.get(0));
         methods1.add(methods0.get(1));
         methods1.add(methods0.get(2));
 
         // replacement methods for editing/resetting
-        ArrayList<FishingMethod> methods2 = new ArrayList<>();
+        ArrayList<UserDefineObject> methods2 = new ArrayList<>();
         methods2.add(methods0.get(3));
         methods2.add(methods0.get(4));
         methods2.add(methods0.get(5));

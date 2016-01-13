@@ -14,6 +14,7 @@ import com.cohenadair.anglerslog.model.user_defines.BaitCategory;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import com.cohenadair.anglerslog.utilities.ListManager;
 import com.cohenadair.anglerslog.utilities.PhotoUtils;
+import com.cohenadair.anglerslog.utilities.Utils;
 import com.cohenadair.anglerslog.views.TitleSubTitleView;
 
 import java.io.File;
@@ -70,7 +71,7 @@ public class BaitListManager {
 
             // hide the separator for the last row
             mSeparator.setVisibility((position == mAdapter.getItemCount() - 1) ? View.INVISIBLE : View.VISIBLE);
-            mView.setBackgroundResource(bait.isSelected() ? R.color.light_grey : android.R.color.transparent);
+            Utils.toggleViewSelected(mView, bait.getIsSelected());
         }
 
         public void setBaitCategory(BaitCategory category) {

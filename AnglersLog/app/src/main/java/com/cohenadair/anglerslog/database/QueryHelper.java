@@ -142,8 +142,8 @@ public class QueryHelper {
      * @param catchId The UUID of the {@link com.cohenadair.anglerslog.model.user_defines.Catch} to look for.
      * @return An ArrayList of {@link FishingMethod} objects.
      */
-    public static ArrayList<FishingMethod> queryUsedFishingMethod(UUID catchId) {
-        ArrayList<FishingMethod> methods = new ArrayList<>();
+    public static ArrayList<UserDefineObject> queryUsedFishingMethod(UUID catchId) {
+        ArrayList<UserDefineObject> methods = new ArrayList<>();
 
         Cursor cursor = simpleQuery(
                 UsedFishingMethodsTable.NAME,

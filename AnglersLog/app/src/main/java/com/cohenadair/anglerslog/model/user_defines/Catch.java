@@ -31,7 +31,8 @@ public class Catch extends PhotoUserDefineObject {
     private CatchResult mCatchResult = CatchResult.RELEASED;
 
     /**
-     * Represents what was done after a catch was made.
+     * Represents what was done after a catch was made. Values correspond to the catch results
+     * array in arrays.xml.
      */
     public enum CatchResult {
         RELEASED(0), KEPT(1);
@@ -151,18 +152,18 @@ public class Catch extends PhotoUserDefineObject {
     //endregion
 
     //region Fishing Method Manipulation
-    public ArrayList<FishingMethod> getFishingMethods() {
+    public ArrayList<UserDefineObject> getFishingMethods() {
         return QueryHelper.queryUsedFishingMethod(getId());
     }
 
-    public void setFishingMethods(ArrayList<FishingMethod> fishingMethods) {
+    public void setFishingMethods(ArrayList<UserDefineObject> fishingMethods) {
         deleteFishingMethods();
         addFishingMethods(fishingMethods);
     }
 
-    private void addFishingMethods(ArrayList<FishingMethod> fishingMethods) {
-        for (FishingMethod method : fishingMethods)
-            if (!QueryHelper.insertQuery(UsedFishingMethodsTable.NAME, getUsedFishingMethodContentValues(method)))
+    private void addFishingMethods(ArrayList<UserDefineObject> fishingMethods) {
+        for (UserDefineObject method : fishingMethods)
+            if (!QueryHelper.insertQuery(UsedFishingMethodsTable.NAME, getUsedFishingMethodContentValues((FishingMethod)method)))
                 Log.e(TAG, "Error adding FishingMethod to database.");
     }
 
@@ -213,6 +214,10 @@ public class Catch extends PhotoUserDefineObject {
         return (mFishingSpot != null) ? mFishingSpot.getLocationName() + " - " + mFishingSpot.getName() : "";
     }
 
+    public String getWaterClarityAsString() {
+        return (mWaterClarity != null) ? mWaterClarity.getName() : "";
+    }
+
     public ContentValues getContentValues() {
         ContentValues values = super.getContentValues();
 
@@ -231,19 +236,5 @@ public class Catch extends PhotoUserDefineObject {
             values.put(CatchTable.Columns.CLARITY_ID, mWaterClarity.idAsString());
 
         return values;
-    }
-
-    /**
-     * Creates a concatenated String of this Catch's fishing methods.
-     * @return A concatenated String.
-     */
-    private String fishingMethodsAsString() {
-        ArrayList<FishingMethod> methods = getFishingMethods();
-        String str = "";
-
-        for (int i = 0; i < methods.size() - 1; i++)
-            str += methods.get(i).getName() + ",";
-
-        return str + methods.get(methods.size() - 1).getName();
     }
 }

@@ -5,8 +5,10 @@ import android.support.annotation.Nullable;
 
 import com.cohenadair.anglerslog.model.Logbook;
 import com.cohenadair.anglerslog.model.user_defines.BaitCategory;
+import com.cohenadair.anglerslog.model.user_defines.FishingMethod;
 import com.cohenadair.anglerslog.model.user_defines.Species;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
+import com.cohenadair.anglerslog.model.user_defines.WaterClarity;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -21,6 +23,8 @@ public class PrimitiveSpecManager {
 
     public static final int SPECIES = 0;
     public static final int BAIT_CATEGORY = 1;
+    public static final int WATER_CLARITY = 2;
+    public static final int FISHING_METHODS = 3;
 
     // force singleton
     private PrimitiveSpecManager() { }
@@ -38,6 +42,12 @@ public class PrimitiveSpecManager {
 
             case BAIT_CATEGORY:
                 return getBaitCategorySpec();
+
+            case WATER_CLARITY:
+                return getWaterClaritySpec();
+
+            case FISHING_METHODS:
+                return getFishingMethodSpec();
         }
 
         return null;
@@ -99,6 +109,66 @@ public class PrimitiveSpecManager {
             @Override
             public void onEditItem(UUID id, UserDefineObject newObj) {
                 Logbook.editBaitCategory(id, new BaitCategory(newObj, true));
+            }
+        });
+    }
+
+    @NonNull
+    private static PrimitiveSpec getWaterClaritySpec() {
+        return new PrimitiveSpec("water clarity", new PrimitiveSpec.InteractionListener() {
+            @Override
+            public ArrayList<UserDefineObject> onGetItems() {
+                return Logbook.getWaterClarities();
+            }
+
+            @Override
+            public UserDefineObject onClickItem(UUID id) {
+                return Logbook.getWaterClarity(id);
+            }
+
+            @Override
+            public boolean onAddItem(String name) {
+                return Logbook.addWaterClarity(new WaterClarity(name));
+            }
+
+            @Override
+            public boolean onRemoveItem(UUID id) {
+                return Logbook.removeWaterClarity(id);
+            }
+
+            @Override
+            public void onEditItem(UUID id, UserDefineObject newObj) {
+                Logbook.editWaterClarity(id, new WaterClarity(newObj, true));
+            }
+        });
+    }
+
+    @NonNull
+    private static PrimitiveSpec getFishingMethodSpec() {
+        return new PrimitiveSpec("fishing method", new PrimitiveSpec.InteractionListener() {
+            @Override
+            public ArrayList<UserDefineObject> onGetItems() {
+                return Logbook.getFishingMethods();
+            }
+
+            @Override
+            public UserDefineObject onClickItem(UUID id) {
+                return Logbook.getFishingMethod(id);
+            }
+
+            @Override
+            public boolean onAddItem(String name) {
+                return Logbook.addFishingMethod(new FishingMethod(name));
+            }
+
+            @Override
+            public boolean onRemoveItem(UUID id) {
+                return Logbook.removeFishingMethod(id);
+            }
+
+            @Override
+            public void onEditItem(UUID id, UserDefineObject newObj) {
+                Logbook.editFishingMethod(id, new FishingMethod(newObj, true));
             }
         });
     }

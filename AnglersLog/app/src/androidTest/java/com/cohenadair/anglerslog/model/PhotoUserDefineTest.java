@@ -22,7 +22,7 @@ import static android.support.test.InstrumentationRegistry.getTargetContext;
 import static org.junit.Assert.assertTrue;
 
 /**
- * Tests for the {@link com.cohenadair.anglerslog.model.user_defines.Catch} class.
+ * Tests for the {@link PhotoUserDefineTest} class.
  * Created by Cohen Adair on 2015-11-04.
  */
 @RunWith(AndroidJUnit4.class)

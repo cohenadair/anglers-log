@@ -83,5 +83,38 @@
 
         <include layout="@layout/view_divider"/>
 
+        <!-- Water Clarity -->
+        <com.cohenadair.anglerslog.views.TitleSubTitleView
+            android:id="@+id/clarity_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_default"
+            custom:titleText="@string/clarity"
+            custom:subtitleHint="@string/clarity_hint"
+            custom:titleStyle="@style/TextView.Header"/>
+
+        <include layout="@layout/view_divider"/>
+
+        <!-- Fishing Methods -->
+        <com.cohenadair.anglerslog.views.TitleSubTitleView
+            android:id="@+id/methods_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_default"
+            custom:titleText="@string/methods"
+            custom:subtitleHint="@string/methods_hint"
+            custom:titleStyle="@style/TextView.Header"/>
+
+        <include layout="@layout/view_divider"/>
+
+        <!-- Result -->
+        <com.cohenadair.anglerslog.views.SelectionSpinnerView
+            android:id="@+id/result_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            custom:titleText="@string/result"/>
+
+        <include layout="@layout/view_divider"/>
+
     </LinearLayout>
 </ScrollView>
