@@ -45,6 +45,7 @@ public class LogbookHelper extends SQLiteOpenHelper {
         createFishingMethodTable(db);
         createUsedFishingMethodTable(db);
         createWaterClarityTable(db);
+        createWeatherTable(db);
     }
 
     @Override
@@ -152,6 +153,16 @@ public class LogbookHelper extends SQLiteOpenHelper {
         db.execSQL("CREATE TABLE " + BaitPhotoTable.NAME + "(" +
             BaitPhotoTable.Columns.USER_DEFINE_ID + " TEXT, " +
             BaitPhotoTable.Columns.NAME + " TEXT NOT NULL" +
+            ")"
+        );
+    }
+
+    public void createWeatherTable(SQLiteDatabase db) {
+        db.execSQL("CREATE TABLE " + WeatherTable.NAME + "(" +
+            WeatherTable.Columns.CATCH_ID + " TEXT PRIMARY KEY NOT NULL, " +
+            WeatherTable.Columns.TEMPERATURE + " INTEGER NOT NULL, " +
+            WeatherTable.Columns.WIND_SPEED + " INTEGER NOT NULL, " +
+            WeatherTable.Columns.SKY_CONDITIONS + " TEXT NOT NULL" +
             ")"
         );
     }

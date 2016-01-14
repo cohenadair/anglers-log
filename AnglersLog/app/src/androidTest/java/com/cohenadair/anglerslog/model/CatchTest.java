@@ -86,4 +86,23 @@ public class CatchTest {
         mTestCatch.setFishingMethods(methods2);
         assertTrue(mTestCatch.getFishingMethods().size() == 4);
     }
+
+    @Test
+    public void testWeather() {
+        Weather weather0 = new Weather(15, 10, "Cloudy");
+        Weather weather1 = new Weather(0, 50, "Snow");
+
+        // setting from null
+        mTestCatch.setWeather(weather0);
+        assertTrue(mTestCatch.getWeather() != null);
+        assertTrue(mTestCatch.getWeather().getTemperature() == 15);
+
+        // replacing
+        mTestCatch.setWeather(weather1);
+        assertTrue(mTestCatch.getWeather().getTemperature() == 0);
+
+        // deleting
+        mTestCatch.deleteWeather();
+        assertTrue(mTestCatch.getWeather() == null);
+    }
 }

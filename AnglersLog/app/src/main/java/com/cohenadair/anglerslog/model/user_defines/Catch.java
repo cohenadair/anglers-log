@@ -16,6 +16,7 @@ import java.util.Date;
 import static com.cohenadair.anglerslog.database.LogbookSchema.CatchPhotoTable;
 import static com.cohenadair.anglerslog.database.LogbookSchema.CatchTable;
 import static com.cohenadair.anglerslog.database.LogbookSchema.UsedFishingMethodsTable;
+import static com.cohenadair.anglerslog.database.LogbookSchema.WeatherTable;
 
 /**
  * The Catch class stores relative information for a single fishing catch.
@@ -32,7 +33,6 @@ public class Catch extends PhotoUserDefineObject {
     private FishingSpot mFishingSpot;
     private WaterClarity mWaterClarity;
     private CatchResult mCatchResult = CatchResult.RELEASED;
-    private Weather mWeather;
 
     /**
      * Represents what was done after a catch was made. Values correspond to the catch results
@@ -158,14 +158,6 @@ public class Catch extends PhotoUserDefineObject {
     public void setCatchResult(CatchResult catchResult) {
         mCatchResult = catchResult;
     }
-
-    public Weather getWeather() {
-        return mWeather;
-    }
-
-    public void setWeather(Weather weather) {
-        mWeather = weather;
-    }
     //endregion
 
     //region Fishing Method Manipulation
@@ -199,6 +191,20 @@ public class Catch extends PhotoUserDefineObject {
         values.put(UsedFishingMethodsTable.Columns.FISHING_METHOD_ID, method.idAsString());
 
         return values;
+    }
+    //endregion
+
+    //region Weather Manipulation
+    public Weather getWeather() {
+        return QueryHelper.queryWeather(getId());
+    }
+
+    public boolean setWeather(Weather weather) {
+        return QueryHelper.replaceQuery(WeatherTable.NAME, weather.getContentValues(getId()));
+    }
+
+    public boolean deleteWeather() {
+        return QueryHelper.deleteQuery(WeatherTable.NAME, WeatherTable.Columns.CATCH_ID + " = ?", new String[] { idAsString() });
     }
     //endregion
 

@@ -5,11 +5,14 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.cohenadair.anglerslog.database.cursors.BaitCursor;
 import com.cohenadair.anglerslog.database.cursors.CatchCursor;
 import com.cohenadair.anglerslog.database.cursors.UserDefineCursor;
+import com.cohenadair.anglerslog.database.cursors.WeatherCursor;
 import com.cohenadair.anglerslog.model.Logbook;
+import com.cohenadair.anglerslog.model.Weather;
 import com.cohenadair.anglerslog.model.user_defines.FishingMethod;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 
@@ -77,6 +80,79 @@ public class QueryHelper {
         return new UserDefineCursor(mDatabase.query(table, null, whereClause, args, null, null, UserDefineTable.Columns.NAME));
     }
 
+    public static ArrayList<UserDefineObject> queryUserDefines(UserDefineCursor cursor, UserDefineQueryInterface callbacks) {
+        ArrayList<UserDefineObject> objs = new ArrayList<>();
+
+        if (cursor.moveToFirst())
+            while (!cursor.isAfterLast()) {
+                objs.add((callbacks == null) ? cursor.getObject() : callbacks.getObject(cursor));
+                cursor.moveToNext();
+            }
+
+        cursor.close();
+        return objs;
+    }
+
+    public static UserDefineObject queryUserDefine(String table, UUID id, UserDefineQueryInterface callbacks) {
+        UserDefineObject obj = null;
+        UserDefineCursor cursor = queryUserDefines(table, UserDefineTable.Columns.ID + " = ?", new String[]{ id.toString() });
+
+        if (cursor.moveToFirst())
+            obj = (callbacks == null) ? cursor.getObject() : callbacks.getObject(cursor);
+
+        cursor.close();
+        return obj;
+    }
+
+    /**
+     * Get all the {@link FishingMethod} objects associated with the given
+     * {@link com.cohenadair.anglerslog.model.user_defines.Catch} id.
+     *
+     * @param catchId The UUID of the {@link com.cohenadair.anglerslog.model.user_defines.Catch} to look for.
+     * @return An ArrayList of {@link FishingMethod} objects.
+     */
+    public static ArrayList<UserDefineObject> queryUsedFishingMethod(UUID catchId) {
+        ArrayList<UserDefineObject> methods = new ArrayList<>();
+
+        Cursor cursor = simpleQuery(
+                UsedFishingMethodsTable.NAME,
+                UsedFishingMethodsTable.Columns.FISHING_METHOD_ID,
+                UsedFishingMethodsTable.Columns.CATCH_ID + " = ?",
+                new String[]{catchId.toString()}
+        );
+
+        if (cursor.moveToFirst())
+            while (!cursor.isAfterLast()) {
+                UUID methodId = UUID.fromString(cursor.getString(cursor.getColumnIndex(UsedFishingMethodsTable.Columns.FISHING_METHOD_ID)));
+                methods.add(Logbook.getFishingMethod(methodId));
+                cursor.moveToNext();
+            }
+
+        cursor.close();
+        return methods;
+    }
+
+    /**
+     * Retrieves the weather data for the specified catch id.
+     *
+     * @param catchId The {@link com.cohenadair.anglerslog.model.user_defines.Catch} id.
+     * @return A {@link Weather} object for the given catch id.
+     */
+    @Nullable
+    public static Weather queryWeather(UUID catchId) {
+        WeatherCursor cursor = new WeatherCursor(simpleQuery(
+                WeatherTable.NAME,
+                "*",
+                WeatherTable.Columns.CATCH_ID + " = ?",
+                new String[] { catchId.toString() }
+        ));
+
+        if (cursor.moveToFirst())
+            return cursor.getWeather();
+
+        return null;
+    }
+
     public static int queryCount(String table, String whereClause, String[] args) {
         int count = 0;
         Cursor cursor = mDatabase.query(table, new String[] { COUNT }, whereClause, args, null, null, null);
@@ -135,58 +211,6 @@ public class QueryHelper {
         return photos;
     }
 
-    /**
-     * Get all the {@link FishingMethod} objects associated with the given
-     * {@link com.cohenadair.anglerslog.model.user_defines.Catch} id.
-     *
-     * @param catchId The UUID of the {@link com.cohenadair.anglerslog.model.user_defines.Catch} to look for.
-     * @return An ArrayList of {@link FishingMethod} objects.
-     */
-    public static ArrayList<UserDefineObject> queryUsedFishingMethod(UUID catchId) {
-        ArrayList<UserDefineObject> methods = new ArrayList<>();
-
-        Cursor cursor = simpleQuery(
-                UsedFishingMethodsTable.NAME,
-                UsedFishingMethodsTable.Columns.FISHING_METHOD_ID,
-                UsedFishingMethodsTable.Columns.CATCH_ID + " = ?",
-                new String[] { catchId.toString() }
-        );
-
-        if (cursor.moveToFirst())
-            while (!cursor.isAfterLast()) {
-                UUID methodId = UUID.fromString(cursor.getString(cursor.getColumnIndex(UsedFishingMethodsTable.Columns.FISHING_METHOD_ID)));
-                methods.add(Logbook.getFishingMethod(methodId));
-                cursor.moveToNext();
-            }
-
-        cursor.close();
-        return methods;
-    }
-
-    public static ArrayList<UserDefineObject> queryUserDefines(UserDefineCursor cursor, UserDefineQueryInterface callbacks) {
-        ArrayList<UserDefineObject> objs = new ArrayList<>();
-
-        if (cursor.moveToFirst())
-            while (!cursor.isAfterLast()) {
-                objs.add((callbacks == null) ? cursor.getObject() : callbacks.getObject(cursor));
-                cursor.moveToNext();
-            }
-
-        cursor.close();
-        return objs;
-    }
-
-    public static UserDefineObject queryUserDefine(String table, UUID id, UserDefineQueryInterface callbacks) {
-        UserDefineObject obj = null;
-        UserDefineCursor cursor = queryUserDefines(table, UserDefineTable.Columns.ID + " = ?", new String[]{ id.toString() });
-
-        if (cursor.moveToFirst())
-            obj = (callbacks == null) ? cursor.getObject() : callbacks.getObject(cursor);
-
-        cursor.close();
-        return obj;
-    }
-
     public static boolean insertQuery(String table, ContentValues contentValues) {
         try {
             return mDatabase.insert(table, null, contentValues) != -1;
@@ -208,6 +232,22 @@ public class QueryHelper {
     public static boolean updateQuery(String table, ContentValues newContentValues, String whereClause, String[] args) {
         try {
             return mDatabase.update(table, newContentValues, whereClause, args) == 1;
+        } catch (SQLiteException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
+     * The Replace method uses the row's PRIMARY KEY to insert or update the row.
+     *
+     * @param table The table.
+     * @param contentValues The replacement ContentValues.
+     * @return True is successful, false otherwise.
+     */
+    public static boolean replaceQuery(String table, ContentValues contentValues) {
+        try {
+            return mDatabase.replace(table, null, contentValues) != -1;
         } catch (SQLiteException e) {
             e.printStackTrace();
             return false;

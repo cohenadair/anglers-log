@@ -104,11 +104,14 @@ public class LogbookSchema {
         }
     }
 
-    public static final class WeatherConditionsTable {
-        public static final String NAME = "WeatherConditionsTable";
+    public static final class WeatherTable {
+        public static final String NAME = "WeatherTable";
 
         public static final class Columns {
             public static final String CATCH_ID = "catchId";
+            public static final String TEMPERATURE = "temperature";
+            public static final String WIND_SPEED = "windSpeed";
+            public static final String SKY_CONDITIONS = "skyConditions";
         }
     }
 }

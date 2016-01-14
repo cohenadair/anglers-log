@@ -1,5 +1,6 @@
 package com.cohenadair.anglerslog.model;
 
+import android.content.ContentValues;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
@@ -12,6 +13,10 @@ import com.google.android.gms.maps.model.LatLng;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.UUID;
+
+import static com.cohenadair.anglerslog.database.LogbookSchema.WeatherTable;
 
 /**
  * The Weather class stores weather information. It has the ability to update based on given
@@ -110,5 +115,16 @@ public class Weather {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    public ContentValues getContentValues(UUID catchId) {
+        ContentValues values = new ContentValues();
+
+        values.put(WeatherTable.Columns.CATCH_ID, catchId.toString());
+        values.put(WeatherTable.Columns.TEMPERATURE, mTemperature);
+        values.put(WeatherTable.Columns.WIND_SPEED, mWindSpeed);
+        values.put(WeatherTable.Columns.SKY_CONDITIONS, mSkyConditions);
+
+        return values;
     }
 }
