@@ -12,7 +12,6 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/spacing_small"
         android:orientation="horizontal">
 
         <TextView
@@ -23,6 +22,16 @@
             android:id="@+id/title_text_view"
             android:text="@string/weather_conditions"
             android:layout_gravity="center_vertical"/>
+
+        <ImageButton
+            android:id="@+id/delete_weather_button"
+            android:layout_width="@dimen/image_button_size"
+            android:layout_height="@dimen/image_button_size"
+            android:layout_marginRight="@dimen/spacing_medium"
+            android:layout_marginEnd="@dimen/spacing_medium"
+            android:src="@drawable/ic_close"
+            android:contentDescription="@string/weather_remove_description"
+            android:background="@android:color/transparent"/>
 
         <ImageButton
             android:id="@+id/edit_weather_button"
@@ -45,48 +54,32 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/details_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/weather_image"
-            android:layout_width="75dp"
-            android:layout_height="75dp"
-            android:layout_marginRight="@dimen/margin_default"
-            android:layout_marginEnd="@dimen/margin_default"
-            android:src="@drawable/no_catch_photo"
-            android:contentDescription="@string/weather_description"/>
-
-        <LinearLayout
+        <!-- Temperature -->
+        <TextView
+            style="@style/TextView.Large"
+            android:id="@+id/temperature_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:orientation="vertical">
+            tools:text="76\u00b0F"/>
 
-            <!-- Temperature -->
-            <TextView
-                style="@style/TextView.Large"
-                android:id="@+id/temperature_text_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:text="76\u00b0F"/>
+        <!-- Wind Speed -->
+        <TextView
+            android:id="@+id/wind_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Wind Speed: 10 mph"/>
 
-            <!-- Wind Speed -->
-            <TextView
-                android:id="@+id/wind_text_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:text="Wind Speed: 10 mph"/>
-
-            <!-- Sky Conditions -->
-            <TextView
-                android:id="@+id/sky_text_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:text="Sky: Cloudy"/>
-
-        </LinearLayout>
+        <!-- Sky Conditions -->
+        <TextView
+            android:id="@+id/sky_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Sky: Cloudy"/>
 
     </LinearLayout>
 

@@ -9,6 +9,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.android.gms.maps.model.LatLng;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -22,14 +24,13 @@ public class Weather {
 
     private static final String TAG = "Weather";
     private static final String API_KEY = "35f69a23678dead2c75e0599eadbb4e1";
-    private static final String API_URL = "api.openweathermap.org/data/2.5/weather";
+    private static final String API_URL = "http://api.openweathermap.org/data/2.5/weather?units=imperial";
 
     private LatLng mCoordinates;
 
     private int mTemperature;
     private int mWindSpeed;
     private String mSkyConditions;
-    private String mImageUrl;
 
     public interface OnFetchInterface {
         void onSuccess();
@@ -55,10 +56,6 @@ public class Weather {
         return mWindSpeed;
     }
 
-    public String getImageUrl() {
-        return mImageUrl;
-    }
-
     public String getSkyConditions() {
         return mSkyConditions;
     }
@@ -81,18 +78,37 @@ public class Weather {
         return new JsonObjectRequest(Request.Method.GET, getUrl(), null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject jsonObject) {
-                Log.d("fetch", jsonObject.toString());
+                parseJson(jsonObject);
                 onFetch.onSuccess();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError volleyError) {
+                Log.e(TAG, "Volly Error: " + volleyError.toString());
                 onFetch.onError();
             }
         });
     }
 
     private String getUrl() {
-        return String.format(API_URL + "?lat=%f&lon=%f&APPID=%s", mCoordinates.latitude, mCoordinates.longitude, API_KEY);
+        return String.format(API_URL + "&lat=%f&lon=%f&APPID=%s", mCoordinates.latitude, mCoordinates.longitude, API_KEY);
+    }
+
+    private void parseJson(JSONObject json) {
+        try {
+            JSONArray weather = json.getJSONArray("weather");
+            if (weather.length() > 0) {
+                JSONObject obj = weather.getJSONObject(0);
+                mSkyConditions = obj.getString("main");
+            }
+
+            JSONObject wind = json.getJSONObject("wind");
+            mWindSpeed = (int)Math.round(wind.getDouble("speed"));
+
+            JSONObject temp = json.getJSONObject("main");
+            mTemperature = (int)Math.round(temp.getDouble("temp"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 }

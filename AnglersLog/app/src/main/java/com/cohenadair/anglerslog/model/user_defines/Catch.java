@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.database.QueryHelper;
+import com.cohenadair.anglerslog.model.Weather;
 import com.cohenadair.anglerslog.utilities.Utils;
 
 import java.util.ArrayList;
@@ -31,6 +32,7 @@ public class Catch extends PhotoUserDefineObject {
     private FishingSpot mFishingSpot;
     private WaterClarity mWaterClarity;
     private CatchResult mCatchResult = CatchResult.RELEASED;
+    private Weather mWeather;
 
     /**
      * Represents what was done after a catch was made. Values correspond to the catch results
@@ -155,6 +157,14 @@ public class Catch extends PhotoUserDefineObject {
 
     public void setCatchResult(CatchResult catchResult) {
         mCatchResult = catchResult;
+    }
+
+    public Weather getWeather() {
+        return mWeather;
+    }
+
+    public void setWeather(Weather weather) {
+        mWeather = weather;
     }
     //endregion
 

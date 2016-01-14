@@ -111,6 +111,12 @@ public class ManageCatchFragment extends ManageContentFragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        Utils.requestLocationServices(getContext());
+    }
+
+    @Override
     public ManageObjectSpec getManageObjectSpec() {
         return new ManageObjectSpec(R.string.error_catch, R.string.success_catch, R.string.error_catch_edit, R.string.success_catch_edit, new ManageInterface() {
             @Override
@@ -179,6 +185,18 @@ public class ManageCatchFragment extends ManageContentFragment {
             return;
 
         mGoogleApiClient = new GoogleApiClient.Builder(getContext())
+                .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
+                    @Override
+                    public void onConnected(Bundle bundle) {
+                        if (!isEditing())
+                            requestWeatherData();
+                    }
+
+                    @Override
+                    public void onConnectionSuspended(int i) {
+
+                    }
+                })
                 .addApi(LocationServices.API)
                 .build();
     }
@@ -357,33 +375,67 @@ public class ManageCatchFragment extends ManageContentFragment {
         });
     }
 
+    //region Weather View
     private void initWeatherView(View view) {
         mWeatherView = (WeatherView)view.findViewById(R.id.weather_view);
-        mWeatherView.setOnClickRefreshButton(new View.OnClickListener() {
+        mWeatherView.setListener(new WeatherView.InteractionListener() {
             @Override
-            public void onClick(View v) {
-                if (mGoogleApiClient.isConnected()) {
-                    Location loc = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-                    if (loc != null) {
-                        final Weather weather = new Weather(new LatLng(loc.getLatitude(), loc.getLongitude()));
-                        mRequestQueue.add(weather.getRequest(new Weather.OnFetchInterface() {
-                            @Override
-                            public void onSuccess() {
-                                mWeatherView.updateViews(weather);
-                            }
+            public void onClickRemoveButton() {
+                getNewCatch().setWeather(null);
+            }
 
-                            @Override
-                            public void onError() {
-                                Utils.showToast(getContext(), R.string.error_getting_weather);
-                            }
-                        }));
-                    } else
-                        Utils.showToast(getContext(), R.string.error_user_location);
-                } else
-                    Utils.showToast(getContext(), R.string.error_google_services);
+            @Override
+            public void onClickEditButton() {
+                WeatherView.EditDialog editDialog = WeatherView.EditDialog.newInstance(getNewCatch().getWeather());
+
+                editDialog.setInteractionListener(new WeatherView.EditDialog.InteractionListener() {
+                    @Override
+                    public void onSave(Weather weather) {
+                        mWeatherView.updateViews(weather);
+                    }
+                });
+
+                editDialog.show(getChildFragmentManager(), "EditWeatherDialog");
+            }
+
+            @Override
+            public void onClickRefreshButton() {
+                requestWeatherData();
             }
         });
     }
+
+    private void updateWeatherView(Weather weather) {
+        mWeatherView.updateViews(weather);
+        getNewCatch().setWeather(weather);
+    }
+
+    private void requestWeatherData() {
+        if (!mGoogleApiClient.isConnected()) {
+            Utils.showToast(getContext(), R.string.error_google_services);
+            return;
+        }
+
+        Location loc = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+        if (loc == null) {
+            Utils.showToast(getContext(), R.string.error_user_location);
+            return;
+        }
+
+        final Weather weather = new Weather(new LatLng(loc.getLatitude(), loc.getLongitude()));
+        mRequestQueue.add(weather.getRequest(new Weather.OnFetchInterface() {
+            @Override
+            public void onSuccess() {
+                updateWeatherView(weather);
+            }
+
+            @Override
+            public void onError() {
+                Utils.showToast(getContext(), R.string.error_getting_weather);
+            }
+        }));
+    }
+    //endregion
 
     private void showPrimitiveDialog(int primitiveId, boolean multiple, ManagePrimitiveFragment.OnDismissInterface onDismissInterface) {
         ManagePrimitiveFragment fragment = ManagePrimitiveFragment.newInstance(primitiveId, multiple);
@@ -392,6 +444,6 @@ public class ManageCatchFragment extends ManageContentFragment {
             fragment.setSelectedObjects(mSelectedFishingMethods);
 
         fragment.setOnDismissInterface(onDismissInterface);
-        fragment.show(getChildFragmentManager(), "dialog");
+        fragment.show(getChildFragmentManager(), "PrimitiveDialog");
     }
 }

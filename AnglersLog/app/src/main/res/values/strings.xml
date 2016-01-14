@@ -39,8 +39,10 @@
     <string name="lat">Lat</string>
     <string name="lng">Lng</string>
     <string name="temperature">Temperature</string>
+    <string name="temperature_f">Temperature (\u00b0F)</string>
     <string name="wind_speed">Wind Speed</string>
     <string name="wind_speed_colon">Wind Speed:</string>
+    <string name="wind_mph">Wind Speed (mph)</string>
     <string name="mph">mph</string>
     <string name="sky_conditions">Sky Conditions</string>
     <string name="sky_conditions_colon">Sky:</string>
@@ -49,6 +51,7 @@
     <string name="water_conditions">Water Conditions</string>
     <string name="weather_conditions">Weather Conditions</string>
     <string name="degrees_f">\u00b0F</string>
+    <string name="zero">0</string>
 
     <string name="drawer_open">Open Navigation Drawer</string>
     <string name="drawer_close">Close Navigation Drawer</string>
@@ -78,6 +81,8 @@
     <string name="color_hint">Enter a color</string>
     <string name="size_hint">Enter a size</string>
     <string name="description_hint">Enter a description</string>
+    <string name="temperature_hint">Enter a temperature</string>
+    <string name="sky_hint">ex. Cloudy</string>
 
     <string name="hint_new_item">Enter new</string>
     <string name="new_text">New</string>
@@ -112,7 +117,7 @@
     <string name="error_location_add">Error adding location.</string>
     <string name="error_location_name">A location with that name already exists.</string>
     <string name="error_location_permission">You have not given permission to use location services.</string>
-    <string name="error_location_disabled">Unable to get current location because the device\'s location services are disabled.</string>
+    <string name="error_location_disabled">Unable to get current location. The device\'s location services are disabled.</string>
     <string name="error_user_location">Error getting user location.</string>
     <string name="open_location_settings">Open location settings</string>
     <string name="error_no_fishing_spots">Please add at least one fishing spot.</string>
@@ -120,6 +125,8 @@
     <string name="error_fishing_spot_add">Error adding fishing spot.</string>
     <string name="error_fishing_spot_edit">Error updating fishing spot.</string>
     <string name="number_caught">Fish Caught</string>
+    <string name="edit_weather">Edit Weather</string>
+    <string name="error_weather_form">Please fill out all fields.</string>
     <string name="error_getting_weather">Couldn\'t get weather data.</string>
     <string name="error_google_services">Couldn\'t connect to Google Play Services.</string>
 
@@ -155,4 +162,7 @@
     <string name="refresh_description">Attempts to get weather data from the web.</string>
     <string name="weather_description">An image representation of the current weather.</string>
     <string name="weather_edit_description">A button used to edit the current weather information.</string>
+    <string name="weather_remove_description">Remove current weather information.</string>
+
+    <string name="unknown">Unknown</string>
 </resources>
