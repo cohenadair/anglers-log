@@ -102,7 +102,12 @@ public class CatchTest {
         assertTrue(mTestCatch.getWeather().getTemperature() == 0);
 
         // deleting
-        mTestCatch.deleteWeather();
+        mTestCatch.removeWeather();
+        assertTrue(mTestCatch.getWeather() == null);
+
+        // deleting via setting
+        mTestCatch.setWeather(weather0);
+        mTestCatch.setWeather(null);
         assertTrue(mTestCatch.getWeather() == null);
     }
 }

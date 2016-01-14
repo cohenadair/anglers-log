@@ -63,6 +63,7 @@ public class ManageCatchFragment extends ManageContentFragment {
      * Used so there is no database interaction until the user saves their changes.
      */
     private ArrayList<UserDefineObject> mSelectedFishingMethods;
+    private Weather mWeather;
 
     public ManageCatchFragment() {
         // Required empty public constructor
@@ -143,6 +144,7 @@ public class ManageCatchFragment extends ManageContentFragment {
             public UserDefineObject onGetNewEditObject(UserDefineObject oldObject) {
                 Catch newCatch = new Catch((Catch) oldObject, true);
                 mSelectedFishingMethods = newCatch.getFishingMethods();
+                mWeather = newCatch.getWeather();
                 return newCatch;
             }
 
@@ -161,8 +163,9 @@ public class ManageCatchFragment extends ManageContentFragment {
             return false;
         }
 
-        // update fishing methods
+        // update properties that interact directly with the database
         getNewCatch().setFishingMethods(mSelectedFishingMethods);
+        getNewCatch().setWeather(mWeather);
 
         return true;
     }
@@ -177,6 +180,7 @@ public class ManageCatchFragment extends ManageContentFragment {
         mWaterClarityView.setSubtitle(getNewCatch().getWaterClarityAsString());
         mFishingMethodsView.setSubtitle(UserDefineArrays.namesAsString(mSelectedFishingMethods));
         mResultSpinner.setSelection(getNewCatch().getCatchResult().getValue());
+        mWeatherView.updateViews(mWeather);
     }
 
     //region Google API
@@ -381,17 +385,17 @@ public class ManageCatchFragment extends ManageContentFragment {
         mWeatherView.setListener(new WeatherView.InteractionListener() {
             @Override
             public void onClickRemoveButton() {
-                getNewCatch().setWeather(null);
+                mWeather = null;
             }
 
             @Override
             public void onClickEditButton() {
-                WeatherView.EditDialog editDialog = WeatherView.EditDialog.newInstance(getNewCatch().getWeather());
+                WeatherView.EditDialog editDialog = WeatherView.EditDialog.newInstance(mWeather);
 
                 editDialog.setInteractionListener(new WeatherView.EditDialog.InteractionListener() {
                     @Override
                     public void onSave(Weather weather) {
-                        mWeatherView.updateViews(weather);
+                        updateWeatherView(weather);
                     }
                 });
 
@@ -407,7 +411,7 @@ public class ManageCatchFragment extends ManageContentFragment {
 
     private void updateWeatherView(Weather weather) {
         mWeatherView.updateViews(weather);
-        getNewCatch().setWeather(weather);
+        mWeather = weather;
     }
 
     private void requestWeatherData() {

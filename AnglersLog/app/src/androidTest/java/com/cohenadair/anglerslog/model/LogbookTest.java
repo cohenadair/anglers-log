@@ -129,6 +129,13 @@ public class LogbookTest {
         assertTrue(Logbook.getRandomCatchPhoto() == null);
         catch0.addPhoto("Test.jpg");
         assertTrue(Logbook.getRandomCatchPhoto() != null);
+
+        // delete with photos and weather (properties stored outside the CatchTable)
+        catch0.setWeather(new Weather(10, 15, "Cloudy"));
+        catch0.addPhoto("photo.png");
+        Logbook.editCatch(catch0.getId(), catch0);
+        assertTrue(Logbook.getCatch(catch0.getId()).getWeather() != null);
+        assertTrue(Logbook.removeCatch(catch0.getId()));
     }
 
     @Test

@@ -166,6 +166,9 @@ public class Catch extends PhotoUserDefineObject {
     }
 
     public void setFishingMethods(ArrayList<UserDefineObject> fishingMethods) {
+        if (fishingMethods == null || fishingMethods.size() == 0)
+            return;
+
         deleteFishingMethods();
         addFishingMethods(fishingMethods);
     }
@@ -200,10 +203,16 @@ public class Catch extends PhotoUserDefineObject {
     }
 
     public boolean setWeather(Weather weather) {
+        // if the weather is being reset to null, try to delete any existing weather data
+        if (weather == null) {
+            removeWeather();
+            return false;
+        }
+
         return QueryHelper.replaceQuery(WeatherTable.NAME, weather.getContentValues(getId()));
     }
 
-    public boolean deleteWeather() {
+    public boolean removeWeather() {
         return QueryHelper.deleteQuery(WeatherTable.NAME, WeatherTable.Columns.CATCH_ID + " = ?", new String[] { idAsString() });
     }
     //endregion
@@ -270,5 +279,17 @@ public class Catch extends PhotoUserDefineObject {
             values.put(CatchTable.Columns.CLARITY_ID, mWaterClarity.idAsString());
 
         return values;
+    }
+
+    /**
+     * Used deleting catches. This method will remove any external ties to the database. For
+     * example, removing images and weather data from the database.
+     */
+    public void removeDatabaseProperties() {
+        ArrayList<String> photos = getPhotos();
+        for (String s : photos)
+            removePhoto(s);
+
+        removeWeather();
     }
 }

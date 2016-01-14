@@ -142,6 +142,24 @@
             android:layout_height="wrap_content"
             custom:propertyName="@string/clarity"/>
 
+        <!-- Weather Conditions -->
+        <TextView
+            style="?android:listSeparatorTextViewStyle"
+            android:id="@+id/title_weather_conditions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_default"
+            android:layout_marginBottom="@dimen/margin_default"
+            android:text="@string/weather_conditions"/>
+
+        <!-- Weather Details -->
+        <com.cohenadair.anglerslog.views.WeatherDetailsView
+            android:id="@+id/weather_details_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_default"
+            android:layout_marginRight="@dimen/margin_default"/>
+
     </LinearLayout>
 
 </ScrollView>

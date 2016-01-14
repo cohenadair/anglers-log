@@ -128,7 +128,7 @@ public class LogbookHelper extends SQLiteOpenHelper {
 
     private void createUsedFishingMethodTable(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE " + UsedFishingMethodsTable.NAME + "(" +
-            UsedFishingMethodsTable.Columns.CATCH_ID + " TEXT NOT NULL, " +
+            UsedFishingMethodsTable.Columns.CATCH_ID + " TEXT NOT NULL REFERENCES " + CatchTable.NAME + "(" + CatchTable.Columns.ID + "), " +
             UsedFishingMethodsTable.Columns.FISHING_METHOD_ID + " TEXT NOT NULL REFERENCES " + FishingMethodTable.NAME + "(" + FishingMethodTable.Columns.ID + "), " +
             "UNIQUE(" + UsedFishingMethodsTable.Columns.CATCH_ID + ", " + UsedFishingMethodsTable.Columns.FISHING_METHOD_ID + ")" +
             ")"
@@ -159,7 +159,7 @@ public class LogbookHelper extends SQLiteOpenHelper {
 
     public void createWeatherTable(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE " + WeatherTable.NAME + "(" +
-            WeatherTable.Columns.CATCH_ID + " TEXT PRIMARY KEY NOT NULL, " +
+            WeatherTable.Columns.CATCH_ID + " TEXT PRIMARY KEY NOT NULL, " + // not REFERENCES because Weather entries are added after Catch entries (results in FOREIGN KEY constraint failure)
             WeatherTable.Columns.TEMPERATURE + " INTEGER NOT NULL, " +
             WeatherTable.Columns.WIND_SPEED + " INTEGER NOT NULL, " +
             WeatherTable.Columns.SKY_CONDITIONS + " TEXT NOT NULL" +

@@ -12,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.model.Weather;
@@ -23,12 +22,9 @@ import com.cohenadair.anglerslog.model.Weather;
  */
 public class WeatherView extends LinearLayout {
 
-    private LinearLayout mDetailsLayout;
     private ImageButton mDeleteButton;
     private ImageButton mEditButton;
-    private TextView mTemperatureTextView;
-    private TextView mWindTextView;
-    private TextView mSkyTextView;
+    private WeatherDetailsView mDetailsView;
 
     private InteractionListener mListener;
 
@@ -78,13 +74,9 @@ public class WeatherView extends LinearLayout {
             }
         });
 
-        mTemperatureTextView = (TextView)findViewById(R.id.temperature_text_view);
-        mWindTextView = (TextView)findViewById(R.id.wind_text_view);
-        mSkyTextView= (TextView)findViewById(R.id.sky_text_view);
-
         // hide details by default
-        mDetailsLayout = (LinearLayout)findViewById(R.id.details_layout);
-        mDetailsLayout.setVisibility(View.GONE);
+        mDetailsView = (WeatherDetailsView)findViewById(R.id.details_view);
+        mDetailsView.setVisibility(View.GONE);
     }
 
     public void updateViews(Weather weather) {
@@ -93,22 +85,14 @@ public class WeatherView extends LinearLayout {
             return;
         }
 
-        String mph = getResources().getString(R.string.mph);
-        String wind = getResources().getString(R.string.wind_speed) + ": " + weather.getWindSpeedAsString() + " " + mph;
-        String sky = getResources().getString(R.string.sky_conditions) + ": " + (weather.getSkyConditions() != null ? weather.getSkyConditions() : getResources().getString(R.string.unknown));
-        String degrees = weather.getTemperatureAsString() + getResources().getString(R.string.degrees_f);
-
-        mTemperatureTextView.setText(degrees);
-        mWindTextView.setText(wind);
-        mSkyTextView.setText(sky);
-
-        mDetailsLayout.setVisibility(View.VISIBLE);
+        mDetailsView.updateViews(weather);
+        mDetailsView.setVisibility(View.VISIBLE);
         mDeleteButton.setVisibility(View.VISIBLE);
         mEditButton.setImageResource(R.drawable.ic_edit);
     }
 
     private void reset() {
-        mDetailsLayout.setVisibility(View.GONE);
+        mDetailsView.setVisibility(View.GONE);
         mDeleteButton.setVisibility(View.GONE);
         mEditButton.setImageResource(R.drawable.ic_add);
     }
@@ -163,7 +147,7 @@ public class WeatherView extends LinearLayout {
 
             // inflate the wrapper view and retrieve the EditWeatherView
             final View dialogView = inflater.inflate(R.layout.view_weather_edit_wrapper, null); // null is okay here because it's a dialog
-            final EditWeatherView editView = (EditWeatherView)dialogView.findViewById(R.id.edit_weather_view);
+            final WeatherEditView editView = (WeatherEditView)dialogView.findViewById(R.id.edit_weather_view);
 
             // set weather properties if needed
             String sky = getArguments().getString(ARG_SKY, null);
@@ -176,6 +160,7 @@ public class WeatherView extends LinearLayout {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     mInteractionListener.onSave(editView.getWeather());
+                    editView.reset();
                     getDialog().dismiss();
                 }
             });

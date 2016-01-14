@@ -13,18 +13,18 @@ import com.cohenadair.anglerslog.utilities.Utils;
  * A EditWeatherView is a view that used for editing or adding weather data.
  * Created by Cohen Adair on 2016-01-13.
  */
-public class EditWeatherView extends LinearLayout {
+public class WeatherEditView extends LinearLayout {
 
     private EditText mTemperatureEditText;
     private EditText mWindEditText;
     private EditText mSkyEditText;
 
-    public EditWeatherView(Context context) {
+    public WeatherEditView(Context context) {
         this(context, null);
         init(null);
     }
 
-    public EditWeatherView(Context context, AttributeSet attrs) {
+    public WeatherEditView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(attrs);
     }
@@ -61,5 +61,11 @@ public class EditWeatherView extends LinearLayout {
         mTemperatureEditText.setText(weather.getTemperatureAsString());
         mWindEditText.setText(weather.getWindSpeedAsString());
         mSkyEditText.setText(weather.getSkyConditions());
+    }
+
+    public void reset() {
+        mTemperatureEditText.setText("");
+        mWindEditText.setText("");
+        mSkyEditText.setText("");
     }
 }

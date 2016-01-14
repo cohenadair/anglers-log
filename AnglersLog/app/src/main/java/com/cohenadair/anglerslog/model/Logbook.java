@@ -154,6 +154,8 @@ public class Logbook {
     }
 
     public static boolean removeCatch(UUID id) {
+        Catch aCatch = Logbook.getCatch(id);
+        aCatch.removeDatabaseProperties();
         return QueryHelper.deleteUserDefine(CatchTable.NAME, id);
     }
 

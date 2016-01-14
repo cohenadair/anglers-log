@@ -14,6 +14,7 @@ import com.cohenadair.anglerslog.activities.DetailFragmentActivity;
 import com.cohenadair.anglerslog.activities.PhotoViewerActivity;
 import com.cohenadair.anglerslog.fragments.DetailFragment;
 import com.cohenadair.anglerslog.model.Logbook;
+import com.cohenadair.anglerslog.model.Weather;
 import com.cohenadair.anglerslog.model.user_defines.Catch;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import com.cohenadair.anglerslog.utilities.LayoutSpecManager;
@@ -22,6 +23,7 @@ import com.cohenadair.anglerslog.utilities.Utils;
 import com.cohenadair.anglerslog.views.ImageScrollView;
 import com.cohenadair.anglerslog.views.PropertyDetailView;
 import com.cohenadair.anglerslog.views.TitleSubTitleView;
+import com.cohenadair.anglerslog.views.WeatherDetailsView;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -43,10 +45,12 @@ public class CatchFragment extends DetailFragment {
     private PropertyDetailView mFishingMethodsView;
     private PropertyDetailView mWaterClarityView;
     private PropertyDetailView mResultView;
+    private WeatherDetailsView mWeatherDetailsView;
 
     private TextView mCatchDetails;
     private TextView mFishDetails;
     private TextView mWaterConditions;
+    private TextView mWeatherConditions;
 
     public CatchFragment() {
         // Required empty public constructor
@@ -74,10 +78,12 @@ public class CatchFragment extends DetailFragment {
         mFishingMethodsView = (PropertyDetailView)view.findViewById(R.id.fishing_methods_view);
         mWaterClarityView = (PropertyDetailView)view.findViewById(R.id.water_clarity_view);
         mResultView = (PropertyDetailView)view.findViewById(R.id.catch_result_view);
+        mWeatherDetailsView = (WeatherDetailsView)view.findViewById(R.id.weather_details_view);
 
         mCatchDetails = (TextView)view.findViewById(R.id.title_catch_details);
         mFishDetails = (TextView)view.findViewById(R.id.title_fish_details);
         mWaterConditions = (TextView)view.findViewById(R.id.title_water_conditions);
+        mWeatherConditions = (TextView)view.findViewById(R.id.title_weather_conditions);
 
         update(getActivity());
 
@@ -113,6 +119,7 @@ public class CatchFragment extends DetailFragment {
             updateFishingMethodsView();
             updateWaterClarityView();
             updateResultView();
+            updateWeatherDetailsView();
 
             // hide catch details title if needed
             if (mCatch.getBait() == null && mCatch.getFishingSpot() == null && mCatch.getFishingMethods().size() <= 0)
@@ -125,6 +132,10 @@ public class CatchFragment extends DetailFragment {
             // hide water conditions title if needed
             if (mCatch.getWaterClarity() == null)
                 mWaterConditions.setVisibility(View.GONE);
+
+            // hide weather title if needed
+            if (mCatch.getWeather() == null)
+                mWeatherConditions.setVisibility(View.GONE);
         }
     }
 
@@ -157,6 +168,12 @@ public class CatchFragment extends DetailFragment {
     private void updateResultView() {
         Utils.toggleVisibility(mResultView, mCatch.getCatchResult() != null);
         mResultView.setDetail(mCatch.getCatchResultAsString(getContext()));
+    }
+
+    private void updateWeatherDetailsView() {
+        Weather weather = mCatch.getWeather();
+        Utils.toggleVisibility(mWeatherDetailsView, weather != null);
+        mWeatherDetailsView.updateViews(weather);
     }
 
     private void initLocationLayout(View view) {

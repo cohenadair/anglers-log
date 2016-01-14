@@ -3,7 +3,6 @@
 -->
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/margin_default"
@@ -53,34 +52,9 @@
 
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/details_layout"
+    <com.cohenadair.anglerslog.views.WeatherDetailsView
+        android:id="@+id/details_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <!-- Temperature -->
-        <TextView
-            style="@style/TextView.Large"
-            android:id="@+id/temperature_text_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:text="76\u00b0F"/>
-
-        <!-- Wind Speed -->
-        <TextView
-            android:id="@+id/wind_text_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:text="Wind Speed: 10 mph"/>
-
-        <!-- Sky Conditions -->
-        <TextView
-            android:id="@+id/sky_text_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:text="Sky: Cloudy"/>
-
-    </LinearLayout>
+        android:layout_height="wrap_content"/>
 
 </LinearLayout>
