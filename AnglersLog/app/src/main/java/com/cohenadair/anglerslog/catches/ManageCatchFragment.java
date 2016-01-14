@@ -2,6 +2,7 @@ package com.cohenadair.anglerslog.catches;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.location.Location;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,12 +12,15 @@ import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.Volley;
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.fragments.DatePickerFragment;
 import com.cohenadair.anglerslog.fragments.ManageContentFragment;
 import com.cohenadair.anglerslog.fragments.ManagePrimitiveFragment;
 import com.cohenadair.anglerslog.fragments.TimePickerFragment;
 import com.cohenadair.anglerslog.model.Logbook;
+import com.cohenadair.anglerslog.model.Weather;
 import com.cohenadair.anglerslog.model.user_defines.Catch;
 import com.cohenadair.anglerslog.model.user_defines.Species;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
@@ -27,6 +31,10 @@ import com.cohenadair.anglerslog.utilities.UserDefineArrays;
 import com.cohenadair.anglerslog.utilities.Utils;
 import com.cohenadair.anglerslog.views.SelectionSpinnerView;
 import com.cohenadair.anglerslog.views.TitleSubTitleView;
+import com.cohenadair.anglerslog.views.WeatherView;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -46,6 +54,10 @@ public class ManageCatchFragment extends ManageContentFragment {
     private TitleSubTitleView mWaterClarityView;
     private TitleSubTitleView mFishingMethodsView;
     private SelectionSpinnerView mResultSpinner;
+    private WeatherView mWeatherView;
+
+    private RequestQueue mRequestQueue;
+    private GoogleApiClient mGoogleApiClient;
 
     /**
      * Used so there is no database interaction until the user saves their changes.
@@ -64,6 +76,7 @@ public class ManageCatchFragment extends ManageContentFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_manage_catch, container, false);
 
+        initGoogleApi();
         initDateTimeView(view);
         initSpeciesView(view);
         initLocationView(view);
@@ -72,6 +85,7 @@ public class ManageCatchFragment extends ManageContentFragment {
         initWaterClarityView(view);
         initFishingMethodsView(view);
         initResultView(view);
+        initWeatherView(view);
 
         initSubclassObject();
 
@@ -79,7 +93,21 @@ public class ManageCatchFragment extends ManageContentFragment {
         if (!isEditing())
             mSelectedFishingMethods = new ArrayList<>();
 
+        mRequestQueue = Volley.newRequestQueue(getContext());
+
         return view;
+    }
+
+    @Override
+    public void onStart() {
+        mGoogleApiClient.connect();
+        super.onStart();
+    }
+
+    @Override
+    public void onStop() {
+        mGoogleApiClient.disconnect();
+        super.onStop();
     }
 
     @Override
@@ -107,7 +135,7 @@ public class ManageCatchFragment extends ManageContentFragment {
 
             @Override
             public UserDefineObject onGetNewEditObject(UserDefineObject oldObject) {
-                Catch newCatch = new Catch((Catch)oldObject, true);
+                Catch newCatch = new Catch((Catch) oldObject, true);
                 mSelectedFishingMethods = newCatch.getFishingMethods();
                 return newCatch;
             }
@@ -142,7 +170,19 @@ public class ManageCatchFragment extends ManageContentFragment {
         mLocationView.setSubtitle(getNewCatch().getFishingSpotAsString());
         mWaterClarityView.setSubtitle(getNewCatch().getWaterClarityAsString());
         mFishingMethodsView.setSubtitle(UserDefineArrays.namesAsString(mSelectedFishingMethods));
+        mResultSpinner.setSelection(getNewCatch().getCatchResult().getValue());
     }
+
+    //region Google API
+    private void initGoogleApi() {
+        if (mGoogleApiClient != null)
+            return;
+
+        mGoogleApiClient = new GoogleApiClient.Builder(getContext())
+                .addApi(LocationServices.API)
+                .build();
+    }
+    //endregion
 
     //region Date & Time
     private void initDateTimeView(View view) {
@@ -313,6 +353,34 @@ public class ManageCatchFragment extends ManageContentFragment {
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
+            }
+        });
+    }
+
+    private void initWeatherView(View view) {
+        mWeatherView = (WeatherView)view.findViewById(R.id.weather_view);
+        mWeatherView.setOnClickRefreshButton(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mGoogleApiClient.isConnected()) {
+                    Location loc = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+                    if (loc != null) {
+                        final Weather weather = new Weather(new LatLng(loc.getLatitude(), loc.getLongitude()));
+                        mRequestQueue.add(weather.getRequest(new Weather.OnFetchInterface() {
+                            @Override
+                            public void onSuccess() {
+                                mWeatherView.updateViews(weather);
+                            }
+
+                            @Override
+                            public void onError() {
+                                Utils.showToast(getContext(), R.string.error_getting_weather);
+                            }
+                        }));
+                    } else
+                        Utils.showToast(getContext(), R.string.error_user_location);
+                } else
+                    Utils.showToast(getContext(), R.string.error_google_services);
             }
         });
     }

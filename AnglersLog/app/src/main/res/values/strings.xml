@@ -38,9 +38,17 @@
     <string name="longitude">Longitude</string>
     <string name="lat">Lat</string>
     <string name="lng">Lng</string>
+    <string name="temperature">Temperature</string>
+    <string name="wind_speed">Wind Speed</string>
+    <string name="wind_speed_colon">Wind Speed:</string>
+    <string name="mph">mph</string>
+    <string name="sky_conditions">Sky Conditions</string>
+    <string name="sky_conditions_colon">Sky:</string>
     <string name="catch_details">Catch Details</string>
     <string name="fish_details">Fish Details</string>
     <string name="water_conditions">Water Conditions</string>
+    <string name="weather_conditions">Weather Conditions</string>
+    <string name="degrees_f">\u00b0F</string>
 
     <string name="drawer_open">Open Navigation Drawer</string>
     <string name="drawer_close">Close Navigation Drawer</string>
@@ -105,12 +113,15 @@
     <string name="error_location_name">A location with that name already exists.</string>
     <string name="error_location_permission">You have not given permission to use location services.</string>
     <string name="error_location_disabled">Unable to get current location because the device\'s location services are disabled.</string>
+    <string name="error_user_location">Error getting user location.</string>
     <string name="open_location_settings">Open location settings</string>
     <string name="error_no_fishing_spots">Please add at least one fishing spot.</string>
     <string name="error_fishing_spot_name">A fishing spot with that name already exists.</string>
     <string name="error_fishing_spot_add">Error adding fishing spot.</string>
     <string name="error_fishing_spot_edit">Error updating fishing spot.</string>
     <string name="number_caught">Fish Caught</string>
+    <string name="error_getting_weather">Couldn\'t get weather data.</string>
+    <string name="error_google_services">Couldn\'t connect to Google Play Services.</string>
 
     <string name="bait_no_catches">No fish have been caught with this bait (feature coming soon).</string>
     <string name="success_bait">Successfully added bait!</string>
@@ -141,4 +152,7 @@
     <string name="location_description">More information about the catch\'s location.</string>
     <string name="bait_description">More information about the catch\'s bait.</string>
     <string name="check_description">A check that signifies selection.</string>
+    <string name="refresh_description">Attempts to get weather data from the web.</string>
+    <string name="weather_description">An image representation of the current weather.</string>
+    <string name="weather_edit_description">A button used to edit the current weather information.</string>
 </resources>

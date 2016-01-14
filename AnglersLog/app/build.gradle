@@ -34,4 +34,5 @@ dependencies {
     compile 'com.google.android.gms:play-services:8.3.0'
 
     compile 'de.hdodenhof:circleimageview:2.0.0'
+    compile 'com.squareup.picasso:picasso:2.5.2'
 }
