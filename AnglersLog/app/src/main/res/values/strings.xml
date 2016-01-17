@@ -16,8 +16,16 @@
     <string name="species">Species</string>
     <string name="bait">Bait</string>
     <string name="clarity">Clarity</string>
+    <string name="water_clarity">Water Clarity</string>
+    <string name="water_depth">Water Depth</string>
+    <string name="water_temperature">Water Temperature</string>
     <string name="methods">Fishing Methods</string>
     <string name="result">Result</string>
+    <string name="notes">Notes</string>
+    <string name="quantity">Quantity</string>
+    <string name="length">Length</string>
+    <string name="weight">Weight</string>
+    <string name="depth">Depth</string>
     <string name="bait_category">Bait Category</string>
     <string name="date">Date</string>
     <string name="time">Time</string>
@@ -51,6 +59,9 @@
     <string name="water_conditions">Water Conditions</string>
     <string name="weather_conditions">Weather Conditions</string>
     <string name="degrees_f">\u00b0F</string>
+    <string name="lbs">lbs</string>
+    <string name="inches">\"</string>
+    <string name="ft">ft</string>
     <string name="zero">0</string>
 
     <string name="drawer_open">Open Navigation Drawer</string>
@@ -82,6 +93,12 @@
     <string name="size_hint">Enter a size</string>
     <string name="description_hint">Enter a description</string>
     <string name="temperature_hint">Enter a temperature</string>
+    <string name="temperature_hint_unit">Enter a temperature (\u00b0F)</string>
+    <string name="notes_hint">Enter some notes</string>
+    <string name="quantity_hint">Enter a quantity</string>
+    <string name="length_hint">Enter a length (inches)</string>
+    <string name="weight_hint">Enter a weight (pounds)</string>
+    <string name="depth_hint">Enter a depth (feet)</string>
     <string name="sky_hint">ex. Cloudy</string>
 
     <string name="hint_new_item">Enter new</string>

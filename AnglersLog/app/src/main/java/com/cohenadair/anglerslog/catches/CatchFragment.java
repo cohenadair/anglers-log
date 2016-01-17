@@ -45,12 +45,19 @@ public class CatchFragment extends DetailFragment {
     private PropertyDetailView mFishingMethodsView;
     private PropertyDetailView mWaterClarityView;
     private PropertyDetailView mResultView;
+    private PropertyDetailView mQuantityView;
+    private PropertyDetailView mLengthView;
+    private PropertyDetailView mWeightView;
+    private PropertyDetailView mWaterDepthView;
+    private PropertyDetailView mWaterTemperatureView;
     private WeatherDetailsView mWeatherDetailsView;
+    private TextView mNotesView;
 
     private TextView mCatchDetails;
     private TextView mFishDetails;
     private TextView mWaterConditions;
     private TextView mWeatherConditions;
+    private TextView mNotesTitle;
 
     public CatchFragment() {
         // Required empty public constructor
@@ -78,12 +85,20 @@ public class CatchFragment extends DetailFragment {
         mFishingMethodsView = (PropertyDetailView)view.findViewById(R.id.fishing_methods_view);
         mWaterClarityView = (PropertyDetailView)view.findViewById(R.id.water_clarity_view);
         mResultView = (PropertyDetailView)view.findViewById(R.id.catch_result_view);
+        mLengthView = (PropertyDetailView)view.findViewById(R.id.length_view);
+        mWeightView = (PropertyDetailView)view.findViewById(R.id.weight_view);
+        mQuantityView = (PropertyDetailView)view.findViewById(R.id.quantity_view);
+        mWaterDepthView = (PropertyDetailView)view.findViewById(R.id.water_depth_view);
+        mWaterTemperatureView = (PropertyDetailView)view.findViewById(R.id.water_temperature_view);
         mWeatherDetailsView = (WeatherDetailsView)view.findViewById(R.id.weather_details_view);
+        mNotesView = (TextView)view.findViewById(R.id.notes_text_view);
+
 
         mCatchDetails = (TextView)view.findViewById(R.id.title_catch_details);
         mFishDetails = (TextView)view.findViewById(R.id.title_fish_details);
         mWaterConditions = (TextView)view.findViewById(R.id.title_water_conditions);
         mWeatherConditions = (TextView)view.findViewById(R.id.title_weather_conditions);
+        mNotesTitle = (TextView)view.findViewById(R.id.title_notes);
 
         update(getActivity());
 
@@ -120,22 +135,32 @@ public class CatchFragment extends DetailFragment {
             updateWaterClarityView();
             updateResultView();
             updateWeatherDetailsView();
+            updateQuantityView();
+            updateLengthView();
+            updateWeightView();
+            updateWaterDepthView();
+            updateWaterTemperatureView();
+            updateNotesView();
 
             // hide catch details title if needed
             if (mCatch.getBait() == null && mCatch.getFishingSpot() == null && mCatch.getFishingMethods().size() <= 0)
                 mCatchDetails.setVisibility(View.GONE);
 
             // hide fish details title if needed
-            if (mCatch.getCatchResult() == null)
+            if (mCatch.getCatchResult() == null && mCatch.getQuantity() == -1 && mCatch.getLength() == -1 && mCatch.getWeight() == -1)
                 mFishDetails.setVisibility(View.GONE);
 
             // hide water conditions title if needed
-            if (mCatch.getWaterClarity() == null)
+            if (mCatch.getWaterClarity() == null && mCatch.getWaterDepth() == -1 && mCatch.getWaterTemperature() == -1)
                 mWaterConditions.setVisibility(View.GONE);
 
             // hide weather title if needed
             if (mCatch.getWeather() == null)
                 mWeatherConditions.setVisibility(View.GONE);
+
+            // hide notes title if needed
+            if (mCatch.getNotes() == null)
+                mNotesTitle.setVisibility(View.GONE);
         }
     }
 
@@ -174,6 +199,36 @@ public class CatchFragment extends DetailFragment {
         Weather weather = mCatch.getWeather();
         Utils.toggleVisibility(mWeatherDetailsView, weather != null);
         mWeatherDetailsView.updateViews(weather);
+    }
+
+    private void updateQuantityView() {
+        Utils.toggleVisibility(mQuantityView, mCatch.getQuantity() != -1);
+        mQuantityView.setDetail(mCatch.getQuantityAsString());
+    }
+
+    private void updateLengthView() {
+        Utils.toggleVisibility(mLengthView, mCatch.getLength() != -1);
+        mLengthView.setDetail(mCatch.getLengthAsString(getContext()));
+    }
+
+    private void updateWeightView() {
+        Utils.toggleVisibility(mWeightView, mCatch.getWeight() != -1);
+        mWeightView.setDetail(mCatch.getWeightAsString(getContext()));
+    }
+
+    private void updateWaterDepthView() {
+        Utils.toggleVisibility(mWaterDepthView, mCatch.getWaterDepth() != -1);
+        mWaterDepthView.setDetail(mCatch.getWaterDepthAsString(getContext()));
+    }
+
+    private void updateWaterTemperatureView() {
+        Utils.toggleVisibility(mWaterTemperatureView, mCatch.getWaterTemperature() != -1);
+        mWaterTemperatureView.setDetail(mCatch.getWaterTemperatureAsString(getContext()));
+    }
+
+    private void updateNotesView() {
+        Utils.toggleVisibility(mNotesView, mCatch.getNotes() != null);
+        mNotesView.setText(mCatch.getNotesAsString());
     }
 
     private void initLocationLayout(View view) {

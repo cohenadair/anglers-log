@@ -30,6 +30,7 @@ import com.cohenadair.anglerslog.utilities.PrimitiveSpecManager;
 import com.cohenadair.anglerslog.utilities.UserDefineArrays;
 import com.cohenadair.anglerslog.utilities.Utils;
 import com.cohenadair.anglerslog.views.SelectionSpinnerView;
+import com.cohenadair.anglerslog.views.TextInputView;
 import com.cohenadair.anglerslog.views.TitleSubTitleView;
 import com.cohenadair.anglerslog.views.WeatherView;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -53,6 +54,12 @@ public class ManageCatchFragment extends ManageContentFragment {
     private TitleSubTitleView mBaitView;
     private TitleSubTitleView mWaterClarityView;
     private TitleSubTitleView mFishingMethodsView;
+    private TextInputView mQuantityView;
+    private TextInputView mLengthView;
+    private TextInputView mWeightView;
+    private TextInputView mWaterDepthView;
+    private TextInputView mWaterTemperatureView;
+    private TextInputView mNotesView;
     private SelectionSpinnerView mResultSpinner;
     private WeatherView mWeatherView;
 
@@ -89,6 +96,13 @@ public class ManageCatchFragment extends ManageContentFragment {
         initWeatherView(view);
 
         initSubclassObject();
+
+        mQuantityView = (TextInputView)view.findViewById(R.id.quantity_view);
+        mLengthView = (TextInputView)view.findViewById(R.id.length_view);
+        mWeightView = (TextInputView)view.findViewById(R.id.weight_view);
+        mWaterDepthView = (TextInputView)view.findViewById(R.id.water_depth_view);
+        mWaterTemperatureView = (TextInputView)view.findViewById(R.id.water_temperature_view);
+        mNotesView = (TextInputView)view.findViewById(R.id.notes_view);
 
         // reset for each time the view is created
         if (!isEditing()) {
@@ -165,6 +179,14 @@ public class ManageCatchFragment extends ManageContentFragment {
             return false;
         }
 
+        // all input properties
+        getNewCatch().setQuantity((int)mQuantityView.asFloat());
+        getNewCatch().setLength(mLengthView.asFloat());
+        getNewCatch().setWeight(mWeightView.asFloat());
+        getNewCatch().setWaterDepth(mWaterDepthView.asFloat());
+        getNewCatch().setWaterTemperature((int)mWaterTemperatureView.asFloat());
+        getNewCatch().setNotes(mNotesView.getInputText().isEmpty() ? null : mNotesView.getInputText());
+
         // update properties that interact directly with the database
         getNewCatch().setFishingMethods(mSelectedFishingMethods);
         getNewCatch().setWeather(mWeather);
@@ -183,6 +205,12 @@ public class ManageCatchFragment extends ManageContentFragment {
         mFishingMethodsView.setSubtitle(UserDefineArrays.namesAsString(mSelectedFishingMethods));
         mResultSpinner.setSelection(getNewCatch().getCatchResult().getValue());
         mWeatherView.updateViews(mWeather);
+        mQuantityView.setInputText(getNewCatch().getQuantityAsString());
+        mLengthView.setInputText(getNewCatch().getLengthAsString());
+        mWeightView.setInputText(getNewCatch().getWeightAsString());
+        mWaterDepthView.setInputText(getNewCatch().getWaterDepthAsString());
+        mWaterTemperatureView.setInputText(getNewCatch().getWaterTemperatureAsString());
+        mNotesView.setInputText(getNewCatch().getNotesAsString());
     }
 
     //region Google API

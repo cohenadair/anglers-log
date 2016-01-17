@@ -118,6 +118,27 @@
             android:layout_marginBottom="@dimen/margin_default"
             android:text="@string/fish_details"/>
 
+        <!-- Quantity -->
+        <com.cohenadair.anglerslog.views.PropertyDetailView
+            android:id="@+id/quantity_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            custom:propertyName="@string/quantity"/>
+
+        <!-- Length -->
+        <com.cohenadair.anglerslog.views.PropertyDetailView
+            android:id="@+id/length_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            custom:propertyName="@string/length"/>
+
+        <!-- Weight -->
+        <com.cohenadair.anglerslog.views.PropertyDetailView
+            android:id="@+id/weight_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            custom:propertyName="@string/weight"/>
+
         <!-- Result -->
         <com.cohenadair.anglerslog.views.PropertyDetailView
             android:id="@+id/catch_result_view"
@@ -142,6 +163,20 @@
             android:layout_height="wrap_content"
             custom:propertyName="@string/clarity"/>
 
+        <!-- Water Depth -->
+        <com.cohenadair.anglerslog.views.PropertyDetailView
+            android:id="@+id/water_depth_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            custom:propertyName="@string/depth"/>
+
+        <!-- Water Temperature -->
+        <com.cohenadair.anglerslog.views.PropertyDetailView
+            android:id="@+id/water_temperature_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            custom:propertyName="@string/temperature"/>
+
         <!-- Weather Conditions -->
         <TextView
             style="?android:listSeparatorTextViewStyle"
@@ -159,6 +194,25 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/margin_default"
             android:layout_marginRight="@dimen/margin_default"/>
+
+        <!-- Notes Title -->
+        <TextView
+            style="?android:listSeparatorTextViewStyle"
+            android:id="@+id/title_notes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_default"
+            android:layout_marginBottom="@dimen/margin_default"
+            android:text="@string/notes"/>
+
+        <!-- Notes -->
+        <TextView
+            android:id="@+id/notes_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_default"
+            android:layout_marginRight="@dimen/margin_default"
+            android:layout_marginBottom="@dimen/margin_default"/>
 
     </LinearLayout>
 

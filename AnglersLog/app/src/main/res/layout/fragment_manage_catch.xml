@@ -83,15 +83,67 @@
 
         <include layout="@layout/view_divider"/>
 
-        <!-- Water Clarity -->
-        <com.cohenadair.anglerslog.views.TitleSubTitleView
-            android:id="@+id/clarity_layout"
+        <!-- Weather -->
+        <com.cohenadair.anglerslog.views.WeatherView
+            android:id="@+id/weather_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <include layout="@layout/view_divider"/>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/margin_default"
-            custom:titleText="@string/clarity"
-            custom:subtitleHint="@string/clarity_hint"
-            custom:titleStyle="@style/TextView.Header"/>
+            android:orientation="horizontal">
+
+            <!-- Length -->
+            <com.cohenadair.anglerslog.views.TextInputView
+                android:id="@+id/length_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                custom:titleText="@string/length"
+                custom:editTextHint="@string/length_hint"
+                custom:numbersOnly="true"/>
+
+            <!-- Weight -->
+            <com.cohenadair.anglerslog.views.TextInputView
+                android:id="@+id/weight_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                custom:titleText="@string/weight"
+                custom:editTextHint="@string/weight_hint"
+                custom:numbersOnly="true"/>
+
+        </LinearLayout>
+
+        <include layout="@layout/view_divider"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <!-- Quantity -->
+            <com.cohenadair.anglerslog.views.TextInputView
+                android:id="@+id/quantity_view"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                custom:titleText="@string/quantity"
+                custom:editTextHint="@string/quantity_hint"
+                custom:numbersOnly="true"/>
+
+            <!-- Result -->
+            <com.cohenadair.anglerslog.views.SelectionSpinnerView
+                android:id="@+id/result_spinner"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                custom:titleText="@string/result"/>
+
+        </LinearLayout>
 
         <include layout="@layout/view_divider"/>
 
@@ -107,20 +159,54 @@
 
         <include layout="@layout/view_divider"/>
 
-        <!-- Result -->
-        <com.cohenadair.anglerslog.views.SelectionSpinnerView
-            android:id="@+id/result_spinner"
+        <!-- Water Clarity -->
+        <com.cohenadair.anglerslog.views.TitleSubTitleView
+            android:id="@+id/clarity_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            custom:titleText="@string/result"/>
+            android:layout_margin="@dimen/margin_default"
+            custom:titleText="@string/water_clarity"
+            custom:subtitleHint="@string/clarity_hint"
+            custom:titleStyle="@style/TextView.Header"/>
 
         <include layout="@layout/view_divider"/>
 
-        <!-- Weather -->
-        <com.cohenadair.anglerslog.views.WeatherView
-            android:id="@+id/weather_view"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <!-- Water Depth -->
+            <com.cohenadair.anglerslog.views.TextInputView
+                android:id="@+id/water_depth_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                custom:titleText="@string/water_depth"
+                custom:editTextHint="@string/depth_hint"
+                custom:numbersOnly="true"/>
+
+            <!-- Water Temperature -->
+            <com.cohenadair.anglerslog.views.TextInputView
+                android:id="@+id/water_temperature_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                custom:titleText="@string/water_temperature"
+                custom:editTextHint="@string/temperature_hint_unit"
+                custom:numbersOnly="true"/>
+
+        </LinearLayout>
+
+        <include layout="@layout/view_divider"/>
+
+        <!-- Notes -->
+        <com.cohenadair.anglerslog.views.TextInputView
+            android:id="@+id/notes_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            custom:titleText="@string/notes"
+            custom:editTextHint="@string/notes_hint"/>
 
     </LinearLayout>
 </ScrollView>

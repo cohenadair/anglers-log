@@ -63,7 +63,13 @@ public class LogbookHelper extends SQLiteOpenHelper {
             CatchTable.Columns.FISHING_SPOT_ID + " TEXT REFERENCES " + FishingSpotTable.NAME + "(" + FishingSpotTable.Columns.ID + "), " +
             CatchTable.Columns.CLARITY_ID + " TEXT REFERENCES " + WaterClarityTable.NAME + "(" + WaterClarityTable.Columns.ID + "), " +
             CatchTable.Columns.CATCH_RESULT + " INTEGER, " +
-            CatchTable.Columns.IS_FAVORITE + " INTEGER" +
+            CatchTable.Columns.IS_FAVORITE + " INTEGER," +
+            CatchTable.Columns.LENGTH + " REAL," +
+            CatchTable.Columns.WEIGHT + " REAL," +
+            CatchTable.Columns.WATER_DEPTH + " REAL," +
+            CatchTable.Columns.WATER_TEMPERATURE + " INTEGER," +
+            CatchTable.Columns.QUANTITY + " INTEGER," +
+            CatchTable.Columns.NOTES + " TEXT" +
             ")"
         );
     }

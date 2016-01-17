@@ -2,6 +2,7 @@ package com.cohenadair.anglerslog.views;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.text.InputType;
 import android.util.AttributeSet;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -44,6 +45,9 @@ public class TextInputView extends LinearLayout {
             try {
                 mTitle.setText(arr.getString(R.styleable.TextInputView_titleText));
                 mEditText.setHint(arr.getString(R.styleable.TextInputView_editTextHint));
+
+                if (arr.getBoolean(R.styleable.TextInputView_numbersOnly, false))
+                    mEditText.setInputType(InputType.TYPE_CLASS_NUMBER);
             } finally {
                 arr.recycle(); // required after using TypedArray
             }
@@ -69,4 +73,8 @@ public class TextInputView extends LinearLayout {
         mEditText.setText(text);
     }
     //endregion
+
+    public float asFloat() {
+        return getInputText() == null ? -1 : Float.parseFloat(getInputText());
+    }
 }

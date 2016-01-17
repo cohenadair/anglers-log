@@ -27,8 +27,14 @@ public class LogbookSchema {
             public static final String IS_FAVORITE = "isFavorite";
             public static final String BAIT_ID = "baitId";
             public static final String FISHING_SPOT_ID = "fishingSpotId";
-            public static final String CLARITY_ID = "waterClarityId";
             public static final String CATCH_RESULT = "catchResult";
+            public static final String CLARITY_ID = "waterClarityId";
+            public static final String WATER_DEPTH = "waterDepth";
+            public static final String WATER_TEMPERATURE = "waterTemperature";
+            public static final String QUANTITY = "quantity";
+            public static final String LENGTH = "length";
+            public static final String WEIGHT = "weight";
+            public static final String NOTES = "notes";
         }
     }
 

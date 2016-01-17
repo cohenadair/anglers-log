@@ -31,8 +31,14 @@ public class Catch extends PhotoUserDefineObject {
     private boolean mIsFavorite;
     private Bait mBait;
     private FishingSpot mFishingSpot;
-    private WaterClarity mWaterClarity;
     private CatchResult mCatchResult = CatchResult.RELEASED;
+    private WaterClarity mWaterClarity;
+    private float mWaterDepth = -1;
+    private int mWaterTemperature = -1;
+    private int mQuantity = -1;
+    private float mLength = -1;
+    private float mWeight = -1;
+    private String mNotes;
 
     /**
      * Represents what was done after a catch was made. Values correspond to the catch results
@@ -80,6 +86,12 @@ public class Catch extends PhotoUserDefineObject {
         mIsFavorite = aCatch.isFavorite();
         mSpecies = new Species(aCatch.getSpecies(), true);
         mCatchResult = aCatch.getCatchResult();
+        mQuantity = aCatch.getQuantity();
+        mLength = aCatch.getLength();
+        mWeight = aCatch.getWeight();
+        mWaterDepth = aCatch.getWaterDepth();
+        mWaterTemperature = aCatch.getWaterTemperature();
+        mNotes = aCatch.getNotes();
 
         if (aCatch.getBait() != null)
             mBait = new Bait(aCatch.getBait(), true);
@@ -157,6 +169,54 @@ public class Catch extends PhotoUserDefineObject {
 
     public void setCatchResult(CatchResult catchResult) {
         mCatchResult = catchResult;
+    }
+
+    public float getWaterDepth() {
+        return mWaterDepth;
+    }
+
+    public void setWaterDepth(float waterDepth) {
+        mWaterDepth = waterDepth;
+    }
+
+    public int getWaterTemperature() {
+        return mWaterTemperature;
+    }
+
+    public void setWaterTemperature(int waterTemperature) {
+        mWaterTemperature = waterTemperature;
+    }
+
+    public int getQuantity() {
+        return mQuantity;
+    }
+
+    public void setQuantity(int quantity) {
+        mQuantity = quantity;
+    }
+
+    public float getLength() {
+        return mLength;
+    }
+
+    public void setLength(float length) {
+        mLength = length;
+    }
+
+    public float getWeight() {
+        return mWeight;
+    }
+
+    public void setWeight(float weight) {
+        mWeight = weight;
+    }
+
+    public String getNotes() {
+        return mNotes;
+    }
+
+    public void setNotes(String notes) {
+        mNotes = notes;
     }
     //endregion
 
@@ -250,6 +310,46 @@ public class Catch extends PhotoUserDefineObject {
         return (mWaterClarity != null) ? mWaterClarity.getName() : "";
     }
 
+    public String getQuantityAsString() {
+        return (mQuantity != -1) ? Integer.toString(mQuantity) : "";
+    }
+
+    public String getLengthAsString(Context context) {
+        return (mLength != -1) ? Float.toString(mLength) + context.getResources().getString(R.string.inches) : "";
+    }
+
+    public String getLengthAsString() {
+        return (mLength != -1) ? Float.toString(mLength) : "";
+    }
+
+    public String getWeightAsString(Context context) {
+        return (mWeight != -1) ? Float.toString(mWeight) + " " + context.getResources().getString(R.string.lbs) : "";
+    }
+
+    public String getWeightAsString() {
+        return (mWeight != -1) ? Float.toString(mWeight) : "";
+    }
+
+    public String getWaterDepthAsString(Context context) {
+        return (mWaterDepth != -1) ? Float.toString(mWaterDepth) + " " + context.getResources().getString(R.string.ft) : "";
+    }
+
+    public String getWaterDepthAsString() {
+        return (mWaterDepth != -1) ? Float.toString(mWaterDepth) : "";
+    }
+
+    public String getWaterTemperatureAsString(Context context) {
+        return (mWaterTemperature != -1) ? Integer.toString(mWaterTemperature) + context.getResources().getString(R.string.degrees_f) : "";
+    }
+
+    public String getWaterTemperatureAsString() {
+        return (mWaterTemperature != -1) ? Integer.toString(mWaterTemperature) : "";
+    }
+
+    public String getNotesAsString() {
+        return (mNotes != null) ? mNotes : "";
+    }
+
     /**
      * Gets the Catch's CatchResult as a String. A Context is needed to retrieve the String array
      * resource.
@@ -268,6 +368,11 @@ public class Catch extends PhotoUserDefineObject {
         values.put(CatchTable.Columns.IS_FAVORITE, mIsFavorite ? 1 : 0);
         values.put(CatchTable.Columns.SPECIES_ID, mSpecies.idAsString());
         values.put(CatchTable.Columns.CATCH_RESULT, mCatchResult.getValue());
+        values.put(CatchTable.Columns.QUANTITY, mQuantity);
+        values.put(CatchTable.Columns.LENGTH, mLength);
+        values.put(CatchTable.Columns.WEIGHT, mWeight);
+        values.put(CatchTable.Columns.WATER_DEPTH, mWaterDepth);
+        values.put(CatchTable.Columns.WATER_TEMPERATURE, mWaterTemperature);
 
         if (mBait != null)
             values.put(CatchTable.Columns.BAIT_ID, mBait.idAsString());
@@ -277,6 +382,9 @@ public class Catch extends PhotoUserDefineObject {
 
         if (mWaterClarity != null)
             values.put(CatchTable.Columns.CLARITY_ID, mWaterClarity.idAsString());
+
+        if (mNotes != null)
+            values.put(CatchTable.Columns.NOTES, mNotes);
 
         return values;
     }

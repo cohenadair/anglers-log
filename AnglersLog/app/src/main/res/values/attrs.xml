@@ -6,6 +6,7 @@
     <declare-styleable name="TextInputView">
         <attr name="titleText" />
         <attr name="editTextHint" format="string" />
+        <attr name="numbersOnly" format="boolean" />
     </declare-styleable>
 
     <declare-styleable name="SelectPhotosView">
