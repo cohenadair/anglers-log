@@ -2,7 +2,7 @@ Anglers' Log To-Do List
 =======================
 
 ### Catches
-* Add missing attributes
+* ~~Add missing attributes~~
 
 ### Pages
 * Add Trips
