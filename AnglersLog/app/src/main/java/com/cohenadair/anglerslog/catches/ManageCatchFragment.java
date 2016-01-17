@@ -91,8 +91,10 @@ public class ManageCatchFragment extends ManageContentFragment {
         initSubclassObject();
 
         // reset for each time the view is created
-        if (!isEditing())
+        if (!isEditing()) {
             mSelectedFishingMethods = new ArrayList<>();
+            mWeather = null;
+        }
 
         mRequestQueue = Volley.newRequestQueue(getContext());
 
