@@ -32,6 +32,7 @@
 @property (nonatomic)BOOL bannerIsVisible;
 
 @property (strong, nonatomic)CMAFishingSpot *currentFishingSpot;
+@property (strong, nonatomic)NSMutableArray *fishingSpotAnnotations;
 @property (nonatomic)BOOL isReadOnly;
 @property (nonatomic)BOOL mapDidRender;
 @property (nonatomic)BOOL showRenderError;
@@ -72,7 +73,8 @@
     if (self.fishingSpotFromSingleEntry)
         [self initCurrentFishingSpot:self.fishingSpotFromSingleEntry];
     else if (!self.currentFishingSpot)
-        [self initCurrentFishingSpot:[self.location.fishingSpots objectAtIndex:0]];
+        if ([self.location.fishingSpots count] > 0)
+            [self initCurrentFishingSpot:[self.location.fishingSpots objectAtIndex:0]];
     
     [self.navigationController setToolbarHidden:YES];
 }
@@ -258,8 +260,6 @@
         source.location = nil;
         source.selectedCellLabelText = nil;
     }
-    
-    [self setMapRegion];
 }
 
 #pragma mark - Map Initializing
@@ -268,6 +268,7 @@
     [self.mapTypeControl.layer setCornerRadius:5.0f];
     [self.mapTypeControl setSelectedSegmentIndex:[[CMAStorageManager sharedManager] getUserMapType]];
     [self.mapView setMapType:self.mapTypeControl.selectedSegmentIndex];
+    [self.mapView setLayoutMargins:UIEdgeInsetsMake(20, 20, 20, 20)];
     
     [self.mapTypeControl.superview bringSubviewToFront:self.mapTypeControl];
     
@@ -295,17 +296,22 @@
 
 // Adds an annotation to the map for each fishing spot in the location.
 - (void)addFishingSpotsToMap: (MKMapView *)mapView {
+    self.fishingSpotAnnotations = [NSMutableArray new];
+    
     for (CMAFishingSpot *spot in self.location.fishingSpots) {
         MKPointAnnotation *p = [MKPointAnnotation new];
         [p setCoordinate:spot.coordinate];
         [p setTitle:spot.name];
 
+        [self.fishingSpotAnnotations addObject:p];
         [mapView addAnnotation:p];
     }
+    
+    [self setMapRegion];
 }
 
 - (void)setMapRegion {
-    [self.mapView setRegion:[self.location mapRegion] animated:NO];
+    [self.mapView showAnnotations:self.fishingSpotAnnotations animated:NO];
 }
 
 - (void)mapViewDidFinishRenderingMap:(MKMapView *)mapView fullyRendered:(BOOL)fullyRendered {

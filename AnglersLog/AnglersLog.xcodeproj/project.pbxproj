@@ -20,6 +20,7 @@
 		0D23B2741A78102B00E89736 /* CMAImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D23B2731A78102B00E89736 /* CMAImage.m */; };
 		0D248B0F1AB0C82200093290 /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D248B0E1AB0C82200093290 /* iAd.framework */; };
 		0D28AAB11ABB44F9009E8184 /* CMAAdBanner.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D28AAB01ABB44F9009E8184 /* CMAAdBanner.m */; };
+		0D2F4BA31C4EFC7000DF7948 /* Crittercism.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D2F4BA21C4EFC7000DF7948 /* Crittercism.framework */; };
 		0D4ECDFD1ACB663B008B55E6 /* rapala.png in Resources */ = {isa = PBXBuildFile; fileRef = 0D4ECDFB1ACB663B008B55E6 /* rapala.png */; };
 		0D4ECDFE1ACB663B008B55E6 /* spinner.png in Resources */ = {isa = PBXBuildFile; fileRef = 0D4ECDFC1ACB663B008B55E6 /* spinner.png */; };
 		0D5584CC1ABF578D00719554 /* icon.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0D5584CB1ABF578D00719554 /* icon.jpg */; };
@@ -190,6 +191,7 @@
 		0D248B0E1AB0C82200093290 /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
 		0D28AAAF1ABB44F9009E8184 /* CMAAdBanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAAdBanner.h; path = Utilities/CMAAdBanner.h; sourceTree = "<group>"; };
 		0D28AAB01ABB44F9009E8184 /* CMAAdBanner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAAdBanner.m; path = Utilities/CMAAdBanner.m; sourceTree = "<group>"; };
+		0D2F4BA21C4EFC7000DF7948 /* Crittercism.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crittercism.framework; sourceTree = "<group>"; };
 		0D3AD6531ACA17DE00FE5204 /* ios_icon_set.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; name = ios_icon_set.sh; path = ../Images/ios_icon_set.sh; sourceTree = "<group>"; };
 		0D4461181A9D3024006C34D2 /* use_cases.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = use_cases.md; path = ../DevNotes/use_cases.md; sourceTree = "<group>"; };
 		0D4461281A9D321B006C34D2 /* docs_link.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = docs_link.md; path = ../Docs/docs_link.md; sourceTree = "<group>"; };
@@ -422,6 +424,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0D2F4BA31C4EFC7000DF7948 /* Crittercism.framework in Frameworks */,
 				0D128FB61AD5D7600004CABE /* libz.dylib in Frameworks */,
 				0D5584CE1ABF59C200719554 /* StoreKit.framework in Frameworks */,
 				0D248B0F1AB0C82200093290 /* iAd.framework in Frameworks */,
@@ -775,6 +778,7 @@
 		E70B637419D3A8E400DFBA85 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				0D2F4BA21C4EFC7000DF7948 /* Crittercism.framework */,
 				0D128FB51AD5D7600004CABE /* libz.dylib */,
 				0D5584CD1ABF59C200719554 /* StoreKit.framework */,
 				0D248B0E1AB0C82200093290 /* iAd.framework */,
@@ -963,6 +967,7 @@
 				E70B636E19D3A8E400DFBA85 /* Sources */,
 				E70B636F19D3A8E400DFBA85 /* Frameworks */,
 				E70B637019D3A8E400DFBA85 /* Resources */,
+				0D2F4BA41C4EFEC400DF7948 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -1078,6 +1083,22 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		0D2F4BA41C4EFEC400DF7948 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "APP_ID=\"569e5966cb99e10e00c7ed69\"\nOAUTH2=\"8e85c5b2180ca4614c8f169a519026dc\"\nsource ${SRCROOT}/Crittercism.framework/dsym_upload.sh";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		E70B636E19D3A8E400DFBA85 /* Sources */ = {

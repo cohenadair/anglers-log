@@ -39,6 +39,7 @@
 
 - (BOOL)addFishingSpot: (CMAFishingSpot *)aFishingSpot {
     [aFishingSpot setMyLocation:self];
+    [self sortFishingSpotsByName];
     return YES;
 }
 

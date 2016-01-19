@@ -23,6 +23,7 @@
 
 @property (strong, nonatomic)CMADeleteActionSheet *deleteLocationActionSheet;
 @property (strong, nonatomic)NSMutableOrderedSet *addedFishingSpots;
+@property (strong, nonatomic)NSMutableOrderedSet *removedFishingSpots;
 @property (nonatomic)BOOL isEditingLocation;
 @property (nonatomic)BOOL tappedAddFishingSpot;
 
@@ -60,6 +61,8 @@ NSInteger const SECTION_DELETE = 3;
     }
     
     self.addedFishingSpots = [NSMutableOrderedSet orderedSet];
+    self.removedFishingSpots = [NSMutableOrderedSet orderedSet];
+    
     [self initDeleteLocationActionSheet];
 }
 
@@ -168,18 +171,23 @@ NSInteger const SECTION_DELETE = 3;
         // delete from data source
         UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
         
-        NSLog(@"addedFishingSpots: %ld before delete.", (long)[self.addedFishingSpots count]);
-        
         // remove fishing spot from addedFishingSpots if needed
         id obj;
+        BOOL foundInAdded = NO;
         for (CMAFishingSpot *s in self.addedFishingSpots)
             if ([s.name isEqualToString:[CMAUtilities capitalizedString:cell.textLabel.text]]) {
                 obj = s;
+                foundInAdded = YES;
                 break;
             }
         
         [self.addedFishingSpots removeObject:obj];
-        NSLog(@"addedFishingSpots: %ld after delete.", (long)[self.addedFishingSpots count]);
+        
+        if (!foundInAdded) {
+            CMAFishingSpot *newSpot = [[CMAStorageManager sharedManager] managedFishingSpot];
+            newSpot = [newSpot initWithFishingSpot:[self.location fishingSpotNamed:cell.textLabel.text]];
+            [self.removedFishingSpots addObject:newSpot];
+        }
         
         [self.location removeFishingSpotNamed:cell.textLabel.text];
         
@@ -276,7 +284,19 @@ NSInteger const SECTION_DELETE = 3;
             [[CMAStorageManager sharedManager] deleteManagedObject:s saveContext:YES];
     }
     
+    // add all removed fishing spots
+    for (CMAFishingSpot *s in self.removedFishingSpots) {
+        if (self.isEditingLocation) {
+            CMAFishingSpot *newSpot = [[CMAStorageManager sharedManager] managedFishingSpot];
+            newSpot = [newSpot initWithFishingSpot:s];
+            [self.location addFishingSpot:newSpot];
+        }
+    }
+    
+    [[CMAStorageManager sharedManager] saveJournal];
+    
     self.addedFishingSpots = nil;
+    self.removedFishingSpots = nil;
     
     [self performSegueToPreviousView];
 }
@@ -323,7 +343,6 @@ NSInteger const SECTION_DELETE = 3;
         
         if (source.fishingSpot && self.tappedAddFishingSpot) {
             [self.location addFishingSpot:source.fishingSpot];
-            [self.location sortFishingSpotsByName];
             
             [self.addedFishingSpots addObject:source.fishingSpot];
             [self setTappedAddFishingSpot:NO];

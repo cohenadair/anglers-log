@@ -28,6 +28,16 @@
     return self;
 }
 
+- (CMAFishingSpot *)initWithFishingSpot:(CMAFishingSpot *)aSpot {
+    self.name = [aSpot.name mutableCopy];
+    self.location = [CLLocation new];
+    [self setCoordinates:aSpot.location.coordinate];
+    self.fishCaught = aSpot.fishCaught;
+    self.entries = aSpot.entries;
+    
+    return self;
+}
+
 #pragma mark - Editing
 
 - (void)setCoordinates: (CLLocationCoordinate2D)coordinates {
