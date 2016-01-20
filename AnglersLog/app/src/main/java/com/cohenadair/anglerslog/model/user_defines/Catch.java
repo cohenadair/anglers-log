@@ -15,7 +15,7 @@ import java.util.Date;
 
 import static com.cohenadair.anglerslog.database.LogbookSchema.CatchPhotoTable;
 import static com.cohenadair.anglerslog.database.LogbookSchema.CatchTable;
-import static com.cohenadair.anglerslog.database.LogbookSchema.UsedFishingMethodsTable;
+import static com.cohenadair.anglerslog.database.LogbookSchema.UsedFishingMethodTable;
 import static com.cohenadair.anglerslog.database.LogbookSchema.WeatherTable;
 
 /**
@@ -235,14 +235,14 @@ public class Catch extends PhotoUserDefineObject {
 
     private void addFishingMethods(ArrayList<UserDefineObject> fishingMethods) {
         for (UserDefineObject method : fishingMethods)
-            if (!QueryHelper.insertQuery(UsedFishingMethodsTable.NAME, getUsedFishingMethodContentValues((FishingMethod)method)))
+            if (!QueryHelper.insertQuery(UsedFishingMethodTable.NAME, getUsedFishingMethodContentValues((FishingMethod)method)))
                 Log.e(TAG, "Error adding FishingMethod to database.");
     }
 
     private void deleteFishingMethods() {
         if (!QueryHelper.deleteQuery(
-                UsedFishingMethodsTable.NAME,
-                UsedFishingMethodsTable.Columns.CATCH_ID + " = ?",
+                UsedFishingMethodTable.NAME,
+                UsedFishingMethodTable.Columns.CATCH_ID + " = ?",
                 new String[] { idAsString() }))
             Log.e(TAG, "Error deleting FishingMethods from database.");
     }
@@ -250,8 +250,8 @@ public class Catch extends PhotoUserDefineObject {
     private ContentValues getUsedFishingMethodContentValues(FishingMethod method) {
         ContentValues values = new ContentValues();
 
-        values.put(UsedFishingMethodsTable.Columns.CATCH_ID, idAsString());
-        values.put(UsedFishingMethodsTable.Columns.FISHING_METHOD_ID, method.idAsString());
+        values.put(UsedFishingMethodTable.Columns.CATCH_ID, idAsString());
+        values.put(UsedFishingMethodTable.Columns.FISHING_METHOD_ID, method.idAsString());
 
         return values;
     }

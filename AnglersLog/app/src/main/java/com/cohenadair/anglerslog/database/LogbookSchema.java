@@ -80,6 +80,20 @@ public class LogbookSchema {
         public static final String NAME = "FishingMethod";
     }
 
+    public static final class AnglerTable extends UserDefineTable {
+        public static final String NAME = "Angler";
+    }
+
+    public static final class TripTable extends UserDefineTable {
+        public static final String NAME = "Trip";
+
+        public static final class Columns extends UserDefineTable.Columns {
+            public static final String START_DATE = "startDate";
+            public static final String END_DATE = "endDate";
+            public static final String NOTES = "notes";
+        }
+    }
+
     /**
      * An actual table isn't created here; used as a superclass to specific photo tables.
      */
@@ -101,7 +115,7 @@ public class LogbookSchema {
     /**
      * Stores Catch to FishingMethod pairs. There can be multiple fishing methods per catch.
      */
-    public static final class UsedFishingMethodsTable {
+    public static final class UsedFishingMethodTable {
         public static final String NAME = "UsedFishingMethod";
 
         public static final class Columns {
@@ -118,6 +132,42 @@ public class LogbookSchema {
             public static final String TEMPERATURE = "temperature";
             public static final String WIND_SPEED = "windSpeed";
             public static final String SKY_CONDITIONS = "skyConditions";
+        }
+    }
+
+    /**
+     * Stores Trip to Angler pairs. There can be multiple anglers per trip.
+     */
+    public static final class UsedAnglerTable {
+        public static final String NAME = "UsedAngler";
+
+        public static final class Columns {
+            public static final String TRIP_ID = "tripId";
+            public static final String ANGLER_ID = "anglerId";
+        }
+    }
+
+    /**
+     * Stores Trip to Location pairs. There can be multiple locations per trip.
+     */
+    public static final class UsedLocationTable {
+        public static final String NAME = "UsedLocation";
+
+        public static final class Columns {
+            public static final String TRIP_ID = "tripId";
+            public static final String LOCATION_ID = "locationId";
+        }
+    }
+
+    /**
+     * Stores Trip to Catch pairs. There can be multiple catches per trip.
+     */
+    public static final class UsedCatchTable {
+        public static final String NAME = "UsedCatch";
+
+        public static final class Columns {
+            public static final String TRIP_ID = "tripId";
+            public static final String CATCH_ID = "catchId";
         }
     }
 }

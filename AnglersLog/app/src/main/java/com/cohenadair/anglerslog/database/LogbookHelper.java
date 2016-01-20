@@ -15,7 +15,10 @@ import static com.cohenadair.anglerslog.database.LogbookSchema.CatchTable;
 import static com.cohenadair.anglerslog.database.LogbookSchema.FishingMethodTable;
 import static com.cohenadair.anglerslog.database.LogbookSchema.FishingSpotTable;
 import static com.cohenadair.anglerslog.database.LogbookSchema.LocationTable;
+import static com.cohenadair.anglerslog.database.LogbookSchema.TripTable;
+import static com.cohenadair.anglerslog.database.LogbookSchema.UsedFishingMethodTable;
 import static com.cohenadair.anglerslog.database.LogbookSchema.WaterClarityTable;
+import static com.cohenadair.anglerslog.database.LogbookSchema.WeatherTable;
 
 /**
  * The LogbookHelper is a {@link SQLiteOpenHelper} subclass that interacts with the application's
@@ -43,7 +46,12 @@ public class LogbookHelper extends SQLiteOpenHelper {
         createLocationTable(db);
         createFishingSpotTable(db);
         createFishingMethodTable(db);
+        createAnglerTable(db);
+        createTripTable(db);
         createUsedFishingMethodTable(db);
+        createUsedAnglerTable(db);
+        createUsedCatchTable(db);
+        createUsedLocationTable(db);
         createWaterClarityTable(db);
         createWeatherTable(db);
     }
@@ -132,11 +140,57 @@ public class LogbookHelper extends SQLiteOpenHelper {
         );
     }
 
+    public void createTripTable(SQLiteDatabase db) {
+        db.execSQL("CREATE TABLE " + TripTable.NAME + "(" +
+            TripTable.Columns.ID + " TEXT PRIMARY KEY NOT NULL, " +
+            TripTable.Columns.NAME + " TEXT, " +
+            TripTable.Columns.START_DATE + " INTEGER UNIQUE NOT NULL, " +
+            TripTable.Columns.END_DATE + " INTEGER UNIQUE NOT NULL, " +
+            TripTable.Columns.NOTES + " TEXT" +
+            ")"
+        );
+    }
+
+    public void createAnglerTable(SQLiteDatabase db) {
+        db.execSQL("CREATE TABLE " + AnglerTable.NAME + "(" +
+            AnglerTable.Columns.ID + " TEXT PRIMARY KEY NOT NULL, " +
+            AnglerTable.Columns.NAME + " TEXT UNIQUE NOT NULL" +
+            ")"
+        );
+    }
+
+    public void createUsedAnglerTable(SQLiteDatabase db) {
+        db.execSQL("CREATE TABLE " + UsedAnglerTable.NAME + "(" +
+            UsedAnglerTable.Columns.TRIP_ID + " TEXT NOT NULL, " +
+            UsedAnglerTable.Columns.ANGLER_ID + " TEXT NOT NULL REFERENCES " + AnglerTable.NAME + "(" + AnglerTable.Columns.ID + "), " +
+            "UNIQUE(" + UsedAnglerTable.Columns.TRIP_ID + ", " + UsedAnglerTable.Columns.ANGLER_ID + ")" +
+            ")"
+        );
+    }
+
+    public void createUsedLocationTable(SQLiteDatabase db) {
+        db.execSQL("CREATE TABLE " + UsedLocationTable.NAME + "(" +
+            UsedLocationTable.Columns.TRIP_ID + " TEXT NOT NULL, " +
+            UsedLocationTable.Columns.LOCATION_ID + " TEXT NOT NULL REFERENCES " + LocationTable.NAME + "(" + LocationTable.Columns.ID + "), " +
+            "UNIQUE(" + UsedLocationTable.Columns.TRIP_ID + ", " + UsedLocationTable.Columns.LOCATION_ID + ")" +
+            ")"
+        );
+    }
+
+    public void createUsedCatchTable(SQLiteDatabase db) {
+        db.execSQL("CREATE TABLE " + UsedCatchTable.NAME + "(" +
+            UsedCatchTable.Columns.TRIP_ID + " TEXT NOT NULL, " +
+            UsedCatchTable.Columns.CATCH_ID + " TEXT NOT NULL REFERENCES " + CatchTable.NAME + "(" + CatchTable.Columns.ID + "), " +
+            "UNIQUE(" + UsedCatchTable.Columns.TRIP_ID + ", " + UsedCatchTable.Columns.CATCH_ID + ")" +
+            ")"
+        );
+    }
+
     private void createUsedFishingMethodTable(SQLiteDatabase db) {
-        db.execSQL("CREATE TABLE " + UsedFishingMethodsTable.NAME + "(" +
-            UsedFishingMethodsTable.Columns.CATCH_ID + " TEXT NOT NULL, " + // not REFERENCES because table entries are added after Catch entries (results in FOREIGN KEY constraint failure)
-            UsedFishingMethodsTable.Columns.FISHING_METHOD_ID + " TEXT NOT NULL REFERENCES " + FishingMethodTable.NAME + "(" + FishingMethodTable.Columns.ID + "), " +
-            "UNIQUE(" + UsedFishingMethodsTable.Columns.CATCH_ID + ", " + UsedFishingMethodsTable.Columns.FISHING_METHOD_ID + ")" +
+        db.execSQL("CREATE TABLE " + UsedFishingMethodTable.NAME + "(" +
+            UsedFishingMethodTable.Columns.CATCH_ID + " TEXT NOT NULL, " + // not REFERENCES because table entries are added after Catch entries (results in FOREIGN KEY constraint failure)
+            UsedFishingMethodTable.Columns.FISHING_METHOD_ID + " TEXT NOT NULL REFERENCES " + FishingMethodTable.NAME + "(" + FishingMethodTable.Columns.ID + "), " +
+            "UNIQUE(" + UsedFishingMethodTable.Columns.CATCH_ID + ", " + UsedFishingMethodTable.Columns.FISHING_METHOD_ID + ")" +
             ")"
         );
     }

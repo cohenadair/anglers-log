@@ -115,15 +115,15 @@ public class QueryHelper {
         ArrayList<UserDefineObject> methods = new ArrayList<>();
 
         Cursor cursor = simpleQuery(
-                UsedFishingMethodsTable.NAME,
-                UsedFishingMethodsTable.Columns.FISHING_METHOD_ID,
-                UsedFishingMethodsTable.Columns.CATCH_ID + " = ?",
+                UsedFishingMethodTable.NAME,
+                UsedFishingMethodTable.Columns.FISHING_METHOD_ID,
+                UsedFishingMethodTable.Columns.CATCH_ID + " = ?",
                 new String[]{catchId.toString()}
         );
 
         if (cursor.moveToFirst())
             while (!cursor.isAfterLast()) {
-                UUID methodId = UUID.fromString(cursor.getString(cursor.getColumnIndex(UsedFishingMethodsTable.Columns.FISHING_METHOD_ID)));
+                UUID methodId = UUID.fromString(cursor.getString(cursor.getColumnIndex(UsedFishingMethodTable.Columns.FISHING_METHOD_ID)));
                 methods.add(Logbook.getFishingMethod(methodId));
                 cursor.moveToNext();
             }
