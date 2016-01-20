@@ -2,7 +2,7 @@ package com.cohenadair.anglerslog.model.user_defines;
 
 /**
  * Represents a single fishing method property, added by the user.
- * @author Cohen Adair
+ * Created by Cohen Adair on 2015-11-03.
  */
 public class FishingMethod extends UserDefineObject {
 

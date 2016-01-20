@@ -3,15 +3,17 @@ package com.cohenadair.anglerslog.model.user_defines;
 import android.content.ContentValues;
 import android.content.Context;
 import android.text.format.DateFormat;
-import android.util.Log;
 
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.database.QueryHelper;
+import com.cohenadair.anglerslog.model.Logbook;
 import com.cohenadair.anglerslog.model.Weather;
+import com.cohenadair.anglerslog.model.utilities.UsedUserDefineObject;
 import com.cohenadair.anglerslog.utilities.Utils;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.UUID;
 
 import static com.cohenadair.anglerslog.database.LogbookSchema.CatchPhotoTable;
 import static com.cohenadair.anglerslog.database.LogbookSchema.CatchTable;
@@ -39,6 +41,9 @@ public class Catch extends PhotoUserDefineObject {
     private float mLength = -1;
     private float mWeight = -1;
     private String mNotes;
+
+    // utility objects used for database accessing
+    private UsedUserDefineObject mUsedFishingMethods;
 
     /**
      * Represents what was done after a catch was made. Values correspond to the catch results
@@ -78,6 +83,7 @@ public class Catch extends PhotoUserDefineObject {
     public Catch(Date date) {
         super(Utils.getDisplayDate(date), CatchPhotoTable.NAME);
         mDate = date;
+        init();
     }
 
     public Catch(Catch aCatch, boolean keepId) {
@@ -101,16 +107,24 @@ public class Catch extends PhotoUserDefineObject {
 
         if (aCatch.getWaterClarity() != null)
             mWaterClarity = new WaterClarity(aCatch.getWaterClarity(), true);
+
+        init();
     }
 
     public Catch(UserDefineObject obj) {
         super(obj);
         setPhotoTable(CatchPhotoTable.NAME);
+        init();
     }
 
     public Catch(UserDefineObject obj, boolean keepId) {
         super(obj, keepId);
         setPhotoTable(CatchPhotoTable.NAME);
+        init();
+    }
+
+    private void init() {
+        mUsedFishingMethods = new UsedUserDefineObject(getId(), UsedFishingMethodTable.NAME, UsedFishingMethodTable.Columns.CATCH_ID, UsedFishingMethodTable.Columns.FISHING_METHOD_ID);
     }
     //endregion
 
@@ -222,38 +236,16 @@ public class Catch extends PhotoUserDefineObject {
 
     //region Fishing Method Manipulation
     public ArrayList<UserDefineObject> getFishingMethods() {
-        return QueryHelper.queryUsedFishingMethod(getId());
+        return mUsedFishingMethods.getObjects(new QueryHelper.UsedQueryCallbacks() {
+            @Override
+            public UserDefineObject getFromLogbook(UUID id) {
+                return Logbook.getFishingMethod(id);
+            }
+        });
     }
 
     public void setFishingMethods(ArrayList<UserDefineObject> fishingMethods) {
-        if (fishingMethods == null || fishingMethods.size() == 0)
-            return;
-
-        deleteFishingMethods();
-        addFishingMethods(fishingMethods);
-    }
-
-    private void addFishingMethods(ArrayList<UserDefineObject> fishingMethods) {
-        for (UserDefineObject method : fishingMethods)
-            if (!QueryHelper.insertQuery(UsedFishingMethodTable.NAME, getUsedFishingMethodContentValues((FishingMethod)method)))
-                Log.e(TAG, "Error adding FishingMethod to database.");
-    }
-
-    private void deleteFishingMethods() {
-        if (!QueryHelper.deleteQuery(
-                UsedFishingMethodTable.NAME,
-                UsedFishingMethodTable.Columns.CATCH_ID + " = ?",
-                new String[] { idAsString() }))
-            Log.e(TAG, "Error deleting FishingMethods from database.");
-    }
-
-    private ContentValues getUsedFishingMethodContentValues(FishingMethod method) {
-        ContentValues values = new ContentValues();
-
-        values.put(UsedFishingMethodTable.Columns.CATCH_ID, idAsString());
-        values.put(UsedFishingMethodTable.Columns.FISHING_METHOD_ID, method.idAsString());
-
-        return values;
+        mUsedFishingMethods.setObjects(fishingMethods);
     }
     //endregion
 

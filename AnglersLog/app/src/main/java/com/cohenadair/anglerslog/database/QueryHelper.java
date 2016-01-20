@@ -41,6 +41,10 @@ public class QueryHelper {
         UserDefineObject getObject(UserDefineCursor cursor);
     }
 
+    public interface UsedQueryCallbacks {
+        UserDefineObject getFromLogbook(UUID id);
+    }
+
     private QueryHelper() { }
 
     public static void setDatabase(SQLiteDatabase database) {
@@ -112,24 +116,54 @@ public class QueryHelper {
      * @return An ArrayList of {@link FishingMethod} objects.
      */
     public static ArrayList<UserDefineObject> queryUsedFishingMethod(UUID catchId) {
-        ArrayList<UserDefineObject> methods = new ArrayList<>();
+        return queryUsedUserDefineObject(UsedFishingMethodTable.NAME, UsedFishingMethodTable.Columns.FISHING_METHOD_ID, UsedFishingMethodTable.Columns.CATCH_ID, catchId, new UsedQueryCallbacks() {
+            @Override
+            public UserDefineObject getFromLogbook(UUID id) {
+                return Logbook.getAngler(id);
+            }
+        });
+    }
 
-        Cursor cursor = simpleQuery(
-                UsedFishingMethodTable.NAME,
-                UsedFishingMethodTable.Columns.FISHING_METHOD_ID,
-                UsedFishingMethodTable.Columns.CATCH_ID + " = ?",
-                new String[]{catchId.toString()}
-        );
+    /**
+     * Get all the {@link com.cohenadair.anglerslog.model.user_defines.Angler} objects associated
+     * with the given {@link com.cohenadair.anglerslog.model.user_defines.Trip} id.
+     *
+     * @param tripId The UUID of the {@link com.cohenadair.anglerslog.model.user_defines.Trip} to look for.
+     * @return An ArrayList of {@link com.cohenadair.anglerslog.model.user_defines.Angler} objects.
+     */
+    public static ArrayList<UserDefineObject> queryUsedAnglers(UUID tripId) {
+        return queryUsedUserDefineObject(UsedAnglerTable.NAME, UsedAnglerTable.Columns.ANGLER_ID, UsedAnglerTable.Columns.TRIP_ID, tripId, new UsedQueryCallbacks() {
+            @Override
+            public UserDefineObject getFromLogbook(UUID id) {
+                return Logbook.getAngler(id);
+            }
+        });
+    }
+
+    /**
+     * Gets the "Used*" UserDefineObjects for a "super" UserDefineObject. Example: Can get all the
+     * used fishing methods for a given Catch.
+     *
+     * @param table The "Used *" table name (i.e. UsedFishingMethodTable).
+     * @param resultColumn If getting FishingMethod objects, for example, use UsedFishingMethodTable.Columns.FISHING_METHOD_ID.
+     * @param superColumn The superclass columns (i.e. UsedFishinMethodsTable.Columns.CATCH_ID).
+     * @param superId The id of the superclass to filter used user define objects (i.e. catch id).
+     * @param callbacks Callbacks for the method.
+     * @return An ArrayList of UserDefineObjects associated with the give superclass id.
+     */
+    public static ArrayList<UserDefineObject> queryUsedUserDefineObject(String table, String resultColumn, String superColumn, UUID superId, UsedQueryCallbacks callbacks) {
+        ArrayList<UserDefineObject> objs = new ArrayList<>();
+        Cursor cursor = simpleQuery(table, resultColumn, superColumn + " = ?", new String[]{ superId.toString() });
 
         if (cursor.moveToFirst())
             while (!cursor.isAfterLast()) {
-                UUID methodId = UUID.fromString(cursor.getString(cursor.getColumnIndex(UsedFishingMethodTable.Columns.FISHING_METHOD_ID)));
-                methods.add(Logbook.getFishingMethod(methodId));
+                UUID id = UUID.fromString(cursor.getString(cursor.getColumnIndex(resultColumn)));
+                objs.add(callbacks.getFromLogbook(id));
                 cursor.moveToNext();
             }
 
         cursor.close();
-        return methods;
+        return objs;
     }
 
     /**

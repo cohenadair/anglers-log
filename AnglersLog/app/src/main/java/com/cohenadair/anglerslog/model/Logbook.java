@@ -8,6 +8,7 @@ import android.util.Log;
 
 import com.cohenadair.anglerslog.database.LogbookHelper;
 import com.cohenadair.anglerslog.database.QueryHelper;
+import com.cohenadair.anglerslog.database.cursors.AnglerCursor;
 import com.cohenadair.anglerslog.database.cursors.BaitCategoryCursor;
 import com.cohenadair.anglerslog.database.cursors.BaitCursor;
 import com.cohenadair.anglerslog.database.cursors.CatchCursor;
@@ -15,8 +16,10 @@ import com.cohenadair.anglerslog.database.cursors.FishingMethodCursor;
 import com.cohenadair.anglerslog.database.cursors.FishingSpotCursor;
 import com.cohenadair.anglerslog.database.cursors.LocationCursor;
 import com.cohenadair.anglerslog.database.cursors.SpeciesCursor;
+import com.cohenadair.anglerslog.database.cursors.TripCursor;
 import com.cohenadair.anglerslog.database.cursors.UserDefineCursor;
 import com.cohenadair.anglerslog.database.cursors.WaterClarityCursor;
+import com.cohenadair.anglerslog.model.user_defines.Angler;
 import com.cohenadair.anglerslog.model.user_defines.Bait;
 import com.cohenadair.anglerslog.model.user_defines.BaitCategory;
 import com.cohenadair.anglerslog.model.user_defines.Catch;
@@ -24,6 +27,7 @@ import com.cohenadair.anglerslog.model.user_defines.FishingMethod;
 import com.cohenadair.anglerslog.model.user_defines.FishingSpot;
 import com.cohenadair.anglerslog.model.user_defines.Location;
 import com.cohenadair.anglerslog.model.user_defines.Species;
+import com.cohenadair.anglerslog.model.user_defines.Trip;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import com.cohenadair.anglerslog.model.user_defines.WaterClarity;
 
@@ -31,6 +35,7 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.UUID;
 
+import static com.cohenadair.anglerslog.database.LogbookSchema.AnglerTable;
 import static com.cohenadair.anglerslog.database.LogbookSchema.BaitCategoryTable;
 import static com.cohenadair.anglerslog.database.LogbookSchema.BaitTable;
 import static com.cohenadair.anglerslog.database.LogbookSchema.CatchPhotoTable;
@@ -39,6 +44,7 @@ import static com.cohenadair.anglerslog.database.LogbookSchema.FishingMethodTabl
 import static com.cohenadair.anglerslog.database.LogbookSchema.FishingSpotTable;
 import static com.cohenadair.anglerslog.database.LogbookSchema.LocationTable;
 import static com.cohenadair.anglerslog.database.LogbookSchema.SpeciesTable;
+import static com.cohenadair.anglerslog.database.LogbookSchema.TripTable;
 import static com.cohenadair.anglerslog.database.LogbookSchema.WaterClarityTable;
 
 /**
@@ -447,6 +453,82 @@ public class Logbook {
 
     public static int getFishingMethodCount() {
         return QueryHelper.queryCount(FishingMethodTable.NAME);
+    }
+    //endregion
+
+    //region Angler Manipulation
+    public static ArrayList<UserDefineObject> getAnglers() {
+        return QueryHelper.queryUserDefines(QueryHelper.queryUserDefines(AnglerTable.NAME, null, null), new QueryHelper.UserDefineQueryInterface() {
+            @Override
+            public UserDefineObject getObject(UserDefineCursor cursor) {
+                return new AnglerCursor(cursor).getAngler();
+            }
+        });
+    }
+
+    public static Angler getAngler(UUID id) {
+        UserDefineObject obj = QueryHelper.queryUserDefine(AnglerTable.NAME, id, new QueryHelper.UserDefineQueryInterface() {
+            @Override
+            public UserDefineObject getObject(UserDefineCursor cursor) {
+                return new AnglerCursor(cursor).getAngler();
+            }
+        });
+
+        return (obj == null) ? null : (Angler)obj;
+    }
+
+    public static boolean addAngler(Angler angler) {
+        return QueryHelper.insertQuery(AnglerTable.NAME, angler.getContentValues());
+    }
+
+    public static boolean removeAngler(UUID id) {
+        return QueryHelper.deleteUserDefine(AnglerTable.NAME, id);
+    }
+
+    public static boolean editAngler(UUID id, Angler newAngler) {
+        return QueryHelper.updateUserDefine(AnglerTable.NAME, newAngler.getContentValues(), id);
+    }
+
+    public static int getAnglerCount() {
+        return QueryHelper.queryCount(AnglerTable.NAME);
+    }
+    //endregion
+
+    //region Trip Manipulation
+    public static ArrayList<UserDefineObject> getTrips() {
+        return QueryHelper.queryUserDefines(QueryHelper.queryUserDefines(TripTable.NAME, null, null), new QueryHelper.UserDefineQueryInterface() {
+            @Override
+            public UserDefineObject getObject(UserDefineCursor cursor) {
+                return new TripCursor(cursor).getTrip();
+            }
+        });
+    }
+
+    public static Trip getTrip(UUID id) {
+        UserDefineObject obj = QueryHelper.queryUserDefine(TripTable.NAME, id, new QueryHelper.UserDefineQueryInterface() {
+            @Override
+            public UserDefineObject getObject(UserDefineCursor cursor) {
+                return new TripCursor(cursor).getTrip();
+            }
+        });
+
+        return (obj == null) ? null : (Trip)obj;
+    }
+
+    public static boolean addTrip(Trip trip) {
+        return QueryHelper.insertQuery(TripTable.NAME, trip.getContentValues());
+    }
+
+    public static boolean removeTrip(UUID id) {
+        return QueryHelper.deleteUserDefine(TripTable.NAME, id);
+    }
+
+    public static boolean editTrip(UUID id, Trip newTrip) {
+        return QueryHelper.updateUserDefine(TripTable.NAME, newTrip.getContentValues(), id);
+    }
+
+    public static int getTripCount() {
+        return QueryHelper.queryCount(TripTable.NAME);
     }
     //endregion
 }

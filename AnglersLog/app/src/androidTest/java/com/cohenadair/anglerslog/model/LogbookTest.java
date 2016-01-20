@@ -5,6 +5,7 @@ import android.support.test.runner.AndroidJUnit4;
 import android.test.RenamingDelegatingContext;
 
 import com.cohenadair.anglerslog.database.LogbookHelper;
+import com.cohenadair.anglerslog.model.user_defines.Angler;
 import com.cohenadair.anglerslog.model.user_defines.Bait;
 import com.cohenadair.anglerslog.model.user_defines.BaitCategory;
 import com.cohenadair.anglerslog.model.user_defines.Catch;
@@ -12,6 +13,7 @@ import com.cohenadair.anglerslog.model.user_defines.FishingMethod;
 import com.cohenadair.anglerslog.model.user_defines.FishingSpot;
 import com.cohenadair.anglerslog.model.user_defines.Location;
 import com.cohenadair.anglerslog.model.user_defines.Species;
+import com.cohenadair.anglerslog.model.user_defines.Trip;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import com.cohenadair.anglerslog.model.user_defines.WaterClarity;
 
@@ -349,5 +351,73 @@ public class LogbookTest {
         Logbook.addFishingMethod(method1);
         ArrayList<UserDefineObject> methods = Logbook.getFishingMethods();
         assertTrue(methods.size() == 2);
+    }
+
+    @Test
+    public void testAngler() {
+        Angler angler0 = new Angler("Cohen Adair");
+        Angler angler1 = new Angler("Eli Adair");
+        Angler angler2 = new Angler(angler1, true);
+        angler2.setName("Ethan Adair");
+
+        // add
+        assertTrue(Logbook.addAngler(angler1));
+        assertFalse(Logbook.addAngler(angler1));
+        assertTrue(Logbook.getAnglerCount() == 1);
+
+        // edit
+        assertTrue(Logbook.editAngler(angler1.getId(), angler2));
+        assertTrue(Logbook.getAngler(angler1.getId()) != null);
+
+        // get single
+        Angler angler3 = Logbook.getAngler(angler1.getId());
+        assertTrue(angler3.getId().equals(angler2.getId()));
+        assertTrue(angler3.getName().equals(angler2.getName()));
+
+        // delete
+        assertTrue(Logbook.removeAngler(angler1.getId()));
+        assertTrue(Logbook.getAnglerCount() == 0);
+
+        // get multiple
+        Logbook.addAngler(angler0);
+        Logbook.addAngler(angler1);
+        ArrayList<UserDefineObject> anglers = Logbook.getAnglers();
+        assertTrue(anglers.size() == 2);
+    }
+
+    @Test
+    public void testTrip() {
+        Trip trip0 = new Trip("Silver Lake 2014");
+        trip0.setStartDate(new Date(1000000));
+        trip0.setEndDate(new Date(2000000));
+        Trip trip1 = new Trip("Lake Ontario 2013");
+        trip1.setStartDate(new Date(3000000));
+        trip1.setEndDate(new Date(4000000));
+        Trip trip2 = new Trip(trip1, true);
+        trip2.setName("Port Albert Opening Weekend 2014");
+
+        // add
+        assertTrue(Logbook.addTrip(trip1));
+        assertFalse(Logbook.addTrip(trip1));
+        assertTrue(Logbook.getTripCount() == 1);
+
+        // edit
+        assertTrue(Logbook.editTrip(trip1.getId(), trip2));
+        assertTrue(Logbook.getTrip(trip1.getId()) != null);
+
+        // get single
+        Trip trip3 = Logbook.getTrip(trip1.getId());
+        assertTrue(trip3.getId().equals(trip2.getId()));
+        assertTrue(trip3.getName().equals(trip2.getName()));
+
+        // delete
+        assertTrue(Logbook.removeTrip(trip1.getId()));
+        assertTrue(Logbook.getTripCount() == 0);
+
+        // get multiple
+        Logbook.addTrip(trip0);
+        Logbook.addTrip(trip1);
+        ArrayList<UserDefineObject> trips = Logbook.getTrips();
+        assertTrue(trips.size() == 2);
     }
 }
