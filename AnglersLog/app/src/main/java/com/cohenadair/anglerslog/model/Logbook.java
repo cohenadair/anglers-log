@@ -520,6 +520,8 @@ public class Logbook {
     }
 
     public static boolean removeTrip(UUID id) {
+        Trip trip = Logbook.getTrip(id);
+        trip.removeDatabaseProperties();
         return QueryHelper.deleteUserDefine(TripTable.NAME, id);
     }
 

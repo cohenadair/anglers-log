@@ -153,10 +153,17 @@
     <string name="success_bait_edit">Successfully updated bait.</string>
     <string name="error_bait_delete">Bait is in use and cannot be deleted.</string>
     <string name="error_bait_edit">Error updating bait.</string>
-    <string name="error_bait">Error adding bait!</string>
+    <string name="error_bait">Error adding bait.</string>
     <string name="error_name">Please enter a name.</string>
     <string name="error_bait_category">Please select a category.</string>
     <string name="error_bait_category_name">A bait with that name and category already exists.</string>
+
+    <string name="error_trip">Error adding trip.</string>
+    <string name="error_trip_edit">Error updating trip.</string>
+    <string name="error_trip_delete">Error deleting trip.</string>
+    <string name="success_trip">Successfully added trip.</string>
+    <string name="success_trip_edit">Successfully updated trip.</string>
+    <string name="success_trip_delete">Successfully deleted trip.</string>
 
     <string name="error_camera_unavailable">The camera is currently unavailable on this device.</string>
     <string name="error_delete_primitive">is currently in use and cannot be deleted.</string>

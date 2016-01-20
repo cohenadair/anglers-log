@@ -391,5 +391,6 @@ public class Catch extends PhotoUserDefineObject {
             removePhoto(s);
 
         removeWeather();
+        mUsedFishingMethods.deleteObjects();
     }
 }

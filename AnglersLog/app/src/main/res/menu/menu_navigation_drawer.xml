@@ -5,6 +5,11 @@
         android:checkableBehavior="single">
 
         <item
+            android:id="@+id/nav_trips"
+            android:icon="@drawable/ic_trips"
+            android:title="@string/drawer_trips" />
+
+        <item
             android:id="@+id/nav_catches"
             android:icon="@drawable/ic_catches"
             android:title="@string/drawer_catches"
@@ -26,10 +31,6 @@
     <group
         android:id="@+id/group_extras"
         android:checkableBehavior="single">
-
-        <item
-            android:id="@+id/nav_trips"
-            android:title="@string/drawer_trips" />
 
         <item
             android:id="@+id/nav_photos"

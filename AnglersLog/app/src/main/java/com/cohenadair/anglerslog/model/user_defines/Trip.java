@@ -33,6 +33,10 @@ public class Trip extends UserDefineObject {
     private UsedUserDefineObject mUsedCatches;
 
     //region Constructors
+    public Trip() {
+        this("");
+    }
+
     public Trip(String name) {
         super(name);
         init();
@@ -153,5 +157,16 @@ public class Trip extends UserDefineObject {
             values.put(TripTable.Columns.NOTES, mNotes);
 
         return values;
+    }
+
+    /**
+     * Used for deleting trips. This method will remove any external ties to the database. For
+     * example, removing used locations and catches. It removes the trip-to-object pairs in the
+     * "Used *" tables.
+     */
+    public void removeDatabaseProperties() {
+        mUsedCatches.deleteObjects();
+        mUsedLocations.deleteObjects();
+        mUsedAnglers.deleteObjects();
     }
 }

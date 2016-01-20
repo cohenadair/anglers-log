@@ -16,6 +16,7 @@ The following are required updates for new `UserDefineObject` subclasses or modi
 * `LogbookSchema` requires a new table scheme.
 * `LogbookHelper` requires new or updated table creation.
 * If a new `UserDefineObject` subclass is created, add manipulation methods to `Logbook` (follow pattern from existing `UserDefineObject` subclasses).
+* If a new `UserDefineObject` has a one-to-many relationship (see below), add a `removeDatabaseProperties()` method that removes the `UserDefineObject` from the necessary tables (see `Catch.removeDatabaseProperties()`), and call this method in the `Logbook.remove*()` method.
 
 ### A note about to-many relationships:
 SQLite doesn't directly support storing an array in a single column.  For `UserDefineObject` subclasses that require a collection of some sort (i.e. `Catch` requires a collection of images and a collection of `FishingMethod` objects), a new table should be created and accessed by the `UserDefineObject`.

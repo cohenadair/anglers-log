@@ -20,6 +20,9 @@ import com.cohenadair.anglerslog.locations.LocationListManager;
 import com.cohenadair.anglerslog.locations.ManageLocationFragment;
 import com.cohenadair.anglerslog.model.Logbook;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
+import com.cohenadair.anglerslog.trips.ManageTripFragment;
+import com.cohenadair.anglerslog.trips.TripFragment;
+import com.cohenadair.anglerslog.trips.TripListManager;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -48,6 +51,7 @@ public class LayoutSpecManager {
     public static final int LAYOUT_CATCHES = R.id.nav_catches;
     public static final int LAYOUT_LOCATIONS = R.id.nav_locations;
     public static final int LAYOUT_BAITS = R.id.nav_baits;
+    public static final int LAYOUT_TRIPS = R.id.nav_trips;
 
     //region Layout Spec Definitions
     @Nullable
@@ -63,19 +67,32 @@ public class LayoutSpecManager {
 
             case LAYOUT_BAITS:
                 return getBaitsLayoutSpec(layoutSpecContext);
+
+            case LAYOUT_TRIPS:
+                return getTripsLayoutSpec(layoutSpecContext);
         }
 
         return null;
     }
 
+    /**
+     * Used to quickly show the details of a complex {@link UserDefineObject} such as a
+     * {@link com.cohenadair.anglerslog.model.user_defines.Location}.
+     */
     @Nullable
     public static DetailFragment getDetailFragment(int layoutId) {
         switch (layoutId) {
+            case LAYOUT_CATCHES:
+                return new CatchFragment();
+
             case LAYOUT_LOCATIONS:
                 return new LocationFragment();
 
             case LAYOUT_BAITS:
                 return new BaitFragment();
+
+            case LAYOUT_TRIPS:
+                return new TripFragment();
         }
 
         return null;
@@ -177,6 +194,31 @@ public class LayoutSpecManager {
         return spec;
     }
 
+    private static LayoutSpec getTripsLayoutSpec(final LayoutSpecActivity context) {
+        final OnClickInterface onMasterItemClick = context.getOnMyListFragmentItemClick();
+        final LayoutSpec spec = new LayoutSpec("trips", "trip", "Trip");
+
+        spec.setListener(new LayoutSpec.InteractionListener() {
+            @Override
+            public ListManager.Adapter onGetMasterAdapter() {
+                return new TripListManager.Adapter(context, Logbook.getTrips(), onMasterItemClick);
+            }
+
+            @Override
+            public boolean onUserDefineRemove(UUID id) {
+                boolean removed = Logbook.removeTrip(id);
+                spec.removeUserDefine(context, Logbook.getTrip(id), removed, R.string.success_trip_delete);
+                return removed;
+            }
+        });
+
+        spec.setId(LAYOUT_TRIPS);
+        spec.setMasterFragment(new MyListFragment());
+        spec.setDetailFragment(new TripFragment());
+        spec.setManageFragment(new ManageTripFragment());
+
+        return spec;
+    }
     //endregion
 
 }

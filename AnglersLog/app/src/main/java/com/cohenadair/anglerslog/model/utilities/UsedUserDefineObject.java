@@ -46,13 +46,13 @@ public class UsedUserDefineObject {
         addObjects(objects);
     }
 
+    public void deleteObjects() {
+        QueryHelper.deleteQuery(mTable, mSuperColumnId + " = ?", new String[]{mSuperId.toString()});
+    }
+
     private void addObjects(ArrayList<UserDefineObject> objects) {
         for (UserDefineObject obj : objects)
             QueryHelper.insertQuery(mTable, getContentValues(obj));
-    }
-
-    private void deleteObjects() {
-        QueryHelper.deleteQuery(mTable, mSuperColumnId + " = ?", new String[]{ mSuperId.toString() });
     }
 
     private ContentValues getContentValues(UserDefineObject obj) {
