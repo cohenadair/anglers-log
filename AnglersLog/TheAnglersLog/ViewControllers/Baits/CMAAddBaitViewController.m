@@ -36,6 +36,7 @@
 
 @property (nonatomic) BOOL isEditingBait;
 @property (nonatomic) BOOL saveImageToCameraRoll;
+@property (strong, nonatomic) NSString *oldName;
 
 @end
 
@@ -67,8 +68,10 @@
     if (self.isEditingBait) {
         self.navigationItem.title = @"Edit Bait";
         self.imageData = self.bait.imageData;
+        self.oldName = self.bait.name;
     } else {
         self.bait = [[CMAStorageManager sharedManager] managedBait];
+        self.oldName = nil;
     }
     
     [self initTableView];
@@ -279,9 +282,11 @@
         return NO;
     }
     
+    NSString *newName = self.nameTextField.text;
+    
     // make sure the bait name doesn't already exist
-    if (!self.isEditingBait)
-        if ([[[self journal] userDefineNamed:UDN_BAITS] objectNamed:self.nameTextField.text] != nil) {
+    if (![self.oldName isEqualToString:newName])
+        if ([[[self journal] userDefineNamed:UDN_BAITS] objectNamed:newName] != nil) {
             [CMAAlerts errorAlert:@"A bait by that name already exists. Please choose a new name or edit the existing bait." presentationViewController:self];
             return NO;
         }

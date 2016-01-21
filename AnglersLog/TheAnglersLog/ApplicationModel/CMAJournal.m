@@ -86,16 +86,9 @@
     for (id define in self.userDefines)
         [define sortByNameProperty];
     
-    // remove locations if they somehow ended up with no fishing spots
-    CMAUserDefine *locations = [self userDefineNamed:UDN_LOCATIONS];
-    NSMutableArray *namesToRemove = [NSMutableArray array];
-    
-    for (CMALocation *loc in locations.locations)
-        if (loc.fishingSpotCount <= 0)
-            [namesToRemove addObject:loc.name];
-
-    for (NSString *str in namesToRemove)
-        [locations removeObjectNamed:str];
+    // remove duplicate names (fixes an earlier bug)
+    [self removeDuplicateNames:[self userDefineNamed:UDN_BAITS]];
+    [self removeDuplicateNames:[self userDefineNamed:UDN_LOCATIONS]];
 }
 
 // Adds a new CMAUserDefine object to [self userDefines].
@@ -479,6 +472,22 @@
     }
     
     return result;
+}
+
+- (void)removeDuplicateNames:(CMAUserDefine *)aUserDefine {
+    NSMutableOrderedSet *objs = [aUserDefine activeSet];
+    NSMutableDictionary *frequencies = [NSMutableDictionary new];
+    
+    for (CMAUserDefineObject *obj in objs)
+        if ([frequencies objectForKey:obj.name] == nil)
+            [frequencies setObject:[NSNumber numberWithLong:1] forKey:obj.name];
+        else
+            [frequencies setObject:[NSNumber numberWithLong:[[frequencies objectForKey:obj.name] longValue] + 1] forKey:obj.name];
+    
+    // remove all objects with the same name (except one)
+    for (NSString *key in frequencies)
+        if ([[frequencies objectForKey:key] longValue] > 1)
+            [self removeUserDefine:aUserDefine.name objectNamed:key];
 }
 
 #pragma mark - Visiting

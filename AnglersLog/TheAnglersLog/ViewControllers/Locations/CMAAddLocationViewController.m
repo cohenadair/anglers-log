@@ -27,6 +27,8 @@
 @property (nonatomic)BOOL isEditingLocation;
 @property (nonatomic)BOOL tappedAddFishingSpot;
 
+@property (strong, nonatomic)NSString *oldName;
+
 @end
 
 NSInteger const SECTION_TITLE = 0;
@@ -56,8 +58,10 @@ NSInteger const SECTION_DELETE = 3;
     
     if (self.isEditingLocation) {
         self.navigationItem.title = @"Edit Location";
+        self.oldName = self.location.name;
     } else {
         self.location = [[CMAStorageManager sharedManager] managedLocation];
+        self.oldName = nil;
     }
     
     self.addedFishingSpots = [NSMutableOrderedSet orderedSet];
@@ -211,9 +215,11 @@ NSInteger const SECTION_DELETE = 3;
         return NO;
     }
     
+    NSString *newName = self.locationNameTextField.text;
+    
     // make sure the location name doesn't already exist
-    if (!self.isEditingLocation)
-        if ([[[self journal] userDefineNamed:UDN_LOCATIONS] objectNamed:self.locationNameTextField.text] != nil) {
+    if (![self.oldName isEqualToString:newName])
+        if ([[[self journal] userDefineNamed:UDN_LOCATIONS] objectNamed:newName] != nil) {
             [CMAAlerts errorAlert:@"A location by that name already exists. Please choose a new name or edit the existing location." presentationViewController:self];
             return NO;
         }

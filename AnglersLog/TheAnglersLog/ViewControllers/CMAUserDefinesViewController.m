@@ -341,9 +341,8 @@
 #pragma mark - Alert Views
 
 - (void)initAddItemAlert {
-    self.addItemAlert = [UIAlertController alertControllerWithTitle:[NSString stringWithFormat:@"Add to %@:", [self.userDefine name]]
-                                                            message:nil
-                                                     preferredStyle:UIAlertControllerStyleAlert];
+    self.addItemAlert =
+        [UIAlertController alertControllerWithTitle:[NSString stringWithFormat:@"Add to %@:", [self.userDefine name]] message:nil preferredStyle:UIAlertControllerStyleAlert];
     
     [self.addItemAlert addTextFieldWithConfigurationHandler:nil];
     
@@ -351,38 +350,15 @@
         [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
     
     UIAlertAction *add =
-        [UIAlertAction actionWithTitle:@"Add"
-                                 style:UIAlertActionStyleDefault
-                               handler:^(UIAlertAction *action) {
-                                        NSString *enteredText = [[[self.addItemAlert textFields] objectAtIndex:0] text];
-                                                    
-                                        if ([enteredText isEqualToString:@""])
-                                            return;
-                                        
-                                        [[[self.addItemAlert textFields] objectAtIndex:0] setText:@""];
-                                   
-                                        id objectToAdd = [self.userDefine emptyObjectNamed:enteredText];
-                                   
-                                        if (![[self journal] addUserDefine:self.userDefine.name objectToAdd:objectToAdd]) {
-                                            [CMAAlerts errorAlert:@"An item that name already exists. Please select a new item or edit the existing item." presentationViewController:self];
-                                            [[CMAStorageManager sharedManager] deleteManagedObject:objectToAdd saveContext:YES];
-                                            return;
-                                        }
-                                   
-                                        [[self journal] archive];
-                                        [self.tableView reloadData];
-                                        
-                                        [self handleNoXView];
-                               }];
+        [UIAlertAction actionWithTitle:@"Add" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) { [self onClickNewDone]; }];
     
     [self.addItemAlert addAction:cancel];
     [self.addItemAlert addAction:add];
 }
 
 - (void)initEditItemAlert {
-    self.editItemAlert = [UIAlertController alertControllerWithTitle:@"Edit Item"
-                                                             message:nil
-                                                      preferredStyle:UIAlertControllerStyleAlert];
+    self.editItemAlert =
+        [UIAlertController alertControllerWithTitle:@"Edit Item" message:nil preferredStyle:UIAlertControllerStyleAlert];
     
     [self.editItemAlert addTextFieldWithConfigurationHandler:nil];
     
@@ -390,23 +366,62 @@
         [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
     
     UIAlertAction *done =
-        [UIAlertAction actionWithTitle:@"Done"
-                                 style:UIAlertActionStyleDefault
-                               handler:^(UIAlertAction *action) {
-                                        NSString *enteredText = [[[self.editItemAlert textFields] objectAtIndex:0] text];
-                                   
-                                        if ([enteredText isEqualToString:@""])
-                                            return;
-                                         
-                                        id newProperties = [self.userDefine emptyObjectNamed:[[[self.editItemAlert textFields] objectAtIndex:0] text]];
-                                        [[self journal] editUserDefine:[self.userDefine name] objectNamed:self.selectedCellLabelText newProperties:newProperties];
-                                        [[CMAStorageManager sharedManager] deleteManagedObject:newProperties saveContext:YES];
-                                         
-                                        [self.tableView reloadData];
-                               }];
+        [UIAlertAction actionWithTitle:@"Done" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) { [self onClickEditDone]; }];
     
     [self.editItemAlert addAction:cancel];
     [self.editItemAlert addAction:done];
+}
+
+- (void)onClickNewDone {
+    NSString *enteredText = [[[self.addItemAlert textFields] objectAtIndex:0] text];
+    
+    if ([enteredText isEqualToString:@""])
+        return;
+    
+    [[[self.addItemAlert textFields] objectAtIndex:0] setText:@""];
+    
+    id objectToAdd = [self.userDefine emptyObjectNamed:enteredText];
+    
+    if (![[self journal] addUserDefine:self.userDefine.name objectToAdd:objectToAdd]) {
+        [self showItemExistsAlert];
+        [[CMAStorageManager sharedManager] deleteManagedObject:objectToAdd saveContext:YES];
+        return;
+    }
+    
+    [[self journal] archive];
+    [self.tableView reloadData];
+    
+    [self handleNoXView];
+}
+
+- (void)onClickEditDone {
+    NSString *oldName = self.selectedCellLabelText;
+    NSString *newName = [[[self.editItemAlert textFields] objectAtIndex:0] text];
+    
+    // if nothing was entered
+    if ([newName isEqualToString:@""])
+        return;
+    
+    // if no changes were made
+    if ([oldName isEqualToString:newName])
+        return;
+    
+    // if the new name is a duplicate name
+    if ([[[self journal] userDefineNamed:self.userDefine.name] objectNamed:newName]) {
+        [self showItemExistsAlert];
+        return;
+    }
+    
+    // if the new name is valid
+    id newObj = [self.userDefine emptyObjectNamed:newName];
+    [[self journal] editUserDefine:[self.userDefine name] objectNamed:oldName newProperties:newObj];
+    [[CMAStorageManager sharedManager] deleteManagedObject:newObj saveContext:YES];
+    
+    [self.tableView reloadData];
+}
+
+- (void)showItemExistsAlert {
+    [CMAAlerts errorAlert:@"An item that name already exists. Please select a new item or edit the existing item." presentationViewController:self];
 }
 
 #pragma mark - Events
