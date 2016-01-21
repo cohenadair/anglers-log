@@ -30,6 +30,7 @@ public abstract class ManageContentFragment extends Fragment {
 
     private SelectPhotosView mSelectPhotosView;
     private UserDefineObject mNewObject;
+    private UserDefineObject mOldObject;
 
     private boolean mIsEditing;
     private UUID mEditingId;
@@ -104,7 +105,19 @@ public abstract class ManageContentFragment extends Fragment {
     public UserDefineObject getNewObject() {
         return mNewObject;
     }
+
+    public UserDefineObject getOldObject() {
+        return mOldObject;
+    }
     //endregion
+
+    /**
+     * Checks to see if, when editing, the new object and old object names are different.
+     * @return True if the names are different, false otherwise.
+     */
+    public boolean isNameDifferent() {
+        return !(mNewObject == null || mOldObject == null) && !mNewObject.getName().equals(mOldObject.getName());
+    }
 
     public void onDismiss() {
         // only clean photos if this class implements a SelectPhotosView
@@ -153,17 +166,17 @@ public abstract class ManageContentFragment extends Fragment {
      */
     protected void initObject(InitializeInterface init) {
         if (isEditing()) {
-            UserDefineObject oldObject = init.onGetOldObject();
+            mOldObject = init.onGetOldObject();
 
             // if the UserDefineObject has photos
-            if (oldObject != null && (oldObject instanceof PhotoUserDefineObject)) {
+            if (mOldObject != null && (mOldObject instanceof PhotoUserDefineObject)) {
                 // populate the photos view with the existing photos
-                ArrayList<String> photos = ((PhotoUserDefineObject)oldObject).getPhotos();
+                ArrayList<String> photos = ((PhotoUserDefineObject)mOldObject).getPhotos();
                 for (String str : photos)
                     getSelectPhotosView().addImage(PhotoUtils.privatePhotoPath(str));
             }
 
-            mNewObject = init.onGetNewEditObject(oldObject);
+            mNewObject = init.onGetNewEditObject(mOldObject);
         } else
             mNewObject = init.onGetNewBlankObject();
     }

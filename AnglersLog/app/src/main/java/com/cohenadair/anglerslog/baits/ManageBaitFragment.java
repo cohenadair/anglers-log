@@ -117,7 +117,7 @@ public class ManageBaitFragment extends ManageContentFragment {
         }
 
         // name and category combo
-        if (!isEditing() && Logbook.baitExists(getNewBait())) {
+        if (isNameDifferent() && Logbook.baitExists(getNewBait())) {
             Utils.showErrorAlert(getActivity(), R.string.error_bait_category_name);
             return false;
         }

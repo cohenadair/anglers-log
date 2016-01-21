@@ -50,10 +50,11 @@ public class ManageLocationFragment extends ManageContentFragment {
         initAddFishingSpotButton(view);
         initSubclassObject();
 
-        if (mFishingSpots == null || !isEditing()) {
+        if (mFishingSpots == null || !isEditing())
             mFishingSpots = new ArrayList<>();
+
+        if (mFishingSpotViews == null)
             mFishingSpotViews = new ArrayList<>();
-        }
 
         return view;
     }
@@ -118,7 +119,7 @@ public class ManageLocationFragment extends ManageContentFragment {
         }
 
         // duplicate name
-        if (!isEditing() && Logbook.locationExists(loc)) {
+        if (isNameDifferent() && Logbook.locationExists(loc)) {
             Utils.showErrorAlert(getActivity(), R.string.error_location_name);
             return false;
         }
