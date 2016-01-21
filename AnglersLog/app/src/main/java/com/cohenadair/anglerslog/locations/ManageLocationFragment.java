@@ -50,11 +50,10 @@ public class ManageLocationFragment extends ManageContentFragment {
         initAddFishingSpotButton(view);
         initSubclassObject();
 
-        if (mFishingSpots == null)
+        if (mFishingSpots == null || !isEditing()) {
             mFishingSpots = new ArrayList<>();
-
-        if (mFishingSpotViews == null)
             mFishingSpotViews = new ArrayList<>();
+        }
 
         return view;
     }
