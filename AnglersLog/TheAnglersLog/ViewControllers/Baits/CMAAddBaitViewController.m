@@ -182,18 +182,23 @@
 }
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
+    BOOL pictureWasTaken = (picker.sourceType == UIImagePickerControllerSourceTypeCamera);
     UIImage *chosenImage = info[UIImagePickerControllerOriginalImage];
     
     // remove old image if there was one
     if (self.imageData)
         [[CMAStorageManager sharedManager] deleteManagedObject:self.imageData saveContext:YES];
     
-    UIImage *scaledImage = [CMAUtilities scaleImageToScreenSize:chosenImage];
+    UIImage *scaledImage;
+    if (!pictureWasTaken)
+        scaledImage = [CMAUtilities scaleImageToScreenSize:chosenImage];
+    else
+        scaledImage = chosenImage;
     
     CMAImage *img = [[CMAStorageManager sharedManager] managedImage];
     [img setFullImage:scaledImage];
     [self setImageData:img];
-    [self setSaveImageToCameraRoll:(picker.sourceType == UIImagePickerControllerSourceTypeCamera)];
+    [self setSaveImageToCameraRoll:pictureWasTaken];
     [self.imageView setImage:[CMAUtilities imageWithImage:scaledImage scaledToSize:CGSizeMake(kImageViewSize, kImageViewSize)]];
     [self.tableView beginUpdates];
     [self.tableView endUpdates];
