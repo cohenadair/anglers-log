@@ -85,6 +85,17 @@
     
     for (id define in self.userDefines)
         [define sortByNameProperty];
+    
+    // remove locations if they somehow ended up with no fishing spots
+    CMAUserDefine *locations = [self userDefineNamed:UDN_LOCATIONS];
+    NSMutableArray *namesToRemove = [NSMutableArray array];
+    
+    for (CMALocation *loc in locations.locations)
+        if (loc.fishingSpotCount <= 0)
+            [namesToRemove addObject:loc.name];
+
+    for (NSString *str in namesToRemove)
+        [locations removeObjectNamed:str];
 }
 
 // Adds a new CMAUserDefine object to [self userDefines].
