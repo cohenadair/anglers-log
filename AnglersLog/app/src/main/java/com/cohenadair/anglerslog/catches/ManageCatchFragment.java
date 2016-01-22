@@ -1,7 +1,5 @@
 package com.cohenadair.anglerslog.catches;
 
-import android.app.DatePickerDialog;
-import android.app.TimePickerDialog;
 import android.location.Location;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,16 +7,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.DatePicker;
-import android.widget.TimePicker;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 import com.cohenadair.anglerslog.R;
-import com.cohenadair.anglerslog.fragments.DatePickerFragment;
 import com.cohenadair.anglerslog.fragments.ManageContentFragment;
 import com.cohenadair.anglerslog.fragments.ManagePrimitiveFragment;
-import com.cohenadair.anglerslog.fragments.TimePickerFragment;
 import com.cohenadair.anglerslog.model.Logbook;
 import com.cohenadair.anglerslog.model.Weather;
 import com.cohenadair.anglerslog.model.user_defines.Catch;
@@ -38,7 +32,6 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.UUID;
 
@@ -180,12 +173,12 @@ public class ManageCatchFragment extends ManageContentFragment {
         }
 
         // all input properties
-        getNewCatch().setQuantity((int)mQuantityView.asFloat());
+        getNewCatch().setQuantity((int) mQuantityView.asFloat());
         getNewCatch().setLength(mLengthView.asFloat());
         getNewCatch().setWeight(mWeightView.asFloat());
         getNewCatch().setWaterDepth(mWaterDepthView.asFloat());
-        getNewCatch().setWaterTemperature((int)mWaterTemperatureView.asFloat());
-        getNewCatch().setNotes(mNotesView.getInputText().isEmpty() ? null : mNotesView.getInputText());
+        getNewCatch().setWaterTemperature((int) mWaterTemperatureView.asFloat());
+        getNewCatch().setNotes(mNotesView.isInputEmpty() ? null : mNotesView.getInputText());
 
         // update properties that interact directly with the database
         getNewCatch().setFishingMethods(mSelectedFishingMethods);
@@ -242,19 +235,13 @@ public class ManageCatchFragment extends ManageContentFragment {
         mDateView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DatePickerFragment datePicker = new DatePickerFragment();
-                datePicker.setOnDateSetListener(new DatePickerDialog.OnDateSetListener() {
+                showDatePickerFragment(getNewCatch().getDate(), new DateTimePickerInterface() {
                     @Override
-                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                        updateCalendar();
-                        Calendar c = Calendar.getInstance();
-                        int hours = c.get(Calendar.HOUR_OF_DAY);
-                        int minutes = c.get(Calendar.MINUTE);
-                        c.set(year, monthOfYear, dayOfMonth, hours, minutes);
-                        updateDateView(c.getTime());
+                    public void onFinish(Date date) {
+                        getNewCatch().setDate(date);
+                        mDateView.setSubtitle(getNewCatch().getDateAsString());
                     }
                 });
-                datePicker.show(getFragmentManager(), "datePicker");
             }
         });
 
@@ -262,47 +249,15 @@ public class ManageCatchFragment extends ManageContentFragment {
         mTimeView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TimePickerFragment timePicker = new TimePickerFragment();
-                timePicker.setOnTimeSetListener(new TimePickerDialog.OnTimeSetListener() {
+                showTimePickerFragment(getNewCatch().getDate(), new DateTimePickerInterface() {
                     @Override
-                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                        updateCalendar();
-                        Calendar c = Calendar.getInstance();
-                        int year = c.get(Calendar.YEAR);
-                        int month = c.get(Calendar.MONTH);
-                        int day = c.get(Calendar.DAY_OF_MONTH);
-                        c.set(year, month, day, hourOfDay, minute);
-                        updateTimeView(c.getTime());
+                    public void onFinish(Date date) {
+                        getNewCatch().setDate(date);
+                        mTimeView.setSubtitle(getNewCatch().getTimeAsString());
                     }
                 });
-                timePicker.show(getFragmentManager(), "timePicker");
             }
         });
-    }
-
-    /**
-     * Updates the date view's text.
-     * @param date The date to display in the view. Only looks at the date portion.
-     */
-    private void updateDateView(Date date) {
-        getNewCatch().setDate(date);
-        mDateView.setSubtitle(getNewCatch().getDateAsString());
-    }
-
-    /**
-     * Updates the time view's text.
-     * @param date The date to display in the view. Only looks at the time portion.
-     */
-    private void updateTimeView(Date date) {
-        getNewCatch().setDate(date);
-        mTimeView.setSubtitle(getNewCatch().getTimeAsString());
-    }
-
-    /**
-     * Resets the calendar's time to the current catch's time.
-     */
-    private void updateCalendar() {
-        Calendar.getInstance().setTime(getNewCatch().getDate());
     }
     //endregion
 
@@ -319,7 +274,7 @@ public class ManageCatchFragment extends ManageContentFragment {
         mSpeciesView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showPrimitiveDialog(PrimitiveSpecManager.SPECIES, false, onDismissInterface);
+                showPrimitiveDialog(PrimitiveSpecManager.SPECIES, false, null, onDismissInterface);
             }
         });
     }
@@ -367,7 +322,7 @@ public class ManageCatchFragment extends ManageContentFragment {
         mWaterClarityView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showPrimitiveDialog(PrimitiveSpecManager.WATER_CLARITY, false, onDismissInterface);
+                showPrimitiveDialog(PrimitiveSpecManager.WATER_CLARITY, false, null, onDismissInterface);
             }
         });
     }
@@ -385,7 +340,7 @@ public class ManageCatchFragment extends ManageContentFragment {
         mFishingMethodsView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showPrimitiveDialog(PrimitiveSpecManager.FISHING_METHODS, true, onDismissInterface);
+                showPrimitiveDialog(PrimitiveSpecManager.FISHING_METHODS, true, mSelectedFishingMethods, onDismissInterface);
             }
         });
     }
@@ -470,14 +425,4 @@ public class ManageCatchFragment extends ManageContentFragment {
         }));
     }
     //endregion
-
-    private void showPrimitiveDialog(int primitiveId, boolean multiple, ManagePrimitiveFragment.OnDismissInterface onDismissInterface) {
-        ManagePrimitiveFragment fragment = ManagePrimitiveFragment.newInstance(primitiveId, multiple);
-
-        if (multiple)
-            fragment.setSelectedObjects(mSelectedFishingMethods);
-
-        fragment.setOnDismissInterface(onDismissInterface);
-        fragment.show(getChildFragmentManager(), "PrimitiveDialog");
-    }
 }

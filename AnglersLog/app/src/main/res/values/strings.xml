@@ -67,6 +67,7 @@
     <string name="inches">\"</string>
     <string name="ft">ft</string>
     <string name="zero">0</string>
+    <string name="to">to</string>
 
     <string name="drawer_open">Open Navigation Drawer</string>
     <string name="drawer_close">Close Navigation Drawer</string>
@@ -168,6 +169,9 @@
     <string name="error_trip">Error adding trip.</string>
     <string name="error_trip_edit">Error updating trip.</string>
     <string name="error_trip_delete">Error deleting trip.</string>
+    <string name="error_trip_date">A trip within that date range already exists.  Please choose another date or edit the current trip.</string>
+    <string name="error_trip_date_start">Start date must come before end date.</string>
+    <string name="error_trip_date_end">End date must come after start date.</string>
     <string name="success_trip">Successfully added trip.</string>
     <string name="success_trip_edit">Successfully updated trip.</string>
     <string name="success_trip_delete">Successfully deleted trip.</string>

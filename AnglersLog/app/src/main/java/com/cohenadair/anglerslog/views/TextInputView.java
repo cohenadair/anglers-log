@@ -77,4 +77,8 @@ public class TextInputView extends LinearLayout {
     public float asFloat() {
         return getInputText() == null ? -1 : Float.parseFloat(getInputText());
     }
+
+    public boolean isInputEmpty() {
+        return getInputText() != null && getInputText().isEmpty();
+    }
 }

@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <TextView
-        style="@style/TextView.Large"
+        style="@style/TextView.Medium"
         android:id="@+id/name_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -16,24 +16,26 @@
         tools:text="Name"/>
 
     <TextView
-        style="@style/TextView.MediumSubtitle"
+        style="@style/TextView.SmallSubtitle"
         android:id="@+id/dates_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/margin_default"
         android:layout_marginRight="@dimen/margin_default"
-        tools:text="Name"/>
+        tools:text="Jan 21, 2016 to Jan 23, 2015"/>
 
     <TextView
-        style="@style/TextView.MediumSubtitle"
-        android:id="@+id/catches_locations_text_view"
+        style="@style/TextView.SmallSubtitle"
+        android:id="@+id/catches_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/margin_default"
         android:layout_marginLeft="@dimen/margin_default"
         android:layout_marginRight="@dimen/margin_default"
-        tools:text="Name"/>
+        tools:text="5 Catches"/>
 
-    <include layout="@layout/view_cell_separator"/>
+    <include
+        android:id="@+id/separator"
+        layout="@layout/view_cell_separator"/>
 
 </LinearLayout>

@@ -495,6 +495,22 @@ public class Logbook {
     //endregion
 
     //region Trip Manipulation
+    /**
+     * Checks to see if a trip with the given date range already exists in the database.
+     *
+     * @param trip The {@link Trip} object to look for.
+     * @return True if the trip exists, false otherwise.
+     */
+    public static boolean tripExists(Trip trip) {
+        ArrayList<UserDefineObject> trips = getTrips();
+
+        for (UserDefineObject object : trips)
+            if (trip.overlapsTrip((Trip)object))
+                return true;
+
+        return false;
+    }
+
     public static ArrayList<UserDefineObject> getTrips() {
         return QueryHelper.queryUserDefines(QueryHelper.queryUserDefines(TripTable.NAME, null, null), new QueryHelper.UserDefineQueryInterface() {
             @Override

@@ -1,9 +1,13 @@
 package com.cohenadair.anglerslog.fragments;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.view.View;
+import android.widget.DatePicker;
+import android.widget.TimePicker;
 
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.activities.MyListSelectionActivity;
@@ -15,6 +19,8 @@ import com.cohenadair.anglerslog.views.SelectPhotosView;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.UUID;
 
 /**
@@ -65,6 +71,13 @@ public abstract class ManageContentFragment extends Fragment {
      */
     public interface OnSelectionActivityResult {
         void onSelect(UUID id);
+    }
+
+    /**
+     * Used as a callback for {@link DatePickerFragment} and {@link TimePickerFragment}.
+     */
+    public interface DateTimePickerInterface {
+        void onFinish(Date date);
     }
 
     @Override
@@ -237,6 +250,76 @@ public abstract class ManageContentFragment extends Fragment {
 
         updateViews();
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    /**
+     * Shows the manager fragment for the specified primitive {@link UserDefineObject}.
+     *
+     * @param primitiveId The primitive id. See {@link com.cohenadair.anglerslog.utilities.PrimitiveSpecManager}.
+     * @param multiple True if multiple selection is allowed, false otherwise.
+     * @param selectedItems Items that should already be selected. This can be null.
+     * @param onDismissInterface Callbacks for when the manager is dismissed.
+     */
+    public void showPrimitiveDialog(int primitiveId, boolean multiple, ArrayList<UserDefineObject> selectedItems, ManagePrimitiveFragment.OnDismissInterface onDismissInterface) {
+        ManagePrimitiveFragment fragment = ManagePrimitiveFragment.newInstance(primitiveId, multiple);
+
+        if (multiple)
+            fragment.setSelectedObjects(selectedItems);
+
+        fragment.setOnDismissInterface(onDismissInterface);
+        fragment.show(getChildFragmentManager(), "PrimitiveDialog");
+    }
+
+    /**
+     * Shows a {@link DatePickerFragment}.
+     *
+     * @param calendarUpdateDate The date to update the global calendar to.
+     * @param callbacks See {@link com.cohenadair.anglerslog.fragments.ManageContentFragment.DateTimePickerInterface}.
+     */
+    public void showDatePickerFragment(final Date calendarUpdateDate, final DateTimePickerInterface callbacks) {
+        DatePickerFragment datePicker = new DatePickerFragment();
+        datePicker.setOnDateSetListener(new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                updateCalendar(calendarUpdateDate);
+                Calendar c = Calendar.getInstance();
+                int hours = c.get(Calendar.HOUR_OF_DAY);
+                int minutes = c.get(Calendar.MINUTE);
+                c.set(year, monthOfYear, dayOfMonth, hours, minutes);
+                callbacks.onFinish(c.getTime());
+            }
+        });
+        datePicker.show(getFragmentManager(), "datePicker");
+    }
+
+    /**
+     * Shows a {@link TimePickerFragment}.
+     *
+     * @param calendarUpdateDate The date to update the global calendar to.
+     * @param callbacks See {@link com.cohenadair.anglerslog.fragments.ManageContentFragment.DateTimePickerInterface}.
+     */
+    public void showTimePickerFragment(final Date calendarUpdateDate, final DateTimePickerInterface callbacks) {
+        TimePickerFragment timePicker = new TimePickerFragment();
+        timePicker.setOnTimeSetListener(new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                updateCalendar(calendarUpdateDate);
+                Calendar c = Calendar.getInstance();
+                int year = c.get(Calendar.YEAR);
+                int month = c.get(Calendar.MONTH);
+                int day = c.get(Calendar.DAY_OF_MONTH);
+                c.set(year, month, day, hourOfDay, minute);
+                callbacks.onFinish(c.getTime());
+            }
+        });
+        timePicker.show(getFragmentManager(), "timePicker");
+    }
+
+    /**
+     * Resets the calendar's time to the current catch's time.
+     */
+    private void updateCalendar(Date date) {
+        Calendar.getInstance().setTime(date);
     }
 
     /**

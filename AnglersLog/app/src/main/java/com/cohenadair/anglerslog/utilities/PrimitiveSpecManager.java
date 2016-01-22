@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.cohenadair.anglerslog.model.Logbook;
+import com.cohenadair.anglerslog.model.user_defines.Angler;
 import com.cohenadair.anglerslog.model.user_defines.BaitCategory;
 import com.cohenadair.anglerslog.model.user_defines.FishingMethod;
 import com.cohenadair.anglerslog.model.user_defines.Species;
@@ -25,6 +26,7 @@ public class PrimitiveSpecManager {
     public static final int BAIT_CATEGORY = 1;
     public static final int WATER_CLARITY = 2;
     public static final int FISHING_METHODS = 3;
+    public static final int ANGLERS = 4;
 
     // force singleton
     private PrimitiveSpecManager() { }
@@ -48,6 +50,9 @@ public class PrimitiveSpecManager {
 
             case FISHING_METHODS:
                 return getFishingMethodSpec();
+
+            case ANGLERS:
+                return getAnglersSpec();
         }
 
         return null;
@@ -169,6 +174,36 @@ public class PrimitiveSpecManager {
             @Override
             public void onEditItem(UUID id, UserDefineObject newObj) {
                 Logbook.editFishingMethod(id, new FishingMethod(newObj, true));
+            }
+        });
+    }
+
+    @NonNull
+    private static PrimitiveSpec getAnglersSpec() {
+        return new PrimitiveSpec("angler", new PrimitiveSpec.InteractionListener() {
+            @Override
+            public ArrayList<UserDefineObject> onGetItems() {
+                return Logbook.getAnglers();
+            }
+
+            @Override
+            public UserDefineObject onClickItem(UUID id) {
+                return Logbook.getAngler(id);
+            }
+
+            @Override
+            public boolean onAddItem(String name) {
+                return Logbook.addAngler(new Angler(name));
+            }
+
+            @Override
+            public boolean onRemoveItem(UUID id) {
+                return Logbook.removeAngler(id);
+            }
+
+            @Override
+            public void onEditItem(UUID id, UserDefineObject newObj) {
+                Logbook.editAngler(id, new Angler(newObj, true));
             }
         });
     }

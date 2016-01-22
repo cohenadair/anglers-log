@@ -401,14 +401,30 @@ public class LogbookTest {
         assertFalse(Logbook.addTrip(trip1));
         assertTrue(Logbook.getTripCount() == 1);
 
+        // exists
+        assertTrue(Logbook.tripExists(trip1));
+        Trip trip3 = new Trip("");
+        trip3.setStartDate(new Date(3100000));
+        trip3.setEndDate(new Date(4200000));
+        assertTrue(Logbook.tripExists(trip3));
+        trip3.setStartDate(new Date(2900000));
+        trip3.setEndDate(new Date(5000000));
+        assertTrue(Logbook.tripExists(trip3));
+        trip3.setStartDate(new Date(3100000));
+        trip3.setEndDate(new Date(3900000));
+        assertTrue(Logbook.tripExists(trip3));
+        trip3.setStartDate(new Date(2900000));
+        trip3.setEndDate(new Date(3900000));
+        assertTrue(Logbook.tripExists(trip3));
+
         // edit
         assertTrue(Logbook.editTrip(trip1.getId(), trip2));
         assertTrue(Logbook.getTrip(trip1.getId()) != null);
 
         // get single
-        Trip trip3 = Logbook.getTrip(trip1.getId());
-        assertTrue(trip3.getId().equals(trip2.getId()));
-        assertTrue(trip3.getName().equals(trip2.getName()));
+        Trip trip4 = Logbook.getTrip(trip1.getId());
+        assertTrue(trip4.getId().equals(trip2.getId()));
+        assertTrue(trip4.getName().equals(trip2.getName()));
 
         // delete
         assertTrue(Logbook.removeTrip(trip1.getId()));

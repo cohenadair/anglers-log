@@ -1,7 +1,10 @@
 package com.cohenadair.anglerslog.model.user_defines;
 
 import android.content.ContentValues;
+import android.content.Context;
+import android.text.format.DateFormat;
 
+import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.database.QueryHelper;
 import com.cohenadair.anglerslog.model.Logbook;
 import com.cohenadair.anglerslog.model.utilities.UsedUserDefineObject;
@@ -22,6 +25,8 @@ import static com.cohenadair.anglerslog.database.LogbookSchema.UsedLocationTable
  * Created by Cohen Adair on 2015-09-05.
  */
 public class Trip extends UserDefineObject {
+
+    private static final String DATE_FORMAT = "MMM dd, yyyy";
 
     private Date mStartDate;
     private Date mEndDate;
@@ -145,6 +150,36 @@ public class Trip extends UserDefineObject {
     @Override
     public String toString() {
         return getName();
+    }
+
+    public String getNameAsString() {
+        return (getName() != null) ? getName() : "";
+    }
+
+    public String getNotesAsString() {
+        return (mNotes != null) ? mNotes : "";
+    }
+
+    public String getStartDateAsString() {
+        return DateFormat.format(DATE_FORMAT, mStartDate).toString();
+    }
+
+    public String getEndDateAsString() {
+        return DateFormat.format(DATE_FORMAT, mEndDate).toString();
+    }
+
+    public String getDateAsString(Context context) {
+        String to = context.getResources().getString(R.string.to);
+        return DateFormat.format(DATE_FORMAT, mStartDate).toString() + " " + to + " " + DateFormat.format(DATE_FORMAT, mEndDate).toString();
+    }
+
+    public String getCatchesAsString(Context context) {
+        return getCatches().size() + " " + context.getResources().getString(R.string.drawer_catches);
+    }
+
+    public boolean overlapsTrip(Trip trip) {
+        //return trip.getStartDate().getTime() <= mEndDate.getTime() && trip.getEndDate().getTime() >= mStartDate.getTime();
+        return trip.getStartDate().before(mEndDate) && trip.getEndDate().after(mStartDate);
     }
 
     public ContentValues getContentValues() {

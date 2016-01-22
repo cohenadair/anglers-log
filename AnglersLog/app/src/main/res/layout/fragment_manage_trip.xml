@@ -22,7 +22,7 @@
         android:orientation="horizontal">
 
         <com.cohenadair.anglerslog.views.TitleSubTitleView
-            android:id="@+id/date_layout"
+            android:id="@+id/start_date_view"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -32,7 +32,7 @@
             custom:titleStyle="@style/TextView.Header"/>
 
         <com.cohenadair.anglerslog.views.TitleSubTitleView
-            android:id="@+id/time_layout"
+            android:id="@+id/end_date_view"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
