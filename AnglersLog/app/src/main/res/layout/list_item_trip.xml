@@ -1,12 +1,39 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/trip_name"
+        style="@style/TextView.Large"
+        android:id="@+id/name_text_view"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_default"
+        android:layout_marginLeft="@dimen/margin_default"
+        android:layout_marginRight="@dimen/margin_default"
+        tools:text="Name"/>
+
+    <TextView
+        style="@style/TextView.MediumSubtitle"
+        android:id="@+id/dates_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_default"
+        android:layout_marginRight="@dimen/margin_default"
+        tools:text="Name"/>
+
+    <TextView
+        style="@style/TextView.MediumSubtitle"
+        android:id="@+id/catches_locations_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_default"
+        android:layout_marginLeft="@dimen/margin_default"
+        android:layout_marginRight="@dimen/margin_default"
+        tools:text="Name"/>
+
+    <include layout="@layout/view_cell_separator"/>
 
 </LinearLayout>

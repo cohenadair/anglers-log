@@ -1,16 +1,97 @@
-<LinearLayout
+<ScrollView
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:id="@+id/trip_container">
+    android:layout_height="match_parent">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Trip Name"
-        android:id="@+id/name_text_view"
-        android:layout_gravity="center_horizontal"
-        android:padding="25dp"
-        android:textSize="20sp"/>
-</LinearLayout>
+        android:orientation="vertical"
+        android:id="@+id/trip_container">
+
+        <!-- Name & Dates -->
+        <com.cohenadair.anglerslog.views.TitleSubTitleView
+            android:id="@+id/title_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_default"
+            android:layout_marginRight="@dimen/margin_default"
+            android:layout_marginTop="@dimen/margin_default"
+            custom:titleText="@string/name"
+            custom:subtitleText="@string/date"
+            custom:titleStyle="@style/TextView.Large"
+            custom:subtitleStyle="@style/TextView.MediumSubtitle"/>
+
+        <!-- Catches Title -->
+        <TextView
+            style="?android:listSeparatorTextViewStyle"
+            android:id="@+id/title_catches"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_default"
+            android:layout_marginBottom="@dimen/margin_default"
+            android:text="@string/drawer_catches"/>
+
+        <!-- Catches -->
+        <LinearLayout
+            android:id="@+id/catches_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"/>
+
+        <!-- Locations Title -->
+        <TextView
+            style="?android:listSeparatorTextViewStyle"
+            android:id="@+id/title_locations"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_default"
+            android:layout_marginBottom="@dimen/margin_default"
+            android:text="@string/drawer_locations"/>
+
+        <!-- Locations -->
+        <LinearLayout
+            android:id="@+id/locations_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"/>
+
+        <!-- Trip Details -->
+        <TextView
+            style="?android:listSeparatorTextViewStyle"
+            android:id="@+id/title_trips"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_default"
+            android:layout_marginBottom="@dimen/margin_default"
+            android:text="@string/trip_details"/>
+
+        <!-- Anglers -->
+        <com.cohenadair.anglerslog.views.PropertyDetailView
+            android:id="@+id/anglers_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            custom:propertyName="@string/anglers"/>
+
+        <!-- Notes Title -->
+        <TextView
+            style="?android:listSeparatorTextViewStyle"
+            android:id="@+id/title_notes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_default"
+            android:layout_marginBottom="@dimen/margin_default"
+            android:text="@string/notes"/>
+
+        <!-- Notes -->
+        <TextView
+            android:id="@+id/notes_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_default"
+            android:layout_marginRight="@dimen/margin_default"
+            android:layout_marginBottom="@dimen/margin_default"/>
+
+    </LinearLayout>
+</ScrollView>

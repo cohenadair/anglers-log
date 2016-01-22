@@ -1,7 +1,92 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- Name -->
+    <com.cohenadair.anglerslog.views.TextInputView
+        android:id="@+id/name_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        custom:titleText="@string/name"
+        custom:editTextHint="@string/name_hint"/>
+
+    <include layout="@layout/view_divider"/>
+
+    <!-- Start and End Dates -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <com.cohenadair.anglerslog.views.TitleSubTitleView
+            android:id="@+id/date_layout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_margin="@dimen/margin_default"
+            custom:titleText="@string/start_date"
+            custom:subtitleText="May 22, 2015"
+            custom:titleStyle="@style/TextView.Header"/>
+
+        <com.cohenadair.anglerslog.views.TitleSubTitleView
+            android:id="@+id/time_layout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_margin="@dimen/margin_default"
+            custom:titleText="@string/end_date"
+            custom:subtitleText="6:00 AM"
+            custom:titleStyle="@style/TextView.Header"/>
+
+    </LinearLayout>
+
+    <include layout="@layout/view_divider"/>
+
+    <!-- Catches -->
+    <com.cohenadair.anglerslog.views.TitleSubTitleView
+        android:id="@+id/catches_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_default"
+        custom:titleText="@string/drawer_catches"
+        custom:subtitleHint="@string/catches_hint"
+        custom:titleStyle="@style/TextView.Header"/>
+
+    <include layout="@layout/view_divider"/>
+
+    <!-- Locations -->
+    <com.cohenadair.anglerslog.views.TitleSubTitleView
+        android:id="@+id/locations_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_default"
+        custom:titleText="@string/drawer_locations"
+        custom:subtitleHint="@string/locations_hint"
+        custom:titleStyle="@style/TextView.Header"/>
+
+    <include layout="@layout/view_divider"/>
+
+    <!-- Anglers -->
+    <com.cohenadair.anglerslog.views.TitleSubTitleView
+        android:id="@+id/anglers_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_default"
+        custom:titleText="@string/anglers"
+        custom:subtitleHint="@string/anglers_hint"
+        custom:titleStyle="@style/TextView.Header"/>
+
+    <include layout="@layout/view_divider"/>
+
+    <!-- Notes -->
+    <com.cohenadair.anglerslog.views.TextInputView
+        android:id="@+id/notes_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        custom:titleText="@string/notes"
+        custom:editTextHint="@string/notes_hint"/>
 
 </LinearLayout>

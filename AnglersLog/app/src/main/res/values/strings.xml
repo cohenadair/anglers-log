@@ -16,6 +16,7 @@
     <string name="species">Species</string>
     <string name="bait">Bait</string>
     <string name="clarity">Clarity</string>
+    <string name="anglers">Anglers</string>
     <string name="water_clarity">Water Clarity</string>
     <string name="water_depth">Water Depth</string>
     <string name="water_temperature">Water Temperature</string>
@@ -28,6 +29,8 @@
     <string name="depth">Depth</string>
     <string name="bait_category">Bait Category</string>
     <string name="date">Date</string>
+    <string name="start_date">Start Date</string>
+    <string name="end_date">End Date</string>
     <string name="time">Time</string>
     <string name="category">Category</string>
     <string name="name">Name</string>
@@ -56,6 +59,7 @@
     <string name="sky_conditions_colon">Sky:</string>
     <string name="catch_details">Catch Details</string>
     <string name="fish_details">Fish Details</string>
+    <string name="trip_details">Trip Details</string>
     <string name="water_conditions">Water Conditions</string>
     <string name="weather_conditions">Weather Conditions</string>
     <string name="degrees_f">\u00b0F</string>
@@ -87,6 +91,9 @@
     <string name="category_hint">Tap to add or select a category</string>
     <string name="methods_hint">Tap to add or select fishing methods</string>
     <string name="clarity_hint">Tap to add or select a water clarity</string>
+    <string name="catches_hint">Tap to add or select catches</string>
+    <string name="locations_hint">Tap to add or select locations</string>
+    <string name="anglers_hint">Tap to add or select anglers</string>
     <string name="name_hint">Enter a name</string>
     <string name="bait_hint">Tap to add or select bait</string>
     <string name="color_hint">Enter a color</string>
