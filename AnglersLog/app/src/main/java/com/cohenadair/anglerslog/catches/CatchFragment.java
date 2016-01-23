@@ -16,9 +16,7 @@ import com.cohenadair.anglerslog.fragments.DetailFragment;
 import com.cohenadair.anglerslog.model.Logbook;
 import com.cohenadair.anglerslog.model.Weather;
 import com.cohenadair.anglerslog.model.user_defines.Catch;
-import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import com.cohenadair.anglerslog.utilities.LayoutSpecManager;
-import com.cohenadair.anglerslog.utilities.UserDefineArrays;
 import com.cohenadair.anglerslog.utilities.Utils;
 import com.cohenadair.anglerslog.views.ImageScrollView;
 import com.cohenadair.anglerslog.views.PropertyDetailView;
@@ -93,7 +91,6 @@ public class CatchFragment extends DetailFragment {
         mWeatherDetailsView = (WeatherDetailsView)view.findViewById(R.id.weather_details_view);
         mNotesView = (TextView)view.findViewById(R.id.notes_text_view);
 
-
         mCatchDetails = (TextView)view.findViewById(R.id.title_catch_details);
         mFishDetails = (TextView)view.findViewById(R.id.title_fish_details);
         mWaterConditions = (TextView)view.findViewById(R.id.title_water_conditions);
@@ -111,57 +108,57 @@ public class CatchFragment extends DetailFragment {
         if (!isAttached())
             return;
 
-        // if there are not catches, there is nothing to display
+        // if there are no catches, there is nothing to display
         // this really only applies to the two-pane view
         if (Logbook.getCatchCount() <= 0) {
             View container = getView();
             if (container != null)
                 container.setVisibility(View.GONE);
-
             return;
         }
 
         setItemId(id);
         mCatch = Logbook.getCatch(id);
 
-        if (mCatch != null) {
-            mCatchPhotos = mCatch.getPhotos();
-            mImageScrollView.setImages(mCatchPhotos);
+        if (mCatch == null)
+            return;
 
-            updateTitleView();
-            updateBaitView();
-            updateLocationView();
-            updateFishingMethodsView();
-            updateWaterClarityView();
-            updateResultView();
-            updateWeatherDetailsView();
-            updateQuantityView();
-            updateLengthView();
-            updateWeightView();
-            updateWaterDepthView();
-            updateWaterTemperatureView();
-            updateNotesView();
+        mCatchPhotos = mCatch.getPhotos();
+        mImageScrollView.setImages(mCatchPhotos);
 
-            // hide catch details title if needed
-            if (mCatch.getBait() == null && mCatch.getFishingSpot() == null && mCatch.getFishingMethods().size() <= 0)
-                mCatchDetails.setVisibility(View.GONE);
+        updateTitleView();
+        updateBaitView();
+        updateLocationView();
+        updateFishingMethodsView();
+        updateWaterClarityView();
+        updateResultView();
+        updateWeatherDetailsView();
+        updateQuantityView();
+        updateLengthView();
+        updateWeightView();
+        updateWaterDepthView();
+        updateWaterTemperatureView();
+        updateNotesView();
 
-            // hide fish details title if needed
-            if (mCatch.getCatchResult() == null && mCatch.getQuantity() == -1 && mCatch.getLength() == -1 && mCatch.getWeight() == -1)
-                mFishDetails.setVisibility(View.GONE);
+        // hide catch details title if needed
+        if (mCatch.getBait() == null && mCatch.getFishingSpot() == null && mCatch.getFishingMethods().size() <= 0)
+            mCatchDetails.setVisibility(View.GONE);
 
-            // hide water conditions title if needed
-            if (mCatch.getWaterClarity() == null && mCatch.getWaterDepth() == -1 && mCatch.getWaterTemperature() == -1)
-                mWaterConditions.setVisibility(View.GONE);
+        // hide fish details title if needed
+        if (mCatch.getCatchResult() == null && mCatch.getQuantity() == -1 && mCatch.getLength() == -1 && mCatch.getWeight() == -1)
+            mFishDetails.setVisibility(View.GONE);
 
-            // hide weather title if needed
-            if (mCatch.getWeather() == null)
-                mWeatherConditions.setVisibility(View.GONE);
+        // hide water conditions title if needed
+        if (mCatch.getWaterClarity() == null && mCatch.getWaterDepth() == -1 && mCatch.getWaterTemperature() == -1)
+            mWaterConditions.setVisibility(View.GONE);
 
-            // hide notes title if needed
-            if (mCatch.getNotes() == null)
-                mNotesTitle.setVisibility(View.GONE);
-        }
+        // hide weather title if needed
+        if (mCatch.getWeather() == null)
+            mWeatherConditions.setVisibility(View.GONE);
+
+        // hide notes title if needed
+        if (mCatch.getNotes() == null)
+            mNotesTitle.setVisibility(View.GONE);
     }
 
     private void updateTitleView() {
@@ -180,9 +177,8 @@ public class CatchFragment extends DetailFragment {
     }
 
     private void updateFishingMethodsView() {
-        ArrayList<UserDefineObject> fishingMethods = mCatch.getFishingMethods();
-        Utils.toggleVisibility(mFishingMethodsView, fishingMethods.size() > 0);
-        mFishingMethodsView.setDetail(UserDefineArrays.namesAsString(fishingMethods));
+        Utils.toggleVisibility(mFishingMethodsView, mCatch.hasFishingMethods());
+        mFishingMethodsView.setDetail(mCatch.getFishingMethodsAsString());
     }
 
     private void updateWaterClarityView() {

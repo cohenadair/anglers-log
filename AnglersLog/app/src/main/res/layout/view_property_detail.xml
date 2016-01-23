@@ -13,6 +13,8 @@
         android:id="@+id/property_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/margin_default"
+        android:layout_marginEnd="@dimen/margin_default"
         android:textStyle="bold"
         tools:text="Property"/>
 

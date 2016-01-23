@@ -11,19 +11,17 @@ import com.cohenadair.anglerslog.database.cursors.BaitCursor;
 import com.cohenadair.anglerslog.database.cursors.CatchCursor;
 import com.cohenadair.anglerslog.database.cursors.UserDefineCursor;
 import com.cohenadair.anglerslog.database.cursors.WeatherCursor;
-import com.cohenadair.anglerslog.model.Logbook;
 import com.cohenadair.anglerslog.model.Weather;
-import com.cohenadair.anglerslog.model.user_defines.FishingMethod;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 
 import java.util.ArrayList;
 import java.util.UUID;
 
-import static com.cohenadair.anglerslog.database.LogbookSchema.*;
 import static com.cohenadair.anglerslog.database.LogbookSchema.BaitTable;
 import static com.cohenadair.anglerslog.database.LogbookSchema.CatchTable;
 import static com.cohenadair.anglerslog.database.LogbookSchema.PhotoTable;
 import static com.cohenadair.anglerslog.database.LogbookSchema.UserDefineTable;
+import static com.cohenadair.anglerslog.database.LogbookSchema.WeatherTable;
 
 // TODO finish documentation for this file
 
@@ -106,38 +104,6 @@ public class QueryHelper {
 
         cursor.close();
         return obj;
-    }
-
-    /**
-     * Get all the {@link FishingMethod} objects associated with the given
-     * {@link com.cohenadair.anglerslog.model.user_defines.Catch} id.
-     *
-     * @param catchId The UUID of the {@link com.cohenadair.anglerslog.model.user_defines.Catch} to look for.
-     * @return An ArrayList of {@link FishingMethod} objects.
-     */
-    public static ArrayList<UserDefineObject> queryUsedFishingMethod(UUID catchId) {
-        return queryUsedUserDefineObject(UsedFishingMethodTable.NAME, UsedFishingMethodTable.Columns.FISHING_METHOD_ID, UsedFishingMethodTable.Columns.CATCH_ID, catchId, new UsedQueryCallbacks() {
-            @Override
-            public UserDefineObject getFromLogbook(UUID id) {
-                return Logbook.getAngler(id);
-            }
-        });
-    }
-
-    /**
-     * Get all the {@link com.cohenadair.anglerslog.model.user_defines.Angler} objects associated
-     * with the given {@link com.cohenadair.anglerslog.model.user_defines.Trip} id.
-     *
-     * @param tripId The UUID of the {@link com.cohenadair.anglerslog.model.user_defines.Trip} to look for.
-     * @return An ArrayList of {@link com.cohenadair.anglerslog.model.user_defines.Angler} objects.
-     */
-    public static ArrayList<UserDefineObject> queryUsedAnglers(UUID tripId) {
-        return queryUsedUserDefineObject(UsedAnglerTable.NAME, UsedAnglerTable.Columns.ANGLER_ID, UsedAnglerTable.Columns.TRIP_ID, tripId, new UsedQueryCallbacks() {
-            @Override
-            public UserDefineObject getFromLogbook(UUID id) {
-                return Logbook.getAngler(id);
-            }
-        });
     }
 
     /**

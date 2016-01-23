@@ -3,6 +3,7 @@ package com.cohenadair.anglerslog.views;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -73,5 +74,9 @@ public class TitleSubTitleView extends LinearLayout {
 
     public void setSubtitleHint(String hint) {
         mSubtitle.setHint(hint);
+    }
+
+    public void hideSubtitle() {
+        mSubtitle.setVisibility(View.GONE);
     }
 }

@@ -47,7 +47,7 @@ public class UsedUserDefineObject {
     }
 
     public void deleteObjects() {
-        QueryHelper.deleteQuery(mTable, mSuperColumnId + " = ?", new String[]{mSuperId.toString()});
+        QueryHelper.deleteQuery(mTable, mSuperColumnId + " = ?", new String[]{ mSuperId.toString() });
     }
 
     private void addObjects(ArrayList<UserDefineObject> objects) {

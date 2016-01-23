@@ -9,6 +9,7 @@ import com.cohenadair.anglerslog.database.QueryHelper;
 import com.cohenadair.anglerslog.model.Logbook;
 import com.cohenadair.anglerslog.model.Weather;
 import com.cohenadair.anglerslog.model.utilities.UsedUserDefineObject;
+import com.cohenadair.anglerslog.utilities.UserDefineArrays;
 import com.cohenadair.anglerslog.utilities.Utils;
 
 import java.util.ArrayList;
@@ -247,6 +248,14 @@ public class Catch extends PhotoUserDefineObject {
     public void setFishingMethods(ArrayList<UserDefineObject> fishingMethods) {
         mUsedFishingMethods.setObjects(fishingMethods);
     }
+
+    public int getFishingMethodCount() {
+        return getFishingMethods().size();
+    }
+
+    public boolean hasFishingMethods() {
+        return getFishingMethodCount() > 0;
+    }
     //endregion
 
     //region Weather Manipulation
@@ -340,6 +349,10 @@ public class Catch extends PhotoUserDefineObject {
 
     public String getNotesAsString() {
         return (mNotes != null) ? mNotes : "";
+    }
+
+    public String getFishingMethodsAsString() {
+        return UserDefineArrays.namesAsString(getFishingMethods());
     }
 
     /**

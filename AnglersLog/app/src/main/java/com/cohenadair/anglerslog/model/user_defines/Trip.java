@@ -8,6 +8,7 @@ import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.database.QueryHelper;
 import com.cohenadair.anglerslog.model.Logbook;
 import com.cohenadair.anglerslog.model.utilities.UsedUserDefineObject;
+import com.cohenadair.anglerslog.utilities.UserDefineArrays;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -115,6 +116,14 @@ public class Trip extends UserDefineObject {
     public void setAnglers(ArrayList<UserDefineObject> anglers) {
         mUsedAnglers.setObjects(anglers);
     }
+
+    public int getAnglersCount() {
+        return getAnglers().size();
+    }
+
+    public boolean hasAnglers() {
+        return getAnglersCount() > 0;
+    }
     //endregion
 
     //region Location Manipulation
@@ -130,6 +139,14 @@ public class Trip extends UserDefineObject {
     public void setLocations(ArrayList<UserDefineObject> locations) {
         mUsedLocations.setObjects(locations);
     }
+
+    public int getLocationCount() {
+        return getLocations().size();
+    }
+
+    public boolean hasLocations() {
+        return getLocationCount() > 0;
+    }
     //endregion
 
     //region Catch Manipulation
@@ -144,6 +161,14 @@ public class Trip extends UserDefineObject {
 
     public void setCatches(ArrayList<UserDefineObject> catches) {
         mUsedCatches.setObjects(catches);
+    }
+
+    public int getCatchesCount() {
+        return getCatches().size();
+    }
+
+    public boolean hasCatches() {
+        return getCatchCount() > 0;
     }
 
     /**
@@ -196,6 +221,10 @@ public class Trip extends UserDefineObject {
         int count = getCatchCount();
         String catchesStr = count == 1 ? context.getResources().getString(R.string.catch_string) : context.getResources().getString(R.string.drawer_catches);
         return count + " " + catchesStr;
+    }
+
+    public String getAnglersAsString() {
+        return UserDefineArrays.namesAsString(getAnglers());
     }
 
     public boolean overlapsTrip(Trip trip) {

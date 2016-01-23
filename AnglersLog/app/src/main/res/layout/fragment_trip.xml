@@ -60,7 +60,7 @@
         <!-- Trip Details -->
         <TextView
             style="?android:listSeparatorTextViewStyle"
-            android:id="@+id/title_trips"
+            android:id="@+id/title_trip_details"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_default"
