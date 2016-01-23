@@ -172,22 +172,10 @@ public class Trip extends UserDefineObject {
     }
 
     /**
-     * Adds up the quantity property of each {@link Catch} object for this Trip.
-     * @return The number of catches for this trip.
+     * @return Sum of the quantity properties for each of this Trip's catches.
      */
     public int getCatchCount() {
-        int numOfCatches = 0;
-        ArrayList<UserDefineObject> catches = getCatches();
-
-        for (UserDefineObject object : catches) {
-            Catch aCatch = (Catch)object;
-            if (aCatch.getQuantity() <= 0)
-                numOfCatches++;
-            else
-                numOfCatches += aCatch.getQuantity();
-        }
-
-        return numOfCatches;
+        return QueryHelper.queryTripsCatchCount(this);
     }
     //endregion
 

@@ -12,16 +12,18 @@ import com.cohenadair.anglerslog.database.cursors.CatchCursor;
 import com.cohenadair.anglerslog.database.cursors.UserDefineCursor;
 import com.cohenadair.anglerslog.database.cursors.WeatherCursor;
 import com.cohenadair.anglerslog.model.Weather;
+import com.cohenadair.anglerslog.model.user_defines.Location;
+import com.cohenadair.anglerslog.model.user_defines.Trip;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 
 import java.util.ArrayList;
 import java.util.UUID;
 
+import static com.cohenadair.anglerslog.database.LogbookSchema.*;
 import static com.cohenadair.anglerslog.database.LogbookSchema.BaitTable;
 import static com.cohenadair.anglerslog.database.LogbookSchema.CatchTable;
 import static com.cohenadair.anglerslog.database.LogbookSchema.PhotoTable;
 import static com.cohenadair.anglerslog.database.LogbookSchema.UserDefineTable;
-import static com.cohenadair.anglerslog.database.LogbookSchema.WeatherTable;
 
 // TODO finish documentation for this file
 
@@ -59,7 +61,7 @@ public class QueryHelper {
      * @return A Cursor of the query.
      */
     public static Cursor simpleQuery(String table, String column, String whereClause, String[] args) {
-        return mDatabase.query(table, new String[] { column }, whereClause, args, null, null, null);
+        return mDatabase.query(table, new String[]{column}, whereClause, args, null, null, null);
     }
 
     @NonNull
@@ -119,7 +121,7 @@ public class QueryHelper {
      */
     public static ArrayList<UserDefineObject> queryUsedUserDefineObject(String table, String resultColumn, String superColumn, UUID superId, UsedQueryCallbacks callbacks) {
         ArrayList<UserDefineObject> objs = new ArrayList<>();
-        Cursor cursor = simpleQuery(table, resultColumn, superColumn + " = ?", new String[]{ superId.toString() });
+        Cursor cursor = simpleQuery(table, resultColumn, superColumn + " = ?", new String[]{superId.toString()});
 
         if (cursor.moveToFirst())
             while (!cursor.isAfterLast()) {
@@ -132,30 +134,9 @@ public class QueryHelper {
         return objs;
     }
 
-    /**
-     * Retrieves the weather data for the specified catch id.
-     *
-     * @param catchId The {@link com.cohenadair.anglerslog.model.user_defines.Catch} id.
-     * @return A {@link Weather} object for the given catch id.
-     */
-    @Nullable
-    public static Weather queryWeather(UUID catchId) {
-        WeatherCursor cursor = new WeatherCursor(simpleQuery(
-                WeatherTable.NAME,
-                "*",
-                WeatherTable.Columns.CATCH_ID + " = ?",
-                new String[] { catchId.toString() }
-        ));
-
-        if (cursor.moveToFirst())
-            return cursor.getWeather();
-
-        return null;
-    }
-
     public static int queryCount(String table, String whereClause, String[] args) {
         int count = 0;
-        Cursor cursor = mDatabase.query(table, new String[] { COUNT }, whereClause, args, null, null, null);
+        Cursor cursor = mDatabase.query(table, new String[]{COUNT}, whereClause, args, null, null, null);
 
         if (cursor.moveToFirst())
             count = cursor.getInt(cursor.getColumnIndex(COUNT));
@@ -267,7 +248,83 @@ public class QueryHelper {
     }
 
     public static int photoCount(String table, UUID id) {
-        return queryCount(table, PhotoTable.Columns.USER_DEFINE_ID + " = ?", new String[]{ id.toString() });
+        return queryCount(table, PhotoTable.Columns.USER_DEFINE_ID + " = ?", new String[]{id.toString()});
+    }
+
+    /**
+     * Retrieves the weather data for the specified catch id.
+     *
+     * @param catchId The {@link com.cohenadair.anglerslog.model.user_defines.Catch} id.
+     * @return A {@link Weather} object for the given catch id.
+     */
+    @Nullable
+    public static Weather queryWeather(UUID catchId) {
+        WeatherCursor cursor = new WeatherCursor(simpleQuery(
+                WeatherTable.NAME,
+                "*",
+                WeatherTable.Columns.CATCH_ID + " = ?",
+                new String[] { catchId.toString() }
+        ));
+
+        if (cursor.moveToFirst())
+            return cursor.getWeather();
+
+        return null;
+    }
+
+    /**
+     * Queries for the sum of the quantities for all the catches in a given {@link Trip}.
+     *
+     * @param trip The {@link Trip} for which to count catches.
+     * @return The quantity of catches.
+     */
+    public static int queryTripsCatchCount(Trip trip) {
+        int numOfCatches = 0;
+        String totalQuantity = "totalQuantity";
+
+        // SELECT SUM(quantity) AS totalQuantity FROM Catch WHERE id IN (SELECT catchId FROM UsedCatch WHERE(tripId = givenId));
+        Cursor cursor = mDatabase.rawQuery(
+                "SELECT SUM(" + CatchTable.Columns.QUANTITY + ") AS " + totalQuantity + " " +
+                "FROM " + CatchTable.NAME + " " +
+                "WHERE " + CatchTable.Columns.ID + " IN (" +
+                    "SELECT " + UsedCatchTable.Columns.CATCH_ID + " " +
+                    "FROM " + UsedCatchTable.NAME + " " +
+                    "WHERE(" + UsedCatchTable.Columns.TRIP_ID + " = ?)" +
+                ")",
+                new String[] { trip.idAsString() });
+
+        if (cursor.moveToFirst())
+            numOfCatches = cursor.getInt(cursor.getColumnIndex(totalQuantity));
+
+        cursor.close();
+        return numOfCatches;
+    }
+
+    public static int queryTripsLocationCatchCount(Trip trip, Location location) {
+        int numOfCatches = 0;
+        String totalQuantity = "totalQuantity";
+
+        Cursor cursor = mDatabase.rawQuery(
+                "SELECT SUM(" + CatchTable.Columns.QUANTITY + ") AS " + totalQuantity + " " +
+                "FROM " + CatchTable.NAME + " " +
+                "WHERE " + CatchTable.Columns.FISHING_SPOT_ID + " IN (" +
+                    "SELECT " + FishingSpotTable.Columns.ID + " " +
+                    "FROM " + FishingSpotTable.NAME + " " +
+                    "WHERE(" + FishingSpotTable.Columns.LOCATION_ID + " = ?)" +
+                ") " +
+                "AND " + CatchTable.Columns.ID + " IN (" +
+                    "SELECT " + UsedCatchTable.Columns.CATCH_ID + " " +
+                    "FROM " + UsedCatchTable.NAME + " " +
+                    "WHERE(" + UsedCatchTable.Columns.TRIP_ID + " = ?)" +
+                ")",
+                new String[] { location.idAsString(), trip.idAsString() }
+        );
+
+        if (cursor.moveToFirst())
+            numOfCatches = cursor.getInt(cursor.getColumnIndex(totalQuantity));
+
+        cursor.close();
+        return numOfCatches;
     }
 
 }

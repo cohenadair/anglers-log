@@ -8,9 +8,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.cohenadair.anglerslog.R;
+import com.cohenadair.anglerslog.database.QueryHelper;
 import com.cohenadair.anglerslog.fragments.DetailFragment;
 import com.cohenadair.anglerslog.model.Logbook;
 import com.cohenadair.anglerslog.model.user_defines.Catch;
+import com.cohenadair.anglerslog.model.user_defines.Location;
 import com.cohenadair.anglerslog.model.user_defines.Trip;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import com.cohenadair.anglerslog.utilities.LayoutSpecManager;
@@ -169,17 +171,7 @@ public class TripFragment extends DetailFragment {
 
             @Override
             public String onGetSubtitle(UserDefineObject object) {
-                // count the number of catches are from this location
-                int numOfCatches = 0;
-
-                ArrayList<UserDefineObject> catches = mTrip.getCatches();
-                for (UserDefineObject obj : catches) {
-                    Catch aCatch = (Catch)obj;
-                    if (aCatch.getFishingSpot() != null)
-                        numOfCatches += aCatch.getFishingSpot().getLocation().getId().equals(object.getId()) ? aCatch.getActualQuantity() : 0;
-                }
-
-                return numOfCatches + " " + getResources().getString(R.string.trip_catches);
+                return QueryHelper.queryTripsLocationCatchCount(mTrip, (Location)object) + " " + getResources().getString(R.string.trip_catches);
             }
 
             @Override

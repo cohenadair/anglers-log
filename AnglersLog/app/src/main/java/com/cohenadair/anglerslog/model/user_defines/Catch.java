@@ -38,7 +38,7 @@ public class Catch extends PhotoUserDefineObject {
     private WaterClarity mWaterClarity;
     private float mWaterDepth = -1;
     private int mWaterTemperature = -1;
-    private int mQuantity = -1;
+    private int mQuantity = 1;
     private float mLength = -1;
     private float mWeight = -1;
     private String mNotes;
@@ -353,16 +353,6 @@ public class Catch extends PhotoUserDefineObject {
 
     public String getFishingMethodsAsString() {
         return UserDefineArrays.namesAsString(getFishingMethods());
-    }
-
-    /**
-     * Used for calculations. If the user didn't set the quantity, the quantity is still
-     * technically at least one.
-     *
-     * @return A more accurate quantity value.
-     */
-    public int getActualQuantity() {
-        return (mQuantity <= 0) ? 1 : mQuantity;
     }
 
     /**
