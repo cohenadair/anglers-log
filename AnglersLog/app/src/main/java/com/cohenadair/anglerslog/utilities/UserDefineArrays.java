@@ -12,19 +12,43 @@ import java.util.Iterator;
 public class UserDefineArrays {
 
     /**
+     * Used to get a {@link UserDefineObject} subclass when converting from a String array.
+     */
+    public interface OnConvertInterface {
+        UserDefineObject onGetObject(String idStr);
+    }
+
+    /**
+     * Used for getting a concatenated String of the property values of a given
+     * {@link UserDefineObject} array.
+     */
+    public interface OnGetPropertyInterface {
+        String onGetProperty(UserDefineObject object);
+    }
+
+    /**
      * Creates a concatenated String of the give array of UserDefineObject instances.
      * @return A concatenated String.
      */
     public static String namesAsString(ArrayList<UserDefineObject> arr) {
+        return propertiesAsString(arr, new OnGetPropertyInterface() {
+            @Override
+            public String onGetProperty(UserDefineObject object) {
+                return object.getName();
+            }
+        });
+    }
+
+    public static String propertiesAsString(ArrayList<UserDefineObject> arr, OnGetPropertyInterface callbacks) {
         String str = "";
 
         if (arr.size() <= 0)
             return str;
 
         for (int i = 0; i < arr.size() - 1; i++)
-            str += arr.get(i).getName() + ", ";
+            str += callbacks.onGetProperty(arr.get(i)) + ", ";
 
-        return str + arr.get(arr.size() - 1).getName();
+        return str + callbacks.onGetProperty(arr.get(arr.size() - 1));
     }
 
     public static boolean hasObjectNamed(ArrayList<UserDefineObject> arr, String name) {
@@ -46,6 +70,20 @@ public class UserDefineArrays {
         }
 
         return arr;
+    }
+
+    public static ArrayList<String> asIdStringArray(ArrayList<UserDefineObject> arr) {
+        ArrayList<String> ids = new ArrayList<>();
+        for (UserDefineObject object : arr)
+            ids.add(object.idAsString());
+        return ids;
+    }
+
+    public static ArrayList<UserDefineObject> asObjectArray(ArrayList<String> arr, OnConvertInterface callbacks) {
+        ArrayList<UserDefineObject> objects = new ArrayList<>();
+        for (String str : arr)
+            objects.add(callbacks.onGetObject(str));
+        return objects;
     }
 
 }

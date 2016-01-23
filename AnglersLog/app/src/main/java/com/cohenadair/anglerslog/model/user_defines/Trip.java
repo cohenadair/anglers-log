@@ -145,6 +145,25 @@ public class Trip extends UserDefineObject {
     public void setCatches(ArrayList<UserDefineObject> catches) {
         mUsedCatches.setObjects(catches);
     }
+
+    /**
+     * Adds up the quantity property of each {@link Catch} object for this Trip.
+     * @return The number of catches for this trip.
+     */
+    public int getCatchCount() {
+        int numOfCatches = 0;
+        ArrayList<UserDefineObject> catches = getCatches();
+
+        for (UserDefineObject object : catches) {
+            Catch aCatch = (Catch)object;
+            if (aCatch.getQuantity() <= 0)
+                numOfCatches++;
+            else
+                numOfCatches += aCatch.getQuantity();
+        }
+
+        return numOfCatches;
+    }
     //endregion
 
     @Override
@@ -174,11 +193,12 @@ public class Trip extends UserDefineObject {
     }
 
     public String getCatchesAsString(Context context) {
-        return getCatches().size() + " " + context.getResources().getString(R.string.drawer_catches);
+        int count = getCatchCount();
+        String catchesStr = count == 1 ? context.getResources().getString(R.string.catch_string) : context.getResources().getString(R.string.drawer_catches);
+        return count + " " + catchesStr;
     }
 
     public boolean overlapsTrip(Trip trip) {
-        //return trip.getStartDate().getTime() <= mEndDate.getTime() && trip.getEndDate().getTime() >= mStartDate.getTime();
         return trip.getStartDate().before(mEndDate) && trip.getEndDate().after(mStartDate);
     }
 

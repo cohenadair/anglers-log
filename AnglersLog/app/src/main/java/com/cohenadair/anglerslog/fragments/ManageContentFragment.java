@@ -70,7 +70,7 @@ public abstract class ManageContentFragment extends Fragment {
      * Used as a callback for {@link MyListSelectionActivity} instances.
      */
     public interface OnSelectionActivityResult {
-        void onSelect(UUID id);
+        void onSelect(ArrayList<String> ids);
     }
 
     /**
@@ -224,13 +224,35 @@ public abstract class ManageContentFragment extends Fragment {
         return result;
     }
 
-    public void startSelectionActivity(int layoutId, OnSelectionActivityResult onSelect) {
-        mOnSelectionActivityResult = onSelect;
+    /**
+     * Starts a new activity for selecting non-primitive UserDefineObjects, such as Catches or
+     * Locations.
+     *
+     * @param layoutId The layout id to show. See {@link com.cohenadair.anglerslog.utilities.LayoutSpecManager}.
+     * @param cancelSpecOnSelection True to cancel {@link com.cohenadair.anglerslog.utilities.LayoutSpec.OnSelectionListener}, false otherwise.
+     * @param multipleSelection True if the user can select multiple items, false otherwise.
+     * @param selectedIds Array of String ids that should already be selected. This can be null.
+     * @param onResult A callback for when the user is finished selecting.
+     */
+    public void startSelectionActivity(int layoutId, boolean cancelSpecOnSelection, boolean multipleSelection, ArrayList<String> selectedIds, OnSelectionActivityResult onResult) {
+        mOnSelectionActivityResult = onResult;
 
         Intent intent = new Intent(getContext(), MyListSelectionActivity.class);
+        intent.putExtra(MyListSelectionActivity.EXTRA_CANCEL_SELECTION_INTERFACE, cancelSpecOnSelection);
+        intent.putExtra(MyListSelectionActivity.EXTRA_MULTIPLE_SELECTION, multipleSelection);
+        intent.putExtra(MyListSelectionActivity.EXTRA_SELECTED_IDS, selectedIds);
         intent.putExtra(MyListSelectionActivity.EXTRA_LAYOUT_ID, layoutId);
         intent.putExtra(MyListSelectionActivity.EXTRA_TWO_PANE, Utils.isTwoPane(getActivity()));
+
         getParentFragment().startActivityForResult(intent, REQUEST_SELECTION);
+    }
+
+    /**
+     * Wrapper function for {@link #startSelectionActivity(int, boolean, boolean, ArrayList, OnSelectionActivityResult)}.
+     * Shows a {@link MyListSelectionActivity} with default settings.
+     */
+    public void startSelectionActivity(int layoutId, OnSelectionActivityResult onResult) {
+        startSelectionActivity(layoutId, false, false, null, onResult);
     }
 
     @Override
@@ -244,7 +266,7 @@ public abstract class ManageContentFragment extends Fragment {
         }
 
         if (requestCode == REQUEST_SELECTION) {
-            mOnSelectionActivityResult.onSelect(UUID.fromString(data.getStringExtra(MyListSelectionActivity.EXTRA_SELECTED_ID)));
+            mOnSelectionActivityResult.onSelect(data.getStringArrayListExtra(MyListSelectionActivity.EXTRA_SELECTED_IDS));
             return;
         }
 

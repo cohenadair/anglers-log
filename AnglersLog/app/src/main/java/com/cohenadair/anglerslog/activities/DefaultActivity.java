@@ -28,6 +28,8 @@ public abstract class DefaultActivity extends AppCompatActivity implements Globa
 
     public static final String EXTRA_TWO_PANE = "extra_two_pane";
 
+    private Toolbar mToolbar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // needs to be done before the calls the super.onCreate() and setContentView()
@@ -60,14 +62,18 @@ public abstract class DefaultActivity extends AppCompatActivity implements Globa
         finish();
     }
 
+    public Toolbar getToolbar() {
+        return mToolbar;
+    }
+
     /**
      * Initializes the navigation toolbar. ** This must be called by subclasses. **
      */
     public void initToolbar() {
-        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
+        mToolbar = (Toolbar)findViewById(R.id.toolbar);
 
         if (!isTwoPane()) {
-            setSupportActionBar(toolbar);
+            setSupportActionBar(mToolbar);
             ActionBar actionBar = getSupportActionBar();
 
             if (actionBar != null) {
@@ -75,8 +81,8 @@ public abstract class DefaultActivity extends AppCompatActivity implements Globa
                 actionBar.setHomeAsUpIndicator(R.drawable.ic_back);
             }
         } else {
-            if (toolbar != null)
-                toolbar.setVisibility(View.GONE);
+            if (mToolbar != null)
+                mToolbar.setVisibility(View.GONE);
         }
     }
 

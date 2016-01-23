@@ -10,9 +10,9 @@ import com.cohenadair.anglerslog.fragments.ManageContentFragment;
 import com.cohenadair.anglerslog.fragments.ManagePrimitiveFragment;
 import com.cohenadair.anglerslog.model.Logbook;
 import com.cohenadair.anglerslog.model.user_defines.Catch;
-import com.cohenadair.anglerslog.model.user_defines.Location;
 import com.cohenadair.anglerslog.model.user_defines.Trip;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
+import com.cohenadair.anglerslog.utilities.LayoutSpecManager;
 import com.cohenadair.anglerslog.utilities.PrimitiveSpecManager;
 import com.cohenadair.anglerslog.utilities.UserDefineArrays;
 import com.cohenadair.anglerslog.utilities.Utils;
@@ -21,6 +21,7 @@ import com.cohenadair.anglerslog.views.TitleSubTitleView;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.UUID;
 
 /**
  * The ManageTripFragment is used to add and edit trips.
@@ -151,18 +152,17 @@ public class ManageTripFragment extends ManageContentFragment {
 
     private void updateCatchesViews() {
         removeViews(mCatchesViews);
-        for (UserDefineObject object : mSelectedCatches) {
-            Catch aCatch = (Catch)object;
-            // TODO create and add view here
-        }
+        mCatchesView.setSubtitle(UserDefineArrays.propertiesAsString(mSelectedCatches, new UserDefineArrays.OnGetPropertyInterface() {
+            @Override
+            public String onGetProperty(UserDefineObject object) {
+                return ((Catch)object).getSpeciesAsString();
+            }
+        }));
     }
 
     private void updateLocationsViews() {
         removeViews(mLocationsViews);
-        for (UserDefineObject object : mSelectedLocations) {
-            Location location = (Location)object;
-            // TODO create and add view here
-        }
+        mLocationsView.setSubtitle(UserDefineArrays.namesAsString(mSelectedLocations));
     }
 
     /**
@@ -251,12 +251,42 @@ public class ManageTripFragment extends ManageContentFragment {
 
     public void initCatchesView(View view) {
         mCatchesView = (TitleSubTitleView)view.findViewById(R.id.catches_view);
-        // TODO catches selection
+        mCatchesView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startSelectionActivity(LayoutSpecManager.LAYOUT_CATCHES, false, true, UserDefineArrays.asIdStringArray(mSelectedCatches), new OnSelectionActivityResult() {
+                    @Override
+                    public void onSelect(ArrayList<String> ids) {
+                        mSelectedCatches = UserDefineArrays.asObjectArray(ids, new UserDefineArrays.OnConvertInterface() {
+                            @Override
+                            public UserDefineObject onGetObject(String idStr) {
+                                return Logbook.getCatch(UUID.fromString(idStr));
+                            }
+                        });
+                    }
+                });
+            }
+        });
     }
 
     public void initLocationsView(View view) {
         mLocationsView = (TitleSubTitleView)view.findViewById(R.id.locations_view);
-        // TODO locations selection
+        mLocationsView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startSelectionActivity(LayoutSpecManager.LAYOUT_LOCATIONS, true, true, UserDefineArrays.asIdStringArray(mSelectedLocations), new OnSelectionActivityResult() {
+                    @Override
+                    public void onSelect(ArrayList<String> ids) {
+                        mSelectedLocations = UserDefineArrays.asObjectArray(ids, new UserDefineArrays.OnConvertInterface() {
+                            @Override
+                            public UserDefineObject onGetObject(String idStr) {
+                                return Logbook.getLocation(UUID.fromString(idStr));
+                            }
+                        });
+                    }
+                });
+            }
+        });
     }
     //endregion
 

@@ -211,7 +211,7 @@ public class ManagePrimitiveFragment extends DialogFragment {
                 @Override
                 public boolean onMenuItemClick(MenuItem item) {
                     dismissFragment();
-                    return true;
+                    return false;
                 }
             });
         }
@@ -338,7 +338,6 @@ public class ManagePrimitiveFragment extends DialogFragment {
         //endregion
 
         private void toggleSelected(boolean select) {
-            mNameTextView.setCompoundDrawablesWithIntrinsicBounds(0, 0, select ? R.drawable.ic_check : 0, 0);
             Utils.toggleViewSelected(mView, select);
         }
 

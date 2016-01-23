@@ -286,8 +286,9 @@ public class ManageCatchFragment extends ManageContentFragment {
             public void onClick(View v) {
                 startSelectionActivity(LayoutSpecManager.LAYOUT_LOCATIONS, new OnSelectionActivityResult() {
                     @Override
-                    public void onSelect(UUID id) {
-                        getNewCatch().setFishingSpot(Logbook.getFishingSpot(id));
+                    public void onSelect(ArrayList<String> ids) {
+                        // should be one and only one element in ids
+                        getNewCatch().setFishingSpot(Logbook.getFishingSpot(UUID.fromString(ids.get(0))));
                     }
                 });
             }
@@ -301,8 +302,9 @@ public class ManageCatchFragment extends ManageContentFragment {
             public void onClick(View v) {
                 startSelectionActivity(LayoutSpecManager.LAYOUT_BAITS, new OnSelectionActivityResult() {
                     @Override
-                    public void onSelect(UUID id) {
-                        getNewCatch().setBait(Logbook.getBait(id));
+                    public void onSelect(ArrayList<String> ids) {
+                        // should be one and only one element in ids
+                        getNewCatch().setBait(Logbook.getBait(UUID.fromString(ids.get(0))));
                     }
                 });
             }
