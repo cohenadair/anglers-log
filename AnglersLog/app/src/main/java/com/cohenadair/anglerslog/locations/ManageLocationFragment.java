@@ -16,7 +16,7 @@ import com.cohenadair.anglerslog.model.user_defines.FishingSpot;
 import com.cohenadair.anglerslog.model.user_defines.Location;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import com.cohenadair.anglerslog.utilities.Utils;
-import com.cohenadair.anglerslog.views.FishingSpotView;
+import com.cohenadair.anglerslog.views.MoreDetailView;
 import com.cohenadair.anglerslog.views.TextInputView;
 
 import java.util.ArrayList;
@@ -30,7 +30,7 @@ public class ManageLocationFragment extends ManageContentFragment {
     private LinearLayout mContainer;
     private TextInputView mNameView;
 
-    private ArrayList<FishingSpotView> mFishingSpotViews;
+    private ArrayList<MoreDetailView> mFishingSpotViews;
     private ArrayList<UserDefineObject> mFishingSpots;
 
     public ManageLocationFragment() {
@@ -141,7 +141,7 @@ public class ManageLocationFragment extends ManageContentFragment {
 
     private void updateAllFishingSpots() {
         // remove all old views
-        for (FishingSpotView fishingSpotView : mFishingSpotViews) {
+        for (MoreDetailView fishingSpotView : mFishingSpotViews) {
             ViewGroup parent = ((ViewGroup)fishingSpotView.getParent());
             if (parent != null)
                 parent.removeView(fishingSpotView);
@@ -169,11 +169,16 @@ public class ManageLocationFragment extends ManageContentFragment {
         String lat = getContext().getResources().getString(R.string.latitude);
         String lng = getContext().getResources().getString(R.string.longitude);
 
-        final FishingSpotView fishingSpotView = new FishingSpotView(getContext());
+        final MoreDetailView fishingSpotView = new MoreDetailView(getContext());
         fishingSpotView.setTitle(spot.getName());
         fishingSpotView.setSubtitle(spot.getCoordinatesAsString(lat, lng));
+        fishingSpotView.setDetailButtonImage(R.drawable.ic_remove);
+        fishingSpotView.setTitleStyle(R.style.TextView_Small);
+        fishingSpotView.setSubtitleStyle(R.style.TextView_SmallSubtitle);
+        fishingSpotView.useDefaultSpacing();
+        fishingSpotView.useDefaultStyle();
 
-        fishingSpotView.setOnClickRemoveButton(new View.OnClickListener() {
+        fishingSpotView.setOnClickDetailButton(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mFishingSpots.remove(spot);

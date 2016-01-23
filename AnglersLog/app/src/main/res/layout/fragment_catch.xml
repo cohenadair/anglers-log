@@ -42,64 +42,28 @@
             android:text="@string/catch_details"/>
 
         <!-- Location -->
-        <LinearLayout
-            android:id="@+id/location_layout"
+        <com.cohenadair.anglerslog.views.MoreDetailView
+            android:id="@+id/location_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/margin_default"
             android:layout_marginRight="@dimen/margin_default"
-            android:layout_marginBottom="@dimen/margin_default"
-            android:orientation="horizontal">
-
-            <com.cohenadair.anglerslog.views.TitleSubTitleView
-                android:id="@+id/location_view"
-                android:layout_weight="1"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                custom:titleText="@string/location"
-                custom:subtitleText="@string/fishing_spot"
-                custom:titleStyle="@style/TextView.Small"
-                custom:subtitleStyle="@style/TextView.SmallSubtitle"/>
-
-            <ImageButton
-                android:id="@+id/location_info_button"
-                android:layout_width="@dimen/image_button_size"
-                android:layout_height="@dimen/image_button_size"
-                android:layout_gravity="center_vertical"
-                android:src="@drawable/ic_info"
-                android:contentDescription="@string/location_description"/>
-
-        </LinearLayout>
+            custom:titleText="@string/location"
+            custom:subtitleText="@string/fishing_spot"
+            custom:titleStyle="@style/TextView.Small"
+            custom:subtitleStyle="@style/TextView.SmallSubtitle"/>
 
         <!-- Bait -->
-        <LinearLayout
-            android:id="@+id/bait_layout"
+        <com.cohenadair.anglerslog.views.MoreDetailView
+            android:id="@+id/bait_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/margin_default"
             android:layout_marginRight="@dimen/margin_default"
-            android:layout_marginBottom="@dimen/margin_default"
-            android:orientation="horizontal">
-
-            <com.cohenadair.anglerslog.views.TitleSubTitleView
-                android:id="@+id/bait_view"
-                android:layout_weight="1"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                custom:titleText="@string/bait"
-                custom:subtitleText="@string/bait"
-                custom:titleStyle="@style/TextView.Small"
-                custom:subtitleStyle="@style/TextView.SmallSubtitle"/>
-
-            <ImageButton
-                android:id="@+id/bait_info_button"
-                android:layout_width="@dimen/image_button_size"
-                android:layout_height="@dimen/image_button_size"
-                android:layout_gravity="center_vertical"
-                android:src="@drawable/ic_info"
-                android:contentDescription="@string/bait_description"/>
-
-        </LinearLayout>
+            custom:titleText="@string/bait"
+            custom:subtitleText="@string/bait"
+            custom:titleStyle="@style/TextView.Small"
+            custom:subtitleStyle="@style/TextView.SmallSubtitle"/>
 
         <!-- Fishing Methods -->
         <com.cohenadair.anglerslog.views.PropertyDetailView

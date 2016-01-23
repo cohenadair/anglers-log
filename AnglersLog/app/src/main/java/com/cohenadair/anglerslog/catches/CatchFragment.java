@@ -5,12 +5,9 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.cohenadair.anglerslog.R;
-import com.cohenadair.anglerslog.activities.DetailFragmentActivity;
 import com.cohenadair.anglerslog.activities.PhotoViewerActivity;
 import com.cohenadair.anglerslog.fragments.DetailFragment;
 import com.cohenadair.anglerslog.model.Logbook;
@@ -19,6 +16,7 @@ import com.cohenadair.anglerslog.model.user_defines.Catch;
 import com.cohenadair.anglerslog.utilities.LayoutSpecManager;
 import com.cohenadair.anglerslog.utilities.Utils;
 import com.cohenadair.anglerslog.views.ImageScrollView;
+import com.cohenadair.anglerslog.views.MoreDetailView;
 import com.cohenadair.anglerslog.views.PropertyDetailView;
 import com.cohenadair.anglerslog.views.TitleSubTitleView;
 import com.cohenadair.anglerslog.views.WeatherDetailsView;
@@ -36,10 +34,8 @@ public class CatchFragment extends DetailFragment {
 
     private ImageScrollView mImageScrollView;
     private TitleSubTitleView mTitleView;
-    private LinearLayout mLocationLayout;
-    private LinearLayout mBaitLayout;
-    private TitleSubTitleView mLocationView;
-    private TitleSubTitleView mBaitView;
+    private MoreDetailView mBaitView;
+    private MoreDetailView mLocationView;
     private PropertyDetailView mFishingMethodsView;
     private PropertyDetailView mWaterClarityView;
     private PropertyDetailView mResultView;
@@ -167,12 +163,12 @@ public class CatchFragment extends DetailFragment {
     }
 
     private void updateBaitView() {
-        Utils.toggleVisibility(mBaitLayout, mCatch.getBait() != null);
+        Utils.toggleVisibility(mBaitView, mCatch.getBait() != null);
         mBaitView.setSubtitle(mCatch.getBaitAsString());
     }
 
     private void updateLocationView() {
-        Utils.toggleVisibility(mLocationLayout, mCatch.getFishingSpot() != null);
+        Utils.toggleVisibility(mLocationView, mCatch.getFishingSpot() != null);
         mLocationView.setSubtitle(mCatch.getFishingSpotAsString());
     }
 
@@ -228,11 +224,8 @@ public class CatchFragment extends DetailFragment {
     }
 
     private void initLocationLayout(View view) {
-        mLocationLayout = (LinearLayout)view.findViewById(R.id.location_layout);
-        mLocationView =(TitleSubTitleView)view.findViewById(R.id.location_view);
-
-        ImageButton locationInfoButton = (ImageButton)view.findViewById(R.id.location_info_button);
-        locationInfoButton.setOnClickListener(new View.OnClickListener() {
+        mLocationView = (MoreDetailView)view.findViewById(R.id.location_view);
+        mLocationView.setOnClickDetailButton(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startDetailActivity(LayoutSpecManager.LAYOUT_LOCATIONS, mCatch.getFishingSpot().getId());
@@ -241,23 +234,12 @@ public class CatchFragment extends DetailFragment {
     }
 
     private void initBaitLayout(View view) {
-        mBaitLayout = (LinearLayout)view.findViewById(R.id.bait_layout);
-        mBaitView =(TitleSubTitleView)view.findViewById(R.id.bait_view);
-
-        ImageButton baitIntoButton = (ImageButton)view.findViewById(R.id.bait_info_button);
-        baitIntoButton.setOnClickListener(new View.OnClickListener() {
+        mBaitView = (MoreDetailView)view.findViewById(R.id.bait_view);
+        mBaitView.setOnClickDetailButton(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startDetailActivity(LayoutSpecManager.LAYOUT_BAITS, mCatch.getBait().getId());
             }
         });
-    }
-
-    private void startDetailActivity(int layoutSpecId, UUID userDefineObjectId) {
-        Intent intent = new Intent(getContext(), DetailFragmentActivity.class);
-        intent.putExtra(DetailFragmentActivity.EXTRA_TWO_PANE, Utils.isTwoPane(getActivity()));
-        intent.putExtra(DetailFragmentActivity.EXTRA_LAYOUT_ID, layoutSpecId);
-        intent.putExtra(DetailFragmentActivity.EXTRA_USER_DEFINE_ID, userDefineObjectId.toString());
-        startActivity(intent);
     }
 }

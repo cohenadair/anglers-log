@@ -2,6 +2,8 @@
     <attr name="titleText" format="string" />
     <attr name="subtitleText" format="string" />
     <attr name="subtitleHint" format="string" />
+    <attr name="titleStyle" format="reference" />
+    <attr name="subtitleStyle" format="reference" />
 
     <declare-styleable name="TextInputView">
         <attr name="titleText" />
@@ -25,7 +27,15 @@
         <attr name="titleText" />
         <attr name="subtitleText" />
         <attr name="subtitleHint" />
-        <attr name="titleStyle" format="reference" />
-        <attr name="subtitleStyle" format="reference" />
+        <attr name="titleStyle" />
+        <attr name="subtitleStyle" />
+    </declare-styleable>
+
+    <declare-styleable name="MoreDetailView">
+        <attr name="titleText" />
+        <attr name="subtitleText" />
+        <attr name="titleStyle" />
+        <attr name="subtitleStyle" />
+        <attr name="detailIcon" format="reference" />
     </declare-styleable>
 </resources>

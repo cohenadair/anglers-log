@@ -13,11 +13,13 @@ import com.cohenadair.anglerslog.model.Logbook;
 import com.cohenadair.anglerslog.model.user_defines.Catch;
 import com.cohenadair.anglerslog.model.user_defines.Trip;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
-import com.cohenadair.anglerslog.utilities.UserDefineArrays;
+import com.cohenadair.anglerslog.utilities.LayoutSpecManager;
 import com.cohenadair.anglerslog.utilities.Utils;
+import com.cohenadair.anglerslog.views.MoreDetailView;
 import com.cohenadair.anglerslog.views.PropertyDetailView;
 import com.cohenadair.anglerslog.views.TitleSubTitleView;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 /**
@@ -103,33 +105,93 @@ public class TripFragment extends DetailFragment {
             mTitleView.hideSubtitle();
     }
 
+    private interface OnUpdateMoreDetailInterface {
+        String onGetTitle(UserDefineObject object);
+        String onGetSubtitle(UserDefineObject object);
+        View.OnClickListener onGetDetailButtonClickListener(UUID id);
+    }
+
+    private void updateMoreDetailViews(ArrayList<UserDefineObject> objects, View titleView, LinearLayout container, OnUpdateMoreDetailInterface callbacks) {
+        boolean hasObjects = objects.size() > 0;
+        Utils.toggleVisibility(titleView, hasObjects);
+        Utils.toggleVisibility(container, hasObjects);
+
+        for (UserDefineObject object : objects) {
+            MoreDetailView catchView = new MoreDetailView(getContext());
+            catchView.setTitle(callbacks.onGetTitle(object));
+            catchView.useDefaultStyle();
+
+            if (callbacks.onGetSubtitle(object) == null)
+                catchView.hideSubtitle();
+            else
+                catchView.setSubtitle(callbacks.onGetSubtitle(object));
+
+            if (objects.size() == 1)
+                catchView.useNoSpacing();
+            else
+                catchView.useDefaultSpacing();
+
+            catchView.setOnClickDetailButton(callbacks.onGetDetailButtonClickListener(object.getId()));
+            container.addView(catchView);
+        }
+    }
+
     private void updateCatchesView() {
-        boolean hasCatches = mTrip.hasCatches();
-        Utils.toggleVisibility(mCatchesTitle, hasCatches);
-        Utils.toggleVisibility(mCatchesContainer, hasCatches);
-
-        // TODO create and add catch views to mCatchesContainer
-
-        TextView temp = new TextView(getContext());
-        temp.setText(UserDefineArrays.propertiesAsString(mTrip.getCatches(), new UserDefineArrays.OnGetPropertyInterface() {
+        updateMoreDetailViews(mTrip.getCatches(), mCatchesTitle, mCatchesContainer, new OnUpdateMoreDetailInterface() {
             @Override
-            public String onGetProperty(UserDefineObject object) {
+            public String onGetTitle(UserDefineObject object) {
                 return ((Catch)object).getSpeciesAsString();
             }
-        }));
-        mCatchesContainer.addView(temp);
+
+            @Override
+            public String onGetSubtitle(UserDefineObject object) {
+                return ((Catch)object).getDateTimeAsString();
+            }
+
+            @Override
+            public View.OnClickListener onGetDetailButtonClickListener(final UUID id) {
+                return new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        startDetailActivity(LayoutSpecManager.LAYOUT_CATCHES, id);
+                    }
+                };
+            }
+        });
     }
 
     private void updateLocationsView() {
-        boolean hasLocations = mTrip.hasLocations();
-        Utils.toggleVisibility(mLocationsTitle, hasLocations);
-        Utils.toggleVisibility(mLocationsContainer, hasLocations);
+        updateMoreDetailViews(mTrip.getLocations(), mLocationsTitle, mLocationsContainer, new OnUpdateMoreDetailInterface() {
+            @Override
+            public String onGetTitle(UserDefineObject object) {
+                return object.getName();
+            }
 
-        // TODO create and add catch views to mLocationsContainer
+            @Override
+            public String onGetSubtitle(UserDefineObject object) {
+                // count the number of catches are from this location
+                int numOfCatches = 0;
 
-        TextView temp = new TextView(getContext());
-        temp.setText(UserDefineArrays.namesAsString(mTrip.getLocations()));
-        mLocationsContainer.addView(temp);
+                ArrayList<UserDefineObject> catches = mTrip.getCatches();
+                for (UserDefineObject obj : catches) {
+                    Catch aCatch = (Catch)obj;
+                    if (aCatch.getFishingSpot() != null)
+                        numOfCatches += aCatch.getFishingSpot().getLocation().getId().equals(object.getId()) ? aCatch.getActualQuantity() : 0;
+                }
+
+                return numOfCatches + " " + getResources().getString(R.string.trip_catches);
+            }
+
+            @Override
+            public View.OnClickListener onGetDetailButtonClickListener(final UUID id) {
+                return new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        startDetailActivity(LayoutSpecManager.LAYOUT_LOCATIONS, id);
+                    }
+                };
+            }
+        });
     }
 
     private void updateAnglersView() {

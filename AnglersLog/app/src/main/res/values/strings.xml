@@ -176,6 +176,7 @@
     <string name="success_trip">Successfully added trip.</string>
     <string name="success_trip_edit">Successfully updated trip.</string>
     <string name="success_trip_delete">Successfully deleted trip.</string>
+    <string name="trip_catches">Fish caught on this trip</string>
 
     <string name="error_camera_unavailable">The camera is currently unavailable on this device.</string>
     <string name="error_delete_primitive">is currently in use and cannot be deleted.</string>
@@ -199,6 +200,7 @@
     <string name="weather_description">An image representation of the current weather.</string>
     <string name="weather_edit_description">A button used to edit the current weather information.</string>
     <string name="weather_remove_description">Remove current weather information.</string>
+    <string name="more_info_description">More information about the current item.</string>
 
     <string name="unknown">Unknown</string>
 </resources>

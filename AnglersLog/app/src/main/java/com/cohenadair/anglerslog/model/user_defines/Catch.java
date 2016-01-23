@@ -356,6 +356,16 @@ public class Catch extends PhotoUserDefineObject {
     }
 
     /**
+     * Used for calculations. If the user didn't set the quantity, the quantity is still
+     * technically at least one.
+     *
+     * @return A more accurate quantity value.
+     */
+    public int getActualQuantity() {
+        return (mQuantity <= 0) ? 1 : mQuantity;
+    }
+
+    /**
      * Gets the Catch's CatchResult as a String. A Context is needed to retrieve the String array
      * resource.
      *

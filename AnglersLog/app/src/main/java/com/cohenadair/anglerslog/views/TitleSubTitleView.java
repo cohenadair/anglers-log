@@ -29,7 +29,7 @@ public class TitleSubTitleView extends LinearLayout {
         init(attrs);
     }
 
-    private void init(AttributeSet attrs) {
+    public void init(AttributeSet attrs) {
         inflate(getContext(), R.layout.view_title_subtitle, this);
 
         mTitle = (TextView)findViewById(R.id.title_text_view);
@@ -78,5 +78,13 @@ public class TitleSubTitleView extends LinearLayout {
 
     public void hideSubtitle() {
         mSubtitle.setVisibility(View.GONE);
+    }
+
+    public void setTitleStyle(int resId) {
+        Utils.setTextAppearance(getContext(), mTitle, resId);
+    }
+
+    public void setSubtitleStyle(int resId) {
+        Utils.setTextAppearance(getContext(), mSubtitle, resId);
     }
 }
