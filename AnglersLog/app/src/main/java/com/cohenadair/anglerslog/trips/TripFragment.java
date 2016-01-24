@@ -11,7 +11,6 @@ import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.database.QueryHelper;
 import com.cohenadair.anglerslog.fragments.DetailFragment;
 import com.cohenadair.anglerslog.model.Logbook;
-import com.cohenadair.anglerslog.model.user_defines.Catch;
 import com.cohenadair.anglerslog.model.user_defines.Location;
 import com.cohenadair.anglerslog.model.user_defines.Trip;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
@@ -20,6 +19,7 @@ import com.cohenadair.anglerslog.utilities.Utils;
 import com.cohenadair.anglerslog.views.PropertyDetailView;
 import com.cohenadair.anglerslog.views.TitleSubTitleView;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 /**
@@ -112,27 +112,8 @@ public class TripFragment extends DetailFragment {
     }
 
     private void updateCatchesView() {
-        addMoreDetailViews(mTrip.getCatches(), mCatchesTitle, mCatchesContainer, new OnUpdateMoreDetailInterface() {
-            @Override
-            public String onGetTitle(UserDefineObject object) {
-                return ((Catch) object).getSpeciesAsString();
-            }
-
-            @Override
-            public String onGetSubtitle(UserDefineObject object) {
-                return ((Catch) object).getDateTimeAsString();
-            }
-
-            @Override
-            public View.OnClickListener onGetDetailButtonClickListener(final UUID id) {
-                return new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        startDetailActivity(LayoutSpecManager.LAYOUT_CATCHES, id);
-                    }
-                };
-            }
-        });
+        ArrayList<UserDefineObject> catches = mTrip.getCatches();
+        addMoreDetailViews(catches, mCatchesTitle, mCatchesContainer, getCatchMoreDetailInterface(catches));
     }
 
     private void updateLocationsView() {
@@ -144,7 +125,7 @@ public class TripFragment extends DetailFragment {
 
             @Override
             public String onGetSubtitle(UserDefineObject object) {
-                return QueryHelper.queryTripsLocationCatchCount(mTrip, (Location)object) + " " + getResources().getString(R.string.trip_catches);
+                return QueryHelper.queryTripsLocationCatchCount(mTrip, (Location) object) + " " + getResources().getString(R.string.trip_catches);
             }
 
             @Override

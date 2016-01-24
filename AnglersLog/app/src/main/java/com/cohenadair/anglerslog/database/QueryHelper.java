@@ -19,11 +19,13 @@ import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import java.util.ArrayList;
 import java.util.UUID;
 
-import static com.cohenadair.anglerslog.database.LogbookSchema.*;
 import static com.cohenadair.anglerslog.database.LogbookSchema.BaitTable;
 import static com.cohenadair.anglerslog.database.LogbookSchema.CatchTable;
+import static com.cohenadair.anglerslog.database.LogbookSchema.FishingSpotTable;
 import static com.cohenadair.anglerslog.database.LogbookSchema.PhotoTable;
+import static com.cohenadair.anglerslog.database.LogbookSchema.UsedCatchTable;
 import static com.cohenadair.anglerslog.database.LogbookSchema.UserDefineTable;
+import static com.cohenadair.anglerslog.database.LogbookSchema.WeatherTable;
 
 // TODO finish documentation for this file
 
@@ -300,6 +302,13 @@ public class QueryHelper {
         return numOfCatches;
     }
 
+    /**
+     * Queries for the number of catches for a give {@link Trip} at a given {@link Location}.
+     *
+     * @param trip The {@link Trip} object.
+     * @param location The {@link Location} object.
+     * @return The number of catches for the given trip at the given location.
+     */
     public static int queryTripsLocationCatchCount(Trip trip, Location location) {
         int numOfCatches = 0;
         String totalQuantity = "totalQuantity";
@@ -326,5 +335,4 @@ public class QueryHelper {
         cursor.close();
         return numOfCatches;
     }
-
 }

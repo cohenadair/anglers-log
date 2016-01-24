@@ -3,12 +3,17 @@ package com.cohenadair.anglerslog.model.user_defines;
 import android.content.ContentValues;
 
 import com.cohenadair.anglerslog.R;
+import com.cohenadair.anglerslog.database.QueryHelper;
+import com.cohenadair.anglerslog.database.cursors.CatchCursor;
+import com.cohenadair.anglerslog.database.cursors.UserDefineCursor;
 import com.cohenadair.anglerslog.model.Logbook;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 import static com.cohenadair.anglerslog.database.LogbookSchema.BaitPhotoTable;
 import static com.cohenadair.anglerslog.database.LogbookSchema.BaitTable;
+import static com.cohenadair.anglerslog.database.LogbookSchema.CatchTable;
 
 /**
  * The Bait class represents a single bait used for fishing.
@@ -106,6 +111,23 @@ public class Bait extends PhotoUserDefineObject {
     public void setIsSelected(boolean isSelected) {
         super.setIsSelected(isSelected);
         Logbook.editBait(getId(), this);
+    }
+    //endregion
+
+    //region Catch Manipulation
+    public ArrayList<UserDefineObject> getCatches() {
+        UserDefineCursor cursor = QueryHelper.queryUserDefines(CatchTable.NAME, CatchTable.Columns.BAIT_ID + " = ?", new String[] { idAsString() });
+
+        return QueryHelper.queryUserDefines(cursor, new QueryHelper.UserDefineQueryInterface() {
+            @Override
+            public UserDefineObject getObject(UserDefineCursor cursor) {
+                return new CatchCursor(cursor).getCatch();
+            }
+        });
+    }
+
+    public int getCatchCount() {
+        return getCatches().size();
     }
     //endregion
 

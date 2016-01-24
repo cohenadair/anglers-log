@@ -156,7 +156,7 @@
     <string name="error_getting_weather">Couldn\'t get weather data.</string>
     <string name="error_google_services">Couldn\'t connect to Google Play Services.</string>
 
-    <string name="bait_no_catches">No fish have been caught with this bait (feature coming soon).</string>
+    <string name="bait_no_catches">No catches have been made with this bait.</string>
     <string name="success_bait">Successfully added bait!</string>
     <string name="success_bait_delete">Successfully deleted bait.</string>
     <string name="success_bait_edit">Successfully updated bait.</string>

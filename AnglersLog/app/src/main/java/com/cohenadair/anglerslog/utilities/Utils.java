@@ -263,6 +263,9 @@ public class Utils {
     }
 
     public static void toggleVisibility(View view, boolean visible) {
+        if (view == null)
+            return;
+
         view.setVisibility(visible ? View.VISIBLE : View.GONE);
     }
 

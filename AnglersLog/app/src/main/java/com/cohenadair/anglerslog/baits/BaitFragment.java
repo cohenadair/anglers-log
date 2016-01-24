@@ -14,6 +14,7 @@ import com.cohenadair.anglerslog.activities.PhotoViewerActivity;
 import com.cohenadair.anglerslog.fragments.DetailFragment;
 import com.cohenadair.anglerslog.model.Logbook;
 import com.cohenadair.anglerslog.model.user_defines.Bait;
+import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import com.cohenadair.anglerslog.utilities.PhotoUtils;
 import com.cohenadair.anglerslog.utilities.Utils;
 import com.cohenadair.anglerslog.views.PropertyDetailView;
@@ -30,9 +31,11 @@ public class BaitFragment extends DetailFragment {
     private Bait mBait;
 
     private LinearLayout mContainer;
+    private LinearLayout mCatchesContainer;
     private ImageView mImageView;
     private TitleSubTitleView mTitleSubTitleView;
     private TextView mDescriptionTextView;
+    private TextView mNoCatchesTextView;
     private PropertyDetailView mTypeView;
     private PropertyDetailView mColorView;
     private PropertyDetailView mSizeView;
@@ -53,6 +56,8 @@ public class BaitFragment extends DetailFragment {
         mTypeView = (PropertyDetailView)view.findViewById(R.id.type_view);
         mColorView = (PropertyDetailView)view.findViewById(R.id.color_view);
         mSizeView = (PropertyDetailView)view.findViewById(R.id.size_view);
+        mNoCatchesTextView = (TextView)view.findViewById(R.id.no_catches_text_view);
+        mCatchesContainer = (LinearLayout)view.findViewById(R.id.catches_container);
 
         update(getActivity());
 
@@ -104,7 +109,19 @@ public class BaitFragment extends DetailFragment {
         mDescriptionTextView.setText(mBait.getDescription());
         Utils.toggleVisibility(mDescriptionTextView, mBait.getDescription() != null);
 
-        // TODO list of catches for this bait
+        updateCatchesList();
+    }
+
+    private void updateCatchesList() {
+        ArrayList<UserDefineObject> catches = mBait.getCatches();
+        boolean hasCatches = catches != null && catches.size() > 0;
+
+        Utils.toggleVisibility(mNoCatchesTextView, !hasCatches);
+
+        if (!hasCatches)
+            return;
+
+        addMoreDetailViews(catches, null, mCatchesContainer, getCatchMoreDetailInterface(catches));
     }
 
     private void initImageView(View view) {

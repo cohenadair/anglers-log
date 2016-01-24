@@ -18,7 +18,9 @@ import com.cohenadair.anglerslog.activities.DetailFragmentActivity;
 import com.cohenadair.anglerslog.activities.LayoutSpecActivity;
 import com.cohenadair.anglerslog.interfaces.GlobalSettingsInterface;
 import com.cohenadair.anglerslog.interfaces.OnClickManageMenuListener;
+import com.cohenadair.anglerslog.model.user_defines.Catch;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
+import com.cohenadair.anglerslog.utilities.LayoutSpecManager;
 import com.cohenadair.anglerslog.utilities.Utils;
 import com.cohenadair.anglerslog.views.MoreDetailView;
 
@@ -209,5 +211,37 @@ public abstract class DetailFragment extends Fragment {
             view.setOnClickDetailButton(callbacks.onGetDetailButtonClickListener(object.getId()));
             container.addView(view);
         }
+    }
+
+    /**
+     * Gets an {@link com.cohenadair.anglerslog.fragments.DetailFragment.OnUpdateMoreDetailInterface}
+     * specifically for {@link Catch} objects. This method is used in multiple DetailFragment
+     * subclasses.
+     *
+     * @param catches The {@link Catch} objects that will be displayed.
+     * @return An {@link com.cohenadair.anglerslog.fragments.DetailFragment.OnUpdateMoreDetailInterface}.
+     */
+    public OnUpdateMoreDetailInterface getCatchMoreDetailInterface(ArrayList<UserDefineObject> catches) {
+        return new OnUpdateMoreDetailInterface() {
+            @Override
+            public String onGetTitle(UserDefineObject object) {
+                return ((Catch)object).getSpeciesAsString();
+            }
+
+            @Override
+            public String onGetSubtitle(UserDefineObject object) {
+                return ((Catch)object).getDateTimeAsString();
+            }
+
+            @Override
+            public View.OnClickListener onGetDetailButtonClickListener(final UUID id) {
+                return new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        startDetailActivity(LayoutSpecManager.LAYOUT_CATCHES, id);
+                    }
+                };
+            }
+        };
     }
 }
