@@ -10,14 +10,19 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.LinearLayout;
 
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.activities.DetailFragmentActivity;
 import com.cohenadair.anglerslog.activities.LayoutSpecActivity;
 import com.cohenadair.anglerslog.interfaces.GlobalSettingsInterface;
 import com.cohenadair.anglerslog.interfaces.OnClickManageMenuListener;
+import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import com.cohenadair.anglerslog.utilities.Utils;
+import com.cohenadair.anglerslog.views.MoreDetailView;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 /**
@@ -38,6 +43,15 @@ public abstract class DetailFragment extends Fragment {
      * @param id the UUID of the clicked ListItem in the master view.
      */
     public abstract void update(UUID id);
+
+    /**
+     * An interface used for creating a list of {@link MoreDetailView}s.
+     */
+    public interface OnUpdateMoreDetailInterface {
+        String onGetTitle(UserDefineObject object);
+        String onGetSubtitle(UserDefineObject object);
+        View.OnClickListener onGetDetailButtonClickListener(UUID id);
+    }
 
     public DetailFragment() {
 
@@ -160,5 +174,40 @@ public abstract class DetailFragment extends Fragment {
         intent.putExtra(DetailFragmentActivity.EXTRA_LAYOUT_ID, layoutSpecId);
         intent.putExtra(DetailFragmentActivity.EXTRA_USER_DEFINE_ID, userDefineObjectId.toString());
         startActivity(intent);
+    }
+
+    /**
+     * Adds a list of {@link MoreDetailView}s to the given container.
+     *
+     * @param objects The {@link UserDefineObject} array of items to display.
+     * @param titleView The header or title view for the list.
+     * @param container The container for the list.
+     * @param callbacks The callbacks each {@link MoreDetailView} behavior.
+     */
+    public void addMoreDetailViews(ArrayList<UserDefineObject> objects, View titleView, LinearLayout container, OnUpdateMoreDetailInterface callbacks) {
+        boolean hasObjects = objects.size() > 0;
+        Utils.toggleVisibility(titleView, hasObjects);
+        Utils.toggleVisibility(container, hasObjects);
+
+        container.removeAllViews();
+
+        for (UserDefineObject object : objects) {
+            MoreDetailView view = new MoreDetailView(getContext());
+            view.setTitle(callbacks.onGetTitle(object));
+            view.useDefaultStyle();
+
+            if (callbacks.onGetSubtitle(object) == null)
+                view.hideSubtitle();
+            else
+                view.setSubtitle(callbacks.onGetSubtitle(object));
+
+            if (objects.size() == 1)
+                view.useNoSpacing();
+            else
+                view.useDefaultSpacing();
+
+            view.setOnClickDetailButton(callbacks.onGetDetailButtonClickListener(object.getId()));
+            container.addView(view);
+        }
     }
 }

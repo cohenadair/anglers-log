@@ -17,11 +17,9 @@ import com.cohenadair.anglerslog.model.user_defines.Trip;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import com.cohenadair.anglerslog.utilities.LayoutSpecManager;
 import com.cohenadair.anglerslog.utilities.Utils;
-import com.cohenadair.anglerslog.views.MoreDetailView;
 import com.cohenadair.anglerslog.views.PropertyDetailView;
 import com.cohenadair.anglerslog.views.TitleSubTitleView;
 
-import java.util.ArrayList;
 import java.util.UUID;
 
 /**
@@ -113,49 +111,16 @@ public class TripFragment extends DetailFragment {
             mTitleView.hideSubtitle();
     }
 
-    private interface OnUpdateMoreDetailInterface {
-        String onGetTitle(UserDefineObject object);
-        String onGetSubtitle(UserDefineObject object);
-        View.OnClickListener onGetDetailButtonClickListener(UUID id);
-    }
-
-    private void updateMoreDetailViews(ArrayList<UserDefineObject> objects, View titleView, LinearLayout container, OnUpdateMoreDetailInterface callbacks) {
-        boolean hasObjects = objects.size() > 0;
-        Utils.toggleVisibility(titleView, hasObjects);
-        Utils.toggleVisibility(container, hasObjects);
-
-        container.removeAllViews();
-
-        for (UserDefineObject object : objects) {
-            MoreDetailView catchView = new MoreDetailView(getContext());
-            catchView.setTitle(callbacks.onGetTitle(object));
-            catchView.useDefaultStyle();
-
-            if (callbacks.onGetSubtitle(object) == null)
-                catchView.hideSubtitle();
-            else
-                catchView.setSubtitle(callbacks.onGetSubtitle(object));
-
-            if (objects.size() == 1)
-                catchView.useNoSpacing();
-            else
-                catchView.useDefaultSpacing();
-
-            catchView.setOnClickDetailButton(callbacks.onGetDetailButtonClickListener(object.getId()));
-            container.addView(catchView);
-        }
-    }
-
     private void updateCatchesView() {
-        updateMoreDetailViews(mTrip.getCatches(), mCatchesTitle, mCatchesContainer, new OnUpdateMoreDetailInterface() {
+        addMoreDetailViews(mTrip.getCatches(), mCatchesTitle, mCatchesContainer, new OnUpdateMoreDetailInterface() {
             @Override
             public String onGetTitle(UserDefineObject object) {
-                return ((Catch)object).getSpeciesAsString();
+                return ((Catch) object).getSpeciesAsString();
             }
 
             @Override
             public String onGetSubtitle(UserDefineObject object) {
-                return ((Catch)object).getDateTimeAsString();
+                return ((Catch) object).getDateTimeAsString();
             }
 
             @Override
@@ -171,7 +136,7 @@ public class TripFragment extends DetailFragment {
     }
 
     private void updateLocationsView() {
-        updateMoreDetailViews(mTrip.getLocations(), mLocationsTitle, mLocationsContainer, new OnUpdateMoreDetailInterface() {
+        addMoreDetailViews(mTrip.getLocations(), mLocationsTitle, mLocationsContainer, new OnUpdateMoreDetailInterface() {
             @Override
             public String onGetTitle(UserDefineObject object) {
                 return object.getName();
