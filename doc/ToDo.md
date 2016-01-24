@@ -5,10 +5,14 @@ Anglers' Log To-Do List
 * ~~Add missing attributes~~
 
 ### Pages
-* Add Trips
+* Single Location
+  * Integrate fish caught into Fishing Spot pins
+* Single Bait
+  * Add `ListView` of catches.
+* ~~Add Trips~~
 * Add Statistics
 * Add Gallery
-* Add Settings
+* Add Settings (http://developer.android.com/guide/topics/ui/settings.html)
   * Backup (import/export)
 * Add About
   * Origins (NMU)
@@ -25,6 +29,8 @@ Anglers' Log To-Do List
 * Sharing (Trips, Catches, Photos)
 * Importing/exporting (JSON)
 * Instabug (via toolbar item)
+* Sorting, filtering user define lists.
+* Crittercism for crash logs.
 
 ### Extra
 * Full page add fishing spot for phones (dialog for tablets)
