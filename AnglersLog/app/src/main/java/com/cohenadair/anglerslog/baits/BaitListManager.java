@@ -14,7 +14,6 @@ import com.cohenadair.anglerslog.model.user_defines.BaitCategory;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import com.cohenadair.anglerslog.utilities.ListManager;
 import com.cohenadair.anglerslog.utilities.PhotoUtils;
-import com.cohenadair.anglerslog.utilities.Utils;
 import com.cohenadair.anglerslog.views.TitleSubTitleView;
 
 import java.io.File;
@@ -69,9 +68,7 @@ public class BaitListManager {
             } else
                 mImageView.setImageResource(R.drawable.no_catch_photo);
 
-            // hide the separator for the last row
-            mSeparator.setVisibility((position == mAdapter.getItemCount() - 1) ? View.INVISIBLE : View.VISIBLE);
-            Utils.toggleViewSelected(mView, bait.getIsSelected());
+            updateView(mSeparator, position, bait);
         }
 
         public void setBaitCategory(BaitCategory category) {

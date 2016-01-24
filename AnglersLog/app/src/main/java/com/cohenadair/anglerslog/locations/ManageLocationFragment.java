@@ -110,8 +110,6 @@ public class ManageLocationFragment extends ManageContentFragment {
     public boolean verifyUserInput() {
         Location loc = getNewLocation();
 
-        loc.setName(mNameView.getInputText());
-
         // name
         if (loc.isNameNull()) {
             Utils.showErrorAlert(getActivity(), R.string.error_name);
@@ -153,6 +151,12 @@ public class ManageLocationFragment extends ManageContentFragment {
 
     private void initNameView(View view) {
         mNameView = (TextInputView)view.findViewById(R.id.name_view);
+        mNameView.addOnInputTextChangedListener(Utils.onTextChangedListener(new Utils.OnTextChangedListener() {
+            @Override
+            public void onTextChanged(String newText) {
+                getNewLocation().setName(newText);
+            }
+        }));
     }
 
     private void initAddFishingSpotButton(View view) {

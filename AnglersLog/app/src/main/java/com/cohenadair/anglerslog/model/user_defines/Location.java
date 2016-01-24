@@ -3,6 +3,7 @@ package com.cohenadair.anglerslog.model.user_defines;
 import com.cohenadair.anglerslog.database.QueryHelper;
 import com.cohenadair.anglerslog.database.cursors.FishingSpotCursor;
 import com.cohenadair.anglerslog.database.cursors.UserDefineCursor;
+import com.cohenadair.anglerslog.model.Logbook;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -36,6 +37,14 @@ public class Location extends UserDefineObject {
     public Location(UserDefineObject obj, boolean keepId) {
         super(obj, keepId);
     }
+
+    //region Getters & Setters
+    @Override
+    public void setIsSelected(boolean isSelected) {
+        super.setIsSelected(isSelected);
+        Logbook.editLocation(getId(), this);
+    }
+    //endregion
 
     //region Fishing Spot Manipulation
     public ArrayList<UserDefineObject> getFishingSpots() {

@@ -187,6 +187,9 @@ public abstract class LayoutSpecActivity extends DefaultActivity implements
      */
     @Override
     public void onClickMenuEdit(UUID id) {
+        if (id == null) // for tablets with no entries
+            return;
+
         setIsEditing(true, id);
         goToListManagerView();
     }
@@ -197,6 +200,9 @@ public abstract class LayoutSpecActivity extends DefaultActivity implements
      */
     @Override
     public void onClickMenuTrash(final UUID id) {
+        if (id == null) // for tablets with no entries
+            return;
+
         Utils.showDeleteConfirm(this, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {

@@ -3,6 +3,7 @@ package com.cohenadair.anglerslog.views;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.text.InputType;
+import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -74,11 +75,7 @@ public class TextInputView extends LinearLayout {
     }
     //endregion
 
-    public float asFloat() {
-        return getInputText() == null ? -1 : Float.parseFloat(getInputText());
-    }
-
-    public boolean isInputEmpty() {
-        return getInputText() != null && getInputText().isEmpty();
+    public void addOnInputTextChangedListener(TextWatcher listener) {
+        mEditText.addTextChangedListener(listener);
     }
 }

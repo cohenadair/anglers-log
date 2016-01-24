@@ -2,6 +2,7 @@ package com.cohenadair.anglerslog.catches;
 
 import android.location.Location;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,7 @@ import com.cohenadair.anglerslog.model.user_defines.Catch;
 import com.cohenadair.anglerslog.model.user_defines.Species;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import com.cohenadair.anglerslog.model.user_defines.WaterClarity;
+import com.cohenadair.anglerslog.trips.ManageTripFragment;
 import com.cohenadair.anglerslog.utilities.LayoutSpecManager;
 import com.cohenadair.anglerslog.utilities.PrimitiveSpecManager;
 import com.cohenadair.anglerslog.utilities.UserDefineArrays;
@@ -88,14 +90,14 @@ public class ManageCatchFragment extends ManageContentFragment {
         initResultView(view);
         initWeatherView(view);
 
-        initSubclassObject();
-
         mQuantityView = (TextInputView)view.findViewById(R.id.quantity_view);
         mLengthView = (TextInputView)view.findViewById(R.id.length_view);
         mWeightView = (TextInputView)view.findViewById(R.id.weight_view);
         mWaterDepthView = (TextInputView)view.findViewById(R.id.water_depth_view);
         mWaterTemperatureView = (TextInputView)view.findViewById(R.id.water_temperature_view);
         mNotesView = (TextInputView)view.findViewById(R.id.notes_view);
+
+        initSubclassObject();
 
         // reset for each time the view is created
         if (!isEditing()) {
@@ -124,6 +126,7 @@ public class ManageCatchFragment extends ManageContentFragment {
     public void onResume() {
         super.onResume();
         Utils.requestLocationServices(getContext());
+        initInputListeners();
     }
 
     @Override
@@ -172,13 +175,7 @@ public class ManageCatchFragment extends ManageContentFragment {
             return false;
         }
 
-        // all input properties
-        getNewCatch().setQuantity((int) mQuantityView.asFloat());
-        getNewCatch().setLength(mLengthView.asFloat());
-        getNewCatch().setWeight(mWeightView.asFloat());
-        getNewCatch().setWaterDepth(mWaterDepthView.asFloat());
-        getNewCatch().setWaterTemperature((int) mWaterTemperatureView.asFloat());
-        getNewCatch().setNotes(mNotesView.isInputEmpty() ? null : mNotesView.getInputText());
+        // all input properties are set using a OnTextChanged listener
 
         // update properties that interact directly with the database
         getNewCatch().setFishingMethods(mSelectedFishingMethods);
@@ -427,4 +424,64 @@ public class ManageCatchFragment extends ManageContentFragment {
         }));
     }
     //endregion
+
+    /**
+     * See {@link ManageTripFragment#initInputListeners()}.
+     */
+    private void initInputListeners() {
+        mNotesView.addOnInputTextChangedListener(Utils.onTextChangedListener(new Utils.OnTextChangedListener() {
+            @Override
+            public void onTextChanged(String newText) {
+                Log.d("TAG", "Notes");
+                getNewCatch().setNotes(newText);
+            }
+        }));
+
+        mWaterTemperatureView.addOnInputTextChangedListener(Utils.onTextChangedListener(new Utils.OnTextChangedListener() {
+            @Override
+            public void onTextChanged(String newText) {
+                Log.d("TAG", "Temperature");
+                getNewCatch().setWaterTemperature((int) asFloat(newText, -1));
+            }
+        }));
+
+        mWaterDepthView.addOnInputTextChangedListener(Utils.onTextChangedListener(new Utils.OnTextChangedListener() {
+            @Override
+            public void onTextChanged(String newText) {
+                Log.d("TAG", "Depth");
+                getNewCatch().setWaterDepth(asFloat(newText, -1));
+            }
+        }));
+
+        mWeightView.addOnInputTextChangedListener(Utils.onTextChangedListener(new Utils.OnTextChangedListener() {
+            @Override
+            public void onTextChanged(String newText) {
+                Log.d("TAG", "Weight");
+                getNewCatch().setWeight(asFloat(newText, -1));
+            }
+        }));
+
+        mLengthView.addOnInputTextChangedListener(Utils.onTextChangedListener(new Utils.OnTextChangedListener() {
+            @Override
+            public void onTextChanged(String newText) {
+                Log.d("TAG", "Length");
+                getNewCatch().setLength(asFloat(newText, -1));
+            }
+        }));
+
+        mQuantityView.addOnInputTextChangedListener(Utils.onTextChangedListener(new Utils.OnTextChangedListener() {
+            @Override
+            public void onTextChanged(String newText) {
+                Log.d("TAG", "Quantity");
+                getNewCatch().setQuantity((int) asFloat(newText, 1));
+            }
+        }));
+    }
+
+    private float asFloat(String str, float defaultValue) {
+        if (str.isEmpty())
+            return defaultValue;
+
+        return Float.parseFloat(str);
+    }
 }

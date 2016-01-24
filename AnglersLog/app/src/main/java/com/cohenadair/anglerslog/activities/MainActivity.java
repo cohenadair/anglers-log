@@ -12,6 +12,7 @@ import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.fragments.DetailFragment;
 import com.cohenadair.anglerslog.interfaces.OnClickInterface;
 import com.cohenadair.anglerslog.utilities.LayoutSpecManager;
+import com.cohenadair.anglerslog.utilities.LogbookPreferences;
 import com.cohenadair.anglerslog.utilities.NavigationManager;
 
 import java.util.UUID;
@@ -44,6 +45,8 @@ public class MainActivity extends LayoutSpecActivity {
         // keep layout on orientation change
         if (savedInstanceState == null)
             showFragment();
+
+        LogbookPreferences.setIsRootTwoPane(isTwoPane());
     }
 
     /**

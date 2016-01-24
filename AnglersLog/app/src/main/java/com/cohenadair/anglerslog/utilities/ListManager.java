@@ -23,6 +23,7 @@ public class ListManager {
     public static abstract class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
 
         private Adapter mAdapter;
+        private View mView;
         private UUID mId;
 
         public ViewHolder(View view, Adapter adapter) {
@@ -32,6 +33,7 @@ public class ListManager {
             view.setOnLongClickListener(this);
 
             mAdapter = adapter;
+            mView = view;
         }
 
         @Override
@@ -74,8 +76,22 @@ public class ListManager {
             mId = id;
         }
 
+        public Adapter getAdapter() {
+            return mAdapter;
+        }
+
+        public View getView() {
+            return mView;
+        }
+
         public Context context() {
             return mAdapter.getContext();
+        }
+
+        public void updateView(View separator, int position, UserDefineObject object) {
+            // hide the separator for the last row
+            separator.setVisibility((position == mAdapter.getItemCount() - 1) ? View.INVISIBLE : View.VISIBLE);
+            Utils.toggleViewSelected(mView, object.getIsSelected() && LogbookPreferences.getIsRootTwoPane());
         }
     }
     //endregion
@@ -86,6 +102,7 @@ public class ListManager {
         private OnClickInterface mCallbacks;
         private Context mContext;
         private ArrayList<UserDefineObject> mItems;
+        private boolean mShowSelection = true; // used for Trip's Catch and Location selection
 
         public Adapter(Context context, ArrayList<UserDefineObject> items, OnClickInterface callbacks) {
             mContext = context;
@@ -99,8 +116,8 @@ public class ListManager {
         }
 
         public void setSelected(int position) {
-            // if we're int two-pane mode there shouldn't be any selection
-            if (!Utils.isTwoPane(mContext))
+            // selection visuals only apply in two-pane view
+            if (!LogbookPreferences.getIsRootTwoPane() || !mShowSelection)
                 return;
 
             for (UserDefineObject obj : mItems)
@@ -108,6 +125,10 @@ public class ListManager {
 
             mItems.get(position).setIsSelected(true);
             notifyDataSetChanged();
+        }
+
+        public void setShowSelection(boolean showSelection) {
+            mShowSelection = showSelection;
         }
 
         public void onBind(ViewHolder holder, int position) {

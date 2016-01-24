@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import com.cohenadair.anglerslog.database.LogbookSchema.SpeciesTable;
 
-import static com.cohenadair.anglerslog.database.LogbookSchema.*;
+import static com.cohenadair.anglerslog.database.LogbookSchema.AnglerTable;
 import static com.cohenadair.anglerslog.database.LogbookSchema.BaitCategoryTable;
 import static com.cohenadair.anglerslog.database.LogbookSchema.BaitPhotoTable;
 import static com.cohenadair.anglerslog.database.LogbookSchema.BaitTable;
@@ -16,7 +16,10 @@ import static com.cohenadair.anglerslog.database.LogbookSchema.FishingMethodTabl
 import static com.cohenadair.anglerslog.database.LogbookSchema.FishingSpotTable;
 import static com.cohenadair.anglerslog.database.LogbookSchema.LocationTable;
 import static com.cohenadair.anglerslog.database.LogbookSchema.TripTable;
+import static com.cohenadair.anglerslog.database.LogbookSchema.UsedAnglerTable;
+import static com.cohenadair.anglerslog.database.LogbookSchema.UsedCatchTable;
 import static com.cohenadair.anglerslog.database.LogbookSchema.UsedFishingMethodTable;
+import static com.cohenadair.anglerslog.database.LogbookSchema.UsedLocationTable;
 import static com.cohenadair.anglerslog.database.LogbookSchema.WaterClarityTable;
 import static com.cohenadair.anglerslog.database.LogbookSchema.WeatherTable;
 
@@ -71,12 +74,13 @@ public class LogbookHelper extends SQLiteOpenHelper {
             CatchTable.Columns.FISHING_SPOT_ID + " TEXT REFERENCES " + FishingSpotTable.NAME + "(" + FishingSpotTable.Columns.ID + "), " +
             CatchTable.Columns.CLARITY_ID + " TEXT REFERENCES " + WaterClarityTable.NAME + "(" + WaterClarityTable.Columns.ID + "), " +
             CatchTable.Columns.CATCH_RESULT + " INTEGER, " +
-            CatchTable.Columns.IS_FAVORITE + " INTEGER," +
-            CatchTable.Columns.LENGTH + " REAL," +
-            CatchTable.Columns.WEIGHT + " REAL," +
-            CatchTable.Columns.WATER_DEPTH + " REAL," +
-            CatchTable.Columns.WATER_TEMPERATURE + " INTEGER," +
-            CatchTable.Columns.QUANTITY + " INTEGER," +
+            CatchTable.Columns.IS_FAVORITE + " INTEGER, " +
+            CatchTable.Columns.SELECTED + " INTEGER, " +
+            CatchTable.Columns.LENGTH + " REAL, " +
+            CatchTable.Columns.WEIGHT + " REAL, " +
+            CatchTable.Columns.WATER_DEPTH + " REAL, " +
+            CatchTable.Columns.WATER_TEMPERATURE + " INTEGER, " +
+            CatchTable.Columns.QUANTITY + " INTEGER, " +
             CatchTable.Columns.NOTES + " TEXT" +
             ")"
         );
@@ -85,7 +89,8 @@ public class LogbookHelper extends SQLiteOpenHelper {
     private void createSpeciesTable(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE " + SpeciesTable.NAME + "(" +
             SpeciesTable.Columns.ID + " TEXT PRIMARY KEY NOT NULL, " +
-            SpeciesTable.Columns.NAME + " TEXT UNIQUE NOT NULL" +
+            SpeciesTable.Columns.NAME + " TEXT UNIQUE NOT NULL, " +
+            SpeciesTable.Columns.SELECTED + " INTEGER" +
             ")"
         );
     }
@@ -93,6 +98,7 @@ public class LogbookHelper extends SQLiteOpenHelper {
     private void createBaitCategoryTable(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE " + BaitCategoryTable.NAME + "(" +
             BaitCategoryTable.Columns.ID + " TEXT PRIMARY KEY NOT NULL, " +
+            BaitCategoryTable.Columns.SELECTED + " INTEGER, " +
             BaitCategoryTable.Columns.NAME + " TEXT UNIQUE NOT NULL" +
             ")"
         );
@@ -102,6 +108,7 @@ public class LogbookHelper extends SQLiteOpenHelper {
         db.execSQL("CREATE TABLE " + BaitTable.NAME + "(" +
             BaitTable.Columns.ID + " TEXT PRIMARY KEY NOT NULL, " +
             BaitTable.Columns.NAME + " TEXT NOT NULL, " +
+            BaitTable.Columns.SELECTED + " INTEGER, " +
             BaitTable.Columns.CATEGORY_ID + " TEXT NOT NULL REFERENCES " + BaitCategoryTable.NAME + "(" + BaitCategoryTable.Columns.ID + "), " +
             BaitTable.Columns.COLOR + " TEXT, " +
             BaitTable.Columns.SIZE + " TEXT, " +
@@ -115,7 +122,8 @@ public class LogbookHelper extends SQLiteOpenHelper {
     private void createLocationTable(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE " + LocationTable.NAME + "(" +
             LocationTable.Columns.ID + " TEXT PRIMARY KEY NOT NULL, " +
-            LocationTable.Columns.NAME + " TEXT UNIQUE NOT NULL" +
+            LocationTable.Columns.NAME + " TEXT UNIQUE NOT NULL, " +
+            LocationTable.Columns.SELECTED + " INTEGER" +
             ")"
         );
     }
@@ -124,6 +132,7 @@ public class LogbookHelper extends SQLiteOpenHelper {
         db.execSQL("CREATE TABLE " + FishingSpotTable.NAME + "(" +
             FishingSpotTable.Columns.ID + " TEXT PRIMARY KEY NOT NULL, " +
             FishingSpotTable.Columns.NAME + " TEXT NOT NULL, " +
+            FishingSpotTable.Columns.SELECTED + " INTEGER, " +
             FishingSpotTable.Columns.LOCATION_ID + " TEXT NOT NULL, " +
             FishingSpotTable.Columns.LATITUDE + " REAL," +
             FishingSpotTable.Columns.LONGITUDE + " REAL, " +
@@ -135,6 +144,7 @@ public class LogbookHelper extends SQLiteOpenHelper {
     private void createFishingMethodTable(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE " + FishingMethodTable.NAME + "(" +
             FishingMethodTable.Columns.ID + " TEXT PRIMARY KEY NOT NULL, " +
+            FishingMethodTable.Columns.SELECTED + " INTEGER, " +
             FishingMethodTable.Columns.NAME + " TEXT UNIQUE NOT NULL" +
             ")"
         );
@@ -144,6 +154,7 @@ public class LogbookHelper extends SQLiteOpenHelper {
         db.execSQL("CREATE TABLE " + TripTable.NAME + "(" +
             TripTable.Columns.ID + " TEXT PRIMARY KEY NOT NULL, " +
             TripTable.Columns.NAME + " TEXT, " +
+            TripTable.Columns.SELECTED + " INTEGER, " +
             TripTable.Columns.START_DATE + " INTEGER UNIQUE NOT NULL, " +
             TripTable.Columns.END_DATE + " INTEGER UNIQUE NOT NULL, " +
             TripTable.Columns.NOTES + " TEXT" +
@@ -154,6 +165,7 @@ public class LogbookHelper extends SQLiteOpenHelper {
     public void createAnglerTable(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE " + AnglerTable.NAME + "(" +
             AnglerTable.Columns.ID + " TEXT PRIMARY KEY NOT NULL, " +
+            AnglerTable.Columns.SELECTED + " INTEGER, " +
             AnglerTable.Columns.NAME + " TEXT UNIQUE NOT NULL" +
             ")"
         );
@@ -198,6 +210,7 @@ public class LogbookHelper extends SQLiteOpenHelper {
     private void createWaterClarityTable(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE " + WaterClarityTable.NAME + "(" +
             WaterClarityTable.Columns.ID + " TEXT PRIMARY KEY NOT NULL, " +
+            WaterClarityTable.Columns.SELECTED + " INTEGER, " +
             WaterClarityTable.Columns.NAME + " TEXT UNIQUE NOT NULL" +
             ")"
         );

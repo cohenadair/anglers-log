@@ -5,7 +5,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
-import android.view.Menu;
 import android.view.MenuItem;
 
 import com.cohenadair.anglerslog.R;
@@ -21,8 +20,6 @@ public class NavigationManager implements FragmentManager.OnBackStackChangedList
     private NavigationView mNavigationView;
     private ActionBar mActionBar;
     private MainActivity mActivity;
-    private String mCurrentTitle;
-    private int mCurrentLayoutId = LayoutSpecManager.LAYOUT_CATCHES;
 
     public NavigationManager(MainActivity activity) {
         mActivity = activity;
@@ -30,14 +27,13 @@ public class NavigationManager implements FragmentManager.OnBackStackChangedList
         mActionBar = mActivity.getSupportActionBar();
 
         mNavigationView = (NavigationView)mActivity.findViewById(R.id.navigation_view);
-        initHeaderView();
+        for (int i = 0; i < mNavigationView.getMenu().size(); i++) {
+            MenuItem item = mNavigationView.getMenu().getItem(i);
+            item.setChecked(item.getItemId() == getCurrentLayoutId());
+        }
 
-        Menu menu = mNavigationView.getMenu();
-        for (int i = 0; i < menu.size(); i++)
-            if (menu.getItem(i).isChecked()) {
-                mCurrentTitle = menu.getItem(i).getTitle().toString();
-                break;
-            }
+        initHeaderView();
+        setActionBarTitle(getCurrentTitle());
     }
 
     /**
@@ -80,7 +76,7 @@ public class NavigationManager implements FragmentManager.OnBackStackChangedList
 
     public void restoreActionBar() {
         mActionBar.setDisplayShowTitleEnabled(true);
-        mActionBar.setTitle(mCurrentTitle);
+        mActionBar.setTitle(getCurrentTitle());
     }
 
     public void setActionBarTitle(String title) {
@@ -109,8 +105,8 @@ public class NavigationManager implements FragmentManager.OnBackStackChangedList
     }
 
     private void onDrawerItemSelected(MenuItem menuItem) {
-        mCurrentLayoutId = menuItem.getItemId();
-        mCurrentTitle = menuItem.getTitle().toString();
+        setCurrentLayoutId(menuItem.getItemId());
+        setCurrentTitle(menuItem.getTitle().toString());
         mActivity.updateLayoutSpec();
         mActivity.showFragment();
         restoreActionBar();
@@ -120,6 +116,18 @@ public class NavigationManager implements FragmentManager.OnBackStackChangedList
     }
 
     public int getCurrentLayoutId() {
-        return mCurrentLayoutId;
+        return LogbookPreferences.getNavigationId();
+    }
+
+    public void setCurrentLayoutId(int id) {
+        LogbookPreferences.setNavigationId(id);
+    }
+
+    public String getCurrentTitle() {
+        return LogbookPreferences.getNavigationTitle();
+    }
+
+    public void setCurrentTitle(String title) {
+        LogbookPreferences.setNavigationTitle(title);
     }
 }

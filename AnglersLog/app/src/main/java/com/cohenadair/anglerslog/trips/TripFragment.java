@@ -32,6 +32,7 @@ public class TripFragment extends DetailFragment {
 
     private Trip mTrip;
 
+    private LinearLayout mContainer;
     private LinearLayout mCatchesContainer;
     private LinearLayout mLocationsContainer;
     private TitleSubTitleView mTitleView;
@@ -50,6 +51,8 @@ public class TripFragment extends DetailFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_trip, container, false);
+
+        mContainer = (LinearLayout)view.findViewById(R.id.trip_container);
 
         mCatchesContainer = (LinearLayout)view.findViewById(R.id.catches_container);
         mLocationsContainer = (LinearLayout)view.findViewById(R.id.locations_container);
@@ -73,18 +76,22 @@ public class TripFragment extends DetailFragment {
         if (!isAttached())
             return;
 
-        if (Logbook.getTripCount() <= 0) {
-            View container = getView();
-            if (container != null)
-                container.setVisibility(View.GONE);
+        // id can be null if in two-pane view and there are no baits
+        if (id == null) {
+            mContainer.setVisibility(View.GONE);
             return;
         }
 
         setItemId(id);
         mTrip = Logbook.getTrip(id);
 
-        if (mTrip == null)
+        // mBait can be null if in tw-pane view and a bait was removed
+        if (mTrip == null) {
+            mContainer.setVisibility(View.GONE);
             return;
+        }
+
+        mContainer.setVisibility(View.VISIBLE);
 
         updateTitleView();
         updateCatchesView();
@@ -92,8 +99,7 @@ public class TripFragment extends DetailFragment {
         updateAnglersView();
         updateNotesView();
 
-        if (!mTrip.hasAnglers())
-            mTripDetailsTitle.setVisibility(View.GONE);
+        mTripDetailsTitle.setVisibility(mTrip.hasAnglers() ? View.VISIBLE : View.GONE);
     }
 
     private void updateTitleView() {
@@ -117,6 +123,8 @@ public class TripFragment extends DetailFragment {
         boolean hasObjects = objects.size() > 0;
         Utils.toggleVisibility(titleView, hasObjects);
         Utils.toggleVisibility(container, hasObjects);
+
+        container.removeAllViews();
 
         for (UserDefineObject object : objects) {
             MoreDetailView catchView = new MoreDetailView(getContext());

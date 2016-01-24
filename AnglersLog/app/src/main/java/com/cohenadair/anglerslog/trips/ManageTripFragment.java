@@ -77,6 +77,12 @@ public class ManageTripFragment extends ManageContentFragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        initInputListeners(); // this MUST be called in onResume()
+    }
+
+    @Override
     public ManageObjectSpec getManageObjectSpec() {
         return new ManageObjectSpec(R.string.error_trip, R.string.success_trip, R.string.error_trip_edit, R.string.success_trip_edit, new ManageInterface() {
             @Override
@@ -124,10 +130,7 @@ public class ManageTripFragment extends ManageContentFragment {
         }
 
         // start and end dates are set after the DatePickerFragment is closed
-
-        // input properties
-        getNewTrip().setName(mNameView.isInputEmpty() ? null : mNameView.getInputText());
-        getNewTrip().setNotes(mNotesView.isInputEmpty() ? null : mNotesView.getInputText());
+        // input properties are set in a onTextChanged listener
 
         // update properties that interact directly with the database
         getNewTrip().setAnglers(mSelectedAnglers);
@@ -287,6 +290,27 @@ public class ManageTripFragment extends ManageContentFragment {
                 });
             }
         });
+    }
+
+    /**
+     * {@link android.text.TextWatcher} interfaces must be added to EditText views in onResume().
+     * Android tries to restore Fragment states if possible which causes the onTextChanged event
+     * to fire and will likely result in a Runtime Exception.
+     */
+    private void initInputListeners() {
+        mNameView.addOnInputTextChangedListener(Utils.onTextChangedListener(new Utils.OnTextChangedListener() {
+            @Override
+            public void onTextChanged(String newText) {
+                getNewTrip().setName(newText);
+            }
+        }));
+
+        mNotesView.addOnInputTextChangedListener(Utils.onTextChangedListener(new Utils.OnTextChangedListener() {
+            @Override
+            public void onTextChanged(String newText) {
+                getNewTrip().setNotes(newText);
+            }
+        }));
     }
     //endregion
 

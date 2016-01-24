@@ -11,7 +11,6 @@ import com.cohenadair.anglerslog.interfaces.OnClickInterface;
 import com.cohenadair.anglerslog.model.user_defines.Trip;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import com.cohenadair.anglerslog.utilities.ListManager;
-import com.cohenadair.anglerslog.utilities.Utils;
 
 import java.util.ArrayList;
 
@@ -54,9 +53,7 @@ public class TripListManager {
             mDateTextView.setText(dateString);
             mCatchesTextView.setText(trip.getCatchesAsString(mContext));
 
-            // hide the separator for the last row
-            mSeparator.setVisibility((position == mAdapter.getItemCount() - 1) ? View.INVISIBLE : View.VISIBLE);
-            Utils.toggleViewSelected(mView, trip.getIsSelected());
+            updateView(mSeparator, position, trip);
         }
     }
     //endregion

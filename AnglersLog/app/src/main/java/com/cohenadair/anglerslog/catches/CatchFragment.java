@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.cohenadair.anglerslog.R;
@@ -32,6 +33,7 @@ public class CatchFragment extends DetailFragment {
     private Catch mCatch;
     private ArrayList<String> mCatchPhotos;
 
+    private LinearLayout mContainer;
     private ImageScrollView mImageScrollView;
     private TitleSubTitleView mTitleView;
     private MoreDetailView mBaitView;
@@ -60,6 +62,8 @@ public class CatchFragment extends DetailFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_catch, container, false);
+
+        mContainer = (LinearLayout)view.findViewById(R.id.catch_container);
 
         mImageScrollView = (ImageScrollView)view.findViewById(R.id.image_scroll_view);
         mImageScrollView.setInteractionListener(new ImageScrollView.InteractionListener() {
@@ -104,21 +108,22 @@ public class CatchFragment extends DetailFragment {
         if (!isAttached())
             return;
 
-        // if there are no catches, there is nothing to display
-        // this really only applies to the two-pane view
-        if (Logbook.getCatchCount() <= 0) {
-            View container = getView();
-            if (container != null)
-                container.setVisibility(View.GONE);
+        // id can be null if in two-pane view and there are no catches
+        if (id == null) {
+            mContainer.setVisibility(View.GONE);
             return;
         }
 
         setItemId(id);
         mCatch = Logbook.getCatch(id);
 
-        if (mCatch == null)
+        // mCatch can be null if in tw-pane view and a catch was removed
+        if (mCatch == null) {
+            mContainer.setVisibility(View.GONE);
             return;
+        }
 
+        mContainer.setVisibility(View.VISIBLE);
         mCatchPhotos = mCatch.getPhotos();
         mImageScrollView.setImages(mCatchPhotos);
 
@@ -135,26 +140,7 @@ public class CatchFragment extends DetailFragment {
         updateWaterDepthView();
         updateWaterTemperatureView();
         updateNotesView();
-
-        // hide catch details title if needed
-        if (mCatch.getBait() == null && mCatch.getFishingSpot() == null && mCatch.getFishingMethods().size() <= 0)
-            mCatchDetails.setVisibility(View.GONE);
-
-        // hide fish details title if needed
-        if (mCatch.getCatchResult() == null && mCatch.getQuantity() == -1 && mCatch.getLength() == -1 && mCatch.getWeight() == -1)
-            mFishDetails.setVisibility(View.GONE);
-
-        // hide water conditions title if needed
-        if (mCatch.getWaterClarity() == null && mCatch.getWaterDepth() == -1 && mCatch.getWaterTemperature() == -1)
-            mWaterConditions.setVisibility(View.GONE);
-
-        // hide weather title if needed
-        if (mCatch.getWeather() == null)
-            mWeatherConditions.setVisibility(View.GONE);
-
-        // hide notes title if needed
-        if (mCatch.getNotes() == null)
-            mNotesTitle.setVisibility(View.GONE);
+        updateHeadingViews();
     }
 
     private void updateTitleView() {
@@ -221,6 +207,17 @@ public class CatchFragment extends DetailFragment {
     private void updateNotesView() {
         Utils.toggleVisibility(mNotesView, mCatch.getNotes() != null);
         mNotesView.setText(mCatch.getNotesAsString());
+    }
+
+    /**
+     * Toggles the visibility of the heading views.
+     */
+    private void updateHeadingViews() {
+        Utils.toggleVisibility(mCatchDetails, mCatch.getBait() != null || mCatch.getFishingSpot() != null || mCatch.getFishingMethods().size() > 0);
+        Utils.toggleVisibility(mFishDetails, mCatch.getCatchResult() != null || mCatch.getQuantity() != -1 || mCatch.getLength() != -1 || mCatch.getWeight() != -1);
+        Utils.toggleVisibility(mWaterConditions, mCatch.getWaterClarity() != null || mCatch.getWaterDepth() != -1 || mCatch.getWaterTemperature() != -1);
+        Utils.toggleVisibility(mWeatherConditions, mCatch.getWeather() != null);
+        Utils.toggleVisibility(mNotesTitle, mCatch.getNotes() != null);
     }
 
     private void initLocationLayout(View view) {

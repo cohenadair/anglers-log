@@ -35,6 +35,7 @@ public class LayoutSpec {
     private String mMasterFragmentTag;
     private String mDetailFragmentTag;
     private String mName;
+    private Class mClass;
 
     private UUID mSelectionId;
     private int id;
@@ -129,9 +130,15 @@ public class LayoutSpec {
     }
 
     public UUID getSelectionId() {
-        // set a default if it hasn't been set yet
-        if (mSelectionId == null && mMasterAdapter.getItemCount() > 0)
-            mSelectionId = mMasterAdapter.getItem(0).getId();
+        // check to see if an item has previously been selected
+        if (mSelectionId == null)
+            for (int i = 0; i < mMasterAdapter.getItemCount(); i++) {
+                UserDefineObject item = mMasterAdapter.getItem(i);
+                if (item.getIsSelected()) {
+                    mSelectionId = item.getId();
+                    break;
+                }
+            }
 
         return mSelectionId;
     }
@@ -146,6 +153,10 @@ public class LayoutSpec {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public void setClass(Class aClass) {
+        mClass = aClass;
     }
     //endregion
 

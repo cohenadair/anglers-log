@@ -14,6 +14,7 @@ import com.cohenadair.anglerslog.model.Logbook;
 import com.cohenadair.anglerslog.model.user_defines.Bait;
 import com.cohenadair.anglerslog.model.user_defines.BaitCategory;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
+import com.cohenadair.anglerslog.trips.ManageTripFragment;
 import com.cohenadair.anglerslog.utilities.PrimitiveSpecManager;
 import com.cohenadair.anglerslog.utilities.Utils;
 import com.cohenadair.anglerslog.views.SelectionSpinnerView;
@@ -61,6 +62,12 @@ public class ManageBaitFragment extends ManageContentFragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        initInputListeners();
+    }
+
+    @Override
     public ManageObjectSpec getManageObjectSpec() {
         return new ManageObjectSpec(R.string.error_bait, R.string.success_bait, R.string.error_bait_edit, R.string.success_bait_edit, new ManageInterface() {
             @Override
@@ -99,10 +106,7 @@ public class ManageBaitFragment extends ManageContentFragment {
     public boolean verifyUserInput() {
         // category is set in the TitleSubtitleView interface
         // type is set in the Spinner interface
-        getNewBait().setName(mNameView.getInputText());
-        getNewBait().setSize(mSizeView.getInputText());
-        getNewBait().setColor(mColorView.getInputText());
-        getNewBait().setDescription(mDescriptionView.getInputText());
+        // input properties are set in a OnTextChanged listener
 
         // category
         if (getNewBait().getCategory() == null) {
@@ -192,6 +196,39 @@ public class ManageBaitFragment extends ManageContentFragment {
 
             }
         });
+    }
+
+    /**
+     * See {@link ManageTripFragment#initInputListeners()}.
+     */
+    private void initInputListeners() {
+        mNameView.addOnInputTextChangedListener(Utils.onTextChangedListener(new Utils.OnTextChangedListener() {
+            @Override
+            public void onTextChanged(String newText) {
+                getNewBait().setName(newText);
+            }
+        }));
+
+        mDescriptionView.addOnInputTextChangedListener(Utils.onTextChangedListener(new Utils.OnTextChangedListener() {
+            @Override
+            public void onTextChanged(String newText) {
+                getNewBait().setDescription(newText);
+            }
+        }));
+
+        mSizeView.addOnInputTextChangedListener(Utils.onTextChangedListener(new Utils.OnTextChangedListener() {
+            @Override
+            public void onTextChanged(String newText) {
+                getNewBait().setSize(newText);
+            }
+        }));
+
+        mColorView.addOnInputTextChangedListener(Utils.onTextChangedListener(new Utils.OnTextChangedListener() {
+            @Override
+            public void onTextChanged(String newText) {
+                getNewBait().setColor(newText);
+            }
+        }));
     }
 
 }

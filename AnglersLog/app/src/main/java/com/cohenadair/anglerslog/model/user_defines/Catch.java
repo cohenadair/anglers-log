@@ -233,6 +233,12 @@ public class Catch extends PhotoUserDefineObject {
     public void setNotes(String notes) {
         mNotes = notes;
     }
+
+    @Override
+    public void setIsSelected(boolean isSelected) {
+        super.setIsSelected(isSelected);
+        Logbook.editCatch(getId(), this);
+    }
     //endregion
 
     //region Fishing Method Manipulation

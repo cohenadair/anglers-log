@@ -3,6 +3,7 @@ package com.cohenadair.anglerslog.model.user_defines;
 import android.content.ContentValues;
 
 import com.cohenadair.anglerslog.R;
+import com.cohenadair.anglerslog.model.Logbook;
 
 import java.util.UUID;
 
@@ -99,6 +100,12 @@ public class Bait extends PhotoUserDefineObject {
 
     public void setType(int type) {
         mType = type;
+    }
+
+    @Override
+    public void setIsSelected(boolean isSelected) {
+        super.setIsSelected(isSelected);
+        Logbook.editBait(getId(), this);
     }
     //endregion
 

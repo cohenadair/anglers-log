@@ -40,6 +40,7 @@ public class UserDefineObject {
             mId = keepId ? obj.getId() : UUID.randomUUID();
             mName = obj.getName();
             mShouldDelete = obj.getShouldDelete();
+            mIsSelected = obj.getIsSelected();
         }
     }
 
@@ -94,6 +95,7 @@ public class UserDefineObject {
 
         values.put(UserDefineTable.Columns.ID, mId.toString());
         values.put(UserDefineTable.Columns.NAME, mName);
+        values.put(UserDefineTable.Columns.SELECTED, mIsSelected);
 
         return values;
     }

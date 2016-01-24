@@ -16,7 +16,6 @@ import com.cohenadair.anglerslog.model.user_defines.Catch;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import com.cohenadair.anglerslog.utilities.ListManager;
 import com.cohenadair.anglerslog.utilities.PhotoUtils;
-import com.cohenadair.anglerslog.utilities.Utils;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -30,22 +29,18 @@ public class CatchListManager {
     //region View Holder
     public static class ViewHolder extends ListManager.ViewHolder {
 
-        private ListManager.Adapter mAdapter;
         private ImageView mImageView;
         private TextView mSpeciesTextView;
         private TextView mDateTextView;
         private TextView mLocationTextView;
         private RatingBar mFavorite;
         private View mSeparator;
-        private View mView;
 
         private Catch mCatch;
 
         public ViewHolder(View view, ListManager.Adapter adapter) {
             super(view, adapter);
 
-            mView = view;
-            mAdapter = adapter;
             mImageView = (ImageView)view.findViewById(R.id.image_view);
             mSpeciesTextView = (TextView)view.findViewById(R.id.species_label);
             mDateTextView = (TextView)view.findViewById(R.id.date_label);
@@ -97,9 +92,7 @@ public class CatchListManager {
             } else
                 mImageView.setImageResource(R.drawable.no_catch_photo);
 
-            // hide the separator for the last row
-            mSeparator.setVisibility((position == mAdapter.getItemCount() - 1) ? View.INVISIBLE : View.VISIBLE);
-            Utils.toggleViewSelected(mView, mCatch.getIsSelected());
+            updateView(mSeparator, position, mCatch);
         }
     }
     //endregion

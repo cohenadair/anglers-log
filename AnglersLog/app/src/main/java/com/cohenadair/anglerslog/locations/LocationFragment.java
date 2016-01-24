@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.cohenadair.anglerslog.R;
@@ -42,6 +43,7 @@ public class LocationFragment extends DetailFragment implements OnMapReadyCallba
 
     private Location mLocation;
 
+    private LinearLayout mContainer;
     private TextView mTitleTextView;
     private SelectionSpinnerView mFishingSpotSelection;
     private ArrayList<Marker> mMarkers;
@@ -61,6 +63,8 @@ public class LocationFragment extends DetailFragment implements OnMapReadyCallba
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_location, container, false);
+
+        mContainer = (LinearLayout)view.findViewById(R.id.location_container);
 
         initTitle(view);
         initFishingSpotSelection(view);
@@ -83,6 +87,12 @@ public class LocationFragment extends DetailFragment implements OnMapReadyCallba
         if (!isAttached())
             return;
 
+        // id can be null if in two-pane view and there are no locations
+        if (id == null) {
+            mContainer.setVisibility(View.GONE);
+            return;
+        }
+
         setItemId(id);
         mLocation = Logbook.getLocation(id);
         FishingSpot fishingSpot = null;
@@ -90,13 +100,19 @@ public class LocationFragment extends DetailFragment implements OnMapReadyCallba
         // for DetailFragmentActivity, the fishing spot id is passed in
         if (mLocation == null) {
             fishingSpot = Logbook.getFishingSpot(id);
-            if (fishingSpot == null)
+            if (fishingSpot == null) {
+                mContainer.setVisibility(View.GONE);
                 return;
+            }
 
             mLocation = Logbook.getLocation(fishingSpot.getLocationId());
-            if (mLocation == null)
+            if (mLocation == null) {
+                mContainer.setVisibility(View.GONE);
                 return;
+            }
         }
+
+        mContainer.setVisibility(View.VISIBLE);
 
         // update spinner adapter
         ArrayAdapter<UserDefineObject> adapter = new ArrayAdapter<>(getContext(), R.layout.list_item_spinner, mLocation.getFishingSpots());
@@ -165,7 +181,7 @@ public class LocationFragment extends DetailFragment implements OnMapReadyCallba
     }
 
     private void updateMap() {
-        if (mMap == null)
+        if (mMap == null || mLocation == null)
             return;
 
         // remove all existing markers
@@ -201,9 +217,8 @@ public class LocationFragment extends DetailFragment implements OnMapReadyCallba
         }
 
         // move the camera to the current fishing spot
-        // TODO calculate actual zoom depending on fishing spots
         float zoom = 15;
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(((FishingSpot) fishingSpots.get(selectedIndex)).getCoordinates(), zoom), 2000, new GoogleMap.CancelableCallback() {
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(((FishingSpot)fishingSpots.get(selectedIndex)).getCoordinates(), zoom), 2000, new GoogleMap.CancelableCallback() {
             @Override
             public void onFinish() {
                 // show the info window for the selected fishing spot
@@ -269,7 +284,7 @@ public class LocationFragment extends DetailFragment implements OnMapReadyCallba
 
         @Override
         public View getInfoContents(Marker marker) {
-            View view = LayoutInflater.from(getContext()).inflate(R.layout.view_location_info_window, null);
+            View view = LayoutInflater.from(getContext()).inflate(R.layout.view_location_info_window, mContainer, false);
 
             TextView name = (TextView)view.findViewById(R.id.location_name_text_view);
             TextView numberCaught = (TextView)view.findViewById(R.id.spots_text_view);

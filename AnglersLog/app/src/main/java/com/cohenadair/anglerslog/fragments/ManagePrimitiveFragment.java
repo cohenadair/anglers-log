@@ -203,18 +203,14 @@ public class ManagePrimitiveFragment extends DialogFragment {
         });
 
         // add the menu check mark when multiple selection is allowed
-        if (mCanSelectMultiple) {
-            MenuItem done = mToolbar.getMenu().add(R.string.action_done);
-            done.setIcon(R.drawable.ic_check);
-            done.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
-            done.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+        if (mCanSelectMultiple)
+            Utils.addDoneButton(mToolbar, new MenuItem.OnMenuItemClickListener() {
                 @Override
                 public boolean onMenuItemClick(MenuItem item) {
                     dismissFragment();
-                    return false;
+                    return true;
                 }
             });
-        }
     }
 
     /**

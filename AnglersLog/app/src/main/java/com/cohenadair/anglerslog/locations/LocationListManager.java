@@ -10,7 +10,6 @@ import com.cohenadair.anglerslog.interfaces.OnClickInterface;
 import com.cohenadair.anglerslog.model.user_defines.Location;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import com.cohenadair.anglerslog.utilities.ListManager;
-import com.cohenadair.anglerslog.utilities.Utils;
 import com.cohenadair.anglerslog.views.TitleSubTitleView;
 
 import java.util.ArrayList;
@@ -44,9 +43,7 @@ public class LocationListManager {
             int suffixId = location.getFishingSpotCount() == 1 ? R.string.fishing_spot : R.string.fishing_spots;
             mTitleSubTitleView.setSubtitle(String.format("%d " + context().getResources().getString(suffixId), location.getFishingSpotCount()));
 
-            // hide the separator for the last row
-            mSeparator.setVisibility((position == mAdapter.getItemCount() - 1) ? View.INVISIBLE : View.VISIBLE);
-            Utils.toggleViewSelected(mView, location.getIsSelected());
+            updateView(mSeparator, position, location);
         }
     }
     //endregion

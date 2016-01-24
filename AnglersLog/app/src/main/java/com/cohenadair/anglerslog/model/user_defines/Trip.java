@@ -101,6 +101,12 @@ public class Trip extends UserDefineObject {
     public void setNotes(String notes) {
         mNotes = notes;
     }
+
+    @Override
+    public void setIsSelected(boolean isSelected) {
+        super.setIsSelected(isSelected);
+        Logbook.editTrip(getId(), this);
+    }
     //endregion
 
     //region Angler Manipulation

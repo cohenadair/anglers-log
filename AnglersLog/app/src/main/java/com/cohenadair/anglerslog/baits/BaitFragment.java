@@ -15,6 +15,7 @@ import com.cohenadair.anglerslog.fragments.DetailFragment;
 import com.cohenadair.anglerslog.model.Logbook;
 import com.cohenadair.anglerslog.model.user_defines.Bait;
 import com.cohenadair.anglerslog.utilities.PhotoUtils;
+import com.cohenadair.anglerslog.utilities.Utils;
 import com.cohenadair.anglerslog.views.PropertyDetailView;
 import com.cohenadair.anglerslog.views.TitleSubTitleView;
 
@@ -64,9 +65,16 @@ public class BaitFragment extends DetailFragment {
         if (!isAttached())
             return;
 
+        // id can be null if in two-pane view and there are no baits
+        if (id == null) {
+            mContainer.setVisibility(View.GONE);
+            return;
+        }
+
         setItemId(id);
         mBait = Logbook.getBait(id);
 
+        // mBait can be null if in tw-pane view and a bait was removed
         if (mBait == null) {
             mContainer.setVisibility(View.GONE);
             return;
@@ -78,8 +86,8 @@ public class BaitFragment extends DetailFragment {
         if (photo != null) {
             int size = getActivity().getResources().getDimensionPixelSize(R.dimen.thumbnail_size);
             PhotoUtils.thumbnailToImageView(mImageView, PhotoUtils.privatePhotoPath(photo), size, R.drawable.no_catch_photo);
-            mImageView.setVisibility(View.VISIBLE);
         }
+        Utils.toggleVisibility(mImageView, photo != null);
 
         mTitleSubTitleView.setTitle(mBait.getName());
         mTitleSubTitleView.setSubtitle(mBait.getCategoryName());
@@ -87,20 +95,16 @@ public class BaitFragment extends DetailFragment {
         mTypeView.setDetail(getActivity().getResources().getString(mBait.getTypeName()));
         mTypeView.setVisibility(View.VISIBLE);
 
-        if (mBait.getColor() != null) {
-            mColorView.setDetail(mBait.getColor());
-            mColorView.setVisibility(View.VISIBLE);
-        }
+        mColorView.setDetail(mBait.getColor());
+        Utils.toggleVisibility(mColorView, mBait.getColor() != null);
 
-        if (mBait.getSize() != null) {
-            mSizeView.setDetail(mBait.getSize());
-            mSizeView.setVisibility(View.VISIBLE);
-        }
+        mSizeView.setDetail(mBait.getSize());
+        Utils.toggleVisibility(mSizeView, mBait.getSize() != null);
 
-        if (mBait.getDescription() != null) {
-            mDescriptionTextView.setText(mBait.getDescription());
-            mDescriptionTextView.setVisibility(View.VISIBLE);
-        }
+        mDescriptionTextView.setText(mBait.getDescription());
+        Utils.toggleVisibility(mDescriptionTextView, mBait.getDescription() != null);
+
+        // TODO list of catches for this bait
     }
 
     private void initImageView(View view) {

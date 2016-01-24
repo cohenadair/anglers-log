@@ -19,6 +19,10 @@ import com.cohenadair.anglerslog.locations.LocationFragment;
 import com.cohenadair.anglerslog.locations.LocationListManager;
 import com.cohenadair.anglerslog.locations.ManageLocationFragment;
 import com.cohenadair.anglerslog.model.Logbook;
+import com.cohenadair.anglerslog.model.user_defines.Bait;
+import com.cohenadair.anglerslog.model.user_defines.Catch;
+import com.cohenadair.anglerslog.model.user_defines.Location;
+import com.cohenadair.anglerslog.model.user_defines.Trip;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import com.cohenadair.anglerslog.trips.ManageTripFragment;
 import com.cohenadair.anglerslog.trips.TripFragment;
@@ -120,6 +124,7 @@ public class LayoutSpecManager {
         spec.setMasterFragment(new MyListFragment());
         spec.setDetailFragment(new CatchFragment());
         spec.setManageFragment(new ManageCatchFragment());
+        spec.setClass(Catch.class);
 
         return spec;
     }
@@ -164,6 +169,7 @@ public class LayoutSpecManager {
         spec.setMasterFragment(new MyListFragment());
         spec.setDetailFragment(new LocationFragment());
         spec.setManageFragment(new ManageLocationFragment());
+        spec.setClass(Location.class);
 
         return spec;
     }
@@ -190,6 +196,7 @@ public class LayoutSpecManager {
         spec.setMasterFragment(new MyListFragment());
         spec.setDetailFragment(new BaitFragment());
         spec.setManageFragment(new ManageBaitFragment());
+        spec.setClass(Bait.class);
 
         return spec;
     }
@@ -216,6 +223,7 @@ public class LayoutSpecManager {
         spec.setMasterFragment(new MyListFragment());
         spec.setDetailFragment(new TripFragment());
         spec.setManageFragment(new ManageTripFragment());
+        spec.setClass(Trip.class);
 
         return spec;
     }

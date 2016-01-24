@@ -13,7 +13,11 @@ import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.text.format.DateFormat;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
@@ -260,5 +264,35 @@ public class Utils {
 
     public static void toggleVisibility(View view, boolean visible) {
         view.setVisibility(visible ? View.VISIBLE : View.GONE);
+    }
+
+    public static void addDoneButton(@NonNull Toolbar toolbar, MenuItem.OnMenuItemClickListener onClick) {
+        MenuItem done = toolbar.getMenu().add(R.string.action_done);
+        done.setIcon(R.drawable.ic_check);
+        done.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+        done.setOnMenuItemClickListener(onClick);
+    }
+
+    public interface OnTextChangedListener {
+        void onTextChanged(String newText);
+    }
+
+    public static TextWatcher onTextChangedListener(final OnTextChangedListener listener) {
+        return new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                listener.onTextChanged(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        };
     }
 }

@@ -24,9 +24,11 @@ public class UserDefineCursor extends CursorWrapper {
     public UserDefineObject getObject() {
         String id = getString(getColumnIndex(UserDefineTable.Columns.ID));
         String name = getString(getColumnIndex(UserDefineTable.Columns.NAME));
+        int selected = getInt(getColumnIndex(UserDefineTable.Columns.SELECTED));
 
         UserDefineObject obj = new UserDefineObject(name);
         obj.setId(UUID.fromString(id));
+        obj.setIsSelected(selected == 1);
 
         return obj;
     }
