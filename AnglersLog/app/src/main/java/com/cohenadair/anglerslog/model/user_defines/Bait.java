@@ -1,6 +1,7 @@
 package com.cohenadair.anglerslog.model.user_defines;
 
 import android.content.ContentValues;
+import android.content.Context;
 
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.database.QueryHelper;
@@ -128,6 +129,12 @@ public class Bait extends PhotoUserDefineObject {
 
     public int getCatchCount() {
         return getCatches().size();
+    }
+
+    public String getCatchCountAsString(Context context) {
+        int count = getCatchCount();
+        String catchesStr = count == 1 ? context.getResources().getString(R.string.catch_string) : context.getResources().getString(R.string.drawer_catches);
+        return count + " " + catchesStr;
     }
     //endregion
 

@@ -14,7 +14,6 @@ import com.cohenadair.anglerslog.model.user_defines.BaitCategory;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import com.cohenadair.anglerslog.utilities.ListManager;
 import com.cohenadair.anglerslog.utilities.PhotoUtils;
-import com.cohenadair.anglerslog.views.TitleSubTitleView;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -31,7 +30,9 @@ public class BaitListManager {
         private ListManager.Adapter mAdapter;
         private ImageView mImageView;
         private TextView mCategoryTextView;
-        private TitleSubTitleView mTitleSubTitleView;
+        private TextView mNameTextView;
+        private TextView mCategoryDetailTextView;
+        private TextView mCatchesTextView;
         private View mSeparator;
         private View mView;
 
@@ -42,13 +43,16 @@ public class BaitListManager {
             mAdapter = adapter;
             mImageView = (ImageView)view.findViewById(R.id.image_view);
             mCategoryTextView = (TextView)view.findViewById(R.id.category_text_view);
-            mTitleSubTitleView = (TitleSubTitleView)view.findViewById(R.id.title_subtitle_view);
             mSeparator = view.findViewById(R.id.cell_separator);
+            mNameTextView = (TextView)view.findViewById(R.id.bait_label);
+            mCategoryDetailTextView = (TextView)view.findViewById(R.id.bait_category_label);
+            mCatchesTextView = (TextView)view.findViewById(R.id.catches_label);
         }
 
         public void setBait(Bait bait, int position) {
-            mTitleSubTitleView.setTitle(bait.getName());
-            mTitleSubTitleView.setSubtitle("0 Catches"); // TODO get actual stats here
+            mNameTextView.setText(bait.getName());
+            mCategoryDetailTextView.setText(bait.getCategoryName());
+            mCatchesTextView.setText(bait.getCatchCountAsString(context()));
 
             // thumbnail stuff
             // if the image doesn't exist or can't be read, a default icon is shown
@@ -74,7 +78,9 @@ public class BaitListManager {
         public void setBaitCategory(BaitCategory category) {
             mCategoryTextView.setVisibility(View.VISIBLE);
             mCategoryTextView.setText(category.getName());
-            mTitleSubTitleView.setVisibility(View.GONE);
+            mNameTextView.setVisibility(View.GONE);
+            mCategoryDetailTextView.setVisibility(View.GONE);
+            mCatchesTextView.setVisibility(View.GONE);
             mImageView.setVisibility(View.GONE);
         }
     }

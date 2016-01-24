@@ -217,7 +217,7 @@ public class CatchFragment extends DetailFragment {
         Utils.toggleVisibility(mFishDetails, mCatch.getCatchResult() != null || mCatch.getQuantity() != -1 || mCatch.getLength() != -1 || mCatch.getWeight() != -1);
         Utils.toggleVisibility(mWaterConditions, mCatch.getWaterClarity() != null || mCatch.getWaterDepth() != -1 || mCatch.getWaterTemperature() != -1);
         Utils.toggleVisibility(mWeatherConditions, mCatch.getWeather() != null);
-        Utils.toggleVisibility(mNotesTitle, mCatch.getNotes() != null);
+        Utils.toggleVisibility(mNotesTitle, mCatch.getNotes() != null && !mCatch.getNotes().isEmpty());
     }
 
     private void initLocationLayout(View view) {
