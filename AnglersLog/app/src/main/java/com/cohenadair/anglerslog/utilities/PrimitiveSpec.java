@@ -21,7 +21,7 @@ public class PrimitiveSpec {
     String mName;
 
     public PrimitiveSpec(String name, InteractionListener listener) {
-        mName = name;
+        mName = name.toLowerCase();
         mListener = listener;
     }
 

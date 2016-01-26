@@ -17,8 +17,11 @@
     <string name="catch_string">Catch</string>
     <string name="bait">Bait</string>
     <string name="clarity">Clarity</string>
+    <string name="trip">Trip</string>
     <string name="anglers">Anglers</string>
     <string name="water_clarity">Water Clarity</string>
+    <string name="fishing_method">Fishing Method</string>
+    <string name="angler">angler</string>
     <string name="water_depth">Water Depth</string>
     <string name="water_temperature">Water Temperature</string>
     <string name="methods">Fishing Methods</string>

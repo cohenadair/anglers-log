@@ -64,10 +64,10 @@ public class LayoutSpec {
         void onFinish(UUID id);
     }
 
-    public LayoutSpec(String masterTag, String detailTag, String name) {
-        mMasterFragmentTag = masterTag;
-        mDetailFragmentTag = detailTag;
-        mName = name;
+    public LayoutSpec(String pluralName, String singularName) {
+        mMasterFragmentTag = pluralName;
+        mDetailFragmentTag = singularName.toLowerCase();
+        mName = singularName;
     }
 
     //region Getters & Setters
@@ -127,6 +127,10 @@ public class LayoutSpec {
 
     public String getName() {
         return mName;
+    }
+
+    public String getPluralName() {
+        return mMasterFragmentTag;
     }
 
     public UUID getSelectionId() {

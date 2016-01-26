@@ -105,7 +105,10 @@ public class LayoutSpecManager {
 
     private static LayoutSpec getCatchesLayoutSpec(final LayoutSpecActivity context) {
         final OnClickInterface onMasterItemClick = context.getOnMyListFragmentItemClick();
-        final LayoutSpec spec = new LayoutSpec("catches", "catch", "Catch");
+        final LayoutSpec spec = new LayoutSpec(
+                context.getResources().getString(R.string.drawer_catches),
+                context.getResources().getString(R.string.catch_string)
+        );
 
         spec.setListener(new LayoutSpec.InteractionListener() {
             @Override
@@ -132,7 +135,10 @@ public class LayoutSpecManager {
 
     private static LayoutSpec getLocationsLayoutSpec(final LayoutSpecActivity context) {
         final OnClickInterface onMasterItemClick = context.getOnMyListFragmentItemClick();
-        final LayoutSpec spec = new LayoutSpec("locations", "location", "Location");
+        final LayoutSpec spec = new LayoutSpec(
+                context.getResources().getString(R.string.drawer_locations),
+                context.getResources().getString(R.string.location)
+        );
 
         spec.setListener(new LayoutSpec.InteractionListener() {
             @Override
@@ -177,7 +183,10 @@ public class LayoutSpecManager {
 
     private static LayoutSpec getBaitsLayoutSpec(final LayoutSpecActivity context) {
         final OnClickInterface onMasterItemClick = context.getOnMyListFragmentItemClick();
-        final LayoutSpec spec = new LayoutSpec("baits", "bait", "Bait");
+        final LayoutSpec spec = new LayoutSpec(
+                context.getResources().getString(R.string.drawer_baits),
+                context.getResources().getString(R.string.bait)
+        );
 
         spec.setListener(new LayoutSpec.InteractionListener() {
             @Override
@@ -204,7 +213,10 @@ public class LayoutSpecManager {
 
     private static LayoutSpec getTripsLayoutSpec(final LayoutSpecActivity context) {
         final OnClickInterface onMasterItemClick = context.getOnMyListFragmentItemClick();
-        final LayoutSpec spec = new LayoutSpec("trips", "trip", "Trip");
+        final LayoutSpec spec = new LayoutSpec(
+                context.getResources().getString(R.string.drawer_trips),
+                context.getResources().getString(R.string.trip)
+        );
 
         spec.setListener(new LayoutSpec.InteractionListener() {
             @Override

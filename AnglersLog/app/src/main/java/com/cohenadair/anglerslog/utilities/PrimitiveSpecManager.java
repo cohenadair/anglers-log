@@ -1,8 +1,10 @@
 package com.cohenadair.anglerslog.utilities;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.model.Logbook;
 import com.cohenadair.anglerslog.model.user_defines.Angler;
 import com.cohenadair.anglerslog.model.user_defines.BaitCategory;
@@ -37,30 +39,30 @@ public class PrimitiveSpecManager {
      * @return A PrimitiveSpec object associated with id or null if one doesn't exist.
      */
     @Nullable
-    public static PrimitiveSpec getSpec(int id) {
+    public static PrimitiveSpec getSpec(Context context, int id) {
         switch (id) {
             case SPECIES:
-                return getSpeciesSpec();
+                return getSpeciesSpec(context.getResources().getString(R.string.species));
 
             case BAIT_CATEGORY:
-                return getBaitCategorySpec();
+                return getBaitCategorySpec(context.getResources().getString(R.string.bait_category));
 
             case WATER_CLARITY:
-                return getWaterClaritySpec();
+                return getWaterClaritySpec(context.getResources().getString(R.string.water_clarity));
 
             case FISHING_METHODS:
-                return getFishingMethodSpec();
+                return getFishingMethodSpec(context.getResources().getString(R.string.fishing_method));
 
             case ANGLERS:
-                return getAnglersSpec();
+                return getAnglersSpec(context.getResources().getString(R.string.angler));
         }
 
         return null;
     }
 
     @NonNull
-    private static PrimitiveSpec getSpeciesSpec() {
-        return new PrimitiveSpec("species", new PrimitiveSpec.InteractionListener() {
+    private static PrimitiveSpec getSpeciesSpec(String name) {
+        return new PrimitiveSpec(name, new PrimitiveSpec.InteractionListener() {
             @Override
             public ArrayList<UserDefineObject> onGetItems() {
                 return Logbook.getSpecies();
@@ -89,8 +91,8 @@ public class PrimitiveSpecManager {
     }
 
     @NonNull
-    private static PrimitiveSpec getBaitCategorySpec() {
-        return new PrimitiveSpec("category", new PrimitiveSpec.InteractionListener() {
+    private static PrimitiveSpec getBaitCategorySpec(String name) {
+        return new PrimitiveSpec(name, new PrimitiveSpec.InteractionListener() {
             @Override
             public ArrayList<UserDefineObject> onGetItems() {
                 return Logbook.getBaitCategories();
@@ -119,8 +121,8 @@ public class PrimitiveSpecManager {
     }
 
     @NonNull
-    private static PrimitiveSpec getWaterClaritySpec() {
-        return new PrimitiveSpec("water clarity", new PrimitiveSpec.InteractionListener() {
+    private static PrimitiveSpec getWaterClaritySpec(String name) {
+        return new PrimitiveSpec(name, new PrimitiveSpec.InteractionListener() {
             @Override
             public ArrayList<UserDefineObject> onGetItems() {
                 return Logbook.getWaterClarities();
@@ -149,8 +151,8 @@ public class PrimitiveSpecManager {
     }
 
     @NonNull
-    private static PrimitiveSpec getFishingMethodSpec() {
-        return new PrimitiveSpec("fishing method", new PrimitiveSpec.InteractionListener() {
+    private static PrimitiveSpec getFishingMethodSpec(String name) {
+        return new PrimitiveSpec(name, new PrimitiveSpec.InteractionListener() {
             @Override
             public ArrayList<UserDefineObject> onGetItems() {
                 return Logbook.getFishingMethods();
@@ -179,8 +181,8 @@ public class PrimitiveSpecManager {
     }
 
     @NonNull
-    private static PrimitiveSpec getAnglersSpec() {
-        return new PrimitiveSpec("angler", new PrimitiveSpec.InteractionListener() {
+    private static PrimitiveSpec getAnglersSpec(String name) {
+        return new PrimitiveSpec(name, new PrimitiveSpec.InteractionListener() {
             @Override
             public ArrayList<UserDefineObject> onGetItems() {
                 return Logbook.getAnglers();

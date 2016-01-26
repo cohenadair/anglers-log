@@ -100,7 +100,7 @@ public class ManagePrimitiveFragment extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_manage_primitive, container, false);
 
-        mPrimitiveSpec = PrimitiveSpecManager.getSpec(getArguments().getInt(ARG_PRIMITIVE_ID));
+        mPrimitiveSpec = PrimitiveSpecManager.getSpec(getContext(), getArguments().getInt(ARG_PRIMITIVE_ID));
         mCanSelectMultiple = getArguments().getBoolean(ARG_ALLOW_MULTIPLE);
 
         initViews(view);

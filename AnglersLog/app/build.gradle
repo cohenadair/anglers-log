@@ -1,21 +1,29 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        AnglersLogRelease {
+            keyAlias 'AnglersLog'
+            keyPassword 'GQui811n8TUb8S92n119'
+            storeFile file('/Volumes/Home/Google Drive/AnglersLog/android/anglers_log_keystore.jks')
+            storePassword 'GQui811n8TUb8S92n119'
+        }
+    }
     compileSdkVersion 23
     buildToolsVersion "19.1.0"
-
     defaultConfig {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         applicationId "com.cohenadair.anglerslog"
         minSdkVersion 16
         targetSdkVersion 23
         versionCode 1
-        versionName "1.0"
+        versionName "0.0.0"
     }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.AnglersLogRelease
         }
     }
     testOptions {
@@ -31,7 +39,6 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.1.1'
     compile 'com.android.support:design:23.1.1'
     compile 'com.android.support:recyclerview-v7:23.1.1'
-    compile 'com.google.android.gms:play-services:8.3.0'
-
+    compile 'com.google.android.gms:play-services:8.4.0'
     compile 'de.hdodenhof:circleimageview:2.0.0'
 }
