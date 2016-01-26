@@ -33,7 +33,6 @@ public class NavigationManager implements FragmentManager.OnBackStackChangedList
         }
 
         initHeaderView();
-        setActionBarTitle(getCurrentTitle());
     }
 
     /**
@@ -76,7 +75,7 @@ public class NavigationManager implements FragmentManager.OnBackStackChangedList
 
     public void restoreActionBar() {
         mActionBar.setDisplayShowTitleEnabled(true);
-        mActionBar.setTitle(getCurrentTitle());
+        updateTitle();
     }
 
     public void setActionBarTitle(String title) {
@@ -106,7 +105,6 @@ public class NavigationManager implements FragmentManager.OnBackStackChangedList
 
     private void onDrawerItemSelected(MenuItem menuItem) {
         setCurrentLayoutId(menuItem.getItemId());
-        setCurrentTitle(menuItem.getTitle().toString());
         mActivity.updateLayoutSpec();
         mActivity.showFragment();
         restoreActionBar();
@@ -123,11 +121,8 @@ public class NavigationManager implements FragmentManager.OnBackStackChangedList
         LogbookPreferences.setNavigationId(id);
     }
 
-    public String getCurrentTitle() {
-        return LogbookPreferences.getNavigationTitle();
-    }
-
-    public void setCurrentTitle(String title) {
-        LogbookPreferences.setNavigationTitle(title);
+    public void updateTitle() {
+        if (mActivity.getLayoutSpec() != null)
+            mActionBar.setTitle(mActivity.getLayoutSpec().getName());
     }
 }

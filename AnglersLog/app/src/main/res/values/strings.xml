@@ -69,6 +69,7 @@
     <string name="ft">ft</string>
     <string name="zero">0</string>
     <string name="to">to</string>
+    <string name="show_more">Show more</string>
 
     <string name="drawer_open">Open Navigation Drawer</string>
     <string name="drawer_close">Close Navigation Drawer</string>

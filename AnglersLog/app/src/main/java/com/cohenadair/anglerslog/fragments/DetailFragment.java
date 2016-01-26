@@ -11,7 +11,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.LinearLayout;
 
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.activities.DetailFragmentActivity;
@@ -22,7 +21,7 @@ import com.cohenadair.anglerslog.model.user_defines.Catch;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import com.cohenadair.anglerslog.utilities.LayoutSpecManager;
 import com.cohenadair.anglerslog.utilities.Utils;
-import com.cohenadair.anglerslog.views.MoreDetailView;
+import com.cohenadair.anglerslog.views.MoreDetailLayout;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -45,15 +44,6 @@ public abstract class DetailFragment extends Fragment {
      * @param id the UUID of the clicked ListItem in the master view.
      */
     public abstract void update(UUID id);
-
-    /**
-     * An interface used for creating a list of {@link MoreDetailView}s.
-     */
-    public interface OnUpdateMoreDetailInterface {
-        String onGetTitle(UserDefineObject object);
-        String onGetSubtitle(UserDefineObject object);
-        View.OnClickListener onGetDetailButtonClickListener(UUID id);
-    }
 
     public DetailFragment() {
 
@@ -179,62 +169,27 @@ public abstract class DetailFragment extends Fragment {
     }
 
     /**
-     * Adds a list of {@link MoreDetailView}s to the given container.
-     *
-     * @param objects The {@link UserDefineObject} array of items to display.
-     * @param titleView The header or title view for the list.
-     * @param container The container for the list.
-     * @param callbacks The callbacks each {@link MoreDetailView} behavior.
-     */
-    public void addMoreDetailViews(ArrayList<UserDefineObject> objects, View titleView, LinearLayout container, OnUpdateMoreDetailInterface callbacks) {
-        boolean hasObjects = objects.size() > 0;
-        Utils.toggleVisibility(titleView, hasObjects);
-        Utils.toggleVisibility(container, hasObjects);
-
-        container.removeAllViews();
-
-        for (UserDefineObject object : objects) {
-            MoreDetailView view = new MoreDetailView(getContext());
-            view.setTitle(callbacks.onGetTitle(object));
-            view.useDefaultStyle();
-
-            if (callbacks.onGetSubtitle(object) == null)
-                view.hideSubtitle();
-            else
-                view.setSubtitle(callbacks.onGetSubtitle(object));
-
-            if (objects.size() == 1)
-                view.useNoSpacing();
-            else
-                view.useDefaultSpacing();
-
-            view.setOnClickDetailButton(callbacks.onGetDetailButtonClickListener(object.getId()));
-            container.addView(view);
-        }
-    }
-
-    /**
-     * Gets an {@link com.cohenadair.anglerslog.fragments.DetailFragment.OnUpdateMoreDetailInterface}
+     * Gets an {@link com.cohenadair.anglerslog.views.MoreDetailLayout.OnUpdateItemInterface},
      * specifically for {@link Catch} objects. This method is used in multiple DetailFragment
      * subclasses.
      *
      * @param catches The {@link Catch} objects that will be displayed.
-     * @return An {@link com.cohenadair.anglerslog.fragments.DetailFragment.OnUpdateMoreDetailInterface}.
+     * @return An {@link com.cohenadair.anglerslog.views.MoreDetailLayout.OnUpdateItemInterface}.
      */
-    public OnUpdateMoreDetailInterface getCatchMoreDetailInterface(ArrayList<UserDefineObject> catches) {
-        return new OnUpdateMoreDetailInterface() {
+    public MoreDetailLayout.OnUpdateItemInterface getCatchUpdateItemInterface(ArrayList<UserDefineObject> catches) {
+        return new MoreDetailLayout.OnUpdateItemInterface() {
             @Override
-            public String onGetTitle(UserDefineObject object) {
+            public String getTitle(UserDefineObject object) {
                 return ((Catch)object).getSpeciesAsString();
             }
 
             @Override
-            public String onGetSubtitle(UserDefineObject object) {
+            public String getSubtitle(UserDefineObject object) {
                 return ((Catch)object).getDateTimeAsString();
             }
 
             @Override
-            public View.OnClickListener onGetDetailButtonClickListener(final UUID id) {
+            public View.OnClickListener onClickItemButton(final UUID id) {
                 return new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

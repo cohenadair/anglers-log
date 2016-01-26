@@ -77,6 +77,7 @@ public class MainActivity extends LayoutSpecActivity {
 
     public void updateLayoutSpec() {
         setLayoutSpec(LayoutSpecManager.layoutSpec(this, mNavigationManager.getCurrentLayoutId()));
+        mNavigationManager.updateTitle();
     }
 
     public void showFragment() {

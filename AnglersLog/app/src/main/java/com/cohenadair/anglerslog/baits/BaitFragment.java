@@ -17,6 +17,7 @@ import com.cohenadair.anglerslog.model.user_defines.Bait;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import com.cohenadair.anglerslog.utilities.PhotoUtils;
 import com.cohenadair.anglerslog.utilities.Utils;
+import com.cohenadair.anglerslog.views.MoreDetailLayout;
 import com.cohenadair.anglerslog.views.PropertyDetailView;
 import com.cohenadair.anglerslog.views.TitleSubTitleView;
 
@@ -31,7 +32,6 @@ public class BaitFragment extends DetailFragment {
     private Bait mBait;
 
     private LinearLayout mContainer;
-    private LinearLayout mCatchesContainer;
     private ImageView mImageView;
     private TitleSubTitleView mTitleSubTitleView;
     private TextView mDescriptionTextView;
@@ -39,6 +39,7 @@ public class BaitFragment extends DetailFragment {
     private PropertyDetailView mTypeView;
     private PropertyDetailView mColorView;
     private PropertyDetailView mSizeView;
+    private MoreDetailLayout mCatchesLayout;
 
     public BaitFragment() {
         // Required empty public constructor
@@ -57,7 +58,7 @@ public class BaitFragment extends DetailFragment {
         mColorView = (PropertyDetailView)view.findViewById(R.id.color_view);
         mSizeView = (PropertyDetailView)view.findViewById(R.id.size_view);
         mNoCatchesTextView = (TextView)view.findViewById(R.id.no_catches_text_view);
-        mCatchesContainer = (LinearLayout)view.findViewById(R.id.catches_container);
+        mCatchesLayout = (MoreDetailLayout)view.findViewById(R.id.catches_layout);
 
         update(getActivity());
 
@@ -121,7 +122,7 @@ public class BaitFragment extends DetailFragment {
         if (!hasCatches)
             return;
 
-        addMoreDetailViews(catches, null, mCatchesContainer, getCatchMoreDetailInterface(catches));
+        mCatchesLayout.init(null, catches, getCatchUpdateItemInterface(catches));
     }
 
     private void initImageView(View view) {

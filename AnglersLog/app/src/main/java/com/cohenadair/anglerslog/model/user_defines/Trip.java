@@ -221,6 +221,10 @@ public class Trip extends UserDefineObject {
         return UserDefineArrays.namesAsString(getAnglers());
     }
 
+    public boolean hasNotes() {
+        return mNotes != null && !mNotes.isEmpty();
+    }
+
     public boolean overlapsTrip(Trip trip) {
         return trip.getStartDate().before(mEndDate) && trip.getEndDate().after(mStartDate);
     }

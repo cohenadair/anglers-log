@@ -74,9 +74,10 @@ public class LayoutSpecManager {
 
             case LAYOUT_TRIPS:
                 return getTripsLayoutSpec(layoutSpecContext);
-        }
 
-        return null;
+            default:
+                return getCatchesLayoutSpec(layoutSpecContext);
+        }
     }
 
     /**

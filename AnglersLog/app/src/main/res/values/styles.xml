@@ -41,6 +41,11 @@
         <item name="android:textSize">@dimen/font_medium</item>
     </style>
 
+    <style name="Button.BorderlessSmall" parent="@android:style/Widget.DeviceDefault.Button.Borderless">
+        <item name="android:textSize">@dimen/font_small</item>
+        <item name="android:textColor">@color/dark_grey</item>
+    </style>
+
     <style name="Button.BorderlessColored" parent="@style/Button.BorderlessMedium">
         <item name="android:background">@drawable/button_borderless</item>
     </style>

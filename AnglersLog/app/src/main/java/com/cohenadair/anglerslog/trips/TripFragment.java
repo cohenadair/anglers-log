@@ -16,6 +16,7 @@ import com.cohenadair.anglerslog.model.user_defines.Trip;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import com.cohenadair.anglerslog.utilities.LayoutSpecManager;
 import com.cohenadair.anglerslog.utilities.Utils;
+import com.cohenadair.anglerslog.views.MoreDetailLayout;
 import com.cohenadair.anglerslog.views.PropertyDetailView;
 import com.cohenadair.anglerslog.views.TitleSubTitleView;
 
@@ -31,8 +32,8 @@ public class TripFragment extends DetailFragment {
     private Trip mTrip;
 
     private LinearLayout mContainer;
-    private LinearLayout mCatchesContainer;
-    private LinearLayout mLocationsContainer;
+    private MoreDetailLayout mCatchesContainer;
+    private MoreDetailLayout mLocationsContainer;
     private TitleSubTitleView mTitleView;
     private PropertyDetailView mAnglersView;
     private TextView mNotesView;
@@ -52,8 +53,8 @@ public class TripFragment extends DetailFragment {
 
         mContainer = (LinearLayout)view.findViewById(R.id.trip_container);
 
-        mCatchesContainer = (LinearLayout)view.findViewById(R.id.catches_container);
-        mLocationsContainer = (LinearLayout)view.findViewById(R.id.locations_container);
+        mCatchesContainer = (MoreDetailLayout)view.findViewById(R.id.catches_container);
+        mLocationsContainer = (MoreDetailLayout)view.findViewById(R.id.locations_container);
         mTitleView = (TitleSubTitleView)view.findViewById(R.id.title_view);
         mAnglersView = (PropertyDetailView)view.findViewById(R.id.anglers_view);
         mNotesView = (TextView)view.findViewById(R.id.notes_text_view);
@@ -102,34 +103,33 @@ public class TripFragment extends DetailFragment {
 
     private void updateTitleView() {
         String dateString = mTrip.getDateAsString(getContext());
-        boolean nameIsNull = mTrip.getName() == null;
 
-        mTitleView.setTitle(nameIsNull ? dateString : mTrip.getName());
-        mTitleView.setSubtitle(nameIsNull ? "" : dateString);
+        mTitleView.setTitle(mTrip.isNameNull() ? dateString : mTrip.getName());
+        mTitleView.setSubtitle(mTrip.isNameNull() ? "" : dateString);
 
-        if (nameIsNull)
+        if (mTrip.isNameNull())
             mTitleView.hideSubtitle();
     }
 
     private void updateCatchesView() {
         ArrayList<UserDefineObject> catches = mTrip.getCatches();
-        addMoreDetailViews(catches, mCatchesTitle, mCatchesContainer, getCatchMoreDetailInterface(catches));
+        mCatchesContainer.init(mCatchesTitle, catches, getCatchUpdateItemInterface(catches));
     }
 
     private void updateLocationsView() {
-        addMoreDetailViews(mTrip.getLocations(), mLocationsTitle, mLocationsContainer, new OnUpdateMoreDetailInterface() {
+        mLocationsContainer.init(mLocationsTitle, mTrip.getLocations(), new MoreDetailLayout.OnUpdateItemInterface() {
             @Override
-            public String onGetTitle(UserDefineObject object) {
+            public String getTitle(UserDefineObject object) {
                 return object.getName();
             }
 
             @Override
-            public String onGetSubtitle(UserDefineObject object) {
+            public String getSubtitle(UserDefineObject object) {
                 return QueryHelper.queryTripsLocationCatchCount(mTrip, (Location) object) + " " + getResources().getString(R.string.trip_catches);
             }
 
             @Override
-            public View.OnClickListener onGetDetailButtonClickListener(final UUID id) {
+            public View.OnClickListener onClickItemButton(final UUID id) {
                 return new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -146,7 +146,7 @@ public class TripFragment extends DetailFragment {
     }
 
     private void updateNotesView() {
-        boolean hasNotes = mTrip.getNotes() != null;
+        boolean hasNotes = mTrip.hasNotes();
         Utils.toggleVisibility(mNotesTitle, hasNotes);
         Utils.toggleVisibility(mNotesView, hasNotes);
         mNotesView.setText(mTrip.getNotesAsString());

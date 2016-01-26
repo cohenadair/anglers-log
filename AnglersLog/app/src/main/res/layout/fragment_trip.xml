@@ -34,11 +34,10 @@
             android:text="@string/drawer_catches"/>
 
         <!-- Catches -->
-        <LinearLayout
+        <com.cohenadair.anglerslog.views.MoreDetailLayout
             android:id="@+id/catches_container"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"/>
+            android:layout_height="wrap_content"/>
 
         <!-- Locations Title -->
         <TextView
@@ -51,11 +50,10 @@
             android:text="@string/drawer_locations"/>
 
         <!-- Locations -->
-        <LinearLayout
+        <com.cohenadair.anglerslog.views.MoreDetailLayout
             android:id="@+id/locations_container"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"/>
+            android:layout_height="wrap_content"/>
 
         <!-- Trip Details -->
         <TextView
