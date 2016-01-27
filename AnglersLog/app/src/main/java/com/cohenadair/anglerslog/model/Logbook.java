@@ -173,6 +173,22 @@ public class Logbook {
     public static int getCatchCount() {
         return QueryHelper.queryCount(CatchTable.NAME);
     }
+
+    public static Catch getLongestCatch() {
+        return QueryHelper.queryCatchMax(CatchTable.Columns.LENGTH);
+    }
+
+    public static Catch getHeaviestCatch() {
+        return QueryHelper.queryCatchMax(CatchTable.Columns.WEIGHT);
+    }
+
+    public static Catch getLongestCatch(Species species) {
+        return QueryHelper.queryCatchMax(CatchTable.Columns.LENGTH, species);
+    }
+
+    public static Catch getHeaviestCatch(Species species) {
+        return QueryHelper.queryCatchMax(CatchTable.Columns.WEIGHT, species);
+    }
     //endregion
 
     //region Species Manipulation
@@ -595,7 +611,7 @@ public class Logbook {
         ArrayList<Stats.Quantity> list = new ArrayList<>();
 
         for (UserDefineObject obj : objects)
-            list.add(new Stats.Quantity(obj.getDisplayName(), listener.query(obj)));
+            list.add(new Stats.Quantity(obj.getId(), obj.getDisplayName(), listener.query(obj)));
 
         Collections.sort(list, new Stats.QuantityComparator());
         return list;

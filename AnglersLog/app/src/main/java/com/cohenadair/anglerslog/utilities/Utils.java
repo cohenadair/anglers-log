@@ -24,9 +24,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cohenadair.anglerslog.R;
+import com.cohenadair.anglerslog.activities.DetailFragmentActivity;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.UUID;
 
 /**
  * A set of utility methods used throughout the project.
@@ -297,5 +299,20 @@ public class Utils {
 
             }
         };
+    }
+
+    /**
+     * Gets an Intent used to show a {@link DetailFragmentActivity}.
+     * @param context The context.
+     * @param layoutSpecId See {@link LayoutSpecManager}.
+     * @param userDefineObjectId The UUID of the object to display.
+     * @return An Intent with required extras.
+     */
+    public static Intent getDetailActivityIntent(Context context, int layoutSpecId, UUID userDefineObjectId) {
+        Intent intent = new Intent(context, DetailFragmentActivity.class);
+        intent.putExtra(DetailFragmentActivity.EXTRA_TWO_PANE, isTwoPane(context));
+        intent.putExtra(DetailFragmentActivity.EXTRA_LAYOUT_ID, layoutSpecId);
+        intent.putExtra(DetailFragmentActivity.EXTRA_USER_DEFINE_ID, userDefineObjectId.toString());
+        return intent;
     }
 }

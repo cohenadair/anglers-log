@@ -488,4 +488,51 @@ public class LogbookTest {
         locationQuantities = Logbook.getLocationCatchCount();
         assertTrue(locationQuantities.get(0).getQuantity() == 70);
     }
+
+    @Test
+    public void testStats() {
+        Species s1 = new Species("Bass");
+        Species s2 = new Species("Pike");
+        Logbook.addSpecies(s1);
+        Logbook.addSpecies(s2);
+
+        Catch c1 = new Catch(new Date(1000000));
+        c1.setSpecies(s1);
+        c1.setLength(15);
+        c1.setWeight(4);
+
+        Catch c2 = new Catch(new Date(2000000));
+        c2.setSpecies(s1);
+        c2.setLength(20);
+        c2.setWeight(2);
+
+        Catch c3 = new Catch(new Date(3000000));
+        c3.setSpecies(s2);
+        c3.setLength(33);
+        c3.setWeight(12);
+
+        Catch c4 = new Catch(new Date(4000000));
+        c4.setSpecies(s2);
+        c4.setLength(24);
+        c4.setWeight(16);
+
+        Logbook.addCatch(c1);
+        Logbook.addCatch(c2);
+        Logbook.addCatch(c3);
+        Logbook.addCatch(c4);
+
+        // longest
+        assertTrue(Logbook.getLongestCatch().getId().equals(c3.getId()));
+
+        // heaviest
+        assertTrue(Logbook.getHeaviestCatch().getId().equals(c4.getId()));
+
+        // heaviest by species
+        assertTrue(Logbook.getHeaviestCatch(s1).getId().equals(c1.getId()));
+        assertTrue(Logbook.getHeaviestCatch(s2).getId().equals(c4.getId()));
+
+        // longest by species
+        assertTrue(Logbook.getLongestCatch(s1).getId().equals(c2.getId()));
+        assertTrue(Logbook.getLongestCatch(s2).getId().equals(c3.getId()));
+    }
 }

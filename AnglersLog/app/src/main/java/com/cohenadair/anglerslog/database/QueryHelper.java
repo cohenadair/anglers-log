@@ -12,7 +12,9 @@ import com.cohenadair.anglerslog.database.cursors.CatchCursor;
 import com.cohenadair.anglerslog.database.cursors.UserDefineCursor;
 import com.cohenadair.anglerslog.database.cursors.WeatherCursor;
 import com.cohenadair.anglerslog.model.Weather;
+import com.cohenadair.anglerslog.model.user_defines.Catch;
 import com.cohenadair.anglerslog.model.user_defines.Location;
+import com.cohenadair.anglerslog.model.user_defines.Species;
 import com.cohenadair.anglerslog.model.user_defines.Trip;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 
@@ -101,7 +103,7 @@ public class QueryHelper {
 
     public static UserDefineObject queryUserDefine(String table, UUID id, UserDefineQueryInterface callbacks) {
         UserDefineObject obj = null;
-        UserDefineCursor cursor = queryUserDefines(table, UserDefineTable.Columns.ID + " = ?", new String[]{ id.toString() });
+        UserDefineCursor cursor = queryUserDefines(table, UserDefineTable.Columns.ID + " = ?", new String[]{id.toString()});
 
         if (cursor.moveToFirst())
             obj = (callbacks == null) ? cursor.getObject() : callbacks.getObject(cursor);
@@ -284,7 +286,7 @@ public class QueryHelper {
         String totalQuantity = "totalQuantity";
 
         // SELECT SUM(quantity) AS totalQuantity FROM Catch WHERE id IN (SELECT catchId FROM UsedCatch WHERE(tripId = givenId));
-        return queryTotal(
+        return querySingleValue(
                 totalQuantity,
                 "SELECT SUM(" + CatchTable.Columns.QUANTITY + ") AS " + totalQuantity + " " +
                 "FROM " + CatchTable.NAME + " " +
@@ -293,7 +295,7 @@ public class QueryHelper {
                     "FROM " + UsedCatchTable.NAME + " " +
                     "WHERE(" + UsedCatchTable.Columns.TRIP_ID + " = ?)" +
                 ")",
-                new String[] { trip.idAsString() });
+                new String[]{ trip.idAsString() });
     }
 
     /**
@@ -306,7 +308,7 @@ public class QueryHelper {
     public static int queryTripsLocationCatchCount(Trip trip, Location location) {
         String totalQuantity = "totalQuantity";
 
-        return queryTotal(
+        return querySingleValue(
                 totalQuantity,
                 "SELECT SUM(" + CatchTable.Columns.QUANTITY + ") AS " + totalQuantity + " " +
                 "FROM " + CatchTable.NAME + " " +
@@ -320,14 +322,14 @@ public class QueryHelper {
                     "FROM " + UsedCatchTable.NAME + " " +
                     "WHERE(" + UsedCatchTable.Columns.TRIP_ID + " = ?)" +
                 ")",
-                new String[] { location.idAsString(), trip.idAsString() }
+                new String[]{ location.idAsString(), trip.idAsString() }
         );
     }
 
     public static int queryLocationCatchCount(Location location) {
         String totalQuantity = "totalQuantity";
 
-        return queryTotal(
+        return querySingleValue(
                 totalQuantity,
                 "SELECT SUM(" + CatchTable.Columns.QUANTITY + ") AS " + totalQuantity + " " +
                 "FROM " + CatchTable.NAME + " " +
@@ -336,30 +338,57 @@ public class QueryHelper {
                     "FROM " + FishingSpotTable.NAME + " " +
                     "WHERE(" + FishingSpotTable.Columns.LOCATION_ID + " = ?)" +
                 ") ",
-                new String[] { location.idAsString() }
+                new String[]{ location.idAsString() }
         );
     }
 
     public static int queryUserDefineCatchCount(UserDefineObject object, String catchColumn) {
         String total = "total";
-        return queryTotal(
+        return querySingleValue(
                 total,
                 "SELECT SUM(" + CatchTable.Columns.QUANTITY + ") AS " + total + " " +
                 "FROM " + CatchTable.NAME + " " +
                 "WHERE (" + catchColumn + " = ?)",
-                new String[] { object.idAsString() }
+                new String[]{ object.idAsString() }
         );
     }
 
-    private static int queryTotal(String colName, String sql, String[] args) {
-        int total = 0;
+    /**
+     * Gets a {@link Catch} with the highest value at the specified column.
+     *
+     * @param column The column with max value.
+     * @param species The species to get the max value. This value can be null.
+     * @return A {@link Catch} object.
+     */
+    @Nullable
+    public static Catch queryCatchMax(String column, Species species) {
+        String sql = "SELECT * FROM " + CatchTable.NAME + " WHERE " + column + " IN (" + "SELECT MAX(" + column + ") FROM " + CatchTable.NAME;
+
+        if (species != null)
+            sql += " WHERE " + CatchTable.Columns.SPECIES_ID + " = ?";
+
+        CatchCursor cursor = new CatchCursor(mDatabase.rawQuery(sql + ")", species == null ? null : new String[] { species.idAsString() }));
+
+        if (cursor.moveToFirst())
+            return cursor.getCatch();
+
+        return null;
+    }
+
+    @Nullable
+    public static Catch queryCatchMax(String column) {
+        return queryCatchMax(column, null);
+    }
+
+    private static int querySingleValue(String colName, String sql, String[] args) {
+        int value = 0;
 
         Cursor cursor = mDatabase.rawQuery(sql, args);
 
         if (cursor.moveToFirst())
-            total = cursor.getInt(cursor.getColumnIndex(colName));
+            value = cursor.getInt(cursor.getColumnIndex(colName));
 
         cursor.close();
-        return total;
+        return value;
     }
 }

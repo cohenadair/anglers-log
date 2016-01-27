@@ -1,6 +1,7 @@
 package com.cohenadair.anglerslog.model;
 
 import java.util.Comparator;
+import java.util.UUID;
 
 /**
  * Stores anything used by the application's stats features.
@@ -9,12 +10,18 @@ import java.util.Comparator;
 public class Stats {
 
     public static class Quantity {
+        private UUID mId;
         private String mName;
         private int mQuantity;
 
-        public Quantity(String name, int quantity) {
+        public Quantity(UUID id, String name, int quantity) {
+            mId = id;
             mName = name;
             mQuantity = quantity;
+        }
+
+        public UUID getId() {
+            return mId;
         }
 
         public String getName() {

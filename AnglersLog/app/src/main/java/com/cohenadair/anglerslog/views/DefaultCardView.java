@@ -40,18 +40,30 @@ public class DefaultCardView extends LinearLayout {
         mShowMoreButton = (Button)findViewById(R.id.show_more_button);
     }
 
-    public void init(String title, String buttonText, ArrayList<Stats.Quantity> content, OnClickListener onClickButton) {
+    /**
+     * Initializes this view with a list of {@link PropertyDetailView}s based on the given content.
+     *
+     * @param title The title of the card.
+     * @param content An array of property-detail values.
+     * @param onClickButton The listener for the "show more" button.
+     */
+    public void initWithList(String title, ArrayList<Stats.Quantity> content, OnClickListener onClickButton) {
         setTitle(title);
         setOnClickShowMoreButton(onClickButton);
-
-        if (buttonText != null)
-            mShowMoreButton.setText(buttonText);
-
         updateContent(content);
     }
 
-    public void init(String title, ArrayList<Stats.Quantity> content, OnClickListener onClickButton) {
-        init(title, null, content, onClickButton);
+    public void initWithMoreDetailView(String cardTitle, String moreDetailTitle, String moreDetailSubtitle, OnClickListener onClickMoreDetail, OnClickListener onClickCard) {
+        setTitle(cardTitle);
+        setOnClickShowMoreButton(onClickCard);
+
+        MoreDetailView view = new MoreDetailView(getContext());
+        view.setTitle(moreDetailTitle);
+        view.setSubtitle(moreDetailSubtitle);
+        view.setOnClickDetailButton(onClickMoreDetail);
+        view.useDefaultStyle();
+        view.useNoSpacing();
+        mContentContainer.addView(view);
     }
 
     public void setTitle(String title) {
@@ -62,6 +74,10 @@ public class DefaultCardView extends LinearLayout {
         mShowMoreButton.setOnClickListener(listener);
     }
 
+    /**
+     * Updates the content view with a list of {@link PropertyDetailView}s.
+     * @param content An array of property-detail values.
+     */
     private void updateContent(ArrayList<Stats.Quantity> content) {
         Utils.toggleVisibility(this, content.size() > 0);
 

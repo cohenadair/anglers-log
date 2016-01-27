@@ -1,7 +1,6 @@
 package com.cohenadair.anglerslog.fragments;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
@@ -13,7 +12,6 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.cohenadair.anglerslog.R;
-import com.cohenadair.anglerslog.activities.DetailFragmentActivity;
 import com.cohenadair.anglerslog.activities.LayoutSpecActivity;
 import com.cohenadair.anglerslog.interfaces.GlobalSettingsInterface;
 import com.cohenadair.anglerslog.interfaces.OnClickManageMenuListener;
@@ -161,11 +159,7 @@ public abstract class DetailFragment extends Fragment {
      * @param userDefineObjectId The id of the UserDefineObject to be shown.
      */
     public void startDetailActivity(int layoutSpecId, UUID userDefineObjectId) {
-        Intent intent = new Intent(getContext(), DetailFragmentActivity.class);
-        intent.putExtra(DetailFragmentActivity.EXTRA_TWO_PANE, Utils.isTwoPane(getActivity()));
-        intent.putExtra(DetailFragmentActivity.EXTRA_LAYOUT_ID, layoutSpecId);
-        intent.putExtra(DetailFragmentActivity.EXTRA_USER_DEFINE_ID, userDefineObjectId.toString());
-        startActivity(intent);
+        startActivity(Utils.getDetailActivityIntent(getContext(), layoutSpecId, userDefineObjectId));
     }
 
     /**

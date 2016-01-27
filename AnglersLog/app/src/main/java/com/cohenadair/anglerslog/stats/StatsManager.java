@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.model.Logbook;
 import com.cohenadair.anglerslog.model.Stats;
+import com.cohenadair.anglerslog.model.user_defines.Catch;
 
 import java.util.ArrayList;
 
@@ -51,7 +52,6 @@ public class StatsManager {
     @NonNull
     private static StatsSpec getSpeciesStatsSpec(Context context) {
         return new StatsSpec(
-                context.getResources().getString(R.string.species_caught),
                 context.getResources().getString(R.string.species_stats),
                 Logbook.getSpeciesCaughtCount(),
                 CatchesCountFragment.newInstance(STATS_SPECIES)
@@ -61,7 +61,6 @@ public class StatsManager {
     @NonNull
     private static StatsSpec getBaitsStatsSpec(Context context) {
         return new StatsSpec(
-                context.getResources().getString(R.string.baits_used),
                 context.getResources().getString(R.string.bait_stats),
                 Logbook.getBaitUsedCount(),
                 CatchesCountFragment.newInstance(STATS_BAITS)
@@ -71,45 +70,59 @@ public class StatsManager {
     @NonNull
     private static StatsSpec getLocationsStatsSpec(Context context) {
         return new StatsSpec(
-                context.getResources().getString(R.string.location_success),
                 context.getResources().getString(R.string.location_stats),
                 Logbook.getLocationCatchCount(),
                 CatchesCountFragment.newInstance(STATS_LOCATIONS)
         );
     }
 
+    @NonNull
     private static StatsSpec getLongestStatsSpec(Context context) {
-        return null;
+        return new StatsSpec(
+                context.getResources().getString(R.string.longest_catches),
+                Logbook.getLongestCatch(),
+                BigCatchFragment.newInstance(STATS_LONGEST)
+        );
     }
 
+    @NonNull
     private static StatsSpec getHeaviestStatsSpec(Context context) {
-        return null;
+        return new StatsSpec(
+                context.getResources().getString(R.string.longest_catches),
+                Logbook.getHeaviestCatch(),
+                BigCatchFragment.newInstance(STATS_LONGEST)
+        );
     }
 
     public static class StatsSpec {
 
-        private String mCardTitle;
         private String mActivityTitle;
-        private ArrayList<Stats.Quantity> mCardContent;
+        private ArrayList<Stats.Quantity> mContent;
+        private Catch mBigCatchContent;
         private Fragment mDetailFragment;
 
-        public StatsSpec (String cardTitle, String activityTitle, ArrayList<Stats.Quantity> cardContent, Fragment detailFragment) {
-            mCardContent = cardContent;
-            mCardTitle = cardTitle;
+        public StatsSpec(String activityTitle, ArrayList<Stats.Quantity> content, Fragment detailFragment) {
             mActivityTitle = activityTitle;
+            mContent = content;
             mDetailFragment = detailFragment;
         }
 
-        public String getCardTitle() {
-            return mCardTitle;
+        public StatsSpec(String activityTitle, Catch content, Fragment detailFragment) {
+            mActivityTitle = activityTitle;
+            mBigCatchContent = content;
+            mDetailFragment = detailFragment;
         }
 
         public String getActivityTitle() {
             return mActivityTitle;
         }
 
-        public ArrayList<Stats.Quantity> getCardContent() {
-            return mCardContent;
+        public ArrayList<Stats.Quantity> getContent() {
+            return mContent;
+        }
+
+        public Catch getBigCatchContent() {
+            return mBigCatchContent;
         }
 
         public Fragment getDetailFragment() {

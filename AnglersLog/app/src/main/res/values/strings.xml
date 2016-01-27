@@ -17,6 +17,10 @@
     <string name="species_stats">Species Statistics</string>
     <string name="species">Species</string>
     <string name="catch_string">Catch</string>
+    <string name="longest_catch">Longest Catch</string>
+    <string name="heaviest_catch">Heaviest Catch</string>
+    <string name="longest_catches">Longest Catches</string>
+    <string name="heaviest_catches">Heaviest Catches</string>
     <string name="bait">Bait</string>
     <string name="baits_used">Baits Used</string>
     <string name="bait_stats">Bait Statistics</string>
