@@ -73,6 +73,12 @@ public class BaitListManager {
                 mImageView.setImageResource(R.drawable.no_catch_photo);
 
             updateView(mSeparator, position, bait);
+
+            // hide last separator for BaitCategory "sub-lists"
+            if (position + 1 < mAdapter.getItemCount()) {
+                boolean isLast = mAdapter.getItem(position + 1) instanceof BaitCategory;
+                mSeparator.setVisibility(isLast ? View.INVISIBLE : View.VISIBLE);
+            }
         }
 
         public void setBaitCategory(BaitCategory category) {
