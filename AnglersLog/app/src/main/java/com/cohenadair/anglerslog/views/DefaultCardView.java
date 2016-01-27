@@ -82,17 +82,5 @@ public class DefaultCardView extends LinearLayout {
             if (++numberAdded >= max)
                 break;
         }
-
-        // hide button/adjust content layout if needed
-        boolean showButton = content.size() > 3;
-        Utils.toggleVisibility(mShowMoreButton, showButton);
-        LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
-        params.setMargins(
-                0,
-                0,
-                0,
-                showButton ? 0 : getResources().getDimensionPixelSize(R.dimen.margin_default)
-        );
-        mContentContainer.setLayoutParams(params);
     }
 }

@@ -1,5 +1,6 @@
 package com.cohenadair.anglerslog.stats;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
@@ -7,9 +8,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.cohenadair.anglerslog.R;
+import com.cohenadair.anglerslog.activities.CardDetailActivity;
 import com.cohenadair.anglerslog.activities.LayoutSpecActivity;
 import com.cohenadair.anglerslog.fragments.MasterFragment;
 import com.cohenadair.anglerslog.model.Logbook;
+import com.cohenadair.anglerslog.utilities.Utils;
 import com.cohenadair.anglerslog.views.DefaultCardView;
 
 /**
@@ -27,13 +30,8 @@ public class StatsFragment extends MasterFragment {
         View view = inflater.inflate(R.layout.stats_layout, container, false);
 
         mSpeciesCard = (DefaultCardView)view.findViewById(R.id.species_card);
-        mSpeciesCard.init(getContext().getResources().getString(R.string.species_caught), Logbook.getSpeciesCaughtCount(), null);
-
         mBaitsCard = (DefaultCardView)view.findViewById(R.id.baits_card);
-        mBaitsCard.init(getContext().getResources().getString(R.string.baits_used), Logbook.getBaitUsedCount(), null);
-
         mLocationsCard = (DefaultCardView)view.findViewById(R.id.locations_card);
-        mLocationsCard.init(getContext().getResources().getString(R.string.location_success), Logbook.getLocationCatchCount(), null);
 
         update(getRealActivity());
 
@@ -42,6 +40,32 @@ public class StatsFragment extends MasterFragment {
 
     @Override
     public void update(LayoutSpecActivity activity) {
+        mSpeciesCard.init(getContext().getResources().getString(R.string.species_caught), Logbook.getSpeciesCaughtCount(), new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startCardDetailActivity(StatsManager.STATS_SPECIES);
+            }
+        });
 
+        mBaitsCard.init(getContext().getResources().getString(R.string.baits_used), Logbook.getBaitUsedCount(), new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startCardDetailActivity(StatsManager.STATS_BAITS);
+            }
+        });
+
+        mLocationsCard.init(getContext().getResources().getString(R.string.location_success), Logbook.getLocationCatchCount(), new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startCardDetailActivity(StatsManager.STATS_LOCATIONS);
+            }
+        });
+    }
+
+    private void startCardDetailActivity(int statsId) {
+        Intent intent = new Intent(getContext(), CardDetailActivity.class);
+        intent.putExtra(CardDetailActivity.EXTRA_TWO_PANE, Utils.isTwoPane(getActivity()));
+        intent.putExtra(CardDetailActivity.EXTRA_STATS_ID, statsId);
+        startActivity(intent);
     }
 }
