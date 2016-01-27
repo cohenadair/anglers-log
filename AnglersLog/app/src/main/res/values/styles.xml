@@ -50,6 +50,10 @@
         <item name="android:background">@drawable/button_borderless</item>
     </style>
 
+    <style name="Button.BorderlessColoredText" parent="@style/Button.Borderless">
+        <item name="android:textColor">@color/anglers_log_dark</item>
+    </style>
+
     <!-- RecyclerView LinearLayout -->
     <style name="recycler_layout">
         <item name="android:paddingLeft">@dimen/spacing_medium</item>

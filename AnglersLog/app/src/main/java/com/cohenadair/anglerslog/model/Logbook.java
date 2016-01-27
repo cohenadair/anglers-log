@@ -32,6 +32,7 @@ import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import com.cohenadair.anglerslog.model.user_defines.WaterClarity;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Random;
 import java.util.UUID;
 
@@ -210,6 +211,15 @@ public class Logbook {
     public static int getSpeciesCount() {
         return QueryHelper.queryCount(SpeciesTable.NAME);
     }
+
+    public static ArrayList<Stats.Quantity> getSpeciesCaughtCount() {
+        return getCatchQuantity(getSpecies(), new OnQueryQuantityListener() {
+            @Override
+            public int query(UserDefineObject obj) {
+                return QueryHelper.queryUserDefineCatchCount(obj, CatchTable.Columns.SPECIES_ID);
+            }
+        });
+    }
     //endregion
 
     //region BaitCategory Manipulation
@@ -278,7 +288,7 @@ public class Logbook {
      * @return True if the Bait exists; false otherwise.
      */
     public static boolean baitExists(Bait bait) {
-        Cursor cursor = mDatabase.query(BaitTable.NAME, null, BaitTable.Columns.CATEGORY_ID + " = ? AND " + BaitTable.Columns.NAME + " = ?", new String[]{ bait.getCategoryId().toString(), bait.getName() }, null, null, null);
+        Cursor cursor = mDatabase.query(BaitTable.NAME, null, BaitTable.Columns.CATEGORY_ID + " = ? AND " + BaitTable.Columns.NAME + " = ?", new String[]{bait.getCategoryId().toString(), bait.getName()}, null, null, null);
         return QueryHelper.queryHasResults(cursor);
     }
 
@@ -317,6 +327,15 @@ public class Logbook {
         }
 
         return result;
+    }
+
+    public static ArrayList<Stats.Quantity> getBaitUsedCount() {
+        return getCatchQuantity(getBaits(), new OnQueryQuantityListener() {
+            @Override
+            public int query(UserDefineObject obj) {
+                return QueryHelper.queryUserDefineCatchCount(obj, CatchTable.Columns.BAIT_ID);
+            }
+        });
     }
     //endregion
 
@@ -359,7 +378,7 @@ public class Logbook {
      * @return True if the Location exists; false otherwise.
      */
     public static boolean locationExists(Location location) {
-        Cursor cursor = mDatabase.query(LocationTable.NAME, null, LocationTable.Columns.NAME + " = ?", new String[]{ location.getName() }, null, null, null);
+        Cursor cursor = mDatabase.query(LocationTable.NAME, null, LocationTable.Columns.NAME + " = ?", new String[]{location.getName()}, null, null, null);
         return QueryHelper.queryHasResults(cursor);
     }
 
@@ -377,6 +396,15 @@ public class Logbook {
 
     public static int getLocationCount() {
         return QueryHelper.queryCount(LocationTable.NAME);
+    }
+
+    public static ArrayList<Stats.Quantity> getLocationCatchCount() {
+        return getCatchQuantity(getLocations(), new OnQueryQuantityListener() {
+            @Override
+            public int query(UserDefineObject obj) {
+                return QueryHelper.queryLocationCatchCount((Location)obj);
+            }
+        });
     }
     //endregion
 
@@ -547,6 +575,30 @@ public class Logbook {
 
     public static int getTripCount() {
         return QueryHelper.queryCount(TripTable.NAME);
+    }
+    //endregion
+
+    //region Common Manipulation
+    private interface OnQueryQuantityListener {
+        int query(UserDefineObject obj);
+    }
+
+    /**
+     * Gets an array of {@link com.cohenadair.anglerslog.model.Stats.Quantity} objects that
+     * represent the quantity of catches associated with the given {@link UserDefineObject}s.
+     *
+     * @param objects The objects to check for {@link Catch} association.
+     * @param listener The listener for querying the database.
+     * @return An array of sorted UserDefineObject stat quantities.
+     */
+    private static ArrayList<Stats.Quantity> getCatchQuantity(ArrayList<UserDefineObject> objects, OnQueryQuantityListener listener) {
+        ArrayList<Stats.Quantity> list = new ArrayList<>();
+
+        for (UserDefineObject obj : objects)
+            list.add(new Stats.Quantity(obj.getDisplayName(), listener.query(obj)));
+
+        Collections.sort(list, new Stats.QuantityComparator());
+        return list;
     }
     //endregion
 }

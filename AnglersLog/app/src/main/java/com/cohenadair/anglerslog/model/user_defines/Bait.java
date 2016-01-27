@@ -150,6 +150,7 @@ public class Bait extends PhotoUserDefineObject {
         return null;
     }
 
+    @Override
     public String getDisplayName() {
         return mCategory.getName() + " - " + getName();
     }

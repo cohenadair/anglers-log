@@ -281,11 +281,11 @@ public class QueryHelper {
      * @return The quantity of catches.
      */
     public static int queryTripsCatchCount(Trip trip) {
-        int numOfCatches = 0;
         String totalQuantity = "totalQuantity";
 
         // SELECT SUM(quantity) AS totalQuantity FROM Catch WHERE id IN (SELECT catchId FROM UsedCatch WHERE(tripId = givenId));
-        Cursor cursor = mDatabase.rawQuery(
+        return queryTotal(
+                totalQuantity,
                 "SELECT SUM(" + CatchTable.Columns.QUANTITY + ") AS " + totalQuantity + " " +
                 "FROM " + CatchTable.NAME + " " +
                 "WHERE " + CatchTable.Columns.ID + " IN (" +
@@ -294,12 +294,6 @@ public class QueryHelper {
                     "WHERE(" + UsedCatchTable.Columns.TRIP_ID + " = ?)" +
                 ")",
                 new String[] { trip.idAsString() });
-
-        if (cursor.moveToFirst())
-            numOfCatches = cursor.getInt(cursor.getColumnIndex(totalQuantity));
-
-        cursor.close();
-        return numOfCatches;
     }
 
     /**
@@ -310,10 +304,10 @@ public class QueryHelper {
      * @return The number of catches for the given trip at the given location.
      */
     public static int queryTripsLocationCatchCount(Trip trip, Location location) {
-        int numOfCatches = 0;
         String totalQuantity = "totalQuantity";
 
-        Cursor cursor = mDatabase.rawQuery(
+        return queryTotal(
+                totalQuantity,
                 "SELECT SUM(" + CatchTable.Columns.QUANTITY + ") AS " + totalQuantity + " " +
                 "FROM " + CatchTable.NAME + " " +
                 "WHERE " + CatchTable.Columns.FISHING_SPOT_ID + " IN (" +
@@ -328,11 +322,44 @@ public class QueryHelper {
                 ")",
                 new String[] { location.idAsString(), trip.idAsString() }
         );
+    }
+
+    public static int queryLocationCatchCount(Location location) {
+        String totalQuantity = "totalQuantity";
+
+        return queryTotal(
+                totalQuantity,
+                "SELECT SUM(" + CatchTable.Columns.QUANTITY + ") AS " + totalQuantity + " " +
+                "FROM " + CatchTable.NAME + " " +
+                "WHERE " + CatchTable.Columns.FISHING_SPOT_ID + " IN (" +
+                    "SELECT " + FishingSpotTable.Columns.ID + " " +
+                    "FROM " + FishingSpotTable.NAME + " " +
+                    "WHERE(" + FishingSpotTable.Columns.LOCATION_ID + " = ?)" +
+                ") ",
+                new String[] { location.idAsString() }
+        );
+    }
+
+    public static int queryUserDefineCatchCount(UserDefineObject object, String catchColumn) {
+        String total = "total";
+        return queryTotal(
+                total,
+                "SELECT SUM(" + CatchTable.Columns.QUANTITY + ") AS " + total + " " +
+                "FROM " + CatchTable.NAME + " " +
+                "WHERE (" + catchColumn + " = ?)",
+                new String[] { object.idAsString() }
+        );
+    }
+
+    private static int queryTotal(String colName, String sql, String[] args) {
+        int total = 0;
+
+        Cursor cursor = mDatabase.rawQuery(sql, args);
 
         if (cursor.moveToFirst())
-            numOfCatches = cursor.getInt(cursor.getColumnIndex(totalQuantity));
+            total = cursor.getInt(cursor.getColumnIndex(colName));
 
         cursor.close();
-        return numOfCatches;
+        return total;
     }
 }

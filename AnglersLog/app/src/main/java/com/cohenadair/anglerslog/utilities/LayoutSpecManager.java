@@ -24,6 +24,7 @@ import com.cohenadair.anglerslog.model.user_defines.Catch;
 import com.cohenadair.anglerslog.model.user_defines.Location;
 import com.cohenadair.anglerslog.model.user_defines.Trip;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
+import com.cohenadair.anglerslog.stats.StatsFragment;
 import com.cohenadair.anglerslog.trips.ManageTripFragment;
 import com.cohenadair.anglerslog.trips.TripFragment;
 import com.cohenadair.anglerslog.trips.TripListManager;
@@ -56,6 +57,7 @@ public class LayoutSpecManager {
     public static final int LAYOUT_LOCATIONS = R.id.nav_locations;
     public static final int LAYOUT_BAITS = R.id.nav_baits;
     public static final int LAYOUT_TRIPS = R.id.nav_trips;
+    public static final int LAYOUT_STATS = R.id.nav_stats;
 
     //region Layout Spec Definitions
     @Nullable
@@ -74,6 +76,9 @@ public class LayoutSpecManager {
 
             case LAYOUT_TRIPS:
                 return getTripsLayoutSpec(layoutSpecContext);
+
+            case LAYOUT_STATS:
+                return getStatsLayoutSpec(layoutSpecContext);
 
             default:
                 return getCatchesLayoutSpec(layoutSpecContext);
@@ -237,6 +242,18 @@ public class LayoutSpecManager {
         spec.setDetailFragment(new TripFragment());
         spec.setManageFragment(new ManageTripFragment());
         spec.setClass(Trip.class);
+
+        return spec;
+    }
+
+    private static LayoutSpec getStatsLayoutSpec(final LayoutSpecActivity context) {
+        final LayoutSpec spec = new LayoutSpec(
+                context.getResources().getString(R.string.drawer_stats),
+                context.getResources().getString(R.string.drawer_stats)
+        );
+
+        spec.setId(LAYOUT_STATS);
+        spec.setMasterFragment(new StatsFragment());
 
         return spec;
     }

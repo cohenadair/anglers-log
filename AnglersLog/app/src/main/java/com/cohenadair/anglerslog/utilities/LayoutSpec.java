@@ -90,7 +90,9 @@ public class LayoutSpec {
 
     public void setMasterFragment(MasterFragment masterFragment) {
         mMasterFragment = masterFragment;
-        mMasterAdapter = mListener.onGetMasterAdapter();
+
+        if (mListener != null)
+            mMasterAdapter = mListener.onGetMasterAdapter();
     }
 
     public DetailFragment getDetailFragment() {

@@ -11,7 +11,7 @@
         android:orientation="vertical"/>
 
     <Button
-        style="@style/Button.BorderlessSmall"
+        style="@style/Button.BorderlessColoredText"
         android:id="@+id/show_more_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

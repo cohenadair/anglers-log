@@ -21,8 +21,6 @@ import java.util.UUID;
  */
 public class MoreDetailLayout extends LinearLayout {
 
-    private final int MIN_DISPLAY = 3;
-
     /**
      * An interface used for creating a list of {@link MoreDetailView}s.
      */
@@ -42,15 +40,15 @@ public class MoreDetailLayout extends LinearLayout {
 
     public MoreDetailLayout(Context context) {
         this(context, null);
-        init(null);
+        init();
     }
 
     public MoreDetailLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init(attrs);
+        init();
     }
 
-    private void init(AttributeSet attrs) {
+    private void init() {
         inflate(getContext(), R.layout.layout_more_detail, this);
 
         mListContainer = (LinearLayout)findViewById(R.id.list_container);
@@ -65,6 +63,7 @@ public class MoreDetailLayout extends LinearLayout {
     }
 
     public void init(View titleView, ArrayList<UserDefineObject> items, OnUpdateItemInterface onUpdateItemInterface) {
+        mItemsShown = 0;
         mTitleView = titleView;
         mObjects = items;
         mCallbacks = onUpdateItemInterface;
@@ -100,8 +99,8 @@ public class MoreDetailLayout extends LinearLayout {
             mListContainer.addView(view);
             mItemsShown++;
 
-            // if the items displayed is a multiple of MIN_DISPLAY
-            if (mItemsShown % MIN_DISPLAY == 0)
+            // if the items displayed is a multiple of 3
+            if (mItemsShown % 3 == 0)
                 break;
         }
 

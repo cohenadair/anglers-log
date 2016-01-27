@@ -436,4 +436,56 @@ public class LogbookTest {
         ArrayList<UserDefineObject> trips = Logbook.getTrips();
         assertTrue(trips.size() == 2);
     }
+
+    @Test
+    public void testCatchQuantities() {
+        Species aSpecies = new Species("Steelhead");
+        Logbook.addSpecies(aSpecies);
+
+        BaitCategory aBaitCategory = new BaitCategory("Bugger");
+        Logbook.addBaitCategory(aBaitCategory);
+
+        Bait aBait = new Bait("Olive", aBaitCategory);
+        Logbook.addBait(aBait);
+
+        Location aLocation = new Location("Port Albert");
+        FishingSpot aFishingSpot = new FishingSpot("Baskets");
+        aLocation.addFishingSpot(aFishingSpot);
+        Logbook.addLocation(aLocation);
+
+        Catch aCatch = new Catch(new Date());
+        aCatch.setSpecies(aSpecies);
+        aCatch.setBait(aBait);
+        aCatch.setFishingSpot(aFishingSpot);
+        aCatch.setQuantity(50);
+        Logbook.addCatch(aCatch);
+
+        ArrayList<Stats.Quantity> baitQuantities = Logbook.getBaitUsedCount();
+        assertTrue(baitQuantities.size() == 1);
+        assertTrue(baitQuantities.get(0).getQuantity() == 50);
+
+        ArrayList<Stats.Quantity> speciesQuantities = Logbook.getSpeciesCaughtCount();
+        assertTrue(speciesQuantities.size() == 1);
+        assertTrue(speciesQuantities.get(0).getQuantity() == 50);
+
+        ArrayList<Stats.Quantity> locationQuantities = Logbook.getLocationCatchCount();
+        assertTrue(locationQuantities.size() == 1);
+        assertTrue(locationQuantities.get(0).getQuantity() == 50);
+
+        aCatch = new Catch(new Date(10000000));
+        aCatch.setSpecies(aSpecies);
+        aCatch.setBait(aBait);
+        aCatch.setFishingSpot(aFishingSpot);
+        aCatch.setQuantity(20);
+        Logbook.addCatch(aCatch);
+
+        baitQuantities = Logbook.getBaitUsedCount();
+        assertTrue(baitQuantities.get(0).getQuantity() == 70);
+
+        speciesQuantities = Logbook.getSpeciesCaughtCount();
+        assertTrue(speciesQuantities.get(0).getQuantity() == 70);
+
+        locationQuantities = Logbook.getLocationCatchCount();
+        assertTrue(locationQuantities.get(0).getQuantity() == 70);
+    }
 }

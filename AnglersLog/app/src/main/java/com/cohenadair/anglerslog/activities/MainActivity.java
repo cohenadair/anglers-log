@@ -7,6 +7,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.fragments.DetailFragment;
@@ -14,6 +15,7 @@ import com.cohenadair.anglerslog.interfaces.OnClickInterface;
 import com.cohenadair.anglerslog.utilities.LayoutSpecManager;
 import com.cohenadair.anglerslog.utilities.LogbookPreferences;
 import com.cohenadair.anglerslog.utilities.NavigationManager;
+import com.cohenadair.anglerslog.utilities.Utils;
 
 import java.util.UUID;
 
@@ -86,9 +88,15 @@ public class MainActivity extends LayoutSpecActivity {
         // add left panel
         transaction.replace(R.id.master_container, getMasterFragment(), getMasterTag());
 
+        boolean hasRightPanel = isTwoPane() && (getDetailFragment() != null);
+
         // add the right panel if needed
-        if (isTwoPane())
+        if (hasRightPanel)
             transaction.replace(R.id.detail_container, getDetailFragment(), getDetailTag());
+
+        // hide/show right panel if needed
+        LinearLayout detailContainer = (LinearLayout)findViewById(R.id.detail_container);
+        Utils.toggleVisibility(detailContainer, hasRightPanel);
 
         // commit changes
         transaction.commit();

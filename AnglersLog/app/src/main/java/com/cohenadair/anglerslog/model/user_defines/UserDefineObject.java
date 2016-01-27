@@ -78,6 +78,10 @@ public class UserDefineObject {
     }
     //endregion
 
+    public String getDisplayName() {
+        return mName;
+    }
+
     public String idAsString() {
         return mId.toString();
     }

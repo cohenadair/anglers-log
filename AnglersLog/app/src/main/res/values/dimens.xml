@@ -6,6 +6,7 @@
     <dimen name="margin_half">8dp</dimen>
     <dimen name="margin_quarter">4dp</dimen>
     <dimen name="margin_three_quarters">12dp</dimen>
+    <dimen name="margin_large">24dp</dimen>
 
     <dimen name="navigation_drawer_width">320dp</dimen>
 

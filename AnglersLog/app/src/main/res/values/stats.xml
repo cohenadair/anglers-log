@@ -1,0 +1,4 @@
+<resources>
+    <item name="stats_layout" type="layout">@layout/fragment_stats</item>
+    <bool name="is_wide">false</bool>
+</resources>

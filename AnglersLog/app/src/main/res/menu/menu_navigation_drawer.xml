@@ -27,20 +27,21 @@
 
     </group>
 
-    <!--
+
     <group
         android:id="@+id/group_extras"
         android:checkableBehavior="single">
-
-        <item
-            android:id="@+id/nav_photos"
-            android:title="@string/drawer_photos" />
-
+    <!--
+    <item
+        android:id="@+id/nav_photos"
+        android:title="@string/drawer_photos" />
+    -->
         <item
             android:id="@+id/nav_stats"
-            android:title="@string/drawer_stats" />
+            android:title="@string/drawer_stats"
+            android:icon="@drawable/ic_stats"/>
     </group>
-    -->
+
     <!--
     <group
         android:id="@+id/group_other"

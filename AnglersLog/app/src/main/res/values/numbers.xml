@@ -11,7 +11,7 @@
     <item name="max_photo_size" format="integer" type="integer">1024</item>
 
     <!-- Font Sizes -->
-    <item name="font_large" type="dimen">22sp</item>
+    <item name="font_large" type="dimen">24sp</item>
     <item name="font_medium" type="dimen">18sp</item>
     <item name="font_small" type="dimen">14sp</item>
 

@@ -13,9 +13,11 @@
 
     <string name="error">Error</string>
     <string name="photos">Photos</string>
+    <string name="species_caught">Species Caught</string>
     <string name="species">Species</string>
     <string name="catch_string">Catch</string>
     <string name="bait">Bait</string>
+    <string name="baits_used">Baits Used</string>
     <string name="clarity">Clarity</string>
     <string name="trip">Trip</string>
     <string name="anglers">Anglers</string>
@@ -46,6 +48,7 @@
     <string name="live">Live</string>
     <string name="real">Real</string>
     <string name="location">Location</string>
+    <string name="location_success">Location Success</string>
     <string name="fishing_spot">Fishing Spot</string>
     <string name="fishing_spots">Fishing Spots</string>
     <string name="properties">Properties</string>
@@ -73,6 +76,7 @@
     <string name="zero">0</string>
     <string name="to">to</string>
     <string name="show_more">Show more</string>
+    <string name="more">More</string>
 
     <string name="drawer_open">Open Navigation Drawer</string>
     <string name="drawer_close">Close Navigation Drawer</string>
