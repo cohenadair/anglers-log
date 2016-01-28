@@ -48,7 +48,7 @@ public class TextInputView extends LinearLayout {
                 mEditText.setHint(arr.getString(R.styleable.TextInputView_editTextHint));
 
                 if (arr.getBoolean(R.styleable.TextInputView_numbersOnly, false))
-                    mEditText.setInputType(InputType.TYPE_CLASS_NUMBER);
+                    mEditText.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
             } finally {
                 arr.recycle(); // required after using TypedArray
             }

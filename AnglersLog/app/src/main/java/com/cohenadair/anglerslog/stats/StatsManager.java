@@ -8,7 +8,6 @@ import android.support.v4.app.Fragment;
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.model.Logbook;
 import com.cohenadair.anglerslog.model.Stats;
-import com.cohenadair.anglerslog.model.user_defines.Catch;
 
 import java.util.ArrayList;
 
@@ -80,7 +79,6 @@ public class StatsManager {
     private static StatsSpec getLongestStatsSpec(Context context) {
         return new StatsSpec(
                 context.getResources().getString(R.string.longest_catches),
-                Logbook.getLongestCatch(),
                 BigCatchFragment.newInstance(STATS_LONGEST)
         );
     }
@@ -88,9 +86,8 @@ public class StatsManager {
     @NonNull
     private static StatsSpec getHeaviestStatsSpec(Context context) {
         return new StatsSpec(
-                context.getResources().getString(R.string.longest_catches),
-                Logbook.getHeaviestCatch(),
-                BigCatchFragment.newInstance(STATS_LONGEST)
+                context.getResources().getString(R.string.heaviest_catches),
+                BigCatchFragment.newInstance(STATS_HEAVIEST)
         );
     }
 
@@ -98,7 +95,6 @@ public class StatsManager {
 
         private String mActivityTitle;
         private ArrayList<Stats.Quantity> mContent;
-        private Catch mBigCatchContent;
         private Fragment mDetailFragment;
 
         public StatsSpec(String activityTitle, ArrayList<Stats.Quantity> content, Fragment detailFragment) {
@@ -107,9 +103,8 @@ public class StatsManager {
             mDetailFragment = detailFragment;
         }
 
-        public StatsSpec(String activityTitle, Catch content, Fragment detailFragment) {
+        public StatsSpec(String activityTitle, Fragment detailFragment) {
             mActivityTitle = activityTitle;
-            mBigCatchContent = content;
             mDetailFragment = detailFragment;
         }
 
@@ -119,10 +114,6 @@ public class StatsManager {
 
         public ArrayList<Stats.Quantity> getContent() {
             return mContent;
-        }
-
-        public Catch getBigCatchContent() {
-            return mBigCatchContent;
         }
 
         public Fragment getDetailFragment() {

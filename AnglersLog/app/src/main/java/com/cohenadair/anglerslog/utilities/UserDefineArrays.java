@@ -59,6 +59,14 @@ public class UserDefineArrays {
         return false;
     }
 
+    public static int indexOfName(ArrayList<UserDefineObject> arr, String name) {
+        for (int i = 0; i < arr.size(); i++)
+            if (arr.get(i).getName().equals(name))
+                return i;
+
+        return -1;
+    }
+
     public static ArrayList<UserDefineObject> removeObjectNamed(ArrayList<UserDefineObject> arr, String name) {
         Iterator<UserDefineObject> it = arr.iterator();
         while (it.hasNext()) {
@@ -77,6 +85,13 @@ public class UserDefineArrays {
         for (UserDefineObject object : arr)
             ids.add(object.idAsString());
         return ids;
+    }
+
+    public static ArrayList<String> asNameStringArray(ArrayList<UserDefineObject> arr) {
+        ArrayList<String> names = new ArrayList<>();
+        for (UserDefineObject object : arr)
+            names.add(object.getName());
+        return names;
     }
 
     public static ArrayList<UserDefineObject> asObjectArray(ArrayList<String> arr, OnConvertInterface callbacks) {
