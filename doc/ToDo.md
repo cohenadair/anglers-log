@@ -9,7 +9,7 @@ Anglers' Log To-Do List
   * ~~Add `ListView` of catches.~~
 * ~~Add Trips~~
 * Integrate fish caught into Fishing Spot pins.
-* ~~ Add Statistics ~~
+* ~~Add Statistics~~
 * Add Gallery
 * Add Settings (http://developer.android.com/guide/topics/ui/settings.html)
   * Backup (import/export)
