@@ -84,6 +84,7 @@ public abstract class ManageContentFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mNewObject = null;
+        mOldObject = null;
     }
 
     @Override
@@ -129,7 +130,7 @@ public abstract class ManageContentFragment extends Fragment {
      * @return True if the names are different, false otherwise.
      */
     public boolean isNameDifferent() {
-        return !(mNewObject == null || mOldObject == null) && !mNewObject.getName().equals(mOldObject.getName());
+        return !isEditing() || (!(mNewObject == null || mOldObject == null) && !mNewObject.getName().equals(mOldObject.getName()));
     }
 
     public void onDismiss() {

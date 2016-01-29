@@ -1,6 +1,9 @@
 package com.cohenadair.anglerslog.catches;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.location.Location;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -404,7 +407,16 @@ public class ManageCatchFragment extends ManageContentFragment {
             return;
         }
 
-        Location loc = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+        Utils.requestLocationServices(getContext());
+
+        Location loc = null;
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (getContext().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED)
+                loc = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+        } else
+            loc = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+
         if (loc == null) {
             Utils.showToast(getContext(), R.string.error_user_location);
             return;

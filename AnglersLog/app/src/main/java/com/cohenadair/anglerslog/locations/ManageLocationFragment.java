@@ -60,6 +60,17 @@ public class ManageLocationFragment extends ManageContentFragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        mNameView.addOnInputTextChangedListener(Utils.onTextChangedListener(new Utils.OnTextChangedListener() {
+            @Override
+            public void onTextChanged(String newText) {
+                getNewLocation().setName(newText);
+            }
+        }));
+    }
+
+    @Override
     public ManageObjectSpec getManageObjectSpec() {
         return new ManageObjectSpec(R.string.error_location_add, R.string.success_location_add, R.string.error_location_edit, R.string.success_location_edit, new ManageInterface() {
             @Override
@@ -151,12 +162,6 @@ public class ManageLocationFragment extends ManageContentFragment {
 
     private void initNameView(View view) {
         mNameView = (TextInputView)view.findViewById(R.id.name_view);
-        mNameView.addOnInputTextChangedListener(Utils.onTextChangedListener(new Utils.OnTextChangedListener() {
-            @Override
-            public void onTextChanged(String newText) {
-                getNewLocation().setName(newText);
-            }
-        }));
     }
 
     private void initAddFishingSpotButton(View view) {

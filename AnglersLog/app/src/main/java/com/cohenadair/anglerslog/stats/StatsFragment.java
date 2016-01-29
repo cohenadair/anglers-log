@@ -48,38 +48,46 @@ public class StatsFragment extends MasterFragment {
 
     @Override
     public void update(LayoutSpecActivity activity) {
-        mSpeciesCard.initWithList(
-                activity.getResources().getString(R.string.species_caught),
-                Logbook.getSpeciesCaughtCount(),
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        startCardDetailActivity(StatsManager.STATS_SPECIES);
-                    }
-                }
-        );
+        boolean hasCatches = Logbook.getCatchCount() > 0;
 
-        mBaitsCard.initWithList(
-                activity.getResources().getString(R.string.baits_used),
-                Logbook.getBaitUsedCount(),
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        startCardDetailActivity(StatsManager.STATS_BAITS);
-                    }
-                }
-        );
+        Utils.toggleVisibility(mSpeciesCard, hasCatches);
+        Utils.toggleVisibility(mBaitsCard, hasCatches);
+        Utils.toggleVisibility(mLocationsCard, hasCatches);
 
-        mLocationsCard.initWithList(
-                activity.getResources().getString(R.string.location_success),
-                Logbook.getLocationCatchCount(),
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        startCardDetailActivity(StatsManager.STATS_LOCATIONS);
+        if (hasCatches) {
+            mSpeciesCard.initWithList(
+                    activity.getResources().getString(R.string.species_caught),
+                    Logbook.getSpeciesCaughtCount(),
+                    new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            startCardDetailActivity(StatsManager.STATS_SPECIES);
+                        }
                     }
-                }
-        );
+            );
+
+            mBaitsCard.initWithList(
+                    activity.getResources().getString(R.string.baits_used),
+                    Logbook.getBaitUsedCount(),
+                    new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            startCardDetailActivity(StatsManager.STATS_BAITS);
+                        }
+                    }
+            );
+
+            mLocationsCard.initWithList(
+                    activity.getResources().getString(R.string.location_success),
+                    Logbook.getLocationCatchCount(),
+                    new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            startCardDetailActivity(StatsManager.STATS_LOCATIONS);
+                        }
+                    }
+            );
+        }
 
         updateBigCatchCard(R.string.longest_catch, mLongestCatchCard, Logbook.getLongestCatch(), StatsManager.STATS_LONGEST);
         updateBigCatchCard(R.string.heaviest_catch, mHeaviestCatchCard, Logbook.getHeaviestCatch(), StatsManager.STATS_HEAVIEST);
