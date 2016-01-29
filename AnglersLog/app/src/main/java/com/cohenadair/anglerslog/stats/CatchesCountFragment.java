@@ -77,6 +77,7 @@ public class CatchesCountFragment extends Fragment {
 
     private void initPieChart(View view) {
         mPieChartView = (PieChartView)view.findViewById(R.id.pie_chart);
+        Utils.toggleVisibility(mPieChartView, getTotalCatches() > 0);
 
         List<SliceValue> values = new ArrayList<>();
 
@@ -163,15 +164,17 @@ public class CatchesCountFragment extends Fragment {
 
     private void initTotalCatchesView(View view) {
         PropertyDetailView totalCatches = (PropertyDetailView)view.findViewById(R.id.total_catches_view);
-
-        int total = 0;
-        for (Stats.Quantity item : mStatsSpec.getContent())
-            total += item.getQuantity();
-
-        totalCatches.setDetail(Integer.toString(total));
+        totalCatches.setDetail(Integer.toString(getTotalCatches()));
     }
 
     private int fontSizeAsDp(int resId) {
         return (int)(getResources().getDimensionPixelOffset(resId) / getResources().getDisplayMetrics().density);
+    }
+
+    private int getTotalCatches() {
+        int total = 0;
+        for (Stats.Quantity item : mStatsSpec.getContent())
+            total += item.getQuantity();
+        return total;
     }
 }

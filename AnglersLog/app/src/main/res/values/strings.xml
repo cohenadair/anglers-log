@@ -21,8 +21,8 @@
     <string name="heaviest_catch">Heaviest Catch</string>
     <string name="longest_catches">Longest Catches</string>
     <string name="heaviest_catches">Heaviest Catches</string>
-    <string name="no_recorded_length">There are no catches with recorded lengths for this species.</string>
-    <string name="no_recorded_weight">There are no catches with recorded weights for this species.</string>
+    <string name="no_recorded_length">There are no catches with recorded lengths.</string>
+    <string name="no_recorded_weight">There are no catches with recorded weights.</string>
     <string name="bait">Bait</string>
     <string name="baits_used">Baits Used</string>
     <string name="bait_stats">Bait Statistics</string>

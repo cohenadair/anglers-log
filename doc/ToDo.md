@@ -24,6 +24,7 @@ Anglers' Log To-Do List
 * #AnglersLogApp Instagram
 
 ### Features
+* No X views
 * View all locations on a single map
 * Sharing (Trips, Catches, Photos)
 * Importing/exporting (JSON)

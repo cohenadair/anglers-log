@@ -110,7 +110,11 @@ public class StatsFragment extends MasterFragment {
         if (aCatch == null)
             return;
 
-        String str = " - " + ((statsId == StatsManager.STATS_LONGEST) ? aCatch.getLengthAsString(getContext()) : aCatch.getWeightAsString(getContext()));
+        // if the user has no recorded lengths or weights, a random catch is chosen
+        // the dash should only be shown for catches that have data
+        String str = ((statsId == StatsManager.STATS_LONGEST) ? aCatch.getLengthAsString(getContext()) : aCatch.getWeightAsString(getContext()));
+        if (!str.isEmpty())
+            str = " - " + str;
 
         card.initWithMoreDetailView(
                 getContext().getResources().getString(titleId) + str,

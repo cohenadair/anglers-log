@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.activities.DefaultActivity;
@@ -64,13 +65,15 @@ public class BigCatchFragment extends Fragment {
     }
 
     private void initContainer(View view) {
+        boolean viewAdded = false;
+
         LinearLayout container = (LinearLayout)view.findViewById(R.id.container);
         ArrayList<UserDefineObject> species = Logbook.getSpecies();
 
         for (UserDefineObject obj : species) {
             final Catch biggest = getCatch((Species)obj);
 
-            if (hasNoRecord(biggest))
+            if (biggest == null || hasNoRecord(biggest))
                 continue;
 
             MoreDetailView v = new MoreDetailView(getContext());
@@ -89,7 +92,12 @@ public class BigCatchFragment extends Fragment {
             });
 
             container.addView(v);
+            viewAdded = true;
         }
+
+        TextView noInfoView = (TextView)view.findViewById(R.id.no_info_text_view);
+        noInfoView.setText(mIsLongest ? R.string.no_recorded_length : R.string.no_recorded_weight);
+        Utils.toggleVisibility(noInfoView, !viewAdded);
     }
 
     private String getMeasurementString(Catch aCatch) {
