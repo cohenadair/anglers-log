@@ -134,9 +134,7 @@ public abstract class ManageContentFragment extends Fragment {
     }
 
     public void onDismiss() {
-        // only clean photos if this class implements a SelectPhotosView
-        if (mSelectPhotosView != null)
-            PhotoUtils.cleanPhotosAsync();
+
     }
 
     /**
