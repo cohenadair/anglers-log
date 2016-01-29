@@ -5,12 +5,11 @@ Anglers' Log To-Do List
 * ~~Add missing attributes~~
 
 ### Pages
-* Single Location
-  * Integrate fish caught into Fishing Spot pins
-* Single Bait
-  * Add `ListView` of catches.
+* ~~Single Bait~~
+  * ~~Add `ListView` of catches.~~
 * ~~Add Trips~~
-* Add Statistics
+* Integrate fish caught into Fishing Spot pins.
+* ~~ Add Statistics ~~
 * Add Gallery
 * Add Settings (http://developer.android.com/guide/topics/ui/settings.html)
   * Backup (import/export)
