@@ -1,12 +1,44 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Catches count fragment."/>
+    <lecho.lib.hellocharts.view.PieChartView
+        android:id="@+id/pie_chart"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.75"/>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.25">
+
+        <!-- Totals -->
+        <TextView
+            style="?android:listSeparatorTextViewStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_default"
+            android:text="@string/totals"/>
+
+        <!-- Total Species -->
+        <com.cohenadair.anglerslog.views.PropertyDetailView
+            android:id="@+id/total_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            custom:propertyName="@string/species"/>
+
+        <!-- Total Catches -->
+        <com.cohenadair.anglerslog.views.PropertyDetailView
+            android:id="@+id/total_catches_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            custom:propertyName="@string/drawer_catches"/>
+
+    </LinearLayout>
 
 </LinearLayout>

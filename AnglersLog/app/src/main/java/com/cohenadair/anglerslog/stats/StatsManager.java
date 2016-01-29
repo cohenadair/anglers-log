@@ -52,6 +52,7 @@ public class StatsManager {
     private static StatsSpec getSpeciesStatsSpec(Context context) {
         return new StatsSpec(
                 context.getResources().getString(R.string.species_stats),
+                context.getResources().getString(R.string.species),
                 Logbook.getSpeciesCaughtCount(),
                 CatchesCountFragment.newInstance(STATS_SPECIES)
         );
@@ -61,6 +62,7 @@ public class StatsManager {
     private static StatsSpec getBaitsStatsSpec(Context context) {
         return new StatsSpec(
                 context.getResources().getString(R.string.bait_stats),
+                context.getResources().getString(R.string.drawer_baits),
                 Logbook.getBaitUsedCount(),
                 CatchesCountFragment.newInstance(STATS_BAITS)
         );
@@ -70,6 +72,7 @@ public class StatsManager {
     private static StatsSpec getLocationsStatsSpec(Context context) {
         return new StatsSpec(
                 context.getResources().getString(R.string.location_stats),
+                context.getResources().getString(R.string.drawer_locations),
                 Logbook.getLocationCatchCount(),
                 CatchesCountFragment.newInstance(STATS_LOCATIONS)
         );
@@ -94,11 +97,13 @@ public class StatsManager {
     public static class StatsSpec {
 
         private String mActivityTitle;
+        private String mUserDefineObjectName;
         private ArrayList<Stats.Quantity> mContent;
         private Fragment mDetailFragment;
 
-        public StatsSpec(String activityTitle, ArrayList<Stats.Quantity> content, Fragment detailFragment) {
+        public StatsSpec(String activityTitle, String userDefineObjectName, ArrayList<Stats.Quantity> content, Fragment detailFragment) {
             mActivityTitle = activityTitle;
+            mUserDefineObjectName = userDefineObjectName;
             mContent = content;
             mDetailFragment = detailFragment;
         }
@@ -110,6 +115,10 @@ public class StatsManager {
 
         public String getActivityTitle() {
             return mActivityTitle;
+        }
+
+        public String getUserDefineObjectName() {
+            return mUserDefineObjectName;
         }
 
         public ArrayList<Stats.Quantity> getContent() {
