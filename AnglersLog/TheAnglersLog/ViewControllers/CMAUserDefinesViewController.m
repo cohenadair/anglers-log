@@ -309,7 +309,12 @@
         [[self journal] removeUserDefine:self.userDefine.name objectNamed:cell.textLabel.text];
         
         // delete from table
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+        @try {
+            [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+        }
+        @catch (NSException *exception) {
+            [CMAAlerts errorAlert:[NSString stringWithFormat:@"Error %@. Failed to delete from %@. Go to Settings > Frequently Asked Questions for more information.", ERROR_USER_DEFINE_DELETE, self.userDefine.name] presentationViewController:self];
+        }
         
         if ([tableView numberOfRowsInSection:0] == 0) {
             [self toggleEditMode:YES];
