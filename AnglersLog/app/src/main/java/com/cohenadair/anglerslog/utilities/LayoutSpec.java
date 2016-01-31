@@ -171,6 +171,9 @@ public class LayoutSpec {
      * to the associated data sets.
      */
     public void updateViews(LayoutSpecActivity activity) {
+        if (mListener == null || mDetailFragment == null)
+            return;
+
         mMasterAdapter = mListener.onGetMasterAdapter();
         mMasterAdapter.notifyDataSetChanged();
 
