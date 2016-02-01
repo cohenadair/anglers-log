@@ -8,18 +8,16 @@ Anglers' Log To-Do List
 * ~~Single Bait~~
   * ~~Add `ListView` of catches.~~
 * ~~Add Trips~~
-* Integrate fish caught into Fishing Spot pins.
 * ~~Add Statistics~~
-* Add Gallery
+* ~~Add Gallery~~
 * Add Settings (http://developer.android.com/guide/topics/ui/settings.html)
   * Backup (import/export)
+  * Units
 * Add About
   * Origins (NMU)
   * Google Maps agreement
   * Icons8
 * Add Help & Feedback (Link to website)
-
-### Navigation Links
 * #AnglersLogApp Twitter
 * #AnglersLogApp Instagram
 
@@ -31,6 +29,10 @@ Anglers' Log To-Do List
 * Instabug (via toolbar item)
 * Sorting, filtering user define lists.
 * Crittercism for crash logs.
+* Integrate fish caught into Fishing Spot pins.
+* Display units:
+  * Weather - add checkbox to form.
+  * Imperial, metric.
 
 ### Extra
 * Full page add fishing spot for phones (dialog for tablets)
