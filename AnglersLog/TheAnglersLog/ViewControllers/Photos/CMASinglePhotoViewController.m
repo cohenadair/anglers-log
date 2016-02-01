@@ -102,6 +102,9 @@
 #pragma mark - Events
 
 - (IBAction)clickActionButton:(UIBarButtonItem *)sender {
+    if ([[self.collectionView indexPathsForVisibleItems] count] <= 0)
+        return;
+    
     NSIndexPath *selectedIndexPath = [[self.collectionView indexPathsForVisibleItems] objectAtIndex:0];
     CMAImage *selectedImage = [self.imagesArray objectAtIndex:selectedIndexPath.item];
     [self shareImage:selectedImage];

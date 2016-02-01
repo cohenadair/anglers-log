@@ -236,6 +236,9 @@
 }
 
 - (NSDate *)earliestEntryDate {
+    if (self.journal.entryCount <= 0)
+        return [NSDate new];
+    
     CMASortOrder oldOrder = [self.journal entrySortOrder];
     
     [self.journal sortEntriesBy:CMAEntrySortMethodDate order:CMASortOrderAscending];

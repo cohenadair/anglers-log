@@ -69,7 +69,11 @@
 #pragma mark - View Management
 
 - (void)initNoStatsView {
-    self.noStatsView = (CMANoXView *)[[[NSBundle mainBundle] loadNibNamed:@"CMANoXView" owner:self options:nil] objectAtIndex:0];
+    NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"CMANoXView" owner:self options:nil];
+    if ([nib count] <= 0)
+        return;
+    
+    self.noStatsView = (CMANoXView *)[nib objectAtIndex:0];
     
     self.noStatsView.imageView.image = [UIImage imageNamed:@"stats_large.png"];
     self.noStatsView.titleView.text = @"Entries.";
@@ -319,7 +323,11 @@
 }
 
 - (void)initChartCenterViewAtCenter:(CGPoint)center pieChartRadius:(NSInteger)radius {
-    self.pieChartCenterView = (CMACircleView *)[[[NSBundle mainBundle] loadNibNamed:@"CMACircleView" owner:self options:nil] objectAtIndex:0];
+    NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"CMACircleView" owner:self options:nil];
+    if ([nib count] <= 0)
+        return;
+    
+    self.pieChartCenterView = (CMACircleView *)[nib objectAtIndex:0];
     [self.pieChartCenterView setFrame:CGRectMake(0, 0, radius * 2 - 50, radius * 2 - 50)];
     [self.pieChartCenterView setCenter:center];
     [self.pieChartCenterView.layer setCornerRadius:self.pieChartCenterView.frame.size.width / 2];

@@ -154,7 +154,8 @@ NSString *const kNotSelectedString = @"Not Selected";
     
     // set weather data view (needs to be called before [self initializeTableForEditing], below)
     NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"CMAWeatherDataView" owner:self options:nil];
-    self.weatherDataView = (CMAWeatherDataView *)[nib objectAtIndex:0];
+    if ([nib count] > 0)
+        self.weatherDataView = (CMAWeatherDataView *)[nib objectAtIndex:0];
     [self.weatherDataView setFrame:CGRectMake(0, 0, 0, TABLE_HEIGHT_WEATHER_CELL)];
     [self.weatherDataView setAlpha:0.0];
     

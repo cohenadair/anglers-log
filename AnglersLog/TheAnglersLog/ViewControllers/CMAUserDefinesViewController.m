@@ -55,7 +55,11 @@
 #pragma mark - View Management
 
 - (void)initNoXView {
-    self.noXView = (CMANoXView *)[[[NSBundle mainBundle] loadNibNamed:@"CMANoXView" owner:self options:nil] objectAtIndex:0];
+    NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"CMANoXView" owner:self options:nil];
+    if (nib.count <= 0)
+        return;
+    
+    self.noXView = (CMANoXView *)[nib objectAtIndex:0];
     
     NSString *imageName = @"";
     

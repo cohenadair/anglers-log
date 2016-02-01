@@ -68,7 +68,11 @@
 #pragma mark - View Management
 
 - (void)initNoEntriesView {
-    self.noEntriesView = (CMANoXView *)[[[NSBundle mainBundle] loadNibNamed:@"CMANoXView" owner:self options:nil] objectAtIndex:0];
+    NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"CMANoXView" owner:self options:nil];
+    if (nib.count <= 0)
+        return;
+    
+    self.noEntriesView = (CMANoXView *)[nib objectAtIndex:0];
     
     self.noEntriesView.imageView.image = [UIImage imageNamed:@"entries_large.png"];
     self.noEntriesView.titleView.text = @"Entries.";

@@ -299,17 +299,19 @@
     // weather data cell
     if ([p.reuseIdentifier isEqualToString:@"weatherDataCell"]) {
         NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"CMAWeatherDataView" owner:self options:nil];
-        CMAWeatherDataView *view = (CMAWeatherDataView *)[nib objectAtIndex:0];
-        [view setFrame:CGRectMake(0, kWeatherCellTitlePadding, 0, TABLE_HEIGHT_WEATHER_CELL)];
-        [view setBackgroundColor:[UIColor redColor]];
-        
-        [view.weatherImageView setImage:[self.entry.weatherData imageURLAsUIImage]];
-        [view.temperatureLabel setText:[self.entry.weatherData temperatureAsStringWithUnits:[[self journal] temperatureUnitsAsString:YES]]];
-        [view.windSpeedLabel setText:[self.entry.weatherData windSpeedAsStringWithUnits:[[self journal] speedUnitsAsString:YES]]];
-        [view.skyConditionsLabel setText:[self.entry.weatherData skyConditionsAsString]];
-        
-        [cell addSubview:view];
-    } else {    
+        if ([nib count] > 0) {
+            CMAWeatherDataView *view = (CMAWeatherDataView *)[nib objectAtIndex:0];
+            [view setFrame:CGRectMake(0, kWeatherCellTitlePadding, 0, TABLE_HEIGHT_WEATHER_CELL)];
+            [view setBackgroundColor:[UIColor redColor]];
+            
+            [view.weatherImageView setImage:[self.entry.weatherData imageURLAsUIImage]];
+            [view.temperatureLabel setText:[self.entry.weatherData temperatureAsStringWithUnits:[[self journal] temperatureUnitsAsString:YES]]];
+            [view.windSpeedLabel setText:[self.entry.weatherData windSpeedAsStringWithUnits:[[self journal] speedUnitsAsString:YES]]];
+            [view.skyConditionsLabel setText:[self.entry.weatherData skyConditionsAsString]];
+            
+            [cell addSubview:view];
+        }
+    } else {
         cell.textLabel.text = p.labelText;
         cell.detailTextLabel.text = p.detailText;
     }

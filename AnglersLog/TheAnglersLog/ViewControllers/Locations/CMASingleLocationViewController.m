@@ -186,7 +186,8 @@
     
     // create UIImage of self.mapView
     CMAFishingSpot *tempFishingSpot = self.currentFishingSpot;
-    [self.mapView deselectAnnotation:[[self.mapView selectedAnnotations] objectAtIndex:0] animated:NO];
+    if ([[self.mapView selectedAnnotations] count] > 0)
+        [self.mapView deselectAnnotation:[[self.mapView selectedAnnotations] objectAtIndex:0] animated:NO];
     
     UIGraphicsBeginImageContextWithOptions(self.mapView.bounds.size, NO, [UIScreen mainScreen].scale);
     
@@ -278,6 +279,9 @@
 
 // Completely disables the default UITapGestureRecogizer in mapView.
 - (void)disableTapRecognizerForMapView:(MKMapView *)mapView {
+    if ([self.mapView.subviews count] <= 0)
+        return;
+    
     NSArray *a = [[self.mapView.subviews objectAtIndex:0] gestureRecognizers];
     
     for (id gesture in a)

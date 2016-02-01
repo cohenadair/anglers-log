@@ -47,7 +47,11 @@
 #pragma mark - View Management
 
 - (void)initNoImagesView {
-    self.noImagesView = (CMANoXView *)[[[NSBundle mainBundle] loadNibNamed:@"CMANoXView" owner:self options:nil] objectAtIndex:0];
+    NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"CMANoXView" owner:self options:nil];
+    if (nib.count <= 0)
+        return;
+    
+    self.noImagesView = (CMANoXView *)[nib objectAtIndex:0];
     
     self.noImagesView.imageView.image = [UIImage imageNamed:@"photos_large.png"];
     self.noImagesView.titleView.text = @"Entries with photos.";

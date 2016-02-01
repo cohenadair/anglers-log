@@ -54,7 +54,11 @@
 #pragma mark - View Management
 
 - (void)initNoBaitView {
-    self.noBaitsView = (CMANoXView *)[[[NSBundle mainBundle] loadNibNamed:@"CMANoXView" owner:self options:nil] objectAtIndex:0];
+    NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"CMANoXView" owner:self options:nil];
+    if (nib.count <= 0)
+        return;
+    
+    self.noBaitsView = (CMANoXView *)[nib objectAtIndex:0];
     
     self.noBaitsView.imageView.image = [UIImage imageNamed:@"baits_large.png"];
     self.noBaitsView.titleView.text = @"Baits.";
