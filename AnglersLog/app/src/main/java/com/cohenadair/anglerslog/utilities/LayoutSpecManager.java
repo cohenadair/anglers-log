@@ -14,6 +14,7 @@ import com.cohenadair.anglerslog.catches.CatchListManager;
 import com.cohenadair.anglerslog.catches.ManageCatchFragment;
 import com.cohenadair.anglerslog.fragments.DetailFragment;
 import com.cohenadair.anglerslog.fragments.MyListFragment;
+import com.cohenadair.anglerslog.gallery.GalleryFragment;
 import com.cohenadair.anglerslog.interfaces.OnClickInterface;
 import com.cohenadair.anglerslog.locations.LocationFragment;
 import com.cohenadair.anglerslog.locations.LocationListManager;
@@ -58,6 +59,7 @@ public class LayoutSpecManager {
     public static final int LAYOUT_BAITS = R.id.nav_baits;
     public static final int LAYOUT_TRIPS = R.id.nav_trips;
     public static final int LAYOUT_STATS = R.id.nav_stats;
+    public static final int LAYOUT_GALLERY = R.id.nav_gallery;
 
     //region Layout Spec Definitions
     @Nullable
@@ -79,6 +81,9 @@ public class LayoutSpecManager {
 
             case LAYOUT_STATS:
                 return getStatsLayoutSpec(layoutSpecContext);
+
+            case LAYOUT_GALLERY:
+                return getGalleryLayoutSpec(layoutSpecContext);
 
             default:
                 return getCatchesLayoutSpec(layoutSpecContext);
@@ -254,6 +259,18 @@ public class LayoutSpecManager {
 
         spec.setId(LAYOUT_STATS);
         spec.setMasterFragment(new StatsFragment());
+
+        return spec;
+    }
+
+    private static LayoutSpec getGalleryLayoutSpec(final LayoutSpecActivity context) {
+        final LayoutSpec spec = new LayoutSpec(
+                context.getResources().getString(R.string.drawer_gallery),
+                context.getResources().getString(R.string.drawer_gallery)
+        );
+
+        spec.setId(LAYOUT_GALLERY);
+        spec.setMasterFragment(new GalleryFragment());
 
         return spec;
     }

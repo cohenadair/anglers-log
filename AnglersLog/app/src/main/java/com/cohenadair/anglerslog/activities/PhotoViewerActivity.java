@@ -1,5 +1,7 @@
 package com.cohenadair.anglerslog.activities;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -20,6 +22,13 @@ public class PhotoViewerActivity extends AppCompatActivity {
     public static final String EXTRA_CURRENT = "extra_current";
 
     private ArrayList<String> mPhotoNames;
+
+    public static Intent getIntent(Context context, ArrayList<String> photos, int position) {
+        Intent intent = new Intent(context, PhotoViewerActivity.class);
+        intent.putStringArrayListExtra(PhotoViewerActivity.EXTRA_NAMES, photos);
+        intent.putExtra(PhotoViewerActivity.EXTRA_CURRENT, position);
+        return intent;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -92,7 +92,7 @@
     <string name="drawer_close">Close Navigation Drawer</string>
     <string name="drawer_catches">Catches</string>
     <string name="drawer_trips">Trips</string>
-    <string name="drawer_photos">Photo Gallery</string>
+    <string name="drawer_gallery">Photo Gallery</string>
     <string name="drawer_locations">Locations</string>
     <string name="drawer_baits">Baits</string>
     <string name="drawer_stats">Statistics</string>

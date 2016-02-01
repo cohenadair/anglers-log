@@ -1,6 +1,5 @@
 package com.cohenadair.anglerslog.catches;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -69,10 +68,7 @@ public class CatchFragment extends DetailFragment {
         mImageScrollView.setInteractionListener(new ImageScrollView.InteractionListener() {
             @Override
             public void onImageClick(int position) {
-                Intent intent = new Intent(getContext(), PhotoViewerActivity.class);
-                intent.putStringArrayListExtra(PhotoViewerActivity.EXTRA_NAMES, mCatchPhotos);
-                intent.putExtra(PhotoViewerActivity.EXTRA_CURRENT, position);
-                startActivity(intent);
+                startActivity(PhotoViewerActivity.getIntent(getContext(), mCatchPhotos, position));
             }
         });
 

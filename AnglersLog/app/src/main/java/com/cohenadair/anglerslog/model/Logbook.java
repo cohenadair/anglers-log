@@ -33,11 +33,11 @@ import com.cohenadair.anglerslog.model.user_defines.WaterClarity;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Random;
 import java.util.UUID;
 
 import static com.cohenadair.anglerslog.database.LogbookSchema.AnglerTable;
 import static com.cohenadair.anglerslog.database.LogbookSchema.BaitCategoryTable;
+import static com.cohenadair.anglerslog.database.LogbookSchema.BaitPhotoTable;
 import static com.cohenadair.anglerslog.database.LogbookSchema.BaitTable;
 import static com.cohenadair.anglerslog.database.LogbookSchema.CatchPhotoTable;
 import static com.cohenadair.anglerslog.database.LogbookSchema.CatchTable;
@@ -107,17 +107,12 @@ public class Logbook {
     //endregion
 
     /**
-     * Gets a random Catch photo to use in the NavigationView.
-     * @return A String representing a random photo name, or null if no photos exist.
+     * Gets all of the user's catch photos.
+     * @return A list of all the catch photo names.
      */
     @Nullable
-    public static String getRandomCatchPhoto() {
-        ArrayList<String> photoNames = QueryHelper.queryPhotos(CatchPhotoTable.NAME, null);
-
-        if (photoNames.size() <= 0)
-            return null;
-
-        return photoNames.get(new Random().nextInt(photoNames.size()));
+    public static ArrayList<String> getAllCatchPhotos() {
+        return QueryHelper.queryPhotos(CatchPhotoTable.NAME, null);
     }
 
     /**
@@ -125,14 +120,19 @@ public class Logbook {
      * instances.
      */
     public static void cleanDatabasePhotos() {
-        // TODO delete photos from BaitPhotoTable
-
         int numDeleted = mDatabase.delete(
                 CatchPhotoTable.NAME,
                 CatchPhotoTable.Columns.USER_DEFINE_ID + " NOT IN(SELECT " + CatchTable.Columns.ID + " FROM " + CatchTable.NAME + ")",
-                null);
+                null
+        );
 
-        Log.i(TAG, "Deleted " + numDeleted + " photos from the database.");
+        numDeleted += mDatabase.delete(
+                BaitPhotoTable.NAME,
+                BaitPhotoTable.Columns.USER_DEFINE_ID + " NOT IN(SELECT " + BaitTable.Columns.ID + " FROM " + BaitTable.NAME + ")",
+                null
+        );
+
+        Log.i(TAG, "Deleted " + numDeleted + " unused photos from the database.");
     }
 
     //region Catch Manipulation

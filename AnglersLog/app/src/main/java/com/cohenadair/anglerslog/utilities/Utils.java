@@ -152,7 +152,7 @@ public class Utils {
      * Checks to see if the user's location services are enabled. If not, it prompts them to enable
      * them.  Method derived from <a href="http://stackoverflow.com/a/10311891/3304388">here</a>.
      */
-    public static void requestLocationServices(final Context context) {
+    public static boolean requestLocationServices(final Context context) {
         LocationManager locationManager = (LocationManager)context.getSystemService(Context.LOCATION_SERVICE);
 
         try {
@@ -168,9 +168,13 @@ public class Utils {
                         })
                         .setNegativeButton(context.getString(R.string.button_cancel), null)
                         .show();
+            else
+                return true;
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        return false;
     }
 
     /**

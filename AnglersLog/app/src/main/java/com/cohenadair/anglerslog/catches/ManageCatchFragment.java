@@ -5,7 +5,6 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -128,7 +127,6 @@ public class ManageCatchFragment extends ManageContentFragment {
     @Override
     public void onResume() {
         super.onResume();
-        Utils.requestLocationServices(getContext());
         initInputListeners();
     }
 
@@ -215,8 +213,7 @@ public class ManageCatchFragment extends ManageContentFragment {
                 .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
                     @Override
                     public void onConnected(Bundle bundle) {
-                        if (!isEditing())
-                            requestWeatherData();
+
                     }
 
                     @Override
@@ -407,7 +404,8 @@ public class ManageCatchFragment extends ManageContentFragment {
             return;
         }
 
-        Utils.requestLocationServices(getContext());
+        if (!Utils.requestLocationServices(getContext()))
+            return;
 
         Location loc = null;
 
@@ -444,7 +442,6 @@ public class ManageCatchFragment extends ManageContentFragment {
         mNotesView.addOnInputTextChangedListener(Utils.onTextChangedListener(new Utils.OnTextChangedListener() {
             @Override
             public void onTextChanged(String newText) {
-                Log.d("TAG", "Notes");
                 getNewCatch().setNotes(newText);
             }
         }));
@@ -452,7 +449,6 @@ public class ManageCatchFragment extends ManageContentFragment {
         mWaterTemperatureView.addOnInputTextChangedListener(Utils.onTextChangedListener(new Utils.OnTextChangedListener() {
             @Override
             public void onTextChanged(String newText) {
-                Log.d("TAG", "Temperature");
                 getNewCatch().setWaterTemperature((int) asFloat(newText, -1));
             }
         }));
@@ -460,7 +456,6 @@ public class ManageCatchFragment extends ManageContentFragment {
         mWaterDepthView.addOnInputTextChangedListener(Utils.onTextChangedListener(new Utils.OnTextChangedListener() {
             @Override
             public void onTextChanged(String newText) {
-                Log.d("TAG", "Depth");
                 getNewCatch().setWaterDepth(asFloat(newText, -1));
             }
         }));
@@ -468,7 +463,6 @@ public class ManageCatchFragment extends ManageContentFragment {
         mWeightView.addOnInputTextChangedListener(Utils.onTextChangedListener(new Utils.OnTextChangedListener() {
             @Override
             public void onTextChanged(String newText) {
-                Log.d("TAG", "Weight");
                 getNewCatch().setWeight(asFloat(newText, -1));
             }
         }));
@@ -476,7 +470,6 @@ public class ManageCatchFragment extends ManageContentFragment {
         mLengthView.addOnInputTextChangedListener(Utils.onTextChangedListener(new Utils.OnTextChangedListener() {
             @Override
             public void onTextChanged(String newText) {
-                Log.d("TAG", "Length");
                 getNewCatch().setLength(asFloat(newText, -1));
             }
         }));
@@ -484,7 +477,6 @@ public class ManageCatchFragment extends ManageContentFragment {
         mQuantityView.addOnInputTextChangedListener(Utils.onTextChangedListener(new Utils.OnTextChangedListener() {
             @Override
             public void onTextChanged(String newText) {
-                Log.d("TAG", "Quantity");
                 getNewCatch().setQuantity((int) asFloat(newText, 1));
             }
         }));
