@@ -35,8 +35,8 @@ Anglers' Log To-Do List
 * Display units:
   * Weather - add checkbox to form.
   * Imperial, metric.
+* Full page add fishing spot for phones (dialog for tablets)
 
 ### Extra
-* Full page add fishing spot for phones (dialog for tablets)
 * Add Android version of website (Android | iOS tabs at top)
 	
