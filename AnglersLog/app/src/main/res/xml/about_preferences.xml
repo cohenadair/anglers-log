@@ -1,0 +1,17 @@
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <Preference
+        android:key="@string/pref_version"
+        android:title="@string/version"
+        android:summary="@string/version_name"/>
+
+    <Preference
+        android:key="@string/pref_google_maps_terms"
+        android:title="@string/google_maps_terms_title"/>
+
+    <Preference
+        android:key="@string/pref_icons8_terms"
+        android:title="@string/icons8_terms_title"/>
+
+</PreferenceScreen>

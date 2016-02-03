@@ -6,7 +6,6 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
-import android.util.Log;
 
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.fragments.DetailFragment;
@@ -63,19 +62,11 @@ public abstract class LayoutSpecActivity extends DefaultActivity implements
      * pointer issue will be found, so it's better to close the dialogs than have the app crash.
      */
     private void closeDialogs() {
-        int c = 0;
         List<Fragment> fragments = getSupportFragmentManager().getFragments();
         if (fragments != null)
-            for (Fragment f : fragments) {
-                Log.d(TAG, "" + f);
-                if (f instanceof DialogFragment) {
-                    c++;
+            for (Fragment f : fragments)
+                if (f instanceof DialogFragment)
                     ((DialogFragment) f).dismiss();
-                }
-
-            }
-
-        Log.d(TAG, "Number of dialogs open: " + c);
     }
 
     public LayoutSpec getLayoutSpec() {

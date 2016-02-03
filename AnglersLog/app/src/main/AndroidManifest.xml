@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest
     package="com.cohenadair.anglerslog"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:versionName="@string/version_name"
+    android:versionCode="1">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-feature android:name="android.hardware.camera2"/>
@@ -29,6 +31,12 @@
 
         <activity
             android:name=".activities.MyListSelectionActivity"
+            android:theme="@style/Theme.Dialog.NoTitle"
+            android:configChanges="orientation|keyboardHidden|screenSize">
+        </activity>
+
+        <activity
+            android:name=".settings.AboutActivity"
             android:theme="@style/Theme.Dialog.NoTitle"
             android:configChanges="orientation|keyboardHidden|screenSize">
         </activity>

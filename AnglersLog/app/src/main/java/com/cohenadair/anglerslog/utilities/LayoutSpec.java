@@ -1,5 +1,8 @@
 package com.cohenadair.anglerslog.utilities;
 
+import android.content.Intent;
+import android.support.v4.app.Fragment;
+
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.activities.LayoutSpecActivity;
 import com.cohenadair.anglerslog.fragments.DetailFragment;
@@ -24,10 +27,11 @@ import java.util.UUID;
  */
 public class LayoutSpec {
 
-    private MasterFragment mMasterFragment;
+    private Fragment mMasterFragment;
     private ListManager.Adapter mMasterAdapter;
     private DetailFragment mDetailFragment;
     private ManageFragment mManageFragment;
+    private Intent mOnClickMenuItemIntent;
 
     private InteractionListener mListener;
     private OnSelectionListener mSelectionListener;
@@ -35,7 +39,6 @@ public class LayoutSpec {
     private String mMasterFragmentTag;
     private String mDetailFragmentTag;
     private String mName;
-    private Class mClass;
 
     private UUID mSelectionId;
     private int id;
@@ -64,6 +67,10 @@ public class LayoutSpec {
         void onFinish(UUID id);
     }
 
+    public LayoutSpec() {
+
+    }
+
     public LayoutSpec(String pluralName, String singularName) {
         mMasterFragmentTag = pluralName;
         mDetailFragmentTag = singularName.toLowerCase();
@@ -84,11 +91,11 @@ public class LayoutSpec {
         mManageFragment.setContentFragment(contentFragment);
     }
 
-    public MasterFragment getMasterFragment() {
+    public Fragment getMasterFragment() {
         return mMasterFragment;
     }
 
-    public void setMasterFragment(MasterFragment masterFragment) {
+    public void setMasterFragment(Fragment masterFragment) {
         mMasterFragment = masterFragment;
 
         if (mListener != null)
@@ -105,6 +112,14 @@ public class LayoutSpec {
 
     public ManageFragment getManageFragment() {
         return mManageFragment;
+    }
+
+    public Intent getOnClickMenuItemIntent() {
+        return mOnClickMenuItemIntent;
+    }
+
+    public void setOnClickMenuItemIntent(Intent onClickMenuItemIntent) {
+        mOnClickMenuItemIntent = onClickMenuItemIntent;
     }
 
     public ListManager.Adapter getMasterAdapter() {
@@ -160,10 +175,6 @@ public class LayoutSpec {
     public void setId(int id) {
         this.id = id;
     }
-
-    public void setClass(Class aClass) {
-        mClass = aClass;
-    }
     //endregion
 
     /**
@@ -177,7 +188,7 @@ public class LayoutSpec {
         mMasterAdapter = mListener.onGetMasterAdapter();
         mMasterAdapter.notifyDataSetChanged();
 
-        mMasterFragment.update(activity);
+        ((MasterFragment)mMasterFragment).update(activity);
         mDetailFragment.update(activity);
     }
 

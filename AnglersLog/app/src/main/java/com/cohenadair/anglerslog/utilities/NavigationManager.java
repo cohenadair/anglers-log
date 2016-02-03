@@ -27,9 +27,16 @@ public class NavigationManager implements FragmentManager.OnBackStackChangedList
         mActionBar = mActivity.getSupportActionBar();
 
         mNavigationView = (NavigationView)mActivity.findViewById(R.id.navigation_view);
+        mNavigationView.setItemIconTintList(null);
+
         for (int i = 0; i < mNavigationView.getMenu().size(); i++) {
             MenuItem item = mNavigationView.getMenu().getItem(i);
             item.setChecked(item.getItemId() == getCurrentLayoutId());
+
+            // keep original colors for Instagram and Twitter links
+            if (item.getItemId() != LayoutSpecManager.LAYOUT_INSTAGRAM &&
+                item.getItemId() != LayoutSpecManager.LAYOUT_TWITTER)
+                item.getIcon().setAlpha(75);
         }
 
         initHeaderView();
@@ -42,8 +49,7 @@ public class NavigationManager implements FragmentManager.OnBackStackChangedList
         mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem menuItem) {
-                onDrawerItemSelected(menuItem);
-                return true;
+                return onDrawerItemSelected(menuItem);
             }
         });
 
@@ -103,14 +109,27 @@ public class NavigationManager implements FragmentManager.OnBackStackChangedList
             showMenuButton();
     }
 
-    private void onDrawerItemSelected(MenuItem menuItem) {
-        setCurrentLayoutId(menuItem.getItemId());
+    private boolean onDrawerItemSelected(MenuItem menuItem) {
+        int itemId = menuItem.getItemId();
+
+        // if the item selected is an external link
+        if (LayoutSpecManager.isLink(itemId)) {
+            LayoutSpec spec = LayoutSpecManager.layoutSpec(mActivity, itemId);
+            if (spec != null)
+                mActivity.startActivity(spec.getOnClickMenuItemIntent());
+
+            return false;
+        }
+
+        setCurrentLayoutId(itemId);
         mActivity.updateLayoutSpec();
         mActivity.showFragment();
         restoreActionBar();
 
         menuItem.setChecked(true);
         mDrawerLayout.closeDrawers();
+
+        return true;
     }
 
     public int getCurrentLayoutId() {

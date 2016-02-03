@@ -20,11 +20,8 @@ import com.cohenadair.anglerslog.locations.LocationFragment;
 import com.cohenadair.anglerslog.locations.LocationListManager;
 import com.cohenadair.anglerslog.locations.ManageLocationFragment;
 import com.cohenadair.anglerslog.model.Logbook;
-import com.cohenadair.anglerslog.model.user_defines.Bait;
-import com.cohenadair.anglerslog.model.user_defines.Catch;
-import com.cohenadair.anglerslog.model.user_defines.Location;
-import com.cohenadair.anglerslog.model.user_defines.Trip;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
+import com.cohenadair.anglerslog.settings.SettingsFragment;
 import com.cohenadair.anglerslog.stats.StatsFragment;
 import com.cohenadair.anglerslog.trips.ManageTripFragment;
 import com.cohenadair.anglerslog.trips.TripFragment;
@@ -60,6 +57,10 @@ public class LayoutSpecManager {
     public static final int LAYOUT_TRIPS = R.id.nav_trips;
     public static final int LAYOUT_STATS = R.id.nav_stats;
     public static final int LAYOUT_GALLERY = R.id.nav_gallery;
+    public static final int LAYOUT_SETTINGS = R.id.nav_settings;
+    public static final int LAYOUT_HELP = R.id.nav_help;
+    public static final int LAYOUT_TWITTER = R.id.nav_twitter;
+    public static final int LAYOUT_INSTAGRAM = R.id.nav_instagram;
 
     //region Layout Spec Definitions
     @Nullable
@@ -84,6 +85,18 @@ public class LayoutSpecManager {
 
             case LAYOUT_GALLERY:
                 return getGalleryLayoutSpec(layoutSpecContext);
+
+            case LAYOUT_SETTINGS:
+                return getSettingsLayoutSpec(layoutSpecContext);
+
+            case LAYOUT_HELP:
+                return getHelpLayoutSpec(layoutSpecContext);
+
+            case LAYOUT_TWITTER:
+                return getTwitterLayoutSpec(layoutSpecContext);
+
+            case LAYOUT_INSTAGRAM:
+                return getInstagramLayoutSpec(layoutSpecContext);
 
             default:
                 return getCatchesLayoutSpec(layoutSpecContext);
@@ -113,6 +126,15 @@ public class LayoutSpecManager {
         return null;
     }
 
+    /**
+     * Checks to see if the given layout id is meant to be a link to a web page.
+     * @param layoutId The layout id.
+     * @return True if link; false otherwise.
+     */
+    public static boolean isLink(int layoutId) {
+        return (layoutId == LAYOUT_HELP || layoutId == LAYOUT_TWITTER || layoutId == LAYOUT_INSTAGRAM);
+    }
+
     private static LayoutSpec getCatchesLayoutSpec(final LayoutSpecActivity context) {
         final OnClickInterface onMasterItemClick = context.getOnMyListFragmentItemClick();
         final LayoutSpec spec = new LayoutSpec(
@@ -138,7 +160,6 @@ public class LayoutSpecManager {
         spec.setMasterFragment(new MyListFragment());
         spec.setDetailFragment(new CatchFragment());
         spec.setManageFragment(new ManageCatchFragment());
-        spec.setClass(Catch.class);
 
         return spec;
     }
@@ -186,7 +207,6 @@ public class LayoutSpecManager {
         spec.setMasterFragment(new MyListFragment());
         spec.setDetailFragment(new LocationFragment());
         spec.setManageFragment(new ManageLocationFragment());
-        spec.setClass(Location.class);
 
         return spec;
     }
@@ -216,7 +236,6 @@ public class LayoutSpecManager {
         spec.setMasterFragment(new MyListFragment());
         spec.setDetailFragment(new BaitFragment());
         spec.setManageFragment(new ManageBaitFragment());
-        spec.setClass(Bait.class);
 
         return spec;
     }
@@ -246,7 +265,6 @@ public class LayoutSpecManager {
         spec.setMasterFragment(new MyListFragment());
         spec.setDetailFragment(new TripFragment());
         spec.setManageFragment(new ManageTripFragment());
-        spec.setClass(Trip.class);
 
         return spec;
     }
@@ -271,6 +289,45 @@ public class LayoutSpecManager {
 
         spec.setId(LAYOUT_GALLERY);
         spec.setMasterFragment(new GalleryFragment());
+
+        return spec;
+    }
+
+    private static LayoutSpec getSettingsLayoutSpec(final LayoutSpecActivity context) {
+        final LayoutSpec spec = new LayoutSpec(
+                context.getResources().getString(R.string.drawer_settings),
+                context.getResources().getString(R.string.drawer_settings)
+        );
+
+        spec.setId(LAYOUT_SETTINGS);
+        spec.setMasterFragment(new SettingsFragment());
+
+        return spec;
+    }
+
+    private static LayoutSpec getHelpLayoutSpec(final LayoutSpecActivity context) {
+        final LayoutSpec spec = new LayoutSpec();
+
+        spec.setId(LAYOUT_HELP);
+        spec.setOnClickMenuItemIntent(Utils.getActionViewIntent(context.getResources().getString(R.string.website)));
+
+        return spec;
+    }
+
+    private static LayoutSpec getTwitterLayoutSpec(final LayoutSpecActivity context) {
+        final LayoutSpec spec = new LayoutSpec();
+
+        spec.setId(LAYOUT_TWITTER);
+        spec.setOnClickMenuItemIntent(Utils.getTwitterIntent(context, R.string.hashtag));
+
+        return spec;
+    }
+
+    private static LayoutSpec getInstagramLayoutSpec(final LayoutSpecActivity context) {
+        final LayoutSpec spec = new LayoutSpec();
+
+        spec.setId(LAYOUT_INSTAGRAM);
+        spec.setOnClickMenuItemIntent(Utils.getInstagramIntent(context, R.string.hashtag));
 
         return spec;
     }

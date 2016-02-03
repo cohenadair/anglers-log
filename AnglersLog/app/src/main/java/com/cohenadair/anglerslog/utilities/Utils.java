@@ -5,12 +5,16 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Point;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
@@ -50,6 +54,32 @@ public class Utils {
 
     public static void showSnackbar(View view, String msg) {
         Snackbar.make(view, msg, Snackbar.LENGTH_LONG).show();
+    }
+
+    public static void showAlert(Context context, int titleId, int msgId) {
+        new AlertDialog.Builder(context)
+                .setTitle(titleId)
+                .setMessage(msgId)
+                .setPositiveButton(R.string.OK, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                })
+                .show();
+    }
+
+    public static void showAlert(Context context, int titleId, String msg) {
+        new AlertDialog.Builder(context)
+                .setTitle(titleId)
+                .setMessage(msg)
+                .setPositiveButton(R.string.OK, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                })
+                .show();
     }
 
     public static void showErrorAlert(Context context, int msgId) {
@@ -318,5 +348,58 @@ public class Utils {
         intent.putExtra(DetailFragmentActivity.EXTRA_LAYOUT_ID, layoutSpecId);
         intent.putExtra(DetailFragmentActivity.EXTRA_USER_DEFINE_ID, userDefineObjectId.toString());
         return intent;
+    }
+
+    /**
+     * Gets a ACTION_VIEW Intent for a given URL.
+     * @param url The URL String to open.
+     * @return An Intent.
+     */
+    public static Intent getActionViewIntent(String url) {
+        return new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+    }
+
+    private static Intent getApplicationIntent(Context context, String packageName, String appUrl, String browserUrl) {
+        try {
+            PackageInfo info = context.getPackageManager().getPackageInfo(packageName, 0);
+            if (info.applicationInfo.enabled)
+                return getActionViewIntent(appUrl);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return getActionViewIntent(browserUrl);
+    }
+
+    /**
+     * Gets an Intent for a Twitter link with a given hashtag.
+     * @param context The Context.
+     * @param hashTagResId The hashtag to load.
+     * @return An Intent that will open the Twitter app or the browser if Twitter isn't installed.
+     */
+    public static Intent getTwitterIntent(Context context, int hashTagResId) {
+        return getApplicationIntent(
+                context,
+                "com.twitter.android",
+                "twitter://search?query=%23" + context.getResources().getString(hashTagResId),
+                "https://twitter.com/search?f=realtime&amp;q=%23" + context.getResources().getString(hashTagResId)
+        );
+    }
+
+    /**
+     * Gets an Intent for an Instagram link with a given hashtag.
+     * @param context The Context.
+     * @param hashTagResId The hashtag to load.
+     * @return An Intent that will open the Instagram app or the browser if Instagram isn't
+     *         installed.
+     */
+    @Nullable
+    public static Intent getInstagramIntent(Context context, int hashTagResId) {
+        return getApplicationIntent(
+                context,
+                "com.instagram.android",
+                "https://www.instagram.com/explore/tags/" + context.getResources().getString(hashTagResId),
+                "https://www.instagram.com/explore/tags/" + context.getResources().getString(hashTagResId)
+        );
     }
 }

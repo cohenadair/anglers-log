@@ -10,16 +10,18 @@ Anglers' Log To-Do List
 * ~~Add Trips~~
 * ~~Add Statistics~~
 * ~~Add Gallery~~
-* Add Settings (http://developer.android.com/guide/topics/ui/settings.html)
-  * Backup (import/export)
+* [Add Settings](http://developer.android.com/guide/topics/ui/settings.html)
+  * [Auto Backup](http://developer.android.com/guide/topics/data/backup.html)
   * Units
-* Add About
-  * Origins (NMU)
-  * Google Maps agreement
-  * Icons8
-* Add Help & Feedback (Link to website)
-* #AnglersLogApp Twitter
-* #AnglersLogApp Instagram
+  * Import
+  * Export
+  * ~~About~~
+  	* ~~Version~~
+    * ~~Google Maps agreement~~
+    * ~~cons8~~
+* ~~Add Help & Feedback (Link to website)~~
+* ~~#AnglersLogApp Twitter~~
+* ~~#AnglersLogApp Instagram~~
 
 ### Features
 * No X views
@@ -36,6 +38,5 @@ Anglers' Log To-Do List
 
 ### Extra
 * Full page add fishing spot for phones (dialog for tablets)
-* Auto backup (exporting)
 * Add Android version of website (Android | iOS tabs at top)
 	

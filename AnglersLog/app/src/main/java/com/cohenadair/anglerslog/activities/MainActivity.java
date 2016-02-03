@@ -83,6 +83,9 @@ public class MainActivity extends LayoutSpecActivity {
     }
 
     public void showFragment() {
+        if (getMasterFragment() == null)
+            return;
+
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
         // add left panel

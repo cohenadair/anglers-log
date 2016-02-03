@@ -7,7 +7,7 @@
         <item
             android:id="@+id/nav_trips"
             android:icon="@drawable/ic_trips"
-            android:title="@string/drawer_trips" />
+            android:title="@string/drawer_trips"/>
 
         <item
             android:id="@+id/nav_catches"
@@ -27,7 +27,6 @@
 
     </group>
 
-
     <group
         android:id="@+id/group_extras"
         android:checkableBehavior="single">
@@ -43,7 +42,21 @@
             android:icon="@drawable/ic_stats"/>
     </group>
 
-    <!--
+    <group
+        android:id="@+id/group_social"
+        android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/nav_twitter"
+            android:title="@string/drawer_twitter"
+            android:icon="@drawable/ic_twitter"/>
+
+        <item
+            android:id="@+id/nav_instagram"
+            android:title="@string/drawer_instagram"
+            android:icon="@drawable/ic_instagram"/>
+    </group>
+
     <group
         android:id="@+id/group_other"
         android:checkableBehavior="single">
@@ -54,14 +67,8 @@
             android:title="@string/drawer_settings" />
 
         <item
-            android:id="@+id/nav_about"
-            android:icon="@drawable/ic_about"
-            android:title="@string/drawer_about" />
-
-        <item
             android:id="@+id/nav_help"
             android:icon="@drawable/ic_help"
             android:title="@string/drawer_help" />
     </group>
-    -->
 </menu>

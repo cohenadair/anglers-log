@@ -2,6 +2,7 @@ package com.cohenadair.anglerslog.utilities;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 
 import com.cohenadair.anglerslog.R;
 
@@ -55,7 +56,14 @@ public class LogbookPreferences {
     }
 
     public static boolean getIsRootTwoPane() {
-        boolean b = getLayoutPreferences().getBoolean(ROOT_TWO_PANE, false);
         return getLayoutPreferences().getBoolean(ROOT_TWO_PANE, false);
+    }
+
+    public static int getUnits() {
+        return Integer.parseInt(PreferenceManager.getDefaultSharedPreferences(mContext).getString(mContext.getResources().getString(R.string.pref_units), ""));
+    }
+
+    public static boolean getAutoBackup() {
+        return PreferenceManager.getDefaultSharedPreferences(mContext).getBoolean(mContext.getResources().getString(R.string.pref_auto_backup), true);
     }
 }

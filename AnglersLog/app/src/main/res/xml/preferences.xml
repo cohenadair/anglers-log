@@ -1,0 +1,25 @@
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <ListPreference
+        android:key="@string/pref_units"
+        android:title="@string/display_units"
+        android:summary="@string/imperial"
+        android:dialogTitle="@string/display_unit_types"
+        android:entries="@array/pref_unitTypes_entries"
+        android:entryValues="@array/pref_unitTypes_values"
+        android:defaultValue="0"/>
+
+    <CheckBoxPreference
+        android:key="@string/pref_auto_backup"
+        android:title="@string/auto_backup"
+        android:summary="@string/auto_backup_summary"
+        android:defaultValue="true"/>
+
+    <Preference
+        android:key="@string/pref_about_group"
+        android:title="@string/about_setting"
+        android:persistent="false">
+    </Preference>
+
+</PreferenceScreen>
