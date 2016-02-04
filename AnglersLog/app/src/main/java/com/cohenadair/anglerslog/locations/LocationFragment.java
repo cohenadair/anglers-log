@@ -1,10 +1,6 @@
 package com.cohenadair.anglerslog.locations;
 
-import android.Manifest;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,16 +11,14 @@ import android.widget.TextView;
 
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.fragments.DetailFragment;
+import com.cohenadair.anglerslog.fragments.DraggableMapFragment;
 import com.cohenadair.anglerslog.model.Logbook;
 import com.cohenadair.anglerslog.model.user_defines.FishingSpot;
 import com.cohenadair.anglerslog.model.user_defines.Location;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
-import com.cohenadair.anglerslog.utilities.Utils;
 import com.cohenadair.anglerslog.views.SelectionSpinnerView;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -36,10 +30,9 @@ import java.util.UUID;
 /**
  * A {@link DetailFragment} subclass used to show the details of a single location.
  */
-public class LocationFragment extends DetailFragment implements OnMapReadyCallback {
+public class LocationFragment extends DetailFragment {
 
-    private static final int REQUEST_LOCATION = 0;
-    private static final String TAG_MAP = "fragment_map";
+    private static final String TAG_MAP = "LocationMap";
 
     private Location mLocation;
 
@@ -140,18 +133,34 @@ public class LocationFragment extends DetailFragment implements OnMapReadyCallba
         updateMap();
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode == REQUEST_LOCATION) {
-            if (permissions.length == 1 && permissions[0].equals(Manifest.permission.ACCESS_FINE_LOCATION) && grantResults[0] == PackageManager.PERMISSION_GRANTED)
-                mMap.setMyLocationEnabled(true);
-        } else
-            Utils.showErrorAlert(getContext(), R.string.error_location_permission);
+    //region Map Fragment
+    private void initMapFragment() {
+        // check to see if the map fragment already exists
+        DraggableMapFragment mapFragmentExists = (DraggableMapFragment)getChildFragmentManager().findFragmentByTag(TAG_MAP);
+        if (mapFragmentExists != null)
+            return;
+
+        final DraggableMapFragment mapFragment = DraggableMapFragment.newInstance(true, false);
+        mapFragment.getMapAsync(new DraggableMapFragment.InteractionListener() {
+            @Override
+            public void onMapReady(GoogleMap map) {
+                mMap = map;
+                LocationFragment.this.onMapReady();
+            }
+
+            @Override
+            public void onLocationUpdate(android.location.Location location) {
+
+            }
+        });
+
+        getChildFragmentManager()
+                .beginTransaction()
+                .add(R.id.location_container, mapFragment, TAG_MAP)
+                .commit();
     }
 
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
+    public void onMapReady() {
         mMap.setInfoWindowAdapter(new LocationInfoWindowAdapter());
 
         // update the Spinner if one of the fishing spot markers was selected
@@ -171,11 +180,6 @@ public class LocationFragment extends DetailFragment implements OnMapReadyCallba
                     marker.hideInfoWindow();
             }
         });
-
-        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED)
-            mMap.setMyLocationEnabled(true);
-        else
-            requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
 
         updateMap();
     }
@@ -218,7 +222,7 @@ public class LocationFragment extends DetailFragment implements OnMapReadyCallba
 
         // move the camera to the current fishing spot
         float zoom = 15;
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(((FishingSpot)fishingSpots.get(selectedIndex)).getCoordinates(), zoom), 2000, new GoogleMap.CancelableCallback() {
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(((FishingSpot) fishingSpots.get(selectedIndex)).getCoordinates(), zoom), 2000, new GoogleMap.CancelableCallback() {
             @Override
             public void onFinish() {
                 // show the info window for the selected fishing spot
@@ -231,6 +235,7 @@ public class LocationFragment extends DetailFragment implements OnMapReadyCallba
             }
         });
     }
+    //endregion
 
     private void initTitle(View view) {
         mTitleTextView = (TextView)view.findViewById(R.id.title_text_view);
@@ -252,22 +257,6 @@ public class LocationFragment extends DetailFragment implements OnMapReadyCallba
         });
 
         selectFishingSpot(0);
-    }
-
-    private void initMapFragment() {
-        // check to see if the map fragment already exists
-        SupportMapFragment mapFragment = (SupportMapFragment)getChildFragmentManager().findFragmentByTag(TAG_MAP);
-        if (mapFragment != null)
-            return;
-
-        // obtain the SupportMapFragment and get notified when the map is ready to be used.
-        mapFragment = new SupportMapFragment();
-        mapFragment.getMapAsync(this);
-
-        getChildFragmentManager()
-                .beginTransaction()
-                .add(R.id.location_container, mapFragment, TAG_MAP)
-                .commit();
     }
 
     private void selectFishingSpot(int position) {

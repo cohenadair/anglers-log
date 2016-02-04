@@ -19,6 +19,7 @@ import com.cohenadair.anglerslog.interfaces.OnClickInterface;
 import com.cohenadair.anglerslog.locations.LocationFragment;
 import com.cohenadair.anglerslog.locations.LocationListManager;
 import com.cohenadair.anglerslog.locations.ManageLocationFragment;
+import com.cohenadair.anglerslog.map.LocationMapFragment;
 import com.cohenadair.anglerslog.model.Logbook;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import com.cohenadair.anglerslog.settings.SettingsFragment;
@@ -53,6 +54,7 @@ public class LayoutSpecManager {
      */
     public static final int LAYOUT_CATCHES = R.id.nav_catches;
     public static final int LAYOUT_LOCATIONS = R.id.nav_locations;
+    public static final int LAYOUT_MAP = R.id.nav_map;
     public static final int LAYOUT_BAITS = R.id.nav_baits;
     public static final int LAYOUT_TRIPS = R.id.nav_trips;
     public static final int LAYOUT_STATS = R.id.nav_stats;
@@ -73,6 +75,9 @@ public class LayoutSpecManager {
 
             case LAYOUT_LOCATIONS:
                 return getLocationsLayoutSpec(layoutSpecContext);
+
+            case LAYOUT_MAP:
+                return getMapLayoutSpec(layoutSpecContext);
 
             case LAYOUT_BAITS:
                 return getBaitsLayoutSpec(layoutSpecContext);
@@ -207,6 +212,18 @@ public class LayoutSpecManager {
         spec.setMasterFragment(new MyListFragment());
         spec.setDetailFragment(new LocationFragment());
         spec.setManageFragment(new ManageLocationFragment());
+
+        return spec;
+    }
+
+    private static LayoutSpec getMapLayoutSpec(final LayoutSpecActivity context) {
+        final LayoutSpec spec = new LayoutSpec(
+                context.getResources().getString(R.string.drawer_map),
+                context.getResources().getString(R.string.drawer_map)
+        );
+
+        spec.setId(LAYOUT_MAP);
+        spec.setMasterFragment(new LocationMapFragment());
 
         return spec;
     }

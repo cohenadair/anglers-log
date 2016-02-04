@@ -22,7 +22,7 @@
         android:layout_weight="1">
 
         <fragment
-            android:id="@+id/map"
+            android:id="@+id/fishing_spot_map"
             android:name="com.cohenadair.anglerslog.fragments.DraggableMapFragment"
             android:layout_width="match_parent"
             android:layout_height="300dp"/>

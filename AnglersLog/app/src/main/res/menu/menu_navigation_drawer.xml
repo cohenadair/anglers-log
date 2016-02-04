@@ -16,14 +16,19 @@
             android:checked="true"/>
 
         <item
+            android:id="@+id/nav_baits"
+            android:icon="@drawable/ic_bait"
+            android:title="@string/drawer_baits" />
+
+        <item
             android:id="@+id/nav_locations"
             android:icon="@drawable/ic_location"
             android:title="@string/drawer_locations" />
 
         <item
-            android:id="@+id/nav_baits"
-            android:icon="@drawable/ic_bait"
-            android:title="@string/drawer_baits" />
+            android:id="@+id/nav_map"
+            android:icon="@drawable/ic_map"
+            android:title="@string/drawer_map" />
 
     </group>
 
