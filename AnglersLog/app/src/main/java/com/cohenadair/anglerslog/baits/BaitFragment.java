@@ -118,6 +118,7 @@ public class BaitFragment extends DetailFragment {
         boolean hasCatches = catches != null && catches.size() > 0;
 
         Utils.toggleVisibility(mNoCatchesTextView, !hasCatches);
+        Utils.toggleVisibility(mCatchesLayout, hasCatches);
 
         if (!hasCatches)
             return;
