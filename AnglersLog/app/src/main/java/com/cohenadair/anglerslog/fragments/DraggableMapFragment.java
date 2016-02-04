@@ -20,9 +20,11 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
 
 /**
  * A SupportMapFragment wrapper class to handle map drag events. It also handles optional user
@@ -34,6 +36,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 public class DraggableMapFragment extends SupportMapFragment implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     private static final String TAG = "DraggableMapFragment";
+    private static final float ZOOM = 15;
 
     private static final int REQUEST_LOCATION = 0;
     private static final int GRANTED = PackageManager.PERMISSION_GRANTED;
@@ -78,7 +81,7 @@ public class DraggableMapFragment extends SupportMapFragment implements OnMapRea
             mLocationUpdatesEnabled = getArguments().getBoolean(ARG_ENABLE_UPDATES);
         }
 
-        if (mLocationUpdatesEnabled && mGoogleApiClient == null)
+        if (mGoogleApiClient == null)
             mGoogleApiClient = new GoogleApiClient.Builder(getContext())
                     .addApi(LocationServices.API)
                     .addConnectionCallbacks(this)
@@ -135,6 +138,8 @@ public class DraggableMapFragment extends SupportMapFragment implements OnMapRea
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
+        Log.d(TAG, "Map is ready.");
+
         mGoogleMap = googleMap;
 
         if (isLocationPermissionGranted())
@@ -177,6 +182,10 @@ public class DraggableMapFragment extends SupportMapFragment implements OnMapRea
         getMapAsync(this);
     }
 
+    public GoogleMap getGoogleMap() {
+        return mGoogleMap;
+    }
+
     public void setLocationEnabled(boolean locationEnabled) {
         mLocationEnabled = locationEnabled;
     }
@@ -187,6 +196,14 @@ public class DraggableMapFragment extends SupportMapFragment implements OnMapRea
 
     public void setOnDragListener(GoogleMapLayout.OnDragListener onDragListener) {
         mOnDragListener = onDragListener;
+    }
+
+    public void updateCamera(LatLng loc, GoogleMap.CancelableCallback callback) {
+        mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(loc, ZOOM), 2000, callback);
+    }
+
+    public void updateCamera(LatLng loc) {
+        updateCamera(loc, null);
     }
 
     private boolean isLocationPermissionGranted() {
