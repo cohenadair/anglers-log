@@ -321,32 +321,32 @@ public class Catch extends PhotoUserDefineObject {
         return (mQuantity != -1) ? Integer.toString(mQuantity) : "";
     }
 
-    public String getLengthAsString(Context context) {
-        return (mLength != -1) ? Float.toString(mLength) + context.getResources().getString(R.string.inches) : "";
+    public String getLengthAsStringWithUnits() {
+        return (mLength != -1) ? Float.toString(mLength) + Logbook.getLengthUnits() : "";
     }
 
     public String getLengthAsString() {
         return (mLength != -1) ? Float.toString(mLength) : "";
     }
 
-    public String getWeightAsString(Context context) {
-        return (mWeight != -1) ? Float.toString(mWeight) + " " + context.getResources().getString(R.string.lbs) : "";
+    public String getWeightAsStringWithUnits() {
+        return (mWeight != -1) ? Float.toString(mWeight) + " " + Logbook.getWeightUnits() : "";
     }
 
     public String getWeightAsString() {
         return (mWeight != -1) ? Float.toString(mWeight) : "";
     }
 
-    public String getWaterDepthAsString(Context context) {
-        return (mWaterDepth != -1) ? Float.toString(mWaterDepth) + " " + context.getResources().getString(R.string.ft) : "";
+    public String getWaterDepthAsStringWithUnits() {
+        return (mWaterDepth != -1) ? Float.toString(mWaterDepth) + " " + Logbook.getDepthUnits() : "";
     }
 
     public String getWaterDepthAsString() {
         return (mWaterDepth != -1) ? Float.toString(mWaterDepth) : "";
     }
 
-    public String getWaterTemperatureAsString(Context context) {
-        return (mWaterTemperature != -1) ? Integer.toString(mWaterTemperature) + context.getResources().getString(R.string.degrees_f) : "";
+    public String getWaterTemperatureAsStringWithUnits() {
+        return (mWaterTemperature != -1) ? Integer.toString(mWaterTemperature) + Logbook.getTemperatureUnits() : "";
     }
 
     public String getWaterTemperatureAsString() {

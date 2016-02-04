@@ -3,9 +3,11 @@ package com.cohenadair.anglerslog.model;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.database.LogbookHelper;
 import com.cohenadair.anglerslog.database.QueryHelper;
 import com.cohenadair.anglerslog.database.cursors.AnglerCursor;
@@ -30,6 +32,7 @@ import com.cohenadair.anglerslog.model.user_defines.Species;
 import com.cohenadair.anglerslog.model.user_defines.Trip;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import com.cohenadair.anglerslog.model.user_defines.WaterClarity;
+import com.cohenadair.anglerslog.utilities.LogbookPreferences;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -53,6 +56,9 @@ import static com.cohenadair.anglerslog.database.LogbookSchema.WaterClarityTable
  * @author Cohen Adair
  */
 public class Logbook {
+
+    public static final int UNIT_IMPERIAL = 0;
+    public static final int UNIT_METRIC = 1;
 
     private static final String TAG = "Logbook";
 
@@ -617,4 +623,41 @@ public class Logbook {
         return list;
     }
     //endregion
+
+    public static String getLengthUnits() {
+        return isImperial() ? getString(R.string.inches) : " " + getString(R.string.cm);
+    }
+
+    public static String getWeightUnits() {
+        return isImperial() ? getString(R.string.lbs) : getString(R.string.kg);
+    }
+
+    public static String getDepthUnits() {
+        return isImperial() ? getString(R.string.ft) : getString(R.string.meters);
+    }
+
+    public static String getTemperatureUnits() {
+        return getTemperatureUnits(isImperial());
+    }
+
+    public static String getSpeedUnits() {
+        return getSpeedUnits(isImperial());
+    }
+
+    public static String getTemperatureUnits(boolean isImperial) {
+        return isImperial ? getString(R.string.degrees_f) : getString(R.string.degrees_c);
+    }
+
+    public static String getSpeedUnits(boolean isImperial) {
+        return isImperial ? getString(R.string.mph) : getString(R.string.kmh);
+    }
+
+    @NonNull
+    private static String getString(int id) {
+        return mContext.getResources().getString(id);
+    }
+
+    private static boolean isImperial() {
+        return (LogbookPreferences.getUnits() == UNIT_IMPERIAL);
+    }
 }

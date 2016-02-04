@@ -1,9 +1,16 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:style="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/margin_default">
+
+    <Spinner
+        android:id="@+id/units_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/spacing_medium"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -11,11 +18,12 @@
         android:orientation="horizontal">
 
         <TextView
-            android:textSize="@dimen/font_medium"
+            style="@style/TextView.Medium"
+            android:id="@+id/temperature_label"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/temperature_f"/>
+            android:text="@string/temperature"/>
 
         <EditText
             android:id="@+id/temp_edit_text"
@@ -33,11 +41,12 @@
         android:orientation="horizontal">
 
         <TextView
-            android:textSize="@dimen/font_medium"
+            style="@style/TextView.Medium"
+            android:id="@+id/wind_label"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/wind_mph"/>
+            android:text="@string/wind_speed"/>
 
         <EditText
             android:id="@+id/wind_edit_text"
@@ -55,7 +64,8 @@
         android:orientation="horizontal">
 
         <TextView
-            android:textSize="@dimen/font_medium"
+            style="@style/TextView.Medium"
+            android:id="@+id/sky_label"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"

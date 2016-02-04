@@ -17,9 +17,8 @@ public class LogbookPreferences {
     public static final String PREF_LAYOUT = "com.cohenadair.anglerslog.LayoutPreferences";
 
     public static final String NAVIGATION_ID = "navigationId";
-    public static final String NAVIGATION_TITLE = "navigationTitle";
-
     public static final String ROOT_TWO_PANE = "isRootTwoPane";
+    public static final String WEATHER_UNITS = "weatherUnits";
 
     private static Context mContext;
 
@@ -43,20 +42,20 @@ public class LogbookPreferences {
         return getPreviousSelections().getInt(NAVIGATION_ID, LayoutSpecManager.LAYOUT_CATCHES);
     }
 
-    public static void setNavigationTitle(String title) {
-        getPreviousSelections().edit().putString(NAVIGATION_TITLE, title).apply();
-    }
-
-    public static String getNavigationTitle() {
-        return getPreviousSelections().getString(NAVIGATION_TITLE, mContext.getResources().getString(R.string.drawer_catches));
-    }
-
     public static void setIsRootTwoPane(boolean isTwoPane) {
         getLayoutPreferences().edit().putBoolean(ROOT_TWO_PANE, isTwoPane).apply();
     }
 
     public static boolean getIsRootTwoPane() {
         return getLayoutPreferences().getBoolean(ROOT_TWO_PANE, false);
+    }
+
+    public static void setWeatherUnits(int units) {
+        getPreviousSelections().edit().putInt(WEATHER_UNITS, units).apply();
+    }
+
+    public static int getWeatherUnits() {
+        return getPreviousSelections().getInt(WEATHER_UNITS, -1);
     }
 
     public static int getUnits() {

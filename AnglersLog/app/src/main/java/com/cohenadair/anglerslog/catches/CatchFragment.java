@@ -182,22 +182,22 @@ public class CatchFragment extends DetailFragment {
 
     private void updateLengthView() {
         Utils.toggleVisibility(mLengthView, mCatch.getLength() != -1);
-        mLengthView.setDetail(mCatch.getLengthAsString(getContext()));
+        mLengthView.setDetail(mCatch.getLengthAsStringWithUnits());
     }
 
     private void updateWeightView() {
         Utils.toggleVisibility(mWeightView, mCatch.getWeight() != -1);
-        mWeightView.setDetail(mCatch.getWeightAsString(getContext()));
+        mWeightView.setDetail(mCatch.getWeightAsStringWithUnits());
     }
 
     private void updateWaterDepthView() {
         Utils.toggleVisibility(mWaterDepthView, mCatch.getWaterDepth() != -1);
-        mWaterDepthView.setDetail(mCatch.getWaterDepthAsString(getContext()));
+        mWaterDepthView.setDetail(mCatch.getWaterDepthAsStringWithUnits());
     }
 
     private void updateWaterTemperatureView() {
         Utils.toggleVisibility(mWaterTemperatureView, mCatch.getWaterTemperature() != -1);
-        mWaterTemperatureView.setDetail(mCatch.getWaterTemperatureAsString(getContext()));
+        mWaterTemperatureView.setDetail(mCatch.getWaterTemperatureAsStringWithUnits());
     }
 
     private void updateNotesView() {

@@ -95,6 +95,7 @@
     <string name="wind_speed_colon">Wind Speed:</string>
     <string name="wind_mph">Wind Speed (mph)</string>
     <string name="mph">mph</string>
+    <string name="kmh">km/h</string>
     <string name="sky_conditions">Sky Conditions</string>
     <string name="sky_conditions_colon">Sky:</string>
     <string name="catch_details">Catch Details</string>
@@ -103,9 +104,13 @@
     <string name="water_conditions">Water Conditions</string>
     <string name="weather_conditions">Weather Conditions</string>
     <string name="degrees_f">\u00b0F</string>
+    <string name="degrees_c">\u00b0C</string>
     <string name="lbs">lbs</string>
     <string name="inches">\"</string>
+    <string name="cm">cm</string>
+    <string name="kg">kg</string>
     <string name="ft">ft</string>
+    <string name="meters">m</string>
     <string name="zero">0</string>
     <string name="to">to</string>
     <string name="show_more">Show more</string>
@@ -146,12 +151,12 @@
     <string name="size_hint">Enter a size</string>
     <string name="description_hint">Enter a description</string>
     <string name="temperature_hint">Enter a temperature</string>
-    <string name="temperature_hint_unit">Enter a temperature (\u00b0F)</string>
+    <string name="temperature_hint_unit">Enter a temperature</string>
     <string name="notes_hint">Enter some notes</string>
     <string name="quantity_hint">Enter a quantity</string>
-    <string name="length_hint">Enter a length (inches)</string>
-    <string name="weight_hint">Enter a weight (pounds)</string>
-    <string name="depth_hint">Enter a depth (feet)</string>
+    <string name="length_hint">Enter a length</string>
+    <string name="weight_hint">Enter a weight</string>
+    <string name="depth_hint">Enter a depth</string>
     <string name="sky_hint">ex. Cloudy</string>
 
     <string name="hint_new_item">Enter new</string>

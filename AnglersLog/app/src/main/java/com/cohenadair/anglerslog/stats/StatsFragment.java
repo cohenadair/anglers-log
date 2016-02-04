@@ -112,7 +112,7 @@ public class StatsFragment extends MasterFragment {
 
         // if the user has no recorded lengths or weights, a random catch is chosen
         // the dash should only be shown for catches that have data
-        String str = ((statsId == StatsManager.STATS_LONGEST) ? aCatch.getLengthAsString(getContext()) : aCatch.getWeightAsString(getContext()));
+        String str = ((statsId == StatsManager.STATS_LONGEST) ? aCatch.getLengthAsStringWithUnits() : aCatch.getWeightAsStringWithUnits());
         if (!str.isEmpty())
             str = " - " + str;
 
