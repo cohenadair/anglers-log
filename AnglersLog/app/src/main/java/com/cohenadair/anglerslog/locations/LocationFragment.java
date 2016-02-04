@@ -16,15 +16,12 @@ import com.cohenadair.anglerslog.model.Logbook;
 import com.cohenadair.anglerslog.model.user_defines.FishingSpot;
 import com.cohenadair.anglerslog.model.user_defines.Location;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
+import com.cohenadair.anglerslog.utilities.FishingSpotMarkerManager;
 import com.cohenadair.anglerslog.views.SelectionSpinnerView;
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.UUID;
 
 /**
@@ -38,19 +35,13 @@ public class LocationFragment extends DetailFragment {
 
     private LinearLayout mContainer;
     private TextView mTitleTextView;
-    private SelectionSpinnerView mFishingSpotSelection;
-    private ArrayList<Marker> mMarkers;
-    private HashMap<String, MarkerInfo> mMarkerInfo;
-    private GoogleMap mMap;
+    private SelectionSpinnerView mFishingSpotSpinner;
+    private DraggableMapFragment mMapFragment;
+
+    private FishingSpotMarkerManager mMarkerManager;
 
     public LocationFragment() {
         // Required empty public constructor
-    }
-
-    public class MarkerInfo {
-        public String title;
-        public String numberCaught;
-        public String coordinates;
     }
 
     @Override
@@ -59,15 +50,9 @@ public class LocationFragment extends DetailFragment {
 
         mContainer = (LinearLayout)view.findViewById(R.id.location_container);
 
+        initMapFragment();
         initTitle(view);
         initFishingSpotSelection(view);
-        initMapFragment();
-
-        if (mMarkers == null)
-            mMarkers = new ArrayList<>();
-
-        if (mMarkerInfo == null)
-            mMarkerInfo = new HashMap<>();
 
         update(getActivity());
 
@@ -110,14 +95,14 @@ public class LocationFragment extends DetailFragment {
         // update spinner adapter
         ArrayAdapter<UserDefineObject> adapter = new ArrayAdapter<>(getContext(), R.layout.list_item_spinner, mLocation.getFishingSpots());
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mFishingSpotSelection.setAdapter(adapter);
+        mFishingSpotSpinner.setAdapter(adapter);
 
         // select the correct fishing spot if it exists
         if (fishingSpot != null) {
             for (int i = 0; i < mLocation.getFishingSpotCount(); i++) {
-                FishingSpot spot = (FishingSpot)mFishingSpotSelection.getAdapter().getItem(i);
+                FishingSpot spot = (FishingSpot) mFishingSpotSpinner.getAdapter().getItem(i);
                 if (spot.getName().equals(fishingSpot.getName())) {
-                    mFishingSpotSelection.setSelection(i);
+                    mFishingSpotSpinner.setSelection(i);
                     break;
                 }
             }
@@ -136,15 +121,14 @@ public class LocationFragment extends DetailFragment {
     //region Map Fragment
     private void initMapFragment() {
         // check to see if the map fragment already exists
-        DraggableMapFragment mapFragmentExists = (DraggableMapFragment)getChildFragmentManager().findFragmentByTag(TAG_MAP);
-        if (mapFragmentExists != null)
+        mMapFragment = (DraggableMapFragment)getChildFragmentManager().findFragmentByTag(TAG_MAP);
+        if (mMapFragment != null)
             return;
 
-        final DraggableMapFragment mapFragment = DraggableMapFragment.newInstance(true, false);
-        mapFragment.getMapAsync(new DraggableMapFragment.InteractionListener() {
+        mMapFragment = DraggableMapFragment.newInstance(true, false);
+        mMapFragment.getMapAsync(new DraggableMapFragment.InteractionListener() {
             @Override
             public void onMapReady(GoogleMap map) {
-                mMap = map;
                 LocationFragment.this.onMapReady();
             }
 
@@ -156,28 +140,16 @@ public class LocationFragment extends DetailFragment {
 
         getChildFragmentManager()
                 .beginTransaction()
-                .add(R.id.location_container, mapFragment, TAG_MAP)
+                .add(R.id.location_container, mMapFragment, TAG_MAP)
                 .commit();
     }
 
     public void onMapReady() {
-        mMap.setInfoWindowAdapter(new LocationInfoWindowAdapter());
-
-        // update the Spinner if one of the fishing spot markers was selected
-        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+        mMarkerManager = new FishingSpotMarkerManager(getContext(), mContainer, mMapFragment.getGoogleMap(), new FishingSpotMarkerManager.InteractionListener() {
             @Override
-            public boolean onMarkerClick(Marker marker) {
-                marker.showInfoWindow();
-                mFishingSpotSelection.setSelection(mMarkers.indexOf(marker));
-                return true;
-            }
-        });
-
-        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-            @Override
-            public void onMapClick(LatLng latLng) {
-                for (Marker marker : mMarkers)
-                    marker.hideInfoWindow();
+            public void onMarkerClick(Marker marker, int index) {
+                // update the Spinner if one of the fishing spot markers was selected
+                mFishingSpotSpinner.setSelection(index);
             }
         });
 
@@ -185,55 +157,13 @@ public class LocationFragment extends DetailFragment {
     }
 
     private void updateMap() {
-        if (mMap == null || mLocation == null)
+        if (mMapFragment.getGoogleMap() == null || mLocation == null)
             return;
 
-        // remove all existing markers
-        for (Marker marker : mMarkers)
-            marker.remove();
+        mMarkerManager.setFishingSpots(mLocation.getFishingSpots());
+        mMarkerManager.updateMarkers();
 
-        final int selectedIndex = mFishingSpotSelection.getSelectedIndex();
-        ArrayList<UserDefineObject> fishingSpots = mLocation.getFishingSpots();
-        mMarkers = new ArrayList<>();
-
-        // add a marker for each fishing spot
-        for (int i = 0; i < fishingSpots.size(); i++) {
-            FishingSpot spot = (FishingSpot)fishingSpots.get(i);
-
-            MarkerOptions options = new MarkerOptions()
-                    .position(spot.getCoordinates())
-                    .title(spot.getName())
-                    .snippet(spot.getName());
-
-            mMarkers.add(mMap.addMarker(options));
-
-            // add fishing spot info to be accessed later
-            String lat = getContext().getResources().getString(R.string.lat);
-            String lng = getContext().getResources().getString(R.string.lng);
-            String caught = getContext().getResources().getString(R.string.number_caught);
-
-            MarkerInfo info = new MarkerInfo();
-            info.title = spot.getName();
-            info.coordinates = spot.getCoordinatesAsString(lat, lng);
-            info.numberCaught = spot.getNumberOfCatches() + " " + caught;
-
-            mMarkerInfo.put(spot.getName(), info);
-        }
-
-        // move the camera to the current fishing spot
-        float zoom = 15;
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(((FishingSpot) fishingSpots.get(selectedIndex)).getCoordinates(), zoom), 2000, new GoogleMap.CancelableCallback() {
-            @Override
-            public void onFinish() {
-                // show the info window for the selected fishing spot
-                mMarkers.get(selectedIndex).showInfoWindow();
-            }
-
-            @Override
-            public void onCancel() {
-
-            }
-        });
+        updateFishingSpotSelection();
     }
     //endregion
 
@@ -243,8 +173,8 @@ public class LocationFragment extends DetailFragment {
     }
 
     private void initFishingSpotSelection(View view) {
-        mFishingSpotSelection = (SelectionSpinnerView)view.findViewById(R.id.fishing_spot_spinner);
-        mFishingSpotSelection.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        mFishingSpotSpinner = (SelectionSpinnerView)view.findViewById(R.id.fishing_spot_spinner);
+        mFishingSpotSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 selectFishingSpot(position);
@@ -255,37 +185,31 @@ public class LocationFragment extends DetailFragment {
 
             }
         });
-
-        selectFishingSpot(0);
     }
 
     private void selectFishingSpot(int position) {
-        mFishingSpotSelection.setSelection(position);
-        updateMap();
+        mFishingSpotSpinner.setSelection(position);
+        updateFishingSpotSelection();
     }
 
-    private class LocationInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
+    private void updateFishingSpotSelection() {
+        ArrayList<UserDefineObject> fishingSpots = mLocation.getFishingSpots();
 
-        @Override
-        public View getInfoWindow(Marker marker) {
-            return null;
-        }
+        final int selectedIndex = mFishingSpotSpinner.getSelectedIndex();
+        FishingSpot fishingSpot = (FishingSpot)fishingSpots.get(selectedIndex);
 
-        @Override
-        public View getInfoContents(Marker marker) {
-            View view = LayoutInflater.from(getContext()).inflate(R.layout.view_location_info_window, mContainer, false);
+        // move the camera to the current fishing spot
+        mMapFragment.updateCamera(fishingSpot.getCoordinates(), new GoogleMap.CancelableCallback() {
+            @Override
+            public void onFinish() {
+                // show the info window for the selected fishing spot
+                mMarkerManager.showInfoWindowAtIndex(selectedIndex);
+            }
 
-            TextView name = (TextView)view.findViewById(R.id.location_name_text_view);
-            TextView numberCaught = (TextView)view.findViewById(R.id.spots_text_view);
-            TextView coordinates = (TextView)view.findViewById(R.id.coordinates_text_view);
+            @Override
+            public void onCancel() {
 
-            MarkerInfo info = mMarkerInfo.get(marker.getTitle());
-
-            name.setText(info.title);
-            numberCaught.setText(info.numberCaught);
-            coordinates.setText(info.coordinates);
-
-            return view;
-        }
+            }
+        });
     }
 }
