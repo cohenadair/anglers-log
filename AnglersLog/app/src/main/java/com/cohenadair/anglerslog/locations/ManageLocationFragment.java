@@ -216,6 +216,8 @@ public class ManageLocationFragment extends ManageContentFragment {
         if (editingId != null)
             fragment.setIsEditing(true, editingId);
 
+        fragment.setLocation(getNewLocation());
+
         fragment.setOnVerifyInterface(new ManageFishingSpotFragment.OnVerifyInterface() {
             @Override
             public boolean isDuplicate(FishingSpot fishingSpot) {

@@ -1,6 +1,5 @@
 package com.cohenadair.anglerslog.locations;
 
-import android.location.Location;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -11,13 +10,16 @@ import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.fragments.DraggableMapFragment;
 import com.cohenadair.anglerslog.fragments.ManageContentFragment;
 import com.cohenadair.anglerslog.model.user_defines.FishingSpot;
+import com.cohenadair.anglerslog.model.user_defines.Location;
+import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import com.cohenadair.anglerslog.utilities.GoogleMapLayout;
 import com.cohenadair.anglerslog.utilities.Utils;
 import com.cohenadair.anglerslog.views.TextInputView;
 import com.cohenadair.anglerslog.views.TitleSubTitleView;
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
+
+import java.util.ArrayList;
 
 /**
  * The ManageFishingSpotFragment is used to add and edit fishing spots. This ManageContentFragment
@@ -27,14 +29,13 @@ import com.google.android.gms.maps.model.LatLng;
  */
 public class ManageFishingSpotFragment extends ManageContentFragment {
 
-    private static final String TAG_MAP = "FishingSpotMap";
-    private static final float ZOOM = 15;
-
     private TextInputView mNameView;
     private TitleSubTitleView mLatitudeView;
     private TitleSubTitleView mLongitudeView;
+    private DraggableMapFragment mMapFragment;
     private GoogleMap mMap;
 
+    private Location mLocation;
     private ManageObjectSpec mManageObjectSpec;
     private InitializeInterface mInitializeInterface;
     private OnVerifyInterface mOnVerifyInterface;
@@ -72,6 +73,10 @@ public class ManageFishingSpotFragment extends ManageContentFragment {
     @Override
     public ManageObjectSpec getManageObjectSpec() {
         return mManageObjectSpec;
+    }
+
+    public void setLocation(Location location) {
+        mLocation = location;
     }
 
     public void setManageObjectSpec(ManageObjectSpec manageObjectSpec) {
@@ -132,7 +137,14 @@ public class ManageFishingSpotFragment extends ManageContentFragment {
 
         // move the camera to the current fishing spot
         if (isEditing())
-            updateCamera(new LatLng(getNewFishingSpot().getLatitude(), getNewFishingSpot().getLongitude()));
+            updateCamera(getNewFishingSpot().getCoordinates());
+        else if (mLocation != null) {
+            // if the location already has fishing spots, move the camera to one
+            // this is simply for user convenience
+            ArrayList<UserDefineObject> fishingSpots = mLocation.getFishingSpots();
+            if (fishingSpots.size() > 0)
+                updateCamera(((FishingSpot)fishingSpots.get(0)).getCoordinates());
+        }
     }
 
     private void initNameView(View view) {
@@ -150,13 +162,12 @@ public class ManageFishingSpotFragment extends ManageContentFragment {
     }
 
     private void initMapFragment() {
-        final DraggableMapFragment mapFragment =
-                (DraggableMapFragment)getChildFragmentManager().findFragmentById(R.id.fishing_spot_map);
+        mMapFragment = (DraggableMapFragment)getChildFragmentManager().findFragmentById(R.id.fishing_spot_map);
 
-        mapFragment.setLocationEnabled(true);
-        mapFragment.setLocationUpdatesEnabled(true);
+        mMapFragment.setLocationEnabled(true);
+        mMapFragment.setLocationUpdatesEnabled(true);
 
-        mapFragment.getMapAsync(new DraggableMapFragment.InteractionListener() {
+        mMapFragment.getMapAsync(new DraggableMapFragment.InteractionListener() {
             @Override
             public void onMapReady(GoogleMap map) {
                 mMap = map;
@@ -164,16 +175,16 @@ public class ManageFishingSpotFragment extends ManageContentFragment {
             }
 
             @Override
-            public void onLocationUpdate(Location location) {
+            public void onLocationUpdate(android.location.Location location) {
                 if (isEditing())
                     return;
 
                 updateCamera(new LatLng(location.getLatitude(), location.getLongitude()));
-                mapFragment.setLocationUpdatesEnabled(false);
+                mMapFragment.setLocationUpdatesEnabled(false);
             }
         });
 
-        mapFragment.setOnDragListener(new GoogleMapLayout.OnDragListener() {
+        mMapFragment.setOnDragListener(new GoogleMapLayout.OnDragListener() {
             @Override
             public void onDrag(MotionEvent motionEvent) {
                 if (mMap != null)
@@ -183,7 +194,7 @@ public class ManageFishingSpotFragment extends ManageContentFragment {
     }
 
     private void updateCamera(LatLng loc) {
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(loc, ZOOM), 2000, null);
+        mMapFragment.updateCamera(loc);
         updateCoordinateViews(loc);
     }
 }
