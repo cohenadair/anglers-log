@@ -310,7 +310,7 @@ public class Catch extends PhotoUserDefineObject {
     }
 
     public String getFishingSpotAsString() {
-        return (mFishingSpot != null) ? mFishingSpot.getLocationName() + " - " + mFishingSpot.getName() : "";
+        return (mFishingSpot != null) ? mFishingSpot.getDisplayName() : "";
     }
 
     public String getWaterClarityAsString() {

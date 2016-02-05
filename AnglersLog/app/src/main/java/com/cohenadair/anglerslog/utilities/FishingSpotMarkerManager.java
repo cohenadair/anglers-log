@@ -1,6 +1,7 @@
 package com.cohenadair.anglerslog.utilities;
 
 import android.content.Context;
+import android.graphics.Point;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -9,8 +10,11 @@ import android.widget.TextView;
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.model.user_defines.FishingSpot;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -34,6 +38,7 @@ public class FishingSpotMarkerManager {
     private ArrayList<UserDefineObject> mFishingSpots;
     private HashMap<String, MarkerSpec> mMarkerSpecMap;
     private GoogleMap mMap;
+    private boolean mShowFishingSpotLocation;
 
     public interface InteractionListener {
         void onMarkerClick(Marker marker, int index);
@@ -54,8 +59,16 @@ public class FishingSpotMarkerManager {
         initMapListeners();
     }
 
+    public FishingSpotMarkerManager(Context context, LinearLayout mapContainer, GoogleMap map) {
+        this(context, mapContainer, map, null);
+    }
+
     public void setFishingSpots(ArrayList<UserDefineObject> fishingSpots) {
         mFishingSpots = fishingSpots;
+    }
+
+    public void setShowFishingSpotLocation(boolean showFishingSpotLocation) {
+        mShowFishingSpotLocation = showFishingSpotLocation;
     }
 
     public void updateMarkers() {
@@ -82,7 +95,7 @@ public class FishingSpotMarkerManager {
 
             // add fishing spot information to be accessed later
             MarkerSpec spec = new MarkerSpec(
-                    spot.getName(),
+                    mShowFishingSpotLocation ? spot.getDisplayName() : spot.getName(),
                     spot.getCoordinatesAsString(getString(R.string.lat), getString(R.string.lng)),
                     spot.getNumberOfCatches() + " " + getString(R.string.number_caught)
             );
@@ -93,6 +106,17 @@ public class FishingSpotMarkerManager {
 
     public void showInfoWindowAtIndex(int index) {
         mMarkers.get(index).showInfoWindow();
+    }
+
+    public void showAllMarkers() {
+        LatLngBounds.Builder builder = new LatLngBounds.Builder();
+        for (Marker marker : mMarkers)
+            builder.include(marker.getPosition());
+
+        Point size = Utils.getScreenSize(mContext);
+        LatLngBounds bounds = builder.build();
+        CameraUpdate update = CameraUpdateFactory.newLatLngBounds(bounds, size.x, size.y, 100);
+        mMap.animateCamera(update);
     }
 
     private void initMapListeners() {

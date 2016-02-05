@@ -81,6 +81,11 @@ public class FishingSpot extends UserDefineObject {
         return getLocation().getName();
     }
 
+    @Override
+    public String getDisplayName() {
+        return getLocationName() + " - " + getName();
+    }
+
     /**
      * Gets a string representation of the FishingSpot's coordinates.
      * @param lat "Latitude" string.

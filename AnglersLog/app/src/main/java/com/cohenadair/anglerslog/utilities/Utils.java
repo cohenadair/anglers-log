@@ -237,6 +237,19 @@ public class Utils {
     }
 
     /**
+     * Gets the screen size in pixels.
+     * @param context The context used to get the screen size.
+     * @return A Point object representing the screen size, in pixels.
+     */
+    @NonNull
+    public static Point getScreenSize(Context context) {
+        return new Point(
+                context.getResources().getDisplayMetrics().widthPixels,
+                context.getResources().getDisplayMetrics().heightPixels
+        );
+    }
+
+    /**
      * Checks to see if the current context is two-pane.
      * @param context The Context to check.
      * @return True if two-pane; false otherwise.

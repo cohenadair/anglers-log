@@ -1,13 +1,8 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/location_map_container"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
-    <fragment
-        android:id="@+id/map"
-        android:name="com.cohenadair.anglerslog.fragments.DraggableMapFragment"
-        android:layout_width="match_parent"
-        android:layout_height="300dp"/>
 
 </LinearLayout>
