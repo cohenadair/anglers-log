@@ -283,13 +283,21 @@ public class LogbookTest {
         loc5.addFishingSpot(new FishingSpot("Spot1"));
         loc5.addFishingSpot(new FishingSpot("Spot2"));
         assertTrue(Logbook.removeLocation(loc5.getId()));
-        assertTrue(Logbook.getBaitCount() == 0);
+        assertTrue(Logbook.getLocationCount() == 0);
 
         // get multiple
         Logbook.addLocation(loc0);
         Logbook.addLocation(loc1);
         ArrayList<UserDefineObject> locs = Logbook.getLocations();
         assertTrue(locs.size() == 2);
+
+        // get all fishing spots
+        loc0.addFishingSpot(new FishingSpot("Spot 1"));
+        loc0.addFishingSpot(new FishingSpot("Spot 2"));
+        loc1.addFishingSpot(new FishingSpot("Spot 1"));
+        loc1.addFishingSpot(new FishingSpot("Spot 2"));
+        loc1.addFishingSpot(new FishingSpot("Spot 3"));
+        assertTrue(Logbook.getAllFishingSpots().size() == 5);
     }
 
     @Test

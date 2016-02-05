@@ -393,6 +393,15 @@ public class Logbook {
         return (obj == null) ? null : (FishingSpot)obj;
     }
 
+    public static ArrayList<UserDefineObject> getAllFishingSpots() {
+        return QueryHelper.queryUserDefines(QueryHelper.queryUserDefines(FishingSpotTable.NAME, null, null), new QueryHelper.UserDefineQueryInterface() {
+            @Override
+            public UserDefineObject getObject(UserDefineCursor cursor) {
+                return new FishingSpotCursor(cursor).getFishingSpot();
+            }
+        });
+    }
+
     /**
      * Checks to see if the Location already exists in the database.
      *
