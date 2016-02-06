@@ -100,9 +100,11 @@
 }
 
 - (id)objectNamed:(NSString *)aName {
-    for (id obj in [self activeSet])
-        if ([[obj name] isEqualToString:[aName capitalizedString]])
+    for (id obj in [self activeSet]) {
+        NSString *name = [obj name];
+        if (name && ([name caseInsensitiveCompare:aName] == NSOrderedSame))
             return obj;
+    }
     
     return nil;
 }
