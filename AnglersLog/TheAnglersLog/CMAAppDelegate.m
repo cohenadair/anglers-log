@@ -19,11 +19,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // initialize Instabug
-    [Instabug startWithToken:@"00957cd4e3f99f77e904c7bb54cc93dc" captureSource:IBGCaptureSourceUIKit invocationEvent:IBGInvocationEventRightEdgePan];
-    [Instabug setFeedbackSentAlertText:[NSString stringWithFormat:@"Thank you for helping improve %@!", APP_NAME]];
-    [Instabug setIsTrackingCrashes:YES];
-    [Instabug setBugHeaderText:@"Report a Bug"];
-    [Instabug setFeedbackHeaderText:@"Requests and Feedback"];
+    [Instabug startWithToken:@"00957cd4e3f99f77e904c7bb54cc93dc" invocationEvent:IBGInvocationEventRightEdgePan];
     
     // initialize Crittercism
     [Crittercism enableWithAppID:@"569e5966cb99e10e00c7ed69"];

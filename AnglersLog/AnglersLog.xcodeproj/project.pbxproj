@@ -16,6 +16,7 @@
 		0D128FB31AD5D7490004CABE /* zip.c in Sources */ = {isa = PBXBuildFile; fileRef = 0D128FAC1AD5D7490004CABE /* zip.c */; };
 		0D128FB41AD5D7490004CABE /* SSZipArchive.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D128FAF1AD5D7490004CABE /* SSZipArchive.m */; };
 		0D128FB61AD5D7600004CABE /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D128FB51AD5D7600004CABE /* libz.dylib */; };
+		0D1EC98A1C6664E400CBD819 /* Instabug.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DCAD6421AA4FF540040B03B /* Instabug.framework */; };
 		0D23B2711A7713C900E89736 /* TheAnglersLog.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 0D23B26F1A7713C900E89736 /* TheAnglersLog.xcdatamodeld */; };
 		0D23B2741A78102B00E89736 /* CMAImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D23B2731A78102B00E89736 /* CMAImage.m */; };
 		0D248B0F1AB0C82200093290 /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D248B0E1AB0C82200093290 /* iAd.framework */; };
@@ -147,7 +148,6 @@
 		0DCAD63A1AA37D160040B03B /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DCAD6391AA37D160040B03B /* ImageIO.framework */; };
 		0DCAD63C1AA37D230040B03B /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DCAD63B1AA37D230040B03B /* MobileCoreServices.framework */; };
 		0DCAD6431AA4FF540040B03B /* Instabug.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 0DCAD6411AA4FF540040B03B /* Instabug.bundle */; };
-		0DCAD6441AA4FF540040B03B /* Instabug.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DCAD6421AA4FF540040B03B /* Instabug.framework */; };
 		0DCAD6461AA4FFBA0040B03B /* libc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DCAD6451AA4FFBA0040B03B /* libc++.dylib */; };
 		0DCAD6481AA4FFC80040B03B /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DCAD6471AA4FFC80040B03B /* CoreMotion.framework */; };
 		0DCAD64A1AA4FFD20040B03B /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DCAD6491AA4FFD20040B03B /* CoreTelephony.framework */; };
@@ -424,6 +424,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0D1EC98A1C6664E400CBD819 /* Instabug.framework in Frameworks */,
 				0D2F4BA31C4EFC7000DF7948 /* Crittercism.framework in Frameworks */,
 				0D128FB61AD5D7600004CABE /* libz.dylib in Frameworks */,
 				0D5584CE1ABF59C200719554 /* StoreKit.framework in Frameworks */,
@@ -436,7 +437,6 @@
 				0DCAD6481AA4FFC80040B03B /* CoreMotion.framework in Frameworks */,
 				0DCAD6461AA4FFBA0040B03B /* libc++.dylib in Frameworks */,
 				0DCAD63C1AA37D230040B03B /* MobileCoreServices.framework in Frameworks */,
-				0DCAD6441AA4FF540040B03B /* Instabug.framework in Frameworks */,
 				0DCAD63A1AA37D160040B03B /* ImageIO.framework in Frameworks */,
 				0D5608121A6F0F3000EE0437 /* CoreData.framework in Frameworks */,
 				0DCC26571A520DD300738F04 /* SystemConfiguration.framework in Frameworks */,
