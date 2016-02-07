@@ -38,6 +38,7 @@ dependencies {
     compile 'com.android.support:cardview-v7:23.1.1'
     compile 'com.android.support:recyclerview-v7:23.1.1'
     compile 'com.google.android.gms:play-services-location:8.4.0'
+    compile 'commons-io:commons-io:2.4'
     compile 'de.hdodenhof:circleimageview:2.0.0'
     compile 'com.github.lecho:hellocharts-library:1.5.8@aar'
     compile 'com.github.lzyzsd.randomcolor:library:1.0.0'
