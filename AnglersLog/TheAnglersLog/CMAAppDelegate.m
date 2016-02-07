@@ -19,7 +19,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // initialize Instabug
-    [Instabug startWithToken:@"00957cd4e3f99f77e904c7bb54cc93dc" invocationEvent:IBGInvocationEventRightEdgePan];
+    [Instabug startWithToken:@"74b1aa82cf70c705dcb0752940c7110b" invocationEvent:IBGInvocationEventRightEdgePan];
     
     // initialize Crittercism
     [Crittercism enableWithAppID:@"569e5966cb99e10e00c7ed69"];
