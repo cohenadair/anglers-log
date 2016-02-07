@@ -9,7 +9,6 @@ import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import com.cohenadair.anglerslog.R;
 
@@ -22,7 +21,6 @@ import com.cohenadair.anglerslog.R;
 public class ImportFragment extends DialogFragment {
 
     private AlertDialog mAlertDialog;
-    private TextView mMessageView;
     private ProgressBar mProgressBar;
 
     private InteractionListener mCallbacks;
@@ -50,9 +48,6 @@ public class ImportFragment extends DialogFragment {
 
     private View getContentView() {
         View view = getActivity().getLayoutInflater().inflate(R.layout.dialog_import, null);
-
-        mMessageView = (TextView)view.findViewById(R.id.text_view);
-        mMessageView.setText(R.string.import_dialog_message);
 
         mProgressBar = (ProgressBar)view.findViewById(R.id.progress_bar);
         mProgressBar.setVisibility(View.GONE);
