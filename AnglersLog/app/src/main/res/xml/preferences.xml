@@ -17,9 +17,18 @@
         android:defaultValue="true"/>
 
     <Preference
+        android:key="@string/pref_import"
+        android:title="@string/import_name"
+        android:summary="@string/import_summary"/>
+
+    <Preference
+        android:key="@string/pref_export"
+        android:title="@string/export"
+        android:summary="@string/export_summary"/>
+
+    <Preference
         android:key="@string/pref_about_group"
         android:title="@string/about_setting"
-        android:persistent="false">
-    </Preference>
+        android:persistent="false"/>
 
 </PreferenceScreen>

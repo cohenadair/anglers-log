@@ -48,8 +48,20 @@ public class Utils {
     public static final int MANAGE_ALERT_EDIT = 0;
     public static final int MANAGE_ALERT_DELETE = 1;
 
+    /**
+     * Checks to see if the current Android version is KitKat (4.4) or newer.
+     * @return True if KitKat or newer; false otherwise.
+     */
+    public static boolean isKitKatOrNewer() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
+    }
+
     public static void showToast(Context context, int resId) {
-        Toast.makeText(context, resId, Toast.LENGTH_SHORT).show();
+        showToast(context, context.getResources().getString(resId));
+    }
+
+    public static void showToast(Context context, String msg) {
+        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
     }
 
     public static void showSnackbar(View view, String msg) {
@@ -415,4 +427,5 @@ public class Utils {
                 "https://www.instagram.com/explore/tags/" + context.getResources().getString(hashTagResId)
         );
     }
+
 }

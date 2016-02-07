@@ -15,6 +15,8 @@
     <string name="pref_google_maps_terms">pref_google_maps_terms</string>
     <string name="pref_icons8_terms">pref_icons8_terms</string>
     <string name="pref_version">pref_version</string>
+    <string name="pref_import">pref_import</string>
+    <string name="pref_export">pref_export</string>
     <string name="google_maps_terms_title">Google Maps Terms &amp; Privacy</string>
     <string name="icons8_terms_title">Icons8 Terms &amp; Privacy</string>
     <string name="icons8_terms">Some icons used in Anglers\' Log were developed by <a href="https://icons8.com/">Icons8</a>.\n\nIcons8 provides thousands of free icons for both personal and commercial use.</string>
@@ -34,6 +36,14 @@
     <string name="metric">Metric</string>
     <string name="about_setting">About, Terms &amp; Privacy</string>
     <string name="version">Version</string>
+    <string name="import_name">Import</string>
+    <string name="import_summary">Transfer data from another device platform, such as iOS.</string>
+    <string name="import_title">Select a zip file</string>
+    <string name="import_confirm">Confirm Import</string>
+    <string name="import_dialog_message">This may take several minutes.</string>
+    <string name="import_success">Import successful.</string>
+    <string name="export">Export</string>
+    <string name="export_summary">Save data to be transferred to a new device platform, such as iOS.</string>
 
     <string name="error">Error</string>
     <string name="photos">Photos</string>
