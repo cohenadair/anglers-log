@@ -1,6 +1,7 @@
 package com.cohenadair.anglerslog.settings;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.support.v7.preference.PreferenceFragmentCompat;
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.backup.ImportFragment;
 import com.cohenadair.anglerslog.model.Importer;
+import com.cohenadair.anglerslog.model.Logbook;
 import com.cohenadair.anglerslog.utilities.LogbookPreferences;
 import com.cohenadair.anglerslog.utilities.Utils;
 
@@ -34,6 +36,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         initUnits();
         initImport();
         initExport();
+        initReset();
         initAbout();
     }
 
@@ -88,7 +91,6 @@ public class SettingsFragment extends PreferenceFragmentCompat {
      */
     private void initImport() {
         Preference importPref = findPreference(getResources().getString(R.string.pref_import));
-
         importPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
@@ -103,11 +105,26 @@ public class SettingsFragment extends PreferenceFragmentCompat {
 
     private void initExport() {
         Preference export = findPreference(getResources().getString(R.string.pref_export));
-
         export.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 return false;
+            }
+        });
+    }
+
+    private void initReset() {
+        Preference reset = findPreference(getResources().getString(R.string.pref_reset));
+        reset.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                Utils.showResetConfirm(getContext(), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Logbook.reset();
+                    }
+                });
+                return true;
             }
         });
     }
