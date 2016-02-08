@@ -20,6 +20,9 @@ public class AnglersLogApplication extends Application {
         LogbookPreferences.init(getApplicationContext());
         PhotoUtils.init(getApplicationContext());
         PhotoUtils.cleanPhotosAsync();
+
+        // needs to be called after initializing
+        Logbook.setDefaults();
     }
 
 }

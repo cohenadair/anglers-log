@@ -32,6 +32,7 @@ import com.drew.metadata.exif.ExifIFD0Directory;
 
 import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.ref.WeakReference;
@@ -356,6 +357,23 @@ public class PhotoUtils {
             int longestSideLength = mContext.getResources().getInteger(R.integer.max_photo_size);
             Bitmap scaledBitmap = fixOrientation(srcUri, scaledBitmap(srcUri, longestSideLength));
             PhotoCache.savePhoto(scaledBitmap, destFile);
+        }
+    }
+
+    public static void saveImageResource(int resId, String fileName) {
+        File destFile = privatePhotoFile(fileName);
+        if (destFile == null)
+            return;
+
+        Bitmap bitmap = BitmapFactory.decodeResource(mContext.getResources(), resId);
+
+        try {
+            FileOutputStream out = new FileOutputStream(destFile);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+            out.flush();
+            out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

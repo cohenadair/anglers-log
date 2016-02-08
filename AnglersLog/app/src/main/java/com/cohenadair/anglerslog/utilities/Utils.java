@@ -132,18 +132,26 @@ public class Utils {
                 .show();
     }
 
-    public static void showDeleteConfirm(Context context, DialogInterface.OnClickListener onConfirm) {
+    public static void showConfirmationDialog(Context context, int titleResId, int msgResId, int buttonResId, DialogInterface.OnClickListener onConfirm) {
         new AlertDialog.Builder(context)
-                .setTitle(context.getResources().getString(R.string.action_confirm))
-                .setMessage(R.string.msg_confirm_delete)
+                .setTitle(titleResId)
+                .setMessage(msgResId)
                 .setNegativeButton(R.string.button_cancel, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();
                     }
                 })
-                .setPositiveButton(R.string.action_delete, onConfirm)
+                .setPositiveButton(buttonResId, onConfirm)
                 .show();
+    }
+
+    public static void showDeleteConfirm(Context context, DialogInterface.OnClickListener onConfirm) {
+        showConfirmationDialog(context, R.string.action_confirm, R.string.msg_confirm_delete, R.string.action_delete, onConfirm);
+    }
+
+    public static void showResetConfirm(Context context, DialogInterface.OnClickListener onReset) {
+        showConfirmationDialog(context, R.string.confirm, R.string.reset_confirm, R.string.reset, onReset);
     }
 
     public static void showDeleteOption(Context context, int msgId, DialogInterface.OnClickListener onConfirm) {
