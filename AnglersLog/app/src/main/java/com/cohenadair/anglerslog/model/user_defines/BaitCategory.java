@@ -1,5 +1,10 @@
 package com.cohenadair.anglerslog.model.user_defines;
 
+import com.cohenadair.anglerslog.model.backup.Json;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 /**
  * The BaitCategory object stores information on a single Bait category.
  *
@@ -21,6 +26,10 @@ public class BaitCategory extends UserDefineObject {
 
     public BaitCategory(UserDefineObject obj, boolean keepId) {
         super(obj, keepId);
+    }
+
+    public BaitCategory(JSONObject jsonObject) throws JSONException {
+        super(jsonObject.getString(Json.NAME));
     }
 
 }

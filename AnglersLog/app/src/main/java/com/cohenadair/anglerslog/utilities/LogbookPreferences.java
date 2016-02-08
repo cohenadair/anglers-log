@@ -62,6 +62,13 @@ public class LogbookPreferences {
         return Integer.parseInt(PreferenceManager.getDefaultSharedPreferences(mContext).getString(mContext.getResources().getString(R.string.pref_units), ""));
     }
 
+    public static void setUnits(int units) {
+        PreferenceManager.getDefaultSharedPreferences(mContext)
+                .edit()
+                .putString(mContext.getResources().getString(R.string.pref_units), Integer.toString(units))
+                .apply();
+    }
+
     public static boolean getAutoBackup() {
         return PreferenceManager.getDefaultSharedPreferences(mContext).getBoolean(mContext.getResources().getString(R.string.pref_auto_backup), true);
     }

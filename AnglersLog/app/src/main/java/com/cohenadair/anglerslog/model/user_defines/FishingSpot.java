@@ -3,7 +3,11 @@ package com.cohenadair.anglerslog.model.user_defines;
 import android.content.ContentValues;
 
 import com.cohenadair.anglerslog.model.Logbook;
+import com.cohenadair.anglerslog.model.backup.Json;
 import com.google.android.gms.maps.model.LatLng;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.UUID;
 
@@ -41,6 +45,15 @@ public class FishingSpot extends UserDefineObject {
 
     public FishingSpot(UserDefineObject obj, boolean keepId) {
         super(obj, keepId);
+    }
+
+    public FishingSpot(JSONObject jsonObject) throws JSONException {
+        super(jsonObject.getString(Json.NAME));
+
+        // read in coordinates
+        JSONObject coordinatesJson = jsonObject.getJSONObject(Json.COORDINATES);
+        mLatitude = Double.parseDouble(coordinatesJson.getString(Json.LATITUDE));
+        mLongitude = Double.parseDouble(coordinatesJson.getString(Json.LONGITUDE));
     }
 
     //region Getters & Setters

@@ -122,6 +122,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         Logbook.reset();
+                        Utils.showToast(getContext(), R.string.reset_success);
                     }
                 });
                 return true;

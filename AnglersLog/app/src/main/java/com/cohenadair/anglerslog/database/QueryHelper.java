@@ -102,8 +102,16 @@ public class QueryHelper {
     }
 
     public static UserDefineObject queryUserDefine(String table, UUID id, UserDefineQueryInterface callbacks) {
+        return queryUserDefine(table, UserDefineTable.Columns.ID, id.toString(), callbacks);
+    }
+
+    public static UserDefineObject queryUserDefine(String table, String name, UserDefineQueryInterface callbacks) {
+        return queryUserDefine(table, UserDefineTable.Columns.NAME, name, callbacks);
+    }
+
+    public static UserDefineObject queryUserDefine(String table, String column, String columnValue, UserDefineQueryInterface callbacks) {
         UserDefineObject obj = null;
-        UserDefineCursor cursor = queryUserDefines(table, UserDefineTable.Columns.ID + " = ?", new String[]{id.toString()});
+        UserDefineCursor cursor = queryUserDefines(table, column + " = ?", new String[] { columnValue });
 
         if (cursor.moveToFirst())
             obj = (callbacks == null) ? cursor.getObject() : callbacks.getObject(cursor);

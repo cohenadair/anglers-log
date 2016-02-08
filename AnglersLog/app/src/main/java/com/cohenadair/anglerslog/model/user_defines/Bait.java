@@ -8,6 +8,11 @@ import com.cohenadair.anglerslog.database.QueryHelper;
 import com.cohenadair.anglerslog.database.cursors.CatchCursor;
 import com.cohenadair.anglerslog.database.cursors.UserDefineCursor;
 import com.cohenadair.anglerslog.model.Logbook;
+import com.cohenadair.anglerslog.model.backup.Json;
+
+import org.apache.commons.io.FilenameUtils;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -64,6 +69,43 @@ public class Bait extends PhotoUserDefineObject {
     public Bait(UserDefineObject obj, boolean keepId) {
         super(obj, keepId);
         setPhotoTable(BaitPhotoTable.NAME);
+    }
+
+    public Bait(JSONObject jsonObject) throws JSONException {
+        this(jsonObject.getString(Json.NAME), null);
+
+        // importing from iOS will have no associated BaitCategory
+        BaitCategory baitCategory = null;
+        try {
+            String baitCategoryName = jsonObject.getString(Json.BAIT_CATEGORY);
+            baitCategory = Logbook.getBaitCategory(baitCategoryName);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        // if there is no import category use "Other"
+        // create "Other" if it doesn't already exist
+        if (baitCategory == null) {
+            baitCategory = Logbook.getBaitCategory("Other");
+            if (baitCategory == null) {
+                baitCategory = new BaitCategory("Other");
+                Logbook.addBaitCategory(baitCategory);
+            }
+        }
+
+        mCategory = baitCategory;
+        mDescription = Json.stringOrNull(jsonObject.getString(Json.BAIT_DESCRIPTION));
+        mSize = Json.stringOrNull(jsonObject.getString(Json.SIZE));
+        mColor = Json.stringOrNull(jsonObject.getString(Json.COLOR));
+        mType = jsonObject.getInt(Json.BAIT_TYPE);
+
+        JSONObject jsonImage = jsonObject.getJSONObject(Json.IMAGE);
+        try {
+            String name = FilenameUtils.getName(jsonImage.getString(Json.IMAGE_PATH));
+            addPhoto(name);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
     //endregion
 

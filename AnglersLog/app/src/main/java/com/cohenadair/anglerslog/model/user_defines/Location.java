@@ -4,6 +4,11 @@ import com.cohenadair.anglerslog.database.QueryHelper;
 import com.cohenadair.anglerslog.database.cursors.FishingSpotCursor;
 import com.cohenadair.anglerslog.database.cursors.UserDefineCursor;
 import com.cohenadair.anglerslog.model.Logbook;
+import com.cohenadair.anglerslog.model.backup.Json;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -36,6 +41,18 @@ public class Location extends UserDefineObject {
 
     public Location(UserDefineObject obj, boolean keepId) {
         super(obj, keepId);
+    }
+
+    public Location(JSONObject jsonObject) throws JSONException {
+        super(jsonObject.getString(Json.NAME));
+
+        JSONArray fishingSpotsJson = jsonObject.getJSONArray(Json.FISHING_SPOTS);
+        ArrayList<UserDefineObject> fishingSpots = new ArrayList<>();
+
+        for (int i = 0; i < fishingSpotsJson.length(); i++)
+            fishingSpots.add(new FishingSpot(fishingSpotsJson.getJSONObject(i)));
+
+        setFishingSpots(fishingSpots);
     }
 
     //region Getters & Setters

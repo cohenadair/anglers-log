@@ -33,7 +33,11 @@ import com.cohenadair.anglerslog.model.user_defines.Trip;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import com.cohenadair.anglerslog.model.user_defines.WaterClarity;
 import com.cohenadair.anglerslog.utilities.LogbookPreferences;
+import com.cohenadair.anglerslog.utilities.PhotoUtils;
 
+import org.apache.commons.io.FileUtils;
+
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.UUID;
@@ -69,7 +73,6 @@ public class Logbook {
 
     public static void init(Context context) {
         init(context, new LogbookHelper(context).getWritableDatabase());
-        setDefaults();
     }
 
     public static void init(Context context, SQLiteDatabase database) {
@@ -87,23 +90,69 @@ public class Logbook {
     /**
      * Set some default UserDefineObjects if there aren't any.
      */
-    private static void setDefaults() {
+    public static void setDefaults() {
         if (getBaitCategoryCount() <= 0) {
-            Log.d(TAG, "Adding default bait category");
-
-            addBaitCategory(new BaitCategory("Woolly Bugger"));
-            addBaitCategory(new BaitCategory("Yarn Fly"));
-            addBaitCategory(new BaitCategory("Bead"));
+            addBaitCategory(new BaitCategory("Lure"));
+            addBaitCategory(new BaitCategory("Minnow"));
+            addBaitCategory(new BaitCategory("Fly"));
         }
 
         if (getSpeciesCount() <= 0) {
-            Log.d(TAG, "Adding default species.");
-
             addSpecies(new Species("Steelhead"));
             addSpecies(new Species("Pike"));
             addSpecies(new Species("Bass - Smallmouth"));
             addSpecies(new Species("Salmon - Coho"));
         }
+
+        if (getFishingMethodCount() <= 0) {
+            addFishingMethod(new FishingMethod("Boat"));
+            addFishingMethod(new FishingMethod("Shore"));
+            addFishingMethod(new FishingMethod("Ice"));
+            addFishingMethod(new FishingMethod("Trolling"));
+        }
+
+        if (getWaterClarityCount() <= 0) {
+            addWaterClarity(new WaterClarity("Crystal Clear"));
+            addWaterClarity(new WaterClarity("Clear"));
+            addWaterClarity(new WaterClarity("Muddy"));
+        }
+
+        if (getBaitCount() <= 0) {
+            BaitCategory baitCategory = getBaitCategory("Lure");
+            if (baitCategory == null)
+                addBaitCategory(new BaitCategory("Lure"));
+
+            String spinner = "spinner_blue_fox.png";
+            String rap = "rippin_rap.png";
+            PhotoUtils.saveImageResource(R.drawable.spinner_blue_fox, spinner);
+            PhotoUtils.saveImageResource(R.drawable.rippin_rap, rap);
+
+            Bait bait = new Bait("Spinner - Blue Fox", baitCategory);
+            bait.setType(Bait.TYPE_ARTIFICIAL);
+            bait.setSize("6");
+            bait.setColor("Silver");
+            bait.addPhoto(spinner);
+            Logbook.addBait(bait);
+
+            bait = new Bait("Rippin' Rap", baitCategory);
+            bait.setType(Bait.TYPE_ARTIFICIAL);
+            bait.setSize("2");
+            bait.setColor("Blue Chrome");
+            bait.addPhoto(rap);
+            Logbook.addBait(bait);
+        }
+    }
+
+    /**
+     * Completely resets the database.
+     */
+    public static void reset() {
+        File data = new File(mDatabase.getPath());
+        mDatabase.close();
+        FileUtils.deleteQuietly(data);
+
+        init(mContext);
+        setDefaults();
     }
 
     //region Getters & Setters
@@ -255,7 +304,15 @@ public class Logbook {
     }
 
     public static BaitCategory getBaitCategory(UUID id) {
-        UserDefineObject obj = QueryHelper.queryUserDefine(BaitCategoryTable.NAME, id, new QueryHelper.UserDefineQueryInterface() {
+        return getBaitCategory(BaitCategoryTable.Columns.ID, id.toString());
+    }
+
+    public static BaitCategory getBaitCategory(String name) {
+        return getBaitCategory(BaitCategoryTable.Columns.NAME, name);
+    }
+
+    private static BaitCategory getBaitCategory(String column, String columnValue) {
+        UserDefineObject obj = QueryHelper.queryUserDefine(BaitCategoryTable.NAME, column, columnValue, new QueryHelper.UserDefineQueryInterface() {
             @Override
             public UserDefineObject getObject(UserDefineCursor cursor) {
                 return new BaitCategoryCursor(cursor).getBaitCategory();
@@ -372,7 +429,15 @@ public class Logbook {
     }
 
     public static Location getLocation(UUID id) {
-        UserDefineObject obj = QueryHelper.queryUserDefine(LocationTable.NAME, id, new QueryHelper.UserDefineQueryInterface() {
+        return getLocation(LocationTable.Columns.ID, id.toString());
+    }
+
+    public static Location getLocation(String name) {
+        return getLocation(LocationTable.Columns.NAME, name);
+    }
+
+    private static Location getLocation(String column, String columnValue) {
+        UserDefineObject obj = QueryHelper.queryUserDefine(LocationTable.NAME, column, columnValue, new QueryHelper.UserDefineQueryInterface() {
             @Override
             public UserDefineObject getObject(UserDefineCursor cursor) {
                 return new LocationCursor(cursor).getLocation();
@@ -383,7 +448,15 @@ public class Logbook {
     }
 
     public static FishingSpot getFishingSpot(UUID id) {
-        UserDefineObject obj = QueryHelper.queryUserDefine(FishingSpotTable.NAME, id, new QueryHelper.UserDefineQueryInterface() {
+        return getFishingSpot(FishingSpotTable.Columns.ID, id.toString());
+    }
+
+    public static FishingSpot getFishingSpot(String name) {
+        return getFishingSpot(FishingSpotTable.Columns.NAME, name);
+    }
+
+    private static FishingSpot getFishingSpot(String column, String columnValue) {
+        UserDefineObject obj = QueryHelper.queryUserDefine(FishingSpotTable.NAME, column, columnValue, new QueryHelper.UserDefineQueryInterface() {
             @Override
             public UserDefineObject getObject(UserDefineCursor cursor) {
                 return new FishingSpotCursor(cursor).getFishingSpot();

@@ -4,6 +4,7 @@ import android.content.ContentResolver;
 import android.net.Uri;
 import android.os.Handler;
 
+import com.cohenadair.anglerslog.model.backup.JsonParser;
 import com.cohenadair.anglerslog.utilities.PhotoUtils;
 
 import org.apache.commons.io.IOUtils;
@@ -85,7 +86,7 @@ public class Importer {
 
         // convert String to JSON
         try {
-            JSONObject json = new JSONObject(jsonStr.toString());
+            JsonParser.parse(new JSONObject(jsonStr.toString()));
         } catch (JSONException e) {
             e.printStackTrace();
         }
