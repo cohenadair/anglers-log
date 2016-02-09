@@ -18,25 +18,42 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * The JsonParser class is used to parse the JSON when importing Logbook data.
- * Created by Cohen Adair on 2016-02-07.
+ * The JsonImporter class is used to parse a given {@link JSONObject} and convert its properties
+ * into Logbook model objects, and save them to the database.
+ *
+ * JsonImporter should be used in conjunction with {@link Importer}.
+ *
+ * @author Cohen Adair
  */
-public class JsonParser {
+public class JsonImporter {
 
-    private static final String TAG = "JsonParser";
+    private static final String TAG = "JsonImporter";
 
     private interface InteractionListener {
         void onAddObject(JSONObject obj) throws JSONException;
     }
 
     public static void parse(JSONObject json) throws JSONException {
-        parseUserDefines(json.getJSONObject(Json.JOURNAL).getJSONArray(Json.USER_DEFINES));
+        JSONObject journalJson = json.getJSONObject(Json.JOURNAL);
+
+        parseUserDefines(journalJson.getJSONArray(Json.USER_DEFINES));
+        parseCatches(journalJson.getJSONArray(Json.ENTRIES));
+        parseTrips(journalJson.getJSONArray(Json.TRIPS));
+
         LogbookPreferences.setUnits(json.getInt(Json.MEASUREMENT_SYSTEM));
     }
 
-    private static void parseUserDefines(JSONArray userDefines) throws JSONException {
-        for (int i = 0; i < userDefines.length(); i++) {
-            JSONObject obj = userDefines.getJSONObject(i);
+    private static void parseTrips(JSONArray tripsJson) throws JSONException {
+
+    }
+
+    private static void parseCatches(JSONArray catchesJson) throws JSONException {
+
+    }
+
+    private static void parseUserDefines(JSONArray userDefinesJson) throws JSONException {
+        for (int i = 0; i < userDefinesJson.length(); i++) {
+            JSONObject obj = userDefinesJson.getJSONObject(i);
             HashMap<String, UserDefineJson> userDefineJsonMap = getUserDefineJsonMap();
 
             for (Map.Entry<String, UserDefineJson> entry : userDefineJsonMap.entrySet()) {

@@ -1,14 +1,15 @@
 package com.cohenadair.anglerslog.model.backup;
 
 /**
- * The Json class is a wrapper for all JSON Strings used for importing and exporting.
- * Created by Cohen Adair on 2016-02-07.
+ * The Json class is a wrapper for all JSON Strings used for importing and exporting Logbook data.
+ * @author Cohen Adair
  */
 public class Json {
-
     public static final String JOURNAL = "journal";
     public static final String NAME = "name";
     public static final String USER_DEFINES = "userDefines";
+    public static final String ENTRIES = "entries";
+    public static final String TRIPS = "trips";
     public static final String MEASUREMENT_SYSTEM = "measurementSystem";
 
     public static final String NAME_FISHING_METHODS = "Fishing Methods";

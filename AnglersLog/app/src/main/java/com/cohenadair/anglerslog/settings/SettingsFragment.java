@@ -11,7 +11,7 @@ import android.support.v7.preference.PreferenceFragmentCompat;
 
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.backup.ImportFragment;
-import com.cohenadair.anglerslog.model.Importer;
+import com.cohenadair.anglerslog.model.backup.Importer;
 import com.cohenadair.anglerslog.model.Logbook;
 import com.cohenadair.anglerslog.utilities.LogbookPreferences;
 import com.cohenadair.anglerslog.utilities.Utils;

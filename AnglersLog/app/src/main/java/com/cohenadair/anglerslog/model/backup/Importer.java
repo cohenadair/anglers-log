@@ -1,10 +1,9 @@
-package com.cohenadair.anglerslog.model;
+package com.cohenadair.anglerslog.model.backup;
 
 import android.content.ContentResolver;
 import android.net.Uri;
 import android.os.Handler;
 
-import com.cohenadair.anglerslog.model.backup.JsonParser;
 import com.cohenadair.anglerslog.utilities.PhotoUtils;
 
 import org.apache.commons.io.IOUtils;
@@ -21,9 +20,8 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 /**
- * The Importer class is used to import data from a .zip archive.
- *
- * Created by Cohen Adair on 2016-02-07.
+ * The Importer class is used to import data from a given {@link Uri} (i.e. a zip archive).
+ * @author Cohen Adair
  */
 public class Importer {
 
@@ -59,13 +57,17 @@ public class Importer {
             String name = entry.getName();
 
             if (name.endsWith(".json"))
-                importLogbook(zip, entry);
-            //else
-                //importImage(zip, entry);
+                importLogbook(zip);
+            else
+                importImage(zip, entry);
         }
 
         zip.close();
 
+        /**
+         * Handler.post() is used to run the callbacks on the original thread, not the new one
+         * created by {@link #importFromUri(ContentResolver, Uri, OnProgressListener)}.
+         */
         if (mCallbacks != null)
             mHandler.post(new Runnable() {
                 @Override
@@ -75,7 +77,7 @@ public class Importer {
             });
     }
 
-    private static void importLogbook(ZipInputStream in, ZipEntry entry) throws IOException {
+    private static void importLogbook(ZipInputStream in) throws IOException {
         StringBuilder jsonStr = new StringBuilder();
         BufferedReader reader = new BufferedReader(new InputStreamReader(in));
 
@@ -86,7 +88,7 @@ public class Importer {
 
         // convert String to JSON
         try {
-            JsonParser.parse(new JSONObject(jsonStr.toString()));
+            JsonImporter.parse(new JSONObject(jsonStr.toString()));
         } catch (JSONException e) {
             e.printStackTrace();
         }
