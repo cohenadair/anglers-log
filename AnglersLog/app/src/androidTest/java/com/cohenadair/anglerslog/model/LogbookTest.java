@@ -154,6 +154,7 @@ public class LogbookTest {
         assertTrue(Logbook.addBaitCategory(category1));
         assertFalse(Logbook.addBaitCategory(category1));
         assertTrue(Logbook.getBaitCategoryCount() == 1);
+        assertTrue(Logbook.getBaitCategory("Minnow") != null);
 
         // edit
         assertTrue(Logbook.editBaitCategory(category1.getId(), category2));
@@ -261,6 +262,7 @@ public class LogbookTest {
         assertTrue(Logbook.addLocation(loc1));
         assertFalse(Logbook.addLocation(loc1));
         assertTrue(Logbook.getLocationCount() == 1);
+        assertTrue(Logbook.getLocation("Goderich") != null);
 
         // exists
         Location dupLoc = new Location("Goderich");

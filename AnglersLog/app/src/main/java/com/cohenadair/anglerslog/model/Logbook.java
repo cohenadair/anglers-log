@@ -56,7 +56,7 @@ import static com.cohenadair.anglerslog.database.LogbookSchema.TripTable;
 import static com.cohenadair.anglerslog.database.LogbookSchema.WaterClarityTable;
 
 /**
- * The Logbook class is a monostate class storing all of the user's log data.
+ * The Logbook class is a "monostate" class storing all of the user's log data.
  * @author Cohen Adair
  */
 public class Logbook {
@@ -341,7 +341,26 @@ public class Logbook {
 
     //region Bait Manipulation
     public static ArrayList<UserDefineObject> getBaits() {
-        return QueryHelper.queryUserDefines(QueryHelper.queryBaits(null, null), new QueryHelper.UserDefineQueryInterface() {
+        return getBaits(null, null);
+    }
+
+    /**
+     * Gets all {@link Bait} objects associated with the given {@link BaitCategory}.
+     * @param baitCategory The BaitCategory.
+     * @return An ArrayList of {@link Bait} objects.
+     */
+    public static ArrayList<UserDefineObject> getBaits(BaitCategory baitCategory) {
+        return getBaits(BaitTable.Columns.CATEGORY_ID + " = ?", new String[]{baitCategory.idAsString()});
+    }
+
+    /**
+     * Gets all {@link Bait} objects based on the given WHERE clause.
+     * @param whereClause The WHERE clause.
+     * @param args The WHERE clause arguments.
+     * @return An ArrayList of {@link Bait} objects matching the WHERE clause.
+     */
+    private static ArrayList<UserDefineObject> getBaits(String whereClause, String[] args) {
+        return QueryHelper.queryUserDefines(QueryHelper.queryBaits(whereClause, args), new QueryHelper.UserDefineQueryInterface() {
             @Override
             public UserDefineObject getObject(UserDefineCursor cursor) {
                 return new BaitCursor(cursor).getBait();
@@ -388,21 +407,17 @@ public class Logbook {
     }
 
     /**
-     * Gets an ordered array of bait categories with their respective baits.
-     *
+     * Gets an ordered array of {@link BaitCategory} objects and their respective {@link Bait}
+     * objects.
      * @return An ArrayList of BaitCategory and Bait objects.
      */
     public static ArrayList<UserDefineObject> getBaitsAndCategories() {
         ArrayList<UserDefineObject> result = new ArrayList<>();
         ArrayList<UserDefineObject> categories = getBaitCategories();
-        ArrayList<UserDefineObject> baits = getBaits();
 
         for (UserDefineObject category : categories) {
             result.add(category);
-
-            for (UserDefineObject bait : baits)
-                if (((Bait)bait).getCategoryId().equals(category.getId()))
-                    result.add(bait);
+            result.addAll(getBaits((BaitCategory) category));
         }
 
         return result;
@@ -449,10 +464,6 @@ public class Logbook {
 
     public static FishingSpot getFishingSpot(UUID id) {
         return getFishingSpot(FishingSpotTable.Columns.ID, id.toString());
-    }
-
-    public static FishingSpot getFishingSpot(String name) {
-        return getFishingSpot(FishingSpotTable.Columns.NAME, name);
     }
 
     private static FishingSpot getFishingSpot(String column, String columnValue) {
@@ -720,10 +731,6 @@ public class Logbook {
 
     public static String getTemperatureUnits() {
         return getTemperatureUnits(isImperial());
-    }
-
-    public static String getSpeedUnits() {
-        return getSpeedUnits(isImperial());
     }
 
     public static String getTemperatureUnits(boolean isImperial) {
