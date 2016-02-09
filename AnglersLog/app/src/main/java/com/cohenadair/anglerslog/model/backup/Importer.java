@@ -32,10 +32,22 @@ public class Importer {
     private static OnProgressListener mCallbacks;
     private static Handler mHandler;
 
+    /**
+     * Used to determine UI behavior during different times in the importing process.
+     */
     public interface OnProgressListener {
         void onFinish();
     }
 
+    /**
+     * Takes a given {@link Uri} of a zip archive and imports its data to the application's
+     * Logbook. This method should always be called after some sort of UI interaction, such as a
+     * button click.
+     *
+     * @param contentResolver The {@link ContentResolver} used to open input streams.
+     * @param uri The Uri of the zip archive.
+     * @param onProgress Callbacks for importing progress.
+     */
     public static void importFromUri(ContentResolver contentResolver, Uri uri, OnProgressListener onProgress) {
         mContentResolver = contentResolver;
         mUri = uri;
@@ -45,6 +57,13 @@ public class Importer {
         new Thread(new UnzipRunnable()).start();
     }
 
+    /**
+     * Handles all importing using the class's {@link #mUri} object. This method should always be
+     * run in a background thread.
+     *
+     * @throws IOException An IOException is thrown if there is a problem opening or traversing the
+     *                     class's {@link #mUri} object.
+     */
     private static void importData() throws IOException {
         InputStream is = mContentResolver.openInputStream(mUri);
         if (is == null)
@@ -77,6 +96,13 @@ public class Importer {
             });
     }
 
+    /**
+     * Uses the given {@link ZipInputStream} to extract, parse, and import new Logbook data.
+     * @see #importData()
+     *
+     * @param in The {@link ZipInputStream} to read from.
+     * @throws IOException Throws an IOException if JSON cannot be read from the given input stream.
+     */
     private static void importLogbook(ZipInputStream in) throws IOException {
         StringBuilder jsonStr = new StringBuilder();
         BufferedReader reader = new BufferedReader(new InputStreamReader(in));
@@ -95,7 +121,8 @@ public class Importer {
     }
 
     /**
-     * Copies the image represented by the given ZipEntry to the applications pictures folder.
+     * Copies the image represented by the given ZipEntry to the application's pictures folder.
+     * @see #importData()
      *
      * @param in The InputStream being read from.
      * @param entry The ZipEntry containing the image to copy.
@@ -115,6 +142,9 @@ public class Importer {
         }
     }
 
+    /**
+     * A simple {@link Runnable} subclass for importing Logbook data.
+     */
     private static class UnzipRunnable implements Runnable {
         @Override
         public void run() {
