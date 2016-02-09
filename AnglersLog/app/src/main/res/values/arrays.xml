@@ -29,7 +29,7 @@
         <item>@string/metric</item>
     </string-array>
 
-    <!-- Correspond to constants found in Logbook.java -->
+    <!-- Correspond to UNIT_* constants found in Logbook.java -->
     <string-array name="pref_unitTypes_values">
         <item>0</item>
         <item>1</item>

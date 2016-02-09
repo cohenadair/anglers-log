@@ -34,12 +34,10 @@ public class BaitListManager {
         private TextView mCategoryDetailTextView;
         private TextView mCatchesTextView;
         private View mSeparator;
-        private View mView;
 
         public ViewHolder(View view, ListManager.Adapter adapter) {
             super(view, adapter);
 
-            mView = view;
             mAdapter = adapter;
             mImageView = (ImageView)view.findViewById(R.id.image_view);
             mCategoryTextView = (TextView)view.findViewById(R.id.category_text_view);
@@ -79,15 +77,22 @@ public class BaitListManager {
                 boolean isLast = mAdapter.getItem(position + 1) instanceof BaitCategory;
                 mSeparator.setVisibility(isLast ? View.INVISIBLE : View.VISIBLE);
             }
+
+            mCategoryTextView.setVisibility(View.GONE);
+            initViewVisibility(View.VISIBLE);
         }
 
         public void setBaitCategory(BaitCategory category) {
             mCategoryTextView.setVisibility(View.VISIBLE);
             mCategoryTextView.setText(category.getName());
-            mNameTextView.setVisibility(View.GONE);
-            mCategoryDetailTextView.setVisibility(View.GONE);
-            mCatchesTextView.setVisibility(View.GONE);
-            mImageView.setVisibility(View.GONE);
+            initViewVisibility(View.GONE);
+        }
+
+        private void initViewVisibility(int visibility) {
+            mNameTextView.setVisibility(visibility);
+            mCategoryDetailTextView.setVisibility(visibility);
+            mCatchesTextView.setVisibility(visibility);
+            mImageView.setVisibility(visibility);
         }
     }
     //endregion
