@@ -7,8 +7,14 @@ import android.text.format.DateFormat;
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.database.QueryHelper;
 import com.cohenadair.anglerslog.model.Logbook;
+import com.cohenadair.anglerslog.model.backup.Json;
+import com.cohenadair.anglerslog.model.backup.JsonImporter;
 import com.cohenadair.anglerslog.model.utilities.UsedUserDefineObject;
 import com.cohenadair.anglerslog.utilities.UserDefineArrays;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -65,6 +71,41 @@ public class Trip extends UserDefineObject {
     public Trip(UserDefineObject obj, boolean keepId) {
         super(obj, keepId);
         init();
+    }
+
+    public Trip(JSONObject jsonTrip) throws JSONException {
+        this(jsonTrip.getString(Json.NAME));
+
+        mStartDate = new Date(jsonTrip.getLong(Json.START_DATE));
+        mEndDate = new Date(jsonTrip.getLong(Json.END_DATE));
+        mNotes = jsonTrip.getString(Json.NOTES);
+
+        // anglers
+        JSONArray jsonAnglers = jsonTrip.getJSONArray(Json.ANGLERS);
+        mUsedAnglers.setObjects(JsonImporter.parseUserDefineArray(jsonAnglers, new JsonImporter.OnGetObject() {
+            @Override
+            public UserDefineObject onGetObject(String name) {
+                return Logbook.getAngler(name);
+            }
+        }));
+
+        // locations
+        JSONArray jsonLocations = jsonTrip.getJSONArray(Json.LOCATIONS);
+        mUsedLocations.setObjects(JsonImporter.parseUserDefineArray(jsonLocations, new JsonImporter.OnGetObject() {
+            @Override
+            public UserDefineObject onGetObject(String name) {
+                return Logbook.getLocation(name);
+            }
+        }));
+
+        // catches
+        JSONArray jsonCatches = jsonTrip.getJSONArray(Json.CATCHES);
+        ArrayList<UserDefineObject> catches = new ArrayList<>();
+
+        for (int i = 0; i < jsonCatches.length(); i++)
+            catches.add(Logbook.getCatch(new Date(jsonCatches.getLong(i))));
+
+        mUsedCatches.setObjects(catches);
     }
 
     private void init() {
@@ -145,14 +186,6 @@ public class Trip extends UserDefineObject {
     public void setLocations(ArrayList<UserDefineObject> locations) {
         mUsedLocations.setObjects(locations);
     }
-
-    public int getLocationCount() {
-        return getLocations().size();
-    }
-
-    public boolean hasLocations() {
-        return getLocationCount() > 0;
-    }
     //endregion
 
     //region Catch Manipulation
@@ -167,14 +200,6 @@ public class Trip extends UserDefineObject {
 
     public void setCatches(ArrayList<UserDefineObject> catches) {
         mUsedCatches.setObjects(catches);
-    }
-
-    public int getCatchesCount() {
-        return getCatches().size();
-    }
-
-    public boolean hasCatches() {
-        return getCatchCount() > 0;
     }
 
     /**

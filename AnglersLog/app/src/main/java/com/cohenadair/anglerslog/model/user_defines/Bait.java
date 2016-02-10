@@ -2,6 +2,7 @@ package com.cohenadair.anglerslog.model.user_defines;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.util.Log;
 
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.database.QueryHelper;
@@ -9,6 +10,7 @@ import com.cohenadair.anglerslog.database.cursors.CatchCursor;
 import com.cohenadair.anglerslog.database.cursors.UserDefineCursor;
 import com.cohenadair.anglerslog.model.Logbook;
 import com.cohenadair.anglerslog.model.backup.Json;
+import com.cohenadair.anglerslog.model.backup.JsonImporter;
 
 import org.apache.commons.io.FilenameUtils;
 import org.json.JSONException;
@@ -27,6 +29,8 @@ import static com.cohenadair.anglerslog.database.LogbookSchema.CatchTable;
  * Created by Cohen Adair on 2015-11-03.
  */
 public class Bait extends PhotoUserDefineObject {
+
+    private static final String TAG = "Bait";
 
     /**
      * Correspond to resources array in arrays.xml.
@@ -74,10 +78,10 @@ public class Bait extends PhotoUserDefineObject {
     public Bait(JSONObject jsonObject) throws JSONException {
         this(jsonObject.getString(Json.NAME), null);
 
-        mCategory = Json.baitCategoryOrOther(jsonObject);
-        mDescription = Json.stringOrNull(jsonObject.getString(Json.BAIT_DESCRIPTION));
-        mSize = Json.stringOrNull(jsonObject.getString(Json.SIZE));
-        mColor = Json.stringOrNull(jsonObject.getString(Json.COLOR));
+        mCategory = JsonImporter.baitCategoryOrOther(jsonObject);
+        mDescription = JsonImporter.stringOrNull(jsonObject.getString(Json.BAIT_DESCRIPTION));
+        mSize = JsonImporter.stringOrNull(jsonObject.getString(Json.SIZE));
+        mColor = JsonImporter.stringOrNull(jsonObject.getString(Json.COLOR));
         mType = jsonObject.getInt(Json.BAIT_TYPE);
 
         JSONObject jsonImage = jsonObject.getJSONObject(Json.IMAGE);
@@ -85,7 +89,7 @@ public class Bait extends PhotoUserDefineObject {
             String name = FilenameUtils.getName(jsonImage.getString(Json.IMAGE_PATH));
             addPhoto(name);
         } catch (JSONException e) {
-            e.printStackTrace();
+            Log.d(TAG, "Bait has no photo.");
         }
     }
     //endregion

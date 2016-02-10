@@ -10,6 +10,7 @@ import com.cohenadair.anglerslog.database.QueryHelper;
 import com.cohenadair.anglerslog.model.Logbook;
 import com.cohenadair.anglerslog.model.Weather;
 import com.cohenadair.anglerslog.model.backup.Json;
+import com.cohenadair.anglerslog.model.backup.JsonImporter;
 import com.cohenadair.anglerslog.model.utilities.UsedUserDefineObject;
 import com.cohenadair.anglerslog.utilities.UserDefineArrays;
 import com.cohenadair.anglerslog.utilities.Utils;
@@ -132,14 +133,14 @@ public class Catch extends PhotoUserDefineObject {
     }
 
     public Catch(JSONObject catchJson) throws JSONException {
-        this(Json.parseDate(catchJson.getString(Json.DATE)));
+        this(JsonImporter.parseDate(catchJson.getString(Json.DATE)));
 
         mSpecies = Logbook.getSpecies(catchJson.getString(Json.FISH_SPECIES));
         mLength = catchJson.getInt(Json.FISH_LENGTH);
-        mWeight = catchJson.getInt(Json.FISH_WEIGHT) + Json.ouncesToDecimal(catchJson.getInt(Json.FISH_OUNCES));
+        mWeight = catchJson.getInt(Json.FISH_WEIGHT) + JsonImporter.ouncesToDecimal(catchJson.getInt(Json.FISH_OUNCES));
         mQuantity = catchJson.getInt(Json.FISH_QUANTITY);
         mCatchResult = CatchResult.fromInt(catchJson.getInt(Json.FISH_RESULT));
-        mBait = Logbook.getBait(catchJson.getString(Json.BAIT_USED), Json.baitCategoryOrOther(catchJson).getId());
+        mBait = Logbook.getBait(catchJson.getString(Json.BAIT_USED), JsonImporter.baitCategoryOrOther(catchJson).getId());
         mFishingSpot = Logbook.getFishingSpot(catchJson.getString(Json.FISHING_SPOT), Logbook.getLocation(catchJson.getString(Json.LOCATION)).getId());
         mWaterTemperature = catchJson.getInt(Json.WATER_TEMPERATURE);
         mWaterClarity = Logbook.getWaterClarity(catchJson.getString(Json.WATER_CLARITY));
@@ -155,14 +156,12 @@ public class Catch extends PhotoUserDefineObject {
 
         // fishing methods
         JSONArray fishingMethodsJson = catchJson.getJSONArray(Json.FISHING_METHOD_NAMES);
-        ArrayList<UserDefineObject> fishingMethods = new ArrayList<>();
-
-        for (int i = 0; i < fishingMethodsJson.length(); i++) {
-            FishingMethod fishingMethod = Logbook.getFishingMethod(fishingMethodsJson.getString(i));
-            fishingMethods.add(fishingMethod);
-        }
-
-        mUsedFishingMethods.setObjects(fishingMethods);
+        mUsedFishingMethods.setObjects(JsonImporter.parseUserDefineArray(fishingMethodsJson, new JsonImporter.OnGetObject() {
+            @Override
+            public UserDefineObject onGetObject(String name) {
+                return Logbook.getFishingMethod(name);
+            }
+        }));
 
         // weather data
         JSONObject weatherJson = catchJson.getJSONObject(Json.WEATHER_DATA);

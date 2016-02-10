@@ -10,6 +10,11 @@ The following are required updates for new `UserDefineObject` subclasses or modi
   > Note that if a property is a subclass of UserDefineObject, the `ClassName(ClassName obj, keepId)` must be called with `keepId = true` in the obejct's cloning constructor.
 * If the new `UserDefineObject` subclass has another `UserDefineObject` instance variable that is linked to a separate database table, create manipulation methods for that variable (see `PhotoUserDefineObject`).
 * The cloning constructor and `getContentValues()` should access the same number of properties, which should be equal to the object's declared instance variables.
+* Be sure to include *all* constructor variations.
+
+### Backup stuff:
+* Add the `UserDefineObject(JSONObject jsonObject)` constructor for importing.
+* Added required code to `JsonParser.java` to create the new objects from a `JSONObject`.
 	
 ### Database stuff:
 * Create or update a `Cursor` subclass for the new `UserDefineObject` subclasses.

@@ -133,8 +133,10 @@ public class Importer {
 
         File newFile = PhotoUtils.privatePhotoFile(entry.getName());
 
-        if (newFile == null || newFile.exists())
+        if (newFile == null || newFile.exists()) {
+            Log.d(TAG, "Image exists, skipping import.");
             return;
+        }
 
         try {
             FileOutputStream out = new FileOutputStream(newFile);

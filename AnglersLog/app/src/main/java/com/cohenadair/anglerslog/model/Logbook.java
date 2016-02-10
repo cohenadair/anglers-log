@@ -40,6 +40,7 @@ import org.apache.commons.io.FileUtils;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.UUID;
 
 import static com.cohenadair.anglerslog.database.LogbookSchema.AnglerTable;
@@ -201,7 +202,15 @@ public class Logbook {
     }
 
     public static Catch getCatch(UUID id) {
-        UserDefineObject obj = QueryHelper.queryUserDefine(CatchTable.NAME, id, new QueryHelper.UserDefineQueryInterface() {
+        return getCatch(CatchTable.Columns.ID, id.toString());
+    }
+
+    public static Catch getCatch(Date date) {
+        return getCatch(CatchTable.Columns.DATE, Long.toString(date.getTime()));
+    }
+
+    private static Catch getCatch(String column, String columnValue) {
+        UserDefineObject obj = QueryHelper.queryUserDefine(CatchTable.NAME, column, columnValue, new QueryHelper.UserDefineQueryInterface() {
             @Override
             public UserDefineObject getObject(UserDefineCursor cursor) {
                 return new CatchCursor(cursor).getCatch();
@@ -674,7 +683,15 @@ public class Logbook {
     }
 
     public static Angler getAngler(UUID id) {
-        UserDefineObject obj = QueryHelper.queryUserDefine(AnglerTable.NAME, id, new QueryHelper.UserDefineQueryInterface() {
+        return getAngler(AnglerTable.Columns.ID, id.toString());
+    }
+
+    public static Angler getAngler(String name) {
+        return getAngler(AnglerTable.Columns.NAME, name);
+    }
+
+    private static Angler getAngler(String column, String columnValue) {
+        UserDefineObject obj = QueryHelper.queryUserDefine(AnglerTable.NAME, column, columnValue, new QueryHelper.UserDefineQueryInterface() {
             @Override
             public UserDefineObject getObject(UserDefineCursor cursor) {
                 return new AnglerCursor(cursor).getAngler();

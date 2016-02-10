@@ -91,6 +91,7 @@ public class LogbookTest {
         Logbook.addSpecies(species0);
         Logbook.addSpecies(species1);
 
+
         Catch catch0 = new Catch(new Date());
         catch0.setSpecies(species0);
 
@@ -106,6 +107,7 @@ public class LogbookTest {
         assertTrue(Logbook.addCatch(catch1));
         assertFalse(Logbook.addCatch(catch1));
         assertTrue(Logbook.getCatchCount() == 1);
+        assertTrue(Logbook.getCatch(new Date(1444000000)) != null);
 
         // edit
         assertTrue(Logbook.editCatch(catch1.getId(), catch2));
@@ -382,6 +384,7 @@ public class LogbookTest {
         assertTrue(Logbook.addAngler(angler1));
         assertFalse(Logbook.addAngler(angler1));
         assertTrue(Logbook.getAnglerCount() == 1);
+        assertTrue(Logbook.getAngler("Eli Adair") != null);
 
         // edit
         assertTrue(Logbook.editAngler(angler1.getId(), angler2));

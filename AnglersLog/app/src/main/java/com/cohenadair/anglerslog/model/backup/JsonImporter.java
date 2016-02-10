@@ -10,6 +10,8 @@ import com.cohenadair.anglerslog.model.user_defines.Catch;
 import com.cohenadair.anglerslog.model.user_defines.FishingMethod;
 import com.cohenadair.anglerslog.model.user_defines.Location;
 import com.cohenadair.anglerslog.model.user_defines.Species;
+import com.cohenadair.anglerslog.model.user_defines.Trip;
+import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import com.cohenadair.anglerslog.model.user_defines.WaterClarity;
 import com.cohenadair.anglerslog.utilities.LogbookPreferences;
 
@@ -17,7 +19,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -32,8 +39,12 @@ public class JsonImporter {
 
     private static final String TAG = "JsonImporter";
 
-    private interface InteractionListener {
+    private interface OnAddObject {
         void onAddObject(JSONObject obj) throws JSONException;
+    }
+
+    public interface OnGetObject {
+        UserDefineObject onGetObject(String name);
     }
 
     public static void parse(JSONObject json) throws JSONException {
@@ -47,18 +58,25 @@ public class JsonImporter {
     }
 
     private static void parseTrips(JSONArray tripsJson) throws JSONException {
+        Log.d(TAG, "Importing trips...");
 
+        parseUserDefineJson(tripsJson, new UserDefineJson(Json.NAME_TRIPS, new OnAddObject() {
+            @Override
+            public void onAddObject(JSONObject obj) throws JSONException {
+                Logbook.addTrip(new Trip(obj));
+            }
+        }));
     }
 
     private static void parseCatches(JSONArray catchesJson) {
         Log.d(TAG, "Importing catches...");
 
-        for (int i = 0; i < catchesJson.length(); i++)
-            try {
-                Logbook.addCatch(new Catch(catchesJson.getJSONObject(i)));
-            } catch (JSONException e) {
-                e.printStackTrace();
+        parseUserDefineJson(catchesJson, new UserDefineJson(Json.NAME_CATCHES, new OnAddObject() {
+            @Override
+            public void onAddObject(JSONObject obj) throws JSONException {
+                Logbook.addCatch(new Catch(obj));
             }
+        }));
     }
 
     private static void parseUserDefines(JSONArray userDefinesJson) throws JSONException {
@@ -81,52 +99,166 @@ public class JsonImporter {
         }
     }
 
+    private static void parseUserDefineJson(JSONArray jsonArray, UserDefineJson userDefineJson) {
+        for (int i = 0; i < jsonArray.length(); i++)
+            try {
+                userDefineJson.getCallbacks().onAddObject(jsonArray.getJSONObject(i));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+    }
+
+    /**
+     * Gets an array of {@link UserDefineObject} based on the given JSONArray and callbacks.
+     * @see Trip constructor.
+     *
+     * @param jsonArray The JSONArray to parse.
+     * @param callbacks The callbacks for getting objects from the {@link Logbook}.
+     * @return An ArrayList of {@link UserDefineObject}.
+     * @throws JSONException Throws JSONException if there is ah error reading elements of the
+     *                       array.
+     */
+    public static ArrayList<UserDefineObject> parseUserDefineArray(JSONArray jsonArray, OnGetObject callbacks) throws JSONException {
+        ArrayList<UserDefineObject> objects = new ArrayList<>();
+
+        for (int i = 0; i < jsonArray.length(); i++)
+            objects.add(callbacks.onGetObject(jsonArray.getString(i)));
+
+        return objects;
+    }
+
+    /**
+     * @param jsonString The String.
+     * @return The input String if it is not empty, null otherwise.
+     */
+    public static String stringOrNull(String jsonString) {
+        return (jsonString == null || jsonString.isEmpty()) ? null : jsonString;
+    }
+
+    /**
+     * Gets a {@link Date} object from a given String.
+     * @see Json for date format.
+     *
+     * @param jsonString The String to be parsed.
+     * @return A {@link Date} object.
+     */
+    public static Date parseDate(String jsonString) {
+        try {
+            return new SimpleDateFormat(Json.DATE_FORMAT, Locale.US).parse(jsonString);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    /**
+     * Rounds the given ounces value up a quarter decimal. In the iPhone version of Anglers'
+     * Log, ounces are used for imperial rather than strictly decimal weights such as in the
+     * Android version.
+     *
+     * An input of 3 will return 0.25. An input of 8 will return 0.5.
+     *
+     * @param ounces The ounces to be converted. Value should be between 0 and 16.
+     * @return A decimal value close to the given ounce.
+     */
+    public static float ouncesToDecimal(int ounces) {
+        if (ounces == 0)
+            return 0;
+        if (ounces <= 4)
+            return (float)0.25;
+        else if (ounces <= 8)
+            return (float)0.5;
+        else if (ounces <= 12)
+            return (float)0.75;
+        else
+            return 1;
+    }
+
+    /**
+     * Used for importing from iOS where there may not be a {@link BaitCategory} associated with
+     * a {@link com.cohenadair.anglerslog.model.user_defines.Bait} or
+     * {@link com.cohenadair.anglerslog.model.user_defines.Catch}.
+     *
+     * @param jsonObject The JSONObject used to look for the bait category field.
+     * @return The associated {@link BaitCategory} or the "other" category if one doesn't exist.
+     */
+    public static BaitCategory baitCategoryOrOther(JSONObject jsonObject) {
+        // importing from iOS will have no associated BaitCategory
+        BaitCategory baitCategory = null;
+        try {
+            String baitCategoryName = jsonObject.getString(Json.BAIT_CATEGORY);
+            baitCategory = Logbook.getBaitCategory(baitCategoryName);
+        } catch (JSONException e) {
+            Log.d(TAG, "No " + Json.BAIT_CATEGORY + " field.");
+        }
+
+        // if there is no import category use "Other"
+        // create "Other" if it doesn't already exist
+        if (baitCategory == null) {
+            baitCategory = Logbook.getBaitCategory(Json.OTHER);
+            if (baitCategory == null) {
+                baitCategory = new BaitCategory(Json.OTHER);
+                Logbook.addBaitCategory(baitCategory);
+            }
+        }
+
+        return baitCategory;
+    }
+
+    /**
+     * Gets a Map for all UserDefineObject arrays that correspond to the JSON file. It is done this
+     * way only for compatibility with iOS exporting.
+     *
+     * @return A map of user define object names as keys, and a
+     * {@link com.cohenadair.anglerslog.model.backup.JsonImporter.UserDefineJson} as values.
+     */
     private static HashMap<String, UserDefineJson> getUserDefineJsonMap() {
         HashMap<String, UserDefineJson> map = new HashMap<>();
 
-        map.put(Json.NAME_FISHING_METHODS, new UserDefineJson(Json.FISHING_METHODS, new InteractionListener() {
+        map.put(Json.NAME_FISHING_METHODS, new UserDefineJson(Json.FISHING_METHODS, new OnAddObject() {
             @Override
             public void onAddObject(JSONObject obj) throws JSONException {
                 Logbook.addFishingMethod(new FishingMethod(obj));
             }
         }));
 
-        map.put(Json.NAME_LOCATIONS, new UserDefineJson(Json.LOCATIONS, new InteractionListener() {
+        map.put(Json.NAME_LOCATIONS, new UserDefineJson(Json.LOCATIONS, new OnAddObject() {
             @Override
             public void onAddObject(JSONObject obj) throws JSONException {
                 Logbook.addLocation(new Location(obj));
             }
         }));
 
-        map.put(Json.NAME_SPECIES, new UserDefineJson(Json.SPECIES, new InteractionListener() {
+        map.put(Json.NAME_SPECIES, new UserDefineJson(Json.SPECIES, new OnAddObject() {
             @Override
             public void onAddObject(JSONObject obj) throws JSONException {
                 Logbook.addSpecies(new Species(obj));
             }
         }));
 
-        map.put(Json.NAME_BAITS, new UserDefineJson(Json.BAITS, new InteractionListener() {
+        map.put(Json.NAME_BAITS, new UserDefineJson(Json.BAITS, new OnAddObject() {
             @Override
             public void onAddObject(JSONObject obj) throws JSONException {
                 Logbook.addBait(new Bait(obj));
             }
         }));
 
-        map.put(Json.NAME_WATER_CLARITIES, new UserDefineJson(Json.WATER_CLARITIES, new InteractionListener() {
+        map.put(Json.NAME_WATER_CLARITIES, new UserDefineJson(Json.WATER_CLARITIES, new OnAddObject() {
             @Override
             public void onAddObject(JSONObject obj) throws JSONException {
                 Logbook.addWaterClarity(new WaterClarity(obj));
             }
         }));
 
-        map.put(Json.NAME_ANGLERS, new UserDefineJson(Json.ANGLERS, new InteractionListener() {
+        map.put(Json.NAME_ANGLERS, new UserDefineJson(Json.ANGLERS, new OnAddObject() {
             @Override
             public void onAddObject(JSONObject obj) throws JSONException {
                 Logbook.addAngler(new Angler(obj));
             }
         }));
 
-        map.put(Json.NAME_BAIT_CATEGORIES, new UserDefineJson(Json.BAIT_CATEGORIES, new InteractionListener() {
+        map.put(Json.NAME_BAIT_CATEGORIES, new UserDefineJson(Json.BAIT_CATEGORIES, new OnAddObject() {
             @Override
             public void onAddObject(JSONObject obj) throws JSONException {
                 Logbook.addBaitCategory(new BaitCategory(obj));
@@ -136,12 +268,15 @@ public class JsonImporter {
         return map;
     }
 
+    /**
+     * Used to easily iterate through the Json.USER_DEFINES property in a Logbook's data file.
+     */
     private static class UserDefineJson {
 
         private String mName;
-        private InteractionListener mCallbacks;
+        private OnAddObject mCallbacks;
 
-        public UserDefineJson(String name, InteractionListener callbacks) {
+        public UserDefineJson(String name, OnAddObject callbacks) {
             mName = name;
             mCallbacks = callbacks;
         }
@@ -154,11 +289,11 @@ public class JsonImporter {
             mName = name;
         }
 
-        public InteractionListener getCallbacks() {
+        public OnAddObject getCallbacks() {
             return mCallbacks;
         }
 
-        public void setCallbacks(InteractionListener callbacks) {
+        public void setCallbacks(OnAddObject callbacks) {
             mCallbacks = callbacks;
         }
     }
