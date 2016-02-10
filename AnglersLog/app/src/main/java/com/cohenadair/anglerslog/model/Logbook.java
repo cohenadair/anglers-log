@@ -628,7 +628,15 @@ public class Logbook {
     }
 
     public static FishingMethod getFishingMethod(UUID id) {
-        UserDefineObject obj = QueryHelper.queryUserDefine(FishingMethodTable.NAME, id, new QueryHelper.UserDefineQueryInterface() {
+        return getFishingMethod(FishingMethodTable.Columns.ID, id.toString());
+    }
+
+    public static FishingMethod getFishingMethod(String name) {
+        return getFishingMethod(FishingMethodTable.Columns.NAME, name);
+    }
+
+    private static FishingMethod getFishingMethod(String column, String columnValue) {
+        UserDefineObject obj = QueryHelper.queryUserDefine(FishingMethodTable.NAME, column, columnValue, new QueryHelper.UserDefineQueryInterface() {
             @Override
             public UserDefineObject getObject(UserDefineCursor cursor) {
                 return new FishingMethodCursor(cursor).getFishingMethod();

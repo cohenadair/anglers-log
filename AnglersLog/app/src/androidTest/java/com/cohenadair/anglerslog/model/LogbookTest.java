@@ -349,6 +349,7 @@ public class LogbookTest {
         assertTrue(Logbook.addFishingMethod(method1));
         assertFalse(Logbook.addFishingMethod(method1));
         assertTrue(Logbook.getFishingMethodCount() == 1);
+        assertTrue(Logbook.getFishingMethod("Trolling") != null);
 
         // edit
         assertTrue(Logbook.editFishingMethod(method1.getId(), method2));
