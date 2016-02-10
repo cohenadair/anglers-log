@@ -62,6 +62,7 @@ public class LogbookTest {
         assertTrue(Logbook.addSpecies(species1));
         assertFalse(Logbook.addSpecies(species1));
         assertTrue(Logbook.getSpeciesCount() == 1);
+        assertTrue(Logbook.getSpecies("Bass") != null);
 
         // edit
         assertTrue(Logbook.editSpecies(species1.getId(), species2));
@@ -194,6 +195,7 @@ public class LogbookTest {
         assertTrue(Logbook.addBait(bait1));
         assertFalse(Logbook.addBait(bait1));
         assertTrue(Logbook.getBaitCount() == 1);
+        assertTrue(Logbook.getBait("Olive", bugger.getId()) != null);
 
         // exists
         Bait dupBait = new Bait("Olive", bugger);
@@ -300,6 +302,7 @@ public class LogbookTest {
         loc1.addFishingSpot(new FishingSpot("Spot 2"));
         loc1.addFishingSpot(new FishingSpot("Spot 3"));
         assertTrue(Logbook.getAllFishingSpots().size() == 5);
+        assertTrue(Logbook.getFishingSpot("Spot 1", loc0.getId()) != null);
     }
 
     @Test
@@ -313,6 +316,7 @@ public class LogbookTest {
         assertTrue(Logbook.addWaterClarity(charity1));
         assertFalse(Logbook.addWaterClarity(charity1));
         assertTrue(Logbook.getWaterClarityCount() == 1);
+        assertTrue(Logbook.getWaterClarity("Chocolate Milk") != null);
 
         // edit
         assertTrue(Logbook.editWaterClarity(charity1.getId(), charity2));

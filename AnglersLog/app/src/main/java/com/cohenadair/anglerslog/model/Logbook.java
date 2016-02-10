@@ -257,7 +257,15 @@ public class Logbook {
     }
 
     public static Species getSpecies(UUID id) {
-        UserDefineObject obj = QueryHelper.queryUserDefine(SpeciesTable.NAME, id, new QueryHelper.UserDefineQueryInterface() {
+        return getSpecies(SpeciesTable.Columns.ID, id.toString());
+    }
+
+    public static Species getSpecies(String name) {
+        return getSpecies(SpeciesTable.Columns.NAME, name);
+    }
+
+    private static Species getSpecies(String column, String columnValue) {
+        UserDefineObject obj = QueryHelper.queryUserDefine(SpeciesTable.NAME, column, columnValue, new QueryHelper.UserDefineQueryInterface() {
             @Override
             public UserDefineObject getObject(UserDefineCursor cursor) {
                 return new SpeciesCursor(cursor).getSpecies();
@@ -369,13 +377,35 @@ public class Logbook {
     }
 
     public static Bait getBait(UUID id) {
-        UserDefineObject obj = QueryHelper.queryUserDefine(BaitTable.NAME, id, new QueryHelper.UserDefineQueryInterface() {
+        return getBait(BaitTable.Columns.ID, id.toString());
+    }
+
+    public static Bait getBait(String name, UUID categoryId) {
+        UserDefineObject obj = QueryHelper.queryUserDefine(
+                BaitTable.NAME,
+                BaitTable.Columns.NAME + " = ? AND " + BaitTable.Columns.CATEGORY_ID + " = ?",
+                new String[]{ name, categoryId.toString() },
+                getBaitQueryInterface()
+        );
+        return baitOrNull(obj);
+    }
+
+    private static Bait getBait(String column, String columnValue) {
+        UserDefineObject obj = QueryHelper.queryUserDefine(BaitTable.NAME, column, columnValue, getBaitQueryInterface());
+        return baitOrNull(obj);
+    }
+
+    @NonNull
+    private static QueryHelper.UserDefineQueryInterface getBaitQueryInterface() {
+        return new QueryHelper.UserDefineQueryInterface() {
             @Override
             public UserDefineObject getObject(UserDefineCursor cursor) {
                 return new BaitCursor(cursor).getBait();
             }
-        });
+        };
+    }
 
+    private static Bait baitOrNull(UserDefineObject obj) {
         return (obj == null) ? null : (Bait)obj;
     }
 
@@ -466,14 +496,32 @@ public class Logbook {
         return getFishingSpot(FishingSpotTable.Columns.ID, id.toString());
     }
 
+    public static FishingSpot getFishingSpot(String name, UUID locationId) {
+        UserDefineObject obj = QueryHelper.queryUserDefine(
+                FishingSpotTable.NAME,
+                FishingSpotTable.Columns.NAME + " = ? AND " + FishingSpotTable.Columns.LOCATION_ID + " = ?",
+                new String[]{name, locationId.toString()},
+                getFishingSpotQueryInterface()
+        );
+        return fishingSpotOrNull(obj);
+    }
+
     private static FishingSpot getFishingSpot(String column, String columnValue) {
-        UserDefineObject obj = QueryHelper.queryUserDefine(FishingSpotTable.NAME, column, columnValue, new QueryHelper.UserDefineQueryInterface() {
+        UserDefineObject obj = QueryHelper.queryUserDefine(FishingSpotTable.NAME, column, columnValue, getFishingSpotQueryInterface());
+        return fishingSpotOrNull(obj);
+    }
+
+    @NonNull
+    private static QueryHelper.UserDefineQueryInterface getFishingSpotQueryInterface() {
+        return new QueryHelper.UserDefineQueryInterface() {
             @Override
             public UserDefineObject getObject(UserDefineCursor cursor) {
                 return new FishingSpotCursor(cursor).getFishingSpot();
             }
-        });
+        };
+    }
 
+    private static FishingSpot fishingSpotOrNull(UserDefineObject obj) {
         return (obj == null) ? null : (FishingSpot)obj;
     }
 
@@ -534,7 +582,15 @@ public class Logbook {
     }
 
     public static WaterClarity getWaterClarity(UUID id) {
-        UserDefineObject obj = QueryHelper.queryUserDefine(WaterClarityTable.NAME, id, new QueryHelper.UserDefineQueryInterface() {
+        return getWaterClarity(WaterClarityTable.Columns.ID, id.toString());
+    }
+
+    public static WaterClarity getWaterClarity(String name) {
+        return getWaterClarity(WaterClarityTable.Columns.NAME, name);
+    }
+
+    private static WaterClarity getWaterClarity(String column, String columnValue) {
+        UserDefineObject obj = QueryHelper.queryUserDefine(WaterClarityTable.NAME, column, columnValue, new QueryHelper.UserDefineQueryInterface() {
             @Override
             public UserDefineObject getObject(UserDefineCursor cursor) {
                 return new WaterClarityCursor(cursor).getWaterClarity();

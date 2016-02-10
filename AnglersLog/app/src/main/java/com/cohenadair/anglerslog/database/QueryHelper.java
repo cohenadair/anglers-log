@@ -105,13 +105,13 @@ public class QueryHelper {
         return queryUserDefine(table, UserDefineTable.Columns.ID, id.toString(), callbacks);
     }
 
-    public static UserDefineObject queryUserDefine(String table, String name, UserDefineQueryInterface callbacks) {
-        return queryUserDefine(table, UserDefineTable.Columns.NAME, name, callbacks);
+    public static UserDefineObject queryUserDefine(String table, String column, String columnValue, UserDefineQueryInterface callbacks) {
+        return queryUserDefine(table, column + " = ?", new String[] { columnValue }, callbacks);
     }
 
-    public static UserDefineObject queryUserDefine(String table, String column, String columnValue, UserDefineQueryInterface callbacks) {
+    public static UserDefineObject queryUserDefine(String table, String whereClause, String[] args, UserDefineQueryInterface callbacks) {
         UserDefineObject obj = null;
-        UserDefineCursor cursor = queryUserDefines(table, column + " = ?", new String[] { columnValue });
+        UserDefineCursor cursor = queryUserDefines(table, whereClause, args);
 
         if (cursor.moveToFirst())
             obj = (callbacks == null) ? cursor.getObject() : callbacks.getObject(cursor);
