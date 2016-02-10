@@ -3,6 +3,7 @@ package com.cohenadair.anglerslog.model.backup;
 import android.content.ContentResolver;
 import android.net.Uri;
 import android.os.Handler;
+import android.util.Log;
 
 import com.cohenadair.anglerslog.utilities.PhotoUtils;
 
@@ -128,6 +129,8 @@ public class Importer {
      * @param entry The ZipEntry containing the image to copy.
      */
     private static void importImage(ZipInputStream in, ZipEntry entry) {
+        Log.d(TAG, "Importing image: " + entry.getName() + "...");
+
         File newFile = PhotoUtils.privatePhotoFile(entry.getName());
 
         if (newFile == null || newFile.exists())

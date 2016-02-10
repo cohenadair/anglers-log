@@ -1,9 +1,12 @@
 package com.cohenadair.anglerslog.model.backup;
 
+import android.util.Log;
+
 import com.cohenadair.anglerslog.model.Logbook;
 import com.cohenadair.anglerslog.model.user_defines.Angler;
 import com.cohenadair.anglerslog.model.user_defines.Bait;
 import com.cohenadair.anglerslog.model.user_defines.BaitCategory;
+import com.cohenadair.anglerslog.model.user_defines.Catch;
 import com.cohenadair.anglerslog.model.user_defines.FishingMethod;
 import com.cohenadair.anglerslog.model.user_defines.Location;
 import com.cohenadair.anglerslog.model.user_defines.Species;
@@ -47,8 +50,15 @@ public class JsonImporter {
 
     }
 
-    private static void parseCatches(JSONArray catchesJson) throws JSONException {
+    private static void parseCatches(JSONArray catchesJson) {
+        Log.d(TAG, "Importing catches...");
 
+        for (int i = 0; i < catchesJson.length(); i++)
+            try {
+                Logbook.addCatch(new Catch(catchesJson.getJSONObject(i)));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
     }
 
     private static void parseUserDefines(JSONArray userDefinesJson) throws JSONException {
@@ -58,6 +68,7 @@ public class JsonImporter {
 
             for (Map.Entry<String, UserDefineJson> entry : userDefineJsonMap.entrySet()) {
                 UserDefineJson userDefineJson = entry.getValue();
+                Log.d(TAG, "Importing " + userDefineJson.getName() + "...");
 
                 try {
                     JSONArray arr = obj.getJSONArray(userDefineJson.getName());

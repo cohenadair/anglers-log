@@ -3,14 +3,21 @@ package com.cohenadair.anglerslog.model.user_defines;
 import android.content.ContentValues;
 import android.content.Context;
 import android.text.format.DateFormat;
+import android.util.Log;
 
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.database.QueryHelper;
 import com.cohenadair.anglerslog.model.Logbook;
 import com.cohenadair.anglerslog.model.Weather;
+import com.cohenadair.anglerslog.model.backup.Json;
 import com.cohenadair.anglerslog.model.utilities.UsedUserDefineObject;
 import com.cohenadair.anglerslog.utilities.UserDefineArrays;
 import com.cohenadair.anglerslog.utilities.Utils;
+
+import org.apache.commons.io.FilenameUtils;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -122,6 +129,53 @@ public class Catch extends PhotoUserDefineObject {
         super(obj, keepId);
         setPhotoTable(CatchPhotoTable.NAME);
         init();
+    }
+
+    public Catch(JSONObject catchJson) throws JSONException {
+        this(Json.parseDate(catchJson.getString(Json.DATE)));
+
+        mSpecies = Logbook.getSpecies(catchJson.getString(Json.FISH_SPECIES));
+        mLength = catchJson.getInt(Json.FISH_LENGTH);
+        mWeight = catchJson.getInt(Json.FISH_WEIGHT) + Json.ouncesToDecimal(catchJson.getInt(Json.FISH_OUNCES));
+        mQuantity = catchJson.getInt(Json.FISH_QUANTITY);
+        mCatchResult = CatchResult.fromInt(catchJson.getInt(Json.FISH_RESULT));
+        mBait = Logbook.getBait(catchJson.getString(Json.BAIT_USED), Json.baitCategoryOrOther(catchJson).getId());
+        mFishingSpot = Logbook.getFishingSpot(catchJson.getString(Json.FISHING_SPOT), Logbook.getLocation(catchJson.getString(Json.LOCATION)).getId());
+        mWaterTemperature = catchJson.getInt(Json.WATER_TEMPERATURE);
+        mWaterClarity = Logbook.getWaterClarity(catchJson.getString(Json.WATER_CLARITY));
+        mWaterDepth = catchJson.getInt(Json.WATER_DEPTH);
+        mNotes = catchJson.getString(Json.NOTES);
+
+        // images
+        JSONArray images = catchJson.getJSONArray(Json.IMAGES);
+        for (int i = 0; i < images.length(); i++) {
+            JSONObject image = images.getJSONObject(i);
+            addPhoto(FilenameUtils.getName(image.getString(Json.IMAGE_PATH)));
+        }
+
+        // fishing methods
+        JSONArray fishingMethodsJson = catchJson.getJSONArray(Json.FISHING_METHOD_NAMES);
+        ArrayList<UserDefineObject> fishingMethods = new ArrayList<>();
+
+        for (int i = 0; i < fishingMethodsJson.length(); i++) {
+            FishingMethod fishingMethod = Logbook.getFishingMethod(fishingMethodsJson.getString(i));
+            fishingMethods.add(fishingMethod);
+        }
+
+        mUsedFishingMethods.setObjects(fishingMethods);
+
+        // weather data
+        JSONObject weatherJson = catchJson.getJSONObject(Json.WEATHER_DATA);
+        try {
+            Weather weather = new Weather(
+                    weatherJson.getInt(Json.TEMPERATURE),
+                    (int) Float.parseFloat(weatherJson.getString(Json.WIND_SPEED)),
+                    weatherJson.getString(Json.SKY_CONDITIONS)
+            );
+            setWeather(weather);
+        } catch (JSONException e) {
+            Log.i(TAG, "JSON Catch has no weather data.");
+        }
     }
 
     private void init() {

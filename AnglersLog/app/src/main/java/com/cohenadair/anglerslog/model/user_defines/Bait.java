@@ -74,26 +74,7 @@ public class Bait extends PhotoUserDefineObject {
     public Bait(JSONObject jsonObject) throws JSONException {
         this(jsonObject.getString(Json.NAME), null);
 
-        // importing from iOS will have no associated BaitCategory
-        BaitCategory baitCategory = null;
-        try {
-            String baitCategoryName = jsonObject.getString(Json.BAIT_CATEGORY);
-            baitCategory = Logbook.getBaitCategory(baitCategoryName);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        // if there is no import category use "Other"
-        // create "Other" if it doesn't already exist
-        if (baitCategory == null) {
-            baitCategory = Logbook.getBaitCategory("Other");
-            if (baitCategory == null) {
-                baitCategory = new BaitCategory("Other");
-                Logbook.addBaitCategory(baitCategory);
-            }
-        }
-
-        mCategory = baitCategory;
+        mCategory = Json.baitCategoryOrOther(jsonObject);
         mDescription = Json.stringOrNull(jsonObject.getString(Json.BAIT_DESCRIPTION));
         mSize = Json.stringOrNull(jsonObject.getString(Json.SIZE));
         mColor = Json.stringOrNull(jsonObject.getString(Json.COLOR));
