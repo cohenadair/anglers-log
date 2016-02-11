@@ -16,6 +16,7 @@ import com.cohenadair.anglerslog.utilities.LayoutSpecManager;
 import com.cohenadair.anglerslog.utilities.LogbookPreferences;
 import com.cohenadair.anglerslog.utilities.NavigationManager;
 import com.cohenadair.anglerslog.utilities.Utils;
+import com.crittercism.app.Crittercism;
 
 import java.util.UUID;
 
@@ -49,6 +50,9 @@ public class MainActivity extends LayoutSpecActivity {
             showFragment();
 
         LogbookPreferences.setIsRootTwoPane(isTwoPane());
+
+        // initialize Crittercism
+        Crittercism.initialize(getApplicationContext(), "56a120776c33dc0f00f116ab");
     }
 
     /**
