@@ -25,7 +25,6 @@ import com.cohenadair.anglerslog.model.user_defines.Bait;
 import com.cohenadair.anglerslog.model.user_defines.Catch;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import com.drew.imaging.ImageMetadataReader;
-import com.drew.imaging.ImageProcessingException;
 import com.drew.metadata.Metadata;
 import com.drew.metadata.MetadataException;
 import com.drew.metadata.exif.ExifIFD0Directory;
@@ -224,7 +223,7 @@ public class PhotoUtils {
     private static Bitmap fixOrientation(Uri uri, Bitmap bmp) {
         String methodName = "fixOrientation()";
         BufferedInputStream bufferStream = null;
-        Metadata metadata = null;
+        Metadata metadata;
 
         try {
             InputStream inputStream = mContext.getContentResolver().openInputStream(uri);
@@ -238,10 +237,8 @@ public class PhotoUtils {
 
         if (bufferStream != null) {
             try {
-                metadata = ImageMetadataReader.readMetadata(bufferStream, false);
-            } catch (ImageProcessingException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
+                metadata = ImageMetadataReader.readMetadata(bufferStream);
+            } catch (Exception e) {
                 Log.e(TAG, "Error reading Metadata in " + methodName + " from Uri: " + uri.toString());
                 e.printStackTrace();
                 return bmp;
@@ -249,7 +246,7 @@ public class PhotoUtils {
 
             if (metadata != null) {
                 int orientation = 0;
-                ExifIFD0Directory exifIFD0Directory = metadata.getDirectory(ExifIFD0Directory.class);
+                ExifIFD0Directory exifIFD0Directory = metadata.getFirstDirectoryOfType(ExifIFD0Directory.class);
 
                 if (exifIFD0Directory != null && exifIFD0Directory.containsTag(ExifIFD0Directory.TAG_ORIENTATION))
                     try {
@@ -432,26 +429,14 @@ public class PhotoUtils {
     }
 
     /**
-     * Cleans up photo files in another thread. See `cleanPhotos(...)`.
+     * Cleans up photo files in another thread.
+     * @see #cleanPhotos()
      */
     public static void cleanPhotosAsync() {
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
                 cleanPhotos();
-                cleanCache();
-            }
-        });
-        thread.start();
-    }
-
-    /**
-     * Cleans up cache files in another thread. See `cleanPhotos(...)`.
-     */
-    public static void cleanCacheAsync() {
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
                 cleanCache();
             }
         });

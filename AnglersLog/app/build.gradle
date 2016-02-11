@@ -43,4 +43,5 @@ dependencies {
     compile 'com.github.lecho:hellocharts-library:1.5.8@aar'
     compile 'com.github.lzyzsd.randomcolor:library:1.0.0'
     compile 'com.crittercism:crittercism-android-agent:5.5.1'
+    compile 'com.adobe.xmp:xmpcore:5.1.2'
 }
