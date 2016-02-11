@@ -243,7 +243,7 @@
     <string name="success_trip">Successfully added trip.</string>
     <string name="success_trip_edit">Successfully updated trip.</string>
     <string name="success_trip_delete">Successfully deleted trip.</string>
-    <string name="trip_catches">Fish caught on this trip</string>
+    <string name="trip_catches">fish caught on this trip</string>
 
     <string name="error_camera_unavailable">The camera is currently unavailable on this device.</string>
     <string name="error_delete_primitive">is currently in use and cannot be deleted.</string>

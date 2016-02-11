@@ -13,6 +13,7 @@ import com.cohenadair.anglerslog.database.cursors.UserDefineCursor;
 import com.cohenadair.anglerslog.database.cursors.WeatherCursor;
 import com.cohenadair.anglerslog.model.Weather;
 import com.cohenadair.anglerslog.model.user_defines.Catch;
+import com.cohenadair.anglerslog.model.user_defines.FishingSpot;
 import com.cohenadair.anglerslog.model.user_defines.Location;
 import com.cohenadair.anglerslog.model.user_defines.Species;
 import com.cohenadair.anglerslog.model.user_defines.Trip;
@@ -74,8 +75,8 @@ public class QueryHelper {
     }
 
     @NonNull
-    public static CatchCursor queryCatches(String[] cols, String whereClause, String[] args) {
-        return new CatchCursor(mDatabase.query(CatchTable.NAME, cols, whereClause, args, null, null, null));
+    public static CatchCursor queryCatches(String column, String whereClause, String[] args) {
+        return new CatchCursor(mDatabase.query(CatchTable.NAME, new String[] { column }, whereClause, args, null, null, null));
     }
 
     @NonNull
@@ -248,7 +249,7 @@ public class QueryHelper {
     }
 
     public static boolean deleteUserDefine(String table, UUID id) {
-        return deleteQuery(table, UserDefineTable.Columns.ID + " = ?", new String[]{ id.toString() });
+        return deleteQuery(table, UserDefineTable.Columns.ID + " = ?", new String[]{id.toString()});
     }
 
     public static boolean updateUserDefine(String table, ContentValues contentValues, UUID id) {
@@ -287,78 +288,122 @@ public class QueryHelper {
     /**
      * Queries for the sum of the quantities for all the catches in a given {@link Trip}.
      *
+     * @see #getTotalCatchQuantity(Cursor)
+     *
      * @param trip The {@link Trip} for which to count catches.
      * @return The quantity of catches.
      */
     public static int queryTripsCatchCount(Trip trip) {
-        String totalQuantity = "totalQuantity";
-
-        // SELECT SUM(quantity) AS totalQuantity FROM Catch WHERE id IN (SELECT catchId FROM UsedCatch WHERE(tripId = givenId));
-        return querySingleValue(
-                totalQuantity,
-                "SELECT SUM(" + CatchTable.Columns.QUANTITY + ") AS " + totalQuantity + " " +
-                "FROM " + CatchTable.NAME + " " +
-                "WHERE " + CatchTable.Columns.ID + " IN (" +
-                    "SELECT " + UsedCatchTable.Columns.CATCH_ID + " " +
-                    "FROM " + UsedCatchTable.NAME + " " +
-                    "WHERE(" + UsedCatchTable.Columns.TRIP_ID + " = ?)" +
+        return getTotalCatchQuantity(queryCatches(
+                CatchTable.Columns.QUANTITY,
+                CatchTable.Columns.ID + " IN (" +
+                        "SELECT " + UsedCatchTable.Columns.CATCH_ID + " " +
+                        "FROM " + UsedCatchTable.NAME + " " +
+                        "WHERE(" + UsedCatchTable.Columns.TRIP_ID + " = ?)" +
                 ")",
-                new String[]{ trip.idAsString() });
+                new String[] { trip.idAsString() }
+        ));
     }
 
     /**
-     * Queries for the number of catches for a give {@link Trip} at a given {@link Location}.
+     * Queries for the number of catches for a given {@link Trip} at a given {@link Location}.
+     *
+     * @see #getTotalCatchQuantity(Cursor)
      *
      * @param trip The {@link Trip} object.
      * @param location The {@link Location} object.
      * @return The number of catches for the given trip at the given location.
      */
     public static int queryTripsLocationCatchCount(Trip trip, Location location) {
-        String totalQuantity = "totalQuantity";
-
-        return querySingleValue(
-                totalQuantity,
-                "SELECT SUM(" + CatchTable.Columns.QUANTITY + ") AS " + totalQuantity + " " +
-                "FROM " + CatchTable.NAME + " " +
-                "WHERE " + CatchTable.Columns.FISHING_SPOT_ID + " IN (" +
-                    "SELECT " + FishingSpotTable.Columns.ID + " " +
-                    "FROM " + FishingSpotTable.NAME + " " +
-                    "WHERE(" + FishingSpotTable.Columns.LOCATION_ID + " = ?)" +
+        return getTotalCatchQuantity(queryCatches(
+                CatchTable.Columns.QUANTITY,
+                CatchTable.Columns.FISHING_SPOT_ID + " IN (" +
+                        "SELECT " + FishingSpotTable.Columns.ID + " " +
+                        "FROM " + FishingSpotTable.NAME + " " +
+                        "WHERE(" + FishingSpotTable.Columns.LOCATION_ID + " = ?)" +
                 ") " +
                 "AND " + CatchTable.Columns.ID + " IN (" +
-                    "SELECT " + UsedCatchTable.Columns.CATCH_ID + " " +
-                    "FROM " + UsedCatchTable.NAME + " " +
-                    "WHERE(" + UsedCatchTable.Columns.TRIP_ID + " = ?)" +
+                        "SELECT " + UsedCatchTable.Columns.CATCH_ID + " " +
+                        "FROM " + UsedCatchTable.NAME + " " +
+                        "WHERE(" + UsedCatchTable.Columns.TRIP_ID + " = ?)" +
                 ")",
-                new String[]{ location.idAsString(), trip.idAsString() }
-        );
+                new String[] { location.idAsString(), trip.idAsString() }
+        ));
     }
 
+    /**
+     * Gets the number of catches made at the given {@link Location}.
+     *
+     * @see #getTotalCatchQuantity(Cursor)
+     *
+     * @param location The {@link Location} to check for catches.
+     * @return The number of catches made at the given {@link Location}.
+     */
     public static int queryLocationCatchCount(Location location) {
-        String totalQuantity = "totalQuantity";
-
-        return querySingleValue(
-                totalQuantity,
-                "SELECT SUM(" + CatchTable.Columns.QUANTITY + ") AS " + totalQuantity + " " +
-                "FROM " + CatchTable.NAME + " " +
-                "WHERE " + CatchTable.Columns.FISHING_SPOT_ID + " IN (" +
-                    "SELECT " + FishingSpotTable.Columns.ID + " " +
-                    "FROM " + FishingSpotTable.NAME + " " +
-                    "WHERE(" + FishingSpotTable.Columns.LOCATION_ID + " = ?)" +
-                ") ",
-                new String[]{ location.idAsString() }
-        );
+        return getTotalCatchQuantity(queryCatches(
+                CatchTable.Columns.QUANTITY,
+                CatchTable.Columns.FISHING_SPOT_ID + " IN (" +
+                        "SELECT " + FishingSpotTable.Columns.ID + " " +
+                        "FROM " + FishingSpotTable.NAME + " " +
+                        "WHERE (" + FishingSpotTable.Columns.LOCATION_ID + " = ?)" +
+                ")",
+                new String[] { location.idAsString() }
+        ));
     }
 
+    public static int queryFishingSpotCatchCount(FishingSpot fishingSpot) {
+        return getTotalCatchQuantity(queryCatches(
+                CatchTable.Columns.QUANTITY,
+                CatchTable.Columns.FISHING_SPOT_ID + " IN (" +
+                        "SELECT " + FishingSpotTable.Columns.ID + " " +
+                        "FROM " + FishingSpotTable.NAME + " " +
+                        "WHERE (" + FishingSpotTable.Columns.ID + " = ?)" +
+                ")",
+                new String[] { fishingSpot.idAsString() }
+        ));
+    }
+
+    /**
+     * Gets the {@link Catch} quantities that match the given parameters. For example, one might
+     * check CatchTable.Columns.SPECIES_ID for the total number of catches for that particualr
+     * species.
+     *
+     * @see #getTotalCatchQuantity(Cursor)
+     *
+     * @param object The {@link UserDefineObject} to look for in the given column.
+     * @param catchColumn The table column to compare the given object to.
+     * @return The number of catches based on the given criteria.
+     */
     public static int queryUserDefineCatchCount(UserDefineObject object, String catchColumn) {
-        String total = "total";
-        return querySingleValue(
-                total,
-                "SELECT SUM(" + CatchTable.Columns.QUANTITY + ") AS " + total + " " +
-                "FROM " + CatchTable.NAME + " " +
-                "WHERE (" + catchColumn + " = ?)",
-                new String[]{ object.idAsString() }
-        );
+        return getTotalCatchQuantity(queryCatches(
+                CatchTable.Columns.QUANTITY,
+                catchColumn + " = ?",
+                new String[] { object.idAsString() }
+        ));
+    }
+
+    /**
+     * Adds together all values from the given {@link Cursor}.
+     *
+     * Note that SQLite's SUM() function is not used here because if the user doesn't fill out
+     * the catch quantity field, that property is set to -1. This method assumes that any catch
+     * without an assigned quantity has a quantity of 1.
+     *
+     * @param cursor The {@link Cursor} to iterate.
+     * @return The total value of each value in the given {@link Cursor}.
+     */
+    private static int getTotalCatchQuantity(Cursor cursor) {
+        int count = 0;
+
+        if (cursor.moveToFirst())
+            while (!cursor.isAfterLast()){
+                int c = cursor.getInt(cursor.getColumnIndex(CatchTable.Columns.QUANTITY));
+                count += (c > 0) ? c : 1; // if the quantity wasn't set, assume 1 was caught
+                cursor.moveToNext();
+            }
+
+        cursor.close();
+        return count;
     }
 
     /**
@@ -386,17 +431,5 @@ public class QueryHelper {
     @Nullable
     public static Catch queryCatchMax(String column) {
         return queryCatchMax(column, null);
-    }
-
-    private static int querySingleValue(String colName, String sql, String[] args) {
-        int value = 0;
-
-        Cursor cursor = mDatabase.rawQuery(sql, args);
-
-        if (cursor.moveToFirst())
-            value = cursor.getInt(cursor.getColumnIndex(colName));
-
-        cursor.close();
-        return value;
     }
 }

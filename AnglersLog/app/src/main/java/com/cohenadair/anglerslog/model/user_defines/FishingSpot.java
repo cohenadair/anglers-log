@@ -2,6 +2,7 @@ package com.cohenadair.anglerslog.model.user_defines;
 
 import android.content.ContentValues;
 
+import com.cohenadair.anglerslog.database.QueryHelper;
 import com.cohenadair.anglerslog.model.Logbook;
 import com.cohenadair.anglerslog.model.backup.Json;
 import com.google.android.gms.maps.model.LatLng;
@@ -110,7 +111,7 @@ public class FishingSpot extends UserDefineObject {
     }
 
     public int getNumberOfCatches() {
-        return 0;
+        return QueryHelper.queryFishingSpotCatchCount(this);
     }
 
     public ContentValues getContentValues(UUID locationId) {
