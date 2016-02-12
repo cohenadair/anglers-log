@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import com.cohenadair.anglerslog.R;
+import com.cohenadair.anglerslog.model.Logbook;
 
 /**
  * Used to store and retrieve values from {@link android.content.SharedPreferences}.
@@ -59,7 +60,7 @@ public class LogbookPreferences {
     }
 
     public static int getUnits() {
-        return Integer.parseInt(PreferenceManager.getDefaultSharedPreferences(mContext).getString(mContext.getResources().getString(R.string.pref_units), ""));
+        return Integer.parseInt(PreferenceManager.getDefaultSharedPreferences(mContext).getString(mContext.getResources().getString(R.string.pref_units), Integer.toString(Logbook.UNIT_IMPERIAL)));
     }
 
     public static void setUnits(int units) {
