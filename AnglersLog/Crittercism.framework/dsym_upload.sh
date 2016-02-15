@@ -10,7 +10,8 @@
 #   * Choose "Add Run Script."
 #   * Paste the following script into the dark text box. You will have to 
 #     uncomment the lines (remove the #s) of course.
-#   * Use the generate_symbol_upload_token.sh script to obtain a OAuth Token
+#   * Go to https://app.crittercism.com/developers/user-settings and select
+#     OAuth Token tab to obtain a OAuth Token
 #     Crittercism is encouraging conversion from old style API_KEY SCRIPT
 #     to new style OAUTH2 SCRIPT for better security.
 #
@@ -253,7 +254,10 @@ else
   # Assume running script inside Xcode IDE
   VERBOSE=true
   verbose "DWARF_DSYM_FILE_NAME is defined"
-  TMP="${TARGET_TEMP_DIR}"
+
+  TMP="${TARGET_TEMP_DIR}/crittercism"
+  mkdir -p ${TMP}
+
   DSYM_SRC=${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}
   DSYM_FILE=${DWARF_DSYM_FILE_NAME}
   # Display build info
