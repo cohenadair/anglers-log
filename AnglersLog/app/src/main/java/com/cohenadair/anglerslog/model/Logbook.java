@@ -160,6 +160,10 @@ public class Logbook {
     public static SQLiteDatabase getDatabase() {
         return mDatabase;
     }
+
+    public static String getName() {
+        return TAG;
+    }
     //endregion
 
     /**

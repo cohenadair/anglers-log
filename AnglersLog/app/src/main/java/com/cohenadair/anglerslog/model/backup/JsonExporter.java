@@ -28,6 +28,10 @@ public class JsonExporter {
         JSONObject getJson(UserDefineObject obj) throws JSONException;
     }
 
+    private interface OnGetUserDefineString {
+        String getString(UserDefineObject obj) throws JSONException;
+    }
+
     public static JSONObject getJson() throws JSONException {
         JSONObject json = new JSONObject();
 
@@ -50,41 +54,44 @@ public class JsonExporter {
 
     /**
      * Gets a JSONArray of the UUID's of the given UserDefineObject array.
-     * @param arr The UserDefineObject array.
-     * @return A JSONArray of UUID String objects.
+     * @see #getUserDefineJsonArray(ArrayList, OnGetUserDefineString)
      */
-    public static JSONArray getJsonIdArray(ArrayList<UserDefineObject> arr) {
-        JSONArray result = new JSONArray();
-
-        for (UserDefineObject obj : arr)
-            result.put(obj.getIdAsString());
-
-        return result;
+    public static JSONArray getJsonIdArray(ArrayList<UserDefineObject> arr) throws JSONException {
+        return getUserDefineJsonArray(arr, new OnGetUserDefineString() {
+            @Override
+            public String getString(UserDefineObject obj) throws JSONException {
+                return obj.getIdAsString();
+            }
+        });
     }
 
-    public static JSONArray getJsonStringArray(ArrayList<String> arr) {
-        JSONArray result = new JSONArray();
-
-        for (String str : arr)
-            result.put(str);
-
-        return result;
+    /**
+     * Gets a JSONArray of the names of the given UserDefineObject array.
+     * @see #getUserDefineJsonArray(ArrayList, OnGetUserDefineString)
+     */
+    public static JSONArray getJsonNameArray(ArrayList<UserDefineObject> arr) throws JSONException {
+        return getUserDefineJsonArray(arr, new OnGetUserDefineString() {
+            @Override
+            public String getString(UserDefineObject obj) throws JSONException {
+                return obj.getName();
+            }
+        });
     }
 
     private static JSONArray getTripsJson() throws JSONException {
-        return getUserDefineJson(Logbook.getTrips(), new OnGetUserDefineJson() {
+        return getUserDefineJsonArray(Logbook.getTrips(), new OnGetUserDefineJson() {
             @Override
             public JSONObject getJson(UserDefineObject obj) throws JSONException {
-                return ((Trip)obj).toJson();
+                return ((Trip) obj).toJson();
             }
         });
     }
 
     private static JSONArray getCatchesJson() throws JSONException {
-        return getUserDefineJson(Logbook.getCatches(), new OnGetUserDefineJson() {
+        return getUserDefineJsonArray(Logbook.getCatches(), new OnGetUserDefineJson() {
             @Override
             public JSONObject getJson(UserDefineObject obj) throws JSONException {
-                return ((Catch)obj).toJson();
+                return ((Catch) obj).toJson();
             }
         });
     }
@@ -93,12 +100,20 @@ public class JsonExporter {
         return null;
     }
 
-    private static JSONArray getUserDefineJson(ArrayList<UserDefineObject> arr, OnGetUserDefineJson callbacks) throws JSONException {
+    private static JSONArray getUserDefineJsonArray(ArrayList<UserDefineObject> arr, OnGetUserDefineJson callbacks) throws JSONException {
         JSONArray jsonArray = new JSONArray();
-        ArrayList<UserDefineObject> trips = Logbook.getTrips();
 
-        for (UserDefineObject obj : trips)
+        for (UserDefineObject obj : arr)
             jsonArray.put(callbacks.getJson(obj));
+
+        return jsonArray;
+    }
+
+    private static JSONArray getUserDefineJsonArray(ArrayList<UserDefineObject> arr, OnGetUserDefineString callbacks) throws JSONException {
+        JSONArray jsonArray = new JSONArray();
+
+        for (UserDefineObject obj : arr)
+            jsonArray.put(callbacks.getString(obj));
 
         return jsonArray;
     }

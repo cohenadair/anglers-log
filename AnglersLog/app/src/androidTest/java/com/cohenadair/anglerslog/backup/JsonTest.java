@@ -11,6 +11,7 @@ import com.cohenadair.anglerslog.model.user_defines.Angler;
 import com.cohenadair.anglerslog.model.user_defines.Bait;
 import com.cohenadair.anglerslog.model.user_defines.BaitCategory;
 import com.cohenadair.anglerslog.model.user_defines.Catch;
+import com.cohenadair.anglerslog.model.user_defines.FishingMethod;
 import com.cohenadair.anglerslog.model.user_defines.FishingSpot;
 import com.cohenadair.anglerslog.model.user_defines.Location;
 import com.cohenadair.anglerslog.model.user_defines.Species;
@@ -53,6 +54,7 @@ public class JsonTest {
     private Species mSpecies;
     private Catch mCatch;
     private Angler mAngler;
+    private FishingMethod mFishingMethod;
 
     @Before
     public void setUp() throws Exception {
@@ -73,6 +75,7 @@ public class JsonTest {
         mSpecies = null;
         mCatch = null;
         mAngler = null;
+        mFishingMethod = null;
     }
 
     @Test
@@ -153,6 +156,10 @@ public class JsonTest {
             photos.add("img2.png");
             obj.setPhotos(photos);
 
+            ArrayList<UserDefineObject> fishingMethods = new ArrayList<>();
+            fishingMethods.add(mLocation);
+            obj.setFishingMethods(fishingMethods);
+
             exportObj = obj.toJson();
             importObj = new Catch(exportObj);
 
@@ -169,6 +176,7 @@ public class JsonTest {
             assertTrue(obj.getBait().getId().equals(importObj.getBait().getId()));
             assertTrue(obj.getFishingSpot().getId().equals(importObj.getFishingSpot().getId()));
             assertTrue(obj.getPhotos().equals(importObj.getPhotos()));
+            assertTrue(obj.getFishingMethods().equals(importObj.getFishingMethods()));
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -211,7 +219,10 @@ public class JsonTest {
         mCatch.setSpecies(mSpecies);
         Logbook.addCatch(mCatch);
 
-        mAngler = new Angler("Angnler");
+        mAngler = new Angler("Angler");
         Logbook.addAngler(mAngler);
+
+        mFishingMethod = new FishingMethod("Boat");
+        Logbook.addFishingMethod(mFishingMethod);
     }
 }

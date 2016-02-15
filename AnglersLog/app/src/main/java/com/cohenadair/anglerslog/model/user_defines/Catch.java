@@ -470,7 +470,8 @@ public class Catch extends PhotoUserDefineObject {
         json.put(Json.LOCATION, mFishingSpot == null ? "" : mFishingSpot.getLocationName());
         json.put(Json.FISHING_SPOT, mFishingSpot == null ? "" : mFishingSpot.getName());
         json.put(Json.NOTES, mNotes == null ? "" : mNotes);
-        json.put(Json.FISHING_METHODS, JsonExporter.getJsonIdArray(getFishingMethods()));
+        json.put(Json.FISHING_METHODS, JsonExporter.getJsonNameArray(getFishingMethods()));
+        json.put(Json.JOURNAL, Logbook.getName());
 
         // weather data
         Weather weather = getWeather();
