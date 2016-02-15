@@ -21,7 +21,9 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 /**
- * The Importer class is used to import data from a given {@link Uri} (i.e. a zip archive).
+ * The Importer class is used to import data from a given {@link Uri}. In this case the {@link Uri}
+ * must be pointing to a ZIP archive.
+ *
  * @author Cohen Adair
  */
 public class Importer {

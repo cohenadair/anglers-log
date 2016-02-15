@@ -3,6 +3,12 @@ package com.cohenadair.anglerslog.model.user_defines;
 import android.content.ContentValues;
 
 import com.cohenadair.anglerslog.database.QueryHelper;
+import com.cohenadair.anglerslog.model.backup.Json;
+
+import org.apache.commons.io.FilenameUtils;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -21,12 +27,12 @@ public abstract class PhotoUserDefineObject extends UserDefineObject {
     //region Constructors
     public PhotoUserDefineObject(String name, String photoTable) {
         super(name);
-        mPhotoTable = photoTable;
+        init(photoTable);
     }
 
     public PhotoUserDefineObject(PhotoUserDefineObject obj, boolean keepId) {
         super(obj, keepId);
-        mPhotoTable = obj.getPhotoTable();
+        init(obj.getPhotoTable());
     }
 
     public PhotoUserDefineObject(UserDefineObject obj) {
@@ -35,6 +41,21 @@ public abstract class PhotoUserDefineObject extends UserDefineObject {
 
     public PhotoUserDefineObject(UserDefineObject obj, boolean keepId) {
         super(obj, keepId);
+    }
+
+    public PhotoUserDefineObject(JSONObject jsonObject, String photoTable) throws JSONException {
+        super(jsonObject);
+        init(photoTable);
+
+        JSONArray images = jsonObject.getJSONArray(Json.IMAGES);
+        for (int i = 0; i < images.length(); i++) {
+            JSONObject image = images.getJSONObject(i);
+            addPhoto(FilenameUtils.getName(image.getString(Json.IMAGE_PATH)));
+        }
+    }
+
+    private void init(String photoTable) {
+        mPhotoTable = photoTable;
     }
     //endregion
 
@@ -130,5 +151,30 @@ public abstract class PhotoUserDefineObject extends UserDefineObject {
         values.put(PhotoTable.Columns.NAME, fileName);
 
         return values;
+    }
+
+    /**
+     * To keep iOS and Core Data compatibility, a simple JSON String array is not used here.
+     */
+    public JSONObject toJson() throws JSONException {
+        JSONObject json = super.toJson();
+
+        ArrayList<String> photos = getPhotos();
+        JSONArray jsonPhotos = new JSONArray();
+
+        for (String photo : photos) {
+            JSONObject jsonPhoto = new JSONObject();
+
+            jsonPhoto.put(Json.IMAGE_PATH, photo);
+
+            // these are for iOS Core Data compatibility
+            jsonPhoto.put(Json.ENTRY_DATE, (this instanceof Catch) ? ((Catch)this).getDateJsonString() : "");
+            jsonPhoto.put(Json.BAIT_NAME, (this instanceof Bait) ? this.getNameAsString() : "");
+
+            jsonPhotos.put(jsonPhoto);
+        }
+
+        json.put(Json.IMAGES, jsonPhotos);
+        return json;
     }
 }

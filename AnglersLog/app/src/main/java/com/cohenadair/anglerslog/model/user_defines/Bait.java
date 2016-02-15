@@ -144,7 +144,7 @@ public class Bait extends PhotoUserDefineObject {
 
     //region Catch Manipulation
     public ArrayList<UserDefineObject> getCatches() {
-        UserDefineCursor cursor = QueryHelper.queryUserDefines(CatchTable.NAME, CatchTable.Columns.BAIT_ID + " = ?", new String[] { idAsString() });
+        UserDefineCursor cursor = QueryHelper.queryUserDefines(CatchTable.NAME, CatchTable.Columns.BAIT_ID + " = ?", new String[] { getIdAsString() });
 
         return QueryHelper.queryUserDefines(cursor, new QueryHelper.UserDefineQueryInterface() {
             @Override
@@ -200,7 +200,7 @@ public class Bait extends PhotoUserDefineObject {
         values.put(BaitTable.Columns.DESCRIPTION, mDescription);
         values.put(BaitTable.Columns.SIZE, mSize);
         values.put(BaitTable.Columns.TYPE, mType);
-        values.put(BaitTable.Columns.CATEGORY_ID, mCategory.idAsString());
+        values.put(BaitTable.Columns.CATEGORY_ID, mCategory.getIdAsString());
 
         return values;
     }

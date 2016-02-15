@@ -1,6 +1,12 @@
 package com.cohenadair.anglerslog.model.user_defines;
 
 import android.content.ContentValues;
+import android.support.annotation.NonNull;
+
+import com.cohenadair.anglerslog.model.backup.Json;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.UUID;
 
@@ -35,6 +41,11 @@ public class UserDefineObject {
         initFromObj(obj, keepId);
     }
 
+    public UserDefineObject(JSONObject jsonObject) throws JSONException {
+        mId = UUID.fromString(jsonObject.getString(Json.ID));
+        mName = jsonObject.getString(Json.NAME);
+    }
+
     private void initFromObj(UserDefineObject obj, boolean keepId) {
         if (obj != null) {
             mId = keepId ? obj.getId() : UUID.randomUUID();
@@ -58,7 +69,7 @@ public class UserDefineObject {
     }
 
     public void setName(String name) {
-        mName = name;
+        mName = name.equals("") ? null : name;
     }
 
     public boolean getShouldDelete() {
@@ -78,22 +89,38 @@ public class UserDefineObject {
     }
     //endregion
 
+
+    /**
+     * Gets a String representation of the UserDefineObject name.
+     * @return The name, or an empty String if name is null.
+     */
+    public final String getNameAsString() {
+        return (mName == null) ? "" : mName;
+    }
+
     public String getDisplayName() {
         return mName;
     }
 
-    public String idAsString() {
+    @NonNull
+    public final String getIdAsString() {
         return mId.toString();
     }
 
     public String toString() {
-        return mName;
+        return (mName == null) ? super.toString() : mName;
     }
 
     public boolean isNameNull() {
         return mName == null || mName.equals("");
     }
 
+    /**
+     * Gets a {@link ContentValues} object for this UserDefineObject. This is used to save and
+     * retrieve data from the backed SQLite database. Subclasses should override this method.
+     *
+     * @return A {@link ContentValues} object of this UserDefineObject.
+     */
     public ContentValues getContentValues() {
         ContentValues values = new ContentValues();
 
@@ -102,5 +129,22 @@ public class UserDefineObject {
         values.put(UserDefineTable.Columns.SELECTED, mIsSelected);
 
         return values;
+    }
+
+    /**
+     * Gets a {@link JSONObject} representation of this UserDefineObject. This is used for
+     * {@link com.cohenadair.anglerslog.model.Logbook} exporting and importing. Subclasses should
+     * override and call this method.
+     *
+     * @return A {@link JSONObject} of this UserDefineObject.
+     * @throws JSONException Throws JSONException if the {@link JSONObject} cannot be created.
+     */
+    public JSONObject toJson() throws JSONException {
+        JSONObject json = new JSONObject();
+
+        json.put(Json.NAME, getNameAsString());
+        json.put(Json.ID, getIdAsString());
+
+        return json;
     }
 }

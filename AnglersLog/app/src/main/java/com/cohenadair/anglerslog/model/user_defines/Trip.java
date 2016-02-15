@@ -8,6 +8,7 @@ import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.database.QueryHelper;
 import com.cohenadair.anglerslog.model.Logbook;
 import com.cohenadair.anglerslog.model.backup.Json;
+import com.cohenadair.anglerslog.model.backup.JsonExporter;
 import com.cohenadair.anglerslog.model.backup.JsonImporter;
 import com.cohenadair.anglerslog.model.utilities.UsedUserDefineObject;
 import com.cohenadair.anglerslog.utilities.UserDefineArrays;
@@ -74,18 +75,21 @@ public class Trip extends UserDefineObject {
     }
 
     public Trip(JSONObject jsonTrip) throws JSONException {
-        this(jsonTrip.getString(Json.NAME));
+        super(jsonTrip);
+        init();
 
         mStartDate = new Date(jsonTrip.getLong(Json.START_DATE));
         mEndDate = new Date(jsonTrip.getLong(Json.END_DATE));
-        mNotes = jsonTrip.getString(Json.NOTES);
+
+        String notes = jsonTrip.getString(Json.NOTES);
+        mNotes = notes.isEmpty() ? null : notes;
 
         // anglers
         JSONArray jsonAnglers = jsonTrip.getJSONArray(Json.ANGLERS);
         mUsedAnglers.setObjects(JsonImporter.parseUserDefineArray(jsonAnglers, new JsonImporter.OnGetObject() {
             @Override
             public UserDefineObject onGetObject(String name) {
-                return Logbook.getAngler(name);
+                return Logbook.getAngler(UUID.fromString(name));
             }
         }));
 
@@ -94,18 +98,18 @@ public class Trip extends UserDefineObject {
         mUsedLocations.setObjects(JsonImporter.parseUserDefineArray(jsonLocations, new JsonImporter.OnGetObject() {
             @Override
             public UserDefineObject onGetObject(String name) {
-                return Logbook.getLocation(name);
+                return Logbook.getLocation(UUID.fromString(name));
             }
         }));
 
         // catches
         JSONArray jsonCatches = jsonTrip.getJSONArray(Json.CATCHES);
-        ArrayList<UserDefineObject> catches = new ArrayList<>();
-
-        for (int i = 0; i < jsonCatches.length(); i++)
-            catches.add(Logbook.getCatch(new Date(jsonCatches.getLong(i))));
-
-        mUsedCatches.setObjects(catches);
+        mUsedCatches.setObjects(JsonImporter.parseUserDefineArray(jsonCatches, new JsonImporter.OnGetObject() {
+            @Override
+            public UserDefineObject onGetObject(String name) {
+                return Logbook.getCatch(UUID.fromString(name));
+            }
+        }));
     }
 
     private void init() {
@@ -210,15 +214,6 @@ public class Trip extends UserDefineObject {
     }
     //endregion
 
-    @Override
-    public String toString() {
-        return getName();
-    }
-
-    public String getNameAsString() {
-        return (getName() != null) ? getName() : "";
-    }
-
     public String getNotesAsString() {
         return (mNotes != null) ? mNotes : "";
     }
@@ -264,6 +259,19 @@ public class Trip extends UserDefineObject {
             values.put(TripTable.Columns.NOTES, mNotes);
 
         return values;
+    }
+
+    public JSONObject toJson() throws JSONException {
+        JSONObject json = super.toJson();
+
+        json.put(Json.START_DATE, mStartDate.getTime());
+        json.put(Json.END_DATE, mEndDate.getTime());
+        json.put(Json.NOTES, getNotesAsString());
+        json.put(Json.CATCHES, JsonExporter.getJsonIdArray(getCatches()));
+        json.put(Json.LOCATIONS, JsonExporter.getJsonIdArray(getLocations()));
+        json.put(Json.ANGLERS, JsonExporter.getJsonIdArray(getAnglers()));
+
+        return json;
     }
 
     /**

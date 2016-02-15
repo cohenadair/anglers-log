@@ -367,7 +367,7 @@ public class Logbook {
      * @return An ArrayList of {@link Bait} objects.
      */
     public static ArrayList<UserDefineObject> getBaits(BaitCategory baitCategory) {
-        return getBaits(BaitTable.Columns.CATEGORY_ID + " = ?", new String[]{baitCategory.idAsString()});
+        return getBaits(BaitTable.Columns.CATEGORY_ID + " = ?", new String[]{baitCategory.getIdAsString()});
     }
 
     /**

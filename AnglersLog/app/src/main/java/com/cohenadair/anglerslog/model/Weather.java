@@ -8,6 +8,9 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.cohenadair.anglerslog.model.backup.Json;
+import com.cohenadair.anglerslog.model.backup.JsonExporter;
+import com.cohenadair.anglerslog.model.user_defines.Catch;
 import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONArray;
@@ -50,6 +53,12 @@ public class Weather {
         mTemperature = temperature;
         mWindSpeed = windSpeed;
         mSkyConditions = skyConditions;
+    }
+
+    public Weather(JSONObject jsonObject) throws JSONException {
+        mTemperature = jsonObject.getInt(Json.TEMPERATURE);
+        mWindSpeed = jsonObject.getInt(Json.WIND_SPEED);
+        mSkyConditions = jsonObject.getString(Json.SKY_CONDITIONS);
     }
 
     //region Getters & Setters
@@ -126,5 +135,18 @@ public class Weather {
         values.put(WeatherTable.Columns.SKY_CONDITIONS, mSkyConditions);
 
         return values;
+    }
+
+    public JSONObject toJson(Catch aCatch) throws JSONException {
+        JSONObject json = new JSONObject();
+
+        // for iOS compatibility (used for Core Data)
+        json.put(Json.ENTRY, JsonExporter.dateToString(aCatch.getDate()));
+
+        json.put(Json.TEMPERATURE, mTemperature);
+        json.put(Json.WIND_SPEED, mWindSpeed);
+        json.put(Json.SKY_CONDITIONS, mSkyConditions);
+
+        return json;
     }
 }

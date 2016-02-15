@@ -59,7 +59,7 @@ public class UsedUserDefineObject {
         ContentValues values = new ContentValues();
 
         values.put(mSuperColumnId, mSuperId.toString());
-        values.put(mChildColumnId, obj.idAsString());
+        values.put(mChildColumnId, obj.getIdAsString());
 
         return values;
     }

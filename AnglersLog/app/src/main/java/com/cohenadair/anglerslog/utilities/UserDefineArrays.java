@@ -83,7 +83,7 @@ public class UserDefineArrays {
     public static ArrayList<String> asIdStringArray(ArrayList<UserDefineObject> arr) {
         ArrayList<String> ids = new ArrayList<>();
         for (UserDefineObject object : arr)
-            ids.add(object.idAsString());
+            ids.add(object.getIdAsString());
         return ids;
     }
 

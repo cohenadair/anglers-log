@@ -301,7 +301,7 @@ public class QueryHelper {
                         "FROM " + UsedCatchTable.NAME + " " +
                         "WHERE(" + UsedCatchTable.Columns.TRIP_ID + " = ?)" +
                 ")",
-                new String[] { trip.idAsString() }
+                new String[] { trip.getIdAsString() }
         ));
     }
 
@@ -327,7 +327,7 @@ public class QueryHelper {
                         "FROM " + UsedCatchTable.NAME + " " +
                         "WHERE(" + UsedCatchTable.Columns.TRIP_ID + " = ?)" +
                 ")",
-                new String[] { location.idAsString(), trip.idAsString() }
+                new String[] { location.getIdAsString(), trip.getIdAsString() }
         ));
     }
 
@@ -347,7 +347,7 @@ public class QueryHelper {
                         "FROM " + FishingSpotTable.NAME + " " +
                         "WHERE (" + FishingSpotTable.Columns.LOCATION_ID + " = ?)" +
                 ")",
-                new String[] { location.idAsString() }
+                new String[] { location.getIdAsString() }
         ));
     }
 
@@ -359,7 +359,7 @@ public class QueryHelper {
                         "FROM " + FishingSpotTable.NAME + " " +
                         "WHERE (" + FishingSpotTable.Columns.ID + " = ?)" +
                 ")",
-                new String[] { fishingSpot.idAsString() }
+                new String[] { fishingSpot.getIdAsString() }
         ));
     }
 
@@ -378,7 +378,7 @@ public class QueryHelper {
         return getTotalCatchQuantity(queryCatches(
                 CatchTable.Columns.QUANTITY,
                 catchColumn + " = ?",
-                new String[] { object.idAsString() }
+                new String[] { object.getIdAsString() }
         ));
     }
 
@@ -420,7 +420,7 @@ public class QueryHelper {
         if (species != null)
             sql += " WHERE " + CatchTable.Columns.SPECIES_ID + " = ?";
 
-        CatchCursor cursor = new CatchCursor(mDatabase.rawQuery(sql + ")", species == null ? null : new String[] { species.idAsString() }));
+        CatchCursor cursor = new CatchCursor(mDatabase.rawQuery(sql + ")", species == null ? null : new String[] { species.getIdAsString() }));
 
         if (cursor.moveToFirst())
             return cursor.getCatch();

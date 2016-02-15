@@ -10,12 +10,12 @@ import com.cohenadair.anglerslog.database.QueryHelper;
 import com.cohenadair.anglerslog.model.Logbook;
 import com.cohenadair.anglerslog.model.Weather;
 import com.cohenadair.anglerslog.model.backup.Json;
+import com.cohenadair.anglerslog.model.backup.JsonExporter;
 import com.cohenadair.anglerslog.model.backup.JsonImporter;
 import com.cohenadair.anglerslog.model.utilities.UsedUserDefineObject;
 import com.cohenadair.anglerslog.utilities.UserDefineArrays;
 import com.cohenadair.anglerslog.utilities.Utils;
 
-import org.apache.commons.io.FilenameUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -133,8 +133,10 @@ public class Catch extends PhotoUserDefineObject {
     }
 
     public Catch(JSONObject catchJson) throws JSONException {
-        this(JsonImporter.parseDate(catchJson.getString(Json.DATE)));
+        super(catchJson, CatchPhotoTable.NAME);
+        init();
 
+        mDate = JsonImporter.parseDate(catchJson.getString(Json.DATE));
         mSpecies = Logbook.getSpecies(catchJson.getString(Json.FISH_SPECIES));
         mLength = catchJson.getInt(Json.FISH_LENGTH);
         mWeight = catchJson.getInt(Json.FISH_WEIGHT) + JsonImporter.ouncesToDecimal(catchJson.getInt(Json.FISH_OUNCES));
@@ -146,13 +148,6 @@ public class Catch extends PhotoUserDefineObject {
         mWaterClarity = Logbook.getWaterClarity(catchJson.getString(Json.WATER_CLARITY));
         mWaterDepth = catchJson.getInt(Json.WATER_DEPTH);
         mNotes = catchJson.getString(Json.NOTES);
-
-        // images
-        JSONArray images = catchJson.getJSONArray(Json.IMAGES);
-        for (int i = 0; i < images.length(); i++) {
-            JSONObject image = images.getJSONObject(i);
-            addPhoto(FilenameUtils.getName(image.getString(Json.IMAGE_PATH)));
-        }
 
         // fishing methods
         JSONArray fishingMethodsJson = catchJson.getJSONArray(Json.FISHING_METHOD_NAMES);
@@ -333,7 +328,7 @@ public class Catch extends PhotoUserDefineObject {
     }
 
     public boolean removeWeather() {
-        return QueryHelper.deleteQuery(WeatherTable.NAME, WeatherTable.Columns.CATCH_ID + " = ?", new String[] { idAsString() });
+        return QueryHelper.deleteQuery(WeatherTable.NAME, WeatherTable.Columns.CATCH_ID + " = ?", new String[] { getIdAsString() });
     }
     //endregion
 
@@ -425,12 +420,16 @@ public class Catch extends PhotoUserDefineObject {
         return (mCatchResult != null) ? mCatchResult.getString(context) : "";
     }
 
+    public String getDateJsonString() {
+        return JsonExporter.dateToString(mDate);
+    }
+
     public ContentValues getContentValues() {
         ContentValues values = super.getContentValues();
 
         values.put(CatchTable.Columns.DATE, mDate.getTime());
         values.put(CatchTable.Columns.IS_FAVORITE, mIsFavorite ? 1 : 0);
-        values.put(CatchTable.Columns.SPECIES_ID, mSpecies.idAsString());
+        values.put(CatchTable.Columns.SPECIES_ID, mSpecies.getIdAsString());
         values.put(CatchTable.Columns.CATCH_RESULT, mCatchResult.getValue());
         values.put(CatchTable.Columns.QUANTITY, mQuantity);
         values.put(CatchTable.Columns.LENGTH, mLength);
@@ -439,13 +438,13 @@ public class Catch extends PhotoUserDefineObject {
         values.put(CatchTable.Columns.WATER_TEMPERATURE, mWaterTemperature);
 
         if (mBait != null)
-            values.put(CatchTable.Columns.BAIT_ID, mBait.idAsString());
+            values.put(CatchTable.Columns.BAIT_ID, mBait.getIdAsString());
 
         if (mFishingSpot != null)
-            values.put(CatchTable.Columns.FISHING_SPOT_ID, mFishingSpot.idAsString());
+            values.put(CatchTable.Columns.FISHING_SPOT_ID, mFishingSpot.getIdAsString());
 
         if (mWaterClarity != null)
-            values.put(CatchTable.Columns.CLARITY_ID, mWaterClarity.idAsString());
+            values.put(CatchTable.Columns.CLARITY_ID, mWaterClarity.getIdAsString());
 
         if (mNotes != null)
             values.put(CatchTable.Columns.NOTES, mNotes);
@@ -453,8 +452,35 @@ public class Catch extends PhotoUserDefineObject {
         return values;
     }
 
+    public JSONObject toJson() throws JSONException {
+        JSONObject json = super.toJson();
+
+        json.put(Json.DATE, getDateJsonString());
+        json.put(Json.IS_FAVORITE, mIsFavorite);
+        json.put(Json.FISH_SPECIES, getSpeciesAsString());
+        json.put(Json.FISH_RESULT, mCatchResult.getValue());
+        json.put(Json.FISH_QUANTITY, mQuantity);
+        json.put(Json.FISH_LENGTH, mLength);
+        json.put(Json.FISH_WEIGHT, mWeight);
+        json.put(Json.WATER_DEPTH, mWaterDepth);
+        json.put(Json.WATER_TEMPERATURE, mWaterTemperature);
+        json.put(Json.WATER_CLARITY, getWaterClarityAsString());
+        json.put(Json.BAIT_USED, mBait == null ? "" : mBait.getName());
+        json.put(Json.BAIT_CATEGORY, mBait == null ? "" : mBait.getCategoryName());
+        json.put(Json.LOCATION, mFishingSpot == null ? "" : mFishingSpot.getLocationName());
+        json.put(Json.FISHING_SPOT, mFishingSpot == null ? "" : mFishingSpot.getName());
+        json.put(Json.NOTES, mNotes == null ? "" : mNotes);
+        json.put(Json.FISHING_METHODS, JsonExporter.getJsonIdArray(getFishingMethods()));
+
+        // weather data
+        Weather weather = getWeather();
+        json.put(Json.WEATHER_DATA, (weather == null) ? new JSONObject() : weather.toJson(this));
+
+        return json;
+    }
+
     /**
-     * Used deleting catches. This method will remove any external ties to the database. For
+     * Used in deleting catches. This method will remove any external ties to the database. For
      * example, removing images and weather data from the database.
      */
     public void removeDatabaseProperties() {
