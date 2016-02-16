@@ -198,6 +198,10 @@ public class Bait extends PhotoUserDefineObject {
         return -1;
     }
 
+    public String getBaitCategoryAsString() {
+        return Utils.emptyStringOrString(getCategoryName());
+    }
+
     public String getColorAsString() {
         return Utils.emptyStringOrString(mColor);
     }

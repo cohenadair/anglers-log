@@ -402,7 +402,7 @@ public class Catch extends PhotoUserDefineObject {
     }
 
     public String getNotesAsString() {
-        return (mNotes != null) ? mNotes : "";
+        return Utils.emptyStringOrString(mNotes);
     }
 
     public String getFishingMethodsAsString() {

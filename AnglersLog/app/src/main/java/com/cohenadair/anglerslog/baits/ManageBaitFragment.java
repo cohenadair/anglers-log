@@ -131,11 +131,11 @@ public class ManageBaitFragment extends ManageContentFragment {
 
     @Override
     public void updateViews() {
-        mCategoryView.setSubtitle(getNewBait().getCategoryName() != null ? getNewBait().getCategoryName() : "");
-        mNameView.setInputText(getNewBait().getName() != null ? getNewBait().getName() : "");
-        mColorView.setInputText(getNewBait().getColor() != null ? getNewBait().getColor() : "");
-        mSizeView.setInputText(getNewBait().getSize() != null ? getNewBait().getSize() : "");
-        mDescriptionView.setInputText(getNewBait().getDescription() != null ? getNewBait().getDescription() : "");
+        mCategoryView.setSubtitle(getNewBait().getBaitCategoryAsString());
+        mNameView.setInputText(getNewBait().getNameAsString());
+        mColorView.setInputText(getNewBait().getColorAsString());
+        mSizeView.setInputText(getNewBait().getSizeAsString());
+        mDescriptionView.setInputText(getNewBait().getDescriptionAsString());
         mTypeSpinner.setSelection(getNewBait().getType());
     }
 
