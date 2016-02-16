@@ -5,10 +5,12 @@ The following are required updates for new `UserDefineObject` subclasses or modi
 	
 ### In the `UserDefineObject` subclass:
 * Add new properties as private instance variables (including getters/setters).
-* For complex subclasses, override and/or update the getContentValues() method to include the new properties.
+* For complex subclasses, override and/or update the `getContentValues()` method to include the new properties.
+* For complex subclasses, override and/or update the `getJson()` method to include the new properties.
+* Make sure that the JSON importing constructor matches up with the JSON exporting method by adding new assertions to `JsonTest.java`.
 * Add new properties to the cloning constructor.
   > Note that if a property is a subclass of UserDefineObject, the `ClassName(ClassName obj, keepId)` must be called with `keepId = true` in the obejct's cloning constructor.
-* If the new `UserDefineObject` subclass has another `UserDefineObject` instance variable that is linked to a separate database table, create manipulation methods for that variable (see `PhotoUserDefineObject`).
+* If the new `UserDefineObject` subclass has another `UserDefineObject` instance variable that is linked to a separate database table, create manipulation methods for that variable (see `PhotoUserDefineObject`). In this case, there is no need for private instance variables.
 * The cloning constructor and `getContentValues()` should access the same number of properties, which should be equal to the object's declared instance variables.
 * Be sure to include *all* constructor variations.
 
@@ -30,4 +32,4 @@ SQLite doesn't directly support storing an array in a single column.  For `UserD
 
 The `Catch` class does not have an instance variable for its fishing methods.  Instead, its `getFishingMethods()` and `setFishingMethods()` methods interact directly with the SQLite database.  It reads from a table with `catchId-fishingMethodId` pairs to get all the fishing methods associated with a given catch.
 
-This is the preferred method over concatinating FishingMethod id's in a String.
+This is the preferred method over concatinating `FishingMethod` id's in a String.

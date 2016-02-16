@@ -1,44 +1,18 @@
 Anglers' Log To-Do List
 =======================
 
-### Catches
-* ~~Add missing attributes~~
-
-### Pages
-* ~~Single Bait~~
-  * ~~Add `ListView` of catches.~~
-* ~~Add Trips~~
-* ~~Add Statistics~~
-* ~~Add Gallery~~
-* Add Map
-* [Add Settings](http://developer.android.com/guide/topics/ui/settings.html)
-  * [Auto Backup](http://developer.android.com/guide/topics/data/backup.html)
-  * ~~Units~~
-  * ~~Import~~
-  * Export
-  * ~~About~~
-  	* ~~Version~~
-    * ~~Google Maps agreement~~
-    * ~~Icons8~~
-* ~~Add Help & Feedback (Link to website)~~
-* ~~#AnglersLogApp Twitter~~
-* ~~#AnglersLogApp Instagram~~
-
 ### Features
+* [Auto Backup](http://developer.android.com/guide/topics/data/backup.html)
 * No X views
-* ~~View all locations on a single map~~
 * Sharing (Trips, Catches, Photos)
-* ~~JSON importing.~~
-* JSON exporting.
-* Instabug (via toolbar item)
-* Sorting, filtering user define lists.
-* Crittercism for crash logs.
-* Integrate fish caught into Fishing Spot pins.
-* ~~Display units:~~
-  * ~~Weather - add checkbox to form.~~
-  * ~~Imperial, metric.~~
+* JSON exporting
+* Instabug
+* Sorting, filtering user define lists
+* Integrate fish caught into Fishing Spot pins
+* Add detail link (info. icon) for selected items in Statisitcs
 * Select multiple images
 
 ### Extra
 * Add Android version of website (Android | iOS tabs at top)
+* [UI automated testing](http://developer.android.com/training/testing/ui-testing/index.html)
 	
