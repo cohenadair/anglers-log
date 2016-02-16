@@ -7,6 +7,8 @@ import android.test.RenamingDelegatingContext;
 import com.cohenadair.anglerslog.database.LogbookHelper;
 import com.cohenadair.anglerslog.model.Logbook;
 import com.cohenadair.anglerslog.model.Weather;
+import com.cohenadair.anglerslog.model.backup.JsonExporter;
+import com.cohenadair.anglerslog.model.backup.JsonImporter;
 import com.cohenadair.anglerslog.model.user_defines.Angler;
 import com.cohenadair.anglerslog.model.user_defines.Bait;
 import com.cohenadair.anglerslog.model.user_defines.BaitCategory;
@@ -56,6 +58,7 @@ public class JsonTest {
     private Catch mCatch;
     private Angler mAngler;
     private FishingMethod mFishingMethod;
+    private Trip mTrip;
 
     @Before
     public void setUp() throws Exception {
@@ -78,6 +81,7 @@ public class JsonTest {
         mCatch = null;
         mAngler = null;
         mFishingMethod = null;
+        mTrip = null;
     }
 
     @Test
@@ -242,6 +246,40 @@ public class JsonTest {
         }
     }
 
+    @Test
+    public void testLogbook() {
+        try {
+            int anglerCount = Logbook.getAnglerCount();
+            int baitCount = Logbook.getBaitCount();
+            int baitCategoryCount = Logbook.getBaitCategoryCount();
+            int catchCount = Logbook.getCatchCount();
+            int fishingMethodCount = Logbook.getFishingMethodCount();
+            int fishingSpotCount = Logbook.getAllFishingSpots().size();
+            int locationCount = Logbook.getLocationCount();
+            int speciesCount = Logbook.getSpeciesCount();
+            int tripCount = Logbook.getTripCount();
+            int waterClarityCount = Logbook.getWaterClarityCount();
+            int photoCount = Logbook.getAllBaitPhotos().size() + Logbook.getAllCatchPhotos().size();
+
+            JSONObject jsonLogbook = JsonExporter.getJson();
+            JsonImporter.parse(jsonLogbook);
+
+            assertTrue(Logbook.getAnglerCount() == anglerCount);
+            assertTrue(Logbook.getBaitCount() == baitCount);
+            assertTrue(Logbook.getBaitCategoryCount() == baitCategoryCount);
+            assertTrue(Logbook.getFishingMethodCount() == fishingMethodCount);
+            assertTrue(Logbook.getAllFishingSpots().size() == fishingSpotCount);
+            assertTrue(Logbook.getLocationCount() == locationCount);
+            assertTrue(Logbook.getSpeciesCount() == speciesCount);
+            assertTrue(Logbook.getTripCount() == tripCount);
+            assertTrue(Logbook.getWaterClarityCount() == waterClarityCount);
+            assertTrue(Logbook.getCatchCount() == catchCount);
+            assertTrue(Logbook.getAllBaitPhotos().size() + Logbook.getAllCatchPhotos().size() == photoCount);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void initTestObjects() {
         mSpecies = new Species("Bass");
         Logbook.addSpecies(mSpecies);
@@ -269,5 +307,21 @@ public class JsonTest {
 
         mFishingMethod = new FishingMethod("Boat");
         Logbook.addFishingMethod(mFishingMethod);
+
+        mTrip = new Trip("Trip");
+
+        ArrayList<UserDefineObject> anglers = new ArrayList<>();
+        anglers.add(mAngler);
+        mTrip.setAnglers(anglers);
+
+        ArrayList<UserDefineObject> locations = new ArrayList<>();
+        locations.add(mLocation);
+        mTrip.setAnglers(locations);
+
+        ArrayList<UserDefineObject> catches = new ArrayList<>();
+        catches.add(mCatch);
+        mTrip.setAnglers(catches);
+
+        Logbook.addTrip(mTrip);
     }
 }

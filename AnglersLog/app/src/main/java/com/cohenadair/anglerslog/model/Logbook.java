@@ -37,6 +37,7 @@ import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import com.cohenadair.anglerslog.model.user_defines.WaterClarity;
 import com.cohenadair.anglerslog.utilities.LogbookPreferences;
 import com.cohenadair.anglerslog.utilities.PhotoUtils;
+import com.drew.lang.annotations.NotNull;
 
 import org.apache.commons.io.FileUtils;
 import org.json.JSONException;
@@ -184,9 +185,18 @@ public class Logbook {
      * Gets all of the user's catch photos.
      * @return A list of all the catch photo names.
      */
-    @Nullable
+    @NonNull
     public static ArrayList<String> getAllCatchPhotos() {
         return QueryHelper.queryPhotos(CatchPhotoTable.NAME, null);
+    }
+
+    /**
+     * Gets all of the user's bait photos.
+     * @return A list of all the bait photo names.
+     */
+    @NotNull
+    public static ArrayList<String> getAllBaitPhotos() {
+        return QueryHelper.queryPhotos(BaitPhotoTable.NAME, null);
     }
 
     /**
