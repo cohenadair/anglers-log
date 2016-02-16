@@ -35,6 +35,7 @@ public class JsonExporter {
     public static JSONObject getJson() throws JSONException {
         JSONObject json = new JSONObject();
 
+        json.put(Json.NAME, Logbook.getName());
         json.put(Json.TRIPS, getJsonArray(Logbook.getTrips()));
         json.put(Json.ENTRIES, getJsonArray(Logbook.getCatches()));
         json.put(Json.USER_DEFINES, getUserDefinesJson());
