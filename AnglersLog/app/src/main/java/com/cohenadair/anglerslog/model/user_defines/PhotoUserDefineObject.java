@@ -1,6 +1,7 @@
 package com.cohenadair.anglerslog.model.user_defines;
 
 import android.content.ContentValues;
+import android.util.Log;
 
 import com.cohenadair.anglerslog.database.QueryHelper;
 import com.cohenadair.anglerslog.model.backup.Json;
@@ -21,6 +22,8 @@ import static com.cohenadair.anglerslog.database.LogbookSchema.PhotoTable;
  * Created by Cohen Adair on 2015-11-08.
  */
 public abstract class PhotoUserDefineObject extends UserDefineObject {
+
+    private static final String TAG = "PhotoUserDefineObject";
 
     private String mPhotoTable;
 
@@ -47,10 +50,14 @@ public abstract class PhotoUserDefineObject extends UserDefineObject {
         super(jsonObject);
         init(photoTable);
 
-        JSONArray images = jsonObject.getJSONArray(Json.IMAGES);
-        for (int i = 0; i < images.length(); i++) {
-            JSONObject image = images.getJSONObject(i);
-            addPhoto(FilenameUtils.getName(image.getString(Json.IMAGE_PATH)));
+        try {
+            JSONArray images = jsonObject.getJSONArray(Json.IMAGES);
+            for (int i = 0; i < images.length(); i++) {
+                JSONObject image = images.getJSONObject(i);
+                addPhoto(FilenameUtils.getName(image.getString(Json.IMAGE_PATH)));
+            }
+        } catch (JSONException e) {
+            Log.e(TAG, "PhotoUserDefineObject doesn't have a " + Json.IMAGES + " array.");
         }
     }
 
@@ -156,25 +163,40 @@ public abstract class PhotoUserDefineObject extends UserDefineObject {
     /**
      * To keep iOS and Core Data compatibility, a simple JSON String array is not used here.
      */
+    @Override
     public JSONObject toJson() throws JSONException {
         JSONObject json = super.toJson();
-
         ArrayList<String> photos = getPhotos();
-        JSONArray jsonPhotos = new JSONArray();
 
-        for (String photo : photos) {
-            JSONObject jsonPhoto = new JSONObject();
+        // the "instanceof" checks are required here for iOS compatibility
+        // in the iOS version, a JSON array is used for Catch photos, but a single JSON object
+        // is used for the Bait photo
 
-            jsonPhoto.put(Json.IMAGE_PATH, photo);
+        if (this instanceof Catch) {
+            JSONArray jsonPhotos = new JSONArray();
 
-            // these are for iOS Core Data compatibility
-            jsonPhoto.put(Json.ENTRY_DATE, (this instanceof Catch) ? ((Catch)this).getDateJsonString() : "");
-            jsonPhoto.put(Json.BAIT_NAME, (this instanceof Bait) ? this.getNameAsString() : "");
+            for (String photo : photos)
+                jsonPhotos.put(getPhotoJson(photo, true));
 
-            jsonPhotos.put(jsonPhoto);
+            json.put(Json.IMAGES, jsonPhotos);
         }
 
-        json.put(Json.IMAGES, jsonPhotos);
+        if (this instanceof Bait && photos.size() > 0)
+            json.put(Json.IMAGE, getPhotoJson(photos.get(0), false));
+
         return json;
+    }
+
+    private JSONObject getPhotoJson(String photo, boolean isCatch) throws JSONException {
+        JSONObject jsonPhoto = new JSONObject();
+
+        // the "Images/" prepend is to keep iOS compatibility
+        jsonPhoto.put(Json.IMAGE_PATH, "Images/" + photo);
+
+        // these are for iOS Core Data compatibility
+        jsonPhoto.put(Json.ENTRY_DATE, isCatch ? ((Catch)this).getDateJsonString() : "");
+        jsonPhoto.put(Json.BAIT_NAME, isCatch ? "" : getNameAsString());
+
+        return jsonPhoto;
     }
 }

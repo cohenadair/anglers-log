@@ -128,14 +128,6 @@ public class JsonImporter {
     }
 
     /**
-     * @param jsonString The String.
-     * @return The input String if it is not empty, null otherwise.
-     */
-    public static String stringOrNull(String jsonString) {
-        return (jsonString == null || jsonString.isEmpty()) ? null : jsonString;
-    }
-
-    /**
      * Gets a {@link Date} object from a given String.
      * @see Json for date format.
      *

@@ -15,7 +15,7 @@ import java.util.Date;
 import java.util.Locale;
 
 /**
- * The JsonEporter class is used to create a JSONObject of the user's
+ * The JsonExporter class is used to create a JSONObject of the user's
  * {@link com.cohenadair.anglerslog.model.Logbook}.
  *
  * @author Cohen Adair
@@ -32,8 +32,8 @@ public class JsonExporter {
     public static JSONObject getJson() throws JSONException {
         JSONObject json = new JSONObject();
 
-        json.put(Json.TRIPS, getJsonUserDefineArray(Logbook.getTrips()));
-        json.put(Json.ENTRIES, getJsonUserDefineArray(Logbook.getCatches()));
+        json.put(Json.TRIPS, getJsonArray(Logbook.getTrips()));
+        json.put(Json.ENTRIES, getJsonArray(Logbook.getCatches()));
         json.put(Json.USER_DEFINES, getUserDefinesJson());
 
         return new JSONObject().put(Json.JOURNAL, json);
@@ -53,7 +53,7 @@ public class JsonExporter {
      * Gets a JSONArray of the UUID's of the given UserDefineObject array.
      * @see #getUserDefineJsonArray(ArrayList, OnGetJsonObject)
      */
-    public static JSONArray getJsonIdArray(ArrayList<UserDefineObject> arr) throws JSONException {
+    public static JSONArray getIdJsonArray(ArrayList<UserDefineObject> arr) throws JSONException {
         return getUserDefineJsonArray(arr, new OnGetJsonObject() {
             @Override
             public String get(UserDefineObject obj) throws JSONException {
@@ -66,7 +66,7 @@ public class JsonExporter {
      * Gets a JSONArray of the names of the given UserDefineObject array.
      * @see #getUserDefineJsonArray(ArrayList, OnGetJsonObject)
      */
-    public static JSONArray getJsonNameArray(ArrayList<UserDefineObject> arr) throws JSONException {
+    public static JSONArray getNameJsonArray(ArrayList<UserDefineObject> arr) throws JSONException {
         return getUserDefineJsonArray(arr, new OnGetJsonObject() {
             @Override
             public String get(UserDefineObject obj) throws JSONException {
@@ -81,7 +81,7 @@ public class JsonExporter {
      *
      * @see #getUserDefineJsonArray(ArrayList, OnGetJsonObject)
      */
-    private static JSONArray getJsonUserDefineArray(ArrayList<UserDefineObject> arr) throws JSONException {
+    public static JSONArray getJsonArray(ArrayList<UserDefineObject> arr) throws JSONException {
         return getUserDefineJsonArray(arr, new OnGetJsonObject() {
             @Override
             public Object get(UserDefineObject obj) throws JSONException {
@@ -90,8 +90,22 @@ public class JsonExporter {
         });
     }
 
+    /**
+     * Gets the JSON entry for Json.USER_DEFINES.
+     * @see #getUserDefineJsonObject(String, String, ArrayList)
+     */
     private static JSONArray getUserDefinesJson() throws JSONException {
-        return null;
+        JSONArray json = new JSONArray();
+
+        json.put(getUserDefineJsonObject(Json.NAME_BAIT_CATEGORIES, Json.BAIT_CATEGORIES, Logbook.getBaitCategories()));
+        json.put(getUserDefineJsonObject(Json.NAME_BAITS, Json.BAITS, Logbook.getBaits()));
+        json.put(getUserDefineJsonObject(Json.NAME_FISHING_METHODS, Json.FISHING_METHODS, Logbook.getFishingMethods()));
+        json.put(getUserDefineJsonObject(Json.NAME_LOCATIONS, Json.LOCATIONS, Logbook.getLocations()));
+        json.put(getUserDefineJsonObject(Json.NAME_SPECIES, Json.SPECIES, Logbook.getSpecies()));
+        json.put(getUserDefineJsonObject(Json.NAME_WATER_CLARITIES, Json.WATER_CLARITIES, Logbook.getWaterClarities()));
+        json.put(getUserDefineJsonObject(Json.NAME_ANGLERS, Json.ANGLERS, Logbook.getAnglers()));
+
+        return json;
     }
 
     /**
@@ -111,5 +125,39 @@ public class JsonExporter {
             jsonArray.put(callbacks.get(obj));
 
         return jsonArray;
+    }
+
+    /**
+     * A helper method for creating a Json.USER_DEFINES entry. Each entry contains a name, journal
+     * name, and an array for each {@link UserDefineObject} subclass. Most of these arrays will be
+     * empty. It is done this way to keep compatibility with iOS.
+     *
+     * @see #getUserDefinesJson()
+     *
+     * @param name The display name of the entry.
+     * @param arrName The name of the JSON property for the input array.
+     * @param arr The {@link UserDefineObject} array to convert to JSON.
+     * @return A {@link JSONObject} representation of a Json.USER_DEFINES entry.
+     * @throws JSONException Throws JSONException if the {@link JSONObject} cannot be constructed.
+     */
+    private static JSONObject getUserDefineJsonObject(String name, String arrName, ArrayList<UserDefineObject> arr) throws JSONException {
+        JSONObject json = new JSONObject();
+
+        json.put(Json.NAME, name);
+        json.put(Json.JOURNAL, Logbook.getName());
+
+        // empty arrays are used here to keep iOS compatibility
+        json.put(Json.BAIT_CATEGORIES, new JSONArray());
+        json.put(Json.BAITS, new JSONArray());
+        json.put(Json.FISHING_METHODS, new JSONArray());
+        json.put(Json.LOCATIONS, new JSONArray());
+        json.put(Json.SPECIES, new JSONArray());
+        json.put(Json.WATER_CLARITIES, new JSONArray());
+        json.put(Json.ANGLERS, new JSONArray());
+
+        // add the actual JSON array
+        json.put(arrName, getJsonArray(arr));
+
+        return json;
     }
 }

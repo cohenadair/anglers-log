@@ -49,7 +49,7 @@ public class FishingSpot extends UserDefineObject {
     }
 
     public FishingSpot(JSONObject jsonObject) throws JSONException {
-        super(jsonObject.getString(Json.NAME));
+        super(jsonObject);
 
         // read in coordinates
         JSONObject coordinatesJson = jsonObject.getJSONObject(Json.COORDINATES);
@@ -122,5 +122,20 @@ public class FishingSpot extends UserDefineObject {
         values.put(FishingSpotTable.Columns.LONGITUDE, mLongitude);
 
         return values;
+    }
+
+    @Override
+    public JSONObject toJson() throws JSONException {
+        JSONObject json = super.toJson();
+
+        JSONObject coordinates = new JSONObject();
+        coordinates.put(Json.LATITUDE, mLatitude);
+        coordinates.put(Json.LONGITUDE, mLongitude);
+        json.put(Json.COORDINATES, coordinates);
+
+        // for iOS Core Data compatibility
+        json.put(Json.LOCATION, getLocationName());
+
+        return json;
     }
 }

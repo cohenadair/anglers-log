@@ -3,6 +3,7 @@ package com.cohenadair.anglerslog.model;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -21,6 +22,8 @@ import com.cohenadair.anglerslog.database.cursors.SpeciesCursor;
 import com.cohenadair.anglerslog.database.cursors.TripCursor;
 import com.cohenadair.anglerslog.database.cursors.UserDefineCursor;
 import com.cohenadair.anglerslog.database.cursors.WaterClarityCursor;
+import com.cohenadair.anglerslog.model.backup.Exporter;
+import com.cohenadair.anglerslog.model.backup.Importer;
 import com.cohenadair.anglerslog.model.user_defines.Angler;
 import com.cohenadair.anglerslog.model.user_defines.Bait;
 import com.cohenadair.anglerslog.model.user_defines.BaitCategory;
@@ -36,6 +39,7 @@ import com.cohenadair.anglerslog.utilities.LogbookPreferences;
 import com.cohenadair.anglerslog.utilities.PhotoUtils;
 
 import org.apache.commons.io.FileUtils;
+import org.json.JSONException;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -163,6 +167,16 @@ public class Logbook {
 
     public static String getName() {
         return TAG;
+    }
+    //endregion
+
+    //region Backup
+    public static void importFromUri(Uri uri, Importer.OnProgressListener onProgress) throws JSONException {
+        Importer.importFromUri(mContext.getContentResolver(), uri, onProgress);
+    }
+
+    public static void exportToUri(Uri uri, Exporter.OnProgressListener onProgress) throws JSONException {
+        Exporter.exportToUri(mContext.getContentResolver(), uri, onProgress);
     }
     //endregion
 

@@ -279,7 +279,7 @@ public class Catch extends PhotoUserDefineObject {
     }
 
     public void setNotes(String notes) {
-        mNotes = notes;
+        mNotes = Utils.stringOrNull(notes);
     }
 
     @Override
@@ -452,6 +452,7 @@ public class Catch extends PhotoUserDefineObject {
         return values;
     }
 
+    @Override
     public JSONObject toJson() throws JSONException {
         JSONObject json = super.toJson();
 
@@ -470,7 +471,7 @@ public class Catch extends PhotoUserDefineObject {
         json.put(Json.LOCATION, mFishingSpot == null ? "" : mFishingSpot.getLocationName());
         json.put(Json.FISHING_SPOT, mFishingSpot == null ? "" : mFishingSpot.getName());
         json.put(Json.NOTES, mNotes == null ? "" : mNotes);
-        json.put(Json.FISHING_METHODS, JsonExporter.getJsonNameArray(getFishingMethods()));
+        json.put(Json.FISHING_METHODS, JsonExporter.getNameJsonArray(getFishingMethods()));
         json.put(Json.JOURNAL, Logbook.getName());
 
         // weather data

@@ -48,6 +48,7 @@ public class JsonTest {
     private SQLiteDatabase mDatabase;
 
     private Location mLocation;
+    private BaitCategory mBaitCategory;
     private Bait mBait;
     private WaterClarity mWaterClarity;
     private FishingSpot mFishingSpot;
@@ -70,6 +71,7 @@ public class JsonTest {
         mDatabase.close();
         mLocation = null;
         mBait = null;
+        mBaitCategory = null;
         mWaterClarity = null;
         mFishingSpot = null;
         mSpecies = null;
@@ -197,14 +199,57 @@ public class JsonTest {
         }
     }
 
+    @Test
+     public void testLocation() {
+        try {
+            Location obj = new Location("Location");
+            obj.addFishingSpot(mFishingSpot);
+
+            JSONObject exportObj = obj.toJson();
+            Location importObj = new Location(exportObj);
+
+            assertTrue(obj.getFishingSpots().equals(importObj.getFishingSpots()));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void testBait() {
+        try {
+            // default with no properties set
+            Bait obj = new Bait("Bait", mBaitCategory);
+            JSONObject exportObj = obj.toJson();
+            Bait importObj = new Bait(exportObj);
+
+            assertTrue(obj.getCategoryId().equals(importObj.getCategoryId()));
+
+            // with all properties set
+            obj.setColor("Red");
+            obj.setSize("Large");
+            obj.setDescription("An awesome bait.");
+            obj.setType(Bait.TYPE_LIVE);
+
+            exportObj = obj.toJson();
+            importObj = new Bait(exportObj);
+
+            assertTrue(obj.getColorAsString().equals(importObj.getColorAsString()));
+            assertTrue(obj.getSizeAsString().equals(importObj.getSizeAsString()));
+            assertTrue(obj.getDescriptionAsString().equals(importObj.getDescriptionAsString()));
+            assertTrue(obj.getType() == importObj.getType());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void initTestObjects() {
         mSpecies = new Species("Bass");
         Logbook.addSpecies(mSpecies);
 
-        BaitCategory baitCategory = new BaitCategory("Minnow");
-        Logbook.addBaitCategory(baitCategory);
+        mBaitCategory = new BaitCategory("Minnow");
+        Logbook.addBaitCategory(mBaitCategory);
 
-        mBait = new Bait("Shiner", baitCategory);
+        mBait = new Bait("Shiner", mBaitCategory);
         Logbook.addBait(mBait);
 
         mWaterClarity = new WaterClarity("Clear");

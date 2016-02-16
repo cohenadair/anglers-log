@@ -436,4 +436,16 @@ public class Utils {
         );
     }
 
+    /**
+     * @param str The String.
+     * @return The input String if it is not empty, null otherwise.
+     */
+    public static String stringOrNull(String str) {
+        return (str == null || str.isEmpty()) ? null : str;
+    }
+
+    public static String emptyStringOrString(String str) {
+        return (str == null) ? "" : str;
+    }
+
 }

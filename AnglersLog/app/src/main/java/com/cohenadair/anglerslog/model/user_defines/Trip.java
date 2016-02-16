@@ -261,15 +261,16 @@ public class Trip extends UserDefineObject {
         return values;
     }
 
+    @Override
     public JSONObject toJson() throws JSONException {
         JSONObject json = super.toJson();
 
         json.put(Json.START_DATE, mStartDate.getTime());
         json.put(Json.END_DATE, mEndDate.getTime());
         json.put(Json.NOTES, getNotesAsString());
-        json.put(Json.CATCHES, JsonExporter.getJsonIdArray(getCatches()));
-        json.put(Json.LOCATIONS, JsonExporter.getJsonIdArray(getLocations()));
-        json.put(Json.ANGLERS, JsonExporter.getJsonIdArray(getAnglers()));
+        json.put(Json.CATCHES, JsonExporter.getIdJsonArray(getCatches()));
+        json.put(Json.LOCATIONS, JsonExporter.getIdJsonArray(getLocations()));
+        json.put(Json.ANGLERS, JsonExporter.getIdJsonArray(getAnglers()));
 
         return json;
     }

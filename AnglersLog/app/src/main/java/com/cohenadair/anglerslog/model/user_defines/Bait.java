@@ -11,6 +11,7 @@ import com.cohenadair.anglerslog.database.cursors.UserDefineCursor;
 import com.cohenadair.anglerslog.model.Logbook;
 import com.cohenadair.anglerslog.model.backup.Json;
 import com.cohenadair.anglerslog.model.backup.JsonImporter;
+import com.cohenadair.anglerslog.utilities.Utils;
 
 import org.apache.commons.io.FilenameUtils;
 import org.json.JSONException;
@@ -76,20 +77,24 @@ public class Bait extends PhotoUserDefineObject {
     }
 
     public Bait(JSONObject jsonObject) throws JSONException {
-        this(jsonObject.getString(Json.NAME), null);
+        super(jsonObject, BaitPhotoTable.NAME);
 
         mCategory = JsonImporter.baitCategoryOrOther(jsonObject);
-        mDescription = JsonImporter.stringOrNull(jsonObject.getString(Json.BAIT_DESCRIPTION));
-        mSize = JsonImporter.stringOrNull(jsonObject.getString(Json.SIZE));
-        mColor = JsonImporter.stringOrNull(jsonObject.getString(Json.COLOR));
+        mDescription = Utils.stringOrNull(jsonObject.getString(Json.BAIT_DESCRIPTION));
+        mSize = Utils.stringOrNull(jsonObject.getString(Json.SIZE));
+        mColor = Utils.stringOrNull(jsonObject.getString(Json.COLOR));
         mType = jsonObject.getInt(Json.BAIT_TYPE);
 
-        JSONObject jsonImage = jsonObject.getJSONObject(Json.IMAGE);
-        try {
-            String name = FilenameUtils.getName(jsonImage.getString(Json.IMAGE_PATH));
-            addPhoto(name);
-        } catch (JSONException e) {
-            Log.d(TAG, "Bait has no photo.");
+        // only check for a single image if there wasn't a Json.IMAGES array
+        // the check for Json.IMAGES is done in the call to the super's method
+        if (getPhotoCount() <= 0) {
+            JSONObject jsonImage = jsonObject.getJSONObject(Json.IMAGE);
+            try {
+                String name = FilenameUtils.getName(jsonImage.getString(Json.IMAGE_PATH));
+                addPhoto(name);
+            } catch (JSONException e) {
+                Log.d(TAG, "Bait has no photo.");
+            }
         }
     }
     //endregion
@@ -108,7 +113,7 @@ public class Bait extends PhotoUserDefineObject {
     }
 
     public void setColor(String color) {
-        mColor = color;
+        mColor = Utils.stringOrNull(color);
     }
 
     public String getSize() {
@@ -116,7 +121,7 @@ public class Bait extends PhotoUserDefineObject {
     }
 
     public void setSize(String size) {
-        mSize = size;
+        mSize = Utils.stringOrNull(size);
     }
 
     public String getDescription() {
@@ -124,7 +129,7 @@ public class Bait extends PhotoUserDefineObject {
     }
 
     public void setDescription(String description) {
-        mDescription = description;
+        mDescription = Utils.stringOrNull(description);
     }
 
     public int getType() {
@@ -193,6 +198,18 @@ public class Bait extends PhotoUserDefineObject {
         return -1;
     }
 
+    public String getColorAsString() {
+        return Utils.emptyStringOrString(mColor);
+    }
+
+    public String getSizeAsString() {
+        return Utils.emptyStringOrString(mSize);
+    }
+
+    public String getDescriptionAsString() {
+        return Utils.emptyStringOrString(mDescription);
+    }
+
     public ContentValues getContentValues() {
         ContentValues values = super.getContentValues();
 
@@ -203,5 +220,18 @@ public class Bait extends PhotoUserDefineObject {
         values.put(BaitTable.Columns.CATEGORY_ID, mCategory.getIdAsString());
 
         return values;
+    }
+
+    @Override
+    public JSONObject toJson() throws JSONException {
+        JSONObject json = super.toJson();
+
+        json.put(Json.BAIT_CATEGORY, mCategory.getIdAsString());
+        json.put(Json.COLOR, getColorAsString());
+        json.put(Json.SIZE, getSizeAsString());
+        json.put(Json.BAIT_DESCRIPTION, getDescriptionAsString());
+        json.put(Json.BAIT_TYPE, getType());
+
+        return json;
     }
 }
