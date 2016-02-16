@@ -15,8 +15,7 @@ import java.util.Date;
 import java.util.Locale;
 
 /**
- * The JsonExporter class is used to create a JSONObject of the user's
- * {@link com.cohenadair.anglerslog.model.Logbook}.
+ * The JsonExporter class is used to create a JSONObject of the user's {@link Logbook}.
  *
  * @author Cohen Adair
  */
@@ -29,6 +28,10 @@ public class JsonExporter {
         Object get(UserDefineObject obj) throws JSONException;
     }
 
+    /**
+     * Returns a {@link JSONObject} representation of the current {@link Logbook}.
+     * @throws JSONException Throws a JSONException if the object could not be  constructed.
+     */
     public static JSONObject getJson() throws JSONException {
         JSONObject json = new JSONObject();
 

@@ -39,14 +39,29 @@ public class JsonImporter {
 
     private static final String TAG = "JsonImporter";
 
+    /**
+     * An interface used for adding different {@link UserDefineObject} subclasses to the current
+     * {@link Logbook}.
+     */
     private interface OnAddObject {
         void onAddObject(JSONObject obj) throws JSONException;
     }
 
+    /**
+     * An interface used for getting different {@link UserDefineObject} subclass instances from
+     * the current {@link Logbook}.
+     */
     public interface OnGetObject {
         UserDefineObject onGetObject(String name);
     }
 
+    /**
+     * Parses the given {@link JSONObject}, constructing and adding objects to the current
+     * {@link Logbook} along the way.
+     *
+     * @param json The {@link JSONObject} to import.
+     * @throws JSONException Throws JSONException if the input JSON couldn't be parsed.
+     */
     public static void parse(JSONObject json) throws JSONException {
         JSONObject journalJson = json.getJSONObject(Json.JOURNAL);
 
@@ -57,6 +72,9 @@ public class JsonImporter {
         LogbookPreferences.setUnits(json.getInt(Json.MEASUREMENT_SYSTEM));
     }
 
+    /**
+     * Parses an input {@link JSONArray} of {@link Trip} objects.
+     */
     private static void parseTrips(JSONArray tripsJson) throws JSONException {
         Log.d(TAG, "Importing trips...");
 
@@ -68,6 +86,9 @@ public class JsonImporter {
         }));
     }
 
+    /**
+     * Parses an input {@link JSONArray} of {@link Catch} objects.
+     */
     private static void parseCatches(JSONArray catchesJson) {
         Log.d(TAG, "Importing catches...");
 
@@ -79,6 +100,10 @@ public class JsonImporter {
         }));
     }
 
+    /**
+     * Parses an input {@link JSONArray} of {@link UserDefineObject} subclass representations.
+     * @see JsonExporter#getUserDefineJsonObject(String, String, ArrayList)
+     */
     private static void parseUserDefines(JSONArray userDefinesJson) throws JSONException {
         for (int i = 0; i < userDefinesJson.length(); i++) {
             JSONObject obj = userDefinesJson.getJSONObject(i);
@@ -99,6 +124,12 @@ public class JsonImporter {
         }
     }
 
+    /**
+     * Parses an input {@link JSONArray} of {@link UserDefineObject} objects based on the given
+     * {@link com.cohenadair.anglerslog.model.backup.JsonImporter.UserDefineJson} specification.
+     *
+     * @see #getUserDefineJsonMap()
+     */
     private static void parseUserDefineJson(JSONArray jsonArray, UserDefineJson userDefineJson) {
         for (int i = 0; i < jsonArray.length(); i++)
             try {
