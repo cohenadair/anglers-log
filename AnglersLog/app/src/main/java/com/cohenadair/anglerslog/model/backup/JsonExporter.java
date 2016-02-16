@@ -3,8 +3,6 @@ package com.cohenadair.anglerslog.model.backup;
 import android.support.annotation.NonNull;
 
 import com.cohenadair.anglerslog.model.Logbook;
-import com.cohenadair.anglerslog.model.user_defines.Catch;
-import com.cohenadair.anglerslog.model.user_defines.Trip;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 
 import org.json.JSONArray;
@@ -24,19 +22,18 @@ import java.util.Locale;
  */
 public class JsonExporter {
 
-    private interface OnGetUserDefineJson {
-        JSONObject getJson(UserDefineObject obj) throws JSONException;
-    }
-
-    private interface OnGetUserDefineString {
-        String getString(UserDefineObject obj) throws JSONException;
+    /**
+     * An interface to be used on different {@link UserDefineObject} subclasses.
+     */
+    private interface OnGetJsonObject {
+        Object get(UserDefineObject obj) throws JSONException;
     }
 
     public static JSONObject getJson() throws JSONException {
         JSONObject json = new JSONObject();
 
-        json.put(Json.TRIPS, getTripsJson());
-        json.put(Json.ENTRIES, getCatchesJson());
+        json.put(Json.TRIPS, getJsonUserDefineArray(Logbook.getTrips()));
+        json.put(Json.ENTRIES, getJsonUserDefineArray(Logbook.getCatches()));
         json.put(Json.USER_DEFINES, getUserDefinesJson());
 
         return new JSONObject().put(Json.JOURNAL, json);
@@ -54,12 +51,12 @@ public class JsonExporter {
 
     /**
      * Gets a JSONArray of the UUID's of the given UserDefineObject array.
-     * @see #getUserDefineJsonArray(ArrayList, OnGetUserDefineString)
+     * @see #getUserDefineJsonArray(ArrayList, OnGetJsonObject)
      */
     public static JSONArray getJsonIdArray(ArrayList<UserDefineObject> arr) throws JSONException {
-        return getUserDefineJsonArray(arr, new OnGetUserDefineString() {
+        return getUserDefineJsonArray(arr, new OnGetJsonObject() {
             @Override
-            public String getString(UserDefineObject obj) throws JSONException {
+            public String get(UserDefineObject obj) throws JSONException {
                 return obj.getIdAsString();
             }
         });
@@ -67,31 +64,28 @@ public class JsonExporter {
 
     /**
      * Gets a JSONArray of the names of the given UserDefineObject array.
-     * @see #getUserDefineJsonArray(ArrayList, OnGetUserDefineString)
+     * @see #getUserDefineJsonArray(ArrayList, OnGetJsonObject)
      */
     public static JSONArray getJsonNameArray(ArrayList<UserDefineObject> arr) throws JSONException {
-        return getUserDefineJsonArray(arr, new OnGetUserDefineString() {
+        return getUserDefineJsonArray(arr, new OnGetJsonObject() {
             @Override
-            public String getString(UserDefineObject obj) throws JSONException {
+            public String get(UserDefineObject obj) throws JSONException {
                 return obj.getName();
             }
         });
     }
 
-    private static JSONArray getTripsJson() throws JSONException {
-        return getUserDefineJsonArray(Logbook.getTrips(), new OnGetUserDefineJson() {
+    /**
+     * Gets a JSONArray of the JSONObject associated with eact item in the given array of
+     * {@link UserDefineObject} instances.
+     *
+     * @see #getUserDefineJsonArray(ArrayList, OnGetJsonObject)
+     */
+    private static JSONArray getJsonUserDefineArray(ArrayList<UserDefineObject> arr) throws JSONException {
+        return getUserDefineJsonArray(arr, new OnGetJsonObject() {
             @Override
-            public JSONObject getJson(UserDefineObject obj) throws JSONException {
-                return ((Trip) obj).toJson();
-            }
-        });
-    }
-
-    private static JSONArray getCatchesJson() throws JSONException {
-        return getUserDefineJsonArray(Logbook.getCatches(), new OnGetUserDefineJson() {
-            @Override
-            public JSONObject getJson(UserDefineObject obj) throws JSONException {
-                return ((Catch) obj).toJson();
+            public Object get(UserDefineObject obj) throws JSONException {
+                return obj.toJson();
             }
         });
     }
@@ -100,20 +94,21 @@ public class JsonExporter {
         return null;
     }
 
-    private static JSONArray getUserDefineJsonArray(ArrayList<UserDefineObject> arr, OnGetUserDefineJson callbacks) throws JSONException {
+    /**
+     * A helper method that takes in an array of {@link UserDefineObject} and outputs a
+     * {@link JSONArray}.
+     *
+     * @param arr The {@link UserDefineObject} array.
+     * @param callbacks The {@link OnGetJsonObject} interface used to get the object to add to the
+     *                  resulting {@link JSONArray}.
+     * @return A {@link JSONArray} representation of the input {@link UserDefineObject} array.
+     * @throws JSONException Throws JSONException if the result cannot be constructed.
+     */
+    private static JSONArray getUserDefineJsonArray(ArrayList<UserDefineObject> arr, OnGetJsonObject callbacks) throws JSONException {
         JSONArray jsonArray = new JSONArray();
 
         for (UserDefineObject obj : arr)
-            jsonArray.put(callbacks.getJson(obj));
-
-        return jsonArray;
-    }
-
-    private static JSONArray getUserDefineJsonArray(ArrayList<UserDefineObject> arr, OnGetUserDefineString callbacks) throws JSONException {
-        JSONArray jsonArray = new JSONArray();
-
-        for (UserDefineObject obj : arr)
-            jsonArray.put(callbacks.getString(obj));
+            jsonArray.put(callbacks.get(obj));
 
         return jsonArray;
     }
