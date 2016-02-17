@@ -5,7 +5,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.cohenadair.anglerslog.R;
@@ -40,7 +39,6 @@ import com.cohenadair.anglerslog.utilities.PhotoUtils;
 import com.drew.lang.annotations.NotNull;
 
 import org.apache.commons.io.FileUtils;
-import org.json.JSONException;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -149,6 +147,10 @@ public class Logbook {
         }
     }
 
+    public static void cleanup() {
+        FileUtils.deleteQuietly(new File(LogbookPreferences.getBackupFile()));
+    }
+
     /**
      * Completely resets the database.
      */
@@ -172,12 +174,12 @@ public class Logbook {
     //endregion
 
     //region Backup
-    public static void importFromUri(Uri uri, Importer.OnProgressListener onProgress) throws JSONException {
+    public static void importFromUri(Uri uri, Importer.OnProgressListener onProgress) {
         Importer.importFromUri(mContext.getContentResolver(), uri, onProgress);
     }
 
-    public static void exportToUri(Uri uri, Exporter.OnProgressListener onProgress) throws JSONException {
-        Exporter.exportToUri(mContext.getContentResolver(), uri, onProgress);
+    public static void exportToPath(File filePath, Exporter.OnProgressListener onProgress) {
+        Exporter.exportToPath(mContext, filePath, onProgress);
     }
     //endregion
 

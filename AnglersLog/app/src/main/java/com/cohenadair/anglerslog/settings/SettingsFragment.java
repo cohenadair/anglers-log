@@ -10,11 +10,14 @@ import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
 
 import com.cohenadair.anglerslog.R;
-import com.cohenadair.anglerslog.backup.ImportFragment;
-import com.cohenadair.anglerslog.model.backup.Importer;
+import com.cohenadair.anglerslog.backup.BackupFragment;
 import com.cohenadair.anglerslog.model.Logbook;
+import com.cohenadair.anglerslog.model.backup.Exporter;
+import com.cohenadair.anglerslog.model.backup.Importer;
 import com.cohenadair.anglerslog.utilities.LogbookPreferences;
 import com.cohenadair.anglerslog.utilities.Utils;
+
+import java.io.File;
 
 /**
  * The SettingsFragment handles all user preferences.
@@ -25,8 +28,12 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     private static final String TAG = "SettingsFragment";
 
     private static final int REQUEST_IMPORT = 0;
+    private static final int REQUEST_EXPORT = 1;
+
+    private static final String MIME_TYPE_ZIP = "application/x-zip";
 
     private Uri mImportUri;
+    private File mExportFile;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -61,6 +68,11 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             return;
         }
 
+        if (requestCode == REQUEST_EXPORT) {
+            Utils.showToast(getContext(), R.string.export_success);
+            return;
+        }
+
         super.onActivityResult(requestCode, resultCode, data);
     }
 
@@ -86,16 +98,13 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         updateUnits(units);
     }
 
-    /**
-     * Uses Intent.ACTION_OPEN_DOCUMENT which requires Android KitKat (API Level 19).
-     */
     private void initImport() {
         Preference importPref = findPreference(getResources().getString(R.string.pref_import));
         importPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                intent.setType("application/x-zip");
+                intent.setType(MIME_TYPE_ZIP);
 
                 startActivityForResult(intent, REQUEST_IMPORT);
                 return true;
@@ -108,7 +117,8 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         export.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                return false;
+                showExportDialog();
+                return true;
             }
         });
     }
@@ -145,11 +155,13 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         if (mImportUri == null)
             return;
 
-        final ImportFragment importFragment = new ImportFragment();
-        importFragment.setCallbacks(new ImportFragment.InteractionListener() {
+        final BackupFragment importFragment =
+                BackupFragment.newInstance(R.string.import_title, R.string.import_name, R.string.import_dialog_message);
+
+        importFragment.setCallbacks(new BackupFragment.InteractionListener() {
             @Override
             public void onConfirm() {
-                Importer.importFromUri(getContext().getContentResolver(), mImportUri, new Importer.OnProgressListener() {
+                Logbook.importFromUri(mImportUri, new Importer.OnProgressListener() {
                     @Override
                     public void onFinish() {
                         importFragment.dismiss();
@@ -165,5 +177,45 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             }
         });
         importFragment.show(getChildFragmentManager(), null);
+    }
+
+    private void showExportDialog() {
+        final BackupFragment exportFragment =
+                BackupFragment.newInstance(R.string.export_title, R.string.export, R.string.export_dialog_message);
+
+        exportFragment.setCallbacks(new BackupFragment.InteractionListener() {
+            @Override
+            public void onConfirm() {
+                File zipFile = getContext().getExternalCacheDir();
+
+                Logbook.exportToPath(zipFile, new Exporter.OnProgressListener() {
+                    @Override
+                    public void onFinish(File zipFile) {
+                        LogbookPreferences.setBackupFile(zipFile.getPath());
+                        exportFragment.dismiss();
+
+                        Intent intent = new Intent();
+                        intent.setAction(Intent.ACTION_SEND);
+                        intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(zipFile));
+                        intent.setType(MIME_TYPE_ZIP);
+
+                        startActivityForResult(intent, REQUEST_EXPORT);
+                    }
+
+                    @Override
+                    public void onError(int errorNo) {
+                        exportFragment.dismiss();
+                        Utils.showToast(getContext(), getResources().getString(R.string.export_error) + " " + errorNo);
+                    }
+                });
+            }
+
+            @Override
+            public void onCancel() {
+                mExportFile = null;
+            }
+        });
+
+        exportFragment.show(getChildFragmentManager(), null);
     }
 }

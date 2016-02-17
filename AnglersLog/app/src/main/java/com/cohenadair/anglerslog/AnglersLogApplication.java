@@ -23,6 +23,7 @@ public class AnglersLogApplication extends Application {
 
         // needs to be called after initializing
         Logbook.setDefaults();
+        Logbook.cleanup();
     }
 
 }

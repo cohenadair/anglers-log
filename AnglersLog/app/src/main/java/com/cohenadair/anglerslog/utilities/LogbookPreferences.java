@@ -14,17 +14,23 @@ import com.cohenadair.anglerslog.model.Logbook;
  */
 public class LogbookPreferences {
 
+    public static final String PREF_CLEANUP = "com.cohenadair.anglerslog.Cleanup";
     public static final String PREF_SELECTIONS = "com.cohenadair.anglerslog.PreviousSelections";
     public static final String PREF_LAYOUT = "com.cohenadair.anglerslog.LayoutPreferences";
 
     public static final String NAVIGATION_ID = "navigationId";
     public static final String ROOT_TWO_PANE = "isRootTwoPane";
     public static final String WEATHER_UNITS = "weatherUnits";
+    public static final String BACKUP_FILE = "backupFilePath";
 
     private static Context mContext;
 
     public static void init(Context context) {
         mContext = context;
+    }
+
+    private static SharedPreferences getCleanup() {
+        return mContext.getSharedPreferences(PREF_CLEANUP, Context.MODE_PRIVATE);
     }
 
     private static SharedPreferences getPreviousSelections() {
@@ -33,6 +39,14 @@ public class LogbookPreferences {
 
     private static SharedPreferences getLayoutPreferences() {
         return mContext.getSharedPreferences(PREF_LAYOUT, Context.MODE_PRIVATE);
+    }
+
+    public static void setBackupFile(String filePath) {
+        getCleanup().edit().putString(BACKUP_FILE, filePath).apply();
+    }
+
+    public static String getBackupFile() {
+        return getCleanup().getString(BACKUP_FILE, null);
     }
 
     public static void setNavigationId(int id) {

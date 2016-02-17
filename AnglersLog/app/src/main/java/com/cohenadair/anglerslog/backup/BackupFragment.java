@@ -9,19 +9,25 @@ import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.cohenadair.anglerslog.R;
 
 /**
- * An ImportFragment is used as a confirmation and progress dialog for importing data from other
- * device platforms.
+ * An BackupFragment is used as a confirmation and progress dialog for importing and exporting
+ * data to and from other device platforms.
  *
- * Created by Cohen Adair on 2016-02-07.
+ * @author Cohen Adair
  */
-public class ImportFragment extends DialogFragment {
+public class BackupFragment extends DialogFragment {
+
+    private static final String ARG_TITLE = "arg_title";
+    private static final String ARG_POSITIVE_BUTTON = "arg_positive_button";
+    private static final String ARG_MESSAGE = "arg_message";
 
     private AlertDialog mAlertDialog;
     private ProgressBar mProgressBar;
+    private TextView mMessageView;
 
     private InteractionListener mCallbacks;
 
@@ -30,14 +36,26 @@ public class ImportFragment extends DialogFragment {
         void onCancel();
     }
 
+    public static BackupFragment newInstance(int titleId, int positiveButtonId, int msgId) {
+        BackupFragment fragment = new BackupFragment();
+
+        Bundle args = new Bundle();
+        args.putInt(ARG_TITLE, titleId);
+        args.putInt(ARG_POSITIVE_BUTTON, positiveButtonId);
+        args.putInt(ARG_MESSAGE, msgId);
+
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
-        builder.setTitle(R.string.import_confirm);
-        builder.setView(getContentView());
-        builder.setPositiveButton(R.string.import_name, null);
+        builder.setTitle(getArguments().getInt(ARG_TITLE));
+        builder.setView(getContentView(getArguments()));
+        builder.setPositiveButton(getArguments().getInt(ARG_POSITIVE_BUTTON), null);
         builder.setNegativeButton(R.string.button_cancel, getOnClickCancel());
 
         mAlertDialog = builder.create();
@@ -46,17 +64,20 @@ public class ImportFragment extends DialogFragment {
         return mAlertDialog;
     }
 
-    private View getContentView() {
-        View view = getActivity().getLayoutInflater().inflate(R.layout.dialog_import, null);
+    private View getContentView(Bundle args) {
+        View view = getActivity().getLayoutInflater().inflate(R.layout.dialog_backup, null);
 
         mProgressBar = (ProgressBar)view.findViewById(R.id.progress_bar);
         mProgressBar.setVisibility(View.GONE);
+
+        mMessageView = (TextView)view.findViewById(R.id.text_view);
+        mMessageView.setText(getResources().getString(args.getInt(ARG_MESSAGE)));
 
         return view;
     }
 
     @NonNull
-    private View.OnClickListener getOnClickImport() {
+    private View.OnClickListener getOnClickConfirm() {
         return new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -92,7 +113,7 @@ public class ImportFragment extends DialogFragment {
             @Override
             public void onShow(DialogInterface dialogInterface) {
                 Button positive = mAlertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
-                positive.setOnClickListener(getOnClickImport());
+                positive.setOnClickListener(getOnClickConfirm());
             }
         };
     }
