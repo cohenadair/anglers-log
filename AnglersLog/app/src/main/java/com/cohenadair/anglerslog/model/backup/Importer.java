@@ -33,8 +33,7 @@ public class Importer {
     public static final int ERROR_ZIP_ITERATE = 2;
     public static final int ERROR_JSON_PARSE = 3;
     public static final int ERROR_JSON_READ = 4;
-    public static final int ERROR_JSON_CLOSE = 5;
-    public static final int ERROR_IMAGE_IMPORT = 6;
+    public static final int ERROR_IMAGE_IMPORT = 5;
 
     private static ContentResolver mContentResolver;
     private static Uri mUri;

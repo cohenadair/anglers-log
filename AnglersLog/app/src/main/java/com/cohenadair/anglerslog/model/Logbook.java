@@ -153,7 +153,12 @@ public class Logbook {
     }
 
     public static void cleanup() {
-        FileUtils.deleteQuietly(new File(LogbookPreferences.getBackupFile()));
+        // delete backup file if one exists
+        String backupFile = LogbookPreferences.getBackupFile();
+        if (backupFile != null) {
+            FileUtils.deleteQuietly(new File(backupFile));
+            LogbookPreferences.setBackupFile(null);
+        }
     }
 
     /**

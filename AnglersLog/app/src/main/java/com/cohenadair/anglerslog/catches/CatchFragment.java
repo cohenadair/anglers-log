@@ -104,6 +104,8 @@ public class CatchFragment extends DetailFragment {
         if (!isAttached())
             return;
 
+        setActionBarTitle("");
+
         // id can be null if in two-pane view and there are no catches
         if (id == null) {
             mContainer.setVisibility(View.GONE);
