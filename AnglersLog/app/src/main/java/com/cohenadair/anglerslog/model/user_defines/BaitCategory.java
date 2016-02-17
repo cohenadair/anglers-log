@@ -1,7 +1,5 @@
 package com.cohenadair.anglerslog.model.user_defines;
 
-import com.cohenadair.anglerslog.model.backup.Json;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -29,7 +27,6 @@ public class BaitCategory extends UserDefineObject {
     }
 
     public BaitCategory(JSONObject jsonObject) throws JSONException {
-        super(jsonObject.getString(Json.NAME));
+        super(jsonObject);
     }
-
 }

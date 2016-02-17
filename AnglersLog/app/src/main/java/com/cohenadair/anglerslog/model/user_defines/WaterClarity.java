@@ -1,7 +1,5 @@
 package com.cohenadair.anglerslog.model.user_defines;
 
-import com.cohenadair.anglerslog.model.backup.Json;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -28,7 +26,7 @@ public class WaterClarity extends UserDefineObject {
     }
 
     public WaterClarity(JSONObject jsonObject) throws JSONException {
-        super(jsonObject.getString(Json.NAME));
+        super(jsonObject);
     }
 
 }

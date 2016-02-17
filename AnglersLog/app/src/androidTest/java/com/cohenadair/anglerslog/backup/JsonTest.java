@@ -29,6 +29,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 import static android.support.test.InstrumentationRegistry.getTargetContext;
@@ -136,8 +137,13 @@ public class JsonTest {
     @Test
     public void testCatch() {
         try {
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(new Date());
+            calendar.set(Calendar.SECOND, 0);
+            calendar.set(Calendar.MILLISECOND, 0);
+
             // default object with no properties set
-            Catch obj = new Catch(new Date());
+            Catch obj = new Catch(calendar.getTime());
             JSONObject exportObj = obj.toJson();
             Catch importObj = new Catch(exportObj);
 

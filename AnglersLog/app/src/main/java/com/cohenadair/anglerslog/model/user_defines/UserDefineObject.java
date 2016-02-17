@@ -140,7 +140,7 @@ public class UserDefineObject {
     public ContentValues getContentValues() {
         ContentValues values = new ContentValues();
 
-        values.put(UserDefineTable.Columns.ID, mId.toString());
+        values.put(UserDefineTable.Columns.ID, getIdAsString());
         values.put(UserDefineTable.Columns.NAME, mName);
         values.put(UserDefineTable.Columns.SELECTED, mIsSelected);
 

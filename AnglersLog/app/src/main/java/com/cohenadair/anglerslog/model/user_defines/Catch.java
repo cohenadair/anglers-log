@@ -138,16 +138,41 @@ public class Catch extends PhotoUserDefineObject {
 
         mDate = JsonImporter.parseDate(catchJson.getString(Json.DATE));
         mSpecies = Logbook.getSpecies(catchJson.getString(Json.FISH_SPECIES));
-        mLength = catchJson.getInt(Json.FISH_LENGTH);
-        mWeight = catchJson.getInt(Json.FISH_WEIGHT) + JsonImporter.ouncesToDecimal(catchJson.getInt(Json.FISH_OUNCES));
+        mLength = (float)catchJson.getDouble(Json.FISH_LENGTH);
         mQuantity = catchJson.getInt(Json.FISH_QUANTITY);
         mCatchResult = CatchResult.fromInt(catchJson.getInt(Json.FISH_RESULT));
-        mBait = Logbook.getBait(catchJson.getString(Json.BAIT_USED), JsonImporter.baitCategoryOrOther(catchJson).getId());
-        mFishingSpot = Logbook.getFishingSpot(catchJson.getString(Json.FISHING_SPOT), Logbook.getLocation(catchJson.getString(Json.LOCATION)).getId());
         mWaterTemperature = catchJson.getInt(Json.WATER_TEMPERATURE);
         mWaterClarity = Logbook.getWaterClarity(catchJson.getString(Json.WATER_CLARITY));
-        mWaterDepth = catchJson.getInt(Json.WATER_DEPTH);
+        mWaterDepth = (float)catchJson.getDouble(Json.WATER_DEPTH);
         mNotes = catchJson.getString(Json.NOTES);
+
+        mWeight = (float)catchJson.getDouble(Json.FISH_WEIGHT);
+
+        // there is no Json.FISH_OUNCES property when importing from Android
+        try {
+            JsonImporter.ouncesToDecimal(catchJson.getInt(Json.FISH_OUNCES));
+        } catch (JSONException e) {
+            Log.e(TAG, "No JSON value for " + Json.FISH_OUNCES);
+        }
+
+        // there is no Json.IS_FAVORITE when importing from iOS
+        try {
+            mIsFavorite = catchJson.getBoolean(Json.IS_FAVORITE);
+        } catch (JSONException e) {
+            Log.e(TAG, "No JSON value " + Json.IS_FAVORITE);
+        }
+
+        // location
+        Location location = Logbook.getLocation(catchJson.getString(Json.LOCATION));
+        if (location != null)
+            mFishingSpot = Logbook.getFishingSpot(catchJson.getString(Json.FISHING_SPOT), location.getId());
+
+        // bait
+        // if there is no used bait, don't even bother looking for the bait category
+        // an "Other" category will be returned in this case
+        String baitName = catchJson.getString(Json.BAIT_USED);
+        if (!baitName.isEmpty())
+            mBait = Logbook.getBait(baitName, JsonImporter.baitCategoryOrOther(catchJson).getId());
 
         // fishing methods
         JSONArray fishingMethodsJson = catchJson.getJSONArray(Json.FISHING_METHOD_NAMES);
@@ -467,11 +492,11 @@ public class Catch extends PhotoUserDefineObject {
         json.put(Json.WATER_TEMPERATURE, mWaterTemperature);
         json.put(Json.WATER_CLARITY, getWaterClarityAsString());
         json.put(Json.BAIT_USED, mBait == null ? "" : mBait.getName());
-        json.put(Json.BAIT_CATEGORY, mBait == null ? "" : mBait.getCategoryName());
+        json.put(Json.BAIT_CATEGORY, mBait == null ? "" : mBait.getCategoryId().toString());
         json.put(Json.LOCATION, mFishingSpot == null ? "" : mFishingSpot.getLocationName());
         json.put(Json.FISHING_SPOT, mFishingSpot == null ? "" : mFishingSpot.getName());
         json.put(Json.NOTES, mNotes == null ? "" : mNotes);
-        json.put(Json.FISHING_METHODS, JsonExporter.getNameJsonArray(getFishingMethods()));
+        json.put(Json.FISHING_METHOD_NAMES, JsonExporter.getNameJsonArray(getFishingMethods()));
 
         // for iOS compatibility
         json.put(Json.JOURNAL, Logbook.getName());

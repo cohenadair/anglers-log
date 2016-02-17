@@ -24,8 +24,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * The JsonImporter class is used to parse a given {@link JSONObject} and convert its properties
@@ -221,8 +223,9 @@ public class JsonImporter {
         // importing from iOS will have no associated BaitCategory
         BaitCategory baitCategory = null;
         try {
-            String baitCategoryName = jsonObject.getString(Json.BAIT_CATEGORY);
-            baitCategory = Logbook.getBaitCategory(baitCategoryName);
+            String baitCategoryId = jsonObject.getString(Json.BAIT_CATEGORY);
+            if (!baitCategoryId.isEmpty())
+                baitCategory = Logbook.getBaitCategory(UUID.fromString(baitCategoryId));
         } catch (JSONException e) {
             Log.e(TAG, "No value for " + Json.BAIT_CATEGORY);
         }
@@ -247,8 +250,8 @@ public class JsonImporter {
      * @return A map of user define object names as keys, and a
      * {@link com.cohenadair.anglerslog.model.backup.JsonImporter.UserDefineJson} as values.
      */
-    private static HashMap<String, UserDefineJson> getUserDefineJsonMap() {
-        HashMap<String, UserDefineJson> map = new HashMap<>();
+    private static LinkedHashMap<String, UserDefineJson> getUserDefineJsonMap() {
+        LinkedHashMap<String, UserDefineJson> map = new LinkedHashMap<>();
 
         map.put(Json.NAME_FISHING_METHODS, new UserDefineJson(Json.FISHING_METHODS, new OnAddObject() {
             @Override
@@ -271,6 +274,13 @@ public class JsonImporter {
             }
         }));
 
+        map.put(Json.NAME_BAIT_CATEGORIES, new UserDefineJson(Json.BAIT_CATEGORIES, new OnAddObject() {
+            @Override
+            public void onAddObject(JSONObject obj) throws JSONException {
+                Logbook.addBaitCategory(new BaitCategory(obj));
+            }
+        }));
+
         map.put(Json.NAME_BAITS, new UserDefineJson(Json.BAITS, new OnAddObject() {
             @Override
             public void onAddObject(JSONObject obj) throws JSONException {
@@ -289,13 +299,6 @@ public class JsonImporter {
             @Override
             public void onAddObject(JSONObject obj) throws JSONException {
                 Logbook.addAngler(new Angler(obj));
-            }
-        }));
-
-        map.put(Json.NAME_BAIT_CATEGORIES, new UserDefineJson(Json.BAIT_CATEGORIES, new OnAddObject() {
-            @Override
-            public void onAddObject(JSONObject obj) throws JSONException {
-                Logbook.addBaitCategory(new BaitCategory(obj));
             }
         }));
 

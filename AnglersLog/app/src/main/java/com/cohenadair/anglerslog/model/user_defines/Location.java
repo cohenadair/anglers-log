@@ -93,6 +93,7 @@ public class Location extends UserDefineObject {
     }
 
     public boolean addFishingSpot(FishingSpot fishingSpot) {
+        fishingSpot.setLocationId(getId());
         return QueryHelper.insertQuery(FishingSpotTable.NAME, fishingSpot.getContentValues(getId()));
     }
 

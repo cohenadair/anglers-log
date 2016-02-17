@@ -1,7 +1,5 @@
 package com.cohenadair.anglerslog.model.user_defines;
 
-import com.cohenadair.anglerslog.model.backup.Json;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -28,6 +26,6 @@ public class Species extends UserDefineObject {
     }
 
     public Species(JSONObject jsonObject) throws JSONException {
-        super(jsonObject.getString(Json.NAME));
+        super(jsonObject);
     }
 }

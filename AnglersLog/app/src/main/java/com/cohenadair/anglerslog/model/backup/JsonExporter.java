@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.cohenadair.anglerslog.model.Logbook;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
+import com.cohenadair.anglerslog.utilities.LogbookPreferences;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -39,6 +40,7 @@ public class JsonExporter {
         json.put(Json.TRIPS, getJsonArray(Logbook.getTrips()));
         json.put(Json.ENTRIES, getJsonArray(Logbook.getCatches()));
         json.put(Json.USER_DEFINES, getUserDefinesJson());
+        json.put(Json.MEASUREMENT_SYSTEM, LogbookPreferences.getUnits());
 
         return new JSONObject().put(Json.JOURNAL, json);
     }
