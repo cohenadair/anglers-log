@@ -24,8 +24,6 @@ import java.util.zip.ZipOutputStream;
  */
 public class Exporter {
 
-    private static final String TAG = "Exporter";
-
     /**
      * Constants representing different exporting errors.
      */
@@ -161,9 +159,14 @@ public class Exporter {
      * A simple method for error handling.
      * @param errorNo The error constant.
      */
-    private static void error(int errorNo) {
+    private static void error(final int errorNo) {
         if (mCallbacks != null)
-            mCallbacks.onError(errorNo);
+            mHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    mCallbacks.onError(errorNo);
+                }
+            });
     }
 
     /**

@@ -93,7 +93,7 @@ public class Bait extends PhotoUserDefineObject {
                 String name = FilenameUtils.getName(jsonImage.getString(Json.IMAGE_PATH));
                 addPhoto(name);
             } catch (JSONException e) {
-                Log.d(TAG, "Bait has no photo.");
+                Log.e(TAG, "No JSON value for " + Json.IMAGE);
             }
         }
     }

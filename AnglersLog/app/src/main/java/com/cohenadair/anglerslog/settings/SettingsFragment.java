@@ -29,10 +29,9 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     private static final int REQUEST_IMPORT = 0;
     private static final int REQUEST_EXPORT = 1;
 
-    private static final String MIME_TYPE_ZIP = "application/x-zip";
+    private static final String MIME_TYPE_ZIP = "application/zip";
 
     private Uri mImportUri;
-    private File mExportFile;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -160,6 +159,12 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                         importFragment.dismiss();
                         Utils.showToast(getContext(), R.string.import_success);
                     }
+
+                    @Override
+                    public void onError(int errorNo) {
+                        importFragment.dismiss();
+                        Utils.showToast(getContext(), getResources().getString(R.string.import_error) + " " + errorNo);
+                    }
                 });
                 mImportUri = null;
             }
@@ -206,7 +211,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
 
             @Override
             public void onCancel() {
-                mExportFile = null;
+
             }
         });
 

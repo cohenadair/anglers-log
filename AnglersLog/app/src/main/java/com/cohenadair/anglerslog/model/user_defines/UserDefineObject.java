@@ -2,6 +2,7 @@ package com.cohenadair.anglerslog.model.user_defines;
 
 import android.content.ContentValues;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.cohenadair.anglerslog.model.backup.Json;
 
@@ -17,6 +18,8 @@ import static com.cohenadair.anglerslog.database.LogbookSchema.UserDefineTable;
  * @author Cohen Adair
  */
 public class UserDefineObject {
+
+    private static final String TAG = "UserDefineObject";
 
     private UUID mId;
     private String mName;
@@ -41,9 +44,22 @@ public class UserDefineObject {
         initFromObj(obj, keepId);
     }
 
-    public UserDefineObject(JSONObject jsonObject) throws JSONException {
-        mId = UUID.fromString(jsonObject.getString(Json.ID));
-        mName = jsonObject.getString(Json.NAME);
+    public UserDefineObject(JSONObject jsonObject) {
+        // importing from iOS will not have an id property
+        try {
+            mId = UUID.fromString(jsonObject.getString(Json.ID));
+        } catch (JSONException e) {
+            Log.e(TAG, "No JSON value for " + Json.ID);
+            mId = UUID.randomUUID();
+        }
+
+        // importing from iOS will not have a name property for some subclasses
+        try {
+            mName = jsonObject.getString(Json.NAME);
+        } catch (JSONException e) {
+            Log.e(TAG, "No JSON value for " + Json.NAME);
+            mName = getIdAsString();
+        }
     }
 
     private void initFromObj(UserDefineObject obj, boolean keepId) {

@@ -168,7 +168,7 @@ public class Catch extends PhotoUserDefineObject {
             );
             setWeather(weather);
         } catch (JSONException e) {
-            Log.i(TAG, "JSON Catch has no weather data.");
+            Log.e(TAG, "No JSON value for " + Json.WEATHER_DATA);
         }
     }
 

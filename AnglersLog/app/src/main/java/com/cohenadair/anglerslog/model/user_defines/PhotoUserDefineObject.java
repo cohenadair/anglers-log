@@ -57,7 +57,7 @@ public abstract class PhotoUserDefineObject extends UserDefineObject {
                 addPhoto(FilenameUtils.getName(image.getString(Json.IMAGE_PATH)));
             }
         } catch (JSONException e) {
-            Log.e(TAG, "PhotoUserDefineObject doesn't have a " + Json.IMAGES + " array.");
+            Log.e(TAG, "No JSON value for " + Json.IMAGES);
         }
     }
 

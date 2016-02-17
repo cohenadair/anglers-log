@@ -67,9 +67,15 @@ public class JsonImporter {
 
         parseUserDefines(journalJson.getJSONArray(Json.USER_DEFINES));
         parseCatches(journalJson.getJSONArray(Json.ENTRIES));
-        parseTrips(journalJson.getJSONArray(Json.TRIPS));
 
-        LogbookPreferences.setUnits(json.getInt(Json.MEASUREMENT_SYSTEM));
+        // there is no trips field when importing from iOS
+        try {
+            parseTrips(journalJson.getJSONArray(Json.TRIPS));
+        } catch (JSONException e) {
+            Log.e(TAG, "No value for " + Json.TRIPS);
+        }
+
+        LogbookPreferences.setUnits(journalJson.getInt(Json.MEASUREMENT_SYSTEM));
     }
 
     /**
@@ -111,14 +117,19 @@ public class JsonImporter {
 
             for (Map.Entry<String, UserDefineJson> entry : userDefineJsonMap.entrySet()) {
                 UserDefineJson userDefineJson = entry.getValue();
-                Log.d(TAG, "Importing " + userDefineJson.getName() + "...");
 
                 try {
                     JSONArray arr = obj.getJSONArray(userDefineJson.getName());
+                    if (arr.length() <= 0)
+                        continue;
+
+                    Log.d(TAG, "Importing " + userDefineJson.getName() + "...");
+
                     for (int j = 0; j < arr.length(); j++)
                         userDefineJson.getCallbacks().onAddObject(arr.getJSONObject(j));
+
                 } catch (JSONException e) {
-                    e.printStackTrace();
+                    Log.e(TAG, "No value for " + userDefineJson.getName());
                 }
             }
         }
@@ -213,7 +224,7 @@ public class JsonImporter {
             String baitCategoryName = jsonObject.getString(Json.BAIT_CATEGORY);
             baitCategory = Logbook.getBaitCategory(baitCategoryName);
         } catch (JSONException e) {
-            Log.d(TAG, "No " + Json.BAIT_CATEGORY + " field.");
+            Log.e(TAG, "No value for " + Json.BAIT_CATEGORY);
         }
 
         // if there is no import category use "Other"
