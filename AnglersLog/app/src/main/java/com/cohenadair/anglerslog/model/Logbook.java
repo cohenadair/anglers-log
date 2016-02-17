@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
@@ -72,6 +73,10 @@ public class Logbook {
 
     private static SQLiteDatabase mDatabase;
     private static Context mContext;
+
+    public interface OnResetListener {
+        void onFinish();
+    }
 
     private Logbook() { }
 
@@ -152,15 +157,34 @@ public class Logbook {
     }
 
     /**
-     * Completely resets the database.
+     * Completely resets the database. This is done in a background thread.
      */
-    public static void reset() {
-        File data = new File(mDatabase.getPath());
-        mDatabase.close();
-        FileUtils.deleteQuietly(data);
+    public static void reset(final OnResetListener callbacks) {
+        final Handler handler = new Handler();
 
-        init(mContext);
-        setDefaults();
+        Runnable r = new Runnable() {
+            @Override
+            public void run() {
+                File data = new File(mDatabase.getPath());
+                mDatabase.close();
+                FileUtils.deleteQuietly(data);
+
+                init(mContext);
+                setDefaults();
+
+                PhotoUtils.cleanPhotos();
+
+                if (callbacks != null)
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            callbacks.onFinish();
+                        }
+                    });
+            }
+        };
+
+        new Thread(r).start();
     }
 
     //region Getters & Setters

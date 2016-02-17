@@ -51,8 +51,9 @@
     <string name="export_error">Export Error</string>
     <string name="reset_logbook">Reset Logbook</string>
     <string name="reset_summary">Erase all existing Anglers\' Log data.</string>
-    <string name="reset_confirm">Resetting Anglers\' Log will delete all existing data and revert Anglers\' Log to its default settings. This cannot be undone.</string>
+    <string name="reset_dialog_message">Resetting Anglers\' Log will delete all existing data and revert Anglers\' Log to its default settings. This cannot be undone.</string>
     <string name="reset_success">Reset successful.</string>
+    <string name="reset_dialog_title">Confirm Reset</string>
 
     <string name="error">Error</string>
     <string name="photos">Photos</string>

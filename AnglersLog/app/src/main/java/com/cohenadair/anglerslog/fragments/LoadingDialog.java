@@ -1,4 +1,4 @@
-package com.cohenadair.anglerslog.backup;
+package com.cohenadair.anglerslog.fragments;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -14,12 +14,12 @@ import android.widget.TextView;
 import com.cohenadair.anglerslog.R;
 
 /**
- * An BackupFragment is used as a confirmation and progress dialog for importing and exporting
- * data to and from other device platforms.
+ * An LoadingDialog is used to show loading throughout the application, such as when importing
+ * or exporting data.
  *
  * @author Cohen Adair
  */
-public class BackupFragment extends DialogFragment {
+public class LoadingDialog extends DialogFragment {
 
     private static final String ARG_TITLE = "arg_title";
     private static final String ARG_POSITIVE_BUTTON = "arg_positive_button";
@@ -27,7 +27,6 @@ public class BackupFragment extends DialogFragment {
 
     private AlertDialog mAlertDialog;
     private ProgressBar mProgressBar;
-    private TextView mMessageView;
 
     private InteractionListener mCallbacks;
 
@@ -36,8 +35,8 @@ public class BackupFragment extends DialogFragment {
         void onCancel();
     }
 
-    public static BackupFragment newInstance(int titleId, int positiveButtonId, int msgId) {
-        BackupFragment fragment = new BackupFragment();
+    public static LoadingDialog newInstance(int titleId, int positiveButtonId, int msgId) {
+        LoadingDialog fragment = new LoadingDialog();
 
         Bundle args = new Bundle();
         args.putInt(ARG_TITLE, titleId);
@@ -53,7 +52,6 @@ public class BackupFragment extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
-        builder.setTitle(getArguments().getInt(ARG_TITLE));
         builder.setView(getContentView(getArguments()));
         builder.setPositiveButton(getArguments().getInt(ARG_POSITIVE_BUTTON), null);
         builder.setNegativeButton(R.string.button_cancel, getOnClickCancel());
@@ -65,13 +63,16 @@ public class BackupFragment extends DialogFragment {
     }
 
     private View getContentView(Bundle args) {
-        View view = getActivity().getLayoutInflater().inflate(R.layout.dialog_backup, null);
+        View view = getActivity().getLayoutInflater().inflate(R.layout.dialog_loading, null);
 
         mProgressBar = (ProgressBar)view.findViewById(R.id.progress_bar);
         mProgressBar.setVisibility(View.GONE);
 
-        mMessageView = (TextView)view.findViewById(R.id.text_view);
-        mMessageView.setText(getResources().getString(args.getInt(ARG_MESSAGE)));
+        TextView titleView = (TextView)view.findViewById(R.id.title_text_view);
+        titleView.setText(getResources().getString(args.getInt(ARG_TITLE)));
+
+        TextView messageView = (TextView)view.findViewById(R.id.text_view);
+        messageView.setText(getResources().getString(args.getInt(ARG_MESSAGE)));
 
         return view;
     }

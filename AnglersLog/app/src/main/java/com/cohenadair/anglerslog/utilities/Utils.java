@@ -150,10 +150,6 @@ public class Utils {
         showConfirmationDialog(context, R.string.action_confirm, R.string.msg_confirm_delete, R.string.action_delete, onConfirm);
     }
 
-    public static void showResetConfirm(Context context, DialogInterface.OnClickListener onReset) {
-        showConfirmationDialog(context, R.string.confirm, R.string.reset_confirm, R.string.reset, onReset);
-    }
-
     public static void showDeleteOption(Context context, int msgId, DialogInterface.OnClickListener onConfirm) {
         new AlertDialog.Builder(context)
                 .setTitle(R.string.action_delete)

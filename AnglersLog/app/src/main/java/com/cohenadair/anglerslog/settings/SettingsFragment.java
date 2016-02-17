@@ -1,7 +1,6 @@
 package com.cohenadair.anglerslog.settings;
 
 import android.app.Activity;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -10,7 +9,7 @@ import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
 
 import com.cohenadair.anglerslog.R;
-import com.cohenadair.anglerslog.backup.BackupFragment;
+import com.cohenadair.anglerslog.fragments.LoadingDialog;
 import com.cohenadair.anglerslog.model.Logbook;
 import com.cohenadair.anglerslog.model.backup.Exporter;
 import com.cohenadair.anglerslog.model.backup.Importer;
@@ -128,13 +127,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         reset.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                Utils.showResetConfirm(getContext(), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Logbook.reset();
-                        Utils.showToast(getContext(), R.string.reset_success);
-                    }
-                });
+                showResetDialog();
                 return true;
             }
         });
@@ -155,10 +148,10 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         if (mImportUri == null)
             return;
 
-        final BackupFragment importFragment =
-                BackupFragment.newInstance(R.string.import_title, R.string.import_name, R.string.import_dialog_message);
+        final LoadingDialog importFragment =
+                LoadingDialog.newInstance(R.string.import_title, R.string.import_name, R.string.import_dialog_message);
 
-        importFragment.setCallbacks(new BackupFragment.InteractionListener() {
+        importFragment.setCallbacks(new LoadingDialog.InteractionListener() {
             @Override
             public void onConfirm() {
                 Logbook.importFromUri(mImportUri, new Importer.OnProgressListener() {
@@ -176,14 +169,15 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                 mImportUri = null;
             }
         });
+
         importFragment.show(getChildFragmentManager(), null);
     }
 
     private void showExportDialog() {
-        final BackupFragment exportFragment =
-                BackupFragment.newInstance(R.string.export_title, R.string.export, R.string.export_dialog_message);
+        final LoadingDialog exportFragment =
+                LoadingDialog.newInstance(R.string.export_title, R.string.export, R.string.export_dialog_message);
 
-        exportFragment.setCallbacks(new BackupFragment.InteractionListener() {
+        exportFragment.setCallbacks(new LoadingDialog.InteractionListener() {
             @Override
             public void onConfirm() {
                 File zipFile = getContext().getExternalCacheDir();
@@ -217,5 +211,30 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         });
 
         exportFragment.show(getChildFragmentManager(), null);
+    }
+
+    private void showResetDialog() {
+        final LoadingDialog resetDialog =
+                LoadingDialog.newInstance(R.string.reset_dialog_title, R.string.reset, R.string.reset_dialog_message);
+
+        resetDialog.setCallbacks(new LoadingDialog.InteractionListener() {
+            @Override
+            public void onConfirm() {
+                Logbook.reset(new Logbook.OnResetListener() {
+                    @Override
+                    public void onFinish() {
+                        resetDialog.dismiss();
+                        Utils.showToast(getContext(), R.string.reset_success);
+                    }
+                });
+            }
+
+            @Override
+            public void onCancel() {
+
+            }
+        });
+
+        resetDialog.show(getChildFragmentManager(), null);
     }
 }

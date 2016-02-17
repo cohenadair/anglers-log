@@ -2,6 +2,7 @@ package com.cohenadair.anglerslog.model.backup;
 
 import android.content.Context;
 import android.os.Environment;
+import android.os.Handler;
 
 import org.apache.commons.io.IOUtils;
 import org.json.JSONException;
@@ -41,6 +42,7 @@ public class Exporter {
     private static Context mContext;
     private static OnProgressListener mCallbacks;
     private static File mFile;
+    private static Handler mHandler;
 
     /**
      * Used to determine UI behavior during different times in the exporting process.
@@ -61,6 +63,7 @@ public class Exporter {
         mContext = context;
         mCallbacks = onProgress;
         mFile = new File(zipFilePath, FILE_NAME_ZIP);
+        mHandler = new Handler();
 
         new Thread(new ZipRunnable()).start();
     }
@@ -93,8 +96,17 @@ public class Exporter {
             return;
         }
 
+        /**
+         * Handler.post() is used to run the callbacks on the original thread, not the new one
+         * created by {@link #exportToPath(Context, File, OnProgressListener)}.
+         */
         if (mCallbacks != null)
-            mCallbacks.onFinish(mFile);
+            mHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    mCallbacks.onFinish(mFile);
+                }
+            });
     }
 
     private static void exportLogbookJson(ZipOutputStream out) {
