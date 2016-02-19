@@ -1,12 +1,15 @@
 package com.cohenadair.anglerslog.stats;
 
+import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.activities.DefaultActivity;
@@ -37,6 +40,8 @@ public class CatchesCountFragment extends Fragment {
     private StatsManager.StatsSpec mStatsSpec;
 
     private PieChartView mPieChartView;
+    private TextView mPieCenterTitle;
+    private TextView mPieCenterSubtitle;
 
     /**
      * Used to capture click events on the center circle of the pie chart.
@@ -68,6 +73,7 @@ public class CatchesCountFragment extends Fragment {
 
         ((DefaultActivity)getActivity()).setActionBarTitle(mStatsSpec.getActivityTitle());
 
+        initPieChartCenter(view);
         initPieChart(view);
         initTotalSpeciesView(view);
         initTotalCatchesView(view);
@@ -75,8 +81,27 @@ public class CatchesCountFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+
+
+    }
+
+    private void initPieChartCenter(View view) {
+        mPieCenterTitle = (TextView)view.findViewById(R.id.pie_center_title);
+        mPieCenterSubtitle = (TextView)view.findViewById(R.id.pie_center_subtitle);
+    }
+
     private void initPieChart(View view) {
         mPieChartView = (PieChartView)view.findViewById(R.id.pie_chart);
+
+        // set chart's height relative to the screen size
+        // this can't be done in XML because it's a child of a ScrollView
+        Point screenSize = Utils.getScreenSize(getContext());
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(screenSize.x, (int)(screenSize.y * 0.60));
+        mPieChartView.setLayoutParams(params);
+
         Utils.toggleVisibility(mPieChartView, getTotalCatches() > 0);
 
         List<SliceValue> values = new ArrayList<>();
@@ -87,14 +112,12 @@ public class CatchesCountFragment extends Fragment {
         PieChartData data = new PieChartData();
         data.setValues(values);
         data.setHasCenterCircle(true);
-        data.setCenterCircleScale((float) 0.75); // size of the center circle
-        data.setCenterText1FontSize(fontSizeAsDp(R.dimen.font_large));
-        data.setCenterText2FontSize(fontSizeAsDp(R.dimen.font_medium));
-        data.setCenterText2Color(ContextCompat.getColor(getContext(), R.color.dark_grey));
+        data.setCenterCircleScale((float) 0.80); // size of the center circle
 
         mPieChartView.setPieChartData(data);
-        mPieChartView.setCircleFillRatio((float) 0.90); // percent of container
+        mPieChartView.setCircleFillRatio((float) 0.95); // percent of container
         mPieChartView.setValueSelectionEnabled(true);
+        mPieChartView.setChartRotationEnabled(false);
         mPieChartView.setClickable(true);
 
         mPieChartView.setOnClickListener(new View.OnClickListener() {
@@ -126,6 +149,17 @@ public class CatchesCountFragment extends Fragment {
             }
         });
 
+        // set the center circle's title size based on the rendered pie chart
+        int width =
+                (int)(mPieChartView.getLayoutParams().width * mPieChartView.getCircleFillRatio() * mPieChartView.getPieChartData().getCenterCircleScale() - // width of inner circle
+                (getResources().getDimensionPixelOffset(R.dimen.margin_default) * 2) - // left and right margin of the chart
+                (getResources().getDimensionPixelOffset(R.dimen.margin_half) * 2)); // left and right margin of the title TextView
+
+        LinearLayout.LayoutParams linearParams =
+                new LinearLayout.LayoutParams(width, LinearLayout.LayoutParams.WRAP_CONTENT);
+
+        mPieCenterTitle.setLayoutParams(linearParams);
+
         // select the first item
         updatePieCenter(0, true);
     }
@@ -137,8 +171,10 @@ public class CatchesCountFragment extends Fragment {
         if (select)
             mPieChartView.selectValue(new SelectedValue(position, 0, SelectedValue.SelectedValueType.NONE));
 
-        data.setCenterText1(new String(value.getLabelAsChars()));
-        data.setCenterText2(Integer.toString((int) value.getValue()) + " " + getResources().getString(R.string.drawer_catches));
+        mPieCenterTitle.setText(new String(value.getLabelAsChars()));
+
+        String subtitle = Integer.toString((int) value.getValue()) + " " + getResources().getString(R.string.drawer_catches);
+        mPieCenterSubtitle.setText(subtitle);
     }
 
     private void onClickCenterCircle() {

@@ -1,44 +1,85 @@
-<LinearLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:custom="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <lecho.lib.hellocharts.view.PieChartView
-        android:id="@+id/pie_chart"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.75"/>
-
     <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:custom="http://schemas.android.com/apk/res-auto"
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.25">
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/margin_half"
+        android:paddingBottom="@dimen/margin_default">
 
-        <!-- Totals -->
-        <TextView
-            style="?android:listSeparatorTextViewStyle"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/margin_default"
-            android:text="@string/totals"/>
+            android:layout_height="wrap_content">
 
-        <!-- Total Species -->
-        <com.cohenadair.anglerslog.views.PropertyDetailView
-            android:id="@+id/total_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            custom:propertyName="@string/species"/>
+            <lecho.lib.hellocharts.view.PieChartView
+                android:id="@+id/pie_chart"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"/>
 
-        <!-- Total Catches -->
-        <com.cohenadair.anglerslog.views.PropertyDetailView
-            android:id="@+id/total_catches_view"
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true">
+
+                <TextView
+                    style="@style/TextView.Large"
+                    android:id="@+id/pie_center_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center"
+                    tools:text="Lure - Blue Fox Spinner"/>
+
+                <TextView
+                    style="@style/TextView.MediumSubtitle"
+                    android:id="@+id/pie_center_subtitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center"
+                    tools:text="15 Catches"/>
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            custom:propertyName="@string/drawer_catches"/>
+            android:layout_height="wrap_content">
+
+            <!-- Totals -->
+            <TextView
+                style="?android:listSeparatorTextViewStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_default"
+                android:text="@string/totals"/>
+
+            <!-- Total Species -->
+            <com.cohenadair.anglerslog.views.PropertyDetailView
+                android:id="@+id/total_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                custom:propertyName="@string/species"/>
+
+            <!-- Total Catches -->
+            <com.cohenadair.anglerslog.views.PropertyDetailView
+                android:id="@+id/total_catches_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                custom:propertyName="@string/drawer_catches"/>
+
+        </LinearLayout>
 
     </LinearLayout>
-
-</LinearLayout>
+</ScrollView>

@@ -136,7 +136,7 @@ public class Logbook {
             PhotoUtils.saveImageResource(R.drawable.spinner_blue_fox, spinner);
             PhotoUtils.saveImageResource(R.drawable.rippin_rap, rap);
 
-            Bait bait = new Bait("Spinner - Blue Fox", baitCategory);
+            Bait bait = new Bait("Blue Fox Spinner", baitCategory);
             bait.setType(Bait.TYPE_ARTIFICIAL);
             bait.setSize("6");
             bait.setColor("Silver");
