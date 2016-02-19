@@ -8,8 +8,11 @@ import android.support.v4.app.Fragment;
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.model.Logbook;
 import com.cohenadair.anglerslog.model.Stats;
+import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
+import com.cohenadair.anglerslog.utilities.LayoutSpecManager;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 /**
  * The StatsManager class is the statistics equivalent of
@@ -19,29 +22,29 @@ import java.util.ArrayList;
  */
 public class StatsManager {
 
-    public static final int STATS_SPECIES = 0;
-    public static final int STATS_BAITS = 1;
-    public static final int STATS_LOCATIONS = 2;
-    public static final int STATS_LONGEST = 3;
-    public static final int STATS_HEAVIEST = 4;
+    public static final int SPECIES = 0;
+    public static final int BAITS = 1;
+    public static final int LOCATIONS = 2;
+    public static final int LONGEST = 3;
+    public static final int HEAVIEST = 4;
 
     @Nullable
     public static StatsSpec getStatsSpec(Context context, int statsId) {
         switch (statsId) {
-            case STATS_SPECIES:
-                return getSpeciesStatsSpec(context);
+            case SPECIES:
+                return getSpeciesStatsSpec(context, statsId);
 
-            case STATS_BAITS:
-                return getBaitsStatsSpec(context);
+            case BAITS:
+                return getBaitsStatsSpec(context, statsId);
 
-            case STATS_LOCATIONS:
-                return getLocationsStatsSpec(context);
+            case LOCATIONS:
+                return getLocationsStatsSpec(context, statsId);
 
-            case STATS_LONGEST:
-                return getLongestStatsSpec(context);
+            case LONGEST:
+                return getLongestStatsSpec(context, statsId);
 
-            case STATS_HEAVIEST:
-                return getHeaviestStatsSpec(context);
+            case HEAVIEST:
+                return getHeaviestStatsSpec(context, statsId);
 
             default:
                 return null;
@@ -49,68 +52,117 @@ public class StatsManager {
     }
 
     @NonNull
-    private static StatsSpec getSpeciesStatsSpec(Context context) {
+    private static StatsSpec getSpeciesStatsSpec(Context context, int id) {
         return new StatsSpec(
+                id,
                 context.getResources().getString(R.string.species_stats),
                 context.getResources().getString(R.string.species),
                 Logbook.getSpeciesCaughtCount(),
-                CatchesCountFragment.newInstance(STATS_SPECIES)
+                CatchesCountFragment.newInstance(SPECIES)
         );
     }
 
     @NonNull
-    private static StatsSpec getBaitsStatsSpec(Context context) {
+    private static StatsSpec getBaitsStatsSpec(Context context, int id) {
         return new StatsSpec(
+                id,
                 context.getResources().getString(R.string.bait_stats),
                 context.getResources().getString(R.string.drawer_baits),
                 Logbook.getBaitUsedCount(),
-                CatchesCountFragment.newInstance(STATS_BAITS)
+                CatchesCountFragment.newInstance(BAITS),
+                new StatsSpec.InteractionListener() {
+                    @Override
+                    public UserDefineObject onGetObject(UUID id) {
+                        return Logbook.getBait(id);
+                    }
+
+                    @Override
+                    public int onGetLayoutSpecId() {
+                        return LayoutSpecManager.LAYOUT_BAITS;
+                    }
+                }
         );
     }
 
     @NonNull
-    private static StatsSpec getLocationsStatsSpec(Context context) {
+    private static StatsSpec getLocationsStatsSpec(Context context, int id) {
         return new StatsSpec(
+                id,
                 context.getResources().getString(R.string.location_stats),
                 context.getResources().getString(R.string.drawer_locations),
                 Logbook.getLocationCatchCount(),
-                CatchesCountFragment.newInstance(STATS_LOCATIONS)
+                CatchesCountFragment.newInstance(LOCATIONS),
+                new StatsSpec.InteractionListener() {
+                    @Override
+                    public UserDefineObject onGetObject(UUID id) {
+                        return Logbook.getLocation(id);
+                    }
+
+                    @Override
+                    public int onGetLayoutSpecId() {
+                        return LayoutSpecManager.LAYOUT_LOCATIONS;
+                    }
+                }
         );
     }
 
     @NonNull
-    private static StatsSpec getLongestStatsSpec(Context context) {
+    private static StatsSpec getLongestStatsSpec(Context context, int id) {
         return new StatsSpec(
+                id,
                 context.getResources().getString(R.string.longest_catches),
-                BigCatchFragment.newInstance(STATS_LONGEST)
+                BigCatchFragment.newInstance(LONGEST)
         );
     }
 
     @NonNull
-    private static StatsSpec getHeaviestStatsSpec(Context context) {
+    private static StatsSpec getHeaviestStatsSpec(Context context, int id) {
         return new StatsSpec(
+                id,
                 context.getResources().getString(R.string.heaviest_catches),
-                BigCatchFragment.newInstance(STATS_HEAVIEST)
+                BigCatchFragment.newInstance(HEAVIEST)
         );
     }
 
     public static class StatsSpec {
 
+        private int mId;
         private String mActivityTitle;
         private String mUserDefineObjectName;
         private ArrayList<Stats.Quantity> mContent;
         private Fragment mDetailFragment;
+        private InteractionListener mCallbacks;
 
-        public StatsSpec(String activityTitle, String userDefineObjectName, ArrayList<Stats.Quantity> content, Fragment detailFragment) {
+        public interface InteractionListener {
+            UserDefineObject onGetObject(UUID id);
+            int onGetLayoutSpecId();
+        }
+
+        public StatsSpec(int id, String activityTitle, String userDefineObjectName, ArrayList<Stats.Quantity> content, Fragment detailFragment) {
+            mId = id;
             mActivityTitle = activityTitle;
             mUserDefineObjectName = userDefineObjectName;
             mContent = content;
             mDetailFragment = detailFragment;
         }
 
-        public StatsSpec(String activityTitle, Fragment detailFragment) {
+        public StatsSpec(int id, String activityTitle, String userDefineObjectName, ArrayList<Stats.Quantity> content, Fragment detailFragment, InteractionListener callbacks) {
+            mId = id;
+            mActivityTitle = activityTitle;
+            mUserDefineObjectName = userDefineObjectName;
+            mContent = content;
+            mDetailFragment = detailFragment;
+            mCallbacks = callbacks;
+        }
+
+        public StatsSpec(int id, String activityTitle, Fragment detailFragment) {
+            mId = id;
             mActivityTitle = activityTitle;
             mDetailFragment = detailFragment;
+        }
+
+        public int getId() {
+            return mId;
         }
 
         public String getActivityTitle() {
@@ -127,6 +179,24 @@ public class StatsManager {
 
         public Fragment getDetailFragment() {
             return mDetailFragment;
+        }
+
+        public InteractionListener getCallbacks() {
+            return mCallbacks;
+        }
+
+        public UserDefineObject getObject(int index) {
+            if (mCallbacks != null)
+                return mCallbacks.onGetObject(mContent.get(index).getId());
+
+            return null;
+        }
+
+        public int getLayoutSpecId() {
+            if (mCallbacks != null)
+                return mCallbacks.onGetLayoutSpecId();
+
+            return -1;
         }
     }
 }

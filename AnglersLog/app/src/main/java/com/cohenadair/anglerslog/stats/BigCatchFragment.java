@@ -56,7 +56,7 @@ public class BigCatchFragment extends Fragment {
         if (spec == null)
             return view;
 
-        mIsLongest = (statsId == StatsManager.STATS_LONGEST);
+        mIsLongest = (statsId == StatsManager.LONGEST);
         ((DefaultActivity)getActivity()).setActionBarTitle(spec.getActivityTitle());
 
         initContainer(view);

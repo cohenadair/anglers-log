@@ -199,7 +199,11 @@ public class DraggableMapFragment extends SupportMapFragment implements OnMapRea
     }
 
     public void updateCamera(LatLng loc, GoogleMap.CancelableCallback callback) {
-        mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(loc, ZOOM), 2000, callback);
+        try {
+            mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(loc, ZOOM), 2000, callback);
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
     }
 
     public void updateCamera(LatLng loc) {

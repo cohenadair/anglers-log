@@ -14,7 +14,9 @@ import android.widget.TextView;
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.activities.DefaultActivity;
 import com.cohenadair.anglerslog.model.Stats;
+import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import com.cohenadair.anglerslog.utilities.Utils;
+import com.cohenadair.anglerslog.views.MoreDetailView;
 import com.cohenadair.anglerslog.views.PropertyDetailView;
 import com.github.lzyzsd.randomcolor.RandomColor;
 
@@ -42,6 +44,7 @@ public class CatchesCountFragment extends Fragment {
     private PieChartView mPieChartView;
     private TextView mPieCenterTitle;
     private TextView mPieCenterSubtitle;
+    private MoreDetailView mMoreDetailView;
 
     /**
      * Used to capture click events on the center circle of the pie chart.
@@ -73,19 +76,15 @@ public class CatchesCountFragment extends Fragment {
 
         ((DefaultActivity)getActivity()).setActionBarTitle(mStatsSpec.getActivityTitle());
 
+        mMoreDetailView = (MoreDetailView)view.findViewById(R.id.more_detail_view);
+        Utils.toggleVisibility(mMoreDetailView, mStatsSpec.getCallbacks() != null);
+
         initPieChartCenter(view);
         initPieChart(view);
         initTotalSpeciesView(view);
         initTotalCatchesView(view);
 
         return view;
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-
-
     }
 
     private void initPieChartCenter(View view) {
@@ -172,9 +171,33 @@ public class CatchesCountFragment extends Fragment {
             mPieChartView.selectValue(new SelectedValue(position, 0, SelectedValue.SelectedValueType.NONE));
 
         mPieCenterTitle.setText(new String(value.getLabelAsChars()));
+        mPieCenterSubtitle.setText(getCircleSubtitle(value));
 
-        String subtitle = Integer.toString((int) value.getValue()) + " " + getResources().getString(R.string.drawer_catches);
-        mPieCenterSubtitle.setText(subtitle);
+        updateMoreDetail(position, value);
+    }
+
+    private void updateMoreDetail(int position, SliceValue value) {
+        final UserDefineObject obj = mStatsSpec.getObject(position);
+
+        if (obj == null) {
+            Utils.toggleVisibility(mMoreDetailView, false);
+            return;
+        }
+
+        mMoreDetailView.setTitle(obj.getDisplayName());
+        mMoreDetailView.setSubtitle(getCircleSubtitle(value));
+
+        if (mStatsSpec.getLayoutSpecId() != -1)
+            mMoreDetailView.setOnClickDetailButton(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startActivity(Utils.getDetailActivityIntent(getContext(), mStatsSpec.getLayoutSpecId(), obj.getId()));
+                }
+            });
+    }
+
+    private String getCircleSubtitle(SliceValue value) {
+        return Integer.toString((int) value.getValue()) + " " + getResources().getString(R.string.drawer_catches);
     }
 
     private void onClickCenterCircle() {
@@ -201,10 +224,6 @@ public class CatchesCountFragment extends Fragment {
     private void initTotalCatchesView(View view) {
         PropertyDetailView totalCatches = (PropertyDetailView)view.findViewById(R.id.total_catches_view);
         totalCatches.setDetail(Integer.toString(getTotalCatches()));
-    }
-
-    private int fontSizeAsDp(int resId) {
-        return (int)(getResources().getDimensionPixelOffset(resId) / getResources().getDisplayMetrics().density);
     }
 
     private int getTotalCatches() {

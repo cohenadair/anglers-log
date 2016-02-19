@@ -61,7 +61,7 @@ public class StatsFragment extends MasterFragment {
                     new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            startCardDetailActivity(StatsManager.STATS_SPECIES);
+                            startCardDetailActivity(StatsManager.SPECIES);
                         }
                     }
             );
@@ -72,7 +72,7 @@ public class StatsFragment extends MasterFragment {
                     new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            startCardDetailActivity(StatsManager.STATS_BAITS);
+                            startCardDetailActivity(StatsManager.BAITS);
                         }
                     }
             );
@@ -83,14 +83,14 @@ public class StatsFragment extends MasterFragment {
                     new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            startCardDetailActivity(StatsManager.STATS_LOCATIONS);
+                            startCardDetailActivity(StatsManager.LOCATIONS);
                         }
                     }
             );
         }
 
-        updateBigCatchCard(R.string.longest_catch, mLongestCatchCard, Logbook.getLongestCatch(), StatsManager.STATS_LONGEST);
-        updateBigCatchCard(R.string.heaviest_catch, mHeaviestCatchCard, Logbook.getHeaviestCatch(), StatsManager.STATS_HEAVIEST);
+        updateBigCatchCard(R.string.longest_catch, mLongestCatchCard, Logbook.getLongestCatch(), StatsManager.LONGEST);
+        updateBigCatchCard(R.string.heaviest_catch, mHeaviestCatchCard, Logbook.getHeaviestCatch(), StatsManager.HEAVIEST);
     }
 
     private void startCardDetailActivity(int statsId) {
@@ -112,7 +112,7 @@ public class StatsFragment extends MasterFragment {
 
         // if the user has no recorded lengths or weights, a random catch is chosen
         // the dash should only be shown for catches that have data
-        String str = ((statsId == StatsManager.STATS_LONGEST) ? aCatch.getLengthAsStringWithUnits() : aCatch.getWeightAsStringWithUnits());
+        String str = ((statsId == StatsManager.LONGEST) ? aCatch.getLengthAsStringWithUnits() : aCatch.getWeightAsStringWithUnits());
         if (!str.isEmpty())
             str = " - " + str;
 
