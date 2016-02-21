@@ -6,6 +6,11 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
+import android.support.v7.widget.SearchView;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
 
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.fragments.DetailFragment;
@@ -45,6 +50,9 @@ public abstract class LayoutSpecActivity extends DefaultActivity implements
      */
     public abstract void goBack();
 
+    private Menu mMenu;
+    private MenuItem mSearchItem;
+    private SearchView mSearchView;
     private LayoutSpec mLayoutSpec;
 
     @Override
@@ -75,6 +83,7 @@ public abstract class LayoutSpecActivity extends DefaultActivity implements
 
     public void setLayoutSpec(LayoutSpec layoutSpec) {
         mLayoutSpec = layoutSpec;
+        updateMenu();
     }
 
     //region LayoutSpec Wrapper Methods
@@ -204,6 +213,11 @@ public abstract class LayoutSpecActivity extends DefaultActivity implements
     }
     //endregion
 
+    public void updateMenu() {
+        if (mSearchItem != null)
+            mSearchItem.setVisible(mLayoutSpec.isSearchable());
+    }
+
     public void setActionBarTitle(String title) {
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null)
@@ -217,5 +231,70 @@ public abstract class LayoutSpecActivity extends DefaultActivity implements
     @Override
     public boolean isTwoPane() {
         return Utils.isTwoPane(this);
+    }
+
+    //region Searching
+    public Menu getMenu() {
+        return mMenu;
+    }
+
+    public MenuItem getSearchItem() {
+        return mSearchItem;
+    }
+
+    public void initSearch(Menu menu) {
+        mMenu = menu;
+        mSearchItem = mMenu.findItem(R.id.action_search);
+        mSearchView = (SearchView)mSearchItem.getActionView();
+        updateMenu();
+
+        mSearchView.setOnSearchClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setMenuItemsVisibility(false);
+
+                // update hint
+                String search = getResources().getString(R.string.search);
+                mSearchView.setQueryHint(search + " " + mLayoutSpec.getPluralName().toLowerCase());
+            }
+        });
+
+        mSearchView.setOnCloseListener(new SearchView.OnCloseListener() {
+            @Override
+            public boolean onClose() {
+                setMenuItemsVisibility(true);
+
+                // returning false will "iconify" the SearchView
+                return false;
+            }
+        });
+
+        mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                mLayoutSpec.getSearchListener().onSubmit(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                Log.d(TAG, "Text changed!");
+                return false;
+            }
+        });
+    }
+
+    public void iconifySearchView() {
+        if (mSearchView != null && !mSearchView.isIconified())
+            mSearchView.setIconified(true);
+    }
+    //endregion
+
+    public void setMenuItemsVisibility(boolean visible) {
+        for (int i = 0; i < mMenu.size(); i++) {
+            MenuItem item = mMenu.getItem(i);
+            if (item != mSearchItem)
+                item.setVisible(visible);
+        }
     }
 }

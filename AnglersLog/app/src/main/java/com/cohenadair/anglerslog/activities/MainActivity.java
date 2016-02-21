@@ -26,6 +26,8 @@ import java.util.UUID;
 
 public class MainActivity extends LayoutSpecActivity {
 
+    private static final String TAG = "MainActivity";
+
     private NavigationManager mNavigationManager;
 
     @Override
@@ -65,6 +67,7 @@ public class MainActivity extends LayoutSpecActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
+        initSearch(menu);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -74,6 +77,12 @@ public class MainActivity extends LayoutSpecActivity {
 
         if (id == android.R.id.home) {
             mNavigationManager.onClickUpButton();
+            iconifySearchView();
+            return true;
+        }
+
+        if (id == R.id.action_sort) {
+            Utils.showErrorAlert(this, "Sorting is not yet supported.");
             return true;
         }
 

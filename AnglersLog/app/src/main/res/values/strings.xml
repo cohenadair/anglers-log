@@ -3,6 +3,7 @@
     <string name="app_name">Anglers\' Log</string>
     <string name="app_description">Track, analyze, share.</string>
     <string name="app_photos_dir">/AnglersLog</string>
+    <string name="app_search">Search Anglers\' Log</string>
     <string name="hashtag">AnglersLogApp</string>
     <string name="website">http://cohenadair.com/anglerslog/</string>
     <string name="no_instagram">Instagram is not installed on this device.</string>
@@ -138,6 +139,7 @@
     <string name="totals">Totals</string>
     <string name="confirm">Confirm</string>
     <string name="reset">Reset</string>
+    <string name="search">Search</string>
 
     <string name="drawer_open">Open Navigation Drawer</string>
     <string name="drawer_close">Close Navigation Drawer</string>
@@ -195,6 +197,7 @@
     <string name="action_add_photo">Add Photo</string>
     <string name="action_settings">Settings</string>
     <string name="action_sort">Sort</string>
+    <string name="action_search">Search</string>
 
     <string name="success_catch">Successfully added catch</string>
     <string name="success_catch_delete">Successfully deleted catch</string>

@@ -35,6 +35,7 @@ public class LayoutSpec {
 
     private InteractionListener mListener;
     private OnSelectionListener mSelectionListener;
+    private OnSearchListener mSearchListener;
 
     private String mMasterFragmentTag;
     private String mDetailFragmentTag;
@@ -67,6 +68,14 @@ public class LayoutSpec {
         void onFinish(UUID id);
     }
 
+    /**
+     * Used in combination with a {@link android.support.v7.widget.SearchView} as a callback to
+     * search different sections of the application's data.
+     */
+    public interface OnSearchListener {
+        void onSubmit(String query);
+    }
+
     public LayoutSpec() {
 
     }
@@ -84,6 +93,14 @@ public class LayoutSpec {
 
     public void setSelectionListener(OnSelectionListener selectionListener) {
         mSelectionListener = selectionListener;
+    }
+
+    public OnSearchListener getSearchListener() {
+        return mSearchListener;
+    }
+
+    public void setSearchListener(OnSearchListener searchListener) {
+        mSearchListener = searchListener;
     }
 
     public void setManageFragment(ManageContentFragment contentFragment) {
@@ -206,5 +223,9 @@ public class LayoutSpec {
             Utils.showToast(context, successId);
         } else
             Utils.showErrorAlert(context, obj.getName() + " " + context.getResources().getString(R.string.error_delete_primitive));
+    }
+
+    public boolean isSearchable() {
+        return mSearchListener != null;
     }
 }

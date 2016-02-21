@@ -161,6 +161,13 @@ public class LayoutSpecManager {
             }
         });
 
+        spec.setSearchListener(new LayoutSpec.OnSearchListener() {
+            @Override
+            public void onSubmit(String query) {
+                Utils.showErrorAlert(context, "Searching catches with query: " + query);
+            }
+        });
+
         spec.setId(LAYOUT_CATCHES);
         spec.setMasterFragment(new MyListFragment());
         spec.setDetailFragment(new CatchFragment());
@@ -208,6 +215,13 @@ public class LayoutSpecManager {
             }
         });
 
+        spec.setSearchListener(new LayoutSpec.OnSearchListener() {
+            @Override
+            public void onSubmit(String query) {
+                Utils.showErrorAlert(context, "Searching locations with query: " + query);
+            }
+        });
+
         spec.setId(LAYOUT_LOCATIONS);
         spec.setMasterFragment(new MyListFragment());
         spec.setDetailFragment(new LocationFragment());
@@ -249,6 +263,13 @@ public class LayoutSpecManager {
             }
         });
 
+        spec.setSearchListener(new LayoutSpec.OnSearchListener() {
+            @Override
+            public void onSubmit(String query) {
+                Utils.showErrorAlert(context, "Searching baits with query: " + query);
+            }
+        });
+
         spec.setId(LAYOUT_BAITS);
         spec.setMasterFragment(new MyListFragment());
         spec.setDetailFragment(new BaitFragment());
@@ -275,6 +296,13 @@ public class LayoutSpecManager {
                 boolean removed = Logbook.removeTrip(id);
                 spec.removeUserDefine(context, Logbook.getTrip(id), removed, R.string.success_trip_delete);
                 return removed;
+            }
+        });
+
+        spec.setSearchListener(new LayoutSpec.OnSearchListener() {
+            @Override
+            public void onSubmit(String query) {
+                Utils.showErrorAlert(context, "Searching trips with query: " + query);
             }
         });
 
