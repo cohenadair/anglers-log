@@ -7,7 +7,6 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.SearchView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -254,8 +253,6 @@ public abstract class LayoutSpecActivity extends DefaultActivity implements
         // this is needed to properly preserve the SearchView's state after fragment transactions
         if (!mLayoutSpec.getMasterFragment().isVisible())
             return;
-
-        Log.d(TAG, "Initializing search");
 
         mMenu = menu;
         mSearchItem = mMenu.findItem(R.id.action_search);

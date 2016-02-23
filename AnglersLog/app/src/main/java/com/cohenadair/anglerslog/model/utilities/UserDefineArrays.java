@@ -2,7 +2,6 @@ package com.cohenadair.anglerslog.model.utilities;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import com.cohenadair.anglerslog.utilities.Utils;
@@ -139,10 +138,8 @@ public class UserDefineArrays {
         for (UserDefineObject obj : arr) {
             String keywordString = obj.toKeywordsString(context);
             for (String keyword : keywords)
-                if (keywordString.toLowerCase().contains(keyword.toLowerCase())) {
-                    Log.d("UserDefineArrays#search", "Found keyword '" + keyword + "' in '" + keywordString + "'");
+                if (keywordString.toLowerCase().contains(keyword.toLowerCase()))
                     matches.add(obj);
-                }
         }
 
         return matches;
