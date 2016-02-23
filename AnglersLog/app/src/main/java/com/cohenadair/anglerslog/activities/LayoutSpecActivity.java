@@ -7,6 +7,7 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -53,6 +54,9 @@ public abstract class LayoutSpecActivity extends DefaultActivity implements
     private MenuItem mSearchItem;
     private SearchView mSearchView;
     private LayoutSpec mLayoutSpec;
+
+    private String mSearchText = "";
+    private boolean mSearchIsExpanded = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -246,9 +250,19 @@ public abstract class LayoutSpecActivity extends DefaultActivity implements
     }
 
     public void initSearch(Menu menu) {
+        // don't initialize searching if it isn't the master fragment that is visible
+        // this is needed to properly preserve the SearchView's state after fragment transactions
+        if (!mLayoutSpec.getMasterFragment().isVisible())
+            return;
+
+        Log.d(TAG, "Initializing search");
+
         mMenu = menu;
         mSearchItem = mMenu.findItem(R.id.action_search);
         mSearchView = (SearchView)mSearchItem.getActionView();
+        mSearchView.setQuery(mSearchText, false);
+        mSearchView.setIconified(!mSearchIsExpanded);
+        setMenuItemsVisibility(!mSearchIsExpanded);
         updateMenu();
 
         mSearchView.setOnSearchClickListener(new View.OnClickListener() {
@@ -259,6 +273,7 @@ public abstract class LayoutSpecActivity extends DefaultActivity implements
                 // update hint
                 String search = getResources().getString(R.string.search);
                 mSearchView.setQueryHint(search + " " + mLayoutSpec.getPluralName().toLowerCase());
+                mSearchIsExpanded = true;
             }
         });
 
@@ -266,7 +281,7 @@ public abstract class LayoutSpecActivity extends DefaultActivity implements
             @Override
             public boolean onClose() {
                 setMenuItemsVisibility(true);
-                updateViews();
+                resetSearch();
 
                 // returning false will "iconify" the SearchView
                 return false;
@@ -282,6 +297,7 @@ public abstract class LayoutSpecActivity extends DefaultActivity implements
 
             @Override
             public boolean onQueryTextChange(String newText) {
+                mSearchText = newText;
                 if (newText.isEmpty())
                     updateViews();
                 return false;
@@ -290,8 +306,17 @@ public abstract class LayoutSpecActivity extends DefaultActivity implements
     }
 
     public void iconifySearchView() {
-        if (mSearchView != null && !mSearchView.isIconified())
+        if (mSearchView != null && !mSearchView.isIconified()) {
+            resetSearch();
             mSearchView.setIconified(true);
+        }
+    }
+
+    public void resetSearch() {
+        mSearchText = "";
+        mSearchIsExpanded = false;
+        mSearchView.setQuery("", false);
+        updateViews();
     }
     //endregion
 

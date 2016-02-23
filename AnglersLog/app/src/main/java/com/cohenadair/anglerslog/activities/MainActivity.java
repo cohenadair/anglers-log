@@ -40,7 +40,12 @@ public class MainActivity extends LayoutSpecActivity {
         setSupportActionBar(toolbar);
 
         mNavigationManager = new NavigationManager(this);
-        mNavigationManager.setUp();
+        mNavigationManager.setUp(new NavigationManager.InteractionListener() {
+            @Override
+            public void onOpenDrawer() {
+                iconifySearchView();
+            }
+        });
 
         // needs to be called after MainActivity's initialization code
         // update the current layout
@@ -77,7 +82,6 @@ public class MainActivity extends LayoutSpecActivity {
 
         if (id == android.R.id.home) {
             mNavigationManager.onClickUpButton();
-            iconifySearchView();
             return true;
         }
 
