@@ -243,11 +243,11 @@ public class Bait extends PhotoUserDefineObject {
     public String toKeywordsString(Context context) {
         StringBuilder builder = new StringBuilder(super.toKeywordsString(context));
 
-        appendToBuilder(builder, mCategory.toKeywordsString(context));
+        builder.append(mCategory.toKeywordsString(context));
         appendToBuilder(builder, getColorAsString());
         appendToBuilder(builder, getSizeAsString());
         appendToBuilder(builder, getDescriptionAsString());
-        appendToBuilder(builder, getTypeName());
+        appendToBuilder(builder, context.getResources().getString(getTypeName()));
 
         return builder.toString();
     }

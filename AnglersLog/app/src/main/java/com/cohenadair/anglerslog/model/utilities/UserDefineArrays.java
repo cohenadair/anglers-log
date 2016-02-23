@@ -137,9 +137,13 @@ public class UserDefineArrays {
 
         for (UserDefineObject obj : arr) {
             String keywordString = obj.toKeywordsString(context);
+
             for (String keyword : keywords)
-                if (keywordString.toLowerCase().contains(keyword.toLowerCase()))
+                if (keywordString.toLowerCase().contains(keyword.toLowerCase())) {
+                    //Log.d("UserDefineArrays#search", "Found keyword '" + keyword + "' in '" + keywordString + "'");
                     matches.add(obj);
+                    break;
+                }
         }
 
         return matches;

@@ -91,7 +91,6 @@ public class LogbookTest {
         Logbook.addSpecies(species0);
         Logbook.addSpecies(species1);
 
-
         Catch catch0 = new Catch(new Date());
         catch0.setSpecies(species0);
 
@@ -136,6 +135,8 @@ public class LogbookTest {
         Logbook.editCatch(catch0.getId(), catch0);
         assertTrue(Logbook.getCatch(catch0.getId()).getWeather() != null);
         assertTrue(Logbook.removeCatch(catch0.getId()));
+        assertTrue(Logbook.removeCatch(catch1.getId()));
+        assertTrue(Logbook.getCatchCount() == 0);
 
         // photos
         catch0.addPhoto("img1.png");
@@ -143,7 +144,26 @@ public class LogbookTest {
         catch0.addPhoto("img3.png");
         Logbook.addCatch(catch0);
         ArrayList<String> photos = Logbook.getAllCatchPhotos();
-        assertTrue(photos != null && photos.size() == 3);
+        assertTrue(photos.size() == 3);
+        assertTrue(Logbook.removeCatch(catch0.getId()));
+
+        // searching
+        catch0 = new Catch(new Date());
+        catch0.setSpecies(species0);
+        catch0.setWeather(new Weather(15, 20, "Cloudy"));
+        catch0.setNotes("Awesome catch!");
+        Logbook.addCatch(catch0);
+
+        catch1 = new Catch(new Date(1444000000));
+        catch1.setSpecies(species1);
+        catch1.setNotes("Cool catch.");
+        Logbook.addCatch(catch1);
+
+        assertTrue(Logbook.getCatchCount() == 2);
+        assertTrue(Logbook.getCatches("cloudy").size() == 1);
+        assertTrue(Logbook.getCatches("awesome bass").size() == 1);
+        assertTrue(Logbook.getCatches("cool pike").size() == 1);
+        assertTrue(Logbook.getCatches("ike bass").size() == 2);
     }
 
     @Test
@@ -238,11 +258,18 @@ public class LogbookTest {
         Logbook.addBaitCategory(stone);
 
         Bait blackBugger = new Bait("Black", bugger);
+        blackBugger.setSize("Large");
+        blackBugger.setDescription("Excellent bait.");
+
         Bait whiteBugger = new Bait("White", bugger);
         Bait oliveBugger = new Bait("Olive", bugger);
         Bait blackStone = new Bait("Black", stone);
         Bait whiteStone = new Bait("White", stone);
+
         Bait yellowStone = new Bait("Yellow", stone);
+        yellowStone.setSize("Small");
+        yellowStone.setType(Bait.TYPE_REAL);
+        yellowStone.setColor("Bright Yellow");
 
         Logbook.addBait(blackBugger);
         Logbook.addBait(whiteBugger);
@@ -253,6 +280,15 @@ public class LogbookTest {
 
         ArrayList<UserDefineObject> baitsAndCategories = Logbook.getBaitsAndCategories();
         assertTrue(baitsAndCategories.size() == 8);
+
+        // searching
+        assertTrue(Logbook.getBaitsAndCategories("bugger").size() == 5); // 3 baits + 2 categories
+        assertTrue(Logbook.getBaitsAndCategories("black").size() == 4); // 2 baits + 2 categories
+        assertTrue(Logbook.getBaitsAndCategories("bright").size() == 3); // 1 bait + 2 categories
+        assertTrue(Logbook.getBaitsAndCategories("small").size() == 3); // 1 bait + 2 categories
+        assertTrue(Logbook.getBaitsAndCategories("large").size() == 3); // 1 bait + 2 categories
+        assertTrue(Logbook.getBaitsAndCategories("llent large").size() == 3); // 1 bait + 2 categories
+        assertTrue(Logbook.getBaitsAndCategories("real olive").size() == 4); // 2 baits + 2 categories
     }
 
     @Test
@@ -305,6 +341,11 @@ public class LogbookTest {
         loc1.addFishingSpot(new FishingSpot("Spot 3"));
         assertTrue(Logbook.getAllFishingSpots().size() == 5);
         assertTrue(Logbook.getFishingSpot("Spot 1", loc0.getId()) != null);
+
+        // searching
+        assertTrue(Logbook.getLocations("rich").size() == 1);
+        assertTrue(Logbook.getLocations("albert").size() == 1);
+        assertTrue(Logbook.getLocations("rich spot 3 spot 1").size() == 2);
     }
 
     @Test
@@ -456,6 +497,12 @@ public class LogbookTest {
         Logbook.addTrip(trip1);
         ArrayList<UserDefineObject> trips = Logbook.getTrips();
         assertTrue(trips.size() == 2);
+
+        // searching
+        assertTrue(Logbook.getTrips("lake").size() == 2);
+        assertTrue(Logbook.getTrips("lake ontario silver").size() == 2);
+        assertTrue(Logbook.getTrips("silver").size() == 1);
+        assertTrue(Logbook.getTrips("ontario").size() == 1);
     }
 
     @Test
