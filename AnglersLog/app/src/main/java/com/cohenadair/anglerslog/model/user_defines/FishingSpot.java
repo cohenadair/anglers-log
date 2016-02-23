@@ -1,6 +1,7 @@
 package com.cohenadair.anglerslog.model.user_defines;
 
 import android.content.ContentValues;
+import android.content.Context;
 
 import com.cohenadair.anglerslog.database.QueryHelper;
 import com.cohenadair.anglerslog.model.Logbook;
@@ -137,5 +138,15 @@ public class FishingSpot extends UserDefineObject {
         json.put(Json.LOCATION, getLocationName());
 
         return json;
+    }
+
+    @Override
+    public String toKeywordsString(Context context) {
+        StringBuilder builder = new StringBuilder(super.toKeywordsString(context));
+
+        appendToBuilder(builder, (float)mLatitude);
+        appendToBuilder(builder, (float)mLongitude);
+
+        return builder.toString();
     }
 }

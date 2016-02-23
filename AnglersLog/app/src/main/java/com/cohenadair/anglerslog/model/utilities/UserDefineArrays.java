@@ -1,6 +1,7 @@
 package com.cohenadair.anglerslog.model.utilities;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
@@ -66,6 +67,18 @@ public class UserDefineArrays {
             str += callbacks.onGetProperty(arr.get(i)) + token;
 
         return str + callbacks.onGetProperty(arr.get(arr.size() - 1));
+    }
+
+    @NonNull
+    public static String keywordsAsString(Context context, ArrayList<UserDefineObject> arr) {
+        StringBuilder builder = new StringBuilder();
+
+        for (UserDefineObject obj : arr) {
+            builder.append(obj.toKeywordsString(context));
+            builder.append(" ");
+        }
+
+        return builder.toString();
     }
 
     public static boolean hasObjectNamed(ArrayList<UserDefineObject> arr, String name) {

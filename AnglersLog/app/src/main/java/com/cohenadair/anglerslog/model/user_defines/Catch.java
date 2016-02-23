@@ -519,9 +519,9 @@ public class Catch extends PhotoUserDefineObject {
         builder.append((mBait == null) ? "" : mBait.getCategory().toKeywordsString(context));
         builder.append((mFishingSpot == null) ? "" : mFishingSpot.getLocation().toKeywordsString(context));
         builder.append((mFishingSpot == null) ? "" : mFishingSpot.toKeywordsString(context));
+        builder.append(UserDefineArrays.keywordsAsString(context, getFishingMethods()));
 
         appendToBuilder(builder, getDateAsString());
-        appendToBuilder(builder, UserDefineArrays.namesAsString(getFishingMethods(), " "));
         appendToBuilder(builder, mIsFavorite ? context.getResources().getString(R.string.favorite) : null);
         appendToBuilder(builder, mCatchResult.getString(context));
         appendToBuilder(builder, mQuantity);

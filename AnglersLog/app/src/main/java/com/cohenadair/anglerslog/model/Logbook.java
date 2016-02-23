@@ -422,7 +422,11 @@ public class Logbook {
 
     //region Bait Manipulation
     public static ArrayList<UserDefineObject> getBaits() {
-        return getBaits(null, null);
+        return getBaits("", null);
+    }
+
+    public static ArrayList<UserDefineObject> getBaits(BaitCategory baitCategory, String searchQuery) {
+        return UserDefineArrays.search(mContext, getBaits(baitCategory), searchQuery);
     }
 
     /**
@@ -441,6 +445,9 @@ public class Logbook {
      * @return An ArrayList of {@link Bait} objects matching the WHERE clause.
      */
     private static ArrayList<UserDefineObject> getBaits(String whereClause, String[] args) {
+        if (whereClause.isEmpty())
+            whereClause = null;
+
         return QueryHelper.queryUserDefines(QueryHelper.queryBaits(whereClause, args), new QueryHelper.UserDefineQueryInterface() {
             @Override
             public UserDefineObject getObject(UserDefineCursor cursor) {
@@ -509,18 +516,25 @@ public class Logbook {
         return QueryHelper.queryCount(BaitTable.NAME);
     }
 
+    public static ArrayList<UserDefineObject> getBaitsAndCategories() {
+        return getBaitsAndCategories(null);
+    }
+
     /**
      * Gets an ordered array of {@link BaitCategory} objects and their respective {@link Bait}
      * objects.
+     *
+     * @param searchQuery A String of keywords used to filter the {@link Bait} objects. If null, all
+     *                    possible baits will be returned.
      * @return An ArrayList of BaitCategory and Bait objects.
      */
-    public static ArrayList<UserDefineObject> getBaitsAndCategories() {
+    public static ArrayList<UserDefineObject> getBaitsAndCategories(String searchQuery) {
         ArrayList<UserDefineObject> result = new ArrayList<>();
         ArrayList<UserDefineObject> categories = getBaitCategories();
 
         for (UserDefineObject category : categories) {
             result.add(category);
-            result.addAll(getBaits((BaitCategory) category));
+            result.addAll(getBaits((BaitCategory) category, searchQuery));
         }
 
         return result;
@@ -544,6 +558,10 @@ public class Logbook {
                 return new LocationCursor(cursor).getLocation();
             }
         });
+    }
+
+    public static ArrayList<UserDefineObject> getLocations(String searchQuery) {
+        return UserDefineArrays.search(mContext, getLocations(), searchQuery);
     }
 
     public static Location getLocation(UUID id) {
@@ -806,6 +824,10 @@ public class Logbook {
                 return new TripCursor(cursor).getTrip();
             }
         });
+    }
+
+    public static ArrayList<UserDefineObject> getTrips(String searchQuery) {
+        return UserDefineArrays.search(mContext, getTrips(), searchQuery);
     }
 
     public static Trip getTrip(UUID id) {

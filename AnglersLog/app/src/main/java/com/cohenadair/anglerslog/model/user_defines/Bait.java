@@ -238,4 +238,17 @@ public class Bait extends PhotoUserDefineObject {
 
         return json;
     }
+
+    @Override
+    public String toKeywordsString(Context context) {
+        StringBuilder builder = new StringBuilder(super.toKeywordsString(context));
+
+        appendToBuilder(builder, mCategory.toKeywordsString(context));
+        appendToBuilder(builder, getColorAsString());
+        appendToBuilder(builder, getSizeAsString());
+        appendToBuilder(builder, getDescriptionAsString());
+        appendToBuilder(builder, getTypeName());
+
+        return builder.toString();
+    }
 }

@@ -180,7 +180,7 @@ public class LayoutSpecManager {
         spec.setListener(new LayoutSpec.InteractionListener() {
             @Override
             public ListManager.Adapter onGetMasterAdapter(String searchQuery) {
-                return new LocationListManager.Adapter(context, Logbook.getLocations(), onMasterItemClick);
+                return new LocationListManager.Adapter(context, Logbook.getLocations(searchQuery), onMasterItemClick);
             }
 
             @Override
@@ -240,7 +240,7 @@ public class LayoutSpecManager {
         spec.setListener(new LayoutSpec.InteractionListener() {
             @Override
             public ListManager.Adapter onGetMasterAdapter(String searchQuery) {
-                return new BaitListManager.Adapter(context, Logbook.getBaitsAndCategories(), onMasterItemClick);
+                return new BaitListManager.Adapter(context, Logbook.getBaitsAndCategories(searchQuery), onMasterItemClick);
             }
 
             @Override
@@ -270,7 +270,7 @@ public class LayoutSpecManager {
         spec.setListener(new LayoutSpec.InteractionListener() {
             @Override
             public ListManager.Adapter onGetMasterAdapter(String searchQuery) {
-                return new TripListManager.Adapter(context, Logbook.getTrips(), onMasterItemClick);
+                return new TripListManager.Adapter(context, Logbook.getTrips(searchQuery), onMasterItemClick);
             }
 
             @Override

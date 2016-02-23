@@ -12,6 +12,7 @@ import com.cohenadair.anglerslog.model.backup.JsonExporter;
 import com.cohenadair.anglerslog.model.backup.JsonImporter;
 import com.cohenadair.anglerslog.model.utilities.UsedUserDefineObject;
 import com.cohenadair.anglerslog.model.utilities.UserDefineArrays;
+import com.cohenadair.anglerslog.utilities.Utils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -273,6 +274,21 @@ public class Trip extends UserDefineObject {
         json.put(Json.ANGLERS, JsonExporter.getIdJsonArray(getAnglers()));
 
         return json;
+    }
+
+    @Override
+    public String toKeywordsString(Context context) {
+        StringBuilder builder = new StringBuilder(super.toKeywordsString(context));
+
+        appendToBuilder(builder, Utils.getDisplayDate(mStartDate));
+        appendToBuilder(builder, Utils.getDisplayDate(mEndDate));
+        appendToBuilder(builder, mNotes);
+
+        builder.append(UserDefineArrays.keywordsAsString(context, getAnglers()));
+        builder.append(UserDefineArrays.keywordsAsString(context, getCatches()));
+        builder.append(UserDefineArrays.keywordsAsString(context, getLocations()));
+
+        return builder.toString();
     }
 
     /**

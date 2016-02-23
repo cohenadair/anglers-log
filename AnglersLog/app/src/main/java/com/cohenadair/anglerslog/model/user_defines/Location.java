@@ -1,11 +1,14 @@
 package com.cohenadair.anglerslog.model.user_defines;
 
+import android.content.Context;
+
 import com.cohenadair.anglerslog.database.QueryHelper;
 import com.cohenadair.anglerslog.database.cursors.FishingSpotCursor;
 import com.cohenadair.anglerslog.database.cursors.UserDefineCursor;
 import com.cohenadair.anglerslog.model.Logbook;
 import com.cohenadair.anglerslog.model.backup.Json;
 import com.cohenadair.anglerslog.model.backup.JsonExporter;
+import com.cohenadair.anglerslog.model.utilities.UserDefineArrays;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -120,5 +123,10 @@ public class Location extends UserDefineObject {
         JSONObject json = super.toJson();
         json.put(Json.FISHING_SPOTS, JsonExporter.getJsonArray(getFishingSpots()));
         return json;
+    }
+
+    @Override
+    public String toKeywordsString(Context context) {
+        return super.toKeywordsString(context) + UserDefineArrays.keywordsAsString(context, getFishingSpots());
     }
 }
