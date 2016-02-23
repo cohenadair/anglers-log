@@ -20,9 +20,9 @@ import com.cohenadair.anglerslog.utilities.Utils;
  * back navigation. If the activity is shown as a dialog, the toolbar is hidden.
  *
  * ** Note: ** Subclasses must call `setContentView(int layoutResId)` in `onCreate()`, and the
- * layout id used must include a navigation_view.xml layout.
+ * layout id used (if applicable) must include a navigation_view.xml layout.
  *
- * Created by Cohen Adair on 2015-12-12.
+ * @author Cohen Adair
  */
 public abstract class DefaultActivity extends AppCompatActivity implements GlobalSettingsInterface {
 

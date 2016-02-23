@@ -9,7 +9,7 @@ import com.cohenadair.anglerslog.stats.StatsManager;
  * The CardDetailActivity acts as a wrapper for a given fragment that displays the details of
  * a {@link com.cohenadair.anglerslog.views.DefaultCardView}.
  *
- * Created by Cohen Adair on 2016-01-27.
+ * @author Cohen Adair
  */
 public class CardDetailActivity extends DefaultActivity {
 
