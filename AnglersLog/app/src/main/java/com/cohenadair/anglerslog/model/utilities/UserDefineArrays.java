@@ -73,10 +73,8 @@ public class UserDefineArrays {
     public static String keywordsAsString(Context context, ArrayList<UserDefineObject> arr) {
         StringBuilder builder = new StringBuilder();
 
-        for (UserDefineObject obj : arr) {
+        for (UserDefineObject obj : arr)
             builder.append(obj.toKeywordsString(context));
-            builder.append(" ");
-        }
 
         return builder.toString();
     }
