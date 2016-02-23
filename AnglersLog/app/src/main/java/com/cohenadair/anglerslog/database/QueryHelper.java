@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 
 import com.cohenadair.anglerslog.database.cursors.BaitCursor;
 import com.cohenadair.anglerslog.database.cursors.CatchCursor;
+import com.cohenadair.anglerslog.database.cursors.TripCursor;
 import com.cohenadair.anglerslog.database.cursors.UserDefineCursor;
 import com.cohenadair.anglerslog.database.cursors.WeatherCursor;
 import com.cohenadair.anglerslog.model.Weather;
@@ -22,6 +23,7 @@ import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import java.util.ArrayList;
 import java.util.UUID;
 
+import static com.cohenadair.anglerslog.database.LogbookSchema.*;
 import static com.cohenadair.anglerslog.database.LogbookSchema.BaitTable;
 import static com.cohenadair.anglerslog.database.LogbookSchema.CatchTable;
 import static com.cohenadair.anglerslog.database.LogbookSchema.FishingSpotTable;
@@ -71,7 +73,7 @@ public class QueryHelper {
 
     @NonNull
     public static CatchCursor queryCatches(String whereClause, String[] args) {
-        return new CatchCursor(mDatabase.query(CatchTable.NAME, null, whereClause, args, null, null, null));
+        return new CatchCursor(mDatabase.query(CatchTable.NAME, null, whereClause, args, null, null, CatchTable.Columns.DATE + " DESC"));
     }
 
     @NonNull
@@ -81,7 +83,12 @@ public class QueryHelper {
 
     @NonNull
     public static BaitCursor queryBaits(String whereClause, String[] args) {
-        return new BaitCursor(mDatabase.query(BaitTable.NAME, null, whereClause, args, null, null, null));
+        return new BaitCursor(mDatabase.query(BaitTable.NAME, null, whereClause, args, null, null, BaitTable.Columns.NAME));
+    }
+
+    @NonNull
+    public static TripCursor queryTrips(String whereClause, String[] args) {
+        return new TripCursor(mDatabase.query(TripTable.NAME, null, whereClause, args, null, null, TripTable.Columns.START_DATE + " DESC"));
     }
 
     @NonNull

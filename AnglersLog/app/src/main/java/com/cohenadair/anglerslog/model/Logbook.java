@@ -818,7 +818,7 @@ public class Logbook {
     }
 
     public static ArrayList<UserDefineObject> getTrips() {
-        return QueryHelper.queryUserDefines(QueryHelper.queryUserDefines(TripTable.NAME, null, null), new QueryHelper.UserDefineQueryInterface() {
+        return QueryHelper.queryUserDefines(QueryHelper.queryTrips(null, null), new QueryHelper.UserDefineQueryInterface() {
             @Override
             public UserDefineObject getObject(UserDefineCursor cursor) {
                 return new TripCursor(cursor).getTrip();
