@@ -22,7 +22,7 @@ import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import com.cohenadair.anglerslog.utilities.PrimitiveSpec;
 import com.cohenadair.anglerslog.utilities.PrimitiveSpecManager;
-import com.cohenadair.anglerslog.utilities.UserDefineArrays;
+import com.cohenadair.anglerslog.model.utilities.UserDefineArrays;
 import com.cohenadair.anglerslog.utilities.Utils;
 import com.cohenadair.anglerslog.utilities.WrappedLinearLayoutManager;
 

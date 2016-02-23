@@ -35,20 +35,21 @@ public class LayoutSpec {
 
     private InteractionListener mListener;
     private OnSelectionListener mSelectionListener;
-    private OnSearchListener mSearchListener;
 
     private String mMasterFragmentTag;
     private String mDetailFragmentTag;
     private String mName;
 
+    private boolean mIsSearchable = false;
+
     private UUID mSelectionId;
-    private int id;
+    private int mId;
 
     /**
      * Used to delete a user define. Editing is done in the Manage*Fragment for that user define.
      */
     public interface InteractionListener {
-        ListManager.Adapter onGetMasterAdapter();
+        ListManager.Adapter onGetMasterAdapter(String searchQuery);
         boolean onUserDefineRemove(UUID id);
     }
 
@@ -66,14 +67,6 @@ public class LayoutSpec {
      */
     public interface OnSelectionFinishedCallback {
         void onFinish(UUID id);
-    }
-
-    /**
-     * Used in combination with a {@link android.support.v7.widget.SearchView} as a callback to
-     * search different sections of the application's data.
-     */
-    public interface OnSearchListener {
-        void onSubmit(String query);
     }
 
     public LayoutSpec() {
@@ -95,14 +88,6 @@ public class LayoutSpec {
         mSelectionListener = selectionListener;
     }
 
-    public OnSearchListener getSearchListener() {
-        return mSearchListener;
-    }
-
-    public void setSearchListener(OnSearchListener searchListener) {
-        mSearchListener = searchListener;
-    }
-
     public void setManageFragment(ManageContentFragment contentFragment) {
         mManageFragment = new ManageFragment();
         mManageFragment.setContentFragment(contentFragment);
@@ -116,7 +101,7 @@ public class LayoutSpec {
         mMasterFragment = masterFragment;
 
         if (mListener != null)
-            mMasterAdapter = mListener.onGetMasterAdapter();
+            mMasterAdapter = mListener.onGetMasterAdapter(null);
     }
 
     public DetailFragment getDetailFragment() {
@@ -186,11 +171,19 @@ public class LayoutSpec {
     }
 
     public int getId() {
-        return id;
+        return mId;
     }
 
     public void setId(int id) {
-        this.id = id;
+        mId = id;
+    }
+
+    public void setIsSearchable(boolean isSearchable) {
+        mIsSearchable = isSearchable;
+    }
+
+    public boolean isSearchable() {
+        return mIsSearchable;
     }
     //endregion
 
@@ -198,15 +191,19 @@ public class LayoutSpec {
      * Updates the views for the master and detail fragments. This is called when changes were made
      * to the associated data sets.
      */
-    public void updateViews(LayoutSpecActivity activity) {
+    public void updateViews(LayoutSpecActivity activity, String searchQuery) {
         if (mListener == null || mDetailFragment == null)
             return;
 
-        mMasterAdapter = mListener.onGetMasterAdapter();
+        mMasterAdapter = mListener.onGetMasterAdapter(searchQuery);
         mMasterAdapter.notifyDataSetChanged();
 
         ((MasterFragment)mMasterFragment).update(activity);
         mDetailFragment.update(activity);
+    }
+
+    public void updateViews(LayoutSpecActivity activity) {
+        updateViews(activity, null);
     }
 
     /**
@@ -223,9 +220,5 @@ public class LayoutSpec {
             Utils.showToast(context, successId);
         } else
             Utils.showErrorAlert(context, obj.getName() + " " + context.getResources().getString(R.string.error_delete_primitive));
-    }
-
-    public boolean isSearchable() {
-        return mSearchListener != null;
     }
 }

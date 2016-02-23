@@ -13,7 +13,7 @@ import com.cohenadair.anglerslog.model.backup.Json;
 import com.cohenadair.anglerslog.model.backup.JsonExporter;
 import com.cohenadair.anglerslog.model.backup.JsonImporter;
 import com.cohenadair.anglerslog.model.utilities.UsedUserDefineObject;
-import com.cohenadair.anglerslog.utilities.UserDefineArrays;
+import com.cohenadair.anglerslog.model.utilities.UserDefineArrays;
 import com.cohenadair.anglerslog.utilities.Utils;
 
 import org.json.JSONArray;
@@ -506,6 +506,35 @@ public class Catch extends PhotoUserDefineObject {
         json.put(Json.WEATHER_DATA, (weather == null) ? new JSONObject() : weather.toJson(this));
 
         return json;
+    }
+
+    @Override
+    public String toKeywordsString(Context context) {
+        StringBuilder builder = new StringBuilder();
+
+        // appendToBuilder isn't used here because it's used in the "nested" toKeywordsString calls
+        builder.append((mSpecies == null) ? "" : mSpecies.toKeywordsString(context));
+        builder.append((mWaterClarity == null) ? "" : mWaterClarity.toKeywordsString(context));
+        builder.append((mBait == null) ? "" : mBait.toKeywordsString(context));
+        builder.append((mBait == null) ? "" : mBait.getCategory().toKeywordsString(context));
+        builder.append((mFishingSpot == null) ? "" : mFishingSpot.getLocation().toKeywordsString(context));
+        builder.append((mFishingSpot == null) ? "" : mFishingSpot.toKeywordsString(context));
+
+        appendToBuilder(builder, getDateAsString());
+        appendToBuilder(builder, UserDefineArrays.namesAsString(getFishingMethods(), " "));
+        appendToBuilder(builder, mIsFavorite ? context.getResources().getString(R.string.favorite) : null);
+        appendToBuilder(builder, mCatchResult.getString(context));
+        appendToBuilder(builder, mQuantity);
+        appendToBuilder(builder, mLength);
+        appendToBuilder(builder, mWeight);
+        appendToBuilder(builder, mWaterDepth);
+        appendToBuilder(builder, mWaterTemperature);
+        appendToBuilder(builder, mNotes);
+
+        Weather weather = getWeather();
+        appendToBuilder(builder, (weather == null) ? null : weather.toKeywordsString());
+
+        return builder.toString();
     }
 
     /**

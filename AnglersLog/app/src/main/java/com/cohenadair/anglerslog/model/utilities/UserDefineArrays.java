@@ -1,6 +1,10 @@
-package com.cohenadair.anglerslog.utilities;
+package com.cohenadair.anglerslog.model.utilities;
+
+import android.content.Context;
+import android.util.Log;
 
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
+import com.cohenadair.anglerslog.utilities.Utils;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -39,14 +43,27 @@ public class UserDefineArrays {
         });
     }
 
+    public static String namesAsString(ArrayList<UserDefineObject> arr, String token) {
+        return propertiesAsString(arr, token, new OnGetPropertyInterface() {
+            @Override
+            public String onGetProperty(UserDefineObject object) {
+                return object.getName();
+            }
+        });
+    }
+
     public static String propertiesAsString(ArrayList<UserDefineObject> arr, OnGetPropertyInterface callbacks) {
+        return propertiesAsString(arr, ", ", callbacks);
+    }
+
+    public static String propertiesAsString(ArrayList<UserDefineObject> arr, String token, OnGetPropertyInterface callbacks) {
         String str = "";
 
         if (arr.size() <= 0)
             return str;
 
         for (int i = 0; i < arr.size() - 1; i++)
-            str += callbacks.onGetProperty(arr.get(i)) + ", ";
+            str += callbacks.onGetProperty(arr.get(i)) + token;
 
         return str + callbacks.onGetProperty(arr.get(arr.size() - 1));
     }
@@ -99,6 +116,25 @@ public class UserDefineArrays {
         for (String str : arr)
             objects.add(callbacks.onGetObject(str));
         return objects;
+    }
+
+    public static ArrayList<UserDefineObject> search(Context context, ArrayList<UserDefineObject> arr, String query) {
+        if (Utils.stringOrNull(query) == null)
+            return arr;
+
+        String[] keywords = query.split(" ");
+        ArrayList<UserDefineObject> matches = new ArrayList<>();
+
+        for (UserDefineObject obj : arr) {
+            String keywordString = obj.toKeywordsString(context);
+            for (String keyword : keywords)
+                if (keywordString.toLowerCase().contains(keyword.toLowerCase())) {
+                    Log.d("UserDefineArrays#search", "Found keyword '" + keyword + "' in '" + keywordString + "'");
+                    matches.add(obj);
+                }
+        }
+
+        return matches;
     }
 
 }

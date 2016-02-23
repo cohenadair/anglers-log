@@ -72,7 +72,7 @@ public class Utils {
         new AlertDialog.Builder(context)
                 .setTitle(titleId)
                 .setMessage(msgId)
-                .setPositiveButton(R.string.OK, new DialogInterface.OnClickListener() {
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();
@@ -85,7 +85,7 @@ public class Utils {
         new AlertDialog.Builder(context)
                 .setTitle(titleId)
                 .setMessage(msg)
-                .setPositiveButton(R.string.OK, new DialogInterface.OnClickListener() {
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();
@@ -102,7 +102,7 @@ public class Utils {
         new AlertDialog.Builder(context)
                 .setTitle(context.getResources().getString(R.string.error))
                 .setMessage(msg)
-                .setPositiveButton(R.string.OK, new DialogInterface.OnClickListener() {
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();

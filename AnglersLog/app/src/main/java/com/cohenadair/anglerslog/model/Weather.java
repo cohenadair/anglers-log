@@ -149,4 +149,8 @@ public class Weather {
 
         return json;
     }
+
+    public String toKeywordsString() {
+        return mSkyConditions;
+    }
 }

@@ -11,7 +11,7 @@ import com.cohenadair.anglerslog.model.backup.Json;
 import com.cohenadair.anglerslog.model.backup.JsonExporter;
 import com.cohenadair.anglerslog.model.backup.JsonImporter;
 import com.cohenadair.anglerslog.model.utilities.UsedUserDefineObject;
-import com.cohenadair.anglerslog.utilities.UserDefineArrays;
+import com.cohenadair.anglerslog.model.utilities.UserDefineArrays;
 
 import org.json.JSONArray;
 import org.json.JSONException;

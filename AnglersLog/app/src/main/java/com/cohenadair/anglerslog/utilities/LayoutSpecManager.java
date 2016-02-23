@@ -149,8 +149,8 @@ public class LayoutSpecManager {
 
         spec.setListener(new LayoutSpec.InteractionListener() {
             @Override
-            public ListManager.Adapter onGetMasterAdapter() {
-                return new CatchListManager.Adapter(context, Logbook.getCatches(), onMasterItemClick);
+            public ListManager.Adapter onGetMasterAdapter(String searchQuery) {
+                return new CatchListManager.Adapter(context, Logbook.getCatches(searchQuery), onMasterItemClick);
             }
 
             @Override
@@ -161,14 +161,8 @@ public class LayoutSpecManager {
             }
         });
 
-        spec.setSearchListener(new LayoutSpec.OnSearchListener() {
-            @Override
-            public void onSubmit(String query) {
-                Utils.showErrorAlert(context, "Searching catches with query: " + query);
-            }
-        });
-
         spec.setId(LAYOUT_CATCHES);
+        spec.setIsSearchable(true);
         spec.setMasterFragment(new MyListFragment());
         spec.setDetailFragment(new CatchFragment());
         spec.setManageFragment(new ManageCatchFragment());
@@ -185,7 +179,7 @@ public class LayoutSpecManager {
 
         spec.setListener(new LayoutSpec.InteractionListener() {
             @Override
-            public ListManager.Adapter onGetMasterAdapter() {
+            public ListManager.Adapter onGetMasterAdapter(String searchQuery) {
                 return new LocationListManager.Adapter(context, Logbook.getLocations(), onMasterItemClick);
             }
 
@@ -215,14 +209,8 @@ public class LayoutSpecManager {
             }
         });
 
-        spec.setSearchListener(new LayoutSpec.OnSearchListener() {
-            @Override
-            public void onSubmit(String query) {
-                Utils.showErrorAlert(context, "Searching locations with query: " + query);
-            }
-        });
-
         spec.setId(LAYOUT_LOCATIONS);
+        spec.setIsSearchable(true);
         spec.setMasterFragment(new MyListFragment());
         spec.setDetailFragment(new LocationFragment());
         spec.setManageFragment(new ManageLocationFragment());
@@ -251,7 +239,7 @@ public class LayoutSpecManager {
 
         spec.setListener(new LayoutSpec.InteractionListener() {
             @Override
-            public ListManager.Adapter onGetMasterAdapter() {
+            public ListManager.Adapter onGetMasterAdapter(String searchQuery) {
                 return new BaitListManager.Adapter(context, Logbook.getBaitsAndCategories(), onMasterItemClick);
             }
 
@@ -263,14 +251,8 @@ public class LayoutSpecManager {
             }
         });
 
-        spec.setSearchListener(new LayoutSpec.OnSearchListener() {
-            @Override
-            public void onSubmit(String query) {
-                Utils.showErrorAlert(context, "Searching baits with query: " + query);
-            }
-        });
-
         spec.setId(LAYOUT_BAITS);
+        spec.setIsSearchable(true);
         spec.setMasterFragment(new MyListFragment());
         spec.setDetailFragment(new BaitFragment());
         spec.setManageFragment(new ManageBaitFragment());
@@ -287,7 +269,7 @@ public class LayoutSpecManager {
 
         spec.setListener(new LayoutSpec.InteractionListener() {
             @Override
-            public ListManager.Adapter onGetMasterAdapter() {
+            public ListManager.Adapter onGetMasterAdapter(String searchQuery) {
                 return new TripListManager.Adapter(context, Logbook.getTrips(), onMasterItemClick);
             }
 
@@ -299,14 +281,8 @@ public class LayoutSpecManager {
             }
         });
 
-        spec.setSearchListener(new LayoutSpec.OnSearchListener() {
-            @Override
-            public void onSubmit(String query) {
-                Utils.showErrorAlert(context, "Searching trips with query: " + query);
-            }
-        });
-
         spec.setId(LAYOUT_TRIPS);
+        spec.setIsSearchable(true);
         spec.setMasterFragment(new MyListFragment());
         spec.setDetailFragment(new TripFragment());
         spec.setManageFragment(new ManageTripFragment());

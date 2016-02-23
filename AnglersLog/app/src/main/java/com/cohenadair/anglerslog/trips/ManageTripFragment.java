@@ -14,7 +14,7 @@ import com.cohenadair.anglerslog.model.user_defines.Trip;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import com.cohenadair.anglerslog.utilities.LayoutSpecManager;
 import com.cohenadair.anglerslog.utilities.PrimitiveSpecManager;
-import com.cohenadair.anglerslog.utilities.UserDefineArrays;
+import com.cohenadair.anglerslog.model.utilities.UserDefineArrays;
 import com.cohenadair.anglerslog.utilities.Utils;
 import com.cohenadair.anglerslog.views.TextInputView;
 import com.cohenadair.anglerslog.views.TitleSubTitleView;

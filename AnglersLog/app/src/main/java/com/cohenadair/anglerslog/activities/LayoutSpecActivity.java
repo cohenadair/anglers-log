@@ -7,7 +7,6 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.SearchView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -146,6 +145,10 @@ public abstract class LayoutSpecActivity extends DefaultActivity implements
     public void updateViews() {
         mLayoutSpec.updateViews(this);
     }
+
+    public void updateViews(String searchQuery) {
+        mLayoutSpec.updateViews(this, searchQuery);
+    }
     // endregion
 
     @NonNull
@@ -263,6 +266,7 @@ public abstract class LayoutSpecActivity extends DefaultActivity implements
             @Override
             public boolean onClose() {
                 setMenuItemsVisibility(true);
+                updateViews();
 
                 // returning false will "iconify" the SearchView
                 return false;
@@ -272,13 +276,14 @@ public abstract class LayoutSpecActivity extends DefaultActivity implements
         mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                mLayoutSpec.getSearchListener().onSubmit(query);
+                updateViews(query);
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                Log.d(TAG, "Text changed!");
+                if (newText.isEmpty())
+                    updateViews();
                 return false;
             }
         });

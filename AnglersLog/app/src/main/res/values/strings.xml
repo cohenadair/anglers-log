@@ -8,7 +8,6 @@
     <string name="website">http://cohenadair.com/anglerslog/</string>
     <string name="no_instagram">Instagram is not installed on this device.</string>
     <string name="instagram_disabled">Instagram is installed, but disabled on this device.</string>
-    <string name="OK">Okay</string>
 
     <string name="pref_units">pref_units</string>
     <string name="pref_auto_backup">pref_auto_backup</string>
@@ -140,6 +139,7 @@
     <string name="confirm">Confirm</string>
     <string name="reset">Reset</string>
     <string name="search">Search</string>
+    <string name="favorite">Favorite</string>
 
     <string name="drawer_open">Open Navigation Drawer</string>
     <string name="drawer_close">Close Navigation Drawer</string>
