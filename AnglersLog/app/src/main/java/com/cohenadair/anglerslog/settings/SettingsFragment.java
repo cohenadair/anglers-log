@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.support.v7.preference.ListPreference;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
+import android.view.Menu;
+import android.view.MenuInflater;
 
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.fragments.LoadingDialog;
@@ -37,6 +39,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.preferences);
+        setHasOptionsMenu(true);
 
         initUnits();
         initImport();
@@ -72,6 +75,12 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         }
 
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        menu.clear();
     }
 
     private void updateUnits(ListPreference units, int index) {

@@ -32,6 +32,12 @@ public class StatsFragment extends MasterFragment {
     private DefaultCardView mHeaviestCatchCard;
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setClearMenuOnCreate(true);
+    }
+
+    @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.stats_layout, container, false);
 
