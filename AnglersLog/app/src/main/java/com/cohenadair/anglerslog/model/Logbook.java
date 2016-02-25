@@ -35,6 +35,7 @@ import com.cohenadair.anglerslog.model.user_defines.Species;
 import com.cohenadair.anglerslog.model.user_defines.Trip;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import com.cohenadair.anglerslog.model.user_defines.WaterClarity;
+import com.cohenadair.anglerslog.model.utilities.SortingMethod;
 import com.cohenadair.anglerslog.model.utilities.UserDefineArrays;
 import com.cohenadair.anglerslog.utilities.LogbookPreferences;
 import com.cohenadair.anglerslog.utilities.PhotoUtils;
@@ -261,8 +262,13 @@ public class Logbook {
         });
     }
 
-    public static ArrayList<UserDefineObject> getCatches(String searchQuery) {
-        return UserDefineArrays.search(mContext, getCatches(), searchQuery);
+    public static ArrayList<UserDefineObject> getCatches(String searchQuery, SortingMethod sortingMethod) {
+        ArrayList<UserDefineObject> result = UserDefineArrays.search(mContext, getCatches(), searchQuery);
+
+        if (sortingMethod != null)
+            result = UserDefineArrays.sort(result, sortingMethod);
+
+        return result;
     }
 
     public static Catch getCatch(UUID id) {

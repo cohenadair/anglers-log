@@ -73,7 +73,7 @@ public class MainActivity extends LayoutSpecActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         initSearch(menu);
-        return super.onCreateOptionsMenu(menu);
+        return true;
     }
 
     @Override
@@ -86,7 +86,7 @@ public class MainActivity extends LayoutSpecActivity {
         }
 
         if (id == R.id.action_sort) {
-            Utils.showErrorAlert(this, "Sorting is not yet supported.");
+            openSortDialog();
             return true;
         }
 

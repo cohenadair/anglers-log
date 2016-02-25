@@ -6,7 +6,9 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,6 +20,8 @@ import com.cohenadair.anglerslog.fragments.ManageFragment;
 import com.cohenadair.anglerslog.fragments.MyListFragment;
 import com.cohenadair.anglerslog.interfaces.GlobalSettingsInterface;
 import com.cohenadair.anglerslog.interfaces.OnClickManageMenuListener;
+import com.cohenadair.anglerslog.model.utilities.SortingMethod;
+import com.cohenadair.anglerslog.model.utilities.SortingUtils;
 import com.cohenadair.anglerslog.utilities.LayoutSpec;
 import com.cohenadair.anglerslog.utilities.LayoutSpecManager;
 import com.cohenadair.anglerslog.utilities.ListManager;
@@ -54,6 +58,9 @@ public abstract class LayoutSpecActivity extends DefaultActivity implements
     private SearchView mSearchView;
     private LayoutSpec mLayoutSpec;
 
+    /**
+     * Used to keep SearchVew's state when transitioning between fragments.
+     */
     private String mSearchText = "";
     private boolean mSearchIsExpanded = false;
 
@@ -152,6 +159,10 @@ public abstract class LayoutSpecActivity extends DefaultActivity implements
     public void updateViews(String searchQuery) {
         mLayoutSpec.updateViews(this, searchQuery);
     }
+
+    public void updateViews(SortingMethod sortingMethod) {
+        mLayoutSpec.updateViews(this, sortingMethod);
+    }
     // endregion
 
     @NonNull
@@ -219,9 +230,18 @@ public abstract class LayoutSpecActivity extends DefaultActivity implements
     }
     //endregion
 
+    /**
+     * Updates the options menu depending on the Activity's {@link LayoutSpec} properties.
+     */
     public void updateMenu() {
-        if (mSearchItem != null)
-            mSearchItem.setVisible(mLayoutSpec.isSearchable());
+        if (mMenu == null)
+            return;
+
+        mSearchItem.setVisible(mLayoutSpec.isSearchable());
+
+        MenuItem sort = mMenu.findItem(R.id.action_sort);
+        if (sort != null)
+            sort.setVisible(mLayoutSpec.isSortable());
     }
 
     public void setActionBarTitle(String title) {
@@ -314,6 +334,31 @@ public abstract class LayoutSpecActivity extends DefaultActivity implements
         mSearchIsExpanded = false;
         mSearchView.setQuery("", false);
         updateViews();
+    }
+    //endregion
+
+    //region Sorting
+    public void openSortDialog() {
+        new AlertDialog.Builder(this)
+                .setTitle(getResources().getString(R.string.sort_by))
+                .setPositiveButton(R.string.button_cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                })
+                .setItems(SortingUtils.getDialogOptions(mLayoutSpec.getSortingMethods()), getOnSortMethodSelected())
+                .show();
+    }
+
+    public DialogInterface.OnClickListener getOnSortMethodSelected() {
+        return new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Log.d(TAG, "Selected " + mLayoutSpec.getSortingMethods()[which].getDisplayText());
+                updateViews(mLayoutSpec.getSortingMethods()[which]);
+            }
+        };
     }
     //endregion
 

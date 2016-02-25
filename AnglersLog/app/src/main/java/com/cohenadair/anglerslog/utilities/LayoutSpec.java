@@ -10,6 +10,7 @@ import com.cohenadair.anglerslog.fragments.ManageContentFragment;
 import com.cohenadair.anglerslog.fragments.ManageFragment;
 import com.cohenadair.anglerslog.fragments.MasterFragment;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
+import com.cohenadair.anglerslog.model.utilities.SortingMethod;
 
 import java.util.UUID;
 
@@ -31,7 +32,8 @@ public class LayoutSpec {
     private ListManager.Adapter mMasterAdapter;
     private DetailFragment mDetailFragment;
     private ManageFragment mManageFragment;
-    private Intent mOnClickMenuItemIntent;
+    private Intent mOnClickMenuItemIntent; // used for nagivation drawer links (i.e. Twitter, Instagram)
+    private SortingMethod[] mSortingMethods;
 
     private InteractionListener mListener;
     private OnSelectionListener mSelectionListener;
@@ -49,7 +51,7 @@ public class LayoutSpec {
      * Used to delete a user define. Editing is done in the Manage*Fragment for that user define.
      */
     public interface InteractionListener {
-        ListManager.Adapter onGetMasterAdapter(String searchQuery);
+        ListManager.Adapter onGetMasterAdapter(String searchQuery, SortingMethod sortingMethod);
         boolean onUserDefineRemove(UUID id);
     }
 
@@ -101,7 +103,7 @@ public class LayoutSpec {
         mMasterFragment = masterFragment;
 
         if (mListener != null)
-            mMasterAdapter = mListener.onGetMasterAdapter(null);
+            mMasterAdapter = mListener.onGetMasterAdapter(null, null);
     }
 
     public DetailFragment getDetailFragment() {
@@ -122,6 +124,14 @@ public class LayoutSpec {
 
     public void setOnClickMenuItemIntent(Intent onClickMenuItemIntent) {
         mOnClickMenuItemIntent = onClickMenuItemIntent;
+    }
+
+    public SortingMethod[] getSortingMethods() {
+        return mSortingMethods;
+    }
+
+    public void setSortingMethods(SortingMethod[] sortingMethods) {
+        mSortingMethods = sortingMethods;
     }
 
     public ListManager.Adapter getMasterAdapter() {
@@ -190,20 +200,32 @@ public class LayoutSpec {
     /**
      * Updates the views for the master and detail fragments. This is called when changes were made
      * to the associated data sets.
+     *
+     * @param activity The {@link LayoutSpecActivity} associated with this LayoutSpec instance.
+     * @param searchQuery The String of keywords used to filter the RecyclerView's adapter.
+     * @param sortingMethod The {@link SortingMethod} used to sort the RecyclerView's adapter.
      */
-    public void updateViews(LayoutSpecActivity activity, String searchQuery) {
+    public void updateViews(LayoutSpecActivity activity, String searchQuery, SortingMethod sortingMethod) {
         if (mListener == null || mDetailFragment == null)
             return;
 
-        mMasterAdapter = mListener.onGetMasterAdapter(searchQuery);
+        mMasterAdapter = mListener.onGetMasterAdapter(searchQuery, sortingMethod);
         mMasterAdapter.notifyDataSetChanged();
 
         ((MasterFragment)mMasterFragment).update(activity);
         mDetailFragment.update(activity);
     }
 
+    public void updateViews(LayoutSpecActivity activity, String searchQuery) {
+        updateViews(activity, searchQuery, null);
+    }
+
+    public void updateViews(LayoutSpecActivity activity, SortingMethod sortingMethod) {
+        updateViews(activity, null, sortingMethod);
+    }
+
     public void updateViews(LayoutSpecActivity activity) {
-        updateViews(activity, null);
+        updateViews(activity, null, null);
     }
 
     /**
@@ -220,5 +242,9 @@ public class LayoutSpec {
             Utils.showToast(context, successId);
         } else
             Utils.showErrorAlert(context, obj.getName() + " " + context.getResources().getString(R.string.error_delete_primitive));
+    }
+
+    public boolean isSortable() {
+        return mSortingMethods != null;
     }
 }

@@ -7,6 +7,7 @@ import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import com.cohenadair.anglerslog.utilities.Utils;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 
 /**
@@ -149,4 +150,8 @@ public class UserDefineArrays {
         return matches;
     }
 
+    public static ArrayList<UserDefineObject> sort(ArrayList<UserDefineObject> arr, SortingMethod sortingMethod) {
+        Collections.sort(arr, sortingMethod.getComparator());
+        return arr;
+    }
 }

@@ -22,6 +22,8 @@ import com.cohenadair.anglerslog.locations.ManageLocationFragment;
 import com.cohenadair.anglerslog.map.LocationMapFragment;
 import com.cohenadair.anglerslog.model.Logbook;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
+import com.cohenadair.anglerslog.model.utilities.SortingMethod;
+import com.cohenadair.anglerslog.model.utilities.SortingUtils;
 import com.cohenadair.anglerslog.settings.SettingsFragment;
 import com.cohenadair.anglerslog.stats.StatsFragment;
 import com.cohenadair.anglerslog.trips.ManageTripFragment;
@@ -149,8 +151,8 @@ public class LayoutSpecManager {
 
         spec.setListener(new LayoutSpec.InteractionListener() {
             @Override
-            public ListManager.Adapter onGetMasterAdapter(String searchQuery) {
-                return new CatchListManager.Adapter(context, Logbook.getCatches(searchQuery), onMasterItemClick);
+            public ListManager.Adapter onGetMasterAdapter(String searchQuery, SortingMethod sortingMethod) {
+                return new CatchListManager.Adapter(context, Logbook.getCatches(searchQuery, sortingMethod), onMasterItemClick);
             }
 
             @Override
@@ -160,6 +162,11 @@ public class LayoutSpecManager {
                 return removed;
             }
         });
+
+        SortingMethod[] methods = {
+                SortingUtils.bySpecies()
+        };
+        spec.setSortingMethods(methods);
 
         spec.setId(LAYOUT_CATCHES);
         spec.setIsSearchable(true);
@@ -179,7 +186,7 @@ public class LayoutSpecManager {
 
         spec.setListener(new LayoutSpec.InteractionListener() {
             @Override
-            public ListManager.Adapter onGetMasterAdapter(String searchQuery) {
+            public ListManager.Adapter onGetMasterAdapter(String searchQuery, SortingMethod sortingMethod) {
                 return new LocationListManager.Adapter(context, Logbook.getLocations(searchQuery), onMasterItemClick);
             }
 
@@ -239,7 +246,7 @@ public class LayoutSpecManager {
 
         spec.setListener(new LayoutSpec.InteractionListener() {
             @Override
-            public ListManager.Adapter onGetMasterAdapter(String searchQuery) {
+            public ListManager.Adapter onGetMasterAdapter(String searchQuery, SortingMethod sortingMethod) {
                 return new BaitListManager.Adapter(context, Logbook.getBaitsAndCategories(searchQuery), onMasterItemClick);
             }
 
@@ -269,7 +276,7 @@ public class LayoutSpecManager {
 
         spec.setListener(new LayoutSpec.InteractionListener() {
             @Override
-            public ListManager.Adapter onGetMasterAdapter(String searchQuery) {
+            public ListManager.Adapter onGetMasterAdapter(String searchQuery, SortingMethod sortingMethod) {
                 return new TripListManager.Adapter(context, Logbook.getTrips(searchQuery), onMasterItemClick);
             }
 

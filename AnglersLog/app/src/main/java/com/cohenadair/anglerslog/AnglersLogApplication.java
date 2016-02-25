@@ -3,6 +3,7 @@ package com.cohenadair.anglerslog;
 import android.app.Application;
 
 import com.cohenadair.anglerslog.model.Logbook;
+import com.cohenadair.anglerslog.model.utilities.SortingUtils;
 import com.cohenadair.anglerslog.utilities.LogbookPreferences;
 import com.cohenadair.anglerslog.utilities.PhotoUtils;
 
@@ -18,6 +19,7 @@ public class AnglersLogApplication extends Application {
 
         Logbook.init(getApplicationContext());
         LogbookPreferences.init(getApplicationContext());
+        SortingUtils.init(getApplicationContext());
         PhotoUtils.init(getApplicationContext());
         PhotoUtils.cleanPhotosAsync();
 

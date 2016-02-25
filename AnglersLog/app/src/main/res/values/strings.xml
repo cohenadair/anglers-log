@@ -140,6 +140,7 @@
     <string name="reset">Reset</string>
     <string name="search">Search</string>
     <string name="favorite">Favorite</string>
+    <string name="sort_by">Sort by</string>
 
     <string name="drawer_open">Open Navigation Drawer</string>
     <string name="drawer_close">Close Navigation Drawer</string>
