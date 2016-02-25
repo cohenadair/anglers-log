@@ -43,6 +43,9 @@ public class LocationListManager {
             int suffixId = location.getFishingSpotCount() == 1 ? R.string.fishing_spot : R.string.fishing_spots;
             mTitleSubTitleView.setSubtitle(String.format("%d " + context().getResources().getString(suffixId), location.getFishingSpotCount()));
 
+            suffixId = location.getCatchCount() == 1 ? R.string.catch_string : R.string.drawer_catches;
+            mTitleSubTitleView.setSubSubtitle(String.format("%d " + context().getResources().getString(suffixId), location.getCatchCount()));
+
             updateView(mSeparator, position, location);
         }
     }

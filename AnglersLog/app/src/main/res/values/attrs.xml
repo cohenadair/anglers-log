@@ -26,6 +26,7 @@
     <declare-styleable name="TitleSubTitleView">
         <attr name="titleText" />
         <attr name="subtitleText" />
+        <attr name="subsubtitleText" format="string"/>
         <attr name="subtitleHint" />
         <attr name="titleStyle" />
         <attr name="subtitleStyle" />

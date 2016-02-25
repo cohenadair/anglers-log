@@ -154,4 +154,13 @@ public class UserDefineArrays {
         Collections.sort(arr, sortingMethod.getComparator());
         return arr;
     }
+
+    public static ArrayList<UserDefineObject> searchAndSort(Context context, ArrayList<UserDefineObject> arr, String searchQuery, SortingMethod sortingMethod) {
+        ArrayList<UserDefineObject> result = search(context, arr, searchQuery);
+
+        if (sortingMethod != null)
+            result = sort(result, sortingMethod);
+
+        return result;
+    }
 }

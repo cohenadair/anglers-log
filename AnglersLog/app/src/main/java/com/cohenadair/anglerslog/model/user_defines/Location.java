@@ -8,6 +8,7 @@ import com.cohenadair.anglerslog.database.cursors.UserDefineCursor;
 import com.cohenadair.anglerslog.model.Logbook;
 import com.cohenadair.anglerslog.model.backup.Json;
 import com.cohenadair.anglerslog.model.backup.JsonExporter;
+import com.cohenadair.anglerslog.model.utilities.HasCatchesInterface;
 import com.cohenadair.anglerslog.model.utilities.UserDefineArrays;
 
 import org.json.JSONArray;
@@ -25,7 +26,7 @@ import static com.cohenadair.anglerslog.database.LogbookSchema.FishingSpotTable;
  *
  * Created by Cohen Adair on 2015-11-03.
  */
-public class Location extends UserDefineObject {
+public class Location extends UserDefineObject implements HasCatchesInterface {
 
     public Location() {
         this("");
@@ -117,6 +118,12 @@ public class Location extends UserDefineObject {
         return QueryHelper.queryCount(FishingSpotTable.NAME, FishingSpotTable.Columns.LOCATION_ID + " = ?", new String[]{ getIdAsString() });
     }
     //endregion
+
+
+    @Override
+    public int getCatchCount() {
+        return QueryHelper.queryLocationCatchCount(this);
+    }
 
     @Override
     public JSONObject toJson() throws JSONException {

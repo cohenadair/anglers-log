@@ -10,6 +10,8 @@ import com.cohenadair.anglerslog.model.Logbook;
 import com.cohenadair.anglerslog.model.backup.Json;
 import com.cohenadair.anglerslog.model.backup.JsonExporter;
 import com.cohenadair.anglerslog.model.backup.JsonImporter;
+import com.cohenadair.anglerslog.model.utilities.HasCatchesInterface;
+import com.cohenadair.anglerslog.model.utilities.HasDateInterface;
 import com.cohenadair.anglerslog.model.utilities.UsedUserDefineObject;
 import com.cohenadair.anglerslog.model.utilities.UserDefineArrays;
 import com.cohenadair.anglerslog.utilities.Utils;
@@ -33,7 +35,7 @@ import static com.cohenadair.anglerslog.database.LogbookSchema.UsedLocationTable
  *
  * Created by Cohen Adair on 2015-09-05.
  */
-public class Trip extends UserDefineObject {
+public class Trip extends UserDefineObject implements HasCatchesInterface, HasDateInterface {
 
     private static final String DATE_FORMAT = "MMM dd, yyyy";
 
@@ -123,6 +125,11 @@ public class Trip extends UserDefineObject {
     }
     //endregion
 
+    @Override
+    public Date getDate() {
+        return getStartDate();
+    }
+
     //region Getters & Setters
     public Date getStartDate() {
         return mStartDate;
@@ -210,6 +217,7 @@ public class Trip extends UserDefineObject {
     /**
      * @return Sum of the quantity properties for each of this Trip's catches.
      */
+    @Override
     public int getCatchCount() {
         return QueryHelper.queryTripsCatchCount(this);
     }

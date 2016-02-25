@@ -24,4 +24,11 @@
         android:id="@+id/subtitle_text_view"
         tools:text="Subtitle"/>
 
+    <TextView
+        style="@style/TextView.Small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/subsubtitle_text_view"
+        tools:text="Subtitle"/>
+
 </LinearLayout>

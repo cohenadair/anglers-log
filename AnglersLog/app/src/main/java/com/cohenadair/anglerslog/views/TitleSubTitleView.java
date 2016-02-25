@@ -18,6 +18,7 @@ public class TitleSubTitleView extends LinearLayout {
 
     private TextView mTitle;
     private TextView mSubtitle;
+    private TextView mSubSubtitle;
 
     public TitleSubTitleView(Context context) {
         super(context);
@@ -34,6 +35,8 @@ public class TitleSubTitleView extends LinearLayout {
 
         mTitle = (TextView)findViewById(R.id.title_text_view);
         mSubtitle = (TextView)findViewById(R.id.subtitle_text_view);
+        mSubSubtitle = (TextView)findViewById(R.id.subsubtitle_text_view);
+        toggleSubSubtitleViewVisibility();
 
         if (attrs != null) {
             TypedArray arr = getContext().getTheme().obtainStyledAttributes(attrs, R.styleable.TitleSubTitleView, 0, 0);
@@ -42,14 +45,18 @@ public class TitleSubTitleView extends LinearLayout {
                 mSubtitle.setText(arr.getString(R.styleable.TitleSubTitleView_subtitleText));
                 mSubtitle.setHint(arr.getString(R.styleable.TitleSubTitleView_subtitleHint));
 
+                mSubSubtitle.setText(arr.getString(R.styleable.TitleSubTitleView_subsubtitleText));
+                toggleSubSubtitleViewVisibility();
+
                 int styleId = arr.getResourceId(R.styleable.TitleSubTitleView_titleStyle, -1);
                 if (styleId != -1)
                     Utils.setTextAppearance(getContext(), mTitle, styleId);
 
                 styleId = arr.getResourceId(R.styleable.TitleSubTitleView_subtitleStyle, -1);
-                if (styleId != -1)
+                if (styleId != -1) {
                     Utils.setTextAppearance(getContext(), mSubtitle, styleId);
-
+                    Utils.setTextAppearance(getContext(), mSubSubtitle, styleId);
+                }
             } finally {
                 arr.recycle(); // required after using TypedArray
             }
@@ -72,6 +79,15 @@ public class TitleSubTitleView extends LinearLayout {
         return mSubtitle.getText().toString();
     }
 
+    public void setSubSubtitle(String subtitle) {
+        mSubSubtitle.setText(subtitle);
+        toggleSubSubtitleViewVisibility();
+    }
+
+    public String getSubSubtitle() {
+        return mSubSubtitle.getText().toString();
+    }
+
     public void setSubtitleHint(String hint) {
         mSubtitle.setHint(hint);
     }
@@ -86,5 +102,9 @@ public class TitleSubTitleView extends LinearLayout {
 
     public void setSubtitleStyle(int resId) {
         Utils.setTextAppearance(getContext(), mSubtitle, resId);
+    }
+
+    private void toggleSubSubtitleViewVisibility() {
+        Utils.toggleVisibility(mSubSubtitle, !mSubSubtitle.getText().toString().isEmpty());
     }
 }

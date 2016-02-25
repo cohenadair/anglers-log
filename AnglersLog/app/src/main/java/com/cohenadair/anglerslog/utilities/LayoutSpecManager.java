@@ -164,7 +164,11 @@ public class LayoutSpecManager {
         });
 
         SortingMethod[] methods = {
-                SortingUtils.bySpecies()
+                SortingUtils.bySpecies(),
+                SortingUtils.byLocation(),
+                SortingUtils.byFavorite(),
+                SortingUtils.byNewestToOldest(),
+                SortingUtils.byOldestToNewest()
         };
         spec.setSortingMethods(methods);
 
@@ -187,7 +191,7 @@ public class LayoutSpecManager {
         spec.setListener(new LayoutSpec.InteractionListener() {
             @Override
             public ListManager.Adapter onGetMasterAdapter(String searchQuery, SortingMethod sortingMethod) {
-                return new LocationListManager.Adapter(context, Logbook.getLocations(searchQuery), onMasterItemClick);
+                return new LocationListManager.Adapter(context, Logbook.getLocations(searchQuery, sortingMethod), onMasterItemClick);
             }
 
             @Override
@@ -215,6 +219,13 @@ public class LayoutSpecManager {
                 });
             }
         });
+
+        SortingMethod[] methods = {
+                SortingUtils.byName(),
+                SortingUtils.byNumberOfFishingSpots(),
+                SortingUtils.byNumberOfCatches()
+        };
+        spec.setSortingMethods(methods);
 
         spec.setId(LAYOUT_LOCATIONS);
         spec.setIsSearchable(true);
@@ -247,7 +258,7 @@ public class LayoutSpecManager {
         spec.setListener(new LayoutSpec.InteractionListener() {
             @Override
             public ListManager.Adapter onGetMasterAdapter(String searchQuery, SortingMethod sortingMethod) {
-                return new BaitListManager.Adapter(context, Logbook.getBaitsAndCategories(searchQuery), onMasterItemClick);
+                return new BaitListManager.Adapter(context, Logbook.getBaitsAndCategories(searchQuery, sortingMethod), onMasterItemClick);
             }
 
             @Override
@@ -257,6 +268,12 @@ public class LayoutSpecManager {
                 return removed;
             }
         });
+
+        SortingMethod[] methods = {
+                SortingUtils.byName(),
+                SortingUtils.byNumberOfCatches()
+        };
+        spec.setSortingMethods(methods);
 
         spec.setId(LAYOUT_BAITS);
         spec.setIsSearchable(true);
@@ -277,7 +294,7 @@ public class LayoutSpecManager {
         spec.setListener(new LayoutSpec.InteractionListener() {
             @Override
             public ListManager.Adapter onGetMasterAdapter(String searchQuery, SortingMethod sortingMethod) {
-                return new TripListManager.Adapter(context, Logbook.getTrips(searchQuery), onMasterItemClick);
+                return new TripListManager.Adapter(context, Logbook.getTrips(searchQuery, sortingMethod), onMasterItemClick);
             }
 
             @Override
@@ -287,6 +304,14 @@ public class LayoutSpecManager {
                 return removed;
             }
         });
+
+        SortingMethod[] methods = {
+                SortingUtils.byName(),
+                SortingUtils.byNewestToOldest(),
+                SortingUtils.byOldestToNewest(),
+                SortingUtils.byNumberOfCatches()
+        };
+        spec.setSortingMethods(methods);
 
         spec.setId(LAYOUT_TRIPS);
         spec.setIsSearchable(true);

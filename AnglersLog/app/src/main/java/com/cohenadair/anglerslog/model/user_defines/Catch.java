@@ -12,6 +12,7 @@ import com.cohenadair.anglerslog.model.Weather;
 import com.cohenadair.anglerslog.model.backup.Json;
 import com.cohenadair.anglerslog.model.backup.JsonExporter;
 import com.cohenadair.anglerslog.model.backup.JsonImporter;
+import com.cohenadair.anglerslog.model.utilities.HasDateInterface;
 import com.cohenadair.anglerslog.model.utilities.UsedUserDefineObject;
 import com.cohenadair.anglerslog.model.utilities.UserDefineArrays;
 import com.cohenadair.anglerslog.utilities.Utils;
@@ -33,7 +34,7 @@ import static com.cohenadair.anglerslog.database.LogbookSchema.WeatherTable;
  * The Catch class stores relative information for a single fishing catch.
  * @author Cohen Adair
  */
-public class Catch extends PhotoUserDefineObject {
+public class Catch extends PhotoUserDefineObject implements HasDateInterface {
 
     private static final String TAG = "Catch";
 
@@ -203,6 +204,7 @@ public class Catch extends PhotoUserDefineObject {
     //endregion
 
     //region Getters & Setters
+    @Override
     public Date getDate() {
         return mDate;
     }

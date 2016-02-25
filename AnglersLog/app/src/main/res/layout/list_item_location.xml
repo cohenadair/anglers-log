@@ -13,6 +13,7 @@
         android:layout_margin="@dimen/margin_default"
         custom:titleText="@string/location"
         custom:subtitleText="@string/fishing_spots"
+        custom:subsubtitleText="@string/drawer_catches"
         custom:titleStyle="@style/TextView.Medium"
         custom:subtitleStyle="@style/TextView.SmallSubtitle"/>
 

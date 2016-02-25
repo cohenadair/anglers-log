@@ -5,9 +5,11 @@ import android.support.annotation.NonNull;
 
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.model.user_defines.Catch;
+import com.cohenadair.anglerslog.model.user_defines.Location;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 
 import java.util.Comparator;
+import java.util.Date;
 
 /**
  * SortingUtils is a utility class that defines different {@link SortingMethod} instances that are
@@ -24,14 +26,102 @@ public class SortingUtils {
     }
 
     @NonNull
+    public static SortingMethod byName() {
+        return new SortingMethod(getString(R.string.name), new Comparator<UserDefineObject>() {
+            @Override
+            public int compare(UserDefineObject lhs, UserDefineObject rhs) {
+                return lhs.getName().compareTo(rhs.getName());
+            }
+        });
+    }
+
+    @NonNull
     public static SortingMethod bySpecies() {
         return new SortingMethod(getString(R.string.species), new Comparator<UserDefineObject>() {
             @Override
             public int compare(UserDefineObject lhs, UserDefineObject rhs) {
-                String lhSpecies = ((Catch)lhs).getSpeciesAsString();
-                String rhSpecies = ((Catch)rhs).getSpeciesAsString();
+                String lhValue = ((Catch)lhs).getSpeciesAsString();
+                String rhValue = ((Catch)rhs).getSpeciesAsString();
 
-                return lhSpecies.compareTo(rhSpecies);
+                return lhValue.compareTo(rhValue);
+            }
+        });
+    }
+
+    @NonNull
+    public static SortingMethod byLocation() {
+        return new SortingMethod(getString(R.string.location), new Comparator<UserDefineObject>() {
+            @Override
+            public int compare(UserDefineObject lhs, UserDefineObject rhs) {
+                String lhValue = ((Catch)lhs).getFishingSpotAsString();
+                String rhValue = ((Catch)rhs).getFishingSpotAsString();
+
+                return lhValue.compareTo(rhValue);
+            }
+        });
+    }
+
+    @NonNull
+    public static SortingMethod byFavorite() {
+        return new SortingMethod(getString(R.string.favorite), new Comparator<UserDefineObject>() {
+            @Override
+            public int compare(UserDefineObject lhs, UserDefineObject rhs) {
+                Boolean lhValue = ((Catch)lhs).isFavorite();
+                Boolean rhValue = ((Catch)rhs).isFavorite();
+
+                return lhValue.compareTo(rhValue) * -1;
+            }
+        });
+    }
+
+    @NonNull
+    public static SortingMethod byNumberOfCatches() {
+        return new SortingMethod(getString(R.string.number_of_catches), new Comparator<UserDefineObject>() {
+            @Override
+            public int compare(UserDefineObject lhs, UserDefineObject rhs) {
+                Integer lhValue = ((HasCatchesInterface)lhs).getCatchCount();
+                Integer rhValue = ((HasCatchesInterface)rhs).getCatchCount();
+
+                return lhValue.compareTo(rhValue) * -1;
+            }
+        });
+    }
+
+    @NonNull
+    public static SortingMethod byNumberOfFishingSpots() {
+        return new SortingMethod(getString(R.string.number_of_fishing_spots), new Comparator<UserDefineObject>() {
+            @Override
+            public int compare(UserDefineObject lhs, UserDefineObject rhs) {
+                Integer lhValue = ((Location)lhs).getFishingSpotCount();
+                Integer rhValue = ((Location)rhs).getFishingSpotCount();
+
+                return lhValue.compareTo(rhValue) * -1;
+            }
+        });
+    }
+
+    @NonNull
+    public static SortingMethod byNewestToOldest() {
+        return new SortingMethod(getString(R.string.newest_to_oldest), new Comparator<UserDefineObject>() {
+            @Override
+            public int compare(UserDefineObject lhs, UserDefineObject rhs) {
+                Date lhValue = ((HasDateInterface)lhs).getDate();
+                Date rhValue = ((HasDateInterface)rhs).getDate();
+
+                return lhValue.compareTo(rhValue) * -1;
+            }
+        });
+    }
+
+    @NonNull
+    public static SortingMethod byOldestToNewest() {
+        return new SortingMethod(getString(R.string.oldest_to_newest), new Comparator<UserDefineObject>() {
+            @Override
+            public int compare(UserDefineObject lhs, UserDefineObject rhs) {
+                Date lhValue = ((HasDateInterface)lhs).getDate();
+                Date rhValue = ((HasDateInterface)rhs).getDate();
+
+                return lhValue.compareTo(rhValue);
             }
         });
     }

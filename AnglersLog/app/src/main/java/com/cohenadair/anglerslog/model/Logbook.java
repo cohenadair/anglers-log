@@ -263,12 +263,7 @@ public class Logbook {
     }
 
     public static ArrayList<UserDefineObject> getCatches(String searchQuery, SortingMethod sortingMethod) {
-        ArrayList<UserDefineObject> result = UserDefineArrays.search(mContext, getCatches(), searchQuery);
-
-        if (sortingMethod != null)
-            result = UserDefineArrays.sort(result, sortingMethod);
-
-        return result;
+        return UserDefineArrays.searchAndSort(mContext, getCatches(), searchQuery, sortingMethod);
     }
 
     public static ArrayList<UserDefineObject> getCatches(String searchQuery) {
@@ -527,7 +522,11 @@ public class Logbook {
     }
 
     public static ArrayList<UserDefineObject> getBaitsAndCategories() {
-        return getBaitsAndCategories(null);
+        return getBaitsAndCategories(null, null);
+    }
+
+    public static ArrayList<UserDefineObject> getBaitsAndCategories(String searchQuery) {
+        return getBaitsAndCategories(searchQuery, null);
     }
 
     /**
@@ -536,15 +535,17 @@ public class Logbook {
      *
      * @param searchQuery A String of keywords used to filter the {@link Bait} objects. If null, all
      *                    possible baits will be returned.
+     * @param sortingMethod A {@link SortingMethod} instance used to sort the {@link Bait} objects
+     *                      for each {@link BaitCategory}.
      * @return An ArrayList of BaitCategory and Bait objects.
      */
-    public static ArrayList<UserDefineObject> getBaitsAndCategories(String searchQuery) {
+    public static ArrayList<UserDefineObject> getBaitsAndCategories(String searchQuery, SortingMethod sortingMethod) {
         ArrayList<UserDefineObject> result = new ArrayList<>();
         ArrayList<UserDefineObject> categories = getBaitCategories();
 
         for (UserDefineObject category : categories) {
             result.add(category);
-            result.addAll(getBaits((BaitCategory) category, searchQuery));
+            result.addAll(UserDefineArrays.searchAndSort(mContext, getBaits((BaitCategory) category), searchQuery, sortingMethod));
         }
 
         return result;
@@ -570,8 +571,12 @@ public class Logbook {
         });
     }
 
+    public static ArrayList<UserDefineObject> getLocations(String searchQuery, SortingMethod sortingMethod) {
+        return UserDefineArrays.searchAndSort(mContext, getLocations(), searchQuery, sortingMethod);
+    }
+
     public static ArrayList<UserDefineObject> getLocations(String searchQuery) {
-        return UserDefineArrays.search(mContext, getLocations(), searchQuery);
+        return getLocations(searchQuery, null);
     }
 
     public static Location getLocation(UUID id) {
@@ -666,7 +671,7 @@ public class Logbook {
         return getCatchQuantity(getLocations(), new OnQueryQuantityListener() {
             @Override
             public int query(UserDefineObject obj) {
-                return QueryHelper.queryLocationCatchCount((Location)obj);
+                return ((Location)obj).getCatchCount();
             }
         });
     }
@@ -836,8 +841,12 @@ public class Logbook {
         });
     }
 
+    public static ArrayList<UserDefineObject> getTrips(String searchQuery, SortingMethod sortingMethod) {
+        return UserDefineArrays.searchAndSort(mContext, getTrips(), searchQuery, sortingMethod);
+    }
+
     public static ArrayList<UserDefineObject> getTrips(String searchQuery) {
-        return UserDefineArrays.search(mContext, getTrips(), searchQuery);
+        return getTrips(searchQuery, null);
     }
 
     public static Trip getTrip(UUID id) {

@@ -8,7 +8,6 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.SearchView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -355,7 +354,6 @@ public abstract class LayoutSpecActivity extends DefaultActivity implements
         return new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Log.d(TAG, "Selected " + mLayoutSpec.getSortingMethods()[which].getDisplayText());
                 updateViews(mLayoutSpec.getSortingMethods()[which]);
             }
         };

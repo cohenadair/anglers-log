@@ -11,6 +11,7 @@ import com.cohenadair.anglerslog.database.cursors.UserDefineCursor;
 import com.cohenadair.anglerslog.model.Logbook;
 import com.cohenadair.anglerslog.model.backup.Json;
 import com.cohenadair.anglerslog.model.backup.JsonImporter;
+import com.cohenadair.anglerslog.model.utilities.HasCatchesInterface;
 import com.cohenadair.anglerslog.utilities.Utils;
 
 import org.apache.commons.io.FilenameUtils;
@@ -29,7 +30,7 @@ import static com.cohenadair.anglerslog.database.LogbookSchema.CatchTable;
  *
  * Created by Cohen Adair on 2015-11-03.
  */
-public class Bait extends PhotoUserDefineObject {
+public class Bait extends PhotoUserDefineObject implements HasCatchesInterface {
 
     private static final String TAG = "Bait";
 
@@ -159,6 +160,7 @@ public class Bait extends PhotoUserDefineObject {
         });
     }
 
+    @Override
     public int getCatchCount() {
         return getCatches().size();
     }

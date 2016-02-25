@@ -141,6 +141,10 @@
     <string name="search">Search</string>
     <string name="favorite">Favorite</string>
     <string name="sort_by">Sort by</string>
+    <string name="number_of_catches">Number of catches</string>
+    <string name="number_of_fishing_spots">Number of fishing spots</string>
+    <string name="newest_to_oldest">Newest to oldest</string>
+    <string name="oldest_to_newest">Oldest to newest</string>
 
     <string name="drawer_open">Open Navigation Drawer</string>
     <string name="drawer_close">Close Navigation Drawer</string>
