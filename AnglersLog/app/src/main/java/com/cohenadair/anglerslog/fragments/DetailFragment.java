@@ -78,8 +78,10 @@ public abstract class DetailFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
 
-        if (shouldShowManageMenu()) {
-            menu.clear();
+        if (isVisible() && shouldShowManageMenu()) {
+            if (!isTwoPane())
+                menu.clear();
+
             inflater.inflate(R.menu.menu_manage, menu);
         }
     }
@@ -149,6 +151,13 @@ public abstract class DetailFragment extends Fragment {
         ActionBar actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
         if (actionBar != null)
             actionBar.setTitle(title);
+    }
+
+    public void clearActionBarTitle() {
+        if (isTwoPane() || !isVisible())
+            return;
+
+        setActionBarTitle("");
     }
 
     /**

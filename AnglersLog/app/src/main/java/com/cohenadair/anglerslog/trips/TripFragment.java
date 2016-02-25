@@ -75,7 +75,7 @@ public class TripFragment extends DetailFragment {
         if (!isAttached())
             return;
 
-        setActionBarTitle("");
+        clearActionBarTitle();
 
         // id can be null if in two-pane view and there are no baits
         if (id == null) {
