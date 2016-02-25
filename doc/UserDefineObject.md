@@ -6,7 +6,8 @@ The following are required updates for new `UserDefineObject` subclasses or modi
 ### In the `UserDefineObject` subclass:
 * Add new properties as private instance variables (including getters/setters).
 * For complex subclasses, override and/or update the `getContentValues()` method to include the new properties.
-* For complex subclasses, override and/or update the `getJson()` method to include the new properties.
+* For complex subclasses, override and/or update the `toJson()` method to include the new properties.
+* For complex subclasses, override and/or update the `toKeywordsString()` method to include the new properties.
 * Make sure that the JSON importing constructor matches up with the JSON exporting method by adding new assertions to `JsonTest.java`.
 * Add new properties to the cloning constructor.
   > Note that if a property is a subclass of UserDefineObject, the `ClassName(ClassName obj, keepId)` must be called with `keepId = true` in the obejct's cloning constructor.
@@ -16,7 +17,12 @@ The following are required updates for new `UserDefineObject` subclasses or modi
 
 ### Backup stuff:
 * Add the `UserDefineObject(JSONObject jsonObject)` constructor for importing.
-* Added required code to `JsonParser.java` to create the new objects from a `JSONObject`.
+* Add required code to `JsonImporter.java` to create the new objects from a `JSONObject`.
+* Add required code to `JsonExporter.java`.
+
+### Tests:
+* Create new tests if needed.
+* Update backup tests for new properties added.
 	
 ### Database stuff:
 * Create or update a `Cursor` subclass for the new `UserDefineObject` subclasses.

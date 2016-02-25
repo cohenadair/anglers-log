@@ -5,11 +5,8 @@ Anglers' Log To-Do List
 * [Auto Backup](http://developer.android.com/guide/topics/data/backup.html)
 * No X views
 * Sharing (Trips, Catches, Photos)
-* JSON exporting
 * Instabug
-* Sorting, filtering user define lists
 * Integrate fish caught into Fishing Spot pins
-* Add detail link (info. icon) for selected items in Statisitcs
 * Select multiple images
 
 ### Extra
