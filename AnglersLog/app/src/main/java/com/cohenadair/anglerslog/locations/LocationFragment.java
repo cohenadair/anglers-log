@@ -71,7 +71,7 @@ public class LocationFragment extends DetailFragment {
         boolean idIsNull = (id == null);
 
         // must hide individual components for the menu to show property on tablets
-        Utils.toggleVisibility(mTitleTextView, !idIsNull);
+        Utils.toggleVisibility(mTitleTextView, !idIsNull && isTwoPane());
         Utils.toggleVisibility(mFishingSpotSpinner, !idIsNull);
         Utils.toggleVisibility(mBreakView, !idIsNull);
         toggleMapVisibility(!idIsNull);
