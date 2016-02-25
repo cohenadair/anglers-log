@@ -4,13 +4,13 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.interfaces.OnClickInterface;
 import com.cohenadair.anglerslog.model.user_defines.Trip;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import com.cohenadair.anglerslog.utilities.ListManager;
+import com.cohenadair.anglerslog.views.TitleSubTitleView;
 
 import java.util.ArrayList;
 
@@ -24,9 +24,7 @@ public class TripListManager {
     public static class ViewHolder extends ListManager.ViewHolder {
 
         private ListManager.Adapter mAdapter;
-        private TextView mNameTextView;
-        private TextView mDateTextView;
-        private TextView mCatchesTextView;
+        private TitleSubTitleView mTitleSubTitleView;
         private View mSeparator;
         private View mView;
         private Context mContext;
@@ -38,20 +36,18 @@ public class TripListManager {
             mView = view;
             mContext = context;
 
-            mNameTextView = (TextView)view.findViewById(R.id.name_text_view);
-            mDateTextView = (TextView)view.findViewById(R.id.dates_text_view);
-            mCatchesTextView = (TextView)view.findViewById(R.id.catches_text_view);
+            mTitleSubTitleView = (TitleSubTitleView)view.findViewById(R.id.title_subtitle_view);
             mSeparator = view.findViewById(R.id.separator);
         }
 
         public void setTrip(Trip trip, int position) {
             if (trip.isNameNull())
-                mDateTextView.setVisibility(View.GONE);
+                mTitleSubTitleView.hideSubtitle();
 
             String dateString = trip.getDateAsString(mContext);
-            mNameTextView.setText(trip.isNameNull() ? dateString : trip.getName());
-            mDateTextView.setText(dateString);
-            mCatchesTextView.setText(trip.getCatchesAsString(mContext));
+            mTitleSubTitleView.setTitle(trip.isNameNull() ? dateString : trip.getName());
+            mTitleSubTitleView.setSubtitle(dateString);
+            mTitleSubTitleView.setSubSubtitle(trip.getCatchesAsString(mContext));
 
             updateView(mSeparator, position, trip);
         }
