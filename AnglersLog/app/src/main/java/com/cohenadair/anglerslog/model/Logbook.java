@@ -271,6 +271,10 @@ public class Logbook {
         return result;
     }
 
+    public static ArrayList<UserDefineObject> getCatches(String searchQuery) {
+        return getCatches(searchQuery, null);
+    }
+
     public static Catch getCatch(UUID id) {
         return getCatch(CatchTable.Columns.ID, id.toString());
     }
