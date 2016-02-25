@@ -3,6 +3,7 @@ package com.cohenadair.anglerslog.model.backup;
 import android.content.ContentResolver;
 import android.net.Uri;
 import android.os.Handler;
+import android.util.Log;
 
 import com.cohenadair.anglerslog.utilities.PhotoUtils;
 
@@ -27,6 +28,8 @@ import java.util.zip.ZipInputStream;
  * @author Cohen Adair
  */
 public class Importer {
+
+    private static final String TAG = "Importer";
 
     public static final int ERROR_URI_NOT_FOUND = 0;
     public static final int ERROR_ZIP_CLOSE = 1;
@@ -161,6 +164,7 @@ public class Importer {
      */
     private static void importImage(ZipInputStream in, ZipEntry entry) {
         File newFile = PhotoUtils.privatePhotoFile(entry.getName());
+        Log.d(TAG, "Importing image: " + entry.getName());
 
         if (newFile == null || newFile.exists())
             return;

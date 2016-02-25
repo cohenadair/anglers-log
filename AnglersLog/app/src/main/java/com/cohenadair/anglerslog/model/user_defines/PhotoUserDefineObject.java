@@ -181,8 +181,8 @@ public abstract class PhotoUserDefineObject extends UserDefineObject {
             json.put(Json.IMAGES, jsonPhotos);
         }
 
-        if (this instanceof Bait && photos.size() > 0)
-            json.put(Json.IMAGE, getPhotoJson(photos.get(0), false));
+        if (this instanceof Bait)
+            json.put(Json.IMAGE, getPhotoJson(photos.size() > 0 ? photos.get(0) : "", false));
 
         return json;
     }
@@ -190,12 +190,14 @@ public abstract class PhotoUserDefineObject extends UserDefineObject {
     private JSONObject getPhotoJson(String photo, boolean isCatch) throws JSONException {
         JSONObject jsonPhoto = new JSONObject();
 
-        // the "Images/" prepend is to keep iOS compatibility
-        jsonPhoto.put(Json.IMAGE_PATH, "Images/" + photo);
+        if (!photo.isEmpty()) {
+            // the "Images/" prepend is to keep iOS compatibility
+            jsonPhoto.put(Json.IMAGE_PATH, "Images/" + photo);
 
-        // these are for iOS Core Data compatibility
-        jsonPhoto.put(Json.ENTRY_DATE, isCatch ? ((Catch)this).getDateJsonString() : "");
-        jsonPhoto.put(Json.BAIT_NAME, isCatch ? "" : getNameAsString());
+            // these are for iOS Core Data compatibility
+            jsonPhoto.put(Json.ENTRY_DATE, isCatch ? ((Catch) this).getDateJsonString() : "");
+            jsonPhoto.put(Json.BAIT_NAME, isCatch ? "" : getNameAsString());
+        }
 
         return jsonPhoto;
     }

@@ -223,6 +223,10 @@ public class Utils {
         return false;
     }
 
+    public static boolean hasGrantedLocation() {
+        return true;
+    }
+
     /**
      * This method converts device specific pixels to density independent pixels.
      * @param px A value in px (pixels) unit. Which we need to convert into db.
