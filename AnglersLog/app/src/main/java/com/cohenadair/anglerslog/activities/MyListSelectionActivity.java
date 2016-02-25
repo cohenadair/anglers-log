@@ -65,7 +65,7 @@ public class MyListSelectionActivity extends LayoutSpecActivity {
         if (done != null && !mCanSelectMultiple)
             done.setVisible(false);
 
-        initSearch(menu);
+        initMenu(menu);
 
         return super.onCreateOptionsMenu(menu);
     }

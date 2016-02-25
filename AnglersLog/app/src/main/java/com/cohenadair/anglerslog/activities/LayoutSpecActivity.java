@@ -236,7 +236,8 @@ public abstract class LayoutSpecActivity extends DefaultActivity implements
         if (mMenu == null)
             return;
 
-        mSearchItem.setVisible(mLayoutSpec.isSearchable());
+        if (mSearchItem != null)
+            mSearchItem.setVisible(mLayoutSpec.isSearchable());
 
         MenuItem sort = mMenu.findItem(R.id.action_sort);
         if (sort != null)
@@ -267,23 +268,20 @@ public abstract class LayoutSpecActivity extends DefaultActivity implements
         return mSearchItem;
     }
 
-    public void initSearch(Menu menu) {
-        if (!mLayoutSpec.isSearchable())
-            return;
+    public void initMenu(Menu menu) {
+        mMenu = menu;
+        updateMenu();
+        setMenuItemsVisibility(!mSearchIsExpanded);
 
         // don't initialize searching if it isn't the master fragment that is visible
         // this is needed to properly preserve the SearchView's state after fragment transactions
-        if (!mLayoutSpec.getMasterFragment().isVisible())
+        if (!mLayoutSpec.getMasterFragment().isVisible() || !mLayoutSpec.isSearchable())
             return;
 
-        mMenu = menu;
         mSearchItem = mMenu.findItem(R.id.action_search);
-        mSearchView = (SearchView)mSearchItem.getActionView();
+        mSearchView = (SearchView) mSearchItem.getActionView();
         mSearchView.setQuery(mSearchText, false);
         mSearchView.setIconified(!mSearchIsExpanded);
-
-        updateMenu();
-        setMenuItemsVisibility(!mSearchIsExpanded);
 
         mSearchView.setOnSearchClickListener(new View.OnClickListener() {
             @Override

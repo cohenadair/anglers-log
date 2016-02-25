@@ -17,6 +17,7 @@ import com.cohenadair.anglerslog.model.user_defines.FishingSpot;
 import com.cohenadair.anglerslog.model.user_defines.Location;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import com.cohenadair.anglerslog.utilities.FishingSpotMarkerManager;
+import com.cohenadair.anglerslog.utilities.Utils;
 import com.cohenadair.anglerslog.views.SelectionSpinnerView;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.Marker;
@@ -37,6 +38,7 @@ public class LocationFragment extends DetailFragment {
     private TextView mTitleTextView;
     private SelectionSpinnerView mFishingSpotSpinner;
     private DraggableMapFragment mMapFragment;
+    private View mBreakView;
 
     private FishingSpotMarkerManager mMarkerManager;
 
@@ -49,6 +51,7 @@ public class LocationFragment extends DetailFragment {
         View view = inflater.inflate(R.layout.fragment_location, container, false);
 
         mContainer = (LinearLayout)view.findViewById(R.id.location_container);
+        mBreakView = view.findViewById(R.id.view_break);
 
         initMapFragment();
         initTitle(view);
@@ -65,11 +68,17 @@ public class LocationFragment extends DetailFragment {
         if (!isAttached())
             return;
 
+        boolean idIsNull = (id == null);
+
+        // must hide individual components for the menu to show property on tablets
+        Utils.toggleVisibility(mTitleTextView, !idIsNull);
+        Utils.toggleVisibility(mFishingSpotSpinner, !idIsNull);
+        Utils.toggleVisibility(mBreakView, !idIsNull);
+        toggleMapVisibility(!idIsNull);
+
         // id can be null if in two-pane view and there are no locations
-        if (id == null) {
-            mContainer.setVisibility(View.GONE);
+        if (idIsNull)
             return;
-        }
 
         setItemId(id);
         mLocation = Logbook.getLocation(id);
@@ -142,6 +151,13 @@ public class LocationFragment extends DetailFragment {
                 .beginTransaction()
                 .add(R.id.location_container, mMapFragment, TAG_MAP)
                 .commit();
+    }
+
+    public void toggleMapVisibility(boolean show) {
+        if (show)
+            getChildFragmentManager().beginTransaction().show(mMapFragment).commit();
+        else
+            getChildFragmentManager().beginTransaction().hide(mMapFragment).commit();
     }
 
     public void onMapReady() {

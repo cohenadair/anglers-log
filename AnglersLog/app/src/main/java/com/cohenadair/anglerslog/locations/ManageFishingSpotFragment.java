@@ -67,7 +67,6 @@ public class ManageFishingSpotFragment extends ManageContentFragment {
     @Override
     public void onResume() {
         super.onResume();
-        Utils.requestLocationServices(getContext());
     }
 
     @Override

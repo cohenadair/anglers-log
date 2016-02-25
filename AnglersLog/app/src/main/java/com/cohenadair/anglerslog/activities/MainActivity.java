@@ -54,6 +54,8 @@ public class MainActivity extends LayoutSpecActivity {
         // keep layout on orientation change
         if (savedInstanceState == null)
             showFragment();
+        else
+            setRightPanelVisibility();
 
         LogbookPreferences.setIsRootTwoPane(isTwoPane());
 
@@ -71,8 +73,9 @@ public class MainActivity extends LayoutSpecActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        menu.clear();
         getMenuInflater().inflate(R.menu.menu_main, menu);
-        initSearch(menu);
+        initMenu(menu);
         return true;
     }
 
@@ -107,15 +110,11 @@ public class MainActivity extends LayoutSpecActivity {
         // add left panel
         transaction.replace(R.id.master_container, getMasterFragment(), getMasterTag());
 
-        boolean hasRightPanel = isTwoPane() && (getDetailFragment() != null);
-
         // add the right panel if needed
-        if (hasRightPanel)
+        if (hasRightPanel())
             transaction.replace(R.id.detail_container, getDetailFragment(), getDetailTag());
 
-        // hide/show right panel if needed
-        LinearLayout detailContainer = (LinearLayout)findViewById(R.id.detail_container);
-        Utils.toggleVisibility(detailContainer, hasRightPanel);
+        setRightPanelVisibility();
 
         // commit changes
         transaction.commit();
@@ -184,4 +183,14 @@ public class MainActivity extends LayoutSpecActivity {
         }
     }
     //endregion
+
+    private boolean hasRightPanel() {
+        return isTwoPane() && (getDetailFragment() != null);
+    }
+
+    private void setRightPanelVisibility() {
+        // hide/show right panel if needed
+        LinearLayout detailContainer = (LinearLayout)findViewById(R.id.detail_container);
+        Utils.toggleVisibility(detailContainer, hasRightPanel());
+    }
 }

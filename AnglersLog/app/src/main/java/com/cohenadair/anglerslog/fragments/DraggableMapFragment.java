@@ -245,6 +245,7 @@ public class DraggableMapFragment extends SupportMapFragment implements OnMapRea
             return;
 
         mGoogleMap.setMyLocationEnabled(true);
+        startLocationUpdates();
     }
 
     /**
@@ -256,6 +257,9 @@ public class DraggableMapFragment extends SupportMapFragment implements OnMapRea
             return;
 
         Log.d(TAG, "Starting location updates...");
+
+        if (!isLocationPermissionGranted())
+            return;
 
         LocationRequest request =
                 new LocationRequest().setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);

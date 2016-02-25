@@ -87,7 +87,7 @@ public class UserDefineObject {
     }
 
     public void setName(String name) {
-        mName = name.equals("") ? null : name;
+        mName = (name == null || name.equals("")) ? null : name;
     }
 
     public boolean getShouldDelete() {
