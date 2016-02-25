@@ -268,6 +268,9 @@ public abstract class LayoutSpecActivity extends DefaultActivity implements
     }
 
     public void initSearch(Menu menu) {
+        if (!mLayoutSpec.isSearchable())
+            return;
+
         // don't initialize searching if it isn't the master fragment that is visible
         // this is needed to properly preserve the SearchView's state after fragment transactions
         if (!mLayoutSpec.getMasterFragment().isVisible())
@@ -278,8 +281,9 @@ public abstract class LayoutSpecActivity extends DefaultActivity implements
         mSearchView = (SearchView)mSearchItem.getActionView();
         mSearchView.setQuery(mSearchText, false);
         mSearchView.setIconified(!mSearchIsExpanded);
-        setMenuItemsVisibility(!mSearchIsExpanded);
+
         updateMenu();
+        setMenuItemsVisibility(!mSearchIsExpanded);
 
         mSearchView.setOnSearchClickListener(new View.OnClickListener() {
             @Override
