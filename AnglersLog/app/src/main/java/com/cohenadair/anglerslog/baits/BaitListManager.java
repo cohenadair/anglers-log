@@ -14,6 +14,7 @@ import com.cohenadair.anglerslog.model.user_defines.BaitCategory;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import com.cohenadair.anglerslog.utilities.ListManager;
 import com.cohenadair.anglerslog.utilities.PhotoUtils;
+import com.cohenadair.anglerslog.views.TitleSubTitleView;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -30,9 +31,7 @@ public class BaitListManager {
         private ListManager.Adapter mAdapter;
         private ImageView mImageView;
         private TextView mCategoryTextView;
-        private TextView mNameTextView;
-        private TextView mCategoryDetailTextView;
-        private TextView mCatchesTextView;
+        private TitleSubTitleView mTitleSubTitleView;
         private View mSeparator;
 
         public ViewHolder(View view, ListManager.Adapter adapter) {
@@ -42,15 +41,13 @@ public class BaitListManager {
             mImageView = (ImageView)view.findViewById(R.id.image_view);
             mCategoryTextView = (TextView)view.findViewById(R.id.category_text_view);
             mSeparator = view.findViewById(R.id.cell_separator);
-            mNameTextView = (TextView)view.findViewById(R.id.bait_label);
-            mCategoryDetailTextView = (TextView)view.findViewById(R.id.bait_category_label);
-            mCatchesTextView = (TextView)view.findViewById(R.id.catches_label);
+            mTitleSubTitleView = (TitleSubTitleView)view.findViewById(R.id.content_view);
         }
 
         public void setBait(Bait bait, int position) {
-            mNameTextView.setText(bait.getName());
-            mCategoryDetailTextView.setText(bait.getCategoryName());
-            mCatchesTextView.setText(bait.getCatchCountAsString(context()));
+            mTitleSubTitleView.setTitle(bait.getName());
+            mTitleSubTitleView.setSubtitle(bait.getCategoryName());
+            mTitleSubTitleView.setSubSubtitle(bait.getCatchCountAsString(context()));
 
             // thumbnail stuff
             // if the image doesn't exist or can't be read, a default icon is shown
@@ -89,9 +86,7 @@ public class BaitListManager {
         }
 
         private void initViewVisibility(int visibility) {
-            mNameTextView.setVisibility(visibility);
-            mCategoryDetailTextView.setVisibility(visibility);
-            mCatchesTextView.setVisibility(visibility);
+            mTitleSubTitleView.setVisibility(visibility);
             mImageView.setVisibility(visibility);
         }
     }

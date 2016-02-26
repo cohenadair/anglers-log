@@ -101,9 +101,9 @@ public class MoreDetailView extends LinearLayout {
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         params.setMargins(
                 getResources().getDimensionPixelSize(R.dimen.margin_default),
-                getResources().getDimensionPixelSize(R.dimen.spacing_small_half),
+                getResources().getDimensionPixelSize(R.dimen.spacing_small),
                 getResources().getDimensionPixelSize(R.dimen.margin_default),
-                getResources().getDimensionPixelSize(R.dimen.spacing_small_half)
+                getResources().getDimensionPixelSize(R.dimen.spacing_small)
         );
         mContainer.setLayoutParams(params);
     }
@@ -111,13 +111,13 @@ public class MoreDetailView extends LinearLayout {
     /**
      * Uses a LayoutParams with no top or bottom spacing.
      */
-    public void useNoSpacing() {
+    public void useSmallSpacing() {
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         params.setMargins(
                 getResources().getDimensionPixelSize(R.dimen.margin_default),
-                0,
+                getResources().getDimensionPixelSize(R.dimen.spacing_small_half),
                 getResources().getDimensionPixelSize(R.dimen.margin_default),
-                0
+                getResources().getDimensionPixelSize(R.dimen.spacing_small_half)
         );
         mContainer.setLayoutParams(params);
     }

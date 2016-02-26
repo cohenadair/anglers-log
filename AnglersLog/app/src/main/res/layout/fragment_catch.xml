@@ -49,6 +49,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/margin_default"
             android:layout_marginRight="@dimen/margin_default"
+            android:layout_marginBottom="@dimen/spacing_small_half"
             custom:titleText="@string/location"
             custom:subtitleText="@string/fishing_spot"
             custom:titleStyle="@style/TextView.Small"
@@ -61,6 +62,8 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/margin_default"
             android:layout_marginRight="@dimen/margin_default"
+            android:layout_marginTop="@dimen/spacing_small_half"
+            android:layout_marginBottom="@dimen/spacing_small_half"
             custom:titleText="@string/bait"
             custom:subtitleText="@string/bait"
             custom:titleStyle="@style/TextView.Small"
@@ -71,6 +74,7 @@
             android:id="@+id/fishing_methods_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_small"
             custom:propertyName="@string/methods"/>
 
         <!-- Fish Details -->

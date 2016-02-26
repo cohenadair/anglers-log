@@ -2,7 +2,6 @@ package com.cohenadair.anglerslog.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 
@@ -36,7 +35,6 @@ public abstract class MasterFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
 
-        Log.d("MasterFragment", "onCreateOptionsMenu called");
         if (mClearMenuOnCreate)
             menu.clear();
     }

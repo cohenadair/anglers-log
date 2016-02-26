@@ -23,7 +23,8 @@
                 android:layout_margin="@dimen/margin_default"
                 custom:titleText="@string/date"
                 custom:subtitleText="May 22, 2015"
-                custom:titleStyle="@style/TextView.Header"/>
+                custom:titleStyle="@style/TextView.Header"
+                custom:subtitleStyle="@style/TextView.Small"/>
 
             <com.cohenadair.anglerslog.views.TitleSubTitleView
                 android:id="@+id/time_layout"
@@ -33,7 +34,8 @@
                 android:layout_margin="@dimen/margin_default"
                 custom:titleText="@string/time"
                 custom:subtitleText="6:00 AM"
-                custom:titleStyle="@style/TextView.Header"/>
+                custom:titleStyle="@style/TextView.Header"
+                custom:subtitleStyle="@style/TextView.Small"/>
 
         </LinearLayout>
 
@@ -55,7 +57,8 @@
             android:layout_margin="@dimen/margin_default"
             custom:titleText="@string/species"
             custom:subtitleHint="@string/species_hint"
-            custom:titleStyle="@style/TextView.Header"/>
+            custom:titleStyle="@style/TextView.Header"
+            custom:subtitleStyle="@style/TextView.Small"/>
 
         <include layout="@layout/view_divider"/>
 
@@ -67,7 +70,8 @@
             android:layout_margin="@dimen/margin_default"
             custom:titleText="@string/location"
             custom:subtitleHint="@string/location_hint"
-            custom:titleStyle="@style/TextView.Header"/>
+            custom:titleStyle="@style/TextView.Header"
+            custom:subtitleStyle="@style/TextView.Small"/>
 
         <include layout="@layout/view_divider"/>
 
@@ -79,7 +83,8 @@
             android:layout_margin="@dimen/margin_default"
             custom:titleText="@string/bait"
             custom:subtitleHint="@string/bait_hint"
-            custom:titleStyle="@style/TextView.Header"/>
+            custom:titleStyle="@style/TextView.Header"
+            custom:subtitleStyle="@style/TextView.Small"/>
 
         <include layout="@layout/view_divider"/>
 
@@ -155,7 +160,8 @@
             android:layout_margin="@dimen/margin_default"
             custom:titleText="@string/methods"
             custom:subtitleHint="@string/methods_hint"
-            custom:titleStyle="@style/TextView.Header"/>
+            custom:titleStyle="@style/TextView.Header"
+            custom:subtitleStyle="@style/TextView.Small"/>
 
         <include layout="@layout/view_divider"/>
 
@@ -167,7 +173,8 @@
             android:layout_margin="@dimen/margin_default"
             custom:titleText="@string/water_clarity"
             custom:subtitleHint="@string/clarity_hint"
-            custom:titleStyle="@style/TextView.Header"/>
+            custom:titleStyle="@style/TextView.Header"
+            custom:subtitleStyle="@style/TextView.Small"/>
 
         <include layout="@layout/view_divider"/>
 

@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RatingBar;
-import android.widget.TextView;
 
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.interfaces.OnClickInterface;
@@ -16,6 +15,7 @@ import com.cohenadair.anglerslog.model.user_defines.Catch;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import com.cohenadair.anglerslog.utilities.ListManager;
 import com.cohenadair.anglerslog.utilities.PhotoUtils;
+import com.cohenadair.anglerslog.views.TitleSubTitleView;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -30,9 +30,7 @@ public class CatchListManager {
     public static class ViewHolder extends ListManager.ViewHolder {
 
         private ImageView mImageView;
-        private TextView mSpeciesTextView;
-        private TextView mDateTextView;
-        private TextView mLocationTextView;
+        private TitleSubTitleView mTitleSubTitleView;
         private RatingBar mFavorite;
         private View mSeparator;
 
@@ -42,9 +40,7 @@ public class CatchListManager {
             super(view, adapter);
 
             mImageView = (ImageView)view.findViewById(R.id.image_view);
-            mSpeciesTextView = (TextView)view.findViewById(R.id.species_label);
-            mDateTextView = (TextView)view.findViewById(R.id.date_label);
-            mLocationTextView = (TextView)view.findViewById(R.id.location_label);
+            mTitleSubTitleView = (TitleSubTitleView)view.findViewById(R.id.content_view);
             mSeparator = view.findViewById(R.id.cell_separator);
 
             mFavorite = (RatingBar)view.findViewById(R.id.favorite_star);
@@ -65,14 +61,14 @@ public class CatchListManager {
         public void setCatch(Catch aCatch, int position) {
             mCatch = aCatch;
 
-            mSpeciesTextView.setText(aCatch.getSpeciesAsString());
-            mDateTextView.setText(aCatch.getDateTimeAsString());
+            mTitleSubTitleView.setTitle(aCatch.getSpeciesAsString());
+            mTitleSubTitleView.setSubtitle(aCatch.getDateTimeAsString());
             mFavorite.setRating(mCatch.isFavorite() ? (float) 1.0 : (float) 0.0);
 
             if (aCatch.getFishingSpot() != null)
-                mLocationTextView.setText(aCatch.getFishingSpotAsString());
+                mTitleSubTitleView.setSubSubtitle(aCatch.getFishingSpotAsString());
             else
-                mLocationTextView.setVisibility(View.GONE);
+                mTitleSubTitleView.hideSubSubtitle();
 
             // thumbnail stuff
             // if the image doesn't exist or can't be read, a default icon is shown

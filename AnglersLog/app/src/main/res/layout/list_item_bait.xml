@@ -28,37 +28,16 @@
         android:layout_weight="1"
         android:layout_height="match_parent">
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+        <com.cohenadair.anglerslog.views.TitleSubTitleView
+            android:id="@+id/content_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:gravity="center_vertical"
             android:padding="@dimen/margin_default"
-            android:orientation="vertical">
-
-            <TextView
-                style="@style/TextView.Medium"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/bait"
-                android:id="@+id/bait_label"/>
-
-            <TextView
-                style="@style/TextView.SmallSubtitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/bait_category"
-                android:id="@+id/bait_category_label"/>
-
-            <TextView
-                style="@style/TextView.SmallSubtitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/drawer_catches"
-                android:id="@+id/catches_label"/>
-
-        </LinearLayout>
+            custom:titleStyle="@style/TextView.Medium"
+            custom:subtitleStyle="@style/TextView.SmallSubtitle"/>
 
         <View
             android:id="@+id/cell_separator"

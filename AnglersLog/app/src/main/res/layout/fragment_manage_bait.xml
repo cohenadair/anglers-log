@@ -17,7 +17,8 @@
             android:layout_margin="@dimen/margin_default"
             custom:titleText="@string/category"
             custom:subtitleHint="@string/category_hint"
-            custom:titleStyle="@style/TextView.Header"/>
+            custom:titleStyle="@style/TextView.Header"
+            custom:subtitleStyle="@style/TextView.Small"/>
 
         <include layout="@layout/view_divider"/>
 

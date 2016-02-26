@@ -62,7 +62,7 @@ public class DefaultCardView extends LinearLayout {
         view.setSubtitle(moreDetailSubtitle);
         view.setOnClickDetailButton(onClickMoreDetail);
         view.useDefaultStyle();
-        view.useNoSpacing();
+        view.useSmallSpacing();
         mContentContainer.addView(view);
     }
 

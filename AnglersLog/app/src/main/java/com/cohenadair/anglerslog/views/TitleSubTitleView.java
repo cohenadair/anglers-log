@@ -96,6 +96,10 @@ public class TitleSubTitleView extends LinearLayout {
         mSubtitle.setVisibility(View.GONE);
     }
 
+    public void hideSubSubtitle() {
+        mSubSubtitle.setVisibility(View.GONE);
+    }
+
     public void setTitleStyle(int resId) {
         Utils.setTextAppearance(getContext(), mTitle, resId);
     }

@@ -91,7 +91,7 @@ public class MoreDetailLayout extends LinearLayout {
                 view.setSubtitle(mCallbacks.getSubtitle(object));
 
             if (mObjects.size() == 1)
-                view.useNoSpacing();
+                view.useSmallSpacing();
             else
                 view.useDefaultSpacing();
 
