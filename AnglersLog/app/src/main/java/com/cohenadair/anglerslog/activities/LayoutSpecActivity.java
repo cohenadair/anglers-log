@@ -291,7 +291,8 @@ public abstract class LayoutSpecActivity extends DefaultActivity implements
         mSearchView.setOnSearchClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setMenuItemsVisibility(false);
+                if (!isTwoPane())
+                    setMenuItemsVisibility(false);
 
                 // update hint
                 String search = getResources().getString(R.string.search);
