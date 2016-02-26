@@ -91,11 +91,14 @@ public class BaitFragment extends DetailFragment {
         mContainer.setVisibility(View.VISIBLE);
 
         String photo = mBait.getRandomPhoto();
+        String path = PhotoUtils.privatePhotoPath(photo);
         if (photo != null) {
             int size = getActivity().getResources().getDimensionPixelSize(R.dimen.thumbnail_size);
-            PhotoUtils.thumbnailToImageView(mImageView, PhotoUtils.privatePhotoPath(photo), size, R.drawable.no_catch_photo);
+
+            if (Utils.fileExists(path))
+                PhotoUtils.thumbnailToImageView(mImageView, path, size, R.drawable.no_catch_photo);
         }
-        Utils.toggleVisibility(mImageView, photo != null);
+        Utils.toggleVisibility(mImageView, photo != null && Utils.fileExists(path));
 
         mTitleSubTitleView.setTitle(mBait.getName());
         mTitleSubTitleView.setSubtitle(mBait.getCategoryName());

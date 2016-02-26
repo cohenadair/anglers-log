@@ -30,6 +30,7 @@ import android.widget.Toast;
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.activities.DetailFragmentActivity;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.UUID;
@@ -286,6 +287,15 @@ public class Utils {
     @NonNull
     public static String extractExtension(String fileName) {
         return fileName.substring(fileName.lastIndexOf('.') + 1);
+    }
+
+    /**
+     * Checks to see if a file exists at a given path.
+     * @param path The path to the file.
+     * @return True if the file exists, false otherwise.
+     */
+    public static boolean fileExists(String path) {
+        return new File(path).exists();
     }
 
     /**
