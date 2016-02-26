@@ -236,8 +236,9 @@ public abstract class LayoutSpecActivity extends DefaultActivity implements
         if (mMenu == null)
             return;
 
-        if (mSearchItem != null)
-            mSearchItem.setVisible(mLayoutSpec.isSearchable());
+        MenuItem search = mMenu.findItem(R.id.action_search);
+        if (search != null)
+            search.setVisible(mLayoutSpec.isSearchable());
 
         MenuItem sort = mMenu.findItem(R.id.action_sort);
         if (sort != null)
@@ -282,6 +283,10 @@ public abstract class LayoutSpecActivity extends DefaultActivity implements
         mSearchView = (SearchView) mSearchItem.getActionView();
         mSearchView.setQuery(mSearchText, false);
         mSearchView.setIconified(!mSearchIsExpanded);
+
+        // reinitialize visibility for searching
+        updateMenu();
+        setMenuItemsVisibility(!mSearchIsExpanded);
 
         mSearchView.setOnSearchClickListener(new View.OnClickListener() {
             @Override
