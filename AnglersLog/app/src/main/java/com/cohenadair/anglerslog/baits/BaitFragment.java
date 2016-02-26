@@ -91,7 +91,7 @@ public class BaitFragment extends DetailFragment {
         mContainer.setVisibility(View.VISIBLE);
 
         String photo = mBait.getRandomPhoto();
-        String path = PhotoUtils.privatePhotoPath(photo);
+        String path = (photo == null) ? "" : PhotoUtils.privatePhotoPath(photo);
         if (photo != null) {
             int size = getActivity().getResources().getDimensionPixelSize(R.dimen.thumbnail_size);
 
