@@ -202,7 +202,9 @@ public class CatchesCountFragment extends Fragment {
 
     private void onClickCenterCircle() {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.select_dialog_item);
-        for (Stats.Quantity item : mStatsSpec.getContent())
+        ArrayList<Stats.Quantity> options = mStatsSpec.getAlphaSortedContent();
+
+        for (Stats.Quantity item : options)
             adapter.add(item.getName());
 
         Utils.showSelectionDialog(getContext(), adapter, new Utils.OnSelectionDialogCallback() {

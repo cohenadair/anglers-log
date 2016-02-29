@@ -12,6 +12,7 @@ import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import com.cohenadair.anglerslog.utilities.LayoutSpecManager;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.UUID;
 
 /**
@@ -175,6 +176,12 @@ public class StatsManager {
 
         public ArrayList<Stats.Quantity> getContent() {
             return mContent;
+        }
+
+        public ArrayList<Stats.Quantity> getAlphaSortedContent() {
+            ArrayList<Stats.Quantity> result = new ArrayList<>(mContent);
+            Collections.sort(result, new Stats.NameComparator());
+            return result;
         }
 
         public Fragment getDetailFragment() {

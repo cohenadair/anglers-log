@@ -45,4 +45,11 @@ public class Stats {
         }
     }
 
+    public static class NameComparator implements  Comparator<Quantity> {
+        @Override
+        public int compare(Quantity lhs, Quantity rhs) {
+            return lhs.getName().compareTo(rhs.getName());
+        }
+    }
+
 }
