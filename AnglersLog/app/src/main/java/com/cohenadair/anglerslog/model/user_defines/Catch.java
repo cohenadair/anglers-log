@@ -151,10 +151,14 @@ public class Catch extends PhotoUserDefineObject implements HasDateInterface {
 
         // there is no Json.FISH_OUNCES property when importing from Android
         try {
-            JsonImporter.ouncesToDecimal(catchJson.getInt(Json.FISH_OUNCES));
+            mWeight += JsonImporter.ouncesToDecimal(catchJson.getInt(Json.FISH_OUNCES));
         } catch (JSONException e) {
             Log.e(TAG, "No JSON value for " + Json.FISH_OUNCES);
         }
+
+        // from iOS, weight could equal 0
+        if (mWeight <= 0)
+            mWeight = -1;
 
         // there is no Json.IS_FAVORITE when importing from iOS
         try {
