@@ -160,7 +160,7 @@ public class CatchesCountFragment extends Fragment {
         mPieCenterTitle.setLayoutParams(linearParams);
 
         // select the first item
-        updatePieCenter(0, true);
+        updatePieCenter(values.size() - 1, true);
     }
 
     private void updatePieCenter(int position, boolean select) {
