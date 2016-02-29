@@ -13,6 +13,7 @@ import com.cohenadair.anglerslog.database.cursors.TripCursor;
 import com.cohenadair.anglerslog.database.cursors.UserDefineCursor;
 import com.cohenadair.anglerslog.database.cursors.WeatherCursor;
 import com.cohenadair.anglerslog.model.Weather;
+import com.cohenadair.anglerslog.model.user_defines.Bait;
 import com.cohenadair.anglerslog.model.user_defines.Catch;
 import com.cohenadair.anglerslog.model.user_defines.FishingSpot;
 import com.cohenadair.anglerslog.model.user_defines.Location;
@@ -290,6 +291,26 @@ public class QueryHelper {
             return cursor.getWeather();
 
         return null;
+    }
+
+    /**
+     * Queries for the sum of the quantities for all the catches in a given {@link Bait}.
+     *
+     * @see #getTotalCatchQuantity(Cursor)
+     *
+     * @param bait The {@link Bait} to look for.
+     * @return The total number of catches associated with the given {@link Bait}.
+     */
+    public static int queryBaitsCatchCount(Bait bait) {
+        return getTotalCatchQuantity(queryCatches(
+                CatchTable.Columns.QUANTITY,
+                CatchTable.Columns.BAIT_ID + " IN (" +
+                        "SELECT " + BaitTable.Columns.ID + " " +
+                        "FROM " + BaitTable.NAME + " " +
+                        "WHERE(" + BaitTable.Columns.ID + " = ?)" +
+                        ")",
+                new String[] { bait.getIdAsString() }
+        ));
     }
 
     /**

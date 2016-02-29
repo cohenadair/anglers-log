@@ -162,7 +162,7 @@ public class Bait extends PhotoUserDefineObject implements HasCatchesInterface {
 
     @Override
     public int getCatchCount() {
-        return getCatches().size();
+        return QueryHelper.queryBaitsCatchCount(this);
     }
 
     public String getCatchCountAsString(Context context) {
