@@ -422,12 +422,14 @@ public class QueryHelper {
      */
     @Nullable
     public static Catch queryCatchMax(String column, Species species) {
-        String sql = "SELECT * FROM " + CatchTable.NAME + " WHERE " + column + " IN (" + "SELECT MAX(" + column + ") FROM " + CatchTable.NAME;
+        String sql = "SELECT * FROM " + CatchTable.NAME + " WHERE " + column + " IN (" + "SELECT MAX(" + column    + ") FROM " + CatchTable.NAME;
 
         if (species != null)
-            sql += " WHERE " + CatchTable.Columns.SPECIES_ID + " = ?";
+            sql += " WHERE " + CatchTable.Columns.SPECIES_ID + " = ?) AND (" + CatchTable.Columns.SPECIES_ID + " = ?";
 
-        CatchCursor cursor = new CatchCursor(mDatabase.rawQuery(sql + ")", species == null ? null : new String[] { species.getIdAsString() }));
+        sql += ")";
+
+        CatchCursor cursor = new CatchCursor(mDatabase.rawQuery(sql, species == null ? null : new String[] { species.getIdAsString(), species.getIdAsString() }));
 
         if (cursor.moveToFirst())
             return cursor.getCatch();
