@@ -17,7 +17,9 @@
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:layout_margin="16dp"
-        android:layout_gravity="bottom|end"
-        android:src="@drawable/ic_add" />
+        android:src="@drawable/ic_add"
+        app:layout_anchor="@id/main_recycler_view"
+        app:layout_anchorGravity="bottom|right|end"
+        app:layout_behavior="com.cohenadair.anglerslog.utilities.ScrollingFabBehavior"/>
 
 </android.support.design.widget.CoordinatorLayout>
