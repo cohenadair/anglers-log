@@ -38,6 +38,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/new_item_edit"
             android:layout_weight="1"
+            android:inputType="textCapWords"
             android:hint="@string/hint_new_item"/>
 
         <Button

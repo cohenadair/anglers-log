@@ -24,7 +24,7 @@
         android:layout_marginLeft="@dimen/margin_edit_text_offset"
         android:layout_marginRight="@dimen/margin_edit_text_offset"
         android:paddingTop="@dimen/spacing_small"
-        android:inputType="textMultiLine|textCapSentences"
+        android:inputType="textMultiLine|textCapWords"
         tools:hint="Hint"/>
 
 </LinearLayout>
