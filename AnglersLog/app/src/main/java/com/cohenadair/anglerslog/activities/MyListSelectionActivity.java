@@ -59,13 +59,11 @@ public class MyListSelectionActivity extends LayoutSpecActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_my_list_selection, menu);
+        getMenuInflater().inflate(R.menu.menu_mylist_selection, menu);
 
         MenuItem done = menu.findItem(R.id.action_done);
         if (done != null && !mCanSelectMultiple)
             done.setVisible(false);
-
-        initMenu(menu);
 
         return super.onCreateOptionsMenu(menu);
     }
@@ -94,6 +92,7 @@ public class MyListSelectionActivity extends LayoutSpecActivity {
         setActionBarTitle("");
     }
 
+    //region MyListFragment.InteractionListener
     @Override
     public OnClickInterface getOnMyListFragmentItemClick() {
         return new OnClickInterface() {
@@ -112,6 +111,17 @@ public class MyListSelectionActivity extends LayoutSpecActivity {
             }
         };
     }
+
+    @Override
+    public boolean isSelecting() {
+        return true;
+    }
+
+    @Override
+    public boolean isSelectingMultiple() {
+        return mCanSelectMultiple;
+    }
+    //endregion
 
     @Override
     public void initToolbar() {
@@ -219,21 +229,6 @@ public class MyListSelectionActivity extends LayoutSpecActivity {
             UserDefineObject object = adapter.getItem(UUID.fromString(idStr));
             if (object != null)
                 object.setIsSelected(selected);
-        }
-    }
-
-    @Override
-    public void setMenuItemsVisibility(boolean visible) {
-        for (int i = 0; i < getMenu().size(); i++) {
-            MenuItem item = getMenu().getItem(i);
-            int itemId = item.getItemId();
-
-            if (item != getSearchItem() && itemId != R.id.action_done)
-                item.setVisible(visible);
-
-            // only handle the done button if it's applicable to this instance
-            if (itemId == R.id.action_done && mCanSelectMultiple)
-                item.setVisible(visible);
         }
     }
 }

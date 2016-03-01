@@ -6,11 +6,6 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.SearchView;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
 
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.fragments.DetailFragment;
@@ -20,7 +15,6 @@ import com.cohenadair.anglerslog.fragments.MyListFragment;
 import com.cohenadair.anglerslog.interfaces.GlobalSettingsInterface;
 import com.cohenadair.anglerslog.interfaces.OnClickManageMenuListener;
 import com.cohenadair.anglerslog.model.utilities.SortingMethod;
-import com.cohenadair.anglerslog.model.utilities.SortingUtils;
 import com.cohenadair.anglerslog.utilities.LayoutSpec;
 import com.cohenadair.anglerslog.utilities.LayoutSpecManager;
 import com.cohenadair.anglerslog.utilities.ListManager;
@@ -52,16 +46,7 @@ public abstract class LayoutSpecActivity extends DefaultActivity implements
      */
     public abstract void goBack();
 
-    private Menu mMenu;
-    private MenuItem mSearchItem;
-    private SearchView mSearchView;
     private LayoutSpec mLayoutSpec;
-
-    /**
-     * Used to keep SearchVew's state when transitioning between fragments.
-     */
-    private String mSearchText = "";
-    private boolean mSearchIsExpanded = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,7 +76,6 @@ public abstract class LayoutSpecActivity extends DefaultActivity implements
 
     public void setLayoutSpec(LayoutSpec layoutSpec) {
         mLayoutSpec = layoutSpec;
-        updateMenu();
     }
 
     //region LayoutSpec Wrapper Methods
@@ -150,18 +134,6 @@ public abstract class LayoutSpecActivity extends DefaultActivity implements
     public String getDetailTag() {
         return mLayoutSpec.getDetailFragmentTag();
     }
-
-    public void updateViews() {
-        mLayoutSpec.updateViews(this);
-    }
-
-    public void updateViews(String searchQuery) {
-        mLayoutSpec.updateViews(this, searchQuery);
-    }
-
-    public void updateViews(SortingMethod sortingMethod) {
-        mLayoutSpec.updateViews(this, sortingMethod);
-    }
     // endregion
 
     @NonNull
@@ -184,7 +156,7 @@ public abstract class LayoutSpecActivity extends DefaultActivity implements
     }
     //endregion
 
-    //region MyListFragment.InteractionListener interface
+    //region MyListFragment.InteractionListener
     /**
      * When the "new" FloatingActionButton is clicked. This button may not appear on all navigation
      * fragments.
@@ -193,6 +165,31 @@ public abstract class LayoutSpecActivity extends DefaultActivity implements
     public void onMyListClickNewButton() {
         setIsEditing(false);
         goToListManagerView();
+    }
+
+    /**
+     * Checks to see if the current layout has two-panes (i.e. master-detail layout).
+     * @return True if there are two-panes; false otherwise.
+     */
+    @Override
+    public boolean isTwoPane() {
+        return Utils.isTwoPane(this);
+    }
+
+    @Override
+    public void updateViews() {
+        mLayoutSpec.updateViews(this);
+        setActionBarTitle(mLayoutSpec.getPluralName());
+    }
+
+    @Override
+    public void updateViews(String searchQuery) {
+        mLayoutSpec.updateViews(this, searchQuery);
+    }
+
+    @Override
+    public void updateViews(SortingMethod sortingMethod) {
+        mLayoutSpec.updateViews(this, sortingMethod);
     }
     //endregion
 
@@ -229,150 +226,9 @@ public abstract class LayoutSpecActivity extends DefaultActivity implements
     }
     //endregion
 
-    /**
-     * Updates the options menu depending on the Activity's {@link LayoutSpec} properties.
-     */
-    public void updateMenu() {
-        if (mMenu == null)
-            return;
-
-        MenuItem search = mMenu.findItem(R.id.action_search);
-        if (search != null)
-            search.setVisible(mLayoutSpec.isSearchable());
-
-        MenuItem sort = mMenu.findItem(R.id.action_sort);
-        if (sort != null)
-            sort.setVisible(mLayoutSpec.isSortable());
-    }
-
     public void setActionBarTitle(String title) {
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null)
             actionBar.setTitle(title);
-    }
-
-    /**
-     * Checks to see if the current layout has two-panes (i.e. master-detail layout).
-     * @return True if there are two-panes; false otherwise.
-     */
-    @Override
-    public boolean isTwoPane() {
-        return Utils.isTwoPane(this);
-    }
-
-    //region Searching
-    public Menu getMenu() {
-        return mMenu;
-    }
-
-    public MenuItem getSearchItem() {
-        return mSearchItem;
-    }
-
-    public void initMenu(Menu menu) {
-        mMenu = menu;
-        updateMenu();
-        setMenuItemsVisibility(!mSearchIsExpanded);
-
-        // don't initialize searching if it isn't the master fragment that is visible
-        // this is needed to properly preserve the SearchView's state after fragment transactions
-        if (!mLayoutSpec.getMasterFragment().isVisible() || !mLayoutSpec.isSearchable())
-            return;
-
-        mSearchItem = mMenu.findItem(R.id.action_search);
-        mSearchView = (SearchView) mSearchItem.getActionView();
-        mSearchView.setQuery(mSearchText, false);
-        mSearchView.setIconified(!mSearchIsExpanded);
-
-        // reinitialize visibility for searching
-        updateMenu();
-        setMenuItemsVisibility(!mSearchIsExpanded);
-
-        mSearchView.setOnSearchClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!isTwoPane())
-                    setMenuItemsVisibility(false);
-
-                // update hint
-                String search = getResources().getString(R.string.search);
-                mSearchView.setQueryHint(search + " " + mLayoutSpec.getPluralName().toLowerCase());
-                mSearchIsExpanded = true;
-            }
-        });
-
-        mSearchView.setOnCloseListener(new SearchView.OnCloseListener() {
-            @Override
-            public boolean onClose() {
-                setMenuItemsVisibility(true);
-                resetSearch();
-
-                // returning false will "iconify" the SearchView
-                return false;
-            }
-        });
-
-        mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                updateViews(query);
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                mSearchText = newText;
-                if (newText.isEmpty())
-                    updateViews();
-                return false;
-            }
-        });
-    }
-
-    public void iconifySearchView() {
-        if (mSearchView != null && !mSearchView.isIconified()) {
-            resetSearch();
-            mSearchView.setIconified(true);
-        }
-    }
-
-    public void resetSearch() {
-        mSearchText = "";
-        mSearchIsExpanded = false;
-        mSearchView.setQuery("", false);
-        updateViews();
-    }
-    //endregion
-
-    //region Sorting
-    public void openSortDialog() {
-        new AlertDialog.Builder(this)
-                .setTitle(getResources().getString(R.string.sort_by))
-                .setPositiveButton(R.string.button_cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                })
-                .setItems(SortingUtils.getDialogOptions(mLayoutSpec.getSortingMethods()), getOnSortMethodSelected())
-                .show();
-    }
-
-    public DialogInterface.OnClickListener getOnSortMethodSelected() {
-        return new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                updateViews(mLayoutSpec.getSortingMethods()[which]);
-            }
-        };
-    }
-    //endregion
-
-    public void setMenuItemsVisibility(boolean visible) {
-        for (int i = 0; i < mMenu.size(); i++) {
-            MenuItem item = mMenu.getItem(i);
-            if (item != mSearchItem)
-                item.setVisible(visible);
-        }
     }
 }

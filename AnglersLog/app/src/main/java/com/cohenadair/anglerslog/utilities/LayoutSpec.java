@@ -212,7 +212,7 @@ public class LayoutSpec {
         mMasterAdapter = mListener.onGetMasterAdapter(searchQuery, sortingMethod);
         mMasterAdapter.notifyDataSetChanged();
 
-        ((MasterFragment)mMasterFragment).update(activity);
+        ((MasterFragment)mMasterFragment).updateInterface();
         mDetailFragment.update(activity);
     }
 

@@ -9,17 +9,13 @@ import com.cohenadair.anglerslog.activities.LayoutSpecActivity;
 
 /**
  * An abstract class for master fragments used throughout the application.
- *
- * Created by Cohen Adair on 2015-10-25.
+ * @author Cohen Adair
  */
 public abstract class MasterFragment extends Fragment {
 
     private boolean mClearMenuOnCreate;
 
-    /**
-     * Updates the fragment's UI.
-     */
-    public abstract void update(LayoutSpecActivity activity);
+    public abstract void updateInterface();
 
     public LayoutSpecActivity getRealActivity() {
         return (LayoutSpecActivity)getActivity();

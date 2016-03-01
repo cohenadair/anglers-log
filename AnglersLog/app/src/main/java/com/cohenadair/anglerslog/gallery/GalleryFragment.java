@@ -11,7 +11,6 @@ import android.widget.GridView;
 import android.widget.ImageView;
 
 import com.cohenadair.anglerslog.R;
-import com.cohenadair.anglerslog.activities.LayoutSpecActivity;
 import com.cohenadair.anglerslog.activities.PhotoViewerActivity;
 import com.cohenadair.anglerslog.fragments.MasterFragment;
 import com.cohenadair.anglerslog.model.Logbook;
@@ -41,13 +40,13 @@ public class GalleryFragment extends MasterFragment {
         mPhotos = Logbook.getAllCatchPhotos();
         initGridView(view);
 
-        update(getRealActivity());
+        updateInterface();
 
         return view;
     }
 
     @Override
-    public void update(LayoutSpecActivity activity) {
+    public void updateInterface() {
 
     }
 

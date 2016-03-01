@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.activities.CardDetailActivity;
-import com.cohenadair.anglerslog.activities.LayoutSpecActivity;
 import com.cohenadair.anglerslog.fragments.MasterFragment;
 import com.cohenadair.anglerslog.model.Logbook;
 import com.cohenadair.anglerslog.model.user_defines.Catch;
@@ -47,13 +46,13 @@ public class StatsFragment extends MasterFragment {
         mLongestCatchCard = (DefaultCardView)view.findViewById(R.id.longest_catch_card);
         mHeaviestCatchCard = (DefaultCardView)view.findViewById(R.id.heaviest_catch_card);
 
-        update(getRealActivity());
+        updateInterface();
 
         return view;
     }
 
     @Override
-    public void update(LayoutSpecActivity activity) {
+    public void updateInterface() {
         boolean hasCatches = Logbook.getCatchCount() > 0;
 
         Utils.toggleVisibility(mSpeciesCard, hasCatches);
@@ -62,7 +61,7 @@ public class StatsFragment extends MasterFragment {
 
         if (hasCatches) {
             mSpeciesCard.initWithList(
-                    activity.getResources().getString(R.string.species_caught),
+                    getContext().getResources().getString(R.string.species_caught),
                     Logbook.getSpeciesCaughtCount(),
                     new View.OnClickListener() {
                         @Override
@@ -73,7 +72,7 @@ public class StatsFragment extends MasterFragment {
             );
 
             mBaitsCard.initWithList(
-                    activity.getResources().getString(R.string.baits_used),
+                    getContext().getResources().getString(R.string.baits_used),
                     Logbook.getBaitUsedCount(),
                     new View.OnClickListener() {
                         @Override
@@ -84,7 +83,7 @@ public class StatsFragment extends MasterFragment {
             );
 
             mLocationsCard.initWithList(
-                    activity.getResources().getString(R.string.location_success),
+                    getContext().getResources().getString(R.string.location_success),
                     Logbook.getLocationCatchCount(),
                     new View.OnClickListener() {
                         @Override

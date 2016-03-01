@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -35,12 +34,7 @@ public class MainActivity extends LayoutSpecActivity {
         setSupportActionBar(toolbar);
 
         mNavigationManager = new NavigationManager(this);
-        mNavigationManager.setUp(new NavigationManager.InteractionListener() {
-            @Override
-            public void onOpenDrawer() {
-                iconifySearchView();
-            }
-        });
+        mNavigationManager.setUp();
 
         // needs to be called after MainActivity's initialization code
         // update the current layout
@@ -67,25 +61,12 @@ public class MainActivity extends LayoutSpecActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        menu.clear();
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        initMenu(menu);
-        return true;
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
         if (id == android.R.id.home) {
             mNavigationManager.onClickUpButton();
             updateViews();
-            return true;
-        }
-
-        if (id == R.id.action_sort) {
-            openSortDialog();
             return true;
         }
 
@@ -116,6 +97,7 @@ public class MainActivity extends LayoutSpecActivity {
         transaction.commit();
     }
 
+    //region MyListFragment.InteractionListener
     @Override
     public OnClickInterface getOnMyListFragmentItemClick() {
         return new OnClickInterface() {
@@ -125,6 +107,17 @@ public class MainActivity extends LayoutSpecActivity {
             }
         };
     }
+
+    @Override
+    public boolean isSelecting() {
+        return false;
+    }
+
+    @Override
+    public boolean isSelectingMultiple() {
+        return false;
+    }
+    //endregion
 
     /**
      * Either show the detail fragment or update if it's already shown.

@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.cohenadair.anglerslog.R;
-import com.cohenadair.anglerslog.activities.LayoutSpecActivity;
 import com.cohenadair.anglerslog.fragments.DraggableMapFragment;
 import com.cohenadair.anglerslog.fragments.MasterFragment;
 import com.cohenadair.anglerslog.model.Logbook;
@@ -49,7 +48,7 @@ public class LocationMapFragment extends MasterFragment {
     }
 
     @Override
-    public void update(LayoutSpecActivity activity) {
+    public void updateInterface() {
         updateMap();
     }
 
