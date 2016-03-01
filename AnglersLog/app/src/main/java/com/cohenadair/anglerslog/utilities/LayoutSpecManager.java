@@ -173,7 +173,6 @@ public class LayoutSpecManager {
         spec.setSortingMethods(methods);
 
         spec.setId(LAYOUT_CATCHES);
-        spec.setIsSearchable(true);
         spec.setMasterFragment(new MyListFragment());
         spec.setDetailFragment(new CatchFragment());
         spec.setManageFragment(new ManageCatchFragment());
@@ -228,7 +227,6 @@ public class LayoutSpecManager {
         spec.setSortingMethods(methods);
 
         spec.setId(LAYOUT_LOCATIONS);
-        spec.setIsSearchable(true);
         spec.setMasterFragment(new MyListFragment());
         spec.setDetailFragment(new LocationFragment());
         spec.setManageFragment(new ManageLocationFragment());
@@ -276,7 +274,6 @@ public class LayoutSpecManager {
         spec.setSortingMethods(methods);
 
         spec.setId(LAYOUT_BAITS);
-        spec.setIsSearchable(true);
         spec.setMasterFragment(new MyListFragment());
         spec.setDetailFragment(new BaitFragment());
         spec.setManageFragment(new ManageBaitFragment());
@@ -314,7 +311,6 @@ public class LayoutSpecManager {
         spec.setSortingMethods(methods);
 
         spec.setId(LAYOUT_TRIPS);
-        spec.setIsSearchable(true);
         spec.setMasterFragment(new MyListFragment());
         spec.setDetailFragment(new TripFragment());
         spec.setManageFragment(new ManageTripFragment());

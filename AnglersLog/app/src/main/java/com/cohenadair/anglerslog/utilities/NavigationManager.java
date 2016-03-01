@@ -20,11 +20,6 @@ public class NavigationManager implements FragmentManager.OnBackStackChangedList
     private NavigationView mNavigationView;
     private ActionBar mActionBar;
     private MainActivity mActivity;
-    private InteractionListener mCallbacks;
-
-    public interface InteractionListener {
-        void onOpenDrawer();
-    }
 
     public NavigationManager(MainActivity activity) {
         mActivity = activity;
@@ -65,11 +60,6 @@ public class NavigationManager implements FragmentManager.OnBackStackChangedList
         restoreActionBar();
     }
 
-    public void setUp(InteractionListener callbacks) {
-        setUp();
-        mCallbacks = callbacks;
-    }
-
     public void initHeaderView() {
         mNavigationView.inflateHeaderView(R.layout.navigation_header);
     }
@@ -85,12 +75,8 @@ public class NavigationManager implements FragmentManager.OnBackStackChangedList
     public void onClickUpButton() {
         if (canGoBack())
             goBack();
-        else {
-            if (mCallbacks != null)
-                mCallbacks.onOpenDrawer();
-
+        else
             mDrawerLayout.openDrawer(GravityCompat.START);
-        }
     }
 
     public void restoreActionBar() {

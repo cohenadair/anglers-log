@@ -32,7 +32,7 @@ public class LayoutSpec {
     private ListManager.Adapter mMasterAdapter;
     private DetailFragment mDetailFragment;
     private ManageFragment mManageFragment;
-    private Intent mOnClickMenuItemIntent; // used for nagivation drawer links (i.e. Twitter, Instagram)
+    private Intent mOnClickMenuItemIntent; // used for navigation drawer links (i.e. Twitter, Instagram)
     private SortingMethod[] mSortingMethods;
 
     private InteractionListener mListener;
@@ -41,8 +41,6 @@ public class LayoutSpec {
     private String mMasterFragmentTag;
     private String mDetailFragmentTag;
     private String mName;
-
-    private boolean mIsSearchable = false;
 
     private UUID mSelectionId;
     private int mId;
@@ -187,14 +185,6 @@ public class LayoutSpec {
     public void setId(int id) {
         mId = id;
     }
-
-    public void setIsSearchable(boolean isSearchable) {
-        mIsSearchable = isSearchable;
-    }
-
-    public boolean isSearchable() {
-        return mIsSearchable;
-    }
     //endregion
 
     /**
@@ -242,9 +232,5 @@ public class LayoutSpec {
             Utils.showToast(context, successId);
         } else
             Utils.showErrorAlert(context, obj.getName() + " " + context.getResources().getString(R.string.error_delete_primitive));
-    }
-
-    public boolean isSortable() {
-        return mSortingMethods != null;
     }
 }
