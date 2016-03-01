@@ -234,7 +234,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         resetDialog.setCallbacks(new LoadingDialog.InteractionListener() {
             @Override
             public void onConfirm() {
-                Logbook.reset(new Logbook.OnResetListener() {
+                Logbook.resetAsync(true, new Logbook.OnResetListener() {
                     @Override
                     public void onFinish() {
                         resetDialog.dismiss();

@@ -166,20 +166,13 @@ public class Logbook {
     /**
      * Completely resets the database. This is done in a background thread.
      */
-    public static void reset(final OnResetListener callbacks) {
+    public static void resetAsync(final boolean addDefaults, final OnResetListener callbacks) {
         final Handler handler = new Handler();
 
         Runnable r = new Runnable() {
             @Override
             public void run() {
-                File data = new File(mDatabase.getPath());
-                mDatabase.close();
-                FileUtils.deleteQuietly(data);
-
-                init(mContext);
-                setDefaults();
-
-                PhotoUtils.cleanPhotos();
+                reset(addDefaults);
 
                 if (callbacks != null)
                     handler.post(new Runnable() {
@@ -192,6 +185,20 @@ public class Logbook {
         };
 
         new Thread(r).start();
+    }
+
+    public static void reset(boolean addDefaults) {
+        File data = new File(mDatabase.getPath());
+        mDatabase.close();
+        FileUtils.deleteQuietly(data);
+
+        init(mContext);
+
+        if (addDefaults)
+            setDefaults();
+
+        PhotoUtils.cleanPhotos();
+        Log.d(TAG, "Logbook was reset!");
     }
 
     //region Getters & Setters

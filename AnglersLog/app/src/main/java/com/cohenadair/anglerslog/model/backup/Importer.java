@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Handler;
 import android.util.Log;
 
+import com.cohenadair.anglerslog.model.Logbook;
 import com.cohenadair.anglerslog.utilities.PhotoUtils;
 
 import org.apache.commons.io.IOUtils;
@@ -199,6 +200,7 @@ public class Importer {
     private static class UnzipRunnable implements Runnable {
         @Override
         public void run() {
+            Logbook.reset(false);
             importData();
         }
     }
