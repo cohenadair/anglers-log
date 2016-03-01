@@ -25,6 +25,9 @@ import java.util.ArrayList;
  */
 public class GalleryFragment extends MasterFragment {
 
+    private static final int SPACING = 2;
+    private static final int MAX_SIZE = 150;
+
     private ArrayList<String> mPhotos;
 
     @Override
@@ -54,8 +57,8 @@ public class GalleryFragment extends MasterFragment {
         GridView gridView = (GridView)view.findViewById(R.id.grid_view);
         gridView.setAdapter(new ImageAdapter(getContext(), mPhotos));
         gridView.setColumnWidth(getImageSize());
-        gridView.setHorizontalSpacing(getSpacing());
-        gridView.setVerticalSpacing(getSpacing());
+        gridView.setHorizontalSpacing(SPACING);
+        gridView.setVerticalSpacing(SPACING);
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -65,11 +68,16 @@ public class GalleryFragment extends MasterFragment {
     }
 
     private int getImageSize() {
-        return Utils.getScreenSize(getActivity()).x / 3 - getSpacing();
-    }
+        int maxSize = (int)Utils.dpToPx(MAX_SIZE);
+        int screenWidth = Utils.getScreenSize(getContext()).x;
+        int size = screenWidth / 3 - SPACING;
 
-    private int getSpacing() {
-        return 2;
+        if (size > maxSize) {
+            int perRow = screenWidth / maxSize;
+            size = screenWidth / perRow - SPACING;
+        }
+
+        return size;
     }
 
     public class ImageAdapter extends BaseAdapter {
