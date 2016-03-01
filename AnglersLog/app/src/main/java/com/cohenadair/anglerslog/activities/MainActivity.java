@@ -19,11 +19,6 @@ import com.cohenadair.anglerslog.utilities.Utils;
 
 import java.util.UUID;
 
-// TODO rename themes for convention
-// TODO hide FAB unless user is at the top of the list (blocks rating star)
-// TODO create custom thumbnail crop activity
-// TODO update all files' documentation
-
 public class MainActivity extends LayoutSpecActivity {
 
     private static final String TAG = "MainActivity";
@@ -85,6 +80,7 @@ public class MainActivity extends LayoutSpecActivity {
 
         if (id == android.R.id.home) {
             mNavigationManager.onClickUpButton();
+            updateViews();
             return true;
         }
 
@@ -165,6 +161,8 @@ public class MainActivity extends LayoutSpecActivity {
             mNavigationManager.onBackPressed();
         else
             super.onBackPressed();
+
+        updateViews();
     }
 
     @Override
