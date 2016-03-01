@@ -4,8 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="@dimen/margin_half"
-    android:layout_marginBottom="@dimen/margin_half"
-    android:background="@drawable/grey_border">
+    android:layout_marginBottom="@dimen/margin_half">
 
     <LinearLayout
         android:layout_width="match_parent"
