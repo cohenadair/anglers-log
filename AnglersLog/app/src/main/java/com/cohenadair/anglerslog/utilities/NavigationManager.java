@@ -1,11 +1,13 @@
 package com.cohenadair.anglerslog.utilities;
 
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.activities.MainActivity;
@@ -20,6 +22,12 @@ public class NavigationManager implements FragmentManager.OnBackStackChangedList
     private NavigationView mNavigationView;
     private ActionBar mActionBar;
     private MainActivity mActivity;
+    private MenuItem mSelectedItemId;
+    private InteractionListener mCallbacks;
+
+    public interface InteractionListener {
+        void onGoBack();
+    }
 
     public NavigationManager(MainActivity activity) {
         mActivity = activity;
@@ -53,11 +61,16 @@ public class NavigationManager implements FragmentManager.OnBackStackChangedList
             }
         });
 
+        mDrawerLayout.setDrawerListener(getDrawerListener());
         mActivity.getSupportFragmentManager().addOnBackStackChangedListener(this);
-
         mActionBar.setDisplayHomeAsUpEnabled(true);
         showMenuButton();
         restoreActionBar();
+    }
+
+    public void setUp(InteractionListener callbacks) {
+        setUp();
+        mCallbacks = callbacks;
     }
 
     public void initHeaderView() {
@@ -95,6 +108,9 @@ public class NavigationManager implements FragmentManager.OnBackStackChangedList
     public void goBack() {
         mActivity.getSupportFragmentManager().popBackStack();
         restoreActionBar();
+
+        if (mCallbacks != null)
+            mCallbacks.onGoBack();
     }
 
     public void onBackPressed() {
@@ -121,15 +137,49 @@ public class NavigationManager implements FragmentManager.OnBackStackChangedList
             return false;
         }
 
-        setCurrentLayoutId(itemId);
+        mSelectedItemId = menuItem;
+        mDrawerLayout.closeDrawers();
+
+        return true;
+    }
+
+    private boolean selectDrawerItem() {
+        setCurrentLayoutId(mSelectedItemId.getItemId());
+
         mActivity.updateLayoutSpec();
         mActivity.showFragment();
         restoreActionBar();
 
-        menuItem.setChecked(true);
-        mDrawerLayout.closeDrawers();
+        mSelectedItemId.setChecked(true);
+        mSelectedItemId = null;
 
         return true;
+    }
+
+    @NonNull
+    private DrawerLayout.DrawerListener getDrawerListener() {
+        return new DrawerLayout.DrawerListener() {
+            @Override
+            public void onDrawerSlide(View drawerView, float slideOffset) {
+
+            }
+
+            @Override
+            public void onDrawerOpened(View drawerView) {
+
+            }
+
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                if (mSelectedItemId != null)
+                    selectDrawerItem();
+            }
+
+            @Override
+            public void onDrawerStateChanged(int newState) {
+
+            }
+        };
     }
 
     public int getCurrentLayoutId() {
