@@ -16,9 +16,7 @@
             android:id="@+id/title_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/margin_default"
-            android:layout_marginRight="@dimen/margin_default"
-            android:layout_marginTop="@dimen/margin_default"
+            android:layout_margin="@dimen/margin_default"
             custom:titleText="@string/name"
             custom:subtitleText="@string/date"
             custom:titleStyle="@style/TextView.Large"
@@ -30,7 +28,6 @@
             android:id="@+id/title_catches"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_default"
             android:layout_marginBottom="@dimen/margin_default"
             android:text="@string/drawer_catches"/>
 
@@ -46,7 +43,6 @@
             android:id="@+id/title_locations"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_default"
             android:layout_marginBottom="@dimen/margin_default"
             android:text="@string/drawer_locations"/>
 
@@ -62,7 +58,6 @@
             android:id="@+id/title_trip_details"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_default"
             android:layout_marginBottom="@dimen/margin_default"
             android:text="@string/trip_details"/>
 
