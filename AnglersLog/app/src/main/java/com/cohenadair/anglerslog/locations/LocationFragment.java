@@ -153,11 +153,17 @@ public class LocationFragment extends DetailFragment {
                 .commit();
     }
 
+    /**
+     * Needed if there is no selection in two-pane mode. Makes sure that the map isn't shown if
+     * the user hasn't selected a location.
+     *
+     * @param show True to show the map; false to hide.
+     */
     public void toggleMapVisibility(boolean show) {
         if (show)
-            getChildFragmentManager().beginTransaction().show(mMapFragment).commit();
+            getChildFragmentManager().beginTransaction().show(mMapFragment).commitAllowingStateLoss();
         else
-            getChildFragmentManager().beginTransaction().hide(mMapFragment).commit();
+            getChildFragmentManager().beginTransaction().hide(mMapFragment).commitAllowingStateLoss();
     }
 
     public void onMapReady() {
