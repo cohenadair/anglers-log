@@ -205,7 +205,6 @@ public class LocationFragment extends DetailFragment {
 
     private void selectFishingSpot(int position) {
         mFishingSpotSpinner.setSelection(position);
-        updateFishingSpotSelection();
     }
 
     private void updateFishingSpotSelection() {

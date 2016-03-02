@@ -115,7 +115,7 @@ public class FishingSpotMarkerManager {
 
         Point size = Utils.getScreenSize(mContext);
         LatLngBounds bounds = builder.build();
-        CameraUpdate update = CameraUpdateFactory.newLatLngBounds(bounds, size.x, size.y, 100);
+        CameraUpdate update = CameraUpdateFactory.newLatLngBounds(bounds, size.x, size.y, 200);
         mMap.animateCamera(update);
     }
 
@@ -140,7 +140,8 @@ public class FishingSpotMarkerManager {
                 if (mCallbacks != null)
                     mCallbacks.onMarkerClick(marker, mMarkers.indexOf(marker));
 
-                return true;
+                // true will disable map re-centering
+                return false;
             }
         });
     }
