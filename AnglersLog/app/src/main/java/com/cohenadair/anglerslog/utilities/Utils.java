@@ -15,7 +15,6 @@ import android.os.Build;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
@@ -41,20 +40,14 @@ import java.util.UUID;
  */
 public class Utils {
 
-    private static final String TAG = "Utils";
-
     /**
      * The index of items that appear in a ManageAlert.
      */
     public static final int MANAGE_ALERT_EDIT = 0;
     public static final int MANAGE_ALERT_DELETE = 1;
 
-    /**
-     * Checks to see if the current Android version is KitKat (4.4) or newer.
-     * @return True if KitKat or newer; false otherwise.
-     */
-    public static boolean isKitKatOrNewer() {
-        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
+    public static boolean isMinMarshmallow() {
+        return (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M);
     }
 
     public static void showToast(Context context, int resId) {
@@ -63,10 +56,6 @@ public class Utils {
 
     public static void showToast(Context context, String msg) {
         Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
-    }
-
-    public static void showSnackbar(View view, String msg) {
-        Snackbar.make(view, msg, Snackbar.LENGTH_LONG).show();
     }
 
     public static void showAlert(Context context, int titleId, int msgId) {
@@ -224,10 +213,6 @@ public class Utils {
         return false;
     }
 
-    public static boolean hasGrantedLocation() {
-        return true;
-    }
-
     /**
      * This method converts device specific pixels to density independent pixels.
      * @param px A value in px (pixels) unit. Which we need to convert into db.
@@ -280,16 +265,6 @@ public class Utils {
     }
 
     /**
-     * Gets the extension from a given file name.
-     * @param fileName The file name.
-     * @return A String representing the file's extension.
-     */
-    @NonNull
-    public static String extractExtension(String fileName) {
-        return fileName.substring(fileName.lastIndexOf('.') + 1);
-    }
-
-    /**
      * Checks to see if a file exists at a given path.
      * @param path The path to the file.
      * @return True if the file exists, false otherwise.
@@ -323,14 +298,10 @@ public class Utils {
         return DateFormat.format("h:mm a", date).toString();
     }
 
-    public static boolean isMinMarshemellow() {
-        return (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M);
-    }
-
     @TargetApi(Build.VERSION_CODES.M)
     @SuppressWarnings("deprecation")
     public static void setTextAppearance(Context context, TextView view, int resId) {
-        if (isMinMarshemellow())
+        if (isMinMarshmallow())
             view.setTextAppearance(resId);
         else
             view.setTextAppearance(context, resId);
