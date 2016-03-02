@@ -76,10 +76,8 @@ public class DraggableMapFragment extends SupportMapFragment implements OnMapRea
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (savedInstanceState != null) {
-            mLocationEnabled = getArguments().getBoolean(ARG_ENABLE_LOCATION);
-            mLocationUpdatesEnabled = getArguments().getBoolean(ARG_ENABLE_UPDATES);
-        }
+        mLocationEnabled = getArguments().getBoolean(ARG_ENABLE_LOCATION);
+        mLocationUpdatesEnabled = getArguments().getBoolean(ARG_ENABLE_UPDATES);
 
         if (mGoogleApiClient == null)
             mGoogleApiClient = new GoogleApiClient.Builder(getContext())

@@ -55,10 +55,16 @@ public class LocationMapFragment extends MasterFragment {
     private void initMapFragment() {
         // check to see if the map fragment already exists
         mMapFragment = (DraggableMapFragment)getChildFragmentManager().findFragmentByTag(TAG_MAP);
-        if (mMapFragment != null)
-            return;
 
-        mMapFragment = DraggableMapFragment.newInstance(true, false);
+        if (mMapFragment == null) {
+            mMapFragment = DraggableMapFragment.newInstance(true, false);
+
+            getChildFragmentManager()
+                    .beginTransaction()
+                    .add(R.id.location_map_container, mMapFragment, TAG_MAP)
+                    .commit();
+        }
+
         mMapFragment.getMapAsync(new DraggableMapFragment.InteractionListener() {
             @Override
             public void onMapReady(GoogleMap map) {
@@ -70,11 +76,6 @@ public class LocationMapFragment extends MasterFragment {
 
             }
         });
-
-        getChildFragmentManager()
-                .beginTransaction()
-                .add(R.id.location_map_container, mMapFragment, TAG_MAP)
-                .commit();
     }
 
     private void onMapReady() {
