@@ -1,23 +1,20 @@
-<ScrollView
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/container"
+    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingTop="@dimen/spacing_medium"
-    android:paddingBottom="@dimen/spacing_medium">
+    android:layout_height="wrap_content">
 
-    <LinearLayout
-        android:id="@+id/container"
-        android:orientation="vertical"
+    <TextView
+        android:id="@+id/no_info_text_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_default"
+        android:visibility="gone"/>
 
-        <TextView
-            android:id="@+id/no_info_text_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/margin_default"
-            android:visibility="gone"/>
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
-    </LinearLayout>
-
-</ScrollView>
+</LinearLayout>

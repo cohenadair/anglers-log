@@ -1,24 +1,27 @@
 package com.cohenadair.anglerslog.stats;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.activities.DefaultActivity;
+import com.cohenadair.anglerslog.catches.CatchListManager;
+import com.cohenadair.anglerslog.interfaces.OnClickInterface;
 import com.cohenadair.anglerslog.model.Logbook;
 import com.cohenadair.anglerslog.model.user_defines.Catch;
 import com.cohenadair.anglerslog.model.user_defines.Species;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import com.cohenadair.anglerslog.utilities.LayoutSpecManager;
 import com.cohenadair.anglerslog.utilities.Utils;
-import com.cohenadair.anglerslog.views.MoreDetailView;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 /**
  * The BigCatchFragment is a statistical fragment that shows details of large catches for each
@@ -59,49 +62,61 @@ public class BigCatchFragment extends Fragment {
         mIsLongest = (statsId == StatsManager.LONGEST);
         ((DefaultActivity)getActivity()).setActionBarTitle(spec.getActivityTitle());
 
-        initContainer(view);
+        initRecyclerView(view);
 
         return view;
     }
 
-    private void initContainer(View view) {
-        boolean viewAdded = false;
+    private void initRecyclerView(View view) {
+        RecyclerView list = (RecyclerView)view.findViewById(R.id.recycler_view);
+        list.setAdapter(new CatchListManager.Adapter(getContext(), getCatches(), getOnClickItemListener(), getOnGetContentListener()));
+        list.setHasFixedSize(true);
+        list.setLayoutManager(new LinearLayoutManager(getContext()));
+    }
 
-        LinearLayout container = (LinearLayout)view.findViewById(R.id.container);
+    /**
+     * Gets the biggest {@link Catch} for each {@link Species} in the {@link Logbook}.
+     * @return A list of the biggest {@link Catch} objects.
+     */
+    private ArrayList<UserDefineObject> getCatches() {
+        ArrayList<UserDefineObject> catches = new ArrayList<>();
         ArrayList<UserDefineObject> species = Logbook.getSpecies();
 
         for (UserDefineObject obj : species) {
-            final Catch biggest = getCatch((Species)obj);
+            Catch biggest = getCatch((Species)obj);
 
+            // skip the Catch if there is no recorded length or weight
             if (biggest == null || hasNoRecord(biggest))
                 continue;
 
-            MoreDetailView v = new MoreDetailView(getContext());
-
-            v.useDefaultSpacing();
-            v.useDefaultStyle();
-
-            v.setTitle(biggest.getSpeciesAsString() + getMeasurementString(biggest));
-            v.setSubtitle(biggest.getDateTimeAsString());
-
-            v.setOnClickDetailButton(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    startActivity(Utils.getDetailActivityIntent(getContext(), LayoutSpecManager.LAYOUT_CATCHES, biggest.getId()));
-                }
-            });
-
-            container.addView(v);
-            viewAdded = true;
+            catches.add(biggest);
         }
 
-        TextView noInfoView = (TextView)view.findViewById(R.id.no_info_text_view);
-        noInfoView.setText(mIsLongest ? R.string.no_recorded_length : R.string.no_recorded_weight);
-        Utils.toggleVisibility(noInfoView, !viewAdded);
+        return catches;
+    }
+
+    @NonNull
+    private OnClickInterface getOnClickItemListener() {
+        return new OnClickInterface() {
+            @Override
+            public void onClick(View view, UUID id) {
+                startActivity(Utils.getDetailActivityIntent(getContext(), LayoutSpecManager.LAYOUT_CATCHES, id));
+            }
+        };
+    }
+
+    @NonNull
+    private CatchListManager.Adapter.GetContentListener getOnGetContentListener() {
+        return new CatchListManager.Adapter.GetContentListener() {
+            @Override
+            public String onGetSubSubtitle(Catch aCatch) {
+                return getMeasurementString(aCatch);
+            }
+        };
     }
 
     private String getMeasurementString(Catch aCatch) {
-        return " (" + (mIsLongest ? aCatch.getLengthAsStringWithUnits() : aCatch.getWeightAsStringWithUnits()) + ")";
+        return (mIsLongest ? aCatch.getLengthAsStringWithUnits() : aCatch.getWeightAsStringWithUnits());
     }
 
     private Catch getCatch(Species species) {

@@ -6,8 +6,8 @@ import java.util.UUID;
 
 /**
  * A custom OnClick interface used for RecyclerViews.
- * Created by Cohen Adair on 2015-10-05.
+ * @author Cohen Adair
  */
 public interface OnClickInterface {
-    void onClick(View view, UUID position);
+    void onClick(View view, UUID id);
 }
