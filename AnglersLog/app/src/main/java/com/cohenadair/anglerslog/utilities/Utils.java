@@ -15,6 +15,7 @@ import android.os.Build;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
@@ -58,17 +59,13 @@ public class Utils {
         Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
     }
 
-    public static void showAlert(Context context, int titleId, int msgId) {
-        new AlertDialog.Builder(context)
+    public static void showAlert(Context context, FragmentManager manager, int titleId, int msgId) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context)
                 .setTitle(titleId)
                 .setMessage(msgId)
-                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                })
-                .show();
+                .setNegativeButton(android.R.string.ok, null);
+
+        new AlertFragment().initWithBuilder(builder).show(manager, null);
     }
 
     public static void showAlert(Context context, int titleId, String msg) {

@@ -49,7 +49,7 @@ public class AboutFragment extends PreferenceFragmentCompat {
         iconsTerms.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                Utils.showAlert(getContext(), R.string.icons8_terms_title, R.string.icons8_terms);
+                Utils.showAlert(getContext(), getChildFragmentManager(), R.string.icons8_terms_title, R.string.icons8_terms);
                 return true;
             }
         });
