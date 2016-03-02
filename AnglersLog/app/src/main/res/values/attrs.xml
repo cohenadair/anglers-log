@@ -9,6 +9,7 @@
         <attr name="titleText" />
         <attr name="editTextHint" format="string" />
         <attr name="numbersOnly" format="boolean" />
+        <attr name="capSentencesOnly" format="boolean" />
     </declare-styleable>
 
     <declare-styleable name="SelectPhotosView">

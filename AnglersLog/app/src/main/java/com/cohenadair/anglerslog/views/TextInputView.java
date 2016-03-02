@@ -49,6 +49,9 @@ public class TextInputView extends LinearLayout {
 
                 if (arr.getBoolean(R.styleable.TextInputView_numbersOnly, false))
                     mEditText.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+
+                if (arr.getBoolean(R.styleable.TextInputView_capSentencesOnly, false))
+                    mEditText.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
             } finally {
                 arr.recycle(); // required after using TypedArray
             }

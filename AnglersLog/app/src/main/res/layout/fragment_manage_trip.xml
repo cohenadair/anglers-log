@@ -92,6 +92,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         custom:titleText="@string/notes"
-        custom:editTextHint="@string/notes_hint"/>
+        custom:editTextHint="@string/notes_hint"
+        custom:capSentencesOnly="true"/>
 
 </LinearLayout>
