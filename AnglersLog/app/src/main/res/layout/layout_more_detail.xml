@@ -8,6 +8,7 @@
         android:id="@+id/list_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_half"
         android:orientation="vertical"/>
 
     <Button
@@ -15,7 +16,8 @@
         android:id="@+id/show_more_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="@dimen/margin_default"
+        android:paddingLeft="@dimen/margin_default"
+        android:paddingRight="@dimen/margin_default"
         android:text="@string/show_more"/>
 
 </LinearLayout>
