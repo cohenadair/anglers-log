@@ -162,7 +162,7 @@ public class LayoutSpec {
 
     public UUID getSelectionId() {
         // check to see if an item has previously been selected
-        if (mSelectionId == null)
+        if (mSelectionId == null && mMasterAdapter != null)
             for (int i = 0; i < mMasterAdapter.getItemCount(); i++) {
                 UserDefineObject item = mMasterAdapter.getItem(i);
                 if (item.getIsSelected()) {
