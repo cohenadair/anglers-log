@@ -2,6 +2,7 @@ package com.cohenadair.anglerslog.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
@@ -20,11 +21,10 @@ import android.widget.TextView;
 
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
+import com.cohenadair.anglerslog.model.utilities.UserDefineArrays;
 import com.cohenadair.anglerslog.utilities.PrimitiveSpec;
 import com.cohenadair.anglerslog.utilities.PrimitiveSpecManager;
-import com.cohenadair.anglerslog.model.utilities.UserDefineArrays;
 import com.cohenadair.anglerslog.utilities.Utils;
-import com.cohenadair.anglerslog.utilities.WrappedLinearLayoutManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -131,8 +131,7 @@ public class ManagePrimitiveFragment extends DialogFragment {
     private void initRecyclerView(View view) {
         mContentRecyclerView = (RecyclerView)view.findViewById(R.id.content_recycler_view);
         restoreAdapter(ManageType.Selection);
-
-        mContentRecyclerView.setLayoutManager(new WrappedLinearLayoutManager(getActivity()));
+        mContentRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     }
 
     private void initBottomBar(View view) {

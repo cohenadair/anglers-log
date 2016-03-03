@@ -13,12 +13,10 @@
         android:background="@color/anglers_log_light" />
 
     <android.support.v7.widget.RecyclerView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:id="@+id/content_recycler_view">
-
-    </android.support.v7.widget.RecyclerView>
+        android:id="@+id/content_recycler_view" />
 
     <include layout="@layout/view_break"/>
 

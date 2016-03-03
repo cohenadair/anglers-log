@@ -1,22 +1,25 @@
-<?xml version="1.0" encoding="utf-8"?>
-
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     style="@style/recycler_layout">
-
-    <TextView
-        style="@style/recycler_text_view"
-        android:layout_width="0dp"
-        android:layout_weight="1"
-        android:layout_height="wrap_content"
-        android:id="@+id/name_text_view"/>
 
     <CheckBox
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
         android:id="@+id/delete_check_box"/>
 
-</LinearLayout>
+    <TextView
+        style="@style/recycler_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toStartOf="@id/delete_check_box"
+        android:layout_toLeftOf="@id/delete_check_box"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/name_text_view"/>
+
+</RelativeLayout>
