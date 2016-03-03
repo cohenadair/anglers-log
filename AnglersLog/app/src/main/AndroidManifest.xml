@@ -20,7 +20,8 @@
         android:label="@string/app_name"
         android:theme="@style/Theme.AnglersLog">
 
-        <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyC5bOB4uOhkIJ-AieuN_B0M8-KmLhlWldk"/>
+        <!-- <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyC5bOB4uOhkIJ-AieuN_B0M8-KmLhlWldk"/> -->
+        <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyDFr0E1Jxt59gWkeesvvWOxPv3D_oXOjBc"/>
 
         <activity
             android:name=".activities.MainActivity"
