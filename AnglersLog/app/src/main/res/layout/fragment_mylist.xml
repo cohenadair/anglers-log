@@ -16,7 +16,7 @@
         android:id="@+id/new_button"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        android:layout_margin="16dp"
+        android:layout_margin="@dimen/margin_default"
         android:src="@drawable/ic_add"
         app:layout_anchor="@id/main_recycler_view"
         app:layout_anchorGravity="bottom|right|end"
