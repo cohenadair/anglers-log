@@ -43,6 +43,21 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
+        <!-- Baits Title -->
+        <TextView
+            style="?android:listSeparatorTextViewStyle"
+            android:id="@+id/title_baits"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_default"
+            android:text="@string/drawer_baits"/>
+
+        <!-- Baits -->
+        <com.cohenadair.anglerslog.views.MoreDetailLayout
+            android:id="@+id/baits_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
         <!-- Trip Details -->
         <TextView
             style="?android:listSeparatorTextViewStyle"

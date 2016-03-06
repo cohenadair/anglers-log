@@ -223,6 +223,27 @@ public class Trip extends UserDefineObject implements HasCatchesInterface, HasDa
     }
     //endregion
 
+    public ArrayList<UserDefineObject> getBaits() {
+        ArrayList<UserDefineObject> result = new ArrayList<>();
+        ArrayList<UserDefineObject> catches = getCatches();
+
+        for (UserDefineObject obj : catches) {
+            Bait bait = ((Catch) obj).getBait();
+            boolean add = true;
+
+            for (UserDefineObject o : result)
+                if (o.getIdAsString().equals(bait.getIdAsString())) {
+                    add = false;
+                    break;
+                }
+
+            if (add)
+                result.add(bait);
+        }
+
+        return result;
+    }
+
     public String getNotesAsString() {
         return (mNotes != null) ? mNotes : "";
     }

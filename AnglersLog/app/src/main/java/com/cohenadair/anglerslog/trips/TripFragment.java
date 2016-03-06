@@ -16,6 +16,7 @@ import com.cohenadair.anglerslog.database.QueryHelper;
 import com.cohenadair.anglerslog.fragments.DetailFragment;
 import com.cohenadair.anglerslog.interfaces.OnClickInterface;
 import com.cohenadair.anglerslog.model.Logbook;
+import com.cohenadair.anglerslog.model.user_defines.Bait;
 import com.cohenadair.anglerslog.model.user_defines.Location;
 import com.cohenadair.anglerslog.model.user_defines.Trip;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
@@ -41,11 +42,13 @@ public class TripFragment extends DetailFragment {
     private LinearLayout mContainer;
     private ListPortionLayout mCatchesContainer;
     private MoreDetailLayout mLocationsContainer;
+    private MoreDetailLayout mBaitsContainer;
     private TitleSubTitleView mTitleView;
     private PropertyDetailView mAnglersView;
     private TextView mNotesView;
 
     private TextView mLocationsTitle;
+    private TextView mBaitsTitle;
     private TextView mTripDetailsTitle;
     private TextView mNotesTitle;
 
@@ -61,11 +64,13 @@ public class TripFragment extends DetailFragment {
 
         mCatchesContainer = (ListPortionLayout)view.findViewById(R.id.catches_container);
         mLocationsContainer = (MoreDetailLayout)view.findViewById(R.id.locations_container);
+        mBaitsContainer = (MoreDetailLayout)view.findViewById(R.id.baits_container);
         mTitleView = (TitleSubTitleView)view.findViewById(R.id.title_view);
         mAnglersView = (PropertyDetailView)view.findViewById(R.id.anglers_view);
         mNotesView = (TextView)view.findViewById(R.id.notes_text_view);
 
         mLocationsTitle = (TextView)view.findViewById(R.id.title_locations);
+        mBaitsTitle= (TextView)view.findViewById(R.id.title_baits);
         mTripDetailsTitle = (TextView)view.findViewById(R.id.title_trip_details);
         mNotesTitle = (TextView)view.findViewById(R.id.title_notes);
 
@@ -102,6 +107,7 @@ public class TripFragment extends DetailFragment {
         updateTitleView();
         updateCatchesView();
         updateLocationsView();
+        updateBaitsView();
         updateAnglersView();
         updateNotesView();
 
@@ -161,6 +167,30 @@ public class TripFragment extends DetailFragment {
                     @Override
                     public void onClick(View v) {
                         startDetailActivity(LayoutSpecManager.LAYOUT_LOCATIONS, id);
+                    }
+                };
+            }
+        });
+    }
+
+    private void updateBaitsView() {
+        mBaitsContainer.init(mBaitsTitle, mTrip.getBaits(), new MoreDetailLayout.OnUpdateItemInterface() {
+            @Override
+            public String getTitle(UserDefineObject object) {
+                return object.getName();
+            }
+
+            @Override
+            public String getSubtitle(UserDefineObject object) {
+                return ((Bait)object).getCategoryName();
+            }
+
+            @Override
+            public View.OnClickListener onClickItemButton(final UUID id) {
+                return new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        startDetailActivity(LayoutSpecManager.LAYOUT_BAITS, id);
                     }
                 };
             }
