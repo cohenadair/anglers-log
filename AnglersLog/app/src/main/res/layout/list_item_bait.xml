@@ -34,7 +34,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:gravity="center_vertical"
+            android:layout_centerVertical="true"
             android:padding="@dimen/margin_default"
             custom:titleStyle="@style/TextView.Medium"
             custom:subtitleStyle="@style/TextView.SmallSubtitle"/>
