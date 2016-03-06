@@ -138,7 +138,7 @@ public class TripFragment extends DetailFragment {
         return new CatchListManager.Adapter(getContext(), items, new OnClickInterface() {
             @Override
             public void onClick(View view, UUID id) {
-                startActivity(Utils.getDetailActivityIntent(getContext(), LayoutSpecManager.LAYOUT_CATCHES, id));
+                startDetailActivity(LayoutSpecManager.LAYOUT_CATCHES, id);
             }
         });
     }

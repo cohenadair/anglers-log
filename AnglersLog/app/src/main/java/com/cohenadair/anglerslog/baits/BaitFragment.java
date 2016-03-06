@@ -10,14 +10,19 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.cohenadair.anglerslog.R;
+import com.cohenadair.anglerslog.activities.CatchListPortionActivity;
 import com.cohenadair.anglerslog.activities.PhotoViewerActivity;
+import com.cohenadair.anglerslog.catches.CatchListManager;
 import com.cohenadair.anglerslog.fragments.DetailFragment;
+import com.cohenadair.anglerslog.interfaces.OnClickInterface;
 import com.cohenadair.anglerslog.model.Logbook;
 import com.cohenadair.anglerslog.model.user_defines.Bait;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
+import com.cohenadair.anglerslog.utilities.LayoutSpecManager;
+import com.cohenadair.anglerslog.utilities.ListManager;
 import com.cohenadair.anglerslog.utilities.PhotoUtils;
 import com.cohenadair.anglerslog.utilities.Utils;
-import com.cohenadair.anglerslog.views.MoreDetailLayout;
+import com.cohenadair.anglerslog.views.ListPortionLayout;
 import com.cohenadair.anglerslog.views.PropertyDetailView;
 import com.cohenadair.anglerslog.views.TitleSubTitleView;
 
@@ -39,7 +44,7 @@ public class BaitFragment extends DetailFragment {
     private PropertyDetailView mTypeView;
     private PropertyDetailView mColorView;
     private PropertyDetailView mSizeView;
-    private MoreDetailLayout mCatchesLayout;
+    private ListPortionLayout mCatchesLayout;
 
     public BaitFragment() {
         // Required empty public constructor
@@ -58,7 +63,7 @@ public class BaitFragment extends DetailFragment {
         mColorView = (PropertyDetailView)view.findViewById(R.id.color_view);
         mSizeView = (PropertyDetailView)view.findViewById(R.id.size_view);
         mNoCatchesTextView = (TextView)view.findViewById(R.id.no_catches_text_view);
-        mCatchesLayout = (MoreDetailLayout)view.findViewById(R.id.catches_layout);
+        mCatchesLayout = (ListPortionLayout)view.findViewById(R.id.catches_layout);
 
         update(getActivity());
 
@@ -128,7 +133,23 @@ public class BaitFragment extends DetailFragment {
         if (!hasCatches)
             return;
 
-        mCatchesLayout.init(null, catches, getCatchUpdateItemInterface(catches));
+        mCatchesLayout.init(null, catches, new ListPortionLayout.InteractionListener() {
+            @Override
+            public ListManager.Adapter onGetAdapter(ArrayList<UserDefineObject> items) {
+                return new CatchListManager.Adapter(getContext(), items, new OnClickInterface() {
+                    @Override
+                    public void onClick(View view, UUID id) {
+                        startDetailActivity(LayoutSpecManager.LAYOUT_CATCHES, id);
+                    }
+                });
+            }
+
+            @Override
+            public void onClickAllButton(ArrayList<UserDefineObject> items) {
+                Intent intent = CatchListPortionActivity.getIntent(getContext(), items);
+                startActivity(intent);
+            }
+        });
     }
 
     private void initImageView(View view) {

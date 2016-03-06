@@ -69,12 +69,7 @@ public class ListPortionLayout extends LinearLayout {
         mPortionItems = getPortionItems(mAllItems);
 
         mRecyclerView.setAdapter(mCallbacks.onGetAdapter(mPortionItems));
-
-        String text =
-                getContext().getResources().getString(R.string.show_all) +
-                " " + getAllCount() + " " +
-                getContext().getResources().getString(R.string.drawer_catches);
-        mShowAllButton.setText(text);
+        mShowAllButton.setText(R.string.show_all);
 
         updateViews();
     }

@@ -78,11 +78,10 @@
             style="?android:listSeparatorTextViewStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/margin_default"
             android:layout_marginTop="@dimen/margin_default"
             android:text="@string/drawer_catches"/>
 
-        <com.cohenadair.anglerslog.views.MoreDetailLayout
+        <com.cohenadair.anglerslog.views.ListPortionLayout
             android:id="@+id/catches_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
@@ -91,8 +90,7 @@
             android:id="@+id/no_catches_text_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/margin_default"
-            android:layout_marginRight="@dimen/margin_default"
+            android:layout_margin="@dimen/margin_default"
             android:text="@string/bait_no_catches"/>
 
     </LinearLayout>
