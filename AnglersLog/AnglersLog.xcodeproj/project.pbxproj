@@ -1096,7 +1096,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "APP_ID=\"569e5966cb99e10e00c7ed69\"\nOAUTH2=\"8e85c5b2180ca4614c8f169a519026dc\"\nsource ${SRCROOT}/Crittercism.framework/dsym_upload.sh";
+			shellScript = "APP_ID=\"569e5966cb99e10e00c7ed69\"\nAPI_KEY=\"XtDUiNw33V1wWEFG4GszTdzSFC5P3ckq\"\nsource ${SRCROOT}/Crittercism.framework/dsym_upload.sh";
 		};
 /* End PBXShellScriptBuildPhase section */
 
