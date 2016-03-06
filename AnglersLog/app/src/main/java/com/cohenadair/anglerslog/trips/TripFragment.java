@@ -1,6 +1,8 @@
 package com.cohenadair.anglerslog.trips;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,14 +10,19 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.cohenadair.anglerslog.R;
+import com.cohenadair.anglerslog.activities.CatchListPortionActivity;
+import com.cohenadair.anglerslog.catches.CatchListManager;
 import com.cohenadair.anglerslog.database.QueryHelper;
 import com.cohenadair.anglerslog.fragments.DetailFragment;
+import com.cohenadair.anglerslog.interfaces.OnClickInterface;
 import com.cohenadair.anglerslog.model.Logbook;
 import com.cohenadair.anglerslog.model.user_defines.Location;
 import com.cohenadair.anglerslog.model.user_defines.Trip;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import com.cohenadair.anglerslog.utilities.LayoutSpecManager;
+import com.cohenadair.anglerslog.utilities.ListManager;
 import com.cohenadair.anglerslog.utilities.Utils;
+import com.cohenadair.anglerslog.views.ListPortionLayout;
 import com.cohenadair.anglerslog.views.MoreDetailLayout;
 import com.cohenadair.anglerslog.views.PropertyDetailView;
 import com.cohenadair.anglerslog.views.TitleSubTitleView;
@@ -32,13 +39,12 @@ public class TripFragment extends DetailFragment {
     private Trip mTrip;
 
     private LinearLayout mContainer;
-    private MoreDetailLayout mCatchesContainer;
+    private ListPortionLayout mCatchesContainer;
     private MoreDetailLayout mLocationsContainer;
     private TitleSubTitleView mTitleView;
     private PropertyDetailView mAnglersView;
     private TextView mNotesView;
 
-    private TextView mCatchesTitle;
     private TextView mLocationsTitle;
     private TextView mTripDetailsTitle;
     private TextView mNotesTitle;
@@ -53,13 +59,12 @@ public class TripFragment extends DetailFragment {
 
         mContainer = (LinearLayout)view.findViewById(R.id.trip_container);
 
-        mCatchesContainer = (MoreDetailLayout)view.findViewById(R.id.catches_container);
+        mCatchesContainer = (ListPortionLayout)view.findViewById(R.id.catches_container);
         mLocationsContainer = (MoreDetailLayout)view.findViewById(R.id.locations_container);
         mTitleView = (TitleSubTitleView)view.findViewById(R.id.title_view);
         mAnglersView = (PropertyDetailView)view.findViewById(R.id.anglers_view);
         mNotesView = (TextView)view.findViewById(R.id.notes_text_view);
 
-        mCatchesTitle = (TextView)view.findViewById(R.id.title_catches);
         mLocationsTitle = (TextView)view.findViewById(R.id.title_locations);
         mTripDetailsTitle = (TextView)view.findViewById(R.id.title_trip_details);
         mNotesTitle = (TextView)view.findViewById(R.id.title_notes);
@@ -114,8 +119,28 @@ public class TripFragment extends DetailFragment {
     }
 
     private void updateCatchesView() {
-        ArrayList<UserDefineObject> catches = mTrip.getCatches();
-        mCatchesContainer.init(mCatchesTitle, catches, getCatchUpdateItemInterface(catches));
+        mCatchesContainer.init(null, mTrip.getCatches(), new ListPortionLayout.InteractionListener() {
+            @Override
+            public ListManager.Adapter onGetAdapter(ArrayList<UserDefineObject> items) {
+                return getCatchesAdapter(items);
+            }
+
+            @Override
+            public void onClickAllButton(ArrayList<UserDefineObject> items) {
+                Intent intent = CatchListPortionActivity.getIntent(getContext(), items);
+                startActivity(intent);
+            }
+        });
+    }
+
+    @NonNull
+    private ListManager.Adapter getCatchesAdapter(ArrayList<UserDefineObject> items) {
+        return new CatchListManager.Adapter(getContext(), items, new OnClickInterface() {
+            @Override
+            public void onClick(View view, UUID id) {
+                startActivity(Utils.getDetailActivityIntent(getContext(), LayoutSpecManager.LAYOUT_CATCHES, id));
+            }
+        });
     }
 
     private void updateLocationsView() {

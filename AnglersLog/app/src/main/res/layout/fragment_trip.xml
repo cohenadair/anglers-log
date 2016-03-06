@@ -22,17 +22,8 @@
             custom:titleStyle="@style/TextView.Large"
             custom:subtitleStyle="@style/TextView.MediumSubtitle"/>
 
-        <!-- Catches Title -->
-        <TextView
-            style="?android:listSeparatorTextViewStyle"
-            android:id="@+id/title_catches"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/margin_default"
-            android:text="@string/drawer_catches"/>
-
         <!-- Catches -->
-        <com.cohenadair.anglerslog.views.MoreDetailLayout
+        <com.cohenadair.anglerslog.views.ListPortionLayout
             android:id="@+id/catches_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>

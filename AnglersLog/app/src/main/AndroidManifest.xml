@@ -39,6 +39,12 @@
         </activity>
 
         <activity
+            android:name=".activities.CatchListPortionActivity"
+            android:theme="@style/Theme.Dialog.NoTitle"
+            android:configChanges="orientation|keyboardHidden|screenSize">
+        </activity>
+
+        <activity
             android:name=".settings.AboutActivity"
             android:theme="@style/Theme.Dialog.NoTitle"
             android:configChanges="orientation|keyboardHidden|screenSize">
