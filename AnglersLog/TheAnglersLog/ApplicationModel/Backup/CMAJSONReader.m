@@ -104,7 +104,15 @@
         CMAWeatherData *w = [[CMAStorageManager sharedManager] managedWeatherData];
         
         w.temperature = (NSNumber *)[someWeatherData valueForKey:@"temperature"];
-        w.windSpeed = [someWeatherData valueForKey:@"windSpeed"];
+        
+        @try {
+            // trys to read in an NSString, but from Android it is an NSInteger
+            w.windSpeed = [someWeatherData valueForKey:@"windSpeed"];
+        }
+        @catch (NSException *exception) {
+            w.windSpeed = [NSString stringWithFormat:@"%@", [someWeatherData valueForKey:@"windSpeed"]];
+        }
+        
         w.skyConditions = [someWeatherData valueForKey:@"skyConditions"];
         w.imageURL = [someWeatherData valueForKey:@"imageURL"];
         
