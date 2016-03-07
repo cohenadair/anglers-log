@@ -30,8 +30,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         tools:text="Number of fishing spots"
-        android:layout_marginBottom="@dimen/margin_half"
         android:layout_marginLeft="@dimen/margin_half"
         android:layout_marginRight="@dimen/margin_half"/>
+
+    <Button
+        style="@style/Button.BorderlessColoredText"
+        android:id="@+id/show_catches_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/margin_half"
+        android:paddingRight="@dimen/margin_half"
+        android:text="@string/show_catches"/>
 
 </LinearLayout>

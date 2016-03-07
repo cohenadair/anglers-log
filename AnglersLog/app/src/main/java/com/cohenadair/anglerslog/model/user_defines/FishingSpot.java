@@ -4,6 +4,8 @@ import android.content.ContentValues;
 import android.content.Context;
 
 import com.cohenadair.anglerslog.database.QueryHelper;
+import com.cohenadair.anglerslog.database.cursors.CatchCursor;
+import com.cohenadair.anglerslog.database.cursors.UserDefineCursor;
 import com.cohenadair.anglerslog.model.Logbook;
 import com.cohenadair.anglerslog.model.backup.Json;
 import com.google.android.gms.maps.model.LatLng;
@@ -11,8 +13,10 @@ import com.google.android.gms.maps.model.LatLng;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
+import static com.cohenadair.anglerslog.database.LogbookSchema.CatchTable;
 import static com.cohenadair.anglerslog.database.LogbookSchema.FishingSpotTable;
 
 /**
@@ -109,6 +113,19 @@ public class FishingSpot extends UserDefineObject {
      */
     public String getCoordinatesAsString(String lat, String lng) {
         return String.format(lat + ": %.6f, " + lng + ": %.6f", mLatitude, mLongitude);
+    }
+
+    /**
+     * @return An {@link ArrayList} of {@link Catch} objects associated with this
+     * {@link FishingSpot}.
+     */
+    public ArrayList<UserDefineObject> getCatches() {
+        return QueryHelper.queryUserDefines(QueryHelper.queryCatches(CatchTable.Columns.FISHING_SPOT_ID + " = ?", new String[] { getIdAsString() }), new QueryHelper.UserDefineQueryInterface() {
+            @Override
+            public UserDefineObject getObject(UserDefineCursor cursor) {
+                return new CatchCursor(cursor).getCatch();
+            }
+        });
     }
 
     public int getNumberOfCatches() {

@@ -1,13 +1,16 @@
 package com.cohenadair.anglerslog.utilities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Point;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.cohenadair.anglerslog.R;
+import com.cohenadair.anglerslog.activities.CatchListPortionActivity;
 import com.cohenadair.anglerslog.model.user_defines.FishingSpot;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import com.google.android.gms.maps.CameraUpdate;
@@ -97,7 +100,8 @@ public class FishingSpotMarkerManager {
             MarkerSpec spec = new MarkerSpec(
                     mShowFishingSpotLocation ? spot.getDisplayName() : spot.getName(),
                     spot.getCoordinatesAsString(getString(R.string.lat), getString(R.string.lng)),
-                    spot.getNumberOfCatches() + " " + getString(R.string.number_caught)
+                    spot.getNumberOfCatches() + " " + getString(R.string.number_caught),
+                    spot.getCatches()
             );
 
             mMarkerSpecMap.put(spot.getName(), spec);
@@ -144,8 +148,18 @@ public class FishingSpotMarkerManager {
                 return false;
             }
         });
+
+        mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+            @Override
+            public void onInfoWindowClick(Marker marker) {
+                MarkerSpec spec = mMarkerSpecMap.get(marker.getTitle());
+                Intent intent = CatchListPortionActivity.getIntent(mContext, spec.getCatches());
+                mContext.startActivity(intent);
+            }
+        });
     }
 
+    @NonNull
     private String getString(int resId) {
         return mContext.getResources().getString(resId);
     }
@@ -154,11 +168,13 @@ public class FishingSpotMarkerManager {
         private String mTitle;
         private String mNumberCaught;
         private String mCoordinates;
+        private ArrayList<UserDefineObject> mCatches;
 
-        public MarkerSpec(String title, String numberCaught, String coordinates) {
+        public MarkerSpec(String title, String numberCaught, String coordinates, ArrayList<UserDefineObject> catches) {
             mTitle = title;
             mNumberCaught = numberCaught;
             mCoordinates = coordinates;
+            mCatches = catches;
         }
 
         public String getTitle() {
@@ -171,6 +187,10 @@ public class FishingSpotMarkerManager {
 
         public String getCoordinates() {
             return mCoordinates;
+        }
+
+        public ArrayList<UserDefineObject> getCatches() {
+            return mCatches;
         }
     }
 
