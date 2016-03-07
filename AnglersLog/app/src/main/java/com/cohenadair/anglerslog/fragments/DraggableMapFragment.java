@@ -225,16 +225,16 @@ public class DraggableMapFragment extends SupportMapFragment implements OnMapRea
         mOnDragListener = onDragListener;
     }
 
-    public void updateCamera(LatLng loc, GoogleMap.CancelableCallback callback) {
+    public void updateCamera(LatLng loc, int time, GoogleMap.CancelableCallback callback) {
         try {
-            mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(loc, ZOOM), 2000, callback);
+            mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(loc, ZOOM), time, callback);
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
     }
 
     public void updateCamera(LatLng loc) {
-        updateCamera(loc, null);
+        updateCamera(loc, 2000, null);
     }
 
     private boolean isLocationPermissionGranted() {

@@ -211,6 +211,7 @@ public class LocationFragment extends DetailFragment {
 
     private void selectFishingSpot(int position) {
         mFishingSpotSpinner.setSelection(position);
+        updateFishingSpotSelection();
     }
 
     private void updateFishingSpotSelection() {
@@ -220,7 +221,7 @@ public class LocationFragment extends DetailFragment {
         FishingSpot fishingSpot = (FishingSpot)fishingSpots.get(selectedIndex);
 
         // move the camera to the current fishing spot
-        mMapFragment.updateCamera(fishingSpot.getCoordinates(), new GoogleMap.CancelableCallback() {
+        mMapFragment.updateCamera(fishingSpot.getCoordinates(), 250, new GoogleMap.CancelableCallback() {
             @Override
             public void onFinish() {
                 // show the info window for the selected fishing spot
