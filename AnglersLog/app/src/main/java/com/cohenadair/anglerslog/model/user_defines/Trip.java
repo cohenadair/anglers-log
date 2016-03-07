@@ -223,6 +223,12 @@ public class Trip extends UserDefineObject implements HasCatchesInterface, HasDa
     }
     //endregion
 
+    /**
+     * Loops through all the Trip's catches and creates an array of {@link Bait} objects that were
+     * used. The resulting array has unique values.
+     *
+     * @return An array of {@link Bait} objects used during this trip.
+     */
     public ArrayList<UserDefineObject> getBaits() {
         ArrayList<UserDefineObject> result = new ArrayList<>();
         ArrayList<UserDefineObject> catches = getCatches();
@@ -231,6 +237,7 @@ public class Trip extends UserDefineObject implements HasCatchesInterface, HasDa
             Bait bait = ((Catch) obj).getBait();
             boolean add = true;
 
+            // check to see if the current bait already exists in the result
             for (UserDefineObject o : result)
                 if (o.getIdAsString().equals(bait.getIdAsString())) {
                     add = false;
