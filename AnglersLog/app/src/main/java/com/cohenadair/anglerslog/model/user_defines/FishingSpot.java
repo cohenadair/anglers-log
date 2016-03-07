@@ -163,6 +163,7 @@ public class FishingSpot extends UserDefineObject {
 
         appendToBuilder(builder, (float)mLatitude);
         appendToBuilder(builder, (float)mLongitude);
+        appendToBuilder(builder, getLocationName());
 
         return builder.toString();
     }

@@ -36,6 +36,16 @@ public class SortingUtils {
     }
 
     @NonNull
+    public static SortingMethod byDisplayName() {
+        return new SortingMethod(getString(R.string.name), new Comparator<UserDefineObject>() {
+            @Override
+            public int compare(UserDefineObject lhs, UserDefineObject rhs) {
+                return lhs.getDisplayName().compareTo(rhs.getDisplayName());
+            }
+        });
+    }
+
+    @NonNull
     public static SortingMethod bySpecies() {
         return new SortingMethod(getString(R.string.species), new Comparator<UserDefineObject>() {
             @Override

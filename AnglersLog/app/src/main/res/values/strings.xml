@@ -190,6 +190,8 @@
     <string name="weight_hint">Enter a weight</string>
     <string name="depth_hint">Enter a depth</string>
     <string name="sky_hint">ex. Cloudy</string>
+    <string name="map_search_hint">Search results will display here</string>
+    <string name="no_search_results">No search results</string>
 
     <string name="hint_new_item">Enter new</string>
     <string name="new_text">New</string>
@@ -205,6 +207,7 @@
     <string name="action_settings">Settings</string>
     <string name="action_sort">Sort</string>
     <string name="action_search">Search</string>
+    <string name="action_zoom">Zoom</string>
 
     <string name="success_catch">Successfully added catch</string>
     <string name="success_catch_delete">Successfully deleted catch</string>

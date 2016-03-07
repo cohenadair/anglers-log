@@ -108,11 +108,35 @@ public class FishingSpotMarkerManager {
         }
     }
 
-    public void showInfoWindowAtIndex(int index) {
+    /**
+     * Displays an info window at the given index.
+     * @param index The index of the marker to display the associated info window.
+     * @param zoom True to animate the transition, false otherwise.
+     */
+    public void showInfoWindowAtIndex(final int index, boolean zoom) {
         mMarkers.get(index).showInfoWindow();
+
+        if (!zoom)
+            return;
+
+        showAllMarkers(new GoogleMap.CancelableCallback() {
+            @Override
+            public void onFinish() {
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(mMarkers.get(index).getPosition(), 15), 2000, null);
+            }
+
+            @Override
+            public void onCancel() {
+
+            }
+        });
     }
 
-    public void showAllMarkers() {
+    public void showInfoWindowAtIndex(int index) {
+        showInfoWindowAtIndex(index, false);
+    }
+
+    public void showAllMarkers(GoogleMap.CancelableCallback callbacks) {
         LatLngBounds.Builder builder = new LatLngBounds.Builder();
         for (Marker marker : mMarkers)
             builder.include(marker.getPosition());
@@ -120,7 +144,11 @@ public class FishingSpotMarkerManager {
         Point size = Utils.getScreenSize(mContext);
         LatLngBounds bounds = builder.build();
         CameraUpdate update = CameraUpdateFactory.newLatLngBounds(bounds, size.x, size.y, 200);
-        mMap.animateCamera(update);
+        mMap.animateCamera(update, callbacks);
+    }
+
+    public void showAllMarkers() {
+        showAllMarkers(null);
     }
 
     private void initMapListeners() {

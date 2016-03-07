@@ -126,7 +126,7 @@ public class UserDefineObject {
     }
 
     public String toString() {
-        return (mName == null) ? super.toString() : mName;
+        return (mName == null) ? super.toString() : getDisplayName();
     }
 
     public boolean isNameNull() {
