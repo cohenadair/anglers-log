@@ -1,19 +1,25 @@
 package com.cohenadair.anglerslog.fragments;
 
 import android.Manifest;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.utilities.GoogleMapLayout;
+import com.cohenadair.anglerslog.utilities.LogbookPreferences;
 import com.cohenadair.anglerslog.utilities.Utils;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -87,6 +93,8 @@ public class DraggableMapFragment extends SupportMapFragment implements OnMapRea
                     .addConnectionCallbacks(this)
                     .addOnConnectionFailedListener(this)
                     .build();
+
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -126,6 +134,24 @@ public class DraggableMapFragment extends SupportMapFragment implements OnMapRea
     }
 
     @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_draggable_map, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.action_map_type) {
+            onClickMapTypeOption();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode != REQUEST_LOCATION || permissions.length != 1)
             return;
@@ -141,6 +167,7 @@ public class DraggableMapFragment extends SupportMapFragment implements OnMapRea
         Log.d(TAG, "Map is ready.");
 
         mGoogleMap = googleMap;
+        mGoogleMap.setMapType(LogbookPreferences.getMapType());
 
         if (isLocationPermissionGranted())
             enableMyLocation();
@@ -288,4 +315,19 @@ public class DraggableMapFragment extends SupportMapFragment implements OnMapRea
 
         }
     };
+
+    private void onClickMapTypeOption() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+
+        builder.setSingleChoiceItems(R.array.map_types, mGoogleMap.getMapType() - 1, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                mGoogleMap.setMapType(which + 1);
+                LogbookPreferences.setMapType(mGoogleMap.getMapType());
+                dialog.dismiss();
+            }
+        });
+
+        builder.show();
+    }
 }

@@ -22,6 +22,7 @@ public class LogbookPreferences {
     public static final String ROOT_TWO_PANE = "isRootTwoPane";
     public static final String WEATHER_UNITS = "weatherUnits";
     public static final String BACKUP_FILE = "backupFilePath";
+    public static final String MAP_TYPE = "mapType";
 
     private static Context mContext;
 
@@ -55,6 +56,14 @@ public class LogbookPreferences {
 
     public static int getNavigationId() {
         return getPreviousSelections().getInt(NAVIGATION_ID, LayoutSpecManager.LAYOUT_CATCHES);
+    }
+
+    public static void setMapType(int type) {
+        getPreviousSelections().edit().putInt(MAP_TYPE, type).apply();
+    }
+
+    public static int getMapType() {
+        return getPreviousSelections().getInt(MAP_TYPE, 1);
     }
 
     public static void setIsRootTwoPane(boolean isTwoPane) {

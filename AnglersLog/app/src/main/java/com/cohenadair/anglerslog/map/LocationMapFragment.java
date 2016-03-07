@@ -74,6 +74,8 @@ public class LocationMapFragment extends MasterFragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_map, menu);
         initMenu(menu);
+
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override

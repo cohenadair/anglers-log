@@ -192,6 +192,11 @@
     <string name="sky_hint">ex. Cloudy</string>
     <string name="map_search_hint">Search results will display here</string>
     <string name="no_search_results">No search results</string>
+    <string name="select_map_type">Select map type</string>
+    <string name="road_map">Road Map</string>
+    <string name="hybrid">Hybrid</string>
+    <string name="satellite">Satellite</string>
+    <string name="terrain">Terrain</string>
 
     <string name="hint_new_item">Enter new</string>
     <string name="new_text">New</string>
@@ -207,7 +212,8 @@
     <string name="action_settings">Settings</string>
     <string name="action_sort">Sort</string>
     <string name="action_search">Search</string>
-    <string name="action_zoom">Zoom</string>
+    <string name="action_zoom">Zoom Out</string>
+    <string name="action_map_type">Map Type</string>
 
     <string name="success_catch">Successfully added catch</string>
     <string name="success_catch_delete">Successfully deleted catch</string>

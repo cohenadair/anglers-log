@@ -165,6 +165,7 @@ public class ManageFishingSpotFragment extends ManageContentFragment {
 
         mMapFragment.setLocationEnabled(true);
         mMapFragment.setLocationUpdatesEnabled(true);
+        mMapFragment.setHasOptionsMenu(false);
 
         mMapFragment.getMapAsync(new DraggableMapFragment.InteractionListener() {
             @Override
