@@ -8,11 +8,12 @@
 //
 
 #import <Instabug/Instabug.h>
-#import <Crittercism/Crittercism.h>
 #import "CMAAppDelegate.h"
 #import "CMAStorageManager.h"
 #import "CMAConstants.h"
 #import "CMAUtilities.h"
+#import <Fabric/Fabric.h>
+#import <Crashlytics/Crashlytics.h>
 
 @implementation CMAAppDelegate
 
@@ -21,8 +22,8 @@
     // initialize Instabug
     [Instabug startWithToken:@"74b1aa82cf70c705dcb0752940c7110b" invocationEvent:IBGInvocationEventRightEdgePan];
     
-    // initialize Crittercism
-    [Crittercism enableWithAppID:@"569e5966cb99e10e00c7ed69"];
+    // initialize crashlytics
+    [Fabric with:@[[Crashlytics class]]];
     
     [[CMAStorageManager sharedManager] loadJournal];
     [self initAppearances];
