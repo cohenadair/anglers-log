@@ -13,6 +13,7 @@
 #import "SWRevealViewController.h"
 #import "CMAStorageManager.h"
 #import "CMAAlerts.h"
+#import "CMAUtilities.h"
 
 @interface CMASideMenuViewController ()
 
@@ -48,18 +49,13 @@
     self.clearsSelectionOnViewWillAppear = NO;
     
     self.statusBar = [[UIView alloc] initWithFrame:CGRectMake(0, -20, self.view.frame.size.width, 20)];
-    [self.statusBar setBackgroundColor:[UIColor blackColor]];
+    [self.statusBar setBackgroundColor:[CMAUtilities themeColorDark]];
     [self.view addSubview:self.statusBar];
-    
-    [self initTitleView];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
-}
-
-- (void)initTitleView {
 }
 
 #pragma mark - Table View Initializing

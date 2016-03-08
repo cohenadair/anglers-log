@@ -31,5 +31,6 @@
 + (void)deleteFileAtPath:(NSString *)aPath;
 + (CGSize)screenSize;
 + (CGSize)screenSizeInPixels;
++ (UIColor *)themeColorDark;
 
 @end

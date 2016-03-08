@@ -28,6 +28,7 @@
 #import <UIKit/UIGestureRecognizerSubclass.h>
 
 #import "SWRevealViewController.h"
+#import "CMAUtilities.h"
 
 //#pragma mark - SWDirectionPanGestureRecognizer
 //
@@ -793,7 +794,7 @@ const int FrontViewPositionNone = 0xff;
         
         [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
     } else {
-        UIView *overlay = [[UIView alloc] initWithFrame:CGRectMake(0, 0, [frontVC view].frame.size.width, [frontVC view].frame.size.height)];
+        UIView *overlay = [[UIView alloc] initWithFrame:CGRectMake(0, 20, [frontVC view].frame.size.width, [frontVC view].frame.size.height)];
         [overlay setTag:123];
         [overlay setAlpha:0.0f];
         [overlay setBackgroundColor:[UIColor colorWithWhite:0.0 alpha:0.60]];
@@ -802,7 +803,7 @@ const int FrontViewPositionNone = 0xff;
         UIView *status = [[UIView alloc] initWithFrame:CGRectMake(0, 0, [frontVC view].frame.size.width, 20)];
         [status setTag:122];
         [overlay setAlpha:0.0f];
-        [status setBackgroundColor:[UIColor blackColor]];
+        [status setBackgroundColor:[CMAUtilities themeColorDark]];
         
         [[frontVC view] addSubview:status];
         [[frontVC view] addSubview:overlay];

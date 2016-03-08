@@ -183,4 +183,8 @@
     return [[UIApplication sharedApplication] delegate].window.frame.size;
 }
 
++ (UIColor *)themeColorDark {
+    return [UIColor colorWithRed:212.0f/255.0f green:191.0f/255.0f blue:132.0f/255.0f alpha:1.0f];
+}
+
 @end
