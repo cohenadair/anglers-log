@@ -205,7 +205,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     CMAEntryTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"entriesCell" forIndexPath:indexPath];
     
-    CMAEntry *entry = [self.entries objectAtIndex:indexPath.item];
+    CMAEntry *entry = [self.entries objectAtIndex:indexPath.row];
     
     cell.speciesLabel.text = [entry.fishSpecies name];
     cell.dateLabel.text = [self.dateFormatter stringFromDate:entry.date];
