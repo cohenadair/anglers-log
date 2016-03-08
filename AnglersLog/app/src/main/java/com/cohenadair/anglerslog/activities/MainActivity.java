@@ -52,9 +52,6 @@ public class MainActivity extends LayoutSpecActivity {
             setRightPanelVisibility();
 
         LogbookPreferences.setIsRootTwoPane(isTwoPane());
-
-        // initialize Crittercism
-        //Crittercism.initialize(getApplicationContext(), "56a120776c33dc0f00f116ab");
     }
 
     /**
