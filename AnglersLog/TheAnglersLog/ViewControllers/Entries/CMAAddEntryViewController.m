@@ -741,6 +741,11 @@ NSString *const kNotSelectedString = @"Not Selected";
     if (![[self.locationDetailLabel text] isEqualToString:kNotSelectedString]) {
         NSArray *locationInfo = [self parseLocationDetailText];
         
+        if ([locationInfo count] != 2) {
+            [CMAAlerts errorAlert:@"Selected location has been deleted. Please choose a different location." presentationViewController:self];
+            return NO;
+        }
+        
         [anEntry setLocation:locationInfo[0]];
         
         if ([locationInfo count] > 1) {
