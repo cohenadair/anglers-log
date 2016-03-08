@@ -26,6 +26,9 @@
 		0D5584CC1ABF578D00719554 /* icon.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0D5584CB1ABF578D00719554 /* icon.jpg */; };
 		0D5584CE1ABF59C200719554 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D5584CD1ABF59C200719554 /* StoreKit.framework */; };
 		0D5608121A6F0F3000EE0437 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D5608111A6F0F3000EE0437 /* CoreData.framework */; };
+		0D81E4561C8F404300974ED3 /* circle_icon@1x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0D81E4531C8F404300974ED3 /* circle_icon@1x.png */; };
+		0D81E4571C8F404300974ED3 /* circle_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0D81E4541C8F404300974ED3 /* circle_icon@2x.png */; };
+		0D81E4581C8F404300974ED3 /* circle_icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0D81E4551C8F404300974ED3 /* circle_icon@3x.png */; };
 		0D87D0691AD6E3FB008E732A /* CMADataImporter.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D87D0681AD6E3FB008E732A /* CMADataImporter.m */; };
 		0D87D06C1AD6E69C008E732A /* CMAAlertController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D87D06B1AD6E69C008E732A /* CMAAlertController.m */; };
 		0D87D06F1AD7158A008E732A /* CMAJSONReader.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D87D06E1AD7158A008E732A /* CMAJSONReader.m */; };
@@ -208,6 +211,9 @@
 		0D6994B31ACA21BA008D6A0D /* AnglersLog-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AnglersLog-Prefix.pch"; sourceTree = "<group>"; };
 		0D6994B51ACA21DE008D6A0D /* AnglersLog-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "AnglersLog-Info.plist"; sourceTree = "<group>"; };
 		0D766CC01AB66B05001EED90 /* tutorials.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = tutorials.md; path = ../DevNotes/tutorials.md; sourceTree = "<group>"; };
+		0D81E4531C8F404300974ED3 /* circle_icon@1x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "circle_icon@1x.png"; path = "Images/circle_icon@1x.png"; sourceTree = "<group>"; };
+		0D81E4541C8F404300974ED3 /* circle_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "circle_icon@2x.png"; path = "Images/circle_icon@2x.png"; sourceTree = "<group>"; };
+		0D81E4551C8F404300974ED3 /* circle_icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "circle_icon@3x.png"; path = "Images/circle_icon@3x.png"; sourceTree = "<group>"; };
 		0D87D0671AD6E3FB008E732A /* CMADataImporter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMADataImporter.h; path = ApplicationModel/Backup/CMADataImporter.h; sourceTree = "<group>"; };
 		0D87D0681AD6E3FB008E732A /* CMADataImporter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMADataImporter.m; path = ApplicationModel/Backup/CMADataImporter.m; sourceTree = "<group>"; };
 		0D87D06A1AD6E69C008E732A /* CMAAlertController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAAlertController.h; path = CustomViews/CMAAlertController.h; sourceTree = "<group>"; };
@@ -872,6 +878,9 @@
 				0D8F844A1A6EC2C300AABAEA /* rectile.png */,
 				0D4ECDFB1ACB663B008B55E6 /* rapala.png */,
 				0D4ECDFC1ACB663B008B55E6 /* spinner.png */,
+				0D81E4531C8F404300974ED3 /* circle_icon@1x.png */,
+				0D81E4541C8F404300974ED3 /* circle_icon@2x.png */,
+				0D81E4551C8F404300974ED3 /* circle_icon@3x.png */,
 			);
 			name = Images;
 			sourceTree = "<group>";
@@ -1052,6 +1061,7 @@
 				0D8F846E1A6EC2C300AABAEA /* stats.png in Resources */,
 				0D8F84611A6EC2C300AABAEA /* instagram@2x.png in Resources */,
 				0D4ECDFE1ACB663B008B55E6 /* spinner.png in Resources */,
+				0D81E4581C8F404300974ED3 /* circle_icon@3x.png in Resources */,
 				0D8F84621A6EC2C300AABAEA /* instagram_small.png in Resources */,
 				0D8F84541A6EC2C300AABAEA /* app_icon_80.png in Resources */,
 				0D8F84631A6EC2C300AABAEA /* literature.png in Resources */,
@@ -1072,10 +1082,12 @@
 				0D8F844B1A6EC2C300AABAEA /* app_icon.png in Resources */,
 				0D8F84721A6EC2C300AABAEA /* entries_large.png in Resources */,
 				0D8F84791A6EC2C300AABAEA /* no_image.png in Resources */,
+				0D81E4561C8F404300974ED3 /* circle_icon@1x.png in Resources */,
 				0D8F839D1A6EC15D00AABAEA /* CMALaunchScreen.xib in Resources */,
 				0D8F845C1A6EC2C300AABAEA /* edit@1x.png in Resources */,
 				0D8F84741A6EC2C300AABAEA /* locations_large.png in Resources */,
 				0D8F84531A6EC2C300AABAEA /* app_icon_76.png in Resources */,
+				0D81E4571C8F404300974ED3 /* circle_icon@2x.png in Resources */,
 				0D8F84761A6EC2C300AABAEA /* species_large.png in Resources */,
 				0D8F84681A6EC2C300AABAEA /* photos.png in Resources */,
 				0D8F84781A6EC2C300AABAEA /* water_clarities_large.png in Resources */,

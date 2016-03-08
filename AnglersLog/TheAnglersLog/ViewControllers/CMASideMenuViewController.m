@@ -19,6 +19,7 @@
 @property (weak, nonatomic) IBOutlet UIView *titleView;
 @property (weak, nonatomic) IBOutlet UITableViewCell *instagramCell;
 @property (weak, nonatomic) IBOutlet UITableViewCell *twitterCell;
+@property (weak, nonatomic) IBOutlet UIImageView *iconImageView;
 
 @property (strong, nonatomic)UIView *statusBar;
 
@@ -59,9 +60,6 @@
 }
 
 - (void)initTitleView {
-    UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0, self.titleView.frame.size.height - 1, self.titleView.frame.size.width, 0.5)];
-    [line setBackgroundColor:[UIColor blackColor]];
-    [self.titleView addSubview:line];
 }
 
 #pragma mark - Table View Initializing
