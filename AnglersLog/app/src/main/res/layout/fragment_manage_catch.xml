@@ -45,7 +45,8 @@
         <com.cohenadair.anglerslog.views.SelectPhotosView
             android:id="@+id/select_photos_view"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            custom:canSelectMultiple="true"/>
 
         <include layout="@layout/view_divider"/>
 

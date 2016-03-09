@@ -1,11 +1,13 @@
 package com.cohenadair.anglerslog.views;
 
+import android.content.ClipData;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.TypedArray;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
+import android.os.Build;
 import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
 import android.util.AttributeSet;
@@ -51,7 +53,9 @@ public class SelectPhotosView extends LinearLayout {
     private SelectPhotosInteraction mSelectPhotosInteraction;
     private File mPrivatePhotoFile; // used to save a version of the photo used by this application
     private File mPublicPhotoFile; // used to save a full resolution version of the photo for the user
+
     private int mMaxPhotos = -1;
+    private boolean mCanSelectMultiple = false;
 
     public interface SelectPhotosInteraction {
         File onGetPhotoFile();
@@ -93,6 +97,7 @@ public class SelectPhotosView extends LinearLayout {
             TypedArray arr = getContext().getTheme().obtainStyledAttributes(attrs, R.styleable.SelectPhotosView, 0, 0);
             try {
                 mMaxPhotos = arr.getInt(R.styleable.SelectPhotosView_maxPhotos, -1);
+                mCanSelectMultiple = arr.getBoolean(R.styleable.SelectPhotosView_canSelectMultiple, false);
             } finally {
                 arr.recycle();
             }
@@ -100,6 +105,9 @@ public class SelectPhotosView extends LinearLayout {
 
         TextView titleTextView = (TextView)view.findViewById(R.id.title_text_view);
         titleTextView.setText(mMaxPhotos == 1 ? "Photo" : "Photos");
+
+        // multiple selection is only available on API 18+
+        mCanSelectMultiple = mCanSelectMultiple && Build.VERSION.SDK_INT >= 18;
     }
 
     //region Getters & Setters
@@ -128,7 +136,7 @@ public class SelectPhotosView extends LinearLayout {
         mPublicPhotoFile = PhotoUtils.publicPhotoFile(mPrivatePhotoFile.getName());
 
         if (takeOrAttach == PHOTO_ATTACH)
-            mSelectPhotosInteraction.onStartSelectionActivity(PhotoUtils.pickPhotoIntent(), ManageCatchFragment.REQUEST_PHOTO);
+            mSelectPhotosInteraction.onStartSelectionActivity(PhotoUtils.pickPhotoIntent(mCanSelectMultiple), ManageCatchFragment.REQUEST_PHOTO);
 
         if (takeOrAttach == PHOTO_TAKE) {
             Intent photoIntent = PhotoUtils.takePhotoIntent();
@@ -143,6 +151,26 @@ public class SelectPhotosView extends LinearLayout {
     }
 
     public void onPhotoIntentResult(Intent data) {
+        if (data != null && data.getClipData() != null)
+            addMultipleImagesFromIntent(data);
+        else
+            addSingleImageFromIntent(data);
+    }
+
+    private void addMultipleImagesFromIntent(Intent data) {
+        ClipData clip = data.getClipData();
+
+        for (int i = 0; i < clip.getItemCount(); i++) {
+            Uri photoUri = clip.getItemAt(i).getUri();
+            PhotoUtils.copyAndResizePhoto(photoUri, mPrivatePhotoFile);
+            addImage(mPrivatePhotoFile.getPath());
+
+            // reset file for each image
+            mPrivatePhotoFile = mSelectPhotosInteraction.onGetPhotoFile();
+        }
+    }
+
+    private void addSingleImageFromIntent(Intent data) {
         // scale down selected/taken photo and copy it to a private directory
         Uri photoUri = (data == null) ? Uri.fromFile(mPublicPhotoFile) : data.getData();
         PhotoUtils.copyAndResizePhoto(photoUri, mPrivatePhotoFile);

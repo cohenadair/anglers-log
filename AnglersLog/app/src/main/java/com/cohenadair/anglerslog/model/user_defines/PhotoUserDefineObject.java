@@ -132,6 +132,7 @@ public abstract class PhotoUserDefineObject extends UserDefineObject {
         Random random = new Random();
         int postfix = random.nextInt();
 
+        // loop prevents unlikely duplicates
         while (true) {
             String name = mPhotoTable + "_" + id.toString() + "_" + postfix + ".jpg";
 

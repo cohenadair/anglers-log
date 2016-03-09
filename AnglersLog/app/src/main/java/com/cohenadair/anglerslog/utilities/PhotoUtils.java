@@ -12,6 +12,7 @@ import android.media.ExifInterface;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
@@ -55,10 +56,15 @@ public class PhotoUtils {
     }
 
     @NonNull
-    public static Intent pickPhotoIntent() {
+    public static Intent pickPhotoIntent(boolean allowMultiSelect) {
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
+
+        // multiple selection is only available on API level 18+
+        if (Build.VERSION.SDK_INT >= 18)
+            intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, allowMultiSelect);
+
         return Intent.createChooser(intent, mContext.getResources().getString(R.string.select_photo));
     }
 
