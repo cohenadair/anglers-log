@@ -292,6 +292,8 @@
     <string name="weather_edit_description">A button used to edit the current weather information.</string>
     <string name="weather_remove_description">Remove current weather information.</string>
     <string name="more_info_description">More information about the current item.</string>
+    <string name="share_description">Share content with popular social media.</string>
+    <string name="back_description">Go back.</string>
 
     <string name="unknown">Unknown</string>
 </resources>

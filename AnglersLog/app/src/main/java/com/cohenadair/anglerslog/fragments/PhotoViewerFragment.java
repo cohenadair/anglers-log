@@ -7,7 +7,10 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateInterpolator;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.utilities.PhotoUtils;
@@ -22,6 +25,8 @@ import java.util.ArrayList;
  */
 public class PhotoViewerFragment extends Fragment {
 
+    private RelativeLayout mToolbar;
+
     private ArrayList<String> mPhotoNames;
     private int mStartIndex = 0;
 
@@ -33,11 +38,35 @@ public class PhotoViewerFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_photo_viewer, container, false);
 
+        mToolbar = (RelativeLayout)view.findViewById(R.id.toolbar);
+
         ViewPager viewPager = (ViewPager)view.findViewById(R.id.photo_view_pager);
         viewPager.setAdapter(new PhotoViewerAdapter());
         viewPager.setCurrentItem(mStartIndex);
 
+        ImageButton back = (ImageButton)view.findViewById(R.id.back_button);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().finish();
+            }
+        });
+
+        ImageButton share = (ImageButton)view.findViewById(R.id.share_button);
+        share.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        hideToolbar();
     }
 
     public void setPhotoNames(ArrayList<String> photoNames) {
@@ -46,6 +75,14 @@ public class PhotoViewerFragment extends Fragment {
 
     public void setStartIndex(int startIndex) {
         mStartIndex = startIndex;
+    }
+
+    private void showToolbar() {
+        mToolbar.animate().translationY(0).setInterpolator(new AccelerateInterpolator()).start();
+    }
+
+    private void hideToolbar() {
+        mToolbar.animate().translationY(-mToolbar.getHeight()).setInterpolator(new AccelerateInterpolator()).start();
     }
 
     private class PhotoViewerAdapter extends PagerAdapter {
@@ -67,7 +104,10 @@ public class PhotoViewerFragment extends Fragment {
             mImageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    if (mToolbar.getY() >= 0)
+                        hideToolbar();
+                    else
+                        showToolbar();
                 }
             });
 

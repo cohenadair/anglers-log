@@ -1,4 +1,4 @@
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -10,4 +10,36 @@
         android:layout_height="match_parent"
         android:layout_gravity="center_vertical"/>
 
-</LinearLayout>
+    <RelativeLayout
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#B3000000">
+
+        <ImageButton
+            android:id="@+id/back_button"
+            android:layout_width="@dimen/image_button_size"
+            android:layout_height="@dimen/image_button_size"
+            android:layout_margin="@dimen/margin_default"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:background="#00000000"
+            android:tint="@android:color/white"
+            android:src="@drawable/ic_back"
+            android:contentDescription="@string/back_description"/>
+
+        <ImageButton
+            android:id="@+id/share_button"
+            android:layout_width="@dimen/image_button_size"
+            android:layout_height="@dimen/image_button_size"
+            android:layout_margin="@dimen/margin_default"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:background="#00000000"
+            android:tint="@android:color/white"
+            android:src="@drawable/ic_share"
+            android:contentDescription="@string/share_description"/>
+
+    </RelativeLayout>
+
+</RelativeLayout>
