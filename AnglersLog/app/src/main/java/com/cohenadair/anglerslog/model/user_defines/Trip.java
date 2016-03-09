@@ -235,6 +235,9 @@ public class Trip extends UserDefineObject implements HasCatchesInterface, HasDa
 
         for (UserDefineObject obj : catches) {
             Bait bait = ((Catch) obj).getBait();
+            if (bait == null)
+                continue;
+
             boolean add = true;
 
             // check to see if the current bait already exists in the result
