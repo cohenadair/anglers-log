@@ -130,8 +130,8 @@ public class ManagePrimitiveFragment extends DialogFragment {
 
     private void initRecyclerView(View view) {
         mContentRecyclerView = (RecyclerView)view.findViewById(R.id.content_recycler_view);
-        restoreAdapter(ManageType.Selection);
         mContentRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        restoreAdapter(ManageType.Selection);
     }
 
     private void initBottomBar(View view) {
@@ -219,6 +219,7 @@ public class ManagePrimitiveFragment extends DialogFragment {
     private void restoreAdapter(ManageType manageType) {
         mAdapter = new ManagePrimitiveAdapter(mPrimitiveSpec.getItems(), manageType);
         mContentRecyclerView.setAdapter(mAdapter);
+        Utils.toggleVisibility(mContentRecyclerView, mAdapter.getItemCount() > 0);
     }
 
     /**
