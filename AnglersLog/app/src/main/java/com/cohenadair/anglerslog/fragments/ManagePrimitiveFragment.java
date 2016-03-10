@@ -21,14 +21,12 @@ import android.widget.TextView;
 
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
-import com.cohenadair.anglerslog.model.utilities.UserDefineArrays;
+import com.cohenadair.anglerslog.utilities.ListSelectionManager;
 import com.cohenadair.anglerslog.utilities.PrimitiveSpec;
 import com.cohenadair.anglerslog.utilities.PrimitiveSpecManager;
 import com.cohenadair.anglerslog.utilities.Utils;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
 
 /**
  * The ManagePrimitiveFragment is used for selecting user defines from a list when adding Catches or
@@ -44,7 +42,7 @@ public class ManagePrimitiveFragment extends DialogFragment {
     private PrimitiveSpec mPrimitiveSpec;
     private boolean mCanSelectMultiple;
 
-    private ArrayList<UserDefineObject> mSelectedObjects = new ArrayList<>();
+    private ArrayList<UserDefineObject> mSelectedObjects;
 
     /**
      * Different "management" types for this fragment. Used to display different list item layotus.
@@ -117,7 +115,7 @@ public class ManagePrimitiveFragment extends DialogFragment {
         for (UserDefineObject obj : mPrimitiveSpec.getItems())
             obj.setShouldDelete(false);
 
-        mOnDismissInterface.onDismiss(mSelectedObjects);
+        mOnDismissInterface.onDismiss(mAdapter.getSelectedItems());
         getDialog().dismiss();
     }
 
@@ -217,7 +215,12 @@ public class ManagePrimitiveFragment extends DialogFragment {
      * @param manageType The type of management item to display.
      */
     private void restoreAdapter(ManageType manageType) {
-        mAdapter = new ManagePrimitiveAdapter(mPrimitiveSpec.getItems(), manageType);
+        if (mAdapter != null)
+            mSelectedObjects = mAdapter.getSelectedItems();
+
+        mAdapter = new ManagePrimitiveAdapter(mPrimitiveSpec.getItems(), mCanSelectMultiple, manageType);
+        mAdapter.setSelectedItems(mSelectedObjects);
+
         mContentRecyclerView.setAdapter(mAdapter);
         Utils.toggleVisibility(mContentRecyclerView, mAdapter.getItemCount() > 0);
     }
@@ -247,23 +250,18 @@ public class ManagePrimitiveFragment extends DialogFragment {
     //endregion
     
     //region RecyclerView Stuff
-    private class ManagePrimitiveHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    private class ManagePrimitiveHolder extends ListSelectionManager.ViewHolder {
 
-        private UUID mId;
         private int mPosition;
 
         private EditText mNameEditText;
         private TextView mNameTextView;
         private CheckBox mDeleteCheckBox;
         private ManageType mManageType;
-        private View mView;
 
         public ManagePrimitiveHolder(View view, ManageType manageType, ManagePrimitiveAdapter adapter) {
-            super(view);
-            view.setOnClickListener(this);
+            super(view, adapter);
             mManageType = manageType;
-            mAdapter = adapter;
-            mView = view;
 
             if (mManageType == ManageType.Edit)
                 initForEditing(view);
@@ -275,40 +273,23 @@ public class ManagePrimitiveFragment extends DialogFragment {
                 initForDeleting(view);
         }
 
-        @Override
-        public void onClick(View view) {
-            UserDefineObject selected = mPrimitiveSpec.getListener().onClickItem(mId);
-
-            if (mCanSelectMultiple) {
-                boolean alreadySelected = UserDefineArrays.hasObjectNamed(mSelectedObjects, selected.getName());
-
-                if (alreadySelected)
-                    mSelectedObjects = UserDefineArrays.removeObjectNamed(mSelectedObjects, selected.getName());
-                else
-                    mSelectedObjects.add(selected);
-
-                toggleSelected(!alreadySelected);
-            } else {
-                mSelectedObjects.add(selected);
-                dismissFragment();
-            }
-        }
-
         //region View Initialization
         private void initForEditing(View view) {
             mNameEditText = (EditText)view.findViewById(R.id.name_edit_text);
             mNameEditText.addTextChangedListener(new TextWatcher() {
                 @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                }
 
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
                     if (mNameEditText.isFocused())
-                        mPrimitiveSpec.getListener().onEditItem(mId, new UserDefineObject(s.toString(), mId));
+                        mPrimitiveSpec.getListener().onEditItem(getId(), new UserDefineObject(s.toString(), getId()));
                 }
 
                 @Override
-                public void afterTextChanged(Editable s) {}
+                public void afterTextChanged(Editable s) {
+                }
             });
         }
 
@@ -319,7 +300,7 @@ public class ManagePrimitiveFragment extends DialogFragment {
             mDeleteCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    mAdapter.getItem(mPosition).setShouldDelete(isChecked);
+                    getAdapter().getItem(mPosition).setShouldDelete(isChecked);
                 }
             });
         }
@@ -333,15 +314,7 @@ public class ManagePrimitiveFragment extends DialogFragment {
         }
         //endregion
 
-        private void toggleSelected(boolean select) {
-            Utils.toggleViewSelected(mView, select);
-        }
-
         //region Getters & Setters
-        public void setId(UUID id) {
-            mId = id;
-        }
-
         public void setPosition(int position) {
             mPosition = position;
         }
@@ -352,7 +325,6 @@ public class ManagePrimitiveFragment extends DialogFragment {
 
         public void setNameText(String text) {
             mNameTextView.setText(text);
-            toggleSelected(UserDefineArrays.hasObjectNamed(mSelectedObjects, text));
         }
 
         public CheckBox getDeleteCheckBox() {
@@ -361,13 +333,18 @@ public class ManagePrimitiveFragment extends DialogFragment {
         //endregion
     }
 
-    private class ManagePrimitiveAdapter extends RecyclerView.Adapter<ManagePrimitiveHolder> {
+    private class ManagePrimitiveAdapter extends ListSelectionManager.Adapter {
 
-        private List<UserDefineObject> mItems;
         private ManageType mManageType;
 
-        public ManagePrimitiveAdapter(List<UserDefineObject> items, ManageType manageType) {
-            mItems = items;
+        public ManagePrimitiveAdapter(ArrayList<UserDefineObject> items, boolean manageSelections, ManageType manageType) {
+            super(items, manageSelections, new InteractionListener() {
+                @Override
+                public void onSelectionFinished() {
+                    dismissFragment();
+                }
+            });
+
             mManageType = manageType;
         }
 
@@ -386,40 +363,35 @@ public class ManagePrimitiveFragment extends DialogFragment {
         }
 
         @Override
-        public void onBindViewHolder(ManagePrimitiveHolder holder, int position) {
-            UserDefineObject obj = mItems.get(position);
-            holder.setId(obj.getId());
-            holder.setPosition(position);
+        public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+            ManagePrimitiveHolder primitiveHolder = (ManagePrimitiveHolder)holder;
+            UserDefineObject obj = getItem(position);
+
+            super.onBind(primitiveHolder, position);
+            primitiveHolder.setPosition(position);
 
             if (mManageType == ManageType.Edit)
-                holder.setEditText(obj.getName());
+                primitiveHolder.setEditText(obj.getName());
 
             if (mManageType == ManageType.Selection || mManageType == ManageType.Delete)
-                holder.setNameText(obj.getName());
+                primitiveHolder.setNameText(obj.getName());
 
             if (mManageType == ManageType.Delete)
-                holder.getDeleteCheckBox().setChecked(obj.getShouldDelete());
-        }
-
-        @Override
-        public int getItemCount() {
-            return mItems.size();
-        }
-
-        public UserDefineObject getItem(int position) {
-            return mItems.get(position);
+                primitiveHolder.getDeleteCheckBox().setChecked(obj.getShouldDelete());
         }
 
         /**
          * Iterates through all the user defines and removes ones where getShouldDelete() returns true.
          */
         public void cleanUp() {
-            for (int i = mItems.size() - 1; i >= 0; i--)
-                if (mItems.get(i).getShouldDelete()) {
-                    if (mPrimitiveSpec.getListener().onRemoveItem(mItems.get(i).getId()))
-                        mItems.remove(i);
+            ArrayList<UserDefineObject> items = getItems();
+
+            for (int i = items.size() - 1; i >= 0; i--)
+                if (items.get(i).getShouldDelete()) {
+                    if (mPrimitiveSpec.getListener().onRemoveItem(items.get(i).getId()))
+                        items.remove(i);
                     else {
-                        String msg = mItems.get(i).getName() + " " + getResources().getString(R.string.error_delete_primitive);
+                        String msg = items.get(i).getName() + " " + getResources().getString(R.string.error_delete_primitive);
                         Utils.showErrorAlert(getContext(), msg);
                     }
                 }

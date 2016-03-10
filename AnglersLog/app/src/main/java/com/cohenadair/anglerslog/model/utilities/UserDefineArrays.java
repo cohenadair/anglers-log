@@ -2,6 +2,7 @@ package com.cohenadair.anglerslog.model.utilities;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import com.cohenadair.anglerslog.utilities.Utils;
@@ -9,6 +10,7 @@ import com.cohenadair.anglerslog.utilities.Utils;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.UUID;
 
 /**
  * A collection of utility methods for interacting with UserDefineObject arrays.
@@ -79,12 +81,30 @@ public class UserDefineArrays {
         return builder.toString();
     }
 
-    public static boolean hasObjectNamed(ArrayList<UserDefineObject> arr, String name) {
+    @Nullable
+    public static UserDefineObject getObjectNamed(ArrayList<UserDefineObject> arr, String name) {
         for (UserDefineObject obj : arr)
             if (obj.getName().equals(name))
-                return true;
+                return obj;
 
-        return false;
+        return null;
+    }
+
+    public static boolean hasObjectNamed(ArrayList<UserDefineObject> arr, String name) {
+        return getObjectNamed(arr, name) != null;
+    }
+
+    @Nullable
+    public static UserDefineObject getObjectWithId(ArrayList<UserDefineObject> arr, UUID id) {
+        for (UserDefineObject obj : arr)
+            if (obj.getId().equals(id))
+                return obj;
+
+        return null;
+    }
+
+    public static boolean hasObjectWithId(ArrayList<UserDefineObject> arr, UUID id) {
+        return getObjectWithId(arr, id) != null;
     }
 
     public static int indexOfName(ArrayList<UserDefineObject> arr, String name) {
