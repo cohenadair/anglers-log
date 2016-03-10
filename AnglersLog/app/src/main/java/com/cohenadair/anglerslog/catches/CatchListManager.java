@@ -116,7 +116,7 @@ public class CatchListManager {
             return mGetContentListener;
         }
 
-        // can't be overridden in the superclass because it needs to return a BaitListManager.ViewHolder
+        // can't be overridden in the superclass because it needs to return a CatchListManager.ViewHolder
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             LayoutInflater inflater = LayoutInflater.from(getContext());
