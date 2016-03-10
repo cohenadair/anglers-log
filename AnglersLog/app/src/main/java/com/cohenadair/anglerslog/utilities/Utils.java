@@ -310,10 +310,13 @@ public class Utils {
     }
 
     public static void toggleVisibility(View view, boolean visible) {
-        if (view == null)
-            return;
+        if (view != null)
+            view.setVisibility(visible ? View.VISIBLE : View.GONE);
+    }
 
-        view.setVisibility(visible ? View.VISIBLE : View.GONE);
+    public static void toggleHidden(View view, boolean hidden) {
+        if (view != null)
+            view.setVisibility(hidden ? View.INVISIBLE : View.VISIBLE);
     }
 
     public static void addDoneButton(@NonNull Toolbar toolbar, MenuItem.OnMenuItemClickListener onClick) {

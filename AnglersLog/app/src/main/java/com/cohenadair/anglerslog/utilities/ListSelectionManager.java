@@ -3,6 +3,7 @@ package com.cohenadair.anglerslog.utilities;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.cohenadair.anglerslog.interfaces.OnClickInterface;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import com.cohenadair.anglerslog.model.utilities.UserDefineArrays;
 
@@ -54,18 +55,22 @@ public class ListSelectionManager {
 
         @Override
         public void onClick(View v) {
-            if (mAdapter.isManagingSelections())
+            if (mAdapter.isManagingMultipleSelections())
                 addToSelections();
             else
                 finishSelection();
         }
 
         public void setSelection(boolean select) {
-            if (!mAdapter.isManagingSelections())
+            if (!mAdapter.isManagingMultipleSelections())
                 return;
 
             getObject().setIsSelected(select);
             Utils.toggleViewSelected(mView, getObject().getIsSelected());
+        }
+
+        public int getItemCount() {
+            return mAdapter.getItemCount();
         }
 
         private void addToSelections() {
@@ -79,64 +84,56 @@ public class ListSelectionManager {
 
         private void finishSelection() {
             mAdapter.addSelectedItem(mId);
-            mAdapter.getCallbacks().onSelectionFinished();
+            mAdapter.getCallbacks().onClick(getView(),  getId());
         }
 
-        private UserDefineObject getObject() {
+        public UserDefineObject getObject() {
             return mAdapter.getItem(mId);
         }
     }
 
     public static abstract class Adapter extends RecyclerView.Adapter {
 
-        private ArrayList<UUID> mSelectedIds;
+        private ArrayList<UUID> mSelectedIds; // ids are used to track selections to ensure we're keeping the same object references
         private ArrayList<UserDefineObject> mItems;
-        private InteractionListener mCallbacks;
-        private boolean mManagingSelections;
+        private OnClickInterface mCallbacks;
+        private boolean mManagingMultipleSelections;
 
-        public interface InteractionListener {
-            void onSelectionFinished();
-        }
-
-        public Adapter(ArrayList<UserDefineObject> items, boolean manageSelections, InteractionListener callbacks) {
+        /**
+         * A {@link android.support.v7.widget.RecyclerView.Adapter} subclass that manages item
+         * selection.  If setup so only one item can be selected, a callback method is called,
+         * otherwise the selections are managed by the adapter and can be retrieved by calling
+         * one of the following:
+         *  - {@link #getSelectedItems()}
+         *  - {@link #getSelectedItemIds()}
+         *
+         * @param items The list of {@link UserDefineObject} from which to initialize the adapter.
+         * @param allowMultipleSelection True to allow multiple selection, false otherwise.
+         * @param callbacks Called when an item is clicked. This callback is ignored if
+         *                  `allowMultipleSelection` is true.
+         */
+        public Adapter(ArrayList<UserDefineObject> items, boolean allowMultipleSelection, OnClickInterface callbacks) {
             mItems = items;
-            mManagingSelections = manageSelections;
+            mManagingMultipleSelections = allowMultipleSelection;
             mCallbacks = callbacks;
+            mSelectedIds = new ArrayList<>();
         }
 
         //region Getters & Setters
-        public ArrayList<UserDefineObject> getSelectedItems() {
-            ArrayList<UserDefineObject> result = new ArrayList<>();
-
-            for (UUID id : mSelectedIds) {
-                UserDefineObject obj = UserDefineArrays.getObjectWithId(mItems, id);
-                if (obj != null)
-                    result.add(obj);
-            }
-
-            return result;
-        }
-
-        public void setSelectedItems(ArrayList<UserDefineObject> selectedItems) {
-            mSelectedIds = new ArrayList<>();
-
-            if (selectedItems != null)
-                for (UserDefineObject obj : selectedItems) {
-                    getItem(obj.getId()).setIsSelected(true);
-                    addSelectedItem(obj.getId());
-                }
-        }
-
         public ArrayList<UserDefineObject> getItems() {
             return mItems;
         }
 
-        public InteractionListener getCallbacks() {
+        public OnClickInterface getCallbacks() {
             return mCallbacks;
         }
 
-        public boolean isManagingSelections() {
-            return mManagingSelections;
+        public boolean isManagingMultipleSelections() {
+            return mManagingMultipleSelections;
+        }
+
+        public void setManagingMultipleSelections(boolean managingMultipleSelections) {
+            mManagingMultipleSelections = managingMultipleSelections;
         }
         //endregion
 
@@ -147,6 +144,41 @@ public class ListSelectionManager {
             UserDefineObject obj = mItems.get(position);
             holder.setId(obj.getId());
             holder.setSelection(obj.getIsSelected());
+        }
+
+        public ArrayList<String> getSelectedItemIds() {
+            return UserDefineArrays.asIdStringArray(getSelectedItems());
+        }
+
+        public ArrayList<UserDefineObject> getSelectedItems() {
+            ArrayList<UserDefineObject> result = new ArrayList<>();
+
+            for (UUID id : mSelectedIds) {
+                UserDefineObject obj = UserDefineArrays.getObjectWithId(mItems, id);
+
+                if (obj != null) {
+                    obj.setIsSelected(false); // reset selection variable
+                    result.add(obj);
+                }
+            }
+
+            return result;
+        }
+
+        public void setSelectedItems(ArrayList<UserDefineObject> selectedItems) {
+            setSelectedItemIds(UserDefineArrays.asIdStringArray(selectedItems));
+        }
+
+        public void setSelectedItemIds(ArrayList<String> selectedIds) {
+            mSelectedIds = new ArrayList<>();
+
+            if (selectedIds != null)
+                // initialize each selected item for selection
+                for (String idStr : selectedIds) {
+                    UUID id = UUID.fromString(idStr);
+                    getItem(id).setIsSelected(true);
+                    addSelectedItem(id);
+                }
         }
 
         @Override

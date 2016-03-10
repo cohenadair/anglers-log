@@ -12,6 +12,7 @@ import com.cohenadair.anglerslog.fragments.MasterFragment;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import com.cohenadair.anglerslog.model.utilities.SortingMethod;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 /**
@@ -49,7 +50,7 @@ public class LayoutSpec {
      * Used to delete a user define. Editing is done in the Manage*Fragment for that user define.
      */
     public interface InteractionListener {
-        ListManager.Adapter onGetMasterAdapter(String searchQuery, SortingMethod sortingMethod);
+        ListManager.Adapter onGetMasterAdapter(String searchQuery, SortingMethod sortingMethod, boolean allowsMultipleSelection);
         boolean onUserDefineRemove(UUID id);
     }
 
@@ -101,7 +102,7 @@ public class LayoutSpec {
         mMasterFragment = masterFragment;
 
         if (mListener != null)
-            mMasterAdapter = mListener.onGetMasterAdapter(null, null);
+            mMasterAdapter = mListener.onGetMasterAdapter(null, null, false);
     }
 
     public DetailFragment getDetailFragment() {
@@ -199,7 +200,11 @@ public class LayoutSpec {
         if (mListener == null || mDetailFragment == null)
             return;
 
-        mMasterAdapter = mListener.onGetMasterAdapter(searchQuery, sortingMethod);
+        ArrayList<String> selectedIds = (mMasterAdapter == null) ? null : mMasterAdapter.getSelectedItemIds();
+        boolean allowsMultipleSelection = (mMasterAdapter != null) && mMasterAdapter.isManagingMultipleSelections();
+
+        mMasterAdapter = mListener.onGetMasterAdapter(searchQuery, sortingMethod, allowsMultipleSelection);
+        mMasterAdapter.setSelectedItemIds(selectedIds);
         mMasterAdapter.notifyDataSetChanged();
 
         ((MasterFragment)mMasterFragment).updateInterface();

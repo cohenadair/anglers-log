@@ -1,6 +1,7 @@
 package com.cohenadair.anglerslog.catches;
 
 import android.content.Context;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -84,12 +85,12 @@ public class CatchListManager {
                 fileExists = new File(randomPhotoPath).exists();
 
             if (fileExists) {
-                int thumbSize = context().getResources().getDimensionPixelSize(R.dimen.thumbnail_size);
+                int thumbSize = getContext().getResources().getDimensionPixelSize(R.dimen.thumbnail_size);
                 PhotoUtils.thumbnailToImageView(mImageView, randomPhotoPath, thumbSize, R.drawable.no_catch_photo);
             } else
                 mImageView.setImageResource(R.drawable.no_catch_photo);
 
-            updateView(mSeparator, position, mCatch);
+            updateView(mSeparator, position);
         }
     }
     //endregion
@@ -99,16 +100,28 @@ public class CatchListManager {
 
         private GetContentListener mGetContentListener;
 
+        /**
+         * Used for variations of {@link ViewHolder}, such as in a
+         * {@link com.cohenadair.anglerslog.stats.BigCatchFragment}, where some of the content may
+         * vary depending on how the list is being used.
+         */
         public interface GetContentListener {
             String onGetSubSubtitle(Catch aCatch);
         }
 
+        /**
+         * @see com.cohenadair.anglerslog.utilities.ListSelectionManager.Adapter
+         */
+        public Adapter(Context context, ArrayList<UserDefineObject> items, boolean allowMultipleSelection, OnClickInterface callbacks) {
+            super(context, items, allowMultipleSelection, callbacks);
+        }
+
         public Adapter(Context context, ArrayList<UserDefineObject> items, OnClickInterface callbacks) {
-            super(context, items, callbacks);
+            super(context, items, false, callbacks);
         }
 
         public Adapter(Context context, ArrayList<UserDefineObject> items, OnClickInterface onClickView, GetContentListener onGetContent) {
-            super(context, items, onClickView);
+            super(context, items, false, onClickView);
             mGetContentListener = onGetContent;
         }
 
@@ -125,10 +138,10 @@ public class CatchListManager {
         }
 
         @Override
-        public void onBindViewHolder(ListManager.ViewHolder holder, int position) {
-            super.onBind(holder, position);
-
+        public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
             ViewHolder catchHolder = (ViewHolder)holder;
+
+            super.onBind(catchHolder, position);
             catchHolder.setCatch((Catch)getItem(position), position);
         }
     }

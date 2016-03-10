@@ -130,22 +130,31 @@ public class UserDefineArrays {
 
     public static ArrayList<String> asIdStringArray(ArrayList<UserDefineObject> arr) {
         ArrayList<String> ids = new ArrayList<>();
-        for (UserDefineObject object : arr)
-            ids.add(object.getIdAsString());
+
+        if (arr != null)
+            for (UserDefineObject object : arr)
+                ids.add(object.getIdAsString());
+
         return ids;
     }
 
     public static ArrayList<String> asNameStringArray(ArrayList<UserDefineObject> arr) {
         ArrayList<String> names = new ArrayList<>();
-        for (UserDefineObject object : arr)
-            names.add(object.getName());
+
+        if (arr != null)
+            for (UserDefineObject object : arr)
+                names.add(object.getName());
+
         return names;
     }
 
     public static ArrayList<UserDefineObject> asObjectArray(ArrayList<String> arr, OnConvertInterface callbacks) {
         ArrayList<UserDefineObject> objects = new ArrayList<>();
-        for (String str : arr)
-            objects.add(callbacks.onGetObject(str));
+
+        if (arr != null)
+            for (String str : arr)
+                objects.add(callbacks.onGetObject(str));
+
         return objects;
     }
 

@@ -30,7 +30,6 @@ public class MyListSelectionActivity extends LayoutSpecActivity {
     public static final String EXTRA_LAYOUT_ID = "extra_layout_id";
     public static final String EXTRA_MULTIPLE_SELECTION = "extra_multiple_selection";
 
-    private ArrayList<String> mSelectedIds;
     private UUID mGlobalSelectedId; // save the ListManager's selection to be reset later
     private boolean mCanSelectMultiple;
     private boolean mCancelSelectionInterface;
@@ -99,15 +98,18 @@ public class MyListSelectionActivity extends LayoutSpecActivity {
             @Override
             public void onClick(final View view, UUID id) {
                 LayoutSpec.OnSelectionListener listener = getLayoutSpec().getSelectionListener();
+
                 if (listener != null && !mCancelSelectionInterface)
                     listener.onSelect(id, new LayoutSpec.OnSelectionFinishedCallback() {
                         @Override
                         public void onFinish(UUID id) {
-                            handleItemSelection(view, id);
+                            ArrayList<String> selectedIds = new ArrayList<>();
+                            selectedIds.add(id.toString());
+                            finishWithResult(selectedIds);
                         }
                     });
                 else
-                    handleItemSelection(view, id);
+                    finishWithResult();
             }
         };
     }
@@ -139,28 +141,6 @@ public class MyListSelectionActivity extends LayoutSpecActivity {
         }
     }
 
-    /**
-     * Processes the given id when selected or deselected.
-     * @param id The UUID of the item selected or deselected.
-     */
-    private void handleItemSelection(View view, UUID id) {
-        String idStr = id.toString();
-
-        if (mCanSelectMultiple) {
-            boolean alreadySelected = mSelectedIds.contains(idStr);
-
-            if (alreadySelected)
-                mSelectedIds.remove(idStr);
-            else
-                mSelectedIds.add(idStr);
-
-            Utils.toggleViewSelected(view, !alreadySelected);
-        } else {
-            mSelectedIds.add(idStr);
-            finishWithResult();
-        }
-    }
-
     @Override
     public void goToListManagerView() {
         getSupportFragmentManager()
@@ -179,8 +159,12 @@ public class MyListSelectionActivity extends LayoutSpecActivity {
     }
 
     private void finishWithResult() {
+        finishWithResult(getMasterAdapter().getSelectedItemIds());
+    }
+
+    private void finishWithResult(ArrayList<String> selectedIds) {
         Intent intent = new Intent();
-        intent.putExtra(EXTRA_SELECTED_IDS, mSelectedIds);
+        intent.putExtra(EXTRA_SELECTED_IDS, selectedIds);
         setResult(RESULT_OK, intent);
         releaseSelections();
         finish();
@@ -188,47 +172,23 @@ public class MyListSelectionActivity extends LayoutSpecActivity {
 
     private void initSelections(Intent intent) {
         ListManager.Adapter adapter = getMasterAdapter();
-        adapter.setShowSelection(false);
+        adapter.setManagingMultipleSelections(true);
 
         // get the globally selected item (one that's shown in master-detail view)
         // so it can be reset later
-        for (int i = 0; i < adapter.getItemCount(); i++)
-            if (adapter.getItem(i).getIsSelected()) {
-                mGlobalSelectedId = adapter.getItem(i).getId();
-                adapter.getItem(i).setIsSelected(false);
+        for (UserDefineObject obj : adapter.getItems())
+            if (obj.getIsSelected()) {
+                mGlobalSelectedId = obj.getId();
+                obj.setIsSelected(false);
                 break;
             }
 
-        mSelectedIds = intent.getStringArrayListExtra(EXTRA_SELECTED_IDS);
-        if (mSelectedIds == null)
-            mSelectedIds = new ArrayList<>();
-
-        toggleSelections(true);
+        ArrayList<String> selectedIds = intent.getStringArrayListExtra(EXTRA_SELECTED_IDS);
+        adapter.setSelectedItemIds(selectedIds);
     }
 
     private void releaseSelections() {
-        toggleSelections(false);
-
-        // reset all item selections
-        if (mGlobalSelectedId != null) {
-            ListManager.Adapter adapter = getMasterAdapter();
-            for (int i = 0; i < adapter.getItemCount(); i++) {
-                UserDefineObject item = adapter.getItem(i);
-                item.setIsSelected(item.getId().equals(mGlobalSelectedId));
-            }
-        }
-    }
-
-    /**
-     * Toggles the selection of all items in the selected id array.
-     * @param selected True selects, false deselects.
-     */
-    private void toggleSelections(boolean selected) {
-        ListManager.Adapter adapter = getMasterAdapter();
-        for (String idStr : mSelectedIds) {
-            UserDefineObject object = adapter.getItem(UUID.fromString(idStr));
-            if (object != null)
-                object.setIsSelected(selected);
-        }
+        if (mGlobalSelectedId != null)
+            getMasterAdapter().getItem(mGlobalSelectedId).setIsSelected(true);
     }
 }

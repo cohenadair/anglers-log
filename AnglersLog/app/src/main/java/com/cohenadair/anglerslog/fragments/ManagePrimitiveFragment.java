@@ -20,6 +20,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.cohenadair.anglerslog.R;
+import com.cohenadair.anglerslog.interfaces.OnClickInterface;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import com.cohenadair.anglerslog.utilities.ListSelectionManager;
 import com.cohenadair.anglerslog.utilities.PrimitiveSpec;
@@ -27,6 +28,7 @@ import com.cohenadair.anglerslog.utilities.PrimitiveSpecManager;
 import com.cohenadair.anglerslog.utilities.Utils;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 /**
  * The ManagePrimitiveFragment is used for selecting user defines from a list when adding Catches or
@@ -337,10 +339,13 @@ public class ManagePrimitiveFragment extends DialogFragment {
 
         private ManageType mManageType;
 
+        /**
+         * @see com.cohenadair.anglerslog.utilities.ListSelectionManager.Adapter
+         */
         public ManagePrimitiveAdapter(ArrayList<UserDefineObject> items, boolean manageSelections, ManageType manageType) {
-            super(items, manageSelections, new InteractionListener() {
+            super(items, manageSelections, new OnClickInterface() {
                 @Override
-                public void onSelectionFinished() {
+                public void onClick(View view, UUID id) {
                     dismissFragment();
                 }
             });

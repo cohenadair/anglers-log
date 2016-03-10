@@ -1,6 +1,7 @@
 package com.cohenadair.anglerslog.baits;
 
 import android.content.Context;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +22,7 @@ import java.util.ArrayList;
 
 /**
  * The BaitListManager is a utility class for managing the catches list.
- * Created by Cohen Adair on 2015-10-05.
+ * @author Cohen Adair
  */
 public class BaitListManager {
 
@@ -47,7 +48,7 @@ public class BaitListManager {
         public void setBait(Bait bait, int position) {
             mTitleSubTitleView.setTitle(bait.getName());
             mTitleSubTitleView.setSubtitle(bait.getCategoryName());
-            mTitleSubTitleView.setSubSubtitle(bait.getCatchCountAsString(context()));
+            mTitleSubTitleView.setSubSubtitle(bait.getCatchCountAsString(getContext()));
 
             // thumbnail stuff
             // if the image doesn't exist or can't be read, a default icon is shown
@@ -62,12 +63,12 @@ public class BaitListManager {
                 fileExists = new File(randomPhotoPath).exists();
 
             if (fileExists) {
-                int thumbSize = context().getResources().getDimensionPixelSize(R.dimen.thumbnail_size);
+                int thumbSize = getContext().getResources().getDimensionPixelSize(R.dimen.thumbnail_size);
                 PhotoUtils.thumbnailToImageView(mImageView, randomPhotoPath, thumbSize, R.drawable.no_catch_photo);
             } else
                 mImageView.setImageResource(R.drawable.no_catch_photo);
 
-            updateView(mSeparator, position, bait);
+            updateView(mSeparator, position);
 
             // hide last separator for BaitCategory "sub-lists"
             if (position + 1 < mAdapter.getItemCount()) {
@@ -95,8 +96,8 @@ public class BaitListManager {
     //region Adapter
     public static class Adapter extends ListManager.Adapter {
 
-        public Adapter(Context context, ArrayList<UserDefineObject> items, OnClickInterface callbacks) {
-            super(context, items, callbacks);
+        public Adapter(Context context, ArrayList<UserDefineObject> items, boolean allowMultipleSelection, OnClickInterface callbacks) {
+            super(context, items, allowMultipleSelection, callbacks);
         }
 
         // can't be overridden in the superclass because it needs to return a BaitListManager.ViewHolder
@@ -108,17 +109,18 @@ public class BaitListManager {
         }
 
         @Override
-        public void onBindViewHolder(ListManager.ViewHolder holder, int position) {
-            super.onBind(holder, position);
-
+        public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
             ViewHolder baitHolder = (ViewHolder)holder;
             UserDefineObject item = getItem(position);
+
+            super.onBind(baitHolder, position);
 
             if (item instanceof Bait)
                 baitHolder.setBait((Bait)item, position);
             else
                 baitHolder.setBaitCategory((BaitCategory)item);
         }
+
     }
     //endregion
 

@@ -2,7 +2,6 @@ package com.cohenadair.anglerslog.utilities;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.cohenadair.anglerslog.interfaces.OnClickInterface;
@@ -20,42 +19,27 @@ import java.util.UUID;
 public class ListManager {
 
     //region View Holder
-    public static abstract class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
-
-        private Adapter mAdapter;
-        private View mView;
-        private UUID mId;
+    public static abstract class ViewHolder extends ListSelectionManager.ViewHolder implements View.OnLongClickListener {
 
         public ViewHolder(View view, Adapter adapter) {
-            super(view);
-
-            view.setOnClickListener(this);
+            super(view, adapter);
             view.setOnLongClickListener(this);
-
-            mAdapter = adapter;
-            mView = view;
-        }
-
-        @Override
-        public void onClick(View view) {
-            mAdapter.getCallbacks().onClick(view, mId);
-            mAdapter.setSelected(getAdapterPosition());
         }
 
         @Override
         public boolean onLongClick(View view) {
-            UserDefineObject obj = mAdapter.getItem(mId);
+            UserDefineObject obj = getObject();
 
-            Utils.showManageAlert(mAdapter.getContext(), obj.getName(), new DialogInterface.OnClickListener() {
+            Utils.showManageAlert(getContext(), obj.getName(), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     switch (which) {
                         case Utils.MANAGE_ALERT_EDIT:
-                            onItemEdit(mId);
+                            onItemEdit(getId());
                             break;
 
                         case Utils.MANAGE_ALERT_DELETE:
-                            onItemDelete(mId);
+                            onItemDelete(getId());
                             break;
                     }
                 }
@@ -65,96 +49,42 @@ public class ListManager {
         }
 
         public void onItemEdit(UUID position) {
-            ((OnClickManageMenuListener)context()).onClickMenuEdit(position);
+            ((OnClickManageMenuListener)getContext()).onClickMenuEdit(position);
         }
 
         public void onItemDelete(UUID position) {
-            ((OnClickManageMenuListener)context()).onClickMenuTrash(position);
+            ((OnClickManageMenuListener)getContext()).onClickMenuTrash(position);
         }
 
-        public void setId(UUID id) {
-            mId = id;
+        public Context getContext() {
+            return ((Adapter)getAdapter()).getContext();
         }
 
-        public Adapter getAdapter() {
-            return mAdapter;
-        }
-
-        public View getView() {
-            return mView;
-        }
-
-        public Context context() {
-            return mAdapter.getContext();
-        }
-
-        public void updateView(View separator, int position, UserDefineObject object) {
+        public void updateView(View separator, int position) {
             // hide the separator for the last row
-            separator.setVisibility((position == mAdapter.getItemCount() - 1) ? View.INVISIBLE : View.VISIBLE);
-            Utils.toggleViewSelected(mView, object.getIsSelected() && LogbookPreferences.getIsRootTwoPane());
+            Utils.toggleHidden(separator, position == getItemCount() - 1);
         }
+
     }
     //endregion
 
     //region Adapter
-    public static abstract class Adapter extends RecyclerView.Adapter<ViewHolder> {
+    public static abstract class Adapter extends ListSelectionManager.Adapter {
 
-        private OnClickInterface mCallbacks;
         private Context mContext;
-        private ArrayList<UserDefineObject> mItems;
-        private boolean mShowSelection = true; // used for Trip's Catch and Location selection
 
-        public Adapter(Context context, ArrayList<UserDefineObject> items, OnClickInterface callbacks) {
+        /**
+         * @see com.cohenadair.anglerslog.utilities.ListSelectionManager.Adapter
+         */
+        public Adapter(Context context, ArrayList<UserDefineObject> items, boolean manageSelections, OnClickInterface callbacks) {
+            super(items, manageSelections, callbacks);
             mContext = context;
-            mItems = items;
-            mCallbacks = callbacks;
-        }
-
-        @Override
-        public int getItemCount() {
-            return mItems.size();
-        }
-
-        public void setSelected(int position) {
-            // selection visuals only apply in two-pane view
-            if (!LogbookPreferences.getIsRootTwoPane() || !mShowSelection)
-                return;
-
-            for (UserDefineObject obj : mItems)
-                obj.setIsSelected(false);
-
-            mItems.get(position).setIsSelected(true);
-            notifyDataSetChanged();
-        }
-
-        public void setShowSelection(boolean showSelection) {
-            mShowSelection = showSelection;
-        }
-
-        public void onBind(ViewHolder holder, int position) {
-            holder.setId(mItems.get(position).getId());
-        }
-
-        public OnClickInterface getCallbacks() {
-            return mCallbacks;
         }
 
         public Context getContext() {
             return mContext;
         }
 
-        public UserDefineObject getItem(UUID id) {
-            for (UserDefineObject obj : mItems)
-                if (obj.getId().equals(id))
-                    return obj;
-
-            return null;
-        }
-
-        public UserDefineObject getItem(int position) {
-            return mItems.get(position);
-        }
     }
     //endregion
-
 }

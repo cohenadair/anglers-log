@@ -151,8 +151,13 @@ public class LayoutSpecManager {
 
         spec.setListener(new LayoutSpec.InteractionListener() {
             @Override
-            public ListManager.Adapter onGetMasterAdapter(String searchQuery, SortingMethod sortingMethod) {
-                return new CatchListManager.Adapter(context, Logbook.getCatches(searchQuery, sortingMethod), onMasterItemClick);
+            public ListManager.Adapter onGetMasterAdapter(String searchQuery, SortingMethod sortingMethod, boolean allowMultipleSelection) {
+                return new CatchListManager.Adapter(
+                        context,
+                        Logbook.getCatches(searchQuery, sortingMethod),
+                        allowMultipleSelection,
+                        onMasterItemClick
+                );
             }
 
             @Override
@@ -189,8 +194,13 @@ public class LayoutSpecManager {
 
         spec.setListener(new LayoutSpec.InteractionListener() {
             @Override
-            public ListManager.Adapter onGetMasterAdapter(String searchQuery, SortingMethod sortingMethod) {
-                return new LocationListManager.Adapter(context, Logbook.getLocations(searchQuery, sortingMethod), onMasterItemClick);
+            public ListManager.Adapter onGetMasterAdapter(String searchQuery, SortingMethod sortingMethod, boolean allowMultipleSelection) {
+                return new LocationListManager.Adapter(
+                        context,
+                        Logbook.getLocations(searchQuery, sortingMethod),
+                        allowMultipleSelection,
+                        onMasterItemClick
+                );
             }
 
             @Override
@@ -255,8 +265,13 @@ public class LayoutSpecManager {
 
         spec.setListener(new LayoutSpec.InteractionListener() {
             @Override
-            public ListManager.Adapter onGetMasterAdapter(String searchQuery, SortingMethod sortingMethod) {
-                return new BaitListManager.Adapter(context, Logbook.getBaitsAndCategories(searchQuery, sortingMethod), onMasterItemClick);
+            public ListManager.Adapter onGetMasterAdapter(String searchQuery, SortingMethod sortingMethod, boolean allowMultipleSelection) {
+                return new BaitListManager.Adapter(
+                        context,
+                        Logbook.getBaitsAndCategories(searchQuery, sortingMethod),
+                        allowMultipleSelection,
+                        onMasterItemClick
+                );
             }
 
             @Override
@@ -290,8 +305,13 @@ public class LayoutSpecManager {
 
         spec.setListener(new LayoutSpec.InteractionListener() {
             @Override
-            public ListManager.Adapter onGetMasterAdapter(String searchQuery, SortingMethod sortingMethod) {
-                return new TripListManager.Adapter(context, Logbook.getTrips(searchQuery, sortingMethod), onMasterItemClick);
+            public ListManager.Adapter onGetMasterAdapter(String searchQuery, SortingMethod sortingMethod, boolean allowMultipleSelection) {
+                return new TripListManager.Adapter(
+                        context,
+                        Logbook.getTrips(searchQuery, sortingMethod),
+                        allowMultipleSelection,
+                        onMasterItemClick
+                );
             }
 
             @Override
