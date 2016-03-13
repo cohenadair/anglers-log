@@ -215,7 +215,7 @@ public class LayoutSpecManager {
             @Override
             public void onSelect(UUID selectionId, final LayoutSpec.OnSelectionFinishedCallback callback) {
                 final ArrayList<UserDefineObject> fishingSpots = Logbook.getLocation(selectionId).getFishingSpots();
-                final ArrayAdapter<String> adapter = new ArrayAdapter<>(context, android.R.layout.select_dialog_item);
+                final ArrayAdapter<String> adapter = new ArrayAdapter<>(context, android.R.layout.simple_list_item_1);
                 for (UserDefineObject fishingSpot : fishingSpots)
                     adapter.add(fishingSpot.getName());
 
