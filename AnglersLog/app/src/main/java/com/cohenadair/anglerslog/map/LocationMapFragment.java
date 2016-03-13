@@ -117,6 +117,12 @@ public class LocationMapFragment extends MasterFragment {
         mSearchView.setOnSearchClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // disable search if there's no map
+                if (mMapFragment.getGoogleMap() == null) {
+                    iconifySearchView();
+                    return;
+                }
+
                 ((SearchView)v).setQueryHint(getResources().getString(R.string.search) + " " + getResources().getString(R.string.locations_lowercase));
                 resetSearch();
             }
