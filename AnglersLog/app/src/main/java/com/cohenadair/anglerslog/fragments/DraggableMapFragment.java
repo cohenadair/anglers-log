@@ -317,6 +317,9 @@ public class DraggableMapFragment extends SupportMapFragment implements OnMapRea
     };
 
     private void onClickMapTypeOption() {
+        if (mGoogleMap == null)
+            return;
+
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
         builder.setSingleChoiceItems(R.array.map_types, mGoogleMap.getMapType() - 1, new DialogInterface.OnClickListener() {

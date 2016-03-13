@@ -81,6 +81,9 @@ public class LocationMapFragment extends MasterFragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        if (mMapFragment.getGoogleMap() == null)
+            return super.onOptionsItemSelected(item);
+
         int id = item.getItemId();
 
         if (id == R.id.action_zoom) {
@@ -114,7 +117,7 @@ public class LocationMapFragment extends MasterFragment {
         mSearchView.setOnSearchClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((SearchView)v).setQueryHint(getResources().getString(R.string.search) + " " + getResources().getString(R.string.drawer_locations));
+                ((SearchView)v).setQueryHint(getResources().getString(R.string.search) + " " + getResources().getString(R.string.locations_lowercase));
                 resetSearch();
             }
         });

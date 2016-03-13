@@ -147,6 +147,7 @@
     <string name="number_of_fishing_spots">Number of fishing spots</string>
     <string name="newest_to_oldest">Newest to oldest</string>
     <string name="oldest_to_newest">Oldest to newest</string>
+    <string name="locations_lowercase">locations</string>
 
     <string name="drawer_open">Open Navigation Drawer</string>
     <string name="drawer_close">Close Navigation Drawer</string>
@@ -213,7 +214,7 @@
     <string name="action_sort">Sort</string>
     <string name="action_search">Search</string>
     <string name="action_zoom">Zoom Out</string>
-    <string name="action_map_type">Map Type</string>
+    <string name="action_map_type">Map type</string>
 
     <string name="success_catch">Successfully added catch</string>
     <string name="success_catch_delete">Successfully deleted catch</string>
