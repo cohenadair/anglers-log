@@ -172,7 +172,7 @@ public class MyListSelectionActivity extends LayoutSpecActivity {
 
     private void initSelections(Intent intent) {
         ListManager.Adapter adapter = getMasterAdapter();
-        adapter.setManagingMultipleSelections(true);
+        adapter.setManagingMultipleSelections(mCanSelectMultiple);
 
         // get the globally selected item (one that's shown in master-detail view)
         // so it can be reset later
