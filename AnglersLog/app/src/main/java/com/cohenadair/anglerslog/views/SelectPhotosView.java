@@ -183,7 +183,7 @@ public class SelectPhotosView extends LinearLayout {
     }
 
     public void addImage(String path) {
-        int size = getContext().getResources().getDimensionPixelSize(R.dimen.thumbnail_size);
+        int size = getContext().getResources().getDimensionPixelSize(R.dimen.size_list_thumb);
 
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(size, size);
         layoutParams.setMargins(0, getResources().getDimensionPixelSize(R.dimen.spacing_small_half), 0, 0);

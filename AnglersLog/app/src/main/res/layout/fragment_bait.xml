@@ -19,12 +19,12 @@
 
             <ImageView
                 android:id="@+id/bait_image_view"
-                android:layout_width="@dimen/thumbnail_size"
-                android:layout_height="@dimen/thumbnail_size"
+                android:layout_width="@dimen/size_list_thumb"
+                android:layout_height="@dimen/size_list_thumb"
                 android:layout_marginRight="@dimen/margin_default"
                 android:layout_marginEnd="@dimen/margin_default"
                 android:contentDescription="@string/bait_photo_description"
-                android:src="@drawable/no_catch_photo"/>
+                android:src="@drawable/placeholder_list"/>
 
             <com.cohenadair.anglerslog.views.TitleSubTitleView
                 android:id="@+id/title_view"

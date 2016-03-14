@@ -98,10 +98,10 @@ public class BaitFragment extends DetailFragment {
         String photo = mBait.getRandomPhoto();
         String path = (photo == null) ? "" : PhotoUtils.privatePhotoPath(photo);
         if (photo != null) {
-            int size = getActivity().getResources().getDimensionPixelSize(R.dimen.thumbnail_size);
+            int size = getActivity().getResources().getDimensionPixelSize(R.dimen.size_list_thumb);
 
             if (Utils.fileExists(path))
-                PhotoUtils.thumbnailToImageView(mImageView, path, size, R.drawable.no_catch_photo);
+                PhotoUtils.thumbnailToImageView(mImageView, path, size, R.drawable.placeholder_list);
         }
         Utils.toggleVisibility(mImageView, photo != null && Utils.fileExists(path));
 

@@ -13,6 +13,8 @@
     <!-- Font Sizes -->
     <item name="font_large" type="dimen">24sp</item>
     <item name="font_medium" type="dimen">18sp</item>
+    <item name="font_normal" type="dimen">15sp</item>
     <item name="font_small" type="dimen">14sp</item>
+    <item name="font_caption" type="dimen">12sp</item>
 
 </resources>

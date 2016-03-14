@@ -1,6 +1,7 @@
 <resources>
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="margin_dialog">24dp</dimen>
+    <dimen name="margin_medium">20dp</dimen>
     <dimen name="margin_default">16dp</dimen>
     <dimen name="margin_edit_text_offset">12dp</dimen>
     <dimen name="margin_spinner_offset">8dp</dimen>
@@ -21,13 +22,9 @@
     <dimen name="text_size_list_item">15sp</dimen>
 
     <dimen name="rating_size">16dp</dimen>
-    <dimen name="thumbnail_size">90dp</dimen>
+    <dimen name="size_list_thumb">60dp</dimen>
     <dimen name="thumbnail_cell_size">92dp</dimen>
     <dimen name="image_scroll_size">250dp</dimen>
     <dimen name="image_button_size">24dp</dimen>
     <dimen name="image_button_small">16dp</dimen>
-
-    <!-- Default screen margins, per the Android Design guidelines. -->
-    <dimen name="activity_horizontal_margin">16dp</dimen>
-    <dimen name="activity_vertical_margin">16dp</dimen>
 </resources>

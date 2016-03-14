@@ -2,96 +2,56 @@ package com.cohenadair.anglerslog.catches;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.RatingBar;
 
-import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.interfaces.OnClickInterface;
 import com.cohenadair.anglerslog.model.Logbook;
 import com.cohenadair.anglerslog.model.user_defines.Catch;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import com.cohenadair.anglerslog.utilities.ListManager;
-import com.cohenadair.anglerslog.utilities.PhotoUtils;
-import com.cohenadair.anglerslog.views.TitleSubTitleView;
 
-import java.io.File;
 import java.util.ArrayList;
 
 /**
  * The BaitListManager is a utility class for managing the catches list.
- * Created by Cohen Adair on 2015-10-05.
+ * @author Cohen Adair
  */
 public class CatchListManager {
 
     //region View Holder
     public static class ViewHolder extends ListManager.ViewHolder {
 
-        private ImageView mImageView;
-        private TitleSubTitleView mTitleSubTitleView;
-        private RatingBar mFavorite;
-        private View mSeparator;
         private CatchListManager.Adapter.GetContentListener mListener;
-
         private Catch mCatch;
 
         public ViewHolder(View view, ListManager.Adapter adapter) {
             super(view, adapter);
 
-            mImageView = (ImageView)view.findViewById(R.id.image_view);
-            mTitleSubTitleView = (TitleSubTitleView)view.findViewById(R.id.content_view);
-            mSeparator = view.findViewById(R.id.cell_separator);
             mListener = ((CatchListManager.Adapter)getAdapter()).getGetContentListener();
-
-            mFavorite = (RatingBar)view.findViewById(R.id.favorite_star);
-            mFavorite.setOnTouchListener(new View.OnTouchListener() {
+            setOnTouchFavoriteStarListener(new OnToggleFavoriteStarListener() {
                 @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    if (event.getAction() == MotionEvent.ACTION_UP) {
-                        mFavorite.setRating(mFavorite.getRating() <= 0 ? (float) 1.0 : (float) 0.0);
-                        mCatch.setIsFavorite(mFavorite.getRating() > 0);
-                        Logbook.editCatch(mCatch.getId(), mCatch);
-                    }
-                    return true;
+                public void onToggle(boolean isFavorite) {
+                    mCatch.setIsFavorite(isFavorite);
+                    Logbook.editCatch(mCatch.getId(), mCatch);
                 }
             });
+
+            initForComplexLayout();
         }
 
-        public void setCatch(Catch aCatch, int position) {
+        public void setCatch(Catch aCatch) {
             mCatch = aCatch;
 
-            mTitleSubTitleView.setTitle(aCatch.getSpeciesAsString());
-            mTitleSubTitleView.setSubtitle(aCatch.getDateTimeAsString());
-            mFavorite.setRating(mCatch.isFavorite() ? (float) 1.0 : (float) 0.0);
+            setTitle(mCatch.getSpeciesAsString());
+            setSubtitle(mCatch.getDateTimeAsString());
+            setIsFavorite(mCatch.isFavorite());
+            setImage(mCatch.getRandomPhoto());
 
-            if (aCatch.getFishingSpot() != null)
-                mTitleSubTitleView.setSubSubtitle((mListener == null) ? aCatch.getFishingSpotAsString() : mListener.onGetSubSubtitle(mCatch));
-            else
-                mTitleSubTitleView.hideSubSubtitle();
-
-            // thumbnail stuff
-            // if the image doesn't exist or can't be read, a default icon is shown
-            boolean fileExists = false;
-            String randomPhoto = mCatch.getRandomPhoto();
-            String randomPhotoPath = "";
-
-            if (randomPhoto != null)
-                randomPhotoPath = PhotoUtils.privatePhotoPath(randomPhoto);
-
-            if (randomPhotoPath != null)
-                fileExists = new File(randomPhotoPath).exists();
-
-            if (fileExists) {
-                int thumbSize = getContext().getResources().getDimensionPixelSize(R.dimen.thumbnail_size);
-                PhotoUtils.thumbnailToImageView(mImageView, randomPhotoPath, thumbSize, R.drawable.no_catch_photo);
-            } else
-                mImageView.setImageResource(R.drawable.no_catch_photo);
-
-            updateView(mSeparator, position);
+            if (mCatch.getFishingSpot() != null)
+                setSubSubtitle((mListener == null) ? mCatch.getFishingSpotAsString() : mListener.onGetSubSubtitle(mCatch));
         }
+
     }
     //endregion
 
@@ -132,9 +92,7 @@ public class CatchListManager {
         // can't be overridden in the superclass because it needs to return a CatchListManager.ViewHolder
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            LayoutInflater inflater = LayoutInflater.from(getContext());
-            View view = inflater.inflate(R.layout.list_item_catch, parent, false);
-            return new ViewHolder(view, this);
+            return new ViewHolder(inflateComplexItem(parent), this);
         }
 
         @Override
@@ -142,8 +100,9 @@ public class CatchListManager {
             ViewHolder catchHolder = (ViewHolder)holder;
 
             super.onBind(catchHolder, position);
-            catchHolder.setCatch((Catch)getItem(position), position);
+            catchHolder.setCatch((Catch)getItem(position));
         }
+
     }
     //endregion
 
