@@ -37,16 +37,7 @@ public class NavigationManager implements FragmentManager.OnBackStackChangedList
         mNavigationView = (NavigationView)mActivity.findViewById(R.id.navigation_view);
         mNavigationView.setItemIconTintList(null);
 
-        for (int i = 0; i < mNavigationView.getMenu().size(); i++) {
-            MenuItem item = mNavigationView.getMenu().getItem(i);
-            item.setChecked(item.getItemId() == getCurrentLayoutId());
-
-            // keep original colors for Instagram and Twitter links
-            if (item.getItemId() != LayoutSpecManager.LAYOUT_INSTAGRAM &&
-                item.getItemId() != LayoutSpecManager.LAYOUT_TWITTER)
-                item.getIcon().setAlpha(75);
-        }
-
+        fixIcons(getCurrentLayoutId());
         initHeaderView();
     }
 
@@ -61,7 +52,7 @@ public class NavigationManager implements FragmentManager.OnBackStackChangedList
             }
         });
 
-        mDrawerLayout.setDrawerListener(getDrawerListener());
+        mDrawerLayout.addDrawerListener(getDrawerListener());
         mActivity.getSupportFragmentManager().addOnBackStackChangedListener(this);
         mActionBar.setDisplayHomeAsUpEnabled(true);
         showMenuButton();
@@ -154,6 +145,19 @@ public class NavigationManager implements FragmentManager.OnBackStackChangedList
         mSelectedItemId = null;
 
         return true;
+    }
+
+    private void fixIcons(int selectedId) {
+        for (int i = 0; i < mNavigationView.getMenu().size(); i++) {
+            MenuItem item = mNavigationView.getMenu().getItem(i);
+            int id = item.getItemId();
+
+            item.setChecked(id == selectedId);
+
+            // keep original colors for Instagram and Twitter links
+            if (id != LayoutSpecManager.LAYOUT_INSTAGRAM && id != LayoutSpecManager.LAYOUT_TWITTER)
+                item.getIcon().setAlpha(75);
+        }
     }
 
     @NonNull
