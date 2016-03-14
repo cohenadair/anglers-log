@@ -188,8 +188,12 @@ public class ListSelectionManager {
                 // initialize each selected item for selection
                 for (String idStr : selectedIds) {
                     UUID id = UUID.fromString(idStr);
-                    getItem(id).setIsSelected(true);
-                    addSelectedItem(id);
+                    UserDefineObject item = getItem(id);
+
+                    if (item != null) {
+                        getItem(id).setIsSelected(true);
+                        addSelectedItem(id);
+                    }
                 }
         }
 
