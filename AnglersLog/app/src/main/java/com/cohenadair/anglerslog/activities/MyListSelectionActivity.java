@@ -180,7 +180,6 @@ public class MyListSelectionActivity extends LayoutSpecActivity {
             if (obj.getIsSelected()) {
                 mGlobalSelectedId = obj.getId();
                 obj.setIsSelected(false);
-                break;
             }
 
         ArrayList<String> selectedIds = intent.getStringArrayListExtra(EXTRA_SELECTED_IDS);

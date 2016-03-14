@@ -57,8 +57,10 @@ public class ListSelectionManager {
         public void onClick(View v) {
             if (mAdapter.isManagingMultipleSelections())
                 addToSelections();
-            else
+            else {
+                updateSelection();
                 finishSelection();
+            }
         }
 
         public void setSelection(boolean select) {
@@ -80,6 +82,16 @@ public class ListSelectionManager {
                 mAdapter.addSelectedItem(mId);
 
             setSelection(!getObject().getIsSelected());
+        }
+
+        /**
+         * Replaces the current selection with this {@link UserDefineObject}.
+         */
+        private void updateSelection() {
+            for (int i = 0; i < getItemCount(); i++)
+                mAdapter.getItem(i).setIsSelected(false);
+
+            getObject().setIsSelected(true);
         }
 
         private void finishSelection() {
