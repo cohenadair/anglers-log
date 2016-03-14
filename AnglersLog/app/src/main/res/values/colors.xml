@@ -3,7 +3,8 @@
     <color name="anglers_log_light">#EBD493</color>
     <color name="anglers_log_dark">#D4BF84</color>
     <color name="anglers_log_accent">#EBD493</color>
-    <color name="drawer_background">@android:color/white</color>
+    <color name="global_background">@android:color/white</color>
+    <color name="drawer_background">@color/global_background</color>
     <color name="light_grey">#ddd</color>
     <color name="grey">#ccc</color>
     <color name="medium_grey">#999999</color>
