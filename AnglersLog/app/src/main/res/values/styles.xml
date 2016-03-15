@@ -104,8 +104,13 @@
         <item name="android:textColor">@color/black</item>
     </style>
 
+    <style name="TextView.Medium.Bold" parent="TextView.Medium">
+        <item name="android:textStyle">bold</item>
+    </style>
+
     <style name="TextView.PrimaryListItem" parent="Theme.AppCompat.Light">
         <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@android:color/black</item>
     </style>
 
     <style name="TextView.SmallSubtitle" parent="Theme.AppCompat.Light">

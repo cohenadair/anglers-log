@@ -102,6 +102,7 @@
     <string name="location">Location</string>
     <string name="location_success">Location Success</string>
     <string name="location_stats">Location Statistics</string>
+    <string name="new_fishing_spot">New Fishing Spot</string>
     <string name="fishing_spot">Fishing Spot</string>
     <string name="fishing_spots">Fishing Spots</string>
     <string name="properties">Properties</string>

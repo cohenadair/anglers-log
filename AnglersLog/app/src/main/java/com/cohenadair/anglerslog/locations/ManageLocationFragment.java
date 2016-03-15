@@ -269,7 +269,7 @@ public class ManageLocationFragment extends ManageContentFragment {
         });
 
         ManageFragment manageFragment = new ManageFragment();
-        manageFragment.setNoTitle(true);
+        manageFragment.setTitle(R.string.new_fishing_spot);
         manageFragment.setContentFragment(fragment);
         manageFragment.show(getChildFragmentManager(), null);
     }

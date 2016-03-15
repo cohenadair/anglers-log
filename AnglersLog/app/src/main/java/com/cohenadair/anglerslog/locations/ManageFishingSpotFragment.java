@@ -22,10 +22,12 @@ import com.google.android.gms.maps.model.LatLng;
 import java.util.ArrayList;
 
 /**
- * The ManageFishingSpotFragment is used to add and edit fishing spots. This ManageContentFragment
- * subclass works slightly different than others. It doesn't interact with the backend database
- * directly. This is so FishingSpot objects aren't manipulated in the database before the user
- * saves the location.
+ * The ManageFishingSpotFragment is used to add and edit fishing spots. This
+ * {@link ManageContentFragment} subclass works slightly different than others. It doesn't interact
+ * with the backend database directly. This is so {@link FishingSpot} objects aren't manipulated in
+ * the database before the user saves the location.
+ *
+ * @author Cohen Adair
  */
 public class ManageFishingSpotFragment extends ManageContentFragment {
 

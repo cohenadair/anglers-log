@@ -9,10 +9,14 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.Button;
+import android.view.WindowManager;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.activities.LayoutSpecActivity;
@@ -26,7 +30,7 @@ public class ManageFragment extends DialogFragment {
 
     private static final String TAG_CONTENT_FRAGMENT = "content_fragment";
 
-    private boolean mNoTitle;
+    private int mTitleId = -1;
     private InteractionListener mCallbacks;
     private ManageContentFragment mContentFragment;
 
@@ -46,19 +50,11 @@ public class ManageFragment extends DialogFragment {
         View view = inflater.inflate(R.layout.fragment_manage, container, false);
         setHasOptionsMenu(true);
 
-        if (mNoTitle && getDialog() != null)
+        // for tablet layouts - shown as a dialog
+        if (getDialog() != null) {
             getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
-
-        Button saveButton = (Button)view.findViewById(R.id.confirm_button);
-        saveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mContentFragment.addObjectToLogbook()) {
-                    mCallbacks.onManageDismiss(closeDialog());
-                    mContentFragment.onDismiss();
-                }
-            }
-        });
+            getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+        }
 
         // add the actual content to the scroll view
         setDialogTitle(getRealActivity().getViewTitle());
@@ -68,11 +64,13 @@ public class ManageFragment extends DialogFragment {
                     .replace(R.id.content_scroll_view, mContentFragment, TAG_CONTENT_FRAGMENT)
                     .commit();
 
+        initToolbar(view);
+
         return view;
     }
 
-    public void setNoTitle(boolean noTitle) {
-        mNoTitle = noTitle;
+    public void setTitle(int resId) {
+        mTitleId = resId;
     }
 
     @Override
@@ -109,8 +107,20 @@ public class ManageFragment extends DialogFragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
 
-        if (isVisible())
+        if (isVisible()) {
             menu.clear();
+            inflater.inflate(R.menu.menu_done, menu);
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_done) {
+            onClickSave();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     public void setContentFragment(ManageContentFragment contentFragment) {
@@ -138,5 +148,41 @@ public class ManageFragment extends DialogFragment {
             return true;
         }
         return false;
+    }
+
+    private void onClickSave() {
+        if (mContentFragment.addObjectToLogbook()) {
+            mCallbacks.onManageDismiss(closeDialog());
+            mContentFragment.onDismiss();
+        }
+    }
+
+    private void initToolbar(View view) {
+        LinearLayout toolbar = (LinearLayout)view.findViewById(R.id.toolbar_view);
+
+        // if not shown as a dialog, hide the toolbar as the actual activity's toolbar is used
+        if (getDialog() == null) {
+            toolbar.setVisibility(View.GONE);
+            return;
+        }
+
+        TextView title = (TextView)view.findViewById(R.id.title_text_view);
+        title.setText(mTitleId == -1 ? getRealActivity().getViewTitle() : getResources().getString(mTitleId));
+
+        ImageButton saveButton = (ImageButton)view.findViewById(R.id.done_button);
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onClickSave();
+            }
+        });
+
+        ImageButton backButton = (ImageButton)view.findViewById(R.id.back_button);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                closeDialog();
+            }
+        });
     }
 }
