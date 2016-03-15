@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.DatePicker;
@@ -13,6 +14,7 @@ import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.activities.MyListSelectionActivity;
 import com.cohenadair.anglerslog.model.user_defines.PhotoUserDefineObject;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
+import com.cohenadair.anglerslog.utilities.PermissionUtils;
 import com.cohenadair.anglerslog.utilities.PhotoUtils;
 import com.cohenadair.anglerslog.utilities.Utils;
 import com.cohenadair.anglerslog.views.SelectPhotosView;
@@ -27,7 +29,7 @@ import java.util.UUID;
  * The ManageContentFragment is the superclass of the content fragments used in ManageFragment
  * instances.
  *
- * Created by Cohen Adair on 2015-09-30.
+ * @author Cohen Adair
  */
 public abstract class ManageContentFragment extends Fragment {
 
@@ -98,6 +100,28 @@ public abstract class ManageContentFragment extends Fragment {
         updateViews();
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        // for taking photos
+        if (requestCode == PermissionUtils.EXTERNAL_STORAGE) {
+            if (grantResults.length > 0 && grantResults[0] == PermissionUtils.GRANTED)
+                mSelectPhotosView.onStoragePermissionsGranted();
+            else
+                Utils.showErrorAlert(getContext(), R.string.storage_permissions_denied);
+
+            return;
+        }
+
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+
+
     //region Getters & Setters
     public boolean isEditing() {
         return mIsEditing;
@@ -146,6 +170,7 @@ public abstract class ManageContentFragment extends Fragment {
      */
     protected void initSelectPhotosView(View view) {
         mSelectPhotosView = (SelectPhotosView)view.findViewById(R.id.select_photos_view);
+        mSelectPhotosView.setFragment(this.getParentFragment());
         mSelectPhotosView.setSelectPhotosInteraction(new SelectPhotosView.SelectPhotosInteraction() {
             @Override
             public File onGetPhotoFile() {

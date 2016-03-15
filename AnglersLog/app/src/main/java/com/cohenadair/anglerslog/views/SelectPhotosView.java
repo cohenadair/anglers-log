@@ -9,6 +9,7 @@ import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.MediaStore;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.util.AttributeSet;
 import android.view.View;
@@ -19,6 +20,7 @@ import android.widget.TextView;
 
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.catches.ManageCatchFragment;
+import com.cohenadair.anglerslog.utilities.PermissionUtils;
 import com.cohenadair.anglerslog.utilities.PhotoUtils;
 import com.cohenadair.anglerslog.utilities.Utils;
 
@@ -53,6 +55,7 @@ public class SelectPhotosView extends LinearLayout {
     private SelectPhotosInteraction mSelectPhotosInteraction;
     private File mPrivatePhotoFile; // used to save a version of the photo used by this application
     private File mPublicPhotoFile; // used to save a full resolution version of the photo for the user
+    private Fragment mFragment;
 
     private int mMaxPhotos = -1;
     private boolean mCanSelectMultiple = false;
@@ -127,7 +130,25 @@ public class SelectPhotosView extends LinearLayout {
     public void setMaxPhotos(int maxPhotos) {
         mMaxPhotos = maxPhotos;
     }
+
+    public void setFragment(Fragment fragment) {
+        mFragment = fragment;
+    }
     //endregion
+
+    /**
+     * Should be called in the associated Fragment's onRequestPermissionsResult method.
+     */
+    public void onStoragePermissionsGranted() {
+        Intent photoIntent = PhotoUtils.takePhotoIntent();
+
+        // make sure the camera is available on this device
+        if (canTakePicture(photoIntent)) {
+            photoIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(mPublicPhotoFile));
+            mSelectPhotosInteraction.onStartSelectionActivity(photoIntent, ManageCatchFragment.REQUEST_PHOTO);
+        } else
+            Utils.showErrorAlert(getContext(), R.string.error_camera_unavailable);
+    }
 
     private void openPhotoIntent(int takeOrAttach) {
         mPrivatePhotoFile = mSelectPhotosInteraction.onGetPhotoFile();
@@ -138,16 +159,12 @@ public class SelectPhotosView extends LinearLayout {
         if (takeOrAttach == PHOTO_ATTACH)
             mSelectPhotosInteraction.onStartSelectionActivity(PhotoUtils.pickPhotoIntent(mCanSelectMultiple), ManageCatchFragment.REQUEST_PHOTO);
 
-        if (takeOrAttach == PHOTO_TAKE) {
-            Intent photoIntent = PhotoUtils.takePhotoIntent();
-
-            // make sure the camera is available on this device
-            if (canTakePicture(photoIntent)) {
-                photoIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(mPublicPhotoFile));
-                mSelectPhotosInteraction.onStartSelectionActivity(photoIntent, ManageCatchFragment.REQUEST_PHOTO);
-            } else
-                Utils.showErrorAlert(getContext(), R.string.error_camera_unavailable);
-        }
+        if (takeOrAttach == PHOTO_TAKE)
+            if (PermissionUtils.isExternalStorageGranted(mFragment.getContext()))
+                onStoragePermissionsGranted();
+            else
+                // results are handled in this view's associated Fragment
+                PermissionUtils.requestExternalStorage(mFragment);
     }
 
     public void onPhotoIntentResult(Intent data) {

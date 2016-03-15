@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -91,16 +92,51 @@ public class ManageFragment extends DialogFragment {
         mCallbacks = null;
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+    /**
+     * Iterates over all children fragments.
+     */
+    private interface ChildFragmentIterationListener {
+        void callMethod(Fragment fragment);
+    }
 
-        // pass the onActivityResult calls to the child fragments
+    private void iterateChildFragments(ChildFragmentIterationListener callbacks) {
         List<Fragment> fragments = getChildFragmentManager().getFragments();
         if (fragments != null)
             for (Fragment fragment : fragments)
                 if (fragment != null)
-                    fragment.onActivityResult(requestCode, resultCode, data);
+                    callbacks.callMethod(fragment);
+    }
+
+    /**
+     * Required as an Android bug workaround. {@link Fragment#onRequestPermissionsResult(int, String[], int[])}
+     * calls aren't passed to child fragments.
+     */
+    @Override
+    public void onRequestPermissionsResult(final int requestCode, @NonNull final String[] permissions, @NonNull final int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        iterateChildFragments(new ChildFragmentIterationListener() {
+            @Override
+            public void callMethod(Fragment fragment) {
+                fragment.onRequestPermissionsResult(requestCode, permissions, grantResults);
+            }
+        });
+    }
+
+    /**
+     * Required as an Android bug workaround. {@link Fragment#onActivityResult(int, int, Intent)}
+     * calls aren't passed to child fragments.
+     */
+    @Override
+    public void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        iterateChildFragments(new ChildFragmentIterationListener() {
+            @Override
+            public void callMethod(Fragment fragment) {
+                fragment.onActivityResult(requestCode, resultCode, data);
+            }
+        });
     }
 
     @Override

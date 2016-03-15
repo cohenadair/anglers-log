@@ -298,4 +298,8 @@
     <string name="back_description">Go back.</string>
 
     <string name="unknown">Unknown</string>
+
+    <string name="storage_permissions">Storage Permissions</string>
+    <string name="storage_permissions_message">Permission to read and write from the device\'s storage is required to save photos taken with Anglers\' Log.</string>
+    <string name="storage_permissions_denied">Storage permissions were denied and as a result Anglers\' Log is unable to use the camera.</string>
 </resources>
