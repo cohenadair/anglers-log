@@ -12,6 +12,7 @@
         android:id="@+id/toolbar_view"
         android:layout_width="match_parent"
         android:layout_height="?android:attr/actionBarSize"
+        android:gravity="center_vertical"
         android:orientation="horizontal"
         android:background="@color/anglers_log_light">
 
@@ -20,7 +21,6 @@
             android:layout_width="@dimen/image_button_size"
             android:layout_height="@dimen/image_button_size"
             android:layout_margin="@dimen/margin_default"
-            android:layout_gravity="center_vertical"
             android:background="?android:attr/selectableItemBackground"
             android:src="@drawable/ic_back"
             android:contentDescription="@string/back_description"/>
@@ -31,7 +31,6 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_gravity="center_vertical"
             tools:text="Title"/>
 
         <ImageButton
@@ -40,7 +39,6 @@
             android:layout_height="@dimen/image_button_size"
             android:layout_marginRight="@dimen/margin_default"
             android:layout_marginEnd="@dimen/margin_default"
-            android:layout_gravity="center_vertical"
             android:background="?android:attr/selectableItemBackground"
             android:src="@drawable/ic_check"
             android:contentDescription="@string/check_description"/>

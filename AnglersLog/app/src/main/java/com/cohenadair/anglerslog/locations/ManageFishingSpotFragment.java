@@ -1,10 +1,14 @@
 package com.cohenadair.anglerslog.locations;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.fragments.DraggableMapFragment;
@@ -35,6 +39,7 @@ public class ManageFishingSpotFragment extends ManageContentFragment {
     private TitleSubTitleView mLatitudeView;
     private TitleSubTitleView mLongitudeView;
     private DraggableMapFragment mMapFragment;
+    private ImageView mCrosshairs;
     private GoogleMap mMap;
 
     private Location mLocation;
@@ -58,10 +63,13 @@ public class ManageFishingSpotFragment extends ManageContentFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_manage_fishing_spot, container, false);
 
+        mCrosshairs = (ImageView)view.findViewById(R.id.crosshairs);
+
         initNameView(view);
         initCoordinatesView(view);
         initMapFragment();
         initSubclassObject();
+        initToolbar();
 
         return view;
     }
@@ -136,6 +144,8 @@ public class ManageFishingSpotFragment extends ManageContentFragment {
         if (mMap == null)
             return;
 
+        updateCrosshairs(mMap.getMapType());
+
         // move the camera to the current fishing spot
         if (isEditing())
             updateCamera(getNewFishingSpot().getCoordinates());
@@ -146,6 +156,50 @@ public class ManageFishingSpotFragment extends ManageContentFragment {
             if (fishingSpots.size() > 0)
                 updateCamera(((FishingSpot)fishingSpots.get(0)).getCoordinates());
         }
+    }
+
+    /**
+     * Adds an icon to the toolbar that allows users to change the map type.
+     */
+    private void initToolbar() {
+        // find the toolbar layout
+        LinearLayout toolbar = null;
+
+        View parent = getParentFragment().getView();
+        if (parent != null)
+            toolbar = (LinearLayout)parent.findViewById(R.id.toolbar_view);
+
+        // create the icon
+        ImageButton mapType = new ImageButton(getContext());
+
+        mapType.setImageResource(R.drawable.ic_map);
+        mapType.setBackgroundResource(Utils.resIdFromAttr(getContext(), android.R.attr.selectableItemBackground));
+        mapType.setContentDescription(getResources().getString(R.string.select_map_type));
+        mapType.setColorFilter(Color.BLACK);
+        mapType.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mMapFragment.onClickMapTypeOption();
+            }
+        });
+
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                getResources().getDimensionPixelOffset(R.dimen.image_button_size),
+                getResources().getDimensionPixelOffset(R.dimen.image_button_size)
+        );
+
+        params.setMargins(
+                0,
+                getResources().getDimensionPixelOffset(R.dimen.margin_default),
+                getResources().getDimensionPixelOffset(R.dimen.margin_default),
+                getResources().getDimensionPixelOffset(R.dimen.margin_default)
+        );
+
+        mapType.setLayoutParams(params);
+
+        // add the icon
+        if (toolbar != null)
+            toolbar.addView(mapType);
     }
 
     private void initNameView(View view) {
@@ -193,10 +247,22 @@ public class ManageFishingSpotFragment extends ManageContentFragment {
                     updateCoordinateViews(mMap.getCameraPosition().target);
             }
         });
+
+        mMapFragment.setOnUpdateMapType(new DraggableMapFragment.OnUpdateMapType() {
+            @Override
+            public void onUpdate(int mapType) {
+                updateCrosshairs(mapType);
+            }
+        });
     }
 
     private void updateCamera(LatLng loc) {
         mMapFragment.updateCamera(loc);
         updateCoordinateViews(loc);
+    }
+
+    private void updateCrosshairs(int mapType) {
+        boolean isDark = mapType == GoogleMap.MAP_TYPE_SATELLITE || mapType == GoogleMap.MAP_TYPE_HYBRID;
+        mCrosshairs.setColorFilter(isDark ? Color.WHITE : Color.BLACK);
     }
 }

@@ -36,8 +36,7 @@ import com.google.android.gms.maps.model.LatLng;
  * A SupportMapFragment wrapper class to handle map drag events. It also handles optional user
  * location support and integration with the Google FusedLocationProviderApi.
  *
- * Created by Cohen Adair on 2015-12-06.
- * Updated by Cohen Adair on 2016-02-03.
+ * @author Cohen Adair
  */
 public class DraggableMapFragment extends SupportMapFragment implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
@@ -58,12 +57,17 @@ public class DraggableMapFragment extends SupportMapFragment implements OnMapRea
 
     private GoogleMapLayout.OnDragListener mOnDragListener;
     private InteractionListener mCallbacks;
+    private OnUpdateMapType mOnUpdateMapType;
     private boolean mLocationEnabled = false;
     private boolean mLocationUpdatesEnabled = false;
 
     public interface InteractionListener {
         void onMapReady(GoogleMap map);
         void onLocationUpdate(Location location);
+    }
+
+    public interface OnUpdateMapType {
+        void onUpdate(int mapType);
     }
 
     public static DraggableMapFragment newInstance(boolean enableLocation, boolean enableLocationUpdates) {
@@ -225,6 +229,10 @@ public class DraggableMapFragment extends SupportMapFragment implements OnMapRea
         mOnDragListener = onDragListener;
     }
 
+    public void setOnUpdateMapType(OnUpdateMapType onUpdateMapType) {
+        mOnUpdateMapType = onUpdateMapType;
+    }
+
     public void updateCamera(LatLng loc, int time, GoogleMap.CancelableCallback callback) {
         try {
             mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(loc, ZOOM), time, callback);
@@ -316,7 +324,7 @@ public class DraggableMapFragment extends SupportMapFragment implements OnMapRea
         }
     };
 
-    private void onClickMapTypeOption() {
+    public void onClickMapTypeOption() {
         if (mGoogleMap == null)
             return;
 
@@ -327,6 +335,10 @@ public class DraggableMapFragment extends SupportMapFragment implements OnMapRea
             public void onClick(DialogInterface dialog, int which) {
                 mGoogleMap.setMapType(which + 1);
                 LogbookPreferences.setMapType(mGoogleMap.getMapType());
+
+                if (mOnUpdateMapType != null)
+                    mOnUpdateMapType.onUpdate(mGoogleMap.getMapType());
+
                 dialog.dismiss();
             }
         });

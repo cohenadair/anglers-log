@@ -21,6 +21,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.format.DateFormat;
+import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -427,6 +428,12 @@ public class Utils {
 
     public static String emptyStringOrString(String str) {
         return (str == null) ? "" : str;
+    }
+
+    public static int resIdFromAttr(Context context, int attr) {
+        TypedValue value = new TypedValue();
+        context.getTheme().resolveAttribute(android.R.attr.selectableItemBackground, value, true);
+        return value.resourceId;
     }
 
 }
