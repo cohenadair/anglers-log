@@ -179,7 +179,7 @@ public class ManageFishingSpotFragment extends ManageContentFragment {
         mapType.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mMapFragment.onClickMapTypeOption();
+                mMapFragment.onClickMapTypeOption(true);
             }
         });
 

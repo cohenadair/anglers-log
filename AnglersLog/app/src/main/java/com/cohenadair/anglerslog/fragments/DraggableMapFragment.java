@@ -324,7 +324,7 @@ public class DraggableMapFragment extends SupportMapFragment implements OnMapRea
         }
     };
 
-    public void onClickMapTypeOption() {
+    public void onClickMapTypeOption(boolean showTitle) {
         if (mGoogleMap == null)
             return;
 
@@ -343,6 +343,13 @@ public class DraggableMapFragment extends SupportMapFragment implements OnMapRea
             }
         });
 
+        if (showTitle)
+            builder.setTitle(R.string.select_map_type);
+
         builder.show();
+    }
+
+    public void onClickMapTypeOption() {
+        onClickMapTypeOption(false);
     }
 }
