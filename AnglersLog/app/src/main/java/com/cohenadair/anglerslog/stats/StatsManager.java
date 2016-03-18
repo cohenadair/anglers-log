@@ -148,12 +148,11 @@ public class StatsManager {
         }
 
         public StatsSpec(int id, String activityTitle, String userDefineObjectName, ArrayList<Stats.Quantity> content, Fragment detailFragment, InteractionListener callbacks) {
-            mId = id;
-            mActivityTitle = activityTitle;
-            mUserDefineObjectName = userDefineObjectName;
-            mContent = content;
-            mDetailFragment = detailFragment;
+            this(id, activityTitle, userDefineObjectName, content, detailFragment);
             mCallbacks = callbacks;
+
+            // make sure content is sorted for selections
+            Collections.sort(mContent, new Stats.NameComparator());
         }
 
         public StatsSpec(int id, String activityTitle, Fragment detailFragment) {
@@ -176,12 +175,6 @@ public class StatsManager {
 
         public ArrayList<Stats.Quantity> getContent() {
             return mContent;
-        }
-
-        public ArrayList<Stats.Quantity> getAlphaSortedContent() {
-            ArrayList<Stats.Quantity> result = new ArrayList<>(mContent);
-            Collections.sort(result, new Stats.NameComparator());
-            return result;
         }
 
         public Fragment getDetailFragment() {

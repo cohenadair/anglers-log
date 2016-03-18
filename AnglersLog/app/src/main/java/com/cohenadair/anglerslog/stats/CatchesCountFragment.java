@@ -202,7 +202,7 @@ public class CatchesCountFragment extends Fragment {
 
     private void onClickCenterCircle() {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1);
-        ArrayList<Stats.Quantity> options = mStatsSpec.getAlphaSortedContent();
+        ArrayList<Stats.Quantity> options = mStatsSpec.getContent();
 
         for (Stats.Quantity item : options)
             adapter.add(item.getName());
