@@ -2,6 +2,8 @@ package com.cohenadair.anglerslog.settings;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.preference.ListPreference;
@@ -57,6 +59,10 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     public void onResume() {
         super.onResume();
         showImportDialog();
+
+        // hide list separators
+        setDivider(new ColorDrawable(Color.TRANSPARENT));
+        setDividerHeight(0);
     }
 
     @Override
