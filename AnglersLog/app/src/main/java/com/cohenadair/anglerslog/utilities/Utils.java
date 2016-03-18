@@ -436,4 +436,65 @@ public class Utils {
         return value.resourceId;
     }
 
+    /**
+     * Ensures content appears behind the navigation and status bars.
+     */
+    public static void allowSystemOverlay(Activity activity) {
+        activity.getWindow().getDecorView().setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
+                        View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION |
+                        View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+        );
+    }
+
+    /**
+     * This snippet shows the system bars. It does this by removing all the flags except for the
+     * ones that make the content appear under the system bars.
+     *
+     * @see <a href="http://developer.android.com/training/system-ui/immersive.html">Using Immersive Full-Screen Mode</a>
+     */
+    public static void showSystemUI(Activity activity) {
+        activity.getWindow().getDecorView().setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
+                View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION |
+                View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+        );
+    }
+
+    /**
+     * @see #showSystemUI(Activity)
+     */
+    public static void hideSystemUI(Activity activity) {
+        // set the content to appear under the system bars so that the content
+        // doesn't resize when the system bars hide and show.
+        activity.getWindow().getDecorView().setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
+                View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION |
+                View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN |
+                View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | // hide nav bar
+                View.SYSTEM_UI_FLAG_FULLSCREEN // hide status bar
+        );
+    }
+
+    public static void toggleSystemUI(Activity activity, boolean show) {
+        if (show)
+            showSystemUI(activity);
+        else
+            hideSystemUI(activity);
+    }
+
+    /**
+     * @return The height of the system's status bar.
+     * See <a href="http://mrtn.me/blog/2012/03/17/get-the-height-of-the-status-bar-in-android/">Get the height of the status bar in Android.</a>
+     */
+    public static int getStatusBarHeight(Context context) {
+        int result = 0;
+        int resourceId = context.getResources().getIdentifier("status_bar_height", "dimen", "android");
+
+        if (resourceId > 0)
+            result = context.getResources().getDimensionPixelSize(resourceId);
+
+        return result;
+    }
+
 }

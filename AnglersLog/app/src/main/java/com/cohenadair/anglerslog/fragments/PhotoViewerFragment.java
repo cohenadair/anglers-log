@@ -1,6 +1,7 @@
 package com.cohenadair.anglerslog.fragments;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -14,6 +15,7 @@ import android.widget.RelativeLayout;
 
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.utilities.PhotoUtils;
+import com.cohenadair.anglerslog.utilities.Utils;
 
 import java.util.ArrayList;
 
@@ -38,11 +40,45 @@ public class PhotoViewerFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_photo_viewer, container, false);
 
+        Utils.allowSystemOverlay(getActivity());
+
+        // toggle the toolbar when system components are toggled
+        getActivity().getWindow().getDecorView().setOnSystemUiVisibilityChangeListener(new View.OnSystemUiVisibilityChangeListener() {
+            @Override
+            public void onSystemUiVisibilityChange(int visibility) {
+                toggleToolbar((visibility & View.SYSTEM_UI_FLAG_FULLSCREEN) == 0);
+            }
+        });
+
+        initToolbar(view);
+        initViewPager(view);
+
+        return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        // delay hidden UI
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Utils.toggleSystemUI(getActivity(), false);
+            }
+        }, 1500);
+    }
+
+    private void initToolbar(View view) {
         mToolbar = (RelativeLayout)view.findViewById(R.id.toolbar);
 
-        ViewPager viewPager = (ViewPager)view.findViewById(R.id.photo_view_pager);
-        viewPager.setAdapter(new PhotoViewerAdapter());
-        viewPager.setCurrentItem(mStartIndex);
+        // compensate for the status bar
+        // this is needed because the System UI components are hidden and content is set to
+        // display below it
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        params.setMargins(0, Utils.getStatusBarHeight(getContext()), 0, 0);
+        mToolbar.setLayoutParams(params);
 
         ImageButton back = (ImageButton)view.findViewById(R.id.back_button);
         back.setOnClickListener(new View.OnClickListener() {
@@ -59,14 +95,12 @@ public class PhotoViewerFragment extends Fragment {
 
             }
         });
-
-        return view;
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        hideToolbar();
+    private void initViewPager(View view) {
+        ViewPager viewPager = (ViewPager)view.findViewById(R.id.photo_view_pager);
+        viewPager.setAdapter(new PhotoViewerAdapter());
+        viewPager.setCurrentItem(mStartIndex);
     }
 
     public void setPhotoNames(ArrayList<String> photoNames) {
@@ -77,12 +111,23 @@ public class PhotoViewerFragment extends Fragment {
         mStartIndex = startIndex;
     }
 
+    private void animateToolbar(float y) {
+        mToolbar.animate().translationY(y).setInterpolator(new AccelerateInterpolator()).start();
+    }
+
     private void showToolbar() {
-        mToolbar.animate().translationY(0).setInterpolator(new AccelerateInterpolator()).start();
+        animateToolbar(0);
     }
 
     private void hideToolbar() {
-        mToolbar.animate().translationY(-mToolbar.getHeight()).setInterpolator(new AccelerateInterpolator()).start();
+        animateToolbar(-(mToolbar.getHeight() + Utils.getStatusBarHeight(getContext())));
+    }
+
+    private void toggleToolbar(boolean show) {
+        if (show)
+            showToolbar();
+        else
+            hideToolbar();
     }
 
     private class PhotoViewerAdapter extends PagerAdapter {
@@ -104,16 +149,13 @@ public class PhotoViewerFragment extends Fragment {
             mImageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (mToolbar.getY() >= 0)
-                        hideToolbar();
-                    else
-                        showToolbar();
+                    Utils.toggleSystemUI(getActivity(), mToolbar.getY() < 0);
                 }
             });
 
             PhotoUtils.photoToImageView(mImageView, path);
-
             collection.addView(viewGroup);
+
             return viewGroup;
         }
 

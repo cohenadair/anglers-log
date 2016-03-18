@@ -24,11 +24,8 @@
         <item name="colorAccent">@color/anglers_log_accent</item>
     </style>
 
-    <style name="Theme.FullScreen" parent="Theme.AnglersLog">
-        <item name="windowNoTitle">true</item>
-        <item name="windowActionBar">false</item>
-        <item name="android:windowFullscreen">true</item>
-        <item name="android:windowContentOverlay">@null</item>
+    <style name="Theme.FullScreen" parent="Base.Theme.AnglersLog">
+        <item name="colorPrimaryDark">@color/black</item>
     </style>
 
     <!-- Buttons -->

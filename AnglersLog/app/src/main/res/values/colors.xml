@@ -10,5 +10,6 @@
     <color name="medium_grey">#999999</color>
     <color name="dark_grey">#737373</color>
     <color name="black">@android:color/black</color>
+    <color name="transparent_black">#B3000000</color>
 
 </resources>
