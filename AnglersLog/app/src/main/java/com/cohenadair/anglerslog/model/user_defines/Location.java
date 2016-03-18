@@ -120,6 +120,18 @@ public class Location extends UserDefineObject implements HasCatchesInterface {
     //endregion
 
 
+    public ArrayList<UserDefineObject> getCatches() {
+        ArrayList<UserDefineObject> catches = new ArrayList<>();
+        ArrayList<UserDefineObject> spots = getFishingSpots();
+
+        for (UserDefineObject obj : spots) {
+            FishingSpot spot = (FishingSpot)obj;
+            catches.addAll(spot.getCatches());
+        }
+
+        return catches;
+    }
+
     @Override
     public int getCatchCount() {
         return QueryHelper.queryLocationCatchCount(this);

@@ -1,7 +1,11 @@
 package com.cohenadair.anglerslog.locations;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -10,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.cohenadair.anglerslog.R;
+import com.cohenadair.anglerslog.activities.CatchListPortionActivity;
 import com.cohenadair.anglerslog.fragments.DetailFragment;
 import com.cohenadair.anglerslog.fragments.DraggableMapFragment;
 import com.cohenadair.anglerslog.model.Logbook;
@@ -61,6 +66,24 @@ public class LocationFragment extends DetailFragment {
 
         // Inflate the layout for this fragment
         return view;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_location, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.action_show_all_catches) {
+            showAllCatches();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -125,6 +148,11 @@ public class LocationFragment extends DetailFragment {
 
         // update map
         updateMap();
+    }
+
+    private void showAllCatches() {
+        Intent intent = CatchListPortionActivity.getIntent(getContext(), mLocation.getCatches());
+        getContext().startActivity(intent);
     }
 
     //region Map Fragment
