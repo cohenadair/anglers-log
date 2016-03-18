@@ -134,6 +134,14 @@ public abstract class LayoutSpecActivity extends DefaultActivity implements
     public String getDetailTag() {
         return mLayoutSpec.getDetailFragmentTag();
     }
+
+    public String getTitleName() {
+        return mLayoutSpec.getTitleName();
+    }
+
+    public String getTitleName(int numberOfItems) {
+        return mLayoutSpec.getTitleName(numberOfItems);
+    }
     // endregion
 
     @NonNull
@@ -179,7 +187,7 @@ public abstract class LayoutSpecActivity extends DefaultActivity implements
     @Override
     public void updateViews() {
         mLayoutSpec.updateViews(this);
-        setActionBarTitle(mLayoutSpec.getPluralName());
+        setActionBarTitle(getTitleName());
     }
 
     @Override

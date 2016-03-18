@@ -50,7 +50,7 @@ public class GalleryFragment extends MasterFragment {
 
     @Override
     public void updateInterface() {
-
+        getRealActivity().setActionBarTitle(getRealActivity().getTitleName(mPhotos.size()));
     }
 
     private void initGridView(View view) {

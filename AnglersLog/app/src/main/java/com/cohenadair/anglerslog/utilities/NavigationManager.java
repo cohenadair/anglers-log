@@ -196,6 +196,6 @@ public class NavigationManager implements FragmentManager.OnBackStackChangedList
 
     public void updateTitle() {
         if (mActivity.getLayoutSpec() != null)
-            mActionBar.setTitle(mActivity.getLayoutSpec().getPluralName());
+            mActionBar.setTitle(mActivity.getTitleName());
     }
 }

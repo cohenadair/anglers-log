@@ -161,6 +161,17 @@ public class LayoutSpec {
         return mMasterFragmentTag;
     }
 
+    /**
+     * @return The navigation title used for this LayoutSpec.
+     */
+    public String getTitleName() {
+        return (mMasterAdapter == null) ? mMasterFragmentTag : getTitleName(mMasterAdapter.getItemCount());
+    }
+
+    public String getTitleName(int numberOfItems) {
+        return mMasterFragmentTag + " (" + numberOfItems + ")";
+    }
+
     public UUID getSelectionId() {
         // check to see if an item has previously been selected
         if (mSelectionId == null && mMasterAdapter != null)
