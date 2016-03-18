@@ -10,12 +10,6 @@
         android:entryValues="@array/pref_unitTypes_values"
         android:defaultValue="0"/>
 
-    <CheckBoxPreference
-        android:key="@string/pref_auto_backup"
-        android:title="@string/auto_backup"
-        android:summary="@string/auto_backup_summary"
-        android:defaultValue="true"/>
-
     <Preference
         android:key="@string/pref_import"
         android:title="@string/import_name"
