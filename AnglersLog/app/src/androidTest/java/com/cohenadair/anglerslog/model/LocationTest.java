@@ -5,8 +5,10 @@ import android.support.test.runner.AndroidJUnit4;
 import android.test.RenamingDelegatingContext;
 
 import com.cohenadair.anglerslog.database.LogbookHelper;
+import com.cohenadair.anglerslog.model.user_defines.Catch;
 import com.cohenadair.anglerslog.model.user_defines.FishingSpot;
 import com.cohenadair.anglerslog.model.user_defines.Location;
+import com.cohenadair.anglerslog.model.user_defines.Species;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 
 import org.junit.After;
@@ -15,6 +17,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import static android.support.test.InstrumentationRegistry.getTargetContext;
 import static org.junit.Assert.assertTrue;
@@ -80,5 +83,22 @@ public class LocationTest {
 
         // remove all
         assertTrue(mTestLocation.removeAllFishingSpots());
+    }
+
+    @Test
+    public void testCatches() {
+        Species species = new Species("Steelhead");
+        Logbook.addSpecies(species);
+
+        FishingSpot spot = new FishingSpot("Spot 1");
+        mTestLocation.addFishingSpot(spot);
+
+        Catch catch0 = new Catch(new Date());
+        catch0.setFishingSpot(spot);
+        catch0.setSpecies(species);
+        Logbook.addCatch(catch0);
+
+        int size = mTestLocation.getCatches().size();
+        assertTrue(mTestLocation.getCatches().size() == 1);
     }
 }
