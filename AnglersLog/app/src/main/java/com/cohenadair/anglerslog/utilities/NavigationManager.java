@@ -35,7 +35,8 @@ public class NavigationManager implements FragmentManager.OnBackStackChangedList
         mActionBar = mActivity.getSupportActionBar();
 
         mNavigationView = (NavigationView)mActivity.findViewById(R.id.navigation_view);
-        mNavigationView.setItemIconTintList(null);
+        if (mNavigationView != null)
+            mNavigationView.setItemIconTintList(null);
 
         fixIcons(getCurrentLayoutId());
         initHeaderView();
@@ -70,10 +71,12 @@ public class NavigationManager implements FragmentManager.OnBackStackChangedList
 
     public void showMenuButton() {
         mActionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
+        mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
     }
 
     public void showBackButton() {
         mActionBar.setHomeAsUpIndicator(R.drawable.ic_back);
+        mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
     }
 
     public void onClickUpButton() {
