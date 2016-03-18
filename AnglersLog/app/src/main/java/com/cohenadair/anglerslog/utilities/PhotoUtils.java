@@ -205,11 +205,7 @@ public class PhotoUtils {
     }
 
     /**
-     * Takes the photo at a specified path and puts it into the specified ImageView. This method
-     * *does not* scale the photo at the specified path.
-     *
-     * @param imageView The ImageView to display.
-     * @param path The path to the photo.
+     * @see #photoToImageView(ImageView, String, int, int)
      */
     public static void photoToImageView(ImageView imageView, String path) {
         imageView.setImageBitmap(BitmapFactory.decodeFile(path));

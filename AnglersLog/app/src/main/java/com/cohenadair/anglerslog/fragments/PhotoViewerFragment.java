@@ -10,12 +10,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.utilities.PhotoUtils;
 import com.cohenadair.anglerslog.utilities.Utils;
+import com.davemorrissey.labs.subscaleview.ImageSource;
+import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
 
 import java.util.ArrayList;
 
@@ -67,7 +68,7 @@ public class PhotoViewerFragment extends Fragment {
             public void run() {
                 Utils.toggleSystemUI(getActivity(), false);
             }
-        }, 1500);
+        }, 750);
     }
 
     private void initToolbar(View view) {
@@ -101,6 +102,7 @@ public class PhotoViewerFragment extends Fragment {
         ViewPager viewPager = (ViewPager)view.findViewById(R.id.photo_view_pager);
         viewPager.setAdapter(new PhotoViewerAdapter());
         viewPager.setCurrentItem(mStartIndex);
+        viewPager.setOffscreenPageLimit(4);
     }
 
     public void setPhotoNames(ArrayList<String> photoNames) {
@@ -132,7 +134,7 @@ public class PhotoViewerFragment extends Fragment {
 
     private class PhotoViewerAdapter extends PagerAdapter {
 
-        private ImageView mImageView;
+        private SubsamplingScaleImageView mImageView;
 
         public PhotoViewerAdapter() {
 
@@ -145,7 +147,7 @@ public class PhotoViewerFragment extends Fragment {
 
             String path = PhotoUtils.privatePhotoPath(mPhotoNames.get(position));
 
-            mImageView = (ImageView)viewGroup.findViewById(R.id.image_pager_view);
+            mImageView = (SubsamplingScaleImageView)viewGroup.findViewById(R.id.image_pager_view);
             mImageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -153,7 +155,9 @@ public class PhotoViewerFragment extends Fragment {
                 }
             });
 
-            PhotoUtils.photoToImageView(mImageView, path);
+            mImageView.setImage(ImageSource.uri(path));
+            mImageView.setMaxScale(5);
+
             collection.addView(viewGroup);
 
             return viewGroup;
