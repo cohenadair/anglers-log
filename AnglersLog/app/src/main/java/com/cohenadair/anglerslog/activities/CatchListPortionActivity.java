@@ -25,10 +25,12 @@ import java.util.UUID;
 public class CatchListPortionActivity extends DefaultActivity {
 
     public static final String EXTRA_ITEMS = "extra_items";
+    public static final String EXTRA_TITLE = "extra_title";
 
-    public static Intent getIntent(Context context, ArrayList<UserDefineObject> items) {
+    public static Intent getIntent(Context context, String title, ArrayList<UserDefineObject> items) {
         Intent intent = new Intent(context, CatchListPortionActivity.class);
         intent.putExtra(EXTRA_ITEMS, UserDefineArrays.asIdStringArray(items));
+        intent.putExtra(EXTRA_TITLE, title);
         return intent;
     }
 
@@ -38,6 +40,8 @@ public class CatchListPortionActivity extends DefaultActivity {
         setContentView(R.layout.activity_default);
         initToolbar();
         initDialogWidth();
+
+        setActionBarTitle(getIntent().getStringExtra(EXTRA_TITLE));
 
         ListPortionFragment fragment = new ListPortionFragment();
         fragment.setAdapter(new CatchListManager.Adapter(this, idsToCatches(), new OnClickInterface() {

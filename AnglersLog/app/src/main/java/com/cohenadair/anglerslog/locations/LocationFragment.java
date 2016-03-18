@@ -151,7 +151,7 @@ public class LocationFragment extends DetailFragment {
     }
 
     private void showAllCatches() {
-        Intent intent = CatchListPortionActivity.getIntent(getContext(), mLocation.getCatches());
+        Intent intent = CatchListPortionActivity.getIntent(getContext(), mLocation.getDisplayName(), mLocation.getCatches());
         getContext().startActivity(intent);
     }
 

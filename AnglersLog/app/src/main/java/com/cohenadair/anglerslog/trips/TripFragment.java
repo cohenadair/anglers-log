@@ -133,7 +133,7 @@ public class TripFragment extends DetailFragment {
 
             @Override
             public void onClickAllButton(ArrayList<UserDefineObject> items) {
-                Intent intent = CatchListPortionActivity.getIntent(getContext(), items);
+                Intent intent = CatchListPortionActivity.getIntent(getContext(), mTrip.getDisplayName(), items);
                 startActivity(intent);
             }
         });
