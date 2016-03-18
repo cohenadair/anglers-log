@@ -218,7 +218,7 @@ public class Trip extends UserDefineObject implements HasCatchesInterface, HasDa
      * @return Sum of the quantity properties for each of this Trip's catches.
      */
     @Override
-    public int getCatchCount() {
+    public int getFishCaughtCount() {
         return QueryHelper.queryTripsCatchCount(this);
     }
     //endregion
@@ -272,7 +272,7 @@ public class Trip extends UserDefineObject implements HasCatchesInterface, HasDa
     }
 
     public String getCatchesAsString(Context context) {
-        int count = getCatchCount();
+        int count = getFishCaughtCount();
         String catchesStr = count == 1 ? context.getResources().getString(R.string.catch_string) : context.getResources().getString(R.string.drawer_catches);
         return count + " " + catchesStr;
     }

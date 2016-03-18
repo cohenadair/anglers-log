@@ -89,8 +89,8 @@ public class SortingUtils {
         return new SortingMethod(getString(R.string.number_of_catches), new Comparator<UserDefineObject>() {
             @Override
             public int compare(UserDefineObject lhs, UserDefineObject rhs) {
-                Integer lhValue = ((HasCatchesInterface)lhs).getCatchCount();
-                Integer rhValue = ((HasCatchesInterface)rhs).getCatchCount();
+                Integer lhValue = ((HasCatchesInterface)lhs).getFishCaughtCount();
+                Integer rhValue = ((HasCatchesInterface)rhs).getFishCaughtCount();
 
                 return lhValue.compareTo(rhValue) * -1;
             }

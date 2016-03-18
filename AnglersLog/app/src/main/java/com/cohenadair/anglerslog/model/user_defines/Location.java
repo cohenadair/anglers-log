@@ -133,7 +133,7 @@ public class Location extends UserDefineObject implements HasCatchesInterface {
     }
 
     @Override
-    public int getCatchCount() {
+    public int getFishCaughtCount() {
         return QueryHelper.queryLocationCatchCount(this);
     }
 

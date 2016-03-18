@@ -678,7 +678,7 @@ public class Logbook {
         return getCatchQuantity(getLocations(), new OnQueryQuantityListener() {
             @Override
             public int query(UserDefineObject obj) {
-                return ((Location)obj).getCatchCount();
+                return ((Location)obj).getFishCaughtCount();
             }
         });
     }

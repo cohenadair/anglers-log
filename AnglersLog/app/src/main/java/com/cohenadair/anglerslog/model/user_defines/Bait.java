@@ -161,12 +161,12 @@ public class Bait extends PhotoUserDefineObject implements HasCatchesInterface {
     }
 
     @Override
-    public int getCatchCount() {
+    public int getFishCaughtCount() {
         return QueryHelper.queryBaitsCatchCount(this);
     }
 
     public String getCatchCountAsString(Context context) {
-        int count = getCatchCount();
+        int count = getFishCaughtCount();
         String catchesStr = count == 1 ? context.getResources().getString(R.string.catch_string) : context.getResources().getString(R.string.drawer_catches);
         return count + " " + catchesStr;
     }

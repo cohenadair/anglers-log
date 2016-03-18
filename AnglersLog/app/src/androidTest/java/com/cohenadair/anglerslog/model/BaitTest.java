@@ -66,7 +66,7 @@ public class BaitTest {
         catches.add(new Catch(new Date(70000000)));
 
         // no catches
-        assertTrue(mTestBait.getCatchCount() == 0);
+        assertTrue(mTestBait.getFishCaughtCount() == 0);
 
         for (Catch c : catches) {
             c.setSpecies(species);
@@ -75,6 +75,6 @@ public class BaitTest {
         }
 
         // bunch of catches
-        assertTrue(mTestBait.getCatchCount() == 7);
+        assertTrue(mTestBait.getFishCaughtCount() == 7);
     }
 }

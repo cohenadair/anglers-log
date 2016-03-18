@@ -12,5 +12,8 @@ import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
  * @author Cohen Adair
  */
 public interface HasCatchesInterface {
-    int getCatchCount();
+    // returns the number of fish caught
+    // this is not the same as the number of catches
+    // this takes Catch.quantity into account
+    int getFishCaughtCount();
 }

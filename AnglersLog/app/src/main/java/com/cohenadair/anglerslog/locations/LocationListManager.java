@@ -33,8 +33,8 @@ public class LocationListManager {
             int suffixId = location.getFishingSpotCount() == 1 ? R.string.fishing_spot : R.string.fishing_spots;
             setSubtitle(String.format("%d " + getContext().getResources().getString(suffixId), location.getFishingSpotCount()));
 
-            suffixId = location.getCatchCount() == 1 ? R.string.catch_string : R.string.drawer_catches;
-            setSubSubtitle(String.format("%d " + getContext().getResources().getString(suffixId), location.getCatchCount()));
+            suffixId = location.getFishCaughtCount() == 1 ? R.string.catch_string : R.string.drawer_catches;
+            setSubSubtitle(String.format("%d " + getContext().getResources().getString(suffixId), location.getFishCaughtCount()));
         }
     }
     //endregion
