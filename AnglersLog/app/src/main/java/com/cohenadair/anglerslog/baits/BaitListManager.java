@@ -35,6 +35,8 @@ public class BaitListManager {
             setImage(bait.getRandomPhoto());
 
             getFavoriteStar().setVisibility(View.GONE);
+
+            updateViews();
         }
 
         public void setBaitCategory(BaitCategory category) {

@@ -50,6 +50,8 @@ public class CatchListManager {
 
             if (mCatch.getFishingSpot() != null)
                 setSubSubtitle((mListener == null) ? mCatch.getFishingSpotAsString() : mListener.onGetSubSubtitle(mCatch));
+
+            updateViews();
         }
 
     }

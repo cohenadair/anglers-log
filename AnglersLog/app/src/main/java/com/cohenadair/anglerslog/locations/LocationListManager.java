@@ -35,6 +35,8 @@ public class LocationListManager {
 
             suffixId = location.getFishCaughtCount() == 1 ? R.string.catch_string : R.string.drawer_catches;
             setSubSubtitle(String.format("%d " + getContext().getResources().getString(suffixId), location.getFishCaughtCount()));
+
+            updateViews();
         }
     }
     //endregion

@@ -179,18 +179,11 @@ public class ListManager {
     //region Adapter
     public static abstract class Adapter extends ListSelectionManager.Adapter {
 
-        private Context mContext;
-
         /**
          * @see com.cohenadair.anglerslog.utilities.ListSelectionManager.Adapter
          */
         public Adapter(Context context, ArrayList<UserDefineObject> items, boolean manageSelections, OnClickInterface callbacks) {
-            super(items, manageSelections, callbacks);
-            mContext = context;
-        }
-
-        public Context getContext() {
-            return mContext;
+            super(context, items, manageSelections, callbacks);
         }
 
         public View inflateComplexItem(ViewGroup parent) {

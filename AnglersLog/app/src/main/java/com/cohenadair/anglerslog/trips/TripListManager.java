@@ -34,6 +34,8 @@ public class TripListManager {
             setTitle(trip.isNameNull() ? dateString : trip.getName());
             setSubtitle(dateString);
             setSubSubtitle(trip.getCatchesAsString(getContext()));
+
+            updateViews();
         }
     }
     //endregion

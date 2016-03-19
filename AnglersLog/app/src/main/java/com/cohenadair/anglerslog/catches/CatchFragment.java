@@ -1,6 +1,7 @@
 package com.cohenadair.anglerslog.catches;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -103,6 +104,8 @@ public class CatchFragment extends DetailFragment {
     public void update(UUID id) {
         if (!isAttached())
             return;
+
+        Log.d("CatchFragment", "update(UUID id)");
 
         clearActionBarTitle();
 

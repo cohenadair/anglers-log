@@ -1,8 +1,10 @@
 package com.cohenadair.anglerslog.utilities;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.cohenadair.anglerslog.interfaces.GlobalSettingsInterface;
 import com.cohenadair.anglerslog.interfaces.OnClickInterface;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import com.cohenadair.anglerslog.model.utilities.UserDefineArrays;
@@ -22,6 +24,7 @@ public class ListSelectionManager {
     public static abstract class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private UUID mId;
+        private int mPosition;
 
         private Adapter mAdapter;
         private View mView;
@@ -85,22 +88,44 @@ public class ListSelectionManager {
         }
 
         /**
-         * Replaces the current selection with this {@link UserDefineObject}.
+         * Replaces the current selection with this {@link UserDefineObject}. This is only used
+         * in two-pane layouts to show item selection.
          */
         private void updateSelection() {
-            for (int i = 0; i < getItemCount(); i++)
-                mAdapter.getItem(i).setIsSelected(false);
+            if (!isTwoPane())
+                return;
 
+            // remove old selection
+            if (mAdapter.getSelectedPosition() != -1)
+                mAdapter.getItem(mAdapter.getSelectedPosition()).setIsSelected(false);
+
+            // add new selection
             getObject().setIsSelected(true);
+
+            // update UI
+            mAdapter.setSelectedPosition(getAdapterPosition());
+            mAdapter.notifyDataSetChanged();
         }
 
         private void finishSelection() {
             mAdapter.addSelectedItem(mId);
-            mAdapter.getCallbacks().onClick(getView(),  getId());
+            mAdapter.getCallbacks().onClick(getView(), getId());
         }
 
         public UserDefineObject getObject() {
             return mAdapter.getItem(mId);
+        }
+
+        /**
+         * This should be called in subclasses after the ViewHolder is inflated.
+         */
+        public void updateViews() {
+            if (isTwoPane())
+                Utils.toggleViewSelected(mView, getAdapterPosition() == mAdapter.getSelectedPosition());
+        }
+
+        public boolean isTwoPane() {
+            return (mAdapter.getContext() instanceof GlobalSettingsInterface) && ((GlobalSettingsInterface)mAdapter.getContext()).isTwoPane();
         }
     }
 
@@ -109,7 +134,9 @@ public class ListSelectionManager {
         private ArrayList<UUID> mSelectedIds; // ids are used to track selections to ensure we're keeping the same object references
         private ArrayList<UserDefineObject> mItems;
         private OnClickInterface mCallbacks;
+        private Context mContext;
         private boolean mManagingMultipleSelections;
+        private int mSelectedPosition = -1; // used for showing selection in two-pane layouts
 
         /**
          * A {@link android.support.v7.widget.RecyclerView.Adapter} subclass that manages item
@@ -129,6 +156,18 @@ public class ListSelectionManager {
             mManagingMultipleSelections = allowMultipleSelection;
             mCallbacks = callbacks;
             mSelectedIds = new ArrayList<>();
+
+            // initialize selection
+            for (int i = 0; i < items.size(); i++)
+                if (items.get(i).getIsSelected()) {
+                    mSelectedPosition = i;
+                    break;
+                }
+        }
+
+        public Adapter(Context context, ArrayList<UserDefineObject> items, boolean allowMultipleSelection, OnClickInterface callbacks) {
+            this(items, allowMultipleSelection, callbacks);
+            mContext = context;
         }
 
         //region Getters & Setters
@@ -140,12 +179,24 @@ public class ListSelectionManager {
             return mCallbacks;
         }
 
+        public Context getContext() {
+            return mContext;
+        }
+
         public boolean isManagingMultipleSelections() {
             return mManagingMultipleSelections;
         }
 
         public void setManagingMultipleSelections(boolean managingMultipleSelections) {
             mManagingMultipleSelections = managingMultipleSelections;
+        }
+
+        public int getSelectedPosition() {
+            return mSelectedPosition;
+        }
+
+        public void setSelectedPosition(int selectedPosition) {
+            mSelectedPosition = selectedPosition;
         }
         //endregion
 

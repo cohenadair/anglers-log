@@ -308,7 +308,7 @@ public class Utils {
     }
 
     public static void toggleViewSelected(View view, boolean selected) {
-        view.setBackgroundResource(selected ? R.color.light_grey : android.R.color.transparent);
+        view.setBackgroundResource(selected ? R.color.anglers_log_light_transparent : android.R.color.transparent);
     }
 
     public static void toggleVisibility(View view, boolean visible) {
