@@ -134,8 +134,10 @@ public class MainActivity extends LayoutSpecActivity {
             detailFragment.update(id);
         else {
             // show the detail fragment
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.master_container, getDetailFragment())
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right)
+                    .replace(R.id.master_container, getDetailFragment())
                     .addToBackStack(null)
                     .commit();
 
@@ -155,8 +157,6 @@ public class MainActivity extends LayoutSpecActivity {
             mNavigationManager.onBackPressed();
         else
             super.onBackPressed();
-
-        updateViews();
     }
 
     @Override

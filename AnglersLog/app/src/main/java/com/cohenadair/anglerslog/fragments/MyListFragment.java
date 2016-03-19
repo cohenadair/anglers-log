@@ -102,7 +102,7 @@ public class MyListFragment extends MasterFragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_mylist, menu);
         mMenu = menu;
-        initSearch();
+        //initSearch();
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -120,8 +120,8 @@ public class MyListFragment extends MasterFragment {
 
     @Override
     public void updateInterface() {
-        if (mRecyclerView != null)
-            mRecyclerView.setAdapter(getLayoutSpec().getMasterAdapter());
+        if (mRecyclerView != null && mRecyclerView.getAdapter() != null)
+            mRecyclerView.getAdapter().notifyDataSetChanged();
     }
 
     private LayoutSpec getLayoutSpec() {
@@ -132,6 +132,7 @@ public class MyListFragment extends MasterFragment {
     private void initRecyclerView(View view) {
         mRecyclerView = (RecyclerView)view.findViewById(R.id.main_recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mRecyclerView.setAdapter(getLayoutSpec().getMasterAdapter());
     }
 
     private void initNewButton(View view) {
