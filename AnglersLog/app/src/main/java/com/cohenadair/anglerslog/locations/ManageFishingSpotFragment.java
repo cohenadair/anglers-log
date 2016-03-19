@@ -2,6 +2,9 @@ package com.cohenadair.anglerslog.locations;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -19,7 +22,6 @@ import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import com.cohenadair.anglerslog.utilities.GoogleMapLayout;
 import com.cohenadair.anglerslog.utilities.Utils;
 import com.cohenadair.anglerslog.views.TextInputView;
-import com.cohenadair.anglerslog.views.TitleSubTitleView;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 
@@ -36,8 +38,8 @@ import java.util.ArrayList;
 public class ManageFishingSpotFragment extends ManageContentFragment {
 
     private TextInputView mNameView;
-    private TitleSubTitleView mLatitudeView;
-    private TitleSubTitleView mLongitudeView;
+    private TextInputView mLatitudeView;
+    private TextInputView mLongitudeView;
     private DraggableMapFragment mMapFragment;
     private ImageView mCrosshairs;
     private GoogleMap mMap;
@@ -207,13 +209,44 @@ public class ManageFishingSpotFragment extends ManageContentFragment {
     }
 
     private void initCoordinatesView(View view) {
-        mLatitudeView = (TitleSubTitleView)view.findViewById(R.id.latitude_layout);
-        mLongitudeView = (TitleSubTitleView)view.findViewById(R.id.longitude_layout);
+        mLatitudeView = (TextInputView)view.findViewById(R.id.latitude_layout);
+        mLatitudeView.addOnInputTextChangedListener(getCoordinateTextWatcher());
+
+        mLongitudeView = (TextInputView)view.findViewById(R.id.longitude_layout);
+        mLongitudeView.addOnInputTextChangedListener(getCoordinateTextWatcher());
     }
 
     private void updateCoordinateViews(LatLng coordinates) {
-        mLatitudeView.setSubtitle(String.format("%.6f", coordinates.latitude));
-        mLongitudeView.setSubtitle(String.format("%.6f", coordinates.longitude));
+        mLatitudeView.setInputText(String.format("%.6f", coordinates.latitude));
+        mLongitudeView.setInputText(String.format("%.6f", coordinates.longitude));
+    }
+
+    @NonNull
+    private TextWatcher getCoordinateTextWatcher() {
+        return new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (mLatitudeView.getInputText() == null || mLongitudeView.getInputText() == null)
+                    return;
+
+                double lat = Double.parseDouble(mLatitudeView.getInputText());
+                double lng = Double.parseDouble(mLongitudeView.getInputText());
+                LatLng latLng = new LatLng(lat, lng);
+
+                if (Utils.isValid(latLng))
+                    updateCameraOnly(latLng);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        };
     }
 
     private void initMapFragment() {
@@ -259,6 +292,10 @@ public class ManageFishingSpotFragment extends ManageContentFragment {
     private void updateCamera(LatLng loc) {
         mMapFragment.updateCamera(loc);
         updateCoordinateViews(loc);
+    }
+
+    private void updateCameraOnly(LatLng loc) {
+        mMapFragment.updateCamera(loc);
     }
 
     private void updateCrosshairs(int mapType) {

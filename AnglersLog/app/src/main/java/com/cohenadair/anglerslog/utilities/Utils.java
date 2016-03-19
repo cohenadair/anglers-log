@@ -30,6 +30,7 @@ import android.widget.Toast;
 
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.activities.DetailFragmentActivity;
+import com.google.android.gms.maps.model.LatLng;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -497,4 +498,7 @@ public class Utils {
         return result;
     }
 
+    public static boolean isValid(LatLng latLng) {
+        return (latLng.latitude >= -90 && latLng.latitude <= 90) && (latLng.longitude >= -180 && latLng.longitude <= 180);
+    }
 }

@@ -47,20 +47,22 @@
         android:layout_margin="@dimen/margin_default"
         android:orientation="horizontal">
 
-        <com.cohenadair.anglerslog.views.TitleSubTitleView
+        <com.cohenadair.anglerslog.views.TextInputView
             android:id="@+id/latitude_layout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            custom:numbersOnly="true"
             custom:titleText="@string/latitude"
             custom:subtitleText="0.000000"
             custom:titleStyle="@style/TextView.Header"/>
 
-        <com.cohenadair.anglerslog.views.TitleSubTitleView
+        <com.cohenadair.anglerslog.views.TextInputView
             android:id="@+id/longitude_layout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            custom:numbersOnly="true"
             custom:titleText="@string/longitude"
             custom:subtitleText="0.000000"
             custom:titleStyle="@style/TextView.Header"/>
