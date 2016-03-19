@@ -75,8 +75,6 @@ public class MyListFragment extends MasterFragment {
         initNewButton(view);
         initRecyclerView(view);
 
-        updateInterface();
-
         return view;
     }
 
@@ -102,7 +100,7 @@ public class MyListFragment extends MasterFragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_mylist, menu);
         mMenu = menu;
-        //initSearch();
+        initSearch();
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -120,8 +118,12 @@ public class MyListFragment extends MasterFragment {
 
     @Override
     public void updateInterface() {
-        if (mRecyclerView != null && mRecyclerView.getAdapter() != null)
-            mRecyclerView.getAdapter().notifyDataSetChanged();
+        if (mRecyclerView != null && mRecyclerView.getAdapter() != null) {
+            if (mRecyclerView.getAdapter() != getLayoutSpec().getMasterAdapter())
+                mRecyclerView.setAdapter(getLayoutSpec().getMasterAdapter());
+            else
+                mRecyclerView.getAdapter().notifyDataSetChanged();
+        }
     }
 
     private LayoutSpec getLayoutSpec() {
@@ -179,7 +181,9 @@ public class MyListFragment extends MasterFragment {
         mSearchView.setOnSearchClickListener(getOnSearchClickListener());
         mSearchView.setOnCloseListener(getOnSearchCloseListener());
         mSearchView.setOnQueryTextListener(getOnQueryTextListener());
-        mSearchView.setQuery(mSearchText, true);
+
+        if (mSearchIsExpanded)
+            mSearchView.setQuery(mSearchText, true);
 
         setMenuItemsVisibility(!mSearchIsExpanded);
     }
