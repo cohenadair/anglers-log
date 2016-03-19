@@ -117,6 +117,7 @@
 
     <style name="TextView.Small" parent="Theme.AppCompat.Light">
         <item name="android:textAppearance">@style/TextAppearance.AppCompat.Body1</item>
+        <item name="android:textColor">@color/black</item>
     </style>
 
     <style name="TextView.Body.Bold" parent="Theme.AppCompat.Light">
