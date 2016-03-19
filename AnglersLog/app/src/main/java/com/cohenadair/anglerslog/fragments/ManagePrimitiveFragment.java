@@ -201,6 +201,14 @@ public class ManagePrimitiveFragment extends DialogFragment {
             }
         });
 
+        mToolbar.setNavigationIcon(R.drawable.ic_back);
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismiss();
+            }
+        });
+
         // add the menu check mark when multiple selection is allowed
         if (mCanSelectMultiple)
             Utils.addDoneButton(mToolbar, new MenuItem.OnMenuItemClickListener() {
