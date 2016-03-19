@@ -1,5 +1,7 @@
 package com.cohenadair.anglerslog.settings;
 
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
@@ -26,6 +28,15 @@ public class AboutFragment extends PreferenceFragmentCompat {
     @Override
     public void onCreatePreferences(Bundle bundle, String s) {
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        // hide list separators
+        setDivider(new ColorDrawable(Color.TRANSPARENT));
+        setDividerHeight(0);
     }
 
     private void initGoogleMapsTerms() {
