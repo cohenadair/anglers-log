@@ -5,7 +5,8 @@
     <color name="anglers_log_accent">#EBD493</color>
     <color name="global_background">@android:color/white</color>
     <color name="drawer_background">@color/global_background</color>
-    <color name="light_grey">#ddd</color>
+    <color name="very_light_grey">#f2f2f2</color>
+    <color name="light_grey">#dddddd</color>
     <color name="grey">#ccc</color>
     <color name="medium_grey">#999999</color>
     <color name="dark_grey">#737373</color>
