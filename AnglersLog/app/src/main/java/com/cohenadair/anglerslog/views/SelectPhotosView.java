@@ -219,7 +219,7 @@ public class SelectPhotosView extends LinearLayout {
                 return false;
             }
         });
-        PhotoUtils.thumbnailToImageView(img, path, size, R.drawable.no_catch_photo);
+        PhotoUtils.thumbnailToImageView(img, path, size, R.drawable.placeholder_square);
 
         mImageViews.add(img);
         mImagePaths.add(path);

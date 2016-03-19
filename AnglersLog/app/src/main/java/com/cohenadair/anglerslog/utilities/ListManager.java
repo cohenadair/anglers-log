@@ -149,9 +149,9 @@ public class ListManager {
 
             if (fileExists) {
                 int thumbSize = getContext().getResources().getDimensionPixelSize(R.dimen.size_list_thumb);
-                PhotoUtils.thumbnailToImageView(mImageView, randomPhotoPath, thumbSize, R.drawable.placeholder_list);
+                PhotoUtils.thumbnailToImageView(mImageView, randomPhotoPath, thumbSize, R.drawable.placeholder_circle);
             } else
-                mImageView.setImageResource(R.drawable.placeholder_list);
+                mImageView.setImageResource(R.drawable.placeholder_circle);
         }
 
         public void setOnTouchFavoriteStarListener(final OnToggleFavoriteStarListener callbacks) {

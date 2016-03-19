@@ -101,7 +101,7 @@ public class BaitFragment extends DetailFragment {
             int size = getActivity().getResources().getDimensionPixelSize(R.dimen.size_list_thumb);
 
             if (Utils.fileExists(path))
-                PhotoUtils.thumbnailToImageView(mImageView, path, size, R.drawable.placeholder_list);
+                PhotoUtils.thumbnailToImageView(mImageView, path, size, R.drawable.placeholder_circle);
         }
         Utils.toggleVisibility(mImageView, photo != null && Utils.fileExists(path));
 

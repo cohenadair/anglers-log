@@ -114,7 +114,7 @@ public class GalleryFragment extends MasterFragment {
             } else
                 imageView = (ImageView)convertView;
 
-            PhotoUtils.thumbnailToImageView(imageView, getFullPath(position), getImageSize(), R.drawable.no_catch_photo);
+            PhotoUtils.thumbnailToImageView(imageView, getFullPath(position), getImageSize(), R.drawable.placeholder_square);
             return imageView;
         }
 

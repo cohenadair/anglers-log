@@ -71,7 +71,7 @@ public class ImageScrollView extends LinearLayout {
             }
         });
 
-        PhotoUtils.thumbnailToImageView(img, path, size, R.drawable.no_catch_photo);
+        PhotoUtils.thumbnailToImageView(img, path, size, R.drawable.placeholder_square);
         updateImageMargins();
 
         mPhotosWrapper.addView(img);

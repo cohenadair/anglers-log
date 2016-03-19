@@ -8,6 +8,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:contentDescription="@string/catch_photo_description"
-        android:src="@drawable/no_catch_photo"/>
+        android:src="@drawable/placeholder_square"/>
 
 </RelativeLayout>

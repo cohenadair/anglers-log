@@ -26,7 +26,7 @@
                 android:layout_marginRight="@dimen/margin_default"
                 android:layout_marginEnd="@dimen/margin_default"
                 android:contentDescription="@string/bait_photo_description"
-                android:src="@drawable/placeholder_list"/>
+                android:src="@drawable/placeholder_circle"/>
 
             <com.cohenadair.anglerslog.views.TitleSubTitleView
                 android:id="@+id/title_view"
