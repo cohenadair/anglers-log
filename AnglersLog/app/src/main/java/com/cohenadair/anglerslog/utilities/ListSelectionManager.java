@@ -158,11 +158,12 @@ public class ListSelectionManager {
             mSelectedIds = new ArrayList<>();
 
             // initialize selection
-            for (int i = 0; i < items.size(); i++)
-                if (items.get(i).getIsSelected()) {
-                    mSelectedPosition = i;
-                    break;
-                }
+            if (!mManagingMultipleSelections)
+                for (int i = 0; i < items.size(); i++)
+                    if (items.get(i).getIsSelected()) {
+                        mSelectedPosition = i;
+                        break;
+                    }
         }
 
         public Adapter(Context context, ArrayList<UserDefineObject> items, boolean allowMultipleSelection, OnClickInterface callbacks) {
