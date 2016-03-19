@@ -74,17 +74,17 @@ public class CatchListManager {
         /**
          * @see com.cohenadair.anglerslog.utilities.ListSelectionManager.Adapter
          */
-        public Adapter(Context context, ArrayList<UserDefineObject> items, boolean allowMultipleSelection, OnClickInterface callbacks) {
-            super(context, items, allowMultipleSelection, callbacks);
+        public Adapter(Context context, ArrayList<UserDefineObject> items, boolean singleSelection, boolean multiSelection, OnClickInterface callbacks) {
+            super(context, items, singleSelection, multiSelection, callbacks);
         }
 
         public Adapter(Context context, ArrayList<UserDefineObject> items, OnClickInterface callbacks) {
-            super(context, items, false, callbacks);
+            super(context, items, false, false, callbacks);
         }
 
-        public Adapter(Context context, ArrayList<UserDefineObject> items, OnClickInterface onClickView, GetContentListener onGetContent) {
-            super(context, items, false, onClickView);
-            mGetContentListener = onGetContent;
+        public Adapter(Context context, ArrayList<UserDefineObject> items, OnClickInterface callbacks, GetContentListener getContentListener) {
+            super(context, items, false, false, callbacks);
+            mGetContentListener = getContentListener;
         }
 
         public GetContentListener getGetContentListener() {

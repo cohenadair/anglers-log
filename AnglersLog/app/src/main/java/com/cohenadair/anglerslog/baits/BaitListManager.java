@@ -49,8 +49,8 @@ public class BaitListManager {
     //region Adapter
     public static class Adapter extends ListManager.Adapter {
 
-        public Adapter(Context context, ArrayList<UserDefineObject> items, boolean allowMultipleSelection, OnClickInterface callbacks) {
-            super(context, items, allowMultipleSelection, callbacks);
+        public Adapter(Context context, ArrayList<UserDefineObject> items, boolean singleSelection, boolean multiSelection, OnClickInterface callbacks) {
+            super(context, items, singleSelection, multiSelection, callbacks);
         }
 
         // can't be overridden in the superclass because it needs to return a BaitListManager.ViewHolder

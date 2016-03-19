@@ -351,7 +351,7 @@ public class ManagePrimitiveFragment extends DialogFragment {
          * @see com.cohenadair.anglerslog.utilities.ListSelectionManager.Adapter
          */
         public ManagePrimitiveAdapter(ArrayList<UserDefineObject> items, boolean manageSelections, ManageType manageType) {
-            super(items, manageSelections, new OnClickInterface() {
+            super(items, false, manageSelections, new OnClickInterface() {
                 @Override
                 public void onClick(View view, UUID id) {
                     dismissFragment();

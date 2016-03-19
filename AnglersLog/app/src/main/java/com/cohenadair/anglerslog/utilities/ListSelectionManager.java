@@ -4,7 +4,6 @@ import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import com.cohenadair.anglerslog.interfaces.GlobalSettingsInterface;
 import com.cohenadair.anglerslog.interfaces.OnClickInterface;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import com.cohenadair.anglerslog.model.utilities.UserDefineArrays;
@@ -92,7 +91,7 @@ public class ListSelectionManager {
          * in two-pane layouts to show item selection.
          */
         private void updateSelection() {
-            if (!isTwoPane())
+            if (!mAdapter.isManagingSingleSelections())
                 return;
 
             // remove old selection
@@ -120,12 +119,8 @@ public class ListSelectionManager {
          * This should be called in subclasses after the ViewHolder is inflated.
          */
         public void updateViews() {
-            if (isTwoPane())
+            if (mAdapter.isManagingSingleSelections())
                 Utils.toggleViewSelected(mView, getAdapterPosition() == mAdapter.getSelectedPosition());
-        }
-
-        public boolean isTwoPane() {
-            return (mAdapter.getContext() instanceof GlobalSettingsInterface) && ((GlobalSettingsInterface)mAdapter.getContext()).isTwoPane();
         }
     }
 
@@ -136,6 +131,7 @@ public class ListSelectionManager {
         private OnClickInterface mCallbacks;
         private Context mContext;
         private boolean mManagingMultipleSelections;
+        private boolean mManagingSingleSelections;
         private int mSelectedPosition = -1; // used for showing selection in two-pane layouts
 
         /**
@@ -147,18 +143,21 @@ public class ListSelectionManager {
          *  - {@link #getSelectedItemIds()}
          *
          * @param items The list of {@link UserDefineObject} from which to initialize the adapter.
-         * @param allowMultipleSelection True to allow multiple selection, false otherwise.
+         * @param showSingleSelection True to show single selections, false otherwise.
+         * @param showMultipleSelection True to allow multiple selections, false otherwise.
          * @param callbacks Called when an item is clicked. This callback is ignored if
          *                  `allowMultipleSelection` is true.
          */
-        public Adapter(ArrayList<UserDefineObject> items, boolean allowMultipleSelection, OnClickInterface callbacks) {
+        public Adapter(Context context, ArrayList<UserDefineObject> items, boolean showSingleSelection, boolean showMultipleSelection, OnClickInterface callbacks) {
             mItems = items;
-            mManagingMultipleSelections = allowMultipleSelection;
+            mManagingMultipleSelections = showMultipleSelection;
+            mManagingSingleSelections = showSingleSelection;
             mCallbacks = callbacks;
+            mContext = context;
             mSelectedIds = new ArrayList<>();
 
-            // initialize selection
-            if (!mManagingMultipleSelections)
+            // initialize selections if needed
+            if (mManagingSingleSelections && !mManagingMultipleSelections)
                 for (int i = 0; i < items.size(); i++)
                     if (items.get(i).getIsSelected()) {
                         mSelectedPosition = i;
@@ -166,9 +165,12 @@ public class ListSelectionManager {
                     }
         }
 
-        public Adapter(Context context, ArrayList<UserDefineObject> items, boolean allowMultipleSelection, OnClickInterface callbacks) {
-            this(items, allowMultipleSelection, callbacks);
-            mContext = context;
+        public Adapter(ArrayList<UserDefineObject> items, boolean showSingleSelection, boolean showMultipleSelection, OnClickInterface callbacks) {
+            this(null, items, showSingleSelection, showMultipleSelection, callbacks);
+        }
+
+        public Adapter(Context context, ArrayList<UserDefineObject> items, OnClickInterface callbacks) {
+            this(context, items, false, false, callbacks);
         }
 
         //region Getters & Setters
@@ -190,6 +192,14 @@ public class ListSelectionManager {
 
         public void setManagingMultipleSelections(boolean managingMultipleSelections) {
             mManagingMultipleSelections = managingMultipleSelections;
+        }
+
+        public boolean isManagingSingleSelections() {
+            return mManagingSingleSelections;
+        }
+
+        public void setManagingSingleSelections(boolean managingSingleSelections) {
+            mManagingSingleSelections = managingSingleSelections;
         }
 
         public int getSelectedPosition() {

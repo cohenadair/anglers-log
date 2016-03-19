@@ -182,8 +182,8 @@ public class ListManager {
         /**
          * @see com.cohenadair.anglerslog.utilities.ListSelectionManager.Adapter
          */
-        public Adapter(Context context, ArrayList<UserDefineObject> items, boolean manageSelections, OnClickInterface callbacks) {
-            super(context, items, manageSelections, callbacks);
+        public Adapter(Context context, ArrayList<UserDefineObject> items, boolean singleSelection, boolean multiSelection, OnClickInterface callbacks) {
+            super(context, items, singleSelection, multiSelection, callbacks);
         }
 
         public View inflateComplexItem(ViewGroup parent) {

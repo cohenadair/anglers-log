@@ -155,6 +155,7 @@ public class LayoutSpecManager {
                 return new CatchListManager.Adapter(
                         context,
                         Logbook.getCatches(searchQuery, sortingMethod),
+                        context.isTwoPane(),
                         allowMultipleSelection,
                         onMasterItemClick
                 );
@@ -198,6 +199,7 @@ public class LayoutSpecManager {
                 return new LocationListManager.Adapter(
                         context,
                         Logbook.getLocations(searchQuery, sortingMethod),
+                        context.isTwoPane(),
                         allowMultipleSelection,
                         onMasterItemClick
                 );
@@ -269,6 +271,7 @@ public class LayoutSpecManager {
                 return new BaitListManager.Adapter(
                         context,
                         Logbook.getBaitsAndCategories(searchQuery, sortingMethod),
+                        context.isTwoPane(),
                         allowMultipleSelection,
                         onMasterItemClick
                 );
@@ -309,6 +312,7 @@ public class LayoutSpecManager {
                 return new TripListManager.Adapter(
                         context,
                         Logbook.getTrips(searchQuery, sortingMethod),
+                        context.isTwoPane(),
                         allowMultipleSelection,
                         onMasterItemClick
                 );
