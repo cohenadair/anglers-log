@@ -46,6 +46,7 @@ public class MyListSelectionActivity extends LayoutSpecActivity {
 
         setLayoutSpec(LayoutSpecManager.layoutSpec(this, layoutId));
 
+        initDialogWidth();
         initToolbar();
         initSelections(intent);
 
