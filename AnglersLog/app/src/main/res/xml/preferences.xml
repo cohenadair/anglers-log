@@ -5,7 +5,7 @@
         android:key="@string/pref_units"
         android:title="@string/display_units"
         android:summary="@string/imperial"
-        android:dialogTitle="@string/display_unit_types"
+        android:dialogTitle=""
         android:entries="@array/pref_unitTypes_entries"
         android:entryValues="@array/pref_unitTypes_values"
         android:defaultValue="0"/>
