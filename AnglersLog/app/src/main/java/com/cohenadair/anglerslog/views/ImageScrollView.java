@@ -62,6 +62,7 @@ public class ImageScrollView extends LinearLayout {
 
     public void addImage(String path, final int position, int size) {
         ImageView img = new ImageView(getContext());
+        img.setLayoutParams(new LayoutParams(size, size));
         img.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
