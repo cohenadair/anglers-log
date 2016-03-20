@@ -9,7 +9,6 @@
         android:id="@+id/add_photo_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?android:attr/selectableItemBackground"
         custom:primaryHint="@string/add_photo"
         custom:iconResource="@drawable/ic_camera"/>
 

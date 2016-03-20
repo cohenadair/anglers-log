@@ -79,8 +79,7 @@ public class SelectPhotosView extends LinearLayout {
         mPhotosWrapper = (LinearLayout)view.findViewById(R.id.photos_wrapper);
 
         mAddPhotoView = (InputButtonView)view.findViewById(R.id.add_photo_view);
-        mAddPhotoView.setPrimaryButtonClickable(false);
-        mAddPhotoView.setOnClickListener(new OnClickListener() {
+        mAddPhotoView.setOnClickPrimaryButton(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 showPhotoOptions();
@@ -258,6 +257,8 @@ public class SelectPhotosView extends LinearLayout {
         if (!mAddPhotoView.isEnabled())
             return;
 
+        int options = mCanSelectMultiple ? R.array.add_photo_options : R.array.add_photo_options_single;
+
         new AlertDialog.Builder(getContext())
                 .setPositiveButton(R.string.button_cancel, new DialogInterface.OnClickListener() {
                     @Override
@@ -265,7 +266,7 @@ public class SelectPhotosView extends LinearLayout {
                         dialog.cancel();
                     }
                 })
-                .setItems(R.array.add_photo_options, new DialogInterface.OnClickListener() {
+                .setItems(options, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         openPhotoIntent(which);
