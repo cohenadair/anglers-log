@@ -59,7 +59,7 @@ public class CatchListPortionActivity extends DefaultActivity {
     }
 
     private ArrayList<UserDefineObject> idsToCatches() {
-        return UserDefineArrays.asObjectArray(
+        return UserDefineArrays.objectsFromStringIds(
                 getIntent().getStringArrayListExtra(EXTRA_ITEMS),
                 new UserDefineArrays.OnConvertInterface() {
                     @Override

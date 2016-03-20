@@ -10,6 +10,7 @@ import android.view.View;
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.interfaces.OnClickInterface;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
+import com.cohenadair.anglerslog.model.utilities.UserDefineArrays;
 import com.cohenadair.anglerslog.utilities.LayoutSpec;
 import com.cohenadair.anglerslog.utilities.LayoutSpecManager;
 import com.cohenadair.anglerslog.utilities.ListManager;
@@ -160,7 +161,7 @@ public class MyListSelectionActivity extends LayoutSpecActivity {
     }
 
     private void finishWithResult() {
-        finishWithResult(getMasterAdapter().getSelectedItemIds());
+        finishWithResult(UserDefineArrays.idsAsStrings(getMasterAdapter().getSelectedIds()));
     }
 
     private void finishWithResult(ArrayList<String> selectedIds) {
@@ -183,8 +184,8 @@ public class MyListSelectionActivity extends LayoutSpecActivity {
                 obj.setIsSelected(false);
             }
 
-        ArrayList<String> selectedIds = intent.getStringArrayListExtra(EXTRA_SELECTED_IDS);
-        adapter.setSelectedItemIds(selectedIds);
+        ArrayList<String> selectedIdStrings = intent.getStringArrayListExtra(EXTRA_SELECTED_IDS);
+        adapter.setSelectedIds(UserDefineArrays.stringsAsIds(selectedIdStrings));
     }
 
     private void releaseSelections() {

@@ -44,7 +44,10 @@ public class ManagePrimitiveFragment extends DialogFragment {
     private PrimitiveSpec mPrimitiveSpec;
     private boolean mCanSelectMultiple;
 
-    private ArrayList<UserDefineObject> mSelectedObjects;
+    /**
+     * Used as temporary storage until the RecyclerView adapter can be initialized.
+     */
+    private ArrayList<UUID> mSelectedIds;
 
     /**
      * Different "management" types for this fragment. Used to display different list item layotus.
@@ -59,7 +62,7 @@ public class ManagePrimitiveFragment extends DialogFragment {
      * OnDismissInterface must be implemented by any view utilizing a ManagePrimitiveFragment.
      */
     public interface OnDismissInterface {
-        void onDismiss(ArrayList<UserDefineObject> selectedItems);
+        void onDismiss(ArrayList<UUID> selectedIds);
     }
 
     /**
@@ -89,10 +92,8 @@ public class ManagePrimitiveFragment extends DialogFragment {
         mOnDismissInterface = onDismissInterface;
     }
 
-    public void setSelectedObjects(ArrayList<UserDefineObject> selectedObjects) {
-        mSelectedObjects = selectedObjects;
-        if (mSelectedObjects == null)
-            mSelectedObjects = new ArrayList<>();
+    public void setSelectedIds(ArrayList<UUID> selectedIds) {
+        mSelectedIds = selectedIds;
     }
     //endregion
 
@@ -117,7 +118,7 @@ public class ManagePrimitiveFragment extends DialogFragment {
         for (UserDefineObject obj : mPrimitiveSpec.getItems())
             obj.setShouldDelete(false);
 
-        mOnDismissInterface.onDismiss(mAdapter.getSelectedItems());
+        mOnDismissInterface.onDismiss(mAdapter.getSelectedIds());
         getDialog().dismiss();
     }
 
@@ -226,10 +227,10 @@ public class ManagePrimitiveFragment extends DialogFragment {
      */
     private void restoreAdapter(ManageType manageType) {
         if (mAdapter != null)
-            mSelectedObjects = mAdapter.getSelectedItems();
+            mSelectedIds = mAdapter.getSelectedIds();
 
         mAdapter = new ManagePrimitiveAdapter(mPrimitiveSpec.getItems(), mCanSelectMultiple, manageType);
-        mAdapter.setSelectedItems(mSelectedObjects);
+        mAdapter.setSelectedIds(mSelectedIds);
 
         mContentRecyclerView.setAdapter(mAdapter);
         Utils.toggleVisibility(mContentRecyclerView, mAdapter.getItemCount() > 0);

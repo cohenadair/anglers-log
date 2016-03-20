@@ -12,7 +12,6 @@ import com.cohenadair.anglerslog.fragments.ManageContentFragment;
 import com.cohenadair.anglerslog.fragments.ManagePrimitiveFragment;
 import com.cohenadair.anglerslog.model.Logbook;
 import com.cohenadair.anglerslog.model.user_defines.Bait;
-import com.cohenadair.anglerslog.model.user_defines.BaitCategory;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import com.cohenadair.anglerslog.trips.ManageTripFragment;
 import com.cohenadair.anglerslog.utilities.PrimitiveSpecManager;
@@ -22,6 +21,7 @@ import com.cohenadair.anglerslog.views.TextInputView;
 import com.cohenadair.anglerslog.views.TitleSubTitleView;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 /**
  * The ManageBaitFragment is used to add and edit baits.
@@ -142,8 +142,8 @@ public class ManageBaitFragment extends ManageContentFragment {
     private void initCategoryView(View view) {
         final ManagePrimitiveFragment.OnDismissInterface onDismissInterface = new ManagePrimitiveFragment.OnDismissInterface() {
             @Override
-            public void onDismiss(ArrayList<UserDefineObject> selectedItems) {
-                getNewBait().setCategory((BaitCategory)selectedItems.get(0));
+            public void onDismiss(ArrayList<UUID> selectedIds) {
+                getNewBait().setCategory(Logbook.getBaitCategory(selectedIds.get(0)));
                 mCategoryView.setSubtitle(getNewBait().getCategoryName());
             }
         };

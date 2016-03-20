@@ -303,14 +303,14 @@ public abstract class ManageContentFragment extends Fragment {
      *
      * @param primitiveId The primitive id. See {@link com.cohenadair.anglerslog.utilities.PrimitiveSpecManager}.
      * @param multiple True if multiple selection is allowed, false otherwise.
-     * @param selectedItems Items that should already be selected. This can be null.
+     * @param selectedIds UUID of the items that should already be selected. This can be null.
      * @param onDismissInterface Callbacks for when the manager is dismissed.
      */
-    public void showPrimitiveDialog(int primitiveId, boolean multiple, ArrayList<UserDefineObject> selectedItems, ManagePrimitiveFragment.OnDismissInterface onDismissInterface) {
+    public void showPrimitiveDialog(int primitiveId, boolean multiple, ArrayList<UUID> selectedIds, ManagePrimitiveFragment.OnDismissInterface onDismissInterface) {
         ManagePrimitiveFragment fragment = ManagePrimitiveFragment.newInstance(primitiveId, multiple);
 
         if (multiple)
-            fragment.setSelectedObjects(selectedItems);
+            fragment.setSelectedIds(selectedIds);
 
         fragment.setOnDismissInterface(onDismissInterface);
         fragment.show(getChildFragmentManager(), "PrimitiveDialog");

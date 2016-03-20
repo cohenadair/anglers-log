@@ -137,10 +137,8 @@ public class ListSelectionManager {
         /**
          * A {@link android.support.v7.widget.RecyclerView.Adapter} subclass that manages item
          * selection.  If setup so only one item can be selected, a callback method is called,
-         * otherwise the selections are managed by the adapter and can be retrieved by calling
-         * one of the following:
-         *  - {@link #getSelectedItems()}
-         *  - {@link #getSelectedItemIds()}
+         * otherwise the selections are managed by the adapter and can be retrieved via
+         * {@link #getSelectedIds()}.
          *
          * @param items The list of {@link UserDefineObject} from which to initialize the adapter.
          * @param showSingleSelection True to show single selections, false otherwise.
@@ -209,6 +207,17 @@ public class ListSelectionManager {
         public void setSelectedPosition(int selectedPosition) {
             mSelectedPosition = selectedPosition;
         }
+
+        public ArrayList<UUID> getSelectedIds() {
+            return mSelectedIds;
+        }
+
+        public void setSelectedIds(ArrayList<UUID> selectedIds) {
+            // null may be passed in if there are no selected items, or the adapter isn't
+            // tracking selections
+            if (selectedIds != null)
+                mSelectedIds = selectedIds;
+        }
         //endregion
 
         /**
@@ -217,46 +226,7 @@ public class ListSelectionManager {
         public void onBind(ViewHolder holder, int position) {
             UserDefineObject obj = mItems.get(position);
             holder.setId(obj.getId());
-            holder.setSelection(obj.getIsSelected());
-        }
-
-        public ArrayList<String> getSelectedItemIds() {
-            return UserDefineArrays.asIdStringArray(getSelectedItems());
-        }
-
-        public ArrayList<UserDefineObject> getSelectedItems() {
-            ArrayList<UserDefineObject> result = new ArrayList<>();
-
-            for (UUID id : mSelectedIds) {
-                UserDefineObject obj = UserDefineArrays.getObjectWithId(mItems, id);
-
-                if (obj != null) {
-                    obj.setIsSelected(false); // reset selection variable
-                    result.add(obj);
-                }
-            }
-
-            return result;
-        }
-
-        public void setSelectedItems(ArrayList<UserDefineObject> selectedItems) {
-            setSelectedItemIds(UserDefineArrays.asIdStringArray(selectedItems));
-        }
-
-        public void setSelectedItemIds(ArrayList<String> selectedIds) {
-            mSelectedIds = new ArrayList<>();
-
-            if (selectedIds != null)
-                // initialize each selected item for selection
-                for (String idStr : selectedIds) {
-                    UUID id = UUID.fromString(idStr);
-                    UserDefineObject item = getItem(id);
-
-                    if (item != null) {
-                        getItem(id).setIsSelected(true);
-                        addSelectedItem(id);
-                    }
-                }
+            holder.setSelection(obj.getIsSelected() || mSelectedIds.contains(obj.getId()));
         }
 
         @Override

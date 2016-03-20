@@ -128,12 +128,42 @@ public class UserDefineArrays {
         return arr;
     }
 
+    public static ArrayList<UUID> asIdArray(ArrayList<UserDefineObject> arr) {
+        ArrayList<UUID> ids = new ArrayList<>();
+
+        if (arr != null)
+            for (UserDefineObject obj : arr)
+                ids.add(obj.getId());
+
+        return ids;
+    }
+
     public static ArrayList<String> asIdStringArray(ArrayList<UserDefineObject> arr) {
         ArrayList<String> ids = new ArrayList<>();
 
         if (arr != null)
             for (UserDefineObject object : arr)
                 ids.add(object.getIdAsString());
+
+        return ids;
+    }
+
+    public static ArrayList<String> idsAsStrings(ArrayList<UUID> ids) {
+        ArrayList<String> strings = new ArrayList<>();
+
+        if (ids != null)
+            for (UUID id : ids)
+                strings.add(id.toString());
+
+        return strings;
+    }
+
+    public static ArrayList<UUID> stringsAsIds(ArrayList<String> strings) {
+        ArrayList<UUID> ids = new ArrayList<>();
+
+        if (strings != null)
+            for (String string : strings)
+                ids.add(UUID.fromString(string));
 
         return ids;
     }
@@ -148,12 +178,22 @@ public class UserDefineArrays {
         return names;
     }
 
-    public static ArrayList<UserDefineObject> asObjectArray(ArrayList<String> arr, OnConvertInterface callbacks) {
+    public static ArrayList<UserDefineObject> objectsFromStringIds(ArrayList<String> arr, OnConvertInterface callbacks) {
         ArrayList<UserDefineObject> objects = new ArrayList<>();
 
         if (arr != null)
             for (String str : arr)
                 objects.add(callbacks.onGetObject(str));
+
+        return objects;
+    }
+
+    public static ArrayList<UserDefineObject> objectsFromIds(ArrayList<UUID> arr, OnConvertInterface callbacks) {
+        ArrayList<UserDefineObject> objects = new ArrayList<>();
+
+        if (arr != null)
+            for (UUID id : arr)
+                objects.add(callbacks.onGetObject(id.toString()));
 
         return objects;
     }

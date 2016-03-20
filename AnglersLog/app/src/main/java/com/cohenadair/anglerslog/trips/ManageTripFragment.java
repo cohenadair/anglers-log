@@ -40,9 +40,9 @@ public class ManageTripFragment extends ManageContentFragment {
     /**
      * Used so there is no database interaction until the user saves their changes.
      */
-    private ArrayList<UserDefineObject> mSelectedAnglers;
-    private ArrayList<UserDefineObject> mSelectedCatches;
-    private ArrayList<UserDefineObject> mSelectedLocations;
+    private ArrayList<UUID> mSelectedAnglersIds;
+    private ArrayList<UUID> mSelectedCatchesIds;
+    private ArrayList<UUID> mSelectedLocationsIds;
 
     private ArrayList<View> mCatchesViews;
     private ArrayList<View> mLocationsViews;
@@ -108,9 +108,9 @@ public class ManageTripFragment extends ManageContentFragment {
             @Override
             public UserDefineObject onGetNewEditObject(UserDefineObject oldObject) {
                 Trip trip = new Trip((Trip) oldObject, true);
-                mSelectedLocations = trip.getLocations();
-                mSelectedAnglers = trip.getAnglers();
-                mSelectedCatches = trip.getCatches();
+                mSelectedLocationsIds = UserDefineArrays.asIdArray(trip.getLocations());
+                mSelectedAnglersIds = UserDefineArrays.asIdArray(trip.getAnglers());
+                mSelectedCatchesIds = UserDefineArrays.asIdArray(trip.getCatches());
                 return trip;
             }
 
@@ -133,9 +133,9 @@ public class ManageTripFragment extends ManageContentFragment {
         // input properties are set in a onTextChanged listener
 
         // update properties that interact directly with the database
-        getNewTrip().setAnglers(mSelectedAnglers);
-        getNewTrip().setCatches(mSelectedCatches);
-        getNewTrip().setLocations(mSelectedLocations);
+        getNewTrip().setAnglers(getSelectedAnglers());
+        getNewTrip().setCatches(getSelectedCatches());
+        getNewTrip().setLocations(getSelectedLocations());
 
         return true;
     }
@@ -146,7 +146,7 @@ public class ManageTripFragment extends ManageContentFragment {
         mNameView.setInputText(getNewTrip().getNameAsString());
         mStartDateView.setSubtitle(getNewTrip().getStartDateAsString());
         mEndDateView.setSubtitle(getNewTrip().getEndDateAsString());
-        mAnglersView.setSubtitle(UserDefineArrays.namesAsString(mSelectedAnglers));
+        mAnglersView.setSubtitle(UserDefineArrays.namesAsString(getSelectedAnglers()));
         mNotesView.setInputText(getNewTrip().getNotesAsString());
 
         updateCatchesViews();
@@ -155,7 +155,7 @@ public class ManageTripFragment extends ManageContentFragment {
 
     private void updateCatchesViews() {
         removeViews(mCatchesViews);
-        mCatchesView.setSubtitle(UserDefineArrays.propertiesAsString(mSelectedCatches, new UserDefineArrays.OnGetPropertyInterface() {
+        mCatchesView.setSubtitle(UserDefineArrays.propertiesAsString(getSelectedCatches(), new UserDefineArrays.OnGetPropertyInterface() {
             @Override
             public String onGetProperty(UserDefineObject object) {
                 return ((Catch)object).getSpeciesAsString();
@@ -165,7 +165,7 @@ public class ManageTripFragment extends ManageContentFragment {
 
     private void updateLocationsViews() {
         removeViews(mLocationsViews);
-        mLocationsView.setSubtitle(UserDefineArrays.namesAsString(mSelectedLocations));
+        mLocationsView.setSubtitle(UserDefineArrays.namesAsString(getSelectedLocations()));
     }
 
     /**
@@ -193,9 +193,9 @@ public class ManageTripFragment extends ManageContentFragment {
     public void initAnglersView(View view) {
         final ManagePrimitiveFragment.OnDismissInterface onDismissInterface = new ManagePrimitiveFragment.OnDismissInterface() {
             @Override
-            public void onDismiss(ArrayList<UserDefineObject> selectedItems) {
-                mSelectedAnglers = selectedItems;
-                mAnglersView.setSubtitle(UserDefineArrays.namesAsString(mSelectedAnglers));
+            public void onDismiss(ArrayList<UUID> selectedIds) {
+                mSelectedAnglersIds = selectedIds;
+                mAnglersView.setSubtitle(UserDefineArrays.namesAsString(getSelectedAnglers()));
             }
         };
 
@@ -203,7 +203,7 @@ public class ManageTripFragment extends ManageContentFragment {
         mAnglersView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showPrimitiveDialog(PrimitiveSpecManager.ANGLERS, true, mSelectedAnglers, onDismissInterface);
+                showPrimitiveDialog(PrimitiveSpecManager.ANGLERS, true, mSelectedAnglersIds, onDismissInterface);
             }
         });
     }
@@ -257,15 +257,10 @@ public class ManageTripFragment extends ManageContentFragment {
         mCatchesView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startSelectionActivity(LayoutSpecManager.LAYOUT_CATCHES, false, true, UserDefineArrays.asIdStringArray(mSelectedCatches), new OnSelectionActivityResult() {
+                startSelectionActivity(LayoutSpecManager.LAYOUT_CATCHES, false, true, UserDefineArrays.idsAsStrings(mSelectedCatchesIds), new OnSelectionActivityResult() {
                     @Override
                     public void onSelect(ArrayList<String> ids) {
-                        mSelectedCatches = UserDefineArrays.asObjectArray(ids, new UserDefineArrays.OnConvertInterface() {
-                            @Override
-                            public UserDefineObject onGetObject(String idStr) {
-                                return Logbook.getCatch(UUID.fromString(idStr));
-                            }
-                        });
+                        mSelectedCatchesIds = UserDefineArrays.stringsAsIds(ids);
                     }
                 });
             }
@@ -277,15 +272,10 @@ public class ManageTripFragment extends ManageContentFragment {
         mLocationsView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startSelectionActivity(LayoutSpecManager.LAYOUT_LOCATIONS, true, true, UserDefineArrays.asIdStringArray(mSelectedLocations), new OnSelectionActivityResult() {
+                startSelectionActivity(LayoutSpecManager.LAYOUT_LOCATIONS, true, true, UserDefineArrays.idsAsStrings(mSelectedLocationsIds), new OnSelectionActivityResult() {
                     @Override
                     public void onSelect(ArrayList<String> ids) {
-                        mSelectedLocations = UserDefineArrays.asObjectArray(ids, new UserDefineArrays.OnConvertInterface() {
-                            @Override
-                            public UserDefineObject onGetObject(String idStr) {
-                                return Logbook.getLocation(UUID.fromString(idStr));
-                            }
-                        });
+                        mSelectedLocationsIds = UserDefineArrays.stringsAsIds(ids);
                     }
                 });
             }
@@ -316,25 +306,52 @@ public class ManageTripFragment extends ManageContentFragment {
 
     //region Temporary Variable Initializing
     private void initSelectedAnglers() {
-        if (mSelectedAnglers == null || !isEditing())
-            mSelectedAnglers = new ArrayList<>();
+        if (mSelectedAnglersIds == null || !isEditing())
+            mSelectedAnglersIds = new ArrayList<>();
     }
 
     private void initSelectedCatches() {
-        if (mSelectedCatches == null || !isEditing())
-            mSelectedCatches = new ArrayList<>();
+        if (mSelectedCatchesIds == null || !isEditing())
+            mSelectedCatchesIds = new ArrayList<>();
 
         if (mCatchesViews == null)
             mCatchesViews = new ArrayList<>();
     }
 
     private void initSelectedLocations() {
-        if (mSelectedLocations == null || !isEditing())
-            mSelectedLocations = new ArrayList<>();
+        if (mSelectedLocationsIds == null || !isEditing())
+            mSelectedLocationsIds = new ArrayList<>();
 
         if (mLocationsViews == null)
             mLocationsViews = new ArrayList<>();
     }
     //endregion
+
+    private ArrayList<UserDefineObject> getSelectedAnglers() {
+        return UserDefineArrays.objectsFromIds(mSelectedAnglersIds, new UserDefineArrays.OnConvertInterface() {
+            @Override
+            public UserDefineObject onGetObject(String idStr) {
+                return Logbook.getAngler(UUID.fromString(idStr));
+            }
+        });
+    }
+
+    private ArrayList<UserDefineObject> getSelectedCatches() {
+        return UserDefineArrays.objectsFromIds(mSelectedCatchesIds, new UserDefineArrays.OnConvertInterface() {
+            @Override
+            public UserDefineObject onGetObject(String idStr) {
+                return Logbook.getCatch(UUID.fromString(idStr));
+            }
+        });
+    }
+
+    private ArrayList<UserDefineObject> getSelectedLocations() {
+        return UserDefineArrays.objectsFromIds(mSelectedLocationsIds, new UserDefineArrays.OnConvertInterface() {
+            @Override
+            public UserDefineObject onGetObject(String idStr) {
+                return Logbook.getLocation(UUID.fromString(idStr));
+            }
+        });
+    }
 
 }

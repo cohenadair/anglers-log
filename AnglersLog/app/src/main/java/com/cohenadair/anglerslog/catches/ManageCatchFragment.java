@@ -19,9 +19,7 @@ import com.cohenadair.anglerslog.fragments.ManagePrimitiveFragment;
 import com.cohenadair.anglerslog.model.Logbook;
 import com.cohenadair.anglerslog.model.Weather;
 import com.cohenadair.anglerslog.model.user_defines.Catch;
-import com.cohenadair.anglerslog.model.user_defines.Species;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
-import com.cohenadair.anglerslog.model.user_defines.WaterClarity;
 import com.cohenadair.anglerslog.trips.ManageTripFragment;
 import com.cohenadair.anglerslog.utilities.LayoutSpecManager;
 import com.cohenadair.anglerslog.utilities.PrimitiveSpecManager;
@@ -66,7 +64,7 @@ public class ManageCatchFragment extends ManageContentFragment {
     /**
      * Used so there is no database interaction until the user saves their changes.
      */
-    private ArrayList<UserDefineObject> mSelectedFishingMethods;
+    private ArrayList<UUID> mSelectedFishingMethods;
     private Weather mWeather;
 
     public ManageCatchFragment() {
@@ -156,7 +154,7 @@ public class ManageCatchFragment extends ManageContentFragment {
             @Override
             public UserDefineObject onGetNewEditObject(UserDefineObject oldObject) {
                 Catch newCatch = new Catch((Catch) oldObject, true);
-                mSelectedFishingMethods = newCatch.getFishingMethods();
+                mSelectedFishingMethods = UserDefineArrays.asIdArray(newCatch.getFishingMethods());
                 mWeather = newCatch.getWeather();
                 return newCatch;
             }
@@ -179,8 +177,8 @@ public class ManageCatchFragment extends ManageContentFragment {
         // all input properties are set using an OnTextChanged listener
 
         // update properties that interact directly with the database
-        getNewCatch().setFishingMethods(mSelectedFishingMethods);
         getNewCatch().setWeather(mWeather);
+        getNewCatch().setFishingMethods(getSelectedFishingMethods());
 
         return true;
     }
@@ -193,7 +191,7 @@ public class ManageCatchFragment extends ManageContentFragment {
         mBaitView.setSubtitle(getNewCatch().getBaitAsString());
         mLocationView.setSubtitle(getNewCatch().getFishingSpotAsString());
         mWaterClarityView.setSubtitle(getNewCatch().getWaterClarityAsString());
-        mFishingMethodsView.setSubtitle(UserDefineArrays.namesAsString(mSelectedFishingMethods));
+        mFishingMethodsView.setSubtitle(UserDefineArrays.namesAsString(getSelectedFishingMethods()));
         mResultSpinner.setSelection(getNewCatch().getCatchResult().getValue());
         mWeatherView.updateViews(mWeather);
         mQuantityView.setInputText(getNewCatch().getQuantityAsString());
@@ -261,8 +259,8 @@ public class ManageCatchFragment extends ManageContentFragment {
     private void initSpeciesView(View view) {
         final ManagePrimitiveFragment.OnDismissInterface onDismissInterface = new ManagePrimitiveFragment.OnDismissInterface() {
             @Override
-            public void onDismiss(ArrayList<UserDefineObject> selectedItems) {
-                getNewCatch().setSpecies((Species)selectedItems.get(0));
+            public void onDismiss(ArrayList<UUID> selectedIds) {
+                getNewCatch().setSpecies(Logbook.getSpecies(selectedIds.get(0)));
                 mSpeciesView.setSubtitle(getNewCatch().getSpeciesAsString());
             }
         };
@@ -311,8 +309,8 @@ public class ManageCatchFragment extends ManageContentFragment {
     private void initWaterClarityView(View view) {
         final ManagePrimitiveFragment.OnDismissInterface onDismissInterface = new ManagePrimitiveFragment.OnDismissInterface() {
             @Override
-            public void onDismiss(ArrayList<UserDefineObject> selectedItems) {
-                getNewCatch().setWaterClarity((WaterClarity)selectedItems.get(0));
+            public void onDismiss(ArrayList<UUID> selectedIds) {
+                getNewCatch().setWaterClarity(Logbook.getWaterClarity(selectedIds.get(0)));
                 mWaterClarityView.setSubtitle(getNewCatch().getWaterClarityAsString());
             }
         };
@@ -329,9 +327,9 @@ public class ManageCatchFragment extends ManageContentFragment {
     private void initFishingMethodsView(View view) {
         final ManagePrimitiveFragment.OnDismissInterface onDismissInterface = new ManagePrimitiveFragment.OnDismissInterface() {
             @Override
-            public void onDismiss(ArrayList<UserDefineObject> selectedItems) {
-                mSelectedFishingMethods = selectedItems;
-                mFishingMethodsView.setSubtitle(UserDefineArrays.namesAsString(mSelectedFishingMethods));
+            public void onDismiss(ArrayList<UUID> selectedIds) {
+                mSelectedFishingMethods = selectedIds;
+                mFishingMethodsView.setSubtitle(UserDefineArrays.namesAsString(getSelectedFishingMethods()));
             }
         };
 
@@ -434,6 +432,15 @@ public class ManageCatchFragment extends ManageContentFragment {
         }));
     }
     //endregion
+
+    private ArrayList<UserDefineObject> getSelectedFishingMethods() {
+        return UserDefineArrays.objectsFromIds(mSelectedFishingMethods, new UserDefineArrays.OnConvertInterface() {
+            @Override
+            public UserDefineObject onGetObject(String idStr) {
+                return Logbook.getFishingMethod(UUID.fromString(idStr));
+            }
+        });
+    }
 
     /**
      * See {@link ManageTripFragment#initInputListeners()}.
