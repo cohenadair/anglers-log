@@ -12,7 +12,6 @@ import com.cohenadair.anglerslog.fragments.MasterFragment;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import com.cohenadair.anglerslog.model.utilities.SortingMethod;
 
-import java.util.ArrayList;
 import java.util.UUID;
 
 /**
@@ -211,11 +210,8 @@ public class LayoutSpec {
         if (mListener == null || mDetailFragment == null)
             return;
 
-        ArrayList<String> selectedIds = (mMasterAdapter == null) ? null : mMasterAdapter.getSelectedItemIds();
         boolean allowsMultipleSelection = (mMasterAdapter != null) && mMasterAdapter.isManagingMultipleSelections();
-
         mMasterAdapter = mListener.onGetMasterAdapter(searchQuery, sortingMethod, allowsMultipleSelection);
-        mMasterAdapter.setSelectedItemIds(selectedIds);
         mMasterAdapter.notifyDataSetChanged();
 
         ((MasterFragment)mMasterFragment).updateInterface();

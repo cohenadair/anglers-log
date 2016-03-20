@@ -176,7 +176,7 @@ public class ManageCatchFragment extends ManageContentFragment {
             return false;
         }
 
-        // all input properties are set using a OnTextChanged listener
+        // all input properties are set using an OnTextChanged listener
 
         // update properties that interact directly with the database
         getNewCatch().setFishingMethods(mSelectedFishingMethods);
