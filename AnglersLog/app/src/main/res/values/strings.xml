@@ -150,6 +150,13 @@
     <string name="newest_to_oldest">Newest to oldest</string>
     <string name="oldest_to_newest">Oldest to newest</string>
     <string name="locations_lowercase">locations</string>
+    <string name="add_photo">Add photo</string>
+    <string name="add_species">Add species</string>
+    <string name="add_location">Add location</string>
+    <string name="add_bait">Add bait</string>
+    <string name="add_fishing_methods">Add fishing methods</string>
+    <string name="add_water_clarity">Add water clarity</string>
+    <string name="add_notes">Add notes</string>
 
     <string name="drawer_open">Open Navigation Drawer</string>
     <string name="drawer_close">Close Navigation Drawer</string>
@@ -297,6 +304,7 @@
     <string name="more_info_description">More information about the current item.</string>
     <string name="share_description">Share content with popular social media.</string>
     <string name="back_description">Go back.</string>
+    <string name="icon_description">An icon that shows the current item.</string>
 
     <string name="unknown">Unknown</string>
 

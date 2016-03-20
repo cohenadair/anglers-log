@@ -53,6 +53,15 @@
         <item name="android:textColor">@color/anglers_log_dark</item>
     </style>
 
+    <!-- Styles a Button to look like a normal TextView -->
+    <style name="Button.TextView" parent="@style/Button.Borderless">
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:padding">@dimen/margin_quarter</item>
+        <item name="android:minWidth">0dp</item>
+    </style>
+
     <!-- RecyclerView LinearLayout -->
     <style name="recycler_layout">
         <item name="android:paddingLeft">@dimen/spacing_medium</item>
@@ -134,5 +143,23 @@
         <item name="android:textSize">@dimen/font_normal</item>
     </style>
     <!-- /TextViews -->
+
+    <!-- Layouts -->
+    <style name="Layout.Input" parent="Theme.AppCompat.Light">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginLeft">@dimen/margin_default</item>
+        <item name="android:layout_marginRight">@dimen/margin_default</item>
+        <item name="android:layout_marginTop">@dimen/margin_half</item>
+        <item name="android:layout_marginBottom">@dimen/margin_half</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+
+    <style name="ImageView.Input" parent="Theme.AppCompat.Light">
+        <item name="android:tint">@color/dark_grey</item>
+        <item name="android:layout_width">@dimen/image_button_size</item>
+        <item name="android:layout_height">@dimen/image_button_size</item>
+    </style>
 
 </resources>

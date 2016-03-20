@@ -34,6 +34,12 @@
         <attr name="subtitleStyle" />
     </declare-styleable>
 
+    <declare-styleable name="InputButtonView">
+        <attr name="primaryHint" format="string"/>
+        <attr name="showSecondary" format="boolean"/>
+        <attr name="iconResource" format="reference"/>
+    </declare-styleable>
+
     <declare-styleable name="MoreDetailView">
         <attr name="titleText" />
         <attr name="subtitleText" />

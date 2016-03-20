@@ -10,35 +10,13 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <!-- Date and Time -->
-        <LinearLayout
+        <!-- Date & Time -->
+        <com.cohenadair.anglerslog.views.InputButtonView
+            android:id="@+id/date_time_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <com.cohenadair.anglerslog.views.TitleSubTitleView
-                android:id="@+id/date_layout"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:layout_margin="@dimen/margin_default"
-                custom:titleText="@string/date"
-                custom:subtitleText="May 22, 2015"
-                custom:titleStyle="@style/TextView.Header"
-                custom:subtitleStyle="@style/TextView.Small"/>
-
-            <com.cohenadair.anglerslog.views.TitleSubTitleView
-                android:id="@+id/time_layout"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_margin="@dimen/margin_default"
-                custom:titleText="@string/time"
-                custom:subtitleText="6:00 AM"
-                custom:titleStyle="@style/TextView.Header"
-                custom:subtitleStyle="@style/TextView.Small"/>
-
-        </LinearLayout>
+            custom:iconResource="@drawable/ic_clock"
+            custom:showSecondary="true"/>
 
         <include layout="@layout/view_divider"/>
 
@@ -52,41 +30,32 @@
         <include layout="@layout/view_divider"/>
 
         <!-- Species -->
-        <com.cohenadair.anglerslog.views.TitleSubTitleView
-            android:id="@+id/species_layout"
+        <com.cohenadair.anglerslog.views.InputButtonView
+            android:id="@+id/species_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/margin_default"
-            custom:titleText="@string/species"
-            custom:subtitleHint="@string/species_hint"
-            custom:titleStyle="@style/TextView.Header"
-            custom:subtitleStyle="@style/TextView.Small"/>
+            custom:primaryHint="@string/add_species"
+            custom:iconResource="@drawable/ic_catches"/>
 
         <include layout="@layout/view_divider"/>
 
         <!-- Location -->
-        <com.cohenadair.anglerslog.views.TitleSubTitleView
-            android:id="@+id/location_layout"
+        <com.cohenadair.anglerslog.views.InputButtonView
+            android:id="@+id/location_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/margin_default"
-            custom:titleText="@string/location"
-            custom:subtitleHint="@string/location_hint"
-            custom:titleStyle="@style/TextView.Header"
-            custom:subtitleStyle="@style/TextView.Small"/>
+            custom:primaryHint="@string/add_location"
+            custom:iconResource="@drawable/ic_location"/>
 
         <include layout="@layout/view_divider"/>
 
         <!-- Bait -->
-        <com.cohenadair.anglerslog.views.TitleSubTitleView
-            android:id="@+id/bait_layout"
+        <com.cohenadair.anglerslog.views.InputButtonView
+            android:id="@+id/bait_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/margin_default"
-            custom:titleText="@string/bait"
-            custom:subtitleHint="@string/bait_hint"
-            custom:titleStyle="@style/TextView.Header"
-            custom:subtitleStyle="@style/TextView.Small"/>
+            custom:primaryHint="@string/add_bait"
+            custom:iconResource="@drawable/ic_bait"/>
 
         <include layout="@layout/view_divider"/>
 

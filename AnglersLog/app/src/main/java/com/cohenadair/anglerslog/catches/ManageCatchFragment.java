@@ -25,6 +25,7 @@ import com.cohenadair.anglerslog.utilities.LayoutSpecManager;
 import com.cohenadair.anglerslog.utilities.PrimitiveSpecManager;
 import com.cohenadair.anglerslog.model.utilities.UserDefineArrays;
 import com.cohenadair.anglerslog.utilities.Utils;
+import com.cohenadair.anglerslog.views.InputButtonView;
 import com.cohenadair.anglerslog.views.SelectionSpinnerView;
 import com.cohenadair.anglerslog.views.TextInputView;
 import com.cohenadair.anglerslog.views.TitleSubTitleView;
@@ -42,11 +43,10 @@ import java.util.UUID;
  */
 public class ManageCatchFragment extends ManageContentFragment {
 
-    private TitleSubTitleView mDateView;
-    private TitleSubTitleView mTimeView;
-    private TitleSubTitleView mSpeciesView;
-    private TitleSubTitleView mLocationView;
-    private TitleSubTitleView mBaitView;
+    private InputButtonView mDateTimeView;
+    private InputButtonView mSpeciesView;
+    private InputButtonView mLocationView;
+    private InputButtonView mBaitView;
     private TitleSubTitleView mWaterClarityView;
     private TitleSubTitleView mFishingMethodsView;
     private TextInputView mQuantityView;
@@ -185,11 +185,11 @@ public class ManageCatchFragment extends ManageContentFragment {
 
     @Override
     public void updateViews() {
-        mDateView.setSubtitle(getNewCatch().getDateAsString());
-        mTimeView.setSubtitle(getNewCatch().getTimeAsString());
-        mSpeciesView.setSubtitle(getNewCatch().getSpeciesAsString());
-        mBaitView.setSubtitle(getNewCatch().getBaitAsString());
-        mLocationView.setSubtitle(getNewCatch().getFishingSpotAsString());
+        mDateTimeView.setPrimaryButtonText(getNewCatch().getDateAsString());
+        mDateTimeView.setSecondaryButtonText(getNewCatch().getTimeAsString());
+        mSpeciesView.setPrimaryButtonText(getNewCatch().getSpeciesAsString());
+        mBaitView.setPrimaryButtonText(getNewCatch().getBaitAsString());
+        mLocationView.setPrimaryButtonText(getNewCatch().getFishingSpotAsString());
         mWaterClarityView.setSubtitle(getNewCatch().getWaterClarityAsString());
         mFishingMethodsView.setSubtitle(UserDefineArrays.namesAsString(getSelectedFishingMethods()));
         mResultSpinner.setSelection(getNewCatch().getCatchResult().getValue());
@@ -226,29 +226,29 @@ public class ManageCatchFragment extends ManageContentFragment {
 
     //region Date & Time
     private void initDateTimeView(View view) {
-        mDateView = (TitleSubTitleView)view.findViewById(R.id.date_layout);
-        mDateView.setOnClickListener(new View.OnClickListener() {
+        mDateTimeView = (InputButtonView)view.findViewById(R.id.date_time_view);
+
+        mDateTimeView.setOnClickPrimaryButton(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showDatePickerFragment(getNewCatch().getDate(), new DateTimePickerInterface() {
                     @Override
                     public void onFinish(Date date) {
                         getNewCatch().setDate(date);
-                        mDateView.setSubtitle(getNewCatch().getDateAsString());
+                        mDateTimeView.setPrimaryButtonText(getNewCatch().getDateAsString());
                     }
                 });
             }
         });
 
-        mTimeView = (TitleSubTitleView)view.findViewById(R.id.time_layout);
-        mTimeView.setOnClickListener(new View.OnClickListener() {
+        mDateTimeView.setOnClickSecondaryButton(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showTimePickerFragment(getNewCatch().getDate(), new DateTimePickerInterface() {
                     @Override
                     public void onFinish(Date date) {
                         getNewCatch().setDate(date);
-                        mTimeView.setSubtitle(getNewCatch().getTimeAsString());
+                        mDateTimeView.setSecondaryButtonText(getNewCatch().getTimeAsString());
                     }
                 });
             }
@@ -261,12 +261,12 @@ public class ManageCatchFragment extends ManageContentFragment {
             @Override
             public void onDismiss(ArrayList<UUID> selectedIds) {
                 getNewCatch().setSpecies(Logbook.getSpecies(selectedIds.get(0)));
-                mSpeciesView.setSubtitle(getNewCatch().getSpeciesAsString());
+                mSpeciesView.setPrimaryButtonText(getNewCatch().getSpeciesAsString());
             }
         };
 
-        mSpeciesView = (TitleSubTitleView)view.findViewById(R.id.species_layout);
-        mSpeciesView.setOnClickListener(new View.OnClickListener() {
+        mSpeciesView = (InputButtonView)view.findViewById(R.id.species_view);
+        mSpeciesView.setOnClickPrimaryButton(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showPrimitiveDialog(PrimitiveSpecManager.SPECIES, false, null, onDismissInterface);
@@ -275,8 +275,8 @@ public class ManageCatchFragment extends ManageContentFragment {
     }
 
     private void initLocationView(View view) {
-        mLocationView = (TitleSubTitleView)view.findViewById(R.id.location_layout);
-        mLocationView.setOnClickListener(new View.OnClickListener() {
+        mLocationView = (InputButtonView)view.findViewById(R.id.location_view);
+        mLocationView.setOnClickPrimaryButton(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startSelectionActivity(LayoutSpecManager.LAYOUT_LOCATIONS, new OnSelectionActivityResult() {
@@ -291,8 +291,8 @@ public class ManageCatchFragment extends ManageContentFragment {
     }
 
     private void initBaitView(View view) {
-        mBaitView = (TitleSubTitleView)view.findViewById(R.id.bait_layout);
-        mBaitView.setOnClickListener(new View.OnClickListener() {
+        mBaitView = (InputButtonView)view.findViewById(R.id.bait_view);
+        mBaitView.setOnClickPrimaryButton(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startSelectionActivity(LayoutSpecManager.LAYOUT_BAITS, new OnSelectionActivityResult() {

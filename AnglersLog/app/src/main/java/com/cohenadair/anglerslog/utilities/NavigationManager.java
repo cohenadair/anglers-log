@@ -33,12 +33,8 @@ public class NavigationManager implements FragmentManager.OnBackStackChangedList
         mActivity = activity;
         mDrawerLayout = (DrawerLayout)mActivity.findViewById(R.id.main_drawer);
         mActionBar = mActivity.getSupportActionBar();
-
         mNavigationView = (NavigationView)mActivity.findViewById(R.id.navigation_view);
-        if (mNavigationView != null)
-            mNavigationView.setItemIconTintList(null);
 
-        fixIcons(getCurrentLayoutId());
         initHeaderView();
     }
 
@@ -148,19 +144,6 @@ public class NavigationManager implements FragmentManager.OnBackStackChangedList
         mSelectedItemId = null;
 
         return true;
-    }
-
-    private void fixIcons(int selectedId) {
-        for (int i = 0; i < mNavigationView.getMenu().size(); i++) {
-            MenuItem item = mNavigationView.getMenu().getItem(i);
-            int id = item.getItemId();
-
-            item.setChecked(id == selectedId);
-
-            // keep original colors for Instagram and Twitter links
-            if (id != LayoutSpecManager.LAYOUT_INSTAGRAM && id != LayoutSpecManager.LAYOUT_TWITTER)
-                item.getIcon().setAlpha(75);
-        }
     }
 
     @NonNull

@@ -13,10 +13,8 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.util.AttributeSet;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.catches.ManageCatchFragment;
@@ -48,8 +46,8 @@ public class SelectPhotosView extends LinearLayout {
     private static final int PHOTO_ATTACH = 0;
     private static final int PHOTO_TAKE = 1;
 
+    private InputButtonView mAddPhotoView;
     private LinearLayout mPhotosWrapper;
-    private ImageButton mCameraButton;
     private ArrayList<ImageView> mImageViews = new ArrayList<>();
     private ArrayList<String> mImagePaths = new ArrayList<>();
     private SelectPhotosInteraction mSelectPhotosInteraction;
@@ -80,16 +78,9 @@ public class SelectPhotosView extends LinearLayout {
 
         mPhotosWrapper = (LinearLayout)view.findViewById(R.id.photos_wrapper);
 
-        mCameraButton = (ImageButton)view.findViewById(R.id.camera_button);
-        mCameraButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showPhotoOptions();
-            }
-        });
-
-        LinearLayout titleView = (LinearLayout)findViewById(R.id.title_view);
-        titleView.setOnClickListener(new OnClickListener() {
+        mAddPhotoView = (InputButtonView)view.findViewById(R.id.add_photo_view);
+        mAddPhotoView.setPrimaryButtonClickable(false);
+        mAddPhotoView.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 showPhotoOptions();
@@ -105,9 +96,6 @@ public class SelectPhotosView extends LinearLayout {
                 arr.recycle();
             }
         }
-
-        TextView titleTextView = (TextView)view.findViewById(R.id.title_text_view);
-        titleTextView.setText(mMaxPhotos == 1 ? "Photo" : "Photos");
 
         // multiple selection is only available on API 18+
         mCanSelectMultiple = mCanSelectMultiple && Build.VERSION.SDK_INT >= 18;
@@ -200,10 +188,10 @@ public class SelectPhotosView extends LinearLayout {
     }
 
     public void addImage(String path) {
-        int size = getContext().getResources().getDimensionPixelSize(R.dimen.size_list_thumb);
+        int size = getContext().getResources().getDimensionPixelSize(R.dimen.thumbnail_cell_size);
 
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(size, size);
-        layoutParams.setMargins(0, getResources().getDimensionPixelSize(R.dimen.spacing_small_half), 0, 0);
+        layoutParams.setMargins(0, 0, 0, getContext().getResources().getDimensionPixelSize(R.dimen.margin_default));
 
         final ImageView img = new ImageView(getContext());
         img.setLayoutParams(layoutParams);
@@ -244,10 +232,13 @@ public class SelectPhotosView extends LinearLayout {
                 enableCamera();
     }
 
+    /**
+     * Updates the right margin of each ImageView to simulate spacing.
+     */
     private void updateImageMargins() {
         for (int i = 0; i < mImageViews.size() - 1; i++) {
             LinearLayout.LayoutParams params = (LinearLayout.LayoutParams)mImageViews.get(i).getLayoutParams();
-            params.setMargins(0, getResources().getDimensionPixelSize(R.dimen.spacing_small_half), getResources().getDimensionPixelSize(R.dimen.spacing_medium), 0);
+            params.setMargins(0, 0, getResources().getDimensionPixelSize(R.dimen.spacing_small), 0);
         }
     }
 
@@ -256,17 +247,15 @@ public class SelectPhotosView extends LinearLayout {
     }
 
     private void enableCamera() {
-        mCameraButton.setEnabled(true);
-        mCameraButton.setImageResource(R.drawable.ic_camera);
+        mAddPhotoView.setEnabled(true);
     }
 
     private void disableCamera() {
-        mCameraButton.setEnabled(false);
-        mCameraButton.setImageResource(R.drawable.ic_camera_disabled);
+        mAddPhotoView.setEnabled(false);
     }
 
     private void showPhotoOptions() {
-        if (!mCameraButton.isEnabled())
+        if (!mAddPhotoView.isEnabled())
             return;
 
         new AlertDialog.Builder(getContext())
