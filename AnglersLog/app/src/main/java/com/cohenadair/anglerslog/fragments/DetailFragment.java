@@ -112,11 +112,13 @@ public abstract class DetailFragment extends Fragment {
      * {@link com.cohenadair.anglerslog.activities.MainActivity#onCreate(Bundle)}.
      */
     public void hide() {
-        mContainer.setVisibility(View.GONE);
+        if (mContainer != null)
+            mContainer.setVisibility(View.GONE);
     }
 
     public void show() {
-        mContainer.setVisibility(View.VISIBLE);
+        if (mContainer != null)
+            mContainer.setVisibility(View.VISIBLE);
     }
 
     public void update(Context context) {
