@@ -33,7 +33,10 @@ public class NavigationManager implements FragmentManager.OnBackStackChangedList
         mActivity = activity;
         mDrawerLayout = (DrawerLayout)mActivity.findViewById(R.id.main_drawer);
         mActionBar = mActivity.getSupportActionBar();
+
         mNavigationView = (NavigationView)mActivity.findViewById(R.id.navigation_view);
+        if (mNavigationView != null)
+            mNavigationView.setCheckedItem(getCurrentLayoutId());
 
         initHeaderView();
     }
