@@ -37,8 +37,6 @@ public class MainActivity extends LayoutSpecActivity {
         mNavigationManager.setUp(new NavigationManager.InteractionListener() {
             @Override
             public void onGoBack() {
-                updateViews();
-
                 // must be called after updateViews()
                 // this is used as a workaround for smoother fragment transitions; for whatever
                 // reason the reverse animation off the back stack makes some views "go white",
