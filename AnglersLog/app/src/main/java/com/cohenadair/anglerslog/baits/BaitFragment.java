@@ -36,7 +36,6 @@ public class BaitFragment extends DetailFragment {
 
     private Bait mBait;
 
-    private LinearLayout mContainer;
     private ImageView mImageView;
     private TitleSubTitleView mTitleSubTitleView;
     private TextView mDescriptionTextView;
@@ -55,8 +54,8 @@ public class BaitFragment extends DetailFragment {
         View view = inflater.inflate(R.layout.fragment_bait, container, false);
 
         initImageView(view);
+        setContainer((LinearLayout)view.findViewById(R.id.bait_container));
 
-        mContainer = (LinearLayout)view.findViewById(R.id.bait_container);
         mTitleSubTitleView = (TitleSubTitleView)view.findViewById(R.id.title_view);
         mDescriptionTextView = (TextView)view.findViewById(R.id.description_text_view);
         mTypeView = (PropertyDetailView)view.findViewById(R.id.type_view);
@@ -80,7 +79,7 @@ public class BaitFragment extends DetailFragment {
 
         // id can be null if in two-pane view and there are no baits
         if (id == null) {
-            mContainer.setVisibility(View.GONE);
+            hide();
             return;
         }
 
@@ -89,11 +88,11 @@ public class BaitFragment extends DetailFragment {
 
         // mBait can be null if in tw-pane view and a bait was removed
         if (mBait == null) {
-            mContainer.setVisibility(View.GONE);
+            hide();
             return;
         }
 
-        mContainer.setVisibility(View.VISIBLE);
+        show();
 
         String photo = mBait.getRandomPhoto();
         String path = (photo == null) ? "" : PhotoUtils.privatePhotoPath(photo);

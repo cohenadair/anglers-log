@@ -39,7 +39,6 @@ public class LocationFragment extends DetailFragment {
 
     private Location mLocation;
 
-    private LinearLayout mContainer;
     private TextView mTitleTextView;
     private SelectionSpinnerView mFishingSpotSpinner;
     private DraggableMapFragment mMapFragment;
@@ -55,7 +54,7 @@ public class LocationFragment extends DetailFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_location, container, false);
 
-        mContainer = (LinearLayout)view.findViewById(R.id.location_container);
+        setContainer((LinearLayout) view.findViewById(R.id.location_container));
         mBreakView = view.findViewById(R.id.view_break);
 
         initMapFragment();
@@ -111,18 +110,18 @@ public class LocationFragment extends DetailFragment {
         if (mLocation == null) {
             fishingSpot = Logbook.getFishingSpot(id);
             if (fishingSpot == null) {
-                mContainer.setVisibility(View.GONE);
+                hide();
                 return;
             }
 
             mLocation = Logbook.getLocation(fishingSpot.getLocationId());
             if (mLocation == null) {
-                mContainer.setVisibility(View.GONE);
+                hide();
                 return;
             }
         }
 
-        mContainer.setVisibility(View.VISIBLE);
+        show();
 
         // update spinner adapter
         ArrayAdapter<UserDefineObject> adapter = new ArrayAdapter<>(getContext(), R.layout.list_item_spinner, mLocation.getFishingSpots());
@@ -148,6 +147,15 @@ public class LocationFragment extends DetailFragment {
 
         // update map
         updateMap();
+    }
+
+    @Override
+    public void hide() {
+        super.hide();
+        Utils.toggleVisibility(mMapFragment.getView(), false);
+        Utils.toggleVisibility(mTitleTextView, false);
+        Utils.toggleVisibility(mFishingSpotSpinner, false);
+        Utils.toggleVisibility(mBreakView, false);
     }
 
     private void showAllCatches() {
@@ -195,7 +203,7 @@ public class LocationFragment extends DetailFragment {
     }
 
     public void onMapReady() {
-        mMarkerManager = new FishingSpotMarkerManager(getContext(), mContainer, mMapFragment.getGoogleMap(), new FishingSpotMarkerManager.InteractionListener() {
+        mMarkerManager = new FishingSpotMarkerManager(getContext(), getContainer(), mMapFragment.getGoogleMap(), new FishingSpotMarkerManager.InteractionListener() {
             @Override
             public void onMarkerClick(Marker marker, int index) {
                 // update the Spinner if one of the fishing spot markers was selected

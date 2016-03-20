@@ -39,7 +39,6 @@ public class TripFragment extends DetailFragment {
 
     private Trip mTrip;
 
-    private LinearLayout mContainer;
     private ListPortionLayout mCatchesContainer;
     private MoreDetailLayout mLocationsContainer;
     private MoreDetailLayout mBaitsContainer;
@@ -60,7 +59,7 @@ public class TripFragment extends DetailFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_trip, container, false);
 
-        mContainer = (LinearLayout)view.findViewById(R.id.trip_container);
+        setContainer((LinearLayout)view.findViewById(R.id.trip_container));
 
         mCatchesContainer = (ListPortionLayout)view.findViewById(R.id.catches_container);
         mLocationsContainer = (MoreDetailLayout)view.findViewById(R.id.locations_container);
@@ -89,7 +88,7 @@ public class TripFragment extends DetailFragment {
 
         // id can be null if in two-pane view and there are no baits
         if (id == null) {
-            mContainer.setVisibility(View.GONE);
+            hide();
             return;
         }
 
@@ -98,11 +97,11 @@ public class TripFragment extends DetailFragment {
 
         // mBait can be null if in tw-pane view and a bait was removed
         if (mTrip == null) {
-            mContainer.setVisibility(View.GONE);
+            hide();
             return;
         }
 
-        mContainer.setVisibility(View.VISIBLE);
+        show();
 
         updateTitleView();
         updateCatchesView();

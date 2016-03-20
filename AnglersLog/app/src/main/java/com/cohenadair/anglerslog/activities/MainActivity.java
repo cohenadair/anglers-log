@@ -38,6 +38,12 @@ public class MainActivity extends LayoutSpecActivity {
             @Override
             public void onGoBack() {
                 updateViews();
+
+                // must be called after updateViews()
+                // this is used as a workaround for smoother fragment transitions; for whatever
+                // reason the reverse animation off the back stack makes some views "go white",
+                // and ScrollViews appear above the toolbar, making the animation look sloppy
+                getDetailFragment().hide();
             }
         });
 
@@ -134,8 +140,7 @@ public class MainActivity extends LayoutSpecActivity {
             detailFragment.update(id);
         else {
             // show the detail fragment
-            getSupportFragmentManager()
-                    .beginTransaction()
+            getSupportFragmentManager().beginTransaction()
                     .setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right)
                     .replace(R.id.master_container, getDetailFragment())
                     .addToBackStack(null)

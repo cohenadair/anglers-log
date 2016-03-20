@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.activities.LayoutSpecActivity;
@@ -36,6 +37,7 @@ public abstract class DetailFragment extends Fragment {
 
     private UUID mItemId;
     private OnClickManageMenuListener mMenuListener;
+    private LinearLayout mContainer;
 
     /**
      * The method that updates the view using the object at the corresponding ListView position.
@@ -104,6 +106,19 @@ public abstract class DetailFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Used to hide all details of the fragment. This is used as a workaround to make fragment
+     * transaction animations smoother. See navigation setup in
+     * {@link com.cohenadair.anglerslog.activities.MainActivity#onCreate(Bundle)}.
+     */
+    public void hide() {
+        mContainer.setVisibility(View.GONE);
+    }
+
+    public void show() {
+        mContainer.setVisibility(View.VISIBLE);
+    }
+
     public void update(Context context) {
         if (isLayoutSpecChild())
             update(((LayoutSpecActivity)context).getSelectionId());
@@ -126,6 +141,14 @@ public abstract class DetailFragment extends Fragment {
 
     public LayoutSpecActivity getRealActivity() {
         return (LayoutSpecActivity)getActivity();
+    }
+
+    public LinearLayout getContainer() {
+        return mContainer;
+    }
+
+    public void setContainer(LinearLayout container) {
+        mContainer = container;
     }
     //endregion
 

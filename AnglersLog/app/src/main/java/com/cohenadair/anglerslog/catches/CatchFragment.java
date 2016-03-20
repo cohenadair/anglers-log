@@ -1,7 +1,6 @@
 package com.cohenadair.anglerslog.catches;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,7 +32,6 @@ public class CatchFragment extends DetailFragment {
     private Catch mCatch;
     private ArrayList<String> mCatchPhotos;
 
-    private LinearLayout mContainer;
     private ImageScrollView mImageScrollView;
     private TitleSubTitleView mTitleView;
     private MoreDetailView mBaitView;
@@ -63,7 +61,7 @@ public class CatchFragment extends DetailFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_catch, container, false);
 
-        mContainer = (LinearLayout)view.findViewById(R.id.catch_container);
+        setContainer((LinearLayout)view.findViewById(R.id.catch_container));
 
         mImageScrollView = (ImageScrollView)view.findViewById(R.id.image_scroll_view);
         mImageScrollView.setInteractionListener(new ImageScrollView.InteractionListener() {
@@ -105,13 +103,11 @@ public class CatchFragment extends DetailFragment {
         if (!isAttached())
             return;
 
-        Log.d("CatchFragment", "update(UUID id)");
-
         clearActionBarTitle();
 
         // id can be null if in two-pane view and there are no catches
         if (id == null) {
-            mContainer.setVisibility(View.GONE);
+            hide();
             return;
         }
 
@@ -120,11 +116,11 @@ public class CatchFragment extends DetailFragment {
 
         // mCatch can be null if in tw-pane view and a catch was removed
         if (mCatch == null) {
-            mContainer.setVisibility(View.GONE);
+            hide();
             return;
         }
 
-        mContainer.setVisibility(View.VISIBLE);
+        show();
         mCatchPhotos = mCatch.getPhotos();
         mImageScrollView.setImages(mCatchPhotos);
 
