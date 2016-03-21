@@ -245,6 +245,18 @@ public class DraggableMapFragment extends SupportMapFragment implements OnMapRea
         updateCamera(loc, 2000, null);
     }
 
+    public void updateCameraNoZoom(LatLng loc, int time, GoogleMap.CancelableCallback callback) {
+        try {
+            mGoogleMap.animateCamera(CameraUpdateFactory.newLatLng(loc), time, callback);
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void updateCameraNoZoom(LatLng loc) {
+        updateCameraNoZoom(loc, 2000, null);
+    }
+
     private boolean isLocationPermissionGranted() {
         return mLocationEnabled && ContextCompat.checkSelfPermission(getContext(), PERMISSION_LOCATION) == GRANTED;
     }

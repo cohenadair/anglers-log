@@ -115,6 +115,10 @@ public class FishingSpot extends UserDefineObject {
         return String.format(lat + ": %.6f, " + lng + ": %.6f", mLatitude, mLongitude);
     }
 
+    public String getCoordinatesAsString() {
+        return String.format("%.6f, %.6f", mLatitude, mLongitude);
+    }
+
     /**
      * @return An {@link ArrayList} of {@link Catch} objects associated with this
      * {@link FishingSpot}.

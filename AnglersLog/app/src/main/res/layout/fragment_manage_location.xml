@@ -3,10 +3,9 @@
     xmlns:custom="http://schemas.android.com/apk/res-auto"
     android:background="@color/global_background"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent">
 
     <LinearLayout
-        android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/margin_default"
@@ -14,43 +13,30 @@
 
         <!-- Name -->
         <com.cohenadair.anglerslog.views.InputTextView
+            style="@style/InputTextView.NoTitle"
             android:id="@+id/name_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            custom:titleText="@string/name"
-            custom:editTextHint="@string/name_hint"/>
+            custom:iconResource="@drawable/ic_location"
+            custom:editTextHint="@string/add_name"/>
 
-        <include layout="@layout/view_divider"/>
+        <com.cohenadair.anglerslog.views.InputButtonView
+            style="@style/InputView.IconInset"
+            android:id="@+id/add_fishing_spot_view"
+            android:layout_marginTop="@dimen/margin_default_negative"
+            custom:primaryHint="@string/add_fishing_spot"/>
 
         <!-- Fishing Spots -->
         <LinearLayout
+            style="@style/InputView.IconInset"
+            android:id="@+id/container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/margin_default"
-            android:layout_marginRight="@dimen/margin_default"
-            android:layout_marginTop="@dimen/margin_default"
-            android:layout_marginBottom="@dimen/spacing_small_half"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
-            <TextView
-                style="@style/TextView.Header"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/fishing_spots"/>
-
-            <ImageButton
-                android:id="@+id/add_button"
-                android:background="#00000000"
-                android:layout_width="@dimen/image_button_size"
-                android:layout_height="@dimen/image_button_size"
-                android:src="@drawable/ic_add"
-                android:contentDescription="@string/add_fishing_spot_description"/>
-
+            <!--
+                Fishing spot list items will be added programmatically since a ListView cannot
+                be embedded in a ScrollView
+            -->
         </LinearLayout>
-
-        <!-- Fishing spot list items will be added programmatically since a ListView cannot be embedded in a ScrollView -->
 
     </LinearLayout>
 </ScrollView>

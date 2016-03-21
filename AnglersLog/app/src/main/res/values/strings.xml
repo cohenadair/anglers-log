@@ -143,6 +143,7 @@
     <string name="confirm">Confirm</string>
     <string name="reset">Reset</string>
     <string name="search">Search</string>
+    <string name="empty"> </string>
     <string name="favorite">Favorite</string>
     <string name="sort_by">Sort by</string>
     <string name="number_of_catches">Number of catches</string>
@@ -162,6 +163,7 @@
     <string name="add_bait_category">Add bait category</string>
     <string name="add_catches">Add catches</string>
     <string name="add_locations">Add locations</string>
+    <string name="add_fishing_spot">Add fishing spot</string>
     <string name="add_anglers">Add anglers</string>
     <string name="add_weather">Add weather</string>
     <string name="update_weather">Update weather</string>

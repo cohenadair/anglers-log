@@ -35,8 +35,7 @@
         style="@style/InputTextView.NoTitle"
         android:id="@+id/name_view"
         custom:iconResource="@drawable/ic_trips"
-        custom:editTextHint="@string/add_name"
-        custom:capSentencesOnly="true"/>
+        custom:editTextHint="@string/add_name"/>
 
     <include layout="@layout/view_divider"/>
 

@@ -5,7 +5,6 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
 import com.cohenadair.anglerslog.R;
@@ -16,8 +15,9 @@ import com.cohenadair.anglerslog.model.user_defines.FishingSpot;
 import com.cohenadair.anglerslog.model.user_defines.Location;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import com.cohenadair.anglerslog.utilities.Utils;
-import com.cohenadair.anglerslog.views.MoreDetailView;
+import com.cohenadair.anglerslog.views.InputButtonView;
 import com.cohenadair.anglerslog.views.InputTextView;
+import com.cohenadair.anglerslog.views.MoreDetailView;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -29,6 +29,7 @@ public class ManageLocationFragment extends ManageContentFragment {
 
     private LinearLayout mContainer;
     private InputTextView mNameView;
+    private InputButtonView mAddFishingSpotView;
 
     private ArrayList<MoreDetailView> mFishingSpotViews;
     private ArrayList<UserDefineObject> mFishingSpots;
@@ -46,8 +47,9 @@ public class ManageLocationFragment extends ManageContentFragment {
         View view = inflater.inflate(R.layout.fragment_manage_location, container, false);
 
         mContainer = (LinearLayout)view.findViewById(R.id.container);
+
         initNameView(view);
-        initAddFishingSpotButton(view);
+        initAddFishingSpotView(view);
         initSubclassObject();
 
         if (mFishingSpots == null || !isEditing())
@@ -164,9 +166,9 @@ public class ManageLocationFragment extends ManageContentFragment {
         mNameView = (InputTextView)view.findViewById(R.id.name_view);
     }
 
-    private void initAddFishingSpotButton(View view) {
-        ImageButton fishingSpotButton = (ImageButton)view.findViewById(R.id.add_button);
-        fishingSpotButton.setOnClickListener(new View.OnClickListener() {
+    private void initAddFishingSpotView(View view) {
+        mAddFishingSpotView = (InputButtonView)view.findViewById(R.id.add_fishing_spot_view);
+        mAddFishingSpotView.setOnClickPrimaryButton(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 goToManageFishingSpot(null);
@@ -180,7 +182,7 @@ public class ManageLocationFragment extends ManageContentFragment {
 
         final MoreDetailView fishingSpotView = new MoreDetailView(getContext());
         fishingSpotView.setTitle(spot.getName());
-        fishingSpotView.setSubtitle(spot.getCoordinatesAsString(lat, lng));
+        fishingSpotView.setSubtitle(spot.getCoordinatesAsString());
         fishingSpotView.setDetailButtonImage(R.drawable.ic_remove);
         fishingSpotView.setTitleStyle(R.style.TextView_Small);
         fishingSpotView.setSubtitleStyle(R.style.TextView_SmallSubtitle);
@@ -269,7 +271,7 @@ public class ManageLocationFragment extends ManageContentFragment {
         });
 
         ManageFragment manageFragment = new ManageFragment();
-        manageFragment.setTitle(R.string.new_fishing_spot);
+        manageFragment.setTitle(R.string.empty);
         manageFragment.setContentFragment(fragment);
         manageFragment.show(getChildFragmentManager(), null);
     }

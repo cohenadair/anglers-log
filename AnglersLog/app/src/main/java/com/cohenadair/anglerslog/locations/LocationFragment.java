@@ -152,10 +152,12 @@ public class LocationFragment extends DetailFragment {
     @Override
     public void hide() {
         super.hide();
-        Utils.toggleVisibility(mMapFragment.getView(), false);
         Utils.toggleVisibility(mTitleTextView, false);
         Utils.toggleVisibility(mFishingSpotSpinner, false);
         Utils.toggleVisibility(mBreakView, false);
+
+        if (mMapFragment != null)
+            Utils.toggleVisibility(mMapFragment.getView(), false);
     }
 
     private void showAllCatches() {
