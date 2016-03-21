@@ -45,13 +45,15 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/margin_default"
         custom:titleText="@string/wind_speed"
-        custom:editTextHint="@string/zero"/>
+        custom:editTextHint="@string/zero"
+        custom:numbersOnly="true"/>
 
     <com.cohenadair.anglerslog.views.TextInputView
         android:id="@+id/sky_conditions_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         custom:titleText="@string/sky_conditions"
-        custom:editTextHint="@string/sky_hint"/>
+        custom:editTextHint="@string/sky_hint"
+        custom:numbersOnly="true"/>
 
 </LinearLayout>

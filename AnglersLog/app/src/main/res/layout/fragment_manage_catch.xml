@@ -68,29 +68,54 @@
         <include layout="@layout/view_divider"/>
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            style="@style/Layout.Input"
+            android:layout_margin="@dimen/margin_default">
 
-            <!-- Length -->
-            <com.cohenadair.anglerslog.views.TextInputView
-                android:id="@+id/length_view"
-                android:layout_width="match_parent"
+            <ImageView
+                style="@style/ImageView.Input"
+                android:id="@+id/icon_image_view"
+                android:src="@drawable/ic_ruler"
+                android:contentDescription="@string/icon_description"
+                android:layout_gravity="start"/>
+
+            <LinearLayout
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                custom:titleText="@string/length"
-                custom:editTextHint="@string/length_hint"
-                custom:numbersOnly="true"/>
+                android:layout_marginLeft="@dimen/margin_large"
+                android:layout_marginStart="@dimen/margin_large"
+                android:orientation="vertical">
 
-            <!-- Weight -->
-            <com.cohenadair.anglerslog.views.TextInputView
-                android:id="@+id/weight_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                custom:titleText="@string/weight"
-                custom:editTextHint="@string/weight_hint"
-                custom:numbersOnly="true"/>
+                <!-- Length -->
+                <com.cohenadair.anglerslog.views.TextInputView
+                    android:id="@+id/length_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/margin_default"
+                    custom:titleText="@string/length"
+                    custom:editTextHint="@string/length_hint"
+                    custom:numbersOnly="true"/>
+
+                <!-- Weight -->
+                <com.cohenadair.anglerslog.views.TextInputView
+                    android:id="@+id/weight_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/margin_default"
+                    custom:titleText="@string/weight"
+                    custom:editTextHint="@string/weight_hint"
+                    custom:numbersOnly="true"/>
+
+                <!-- Quantity -->
+                <com.cohenadair.anglerslog.views.TextInputView
+                    android:id="@+id/quantity_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    custom:titleText="@string/quantity"
+                    custom:editTextHint="@string/quantity_hint"
+                    custom:numbersOnly="true"/>
+
+            </LinearLayout>
 
         </LinearLayout>
 
@@ -100,16 +125,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
-
-            <!-- Quantity -->
-            <com.cohenadair.anglerslog.views.TextInputView
-                android:id="@+id/quantity_view"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                custom:titleText="@string/quantity"
-                custom:editTextHint="@string/quantity_hint"
-                custom:numbersOnly="true"/>
 
             <!-- Result -->
             <com.cohenadair.anglerslog.views.SelectionSpinnerView
