@@ -3,58 +3,27 @@
 -->
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="@dimen/margin_default"
     android:orientation="vertical">
 
-    <LinearLayout
+    <com.cohenadair.anglerslog.views.InputButtonView
+        android:id="@+id/input_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <TextView
-            style="@style/TextView.Header"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:id="@+id/title_text_view"
-            android:text="@string/weather_conditions"
-            android:layout_gravity="center_vertical"/>
-
-        <ImageButton
-            android:id="@+id/delete_weather_button"
-            android:layout_width="@dimen/image_button_size"
-            android:layout_height="@dimen/image_button_size"
-            android:layout_marginRight="@dimen/spacing_medium"
-            android:layout_marginEnd="@dimen/spacing_medium"
-            android:src="@drawable/ic_close"
-            android:contentDescription="@string/weather_remove_description"
-            android:background="@android:color/transparent"/>
-
-        <ImageButton
-            android:id="@+id/edit_weather_button"
-            android:layout_width="@dimen/image_button_size"
-            android:layout_height="@dimen/image_button_size"
-            android:layout_marginRight="@dimen/spacing_medium"
-            android:layout_marginEnd="@dimen/spacing_medium"
-            android:src="@drawable/ic_edit"
-            android:contentDescription="@string/weather_edit_description"
-            android:background="@android:color/transparent"/>
-
-        <ImageButton
-            android:id="@+id/refresh_button"
-            android:layout_width="@dimen/image_button_size"
-            android:layout_height="@dimen/image_button_size"
-            android:src="@drawable/ic_refresh"
-            android:contentDescription="@string/refresh_description"
-            android:background="@android:color/transparent"/>
-
-    </LinearLayout>
+        custom:iconResource="@drawable/ic_cloud"
+        custom:primaryHint="@string/add_weather"/>
 
     <com.cohenadair.anglerslog.views.WeatherDetailsView
         android:id="@+id/details_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_input_icon_offset"
+        android:layout_marginStart="@dimen/margin_input_icon_offset"
+        android:layout_marginRight="@dimen/margin_default"
+        android:layout_marginEnd="@dimen/margin_default"
+        android:layout_marginBottom="@dimen/margin_default"
+        android:layout_marginTop="-8dp"/>
 
 </LinearLayout>

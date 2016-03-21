@@ -32,7 +32,7 @@ public class Weather {
 
     private static final String TAG = "Weather";
     private static final String API_KEY = "35f69a23678dead2c75e0599eadbb4e1";
-    private static final String API_URL = "http://api.openweathermap.org/data/2.5/weather?units=imperial";
+    private static final String API_URL = "http://api.openweathermap.org/data/2.5/weather?";
 
     private LatLng mCoordinates;
 
@@ -83,13 +83,13 @@ public class Weather {
         return Integer.toString(mWindSpeed);
     }
 
-    public JsonObjectRequest getRequest(@NonNull final OnFetchInterface onFetch) {
+    public JsonObjectRequest getRequest(String units, @NonNull final OnFetchInterface onFetch) {
         if (mCoordinates == null) {
             Log.e(TAG, "Coordinates must not equal null to fetch weather data.");
             return null;
         }
 
-        return new JsonObjectRequest(Request.Method.GET, getUrl(), null, new Response.Listener<JSONObject>() {
+        return new JsonObjectRequest(Request.Method.GET, getUrl(units), null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject jsonObject) {
                 parseJson(jsonObject);
@@ -104,8 +104,8 @@ public class Weather {
         });
     }
 
-    private String getUrl() {
-        return String.format(API_URL + "&lat=%f&lon=%f&APPID=%s", mCoordinates.latitude, mCoordinates.longitude, API_KEY);
+    private String getUrl(String units) {
+        return String.format(API_URL + "units=%s&lat=%f&lon=%f&APPID=%s", units, mCoordinates.latitude, mCoordinates.longitude, API_KEY);
     }
 
     private void parseJson(JSONObject json) {

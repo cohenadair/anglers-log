@@ -22,6 +22,7 @@ import com.cohenadair.anglerslog.model.user_defines.Catch;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import com.cohenadair.anglerslog.trips.ManageTripFragment;
 import com.cohenadair.anglerslog.utilities.LayoutSpecManager;
+import com.cohenadair.anglerslog.utilities.LogbookPreferences;
 import com.cohenadair.anglerslog.utilities.PrimitiveSpecManager;
 import com.cohenadair.anglerslog.model.utilities.UserDefineArrays;
 import com.cohenadair.anglerslog.utilities.Utils;
@@ -366,27 +367,8 @@ public class ManageCatchFragment extends ManageContentFragment {
         mWeatherView = (WeatherView)view.findViewById(R.id.weather_view);
         mWeatherView.setListener(new WeatherView.InteractionListener() {
             @Override
-            public void onClickRemoveButton() {
-                mWeather = null;
-            }
-
-            @Override
-            public void onClickEditButton() {
-                WeatherView.EditDialog editDialog = WeatherView.EditDialog.newInstance(mWeather);
-
-                editDialog.setInteractionListener(new WeatherView.EditDialog.InteractionListener() {
-                    @Override
-                    public void onSave(Weather weather) {
-                        updateWeatherView(weather);
-                    }
-                });
-
-                editDialog.show(getChildFragmentManager(), "EditWeatherDialog");
-            }
-
-            @Override
-            public void onClickRefreshButton() {
-                requestWeatherData();
+            public void onClickButton() {
+                openEditWeatherDialog();
             }
         });
     }
@@ -396,7 +378,31 @@ public class ManageCatchFragment extends ManageContentFragment {
         mWeather = weather;
     }
 
-    private void requestWeatherData() {
+    private void openEditWeatherDialog() {
+        WeatherView.EditDialog editDialog = WeatherView.EditDialog.newInstance(mWeather);
+
+        editDialog.setInteractionListener(new WeatherView.EditDialog.InteractionListener() {
+            @Override
+            public void onClear() {
+                mWeather = null;
+                updateWeatherView(null);
+            }
+
+            @Override
+            public void onSave(Weather weather) {
+                updateWeatherView(weather);
+            }
+
+            @Override
+            public void onClickRefresh(WeatherView.EditDialog.OnGetWeatherListener l) {
+                requestWeatherData(l);
+            }
+        });
+
+        editDialog.show(getChildFragmentManager(), "EditWeatherDialog");
+    }
+
+    private void requestWeatherData(final WeatherView.EditDialog.OnGetWeatherListener l) {
         if (!mGoogleApiClient.isConnected()) {
             Utils.showToast(getContext(), R.string.error_google_services);
             return;
@@ -419,10 +425,12 @@ public class ManageCatchFragment extends ManageContentFragment {
         }
 
         final Weather weather = new Weather(new LatLng(loc.getLatitude(), loc.getLongitude()));
-        mRequestQueue.add(weather.getRequest(new Weather.OnFetchInterface() {
+        String units = getResources().getStringArray(R.array.pref_unitTypes_entries)[LogbookPreferences.getWeatherUnits()];
+
+        mRequestQueue.add(weather.getRequest(units, new Weather.OnFetchInterface() {
             @Override
             public void onSuccess() {
-                updateWeatherView(weather);
+                l.onSuccess(weather);
             }
 
             @Override

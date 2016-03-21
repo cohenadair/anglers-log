@@ -3,27 +3,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="@dimen/margin_default"
-    android:layout_marginBottom="@dimen/spacing_medium"
     android:orientation="vertical">
 
     <TextView
-        style="@style/TextView.Header"
+        style="@style/TextView.InputLabel"
+        android:id="@+id/title_text_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/margin_default"
-        android:layout_marginRight="@dimen/margin_default"
-        android:id="@+id/title_text_view"
         tools:text="Title"/>
 
     <EditText
-        style="@style/TextView.FromSelection"
+        style="@style/EditText.TextView.Input"
         android:id="@+id/edit_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/margin_edit_text_offset"
-        android:layout_marginRight="@dimen/margin_edit_text_offset"
-        android:paddingTop="@dimen/spacing_small"
+        android:layout_marginTop="@dimen/margin_quarter"
         android:inputType="textMultiLine|textCapWords"
         tools:hint="Hint"/>
 

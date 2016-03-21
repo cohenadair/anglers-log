@@ -6,7 +6,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.cohenadair.anglerslog.R;
+import com.cohenadair.anglerslog.model.Logbook;
 import com.cohenadair.anglerslog.model.Weather;
+import com.cohenadair.anglerslog.utilities.LogbookPreferences;
 
 /**
  * A WeatherDetailsView is a view that displays weather data.
@@ -40,10 +42,13 @@ public class WeatherDetailsView extends LinearLayout {
         if (weather == null)
             return;
 
-        String mph = getResources().getString(R.string.mph);
-        String wind = getResources().getString(R.string.wind_speed) + ": " + weather.getWindSpeedAsString() + " " + mph;
+        boolean isImperial = LogbookPreferences.getWeatherUnits() == Logbook.UNIT_IMPERIAL;
+
+        String ph = isImperial ? getResources().getString(R.string.mph) : getResources().getString(R.string.kmh);
+        String deg = isImperial ? getResources().getString(R.string.degrees_f) : getResources().getString(R.string.degrees_c);
+        String wind = getResources().getString(R.string.wind_speed) + ": " + weather.getWindSpeedAsString() + " " + ph;
         String sky = getResources().getString(R.string.sky_conditions) + ": " + (weather.getSkyConditions() != null ? weather.getSkyConditions() : getResources().getString(R.string.unknown));
-        String degrees = weather.getTemperatureAsString() + getResources().getString(R.string.degrees_f);
+        String degrees = weather.getTemperatureAsString() + deg;
 
         mTemperatureTextView.setText(degrees);
         mWindTextView.setText(wind);

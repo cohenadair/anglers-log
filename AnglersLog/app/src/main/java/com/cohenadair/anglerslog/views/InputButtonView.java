@@ -73,6 +73,10 @@ public class InputButtonView extends LinearLayout {
         mPrimaryButton.setText(text);
     }
 
+    public void setPrimaryButtonHint(int resId) {
+        mPrimaryButton.setHint(resId);
+    }
+
     public void setSecondaryButtonText(String text) {
         mSecondaryButton.setText(text);
     }

@@ -10,7 +10,6 @@ import android.support.v7.app.AlertDialog;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
 import com.cohenadair.anglerslog.R;
@@ -22,16 +21,13 @@ import com.cohenadair.anglerslog.model.Weather;
  */
 public class WeatherView extends LinearLayout {
 
-    private ImageButton mDeleteButton;
-    private ImageButton mEditButton;
+    private InputButtonView mAddWeatherView;
     private WeatherDetailsView mDetailsView;
 
     private InteractionListener mListener;
 
     public interface InteractionListener {
-        void onClickRemoveButton();
-        void onClickEditButton();
-        void onClickRefreshButton();
+        void onClickButton();
     }
 
     public WeatherView(Context context) {
@@ -47,30 +43,11 @@ public class WeatherView extends LinearLayout {
     private void init(AttributeSet attrs) {
         inflate(getContext(), R.layout.view_weather, this);
 
-        mDeleteButton = (ImageButton)findViewById(R.id.delete_weather_button);
-        mDeleteButton.setVisibility(View.GONE);
-        mDeleteButton.setOnClickListener(new OnClickListener() {
+        mAddWeatherView = (InputButtonView)findViewById(R.id.input_view);
+        mAddWeatherView.setOnClickPrimaryButton(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                mListener.onClickRemoveButton();
-                reset();
-            }
-        });
-
-        mEditButton = (ImageButton)findViewById(R.id.edit_weather_button);
-        mEditButton.setImageResource(R.drawable.ic_add);
-        mEditButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mListener.onClickEditButton();
-            }
-        });
-
-        ImageButton refreshButton = (ImageButton)findViewById(R.id.refresh_button);
-        refreshButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mListener.onClickRefreshButton();
+                mListener.onClickButton();
             }
         });
 
@@ -81,20 +58,18 @@ public class WeatherView extends LinearLayout {
 
     public void updateViews(Weather weather) {
         if (weather == null) {
+            mAddWeatherView.setPrimaryButtonHint(R.string.add_weather);
             reset();
             return;
         }
 
+        mAddWeatherView.setPrimaryButtonHint(R.string.update_weather);
         mDetailsView.updateViews(weather);
         mDetailsView.setVisibility(View.VISIBLE);
-        mDeleteButton.setVisibility(View.VISIBLE);
-        mEditButton.setImageResource(R.drawable.ic_edit);
     }
 
     private void reset() {
         mDetailsView.setVisibility(View.GONE);
-        mDeleteButton.setVisibility(View.GONE);
-        mEditButton.setImageResource(R.drawable.ic_add);
     }
 
     public void setListener(InteractionListener listener) {
@@ -116,8 +91,14 @@ public class WeatherView extends LinearLayout {
 
         private InteractionListener mInteractionListener;
 
+        public interface OnGetWeatherListener {
+            void onSuccess(Weather weather);
+        }
+
         public interface InteractionListener {
+            void onClear();
             void onSave(Weather weather);
+            void onClickRefresh(OnGetWeatherListener l);
         }
 
         public static EditDialog newInstance(Weather weather) {
@@ -154,6 +135,18 @@ public class WeatherView extends LinearLayout {
             if (sky != null)
                 editView.setWeather(new Weather(getArguments().getInt(ARG_TEMP), getArguments().getInt(ARG_WIND), getArguments().getString(ARG_SKY)));
 
+            editView.setCallbacks(new WeatherEditView.InteractionListener() {
+                @Override
+                public void onClickRefreshButton() {
+                    mInteractionListener.onClickRefresh(new OnGetWeatherListener() {
+                        @Override
+                        public void onSuccess(Weather weather) {
+                            editView.setWeather(weather);
+                        }
+                    });
+                }
+            });
+
             AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
             dialog.setView(dialogView);
             dialog.setPositiveButton(R.string.button_save, new DialogInterface.OnClickListener() {
@@ -161,10 +154,17 @@ public class WeatherView extends LinearLayout {
                 public void onClick(DialogInterface dialog, int which) {
                     mInteractionListener.onSave(editView.getWeather());
                     editView.reset();
-                    getDialog().dismiss();
+                    dialog.dismiss();
                 }
             });
             dialog.setNegativeButton(R.string.button_cancel, null);
+            dialog.setNeutralButton(R.string.button_delete, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    mInteractionListener.onClear();
+                    dialog.dismiss();
+                }
+            });
 
             return dialog.create();
         }
