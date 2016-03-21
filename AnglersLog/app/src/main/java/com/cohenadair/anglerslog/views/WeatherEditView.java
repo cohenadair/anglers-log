@@ -22,9 +22,9 @@ import com.cohenadair.anglerslog.utilities.Utils;
  */
 public class WeatherEditView extends LinearLayout {
 
-    private TextInputView mTemperatureView;
-    private TextInputView mWindSpeedView;
-    private TextInputView mSkyConditionsView;
+    private InputTextView mTemperatureView;
+    private InputTextView mWindSpeedView;
+    private InputTextView mSkyConditionsView;
     private InteractionListener mCallbacks;
 
     public interface InteractionListener {
@@ -44,9 +44,11 @@ public class WeatherEditView extends LinearLayout {
     private void init(AttributeSet attrs) {
         inflate(getContext(), R.layout.view_weather_edit, this);
 
-        mTemperatureView = (TextInputView)findViewById(R.id.temperature_view);
-        mWindSpeedView = (TextInputView)findViewById(R.id.wind_speed_view);
-        mSkyConditionsView = (TextInputView)findViewById(R.id.sky_conditions_view);
+        mTemperatureView = (InputTextView)findViewById(R.id.temperature_view);
+        mTemperatureView.setAllowsNegativeNumbers(true);
+
+        mWindSpeedView = (InputTextView)findViewById(R.id.wind_speed_view);
+        mSkyConditionsView = (InputTextView)findViewById(R.id.sky_conditions_view);
 
         initUnitsSpinner();
         initRefreshButton();

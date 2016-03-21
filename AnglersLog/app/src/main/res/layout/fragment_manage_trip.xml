@@ -7,7 +7,7 @@
     android:layout_height="match_parent">
 
     <!-- Name -->
-    <com.cohenadair.anglerslog.views.TextInputView
+    <com.cohenadair.anglerslog.views.InputTextView
         android:id="@+id/name_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -88,7 +88,7 @@
     <include layout="@layout/view_divider"/>
 
     <!-- Notes -->
-    <com.cohenadair.anglerslog.views.TextInputView
+    <com.cohenadair.anglerslog.views.InputTextView
         android:id="@+id/notes_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

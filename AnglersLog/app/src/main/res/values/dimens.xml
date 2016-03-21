@@ -3,6 +3,7 @@
     <dimen name="margin_dialog">24dp</dimen>
     <dimen name="margin_medium">20dp</dimen>
     <dimen name="margin_default">16dp</dimen>
+    <dimen name="margin_default_negative">-16dp</dimen>
     <dimen name="margin_small">12dp</dimen>
     <dimen name="margin_edit_text_offset">12dp</dimen>
     <dimen name="margin_spinner_offset">8dp</dimen>
@@ -11,8 +12,11 @@
     <dimen name="margin_three_quarters">12dp</dimen>
     <dimen name="margin_large">24dp</dimen>
 
-    <!-- margin_default + image_button_size + margin_large + margin_quarter -->
-    <dimen name="margin_input_icon_offset">68dp</dimen>
+    <!-- margin_default + image_button_size + margin_large -->
+    <dimen name="margin_input_icon_offset">64dp</dimen>
+
+    <!-- image_button_size + margin_large -->
+    <dimen name="margin_input_icon_no_left">48dp</dimen>
 
     <dimen name="navigation_drawer_width">320dp</dimen>
 

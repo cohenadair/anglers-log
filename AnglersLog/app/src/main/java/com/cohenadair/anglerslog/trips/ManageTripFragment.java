@@ -16,7 +16,7 @@ import com.cohenadair.anglerslog.utilities.LayoutSpecManager;
 import com.cohenadair.anglerslog.utilities.PrimitiveSpecManager;
 import com.cohenadair.anglerslog.model.utilities.UserDefineArrays;
 import com.cohenadair.anglerslog.utilities.Utils;
-import com.cohenadair.anglerslog.views.TextInputView;
+import com.cohenadair.anglerslog.views.InputTextView;
 import com.cohenadair.anglerslog.views.TitleSubTitleView;
 
 import java.util.ArrayList;
@@ -29,8 +29,8 @@ import java.util.UUID;
  */
 public class ManageTripFragment extends ManageContentFragment {
 
-    private TextInputView mNameView;
-    private TextInputView mNotesView;
+    private InputTextView mNameView;
+    private InputTextView mNotesView;
     private TitleSubTitleView mStartDateView;
     private TitleSubTitleView mEndDateView;
     private TitleSubTitleView mCatchesView;
@@ -183,11 +183,11 @@ public class ManageTripFragment extends ManageContentFragment {
 
     //region View Initializing
     public void initNameView(View view) {
-        mNameView = (TextInputView)view.findViewById(R.id.name_view);
+        mNameView = (InputTextView)view.findViewById(R.id.name_view);
     }
 
     public void initNotesView(View view) {
-        mNotesView = (TextInputView)view.findViewById(R.id.notes_view);
+        mNotesView = (InputTextView)view.findViewById(R.id.notes_view);
     }
 
     public void initAnglersView(View view) {

@@ -17,7 +17,7 @@ import com.cohenadair.anglerslog.model.user_defines.Location;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import com.cohenadair.anglerslog.utilities.Utils;
 import com.cohenadair.anglerslog.views.MoreDetailView;
-import com.cohenadair.anglerslog.views.TextInputView;
+import com.cohenadair.anglerslog.views.InputTextView;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -28,7 +28,7 @@ import java.util.UUID;
 public class ManageLocationFragment extends ManageContentFragment {
 
     private LinearLayout mContainer;
-    private TextInputView mNameView;
+    private InputTextView mNameView;
 
     private ArrayList<MoreDetailView> mFishingSpotViews;
     private ArrayList<UserDefineObject> mFishingSpots;
@@ -161,7 +161,7 @@ public class ManageLocationFragment extends ManageContentFragment {
     }
 
     private void initNameView(View view) {
-        mNameView = (TextInputView)view.findViewById(R.id.name_view);
+        mNameView = (InputTextView)view.findViewById(R.id.name_view);
     }
 
     private void initAddFishingSpotButton(View view) {

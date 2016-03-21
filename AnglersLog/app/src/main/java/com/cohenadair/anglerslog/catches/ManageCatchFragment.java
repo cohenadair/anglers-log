@@ -28,7 +28,7 @@ import com.cohenadair.anglerslog.model.utilities.UserDefineArrays;
 import com.cohenadair.anglerslog.utilities.Utils;
 import com.cohenadair.anglerslog.views.InputButtonView;
 import com.cohenadair.anglerslog.views.SelectionSpinnerView;
-import com.cohenadair.anglerslog.views.TextInputView;
+import com.cohenadair.anglerslog.views.InputTextView;
 import com.cohenadair.anglerslog.views.TitleSubTitleView;
 import com.cohenadair.anglerslog.views.WeatherView;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -48,14 +48,14 @@ public class ManageCatchFragment extends ManageContentFragment {
     private InputButtonView mSpeciesView;
     private InputButtonView mLocationView;
     private InputButtonView mBaitView;
-    private TitleSubTitleView mWaterClarityView;
+    private InputButtonView mWaterClarityView;
     private TitleSubTitleView mFishingMethodsView;
-    private TextInputView mQuantityView;
-    private TextInputView mLengthView;
-    private TextInputView mWeightView;
-    private TextInputView mWaterDepthView;
-    private TextInputView mWaterTemperatureView;
-    private TextInputView mNotesView;
+    private InputTextView mQuantityView;
+    private InputTextView mLengthView;
+    private InputTextView mWeightView;
+    private InputTextView mWaterDepthView;
+    private InputTextView mWaterTemperatureView;
+    private InputTextView mNotesView;
     private SelectionSpinnerView mResultSpinner;
     private WeatherView mWeatherView;
 
@@ -91,12 +91,12 @@ public class ManageCatchFragment extends ManageContentFragment {
         initResultView(view);
         initWeatherView(view);
 
-        mQuantityView = (TextInputView)view.findViewById(R.id.quantity_view);
-        mLengthView = (TextInputView)view.findViewById(R.id.length_view);
-        mWeightView = (TextInputView)view.findViewById(R.id.weight_view);
-        mWaterDepthView = (TextInputView)view.findViewById(R.id.water_depth_view);
-        mWaterTemperatureView = (TextInputView)view.findViewById(R.id.water_temperature_view);
-        mNotesView = (TextInputView)view.findViewById(R.id.notes_view);
+        mQuantityView = (InputTextView)view.findViewById(R.id.quantity_view);
+        mLengthView = (InputTextView)view.findViewById(R.id.length_view);
+        mWeightView = (InputTextView)view.findViewById(R.id.weight_view);
+        mWaterDepthView = (InputTextView)view.findViewById(R.id.water_depth_view);
+        mWaterTemperatureView = (InputTextView)view.findViewById(R.id.water_temperature_view);
+        mNotesView = (InputTextView)view.findViewById(R.id.notes_view);
 
         initSubclassObject();
 
@@ -191,7 +191,7 @@ public class ManageCatchFragment extends ManageContentFragment {
         mSpeciesView.setPrimaryButtonText(getNewCatch().getSpeciesAsString());
         mBaitView.setPrimaryButtonText(getNewCatch().getBaitAsString());
         mLocationView.setPrimaryButtonText(getNewCatch().getFishingSpotAsString());
-        mWaterClarityView.setSubtitle(getNewCatch().getWaterClarityAsString());
+        mWaterClarityView.setPrimaryButtonText(getNewCatch().getWaterClarityAsString());
         mFishingMethodsView.setSubtitle(UserDefineArrays.namesAsString(getSelectedFishingMethods()));
         mResultSpinner.setSelection(getNewCatch().getCatchResult().getValue());
         mWeatherView.updateViews(mWeather);
@@ -312,12 +312,12 @@ public class ManageCatchFragment extends ManageContentFragment {
             @Override
             public void onDismiss(ArrayList<UUID> selectedIds) {
                 getNewCatch().setWaterClarity(Logbook.getWaterClarity(selectedIds.get(0)));
-                mWaterClarityView.setSubtitle(getNewCatch().getWaterClarityAsString());
+                mWaterClarityView.setPrimaryButtonText(getNewCatch().getWaterClarityAsString());
             }
         };
 
-        mWaterClarityView = (TitleSubTitleView)view.findViewById(R.id.clarity_layout);
-        mWaterClarityView.setOnClickListener(new View.OnClickListener() {
+        mWaterClarityView = (InputButtonView)view.findViewById(R.id.water_clarity_view);
+        mWaterClarityView.setOnClickPrimaryButton(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showPrimitiveDialog(PrimitiveSpecManager.WATER_CLARITY, false, null, onDismissInterface);

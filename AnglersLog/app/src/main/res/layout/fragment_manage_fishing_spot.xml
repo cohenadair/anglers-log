@@ -7,7 +7,7 @@
     android:orientation="vertical">
 
     <!-- Name -->
-    <com.cohenadair.anglerslog.views.TextInputView
+    <com.cohenadair.anglerslog.views.InputTextView
         android:id="@+id/name_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -47,7 +47,7 @@
         android:layout_margin="@dimen/margin_default"
         android:orientation="horizontal">
 
-        <com.cohenadair.anglerslog.views.TextInputView
+        <com.cohenadair.anglerslog.views.InputTextView
             android:id="@+id/latitude_layout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -57,7 +57,7 @@
             custom:subtitleText="0.000000"
             custom:titleStyle="@style/TextView.Header"/>
 
-        <com.cohenadair.anglerslog.views.TextInputView
+        <com.cohenadair.anglerslog.views.InputTextView
             android:id="@+id/longitude_layout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

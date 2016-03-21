@@ -4,13 +4,8 @@
     <attr name="subtitleHint" format="string" />
     <attr name="titleStyle" format="reference" />
     <attr name="subtitleStyle" format="reference" />
-
-    <declare-styleable name="TextInputView">
-        <attr name="titleText" />
-        <attr name="editTextHint" format="string" />
-        <attr name="numbersOnly" format="boolean" />
-        <attr name="capSentencesOnly" format="boolean" />
-    </declare-styleable>
+    <attr name="iconResource" format="reference"/>
+    <attr name="numbersOnly" format="boolean" />
 
     <declare-styleable name="SelectPhotosView">
         <attr name="maxPhotos" format="integer" />
@@ -37,7 +32,15 @@
     <declare-styleable name="InputButtonView">
         <attr name="primaryHint" format="string"/>
         <attr name="showSecondary" format="boolean"/>
-        <attr name="iconResource" format="reference"/>
+        <attr name="iconResource" />
+    </declare-styleable>
+
+    <declare-styleable name="InputTextView">
+        <attr name="titleText" />
+        <attr name="editTextHint" format="string" />
+        <attr name="iconResource" />
+        <attr name="numbersOnly" />
+        <attr name="capSentencesOnly" format="boolean" />
     </declare-styleable>
 
     <declare-styleable name="MoreDetailView">

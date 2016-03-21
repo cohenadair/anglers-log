@@ -21,7 +21,7 @@ import com.cohenadair.anglerslog.model.user_defines.Location;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import com.cohenadair.anglerslog.utilities.GoogleMapLayout;
 import com.cohenadair.anglerslog.utilities.Utils;
-import com.cohenadair.anglerslog.views.TextInputView;
+import com.cohenadair.anglerslog.views.InputTextView;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 
@@ -37,9 +37,9 @@ import java.util.ArrayList;
  */
 public class ManageFishingSpotFragment extends ManageContentFragment {
 
-    private TextInputView mNameView;
-    private TextInputView mLatitudeView;
-    private TextInputView mLongitudeView;
+    private InputTextView mNameView;
+    private InputTextView mLatitudeView;
+    private InputTextView mLongitudeView;
     private DraggableMapFragment mMapFragment;
     private ImageView mCrosshairs;
     private GoogleMap mMap;
@@ -205,14 +205,14 @@ public class ManageFishingSpotFragment extends ManageContentFragment {
     }
 
     private void initNameView(View view) {
-        mNameView = (TextInputView)view.findViewById(R.id.name_view);
+        mNameView = (InputTextView)view.findViewById(R.id.name_view);
     }
 
     private void initCoordinatesView(View view) {
-        mLatitudeView = (TextInputView)view.findViewById(R.id.latitude_layout);
+        mLatitudeView = (InputTextView)view.findViewById(R.id.latitude_layout);
         mLatitudeView.addOnInputTextChangedListener(getCoordinateTextWatcher());
 
-        mLongitudeView = (TextInputView)view.findViewById(R.id.longitude_layout);
+        mLongitudeView = (InputTextView)view.findViewById(R.id.longitude_layout);
         mLongitudeView.addOnInputTextChangedListener(getCoordinateTextWatcher());
     }
 

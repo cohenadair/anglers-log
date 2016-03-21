@@ -24,7 +24,7 @@
         <include layout="@layout/view_divider"/>
 
         <!-- Name -->
-        <com.cohenadair.anglerslog.views.TextInputView
+        <com.cohenadair.anglerslog.views.InputTextView
             android:id="@+id/name_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -57,7 +57,7 @@
             android:orientation="horizontal">
 
             <!-- Color -->
-            <com.cohenadair.anglerslog.views.TextInputView
+            <com.cohenadair.anglerslog.views.InputTextView
                 android:id="@+id/color_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -66,7 +66,7 @@
                 custom:editTextHint="@string/color_hint"/>
 
             <!-- Size -->
-            <com.cohenadair.anglerslog.views.TextInputView
+            <com.cohenadair.anglerslog.views.InputTextView
                 android:id="@+id/size_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -79,7 +79,7 @@
         <include layout="@layout/view_divider"/>
 
         <!-- Description -->
-        <com.cohenadair.anglerslog.views.TextInputView
+        <com.cohenadair.anglerslog.views.InputTextView
             android:id="@+id/description_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

@@ -17,7 +17,7 @@ import com.cohenadair.anglerslog.trips.ManageTripFragment;
 import com.cohenadair.anglerslog.utilities.PrimitiveSpecManager;
 import com.cohenadair.anglerslog.utilities.Utils;
 import com.cohenadair.anglerslog.views.SelectionSpinnerView;
-import com.cohenadair.anglerslog.views.TextInputView;
+import com.cohenadair.anglerslog.views.InputTextView;
 import com.cohenadair.anglerslog.views.TitleSubTitleView;
 
 import java.util.ArrayList;
@@ -29,10 +29,10 @@ import java.util.UUID;
 public class ManageBaitFragment extends ManageContentFragment {
 
     private TitleSubTitleView mCategoryView;
-    private TextInputView mNameView;
-    private TextInputView mColorView;
-    private TextInputView mSizeView;
-    private TextInputView mDescriptionView;
+    private InputTextView mNameView;
+    private InputTextView mColorView;
+    private InputTextView mSizeView;
+    private InputTextView mDescriptionView;
     private SelectionSpinnerView mTypeSpinner;
 
     public ManageBaitFragment() {
@@ -164,19 +164,19 @@ public class ManageBaitFragment extends ManageContentFragment {
     }
 
     private void initNameView(View view) {
-        mNameView = (TextInputView)view.findViewById(R.id.name_view);
+        mNameView = (InputTextView)view.findViewById(R.id.name_view);
     }
 
     private void initColorView(View view) {
-        mColorView = (TextInputView)view.findViewById(R.id.color_view);
+        mColorView = (InputTextView)view.findViewById(R.id.color_view);
     }
 
     private void initSizeView(View view) {
-        mSizeView = (TextInputView)view.findViewById(R.id.size_view);
+        mSizeView = (InputTextView)view.findViewById(R.id.size_view);
     }
 
     private void initDescriptionView(View view) {
-        mDescriptionView = (TextInputView)view.findViewById(R.id.description_view);
+        mDescriptionView = (InputTextView)view.findViewById(R.id.description_view);
     }
 
     private void initSpinner(View view) {
