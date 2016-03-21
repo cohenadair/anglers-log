@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.fragments.ManageContentFragment;
@@ -16,9 +17,8 @@ import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import com.cohenadair.anglerslog.trips.ManageTripFragment;
 import com.cohenadair.anglerslog.utilities.PrimitiveSpecManager;
 import com.cohenadair.anglerslog.utilities.Utils;
-import com.cohenadair.anglerslog.views.SelectionSpinnerView;
+import com.cohenadair.anglerslog.views.InputButtonView;
 import com.cohenadair.anglerslog.views.InputTextView;
-import com.cohenadair.anglerslog.views.TitleSubTitleView;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -28,12 +28,12 @@ import java.util.UUID;
  */
 public class ManageBaitFragment extends ManageContentFragment {
 
-    private TitleSubTitleView mCategoryView;
+    private InputButtonView mCategoryView;
     private InputTextView mNameView;
     private InputTextView mColorView;
     private InputTextView mSizeView;
     private InputTextView mDescriptionView;
-    private SelectionSpinnerView mTypeSpinner;
+    private Spinner mTypeSpinner;
 
     public ManageBaitFragment() {
         // Required empty public constructor
@@ -131,7 +131,7 @@ public class ManageBaitFragment extends ManageContentFragment {
 
     @Override
     public void updateViews() {
-        mCategoryView.setSubtitle(getNewBait().getBaitCategoryAsString());
+        mCategoryView.setPrimaryButtonText(getNewBait().getBaitCategoryAsString());
         mNameView.setInputText(getNewBait().getNameAsString());
         mColorView.setInputText(getNewBait().getColorAsString());
         mSizeView.setInputText(getNewBait().getSizeAsString());
@@ -144,12 +144,12 @@ public class ManageBaitFragment extends ManageContentFragment {
             @Override
             public void onDismiss(ArrayList<UUID> selectedIds) {
                 getNewBait().setCategory(Logbook.getBaitCategory(selectedIds.get(0)));
-                mCategoryView.setSubtitle(getNewBait().getCategoryName());
+                mCategoryView.setPrimaryButtonText(getNewBait().getCategoryName());
             }
         };
 
-        mCategoryView = (TitleSubTitleView)view.findViewById(R.id.category_view);
-        mCategoryView.setOnClickListener(new View.OnClickListener() {
+        mCategoryView = (InputButtonView)view.findViewById(R.id.category_view);
+        mCategoryView.setOnClickPrimaryButton(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showCategoryDialog(onDismissInterface);
@@ -183,7 +183,7 @@ public class ManageBaitFragment extends ManageContentFragment {
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(), R.array.bait_types, R.layout.list_item_spinner);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-        mTypeSpinner = (SelectionSpinnerView)view.findViewById(R.id.type_spinner);
+        mTypeSpinner = (Spinner)view.findViewById(R.id.type_spinner);
         mTypeSpinner.setAdapter(adapter);
         mTypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
