@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
@@ -20,16 +21,14 @@ import com.cohenadair.anglerslog.model.Logbook;
 import com.cohenadair.anglerslog.model.Weather;
 import com.cohenadair.anglerslog.model.user_defines.Catch;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
+import com.cohenadair.anglerslog.model.utilities.UserDefineArrays;
 import com.cohenadair.anglerslog.trips.ManageTripFragment;
 import com.cohenadair.anglerslog.utilities.LayoutSpecManager;
 import com.cohenadair.anglerslog.utilities.LogbookPreferences;
 import com.cohenadair.anglerslog.utilities.PrimitiveSpecManager;
-import com.cohenadair.anglerslog.model.utilities.UserDefineArrays;
 import com.cohenadair.anglerslog.utilities.Utils;
 import com.cohenadair.anglerslog.views.InputButtonView;
-import com.cohenadair.anglerslog.views.SelectionSpinnerView;
 import com.cohenadair.anglerslog.views.InputTextView;
-import com.cohenadair.anglerslog.views.TitleSubTitleView;
 import com.cohenadair.anglerslog.views.WeatherView;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
@@ -49,14 +48,14 @@ public class ManageCatchFragment extends ManageContentFragment {
     private InputButtonView mLocationView;
     private InputButtonView mBaitView;
     private InputButtonView mWaterClarityView;
-    private TitleSubTitleView mFishingMethodsView;
+    private InputButtonView mFishingMethodsView;
     private InputTextView mQuantityView;
     private InputTextView mLengthView;
     private InputTextView mWeightView;
     private InputTextView mWaterDepthView;
     private InputTextView mWaterTemperatureView;
     private InputTextView mNotesView;
-    private SelectionSpinnerView mResultSpinner;
+    private Spinner mResultSpinner;
     private WeatherView mWeatherView;
 
     private RequestQueue mRequestQueue;
@@ -192,7 +191,7 @@ public class ManageCatchFragment extends ManageContentFragment {
         mBaitView.setPrimaryButtonText(getNewCatch().getBaitAsString());
         mLocationView.setPrimaryButtonText(getNewCatch().getFishingSpotAsString());
         mWaterClarityView.setPrimaryButtonText(getNewCatch().getWaterClarityAsString());
-        mFishingMethodsView.setSubtitle(UserDefineArrays.namesAsString(getSelectedFishingMethods()));
+        mFishingMethodsView.setPrimaryButtonText(UserDefineArrays.namesAsString(getSelectedFishingMethods()));
         mResultSpinner.setSelection(getNewCatch().getCatchResult().getValue());
         mWeatherView.updateViews(mWeather);
         mQuantityView.setInputText(getNewCatch().getQuantityAsString());
@@ -330,12 +329,12 @@ public class ManageCatchFragment extends ManageContentFragment {
             @Override
             public void onDismiss(ArrayList<UUID> selectedIds) {
                 mSelectedFishingMethods = selectedIds;
-                mFishingMethodsView.setSubtitle(UserDefineArrays.namesAsString(getSelectedFishingMethods()));
+                mFishingMethodsView.setPrimaryButtonText(UserDefineArrays.namesAsString(getSelectedFishingMethods()));
             }
         };
 
-        mFishingMethodsView = (TitleSubTitleView)view.findViewById(R.id.methods_layout);
-        mFishingMethodsView.setOnClickListener(new View.OnClickListener() {
+        mFishingMethodsView = (InputButtonView)view.findViewById(R.id.fishing_methods_view);
+        mFishingMethodsView.setOnClickPrimaryButton(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showPrimitiveDialog(PrimitiveSpecManager.FISHING_METHODS, true, mSelectedFishingMethods, onDismissInterface);
@@ -347,7 +346,7 @@ public class ManageCatchFragment extends ManageContentFragment {
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(), R.array.result_types, R.layout.list_item_spinner);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-        mResultSpinner = (SelectionSpinnerView)view.findViewById(R.id.result_spinner);
+        mResultSpinner = (Spinner)view.findViewById(R.id.result_spinner);
         mResultSpinner.setAdapter(adapter);
         mResultSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override

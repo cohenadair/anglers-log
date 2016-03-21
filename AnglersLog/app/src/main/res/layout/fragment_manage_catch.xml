@@ -118,6 +118,7 @@
             android:layout_marginBottom="@dimen/margin_default"
             android:orientation="vertical">
 
+            <!-- Water Clarity -->
             <com.cohenadair.anglerslog.views.InputButtonView
                 android:id="@+id/water_clarity_view"
                 android:layout_width="match_parent"
@@ -152,33 +153,33 @@
 
         <include layout="@layout/view_divider"/>
 
+        <!-- Miscellaneous properties -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_marginBottom="@dimen/margin_default"
+            android:orientation="vertical">
+
+            <!-- Fishing Methods -->
+            <com.cohenadair.anglerslog.views.InputButtonView
+                android:id="@+id/fishing_methods_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                custom:primaryHint="@string/add_fishing_method"
+                custom:iconResource="@drawable/ic_info"/>
 
             <!-- Result -->
-            <com.cohenadair.anglerslog.views.SelectionSpinnerView
+            <Spinner
                 android:id="@+id/result_spinner"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                custom:titleText="@string/result"/>
+                android:layout_marginTop="@dimen/margin_half_negative"
+                android:layout_marginLeft="@dimen/margin_input_icon_offset"
+                android:layout_marginStart="@dimen/margin_input_icon_offset"
+                android:layout_marginRight="@dimen/margin_default"
+                android:layout_marginEnd="@dimen/margin_default"/>
 
         </LinearLayout>
-
-        <include layout="@layout/view_divider"/>
-
-        <!-- Fishing Methods -->
-        <com.cohenadair.anglerslog.views.TitleSubTitleView
-            android:id="@+id/methods_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/margin_default"
-            custom:titleText="@string/methods"
-            custom:subtitleHint="@string/methods_hint"
-            custom:titleStyle="@style/TextView.Header"
-            custom:subtitleStyle="@style/TextView.Small"/>
 
         <include layout="@layout/view_divider"/>
 
@@ -187,9 +188,12 @@
             android:id="@+id/notes_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            custom:titleText="@string/notes"
-            custom:editTextHint="@string/notes_hint"
+            android:layout_marginTop="@dimen/margin_default"
+            android:layout_marginBottom="@dimen/margin_default"
+            custom:iconResource="@drawable/ic_note"
+            custom:editTextHint="@string/add_note"
             custom:capSentencesOnly="true"/>
 
     </LinearLayout>
+
 </ScrollView>

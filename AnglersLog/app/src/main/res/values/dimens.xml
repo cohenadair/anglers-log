@@ -8,6 +8,7 @@
     <dimen name="margin_edit_text_offset">12dp</dimen>
     <dimen name="margin_spinner_offset">8dp</dimen>
     <dimen name="margin_half">8dp</dimen>
+    <dimen name="margin_half_negative">-8dp</dimen>
     <dimen name="margin_quarter">4dp</dimen>
     <dimen name="margin_three_quarters">12dp</dimen>
     <dimen name="margin_large">24dp</dimen>

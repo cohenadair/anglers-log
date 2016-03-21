@@ -57,7 +57,7 @@ public class InputTextView extends LinearLayout {
 
             // title
             String titleText = arr.getString(R.styleable.InputTextView_titleText);
-            mTitleTextView.setText(titleText);
+            setTitle(titleText);
 
             // edit
             String editHint = arr.getString(R.styleable.InputTextView_editTextHint);
