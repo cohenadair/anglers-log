@@ -25,6 +25,7 @@ import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -500,5 +501,15 @@ public class Utils {
 
     public static boolean isValid(LatLng latLng) {
         return (latLng.latitude >= -90 && latLng.latitude <= 90) && (latLng.longitude >= -180 && latLng.longitude <= 180);
+    }
+
+    public static void setImageOrHide(ImageView imageView, int resId) {
+        if (resId == -1) {
+            toggleVisibility(imageView, false);
+            return;
+        }
+
+        imageView.setImageResource(resId);
+        toggleVisibility(imageView, true);
     }
 }

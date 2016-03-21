@@ -101,13 +101,7 @@ public class InputTextView extends LinearLayout {
     }
 
     public void setIconResource(int resId) {
-        if (resId == -1) {
-            Utils.toggleVisibility(mIconImageView, false);
-            return;
-        }
-
-        mIconImageView.setImageResource(resId);
-        Utils.toggleVisibility(mIconImageView, true);
+        Utils.setImageOrHide(mIconImageView, resId);
     }
     //endregion
 

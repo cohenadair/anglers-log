@@ -157,8 +157,12 @@
     <string name="add_fishing_method">Add fishing method</string>
     <string name="add_water_clarity">Add water clarity</string>
     <string name="add_note">Add note</string>
+    <string name="add_name">Add name</string>
     <string name="add_description">Add description</string>
     <string name="add_bait_category">Add bait category</string>
+    <string name="add_catches">Add catches</string>
+    <string name="add_locations">Add locations</string>
+    <string name="add_anglers">Add anglers</string>
     <string name="add_weather">Add weather</string>
     <string name="update_weather">Update weather</string>
 

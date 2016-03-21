@@ -6,94 +6,76 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- Name -->
-    <com.cohenadair.anglerslog.views.InputTextView
-        android:id="@+id/name_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        custom:titleText="@string/name"
-        custom:editTextHint="@string/name_hint"/>
-
-    <include layout="@layout/view_divider"/>
-
     <!-- Start and End Dates -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
-        <com.cohenadair.anglerslog.views.TitleSubTitleView
+        <!-- Water Clarity -->
+        <com.cohenadair.anglerslog.views.InputButtonView
             android:id="@+id/start_date_view"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_margin="@dimen/margin_default"
-            custom:titleText="@string/start_date"
-            custom:subtitleText="May 22, 2015"
-            custom:titleStyle="@style/TextView.Header"
-            custom:subtitleStyle="@style/TextView.Small"/>
+            custom:primaryHint="Start date"
+            custom:iconResource="@drawable/ic_clock"/>
 
-        <com.cohenadair.anglerslog.views.TitleSubTitleView
+        <com.cohenadair.anglerslog.views.InputButtonView
+            style="@style/InputView.IconInset"
             android:id="@+id/end_date_view"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_margin="@dimen/margin_default"
-            custom:titleText="@string/end_date"
-            custom:subtitleText="6:00 AM"
-            custom:titleStyle="@style/TextView.Header"
-            custom:subtitleStyle="@style/TextView.Small"/>
+            android:layout_marginTop="@dimen/margin_default_negative"
+            custom:primaryHint="End date"/>
 
     </LinearLayout>
 
     <include layout="@layout/view_divider"/>
 
+    <!-- Name -->
+    <com.cohenadair.anglerslog.views.InputTextView
+        style="@style/InputTextView.NoTitle"
+        android:id="@+id/name_view"
+        custom:iconResource="@drawable/ic_trips"
+        custom:editTextHint="@string/add_name"
+        custom:capSentencesOnly="true"/>
+
+    <include layout="@layout/view_divider"/>
+
     <!-- Catches -->
-    <com.cohenadair.anglerslog.views.TitleSubTitleView
+    <com.cohenadair.anglerslog.views.InputButtonView
         android:id="@+id/catches_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/margin_default"
-        custom:titleText="@string/drawer_catches"
-        custom:subtitleHint="@string/catches_hint"
-        custom:titleStyle="@style/TextView.Header"
-        custom:subtitleStyle="@style/TextView.Small"/>
+        custom:primaryHint="@string/add_catches"
+        custom:iconResource="@drawable/ic_catches"/>
 
     <include layout="@layout/view_divider"/>
 
     <!-- Locations -->
-    <com.cohenadair.anglerslog.views.TitleSubTitleView
+    <com.cohenadair.anglerslog.views.InputButtonView
         android:id="@+id/locations_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/margin_default"
-        custom:titleText="@string/drawer_locations"
-        custom:subtitleHint="@string/locations_hint"
-        custom:titleStyle="@style/TextView.Header"
-        custom:subtitleStyle="@style/TextView.Small"/>
+        custom:primaryHint="@string/add_locations"
+        custom:iconResource="@drawable/ic_location"/>
 
     <include layout="@layout/view_divider"/>
 
     <!-- Anglers -->
-    <com.cohenadair.anglerslog.views.TitleSubTitleView
+    <com.cohenadair.anglerslog.views.InputButtonView
         android:id="@+id/anglers_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/margin_default"
-        custom:titleText="@string/anglers"
-        custom:subtitleHint="@string/anglers_hint"
-        custom:titleStyle="@style/TextView.Header"
-        custom:subtitleStyle="@style/TextView.Small"/>
+        custom:primaryHint="@string/add_anglers"
+        custom:iconResource="@drawable/ic_anglers"/>
 
     <include layout="@layout/view_divider"/>
 
     <!-- Notes -->
     <com.cohenadair.anglerslog.views.InputTextView
+        style="@style/InputTextView.NoTitle"
         android:id="@+id/notes_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        custom:titleText="@string/notes"
-        custom:editTextHint="@string/notes_hint"
+        custom:iconResource="@drawable/ic_note"
+        custom:editTextHint="@string/add_note"
         custom:capSentencesOnly="true"/>
 
 </LinearLayout>

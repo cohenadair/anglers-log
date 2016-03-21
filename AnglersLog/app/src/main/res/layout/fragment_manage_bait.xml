@@ -62,7 +62,7 @@
 
             <!-- Size -->
             <com.cohenadair.anglerslog.views.InputTextView
-                style="@style/InputTextView.IconInset"
+                style="@style/InputView.IconInset"
                 android:id="@+id/size_view"
                 custom:titleText="@string/size"
                 custom:editTextHint="@string/size_hint"/>

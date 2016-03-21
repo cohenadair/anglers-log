@@ -187,7 +187,7 @@
         <item name="android:orientation">vertical</item>
     </style>
 
-    <style name="InputTextView.IconInset" parent="Theme.AppCompat.Light">
+    <style name="InputView.IconInset" parent="Theme.AppCompat.Light">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginLeft">@dimen/margin_input_icon_no_left</item>

@@ -83,7 +83,7 @@
 
             <!-- Weight -->
             <com.cohenadair.anglerslog.views.InputTextView
-                style="@style/InputTextView.IconInset"
+                style="@style/InputView.IconInset"
                 android:id="@+id/weight_view"
                 custom:titleText="@string/weight"
                 custom:editTextHint="@string/weight_hint"
@@ -91,7 +91,7 @@
 
             <!-- Quantity -->
             <com.cohenadair.anglerslog.views.InputTextView
-                style="@style/InputTextView.IconInset"
+                style="@style/InputView.IconInset"
                 android:id="@+id/quantity_view"
                 custom:titleText="@string/quantity"
                 custom:editTextHint="@string/quantity_hint"
@@ -118,7 +118,7 @@
 
             <!-- Water Depth -->
             <com.cohenadair.anglerslog.views.InputTextView
-                style="@style/InputTextView.IconInset"
+                style="@style/InputView.IconInset"
                 android:id="@+id/water_depth_view"
                 android:layout_marginTop="@dimen/margin_default_negative"
                 custom:titleText="@string/water_depth"
@@ -127,7 +127,7 @@
 
             <!-- Water Temperature -->
             <com.cohenadair.anglerslog.views.InputTextView
-                style="@style/InputTextView.IconInset"
+                style="@style/InputView.IconInset"
                 android:id="@+id/water_temperature_view"
                 custom:titleText="@string/water_temperature"
                 custom:editTextHint="@string/temperature_hint"

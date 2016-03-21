@@ -82,19 +82,6 @@ public class InputButtonView extends LinearLayout {
     }
 
     public void setIconResource(int resId) {
-        mIconImageView.setImageResource(resId);
-    }
-
-    public void setPrimaryButtonClickable(boolean clickable) {
-        setButtonClickable(mPrimaryButton, clickable);
-    }
-
-    public void setSecondaryButtonClickable(boolean clickable) {
-        setButtonClickable(mSecondaryButton, clickable);
-    }
-
-    private void setButtonClickable(Button button, boolean clickable) {
-        button.setClickable(clickable);
-        button.setBackgroundResource(android.R.color.transparent);
+        Utils.setImageOrHide(mIconImageView, resId);
     }
 }

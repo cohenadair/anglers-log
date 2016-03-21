@@ -12,12 +12,12 @@ import com.cohenadair.anglerslog.model.Logbook;
 import com.cohenadair.anglerslog.model.user_defines.Catch;
 import com.cohenadair.anglerslog.model.user_defines.Trip;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
+import com.cohenadair.anglerslog.model.utilities.UserDefineArrays;
 import com.cohenadair.anglerslog.utilities.LayoutSpecManager;
 import com.cohenadair.anglerslog.utilities.PrimitiveSpecManager;
-import com.cohenadair.anglerslog.model.utilities.UserDefineArrays;
 import com.cohenadair.anglerslog.utilities.Utils;
+import com.cohenadair.anglerslog.views.InputButtonView;
 import com.cohenadair.anglerslog.views.InputTextView;
-import com.cohenadair.anglerslog.views.TitleSubTitleView;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -31,11 +31,11 @@ public class ManageTripFragment extends ManageContentFragment {
 
     private InputTextView mNameView;
     private InputTextView mNotesView;
-    private TitleSubTitleView mStartDateView;
-    private TitleSubTitleView mEndDateView;
-    private TitleSubTitleView mCatchesView;
-    private TitleSubTitleView mLocationsView;
-    private TitleSubTitleView mAnglersView;
+    private InputButtonView mStartDateView;
+    private InputButtonView mEndDateView;
+    private InputButtonView mCatchesView;
+    private InputButtonView mLocationsView;
+    private InputButtonView mAnglersView;
 
     /**
      * Used so there is no database interaction until the user saves their changes.
@@ -144,9 +144,9 @@ public class ManageTripFragment extends ManageContentFragment {
     @Override
     public void updateViews() {
         mNameView.setInputText(getNewTrip().getNameAsString());
-        mStartDateView.setSubtitle(getNewTrip().getStartDateAsString());
-        mEndDateView.setSubtitle(getNewTrip().getEndDateAsString());
-        mAnglersView.setSubtitle(UserDefineArrays.namesAsString(getSelectedAnglers()));
+        mStartDateView.setPrimaryButtonText(getNewTrip().getStartDateAsString());
+        mEndDateView.setPrimaryButtonText(getNewTrip().getEndDateAsString());
+        mAnglersView.setPrimaryButtonText(UserDefineArrays.namesAsString(getSelectedAnglers()));
         mNotesView.setInputText(getNewTrip().getNotesAsString());
 
         updateCatchesViews();
@@ -155,17 +155,17 @@ public class ManageTripFragment extends ManageContentFragment {
 
     private void updateCatchesViews() {
         removeViews(mCatchesViews);
-        mCatchesView.setSubtitle(UserDefineArrays.propertiesAsString(getSelectedCatches(), new UserDefineArrays.OnGetPropertyInterface() {
+        mCatchesView.setPrimaryButtonText(UserDefineArrays.propertiesAsString(getSelectedCatches(), new UserDefineArrays.OnGetPropertyInterface() {
             @Override
             public String onGetProperty(UserDefineObject object) {
-                return ((Catch)object).getSpeciesAsString();
+                return ((Catch) object).getSpeciesAsString();
             }
         }));
     }
 
     private void updateLocationsViews() {
         removeViews(mLocationsViews);
-        mLocationsView.setSubtitle(UserDefineArrays.namesAsString(getSelectedLocations()));
+        mLocationsView.setPrimaryButtonText(UserDefineArrays.namesAsString(getSelectedLocations()));
     }
 
     /**
@@ -195,12 +195,12 @@ public class ManageTripFragment extends ManageContentFragment {
             @Override
             public void onDismiss(ArrayList<UUID> selectedIds) {
                 mSelectedAnglersIds = selectedIds;
-                mAnglersView.setSubtitle(UserDefineArrays.namesAsString(getSelectedAnglers()));
+                mAnglersView.setPrimaryButtonText(UserDefineArrays.namesAsString(getSelectedAnglers()));
             }
         };
 
-        mAnglersView = (TitleSubTitleView)view.findViewById(R.id.anglers_view);
-        mAnglersView.setOnClickListener(new View.OnClickListener() {
+        mAnglersView = (InputButtonView)view.findViewById(R.id.anglers_view);
+        mAnglersView.setOnClickPrimaryButton(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showPrimitiveDialog(PrimitiveSpecManager.ANGLERS, true, mSelectedAnglersIds, onDismissInterface);
@@ -209,8 +209,8 @@ public class ManageTripFragment extends ManageContentFragment {
     }
 
     public void initStartDateView(View view) {
-        mStartDateView = (TitleSubTitleView)view.findViewById(R.id.start_date_view);
-        mStartDateView.setOnClickListener(new View.OnClickListener() {
+        mStartDateView = (InputButtonView)view.findViewById(R.id.start_date_view);
+        mStartDateView.setOnClickPrimaryButton(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showDatePickerFragment(getNewTrip().getStartDate(), new DateTimePickerInterface() {
@@ -222,7 +222,7 @@ public class ManageTripFragment extends ManageContentFragment {
                         }
 
                         getNewTrip().setStartDate(date);
-                        mStartDateView.setSubtitle(getNewTrip().getStartDateAsString());
+                        mStartDateView.setPrimaryButtonText(getNewTrip().getStartDateAsString());
                         mDateChanged = isEditing();
                     }
                 });
@@ -231,8 +231,8 @@ public class ManageTripFragment extends ManageContentFragment {
     }
 
     public void initEndDateView(View view) {
-        mEndDateView = (TitleSubTitleView)view.findViewById(R.id.end_date_view);
-        mEndDateView.setOnClickListener(new View.OnClickListener() {
+        mEndDateView = (InputButtonView)view.findViewById(R.id.end_date_view);
+        mEndDateView.setOnClickPrimaryButton(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showDatePickerFragment(getNewTrip().getEndDate(), new DateTimePickerInterface() {
@@ -244,7 +244,7 @@ public class ManageTripFragment extends ManageContentFragment {
                         }
 
                         getNewTrip().setEndDate(date);
-                        mEndDateView.setSubtitle(getNewTrip().getEndDateAsString());
+                        mEndDateView.setPrimaryButtonText(getNewTrip().getEndDateAsString());
                         mDateChanged = isEditing();
                     }
                 });
@@ -253,8 +253,8 @@ public class ManageTripFragment extends ManageContentFragment {
     }
 
     public void initCatchesView(View view) {
-        mCatchesView = (TitleSubTitleView)view.findViewById(R.id.catches_view);
-        mCatchesView.setOnClickListener(new View.OnClickListener() {
+        mCatchesView = (InputButtonView)view.findViewById(R.id.catches_view);
+        mCatchesView.setOnClickPrimaryButton(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startSelectionActivity(LayoutSpecManager.LAYOUT_CATCHES, false, true, UserDefineArrays.idsAsStrings(mSelectedCatchesIds), new OnSelectionActivityResult() {
@@ -268,8 +268,8 @@ public class ManageTripFragment extends ManageContentFragment {
     }
 
     public void initLocationsView(View view) {
-        mLocationsView = (TitleSubTitleView)view.findViewById(R.id.locations_view);
-        mLocationsView.setOnClickListener(new View.OnClickListener() {
+        mLocationsView = (InputButtonView)view.findViewById(R.id.locations_view);
+        mLocationsView.setOnClickPrimaryButton(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startSelectionActivity(LayoutSpecManager.LAYOUT_LOCATIONS, true, true, UserDefineArrays.idsAsStrings(mSelectedLocationsIds), new OnSelectionActivityResult() {
