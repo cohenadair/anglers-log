@@ -117,7 +117,7 @@ public class TripFragment extends DetailFragment {
         mEndDateView.setDetail(mTrip.getEndDateAsString());
     }
 
-    private void startListPortionActivity(Intent intent) {
+    private void startPartialListActivity(Intent intent) {
         startActivity(intent);
     }
 
@@ -130,7 +130,7 @@ public class TripFragment extends DetailFragment {
 
             @Override
             public void onClickAllButton(ArrayList<UserDefineObject> items) {
-                startListPortionActivity(PartialListActivity.getIntent(getContext(), mTrip.getDisplayName(), LayoutSpecManager.LAYOUT_CATCHES, items));
+                startPartialListActivity(PartialListActivity.getIntent(getContext(), mTrip.getDisplayName(), LayoutSpecManager.LAYOUT_CATCHES, items));
             }
         });
 
@@ -156,7 +156,7 @@ public class TripFragment extends DetailFragment {
 
             @Override
             public void onClickAllButton(ArrayList<UserDefineObject> items) {
-                startListPortionActivity(PartialListActivity.getIntent(getContext(), mTrip.getDisplayName(), LayoutSpecManager.LAYOUT_LOCATIONS, items));
+                startPartialListActivity(PartialListActivity.getIntent(getContext(), mTrip.getDisplayName(), LayoutSpecManager.LAYOUT_LOCATIONS, items));
             }
         });
 
@@ -182,7 +182,7 @@ public class TripFragment extends DetailFragment {
 
             @Override
             public void onClickAllButton(ArrayList<UserDefineObject> items) {
-                startListPortionActivity(PartialListActivity.getIntent(getContext(), mTrip.getDisplayName(), LayoutSpecManager.LAYOUT_BAITS, items));
+                startPartialListActivity(PartialListActivity.getIntent(getContext(), mTrip.getDisplayName(), LayoutSpecManager.LAYOUT_BAITS, items));
             }
         });
 
