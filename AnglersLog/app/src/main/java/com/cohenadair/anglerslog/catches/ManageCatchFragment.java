@@ -35,6 +35,7 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.UUID;
 
@@ -234,7 +235,7 @@ public class ManageCatchFragment extends ManageContentFragment {
                 showDatePickerFragment(getNewCatch().getDate(), new DateTimePickerInterface() {
                     @Override
                     public void onFinish(Date date) {
-                        getNewCatch().setDate(date);
+                        setDate(date, getNewCatch().getDate());
                         mDateTimeView.setPrimaryButtonText(getNewCatch().getDateAsString());
                     }
                 });
@@ -247,12 +248,38 @@ public class ManageCatchFragment extends ManageContentFragment {
                 showTimePickerFragment(getNewCatch().getDate(), new DateTimePickerInterface() {
                     @Override
                     public void onFinish(Date date) {
-                        getNewCatch().setDate(date);
+                        setDate(getNewCatch().getDate(), date);
                         mDateTimeView.setSecondaryButtonText(getNewCatch().getTimeAsString());
                     }
                 });
             }
         });
+    }
+
+    /**
+     * Combines the date (year, month day) and time (hour, minutes) of two {@link Date} objects.
+     * This is required so if the user changes the date, the time remains the same and vise versa.
+     *
+     * @param forDate The {@link Date} object used for year, month, and day.
+     * @param forTime The {@link Date} object used for hours and minutes.
+     */
+    private void setDate(Date forDate, Date forTime) {
+        Calendar dateCalendar = Calendar.getInstance();
+        dateCalendar.setTime(forDate);
+
+        Calendar timeCalendar = Calendar.getInstance();
+        timeCalendar.setTime(forTime);
+
+        Calendar newCalendar = Calendar.getInstance();
+        newCalendar.set(
+                dateCalendar.get(Calendar.YEAR),
+                dateCalendar.get(Calendar.MONTH),
+                dateCalendar.get(Calendar.DAY_OF_MONTH),
+                timeCalendar.get(Calendar.HOUR_OF_DAY),
+                timeCalendar.get(Calendar.MINUTE)
+        );
+
+        getNewCatch().setDate(newCalendar.getTime());
     }
     //endregion
 
