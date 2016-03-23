@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.cohenadair.anglerslog.R;
@@ -28,7 +29,7 @@ public class ListPortionLayout extends LinearLayout {
         void onClickAllButton(ArrayList<UserDefineObject> items);
     }
 
-    private View mTitleView;
+    private ImageView mIconImageView;
     private Button mShowAllButton;
     private RecyclerView mRecyclerView;
 
@@ -49,6 +50,8 @@ public class ListPortionLayout extends LinearLayout {
     private void init() {
         inflate(getContext(), R.layout.layout_list_portion, this);
 
+        mIconImageView = (ImageView)findViewById(R.id.icon_image_view);
+
         mRecyclerView = (RecyclerView)findViewById(R.id.recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecyclerView.setLayoutFrozen(true);
@@ -62,14 +65,13 @@ public class ListPortionLayout extends LinearLayout {
         });
     }
 
-    public void init(View titleView, ArrayList<UserDefineObject> items, InteractionListener callbacks) {
-        mTitleView = titleView;
+    public void init(int iconResId, ArrayList<UserDefineObject> items, InteractionListener callbacks) {
         mCallbacks = callbacks;
         mAllItems = items;
         mPortionItems = getPortionItems(mAllItems);
 
+        mIconImageView.setImageResource(iconResId);
         mRecyclerView.setAdapter(mCallbacks.onGetAdapter(mPortionItems));
-        mShowAllButton.setText(R.string.show_all);
 
         updateViews();
     }
@@ -94,7 +96,7 @@ public class ListPortionLayout extends LinearLayout {
         boolean hasObjects = getPortionCount() > 0;
 
         // hide views if needed
-        Utils.toggleVisibility(mTitleView, hasObjects);
+        Utils.toggleVisibility(mIconImageView, hasObjects);
         Utils.toggleVisibility(findViewById(R.id.container), hasObjects);
 
         boolean shouldShowMore = getAllCount() > getPortionCount();
@@ -112,6 +114,10 @@ public class ListPortionLayout extends LinearLayout {
 
             mRecyclerView.setLayoutParams(params);
         }
+    }
+
+    public void setButtonText(int resId) {
+        mShowAllButton.setText(resId);
     }
 
     private int getPortionCount() {

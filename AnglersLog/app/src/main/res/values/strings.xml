@@ -136,8 +136,10 @@
     <string name="to">to</string>
     <string name="show_more">Show more</string>
     <string name="show_all">Show all</string>
+    <string name="all">All</string>
     <string name="show_catches">Show catches</string>
     <string name="show_all_catches">Show all catches</string>
+    <string name="all_catches">All catches</string>
     <string name="more">More</string>
     <string name="totals">Totals</string>
     <string name="confirm">Confirm</string>

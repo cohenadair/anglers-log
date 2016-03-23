@@ -43,12 +43,16 @@ public class ListManager {
         public ViewHolder(View view, Adapter adapter) {
             super(view, adapter);
 
-            view.setOnLongClickListener(this);
+            // header view and favorite star do not exist in the condensed layout, and items
+            // shouldn't be editable via long click
+            if (!getAdapter().isCondensed()) {
+                view.setOnLongClickListener(this);
+                mHeaderTextView = (TextView) view.findViewById(R.id.header_view);
+                mFavoriteStar = (RatingBar) view.findViewById(R.id.favorite_star);
+            }
 
-            mHeaderTextView = (TextView)view.findViewById(R.id.header_view);
             mImageView = (CircleImageView)view.findViewById(R.id.image_view);
             mTitleSubTitleView = (TitleSubTitleView)view.findViewById(R.id.content_view);
-            mFavoriteStar = (RatingBar)view.findViewById(R.id.favorite_star);
         }
 
         //region Getters & Setters
@@ -69,7 +73,7 @@ public class ListManager {
         }
         //endregion
 
-        public void initForComplexLayout() {
+        public void initForNormalLayout() {
             toggleHeader(false);
         }
 
@@ -114,10 +118,13 @@ public class ListManager {
         }
 
         public Context getContext() {
-            return ((Adapter)getAdapter()).getContext();
+            return getAdapter().getContext();
         }
 
         public void setHeaderText(String text) {
+            if (mHeaderTextView == null)
+                return;
+
             mHeaderTextView.setText(text);
         }
 
@@ -134,6 +141,9 @@ public class ListManager {
         }
 
         public void setIsFavorite(boolean isFavorite) {
+            if (mFavoriteStar == null)
+                return;
+
             mFavoriteStar.setRating(isFavorite ? (float) 1.0 : (float) 0.0);
         }
 
@@ -155,6 +165,9 @@ public class ListManager {
         }
 
         public void setOnTouchFavoriteStarListener(final OnToggleFavoriteStarListener callbacks) {
+            if (mFavoriteStar == null)
+                return;
+
             mFavoriteStar.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
@@ -173,11 +186,18 @@ public class ListManager {
             Utils.toggleVisibility(mFavoriteStar, !showHeader);
             Utils.toggleVisibility(mTitleSubTitleView, !showHeader);
         }
+
+        @Override
+        public Adapter getAdapter() {
+            return (Adapter)super.getAdapter();
+        }
     }
     //endregion
 
     //region Adapter
     public static abstract class Adapter extends ListSelectionManager.Adapter {
+
+        private boolean mCondensed;
 
         /**
          * @see com.cohenadair.anglerslog.utilities.ListSelectionManager.Adapter
@@ -186,11 +206,19 @@ public class ListManager {
             super(context, items, singleSelection, multiSelection, callbacks);
         }
 
-        public View inflateComplexItem(ViewGroup parent) {
-            LayoutInflater inflater = LayoutInflater.from(getContext());
-            return inflater.inflate(R.layout.list_item_complex, parent, false);
+        public Adapter(Context context, ArrayList<UserDefineObject> items, boolean condensed, OnClickInterface callbacks) {
+            this(context, items, false, false, callbacks);
+            mCondensed = condensed;
         }
 
+        public View inflateComplexItem(ViewGroup parent) {
+            LayoutInflater inflater = LayoutInflater.from(getContext());
+            return inflater.inflate(mCondensed ? R.layout.list_item_complex_condensed : R.layout.list_item_complex, parent, false);
+        }
+
+        public boolean isCondensed() {
+            return mCondensed;
+        }
     }
     //endregion
 }

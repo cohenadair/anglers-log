@@ -32,6 +32,7 @@
 
     <dimen name="rating_size">16dp</dimen>
     <dimen name="size_list_thumb">60dp</dimen>
+    <dimen name="size_list_thumb_condensed">40dp</dimen>
     <dimen name="thumbnail_cell_size">92dp</dimen>
     <dimen name="image_scroll_size">250dp</dimen>
     <dimen name="image_button_size">24dp</dimen>

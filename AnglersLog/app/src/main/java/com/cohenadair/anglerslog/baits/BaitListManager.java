@@ -27,7 +27,7 @@ public class BaitListManager {
         }
 
         public void setBait(Bait bait) {
-            initForComplexLayout();
+            initForNormalLayout();
 
             setTitle(bait.getName());
             setSubtitle(bait.getCategoryName());

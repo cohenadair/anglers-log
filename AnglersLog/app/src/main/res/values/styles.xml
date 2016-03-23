@@ -124,6 +124,11 @@
         <item name="android:textColor">@android:color/black</item>
     </style>
 
+    <style name="TextView.PrimaryListItem.Condensed" parent="Theme.AppCompat.Light">
+        <item name="android:textSize">13sp</item>
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
     <style name="TextView.SmallSubtitle" parent="Theme.AppCompat.Light">
         <item name="android:textSize">@dimen/font_small</item>
         <item name="android:textColor">@color/medium_grey</item>

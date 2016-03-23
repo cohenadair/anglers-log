@@ -37,7 +37,7 @@ public class CatchListManager {
                 }
             });
 
-            initForComplexLayout();
+            initForNormalLayout();
         }
 
         public void setCatch(Catch aCatch) {
@@ -48,7 +48,8 @@ public class CatchListManager {
             setIsFavorite(mCatch.isFavorite());
             setImage(mCatch.getRandomPhoto());
 
-            if (mCatch.getFishingSpot() != null)
+            // do not show the fishing spot if the layout is the condensed version
+            if (mCatch.getFishingSpot() != null && !getAdapter().isCondensed())
                 setSubSubtitle((mListener == null) ? mCatch.getFishingSpotAsString() : mListener.onGetSubSubtitle(mCatch));
 
             updateViews();
@@ -76,6 +77,10 @@ public class CatchListManager {
          */
         public Adapter(Context context, ArrayList<UserDefineObject> items, boolean singleSelection, boolean multiSelection, OnClickInterface callbacks) {
             super(context, items, singleSelection, multiSelection, callbacks);
+        }
+
+        public Adapter(Context context, ArrayList<UserDefineObject> items, boolean condensed, OnClickInterface callbacks) {
+            super(context, items, condensed, callbacks);
         }
 
         public Adapter(Context context, ArrayList<UserDefineObject> items, OnClickInterface callbacks) {
