@@ -32,6 +32,7 @@
     <declare-styleable name="InputButtonView">
         <attr name="primaryHint" format="string"/>
         <attr name="showSecondary" format="boolean"/>
+        <attr name="asLabel" format="boolean"/>
         <attr name="iconResource" />
     </declare-styleable>
 

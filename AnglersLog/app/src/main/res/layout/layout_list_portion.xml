@@ -1,6 +1,6 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/Layout.Input"
+    style="@style/IconInputView"
     android:id="@+id/container"
     android:gravity="top"
     android:layout_marginRight="0dp"

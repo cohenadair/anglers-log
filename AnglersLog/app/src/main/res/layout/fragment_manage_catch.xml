@@ -12,9 +12,8 @@
 
         <!-- Date & Time -->
         <com.cohenadair.anglerslog.views.InputButtonView
+            style="@style/IconInputView"
             android:id="@+id/date_time_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             custom:iconResource="@drawable/ic_clock"
             custom:showSecondary="true"/>
 
@@ -22,18 +21,16 @@
 
         <!-- Photos -->
         <com.cohenadair.anglerslog.views.SelectPhotosView
+            style="@style/IconInputView"
             android:id="@+id/select_photos_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             custom:canSelectMultiple="true"/>
 
         <include layout="@layout/view_divider"/>
 
         <!-- Species -->
         <com.cohenadair.anglerslog.views.InputButtonView
+            style="@style/IconInputView"
             android:id="@+id/species_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             custom:primaryHint="@string/add_species"
             custom:iconResource="@drawable/ic_catches"/>
 
@@ -41,9 +38,8 @@
 
         <!-- Location -->
         <com.cohenadair.anglerslog.views.InputButtonView
+            style="@style/IconInputView"
             android:id="@+id/location_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             custom:primaryHint="@string/add_location"
             custom:iconResource="@drawable/ic_location"/>
 
@@ -51,9 +47,8 @@
 
         <!-- Bait -->
         <com.cohenadair.anglerslog.views.InputButtonView
+            style="@style/IconInputView"
             android:id="@+id/bait_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             custom:primaryHint="@string/add_bait"
             custom:iconResource="@drawable/ic_bait"/>
 
@@ -61,9 +56,8 @@
 
         <!-- Weather -->
         <com.cohenadair.anglerslog.views.WeatherView
-            android:id="@+id/weather_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            style="@style/IconInputView"
+            android:id="@+id/weather_view"/>
 
         <include layout="@layout/view_divider"/>
 
@@ -110,9 +104,8 @@
 
             <!-- Water Clarity -->
             <com.cohenadair.anglerslog.views.InputButtonView
+                style="@style/IconInputView"
                 android:id="@+id/water_clarity_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 custom:primaryHint="@string/add_water_clarity"
                 custom:iconResource="@drawable/ic_water"/>
 
@@ -146,9 +139,8 @@
 
             <!-- Fishing Methods -->
             <com.cohenadair.anglerslog.views.InputButtonView
+                style="@style/IconInputView"
                 android:id="@+id/fishing_methods_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 custom:primaryHint="@string/add_fishing_method"
                 custom:iconResource="@drawable/ic_info"/>
 

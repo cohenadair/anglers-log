@@ -23,10 +23,10 @@ import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import com.cohenadair.anglerslog.utilities.LayoutSpecManager;
 import com.cohenadair.anglerslog.utilities.ListManager;
 import com.cohenadair.anglerslog.utilities.Utils;
+import com.cohenadair.anglerslog.views.InputButtonView;
 import com.cohenadair.anglerslog.views.ListPortionLayout;
 import com.cohenadair.anglerslog.views.MoreDetailLayout;
 import com.cohenadair.anglerslog.views.PropertyDetailView;
-import com.cohenadair.anglerslog.views.TitleSubTitleView;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -39,10 +39,13 @@ public class TripFragment extends DetailFragment {
 
     private Trip mTrip;
 
+    private InputButtonView mNameView;
+    private InputButtonView mStartDateView;
+    private InputButtonView mEndDateView;
+
     private ListPortionLayout mCatchesContainer;
     private MoreDetailLayout mLocationsContainer;
     private MoreDetailLayout mBaitsContainer;
-    private TitleSubTitleView mTitleView;
     private PropertyDetailView mAnglersView;
     private TextView mNotesView;
 
@@ -59,12 +62,14 @@ public class TripFragment extends DetailFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_trip, container, false);
 
-        setContainer((LinearLayout)view.findViewById(R.id.trip_container));
+        setContainer((LinearLayout) view.findViewById(R.id.trip_container));
 
+        mNameView = (InputButtonView)view.findViewById(R.id.name_view);
+        mStartDateView = (InputButtonView)view.findViewById(R.id.start_date_view);
+        mEndDateView = (InputButtonView)view.findViewById(R.id.end_date_view);
         mCatchesContainer = (ListPortionLayout)view.findViewById(R.id.catches_container);
         mLocationsContainer = (MoreDetailLayout)view.findViewById(R.id.locations_container);
         mBaitsContainer = (MoreDetailLayout)view.findViewById(R.id.baits_container);
-        mTitleView = (TitleSubTitleView)view.findViewById(R.id.title_view);
         mAnglersView = (PropertyDetailView)view.findViewById(R.id.anglers_view);
         mNotesView = (TextView)view.findViewById(R.id.notes_text_view);
 
@@ -103,7 +108,8 @@ public class TripFragment extends DetailFragment {
 
         show();
 
-        updateTitleView();
+        updateNameView();
+        updateDateView();
         updateCatchesView();
         updateLocationsView();
         updateBaitsView();
@@ -113,14 +119,18 @@ public class TripFragment extends DetailFragment {
         mTripDetailsTitle.setVisibility(mTrip.hasAnglers() ? View.VISIBLE : View.GONE);
     }
 
-    private void updateTitleView() {
-        String dateString = mTrip.getDateAsString(getContext());
+    private void updateNameView() {
+        if (mTrip.isNameNull()) {
+            Utils.toggleVisibility(mNameView, false);
+            return;
+        }
 
-        mTitleView.setTitle(mTrip.isNameNull() ? dateString : mTrip.getName());
-        mTitleView.setSubtitle(mTrip.isNameNull() ? "" : dateString);
+        mNameView.setPrimaryButtonText(mTrip.getDisplayName());
+    }
 
-        if (mTrip.isNameNull())
-            mTitleView.hideSubtitle();
+    private void updateDateView() {
+        mStartDateView.setPrimaryButtonText(mTrip.getStartDateAsString());
+        mEndDateView.setPrimaryButtonText(mTrip.getEndDateAsString());
     }
 
     private void updateCatchesView() {

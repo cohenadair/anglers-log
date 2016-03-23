@@ -12,16 +12,36 @@
         android:orientation="vertical"
         android:id="@+id/trip_container">
 
-        <!-- Name & Dates -->
-        <com.cohenadair.anglerslog.views.TitleSubTitleView
-            android:id="@+id/title_view"
+        <com.cohenadair.anglerslog.views.InputButtonView
+            style="@style/IconLabelView"
+            android:id="@+id/name_view"
+            android:layout_marginTop="@dimen/margin_half"
+            custom:primaryHint="@string/trip"
+            custom:iconResource="@drawable/ic_trips"
+            custom:asLabel="true"/>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/margin_default"
-            custom:titleText="@string/name"
-            custom:subtitleText="@string/date"
-            custom:titleStyle="@style/TextView.Large"
-            custom:subtitleStyle="@style/TextView.MediumSubtitle"/>
+            android:orientation="vertical">
+
+            <com.cohenadair.anglerslog.views.InputButtonView
+                style="@style/IconLabelView"
+                android:id="@+id/start_date_view"
+                custom:primaryHint="@string/date"
+                custom:iconResource="@drawable/ic_clock"
+                custom:asLabel="true"/>
+
+            <com.cohenadair.anglerslog.views.InputButtonView
+                style="@style/IconLabelView"
+                android:id="@+id/end_date_view"
+                android:layout_marginTop="@dimen/margin_default_negative"
+                android:layout_marginLeft="@dimen/margin_input_icon_offset"
+                android:layout_marginStart="@dimen/margin_input_icon_offset"
+                custom:primaryHint="@string/date"
+                custom:asLabel="true"/>
+
+        </LinearLayout>
 
         <!-- Catches -->
         <com.cohenadair.anglerslog.views.ListPortionLayout

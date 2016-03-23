@@ -155,15 +155,20 @@
     <!-- /TextViews -->
 
     <!-- Used for different variations of view_input_*.xml layouts -->
-    <style name="Layout.Input" parent="Theme.AppCompat.Light">
+    <style name="IconLabelView" parent="Theme.AppCompat.Light">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginLeft">@dimen/margin_default</item>
+        <item name="android:layout_marginRight">@dimen/margin_default</item>
+    </style>
+
+    <style name="IconInputView" parent="IconLabelView">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginLeft">@dimen/margin_default</item>
         <item name="android:layout_marginRight">@dimen/margin_default</item>
         <item name="android:layout_marginTop">@dimen/margin_half</item>
         <item name="android:layout_marginBottom">@dimen/margin_half</item>
-        <item name="android:orientation">horizontal</item>
-        <item name="android:gravity">center_vertical</item>
     </style>
 
     <!-- Style used for view_input_*.xml icons -->
@@ -195,7 +200,7 @@
     <style name="InputView.IconInset" parent="Theme.AppCompat.Light">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginLeft">@dimen/margin_input_icon_no_left</item>
+        <item name="android:layout_marginLeft">@dimen/margin_input_icon_offset</item>
     </style>
 
     <style name="InputTextView.NoTitle" parent="Theme.AppCompat.Light">

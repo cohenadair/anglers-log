@@ -18,9 +18,8 @@
 
             <!-- Bait Category -->
             <com.cohenadair.anglerslog.views.InputButtonView
+                style="@style/IconInputView"
                 android:id="@+id/category_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 custom:primaryHint="@string/add_bait_category"
                 custom:iconResource="@drawable/ic_bait"/>
 
@@ -41,9 +40,8 @@
 
         <!-- Photos -->
         <com.cohenadair.anglerslog.views.SelectPhotosView
+            style="@style/IconInputView"
             android:id="@+id/select_photos_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             custom:maxPhotos="1"/>
 
         <include layout="@layout/view_divider"/>
