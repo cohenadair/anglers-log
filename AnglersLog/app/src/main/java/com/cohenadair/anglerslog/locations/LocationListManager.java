@@ -33,8 +33,11 @@ public class LocationListManager {
             int suffixId = location.getFishingSpotCount() == 1 ? R.string.fishing_spot : R.string.fishing_spots;
             setSubtitle(String.format("%d " + getContext().getResources().getString(suffixId), location.getFishingSpotCount()));
 
-            suffixId = location.getFishCaughtCount() == 1 ? R.string.catch_string : R.string.drawer_catches;
-            setSubSubtitle(String.format("%d " + getContext().getResources().getString(suffixId), location.getFishCaughtCount()));
+            // hide subsubtitle if in condensed layout
+            if (!getAdapter().isCondensed()) {
+                suffixId = location.getFishCaughtCount() == 1 ? R.string.catch_string : R.string.drawer_catches;
+                setSubSubtitle(String.format("%d " + getContext().getResources().getString(suffixId), location.getFishCaughtCount()));
+            }
 
             updateViews();
         }
@@ -46,6 +49,14 @@ public class LocationListManager {
 
         public Adapter(Context context, ArrayList<UserDefineObject> items, boolean singleSelection, boolean multiSelection, OnClickInterface callbacks) {
             super(context, items, singleSelection, multiSelection, callbacks);
+        }
+
+        public Adapter(Context context, ArrayList<UserDefineObject> items, boolean condensed, OnClickInterface callbacks) {
+            super(context, items, condensed, callbacks);
+        }
+
+        public Adapter(Context context, ArrayList<UserDefineObject> items, OnClickInterface callbacks) {
+            super(context, items, false, false, callbacks);
         }
 
         // can't be overridden in the superclass because it needs to return a BaitListManager.ViewHolder

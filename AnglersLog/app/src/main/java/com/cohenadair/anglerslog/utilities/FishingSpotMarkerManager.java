@@ -181,7 +181,7 @@ public class FishingSpotMarkerManager {
             @Override
             public void onInfoWindowClick(Marker marker) {
                 MarkerSpec spec = mMarkerSpecMap.get(marker.getTitle());
-                Intent intent = CatchListPortionActivity.getIntent(mContext, marker.getTitle(), spec.getCatches());
+                Intent intent = CatchListPortionActivity.getIntent(mContext, marker.getTitle(), LayoutSpecManager.LAYOUT_CATCHES, spec.getCatches());
                 mContext.startActivity(intent);
             }
         });

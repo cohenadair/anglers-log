@@ -7,26 +7,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.activities.CatchListPortionActivity;
+import com.cohenadair.anglerslog.baits.BaitListManager;
 import com.cohenadair.anglerslog.catches.CatchListManager;
-import com.cohenadair.anglerslog.database.QueryHelper;
 import com.cohenadair.anglerslog.fragments.DetailFragment;
 import com.cohenadair.anglerslog.interfaces.OnClickInterface;
+import com.cohenadair.anglerslog.locations.LocationListManager;
 import com.cohenadair.anglerslog.model.Logbook;
-import com.cohenadair.anglerslog.model.user_defines.Bait;
-import com.cohenadair.anglerslog.model.user_defines.Location;
 import com.cohenadair.anglerslog.model.user_defines.Trip;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import com.cohenadair.anglerslog.utilities.LayoutSpecManager;
 import com.cohenadair.anglerslog.utilities.ListManager;
 import com.cohenadair.anglerslog.utilities.Utils;
-import com.cohenadair.anglerslog.views.InputButtonView;
+import com.cohenadair.anglerslog.views.DisplayLabelView;
 import com.cohenadair.anglerslog.views.ListPortionLayout;
-import com.cohenadair.anglerslog.views.MoreDetailLayout;
-import com.cohenadair.anglerslog.views.PropertyDetailView;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -39,20 +35,15 @@ public class TripFragment extends DetailFragment {
 
     private Trip mTrip;
 
-    private InputButtonView mNameView;
-    private InputButtonView mStartDateView;
-    private InputButtonView mEndDateView;
+    private DisplayLabelView mNameView;
+    private DisplayLabelView mStartDateView;
+    private DisplayLabelView mEndDateView;
+    private DisplayLabelView mAnglersView;
+    private DisplayLabelView mNotesView;
 
     private ListPortionLayout mCatchesContainer;
-    private MoreDetailLayout mLocationsContainer;
-    private MoreDetailLayout mBaitsContainer;
-    private PropertyDetailView mAnglersView;
-    private TextView mNotesView;
-
-    private TextView mLocationsTitle;
-    private TextView mBaitsTitle;
-    private TextView mTripDetailsTitle;
-    private TextView mNotesTitle;
+    private ListPortionLayout mLocationsContainer;
+    private ListPortionLayout mBaitsContainer;
 
     public TripFragment() {
         // Required empty public constructor
@@ -64,19 +55,14 @@ public class TripFragment extends DetailFragment {
 
         setContainer((LinearLayout) view.findViewById(R.id.trip_container));
 
-        mNameView = (InputButtonView)view.findViewById(R.id.name_view);
-        mStartDateView = (InputButtonView)view.findViewById(R.id.start_date_view);
-        mEndDateView = (InputButtonView)view.findViewById(R.id.end_date_view);
+        mNameView = (DisplayLabelView)view.findViewById(R.id.name_view);
+        mStartDateView = (DisplayLabelView)view.findViewById(R.id.start_date_view);
+        mEndDateView = (DisplayLabelView)view.findViewById(R.id.end_date_view);
         mCatchesContainer = (ListPortionLayout)view.findViewById(R.id.catches_container);
-        mLocationsContainer = (MoreDetailLayout)view.findViewById(R.id.locations_container);
-        mBaitsContainer = (MoreDetailLayout)view.findViewById(R.id.baits_container);
-        mAnglersView = (PropertyDetailView)view.findViewById(R.id.anglers_view);
-        mNotesView = (TextView)view.findViewById(R.id.notes_text_view);
-
-        mLocationsTitle = (TextView)view.findViewById(R.id.title_locations);
-        mBaitsTitle= (TextView)view.findViewById(R.id.title_baits);
-        mTripDetailsTitle = (TextView)view.findViewById(R.id.title_trip_details);
-        mNotesTitle = (TextView)view.findViewById(R.id.title_notes);
+        mLocationsContainer = (ListPortionLayout)view.findViewById(R.id.locations_container);
+        mBaitsContainer = (ListPortionLayout)view.findViewById(R.id.baits_container);
+        mAnglersView = (DisplayLabelView)view.findViewById(R.id.anglers_view);
+        mNotesView = (DisplayLabelView)view.findViewById(R.id.notes_view);
 
         update(getActivity());
 
@@ -115,8 +101,6 @@ public class TripFragment extends DetailFragment {
         updateBaitsView();
         updateAnglersView();
         updateNotesView();
-
-        mTripDetailsTitle.setVisibility(mTrip.hasAnglers() ? View.VISIBLE : View.GONE);
     }
 
     private void updateNameView() {
@@ -125,12 +109,16 @@ public class TripFragment extends DetailFragment {
             return;
         }
 
-        mNameView.setPrimaryButtonText(mTrip.getDisplayName());
+        mNameView.setLabel(mTrip.getDisplayName());
     }
 
     private void updateDateView() {
-        mStartDateView.setPrimaryButtonText(mTrip.getStartDateAsString());
-        mEndDateView.setPrimaryButtonText(mTrip.getEndDateAsString());
+        mStartDateView.setLabel(mTrip.getStartDateAsString());
+        mEndDateView.setLabel(mTrip.getEndDateAsString());
+    }
+
+    private void startListPortionActivity(Intent intent) {
+        startActivity(intent);
     }
 
     private void updateCatchesView() {
@@ -142,8 +130,7 @@ public class TripFragment extends DetailFragment {
 
             @Override
             public void onClickAllButton(ArrayList<UserDefineObject> items) {
-                Intent intent = CatchListPortionActivity.getIntent(getContext(), mTrip.getDisplayName(), items);
-                startActivity(intent);
+                startListPortionActivity(CatchListPortionActivity.getIntent(getContext(), mTrip.getDisplayName(), LayoutSpecManager.LAYOUT_CATCHES, items));
             }
         });
 
@@ -161,62 +148,64 @@ public class TripFragment extends DetailFragment {
     }
 
     private void updateLocationsView() {
-        mLocationsContainer.init(mLocationsTitle, mTrip.getLocations(), new MoreDetailLayout.OnUpdateItemInterface() {
+        mLocationsContainer.init(mTrip.getLocations(), new ListPortionLayout.InteractionListener() {
             @Override
-            public String getTitle(UserDefineObject object) {
-                return object.getName();
+            public ListManager.Adapter onGetAdapter(ArrayList<UserDefineObject> items) {
+                return getLocationsAdapter(items);
             }
 
             @Override
-            public String getSubtitle(UserDefineObject object) {
-                return QueryHelper.queryTripsLocationCatchCount(mTrip, (Location) object) + " " + getResources().getString(R.string.trip_catches);
+            public void onClickAllButton(ArrayList<UserDefineObject> items) {
+                startListPortionActivity(CatchListPortionActivity.getIntent(getContext(), mTrip.getDisplayName(), LayoutSpecManager.LAYOUT_LOCATIONS, items));
             }
+        });
 
+        mLocationsContainer.setButtonText(R.string.all_locations);
+    }
+
+    @NonNull
+    private ListManager.Adapter getLocationsAdapter(ArrayList<UserDefineObject> items) {
+        return new LocationListManager.Adapter(getContext(), items, true, new OnClickInterface() {
             @Override
-            public View.OnClickListener onClickItemButton(final UUID id) {
-                return new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        startDetailActivity(LayoutSpecManager.LAYOUT_LOCATIONS, id);
-                    }
-                };
+            public void onClick(View view, UUID id) {
+                startDetailActivity(LayoutSpecManager.LAYOUT_LOCATIONS, id);
             }
         });
     }
 
     private void updateBaitsView() {
-        mBaitsContainer.init(mBaitsTitle, mTrip.getBaits(), new MoreDetailLayout.OnUpdateItemInterface() {
+        mBaitsContainer.init(mTrip.getBaits(), new ListPortionLayout.InteractionListener() {
             @Override
-            public String getTitle(UserDefineObject object) {
-                return object.getName();
+            public ListManager.Adapter onGetAdapter(ArrayList<UserDefineObject> items) {
+                return getBaitsAdapter(items);
             }
 
             @Override
-            public String getSubtitle(UserDefineObject object) {
-                return ((Bait)object).getCategoryName();
+            public void onClickAllButton(ArrayList<UserDefineObject> items) {
+                startListPortionActivity(CatchListPortionActivity.getIntent(getContext(), mTrip.getDisplayName(), LayoutSpecManager.LAYOUT_BAITS, items));
             }
+        });
 
+        mBaitsContainer.setButtonText(R.string.all_baits);
+    }
+
+    @NonNull
+    private ListManager.Adapter getBaitsAdapter(ArrayList<UserDefineObject> items) {
+        return new BaitListManager.Adapter(getContext(), items, true, new OnClickInterface() {
             @Override
-            public View.OnClickListener onClickItemButton(final UUID id) {
-                return new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        startDetailActivity(LayoutSpecManager.LAYOUT_BAITS, id);
-                    }
-                };
+            public void onClick(View view, UUID id) {
+                startDetailActivity(LayoutSpecManager.LAYOUT_BAITS, id);
             }
         });
     }
 
     private void updateAnglersView() {
         Utils.toggleVisibility(mAnglersView, mTrip.hasAnglers());
-        mAnglersView.setDetail(mTrip.getAnglersAsString());
+        mAnglersView.setLabel(mTrip.getAnglersAsString());
     }
 
     private void updateNotesView() {
-        boolean hasNotes = mTrip.hasNotes();
-        Utils.toggleVisibility(mNotesTitle, hasNotes);
-        Utils.toggleVisibility(mNotesView, hasNotes);
-        mNotesView.setText(mTrip.getNotesAsString());
+        Utils.toggleVisibility(mNotesView, mTrip.hasNotes());
+        mNotesView.setLabel(mTrip.getNotesAsString());
     }
 }

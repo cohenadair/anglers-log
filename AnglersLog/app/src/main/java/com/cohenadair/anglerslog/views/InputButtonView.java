@@ -13,8 +13,6 @@ import com.cohenadair.anglerslog.utilities.Utils;
  * {@link com.cohenadair.anglerslog.model.user_defines.Species} or a date and time.  The view
  * includes an icon, and two customizable input buttons.
  *
- * This view could also be used as a simple label when the `custom:asLabel` property is set to true.
- *
  * @author Cohen Adair
  */
 public class InputButtonView extends LeftIconView {
@@ -41,9 +39,6 @@ public class InputButtonView extends LeftIconView {
             TypedArray arr = getContext().getTheme().obtainStyledAttributes(attrs, R.styleable.InputButtonView, 0, 0);
 
             try {
-                // possibly use as label, not input
-                setPrimaryButtonClickable(!arr.getBoolean(R.styleable.InputButtonView_asLabel, false));
-
                 // primary text
                 String primaryText = arr.getString(R.styleable.InputButtonView_primaryHint);
                 mPrimaryButton.setHint(primaryText);

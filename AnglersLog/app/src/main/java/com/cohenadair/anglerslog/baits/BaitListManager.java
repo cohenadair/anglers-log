@@ -31,10 +31,12 @@ public class BaitListManager {
 
             setTitle(bait.getName());
             setSubtitle(bait.getCategoryName());
-            setSubSubtitle(bait.getCatchCountAsString(getContext()));
             setImage(bait.getRandomPhoto());
 
-            getFavoriteStar().setVisibility(View.GONE);
+            if (!getAdapter().isCondensed()) {
+                getFavoriteStar().setVisibility(View.GONE);
+                setSubSubtitle(bait.getCatchCountAsString(getContext()));
+            }
 
             updateViews();
         }
@@ -51,6 +53,14 @@ public class BaitListManager {
 
         public Adapter(Context context, ArrayList<UserDefineObject> items, boolean singleSelection, boolean multiSelection, OnClickInterface callbacks) {
             super(context, items, singleSelection, multiSelection, callbacks);
+        }
+
+        public Adapter(Context context, ArrayList<UserDefineObject> items, boolean condensed, OnClickInterface callbacks) {
+            super(context, items, condensed, callbacks);
+        }
+
+        public Adapter(Context context, ArrayList<UserDefineObject> items, OnClickInterface callbacks) {
+            super(context, items, false, false, callbacks);
         }
 
         // can't be overridden in the superclass because it needs to return a BaitListManager.ViewHolder

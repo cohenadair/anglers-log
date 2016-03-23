@@ -145,7 +145,7 @@ public class BaitFragment extends DetailFragment {
 
             @Override
             public void onClickAllButton(ArrayList<UserDefineObject> items) {
-                Intent intent = CatchListPortionActivity.getIntent(getContext(), mBait.getDisplayName(), items);
+                Intent intent = CatchListPortionActivity.getIntent(getContext(), mBait.getDisplayName(), LayoutSpecManager.LAYOUT_CATCHES, items);
                 startActivity(intent);
             }
         });

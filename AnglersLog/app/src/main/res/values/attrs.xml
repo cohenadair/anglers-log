@@ -32,7 +32,6 @@
     <declare-styleable name="InputButtonView">
         <attr name="primaryHint" format="string"/>
         <attr name="showSecondary" format="boolean"/>
-        <attr name="asLabel" format="boolean"/>
         <attr name="iconResource" />
     </declare-styleable>
 
@@ -42,6 +41,11 @@
         <attr name="iconResource" />
         <attr name="numbersOnly" />
         <attr name="capSentencesOnly" format="boolean" />
+    </declare-styleable>
+
+    <declare-styleable name="DisplayLabelView">
+        <attr name="labelText" format="string"/>
+        <attr name="iconResource" />
     </declare-styleable>
 
     <declare-styleable name="LeftIconView">

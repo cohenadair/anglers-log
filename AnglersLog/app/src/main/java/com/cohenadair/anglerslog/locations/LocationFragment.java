@@ -22,6 +22,7 @@ import com.cohenadair.anglerslog.model.user_defines.FishingSpot;
 import com.cohenadair.anglerslog.model.user_defines.Location;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import com.cohenadair.anglerslog.utilities.FishingSpotMarkerManager;
+import com.cohenadair.anglerslog.utilities.LayoutSpecManager;
 import com.cohenadair.anglerslog.utilities.Utils;
 import com.cohenadair.anglerslog.views.SelectionSpinnerView;
 import com.google.android.gms.maps.GoogleMap;
@@ -161,7 +162,7 @@ public class LocationFragment extends DetailFragment {
     }
 
     private void showAllCatches() {
-        Intent intent = CatchListPortionActivity.getIntent(getContext(), mLocation.getDisplayName(), mLocation.getCatches());
+        Intent intent = CatchListPortionActivity.getIntent(getContext(), mLocation.getDisplayName(), LayoutSpecManager.LAYOUT_CATCHES, mLocation.getCatches());
         getContext().startActivity(intent);
     }
 
