@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.activities.PhotoViewerActivity;
@@ -15,10 +14,8 @@ import com.cohenadair.anglerslog.model.Weather;
 import com.cohenadair.anglerslog.model.user_defines.Catch;
 import com.cohenadair.anglerslog.utilities.LayoutSpecManager;
 import com.cohenadair.anglerslog.utilities.Utils;
+import com.cohenadair.anglerslog.views.DisplayLabelView;
 import com.cohenadair.anglerslog.views.ImageScrollView;
-import com.cohenadair.anglerslog.views.MoreDetailView;
-import com.cohenadair.anglerslog.views.PropertyDetailView;
-import com.cohenadair.anglerslog.views.TitleSubTitleView;
 import com.cohenadair.anglerslog.views.WeatherDetailsView;
 
 import java.util.ArrayList;
@@ -33,25 +30,21 @@ public class CatchFragment extends DetailFragment {
     private ArrayList<String> mCatchPhotos;
 
     private ImageScrollView mImageScrollView;
-    private TitleSubTitleView mTitleView;
-    private MoreDetailView mBaitView;
-    private MoreDetailView mLocationView;
-    private PropertyDetailView mFishingMethodsView;
-    private PropertyDetailView mWaterClarityView;
-    private PropertyDetailView mResultView;
-    private PropertyDetailView mQuantityView;
-    private PropertyDetailView mLengthView;
-    private PropertyDetailView mWeightView;
-    private PropertyDetailView mWaterDepthView;
-    private PropertyDetailView mWaterTemperatureView;
+    private DisplayLabelView mSpeciesView;
+    private DisplayLabelView mDateView;
+    private DisplayLabelView mBaitView;
+    private DisplayLabelView mLocationView;
+    private DisplayLabelView mFishingMethodsView;
+    private DisplayLabelView mWaterClarityView;
+    private DisplayLabelView mResultView;
+    private DisplayLabelView mQuantityView;
+    private DisplayLabelView mLengthView;
+    private DisplayLabelView mWeightView;
+    private DisplayLabelView mWaterDepthView;
+    private DisplayLabelView mWaterTemperatureView;
+    private DisplayLabelView mNotesView;
+    private LinearLayout mWeatherContainer;
     private WeatherDetailsView mWeatherDetailsView;
-    private TextView mNotesView;
-
-    private TextView mCatchDetails;
-    private TextView mFishDetails;
-    private TextView mWaterConditions;
-    private TextView mWeatherConditions;
-    private TextView mNotesTitle;
 
     public CatchFragment() {
         // Required empty public constructor
@@ -74,23 +67,19 @@ public class CatchFragment extends DetailFragment {
         initLocationLayout(view);
         initBaitLayout(view);
 
-        mTitleView = (TitleSubTitleView)view.findViewById(R.id.title_view);
-        mFishingMethodsView = (PropertyDetailView)view.findViewById(R.id.fishing_methods_view);
-        mWaterClarityView = (PropertyDetailView)view.findViewById(R.id.water_clarity_view);
-        mResultView = (PropertyDetailView)view.findViewById(R.id.catch_result_view);
-        mLengthView = (PropertyDetailView)view.findViewById(R.id.length_view);
-        mWeightView = (PropertyDetailView)view.findViewById(R.id.weight_view);
-        mQuantityView = (PropertyDetailView)view.findViewById(R.id.quantity_view);
-        mWaterDepthView = (PropertyDetailView)view.findViewById(R.id.water_depth_view);
-        mWaterTemperatureView = (PropertyDetailView)view.findViewById(R.id.water_temperature_view);
+        mSpeciesView = (DisplayLabelView)view.findViewById(R.id.species_view);
+        mDateView= (DisplayLabelView)view.findViewById(R.id.date_view);
+        mFishingMethodsView = (DisplayLabelView)view.findViewById(R.id.fishing_methods_view);
+        mWaterClarityView = (DisplayLabelView)view.findViewById(R.id.water_clarity_view);
+        mResultView = (DisplayLabelView)view.findViewById(R.id.catch_result_view);
+        mLengthView = (DisplayLabelView)view.findViewById(R.id.length_view);
+        mWeightView = (DisplayLabelView)view.findViewById(R.id.weight_view);
+        mQuantityView = (DisplayLabelView)view.findViewById(R.id.quantity_view);
+        mWaterDepthView = (DisplayLabelView)view.findViewById(R.id.water_depth_view);
+        mWaterTemperatureView = (DisplayLabelView)view.findViewById(R.id.water_temperature_view);
+        mNotesView = (DisplayLabelView)view.findViewById(R.id.notes_view);
+        mWeatherContainer = (LinearLayout)view.findViewById(R.id.weather_container);
         mWeatherDetailsView = (WeatherDetailsView)view.findViewById(R.id.weather_details_view);
-        mNotesView = (TextView)view.findViewById(R.id.notes_text_view);
-
-        mCatchDetails = (TextView)view.findViewById(R.id.title_catch_details);
-        mFishDetails = (TextView)view.findViewById(R.id.title_fish_details);
-        mWaterConditions = (TextView)view.findViewById(R.id.title_water_conditions);
-        mWeatherConditions = (TextView)view.findViewById(R.id.title_weather_conditions);
-        mNotesTitle = (TextView)view.findViewById(R.id.title_notes);
 
         update(getActivity());
 
@@ -124,7 +113,8 @@ public class CatchFragment extends DetailFragment {
         mCatchPhotos = mCatch.getPhotos();
         mImageScrollView.setImages(mCatchPhotos);
 
-        updateTitleView();
+        updateSpeciesView();
+        updateDateView();
         updateBaitView();
         updateLocationView();
         updateFishingMethodsView();
@@ -137,22 +127,24 @@ public class CatchFragment extends DetailFragment {
         updateWaterDepthView();
         updateWaterTemperatureView();
         updateNotesView();
-        updateHeadingViews();
     }
 
-    private void updateTitleView() {
-        mTitleView.setTitle(mCatch.getSpeciesAsString());
-        mTitleView.setSubtitle(mCatch.getDateTimeAsString());
+    private void updateSpeciesView() {
+        mSpeciesView.setDetail(mCatch.getSpeciesAsString());
+    }
+
+    private void updateDateView() {
+        mDateView.setDetail(mCatch.getDateTimeAsString());
     }
 
     private void updateBaitView() {
         Utils.toggleVisibility(mBaitView, mCatch.getBait() != null);
-        mBaitView.setSubtitle(mCatch.getBaitAsString());
+        mBaitView.setDetail(mCatch.getBaitAsString());
     }
 
     private void updateLocationView() {
         Utils.toggleVisibility(mLocationView, mCatch.getFishingSpot() != null);
-        mLocationView.setSubtitle(mCatch.getFishingSpotAsString());
+        mLocationView.setDetail(mCatch.getFishingSpotAsString());
     }
 
     private void updateFishingMethodsView() {
@@ -172,7 +164,7 @@ public class CatchFragment extends DetailFragment {
 
     private void updateWeatherDetailsView() {
         Weather weather = mCatch.getWeather();
-        Utils.toggleVisibility(mWeatherDetailsView, weather != null);
+        Utils.toggleVisibility(mWeatherContainer, weather != null);
         mWeatherDetailsView.updateViews(weather);
     }
 
@@ -203,23 +195,12 @@ public class CatchFragment extends DetailFragment {
 
     private void updateNotesView() {
         Utils.toggleVisibility(mNotesView, mCatch.getNotes() != null);
-        mNotesView.setText(mCatch.getNotesAsString());
-    }
-
-    /**
-     * Toggles the visibility of the heading views.
-     */
-    private void updateHeadingViews() {
-        Utils.toggleVisibility(mCatchDetails, mCatch.getBait() != null || mCatch.getFishingSpot() != null || mCatch.getFishingMethods().size() > 0);
-        Utils.toggleVisibility(mFishDetails, mCatch.getCatchResult() != null || mCatch.getQuantity() != -1 || mCatch.getLength() != -1 || mCatch.getWeight() != -1);
-        Utils.toggleVisibility(mWaterConditions, mCatch.getWaterClarity() != null || mCatch.getWaterDepth() != -1 || mCatch.getWaterTemperature() != -1);
-        Utils.toggleVisibility(mWeatherConditions, mCatch.getWeather() != null);
-        Utils.toggleVisibility(mNotesTitle, mCatch.getNotes() != null && !mCatch.getNotes().isEmpty());
+        mNotesView.setDetail(mCatch.getNotesAsString());
     }
 
     private void initLocationLayout(View view) {
-        mLocationView = (MoreDetailView)view.findViewById(R.id.location_view);
-        mLocationView.setOnClickDetailButton(new View.OnClickListener() {
+        mLocationView = (DisplayLabelView)view.findViewById(R.id.location_view);
+        mLocationView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startDetailActivity(LayoutSpecManager.LAYOUT_LOCATIONS, mCatch.getFishingSpot().getId());
@@ -228,8 +209,8 @@ public class CatchFragment extends DetailFragment {
     }
 
     private void initBaitLayout(View view) {
-        mBaitView = (MoreDetailView)view.findViewById(R.id.bait_view);
-        mBaitView.setOnClickDetailButton(new View.OnClickListener() {
+        mBaitView = (DisplayLabelView)view.findViewById(R.id.bait_view);
+        mBaitView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startDetailActivity(LayoutSpecManager.LAYOUT_BAITS, mCatch.getBait().getId());

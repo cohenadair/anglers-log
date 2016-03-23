@@ -90,9 +90,12 @@
     <style name="TextView.FromSelection" parent="Theme.AppCompat.Light">
     </style>
 
-    <style name="TextView.InputLabel" parent="Theme.AppCompat.Light">
+    <style name="TextView.Label" parent="Theme.AppCompat.Light">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize">@dimen/font_small</item>
         <item name="android:textColor">@color/medium_grey</item>
+        <item name="android:layout_marginBottom">@dimen/margin_quarter</item>
     </style>
 
     <style name="TextView.Header" parent="TextView.SmallSubtitle">
@@ -129,6 +132,11 @@
         <item name="android:textColor">@android:color/black</item>
     </style>
 
+    <style name="TextView.SecondaryListItem" parent="Theme.AppCompat.Light">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/medium_grey</item>
+    </style>
+
     <style name="TextView.SmallSubtitle" parent="Theme.AppCompat.Light">
         <item name="android:textSize">@dimen/font_small</item>
         <item name="android:textColor">@color/medium_grey</item>
@@ -158,15 +166,13 @@
     <style name="IconLabelView" parent="Theme.AppCompat.Light">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginLeft">@dimen/margin_default</item>
-        <item name="android:layout_marginRight">@dimen/margin_default</item>
-        <item name="android:layout_marginTop">@dimen/margin_default</item>
-        <item name="android:layout_marginBottom">@dimen/margin_default</item>
     </style>
 
     <style name="IconInputView" parent="IconLabelView">
-        <item name="android:layout_marginTop">@dimen/margin_half</item>
-        <item name="android:layout_marginBottom">@dimen/margin_half</item>
+        <item name="android:paddingTop">@dimen/margin_half</item>
+        <item name="android:paddingBottom">@dimen/margin_half</item>
+        <item name="android:paddingRight">@dimen/margin_default</item>
+        <item name="android:paddingLeft">@dimen/margin_default</item>
     </style>
 
     <!-- Style used for view_input_*.xml icons -->
@@ -199,6 +205,10 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginLeft">@dimen/margin_input_icon_offset</item>
+    </style>
+
+    <style name="InputView.IconInset.NoLeft" parent="InputView.IconInset">
+        <item name="android:layout_marginLeft">@dimen/margin_input_icon_no_left</item>
     </style>
 
     <style name="InputTextView.NoTitle" parent="Theme.AppCompat.Light">

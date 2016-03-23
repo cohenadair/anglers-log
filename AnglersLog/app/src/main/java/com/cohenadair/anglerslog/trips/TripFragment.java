@@ -109,12 +109,12 @@ public class TripFragment extends DetailFragment {
             return;
         }
 
-        mNameView.setLabel(mTrip.getDisplayName());
+        mNameView.setDetail(mTrip.getDisplayName());
     }
 
     private void updateDateView() {
-        mStartDateView.setLabel(mTrip.getStartDateAsString());
-        mEndDateView.setLabel(mTrip.getEndDateAsString());
+        mStartDateView.setDetail(mTrip.getStartDateAsString());
+        mEndDateView.setDetail(mTrip.getEndDateAsString());
     }
 
     private void startListPortionActivity(Intent intent) {
@@ -201,11 +201,11 @@ public class TripFragment extends DetailFragment {
 
     private void updateAnglersView() {
         Utils.toggleVisibility(mAnglersView, mTrip.hasAnglers());
-        mAnglersView.setLabel(mTrip.getAnglersAsString());
+        mAnglersView.setDetail(mTrip.getAnglersAsString());
     }
 
     private void updateNotesView() {
         Utils.toggleVisibility(mNotesView, mTrip.hasNotes());
-        mNotesView.setLabel(mTrip.getNotesAsString());
+        mNotesView.setDetail(mTrip.getNotesAsString());
     }
 }

@@ -45,6 +45,7 @@
 
     <declare-styleable name="DisplayLabelView">
         <attr name="labelText" format="string"/>
+        <attr name="detailText" format="string"/>
         <attr name="iconResource" />
     </declare-styleable>
 

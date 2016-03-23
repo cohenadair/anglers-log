@@ -5,6 +5,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.utilities.PhotoUtils;
@@ -22,6 +23,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
  */
 public class ImageScrollView extends LinearLayout {
 
+    private RelativeLayout mContainer;
     private HorizontalScrollView mScrollView;
     private LinearLayout mPhotosWrapper;
     private InteractionListener mInteractionListener;
@@ -45,6 +47,8 @@ public class ImageScrollView extends LinearLayout {
     private void init() {
         View view = inflate(getContext(), R.layout.view_image_scroll, this);
 
+        mContainer = (RelativeLayout)view.findViewById(R.id.image_scroll_container);
+
         mScrollView = (HorizontalScrollView)view.findViewById(R.id.scroll_view);
         mScrollView.post(new Runnable() {
             @Override
@@ -61,6 +65,12 @@ public class ImageScrollView extends LinearLayout {
     }
 
     public void setImages(ArrayList<String> imagePaths) {
+        if (imagePaths == null || imagePaths.size() <= 0) {
+            Utils.toggleVisibility(mContainer, false);
+            return;
+        }
+
+        Utils.toggleVisibility(mContainer, true);
         mPhotosWrapper.removeAllViews();
 
         int size = getResources().getDimensionPixelSize(R.dimen.image_scroll_size);

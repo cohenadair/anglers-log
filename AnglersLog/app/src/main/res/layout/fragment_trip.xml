@@ -9,6 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingBottom="@dimen/margin_default"
+        android:paddingTop="@dimen/margin_default"
         android:orientation="vertical"
         android:id="@+id/trip_container">
 
@@ -16,7 +17,7 @@
         <com.cohenadair.anglerslog.views.DisplayLabelView
             style="@style/IconLabelView"
             android:id="@+id/name_view"
-            custom:labelText="@string/trip"
+            custom:detailText="@string/trip"
             custom:iconResource="@drawable/ic_trips"/>
 
         <!-- Start & End Dates -->
@@ -28,16 +29,14 @@
             <com.cohenadair.anglerslog.views.DisplayLabelView
                 style="@style/IconLabelView"
                 android:id="@+id/start_date_view"
-                custom:labelText="@string/date"
+                custom:detailText="@string/date"
                 custom:iconResource="@drawable/ic_clock"/>
 
             <com.cohenadair.anglerslog.views.DisplayLabelView
-                style="@style/IconLabelView"
+                style="@style/InputView.IconInset.NoLeft"
                 android:id="@+id/end_date_view"
-                android:layout_marginLeft="@dimen/margin_input_icon_offset"
-                android:layout_marginStart="@dimen/margin_input_icon_offset"
-                android:layout_marginTop="@dimen/margin_half_negative"
-                custom:labelText="@string/date"/>
+                android:layout_marginTop="@dimen/margin_default_negative"
+                custom:detailText="@string/date"/>
 
         </LinearLayout>
 
@@ -67,7 +66,7 @@
             style="@style/IconLabelView"
             android:id="@+id/anglers_view"
             android:layout_marginTop="@dimen/margin_half"
-            custom:labelText="@string/anglers"
+            custom:detailText="@string/anglers"
             custom:iconResource="@drawable/ic_anglers"/>
 
         <!-- Notes -->
@@ -75,7 +74,7 @@
             style="@style/IconLabelView"
             android:id="@+id/notes_view"
             android:layout_marginTop="@dimen/margin_half"
-            custom:labelText="@string/notes"
+            custom:detailText="@string/notes"
             custom:iconResource="@drawable/ic_note"/>
 
     </LinearLayout>

@@ -16,11 +16,8 @@
         android:orientation="vertical">
 
         <TextView
+            style="@style/TextView.Label"
             android:id="@+id/title_text_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/margin_quarter"
-            android:textAppearance="@style/TextView.SmallSubtitle"
             tools:text="Title"/>
 
         <EditText
