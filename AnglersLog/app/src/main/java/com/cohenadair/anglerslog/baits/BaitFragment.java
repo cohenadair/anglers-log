@@ -5,9 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.activities.CatchListPortionActivity;
@@ -20,11 +18,10 @@ import com.cohenadair.anglerslog.model.user_defines.Bait;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import com.cohenadair.anglerslog.utilities.LayoutSpecManager;
 import com.cohenadair.anglerslog.utilities.ListManager;
-import com.cohenadair.anglerslog.utilities.PhotoUtils;
 import com.cohenadair.anglerslog.utilities.Utils;
+import com.cohenadair.anglerslog.views.DisplayLabelView;
+import com.cohenadair.anglerslog.views.ImageScrollView;
 import com.cohenadair.anglerslog.views.ListPortionLayout;
-import com.cohenadair.anglerslog.views.PropertyDetailView;
-import com.cohenadair.anglerslog.views.TitleSubTitleView;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -36,13 +33,12 @@ public class BaitFragment extends DetailFragment {
 
     private Bait mBait;
 
-    private ImageView mImageView;
-    private TitleSubTitleView mTitleSubTitleView;
-    private TextView mDescriptionTextView;
-    private TextView mNoCatchesTextView;
-    private PropertyDetailView mTypeView;
-    private PropertyDetailView mColorView;
-    private PropertyDetailView mSizeView;
+    private ImageScrollView mImageScrollView;
+    private DisplayLabelView mNameView;
+    private DisplayLabelView mTypeView;
+    private DisplayLabelView mColorView;
+    private DisplayLabelView mSizeView;
+    private DisplayLabelView mDescriptionView;
     private ListPortionLayout mCatchesLayout;
 
     public BaitFragment() {
@@ -54,14 +50,14 @@ public class BaitFragment extends DetailFragment {
         View view = inflater.inflate(R.layout.fragment_bait, container, false);
 
         initImageView(view);
-        setContainer((LinearLayout)view.findViewById(R.id.bait_container));
+        setContainer((LinearLayout) view.findViewById(R.id.bait_container));
 
-        mTitleSubTitleView = (TitleSubTitleView)view.findViewById(R.id.title_view);
-        mDescriptionTextView = (TextView)view.findViewById(R.id.description_text_view);
-        mTypeView = (PropertyDetailView)view.findViewById(R.id.type_view);
-        mColorView = (PropertyDetailView)view.findViewById(R.id.color_view);
-        mSizeView = (PropertyDetailView)view.findViewById(R.id.size_view);
-        mNoCatchesTextView = (TextView)view.findViewById(R.id.no_catches_text_view);
+        mImageScrollView = (ImageScrollView)view.findViewById(R.id.image_scroll_view);
+        mNameView = (DisplayLabelView)view.findViewById(R.id.name_view);
+        mTypeView = (DisplayLabelView)view.findViewById(R.id.type_view);
+        mColorView = (DisplayLabelView)view.findViewById(R.id.color_view);
+        mSizeView = (DisplayLabelView)view.findViewById(R.id.size_view);
+        mDescriptionView = (DisplayLabelView)view.findViewById(R.id.description_view);
         mCatchesLayout = (ListPortionLayout)view.findViewById(R.id.catches_layout);
 
         update(getActivity());
@@ -95,20 +91,15 @@ public class BaitFragment extends DetailFragment {
         show();
 
         String photo = mBait.getRandomPhoto();
-        String path = (photo == null) ? "" : PhotoUtils.privatePhotoPath(photo);
-        if (photo != null) {
-            int size = getActivity().getResources().getDimensionPixelSize(R.dimen.size_list_thumb);
+        ArrayList<String> photos = new ArrayList<>();
+        if (photo != null)
+            photos.add(photo);
+        mImageScrollView.setImages(photos);
 
-            if (Utils.fileExists(path))
-                PhotoUtils.thumbnailToImageView(mImageView, path, size, R.drawable.placeholder_circle);
-        }
-        Utils.toggleVisibility(mImageView, photo != null && Utils.fileExists(path));
-
-        mTitleSubTitleView.setTitle(mBait.getName());
-        mTitleSubTitleView.setSubtitle(mBait.getCategoryName());
+        mNameView.setDetail(mBait.getName());
+        mNameView.setLabel(mBait.getCategoryName());
 
         mTypeView.setDetail(getActivity().getResources().getString(mBait.getTypeName()));
-        mTypeView.setVisibility(View.VISIBLE);
 
         mColorView.setDetail(mBait.getColor());
         Utils.toggleVisibility(mColorView, mBait.getColor() != null);
@@ -116,8 +107,8 @@ public class BaitFragment extends DetailFragment {
         mSizeView.setDetail(mBait.getSize());
         Utils.toggleVisibility(mSizeView, mBait.getSize() != null);
 
-        mDescriptionTextView.setText(mBait.getDescription());
-        Utils.toggleVisibility(mDescriptionTextView, mBait.getDescription() != null);
+        mDescriptionView.setDetail(mBait.getDescription());
+        Utils.toggleVisibility(mDescriptionView, mBait.getDescription() != null);
 
         updateCatchesList();
     }
@@ -126,7 +117,6 @@ public class BaitFragment extends DetailFragment {
         ArrayList<UserDefineObject> catches = mBait.getCatches();
         boolean hasCatches = catches != null && catches.size() > 0;
 
-        Utils.toggleVisibility(mNoCatchesTextView, !hasCatches);
         Utils.toggleVisibility(mCatchesLayout, hasCatches);
 
         if (!hasCatches)
@@ -135,7 +125,7 @@ public class BaitFragment extends DetailFragment {
         mCatchesLayout.init(catches, new ListPortionLayout.InteractionListener() {
             @Override
             public ListManager.Adapter onGetAdapter(ArrayList<UserDefineObject> items) {
-                return new CatchListManager.Adapter(getContext(), items, new OnClickInterface() {
+                return new CatchListManager.Adapter(getContext(), items, true, new OnClickInterface() {
                     @Override
                     public void onClick(View view, UUID id) {
                         startDetailActivity(LayoutSpecManager.LAYOUT_CATCHES, id);
@@ -149,12 +139,13 @@ public class BaitFragment extends DetailFragment {
                 startActivity(intent);
             }
         });
+
+        mCatchesLayout.setButtonText(R.string.all_catches);
     }
 
     private void initImageView(View view) {
-        mImageView = (ImageView)view.findViewById(R.id.bait_image_view);
-        mImageView.setVisibility(View.GONE);
-        mImageView.setOnClickListener(new View.OnClickListener() {
+        mImageScrollView = (ImageScrollView)view.findViewById(R.id.image_scroll_view);
+        mImageScrollView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (mBait.getPhotoCount() <= 0)

@@ -12,88 +12,57 @@
         android:paddingBottom="@dimen/margin_default"
         android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <!-- Images -->
+        <com.cohenadair.anglerslog.views.ImageScrollView
+            android:id="@+id/image_scroll_view"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/global_background"
-            android:layout_margin="@dimen/margin_default"
-            android:orientation="horizontal">
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="@dimen/margin_half"/>
 
-            <ImageView
-                android:id="@+id/bait_image_view"
-                android:layout_width="@dimen/size_list_thumb"
-                android:layout_height="@dimen/size_list_thumb"
-                android:layout_marginRight="@dimen/margin_default"
-                android:layout_marginEnd="@dimen/margin_default"
-                android:contentDescription="@string/bait_photo_description"
-                android:src="@drawable/placeholder_circle"/>
+        <!-- Name & Category -->
+        <com.cohenadair.anglerslog.views.DisplayLabelView
+            style="@style/IconLabelView"
+            android:id="@+id/name_view"
+            custom:labelText="@string/category"
+            custom:detailText="@string/bait"
+            custom:iconResource="@drawable/ic_bait"/>
 
-            <com.cohenadair.anglerslog.views.TitleSubTitleView
-                android:id="@+id/title_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                custom:titleText="@string/bait"
-                custom:subtitleText="@string/bait_category"
-                custom:titleStyle="@style/TextView.Large"
-                custom:subtitleStyle="@style/TextView.MediumSubtitle"/>
-
-        </LinearLayout>
-
-        <TextView
-            style="?android:listSeparatorTextViewStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/margin_default"
-            android:text="@string/properties"/>
-
-        <com.cohenadair.anglerslog.views.PropertyDetailView
-            android:id="@+id/type_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            custom:propertyName="@string/type"/>
-
-        <com.cohenadair.anglerslog.views.PropertyDetailView
-            android:id="@+id/color_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            custom:propertyName="@string/color"/>
-
-        <com.cohenadair.anglerslog.views.PropertyDetailView
+        <!-- Size -->
+        <com.cohenadair.anglerslog.views.DisplayLabelView
+            style="@style/InputView.IconInset.NoLeft"
             android:id="@+id/size_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            custom:propertyName="@string/size"/>
+            android:layout_marginTop="@dimen/margin_default_negative"
+            custom:labelText="@string/size"
+            custom:detailText="@string/size"/>
 
-        <TextView
-            android:id="@+id/description_text_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/margin_default"
-            android:layout_marginRight="@dimen/margin_default"
-            android:visibility="gone"/>
+        <!-- Color -->
+        <com.cohenadair.anglerslog.views.DisplayLabelView
+            style="@style/InputView.IconInset.NoLeft"
+            android:id="@+id/color_view"
+            android:layout_marginTop="@dimen/margin_default_negative"
+            custom:detailText="@string/color"/>
 
-        <TextView
-            style="?android:listSeparatorTextViewStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_default"
-            android:text="@string/drawer_catches"/>
+        <!-- Type -->
+        <com.cohenadair.anglerslog.views.DisplayLabelView
+            style="@style/InputView.IconInset.NoLeft"
+            android:id="@+id/type_view"
+            android:layout_marginTop="@dimen/margin_default_negative"
+            custom:detailText="@string/type"/>
 
+        <!-- Description -->
+        <com.cohenadair.anglerslog.views.DisplayLabelView
+            style="@style/IconLabelView"
+            android:id="@+id/description_view"
+            custom:detailText="@string/description"
+            custom:iconResource="@drawable/ic_note"/>
+
+        <!-- Catches -->
         <com.cohenadair.anglerslog.views.ListPortionLayout
             android:id="@+id/catches_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
-        <TextView
-            android:id="@+id/no_catches_text_view"
-            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/margin_default"
-            android:text="@string/bait_no_catches"/>
+            custom:iconResource="@drawable/ic_catches"/>
 
     </LinearLayout>
 
