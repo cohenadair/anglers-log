@@ -1,10 +1,9 @@
 package com.cohenadair.anglerslog.views;
 
-import android.app.Activity;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
-import android.widget.ImageView;
+import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 
 import com.cohenadair.anglerslog.R;
@@ -12,6 +11,8 @@ import com.cohenadair.anglerslog.utilities.PhotoUtils;
 import com.cohenadair.anglerslog.utilities.Utils;
 
 import java.util.ArrayList;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * An image scrolling view. This differs from a ViewPager in that this is a series of ImageView
@@ -21,8 +22,11 @@ import java.util.ArrayList;
  */
 public class ImageScrollView extends LinearLayout {
 
+    private HorizontalScrollView mScrollView;
     private LinearLayout mPhotosWrapper;
     private InteractionListener mInteractionListener;
+
+    public float mScrollSize;
 
     public interface InteractionListener {
         void onImageClick(int position);
@@ -40,6 +44,15 @@ public class ImageScrollView extends LinearLayout {
 
     private void init() {
         View view = inflate(getContext(), R.layout.view_image_scroll, this);
+
+        mScrollView = (HorizontalScrollView)view.findViewById(R.id.scroll_view);
+        mScrollView.post(new Runnable() {
+            @Override
+            public void run() {
+                mScrollView.scrollTo((int)(Utils.pxToDp(mScrollSize) / 2), 0);
+            }
+        });
+
         mPhotosWrapper = (LinearLayout)view.findViewById(R.id.photos_wrapper);
     }
 
@@ -50,18 +63,16 @@ public class ImageScrollView extends LinearLayout {
     public void setImages(ArrayList<String> imagePaths) {
         mPhotosWrapper.removeAllViews();
 
-        int size = Utils.getScreenSize((Activity)getContext()).x;
-
-        // if in two-pane or there's more than one photo, show smaller thumbnails
-        if (Utils.isTwoPane(getContext()) || imagePaths.size() > 1)
-            size = getContext().getResources().getDimensionPixelSize(R.dimen.image_scroll_size);
+        int size = getResources().getDimensionPixelSize(R.dimen.image_scroll_size);
 
         for (int i = 0; i < imagePaths.size(); i++)
             addImage(PhotoUtils.privatePhotoPath(imagePaths.get(i)), i, size);
+
+        updateImageMargins();
     }
 
     public void addImage(String path, final int position, int size) {
-        ImageView img = new ImageView(getContext());
+        CircleImageView img = new CircleImageView(getContext());
         img.setLayoutParams(new LayoutParams(size, size));
         img.setOnClickListener(new OnClickListener() {
             @Override
@@ -72,15 +83,21 @@ public class ImageScrollView extends LinearLayout {
         });
 
         PhotoUtils.thumbnailToImageView(img, path, size, R.drawable.placeholder_square);
-        updateImageMargins();
-
         mPhotosWrapper.addView(img);
+
+        // used to correctly center the scroll view
+        mScrollSize += size + getResources().getDimensionPixelOffset(R.dimen.margin_default);
     }
 
     private void updateImageMargins() {
         for (int i = 0; i < mPhotosWrapper.getChildCount(); i++) {
             LinearLayout.LayoutParams params = (LinearLayout.LayoutParams)mPhotosWrapper.getChildAt(i).getLayoutParams();
-            params.setMargins(0, 0, getResources().getDimensionPixelSize(R.dimen.spacing_small_half), 0);
+            params.setMargins(
+                    getResources().getDimensionPixelSize(R.dimen.margin_half),
+                    0,
+                    getResources().getDimensionPixelSize(R.dimen.margin_half),
+                    0
+            );
         }
     }
 }
