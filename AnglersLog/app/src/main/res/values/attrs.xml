@@ -43,6 +43,10 @@
         <attr name="capSentencesOnly" format="boolean" />
     </declare-styleable>
 
+    <declare-styleable name="LeftIconView">
+        <attr name="iconResource" />
+    </declare-styleable>
+
     <declare-styleable name="MoreDetailView">
         <attr name="titleText" />
         <attr name="subtitleText" />

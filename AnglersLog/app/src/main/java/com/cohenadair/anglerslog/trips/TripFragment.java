@@ -124,7 +124,7 @@ public class TripFragment extends DetailFragment {
     }
 
     private void updateCatchesView() {
-        mCatchesContainer.init(null, mTrip.getCatches(), new ListPortionLayout.InteractionListener() {
+        mCatchesContainer.init(mTrip.getCatches(), new ListPortionLayout.InteractionListener() {
             @Override
             public ListManager.Adapter onGetAdapter(ArrayList<UserDefineObject> items) {
                 return getCatchesAdapter(items);
@@ -136,11 +136,13 @@ public class TripFragment extends DetailFragment {
                 startActivity(intent);
             }
         });
+
+        mCatchesContainer.setButtonText(R.string.all_catches);
     }
 
     @NonNull
     private ListManager.Adapter getCatchesAdapter(ArrayList<UserDefineObject> items) {
-        return new CatchListManager.Adapter(getContext(), items, new OnClickInterface() {
+        return new CatchListManager.Adapter(getContext(), items, true, new OnClickInterface() {
             @Override
             public void onClick(View view, UUID id) {
                 startDetailActivity(LayoutSpecManager.LAYOUT_CATCHES, id);

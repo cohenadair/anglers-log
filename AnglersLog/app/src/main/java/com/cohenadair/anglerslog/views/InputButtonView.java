@@ -4,8 +4,6 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.utilities.Utils;
@@ -17,15 +15,13 @@ import com.cohenadair.anglerslog.utilities.Utils;
  *
  * @author Cohen Adair
  */
-public class InputButtonView extends LinearLayout {
+public class InputButtonView extends LeftIconView {
 
     private Button mPrimaryButton;
     private Button mSecondaryButton;
-    private ImageView mIconImageView;
 
     public InputButtonView(Context context) {
-        super(context);
-        init(null);
+        this(context, null);
     }
 
     public InputButtonView(Context context, AttributeSet attrs) {
@@ -34,11 +30,10 @@ public class InputButtonView extends LinearLayout {
     }
 
     public void init(AttributeSet attrs) {
-        inflate(getContext(), R.layout.view_input_button, this);
+        init(R.layout.view_input_button, attrs);
 
         mPrimaryButton = (Button)findViewById(R.id.primary_button);
         mSecondaryButton = (Button)findViewById(R.id.secondary_button);
-        mIconImageView = (ImageView)findViewById(R.id.icon_image_view);
 
         if (attrs != null) {
             TypedArray arr = getContext().getTheme().obtainStyledAttributes(attrs, R.styleable.InputButtonView, 0, 0);
@@ -51,10 +46,6 @@ public class InputButtonView extends LinearLayout {
                 // secondary button
                 boolean showSecondary = arr.getBoolean(R.styleable.InputButtonView_showSecondary, false);
                 Utils.toggleVisibility(mSecondaryButton, showSecondary);
-
-                // icon
-                int iconResId = arr.getResourceId(R.styleable.InputButtonView_iconResource, -1);
-                setIconResource(iconResId);
             } finally {
                 arr.recycle(); // required after using TypedArray
             }
@@ -79,9 +70,5 @@ public class InputButtonView extends LinearLayout {
 
     public void setSecondaryButtonText(String text) {
         mSecondaryButton.setText(text);
-    }
-
-    public void setIconResource(int resId) {
-        Utils.setImageOrHide(mIconImageView, resId);
     }
 }

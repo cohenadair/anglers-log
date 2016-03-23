@@ -132,7 +132,7 @@ public class BaitFragment extends DetailFragment {
         if (!hasCatches)
             return;
 
-        mCatchesLayout.init(R.drawable.ic_catches, catches, new ListPortionLayout.InteractionListener() {
+        mCatchesLayout.init(catches, new ListPortionLayout.InteractionListener() {
             @Override
             public ListManager.Adapter onGetAdapter(ArrayList<UserDefineObject> items) {
                 return new CatchListManager.Adapter(getContext(), items, new OnClickInterface() {

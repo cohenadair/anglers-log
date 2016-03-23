@@ -6,8 +6,6 @@ import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.cohenadair.anglerslog.R;
@@ -22,15 +20,13 @@ import com.cohenadair.anglerslog.utilities.Utils;
  * at odd times and will result in improper text values.
  * </p>
  */
-public class InputTextView extends LinearLayout {
+public class InputTextView extends LeftIconView {
 
-    private ImageView mIconImageView;
     private TextView mTitleTextView;
     private EditText mEditText;
 
     public InputTextView(Context context) {
         this(context, null);
-        init(null);
     }
 
     public InputTextView(Context context, AttributeSet attrs) {
@@ -39,9 +35,8 @@ public class InputTextView extends LinearLayout {
     }
 
     private void init(AttributeSet attrs) {
-        inflate(getContext(), R.layout.view_input_text, this);
+        init(R.layout.view_input_text, attrs);
 
-        mIconImageView = (ImageView)findViewById(R.id.icon_image_view);
         mTitleTextView = (TextView)findViewById(R.id.title_text_view);
         mEditText = (EditText)findViewById(R.id.edit_text);
 
@@ -51,10 +46,6 @@ public class InputTextView extends LinearLayout {
         TypedArray arr = getContext().getTheme().obtainStyledAttributes(attrs, R.styleable.InputTextView, 0, 0);
 
         try {
-            // icon
-            int iconResId = arr.getResourceId(R.styleable.InputTextView_iconResource, -1);
-            setIconResource(iconResId);
-
             // title
             String titleText = arr.getString(R.styleable.InputTextView_titleText);
             setTitle(titleText);
@@ -98,10 +89,6 @@ public class InputTextView extends LinearLayout {
 
     public void setHint(String hint) {
         mEditText.setHint(hint);
-    }
-
-    public void setIconResource(int resId) {
-        Utils.setImageOrHide(mIconImageView, resId);
     }
     //endregion
 

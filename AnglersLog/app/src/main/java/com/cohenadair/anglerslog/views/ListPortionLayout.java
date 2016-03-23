@@ -6,7 +6,6 @@ import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.cohenadair.anglerslog.R;
@@ -22,14 +21,13 @@ import java.util.ArrayList;
  *
  * @author Cohen Adair
  */
-public class ListPortionLayout extends LinearLayout {
+public class ListPortionLayout extends LeftIconView {
 
     public interface InteractionListener {
         ListManager.Adapter onGetAdapter(ArrayList<UserDefineObject> items);
         void onClickAllButton(ArrayList<UserDefineObject> items);
     }
 
-    private ImageView mIconImageView;
     private Button mShowAllButton;
     private RecyclerView mRecyclerView;
 
@@ -39,18 +37,15 @@ public class ListPortionLayout extends LinearLayout {
 
     public ListPortionLayout(Context context) {
         this(context, null);
-        init();
     }
 
     public ListPortionLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init();
+        init(attrs);
     }
 
-    private void init() {
-        inflate(getContext(), R.layout.layout_list_portion, this);
-
-        mIconImageView = (ImageView)findViewById(R.id.icon_image_view);
+    private void init(AttributeSet attrs) {
+        init(R.layout.layout_list_portion, attrs);
 
         mRecyclerView = (RecyclerView)findViewById(R.id.recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -65,12 +60,10 @@ public class ListPortionLayout extends LinearLayout {
         });
     }
 
-    public void init(int iconResId, ArrayList<UserDefineObject> items, InteractionListener callbacks) {
+    public void init(ArrayList<UserDefineObject> items, InteractionListener callbacks) {
         mCallbacks = callbacks;
         mAllItems = items;
         mPortionItems = getPortionItems(mAllItems);
-
-        mIconImageView.setImageResource(iconResId);
         mRecyclerView.setAdapter(mCallbacks.onGetAdapter(mPortionItems));
 
         updateViews();
@@ -96,7 +89,7 @@ public class ListPortionLayout extends LinearLayout {
         boolean hasObjects = getPortionCount() > 0;
 
         // hide views if needed
-        Utils.toggleVisibility(mIconImageView, hasObjects);
+        Utils.toggleVisibility(getIconImageView(), hasObjects);
         Utils.toggleVisibility(findViewById(R.id.container), hasObjects);
 
         boolean shouldShowMore = getAllCount() > getPortionCount();

@@ -503,13 +503,4 @@ public class Utils {
         return (latLng.latitude >= -90 && latLng.latitude <= 90) && (latLng.longitude >= -180 && latLng.longitude <= 180);
     }
 
-    public static void setImageOrHide(ImageView imageView, int resId) {
-        if (resId == -1) {
-            toggleVisibility(imageView, false);
-            return;
-        }
-
-        imageView.setImageResource(resId);
-        toggleVisibility(imageView, true);
-    }
 }
