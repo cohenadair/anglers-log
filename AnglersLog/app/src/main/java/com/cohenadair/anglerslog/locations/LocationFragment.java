@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.cohenadair.anglerslog.R;
@@ -24,7 +25,6 @@ import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import com.cohenadair.anglerslog.utilities.FishingSpotMarkerManager;
 import com.cohenadair.anglerslog.utilities.LayoutSpecManager;
 import com.cohenadair.anglerslog.utilities.Utils;
-import com.cohenadair.anglerslog.views.SelectionSpinnerView;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.Marker;
 
@@ -41,7 +41,7 @@ public class LocationFragment extends DetailFragment {
     private Location mLocation;
 
     private TextView mTitleTextView;
-    private SelectionSpinnerView mFishingSpotSpinner;
+    private Spinner mFishingSpotSpinner;
     private DraggableMapFragment mMapFragment;
     private View mBreakView;
 
@@ -234,7 +234,7 @@ public class LocationFragment extends DetailFragment {
     }
 
     private void initFishingSpotSelection(View view) {
-        mFishingSpotSpinner = (SelectionSpinnerView)view.findViewById(R.id.fishing_spot_spinner);
+        mFishingSpotSpinner = (Spinner)view.findViewById(R.id.fishing_spot_spinner);
         mFishingSpotSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -256,7 +256,7 @@ public class LocationFragment extends DetailFragment {
     private void updateFishingSpotSelection() {
         ArrayList<UserDefineObject> fishingSpots = mLocation.getFishingSpots();
 
-        final int selectedIndex = mFishingSpotSpinner.getSelectedIndex();
+        final int selectedIndex = mFishingSpotSpinner.getSelectedItemPosition();
         FishingSpot fishingSpot = (FishingSpot)fishingSpots.get(selectedIndex);
 
         // move the camera to the current fishing spot
