@@ -12,7 +12,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.activities.CatchListPortionActivity;
@@ -40,10 +39,8 @@ public class LocationFragment extends DetailFragment {
 
     private Location mLocation;
 
-    private TextView mTitleTextView;
     private Spinner mFishingSpotSpinner;
     private DraggableMapFragment mMapFragment;
-    private View mBreakView;
 
     private FishingSpotMarkerManager mMarkerManager;
 
@@ -56,10 +53,8 @@ public class LocationFragment extends DetailFragment {
         View view = inflater.inflate(R.layout.fragment_location, container, false);
 
         setContainer((LinearLayout) view.findViewById(R.id.location_container));
-        mBreakView = view.findViewById(R.id.view_break);
 
         initMapFragment();
-        initTitle(view);
         initFishingSpotSelection(view);
 
         update(getActivity());
@@ -94,9 +89,7 @@ public class LocationFragment extends DetailFragment {
         boolean idIsNull = (id == null);
 
         // must hide individual components for the menu to show property on tablets
-        Utils.toggleVisibility(mTitleTextView, !idIsNull && isTwoPane());
         Utils.toggleVisibility(mFishingSpotSpinner, !idIsNull);
-        Utils.toggleVisibility(mBreakView, !idIsNull);
         toggleMapVisibility(!idIsNull);
 
         // id can be null if in two-pane view and there are no locations
@@ -140,12 +133,6 @@ public class LocationFragment extends DetailFragment {
             }
         }
 
-        // update title
-        if (isTwoPane())
-            mTitleTextView.setText(mLocation.getName());
-        else
-            setActionBarTitle(mLocation.getName());
-
         // update map
         updateMap();
     }
@@ -153,9 +140,7 @@ public class LocationFragment extends DetailFragment {
     @Override
     public void hide() {
         super.hide();
-        Utils.toggleVisibility(mTitleTextView, false);
         Utils.toggleVisibility(mFishingSpotSpinner, false);
-        Utils.toggleVisibility(mBreakView, false);
 
         if (mMapFragment != null)
             Utils.toggleVisibility(mMapFragment.getView(), false);
@@ -227,11 +212,6 @@ public class LocationFragment extends DetailFragment {
         updateFishingSpotSelection();
     }
     //endregion
-
-    private void initTitle(View view) {
-        mTitleTextView = (TextView)view.findViewById(R.id.title_text_view);
-        mTitleTextView.setVisibility(isTwoPane() ? View.VISIBLE : View.GONE);
-    }
 
     private void initFishingSpotSelection(View view) {
         mFishingSpotSpinner = (Spinner)view.findViewById(R.id.fishing_spot_spinner);

@@ -1,6 +1,5 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/location_container"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -18,25 +17,12 @@
             android:src="@drawable/ic_location"
             android:contentDescription="@string/icon_description"/>
 
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical">
+        <!-- Current Fishing Spot -->
+        <Spinner
+            android:id="@+id/fishing_spot_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
 
-            <TextView
-                style="@style/TextView.PrimaryListItem"
-                android:id="@+id/title_text_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:text="Location"/>
-
-            <!-- Current Fishing Spot -->
-            <Spinner
-                android:id="@+id/fishing_spot_spinner"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-
-        </LinearLayout>
     </LinearLayout>
+
 </LinearLayout>
