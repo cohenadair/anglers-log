@@ -335,6 +335,7 @@ public abstract class ManageContentFragment extends Fragment {
                 callbacks.onFinish(c.getTime());
             }
         });
+        datePicker.setInitialDate(calendarUpdateDate);
         datePicker.show(getFragmentManager(), "datePicker");
     }
 
@@ -358,6 +359,7 @@ public abstract class ManageContentFragment extends Fragment {
                 callbacks.onFinish(c.getTime());
             }
         });
+        timePicker.setInitialDate(calendarUpdateDate);
         timePicker.show(getFragmentManager(), "timePicker");
     }
 

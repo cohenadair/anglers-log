@@ -8,6 +8,7 @@ import android.support.v4.app.DialogFragment;
 import android.text.format.DateFormat;
 
 import java.util.Calendar;
+import java.util.Date;
 
 /**
  * The TimePickerFragment is used for selecting time.
@@ -16,11 +17,16 @@ import java.util.Calendar;
 public class TimePickerFragment extends DialogFragment {
 
     private TimePickerDialog.OnTimeSetListener mCallback;
+    private Date mInitialDate;
 
     @Override
     @NonNull
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         final Calendar cal = Calendar.getInstance();
+
+        if (mInitialDate != null)
+            cal.setTime(mInitialDate);
+
         int hour = cal.get(Calendar.HOUR_OF_DAY);
         int minute = cal.get(Calendar.MINUTE);
 
@@ -31,4 +37,7 @@ public class TimePickerFragment extends DialogFragment {
         mCallback = callback;
     }
 
+    public void setInitialDate(Date initialDate) {
+        mInitialDate = initialDate;
+    }
 }
