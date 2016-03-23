@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.cohenadair.anglerslog.R;
-import com.cohenadair.anglerslog.activities.CatchListPortionActivity;
+import com.cohenadair.anglerslog.activities.PartialListActivity;
 import com.cohenadair.anglerslog.activities.PhotoViewerActivity;
 import com.cohenadair.anglerslog.catches.CatchListManager;
 import com.cohenadair.anglerslog.fragments.DetailFragment;
@@ -21,7 +21,7 @@ import com.cohenadair.anglerslog.utilities.ListManager;
 import com.cohenadair.anglerslog.utilities.Utils;
 import com.cohenadair.anglerslog.views.DisplayLabelView;
 import com.cohenadair.anglerslog.views.ImageScrollView;
-import com.cohenadair.anglerslog.views.ListPortionLayout;
+import com.cohenadair.anglerslog.views.PartialListView;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -39,7 +39,7 @@ public class BaitFragment extends DetailFragment {
     private DisplayLabelView mColorView;
     private DisplayLabelView mSizeView;
     private DisplayLabelView mDescriptionView;
-    private ListPortionLayout mCatchesLayout;
+    private PartialListView mCatchesLayout;
 
     public BaitFragment() {
         // Required empty public constructor
@@ -58,7 +58,7 @@ public class BaitFragment extends DetailFragment {
         mColorView = (DisplayLabelView)view.findViewById(R.id.color_view);
         mSizeView = (DisplayLabelView)view.findViewById(R.id.size_view);
         mDescriptionView = (DisplayLabelView)view.findViewById(R.id.description_view);
-        mCatchesLayout = (ListPortionLayout)view.findViewById(R.id.catches_layout);
+        mCatchesLayout = (PartialListView)view.findViewById(R.id.catches_layout);
 
         update(getActivity());
 
@@ -122,7 +122,7 @@ public class BaitFragment extends DetailFragment {
         if (!hasCatches)
             return;
 
-        mCatchesLayout.init(catches, new ListPortionLayout.InteractionListener() {
+        mCatchesLayout.init(catches, new PartialListView.InteractionListener() {
             @Override
             public ListManager.Adapter onGetAdapter(ArrayList<UserDefineObject> items) {
                 return new CatchListManager.Adapter(getContext(), items, true, new OnClickInterface() {
@@ -135,7 +135,7 @@ public class BaitFragment extends DetailFragment {
 
             @Override
             public void onClickAllButton(ArrayList<UserDefineObject> items) {
-                Intent intent = CatchListPortionActivity.getIntent(getContext(), mBait.getDisplayName(), LayoutSpecManager.LAYOUT_CATCHES, items);
+                Intent intent = PartialListActivity.getIntent(getContext(), mBait.getDisplayName(), LayoutSpecManager.LAYOUT_CATCHES, items);
                 startActivity(intent);
             }
         });

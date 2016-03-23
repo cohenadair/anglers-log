@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.cohenadair.anglerslog.R;
-import com.cohenadair.anglerslog.activities.CatchListPortionActivity;
+import com.cohenadair.anglerslog.activities.PartialListActivity;
 import com.cohenadair.anglerslog.baits.BaitListManager;
 import com.cohenadair.anglerslog.catches.CatchListManager;
 import com.cohenadair.anglerslog.fragments.DetailFragment;
@@ -22,7 +22,7 @@ import com.cohenadair.anglerslog.utilities.LayoutSpecManager;
 import com.cohenadair.anglerslog.utilities.ListManager;
 import com.cohenadair.anglerslog.utilities.Utils;
 import com.cohenadair.anglerslog.views.DisplayLabelView;
-import com.cohenadair.anglerslog.views.ListPortionLayout;
+import com.cohenadair.anglerslog.views.PartialListView;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -41,9 +41,9 @@ public class TripFragment extends DetailFragment {
     private DisplayLabelView mAnglersView;
     private DisplayLabelView mNotesView;
 
-    private ListPortionLayout mCatchesContainer;
-    private ListPortionLayout mLocationsContainer;
-    private ListPortionLayout mBaitsContainer;
+    private PartialListView mCatchesContainer;
+    private PartialListView mLocationsContainer;
+    private PartialListView mBaitsContainer;
 
     public TripFragment() {
         // Required empty public constructor
@@ -58,9 +58,9 @@ public class TripFragment extends DetailFragment {
         mNameView = (DisplayLabelView)view.findViewById(R.id.name_view);
         mStartDateView = (DisplayLabelView)view.findViewById(R.id.start_date_view);
         mEndDateView = (DisplayLabelView)view.findViewById(R.id.end_date_view);
-        mCatchesContainer = (ListPortionLayout)view.findViewById(R.id.catches_container);
-        mLocationsContainer = (ListPortionLayout)view.findViewById(R.id.locations_container);
-        mBaitsContainer = (ListPortionLayout)view.findViewById(R.id.baits_container);
+        mCatchesContainer = (PartialListView)view.findViewById(R.id.catches_container);
+        mLocationsContainer = (PartialListView)view.findViewById(R.id.locations_container);
+        mBaitsContainer = (PartialListView)view.findViewById(R.id.baits_container);
         mAnglersView = (DisplayLabelView)view.findViewById(R.id.anglers_view);
         mNotesView = (DisplayLabelView)view.findViewById(R.id.notes_view);
 
@@ -122,7 +122,7 @@ public class TripFragment extends DetailFragment {
     }
 
     private void updateCatchesView() {
-        mCatchesContainer.init(mTrip.getCatches(), new ListPortionLayout.InteractionListener() {
+        mCatchesContainer.init(mTrip.getCatches(), new PartialListView.InteractionListener() {
             @Override
             public ListManager.Adapter onGetAdapter(ArrayList<UserDefineObject> items) {
                 return getCatchesAdapter(items);
@@ -130,7 +130,7 @@ public class TripFragment extends DetailFragment {
 
             @Override
             public void onClickAllButton(ArrayList<UserDefineObject> items) {
-                startListPortionActivity(CatchListPortionActivity.getIntent(getContext(), mTrip.getDisplayName(), LayoutSpecManager.LAYOUT_CATCHES, items));
+                startListPortionActivity(PartialListActivity.getIntent(getContext(), mTrip.getDisplayName(), LayoutSpecManager.LAYOUT_CATCHES, items));
             }
         });
 
@@ -148,7 +148,7 @@ public class TripFragment extends DetailFragment {
     }
 
     private void updateLocationsView() {
-        mLocationsContainer.init(mTrip.getLocations(), new ListPortionLayout.InteractionListener() {
+        mLocationsContainer.init(mTrip.getLocations(), new PartialListView.InteractionListener() {
             @Override
             public ListManager.Adapter onGetAdapter(ArrayList<UserDefineObject> items) {
                 return getLocationsAdapter(items);
@@ -156,7 +156,7 @@ public class TripFragment extends DetailFragment {
 
             @Override
             public void onClickAllButton(ArrayList<UserDefineObject> items) {
-                startListPortionActivity(CatchListPortionActivity.getIntent(getContext(), mTrip.getDisplayName(), LayoutSpecManager.LAYOUT_LOCATIONS, items));
+                startListPortionActivity(PartialListActivity.getIntent(getContext(), mTrip.getDisplayName(), LayoutSpecManager.LAYOUT_LOCATIONS, items));
             }
         });
 
@@ -174,7 +174,7 @@ public class TripFragment extends DetailFragment {
     }
 
     private void updateBaitsView() {
-        mBaitsContainer.init(mTrip.getBaits(), new ListPortionLayout.InteractionListener() {
+        mBaitsContainer.init(mTrip.getBaits(), new PartialListView.InteractionListener() {
             @Override
             public ListManager.Adapter onGetAdapter(ArrayList<UserDefineObject> items) {
                 return getBaitsAdapter(items);
@@ -182,7 +182,7 @@ public class TripFragment extends DetailFragment {
 
             @Override
             public void onClickAllButton(ArrayList<UserDefineObject> items) {
-                startListPortionActivity(CatchListPortionActivity.getIntent(getContext(), mTrip.getDisplayName(), LayoutSpecManager.LAYOUT_BAITS, items));
+                startListPortionActivity(PartialListActivity.getIntent(getContext(), mTrip.getDisplayName(), LayoutSpecManager.LAYOUT_BAITS, items));
             }
         });
 

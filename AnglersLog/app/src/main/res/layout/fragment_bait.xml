@@ -58,7 +58,7 @@
             custom:iconResource="@drawable/ic_note"/>
 
         <!-- Catches -->
-        <com.cohenadair.anglerslog.views.ListPortionLayout
+        <com.cohenadair.anglerslog.views.PartialListView
             android:id="@+id/catches_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

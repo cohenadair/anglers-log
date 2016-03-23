@@ -21,7 +21,7 @@ import java.util.ArrayList;
  *
  * @author Cohen Adair
  */
-public class ListPortionLayout extends LeftIconView {
+public class PartialListView extends LeftIconView {
 
     public interface InteractionListener {
         ListManager.Adapter onGetAdapter(ArrayList<UserDefineObject> items);
@@ -35,17 +35,17 @@ public class ListPortionLayout extends LeftIconView {
     private ArrayList<UserDefineObject> mAllItems;
     private ArrayList<UserDefineObject> mPortionItems;
 
-    public ListPortionLayout(Context context) {
+    public PartialListView(Context context) {
         this(context, null);
     }
 
-    public ListPortionLayout(Context context, AttributeSet attrs) {
+    public PartialListView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(attrs);
     }
 
     private void init(AttributeSet attrs) {
-        init(R.layout.layout_list_portion, attrs);
+        init(R.layout.view_partial_list, attrs);
 
         mRecyclerView = (RecyclerView)findViewById(R.id.recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));

@@ -10,7 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.cohenadair.anglerslog.R;
-import com.cohenadair.anglerslog.activities.CatchListPortionActivity;
+import com.cohenadair.anglerslog.activities.PartialListActivity;
 import com.cohenadair.anglerslog.model.user_defines.FishingSpot;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import com.google.android.gms.maps.CameraUpdate;
@@ -181,7 +181,7 @@ public class FishingSpotMarkerManager {
             @Override
             public void onInfoWindowClick(Marker marker) {
                 MarkerSpec spec = mMarkerSpecMap.get(marker.getTitle());
-                Intent intent = CatchListPortionActivity.getIntent(mContext, marker.getTitle(), LayoutSpecManager.LAYOUT_CATCHES, spec.getCatches());
+                Intent intent = PartialListActivity.getIntent(mContext, marker.getTitle(), LayoutSpecManager.LAYOUT_CATCHES, spec.getCatches());
                 mContext.startActivity(intent);
             }
         });

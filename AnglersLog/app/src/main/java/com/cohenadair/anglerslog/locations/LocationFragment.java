@@ -14,7 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 
 import com.cohenadair.anglerslog.R;
-import com.cohenadair.anglerslog.activities.CatchListPortionActivity;
+import com.cohenadair.anglerslog.activities.PartialListActivity;
 import com.cohenadair.anglerslog.fragments.DetailFragment;
 import com.cohenadair.anglerslog.fragments.DraggableMapFragment;
 import com.cohenadair.anglerslog.model.Logbook;
@@ -147,7 +147,7 @@ public class LocationFragment extends DetailFragment {
     }
 
     private void showAllCatches() {
-        Intent intent = CatchListPortionActivity.getIntent(getContext(), mLocation.getDisplayName(), LayoutSpecManager.LAYOUT_CATCHES, mLocation.getCatches());
+        Intent intent = PartialListActivity.getIntent(getContext(), mLocation.getDisplayName(), LayoutSpecManager.LAYOUT_CATCHES, mLocation.getCatches());
         getContext().startActivity(intent);
     }
 

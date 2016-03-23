@@ -10,7 +10,7 @@ import android.view.View;
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.baits.BaitListManager;
 import com.cohenadair.anglerslog.catches.CatchListManager;
-import com.cohenadair.anglerslog.fragments.ListPortionFragment;
+import com.cohenadair.anglerslog.fragments.PartialListFragment;
 import com.cohenadair.anglerslog.interfaces.OnClickInterface;
 import com.cohenadair.anglerslog.locations.LocationListManager;
 import com.cohenadair.anglerslog.model.Logbook;
@@ -24,10 +24,10 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 /**
- * The CatchListPortionActivity is used to show a portion of a list.
+ * The PartialListActivity is used to show a portion of a list.
  * @author Cohen Adair
  */
-public class CatchListPortionActivity extends DefaultActivity {
+public class PartialListActivity extends DefaultActivity {
 
     public static final String EXTRA_LAYOUT = "extra_layout";
     public static final String EXTRA_ITEMS = "extra_items";
@@ -36,7 +36,7 @@ public class CatchListPortionActivity extends DefaultActivity {
     private int mLayoutId;
 
     public static Intent getIntent(Context context, String title, int layoutId, ArrayList<UserDefineObject> items) {
-        Intent intent = new Intent(context, CatchListPortionActivity.class);
+        Intent intent = new Intent(context, PartialListActivity.class);
         intent.putExtra(EXTRA_LAYOUT, layoutId);
         intent.putExtra(EXTRA_ITEMS, UserDefineArrays.asIdStringArray(items));
         intent.putExtra(EXTRA_TITLE, title);
@@ -55,7 +55,7 @@ public class CatchListPortionActivity extends DefaultActivity {
         if (mLayoutId == -1)
             throw new RuntimeException("EXTRA_LAYOUT cannot be -1");
 
-        ListPortionFragment fragment = new ListPortionFragment();
+        PartialListFragment fragment = new PartialListFragment();
         fragment.setAdapter(getAdapter());
 
         if (savedInstanceState == null)
@@ -117,7 +117,7 @@ public class CatchListPortionActivity extends DefaultActivity {
         return new OnClickInterface() {
             @Override
             public void onClick(View view, UUID id) {
-                startActivity(Utils.getDetailActivityIntent(CatchListPortionActivity.this, mLayoutId, id));
+                startActivity(Utils.getDetailActivityIntent(PartialListActivity.this, mLayoutId, id));
             }
         };
     }

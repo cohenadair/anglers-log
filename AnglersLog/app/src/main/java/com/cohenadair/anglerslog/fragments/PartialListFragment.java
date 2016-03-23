@@ -14,7 +14,7 @@ import com.cohenadair.anglerslog.R;
  * A very simple fragment designed to display a list of items.
  * @author Cohen Adair
  */
-public class ListPortionFragment extends Fragment {
+public class PartialListFragment extends Fragment {
 
     private RecyclerView.Adapter mAdapter;
 

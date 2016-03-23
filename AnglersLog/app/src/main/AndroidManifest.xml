@@ -43,7 +43,7 @@
         </activity>
 
         <activity
-            android:name=".activities.CatchListPortionActivity"
+            android:name=".activities.PartialListActivity"
             android:theme="@style/Theme.Dialog.NoTitle"
             android:configChanges="orientation|keyboardHidden|screenSize">
         </activity>

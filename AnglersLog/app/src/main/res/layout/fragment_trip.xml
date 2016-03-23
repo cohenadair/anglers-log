@@ -41,21 +41,21 @@
         </LinearLayout>
 
         <!-- Locations -->
-        <com.cohenadair.anglerslog.views.ListPortionLayout
+        <com.cohenadair.anglerslog.views.PartialListView
             android:id="@+id/locations_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             custom:iconResource="@drawable/ic_location"/>
 
         <!-- Catches -->
-        <com.cohenadair.anglerslog.views.ListPortionLayout
+        <com.cohenadair.anglerslog.views.PartialListView
             android:id="@+id/catches_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             custom:iconResource="@drawable/ic_catches"/>
 
         <!-- Baits -->
-        <com.cohenadair.anglerslog.views.ListPortionLayout
+        <com.cohenadair.anglerslog.views.PartialListView
             android:id="@+id/baits_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
