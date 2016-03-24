@@ -257,6 +257,10 @@ public class DraggableMapFragment extends SupportMapFragment implements OnMapRea
         updateCameraNoZoom(loc, 2000, null);
     }
 
+    public void takeSnapshot(GoogleMap.SnapshotReadyCallback callback) {
+        mGoogleMap.snapshot(callback);
+    }
+
     private boolean isLocationPermissionGranted() {
         return mLocationEnabled && ContextCompat.checkSelfPermission(getContext(), PERMISSION_LOCATION) == GRANTED;
     }

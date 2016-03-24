@@ -1,7 +1,10 @@
 package com.cohenadair.anglerslog.locations;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -78,6 +81,11 @@ public class LocationFragment extends DetailFragment {
             return true;
         }
 
+        if (id == R.id.action_share) {
+            shareLocation();
+            return true;
+        }
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -149,6 +157,18 @@ public class LocationFragment extends DetailFragment {
     private void showAllCatches() {
         Intent intent = PartialListActivity.getIntent(getContext(), mLocation.getDisplayName(), LayoutSpecManager.LAYOUT_CATCHES, mLocation.getCatches());
         getContext().startActivity(intent);
+    }
+
+    private void shareLocation() {
+        mMapFragment.takeSnapshot(new GoogleMap.SnapshotReadyCallback() {
+            @Override
+            public void onSnapshotReady(Bitmap bitmap) {
+                Intent intent = mLocation.getShareIntent(getContext());
+                String path = MediaStore.Images.Media.insertImage(getContext().getContentResolver(), bitmap, "google_map_snapshot", null);
+                intent.putExtra(Intent.EXTRA_STREAM, Uri.parse(path));
+                startActivity(intent);
+            }
+        });
     }
 
     //region Map Fragment

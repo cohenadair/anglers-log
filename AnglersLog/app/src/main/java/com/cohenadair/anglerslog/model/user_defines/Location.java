@@ -1,6 +1,7 @@
 package com.cohenadair.anglerslog.model.user_defines;
 
 import android.content.Context;
+import android.content.Intent;
 
 import com.cohenadair.anglerslog.database.QueryHelper;
 import com.cohenadair.anglerslog.database.cursors.FishingSpotCursor;
@@ -135,6 +136,16 @@ public class Location extends UserDefineObject implements HasCatchesInterface {
     @Override
     public int getFishCaughtCount() {
         return QueryHelper.queryLocationCatchCount(this);
+    }
+
+    @Override
+    public Intent getShareIntent(Context context) {
+        Intent intent =  super.getShareIntent(context);
+
+        String text = getDisplayName() + " has " + getFishingSpotCount() + " fishing spots and " + getFishCaughtCount() + " fish caught. ";
+        intent.putExtra(Intent.EXTRA_TEXT, text + intent.getStringExtra(Intent.EXTRA_TEXT));
+
+        return intent;
     }
 
     @Override
