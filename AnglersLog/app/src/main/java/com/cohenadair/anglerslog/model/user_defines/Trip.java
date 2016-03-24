@@ -335,7 +335,10 @@ public class Trip extends UserDefineObject implements HasCatchesInterface, HasDa
      * example, removing used locations and catches. It removes the trip-to-object pairs in the
      * "Used *" tables.
      */
+    @Override
     public void removeDatabaseProperties() {
+        super.removeDatabaseProperties();
+
         mUsedCatches.deleteObjects();
         mUsedLocations.deleteObjects();
         mUsedAnglers.deleteObjects();

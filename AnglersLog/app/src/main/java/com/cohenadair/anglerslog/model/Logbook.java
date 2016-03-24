@@ -301,9 +301,7 @@ public class Logbook {
     }
 
     public static boolean removeCatch(UUID id) {
-        Catch aCatch = Logbook.getCatch(id);
-        aCatch.removeDatabaseProperties();
-        return QueryHelper.deleteUserDefine(CatchTable.NAME, id);
+        return removeUserDefine(CatchTable.NAME, Logbook.getCatch(id));
     }
 
     public static boolean editCatch(UUID id, Catch newCatch) {
@@ -872,9 +870,7 @@ public class Logbook {
     }
 
     public static boolean removeTrip(UUID id) {
-        Trip trip = Logbook.getTrip(id);
-        trip.removeDatabaseProperties();
-        return QueryHelper.deleteUserDefine(TripTable.NAME, id);
+        return removeUserDefine(TripTable.NAME, Logbook.getTrip(id));
     }
 
     public static boolean editTrip(UUID id, Trip newTrip) {
@@ -941,5 +937,14 @@ public class Logbook {
 
     private static boolean isImperial() {
         return (LogbookPreferences.getUnits() == UNIT_IMPERIAL);
+    }
+
+    private static boolean removeUserDefine(String table, UserDefineObject obj) {
+        if (QueryHelper.deleteUserDefine(table, obj.getId())) {
+            obj.removeDatabaseProperties();
+            return true;
+        }
+
+        return false;
     }
 }

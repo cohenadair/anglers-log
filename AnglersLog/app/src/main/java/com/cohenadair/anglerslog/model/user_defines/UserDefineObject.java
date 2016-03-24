@@ -107,6 +107,9 @@ public class UserDefineObject {
     }
     //endregion
 
+    public void removeDatabaseProperties() {
+        // if needed, should be overridden by subclasses
+    }
 
     /**
      * Gets a String representation of the UserDefineObject name.

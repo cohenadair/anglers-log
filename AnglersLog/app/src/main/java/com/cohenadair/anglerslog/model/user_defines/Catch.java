@@ -365,7 +365,7 @@ public class Catch extends PhotoUserDefineObject implements HasDateInterface {
 
     @Override
     public String getName() {
-        return getDateTimeAsString();
+        return getSpeciesAsString();
     }
 
     public String getSpeciesAsString() {
@@ -547,7 +547,10 @@ public class Catch extends PhotoUserDefineObject implements HasDateInterface {
      * Used in deleting catches. This method will remove any external ties to the database. For
      * example, removing images and weather data from the database.
      */
+    @Override
     public void removeDatabaseProperties() {
+        super.removeDatabaseProperties();
+
         ArrayList<String> photos = getPhotos();
         for (String s : photos)
             removePhoto(s);
