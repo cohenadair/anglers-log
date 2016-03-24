@@ -51,7 +51,7 @@ public class BigCatchFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_big_catch, container, false);
+        View view = inflater.inflate(R.layout.fragment_simple_list, container, false);
 
         int statsId = getArguments().getInt(ARG_STATS_ID);
 
