@@ -56,6 +56,7 @@ public class StatsManager {
     private static StatsSpec getSpeciesStatsSpec(Context context, int id) {
         return new StatsSpec(
                 id,
+                R.drawable.ic_catches,
                 context.getResources().getString(R.string.species_stats),
                 context.getResources().getString(R.string.species),
                 Logbook.getSpeciesCaughtCount(),
@@ -67,6 +68,7 @@ public class StatsManager {
     private static StatsSpec getBaitsStatsSpec(Context context, int id) {
         return new StatsSpec(
                 id,
+                R.drawable.ic_bait,
                 context.getResources().getString(R.string.bait_stats),
                 context.getResources().getString(R.string.drawer_baits),
                 Logbook.getBaitUsedCount(),
@@ -89,6 +91,7 @@ public class StatsManager {
     private static StatsSpec getLocationsStatsSpec(Context context, int id) {
         return new StatsSpec(
                 id,
+                R.drawable.ic_location,
                 context.getResources().getString(R.string.location_stats),
                 context.getResources().getString(R.string.drawer_locations),
                 Logbook.getLocationCatchCount(),
@@ -111,6 +114,7 @@ public class StatsManager {
     private static StatsSpec getLongestStatsSpec(Context context, int id) {
         return new StatsSpec(
                 id,
+                -1,
                 context.getResources().getString(R.string.longest_catches),
                 BigCatchFragment.newInstance(LONGEST)
         );
@@ -120,6 +124,7 @@ public class StatsManager {
     private static StatsSpec getHeaviestStatsSpec(Context context, int id) {
         return new StatsSpec(
                 id,
+                -1,
                 context.getResources().getString(R.string.heaviest_catches),
                 BigCatchFragment.newInstance(HEAVIEST)
         );
@@ -133,32 +138,32 @@ public class StatsManager {
         private ArrayList<Stats.Quantity> mContent;
         private Fragment mDetailFragment;
         private InteractionListener mCallbacks;
+        private int mIconResource;
 
         public interface InteractionListener {
             UserDefineObject onGetObject(UUID id);
             int onGetLayoutSpecId();
         }
 
-        public StatsSpec(int id, String activityTitle, String userDefineObjectName, ArrayList<Stats.Quantity> content, Fragment detailFragment) {
+        public StatsSpec(int id, int iconResource, String activityTitle, String userDefineObjectName, ArrayList<Stats.Quantity> content, Fragment detailFragment) {
             mId = id;
+            mIconResource = iconResource;
             mActivityTitle = activityTitle;
             mUserDefineObjectName = userDefineObjectName;
             mContent = content;
             mDetailFragment = detailFragment;
-        }
-
-        public StatsSpec(int id, String activityTitle, String userDefineObjectName, ArrayList<Stats.Quantity> content, Fragment detailFragment, InteractionListener callbacks) {
-            this(id, activityTitle, userDefineObjectName, content, detailFragment);
-            mCallbacks = callbacks;
 
             // make sure content is sorted for selections
             Collections.sort(mContent, new Stats.NameComparator());
         }
 
-        public StatsSpec(int id, String activityTitle, Fragment detailFragment) {
-            mId = id;
-            mActivityTitle = activityTitle;
-            mDetailFragment = detailFragment;
+        public StatsSpec(int id, int iconResource, String activityTitle, String userDefineObjectName, ArrayList<Stats.Quantity> content, Fragment detailFragment, InteractionListener callbacks) {
+            this(id, iconResource, activityTitle, userDefineObjectName, content, detailFragment);
+            mCallbacks = callbacks;
+        }
+
+        public StatsSpec(int id, int iconResource, String activityTitle, Fragment detailFragment) {
+            this(id, iconResource, activityTitle, null, null, detailFragment);
         }
 
         public int getId() {
@@ -183,6 +188,10 @@ public class StatsManager {
 
         public InteractionListener getCallbacks() {
             return mCallbacks;
+        }
+
+        public int getIconResource() {
+            return mIconResource;
         }
 
         public UserDefineObject getObject(int index) {

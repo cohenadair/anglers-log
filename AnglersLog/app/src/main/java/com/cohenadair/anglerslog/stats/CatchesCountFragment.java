@@ -16,7 +16,7 @@ import com.cohenadair.anglerslog.activities.DefaultActivity;
 import com.cohenadair.anglerslog.model.Stats;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import com.cohenadair.anglerslog.utilities.Utils;
-import com.cohenadair.anglerslog.views.MoreDetailView;
+import com.cohenadair.anglerslog.views.DisplayLabelView;
 import com.cohenadair.anglerslog.views.PropertyDetailView;
 import com.github.lzyzsd.randomcolor.RandomColor;
 
@@ -44,7 +44,7 @@ public class CatchesCountFragment extends Fragment {
     private PieChartView mPieChartView;
     private TextView mPieCenterTitle;
     private TextView mPieCenterSubtitle;
-    private MoreDetailView mMoreDetailView;
+    private DisplayLabelView mDetailView;
 
     /**
      * Used to capture click events on the center circle of the pie chart.
@@ -76,8 +76,9 @@ public class CatchesCountFragment extends Fragment {
 
         ((DefaultActivity)getActivity()).setActionBarTitle(mStatsSpec.getActivityTitle());
 
-        mMoreDetailView = (MoreDetailView)view.findViewById(R.id.more_detail_view);
-        Utils.toggleVisibility(mMoreDetailView, mStatsSpec.getCallbacks() != null);
+        mDetailView = (DisplayLabelView)view.findViewById(R.id.detail_view);
+        mDetailView.setIconResource(mStatsSpec.getIconResource());
+        Utils.toggleVisibility(mDetailView, mStatsSpec.getCallbacks() != null);
 
         initPieChartCenter(view);
         initPieChart(view);
@@ -111,10 +112,10 @@ public class CatchesCountFragment extends Fragment {
         PieChartData data = new PieChartData();
         data.setValues(values);
         data.setHasCenterCircle(true);
-        data.setCenterCircleScale((float) 0.80); // size of the center circle
+        data.setCenterCircleScale((float) 0.775); // size of the center circle
 
         mPieChartView.setPieChartData(data);
-        mPieChartView.setCircleFillRatio((float) 0.95); // percent of container
+        mPieChartView.setCircleFillRatio((float) 0.925); // percent of container
         mPieChartView.setValueSelectionEnabled(true);
         mPieChartView.setChartRotationEnabled(false);
         mPieChartView.setClickable(true);
@@ -180,15 +181,14 @@ public class CatchesCountFragment extends Fragment {
         final UserDefineObject obj = mStatsSpec.getObject(position);
 
         if (obj == null) {
-            Utils.toggleVisibility(mMoreDetailView, false);
+            Utils.toggleVisibility(mDetailView, false);
             return;
         }
 
-        mMoreDetailView.setTitle(obj.getDisplayName());
-        mMoreDetailView.setSubtitle(getCircleSubtitle(value));
+        mDetailView.setDetail(obj.getDisplayName());
 
         if (mStatsSpec.getLayoutSpecId() != -1)
-            mMoreDetailView.setOnClickDetailButton(new View.OnClickListener() {
+            mDetailView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     startActivity(Utils.getDetailActivityIntent(getContext(), mStatsSpec.getLayoutSpecId(), obj.getId()));
