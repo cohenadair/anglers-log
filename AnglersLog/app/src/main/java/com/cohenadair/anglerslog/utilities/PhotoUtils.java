@@ -329,6 +329,16 @@ public class PhotoUtils {
     }
 
     /**
+     * Gets a {@link Uri} of the given file name.
+     *
+     * @param fileName The file's name.
+     * @return A {@link Uri} of the given file name.
+     */
+    public static Uri privatePhotoUri(String fileName) {
+        return Uri.fromFile(privatePhotoFile(fileName));
+    }
+
+    /**
      * Gets a pointer to a file location in the devices public storage.
      *
      * @param fileName The name of the file to to be created.

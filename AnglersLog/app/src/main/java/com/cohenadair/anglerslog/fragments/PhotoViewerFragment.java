@@ -1,5 +1,7 @@
 package com.cohenadair.anglerslog.fragments;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -29,6 +31,7 @@ import java.util.ArrayList;
 public class PhotoViewerFragment extends Fragment {
 
     private RelativeLayout mToolbar;
+    private ViewPager mViewPager;
 
     private ArrayList<String> mPhotoNames;
     private int mStartIndex = 0;
@@ -93,16 +96,24 @@ public class PhotoViewerFragment extends Fragment {
         share.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent();
+                intent.setAction(Intent.ACTION_SEND);
+                intent.putExtra(Intent.EXTRA_STREAM, getCurrentImage());
+                intent.setType(Utils.MIME_TYPE_IMAGE);
+                startActivity(intent);
             }
         });
     }
 
     private void initViewPager(View view) {
-        ViewPager viewPager = (ViewPager)view.findViewById(R.id.photo_view_pager);
-        viewPager.setAdapter(new PhotoViewerAdapter());
-        viewPager.setCurrentItem(mStartIndex);
-        viewPager.setOffscreenPageLimit(4);
+        mViewPager = (ViewPager)view.findViewById(R.id.photo_view_pager);
+        mViewPager.setAdapter(new PhotoViewerAdapter());
+        mViewPager.setCurrentItem(mStartIndex);
+        mViewPager.setOffscreenPageLimit(4);
+    }
+
+    private Uri getCurrentImage() {
+        return ((PhotoViewerAdapter)mViewPager.getAdapter()).getItemUri(mViewPager.getCurrentItem());
     }
 
     public void setPhotoNames(ArrayList<String> photoNames) {
@@ -165,7 +176,7 @@ public class PhotoViewerFragment extends Fragment {
 
         @Override
         public void destroyItem(ViewGroup collection, int position, Object view) {
-            collection.removeView((View)view);
+            collection.removeView((View) view);
         }
 
         @Override
@@ -176,6 +187,10 @@ public class PhotoViewerFragment extends Fragment {
         @Override
         public boolean isViewFromObject(View view, Object object) {
             return view == object;
+        }
+
+        public Uri getItemUri(int position) {
+            return Uri.fromFile(PhotoUtils.privatePhotoFile(mPhotoNames.get(position)));
         }
 
     }

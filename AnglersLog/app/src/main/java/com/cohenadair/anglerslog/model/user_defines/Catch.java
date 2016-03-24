@@ -2,6 +2,7 @@ package com.cohenadair.anglerslog.model.user_defines;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.text.format.DateFormat;
 import android.util.Log;
 
@@ -455,6 +456,31 @@ public class Catch extends PhotoUserDefineObject implements HasDateInterface {
         return JsonExporter.dateToString(mDate);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Intent getShareIntent(Context context) {
+        Intent intent = super.getShareIntent(context);
+
+        String text = getSpeciesAsString();
+
+        if (mLength > 0 && mWeight > 0)
+            text += " measuring " + getLengthAsStringWithUnits() + " and weighing " + getWeightAsStringWithUnits();
+        else if (mWeight > 0)
+            text += " weighing " + getWeightAsStringWithUnits();
+        else if (mLength > 0)
+            text += " measuring " + getLengthAsStringWithUnits();
+
+        intent.putExtra(Intent.EXTRA_TEXT, text + ". " + intent.getStringExtra(Intent.EXTRA_TEXT));
+
+        return intent;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public ContentValues getContentValues() {
         ContentValues values = super.getContentValues();
 
@@ -483,6 +509,9 @@ public class Catch extends PhotoUserDefineObject implements HasDateInterface {
         return values;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JSONObject toJson() throws JSONException {
         JSONObject json = super.toJson();
@@ -514,6 +543,9 @@ public class Catch extends PhotoUserDefineObject implements HasDateInterface {
         return json;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toKeywordsString(Context context) {
         StringBuilder builder = new StringBuilder();
@@ -544,6 +576,8 @@ public class Catch extends PhotoUserDefineObject implements HasDateInterface {
     }
 
     /**
+     * {@inheritDoc}
+     *
      * Used in deleting catches. This method will remove any external ties to the database. For
      * example, removing images and weather data from the database.
      */

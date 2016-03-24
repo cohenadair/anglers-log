@@ -154,7 +154,8 @@ public class StatsManager {
             mDetailFragment = detailFragment;
 
             // make sure content is sorted for selections
-            Collections.sort(mContent, new Stats.NameComparator());
+            if (mContent != null)
+                Collections.sort(mContent, new Stats.NameComparator());
         }
 
         public StatsSpec(int id, int iconResource, String activityTitle, String userDefineObjectName, ArrayList<Stats.Quantity> content, Fragment detailFragment, InteractionListener callbacks) {

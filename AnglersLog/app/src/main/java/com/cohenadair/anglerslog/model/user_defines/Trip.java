@@ -2,6 +2,7 @@ package com.cohenadair.anglerslog.model.user_defines;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.text.format.DateFormat;
 
 import com.cohenadair.anglerslog.R;
@@ -301,6 +302,22 @@ public class Trip extends UserDefineObject implements HasCatchesInterface, HasDa
         return values;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Intent getShareIntent(Context context) {
+        Intent intent = super.getShareIntent(context);
+
+        String text = "Trip to " + UserDefineArrays.namesAsString(getLocations()) + " caught " + getFishCaughtCount() + " fish. ";
+        intent.putExtra(Intent.EXTRA_TEXT, text + intent.getStringExtra(Intent.EXTRA_TEXT));
+
+        return intent;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JSONObject toJson() throws JSONException {
         JSONObject json = super.toJson();
@@ -315,6 +332,9 @@ public class Trip extends UserDefineObject implements HasCatchesInterface, HasDa
         return json;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toKeywordsString(Context context) {
         StringBuilder builder = new StringBuilder(super.toKeywordsString(context));
@@ -331,6 +351,8 @@ public class Trip extends UserDefineObject implements HasCatchesInterface, HasDa
     }
 
     /**
+     * {@inheritDoc}
+     *
      * Used for deleting trips. This method will remove any external ties to the database. For
      * example, removing used locations and catches. It removes the trip-to-object pairs in the
      * "Used *" tables.

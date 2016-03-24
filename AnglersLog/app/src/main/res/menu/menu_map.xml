@@ -14,4 +14,9 @@
           android:icon="@drawable/ic_zoom_map"
           android:title="@string/action_zoom"
           app:showAsAction="ifRoom" />
+
+    <item android:id="@+id/action_share"
+          android:icon="@drawable/ic_share"
+          android:title="@string/action_share"
+          app:showAsAction="ifRoom" />
 </menu>

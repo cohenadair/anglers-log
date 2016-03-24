@@ -930,6 +930,10 @@ public class Logbook {
         return isImperial ? getString(R.string.mph) : getString(R.string.kmh);
     }
 
+    public static String getShareText(Context context) {
+        return context.getResources().getString(R.string.share_text);
+    }
+
     @NonNull
     private static String getString(int id) {
         return mContext.getResources().getString(id);

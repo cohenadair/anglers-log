@@ -33,8 +33,6 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     private static final int REQUEST_IMPORT = 0;
     private static final int REQUEST_EXPORT = 1;
 
-    private static final String MIME_TYPE_ZIP = "application/zip";
-
     private Uri mImportUri;
 
     @Override
@@ -117,7 +115,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                intent.setType(MIME_TYPE_ZIP);
+                intent.setType(Utils.MIME_TYPE_ZIP);
 
                 startActivityForResult(intent, REQUEST_IMPORT);
                 return true;
@@ -211,7 +209,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                         Intent intent = new Intent();
                         intent.setAction(Intent.ACTION_SEND);
                         intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(zipFile));
-                        intent.setType(MIME_TYPE_ZIP);
+                        intent.setType(Utils.MIME_TYPE_ZIP);
 
                         startActivityForResult(intent, REQUEST_EXPORT);
                     }

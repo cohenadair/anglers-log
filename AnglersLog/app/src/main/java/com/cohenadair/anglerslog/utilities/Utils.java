@@ -25,7 +25,6 @@ import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -49,6 +48,11 @@ public class Utils {
      */
     public static final int MANAGE_ALERT_EDIT = 0;
     public static final int MANAGE_ALERT_DELETE = 1;
+
+    public static final String MIME_TYPE_IMAGE = "image/jpeg";
+    public static final String MIME_TYPE_TEXT = "text/plain";
+    public static final String MIME_TYPE_ZIP = "application/zip";
+    public static final String MIME_TYPE_ALL = "*/*";
 
     public static boolean isMinMarshmallow() {
         return (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M);

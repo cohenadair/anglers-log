@@ -169,8 +169,9 @@ public class MainActivity extends LayoutSpecActivity {
             getManageFragment().show(getSupportFragmentManager(), "dialog");
         } else {
             // show normally
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.master_container, getManageFragment())
+            getSupportFragmentManager().beginTransaction()
+                    //.setCustomAnimations(R.anim.slide_in_bottom, R.anim.slide_out_top, R.anim.slide_in_top, R.anim.slide_out_bottom)
+                    .replace(R.id.master_container, getManageFragment())
                     .addToBackStack(null)
                     .commit();
 

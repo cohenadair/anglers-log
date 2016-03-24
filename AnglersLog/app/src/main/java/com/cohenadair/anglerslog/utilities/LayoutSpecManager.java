@@ -134,6 +134,29 @@ public class LayoutSpecManager {
     }
 
     /**
+     * Used to easily get an object for different layouts. This is needed because different
+     * {@link Logbook} methods need to be called depending on the layout.
+     */
+    @Nullable
+    public static UserDefineObject getObject(int layoutId, UUID id) {
+        switch (layoutId) {
+            case LAYOUT_CATCHES:
+                return Logbook.getCatch(id);
+
+            case LAYOUT_LOCATIONS:
+                return Logbook.getLocation(id);
+
+            case LAYOUT_BAITS:
+                return Logbook.getBait(id);
+
+            case LAYOUT_TRIPS:
+                return Logbook.getTrip(id);
+        }
+
+        return null;
+    }
+
+    /**
      * Checks to see if the given layout id is meant to be a link to a web page.
      * @param layoutId The layout id.
      * @return True if link; false otherwise.

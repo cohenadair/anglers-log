@@ -10,8 +10,8 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.cohenadair.anglerslog.R;
+import com.cohenadair.anglerslog.fragments.DetailFragment;
 import com.cohenadair.anglerslog.interfaces.OnClickInterface;
-import com.cohenadair.anglerslog.interfaces.OnClickManageMenuListener;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import com.cohenadair.anglerslog.views.TitleSubTitleView;
 
@@ -110,11 +110,11 @@ public class ListManager {
         }
 
         public void onItemEdit(UUID position) {
-            ((OnClickManageMenuListener)getContext()).onClickMenuEdit(position);
+            ((DetailFragment.OnClickMenuListener)getContext()).onClickMenuEdit(position);
         }
 
         public void onItemDelete(UUID position) {
-            ((OnClickManageMenuListener)getContext()).onClickMenuTrash(position);
+            ((DetailFragment.OnClickMenuListener)getContext()).onClickMenuTrash(position);
         }
 
         public Context getContext() {

@@ -2,9 +2,12 @@ package com.cohenadair.anglerslog.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.fragments.DetailFragment;
+import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import com.cohenadair.anglerslog.utilities.LayoutSpecManager;
 
 import java.util.UUID;
@@ -18,6 +21,9 @@ public class DetailFragmentActivity extends DefaultActivity {
     public static final String EXTRA_LAYOUT_ID = "layout_spec_id";
     public static final String EXTRA_USER_DEFINE_ID = "user_define_id";
 
+    private int mLayoutId = -1;
+    private UUID mItemId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,19 +32,21 @@ public class DetailFragmentActivity extends DefaultActivity {
         initDialogWidth();
 
         Intent intent = getIntent();
-        int layoutSpecId = intent.getIntExtra(EXTRA_LAYOUT_ID, -1);
-        if (layoutSpecId == -1)
+        mLayoutId = intent.getIntExtra(EXTRA_LAYOUT_ID, -1);
+        if (mLayoutId == -1)
             throw new RuntimeException("DetailFragmentActivity intent must include EXTRA_LAYOUT_ID.");
 
         String userDefineIdStr = intent.getStringExtra(EXTRA_USER_DEFINE_ID);
         if (userDefineIdStr == null)
             throw new RuntimeException("DetailFragmentActivity init must include EXTRA_USER_DEFINE_ID.");
 
-        DetailFragment detailFragment = LayoutSpecManager.getDetailFragment(layoutSpecId);
+        mItemId = UUID.fromString(userDefineIdStr);
+
+        DetailFragment detailFragment = LayoutSpecManager.getDetailFragment(mLayoutId);
         if (detailFragment == null)
             throw new RuntimeException("Invalid layout id for DetailFragmentActivity.");
 
-        detailFragment.setItemId(UUID.fromString(userDefineIdStr));
+        detailFragment.setItemId(mItemId);
 
         if (savedInstanceState == null)
             getSupportFragmentManager()
@@ -47,4 +55,27 @@ public class DetailFragmentActivity extends DefaultActivity {
                     .commit();
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        //getMenuInflater().inflate(R.menu.menu_share, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.action_share) {
+            onClickShare(mItemId);
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    public void onClickShare(UUID objId) {
+        UserDefineObject obj = LayoutSpecManager.getObject(mLayoutId, objId);
+        if (obj != null)
+            startActivity(obj.getShareIntent(this));
+    }
 }

@@ -1,10 +1,13 @@
 package com.cohenadair.anglerslog.model.user_defines;
 
 import android.content.ContentValues;
+import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 
 import com.cohenadair.anglerslog.database.QueryHelper;
 import com.cohenadair.anglerslog.model.backup.Json;
+import com.cohenadair.anglerslog.utilities.PhotoUtils;
 
 import org.apache.commons.io.FilenameUtils;
 import org.json.JSONArray;
@@ -159,6 +162,17 @@ public abstract class PhotoUserDefineObject extends UserDefineObject {
         values.put(PhotoTable.Columns.NAME, fileName);
 
         return values;
+    }
+
+    @Override
+    public Intent getShareIntent(Context context) {
+        Intent intent =  super.getShareIntent(context);
+
+        String photo = getRandomPhoto();
+        if (photo != null)
+            intent.putExtra(Intent.EXTRA_STREAM, PhotoUtils.privatePhotoUri(photo));
+
+        return intent;
     }
 
     /**

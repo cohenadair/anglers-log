@@ -2,6 +2,7 @@ package com.cohenadair.anglerslog.model.user_defines;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 
 import com.cohenadair.anglerslog.R;
@@ -37,7 +38,6 @@ public class Bait extends PhotoUserDefineObject implements HasCatchesInterface {
     /**
      * Correspond to resources array in arrays.xml.
      */
-    // TODO convert to enum (see Catch.java)
     public static final int TYPE_ARTIFICIAL = 0;
     public static final int TYPE_LIVE = 1;
     public static final int TYPE_REAL = 2;
@@ -228,6 +228,22 @@ public class Bait extends PhotoUserDefineObject implements HasCatchesInterface {
         return values;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Intent getShareIntent(Context context) {
+        Intent intent = super.getShareIntent(context);
+
+        String text = "I've made " + getCatchCountAsString(context).toLowerCase() + " so far using " + getDisplayName() + ". " + getDescriptionAsString();
+        intent.putExtra(Intent.EXTRA_TEXT, text + intent.getStringExtra(Intent.EXTRA_TEXT));
+
+        return intent;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JSONObject toJson() throws JSONException {
         JSONObject json = super.toJson();
@@ -241,6 +257,9 @@ public class Bait extends PhotoUserDefineObject implements HasCatchesInterface {
         return json;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toKeywordsString(Context context) {
         StringBuilder builder = new StringBuilder(super.toKeywordsString(context));

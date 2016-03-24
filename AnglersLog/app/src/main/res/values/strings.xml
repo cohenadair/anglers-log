@@ -6,6 +6,7 @@
     <string name="app_search">Search Anglers\' Log</string>
     <string name="hashtag">AnglersLogApp</string>
     <string name="website">http://cohenadair.com/anglerslog/</string>
+    <string name="share_text">Shared with @anglerslog for #android #anglerslogapp</string>
     <string name="no_instagram">Instagram is not installed on this device.</string>
     <string name="instagram_disabled">Instagram is installed, but disabled on this device.</string>
 
@@ -228,6 +229,7 @@
     <string name="selection_text">Select</string>
     <string name="select_photo">Select Photo</string>
 
+    <string name="action_share">Share</string>
     <string name="action_edit">Edit</string>
     <string name="action_delete">Delete</string>
     <string name="action_done">Done</string>

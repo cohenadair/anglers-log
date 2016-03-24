@@ -15,6 +15,7 @@
         android:paddingTop="@dimen/margin_half"
         android:paddingBottom="@dimen/margin_default">
 
+        <!-- Pie Chart -->
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -59,41 +60,50 @@
             android:layout_height="wrap_content">
 
             <!-- Detail View -->
-            <com.cohenadair.anglerslog.views.MoreDetailView
-                android:id="@+id/more_detail_view"
+            <com.cohenadair.anglerslog.views.DisplayLabelView
+                style="@style/IconLabelView"
+                android:id="@+id/detail_view"
+                custom:detailText="@string/bait"
+                custom:iconResource="@drawable/ic_bait"/>
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/margin_default"
-                android:layout_marginRight="@dimen/margin_default"
-                android:layout_marginBottom="@dimen/margin_half"
-                custom:titleText="@string/bait"
-                custom:subtitleText="@string/fishing_spot"
-                custom:titleStyle="@style/TextView.Small"
-                custom:subtitleStyle="@style/TextView.SmallSubtitle"/>
+                android:layout_marginStart="@dimen/margin_default"
+                android:orientation="horizontal">
 
-            <!-- Totals -->
-            <TextView
-                style="?android:listSeparatorTextViewStyle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/margin_default"
-                android:text="@string/totals"/>
+                <ImageView
+                    style="@style/ImageView.Input"
+                    android:layout_marginTop="@dimen/spacing_small_half"
+                    android:id="@+id/icon_image_view"
+                    android:src="@drawable/ic_stats"
+                    android:contentDescription="@string/icon_description"/>
 
-            <!-- Total Species -->
-            <com.cohenadair.anglerslog.views.PropertyDetailView
-                android:id="@+id/total_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                custom:propertyName="@string/species"/>
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="@dimen/margin_default_negative"
+                    android:layout_marginStart="@dimen/margin_default_negative"
+                    android:orientation="vertical">
 
-            <!-- Total Catches -->
-            <com.cohenadair.anglerslog.views.PropertyDetailView
-                android:id="@+id/total_catches_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                custom:propertyName="@string/drawer_catches"/>
+                    <!-- Total Species -->
+                    <com.cohenadair.anglerslog.views.PropertyDetailView
+                        android:id="@+id/total_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        custom:propertyName="@string/species"/>
 
+                    <!-- Total Catches -->
+                    <com.cohenadair.anglerslog.views.PropertyDetailView
+                        android:id="@+id/total_catches_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        custom:propertyName="@string/drawer_catches"/>
+
+                </LinearLayout>
+            </LinearLayout>
         </LinearLayout>
-
     </LinearLayout>
 </ScrollView>

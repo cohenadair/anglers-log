@@ -13,7 +13,7 @@ import com.cohenadair.anglerslog.fragments.ManageContentFragment;
 import com.cohenadair.anglerslog.fragments.ManageFragment;
 import com.cohenadair.anglerslog.fragments.MyListFragment;
 import com.cohenadair.anglerslog.interfaces.GlobalSettingsInterface;
-import com.cohenadair.anglerslog.interfaces.OnClickManageMenuListener;
+import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import com.cohenadair.anglerslog.model.utilities.SortingMethod;
 import com.cohenadair.anglerslog.utilities.LayoutSpec;
 import com.cohenadair.anglerslog.utilities.LayoutSpecManager;
@@ -30,7 +30,7 @@ public abstract class LayoutSpecActivity extends DefaultActivity implements
         MyListFragment.InteractionListener,
         ManageFragment.InteractionListener,
         LayoutSpecManager.InteractionListener,
-        OnClickManageMenuListener,
+        DetailFragment.OnClickMenuListener,
         GlobalSettingsInterface
 {
     private static final String TAG = "LayoutSpecActivity";
@@ -201,7 +201,7 @@ public abstract class LayoutSpecActivity extends DefaultActivity implements
     }
     //endregion
 
-    //region OnClickManageMenuListener interface
+    //region DetailFragment.OnClickMenuListener interface
     /**
      * A method called when the user wants to edit and object in the current MyListFragment
      * instance.
@@ -231,6 +231,15 @@ public abstract class LayoutSpecActivity extends DefaultActivity implements
                     goBack();
             }
         });
+    }
+
+    @Override
+    public void onClickShare(UUID objId) {
+        if (objId == null)
+            return;
+
+        UserDefineObject obj = getMasterAdapter().getItem(objId);
+        startActivity(obj.getShareIntent(this));
     }
     //endregion
 

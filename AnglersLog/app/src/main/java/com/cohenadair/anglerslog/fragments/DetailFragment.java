@@ -15,14 +15,8 @@ import android.widget.LinearLayout;
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.activities.LayoutSpecActivity;
 import com.cohenadair.anglerslog.interfaces.GlobalSettingsInterface;
-import com.cohenadair.anglerslog.interfaces.OnClickManageMenuListener;
-import com.cohenadair.anglerslog.model.user_defines.Catch;
-import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
-import com.cohenadair.anglerslog.utilities.LayoutSpecManager;
 import com.cohenadair.anglerslog.utilities.Utils;
-import com.cohenadair.anglerslog.views.MoreDetailLayout;
 
-import java.util.ArrayList;
 import java.util.UUID;
 
 /**
@@ -36,8 +30,14 @@ public abstract class DetailFragment extends Fragment {
     private static final String TAG = "DetailFragment";
 
     private UUID mItemId;
-    private OnClickManageMenuListener mMenuListener;
+    private OnClickMenuListener mMenuListener;
     private LinearLayout mContainer;
+
+    public interface OnClickMenuListener {
+        void onClickMenuEdit(UUID objId);
+        void onClickMenuTrash(UUID objId);
+        void onClickShare(UUID objId);
+    }
 
     /**
      * The method that updates the view using the object at the corresponding ListView position.
@@ -64,9 +64,9 @@ public abstract class DetailFragment extends Fragment {
 
         // make sure the container activity has implemented the callback interface
         try {
-            mMenuListener = (OnClickManageMenuListener)context;
+            mMenuListener = (DetailFragment.OnClickMenuListener)context;
         } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString() + " must implement OnClickManageMenuListener.");
+            throw new ClassCastException(context.toString() + " must implement DetailFragment.OnClickMenuListener.");
         }
     }
 
@@ -86,6 +86,9 @@ public abstract class DetailFragment extends Fragment {
 
             inflater.inflate(R.menu.menu_manage, menu);
         }
+
+        // inflate the share menu no matter what
+        inflater.inflate(R.menu.menu_share, menu);
     }
 
     @Override
@@ -98,6 +101,9 @@ public abstract class DetailFragment extends Fragment {
                 break;
             case R.id.action_trash:
                 mMenuListener.onClickMenuTrash(mItemId);
+                break;
+            case R.id.action_share:
+                mMenuListener.onClickShare(mItemId);
                 break;
             default:
                 Log.e(TAG, "Menu item id: " + id + " is not supported.");
@@ -155,7 +161,7 @@ public abstract class DetailFragment extends Fragment {
     //endregion
 
     private boolean shouldShowManageMenu() {
-        return getContext() instanceof OnClickManageMenuListener;
+        return getContext() instanceof DetailFragment.OnClickMenuListener;
     }
 
     /**
@@ -194,37 +200,5 @@ public abstract class DetailFragment extends Fragment {
      */
     public void startDetailActivity(int layoutSpecId, UUID userDefineObjectId) {
         startActivity(Utils.getDetailActivityIntent(getContext(), layoutSpecId, userDefineObjectId));
-    }
-
-    /**
-     * Gets an {@link com.cohenadair.anglerslog.views.MoreDetailLayout.OnUpdateItemInterface},
-     * specifically for {@link Catch} objects. This method is used in multiple DetailFragment
-     * subclasses.
-     *
-     * @param catches The {@link Catch} objects that will be displayed.
-     * @return An {@link com.cohenadair.anglerslog.views.MoreDetailLayout.OnUpdateItemInterface}.
-     */
-    public MoreDetailLayout.OnUpdateItemInterface getCatchUpdateItemInterface(ArrayList<UserDefineObject> catches) {
-        return new MoreDetailLayout.OnUpdateItemInterface() {
-            @Override
-            public String getTitle(UserDefineObject object) {
-                return ((Catch)object).getSpeciesAsString();
-            }
-
-            @Override
-            public String getSubtitle(UserDefineObject object) {
-                return ((Catch)object).getDateTimeAsString();
-            }
-
-            @Override
-            public View.OnClickListener onClickItemButton(final UUID id) {
-                return new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        startDetailActivity(LayoutSpecManager.LAYOUT_CATCHES, id);
-                    }
-                };
-            }
-        };
     }
 }
