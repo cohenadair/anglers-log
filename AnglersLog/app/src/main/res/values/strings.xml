@@ -100,7 +100,7 @@
     <string name="live">Live</string>
     <string name="real">Real</string>
     <string name="location">Location</string>
-    <string name="location_success">Location Success</string>
+    <string name="location_success">Location Catches</string>
     <string name="location_stats">Location Statistics</string>
     <string name="new_fishing_spot">New Fishing Spot</string>
     <string name="fishing_spot">Fishing Spot</string>
@@ -320,6 +320,7 @@
     <string name="share_description">Share content with popular social media.</string>
     <string name="back_description">Go back.</string>
     <string name="icon_description">An icon that shows the current item.</string>
+    <string name="card_banner_description">An image of the presented item.</string>
 
     <string name="unknown">Unknown</string>
 

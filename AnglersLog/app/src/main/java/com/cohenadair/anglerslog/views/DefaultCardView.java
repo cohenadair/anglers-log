@@ -1,13 +1,16 @@
 package com.cohenadair.anglerslog.views;
 
 import android.content.Context;
+import android.graphics.Point;
 import android.util.AttributeSet;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.model.Stats;
+import com.cohenadair.anglerslog.utilities.PhotoUtils;
 import com.cohenadair.anglerslog.utilities.Utils;
 
 import java.util.ArrayList;
@@ -18,6 +21,8 @@ import java.util.ArrayList;
  */
 public class DefaultCardView extends LinearLayout {
 
+    private ImageView mBannerImageView;
+    private ImageView mIconImageView;
     private TextView mTitleView;
     private LinearLayout mContentContainer;
     private Button mShowMoreButton;
@@ -34,6 +39,12 @@ public class DefaultCardView extends LinearLayout {
 
     private void init() {
         inflate(getContext(), R.layout.view_card_default, this);
+
+        mBannerImageView = (ImageView)findViewById(R.id.banner_image_view);
+        Utils.toggleVisibility(mBannerImageView, false);
+
+        mIconImageView = (ImageView)findViewById(R.id.icon_image_view);
+        Utils.toggleVisibility(mIconImageView, false);
 
         mTitleView = (TextView)findViewById(R.id.title_text_view);
         mContentContainer = (LinearLayout)findViewById(R.id.content_container);
@@ -53,17 +64,46 @@ public class DefaultCardView extends LinearLayout {
         updateContent(content);
     }
 
-    public void initWithMoreDetailView(String cardTitle, String moreDetailTitle, String moreDetailSubtitle, OnClickListener onClickMoreDetail, OnClickListener onClickCard) {
+    public void initWithMoreDetailView(String cardTitle, String detailText, String labelText, OnClickListener onClickDetail, OnClickListener onClickCard) {
         setTitle(cardTitle);
         setOnClickShowMoreButton(onClickCard);
 
-        MoreDetailView view = new MoreDetailView(getContext());
-        view.setTitle(moreDetailTitle);
-        view.setSubtitle(moreDetailSubtitle);
-        view.setOnClickDetailButton(onClickMoreDetail);
-        view.useDefaultStyle();
-        view.useSmallSpacing();
+        DisplayLabelView view = new DisplayLabelView(getContext());
+        view.setDetail(detailText);
+        view.setLabel(labelText);
+        view.setOnClickListener(onClickDetail);
+        view.setIconResource(-1);
+
+        // required to offset the default padding in view_display_label.xml
+        view.setPadding(
+                0,
+                getResources().getDimensionPixelOffset(R.dimen.margin_default_negative),
+                0,
+                getResources().getDimensionPixelOffset(R.dimen.margin_default_negative)
+        );
+
         mContentContainer.addView(view);
+    }
+
+    public void setBannerImage(String path) {
+        if (path == null)
+            return;
+
+        Point screenSize = Utils.getScreenSize(getContext());
+        int w = screenSize.x;
+        int h = (int)(w * 9f / 16f); // keep 16:9 aspect ratio as per Material Design Guidelines
+
+        mBannerImageView.getLayoutParams().width = w;
+        mBannerImageView.getLayoutParams().height = h;
+        mBannerImageView.requestLayout();
+
+        PhotoUtils.photoToImageView(mBannerImageView, path, w, h);
+        Utils.toggleVisibility(mBannerImageView, true);
+    }
+
+    public void setIconImage(int resId) {
+        mIconImageView.setImageResource(resId);
+        Utils.toggleVisibility(mIconImageView, true);
     }
 
     public void setTitle(String title) {

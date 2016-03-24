@@ -28,7 +28,7 @@ public class DisplayLabelView extends LeftIconView {
         init(attrs);
     }
 
-    public void init(AttributeSet attrs) {
+    private void init(AttributeSet attrs) {
         init(R.layout.view_display_label, attrs);
 
         mContainer = (LinearLayout)findViewById(R.id.display_label_container);

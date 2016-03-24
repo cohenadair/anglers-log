@@ -4,21 +4,22 @@
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginBottom="@dimen/spacing_small_half"
-    android:layout_marginTop="@dimen/spacing_small_half"
+    android:layout_marginBottom="@dimen/margin_quarter"
+    android:layout_marginTop="@dimen/margin_quarter"
     android:layout_marginLeft="@dimen/margin_default"
     android:layout_marginRight="@dimen/margin_default">
 
     <TextView
+        style="@style/TextView.PrimaryListItem"
         android:id="@+id/property_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginRight="@dimen/margin_default"
         android:layout_marginEnd="@dimen/margin_default"
-        android:textStyle="bold"
         tools:text="Property"/>
 
     <TextView
+        style="@style/TextView.SecondaryListItem"
         android:id="@+id/detail_text_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

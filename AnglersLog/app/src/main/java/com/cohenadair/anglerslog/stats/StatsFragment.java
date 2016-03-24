@@ -13,6 +13,7 @@ import com.cohenadair.anglerslog.fragments.MasterFragment;
 import com.cohenadair.anglerslog.model.Logbook;
 import com.cohenadair.anglerslog.model.user_defines.Catch;
 import com.cohenadair.anglerslog.utilities.LayoutSpecManager;
+import com.cohenadair.anglerslog.utilities.PhotoUtils;
 import com.cohenadair.anglerslog.utilities.Utils;
 import com.cohenadair.anglerslog.views.DefaultCardView;
 
@@ -70,6 +71,7 @@ public class StatsFragment extends MasterFragment {
                         }
                     }
             );
+            mSpeciesCard.setIconImage(R.drawable.ic_catches);
 
             mBaitsCard.initWithList(
                     getContext().getResources().getString(R.string.baits_used),
@@ -81,6 +83,7 @@ public class StatsFragment extends MasterFragment {
                         }
                     }
             );
+            mBaitsCard.setIconImage(R.drawable.ic_bait);
 
             mLocationsCard.initWithList(
                     getContext().getResources().getString(R.string.location_success),
@@ -92,6 +95,7 @@ public class StatsFragment extends MasterFragment {
                         }
                     }
             );
+            mLocationsCard.setIconImage(R.drawable.ic_location);
         }
 
         updateBigCatchCard(R.string.longest_catch, mLongestCatchCard, Logbook.getLongestCatch(), StatsManager.LONGEST);
@@ -115,16 +119,14 @@ public class StatsFragment extends MasterFragment {
         if (aCatch == null)
             return;
 
-        // if the user has no recorded lengths or weights, a random catch is chosen
-        // the dash should only be shown for catches that have data
-        String str = ((statsId == StatsManager.LONGEST) ? aCatch.getLengthAsStringWithUnits() : aCatch.getWeightAsStringWithUnits());
-        if (!str.isEmpty())
-            str = " - " + str;
+        String measurementStr = ((statsId == StatsManager.LONGEST) ? aCatch.getLengthAsStringWithUnits() : aCatch.getWeightAsStringWithUnits());
+        if (!measurementStr.isEmpty())
+            measurementStr = " - " + measurementStr;
 
         card.initWithMoreDetailView(
-                getContext().getResources().getString(titleId) + str,
+                getContext().getResources().getString(titleId) + measurementStr,
                 aCatch.getSpeciesAsString(),
-                aCatch.getDateTimeAsString(),
+                aCatch.getDateAsString(),
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -138,5 +140,7 @@ public class StatsFragment extends MasterFragment {
                     }
                 }
         );
+
+        card.setBannerImage(PhotoUtils.privatePhotoPath(aCatch.getRandomPhoto()));
     }
 }
