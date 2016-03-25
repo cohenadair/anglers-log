@@ -202,6 +202,9 @@ public abstract class ManageContentFragment extends Fragment {
      *             used to initialize the UserDefineObject.
      */
     protected void initObject(InitializeInterface init) {
+        if (init == null)
+            return;
+
         if (isEditing()) {
             mOldObject = init.onGetOldObject();
 
