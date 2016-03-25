@@ -177,16 +177,13 @@ public class ManageLocationFragment extends ManageContentFragment {
     }
 
     private void addFishingSpot(final FishingSpot spot) {
-        String lat = getContext().getResources().getString(R.string.latitude);
-        String lng = getContext().getResources().getString(R.string.longitude);
-
         final MoreDetailView fishingSpotView = new MoreDetailView(getContext());
         fishingSpotView.setTitle(spot.getName());
         fishingSpotView.setSubtitle(spot.getCoordinatesAsString());
         fishingSpotView.setDetailButtonImage(R.drawable.ic_remove);
         fishingSpotView.setTitleStyle(R.style.TextView_Small);
         fishingSpotView.setSubtitleStyle(R.style.TextView_SmallSubtitle);
-        fishingSpotView.useDefaultSpacing();
+        fishingSpotView.useNoLeftSpacing();
         fishingSpotView.useDefaultStyle();
 
         fishingSpotView.setOnClickDetailButton(new View.OnClickListener() {

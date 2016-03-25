@@ -109,6 +109,20 @@ public class MoreDetailView extends LinearLayout {
     }
 
     /**
+     * Uses a LayoutParams to create spacing similar to the default margins.
+     */
+    public void useNoLeftSpacing() {
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        params.setMargins(
+                0,
+                getResources().getDimensionPixelSize(R.dimen.spacing_small),
+                getResources().getDimensionPixelSize(R.dimen.margin_default),
+                getResources().getDimensionPixelSize(R.dimen.spacing_small)
+        );
+        mContainer.setLayoutParams(params);
+    }
+
+    /**
      * Uses a LayoutParams with no top or bottom spacing.
      */
     public void useSmallSpacing() {
