@@ -123,7 +123,7 @@ public class StatsFragment extends MasterFragment {
         if (!measurementStr.isEmpty())
             measurementStr = " - " + measurementStr;
 
-        card.initWithMoreDetailView(
+        card.initWithDisplayLabel(
                 getContext().getResources().getString(titleId) + measurementStr,
                 aCatch.getSpeciesAsString(),
                 aCatch.getDateAsString(),

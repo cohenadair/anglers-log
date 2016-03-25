@@ -64,7 +64,7 @@ public class DefaultCardView extends LinearLayout {
         updateContent(content);
     }
 
-    public void initWithMoreDetailView(String cardTitle, String detailText, String labelText, OnClickListener onClickDetail, OnClickListener onClickCard) {
+    public void initWithDisplayLabel(String cardTitle, String detailText, String labelText, OnClickListener onClickDetail, OnClickListener onClickCard) {
         setTitle(cardTitle);
         setOnClickShowMoreButton(onClickCard);
 
