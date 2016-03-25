@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
-import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.location.LocationManager;
 import android.net.Uri;
@@ -80,6 +79,18 @@ public class Utils {
         new AlertDialog.Builder(context)
                 .setTitle(titleId)
                 .setMessage(msg)
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                })
+                .show();
+    }
+
+    public static void showAlert(Context context, int msgId) {
+        new AlertDialog.Builder(context)
+                .setMessage(msgId)
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {

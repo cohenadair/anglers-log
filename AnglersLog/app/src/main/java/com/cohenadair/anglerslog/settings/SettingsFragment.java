@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.preference.CheckBoxPreference;
 import android.support.v7.preference.ListPreference;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
@@ -42,6 +43,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         setHasOptionsMenu(true);
 
         initUnits();
+        initInstabug();
         initImport();
         initExport();
         initReset();
@@ -107,6 +109,19 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         });
 
         updateUnits(units);
+    }
+
+    private void initInstabug() {
+        CheckBoxPreference instabug = (CheckBoxPreference)findPreference(getResources().getString(R.string.pref_instabug));
+        instabug.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object o) {
+                boolean on = ((CheckBoxPreference)preference).isChecked();
+                LogbookPreferences.setInstabugEnabled(on);
+                Utils.showAlert(getContext(), R.string.instabug_restart);
+                return true;
+            }
+        });
     }
 
     private void initImport() {

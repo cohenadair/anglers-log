@@ -11,6 +11,7 @@
     <string name="instagram_disabled">Instagram is installed, but disabled on this device.</string>
 
     <string name="pref_units">pref_units</string>
+    <string name="pref_instabug">pref_instabug</string>
     <string name="pref_auto_backup">pref_auto_backup</string>
     <string name="pref_about_group">pref_about_group</string>
     <string name="pref_google_maps_terms">pref_google_maps_terms</string>
@@ -31,6 +32,9 @@
     <string name="display_units">Display Units</string>
     <string name="display_unit_types">Unit Types</string>
     <string name="display_units_summary">This will not affect existing input values.</string>
+    <string name="instabug_title">Bugs and Feedback</string>
+    <string name="instabug_summary">Enable or disable the Instabug floating button.</string>
+    <string name="instabug_restart">Changes will take effect after Anglers\' Log is restarted.</string>
     <string name="error_sync">Error syncing data</string>
     <string name="auto_backup">Auto Backup</string>
     <string name="auto_backup_summary">Automatically save application data to Google\'s cloud services.</string>

@@ -59,6 +59,7 @@ dependencies {
     compile 'com.github.lzyzsd.randomcolor:library:1.0.0'
     compile 'com.adobe.xmp:xmpcore:5.1.2'
     compile 'com.davemorrissey.labs:subsampling-scale-image-view:3.4.1'
+    compile 'com.instabug.library:instabug:2+'
     compile('com.crashlytics.sdk.android:crashlytics:2.5.5@aar') {
         transitive = true;
     }

@@ -93,7 +93,14 @@ public class LogbookPreferences {
                 .apply();
     }
 
-    public static boolean getAutoBackup() {
-        return PreferenceManager.getDefaultSharedPreferences(mContext).getBoolean(mContext.getResources().getString(R.string.pref_auto_backup), true);
+    public static boolean isInstabugEnabled() {
+        return PreferenceManager.getDefaultSharedPreferences(mContext).getBoolean(mContext.getResources().getString(R.string.pref_instabug), true);
+    }
+
+    public static void setInstabugEnabled(boolean enabled) {
+        PreferenceManager.getDefaultSharedPreferences(mContext)
+                .edit()
+                .putBoolean(mContext.getResources().getString(R.string.pref_instabug), enabled)
+                .apply();
     }
 }

@@ -40,6 +40,8 @@ import com.cohenadair.anglerslog.model.utilities.UserDefineArrays;
 import com.cohenadair.anglerslog.utilities.LogbookPreferences;
 import com.cohenadair.anglerslog.utilities.PhotoUtils;
 import com.drew.lang.annotations.NotNull;
+import com.instabug.library.IBGInvocationEvent;
+import com.instabug.library.Instabug;
 
 import org.apache.commons.io.FileUtils;
 
@@ -161,6 +163,13 @@ public class Logbook {
             FileUtils.deleteQuietly(new File(backupFile));
             LogbookPreferences.setBackupFile(null);
         }
+    }
+
+    public static void updatePreferences() {
+        if (LogbookPreferences.isInstabugEnabled())
+            Instabug.changeInvocationEvent(IBGInvocationEvent.IBGInvocationEventFloatingButton);
+        else
+            Instabug.changeInvocationEvent(IBGInvocationEvent.IBGInvocationEventNone);
     }
 
     /**

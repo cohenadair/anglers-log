@@ -10,6 +10,12 @@
         android:entryValues="@array/pref_unitTypes_values"
         android:defaultValue="0"/>
 
+    <CheckBoxPreference
+        android:key="@string/pref_instabug"
+        android:title="@string/instabug_title"
+        android:summary="@string/instabug_summary"
+        android:defaultValue="true"/>
+
     <Preference
         android:key="@string/pref_import"
         android:title="@string/import_name"
