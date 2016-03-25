@@ -151,7 +151,7 @@ public class ManageFragment extends DialogFragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.action_done) {
+        if (item.getItemId() == R.id.action_confirm) {
             onClickSave();
             return true;
         }
