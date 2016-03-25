@@ -48,15 +48,7 @@ public class ImageScrollView extends LinearLayout {
         View view = inflate(getContext(), R.layout.view_image_scroll, this);
 
         mContainer = (RelativeLayout)view.findViewById(R.id.image_scroll_container);
-
         mScrollView = (HorizontalScrollView)view.findViewById(R.id.scroll_view);
-        mScrollView.post(new Runnable() {
-            @Override
-            public void run() {
-                mScrollView.scrollTo((int)(Utils.pxToDp(mScrollSize) / 2), 0);
-            }
-        });
-
         mPhotosWrapper = (LinearLayout)view.findViewById(R.id.photos_wrapper);
     }
 
