@@ -24,7 +24,7 @@
             style="@style/EditText.TextView.Input"
             android:id="@+id/edit_text"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/image_button_size"
             android:inputType="textMultiLine|textCapWords"
             tools:hint="A helpful hint"/>
 
