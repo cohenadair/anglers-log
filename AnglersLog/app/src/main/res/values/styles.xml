@@ -167,6 +167,12 @@
         <item name="android:layout_height">wrap_content</item>
     </style>
 
+    <!-- Used for label lists such as in fragment_catch.xml -->
+    <style name="IconLabelView.ListItem" parent="IconLabelView">
+        <item name="android:layout_marginTop">@dimen/margin_half_negative</item>
+        <item name="android:layout_marginBottom">@dimen/margin_half_negative</item>
+    </style>
+
     <style name="IconInputView" parent="IconLabelView">
         <item name="android:paddingTop">@dimen/margin_half</item>
         <item name="android:paddingBottom">@dimen/margin_half</item>
@@ -180,6 +186,12 @@
         <item name="android:layout_width">@dimen/image_button_size</item>
         <item name="android:layout_height">@dimen/image_button_size</item>
         <item name="android:layout_marginRight">@dimen/margin_large</item>
+    </style>
+
+    <!-- Style used for icon lists such as in fragment_catch.xml -->
+    <style name="ImageView.InputList" parent="ImageView.Input">
+        <item name="android:layout_marginLeft">@dimen/margin_default</item>
+        <item name="android:layout_marginRight">@dimen/margin_half</item>
     </style>
 
     <!-- Style that makes EditText widgets look like normal TextViews -->

@@ -46,6 +46,10 @@ public class CatchFragment extends DetailFragment {
     private LinearLayout mWeatherContainer;
     private WeatherDetailsView mWeatherDetailsView;
 
+    // need to be hidden if certain fields weren't filled out
+    private LinearLayout mSizeContainer;
+    private LinearLayout mWaterContainer;
+
     public CatchFragment() {
         // Required empty public constructor
     }
@@ -80,6 +84,9 @@ public class CatchFragment extends DetailFragment {
         mNotesView = (DisplayLabelView)view.findViewById(R.id.notes_view);
         mWeatherContainer = (LinearLayout)view.findViewById(R.id.weather_container);
         mWeatherDetailsView = (WeatherDetailsView)view.findViewById(R.id.weather_details_view);
+
+        mSizeContainer = (LinearLayout)view.findViewById(R.id.size_container);
+        mWaterContainer = (LinearLayout)view.findViewById(R.id.water_container);
 
         update(getActivity());
 
@@ -127,6 +134,9 @@ public class CatchFragment extends DetailFragment {
         updateWaterDepthView();
         updateWaterTemperatureView();
         updateNotesView();
+
+        updateRulerIcon();
+        updateWaterIcon();
     }
 
     private void updateSpeciesView() {
@@ -196,6 +206,18 @@ public class CatchFragment extends DetailFragment {
     private void updateNotesView() {
         Utils.toggleVisibility(mNotesView, mCatch.getNotes() != null);
         mNotesView.setDetail(mCatch.getNotesAsString());
+    }
+
+    private void updateRulerIcon() {
+        Utils.toggleVisibility(mSizeContainer, !(isGone(mLengthView) && isGone(mWeightView) && isGone(mQuantityView)));
+    }
+
+    private void updateWaterIcon() {
+        Utils.toggleVisibility(mWaterContainer, !(isGone(mWaterClarityView) && isGone(mWaterDepthView) && isGone(mWaterTemperatureView)));
+    }
+
+    private boolean isGone(View view) {
+        return view.getVisibility() == View.GONE;
     }
 
     private void initLocationLayout(View view) {

@@ -69,66 +69,107 @@
 
         </LinearLayout>
 
-        <!-- Length -->
-        <com.cohenadair.anglerslog.views.DisplayLabelView
-            style="@style/IconLabelView"
-            android:id="@+id/length_view"
-            custom:labelText="@string/length"
-            custom:detailText="@string/length"
-            custom:iconResource="@drawable/ic_ruler"/>
+        <LinearLayout
+            android:id="@+id/size_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/margin_half"
+            android:paddingBottom="@dimen/margin_half"
+            android:orientation="horizontal">
 
-        <!-- Weight -->
-        <com.cohenadair.anglerslog.views.DisplayLabelView
-            style="@style/InputView.IconInset.NoLeft"
-            android:id="@+id/weight_view"
-            android:layout_marginTop="@dimen/margin_default_negative"
-            custom:labelText="@string/weight"
-            custom:detailText="@string/weight"/>
+            <ImageView
+                style="@style/ImageView.InputList"
+                android:layout_marginTop="@dimen/margin_default"
+                android:src="@drawable/ic_ruler"
+                android:contentDescription="@string/icon_description"/>
 
-        <!-- Quantity -->
-        <com.cohenadair.anglerslog.views.DisplayLabelView
-            style="@style/InputView.IconInset.NoLeft"
-            android:id="@+id/quantity_view"
-            android:layout_marginTop="@dimen/margin_default_negative"
-            custom:labelText="@string/quantity"
-            custom:detailText="@string/quantity"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-        <!-- Water Clarity -->
-        <com.cohenadair.anglerslog.views.DisplayLabelView
-            style="@style/IconLabelView"
-            android:id="@+id/water_clarity_view"
-            custom:detailText="@string/water_clarity"
-            custom:iconResource="@drawable/ic_water"/>
+                <!-- Length -->
+                <com.cohenadair.anglerslog.views.DisplayLabelView
+                    style="@style/IconLabelView.ListItem"
+                    android:id="@+id/length_view"
+                    custom:labelText="@string/length"
+                    custom:detailText="@string/length"/>
 
-        <!-- Water Depth -->
-        <com.cohenadair.anglerslog.views.DisplayLabelView
-            style="@style/InputView.IconInset.NoLeft"
-            android:id="@+id/water_depth_view"
-            android:layout_marginTop="@dimen/margin_default_negative"
-            custom:labelText="@string/depth"
-            custom:detailText="@string/water_depth"/>
+                <!-- Weight -->
+                <com.cohenadair.anglerslog.views.DisplayLabelView
+                    style="@style/IconLabelView.ListItem"
+                    android:id="@+id/weight_view"
+                    custom:labelText="@string/weight"
+                    custom:detailText="@string/weight"/>
 
-        <!-- Water Temperature -->
-        <com.cohenadair.anglerslog.views.DisplayLabelView
-            style="@style/InputView.IconInset.NoLeft"
-            android:id="@+id/water_temperature_view"
-            android:layout_marginTop="@dimen/margin_default_negative"
-            custom:labelText="@string/temperature"
-            custom:detailText="@string/water_temperature"/>
+                <!-- Quantity -->
+                <com.cohenadair.anglerslog.views.DisplayLabelView
+                    style="@style/IconLabelView.ListItem"
+                    android:id="@+id/quantity_view"
+                    custom:labelText="@string/quantity"
+                    custom:detailText="@string/quantity"/>
 
-        <!-- Fishing Methods -->
-        <com.cohenadair.anglerslog.views.DisplayLabelView
-            style="@style/IconLabelView"
-            android:id="@+id/fishing_methods_view"
-            custom:detailText="@string/methods"
-            custom:iconResource="@drawable/ic_info"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/water_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/margin_half"
+            android:paddingBottom="@dimen/margin_half"
+            android:orientation="horizontal">
+
+            <ImageView
+                style="@style/ImageView.InputList"
+                android:layout_marginTop="@dimen/margin_default"
+                android:src="@drawable/ic_water"
+                android:contentDescription="@string/icon_description"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <!-- Water Clarity -->
+                <com.cohenadair.anglerslog.views.DisplayLabelView
+                    style="@style/IconLabelView.ListItem"
+                    android:id="@+id/water_clarity_view"
+                    custom:labelText="@string/clarity"
+                    custom:detailText="@string/water_clarity"/>
+
+                <!-- Water Depth -->
+                <com.cohenadair.anglerslog.views.DisplayLabelView
+                    style="@style/IconLabelView.ListItem"
+                    android:id="@+id/water_depth_view"
+                    custom:labelText="@string/depth"
+                    custom:detailText="@string/water_depth"/>
+
+                <!-- Water Temperature -->
+                <com.cohenadair.anglerslog.views.DisplayLabelView
+                    style="@style/IconLabelView.ListItem"
+                    android:id="@+id/water_temperature_view"
+                    custom:labelText="@string/temperature"
+                    custom:detailText="@string/water_temperature"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
 
         <!-- Result -->
         <com.cohenadair.anglerslog.views.DisplayLabelView
-            style="@style/InputView.IconInset.NoLeft"
+            style="@style/IconLabelView"
             android:id="@+id/catch_result_view"
+            custom:detailText="@string/result"
+            custom:iconResource="@drawable/ic_info"/>
+
+        <!-- Fishing Methods -->
+        <com.cohenadair.anglerslog.views.DisplayLabelView
+            style="@style/InputView.IconInset.NoLeft"
+            android:id="@+id/fishing_methods_view"
             android:layout_marginTop="@dimen/margin_default_negative"
-            custom:detailText="@string/result"/>
+            custom:detailText="@string/methods"/>
 
         <!-- Notes -->
         <com.cohenadair.anglerslog.views.DisplayLabelView
