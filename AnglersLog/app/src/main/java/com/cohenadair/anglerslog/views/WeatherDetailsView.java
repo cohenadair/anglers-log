@@ -14,7 +14,7 @@ import com.cohenadair.anglerslog.utilities.LogbookPreferences;
  * A WeatherDetailsView is a view that displays weather data.
  * Created by Cohen Adair on 2016-01-13.
  */
-public class WeatherDetailsView extends LinearLayout {
+public class WeatherDetailsView extends LeftIconView {
 
     private TextView mTemperatureTextView;
     private TextView mWindTextView;
@@ -31,7 +31,7 @@ public class WeatherDetailsView extends LinearLayout {
     }
 
     private void init(AttributeSet attrs) {
-        inflate(getContext(), R.layout.view_weather_details, this);
+        init(R.layout.view_weather_details, attrs);
 
         mTemperatureTextView = (TextView)findViewById(R.id.temperature_text_view);
         mWindTextView = (TextView)findViewById(R.id.wind_text_view);
@@ -53,5 +53,17 @@ public class WeatherDetailsView extends LinearLayout {
         mTemperatureTextView.setText(degrees);
         mWindTextView.setText(wind);
         mSkyTextView.setText(sky);
+    }
+
+    @Override
+    public void setIconResource(int resId) {
+        super.setIconResource(resId);
+
+        if (resId == -1) {
+            LinearLayout detailsWrapper = (LinearLayout)findViewById(R.id.speed_sky_wrapper);
+            LinearLayout.LayoutParams params = (LinearLayout.LayoutParams)detailsWrapper.getLayoutParams();
+            params.leftMargin = 0;
+            detailsWrapper.setLayoutParams(params);
+        }
     }
 }

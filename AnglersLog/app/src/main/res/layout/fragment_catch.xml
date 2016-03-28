@@ -60,18 +60,12 @@
             android:layout_marginStart="@dimen/margin_default"
             android:layout_marginBottom="@dimen/margin_default">
 
-            <ImageView
-                style="@style/ImageView.Input"
-                android:layout_gravity="top"
-                android:id="@+id/icon_image_view"
-                android:src="@drawable/ic_cloud"
-                android:contentDescription="@string/icon_description"/>
-
             <!-- Weather Details -->
             <com.cohenadair.anglerslog.views.WeatherDetailsView
                 android:id="@+id/weather_details_view"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                custom:iconResource="@drawable/ic_cloud"/>
 
         </LinearLayout>
 
