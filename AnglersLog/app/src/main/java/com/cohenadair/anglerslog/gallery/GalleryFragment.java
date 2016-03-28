@@ -104,15 +104,22 @@ public class GalleryFragment extends MasterFragment {
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            ImageView imageView;
+            final ImageView imageView;
 
             if (convertView == null) {
                 imageView = new ImageView(mContext);
                 imageView.setLayoutParams(new GridView.LayoutParams(getImageSize(), getImageSize()));
                 imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                imageView.setPadding(2, 2, 2, 2);
             } else
                 imageView = (ImageView)convertView;
+
+            // update padding to give evenly distributed spacing
+            int p = 5;
+
+            if ((position + 1) % 3 == 0)
+                imageView.setPadding(0, 0, 0, p * 2);
+            else
+                imageView.setPadding(0, 0, p, p);
 
             PhotoUtils.thumbnailToImageView(imageView, getFullPath(position), getImageSize(), R.drawable.placeholder_square);
             return imageView;
