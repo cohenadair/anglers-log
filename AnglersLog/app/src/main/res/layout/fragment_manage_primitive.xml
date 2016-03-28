@@ -26,22 +26,21 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="@dimen/spacing_small"
-        android:paddingStart="@dimen/spacing_small"
-        android:paddingRight="@dimen/spacing_small"
-        android:paddingEnd="@dimen/spacing_small"
-        android:paddingBottom="@dimen/spacing_small">
+        android:layout_gravity="center_vertical">
 
         <EditText
+            style="@style/EditText.TextView.Input"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_default"
+            android:layout_marginStart="@dimen/margin_default"
             android:id="@+id/new_item_edit"
             android:layout_weight="1"
             android:inputType="textCapWords"
             android:hint="@string/hint_new_item"/>
 
         <Button
-            style="?android:attr/borderlessButtonStyle"
+            style="@style/Button.Borderless"
             android:layout_width="60dp"
             android:layout_height="wrap_content"
             android:text="@string/button_add"
