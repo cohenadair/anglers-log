@@ -5,7 +5,7 @@
 
     <ImageView
         style="@style/ImageView.Input"
-        android:layout_gravity="top"
+        android:layout_gravity="center_vertical"
         android:id="@+id/icon_image_view"
         android:src="@drawable/ic_clock"
         android:contentDescription="@string/icon_description"/>
