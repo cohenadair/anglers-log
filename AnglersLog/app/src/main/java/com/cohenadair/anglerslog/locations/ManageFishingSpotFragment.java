@@ -252,7 +252,7 @@ public class ManageFishingSpotFragment extends ManageContentFragment {
                 double lng = Double.parseDouble(mLongitudeView.getInputText());
                 LatLng latLng = new LatLng(lat, lng);
 
-                if (Utils.isValid(latLng) && !mCancelInputListener) {
+                if (mMapFragment.isValid(latLng) && !mCancelInputListener) {
                     updateCameraOnly(latLng);
                     mCancelInputListener = false;
                 }

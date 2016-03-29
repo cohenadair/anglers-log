@@ -261,6 +261,13 @@ public class DraggableMapFragment extends SupportMapFragment implements OnMapRea
         mGoogleMap.snapshot(callback);
     }
 
+    /**
+     * @return True if the given {@link LatLng} object is valid; false otherwise.
+     */
+    public boolean isValid(LatLng latLng) {
+        return (latLng.latitude >= -90 && latLng.latitude <= 90) && (latLng.longitude >= -180 && latLng.longitude <= 180);
+    }
+
     private boolean isLocationPermissionGranted() {
         return mLocationEnabled && ContextCompat.checkSelfPermission(getContext(), PERMISSION_LOCATION) == GRANTED;
     }

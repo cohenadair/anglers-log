@@ -12,9 +12,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.cohenadair.anglerslog.R;
-import com.google.android.gms.maps.model.LatLng;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -28,14 +26,23 @@ public class Utils {
     public static final String MIME_TYPE_ZIP = "application/zip";
     public static final String MIME_TYPE_ALL = "*/*";
 
+    /**
+     * @return True if the current Android version if equal to or newer than Marshmallow.
+     */
     public static boolean isMinMarshmallow() {
         return (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M);
     }
 
+    /**
+     * Shows a toast with the given resource.
+     */
     public static void showToast(Context context, int resId) {
         showToast(context, context.getResources().getString(resId));
     }
 
+    /**
+     * Shows a toast with the given String.
+     */
     public static void showToast(Context context, String msg) {
         Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
     }
@@ -92,12 +99,19 @@ public class Utils {
     }
 
     /**
-     * Checks to see if a file exists at a given path.
-     * @param path The path to the file.
-     * @return True if the file exists, false otherwise.
+     * @return A String representation of the date of the given {@link Date}.
      */
-    public static boolean fileExists(String path) {
-        return new File(path).exists();
+    @NonNull
+    public static String getDisplayDate(Date date) {
+        return DateFormat.format("MMMM dd, yyyy", date).toString();
+    }
+
+    /**
+     * @return A String representation of the time of the given {@link Date}.
+     */
+    @NonNull
+    public static String getDisplayTime(Date date) {
+        return DateFormat.format("h:mm a", date).toString();
     }
 
     /**
@@ -115,31 +129,28 @@ public class Utils {
         return false;
     }
 
-    @NonNull
-    public static String getDisplayDate(Date date) {
-        return DateFormat.format("MMMM dd, yyyy", date).toString();
-    }
-
-    @NonNull
-    public static String getDisplayTime(Date date) {
-        return DateFormat.format("h:mm a", date).toString();
-    }
-
     /**
-     * @param str The String.
      * @return The input String if it is not empty, null otherwise.
      */
     public static String stringOrNull(String str) {
         return (str == null || str.isEmpty()) ? null : str;
     }
 
+    /**
+     * @return An empty String if the given String is null, the given String otherwise.
+     */
     public static String emptyStringOrString(String str) {
         return (str == null) ? "" : str;
     }
 
+    /**
+     * Gets the resource id of a given attribute.
+     * @param attr The attribute to look for.
+     * @return The resource id.
+     */
     public static int resIdFromAttr(Context context, int attr) {
         TypedValue value = new TypedValue();
-        context.getTheme().resolveAttribute(android.R.attr.selectableItemBackground, value, true);
+        context.getTheme().resolveAttribute(attr, value, true);
         return value.resourceId;
     }
 
@@ -183,6 +194,11 @@ public class Utils {
         );
     }
 
+    /**
+     * Toggles the navigation and status bar's visibility.
+     * @see #hideSystemUI(Activity)
+     * @see #showSystemUI(Activity)
+     */
     public static void toggleSystemUI(Activity activity, boolean show) {
         if (show)
             showSystemUI(activity);
@@ -202,10 +218,6 @@ public class Utils {
             result = context.getResources().getDimensionPixelSize(resourceId);
 
         return result;
-    }
-
-    public static boolean isValid(LatLng latLng) {
-        return (latLng.latitude >= -90 && latLng.latitude <= 90) && (latLng.longitude >= -180 && latLng.longitude <= 180);
     }
 
 }
