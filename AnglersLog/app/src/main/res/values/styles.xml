@@ -63,13 +63,13 @@
     </style>
 
     <!-- RecyclerView LinearLayout -->
-    <style name="recycler_layout">
+    <style name="RecyclerView.Layout" parent="Theme.AppCompat.Light">
         <item name="android:paddingLeft">@dimen/spacing_medium</item>
         <item name="android:paddingRight">@dimen/spacing_medium</item>
     </style>
 
     <!-- RecyclerView TextView -->
-    <style name="recycler_text_view">
+    <style name="RecyclerView.TextView" parent="Theme.AppCompat.Light">
         <item name="android:textAppearance">@android:style/TextAppearance.Medium</item>
         <item name="android:paddingBottom">@dimen/spacing_medium</item>
         <item name="android:paddingTop">@dimen/spacing_medium</item>

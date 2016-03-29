@@ -3,10 +3,10 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="?android:attr/selectableItemBackground"
-    style="@style/recycler_layout">
+    style="@style/RecyclerView.Layout">
 
     <TextView
-        style="@style/recycler_text_view"
+        style="@style/RecyclerView.TextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/name_text_view"/>

@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="?android:attr/selectableItemBackground"
-    style="@style/recycler_layout">
+    style="@style/RecyclerView.Layout">
 
     <CheckBox
         android:layout_width="wrap_content"
@@ -14,7 +14,7 @@
         android:id="@+id/delete_check_box"/>
 
     <TextView
-        style="@style/recycler_text_view"
+        style="@style/RecyclerView.TextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toStartOf="@id/delete_check_box"
