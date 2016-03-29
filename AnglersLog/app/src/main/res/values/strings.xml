@@ -3,12 +3,9 @@
     <string name="app_name">Anglers\' Log</string>
     <string name="app_description">Track, analyze, share.</string>
     <string name="app_photos_dir">/AnglersLog</string>
-    <string name="app_search">Search Anglers\' Log</string>
     <string name="hashtag">AnglersLogApp</string>
     <string name="website">http://cohenadair.com/anglerslog/</string>
     <string name="share_text">Shared with @anglerslog for #android #anglerslogapp</string>
-    <string name="no_instagram">Instagram is not installed on this device.</string>
-    <string name="instagram_disabled">Instagram is installed, but disabled on this device.</string>
 
     <string name="instabug_sheet_title">Bugs &amp; Feedback</string>
     <string name="instabug_sheet_description">Tap the ladybug button to send bug reports and feedback.  The button can be disabled from the Settings menu.</string>
@@ -17,7 +14,6 @@
 
     <string name="pref_units">pref_units</string>
     <string name="pref_instabug">pref_instabug</string>
-    <string name="pref_auto_backup">pref_auto_backup</string>
     <string name="pref_about_group">pref_about_group</string>
     <string name="pref_google_maps_terms">pref_google_maps_terms</string>
     <string name="pref_icons8_terms">pref_icons8_terms</string>
@@ -29,20 +25,10 @@
     <string name="icons8_terms_title">Icons8 Terms &amp; Privacy</string>
     <string name="icons8_terms">Some icons used in Anglers\' Log were developed by <a href="https://icons8.com/">Icons8</a>.\n\nIcons8 provides thousands of free icons for both personal and commercial use.</string>
 
-    <string name="backup_alert_title">Backup</string>
-    <string name="backup_alert_msg">Would you like to backup and sync Anglers\' Log data with Google?</string>
-    <string name="backup_alert_confirm">Backup</string>
-    <string name="backup_alert_deny">Not Now</string>
-    <string name="success_sync">Data sync successful!</string>
     <string name="display_units">Display Units</string>
-    <string name="display_unit_types">Unit Types</string>
-    <string name="display_units_summary">This will not affect existing input values.</string>
     <string name="instabug_title">Bugs and Feedback</string>
     <string name="instabug_summary">Enable or disable the Instabug floating button.</string>
     <string name="instabug_restart">Changes will take effect after Anglers\' Log is restarted.</string>
-    <string name="error_sync">Error syncing data</string>
-    <string name="auto_backup">Auto Backup</string>
-    <string name="auto_backup_summary">Automatically save application data to Google\'s cloud services.</string>
     <string name="imperial">Imperial</string>
     <string name="metric">Metric</string>
     <string name="about_setting">About, Terms &amp; Privacy</string>
@@ -66,7 +52,6 @@
     <string name="reset_dialog_title">Confirm Reset</string>
 
     <string name="error">Error</string>
-    <string name="photos">Photos</string>
     <string name="species_caught">Species Caught</string>
     <string name="species_stats">Species Statistics</string>
     <string name="species">Species</string>
@@ -75,8 +60,6 @@
     <string name="heaviest_catch">Heaviest Catch</string>
     <string name="longest_catches">Longest Catches</string>
     <string name="heaviest_catches">Heaviest Catches</string>
-    <string name="no_recorded_length">There are no catches with recorded lengths.</string>
-    <string name="no_recorded_weight">There are no catches with recorded weights.</string>
     <string name="bait">Bait</string>
     <string name="baits_used">Baits Used</string>
     <string name="bait_stats">Bait Statistics</string>
@@ -97,9 +80,6 @@
     <string name="depth">Depth</string>
     <string name="bait_category">Bait Category</string>
     <string name="date">Date</string>
-    <string name="start_date">Start Date</string>
-    <string name="end_date">End Date</string>
-    <string name="time">Time</string>
     <string name="category">Category</string>
     <string name="name">Name</string>
     <string name="color">Color</string>
@@ -114,28 +94,17 @@
     <string name="location">Location</string>
     <string name="location_success">Location Catches</string>
     <string name="location_stats">Location Statistics</string>
-    <string name="new_fishing_spot">New Fishing Spot</string>
     <string name="fishing_spot">Fishing Spot</string>
     <string name="fishing_spots">Fishing Spots</string>
-    <string name="properties">Properties</string>
     <string name="latitude">Latitude</string>
     <string name="longitude">Longitude</string>
     <string name="lat">Lat</string>
     <string name="lng">Lng</string>
     <string name="temperature">Temperature</string>
-    <string name="temperature_f">Temperature (\u00b0F)</string>
     <string name="wind_speed">Wind Speed</string>
-    <string name="wind_speed_colon">Wind Speed:</string>
-    <string name="wind_mph">Wind Speed (mph)</string>
+    <string name="sky_conditions">Sky Conditions</string>
     <string name="mph">mph</string>
     <string name="kmh">km/h</string>
-    <string name="sky_conditions">Sky Conditions</string>
-    <string name="sky_conditions_colon">Sky:</string>
-    <string name="catch_details">Catch Details</string>
-    <string name="fish_details">Fish Details</string>
-    <string name="trip_details">Trip Details</string>
-    <string name="water_conditions">Water Conditions</string>
-    <string name="weather_conditions">Weather Conditions</string>
     <string name="degrees_f">\u00b0F</string>
     <string name="degrees_c">\u00b0C</string>
     <string name="lbs">lbs</string>
@@ -147,16 +116,12 @@
     <string name="zero">0</string>
     <string name="to">to</string>
     <string name="show_more">Show more</string>
-    <string name="show_all">Show all</string>
     <string name="all">All</string>
     <string name="show_catches">Show catches</string>
     <string name="show_all_catches">Show all catches</string>
     <string name="all_catches">All catches</string>
     <string name="all_locations">All locations</string>
     <string name="all_baits">All baits</string>
-    <string name="more">More</string>
-    <string name="totals">Totals</string>
-    <string name="confirm">Confirm</string>
     <string name="reset">Reset</string>
     <string name="search">Search</string>
     <string name="empty"> </string>
@@ -188,8 +153,6 @@
     <string name="attach_photo">Attach photo</string>
     <string name="take_photo">Take photo</string>
 
-    <string name="drawer_open">Open Navigation Drawer</string>
-    <string name="drawer_close">Close Navigation Drawer</string>
     <string name="drawer_catches">Catches</string>
     <string name="drawer_trips">Trips</string>
     <string name="drawer_gallery">Photo Gallery</string>
@@ -198,34 +161,19 @@
     <string name="drawer_baits">Baits</string>
     <string name="drawer_stats">Statistics</string>
     <string name="drawer_settings">Settings</string>
-    <string name="drawer_about">About</string>
     <string name="drawer_help">Help &amp; Feedback</string>
     <string name="drawer_instagram">#AnglersLogApp</string>
     <string name="drawer_twitter">#AnglersLogApp</string>
 
     <string name="button_cancel">Cancel</string>
     <string name="button_save">Save</string>
-    <string name="button_done">Done</string>
     <string name="button_add">Add</string>
     <string name="button_delete">Delete</string>
 
-    <string name="photos_hint">Tap to add photos</string>
-    <string name="species_hint">Tap to add or select species</string>
-    <string name="location_hint">Tap to add or select a location</string>
-    <string name="category_hint">Tap to add or select a category</string>
-    <string name="methods_hint">Tap to add or select fishing methods</string>
-    <string name="clarity_hint">Tap to add or select a water clarity</string>
-    <string name="catches_hint">Tap to add or select catches</string>
-    <string name="locations_hint">Tap to add or select locations</string>
-    <string name="anglers_hint">Tap to add or select anglers</string>
     <string name="name_hint">Enter a name</string>
-    <string name="bait_hint">Tap to add or select bait</string>
     <string name="color_hint">Enter a color</string>
     <string name="size_hint">Enter a size</string>
-    <string name="description_hint">Enter a description</string>
     <string name="temperature_hint">Enter a temperature</string>
-    <string name="temperature_hint_unit">Enter a temperature</string>
-    <string name="notes_hint">Enter some notes</string>
     <string name="quantity_hint">Enter a quantity</string>
     <string name="length_hint">Enter a length</string>
     <string name="weight_hint">Enter a weight</string>
@@ -241,7 +189,6 @@
 
     <string name="hint_new_item">Enter new</string>
     <string name="new_text">New</string>
-    <string name="selection_text">Select</string>
     <string name="select_photo">Select Photo</string>
 
     <string name="action_share">Share</string>
@@ -249,9 +196,6 @@
     <string name="action_delete">Delete</string>
     <string name="action_done">Done</string>
     <string name="action_confirm">Confirm Delete</string>
-    <string name="action_close">Close</string>
-    <string name="action_add_photo">Add Photo</string>
-    <string name="action_settings">Settings</string>
     <string name="action_sort">Sort</string>
     <string name="action_search">Search</string>
     <string name="action_zoom">Zoom Out</string>
@@ -260,18 +204,15 @@
     <string name="success_catch">Successfully added catch</string>
     <string name="success_catch_delete">Successfully deleted catch</string>
     <string name="success_catch_edit">Successfully updated catch</string>
-    <string name="error_catch_delete">Catch is in use and cannot be deleted.</string>
     <string name="error_catch_edit">Error updating catch</string>
     <string name="error_catch">Error adding catch!</string>
-    <string name="error_catch_date">A catch with that date and time already exists.  Please choose another date or edit the current catch.</string>
     <string name="error_catch_species">Please select a species.</string>
 
-    <string name="success_location_delete">Successfully deleted location</string>
     <string name="success_location_edit">Successfully updated location</string>
     <string name="success_location_add">Successfully added location</string>
+    <string name="success_location_delete">Successfully deleted location</string>
     <string name="success_fishing_spot_add">Successfully added fishing spot</string>
     <string name="success_fishing_spot_edit">Successfully updated fishing spot</string>
-    <string name="error_location_delete">Location is in use and cannot be deleted.</string>
     <string name="error_location_edit">Error updating location</string>
     <string name="error_location_add">Error adding location</string>
     <string name="error_location_name">A location with that name already exists.</string>
@@ -284,16 +225,13 @@
     <string name="error_fishing_spot_add">Error adding fishing spot</string>
     <string name="error_fishing_spot_edit">Error updating fishing spot</string>
     <string name="number_caught">Fish Caught</string>
-    <string name="edit_weather">Edit Weather</string>
     <string name="error_weather_form">Please fill out all fields.</string>
     <string name="error_getting_weather">Couldn\'t get weather data.</string>
     <string name="error_google_services">Couldn\'t connect to Google Play Services.</string>
 
-    <string name="bait_no_catches">No catches have been made with this bait.</string>
     <string name="success_bait">Successfully added bait</string>
     <string name="success_bait_delete">Successfully deleted bait</string>
     <string name="success_bait_edit">Successfully updated bait</string>
-    <string name="error_bait_delete">Bait is in use and cannot be deleted.</string>
     <string name="error_bait_edit">Error updating bait</string>
     <string name="error_bait">Error adding bait</string>
     <string name="error_name">Please enter a name.</string>
@@ -302,37 +240,23 @@
 
     <string name="error_trip">Error adding trip</string>
     <string name="error_trip_edit">Error updating trip</string>
-    <string name="error_trip_delete">Error deleting trip</string>
     <string name="error_trip_date">A trip within that date range already exists.  Please choose another date or edit the current trip.</string>
     <string name="error_trip_date_start">Start date must come before end date.</string>
     <string name="error_trip_date_end">End date must come after start date.</string>
     <string name="success_trip">Successfully added trip</string>
     <string name="success_trip_edit">Successfully updated trip</string>
     <string name="success_trip_delete">Successfully deleted trip</string>
-    <string name="trip_catches">fish caught on this trip</string>
 
     <string name="error_camera_unavailable">The camera is currently unavailable on this device.</string>
     <string name="error_delete_primitive">is currently in use and cannot be deleted.</string>
-    <string name="error_add_photo">Error adding photo</string>
-    <string name="error_remove_photo">Error removing photo</string>
-    <string name="error_resolve_google_connection">Failed to connect to Google Drive.</string>
     <string name="msg_confirm_delete">This action cannot be undone. Delete anyway?</string>
     <string name="msg_delete_photo">Are you sure you want to delete this photo? This action cannot be undone.</string>
 
     <string name="catch_photo_description">A photo of the current catch.</string>
-    <string name="bait_photo_description">A photo of the current bait.</string>
-    <string name="camera_icon_description">A button to take or attach a photo.</string>
-    <string name="remove_fishing_spot_description">Removes fishing spot from the current location.</string>
     <string name="header_photo_description">A photo of one of the user\'s catches.</string>
-    <string name="add_fishing_spot_description">Add fishing spot to location.</string>
     <string name="crosshairs_description">The coordinates of the current fishing spot.</string>
-    <string name="location_description">More information about the catch\'s location.</string>
-    <string name="bait_description">More information about the catch\'s bait.</string>
     <string name="check_description">A check that signifies selection.</string>
     <string name="refresh_description">Attempts to get weather data from the web.</string>
-    <string name="weather_description">An image representation of the current weather.</string>
-    <string name="weather_edit_description">A button used to edit the current weather information.</string>
-    <string name="weather_remove_description">Remove current weather information.</string>
     <string name="more_info_description">More information about the current item.</string>
     <string name="share_description">Share content with popular social media.</string>
     <string name="back_description">Go back.</string>
