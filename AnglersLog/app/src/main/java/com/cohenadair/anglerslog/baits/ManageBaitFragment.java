@@ -15,6 +15,7 @@ import com.cohenadair.anglerslog.model.Logbook;
 import com.cohenadair.anglerslog.model.user_defines.Bait;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import com.cohenadair.anglerslog.trips.ManageTripFragment;
+import com.cohenadair.anglerslog.utilities.AlertUtils;
 import com.cohenadair.anglerslog.utilities.PrimitiveSpecManager;
 import com.cohenadair.anglerslog.utilities.Utils;
 import com.cohenadair.anglerslog.views.InputButtonView;
@@ -110,19 +111,19 @@ public class ManageBaitFragment extends ManageContentFragment {
 
         // category
         if (getNewBait().getCategory() == null) {
-            Utils.showErrorAlert(getActivity(), R.string.error_bait_category);
+            AlertUtils.showError(getActivity(), R.string.error_bait_category);
             return false;
         }
 
         // name
         if (getNewBait().isNameNull()) {
-            Utils.showErrorAlert(getActivity(), R.string.error_name);
+            AlertUtils.showError(getActivity(), R.string.error_name);
             return false;
         }
 
         // name and category combo
         if (isNameDifferent() && Logbook.baitExists(getNewBait())) {
-            Utils.showErrorAlert(getActivity(), R.string.error_bait_category_name);
+            AlertUtils.showError(getActivity(), R.string.error_bait_category_name);
             return false;
         }
 

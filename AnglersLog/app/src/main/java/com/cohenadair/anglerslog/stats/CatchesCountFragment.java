@@ -15,6 +15,7 @@ import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.activities.DefaultActivity;
 import com.cohenadair.anglerslog.model.Stats;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
+import com.cohenadair.anglerslog.utilities.AlertUtils;
 import com.cohenadair.anglerslog.utilities.Utils;
 import com.cohenadair.anglerslog.views.DisplayLabelView;
 import com.cohenadair.anglerslog.views.PropertyDetailView;
@@ -207,7 +208,7 @@ public class CatchesCountFragment extends Fragment {
         for (Stats.Quantity item : options)
             adapter.add(item.getName());
 
-        Utils.showSelectionDialog(getContext(), adapter, new Utils.OnSelectionDialogCallback() {
+        AlertUtils.showSelection(getContext(), getChildFragmentManager(), adapter, new AlertUtils.OnSelectionDialogCallback() {
             @Override
             public void onSelect(int position) {
                 mPieChartView.invalidate();

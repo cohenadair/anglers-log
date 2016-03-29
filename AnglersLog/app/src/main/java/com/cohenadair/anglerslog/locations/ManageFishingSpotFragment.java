@@ -19,6 +19,7 @@ import com.cohenadair.anglerslog.fragments.ManageContentFragment;
 import com.cohenadair.anglerslog.model.user_defines.FishingSpot;
 import com.cohenadair.anglerslog.model.user_defines.Location;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
+import com.cohenadair.anglerslog.utilities.AlertUtils;
 import com.cohenadair.anglerslog.utilities.GoogleMapLayout;
 import com.cohenadair.anglerslog.utilities.Utils;
 import com.cohenadair.anglerslog.views.InputTextView;
@@ -131,13 +132,13 @@ public class ManageFishingSpotFragment extends ManageContentFragment {
 
         // name
         if (fishingSpot.isNameNull()) {
-            Utils.showErrorAlert(getActivity(), R.string.error_name);
+            AlertUtils.showError(getActivity(), R.string.error_name);
             return false;
         }
 
         // duplicate name
         if (!isEditing() && mOnVerifyInterface.isDuplicate(fishingSpot)) {
-            Utils.showErrorAlert(getActivity(), R.string.error_fishing_spot_name);
+            AlertUtils.showError(getActivity(), R.string.error_fishing_spot_name);
             return false;
         }
 

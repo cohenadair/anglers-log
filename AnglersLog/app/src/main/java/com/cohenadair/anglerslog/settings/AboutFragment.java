@@ -7,7 +7,7 @@ import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
 
 import com.cohenadair.anglerslog.R;
-import com.cohenadair.anglerslog.utilities.Utils;
+import com.cohenadair.anglerslog.utilities.AlertUtils;
 import com.google.android.gms.common.GoogleApiAvailability;
 
 /**
@@ -49,7 +49,7 @@ public class AboutFragment extends PreferenceFragmentCompat {
             mapsTerms.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
-                    Utils.showAlert(getContext(), R.string.google_maps_terms_title, licence);
+                    AlertUtils.show(getContext(), R.string.google_maps_terms_title, licence);
                     return true;
                 }
             });
@@ -60,7 +60,7 @@ public class AboutFragment extends PreferenceFragmentCompat {
         iconsTerms.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                Utils.showAlert(getContext(), getChildFragmentManager(), R.string.icons8_terms_title, R.string.icons8_terms);
+                AlertUtils.show(getContext(), getChildFragmentManager(), R.string.icons8_terms_title, R.string.icons8_terms);
                 return true;
             }
         });

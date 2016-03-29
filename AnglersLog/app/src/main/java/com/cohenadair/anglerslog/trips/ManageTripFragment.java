@@ -13,6 +13,7 @@ import com.cohenadair.anglerslog.model.user_defines.Catch;
 import com.cohenadair.anglerslog.model.user_defines.Trip;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import com.cohenadair.anglerslog.model.utilities.UserDefineArrays;
+import com.cohenadair.anglerslog.utilities.AlertUtils;
 import com.cohenadair.anglerslog.utilities.LayoutSpecManager;
 import com.cohenadair.anglerslog.utilities.PrimitiveSpecManager;
 import com.cohenadair.anglerslog.utilities.Utils;
@@ -125,7 +126,7 @@ public class ManageTripFragment extends ManageContentFragment {
     public boolean verifyUserInput() {
         // make sure the new trip doesn't overlap any existing trips
         if ((mDateChanged || !isEditing()) && Logbook.tripExists(getNewTrip())) {
-            Utils.showErrorAlert(getActivity(), R.string.error_trip_date);
+            AlertUtils.showError(getActivity(), R.string.error_trip_date);
             return false;
         }
 
@@ -217,7 +218,7 @@ public class ManageTripFragment extends ManageContentFragment {
                     @Override
                     public void onFinish(Date date) {
                         if (date.after(getNewTrip().getEndDate())) {
-                            Utils.showErrorAlert(getActivity(), R.string.error_trip_date_start);
+                            AlertUtils.showError(getActivity(), R.string.error_trip_date_start);
                             return;
                         }
 
@@ -239,7 +240,7 @@ public class ManageTripFragment extends ManageContentFragment {
                     @Override
                     public void onFinish(Date date) {
                         if (date.before(getNewTrip().getStartDate())) {
-                            Utils.showErrorAlert(getActivity(), R.string.error_trip_date_end);
+                            AlertUtils.showError(getActivity(), R.string.error_trip_date_end);
                             return;
                         }
 

@@ -15,7 +15,6 @@ import android.os.Build;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
@@ -24,7 +23,6 @@ import android.text.format.DateFormat;
 import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -50,7 +48,6 @@ public class Utils {
     public static final int MANAGE_ALERT_DELETE = 1;
 
     public static final String MIME_TYPE_IMAGE = "image/jpeg";
-    public static final String MIME_TYPE_TEXT = "text/plain";
     public static final String MIME_TYPE_ZIP = "application/zip";
     public static final String MIME_TYPE_ALL = "*/*";
 
@@ -64,140 +61,6 @@ public class Utils {
 
     public static void showToast(Context context, String msg) {
         Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
-    }
-
-    public static void showAlert(Context context, FragmentManager manager, int titleId, int msgId) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(context)
-                .setTitle(titleId)
-                .setMessage(msgId)
-                .setNegativeButton(android.R.string.ok, null);
-
-        new AlertFragment().initWithBuilder(builder).show(manager, null);
-    }
-
-    public static void showAlert(Context context, int titleId, String msg) {
-        new AlertDialog.Builder(context)
-                .setTitle(titleId)
-                .setMessage(msg)
-                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                })
-                .show();
-    }
-
-    public static void showAlert(Context context, int msgId) {
-        new AlertDialog.Builder(context)
-                .setMessage(msgId)
-                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                })
-                .show();
-    }
-
-    public static void showErrorAlert(Context context, int msgId) {
-        showErrorAlert(context, context.getResources().getString(msgId));
-    }
-
-    public static void showErrorAlert(Context context, String msg) {
-        new AlertDialog.Builder(context)
-                .setTitle(context.getResources().getString(R.string.error))
-                .setMessage(msg)
-                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                })
-                .show();
-    }
-
-    // TODO wrap AlertDialog instances in a DialogFragment to properly handle rotation
-    // see http://stackoverflow.com/questions/7557265/prevent-dialog-dismissal-on-screen-rotation-in-android
-
-    /**
-     * An alert that shows managing options such as "Edit" and "Delete".
-     * @param context The context in which to show the dialog.
-     * @param onItemClick The on item click listener.
-     */
-    public static void showManageAlert(Context context, String title, DialogInterface.OnClickListener onItemClick) {
-        new AlertDialog.Builder(context)
-                .setTitle(title)
-                .setPositiveButton(R.string.button_cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                })
-                .setItems(R.array.manage_options, onItemClick)
-                .show();
-    }
-
-    public static void showConfirmationDialog(Context context, int titleResId, int msgResId, int buttonResId, DialogInterface.OnClickListener onConfirm) {
-        new AlertDialog.Builder(context)
-                .setTitle(titleResId)
-                .setMessage(msgResId)
-                .setNegativeButton(R.string.button_cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                })
-                .setPositiveButton(buttonResId, onConfirm)
-                .show();
-    }
-
-    public static void showDeleteConfirm(Context context, DialogInterface.OnClickListener onConfirm) {
-        showConfirmationDialog(context, R.string.action_confirm, R.string.msg_confirm_delete, R.string.action_delete, onConfirm);
-    }
-
-    public static void showDeleteOption(Context context, int msgId, DialogInterface.OnClickListener onConfirm) {
-        new AlertDialog.Builder(context)
-                .setTitle(R.string.action_delete)
-                .setMessage(msgId)
-                .setNegativeButton(R.string.button_cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                })
-                .setPositiveButton(R.string.action_delete, onConfirm)
-                .show();
-    }
-
-    public interface OnSelectionDialogCallback {
-        void onSelect(int position);
-    }
-
-    /**
-     * Shows a Dialog with a list of options to select.
-     *
-     * @param context The Context.
-     * @param adapter The adapter of selection items to show.
-     * @param callback The callback for when an option is selected.
-     */
-    public static void showSelectionDialog(Context context, ArrayAdapter<String> adapter, final OnSelectionDialogCallback callback) {
-        new AlertDialog.Builder(context)
-                .setNegativeButton(R.string.button_cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                })
-                .setAdapter(adapter, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        if (callback != null)
-                            callback.onSelect(which);
-                        dialog.dismiss();
-                    }
-                })
-                .show();
     }
 
     /**

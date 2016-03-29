@@ -91,7 +91,7 @@ public class ListManager {
         public boolean onLongClick(View view) {
             UserDefineObject obj = getObject();
 
-            Utils.showManageAlert(getContext(), obj.getName(), new DialogInterface.OnClickListener() {
+            AlertUtils.showManageOptions(getContext(), obj.getName(), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     switch (which) {

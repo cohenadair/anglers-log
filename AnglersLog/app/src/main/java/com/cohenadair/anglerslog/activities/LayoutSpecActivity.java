@@ -15,6 +15,7 @@ import com.cohenadair.anglerslog.fragments.MyListFragment;
 import com.cohenadair.anglerslog.interfaces.GlobalSettingsInterface;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import com.cohenadair.anglerslog.model.utilities.SortingMethod;
+import com.cohenadair.anglerslog.utilities.AlertUtils;
 import com.cohenadair.anglerslog.utilities.LayoutSpec;
 import com.cohenadair.anglerslog.utilities.LayoutSpecManager;
 import com.cohenadair.anglerslog.utilities.ListManager;
@@ -224,7 +225,7 @@ public abstract class LayoutSpecActivity extends DefaultActivity implements
         if (id == null) // for tablets with no entries
             return;
 
-        Utils.showDeleteConfirm(this, new DialogInterface.OnClickListener() {
+        AlertUtils.showDeleteConfirmation(this, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 if (removeUserDefine(id))

@@ -22,6 +22,7 @@ import android.widget.TextView;
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.interfaces.OnClickInterface;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
+import com.cohenadair.anglerslog.utilities.AlertUtils;
 import com.cohenadair.anglerslog.utilities.ListSelectionManager;
 import com.cohenadair.anglerslog.utilities.PrimitiveSpec;
 import com.cohenadair.anglerslog.utilities.PrimitiveSpecManager;
@@ -406,7 +407,7 @@ public class ManagePrimitiveFragment extends DialogFragment {
                         items.remove(i);
                     else {
                         String msg = items.get(i).getName() + " " + getResources().getString(R.string.error_delete_primitive);
-                        Utils.showErrorAlert(getContext(), msg);
+                        AlertUtils.showError(getContext(), msg);
                     }
                 }
         }

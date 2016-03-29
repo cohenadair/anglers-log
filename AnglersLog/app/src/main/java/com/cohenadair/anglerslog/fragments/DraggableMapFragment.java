@@ -18,9 +18,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.cohenadair.anglerslog.R;
+import com.cohenadair.anglerslog.utilities.AlertUtils;
 import com.cohenadair.anglerslog.utilities.GoogleMapLayout;
 import com.cohenadair.anglerslog.utilities.LogbookPreferences;
-import com.cohenadair.anglerslog.utilities.Utils;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
@@ -163,7 +163,7 @@ public class DraggableMapFragment extends SupportMapFragment implements OnMapRea
         if (permissions[0].equals(PERMISSION_LOCATION) && grantResults[0] == GRANTED)
             enableMyLocation();
         else
-            Utils.showErrorAlert(getContext(), R.string.error_location_permission);
+            AlertUtils.showError(getContext(), R.string.error_location_permission);
     }
 
     @Override

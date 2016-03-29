@@ -14,6 +14,7 @@ import com.cohenadair.anglerslog.model.Logbook;
 import com.cohenadair.anglerslog.model.user_defines.FishingSpot;
 import com.cohenadair.anglerslog.model.user_defines.Location;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
+import com.cohenadair.anglerslog.utilities.AlertUtils;
 import com.cohenadair.anglerslog.utilities.Utils;
 import com.cohenadair.anglerslog.views.InputButtonView;
 import com.cohenadair.anglerslog.views.InputTextView;
@@ -125,19 +126,19 @@ public class ManageLocationFragment extends ManageContentFragment {
 
         // name
         if (loc.isNameNull()) {
-            Utils.showErrorAlert(getActivity(), R.string.error_name);
+            AlertUtils.showError(getActivity(), R.string.error_name);
             return false;
         }
 
         // duplicate name
         if (isNameDifferent() && Logbook.locationExists(loc)) {
-            Utils.showErrorAlert(getActivity(), R.string.error_location_name);
+            AlertUtils.showError(getActivity(), R.string.error_location_name);
             return false;
         }
 
         // fishing spots
         if (mFishingSpots.size() <= 0) {
-            Utils.showErrorAlert(getActivity(), R.string.error_no_fishing_spots);
+            AlertUtils.showError(getActivity(), R.string.error_no_fishing_spots);
             return false;
         }
 

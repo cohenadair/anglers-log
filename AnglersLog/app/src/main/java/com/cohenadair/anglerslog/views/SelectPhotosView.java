@@ -18,9 +18,9 @@ import android.widget.LinearLayout;
 
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.catches.ManageCatchFragment;
+import com.cohenadair.anglerslog.utilities.AlertUtils;
 import com.cohenadair.anglerslog.utilities.PermissionUtils;
 import com.cohenadair.anglerslog.utilities.PhotoUtils;
-import com.cohenadair.anglerslog.utilities.Utils;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -134,7 +134,7 @@ public class SelectPhotosView extends LinearLayout {
             photoIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(mPublicPhotoFile));
             mSelectPhotosInteraction.onStartSelectionActivity(photoIntent, ManageCatchFragment.REQUEST_PHOTO);
         } else
-            Utils.showErrorAlert(getContext(), R.string.error_camera_unavailable);
+            AlertUtils.showError(getContext(), R.string.error_camera_unavailable);
     }
 
     private void openPhotoIntent(int takeOrAttach) {
@@ -197,7 +197,7 @@ public class SelectPhotosView extends LinearLayout {
         img.setOnLongClickListener(new OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                Utils.showDeleteOption(getContext(), R.string.msg_delete_photo, new DialogInterface.OnClickListener() {
+                AlertUtils.showDeleteConfirmation(getContext(), R.string.msg_delete_photo, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         removeImage(img);

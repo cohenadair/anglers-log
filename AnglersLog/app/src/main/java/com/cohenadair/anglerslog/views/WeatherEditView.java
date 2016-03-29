@@ -12,8 +12,8 @@ import android.widget.Spinner;
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.model.Logbook;
 import com.cohenadair.anglerslog.model.Weather;
+import com.cohenadair.anglerslog.utilities.AlertUtils;
 import com.cohenadair.anglerslog.utilities.LogbookPreferences;
-import com.cohenadair.anglerslog.utilities.Utils;
 
 /**
  * A EditWeatherView is a view that used for adding, updating, or removing a {@link Weather} object.
@@ -60,7 +60,7 @@ public class WeatherEditView extends LinearLayout {
         String sky = mSkyConditionsView.getInputText();
 
         if (temp == null || wind == null || sky == null) {
-            Utils.showErrorAlert(getContext(), R.string.error_weather_form);
+            AlertUtils.showError(getContext(), R.string.error_weather_form);
             return null;
         }
 

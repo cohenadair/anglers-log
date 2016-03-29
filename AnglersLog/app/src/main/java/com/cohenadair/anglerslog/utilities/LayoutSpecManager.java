@@ -244,7 +244,7 @@ public class LayoutSpecManager {
                 for (UserDefineObject fishingSpot : fishingSpots)
                     adapter.add(fishingSpot.getName());
 
-                Utils.showSelectionDialog(context, adapter, new Utils.OnSelectionDialogCallback() {
+                AlertUtils.showSelection(context, context.getSupportFragmentManager(), adapter, new AlertUtils.OnSelectionDialogCallback() {
                     @Override
                     public void onSelect(int position) {
                         if (callback != null)

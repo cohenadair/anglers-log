@@ -14,6 +14,7 @@ import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.activities.MyListSelectionActivity;
 import com.cohenadair.anglerslog.model.user_defines.PhotoUserDefineObject;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
+import com.cohenadair.anglerslog.utilities.AlertUtils;
 import com.cohenadair.anglerslog.utilities.PermissionUtils;
 import com.cohenadair.anglerslog.utilities.PhotoUtils;
 import com.cohenadair.anglerslog.utilities.Utils;
@@ -112,7 +113,7 @@ public abstract class ManageContentFragment extends Fragment {
             if (grantResults.length > 0 && grantResults[0] == PermissionUtils.GRANTED)
                 mSelectPhotosView.onStoragePermissionsGranted();
             else
-                Utils.showErrorAlert(getContext(), R.string.storage_permissions_denied);
+                AlertUtils.showError(getContext(), R.string.storage_permissions_denied);
 
             return;
         }

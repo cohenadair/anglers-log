@@ -23,6 +23,7 @@ import com.cohenadair.anglerslog.model.user_defines.Catch;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import com.cohenadair.anglerslog.model.utilities.UserDefineArrays;
 import com.cohenadair.anglerslog.trips.ManageTripFragment;
+import com.cohenadair.anglerslog.utilities.AlertUtils;
 import com.cohenadair.anglerslog.utilities.LayoutSpecManager;
 import com.cohenadair.anglerslog.utilities.LogbookPreferences;
 import com.cohenadair.anglerslog.utilities.PrimitiveSpecManager;
@@ -171,7 +172,7 @@ public class ManageCatchFragment extends ManageContentFragment {
     public boolean verifyUserInput() {
         // species
         if (getNewCatch().getSpecies() == null) {
-            Utils.showErrorAlert(getActivity(), R.string.error_catch_species);
+            AlertUtils.showError(getActivity(), R.string.error_catch_species);
             return false;
         }
 

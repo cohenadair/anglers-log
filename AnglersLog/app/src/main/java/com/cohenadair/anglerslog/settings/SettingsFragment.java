@@ -18,6 +18,7 @@ import com.cohenadair.anglerslog.fragments.LoadingDialog;
 import com.cohenadair.anglerslog.model.Logbook;
 import com.cohenadair.anglerslog.model.backup.Exporter;
 import com.cohenadair.anglerslog.model.backup.Importer;
+import com.cohenadair.anglerslog.utilities.AlertUtils;
 import com.cohenadair.anglerslog.utilities.LogbookPreferences;
 import com.cohenadair.anglerslog.utilities.Utils;
 
@@ -118,7 +119,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             public boolean onPreferenceChange(Preference preference, Object o) {
                 boolean on = ((CheckBoxPreference)preference).isChecked();
                 LogbookPreferences.setInstabugEnabled(on);
-                Utils.showAlert(getContext(), R.string.instabug_restart);
+                AlertUtils.show(getContext(), R.string.instabug_restart);
                 return true;
             }
         });

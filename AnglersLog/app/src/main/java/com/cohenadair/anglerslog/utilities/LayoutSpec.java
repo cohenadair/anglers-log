@@ -247,6 +247,6 @@ public class LayoutSpec {
             updateViews(context);
             Utils.showToast(context, successId);
         } else
-            Utils.showErrorAlert(context, obj.getName() + " " + context.getResources().getString(R.string.error_delete_primitive));
+            AlertUtils.showError(context, obj.getName() + " " + context.getResources().getString(R.string.error_delete_primitive));
     }
 }
