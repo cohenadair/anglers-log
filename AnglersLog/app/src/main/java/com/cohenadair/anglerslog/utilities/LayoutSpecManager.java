@@ -405,7 +405,7 @@ public class LayoutSpecManager {
         final LayoutSpec spec = new LayoutSpec();
 
         spec.setId(LAYOUT_HELP);
-        spec.setOnClickMenuItemIntent(Utils.getActionViewIntent(context.getResources().getString(R.string.website)));
+        spec.setOnClickMenuItemIntent(IntentUtils.getActionView(context.getResources().getString(R.string.website)));
 
         return spec;
     }
@@ -414,7 +414,7 @@ public class LayoutSpecManager {
         final LayoutSpec spec = new LayoutSpec();
 
         spec.setId(LAYOUT_TWITTER);
-        spec.setOnClickMenuItemIntent(Utils.getTwitterIntent(context, R.string.hashtag));
+        spec.setOnClickMenuItemIntent(IntentUtils.getTwitter(context, R.string.hashtag));
 
         return spec;
     }
@@ -423,7 +423,7 @@ public class LayoutSpecManager {
         final LayoutSpec spec = new LayoutSpec();
 
         spec.setId(LAYOUT_INSTAGRAM);
-        spec.setOnClickMenuItemIntent(Utils.getInstagramIntent(context, R.string.hashtag));
+        spec.setOnClickMenuItemIntent(IntentUtils.getInstagram(context, R.string.hashtag));
 
         return spec;
     }

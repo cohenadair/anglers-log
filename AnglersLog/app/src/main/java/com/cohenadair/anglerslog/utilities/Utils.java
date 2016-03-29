@@ -3,15 +3,10 @@ package com.cohenadair.anglerslog.utilities;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Point;
-import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -194,59 +189,6 @@ public class Utils {
 
             }
         };
-    }
-
-    /**
-     * Gets a ACTION_VIEW Intent for a given URL.
-     * @param url The URL String to open.
-     * @return An Intent.
-     */
-    public static Intent getActionViewIntent(String url) {
-        return new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-    }
-
-    private static Intent getApplicationIntent(Context context, String packageName, String appUrl, String browserUrl) {
-        try {
-            PackageInfo info = context.getPackageManager().getPackageInfo(packageName, 0);
-            if (info.applicationInfo.enabled)
-                return getActionViewIntent(appUrl);
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        return getActionViewIntent(browserUrl);
-    }
-
-    /**
-     * Gets an Intent for a Twitter link with a given hashtag.
-     * @param context The Context.
-     * @param hashTagResId The hashtag to load.
-     * @return An Intent that will open the Twitter app or the browser if Twitter isn't installed.
-     */
-    public static Intent getTwitterIntent(Context context, int hashTagResId) {
-        return getApplicationIntent(
-                context,
-                "com.twitter.android",
-                "twitter://search?query=%23" + context.getResources().getString(hashTagResId),
-                "https://twitter.com/search?f=realtime&amp;q=%23" + context.getResources().getString(hashTagResId)
-        );
-    }
-
-    /**
-     * Gets an Intent for an Instagram link with a given hashtag.
-     * @param context The Context.
-     * @param hashTagResId The hashtag to load.
-     * @return An Intent that will open the Instagram app or the browser if Instagram isn't
-     *         installed.
-     */
-    @Nullable
-    public static Intent getInstagramIntent(Context context, int hashTagResId) {
-        return getApplicationIntent(
-                context,
-                "com.instagram.android",
-                "https://www.instagram.com/explore/tags/" + context.getResources().getString(hashTagResId),
-                "https://www.instagram.com/explore/tags/" + context.getResources().getString(hashTagResId)
-        );
     }
 
     /**
