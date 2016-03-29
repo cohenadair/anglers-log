@@ -109,6 +109,8 @@
     <string name="artificial">Artificial</string>
     <string name="live">Live</string>
     <string name="real">Real</string>
+    <string name="released">Released</string>
+    <string name="kept">Kept</string>
     <string name="location">Location</string>
     <string name="location_success">Location Catches</string>
     <string name="location_stats">Location Statistics</string>
@@ -182,6 +184,9 @@
     <string name="add_weather">Add weather</string>
     <string name="update_weather">Update weather</string>
     <string name="dismiss">Dismiss</string>
+    <string name="attach_photos">Attach photos</string>
+    <string name="attach_photo">Attach photo</string>
+    <string name="take_photo">Take photo</string>
 
     <string name="drawer_open">Open Navigation Drawer</string>
     <string name="drawer_close">Close Navigation Drawer</string>
