@@ -26,7 +26,7 @@ import com.cohenadair.anglerslog.model.user_defines.Location;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import com.cohenadair.anglerslog.utilities.FishingSpotMarkerManager;
 import com.cohenadair.anglerslog.utilities.LayoutSpecManager;
-import com.cohenadair.anglerslog.utilities.Utils;
+import com.cohenadair.anglerslog.utilities.ViewUtils;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.Marker;
 
@@ -97,7 +97,7 @@ public class LocationFragment extends DetailFragment {
         boolean idIsNull = (id == null);
 
         // must hide individual components for the menu to show property on tablets
-        Utils.toggleVisibility(mFishingSpotSpinner, !idIsNull);
+        ViewUtils.setVisibility(mFishingSpotSpinner, !idIsNull);
         toggleMapVisibility(!idIsNull);
 
         // id can be null if in two-pane view and there are no locations
@@ -148,10 +148,10 @@ public class LocationFragment extends DetailFragment {
     @Override
     public void hide() {
         super.hide();
-        Utils.toggleVisibility(mFishingSpotSpinner, false);
+        ViewUtils.setVisibility(mFishingSpotSpinner, false);
 
         if (mMapFragment != null)
-            Utils.toggleVisibility(mMapFragment.getView(), false);
+            ViewUtils.setVisibility(mMapFragment.getView(), false);
     }
 
     private void showAllCatches() {

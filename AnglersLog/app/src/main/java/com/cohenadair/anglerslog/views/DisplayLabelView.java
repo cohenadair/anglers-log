@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.utilities.Utils;
+import com.cohenadair.anglerslog.utilities.ViewUtils;
 
 /**
  * A simple view that shows a TextView and ImageView icon.
@@ -53,12 +54,12 @@ public class DisplayLabelView extends LeftIconView {
 
     public void setLabel(String label) {
         if (Utils.stringOrNull(label) == null) {
-            Utils.toggleVisibility(mLabelTextView, false);
+            ViewUtils.setVisibility(mLabelTextView, false);
             return;
         }
 
         mLabelTextView.setText(label);
-        Utils.toggleVisibility(mLabelTextView, true);
+        ViewUtils.setVisibility(mLabelTextView, true);
     }
 
     public void setOnClickListener(OnClickListener l) {

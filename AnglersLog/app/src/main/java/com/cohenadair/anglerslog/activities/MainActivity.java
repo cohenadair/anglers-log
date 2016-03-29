@@ -14,7 +14,7 @@ import com.cohenadair.anglerslog.interfaces.OnClickInterface;
 import com.cohenadair.anglerslog.utilities.LayoutSpecManager;
 import com.cohenadair.anglerslog.utilities.LogbookPreferences;
 import com.cohenadair.anglerslog.utilities.NavigationManager;
-import com.cohenadair.anglerslog.utilities.Utils;
+import com.cohenadair.anglerslog.utilities.ViewUtils;
 
 import java.util.UUID;
 
@@ -187,6 +187,6 @@ public class MainActivity extends LayoutSpecActivity {
     private void setRightPanelVisibility() {
         // hide/show right panel if needed
         LinearLayout detailContainer = (LinearLayout)findViewById(R.id.detail_container);
-        Utils.toggleVisibility(detailContainer, hasRightPanel());
+        ViewUtils.setVisibility(detailContainer, hasRightPanel());
     }
 }

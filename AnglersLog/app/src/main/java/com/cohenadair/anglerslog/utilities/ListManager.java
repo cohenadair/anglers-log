@@ -82,9 +82,9 @@ public class ListManager {
         }
 
         public void initForSimpleLayout() {
-            Utils.toggleVisibility(mHeaderTextView, false);
-            Utils.toggleVisibility(mImageView, false);
-            Utils.toggleVisibility(mFavoriteStar, false);
+            ViewUtils.setVisibility(mHeaderTextView, false);
+            ViewUtils.setVisibility(mImageView, false);
+            ViewUtils.setVisibility(mFavoriteStar, false);
         }
 
         @Override
@@ -181,10 +181,10 @@ public class ListManager {
         }
 
         private void toggleHeader(boolean showHeader) {
-            Utils.toggleVisibility(mHeaderTextView, showHeader);
-            Utils.toggleVisibility(mImageView, !showHeader);
-            Utils.toggleVisibility(mFavoriteStar, !showHeader);
-            Utils.toggleVisibility(mTitleSubTitleView, !showHeader);
+            ViewUtils.setVisibility(mHeaderTextView, showHeader);
+            ViewUtils.setVisibility(mImageView, !showHeader);
+            ViewUtils.setVisibility(mFavoriteStar, !showHeader);
+            ViewUtils.setVisibility(mTitleSubTitleView, !showHeader);
         }
 
         @Override

@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.utilities.Utils;
+import com.cohenadair.anglerslog.utilities.ViewUtils;
 
 /**
  * A TextInputView is a view with a title and EditText view for input from the user..
@@ -69,12 +70,12 @@ public class InputTextView extends LeftIconView {
 
     public void setTitle(String title) {
         if (Utils.stringOrNull(title) == null) {
-            Utils.toggleVisibility(mTitleTextView, false);
+            ViewUtils.setVisibility(mTitleTextView, false);
             return;
         }
 
         mTitleTextView.setText(title);
-        Utils.toggleVisibility(mTitleTextView, true);
+        ViewUtils.setVisibility(mTitleTextView, true);
     }
 
     public String getInputText() {
@@ -125,7 +126,7 @@ public class InputTextView extends LeftIconView {
     }
 
     public void setTitleVisibility(boolean visible) {
-        Utils.toggleVisibility(mTitleTextView, visible);
+        ViewUtils.setVisibility(mTitleTextView, visible);
     }
 
     public void addOnInputTextChangedListener(TextWatcher listener) {

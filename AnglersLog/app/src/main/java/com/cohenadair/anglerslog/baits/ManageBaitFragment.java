@@ -17,7 +17,7 @@ import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import com.cohenadair.anglerslog.trips.ManageTripFragment;
 import com.cohenadair.anglerslog.utilities.AlertUtils;
 import com.cohenadair.anglerslog.utilities.PrimitiveSpecManager;
-import com.cohenadair.anglerslog.utilities.Utils;
+import com.cohenadair.anglerslog.utilities.ViewUtils;
 import com.cohenadair.anglerslog.views.InputButtonView;
 import com.cohenadair.anglerslog.views.InputTextView;
 
@@ -203,28 +203,28 @@ public class ManageBaitFragment extends ManageContentFragment {
      * See {@link ManageTripFragment#initInputListeners()}.
      */
     private void initInputListeners() {
-        mNameView.addOnInputTextChangedListener(Utils.onTextChangedListener(new Utils.OnTextChangedListener() {
+        mNameView.addOnInputTextChangedListener(ViewUtils.onTextChangedListener(new ViewUtils.OnTextChangedListener() {
             @Override
             public void onTextChanged(String newText) {
                 getNewBait().setName(newText);
             }
         }));
 
-        mDescriptionView.addOnInputTextChangedListener(Utils.onTextChangedListener(new Utils.OnTextChangedListener() {
+        mDescriptionView.addOnInputTextChangedListener(ViewUtils.onTextChangedListener(new ViewUtils.OnTextChangedListener() {
             @Override
             public void onTextChanged(String newText) {
                 getNewBait().setDescription(newText);
             }
         }));
 
-        mSizeView.addOnInputTextChangedListener(Utils.onTextChangedListener(new Utils.OnTextChangedListener() {
+        mSizeView.addOnInputTextChangedListener(ViewUtils.onTextChangedListener(new ViewUtils.OnTextChangedListener() {
             @Override
             public void onTextChanged(String newText) {
                 getNewBait().setSize(newText);
             }
         }));
 
-        mColorView.addOnInputTextChangedListener(Utils.onTextChangedListener(new Utils.OnTextChangedListener() {
+        mColorView.addOnInputTextChangedListener(ViewUtils.onTextChangedListener(new ViewUtils.OnTextChangedListener() {
             @Override
             public void onTextChanged(String newText) {
                 getNewBait().setColor(newText);

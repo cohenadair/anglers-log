@@ -13,7 +13,7 @@ import com.cohenadair.anglerslog.model.Logbook;
 import com.cohenadair.anglerslog.model.Weather;
 import com.cohenadair.anglerslog.model.user_defines.Catch;
 import com.cohenadair.anglerslog.utilities.LayoutSpecManager;
-import com.cohenadair.anglerslog.utilities.Utils;
+import com.cohenadair.anglerslog.utilities.ViewUtils;
 import com.cohenadair.anglerslog.views.DisplayLabelView;
 import com.cohenadair.anglerslog.views.ImageScrollView;
 import com.cohenadair.anglerslog.views.WeatherDetailsView;
@@ -148,72 +148,72 @@ public class CatchFragment extends DetailFragment {
     }
 
     private void updateBaitView() {
-        Utils.toggleVisibility(mBaitView, mCatch.getBait() != null);
+        ViewUtils.setVisibility(mBaitView, mCatch.getBait() != null);
         mBaitView.setDetail(mCatch.getBaitAsString());
     }
 
     private void updateLocationView() {
-        Utils.toggleVisibility(mLocationView, mCatch.getFishingSpot() != null);
+        ViewUtils.setVisibility(mLocationView, mCatch.getFishingSpot() != null);
         mLocationView.setDetail(mCatch.getFishingSpotAsString());
     }
 
     private void updateFishingMethodsView() {
-        Utils.toggleVisibility(mFishingMethodsView, mCatch.hasFishingMethods());
+        ViewUtils.setVisibility(mFishingMethodsView, mCatch.hasFishingMethods());
         mFishingMethodsView.setDetail(mCatch.getFishingMethodsAsString());
     }
 
     private void updateWaterClarityView() {
-        Utils.toggleVisibility(mWaterClarityView, mCatch.getWaterClarity() != null);
+        ViewUtils.setVisibility(mWaterClarityView, mCatch.getWaterClarity() != null);
         mWaterClarityView.setDetail(mCatch.getWaterClarityAsString());
     }
 
     private void updateResultView() {
-        Utils.toggleVisibility(mResultView, mCatch.getCatchResult() != null);
+        ViewUtils.setVisibility(mResultView, mCatch.getCatchResult() != null);
         mResultView.setDetail(mCatch.getCatchResultAsString(getContext()));
     }
 
     private void updateWeatherDetailsView() {
         Weather weather = mCatch.getWeather();
-        Utils.toggleVisibility(mWeatherContainer, weather != null);
+        ViewUtils.setVisibility(mWeatherContainer, weather != null);
         mWeatherDetailsView.updateViews(weather);
     }
 
     private void updateQuantityView() {
-        Utils.toggleVisibility(mQuantityView, mCatch.getQuantity() != -1);
+        ViewUtils.setVisibility(mQuantityView, mCatch.getQuantity() != -1);
         mQuantityView.setDetail(mCatch.getQuantityAsString());
     }
 
     private void updateLengthView() {
-        Utils.toggleVisibility(mLengthView, mCatch.getLength() != -1);
+        ViewUtils.setVisibility(mLengthView, mCatch.getLength() != -1);
         mLengthView.setDetail(mCatch.getLengthAsStringWithUnits());
     }
 
     private void updateWeightView() {
-        Utils.toggleVisibility(mWeightView, mCatch.getWeight() != -1);
+        ViewUtils.setVisibility(mWeightView, mCatch.getWeight() != -1);
         mWeightView.setDetail(mCatch.getWeightAsStringWithUnits());
     }
 
     private void updateWaterDepthView() {
-        Utils.toggleVisibility(mWaterDepthView, mCatch.getWaterDepth() != -1);
+        ViewUtils.setVisibility(mWaterDepthView, mCatch.getWaterDepth() != -1);
         mWaterDepthView.setDetail(mCatch.getWaterDepthAsStringWithUnits());
     }
 
     private void updateWaterTemperatureView() {
-        Utils.toggleVisibility(mWaterTemperatureView, mCatch.getWaterTemperature() != -1);
+        ViewUtils.setVisibility(mWaterTemperatureView, mCatch.getWaterTemperature() != -1);
         mWaterTemperatureView.setDetail(mCatch.getWaterTemperatureAsStringWithUnits());
     }
 
     private void updateNotesView() {
-        Utils.toggleVisibility(mNotesView, mCatch.getNotes() != null);
+        ViewUtils.setVisibility(mNotesView, mCatch.getNotes() != null);
         mNotesView.setDetail(mCatch.getNotesAsString());
     }
 
     private void updateRulerIcon() {
-        Utils.toggleVisibility(mSizeContainer, !(isGone(mLengthView) && isGone(mWeightView) && isGone(mQuantityView)));
+        ViewUtils.setVisibility(mSizeContainer, !(isGone(mLengthView) && isGone(mWeightView) && isGone(mQuantityView)));
     }
 
     private void updateWaterIcon() {
-        Utils.toggleVisibility(mWaterContainer, !(isGone(mWaterClarityView) && isGone(mWaterDepthView) && isGone(mWaterTemperatureView)));
+        ViewUtils.setVisibility(mWaterContainer, !(isGone(mWaterClarityView) && isGone(mWaterDepthView) && isGone(mWaterTemperatureView)));
     }
 
     private boolean isGone(View view) {

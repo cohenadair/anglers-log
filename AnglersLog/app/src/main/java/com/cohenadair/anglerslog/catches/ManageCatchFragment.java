@@ -29,6 +29,7 @@ import com.cohenadair.anglerslog.utilities.LogbookPreferences;
 import com.cohenadair.anglerslog.utilities.PermissionUtils;
 import com.cohenadair.anglerslog.utilities.PrimitiveSpecManager;
 import com.cohenadair.anglerslog.utilities.Utils;
+import com.cohenadair.anglerslog.utilities.ViewUtils;
 import com.cohenadair.anglerslog.views.InputButtonView;
 import com.cohenadair.anglerslog.views.InputTextView;
 import com.cohenadair.anglerslog.views.WeatherView;
@@ -482,42 +483,42 @@ public class ManageCatchFragment extends ManageContentFragment {
      * See {@link ManageTripFragment#initInputListeners()}.
      */
     private void initInputListeners() {
-        mNotesView.addOnInputTextChangedListener(Utils.onTextChangedListener(new Utils.OnTextChangedListener() {
+        mNotesView.addOnInputTextChangedListener(ViewUtils.onTextChangedListener(new ViewUtils.OnTextChangedListener() {
             @Override
             public void onTextChanged(String newText) {
                 getNewCatch().setNotes(newText);
             }
         }));
 
-        mWaterTemperatureView.addOnInputTextChangedListener(Utils.onTextChangedListener(new Utils.OnTextChangedListener() {
+        mWaterTemperatureView.addOnInputTextChangedListener(ViewUtils.onTextChangedListener(new ViewUtils.OnTextChangedListener() {
             @Override
             public void onTextChanged(String newText) {
                 getNewCatch().setWaterTemperature((int) asFloat(newText, -1));
             }
         }));
 
-        mWaterDepthView.addOnInputTextChangedListener(Utils.onTextChangedListener(new Utils.OnTextChangedListener() {
+        mWaterDepthView.addOnInputTextChangedListener(ViewUtils.onTextChangedListener(new ViewUtils.OnTextChangedListener() {
             @Override
             public void onTextChanged(String newText) {
                 getNewCatch().setWaterDepth(asFloat(newText, -1));
             }
         }));
 
-        mWeightView.addOnInputTextChangedListener(Utils.onTextChangedListener(new Utils.OnTextChangedListener() {
+        mWeightView.addOnInputTextChangedListener(ViewUtils.onTextChangedListener(new ViewUtils.OnTextChangedListener() {
             @Override
             public void onTextChanged(String newText) {
                 getNewCatch().setWeight(asFloat(newText, -1));
             }
         }));
 
-        mLengthView.addOnInputTextChangedListener(Utils.onTextChangedListener(new Utils.OnTextChangedListener() {
+        mLengthView.addOnInputTextChangedListener(ViewUtils.onTextChangedListener(new ViewUtils.OnTextChangedListener() {
             @Override
             public void onTextChanged(String newText) {
                 getNewCatch().setLength(asFloat(newText, -1));
             }
         }));
 
-        mQuantityView.addOnInputTextChangedListener(Utils.onTextChangedListener(new Utils.OnTextChangedListener() {
+        mQuantityView.addOnInputTextChangedListener(ViewUtils.onTextChangedListener(new ViewUtils.OnTextChangedListener() {
             @Override
             public void onTextChanged(String newText) {
                 getNewCatch().setQuantity((int) asFloat(newText, 1));

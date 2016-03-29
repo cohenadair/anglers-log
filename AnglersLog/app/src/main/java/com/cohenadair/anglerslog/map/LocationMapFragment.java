@@ -24,7 +24,7 @@ import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import com.cohenadair.anglerslog.model.utilities.SortingUtils;
 import com.cohenadair.anglerslog.model.utilities.UserDefineArrays;
 import com.cohenadair.anglerslog.utilities.FishingSpotMarkerManager;
-import com.cohenadair.anglerslog.utilities.Utils;
+import com.cohenadair.anglerslog.utilities.ViewUtils;
 import com.google.android.gms.maps.GoogleMap;
 
 import java.util.ArrayList;
@@ -195,9 +195,9 @@ public class LocationMapFragment extends MasterFragment {
     }
 
     private void resetSearch() {
-        Utils.toggleVisibility(mSearchContainer, true);
-        Utils.toggleVisibility(mSearchList, true);
-        Utils.toggleVisibility(mSearchMessage, false);
+        ViewUtils.setVisibility(mSearchContainer, true);
+        ViewUtils.setVisibility(mSearchList, true);
+        ViewUtils.setVisibility(mSearchMessage, false);
 
         // initially show all fishing spots
         mSearchList.setAdapter(getSearchAdapter(mFishingSpots));
@@ -211,9 +211,9 @@ public class LocationMapFragment extends MasterFragment {
     }
 
     private void hideSearchContainer() {
-        Utils.toggleVisibility(mSearchContainer, false);
-        Utils.toggleVisibility(mSearchList, true);
-        Utils.toggleVisibility(mSearchMessage, false);
+        ViewUtils.setVisibility(mSearchContainer, false);
+        ViewUtils.setVisibility(mSearchList, true);
+        ViewUtils.setVisibility(mSearchMessage, false);
     }
 
     private void showSearchResults(String query) {
@@ -222,8 +222,8 @@ public class LocationMapFragment extends MasterFragment {
         // if there are no results, notify the user
         if (filtered.size() <= 0) {
             mSearchMessage.setText(R.string.no_search_results);
-            Utils.toggleVisibility(mSearchMessage, true);
-            Utils.toggleVisibility(mSearchList, false);
+            ViewUtils.setVisibility(mSearchMessage, true);
+            ViewUtils.setVisibility(mSearchList, false);
             return;
         }
 
@@ -237,8 +237,8 @@ public class LocationMapFragment extends MasterFragment {
             }
         });
 
-        Utils.toggleVisibility(mSearchList, true);
-        Utils.toggleVisibility(mSearchMessage, false);
+        ViewUtils.setVisibility(mSearchList, true);
+        ViewUtils.setVisibility(mSearchMessage, false);
     }
 
     private void iconifySearchView() {

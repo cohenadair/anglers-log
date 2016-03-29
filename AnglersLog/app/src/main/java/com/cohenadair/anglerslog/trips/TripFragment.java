@@ -20,7 +20,7 @@ import com.cohenadair.anglerslog.model.user_defines.Trip;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import com.cohenadair.anglerslog.utilities.LayoutSpecManager;
 import com.cohenadair.anglerslog.utilities.ListManager;
-import com.cohenadair.anglerslog.utilities.Utils;
+import com.cohenadair.anglerslog.utilities.ViewUtils;
 import com.cohenadair.anglerslog.views.DisplayLabelView;
 import com.cohenadair.anglerslog.views.PartialListView;
 
@@ -105,7 +105,7 @@ public class TripFragment extends DetailFragment {
 
     private void updateNameView() {
         if (mTrip.isNameNull()) {
-            Utils.toggleVisibility(mNameView, false);
+            ViewUtils.setVisibility(mNameView, false);
             return;
         }
 
@@ -200,12 +200,12 @@ public class TripFragment extends DetailFragment {
     }
 
     private void updateAnglersView() {
-        Utils.toggleVisibility(mAnglersView, mTrip.hasAnglers());
+        ViewUtils.setVisibility(mAnglersView, mTrip.hasAnglers());
         mAnglersView.setDetail(mTrip.getAnglersAsString());
     }
 
     private void updateNotesView() {
-        Utils.toggleVisibility(mNotesView, mTrip.hasNotes());
+        ViewUtils.setVisibility(mNotesView, mTrip.hasNotes());
         mNotesView.setDetail(mTrip.getNotesAsString());
     }
 }

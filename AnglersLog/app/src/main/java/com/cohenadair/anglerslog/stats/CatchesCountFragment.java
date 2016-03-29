@@ -18,6 +18,7 @@ import com.cohenadair.anglerslog.model.Stats;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import com.cohenadair.anglerslog.utilities.AlertUtils;
 import com.cohenadair.anglerslog.utilities.Utils;
+import com.cohenadair.anglerslog.utilities.ViewUtils;
 import com.cohenadair.anglerslog.views.DisplayLabelView;
 import com.cohenadair.anglerslog.views.PropertyDetailView;
 import com.github.lzyzsd.randomcolor.RandomColor;
@@ -80,7 +81,7 @@ public class CatchesCountFragment extends Fragment {
 
         mDetailView = (DisplayLabelView)view.findViewById(R.id.detail_view);
         mDetailView.setIconResource(mStatsSpec.getIconResource());
-        Utils.toggleVisibility(mDetailView, mStatsSpec.getCallbacks() != null);
+        ViewUtils.setVisibility(mDetailView, mStatsSpec.getCallbacks() != null);
 
         initPieChartCenter(view);
         initPieChart(view);
@@ -104,7 +105,7 @@ public class CatchesCountFragment extends Fragment {
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(screenSize.x, (int)(screenSize.y * 0.60));
         mPieChartView.setLayoutParams(params);
 
-        Utils.toggleVisibility(mPieChartView, getTotalCatches() > 0);
+        ViewUtils.setVisibility(mPieChartView, getTotalCatches() > 0);
 
         List<SliceValue> values = new ArrayList<>();
 
@@ -183,7 +184,7 @@ public class CatchesCountFragment extends Fragment {
         final UserDefineObject obj = mStatsSpec.getObject(position);
 
         if (obj == null) {
-            Utils.toggleVisibility(mDetailView, false);
+            ViewUtils.setVisibility(mDetailView, false);
             return;
         }
 

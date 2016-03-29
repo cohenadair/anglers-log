@@ -7,7 +7,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.cohenadair.anglerslog.R;
-import com.cohenadair.anglerslog.utilities.Utils;
+import com.cohenadair.anglerslog.utilities.ViewUtils;
 
 /**
  * An abstract class that includes manipulation methods for views with a left icon.
@@ -48,11 +48,11 @@ public abstract class LeftIconView extends LinearLayout {
 
     public void setIconResource(int resId) {
         if (resId == -1) {
-            Utils.toggleVisibility(mIconImageView, false);
+            ViewUtils.setVisibility(mIconImageView, false);
             return;
         }
 
         mIconImageView.setImageResource(resId);
-        Utils.toggleVisibility(mIconImageView, true);
+        ViewUtils.setVisibility(mIconImageView, true);
     }
 }

@@ -18,7 +18,7 @@ import com.cohenadair.anglerslog.model.user_defines.Bait;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import com.cohenadair.anglerslog.utilities.LayoutSpecManager;
 import com.cohenadair.anglerslog.utilities.ListManager;
-import com.cohenadair.anglerslog.utilities.Utils;
+import com.cohenadair.anglerslog.utilities.ViewUtils;
 import com.cohenadair.anglerslog.views.DisplayLabelView;
 import com.cohenadair.anglerslog.views.ImageScrollView;
 import com.cohenadair.anglerslog.views.PartialListView;
@@ -102,13 +102,13 @@ public class BaitFragment extends DetailFragment {
         mTypeView.setDetail(getActivity().getResources().getString(mBait.getTypeName()));
 
         mColorView.setDetail(mBait.getColor());
-        Utils.toggleVisibility(mColorView, mBait.getColor() != null);
+        ViewUtils.setVisibility(mColorView, mBait.getColor() != null);
 
         mSizeView.setDetail(mBait.getSize());
-        Utils.toggleVisibility(mSizeView, mBait.getSize() != null);
+        ViewUtils.setVisibility(mSizeView, mBait.getSize() != null);
 
         mDescriptionView.setDetail(mBait.getDescription());
-        Utils.toggleVisibility(mDescriptionView, mBait.getDescription() != null);
+        ViewUtils.setVisibility(mDescriptionView, mBait.getDescription() != null);
 
         updateCatchesList();
     }
@@ -117,7 +117,7 @@ public class BaitFragment extends DetailFragment {
         ArrayList<UserDefineObject> catches = mBait.getCatches();
         boolean hasCatches = catches != null && catches.size() > 0;
 
-        Utils.toggleVisibility(mCatchesLayout, hasCatches);
+        ViewUtils.setVisibility(mCatchesLayout, hasCatches);
 
         if (!hasCatches)
             return;

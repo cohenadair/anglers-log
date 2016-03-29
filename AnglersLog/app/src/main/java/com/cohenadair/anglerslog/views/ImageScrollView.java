@@ -9,7 +9,7 @@ import android.widget.RelativeLayout;
 
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.utilities.PhotoUtils;
-import com.cohenadair.anglerslog.utilities.Utils;
+import com.cohenadair.anglerslog.utilities.ViewUtils;
 
 import java.util.ArrayList;
 
@@ -58,11 +58,11 @@ public class ImageScrollView extends LinearLayout {
 
     public void setImages(ArrayList<String> imagePaths) {
         if (imagePaths == null || imagePaths.size() <= 0) {
-            Utils.toggleVisibility(mContainer, false);
+            ViewUtils.setVisibility(mContainer, false);
             return;
         }
 
-        Utils.toggleVisibility(mContainer, true);
+        ViewUtils.setVisibility(mContainer, true);
         mPhotosWrapper.removeAllViews();
 
         int size = getResources().getDimensionPixelSize(R.dimen.image_scroll_size);

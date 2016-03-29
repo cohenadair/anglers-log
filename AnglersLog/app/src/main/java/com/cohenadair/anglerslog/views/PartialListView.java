@@ -11,7 +11,7 @@ import android.widget.LinearLayout;
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import com.cohenadair.anglerslog.utilities.ListManager;
-import com.cohenadair.anglerslog.utilities.Utils;
+import com.cohenadair.anglerslog.utilities.ViewUtils;
 
 import java.util.ArrayList;
 
@@ -89,11 +89,11 @@ public class PartialListView extends LeftIconView {
         boolean hasObjects = getPortionCount() > 0;
 
         // hide views if needed
-        Utils.toggleVisibility(getIconImageView(), hasObjects);
-        Utils.toggleVisibility(findViewById(R.id.container), hasObjects);
+        ViewUtils.setVisibility(getIconImageView(), hasObjects);
+        ViewUtils.setVisibility(findViewById(R.id.container), hasObjects);
 
         boolean shouldShowMore = getAllCount() > getPortionCount();
-        Utils.toggleVisibility(mShowAllButton, shouldShowMore);
+        ViewUtils.setVisibility(mShowAllButton, shouldShowMore);
 
         // give the RecyclerView a margin if it is showing all possible items
         if (!shouldShowMore) {

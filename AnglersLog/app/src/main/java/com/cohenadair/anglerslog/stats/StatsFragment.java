@@ -16,6 +16,7 @@ import com.cohenadair.anglerslog.model.user_defines.Catch;
 import com.cohenadair.anglerslog.utilities.LayoutSpecManager;
 import com.cohenadair.anglerslog.utilities.PhotoUtils;
 import com.cohenadair.anglerslog.utilities.Utils;
+import com.cohenadair.anglerslog.utilities.ViewUtils;
 import com.cohenadair.anglerslog.views.DefaultCardView;
 
 import java.util.UUID;
@@ -57,9 +58,9 @@ public class StatsFragment extends MasterFragment {
     public void updateInterface() {
         boolean hasCatches = Logbook.getCatchCount() > 0;
 
-        Utils.toggleVisibility(mSpeciesCard, hasCatches);
-        Utils.toggleVisibility(mBaitsCard, hasCatches);
-        Utils.toggleVisibility(mLocationsCard, hasCatches);
+        ViewUtils.setVisibility(mSpeciesCard, hasCatches);
+        ViewUtils.setVisibility(mBaitsCard, hasCatches);
+        ViewUtils.setVisibility(mLocationsCard, hasCatches);
 
         if (hasCatches) {
             mSpeciesCard.initWithList(
@@ -115,7 +116,7 @@ public class StatsFragment extends MasterFragment {
     }
 
     private void updateBigCatchCard(int titleId, DefaultCardView card, final Catch aCatch, final int statsId) {
-        Utils.toggleVisibility(card, aCatch != null);
+        ViewUtils.setVisibility(card, aCatch != null);
 
         if (aCatch == null)
             return;

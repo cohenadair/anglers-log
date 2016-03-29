@@ -70,7 +70,7 @@ public class ListSelectionManager {
                 return;
 
             getObject().setIsSelected(select);
-            Utils.toggleViewSelected(mView, getObject().getIsSelected());
+            ViewUtils.setSelected(mView, getObject().getIsSelected());
         }
 
         public int getItemCount() {
@@ -120,7 +120,7 @@ public class ListSelectionManager {
          */
         public void updateViews() {
             if (mAdapter.isManagingSingleSelections())
-                Utils.toggleViewSelected(mView, getAdapterPosition() == mAdapter.getSelectedPosition());
+                ViewUtils.setSelected(mView, getAdapterPosition() == mAdapter.getSelectedPosition());
         }
     }
 

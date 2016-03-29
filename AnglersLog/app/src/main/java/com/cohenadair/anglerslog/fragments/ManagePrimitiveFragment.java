@@ -26,7 +26,7 @@ import com.cohenadair.anglerslog.utilities.AlertUtils;
 import com.cohenadair.anglerslog.utilities.ListSelectionManager;
 import com.cohenadair.anglerslog.utilities.PrimitiveSpec;
 import com.cohenadair.anglerslog.utilities.PrimitiveSpecManager;
-import com.cohenadair.anglerslog.utilities.Utils;
+import com.cohenadair.anglerslog.utilities.ViewUtils;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -213,7 +213,7 @@ public class ManagePrimitiveFragment extends DialogFragment {
 
         // add the menu check mark when multiple selection is allowed
         if (mCanSelectMultiple)
-            Utils.addDoneButton(mToolbar, new MenuItem.OnMenuItemClickListener() {
+            ViewUtils.addDoneButton(mToolbar, new MenuItem.OnMenuItemClickListener() {
                 @Override
                 public boolean onMenuItemClick(MenuItem item) {
                     dismissFragment();
@@ -234,7 +234,7 @@ public class ManagePrimitiveFragment extends DialogFragment {
         mAdapter.setSelectedIds(mSelectedIds);
 
         mContentRecyclerView.setAdapter(mAdapter);
-        Utils.toggleVisibility(mContentRecyclerView, mAdapter.getItemCount() > 0);
+        ViewUtils.setVisibility(mContentRecyclerView, mAdapter.getItemCount() > 0);
     }
 
     /**

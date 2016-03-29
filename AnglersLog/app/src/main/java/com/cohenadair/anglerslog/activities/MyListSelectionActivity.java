@@ -14,7 +14,7 @@ import com.cohenadair.anglerslog.model.utilities.UserDefineArrays;
 import com.cohenadair.anglerslog.utilities.LayoutSpec;
 import com.cohenadair.anglerslog.utilities.LayoutSpecManager;
 import com.cohenadair.anglerslog.utilities.ListManager;
-import com.cohenadair.anglerslog.utilities.Utils;
+import com.cohenadair.anglerslog.utilities.ViewUtils;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -132,8 +132,8 @@ public class MyListSelectionActivity extends LayoutSpecActivity {
         super.initToolbar();
 
         if (isTwoPane()) {
-            Utils.toggleVisibility(getToolbar(), mCanSelectMultiple);
-            Utils.addDoneButton(getToolbar(), new MenuItem.OnMenuItemClickListener() {
+            ViewUtils.setVisibility(getToolbar(), mCanSelectMultiple);
+            ViewUtils.addDoneButton(getToolbar(), new MenuItem.OnMenuItemClickListener() {
                 @Override
                 public boolean onMenuItemClick(MenuItem item) {
                     finishWithResult();

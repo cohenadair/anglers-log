@@ -15,7 +15,7 @@ import com.cohenadair.anglerslog.model.user_defines.FishingSpot;
 import com.cohenadair.anglerslog.model.user_defines.Location;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import com.cohenadair.anglerslog.utilities.AlertUtils;
-import com.cohenadair.anglerslog.utilities.Utils;
+import com.cohenadair.anglerslog.utilities.ViewUtils;
 import com.cohenadair.anglerslog.views.InputButtonView;
 import com.cohenadair.anglerslog.views.InputTextView;
 import com.cohenadair.anglerslog.views.MoreDetailView;
@@ -65,7 +65,7 @@ public class ManageLocationFragment extends ManageContentFragment {
     @Override
     public void onResume() {
         super.onResume();
-        mNameView.addOnInputTextChangedListener(Utils.onTextChangedListener(new Utils.OnTextChangedListener() {
+        mNameView.addOnInputTextChangedListener(ViewUtils.onTextChangedListener(new ViewUtils.OnTextChangedListener() {
             @Override
             public void onTextChanged(String newText) {
                 getNewLocation().setName(newText);

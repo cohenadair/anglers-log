@@ -8,7 +8,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.cohenadair.anglerslog.R;
-import com.cohenadair.anglerslog.utilities.Utils;
+import com.cohenadair.anglerslog.utilities.ViewUtils;
 
 /**
  * A TitleSubTitleView is a view that neatly displays a title and subtitle text vertically.
@@ -50,12 +50,12 @@ public class TitleSubTitleView extends LinearLayout {
 
                 int styleId = arr.getResourceId(R.styleable.TitleSubTitleView_titleStyle, -1);
                 if (styleId != -1)
-                    Utils.setTextAppearance(getContext(), mTitle, styleId);
+                    ViewUtils.setTextAppearance(getContext(), mTitle, styleId);
 
                 styleId = arr.getResourceId(R.styleable.TitleSubTitleView_subtitleStyle, -1);
                 if (styleId != -1) {
-                    Utils.setTextAppearance(getContext(), mSubtitle, styleId);
-                    Utils.setTextAppearance(getContext(), mSubSubtitle, styleId);
+                    ViewUtils.setTextAppearance(getContext(), mSubtitle, styleId);
+                    ViewUtils.setTextAppearance(getContext(), mSubSubtitle, styleId);
                 }
             } finally {
                 arr.recycle(); // required after using TypedArray
@@ -101,14 +101,14 @@ public class TitleSubTitleView extends LinearLayout {
     }
 
     public void setTitleStyle(int resId) {
-        Utils.setTextAppearance(getContext(), mTitle, resId);
+        ViewUtils.setTextAppearance(getContext(), mTitle, resId);
     }
 
     public void setSubtitleStyle(int resId) {
-        Utils.setTextAppearance(getContext(), mSubtitle, resId);
+        ViewUtils.setTextAppearance(getContext(), mSubtitle, resId);
     }
 
     private void toggleSubSubtitleViewVisibility() {
-        Utils.toggleVisibility(mSubSubtitle, !mSubSubtitle.getText().toString().isEmpty());
+        ViewUtils.setVisibility(mSubSubtitle, !mSubSubtitle.getText().toString().isEmpty());
     }
 }

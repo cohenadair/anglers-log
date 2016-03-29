@@ -12,6 +12,7 @@ import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.model.Stats;
 import com.cohenadair.anglerslog.utilities.PhotoUtils;
 import com.cohenadair.anglerslog.utilities.Utils;
+import com.cohenadair.anglerslog.utilities.ViewUtils;
 
 import java.util.ArrayList;
 
@@ -41,10 +42,10 @@ public class DefaultCardView extends LinearLayout {
         inflate(getContext(), R.layout.view_card_default, this);
 
         mBannerImageView = (ImageView)findViewById(R.id.banner_image_view);
-        Utils.toggleVisibility(mBannerImageView, false);
+        ViewUtils.setVisibility(mBannerImageView, false);
 
         mIconImageView = (ImageView)findViewById(R.id.icon_image_view);
-        Utils.toggleVisibility(mIconImageView, false);
+        ViewUtils.setVisibility(mIconImageView, false);
 
         mTitleView = (TextView)findViewById(R.id.title_text_view);
         mContentContainer = (LinearLayout)findViewById(R.id.content_container);
@@ -98,12 +99,12 @@ public class DefaultCardView extends LinearLayout {
         mBannerImageView.requestLayout();
 
         PhotoUtils.photoToImageView(mBannerImageView, path, w, h);
-        Utils.toggleVisibility(mBannerImageView, true);
+        ViewUtils.setVisibility(mBannerImageView, true);
     }
 
     public void setIconImage(int resId) {
         mIconImageView.setImageResource(resId);
-        Utils.toggleVisibility(mIconImageView, true);
+        ViewUtils.setVisibility(mIconImageView, true);
     }
 
     public void setTitle(String title) {
@@ -119,7 +120,7 @@ public class DefaultCardView extends LinearLayout {
      * @param content An array of property-detail values.
      */
     private void updateContent(ArrayList<Stats.Quantity> content) {
-        Utils.toggleVisibility(this, content.size() > 0);
+        ViewUtils.setVisibility(this, content.size() > 0);
 
         if (content.size() <= 0)
             return;

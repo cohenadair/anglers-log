@@ -6,7 +6,7 @@ import android.util.AttributeSet;
 import android.widget.Button;
 
 import com.cohenadair.anglerslog.R;
-import com.cohenadair.anglerslog.utilities.Utils;
+import com.cohenadair.anglerslog.utilities.ViewUtils;
 
 /**
  * A simple view used for user selection, such as selecting a
@@ -45,7 +45,7 @@ public class InputButtonView extends LeftIconView {
 
                 // secondary button
                 boolean showSecondary = arr.getBoolean(R.styleable.InputButtonView_showSecondary, false);
-                Utils.toggleVisibility(mSecondaryButton, showSecondary);
+                ViewUtils.setVisibility(mSecondaryButton, showSecondary);
             } finally {
                 arr.recycle(); // required after using TypedArray
             }
