@@ -95,11 +95,11 @@ public class ListManager {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     switch (which) {
-                        case Utils.MANAGE_ALERT_EDIT:
+                        case AlertUtils.MANAGE_ALERT_EDIT:
                             onItemEdit(getId());
                             break;
 
-                        case Utils.MANAGE_ALERT_DELETE:
+                        case AlertUtils.MANAGE_ALERT_DELETE:
                             onItemDelete(getId());
                             break;
                     }

@@ -30,12 +30,6 @@ import java.util.Date;
  */
 public class Utils {
 
-    /**
-     * The index of items that appear in a ManageAlert.
-     */
-    public static final int MANAGE_ALERT_EDIT = 0;
-    public static final int MANAGE_ALERT_DELETE = 1;
-
     public static final String MIME_TYPE_IMAGE = "image/jpeg";
     public static final String MIME_TYPE_ZIP = "application/zip";
     public static final String MIME_TYPE_ALL = "*/*";
