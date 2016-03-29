@@ -78,7 +78,7 @@ public class MyListFragment extends MasterFragment {
 
         initNewButton(view);
         initRecyclerView(view);
-        initBottomSheet(view);
+        initBottomSheets(view);
 
         return view;
     }
@@ -152,26 +152,42 @@ public class MyListFragment extends MasterFragment {
         });
     }
 
-    private void initBottomSheet(View view) {
-        // only show the sheet if it's the first time running the app
-        if (!LogbookPreferences.isFirstRun())
-            return;
-
-        final BottomSheetView bottomSheet = (BottomSheetView)view.findViewById(R.id.bottom_sheet_view);
-
-        bottomSheet.init(
-                bottomSheet,
-                R.drawable.instabug_ic_ibg_logo_dark,
-                R.string.instabug_sheet_title,
-                R.string.instabug_sheet_description,
-                R.string.dismiss, true,
-                new BottomSheetView.InteractionListener() {
-                    @Override
-                    public void onDismiss() {
-                        LogbookPreferences.setFirstRun(false);
+    private void initBottomSheets(View view) {
+        if (LogbookPreferences.shouldShowInstabugSheet()) {
+            final BottomSheetView bugsBottomSheet = (BottomSheetView)view.findViewById(R.id.instabug_bottom_sheet_view);
+            bugsBottomSheet.init(
+                    bugsBottomSheet,
+                    R.drawable.instabug_ic_ibg_logo_dark,
+                    R.string.instabug_sheet_title,
+                    R.string.instabug_sheet_description,
+                    R.string.dismiss,
+                    true,
+                    new BottomSheetView.InteractionListener() {
+                        @Override
+                        public void onDismiss() {
+                            LogbookPreferences.setShouldShowInstabugSheet(false);
+                        }
                     }
-                }
-        );
+            );
+        }
+
+        if (LogbookPreferences.shouldShowBackupSheet()) {
+            final BottomSheetView backupSheetView = (BottomSheetView)view.findViewById(R.id.backup_bottom_sheet_view);
+            backupSheetView.init(
+                    backupSheetView,
+                    R.drawable.ic_info,
+                    R.string.backup_sheet_title,
+                    R.string.backup_sheet_description,
+                    R.string.dismiss,
+                    true,
+                    new BottomSheetView.InteractionListener() {
+                        @Override
+                        public void onDismiss() {
+                            LogbookPreferences.updateLastBackup();
+                        }
+                    }
+            );
+        }
     }
     //endregion
 

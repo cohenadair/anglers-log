@@ -7,6 +7,8 @@ import android.preference.PreferenceManager;
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.model.Logbook;
 
+import java.util.Date;
+
 /**
  * Used to store and retrieve values from {@link android.content.SharedPreferences}.
  *
@@ -23,7 +25,8 @@ public class LogbookPreferences {
     public static final String WEATHER_UNITS = "weatherUnits";
     public static final String BACKUP_FILE = "backupFilePath";
     public static final String MAP_TYPE = "mapType";
-    public static final String FIRST_RUN = "firstRun";
+    public static final String SHOW_INSTABUG_SHEET = "showInstabugSheet";
+    public static final String LAST_BACKUP = "lastBackup";
 
     private static Context mContext;
 
@@ -111,11 +114,28 @@ public class LogbookPreferences {
     }
     //endregion
 
-    public static boolean isFirstRun() {
-        return getDefaultPreferences().getBoolean(FIRST_RUN, true);
+    public static boolean shouldShowInstabugSheet() {
+        return getDefaultPreferences().getBoolean(SHOW_INSTABUG_SHEET, true);
     }
 
-    public static void setFirstRun(boolean isFirstRun) {
-        getDefaultPreferences().edit().putBoolean(FIRST_RUN, isFirstRun).apply();
+    public static void setShouldShowInstabugSheet(boolean shouldShow) {
+        getDefaultPreferences().edit().putBoolean(SHOW_INSTABUG_SHEET, shouldShow).apply();
+    }
+
+    public static boolean shouldShowBackupSheet() {
+        long ms = getDefaultPreferences().getLong(LAST_BACKUP, -1);
+
+        // do not prompt users to backup if it's the first run
+        if (ms == -1) {
+            updateLastBackup(); // comparison baseline
+            return false;
+        }
+
+        // prompt the user every 7 days
+        return ((new Date().getTime() - ms) > (60000 * 60 * 24 * 7));
+    }
+
+    public static void updateLastBackup() {
+        getDefaultPreferences().edit().putLong(LAST_BACKUP, new Date().getTime()).apply();
     }
 }

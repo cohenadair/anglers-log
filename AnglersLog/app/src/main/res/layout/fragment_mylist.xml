@@ -26,7 +26,13 @@
         app:layout_behavior="com.cohenadair.anglerslog.utilities.ScrollingFabBehavior"/>
 
     <com.cohenadair.anglerslog.views.BottomSheetView
-        android:id="@+id/bottom_sheet_view"
+        android:id="@+id/instabug_bottom_sheet_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_behavior="@string/bottom_sheet_behavior" />
+
+    <com.cohenadair.anglerslog.views.BottomSheetView
+        android:id="@+id/backup_bottom_sheet_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_behavior="@string/bottom_sheet_behavior" />

@@ -219,6 +219,8 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                     @Override
                     public void onFinish(File zipFile) {
                         LogbookPreferences.setBackupFile(zipFile.getPath());
+                        LogbookPreferences.updateLastBackup();
+
                         exportFragment.dismiss();
 
                         Intent intent = new Intent();

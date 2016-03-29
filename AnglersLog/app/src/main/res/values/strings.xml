@@ -11,7 +11,9 @@
     <string name="instagram_disabled">Instagram is installed, but disabled on this device.</string>
 
     <string name="instabug_sheet_title">Bugs &amp; Feedback</string>
-    <string name="instabug_sheet_description">Tap the ladybug button to send bug reports and feedback. The button can be disabled from the Settings menu.</string>
+    <string name="instabug_sheet_description">Tap the ladybug button to send bug reports and feedback.  The button can be disabled from the Settings menu.</string>
+    <string name="backup_sheet_title">Backup</string>
+    <string name="backup_sheet_description">Be sure to periodically export Anglers\' Log to ensure no data is lost. Visit the Settings menu to learn more.</string>
 
     <string name="pref_units">pref_units</string>
     <string name="pref_instabug">pref_instabug</string>
