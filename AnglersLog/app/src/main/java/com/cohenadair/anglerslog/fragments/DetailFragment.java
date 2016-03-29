@@ -13,9 +13,9 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import com.cohenadair.anglerslog.R;
+import com.cohenadair.anglerslog.activities.DetailFragmentActivity;
 import com.cohenadair.anglerslog.activities.LayoutSpecActivity;
 import com.cohenadair.anglerslog.interfaces.GlobalSettingsInterface;
-import com.cohenadair.anglerslog.utilities.Utils;
 
 import java.util.UUID;
 
@@ -199,6 +199,6 @@ public abstract class DetailFragment extends Fragment {
      * @param userDefineObjectId The id of the UserDefineObject to be shown.
      */
     public void startDetailActivity(int layoutSpecId, UUID userDefineObjectId) {
-        startActivity(Utils.getDetailActivityIntent(getContext(), layoutSpecId, userDefineObjectId));
+        startActivity(DetailFragmentActivity.getIntent(getContext(), layoutSpecId, userDefineObjectId));
     }
 }

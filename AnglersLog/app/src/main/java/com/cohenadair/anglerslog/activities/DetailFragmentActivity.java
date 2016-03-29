@@ -1,5 +1,6 @@
 package com.cohenadair.anglerslog.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -9,6 +10,7 @@ import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.fragments.DetailFragment;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import com.cohenadair.anglerslog.utilities.LayoutSpecManager;
+import com.cohenadair.anglerslog.utilities.Utils;
 
 import java.util.UUID;
 
@@ -23,6 +25,21 @@ public class DetailFragmentActivity extends DefaultActivity {
 
     private int mLayoutId = -1;
     private UUID mItemId;
+
+    /**
+     * Gets an Intent used to show a {@link DetailFragmentActivity}.
+     * @param context The context.
+     * @param layoutSpecId See {@link LayoutSpecManager}.
+     * @param userDefineObjectId The UUID of the object to display.
+     * @return An Intent with required extras.
+     */
+    public static Intent getIntent(Context context, int layoutSpecId, UUID userDefineObjectId) {
+        Intent intent = new Intent(context, DetailFragmentActivity.class);
+        intent.putExtra(DetailFragmentActivity.EXTRA_TWO_PANE, Utils.isTwoPane(context));
+        intent.putExtra(DetailFragmentActivity.EXTRA_LAYOUT_ID, layoutSpecId);
+        intent.putExtra(DetailFragmentActivity.EXTRA_USER_DEFINE_ID, userDefineObjectId.toString());
+        return intent;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

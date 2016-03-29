@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.activities.DefaultActivity;
+import com.cohenadair.anglerslog.activities.DetailFragmentActivity;
 import com.cohenadair.anglerslog.catches.CatchListManager;
 import com.cohenadair.anglerslog.interfaces.OnClickInterface;
 import com.cohenadair.anglerslog.model.Logbook;
@@ -18,7 +19,6 @@ import com.cohenadair.anglerslog.model.user_defines.Catch;
 import com.cohenadair.anglerslog.model.user_defines.Species;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import com.cohenadair.anglerslog.utilities.LayoutSpecManager;
-import com.cohenadair.anglerslog.utilities.Utils;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -100,7 +100,7 @@ public class BigCatchFragment extends Fragment {
         return new OnClickInterface() {
             @Override
             public void onClick(View view, UUID id) {
-                startActivity(Utils.getDetailActivityIntent(getContext(), LayoutSpecManager.LAYOUT_CATCHES, id));
+                startActivity(DetailFragmentActivity.getIntent(getContext(), LayoutSpecManager.LAYOUT_CATCHES, id));
             }
         };
     }

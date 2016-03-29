@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.activities.DefaultActivity;
+import com.cohenadair.anglerslog.activities.DetailFragmentActivity;
 import com.cohenadair.anglerslog.model.Stats;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import com.cohenadair.anglerslog.utilities.AlertUtils;
@@ -192,7 +193,7 @@ public class CatchesCountFragment extends Fragment {
             mDetailView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    startActivity(Utils.getDetailActivityIntent(getContext(), mStatsSpec.getLayoutSpecId(), obj.getId()));
+                    startActivity(DetailFragmentActivity.getIntent(getContext(), mStatsSpec.getLayoutSpecId(), obj.getId()));
                 }
             });
     }

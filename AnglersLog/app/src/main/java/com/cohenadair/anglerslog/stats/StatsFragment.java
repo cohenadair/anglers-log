@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.activities.CardDetailActivity;
+import com.cohenadair.anglerslog.activities.DetailFragmentActivity;
 import com.cohenadair.anglerslog.fragments.MasterFragment;
 import com.cohenadair.anglerslog.model.Logbook;
 import com.cohenadair.anglerslog.model.user_defines.Catch;
@@ -110,7 +111,7 @@ public class StatsFragment extends MasterFragment {
     }
 
     private void startUserDefineDetailActivity(int layoutSpecId, UUID userDefineObjectId) {
-        startActivity(Utils.getDetailActivityIntent(getContext(), layoutSpecId, userDefineObjectId));
+        startActivity(DetailFragmentActivity.getIntent(getContext(), layoutSpecId, userDefineObjectId));
     }
 
     private void updateBigCatchCard(int titleId, DefaultCardView card, final Catch aCatch, final int statsId) {

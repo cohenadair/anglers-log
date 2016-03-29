@@ -117,7 +117,7 @@ public class PartialListActivity extends DefaultActivity {
         return new OnClickInterface() {
             @Override
             public void onClick(View view, UUID id) {
-                startActivity(Utils.getDetailActivityIntent(PartialListActivity.this, mLayoutId, id));
+                startActivity(DetailFragmentActivity.getIntent(PartialListActivity.this, mLayoutId, id));
             }
         };
     }
