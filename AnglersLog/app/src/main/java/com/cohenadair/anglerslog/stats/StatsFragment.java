@@ -141,6 +141,8 @@ public class StatsFragment extends MasterFragment {
                 }
         );
 
-        card.setBannerImage(PhotoUtils.privatePhotoPath(aCatch.getRandomPhoto()));
+        String fileName = aCatch.getRandomPhoto();
+        if (fileName != null)
+            card.setBannerImage(PhotoUtils.privatePhotoPath(aCatch.getRandomPhoto()));
     }
 }
