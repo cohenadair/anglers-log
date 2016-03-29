@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
@@ -20,6 +21,8 @@ import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.model.utilities.SortingMethod;
 import com.cohenadair.anglerslog.model.utilities.SortingUtils;
 import com.cohenadair.anglerslog.utilities.LayoutSpec;
+import com.cohenadair.anglerslog.utilities.LogbookPreferences;
+import com.cohenadair.anglerslog.views.BottomSheetView;
 
 /**
  * The fragment showing the list of catches.
@@ -27,6 +30,7 @@ import com.cohenadair.anglerslog.utilities.LayoutSpec;
 public class MyListFragment extends MasterFragment {
 
     private RecyclerView mRecyclerView;
+    private BottomSheetBehavior mBottomSheetBehavior;
 
     /**
      * Used to manage the App Bar's menu, including preserving search queries and the SearchView
@@ -74,6 +78,7 @@ public class MyListFragment extends MasterFragment {
 
         initNewButton(view);
         initRecyclerView(view);
+        initBottomSheet(view);
 
         return view;
     }
@@ -145,6 +150,28 @@ public class MyListFragment extends MasterFragment {
                 mCallbacks.onMyListClickNewButton();
             }
         });
+    }
+
+    private void initBottomSheet(View view) {
+        // only show the sheet if it's the first time running the app
+        if (!LogbookPreferences.isFirstRun())
+            return;
+
+        final BottomSheetView bottomSheet = (BottomSheetView)view.findViewById(R.id.bottom_sheet_view);
+
+        bottomSheet.init(
+                bottomSheet,
+                R.drawable.instabug_ic_ibg_logo_dark,
+                R.string.instabug_sheet_title,
+                R.string.instabug_sheet_description,
+                R.string.dismiss, true,
+                new BottomSheetView.InteractionListener() {
+                    @Override
+                    public void onDismiss() {
+                        LogbookPreferences.setFirstRun(false);
+                    }
+                }
+        );
     }
     //endregion
 

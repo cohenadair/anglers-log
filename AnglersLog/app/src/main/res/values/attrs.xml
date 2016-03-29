@@ -60,4 +60,11 @@
         <attr name="subtitleStyle" />
         <attr name="detailIcon" format="reference" />
     </declare-styleable>
+
+    <declare-styleable name="BottomSheetView">
+        <attr name="titleText" />
+        <attr name="descriptionText" format="string" />
+        <attr name="buttonText" format="string" />
+        <attr name="iconRes" format="reference" />
+    </declare-styleable>
 </resources>

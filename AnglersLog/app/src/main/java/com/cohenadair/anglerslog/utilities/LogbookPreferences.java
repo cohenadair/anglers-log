@@ -23,6 +23,7 @@ public class LogbookPreferences {
     public static final String WEATHER_UNITS = "weatherUnits";
     public static final String BACKUP_FILE = "backupFilePath";
     public static final String MAP_TYPE = "mapType";
+    public static final String FIRST_RUN = "firstRun";
 
     private static Context mContext;
 
@@ -40,6 +41,10 @@ public class LogbookPreferences {
 
     private static SharedPreferences getLayoutPreferences() {
         return mContext.getSharedPreferences(PREF_LAYOUT, Context.MODE_PRIVATE);
+    }
+
+    private static SharedPreferences getDefaultPreferences() {
+        return PreferenceManager.getDefaultSharedPreferences(mContext);
     }
 
     public static void setBackupFile(String filePath) {
@@ -82,25 +87,35 @@ public class LogbookPreferences {
         return getPreviousSelections().getInt(WEATHER_UNITS, -1);
     }
 
+    //region Settings Preferences
     public static int getUnits() {
-        return Integer.parseInt(PreferenceManager.getDefaultSharedPreferences(mContext).getString(mContext.getResources().getString(R.string.pref_units), Integer.toString(Logbook.UNIT_IMPERIAL)));
+        return Integer.parseInt(getDefaultPreferences().getString(mContext.getResources().getString(R.string.pref_units), Integer.toString(Logbook.UNIT_IMPERIAL)));
     }
 
     public static void setUnits(int units) {
-        PreferenceManager.getDefaultSharedPreferences(mContext)
+        getDefaultPreferences()
                 .edit()
                 .putString(mContext.getResources().getString(R.string.pref_units), Integer.toString(units))
                 .apply();
     }
 
     public static boolean isInstabugEnabled() {
-        return PreferenceManager.getDefaultSharedPreferences(mContext).getBoolean(mContext.getResources().getString(R.string.pref_instabug), true);
+        return getDefaultPreferences().getBoolean(mContext.getResources().getString(R.string.pref_instabug), true);
     }
 
     public static void setInstabugEnabled(boolean enabled) {
-        PreferenceManager.getDefaultSharedPreferences(mContext)
+        getDefaultPreferences()
                 .edit()
                 .putBoolean(mContext.getResources().getString(R.string.pref_instabug), enabled)
                 .apply();
+    }
+    //endregion
+
+    public static boolean isFirstRun() {
+        return getDefaultPreferences().getBoolean(FIRST_RUN, true);
+    }
+
+    public static void setFirstRun(boolean isFirstRun) {
+        getDefaultPreferences().edit().putBoolean(FIRST_RUN, isFirstRun).apply();
     }
 }

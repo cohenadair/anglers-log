@@ -10,6 +10,9 @@
     <string name="no_instagram">Instagram is not installed on this device.</string>
     <string name="instagram_disabled">Instagram is installed, but disabled on this device.</string>
 
+    <string name="instabug_sheet_title">Bugs &amp; Feedback</string>
+    <string name="instabug_sheet_description">Tap the ladybug button to send bug reports and feedback. The button can be disabled from the Settings menu.</string>
+
     <string name="pref_units">pref_units</string>
     <string name="pref_instabug">pref_instabug</string>
     <string name="pref_auto_backup">pref_auto_backup</string>
@@ -176,6 +179,7 @@
     <string name="add_anglers">Add anglers</string>
     <string name="add_weather">Add weather</string>
     <string name="update_weather">Update weather</string>
+    <string name="dismiss">Dismiss</string>
 
     <string name="drawer_open">Open Navigation Drawer</string>
     <string name="drawer_close">Close Navigation Drawer</string>
