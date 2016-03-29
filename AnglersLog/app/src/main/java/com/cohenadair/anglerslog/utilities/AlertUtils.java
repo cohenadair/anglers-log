@@ -15,6 +15,13 @@ import com.cohenadair.anglerslog.R;
 public class AlertUtils {
 
     /**
+     * The index of items that appear in a
+     * {@link #showManageOptions(Context, String, DialogInterface.OnClickListener)} alert.
+     */
+    public static final int MANAGE_ALERT_EDIT = 0;
+    public static final int MANAGE_ALERT_DELETE = 1;
+
+    /**
      * Shows an {@link AlertFragment} with the given parameters. Alerts shown using this method
      * survive device rotation.
      *
