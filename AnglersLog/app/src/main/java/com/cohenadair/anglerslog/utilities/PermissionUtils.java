@@ -3,7 +3,10 @@ package com.cohenadair.anglerslog.utilities;
 import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.LocationManager;
+import android.provider.Settings;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
@@ -52,6 +55,35 @@ public class PermissionUtils {
         int writePermission = ContextCompat.checkSelfPermission(context, WRITE);
         int readPermission = ContextCompat.checkSelfPermission(context, READ);
         return (writePermission == GRANTED && readPermission == GRANTED);
+    }
+
+    /**
+     * Checks to see if the user's location services are enabled. If not, it prompts them to enable
+     * them.  Method derived from <a href="http://stackoverflow.com/a/10311891/3304388">here</a>.
+     */
+    public static boolean requestLocationServices(final Context context) {
+        LocationManager locationManager = (LocationManager)context.getSystemService(Context.LOCATION_SERVICE);
+
+        try {
+            if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER))
+                new AlertDialog.Builder(context)
+                        .setMessage(context.getResources().getString(R.string.error_location_disabled))
+                        .setPositiveButton(context.getResources().getString(R.string.open_location_settings), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface paramDialogInterface, int paramInt) {
+                                Intent myIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                                context.startActivity(myIntent);
+                            }
+                        })
+                        .setNegativeButton(context.getString(R.string.button_cancel), null)
+                        .show();
+            else
+                return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return false;
     }
 
     /**

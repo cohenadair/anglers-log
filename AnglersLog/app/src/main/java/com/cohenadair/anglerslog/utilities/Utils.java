@@ -3,19 +3,15 @@ package com.cohenadair.anglerslog.utilities;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Point;
-import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Build;
-import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -61,35 +57,6 @@ public class Utils {
 
     public static void showToast(Context context, String msg) {
         Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
-    }
-
-    /**
-     * Checks to see if the user's location services are enabled. If not, it prompts them to enable
-     * them.  Method derived from <a href="http://stackoverflow.com/a/10311891/3304388">here</a>.
-     */
-    public static boolean requestLocationServices(final Context context) {
-        LocationManager locationManager = (LocationManager)context.getSystemService(Context.LOCATION_SERVICE);
-
-        try {
-            if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER))
-                new AlertDialog.Builder(context)
-                        .setMessage(context.getResources().getString(R.string.error_location_disabled))
-                        .setPositiveButton(context.getResources().getString(R.string.open_location_settings), new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface paramDialogInterface, int paramInt) {
-                                Intent myIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                                context.startActivity(myIntent);
-                            }
-                        })
-                        .setNegativeButton(context.getString(R.string.button_cancel), null)
-                        .show();
-            else
-                return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return false;
     }
 
     /**

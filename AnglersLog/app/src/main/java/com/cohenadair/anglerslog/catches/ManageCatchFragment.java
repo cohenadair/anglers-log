@@ -26,6 +26,7 @@ import com.cohenadair.anglerslog.trips.ManageTripFragment;
 import com.cohenadair.anglerslog.utilities.AlertUtils;
 import com.cohenadair.anglerslog.utilities.LayoutSpecManager;
 import com.cohenadair.anglerslog.utilities.LogbookPreferences;
+import com.cohenadair.anglerslog.utilities.PermissionUtils;
 import com.cohenadair.anglerslog.utilities.PrimitiveSpecManager;
 import com.cohenadair.anglerslog.utilities.Utils;
 import com.cohenadair.anglerslog.views.InputButtonView;
@@ -435,7 +436,7 @@ public class ManageCatchFragment extends ManageContentFragment {
             return;
         }
 
-        if (!Utils.requestLocationServices(getContext()))
+        if (!PermissionUtils.requestLocationServices(getContext()))
             return;
 
         Location loc = null;
