@@ -32,7 +32,7 @@ import java.util.UUID;
 
 /**
  * A LocationMapFragment displays an interactive map of all the user's fishing spots.
- * Created by Cohen Adair on 2016-02-03.
+ * @author Cohen Adair
  */
 public class LocationMapFragment extends MasterFragment {
 
@@ -97,12 +97,16 @@ public class LocationMapFragment extends MasterFragment {
     @Override
     public void onResume() {
         super.onResume();
+
+        // so the map isn't resized when the soft keyboard is shown
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
     }
 
     @Override
     public void onPause() {
         super.onPause();
+
+        // reset to default
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
     }
 

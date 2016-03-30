@@ -34,7 +34,7 @@ import static com.cohenadair.anglerslog.database.LogbookSchema.UsedLocationTable
  * The Trip class manages all data associated with a single trip. A trip is added (optionally) by
  * the user.
  *
- * Created by Cohen Adair on 2015-09-05.
+ * @author Cohen Adair
  */
 public class Trip extends UserDefineObject implements HasCatchesInterface, HasDateInterface {
 
@@ -290,6 +290,10 @@ public class Trip extends UserDefineObject implements HasCatchesInterface, HasDa
         return trip.getStartDate().before(mEndDate) && trip.getEndDate().after(mStartDate);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public ContentValues getContentValues() {
         ContentValues values = super.getContentValues();
 

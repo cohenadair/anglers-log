@@ -13,14 +13,6 @@ public class WaterClarity extends UserDefineObject {
         super(name);
     }
 
-    public WaterClarity(WaterClarity clarity) {
-        super(clarity);
-    }
-
-    public WaterClarity(UserDefineObject obj) {
-        super(obj);
-    }
-
     public WaterClarity(UserDefineObject obj, boolean keepId) {
         super(obj, keepId);
     }

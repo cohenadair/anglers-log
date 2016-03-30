@@ -25,7 +25,7 @@ import static com.cohenadair.anglerslog.database.LogbookSchema.FishingSpotTable;
  * The Location object stores information on a single location, including many fishing spots
  * within that location.
  *
- * Created by Cohen Adair on 2015-11-03.
+ * @author Cohen Adair
  */
 public class Location extends UserDefineObject implements HasCatchesInterface {
 
@@ -71,9 +71,24 @@ public class Location extends UserDefineObject implements HasCatchesInterface {
 
     //region Fishing Spot Manipulation
     public ArrayList<UserDefineObject> getFishingSpots() {
-        return getFishingSpots(getId());
+        return QueryHelper.queryUserDefines(
+                QueryHelper.queryUserDefines(
+                        FishingSpotTable.NAME,
+                        FishingSpotTable.Columns.LOCATION_ID + " = ?", new String[]{getIdAsString()}
+                ),
+                new QueryHelper.UserDefineQueryInterface() {
+                    @Override
+                    public UserDefineObject getObject(UserDefineCursor cursor) {
+                        return new FishingSpotCursor(cursor).getFishingSpot();
+                    }
+                }
+        );
     }
 
+    /**
+     * Resets the location's fishing spots by first removing the old ones, then adding the new ones.
+     * @param newFishingSpots The new collection of {@link FishingSpot} objects.
+     */
     public void setFishingSpots(ArrayList<UserDefineObject> newFishingSpots) {
         ArrayList<UserDefineObject> oldFishingSpots = getFishingSpots();
 
@@ -82,19 +97,6 @@ public class Location extends UserDefineObject implements HasCatchesInterface {
 
         for (UserDefineObject newSpot : newFishingSpots)
             addFishingSpot((FishingSpot)newSpot);
-    }
-
-    public ArrayList<UserDefineObject> getFishingSpots(UUID id) {
-        return QueryHelper.queryUserDefines(
-            QueryHelper.queryUserDefines(FishingSpotTable.NAME,
-            FishingSpotTable.Columns.LOCATION_ID + " = ?", new String[] { id.toString() }),
-            new QueryHelper.UserDefineQueryInterface() {
-                @Override
-                public UserDefineObject getObject(UserDefineCursor cursor) {
-                    return new FishingSpotCursor(cursor).getFishingSpot();
-                }
-            }
-        );
     }
 
     public boolean addFishingSpot(FishingSpot fishingSpot) {
@@ -120,7 +122,6 @@ public class Location extends UserDefineObject implements HasCatchesInterface {
     }
     //endregion
 
-
     public ArrayList<UserDefineObject> getCatches() {
         ArrayList<UserDefineObject> catches = new ArrayList<>();
         ArrayList<UserDefineObject> spots = getFishingSpots();
@@ -133,11 +134,17 @@ public class Location extends UserDefineObject implements HasCatchesInterface {
         return catches;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int getFishCaughtCount() {
         return QueryHelper.queryLocationCatchCount(this);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Intent getShareIntent(Context context) {
         Intent intent =  super.getShareIntent(context);
@@ -148,6 +155,9 @@ public class Location extends UserDefineObject implements HasCatchesInterface {
         return intent;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JSONObject toJson() throws JSONException {
         JSONObject json = super.toJson();
@@ -155,6 +165,9 @@ public class Location extends UserDefineObject implements HasCatchesInterface {
         return json;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toKeywordsString(Context context) {
         return super.toKeywordsString(context) + UserDefineArrays.keywordsAsString(context, getFishingSpots());

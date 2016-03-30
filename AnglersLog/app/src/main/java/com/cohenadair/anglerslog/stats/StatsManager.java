@@ -19,7 +19,7 @@ import java.util.UUID;
  * The StatsManager class is the statistics equivalent of
  * {@link com.cohenadair.anglerslog.utilities.LayoutSpecManager}.
  *
- * Created by Cohen Adair on 2016-01-27.
+ * @author Cohen Adair
  */
 public class StatsManager {
 
@@ -130,6 +130,9 @@ public class StatsManager {
         );
     }
 
+    /**
+     * Stores any kind of data needed for different kinds of statistical information.
+     */
     public static class StatsSpec {
 
         private int mId;

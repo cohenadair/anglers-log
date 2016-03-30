@@ -5,7 +5,7 @@ import org.json.JSONObject;
 
 /**
  * Represents a single fishing method property, added by the user.
- * Created by Cohen Adair on 2015-11-03.
+ * @author Cohen Adair
  */
 public class FishingMethod extends UserDefineObject {
 

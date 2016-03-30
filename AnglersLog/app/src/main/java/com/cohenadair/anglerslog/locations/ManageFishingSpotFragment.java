@@ -58,6 +58,9 @@ public class ManageFishingSpotFragment extends ManageContentFragment {
     // other spots for user convenience
     private boolean mCancelLocationUpdate;
 
+    /**
+     * Used to verify the new fishing spot being added is unique to the location.
+     */
     public interface OnVerifyInterface {
         boolean isDuplicate(FishingSpot fishingSpot);
     }
@@ -253,7 +256,7 @@ public class ManageFishingSpotFragment extends ManageContentFragment {
                 LatLng latLng = new LatLng(lat, lng);
 
                 if (mMapFragment.isValid(latLng) && !mCancelInputListener) {
-                    updateCameraOnly(latLng);
+                    mMapFragment.updateCameraNoZoom(latLng);
                     mCancelInputListener = false;
                 }
             }
@@ -311,10 +314,10 @@ public class ManageFishingSpotFragment extends ManageContentFragment {
         updateCoordinateViews(loc);
     }
 
-    private void updateCameraOnly(LatLng loc) {
-        mMapFragment.updateCameraNoZoom(loc);
-    }
-
+    /**
+     * Changes the color of the center crosshairs depending on the given map type.
+     * @param mapType The type of the map.
+     */
     private void updateCrosshairs(int mapType) {
         boolean isDark = mapType == GoogleMap.MAP_TYPE_SATELLITE || mapType == GoogleMap.MAP_TYPE_HYBRID;
         mCrosshairs.setColorFilter(isDark ? Color.WHITE : Color.BLACK);

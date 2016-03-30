@@ -12,7 +12,7 @@ import com.google.android.gms.common.GoogleApiAvailability;
 
 /**
  * The SettingsFragment handles all user preferences.
- * Created by Cohen Adair on 2016-02-02.
+ * @author Cohen Adair
  */
 public class AboutFragment extends PreferenceFragmentCompat {
 

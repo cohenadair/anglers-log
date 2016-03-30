@@ -30,6 +30,8 @@ import java.util.UUID;
 /**
  * A {@link DetailFragment} subclass used to show the details of a single
  * {@link com.cohenadair.anglerslog.model.user_defines.Trip}.
+ *
+ * @author Cohen Adair
  */
 public class TripFragment extends DetailFragment {
 

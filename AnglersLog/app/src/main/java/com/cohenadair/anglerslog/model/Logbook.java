@@ -65,13 +65,12 @@ import static com.cohenadair.anglerslog.database.LogbookSchema.TripTable;
 import static com.cohenadair.anglerslog.database.LogbookSchema.WaterClarityTable;
 
 /**
- * The Logbook class is a "monostate" class storing all of the user's log data.
+ * The Logbook class is a static class storing all of the user's log data.
  * @author Cohen Adair
  */
 public class Logbook {
 
     public static final int UNIT_IMPERIAL = 0;
-    public static final int UNIT_METRIC = 1;
 
     private static final String TAG = "Logbook";
 
@@ -196,6 +195,10 @@ public class Logbook {
         new Thread(r).start();
     }
 
+    /**
+     * Completely resets the Logbook's data. This cannot be undone.
+     * @param addDefaults True to add default objects after reset; false otherwise.
+     */
     public static void reset(boolean addDefaults) {
         File data = new File(mDatabase.getPath());
         mDatabase.close();
@@ -207,7 +210,6 @@ public class Logbook {
             setDefaults();
 
         PhotoUtils.cleanPhotos();
-        Log.d(TAG, "Logbook was reset!");
     }
 
     //region Getters & Setters
@@ -444,10 +446,6 @@ public class Logbook {
         return getBaits("", null);
     }
 
-    public static ArrayList<UserDefineObject> getBaits(BaitCategory baitCategory, String searchQuery) {
-        return UserDefineArrays.search(mContext, getBaits(baitCategory), searchQuery);
-    }
-
     /**
      * Gets all {@link Bait} objects associated with the given {@link BaitCategory}.
      * @param baitCategory The BaitCategory.
@@ -535,10 +533,16 @@ public class Logbook {
         return QueryHelper.queryCount(BaitTable.NAME);
     }
 
+    /**
+     * @see #getBaitsAndCategories(String, SortingMethod)
+     */
     public static ArrayList<UserDefineObject> getBaitsAndCategories() {
         return getBaitsAndCategories(null, null);
     }
 
+    /**
+     * @see #getBaitsAndCategories(String, SortingMethod)
+     */
     public static ArrayList<UserDefineObject> getBaitsAndCategories(String searchQuery) {
         return getBaitsAndCategories(searchQuery, null);
     }
@@ -654,12 +658,6 @@ public class Logbook {
         });
     }
 
-    /**
-     * Checks to see if the Location already exists in the database.
-     *
-     * @param location The Location object to look for.
-     * @return True if the Location exists; false otherwise.
-     */
     public static boolean locationExists(Location location) {
         Cursor cursor = mDatabase.query(LocationTable.NAME, null, LocationTable.Columns.NAME + " = ?", new String[]{location.getName()}, null, null, null);
         return QueryHelper.queryHasResults(cursor);
@@ -830,12 +828,6 @@ public class Logbook {
     //endregion
 
     //region Trip Manipulation
-    /**
-     * Checks to see if a trip with the given date range already exists in the database.
-     *
-     * @param trip The {@link Trip} object to look for.
-     * @return True if the trip exists, false otherwise.
-     */
     public static boolean tripExists(Trip trip) {
         ArrayList<UserDefineObject> trips = getTrips();
 

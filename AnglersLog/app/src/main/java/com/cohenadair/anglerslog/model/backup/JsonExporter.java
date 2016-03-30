@@ -17,7 +17,6 @@ import java.util.Locale;
 
 /**
  * The JsonExporter class is used to create a JSONObject of the user's {@link Logbook}.
- *
  * @author Cohen Adair
  */
 public class JsonExporter {

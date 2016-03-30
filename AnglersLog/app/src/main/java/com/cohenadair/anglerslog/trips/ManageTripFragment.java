@@ -26,7 +26,7 @@ import java.util.UUID;
 
 /**
  * The ManageTripFragment is used to add and edit trips.
- * Created by Cohen Adair on 2016-01-20.
+ * @author Cohen Adair
  */
 public class ManageTripFragment extends ManageContentFragment {
 

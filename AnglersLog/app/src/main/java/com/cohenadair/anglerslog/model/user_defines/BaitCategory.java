@@ -5,8 +5,7 @@ import org.json.JSONObject;
 
 /**
  * The BaitCategory object stores information on a single Bait category.
- *
- * Created by Cohen Adair on 2015-11-03.
+ * @author Cohen Adair
  */
 public class BaitCategory extends UserDefineObject {
 

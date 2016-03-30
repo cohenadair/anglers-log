@@ -26,11 +26,9 @@ import java.io.File;
 
 /**
  * The SettingsFragment handles all user preferences.
- * Created by Cohen Adair on 2016-02-02.
+ * @author Cohen Adair
  */
 public class SettingsFragment extends PreferenceFragmentCompat {
-
-    private static final String TAG = "SettingsFragment";
 
     private static final int REQUEST_IMPORT = 0;
     private static final int REQUEST_EXPORT = 1;

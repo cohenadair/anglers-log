@@ -9,12 +9,11 @@ import com.cohenadair.anglerslog.utilities.Utils;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.UUID;
 
 /**
  * A collection of utility methods for interacting with UserDefineObject arrays.
- * Created by Cohen Adair on 2016-01-12.
+ * @author Cohen Adair
  */
 public class UserDefineArrays {
 
@@ -46,19 +45,14 @@ public class UserDefineArrays {
         });
     }
 
-    public static String namesAsString(ArrayList<UserDefineObject> arr, String token) {
-        return propertiesAsString(arr, token, new OnGetPropertyInterface() {
-            @Override
-            public String onGetProperty(UserDefineObject object) {
-                return object.getName();
-            }
-        });
-    }
-
-    public static String propertiesAsString(ArrayList<UserDefineObject> arr, OnGetPropertyInterface callbacks) {
-        return propertiesAsString(arr, ", ", callbacks);
-    }
-
+    /**
+     * Gets a concatenated String of a certain property of an object.
+     *
+     * @param arr The array of objects who's properties will be combined.
+     * @param token The separating token of the resulting String.
+     * @param callbacks The callback used to get a String representation of a property.
+     * @return A String representation of each property in the given array.
+     */
     public static String propertiesAsString(ArrayList<UserDefineObject> arr, String token, OnGetPropertyInterface callbacks) {
         String str = "";
 
@@ -71,6 +65,17 @@ public class UserDefineArrays {
         return str + callbacks.onGetProperty(arr.get(arr.size() - 1));
     }
 
+    /**
+     * @see #propertiesAsString(ArrayList, String, OnGetPropertyInterface)
+     */
+    public static String propertiesAsString(ArrayList<UserDefineObject> arr, OnGetPropertyInterface callbacks) {
+        return propertiesAsString(arr, ", ", callbacks);
+    }
+
+    /**
+     * @return A String representation of the keywords for each object in the given array. This is
+     *         normally used for searching a list of objects.
+     */
     @NonNull
     public static String keywordsAsString(Context context, ArrayList<UserDefineObject> arr) {
         StringBuilder builder = new StringBuilder();
@@ -81,19 +86,9 @@ public class UserDefineArrays {
         return builder.toString();
     }
 
-    @Nullable
-    public static UserDefineObject getObjectNamed(ArrayList<UserDefineObject> arr, String name) {
-        for (UserDefineObject obj : arr)
-            if (obj.getName().equals(name))
-                return obj;
-
-        return null;
-    }
-
-    public static boolean hasObjectNamed(ArrayList<UserDefineObject> arr, String name) {
-        return getObjectNamed(arr, name) != null;
-    }
-
+    /**
+     * @return A {@link UserDefineObject} with the given id, or null if one doesn't exist.
+     */
     @Nullable
     public static UserDefineObject getObjectWithId(ArrayList<UserDefineObject> arr, UUID id) {
         for (UserDefineObject obj : arr)
@@ -103,31 +98,10 @@ public class UserDefineArrays {
         return null;
     }
 
-    public static boolean hasObjectWithId(ArrayList<UserDefineObject> arr, UUID id) {
-        return getObjectWithId(arr, id) != null;
-    }
-
-    public static int indexOfName(ArrayList<UserDefineObject> arr, String name) {
-        for (int i = 0; i < arr.size(); i++)
-            if (arr.get(i).getName().equals(name))
-                return i;
-
-        return -1;
-    }
-
-    public static ArrayList<UserDefineObject> removeObjectNamed(ArrayList<UserDefineObject> arr, String name) {
-        Iterator<UserDefineObject> it = arr.iterator();
-        while (it.hasNext()) {
-            UserDefineObject obj = it.next();
-            if (obj.getName().equals(name)) {
-                it.remove();
-                break;
-            }
-        }
-
-        return arr;
-    }
-
+    /**
+     * @return An array of {@link UUID} objects associated with the given {@link UserDefineObject}
+     *         array.
+     */
     public static ArrayList<UUID> asIdArray(ArrayList<UserDefineObject> arr) {
         ArrayList<UUID> ids = new ArrayList<>();
 
@@ -138,6 +112,10 @@ public class UserDefineArrays {
         return ids;
     }
 
+    /**
+     * @return An array of {@link String} object representing the ids associated with the given
+     *         {@link UserDefineObject} array.
+     */
     public static ArrayList<String> asIdStringArray(ArrayList<UserDefineObject> arr) {
         ArrayList<String> ids = new ArrayList<>();
 
@@ -148,6 +126,9 @@ public class UserDefineArrays {
         return ids;
     }
 
+    /**
+     * @return An array of String representations of the given ids.
+     */
     public static ArrayList<String> idsAsStrings(ArrayList<UUID> ids) {
         ArrayList<String> strings = new ArrayList<>();
 
@@ -158,6 +139,9 @@ public class UserDefineArrays {
         return strings;
     }
 
+    /**
+     * @return An array of UUID representations of the given Strings.
+     */
     public static ArrayList<UUID> stringsAsIds(ArrayList<String> strings) {
         ArrayList<UUID> ids = new ArrayList<>();
 
@@ -168,16 +152,13 @@ public class UserDefineArrays {
         return ids;
     }
 
-    public static ArrayList<String> asNameStringArray(ArrayList<UserDefineObject> arr) {
-        ArrayList<String> names = new ArrayList<>();
-
-        if (arr != null)
-            for (UserDefineObject object : arr)
-                names.add(object.getName());
-
-        return names;
-    }
-
+    /**
+     * Gets a list of {@link UserDefineObject} objects based on the given array of String ids.
+     *
+     * @param arr The {@link UserDefineObject} array to convert.
+     * @param callbacks Callbacks used to get the object from the Logbook.
+     * @return An array of {@link UserDefineObject} objects.
+     */
     public static ArrayList<UserDefineObject> objectsFromStringIds(ArrayList<String> arr, OnConvertInterface callbacks) {
         ArrayList<UserDefineObject> objects = new ArrayList<>();
 
@@ -188,6 +169,13 @@ public class UserDefineArrays {
         return objects;
     }
 
+    /**
+     * Gets a list of {@link UserDefineObject} objects based on the given array of ids.
+     *
+     * @param arr The {@link UserDefineObject} array to convert.
+     * @param callbacks Callbacks used to get the object from the Logbook.
+     * @return An array of {@link UserDefineObject} objects.
+     */
     public static ArrayList<UserDefineObject> objectsFromIds(ArrayList<UUID> arr, OnConvertInterface callbacks) {
         ArrayList<UserDefineObject> objects = new ArrayList<>();
 
@@ -198,6 +186,13 @@ public class UserDefineArrays {
         return objects;
     }
 
+    /**
+     * Searches the given array for the given query.
+     *
+     * @param arr The array of {@link UserDefineObject} objects to search.
+     * @param query The text to search for.
+     * @return An array of {@link UserDefineObject} objects that match the query.
+     */
     public static ArrayList<UserDefineObject> search(Context context, ArrayList<UserDefineObject> arr, String query) {
         if (Utils.stringOrNull(query) == null)
             return arr;
@@ -210,7 +205,6 @@ public class UserDefineArrays {
 
             for (String keyword : keywords)
                 if (keywordString.toLowerCase().contains(keyword.toLowerCase())) {
-                    //Log.d("UserDefineArrays#search", "Found keyword '" + keyword + "' in '" + keywordString + "'");
                     matches.add(obj);
                     break;
                 }
@@ -219,11 +213,21 @@ public class UserDefineArrays {
         return matches;
     }
 
+    /**
+     * Sorts the given array.
+     *
+     * @param sortingMethod The method by which to sort the array.
+     * @return A sorted array of {@link UserDefineObject} objects.
+     */
     public static ArrayList<UserDefineObject> sort(ArrayList<UserDefineObject> arr, SortingMethod sortingMethod) {
         Collections.sort(arr, sortingMethod.getComparator());
         return arr;
     }
 
+    /**
+     * @see #search(Context, ArrayList, String)
+     * @see #sort(ArrayList, SortingMethod)
+     */
     public static ArrayList<UserDefineObject> searchAndSort(Context context, ArrayList<UserDefineObject> arr, String searchQuery, SortingMethod sortingMethod) {
         ArrayList<UserDefineObject> result = search(context, arr, searchQuery);
 

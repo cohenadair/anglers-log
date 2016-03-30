@@ -35,6 +35,7 @@ import java.util.UUID;
 
 /**
  * A {@link DetailFragment} subclass used to show the details of a single location.
+ * @author Cohen Adair
  */
 public class LocationFragment extends DetailFragment {
 

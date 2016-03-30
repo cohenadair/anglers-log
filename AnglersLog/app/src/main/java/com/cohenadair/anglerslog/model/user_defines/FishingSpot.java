@@ -21,8 +21,7 @@ import static com.cohenadair.anglerslog.database.LogbookSchema.FishingSpotTable;
 
 /**
  * The FishingSpot object stores information on a single fishing spot (not an entire location);
- *
- * Created by Cohen Adair on 2015-11-03.
+ * @author Cohen Adair
  */
 public class FishingSpot extends UserDefineObject {
 
@@ -106,7 +105,9 @@ public class FishingSpot extends UserDefineObject {
     }
 
     /**
-     * Gets a string representation of the FishingSpot's coordinates.
+     * Gets a string representation of the FishingSpot's coordinates. The result of this method
+     * includes "Latitude" and "Longitude" labels.
+     *
      * @param lat "Latitude" string.
      * @param lng "Longitude" string.
      * @return A String of the FishingSpot's coordinates.
@@ -115,6 +116,11 @@ public class FishingSpot extends UserDefineObject {
         return String.format(lat + ": %.6f, " + lng + ": %.6f", mLatitude, mLongitude);
     }
 
+    /**
+     * Gets a string representation of the FishingSpot's coordinates. The result of this method
+     * <b>does not</b> include "Latitude" and "Longitude" labels.
+     * @see #getCoordinatesAsString(String, String)
+     */
     public String getCoordinatesAsString() {
         return String.format("%.6f, %.6f", mLatitude, mLongitude);
     }
@@ -146,6 +152,9 @@ public class FishingSpot extends UserDefineObject {
         return values;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JSONObject toJson() throws JSONException {
         JSONObject json = super.toJson();
@@ -161,6 +170,9 @@ public class FishingSpot extends UserDefineObject {
         return json;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toKeywordsString(Context context) {
         StringBuilder builder = new StringBuilder(super.toKeywordsString(context));

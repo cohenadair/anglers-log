@@ -23,7 +23,7 @@ import java.util.UUID;
 
 /**
  * The StatsFragment is the fragment that displays statistical summaries of the Logbook's data.
- * Created by Cohen Adair on 2016-01-26.
+ * @author Cohen Adair
  */
 public class StatsFragment extends MasterFragment {
 

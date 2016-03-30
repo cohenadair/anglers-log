@@ -24,9 +24,6 @@ import java.util.zip.ZipOutputStream;
  */
 public class Exporter {
 
-    /**
-     * Constants representing different exporting errors.
-     */
     public static final int ERROR_FILE_NOT_FOUND = 0;
     public static final int ERROR_JSON_WRITE = 1;
     public static final int ERROR_ZIP_WRITE_JSON = 2;
@@ -66,6 +63,9 @@ public class Exporter {
         new Thread(new ZipRunnable()).start();
     }
 
+    /**
+     * Exports all Logbook data to a zip archive.
+     */
     private static void exportData() {
         // get output stream from file location
         FileOutputStream out;
@@ -107,6 +107,10 @@ public class Exporter {
             });
     }
 
+    /**
+     * Writes the JSON representation of the Logbook to the provided {@link ZipOutputStream}.
+     * @param out The output stream.
+     */
     private static void exportLogbookJson(ZipOutputStream out) {
         // get JSON object from Logbook
         JSONObject json;
@@ -130,6 +134,10 @@ public class Exporter {
         }
     }
 
+    /**
+     * Exports all Logbook images to the provided {@link ZipOutputStream}.
+     * @param out The output stream.
+     */
     private static void exportLogbookImages(ZipOutputStream out) {
         File picturesDir = mContext.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
 

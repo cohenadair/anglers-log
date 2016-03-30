@@ -2,7 +2,6 @@ package com.cohenadair.anglerslog.model;
 
 import android.content.ContentValues;
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -26,11 +25,10 @@ import static com.cohenadair.anglerslog.database.LogbookSchema.WeatherTable;
  * coordinates. This class uses the <a href="http://openweathermap.org/">Open Weather Map API</a>,
  * and is done in a background thread.
  *
- * Created by Cohen Adair on 2016-01-13.
+ * @author Cohen Adair
  */
 public class Weather {
 
-    private static final String TAG = "Weather";
     private static final String API_KEY = "35f69a23678dead2c75e0599eadbb4e1";
     private static final String API_URL = "http://api.openweathermap.org/data/2.5/weather?";
 
@@ -84,10 +82,8 @@ public class Weather {
     }
 
     public JsonObjectRequest getRequest(String units, @NonNull final OnFetchInterface onFetch) {
-        if (mCoordinates == null) {
-            Log.e(TAG, "Coordinates must not equal null to fetch weather data.");
+        if (mCoordinates == null)
             return null;
-        }
 
         return new JsonObjectRequest(Request.Method.GET, getUrl(units), null, new Response.Listener<JSONObject>() {
             @Override
@@ -98,7 +94,6 @@ public class Weather {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError volleyError) {
-                Log.e(TAG, "Volly Error: " + volleyError.toString());
                 onFetch.onError();
             }
         });

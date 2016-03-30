@@ -113,10 +113,6 @@ public class UserDefineObject {
         // if needed, should be overridden by subclasses
     }
 
-    /**
-     * Gets a String representation of the UserDefineObject name.
-     * @return The name, or an empty String if name is null.
-     */
     public final String getNameAsString() {
         return (mName == null) ? "" : mName;
     }
@@ -192,6 +188,9 @@ public class UserDefineObject {
         return appendToBuilder(new StringBuilder(), mName).toString();
     }
 
+    /**
+     * Adds a String value to the given {@link StringBuilder}.
+     */
     protected StringBuilder appendToBuilder(StringBuilder builder, String value) {
         if (Utils.stringOrNull(value) == null)
             return builder;
@@ -202,6 +201,9 @@ public class UserDefineObject {
         return builder;
     }
 
+    /**
+     * Adds a float value to the given {@link StringBuilder}.
+     */
     protected StringBuilder appendToBuilder(StringBuilder builder, float value) {
         if (value < 0)
             return builder;
@@ -209,6 +211,9 @@ public class UserDefineObject {
         return appendToBuilder(builder, Float.toString(value));
     }
 
+    /**
+     * Adds a int value to the given {@link StringBuilder}.
+     */
     protected StringBuilder appendToBuilder(StringBuilder builder, int value) {
         return appendToBuilder(builder, (float)value);
     }

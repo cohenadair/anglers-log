@@ -18,11 +18,11 @@ import java.util.UUID;
  * This class is used to extract those {@link FishingMethod}s or other "used"
  * {@link UserDefineObject}s.
  *
- * Created by Cohen Adair on 2016-01-20.
+ * @author Cohen Adair
  */
 public class UsedUserDefineObject {
 
-    private UUID mSuperId;
+    private UUID mSuperId; // the id of the UserDefineObject this object belongs to
     private String mTable;
     private String mSuperColumnId;
     private String mChildColumnId;

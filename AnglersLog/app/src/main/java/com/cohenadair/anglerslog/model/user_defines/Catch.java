@@ -441,13 +441,6 @@ public class Catch extends PhotoUserDefineObject implements HasDateInterface {
         return UserDefineArrays.namesAsString(getFishingMethods());
     }
 
-    /**
-     * Gets the Catch's CatchResult as a String. A Context is needed to retrieve the String array
-     * resource.
-     *
-     * @param context The context.
-     * @return A String representing the catch result.
-     */
     public String getCatchResultAsString(Context context) {
         return (mCatchResult != null) ? mCatchResult.getString(context) : "";
     }

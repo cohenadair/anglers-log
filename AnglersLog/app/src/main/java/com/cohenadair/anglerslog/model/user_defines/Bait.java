@@ -28,8 +28,7 @@ import static com.cohenadair.anglerslog.database.LogbookSchema.CatchTable;
 
 /**
  * The Bait class represents a single bait used for fishing.
- *
- * Created by Cohen Adair on 2015-11-03.
+ * @author Cohen Adair
  */
 public class Bait extends PhotoUserDefineObject implements HasCatchesInterface {
 

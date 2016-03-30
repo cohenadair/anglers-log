@@ -5,7 +5,7 @@ import java.util.UUID;
 
 /**
  * Stores anything used by the application's stats features.
- * Created by Cohen Adair on 2016-01-26.
+ * @author Cohen Adair
  */
 public class Stats {
 

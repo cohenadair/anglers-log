@@ -36,7 +36,7 @@ import lecho.lib.hellocharts.view.PieChartView;
  * A statistics fragment used to show the number of catches for a particular
  * {@link com.cohenadair.anglerslog.model.user_defines.UserDefineObject}.
  *
- * Created by Cohen Adair on 2016-01-27.
+ * @author Cohen Adair
  */
 public class CatchesCountFragment extends Fragment {
 
@@ -177,10 +177,10 @@ public class CatchesCountFragment extends Fragment {
         mPieCenterTitle.setText(new String(value.getLabelAsChars()));
         mPieCenterSubtitle.setText(getCircleSubtitle(value));
 
-        updateMoreDetail(position, value);
+        updateMoreDetail(position);
     }
 
-    private void updateMoreDetail(int position, SliceValue value) {
+    private void updateMoreDetail(int position) {
         final UserDefineObject obj = mStatsSpec.getObject(position);
 
         if (obj == null) {

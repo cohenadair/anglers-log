@@ -22,7 +22,7 @@ import static com.cohenadair.anglerslog.database.LogbookSchema.PhotoTable;
 
 /**
  * An abstract class for a UserDefineObject subclass that includes photos added by the user.
- * Created by Cohen Adair on 2015-11-08.
+ * @author Cohen Adair
  */
 public abstract class PhotoUserDefineObject extends UserDefineObject {
 
@@ -84,6 +84,10 @@ public abstract class PhotoUserDefineObject extends UserDefineObject {
         return getPhotos(getId());
     }
 
+    /**
+     * Resets photos by first removing all old ones, the adding the new ones.
+     * @param newPhotos The collection new photos.
+     */
     public void setPhotos(ArrayList<String> newPhotos) {
         ArrayList<String> oldPhotos = getPhotos();
 
@@ -94,6 +98,10 @@ public abstract class PhotoUserDefineObject extends UserDefineObject {
             addPhoto(newPhoto);
     }
 
+    /**
+     * @return An array of photos associated with the given id.
+     * @see #getNextPhotoName(UUID)
+     */
     public ArrayList<String> getPhotos(UUID id) {
         return QueryHelper.queryPhotos(mPhotoTable, id);
     }
@@ -124,9 +132,10 @@ public abstract class PhotoUserDefineObject extends UserDefineObject {
     }
 
     /**
-     * Generates a file name for the next photo to be added to the Catch's photos.
-     * @param id The id to use for the name, or null to use this Catch's id. Useful for Catch
-     *           editing.
+     * Generates a file name for the next photo to be added to the object's photos.
+     *
+     * @param id The id to use for the name, or null to use this object's id. Useful for instances
+     *           such as {@link Catch} editing.
      * @return The file name as String. Example "IMG_<mId>_<aRandomNumber>.png".
      */
     public String getNextPhotoName(UUID id) {
@@ -164,6 +173,9 @@ public abstract class PhotoUserDefineObject extends UserDefineObject {
         return values;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Intent getShareIntent(Context context) {
         Intent intent =  super.getShareIntent(context);
@@ -176,6 +188,8 @@ public abstract class PhotoUserDefineObject extends UserDefineObject {
     }
 
     /**
+     * {@inheritDoc}
+     *
      * To keep iOS and Core Data compatibility, a simple JSON String array is not used here.
      */
     @Override

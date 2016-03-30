@@ -27,7 +27,7 @@ import java.util.UUID;
  * The BigCatchFragment is a statistical fragment that shows details of large catches for each
  * type of species.
  *
- * Created by Cohen Adair on 2016-01-27.
+ * @author Cohen Adair
  */
 public class BigCatchFragment extends Fragment {
 

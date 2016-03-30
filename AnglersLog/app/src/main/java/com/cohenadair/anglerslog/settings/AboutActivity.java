@@ -10,7 +10,7 @@ import com.cohenadair.anglerslog.activities.DefaultActivity;
  * {@link android.support.v7.preference.Preference}s. Sub-screens do not work and need to be
  * handled by the programmer.
  *
- * Created by Cohen Adair on 2016-02-02.
+ * @author Cohen Adair
  */
 public class AboutActivity extends DefaultActivity {
 
