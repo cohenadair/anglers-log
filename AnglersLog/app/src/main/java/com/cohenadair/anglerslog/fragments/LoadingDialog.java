@@ -63,7 +63,7 @@ public class LoadingDialog extends DialogFragment {
     }
 
     private View getContentView(Bundle args) {
-        View view = getActivity().getLayoutInflater().inflate(R.layout.dialog_loading, null);
+        View view = View.inflate(getContext(), R.layout.dialog_loading, null);
 
         mProgressBar = (ProgressBar)view.findViewById(R.id.progress_bar);
         mProgressBar.setVisibility(View.GONE);

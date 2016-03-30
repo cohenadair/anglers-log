@@ -21,10 +21,12 @@ import java.util.ArrayList;
 
 /**
  * The GalleryFragment displays a gallery of the user's photos.
- * Created by Cohen Adair on 2016-02-01.
+ * @author Cohen Adair
  */
 public class GalleryFragment extends MasterFragment {
 
+    // largest size of a gallery cell
+    // this is used so tablets in landscape don't have massive thumbnail sizes
     private static final int MAX_SIZE = 150;
 
     private ArrayList<String> mPhotos;
@@ -64,6 +66,12 @@ public class GalleryFragment extends MasterFragment {
         });
     }
 
+    /**
+     * Uses the screen size to calculate the size of each thumbnail so they are evenly
+     * distributes across the screen.
+     *
+     * @return The size of each image, in pixels.
+     */
     private int getImageSize() {
         int maxSize = (int)Utils.dpToPx(MAX_SIZE);
         int screenWidth = Utils.getScreenSize(getContext()).x;
@@ -77,6 +85,10 @@ public class GalleryFragment extends MasterFragment {
         return size;
     }
 
+    /**
+     * Each item in this {@link BaseAdapter} subclass has a single {@link ImageView} that can be
+     * clicked to open a full-sized version of the image.
+     */
     public class ImageAdapter extends BaseAdapter {
 
         private Context mContext;

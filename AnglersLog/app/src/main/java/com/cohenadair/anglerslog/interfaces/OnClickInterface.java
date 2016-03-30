@@ -5,7 +5,9 @@ import android.view.View;
 import java.util.UUID;
 
 /**
- * A custom OnClick interface used for RecyclerViews.
+ * A custom OnClick interface used primarily for
+ * {@link com.cohenadair.anglerslog.fragments.MyListFragment} instances.
+ *
  * @author Cohen Adair
  */
 public interface OnClickInterface {
