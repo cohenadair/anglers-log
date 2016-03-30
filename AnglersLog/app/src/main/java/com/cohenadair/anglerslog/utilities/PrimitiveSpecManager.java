@@ -20,7 +20,7 @@ import java.util.UUID;
  * A controller object used to retrieve managing information for a primitive
  * {@link UserDefineObject} such as {@link Species}.
  *
- * Created by Cohen Adair on 2015-10-23.
+ * @author Cohen Adair
  */
 public class PrimitiveSpecManager {
 

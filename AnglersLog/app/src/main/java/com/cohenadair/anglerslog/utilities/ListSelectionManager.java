@@ -23,7 +23,6 @@ public class ListSelectionManager {
     public static abstract class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private UUID mId;
-        private int mPosition;
 
         private Adapter mAdapter;
         private View mView;
@@ -71,10 +70,6 @@ public class ListSelectionManager {
 
             getObject().setIsSelected(select);
             ViewUtils.setSelected(mView, getObject().getIsSelected());
-        }
-
-        public int getItemCount() {
-            return mAdapter.getItemCount();
         }
 
         private void addToSelections() {

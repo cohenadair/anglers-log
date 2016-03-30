@@ -12,7 +12,7 @@ import com.cohenadair.anglerslog.utilities.LogbookPreferences;
 
 /**
  * A WeatherDetailsView is a view that displays weather data.
- * Created by Cohen Adair on 2016-01-13.
+ * @author Cohen Adair
  */
 public class WeatherDetailsView extends LeftIconView {
 

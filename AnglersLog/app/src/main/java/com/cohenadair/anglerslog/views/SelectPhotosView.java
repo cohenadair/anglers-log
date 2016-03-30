@@ -39,7 +39,7 @@ import java.util.ArrayList;
  * All photos (taken or selected) are downsized and copied to private application storage where
  * they are used by this application.
  *
- * Created by Cohen Adair on 2015-10-18.
+ * @author Cohen Adair
  */
 public class SelectPhotosView extends LinearLayout {
 

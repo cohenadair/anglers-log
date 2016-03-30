@@ -38,7 +38,7 @@ import java.util.UUID;
  * application's layouts are similar; they just show different content.  This class, in
  * conjunction with {@link LayoutSpec} are used to make that process much easier.
  *
- * Created by Cohen Adair on 2015-09-03.
+ * @author Cohen Adair
  */
 public class LayoutSpecManager {
     // force singleton

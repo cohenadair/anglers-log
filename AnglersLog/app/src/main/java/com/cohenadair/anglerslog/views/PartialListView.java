@@ -69,6 +69,9 @@ public class PartialListView extends LeftIconView {
         updateViews();
     }
 
+    /**
+     * @return The first few items in given array of {@link UserDefineObject} objects.
+     */
     private ArrayList<UserDefineObject> getPortionItems(ArrayList<UserDefineObject> allItems) {
         ArrayList<UserDefineObject> newItems = new ArrayList<>();
 

@@ -6,7 +6,7 @@ import android.widget.FrameLayout;
 
 /**
  * A wrapper class for use with a GoogleMap object.
- * Created by Cohen Adair on 2015-12-06.
+ * @author Cohen Adair
  */
 public class GoogleMapLayout extends FrameLayout {
 

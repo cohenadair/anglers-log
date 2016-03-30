@@ -3,7 +3,6 @@ package com.cohenadair.anglerslog.views;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
-import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
@@ -13,7 +12,7 @@ import com.cohenadair.anglerslog.R;
 
 /**
  * A SelectionSpinnerView is a view with a title and and a Spinner for selection.
- * Created by Cohen Adair on 2015-12-06.
+ * @author Cohen Adair
  */
 public class SelectionSpinnerView extends LinearLayout {
 
@@ -58,10 +57,6 @@ public class SelectionSpinnerView extends LinearLayout {
     public void setSelection(int position) {
         mSpinner.setSelection(position);
     }
-
-    public int getSelectedIndex() {
-        return mSpinner.getSelectedItemPosition();
-    }
     //endregion
 
     public void setAdapter(SpinnerAdapter adapter) {
@@ -70,9 +65,5 @@ public class SelectionSpinnerView extends LinearLayout {
 
     public SpinnerAdapter getAdapter() {
         return mSpinner.getAdapter();
-    }
-
-    public void setOnItemSelectedListener(AdapterView.OnItemSelectedListener listener) {
-        mSpinner.setOnItemSelectedListener(listener);
     }
 }

@@ -13,7 +13,7 @@ import java.util.UUID;
  * simple {@link com.cohenadair.anglerslog.fragments.ManagePrimitiveFragment} for adding, editing,
  * and deleting.
  *
- * Created by Cohen Adair on 2015-09-03.
+ * @author Cohen Adair
  */
 public class PrimitiveSpec {
 

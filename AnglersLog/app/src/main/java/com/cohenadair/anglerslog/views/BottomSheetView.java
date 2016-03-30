@@ -13,7 +13,7 @@ import com.cohenadair.anglerslog.R;
 
 /**
  * A BottomSheetView is a wrapper for {@link android.support.design.widget.BottomSheetBehavior} as
- * part of Google's Material Design Pattern.
+ * part of Google Material Design Pattern.
  *
  * @author Cohen Adair
  */
@@ -36,10 +36,10 @@ public class BottomSheetView extends LinearLayout {
 
     public BottomSheetView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init(attrs);
+        init();
     }
 
-    private void init(AttributeSet attrs) {
+    private void init() {
         inflate(getContext(), R.layout.view_bottom_sheet, this);
         mTitleTextView = (TextView)findViewById(R.id.title_text_view);
         mDescriptionTextView = (TextView)findViewById(R.id.description_text_view);

@@ -3,7 +3,6 @@ package com.cohenadair.anglerslog.views;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
-import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
@@ -17,18 +16,16 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * An image scrolling view. This differs from a ViewPager in that this is a series of ImageView
- * objects embedded in a ScrollView.
+ * objects embedded in a ScrollView and is normally used as a small part of a Fragment, rather
+ * than full screen interaction.
  *
- * Created by Cohen Adair on 2015-11-03.
+ * @author Cohen Adair
  */
 public class ImageScrollView extends LinearLayout {
 
     private RelativeLayout mContainer;
-    private HorizontalScrollView mScrollView;
     private LinearLayout mPhotosWrapper;
     private InteractionListener mInteractionListener;
-
-    public float mScrollSize;
 
     public interface InteractionListener {
         void onImageClick(int position);
@@ -48,7 +45,6 @@ public class ImageScrollView extends LinearLayout {
         View view = inflate(getContext(), R.layout.view_image_scroll, this);
 
         mContainer = (RelativeLayout)view.findViewById(R.id.image_scroll_container);
-        mScrollView = (HorizontalScrollView)view.findViewById(R.id.scroll_view);
         mPhotosWrapper = (LinearLayout)view.findViewById(R.id.photos_wrapper);
     }
 
@@ -86,11 +82,11 @@ public class ImageScrollView extends LinearLayout {
 
         PhotoUtils.thumbnailToImageView(img, path, size, R.drawable.placeholder_square);
         mPhotosWrapper.addView(img);
-
-        // used to correctly center the scroll view
-        mScrollSize += size + getResources().getDimensionPixelOffset(R.dimen.margin_default);
     }
 
+    /**
+     * Ensures there is even spacing between all images.
+     */
     private void updateImageMargins() {
         for (int i = 0; i < mPhotosWrapper.getChildCount(); i++) {
             LinearLayout.LayoutParams params = (LinearLayout.LayoutParams)mPhotosWrapper.getChildAt(i).getLayoutParams();

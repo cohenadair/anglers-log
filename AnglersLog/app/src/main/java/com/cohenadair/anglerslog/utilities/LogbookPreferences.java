@@ -11,8 +11,7 @@ import java.util.Date;
 
 /**
  * Used to store and retrieve values from {@link android.content.SharedPreferences}.
- *
- * Created by Cohen Adair on 2016-01-23.
+ * @author Cohen Adair
  */
 public class LogbookPreferences {
 

@@ -60,12 +60,6 @@ public class InputButtonView extends LeftIconView {
         mSecondaryButton.setOnClickListener(l);
     }
 
-    private void setPrimaryButtonClickable(boolean clickable) {
-        mPrimaryButton.setClickable(clickable);
-        if (!clickable)
-            mPrimaryButton.setBackgroundResource(android.R.color.transparent);
-    }
-
     public void setPrimaryButtonText(String text) {
         mPrimaryButton.setText(text);
     }

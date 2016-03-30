@@ -21,8 +21,7 @@ import java.util.Map;
 
 /**
  * A utility class that manages both a disk and memory Bitmap cache.
- *
- * Created by Cohen Adair on 2015-10-21.
+ * @author Cohen Adair
  */
 public class PhotoCache {
 
@@ -64,6 +63,12 @@ public class PhotoCache {
         new DiskTask().execute(diskDirectory(subDir));
     }
 
+    /**
+     * Adds a Bitmap to the memory and disk.
+     * @param path The path to the image.
+     * @param size The size of the image.
+     * @param bitmap The Bitmap representation of the image.
+     */
     public void addBitmap(String path, int size, Bitmap bitmap) {
         String key = key(path, size);
 
@@ -78,10 +83,16 @@ public class PhotoCache {
         }
     }
 
+    /**
+     * @return A memory cached Bitmap from the given path or null if one doesn't exist.
+     */
     public Bitmap bitmapFromMemory(String path, int size) {
         return mMemoryCache.get(key(path, size));
     }
 
+    /**
+     * @return A disk cached Bitmap from the given path or null if one doesn't exist.
+     */
     @Nullable
     public Bitmap bitmapFromDisk(String path, int size) {
         synchronized (mDiskCacheLock) {
@@ -148,13 +159,6 @@ public class PhotoCache {
     }
 
     /**
-     * Completely clears the disk cache.
-     */
-    public void clearDisk() {
-        mDiskCache.clear();
-    }
-
-    /**
      * Provides a unique cache key for different bitmap sizes.
      *
      * @param path The path of the bitmap to be cached.
@@ -183,20 +187,6 @@ public class PhotoCache {
             cachePath = mContext.getCacheDir().getPath();
 
         return new File(cachePath + File.separator + subDir);
-    }
-
-    private class DiskTask extends AsyncTask<File, Void, Void> {
-        @Override
-        protected Void doInBackground(File... params) {
-            synchronized (mDiskCacheLock) {
-                File cacheDir = params[0];
-                mDiskCache = openBitmapDiskCache(cacheDir, mDiskCacheSize);
-                mDiskCacheStarting = false; // initializing finished
-                mDiskCacheLock.notifyAll(); // wake any waiting threads
-            }
-
-            return null;
-        }
     }
 
     //region BitmapDiskCache Class
@@ -363,4 +353,22 @@ public class PhotoCache {
         }
     }
     //endregion
+
+    /**
+     * Used to initialize the disk cache. An AsyncTask is used to avoid locking when reading and
+     * writing to the cache.
+     */
+    private class DiskTask extends AsyncTask<File, Void, Void> {
+        @Override
+        protected Void doInBackground(File... params) {
+            synchronized (mDiskCacheLock) {
+                File cacheDir = params[0];
+                mDiskCache = openBitmapDiskCache(cacheDir, mDiskCacheSize);
+                mDiskCacheStarting = false; // initializing finished
+                mDiskCacheLock.notifyAll(); // wake any waiting threads
+            }
+
+            return null;
+        }
+    }
 }

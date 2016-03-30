@@ -12,7 +12,7 @@ import com.cohenadair.anglerslog.utilities.ViewUtils;
 
 /**
  * A TitleSubTitleView is a view that neatly displays a title and subtitle text vertically.
- * Created by Cohen Adair on 2015-09-30.
+ * @author Cohen Adair
  */
 public class TitleSubTitleView extends LinearLayout {
 
@@ -84,20 +84,8 @@ public class TitleSubTitleView extends LinearLayout {
         toggleSubSubtitleViewVisibility();
     }
 
-    public String getSubSubtitle() {
-        return mSubSubtitle.getText().toString();
-    }
-
-    public void setSubtitleHint(String hint) {
-        mSubtitle.setHint(hint);
-    }
-
     public void hideSubtitle() {
         mSubtitle.setVisibility(View.GONE);
-    }
-
-    public void hideSubSubtitle() {
-        mSubSubtitle.setVisibility(View.GONE);
     }
 
     public void setTitleStyle(int resId) {

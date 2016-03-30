@@ -20,6 +20,8 @@ import com.cohenadair.anglerslog.utilities.ViewUtils;
  * UserDefineObject will be edited. Due to the lifecycle of Fragments, the callbacks are called
  * at odd times and will result in improper text values.
  * </p>
+ *
+ * @author Cohen Adair
  */
 public class InputTextView extends LeftIconView {
 
@@ -87,10 +89,6 @@ public class InputTextView extends LeftIconView {
     public void setInputText(String text) {
         mEditText.setText(text);
     }
-
-    public void setHint(String hint) {
-        mEditText.setHint(hint);
-    }
     //endregion
 
     public void setAllowsNegativeNumbers(boolean allowsNegativeNumbers) {
@@ -123,10 +121,6 @@ public class InputTextView extends LeftIconView {
                 InputType.TYPE_TEXT_FLAG_MULTI_LINE |
                 InputType.TYPE_TEXT_FLAG_CAP_SENTENCES
         );
-    }
-
-    public void setTitleVisibility(boolean visible) {
-        ViewUtils.setVisibility(mTitleTextView, visible);
     }
 
     public void addOnInputTextChangedListener(TextWatcher listener) {

@@ -25,7 +25,7 @@ import java.util.UUID;
  * The current layout is controlled by a {@link LayoutSpecManager} singleton class, and should never
  * be instantiated outside that instance.
  *
- * Created by Cohen Adair on 2015-09-03.
+ * @author Cohen Adair
  */
 public class LayoutSpec {
 
@@ -172,6 +172,10 @@ public class LayoutSpec {
         return mMasterFragmentTag + " (" + numberOfItems + ")";
     }
 
+    /**
+     * Gets the id of a selected item. This is only used for tablets in two-pane mode. It will
+     * show and store each item selected by the user.
+     */
     public UUID getSelectionId() {
         // check to see if an item has previously been selected
         if (mSelectionId == null && mMasterAdapter != null)
@@ -222,14 +226,23 @@ public class LayoutSpec {
         mDetailFragment.update(activity);
     }
 
+    /**
+     * @see #updateViews(LayoutSpecActivity, String, SortingMethod)
+     */
     public void updateViews(LayoutSpecActivity activity, String searchQuery) {
         updateViews(activity, searchQuery, null);
     }
 
+    /**
+     * @see #updateViews(LayoutSpecActivity, String, SortingMethod)
+     */
     public void updateViews(LayoutSpecActivity activity, SortingMethod sortingMethod) {
         updateViews(activity, null, sortingMethod);
     }
 
+    /**
+     * @see #updateViews(LayoutSpecActivity, String, SortingMethod)
+     */
     public void updateViews(LayoutSpecActivity activity) {
         updateViews(activity, null, null);
     }

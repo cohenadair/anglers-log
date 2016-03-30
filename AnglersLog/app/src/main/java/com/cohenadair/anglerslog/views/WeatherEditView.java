@@ -17,7 +17,6 @@ import com.cohenadair.anglerslog.utilities.LogbookPreferences;
 
 /**
  * A EditWeatherView is a view that used for adding, updating, or removing a {@link Weather} object.
- *
  * @author Cohen Adair
  */
 public class WeatherEditView extends LinearLayout {
@@ -33,15 +32,15 @@ public class WeatherEditView extends LinearLayout {
 
     public WeatherEditView(Context context) {
         this(context, null);
-        init(null);
+        init();
     }
 
     public WeatherEditView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init(attrs);
+        init();
     }
 
-    private void init(AttributeSet attrs) {
+    private void init() {
         inflate(getContext(), R.layout.view_weather_edit, this);
 
         mTemperatureView = (InputTextView)findViewById(R.id.temperature_view);

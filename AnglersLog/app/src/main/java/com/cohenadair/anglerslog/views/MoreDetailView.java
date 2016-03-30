@@ -12,7 +12,7 @@ import com.cohenadair.anglerslog.R;
  * A MoreDetailView is a view that displays a single a {@link TitleSubTitleView} with a clickable
  * "more info" button.
  *
- * Created by Cohen Adair on 2016-01-23.
+ * @author Cohen Adair
  */
 public class MoreDetailView extends LinearLayout {
 
@@ -90,24 +90,6 @@ public class MoreDetailView extends LinearLayout {
         mTitleSubTitleView.setSubtitleStyle(resId);
     }
 
-    public void hideSubtitle() {
-        mTitleSubTitleView.hideSubtitle();
-    }
-
-    /**
-     * Uses a LayoutParams to create spacing similar to the default margins.
-     */
-    public void useDefaultSpacing() {
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        params.setMargins(
-                getResources().getDimensionPixelSize(R.dimen.margin_default),
-                getResources().getDimensionPixelSize(R.dimen.spacing_small),
-                getResources().getDimensionPixelSize(R.dimen.margin_default),
-                getResources().getDimensionPixelSize(R.dimen.spacing_small)
-        );
-        mContainer.setLayoutParams(params);
-    }
-
     /**
      * Uses a LayoutParams to create spacing similar to the default margins.
      */
@@ -118,20 +100,6 @@ public class MoreDetailView extends LinearLayout {
                 getResources().getDimensionPixelSize(R.dimen.spacing_small),
                 getResources().getDimensionPixelSize(R.dimen.margin_default),
                 getResources().getDimensionPixelSize(R.dimen.spacing_small)
-        );
-        mContainer.setLayoutParams(params);
-    }
-
-    /**
-     * Uses a LayoutParams with no top or bottom spacing.
-     */
-    public void useSmallSpacing() {
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        params.setMargins(
-                getResources().getDimensionPixelSize(R.dimen.margin_default),
-                getResources().getDimensionPixelSize(R.dimen.spacing_small_half),
-                getResources().getDimensionPixelSize(R.dimen.margin_default),
-                getResources().getDimensionPixelSize(R.dimen.spacing_small_half)
         );
         mContainer.setLayoutParams(params);
     }

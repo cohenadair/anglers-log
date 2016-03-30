@@ -10,7 +10,7 @@ import com.cohenadair.anglerslog.R;
 
 /**
  * A PropertyDetailView is a view that neatly displays a property and detail text horizontally.
- * Created by Cohen Adair on 2015-09-30.
+ * @author Cohen Adair
  */
 public class PropertyDetailView extends LinearLayout {
 

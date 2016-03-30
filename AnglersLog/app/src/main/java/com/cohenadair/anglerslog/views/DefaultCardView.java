@@ -17,8 +17,10 @@ import com.cohenadair.anglerslog.utilities.ViewUtils;
 import java.util.ArrayList;
 
 /**
- * A DefaultCardView is a view that displays a default styled {@link android.support.v7.widget.CardView}.
- * Created by Cohen Adair on 2016-01-26.
+ * A DefaultCardView is a view that displays a default styled
+ * {@link android.support.v7.widget.CardView}.
+ *
+ * @author Cohen Adair
  */
 public class DefaultCardView extends LinearLayout {
 

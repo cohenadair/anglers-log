@@ -24,7 +24,8 @@ import de.hdodenhof.circleimageview.CircleImageView;
 /**
  * The ListManager is a utility class for managing the catches list. This class should never be
  * instantiated. Only the ViewHolder and Adapter classes should be used.
- * Created by Cohen Adair on 2015-10-05.
+ *
+ * @author Cohen Adair
  */
 public class ListManager {
 

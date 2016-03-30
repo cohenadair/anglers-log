@@ -17,7 +17,7 @@ import com.cohenadair.anglerslog.model.Weather;
 
 /**
  * A WeatherView is a view that used for getting, displaying, and managing weather data.
- * Created by Cohen Adair on 2016-01-13.
+ * @author Cohen Adair
  */
 public class WeatherView extends LinearLayout {
 
@@ -32,15 +32,15 @@ public class WeatherView extends LinearLayout {
 
     public WeatherView(Context context) {
         this(context, null);
-        init(null);
+        init();
     }
 
     public WeatherView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init(attrs);
+        init();
     }
 
-    private void init(AttributeSet attrs) {
+    private void init() {
         inflate(getContext(), R.layout.view_weather, this);
 
         mAddWeatherView = (InputButtonView)findViewById(R.id.input_view);

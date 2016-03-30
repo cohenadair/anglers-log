@@ -14,7 +14,7 @@ import com.cohenadair.anglerslog.activities.MainActivity;
 
 /**
  * A wrapper class to manage drawer navigation.
- * Created by Cohen Adair on 2015-09-16.
+ * @author Cohen Adair
  */
 public class NavigationManager implements FragmentManager.OnBackStackChangedListener {
 

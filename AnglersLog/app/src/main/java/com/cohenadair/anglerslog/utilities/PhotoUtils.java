@@ -17,7 +17,6 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.widget.ImageView;
 
 import com.cohenadair.anglerslog.R;
@@ -40,11 +39,10 @@ import java.util.ArrayList;
 
 /**
  * Any utility functions that have anything to do with photos/photo manipulation.
- * Created by Cohen Adair on 2015-10-18.
+ * @author Cohen Adair
  */
 public class PhotoUtils {
 
-    private static final String TAG = "PhotoUtils";
     private static Context mContext;
     private static PhotoCache mCache;
 
@@ -178,10 +176,9 @@ public class PhotoUtils {
         Bitmap placeHolder = BitmapFactory.decodeResource(mContext.getResources(), placeHolderResId);
         Bitmap fromCache = mCache.bitmapFromMemory(path, size);
 
-        if (fromCache != null) {
-            Log.i(TAG, "Found bitmap in MEMORY cache!");
+        if (fromCache != null)
             imageView.setImageBitmap(fromCache);
-        } else if (cancelPotentialWork(path, imageView)) {
+        else if (cancelPotentialWork(path, imageView)) {
             final BitmapAsyncTask task = new BitmapAsyncTask(imageView, size, size, true);
             final AsyncDrawable asyncDrawable = new AsyncDrawable(mContext.getResources(), placeHolder, task);
             imageView.setImageDrawable(asyncDrawable);
@@ -232,7 +229,6 @@ public class PhotoUtils {
             if (inputStream != null)
                 bufferStream = new BufferedInputStream(inputStream);
         } catch (IOException e) {
-            Log.e(TAG, "Error opening stream from Uri in " + methodName + ": " + uri.toString());
             e.printStackTrace();
             return bmp;
         }
@@ -241,7 +237,6 @@ public class PhotoUtils {
             try {
                 metadata = ImageMetadataReader.readMetadata(bufferStream);
             } catch (Exception e) {
-                Log.e(TAG, "Error reading Metadata in " + methodName + " from Uri: " + uri.toString());
                 e.printStackTrace();
                 return bmp;
             }
@@ -254,7 +249,6 @@ public class PhotoUtils {
                     try {
                         orientation = exifIFD0Directory.getInt(ExifIFD0Directory.TAG_ORIENTATION);
                     } catch (MetadataException e){
-                        Log.e(TAG, "Error getting orientation in " + methodName + " from Uri: " + uri.toString());
                         e.printStackTrace();
                         return bmp;
                     }
@@ -369,6 +363,11 @@ public class PhotoUtils {
         }
     }
 
+    /**
+     * Saves an image resource to the device's storage.
+     * @param resId The resource id of the file to save.
+     * @param fileName The name of the file.
+     */
     public static void saveImageResource(int resId, String fileName) {
         File destFile = privatePhotoFile(fileName);
         if (destFile == null)
@@ -422,8 +421,6 @@ public class PhotoUtils {
                     numDeleted += (photoFiles[i].delete()) ? 1 : 0;
             }
         }
-
-        Log.i(TAG, "Cleaned " + numDeleted + " photo files from private storage.");
     }
 
     /**
@@ -501,8 +498,7 @@ public class PhotoUtils {
                     int size = (mWidth > mHeight) ? mHeight : mWidth; // get the smaller of the width/height
                     scaledBitmap = ThumbnailUtils.extractThumbnail(scaledBitmap, size, size);
                 }
-            } else
-                Log.i(TAG, "Bitmap found in DISK cache!");
+            }
 
             // cache bitmap to use later
             mCache.addBitmap(mPath, mWidth, scaledBitmap);

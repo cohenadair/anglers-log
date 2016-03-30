@@ -29,7 +29,7 @@ import java.util.HashMap;
  * {@link GoogleMap}. Each Marker is used to display a
  * {@link com.cohenadair.anglerslog.model.user_defines.FishingSpot}.
  *
- * Created by Cohen Adair on 2016-02-04.
+ * @author Cohen Adair
  */
 public class FishingSpotMarkerManager {
 
