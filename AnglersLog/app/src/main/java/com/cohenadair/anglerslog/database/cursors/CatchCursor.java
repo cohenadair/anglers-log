@@ -14,7 +14,7 @@ import static com.cohenadair.anglerslog.database.LogbookSchema.CatchTable;
  * A {@link Cursor} wrapper for the {@link com.cohenadair.anglerslog.model.user_defines.Catch}
  * object.
  *
- * Created by Cohen Adair on 2015-10-24.
+ * @author Cohen Adair
  */
 public class CatchCursor extends UserDefineCursor {
 

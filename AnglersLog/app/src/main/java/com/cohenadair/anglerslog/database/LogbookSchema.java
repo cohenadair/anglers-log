@@ -2,8 +2,7 @@ package com.cohenadair.anglerslog.database;
 
 /**
  * The SQLite database schema for a Logbook.
- *
- * Created by Cohen Adair on 2015-10-24.
+ * @author Cohen Adair
  */
 public class LogbookSchema {
 

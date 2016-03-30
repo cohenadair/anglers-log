@@ -107,7 +107,7 @@ public abstract class PhotoUserDefineObject extends UserDefineObject {
     }
 
     public int getPhotoCount() {
-        return QueryHelper.photoCount(mPhotoTable, getId());
+        return QueryHelper.getPhotoCount(mPhotoTable, getId());
     }
 
     /**

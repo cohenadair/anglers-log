@@ -13,7 +13,7 @@ import static com.cohenadair.anglerslog.database.LogbookSchema.TripTable;
  * A {@link Cursor} wrapper for the {@link com.cohenadair.anglerslog.model.user_defines.Trip}
  * object.
  *
- * Created by Cohen Adair on 2016-01-20
+ * @author Cohen Adair
  */
 public class TripCursor extends UserDefineCursor {
 

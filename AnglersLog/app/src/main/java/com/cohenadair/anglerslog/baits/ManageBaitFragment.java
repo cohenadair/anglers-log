@@ -158,6 +158,12 @@ public class ManageBaitFragment extends ManageContentFragment {
         });
     }
 
+    /**
+     * Shows an instance of {@link ManagePrimitiveFragment} allowing the user to select a
+     * {@link com.cohenadair.anglerslog.model.user_defines.BaitCategory}.
+     *
+     * @param onDismissInterface Callbacks for when a selection is made.
+     */
     private void showCategoryDialog(ManagePrimitiveFragment.OnDismissInterface onDismissInterface) {
         ManagePrimitiveFragment fragment = ManagePrimitiveFragment.newInstance(PrimitiveSpecManager.BAIT_CATEGORY, false);
         fragment.setOnDismissInterface(onDismissInterface);

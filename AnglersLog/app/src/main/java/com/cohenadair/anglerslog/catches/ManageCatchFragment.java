@@ -43,7 +43,8 @@ import java.util.Date;
 import java.util.UUID;
 
 /**
- * The ManageBaitFragment is used to add and edit catches.
+ * The ManageCatchFragment is used to add and edit catches.
+ * @author Cohen Adair
  */
 public class ManageCatchFragment extends ManageContentFragment {
 
@@ -431,6 +432,10 @@ public class ManageCatchFragment extends ManageContentFragment {
         editDialog.show(getChildFragmentManager(), "EditWeatherDialog");
     }
 
+    /**
+     * Attempts to get weather data online.
+     * @param l Callbacks for the request.
+     */
     private void requestWeatherData(final WeatherView.EditDialog.OnGetWeatherListener l) {
         if (!mGoogleApiClient.isConnected()) {
             Utils.showToast(getContext(), R.string.error_google_services);
@@ -526,6 +531,14 @@ public class ManageCatchFragment extends ManageContentFragment {
         }));
     }
 
+    /**
+     * Converts a String to a float.
+     *
+     * @param str The String to be converted.
+     * @param defaultValue The value to be returned if the given String is empty.
+     * @return A float representation of the given String, or the given default value if the given
+     *         String is empty.
+     */
     private float asFloat(String str, float defaultValue) {
         if (str.isEmpty())
             return defaultValue;

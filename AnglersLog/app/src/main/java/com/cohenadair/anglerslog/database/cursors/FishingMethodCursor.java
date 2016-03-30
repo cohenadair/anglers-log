@@ -8,7 +8,7 @@ import com.cohenadair.anglerslog.model.user_defines.FishingMethod;
  * A {@link Cursor} wrapper for the {@link com.cohenadair.anglerslog.model.user_defines.FishingMethod}
  * object.
  *
- * Created by Cohen Adair on 2015-10-24.
+ * @author Cohen Adair
  */
 public class FishingMethodCursor extends UserDefineCursor {
 

@@ -8,7 +8,7 @@ import com.cohenadair.anglerslog.model.user_defines.Angler;
  * A {@link Cursor} wrapper for the {@link com.cohenadair.anglerslog.model.user_defines.Angler}
  * object.
  *
- * Created by Cohen Adair on 2016-01-20.
+ * @author Cohen Adair
  */
 public class AnglerCursor extends UserDefineCursor {
 

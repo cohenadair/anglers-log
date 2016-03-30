@@ -27,7 +27,7 @@ import static com.cohenadair.anglerslog.database.LogbookSchema.WeatherTable;
  * The LogbookHelper is a {@link SQLiteOpenHelper} subclass that interacts with the application's
  * database.
  *
- * Created by Cohen Adair on 2015-10-24.
+ * @author Cohen Adair
  */
 public class LogbookHelper extends SQLiteOpenHelper {
 

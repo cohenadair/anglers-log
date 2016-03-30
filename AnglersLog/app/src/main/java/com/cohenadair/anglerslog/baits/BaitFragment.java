@@ -28,6 +28,7 @@ import java.util.UUID;
 
 /**
  * A {@link DetailFragment} subclass used to show the details of a single bait.
+ * @author Cohen Adair
  */
 public class BaitFragment extends DetailFragment {
 
@@ -151,7 +152,7 @@ public class BaitFragment extends DetailFragment {
                 if (mBait.getPhotoCount() <= 0)
                     return;
 
-                ArrayList<String> photos = new ArrayList<String>();
+                ArrayList<String> photos = new ArrayList<>();
                 photos.add(mBait.getRandomPhoto());
 
                 Intent intent = new Intent(getContext(), PhotoViewerActivity.class);

@@ -23,6 +23,7 @@ import java.util.UUID;
 
 /**
  * A {@link DetailFragment} subclass used to show the details of a single catch.
+ * @author Cohen Adair
  */
 public class CatchFragment extends DetailFragment {
 

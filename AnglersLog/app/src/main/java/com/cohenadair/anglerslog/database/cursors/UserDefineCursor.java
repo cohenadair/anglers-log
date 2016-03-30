@@ -10,10 +10,10 @@ import java.util.UUID;
 import static com.cohenadair.anglerslog.database.LogbookSchema.UserDefineTable;
 
 /**
- * A {@link Cursor} wrapper for the {@link com.cohenadair.anglerslog.model.user_defines.UserDefineObject}
- * object.
+ * A {@link Cursor} wrapper for the
+ * {@link com.cohenadair.anglerslog.model.user_defines.UserDefineObject} object.
  *
- * Created by Cohen Adair on 2015-10-24.
+ * @author Cohen Adair
  */
 public class UserDefineCursor extends CursorWrapper {
 

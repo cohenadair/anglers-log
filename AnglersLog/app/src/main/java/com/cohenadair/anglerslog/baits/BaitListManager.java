@@ -14,7 +14,7 @@ import com.cohenadair.anglerslog.utilities.ListManager;
 import java.util.ArrayList;
 
 /**
- * The BaitListManager is a utility class for managing the catches list.
+ * The BaitListManager is a utility class for managing the baits list.
  * @author Cohen Adair
  */
 public class BaitListManager {

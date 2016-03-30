@@ -33,11 +33,11 @@ import static com.cohenadair.anglerslog.database.LogbookSchema.UsedCatchTable;
 import static com.cohenadair.anglerslog.database.LogbookSchema.UserDefineTable;
 import static com.cohenadair.anglerslog.database.LogbookSchema.WeatherTable;
 
-// TODO finish documentation for this file
-
 /**
- * A class for easy database querying.
- * Created by Cohen Adair on 2015-10-24.
+ * A class for easy database querying. This is also used so the rest of the application doesn't
+ * need to interact directly with the database.
+ *
+ * @author Cohen Adair
  */
 public class QueryHelper {
 
@@ -53,7 +53,9 @@ public class QueryHelper {
         UserDefineObject getFromLogbook(UUID id);
     }
 
-    private QueryHelper() { }
+    private QueryHelper() {
+        // prevents instantiation
+    }
 
     public static void setDatabase(SQLiteDatabase database) {
         mDatabase = database;
@@ -92,11 +94,31 @@ public class QueryHelper {
         return new TripCursor(mDatabase.query(TripTable.NAME, null, whereClause, args, null, null, TripTable.Columns.START_DATE + " DESC"));
     }
 
+    /**
+     * Gets a {@link UserDefineCursor} subclass for a given table. This method is normally used
+     * in combination with {@link #queryUserDefines(UserDefineCursor, UserDefineQueryInterface)}.
+     *
+     * @param table The table (i.e. BaitTable.Name).
+     * @param whereClause The SQL where clause.
+     * @param args The arguments for the where clause.
+     * @return A {@link UserDefineCursor} subclass.
+     *
+     * @see #queryUserDefines(UserDefineCursor, UserDefineQueryInterface)
+     */
     @NonNull
     public static UserDefineCursor queryUserDefines(String table, String whereClause, String[] args) {
         return new UserDefineCursor(mDatabase.query(table, null, whereClause, args, null, null, UserDefineTable.Columns.NAME));
     }
 
+    /**
+     * Queries for all instances of a {@link UserDefineObject} subclass.
+     *
+     * @param cursor The {@link UserDefineCursor} to be iterated through.
+     * @param callbacks Callbacks for casting the {@link UserDefineObject} to the desired object.
+     * @return An array of {@link UserDefineObject} subclasses.
+     *
+     * @see #queryUserDefines(String, String, String[])
+     */
     public static ArrayList<UserDefineObject> queryUserDefines(UserDefineCursor cursor, UserDefineQueryInterface callbacks) {
         ArrayList<UserDefineObject> objs = new ArrayList<>();
 
@@ -110,14 +132,29 @@ public class QueryHelper {
         return objs;
     }
 
+    /**
+     * @see #queryUserDefine(String, String, String[], UserDefineQueryInterface)
+     */
     public static UserDefineObject queryUserDefine(String table, UUID id, UserDefineQueryInterface callbacks) {
         return queryUserDefine(table, UserDefineTable.Columns.ID, id.toString(), callbacks);
     }
 
+    /**
+     * @see #queryUserDefine(String, String, String[], UserDefineQueryInterface)
+     */
     public static UserDefineObject queryUserDefine(String table, String column, String columnValue, UserDefineQueryInterface callbacks) {
         return queryUserDefine(table, column + " = ?", new String[] { columnValue }, callbacks);
     }
 
+    /**
+     * Retrieves a single {@link UserDefineObject} from the database.
+     *
+     * @param callbacks Callbacks for casting the resulting {@link UserDefineObject}.
+     * @return A {@link UserDefineObject} subclass.
+     *
+     * @see #queryUserDefine(String, UUID, UserDefineQueryInterface)
+     * @see #queryUserDefine(String, String, String, UserDefineQueryInterface)
+     */
     public static UserDefineObject queryUserDefine(String table, String whereClause, String[] args, UserDefineQueryInterface callbacks) {
         UserDefineObject obj = null;
         UserDefineCursor cursor = queryUserDefines(table, whereClause, args);
@@ -155,6 +192,12 @@ public class QueryHelper {
         return objs;
     }
 
+    /**
+     * Returns the number of items matching the given criteria.
+     * @return The number of rows returned by the query.
+     *
+     * @see #queryCount(String)
+     */
     public static int queryCount(String table, String whereClause, String[] args) {
         int count = 0;
         Cursor cursor = mDatabase.query(table, new String[]{COUNT}, whereClause, args, null, null, null);
@@ -166,22 +209,15 @@ public class QueryHelper {
         return count;
     }
 
+    /**
+     * @see #queryCount(String, String, String[])
+     */
     public static int queryCount(String table) {
         return queryCount(table, null, null);
     }
 
     public static boolean queryHasResults(Cursor cursor) {
         boolean result = cursor.getCount() > 0;
-        cursor.close();
-        return result;
-    }
-
-    public static boolean queryBoolean(Cursor cursor, String column) {
-        boolean result = false;
-
-        if (cursor.moveToFirst())
-            result = cursor.getInt(cursor.getColumnIndex(column)) == 1;
-
         cursor.close();
         return result;
     }
@@ -268,7 +304,14 @@ public class QueryHelper {
         return deleteQuery(table, PhotoTable.Columns.NAME + " = ?", new String[]{fileName});
     }
 
-    public static int photoCount(String table, UUID id) {
+    /**
+     * Gets the number of photos associated with the given {@link UserDefineObject} id.
+     *
+     * @param table The table (i.e. BaitPhotoTable.NAME).
+     * @param id The id of the object for which to count photos.
+     * @return The number of photos associated with the given id.
+     */
+    public static int getPhotoCount(String table, UUID id) {
         return queryCount(table, PhotoTable.Columns.USER_DEFINE_ID + " = ?", new String[]{id.toString()});
     }
 
@@ -334,13 +377,11 @@ public class QueryHelper {
     }
 
     /**
-     * Queries for the number of catches for a given {@link Trip} at a given {@link Location}.
-     *
-     * @see #getTotalCatchQuantity(Cursor)
-     *
      * @param trip The {@link Trip} object.
      * @param location The {@link Location} object.
-     * @return The number of catches for the given trip at the given location.
+     * @return The number of catches for the given {@link Trip} at the given {@link Location}.
+     *
+     * @see #getTotalCatchQuantity(Cursor)
      */
     public static int queryTripsLocationCatchCount(Trip trip, Location location) {
         return getTotalCatchQuantity(queryCatches(
@@ -360,12 +401,10 @@ public class QueryHelper {
     }
 
     /**
-     * Gets the number of catches made at the given {@link Location}.
-     *
-     * @see #getTotalCatchQuantity(Cursor)
-     *
      * @param location The {@link Location} to check for catches.
      * @return The number of catches made at the given {@link Location}.
+     *
+     * @see #getTotalCatchQuantity(Cursor)
      */
     public static int queryLocationCatchCount(Location location) {
         return getTotalCatchQuantity(queryCatches(
@@ -379,6 +418,12 @@ public class QueryHelper {
         ));
     }
 
+    /**
+     * @param fishingSpot The {@link FishingSpot} to query for.
+     * @return The number of catches made at the given {@link FishingSpot}.
+     *
+     * @see #getTotalCatchQuantity(Cursor)
+     */
     public static int queryFishingSpotCatchCount(FishingSpot fishingSpot) {
         return getTotalCatchQuantity(queryCatches(
                 CatchTable.Columns.QUANTITY,
@@ -393,14 +438,14 @@ public class QueryHelper {
 
     /**
      * Gets the {@link Catch} quantities that match the given parameters. For example, one might
-     * check CatchTable.Columns.SPECIES_ID for the total number of catches for that particualr
+     * check CatchTable.Columns.SPECIES_ID for the total number of catches for that particular
      * species.
-     *
-     * @see #getTotalCatchQuantity(Cursor)
      *
      * @param object The {@link UserDefineObject} to look for in the given column.
      * @param catchColumn The table column to compare the given object to.
      * @return The number of catches based on the given criteria.
+     *
+     * @see #getTotalCatchQuantity(Cursor)
      */
     public static int queryUserDefineCatchCount(UserDefineObject object, String catchColumn) {
         return getTotalCatchQuantity(queryCatches(
@@ -439,7 +484,8 @@ public class QueryHelper {
      *
      * @param column The column with max value.
      * @param species The species to get the max value. This value can be null.
-     * @return A {@link Catch} object.
+     * @return The {@link Catch} object with the highest value at the given column for the given
+     *         {@link Species}.
      */
     @Nullable
     public static Catch queryCatchMax(String column, Species species) {
@@ -458,6 +504,10 @@ public class QueryHelper {
         return null;
     }
 
+    /**
+     * Gets the largest {@link Catch} for the given column, regardless of species.
+     * @see #queryCatchMax(String, Species)
+     */
     @Nullable
     public static Catch queryCatchMax(String column) {
         return queryCatchMax(column, null);

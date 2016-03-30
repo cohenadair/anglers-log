@@ -10,8 +10,7 @@ import static com.cohenadair.anglerslog.database.LogbookSchema.FishingSpotTable;
 
 /**
  * A {@link Cursor} wrapper for the {@link FishingSpot} object.
- *
- * Created by Cohen Adair on 2015-10-24.
+ * @author Cohen Adair
  */
 public class FishingSpotCursor extends UserDefineCursor {
 
