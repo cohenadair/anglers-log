@@ -29,6 +29,7 @@
                 style="@style/InputView.IconInset"
                 android:id="@+id/end_date_view"
                 android:layout_marginTop="@dimen/margin_default_negative"
+                android:paddingBottom="@dimen/margin_half"
                 custom:primaryHint="End date"/>
 
         </LinearLayout>
