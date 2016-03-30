@@ -15,8 +15,10 @@ import com.cohenadair.anglerslog.utilities.Utils;
 import java.util.UUID;
 
 /**
- * The DetailFragmentActivity is used to view a {@link com.cohenadair.anglerslog.fragments.DetailFragment}.
- * Created by Cohen Adair on 2015-12-12.
+ * The DetailFragmentActivity is used to view a
+ * {@link com.cohenadair.anglerslog.fragments.DetailFragment}.
+ *
+ * @author Cohen Adair
  */
 public class DetailFragmentActivity extends DefaultActivity {
 
@@ -28,6 +30,7 @@ public class DetailFragmentActivity extends DefaultActivity {
 
     /**
      * Gets an Intent used to show a {@link DetailFragmentActivity}.
+     *
      * @param context The context.
      * @param layoutSpecId See {@link LayoutSpecManager}.
      * @param userDefineObjectId The UUID of the object to display.
@@ -74,7 +77,6 @@ public class DetailFragmentActivity extends DefaultActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        //getMenuInflater().inflate(R.menu.menu_share, menu);
         return super.onCreateOptionsMenu(menu);
     }
 

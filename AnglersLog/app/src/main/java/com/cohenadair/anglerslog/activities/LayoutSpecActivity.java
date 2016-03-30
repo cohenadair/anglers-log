@@ -5,11 +5,9 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBar;
 
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.fragments.DetailFragment;
-import com.cohenadair.anglerslog.fragments.ManageContentFragment;
 import com.cohenadair.anglerslog.fragments.ManageFragment;
 import com.cohenadair.anglerslog.fragments.MyListFragment;
 import com.cohenadair.anglerslog.interfaces.GlobalSettingsInterface;
@@ -26,6 +24,7 @@ import java.util.UUID;
 
 /**
  * A wrapper class to be used for any Activity that requires a {@link LayoutSpec} object.
+ * @author Cohen Adair
  */
 public abstract class LayoutSpecActivity extends DefaultActivity implements
         MyListFragment.InteractionListener,
@@ -34,8 +33,6 @@ public abstract class LayoutSpecActivity extends DefaultActivity implements
         DetailFragment.OnClickMenuListener,
         GlobalSettingsInterface
 {
-    private static final String TAG = "LayoutSpecActivity";
-
     /**
      * Will open or display the manager view associated with the current master detail fragment.
      * For example, when the Catches list is open, this method will display the ManageBaitFragment.
@@ -120,10 +117,6 @@ public abstract class LayoutSpecActivity extends DefaultActivity implements
         return mLayoutSpec.getManageFragment();
     }
 
-    public ManageContentFragment getManageContentFragment() {
-        return mLayoutSpec.getManageFragment().getContentFragment();
-    }
-
     public ListManager.Adapter getMasterAdapter() {
         return mLayoutSpec.getMasterAdapter();
     }
@@ -145,6 +138,10 @@ public abstract class LayoutSpecActivity extends DefaultActivity implements
     }
     // endregion
 
+    /**
+     * Gets the correct title for the Toolbar.
+     * @return "Edit" or "New" depending on the situation.
+     */
     @NonNull
     public String getViewTitle() {
         return getResources().getString(isEditing() ? R.string.action_edit : R.string.new_text) + " " + mLayoutSpec.getName();
@@ -243,10 +240,4 @@ public abstract class LayoutSpecActivity extends DefaultActivity implements
         startActivity(obj.getShareIntent(this));
     }
     //endregion
-
-    public void setActionBarTitle(String title) {
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null)
-            actionBar.setTitle(title);
-    }
 }

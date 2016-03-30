@@ -18,7 +18,6 @@ import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import com.cohenadair.anglerslog.model.utilities.UserDefineArrays;
 import com.cohenadair.anglerslog.utilities.LayoutSpecManager;
 import com.cohenadair.anglerslog.utilities.ListManager;
-import com.cohenadair.anglerslog.utilities.Utils;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -65,10 +64,16 @@ public class PartialListActivity extends DefaultActivity {
                     .commit();
     }
 
+    /**
+     * @see UserDefineArrays#objectsFromStringIds(ArrayList, UserDefineArrays.OnConvertInterface)
+     */
     private ArrayList<UserDefineObject> idsToObjects(UserDefineArrays.OnConvertInterface onConvert) {
         return UserDefineArrays.objectsFromStringIds(getIntent().getStringArrayListExtra(EXTRA_ITEMS), onConvert);
     }
 
+    /**
+     * @see #idsToObjects(UserDefineArrays.OnConvertInterface)
+     */
     private ArrayList<UserDefineObject> idsToCatches() {
         return idsToObjects(new UserDefineArrays.OnConvertInterface() {
             @Override
@@ -78,6 +83,9 @@ public class PartialListActivity extends DefaultActivity {
         });
     }
 
+    /**
+     * @see #idsToObjects(UserDefineArrays.OnConvertInterface)
+     */
     private ArrayList<UserDefineObject> idsToLocations() {
         return idsToObjects(new UserDefineArrays.OnConvertInterface() {
             @Override
@@ -87,6 +95,9 @@ public class PartialListActivity extends DefaultActivity {
         });
     }
 
+    /**
+     * @see #idsToObjects(UserDefineArrays.OnConvertInterface)
+     */
     private ArrayList<UserDefineObject> idsToBaits() {
         return idsToObjects(new UserDefineArrays.OnConvertInterface() {
             @Override

@@ -20,8 +20,6 @@ import java.util.UUID;
 
 public class MainActivity extends LayoutSpecActivity {
 
-    private static final String TAG = "MainActivity";
-
     private NavigationManager mNavigationManager;
 
     @Override
@@ -41,6 +39,7 @@ public class MainActivity extends LayoutSpecActivity {
                 // this is used as a workaround for smoother fragment transitions; for whatever
                 // reason the reverse animation off the back stack makes some views "go white",
                 // and ScrollViews appear above the toolbar, making the animation look sloppy
+                // StackOverflow issue: http://stackoverflow.com/questions/36204194/android-keep-actionbar-toolbar-in-front-of-fragment-animations
                 getDetailFragment().hide();
             }
         });
