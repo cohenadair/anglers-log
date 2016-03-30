@@ -109,7 +109,7 @@ public abstract class ManageContentFragment extends Fragment {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         // for taking photos
-        if (requestCode == PermissionUtils.EXTERNAL_STORAGE) {
+        if (requestCode == PermissionUtils.REQUEST_EXTERNAL_STORAGE) {
             if (grantResults.length > 0 && grantResults[0] == PermissionUtils.GRANTED)
                 mSelectPhotosView.onStoragePermissionsGranted();
             else

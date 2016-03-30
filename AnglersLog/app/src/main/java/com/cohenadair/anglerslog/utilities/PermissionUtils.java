@@ -21,12 +21,14 @@ import com.cohenadair.anglerslog.R;
  */
 public class PermissionUtils {
 
-    public static final int EXTERNAL_STORAGE = 1;
+    public static final int REQUEST_EXTERNAL_STORAGE = 1;
+    public static final int REQUEST_LOCATION = 2;
 
     public static final int GRANTED = PackageManager.PERMISSION_GRANTED;
 
     public static final String WRITE = Manifest.permission.WRITE_EXTERNAL_STORAGE;
     public static final String READ = Manifest.permission.READ_EXTERNAL_STORAGE;
+    public static final String LOCATION = Manifest.permission.ACCESS_FINE_LOCATION;
 
     /**
      * Checks to see if we have permission to read and write to external storage. If not, asks
@@ -35,14 +37,15 @@ public class PermissionUtils {
      * @param fragment The {@link Fragment} that calls {@link Fragment#requestPermissions(String[], int)}.
      */
     public static void requestExternalStorage(Fragment fragment) {
-        Context context = fragment.getContext();
-        String[] permissions = new String[] { WRITE, READ };
-
-        if (!isExternalStorageGranted(context))
-            if (shouldShowExplanation(fragment, WRITE) || shouldShowExplanation(fragment, READ))
-                showExplanationDialog(fragment, R.string.storage_permissions_message, permissions, EXTERNAL_STORAGE);
-            else
-                fragment.requestPermissions(permissions, EXTERNAL_STORAGE);
+        request(
+                fragment,
+                new String[] {WRITE, READ},
+                isExternalStorageGranted(fragment.getContext()),
+                shouldShowExplanation(fragment, WRITE) || shouldShowExplanation(fragment, READ),
+                REQUEST_EXTERNAL_STORAGE,
+                R.string.storage_permissions,
+                R.string.storage_permissions_message
+        );
     }
 
     /**
@@ -58,10 +61,35 @@ public class PermissionUtils {
     }
 
     /**
+     * Checks to see if we have permission to use the device's location services. If not, asks
+     * the user for permission.
+     *
+     * @param fragment The {@link Fragment} that calls {@link Fragment#requestPermissions(String[], int)}.
+     */
+    public static void requestLocation(Fragment fragment) {
+        request(
+                fragment,
+                new String[] {LOCATION},
+                isLocationGranted(fragment.getContext()),
+                shouldShowExplanation(fragment, LOCATION),
+                REQUEST_LOCATION,
+                R.string.location_permissions,
+                R.string.location_permissions_message
+        );
+    }
+
+    /**
+     * @return True if permission is grated, false otherwise.
+     */
+    public static boolean isLocationGranted(Context context) {
+        return ContextCompat.checkSelfPermission(context, LOCATION) == GRANTED;
+    }
+
+    /**
      * Checks to see if the user's location services are enabled. If not, it prompts them to enable
      * them.  Method derived from <a href="http://stackoverflow.com/a/10311891/3304388">here</a>.
      */
-    public static boolean requestLocationServices(final Context context) {
+    public static boolean checkLocationServices(final Context context) {
         LocationManager locationManager = (LocationManager)context.getSystemService(Context.LOCATION_SERVICE);
 
         try {
@@ -98,13 +126,14 @@ public class PermissionUtils {
      * the dialog is dismissed, {@link Fragment#requestPermissions(String[], int)} is called.
      *
      * @param fragment The {@link Fragment} that calls {@link Fragment#requestPermissions(String[], int)}.
+     * @param titleId The title of the dialog.
      * @param msgId The explanation shown to users.
      * @param permissions The permissions to be requested.
      * @param requestCode The request code send with the permission request.
      */
-    private static void showExplanationDialog(final Fragment fragment, int msgId, final String[] permissions, final int requestCode) {
+    private static void showExplanationDialog(final Fragment fragment, int titleId, int msgId, final String[] permissions, final int requestCode) {
         new AlertDialog.Builder(fragment.getContext())
-                .setTitle(R.string.storage_permissions)
+                .setTitle(titleId)
                 .setMessage(msgId)
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
@@ -114,5 +143,26 @@ public class PermissionUtils {
                     }
                 })
                 .show();
+    }
+
+    /**
+     * Handles a permission request, prompting the user if needed.
+     *
+     * @param fragment The {@link Fragment} that calls {@link Fragment#requestPermissions(String[], int)}.
+     * @param permissions The permissions to request.
+     * @param isGranted True if access is granted, false otherwise.
+     * @param shouldShowExplanation True if an explanation should be shown to the user, false otherwise.
+     * @param request The request code.
+     * @param titleId The title of the explanation dialog.
+     * @param msgId The message in the explanation dialog.
+     */
+    private static void request(Fragment fragment, String[] permissions, boolean isGranted, boolean shouldShowExplanation, int request, int titleId, int msgId) {
+        if (isGranted)
+            return;
+
+        if (shouldShowExplanation)
+            showExplanationDialog(fragment, titleId, msgId, permissions, request);
+        else
+            fragment.requestPermissions(permissions, request);
     }
 }

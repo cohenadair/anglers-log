@@ -216,7 +216,6 @@
     <string name="error_location_edit">Error updating location</string>
     <string name="error_location_add">Error adding location</string>
     <string name="error_location_name">A location with that name already exists.</string>
-    <string name="error_location_permission">You have not given permission to use location services.</string>
     <string name="error_location_disabled">Unable to get current location. The device\'s location services are disabled.</string>
     <string name="error_user_location">Error getting user location</string>
     <string name="open_location_settings">Open location settings</string>
@@ -268,4 +267,8 @@
     <string name="storage_permissions">Storage Permissions</string>
     <string name="storage_permissions_message">Permission to read and write from the device\'s storage is required to save photos taken with Anglers\' Log.</string>
     <string name="storage_permissions_denied">Storage permissions were denied and as a result Anglers\' Log is unable to use the camera.</string>
+
+    <string name="location_permissions">Location Permissions</string>
+    <string name="location_permissions_message">Permission to use Location Services allows Anglers\' Log to display your location on its maps.</string>
+    <string name="location_permissions_denied">Location permissions were denied and as a result your location will not be shown on Anglers\' Log maps.</string>
 </resources>

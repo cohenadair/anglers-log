@@ -11,7 +11,7 @@ import java.util.Date;
 
 /**
  * The DatePickerFragment is used for date selection.
- * Created by Cohen Adair on 2015-09-30.
+ * @author Cohen Adair
  */
 public class DatePickerFragment extends DialogFragment {
 

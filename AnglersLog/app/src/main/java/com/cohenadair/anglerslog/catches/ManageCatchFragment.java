@@ -442,7 +442,7 @@ public class ManageCatchFragment extends ManageContentFragment {
             return;
         }
 
-        if (!PermissionUtils.requestLocationServices(getContext()))
+        if (!PermissionUtils.checkLocationServices(getContext()))
             return;
 
         Location loc = null;

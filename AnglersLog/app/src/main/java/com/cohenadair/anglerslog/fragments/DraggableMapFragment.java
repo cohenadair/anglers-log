@@ -6,9 +6,7 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -21,6 +19,7 @@ import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.utilities.AlertUtils;
 import com.cohenadair.anglerslog.utilities.GoogleMapLayout;
 import com.cohenadair.anglerslog.utilities.LogbookPreferences;
+import com.cohenadair.anglerslog.utilities.PermissionUtils;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
@@ -40,10 +39,8 @@ import com.google.android.gms.maps.model.LatLng;
  */
 public class DraggableMapFragment extends SupportMapFragment implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
-    private static final String TAG = "DraggableMapFragment";
     private static final float ZOOM = 15;
 
-    private static final int REQUEST_LOCATION = 0;
     private static final int GRANTED = PackageManager.PERMISSION_GRANTED;
     private static final String PERMISSION_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION;
 
@@ -52,7 +49,6 @@ public class DraggableMapFragment extends SupportMapFragment implements OnMapRea
 
     private GoogleApiClient mGoogleApiClient;
     private View mOriginalView;
-    private GoogleMapLayout mMapLayout;
     private GoogleMap mGoogleMap;
 
     private GoogleMapLayout.OnDragListener mOnDragListener;
@@ -105,11 +101,11 @@ public class DraggableMapFragment extends SupportMapFragment implements OnMapRea
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mOriginalView = super.onCreateView(inflater, container, savedInstanceState);
 
-        mMapLayout = new GoogleMapLayout(getActivity());
-        mMapLayout.addView(mOriginalView);
+        GoogleMapLayout mapLayout = new GoogleMapLayout(getActivity());
+        mapLayout.addView(mOriginalView);
 
         // nested inner class used here in case mOnDragListener is set after onCreateView is called
-        mMapLayout.setOnDragListener(new GoogleMapLayout.OnDragListener() {
+        mapLayout.setOnDragListener(new GoogleMapLayout.OnDragListener() {
             @Override
             public void onDrag(MotionEvent motionEvent) {
                 if (mOnDragListener != null)
@@ -117,7 +113,7 @@ public class DraggableMapFragment extends SupportMapFragment implements OnMapRea
             }
         });
 
-        return mMapLayout;
+        return mapLayout;
     }
 
     @Override
@@ -157,19 +153,17 @@ public class DraggableMapFragment extends SupportMapFragment implements OnMapRea
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode != REQUEST_LOCATION || permissions.length != 1)
+        if (requestCode != PermissionUtils.REQUEST_LOCATION || permissions.length != 1)
             return;
 
         if (permissions[0].equals(PERMISSION_LOCATION) && grantResults[0] == GRANTED)
             enableMyLocation();
         else
-            AlertUtils.showError(getContext(), R.string.error_location_permission);
+            AlertUtils.showError(getContext(), R.string.location_permissions_denied);
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        Log.d(TAG, "Map is ready.");
-
         mGoogleMap = googleMap;
         mGoogleMap.setMapType(LogbookPreferences.getMapType());
 
@@ -184,8 +178,6 @@ public class DraggableMapFragment extends SupportMapFragment implements OnMapRea
 
     @Override
     public void onConnected(Bundle bundle) {
-        Log.d(TAG, "GoogleClient connected.");
-
         if (mLocationUpdatesEnabled)
             startLocationUpdates();
     }
@@ -205,10 +197,8 @@ public class DraggableMapFragment extends SupportMapFragment implements OnMapRea
 
         if (mLocationUpdatesEnabled)
             startLocationUpdates();
-        else {
-            Log.d(TAG, "Location updates disabled, disconnecting from GoogleClientApi.");
+        else
             disconnectFromGoogleClient();
-        }
 
         getMapAsync(this);
     }
@@ -233,6 +223,13 @@ public class DraggableMapFragment extends SupportMapFragment implements OnMapRea
         mOnUpdateMapType = onUpdateMapType;
     }
 
+    /**
+     * Updates the map camera to the give location.
+     *
+     * @param loc The {@link LatLng} from which to update the camera.
+     * @param time The animation time, in milliseconds.
+     * @param callback Callbacks.
+     */
     public void updateCamera(LatLng loc, int time, GoogleMap.CancelableCallback callback) {
         try {
             mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(loc, ZOOM), time, callback);
@@ -241,10 +238,18 @@ public class DraggableMapFragment extends SupportMapFragment implements OnMapRea
         }
     }
 
+    /**
+     * Performs a two second animation to the given location.
+     * @see #updateCamera(LatLng, int, GoogleMap.CancelableCallback)
+     */
     public void updateCamera(LatLng loc) {
         updateCamera(loc, 2000, null);
     }
 
+    /**
+     * Updates the camera to the given location. Camera's zoom isn't doesn't change.
+     * @see #updateCamera(LatLng, int, GoogleMap.CancelableCallback)
+     */
     public void updateCameraNoZoom(LatLng loc, int time, GoogleMap.CancelableCallback callback) {
         try {
             mGoogleMap.animateCamera(CameraUpdateFactory.newLatLng(loc), time, callback);
@@ -253,10 +258,17 @@ public class DraggableMapFragment extends SupportMapFragment implements OnMapRea
         }
     }
 
+    /**
+     * Performs a two second animation to the given location. The camera's zoom remains unchanged.
+     * @see #updateCameraNoZoom(LatLng, int, GoogleMap.CancelableCallback)
+     */
     public void updateCameraNoZoom(LatLng loc) {
         updateCameraNoZoom(loc, 2000, null);
     }
 
+    /**
+     * Takes a screenshot of the map.
+     */
     public void takeSnapshot(GoogleMap.SnapshotReadyCallback callback) {
         mGoogleMap.snapshot(callback);
     }
@@ -269,17 +281,14 @@ public class DraggableMapFragment extends SupportMapFragment implements OnMapRea
     }
 
     private boolean isLocationPermissionGranted() {
-        return mLocationEnabled && ContextCompat.checkSelfPermission(getContext(), PERMISSION_LOCATION) == GRANTED;
+        return mLocationEnabled && PermissionUtils.isLocationGranted(getContext());
     }
 
     private void requestLocationPermission() {
         if (!mLocationEnabled)
             return;
 
-        requestPermissions(
-                new String[]{ Manifest.permission.ACCESS_FINE_LOCATION },
-                REQUEST_LOCATION
-        );
+        PermissionUtils.requestLocation(this);
     }
 
     private void connectToGoogleClient() {
@@ -314,8 +323,6 @@ public class DraggableMapFragment extends SupportMapFragment implements OnMapRea
         if (mGoogleApiClient == null || !mGoogleApiClient.isConnected())
             return;
 
-        Log.d(TAG, "Starting location updates...");
-
         if (!isLocationPermissionGranted())
             return;
 
@@ -325,11 +332,8 @@ public class DraggableMapFragment extends SupportMapFragment implements OnMapRea
         LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, request, new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
-                Log.d(TAG, "Received location update...");
-
                 if (!mLocationUpdatesEnabled) {
                     LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, mDummyListener);
-                    Log.d(TAG, "Removed location updates.");
                     return;
                 }
 

@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -23,11 +22,9 @@ import java.util.UUID;
  * The DetailFragment class is meant to be extended by any "detail" fragments.
  * A detail fragment is a fragment that shows details after a user selects an item from a list view.
  *
- * Created by Cohen Adair on 2015-09-03.
+ * @author Cohen Adair
  */
 public abstract class DetailFragment extends Fragment {
-
-    private static final String TAG = "DetailFragment";
 
     private UUID mItemId;
     private OnClickMenuListener mMenuListener;
@@ -105,8 +102,6 @@ public abstract class DetailFragment extends Fragment {
             case R.id.action_share:
                 mMenuListener.onClickShare(mItemId);
                 break;
-            default:
-                Log.e(TAG, "Menu item id: " + id + " is not supported.");
         }
 
         return super.onOptionsItemSelected(item);
@@ -122,11 +117,17 @@ public abstract class DetailFragment extends Fragment {
             mContainer.setVisibility(View.GONE);
     }
 
+    /**
+     * @see #hide()
+     */
     public void show() {
         if (mContainer != null)
             mContainer.setVisibility(View.VISIBLE);
     }
 
+    /**
+     * Updates the UI of the fragment.
+     */
     public void update(Context context) {
         if (isLayoutSpecChild())
             update(((LayoutSpecActivity)context).getSelectionId());
@@ -147,10 +148,6 @@ public abstract class DetailFragment extends Fragment {
         mItemId = itemId;
     }
 
-    public LayoutSpecActivity getRealActivity() {
-        return (LayoutSpecActivity)getActivity();
-    }
-
     public LinearLayout getContainer() {
         return mContainer;
     }
@@ -165,12 +162,15 @@ public abstract class DetailFragment extends Fragment {
     }
 
     /**
-     * @return True if this fragment is a child of a {@link LayoutSpecActivity}.
+     * @return True if this fragment is a child of a {@link LayoutSpecActivity}, false otherwise.
      */
     public boolean isLayoutSpecChild() {
         return getActivity() instanceof LayoutSpecActivity;
     }
 
+    /**
+     * @return True if the current layout is two-pane; false otherwise.
+     */
     public boolean isTwoPane() {
         return (getActivity() instanceof GlobalSettingsInterface) && ((GlobalSettingsInterface)getActivity()).isTwoPane();
     }
