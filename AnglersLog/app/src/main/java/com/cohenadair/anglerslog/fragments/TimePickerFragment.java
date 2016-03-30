@@ -11,8 +11,11 @@ import java.util.Calendar;
 import java.util.Date;
 
 /**
- * The TimePickerFragment is used for selecting time.
- * Created by Cohen Adair on 2015-09-30.
+ * The TimePickerFragment is used for selecting time. Note that
+ * {@link #setOnTimeSetListener(TimePickerDialog.OnTimeSetListener)} must be called before
+ * displaying an instance of {@link TimePickerFragment}.
+ *
+ * @author Cohen Adair
  */
 public class TimePickerFragment extends DialogFragment {
 

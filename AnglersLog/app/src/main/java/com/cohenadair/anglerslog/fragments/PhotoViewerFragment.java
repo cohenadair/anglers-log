@@ -64,7 +64,7 @@ public class PhotoViewerFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-        // delay hidden UI
+        // delay hidden UI so users see that they are available
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
@@ -143,6 +143,10 @@ public class PhotoViewerFragment extends Fragment {
             hideToolbar();
     }
 
+    /**
+     * The {@link PagerAdapter} subclass for the current ViewPager.  Each item contains an
+     * {@link SubsamplingScaleImageView} that allows users to zoom and pan on their photos.
+     */
     private class PhotoViewerAdapter extends PagerAdapter {
 
         private SubsamplingScaleImageView mImageView;

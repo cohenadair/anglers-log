@@ -1,8 +1,6 @@
 package com.cohenadair.anglerslog.fragments;
 
-import android.Manifest;
 import android.content.DialogInterface;
-import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -41,9 +39,6 @@ public class DraggableMapFragment extends SupportMapFragment implements OnMapRea
 
     private static final float ZOOM = 15;
 
-    private static final int GRANTED = PackageManager.PERMISSION_GRANTED;
-    private static final String PERMISSION_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION;
-
     private static final String ARG_ENABLE_LOCATION = "arg_enable_location";
     private static final String ARG_ENABLE_UPDATES = "arg_enable_updates";
 
@@ -62,6 +57,9 @@ public class DraggableMapFragment extends SupportMapFragment implements OnMapRea
         void onLocationUpdate(Location location);
     }
 
+    /**
+     * A callback for when the user changes the map type.
+     */
     public interface OnUpdateMapType {
         void onUpdate(int mapType);
     }
@@ -156,7 +154,7 @@ public class DraggableMapFragment extends SupportMapFragment implements OnMapRea
         if (requestCode != PermissionUtils.REQUEST_LOCATION || permissions.length != 1)
             return;
 
-        if (permissions[0].equals(PERMISSION_LOCATION) && grantResults[0] == GRANTED)
+        if (permissions[0].equals(PermissionUtils.LOCATION) && grantResults[0] == PermissionUtils.GRANTED)
             enableMyLocation();
         else
             AlertUtils.showError(getContext(), R.string.location_permissions_denied);
@@ -280,10 +278,17 @@ public class DraggableMapFragment extends SupportMapFragment implements OnMapRea
         return (latLng.latitude >= -90 && latLng.latitude <= 90) && (latLng.longitude >= -180 && latLng.longitude <= 180);
     }
 
+    /**
+     * @return True if this instance uses user location and we have permission to access the
+     *         device's location; false otherwise.
+     */
     private boolean isLocationPermissionGranted() {
         return mLocationEnabled && PermissionUtils.isLocationGranted(getContext());
     }
 
+    /**
+     * Requests device location permission from the user if this instance is tracking user location.
+     */
     private void requestLocationPermission() {
         if (!mLocationEnabled)
             return;

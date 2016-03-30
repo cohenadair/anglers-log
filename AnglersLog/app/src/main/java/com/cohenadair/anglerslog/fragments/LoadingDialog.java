@@ -14,7 +14,7 @@ import android.widget.TextView;
 import com.cohenadair.anglerslog.R;
 
 /**
- * An LoadingDialog is used to show loading throughout the application, such as when importing
+ * A LoadingDialog is used to show loading throughout the application, such as when importing
  * or exporting data.
  *
  * @author Cohen Adair

@@ -26,6 +26,7 @@ import java.util.List;
 
 /**
  * The ManageFragment is used for add and edit views for the various user defines.
+ * @author Cohen Adair
  */
 public class ManageFragment extends DialogFragment {
 

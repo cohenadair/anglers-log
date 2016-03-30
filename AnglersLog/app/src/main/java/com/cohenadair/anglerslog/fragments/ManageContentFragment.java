@@ -144,10 +144,6 @@ public abstract class ManageContentFragment extends Fragment {
     public UserDefineObject getNewObject() {
         return mNewObject;
     }
-
-    public UserDefineObject getOldObject() {
-        return mOldObject;
-    }
     //endregion
 
     /**
@@ -159,7 +155,8 @@ public abstract class ManageContentFragment extends Fragment {
     }
 
     public void onDismiss() {
-
+        // called elsewhere; empty to avoid runtime errors
+        // some subclasses override this method
     }
 
     /**
@@ -423,5 +420,6 @@ public abstract class ManageContentFragment extends Fragment {
         public int getEditSuccess() {
             return mEditSuccess;
         }
+
     }
 }

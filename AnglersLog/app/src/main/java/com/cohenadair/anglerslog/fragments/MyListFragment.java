@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
@@ -25,12 +24,15 @@ import com.cohenadair.anglerslog.utilities.LogbookPreferences;
 import com.cohenadair.anglerslog.views.BottomSheetView;
 
 /**
- * The fragment showing the list of catches.
+ * A {@link MasterFragment} subclass that displays a list of items, such as
+ * {@link com.cohenadair.anglerslog.model.user_defines.Catch} or
+ * {@link com.cohenadair.anglerslog.model.user_defines.Bait} objects.
+ *
+ * @author Cohen Adair
  */
 public class MyListFragment extends MasterFragment {
 
     private RecyclerView mRecyclerView;
-    private BottomSheetBehavior mBottomSheetBehavior;
 
     /**
      * Used to manage the App Bar's menu, including preserving search queries and the SearchView
@@ -124,6 +126,8 @@ public class MyListFragment extends MasterFragment {
     @Override
     public void updateInterface() {
         if (mRecyclerView != null && mRecyclerView.getAdapter() != null) {
+            // rather than always resetting adapter, just refresh
+            // this avoids slight lag in navigation
             if (mRecyclerView.getAdapter() != getLayoutSpec().getMasterAdapter())
                 mRecyclerView.setAdapter(getLayoutSpec().getMasterAdapter());
             else
@@ -290,6 +294,10 @@ public class MyListFragment extends MasterFragment {
     }
     //endregion
 
+    /**
+     * Hides or shows all menu icons.
+     * @param visible True to show; false to hide.
+     */
     public void setMenuItemsVisibility(boolean visible) {
         for (int i = 0; i < mMenu.size(); i++) {
             MenuItem item = mMenu.getItem(i);

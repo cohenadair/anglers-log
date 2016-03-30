@@ -32,8 +32,11 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 /**
- * The ManagePrimitiveFragment is used for selecting user defines from a list when adding Catches or
- * Trips.
+ * The ManagePrimitiveFragment is used for selecting user defines from a list when adding new items
+ * such as a {@link com.cohenadair.anglerslog.model.user_defines.Catch} or a
+ * {@link com.cohenadair.anglerslog.model.user_defines.Trip}.
+ *
+ * @author Cohen Adair
  */
 public class ManagePrimitiveFragment extends DialogFragment {
 
@@ -368,6 +371,7 @@ public class ManagePrimitiveFragment extends DialogFragment {
             LayoutInflater inflater = LayoutInflater.from(getActivity());
             int layoutId = 0;
 
+            // uses a different layout depending on the ManageType
             if      (mManageType == ManageType.Delete) layoutId = R.layout.list_item_manage_primitive_delete;
             else if (mManageType == ManageType.Selection) layoutId = R.layout.list_item_manage_primitive;
             else if (mManageType == ManageType.Edit) layoutId = R.layout.list_item_manage_primitive_edit;

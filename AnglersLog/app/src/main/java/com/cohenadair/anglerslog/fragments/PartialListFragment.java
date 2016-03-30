@@ -11,7 +11,10 @@ import android.view.ViewGroup;
 import com.cohenadair.anglerslog.R;
 
 /**
- * A very simple fragment designed to display a list of items.
+ * A simple {@link Fragment} subclass that show a list of items. Note that
+ * {@link #setAdapter(RecyclerView.Adapter)} must be called before displaying an instance of
+ * {@link PartialListFragment}.
+ *
  * @author Cohen Adair
  */
 public class PartialListFragment extends Fragment {
