@@ -265,7 +265,7 @@ public class ManagePrimitiveFragment extends DialogFragment {
     //endregion
     
     //region RecyclerView Stuff
-    private class ManagePrimitiveHolder extends ListSelectionManager.ViewHolder {
+    public class ManagePrimitiveHolder extends ListSelectionManager.ViewHolder {
 
         private int mPosition;
 
@@ -348,7 +348,7 @@ public class ManagePrimitiveFragment extends DialogFragment {
         //endregion
     }
 
-    private class ManagePrimitiveAdapter extends ListSelectionManager.Adapter {
+    public class ManagePrimitiveAdapter extends ListSelectionManager.Adapter {
 
         private ManageType mManageType;
 
