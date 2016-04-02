@@ -207,6 +207,7 @@ public class ManagePrimitiveFragment extends DialogFragment {
         });
 
         mToolbar.setNavigationIcon(R.drawable.ic_back);
+        mToolbar.setNavigationContentDescription(R.string.back_description);
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -1,6 +1,7 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/manage_primitive_fragment"
     android:background="@color/global_background"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -19,7 +20,7 @@
         android:layout_weight="1"
         android:id="@+id/content_recycler_view" />
 
-    <include layout="@layout/view_break"/>
+    <include layout="@layout/view_cell_separator"/>
 
     <LinearLayout
         android:id="@+id/add_item_layout"

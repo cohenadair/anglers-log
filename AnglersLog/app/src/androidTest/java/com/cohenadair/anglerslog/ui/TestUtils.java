@@ -9,8 +9,10 @@ import com.cohenadair.anglerslog.R;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.typeText;
+import static android.support.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static android.support.test.espresso.matcher.ViewMatchers.withHint;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
@@ -37,6 +39,10 @@ public class TestUtils {
         onView(withHint(hintId)).perform(click());
     }
 
+    public static void performDescriptionClick(int descriptionId) {
+        onView(withContentDescription(descriptionId)).perform(click());
+    }
+
     public static void performTypeText(int textEditId, String text) {
         onView(withId(textEditId)).perform(typeText(text));
     }
@@ -58,12 +64,20 @@ public class TestUtils {
         onView(withId(viewId)).check(matches(isDisplayed()));
     }
 
+    public static void checkViewNotDisplayed(int viewId) {
+        onView(withId(viewId)).check(doesNotExist());
+    }
+
     public static void checkTextDisplayed(int labelId) {
         onView(withText(labelId)).check(matches(isDisplayed()));
     }
 
     public static void checkTextDisplayed(String label) {
         onView(withText(label)).check(matches(isDisplayed()));
+    }
+
+    public static void checkTextNotDisplayed(String label) {
+        onView(withText(label)).check(doesNotExist());
     }
 
     public static void actionOnRecyclerViewItem(int id, int position, ViewAction action) {

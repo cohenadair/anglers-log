@@ -14,8 +14,12 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static android.support.test.espresso.action.ViewActions.typeText;
+import static com.cohenadair.anglerslog.ui.TestUtils.*;
 import static com.cohenadair.anglerslog.ui.TestUtils.actionOnRecyclerViewItem;
+import static com.cohenadair.anglerslog.ui.TestUtils.checkTextDisplayed;
+import static com.cohenadair.anglerslog.ui.TestUtils.checkViewNotDisplayed;
 import static com.cohenadair.anglerslog.ui.TestUtils.openAndSelectDrawerItem;
+import static com.cohenadair.anglerslog.ui.TestUtils.performDescriptionClick;
 import static com.cohenadair.anglerslog.ui.TestUtils.performHintClick;
 import static com.cohenadair.anglerslog.ui.TestUtils.performTypeText;
 import static com.cohenadair.anglerslog.ui.TestUtils.performViewClick;
@@ -50,19 +54,28 @@ public class PrimitiveTests {
         performHintClick(R.string.add_species);
 
         String test = "Aaa A Aaaa";
+        String testExtended = "Aa Aa Aa";
+        String test2 = test + testExtended;
 
         // add item
         performTypeText(R.id.new_item_edit, test);
         performViewClick(R.id.add_button);
+        checkTextDisplayed(test);
 
         // edit item
         performViewClick(R.id.action_edit);
-        actionOnRecyclerViewItem(R.id.content_recycler_view, 0, typeText("Aa Aa Aa"));
+        actionOnRecyclerViewItem(R.id.content_recycler_view, 0, typeText(testExtended));
         performViewClick(R.id.action_check);
+        checkTextDisplayed(test2);
 
         // delete item
         performViewClick(R.id.action_trash);
         actionOnRecyclerViewItem(R.id.content_recycler_view, 0, MyViewActions.clickChildView(R.id.delete_check_box));
         performViewClick(R.id.action_check);
+        checkTextNotDisplayed(test2);
+
+        // close dialog
+        performDescriptionClick(R.string.back_description);
+        checkViewNotDisplayed(R.id.manage_primitive_fragment);
     }
 }
