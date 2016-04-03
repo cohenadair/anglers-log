@@ -70,11 +70,13 @@ public class NavigationManager implements FragmentManager.OnBackStackChangedList
 
     public void showMenuButton() {
         mActionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
+        mActionBar.setHomeActionContentDescription(R.string.menu_description);
         mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
     }
 
     public void showBackButton() {
         mActionBar.setHomeAsUpIndicator(R.drawable.ic_back);
+        mActionBar.setHomeActionContentDescription(R.string.back_description);
         mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
     }
 

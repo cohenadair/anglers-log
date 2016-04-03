@@ -8,6 +8,7 @@ import com.cohenadair.anglerslog.R;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.action.ViewActions.scrollTo;
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
@@ -84,4 +85,16 @@ public class TestUtils {
         onView(withId(id)).perform(RecyclerViewActions.actionOnItemAtPosition(position, action));
     }
 
+    public static void clickBackDescription() {
+        performDescriptionClick(R.string.back_description);
+    }
+
+    public static void clickBackMenuButton() {
+        // basically clicks the navigation up button; sometimes it's a back button
+        openDrawer();
+    }
+
+    public static void scrollToAndClickHint(int hintId) {
+        onView(withHint(hintId)).perform(scrollTo(), click());
+    }
 }

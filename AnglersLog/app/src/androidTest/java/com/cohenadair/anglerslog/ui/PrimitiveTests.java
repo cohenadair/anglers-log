@@ -14,15 +14,17 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static android.support.test.espresso.action.ViewActions.typeText;
-import static com.cohenadair.anglerslog.ui.TestUtils.*;
 import static com.cohenadair.anglerslog.ui.TestUtils.actionOnRecyclerViewItem;
 import static com.cohenadair.anglerslog.ui.TestUtils.checkTextDisplayed;
+import static com.cohenadair.anglerslog.ui.TestUtils.checkTextNotDisplayed;
 import static com.cohenadair.anglerslog.ui.TestUtils.checkViewNotDisplayed;
+import static com.cohenadair.anglerslog.ui.TestUtils.clickBackDescription;
+import static com.cohenadair.anglerslog.ui.TestUtils.clickBackMenuButton;
 import static com.cohenadair.anglerslog.ui.TestUtils.openAndSelectDrawerItem;
-import static com.cohenadair.anglerslog.ui.TestUtils.performDescriptionClick;
 import static com.cohenadair.anglerslog.ui.TestUtils.performHintClick;
 import static com.cohenadair.anglerslog.ui.TestUtils.performTypeText;
 import static com.cohenadair.anglerslog.ui.TestUtils.performViewClick;
+import static com.cohenadair.anglerslog.ui.TestUtils.scrollToAndClickHint;
 
 /**
  * UI automated tests for viewing and managing primitive
@@ -49,10 +51,46 @@ public class PrimitiveTests {
 
     @Test
     public void testManagePrimitives() {
+        // catch stuff
         openAndSelectDrawerItem(R.string.drawer_catches);
         performViewClick(R.id.new_button);
-        performHintClick(R.string.add_species);
 
+        // species
+        performHintClick(R.string.add_species);
+        doPrimitiveRoutine();
+
+        // water clarity
+        scrollToAndClickHint(R.string.add_water_clarity);
+        doPrimitiveRoutine();
+
+        // fishing methods
+        scrollToAndClickHint(R.string.add_fishing_method);
+        doPrimitiveRoutine();
+
+        clickBackMenuButton();
+
+        // bait stuff
+        openAndSelectDrawerItem(R.string.drawer_baits);
+        performViewClick(R.id.new_button);
+
+        // bait  category
+        performHintClick(R.string.add_bait_category);
+        doPrimitiveRoutine();
+
+        clickBackMenuButton();
+
+        // trip stuff
+        openAndSelectDrawerItem(R.string.drawer_trips);
+        performViewClick(R.id.new_button);
+
+        // anglers
+        performHintClick(R.string.add_anglers);
+        doPrimitiveRoutine();
+
+        clickBackMenuButton();
+    }
+
+    public void doPrimitiveRoutine() {
         String test = "Aaa A Aaaa";
         String testExtended = "Aa Aa Aa";
         String test2 = test + testExtended;
@@ -75,7 +113,7 @@ public class PrimitiveTests {
         checkTextNotDisplayed(test2);
 
         // close dialog
-        performDescriptionClick(R.string.back_description);
+        clickBackDescription();
         checkViewNotDisplayed(R.id.manage_primitive_fragment);
     }
 }

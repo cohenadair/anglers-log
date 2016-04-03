@@ -261,6 +261,7 @@
     <string name="back_description">Go back.</string>
     <string name="icon_description">An icon that shows the current item.</string>
     <string name="card_banner_description">An image of the presented item.</string>
+    <string name="menu_description">Open the navigation drawer menu.</string>
 
     <string name="unknown">Unknown</string>
 
