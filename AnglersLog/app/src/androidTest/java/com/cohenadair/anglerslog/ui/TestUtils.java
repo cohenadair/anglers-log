@@ -6,14 +6,19 @@ import android.support.test.espresso.contrib.RecyclerViewActions;
 
 import com.cohenadair.anglerslog.R;
 
+import org.hamcrest.Matchers;
+
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.action.ViewActions.replaceText;
 import static android.support.test.espresso.action.ViewActions.scrollTo;
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.ViewMatchers.Visibility.VISIBLE;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
+import static android.support.test.espresso.matcher.ViewMatchers.withEffectiveVisibility;
 import static android.support.test.espresso.matcher.ViewMatchers.withHint;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
@@ -46,6 +51,14 @@ public class TestUtils {
 
     public static void performTypeText(int textEditId, String text) {
         onView(withId(textEditId)).perform(typeText(text));
+    }
+
+    public static void performHintTypeText(int hintId, String text) {
+        onView(withHint(hintId)).perform(typeText(text));
+    }
+
+    public static void performReplaceText(int textEditId, String text) {
+        onView(withId(textEditId)).perform(replaceText(text));
     }
 
     public static void openDrawer() {
@@ -90,8 +103,7 @@ public class TestUtils {
     }
 
     public static void clickBackMenuButton() {
-        // basically clicks the navigation up button; sometimes it's a back button
-        openDrawer();
+        onView(Matchers.allOf(withContentDescription(R.string.back_description), withEffectiveVisibility(VISIBLE))).perform(click());
     }
 
     public static void scrollToAndClickHint(int hintId) {

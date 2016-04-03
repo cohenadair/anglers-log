@@ -79,6 +79,7 @@ public abstract class DefaultActivity extends AppCompatActivity implements Globa
             if (actionBar != null) {
                 actionBar.setDisplayHomeAsUpEnabled(true);
                 actionBar.setHomeAsUpIndicator(R.drawable.ic_back);
+                actionBar.setHomeActionContentDescription(R.string.back_description);
             }
         } else {
             if (mToolbar != null)

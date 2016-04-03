@@ -121,8 +121,6 @@ public abstract class ManageContentFragment extends Fragment {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
-
-
     //region Getters & Setters
     public boolean isEditing() {
         return mIsEditing;
