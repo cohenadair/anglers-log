@@ -1,4 +1,4 @@
-package com.cohenadair.anglerslog.ui;
+package com.cohenadair.anglerslog.ui.new_logbook;
 
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
@@ -6,6 +6,7 @@ import android.test.suitebuilder.annotation.LargeTest;
 
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.activities.MainActivity;
+import com.cohenadair.anglerslog.ui.MyViewActions;
 
 import org.junit.After;
 import org.junit.Before;

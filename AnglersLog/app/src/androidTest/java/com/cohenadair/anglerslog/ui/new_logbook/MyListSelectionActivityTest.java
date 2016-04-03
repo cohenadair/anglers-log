@@ -1,4 +1,4 @@
-package com.cohenadair.anglerslog.ui;
+package com.cohenadair.anglerslog.ui.new_logbook;
 
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
