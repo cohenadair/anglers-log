@@ -49,12 +49,12 @@ public class TestUtils {
         performTextAction(label, click());
     }
 
-    public static void performHintClick(int hintId) {
-        onView(withHint(hintId)).perform(click());
+    public static void performHintAction(int hintId, ViewAction action) {
+        onView(withHint(hintId)).perform(action);
     }
 
-    public static void performDescriptionAction(String description, ViewAction action) {
-        onView(withContentDescription(description)).perform(action);
+    public static void performHintClick(int hintId) {
+        performHintAction(hintId, click());
     }
 
     public static void performDescriptionAction(int descriptionId, ViewAction action) {
@@ -63,10 +63,6 @@ public class TestUtils {
 
     public static void performDescriptionClick(int descriptionId) {
         performDescriptionAction(descriptionId, click());
-    }
-
-    public static void performDescriptionClick(String description) {
-        performDescriptionAction(description, click());
     }
 
     public static void performTypeText(int textEditId, String text) {
@@ -94,10 +90,6 @@ public class TestUtils {
         selectDrawerItem(labelId);
     }
 
-    public static void checkViewDisplayed(int viewId) {
-        onView(withId(viewId)).check(matches(isDisplayed()));
-    }
-
     public static void checkViewNotDisplayed(int viewId) {
         onView(withId(viewId)).check(doesNotExist());
     }
@@ -108,14 +100,6 @@ public class TestUtils {
 
     public static void checkTextDisplayed(String label) {
         onView(withText(label)).check(matches(isDisplayed()));
-    }
-
-    public static void checkDescriptionDisplayed(String description) {
-        onView(withContentDescription(description)).check(matches(isDisplayed()));
-    }
-
-    public static void checkDescriptionNotDisplayed(String description) {
-        onView(withContentDescription(description)).check(doesNotExist());
     }
 
     public static void checkTextNotDisplayed(String label) {
