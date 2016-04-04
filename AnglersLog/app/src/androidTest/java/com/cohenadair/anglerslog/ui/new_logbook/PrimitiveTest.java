@@ -35,7 +35,7 @@ import static com.cohenadair.anglerslog.ui.TestUtils.scrollToAndClickHint;
  */
 @RunWith(AndroidJUnit4.class)
 @LargeTest
-public class PrimitiveTests {
+public class PrimitiveTest {
 
     @Rule
     public ActivityTestRule<MainActivity> mActivityRule = new ActivityTestRule<>(MainActivity.class);

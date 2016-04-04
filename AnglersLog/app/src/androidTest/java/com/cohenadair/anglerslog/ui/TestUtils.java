@@ -33,20 +33,40 @@ public class TestUtils {
         onView(withId(viewId)).perform(click());
     }
 
+    public static void performTextAction(String text, ViewAction action) {
+        onView(withText(text)).perform(action);
+    }
+
+    public static void performTextAction(int textId, ViewAction action) {
+        onView(withText(textId)).perform(action);
+    }
+
     public static void performTextClick(int labelId) {
-        onView(withText(labelId)).perform(click());
+        performTextAction(labelId, click());
     }
 
     public static void performTextClick(String label) {
-        onView(withText(label)).perform(click());
+        performTextAction(label, click());
     }
 
     public static void performHintClick(int hintId) {
         onView(withHint(hintId)).perform(click());
     }
 
+    public static void performDescriptionAction(String description, ViewAction action) {
+        onView(withContentDescription(description)).perform(action);
+    }
+
+    public static void performDescriptionAction(int descriptionId, ViewAction action) {
+        onView(withContentDescription(descriptionId)).perform(action);
+    }
+
     public static void performDescriptionClick(int descriptionId) {
-        onView(withContentDescription(descriptionId)).perform(click());
+        performDescriptionAction(descriptionId, click());
+    }
+
+    public static void performDescriptionClick(String description) {
+        performDescriptionAction(description, click());
     }
 
     public static void performTypeText(int textEditId, String text) {
@@ -88,6 +108,14 @@ public class TestUtils {
 
     public static void checkTextDisplayed(String label) {
         onView(withText(label)).check(matches(isDisplayed()));
+    }
+
+    public static void checkDescriptionDisplayed(String description) {
+        onView(withContentDescription(description)).check(matches(isDisplayed()));
+    }
+
+    public static void checkDescriptionNotDisplayed(String description) {
+        onView(withContentDescription(description)).check(doesNotExist());
     }
 
     public static void checkTextNotDisplayed(String label) {

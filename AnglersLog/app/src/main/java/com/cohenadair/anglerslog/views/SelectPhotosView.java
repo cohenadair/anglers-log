@@ -193,6 +193,7 @@ public class SelectPhotosView extends LinearLayout {
         layoutParams.setMargins(0, 0, 0, getContext().getResources().getDimensionPixelSize(R.dimen.margin_default));
 
         final ImageView img = new ImageView(getContext());
+        img.setContentDescription("Image-" + mImageViews.size());
         img.setLayoutParams(layoutParams);
         img.setOnLongClickListener(new OnLongClickListener() {
             @Override
