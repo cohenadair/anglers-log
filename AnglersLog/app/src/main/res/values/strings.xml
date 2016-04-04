@@ -56,6 +56,7 @@
     <string name="species_stats">Species Statistics</string>
     <string name="species">Species</string>
     <string name="catch_string">Catch</string>
+    <string name="catches_on_trip">fish caught on this trip</string>
     <string name="longest_catch">Longest Catch</string>
     <string name="heaviest_catch">Heaviest Catch</string>
     <string name="longest_catches">Longest Catches</string>

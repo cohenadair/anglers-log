@@ -22,18 +22,26 @@ public class LocationListManager {
     //region View Holder
     public static class ViewHolder extends ListManager.ViewHolder {
 
+        LocationListManager.Adapter.GetContentListener mListener;
+
         public ViewHolder(View view, ListManager.Adapter adapter) {
             super(view, adapter);
+            mListener = ((LocationListManager.Adapter)getAdapter()).getGetContentListener();
             initForSimpleLayout();
         }
 
         public void setLocation(Location location) {
             setTitle(location.getName());
+            int suffixId;
 
-            int suffixId = location.getFishingSpotCount() == 1 ? R.string.fishing_spot : R.string.fishing_spots;
-            setSubtitle(String.format("%d " + getContext().getResources().getString(suffixId), location.getFishingSpotCount()));
+            if (mListener != null) {
+                setSubtitle(mListener.onGetSubtitle(location));
+            } else {
+                suffixId = location.getFishingSpotCount() == 1 ? R.string.fishing_spot : R.string.fishing_spots;
+                setSubtitle(String.format("%d " + getContext().getResources().getString(suffixId), location.getFishingSpotCount()));
+            }
 
-            // hide subsubtitle if in condensed layout
+            // hide sub-subtitle if in condensed layout
             if (!getAdapter().isCondensed()) {
                 suffixId = location.getFishCaughtCount() == 1 ? R.string.catch_string : R.string.drawer_catches;
                 setSubSubtitle(String.format("%d " + getContext().getResources().getString(suffixId), location.getFishCaughtCount()));
@@ -47,16 +55,30 @@ public class LocationListManager {
     //region Adapter
     public static class Adapter extends ListManager.Adapter {
 
+        private GetContentListener mGetContentListener;
+
+        /**
+         * Used for non-default subtitle text.
+         */
+        public interface GetContentListener {
+            String onGetSubtitle(Location location);
+        }
+
         public Adapter(Context context, ArrayList<UserDefineObject> items, boolean singleSelection, boolean multiSelection, OnClickInterface callbacks) {
             super(context, items, singleSelection, multiSelection, callbacks);
         }
 
-        public Adapter(Context context, ArrayList<UserDefineObject> items, boolean condensed, OnClickInterface callbacks) {
+        public Adapter(Context context, ArrayList<UserDefineObject> items, boolean condensed, OnClickInterface callbacks, GetContentListener getContentListener) {
             super(context, items, condensed, callbacks);
+            mGetContentListener = getContentListener;
         }
 
         public Adapter(Context context, ArrayList<UserDefineObject> items, OnClickInterface callbacks) {
             super(context, items, false, false, callbacks);
+        }
+
+        public GetContentListener getGetContentListener() {
+            return mGetContentListener;
         }
 
         // can't be overridden in the superclass because it needs to return a BaitListManager.ViewHolder

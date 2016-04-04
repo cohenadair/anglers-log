@@ -12,10 +12,12 @@ import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.activities.PartialListActivity;
 import com.cohenadair.anglerslog.baits.BaitListManager;
 import com.cohenadair.anglerslog.catches.CatchListManager;
+import com.cohenadair.anglerslog.database.QueryHelper;
 import com.cohenadair.anglerslog.fragments.DetailFragment;
 import com.cohenadair.anglerslog.interfaces.OnClickInterface;
 import com.cohenadair.anglerslog.locations.LocationListManager;
 import com.cohenadair.anglerslog.model.Logbook;
+import com.cohenadair.anglerslog.model.user_defines.Location;
 import com.cohenadair.anglerslog.model.user_defines.Trip;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import com.cohenadair.anglerslog.utilities.LayoutSpecManager;
@@ -167,12 +169,24 @@ public class TripFragment extends DetailFragment {
 
     @NonNull
     private ListManager.Adapter getLocationsAdapter(ArrayList<UserDefineObject> items) {
-        return new LocationListManager.Adapter(getContext(), items, true, new OnClickInterface() {
-            @Override
-            public void onClick(View view, UUID id) {
-                startDetailActivity(LayoutSpecManager.LAYOUT_LOCATIONS, id);
-            }
-        });
+        return new LocationListManager.Adapter(
+                getContext(),
+                items,
+                true,
+                new OnClickInterface() {
+                    @Override
+                    public void onClick(View view, UUID id) {
+                        startDetailActivity(LayoutSpecManager.LAYOUT_LOCATIONS, id);
+                    }
+                },
+                new LocationListManager.Adapter.GetContentListener() {
+                    @Override
+                    public String onGetSubtitle(Location location) {
+                        int count = QueryHelper.queryTripsLocationCatchCount(mTrip, location);
+                        return String.format("%d " + getContext().getResources().getString(R.string.catches_on_trip), count);
+                    }
+                }
+        );
     }
 
     private void updateBaitsView() {
