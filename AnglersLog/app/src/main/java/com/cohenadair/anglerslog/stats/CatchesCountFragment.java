@@ -153,8 +153,12 @@ public class CatchesCountFragment extends Fragment {
         });
 
         // set the center circle's title size based on the rendered pie chart
+        int w = mPieChartView.getLayoutParams().width;
+        int h = mPieChartView.getLayoutParams().height;
+        int baseline = (h < w) ? h : w;
+
         int width =
-                (int)(mPieChartView.getLayoutParams().width * mPieChartView.getCircleFillRatio() * mPieChartView.getPieChartData().getCenterCircleScale() - // width of inner circle
+                (int)(baseline * mPieChartView.getCircleFillRatio() * mPieChartView.getPieChartData().getCenterCircleScale() - // width of inner circle
                 (getResources().getDimensionPixelOffset(R.dimen.margin_default) * 2) - // left and right margin of the chart
                 (getResources().getDimensionPixelOffset(R.dimen.margin_half) * 2)); // left and right margin of the title TextView
 

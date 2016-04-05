@@ -1,5 +1,5 @@
 <resources>
-    <string name="version_name">0.0.4</string>
+    <string name="version_name">1.0.0</string>
     <string name="app_name">Anglers\' Log</string>
     <string name="app_description">Track, analyze, share.</string>
     <string name="app_photos_dir">/AnglersLog</string>
