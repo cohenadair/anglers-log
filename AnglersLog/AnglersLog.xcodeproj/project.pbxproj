@@ -1303,7 +1303,7 @@
 				GCC_PREFIX_HEADER = "TheAnglersLog/AnglersLog-Prefix.pch";
 				INFOPLIST_FILE = "TheAnglersLog/AnglersLog-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
-				PRODUCT_BUNDLE_IDENTIFIER = "CMA.The$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = CMA.TheAnglersLog;
 				PRODUCT_NAME = AnglersLog;
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 1;
@@ -1328,7 +1328,7 @@
 				GCC_PREFIX_HEADER = "TheAnglersLog/AnglersLog-Prefix.pch";
 				INFOPLIST_FILE = "TheAnglersLog/AnglersLog-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
-				PRODUCT_BUNDLE_IDENTIFIER = "CMA.The$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = CMA.TheAnglersLog;
 				PRODUCT_NAME = AnglersLog;
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 1;
