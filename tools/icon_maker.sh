@@ -11,9 +11,9 @@ cp img.png xxxhdpi.png
 
 # Other Images
 # mdpi 1.0, hdpi 1.5, xhdpi 2.0, xxhdpi 3.0, xxxhdpi 4.0
-sips -Z 100 mdpi.png
-sips -Z 150 hdpi.png
-sips -Z 200 xhdpi.png
-sips -Z 300 xxhdpi.png
-sips -Z 400 xxxhdpi.png
+sips -Z 48 mdpi.png
+sips -Z 72 hdpi.png
+sips -Z 96 xhdpi.png
+sips -Z 144 xxhdpi.png
+sips -Z 192 xxxhdpi.png
 # sips -Z 512 web.png
