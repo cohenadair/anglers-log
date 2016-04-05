@@ -29,4 +29,6 @@
     <!-- 0.5 * image_scroll_size + margin_default -->
     <dimen name="image_scroll_size_half">141dp</dimen>
     <dimen name="image_button_size">24dp</dimen>
+
+    <dimen name="stats_column_width">375dp</dimen>
 </resources>

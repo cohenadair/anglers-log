@@ -155,6 +155,8 @@ public class CatchesCountFragment extends Fragment {
         // set the center circle's title size based on the rendered pie chart
         int w = mPieChartView.getLayoutParams().width;
         int h = mPieChartView.getLayoutParams().height;
+
+        // take the smaller of the width/height for tablet support
         int baseline = (h < w) ? h : w;
 
         int width =

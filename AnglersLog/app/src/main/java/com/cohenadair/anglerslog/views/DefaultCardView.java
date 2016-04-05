@@ -93,7 +93,7 @@ public class DefaultCardView extends LinearLayout {
             return;
 
         Point screenSize = Utils.getScreenSize(getContext());
-        int w = screenSize.x;
+        int w = screenSize.x < screenSize.y ? screenSize.x : getResources().getDimensionPixelOffset(R.dimen.stats_column_width); // take the smaller of the width/height for tablet support
         int h = (int)(w * 9f / 16f); // keep 16:9 aspect ratio as per Material Design Guidelines
 
         mBannerImageView.getLayoutParams().width = w;
