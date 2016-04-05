@@ -171,11 +171,13 @@
 #pragma mark - Ad Banner Initializing
 
 - (void)initAdBanner {
+    /*
     if (self.adBanner == nil) {
         self.adBanner = [CMAAdBanner withFrame:CGRectMake(0, -50, self.view.frame.size.width, 50) delegate:self superView:self.view];
         self.adBanner.constraint = self.tableViewTop;
         self.adBanner.noXView = self.noEntriesView;
     }
+     */
 }
 
 - (void)bannerViewDidLoadAd:(ADBannerView *)banner {
