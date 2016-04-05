@@ -98,7 +98,6 @@ public class LocationTest {
         catch0.setSpecies(species);
         Logbook.addCatch(catch0);
 
-        int size = mTestLocation.getCatches().size();
         assertTrue(mTestLocation.getCatches().size() == 1);
     }
 }

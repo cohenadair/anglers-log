@@ -25,13 +25,6 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 import static com.cohenadair.anglerslog.database.LogbookSchema.*;
-import static com.cohenadair.anglerslog.database.LogbookSchema.BaitTable;
-import static com.cohenadair.anglerslog.database.LogbookSchema.CatchTable;
-import static com.cohenadair.anglerslog.database.LogbookSchema.FishingSpotTable;
-import static com.cohenadair.anglerslog.database.LogbookSchema.PhotoTable;
-import static com.cohenadair.anglerslog.database.LogbookSchema.UsedCatchTable;
-import static com.cohenadair.anglerslog.database.LogbookSchema.UserDefineTable;
-import static com.cohenadair.anglerslog.database.LogbookSchema.WeatherTable;
 
 /**
  * A class for easy database querying. This is also used so the rest of the application doesn't

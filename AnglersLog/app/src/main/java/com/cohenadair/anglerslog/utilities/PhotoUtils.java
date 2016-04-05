@@ -202,13 +202,6 @@ public class PhotoUtils {
     }
 
     /**
-     * @see #photoToImageView(ImageView, String, int, int)
-     */
-    public static void photoToImageView(ImageView imageView, String path) {
-        imageView.setImageBitmap(BitmapFactory.decodeFile(path));
-    }
-
-    /**
      * Rotates the specified bitmap to the correct orientation. The specified Uri is used to get the
      * exif information (i.e. orientation) so the Bitmap can be properly rotated. Note that this library
      * requires the following two libraries:
@@ -220,7 +213,6 @@ public class PhotoUtils {
      * @return A correctly rotated Bitmap.
      */
     private static Bitmap fixOrientation(Uri uri, Bitmap bmp) {
-        String methodName = "fixOrientation()";
         BufferedInputStream bufferStream = null;
         Metadata metadata;
 
@@ -393,7 +385,6 @@ public class PhotoUtils {
     public static void cleanPhotos() {
         File photosDir = privatePhotoDirectory();
         boolean found;
-        int numDeleted = 0;
 
         if (photosDir != null && photosDir.isDirectory()) {
             File[] photoFiles = photosDir.listFiles();
@@ -416,9 +407,6 @@ public class PhotoUtils {
                         break;
                     }
                 }
-
-                if (!found)
-                    numDeleted += (photoFiles[i].delete()) ? 1 : 0;
             }
         }
     }
