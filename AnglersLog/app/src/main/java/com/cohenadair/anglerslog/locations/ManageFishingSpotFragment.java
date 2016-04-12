@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.cohenadair.anglerslog.R;
+import com.cohenadair.anglerslog.activities.LayoutSpecActivity;
 import com.cohenadair.anglerslog.fragments.DraggableMapFragment;
 import com.cohenadair.anglerslog.fragments.ManageContentFragment;
 import com.cohenadair.anglerslog.model.user_defines.FishingSpot;
@@ -96,6 +97,12 @@ public class ManageFishingSpotFragment extends ManageContentFragment {
     @Override
     public ManageObjectSpec getManageObjectSpec() {
         return mManageObjectSpec;
+    }
+
+    @Override
+    public void onDismiss() {
+        LayoutSpecActivity activity = (LayoutSpecActivity)getActivity();
+        activity.setActionBarTitle(activity.getViewTitle());
     }
 
     public void setLocation(Location location) {
@@ -234,8 +241,8 @@ public class ManageFishingSpotFragment extends ManageContentFragment {
     }
 
     private void updateCoordinateViews(LatLng coordinates) {
-        mLatitudeView.setInputText(String.format("%.6f", coordinates.latitude));
-        mLongitudeView.setInputText(String.format("%.6f", coordinates.longitude));
+        mLatitudeView.setInputText(String.format(getResources().getConfiguration().locale, "%.6f", coordinates.latitude));
+        mLongitudeView.setInputText(String.format(getResources().getConfiguration().locale, "%.6f", coordinates.longitude));
     }
 
     @NonNull

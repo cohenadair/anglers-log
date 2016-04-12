@@ -30,7 +30,6 @@ public class ManageLocationFragment extends ManageContentFragment {
 
     private LinearLayout mContainer;
     private InputTextView mNameView;
-    private InputButtonView mAddFishingSpotView;
 
     private ArrayList<MoreDetailView> mFishingSpotViews;
     private ArrayList<UserDefineObject> mFishingSpots;
@@ -168,8 +167,8 @@ public class ManageLocationFragment extends ManageContentFragment {
     }
 
     private void initAddFishingSpotView(View view) {
-        mAddFishingSpotView = (InputButtonView)view.findViewById(R.id.add_fishing_spot_view);
-        mAddFishingSpotView.setOnClickPrimaryButton(new View.OnClickListener() {
+        InputButtonView addFishingSpotView = (InputButtonView)view.findViewById(R.id.add_fishing_spot_view);
+        addFishingSpotView.setOnClickPrimaryButton(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 goToManageFishingSpot(null);

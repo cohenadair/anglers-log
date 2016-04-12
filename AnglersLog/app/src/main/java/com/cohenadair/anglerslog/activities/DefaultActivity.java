@@ -107,6 +107,6 @@ public abstract class DefaultActivity extends AppCompatActivity implements Globa
 
     public void setActionBarTitle(String title) {
         if (getSupportActionBar() != null)
-            getSupportActionBar() .setTitle(title);
+            getSupportActionBar().setTitle(title);
     }
 }
