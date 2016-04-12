@@ -153,6 +153,8 @@
     <string name="attach_photos">Attach photos</string>
     <string name="attach_photo">Attach photo</string>
     <string name="take_photo">Take photo</string>
+    <string name="map_no_spots">There are no locations to show.</string>
+    <string name="map_no_search">There are no locations to search</string>
 
     <string name="drawer_catches">Catches</string>
     <string name="drawer_trips">Trips</string>

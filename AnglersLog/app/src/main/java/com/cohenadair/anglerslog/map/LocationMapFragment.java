@@ -203,6 +203,11 @@ public class LocationMapFragment extends MasterFragment {
         ViewUtils.setVisibility(mSearchList, true);
         ViewUtils.setVisibility(mSearchMessage, false);
 
+        if (!mMarkerManager.hasMarkers()) {
+            mSearchMessage.setText(R.string.map_no_search);
+            ViewUtils.setVisibility(mSearchMessage, true);
+        }
+
         // initially show all fishing spots
         mSearchList.setAdapter(getSearchAdapter(mFishingSpots));
         mSearchList.setOnItemClickListener(new AdapterView.OnItemClickListener() {

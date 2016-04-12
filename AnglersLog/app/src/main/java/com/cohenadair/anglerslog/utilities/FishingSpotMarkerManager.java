@@ -74,6 +74,10 @@ public class FishingSpotMarkerManager {
         mShowFishingSpotLocation = showFishingSpotLocation;
     }
 
+    public boolean hasMarkers() {
+        return mMarkers.size() > 0;
+    }
+
     public void updateMarkers() {
         if (mMap == null || mFishingSpots.size() <= 0)
             return;
@@ -137,6 +141,11 @@ public class FishingSpotMarkerManager {
     }
 
     public void showAllMarkers(GoogleMap.CancelableCallback callbacks) {
+        if (mMarkers.size() <= 0) {
+            AlertUtils.show(mContext, R.string.map_no_spots);
+            return;
+        }
+
         LatLngBounds.Builder builder = new LatLngBounds.Builder();
         for (Marker marker : mMarkers)
             builder.include(marker.getPosition());
