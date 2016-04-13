@@ -212,7 +212,7 @@ public abstract class ManageContentFragment extends Fragment {
                     getSelectPhotosView().addImage(PhotoUtils.privatePhotoPath(str));
             }
 
-            mNewObject = init.onGetNewEditObject(mOldObject);
+            mNewObject = (mOldObject != null) ? init.onGetNewEditObject(mOldObject) : init.onGetNewBlankObject();
         } else
             mNewObject = init.onGetNewBlankObject();
     }
