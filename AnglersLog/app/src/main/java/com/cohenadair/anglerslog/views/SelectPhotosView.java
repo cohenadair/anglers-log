@@ -180,7 +180,7 @@ public class SelectPhotosView extends LinearLayout {
         PhotoUtils.copyAndResizePhoto(photoUri, mPrivatePhotoFile);
 
         // make sure photo taken shows up in the user's gallery
-        if (mPublicPhotoFile.exists())
+        if (mPublicPhotoFile != null && mPublicPhotoFile.exists())
             MediaScannerConnection.scanFile(getContext(), new String[]{ mPublicPhotoFile.toString() }, null, null);
 
         addImage(mPrivatePhotoFile.getPath());
