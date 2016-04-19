@@ -314,6 +314,8 @@ public class ManageFishingSpotFragment extends ManageContentFragment {
                 updateCrosshairs(mapType);
             }
         });
+
+        updateCoordinateViews(new LatLng(0.0, 0.0));
     }
 
     private void updateCamera(LatLng loc) {

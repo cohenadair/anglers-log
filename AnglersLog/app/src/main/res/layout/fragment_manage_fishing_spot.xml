@@ -1,6 +1,7 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:custom="http://schemas.android.com/apk/res-auto"
+    xmlns:map="http://schemas.android.com/tools"
     android:background="@color/global_background"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -24,7 +25,8 @@
             android:id="@+id/fishing_spot_map"
             android:name="com.cohenadair.anglerslog.fragments.DraggableMapFragment"
             android:layout_width="match_parent"
-            android:layout_height="300dp"/>
+            android:layout_height="300dp"
+            map:zOrderOnTop="true"/>
 
         <ImageView
             android:id="@+id/crosshairs"
