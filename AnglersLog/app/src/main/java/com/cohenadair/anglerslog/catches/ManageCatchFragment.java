@@ -540,7 +540,7 @@ public class ManageCatchFragment extends ManageContentFragment {
      *         String is empty.
      */
     private float asFloat(String str, float defaultValue) {
-        if (str.isEmpty())
+        if (str.isEmpty() || (str.length() == 1 && str.equals(".")))
             return defaultValue;
 
         return Float.parseFloat(str);
