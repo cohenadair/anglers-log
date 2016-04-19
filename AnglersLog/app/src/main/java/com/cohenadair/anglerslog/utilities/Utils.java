@@ -41,6 +41,21 @@ public class Utils {
     }
 
     /**
+     * Converts a String to a float.
+     *
+     * @param str The String to be converted.
+     * @param defaultValue The value to be returned if the given String is empty.
+     * @return A float representation of the given String, or the given default value if the given
+     *         String is empty.
+     */
+    public static float asFloat(String str, float defaultValue) {
+        if (str.isEmpty() || (str.length() == 1 && str.equals(".")))
+            return defaultValue;
+
+        return Float.parseFloat(str);
+    }
+
+    /**
      * Shows a toast with the given String.
      */
     public static void showToast(Context context, String msg) {

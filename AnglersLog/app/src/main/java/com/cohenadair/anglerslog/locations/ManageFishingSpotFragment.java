@@ -258,8 +258,8 @@ public class ManageFishingSpotFragment extends ManageContentFragment {
                 if (mLatitudeView.getInputText() == null || mLongitudeView.getInputText() == null)
                     return;
 
-                double lat = Double.parseDouble(mLatitudeView.getInputText());
-                double lng = Double.parseDouble(mLongitudeView.getInputText());
+                double lat = (double)Utils.asFloat(mLatitudeView.getInputText(), 0);
+                double lng = (double)Utils.asFloat(mLongitudeView.getInputText(), 0);
                 LatLng latLng = new LatLng(lat, lng);
 
                 if (mMapFragment.isValid(latLng) && !mCancelInputListener) {

@@ -498,51 +498,36 @@ public class ManageCatchFragment extends ManageContentFragment {
         mWaterTemperatureView.addOnInputTextChangedListener(ViewUtils.onTextChangedListener(new ViewUtils.OnTextChangedListener() {
             @Override
             public void onTextChanged(String newText) {
-                getNewCatch().setWaterTemperature((int) asFloat(newText, -1));
+                getNewCatch().setWaterTemperature((int) Utils.asFloat(newText, -1));
             }
         }));
 
         mWaterDepthView.addOnInputTextChangedListener(ViewUtils.onTextChangedListener(new ViewUtils.OnTextChangedListener() {
             @Override
             public void onTextChanged(String newText) {
-                getNewCatch().setWaterDepth(asFloat(newText, -1));
+                getNewCatch().setWaterDepth(Utils.asFloat(newText, -1));
             }
         }));
 
         mWeightView.addOnInputTextChangedListener(ViewUtils.onTextChangedListener(new ViewUtils.OnTextChangedListener() {
             @Override
             public void onTextChanged(String newText) {
-                getNewCatch().setWeight(asFloat(newText, -1));
+                getNewCatch().setWeight(Utils.asFloat(newText, -1));
             }
         }));
 
         mLengthView.addOnInputTextChangedListener(ViewUtils.onTextChangedListener(new ViewUtils.OnTextChangedListener() {
             @Override
             public void onTextChanged(String newText) {
-                getNewCatch().setLength(asFloat(newText, -1));
+                getNewCatch().setLength(Utils.asFloat(newText, -1));
             }
         }));
 
         mQuantityView.addOnInputTextChangedListener(ViewUtils.onTextChangedListener(new ViewUtils.OnTextChangedListener() {
             @Override
             public void onTextChanged(String newText) {
-                getNewCatch().setQuantity((int) asFloat(newText, 1));
+                getNewCatch().setQuantity((int) Utils.asFloat(newText, 1));
             }
         }));
-    }
-
-    /**
-     * Converts a String to a float.
-     *
-     * @param str The String to be converted.
-     * @param defaultValue The value to be returned if the given String is empty.
-     * @return A float representation of the given String, or the given default value if the given
-     *         String is empty.
-     */
-    private float asFloat(String str, float defaultValue) {
-        if (str.isEmpty() || (str.length() == 1 && str.equals(".")))
-            return defaultValue;
-
-        return Float.parseFloat(str);
     }
 }
