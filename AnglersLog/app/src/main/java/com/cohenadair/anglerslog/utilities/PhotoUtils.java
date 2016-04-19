@@ -384,29 +384,21 @@ public class PhotoUtils {
      */
     public static void cleanPhotos() {
         File photosDir = privatePhotoDirectory();
-        boolean found;
 
         if (photosDir != null && photosDir.isDirectory()) {
             File[] photoFiles = photosDir.listFiles();
 
             for (int i = photoFiles.length - 1; i >= 0; i--) {
-                found = false;
 
                 // check all Catch objects for the current File
-                for (UserDefineObject aCatch : Logbook.getCatches()) {
-                    if (((Catch)aCatch).getPhotos().indexOf(photoFiles[i].getName()) >= 0) {
-                        found = true;
+                for (UserDefineObject aCatch : Logbook.getCatches())
+                    if (((Catch)aCatch).getPhotos().indexOf(photoFiles[i].getName()) >= 0)
                         break;
-                    }
-                }
 
                 // check all Bait objects for the current file
-                for (UserDefineObject aBait : Logbook.getBaits()) {
-                    if (((Bait)aBait).getPhotos().indexOf(photoFiles[i].getName()) >= 0) {
-                        found = true;
+                for (UserDefineObject aBait : Logbook.getBaits())
+                    if (((Bait)aBait).getPhotos().indexOf(photoFiles[i].getName()) >= 0)
                         break;
-                    }
-                }
             }
         }
     }
