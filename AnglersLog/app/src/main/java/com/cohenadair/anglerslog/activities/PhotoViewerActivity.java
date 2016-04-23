@@ -17,8 +17,8 @@ public class PhotoViewerActivity extends AppCompatActivity {
 
     public static Intent getIntent(Context context, ArrayList<String> photos, int position) {
         Intent intent = new Intent(context, PhotoViewerActivity.class);
-        intent.putStringArrayListExtra(PhotoViewerActivity.EXTRA_NAMES, photos);
-        intent.putExtra(PhotoViewerActivity.EXTRA_CURRENT, position);
+        intent.putStringArrayListExtra(EXTRA_NAMES, photos);
+        intent.putExtra(EXTRA_CURRENT, position);
         return intent;
     }
 

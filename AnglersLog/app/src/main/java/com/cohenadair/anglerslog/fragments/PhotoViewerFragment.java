@@ -170,7 +170,9 @@ public class PhotoViewerFragment extends Fragment {
                 }
             });
 
-            mImageView.setImage(ImageSource.uri(path));
+            if (path != null)
+                mImageView.setImage(ImageSource.uri(path));
+
             mImageView.setMaxScale(5);
 
             collection.addView(viewGroup);
@@ -185,6 +187,9 @@ public class PhotoViewerFragment extends Fragment {
 
         @Override
         public int getCount() {
+            if (mPhotoNames == null)
+                return 0;
+
             return mPhotoNames.size();
         }
 
