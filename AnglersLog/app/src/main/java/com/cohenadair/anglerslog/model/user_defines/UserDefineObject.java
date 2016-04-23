@@ -141,7 +141,7 @@ public class UserDefineObject {
     public Intent getShareIntent(Context context) {
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.putExtra(Intent.EXTRA_TEXT, Logbook.getShareText(context));
-        intent.setType(Utils.MIME_TYPE_ALL);
+        intent.setType(Utils.MIME_TYPE_IMAGE);
         return intent;
     }
 

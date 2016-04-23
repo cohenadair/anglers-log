@@ -1,6 +1,7 @@
 package com.cohenadair.anglerslog.activities;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
@@ -236,7 +237,7 @@ public abstract class LayoutSpecActivity extends DefaultActivity implements
             return;
 
         UserDefineObject obj = getMasterAdapter().getItem(objId);
-        startActivity(obj.getShareIntent(this));
+        startActivity(Intent.createChooser(obj.getShareIntent(this), null));
     }
     //endregion
 }

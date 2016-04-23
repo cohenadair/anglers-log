@@ -95,6 +95,6 @@ public class DetailFragmentActivity extends DefaultActivity {
     public void onClickShare(UUID objId) {
         UserDefineObject obj = LayoutSpecManager.getObject(mLayoutId, objId);
         if (obj != null)
-            startActivity(obj.getShareIntent(this));
+            startActivity(Intent.createChooser(obj.getShareIntent(this), null));
     }
 }
