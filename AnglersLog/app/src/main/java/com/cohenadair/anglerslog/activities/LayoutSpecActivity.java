@@ -185,7 +185,6 @@ public abstract class LayoutSpecActivity extends DefaultActivity implements
     @Override
     public void updateViews() {
         mLayoutSpec.updateViews(this);
-        setActionBarTitle(getTitleName());
     }
 
     @Override
