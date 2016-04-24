@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -24,8 +25,10 @@ import com.cohenadair.anglerslog.model.Logbook;
 import com.cohenadair.anglerslog.model.user_defines.FishingSpot;
 import com.cohenadair.anglerslog.model.user_defines.Location;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
+import com.cohenadair.anglerslog.utilities.AlertUtils;
 import com.cohenadair.anglerslog.utilities.FishingSpotMarkerManager;
 import com.cohenadair.anglerslog.utilities.LayoutSpecManager;
+import com.cohenadair.anglerslog.utilities.PermissionUtils;
 import com.cohenadair.anglerslog.utilities.ViewUtils;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.Marker;
@@ -42,6 +45,7 @@ public class LocationFragment extends DetailFragment {
     private static final String TAG_MAP = "LocationMap";
 
     private Location mLocation;
+    private Bitmap mShareBitmap;
 
     private Spinner mFishingSpotSpinner;
     private DraggableMapFragment mMapFragment;
@@ -83,7 +87,7 @@ public class LocationFragment extends DetailFragment {
         }
 
         if (id == R.id.action_share) {
-            shareLocation();
+            onClickShareLocation();
             return true;
         }
 
@@ -160,16 +164,39 @@ public class LocationFragment extends DetailFragment {
         getContext().startActivity(intent);
     }
 
-    private void shareLocation() {
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == PermissionUtils.REQUEST_EXTERNAL_STORAGE) {
+            if (grantResults.length > 0 && grantResults[0] == PermissionUtils.GRANTED)
+                shareLocation();
+            else
+                AlertUtils.showError(getContext(), R.string.storage_permissions_denied);
+
+            return;
+        }
+
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+    private void onClickShareLocation() {
         mMapFragment.takeSnapshot(new GoogleMap.SnapshotReadyCallback() {
             @Override
             public void onSnapshotReady(Bitmap bitmap) {
-                Intent intent = mLocation.getShareIntent(getContext());
-                String path = MediaStore.Images.Media.insertImage(getContext().getContentResolver(), bitmap, "google_map_snapshot", null);
-                intent.putExtra(Intent.EXTRA_STREAM, Uri.parse(path));
-                startActivity(intent);
+                mShareBitmap = bitmap;
+
+                if (PermissionUtils.isExternalStorageGranted(getContext()))
+                    shareLocation();
+                else
+                    PermissionUtils.requestExternalStorage(LocationFragment.this);
             }
         });
+    }
+
+    private void shareLocation() {
+        Intent intent = mLocation.getShareIntent(getContext());
+        String path = MediaStore.Images.Media.insertImage(getContext().getContentResolver(), mShareBitmap, "google_map_snapshot", null);
+        intent.putExtra(Intent.EXTRA_STREAM, Uri.parse(path));
+        startActivity(Intent.createChooser(intent, null));
     }
 
     //region Map Fragment
