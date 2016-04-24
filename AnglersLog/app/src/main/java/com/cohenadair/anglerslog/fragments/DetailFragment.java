@@ -129,7 +129,8 @@ public abstract class DetailFragment extends Fragment {
      * Updates the UI of the fragment.
      */
     public void update(Context context) {
-        setActionBarTitle("");
+        if (!isTwoPane())
+            setActionBarTitle("");
 
         if (isLayoutSpecChild())
             update(((LayoutSpecActivity)context).getSelectionId());
