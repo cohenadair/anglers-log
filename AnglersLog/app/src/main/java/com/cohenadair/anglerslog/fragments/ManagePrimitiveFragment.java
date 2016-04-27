@@ -1,5 +1,6 @@
 package com.cohenadair.anglerslog.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -40,6 +41,7 @@ import java.util.UUID;
  */
 public class ManagePrimitiveFragment extends DialogFragment {
 
+    private Context mContext;
     private RecyclerView mContentRecyclerView;
     private ManagePrimitiveAdapter mAdapter;
     private EditText mNewItemEdit;
@@ -105,6 +107,7 @@ public class ManagePrimitiveFragment extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_manage_primitive, container, false);
 
+        mContext = getContext();
         mPrimitiveSpec = PrimitiveSpecManager.getSpec(getContext(), getArguments().getInt(ARG_PRIMITIVE_ID));
         mCanSelectMultiple = getArguments().getBoolean(ARG_ALLOW_MULTIPLE);
 
@@ -412,7 +415,7 @@ public class ManagePrimitiveFragment extends DialogFragment {
                         items.remove(i);
                     else {
                         String msg = items.get(i).getName() + " " + getResources().getString(R.string.error_delete_primitive);
-                        AlertUtils.showError(getContext(), msg);
+                        AlertUtils.showError(mContext, msg);
                     }
                 }
         }
