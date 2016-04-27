@@ -8,6 +8,9 @@ import android.support.v4.app.Fragment;
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.model.Logbook;
 import com.cohenadair.anglerslog.model.Stats;
+import com.cohenadair.anglerslog.model.user_defines.Bait;
+import com.cohenadair.anglerslog.model.user_defines.Location;
+import com.cohenadair.anglerslog.model.user_defines.Species;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import com.cohenadair.anglerslog.utilities.LayoutSpecManager;
 
@@ -54,80 +57,115 @@ public class StatsManager {
 
     @NonNull
     private static StatsSpec getSpeciesStatsSpec(Context context, int id) {
-        return new StatsSpec(
-                id,
-                R.drawable.ic_catches,
-                context.getResources().getString(R.string.species_stats),
-                context.getResources().getString(R.string.species),
-                Logbook.getSpeciesCaughtCount(),
-                CatchesCountFragment.newInstance(SPECIES)
-        );
+        StatsSpec spec = new StatsSpec(id);
+
+        spec.setIconResource(R.drawable.ic_catches);
+        spec.setExtendedIconResource(R.drawable.ic_bait);
+        spec.setActivityTitle(context.getResources().getString(R.string.species_stats));
+        spec.setUserDefineObjectName(context.getResources().getString(R.string.species));
+        spec.setContent(Logbook.getSpeciesCaughtCount());
+        spec.setDetailFragment(CatchesCountFragment.newInstance(SPECIES));
+
+        spec.setCallbacks(new StatsSpec.InteractionListener() {
+            @Override
+            public UserDefineObject onGetObject(UUID id) {
+                return Logbook.getSpecies(id);
+            }
+
+            @Override
+            public int onGetLayoutSpecId() {
+                return -1;
+            }
+
+            @Override
+            public ArrayList<Stats.Quantity> onGetExtendedStats(UserDefineObject obj) {
+                return Logbook.getBaitUsedCount((Species)obj);
+            }
+        });
+
+        return spec;
     }
 
     @NonNull
     private static StatsSpec getBaitsStatsSpec(Context context, int id) {
-        return new StatsSpec(
-                id,
-                R.drawable.ic_bait,
-                context.getResources().getString(R.string.bait_stats),
-                context.getResources().getString(R.string.drawer_baits),
-                Logbook.getBaitUsedCount(),
-                CatchesCountFragment.newInstance(BAITS),
-                new StatsSpec.InteractionListener() {
-                    @Override
-                    public UserDefineObject onGetObject(UUID id) {
-                        return Logbook.getBait(id);
-                    }
+        StatsSpec spec = new StatsSpec(id);
 
-                    @Override
-                    public int onGetLayoutSpecId() {
-                        return LayoutSpecManager.LAYOUT_BAITS;
-                    }
-                }
-        );
+        spec.setIconResource(R.drawable.ic_bait);
+        spec.setExtendedIconResource(R.drawable.ic_catches);
+        spec.setActivityTitle(context.getResources().getString(R.string.bait_stats));
+        spec.setUserDefineObjectName(context.getResources().getString(R.string.drawer_baits));
+        spec.setContent(Logbook.getBaitUsedCount());
+        spec.setDetailFragment(CatchesCountFragment.newInstance(BAITS));
+
+        spec.setCallbacks(new StatsSpec.InteractionListener() {
+            @Override
+            public UserDefineObject onGetObject(UUID id) {
+                return Logbook.getBait(id);
+            }
+
+            @Override
+            public int onGetLayoutSpecId() {
+                return LayoutSpecManager.LAYOUT_BAITS;
+            }
+
+            @Override
+            public ArrayList<Stats.Quantity> onGetExtendedStats(UserDefineObject obj) {
+                return Logbook.getSpeciesCaughtCount((Bait)obj);
+            }
+        });
+
+        return spec;
     }
 
     @NonNull
     private static StatsSpec getLocationsStatsSpec(Context context, int id) {
-        return new StatsSpec(
-                id,
-                R.drawable.ic_location,
-                context.getResources().getString(R.string.location_stats),
-                context.getResources().getString(R.string.drawer_locations),
-                Logbook.getLocationCatchCount(),
-                CatchesCountFragment.newInstance(LOCATIONS),
-                new StatsSpec.InteractionListener() {
-                    @Override
-                    public UserDefineObject onGetObject(UUID id) {
-                        return Logbook.getLocation(id);
-                    }
+        StatsSpec spec = new StatsSpec(id);
 
-                    @Override
-                    public int onGetLayoutSpecId() {
-                        return LayoutSpecManager.LAYOUT_LOCATIONS;
-                    }
-                }
-        );
+        spec.setIconResource(R.drawable.ic_location);
+        spec.setExtendedIconResource(R.drawable.ic_catches);
+        spec.setActivityTitle(context.getResources().getString(R.string.location_stats));
+        spec.setUserDefineObjectName(context.getResources().getString(R.string.drawer_locations));
+        spec.setContent(Logbook.getLocationCatchCount());
+        spec.setDetailFragment(CatchesCountFragment.newInstance(LOCATIONS));
+
+        spec.setCallbacks(new StatsSpec.InteractionListener() {
+            @Override
+            public UserDefineObject onGetObject(UUID id) {
+                return Logbook.getLocation(id);
+            }
+
+            @Override
+            public int onGetLayoutSpecId() {
+                return LayoutSpecManager.LAYOUT_LOCATIONS;
+            }
+
+            @Override
+            public ArrayList<Stats.Quantity> onGetExtendedStats(UserDefineObject obj) {
+                return Logbook.getSpeciesCaughtCount((Location)obj);
+            }
+        });
+
+        return spec;
     }
 
     @NonNull
     private static StatsSpec getLongestStatsSpec(Context context, int id) {
-        return new StatsSpec(
-                id,
-                -1,
-                context.getResources().getString(R.string.longest_catches),
-                BigCatchFragment.newInstance(LONGEST)
-        );
+        StatsSpec spec = new StatsSpec(id);
+
+        spec.setActivityTitle(context.getResources().getString(R.string.longest_catches));
+        spec.setDetailFragment(BigCatchFragment.newInstance(LONGEST));
+
+        return spec;
     }
 
     @NonNull
     private static StatsSpec getHeaviestStatsSpec(Context context, int id) {
-        return new StatsSpec(
-                id,
-                -1,
-                context.getResources().getString(R.string.heaviest_catches),
-                BigCatchFragment.newInstance(HEAVIEST)
-        );
+        StatsSpec spec = new StatsSpec(id);
+
+        spec.setActivityTitle(context.getResources().getString(R.string.heaviest_catches));
+        spec.setDetailFragment(BigCatchFragment.newInstance(HEAVIEST));
+
+        return spec;
     }
 
     /**
@@ -141,61 +179,84 @@ public class StatsManager {
         private ArrayList<Stats.Quantity> mContent;
         private Fragment mDetailFragment;
         private InteractionListener mCallbacks;
-        private int mIconResource;
+        private int mIconResource = -1;
+        private int mExtendedIconResource = -1;
 
         public interface InteractionListener {
             UserDefineObject onGetObject(UUID id);
             int onGetLayoutSpecId();
+            ArrayList<Stats.Quantity> onGetExtendedStats(UserDefineObject obj);
         }
 
-        public StatsSpec(int id, int iconResource, String activityTitle, String userDefineObjectName, ArrayList<Stats.Quantity> content, Fragment detailFragment) {
+        public StatsSpec(int id) {
             mId = id;
-            mIconResource = iconResource;
-            mActivityTitle = activityTitle;
-            mUserDefineObjectName = userDefineObjectName;
-            mContent = content;
-            mDetailFragment = detailFragment;
-
-            // make sure content is sorted for selections
-            if (mContent != null)
-                Collections.sort(mContent, new Stats.NameComparator());
-        }
-
-        public StatsSpec(int id, int iconResource, String activityTitle, String userDefineObjectName, ArrayList<Stats.Quantity> content, Fragment detailFragment, InteractionListener callbacks) {
-            this(id, iconResource, activityTitle, userDefineObjectName, content, detailFragment);
-            mCallbacks = callbacks;
-        }
-
-        public StatsSpec(int id, int iconResource, String activityTitle, Fragment detailFragment) {
-            this(id, iconResource, activityTitle, null, null, detailFragment);
         }
 
         public int getId() {
             return mId;
         }
 
+        public void setId(int id) {
+            mId = id;
+        }
+
         public String getActivityTitle() {
             return mActivityTitle;
+        }
+
+        public void setActivityTitle(String activityTitle) {
+            mActivityTitle = activityTitle;
         }
 
         public String getUserDefineObjectName() {
             return mUserDefineObjectName;
         }
 
+        public void setUserDefineObjectName(String userDefineObjectName) {
+            mUserDefineObjectName = userDefineObjectName;
+        }
+
         public ArrayList<Stats.Quantity> getContent() {
             return mContent;
+        }
+
+        public void setContent(ArrayList<Stats.Quantity> content) {
+            if (content != null) {
+                mContent = content;
+                Collections.sort(mContent, new Stats.NameComparator());
+            }
         }
 
         public Fragment getDetailFragment() {
             return mDetailFragment;
         }
 
+        public void setDetailFragment(Fragment detailFragment) {
+            mDetailFragment = detailFragment;
+        }
+
         public InteractionListener getCallbacks() {
             return mCallbacks;
         }
 
+        public void setCallbacks(InteractionListener callbacks) {
+            mCallbacks = callbacks;
+        }
+
         public int getIconResource() {
             return mIconResource;
+        }
+
+        public void setIconResource(int iconResource) {
+            mIconResource = iconResource;
+        }
+
+        public int getExtendedIconResource() {
+            return mExtendedIconResource;
+        }
+
+        public void setExtendedIconResource(int extendedIconResource) {
+            mExtendedIconResource = extendedIconResource;
         }
 
         public UserDefineObject getObject(int index) {
@@ -210,6 +271,21 @@ public class StatsManager {
                 return mCallbacks.onGetLayoutSpecId();
 
             return -1;
+        }
+
+        public ArrayList<Stats.Quantity> getExtendedContent(int index) {
+            if (mCallbacks == null)
+                return null;
+
+            UserDefineObject obj = getObject(index);
+
+            if (obj != null) {
+                ArrayList<Stats.Quantity> content = mCallbacks.onGetExtendedStats(obj);
+                Collections.sort(content, new Stats.NameComparator());
+                return content;
+            }
+
+            return null;
         }
     }
 }

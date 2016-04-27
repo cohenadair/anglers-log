@@ -393,6 +393,44 @@ public class Logbook {
             }
         });
     }
+
+    /**
+     * Gets a list of {@link com.cohenadair.anglerslog.model.Stats.Quantity} objects representing
+     * the number of {@link Species} that were caught with the given {@link Species}.
+     *
+     * @param bait The {@link Bait} object used to query the database.
+     * @return A list of {@link com.cohenadair.anglerslog.model.Stats.Quantity} objects.
+     */
+    public static ArrayList<Stats.Quantity> getSpeciesCaughtCount(final Bait bait) {
+        return getCatchQuantity(getSpecies(), new OnQueryQuantityListener() {
+            @Override
+            public int query(UserDefineObject obj) {
+                return QueryHelper.queryUserDefineCatchCount(
+                        CatchTable.Columns.BAIT_ID + " = ? AND " + CatchTable.Columns.SPECIES_ID + " = ?",
+                        new String[] { bait.getIdAsString(), obj.getIdAsString() }
+                );
+            }
+        });
+    }
+
+    /**
+     * Gets a list of {@link com.cohenadair.anglerslog.model.Stats.Quantity} objects representing
+     * the number of {@link Species} that were caught at the given {@link Location}.
+     *
+     * @param location The {@link Location} object used to query the database.
+     * @return A list of {@link com.cohenadair.anglerslog.model.Stats.Quantity} objects.
+     */
+    public static ArrayList<Stats.Quantity> getSpeciesCaughtCount(final Location location) {
+        return getCatchQuantity(getSpecies(), new OnQueryQuantityListener() {
+            @Override
+            public int query(UserDefineObject obj) {
+                return QueryHelper.queryUserDefineCatchCount(
+                        CatchTable.Columns.SPECIES_ID + " = ? AND " + CatchTable.Columns.FISHING_SPOT_ID + " IN (SELECT " + FishingSpotTable.Columns.ID + " FROM " + FishingSpotTable.NAME + " WHERE " + FishingSpotTable.Columns.LOCATION_ID + " = ?)",
+                        new String[] { obj.getIdAsString(), location.getIdAsString() }
+                );
+            }
+        });
+    }
     //endregion
 
     //region BaitCategory Manipulation
@@ -574,6 +612,25 @@ public class Logbook {
             @Override
             public int query(UserDefineObject obj) {
                 return QueryHelper.queryUserDefineCatchCount(obj, CatchTable.Columns.BAIT_ID);
+            }
+        });
+    }
+
+    /**
+     * Gets a list of {@link com.cohenadair.anglerslog.model.Stats.Quantity} objects representing
+     * the number of {@link Bait} objects that were used to catch a given {@link Species}.
+     *
+     * @param species The {@link Species} object used to query the database.
+     * @return A list of {@link com.cohenadair.anglerslog.model.Stats.Quantity} objects.
+     */
+    public static ArrayList<Stats.Quantity> getBaitUsedCount(final Species species) {
+        return getCatchQuantity(getBaits(), new OnQueryQuantityListener() {
+            @Override
+            public int query(UserDefineObject obj) {
+                return QueryHelper.queryUserDefineCatchCount(
+                        CatchTable.Columns.BAIT_ID + " = ? AND " + CatchTable.Columns.SPECIES_ID + " = ?",
+                        new String[] { obj.getIdAsString(), species.getIdAsString() }
+                );
             }
         });
     }

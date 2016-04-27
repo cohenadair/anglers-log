@@ -441,11 +441,20 @@ public class QueryHelper {
      * @see #getTotalCatchQuantity(Cursor)
      */
     public static int queryUserDefineCatchCount(UserDefineObject object, String catchColumn) {
-        return getTotalCatchQuantity(queryCatches(
-                CatchTable.Columns.QUANTITY,
+        return queryUserDefineCatchCount(
                 catchColumn + " = ?",
                 new String[] { object.getIdAsString() }
-        ));
+        );
+    }
+
+    /**
+     * Works like {@link #queryUserDefineCatchCount(UserDefineObject, String)} except it takes in
+     * a custom where clause.
+     *
+     * @see #queryUserDefineCatchCount(UserDefineObject, String)
+     */
+    public static int queryUserDefineCatchCount(String whereClause, String[] args) {
+        return getTotalCatchQuantity(queryCatches(CatchTable.Columns.QUANTITY, whereClause, args));
     }
 
     /**
@@ -458,7 +467,7 @@ public class QueryHelper {
      * @param cursor The {@link Cursor} to iterate.
      * @return The total value of each value in the given {@link Cursor}.
      */
-    private static int getTotalCatchQuantity(Cursor cursor) {
+    public static int getTotalCatchQuantity(Cursor cursor) {
         int count = 0;
 
         if (cursor.moveToFirst())

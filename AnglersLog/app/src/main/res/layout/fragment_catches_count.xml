@@ -67,10 +67,35 @@
                 custom:detailText="@string/bait"
                 custom:iconResource="@drawable/ic_bait"/>
 
+            <!-- Extended stats such as the number of each species caught by selected bait -->
+            <LinearLayout
+                android:id="@+id/extended_wrapper"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/margin_half"
+                android:paddingBottom="@dimen/margin_default"
+                android:orientation="horizontal">
+
+                <ImageView
+                    style="@style/ImageView.InputList"
+                    android:id="@+id/extended_icon"
+                    android:src="@drawable/ic_catches"
+                    android:layout_marginTop="@dimen/margin_quarter"
+                    android:contentDescription="@string/icon_description"/>
+
+                <LinearLayout
+                    android:id="@+id/extended_container"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"/>
+
+            </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/margin_default"
+                android:layout_marginTop="@dimen/margin_half"
                 android:layout_marginStart="@dimen/margin_default"
                 android:orientation="horizontal">
 
@@ -85,7 +110,6 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:layout_marginLeft="@dimen/margin_default_negative"
                     android:layout_marginStart="@dimen/margin_default_negative"
                     android:orientation="vertical">
 

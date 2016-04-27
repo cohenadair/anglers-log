@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -48,6 +49,8 @@ public class CatchesCountFragment extends Fragment {
     private TextView mPieCenterTitle;
     private TextView mPieCenterSubtitle;
     private DisplayLabelView mDetailView;
+    private LinearLayout mExtendedView;
+    private LinearLayout mExtendedWrapper;
 
     /**
      * Used to capture click events on the center circle of the pie chart.
@@ -81,7 +84,11 @@ public class CatchesCountFragment extends Fragment {
 
         mDetailView = (DisplayLabelView)view.findViewById(R.id.detail_view);
         mDetailView.setIconResource(mStatsSpec.getIconResource());
-        ViewUtils.setVisibility(mDetailView, mStatsSpec.getCallbacks() != null);
+
+        mExtendedView = (LinearLayout)view.findViewById(R.id.extended_container);
+        mExtendedWrapper = (LinearLayout)view.findViewById(R.id.extended_wrapper);
+        ImageView extendedIcon = (ImageView)view.findViewById(R.id.extended_icon);
+        extendedIcon.setImageResource(mStatsSpec.getExtendedIconResource());
 
         initPieChartCenter(view);
         initPieChart(view);
@@ -184,6 +191,7 @@ public class CatchesCountFragment extends Fragment {
         mPieCenterSubtitle.setText(getCircleSubtitle(value));
 
         updateMoreDetail(position);
+        updateExtended(position);
     }
 
     private void updateMoreDetail(int position) {
@@ -203,6 +211,26 @@ public class CatchesCountFragment extends Fragment {
                     startActivity(DetailFragmentActivity.getIntent(getContext(), mStatsSpec.getLayoutSpecId(), obj.getId()));
                 }
             });
+    }
+
+    private void updateExtended(int position) {
+        ArrayList<Stats.Quantity> content = mStatsSpec.getExtendedContent(position);
+        int count = 0;
+        mExtendedView.removeAllViews();
+
+        for (Stats.Quantity item : content) {
+            if (item.getQuantity() <= 0)
+                continue;
+
+            PropertyDetailView view = new PropertyDetailView(getContext());
+            view.setProperty(item.getName());
+            view.setDetail(Integer.toString(item.getQuantity()));
+
+            mExtendedView.addView(view);
+            count++;
+        }
+
+        ViewUtils.setVisibility(mExtendedWrapper, count > 0);
     }
 
     private String getCircleSubtitle(SliceValue value) {
