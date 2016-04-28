@@ -1,11 +1,17 @@
 <resources>
-    <string name="version_name">1.1.0</string>
+    <string name="version_name">1.2.0</string>
     <string name="app_name">Anglers\' Log</string>
     <string name="app_description">Track, analyze, share.</string>
     <string name="app_photos_dir">/AnglersLog</string>
     <string name="hashtag">AnglersLogApp</string>
     <string name="website">http://cohenadair.com/anglerslog/</string>
     <string name="share_text">Shared with @anglerslog for #android #anglerslogapp</string>
+
+    <string name="rate_title">Rate Anglers\' Log</string>
+    <string name="rate_msg">Please take a minute to rate Anglers\' Log.  All feedback is greatly appreciated!</string>
+    <string name="rate_positive">Rate</string>
+    <string name="rate_negative">No thanks</string>
+    <string name="rate_neutral">Cancel</string>
 
     <string name="instabug_sheet_title">Bugs &amp; Feedback</string>
     <string name="instabug_sheet_description">Tap the ladybug button to send bug reports and feedback.  The button can be disabled from the Settings menu.</string>

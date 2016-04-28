@@ -14,6 +14,7 @@ import com.cohenadair.anglerslog.interfaces.OnClickInterface;
 import com.cohenadair.anglerslog.utilities.LayoutSpecManager;
 import com.cohenadair.anglerslog.utilities.LogbookPreferences;
 import com.cohenadair.anglerslog.utilities.NavigationManager;
+import com.cohenadair.anglerslog.utilities.RateDialog;
 import com.cohenadair.anglerslog.utilities.ViewUtils;
 
 import java.util.UUID;
@@ -55,6 +56,14 @@ public class MainActivity extends LayoutSpecActivity {
             setRightPanelVisibility();
 
         LogbookPreferences.setIsRootTwoPane(isTwoPane());
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        // prompt the user to rate the app
+        new RateDialog().showIfNeeded(this, getSupportFragmentManager());
     }
 
     /**

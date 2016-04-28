@@ -83,4 +83,12 @@ public class IntentUtils {
                 "https://www.instagram.com/explore/tags/" + context.getResources().getString(hashTagResId)
         );
     }
+
+    /**
+     * Gets an Intent that opens the app in Google Play.
+     */
+    @NonNull
+    public static Intent getStore(Context context) {
+        return new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + context.getPackageName()));
+    }
 }
