@@ -11,7 +11,7 @@
     <string name="rate_msg">Please take a minute to rate Anglers\' Log.  All feedback is greatly appreciated!</string>
     <string name="rate_positive">Rate</string>
     <string name="rate_negative">No thanks</string>
-    <string name="rate_neutral">Cancel</string>
+    <string name="rate_neutral">Later</string>
 
     <string name="instabug_sheet_title">Bugs &amp; Feedback</string>
     <string name="instabug_sheet_description">Tap the ladybug button to send bug reports and feedback.  The button can be disabled from the Settings menu.</string>
