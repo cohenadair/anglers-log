@@ -46,8 +46,9 @@ public class Utils {
      * @param defaultValue The value to be returned if the given String is empty.
      * @return A float representation of the given String, or the given default value if the given
      *         String is empty.
+     * @throws NumberFormatException if the input String cannot be parsed.
      */
-    public static float asFloat(String str, float defaultValue) {
+    public static float asFloat(String str, float defaultValue) throws NumberFormatException {
         if (str.isEmpty() || (str.length() == 1 && str.equals(".")))
             return defaultValue;
 

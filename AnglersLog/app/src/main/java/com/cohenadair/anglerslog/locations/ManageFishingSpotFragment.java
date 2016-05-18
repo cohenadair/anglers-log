@@ -235,9 +235,11 @@ public class ManageFishingSpotFragment extends ManageContentFragment {
     private void initCoordinatesView(View view) {
         mLatitudeView = (InputTextView)view.findViewById(R.id.latitude_layout);
         mLatitudeView.addOnInputTextChangedListener(getCoordinateTextWatcher());
+        mLatitudeView.setAllowsNegativeNumbers(true);
 
         mLongitudeView = (InputTextView)view.findViewById(R.id.longitude_layout);
         mLongitudeView.addOnInputTextChangedListener(getCoordinateTextWatcher());
+        mLongitudeView.setAllowsNegativeNumbers(true);
     }
 
     private void updateCoordinateViews(LatLng coordinates) {
@@ -258,13 +260,16 @@ public class ManageFishingSpotFragment extends ManageContentFragment {
                 if (mLatitudeView.getInputText() == null || mLongitudeView.getInputText() == null)
                     return;
 
-                double lat = (double)Utils.asFloat(mLatitudeView.getInputText(), 0);
-                double lng = (double)Utils.asFloat(mLongitudeView.getInputText(), 0);
-                LatLng latLng = new LatLng(lat, lng);
+                double lat = validateCoordinateInput(mLatitudeView);
+                double lng = validateCoordinateInput(mLongitudeView);
 
-                if (mMapFragment.isValid(latLng) && !mCancelInputListener) {
-                    mMapFragment.updateCameraNoZoom(latLng);
-                    mCancelInputListener = false;
+                if (lat != -1 && lng != -1) {
+                    LatLng latLng = new LatLng(lat, lng);
+
+                    if (mMapFragment.isValid(latLng) && !mCancelInputListener) {
+                        mMapFragment.updateCameraNoZoom(latLng);
+                        mCancelInputListener = false;
+                    }
                 }
             }
 
@@ -273,6 +278,31 @@ public class ManageFishingSpotFragment extends ManageContentFragment {
 
             }
         };
+    }
+
+    /**
+     * Validates the given {@link InputTextView}. If the input is invalid a Toast will be displayed
+     * to the user and the previously entered character will be removed.
+     *
+     * @param input The {@link InputTextView} to validate.
+     * @return The text of the input as a double.
+     */
+    private double validateCoordinateInput(InputTextView input) {
+        String inputText = input.getInputText();
+
+        // do not validate if the user is entering a negative coordinate
+        if (inputText.length() == 1 && inputText.charAt(0) == '-')
+            return -1;
+
+        try {
+            return (double) Utils.asFloat(inputText, 0);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+            Utils.showToast(getContext(), R.string.msg_invalid_coordinate);
+            input.pressBackspace();
+        }
+
+        return -1;
     }
 
     private void initMapFragment() {

@@ -5,6 +5,7 @@ import android.content.res.TypedArray;
 import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
+import android.view.KeyEvent;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -125,5 +126,9 @@ public class InputTextView extends LeftIconView {
 
     public void addOnInputTextChangedListener(TextWatcher listener) {
         mEditText.addTextChangedListener(listener);
+    }
+
+    public void pressBackspace() {
+        mEditText.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DEL));
     }
 }
