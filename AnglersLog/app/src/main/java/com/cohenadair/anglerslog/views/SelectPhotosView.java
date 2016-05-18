@@ -21,6 +21,7 @@ import com.cohenadair.anglerslog.catches.ManageCatchFragment;
 import com.cohenadair.anglerslog.utilities.AlertUtils;
 import com.cohenadair.anglerslog.utilities.PermissionUtils;
 import com.cohenadair.anglerslog.utilities.PhotoUtils;
+import com.cohenadair.anglerslog.utilities.Utils;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -131,8 +132,11 @@ public class SelectPhotosView extends LinearLayout {
 
         // make sure the camera is available on this device
         if (canTakePicture(photoIntent)) {
-            photoIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(mPublicPhotoFile));
-            mSelectPhotosInteraction.onStartSelectionActivity(photoIntent, ManageCatchFragment.REQUEST_PHOTO);
+            if (mPublicPhotoFile != null) {
+                photoIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(mPublicPhotoFile));
+                mSelectPhotosInteraction.onStartSelectionActivity(photoIntent, ManageCatchFragment.REQUEST_PHOTO);
+            } else
+                Utils.showToast(getContext(), R.string.error_starting_camera);
         } else
             AlertUtils.showError(getContext(), R.string.error_camera_unavailable);
     }

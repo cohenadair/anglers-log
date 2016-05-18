@@ -255,6 +255,7 @@
     <string name="success_trip_edit">Successfully updated trip</string>
     <string name="success_trip_delete">Successfully deleted trip</string>
 
+    <string name="error_starting_camera">Error starting camera</string>
     <string name="error_camera_unavailable">The camera is currently unavailable on this device.</string>
     <string name="error_delete_primitive">is currently in use and cannot be deleted.</string>
     <string name="msg_confirm_delete">This action cannot be undone. Delete anyway?</string>
