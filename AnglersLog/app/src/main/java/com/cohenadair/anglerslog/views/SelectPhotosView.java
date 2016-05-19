@@ -99,6 +99,9 @@ public class SelectPhotosView extends LinearLayout {
 
         // multiple selection is only available on API 18+
         mCanSelectMultiple = mCanSelectMultiple && Build.VERSION.SDK_INT >= 18;
+        if (mCanSelectMultiple) {
+            mAddPhotoView.setPrimaryButtonHint(R.string.add_photos);
+        }
     }
 
     //region Getters & Setters
@@ -171,7 +174,9 @@ public class SelectPhotosView extends LinearLayout {
         for (int i = 0; i < clip.getItemCount(); i++) {
             Uri photoUri = clip.getItemAt(i).getUri();
             PhotoUtils.copyAndResizePhoto(photoUri, mPrivatePhotoFile);
-            addImage(mPrivatePhotoFile.getPath());
+
+            if (!addImage(R.string.msg_error_attaching_photos))
+                break;
 
             // reset file for each image
             mPrivatePhotoFile = mSelectPhotosInteraction.onGetPhotoFile();
@@ -187,7 +192,7 @@ public class SelectPhotosView extends LinearLayout {
         if (mPublicPhotoFile != null && mPublicPhotoFile.exists())
             MediaScannerConnection.scanFile(getContext(), new String[]{ mPublicPhotoFile.toString() }, null, null);
 
-        addImage(mPrivatePhotoFile.getPath());
+        addImage(R.string.msg_error_attaching_photo);
     }
 
     public void addImage(String path) {
@@ -223,6 +228,16 @@ public class SelectPhotosView extends LinearLayout {
         if (mMaxPhotos != -1)
             if (mPhotosWrapper.getChildCount() >= mMaxPhotos)
                 disableCamera();
+    }
+
+    public boolean addImage(int errMsgId) {
+        if (mPrivatePhotoFile == null) {
+            Utils.showToast(getContext(), errMsgId);
+            return false;
+        } else {
+            addImage(mPrivatePhotoFile.getPath());
+            return true;
+        }
     }
 
     private void removeImage(ImageView img) {

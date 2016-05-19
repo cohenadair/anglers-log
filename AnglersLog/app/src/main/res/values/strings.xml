@@ -140,6 +140,7 @@
     <string name="oldest_to_newest">Oldest to newest</string>
     <string name="locations_lowercase">locations</string>
     <string name="add_photo">Add photo</string>
+    <string name="add_photos">Add photos</string>
     <string name="add_species">Add species</string>
     <string name="add_location">Add location</string>
     <string name="add_bait">Add bait</string>
@@ -261,6 +262,8 @@
     <string name="msg_confirm_delete">This action cannot be undone. Delete anyway?</string>
     <string name="msg_delete_photo">Are you sure you want to delete this photo? This action cannot be undone.</string>
     <string name="msg_invalid_coordinate">Invalid coordinate value</string>
+    <string name="msg_error_attaching_photo">Error attaching photo</string>
+    <string name="msg_error_attaching_photos">Error attaching photos</string>
 
     <string name="catch_photo_description">A photo of the current catch.</string>
     <string name="header_photo_description">A photo of one of the user\'s catches.</string>
