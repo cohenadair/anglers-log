@@ -63,6 +63,7 @@ public class LayoutSpecManager {
     public static final int LAYOUT_GALLERY = R.id.nav_gallery;
     public static final int LAYOUT_SETTINGS = R.id.nav_settings;
     public static final int LAYOUT_HELP = R.id.nav_help;
+    public static final int LAYOUT_RATE = R.id.nav_rate;
     public static final int LAYOUT_TWITTER = R.id.nav_twitter;
     public static final int LAYOUT_INSTAGRAM = R.id.nav_instagram;
 
@@ -95,6 +96,9 @@ public class LayoutSpecManager {
 
             case LAYOUT_SETTINGS:
                 return getSettingsLayoutSpec(layoutSpecContext);
+
+            case LAYOUT_RATE:
+                return getRateLayoutSpec(layoutSpecContext);
 
             case LAYOUT_HELP:
                 return getHelpLayoutSpec(layoutSpecContext);
@@ -162,7 +166,11 @@ public class LayoutSpecManager {
      * @return True if link; false otherwise.
      */
     public static boolean isLink(int layoutId) {
-        return (layoutId == LAYOUT_HELP || layoutId == LAYOUT_TWITTER || layoutId == LAYOUT_INSTAGRAM);
+        return (layoutId == LAYOUT_HELP ||
+                layoutId == LAYOUT_TWITTER ||
+                layoutId == LAYOUT_INSTAGRAM ||
+                layoutId == LAYOUT_RATE
+        );
     }
 
     private static LayoutSpec getCatchesLayoutSpec(final LayoutSpecActivity context) {
@@ -397,6 +405,15 @@ public class LayoutSpecManager {
 
         spec.setId(LAYOUT_SETTINGS);
         spec.setMasterFragment(new SettingsFragment());
+
+        return spec;
+    }
+
+    private static LayoutSpec getRateLayoutSpec(final LayoutSpecActivity context) {
+        final LayoutSpec spec = new LayoutSpec();
+
+        spec.setId(LAYOUT_RATE);
+        spec.setOnClickMenuItemIntent(IntentUtils.getActionView(context.getResources().getString(R.string.website)));
 
         return spec;
     }

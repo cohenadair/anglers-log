@@ -2,12 +2,9 @@ package com.cohenadair.anglerslog.utilities;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
@@ -69,7 +66,7 @@ public class RateDialog extends DialogFragment {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 resetVersion();
-                openStore();
+                Utils.openGooglePlay(mContext);
             }
         };
     }
@@ -143,11 +140,5 @@ public class RateDialog extends DialogFragment {
         return mContext.getResources().getString(R.string.version_name);
     }
 
-    private void openStore() {
-        try {
-            startActivity(IntentUtils.getStore(mContext));
-        } catch (ActivityNotFoundException e) {
-            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=" + mContext.getPackageName())));
-        }
-    }
+
 }

@@ -1,9 +1,12 @@
 package com.cohenadair.anglerslog.utilities;
 
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Point;
+import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.text.format.DateFormat;
@@ -233,6 +236,17 @@ public class Utils {
             result = context.getResources().getDimensionPixelSize(resourceId);
 
         return result;
+    }
+
+    public static void openGooglePlay(Context context) {
+        try {
+            context.startActivity(IntentUtils.getStore(context));
+        } catch (ActivityNotFoundException e) {
+            Uri uri = Uri.parse(
+                    "http://play.google.com/store/apps/details?id=" + context.getPackageName()
+            );
+            context.startActivity(new Intent(Intent.ACTION_VIEW, uri));
+        }
     }
 
 }
