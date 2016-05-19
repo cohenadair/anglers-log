@@ -22,8 +22,15 @@ public class BaitListManager {
     //region View Holder
     public static class ViewHolder extends ListManager.ViewHolder {
 
+        private boolean mIsBait = true;
+
         public ViewHolder(View view, ListManager.Adapter adapter) {
             super(view, adapter);
+        }
+
+        @Override
+        public boolean onLongClick(View view) {
+            return !mIsBait || super.onLongClick(view);
         }
 
         public void setBait(Bait bait) {
@@ -39,11 +46,13 @@ public class BaitListManager {
             }
 
             updateViews();
+            mIsBait = true;
         }
 
         public void setBaitCategory(BaitCategory category) {
             initForHeaderLayout();
             setHeaderText(category.getName());
+            mIsBait = false;
         }
     }
     //endregion
