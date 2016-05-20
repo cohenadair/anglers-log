@@ -24,6 +24,7 @@ public class RateDialog extends DialogFragment {
     private static final String PREF_VERSION = "RateVersion";
     private static final String PREF_TIME = "RateTime";
     private static final String PREF_NO = "RateNoVersion";
+    private static final String PREF_FIRST = "FirstRun";
 
     private static final long MS_WEEK = (60000 * 60 * 24 * 7);
 
@@ -47,6 +48,11 @@ public class RateDialog extends DialogFragment {
 
     public void showIfNeeded(Context context, FragmentManager manager) {
         mContext = context;
+
+        if (isFirstRun()) {
+            setFirstRun(false);
+            return;
+        }
 
         if (didRateAndIsNewVersion() && isTimeExceeded()) {
             super.show(manager, "");
@@ -107,6 +113,10 @@ public class RateDialog extends DialogFragment {
         return getPreferences().getLong(PREF_TIME, -1);
     }
 
+    private boolean isFirstRun() {
+        return getPreferences().getBoolean(PREF_FIRST, true);
+    }
+
     private void resetNo() {
         getPreferences().edit().putString(PREF_NO, getCurrentVersion()).apply();
     }
@@ -117,6 +127,10 @@ public class RateDialog extends DialogFragment {
 
     private void resetTime() {
         getPreferences().edit().putLong(PREF_TIME, new Date().getTime()).apply();
+    }
+
+    private void setFirstRun(boolean firstRun) {
+        getPreferences().edit().putBoolean(PREF_FIRST, firstRun).apply();
     }
 
     private boolean didRateThisVersion() {
