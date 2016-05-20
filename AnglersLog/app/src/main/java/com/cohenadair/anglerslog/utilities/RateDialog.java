@@ -48,7 +48,7 @@ public class RateDialog extends DialogFragment {
     public void showIfNeeded(Context context, FragmentManager manager) {
         mContext = context;
 
-        if (didRateAndIsNewVersion()) {
+        if (didRateAndIsNewVersion() && isTimeExceeded()) {
             super.show(manager, "");
             return;
         }
