@@ -289,7 +289,10 @@ public abstract class ManageContentFragment extends Fragment {
         }
 
         if (requestCode == REQUEST_SELECTION) {
-            mOnSelectionActivityResult.onSelect(data.getStringArrayListExtra(MyListSelectionActivity.EXTRA_SELECTED_IDS));
+            if (mOnSelectionActivityResult != null)
+                mOnSelectionActivityResult.onSelect(
+                        data.getStringArrayListExtra(MyListSelectionActivity.EXTRA_SELECTED_IDS)
+                );
             return;
         }
 
