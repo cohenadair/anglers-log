@@ -295,6 +295,7 @@ public class ManageFishingSpotFragment extends ManageContentFragment {
             return -1;
 
         try {
+            inputText = inputText.replace(',', '.'); // some countries/keyboard use ',' in place of '.'
             return (double) Utils.asFloat(inputText, 0);
         } catch (NumberFormatException e) {
             e.printStackTrace();
