@@ -150,7 +150,7 @@ public class MainActivity extends LayoutSpecActivity {
                     .setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right)
                     .replace(R.id.master_container, getDetailFragment())
                     .addToBackStack(null)
-                    .commit();
+                    .commitAllowingStateLoss();
 
             mNavigationManager.setActionBarTitle("");
         }
