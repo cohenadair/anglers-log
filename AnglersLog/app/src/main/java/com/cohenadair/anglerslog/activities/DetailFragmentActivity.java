@@ -60,7 +60,13 @@ public class DetailFragmentActivity extends DefaultActivity {
         if (userDefineIdStr == null)
             throw new RuntimeException("DetailFragmentActivity init must include EXTRA_USER_DEFINE_ID.");
 
-        mItemId = UUID.fromString(userDefineIdStr);
+        try {
+            mItemId = UUID.fromString(userDefineIdStr);
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+            Utils.showToast(this, R.string.msg_error_showing_details);
+            finish();
+        }
 
         DetailFragment detailFragment = LayoutSpecManager.getDetailFragment(mLayoutId);
         if (detailFragment == null)
