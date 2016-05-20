@@ -413,7 +413,7 @@ public class LayoutSpecManager {
         final LayoutSpec spec = new LayoutSpec();
 
         spec.setId(LAYOUT_RATE);
-        spec.setOnClickMenuItemIntent(IntentUtils.getActionView(context.getResources().getString(R.string.website)));
+        spec.setOnClickMenuItemIntent(IntentUtils.getStore(context));
 
         return spec;
     }
