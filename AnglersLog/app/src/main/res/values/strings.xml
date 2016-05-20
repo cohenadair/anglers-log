@@ -265,6 +265,7 @@
     <string name="msg_invalid_coordinate">Invalid coordinate value</string>
     <string name="msg_error_attaching_photo">Error attaching photo</string>
     <string name="msg_error_attaching_photos">Error attaching photos</string>
+    <string name="msg_error_showing_details">Error showing details</string>
 
     <string name="catch_photo_description">A photo of the current catch.</string>
     <string name="header_photo_description">A photo of one of the user\'s catches.</string>
