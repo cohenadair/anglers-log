@@ -28,9 +28,21 @@ public class BaitListManager {
             super(view, adapter);
         }
 
+        /**
+         * Disable clicking if the current item isn't a Bait.
+         */
+
         @Override
         public boolean onLongClick(View view) {
             return !mIsBait || super.onLongClick(view);
+        }
+
+        @Override
+        public void onClick(View v) {
+            if (!mIsBait)
+                return;
+
+            super.onClick(v);
         }
 
         public void setBait(Bait bait) {
