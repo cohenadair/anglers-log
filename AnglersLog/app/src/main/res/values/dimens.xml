@@ -24,6 +24,7 @@
 
     <dimen name="size_list_thumb">60dp</dimen>
     <dimen name="size_list_thumb_condensed">40dp</dimen>
+    <dimen name="size_list_item_condensed">56dp</dimen>
     <dimen name="thumbnail_cell_size">92dp</dimen>
     <dimen name="image_scroll_size">250dp</dimen>
     <!-- 0.5 * image_scroll_size + margin_default -->

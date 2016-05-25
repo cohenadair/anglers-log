@@ -64,7 +64,11 @@ public class PartialListView extends LeftIconView {
         mCallbacks = callbacks;
         mAllItems = items;
         mPortionItems = getPortionItems(mAllItems);
+
         mRecyclerView.setAdapter(mCallbacks.onGetAdapter(mPortionItems));
+        mRecyclerView.getLayoutParams().height =
+                getResources().getDimensionPixelSize(R.dimen.size_list_item_condensed) *
+                        mRecyclerView.getAdapter().getItemCount();
 
         updateViews();
     }

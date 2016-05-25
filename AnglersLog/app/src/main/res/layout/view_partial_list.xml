@@ -3,7 +3,6 @@
     style="@style/IconInputView"
     android:id="@+id/container"
     android:gravity="top"
-    android:layout_marginRight="0dp"
     android:layout_marginEnd="0dp">
 
     <ImageView
@@ -17,7 +16,6 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:layout_marginLeft="@dimen/margin_default_negative"
         android:layout_marginStart="@dimen/margin_default_negative"
         android:orientation="vertical">
 
