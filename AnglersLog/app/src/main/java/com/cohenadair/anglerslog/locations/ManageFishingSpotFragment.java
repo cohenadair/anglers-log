@@ -2,9 +2,6 @@ package com.cohenadair.anglerslog.locations;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -18,7 +15,6 @@ import com.cohenadair.anglerslog.activities.LayoutSpecActivity;
 import com.cohenadair.anglerslog.fragments.DraggableMapFragment;
 import com.cohenadair.anglerslog.fragments.ManageContentFragment;
 import com.cohenadair.anglerslog.model.user_defines.FishingSpot;
-import com.cohenadair.anglerslog.model.user_defines.Location;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import com.cohenadair.anglerslog.utilities.AlertUtils;
 import com.cohenadair.anglerslog.utilities.GoogleMapLayout;
@@ -27,7 +23,7 @@ import com.cohenadair.anglerslog.views.InputTextView;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The ManageFishingSpotFragment is used to add and edit fishing spots. This
@@ -46,18 +42,14 @@ public class ManageFishingSpotFragment extends ManageContentFragment {
     private ImageView mCrosshairs;
     private GoogleMap mMap;
 
-    private Location mLocation;
+    private List<UserDefineObject> mFishingSpots;
     private ManageObjectSpec mManageObjectSpec;
     private InitializeInterface mInitializeInterface;
     private OnVerifyInterface mOnVerifyInterface;
 
-    // used to temporarily cancel the coordinate view's text listener to propery handle map
-    // camera changes
-    private boolean mCancelInputListener;
-
     // if we're adding a fishing spot to a location that already has spots, we want to zoom to the
     // other spots for user convenience
-    private boolean mCancelLocationUpdate;
+    private boolean mStopLocationUpdates;
 
     /**
      * Used to verify the new fishing spot being added is unique to the location.
@@ -83,6 +75,7 @@ public class ManageFishingSpotFragment extends ManageContentFragment {
         initNameView(view);
         initCoordinatesView(view);
         initMapFragment();
+        initRefreshButton(view);
         initSubclassObject();
         initToolbar();
 
@@ -105,8 +98,8 @@ public class ManageFishingSpotFragment extends ManageContentFragment {
         activity.setActionBarTitle(activity.getViewTitle());
     }
 
-    public void setLocation(Location location) {
-        mLocation = location;
+    public void setFishingSpots(List<UserDefineObject> fishingSpots) {
+        mFishingSpots = fishingSpots;
     }
 
     public void setManageObjectSpec(ManageObjectSpec manageObjectSpec) {
@@ -169,17 +162,14 @@ public class ManageFishingSpotFragment extends ManageContentFragment {
 
         // move the camera to the current fishing spot
         if (isEditing()) {
-            mCancelLocationUpdate = true;
-            mCancelInputListener = true;
+            mStopLocationUpdates = true;
             updateCamera(getNewFishingSpot().getCoordinates());
-        } else if (mLocation != null) {
+        } else if (mFishingSpots != null) {
             // if the location already has fishing spots, move the camera to one
             // this is simply for user convenience
-            ArrayList<UserDefineObject> fishingSpots = mLocation.getFishingSpots();
-            if (fishingSpots.size() > 0) {
-                mCancelLocationUpdate = true;
-                mCancelInputListener = true;
-                updateCamera(((FishingSpot) fishingSpots.get(0)).getCoordinates());
+            if (mFishingSpots.size() > 0) {
+                mStopLocationUpdates = true;
+                updateCamera(((FishingSpot)mFishingSpots.get(0)).getCoordinates());
             }
         }
     }
@@ -234,29 +224,17 @@ public class ManageFishingSpotFragment extends ManageContentFragment {
 
     private void initCoordinatesView(View view) {
         mLatitudeView = (InputTextView)view.findViewById(R.id.latitude_layout);
-        mLatitudeView.addOnInputTextChangedListener(getCoordinateTextWatcher());
         mLatitudeView.setAllowsNegativeNumbers(true);
 
         mLongitudeView = (InputTextView)view.findViewById(R.id.longitude_layout);
-        mLongitudeView.addOnInputTextChangedListener(getCoordinateTextWatcher());
         mLongitudeView.setAllowsNegativeNumbers(true);
     }
 
-    private void updateCoordinateViews(LatLng coordinates) {
-        mLatitudeView.setInputText(String.format(getResources().getConfiguration().locale, "%.6f", coordinates.latitude));
-        mLongitudeView.setInputText(String.format(getResources().getConfiguration().locale, "%.6f", coordinates.longitude));
-    }
-
-    @NonNull
-    private TextWatcher getCoordinateTextWatcher() {
-        return new TextWatcher() {
+    private void initRefreshButton(View view) {
+        ImageButton refreshButton = (ImageButton)view.findViewById(R.id.coordinate_refresh_button);
+        refreshButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            public void onClick(View v) {
                 if (mLatitudeView.getInputText() == null || mLongitudeView.getInputText() == null)
                     return;
 
@@ -266,18 +244,17 @@ public class ManageFishingSpotFragment extends ManageContentFragment {
                 if (lat != -1 && lng != -1) {
                     LatLng latLng = new LatLng(lat, lng);
 
-                    if (mMapFragment.isValid(latLng) && !mCancelInputListener) {
+                    if (mMapFragment.isValid(latLng)) {
                         mMapFragment.updateCameraNoZoom(latLng);
-                        mCancelInputListener = false;
                     }
                 }
             }
+        });
+    }
 
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        };
+    private void updateCoordinateViews(LatLng coordinates) {
+        mLatitudeView.setInputText(String.format(getResources().getConfiguration().locale, "%.6f", coordinates.latitude));
+        mLongitudeView.setInputText(String.format(getResources().getConfiguration().locale, "%.6f", coordinates.longitude));
     }
 
     /**
@@ -322,10 +299,11 @@ public class ManageFishingSpotFragment extends ManageContentFragment {
 
             @Override
             public void onLocationUpdate(android.location.Location location) {
-                if (mCancelLocationUpdate)
+                if (mStopLocationUpdates) {
+                    mMapFragment.setLocationUpdatesEnabled(false);
                     return;
+                }
 
-                mCancelInputListener = true;
                 updateCamera(new LatLng(location.getLatitude(), location.getLongitude()));
                 mMapFragment.setLocationUpdatesEnabled(false);
             }

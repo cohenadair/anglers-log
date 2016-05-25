@@ -66,6 +66,17 @@
             custom:subtitleText="0.000000"
             custom:titleStyle="@style/TextView.Header"/>
 
+        <ImageButton
+            android:id="@+id/coordinate_refresh_button"
+            android:layout_width="@dimen/image_button_size"
+            android:layout_height="@dimen/image_button_size"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/margin_default"
+            android:layout_marginRight="@dimen/margin_default"
+            android:background="?android:attr/selectableItemBackground"
+            android:src="@drawable/ic_refresh"
+            android:contentDescription="@string/refresh_description"/>
+
     </LinearLayout>
 
 </LinearLayout>

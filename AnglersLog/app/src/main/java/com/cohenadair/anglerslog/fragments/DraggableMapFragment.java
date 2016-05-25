@@ -178,6 +178,8 @@ public class DraggableMapFragment extends SupportMapFragment implements OnMapRea
     public void onConnected(Bundle bundle) {
         if (mLocationUpdatesEnabled)
             startLocationUpdates();
+        else
+            disconnectFromGoogleClient();
     }
 
     @Override
@@ -192,12 +194,6 @@ public class DraggableMapFragment extends SupportMapFragment implements OnMapRea
 
     public void getMapAsync(InteractionListener callbacks) {
         mCallbacks = callbacks;
-
-        if (mLocationUpdatesEnabled)
-            startLocationUpdates();
-        else
-            disconnectFromGoogleClient();
-
         getMapAsync(this);
     }
 

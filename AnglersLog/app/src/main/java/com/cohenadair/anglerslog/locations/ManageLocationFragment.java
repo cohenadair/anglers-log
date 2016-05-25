@@ -21,6 +21,7 @@ import com.cohenadair.anglerslog.views.InputTextView;
 import com.cohenadair.anglerslog.views.MoreDetailView;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -215,7 +216,11 @@ public class ManageLocationFragment extends ManageContentFragment {
         if (editingId != null)
             fragment.setIsEditing(true, editingId);
 
-        fragment.setLocation(getNewLocation());
+        // get all possible fishing spots to be used when adding a new spot
+        // this is purely for user convenience
+        List<UserDefineObject> allPossibleFishingSpots = mFishingSpots;
+        mFishingSpots.addAll(getNewLocation().getFishingSpots());
+        fragment.setFishingSpots(allPossibleFishingSpots);
 
         fragment.setOnVerifyInterface(new ManageFishingSpotFragment.OnVerifyInterface() {
             @Override
