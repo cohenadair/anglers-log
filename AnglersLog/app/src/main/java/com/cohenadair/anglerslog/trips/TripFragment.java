@@ -183,7 +183,8 @@ public class TripFragment extends DetailFragment {
                     @Override
                     public String onGetSubtitle(Location location) {
                         int count = QueryHelper.queryTripsLocationCatchCount(mTrip, location);
-                        return String.format("%d " + getContext().getResources().getString(R.string.catches_on_trip), count);
+                        String catchesOnTrip = getContext().getResources().getString(R.string.catches_on_trip);
+                        return String.format("%d " + catchesOnTrip, count);
                     }
                 }
         );
