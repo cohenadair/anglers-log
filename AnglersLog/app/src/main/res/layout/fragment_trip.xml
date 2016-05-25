@@ -65,7 +65,6 @@
         <com.cohenadair.anglerslog.views.DisplayLabelView
             style="@style/IconLabelView"
             android:id="@+id/anglers_view"
-            android:layout_marginTop="@dimen/margin_half"
             custom:detailText="@string/anglers"
             custom:iconResource="@drawable/ic_anglers"/>
 
@@ -73,7 +72,6 @@
         <com.cohenadair.anglerslog.views.DisplayLabelView
             style="@style/IconLabelView"
             android:id="@+id/notes_view"
-            android:layout_marginTop="@dimen/margin_half"
             custom:detailText="@string/notes"
             custom:iconResource="@drawable/ic_note"/>
 
