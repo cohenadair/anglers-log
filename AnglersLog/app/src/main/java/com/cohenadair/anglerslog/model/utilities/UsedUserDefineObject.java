@@ -39,7 +39,7 @@ public class UsedUserDefineObject {
     }
 
     public void setObjects(ArrayList<UserDefineObject> objects) {
-        if (objects == null || objects.size() == 0)
+        if (objects == null)
             return;
 
         deleteObjects();
