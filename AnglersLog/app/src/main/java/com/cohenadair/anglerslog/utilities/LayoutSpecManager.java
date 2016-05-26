@@ -316,6 +316,13 @@ public class LayoutSpecManager {
             }
         });
 
+        spec.setOnGetTitleCallback(new LayoutSpec.OnGetTitleCallback() {
+            @Override
+            public String onGetTitle() {
+                return spec.getTitleName(Logbook.getBaitCount());
+            }
+        });
+
         SortingMethod[] methods = {
                 SortingUtils.byName(),
                 SortingUtils.byNumberOfCatches()

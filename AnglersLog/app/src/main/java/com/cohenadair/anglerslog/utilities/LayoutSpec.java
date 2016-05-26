@@ -38,6 +38,7 @@ public class LayoutSpec {
 
     private InteractionListener mListener;
     private OnSelectionListener mSelectionListener;
+    private OnGetTitleCallback mOnGetTitleCallback;
 
     private String mMasterFragmentTag;
     private String mDetailFragmentTag;
@@ -70,6 +71,14 @@ public class LayoutSpec {
         void onFinish(UUID id);
     }
 
+    /**
+     * Used to get the current layout's title. This interface is optional and by default the title
+     * will get the layout's name + adapter's length.
+     */
+    public interface OnGetTitleCallback {
+        String onGetTitle();
+    }
+
     public LayoutSpec() {
 
     }
@@ -87,6 +96,10 @@ public class LayoutSpec {
 
     public void setSelectionListener(OnSelectionListener selectionListener) {
         mSelectionListener = selectionListener;
+    }
+
+    public void setOnGetTitleCallback(OnGetTitleCallback onGetTitleCallback) {
+        mOnGetTitleCallback = onGetTitleCallback;
     }
 
     public void setManageFragment(ManageContentFragment contentFragment) {
@@ -165,6 +178,9 @@ public class LayoutSpec {
      * @return The navigation title used for this LayoutSpec.
      */
     public String getTitleName() {
+        if (mOnGetTitleCallback != null)
+            return mOnGetTitleCallback.onGetTitle();
+
         return (mMasterAdapter == null) ? mMasterFragmentTag : getTitleName(mMasterAdapter.getItemCount());
     }
 
