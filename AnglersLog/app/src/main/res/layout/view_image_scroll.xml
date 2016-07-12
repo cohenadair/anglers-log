@@ -1,0 +1,31 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/image_scroll_container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/global_background">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/image_scroll_size_half"
+        android:background="@color/anglers_log_light"/>
+
+    <HorizontalScrollView
+        android:id="@+id/scroll_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_default"
+        android:layout_centerHorizontal="true"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:id="@+id/photos_wrapper"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+        </LinearLayout>
+
+    </HorizontalScrollView>
+
+</RelativeLayout>

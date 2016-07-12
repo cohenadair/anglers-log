@@ -1,0 +1,4 @@
+<resources>
+    <item name="main_layout" type="layout">@layout/activity_main</item>
+    <bool name="has_two_panes">false</bool>
+</resources>

@@ -1,0 +1,183 @@
+<ScrollView
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@color/global_background"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/catch_container"
+        android:background="@color/global_background"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/margin_default">
+
+        <!-- Images -->
+        <com.cohenadair.anglerslog.views.ImageScrollView
+            android:id="@+id/image_scroll_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="@dimen/margin_half"/>
+
+        <!-- Species -->
+        <com.cohenadair.anglerslog.views.DisplayLabelView
+            style="@style/IconLabelView"
+            android:id="@+id/species_view"
+            custom:detailText="@string/species"
+            custom:iconResource="@drawable/ic_catches"/>
+
+        <!-- Date -->
+        <com.cohenadair.anglerslog.views.DisplayLabelView
+            style="@style/IconLabelView"
+            android:id="@+id/date_view"
+            custom:detailText="@string/date"
+            custom:iconResource="@drawable/ic_clock"/>
+
+        <!-- Location -->
+        <com.cohenadair.anglerslog.views.DisplayLabelView
+            style="@style/IconLabelView"
+            android:id="@+id/location_view"
+            custom:detailText="@string/location"
+            custom:iconResource="@drawable/ic_location"/>
+
+        <!-- Bait -->
+        <com.cohenadair.anglerslog.views.DisplayLabelView
+            style="@style/IconLabelView"
+            android:id="@+id/bait_view"
+            custom:detailText="@string/bait"
+            custom:iconResource="@drawable/ic_bait"/>
+
+        <!-- Weather -->
+        <LinearLayout
+            android:id="@+id/weather_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_default"
+            android:layout_marginLeft="@dimen/margin_default"
+            android:layout_marginStart="@dimen/margin_default"
+            android:layout_marginBottom="@dimen/margin_default">
+
+            <!-- Weather Details -->
+            <com.cohenadair.anglerslog.views.WeatherDetailsView
+                android:id="@+id/weather_details_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                custom:iconResource="@drawable/ic_cloud"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/size_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/margin_half"
+            android:paddingBottom="@dimen/margin_half"
+            android:orientation="horizontal">
+
+            <ImageView
+                style="@style/ImageView.InputList"
+                android:layout_marginTop="@dimen/margin_default"
+                android:src="@drawable/ic_ruler"
+                android:contentDescription="@string/icon_description"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <!-- Length -->
+                <com.cohenadair.anglerslog.views.DisplayLabelView
+                    style="@style/IconLabelView.ListItem"
+                    android:id="@+id/length_view"
+                    custom:labelText="@string/length"
+                    custom:detailText="@string/length"/>
+
+                <!-- Weight -->
+                <com.cohenadair.anglerslog.views.DisplayLabelView
+                    style="@style/IconLabelView.ListItem"
+                    android:id="@+id/weight_view"
+                    custom:labelText="@string/weight"
+                    custom:detailText="@string/weight"/>
+
+                <!-- Quantity -->
+                <com.cohenadair.anglerslog.views.DisplayLabelView
+                    style="@style/IconLabelView.ListItem"
+                    android:id="@+id/quantity_view"
+                    custom:labelText="@string/quantity"
+                    custom:detailText="@string/quantity"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/water_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/margin_half"
+            android:paddingBottom="@dimen/margin_half"
+            android:orientation="horizontal">
+
+            <ImageView
+                style="@style/ImageView.InputList"
+                android:layout_marginTop="@dimen/margin_default"
+                android:src="@drawable/ic_water"
+                android:contentDescription="@string/icon_description"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <!-- Water Clarity -->
+                <com.cohenadair.anglerslog.views.DisplayLabelView
+                    style="@style/IconLabelView.ListItem"
+                    android:id="@+id/water_clarity_view"
+                    custom:labelText="@string/clarity"
+                    custom:detailText="@string/water_clarity"/>
+
+                <!-- Water Depth -->
+                <com.cohenadair.anglerslog.views.DisplayLabelView
+                    style="@style/IconLabelView.ListItem"
+                    android:id="@+id/water_depth_view"
+                    custom:labelText="@string/depth"
+                    custom:detailText="@string/water_depth"/>
+
+                <!-- Water Temperature -->
+                <com.cohenadair.anglerslog.views.DisplayLabelView
+                    style="@style/IconLabelView.ListItem"
+                    android:id="@+id/water_temperature_view"
+                    custom:labelText="@string/temperature"
+                    custom:detailText="@string/water_temperature"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- Result -->
+        <com.cohenadair.anglerslog.views.DisplayLabelView
+            style="@style/IconLabelView"
+            android:id="@+id/catch_result_view"
+            custom:detailText="@string/result"
+            custom:iconResource="@drawable/ic_info"/>
+
+        <!-- Fishing Methods -->
+        <com.cohenadair.anglerslog.views.DisplayLabelView
+            style="@style/InputView.IconInset.NoLeft"
+            android:id="@+id/fishing_methods_view"
+            android:layout_marginTop="@dimen/margin_default_negative"
+            custom:detailText="@string/methods"/>
+
+        <!-- Notes -->
+        <com.cohenadair.anglerslog.views.DisplayLabelView
+            style="@style/IconLabelView"
+            android:id="@+id/notes_view"
+            custom:detailText="@string/notes"
+            custom:iconResource="@drawable/ic_note"/>
+
+    </LinearLayout>
+
+</ScrollView>

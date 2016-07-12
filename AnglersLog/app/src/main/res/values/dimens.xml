@@ -1,0 +1,35 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="margin_dialog">24dp</dimen>
+    <dimen name="margin_default">16dp</dimen>
+    <dimen name="margin_default_negative">-16dp</dimen>
+    <dimen name="margin_half">8dp</dimen>
+    <dimen name="margin_half_negative">-8dp</dimen>
+    <dimen name="margin_quarter">4dp</dimen>
+    <dimen name="margin_three_quarters">12dp</dimen>
+    <dimen name="margin_large">24dp</dimen>
+
+    <!-- margin_default + image_button_size + margin_large -->
+    <dimen name="margin_input_icon_offset">64dp</dimen>
+
+    <!-- image_button_size + margin_large -->
+    <dimen name="margin_input_icon_no_left">48dp</dimen>
+
+    <dimen name="spacing_small">6dp</dimen>
+    <dimen name="spacing_small_half">3dp</dimen>
+    <dimen name="spacing_medium">10dp</dimen>
+    <dimen name="spacing_large">16dp</dimen>
+
+    <dimen name="nav_header_height">192dp</dimen>
+
+    <dimen name="size_list_thumb">60dp</dimen>
+    <dimen name="size_list_thumb_condensed">40dp</dimen>
+    <dimen name="size_list_item_condensed">56dp</dimen>
+    <dimen name="thumbnail_cell_size">92dp</dimen>
+    <dimen name="image_scroll_size">250dp</dimen>
+    <!-- 0.5 * image_scroll_size + margin_default -->
+    <dimen name="image_scroll_size_half">141dp</dimen>
+    <dimen name="image_button_size">24dp</dimen>
+
+    <dimen name="stats_column_width">375dp</dimen>
+</resources>

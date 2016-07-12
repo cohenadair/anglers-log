@@ -1,0 +1,168 @@
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/manage_catch_fragment"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:background="@color/global_background"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Date & Time -->
+        <com.cohenadair.anglerslog.views.InputButtonView
+            style="@style/IconInputView"
+            android:id="@+id/date_time_view"
+            custom:iconResource="@drawable/ic_clock"
+            custom:showSecondary="true"/>
+
+        <include layout="@layout/view_divider"/>
+
+        <!-- Photos -->
+        <com.cohenadair.anglerslog.views.SelectPhotosView
+            style="@style/IconInputView"
+            android:id="@+id/select_photos_view"
+            custom:canSelectMultiple="true"/>
+
+        <include layout="@layout/view_divider"/>
+
+        <!-- Species -->
+        <com.cohenadair.anglerslog.views.InputButtonView
+            style="@style/IconInputView"
+            android:id="@+id/species_view"
+            custom:primaryHint="@string/add_species"
+            custom:iconResource="@drawable/ic_catches"/>
+
+        <include layout="@layout/view_divider"/>
+
+        <!-- Location -->
+        <com.cohenadair.anglerslog.views.InputButtonView
+            style="@style/IconInputView"
+            android:id="@+id/location_view"
+            custom:primaryHint="@string/add_location"
+            custom:iconResource="@drawable/ic_location"/>
+
+        <include layout="@layout/view_divider"/>
+
+        <!-- Bait -->
+        <com.cohenadair.anglerslog.views.InputButtonView
+            style="@style/IconInputView"
+            android:id="@+id/bait_view"
+            custom:primaryHint="@string/add_bait"
+            custom:iconResource="@drawable/ic_bait"/>
+
+        <include layout="@layout/view_divider"/>
+
+        <!-- Weather -->
+        <com.cohenadair.anglerslog.views.WeatherView
+            style="@style/IconInputView"
+            android:id="@+id/weather_view"/>
+
+        <include layout="@layout/view_divider"/>
+
+        <!-- All quantified fish details -->
+        <LinearLayout
+            style="@style/InputWrapper">
+
+            <!-- Length -->
+            <com.cohenadair.anglerslog.views.InputTextView
+                android:id="@+id/length_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                custom:iconResource="@drawable/ic_ruler"
+                custom:titleText="@string/length"
+                custom:editTextHint="@string/length_hint"
+                custom:numbersOnly="true"/>
+
+            <!-- Weight -->
+            <com.cohenadair.anglerslog.views.InputTextView
+                style="@style/InputView.IconInset.NoLeft"
+                android:id="@+id/weight_view"
+                custom:titleText="@string/weight"
+                custom:editTextHint="@string/weight_hint"
+                custom:numbersOnly="true"/>
+
+            <!-- Quantity -->
+            <com.cohenadair.anglerslog.views.InputTextView
+                style="@style/InputView.IconInset.NoLeft"
+                android:id="@+id/quantity_view"
+                custom:titleText="@string/quantity"
+                custom:editTextHint="@string/quantity_hint"
+                custom:numbersOnly="true"/>
+
+        </LinearLayout>
+
+        <include layout="@layout/view_divider"/>
+
+        <!-- Water properties -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_default"
+            android:orientation="vertical">
+
+            <!-- Water Clarity -->
+            <com.cohenadair.anglerslog.views.InputButtonView
+                style="@style/IconInputView"
+                android:id="@+id/water_clarity_view"
+                custom:primaryHint="@string/add_water_clarity"
+                custom:iconResource="@drawable/ic_water"/>
+
+            <!-- Water Depth -->
+            <com.cohenadair.anglerslog.views.InputTextView
+                style="@style/InputView.IconInset.NoLeft"
+                android:id="@+id/water_depth_view"
+                android:layout_marginTop="@dimen/margin_default_negative"
+                custom:titleText="@string/water_depth"
+                custom:editTextHint="@string/depth_hint"
+                custom:numbersOnly="true"/>
+
+            <!-- Water Temperature -->
+            <com.cohenadair.anglerslog.views.InputTextView
+                style="@style/InputView.IconInset.NoLeft"
+                android:id="@+id/water_temperature_view"
+                custom:titleText="@string/water_temperature"
+                custom:editTextHint="@string/temperature_hint"
+                custom:numbersOnly="true"/>
+
+        </LinearLayout>
+
+        <include layout="@layout/view_divider"/>
+
+        <!-- Miscellaneous properties -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_default"
+            android:orientation="vertical">
+
+            <!-- Fishing Methods -->
+            <com.cohenadair.anglerslog.views.InputButtonView
+                style="@style/IconInputView"
+                android:id="@+id/fishing_methods_view"
+                custom:primaryHint="@string/add_fishing_method"
+                custom:iconResource="@drawable/ic_info"/>
+
+            <!-- Result -->
+            <Spinner
+                style="@style/Spinner.IconInset"
+                android:id="@+id/result_spinner"
+                android:layout_marginTop="@dimen/margin_half_negative"/>
+
+        </LinearLayout>
+
+        <include layout="@layout/view_divider"/>
+
+        <!-- Notes -->
+        <com.cohenadair.anglerslog.views.InputTextView
+            style="@style/InputTextView.NoTitle"
+            android:id="@+id/notes_view"
+            custom:iconResource="@drawable/ic_note"
+            custom:editTextHint="@string/add_note"
+            custom:capSentencesOnly="true"/>
+
+    </LinearLayout>
+
+</ScrollView>

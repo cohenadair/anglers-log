@@ -1,0 +1,240 @@
+<resources>
+    <!-- Base application theme. -->
+    <style name="Theme.AnglersLog" parent="Base.Theme.AnglersLog">
+
+    </style>
+
+    <style name="Base.Theme.AnglersLog" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:logo">@android:color/transparent</item>
+
+        <item name="colorPrimary">@color/anglers_log_light</item>
+        <item name="colorPrimaryDark">@color/anglers_log_dark</item>
+        <item name="colorAccent">@color/anglers_log_accent</item>
+
+        <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
+    </style>
+
+    <style name="Theme.Dialog.NoTitle" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:windowNoTitle">true</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:logo">@android:color/transparent</item>
+
+        <item name="colorPrimary">@color/anglers_log_light</item>
+        <item name="colorPrimaryDark">@color/anglers_log_dark</item>
+        <item name="colorAccent">@color/anglers_log_accent</item>
+    </style>
+
+    <style name="Theme.FullScreen" parent="Base.Theme.AnglersLog">
+        <item name="colorPrimaryDark">@color/black</item>
+    </style>
+
+    <!-- Buttons -->
+    <style name="Widget.ButtonBar" parent="@android:style/DeviceDefault.ButtonBar">
+        <item name="android:background">@android:color/white</item>
+    </style>
+
+    <style name="Button.Borderless" parent="@android:style/Widget.DeviceDefault.Button.Borderless">
+    </style>
+
+    <style name="Button.BorderlessMedium" parent="@android:style/Widget.DeviceDefault.Button.Borderless">
+        <item name="android:textSize">@dimen/font_medium</item>
+    </style>
+
+    <style name="Button.BorderlessSmall" parent="@android:style/Widget.DeviceDefault.Button.Borderless">
+        <item name="android:textSize">@dimen/font_small</item>
+        <item name="android:textColor">@color/dark_grey</item>
+    </style>
+
+    <style name="Button.BorderlessColored" parent="@style/Button.BorderlessMedium">
+        <item name="android:background">@drawable/button_borderless</item>
+    </style>
+
+    <style name="Button.BorderlessColoredText" parent="@style/Button.Borderless">
+        <item name="android:textColor">@color/anglers_log_dark</item>
+    </style>
+
+    <!-- Styles a Button to look like a normal TextView -->
+    <style name="Button.TextView" parent="@style/Button.Borderless">
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textSize">@dimen/font_normal</item>
+        <item name="android:padding">0dp</item>
+        <item name="android:minWidth">0dp</item>
+    </style>
+
+    <!-- RecyclerView LinearLayout -->
+    <style name="RecyclerView.Layout" parent="Theme.AppCompat.Light">
+        <item name="android:paddingLeft">@dimen/spacing_medium</item>
+        <item name="android:paddingRight">@dimen/spacing_medium</item>
+    </style>
+
+    <!-- RecyclerView TextView -->
+    <style name="RecyclerView.TextView" parent="Theme.AppCompat.Light">
+        <item name="android:textAppearance">@android:style/TextAppearance.Medium</item>
+        <item name="android:paddingBottom">@dimen/spacing_medium</item>
+        <item name="android:paddingTop">@dimen/spacing_medium</item>
+        <item name="android:paddingLeft">@dimen/spacing_small</item>
+        <item name="android:paddingRight">@dimen/spacing_small</item>
+    </style>
+
+    <!-- RecyclerView EditText -->
+    <style name="Widget.EditText.RecyclerView" parent="Theme.AppCompat.Light">
+        <item name="android:textAppearance">@android:style/TextAppearance.Medium</item>
+        <item name="android:paddingBottom">@dimen/spacing_medium</item>
+        <item name="android:paddingTop">@dimen/spacing_medium</item>
+        <item name="android:paddingLeft">@dimen/spacing_small</item>
+        <item name="android:paddingRight">@dimen/spacing_small</item>
+    </style>
+
+    <!-- TextViews -->
+    <style name="TextView.FromSelection" parent="Theme.AppCompat.Light">
+    </style>
+
+    <style name="TextView.Label" parent="Theme.AppCompat.Light">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/font_small</item>
+        <item name="android:textColor">@color/medium_grey</item>
+    </style>
+
+    <style name="TextView.Header" parent="TextView.SmallSubtitle">
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textColor">@color/dark_grey</item>
+    </style>
+
+    <style name="TextView.Large" parent="Theme.AppCompat.Light">
+        <item name="android:textSize">@dimen/font_large</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="TextView.MediumSubtitle" parent="Theme.AppCompat.Light">
+        <item name="android:textSize">@dimen/font_medium</item>
+        <item name="android:textColor">@color/medium_grey</item>
+    </style>
+
+    <style name="TextView.Medium" parent="Theme.AppCompat.Light">
+        <item name="android:textSize">@dimen/font_medium</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="TextView.Medium.Bold" parent="TextView.Medium">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TextView.PrimaryListItem" parent="Theme.AppCompat.Light">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
+    <style name="TextView.PrimaryListItem.Condensed" parent="Theme.AppCompat.Light">
+        <item name="android:textSize">13sp</item>
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
+    <style name="TextView.SecondaryListItem" parent="Theme.AppCompat.Light">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/medium_grey</item>
+    </style>
+
+    <style name="TextView.SmallSubtitle" parent="Theme.AppCompat.Light">
+        <item name="android:textSize">@dimen/font_small</item>
+        <item name="android:textColor">@color/medium_grey</item>
+    </style>
+
+    <style name="TextView.Small" parent="Theme.AppCompat.Light">
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Body1</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="TextView.Body.Bold" parent="Theme.AppCompat.Light">
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Body1</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TextView.ListSeparator" parent="TextView.Body.Bold">
+        <item name="android:layout_marginTop">@dimen/margin_half</item>
+        <item name="android:layout_marginBottom">@dimen/margin_half</item>
+        <item name="android:layout_marginLeft">@dimen/margin_default</item>
+        <item name="android:layout_marginRight">@dimen/margin_default</item>
+        <item name="android:textColor">@color/dark_grey</item>
+        <item name="android:textSize">@dimen/font_normal</item>
+    </style>
+    <!-- /TextViews -->
+
+    <!-- Used for different variations of view_input_*.xml layouts -->
+    <style name="IconLabelView" parent="Theme.AppCompat.Light">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <!-- Used for label lists such as in fragment_catch.xml -->
+    <style name="IconLabelView.ListItem" parent="IconLabelView">
+        <item name="android:layout_marginTop">@dimen/margin_half_negative</item>
+        <item name="android:layout_marginBottom">@dimen/margin_half_negative</item>
+    </style>
+
+    <style name="IconInputView" parent="IconLabelView">
+        <item name="android:paddingTop">@dimen/margin_half</item>
+        <item name="android:paddingBottom">@dimen/margin_half</item>
+        <item name="android:paddingRight">@dimen/margin_default</item>
+        <item name="android:paddingLeft">@dimen/margin_default</item>
+    </style>
+
+    <!-- Style used for view_input_*.xml icons -->
+    <style name="ImageView.Input" parent="Theme.AppCompat.Light">
+        <item name="android:tint">@color/dark_grey</item>
+        <item name="android:layout_width">@dimen/image_button_size</item>
+        <item name="android:layout_height">@dimen/image_button_size</item>
+        <item name="android:layout_marginRight">@dimen/margin_large</item>
+    </style>
+
+    <!-- Style used for icon lists such as in fragment_catch.xml -->
+    <style name="ImageView.InputList" parent="ImageView.Input">
+        <item name="android:layout_marginLeft">@dimen/margin_default</item>
+        <item name="android:layout_marginRight">@dimen/margin_half</item>
+    </style>
+
+    <!-- Style that makes EditText widgets look like normal TextViews -->
+    <style name="EditText.TextView" parent="Theme.AppCompat.Light">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:textSize">@dimen/font_normal</item>
+    </style>
+
+    <style name="EditText.TextView.Input" parent="EditText.TextView">
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="InputWrapper">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">@dimen/margin_default</item>
+        <item name="android:layout_marginBottom">@dimen/margin_default</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="InputView.IconInset" parent="Theme.AppCompat.Light">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginLeft">@dimen/margin_input_icon_offset</item>
+    </style>
+
+    <style name="InputView.IconInset.NoLeft" parent="InputView.IconInset">
+        <item name="android:layout_marginLeft">@dimen/margin_input_icon_no_left</item>
+    </style>
+
+    <style name="InputTextView.NoTitle" parent="Theme.AppCompat.Light">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">@dimen/margin_default</item>
+        <item name="android:layout_marginBottom">@dimen/margin_default</item>
+    </style>
+
+    <style name="Spinner.IconInset" parent="Theme.AppCompat.Light">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginLeft">@dimen/margin_input_icon_offset</item>
+        <item name="android:layout_marginRight">@dimen/margin_default</item>
+        <item name="android:layout_marginTop">@dimen/margin_half</item>
+    </style>
+
+</resources>

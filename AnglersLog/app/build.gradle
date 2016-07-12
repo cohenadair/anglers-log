@@ -1,0 +1,84 @@
+buildscript {
+    repositories {
+        maven { url 'https://maven.fabric.io/public' }
+    }
+
+    dependencies {
+        classpath 'io.fabric.tools:gradle:1.+'
+    }
+}
+apply plugin: 'com.android.application'
+apply plugin: 'io.fabric'
+
+repositories {
+    maven { url 'https://maven.fabric.io/public' }
+}
+
+android {
+    signingConfigs {
+        AnglersLogRelease {
+            keyAlias 'AnglersLog'
+            keyPassword 'GQui811n8TUb8S92n119'
+            storeFile file('/Volumes/Home/Google Drive/AnglersLog/android/anglers_log_keystore.jks')
+            storePassword 'GQui811n8TUb8S92n119'
+        }
+    }
+    compileSdkVersion 23
+    buildToolsVersion "22.0.1"
+    defaultConfig {
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        applicationId "com.cohenadair.anglerslog"
+        minSdkVersion 16
+        targetSdkVersion 23
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.AnglersLogRelease
+        }
+    }
+    testOptions {
+        unitTests.returnDefaultValues = true
+    }
+    productFlavors {
+        releaseFlavor {
+
+        }
+        uiTesting {
+            minSdkVersion 18
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    androidTestCompile('com.android.support.test:runner:0.5') {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    }
+    androidTestCompile 'com.android.support.test:rules:0.4'
+    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
+    androidTestCompile ('com.android.support.test.espresso:espresso-contrib:2.2') {
+        exclude module: 'support-annotations'
+        exclude module: 'support-v4'
+        exclude module: 'support-v13'
+        exclude module: 'recyclerview-v7'
+    }
+    androidTestCompile 'com.android.support.test.uiautomator:uiautomator-v18:2.1.2'
+    androidTestCompile 'com.android.support:support-annotations:23.4.0'
+    compile 'com.android.support:preference-v14:23.4.0'
+    compile 'com.android.support:design:23.4.0'
+    compile 'com.android.support:cardview-v7:23.4.0'
+    compile 'com.android.support:recyclerview-v7:23.4.0'
+    compile 'com.google.android.gms:play-services-location:9.0.0'
+    compile 'commons-io:commons-io:2.4'
+    compile 'de.hdodenhof:circleimageview:2.0.0'
+    compile 'com.github.lecho:hellocharts-library:1.5.8@aar'
+    compile 'com.github.lzyzsd.randomcolor:library:1.0.0'
+    compile 'com.adobe.xmp:xmpcore:5.1.2'
+    compile 'com.davemorrissey.labs:subsampling-scale-image-view:3.4.1'
+    compile 'com.instabug.library:instabug:2+'
+    compile('com.crashlytics.sdk.android:crashlytics:2.5.5@aar') {
+        transitive = true;
+    }
+}

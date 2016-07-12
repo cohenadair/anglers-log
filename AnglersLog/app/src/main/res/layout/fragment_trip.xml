@@ -1,0 +1,80 @@
+<ScrollView
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@color/global_background"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/margin_default"
+        android:paddingTop="@dimen/margin_default"
+        android:orientation="vertical"
+        android:id="@+id/trip_container">
+
+        <!-- Name -->
+        <com.cohenadair.anglerslog.views.DisplayLabelView
+            style="@style/IconLabelView"
+            android:id="@+id/name_view"
+            custom:detailText="@string/trip"
+            custom:iconResource="@drawable/ic_trips"/>
+
+        <!-- Start & End Dates -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.cohenadair.anglerslog.views.DisplayLabelView
+                style="@style/IconLabelView"
+                android:id="@+id/start_date_view"
+                custom:detailText="@string/date"
+                custom:iconResource="@drawable/ic_clock"/>
+
+            <com.cohenadair.anglerslog.views.DisplayLabelView
+                style="@style/InputView.IconInset.NoLeft"
+                android:id="@+id/end_date_view"
+                android:layout_marginTop="@dimen/margin_default_negative"
+                custom:detailText="@string/date"/>
+
+        </LinearLayout>
+
+        <!-- Locations -->
+        <com.cohenadair.anglerslog.views.PartialListView
+            android:id="@+id/locations_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            custom:iconResource="@drawable/ic_location"/>
+
+        <!-- Catches -->
+        <com.cohenadair.anglerslog.views.PartialListView
+            android:id="@+id/catches_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            custom:iconResource="@drawable/ic_catches"/>
+
+        <!-- Baits -->
+        <com.cohenadair.anglerslog.views.PartialListView
+            android:id="@+id/baits_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            custom:iconResource="@drawable/ic_bait"/>
+
+        <!-- Anglers -->
+        <com.cohenadair.anglerslog.views.DisplayLabelView
+            style="@style/IconLabelView"
+            android:id="@+id/anglers_view"
+            custom:detailText="@string/anglers"
+            custom:iconResource="@drawable/ic_anglers"/>
+
+        <!-- Notes -->
+        <com.cohenadair.anglerslog.views.DisplayLabelView
+            style="@style/IconLabelView"
+            android:id="@+id/notes_view"
+            custom:detailText="@string/notes"
+            custom:iconResource="@drawable/ic_note"/>
+
+    </LinearLayout>
+
+</ScrollView>

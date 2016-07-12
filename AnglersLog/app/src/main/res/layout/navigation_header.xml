@@ -1,0 +1,44 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/nav_header_height">
+
+    <ImageView
+        android:id="@+id/nav_header_cover"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/anglers_log_light"
+        android:contentDescription="@string/header_photo_description"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:padding="@dimen/spacing_large"
+        android:orientation="vertical">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/nav_header_logo"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:layout_marginBottom="@dimen/spacing_medium"
+            android:layout_marginTop="@dimen/spacing_medium"
+            android:src="@drawable/nav_header_logo"/>
+
+        <TextView
+            android:id="@+id/nav_header_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/app_name"
+            android:textColor="@android:color/black"
+            android:textAppearance="?android:attr/textAppearanceLarge"/>
+
+        <TextView
+            android:id="@+id/nav_header_subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/app_description"/>
+
+    </LinearLayout>
+
+</RelativeLayout>

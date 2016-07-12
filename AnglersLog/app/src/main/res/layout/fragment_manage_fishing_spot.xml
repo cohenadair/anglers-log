@@ -1,0 +1,82 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    xmlns:map="http://schemas.android.com/tools"
+    android:background="@color/global_background"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <!-- Name -->
+    <com.cohenadair.anglerslog.views.InputTextView
+        style="@style/InputTextView.NoTitle"
+        android:layout_marginTop="@dimen/margin_half"
+        android:layout_marginBottom="@dimen/margin_half"
+        android:id="@+id/name_view"
+        custom:editTextHint="@string/add_name"/>
+
+    <!-- Google Map -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <fragment
+            android:id="@+id/fishing_spot_map"
+            android:name="com.cohenadair.anglerslog.fragments.DraggableMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            map:zOrderOnTop="true"/>
+
+        <ImageView
+            android:id="@+id/crosshairs"
+            android:layout_width="@dimen/image_button_size"
+            android:layout_height="@dimen/image_button_size"
+            android:layout_centerInParent="true"
+            android:src="@drawable/ic_crosshairs"
+            android:contentDescription="@string/crosshairs_description"/>
+
+    </RelativeLayout>
+
+    <!-- Coordinates -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_half"
+        android:layout_marginBottom="@dimen/margin_half"
+        android:orientation="horizontal">
+
+        <com.cohenadair.anglerslog.views.InputTextView
+            android:id="@+id/latitude_layout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            custom:numbersOnly="true"
+            custom:titleText="@string/latitude"
+            custom:subtitleText="0.000000"
+            custom:titleStyle="@style/TextView.Header"/>
+
+        <com.cohenadair.anglerslog.views.InputTextView
+            android:id="@+id/longitude_layout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            custom:numbersOnly="true"
+            custom:titleText="@string/longitude"
+            custom:subtitleText="0.000000"
+            custom:titleStyle="@style/TextView.Header"/>
+
+        <ImageButton
+            android:id="@+id/coordinate_refresh_button"
+            android:layout_width="@dimen/image_button_size"
+            android:layout_height="@dimen/image_button_size"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/margin_default"
+            android:layout_marginRight="@dimen/margin_default"
+            android:background="?android:attr/selectableItemBackground"
+            android:src="@drawable/ic_refresh"
+            android:contentDescription="@string/refresh_description"/>
+
+    </LinearLayout>
+
+</LinearLayout>

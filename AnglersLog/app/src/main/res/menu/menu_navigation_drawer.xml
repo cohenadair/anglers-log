@@ -1,0 +1,84 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group
+        android:id="@+id/group_logbook"
+        android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/nav_trips"
+            android:icon="@drawable/ic_trips"
+            android:title="@string/drawer_trips"/>
+
+        <item
+            android:id="@+id/nav_catches"
+            android:icon="@drawable/ic_catches"
+            android:title="@string/drawer_catches"
+            android:checked="true"/>
+
+        <item
+            android:id="@+id/nav_baits"
+            android:icon="@drawable/ic_bait"
+            android:title="@string/drawer_baits" />
+
+        <item
+            android:id="@+id/nav_locations"
+            android:icon="@drawable/ic_location"
+            android:title="@string/drawer_locations" />
+
+        <item
+            android:id="@+id/nav_map"
+            android:icon="@drawable/ic_map"
+            android:title="@string/drawer_map" />
+
+    </group>
+
+    <group
+        android:id="@+id/group_extras"
+        android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/nav_gallery"
+            android:title="@string/drawer_gallery"
+            android:icon="@drawable/ic_gallery"/>
+
+        <item
+            android:id="@+id/nav_stats"
+            android:title="@string/drawer_stats"
+            android:icon="@drawable/ic_stats"/>
+    </group>
+
+    <group
+        android:id="@+id/group_social"
+        android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/nav_twitter"
+            android:title="@string/drawer_twitter"
+            android:icon="@drawable/ic_twitter"/>
+
+        <item
+            android:id="@+id/nav_instagram"
+            android:title="@string/drawer_instagram"
+            android:icon="@drawable/ic_instagram"/>
+    </group>
+
+    <group
+        android:id="@+id/group_other"
+        android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/nav_settings"
+            android:icon="@drawable/ic_settings"
+            android:title="@string/drawer_settings" />
+
+        <item
+            android:id="@+id/nav_rate"
+            android:icon="@drawable/ic_star"
+            android:title="@string/drawer_rate" />
+
+        <item
+            android:id="@+id/nav_help"
+            android:icon="@drawable/ic_help"
+            android:title="@string/drawer_help" />
+    </group>
+</menu>

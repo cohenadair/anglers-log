@@ -1,0 +1,42 @@
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    android:background="@color/global_background"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_default"
+        android:orientation="vertical">
+
+        <!-- Name -->
+        <com.cohenadair.anglerslog.views.InputTextView
+            style="@style/InputTextView.NoTitle"
+            android:id="@+id/name_view"
+            custom:iconResource="@drawable/ic_location"
+            custom:editTextHint="@string/add_name"/>
+
+        <com.cohenadair.anglerslog.views.InputButtonView
+            style="@style/InputView.IconInset"
+            android:id="@+id/add_fishing_spot_view"
+            android:layout_marginTop="@dimen/margin_default_negative"
+            custom:primaryHint="@string/add_fishing_spot"/>
+
+        <!-- Fishing Spots -->
+        <LinearLayout
+            style="@style/InputView.IconInset"
+            android:id="@+id/container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!--
+                Fishing spot list items will be added programmatically since a ListView cannot
+                be embedded in a ScrollView
+            -->
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>

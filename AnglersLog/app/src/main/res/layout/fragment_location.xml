@@ -1,0 +1,28 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/location_container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/margin_default"
+        android:gravity="center_vertical">
+
+        <ImageView
+            style="@style/ImageView.Input"
+            android:id="@+id/icon_image_view"
+            android:src="@drawable/ic_location"
+            android:contentDescription="@string/icon_description"/>
+
+        <!-- Current Fishing Spot -->
+        <Spinner
+            android:id="@+id/fishing_spot_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+</LinearLayout>

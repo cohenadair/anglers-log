@@ -1,0 +1,54 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    android:background="?android:attr/selectableItemBackground"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        style="@style/TextView.ListSeparator"
+        android:id="@+id/header_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"/>
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/image_view"
+        android:layout_width="@dimen/size_list_thumb"
+        android:layout_height="@dimen/size_list_thumb"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="@dimen/margin_default"
+        android:layout_marginStart="@dimen/margin_default"
+        android:layout_marginTop="@dimen/margin_default"
+        android:layout_marginBottom="@dimen/margin_default"
+        android:layout_marginRight="@dimen/margin_half"
+        android:layout_marginEnd="@dimen/margin_half"
+        android:src="@drawable/placeholder_circle"
+        android:contentDescription="@string/catch_photo_description"/>
+
+    <com.cohenadair.anglerslog.views.TitleSubTitleView
+        android:id="@+id/content_view"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="1"
+        android:layout_marginLeft="@dimen/margin_default"
+        android:layout_marginRight="@dimen/margin_default"
+        android:layout_marginTop="@dimen/margin_default"
+        android:layout_marginBottom="@dimen/margin_default"
+        custom:titleStyle="@style/TextView.PrimaryListItem"
+        custom:subtitleStyle="@style/TextView.SmallSubtitle"/>
+
+    <RatingBar
+        style="?android:attr/ratingBarStyleIndicator"
+        android:id="@+id/favorite_star"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginRight="@dimen/margin_default"
+        android:layout_marginEnd="@dimen/margin_default"
+        android:numStars="1"
+        android:stepSize="1"/>
+
+</LinearLayout>

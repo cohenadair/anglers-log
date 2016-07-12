@@ -1,0 +1,70 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/margin_dialog"
+    android:layout_marginBottom="@dimen/margin_dialog">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="@dimen/margin_dialog"
+        android:layout_marginRight="@dimen/margin_dialog"
+        android:orientation="horizontal">
+
+        <Spinner
+            android:id="@+id/units_spinner"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_default"
+            android:layout_marginRight="@dimen/margin_default"
+            android:layout_marginEnd="@dimen/margin_default"
+            android:layout_weight="1"/>
+        
+        <ImageButton
+            android:id="@+id/refresh_button"
+            android:layout_width="@dimen/image_button_size"
+            android:layout_height="@dimen/image_button_size"
+            android:background="?android:attr/selectableItemBackground"
+            android:src="@drawable/ic_refresh"
+            android:contentDescription="@string/refresh_description"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginLeft="@dimen/margin_half"
+        android:layout_marginRight="@dimen/margin_half">
+
+        <com.cohenadair.anglerslog.views.InputTextView
+            android:id="@+id/temperature_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_default"
+            custom:titleText="@string/temperature"
+            custom:editTextHint="@string/zero"/>
+
+        <com.cohenadair.anglerslog.views.InputTextView
+            android:id="@+id/wind_speed_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_default"
+            custom:titleText="@string/wind_speed"
+            custom:editTextHint="@string/zero"
+            custom:numbersOnly="true"/>
+
+        <com.cohenadair.anglerslog.views.InputTextView
+            android:id="@+id/sky_conditions_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            custom:titleText="@string/sky_conditions"
+            custom:editTextHint="@string/sky_hint"/>
+
+    </LinearLayout>
+
+</LinearLayout>

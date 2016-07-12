@@ -1,0 +1,55 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/details_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageView
+            style="@style/ImageView.Input"
+            android:layout_gravity="center_vertical"
+            android:id="@+id/icon_image_view"
+            android:src="@drawable/ic_cloud"
+            android:contentDescription="@string/icon_description"/>
+
+        <!-- Temperature -->
+        <TextView
+            style="@style/TextView.Large"
+            android:id="@+id/temperature_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="76\u00b0F"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/speed_sky_wrapper"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_input_icon_no_left"
+        android:layout_marginStart="@dimen/margin_input_icon_no_left"
+        android:orientation="vertical">
+
+        <!-- Wind Speed -->
+        <TextView
+            android:id="@+id/wind_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Wind Speed: 10 mph"/>
+
+        <!-- Sky Conditions -->
+        <TextView
+            android:id="@+id/sky_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Sky: Cloudy"/>
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,37 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical">
+
+    <ImageView
+        style="@style/ImageView.Input"
+        android:id="@+id/icon_image_view"
+        android:src="@drawable/ic_clock"
+        android:contentDescription="@string/icon_description"/>
+
+    <Button
+        style="@style/Button.TextView"
+        android:id="@+id/primary_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="start|center_vertical"
+        tools:text="Primary"/>
+
+    <!-- Dummy view used to fill extra space between date and time buttons. This is used so the
+         buttons aren't larger than they need to be. -->
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+
+    <Button
+        style="@style/Button.TextView"
+        android:id="@+id/secondary_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="end|center_vertical"
+        tools:text="Secondary"/>
+
+</LinearLayout>

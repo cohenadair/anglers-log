@@ -1,0 +1,32 @@
+<!--
+    A simple title-subtitle vertical layout. Title and subtitle styles can and
+    should be set in custom attributes.
+-->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_vertical"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/title_text_view"
+        tools:text="Title"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/subtitle_text_view"
+        tools:text="Subtitle"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/subsubtitle_text_view"
+        android:visibility="gone"
+        tools:text="Subtitle"/>
+
+</LinearLayout>

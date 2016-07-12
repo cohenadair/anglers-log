@@ -1,0 +1,39 @@
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <ListPreference
+        android:key="@string/pref_units"
+        android:title="@string/display_units"
+        android:summary="@string/imperial"
+        android:dialogTitle=""
+        android:entries="@array/pref_unitTypes_entries"
+        android:entryValues="@array/pref_unitTypes_values"
+        android:defaultValue="0"/>
+
+    <CheckBoxPreference
+        android:key="@string/pref_instabug"
+        android:title="@string/instabug_title"
+        android:summary="@string/instabug_summary"
+        android:defaultValue="true"/>
+
+    <Preference
+        android:key="@string/pref_import"
+        android:title="@string/import_name"
+        android:summary="@string/import_summary"/>
+
+    <Preference
+        android:key="@string/pref_export"
+        android:title="@string/export"
+        android:summary="@string/export_summary"/>
+
+    <Preference
+        android:key="@string/pref_reset"
+        android:title="@string/reset_logbook"
+        android:summary="@string/reset_summary"/>
+
+    <Preference
+        android:key="@string/pref_about_group"
+        android:title="@string/about_setting"
+        android:persistent="false"/>
+
+</PreferenceScreen>

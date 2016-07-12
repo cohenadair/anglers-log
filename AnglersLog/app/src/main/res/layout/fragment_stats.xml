@@ -1,0 +1,44 @@
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@color/very_light_grey"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/margin_default"
+        android:paddingRight="@dimen/margin_default"
+        android:paddingTop="@dimen/margin_half"
+        android:paddingBottom="@dimen/margin_half">
+
+        <com.cohenadair.anglerslog.views.DefaultCardView
+            android:id="@+id/species_card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <com.cohenadair.anglerslog.views.DefaultCardView
+            android:id="@+id/baits_card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <com.cohenadair.anglerslog.views.DefaultCardView
+            android:id="@+id/locations_card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <com.cohenadair.anglerslog.views.DefaultCardView
+            android:id="@+id/longest_catch_card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <com.cohenadair.anglerslog.views.DefaultCardView
+            android:id="@+id/heaviest_catch_card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+</ScrollView>

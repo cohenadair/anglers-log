@@ -1,0 +1,134 @@
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/global_background"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:custom="http://schemas.android.com/apk/res-auto"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/margin_half"
+        android:paddingBottom="@dimen/margin_default">
+
+        <!-- Pie Chart -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <lecho.lib.hellocharts.view.PieChartView
+                android:id="@+id/pie_chart"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"/>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:gravity="center_horizontal">
+
+                <TextView
+                    style="@style/TextView.Large"
+                    android:id="@+id/pie_center_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center"
+                    tools:text="Lure - Blue Fox Spinner"/>
+
+                <TextView
+                    style="@style/TextView.MediumSubtitle"
+                    android:id="@+id/pie_center_subtitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center"
+                    tools:text="15 Catches"/>
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <!-- Detail View -->
+            <com.cohenadair.anglerslog.views.DisplayLabelView
+                style="@style/IconLabelView"
+                android:id="@+id/detail_view"
+                custom:detailText="@string/bait"
+                custom:iconResource="@drawable/ic_bait"/>
+
+            <!-- Extended stats such as the number of each species caught by selected bait -->
+            <LinearLayout
+                android:id="@+id/extended_wrapper"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/margin_half"
+                android:paddingBottom="@dimen/margin_default"
+                android:orientation="horizontal">
+
+                <ImageView
+                    style="@style/ImageView.InputList"
+                    android:id="@+id/extended_icon"
+                    android:src="@drawable/ic_catches"
+                    android:layout_marginTop="@dimen/margin_quarter"
+                    android:contentDescription="@string/icon_description"/>
+
+                <LinearLayout
+                    android:id="@+id/extended_container"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_half"
+                android:layout_marginStart="@dimen/margin_default"
+                android:orientation="horizontal">
+
+                <ImageView
+                    style="@style/ImageView.Input"
+                    android:layout_marginTop="@dimen/spacing_small_half"
+                    android:id="@+id/icon_image_view"
+                    android:src="@drawable/ic_stats"
+                    android:contentDescription="@string/icon_description"/>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="@dimen/margin_default_negative"
+                    android:orientation="vertical">
+
+                    <!-- Total Species -->
+                    <com.cohenadair.anglerslog.views.PropertyDetailView
+                        android:id="@+id/total_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        custom:propertyName="@string/species"/>
+
+                    <!-- Total Catches -->
+                    <com.cohenadair.anglerslog.views.PropertyDetailView
+                        android:id="@+id/total_catches_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        custom:propertyName="@string/drawer_catches"/>
+
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

@@ -1,0 +1,52 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/manage_primitive_fragment"
+    android:background="@color/global_background"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    tools:context="com.cohenadair.anglerslog.fragments.ManageFragment">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/anglers_log_light" />
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:id="@+id/content_recycler_view" />
+
+    <include layout="@layout/view_cell_separator"/>
+
+    <LinearLayout
+        android:id="@+id/add_item_layout"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical">
+
+        <EditText
+            style="@style/EditText.TextView.Input"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_default"
+            android:layout_marginStart="@dimen/margin_default"
+            android:id="@+id/new_item_edit"
+            android:layout_weight="1"
+            android:inputType="textCapWords"
+            android:hint="@string/hint_new_item"/>
+
+        <Button
+            style="@style/Button.Borderless"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:text="@string/button_add"
+            android:id="@+id/add_button"/>
+
+    </LinearLayout>
+
+</LinearLayout>

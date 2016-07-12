@@ -1,0 +1,45 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        style="@style/TextView.Medium"
+        android:id="@+id/location_name_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="Location Name"
+        android:layout_marginTop="@dimen/margin_half"
+        android:layout_marginLeft="@dimen/margin_half"
+        android:layout_marginRight="@dimen/margin_half"/>
+
+    <TextView
+        style="@style/TextView.SmallSubtitle"
+        android:id="@+id/coordinates_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="Coordinates"
+        android:layout_marginLeft="@dimen/margin_half"
+        android:layout_marginRight="@dimen/margin_half"/>
+
+    <TextView
+        style="@style/TextView.SmallSubtitle"
+        android:id="@+id/spots_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="Number of fishing spots"
+        android:layout_marginLeft="@dimen/margin_half"
+        android:layout_marginRight="@dimen/margin_half"/>
+
+    <Button
+        style="@style/Button.BorderlessColoredText"
+        android:id="@+id/show_catches_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/margin_half"
+        android:paddingRight="@dimen/margin_half"
+        android:text="@string/show_catches"/>
+
+</LinearLayout>

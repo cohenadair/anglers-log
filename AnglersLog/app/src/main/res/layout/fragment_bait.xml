@@ -1,0 +1,69 @@
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    android:background="@color/global_background"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/bait_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/margin_default"
+        android:orientation="vertical">
+
+        <!-- Images -->
+        <com.cohenadair.anglerslog.views.ImageScrollView
+            android:id="@+id/image_scroll_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="@dimen/margin_half"/>
+
+        <!-- Name & Category -->
+        <com.cohenadair.anglerslog.views.DisplayLabelView
+            style="@style/IconLabelView"
+            android:id="@+id/name_view"
+            custom:labelText="@string/category"
+            custom:detailText="@string/bait"
+            custom:iconResource="@drawable/ic_bait"/>
+
+        <!-- Size -->
+        <com.cohenadair.anglerslog.views.DisplayLabelView
+            style="@style/InputView.IconInset.NoLeft"
+            android:id="@+id/size_view"
+            android:layout_marginTop="@dimen/margin_default_negative"
+            custom:labelText="@string/size"
+            custom:detailText="@string/size"/>
+
+        <!-- Color -->
+        <com.cohenadair.anglerslog.views.DisplayLabelView
+            style="@style/InputView.IconInset.NoLeft"
+            android:id="@+id/color_view"
+            android:layout_marginTop="@dimen/margin_default_negative"
+            custom:detailText="@string/color"/>
+
+        <!-- Type -->
+        <com.cohenadair.anglerslog.views.DisplayLabelView
+            style="@style/InputView.IconInset.NoLeft"
+            android:id="@+id/type_view"
+            android:layout_marginTop="@dimen/margin_default_negative"
+            custom:detailText="@string/type"/>
+
+        <!-- Description -->
+        <com.cohenadair.anglerslog.views.DisplayLabelView
+            style="@style/IconLabelView"
+            android:id="@+id/description_view"
+            custom:detailText="@string/description"
+            custom:iconResource="@drawable/ic_note"/>
+
+        <!-- Catches -->
+        <com.cohenadair.anglerslog.views.PartialListView
+            android:id="@+id/catches_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            custom:iconResource="@drawable/ic_catches"/>
+
+    </LinearLayout>
+
+</ScrollView>

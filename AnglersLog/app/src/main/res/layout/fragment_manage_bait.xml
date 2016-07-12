@@ -1,0 +1,87 @@
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    android:background="@color/global_background"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_default"
+            android:orientation="vertical">
+
+            <!-- Bait Category -->
+            <com.cohenadair.anglerslog.views.InputButtonView
+                style="@style/IconInputView"
+                android:id="@+id/category_view"
+                custom:primaryHint="@string/add_bait_category"
+                custom:iconResource="@drawable/ic_bait"/>
+
+            <!-- Name -->
+            <com.cohenadair.anglerslog.views.InputTextView
+                android:id="@+id/name_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_input_icon_no_left"
+                android:layout_marginStart="@dimen/margin_input_icon_no_left"
+                android:layout_marginTop="@dimen/margin_default_negative"
+                custom:titleText="@string/name"
+                custom:editTextHint="@string/name_hint"/>
+
+        </LinearLayout>
+
+        <include layout="@layout/view_divider"/>
+
+        <!-- Photos -->
+        <com.cohenadair.anglerslog.views.SelectPhotosView
+            style="@style/IconInputView"
+            android:id="@+id/select_photos_view"
+            custom:maxPhotos="1"/>
+
+        <include layout="@layout/view_divider"/>
+
+        <LinearLayout
+            style="@style/InputWrapper">
+
+            <!-- Color -->
+            <com.cohenadair.anglerslog.views.InputTextView
+                android:id="@+id/color_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                custom:iconResource="@drawable/ic_info"
+                custom:titleText="@string/color"
+                custom:editTextHint="@string/color_hint"/>
+
+            <!-- Size -->
+            <com.cohenadair.anglerslog.views.InputTextView
+                style="@style/InputView.IconInset.NoLeft"
+                android:id="@+id/size_view"
+                custom:titleText="@string/size"
+                custom:editTextHint="@string/size_hint"/>
+
+            <!-- Type -->
+            <Spinner
+                style="@style/Spinner.IconInset"
+                android:id="@+id/type_spinner"/>
+
+        </LinearLayout>
+
+        <include layout="@layout/view_divider"/>
+
+        <!-- Description -->
+        <com.cohenadair.anglerslog.views.InputTextView
+            style="@style/InputTextView.NoTitle"
+            android:id="@+id/description_view"
+            custom:iconResource="@drawable/ic_note"
+            custom:editTextHint="@string/add_description"
+            custom:capSentencesOnly="true"/>
+
+    </LinearLayout>
+
+</ScrollView>

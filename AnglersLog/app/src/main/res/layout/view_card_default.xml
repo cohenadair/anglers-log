@@ -1,0 +1,59 @@
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/margin_half"
+    android:layout_marginBottom="@dimen/margin_half">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@drawable/grey_border">
+
+        <ImageView
+            android:id="@+id/banner_image_view"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:src="@drawable/placeholder_square"
+            android:contentDescription="@string/card_banner_description"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/margin_default"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                style="@style/ImageView.Input"
+                android:id="@+id/icon_image_view"
+                android:src="@drawable/ic_catches"
+                android:contentDescription="@string/icon_description"/>
+
+            <TextView
+                style="@style/TextView.Large"
+                android:id="@+id/title_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="Title"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/content_container"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <Button
+            style="@style/Button.BorderlessColoredText"
+            android:id="@+id/show_more_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/margin_default"
+            android:text="@string/show_more"/>
+
+    </LinearLayout>
+
+</android.support.v7.widget.CardView>

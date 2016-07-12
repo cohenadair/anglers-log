@@ -1,0 +1,27 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/tools"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:background="?android:attr/selectableItemBackground">
+
+    <com.cohenadair.anglerslog.views.TitleSubTitleView
+        android:id="@+id/title_subtitle_view"
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        custom:titleStyle="@style/TextView.Small"
+        custom:subtitleStyle="@style/TextView.SmallSubtitle"/>
+
+    <ImageButton
+        android:id="@+id/more_info_button"
+        android:layout_width="@dimen/image_button_size"
+        android:layout_height="@dimen/image_button_size"
+        android:layout_gravity="center_vertical"
+        android:src="@drawable/ic_info"
+        android:background="?android:attr/selectableItemBackground"
+        android:contentDescription="@string/more_info_description"/>
+
+</LinearLayout>

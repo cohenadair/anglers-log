@@ -1,0 +1,40 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/IconInputView"
+    android:id="@+id/container"
+    android:gravity="top"
+    android:layout_marginEnd="0dp">
+
+    <ImageView
+        style="@style/ImageView.Input"
+        android:layout_marginTop="@dimen/margin_default"
+        android:id="@+id/icon_image_view"
+        android:src="@drawable/ic_info"
+        android:contentDescription="@string/icon_description"/>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginStart="@dimen/margin_default_negative"
+        android:orientation="vertical">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <Button
+            style="@style/Button.TextView"
+            android:id="@+id/show_all_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_default"
+            android:layout_marginRight="@dimen/margin_default"
+            android:textAllCaps="true"
+            android:textColor="@color/anglers_log_light"
+            android:padding="0dp"
+            android:text="@string/all"/>
+    </LinearLayout>
+
+</LinearLayout>

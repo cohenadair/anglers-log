@@ -1,0 +1,41 @@
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/my_list_fragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/global_background"
+    app:layout_behavior="com.cohenadair.anglerslog.views.FloatingButtonBehavior">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/main_recycler_view"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:paddingTop="@dimen/margin_half"
+        android:paddingBottom="@dimen/margin_half"
+        android:clipToPadding="false"/>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/new_button"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_margin="@dimen/margin_default"
+        android:src="@drawable/ic_add"
+        app:elevation="0dp"
+        app:layout_anchor="@id/main_recycler_view"
+        app:layout_anchorGravity="bottom|right|end"
+        app:layout_behavior="com.cohenadair.anglerslog.utilities.ScrollingFabBehavior"/>
+
+    <com.cohenadair.anglerslog.views.BottomSheetView
+        android:id="@+id/instabug_bottom_sheet_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_behavior="@string/bottom_sheet_behavior" />
+
+    <com.cohenadair.anglerslog.views.BottomSheetView
+        android:id="@+id/backup_bottom_sheet_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_behavior="@string/bottom_sheet_behavior" />
+
+</android.support.design.widget.CoordinatorLayout>

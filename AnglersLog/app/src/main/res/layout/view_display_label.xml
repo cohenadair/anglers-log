@@ -1,0 +1,38 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/display_label_container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?android:attr/selectableItemBackground"
+    android:padding="@dimen/margin_default"
+    android:gravity="center_vertical">
+
+    <ImageView
+        style="@style/ImageView.Input"
+        android:id="@+id/icon_image_view"
+        android:src="@drawable/ic_clock"
+        android:contentDescription="@string/icon_description"/>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            style="@style/TextView.Label"
+            android:id="@+id/text_view"
+            tools:text="Label"/>
+
+        <TextView
+            style="@style/TextView.PrimaryListItem"
+            android:id="@+id/detail_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            tools:text="Detail"/>
+
+    </LinearLayout>
+
+</LinearLayout>

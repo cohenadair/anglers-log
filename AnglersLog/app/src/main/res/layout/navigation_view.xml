@@ -1,0 +1,11 @@
+<android.support.design.widget.NavigationView
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/navigation_view"
+    android:layout_height="match_parent"
+    android:layout_width="wrap_content"
+    android:layout_gravity="start"
+    android:fitsSystemWindows="true"
+    android:background="@color/global_background"
+    app:menu="@menu/menu_navigation_drawer"
+    app:itemTextColor="@color/list_item"/>

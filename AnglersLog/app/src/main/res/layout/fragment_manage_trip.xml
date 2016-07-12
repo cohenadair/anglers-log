@@ -1,0 +1,84 @@
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/global_background">
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:custom="http://schemas.android.com/apk/res-auto"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!-- Start and End Dates -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- Water Clarity -->
+            <com.cohenadair.anglerslog.views.InputButtonView
+                style="@style/IconInputView"
+                android:id="@+id/start_date_view"
+                custom:primaryHint="Start date"
+                custom:iconResource="@drawable/ic_clock"/>
+
+            <com.cohenadair.anglerslog.views.InputButtonView
+                style="@style/InputView.IconInset"
+                android:id="@+id/end_date_view"
+                android:layout_marginTop="@dimen/margin_default_negative"
+                android:paddingBottom="@dimen/margin_half"
+                custom:primaryHint="End date"/>
+
+        </LinearLayout>
+
+        <include layout="@layout/view_divider"/>
+
+        <!-- Name -->
+        <com.cohenadair.anglerslog.views.InputTextView
+            style="@style/InputTextView.NoTitle"
+            android:id="@+id/name_view"
+            custom:iconResource="@drawable/ic_trips"
+            custom:editTextHint="@string/add_name"/>
+
+        <include layout="@layout/view_divider"/>
+
+        <!-- Catches -->
+        <com.cohenadair.anglerslog.views.InputButtonView
+            style="@style/IconInputView"
+            android:id="@+id/catches_view"
+            custom:primaryHint="@string/add_catches"
+            custom:iconResource="@drawable/ic_catches"/>
+
+        <include layout="@layout/view_divider"/>
+
+        <!-- Locations -->
+        <com.cohenadair.anglerslog.views.InputButtonView
+            style="@style/IconInputView"
+            android:id="@+id/locations_view"
+            custom:primaryHint="@string/add_locations"
+            custom:iconResource="@drawable/ic_location"/>
+
+        <include layout="@layout/view_divider"/>
+
+        <!-- Anglers -->
+        <com.cohenadair.anglerslog.views.InputButtonView
+            style="@style/IconInputView"
+            android:id="@+id/anglers_view"
+            custom:primaryHint="@string/add_anglers"
+            custom:iconResource="@drawable/ic_anglers"/>
+
+        <include layout="@layout/view_divider"/>
+
+        <!-- Notes -->
+        <com.cohenadair.anglerslog.views.InputTextView
+            style="@style/InputTextView.NoTitle"
+            android:id="@+id/notes_view"
+            custom:iconResource="@drawable/ic_note"
+            custom:editTextHint="@string/add_note"
+            custom:capSentencesOnly="true"/>
+
+    </LinearLayout>
+</ScrollView>

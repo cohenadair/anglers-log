@@ -1,0 +1,35 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/IconInputView">
+
+    <ImageView
+        style="@style/ImageView.Input"
+        android:layout_gravity="center_vertical"
+        android:id="@+id/icon_image_view"
+        android:src="@drawable/ic_clock"
+        android:contentDescription="@string/icon_description"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:orientation="vertical">
+
+        <TextView
+            style="@style/TextView.Label"
+            android:id="@+id/title_text_view"
+            tools:text="Title"/>
+
+        <EditText
+            style="@style/EditText.TextView.Input"
+            android:id="@+id/edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:inputType="textMultiLine|textCapWords"
+            tools:hint="A helpful hint"/>
+
+    </LinearLayout>
+
+</LinearLayout>

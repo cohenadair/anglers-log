@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Used for large device landscape layout. -->
+    <item name="left_panel_weight" format="float" type="dimen">0.40</item>
+    <item name="right_panel_weight" format="float" type="dimen">0.60</item>
+
+    <!-- Used for storing user images -->
+    <item name="max_photo_size" format="integer" type="integer">1024</item>
+
+    <!-- Font Sizes -->
+    <item name="font_large" type="dimen">24sp</item>
+    <item name="font_medium" type="dimen">18sp</item>
+    <item name="font_normal" type="dimen">15sp</item>
+    <item name="font_small" type="dimen">14sp</item>
+
+</resources>

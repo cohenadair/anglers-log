@@ -1,0 +1,15 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?android:attr/selectableItemBackground"
+    style="@style/RecyclerView.Layout">
+
+    <EditText
+        style="@style/Widget.EditText.RecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="text|textCapWords"
+        android:id="@+id/name_edit_text"/>
+
+</RelativeLayout>

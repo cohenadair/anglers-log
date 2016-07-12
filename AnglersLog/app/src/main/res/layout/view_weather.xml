@@ -1,0 +1,29 @@
+<!--
+    A view that allows editing or fetching of current weather data.
+-->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <com.cohenadair.anglerslog.views.InputButtonView
+        android:id="@+id/input_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        custom:iconResource="@drawable/ic_cloud"
+        custom:primaryHint="@string/add_weather"/>
+
+    <com.cohenadair.anglerslog.views.WeatherDetailsView
+        android:id="@+id/details_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_input_icon_no_left"
+        android:layout_marginStart="@dimen/margin_input_icon_no_left"
+        android:layout_marginRight="@dimen/margin_default"
+        android:layout_marginEnd="@dimen/margin_default"
+        android:layout_marginBottom="@dimen/margin_default"
+        android:layout_marginTop="-8dp"/>
+
+</LinearLayout>

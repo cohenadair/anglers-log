@@ -1,0 +1,54 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/manage_container"
+    android:background="@color/global_background"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.cohenadair.anglerslog.fragments.ManageFragment">
+
+    <LinearLayout
+        android:id="@+id/toolbar_view"
+        android:layout_width="match_parent"
+        android:layout_height="?android:attr/actionBarSize"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:background="@color/anglers_log_light">
+
+        <ImageButton
+            android:id="@+id/back_button"
+            android:layout_width="@dimen/image_button_size"
+            android:layout_height="@dimen/image_button_size"
+            android:layout_margin="@dimen/margin_default"
+            android:background="?android:attr/selectableItemBackground"
+            android:src="@drawable/ic_back"
+            android:contentDescription="@string/back_description"/>
+
+        <TextView
+            style="@style/TextView.Medium"
+            android:id="@+id/title_text_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            tools:text="Title"/>
+
+        <ImageButton
+            android:id="@+id/done_button"
+            android:layout_width="@dimen/image_button_size"
+            android:layout_height="@dimen/image_button_size"
+            android:layout_marginRight="@dimen/margin_default"
+            android:layout_marginEnd="@dimen/margin_default"
+            android:background="?android:attr/selectableItemBackground"
+            android:src="@drawable/ic_check"
+            android:contentDescription="@string/check_description"/>
+
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:id="@+id/content_scroll_view" />
+
+</LinearLayout>

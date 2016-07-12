@@ -1,0 +1,13 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="Theme.AnglersLog" parent="Base.Theme.AnglersLog">
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+    </style>
+
+    <style name="Theme.FullScreen" parent="Base.Theme.AnglersLog">
+        <item name="android:statusBarColor">@color/transparent_black</item>
+        <item name="android:navigationBarColor">@color/transparent_black</item>
+    </style>
+
+</resources>

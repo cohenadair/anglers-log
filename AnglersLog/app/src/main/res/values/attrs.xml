@@ -1,0 +1,70 @@
+<resources>
+    <attr name="titleText" format="string" />
+    <attr name="subtitleText" format="string" />
+    <attr name="subtitleHint" format="string" />
+    <attr name="titleStyle" format="reference" />
+    <attr name="subtitleStyle" format="reference" />
+    <attr name="iconResource" format="reference"/>
+    <attr name="numbersOnly" format="boolean" />
+
+    <declare-styleable name="SelectPhotosView">
+        <attr name="maxPhotos" format="integer" />
+        <attr name="canSelectMultiple" format="boolean" />
+    </declare-styleable>
+
+    <declare-styleable name="PropertyDetailView">
+        <attr name="propertyName" format="string" />
+    </declare-styleable>
+
+    <declare-styleable name="SelectionSpinnerView">
+        <attr name="titleText" />
+    </declare-styleable>
+
+    <declare-styleable name="TitleSubTitleView">
+        <attr name="titleText" />
+        <attr name="subtitleText" />
+        <attr name="subsubtitleText" format="string"/>
+        <attr name="subtitleHint" />
+        <attr name="titleStyle" />
+        <attr name="subtitleStyle" />
+    </declare-styleable>
+
+    <declare-styleable name="InputButtonView">
+        <attr name="primaryHint" format="string"/>
+        <attr name="showSecondary" format="boolean"/>
+        <attr name="iconResource" />
+    </declare-styleable>
+
+    <declare-styleable name="InputTextView">
+        <attr name="titleText" />
+        <attr name="editTextHint" format="string" />
+        <attr name="iconResource" />
+        <attr name="numbersOnly" />
+        <attr name="capSentencesOnly" format="boolean" />
+    </declare-styleable>
+
+    <declare-styleable name="DisplayLabelView">
+        <attr name="labelText" format="string"/>
+        <attr name="detailText" format="string"/>
+        <attr name="iconResource" />
+    </declare-styleable>
+
+    <declare-styleable name="LeftIconView">
+        <attr name="iconResource" />
+    </declare-styleable>
+
+    <declare-styleable name="MoreDetailView">
+        <attr name="titleText" />
+        <attr name="subtitleText" />
+        <attr name="titleStyle" />
+        <attr name="subtitleStyle" />
+        <attr name="detailIcon" format="reference" />
+    </declare-styleable>
+
+    <declare-styleable name="BottomSheetView">
+        <attr name="titleText" />
+        <attr name="descriptionText" format="string" />
+        <attr name="buttonText" format="string" />
+        <attr name="iconRes" format="reference" />
+    </declare-styleable>
+</resources>
