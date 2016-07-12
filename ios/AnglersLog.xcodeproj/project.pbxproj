@@ -210,14 +210,14 @@
 		0D87D06B1AD6E69C008E732A /* CMAAlertController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAAlertController.m; path = CustomViews/CMAAlertController.m; sourceTree = "<group>"; };
 		0D87D06D1AD7158A008E732A /* CMAJSONReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAJSONReader.h; path = ApplicationModel/Backup/CMAJSONReader.h; sourceTree = "<group>"; };
 		0D87D06E1AD7158A008E732A /* CMAJSONReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAJSONReader.m; path = ApplicationModel/Backup/CMAJSONReader.m; sourceTree = "<group>"; };
-		0D8F836C1A6EC10800AABAEA /* CMAEntry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAEntry.h; path = TheAnglersLog/ApplicationModel/CMAEntry.h; sourceTree = SOURCE_ROOT; };
-		0D8F836D1A6EC10800AABAEA /* CMAEntry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAEntry.m; path = TheAnglersLog/ApplicationModel/CMAEntry.m; sourceTree = SOURCE_ROOT; };
-		0D8F836E1A6EC10800AABAEA /* CMAJournal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAJournal.h; path = TheAnglersLog/ApplicationModel/CMAJournal.h; sourceTree = SOURCE_ROOT; };
-		0D8F836F1A6EC10800AABAEA /* CMAJournal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAJournal.m; path = TheAnglersLog/ApplicationModel/CMAJournal.m; sourceTree = SOURCE_ROOT; };
-		0D8F83721A6EC10800AABAEA /* CMAStorageManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAStorageManager.h; path = TheAnglersLog/ApplicationModel/CMAStorageManager.h; sourceTree = SOURCE_ROOT; };
-		0D8F83731A6EC10800AABAEA /* CMAStorageManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAStorageManager.m; path = TheAnglersLog/ApplicationModel/CMAStorageManager.m; sourceTree = SOURCE_ROOT; };
-		0D8F83741A6EC10800AABAEA /* CMAWeatherData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAWeatherData.h; path = TheAnglersLog/ApplicationModel/CMAWeatherData.h; sourceTree = SOURCE_ROOT; };
-		0D8F83751A6EC10800AABAEA /* CMAWeatherData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAWeatherData.m; path = TheAnglersLog/ApplicationModel/CMAWeatherData.m; sourceTree = SOURCE_ROOT; };
+		0D8F836C1A6EC10800AABAEA /* CMAEntry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAEntry.h; path = AnglersLog/ApplicationModel/CMAEntry.h; sourceTree = SOURCE_ROOT; };
+		0D8F836D1A6EC10800AABAEA /* CMAEntry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAEntry.m; path = AnglersLog/ApplicationModel/CMAEntry.m; sourceTree = SOURCE_ROOT; };
+		0D8F836E1A6EC10800AABAEA /* CMAJournal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAJournal.h; path = AnglersLog/ApplicationModel/CMAJournal.h; sourceTree = SOURCE_ROOT; };
+		0D8F836F1A6EC10800AABAEA /* CMAJournal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAJournal.m; path = AnglersLog/ApplicationModel/CMAJournal.m; sourceTree = SOURCE_ROOT; };
+		0D8F83721A6EC10800AABAEA /* CMAStorageManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAStorageManager.h; path = AnglersLog/ApplicationModel/CMAStorageManager.h; sourceTree = SOURCE_ROOT; };
+		0D8F83731A6EC10800AABAEA /* CMAStorageManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAStorageManager.m; path = AnglersLog/ApplicationModel/CMAStorageManager.m; sourceTree = SOURCE_ROOT; };
+		0D8F83741A6EC10800AABAEA /* CMAWeatherData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAWeatherData.h; path = AnglersLog/ApplicationModel/CMAWeatherData.h; sourceTree = SOURCE_ROOT; };
+		0D8F83751A6EC10800AABAEA /* CMAWeatherData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAWeatherData.m; path = AnglersLog/ApplicationModel/CMAWeatherData.m; sourceTree = SOURCE_ROOT; };
 		0D8F83771A6EC10800AABAEA /* CMAStats.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMAStats.h; sourceTree = "<group>"; };
 		0D8F83781A6EC10800AABAEA /* CMAStats.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CMAStats.m; sourceTree = "<group>"; };
 		0D8F83791A6EC10800AABAEA /* CMAStatsObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMAStatsObject.h; sourceTree = "<group>"; };
@@ -237,27 +237,27 @@
 		0D8F83881A6EC10800AABAEA /* CMAUserDefineProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMAUserDefineProtocol.h; sourceTree = "<group>"; };
 		0D8F83891A6EC10800AABAEA /* CMAWaterClarity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMAWaterClarity.h; sourceTree = "<group>"; };
 		0D8F838A1A6EC10800AABAEA /* CMAWaterClarity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CMAWaterClarity.m; sourceTree = "<group>"; };
-		0D8F83991A6EC15D00AABAEA /* CMAAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAAppDelegate.h; path = TheAnglersLog/CMAAppDelegate.h; sourceTree = SOURCE_ROOT; };
-		0D8F839A1A6EC15D00AABAEA /* CMAAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAAppDelegate.m; path = TheAnglersLog/CMAAppDelegate.m; sourceTree = SOURCE_ROOT; };
-		0D8F839B1A6EC15D00AABAEA /* CMALaunchScreen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = CMALaunchScreen.xib; path = TheAnglersLog/CMALaunchScreen.xib; sourceTree = SOURCE_ROOT; };
-		0D8F839F1A6EC1AE00AABAEA /* CMAStoryboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = CMAStoryboard.storyboard; path = TheAnglersLog/CMAStoryboard.storyboard; sourceTree = SOURCE_ROOT; };
-		0D8F83A41A6EC1E600AABAEA /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = TheAnglersLog/Images.xcassets; sourceTree = SOURCE_ROOT; };
-		0D8F83A61A6EC20800AABAEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = TheAnglersLog/main.m; sourceTree = SOURCE_ROOT; };
-		0D8F83AC1A6EC22900AABAEA /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = TheAnglersLog/en.lproj/InfoPlist.strings; sourceTree = SOURCE_ROOT; };
+		0D8F83991A6EC15D00AABAEA /* CMAAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAAppDelegate.h; path = AnglersLog/CMAAppDelegate.h; sourceTree = SOURCE_ROOT; };
+		0D8F839A1A6EC15D00AABAEA /* CMAAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAAppDelegate.m; path = AnglersLog/CMAAppDelegate.m; sourceTree = SOURCE_ROOT; };
+		0D8F839B1A6EC15D00AABAEA /* CMALaunchScreen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = CMALaunchScreen.xib; path = AnglersLog/CMALaunchScreen.xib; sourceTree = SOURCE_ROOT; };
+		0D8F839F1A6EC1AE00AABAEA /* CMAStoryboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = CMAStoryboard.storyboard; path = AnglersLog/CMAStoryboard.storyboard; sourceTree = SOURCE_ROOT; };
+		0D8F83A41A6EC1E600AABAEA /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = AnglersLog/Images.xcassets; sourceTree = SOURCE_ROOT; };
+		0D8F83A61A6EC20800AABAEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = AnglersLog/main.m; sourceTree = SOURCE_ROOT; };
+		0D8F83AC1A6EC22900AABAEA /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = AnglersLog/en.lproj/InfoPlist.strings; sourceTree = SOURCE_ROOT; };
 		0D8F83AF1A6EC25200AABAEA /* CMAAddBaitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMAAddBaitViewController.h; sourceTree = "<group>"; };
 		0D8F83B01A6EC25200AABAEA /* CMAAddBaitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CMAAddBaitViewController.m; sourceTree = "<group>"; };
 		0D8F83B11A6EC25200AABAEA /* CMASingleBaitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMASingleBaitViewController.h; sourceTree = "<group>"; };
 		0D8F83B21A6EC25200AABAEA /* CMASingleBaitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CMASingleBaitViewController.m; sourceTree = "<group>"; };
 		0D8F83B31A6EC25200AABAEA /* CMAViewBaitsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMAViewBaitsViewController.h; sourceTree = "<group>"; };
 		0D8F83B41A6EC25200AABAEA /* CMAViewBaitsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CMAViewBaitsViewController.m; sourceTree = "<group>"; };
-		0D8F83B51A6EC25200AABAEA /* CMAImagePickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAImagePickerViewController.h; path = TheAnglersLog/ViewControllers/CMAImagePickerViewController.h; sourceTree = SOURCE_ROOT; };
-		0D8F83B61A6EC25200AABAEA /* CMAImagePickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAImagePickerViewController.m; path = TheAnglersLog/ViewControllers/CMAImagePickerViewController.m; sourceTree = SOURCE_ROOT; };
-		0D8F83B91A6EC25200AABAEA /* CMASideMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMASideMenuViewController.h; path = TheAnglersLog/ViewControllers/CMASideMenuViewController.h; sourceTree = SOURCE_ROOT; };
-		0D8F83BA1A6EC25200AABAEA /* CMASideMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMASideMenuViewController.m; path = TheAnglersLog/ViewControllers/CMASideMenuViewController.m; sourceTree = SOURCE_ROOT; };
-		0D8F83BB1A6EC25200AABAEA /* CMAStatisticsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAStatisticsViewController.h; path = TheAnglersLog/ViewControllers/CMAStatisticsViewController.h; sourceTree = SOURCE_ROOT; };
-		0D8F83BC1A6EC25200AABAEA /* CMAStatisticsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAStatisticsViewController.m; path = TheAnglersLog/ViewControllers/CMAStatisticsViewController.m; sourceTree = SOURCE_ROOT; };
-		0D8F83BD1A6EC25200AABAEA /* CMAUserDefinesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAUserDefinesViewController.h; path = TheAnglersLog/ViewControllers/CMAUserDefinesViewController.h; sourceTree = SOURCE_ROOT; };
-		0D8F83BE1A6EC25200AABAEA /* CMAUserDefinesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAUserDefinesViewController.m; path = TheAnglersLog/ViewControllers/CMAUserDefinesViewController.m; sourceTree = SOURCE_ROOT; };
+		0D8F83B51A6EC25200AABAEA /* CMAImagePickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAImagePickerViewController.h; path = AnglersLog/ViewControllers/CMAImagePickerViewController.h; sourceTree = SOURCE_ROOT; };
+		0D8F83B61A6EC25200AABAEA /* CMAImagePickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAImagePickerViewController.m; path = AnglersLog/ViewControllers/CMAImagePickerViewController.m; sourceTree = SOURCE_ROOT; };
+		0D8F83B91A6EC25200AABAEA /* CMASideMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMASideMenuViewController.h; path = AnglersLog/ViewControllers/CMASideMenuViewController.h; sourceTree = SOURCE_ROOT; };
+		0D8F83BA1A6EC25200AABAEA /* CMASideMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMASideMenuViewController.m; path = AnglersLog/ViewControllers/CMASideMenuViewController.m; sourceTree = SOURCE_ROOT; };
+		0D8F83BB1A6EC25200AABAEA /* CMAStatisticsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAStatisticsViewController.h; path = AnglersLog/ViewControllers/CMAStatisticsViewController.h; sourceTree = SOURCE_ROOT; };
+		0D8F83BC1A6EC25200AABAEA /* CMAStatisticsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAStatisticsViewController.m; path = AnglersLog/ViewControllers/CMAStatisticsViewController.m; sourceTree = SOURCE_ROOT; };
+		0D8F83BD1A6EC25200AABAEA /* CMAUserDefinesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAUserDefinesViewController.h; path = AnglersLog/ViewControllers/CMAUserDefinesViewController.h; sourceTree = SOURCE_ROOT; };
+		0D8F83BE1A6EC25200AABAEA /* CMAUserDefinesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAUserDefinesViewController.m; path = AnglersLog/ViewControllers/CMAUserDefinesViewController.m; sourceTree = SOURCE_ROOT; };
 		0D8F83C01A6EC25200AABAEA /* CMAAddEntryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMAAddEntryViewController.h; sourceTree = "<group>"; };
 		0D8F83C11A6EC25200AABAEA /* CMAAddEntryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CMAAddEntryViewController.m; sourceTree = "<group>"; };
 		0D8F83C21A6EC25200AABAEA /* CMAEntrySortingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMAEntrySortingViewController.h; sourceTree = "<group>"; };
@@ -278,37 +278,37 @@
 		0D8F83D31A6EC25200AABAEA /* CMASinglePhotoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CMASinglePhotoViewController.m; sourceTree = "<group>"; };
 		0D8F83D41A6EC25200AABAEA /* CMAViewPhotosViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMAViewPhotosViewController.h; sourceTree = "<group>"; };
 		0D8F83D51A6EC25200AABAEA /* CMAViewPhotosViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CMAViewPhotosViewController.m; sourceTree = "<group>"; };
-		0D8F83E81A6EC28300AABAEA /* CMAAlerts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAAlerts.h; path = TheAnglersLog/Utilities/CMAAlerts.h; sourceTree = SOURCE_ROOT; };
-		0D8F83E91A6EC28300AABAEA /* CMAAlerts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAAlerts.m; path = TheAnglersLog/Utilities/CMAAlerts.m; sourceTree = SOURCE_ROOT; };
-		0D8F83EA1A6EC28300AABAEA /* CMAConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAConstants.h; path = TheAnglersLog/Utilities/CMAConstants.h; sourceTree = SOURCE_ROOT; };
-		0D8F83EB1A6EC28300AABAEA /* CMAConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAConstants.m; path = TheAnglersLog/Utilities/CMAConstants.m; sourceTree = SOURCE_ROOT; };
-		0D8F83EC1A6EC28300AABAEA /* CMAUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAUtilities.h; path = TheAnglersLog/Utilities/CMAUtilities.h; sourceTree = SOURCE_ROOT; };
-		0D8F83ED1A6EC28300AABAEA /* CMAUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAUtilities.m; path = TheAnglersLog/Utilities/CMAUtilities.m; sourceTree = SOURCE_ROOT; };
-		0D8F83F11A6EC29A00AABAEA /* CMABaitTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMABaitTableViewCell.h; path = TheAnglersLog/CustomViews/CMABaitTableViewCell.h; sourceTree = SOURCE_ROOT; };
-		0D8F83F21A6EC29A00AABAEA /* CMABaitTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMABaitTableViewCell.m; path = TheAnglersLog/CustomViews/CMABaitTableViewCell.m; sourceTree = SOURCE_ROOT; };
-		0D8F83F31A6EC29A00AABAEA /* CMACameraActionSheet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMACameraActionSheet.h; path = TheAnglersLog/CustomViews/CMACameraActionSheet.h; sourceTree = SOURCE_ROOT; };
-		0D8F83F41A6EC29A00AABAEA /* CMACameraActionSheet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMACameraActionSheet.m; path = TheAnglersLog/CustomViews/CMACameraActionSheet.m; sourceTree = SOURCE_ROOT; };
-		0D8F83F51A6EC29A00AABAEA /* CMACameraButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMACameraButton.h; path = TheAnglersLog/CustomViews/CMACameraButton.h; sourceTree = SOURCE_ROOT; };
-		0D8F83F61A6EC29A00AABAEA /* CMACameraButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMACameraButton.m; path = TheAnglersLog/CustomViews/CMACameraButton.m; sourceTree = SOURCE_ROOT; };
-		0D8F83F71A6EC29A00AABAEA /* CMACircleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMACircleView.h; path = TheAnglersLog/CustomViews/CMACircleView.h; sourceTree = SOURCE_ROOT; };
-		0D8F83F81A6EC29A00AABAEA /* CMACircleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMACircleView.m; path = TheAnglersLog/CustomViews/CMACircleView.m; sourceTree = SOURCE_ROOT; };
-		0D8F83F91A6EC29A00AABAEA /* CMACircleView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = CMACircleView.xib; path = TheAnglersLog/CustomViews/CMACircleView.xib; sourceTree = SOURCE_ROOT; };
-		0D8F83FA1A6EC29A00AABAEA /* CMAEntryTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAEntryTableViewCell.h; path = TheAnglersLog/CustomViews/CMAEntryTableViewCell.h; sourceTree = SOURCE_ROOT; };
-		0D8F83FB1A6EC29A00AABAEA /* CMAEntryTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAEntryTableViewCell.m; path = TheAnglersLog/CustomViews/CMAEntryTableViewCell.m; sourceTree = SOURCE_ROOT; };
-		0D8F83FC1A6EC29A00AABAEA /* CMAInstagramActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAInstagramActivity.h; path = TheAnglersLog/CustomViews/CMAInstagramActivity.h; sourceTree = SOURCE_ROOT; };
-		0D8F83FD1A6EC29A00AABAEA /* CMAInstagramActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAInstagramActivity.m; path = TheAnglersLog/CustomViews/CMAInstagramActivity.m; sourceTree = SOURCE_ROOT; };
-		0D8F83FE1A6EC29A00AABAEA /* CMANoXView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMANoXView.h; path = TheAnglersLog/CustomViews/CMANoXView.h; sourceTree = SOURCE_ROOT; };
-		0D8F83FF1A6EC29A00AABAEA /* CMANoXView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMANoXView.m; path = TheAnglersLog/CustomViews/CMANoXView.m; sourceTree = SOURCE_ROOT; };
-		0D8F84001A6EC29A00AABAEA /* CMANoXView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = CMANoXView.xib; path = TheAnglersLog/CustomViews/CMANoXView.xib; sourceTree = SOURCE_ROOT; };
-		0D8F84011A6EC29A00AABAEA /* CMADeleteActionSheet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMADeleteActionSheet.h; path = TheAnglersLog/CustomViews/CMADeleteActionSheet.h; sourceTree = SOURCE_ROOT; };
-		0D8F84021A6EC29A00AABAEA /* CMADeleteActionSheet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMADeleteActionSheet.m; path = TheAnglersLog/CustomViews/CMADeleteActionSheet.m; sourceTree = SOURCE_ROOT; };
-		0D8F84031A6EC29A00AABAEA /* CMAStatisticsTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAStatisticsTableViewCell.h; path = TheAnglersLog/CustomViews/CMAStatisticsTableViewCell.h; sourceTree = SOURCE_ROOT; };
-		0D8F84041A6EC29A00AABAEA /* CMAStatisticsTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAStatisticsTableViewCell.m; path = TheAnglersLog/CustomViews/CMAStatisticsTableViewCell.m; sourceTree = SOURCE_ROOT; };
-		0D8F84051A6EC29A00AABAEA /* CMATouchSegmentedControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMATouchSegmentedControl.h; path = TheAnglersLog/CustomViews/CMATouchSegmentedControl.h; sourceTree = SOURCE_ROOT; };
-		0D8F84061A6EC29A00AABAEA /* CMATouchSegmentedControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMATouchSegmentedControl.m; path = TheAnglersLog/CustomViews/CMATouchSegmentedControl.m; sourceTree = SOURCE_ROOT; };
-		0D8F84071A6EC29A00AABAEA /* CMAWeatherDataView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAWeatherDataView.h; path = TheAnglersLog/CustomViews/CMAWeatherDataView.h; sourceTree = SOURCE_ROOT; };
-		0D8F84081A6EC29A00AABAEA /* CMAWeatherDataView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAWeatherDataView.m; path = TheAnglersLog/CustomViews/CMAWeatherDataView.m; sourceTree = SOURCE_ROOT; };
-		0D8F84091A6EC29A00AABAEA /* CMAWeatherDataView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = CMAWeatherDataView.xib; path = TheAnglersLog/CustomViews/CMAWeatherDataView.xib; sourceTree = SOURCE_ROOT; };
+		0D8F83E81A6EC28300AABAEA /* CMAAlerts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAAlerts.h; path = AnglersLog/Utilities/CMAAlerts.h; sourceTree = SOURCE_ROOT; };
+		0D8F83E91A6EC28300AABAEA /* CMAAlerts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAAlerts.m; path = AnglersLog/Utilities/CMAAlerts.m; sourceTree = SOURCE_ROOT; };
+		0D8F83EA1A6EC28300AABAEA /* CMAConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAConstants.h; path = AnglersLog/Utilities/CMAConstants.h; sourceTree = SOURCE_ROOT; };
+		0D8F83EB1A6EC28300AABAEA /* CMAConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAConstants.m; path = AnglersLog/Utilities/CMAConstants.m; sourceTree = SOURCE_ROOT; };
+		0D8F83EC1A6EC28300AABAEA /* CMAUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAUtilities.h; path = AnglersLog/Utilities/CMAUtilities.h; sourceTree = SOURCE_ROOT; };
+		0D8F83ED1A6EC28300AABAEA /* CMAUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAUtilities.m; path = AnglersLog/Utilities/CMAUtilities.m; sourceTree = SOURCE_ROOT; };
+		0D8F83F11A6EC29A00AABAEA /* CMABaitTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMABaitTableViewCell.h; path = AnglersLog/CustomViews/CMABaitTableViewCell.h; sourceTree = SOURCE_ROOT; };
+		0D8F83F21A6EC29A00AABAEA /* CMABaitTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMABaitTableViewCell.m; path = AnglersLog/CustomViews/CMABaitTableViewCell.m; sourceTree = SOURCE_ROOT; };
+		0D8F83F31A6EC29A00AABAEA /* CMACameraActionSheet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMACameraActionSheet.h; path = AnglersLog/CustomViews/CMACameraActionSheet.h; sourceTree = SOURCE_ROOT; };
+		0D8F83F41A6EC29A00AABAEA /* CMACameraActionSheet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMACameraActionSheet.m; path = AnglersLog/CustomViews/CMACameraActionSheet.m; sourceTree = SOURCE_ROOT; };
+		0D8F83F51A6EC29A00AABAEA /* CMACameraButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMACameraButton.h; path = AnglersLog/CustomViews/CMACameraButton.h; sourceTree = SOURCE_ROOT; };
+		0D8F83F61A6EC29A00AABAEA /* CMACameraButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMACameraButton.m; path = AnglersLog/CustomViews/CMACameraButton.m; sourceTree = SOURCE_ROOT; };
+		0D8F83F71A6EC29A00AABAEA /* CMACircleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMACircleView.h; path = AnglersLog/CustomViews/CMACircleView.h; sourceTree = SOURCE_ROOT; };
+		0D8F83F81A6EC29A00AABAEA /* CMACircleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMACircleView.m; path = AnglersLog/CustomViews/CMACircleView.m; sourceTree = SOURCE_ROOT; };
+		0D8F83F91A6EC29A00AABAEA /* CMACircleView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = CMACircleView.xib; path = AnglersLog/CustomViews/CMACircleView.xib; sourceTree = SOURCE_ROOT; };
+		0D8F83FA1A6EC29A00AABAEA /* CMAEntryTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAEntryTableViewCell.h; path = AnglersLog/CustomViews/CMAEntryTableViewCell.h; sourceTree = SOURCE_ROOT; };
+		0D8F83FB1A6EC29A00AABAEA /* CMAEntryTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAEntryTableViewCell.m; path = AnglersLog/CustomViews/CMAEntryTableViewCell.m; sourceTree = SOURCE_ROOT; };
+		0D8F83FC1A6EC29A00AABAEA /* CMAInstagramActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAInstagramActivity.h; path = AnglersLog/CustomViews/CMAInstagramActivity.h; sourceTree = SOURCE_ROOT; };
+		0D8F83FD1A6EC29A00AABAEA /* CMAInstagramActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAInstagramActivity.m; path = AnglersLog/CustomViews/CMAInstagramActivity.m; sourceTree = SOURCE_ROOT; };
+		0D8F83FE1A6EC29A00AABAEA /* CMANoXView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMANoXView.h; path = AnglersLog/CustomViews/CMANoXView.h; sourceTree = SOURCE_ROOT; };
+		0D8F83FF1A6EC29A00AABAEA /* CMANoXView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMANoXView.m; path = AnglersLog/CustomViews/CMANoXView.m; sourceTree = SOURCE_ROOT; };
+		0D8F84001A6EC29A00AABAEA /* CMANoXView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = CMANoXView.xib; path = AnglersLog/CustomViews/CMANoXView.xib; sourceTree = SOURCE_ROOT; };
+		0D8F84011A6EC29A00AABAEA /* CMADeleteActionSheet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMADeleteActionSheet.h; path = AnglersLog/CustomViews/CMADeleteActionSheet.h; sourceTree = SOURCE_ROOT; };
+		0D8F84021A6EC29A00AABAEA /* CMADeleteActionSheet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMADeleteActionSheet.m; path = AnglersLog/CustomViews/CMADeleteActionSheet.m; sourceTree = SOURCE_ROOT; };
+		0D8F84031A6EC29A00AABAEA /* CMAStatisticsTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAStatisticsTableViewCell.h; path = AnglersLog/CustomViews/CMAStatisticsTableViewCell.h; sourceTree = SOURCE_ROOT; };
+		0D8F84041A6EC29A00AABAEA /* CMAStatisticsTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAStatisticsTableViewCell.m; path = AnglersLog/CustomViews/CMAStatisticsTableViewCell.m; sourceTree = SOURCE_ROOT; };
+		0D8F84051A6EC29A00AABAEA /* CMATouchSegmentedControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMATouchSegmentedControl.h; path = AnglersLog/CustomViews/CMATouchSegmentedControl.h; sourceTree = SOURCE_ROOT; };
+		0D8F84061A6EC29A00AABAEA /* CMATouchSegmentedControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMATouchSegmentedControl.m; path = AnglersLog/CustomViews/CMATouchSegmentedControl.m; sourceTree = SOURCE_ROOT; };
+		0D8F84071A6EC29A00AABAEA /* CMAWeatherDataView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAWeatherDataView.h; path = AnglersLog/CustomViews/CMAWeatherDataView.h; sourceTree = SOURCE_ROOT; };
+		0D8F84081A6EC29A00AABAEA /* CMAWeatherDataView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAWeatherDataView.m; path = AnglersLog/CustomViews/CMAWeatherDataView.m; sourceTree = SOURCE_ROOT; };
+		0D8F84091A6EC29A00AABAEA /* CMAWeatherDataView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = CMAWeatherDataView.xib; path = AnglersLog/CustomViews/CMAWeatherDataView.xib; sourceTree = SOURCE_ROOT; };
 		0D8F84191A6EC2C300AABAEA /* app_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = app_icon.png; sourceTree = "<group>"; };
 		0D8F841B1A6EC2C300AABAEA /* app_icon_120.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = app_icon_120.png; sourceTree = "<group>"; };
 		0D8F841C1A6EC2C300AABAEA /* app_icon_152.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = app_icon_152.png; sourceTree = "<group>"; };
@@ -354,8 +354,8 @@
 		0D8F84461A6EC2C300AABAEA /* species_large.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = species_large.png; sourceTree = "<group>"; };
 		0D8F84471A6EC2C300AABAEA /* stats_large.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = stats_large.png; sourceTree = "<group>"; };
 		0D8F84481A6EC2C300AABAEA /* water_clarities_large.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = water_clarities_large.png; sourceTree = "<group>"; };
-		0D8F84491A6EC2C300AABAEA /* no_image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = no_image.png; path = TheAnglersLog/Images/no_image.png; sourceTree = SOURCE_ROOT; };
-		0D8F844A1A6EC2C300AABAEA /* rectile.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = rectile.png; path = TheAnglersLog/Images/rectile.png; sourceTree = SOURCE_ROOT; };
+		0D8F84491A6EC2C300AABAEA /* no_image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = no_image.png; path = AnglersLog/Images/no_image.png; sourceTree = SOURCE_ROOT; };
+		0D8F844A1A6EC2C300AABAEA /* rectile.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = rectile.png; path = AnglersLog/Images/rectile.png; sourceTree = SOURCE_ROOT; };
 		0D8F847C1A6EC2D900AABAEA /* AFHTTPRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFHTTPRequestOperation.h; sourceTree = "<group>"; };
 		0D8F847D1A6EC2D900AABAEA /* AFHTTPRequestOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFHTTPRequestOperation.m; sourceTree = "<group>"; };
 		0D8F847E1A6EC2D900AABAEA /* AFHTTPRequestOperationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFHTTPRequestOperationManager.h; sourceTree = "<group>"; };
@@ -381,7 +381,7 @@
 		0D8F84941A6EC2D900AABAEA /* SWRevealViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SWRevealViewController.m; sourceTree = "<group>"; };
 		0D8F84961A6EC2D900AABAEA /* XYPieChart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XYPieChart.h; sourceTree = "<group>"; };
 		0D8F84971A6EC2D900AABAEA /* XYPieChart.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XYPieChart.m; sourceTree = "<group>"; };
-		0D8F84A41A6EC31500AABAEA /* TheAnglersLog.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = TheAnglersLog.entitlements; path = TheAnglersLog/TheAnglersLog.entitlements; sourceTree = SOURCE_ROOT; };
+		0D8F84A41A6EC31500AABAEA /* TheAnglersLog.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = TheAnglersLog.entitlements; path = AnglersLog/TheAnglersLog.entitlements; sourceTree = SOURCE_ROOT; };
 		0D9B760E1A76C4C100553177 /* CMAUserDefineObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMAUserDefineObject.h; sourceTree = "<group>"; };
 		0D9B760F1A76C4C100553177 /* CMAUserDefineObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CMAUserDefineObject.m; sourceTree = "<group>"; };
 		0DBFE94B1C8E45BB00BDCC1D /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = "<group>"; };
@@ -503,7 +503,7 @@
 				0D8F837A1A6EC10800AABAEA /* CMAStatsObject.m */,
 			);
 			name = Statistics;
-			path = TheAnglersLog/ApplicationModel/Statistics;
+			path = AnglersLog/ApplicationModel/Statistics;
 			sourceTree = SOURCE_ROOT;
 		};
 		0D8F837B1A6EC10800AABAEA /* UserDefines */ = {
@@ -528,7 +528,7 @@
 				0D9B760F1A76C4C100553177 /* CMAUserDefineObject.m */,
 			);
 			name = UserDefines;
-			path = TheAnglersLog/ApplicationModel/UserDefines;
+			path = AnglersLog/ApplicationModel/UserDefines;
 			sourceTree = SOURCE_ROOT;
 		};
 		0D8F83AE1A6EC25200AABAEA /* Baits */ = {
@@ -542,7 +542,7 @@
 				0D8F83B41A6EC25200AABAEA /* CMAViewBaitsViewController.m */,
 			);
 			name = Baits;
-			path = TheAnglersLog/ViewControllers/Baits;
+			path = AnglersLog/ViewControllers/Baits;
 			sourceTree = SOURCE_ROOT;
 		};
 		0D8F83BF1A6EC25200AABAEA /* Entries */ = {
@@ -558,7 +558,7 @@
 				0D8F83C71A6EC25200AABAEA /* CMAViewEntriesViewController.m */,
 			);
 			name = Entries;
-			path = TheAnglersLog/ViewControllers/Entries;
+			path = AnglersLog/ViewControllers/Entries;
 			sourceTree = SOURCE_ROOT;
 		};
 		0D8F83C81A6EC25200AABAEA /* Locations */ = {
@@ -574,7 +574,7 @@
 				0D8F83D01A6EC25200AABAEA /* CMASingleLocationViewController.m */,
 			);
 			name = Locations;
-			path = TheAnglersLog/ViewControllers/Locations;
+			path = AnglersLog/ViewControllers/Locations;
 			sourceTree = SOURCE_ROOT;
 		};
 		0D8F83D11A6EC25200AABAEA /* Photos */ = {
@@ -586,7 +586,7 @@
 				0D8F83D51A6EC25200AABAEA /* CMAViewPhotosViewController.m */,
 			);
 			name = Photos;
-			path = TheAnglersLog/ViewControllers/Photos;
+			path = AnglersLog/ViewControllers/Photos;
 			sourceTree = SOURCE_ROOT;
 		};
 		0D8F84181A6EC2C300AABAEA /* AppIcons */ = {
@@ -603,7 +603,7 @@
 				0D8F84221A6EC2C300AABAEA /* app_icon_80.png */,
 			);
 			name = AppIcons;
-			path = TheAnglersLog/Images/AppIcons;
+			path = AnglersLog/Images/AppIcons;
 			sourceTree = SOURCE_ROOT;
 		};
 		0D8F84231A6EC2C300AABAEA /* Icons */ = {
@@ -639,7 +639,7 @@
 				0D8F843F1A6EC2C300AABAEA /* water_clarities.png */,
 			);
 			name = Icons;
-			path = TheAnglersLog/Images/Icons;
+			path = AnglersLog/Images/Icons;
 			sourceTree = SOURCE_ROOT;
 		};
 		0D8F84401A6EC2C300AABAEA /* LargeIcons */ = {
@@ -655,7 +655,7 @@
 				0D8F84481A6EC2C300AABAEA /* water_clarities_large.png */,
 			);
 			name = LargeIcons;
-			path = TheAnglersLog/Images/LargeIcons;
+			path = AnglersLog/Images/LargeIcons;
 			sourceTree = SOURCE_ROOT;
 		};
 		0D8F847B1A6EC2D900AABAEA /* AFNetworking */ = {
@@ -682,7 +682,7 @@
 				0D8F848E1A6EC2D900AABAEA /* AFURLSessionManager.m */,
 			);
 			name = AFNetworking;
-			path = TheAnglersLog/Libraries/AFNetworking;
+			path = AnglersLog/Libraries/AFNetworking;
 			sourceTree = SOURCE_ROOT;
 		};
 		0D8F848F1A6EC2D900AABAEA /* OWMWeatherAPI */ = {
@@ -692,7 +692,7 @@
 				0D8F84911A6EC2D900AABAEA /* OWMWeatherAPI.m */,
 			);
 			name = OWMWeatherAPI;
-			path = TheAnglersLog/Libraries/OWMWeatherAPI;
+			path = AnglersLog/Libraries/OWMWeatherAPI;
 			sourceTree = SOURCE_ROOT;
 		};
 		0D8F84921A6EC2D900AABAEA /* SWRevealViewController */ = {
@@ -702,7 +702,7 @@
 				0D8F84941A6EC2D900AABAEA /* SWRevealViewController.m */,
 			);
 			name = SWRevealViewController;
-			path = TheAnglersLog/Libraries/SWRevealViewController;
+			path = AnglersLog/Libraries/SWRevealViewController;
 			sourceTree = SOURCE_ROOT;
 		};
 		0D8F84951A6EC2D900AABAEA /* XYPieChart */ = {
@@ -712,7 +712,7 @@
 				0D8F84971A6EC2D900AABAEA /* XYPieChart.m */,
 			);
 			name = XYPieChart;
-			path = TheAnglersLog/Libraries/XYPieChart;
+			path = AnglersLog/Libraries/XYPieChart;
 			sourceTree = SOURCE_ROOT;
 		};
 		0DC5ABCD1C1F892D0047587E /* ResizeMagick */ = {
@@ -790,8 +790,7 @@
 				0D8F839F1A6EC1AE00AABAEA /* CMAStoryboard.storyboard */,
 				0D8F839B1A6EC15D00AABAEA /* CMALaunchScreen.xib */,
 			);
-			name = AnglersLog;
-			path = TheAnglersLog;
+			path = AnglersLog;
 			sourceTree = "<group>";
 		};
 		E70B637C19D3A8E400DFBA85 /* SupportingFiles */ = {
@@ -1247,7 +1246,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_ENTITLEMENTS = TheAnglersLog/TheAnglersLog.entitlements;
+				CODE_SIGN_ENTITLEMENTS = AnglersLog/TheAnglersLog.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
@@ -1256,8 +1255,8 @@
 					"$(PROJECT_DIR)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "TheAnglersLog/AnglersLog-Prefix.pch";
-				INFOPLIST_FILE = "TheAnglersLog/AnglersLog-Info.plist";
+				GCC_PREFIX_HEADER = "AnglersLog/AnglersLog-Prefix.pch";
+				INFOPLIST_FILE = "AnglersLog/AnglersLog-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				PRODUCT_BUNDLE_IDENTIFIER = CMA.TheAnglersLog;
 				PRODUCT_NAME = AnglersLog;
@@ -1272,7 +1271,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_ENTITLEMENTS = TheAnglersLog/TheAnglersLog.entitlements;
+				CODE_SIGN_ENTITLEMENTS = AnglersLog/TheAnglersLog.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
@@ -1281,8 +1280,8 @@
 					"$(PROJECT_DIR)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "TheAnglersLog/AnglersLog-Prefix.pch";
-				INFOPLIST_FILE = "TheAnglersLog/AnglersLog-Info.plist";
+				GCC_PREFIX_HEADER = "AnglersLog/AnglersLog-Prefix.pch";
+				INFOPLIST_FILE = "AnglersLog/AnglersLog-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				PRODUCT_BUNDLE_IDENTIFIER = CMA.TheAnglersLog;
 				PRODUCT_NAME = AnglersLog;
