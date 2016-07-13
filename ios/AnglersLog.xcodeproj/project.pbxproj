@@ -7,16 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0D006E601D3702BB00DBDA7B /* SWRevealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D006E5F1D3702BB00DBDA7B /* SWRevealViewController.m */; };
 		0D128F501AD472340004CABE /* CMAJSONWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D128F4E1AD472340004CABE /* CMAJSONWriter.m */; };
 		0D128F571AD5C1510004CABE /* CMAJSONWriter.json in Resources */ = {isa = PBXBuildFile; fileRef = 0D128F561AD5C1510004CABE /* CMAJSONWriter.json */; };
 		0D128F5A1AD5C1BC0004CABE /* CMADataExporter.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D128F591AD5C1BC0004CABE /* CMADataExporter.m */; };
-		0D128FB01AD5D7490004CABE /* ioapi.c in Sources */ = {isa = PBXBuildFile; fileRef = 0D128FA61AD5D7490004CABE /* ioapi.c */; };
-		0D128FB11AD5D7490004CABE /* mztools.c in Sources */ = {isa = PBXBuildFile; fileRef = 0D128FA81AD5D7490004CABE /* mztools.c */; };
-		0D128FB21AD5D7490004CABE /* unzip.c in Sources */ = {isa = PBXBuildFile; fileRef = 0D128FAA1AD5D7490004CABE /* unzip.c */; };
-		0D128FB31AD5D7490004CABE /* zip.c in Sources */ = {isa = PBXBuildFile; fileRef = 0D128FAC1AD5D7490004CABE /* zip.c */; };
-		0D128FB41AD5D7490004CABE /* SSZipArchive.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D128FAF1AD5D7490004CABE /* SSZipArchive.m */; };
 		0D128FB61AD5D7600004CABE /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D128FB51AD5D7600004CABE /* libz.dylib */; };
-		0D1EC98A1C6664E400CBD819 /* Instabug.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DCAD6421AA4FF540040B03B /* Instabug.framework */; };
 		0D23B2711A7713C900E89736 /* TheAnglersLog.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 0D23B26F1A7713C900E89736 /* TheAnglersLog.xcdatamodeld */; };
 		0D23B2741A78102B00E89736 /* CMAImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D23B2731A78102B00E89736 /* CMAImage.m */; };
 		0D248B0F1AB0C82200093290 /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D248B0E1AB0C82200093290 /* iAd.framework */; };
@@ -131,26 +126,10 @@
 		0D8F84781A6EC2C300AABAEA /* water_clarities_large.png in Resources */ = {isa = PBXBuildFile; fileRef = 0D8F84481A6EC2C300AABAEA /* water_clarities_large.png */; };
 		0D8F84791A6EC2C300AABAEA /* no_image.png in Resources */ = {isa = PBXBuildFile; fileRef = 0D8F84491A6EC2C300AABAEA /* no_image.png */; };
 		0D8F847A1A6EC2C300AABAEA /* rectile.png in Resources */ = {isa = PBXBuildFile; fileRef = 0D8F844A1A6EC2C300AABAEA /* rectile.png */; };
-		0D8F84981A6EC2D900AABAEA /* AFHTTPRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D8F847D1A6EC2D900AABAEA /* AFHTTPRequestOperation.m */; settings = {COMPILER_FLAGS = "-w"; }; };
-		0D8F84991A6EC2D900AABAEA /* AFHTTPRequestOperationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D8F847F1A6EC2D900AABAEA /* AFHTTPRequestOperationManager.m */; settings = {COMPILER_FLAGS = "-w"; }; };
-		0D8F849A1A6EC2D900AABAEA /* AFHTTPSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D8F84811A6EC2D900AABAEA /* AFHTTPSessionManager.m */; settings = {COMPILER_FLAGS = "-w"; }; };
-		0D8F849B1A6EC2D900AABAEA /* AFNetworkReachabilityManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D8F84841A6EC2D900AABAEA /* AFNetworkReachabilityManager.m */; settings = {COMPILER_FLAGS = "-w"; }; };
-		0D8F849C1A6EC2D900AABAEA /* AFSecurityPolicy.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D8F84861A6EC2D900AABAEA /* AFSecurityPolicy.m */; };
-		0D8F849D1A6EC2D900AABAEA /* AFURLConnectionOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D8F84881A6EC2D900AABAEA /* AFURLConnectionOperation.m */; };
-		0D8F849E1A6EC2D900AABAEA /* AFURLRequestSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D8F848A1A6EC2D900AABAEA /* AFURLRequestSerialization.m */; };
-		0D8F849F1A6EC2D900AABAEA /* AFURLResponseSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D8F848C1A6EC2D900AABAEA /* AFURLResponseSerialization.m */; };
-		0D8F84A01A6EC2D900AABAEA /* AFURLSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D8F848E1A6EC2D900AABAEA /* AFURLSessionManager.m */; };
-		0D8F84A11A6EC2D900AABAEA /* OWMWeatherAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D8F84911A6EC2D900AABAEA /* OWMWeatherAPI.m */; };
-		0D8F84A21A6EC2D900AABAEA /* SWRevealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D8F84941A6EC2D900AABAEA /* SWRevealViewController.m */; settings = {COMPILER_FLAGS = "-w"; }; };
-		0D8F84A31A6EC2D900AABAEA /* XYPieChart.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D8F84971A6EC2D900AABAEA /* XYPieChart.m */; };
 		0D9B76101A76C4C100553177 /* CMAUserDefineObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D9B760F1A76C4C100553177 /* CMAUserDefineObject.m */; };
-		0DBFE94D1C8E45BB00BDCC1D /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DBFE94B1C8E45BB00BDCC1D /* Fabric.framework */; };
-		0DBFE94E1C8E45BB00BDCC1D /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DBFE94C1C8E45BB00BDCC1D /* Crashlytics.framework */; };
-		0DC5ABD01C1F894B0047587E /* UIImage+ResizeMagick.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DC5ABCF1C1F894B0047587E /* UIImage+ResizeMagick.m */; };
 		0DC75FDD1A9AEDCE0045030C /* CMASinglePhotoCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DC75FDC1A9AEDCE0045030C /* CMASinglePhotoCollectionViewCell.m */; };
 		0DCAD63A1AA37D160040B03B /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DCAD6391AA37D160040B03B /* ImageIO.framework */; };
 		0DCAD63C1AA37D230040B03B /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DCAD63B1AA37D230040B03B /* MobileCoreServices.framework */; };
-		0DCAD6431AA4FF540040B03B /* Instabug.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 0DCAD6411AA4FF540040B03B /* Instabug.bundle */; };
 		0DCAD6461AA4FFBA0040B03B /* libc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DCAD6451AA4FFBA0040B03B /* libc++.dylib */; };
 		0DCAD6481AA4FFC80040B03B /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DCAD6471AA4FFC80040B03B /* CoreMotion.framework */; };
 		0DCAD64A1AA4FFD20040B03B /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DCAD6491AA4FFD20040B03B /* CoreTelephony.framework */; };
@@ -160,6 +139,7 @@
 		0DCAD6521AA5000A0040B03B /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DCAD6511AA5000A0040B03B /* GLKit.framework */; };
 		0DCAD6551AA5069E0040B03B /* CMASettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DCAD6541AA5069E0040B03B /* CMASettingsViewController.m */; };
 		0DCC26571A520DD300738F04 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DCC26561A520DD300738F04 /* SystemConfiguration.framework */; };
+		D6E037DE99C4BF212C247133 /* Pods_AnglersLog.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 029851291812FE4E6CF732C9 /* Pods_AnglersLog.framework */; };
 		E705AD7E1A22DD5C0077F16C /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E705AD7D1A22DD5C0077F16C /* QuartzCore.framework */; };
 		E70B637619D3A8E400DFBA85 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E70B637519D3A8E400DFBA85 /* Foundation.framework */; };
 		E70B637819D3A8E400DFBA85 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E70B637719D3A8E400DFBA85 /* CoreGraphics.framework */; };
@@ -169,6 +149,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		029851291812FE4E6CF732C9 /* Pods_AnglersLog.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AnglersLog.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		0D006E5E1D3702BB00DBDA7B /* SWRevealViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SWRevealViewController.h; path = SWRevealViewController/SWRevealViewController.h; sourceTree = "<group>"; };
+		0D006E5F1D3702BB00DBDA7B /* SWRevealViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SWRevealViewController.m; path = SWRevealViewController/SWRevealViewController.m; sourceTree = "<group>"; };
 		0D128F4D1AD472340004CABE /* CMAJSONWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAJSONWriter.h; path = ApplicationModel/Backup/CMAJSONWriter.h; sourceTree = "<group>"; };
 		0D128F4E1AD472340004CABE /* CMAJSONWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAJSONWriter.m; path = ApplicationModel/Backup/CMAJSONWriter.m; sourceTree = "<group>"; };
 		0D128F541AD4C4A80004CABE /* TheAnglersLog 7.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "TheAnglersLog 7.xcdatamodel"; sourceTree = "<group>"; };
@@ -176,17 +159,6 @@
 		0D128F561AD5C1510004CABE /* CMAJSONWriter.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = CMAJSONWriter.json; path = ApplicationModel/Backup/CMAJSONWriter.json; sourceTree = "<group>"; };
 		0D128F581AD5C1BC0004CABE /* CMADataExporter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMADataExporter.h; path = ApplicationModel/Backup/CMADataExporter.h; sourceTree = "<group>"; };
 		0D128F591AD5C1BC0004CABE /* CMADataExporter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMADataExporter.m; path = ApplicationModel/Backup/CMADataExporter.m; sourceTree = "<group>"; };
-		0D128FA51AD5D7490004CABE /* crypt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = crypt.h; sourceTree = "<group>"; };
-		0D128FA61AD5D7490004CABE /* ioapi.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ioapi.c; sourceTree = "<group>"; };
-		0D128FA71AD5D7490004CABE /* ioapi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ioapi.h; sourceTree = "<group>"; };
-		0D128FA81AD5D7490004CABE /* mztools.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = mztools.c; sourceTree = "<group>"; };
-		0D128FA91AD5D7490004CABE /* mztools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mztools.h; sourceTree = "<group>"; };
-		0D128FAA1AD5D7490004CABE /* unzip.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = unzip.c; sourceTree = "<group>"; };
-		0D128FAB1AD5D7490004CABE /* unzip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = unzip.h; sourceTree = "<group>"; };
-		0D128FAC1AD5D7490004CABE /* zip.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip.c; sourceTree = "<group>"; };
-		0D128FAD1AD5D7490004CABE /* zip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zip.h; sourceTree = "<group>"; };
-		0D128FAE1AD5D7490004CABE /* SSZipArchive.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SSZipArchive.h; path = SSZipArchive/SSZipArchive.h; sourceTree = "<group>"; };
-		0D128FAF1AD5D7490004CABE /* SSZipArchive.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SSZipArchive.m; path = SSZipArchive/SSZipArchive.m; sourceTree = "<group>"; };
 		0D128FB51AD5D7600004CABE /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		0D23B2701A7713C900E89736 /* TheAnglersLog.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = TheAnglersLog.xcdatamodel; sourceTree = "<group>"; };
 		0D23B2721A78102B00E89736 /* CMAImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAImage.h; path = ApplicationModel/CMAImage.h; sourceTree = "<group>"; };
@@ -356,38 +328,11 @@
 		0D8F84481A6EC2C300AABAEA /* water_clarities_large.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = water_clarities_large.png; sourceTree = "<group>"; };
 		0D8F84491A6EC2C300AABAEA /* no_image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = no_image.png; path = AnglersLog/Images/no_image.png; sourceTree = SOURCE_ROOT; };
 		0D8F844A1A6EC2C300AABAEA /* rectile.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = rectile.png; path = AnglersLog/Images/rectile.png; sourceTree = SOURCE_ROOT; };
-		0D8F847C1A6EC2D900AABAEA /* AFHTTPRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFHTTPRequestOperation.h; sourceTree = "<group>"; };
-		0D8F847D1A6EC2D900AABAEA /* AFHTTPRequestOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFHTTPRequestOperation.m; sourceTree = "<group>"; };
-		0D8F847E1A6EC2D900AABAEA /* AFHTTPRequestOperationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFHTTPRequestOperationManager.h; sourceTree = "<group>"; };
-		0D8F847F1A6EC2D900AABAEA /* AFHTTPRequestOperationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFHTTPRequestOperationManager.m; sourceTree = "<group>"; };
-		0D8F84801A6EC2D900AABAEA /* AFHTTPSessionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFHTTPSessionManager.h; sourceTree = "<group>"; };
-		0D8F84811A6EC2D900AABAEA /* AFHTTPSessionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFHTTPSessionManager.m; sourceTree = "<group>"; };
-		0D8F84821A6EC2D900AABAEA /* AFNetworking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFNetworking.h; sourceTree = "<group>"; };
-		0D8F84831A6EC2D900AABAEA /* AFNetworkReachabilityManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFNetworkReachabilityManager.h; sourceTree = "<group>"; };
-		0D8F84841A6EC2D900AABAEA /* AFNetworkReachabilityManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFNetworkReachabilityManager.m; sourceTree = "<group>"; };
-		0D8F84851A6EC2D900AABAEA /* AFSecurityPolicy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFSecurityPolicy.h; sourceTree = "<group>"; };
-		0D8F84861A6EC2D900AABAEA /* AFSecurityPolicy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFSecurityPolicy.m; sourceTree = "<group>"; };
-		0D8F84871A6EC2D900AABAEA /* AFURLConnectionOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFURLConnectionOperation.h; sourceTree = "<group>"; };
-		0D8F84881A6EC2D900AABAEA /* AFURLConnectionOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFURLConnectionOperation.m; sourceTree = "<group>"; };
-		0D8F84891A6EC2D900AABAEA /* AFURLRequestSerialization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFURLRequestSerialization.h; sourceTree = "<group>"; };
-		0D8F848A1A6EC2D900AABAEA /* AFURLRequestSerialization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFURLRequestSerialization.m; sourceTree = "<group>"; };
-		0D8F848B1A6EC2D900AABAEA /* AFURLResponseSerialization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFURLResponseSerialization.h; sourceTree = "<group>"; };
-		0D8F848C1A6EC2D900AABAEA /* AFURLResponseSerialization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFURLResponseSerialization.m; sourceTree = "<group>"; };
-		0D8F848D1A6EC2D900AABAEA /* AFURLSessionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFURLSessionManager.h; sourceTree = "<group>"; };
-		0D8F848E1A6EC2D900AABAEA /* AFURLSessionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFURLSessionManager.m; sourceTree = "<group>"; };
-		0D8F84901A6EC2D900AABAEA /* OWMWeatherAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OWMWeatherAPI.h; sourceTree = "<group>"; };
-		0D8F84911A6EC2D900AABAEA /* OWMWeatherAPI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OWMWeatherAPI.m; sourceTree = "<group>"; };
-		0D8F84931A6EC2D900AABAEA /* SWRevealViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SWRevealViewController.h; sourceTree = "<group>"; };
-		0D8F84941A6EC2D900AABAEA /* SWRevealViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SWRevealViewController.m; sourceTree = "<group>"; };
-		0D8F84961A6EC2D900AABAEA /* XYPieChart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XYPieChart.h; sourceTree = "<group>"; };
-		0D8F84971A6EC2D900AABAEA /* XYPieChart.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XYPieChart.m; sourceTree = "<group>"; };
 		0D8F84A41A6EC31500AABAEA /* TheAnglersLog.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = TheAnglersLog.entitlements; path = AnglersLog/TheAnglersLog.entitlements; sourceTree = SOURCE_ROOT; };
 		0D9B760E1A76C4C100553177 /* CMAUserDefineObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMAUserDefineObject.h; sourceTree = "<group>"; };
 		0D9B760F1A76C4C100553177 /* CMAUserDefineObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CMAUserDefineObject.m; sourceTree = "<group>"; };
 		0DBFE94B1C8E45BB00BDCC1D /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = "<group>"; };
 		0DBFE94C1C8E45BB00BDCC1D /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
-		0DC5ABCE1C1F894B0047587E /* UIImage+ResizeMagick.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+ResizeMagick.h"; sourceTree = "<group>"; };
-		0DC5ABCF1C1F894B0047587E /* UIImage+ResizeMagick.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+ResizeMagick.m"; sourceTree = "<group>"; };
 		0DC75FDB1A9AEDCE0045030C /* CMASinglePhotoCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMASinglePhotoCollectionViewCell.h; path = CustomViews/CMASinglePhotoCollectionViewCell.h; sourceTree = "<group>"; };
 		0DC75FDC1A9AEDCE0045030C /* CMASinglePhotoCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMASinglePhotoCollectionViewCell.m; path = CustomViews/CMASinglePhotoCollectionViewCell.m; sourceTree = "<group>"; };
 		0DC75FE61A9BD9090045030C /* TheAnglersLog 4.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "TheAnglersLog 4.xcdatamodel"; sourceTree = "<group>"; };
@@ -408,6 +353,8 @@
 		0DCC26561A520DD300738F04 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		0DCC43271A99A3AD0019DB2E /* TheAnglersLog 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "TheAnglersLog 2.xcdatamodel"; sourceTree = "<group>"; };
 		0DCC43281A99B0D00019DB2E /* TheAnglersLog 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "TheAnglersLog 3.xcdatamodel"; sourceTree = "<group>"; };
+		493E619A3319133E8D65DB4D /* Pods-AnglersLog.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AnglersLog.debug.xcconfig"; path = "Pods/Target Support Files/Pods-AnglersLog/Pods-AnglersLog.debug.xcconfig"; sourceTree = "<group>"; };
+		C43B3CB978CF523B47875868 /* Pods-AnglersLog.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AnglersLog.release.xcconfig"; path = "Pods/Target Support Files/Pods-AnglersLog/Pods-AnglersLog.release.xcconfig"; sourceTree = "<group>"; };
 		E705AD7D1A22DD5C0077F16C /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		E70B637219D3A8E400DFBA85 /* AnglersLog.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AnglersLog.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E70B637519D3A8E400DFBA85 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -422,8 +369,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0DBFE94D1C8E45BB00BDCC1D /* Fabric.framework in Frameworks */,
-				0D1EC98A1C6664E400CBD819 /* Instabug.framework in Frameworks */,
 				0D128FB61AD5D7600004CABE /* libz.dylib in Frameworks */,
 				0D5584CE1ABF59C200719554 /* StoreKit.framework in Frameworks */,
 				0D248B0F1AB0C82200093290 /* iAd.framework in Frameworks */,
@@ -431,7 +376,6 @@
 				0DCAD6501AA4FFFE0040B03B /* OpenGLES.framework in Frameworks */,
 				0DCAD64E1AA4FFF00040B03B /* MessageUI.framework in Frameworks */,
 				0DCAD64C1AA4FFDD0040B03B /* AudioToolbox.framework in Frameworks */,
-				0DBFE94E1C8E45BB00BDCC1D /* Crashlytics.framework in Frameworks */,
 				0DCAD64A1AA4FFD20040B03B /* CoreTelephony.framework in Frameworks */,
 				0DCAD6481AA4FFC80040B03B /* CoreMotion.framework in Frameworks */,
 				0DCAD6461AA4FFBA0040B03B /* libc++.dylib in Frameworks */,
@@ -445,12 +389,22 @@
 				E70B637819D3A8E400DFBA85 /* CoreGraphics.framework in Frameworks */,
 				E70B637A19D3A8E400DFBA85 /* UIKit.framework in Frameworks */,
 				E70B637619D3A8E400DFBA85 /* Foundation.framework in Frameworks */,
+				D6E037DE99C4BF212C247133 /* Pods_AnglersLog.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0D006E5D1D3702A900DBDA7B /* SWRevealViewController */ = {
+			isa = PBXGroup;
+			children = (
+				0D006E5E1D3702BB00DBDA7B /* SWRevealViewController.h */,
+				0D006E5F1D3702BB00DBDA7B /* SWRevealViewController.m */,
+			);
+			name = SWRevealViewController;
+			sourceTree = "<group>";
+		};
 		0D128F441AD436220004CABE /* Backup */ = {
 			isa = PBXGroup;
 			children = (
@@ -465,33 +419,6 @@
 				0D87D0681AD6E3FB008E732A /* CMADataImporter.m */,
 			);
 			name = Backup;
-			sourceTree = "<group>";
-		};
-		0D128FA31AD5D73B0004CABE /* SSZipArchive */ = {
-			isa = PBXGroup;
-			children = (
-				0D128FA41AD5D7490004CABE /* minizip */,
-				0D128FAE1AD5D7490004CABE /* SSZipArchive.h */,
-				0D128FAF1AD5D7490004CABE /* SSZipArchive.m */,
-			);
-			name = SSZipArchive;
-			sourceTree = "<group>";
-		};
-		0D128FA41AD5D7490004CABE /* minizip */ = {
-			isa = PBXGroup;
-			children = (
-				0D128FA51AD5D7490004CABE /* crypt.h */,
-				0D128FA61AD5D7490004CABE /* ioapi.c */,
-				0D128FA71AD5D7490004CABE /* ioapi.h */,
-				0D128FA81AD5D7490004CABE /* mztools.c */,
-				0D128FA91AD5D7490004CABE /* mztools.h */,
-				0D128FAA1AD5D7490004CABE /* unzip.c */,
-				0D128FAB1AD5D7490004CABE /* unzip.h */,
-				0D128FAC1AD5D7490004CABE /* zip.c */,
-				0D128FAD1AD5D7490004CABE /* zip.h */,
-			);
-			name = minizip;
-			path = SSZipArchive/minizip;
 			sourceTree = "<group>";
 		};
 		0D8F83761A6EC10800AABAEA /* Statistics */ = {
@@ -658,70 +585,13 @@
 			path = AnglersLog/Images/LargeIcons;
 			sourceTree = SOURCE_ROOT;
 		};
-		0D8F847B1A6EC2D900AABAEA /* AFNetworking */ = {
+		9392542E7B56F7E064496078 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				0D8F847C1A6EC2D900AABAEA /* AFHTTPRequestOperation.h */,
-				0D8F847D1A6EC2D900AABAEA /* AFHTTPRequestOperation.m */,
-				0D8F847E1A6EC2D900AABAEA /* AFHTTPRequestOperationManager.h */,
-				0D8F847F1A6EC2D900AABAEA /* AFHTTPRequestOperationManager.m */,
-				0D8F84801A6EC2D900AABAEA /* AFHTTPSessionManager.h */,
-				0D8F84811A6EC2D900AABAEA /* AFHTTPSessionManager.m */,
-				0D8F84821A6EC2D900AABAEA /* AFNetworking.h */,
-				0D8F84831A6EC2D900AABAEA /* AFNetworkReachabilityManager.h */,
-				0D8F84841A6EC2D900AABAEA /* AFNetworkReachabilityManager.m */,
-				0D8F84851A6EC2D900AABAEA /* AFSecurityPolicy.h */,
-				0D8F84861A6EC2D900AABAEA /* AFSecurityPolicy.m */,
-				0D8F84871A6EC2D900AABAEA /* AFURLConnectionOperation.h */,
-				0D8F84881A6EC2D900AABAEA /* AFURLConnectionOperation.m */,
-				0D8F84891A6EC2D900AABAEA /* AFURLRequestSerialization.h */,
-				0D8F848A1A6EC2D900AABAEA /* AFURLRequestSerialization.m */,
-				0D8F848B1A6EC2D900AABAEA /* AFURLResponseSerialization.h */,
-				0D8F848C1A6EC2D900AABAEA /* AFURLResponseSerialization.m */,
-				0D8F848D1A6EC2D900AABAEA /* AFURLSessionManager.h */,
-				0D8F848E1A6EC2D900AABAEA /* AFURLSessionManager.m */,
+				493E619A3319133E8D65DB4D /* Pods-AnglersLog.debug.xcconfig */,
+				C43B3CB978CF523B47875868 /* Pods-AnglersLog.release.xcconfig */,
 			);
-			name = AFNetworking;
-			path = AnglersLog/Libraries/AFNetworking;
-			sourceTree = SOURCE_ROOT;
-		};
-		0D8F848F1A6EC2D900AABAEA /* OWMWeatherAPI */ = {
-			isa = PBXGroup;
-			children = (
-				0D8F84901A6EC2D900AABAEA /* OWMWeatherAPI.h */,
-				0D8F84911A6EC2D900AABAEA /* OWMWeatherAPI.m */,
-			);
-			name = OWMWeatherAPI;
-			path = AnglersLog/Libraries/OWMWeatherAPI;
-			sourceTree = SOURCE_ROOT;
-		};
-		0D8F84921A6EC2D900AABAEA /* SWRevealViewController */ = {
-			isa = PBXGroup;
-			children = (
-				0D8F84931A6EC2D900AABAEA /* SWRevealViewController.h */,
-				0D8F84941A6EC2D900AABAEA /* SWRevealViewController.m */,
-			);
-			name = SWRevealViewController;
-			path = AnglersLog/Libraries/SWRevealViewController;
-			sourceTree = SOURCE_ROOT;
-		};
-		0D8F84951A6EC2D900AABAEA /* XYPieChart */ = {
-			isa = PBXGroup;
-			children = (
-				0D8F84961A6EC2D900AABAEA /* XYPieChart.h */,
-				0D8F84971A6EC2D900AABAEA /* XYPieChart.m */,
-			);
-			name = XYPieChart;
-			path = AnglersLog/Libraries/XYPieChart;
-			sourceTree = SOURCE_ROOT;
-		};
-		0DC5ABCD1C1F892D0047587E /* ResizeMagick */ = {
-			isa = PBXGroup;
-			children = (
-				0DC5ABCE1C1F894B0047587E /* UIImage+ResizeMagick.h */,
-				0DC5ABCF1C1F894B0047587E /* UIImage+ResizeMagick.m */,
-			);
-			name = ResizeMagick;
+			name = Pods;
 			sourceTree = "<group>";
 		};
 		E70B636919D3A8E400DFBA85 = {
@@ -730,6 +600,7 @@
 				E70B637B19D3A8E400DFBA85 /* AnglersLog */,
 				E70B637419D3A8E400DFBA85 /* Frameworks */,
 				E70B637319D3A8E400DFBA85 /* Products */,
+				9392542E7B56F7E064496078 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -768,6 +639,7 @@
 				E70B637519D3A8E400DFBA85 /* Foundation.framework */,
 				E70B637719D3A8E400DFBA85 /* CoreGraphics.framework */,
 				E70B637919D3A8E400DFBA85 /* UIKit.framework */,
+				029851291812FE4E6CF732C9 /* Pods_AnglersLog.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -880,12 +752,7 @@
 		E7C29D0C1A143A1600015B42 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
-				0DC5ABCD1C1F892D0047587E /* ResizeMagick */,
-				0D128FA31AD5D73B0004CABE /* SSZipArchive */,
-				0D8F847B1A6EC2D900AABAEA /* AFNetworking */,
-				0D8F848F1A6EC2D900AABAEA /* OWMWeatherAPI */,
-				0D8F84921A6EC2D900AABAEA /* SWRevealViewController */,
-				0D8F84951A6EC2D900AABAEA /* XYPieChart */,
+				0D006E5D1D3702A900DBDA7B /* SWRevealViewController */,
 			);
 			path = Libraries;
 			sourceTree = "<group>";
@@ -933,10 +800,14 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = E70B639E19D3A8E400DFBA85 /* Build configuration list for PBXNativeTarget "AnglersLog" */;
 			buildPhases = (
+				317E6C28C46AD11CD916BD0D /* [CP] Check Pods Manifest.lock */,
 				E70B636E19D3A8E400DFBA85 /* Sources */,
 				E70B636F19D3A8E400DFBA85 /* Frameworks */,
 				E70B637019D3A8E400DFBA85 /* Resources */,
 				0DBFE94A1C8E456900BDCC1D /* ShellScript */,
+				0D30054E1D35CD6A00A1EEDD /* ShellScript */,
+				D671AC50BFFFD85CA40C799F /* [CP] Embed Pods Frameworks */,
+				B1E0DE96047352F4E40C4AB9 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -1027,7 +898,6 @@
 				0D8F84551A6EC2C300AABAEA /* bait.png in Resources */,
 				0D4ECDFD1ACB663B008B55E6 /* rapala.png in Resources */,
 				0D8F846B1A6EC2C300AABAEA /* sort@2x.png in Resources */,
-				0DCAD6431AA4FF540040B03B /* Instabug.bundle in Resources */,
 				0D8F84731A6EC2C300AABAEA /* fishing_methods_large.png in Resources */,
 				0D8F84121A6EC29A00AABAEA /* CMANoXView.xib in Resources */,
 				0D8F84661A6EC2C300AABAEA /* menu@2x.png in Resources */,
@@ -1056,6 +926,19 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		0D30054E1D35CD6A00A1EEDD /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "";
+		};
 		0DBFE94A1C8E456900BDCC1D /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1067,7 +950,52 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "./Fabric.framework/run d570cd50cd2bdb75cf4574dddd2936d781cc03af 8770c7938b6e0d387170bd0da2475915cade721b2b91f1804fb78ad382f7dbfb";
+			shellScript = "\"${PODS_ROOT}/Fabric/run\" d570cd50cd2bdb75cf4574dddd2936d781cc03af 8770c7938b6e0d387170bd0da2475915cade721b2b91f1804fb78ad382f7dbfb";
+		};
+		317E6C28C46AD11CD916BD0D /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		B1E0DE96047352F4E40C4AB9 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-AnglersLog/Pods-AnglersLog-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		D671AC50BFFFD85CA40C799F /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-AnglersLog/Pods-AnglersLog-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -1083,8 +1011,6 @@
 				0D8F838C1A6EC10800AABAEA /* CMAJournal.m in Sources */,
 				0D8F83961A6EC10800AABAEA /* CMASpecies.m in Sources */,
 				0D8F83DD1A6EC25200AABAEA /* CMAUserDefinesViewController.m in Sources */,
-				0D8F849A1A6EC2D900AABAEA /* AFHTTPSessionManager.m in Sources */,
-				0D8F849B1A6EC2D900AABAEA /* AFNetworkReachabilityManager.m in Sources */,
 				0D87D0691AD6E3FB008E732A /* CMADataImporter.m in Sources */,
 				0D8F83DE1A6EC25200AABAEA /* CMAAddEntryViewController.m in Sources */,
 				0D8F83E51A6EC25200AABAEA /* CMASingleLocationViewController.m in Sources */,
@@ -1098,51 +1024,36 @@
 				0D8F840A1A6EC29A00AABAEA /* CMABaitTableViewCell.m in Sources */,
 				0D8F83951A6EC10800AABAEA /* CMALocation.m in Sources */,
 				0D8F84111A6EC29A00AABAEA /* CMANoXView.m in Sources */,
-				0D128FB21AD5D7490004CABE /* unzip.c in Sources */,
 				0D8F838E1A6EC10800AABAEA /* CMAStorageManager.m in Sources */,
 				0D87D06F1AD7158A008E732A /* CMAJSONReader.m in Sources */,
 				0D8F838B1A6EC10800AABAEA /* CMAEntry.m in Sources */,
+				0D006E601D3702BB00DBDA7B /* SWRevealViewController.m in Sources */,
 				0D8F840B1A6EC29A00AABAEA /* CMACameraActionSheet.m in Sources */,
 				0D8F83E61A6EC25200AABAEA /* CMASinglePhotoViewController.m in Sources */,
 				0D8F840C1A6EC29A00AABAEA /* CMACameraButton.m in Sources */,
-				0D8F849F1A6EC2D900AABAEA /* AFURLResponseSerialization.m in Sources */,
 				0D8F83EE1A6EC28300AABAEA /* CMAAlerts.m in Sources */,
-				0D8F84A21A6EC2D900AABAEA /* SWRevealViewController.m in Sources */,
 				0D8F83D61A6EC25200AABAEA /* CMAAddBaitViewController.m in Sources */,
 				0D8F83971A6EC10800AABAEA /* CMAUserDefine.m in Sources */,
 				0DC75FDD1A9AEDCE0045030C /* CMASinglePhotoCollectionViewCell.m in Sources */,
 				0D8F83E01A6EC25200AABAEA /* CMASingleEntryViewController.m in Sources */,
 				0D8F83F01A6EC28300AABAEA /* CMAUtilities.m in Sources */,
 				0D8F84141A6EC29A00AABAEA /* CMAStatisticsTableViewCell.m in Sources */,
-				0D8F84A01A6EC2D900AABAEA /* AFURLSessionManager.m in Sources */,
 				0D8F83DF1A6EC25200AABAEA /* CMAEntrySortingViewController.m in Sources */,
-				0D128FB41AD5D7490004CABE /* SSZipArchive.m in Sources */,
-				0DC5ABD01C1F894B0047587E /* UIImage+ResizeMagick.m in Sources */,
 				0D8F83E31A6EC25200AABAEA /* CMAAddLocationViewController.m in Sources */,
-				0D8F84991A6EC2D900AABAEA /* AFHTTPRequestOperationManager.m in Sources */,
 				0D8F83DC1A6EC25200AABAEA /* CMAStatisticsViewController.m in Sources */,
 				0D8F84161A6EC29A00AABAEA /* CMAWeatherDataView.m in Sources */,
 				0D8F84151A6EC29A00AABAEA /* CMATouchSegmentedControl.m in Sources */,
 				0D8F83981A6EC10800AABAEA /* CMAWaterClarity.m in Sources */,
 				0D8F83911A6EC10800AABAEA /* CMAStatsObject.m in Sources */,
 				0D8F83DB1A6EC25200AABAEA /* CMASideMenuViewController.m in Sources */,
-				0D8F84A11A6EC2D900AABAEA /* OWMWeatherAPI.m in Sources */,
 				0D8F84131A6EC29A00AABAEA /* CMADeleteActionSheet.m in Sources */,
 				0D8F838F1A6EC10800AABAEA /* CMAWeatherData.m in Sources */,
-				0D8F849C1A6EC2D900AABAEA /* AFSecurityPolicy.m in Sources */,
 				0D87D06C1AD6E69C008E732A /* CMAAlertController.m in Sources */,
-				0D128FB01AD5D7490004CABE /* ioapi.c in Sources */,
 				0D8F83D71A6EC25200AABAEA /* CMASingleBaitViewController.m in Sources */,
-				0D8F84981A6EC2D900AABAEA /* AFHTTPRequestOperation.m in Sources */,
-				0D128FB31AD5D7490004CABE /* zip.c in Sources */,
 				0D9B76101A76C4C100553177 /* CMAUserDefineObject.m in Sources */,
 				0D8F840F1A6EC29A00AABAEA /* CMAEntryTableViewCell.m in Sources */,
 				0D128F501AD472340004CABE /* CMAJSONWriter.m in Sources */,
 				0D28AAB11ABB44F9009E8184 /* CMAAdBanner.m in Sources */,
-				0D8F849D1A6EC2D900AABAEA /* AFURLConnectionOperation.m in Sources */,
-				0D8F849E1A6EC2D900AABAEA /* AFURLRequestSerialization.m in Sources */,
-				0D128FB11AD5D7490004CABE /* mztools.c in Sources */,
-				0D8F84A31A6EC2D900AABAEA /* XYPieChart.m in Sources */,
 				0D8F83921A6EC10800AABAEA /* CMABait.m in Sources */,
 				0D8F84101A6EC29A00AABAEA /* CMAInstagramActivity.m in Sources */,
 				0D8F840D1A6EC29A00AABAEA /* CMACircleView.m in Sources */,
@@ -1243,6 +1154,7 @@
 		};
 		E70B639F19D3A8E400DFBA85 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 493E619A3319133E8D65DB4D /* Pods-AnglersLog.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -1268,6 +1180,7 @@
 		};
 		E70B63A019D3A8E400DFBA85 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C43B3CB978CF523B47875868 /* Pods-AnglersLog.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;

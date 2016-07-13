@@ -1,0 +1,35 @@
+PODS:
+  - AFNetworking (1.3.4)
+  - Crashlytics (3.7.2):
+    - Fabric (~> 1.6.3)
+  - Fabric (1.6.7)
+  - Instabug (5.3)
+  - OpenWeatherMapAPI (0.0.5):
+    - AFNetworking (~> 1.3.1)
+  - SSZipArchive (1.3)
+  - UIImage-ResizeMagick (0.0.1)
+  - XYPieChart (0.2)
+
+DEPENDENCIES:
+  - AFNetworking (~> 1.3.1)
+  - Crashlytics
+  - Fabric
+  - Instabug
+  - OpenWeatherMapAPI (~> 0.0.5)
+  - SSZipArchive
+  - UIImage-ResizeMagick
+  - XYPieChart
+
+SPEC CHECKSUMS:
+  AFNetworking: cf8e418e16f0c9c7e5c3150d019a3c679d015018
+  Crashlytics: 130ab943f8c78cda7a814b434f270b2e2c8a3cba
+  Fabric: caf7580c725e64db144f610ac65cd60956911dc7
+  Instabug: 16031235d7656f3b7104232a25ec4cecb3c0ce3b
+  OpenWeatherMapAPI: 53613bba3dffc948f852a66a25f512f7a16643e7
+  SSZipArchive: 5525196ee195b473dcc4a0d4d2cba98bfa3eb1c1
+  UIImage-ResizeMagick: f08c2d14d1e8a5f0b402185408785540562f2fe7
+  XYPieChart: 0efd8069d26c25d20ab74c01b5ad455f1fc48153
+
+PODFILE CHECKSUM: 52a2d1916e469f76aa64c2a23d019b24c1331bb0
+
+COCOAPODS: 1.0.1

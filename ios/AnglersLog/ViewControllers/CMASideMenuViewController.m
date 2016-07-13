@@ -110,7 +110,7 @@
         [self.revealViewController toggleOverlay];
         
         SWRevealViewControllerSegue *swSegue = (SWRevealViewControllerSegue*)segue;
-        
+
         swSegue.performBlock = ^(SWRevealViewControllerSegue *rvc_segue, UIViewController *svc, UIViewController *dvc) {
             UINavigationController *navController = (UINavigationController *)self.revealViewController.frontViewController;
             [navController setViewControllers: @[dvc] animated: NO];

@@ -1,0 +1,14 @@
+source 'https://github.com/CocoaPods/Specs.git'
+platform :ios, '8.3'
+
+target 'AnglersLog' do
+    use_frameworks!
+    pod 'UIImage-ResizeMagick'
+    pod 'SSZipArchive'
+    pod 'AFNetworking', '~> 1.3.1'
+    pod 'OpenWeatherMapAPI', '~> 0.0.5'
+    pod 'XYPieChart'
+    pod 'Instabug'
+    pod 'Fabric'
+    pod 'Crashlytics'
+end 
