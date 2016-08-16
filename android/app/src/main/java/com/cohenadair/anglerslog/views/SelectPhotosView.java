@@ -184,8 +184,13 @@ public class SelectPhotosView extends LinearLayout {
     }
 
     private void addSingleImageFromIntent(Intent data) {
+        // https://developer.android.com/reference/android/provider/MediaStore.html#ACTION_IMAGE_CAPTURE
+        // the Uri passed to a ACTION_IMAGE_CAPTURE intent is where the image is saved
+        // for some devices, like the Nexus 5X, it is the only way to read resulting data
+        // for most devices, the photo Uri is passed to Intent.getData()
+        Uri photoUri = (data == null || data.getData() == null) ? Uri.fromFile(mPublicPhotoFile) : data.getData();
+
         // scale down selected/taken photo and copy it to a private directory
-        Uri photoUri = (data == null) ? Uri.fromFile(mPublicPhotoFile) : data.getData();
         PhotoUtils.copyAndResizePhoto(photoUri, mPrivatePhotoFile);
 
         // make sure photo taken shows up in the user's gallery
