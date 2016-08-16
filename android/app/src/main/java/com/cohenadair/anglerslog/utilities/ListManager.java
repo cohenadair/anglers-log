@@ -90,6 +90,11 @@ public class ListManager {
 
         @Override
         public boolean onLongClick(View view) {
+            if (getAdapter().isDisableLongClick()) {
+                // false so the normal click event is triggered
+                return false;
+            }
+
             UserDefineObject obj = getObject();
 
             AlertUtils.showManageOptions(getContext(), obj.getName(), new DialogInterface.OnClickListener() {
@@ -198,7 +203,8 @@ public class ListManager {
     //region Adapter
     public static abstract class Adapter extends ListSelectionManager.Adapter {
 
-        private boolean mCondensed;
+        private boolean mCondensed = false;
+        private boolean mDisableLongClick = false;
 
         /**
          * @see com.cohenadair.anglerslog.utilities.ListSelectionManager.Adapter
@@ -219,6 +225,14 @@ public class ListManager {
 
         public boolean isCondensed() {
             return mCondensed;
+        }
+
+        public boolean isDisableLongClick() {
+            return mDisableLongClick;
+        }
+
+        public void setDisableLongClick(boolean disableLongClick) {
+            mDisableLongClick = disableLongClick;
         }
     }
     //endregion

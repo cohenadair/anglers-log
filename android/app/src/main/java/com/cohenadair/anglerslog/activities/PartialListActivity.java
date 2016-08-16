@@ -109,18 +109,28 @@ public class PartialListActivity extends DefaultActivity {
 
     @Nullable
     private ListManager.Adapter getAdapter() {
+        ListManager.Adapter adapter = null;
+
         switch (mLayoutId) {
             case LayoutSpecManager.LAYOUT_CATCHES:
-                return new CatchListManager.Adapter(this, idsToCatches(), getOnClickInterface());
+                adapter = new CatchListManager.Adapter(this, idsToCatches(), getOnClickInterface());
+                break;
 
             case LayoutSpecManager.LAYOUT_LOCATIONS:
-                return new LocationListManager.Adapter(this, idsToLocations(), getOnClickInterface());
+                adapter = new LocationListManager.Adapter(this, idsToLocations(), getOnClickInterface());
+                break;
 
             case LayoutSpecManager.LAYOUT_BAITS:
-                return new BaitListManager.Adapter(this, idsToBaits(), getOnClickInterface());
+                adapter = new BaitListManager.Adapter(this, idsToBaits(), getOnClickInterface());
+                break;
         }
 
-        return null;
+        // disable deleting/editing
+        if (adapter != null) {
+            adapter.setDisableLongClick(true);
+        }
+
+        return adapter;
     }
 
     @NonNull
