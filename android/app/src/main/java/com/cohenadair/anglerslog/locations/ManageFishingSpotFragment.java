@@ -224,10 +224,10 @@ public class ManageFishingSpotFragment extends ManageContentFragment {
 
     private void initCoordinatesView(View view) {
         mLatitudeView = (InputTextView)view.findViewById(R.id.latitude_layout);
-        mLatitudeView.setAllowsNegativeNumbers(true);
+        mLatitudeView.allowNegativeFloatingNumbersOnly();
 
         mLongitudeView = (InputTextView)view.findViewById(R.id.longitude_layout);
-        mLongitudeView.setAllowsNegativeNumbers(true);
+        mLongitudeView.allowNegativeFloatingNumbersOnly();
     }
 
     private void initRefreshButton(View view) {

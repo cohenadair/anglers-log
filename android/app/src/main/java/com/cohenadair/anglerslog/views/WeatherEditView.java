@@ -44,9 +44,11 @@ public class WeatherEditView extends LinearLayout {
         inflate(getContext(), R.layout.view_weather_edit, this);
 
         mTemperatureView = (InputTextView)findViewById(R.id.temperature_view);
-        mTemperatureView.setAllowsNegativeNumbers(true);
+        mTemperatureView.allowNegativeWholeNumbersOnly();
 
         mWindSpeedView = (InputTextView)findViewById(R.id.wind_speed_view);
+        mWindSpeedView.allowPositiveWholeNumbersOnly();
+
         mSkyConditionsView = (InputTextView)findViewById(R.id.sky_conditions_view);
 
         initUnitsSpinner();

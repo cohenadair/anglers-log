@@ -58,8 +58,15 @@ public class InputTextView extends LeftIconView {
             String editHint = arr.getString(R.styleable.InputTextView_editTextHint);
             mEditText.setHint(editHint);
 
-            setNumbersOnly(arr.getBoolean(R.styleable.InputTextView_numbersOnly, false));
-            setCapSentencesOnly(arr.getBoolean(R.styleable.InputTextView_capSentencesOnly, false));
+            // TODO rename `numbersOnly` to `floatingNumbersOnly`
+            if (arr.getBoolean(R.styleable.InputTextView_numbersOnly, false)) {
+                allowPositiveFloatingNumbersOnly();
+            }
+
+            // TODO rename `capSentencesOnly` to `multilineCapSentencesOnly`
+            if (arr.getBoolean(R.styleable.InputTextView_capSentencesOnly, false)) {
+                allowMultilineCapSentencesOnly();
+            }
 
         } finally {
             arr.recycle(); // required after using TypedArray
@@ -92,10 +99,7 @@ public class InputTextView extends LeftIconView {
     }
     //endregion
 
-    public void setAllowsNegativeNumbers(boolean allowsNegativeNumbers) {
-        if (!allowsNegativeNumbers)
-            return;
-
+    public void allowNegativeFloatingNumbersOnly() {
         mEditText.setInputType(
                 InputType.TYPE_CLASS_NUMBER |
                 InputType.TYPE_NUMBER_FLAG_DECIMAL |
@@ -103,20 +107,27 @@ public class InputTextView extends LeftIconView {
         );
     }
 
-    public void setNumbersOnly(boolean numbersOnly) {
-        if (!numbersOnly)
-            return;
+    public void allowNegativeWholeNumbersOnly() {
+        mEditText.setInputType(
+                InputType.TYPE_CLASS_NUMBER |
+                InputType.TYPE_NUMBER_FLAG_SIGNED
+        );
+    }
 
+    public void allowPositiveFloatingNumbersOnly() {
         mEditText.setInputType(
                 InputType.TYPE_CLASS_NUMBER |
                 InputType.TYPE_NUMBER_FLAG_DECIMAL
         );
     }
 
-    public void setCapSentencesOnly(boolean capSentencesOnly) {
-        if (!capSentencesOnly)
-            return;
+    public void allowPositiveWholeNumbersOnly() {
+        mEditText.setInputType(
+                InputType.TYPE_CLASS_NUMBER
+        );
+    }
 
+    public void allowMultilineCapSentencesOnly() {
         mEditText.setInputType(
                 InputType.TYPE_CLASS_TEXT |
                 InputType.TYPE_TEXT_FLAG_MULTI_LINE |
