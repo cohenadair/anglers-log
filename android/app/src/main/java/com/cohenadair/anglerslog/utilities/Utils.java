@@ -190,6 +190,9 @@ public class Utils {
      * @see <a href="http://developer.android.com/training/system-ui/immersive.html">Using Immersive Full-Screen Mode</a>
      */
     public static void showSystemUI(Activity activity) {
+        if (activity == null)
+            return;
+
         activity.getWindow().getDecorView().setSystemUiVisibility(
                 View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
                 View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION |
@@ -201,6 +204,9 @@ public class Utils {
      * @see #showSystemUI(Activity)
      */
     public static void hideSystemUI(Activity activity) {
+        if (activity == null)
+            return;
+        
         // set the content to appear under the system bars so that the content
         // doesn't resize when the system bars hide and show.
         activity.getWindow().getDecorView().setSystemUiVisibility(
