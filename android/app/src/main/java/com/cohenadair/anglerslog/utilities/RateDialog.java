@@ -50,6 +50,7 @@ public class RateDialog extends DialogFragment {
         mContext = context;
 
         if (isFirstRun()) {
+            resetTime();
             setFirstRun(false);
             return;
         }
