@@ -1,16 +1,21 @@
 package com.cohenadair.anglerslog.stats;
 
+import android.graphics.Color;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.style.AbsoluteSizeSpan;
+import android.text.style.ForegroundColorSpan;
+import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.activities.DefaultActivity;
@@ -23,15 +28,18 @@ import com.cohenadair.anglerslog.utilities.ViewUtils;
 import com.cohenadair.anglerslog.views.DisplayLabelView;
 import com.cohenadair.anglerslog.views.PropertyDetailView;
 import com.github.lzyzsd.randomcolor.RandomColor;
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.listener.ChartTouchListener;
+import com.github.mikephil.charting.listener.OnChartGestureListener;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import lecho.lib.hellocharts.listener.PieChartOnValueSelectListener;
-import lecho.lib.hellocharts.model.PieChartData;
-import lecho.lib.hellocharts.model.SelectedValue;
-import lecho.lib.hellocharts.model.SliceValue;
-import lecho.lib.hellocharts.view.PieChartView;
 
 /**
  * A statistics fragment used to show the number of catches for a particular
@@ -43,20 +51,21 @@ public class CatchesCountFragment extends Fragment {
 
     private static final String ARG_STATS_ID = "arg_stats_id";
 
+    private static final float SCREEN_HEIGHT_PERCENT = 0.575f;
+    private static final float SLICE_SPACE = 2.5f;
+    private static final float HOLE_RADIUS_PERCENT = 75.0f;
+    private static final float TRASPARENT_HOLE_RADIUS_PERCENT = 80.0f;
+    private static final float CENTER_TEXT_RADIUS_PERCENT = 95.0f;
+
     private StatsManager.StatsSpec mStatsSpec;
 
-    private PieChartView mPieChartView;
-    private TextView mPieCenterTitle;
-    private TextView mPieCenterSubtitle;
+    private PieChart mPieChart;
     private DisplayLabelView mDetailView;
     private LinearLayout mExtendedView;
     private LinearLayout mExtendedWrapper;
 
-    /**
-     * Used to capture click events on the center circle of the pie chart.
-     */
-    private boolean mClickedSlice = false;
-    private boolean mIsFirst = true;
+    // used to disable the "deselect" feature
+    private int mLastSelectedPosition = -1;
 
     public static CatchesCountFragment newInstance(int statsId) {
         CatchesCountFragment fragment = new CatchesCountFragment();
@@ -90,7 +99,6 @@ public class CatchesCountFragment extends Fragment {
         ImageView extendedIcon = (ImageView)view.findViewById(R.id.extended_icon);
         extendedIcon.setImageResource(mStatsSpec.getExtendedIconResource());
 
-        initPieChartCenter(view);
         initPieChart(view);
         initTotalSpeciesView(view);
         initTotalCatchesView(view);
@@ -98,97 +106,86 @@ public class CatchesCountFragment extends Fragment {
         return view;
     }
 
-    private void initPieChartCenter(View view) {
-        mPieCenterTitle = (TextView)view.findViewById(R.id.pie_center_title);
-        mPieCenterSubtitle = (TextView)view.findViewById(R.id.pie_center_subtitle);
-    }
-
     private void initPieChart(View view) {
-        mPieChartView = (PieChartView)view.findViewById(R.id.pie_chart);
+        mPieChart = (PieChart)view.findViewById(R.id.pie_chart);
 
         // set chart's height relative to the screen size
         // this can't be done in XML because it's a child of a ScrollView
         Point screenSize = Utils.getScreenSize(getContext());
-        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(screenSize.x, (int)(screenSize.y * 0.60));
-        mPieChartView.setLayoutParams(params);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(screenSize.x, (int)(screenSize.y * SCREEN_HEIGHT_PERCENT));
+        params.topMargin = getResources().getDimensionPixelOffset(R.dimen.margin_default);
+        params.gravity = Gravity.CENTER_HORIZONTAL; // required for tablets in landscape
+        mPieChart.setLayoutParams(params);
 
-        ViewUtils.setVisibility(mPieChartView, getTotalCatches() > 0);
+        ViewUtils.setVisibility(mPieChart, getTotalCatches() > 0);
 
-        List<SliceValue> values = new ArrayList<>();
+        List<Stats.Quantity> items = mStatsSpec.getContent();
+        List<PieEntry> entries = new ArrayList<>();
+        int[] colors = new int[mStatsSpec.getContent().size()];
 
-        for (Stats.Quantity item : mStatsSpec.getContent())
-            values.add(new SliceValue(item.getQuantity()).setLabel(item.getName()).setColor(new RandomColor().randomColor()));
+        for (int i = 0; i < items.size(); i ++) {
+            Stats.Quantity item = items.get(i);
+            entries.add(new PieEntry(item.getQuantity(), item.getName()));
+            colors[i] = new RandomColor().randomColor();
+        }
 
-        PieChartData data = new PieChartData();
-        data.setValues(values);
-        data.setHasCenterCircle(true);
-        data.setCenterCircleScale((float) 0.775); // size of the center circle
+        PieDataSet pieDataSet = new PieDataSet(entries, "");
+        pieDataSet.setColors(colors);
+        pieDataSet.setSliceSpace(SLICE_SPACE);
+        pieDataSet.setDrawValues(false);
+        PieData pieData = new PieData(pieDataSet);
 
-        mPieChartView.setPieChartData(data);
-        mPieChartView.setCircleFillRatio((float) 0.925); // percent of container
-        mPieChartView.setValueSelectionEnabled(true);
-        mPieChartView.setChartRotationEnabled(false);
-        mPieChartView.setClickable(true);
+        mPieChart.setData(pieData);
+        mPieChart.setHoleRadius(HOLE_RADIUS_PERCENT);
+        mPieChart.setTransparentCircleRadius(TRASPARENT_HOLE_RADIUS_PERCENT);
+        mPieChart.setCenterTextRadiusPercent(CENTER_TEXT_RADIUS_PERCENT);
+        mPieChart.setDrawEntryLabels(false);
+        mPieChart.setDrawCenterText(true);
+        mPieChart.setDescription(""); // hide description
+        mPieChart.setOnChartGestureListener(mPieChartListener);
+        mPieChart.setOnChartValueSelectedListener(mPieChartValueSelectedListener);
 
-        mPieChartView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!mClickedSlice)
-                    onClickCenterCircle();
-
-                mClickedSlice = false;
-            }
-        });
-
-        mPieChartView.setOnValueTouchListener(new PieChartOnValueSelectListener() {
-            @Override
-            public void onValueSelected(int arcIndex, SliceValue value) {
-                updatePieCenter(arcIndex, false);
-
-                if (mIsFirst) {
-                    mIsFirst = false;
-                    return;
-                }
-
-                mClickedSlice = true;
-            }
-
-            @Override
-            public void onValueDeselected() {
-
-            }
-        });
-
-        // set the center circle's title size based on the rendered pie chart
-        int w = mPieChartView.getLayoutParams().width;
-        int h = mPieChartView.getLayoutParams().height;
-
-        // take the smaller of the width/height for tablet support
-        int baseline = (h < w) ? h : w;
-
-        int width =
-                (int)(baseline * mPieChartView.getCircleFillRatio() * mPieChartView.getPieChartData().getCenterCircleScale() - // width of inner circle
-                (getResources().getDimensionPixelOffset(R.dimen.margin_default) * 2) - // left and right margin of the chart
-                (getResources().getDimensionPixelOffset(R.dimen.margin_half) * 2)); // left and right margin of the title TextView
-
-        LinearLayout.LayoutParams linearParams =
-                new LinearLayout.LayoutParams(width, LinearLayout.LayoutParams.WRAP_CONTENT);
-
-        mPieCenterTitle.setLayoutParams(linearParams);
-
-        // select the first item
-        updatePieCenter(values.size() - 1, true);
+        mPieChart.highlightValue(entries.size() - 1, 0, true);
+        mPieChart.invalidate();
     }
 
-    private void updatePieCenter(int position, boolean select) {
-        PieChartData data = mPieChartView.getPieChartData();
-        SliceValue value = data.getValues().get(position);
+    private void updatePieCenter(PieEntry entry, int position, boolean highlightSlice) {
+        String label = entry.getLabel();
+        String value = getCircleSubtitle((int)entry.getValue());
 
-        if (select)
-            mPieChartView.selectValue(new SelectedValue(position, 0, SelectedValue.SelectedValueType.NONE));
+        SpannableStringBuilder builder = new SpannableStringBuilder()
+                .append(label)
+                .append("\n")
+                .append(value);
 
-        mPieCenterTitle.setText(new String(value.getLabelAsChars()));
-        mPieCenterSubtitle.setText(getCircleSubtitle(value));
+        // style the title
+        builder.setSpan(
+                new AbsoluteSizeSpan(getResources().getDimensionPixelSize(R.dimen.font_large)),
+                0,
+                label.length(),
+                Spannable.SPAN_INCLUSIVE_EXCLUSIVE
+        );
+
+        // style the subtitle
+        builder.setSpan(
+                new AbsoluteSizeSpan(getResources().getDimensionPixelSize(R.dimen.font_medium)),
+                label.length(),
+                label.length() + value.length() + 1,
+                Spannable.SPAN_INCLUSIVE_EXCLUSIVE
+        );
+
+        builder.setSpan(
+                new ForegroundColorSpan(Color.GRAY),
+                label.length(),
+                label.length() + value.length() + 1,
+                Spannable.SPAN_INCLUSIVE_EXCLUSIVE
+        );
+
+        mPieChart.setCenterText(builder);
+
+        if (highlightSlice) {
+            mPieChart.highlightValue(position, 0, false);
+        }
 
         updateMoreDetail(position);
         updateExtended(position);
@@ -233,8 +230,12 @@ public class CatchesCountFragment extends Fragment {
         ViewUtils.setVisibility(mExtendedWrapper, count > 0);
     }
 
-    private String getCircleSubtitle(SliceValue value) {
-        return Integer.toString((int) value.getValue()) + " " + getResources().getString(R.string.drawer_catches);
+    private PieEntry getEntryAtPosition(int position) {
+        return mPieChart.getData().getDataSet().getEntryForIndex(position);
+    }
+
+    private String getCircleSubtitle(float value) {
+        return Integer.toString((int) value) + " " + getResources().getString(R.string.drawer_catches);
     }
 
     private void onClickCenterCircle() {
@@ -247,9 +248,8 @@ public class CatchesCountFragment extends Fragment {
         AlertUtils.showSelection(getContext(), getChildFragmentManager(), adapter, new AlertUtils.OnSelectionDialogCallback() {
             @Override
             public void onSelect(int position) {
-                mPieChartView.invalidate();
-                updatePieCenter(position, true);
-                mClickedSlice = false;
+                updatePieCenter(getEntryAtPosition(position), position, true);
+                mPieChart.invalidate();
             }
         });
     }
@@ -271,4 +271,76 @@ public class CatchesCountFragment extends Fragment {
             total += item.getQuantity();
         return total;
     }
+
+    private OnChartValueSelectedListener mPieChartValueSelectedListener = new OnChartValueSelectedListener() {
+        @Override
+        public void onValueSelected(Entry e, Highlight h) {
+            mLastSelectedPosition = (int)h.getX();
+            PieEntry entry = (PieEntry) e;
+            updatePieCenter(entry, mLastSelectedPosition, false);
+        }
+
+        @Override
+        public void onNothingSelected() {
+            // required so the slice isn't "deselected"
+            if (mLastSelectedPosition != -1) {
+                mPieChart.highlightValue(mLastSelectedPosition, 0, false);
+            }
+        }
+    };
+
+    private OnChartGestureListener mPieChartListener = new OnChartGestureListener() {
+        @Override
+        public void onChartGestureStart(MotionEvent me, ChartTouchListener.ChartGesture lastPerformedGesture) {
+
+        }
+
+        @Override
+        public void onChartGestureEnd(MotionEvent me, ChartTouchListener.ChartGesture lastPerformedGesture) {
+
+        }
+
+        @Override
+        public void onChartLongPressed(MotionEvent me) {
+
+        }
+
+        @Override
+        public void onChartDoubleTapped(MotionEvent me) {
+
+        }
+
+        @Override
+        public void onChartSingleTapped(MotionEvent me) {
+            // get the coordinates of the point clicked and make sure it is in the center of the
+            // chart
+            float x = me.getX();
+            float y = me.getY();
+
+            float radius = mPieChart.getWidth() * (HOLE_RADIUS_PERCENT / 100) / 2;
+            float centerX = (mPieChart.getX() + mPieChart.getWidth()) / 2;
+            float centerY = (mPieChart.getY() + mPieChart.getHeight()) / 2;
+
+            float distance = (float)Math.hypot(x - centerX, y - centerY);
+
+            if (distance < (radius / 2)) {
+                onClickCenterCircle();
+            }
+        }
+
+        @Override
+        public void onChartFling(MotionEvent me1, MotionEvent me2, float velocityX, float velocityY) {
+
+        }
+
+        @Override
+        public void onChartScale(MotionEvent me, float scaleX, float scaleY) {
+
+        }
+
+        @Override
+        public void onChartTranslate(MotionEvent me, float dX, float dY) {
+
+        }
+    };
 }

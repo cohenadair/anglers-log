@@ -15,45 +15,10 @@
         android:paddingTop="@dimen/margin_half"
         android:paddingBottom="@dimen/margin_default">
 
-        <!-- Pie Chart -->
-        <RelativeLayout
+        <com.github.mikephil.charting.charts.PieChart
+            android:id="@+id/pie_chart"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <lecho.lib.hellocharts.view.PieChartView
-                android:id="@+id/pie_chart"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"/>
-
-            <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:gravity="center_horizontal">
-
-                <TextView
-                    style="@style/TextView.Large"
-                    android:id="@+id/pie_center_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:gravity="center"
-                    tools:text="Lure - Blue Fox Spinner"/>
-
-                <TextView
-                    style="@style/TextView.MediumSubtitle"
-                    android:id="@+id/pie_center_subtitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:gravity="center"
-                    tools:text="15 Catches"/>
-
-            </LinearLayout>
-
-        </RelativeLayout>
+            android:layout_height="match_parent"/>
 
         <LinearLayout
             android:orientation="vertical"

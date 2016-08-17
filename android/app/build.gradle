@@ -14,6 +14,12 @@ repositories {
     maven { url 'https://maven.fabric.io/public' }
 }
 
+allprojects {
+    repositories {
+        maven { url "https://jitpack.io" }
+    }
+}
+
 android {
     signingConfigs {
         AnglersLogRelease {
@@ -73,7 +79,7 @@ dependencies {
     compile 'com.google.android.gms:play-services-location:9.0.0'
     compile 'commons-io:commons-io:2.4'
     compile 'de.hdodenhof:circleimageview:2.0.0'
-    compile 'com.github.lecho:hellocharts-library:1.5.8@aar'
+    compile 'com.github.PhilJay:MPAndroidChart:v3.0.0-beta1'
     compile 'com.github.lzyzsd.randomcolor:library:1.0.0'
     compile 'com.adobe.xmp:xmpcore:5.1.2'
     compile 'com.davemorrissey.labs:subsampling-scale-image-view:3.4.1'
