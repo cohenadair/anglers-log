@@ -21,7 +21,8 @@ import com.cohenadair.anglerslog.views.InputTextView;
 import com.cohenadair.anglerslog.views.MoreDetailView;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -29,7 +30,7 @@ import java.util.UUID;
  */
 public class ManageLocationFragment extends ManageContentFragment {
 
-    private LinearLayout mContainer;
+    private LinearLayout mFishingSpotContainer;
     private InputTextView mNameView;
 
     private ArrayList<MoreDetailView> mFishingSpotViews;
@@ -47,7 +48,7 @@ public class ManageLocationFragment extends ManageContentFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_manage_location, container, false);
 
-        mContainer = (LinearLayout)view.findViewById(R.id.container);
+        mFishingSpotContainer = (LinearLayout)view.findViewById(R.id.container);
 
         initNameView(view);
         initAddFishingSpotView(view);
@@ -56,8 +57,9 @@ public class ManageLocationFragment extends ManageContentFragment {
         if (mFishingSpots == null || !isEditing())
             mFishingSpots = new ArrayList<>();
 
-        if (mFishingSpotViews == null)
+        if (mFishingSpotViews == null) {
             mFishingSpotViews = new ArrayList<>();
+        }
 
         return view;
     }
@@ -153,11 +155,8 @@ public class ManageLocationFragment extends ManageContentFragment {
 
     private void updateAllFishingSpots() {
         // remove all old views
-        for (MoreDetailView fishingSpotView : mFishingSpotViews) {
-            ViewGroup parent = ((ViewGroup)fishingSpotView.getParent());
-            if (parent != null)
-                parent.removeView(fishingSpotView);
-        }
+        mFishingSpotContainer.removeAllViews();
+        mFishingSpotViews.clear();
 
         for (UserDefineObject spot : mFishingSpots)
             addFishingSpot((FishingSpot)spot);
@@ -190,8 +189,7 @@ public class ManageLocationFragment extends ManageContentFragment {
         fishingSpotView.setOnClickDetailButton(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mFishingSpots.remove(spot);
-                mContainer.removeView(fishingSpotView);
+                removeFishingSpot(spot, fishingSpotView);
             }
         });
 
@@ -203,7 +201,13 @@ public class ManageLocationFragment extends ManageContentFragment {
         });
 
         mFishingSpotViews.add(fishingSpotView);
-        mContainer.addView(fishingSpotView);
+        mFishingSpotContainer.addView(fishingSpotView);
+    }
+
+    private void removeFishingSpot(FishingSpot fishingSpot, MoreDetailView view) {
+        mFishingSpots.remove(fishingSpot);
+        mFishingSpotContainer.removeView(view);
+        mFishingSpotViews.remove(view);
     }
 
     /**
@@ -218,9 +222,9 @@ public class ManageLocationFragment extends ManageContentFragment {
 
         // get all possible fishing spots to be used when adding a new spot
         // this is purely for user convenience
-        List<UserDefineObject> allPossibleFishingSpots = mFishingSpots;
-        mFishingSpots.addAll(getNewLocation().getFishingSpots());
-        fragment.setFishingSpots(allPossibleFishingSpots);
+        Set<UserDefineObject> allPossibleFishingSpots = new HashSet<>(mFishingSpots);
+        allPossibleFishingSpots.addAll(getNewLocation().getFishingSpots());
+        fragment.setFishingSpots(new ArrayList<>(allPossibleFishingSpots));
 
         fragment.setOnVerifyInterface(new ManageFishingSpotFragment.OnVerifyInterface() {
             @Override
