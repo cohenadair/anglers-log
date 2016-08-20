@@ -180,8 +180,12 @@ public class UserDefineArrays {
         ArrayList<UserDefineObject> objects = new ArrayList<>();
 
         if (arr != null)
-            for (UUID id : arr)
-                objects.add(callbacks.onGetObject(id.toString()));
+            for (UUID id : arr) {
+                UserDefineObject obj = callbacks.onGetObject(id.toString());
+                if (obj != null) {
+                    objects.add(obj);
+                }
+            }
 
         return objects;
     }
