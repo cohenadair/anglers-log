@@ -189,7 +189,20 @@ public class ManageCatchFragment extends ManageContentFragment {
     }
 
     @Override
-    public void updateViews() {
+    protected void validateNewObject() {
+        Catch newCatch = getNewCatch();
+
+        if (newCatch.getBait() != null) {
+            getNewCatch().setBait(Logbook.getBait(newCatch.getBait().getId()));
+        }
+
+        if (newCatch.getFishingSpot() != null) {
+            getNewCatch().setFishingSpot(Logbook.getFishingSpot(newCatch.getFishingSpot().getId()));
+        }
+    }
+
+    @Override
+    protected void updateViews() {
         mDateTimeView.setPrimaryButtonText(getNewCatch().getDateAsString());
         mDateTimeView.setSecondaryButtonText(getNewCatch().getTimeAsString());
         mSpeciesView.setPrimaryButtonText(getNewCatch().getSpeciesAsString());

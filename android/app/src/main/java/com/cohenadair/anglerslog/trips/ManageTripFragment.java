@@ -142,8 +142,14 @@ public class ManageTripFragment extends ManageContentFragment {
     }
 
     //region View Updating
+
     @Override
-    public void updateViews() {
+    protected void validateNewObject() {
+
+    }
+
+    @Override
+    protected void updateViews() {
         mNameView.setInputText(getNewTrip().getNameAsString());
         mStartDateView.setPrimaryButtonText(getNewTrip().getStartDateAsString());
         mEndDateView.setPrimaryButtonText(getNewTrip().getEndDateAsString());

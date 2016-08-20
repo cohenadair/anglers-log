@@ -149,7 +149,12 @@ public class ManageFishingSpotFragment extends ManageContentFragment {
     }
 
     @Override
-    public void updateViews() {
+    protected void validateNewObject() {
+
+    }
+
+    @Override
+    protected void updateViews() {
         mNameView.setInputText(getNewFishingSpot().getName() != null ? getNewFishingSpot().getName() : "");
         updateMap();
     }

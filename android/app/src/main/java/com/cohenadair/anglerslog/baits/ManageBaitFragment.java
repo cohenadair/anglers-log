@@ -131,7 +131,12 @@ public class ManageBaitFragment extends ManageContentFragment {
     }
 
     @Override
-    public void updateViews() {
+    protected void validateNewObject() {
+
+    }
+
+    @Override
+    protected void updateViews() {
         mCategoryView.setPrimaryButtonText(getNewBait().getBaitCategoryAsString());
         mNameView.setInputText(getNewBait().getNameAsString());
         mColorView.setInputText(getNewBait().getColorAsString());

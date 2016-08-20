@@ -48,7 +48,7 @@ public abstract class ManageContentFragment extends Fragment {
     /**
      * Updates each view; normally used for editing.
      */
-    public abstract void updateViews();
+    protected abstract void updateViews();
 
     /**
      * Gets a {@link com.cohenadair.anglerslog.fragments.ManageContentFragment.ManageObjectSpec}
@@ -68,6 +68,14 @@ public abstract class ManageContentFragment extends Fragment {
      * @return True if everything is valid; false otherwise.
      */
     public abstract boolean verifyUserInput();
+
+    /**
+     * A double-check to make sure all the object's properties are valid. A property may become
+     * invalid during management. For example, selecting a bait when adding a catch, and then
+     * proceeding to delete that bait from the {@link MyListSelectionActivity} will eventually
+     * result in error.
+     */
+    protected abstract void validateNewObject();
 
     /**
      * Used as a callback for {@link MyListSelectionActivity} instances.
@@ -98,6 +106,7 @@ public abstract class ManageContentFragment extends Fragment {
         if (getNewObject() == null)
             initSubclassObject();
 
+        validateNewObject();
         updateViews();
     }
 

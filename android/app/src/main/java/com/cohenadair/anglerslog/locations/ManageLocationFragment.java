@@ -148,7 +148,12 @@ public class ManageLocationFragment extends ManageContentFragment {
     }
 
     @Override
-    public void updateViews() {
+    protected void validateNewObject() {
+
+    }
+
+    @Override
+    protected void updateViews() {
         mNameView.setInputText(getNewLocation().getName() != null ? getNewLocation().getName() : "");
         updateAllFishingSpots();
     }
