@@ -145,7 +145,14 @@ public class ManageTripFragment extends ManageContentFragment {
 
     @Override
     protected void validateNewObject() {
+        Trip newTrip = getNewTrip();
 
+        newTrip.setAnglers(UserDefineArrays.getValidObjects(newTrip.getAnglers(), new UserDefineArrays.OnConvertInterface() {
+            @Override
+            public UserDefineObject onGetObject(String idStr) {
+                return Logbook.getAngler(UUID.fromString(idStr));
+            }
+        }));
     }
 
     @Override
@@ -198,13 +205,13 @@ public class ManageTripFragment extends ManageContentFragment {
     }
 
     public void initAnglersView(View view) {
-        final ManagePrimitiveFragment.OnDismissInterface onDismissInterface = new ManagePrimitiveFragment.OnDismissInterface() {
+        final ManagePrimitiveFragment.OnDismissInterface onDismissInterface = getDismissInterface(new PrimitiveDismissListener() {
             @Override
-            public void onDismiss(ArrayList<UUID> selectedIds) {
+            public void onDismissWithSelection(ArrayList<UUID> selectedIds) {
                 mSelectedAnglersIds = selectedIds;
                 mAnglersView.setPrimaryButtonText(UserDefineArrays.namesAsString(getSelectedAnglers()));
             }
-        };
+        });
 
         mAnglersView = (InputButtonView)view.findViewById(R.id.anglers_view);
         mAnglersView.setOnClickPrimaryButton(new View.OnClickListener() {

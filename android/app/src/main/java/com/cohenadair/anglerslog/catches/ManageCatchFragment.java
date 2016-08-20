@@ -193,12 +193,27 @@ public class ManageCatchFragment extends ManageContentFragment {
         Catch newCatch = getNewCatch();
 
         if (newCatch.getBait() != null) {
-            getNewCatch().setBait(Logbook.getBait(newCatch.getBait().getId()));
+            newCatch.setBait(Logbook.getBait(newCatch.getBait().getId()));
         }
 
         if (newCatch.getFishingSpot() != null) {
-            getNewCatch().setFishingSpot(Logbook.getFishingSpot(newCatch.getFishingSpot().getId()));
+            newCatch.setFishingSpot(Logbook.getFishingSpot(newCatch.getFishingSpot().getId()));
         }
+
+        if (newCatch.getSpecies() != null) {
+            newCatch.setSpecies(Logbook.getSpecies(newCatch.getSpecies().getId()));
+        }
+
+        if (newCatch.getWaterClarity() != null) {
+            newCatch.setWaterClarity(Logbook.getWaterClarity(newCatch.getWaterClarity().getId()));
+        }
+
+        newCatch.setFishingMethods(UserDefineArrays.getValidObjects(newCatch.getFishingMethods(), new UserDefineArrays.OnConvertInterface() {
+            @Override
+            public UserDefineObject onGetObject(String idStr) {
+                return Logbook.getFishingMethod(UUID.fromString(idStr));
+            }
+        }));
     }
 
     @Override
@@ -301,13 +316,13 @@ public class ManageCatchFragment extends ManageContentFragment {
     //endregion
 
     private void initSpeciesView(View view) {
-        final ManagePrimitiveFragment.OnDismissInterface onDismissInterface = new ManagePrimitiveFragment.OnDismissInterface() {
+        final ManagePrimitiveFragment.OnDismissInterface onDismissInterface = getDismissInterface(new PrimitiveDismissListener() {
             @Override
-            public void onDismiss(ArrayList<UUID> selectedIds) {
+            public void onDismissWithSelection(ArrayList<UUID> selectedIds) {
                 getNewCatch().setSpecies(Logbook.getSpecies(selectedIds.get(0)));
                 mSpeciesView.setPrimaryButtonText(getNewCatch().getSpeciesAsString());
             }
-        };
+        });
 
         mSpeciesView = (InputButtonView)view.findViewById(R.id.species_view);
         mSpeciesView.setOnClickPrimaryButton(new View.OnClickListener() {
@@ -351,13 +366,13 @@ public class ManageCatchFragment extends ManageContentFragment {
     }
 
     private void initWaterClarityView(View view) {
-        final ManagePrimitiveFragment.OnDismissInterface onDismissInterface = new ManagePrimitiveFragment.OnDismissInterface() {
+        final ManagePrimitiveFragment.OnDismissInterface onDismissInterface = getDismissInterface(new PrimitiveDismissListener() {
             @Override
-            public void onDismiss(ArrayList<UUID> selectedIds) {
+            public void onDismissWithSelection(ArrayList<UUID> selectedIds) {
                 getNewCatch().setWaterClarity(Logbook.getWaterClarity(selectedIds.get(0)));
                 mWaterClarityView.setPrimaryButtonText(getNewCatch().getWaterClarityAsString());
             }
-        };
+        });
 
         mWaterClarityView = (InputButtonView)view.findViewById(R.id.water_clarity_view);
         mWaterClarityView.setOnClickPrimaryButton(new View.OnClickListener() {
@@ -369,13 +384,13 @@ public class ManageCatchFragment extends ManageContentFragment {
     }
 
     private void initFishingMethodsView(View view) {
-        final ManagePrimitiveFragment.OnDismissInterface onDismissInterface = new ManagePrimitiveFragment.OnDismissInterface() {
+        final ManagePrimitiveFragment.OnDismissInterface onDismissInterface = getDismissInterface(new PrimitiveDismissListener() {
             @Override
-            public void onDismiss(ArrayList<UUID> selectedIds) {
+            public void onDismissWithSelection(ArrayList<UUID> selectedIds) {
                 mSelectedFishingMethods = selectedIds;
                 mFishingMethodsView.setPrimaryButtonText(UserDefineArrays.namesAsString(getSelectedFishingMethods()));
             }
-        };
+        });
 
         mFishingMethodsView = (InputButtonView)view.findViewById(R.id.fishing_methods_view);
         mFishingMethodsView.setOnClickPrimaryButton(new View.OnClickListener() {

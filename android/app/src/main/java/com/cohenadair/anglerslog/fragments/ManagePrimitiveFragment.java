@@ -68,7 +68,8 @@ public class ManagePrimitiveFragment extends DialogFragment {
      * OnDismissInterface must be implemented by any view utilizing a ManagePrimitiveFragment.
      */
     public interface OnDismissInterface {
-        void onDismiss(ArrayList<UUID> selectedIds);
+        void onDismissWithSelection(ArrayList<UUID> selectedIds);
+        void onDismissAlways();
     }
 
     /**
@@ -120,12 +121,21 @@ public class ManagePrimitiveFragment extends DialogFragment {
         return view;
     }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        if (mOnDismissInterface != null) {
+            mOnDismissInterface.onDismissAlways();
+        }
+    }
+
     public void dismissFragment() {
         // reset should delete if the delete selection was never confirmed
         for (UserDefineObject obj : mPrimitiveSpec.getItems())
             obj.setShouldDelete(false);
 
-        mOnDismissInterface.onDismiss(mAdapter.getSelectedIds());
+        mOnDismissInterface.onDismissWithSelection(mAdapter.getSelectedIds());
         getDialog().dismiss();
     }
 

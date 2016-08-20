@@ -9,6 +9,7 @@ import com.cohenadair.anglerslog.utilities.Utils;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -189,6 +190,27 @@ public class UserDefineArrays {
             }
 
         return objects;
+    }
+
+    /**
+     * Iterates through the given array of {@link UserDefineObject}s, filtering out that aren't
+     * associated with a {@link UserDefineObject}.
+     *
+     * @param objs The list of {@link UserDefineObject}s.
+     * @param callbacks The callbacks for getting the correct {@link UserDefineObject} instance.
+     * @return A list of valid {@link UserDefineObject} instances.
+     */
+    public static ArrayList<UserDefineObject> getValidObjects(List<UserDefineObject> objs, OnConvertInterface callbacks) {
+        ArrayList<UserDefineObject> result = new ArrayList<>();
+
+        for (UserDefineObject o: objs) {
+            UserDefineObject obj = callbacks.onGetObject(o.getIdAsString());
+            if (obj != null) {
+                result.add(obj);
+            }
+        }
+
+        return result;
     }
 
     /**

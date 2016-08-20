@@ -106,8 +106,7 @@ public abstract class ManageContentFragment extends Fragment {
         if (getNewObject() == null)
             initSubclassObject();
 
-        validateNewObject();
-        updateViews();
+        validateAndUpdateViews();
     }
 
     @Override
@@ -128,6 +127,11 @@ public abstract class ManageContentFragment extends Fragment {
         }
 
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+    public void validateAndUpdateViews() {
+        validateNewObject();
+        updateViews();
     }
 
     //region Getters & Setters
@@ -379,6 +383,28 @@ public abstract class ManageContentFragment extends Fragment {
      */
     private void updateCalendar(Date date) {
         Calendar.getInstance().setTime(date);
+    }
+
+    /**
+     * Used a wrapper for a {@link com.cohenadair.anglerslog.fragments.ManagePrimitiveFragment.OnDismissInterface}
+     * so we don't repeat common methods.
+     */
+    protected interface PrimitiveDismissListener {
+        void onDismissWithSelection(ArrayList<UUID> selectedIds);
+    }
+
+    protected ManagePrimitiveFragment.OnDismissInterface getDismissInterface(final PrimitiveDismissListener listener) {
+        return new ManagePrimitiveFragment.OnDismissInterface() {
+            @Override
+            public void onDismissWithSelection(ArrayList<UUID> selectedIds) {
+                listener.onDismissWithSelection(selectedIds);
+            }
+
+            @Override
+            public void onDismissAlways() {
+                validateAndUpdateViews();
+            }
+        };
     }
 
     /**

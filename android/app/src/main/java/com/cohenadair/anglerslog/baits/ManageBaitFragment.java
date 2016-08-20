@@ -132,7 +132,11 @@ public class ManageBaitFragment extends ManageContentFragment {
 
     @Override
     protected void validateNewObject() {
+        Bait newBait = getNewBait();
 
+        if (newBait.getCategory() != null) {
+            newBait.setCategory(Logbook.getBaitCategory(newBait.getCategoryId()));
+        }
     }
 
     @Override
@@ -146,13 +150,13 @@ public class ManageBaitFragment extends ManageContentFragment {
     }
 
     private void initCategoryView(View view) {
-        final ManagePrimitiveFragment.OnDismissInterface onDismissInterface = new ManagePrimitiveFragment.OnDismissInterface() {
+        final ManagePrimitiveFragment.OnDismissInterface onDismissInterface = getDismissInterface(new PrimitiveDismissListener() {
             @Override
-            public void onDismiss(ArrayList<UUID> selectedIds) {
+            public void onDismissWithSelection(ArrayList<UUID> selectedIds) {
                 getNewBait().setCategory(Logbook.getBaitCategory(selectedIds.get(0)));
                 mCategoryView.setPrimaryButtonText(getNewBait().getCategoryName());
             }
-        };
+        });
 
         mCategoryView = (InputButtonView)view.findViewById(R.id.category_view);
         mCategoryView.setOnClickPrimaryButton(new View.OnClickListener() {
