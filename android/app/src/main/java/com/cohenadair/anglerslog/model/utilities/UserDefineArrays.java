@@ -170,11 +170,12 @@ public class UserDefineArrays {
     }
 
     /**
-     * Gets a list of {@link UserDefineObject} objects based on the given array of ids.
+     * Gets a list of {@link UserDefineObject} objects based on the given array of ids. This also
+     * makes sure all passed in ids are valid.
      *
      * @param arr The {@link UserDefineObject} array to convert.
      * @param callbacks Callbacks used to get the object from the Logbook.
-     * @return An array of {@link UserDefineObject} objects.
+     * @return An array of {@link UserDefineObject} objects. There will be no null elements.
      */
     public static ArrayList<UserDefineObject> objectsFromIds(ArrayList<UUID> arr, OnConvertInterface callbacks) {
         ArrayList<UserDefineObject> objects = new ArrayList<>();
