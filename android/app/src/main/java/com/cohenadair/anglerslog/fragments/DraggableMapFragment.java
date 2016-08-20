@@ -264,7 +264,9 @@ public class DraggableMapFragment extends SupportMapFragment implements OnMapRea
      * Takes a screenshot of the map.
      */
     public void takeSnapshot(GoogleMap.SnapshotReadyCallback callback) {
-        mGoogleMap.snapshot(callback);
+        if (mGoogleMap != null) {
+            mGoogleMap.snapshot(callback);
+        }
     }
 
     /**
