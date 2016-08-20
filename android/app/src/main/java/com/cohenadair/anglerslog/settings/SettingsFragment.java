@@ -1,6 +1,7 @@
 package com.cohenadair.anglerslog.settings;
 
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -123,6 +124,15 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         });
     }
 
+    private void startBackupActivity(Intent intent, int request) {
+        try {
+            startActivityForResult(intent, request);
+        } catch (ActivityNotFoundException e) {
+            e.printStackTrace();
+            AlertUtils.showError(getContext(), R.string.backup_activity_not_found);
+        }
+    }
+
     private void initImport() {
         Preference importPref = findPreference(getResources().getString(R.string.pref_import));
         importPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
@@ -130,8 +140,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             public boolean onPreferenceClick(Preference preference) {
                 Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
                 intent.setType(Utils.MIME_TYPE_ZIP);
-
-                startActivityForResult(intent, REQUEST_IMPORT);
+                startBackupActivity(intent, REQUEST_IMPORT);
                 return true;
             }
         });
@@ -227,7 +236,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                         intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(zipFile));
                         intent.setType(Utils.MIME_TYPE_ZIP);
 
-                        startActivityForResult(intent, REQUEST_EXPORT);
+                        startBackupActivity(intent, REQUEST_EXPORT);
                     }
 
                     @Override

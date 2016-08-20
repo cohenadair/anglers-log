@@ -238,6 +238,7 @@
     <string name="error_weather_form">Please fill out all fields.</string>
     <string name="error_getting_weather">Couldn\'t get weather data.</string>
     <string name="error_google_services">Couldn\'t connect to Google Play Services.</string>
+    <string name="backup_activity_not_found">There is no app on this device that can read and write an Anglers\' Log backup file (.zip).</string>
 
     <string name="success_bait">Successfully added bait</string>
     <string name="success_bait_delete">Successfully deleted bait</string>
