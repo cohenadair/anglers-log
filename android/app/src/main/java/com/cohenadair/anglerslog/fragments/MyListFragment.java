@@ -157,8 +157,10 @@ public class MyListFragment extends MasterFragment {
     }
 
     private void initBottomSheets(View view) {
+        final BottomSheetView bugsBottomSheet = (BottomSheetView)view.findViewById(R.id.instabug_bottom_sheet_view);
+        final BottomSheetView backupSheetView = (BottomSheetView)view.findViewById(R.id.backup_bottom_sheet_view);
+
         if (LogbookPreferences.shouldShowInstabugSheet()) {
-            final BottomSheetView bugsBottomSheet = (BottomSheetView)view.findViewById(R.id.instabug_bottom_sheet_view);
             bugsBottomSheet.init(
                     bugsBottomSheet,
                     R.drawable.instabug_ic_ibg_logo_dark,
@@ -173,10 +175,12 @@ public class MyListFragment extends MasterFragment {
                         }
                     }
             );
+        } else {
+            // just a precaution if it happens to be showing
+            bugsBottomSheet.setVisibility(View.GONE);
         }
 
         if (LogbookPreferences.shouldShowBackupSheet()) {
-            final BottomSheetView backupSheetView = (BottomSheetView)view.findViewById(R.id.backup_bottom_sheet_view);
             backupSheetView.init(
                     backupSheetView,
                     R.drawable.ic_info,
@@ -191,6 +195,9 @@ public class MyListFragment extends MasterFragment {
                         }
                     }
             );
+        } else {
+            // just a precaution if it happens to be showing
+            backupSheetView.setVisibility(View.GONE);
         }
     }
     //endregion

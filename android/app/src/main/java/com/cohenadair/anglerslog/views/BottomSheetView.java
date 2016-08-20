@@ -54,6 +54,7 @@ public class BottomSheetView extends LinearLayout {
         mDescriptionTextView.setText(description);
         mCloseButton.setText(buttonText);
 
+        mBehavior.setHideable(true);
         mBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
@@ -91,7 +92,7 @@ public class BottomSheetView extends LinearLayout {
     }
 
     public void collapse() {
-        mBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+        mBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
     }
 
 }
