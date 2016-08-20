@@ -1,5 +1,7 @@
 package com.cohenadair.anglerslog.map;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.SearchView;
@@ -24,6 +26,7 @@ import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import com.cohenadair.anglerslog.model.utilities.SortingUtils;
 import com.cohenadair.anglerslog.model.utilities.UserDefineArrays;
 import com.cohenadair.anglerslog.utilities.FishingSpotMarkerManager;
+import com.cohenadair.anglerslog.utilities.Utils;
 import com.cohenadair.anglerslog.utilities.ViewUtils;
 import com.google.android.gms.maps.GoogleMap;
 
@@ -88,6 +91,11 @@ public class LocationMapFragment extends MasterFragment {
 
         if (id == R.id.action_zoom) {
             mMarkerManager.showAllMarkers();
+            return true;
+        }
+
+        if (id == R.id.action_share) {
+            onClickShareMap();
             return true;
         }
 
@@ -266,5 +274,17 @@ public class LocationMapFragment extends MasterFragment {
     @NonNull
     private ArrayAdapter<UserDefineObject> getSearchAdapter(ArrayList<UserDefineObject> items) {
         return new ArrayAdapter<>(getContext(), R.layout.list_item_white, items);
+    }
+
+    private void onClickShareMap() {
+        mMapFragment.takeSnapshot(new DraggableMapFragment.SnapshotListener() {
+            @Override
+            public void onTakeSnapshot(Uri saveUri) {
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.putExtra(Intent.EXTRA_STREAM, saveUri);
+                intent.setType(Utils.MIME_TYPE_IMAGE);
+                startActivity(Intent.createChooser(intent, null));
+            }
+        });
     }
 }

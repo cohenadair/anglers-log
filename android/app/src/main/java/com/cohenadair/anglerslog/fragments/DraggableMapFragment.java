@@ -1,8 +1,11 @@
 package com.cohenadair.anglerslog.fragments;
 
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
@@ -45,9 +48,11 @@ public class DraggableMapFragment extends SupportMapFragment implements OnMapRea
     private GoogleApiClient mGoogleApiClient;
     private View mOriginalView;
     private GoogleMap mGoogleMap;
+    private Bitmap mShareBitmap;
 
     private GoogleMapLayout.OnDragListener mOnDragListener;
     private InteractionListener mCallbacks;
+    private SnapshotListener mSnapshotListener;
     private OnUpdateMapType mOnUpdateMapType;
     private boolean mLocationEnabled = false;
     private boolean mLocationUpdatesEnabled = false;
@@ -55,6 +60,10 @@ public class DraggableMapFragment extends SupportMapFragment implements OnMapRea
     public interface InteractionListener {
         void onMapReady(GoogleMap map);
         void onLocationUpdate(Location location);
+    }
+
+    public interface SnapshotListener {
+        void onTakeSnapshot(Uri saveUri);
     }
 
     /**
@@ -151,13 +160,25 @@ public class DraggableMapFragment extends SupportMapFragment implements OnMapRea
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode != PermissionUtils.REQUEST_LOCATION || permissions.length != 1)
+        if (grantResults.length <= 0)
             return;
 
-        if (permissions[0].equals(PermissionUtils.LOCATION) && grantResults[0] == PermissionUtils.GRANTED)
+        if (permissions.length > 0 &&
+            permissions[0].equals(PermissionUtils.LOCATION) &&
+            grantResults[0] == PermissionUtils.GRANTED)
+        {
             enableMyLocation();
-        else
+        } else {
             AlertUtils.showError(getContext(), R.string.location_permissions_denied);
+        }
+
+        if (requestCode == PermissionUtils.REQUEST_EXTERNAL_STORAGE &&
+            grantResults[0] == PermissionUtils.GRANTED)
+        {
+            saveSnapshot();
+        } else {
+            AlertUtils.showError(getContext(), R.string.storage_permissions_denied);
+        }
     }
 
     @Override
@@ -263,9 +284,31 @@ public class DraggableMapFragment extends SupportMapFragment implements OnMapRea
     /**
      * Takes a screenshot of the map.
      */
-    public void takeSnapshot(GoogleMap.SnapshotReadyCallback callback) {
-        if (mGoogleMap != null) {
-            mGoogleMap.snapshot(callback);
+    public void takeSnapshot(@NonNull final SnapshotListener listener) {
+        if (mGoogleMap == null) {
+            return;
+        }
+
+        mGoogleMap.snapshot(new GoogleMap.SnapshotReadyCallback() {
+            @Override
+            public void onSnapshotReady(Bitmap bitmap) {
+                mSnapshotListener = listener;
+                mShareBitmap = bitmap;
+
+                if (PermissionUtils.isExternalStorageGranted(getContext())) {
+                    saveSnapshot();
+                } else {
+                    PermissionUtils.requestExternalStorage(DraggableMapFragment.this);
+                }
+            }
+        });
+    }
+
+    private void saveSnapshot() {
+        if (mSnapshotListener != null) {
+            mSnapshotListener.onTakeSnapshot(Uri.parse(
+                    MediaStore.Images.Media.insertImage(getContext().getContentResolver(),
+                            mShareBitmap, "google_map_snapshot", null)));
         }
     }
 
