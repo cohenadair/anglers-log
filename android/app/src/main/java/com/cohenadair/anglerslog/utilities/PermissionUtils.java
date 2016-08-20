@@ -82,7 +82,7 @@ public class PermissionUtils {
      * @return True if permission is grated, false otherwise.
      */
     public static boolean isLocationGranted(Context context) {
-        return ContextCompat.checkSelfPermission(context, LOCATION) == GRANTED;
+        return context != null && ContextCompat.checkSelfPermission(context, LOCATION) == GRANTED;
     }
 
     /**
@@ -112,6 +112,15 @@ public class PermissionUtils {
         }
 
         return false;
+    }
+
+    /**
+     * Checks to see if the first result is granted.
+     * @param grantResults The grant results, returned from Fragment.onRequestPermissionResult.
+     * @return True if the permission is granted, false otherwise.
+     */
+    public static boolean isGranted(int[] grantResults) {
+        return grantResults.length > 0 && grantResults[0] == PermissionUtils.GRANTED;
     }
 
     /**

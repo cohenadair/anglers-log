@@ -160,25 +160,27 @@ public class DraggableMapFragment extends SupportMapFragment implements OnMapRea
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (grantResults.length <= 0)
-            return;
+        switch (requestCode) {
+            case PermissionUtils.REQUEST_LOCATION: {
+                if (PermissionUtils.isGranted(grantResults)) {
+                    enableMyLocation();
+                } else {
+                    AlertUtils.showError(getContext(), R.string.location_permissions_denied);
+                }
+                return;
+            }
 
-        if (permissions.length > 0 &&
-            permissions[0].equals(PermissionUtils.LOCATION) &&
-            grantResults[0] == PermissionUtils.GRANTED)
-        {
-            enableMyLocation();
-        } else {
-            AlertUtils.showError(getContext(), R.string.location_permissions_denied);
+            case PermissionUtils.REQUEST_EXTERNAL_STORAGE: {
+                if (PermissionUtils.isGranted(grantResults)) {
+                    saveSnapshot();
+                } else {
+                    AlertUtils.showError(getContext(), R.string.storage_permissions_denied);
+                }
+                return;
+            }
         }
 
-        if (requestCode == PermissionUtils.REQUEST_EXTERNAL_STORAGE &&
-            grantResults[0] == PermissionUtils.GRANTED)
-        {
-            saveSnapshot();
-        } else {
-            AlertUtils.showError(getContext(), R.string.storage_permissions_denied);
-        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     @Override
