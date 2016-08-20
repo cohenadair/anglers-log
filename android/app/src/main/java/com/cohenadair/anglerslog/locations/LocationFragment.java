@@ -259,6 +259,12 @@ public class LocationFragment extends DetailFragment {
         ArrayList<UserDefineObject> fishingSpots = mLocation.getFishingSpots();
 
         final int selectedIndex = mFishingSpotSpinner.getSelectedItemPosition();
+
+        // hopefully fixed issue #90 (I was never able to reproduce the exception) -Cohen
+        if (selectedIndex == -1) {
+            return;
+        }
+
         FishingSpot fishingSpot = (FishingSpot)fishingSpots.get(selectedIndex);
 
         // move the camera to the current fishing spot
