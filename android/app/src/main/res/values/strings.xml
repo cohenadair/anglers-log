@@ -5,7 +5,7 @@
     <string name="app_description">Track, analyze, share.</string>
     <string name="app_photos_dir">/AnglersLog</string>
     <string name="hashtag">AnglersLogApp</string>
-    <string name="website">http://cohenadair.com/anglerslog/</string>
+    <string name="website">https://cohenadair.github.io/anglerslog/</string>
     <string name="share_text">Shared with @anglerslog for #android #anglerslogapp</string>
 
     <string name="rate_msg">Please take a minute to rate Anglers\' Log.  All feedback is greatly appreciated!</string>
