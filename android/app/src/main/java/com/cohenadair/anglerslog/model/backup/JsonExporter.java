@@ -51,7 +51,7 @@ public class JsonExporter {
      */
     @NonNull
     public static String dateToString(Date date) {
-        return new SimpleDateFormat(Json.DATE_FORMAT, Locale.US).format(date);
+        return new SimpleDateFormat(Json.DATE_FORMAT_MS, Locale.US).format(date);
     }
 
     /**
