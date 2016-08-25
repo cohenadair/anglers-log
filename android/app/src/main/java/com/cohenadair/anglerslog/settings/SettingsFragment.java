@@ -128,8 +128,15 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         try {
             startActivityForResult(intent, request);
         } catch (ActivityNotFoundException e) {
-            e.printStackTrace();
-            AlertUtils.showError(getContext(), R.string.backup_activity_not_found);
+            // try launching activity again with the mime-type set to all files
+            // this is an issue with some devices (known to happen for Galaxy devices)
+            try {
+                intent.setType("*/*");
+                startActivityForResult(intent, request);
+            } catch (ActivityNotFoundException e2) {
+                e2.printStackTrace();
+                AlertUtils.showError(getContext(), R.string.backup_activity_not_found);
+            }
         }
     }
 
@@ -197,9 +204,9 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                     }
 
                     @Override
-                    public void onError(int errorNo) {
+                    public void onError(String errorMsg) {
                         importFragment.dismiss();
-                        Utils.showToast(getContext(), getResources().getString(R.string.import_error) + " " + errorNo);
+                        Utils.showToast(getContext(), errorMsg);
                     }
                 });
                 mImportUri = null;

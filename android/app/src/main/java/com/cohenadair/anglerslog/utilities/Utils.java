@@ -27,6 +27,7 @@ public class Utils {
 
     public static final String MIME_TYPE_IMAGE = "image/*";
     public static final String MIME_TYPE_ZIP = "application/zip";
+    public static final String FILE_EXTENSION_ZIP = "zip";
 
     /**
      * @return True if the current Android version if equal to or newer than Marshmallow.

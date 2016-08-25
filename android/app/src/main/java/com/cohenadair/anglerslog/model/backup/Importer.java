@@ -4,9 +4,11 @@ import android.content.ContentResolver;
 import android.net.Uri;
 import android.os.Handler;
 import android.util.Log;
+import android.webkit.MimeTypeMap;
 
 import com.cohenadair.anglerslog.model.Logbook;
 import com.cohenadair.anglerslog.utilities.PhotoUtils;
+import com.cohenadair.anglerslog.utilities.Utils;
 
 import org.apache.commons.io.IOUtils;
 import org.json.JSONException;
@@ -32,12 +34,27 @@ public class Importer {
 
     private static final String TAG = "Importer";
 
-    public static final int ERROR_URI_NOT_FOUND = 0;
-    public static final int ERROR_ZIP_CLOSE = 1;
-    public static final int ERROR_ZIP_ITERATE = 2;
-    public static final int ERROR_JSON_PARSE = 3;
-    public static final int ERROR_JSON_READ = 4;
-    public static final int ERROR_IMAGE_IMPORT = 5;
+    public enum Error {
+        ERROR_URI_NOT_FOUND(0, "File not found"),
+        ERROR_ZIP_CLOSE(1, "Error closing file"),
+        ERROR_ZIP_ITERATE(2, "Error extracting file"),
+        ERROR_JSON_PARSE(3, "Error reading data file"),
+        ERROR_JSON_READ(4, "Invalid data format"),
+        ERROR_IMAGE_IMPORT(5, "Error importing photos"),
+        ERROR_INVALID_FILE_EXT(6, "Not a .zip file");
+
+        private final int mId;
+        private final String mMsg;
+
+        Error(int id, String msg) {
+            mId = id;
+            mMsg = msg;
+        }
+
+        public String getMessage() {
+            return mMsg + " (Error no. " + mId + ")";
+        }
+    }
 
     private static ContentResolver mContentResolver;
     private static Uri mUri;
@@ -49,7 +66,7 @@ public class Importer {
      */
     public interface OnProgressListener {
         void onFinish();
-        void onError(int errorNo);
+        void onError(String errorMsg);
     }
 
     /**
@@ -67,7 +84,14 @@ public class Importer {
         mCallbacks = onProgress;
         mHandler = new Handler();
 
-        new Thread(new UnzipRunnable()).start();
+        String fileExt = MimeTypeMap.getSingleton().getExtensionFromMimeType(mContentResolver.getType(uri));
+        Log.d("Importer", "File extension: " + fileExt);
+
+        if (fileExt.equals(Utils.FILE_EXTENSION_ZIP)) {
+            new Thread(new UnzipRunnable()).start();
+        } else {
+            error(Error.ERROR_INVALID_FILE_EXT);
+        }
     }
 
     /**
@@ -81,7 +105,7 @@ public class Importer {
             is = mContentResolver.openInputStream(mUri);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-            error(ERROR_URI_NOT_FOUND);
+            error(Error.ERROR_URI_NOT_FOUND);
             return;
         }
 
@@ -102,14 +126,14 @@ public class Importer {
             }
         } catch (IOException e) {
             e.printStackTrace();
-            error(ERROR_ZIP_ITERATE);
+            error(Error.ERROR_ZIP_ITERATE);
             return;
         } finally {
             try {
                 zip.close();
             } catch (IOException e) {
                 e.printStackTrace();
-                error(ERROR_ZIP_CLOSE);
+                error(Error.ERROR_ZIP_CLOSE);
             }
         }
 
@@ -143,7 +167,7 @@ public class Importer {
                 jsonStr.append(next);
         } catch (IOException e) {
             e.printStackTrace();
-            error(ERROR_JSON_READ);
+            error(Error.ERROR_JSON_READ);
             return;
         }
 
@@ -152,7 +176,7 @@ public class Importer {
             JsonImporter.parse(new JSONObject(jsonStr.toString()));
         } catch (JSONException e) {
             e.printStackTrace();
-            error(ERROR_JSON_PARSE);
+            error(Error.ERROR_JSON_PARSE);
         }
     }
 
@@ -176,20 +200,20 @@ public class Importer {
             out.close();
         } catch (IOException e) {
             e.printStackTrace();
-            error(ERROR_IMAGE_IMPORT);
+            error(Error.ERROR_IMAGE_IMPORT);
         }
     }
 
     /**
      * A simple method for error handling.
-     * @param errorNo The error constant.
+     * @param err The error value.
      */
-    private static void error(final int errorNo) {
+    private static void error(final Error err) {
         if (mCallbacks != null)
             mHandler.post(new Runnable() {
                 @Override
                 public void run() {
-                    mCallbacks.onError(errorNo);
+                    mCallbacks.onError(err.getMessage());
                 }
             });
     }
