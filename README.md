@@ -1,6 +1,6 @@
 # Anglers' Log - Fishing Journal
 
-<img src="https://github.com/cohenadair/anglers-log/blob/master/img/icon512.png" height="150">
+<img src="https://github.com/cohenadair/anglers-log/blob/master/img/icon.png" height="150">
 
 <a href="https://itunes.apple.com/ca/app/anglers-log-fishing-journal/id959989008"><img src="http://linkmaker.itunes.apple.com/images/badges/en-us/badge_appstore-lrg.svg" height="48"></a>
 <a href="https://play.google.com/store/apps/details?id=com.cohenadair.anglerslog"><img src="http://steverichey.github.io/google-play-badge-svg/img/en_get.svg" height="48"></a>
