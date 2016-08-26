@@ -1,0 +1,106 @@
+<html ng-app="anglers-log">
+    <head>
+        <title>Anglers' Log - Fishing Journal</title>
+        <meta name="description" content="Anglers' Log is a mobile application that allows users to track, analyze, and share their catches in the sport of fishing.">
+        <meta name="keywords" content="fish,diary,report,track,book,catch,utility,gallery,share,social,gps,brain,tales,tool,pro,map,free,journal,angler,log,fishing,location,iphone,app,android,mobile,phone">
+        <meta name="author" content="Cohen Adair">
+        <meta name="robots" content="NOODP">
+        <meta name="googlebot" content="NOODP">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+        <link type="image/vnd.microsoft.icon" href="favicon.png" rel="icon">
+        
+		<!-- Bootstrap 3.3.5 -->
+		<link rel="stylesheet" href="lib/bootstrap/css/bootstrap.min.css">
+		<link rel="stylesheet" href="lib/bootstrap/css/bootstrap-theme.min.css">
+
+		<link rel="stylesheet" href="index.css">
+    </head>
+
+    <body ng-controller="AppController as appCtrl">
+        <!-- Header -->
+        <div class="jumbotron">
+            <div class="row text-right nav">
+                <div class="col-md-11 col-sm-12">
+                    <a ng-repeat="nav in appCtrl.navItems" href="#" ng-click="appCtrl.scrollTo(nav.href)">{{nav.name}}</a>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-5 col-md-offset-1 col-sm-6 col header-info">
+                    <h1 class="header-title">{{appCtrl.name}}</h1>
+                    <p class="header-subtitle">{{appCtrl.description}}</p>
+                    <a href="{{appCtrl.appleUrl}}" target="_blank">
+                        <img ng-src="{{appCtrl.appleBadge}}" width="200" height="59" title="App Store">
+                    </a>
+                    <a href="{{appCtrl.androidUrl}}" target="_blank">
+                        <img ng-src="{{appCtrl.playBadge}}" width="200" height="59" title="Google Play Store">
+                    </a>
+
+                    <div class="header-social" ng-include="appCtrl.socialUrl"></div>
+                </div>
+
+                <div class="col-md-4 col-md-offset-1 col-sm-6 col device">
+                    <img ng-src="{{appCtrl.deviceUrl}}" width="384" height="615" title="phones">
+                </div>
+            </div>
+        </div>
+
+        <!-- Content -->
+        <div class="content">
+            <div class="row text-center nav platform-nav">
+                <div class="col-md-11 col-sm-12">
+                    <a ng-repeat="nav in appCtrl.platformNav" ng-class="{active: nav.isActive}" href="#" ng-click="appCtrl.onClickPlatform($index)">{{nav.name}}</a>
+                </div>
+            </div>
+
+            <div ng-repeat="content in appCtrl.contentItems">
+                <!-- Section title -->
+                <div class="page-header">
+                    <h1 ng-attr-id="{{content.id}}">{{content.name}}</h1>
+                </div>
+
+                <!-- Table of contents -->
+                <div class="row table-of-contents" ng-show="content.tableOfContents">
+                    <div class="col-sm-6 table-of-contents-link" ng-repeat="info in content.infoItems" ng-show="appCtrl.shouldShowItem(info)">
+                        <a href="#" ng-click="appCtrl.scrollTo('#'+info.id)">{{info.title}}</a>
+                    </div>
+                </div>
+
+                <!-- All content items -->
+                <div ng-attr-id="{{info.id}}" class="panel panel-default" ng-repeat="info in content.infoItems" ng-show="appCtrl.shouldShowItem(info)">
+                    <div class="panel-heading" ng-if="info.title != null">
+                        <h3 class="panel-title">{{info.title}}</h3>
+                    </div>
+                    <div class="panel-body" ng-include="info.template"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="text-center">
+            <div class="hashtag">#AnglersLogApp @anglerslog</div>
+
+            <div class="text-center" ng-include="appCtrl.socialUrl"></div>
+
+            <div class="copyright">
+                Copyright &copy;  
+                <script type="text/javascript">
+                        var currentDate = new Date();
+                        document.write(currentDate.getFullYear());              
+                </script> Anglers' Log
+            </div>
+        </footer>
+
+        <!-- jQuery 1.11.3 -->
+        <script src="lib/jquery/jquery.min.js"></script>
+
+        <!-- Bootstrap 3.3.5 -->
+		<script src="lib/bootstrap/js/bootstrap.min.js"></script>
+
+		<!-- AngularJS 1.4.1 -->
+		<script src="lib/angular/angular.min.js"></script>
+        <script src="lib/angular/angular-sanitize.min.js"></script>
+
+		<script src="home.js"></script>
+    </body>
+</html>

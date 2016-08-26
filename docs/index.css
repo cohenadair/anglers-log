@@ -1,0 +1,173 @@
+.row {
+	margin: 0;
+}
+
+.col {
+	margin-bottom: 30px;
+}
+
+.jumbotron {
+	background-image: url("img/headerbg.jpg");
+	background-size: cover;
+	height: 90%;
+	min-height: 600px;
+	padding: 0;
+	margin-bottom: 105px;
+}
+
+.nav {
+	height: 60px;
+	line-height: 50px;
+}
+
+	.nav a {
+		margin: 10px;
+		padding-bottom: 5px;
+		text-decoration: none;
+		color: black;
+		border-bottom: 2px solid transparant;
+	}
+
+		.nav a:hover {
+			border-bottom: 2px solid black;
+		}
+
+.platform-nav {
+	height: 40px;
+	line-height: 40px;
+}
+
+	.platform-nav a {
+		font-size: 20px;
+		color: #737373;
+	}
+
+	.platform-nav a.active {
+		color: black;
+		border-bottom: 2px solid black;
+	}
+
+		.platform-nav a.active:hover {
+		border-bottom: 2px solid black;
+		}
+
+	.platform-nav a:hover {
+		border-bottom: 2px solid #737373;
+	}
+
+h1.header-title {
+	font-size: 5em;
+}
+
+p.header-subtitle {
+	font-size: 2.5em;
+}
+
+.header-info {
+	position: relative;
+	height: 100%;
+}
+
+@media (min-width: 768px) {
+	.device {
+		position: relative;
+		height: 100%;
+	}
+	
+	.device img {
+		position: absolute;
+		bottom: 0;
+		right: 0;
+	}
+}
+
+.header-social {
+	position: absolute;
+	bottom: 80px;
+}
+
+.content {
+	width: 100%;
+	padding-left: 15px;
+	padding-right: 15px;
+}
+
+.table-of-contents {
+	margin-bottom: 30px;
+}
+
+	.table-of-contents-link {
+		padding-top: 5px;
+		padding-bottom: 5px;
+	}
+
+.panel-body div, .panel-body ol, .panel-body ul {
+	margin-top: 15px;
+}
+
+	.panel-body div:first-child {
+		margin-top: 0;
+	}
+
+.alert {
+	margin-bottom: 0;
+	margin-top: 15px;
+}
+
+form {
+	margin-bottom: 0;
+	margin-top: 15px;
+}
+
+	form input {
+		max-width: 300px;
+	}
+
+footer {
+	background-image: url("img/footerbg.jpg");
+	background-size: cover;
+	width: 100%;
+	height: 160px;
+}
+
+	.hashtag {
+		padding: 15px;
+		font-size: 1.1em;
+	}
+
+	.copyright {
+		padding: 15px;
+		font-size: 0.85em;
+		color: gray;
+		opacity: 0.5;
+	}
+
+	img.social {
+		width: 50px;
+		height: 50px;
+		margin: 5px;
+	}
+
+/* Mobile devices. */
+@media (max-width: 768px) {
+	.device {
+		margin-top: -100px;
+		text-align: center;
+	}
+
+	.jumbotron {
+		background-image: url("img/header-bg-mobile.jpg");
+		height: 100%;
+		margin-bottom: 650px;
+	}
+
+	.header-social {
+		position: absolute;
+		bottom: 95px;
+	}
+}
+
+.red {
+	background-color:  red;
+}
+
