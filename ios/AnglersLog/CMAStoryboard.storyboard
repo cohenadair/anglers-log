@@ -1727,12 +1727,6 @@
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Length (Inches)" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TUn-d6-ErT">
-                                                    <rect key="frame" x="15" y="11" width="447" height="21"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
                                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Not Specified" textAlignment="right" clearsOnBeginEditing="YES" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="nBM-tZ-R64">
                                                     <rect key="frame" x="485" y="7" width="100" height="30"/>
                                                     <constraints>
@@ -1743,6 +1737,12 @@
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                     <textInputTraits key="textInputTraits" keyboardType="decimalPad" returnKeyType="done"/>
                                                 </textField>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Length (Inches)" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TUn-d6-ErT">
+                                                    <rect key="frame" x="15" y="11" width="447" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="nBM-tZ-R64" firstAttribute="leading" secondItem="TUn-d6-ErT" secondAttribute="trailing" constant="23" id="3P2-Iy-rFd"/>
@@ -1768,41 +1768,25 @@
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Weight (Kilograms)" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KmG-HQ-U4g">
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Not Specified" textAlignment="right" clearsOnBeginEditing="YES" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Kiv-US-vyI">
+                                                    <rect key="frame" x="485" y="7" width="100" height="30"/>
+                                                    <color key="textColor" white="0.56000000000000005" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                    <textInputTraits key="textInputTraits" keyboardType="decimalPad" returnKeyType="done"/>
+                                                </textField>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Weight (Kilograms)" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KmG-HQ-U4g">
                                                     <rect key="frame" x="15" y="11" width="447" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Not Specified" textAlignment="right" clearsOnBeginEditing="YES" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Kiv-US-vyI">
-                                                    <rect key="frame" x="485" y="7" width="100" height="30"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="30" id="OIc-dZ-9Fw"/>
-                                                        <constraint firstAttribute="width" constant="100" id="QY0-C2-iaV"/>
-                                                    </constraints>
-                                                    <color key="textColor" white="0.56000000000000005" alpha="1" colorSpace="calibratedWhite"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                                    <textInputTraits key="textInputTraits" keyboardType="decimalPad" returnKeyType="done"/>
-                                                </textField>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="Kiv-US-vyI" firstAttribute="baseline" secondItem="KmG-HQ-U4g" secondAttribute="baseline" id="8jN-js-cGf"/>
-                                                <constraint firstItem="KmG-HQ-U4g" firstAttribute="centerY" secondItem="J9n-CN-uOV" secondAttribute="centerY" id="Baf-rC-EpH"/>
-                                                <constraint firstItem="Kiv-US-vyI" firstAttribute="trailing" secondItem="J9n-CN-uOV" secondAttribute="trailingMargin" id="HYy-nq-dFB"/>
-                                                <constraint firstItem="KmG-HQ-U4g" firstAttribute="top" secondItem="J9n-CN-uOV" secondAttribute="topMargin" constant="1" id="bJR-pO-taM"/>
-                                                <constraint firstItem="Kiv-US-vyI" firstAttribute="centerY" secondItem="KmG-HQ-U4g" secondAttribute="centerY" id="bNf-Lq-U0l"/>
-                                                <constraint firstItem="Kiv-US-vyI" firstAttribute="leading" secondItem="KmG-HQ-U4g" secondAttribute="trailing" constant="23" id="kbD-0w-gp6"/>
-                                                <constraint firstItem="KmG-HQ-U4g" firstAttribute="leading" secondItem="J9n-CN-uOV" secondAttribute="leadingMargin" id="ni6-Cd-67K"/>
-                                                <constraint firstItem="KmG-HQ-U4g" firstAttribute="top" secondItem="J9n-CN-uOV" secondAttribute="topMargin" constant="4" id="rzB-l7-kvC"/>
-                                                <constraint firstAttribute="bottomMargin" secondItem="KmG-HQ-U4g" secondAttribute="bottom" constant="2" id="v95-ej-uXB"/>
+                                                <constraint firstItem="KmG-HQ-U4g" firstAttribute="leading" secondItem="J9n-CN-uOV" secondAttribute="leadingMargin" constant="7" id="A5f-tA-atG"/>
+                                                <constraint firstItem="KmG-HQ-U4g" firstAttribute="centerY" secondItem="J9n-CN-uOV" secondAttribute="centerY" id="HKw-YN-T7V"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="Kiv-US-vyI" secondAttribute="trailing" constant="7" id="juD-pb-Upl"/>
+                                                <constraint firstItem="Kiv-US-vyI" firstAttribute="centerY" secondItem="J9n-CN-uOV" secondAttribute="centerY" id="z06-ru-2sZ"/>
                                             </constraints>
-                                            <variation key="default">
-                                                <mask key="constraints">
-                                                    <exclude reference="bJR-pO-taM"/>
-                                                    <exclude reference="rzB-l7-kvC"/>
-                                                    <exclude reference="v95-ej-uXB"/>
-                                                </mask>
-                                            </variation>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" id="27o-7a-hw6">
@@ -1859,10 +1843,10 @@
                                                     <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                                                 </textField>
                                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="0" textAlignment="right" clearsOnBeginEditing="YES" minimumFontSize="16" translatesAutoresizingMaskIntoConstraints="NO" id="96I-fZ-25l">
-                                                    <rect key="frame" x="449" y="8" width="30" height="30"/>
+                                                    <rect key="frame" x="429" y="8" width="50" height="30"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="30" id="F0P-Fm-2ha"/>
-                                                        <constraint firstAttribute="width" constant="30" id="yyK-VK-WCG"/>
+                                                        <constraint firstAttribute="width" constant="50" id="yyK-VK-WCG"/>
                                                     </constraints>
                                                     <color key="textColor" white="0.56000000000000005" alpha="1" colorSpace="calibratedWhite"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
@@ -3432,18 +3416,18 @@
         <image name="water_clarities.png" width="50" height="50"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="2gI-zo-GiY"/>
         <segue reference="Jyy-wS-dXA"/>
-        <segue reference="mBP-Qv-19k"/>
-        <segue reference="gDt-Tw-gtk"/>
         <segue reference="5d5-Lp-R9Q"/>
-        <segue reference="Usd-Jw-Xr5"/>
-        <segue reference="LIc-S1-G3c"/>
-        <segue reference="Twf-fj-9Lv"/>
+        <segue reference="gDt-Tw-gtk"/>
+        <segue reference="2gI-zo-GiY"/>
         <segue reference="bOr-hP-Xzw"/>
         <segue reference="SF3-i3-YYt"/>
-        <segue reference="xHN-1T-TEi"/>
+        <segue reference="K9T-AN-ziV"/>
+        <segue reference="iLd-nY-dx2"/>
+        <segue reference="Twf-fj-9Lv"/>
+        <segue reference="LIc-S1-G3c"/>
         <segue reference="yVf-ju-IAW"/>
+        <segue reference="xHN-1T-TEi"/>
         <segue reference="xJw-cV-13t"/>
         <segue reference="0Og-p6-XEZ"/>
     </inferredMetricsTieBreakers>
