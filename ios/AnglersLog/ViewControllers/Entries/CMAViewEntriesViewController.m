@@ -17,7 +17,6 @@
 #import "CMAStorageManager.h"
 #import "CMAAlerts.h"
 #import "CMAUtilities.h"
-#import "CMAAdBanner.h"
 
 @interface CMAViewEntriesViewController ()
 
@@ -32,8 +31,6 @@
 @property (strong, nonatomic)CMANoXView *noEntriesView;
 @property (strong, nonatomic)UISearchBar *searchBar;
 @property (strong, nonatomic)UIView *searchResultView;
-
-@property (strong, nonatomic)CMAAdBanner *adBanner;
 
 @property (strong, nonatomic)NSMutableOrderedSet *entries;
 @property (nonatomic)BOOL isSearchBarInView;
@@ -106,7 +103,6 @@
     self.navigationItem.title = [NSString stringWithFormat:@"Entries (%ld)", (long)[[self journal] entryCount]];
     
     [self handleNoEntriesView];
-    [self initAdBanner];
 }
 
 - (void)viewDidLoad {
@@ -165,24 +161,6 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
-}
-
-#pragma mark - Ad Banner Initializing
-
-- (void)initAdBanner {
-    if (self.adBanner == nil) {
-        self.adBanner = [CMAAdBanner withFrame:CGRectMake(0, -50, self.view.frame.size.width, 50) delegate:self superView:self.view];
-        self.adBanner.constraint = self.tableViewTop;
-        self.adBanner.noXView = self.noEntriesView;
-    }
-}
-
-- (void)bannerViewDidLoadAd:(ADBannerView *)banner {
-    [self.adBanner showWithCompletion:nil];
-}
-
-- (void)bannerView:(ADBannerView *)banner didFailToReceiveAdWithError:(NSError *)error {
-    [self.adBanner hideWithCompletion:nil];
 }
 
 #pragma mark - Table View Initializing
