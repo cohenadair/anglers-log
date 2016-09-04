@@ -14,7 +14,7 @@ NSString *const DATE_FILE_STRING = @"MM-dd-yyyy_h-mm_a";
 
 NSString *const APP_NAME        = @"Anglers' Log";
 NSString *const APP_STORE_LINK  = @"itms-apps://itunes.apple.com/app/id959989008";
-NSString *const FAQ_LINK        = @"http://cohenadair.com/anglerslog/faq/";
+NSString *const FAQ_LINK        = @"https://anglerslog.ca/";
 NSString *const SHARE_MESSAGE   = @"#AnglersLogApp";
 NSString *const HASHTAG_TEXT    = @"AnglersLogApp";
 NSString *const GLOBAL_FONT     = @"HelveticaNeue";
