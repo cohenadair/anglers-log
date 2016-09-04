@@ -178,7 +178,7 @@
     if (aMeasurementSystem == CMAMeasuringSystemTypeImperial)
         result = [NSString stringWithFormat:@"%ld%@ %ld%@", (long)[self.fishWeight integerValue], weightString, (long)[self.fishOunces integerValue], ounceString];
     else
-        result = [NSString stringWithFormat:@"%ld%@", (long)[self.fishWeight integerValue], weightString];
+        result = [NSString stringWithFormat:@"%.2f%@", self.fishWeight.floatValue, weightString];
     
     return result;
 }
@@ -198,7 +198,7 @@
             unitString = UNIT_METRIC_LENGTH;
     }
     
-    return [NSString stringWithFormat:@"%ld%@", (long)[self.fishLength integerValue], unitString];
+    return [NSString stringWithFormat:@"%.2f%@", self.fishLength.floatValue, unitString];
 }
 
 - (NSString *)fishResultAsString {

@@ -182,7 +182,7 @@
     if (self.entry.fishLength && [self.entry.fishLength integerValue] > 0)
         [self.tableCellProperties addObject:
          [CMATableCellProperties withLabelText: @"Length"
-                                 andDetailText: [NSString stringWithFormat:@"%@%@", self.entry.fishLength.stringValue, [[self journal] lengthUnitsAsString:YES]]
+                                 andDetailText: [self.entry lengthAsStringWithMeasurementSystem:[[self journal] measurementSystem] shorthand:YES]
                             andReuseIdentifier: @"rightDetailCell"
                                      andHeight: kRightDetailCellHeight
                                   hasSeparator: NO]];
@@ -234,7 +234,7 @@
     if (self.entry.waterDepth && [self.entry.waterDepth integerValue] > 0)
         [self.tableCellProperties addObject:
          [CMATableCellProperties withLabelText: @"Water Depth"
-                                 andDetailText: [NSString stringWithFormat:@"%ld%@", (long)[self.entry.waterDepth integerValue], [[self journal] depthUnitsAsString:YES]]
+                                 andDetailText: [NSString stringWithFormat:@"%.2f%@", [self.entry.waterDepth floatValue], [[self journal] depthUnitsAsString:YES]]
                             andReuseIdentifier: @"rightDetailCell"
                                      andHeight: kRightDetailCellHeight
                                   hasSeparator: NO]];

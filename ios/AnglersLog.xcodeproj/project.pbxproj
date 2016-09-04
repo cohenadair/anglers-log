@@ -326,6 +326,7 @@
 		0D8F84A41A6EC31500AABAEA /* TheAnglersLog.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = TheAnglersLog.entitlements; path = AnglersLog/TheAnglersLog.entitlements; sourceTree = SOURCE_ROOT; };
 		0D9B760E1A76C4C100553177 /* CMAUserDefineObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMAUserDefineObject.h; sourceTree = "<group>"; };
 		0D9B760F1A76C4C100553177 /* CMAUserDefineObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CMAUserDefineObject.m; sourceTree = "<group>"; };
+		0DBC360F1D7CBC720016B898 /* TheAnglersLog 9.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "TheAnglersLog 9.xcdatamodel"; sourceTree = "<group>"; };
 		0DBFE94B1C8E45BB00BDCC1D /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = "<group>"; };
 		0DBFE94C1C8E45BB00BDCC1D /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		0DC75FDB1A9AEDCE0045030C /* CMASinglePhotoCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMASinglePhotoCollectionViewCell.h; path = CustomViews/CMASinglePhotoCollectionViewCell.h; sourceTree = "<group>"; };
@@ -1224,6 +1225,7 @@
 		0D23B26F1A7713C900E89736 /* TheAnglersLog.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				0DBC360F1D7CBC720016B898 /* TheAnglersLog 9.xcdatamodel */,
 				0D128F551AD4C6890004CABE /* TheAnglersLog 8.xcdatamodel */,
 				0D128F541AD4C4A80004CABE /* TheAnglersLog 7.xcdatamodel */,
 				0D4ECDF51ACB383C008B55E6 /* TheAnglersLog 6.xcdatamodel */,
@@ -1233,7 +1235,7 @@
 				0DCC43271A99A3AD0019DB2E /* TheAnglersLog 2.xcdatamodel */,
 				0D23B2701A7713C900E89736 /* TheAnglersLog.xcdatamodel */,
 			);
-			currentVersion = 0D128F551AD4C6890004CABE /* TheAnglersLog 8.xcdatamodel */;
+			currentVersion = 0DBC360F1D7CBC720016B898 /* TheAnglersLog 9.xcdatamodel */;
 			path = TheAnglersLog.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
