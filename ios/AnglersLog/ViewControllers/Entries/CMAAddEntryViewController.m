@@ -721,15 +721,8 @@ NSString *const kNotSelectedString = @"Not Selected";
             if ([poundsStr isEqualToString:@""]) poundsStr = @"0";
             if ([ouncesStr isEqualToString:@""]) ouncesStr = @"0";
             
-            if (![[self.poundsTextField text] isEqualToString:@""]) {
-                NSNumber *pounds = [NSNumber numberWithInteger:[poundsStr integerValue]];
-                NSNumber *ounces = [NSNumber numberWithInteger:[ouncesStr integerValue]];
-                [anEntry setFishWeight:pounds];
-                [anEntry setFishOunces:ounces];
-            } else {
-                [anEntry setFishWeight:[NSNumber numberWithInteger:-1]];
-                [anEntry setFishOunces:[NSNumber numberWithInteger:-1]];
-            }
+            [anEntry setFishWeight:[NSNumber numberWithInteger:poundsStr.integerValue]];
+            [anEntry setFishOunces:[NSNumber numberWithInteger:ouncesStr.integerValue]];
         }
     }
     

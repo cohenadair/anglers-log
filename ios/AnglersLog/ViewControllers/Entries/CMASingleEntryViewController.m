@@ -132,6 +132,7 @@
 // Only self.entry properties that were specified by the user are shown.
 // Sets self.tableCellProperties property.
 - (void)initTableSettings {
+    CMAMeasuringSystemType measureType = [[self journal] measurementSystem];
     self.tableCellProperties = [NSMutableArray array];
     
     // images
@@ -179,22 +180,25 @@
                                   hasSeparator: YES]];
     
     // length
-    if (self.entry.fishLength && [self.entry.fishLength integerValue] > 0)
+    if (self.entry.fishLength && [self.entry.fishLength floatValue] > 0)
         [self.tableCellProperties addObject:
          [CMATableCellProperties withLabelText: @"Length"
-                                 andDetailText: [self.entry lengthAsStringWithMeasurementSystem:[[self journal] measurementSystem] shorthand:YES]
+                                 andDetailText: [self.entry lengthAsStringWithMeasurementSystem:measureType shorthand:YES]
                             andReuseIdentifier: @"rightDetailCell"
                                      andHeight: kRightDetailCellHeight
                                   hasSeparator: NO]];
     
     // weight
-    if (self.entry.fishWeight && [self.entry.fishWeight integerValue] > 0)
+    if ((self.entry.fishWeight && [self.entry.fishWeight floatValue] > 0) ||
+        (self.entry.fishOunces && [self.entry.fishOunces integerValue] > 0))
+    {
         [self.tableCellProperties addObject:
          [CMATableCellProperties withLabelText: @"Weight"
-                                 andDetailText: [self.entry weightAsStringWithMeasurementSystem:[[self journal] measurementSystem] shorthand:YES]
+                                 andDetailText: [self.entry weightAsStringWithMeasurementSystem:measureType shorthand:YES]
                             andReuseIdentifier: @"rightDetailCell"
                                      andHeight: kRightDetailCellHeight
                                   hasSeparator: NO]];
+    }
     
     // quantity
     if (self.entry.fishQuantity && [self.entry.fishQuantity integerValue] >= 0)
@@ -231,7 +235,7 @@
                                   hasSeparator: NO]];
     
     // water depth
-    if (self.entry.waterDepth && [self.entry.waterDepth integerValue] > 0)
+    if (self.entry.waterDepth && [self.entry.waterDepth floatValue] > 0)
         [self.tableCellProperties addObject:
          [CMATableCellProperties withLabelText: @"Water Depth"
                                  andDetailText: [NSString stringWithFormat:@"%.2f%@", [self.entry.waterDepth floatValue], [[self journal] depthUnitsAsString:YES]]
