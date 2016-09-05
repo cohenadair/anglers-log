@@ -125,6 +125,8 @@
 		0D8F84791A6EC2C300AABAEA /* no_image.png in Resources */ = {isa = PBXBuildFile; fileRef = 0D8F84491A6EC2C300AABAEA /* no_image.png */; };
 		0D8F847A1A6EC2C300AABAEA /* rectile.png in Resources */ = {isa = PBXBuildFile; fileRef = 0D8F844A1A6EC2C300AABAEA /* rectile.png */; };
 		0D9B76101A76C4C100553177 /* CMAUserDefineObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D9B760F1A76C4C100553177 /* CMAUserDefineObject.m */; };
+		0DBC36131D7DBB480016B898 /* iRate.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 0DBC36101D7DBB480016B898 /* iRate.bundle */; };
+		0DBC36141D7DBB480016B898 /* iRate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DBC36121D7DBB480016B898 /* iRate.m */; };
 		0DC75FDD1A9AEDCE0045030C /* CMASinglePhotoCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DC75FDC1A9AEDCE0045030C /* CMASinglePhotoCollectionViewCell.m */; };
 		0DCAD63A1AA37D160040B03B /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DCAD6391AA37D160040B03B /* ImageIO.framework */; };
 		0DCAD63C1AA37D230040B03B /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DCAD63B1AA37D230040B03B /* MobileCoreServices.framework */; };
@@ -327,6 +329,9 @@
 		0D9B760E1A76C4C100553177 /* CMAUserDefineObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMAUserDefineObject.h; sourceTree = "<group>"; };
 		0D9B760F1A76C4C100553177 /* CMAUserDefineObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CMAUserDefineObject.m; sourceTree = "<group>"; };
 		0DBC360F1D7CBC720016B898 /* TheAnglersLog 9.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "TheAnglersLog 9.xcdatamodel"; sourceTree = "<group>"; };
+		0DBC36101D7DBB480016B898 /* iRate.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = iRate.bundle; path = iRate/iRate.bundle; sourceTree = "<group>"; };
+		0DBC36111D7DBB480016B898 /* iRate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = iRate.h; path = iRate/iRate.h; sourceTree = "<group>"; };
+		0DBC36121D7DBB480016B898 /* iRate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = iRate.m; path = iRate/iRate.m; sourceTree = "<group>"; };
 		0DBFE94B1C8E45BB00BDCC1D /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = "<group>"; };
 		0DBFE94C1C8E45BB00BDCC1D /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		0DC75FDB1A9AEDCE0045030C /* CMASinglePhotoCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMASinglePhotoCollectionViewCell.h; path = CustomViews/CMASinglePhotoCollectionViewCell.h; sourceTree = "<group>"; };
@@ -746,6 +751,9 @@
 		E7C29D0C1A143A1600015B42 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				0DBC36101D7DBB480016B898 /* iRate.bundle */,
+				0DBC36111D7DBB480016B898 /* iRate.h */,
+				0DBC36121D7DBB480016B898 /* iRate.m */,
 				0D006E5D1D3702A900DBDA7B /* SWRevealViewController */,
 			);
 			path = Libraries;
@@ -890,6 +898,7 @@
 				0D8F83A11A6EC1AE00AABAEA /* CMAStoryboard.storyboard in Resources */,
 				0D8F844D1A6EC2C300AABAEA /* app_icon_120.png in Resources */,
 				0D8F845F1A6EC2C300AABAEA /* fishing_methods.png in Resources */,
+				0DBC36131D7DBB480016B898 /* iRate.bundle in Resources */,
 				0D8F84551A6EC2C300AABAEA /* bait.png in Resources */,
 				0D4ECDFD1ACB663B008B55E6 /* rapala.png in Resources */,
 				0D8F846B1A6EC2C300AABAEA /* sort@2x.png in Resources */,
@@ -1040,6 +1049,7 @@
 				0D8F84151A6EC29A00AABAEA /* CMATouchSegmentedControl.m in Sources */,
 				0D8F83981A6EC10800AABAEA /* CMAWaterClarity.m in Sources */,
 				0D8F83911A6EC10800AABAEA /* CMAStatsObject.m in Sources */,
+				0DBC36141D7DBB480016B898 /* iRate.m in Sources */,
 				0D8F83DB1A6EC25200AABAEA /* CMASideMenuViewController.m in Sources */,
 				0D8F84131A6EC29A00AABAEA /* CMADeleteActionSheet.m in Sources */,
 				0D8F838F1A6EC10800AABAEA /* CMAWeatherData.m in Sources */,
