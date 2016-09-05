@@ -62,7 +62,7 @@
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
-    return self.collectionView.frame.size;
+    return self.view.frame.size;
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
