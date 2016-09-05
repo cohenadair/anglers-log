@@ -18,8 +18,8 @@
 @implementation CMAAppDelegate
 
 - (BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    [iRate sharedInstance].daysUntilPrompt = 0;
-    [iRate sharedInstance].usesUntilPrompt = 0;
+    [iRate sharedInstance].daysUntilPrompt = 7;
+    [iRate sharedInstance].usesUntilPrompt = 15;
     [iRate sharedInstance].promptForNewVersionIfUserRated = YES;
     return YES;
 }
