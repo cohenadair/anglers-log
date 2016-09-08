@@ -15,8 +15,6 @@
 		0D23B2711A7713C900E89736 /* TheAnglersLog.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 0D23B26F1A7713C900E89736 /* TheAnglersLog.xcdatamodeld */; };
 		0D23B2741A78102B00E89736 /* CMAImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D23B2731A78102B00E89736 /* CMAImage.m */; };
 		0D248B0F1AB0C82200093290 /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D248B0E1AB0C82200093290 /* iAd.framework */; };
-		0D4ECDFD1ACB663B008B55E6 /* rapala.png in Resources */ = {isa = PBXBuildFile; fileRef = 0D4ECDFB1ACB663B008B55E6 /* rapala.png */; };
-		0D4ECDFE1ACB663B008B55E6 /* spinner.png in Resources */ = {isa = PBXBuildFile; fileRef = 0D4ECDFC1ACB663B008B55E6 /* spinner.png */; };
 		0D5608121A6F0F3000EE0437 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D5608111A6F0F3000EE0437 /* CoreData.framework */; };
 		0D81E4561C8F404300974ED3 /* circle_icon@1x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0D81E4531C8F404300974ED3 /* circle_icon@1x.png */; };
 		0D81E4571C8F404300974ED3 /* circle_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0D81E4541C8F404300974ED3 /* circle_icon@2x.png */; };
@@ -127,6 +125,8 @@
 		0D9B76101A76C4C100553177 /* CMAUserDefineObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D9B760F1A76C4C100553177 /* CMAUserDefineObject.m */; };
 		0DBC36131D7DBB480016B898 /* iRate.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 0DBC36101D7DBB480016B898 /* iRate.bundle */; };
 		0DBC36141D7DBB480016B898 /* iRate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DBC36121D7DBB480016B898 /* iRate.m */; };
+		0DBC36171D7E2BA50016B898 /* rapala.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0DBC36151D7E2BA50016B898 /* rapala.jpg */; };
+		0DBC36181D7E2BA50016B898 /* spinner.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0DBC36161D7E2BA50016B898 /* spinner.jpg */; };
 		0DC75FDD1A9AEDCE0045030C /* CMASinglePhotoCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DC75FDC1A9AEDCE0045030C /* CMASinglePhotoCollectionViewCell.m */; };
 		0DCAD63A1AA37D160040B03B /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DCAD6391AA37D160040B03B /* ImageIO.framework */; };
 		0DCAD63C1AA37D230040B03B /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DCAD63B1AA37D230040B03B /* MobileCoreServices.framework */; };
@@ -165,8 +165,6 @@
 		0D23B2731A78102B00E89736 /* CMAImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAImage.m; path = ApplicationModel/CMAImage.m; sourceTree = "<group>"; };
 		0D248B0E1AB0C82200093290 /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
 		0D4ECDF51ACB383C008B55E6 /* TheAnglersLog 6.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "TheAnglersLog 6.xcdatamodel"; sourceTree = "<group>"; };
-		0D4ECDFB1ACB663B008B55E6 /* rapala.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = rapala.png; path = Images/rapala.png; sourceTree = "<group>"; };
-		0D4ECDFC1ACB663B008B55E6 /* spinner.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = spinner.png; path = Images/spinner.png; sourceTree = "<group>"; };
 		0D5608111A6F0F3000EE0437 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		0D6994B31ACA21BA008D6A0D /* AnglersLog-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AnglersLog-Prefix.pch"; sourceTree = "<group>"; };
 		0D6994B51ACA21DE008D6A0D /* AnglersLog-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "AnglersLog-Info.plist"; sourceTree = "<group>"; };
@@ -332,6 +330,8 @@
 		0DBC36101D7DBB480016B898 /* iRate.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = iRate.bundle; path = iRate/iRate.bundle; sourceTree = "<group>"; };
 		0DBC36111D7DBB480016B898 /* iRate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = iRate.h; path = iRate/iRate.h; sourceTree = "<group>"; };
 		0DBC36121D7DBB480016B898 /* iRate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = iRate.m; path = iRate/iRate.m; sourceTree = "<group>"; };
+		0DBC36151D7E2BA50016B898 /* rapala.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = rapala.jpg; path = Images/rapala.jpg; sourceTree = "<group>"; };
+		0DBC36161D7E2BA50016B898 /* spinner.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = spinner.jpg; path = Images/spinner.jpg; sourceTree = "<group>"; };
 		0DBFE94B1C8E45BB00BDCC1D /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = "<group>"; };
 		0DBFE94C1C8E45BB00BDCC1D /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		0DC75FDB1A9AEDCE0045030C /* CMASinglePhotoCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMASinglePhotoCollectionViewCell.h; path = CustomViews/CMASinglePhotoCollectionViewCell.h; sourceTree = "<group>"; };
@@ -585,6 +585,16 @@
 			path = AnglersLog/Images/LargeIcons;
 			sourceTree = SOURCE_ROOT;
 		};
+		0DBC36191D7E2DCF0016B898 /* iRate */ = {
+			isa = PBXGroup;
+			children = (
+				0DBC36101D7DBB480016B898 /* iRate.bundle */,
+				0DBC36111D7DBB480016B898 /* iRate.h */,
+				0DBC36121D7DBB480016B898 /* iRate.m */,
+			);
+			name = iRate;
+			sourceTree = "<group>";
+		};
 		9392542E7B56F7E064496078 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -703,8 +713,8 @@
 				0D8F84401A6EC2C300AABAEA /* LargeIcons */,
 				0D8F84491A6EC2C300AABAEA /* no_image.png */,
 				0D8F844A1A6EC2C300AABAEA /* rectile.png */,
-				0D4ECDFB1ACB663B008B55E6 /* rapala.png */,
-				0D4ECDFC1ACB663B008B55E6 /* spinner.png */,
+				0DBC36151D7E2BA50016B898 /* rapala.jpg */,
+				0DBC36161D7E2BA50016B898 /* spinner.jpg */,
 				0D81E4531C8F404300974ED3 /* circle_icon@1x.png */,
 				0D81E4541C8F404300974ED3 /* circle_icon@2x.png */,
 				0D81E4551C8F404300974ED3 /* circle_icon@3x.png */,
@@ -751,9 +761,7 @@
 		E7C29D0C1A143A1600015B42 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
-				0DBC36101D7DBB480016B898 /* iRate.bundle */,
-				0DBC36111D7DBB480016B898 /* iRate.h */,
-				0DBC36121D7DBB480016B898 /* iRate.m */,
+				0DBC36191D7E2DCF0016B898 /* iRate */,
 				0D006E5D1D3702A900DBDA7B /* SWRevealViewController */,
 			);
 			path = Libraries;
@@ -888,8 +896,8 @@
 				0D8F840E1A6EC29A00AABAEA /* CMACircleView.xib in Resources */,
 				0D8F845D1A6EC2C300AABAEA /* edit@2x.png in Resources */,
 				0D8F846E1A6EC2C300AABAEA /* stats.png in Resources */,
+				0DBC36181D7E2BA50016B898 /* spinner.jpg in Resources */,
 				0D8F84611A6EC2C300AABAEA /* instagram@2x.png in Resources */,
-				0D4ECDFE1ACB663B008B55E6 /* spinner.png in Resources */,
 				0D81E4581C8F404300974ED3 /* circle_icon@3x.png in Resources */,
 				0D8F84621A6EC2C300AABAEA /* instagram_small.png in Resources */,
 				0D8F84541A6EC2C300AABAEA /* app_icon_80.png in Resources */,
@@ -898,9 +906,9 @@
 				0D8F83A11A6EC1AE00AABAEA /* CMAStoryboard.storyboard in Resources */,
 				0D8F844D1A6EC2C300AABAEA /* app_icon_120.png in Resources */,
 				0D8F845F1A6EC2C300AABAEA /* fishing_methods.png in Resources */,
+				0DBC36171D7E2BA50016B898 /* rapala.jpg in Resources */,
 				0DBC36131D7DBB480016B898 /* iRate.bundle in Resources */,
 				0D8F84551A6EC2C300AABAEA /* bait.png in Resources */,
-				0D4ECDFD1ACB663B008B55E6 /* rapala.png in Resources */,
 				0D8F846B1A6EC2C300AABAEA /* sort@2x.png in Resources */,
 				0D8F84731A6EC2C300AABAEA /* fishing_methods_large.png in Resources */,
 				0D8F84121A6EC29A00AABAEA /* CMANoXView.xib in Resources */,

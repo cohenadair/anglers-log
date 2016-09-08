@@ -9,6 +9,7 @@
 #import "CMAConstants.h"
 
 NSString *const DATE_FILE_STRING = @"MM-dd-yyyy_h-mm_a";
+NSString *const ACCURATE_DATE_FILE_STRING = @"MM-dd-yyyy_h-mm-ss.SSS_a";
 
 #pragma mark - Application Constants
 
@@ -19,6 +20,11 @@ NSString *const SHARE_MESSAGE   = @"#AnglersLogApp";
 NSString *const HASHTAG_TEXT    = @"AnglersLogApp";
 NSString *const GLOBAL_FONT     = @"HelveticaNeue";
 NSInteger const MODEL_VERSION   = 4;
+
+#pragma mark - File Name Constants
+
+NSString *const PNG = @".png";
+NSString *const JPG = @".jpg";
 
 #pragma mark - User Define Name (UDN)
 

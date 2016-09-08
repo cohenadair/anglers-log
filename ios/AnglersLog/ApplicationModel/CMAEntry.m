@@ -11,6 +11,7 @@
 #import "CMAJournal.h"
 #import "CMAJSONWriter.h"
 #import "CMAStorageManager.h"
+#import "CMAUtilities.h"
 
 @implementation CMAEntry
 
@@ -111,10 +112,12 @@
 }
 
 - (NSString *)dateAsFileNameString {
-    NSDateFormatter *format = [NSDateFormatter new];
-    [format setDateFormat:DATE_FILE_STRING];
-    
-    return [format stringFromDate:self.date];
+    return [CMAUtilities stringForDate:self.date withFormat:DATE_FILE_STRING];
+}
+
+- (NSString *)accurateDateAsFileNameString {
+    return [CMAUtilities stringForDate:self.date
+                            withFormat:ACCURATE_DATE_FILE_STRING];
 }
 
 - (NSString *)fishingMethodsAsString {

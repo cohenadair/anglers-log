@@ -25,6 +25,7 @@
 
 - (NSURL *)documentsSubDirectory:(NSString *)aString;
 - (NSURL *)documentsDirectory;
+- (NSString *)imagesDirectoryPath;
 
 #pragma mark - Core Data Management
 
