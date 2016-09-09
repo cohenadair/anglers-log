@@ -108,6 +108,7 @@
     }
     
     NSString *oldFilePath = [self.imagePath copy];
+    NSLog(@"Converting file: %@", self.fileName);
     
     // save new file
     [self saveWithIndex:index];
@@ -127,8 +128,12 @@
     return [self primitiveValueForKey:@"imagePath"];
 }
 
+- (NSString *)fileName {
+    return self.imagePath.lastPathComponent;
+}
+
 - (NSString *)fileNameWithoutExtension {
-    return [self.imagePath.lastPathComponent stringByDeletingPathExtension];
+    return [self.fileName stringByDeletingPathExtension];
 }
 
 - (UIImage *)fullImage {

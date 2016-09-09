@@ -173,6 +173,8 @@
         for (CMABait *bait in baits) {
             [bait.imageData resaveAsJpgWithIndex:0];
         }
+        
+        [self.sharedJournal archive];
     }];
 }
 
