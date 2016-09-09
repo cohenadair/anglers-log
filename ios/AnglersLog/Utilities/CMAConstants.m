@@ -9,7 +9,7 @@
 #import "CMAConstants.h"
 
 NSString *const DATE_FILE_STRING = @"MM-dd-yyyy_h-mm_a";
-NSString *const ACCURATE_DATE_FILE_STRING = @"MM-dd-yyyy_h-mm-ss.SSS_a";
+NSString *const ACCURATE_DATE_FILE_STRING = @"MM-dd-yyyy_h-mm_a_ss.SSS";
 
 #pragma mark - Application Constants
 
