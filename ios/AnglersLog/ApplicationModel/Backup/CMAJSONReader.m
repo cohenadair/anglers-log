@@ -151,7 +151,7 @@
 - (void)addBait:(id)aBait {
     CMAUserDefine *ud = [self.journal userDefineNamed:UDN_BAITS];
     
-    // create a new clarity if it doesn't already exist
+    // create a new bait if it doesn't already exist
     NSString *name = [aBait valueForKey:@"name"];
     CMABait *b = (CMABait *)[ud objectNamed:name];
     if (b == nil) {

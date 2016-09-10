@@ -252,11 +252,11 @@ NSString *const kNotSelectedString = @"Not Selected";
         [self.quantityTextField setText:self.entry.fishQuantity.stringValue];
     
     // fish length
-    if (self.entry.fishLength && ([self.entry.fishLength integerValue] != -1))
+    if (self.entry.fishLength && ([self.entry.fishLength floatValue] != -1))
         [self.lengthTextField setText:self.entry.fishLength.stringValue];
     
     // fish weight
-    if (self.entry.fishWeight && ([self.entry.fishWeight integerValue] != -1)) {
+    if (self.entry.fishWeight && ([self.entry.fishWeight floatValue] != -1)) {
         if ([[self journal] measurementSystem] == CMAMeasuringSystemTypeMetric)
             [self.metricWeightTextField setText:self.entry.fishWeight.stringValue];
         else {
@@ -306,7 +306,7 @@ NSString *const kNotSelectedString = @"Not Selected";
         [self.speciesDetailLabel setText:kNotSelectedString];
     
     // water depth
-    if (self.entry.waterDepth && ([self.entry.waterDepth integerValue] != -1))
+    if (self.entry.waterDepth && ([self.entry.waterDepth floatValue] != -1))
         [self.waterDepthTextField setText:self.entry.waterDepth.stringValue];
     
     // notes
@@ -698,7 +698,7 @@ NSString *const kNotSelectedString = @"Not Selected";
     
     // fish length
     if (![[self.lengthTextField text] isEqualToString:@""]) {
-        NSNumber *length = [NSNumber numberWithInteger:[[self.lengthTextField text] integerValue]];
+        NSNumber *length = [NSNumber numberWithFloat:[[self.lengthTextField text] floatValue]];
         [anEntry setFishLength:length];
     } else {
         [anEntry setFishLength:[NSNumber numberWithInteger:-1]];
@@ -707,7 +707,7 @@ NSString *const kNotSelectedString = @"Not Selected";
     // fish weight
     if ([[self journal] measurementSystem] == CMAMeasuringSystemTypeMetric) {
         if (![[self.metricWeightTextField text] isEqualToString:@""]) {
-            NSNumber *weight = [NSNumber numberWithInteger:[[self.metricWeightTextField text] integerValue]];
+            NSNumber *weight = [NSNumber numberWithFloat:[[self.metricWeightTextField text] floatValue]];
             [anEntry setFishWeight:weight];
         } else {
             [anEntry setFishWeight:[NSNumber numberWithInteger:-1]];
@@ -721,15 +721,8 @@ NSString *const kNotSelectedString = @"Not Selected";
             if ([poundsStr isEqualToString:@""]) poundsStr = @"0";
             if ([ouncesStr isEqualToString:@""]) ouncesStr = @"0";
             
-            if (![[self.poundsTextField text] isEqualToString:@""]) {
-                NSNumber *pounds = [NSNumber numberWithInteger:[poundsStr integerValue]];
-                NSNumber *ounces = [NSNumber numberWithInteger:[ouncesStr integerValue]];
-                [anEntry setFishWeight:pounds];
-                [anEntry setFishOunces:ounces];
-            } else {
-                [anEntry setFishWeight:[NSNumber numberWithInteger:-1]];
-                [anEntry setFishOunces:[NSNumber numberWithInteger:-1]];
-            }
+            [anEntry setFishWeight:[NSNumber numberWithInteger:poundsStr.integerValue]];
+            [anEntry setFishOunces:[NSNumber numberWithInteger:ouncesStr.integerValue]];
         }
     }
     
@@ -794,7 +787,7 @@ NSString *const kNotSelectedString = @"Not Selected";
     
     // water depth
     if (![[self.waterDepthTextField text] isEqualToString:@""]) {
-        NSNumber *depth = [NSNumber numberWithInteger:[[self.waterDepthTextField text] integerValue]];
+        NSNumber *depth = [NSNumber numberWithFloat:[[self.waterDepthTextField text] floatValue]];
         [anEntry setWaterDepth:depth];
     } else {
         [anEntry setWaterDepth:[NSNumber numberWithInteger:-1]];

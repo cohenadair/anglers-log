@@ -688,7 +688,7 @@ const int FrontViewPositionNone = 0xff;
 }
 
 
-- (NSUInteger)supportedInterfaceOrientations
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations
 {
     // we could have simply not implemented this, but we choose to call super to make explicit that we
     // want the default behavior.
@@ -1234,7 +1234,7 @@ const int FrontViewPositionNone = 0xff;
     NSTimeInterval duration = _toggleAnimationDuration;
 
     // Velocity driven change:
-    if (fabsf(velocity) > _quickFlickVelocity)
+    if (fabsf((float)velocity) > _quickFlickVelocity)
     {
         // we may need to set the drag position and to adjust the animation duration
         CGFloat journey = xLocation;
@@ -1252,7 +1252,7 @@ const int FrontViewPositionNone = 0xff;
             }
         }
         
-        duration = fabsf(journey/velocity);
+        duration = fabsf((float)(journey/velocity));
     }
     
     // Position driven change:

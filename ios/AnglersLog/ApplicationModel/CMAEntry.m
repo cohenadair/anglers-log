@@ -11,6 +11,7 @@
 #import "CMAJournal.h"
 #import "CMAJSONWriter.h"
 #import "CMAStorageManager.h"
+#import "CMAUtilities.h"
 
 @implementation CMAEntry
 
@@ -111,10 +112,12 @@
 }
 
 - (NSString *)dateAsFileNameString {
-    NSDateFormatter *format = [NSDateFormatter new];
-    [format setDateFormat:DATE_FILE_STRING];
-    
-    return [format stringFromDate:self.date];
+    return [CMAUtilities stringForDate:self.date withFormat:DATE_FILE_STRING];
+}
+
+- (NSString *)accurateDateAsFileNameString {
+    return [CMAUtilities stringForDate:self.date
+                            withFormat:ACCURATE_DATE_FILE_STRING];
 }
 
 - (NSString *)fishingMethodsAsString {
@@ -178,7 +181,7 @@
     if (aMeasurementSystem == CMAMeasuringSystemTypeImperial)
         result = [NSString stringWithFormat:@"%ld%@ %ld%@", (long)[self.fishWeight integerValue], weightString, (long)[self.fishOunces integerValue], ounceString];
     else
-        result = [NSString stringWithFormat:@"%ld%@", (long)[self.fishWeight integerValue], weightString];
+        result = [NSString stringWithFormat:@"%.2f%@", self.fishWeight.floatValue, weightString];
     
     return result;
 }
@@ -198,7 +201,7 @@
             unitString = UNIT_METRIC_LENGTH;
     }
     
-    return [NSString stringWithFormat:@"%ld%@", (long)[self.fishLength integerValue], unitString];
+    return [NSString stringWithFormat:@"%.2f%@", self.fishLength.floatValue, unitString];
 }
 
 - (NSString *)fishResultAsString {

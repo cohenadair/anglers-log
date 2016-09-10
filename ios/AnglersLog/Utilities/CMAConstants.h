@@ -69,6 +69,7 @@ UIColor *CELL_COLOR_LIGHT;
 CGSize CELL_SIZE_GALLERY;
 
 extern NSString *const DATE_FILE_STRING;
+extern NSString *const ACCURATE_DATE_FILE_STRING;
 
 #pragma mark - Application Constants
 
@@ -79,6 +80,11 @@ extern NSString *const SHARE_MESSAGE;
 extern NSString *const HASHTAG_TEXT;
 extern NSString *const GLOBAL_FONT;
 extern NSInteger const MODEL_VERSION;
+
+#pragma mark - File Name Constants
+
+extern NSString *const PNG;
+extern NSString *const JPG;
 
 #pragma mark - User Define Name (UDN)
 

@@ -8,6 +8,7 @@
 
 #import "CMAAppDelegate.h"
 #import "CMAStorageManager.h"
+#import "CMAUtilities.h"
 
 @implementation CMAStorageManager
 
@@ -138,16 +139,53 @@
 
 #pragma mark - Core Data Management
 
+/**
+ * Returns the path to Anglers' Log's images directory.
+ */
+- (NSString *)imagesDirectoryPath {
+    return [self documentsSubDirectory:@"Images"].path;
+}
+
+/**
+ * Returns an array of paths to all the user's photos.
+ */
+- (NSArray<NSString *> *)imageFilePaths {
+    return [[NSFileManager defaultManager]
+                contentsOfDirectoryAtPath:[self imagesDirectoryPath]
+                                    error:nil];
+}
+
+/**
+ * Iterates through all the users entries and baits, resaving each image as JPG.
+ * This method is run in the background.
+ */
+- (void)convertAllPngToJpg {
+    [CMAUtilities runInBackground:^{
+        NSMutableOrderedSet *entries = self.sharedJournal.entries;
+        NSMutableOrderedSet *baits = self.sharedJournal.baits;
+        
+        for (CMAEntry *entry in entries) {
+            for (int i = 0; i < entry.imageCount; i++) {
+                [entry.images[i] resaveAsJpgWithIndex:i];
+            }
+        }
+        
+        for (CMABait *bait in baits) {
+            [bait.imageData resaveAsJpgWithIndex:0];
+        }
+        
+        [self.sharedJournal archive];
+    }];
+}
+
 - (void)cleanImages {
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+    [CMAUtilities runInBackground:^{
         
         CFAbsoluteTime start = CFAbsoluteTimeGetCurrent();
         BOOL found;
         int removeCount = 0;
         NSMutableArray *entryPaths = [NSMutableArray array];
-        NSString *imagesPath = [self documentsSubDirectory:@"Images"].path;
-        
-        NSArray *imageFiles = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:imagesPath error:nil];
+        NSArray *imageFiles = [self imageFilePaths];
         
         // get all imagePaths
         for (CMAEntry *e in self.sharedJournal.entries)
@@ -174,7 +212,7 @@
             
             if (!found) {
                 NSError *e;
-                if (![[NSFileManager defaultManager] removeItemAtPath:[imagesPath stringByAppendingPathComponent:filePath] error:&e])
+                if (![[NSFileManager defaultManager] removeItemAtPath:[[self imagesDirectoryPath] stringByAppendingPathComponent:filePath] error:&e])
                     NSLog(@"Failed to delete image: %@", e.localizedDescription);
                 else
                     removeCount++;
@@ -184,8 +222,7 @@
         dispatch_async(dispatch_get_main_queue(), ^{
            NSLog(@"Removed %d images in %f ms.", removeCount, CFAbsoluteTimeGetCurrent() - start);
         });
-        
-    });
+    }];
 }
 
 - (void)saveJournal {
@@ -224,6 +261,7 @@
     
     if ([results count] > 0) {
         self.sharedJournal = [results objectAtIndex:0];
+        [self convertAllPngToJpg];
         [self cleanImages];
     } else {
         NSLog(@"No local data found, initializing new journal.");
@@ -236,7 +274,7 @@
 - (CMABait *)rapalaBait {
     CMABait *result = [[CMAStorageManager sharedManager] managedBait];
     CMAImage *img = [[CMAStorageManager sharedManager] managedImage];
-    [img setFullImage:[UIImage imageNamed:@"rapala.png"]];
+    [img setFullImage:[UIImage imageNamed:@"rapala.jpg"]];
     
     [result setName:@"Rippin' Rap"];
     [result setColor:@"Blue Chrome"];
@@ -251,7 +289,7 @@
 - (CMABait *)spinnerBait {
     CMABait *result = [[CMAStorageManager sharedManager] managedBait];
     CMAImage *img = [[CMAStorageManager sharedManager] managedImage];
-    [img setFullImage:[UIImage imageNamed:@"spinner.png"]];
+    [img setFullImage:[UIImage imageNamed:@"spinner.jpg"]];
     
     [result setName:@"Spinner - Blue Fox"];
     [result setColor:@"Silver"];

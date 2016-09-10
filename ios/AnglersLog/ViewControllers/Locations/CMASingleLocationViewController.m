@@ -11,7 +11,6 @@
 #import "CMASelectFishingSpotViewController.h"
 #import "CMAConstants.h"
 #import "CMAInstagramActivity.h"
-#import "CMAAdBanner.h"
 #import "CMAStorageManager.h"
 #import "CMAAlerts.h"
 
@@ -26,9 +25,6 @@
 
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *mapTypeControl;
-
-@property (strong, nonatomic)CMAAdBanner *adBanner;
-@property (nonatomic)BOOL bannerIsVisible;
 
 @property (strong, nonatomic)CMAFishingSpot *currentFishingSpot;
 @property (strong, nonatomic)NSMutableArray *fishingSpotAnnotations;
@@ -60,7 +56,6 @@
     
     [self initNavigationBarItems];
     [self initMapView];
-    [self initAdBanner];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -94,48 +89,6 @@
     [[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:kSectionSelectFishingSpot]] setAccessoryType:UITableViewCellAccessoryNone];
 }
 
-#pragma mark - Ad Banner Initializing
-
-- (void)initAdBanner {
-    // the height of the view excluding the navigation bar and status bar
-    CGFloat y = self.view.frame.size.height - self.navigationController.navigationBar.frame.size.height - [UIApplication sharedApplication].statusBarFrame.size.height;
-    CGRect f = CGRectMake(0, y, self.view.frame.size.width, kBannerHeight);
-    
-    self.adBanner = [CMAAdBanner withFrame:f delegate:self superView:self.view];
-    self.adBanner.bannerIsOnBottom = YES;
-    self.adBanner.showTime = 0.25;
-}
-
-- (void)hideAdBanner {
-    __block typeof(self) blockSelf = self;
-    
-    [self.adBanner hideWithCompletion:^(void) {
-        blockSelf.bannerIsVisible = blockSelf.adBanner.bannerIsVisible;
-        // so map cell's height is reset
-        [blockSelf.tableView beginUpdates];
-        [blockSelf.tableView endUpdates];
-    }];
-}
-
-- (void)showAdBanner {
-    __block typeof(self) blockSelf = self;
-    
-    [self.adBanner showWithCompletion:^(void) {
-        blockSelf.bannerIsVisible = blockSelf.adBanner.bannerIsVisible;
-        // so map cell's height is reset
-        [blockSelf.tableView beginUpdates];
-        [blockSelf.tableView endUpdates];
-    }];
-}
-
-- (void)bannerViewDidLoadAd:(ADBannerView *)banner {
-    [self showAdBanner];
-}
-
-- (void)bannerView:(ADBannerView *)banner didFailToReceiveAdWithError:(NSError *)error {
-    [self hideAdBanner];
-}
-
 #pragma mark - Table View Initializing
 
 - (void)initCurrentFishingSpot:(CMAFishingSpot *)currentFishingSpot {
@@ -157,7 +110,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == kSectionMap)
-        return tableView.frame.size.height - kDefaultCellHeight - (self.bannerIsVisible * kBannerHeight);
+        return tableView.frame.size.height - kDefaultCellHeight;
     
     return kDefaultCellHeight;
 }

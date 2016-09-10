@@ -14,7 +14,6 @@
 #import "CMAAppDelegate.h"
 #import "CMANoXView.h"
 #import "CMAStorageManager.h"
-#import "CMAAdBanner.h"
 
 @interface CMAViewBaitsViewController ()
 
@@ -23,8 +22,6 @@
 @property (weak, nonatomic)IBOutlet UIBarButtonItem *menuButton;
 @property (weak, nonatomic)IBOutlet UIBarButtonItem *deleteButton;
 @property (weak, nonatomic)IBOutlet UIBarButtonItem *addButton;
-
-@property (strong, nonatomic)CMAAdBanner *adBanner;
 
 @property (strong, nonatomic)CMAUserDefine *userDefineBaits;
 @property (strong, nonatomic)CMANoXView *noBaitsView;
@@ -83,7 +80,6 @@
     [self setUserDefineBaits:[[self journal] userDefineNamed:UDN_BAITS]];
     [self.tableView setContentOffset:CGPointMake(0, self.currentOffsetY)];
     [self handleNoBaitView];
-    [self initAdBanner];
     [self.tableView reloadData];
 }
 
@@ -115,24 +111,6 @@
     [super didReceiveMemoryWarning];
 }
 
-#pragma mark - Ad Banner Initializing
-
-- (void)initAdBanner {
-    if (self.adBanner == nil) {
-        self.adBanner = [CMAAdBanner withFrame:CGRectMake(0, -50, self.view.frame.size.width, 50) delegate:self superView:self.view];
-        self.adBanner.constraint = self.tableViewTop;
-        self.adBanner.noXView = self.noBaitsView;
-    }
-}
-
-- (void)bannerViewDidLoadAd:(ADBannerView *)banner {
-    [self.adBanner showWithCompletion:nil];
-}
-
-- (void)bannerView:(ADBannerView *)banner didFailToReceiveAdWithError:(NSError *)error {
-    [self.adBanner hideWithCompletion:nil];
-}
-
 #pragma mark - Table View Initializing
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -153,7 +131,7 @@
     CMABait *bait = [self.userDefineBaits objectAtIndex:indexPath.row];
     
     if (bait.imageData)
-        [cell.thumbImage setImage:[bait.imageData image]];
+        [cell.thumbImage setImage:bait.imageData.tableCellImage];
     else
         [cell.thumbImage setImage:[UIImage imageNamed:@"no_image.png"]];
     

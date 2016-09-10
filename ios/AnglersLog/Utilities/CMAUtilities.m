@@ -186,4 +186,17 @@
     return [UIColor colorWithRed:212.0f/255.0f green:191.0f/255.0f blue:132.0f/255.0f alpha:1.0f];
 }
 
++ (void)runInBackground:(void(^)())aBlock {
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND,
+                                             0), ^{
+        aBlock();
+    });
+}
+
++ (NSString *)stringForDate:(NSDate *)date withFormat:(NSString *)format {
+    NSDateFormatter *formatter = [NSDateFormatter new];
+    [formatter setDateFormat:format];
+    return [formatter stringFromDate:date];
+}
+
 @end

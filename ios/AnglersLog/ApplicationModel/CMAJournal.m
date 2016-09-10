@@ -370,6 +370,28 @@
         return UNIT_METRIC_SPEED;
 }
 
+#pragma mark - User Define Accessing
+
+- (NSMutableOrderedSet *)baits {
+    return [self userDefineNamed:UDN_BAITS].activeSet;
+}
+
+- (NSMutableOrderedSet *)locations {
+    return [self userDefineNamed:UDN_LOCATIONS].activeSet;
+}
+
+- (NSMutableOrderedSet *)fishingMethods {
+    return [self userDefineNamed:UDN_FISHING_METHODS].activeSet;
+}
+
+- (NSMutableOrderedSet *)species {
+    return [self userDefineNamed:UDN_SPECIES].activeSet;
+}
+
+- (NSMutableOrderedSet *)waterClarities {
+    return [self userDefineNamed:UDN_WATER_CLARITIES].activeSet;
+}
+
 #pragma mark - Sorting
 
 - (void)sortEntriesBy: (CMAEntrySortMethod)aSortMethod order: (CMASortOrder)aSortOrder {

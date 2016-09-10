@@ -31,5 +31,7 @@
 + (CGSize)screenSize;
 + (CGSize)screenSizeInPixels;
 + (UIColor *)themeColorDark;
++ (void)runInBackground:(void(^)())aBlock;
++ (NSString *)stringForDate:(NSDate *)date withFormat:(NSString *)format;
 
 @end

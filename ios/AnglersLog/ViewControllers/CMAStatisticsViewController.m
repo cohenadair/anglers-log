@@ -17,7 +17,6 @@
 #import "CMACircleView.h"
 #import "CMAStatisticsTableViewCell.h"
 #import "CMAStorageManager.h"
-#import "CMAAdBanner.h"
 
 @interface CMAStatisticsViewController ()
 
@@ -36,7 +35,6 @@
 @property (strong, nonatomic) CMAEntry *longestCatchEntry;
 @property (strong, nonatomic) CMAEntry *heaviestCatchEntry;
 @property (strong, nonatomic) CMAEntry *entryForSingleEntry;
-@property (strong, nonatomic) CMAAdBanner *adBanner;
 
 @property (nonatomic) NSInteger initialSelectedIndex;
 @property (nonatomic) BOOL journalHasEntries;
@@ -95,7 +93,6 @@
 
 - (void)setupView {
     [self handleNoStatsView];
-    [self initAdBanner];
     [self setJournalHasEntries:[[self journal] entryCount] > 0];
     
     if (self.journalHasEntries)
@@ -140,24 +137,6 @@
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-}
-
-#pragma mark - Ad Banner Initializing
-
-- (void)initAdBanner {
-    if (self.adBanner == nil) {
-        self.adBanner = [CMAAdBanner withFrame:CGRectMake(0, -50, self.view.frame.size.width, 50) delegate:self superView:self.view];
-        self.adBanner.constraint = self.tableViewTop;
-        self.adBanner.noXView = self.noStatsView;
-    }
-}
-
-- (void)bannerViewDidLoadAd:(ADBannerView *)banner {
-    [self.adBanner showWithCompletion:nil];
-}
-
-- (void)bannerView:(ADBannerView *)banner didFailToReceiveAdWithError:(NSError *)error {
-    [self.adBanner hideWithCompletion:nil];
 }
 
 #pragma mark - Table View Initializing

@@ -11,10 +11,18 @@
 #import "CMAStorageManager.h"
 #import "CMAConstants.h"
 #import "CMAUtilities.h"
+#import "iRate.h"
 #import <Fabric/Fabric.h>
 #import <Crashlytics/Crashlytics.h>
 
 @implementation CMAAppDelegate
+
+- (BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    [iRate sharedInstance].daysUntilPrompt = 7;
+    [iRate sharedInstance].usesUntilPrompt = 15;
+    [iRate sharedInstance].promptForNewVersionIfUserRated = YES;
+    return YES;
+}
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {

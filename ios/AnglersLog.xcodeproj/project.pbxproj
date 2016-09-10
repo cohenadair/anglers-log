@@ -15,10 +15,6 @@
 		0D23B2711A7713C900E89736 /* TheAnglersLog.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 0D23B26F1A7713C900E89736 /* TheAnglersLog.xcdatamodeld */; };
 		0D23B2741A78102B00E89736 /* CMAImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D23B2731A78102B00E89736 /* CMAImage.m */; };
 		0D248B0F1AB0C82200093290 /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D248B0E1AB0C82200093290 /* iAd.framework */; };
-		0D28AAB11ABB44F9009E8184 /* CMAAdBanner.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D28AAB01ABB44F9009E8184 /* CMAAdBanner.m */; };
-		0D4ECDFD1ACB663B008B55E6 /* rapala.png in Resources */ = {isa = PBXBuildFile; fileRef = 0D4ECDFB1ACB663B008B55E6 /* rapala.png */; };
-		0D4ECDFE1ACB663B008B55E6 /* spinner.png in Resources */ = {isa = PBXBuildFile; fileRef = 0D4ECDFC1ACB663B008B55E6 /* spinner.png */; };
-		0D5584CE1ABF59C200719554 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D5584CD1ABF59C200719554 /* StoreKit.framework */; };
 		0D5608121A6F0F3000EE0437 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D5608111A6F0F3000EE0437 /* CoreData.framework */; };
 		0D81E4561C8F404300974ED3 /* circle_icon@1x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0D81E4531C8F404300974ED3 /* circle_icon@1x.png */; };
 		0D81E4571C8F404300974ED3 /* circle_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0D81E4541C8F404300974ED3 /* circle_icon@2x.png */; };
@@ -127,6 +123,10 @@
 		0D8F84791A6EC2C300AABAEA /* no_image.png in Resources */ = {isa = PBXBuildFile; fileRef = 0D8F84491A6EC2C300AABAEA /* no_image.png */; };
 		0D8F847A1A6EC2C300AABAEA /* rectile.png in Resources */ = {isa = PBXBuildFile; fileRef = 0D8F844A1A6EC2C300AABAEA /* rectile.png */; };
 		0D9B76101A76C4C100553177 /* CMAUserDefineObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D9B760F1A76C4C100553177 /* CMAUserDefineObject.m */; };
+		0DBC36131D7DBB480016B898 /* iRate.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 0DBC36101D7DBB480016B898 /* iRate.bundle */; };
+		0DBC36141D7DBB480016B898 /* iRate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DBC36121D7DBB480016B898 /* iRate.m */; };
+		0DBC36171D7E2BA50016B898 /* rapala.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0DBC36151D7E2BA50016B898 /* rapala.jpg */; };
+		0DBC36181D7E2BA50016B898 /* spinner.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0DBC36161D7E2BA50016B898 /* spinner.jpg */; };
 		0DC75FDD1A9AEDCE0045030C /* CMASinglePhotoCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DC75FDC1A9AEDCE0045030C /* CMASinglePhotoCollectionViewCell.m */; };
 		0DCAD63A1AA37D160040B03B /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DCAD6391AA37D160040B03B /* ImageIO.framework */; };
 		0DCAD63C1AA37D230040B03B /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DCAD63B1AA37D230040B03B /* MobileCoreServices.framework */; };
@@ -164,12 +164,7 @@
 		0D23B2721A78102B00E89736 /* CMAImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAImage.h; path = ApplicationModel/CMAImage.h; sourceTree = "<group>"; };
 		0D23B2731A78102B00E89736 /* CMAImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAImage.m; path = ApplicationModel/CMAImage.m; sourceTree = "<group>"; };
 		0D248B0E1AB0C82200093290 /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
-		0D28AAAF1ABB44F9009E8184 /* CMAAdBanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAAdBanner.h; path = Utilities/CMAAdBanner.h; sourceTree = "<group>"; };
-		0D28AAB01ABB44F9009E8184 /* CMAAdBanner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAAdBanner.m; path = Utilities/CMAAdBanner.m; sourceTree = "<group>"; };
 		0D4ECDF51ACB383C008B55E6 /* TheAnglersLog 6.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "TheAnglersLog 6.xcdatamodel"; sourceTree = "<group>"; };
-		0D4ECDFB1ACB663B008B55E6 /* rapala.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = rapala.png; path = Images/rapala.png; sourceTree = "<group>"; };
-		0D4ECDFC1ACB663B008B55E6 /* spinner.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = spinner.png; path = Images/spinner.png; sourceTree = "<group>"; };
-		0D5584CD1ABF59C200719554 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		0D5608111A6F0F3000EE0437 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		0D6994B31ACA21BA008D6A0D /* AnglersLog-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AnglersLog-Prefix.pch"; sourceTree = "<group>"; };
 		0D6994B51ACA21DE008D6A0D /* AnglersLog-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "AnglersLog-Info.plist"; sourceTree = "<group>"; };
@@ -331,6 +326,12 @@
 		0D8F84A41A6EC31500AABAEA /* TheAnglersLog.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = TheAnglersLog.entitlements; path = AnglersLog/TheAnglersLog.entitlements; sourceTree = SOURCE_ROOT; };
 		0D9B760E1A76C4C100553177 /* CMAUserDefineObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMAUserDefineObject.h; sourceTree = "<group>"; };
 		0D9B760F1A76C4C100553177 /* CMAUserDefineObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CMAUserDefineObject.m; sourceTree = "<group>"; };
+		0DBC360F1D7CBC720016B898 /* TheAnglersLog 9.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "TheAnglersLog 9.xcdatamodel"; sourceTree = "<group>"; };
+		0DBC36101D7DBB480016B898 /* iRate.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = iRate.bundle; path = iRate/iRate.bundle; sourceTree = "<group>"; };
+		0DBC36111D7DBB480016B898 /* iRate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = iRate.h; path = iRate/iRate.h; sourceTree = "<group>"; };
+		0DBC36121D7DBB480016B898 /* iRate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = iRate.m; path = iRate/iRate.m; sourceTree = "<group>"; };
+		0DBC36151D7E2BA50016B898 /* rapala.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = rapala.jpg; path = Images/rapala.jpg; sourceTree = "<group>"; };
+		0DBC36161D7E2BA50016B898 /* spinner.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = spinner.jpg; path = Images/spinner.jpg; sourceTree = "<group>"; };
 		0DBFE94B1C8E45BB00BDCC1D /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = "<group>"; };
 		0DBFE94C1C8E45BB00BDCC1D /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		0DC75FDB1A9AEDCE0045030C /* CMASinglePhotoCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMASinglePhotoCollectionViewCell.h; path = CustomViews/CMASinglePhotoCollectionViewCell.h; sourceTree = "<group>"; };
@@ -370,7 +371,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				0D128FB61AD5D7600004CABE /* libz.dylib in Frameworks */,
-				0D5584CE1ABF59C200719554 /* StoreKit.framework in Frameworks */,
 				0D248B0F1AB0C82200093290 /* iAd.framework in Frameworks */,
 				0DCAD6521AA5000A0040B03B /* GLKit.framework in Frameworks */,
 				0DCAD6501AA4FFFE0040B03B /* OpenGLES.framework in Frameworks */,
@@ -585,6 +585,16 @@
 			path = AnglersLog/Images/LargeIcons;
 			sourceTree = SOURCE_ROOT;
 		};
+		0DBC36191D7E2DCF0016B898 /* iRate */ = {
+			isa = PBXGroup;
+			children = (
+				0DBC36101D7DBB480016B898 /* iRate.bundle */,
+				0DBC36111D7DBB480016B898 /* iRate.h */,
+				0DBC36121D7DBB480016B898 /* iRate.m */,
+			);
+			name = iRate;
+			sourceTree = "<group>";
+		};
 		9392542E7B56F7E064496078 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -616,7 +626,6 @@
 			isa = PBXGroup;
 			children = (
 				0D128FB51AD5D7600004CABE /* libz.dylib */,
-				0D5584CD1ABF59C200719554 /* StoreKit.framework */,
 				0D248B0E1AB0C82200093290 /* iAd.framework */,
 				0DCAD6511AA5000A0040B03B /* GLKit.framework */,
 				0DCAD64F1AA4FFFE0040B03B /* OpenGLES.framework */,
@@ -704,8 +713,8 @@
 				0D8F84401A6EC2C300AABAEA /* LargeIcons */,
 				0D8F84491A6EC2C300AABAEA /* no_image.png */,
 				0D8F844A1A6EC2C300AABAEA /* rectile.png */,
-				0D4ECDFB1ACB663B008B55E6 /* rapala.png */,
-				0D4ECDFC1ACB663B008B55E6 /* spinner.png */,
+				0DBC36151D7E2BA50016B898 /* rapala.jpg */,
+				0DBC36161D7E2BA50016B898 /* spinner.jpg */,
 				0D81E4531C8F404300974ED3 /* circle_icon@1x.png */,
 				0D81E4541C8F404300974ED3 /* circle_icon@2x.png */,
 				0D81E4551C8F404300974ED3 /* circle_icon@3x.png */,
@@ -752,6 +761,7 @@
 		E7C29D0C1A143A1600015B42 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				0DBC36191D7E2DCF0016B898 /* iRate */,
 				0D006E5D1D3702A900DBDA7B /* SWRevealViewController */,
 			);
 			path = Libraries;
@@ -787,8 +797,6 @@
 				0D8F83EB1A6EC28300AABAEA /* CMAConstants.m */,
 				0D8F83EC1A6EC28300AABAEA /* CMAUtilities.h */,
 				0D8F83ED1A6EC28300AABAEA /* CMAUtilities.m */,
-				0D28AAAF1ABB44F9009E8184 /* CMAAdBanner.h */,
-				0D28AAB01ABB44F9009E8184 /* CMAAdBanner.m */,
 			);
 			name = Utilities;
 			sourceTree = "<group>";
@@ -831,6 +839,9 @@
 					E70B637119D3A8E400DFBA85 = {
 						DevelopmentTeam = RQ74DU9PML;
 						SystemCapabilities = {
+							com.apple.InAppPurchase = {
+								enabled = 0;
+							};
 							com.apple.iCloud = {
 								enabled = 1;
 							};
@@ -885,8 +896,8 @@
 				0D8F840E1A6EC29A00AABAEA /* CMACircleView.xib in Resources */,
 				0D8F845D1A6EC2C300AABAEA /* edit@2x.png in Resources */,
 				0D8F846E1A6EC2C300AABAEA /* stats.png in Resources */,
+				0DBC36181D7E2BA50016B898 /* spinner.jpg in Resources */,
 				0D8F84611A6EC2C300AABAEA /* instagram@2x.png in Resources */,
-				0D4ECDFE1ACB663B008B55E6 /* spinner.png in Resources */,
 				0D81E4581C8F404300974ED3 /* circle_icon@3x.png in Resources */,
 				0D8F84621A6EC2C300AABAEA /* instagram_small.png in Resources */,
 				0D8F84541A6EC2C300AABAEA /* app_icon_80.png in Resources */,
@@ -895,8 +906,9 @@
 				0D8F83A11A6EC1AE00AABAEA /* CMAStoryboard.storyboard in Resources */,
 				0D8F844D1A6EC2C300AABAEA /* app_icon_120.png in Resources */,
 				0D8F845F1A6EC2C300AABAEA /* fishing_methods.png in Resources */,
+				0DBC36171D7E2BA50016B898 /* rapala.jpg in Resources */,
+				0DBC36131D7DBB480016B898 /* iRate.bundle in Resources */,
 				0D8F84551A6EC2C300AABAEA /* bait.png in Resources */,
-				0D4ECDFD1ACB663B008B55E6 /* rapala.png in Resources */,
 				0D8F846B1A6EC2C300AABAEA /* sort@2x.png in Resources */,
 				0D8F84731A6EC2C300AABAEA /* fishing_methods_large.png in Resources */,
 				0D8F84121A6EC29A00AABAEA /* CMANoXView.xib in Resources */,
@@ -1045,6 +1057,7 @@
 				0D8F84151A6EC29A00AABAEA /* CMATouchSegmentedControl.m in Sources */,
 				0D8F83981A6EC10800AABAEA /* CMAWaterClarity.m in Sources */,
 				0D8F83911A6EC10800AABAEA /* CMAStatsObject.m in Sources */,
+				0DBC36141D7DBB480016B898 /* iRate.m in Sources */,
 				0D8F83DB1A6EC25200AABAEA /* CMASideMenuViewController.m in Sources */,
 				0D8F84131A6EC29A00AABAEA /* CMADeleteActionSheet.m in Sources */,
 				0D8F838F1A6EC10800AABAEA /* CMAWeatherData.m in Sources */,
@@ -1053,7 +1066,6 @@
 				0D9B76101A76C4C100553177 /* CMAUserDefineObject.m in Sources */,
 				0D8F840F1A6EC29A00AABAEA /* CMAEntryTableViewCell.m in Sources */,
 				0D128F501AD472340004CABE /* CMAJSONWriter.m in Sources */,
-				0D28AAB11ABB44F9009E8184 /* CMAAdBanner.m in Sources */,
 				0D8F83921A6EC10800AABAEA /* CMABait.m in Sources */,
 				0D8F84101A6EC29A00AABAEA /* CMAInstagramActivity.m in Sources */,
 				0D8F840D1A6EC29A00AABAEA /* CMACircleView.m in Sources */,
@@ -1231,6 +1243,7 @@
 		0D23B26F1A7713C900E89736 /* TheAnglersLog.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				0DBC360F1D7CBC720016B898 /* TheAnglersLog 9.xcdatamodel */,
 				0D128F551AD4C6890004CABE /* TheAnglersLog 8.xcdatamodel */,
 				0D128F541AD4C4A80004CABE /* TheAnglersLog 7.xcdatamodel */,
 				0D4ECDF51ACB383C008B55E6 /* TheAnglersLog 6.xcdatamodel */,
@@ -1240,7 +1253,7 @@
 				0DCC43271A99A3AD0019DB2E /* TheAnglersLog 2.xcdatamodel */,
 				0D23B2701A7713C900E89736 /* TheAnglersLog.xcdatamodel */,
 			);
-			currentVersion = 0D128F551AD4C6890004CABE /* TheAnglersLog 8.xcdatamodel */;
+			currentVersion = 0DBC360F1D7CBC720016B898 /* TheAnglersLog 9.xcdatamodel */;
 			path = TheAnglersLog.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

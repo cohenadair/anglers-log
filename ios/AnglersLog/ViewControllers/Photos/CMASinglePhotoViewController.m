@@ -12,7 +12,6 @@
 #import "CMAInstagramActivity.h"
 #import "CMAImage.h"
 #import "CMAEntry.h"
-#import "CMAAdBanner.h"
 #import "CMAUtilities.h"
 
 @interface CMASinglePhotoViewController ()
@@ -21,18 +20,11 @@
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *actionButton;
 
-@property (strong, nonatomic)CMAAdBanner *adBanner;
-
 @end
 
 @implementation CMASinglePhotoViewController
 
 #pragma mark - View Management
-
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    [self initAdBanner];
-}
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
@@ -49,26 +41,6 @@
 
 - (void)setNavigationTitleForIndexPath:(NSIndexPath *)anIndexPath {
     [self.navigationItem setTitle:[NSString stringWithFormat:@"Photos (%ld of %lu)", (unsigned long)anIndexPath.item + 1, (unsigned long)[self.imagesArray count]]];
-}
-
-#pragma mark - Ad Banner Initializing
-
-- (void)initAdBanner {
-    // the height of the view excluding the navigation bar and status bar
-    CGFloat y = self.view.frame.size.height - self.navigationController.navigationBar.frame.size.height - [UIApplication sharedApplication].statusBarFrame.size.height;
-    CGRect f = CGRectMake(0, y, self.view.frame.size.width, 50);
-    
-    self.adBanner = [CMAAdBanner withFrame:f delegate:self superView:self.view];
-    self.adBanner.bannerIsOnBottom = YES;
-    self.adBanner.constraint = self.collectionViewBottom;
-}
-
-- (void)bannerViewDidLoadAd:(ADBannerView *)banner {
-    [self.adBanner showWithCompletion:nil];
-}
-
-- (void)bannerView:(ADBannerView *)banner didFailToReceiveAdWithError:(NSError *)error {
-    [self.adBanner hideWithCompletion:nil];
 }
 
 #pragma mark - Collection View Initializing
@@ -90,7 +62,7 @@
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
-    return self.collectionView.frame.size;
+    return self.view.frame.size;
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
