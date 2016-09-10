@@ -16,6 +16,6 @@ http-server <path-to-anglerslog>
 2. Navigate to `anglers-log/web`
 3. Run `firebase deploy`
 
-Updates should appear at http://anglerslog.ca.
+Updates should appear at https://anglerslog.ca/.
 
 
