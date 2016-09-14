@@ -21,6 +21,7 @@
 #import "CMAUtilities.h"
 #import "CMAStorageManager.h"
 #import "CMAImage.h"
+#import "NSString+CMA.h"
 
 @interface CMAAddEntryViewController ()
 
@@ -698,8 +699,7 @@ NSString *const kNotSelectedString = @"Not Selected";
     
     // fish length
     if (![[self.lengthTextField text] isEqualToString:@""]) {
-        NSNumber *length = [NSNumber numberWithFloat:[[self.lengthTextField text] floatValue]];
-        [anEntry setFishLength:length];
+        [anEntry setFishLength:[self.lengthTextField text].formattedFloatValue];
     } else {
         [anEntry setFishLength:[NSNumber numberWithInteger:-1]];
     }
@@ -707,8 +707,7 @@ NSString *const kNotSelectedString = @"Not Selected";
     // fish weight
     if ([[self journal] measurementSystem] == CMAMeasuringSystemTypeMetric) {
         if (![[self.metricWeightTextField text] isEqualToString:@""]) {
-            NSNumber *weight = [NSNumber numberWithFloat:[[self.metricWeightTextField text] floatValue]];
-            [anEntry setFishWeight:weight];
+            [anEntry setFishWeight:[self.metricWeightTextField text].formattedFloatValue];
         } else {
             [anEntry setFishWeight:[NSNumber numberWithInteger:-1]];
         }
@@ -787,8 +786,7 @@ NSString *const kNotSelectedString = @"Not Selected";
     
     // water depth
     if (![[self.waterDepthTextField text] isEqualToString:@""]) {
-        NSNumber *depth = [NSNumber numberWithFloat:[[self.waterDepthTextField text] floatValue]];
-        [anEntry setWaterDepth:depth];
+        [anEntry setWaterDepth:[self.waterDepthTextField text].formattedFloatValue];
     } else {
         [anEntry setWaterDepth:[NSNumber numberWithInteger:-1]];
     }

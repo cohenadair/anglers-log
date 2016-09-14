@@ -123,6 +123,7 @@
 		0D8F84791A6EC2C300AABAEA /* no_image.png in Resources */ = {isa = PBXBuildFile; fileRef = 0D8F84491A6EC2C300AABAEA /* no_image.png */; };
 		0D8F847A1A6EC2C300AABAEA /* rectile.png in Resources */ = {isa = PBXBuildFile; fileRef = 0D8F844A1A6EC2C300AABAEA /* rectile.png */; };
 		0D9B76101A76C4C100553177 /* CMAUserDefineObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D9B760F1A76C4C100553177 /* CMAUserDefineObject.m */; };
+		0DB8D7911D8A092100EF7C50 /* NSString+CMA.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DB8D7901D8A092100EF7C50 /* NSString+CMA.m */; };
 		0DBC36131D7DBB480016B898 /* iRate.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 0DBC36101D7DBB480016B898 /* iRate.bundle */; };
 		0DBC36141D7DBB480016B898 /* iRate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DBC36121D7DBB480016B898 /* iRate.m */; };
 		0DBC36171D7E2BA50016B898 /* rapala.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0DBC36151D7E2BA50016B898 /* rapala.jpg */; };
@@ -326,6 +327,8 @@
 		0D8F84A41A6EC31500AABAEA /* TheAnglersLog.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = TheAnglersLog.entitlements; path = AnglersLog/TheAnglersLog.entitlements; sourceTree = SOURCE_ROOT; };
 		0D9B760E1A76C4C100553177 /* CMAUserDefineObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMAUserDefineObject.h; sourceTree = "<group>"; };
 		0D9B760F1A76C4C100553177 /* CMAUserDefineObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CMAUserDefineObject.m; sourceTree = "<group>"; };
+		0DB8D78F1D8A092100EF7C50 /* NSString+CMA.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSString+CMA.h"; path = "Categories/NSString+CMA.h"; sourceTree = "<group>"; };
+		0DB8D7901D8A092100EF7C50 /* NSString+CMA.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSString+CMA.m"; path = "Categories/NSString+CMA.m"; sourceTree = "<group>"; };
 		0DBC360F1D7CBC720016B898 /* TheAnglersLog 9.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "TheAnglersLog 9.xcdatamodel"; sourceTree = "<group>"; };
 		0DBC36101D7DBB480016B898 /* iRate.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = iRate.bundle; path = iRate/iRate.bundle; sourceTree = "<group>"; };
 		0DBC36111D7DBB480016B898 /* iRate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = iRate.h; path = iRate/iRate.h; sourceTree = "<group>"; };
@@ -585,6 +588,15 @@
 			path = AnglersLog/Images/LargeIcons;
 			sourceTree = SOURCE_ROOT;
 		};
+		0DB8D78B1D8A088400EF7C50 /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				0DB8D78F1D8A092100EF7C50 /* NSString+CMA.h */,
+				0DB8D7901D8A092100EF7C50 /* NSString+CMA.m */,
+			);
+			name = Categories;
+			sourceTree = "<group>";
+		};
 		0DBC36191D7E2DCF0016B898 /* iRate */ = {
 			isa = PBXGroup;
 			children = (
@@ -660,6 +672,7 @@
 				0D8F84A41A6EC31500AABAEA /* TheAnglersLog.entitlements */,
 				E7C29D0C1A143A1600015B42 /* Libraries */,
 				E738583B19FCD49100FE122B /* Images */,
+				0DB8D78B1D8A088400EF7C50 /* Categories */,
 				E7A6883D19F7321E00B032E3 /* CustomViews */,
 				E7C9272019EF90C00010A9FE /* Utilities */,
 				E7C926D419EE3B320010A9FE /* ViewControllers */,
@@ -1021,6 +1034,7 @@
 				0D8F83D81A6EC25200AABAEA /* CMAViewBaitsViewController.m in Sources */,
 				0D8F83901A6EC10800AABAEA /* CMAStats.m in Sources */,
 				0D8F838C1A6EC10800AABAEA /* CMAJournal.m in Sources */,
+				0DB8D7911D8A092100EF7C50 /* NSString+CMA.m in Sources */,
 				0D8F83961A6EC10800AABAEA /* CMASpecies.m in Sources */,
 				0D8F83DD1A6EC25200AABAEA /* CMAUserDefinesViewController.m in Sources */,
 				0D87D0691AD6E3FB008E732A /* CMADataImporter.m in Sources */,
