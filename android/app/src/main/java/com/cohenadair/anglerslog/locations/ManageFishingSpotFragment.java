@@ -124,11 +124,12 @@ public class ManageFishingSpotFragment extends ManageContentFragment {
         FishingSpot fishingSpot = getNewFishingSpot();
         fishingSpot.setName(mNameView.getInputText());
 
-        if (mMap != null) {
-            fishingSpot.setLatitude(mMap.getCameraPosition().target.latitude);
-            fishingSpot.setLongitude(mMap.getCameraPosition().target.longitude);
-        } else {
-            // in case Google Play Services isn't available, fishing spots can still be added and updated later
+        // coordinates
+        try {
+            fishingSpot.setLatitude(Double.parseDouble(mLatitudeView.getInputText()));
+            fishingSpot.setLongitude(Double.parseDouble(mLongitudeView.getInputText()));
+        } catch (NullPointerException e) {
+            // only happens if the user erases what's in the EditText
             fishingSpot.setLatitude(0.0);
             fishingSpot.setLongitude(0.0);
         }
