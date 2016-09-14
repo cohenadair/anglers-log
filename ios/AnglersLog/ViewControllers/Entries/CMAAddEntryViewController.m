@@ -995,7 +995,7 @@ NSString *const kNotSelectedString = @"Not Selected";
         NSArray *weatherArray = result[@"weather"];
         
         if ([weatherArray count] > 0) {
-            NSString *imageString = [NSString stringWithFormat:@"https://openweathermap.org/img/w/%@.png", result[@"weather"][0][@"icon"]];
+            NSString *imageString = [NSString stringWithFormat:@"http://openweathermap.org/img/w/%@.png", result[@"weather"][0][@"icon"]];
             [self.weatherData setImageURL:imageString];
             [self.weatherData setSkyConditions:result[@"weather"][0][@"main"]];
         } else {
