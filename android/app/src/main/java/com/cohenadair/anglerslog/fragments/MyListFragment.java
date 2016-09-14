@@ -80,7 +80,8 @@ public class MyListFragment extends MasterFragment {
 
         initNewButton(view);
         initRecyclerView(view);
-        initBottomSheets(view);
+        initBackupBottomSheet(view);
+        initInstabugAlert();
 
         return view;
     }
@@ -156,29 +157,26 @@ public class MyListFragment extends MasterFragment {
         });
     }
 
-    private void initBottomSheets(View view) {
-        final BottomSheetView bugsBottomSheet = (BottomSheetView)view.findViewById(R.id.instabug_bottom_sheet_view);
-        final BottomSheetView backupSheetView = (BottomSheetView)view.findViewById(R.id.backup_bottom_sheet_view);
-
+    private void initInstabugAlert() {
         if (LogbookPreferences.shouldShowInstabugSheet()) {
-            bugsBottomSheet.init(
-                    bugsBottomSheet,
-                    R.drawable.instabug_ic_ibg_logo_dark,
-                    R.string.instabug_sheet_title,
-                    R.string.instabug_sheet_description,
-                    R.string.dismiss,
-                    true,
-                    new BottomSheetView.InteractionListener() {
+            new AlertDialog.Builder(getContext())
+                    .setIcon(R.drawable.instabug_ic_ibg_logo_dark)
+                    .setTitle(R.string.instabug_sheet_title)
+                    .setMessage(R.string.instabug_sheet_description)
+                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                         @Override
-                        public void onDismiss() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
                             LogbookPreferences.setShouldShowInstabugSheet(false);
                         }
-                    }
-            );
-        } else {
-            // just a precaution if it happens to be showing
-            bugsBottomSheet.setVisibility(View.GONE);
+                    })
+                    .show();
         }
+    }
+
+    private void initBackupBottomSheet(View view) {
+        final BottomSheetView backupSheetView =
+                (BottomSheetView)view.findViewById(R.id.backup_bottom_sheet_view);
 
         if (LogbookPreferences.shouldShowBackupSheet()) {
             backupSheetView.init(
