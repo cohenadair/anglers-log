@@ -3,6 +3,8 @@
     <dimen name="margin_dialog">24dp</dimen>
     <dimen name="margin_default">16dp</dimen>
     <dimen name="margin_default_negative">-16dp</dimen>
+    <!-- Used so content isn't cut off by negative padding -->
+    <dimen name="margin_default_negative_cutoff">-15dp</dimen>
     <dimen name="margin_half">8dp</dimen>
     <dimen name="margin_half_negative">-8dp</dimen>
     <dimen name="margin_quarter">4dp</dimen>

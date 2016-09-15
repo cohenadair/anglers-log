@@ -8,7 +8,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -33,16 +32,6 @@ import com.cohenadair.anglerslog.views.BottomSheetView;
 public class MyListFragment extends MasterFragment {
 
     private RecyclerView mRecyclerView;
-
-    /**
-     * Used to manage the App Bar's menu, including preserving search queries and the SearchView
-     * through Fragment transactions.
-     */
-    private Menu mMenu;
-    private MenuItem mSearchItem;
-    private SearchView mSearchView;
-    private String mSearchText = "";
-    private boolean mSearchIsExpanded = false;
 
     //region Callback Interface
     InteractionListener mCallbacks;
@@ -82,6 +71,7 @@ public class MyListFragment extends MasterFragment {
         initRecyclerView(view);
         initBackupBottomSheet(view);
         initInstabugAlert();
+        setSearchInteractionListener(getSearchInteractionListener());
 
         return view;
     }
@@ -107,8 +97,6 @@ public class MyListFragment extends MasterFragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_mylist, menu);
-        mMenu = menu;
-        initSearch();
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -225,75 +213,39 @@ public class MyListFragment extends MasterFragment {
     //endregion
 
     //region Searching
-    public void initSearch() {
-        mSearchItem = mMenu.findItem(R.id.action_search);
-
-        mSearchView = (SearchView) mSearchItem.getActionView();
-        mSearchView.setIconified(!mSearchIsExpanded);
-        mSearchView.setOnSearchClickListener(getOnSearchClickListener());
-        mSearchView.setOnCloseListener(getOnSearchCloseListener());
-        mSearchView.setOnQueryTextListener(getOnQueryTextListener());
-
-        if (mSearchIsExpanded)
-            mSearchView.setQuery(mSearchText, true);
-
-        setMenuItemsVisibility(!mSearchIsExpanded);
-    }
-
-    public void resetSearch() {
-        mSearchText = "";
-        mSearchIsExpanded = false;
-        mSearchView.setQuery("", false);
-        mCallbacks.updateViews();
-    }
-
-    @NonNull
-    private SearchView.OnClickListener getOnSearchClickListener() {
-        return new View.OnClickListener() {
+    private SearchInteractionListener getSearchInteractionListener() {
+        return new SearchInteractionListener() {
             @Override
-            public void onClick(View v) {
-                if (!mCallbacks.isTwoPane())
+            public void onIconClicked() {
+                if (!mCallbacks.isTwoPane()) {
                     setMenuItemsVisibility(false);
+                }
 
                 // update hint
-                String search = getResources().getString(R.string.search);
-                mSearchView.setQueryHint(search + " " + getLayoutSpec().getPluralName().toLowerCase());
-                mSearchIsExpanded = true;
+                setSearchQueryHint(String.format(getString(R.string.search),
+                        getLayoutSpec().getPluralName().toLowerCase()));
             }
-        };
-    }
 
-    @NonNull
-    private SearchView.OnCloseListener getOnSearchCloseListener() {
-        return new SearchView.OnCloseListener() {
             @Override
-            public boolean onClose() {
-                setMenuItemsVisibility(true);
-                resetSearch();
+            public void onClose() {
 
-                // returning false will "iconify" the SearchView
-                return false;
             }
-        };
-    }
 
-    @NonNull
-    private SearchView.OnQueryTextListener getOnQueryTextListener() {
-        return new SearchView.OnQueryTextListener() {
             @Override
-            public boolean onQueryTextSubmit(String query) {
+            public void onTextSubmit(String query) {
                 mCallbacks.updateViews(query);
-                return false;
             }
 
             @Override
-            public boolean onQueryTextChange(String newText) {
-                mSearchText = newText;
-
-                if (newText.isEmpty())
+            public void onTextChanged(String newText) {
+                if (newText.isEmpty()) {
                     mCallbacks.updateViews();
+                }
+            }
 
-                return false;
+            @Override
+            public void onReset() {
+                mCallbacks.updateViews();
             }
         };
     }
@@ -303,16 +255,13 @@ public class MyListFragment extends MasterFragment {
      * Hides or shows all menu icons.
      * @param visible True to show; false to hide.
      */
+    @Override
     public void setMenuItemsVisibility(boolean visible) {
-        for (int i = 0; i < mMenu.size(); i++) {
-            MenuItem item = mMenu.getItem(i);
-            if (item != mSearchItem)
-                item.setVisible(visible);
-        }
+        super.setMenuItemsVisibility(visible);
 
         // separately handle the done button for item selection
         // this is done because it needs a couple extra conditions
-        MenuItem done = mMenu.findItem(R.id.action_done);
+        MenuItem done = getMenu().findItem(R.id.action_done);
         if (done != null)
             done.setVisible(visible && mCallbacks.isSelecting() && mCallbacks.isSelectingMultiple());
     }
