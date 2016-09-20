@@ -9,6 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "CMAJournal.h"
 
-@interface CMASettingsViewController : UITableViewController <SKProductsRequestDelegate, SKPaymentTransactionObserver, UIDocumentPickerDelegate, UIDocumentMenuDelegate>
+@interface CMASettingsViewController : UITableViewController <UIDocumentPickerDelegate, UIDocumentMenuDelegate>
 
 @end

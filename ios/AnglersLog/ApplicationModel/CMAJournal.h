@@ -47,6 +47,13 @@
 - (NSString *)temperatureUnitsAsString:(BOOL)shorthand;
 - (NSString *)speedUnitsAsString:(BOOL)shorthand;
 
+// user define accessing
+- (NSMutableOrderedSet *)baits;
+- (NSMutableOrderedSet *)locations;
+- (NSMutableOrderedSet *)fishingMethods;
+- (NSMutableOrderedSet *)species;
+- (NSMutableOrderedSet *)waterClarities;
+
 // sorting
 - (void)sortEntriesBy:(CMAEntrySortMethod)aSortMethod order:(CMASortOrder)aSortOrder;
 

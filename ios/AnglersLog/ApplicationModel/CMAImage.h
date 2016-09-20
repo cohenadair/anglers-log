@@ -25,11 +25,12 @@
 - (void)handleModelUpdate;
 - (void)initProperties;
 
-- (void)saveWithImage:(UIImage *)anImage andFileName:(NSString *)aFileName;
 - (void)saveWithIndex:(NSInteger)anIndex;
+- (void)resaveAsJpgWithIndex:(NSInteger)index;
 
 // accessing
 - (NSString *)localImagePath;
+- (NSString *)fileNameWithoutExtension;
 
 // visiting
 - (void)accept:(id)aVisitor;

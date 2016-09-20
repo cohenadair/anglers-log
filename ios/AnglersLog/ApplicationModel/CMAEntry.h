@@ -66,7 +66,10 @@
 - (BOOL)hasImageNamed:(NSString *)aFileName;
 - (NSInteger)fishingMethodCount;
 - (NSString *)dateAsString;
+/// Deprecated. Use [CMAEntry accurateDateAsFileNameString]. Needed for compatibility.
 - (NSString *)dateAsFileNameString;
+/// The new version that includes milliseconds.
+- (NSString *)accurateDateAsFileNameString;
 - (NSString *)locationAsString;
 - (NSString *)fishingMethodsAsString;
 - (NSString *)weightAsStringWithMeasurementSystem:(CMAMeasuringSystemType)aMeasurementSystem shorthand:(BOOL)useShorthand;

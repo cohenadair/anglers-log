@@ -55,7 +55,7 @@
 
 - (void)saveWithImage:(UIImage *)anImage andFileName:(NSString *)aFileName {
     NSString *subDirectory = @"Images";
-    NSString *fileName = [aFileName stringByAppendingString:@".png"];
+    NSString *fileName = [aFileName stringByAppendingString:JPG];
     
     NSString *documentsPath = [[CMAStorageManager sharedManager] documentsSubDirectory:subDirectory].path;
     NSString *imagePath = [subDirectory stringByAppendingPathComponent:fileName];
@@ -87,14 +87,34 @@
     NSString *fileName;
     
     if (self.entry)
-        fileName = [[self.entry dateAsFileNameString] stringByAppendingString:[NSString stringWithFormat:@"-%ld", (long)anIndex]];
+        fileName = [[self.entry accurateDateAsFileNameString] stringByAppendingFormat:@"-%ld", (long)anIndex];
     else if (self.bait) {
-        NSDateFormatter *formatter = [NSDateFormatter new];
-        [formatter setDateFormat:[NSString stringWithFormat:@"ddmmyyyyHHmmssSSS_%ld", (long)anIndex]];
-        fileName = [formatter stringFromDate:[NSDate date]];
+        NSString *dateString = [CMAUtilities stringForDate:[NSDate date]
+                                                withFormat:ACCURATE_DATE_FILE_STRING];
+        dateString = [dateString stringByAppendingFormat:@"-%ld", (long)anIndex];
+        fileName = [@"Bait_" stringByAppendingString:dateString];
     }
     
     [self saveWithImage:self.fullImage andFileName:fileName];
+}
+
+/**
+ * Resaves the associated image file as a JPG if necessary. This greatly
+ * reduces the size of the file. All future photos are saved as JPG.
+ */
+- (void)resaveAsJpgWithIndex:(NSInteger)index {
+    if ([self.imagePath hasSuffix:JPG]) {
+        return;
+    }
+    
+    NSString *oldFilePath = [self.imagePath copy];
+    NSLog(@"Converting file: %@", self.fileName);
+    
+    // save new file
+    [self saveWithIndex:index];
+    
+    // delete old file
+    [CMAUtilities deleteFileAtPath:oldFilePath];
 }
 
 #pragma mark - Getters
@@ -106,6 +126,14 @@
 // Path relative to /Documents/
 - (NSString *)localImagePath {
     return [self primitiveValueForKey:@"imagePath"];
+}
+
+- (NSString *)fileName {
+    return self.imagePath.lastPathComponent;
+}
+
+- (NSString *)fileNameWithoutExtension {
+    return [self.fileName stringByDeletingPathExtension];
 }
 
 - (UIImage *)fullImage {
