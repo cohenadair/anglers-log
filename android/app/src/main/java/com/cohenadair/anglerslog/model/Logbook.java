@@ -134,10 +134,10 @@ public class Logbook {
             if (baitCategory == null)
                 addBaitCategory(new BaitCategory("Lure"));
 
-            String spinner = "spinner_blue_fox.png";
-            String rap = "rippin_rap.png";
-            PhotoUtils.saveImageResource(R.drawable.spinner_blue_fox, spinner);
-            PhotoUtils.saveImageResource(R.drawable.rippin_rap, rap);
+            String spinner = "spinner.jpg";
+            String rap = "rapala.jpg";
+            PhotoUtils.saveImageResource(R.drawable.spinner, spinner);
+            PhotoUtils.saveImageResource(R.drawable.rapala, rap);
 
             Bait bait = new Bait("Blue Fox Spinner", baitCategory);
             bait.setType(Bait.TYPE_ARTIFICIAL);
