@@ -10,10 +10,7 @@ import android.util.Log;
 import android.util.LruCache;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.FilenameFilter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -27,7 +24,6 @@ public class PhotoCache {
 
     private static final String TAG = "PhotoCache";
     private static final String DISK_PREFIX = "IMG";
-    private static final int PHOTO_QUALITY = 70;
 
     private int mDiskCacheSize;
 
@@ -107,34 +103,6 @@ public class PhotoCache {
         }
 
         return null;
-    }
-
-    /**
-     * Saves the specified bitmap to the specified File object.
-     *
-     * @param bitmap The Bitmap object to save.
-     * @param file The File object to be written to.
-     * @return True if the bitmap was saved; false otherwise.
-     */
-    public static boolean savePhoto(Bitmap bitmap, File file) {
-        FileOutputStream out = null;
-
-        try {
-            out = new FileOutputStream(file);
-            return bitmap.compress(Bitmap.CompressFormat.JPEG, PHOTO_QUALITY, out);
-        } catch (FileNotFoundException e) {
-            Log.e(TAG, "File not found: " + file.getPath());
-            e.printStackTrace();
-        } finally {
-            try {
-                if (out != null)
-                    out.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        return false;
     }
 
     /**
@@ -240,7 +208,7 @@ public class PhotoCache {
         public void put(String key, Bitmap data) {
             String filePath = filePath(key);
 
-            if (savePhoto(data, new File(filePath)))
+            if (PhotoUtils.compressAndSaveBitmap(data, new File(filePath)))
                 put(key, filePath);
         }
 

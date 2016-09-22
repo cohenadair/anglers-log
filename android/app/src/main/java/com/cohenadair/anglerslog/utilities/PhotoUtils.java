@@ -43,6 +43,8 @@ import java.util.ArrayList;
  */
 public class PhotoUtils {
 
+    public static final int PHOTO_QUALITY = 70;
+
     private static PhotoCache mCache;
 
     private PhotoUtils() { }
@@ -352,7 +354,7 @@ public class PhotoUtils {
             int longestSideLength = context.getResources().getInteger(R.integer.max_photo_size);
             Bitmap scaledBitmap = fixOrientation(context, srcUri,
                     scaledBitmap(context, srcUri, longestSideLength));
-            PhotoCache.savePhoto(scaledBitmap, destFile);
+            compressAndSaveBitmap(scaledBitmap, destFile);
         }
     }
 
@@ -367,15 +369,25 @@ public class PhotoUtils {
             return;
 
         Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), resId);
+        compressAndSaveBitmap(bitmap, destFile);
+    }
 
+    /**
+     * Compresses and saves the given bitmap to the given file location as a JPEG.
+     * @param bitmap The {@link Bitmap} object to save.
+     * @param destFile The destination to which the bitmap will be saved.
+     */
+    public static boolean compressAndSaveBitmap(Bitmap bitmap, File destFile) {
         try {
             FileOutputStream out = new FileOutputStream(destFile);
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
-            out.flush();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, PHOTO_QUALITY, out);
             out.close();
+            return true;
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        return false;
     }
 
     /**
