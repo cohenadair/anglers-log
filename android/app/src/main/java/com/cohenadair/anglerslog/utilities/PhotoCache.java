@@ -29,7 +29,6 @@ public class PhotoCache {
     private static final String DISK_PREFIX = "IMG";
     private static final int PHOTO_QUALITY = 70;
 
-    private Context mContext;
     private int mDiskCacheSize;
 
     /**
@@ -42,7 +41,6 @@ public class PhotoCache {
     private LruCache<String, Bitmap> mMemoryCache;
 
     public PhotoCache(Context context, int diskSize, double memorySizePercent, String subDir) {
-        mContext = context;
         mDiskCacheSize = diskSize;
 
         // initialize memory cache
@@ -60,7 +58,7 @@ public class PhotoCache {
         }
 
         // initialize disk cache
-        new DiskTask().execute(diskDirectory(subDir));
+        new DiskTask().execute(diskDirectory(context, subDir));
     }
 
     /**
@@ -177,14 +175,14 @@ public class PhotoCache {
      * @param subDir The unique subdirectory name.
      * @return A File object representing the new cache directory.
      */
-    private File diskDirectory(String subDir) {
+    private File diskDirectory(Context context, String subDir) {
         boolean useExternal = Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState()) || !Environment.isExternalStorageRemovable();
         String cachePath;
 
-        if (useExternal && mContext.getExternalCacheDir() != null)
-            cachePath = mContext.getExternalCacheDir().getPath();
+        if (useExternal && context.getExternalCacheDir() != null)
+            cachePath = context.getExternalCacheDir().getPath();
         else
-            cachePath = mContext.getCacheDir().getPath();
+            cachePath = context.getCacheDir().getPath();
 
         return new File(cachePath + File.separator + subDir);
     }

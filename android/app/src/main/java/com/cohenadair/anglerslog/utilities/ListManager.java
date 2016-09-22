@@ -158,14 +158,15 @@ public class ListManager {
             String randomPhotoPath = "";
 
             if (fileName != null)
-                randomPhotoPath = PhotoUtils.privatePhotoPath(fileName);
+                randomPhotoPath = PhotoUtils.privatePhotoPath(getContext(), fileName);
 
             if (randomPhotoPath != null)
                 fileExists = new File(randomPhotoPath).exists();
 
             if (fileExists) {
                 int thumbSize = getContext().getResources().getDimensionPixelSize(R.dimen.size_list_thumb);
-                PhotoUtils.thumbnailToImageView(mImageView, randomPhotoPath, thumbSize, R.drawable.placeholder_circle);
+                PhotoUtils.thumbnailToImageView(getContext(), mImageView, randomPhotoPath,
+                        thumbSize, R.drawable.placeholder_circle);
             } else
                 mImageView.setImageResource(R.drawable.placeholder_circle);
         }

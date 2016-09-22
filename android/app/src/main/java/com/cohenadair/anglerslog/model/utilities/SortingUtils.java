@@ -19,15 +19,9 @@ import java.util.Date;
  */
 public class SortingUtils {
 
-    private static Context mContext;
-
-    public static void init(Context context) {
-        mContext = context;
-    }
-
     @NonNull
-    public static SortingMethod byName() {
-        return new SortingMethod(getString(R.string.name), new Comparator<UserDefineObject>() {
+    public static SortingMethod byName(Context context) {
+        return new SortingMethod(context.getString(R.string.name), new Comparator<UserDefineObject>() {
             @Override
             public int compare(UserDefineObject lhs, UserDefineObject rhs) {
                 return lhs.getName().compareTo(rhs.getName());
@@ -36,8 +30,8 @@ public class SortingUtils {
     }
 
     @NonNull
-    public static SortingMethod byDisplayName() {
-        return new SortingMethod(getString(R.string.name), new Comparator<UserDefineObject>() {
+    public static SortingMethod byDisplayName(Context context) {
+        return new SortingMethod(context.getString(R.string.name), new Comparator<UserDefineObject>() {
             @Override
             public int compare(UserDefineObject lhs, UserDefineObject rhs) {
                 return lhs.getDisplayName().compareTo(rhs.getDisplayName());
@@ -46,8 +40,8 @@ public class SortingUtils {
     }
 
     @NonNull
-    public static SortingMethod bySpecies() {
-        return new SortingMethod(getString(R.string.species), new Comparator<UserDefineObject>() {
+    public static SortingMethod bySpecies(Context context) {
+        return new SortingMethod(context.getString(R.string.species), new Comparator<UserDefineObject>() {
             @Override
             public int compare(UserDefineObject lhs, UserDefineObject rhs) {
                 String lhValue = ((Catch)lhs).getSpeciesAsString();
@@ -59,8 +53,8 @@ public class SortingUtils {
     }
 
     @NonNull
-    public static SortingMethod byLocation() {
-        return new SortingMethod(getString(R.string.location), new Comparator<UserDefineObject>() {
+    public static SortingMethod byLocation(Context context) {
+        return new SortingMethod(context.getString(R.string.location), new Comparator<UserDefineObject>() {
             @Override
             public int compare(UserDefineObject lhs, UserDefineObject rhs) {
                 String lhValue = ((Catch)lhs).getFishingSpotAsString();
@@ -72,8 +66,8 @@ public class SortingUtils {
     }
 
     @NonNull
-    public static SortingMethod byFavorite() {
-        return new SortingMethod(getString(R.string.favorite), new Comparator<UserDefineObject>() {
+    public static SortingMethod byFavorite(Context context) {
+        return new SortingMethod(context.getString(R.string.favorite), new Comparator<UserDefineObject>() {
             @Override
             public int compare(UserDefineObject lhs, UserDefineObject rhs) {
                 Boolean lhValue = ((Catch)lhs).isFavorite();
@@ -85,8 +79,8 @@ public class SortingUtils {
     }
 
     @NonNull
-    public static SortingMethod byNumberOfCatches() {
-        return new SortingMethod(getString(R.string.number_of_catches), new Comparator<UserDefineObject>() {
+    public static SortingMethod byNumberOfCatches(Context context) {
+        return new SortingMethod(context.getString(R.string.number_of_catches), new Comparator<UserDefineObject>() {
             @Override
             public int compare(UserDefineObject lhs, UserDefineObject rhs) {
                 Integer lhValue = ((HasCatchesInterface)lhs).getFishCaughtCount();
@@ -98,8 +92,8 @@ public class SortingUtils {
     }
 
     @NonNull
-    public static SortingMethod byNumberOfFishingSpots() {
-        return new SortingMethod(getString(R.string.number_of_fishing_spots), new Comparator<UserDefineObject>() {
+    public static SortingMethod byNumberOfFishingSpots(Context context) {
+        return new SortingMethod(context.getString(R.string.number_of_fishing_spots), new Comparator<UserDefineObject>() {
             @Override
             public int compare(UserDefineObject lhs, UserDefineObject rhs) {
                 Integer lhValue = ((Location)lhs).getFishingSpotCount();
@@ -111,8 +105,8 @@ public class SortingUtils {
     }
 
     @NonNull
-    public static SortingMethod byNewestToOldest() {
-        return new SortingMethod(getString(R.string.newest_to_oldest), new Comparator<UserDefineObject>() {
+    public static SortingMethod byNewestToOldest(Context context) {
+        return new SortingMethod(context.getString(R.string.newest_to_oldest), new Comparator<UserDefineObject>() {
             @Override
             public int compare(UserDefineObject lhs, UserDefineObject rhs) {
                 Date lhValue = ((HasDateInterface)lhs).getDate();
@@ -124,8 +118,8 @@ public class SortingUtils {
     }
 
     @NonNull
-    public static SortingMethod byOldestToNewest() {
-        return new SortingMethod(getString(R.string.oldest_to_newest), new Comparator<UserDefineObject>() {
+    public static SortingMethod byOldestToNewest(Context context) {
+        return new SortingMethod(context.getString(R.string.oldest_to_newest), new Comparator<UserDefineObject>() {
             @Override
             public int compare(UserDefineObject lhs, UserDefineObject rhs) {
                 Date lhValue = ((HasDateInterface)lhs).getDate();
@@ -147,10 +141,5 @@ public class SortingUtils {
             result[i] = methods[i].getDisplayText();
 
         return result;
-    }
-
-    @NonNull
-    private static String getString(int resId) {
-        return mContext.getResources().getString(resId);
     }
 }

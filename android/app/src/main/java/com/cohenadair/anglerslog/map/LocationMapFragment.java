@@ -59,7 +59,8 @@ public class LocationMapFragment extends MasterFragment {
         View view = inflater.inflate(R.layout.fragment_map, container, false);
 
         mMapContainer = (LinearLayout)view.findViewById(R.id.location_map_container);
-        mFishingSpots = UserDefineArrays.sort(Logbook.getAllFishingSpots(), SortingUtils.byDisplayName());
+        mFishingSpots = UserDefineArrays.sort(Logbook.getAllFishingSpots(),
+                SortingUtils.byDisplayName(getContext()));
         initMapFragment();
 
         mSearchContainer = (LinearLayout)view.findViewById(R.id.search_result_container);

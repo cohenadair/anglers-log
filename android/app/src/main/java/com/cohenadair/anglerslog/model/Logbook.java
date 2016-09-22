@@ -75,7 +75,6 @@ public class Logbook {
     private static final String TAG = "Logbook";
 
     private static SQLiteDatabase mDatabase;
-    private static Context mContext;
 
     public interface OnResetListener {
         void onFinish();
@@ -84,25 +83,24 @@ public class Logbook {
     private Logbook() { }
 
     public static void init(Context context) {
-        init(context, new LogbookHelper(context).getWritableDatabase());
+        init(new LogbookHelper(context).getWritableDatabase());
     }
 
-    public static void init(Context context, SQLiteDatabase database) {
-        mContext = context;
+    public static void init(SQLiteDatabase database) {
         mDatabase = database;
         mDatabase.setForeignKeyConstraintsEnabled(true);
         QueryHelper.setDatabase(mDatabase);
         cleanDatabasePhotos();
     }
 
-    public static void initForTesting(Context context, SQLiteDatabase database) {
-        init(context, database);
+    static void initForTesting(Context context, SQLiteDatabase database) {
+        init(database);
     }
 
     /**
      * Set some default UserDefineObjects if there aren't any.
      */
-    public static void setDefaults() {
+    public static void setDefaults(Context context) {
         if (getBaitCategoryCount() <= 0) {
             addBaitCategory(new BaitCategory("Lure"));
             addBaitCategory(new BaitCategory("Minnow"));
@@ -136,8 +134,8 @@ public class Logbook {
 
             String spinner = "spinner.jpg";
             String rap = "rapala.jpg";
-            PhotoUtils.saveImageResource(R.drawable.spinner, spinner);
-            PhotoUtils.saveImageResource(R.drawable.rapala, rap);
+            PhotoUtils.saveImageResource(context, R.drawable.spinner, spinner);
+            PhotoUtils.saveImageResource(context, R.drawable.rapala, rap);
 
             Bait bait = new Bait("Blue Fox Spinner", baitCategory);
             bait.setType(Bait.TYPE_ARTIFICIAL);
@@ -155,17 +153,17 @@ public class Logbook {
         }
     }
 
-    public static void cleanup() {
+    public static void cleanup(Context context) {
         // delete backup file if one exists
-        String backupFile = LogbookPreferences.getBackupFile();
+        String backupFile = LogbookPreferences.getBackupFile(context);
         if (backupFile != null) {
             FileUtils.deleteQuietly(new File(backupFile));
-            LogbookPreferences.setBackupFile(null);
+            LogbookPreferences.setBackupFile(context, null);
         }
     }
 
-    public static void updatePreferences() {
-        if (LogbookPreferences.isInstabugEnabled())
+    public static void updatePreferences(Context context) {
+        if (LogbookPreferences.isInstabugEnabled(context))
             Instabug.changeInvocationEvent(IBGInvocationEvent.IBGInvocationEventFloatingButton);
         else
             Instabug.changeInvocationEvent(IBGInvocationEvent.IBGInvocationEventNone);
@@ -174,13 +172,15 @@ public class Logbook {
     /**
      * Completely resets the database. This is done in a background thread.
      */
-    public static void resetAsync(final boolean addDefaults, final OnResetListener callbacks) {
+    public static void resetAsync(final Context context, final boolean addDefaults,
+                                  final OnResetListener callbacks)
+    {
         final Handler handler = new Handler();
 
         Runnable r = new Runnable() {
             @Override
             public void run() {
-                reset(addDefaults);
+                reset(context, addDefaults);
 
                 if (callbacks != null)
                     handler.post(new Runnable() {
@@ -199,17 +199,17 @@ public class Logbook {
      * Completely resets the Logbook's data. This cannot be undone.
      * @param addDefaults True to add default objects after reset; false otherwise.
      */
-    public static void reset(boolean addDefaults) {
+    public static void reset(Context context, boolean addDefaults) {
         File data = new File(mDatabase.getPath());
         mDatabase.close();
         FileUtils.deleteQuietly(data);
 
-        init(mContext);
+        init(context);
 
         if (addDefaults)
-            setDefaults();
+            setDefaults(context);
 
-        PhotoUtils.cleanPhotos();
+        PhotoUtils.cleanPhotos(context);
     }
 
     //region Getters & Setters
@@ -223,12 +223,16 @@ public class Logbook {
     //endregion
 
     //region Backup
-    public static void importFromUri(Uri uri, Importer.OnProgressListener onProgress) {
-        Importer.importFromUri(mContext.getContentResolver(), uri, onProgress);
+    public static void importFromUri(
+            Context context, Uri uri, Importer.OnProgressListener onProgress)
+    {
+        Importer.importFromUri(context, uri, onProgress);
     }
 
-    public static void exportToPath(File filePath, Exporter.OnProgressListener onProgress) {
-        Exporter.exportToPath(mContext, filePath, onProgress);
+    public static void exportToPath(
+            Context context, File filePath, Exporter.OnProgressListener onProgress)
+    {
+        Exporter.exportToPath(context, filePath, onProgress);
     }
     //endregion
 
@@ -254,7 +258,7 @@ public class Logbook {
      * Deletes all database entries for photos that aren't associated with any UserDefineObject
      * instances.
      */
-    public static void cleanDatabasePhotos() {
+    private static void cleanDatabasePhotos() {
         int numDeleted = mDatabase.delete(
                 CatchPhotoTable.NAME,
                 CatchPhotoTable.Columns.USER_DEFINE_ID + " NOT IN(SELECT " + CatchTable.Columns.ID + " FROM " + CatchTable.NAME + ")",
@@ -280,12 +284,14 @@ public class Logbook {
         });
     }
 
-    public static ArrayList<UserDefineObject> getCatches(String searchQuery, SortingMethod sortingMethod) {
-        return UserDefineArrays.searchAndSort(mContext, getCatches(), searchQuery, sortingMethod);
+    public static ArrayList<UserDefineObject> getCatches(
+            Context context, String searchQuery, SortingMethod sortingMethod)
+    {
+        return UserDefineArrays.searchAndSort(context, getCatches(), searchQuery, sortingMethod);
     }
 
-    public static ArrayList<UserDefineObject> getCatches(String searchQuery) {
-        return getCatches(searchQuery, null);
+    public static ArrayList<UserDefineObject> getCatches(Context context, String searchQuery) {
+        return getCatches(context, searchQuery, null);
     }
 
     public static Catch getCatch(UUID id) {
@@ -489,7 +495,7 @@ public class Logbook {
      * @param baitCategory The BaitCategory.
      * @return An ArrayList of {@link Bait} objects.
      */
-    public static ArrayList<UserDefineObject> getBaits(BaitCategory baitCategory) {
+    private static ArrayList<UserDefineObject> getBaits(BaitCategory baitCategory) {
         return getBaits(BaitTable.Columns.CATEGORY_ID + " = ?", new String[]{baitCategory.getIdAsString()});
     }
 
@@ -572,17 +578,19 @@ public class Logbook {
     }
 
     /**
-     * @see #getBaitsAndCategories(String, SortingMethod)
+     * @see #getBaitsAndCategories(Context, String, SortingMethod)
      */
-    public static ArrayList<UserDefineObject> getBaitsAndCategories() {
-        return getBaitsAndCategories(null, null);
+    public static ArrayList<UserDefineObject> getBaitsAndCategories(Context context) {
+        return getBaitsAndCategories(context, null, null);
     }
 
     /**
-     * @see #getBaitsAndCategories(String, SortingMethod)
+     * @see #getBaitsAndCategories(Context, String, SortingMethod)
      */
-    public static ArrayList<UserDefineObject> getBaitsAndCategories(String searchQuery) {
-        return getBaitsAndCategories(searchQuery, null);
+    public static ArrayList<UserDefineObject> getBaitsAndCategories(
+            Context context, String searchQuery)
+    {
+        return getBaitsAndCategories(context, searchQuery, null);
     }
 
     /**
@@ -595,13 +603,16 @@ public class Logbook {
      *                      for each {@link BaitCategory}.
      * @return An ArrayList of BaitCategory and Bait objects.
      */
-    public static ArrayList<UserDefineObject> getBaitsAndCategories(String searchQuery, SortingMethod sortingMethod) {
+    public static ArrayList<UserDefineObject> getBaitsAndCategories(
+            Context context, String searchQuery, SortingMethod sortingMethod)
+    {
         ArrayList<UserDefineObject> result = new ArrayList<>();
         ArrayList<UserDefineObject> categories = getBaitCategories();
 
         for (UserDefineObject category : categories) {
             result.add(category);
-            result.addAll(UserDefineArrays.searchAndSort(mContext, getBaits((BaitCategory) category), searchQuery, sortingMethod));
+            result.addAll(UserDefineArrays.searchAndSort(
+                    context, getBaits((BaitCategory) category), searchQuery, sortingMethod));
         }
 
         return result;
@@ -646,12 +657,14 @@ public class Logbook {
         });
     }
 
-    public static ArrayList<UserDefineObject> getLocations(String searchQuery, SortingMethod sortingMethod) {
-        return UserDefineArrays.searchAndSort(mContext, getLocations(), searchQuery, sortingMethod);
+    public static ArrayList<UserDefineObject> getLocations(
+            Context context, String searchQuery, SortingMethod sortingMethod)
+    {
+        return UserDefineArrays.searchAndSort(context, getLocations(), searchQuery, sortingMethod);
     }
 
-    public static ArrayList<UserDefineObject> getLocations(String searchQuery) {
-        return getLocations(searchQuery, null);
+    public static ArrayList<UserDefineObject> getLocations(Context context, String searchQuery) {
+        return getLocations(context, searchQuery, null);
     }
 
     public static Location getLocation(UUID id) {
@@ -852,7 +865,7 @@ public class Logbook {
         return getAngler(AnglerTable.Columns.ID, id.toString());
     }
 
-    public static Angler getAngler(String name) {
+    static Angler getAngler(String name) {
         return getAngler(AnglerTable.Columns.NAME, name);
     }
 
@@ -904,12 +917,14 @@ public class Logbook {
         });
     }
 
-    public static ArrayList<UserDefineObject> getTrips(String searchQuery, SortingMethod sortingMethod) {
-        return UserDefineArrays.searchAndSort(mContext, getTrips(), searchQuery, sortingMethod);
+    public static ArrayList<UserDefineObject> getTrips(
+            Context context, String searchQuery, SortingMethod sortingMethod)
+    {
+        return UserDefineArrays.searchAndSort(context, getTrips(), searchQuery, sortingMethod);
     }
 
-    public static ArrayList<UserDefineObject> getTrips(String searchQuery) {
-        return getTrips(searchQuery, null);
+    public static ArrayList<UserDefineObject> getTrips(Context context, String searchQuery) {
+        return getTrips(context, searchQuery, null);
     }
 
     public static Trip getTrip(UUID id) {
@@ -964,41 +979,40 @@ public class Logbook {
     }
     //endregion
 
-    public static String getLengthUnits() {
-        return isImperial() ? getString(R.string.inches) : " " + getString(R.string.cm);
+    public static String getLengthUnits(Context context) {
+        return isImperial(context)
+                ? context.getString(R.string.inches)
+                : " " + context.getString(R.string.cm);
     }
 
-    public static String getWeightUnits() {
-        return isImperial() ? getString(R.string.lbs) : getString(R.string.kg);
+    public static String getWeightUnits(Context context) {
+        return isImperial(context) ? context.getString(R.string.lbs) : context.getString(R.string.kg);
     }
 
-    public static String getDepthUnits() {
-        return isImperial() ? getString(R.string.ft) : getString(R.string.meters);
+    public static String getDepthUnits(Context context) {
+        return isImperial(context) ? context.getString(R.string.ft) : context.getString(R.string.meters);
     }
 
-    public static String getTemperatureUnits() {
-        return getTemperatureUnits(isImperial());
+    public static String getTemperatureUnits(Context context) {
+        return getTemperatureUnits(context, isImperial(context));
     }
 
-    public static String getTemperatureUnits(boolean isImperial) {
-        return isImperial ? getString(R.string.degrees_f) : getString(R.string.degrees_c);
+    public static String getTemperatureUnits(Context context, boolean isImperial) {
+        return isImperial
+                ? context.getString(R.string.degrees_f)
+                : context.getString(R.string.degrees_c);
     }
 
-    public static String getSpeedUnits(boolean isImperial) {
-        return isImperial ? getString(R.string.mph) : getString(R.string.kmh);
+    public static String getSpeedUnits(Context context, boolean isImperial) {
+        return isImperial ? context.getString(R.string.mph) : context.getString(R.string.kmh);
     }
 
     public static String getShareText(Context context) {
         return context.getResources().getString(R.string.share_text);
     }
 
-    @NonNull
-    private static String getString(int id) {
-        return mContext.getResources().getString(id);
-    }
-
-    private static boolean isImperial() {
-        return (LogbookPreferences.getUnits() == UNIT_IMPERIAL);
+    private static boolean isImperial(Context context) {
+        return (LogbookPreferences.getUnits(context) == UNIT_IMPERIAL);
     }
 
     private static boolean removeUserDefine(String table, UserDefineObject obj) {

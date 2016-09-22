@@ -44,7 +44,6 @@
     <string name="import_title">Confirm Import</string>
     <string name="import_dialog_message">Importing new data will erase current data and may take several minutes.</string>
     <string name="import_success">Import successful</string>
-    <string name="import_error">Import Error</string>
     <string name="export">Export</string>
     <string name="export_summary">Save data to be transferred to a new device platform.</string>
     <string name="export_title">Confirm Export</string>

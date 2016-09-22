@@ -33,7 +33,6 @@ public class ManageLocationFragment extends ManageContentFragment {
     private LinearLayout mFishingSpotContainer;
     private InputTextView mNameView;
 
-    private ArrayList<MoreDetailView> mFishingSpotViews;
     private ArrayList<UserDefineObject> mFishingSpots;
 
     public ManageLocationFragment() {
@@ -56,10 +55,6 @@ public class ManageLocationFragment extends ManageContentFragment {
 
         if (mFishingSpots == null || !isEditing())
             mFishingSpots = new ArrayList<>();
-
-        if (mFishingSpotViews == null) {
-            mFishingSpotViews = new ArrayList<>();
-        }
 
         return view;
     }
@@ -161,7 +156,6 @@ public class ManageLocationFragment extends ManageContentFragment {
     private void updateAllFishingSpots() {
         // remove all old views
         mFishingSpotContainer.removeAllViews();
-        mFishingSpotViews.clear();
 
         for (UserDefineObject spot : mFishingSpots)
             addFishingSpot((FishingSpot)spot);
@@ -205,14 +199,12 @@ public class ManageLocationFragment extends ManageContentFragment {
             }
         });
 
-        mFishingSpotViews.add(fishingSpotView);
         mFishingSpotContainer.addView(fishingSpotView);
     }
 
     private void removeFishingSpot(FishingSpot fishingSpot, MoreDetailView view) {
         mFishingSpots.remove(fishingSpot);
         mFishingSpotContainer.removeView(view);
-        mFishingSpotViews.remove(view);
     }
 
     /**

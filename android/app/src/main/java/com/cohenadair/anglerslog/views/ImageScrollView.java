@@ -64,7 +64,7 @@ public class ImageScrollView extends LinearLayout {
         int size = getResources().getDimensionPixelSize(R.dimen.image_scroll_size);
 
         for (int i = 0; i < imagePaths.size(); i++)
-            addImage(PhotoUtils.privatePhotoPath(imagePaths.get(i)), i, size);
+            addImage(PhotoUtils.privatePhotoPath(getContext(), imagePaths.get(i)), i, size);
 
         updateImageMargins();
     }
@@ -80,7 +80,7 @@ public class ImageScrollView extends LinearLayout {
             }
         });
 
-        PhotoUtils.thumbnailToImageView(img, path, size, R.drawable.placeholder_square);
+        PhotoUtils.thumbnailToImageView(getContext(), img, path, size, R.drawable.placeholder_square);
         mPhotosWrapper.addView(img);
     }
 

@@ -55,7 +55,7 @@ public class MainActivity extends LayoutSpecActivity {
         else
             setRightPanelVisibility();
 
-        LogbookPreferences.setIsRootTwoPane(isTwoPane());
+        LogbookPreferences.setIsRootTwoPane(this, isTwoPane());
     }
 
     @Override

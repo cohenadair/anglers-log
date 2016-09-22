@@ -1,6 +1,8 @@
 package com.cohenadair.anglerslog.model;
 
+import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.RenamingDelegatingContext;
 
@@ -37,13 +39,16 @@ import static org.junit.Assert.assertTrue;
 public class LogbookTest {
 
     private SQLiteDatabase mDatabase;
+    private Context mContext;
 
     @Before
     public void setUp() throws Exception {
         RenamingDelegatingContext context = new RenamingDelegatingContext(getTargetContext(), "test_");
         context.deleteDatabase(LogbookHelper.DATABASE_NAME);
         mDatabase = new LogbookHelper(context).getWritableDatabase();
+        mContext = InstrumentationRegistry.getContext();
         Logbook.initForTesting(context, mDatabase);
+
     }
 
     @After
@@ -160,10 +165,10 @@ public class LogbookTest {
         Logbook.addCatch(catch1);
 
         assertTrue(Logbook.getCatchCount() == 2);
-        assertTrue(Logbook.getCatches("cloudy").size() == 1);
-        assertTrue(Logbook.getCatches("awesome bass").size() == 1);
-        assertTrue(Logbook.getCatches("cool pike").size() == 1);
-        assertTrue(Logbook.getCatches("ike bass").size() == 2);
+        assertTrue(Logbook.getCatches(mContext, "cloudy").size() == 1);
+        assertTrue(Logbook.getCatches(mContext, "awesome bass").size() == 1);
+        assertTrue(Logbook.getCatches(mContext, "cool pike").size() == 1);
+        assertTrue(Logbook.getCatches(mContext, "ike bass").size() == 2);
     }
 
     @Test
@@ -278,17 +283,17 @@ public class LogbookTest {
         Logbook.addBait(whiteStone);
         Logbook.addBait(yellowStone);
 
-        ArrayList<UserDefineObject> baitsAndCategories = Logbook.getBaitsAndCategories();
+        ArrayList<UserDefineObject> baitsAndCategories = Logbook.getBaitsAndCategories(mContext);
         assertTrue(baitsAndCategories.size() == 8);
 
         // searching
-        assertTrue(Logbook.getBaitsAndCategories("bugger").size() == 5); // 3 baits + 2 categories
-        assertTrue(Logbook.getBaitsAndCategories("black").size() == 4); // 2 baits + 2 categories
-        assertTrue(Logbook.getBaitsAndCategories("bright").size() == 3); // 1 bait + 2 categories
-        assertTrue(Logbook.getBaitsAndCategories("small").size() == 3); // 1 bait + 2 categories
-        assertTrue(Logbook.getBaitsAndCategories("large").size() == 3); // 1 bait + 2 categories
-        assertTrue(Logbook.getBaitsAndCategories("llent large").size() == 3); // 1 bait + 2 categories
-        assertTrue(Logbook.getBaitsAndCategories("real olive").size() == 4); // 2 baits + 2 categories
+        assertTrue(Logbook.getBaitsAndCategories(mContext, "bugger").size() == 5); // 3 baits + 2 categories
+        assertTrue(Logbook.getBaitsAndCategories(mContext, "black").size() == 4); // 2 baits + 2 categories
+        assertTrue(Logbook.getBaitsAndCategories(mContext, "bright").size() == 3); // 1 bait + 2 categories
+        assertTrue(Logbook.getBaitsAndCategories(mContext, "small").size() == 3); // 1 bait + 2 categories
+        assertTrue(Logbook.getBaitsAndCategories(mContext, "large").size() == 3); // 1 bait + 2 categories
+        assertTrue(Logbook.getBaitsAndCategories(mContext, "llent large").size() == 3); // 1 bait + 2 categories
+        assertTrue(Logbook.getBaitsAndCategories(mContext, "real olive").size() == 4); // 2 baits + 2 categories
     }
 
     @Test
@@ -343,9 +348,9 @@ public class LogbookTest {
         assertTrue(Logbook.getFishingSpot("Spot 1", loc0.getId()) != null);
 
         // searching
-        assertTrue(Logbook.getLocations("rich").size() == 1);
-        assertTrue(Logbook.getLocations("albert").size() == 1);
-        assertTrue(Logbook.getLocations("rich spot 3 spot 1").size() == 2);
+        assertTrue(Logbook.getLocations(mContext, "rich").size() == 1);
+        assertTrue(Logbook.getLocations(mContext, "albert").size() == 1);
+        assertTrue(Logbook.getLocations(mContext, "rich spot 3 spot 1").size() == 2);
     }
 
     @Test
@@ -499,10 +504,10 @@ public class LogbookTest {
         assertTrue(trips.size() == 2);
 
         // searching
-        assertTrue(Logbook.getTrips("lake").size() == 2);
-        assertTrue(Logbook.getTrips("lake ontario silver").size() == 2);
-        assertTrue(Logbook.getTrips("silver").size() == 1);
-        assertTrue(Logbook.getTrips("ontario").size() == 1);
+        assertTrue(Logbook.getTrips(mContext, "lake").size() == 2);
+        assertTrue(Logbook.getTrips(mContext, "lake ontario silver").size() == 2);
+        assertTrue(Logbook.getTrips(mContext, "silver").size() == 1);
+        assertTrue(Logbook.getTrips(mContext, "ontario").size() == 1);
     }
 
     @Test

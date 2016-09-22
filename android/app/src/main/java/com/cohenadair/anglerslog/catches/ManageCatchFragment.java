@@ -487,7 +487,7 @@ public class ManageCatchFragment extends ManageContentFragment {
         }
 
         final Weather weather = new Weather(new LatLng(loc.getLatitude(), loc.getLongitude()));
-        String units = getResources().getStringArray(R.array.pref_unitTypes_entries)[LogbookPreferences.getWeatherUnits()];
+        String units = getResources().getStringArray(R.array.pref_unitTypes_entries)[LogbookPreferences.getWeatherUnits(getContext())];
 
         mRequestQueue.add(weather.getRequest(units, new Weather.OnFetchInterface() {
             @Override

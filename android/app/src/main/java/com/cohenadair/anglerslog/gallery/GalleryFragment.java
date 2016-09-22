@@ -133,12 +133,13 @@ public class GalleryFragment extends MasterFragment {
             else
                 imageView.setPadding(0, 0, p, p);
 
-            PhotoUtils.thumbnailToImageView(imageView, getFullPath(position), getImageSize(), R.drawable.placeholder_square);
+            PhotoUtils.thumbnailToImageView(getContext(), imageView, getFullPath(position),
+                    getImageSize(), R.drawable.placeholder_square);
             return imageView;
         }
 
         private String getFullPath(int position) {
-            return PhotoUtils.privatePhotoPath(mPhotos.get(position));
+            return PhotoUtils.privatePhotoPath(getContext(), mPhotos.get(position));
         }
     }
 }

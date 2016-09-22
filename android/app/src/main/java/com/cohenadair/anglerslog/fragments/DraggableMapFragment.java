@@ -186,7 +186,7 @@ public class DraggableMapFragment extends SupportMapFragment implements OnMapRea
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mGoogleMap = googleMap;
-        mGoogleMap.setMapType(LogbookPreferences.getMapType());
+        mGoogleMap.setMapType(LogbookPreferences.getMapType(getContext()));
 
         if (isLocationPermissionGranted())
             enableMyLocation();
@@ -409,7 +409,7 @@ public class DraggableMapFragment extends SupportMapFragment implements OnMapRea
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 mGoogleMap.setMapType(which + 1);
-                LogbookPreferences.setMapType(mGoogleMap.getMapType());
+                LogbookPreferences.setMapType(getContext(), mGoogleMap.getMapType());
 
                 if (mOnUpdateMapType != null)
                     mOnUpdateMapType.onUpdate(mGoogleMap.getMapType());

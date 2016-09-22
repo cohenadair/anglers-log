@@ -56,16 +56,16 @@ public class LayoutSpecManager {
      */
     public static final int LAYOUT_CATCHES = R.id.nav_catches;
     public static final int LAYOUT_LOCATIONS = R.id.nav_locations;
-    public static final int LAYOUT_MAP = R.id.nav_map;
     public static final int LAYOUT_BAITS = R.id.nav_baits;
-    public static final int LAYOUT_TRIPS = R.id.nav_trips;
-    public static final int LAYOUT_STATS = R.id.nav_stats;
-    public static final int LAYOUT_GALLERY = R.id.nav_gallery;
-    public static final int LAYOUT_SETTINGS = R.id.nav_settings;
-    public static final int LAYOUT_HELP = R.id.nav_help;
-    public static final int LAYOUT_RATE = R.id.nav_rate;
-    public static final int LAYOUT_TWITTER = R.id.nav_twitter;
-    public static final int LAYOUT_INSTAGRAM = R.id.nav_instagram;
+    private static final int LAYOUT_MAP = R.id.nav_map;
+    private static final int LAYOUT_TRIPS = R.id.nav_trips;
+    private static final int LAYOUT_STATS = R.id.nav_stats;
+    private static final int LAYOUT_GALLERY = R.id.nav_gallery;
+    private static final int LAYOUT_SETTINGS = R.id.nav_settings;
+    private static final int LAYOUT_HELP = R.id.nav_help;
+    private static final int LAYOUT_RATE = R.id.nav_rate;
+    private static final int LAYOUT_TWITTER = R.id.nav_twitter;
+    private static final int LAYOUT_INSTAGRAM = R.id.nav_instagram;
 
     //region Layout Spec Definitions
     @Nullable
@@ -165,7 +165,7 @@ public class LayoutSpecManager {
      * @param layoutId The layout id.
      * @return True if link; false otherwise.
      */
-    public static boolean isLink(int layoutId) {
+    static boolean isLink(int layoutId) {
         return (layoutId == LAYOUT_HELP ||
                 layoutId == LAYOUT_TWITTER ||
                 layoutId == LAYOUT_INSTAGRAM ||
@@ -185,7 +185,7 @@ public class LayoutSpecManager {
             public ListManager.Adapter onGetMasterAdapter(String searchQuery, SortingMethod sortingMethod, boolean allowMultipleSelection) {
                 return new CatchListManager.Adapter(
                         context,
-                        Logbook.getCatches(searchQuery, sortingMethod),
+                        Logbook.getCatches(context, searchQuery, sortingMethod),
                         context.isTwoPane(),
                         allowMultipleSelection,
                         onMasterItemClick
@@ -201,11 +201,11 @@ public class LayoutSpecManager {
         });
 
         SortingMethod[] methods = {
-                SortingUtils.bySpecies(),
-                SortingUtils.byLocation(),
-                SortingUtils.byFavorite(),
-                SortingUtils.byNewestToOldest(),
-                SortingUtils.byOldestToNewest()
+                SortingUtils.bySpecies(context),
+                SortingUtils.byLocation(context),
+                SortingUtils.byFavorite(context),
+                SortingUtils.byNewestToOldest(context),
+                SortingUtils.byOldestToNewest(context)
         };
         spec.setSortingMethods(methods);
 
@@ -229,7 +229,7 @@ public class LayoutSpecManager {
             public ListManager.Adapter onGetMasterAdapter(String searchQuery, SortingMethod sortingMethod, boolean allowMultipleSelection) {
                 return new LocationListManager.Adapter(
                         context,
-                        Logbook.getLocations(searchQuery, sortingMethod),
+                        Logbook.getLocations(context, searchQuery, sortingMethod),
                         context.isTwoPane(),
                         allowMultipleSelection,
                         onMasterItemClick
@@ -263,9 +263,9 @@ public class LayoutSpecManager {
         });
 
         SortingMethod[] methods = {
-                SortingUtils.byName(),
-                SortingUtils.byNumberOfFishingSpots(),
-                SortingUtils.byNumberOfCatches()
+                SortingUtils.byName(context),
+                SortingUtils.byNumberOfFishingSpots(context),
+                SortingUtils.byNumberOfCatches(context)
         };
         spec.setSortingMethods(methods);
 
@@ -301,7 +301,7 @@ public class LayoutSpecManager {
             public ListManager.Adapter onGetMasterAdapter(String searchQuery, SortingMethod sortingMethod, boolean allowMultipleSelection) {
                 return new BaitListManager.Adapter(
                         context,
-                        Logbook.getBaitsAndCategories(searchQuery, sortingMethod),
+                        Logbook.getBaitsAndCategories(context, searchQuery, sortingMethod),
                         context.isTwoPane(),
                         allowMultipleSelection,
                         onMasterItemClick
@@ -324,8 +324,8 @@ public class LayoutSpecManager {
         });
 
         SortingMethod[] methods = {
-                SortingUtils.byName(),
-                SortingUtils.byNumberOfCatches()
+                SortingUtils.byName(context),
+                SortingUtils.byNumberOfCatches(context)
         };
         spec.setSortingMethods(methods);
 
@@ -349,7 +349,7 @@ public class LayoutSpecManager {
             public ListManager.Adapter onGetMasterAdapter(String searchQuery, SortingMethod sortingMethod, boolean allowMultipleSelection) {
                 return new TripListManager.Adapter(
                         context,
-                        Logbook.getTrips(searchQuery, sortingMethod),
+                        Logbook.getTrips(context, searchQuery, sortingMethod),
                         context.isTwoPane(),
                         allowMultipleSelection,
                         onMasterItemClick
@@ -365,10 +365,10 @@ public class LayoutSpecManager {
         });
 
         SortingMethod[] methods = {
-                SortingUtils.byName(),
-                SortingUtils.byNewestToOldest(),
-                SortingUtils.byOldestToNewest(),
-                SortingUtils.byNumberOfCatches()
+                SortingUtils.byName(context),
+                SortingUtils.byNewestToOldest(context),
+                SortingUtils.byOldestToNewest(context),
+                SortingUtils.byNumberOfCatches(context)
         };
         spec.setSortingMethods(methods);
 

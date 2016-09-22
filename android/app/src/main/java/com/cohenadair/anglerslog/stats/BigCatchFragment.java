@@ -116,7 +116,7 @@ public class BigCatchFragment extends Fragment {
     }
 
     private String getMeasurementString(Catch aCatch) {
-        return (mIsLongest ? aCatch.getLengthAsStringWithUnits() : aCatch.getWeightAsStringWithUnits());
+        return (mIsLongest ? aCatch.getLengthAsStringWithUnits(getContext()) : aCatch.getWeightAsStringWithUnits(getContext()));
     }
 
     private Catch getCatch(Species species) {

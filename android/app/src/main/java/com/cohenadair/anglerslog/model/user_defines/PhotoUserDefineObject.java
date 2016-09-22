@@ -182,7 +182,7 @@ public abstract class PhotoUserDefineObject extends UserDefineObject {
 
         String photo = getRandomPhoto();
         if (photo != null)
-            intent.putExtra(Intent.EXTRA_STREAM, PhotoUtils.privatePhotoUri(photo));
+            intent.putExtra(Intent.EXTRA_STREAM, PhotoUtils.privatePhotoUri(context, photo));
 
         return intent;
     }

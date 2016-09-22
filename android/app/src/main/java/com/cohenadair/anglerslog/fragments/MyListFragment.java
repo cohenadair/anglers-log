@@ -146,7 +146,7 @@ public class MyListFragment extends MasterFragment {
     }
 
     private void initInstabugAlert() {
-        if (LogbookPreferences.shouldShowInstabugSheet()) {
+        if (LogbookPreferences.shouldShowInstabugSheet(getContext())) {
             new AlertDialog.Builder(getContext())
                     .setIcon(R.drawable.instabug_ic_ibg_logo_dark)
                     .setTitle(R.string.instabug_sheet_title)
@@ -155,7 +155,7 @@ public class MyListFragment extends MasterFragment {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();
-                            LogbookPreferences.setShouldShowInstabugSheet(false);
+                            LogbookPreferences.setShouldShowInstabugSheet(getContext(), false);
                         }
                     })
                     .show();
@@ -166,7 +166,7 @@ public class MyListFragment extends MasterFragment {
         final BottomSheetView backupSheetView =
                 (BottomSheetView)view.findViewById(R.id.backup_bottom_sheet_view);
 
-        if (LogbookPreferences.shouldShowBackupSheet()) {
+        if (LogbookPreferences.shouldShowBackupSheet(getContext())) {
             backupSheetView.init(
                     backupSheetView,
                     R.drawable.ic_info,
@@ -177,7 +177,7 @@ public class MyListFragment extends MasterFragment {
                     new BottomSheetView.InteractionListener() {
                         @Override
                         public void onDismiss() {
-                            LogbookPreferences.updateLastBackup();
+                            LogbookPreferences.updateLastBackup(getContext());
                         }
                     }
             );

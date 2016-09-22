@@ -43,18 +43,16 @@ import java.util.ArrayList;
  */
 public class PhotoUtils {
 
-    private static Context mContext;
     private static PhotoCache mCache;
 
     private PhotoUtils() { }
 
     public static void init(Context context) {
-        PhotoUtils.mContext = context;
         mCache = new PhotoCache(context, 1024 * 1024 * 10, 0.125, "bitmap_cache");
     }
 
     @NonNull
-    public static Intent pickPhotoIntent(boolean allowMultiSelect) {
+    public static Intent pickPhotoIntent(Context context, boolean allowMultiSelect) {
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
@@ -63,7 +61,7 @@ public class PhotoUtils {
         if (Build.VERSION.SDK_INT >= 18)
             intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, allowMultiSelect);
 
-        return Intent.createChooser(intent, mContext.getResources().getString(R.string.select_photo));
+        return Intent.createChooser(intent, context.getResources().getString(R.string.select_photo));
     }
 
     @NonNull
@@ -102,12 +100,12 @@ public class PhotoUtils {
      * failed.
      */
     @Nullable
-    private static Bitmap scaledBitmap(Uri uri, int longestDestLength) {
+    private static Bitmap scaledBitmap(Context context, Uri uri, int longestDestLength) {
         InputStream in = null;
 
         // create InputStream from Uri
         try {
-            in = mContext.getContentResolver().openInputStream(uri);
+            in = context.getContentResolver().openInputStream(uri);
 
             // read in the dimensions of the image on disk
             BitmapFactory.Options options = new BitmapFactory.Options();
@@ -120,7 +118,7 @@ public class PhotoUtils {
             options = scaledBitmapSampleSize(options.outWidth, options.outHeight, longestDestLength, longestDestLength);
 
             // reset InputStream as it cannot be used more than once
-            in = mContext.getContentResolver().openInputStream(uri);
+            in = context.getContentResolver().openInputStream(uri);
 
             // read in and create the final bitmap
             return BitmapFactory.decodeStream(in, null, options);
@@ -172,15 +170,17 @@ public class PhotoUtils {
      * @param path The path to the photo.
      * @param size The size of the ImageView, in pixels.
      */
-    public static void thumbnailToImageView(ImageView imageView, String path, int size, int placeHolderResId) {
-        Bitmap placeHolder = BitmapFactory.decodeResource(mContext.getResources(), placeHolderResId);
+    public static void thumbnailToImageView(
+            Context context, ImageView imageView, String path, int size, int placeHolderResId)
+    {
+        Bitmap placeHolder = BitmapFactory.decodeResource(context.getResources(), placeHolderResId);
         Bitmap fromCache = mCache.bitmapFromMemory(path, size);
 
         if (fromCache != null)
             imageView.setImageBitmap(fromCache);
         else if (cancelPotentialWork(path, imageView)) {
             final BitmapAsyncTask task = new BitmapAsyncTask(imageView, size, size, true);
-            final AsyncDrawable asyncDrawable = new AsyncDrawable(mContext.getResources(), placeHolder, task);
+            final AsyncDrawable asyncDrawable = new AsyncDrawable(context.getResources(), placeHolder, task);
             imageView.setImageDrawable(asyncDrawable);
             task.execute(path);
         }
@@ -212,12 +212,12 @@ public class PhotoUtils {
      * @param bmp The Bitmap representative of the photo file.
      * @return A correctly rotated Bitmap.
      */
-    private static Bitmap fixOrientation(Uri uri, Bitmap bmp) {
+    private static Bitmap fixOrientation(Context context, Uri uri, Bitmap bmp) {
         BufferedInputStream bufferStream = null;
         Metadata metadata;
 
         try {
-            InputStream inputStream = mContext.getContentResolver().openInputStream(uri);
+            InputStream inputStream = context.getContentResolver().openInputStream(uri);
             if (inputStream != null)
                 bufferStream = new BufferedInputStream(inputStream);
         } catch (IOException e) {
@@ -282,8 +282,8 @@ public class PhotoUtils {
      *
      * @return A File object of the storage directory.
      */
-    public static File privatePhotoDirectory() {
-        return mContext.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+    public static File privatePhotoDirectory(Context context) {
+        return context.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
     }
 
     /**
@@ -294,8 +294,8 @@ public class PhotoUtils {
      * @return A File object pointing to the photo's storage location.
      */
     @Nullable
-    public static File privatePhotoFile(String fileName) {
-        File externalFilesDir = privatePhotoDirectory();
+    public static File privatePhotoFile(Context context, String fileName) {
+        File externalFilesDir = privatePhotoDirectory(context);
 
         if (externalFilesDir == null)
             return null;
@@ -309,8 +309,8 @@ public class PhotoUtils {
      * @param fileName The name of the file to get.
      * @return A String of the file's path.
      */
-    public static String privatePhotoPath(String fileName) {
-        File f = privatePhotoFile(fileName);
+    public static String privatePhotoPath(Context context, String fileName) {
+        File f = privatePhotoFile(context, fileName);
         return (f == null) ? null : f.getPath();
     }
 
@@ -320,8 +320,8 @@ public class PhotoUtils {
      * @param fileName The file's name.
      * @return A {@link Uri} of the given file name.
      */
-    public static Uri privatePhotoUri(String fileName) {
-        return Uri.fromFile(privatePhotoFile(fileName));
+    public static Uri privatePhotoUri(Context context, String fileName) {
+        return Uri.fromFile(privatePhotoFile(context, fileName));
     }
 
     /**
@@ -331,8 +331,8 @@ public class PhotoUtils {
      * @return A File object if the directory exists, null otherwise.
      */
     @Nullable
-    public static File publicPhotoFile(String fileName) {
-        String photosPath = Environment.DIRECTORY_PICTURES + mContext.getResources().getString(R.string.app_photos_dir);
+    public static File publicPhotoFile(Context context, String fileName) {
+        String photosPath = Environment.DIRECTORY_PICTURES + context.getResources().getString(R.string.app_photos_dir);
         File publicDirectory = Environment.getExternalStoragePublicDirectory(photosPath);
 
         if (publicDirectory.mkdirs() || publicDirectory.isDirectory())
@@ -347,10 +347,11 @@ public class PhotoUtils {
      * @param srcUri The source Uri of the photo.
      * @param destFile The destination file the Bitmap will be written to.
      */
-    public static void copyAndResizePhoto(Uri srcUri, File destFile) {
+    public static void copyAndResizePhoto(Context context, Uri srcUri, File destFile) {
         if (destFile != null) {
-            int longestSideLength = mContext.getResources().getInteger(R.integer.max_photo_size);
-            Bitmap scaledBitmap = fixOrientation(srcUri, scaledBitmap(srcUri, longestSideLength));
+            int longestSideLength = context.getResources().getInteger(R.integer.max_photo_size);
+            Bitmap scaledBitmap = fixOrientation(context, srcUri,
+                    scaledBitmap(context, srcUri, longestSideLength));
             PhotoCache.savePhoto(scaledBitmap, destFile);
         }
     }
@@ -360,12 +361,12 @@ public class PhotoUtils {
      * @param resId The resource id of the file to save.
      * @param fileName The name of the file.
      */
-    public static void saveImageResource(int resId, String fileName) {
-        File destFile = privatePhotoFile(fileName);
+    public static void saveImageResource(Context context, int resId, String fileName) {
+        File destFile = privatePhotoFile(context, fileName);
         if (destFile == null)
             return;
 
-        Bitmap bitmap = BitmapFactory.decodeResource(mContext.getResources(), resId);
+        Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), resId);
 
         try {
             FileOutputStream out = new FileOutputStream(destFile);
@@ -380,10 +381,10 @@ public class PhotoUtils {
     /**
      * Cross references the photo files in private storage with the names of photos used throughout
      * the application and deletes photos that aren't used. This method should never be called on
-     * the UI thread. Use {@link #cleanPhotosAsync()} instead.
+     * the UI thread. Use {@link #cleanPhotosAsync(Context)} instead.
      */
-    public static void cleanPhotos() {
-        File photosDir = privatePhotoDirectory();
+    public static void cleanPhotos(Context context) {
+        File photosDir = privatePhotoDirectory(context);
 
         if (photosDir != null && photosDir.isDirectory()) {
             File[] photoFiles = photosDir.listFiles();
@@ -404,8 +405,8 @@ public class PhotoUtils {
     }
 
     /**
-     * Similar to {@link #cleanPhotos()} except it cleans the disk cache. This method should never
-     * be called on the UI thread. Use {@link #cleanPhotosAsync()} instead.
+     * Similar to {@link #cleanPhotos(Context)} except it cleans the disk cache. This method should
+     * never be called on the UI thread. Use {@link #cleanPhotosAsync(Context)} instead.
      */
     private static void cleanCache() {
         ArrayList<String> photoNames = new ArrayList<>();
@@ -419,13 +420,13 @@ public class PhotoUtils {
 
     /**
      * Cleans up photo files in another thread.
-     * @see #cleanPhotos()
+     * @see #cleanPhotos(Context)
      */
-    public static void cleanPhotosAsync() {
+    public static void cleanPhotosAsync(final Context context) {
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
-                cleanPhotos();
+                cleanPhotos(context);
                 cleanCache();
             }
         });

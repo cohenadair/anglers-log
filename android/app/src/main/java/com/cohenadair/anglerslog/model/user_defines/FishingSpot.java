@@ -1,5 +1,6 @@
 package com.cohenadair.anglerslog.model.user_defines;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 
@@ -121,6 +122,7 @@ public class FishingSpot extends UserDefineObject {
      * <b>does not</b> include "Latitude" and "Longitude" labels.
      * @see #getCoordinatesAsString(String, String)
      */
+    @SuppressLint("DefaultLocale")
     public String getCoordinatesAsString() {
         return String.format("%.6f, %.6f", mLatitude, mLongitude);
     }
@@ -142,7 +144,7 @@ public class FishingSpot extends UserDefineObject {
         return QueryHelper.queryFishingSpotCatchCount(this);
     }
 
-    public ContentValues getContentValues(UUID locationId) {
+    ContentValues getContentValues(UUID locationId) {
         ContentValues values = super.getContentValues();
 
         values.put(FishingSpotTable.Columns.LOCATION_ID, locationId.toString());

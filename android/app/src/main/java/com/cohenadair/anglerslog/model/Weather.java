@@ -1,5 +1,6 @@
 package com.cohenadair.anglerslog.model;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.support.annotation.NonNull;
 
@@ -99,6 +100,7 @@ public class Weather {
         });
     }
 
+    @SuppressLint("DefaultLocale")
     private String getUrl(String units) {
         return String.format(API_URL + "units=%s&lat=%f&lon=%f&APPID=%s", units, mCoordinates.latitude, mCoordinates.longitude, API_KEY);
     }

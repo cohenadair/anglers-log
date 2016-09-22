@@ -148,10 +148,12 @@ public class SelectPhotosView extends LinearLayout {
         mPrivatePhotoFile = mSelectPhotosInteraction.onGetPhotoFile();
 
         // photos taken from the camera are saved here
-        mPublicPhotoFile = PhotoUtils.publicPhotoFile(mPrivatePhotoFile.getName());
+        mPublicPhotoFile = PhotoUtils.publicPhotoFile(getContext(), mPrivatePhotoFile.getName());
 
         if (takeOrAttach == PHOTO_ATTACH)
-            mSelectPhotosInteraction.onStartSelectionActivity(PhotoUtils.pickPhotoIntent(mCanSelectMultiple), ManageCatchFragment.REQUEST_PHOTO);
+            mSelectPhotosInteraction.onStartSelectionActivity(
+                    PhotoUtils.pickPhotoIntent(getContext(), mCanSelectMultiple),
+                    ManageCatchFragment.REQUEST_PHOTO);
 
         if (takeOrAttach == PHOTO_TAKE)
             if (PermissionUtils.isExternalStorageGranted(mFragment.getContext()))
@@ -173,7 +175,7 @@ public class SelectPhotosView extends LinearLayout {
 
         for (int i = 0; i < clip.getItemCount(); i++) {
             Uri photoUri = clip.getItemAt(i).getUri();
-            PhotoUtils.copyAndResizePhoto(photoUri, mPrivatePhotoFile);
+            PhotoUtils.copyAndResizePhoto(getContext(), photoUri, mPrivatePhotoFile);
 
             if (!addImage(R.string.msg_error_attaching_photos))
                 break;
@@ -191,7 +193,7 @@ public class SelectPhotosView extends LinearLayout {
         Uri photoUri = (data == null || data.getData() == null) ? Uri.fromFile(mPublicPhotoFile) : data.getData();
 
         // scale down selected/taken photo and copy it to a private directory
-        PhotoUtils.copyAndResizePhoto(photoUri, mPrivatePhotoFile);
+        PhotoUtils.copyAndResizePhoto(getContext(), photoUri, mPrivatePhotoFile);
 
         // make sure photo taken shows up in the user's gallery
         if (mPublicPhotoFile != null && mPublicPhotoFile.exists())
@@ -221,7 +223,7 @@ public class SelectPhotosView extends LinearLayout {
                 return false;
             }
         });
-        PhotoUtils.thumbnailToImageView(img, path, size, R.drawable.placeholder_square);
+        PhotoUtils.thumbnailToImageView(getContext(), img, path, size, R.drawable.placeholder_square);
 
         mImageViews.add(img);
         mImagePaths.add(path);

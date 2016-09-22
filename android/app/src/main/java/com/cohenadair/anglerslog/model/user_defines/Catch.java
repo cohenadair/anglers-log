@@ -335,7 +335,7 @@ public class Catch extends PhotoUserDefineObject implements HasDateInterface {
         mUsedFishingMethods.setObjects(fishingMethods);
     }
 
-    public int getFishingMethodCount() {
+    private int getFishingMethodCount() {
         return getFishingMethods().size();
     }
 
@@ -401,32 +401,32 @@ public class Catch extends PhotoUserDefineObject implements HasDateInterface {
         return (mQuantity != -1) ? Integer.toString(mQuantity) : "";
     }
 
-    public String getLengthAsStringWithUnits() {
-        return (mLength != -1) ? Float.toString(mLength) + Logbook.getLengthUnits() : "";
+    public String getLengthAsStringWithUnits(Context context) {
+        return (mLength != -1) ? Float.toString(mLength) + Logbook.getLengthUnits(context) : "";
     }
 
     public String getLengthAsString() {
         return (mLength != -1) ? Float.toString(mLength) : "";
     }
 
-    public String getWeightAsStringWithUnits() {
-        return (mWeight != -1) ? Float.toString(mWeight) + " " + Logbook.getWeightUnits() : "";
+    public String getWeightAsStringWithUnits(Context context) {
+        return (mWeight != -1) ? Float.toString(mWeight) + " " + Logbook.getWeightUnits(context) : "";
     }
 
     public String getWeightAsString() {
         return (mWeight != -1) ? Float.toString(mWeight) : "";
     }
 
-    public String getWaterDepthAsStringWithUnits() {
-        return (mWaterDepth != -1) ? Float.toString(mWaterDepth) + " " + Logbook.getDepthUnits() : "";
+    public String getWaterDepthAsStringWithUnits(Context context) {
+        return (mWaterDepth != -1) ? Float.toString(mWaterDepth) + " " + Logbook.getDepthUnits(context) : "";
     }
 
     public String getWaterDepthAsString() {
         return (mWaterDepth != -1) ? Float.toString(mWaterDepth) : "";
     }
 
-    public String getWaterTemperatureAsStringWithUnits() {
-        return (mWaterTemperature != -1) ? Integer.toString(mWaterTemperature) + Logbook.getTemperatureUnits() : "";
+    public String getWaterTemperatureAsStringWithUnits(Context context) {
+        return (mWaterTemperature != -1) ? Integer.toString(mWaterTemperature) + Logbook.getTemperatureUnits(context) : "";
     }
 
     public String getWaterTemperatureAsString() {
@@ -445,7 +445,7 @@ public class Catch extends PhotoUserDefineObject implements HasDateInterface {
         return (mCatchResult != null) ? mCatchResult.getString(context) : "";
     }
 
-    public String getDateJsonString() {
+    String getDateJsonString() {
         return JsonExporter.dateToString(mDate);
     }
 
@@ -459,11 +459,11 @@ public class Catch extends PhotoUserDefineObject implements HasDateInterface {
         String text = getSpeciesAsString();
 
         if (mLength > 0 && mWeight > 0)
-            text += " measuring " + getLengthAsStringWithUnits() + " and weighing " + getWeightAsStringWithUnits();
+            text += " measuring " + getLengthAsStringWithUnits(context) + " and weighing " + getWeightAsStringWithUnits(context);
         else if (mWeight > 0)
-            text += " weighing " + getWeightAsStringWithUnits();
+            text += " weighing " + getWeightAsStringWithUnits(context);
         else if (mLength > 0)
-            text += " measuring " + getLengthAsStringWithUnits();
+            text += " measuring " + getLengthAsStringWithUnits(context);
 
         intent.putExtra(Intent.EXTRA_TEXT, text + ". " + intent.getStringExtra(Intent.EXTRA_TEXT));
 

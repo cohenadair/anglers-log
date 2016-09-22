@@ -98,13 +98,13 @@ public class WeatherEditView extends LinearLayout {
         Spinner spinner = (Spinner)findViewById(R.id.units_spinner);
         spinner.setAdapter(adapter);
 
-        int weatherUnits = LogbookPreferences.getWeatherUnits();
-        spinner.setSelection((weatherUnits == -1) ? LogbookPreferences.getUnits() : weatherUnits);
+        int weatherUnits = LogbookPreferences.getWeatherUnits(getContext());
+        spinner.setSelection((weatherUnits == -1) ? LogbookPreferences.getUnits(getContext()) : weatherUnits);
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                LogbookPreferences.setWeatherUnits(position);
+                LogbookPreferences.setWeatherUnits(getContext(), position);
                 mTemperatureView.setTitle(getTemperatureLabel(position == Logbook.UNIT_IMPERIAL));
                 mWindSpeedView.setTitle(getWindLabel(position == Logbook.UNIT_IMPERIAL));
             }
@@ -117,11 +117,11 @@ public class WeatherEditView extends LinearLayout {
     }
 
     private String getTemperatureLabel(boolean isImperial) {
-        return getResources().getString(R.string.temperature) + " (" + Logbook.getTemperatureUnits(isImperial) + ")";
+        return getResources().getString(R.string.temperature) + " (" + Logbook.getTemperatureUnits(getContext(), isImperial) + ")";
     }
 
     private String getWindLabel(boolean isImperial) {
-        return getResources().getString(R.string.wind_speed) + " (" + Logbook.getSpeedUnits(isImperial) + ")";
+        return getResources().getString(R.string.wind_speed) + " (" + Logbook.getSpeedUnits(getContext(), isImperial) + ")";
     }
 
     private void initRefreshButton() {
