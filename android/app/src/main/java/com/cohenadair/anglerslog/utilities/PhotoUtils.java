@@ -17,17 +17,20 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.widget.ImageView;
 
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.model.Logbook;
-import com.cohenadair.anglerslog.model.user_defines.Bait;
 import com.cohenadair.anglerslog.model.user_defines.Catch;
+import com.cohenadair.anglerslog.model.user_defines.PhotoUserDefineObject;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import com.drew.imaging.ImageMetadataReader;
 import com.drew.metadata.Metadata;
 import com.drew.metadata.MetadataException;
 import com.drew.metadata.exif.ExifIFD0Directory;
+
+import org.apache.commons.io.FileUtils;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -36,6 +39,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Any utility functions that have anything to do with photos/photo manipulation.
@@ -43,7 +47,8 @@ import java.util.ArrayList;
  */
 public class PhotoUtils {
 
-    public static final int PHOTO_QUALITY = 70;
+    private static final String TAG = "PhotoUtils";
+    private static final int PHOTO_QUALITY = 70;
 
     private static PhotoCache mCache;
 
@@ -397,23 +402,40 @@ public class PhotoUtils {
      */
     public static void cleanPhotos(Context context) {
         File photosDir = privatePhotoDirectory(context);
+        int count = 0;
 
         if (photosDir != null && photosDir.isDirectory()) {
             File[] photoFiles = photosDir.listFiles();
 
             for (int i = photoFiles.length - 1; i >= 0; i--) {
-
-                // check all Catch objects for the current File
-                for (UserDefineObject aCatch : Logbook.getCatches())
-                    if (((Catch)aCatch).getPhotos().indexOf(photoFiles[i].getName()) >= 0)
-                        break;
-
-                // check all Bait objects for the current file
-                for (UserDefineObject aBait : Logbook.getBaits())
-                    if (((Bait)aBait).getPhotos().indexOf(photoFiles[i].getName()) >= 0)
-                        break;
+                if (!isPhotoUsed(photoFiles[i])) {
+                    FileUtils.deleteQuietly(photoFiles[i]);
+                    count++;
+                }
             }
         }
+
+        Log.d(TAG, "Deleted " + count + " unused photos.");
+    }
+
+    /**
+     * @param photoFile The {@link File} where the photo is saved.
+     * @return True if the photo is used in the logbook, false otherwise.
+     */
+    private static boolean isPhotoUsed(File photoFile) {
+        // combine all UserDefineObject subclasses that use photos
+        List<UserDefineObject> photoUserDefines = new ArrayList<>();
+        photoUserDefines.addAll(Logbook.getCatches());
+        photoUserDefines.addAll(Logbook.getBaits());
+
+        for (UserDefineObject obj : photoUserDefines) {
+            PhotoUserDefineObject photoObj = (PhotoUserDefineObject)obj;
+            if (photoObj.getPhotos().contains(photoFile.getName())) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
