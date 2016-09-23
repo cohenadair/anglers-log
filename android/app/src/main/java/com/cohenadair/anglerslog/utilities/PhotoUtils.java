@@ -399,6 +399,10 @@ public class PhotoUtils {
      * Cross references the photo files in private storage with the names of photos used throughout
      * the application and deletes photos that aren't used. This method should never be called on
      * the UI thread. Use {@link #cleanPhotosAsync(Context)} instead.
+     *
+     * Note that this will delete _any_ file in the photos directory whose name doesn't match a
+     * photo in the database. This ensures there are only photo files that are being used are using
+     * the user's storage.
      */
     public static void cleanPhotos(Context context) {
         Log.d(TAG, "Cleaning photos...");
