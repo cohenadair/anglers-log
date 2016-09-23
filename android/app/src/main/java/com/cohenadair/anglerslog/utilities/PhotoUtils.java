@@ -21,9 +21,9 @@ import android.util.Log;
 import android.widget.ImageView;
 
 import com.cohenadair.anglerslog.R;
+import com.cohenadair.anglerslog.database.QueryHelper;
 import com.cohenadair.anglerslog.model.Logbook;
 import com.cohenadair.anglerslog.model.user_defines.Catch;
-import com.cohenadair.anglerslog.model.user_defines.PhotoUserDefineObject;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import com.drew.imaging.ImageMetadataReader;
 import com.drew.metadata.Metadata;
@@ -401,41 +401,25 @@ public class PhotoUtils {
      * the UI thread. Use {@link #cleanPhotosAsync(Context)} instead.
      */
     public static void cleanPhotos(Context context) {
+        Log.d(TAG, "Cleaning photos...");
+
         File photosDir = privatePhotoDirectory(context);
         int count = 0;
 
         if (photosDir != null && photosDir.isDirectory()) {
             File[] photoFiles = photosDir.listFiles();
+            List<String> photoNames = QueryHelper.queryPhotos();
 
             for (int i = photoFiles.length - 1; i >= 0; i--) {
-                if (!isPhotoUsed(photoFiles[i])) {
+                if (!photoNames.contains(photoFiles[i].getName())) {
                     FileUtils.deleteQuietly(photoFiles[i]);
+                    Log.d(TAG, "Deleting " + photoFiles[i].getName());
                     count++;
                 }
             }
         }
 
         Log.d(TAG, "Deleted " + count + " unused photos.");
-    }
-
-    /**
-     * @param photoFile The {@link File} where the photo is saved.
-     * @return True if the photo is used in the logbook, false otherwise.
-     */
-    private static boolean isPhotoUsed(File photoFile) {
-        // combine all UserDefineObject subclasses that use photos
-        List<UserDefineObject> photoUserDefines = new ArrayList<>();
-        photoUserDefines.addAll(Logbook.getCatches());
-        photoUserDefines.addAll(Logbook.getBaits());
-
-        for (UserDefineObject obj : photoUserDefines) {
-            PhotoUserDefineObject photoObj = (PhotoUserDefineObject)obj;
-            if (photoObj.getPhotos().contains(photoFile.getName())) {
-                return true;
-            }
-        }
-
-        return false;
     }
 
     /**

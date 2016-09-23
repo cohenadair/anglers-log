@@ -22,9 +22,18 @@ import com.cohenadair.anglerslog.model.user_defines.Trip;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import static com.cohenadair.anglerslog.database.LogbookSchema.*;
+import static com.cohenadair.anglerslog.database.LogbookSchema.BaitTable;
+import static com.cohenadair.anglerslog.database.LogbookSchema.CatchTable;
+import static com.cohenadair.anglerslog.database.LogbookSchema.FishingSpotTable;
+import static com.cohenadair.anglerslog.database.LogbookSchema.PhotoTable;
+import static com.cohenadair.anglerslog.database.LogbookSchema.TripTable;
+import static com.cohenadair.anglerslog.database.LogbookSchema.UsedCatchTable;
+import static com.cohenadair.anglerslog.database.LogbookSchema.UserDefineTable;
+import static com.cohenadair.anglerslog.database.LogbookSchema.WeatherTable;
 
 /**
  * A class for easy database querying. This is also used so the rest of the application doesn't
@@ -239,6 +248,19 @@ public class QueryHelper {
             }
 
         cursor.close();
+        return photos;
+    }
+
+    /**
+     * @return A list of all photo names in the database, regardless of associated
+     *         {@link UserDefineObject}.
+     */
+    public static List<String> queryPhotos() {
+        List<String> photos = new ArrayList<>();
+
+        photos.addAll(queryPhotos(CatchPhotoTable.NAME, null));
+        photos.addAll(queryPhotos(BaitPhotoTable.NAME, null));
+
         return photos;
     }
 
