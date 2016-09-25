@@ -24,6 +24,7 @@ import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.database.QueryHelper;
 import com.cohenadair.anglerslog.model.Logbook;
 import com.cohenadair.anglerslog.model.user_defines.Catch;
+import com.cohenadair.anglerslog.model.user_defines.PhotoUserDefineObject;
 import com.cohenadair.anglerslog.model.user_defines.UserDefineObject;
 import com.drew.imaging.ImageMetadataReader;
 import com.drew.metadata.Metadata;
@@ -48,6 +49,9 @@ import java.util.List;
 public class PhotoUtils {
 
     private static final String TAG = "PhotoUtils";
+    private static final String PNG = ".png";
+    private static final String JPG = ".jpg";
+
     private static final int PHOTO_QUALITY = 70;
 
     private static PhotoCache mCache;
@@ -285,6 +289,16 @@ public class PhotoUtils {
     }
 
     /**
+     * @param path The path from which to get a {@link Bitmap} object.
+     * @return A {@link Bitmap} from the given path.
+     */
+    private static Bitmap bitmapFromPrivatePath(String path) {
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inPreferredConfig = Bitmap.Config.ARGB_8888; // preserve alpha, just in case
+        return BitmapFactory.decodeFile(path, options);
+    }
+
+    /**
      * Gets the photo storage directory for this application.
      *
      * @return A File object of the storage directory.
@@ -441,7 +455,53 @@ public class PhotoUtils {
     }
 
     /**
-     * Cleans up photo files in another thread.
+     * Converts any PNG photos in the logbook to JPG. This is only necessary because an older
+     * version of the iOS app saved photos as PNGs. Any user that used that version and transferred
+     * their data to Android may have a ton of photo files ~10x too large. This will significantly
+     * decrease their file sizes.
+     *
+     * This method should be called in the current thread before the app starts so the user's files
+     * and catches aren't modified while they are using the app.
+     */
+    public static void convertAllPngToJpg(Context context) {
+        Log.d(TAG, "Converting PNG files...");
+
+        int count = 0;
+        List<UserDefineObject> photoUserDefines = new ArrayList<>();
+        photoUserDefines.addAll(Logbook.getCatches());
+        photoUserDefines.addAll(Logbook.getBaits());
+
+        for (UserDefineObject obj : photoUserDefines) {
+            PhotoUserDefineObject photoObj = (PhotoUserDefineObject)obj;
+            List<String> photos = photoObj.getPhotos();
+
+            for (String oldPhoto : photos) {
+                if (oldPhoto.endsWith(PNG)) {
+                    Log.d(TAG, "Converting file: " + oldPhoto);
+
+                    // update the photo name associated with the PhotoUserDefineObject
+                    String newPhoto = oldPhoto.replace(PNG, JPG);
+                    photoObj.removePhoto(oldPhoto);
+                    photoObj.addPhoto(newPhoto);
+
+                    // load the old photo and re-save it as a JPG
+                    File oldFile = privatePhotoFile(context, oldPhoto);
+                    File newFile = privatePhotoFile(context, newPhoto);
+                    Bitmap bitmap = bitmapFromPrivatePath(privatePhotoPath(context, oldPhoto));
+                    compressAndSaveBitmap(bitmap, newFile);
+                    FileUtils.deleteQuietly(oldFile);
+
+                    count++;
+                }
+            }
+        }
+
+        Log.d(TAG, "Converted " + count + " PNG files.");
+    }
+
+    /**
+     * Cleans up photo files in another thread.  This includes removing unused files, clearing
+     * unused cache files, and converting old PNG files to JPG.
      * @see #cleanPhotos(Context)
      */
     public static void cleanPhotosAsync(final Context context) {

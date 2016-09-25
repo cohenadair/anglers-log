@@ -30,6 +30,7 @@ public class AnglersLogApplication extends Application {
         Logbook.init(context);
         PhotoUtils.init(context);
         PhotoUtils.cleanPhotosAsync(context);
+        PhotoUtils.convertAllPngToJpg(context);
 
         // needs to be called after initializing
 
