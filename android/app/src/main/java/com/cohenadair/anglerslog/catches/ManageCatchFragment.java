@@ -482,8 +482,12 @@ public class ManageCatchFragment extends ManageContentFragment {
             return;
         }
 
-        if (!PermissionUtils.checkLocationServices(getContext()))
+        // if location is enabled, request permission if needed
+        if (PermissionUtils.checkLocationServices(getContext())) {
+            PermissionUtils.requestLocation(this);
+        } else {
             return;
+        }
 
         Location loc = null;
 
