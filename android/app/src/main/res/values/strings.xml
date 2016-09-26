@@ -77,6 +77,8 @@
     <string name="angler">angler</string>
     <string name="water_depth">Water Depth</string>
     <string name="water_temperature">Water Temperature</string>
+    <string name="water_depth_units">Water Depth (%s)</string>
+    <string name="water_temperature_units">Water Temperature (%s)</string>
     <string name="methods">Fishing Methods</string>
     <string name="result">Result</string>
     <string name="notes">Notes</string>
@@ -84,6 +86,9 @@
     <string name="length">Length</string>
     <string name="weight">Weight</string>
     <string name="depth">Depth</string>
+    <string name="length_units">Length (%s)</string>
+    <string name="weight_units">Weight (%s)</string>
+    <string name="depth_units">Depth (%s)</string>
     <string name="bait_category">Bait Category</string>
     <string name="date">Date</string>
     <string name="category">Category</string>
