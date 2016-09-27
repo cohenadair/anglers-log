@@ -11,6 +11,8 @@
 
 Anglers' Log is a mobile application that allows users to track, analyze, and share their catches in the sport of fishing.  It is available for free on the [App Store](https://itunes.apple.com/ca/app/anglers-log-fishing-journal/id959989008) and [Google Play](https://play.google.com/store/apps/details?id=com.cohenadair.anglerslog).
 
+[https://anglerslog.ca/](https://anglerslog.ca/)
+
 ## Contributing
 
 Contributions are always welcome! Please run the test suite before opening a pull request, and create new tests where appropriate.
