@@ -17,7 +17,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.cohenadair.anglerslog.R;
-import com.cohenadair.anglerslog.catches.ManageCatchFragment;
+import com.cohenadair.anglerslog.fragments.ManageContentFragment;
 import com.cohenadair.anglerslog.utilities.AlertUtils;
 import com.cohenadair.anglerslog.utilities.PermissionUtils;
 import com.cohenadair.anglerslog.utilities.PhotoUtils;
@@ -53,7 +53,7 @@ public class SelectPhotosView extends LinearLayout {
     private ArrayList<String> mImagePaths = new ArrayList<>();
     private SelectPhotosInteraction mSelectPhotosInteraction;
     private File mPrivatePhotoFile; // used to save a version of the photo used by this application
-    private File mPublicPhotoFile; // used to save a full resolution version of the photo for the user
+    private Uri mPublicPhotoUri; // used to save a full resolution version of the photo for the user
     private Fragment mFragment;
 
     private int mMaxPhotos = -1;
@@ -135,9 +135,9 @@ public class SelectPhotosView extends LinearLayout {
 
         // make sure the camera is available on this device
         if (canTakePicture(photoIntent)) {
-            if (mPublicPhotoFile != null) {
-                photoIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(mPublicPhotoFile));
-                mSelectPhotosInteraction.onStartSelectionActivity(photoIntent, ManageCatchFragment.REQUEST_PHOTO);
+            if (mPublicPhotoUri != null) {
+                photoIntent.putExtra(MediaStore.EXTRA_OUTPUT, mPublicPhotoUri);
+                mSelectPhotosInteraction.onStartSelectionActivity(photoIntent, ManageContentFragment.REQUEST_PHOTO);
             } else
                 Utils.showToast(getContext(), R.string.error_starting_camera);
         } else
@@ -148,12 +148,13 @@ public class SelectPhotosView extends LinearLayout {
         mPrivatePhotoFile = mSelectPhotosInteraction.onGetPhotoFile();
 
         // photos taken from the camera are saved here
-        mPublicPhotoFile = PhotoUtils.publicPhotoFile(getContext(), mPrivatePhotoFile.getName());
+        mPublicPhotoUri = Uri.fromFile(PhotoUtils.publicPhotoFile(getContext(),
+                mPrivatePhotoFile.getName()));
 
         if (takeOrAttach == PHOTO_ATTACH)
             mSelectPhotosInteraction.onStartSelectionActivity(
                     PhotoUtils.pickPhotoIntent(getContext(), mCanSelectMultiple),
-                    ManageCatchFragment.REQUEST_PHOTO);
+                    ManageContentFragment.REQUEST_PHOTO);
 
         if (takeOrAttach == PHOTO_TAKE)
             if (PermissionUtils.isExternalStorageGranted(mFragment.getContext()))
@@ -190,14 +191,22 @@ public class SelectPhotosView extends LinearLayout {
         // the Uri passed to a ACTION_IMAGE_CAPTURE intent is where the image is saved
         // for some devices, like the Nexus 5X, it is the only way to read resulting data
         // for most devices, the photo Uri is passed to Intent.getData()
-        Uri photoUri = (data == null || data.getData() == null) ? Uri.fromFile(mPublicPhotoFile) : data.getData();
+        Uri photoUri = (data == null || data.getData() == null) ? mPublicPhotoUri : data.getData();
+
+        if (photoUri == null) {
+            Utils.showToast(getContext(), R.string.error_camera_result);
+            return;
+        }
 
         // scale down selected/taken photo and copy it to a private directory
         PhotoUtils.copyAndResizePhoto(getContext(), photoUri, mPrivatePhotoFile);
 
         // make sure photo taken shows up in the user's gallery
-        if (mPublicPhotoFile != null && mPublicPhotoFile.exists())
-            MediaScannerConnection.scanFile(getContext(), new String[]{ mPublicPhotoFile.toString() }, null, null);
+        String publicPhotoPath = mPublicPhotoUri.getPath();
+        if (publicPhotoPath != null) {
+            MediaScannerConnection.scanFile(getContext(), new String[]{ publicPhotoPath }, null,
+                    null);
+        }
 
         addImage(R.string.msg_error_attaching_photo);
     }

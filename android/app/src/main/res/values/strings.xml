@@ -264,6 +264,7 @@
 
     <string name="error_starting_camera">Error starting camera</string>
     <string name="error_camera_unavailable">The camera is currently unavailable on this device.</string>
+    <string name="error_camera_result">Error retrieving photo from camera</string>
     <string name="error_delete_primitive">is currently in use and cannot be deleted.</string>
     <string name="msg_confirm_delete">This action cannot be undone. Delete anyway?</string>
     <string name="msg_delete_photo">Are you sure you want to delete this photo? This action cannot be undone.</string>
