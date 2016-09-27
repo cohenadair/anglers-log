@@ -1,6 +1,7 @@
 package com.cohenadair.anglerslog.locations;
 
 import android.graphics.Color;
+import android.location.Location;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -41,6 +42,7 @@ public class ManageFishingSpotFragment extends ManageContentFragment {
     private DraggableMapFragment mMapFragment;
     private ImageView mCrosshairs;
     private GoogleMap mMap;
+    private Location mLastLocation;
 
     private List<UserDefineObject> mFishingSpots;
     private ManageObjectSpec mManageObjectSpec;
@@ -300,6 +302,14 @@ public class ManageFishingSpotFragment extends ManageContentFragment {
             @Override
             public void onMapReady(GoogleMap map) {
                 mMap = map;
+                mMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
+                    @Override
+                    public boolean onMyLocationButtonClick() {
+                        updateCoordinateViews(new LatLng(mLastLocation.getLatitude(),
+                                mLastLocation.getLongitude()));
+                        return false;
+                    }
+                });
                 updateMap();
             }
 
@@ -311,6 +321,7 @@ public class ManageFishingSpotFragment extends ManageContentFragment {
                 }
 
                 updateCamera(new LatLng(location.getLatitude(), location.getLongitude()));
+                mLastLocation = location;
                 mMapFragment.setLocationUpdatesEnabled(false);
             }
         });
