@@ -87,7 +87,7 @@ public class Importer {
         String fileExt = MimeTypeMap.getSingleton().getExtensionFromMimeType(mContentResolver.getType(uri));
         Log.d("Importer", "File extension: " + fileExt);
 
-        if (fileExt.equals(Utils.FILE_EXTENSION_ZIP)) {
+        if (fileExt != null && fileExt.equals(Utils.FILE_EXTENSION_ZIP)) {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
