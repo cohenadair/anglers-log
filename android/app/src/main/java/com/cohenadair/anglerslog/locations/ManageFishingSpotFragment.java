@@ -305,8 +305,10 @@ public class ManageFishingSpotFragment extends ManageContentFragment {
                 mMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
                     @Override
                     public boolean onMyLocationButtonClick() {
-                        updateCoordinateViews(new LatLng(mLastLocation.getLatitude(),
-                                mLastLocation.getLongitude()));
+                        if (mLastLocation != null) {
+                            updateCoordinateViews(new LatLng(mLastLocation.getLatitude(),
+                                    mLastLocation.getLongitude()));
+                        }
                         return false;
                     }
                 });
@@ -315,13 +317,14 @@ public class ManageFishingSpotFragment extends ManageContentFragment {
 
             @Override
             public void onLocationUpdate(android.location.Location location) {
+                mLastLocation = location;
+                
                 if (mStopLocationUpdates) {
                     mMapFragment.setLocationUpdatesEnabled(false);
                     return;
                 }
 
                 updateCamera(new LatLng(location.getLatitude(), location.getLongitude()));
-                mLastLocation = location;
                 mMapFragment.setLocationUpdatesEnabled(false);
             }
         });
