@@ -1,6 +1,7 @@
 package com.cohenadair.anglerslog.model.backup;
 
 import android.content.ContentResolver;
+import android.content.Context;
 import android.net.Uri;
 import android.os.Handler;
 import android.util.Log;
@@ -34,7 +35,7 @@ public class Importer {
 
     private static final String TAG = "Importer";
 
-    public enum Error {
+    private enum Error {
         ERROR_URI_NOT_FOUND(0, "File not found"),
         ERROR_ZIP_CLOSE(1, "Error closing file"),
         ERROR_ZIP_ITERATE(2, "Error extracting file"),
@@ -74,12 +75,11 @@ public class Importer {
      * Logbook. This method should always be called after some sort of UI interaction, such as a
      * button click.
      *
-     * @param contentResolver The {@link ContentResolver} used to open input streams.
      * @param uri The Uri of the zip archive.
      * @param onProgress Callbacks for importing progress.
      */
-    public static void importFromUri(ContentResolver contentResolver, Uri uri, OnProgressListener onProgress) {
-        mContentResolver = contentResolver;
+    public static void importFromUri(final Context context, Uri uri, OnProgressListener onProgress) {
+        mContentResolver = context.getContentResolver();
         mUri = uri;
         mCallbacks = onProgress;
         mHandler = new Handler();
@@ -87,8 +87,14 @@ public class Importer {
         String fileExt = MimeTypeMap.getSingleton().getExtensionFromMimeType(mContentResolver.getType(uri));
         Log.d("Importer", "File extension: " + fileExt);
 
-        if (fileExt.equals(Utils.FILE_EXTENSION_ZIP)) {
-            new Thread(new UnzipRunnable()).start();
+        if (fileExt != null && fileExt.equals(Utils.FILE_EXTENSION_ZIP)) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    Logbook.reset(context, false);
+                    importData(context);
+                }
+            }).start();
         } else {
             error(Error.ERROR_INVALID_FILE_EXT);
         }
@@ -98,7 +104,7 @@ public class Importer {
      * Handles all importing using the class's {@link #mUri} object. This method should always be
      * run in a background thread.
      */
-    private static void importData() {
+    private static void importData(Context context) {
         InputStream is;
 
         try {
@@ -120,9 +126,9 @@ public class Importer {
                 String name = entry.getName();
 
                 if (name.endsWith(".json"))
-                    importLogbook(zip);
+                    importLogbook(context, zip);
                 else
-                    importImage(zip, entry);
+                    importImage(context, zip, entry);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -152,11 +158,11 @@ public class Importer {
 
     /**
      * Uses the given {@link ZipInputStream} to extract, parse, and import new Logbook data.
-     * @see #importData()
+     * @see #importData(Context)
      *
      * @param in The {@link ZipInputStream} to read from.
      */
-    private static void importLogbook(ZipInputStream in) {
+    private static void importLogbook(Context context, ZipInputStream in) {
         StringBuilder jsonStr = new StringBuilder();
         BufferedReader reader = new BufferedReader(new InputStreamReader(in));
 
@@ -173,7 +179,7 @@ public class Importer {
 
         // convert String to JSON
         try {
-            JsonImporter.parse(new JSONObject(jsonStr.toString()));
+            JsonImporter.parse(context, new JSONObject(jsonStr.toString()));
         } catch (JSONException e) {
             e.printStackTrace();
             error(Error.ERROR_JSON_PARSE);
@@ -182,13 +188,13 @@ public class Importer {
 
     /**
      * Copies the image represented by the given ZipEntry to the application's pictures folder.
-     * @see #importData()
+     * @see #importData(Context)
      *
      * @param in The InputStream being read from.
      * @param entry The ZipEntry containing the image to copy.
      */
-    private static void importImage(ZipInputStream in, ZipEntry entry) {
-        File newFile = PhotoUtils.privatePhotoFile(entry.getName());
+    private static void importImage(Context context, ZipInputStream in, ZipEntry entry) {
+        File newFile = PhotoUtils.privatePhotoFile(context, entry.getName());
         Log.d(TAG, "Importing image: " + entry.getName());
 
         if (newFile == null || newFile.exists())
@@ -216,16 +222,5 @@ public class Importer {
                     mCallbacks.onError(err.getMessage());
                 }
             });
-    }
-
-    /**
-     * A simple {@link Runnable} subclass for importing Logbook data.
-     */
-    private static class UnzipRunnable implements Runnable {
-        @Override
-        public void run() {
-            Logbook.reset(false);
-            importData();
-        }
     }
 }

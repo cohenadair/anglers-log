@@ -178,11 +178,11 @@ public class NavigationManager implements FragmentManager.OnBackStackChangedList
     }
 
     public int getCurrentLayoutId() {
-        return LogbookPreferences.getNavigationId();
+        return LogbookPreferences.getNavigationId(mActivity);
     }
 
     public void setCurrentLayoutId(int id) {
-        LogbookPreferences.setNavigationId(id);
+        LogbookPreferences.setNavigationId(mActivity, id);
     }
 
     public void updateTitle() {

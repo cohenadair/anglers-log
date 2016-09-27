@@ -61,6 +61,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_half"
                 android:layout_marginStart="@dimen/margin_default"
+                android:layout_marginLeft="@dimen/margin_default"
                 android:orientation="horizontal">
 
                 <ImageView
@@ -75,6 +76,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_marginStart="@dimen/margin_default_negative"
+                    android:layout_marginLeft="@dimen/margin_default_negative"
                     android:orientation="vertical">
 
                     <!-- Total Species -->

@@ -15,7 +15,8 @@
     <HorizontalScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginStart="@dimen/margin_input_icon_no_left">
+        android:layout_marginStart="@dimen/margin_input_icon_no_left"
+        android:layout_marginLeft="@dimen/margin_input_icon_no_left">
 
         <LinearLayout
             android:id="@+id/photos_wrapper"

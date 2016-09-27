@@ -42,7 +42,7 @@ public class WeatherDetailsView extends LeftIconView {
         if (weather == null)
             return;
 
-        boolean isImperial = LogbookPreferences.getWeatherUnits() == Logbook.UNIT_IMPERIAL;
+        boolean isImperial = LogbookPreferences.getWeatherUnits(getContext()) == Logbook.UNIT_IMPERIAL;
 
         String ph = isImperial ? getResources().getString(R.string.mph) : getResources().getString(R.string.kmh);
         String deg = isImperial ? getResources().getString(R.string.degrees_f) : getResources().getString(R.string.degrees_c);

@@ -1,11 +1,11 @@
 <resources>
-    <string name="version_name">1.2.5</string>
-    <string name="rate_title">Rate Anglers\' Log 1.2.5</string>
+    <string name="version_name">1.2.6</string>
+    <string name="rate_title">Rate Anglers\' Log 1.2.6</string>
     <string name="app_name">Anglers\' Log</string>
     <string name="app_description">Track, analyze, share.</string>
     <string name="app_photos_dir">/AnglersLog</string>
     <string name="hashtag">AnglersLogApp</string>
-    <string name="website">https://cohenadair.github.io/anglerslog/</string>
+    <string name="website">https://anglerslog.ca/</string>
     <string name="share_text">Shared with @anglerslog for #android #anglerslogapp</string>
 
     <string name="rate_msg">Please take a minute to rate Anglers\' Log.  All feedback is greatly appreciated!</string>
@@ -44,7 +44,6 @@
     <string name="import_title">Confirm Import</string>
     <string name="import_dialog_message">Importing new data will erase current data and may take several minutes.</string>
     <string name="import_success">Import successful</string>
-    <string name="import_error">Import Error</string>
     <string name="export">Export</string>
     <string name="export_summary">Save data to be transferred to a new device platform.</string>
     <string name="export_title">Confirm Export</string>
@@ -78,6 +77,8 @@
     <string name="angler">angler</string>
     <string name="water_depth">Water Depth</string>
     <string name="water_temperature">Water Temperature</string>
+    <string name="water_depth_units">Water Depth (%s)</string>
+    <string name="water_temperature_units">Water Temperature (%s)</string>
     <string name="methods">Fishing Methods</string>
     <string name="result">Result</string>
     <string name="notes">Notes</string>
@@ -85,6 +86,9 @@
     <string name="length">Length</string>
     <string name="weight">Weight</string>
     <string name="depth">Depth</string>
+    <string name="length_units">Length (%s)</string>
+    <string name="weight_units">Weight (%s)</string>
+    <string name="depth_units">Depth (%s)</string>
     <string name="bait_category">Bait Category</string>
     <string name="date">Date</string>
     <string name="category">Category</string>
@@ -130,7 +134,7 @@
     <string name="all_locations">All locations</string>
     <string name="all_baits">All baits</string>
     <string name="reset">Reset</string>
-    <string name="search">Search</string>
+    <string name="search">Search %s</string>
     <string name="empty"> </string>
     <string name="favorite">Favorite</string>
     <string name="sort_by">Sort by</string>
@@ -260,6 +264,7 @@
 
     <string name="error_starting_camera">Error starting camera</string>
     <string name="error_camera_unavailable">The camera is currently unavailable on this device.</string>
+    <string name="error_camera_result">Error retrieving photo from camera</string>
     <string name="error_delete_primitive">is currently in use and cannot be deleted.</string>
     <string name="msg_confirm_delete">This action cannot be undone. Delete anyway?</string>
     <string name="msg_delete_photo">Are you sure you want to delete this photo? This action cannot be undone.</string>

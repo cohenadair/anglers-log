@@ -1,10 +1,9 @@
 package com.cohenadair.anglerslog;
 
 import android.app.Application;
+import android.content.Context;
 
 import com.cohenadair.anglerslog.model.Logbook;
-import com.cohenadair.anglerslog.model.utilities.SortingUtils;
-import com.cohenadair.anglerslog.utilities.LogbookPreferences;
 import com.cohenadair.anglerslog.utilities.PhotoUtils;
 import com.instabug.library.IBGInvocationEvent;
 import com.instabug.library.Instabug;
@@ -26,17 +25,18 @@ public class AnglersLogApplication extends Application {
                 .setInvocationEvent(IBGInvocationEvent.IBGInvocationEventFloatingButton)
                 .build();
 
-        Logbook.init(getApplicationContext());
-        LogbookPreferences.init(getApplicationContext());
-        SortingUtils.init(getApplicationContext());
-        PhotoUtils.init(getApplicationContext());
-        PhotoUtils.cleanPhotosAsync();
+        Context context = getApplicationContext();
+
+        Logbook.init(context);
+        PhotoUtils.init(context);
+        PhotoUtils.cleanPhotosAsync(context);
+        PhotoUtils.convertAllPngToJpg(context);
 
         // needs to be called after initializing
 
-        Logbook.setDefaults();
-        Logbook.cleanup();
-        Logbook.updatePreferences();
+        Logbook.setDefaults(context);
+        Logbook.cleanup(context);
+        Logbook.updatePreferences(context);
     }
 
 }

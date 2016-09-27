@@ -53,9 +53,13 @@ public class ManageFragment extends DialogFragment {
         setHasOptionsMenu(true);
 
         // for tablet layouts - shown as a dialog
-        if (getDialog() != null) {
-            getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
-            getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+        Dialog dialog = getDialog();
+        if (dialog != null) {
+            Window window = dialog.getWindow();
+            if (window != null) {
+                window.requestFeature(Window.FEATURE_NO_TITLE);
+                window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+            }
         }
 
         // add the actual content to the scroll view

@@ -228,10 +228,22 @@ public class ManageCatchFragment extends ManageContentFragment {
         mResultSpinner.setSelection(getNewCatch().getCatchResult().getValue());
         mWeatherView.updateViews(mWeather);
         mQuantityView.setInputText(getNewCatch().getQuantityAsString());
+
         mLengthView.setInputText(getNewCatch().getLengthAsString());
+        mLengthView.setTitle(getString(R.string.length_units,
+                Logbook.getLengthUnits(getContext()).replace(" ", "")));
+
         mWeightView.setInputText(getNewCatch().getWeightAsString());
+        mWeightView.setTitle(getString(R.string.weight_units, Logbook.getWeightUnits(getContext())));
+
         mWaterDepthView.setInputText(getNewCatch().getWaterDepthAsString());
+        mWaterDepthView.setTitle(getString(R.string.depth_units,
+                Logbook.getDepthUnits(getContext())));
+
         mWaterTemperatureView.setInputText(getNewCatch().getWaterTemperatureAsString());
+        mWaterTemperatureView.setTitle(getString(R.string.water_temperature_units,
+                Logbook.getTemperatureUnits(getContext())));
+
         mNotesView.setInputText(getNewCatch().getNotesAsString());
     }
 
@@ -470,8 +482,12 @@ public class ManageCatchFragment extends ManageContentFragment {
             return;
         }
 
-        if (!PermissionUtils.checkLocationServices(getContext()))
+        // if location is enabled, request permission if needed
+        if (PermissionUtils.checkLocationServices(getContext())) {
+            PermissionUtils.requestLocation(this);
+        } else {
             return;
+        }
 
         Location loc = null;
 
@@ -487,7 +503,7 @@ public class ManageCatchFragment extends ManageContentFragment {
         }
 
         final Weather weather = new Weather(new LatLng(loc.getLatitude(), loc.getLongitude()));
-        String units = getResources().getStringArray(R.array.pref_unitTypes_entries)[LogbookPreferences.getWeatherUnits()];
+        String units = getResources().getStringArray(R.array.pref_unitTypes_entries)[LogbookPreferences.getWeatherUnits(getContext())];
 
         mRequestQueue.add(weather.getRequest(units, new Weather.OnFetchInterface() {
             @Override

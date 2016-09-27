@@ -91,7 +91,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
 
     private void updateUnits(ListPreference units, int index) {
         String[] unitStrings = getResources().getStringArray(R.array.pref_unitTypes_entries);
-        units.setSummary(unitStrings[(index == -1) ? LogbookPreferences.getUnits() : index]);
+        units.setSummary(unitStrings[(index == -1) ? LogbookPreferences.getUnits(getContext()) : index]);
     }
 
     private void updateUnits(ListPreference units) {
@@ -117,7 +117,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             @Override
             public boolean onPreferenceChange(Preference preference, Object o) {
                 boolean on = ((CheckBoxPreference)preference).isChecked();
-                LogbookPreferences.setInstabugEnabled(on);
+                LogbookPreferences.setInstabugEnabled(getContext(), on);
                 AlertUtils.show(getContext(), R.string.instabug_restart);
                 return true;
             }
@@ -196,7 +196,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         importFragment.setCallbacks(new LoadingDialog.InteractionListener() {
             @Override
             public void onConfirm() {
-                Logbook.importFromUri(mImportUri, new Importer.OnProgressListener() {
+                Logbook.importFromUri(getContext(), mImportUri, new Importer.OnProgressListener() {
                     @Override
                     public void onFinish() {
                         importFragment.dismiss();
@@ -230,11 +230,11 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             public void onConfirm() {
                 File zipFile = getContext().getExternalCacheDir();
 
-                Logbook.exportToPath(zipFile, new Exporter.OnProgressListener() {
+                Logbook.exportToPath(getContext(), zipFile, new Exporter.OnProgressListener() {
                     @Override
                     public void onFinish(File zipFile) {
-                        LogbookPreferences.setBackupFile(zipFile.getPath());
-                        LogbookPreferences.updateLastBackup();
+                        LogbookPreferences.setBackupFile(getContext(), zipFile.getPath());
+                        LogbookPreferences.updateLastBackup(getContext());
 
                         exportFragment.dismiss();
 
@@ -270,7 +270,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         resetDialog.setCallbacks(new LoadingDialog.InteractionListener() {
             @Override
             public void onConfirm() {
-                Logbook.resetAsync(true, new Logbook.OnResetListener() {
+                Logbook.resetAsync(getContext(), true, new Logbook.OnResetListener() {
                     @Override
                     public void onFinish() {
                         resetDialog.dismiss();

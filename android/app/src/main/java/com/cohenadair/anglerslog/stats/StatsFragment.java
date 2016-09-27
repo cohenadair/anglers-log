@@ -121,7 +121,10 @@ public class StatsFragment extends MasterFragment {
         if (aCatch == null)
             return;
 
-        String measurementStr = ((statsId == StatsManager.LONGEST) ? aCatch.getLengthAsStringWithUnits() : aCatch.getWeightAsStringWithUnits());
+        String measurementStr = ((statsId == StatsManager.LONGEST)
+                ? aCatch.getLengthAsStringWithUnits(getContext())
+                : aCatch.getWeightAsStringWithUnits(getContext()));
+
         if (!measurementStr.isEmpty())
             measurementStr = " - " + measurementStr;
 
@@ -145,6 +148,6 @@ public class StatsFragment extends MasterFragment {
 
         String fileName = aCatch.getRandomPhoto();
         if (fileName != null)
-            card.setBannerImage(PhotoUtils.privatePhotoPath(aCatch.getRandomPhoto()));
+            card.setBannerImage(PhotoUtils.privatePhotoPath(getContext(), aCatch.getRandomPhoto()));
     }
 }

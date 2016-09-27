@@ -21,6 +21,8 @@ allprojects {
 }
 
 android {
+    compileSdkVersion 23
+    buildToolsVersion "22.0.1"
     signingConfigs {
         AnglersLogRelease {
             keyAlias 'AnglersLog'
@@ -29,8 +31,6 @@ android {
             storePassword 'GQui811n8TUb8S92n119'
         }
     }
-    compileSdkVersion 23
-    buildToolsVersion "22.0.1"
     defaultConfig {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         applicationId "com.cohenadair.anglerslog"

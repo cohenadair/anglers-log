@@ -1,5 +1,6 @@
 package com.cohenadair.anglerslog.model.backup;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.cohenadair.anglerslog.model.Logbook;
@@ -65,7 +66,7 @@ public class JsonImporter {
      * @param json The {@link JSONObject} to import.
      * @throws JSONException Throws JSONException if the input JSON couldn't be parsed.
      */
-    public static void parse(JSONObject json) throws JSONException {
+    public static void parse(Context context, JSONObject json) throws JSONException {
         JSONObject journalJson = json.getJSONObject(Json.JOURNAL);
 
         parseUserDefines(journalJson.getJSONArray(Json.USER_DEFINES));
@@ -78,7 +79,7 @@ public class JsonImporter {
             Log.e(TAG, "No value for " + Json.TRIPS);
         }
 
-        LogbookPreferences.setUnits(journalJson.getInt(Json.MEASUREMENT_SYSTEM));
+        LogbookPreferences.setUnits(context, journalJson.getInt(Json.MEASUREMENT_SYSTEM));
     }
 
     /**

@@ -24,17 +24,16 @@ import java.util.zip.ZipOutputStream;
  */
 public class Exporter {
 
-    public static final int ERROR_FILE_NOT_FOUND = 0;
-    public static final int ERROR_JSON_WRITE = 1;
-    public static final int ERROR_ZIP_WRITE_JSON = 2;
-    public static final int ERROR_ZIP_CLOSE = 3;
-    public static final int ERROR_IMAGES_DIRECTORY_NULL = 4;
-    public static final int ERROR_IMAGES_WRITE = 5;
+    private static final int ERROR_FILE_NOT_FOUND = 0;
+    private static final int ERROR_JSON_WRITE = 1;
+    private static final int ERROR_ZIP_WRITE_JSON = 2;
+    private static final int ERROR_ZIP_CLOSE = 3;
+    private static final int ERROR_IMAGES_DIRECTORY_NULL = 4;
+    private static final int ERROR_IMAGES_WRITE = 5;
 
     private static final String FILE_NAME_ZIP = "AnglersLogBackup.zip";
     private static final String FILE_NAME_JSON = "AnglersLogData.json";
 
-    private static Context mContext;
     private static OnProgressListener mCallbacks;
     private static File mFile;
     private static Handler mHandler;
@@ -54,19 +53,25 @@ public class Exporter {
      * @param zipFilePath The path to save the zip file to.
      * @param onProgress Exporting progress callbacks.
      */
-    public static void exportToPath(Context context, File zipFilePath, OnProgressListener onProgress) {
-        mContext = context;
+    public static void exportToPath(
+            final Context context, File zipFilePath, OnProgressListener onProgress)
+    {
         mCallbacks = onProgress;
         mFile = new File(zipFilePath, FILE_NAME_ZIP);
         mHandler = new Handler();
 
-        new Thread(new ZipRunnable()).start();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                exportData(context);
+            }
+        }).start();
     }
 
     /**
      * Exports all Logbook data to a zip archive.
      */
-    private static void exportData() {
+    private static void exportData(Context context) {
         // get output stream from file location
         FileOutputStream out;
 
@@ -82,8 +87,8 @@ public class Exporter {
         ZipOutputStream zip = new ZipOutputStream(out);
 
         // export data
-        exportLogbookJson(zip);
-        exportLogbookImages(zip);
+        exportLogbookJson(context, zip);
+        exportLogbookImages(context, zip);
 
         // close zip file
         try {
@@ -111,12 +116,12 @@ public class Exporter {
      * Writes the JSON representation of the Logbook to the provided {@link ZipOutputStream}.
      * @param out The output stream.
      */
-    private static void exportLogbookJson(ZipOutputStream out) {
+    private static void exportLogbookJson(Context context, ZipOutputStream out) {
         // get JSON object from Logbook
         JSONObject json;
 
         try {
-            json = JsonExporter.getJson();
+            json = JsonExporter.getJson(context);
         } catch (JSONException e) {
             e.printStackTrace();
             error(ERROR_JSON_WRITE);
@@ -138,8 +143,8 @@ public class Exporter {
      * Exports all Logbook images to the provided {@link ZipOutputStream}.
      * @param out The output stream.
      */
-    private static void exportLogbookImages(ZipOutputStream out) {
-        File picturesDir = mContext.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+    private static void exportLogbookImages(Context context, ZipOutputStream out) {
+        File picturesDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
 
         if (picturesDir == null) {
             error(ERROR_IMAGES_DIRECTORY_NULL);
@@ -175,15 +180,5 @@ public class Exporter {
                     mCallbacks.onError(errorNo);
                 }
             });
-    }
-
-    /**
-     * A simple {@link Runnable} subclass for exporting Logbook data.
-     */
-    private static class ZipRunnable implements Runnable {
-        @Override
-        public void run() {
-            exportData();
-        }
     }
 }

@@ -24,7 +24,8 @@
             android:layout_height="wrap_content"
             android:padding="@dimen/margin_default"
             android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            tools:ignore="UseCompoundDrawables">
 
             <ImageView
                 style="@style/ImageView.Input"

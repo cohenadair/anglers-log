@@ -160,7 +160,7 @@ public class PhotoViewerFragment extends Fragment {
             LayoutInflater inflater = LayoutInflater.from(PhotoViewerFragment.this.getContext());
             ViewGroup viewGroup = (ViewGroup)inflater.inflate(R.layout.view_image_pager, collection, false);
 
-            String path = PhotoUtils.privatePhotoPath(mPhotoNames.get(position));
+            String path = PhotoUtils.privatePhotoPath(getContext(), mPhotoNames.get(position));
 
             mImageView = (SubsamplingScaleImageView)viewGroup.findViewById(R.id.image_pager_view);
             mImageView.setOnClickListener(new View.OnClickListener() {
@@ -199,7 +199,8 @@ public class PhotoViewerFragment extends Fragment {
         }
 
         public Uri getItemUri(int position) {
-            return Uri.fromFile(PhotoUtils.privatePhotoFile(mPhotoNames.get(position)));
+            return Uri.fromFile(PhotoUtils.privatePhotoFile(getContext(),
+                    mPhotoNames.get(position)));
         }
 
     }

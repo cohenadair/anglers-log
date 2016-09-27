@@ -1,5 +1,6 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/location_container"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -9,7 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="@dimen/margin_default"
-        android:gravity="center_vertical">
+        android:gravity="center_vertical"
+        tools:ignore="UselessParent">
 
         <ImageView
             style="@style/ImageView.Input"

@@ -184,7 +184,8 @@ public abstract class ManageContentFragment extends Fragment {
             @Override
             public File onGetPhotoFile() {
                 UUID id = isEditing() ? getEditingId() : null;
-                return PhotoUtils.privatePhotoFile(((PhotoUserDefineObject)mNewObject).getNextPhotoName(id));
+                return PhotoUtils.privatePhotoFile(getContext(),
+                        ((PhotoUserDefineObject)mNewObject).getNextPhotoName(id));
             }
 
             @Override
@@ -222,7 +223,7 @@ public abstract class ManageContentFragment extends Fragment {
                 // populate the photos view with the existing photos
                 ArrayList<String> photos = ((PhotoUserDefineObject)mOldObject).getPhotos();
                 for (String str : photos)
-                    getSelectPhotosView().addImage(PhotoUtils.privatePhotoPath(str));
+                    getSelectPhotosView().addImage(PhotoUtils.privatePhotoPath(getContext(), str));
             }
 
             mNewObject = (mOldObject != null) ? init.onGetNewEditObject(mOldObject) : init.onGetNewBlankObject();

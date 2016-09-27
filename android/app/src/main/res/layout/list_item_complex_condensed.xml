@@ -17,6 +17,7 @@
         android:layout_height="@dimen/size_list_thumb_condensed"
         android:layout_gravity="center_vertical"
         android:layout_marginEnd="@dimen/margin_large"
+        android:layout_marginRight="@dimen/margin_large"
         android:src="@drawable/placeholder_circle"
         android:contentDescription="@string/catch_photo_description"/>
 

@@ -1,5 +1,6 @@
 package com.cohenadair.anglerslog.views;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -127,7 +128,8 @@ public class WeatherView extends LinearLayout {
             LayoutInflater inflater = getActivity().getLayoutInflater();
 
             // inflate the wrapper view and retrieve the EditWeatherView
-            final View dialogView = inflater.inflate(R.layout.view_weather_edit_wrapper, null); // null is okay here because it's a dialog
+            @SuppressLint("InflateParams") // null is okay here because it's a dialog
+            final View dialogView = inflater.inflate(R.layout.view_weather_edit_wrapper, null);
             final WeatherEditView editView = (WeatherEditView)dialogView.findViewById(R.id.edit_weather_view);
 
             // set weather properties if needed

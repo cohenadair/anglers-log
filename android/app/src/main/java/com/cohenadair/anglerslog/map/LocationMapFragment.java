@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -41,7 +40,6 @@ public class LocationMapFragment extends MasterFragment {
 
     private static final String TAG_MAP = "LocationMapMap";
 
-    private SearchView mSearchView;
     private ListView mSearchList;
     private TextView mSearchMessage;
     private LinearLayout mSearchContainer;
@@ -61,7 +59,8 @@ public class LocationMapFragment extends MasterFragment {
         View view = inflater.inflate(R.layout.fragment_map, container, false);
 
         mMapContainer = (LinearLayout)view.findViewById(R.id.location_map_container);
-        mFishingSpots = UserDefineArrays.sort(Logbook.getAllFishingSpots(), SortingUtils.byDisplayName());
+        mFishingSpots = UserDefineArrays.sort(Logbook.getAllFishingSpots(),
+                SortingUtils.byDisplayName(getContext()));
         initMapFragment();
 
         mSearchContainer = (LinearLayout)view.findViewById(R.id.search_result_container);
@@ -71,14 +70,14 @@ public class LocationMapFragment extends MasterFragment {
         mSearchMessage = (TextView)view.findViewById(R.id.search_result_text_view);
         mSearchList = (ListView)view.findViewById(R.id.search_list_view);
 
+        setSearchInteractionListener(getSearchInteractionListener());
+
         return view;
     }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_map, menu);
-        initMenu(menu);
-
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -123,46 +122,44 @@ public class LocationMapFragment extends MasterFragment {
         updateMap();
     }
 
-    private void initMenu(Menu menu) {
-        mSearchView = (SearchView)menu.findItem(R.id.action_search).getActionView();
-
-        mSearchView.setOnSearchClickListener(new View.OnClickListener() {
+    private SearchInteractionListener getSearchInteractionListener() {
+        return new SearchInteractionListener() {
             @Override
-            public void onClick(View v) {
+            public void onIconClicked() {
                 // disable search if there's no map
                 if (mMapFragment.getGoogleMap() == null) {
                     iconifySearchView();
                     return;
                 }
 
-                ((SearchView)v).setQueryHint(getResources().getString(R.string.search) + " " + getResources().getString(R.string.locations_lowercase));
-                resetSearch();
+                setMenuItemsVisibility(false);
+                setSearchQueryHint(String.format(getString(R.string.search),
+                        getString(R.string.locations_lowercase)));
+                resetSearchViews();
             }
-        });
 
-        mSearchView.setOnCloseListener(new SearchView.OnCloseListener() {
             @Override
-            public boolean onClose() {
+            public void onClose() {
                 hideSearchContainer();
-                return false;
             }
-        });
 
-        mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
-            public boolean onQueryTextSubmit(String query) {
+            public void onTextSubmit(String query) {
                 showSearchResults(query);
-                return true;
             }
 
             @Override
-            public boolean onQueryTextChange(String newText) {
-                if (newText.isEmpty())
-                    resetSearch();
-
-                return false;
+            public void onTextChanged(String newText) {
+                if (newText.isEmpty()) {
+                    resetSearchViews();
+                }
             }
-        });
+
+            @Override
+            public void onReset() {
+
+            }
+        };
     }
 
     private void initMapFragment() {
@@ -206,7 +203,7 @@ public class LocationMapFragment extends MasterFragment {
         mMarkerManager.showAllMarkers();
     }
 
-    private void resetSearch() {
+    private void resetSearchViews() {
         ViewUtils.setVisibility(mSearchContainer, true);
         ViewUtils.setVisibility(mSearchList, true);
         ViewUtils.setVisibility(mSearchMessage, false);
@@ -229,8 +226,6 @@ public class LocationMapFragment extends MasterFragment {
 
     private void hideSearchContainer() {
         ViewUtils.setVisibility(mSearchContainer, false);
-        ViewUtils.setVisibility(mSearchList, true);
-        ViewUtils.setVisibility(mSearchMessage, false);
     }
 
     private void showSearchResults(String query) {
@@ -256,11 +251,6 @@ public class LocationMapFragment extends MasterFragment {
 
         ViewUtils.setVisibility(mSearchList, true);
         ViewUtils.setVisibility(mSearchMessage, false);
-    }
-
-    private void iconifySearchView() {
-        mSearchView.setQuery("", false);
-        mSearchView.setIconified(true);
     }
 
     private void selectSearchItem(UUID selectedId) {
