@@ -128,9 +128,17 @@ public class Logbook {
         }
 
         if (getBaitCount() <= 0) {
+            // ensure the BaitCategory exists
             BaitCategory baitCategory = getBaitCategory("Lure");
-            if (baitCategory == null)
+            if (baitCategory == null) {
+                // if for some reason it wasn't added above, try adding it again
                 addBaitCategory(new BaitCategory("Lure"));
+                baitCategory = getBaitCategory("Lure");
+                // if the second add attempt failed, don't bother creating example baits
+                if (baitCategory == null) {
+                    return;
+                }
+            }
 
             String spinner = "spinner.jpg";
             String rap = "rapala.jpg";
