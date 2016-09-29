@@ -353,8 +353,10 @@ public class PhotoUtils {
      */
     @Nullable
     public static File publicPhotoFile(Context context, String fileName) {
-        String photosPath = Environment.DIRECTORY_PICTURES + context.getResources().getString(R.string.app_photos_dir);
-        File publicDirectory = Environment.getExternalStoragePublicDirectory(photosPath);
+        File publicDirectory = new File(
+                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
+                context.getString(R.string.app_photos_dir)
+        );
 
         if (publicDirectory.mkdirs() || publicDirectory.isDirectory())
             return new File(publicDirectory, fileName);

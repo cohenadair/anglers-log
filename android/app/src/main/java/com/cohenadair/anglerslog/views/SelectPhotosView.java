@@ -44,6 +44,7 @@ import java.util.ArrayList;
  */
 public class SelectPhotosView extends LinearLayout {
 
+    // indexes in a selection dialog
     private static final int PHOTO_ATTACH = 0;
     private static final int PHOTO_TAKE = 1;
 
@@ -55,6 +56,7 @@ public class SelectPhotosView extends LinearLayout {
     private File mPrivatePhotoFile; // used to save a version of the photo used by this application
     private Uri mPublicPhotoUri; // used to save a full resolution version of the photo for the user
     private Fragment mFragment;
+    private int mPhotoType;
 
     private int mMaxPhotos = -1;
     private boolean mCanSelectMultiple = false;
@@ -131,37 +133,59 @@ public class SelectPhotosView extends LinearLayout {
      * Should be called in the associated Fragment's onRequestPermissionsResult method.
      */
     public void onStoragePermissionsGranted() {
+        mPrivatePhotoFile = mSelectPhotosInteraction.onGetPhotoFile();
+
+        if (mPhotoType == PHOTO_ATTACH) {
+            attachPhotos();
+        }
+
+        if (mPhotoType == PHOTO_TAKE) {
+            takePhoto();
+        }
+    }
+
+    private void attachPhotos() {
+        mSelectPhotosInteraction.onStartSelectionActivity(
+                PhotoUtils.pickPhotoIntent(getContext(), mCanSelectMultiple),
+                ManageContentFragment.REQUEST_PHOTO);
+    }
+
+    private void takePhoto() {
+        // photos taken from the camera are saved here
+        File publicFile = PhotoUtils.publicPhotoFile(getContext(), mPrivatePhotoFile.getName());
+        if (publicFile != null) {
+            mPublicPhotoUri = Uri.fromFile(publicFile);
+        } else {
+            // needs to be reset for new/additional user photos
+            // if this is null it just means the photo taken by the user will not be saved
+            // to their gallery
+            mPublicPhotoUri = null;
+        }
+
         Intent photoIntent = PhotoUtils.takePhotoIntent();
 
         // make sure the camera is available on this device
         if (canTakePicture(photoIntent)) {
             if (mPublicPhotoUri != null) {
                 photoIntent.putExtra(MediaStore.EXTRA_OUTPUT, mPublicPhotoUri);
-                mSelectPhotosInteraction.onStartSelectionActivity(photoIntent, ManageContentFragment.REQUEST_PHOTO);
-            } else
+                mSelectPhotosInteraction.onStartSelectionActivity(photoIntent,
+                        ManageContentFragment.REQUEST_PHOTO);
+            } else {
                 Utils.showToast(getContext(), R.string.error_starting_camera);
-        } else
+            }
+        } else {
             AlertUtils.showError(getContext(), R.string.error_camera_unavailable);
+        }
     }
 
     private void openPhotoIntent(int takeOrAttach) {
-        mPrivatePhotoFile = mSelectPhotosInteraction.onGetPhotoFile();
+        mPhotoType = takeOrAttach;
 
-        // photos taken from the camera are saved here
-        mPublicPhotoUri = Uri.fromFile(PhotoUtils.publicPhotoFile(getContext(),
-                mPrivatePhotoFile.getName()));
-
-        if (takeOrAttach == PHOTO_ATTACH)
-            mSelectPhotosInteraction.onStartSelectionActivity(
-                    PhotoUtils.pickPhotoIntent(getContext(), mCanSelectMultiple),
-                    ManageContentFragment.REQUEST_PHOTO);
-
-        if (takeOrAttach == PHOTO_TAKE)
-            if (PermissionUtils.isExternalStorageGranted(mFragment.getContext()))
-                onStoragePermissionsGranted();
-            else
-                // results are handled in this view's associated Fragment
-                PermissionUtils.requestExternalStorage(mFragment);
+        if (PermissionUtils.isExternalStorageGranted(mFragment.getContext()))
+            onStoragePermissionsGranted();
+        else
+            // results are handled in this view's associated Fragment
+            PermissionUtils.requestExternalStorage(mFragment);
     }
 
     public void onPhotoIntentResult(Intent data) {
@@ -178,7 +202,7 @@ public class SelectPhotosView extends LinearLayout {
             Uri photoUri = clip.getItemAt(i).getUri();
             PhotoUtils.copyAndResizePhoto(getContext(), photoUri, mPrivatePhotoFile);
 
-            if (!addImage(R.string.msg_error_attaching_photos))
+            if (!addImage(R.string.msg_error_saving_photos))
                 break;
 
             // reset file for each image
@@ -194,7 +218,7 @@ public class SelectPhotosView extends LinearLayout {
         Uri photoUri = (data == null || data.getData() == null) ? mPublicPhotoUri : data.getData();
 
         if (photoUri == null) {
-            Utils.showToast(getContext(), R.string.error_camera_result);
+            Utils.showToast(getContext(), R.string.msg_error_attaching_photo);
             return;
         }
 
@@ -202,13 +226,15 @@ public class SelectPhotosView extends LinearLayout {
         PhotoUtils.copyAndResizePhoto(getContext(), photoUri, mPrivatePhotoFile);
 
         // make sure photo taken shows up in the user's gallery
-        String publicPhotoPath = mPublicPhotoUri.getPath();
-        if (publicPhotoPath != null) {
-            MediaScannerConnection.scanFile(getContext(), new String[]{ publicPhotoPath }, null,
-                    null);
+        if (mPublicPhotoUri != null) {
+            String publicPhotoPath = mPublicPhotoUri.getPath();
+            if (publicPhotoPath != null) {
+                MediaScannerConnection.scanFile(getContext(), new String[]{publicPhotoPath}, null,
+                        null);
+            }
         }
 
-        addImage(R.string.msg_error_attaching_photo);
+        addImage(R.string.msg_error_saving_photo);
     }
 
     public void addImage(String path) {
