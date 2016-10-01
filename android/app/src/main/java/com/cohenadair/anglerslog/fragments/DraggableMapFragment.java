@@ -42,6 +42,11 @@ public class DraggableMapFragment extends SupportMapFragment implements OnMapRea
 
     private static final float ZOOM = 15;
 
+    private static final double LATITUDE_MIN = -90;
+    private static final double LATITUDE_MAX = 90;
+    private static final double LONGITUDE_MIN = -180;
+    private static final double LONGITUDE_MAX = 180;
+
     private static final String ARG_ENABLE_LOCATION = "arg_enable_location";
     private static final String ARG_ENABLE_UPDATES = "arg_enable_updates";
 
@@ -315,10 +320,13 @@ public class DraggableMapFragment extends SupportMapFragment implements OnMapRea
     }
 
     /**
-     * @return True if the given {@link LatLng} object is valid; false otherwise.
+     * @return True if the given coordinates are valid; false otherwise.
      */
-    public boolean isValid(LatLng latLng) {
-        return (latLng.latitude >= -90 && latLng.latitude <= 90) && (latLng.longitude >= -180 && latLng.longitude <= 180);
+    public boolean areCoordinatesValid(double lat, double lng) {
+        return (lat >= LATITUDE_MIN &&
+                lat <= LATITUDE_MAX &&
+                lng >= LONGITUDE_MIN &&
+                lng <= LONGITUDE_MAX);
     }
 
     /**

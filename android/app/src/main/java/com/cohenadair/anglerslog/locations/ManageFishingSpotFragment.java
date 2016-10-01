@@ -3,6 +3,7 @@ package com.cohenadair.anglerslog.locations;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -126,16 +127,6 @@ public class ManageFishingSpotFragment extends ManageContentFragment {
         FishingSpot fishingSpot = getNewFishingSpot();
         fishingSpot.setName(mNameView.getInputText());
 
-        // coordinates
-        try {
-            fishingSpot.setLatitude(Double.parseDouble(mLatitudeView.getInputText()));
-            fishingSpot.setLongitude(Double.parseDouble(mLongitudeView.getInputText()));
-        } catch (NullPointerException e) {
-            // only happens if the user erases what's in the EditText
-            fishingSpot.setLatitude(0.0);
-            fishingSpot.setLongitude(0.0);
-        }
-
         // name
         if (fishingSpot.isNameNull()) {
             AlertUtils.showError(getActivity(), R.string.error_name);
@@ -146,6 +137,16 @@ public class ManageFishingSpotFragment extends ManageContentFragment {
         if (!isEditing() && mOnVerifyInterface.isDuplicate(fishingSpot)) {
             AlertUtils.showError(getActivity(), R.string.error_fishing_spot_name);
             return false;
+        }
+
+        // coordinates
+        LatLng latLng = getValidCoordinates();
+        if (latLng == null) {
+            AlertUtils.showError(getActivity(), R.string.msg_enter_valid_coordinates);
+            return false;
+        } else {
+            fishingSpot.setLatitude(latLng.latitude);
+            fishingSpot.setLongitude(latLng.longitude);
         }
 
         return true;
@@ -246,49 +247,46 @@ public class ManageFishingSpotFragment extends ManageContentFragment {
                 if (mLatitudeView.getInputText() == null || mLongitudeView.getInputText() == null)
                     return;
 
-                double lat = validateCoordinateInput(mLatitudeView);
-                double lng = validateCoordinateInput(mLongitudeView);
-
-                if (lat != -1 && lng != -1) {
-                    LatLng latLng = new LatLng(lat, lng);
-
-                    if (mMapFragment.isValid(latLng)) {
-                        mMapFragment.updateCameraNoZoom(latLng);
-                    }
+                LatLng latLng = getValidCoordinates();
+                if (latLng == null) {
+                    Utils.showToast(getContext(), R.string.msg_invalid_coordinates);
+                } else {
+                    mMapFragment.updateCameraNoZoom(latLng);
                 }
             }
         });
     }
 
     private void updateCoordinateViews(LatLng coordinates) {
-        mLatitudeView.setInputText(String.format(getResources().getConfiguration().locale, "%.6f", coordinates.latitude));
-        mLongitudeView.setInputText(String.format(getResources().getConfiguration().locale, "%.6f", coordinates.longitude));
+        mLatitudeView.setInputText(Utils.userStringFromDouble(coordinates.latitude,
+                Utils.COORDINATE_DECIMAL_PLACES));
+        mLongitudeView.setInputText(Utils.userStringFromDouble(coordinates.longitude,
+                Utils.COORDINATE_DECIMAL_PLACES));
     }
 
     /**
-     * Validates the given {@link InputTextView}. If the input is invalid a Toast will be displayed
-     * to the user and the previously entered character will be removed.
-     *
-     * @param input The {@link InputTextView} to validate.
-     * @return The text of the input as a double.
+     * Gets a {@link LatLng} instance from the coordinate {@link android.widget.EditText} fields.
+     * @return Returns a valid {@link LatLng} instance, or null if the coordinate input is invalid.
      */
-    private double validateCoordinateInput(InputTextView input) {
-        String inputText = input.getInputText();
+    @Nullable
+    private LatLng getValidCoordinates() {
+        String latText = mLatitudeView.getInputText();
+        String lngText = mLongitudeView.getInputText();
 
-        // do not validate if the user is entering a negative coordinate
-        if (inputText.length() == 1 && inputText.charAt(0) == '-')
-            return -1;
+        if (latText != null && lngText != null) {
+            Double lat = Utils.doubleFromUserInput(latText);
+            Double lng = Utils.doubleFromUserInput(lngText);
 
-        try {
-            inputText = inputText.replace(',', '.'); // some countries/keyboard use ',' in place of '.'
-            return (double) Utils.asFloat(inputText, 0);
-        } catch (NumberFormatException e) {
-            e.printStackTrace();
-            Utils.showToast(getContext(), R.string.msg_invalid_coordinate);
-            input.pressBackspace();
+            if (lat != null && lng != null) {
+                if (mMapFragment.areCoordinatesValid(lat, lng)) {
+                    return new LatLng(lat, lng);
+                }
+
+                return null;
+            }
         }
 
-        return -1;
+        return null;
     }
 
     private void initMapFragment() {

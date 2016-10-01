@@ -9,6 +9,7 @@ import android.graphics.Point;
 import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.text.format.DateFormat;
 import android.util.TypedValue;
 import android.view.View;
@@ -16,6 +17,7 @@ import android.widget.Toast;
 
 import com.cohenadair.anglerslog.R;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -28,6 +30,10 @@ public class Utils {
     public static final String MIME_TYPE_IMAGE = "image/*";
     public static final String MIME_TYPE_ZIP = "application/zip";
     public static final String FILE_EXTENSION_ZIP = "zip";
+
+    public static final int DEFAULT_DECIMAL_PLACES = 2;
+    public static final int COORDINATE_DECIMAL_PLACES = 6;
+
 
     /**
      * @return True if the current Android version if equal to or newer than Marshmallow.
@@ -131,6 +137,41 @@ public class Utils {
     @NonNull
     public static String getDisplayTime(Date date) {
         return DateFormat.format("h:mm a", date).toString();
+    }
+
+    /**
+     * Converts the given String to a Double by first replacing all commas with periods and calling
+     * {@link Double#parseDouble(String)}.
+     *
+     * Note that this method does not use Android's {@link NumberFormat}. This is because it parses
+     * strings based on the current locale resulting in an error if, for example, the user were to
+     * enter a '.' as their decimal point rather than a ',' (their current locale). This is a rare
+     * case but does happen on some keyboard configurations.
+     *
+     * @return Returns a Double parsed from the given String, or null if it cannot be parsed.
+     */
+    @Nullable
+    public static Double doubleFromUserInput(String str) {
+        try {
+            return Double.parseDouble(str.replace(',', '.'));
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    /**
+     * @param d The double to be converted to a String.
+     * @param decimalPlaces The number of decimal places in the resulting String.
+     * @return Returns a user-readable String of the given double. The format of the String may
+     *         depend on the current locale.
+     */
+    public static String userStringFromDouble(double d, int decimalPlaces) {
+        NumberFormat format = NumberFormat.getNumberInstance();
+        format.setMaximumFractionDigits(decimalPlaces);
+        format.setMinimumFractionDigits(decimalPlaces);
+        return format.format(d);
     }
 
     /**

@@ -268,7 +268,8 @@
     <string name="error_delete_primitive">is currently in use and cannot be deleted.</string>
     <string name="msg_confirm_delete">This action cannot be undone. Delete anyway?</string>
     <string name="msg_delete_photo">Are you sure you want to delete this photo? This action cannot be undone.</string>
-    <string name="msg_invalid_coordinate">Invalid coordinate value</string>
+    <string name="msg_invalid_coordinates">Invalid coordinates input</string>
+    <string name="msg_enter_valid_coordinates">Please enter valid coordinates.</string>
     <string name="msg_error_saving_photo">Error saving photo</string>
     <string name="msg_error_saving_photos">Error saving photos</string>
     <string name="msg_error_attaching_photo">Error attaching photo</string>
