@@ -542,35 +542,35 @@ public class ManageCatchFragment extends ManageContentFragment {
         mWaterTemperatureView.addOnInputTextChangedListener(ViewUtils.onTextChangedListener(new ViewUtils.OnTextChangedListener() {
             @Override
             public void onTextChanged(String newText) {
-                getNewCatch().setWaterTemperature((int) Utils.asFloat(newText, -1));
+                getNewCatch().setWaterTemperature((int) Utils.floatFromUserInput(newText, -1));
             }
         }));
 
         mWaterDepthView.addOnInputTextChangedListener(ViewUtils.onTextChangedListener(new ViewUtils.OnTextChangedListener() {
             @Override
             public void onTextChanged(String newText) {
-                getNewCatch().setWaterDepth(Utils.asFloat(newText, -1));
+                getNewCatch().setWaterDepth(Utils.floatFromUserInput(newText, -1));
             }
         }));
 
         mWeightView.addOnInputTextChangedListener(ViewUtils.onTextChangedListener(new ViewUtils.OnTextChangedListener() {
             @Override
             public void onTextChanged(String newText) {
-                getNewCatch().setWeight(Utils.asFloat(newText, -1));
+                getNewCatch().setWeight(Utils.floatFromUserInput(newText, -1));
             }
         }));
 
         mLengthView.addOnInputTextChangedListener(ViewUtils.onTextChangedListener(new ViewUtils.OnTextChangedListener() {
             @Override
             public void onTextChanged(String newText) {
-                getNewCatch().setLength(Utils.asFloat(newText, -1));
+                getNewCatch().setLength(Utils.floatFromUserInput(newText, -1));
             }
         }));
 
         mQuantityView.addOnInputTextChangedListener(ViewUtils.onTextChangedListener(new ViewUtils.OnTextChangedListener() {
             @Override
             public void onTextChanged(String newText) {
-                getNewCatch().setQuantity((int) Utils.asFloat(newText, 1));
+                getNewCatch().setQuantity((int) Utils.floatFromUserInput(newText, 1));
             }
         }));
     }

@@ -50,22 +50,6 @@ public class Utils {
     }
 
     /**
-     * Converts a String to a float.
-     *
-     * @param str The String to be converted.
-     * @param defaultValue The value to be returned if the given String is empty.
-     * @return A float representation of the given String, or the given default value if the given
-     *         String is empty.
-     * @throws NumberFormatException if the input String cannot be parsed.
-     */
-    public static float asFloat(String str, float defaultValue) throws NumberFormatException {
-        if (str.isEmpty() || (str.length() == 1 && str.equals(".")))
-            return defaultValue;
-
-        return Float.parseFloat(str);
-    }
-
-    /**
      * Shows a toast with the given String.
      */
     public static void showToast(Context context, String msg) {
@@ -159,6 +143,19 @@ public class Utils {
         }
 
         return null;
+    }
+
+    /**
+     * @param str The String to convert to a float.
+     * @param defaultValue The default value if the given String in in an invalid format.
+     * @return A float representation of the given String.
+     */
+    public static float floatFromUserInput(String str, float defaultValue) {
+        Double d = doubleFromUserInput(str);
+        if (d == null) {
+            return defaultValue;
+        }
+        return d.floatValue();
     }
 
     /**
