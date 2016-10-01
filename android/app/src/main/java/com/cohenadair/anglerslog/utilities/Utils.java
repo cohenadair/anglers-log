@@ -146,6 +146,7 @@ public class Utils {
     }
 
     /**
+     * @see #doubleFromUserInput(String)
      * @param str The String to convert to a float.
      * @param defaultValue The default value if the given String in in an invalid format.
      * @return A float representation of the given String.
@@ -165,10 +166,27 @@ public class Utils {
      *         depend on the current locale.
      */
     public static String userStringFromDouble(double d, int decimalPlaces) {
+        return decimalNumberFormat(decimalPlaces, decimalPlaces).format(d);
+    }
+
+    /**
+     * @param f The float to be formatted as a String.
+     * @return A String formatted float with a maximum of {@link #DEFAULT_DECIMAL_PLACES} decimal
+     *         decimal places.
+     */
+    public static String userStringFromFloat(float f) {
+        return decimalNumberFormat(0, DEFAULT_DECIMAL_PLACES).format(f);
+    }
+
+    /**
+     * @return Returns a {@link NumberFormat} object with the given minimum and maximum decimal
+     *         places.
+     */
+    private static NumberFormat decimalNumberFormat(int minDecimalPlaces, int maxDecimalPlaces) {
         NumberFormat format = NumberFormat.getNumberInstance();
-        format.setMaximumFractionDigits(decimalPlaces);
-        format.setMinimumFractionDigits(decimalPlaces);
-        return format.format(d);
+        format.setMaximumFractionDigits(maxDecimalPlaces);
+        format.setMinimumFractionDigits(minDecimalPlaces);
+        return format;
     }
 
     /**
