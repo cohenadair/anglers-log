@@ -11,6 +11,7 @@
 @implementation CMABaitTableViewCell
 
 - (void)awakeFromNib {
+    [super awakeFromNib];
     // Initialization code
 }
 

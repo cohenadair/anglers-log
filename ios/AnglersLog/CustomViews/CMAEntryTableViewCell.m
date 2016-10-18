@@ -11,6 +11,7 @@
 @implementation CMAEntryTableViewCell
 
 - (void)awakeFromNib {
+    [super awakeFromNib];
     // Initialization code
 }
 
