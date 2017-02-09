@@ -8,6 +8,7 @@ import android.support.v7.preference.PreferenceFragmentCompat;
 
 import com.cohenadair.anglerslog.R;
 import com.cohenadair.anglerslog.utilities.AlertUtils;
+import com.cohenadair.anglerslog.utilities.IntentUtils;
 import com.google.android.gms.common.GoogleApiAvailability;
 
 /**
@@ -21,6 +22,7 @@ public class AboutFragment extends PreferenceFragmentCompat {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.about_preferences);
 
+        initPrivacyPolicy();
         initGoogleMapsTerms();
         initIcons8Terms();
     }
@@ -37,6 +39,19 @@ public class AboutFragment extends PreferenceFragmentCompat {
         // hide list separators
         setDivider(new ColorDrawable(Color.TRANSPARENT));
         setDividerHeight(0);
+    }
+
+    private void initPrivacyPolicy() {
+        Preference privacyPolicy =
+                findPreference(getResources().getString(R.string.pref_privacy_policy));
+
+        privacyPolicy.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                startActivity(IntentUtils.getActionView(getContext(), R.string.privacy_policy_url));
+                return true;
+            }
+        });
     }
 
     private void initGoogleMapsTerms() {

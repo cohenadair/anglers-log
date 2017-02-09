@@ -7,6 +7,10 @@
         android:summary="@string/version_name"/>
 
     <Preference
+        android:key="@string/pref_privacy_policy"
+        android:title="@string/privacy_policy_title"/>
+
+    <Preference
         android:key="@string/pref_google_maps_terms"
         android:title="@string/google_maps_terms_title"/>
 

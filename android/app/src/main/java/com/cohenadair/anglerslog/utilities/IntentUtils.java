@@ -24,6 +24,14 @@ public class IntentUtils {
     }
 
     /**
+     * @see {{@link #getActionView(Context, int)}}
+     */
+    @NonNull
+    public static Intent getActionView(Context context, int urlResId) {
+        return getActionView(context.getResources().getString(urlResId));
+    }
+
+    /**
      * Gets an {@link Intent} object for a specific external application, such as Twitter or
      * Instagram.
      *

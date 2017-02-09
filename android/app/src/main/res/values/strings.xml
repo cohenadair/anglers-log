@@ -20,6 +20,7 @@
 
     <string name="pref_units">pref_units</string>
     <string name="pref_instabug">pref_instabug</string>
+    <string name="pref_privacy_policy">pref_privacy_policy</string>
     <string name="pref_about_group">pref_about_group</string>
     <string name="pref_google_maps_terms">pref_google_maps_terms</string>
     <string name="pref_icons8_terms">pref_icons8_terms</string>
@@ -27,6 +28,8 @@
     <string name="pref_import">pref_import</string>
     <string name="pref_export">pref_export</string>
     <string name="pref_reset">pref_reset</string>
+    <string name="privacy_policy_url">https://anglerslog.ca/privacy/privacy-policy.html</string>
+    <string name="privacy_policy_title">Privacy Policy</string>
     <string name="google_maps_terms_title">Google Maps Terms &amp; Privacy</string>
     <string name="icons8_terms_title">Icons8 Terms &amp; Privacy</string>
     <string name="icons8_terms">Some icons used in Anglers\' Log were developed by <a href="https://icons8.com/">Icons8</a>.\n\nIcons8 provides thousands of free icons for both personal and commercial use.</string>
