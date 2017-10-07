@@ -25,7 +25,7 @@
             android:id="@+id/fishing_spot_map"
             android:name="com.cohenadair.anglerslog.fragments.DraggableMapFragment"
             android:layout_width="match_parent"
-            android:layout_height="300dp"
+            android:layout_height="match_parent"
             map:zOrderOnTop="true"/>
 
         <ImageView

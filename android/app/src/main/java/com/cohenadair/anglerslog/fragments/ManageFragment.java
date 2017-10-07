@@ -97,6 +97,20 @@ public class ManageFragment extends DialogFragment {
         mCallbacks = null;
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        Dialog dialog = getDialog();
+        if (dialog != null) {
+            Window window = dialog.getWindow();
+            if (window != null) {
+                dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.MATCH_PARENT);
+            }
+        }
+    }
+
     /**
      * Iterates over all children fragments.
      */
