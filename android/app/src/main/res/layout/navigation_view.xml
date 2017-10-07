@@ -8,4 +8,5 @@
     android:fitsSystemWindows="true"
     android:background="@color/global_background"
     app:menu="@menu/menu_navigation_drawer"
-    app:itemTextColor="@color/list_item"/>
+    app:itemTextColor="@color/list_item"
+    app:itemIconTint="@color/medium_grey"/>
