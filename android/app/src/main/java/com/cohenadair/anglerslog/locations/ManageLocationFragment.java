@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.cohenadair.anglerslog.R;
+import com.cohenadair.anglerslog.database.QueryHelper;
 import com.cohenadair.anglerslog.fragments.ManageContentFragment;
 import com.cohenadair.anglerslog.fragments.ManageFragment;
 import com.cohenadair.anglerslog.model.Logbook;
@@ -203,6 +204,12 @@ public class ManageLocationFragment extends ManageContentFragment {
     }
 
     private void removeFishingSpot(FishingSpot fishingSpot, MoreDetailView view) {
+        // Check and see if the fishing spot is being used by any catches.
+        if (QueryHelper.isFishingSpotUsedByCatch(fishingSpot.getIdAsString())) {
+            AlertUtils.showError(getContext(), R.string.error_fishing_spot_cannot_be_deleted);
+            return;
+        }
+
         mFishingSpots.remove(fishingSpot);
         mFishingSpotContainer.removeView(view);
     }

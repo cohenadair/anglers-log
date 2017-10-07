@@ -2,6 +2,7 @@ package com.cohenadair.anglerslog.model.user_defines;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.sqlite.SQLiteException;
 
 import com.cohenadair.anglerslog.database.QueryHelper;
 import com.cohenadair.anglerslog.database.cursors.FishingSpotCursor;
@@ -86,17 +87,38 @@ public class Location extends UserDefineObject implements HasCatchesInterface {
     }
 
     /**
-     * Resets the location's fishing spots by first removing the old ones, then adding the new ones.
+     * Resets the location's fishing spots by updating existing spots, deleting spots that no
+     * longer exist, and adding new spots.
      * @param newFishingSpots The new collection of {@link FishingSpot} objects.
      */
     public void setFishingSpots(ArrayList<UserDefineObject> newFishingSpots) {
         ArrayList<UserDefineObject> oldFishingSpots = getFishingSpots();
 
-        for (UserDefineObject oldSpot : oldFishingSpots)
-            removeFishingSpot(oldSpot.getId());
+        // Iterate through the old and new spots, updating and deleting fishing spots.
+        for (UserDefineObject oldSpot : oldFishingSpots) {
+            boolean shouldDelete = true;
 
-        for (UserDefineObject newSpot : newFishingSpots)
-            addFishingSpot((FishingSpot)newSpot);
+            for (UserDefineObject newSpot : newFishingSpots) {
+                // If the old fishing spot is in the new fishing spots, update it, and remove it
+                // from new fishing spots.
+                if (oldSpot.getId().equals(newSpot.getId())) {
+                    updateFishingSpot((FishingSpot) newSpot);
+                    newFishingSpots.remove(newSpot);
+                    shouldDelete = false;
+                    break;
+                }
+            }
+
+            // The old fishing spot is not present in the new fishing spots, delete it.
+            if (shouldDelete) {
+                removeFishingSpot(oldSpot.getId());
+            }
+        }
+
+        // Add remaining new fishing spots.
+        for (UserDefineObject newSpot : newFishingSpots) {
+            addFishingSpot((FishingSpot) newSpot);
+        }
     }
 
     public boolean addFishingSpot(FishingSpot fishingSpot) {
@@ -106,6 +128,12 @@ public class Location extends UserDefineObject implements HasCatchesInterface {
 
     public boolean removeFishingSpot(UUID id) {
         return QueryHelper.deleteUserDefine(FishingSpotTable.NAME, id);
+    }
+
+    public boolean updateFishingSpot(FishingSpot fishingSpot) {
+        return QueryHelper.updateQuery(FishingSpotTable.NAME,
+                fishingSpot.getContentValues(getId()), FishingSpotTable.Columns.ID + " = ?",
+                new String[] { fishingSpot.getIdAsString() });
     }
 
     public boolean removeAllFishingSpots() {

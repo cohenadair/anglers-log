@@ -236,6 +236,7 @@
     <string name="error_location_name">A location with that name already exists.</string>
     <string name="error_location_disabled">Unable to get current location. The device\'s location services are disabled.</string>
     <string name="error_user_location">Error getting user location</string>
+    <string name="error_fishing_spot_cannot_be_deleted">Fishing spot cannot be deleted because it is being used by a Catch.</string>
     <string name="open_location_settings">Open location settings</string>
     <string name="error_no_fishing_spots">Please add at least one fishing spot.</string>
     <string name="error_fishing_spot_name">A fishing spot with that name already exists.</string>

@@ -452,6 +452,15 @@ public class QueryHelper {
     }
 
     /**
+     * @param fishingSpotId The ID to cross-reference with catches.
+     * @return True if the given fishing spot ID is used by a {@link Catch} object.
+     */
+    public static boolean isFishingSpotUsedByCatch(String fishingSpotId) {
+        return queryCount(CatchTable.NAME, CatchTable.Columns.FISHING_SPOT_ID + " = ?",
+                new String[] { fishingSpotId }) > 0;
+    }
+
+    /**
      * Gets the {@link Catch} quantities that match the given parameters. For example, one might
      * check CatchTable.Columns.SPECIES_ID for the total number of catches for that particular
      * species.
