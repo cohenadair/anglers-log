@@ -21,7 +21,16 @@
         android:theme="@style/Theme.AnglersLog"
         android:supportsRtl="true">
 
-        <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyDFr0E1Jxt59gWkeesvvWOxPv3D_oXOjBc"/>
+        <!-- Production
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyDFr0E1Jxt59gWkeesvvWOxPv3D_oXOjBc"/>
+        -->
+
+        <!-- Development -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyAZca9SD3IxK9Nl0dHfbuIT6i6id4OBg0o"/>
 
         <activity
             android:name=".activities.MainActivity"
