@@ -205,11 +205,14 @@ public class ManageFragment extends DialogFragment {
         return false;
     }
 
-    private void onClickSave() {
+    public boolean onClickSave() {
         if (mContentFragment.addObjectToLogbook()) {
             mCallbacks.onManageDismiss(closeDialog());
             mContentFragment.onDismiss();
+            return true;
         }
+
+        return false;
     }
 
     private void initToolbar(View view) {

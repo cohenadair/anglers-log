@@ -132,14 +132,8 @@ public class MyListSelectionActivity extends LayoutSpecActivity {
         super.initToolbar();
 
         if (isTwoPane()) {
-            ViewUtils.setVisibility(getToolbar(), mCanSelectMultiple);
-            ViewUtils.addDoneButton(getToolbar(), new MenuItem.OnMenuItemClickListener() {
-                @Override
-                public boolean onMenuItemClick(MenuItem item) {
-                    finishWithResult();
-                    return true;
-                }
-            });
+            ViewUtils.addDoneButton(getToolbar(), null);
+            initToolbarForSelection();
         }
     }
 
@@ -150,6 +144,8 @@ public class MyListSelectionActivity extends LayoutSpecActivity {
                 .replace(R.id.container, getManageFragment())
                 .addToBackStack(null)
                 .commit();
+
+        initToolbarForManageContent();
 
         setActionBarTitle(getViewTitle());
     }
@@ -186,6 +182,48 @@ public class MyListSelectionActivity extends LayoutSpecActivity {
 
         ArrayList<String> selectedIdStrings = intent.getStringArrayListExtra(EXTRA_SELECTED_IDS);
         adapter.setSelectedIds(UserDefineArrays.stringsAsIds(selectedIdStrings));
+    }
+
+    private void initToolbarForSelection() {
+        initToolbarHelper(new OnClickDoneButtonHelper() {
+            @Override
+            public boolean run() {
+                finishWithResult();
+                return true;
+            }
+        });
+    }
+
+    private void initToolbarForManageContent() {
+        initToolbarHelper(new OnClickDoneButtonHelper() {
+            @Override
+            public boolean run() {
+                if (getManageFragment().onClickSave()) {
+                    initToolbarForSelection();
+                }
+                return true;
+            }
+        });
+    }
+
+    private interface OnClickDoneButtonHelper {
+        boolean run();
+    }
+
+    private void initToolbarHelper(final OnClickDoneButtonHelper onClickDoneButton) {
+        if (!isTwoPane()) {
+            return;
+        }
+
+        ViewUtils.setVisibility(getToolbar(), true);
+
+        MenuItem doneButton = getToolbar().getMenu().findItem(ViewUtils.DONE_BUTTON_ID);
+        doneButton.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                return onClickDoneButton.run();
+            }
+        });
     }
 
     private void releaseSelections() {

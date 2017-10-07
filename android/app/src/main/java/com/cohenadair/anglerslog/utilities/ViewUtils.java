@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -18,6 +19,8 @@ import com.cohenadair.anglerslog.R;
  * @author Cohen Adair
  */
 public class ViewUtils {
+
+    public static final int DONE_BUTTON_ID = 100;
 
     /**
      * A wrapper for {@link TextView#setTextAppearance(int)}.
@@ -58,11 +61,13 @@ public class ViewUtils {
      * @param toolbar The {@link Toolbar} being added to.
      * @param onClick A callback for the "Done" menu button.
      */
-    public static void addDoneButton(@NonNull Toolbar toolbar, MenuItem.OnMenuItemClickListener onClick) {
-        MenuItem done = toolbar.getMenu().add(R.string.action_done);
+    public static MenuItem addDoneButton(@NonNull Toolbar toolbar, MenuItem.OnMenuItemClickListener onClick) {
+        MenuItem done = toolbar.getMenu().add(Menu.NONE, DONE_BUTTON_ID, Menu.NONE,
+                R.string.action_done);
         done.setIcon(R.drawable.ic_check);
         done.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
         done.setOnMenuItemClickListener(onClick);
+        return done;
     }
 
     /**
