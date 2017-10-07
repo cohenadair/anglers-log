@@ -23,14 +23,6 @@ allprojects {
 android {
     compileSdkVersion 23
     buildToolsVersion "22.0.1"
-    signingConfigs {
-        AnglersLogRelease {
-            keyAlias 'AnglersLog'
-            keyPassword 'GQui811n8TUb8S92n119'
-            storeFile file('/Volumes/Home/Google Drive/AnglersLog/android/anglers_log_keystore.jks')
-            storePassword 'GQui811n8TUb8S92n119'
-        }
-    }
     defaultConfig {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         applicationId "com.cohenadair.anglerslog"
@@ -41,7 +33,6 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.AnglersLogRelease
         }
     }
     testOptions {
