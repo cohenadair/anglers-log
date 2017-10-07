@@ -50,7 +50,7 @@
     <string name="export">Export</string>
     <string name="export_summary">Save data to be transferred to a new device platform.</string>
     <string name="export_title">Confirm Export</string>
-    <string name="export_dialog_message">Exporting data will not effect current data, but may take several minutes.</string>
+    <string name="export_dialog_message">Exporting data will not affect current data, but may take several minutes.</string>
     <string name="export_success">Export successful</string>
     <string name="export_error">Export Error</string>
     <string name="reset_logbook">Reset Logbook</string>
