@@ -151,6 +151,16 @@
 		E78BB7D61A0724760082004B /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E78BB7D51A0724760082004B /* CoreLocation.framework */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		ACCC66D31FEB5BD600B681A8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E70B636A19D3A8E400DFBA85 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E70B637119D3A8E400DFBA85;
+			remoteInfo = AnglersLog;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		029851291812FE4E6CF732C9 /* Pods_AnglersLog.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AnglersLog.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0D006E5E1D3702BB00DBDA7B /* SWRevealViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SWRevealViewController.h; path = SWRevealViewController/SWRevealViewController.h; sourceTree = "<group>"; };
@@ -358,6 +368,8 @@
 		ACCC66C31FEB4C4400B681A8 /* app_icon_87.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = app_icon_87.png; sourceTree = "<group>"; };
 		ACCC66C41FEB4C4400B681A8 /* app_icon_60.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = app_icon_60.png; sourceTree = "<group>"; };
 		ACCC66C51FEB4C4400B681A8 /* app_icon_20.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = app_icon_20.png; sourceTree = "<group>"; };
+		ACCC66CE1FEB5BD600B681A8 /* AnglersLogTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AnglersLogTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		ACCC66D21FEB5BD600B681A8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C43B3CB978CF523B47875868 /* Pods-AnglersLog.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AnglersLog.release.xcconfig"; path = "Pods/Target Support Files/Pods-AnglersLog/Pods-AnglersLog.release.xcconfig"; sourceTree = "<group>"; };
 		E705AD7D1A22DD5C0077F16C /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		E70B637219D3A8E400DFBA85 /* AnglersLog.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AnglersLog.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -369,6 +381,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		ACCC66CB1FEB5BD600B681A8 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		E70B636F19D3A8E400DFBA85 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -618,10 +637,19 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		ACCC66CF1FEB5BD600B681A8 /* AnglersLogTests */ = {
+			isa = PBXGroup;
+			children = (
+				ACCC66D21FEB5BD600B681A8 /* Info.plist */,
+			);
+			path = AnglersLogTests;
+			sourceTree = "<group>";
+		};
 		E70B636919D3A8E400DFBA85 = {
 			isa = PBXGroup;
 			children = (
 				E70B637B19D3A8E400DFBA85 /* AnglersLog */,
+				ACCC66CF1FEB5BD600B681A8 /* AnglersLogTests */,
 				E70B637419D3A8E400DFBA85 /* Frameworks */,
 				E70B637319D3A8E400DFBA85 /* Products */,
 				9392542E7B56F7E064496078 /* Pods */,
@@ -632,6 +660,7 @@
 			isa = PBXGroup;
 			children = (
 				E70B637219D3A8E400DFBA85 /* AnglersLog.app */,
+				ACCC66CE1FEB5BD600B681A8 /* AnglersLogTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -813,6 +842,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		ACCC66CD1FEB5BD600B681A8 /* AnglersLogTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = ACCC66D71FEB5BD600B681A8 /* Build configuration list for PBXNativeTarget "AnglersLogTests" */;
+			buildPhases = (
+				ACCC66CA1FEB5BD600B681A8 /* Sources */,
+				ACCC66CB1FEB5BD600B681A8 /* Frameworks */,
+				ACCC66CC1FEB5BD600B681A8 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				ACCC66D41FEB5BD600B681A8 /* PBXTargetDependency */,
+			);
+			name = AnglersLogTests;
+			productName = AnglersLogTests;
+			productReference = ACCC66CE1FEB5BD600B681A8 /* AnglersLogTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		E70B637119D3A8E400DFBA85 /* AnglersLog */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = E70B639E19D3A8E400DFBA85 /* Build configuration list for PBXNativeTarget "AnglersLog" */;
@@ -845,6 +892,12 @@
 				LastUpgradeCheck = 0920;
 				ORGANIZATIONNAME = "Cohen Adair";
 				TargetAttributes = {
+					ACCC66CD1FEB5BD600B681A8 = {
+						CreatedOnToolsVersion = 9.2;
+						DevelopmentTeam = 835Q386L3F;
+						ProvisioningStyle = Automatic;
+						TestTargetID = E70B637119D3A8E400DFBA85;
+					};
 					E70B637119D3A8E400DFBA85 = {
 						DevelopmentTeam = RQ74DU9PML;
 						SystemCapabilities = {
@@ -871,11 +924,19 @@
 			projectRoot = "";
 			targets = (
 				E70B637119D3A8E400DFBA85 /* AnglersLog */,
+				ACCC66CD1FEB5BD600B681A8 /* AnglersLogTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		ACCC66CC1FEB5BD600B681A8 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		E70B637019D3A8E400DFBA85 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1042,6 +1103,13 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		ACCC66CA1FEB5BD600B681A8 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		E70B636E19D3A8E400DFBA85 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1110,6 +1178,14 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		ACCC66D41FEB5BD600B681A8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E70B637119D3A8E400DFBA85 /* AnglersLog */;
+			targetProxy = ACCC66D31FEB5BD600B681A8 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin PBXVariantGroup section */
 		0D8F83AB1A6EC22900AABAEA /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
@@ -1122,6 +1198,57 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		ACCC66D51FEB5BD600B681A8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = 835Q386L3F;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = AnglersLogTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = ca.anglerslog.AnglersLogTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AnglersLog.app/AnglersLog";
+			};
+			name = Debug;
+		};
+		ACCC66D61FEB5BD600B681A8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 835Q386L3F;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = AnglersLogTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = ca.anglerslog.AnglersLogTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AnglersLog.app/AnglersLog";
+			};
+			name = Release;
+		};
 		E70B639C19D3A8E400DFBA85 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1278,6 +1405,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		ACCC66D71FEB5BD600B681A8 /* Build configuration list for PBXNativeTarget "AnglersLogTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				ACCC66D51FEB5BD600B681A8 /* Debug */,
+				ACCC66D61FEB5BD600B681A8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		E70B636D19D3A8E400DFBA85 /* Build configuration list for PBXProject "AnglersLog" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
