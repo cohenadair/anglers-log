@@ -76,13 +76,13 @@
 // For example, called in CMAAddEntryViewController.m's clickDoneButton event.
 + (void)addSceneConfirmWithObject:(id)anObjToAdd
                         objToEdit:(id)anObjToEdit
-                  checkInputBlock:(BOOL(^)())aCheckInputBlock
-                   isEditingBlock:(BOOL(^)())anIsEditingBlock
-                  editObjectBlock:(void(^)())anEditBlock
-                   addObjectBlock:(BOOL(^)())anAddObjectBlock
+                  checkInputBlock:(BOOL(^)(void))aCheckInputBlock
+                   isEditingBlock:(BOOL(^)(void))anIsEditingBlock
+                  editObjectBlock:(void(^)(void))anEditBlock
+                   addObjectBlock:(BOOL(^)(void))anAddObjectBlock
                     errorAlertMsg:(NSString *)anErrorMsg
                    viewController:(id)aVC
-                       segueBlock:(void(^)())aSegueBlock
+                       segueBlock:(void(^)(void))aSegueBlock
                   removeObjToEdit:(BOOL)rmObjToEdit
 {
     if (aCheckInputBlock()) {
@@ -186,7 +186,7 @@
     return [UIColor colorWithRed:212.0f/255.0f green:191.0f/255.0f blue:132.0f/255.0f alpha:1.0f];
 }
 
-+ (void)runInBackground:(void(^)())aBlock {
++ (void)runInBackground:(void(^)(void))aBlock {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND,
                                              0), ^{
         aBlock();

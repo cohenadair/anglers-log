@@ -15,13 +15,13 @@
 + (BOOL)validConnection;
 + (void)addSceneConfirmWithObject:(id)anObjToAdd
                         objToEdit:(id)anObjToEdit
-                  checkInputBlock:(BOOL(^)())aCheckInputBlock
-                   isEditingBlock:(BOOL(^)())anIsEditingBlock
-                  editObjectBlock:(void(^)())anEditBlock
-                   addObjectBlock:(BOOL(^)())anAddObjectBlock
+                  checkInputBlock:(BOOL(^)(void))aCheckInputBlock
+                   isEditingBlock:(BOOL(^)(void))anIsEditingBlock
+                  editObjectBlock:(void(^)(void))anEditBlock
+                   addObjectBlock:(BOOL(^)(void))anAddObjectBlock
                     errorAlertMsg:(NSString *)anErrorMsg
                    viewController:(id)aVC
-                       segueBlock:(void(^)())aSegueBlock
+                       segueBlock:(void(^)(void))aSegueBlock
                   removeObjToEdit:(BOOL)rmObjToEdit;
 + (UIImage *)imageWithImage:(UIImage *)image scaledToSize:(CGSize)size;
 + (UIImage *)scaleImageToScreenSize:(UIImage *)anImage;
@@ -31,7 +31,7 @@
 + (CGSize)screenSize;
 + (CGSize)screenSizeInPixels;
 + (UIColor *)themeColorDark;
-+ (void)runInBackground:(void(^)())aBlock;
++ (void)runInBackground:(void(^)(void))aBlock;
 + (NSString *)stringForDate:(NSDate *)date withFormat:(NSString *)format;
 
 @end

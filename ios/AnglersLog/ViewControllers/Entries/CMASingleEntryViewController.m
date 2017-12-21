@@ -83,7 +83,7 @@
 @property (strong, nonatomic)UIBarButtonItem *editButton;
 
 @property (strong, nonatomic)NSOrderedSet *entryImageArray;
-@property (strong, nonatomic)NSMutableArray *tableCellProperties;
+@property (strong, nonatomic)NSMutableArray<CMATableCellProperties *> *tableCellProperties;
 
 @end
 
@@ -282,7 +282,7 @@
         return rect.size.height + 40; // + 40 for the "Notes" title
     }
     
-    return [[self.tableCellProperties objectAtIndex:indexPath.item] height];
+    return self.tableCellProperties[indexPath.item].height;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {

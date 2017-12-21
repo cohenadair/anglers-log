@@ -17,8 +17,8 @@
 - (CMAAlertController *)initWithTitle:(NSString *)aTitle
                               message:(NSString *)aMessage
                     actionButtonTitle:(NSString *)aButtonTitle
-                          actionBlock:(void (^)())anActionBlock
-                          cancelBlock:(void (^)())aCancelBlock {
+                          actionBlock:(void (^)(void))anActionBlock
+                          cancelBlock:(void (^)(void))aCancelBlock {
     
     if ((self = (CMAAlertController *)[UIAlertController alertControllerWithTitle:aTitle message:aMessage preferredStyle:UIAlertControllerStyleActionSheet])) {
         UIAlertAction *action =

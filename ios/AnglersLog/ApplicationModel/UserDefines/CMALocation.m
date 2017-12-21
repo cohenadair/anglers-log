@@ -78,7 +78,8 @@
 
 // Returns a MKCoordinateRegion for this location. Used for display on a MKMapView.
 - (MKCoordinateRegion)mapRegion {
-    MKCoordinateRegion result;
+    MKCoordinateRegion result =
+            MKCoordinateRegionMake(CLLocationCoordinate2DMake(0, 0), MKCoordinateSpanMake(0, 0));
 
     if ([self fishingSpotCount] > 0) {
         CMAFishingSpot *fishingSpot = [[self fishingSpots] objectAtIndex:0];

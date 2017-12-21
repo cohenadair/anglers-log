@@ -125,7 +125,7 @@
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:FAQ_LINK]];
 }
 
-- (void)handleExportEventWithBlock:(void (^)())anExportBlock cancelBlock:(void (^)())aCancelBlock completionBlock:(void (^)())aCompletionBlock {
+- (void)handleExportEventWithBlock:(void (^)(void))anExportBlock cancelBlock:(void (^)(void))aCancelBlock completionBlock:(void (^)(void))aCompletionBlock {
     CMAAlertController *alert = [CMAAlertController new];
     alert = [alert initWithTitle:@"Export Data"
                          message:@"Exporting will not delete any of your data. This process may take several minutes."
@@ -141,9 +141,9 @@
 - (void)backupSheetWithTitle:(NSString *)aTitle
                      message:(NSString *)aMessage
            actionButtonTitle:(NSString *)aButtonTitle
-                 actionBlock:(void (^)())anActionBlock
-                 cancelBlock:(void (^)())aCancelBlock
-             completionBlock:(void (^)())aCompletionBlock {
+                 actionBlock:(void (^)(void))anActionBlock
+                 cancelBlock:(void (^)(void))aCancelBlock
+             completionBlock:(void (^)(void))aCompletionBlock {
     
     CMAAlertController *alert = [CMAAlertController new];
     

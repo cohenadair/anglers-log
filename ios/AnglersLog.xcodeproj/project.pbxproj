@@ -7,11 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0D006E601D3702BB00DBDA7B /* SWRevealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D006E5F1D3702BB00DBDA7B /* SWRevealViewController.m */; };
+		0D006E601D3702BB00DBDA7B /* SWRevealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D006E5F1D3702BB00DBDA7B /* SWRevealViewController.m */; settings = {COMPILER_FLAGS = "-w"; }; };
 		0D128F501AD472340004CABE /* CMAJSONWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D128F4E1AD472340004CABE /* CMAJSONWriter.m */; };
 		0D128F571AD5C1510004CABE /* CMAJSONWriter.json in Resources */ = {isa = PBXBuildFile; fileRef = 0D128F561AD5C1510004CABE /* CMAJSONWriter.json */; };
 		0D128F5A1AD5C1BC0004CABE /* CMADataExporter.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D128F591AD5C1BC0004CABE /* CMADataExporter.m */; };
-		0D128FB61AD5D7600004CABE /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D128FB51AD5D7600004CABE /* libz.dylib */; };
 		0D23B2711A7713C900E89736 /* TheAnglersLog.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 0D23B26F1A7713C900E89736 /* TheAnglersLog.xcdatamodeld */; };
 		0D23B2741A78102B00E89736 /* CMAImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D23B2731A78102B00E89736 /* CMAImage.m */; };
 		0D248B0F1AB0C82200093290 /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D248B0E1AB0C82200093290 /* iAd.framework */; };
@@ -131,7 +130,6 @@
 		0DC75FDD1A9AEDCE0045030C /* CMASinglePhotoCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DC75FDC1A9AEDCE0045030C /* CMASinglePhotoCollectionViewCell.m */; };
 		0DCAD63A1AA37D160040B03B /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DCAD6391AA37D160040B03B /* ImageIO.framework */; };
 		0DCAD63C1AA37D230040B03B /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DCAD63B1AA37D230040B03B /* MobileCoreServices.framework */; };
-		0DCAD6461AA4FFBA0040B03B /* libc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DCAD6451AA4FFBA0040B03B /* libc++.dylib */; };
 		0DCAD6481AA4FFC80040B03B /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DCAD6471AA4FFC80040B03B /* CoreMotion.framework */; };
 		0DCAD64A1AA4FFD20040B03B /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DCAD6491AA4FFD20040B03B /* CoreTelephony.framework */; };
 		0DCAD64C1AA4FFDD0040B03B /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DCAD64B1AA4FFDD0040B03B /* AudioToolbox.framework */; };
@@ -140,6 +138,10 @@
 		0DCAD6521AA5000A0040B03B /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DCAD6511AA5000A0040B03B /* GLKit.framework */; };
 		0DCAD6551AA5069E0040B03B /* CMASettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DCAD6541AA5069E0040B03B /* CMASettingsViewController.m */; };
 		0DCC26571A520DD300738F04 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DCC26561A520DD300738F04 /* SystemConfiguration.framework */; };
+		ACCC66C61FEB4C4400B681A8 /* app_icon_167.png in Resources */ = {isa = PBXBuildFile; fileRef = ACCC66C21FEB4C4400B681A8 /* app_icon_167.png */; };
+		ACCC66C71FEB4C4400B681A8 /* app_icon_87.png in Resources */ = {isa = PBXBuildFile; fileRef = ACCC66C31FEB4C4400B681A8 /* app_icon_87.png */; };
+		ACCC66C81FEB4C4400B681A8 /* app_icon_60.png in Resources */ = {isa = PBXBuildFile; fileRef = ACCC66C41FEB4C4400B681A8 /* app_icon_60.png */; };
+		ACCC66C91FEB4C4400B681A8 /* app_icon_20.png in Resources */ = {isa = PBXBuildFile; fileRef = ACCC66C51FEB4C4400B681A8 /* app_icon_20.png */; };
 		D6E037DE99C4BF212C247133 /* Pods_AnglersLog.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 029851291812FE4E6CF732C9 /* Pods_AnglersLog.framework */; };
 		E705AD7E1A22DD5C0077F16C /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E705AD7D1A22DD5C0077F16C /* QuartzCore.framework */; };
 		E70B637619D3A8E400DFBA85 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E70B637519D3A8E400DFBA85 /* Foundation.framework */; };
@@ -160,7 +162,6 @@
 		0D128F561AD5C1510004CABE /* CMAJSONWriter.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = CMAJSONWriter.json; path = ApplicationModel/Backup/CMAJSONWriter.json; sourceTree = "<group>"; };
 		0D128F581AD5C1BC0004CABE /* CMADataExporter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMADataExporter.h; path = ApplicationModel/Backup/CMADataExporter.h; sourceTree = "<group>"; };
 		0D128F591AD5C1BC0004CABE /* CMADataExporter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMADataExporter.m; path = ApplicationModel/Backup/CMADataExporter.m; sourceTree = "<group>"; };
-		0D128FB51AD5D7600004CABE /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		0D23B2701A7713C900E89736 /* TheAnglersLog.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = TheAnglersLog.xcdatamodel; sourceTree = "<group>"; };
 		0D23B2721A78102B00E89736 /* CMAImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAImage.h; path = ApplicationModel/CMAImage.h; sourceTree = "<group>"; };
 		0D23B2731A78102B00E89736 /* CMAImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAImage.m; path = ApplicationModel/CMAImage.m; sourceTree = "<group>"; };
@@ -335,17 +336,12 @@
 		0DBC36121D7DBB480016B898 /* iRate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = iRate.m; path = iRate/iRate.m; sourceTree = "<group>"; };
 		0DBC36151D7E2BA50016B898 /* rapala.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = rapala.jpg; path = Images/rapala.jpg; sourceTree = "<group>"; };
 		0DBC36161D7E2BA50016B898 /* spinner.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = spinner.jpg; path = Images/spinner.jpg; sourceTree = "<group>"; };
-		0DBFE94B1C8E45BB00BDCC1D /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = "<group>"; };
-		0DBFE94C1C8E45BB00BDCC1D /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		0DC75FDB1A9AEDCE0045030C /* CMASinglePhotoCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMASinglePhotoCollectionViewCell.h; path = CustomViews/CMASinglePhotoCollectionViewCell.h; sourceTree = "<group>"; };
 		0DC75FDC1A9AEDCE0045030C /* CMASinglePhotoCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMASinglePhotoCollectionViewCell.m; path = CustomViews/CMASinglePhotoCollectionViewCell.m; sourceTree = "<group>"; };
 		0DC75FE61A9BD9090045030C /* TheAnglersLog 4.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "TheAnglersLog 4.xcdatamodel"; sourceTree = "<group>"; };
 		0DC75FE71A9BE8320045030C /* TheAnglersLog 5.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "TheAnglersLog 5.xcdatamodel"; sourceTree = "<group>"; };
 		0DCAD6391AA37D160040B03B /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		0DCAD63B1AA37D230040B03B /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
-		0DCAD6411AA4FF540040B03B /* Instabug.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Instabug.bundle; sourceTree = "<group>"; };
-		0DCAD6421AA4FF540040B03B /* Instabug.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Instabug.framework; sourceTree = "<group>"; };
-		0DCAD6451AA4FFBA0040B03B /* libc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++.dylib"; path = "usr/lib/libc++.dylib"; sourceTree = SDKROOT; };
 		0DCAD6471AA4FFC80040B03B /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
 		0DCAD6491AA4FFD20040B03B /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		0DCAD64B1AA4FFDD0040B03B /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
@@ -358,6 +354,10 @@
 		0DCC43271A99A3AD0019DB2E /* TheAnglersLog 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "TheAnglersLog 2.xcdatamodel"; sourceTree = "<group>"; };
 		0DCC43281A99B0D00019DB2E /* TheAnglersLog 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "TheAnglersLog 3.xcdatamodel"; sourceTree = "<group>"; };
 		493E619A3319133E8D65DB4D /* Pods-AnglersLog.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AnglersLog.debug.xcconfig"; path = "Pods/Target Support Files/Pods-AnglersLog/Pods-AnglersLog.debug.xcconfig"; sourceTree = "<group>"; };
+		ACCC66C21FEB4C4400B681A8 /* app_icon_167.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = app_icon_167.png; sourceTree = "<group>"; };
+		ACCC66C31FEB4C4400B681A8 /* app_icon_87.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = app_icon_87.png; sourceTree = "<group>"; };
+		ACCC66C41FEB4C4400B681A8 /* app_icon_60.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = app_icon_60.png; sourceTree = "<group>"; };
+		ACCC66C51FEB4C4400B681A8 /* app_icon_20.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = app_icon_20.png; sourceTree = "<group>"; };
 		C43B3CB978CF523B47875868 /* Pods-AnglersLog.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AnglersLog.release.xcconfig"; path = "Pods/Target Support Files/Pods-AnglersLog/Pods-AnglersLog.release.xcconfig"; sourceTree = "<group>"; };
 		E705AD7D1A22DD5C0077F16C /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		E70B637219D3A8E400DFBA85 /* AnglersLog.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AnglersLog.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -373,7 +373,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0D128FB61AD5D7600004CABE /* libz.dylib in Frameworks */,
 				0D248B0F1AB0C82200093290 /* iAd.framework in Frameworks */,
 				0DCAD6521AA5000A0040B03B /* GLKit.framework in Frameworks */,
 				0DCAD6501AA4FFFE0040B03B /* OpenGLES.framework in Frameworks */,
@@ -381,7 +380,6 @@
 				0DCAD64C1AA4FFDD0040B03B /* AudioToolbox.framework in Frameworks */,
 				0DCAD64A1AA4FFD20040B03B /* CoreTelephony.framework in Frameworks */,
 				0DCAD6481AA4FFC80040B03B /* CoreMotion.framework in Frameworks */,
-				0DCAD6461AA4FFBA0040B03B /* libc++.dylib in Frameworks */,
 				0DCAD63C1AA37D230040B03B /* MobileCoreServices.framework in Frameworks */,
 				0DCAD63A1AA37D160040B03B /* ImageIO.framework in Frameworks */,
 				0D5608121A6F0F3000EE0437 /* CoreData.framework in Frameworks */,
@@ -522,15 +520,19 @@
 		0D8F84181A6EC2C300AABAEA /* AppIcons */ = {
 			isa = PBXGroup;
 			children = (
-				0D8F84191A6EC2C300AABAEA /* app_icon.png */,
-				0D8F841B1A6EC2C300AABAEA /* app_icon_120.png */,
-				0D8F841C1A6EC2C300AABAEA /* app_icon_152.png */,
-				0D8F841D1A6EC2C300AABAEA /* app_icon_180.png */,
+				ACCC66C51FEB4C4400B681A8 /* app_icon_20.png */,
 				0D8F841E1A6EC2C300AABAEA /* app_icon_29.png */,
 				0D8F841F1A6EC2C300AABAEA /* app_icon_40.png */,
 				0D8F84201A6EC2C300AABAEA /* app_icon_58.png */,
+				ACCC66C41FEB4C4400B681A8 /* app_icon_60.png */,
 				0D8F84211A6EC2C300AABAEA /* app_icon_76.png */,
 				0D8F84221A6EC2C300AABAEA /* app_icon_80.png */,
+				ACCC66C31FEB4C4400B681A8 /* app_icon_87.png */,
+				0D8F841B1A6EC2C300AABAEA /* app_icon_120.png */,
+				0D8F841C1A6EC2C300AABAEA /* app_icon_152.png */,
+				ACCC66C21FEB4C4400B681A8 /* app_icon_167.png */,
+				0D8F841D1A6EC2C300AABAEA /* app_icon_180.png */,
+				0D8F84191A6EC2C300AABAEA /* app_icon.png */,
 			);
 			name = AppIcons;
 			path = AnglersLog/Images/AppIcons;
@@ -637,7 +639,6 @@
 		E70B637419D3A8E400DFBA85 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				0D128FB51AD5D7600004CABE /* libz.dylib */,
 				0D248B0E1AB0C82200093290 /* iAd.framework */,
 				0DCAD6511AA5000A0040B03B /* GLKit.framework */,
 				0DCAD64F1AA4FFFE0040B03B /* OpenGLES.framework */,
@@ -645,11 +646,6 @@
 				0DCAD64B1AA4FFDD0040B03B /* AudioToolbox.framework */,
 				0DCAD6491AA4FFD20040B03B /* CoreTelephony.framework */,
 				0DCAD6471AA4FFC80040B03B /* CoreMotion.framework */,
-				0DCAD6451AA4FFBA0040B03B /* libc++.dylib */,
-				0DBFE94B1C8E45BB00BDCC1D /* Fabric.framework */,
-				0DBFE94C1C8E45BB00BDCC1D /* Crashlytics.framework */,
-				0DCAD6411AA4FF540040B03B /* Instabug.bundle */,
-				0DCAD6421AA4FF540040B03B /* Instabug.framework */,
 				0DCAD63B1AA37D230040B03B /* MobileCoreServices.framework */,
 				0DCAD6391AA37D160040B03B /* ImageIO.framework */,
 				0D5608111A6F0F3000EE0437 /* CoreData.framework */,
@@ -846,7 +842,7 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = CMA;
-				LastUpgradeCheck = 0800;
+				LastUpgradeCheck = 0920;
 				ORGANIZATIONNAME = "Cohen Adair";
 				TargetAttributes = {
 					E70B637119D3A8E400DFBA85 = {
@@ -890,6 +886,7 @@
 				0D8F844F1A6EC2C300AABAEA /* app_icon_180.png in Resources */,
 				0D8F84691A6EC2C300AABAEA /* settings.png in Resources */,
 				0D8F84771A6EC2C300AABAEA /* stats_large.png in Resources */,
+				ACCC66C71FEB4C4400B681A8 /* app_icon_87.png in Resources */,
 				0D8F84571A6EC2C300AABAEA /* camera@2x.png in Resources */,
 				0D8F83AD1A6EC22900AABAEA /* InfoPlist.strings in Resources */,
 				0D8F84671A6EC2C300AABAEA /* menu@3x.png in Resources */,
@@ -899,6 +896,7 @@
 				0D8F84701A6EC2C300AABAEA /* water_clarities.png in Resources */,
 				0D8F845E1A6EC2C300AABAEA /* edit@3x.png in Resources */,
 				0D8F845A1A6EC2C300AABAEA /* checkmark@2x.png in Resources */,
+				ACCC66C81FEB4C4400B681A8 /* app_icon_60.png in Resources */,
 				0D8F846D1A6EC2C300AABAEA /* species.png in Resources */,
 				0D8F84521A6EC2C300AABAEA /* app_icon_58.png in Resources */,
 				0D8F847A1A6EC2C300AABAEA /* rectile.png in Resources */,
@@ -907,6 +905,7 @@
 				0D8F84591A6EC2C300AABAEA /* checkmark@1x.png in Resources */,
 				0D8F84561A6EC2C300AABAEA /* camera@1x.png in Resources */,
 				0D8F840E1A6EC29A00AABAEA /* CMACircleView.xib in Resources */,
+				ACCC66C61FEB4C4400B681A8 /* app_icon_167.png in Resources */,
 				0D8F845D1A6EC2C300AABAEA /* edit@2x.png in Resources */,
 				0D8F846E1A6EC2C300AABAEA /* stats.png in Resources */,
 				0DBC36181D7E2BA50016B898 /* spinner.jpg in Resources */,
@@ -934,6 +933,7 @@
 				0D8F84791A6EC2C300AABAEA /* no_image.png in Resources */,
 				0D81E4561C8F404300974ED3 /* circle_icon@1x.png in Resources */,
 				0D8F839D1A6EC15D00AABAEA /* CMALaunchScreen.xib in Resources */,
+				ACCC66C91FEB4C4400B681A8 /* app_icon_20.png in Resources */,
 				0D8F845C1A6EC2C300AABAEA /* edit@1x.png in Resources */,
 				0D8F84741A6EC2C300AABAEA /* locations_large.png in Resources */,
 				0D8F84531A6EC2C300AABAEA /* app_icon_76.png in Resources */,
@@ -983,13 +983,16 @@
 			files = (
 			);
 			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-AnglersLog-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		B1E0DE96047352F4E40C4AB9 /* [CP] Copy Pods Resources */ = {
@@ -998,9 +1001,12 @@
 			files = (
 			);
 			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-AnglersLog/Pods-AnglersLog-resources.sh",
+				"${PODS_ROOT}/Instabug/Instabug.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -1013,9 +1019,20 @@
 			files = (
 			);
 			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-AnglersLog/Pods-AnglersLog-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/AFNetworking/AFNetworking.framework",
+				"${BUILT_PRODUCTS_DIR}/OpenWeatherMapAPI/OpenWeatherMapAPI.framework",
+				"${BUILT_PRODUCTS_DIR}/SSZipArchive/SSZipArchive.framework",
+				"${BUILT_PRODUCTS_DIR}/UIImage-ResizeMagick/UIImage_ResizeMagick.framework",
+				"${BUILT_PRODUCTS_DIR}/XYPieChart/XYPieChart.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AFNetworking.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OpenWeatherMapAPI.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SSZipArchive.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/UIImage_ResizeMagick.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/XYPieChart.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -1113,14 +1130,20 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -1158,14 +1181,20 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;

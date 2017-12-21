@@ -14,10 +14,10 @@
 @property (strong, nonatomic)NSString *myMessage;
 @property (strong, nonatomic)NSString *myActionButtonTitle;
 
-@property (strong, nonatomic)void (^actionButtonBlock)();
-@property (strong, nonatomic)void (^cancelBlock)();
-@property (strong, nonatomic)void (^completionBlock)();
+@property (strong, nonatomic)void (^actionButtonBlock)(void);
+@property (strong, nonatomic)void (^cancelBlock)(void);
+@property (strong, nonatomic)void (^completionBlock)(void);
 
-- (CMAAlertController *)initWithTitle:(NSString *)aTitle message:(NSString *)aMessage actionButtonTitle:(NSString *)aButtonTitle actionBlock:(void (^)())anActionBlock cancelBlock:(void (^)())aCancelBlock;
+- (CMAAlertController *)initWithTitle:(NSString *)aTitle message:(NSString *)aMessage actionButtonTitle:(NSString *)aButtonTitle actionBlock:(void (^)(void))anActionBlock cancelBlock:(void (^)(void))aCancelBlock;
 
 @end
