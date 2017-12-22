@@ -138,10 +138,14 @@
 		0DCAD6521AA5000A0040B03B /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DCAD6511AA5000A0040B03B /* GLKit.framework */; };
 		0DCAD6551AA5069E0040B03B /* CMASettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DCAD6541AA5069E0040B03B /* CMASettingsViewController.m */; };
 		0DCC26571A520DD300738F04 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DCC26561A520DD300738F04 /* SystemConfiguration.framework */; };
+		1C74E7B8C5364063A0D85F6F /* Pods_AnglersLog_AnglersLogTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FDAFF13CF55D9681BAF299B1 /* Pods_AnglersLog_AnglersLogTests.framework */; };
+		AC85D5471FEC8BA800B0FC71 /* backup_ios_legacy.json in Resources */ = {isa = PBXBuildFile; fileRef = AC85D5461FEC8BA800B0FC71 /* backup_ios_legacy.json */; };
 		ACCC66C61FEB4C4400B681A8 /* app_icon_167.png in Resources */ = {isa = PBXBuildFile; fileRef = ACCC66C21FEB4C4400B681A8 /* app_icon_167.png */; };
 		ACCC66C71FEB4C4400B681A8 /* app_icon_87.png in Resources */ = {isa = PBXBuildFile; fileRef = ACCC66C31FEB4C4400B681A8 /* app_icon_87.png */; };
 		ACCC66C81FEB4C4400B681A8 /* app_icon_60.png in Resources */ = {isa = PBXBuildFile; fileRef = ACCC66C41FEB4C4400B681A8 /* app_icon_60.png */; };
 		ACCC66C91FEB4C4400B681A8 /* app_icon_20.png in Resources */ = {isa = PBXBuildFile; fileRef = ACCC66C51FEB4C4400B681A8 /* app_icon_20.png */; };
+		ACCC66D91FEB5DB800B681A8 /* CMAJSONReaderTest.m in Sources */ = {isa = PBXBuildFile; fileRef = ACCC66D81FEB5DB800B681A8 /* CMAJSONReaderTest.m */; };
+		ACCC66E51FEC6BC100B681A8 /* backup_android.json in Resources */ = {isa = PBXBuildFile; fileRef = ACCC66E31FEC6BC100B681A8 /* backup_android.json */; };
 		D6E037DE99C4BF212C247133 /* Pods_AnglersLog.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 029851291812FE4E6CF732C9 /* Pods_AnglersLog.framework */; };
 		E705AD7E1A22DD5C0077F16C /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E705AD7D1A22DD5C0077F16C /* QuartzCore.framework */; };
 		E70B637619D3A8E400DFBA85 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E70B637519D3A8E400DFBA85 /* Foundation.framework */; };
@@ -364,13 +368,17 @@
 		0DCC43271A99A3AD0019DB2E /* TheAnglersLog 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "TheAnglersLog 2.xcdatamodel"; sourceTree = "<group>"; };
 		0DCC43281A99B0D00019DB2E /* TheAnglersLog 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "TheAnglersLog 3.xcdatamodel"; sourceTree = "<group>"; };
 		493E619A3319133E8D65DB4D /* Pods-AnglersLog.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AnglersLog.debug.xcconfig"; path = "Pods/Target Support Files/Pods-AnglersLog/Pods-AnglersLog.debug.xcconfig"; sourceTree = "<group>"; };
+		AC85D5461FEC8BA800B0FC71 /* backup_ios_legacy.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = backup_ios_legacy.json; sourceTree = "<group>"; };
 		ACCC66C21FEB4C4400B681A8 /* app_icon_167.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = app_icon_167.png; sourceTree = "<group>"; };
 		ACCC66C31FEB4C4400B681A8 /* app_icon_87.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = app_icon_87.png; sourceTree = "<group>"; };
 		ACCC66C41FEB4C4400B681A8 /* app_icon_60.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = app_icon_60.png; sourceTree = "<group>"; };
 		ACCC66C51FEB4C4400B681A8 /* app_icon_20.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = app_icon_20.png; sourceTree = "<group>"; };
 		ACCC66CE1FEB5BD600B681A8 /* AnglersLogTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AnglersLogTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		ACCC66D21FEB5BD600B681A8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		ACCC66D81FEB5DB800B681A8 /* CMAJSONReaderTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CMAJSONReaderTest.m; sourceTree = "<group>"; };
+		ACCC66E31FEC6BC100B681A8 /* backup_android.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = backup_android.json; sourceTree = "<group>"; };
 		C43B3CB978CF523B47875868 /* Pods-AnglersLog.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AnglersLog.release.xcconfig"; path = "Pods/Target Support Files/Pods-AnglersLog/Pods-AnglersLog.release.xcconfig"; sourceTree = "<group>"; };
+		CE5AEC276E16C3AA41537A21 /* Pods-AnglersLog-AnglersLogTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AnglersLog-AnglersLogTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-AnglersLog-AnglersLogTests/Pods-AnglersLog-AnglersLogTests.release.xcconfig"; sourceTree = "<group>"; };
 		E705AD7D1A22DD5C0077F16C /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		E70B637219D3A8E400DFBA85 /* AnglersLog.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AnglersLog.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E70B637519D3A8E400DFBA85 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -378,6 +386,8 @@
 		E70B637919D3A8E400DFBA85 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		E78BB7D31A0724290082004B /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		E78BB7D51A0724760082004B /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		F4ED68DB960A24DE564C92D5 /* Pods-AnglersLog-AnglersLogTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AnglersLog-AnglersLogTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-AnglersLog-AnglersLogTests/Pods-AnglersLog-AnglersLogTests.debug.xcconfig"; sourceTree = "<group>"; };
+		FDAFF13CF55D9681BAF299B1 /* Pods_AnglersLog_AnglersLogTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AnglersLog_AnglersLogTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -385,6 +395,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1C74E7B8C5364063A0D85F6F /* Pods_AnglersLog_AnglersLogTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -633,6 +644,8 @@
 			children = (
 				493E619A3319133E8D65DB4D /* Pods-AnglersLog.debug.xcconfig */,
 				C43B3CB978CF523B47875868 /* Pods-AnglersLog.release.xcconfig */,
+				F4ED68DB960A24DE564C92D5 /* Pods-AnglersLog-AnglersLogTests.debug.xcconfig */,
+				CE5AEC276E16C3AA41537A21 /* Pods-AnglersLog-AnglersLogTests.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -640,9 +653,20 @@
 		ACCC66CF1FEB5BD600B681A8 /* AnglersLogTests */ = {
 			isa = PBXGroup;
 			children = (
+				ACCC66DA1FEC68CE00B681A8 /* Data */,
 				ACCC66D21FEB5BD600B681A8 /* Info.plist */,
+				ACCC66D81FEB5DB800B681A8 /* CMAJSONReaderTest.m */,
 			);
 			path = AnglersLogTests;
+			sourceTree = "<group>";
+		};
+		ACCC66DA1FEC68CE00B681A8 /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				AC85D5461FEC8BA800B0FC71 /* backup_ios_legacy.json */,
+				ACCC66E31FEC6BC100B681A8 /* backup_android.json */,
+			);
+			path = Data;
 			sourceTree = "<group>";
 		};
 		E70B636919D3A8E400DFBA85 = {
@@ -686,6 +710,7 @@
 				E70B637719D3A8E400DFBA85 /* CoreGraphics.framework */,
 				E70B637919D3A8E400DFBA85 /* UIKit.framework */,
 				029851291812FE4E6CF732C9 /* Pods_AnglersLog.framework */,
+				FDAFF13CF55D9681BAF299B1 /* Pods_AnglersLog_AnglersLogTests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -846,9 +871,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = ACCC66D71FEB5BD600B681A8 /* Build configuration list for PBXNativeTarget "AnglersLogTests" */;
 			buildPhases = (
+				F2F69295F9908E97EEA52621 /* [CP] Check Pods Manifest.lock */,
 				ACCC66CA1FEB5BD600B681A8 /* Sources */,
 				ACCC66CB1FEB5BD600B681A8 /* Frameworks */,
 				ACCC66CC1FEB5BD600B681A8 /* Resources */,
+				79BAD643E50A6155093E9394 /* [CP] Embed Pods Frameworks */,
+				A6ACD957D2529FE095E45763 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -900,6 +928,7 @@
 					};
 					E70B637119D3A8E400DFBA85 = {
 						DevelopmentTeam = RQ74DU9PML;
+						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.InAppPurchase = {
 								enabled = 0;
@@ -934,6 +963,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AC85D5471FEC8BA800B0FC71 /* backup_ios_legacy.json in Resources */,
+				ACCC66E51FEC6BC100B681A8 /* backup_android.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1056,6 +1087,50 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		79BAD643E50A6155093E9394 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-AnglersLog-AnglersLogTests/Pods-AnglersLog-AnglersLogTests-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/AFNetworking/AFNetworking.framework",
+				"${BUILT_PRODUCTS_DIR}/OpenWeatherMapAPI/OpenWeatherMapAPI.framework",
+				"${BUILT_PRODUCTS_DIR}/SSZipArchive/SSZipArchive.framework",
+				"${BUILT_PRODUCTS_DIR}/UIImage-ResizeMagick/UIImage_ResizeMagick.framework",
+				"${BUILT_PRODUCTS_DIR}/XYPieChart/XYPieChart.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AFNetworking.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OpenWeatherMapAPI.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SSZipArchive.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/UIImage_ResizeMagick.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/XYPieChart.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-AnglersLog-AnglersLogTests/Pods-AnglersLog-AnglersLogTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		A6ACD957D2529FE095E45763 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-AnglersLog-AnglersLogTests/Pods-AnglersLog-AnglersLogTests-resources.sh",
+				"${PODS_ROOT}/Instabug/Instabug.bundle",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-AnglersLog-AnglersLogTests/Pods-AnglersLog-AnglersLogTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		B1E0DE96047352F4E40C4AB9 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1100,6 +1175,24 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-AnglersLog/Pods-AnglersLog-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		F2F69295F9908E97EEA52621 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-AnglersLog-AnglersLogTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -1107,6 +1200,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ACCC66D91FEB5DB800B681A8 /* CMAJSONReaderTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1200,6 +1294,7 @@
 /* Begin XCBuildConfiguration section */
 		ACCC66D51FEB5BD600B681A8 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F4ED68DB960A24DE564C92D5 /* Pods-AnglersLog-AnglersLogTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ANALYZER_NONNULL = YES;
@@ -1225,6 +1320,7 @@
 		};
 		ACCC66D61FEB5BD600B681A8 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = CE5AEC276E16C3AA41537A21 /* Pods-AnglersLog-AnglersLogTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ANALYZER_NONNULL = YES;
@@ -1353,6 +1449,7 @@
 				CODE_SIGN_ENTITLEMENTS = AnglersLog/TheAnglersLog.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = YES;
 				DEVELOPMENT_TEAM = RQ74DU9PML;
 				ENABLE_TESTABILITY = NO;
@@ -1368,6 +1465,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = CMA.TheAnglersLog;
 				PRODUCT_NAME = AnglersLog;
 				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
@@ -1382,6 +1480,7 @@
 				CODE_SIGN_ENTITLEMENTS = AnglersLog/TheAnglersLog.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = YES;
 				DEVELOPMENT_TEAM = RQ74DU9PML;
 				ENABLE_TESTABILITY = NO;
@@ -1397,6 +1496,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = CMA.TheAnglersLog;
 				PRODUCT_NAME = AnglersLog;
 				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};

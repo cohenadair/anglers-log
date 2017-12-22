@@ -58,10 +58,21 @@
 }
 
 - (void)addEntry:(id)anEntry {
+    NSDateFormatter *legacyFormatter = [NSDateFormatter new];
+    [legacyFormatter setDateFormat:DATE_FILE_STRING];
     NSDateFormatter *formatter = [NSDateFormatter new];
-    [formatter setDateFormat:DATE_FILE_STRING];
+    [formatter setDateFormat:ACCURATE_DATE_FILE_STRING];
     
-    NSDate *date = [formatter dateFromString:[anEntry valueForKey:@"date"]];
+    NSString *dateString = [anEntry valueForKey:@"date"];
+    
+    // Attempt to parse the iOS backup date format.
+    NSDate *date = [formatter dateFromString:dateString];
+    
+    // If the date couldn't be parsed, try to parse a legacy date format.
+    if (date == nil) {
+        date = [legacyFormatter dateFromString:dateString];
+    }
+    
     CMAEntry *e = [self.journal entryDated:date];
     if (e == nil) {
         e = [[CMAStorageManager sharedManager] managedEntry];

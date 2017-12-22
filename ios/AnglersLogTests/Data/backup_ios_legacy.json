@@ -1,0 +1,3286 @@
+{
+	"journal": {
+		"name": "Logbook",
+		"entries": [
+			{
+				"date": "08-04-2016_4-51_PM",
+				"images": [
+					{
+						"imagePath": "Images/CatchPhoto_2747972e-223c-4994-82dd-5fc52981ae4f_1228857997.jpg",
+						"entryDate": "08-04-2016_4-51_PM",
+						"baitName": ""
+					}
+				],
+				"fishSpecies": "Jack - Crevalle",
+				"fishLength": -1,
+				"fishWeight": -1,
+				"fishOunces": -1,
+				"fishQuantity": 1,
+				"fishResult": 0,
+				"baitUsed": "Green Belly",
+				"fishingMethodNames": [
+					"Crank",
+					"Casting",
+					"Boat"
+				],
+				"location": "Indian River",
+				"fishingSpot": "Honeymoon Lake Mouth",
+				"weatherData": {
+				},
+				"waterTemperature": -1,
+				"waterClarity": "Cloudy",
+				"waterDepth": 3,
+				"notes": "",
+				"journal": "Logbook"
+			},
+			{
+				"date": "08-04-2016_4-50_PM",
+				"images": [
+					{
+						"imagePath": "Images/CatchPhoto_ad1c7fcf-6953-49e6-a281-9dd5b7195161_-821261763.jpg",
+						"entryDate": "08-04-2016_4-50_PM",
+						"baitName": ""
+					}
+				],
+				"fishSpecies": "Bluefish",
+				"fishLength": -1,
+				"fishWeight": -1,
+				"fishOunces": -1,
+				"fishQuantity": 1,
+				"fishResult": 0,
+				"baitUsed": "Green Belly",
+				"fishingMethodNames": [
+					"Crank",
+					"Casting",
+					"Boat"
+				],
+				"location": "Indian River",
+				"fishingSpot": "Island Oaks",
+				"weatherData": {
+				},
+				"waterTemperature": -1,
+				"waterClarity": "Cloudy",
+				"waterDepth": 3,
+				"notes": "",
+				"journal": "Logbook"
+			},
+			{
+				"date": "08-04-2016_4-45_PM",
+				"images": [
+					{
+						"imagePath": "Images/CatchPhoto_1cff2d74-1d27-4781-a2a9-d69bfaca4415_-1227506675.jpg",
+						"entryDate": "08-04-2016_4-45_PM",
+						"baitName": ""
+					},
+					{
+						"imagePath": "Images/CatchPhoto_1cff2d74-1d27-4781-a2a9-d69bfaca4415_-1812146131.jpg",
+						"entryDate": "08-04-2016_4-45_PM",
+						"baitName": ""
+					},
+					{
+						"imagePath": "Images/CatchPhoto_1cff2d74-1d27-4781-a2a9-d69bfaca4415_-231723564.jpg",
+						"entryDate": "08-04-2016_4-45_PM",
+						"baitName": ""
+					}
+				],
+				"fishSpecies": "Trout - Speckled Sea",
+				"fishLength": -1,
+				"fishWeight": 2,
+				"fishOunces": -1,
+				"fishQuantity": 3,
+				"fishResult": 0,
+				"baitUsed": "Green Belly",
+				"fishingMethodNames": [
+					"Crank",
+					"Casting",
+					"Boat"
+				],
+				"location": "Indian River",
+				"fishingSpot": "Honeymoon Lake Mouth",
+				"weatherData": {
+				},
+				"waterTemperature": -1,
+				"waterClarity": "Cloudy",
+				"waterDepth": 5,
+				"notes": "Biggest was a couple pounds, others were very small. Katee caught one.",
+				"journal": "Logbook"
+			},
+			{
+				"date": "08-04-2016_10-41_AM",
+				"images": [
+					{
+						"imagePath": "Images/CatchPhoto_36493f22-9342-477e-9eec-ff2a470c3be8_2063326777.jpg",
+						"entryDate": "08-04-2016_10-41_AM",
+						"baitName": ""
+					}
+				],
+				"fishSpecies": "Trout - Silver",
+				"fishLength": -1,
+				"fishWeight": -1,
+				"fishOunces": -1,
+				"fishQuantity": 6,
+				"fishResult": 0,
+				"baitUsed": "Red-tailed Yellow",
+				"fishingMethodNames": [
+					"Jig",
+					"Casting",
+					"Boat"
+				],
+				"location": "Indian River",
+				"fishingSpot": "Isles",
+				"weatherData": {
+				},
+				"waterTemperature": -1,
+				"waterClarity": "Cloudy",
+				"waterDepth": 5,
+				"notes": "Katee caught 3, I caught 3.",
+				"journal": "Logbook"
+			},
+			{
+				"date": "08-04-2016_7-07_AM",
+				"images": [
+					{
+						"imagePath": "Images/CatchPhoto_eab2c6c1-2ef4-40e4-b65a-b8b59314994d_-1177860780.jpg",
+						"entryDate": "08-04-2016_7-07_AM",
+						"baitName": ""
+					},
+					{
+						"imagePath": "Images/CatchPhoto_eab2c6c1-2ef4-40e4-b65a-b8b59314994d_779931943.jpg",
+						"entryDate": "08-04-2016_7-07_AM",
+						"baitName": ""
+					}
+				],
+				"fishSpecies": "Ladyfish",
+				"fishLength": -1,
+				"fishWeight": -1,
+				"fishOunces": -1,
+				"fishQuantity": 3,
+				"fishResult": 0,
+				"baitUsed": "Red Belly",
+				"fishingMethodNames": [
+					"Lure",
+					"Casting",
+					"Boat"
+				],
+				"location": "Indian River",
+				"fishingSpot": "Honeymoon Lake Mouth",
+				"weatherData": {
+				},
+				"waterTemperature": -1,
+				"waterClarity": "Cloudy",
+				"waterDepth": 5,
+				"notes": "Quick retrieve, no jigging. Caught by Katee.",
+				"journal": "Logbook"
+			},
+			{
+				"date": "07-19-2016_2-40_PM",
+				"images": [
+					{
+						"imagePath": "Images/CatchPhoto_912927dc-708f-41a8-a60e-4e114a595af1_-2014718182.jpg",
+						"entryDate": "07-19-2016_2-40_PM",
+						"baitName": ""
+					},
+					{
+						"imagePath": "Images/CatchPhoto_912927dc-708f-41a8-a60e-4e114a595af1_-264078616.jpg",
+						"entryDate": "07-19-2016_2-40_PM",
+						"baitName": ""
+					},
+					{
+						"imagePath": "Images/CatchPhoto_912927dc-708f-41a8-a60e-4e114a595af1_-722093488.jpg",
+						"entryDate": "07-19-2016_2-40_PM",
+						"baitName": ""
+					}
+				],
+				"fishSpecies": "Sucker - Redhorse",
+				"fishLength": -1,
+				"fishWeight": -1,
+				"fishOunces": -1,
+				"fishQuantity": 2,
+				"fishResult": 0,
+				"baitUsed": "Olive",
+				"fishingMethodNames": [
+				],
+				"location": "Maitland River",
+				"fishingSpot": "Balls Bridge South Hole",
+				"weatherData": {
+				},
+				"waterTemperature": -1,
+				"waterClarity": "",
+				"waterDepth": -1,
+				"notes": "",
+				"journal": "Logbook"
+			},
+			{
+				"date": "05-28-2016_12-31_PM",
+				"images": [
+					{
+						"imagePath": "Images/CatchPhoto_860773c2-b78c-4c5e-ae61-b0797d91aff4_-1885963317.jpg",
+						"entryDate": "05-28-2016_12-31_PM",
+						"baitName": ""
+					}
+				],
+				"fishSpecies": "Bass - Smallmouth",
+				"fishLength": -1,
+				"fishWeight": -1,
+				"fishOunces": -1,
+				"fishQuantity": 4,
+				"fishResult": 0,
+				"baitUsed": "Brown Speckled",
+				"fishingMethodNames": [
+					"Bottom",
+					"Jig",
+					"Boat"
+				],
+				"location": "Wildwood",
+				"fishingSpot": "Blue Bird Hole",
+				"weatherData": {
+				},
+				"waterTemperature": -1,
+				"waterClarity": "",
+				"waterDepth": -1,
+				"notes": "Caught 4 decent sized smallies throughout the day. Not all picture worthy.",
+				"journal": "Logbook"
+			},
+			{
+				"date": "05-28-2016_11-30_AM",
+				"images": [
+					{
+						"imagePath": "Images/CatchPhoto_3aab69da-f220-4087-ab41-f059edfa47f6_869688078.jpg",
+						"entryDate": "05-28-2016_11-30_AM",
+						"baitName": ""
+					}
+				],
+				"fishSpecies": "Bass - Largemouth",
+				"fishLength": -1,
+				"fishWeight": -1,
+				"fishOunces": -1,
+				"fishQuantity": 1,
+				"fishResult": 0,
+				"baitUsed": "Brown Speckled",
+				"fishingMethodNames": [
+					"Bottom",
+					"Jig",
+					"Boat"
+				],
+				"location": "Wildwood",
+				"fishingSpot": "16 Point Tree",
+				"weatherData": {
+				},
+				"waterTemperature": -1,
+				"waterClarity": "",
+				"waterDepth": -1,
+				"notes": "",
+				"journal": "Logbook"
+			},
+			{
+				"date": "05-28-2016_11-13_AM",
+				"images": [
+				],
+				"fishSpecies": "Pike",
+				"fishLength": -1,
+				"fishWeight": -1,
+				"fishOunces": -1,
+				"fishQuantity": 1,
+				"fishResult": 0,
+				"baitUsed": "Silver Rapala",
+				"fishingMethodNames": [
+					"Trolling",
+					"Boat"
+				],
+				"location": "Wildwood",
+				"fishingSpot": "South Dock",
+				"weatherData": {
+				},
+				"waterTemperature": -1,
+				"waterClarity": "",
+				"waterDepth": 6,
+				"notes": "",
+				"journal": "Logbook"
+			},
+			{
+				"date": "05-05-2016_12-15_PM",
+				"images": [
+					{
+						"imagePath": "Images/CatchPhoto_efe14b7f-58c6-49b8-b849-667d35e5da19_1385018344.jpg",
+						"entryDate": "05-05-2016_12-15_PM",
+						"baitName": ""
+					},
+					{
+						"imagePath": "Images/CatchPhoto_efe14b7f-58c6-49b8-b849-667d35e5da19_1275179879.jpg",
+						"entryDate": "05-05-2016_12-15_PM",
+						"baitName": ""
+					}
+				],
+				"fishSpecies": "Steelhead",
+				"fishLength": -1,
+				"fishWeight": -1,
+				"fishOunces": -1,
+				"fishQuantity": 1,
+				"fishResult": 0,
+				"baitUsed": "Cyan",
+				"fishingMethodNames": [
+					"Fly",
+					"Drifting"
+				],
+				"location": "Port Albert",
+				"fishingSpot": "Little Hole",
+				"weatherData": {
+				},
+				"waterTemperature": -1,
+				"waterClarity": "",
+				"waterDepth": -1,
+				"notes": "",
+				"journal": "Logbook"
+			},
+			{
+				"date": "05-05-2016_11-45_AM",
+				"images": [
+					{
+						"imagePath": "Images/CatchPhoto_4e476141-d51f-4867-8d37-0b13ca77c102_-1132605025.jpg",
+						"entryDate": "05-05-2016_11-45_AM",
+						"baitName": ""
+					}
+				],
+				"fishSpecies": "Steelhead",
+				"fishLength": 20,
+				"fishWeight": -1,
+				"fishOunces": -1,
+				"fishQuantity": 1,
+				"fishResult": 0,
+				"baitUsed": "White Blood Dot",
+				"fishingMethodNames": [
+					"Fly",
+					"Drifting"
+				],
+				"location": "Port Albert",
+				"fishingSpot": "Little Hole",
+				"weatherData": {
+				},
+				"waterTemperature": -1,
+				"waterClarity": "",
+				"waterDepth": -1,
+				"notes": "",
+				"journal": "Logbook"
+			},
+			{
+				"date": "05-05-2016_10-30_AM",
+				"images": [
+					{
+						"imagePath": "Images/CatchPhoto_5371c1a9-1a56-414c-9080-e3677d34781a_261857981.jpg",
+						"entryDate": "05-05-2016_10-30_AM",
+						"baitName": ""
+					}
+				],
+				"fishSpecies": "Bass - Smallmouth",
+				"fishLength": -1,
+				"fishWeight": -1,
+				"fishOunces": -1,
+				"fishQuantity": 7,
+				"fishResult": 0,
+				"baitUsed": "Olive",
+				"fishingMethodNames": [
+					"Fly",
+					"Drifting"
+				],
+				"location": "Port Albert",
+				"fishingSpot": "Bridge",
+				"weatherData": {
+				},
+				"waterTemperature": -1,
+				"waterClarity": "",
+				"waterDepth": -1,
+				"notes": "",
+				"journal": "Logbook"
+			},
+			{
+				"date": "05-05-2016_9-50_AM",
+				"images": [
+					{
+						"imagePath": "Images/CatchPhoto_f7cea301-e2cb-4de5-9d07-a96629380d2d_1443115605.jpg",
+						"entryDate": "05-05-2016_9-50_AM",
+						"baitName": ""
+					}
+				],
+				"fishSpecies": "Sucker - White",
+				"fishLength": -1,
+				"fishWeight": -1,
+				"fishOunces": -1,
+				"fishQuantity": 1,
+				"fishResult": 0,
+				"baitUsed": "White Blood Dot",
+				"fishingMethodNames": [
+					"Fly"
+				],
+				"location": "Port Albert",
+				"fishingSpot": "Beaver Dam",
+				"weatherData": {
+				},
+				"waterTemperature": -1,
+				"waterClarity": "",
+				"waterDepth": -1,
+				"notes": "",
+				"journal": "Logbook"
+			},
+			{
+				"date": "01-23-2016_11-52_AM",
+				"images": [
+				],
+				"fishSpecies": "Pike",
+				"fishLength": 20,
+				"fishWeight": -1,
+				"fishOunces": -1,
+				"fishQuantity": 3,
+				"fishResult": 0,
+				"baitUsed": "Shiner Minnow",
+				"fishingMethodNames": [
+					"Ice",
+					"Tip Up"
+				],
+				"location": "Harlow Lake",
+				"fishingSpot": "Point",
+				"weatherData": {
+				},
+				"waterTemperature": -1,
+				"waterClarity": "",
+				"waterDepth": -1,
+				"notes": "",
+				"journal": "Logbook"
+			},
+			{
+				"date": "01-23-2016_11-37_AM",
+				"images": [
+				],
+				"fishSpecies": "Bass - Largemouth",
+				"fishLength": 13,
+				"fishWeight": -1,
+				"fishOunces": -1,
+				"fishQuantity": 2,
+				"fishResult": 0,
+				"baitUsed": "Shiner Minnow",
+				"fishingMethodNames": [
+					"Rod",
+					"Ice",
+					"Tip Up"
+				],
+				"location": "Harlow Lake",
+				"fishingSpot": "Point",
+				"weatherData": {
+				},
+				"waterTemperature": -1,
+				"waterClarity": "",
+				"waterDepth": -1,
+				"notes": "Caught 2 throughout the day, the biggest was 13.5 inches.",
+				"journal": "Logbook"
+			},
+			{
+				"date": "01-06-2016_5-46_PM",
+				"images": [
+					{
+						"imagePath": "Images/01-06-2016_5-46_PM_00.000-0.jpg",
+						"entryDate": "01-06-2016_5-46_PM",
+						"baitName": ""
+					}
+				],
+				"fishSpecies": "Crappie",
+				"fishLength": -1,
+				"fishWeight": -1,
+				"fishOunces": -1,
+				"fishQuantity": -1,
+				"fishResult": 0,
+				"baitUsed": "Watermelon Jig",
+				"fishingMethodNames": [
+					"Flasher",
+					"Ice",
+					"Jig"
+				],
+				"location": "Bass Lake",
+				"fishingSpot": "Small South Bay",
+				"weatherData": {
+				},
+				"waterTemperature": -1,
+				"waterClarity": "",
+				"waterDepth": -1,
+				"notes": "",
+				"journal": "Logbook"
+			},
+			{
+				"date": "01-06-2016_5-19_PM",
+				"images": [
+					{
+						"imagePath": "Images/01-06-2016_5-19_PM_00.000-0.jpg",
+						"entryDate": "01-06-2016_5-19_PM",
+						"baitName": ""
+					}
+				],
+				"fishSpecies": "Walleye",
+				"fishLength": -1,
+				"fishWeight": -1,
+				"fishOunces": -1,
+				"fishQuantity": -1,
+				"fishResult": 0,
+				"baitUsed": "Watermelon Jig",
+				"fishingMethodNames": [
+					"Flasher",
+					"Ice",
+					"Jig"
+				],
+				"location": "Bass Lake",
+				"fishingSpot": "Small South Bay",
+				"weatherData": {
+				},
+				"waterTemperature": -1,
+				"waterClarity": "",
+				"waterDepth": -1,
+				"notes": "",
+				"journal": "Logbook"
+			},
+			{
+				"date": "01-04-2016_12-20_AM",
+				"images": [
+					{
+						"imagePath": "Images/01-04-2016_12-20_AM_00.000-0.jpg",
+						"entryDate": "01-04-2016_12-20_AM",
+						"baitName": ""
+					}
+				],
+				"fishSpecies": "Bass - Largemouth",
+				"fishLength": -1,
+				"fishWeight": -1,
+				"fishOunces": -1,
+				"fishQuantity": -1,
+				"fishResult": 0,
+				"baitUsed": "Fathead Minnow",
+				"fishingMethodNames": [
+					"Rod",
+					"Ice",
+					"Tip Up"
+				],
+				"location": "Harlow Lake",
+				"fishingSpot": "Point",
+				"weatherData": {
+				},
+				"waterTemperature": -1,
+				"waterClarity": "",
+				"waterDepth": 10,
+				"notes": "1-2 feet off bottom.",
+				"journal": "Logbook"
+			},
+			{
+				"date": "01-03-2016_10-42_AM",
+				"images": [
+					{
+						"imagePath": "Images/01-03-2016_10-42_AM_00.000-0.jpg",
+						"entryDate": "01-03-2016_10-42_AM",
+						"baitName": ""
+					}
+				],
+				"fishSpecies": "Pike",
+				"fishLength": -1,
+				"fishWeight": -1,
+				"fishOunces": -1,
+				"fishQuantity": -1,
+				"fishResult": 0,
+				"baitUsed": "Sucker Minnow",
+				"fishingMethodNames": [
+					"Ice",
+					"Tip Up"
+				],
+				"location": "Harlow Lake",
+				"fishingSpot": "Point",
+				"weatherData": {
+				},
+				"waterTemperature": -1,
+				"waterClarity": "",
+				"waterDepth": 13,
+				"notes": "Bait set 1-2 feet below the ice.",
+				"journal": "Logbook"
+			},
+			{
+				"date": "12-15-2015_1-26_PM",
+				"images": [
+					{
+						"imagePath": "Images/12-15-2015_1-26_PM_00.000-0.jpg",
+						"entryDate": "12-15-2015_1-26_PM",
+						"baitName": ""
+					}
+				],
+				"fishSpecies": "Steelhead",
+				"fishLength": -1,
+				"fishWeight": -1,
+				"fishOunces": -1,
+				"fishQuantity": -1,
+				"fishResult": 0,
+				"baitUsed": "",
+				"fishingMethodNames": [
+					"Drifting",
+					"Shore",
+					"Rod"
+				],
+				"location": "Bayfield River",
+				"fishingSpot": "Beginner's Luck",
+				"weatherData": {
+				},
+				"waterTemperature": -1,
+				"waterClarity": "Clear",
+				"waterDepth": -1,
+				"notes": "",
+				"journal": "Logbook"
+			},
+			{
+				"date": "08-21-2015_3-17_PM",
+				"images": [
+					{
+						"imagePath": "Images/CatchPhoto_18cab5f1-69e4-47e4-abfa-7e57e23d3177_885645083.jpg",
+						"entryDate": "08-21-2015_3-17_PM",
+						"baitName": ""
+					},
+					{
+						"imagePath": "Images/CatchPhoto_18cab5f1-69e4-47e4-abfa-7e57e23d3177_240170394.jpg",
+						"entryDate": "08-21-2015_3-17_PM",
+						"baitName": ""
+					}
+				],
+				"fishSpecies": "Bass - Largemouth",
+				"fishLength": -1,
+				"fishWeight": -1,
+				"fishOunces": -1,
+				"fishQuantity": 1,
+				"fishResult": 0,
+				"baitUsed": "Table",
+				"fishingMethodNames": [
+				],
+				"location": "McCann's Pits",
+				"fishingSpot": "South Weed Bed",
+				"weatherData": {
+				},
+				"waterTemperature": -1,
+				"waterClarity": "",
+				"waterDepth": -1,
+				"notes": "",
+				"journal": "Logbook"
+			},
+			{
+				"date": "07-05-2015_11-00_AM",
+				"images": [
+					{
+						"imagePath": "Images/07-05-2015_11-00_AM_00.000-0.jpg",
+						"entryDate": "07-05-2015_11-00_AM",
+						"baitName": ""
+					}
+				],
+				"fishSpecies": "Bass - Silver",
+				"fishLength": -1,
+				"fishWeight": -1,
+				"fishOunces": -1,
+				"fishQuantity": -1,
+				"fishResult": 0,
+				"baitUsed": "Pink Rapala",
+				"fishingMethodNames": [
+					"Dipsy Diver",
+					"Trolling",
+					"Boat"
+				],
+				"location": "Lake Erie",
+				"fishingSpot": "Port Burwell",
+				"weatherData": {
+				},
+				"waterTemperature": -1,
+				"waterClarity": "Cloudy",
+				"waterDepth": 35,
+				"notes": "",
+				"journal": "Logbook"
+			},
+			{
+				"date": "06-28-2015_4-57_PM",
+				"images": [
+					{
+						"imagePath": "Images/06-28-2015_4-57_PM_00.000-0.jpg",
+						"entryDate": "06-28-2015_4-57_PM",
+						"baitName": ""
+					}
+				],
+				"fishSpecies": "Bass - Smallmouth",
+				"fishLength": -1,
+				"fishWeight": -1,
+				"fishOunces": -1,
+				"fishQuantity": -1,
+				"fishResult": 0,
+				"baitUsed": "Brown Speckled",
+				"fishingMethodNames": [
+					"Bottom",
+					"Casting",
+					"Shore"
+				],
+				"location": "McCann's Pits",
+				"fishingSpot": "Peninsula East",
+				"weatherData": {
+				},
+				"waterTemperature": -1,
+				"waterClarity": "Clear",
+				"waterDepth": -1,
+				"notes": "",
+				"journal": "Logbook"
+			},
+			{
+				"date": "06-28-2015_4-04_PM",
+				"images": [
+					{
+						"imagePath": "Images/06-28-2015_4-04_PM_00.000-0.jpg",
+						"entryDate": "06-28-2015_4-04_PM",
+						"baitName": ""
+					},
+					{
+						"imagePath": "Images/06-28-2015_4-04_PM_00.000-1.jpg",
+						"entryDate": "06-28-2015_4-04_PM",
+						"baitName": ""
+					}
+				],
+				"fishSpecies": "Bass - Largemouth",
+				"fishLength": -1,
+				"fishWeight": -1,
+				"fishOunces": -1,
+				"fishQuantity": -1,
+				"fishResult": 0,
+				"baitUsed": "Brown Speckled",
+				"fishingMethodNames": [
+					"Bottom",
+					"Casting",
+					"Shore"
+				],
+				"location": "McCann's Pits",
+				"fishingSpot": "Peninsula East",
+				"weatherData": {
+				},
+				"waterTemperature": -1,
+				"waterClarity": "Clear",
+				"waterDepth": -1,
+				"notes": "",
+				"journal": "Logbook"
+			},
+			{
+				"date": "06-21-2015_3-19_PM",
+				"images": [
+					{
+						"imagePath": "Images/06-21-2015_3-19_PM_00.000-0.jpg",
+						"entryDate": "06-21-2015_3-19_PM",
+						"baitName": ""
+					},
+					{
+						"imagePath": "Images/06-21-2015_3-19_PM_00.000-1.jpg",
+						"entryDate": "06-21-2015_3-19_PM",
+						"baitName": ""
+					}
+				],
+				"fishSpecies": "Freshwater Drum",
+				"fishLength": -1,
+				"fishWeight": -1,
+				"fishOunces": -1,
+				"fishQuantity": -1,
+				"fishResult": 0,
+				"baitUsed": "",
+				"fishingMethodNames": [
+					"Bottom",
+					"Casting",
+					"Shore"
+				],
+				"location": "Port Albert",
+				"fishingSpot": "Mouth",
+				"weatherData": {
+					"entry": "06-21-2015_3-19_PM",
+					"temperature": 68,
+					"windSpeed": "4",
+					"skyConditions": "Clear",
+					"imageURL": ""
+				},
+				"waterTemperature": -1,
+				"waterClarity": "Cloudy",
+				"waterDepth": -1,
+				"notes": "",
+				"journal": "Logbook"
+			},
+			{
+				"date": "06-21-2015_11-14_AM",
+				"images": [
+					{
+						"imagePath": "Images/06-21-2015_11-14_AM_00.000-0.jpg",
+						"entryDate": "06-21-2015_11-14_AM",
+						"baitName": ""
+					}
+				],
+				"fishSpecies": "Bass - Smallmouth",
+				"fishLength": -1,
+				"fishWeight": -1,
+				"fishOunces": -1,
+				"fishQuantity": -1,
+				"fishResult": 0,
+				"baitUsed": "Crayfish",
+				"fishingMethodNames": [
+					"Bottom",
+					"Casting",
+					"Shore"
+				],
+				"location": "Port Albert",
+				"fishingSpot": "Mouth",
+				"weatherData": {
+					"entry": "06-21-2015_11-14_AM",
+					"temperature": 68,
+					"windSpeed": "4",
+					"skyConditions": "Clear",
+					"imageURL": ""
+				},
+				"waterTemperature": -1,
+				"waterClarity": "Cloudy",
+				"waterDepth": -1,
+				"notes": "",
+				"journal": "Logbook"
+			},
+			{
+				"date": "06-21-2015_11-01_AM",
+				"images": [
+					{
+						"imagePath": "Images/06-21-2015_11-01_AM_00.000-0.jpg",
+						"entryDate": "06-21-2015_11-01_AM",
+						"baitName": ""
+					}
+				],
+				"fishSpecies": "Freshwater Drum",
+				"fishLength": -1,
+				"fishWeight": 5,
+				"fishOunces": -1,
+				"fishQuantity": -1,
+				"fishResult": 0,
+				"baitUsed": "Crayfish",
+				"fishingMethodNames": [
+					"Bottom",
+					"Casting",
+					"Shore"
+				],
+				"location": "Port Albert",
+				"fishingSpot": "Mouth",
+				"weatherData": {
+					"entry": "06-21-2015_11-01_AM",
+					"temperature": 68,
+					"windSpeed": "4",
+					"skyConditions": "Clear",
+					"imageURL": ""
+				},
+				"waterTemperature": -1,
+				"waterClarity": "Cloudy",
+				"waterDepth": -1,
+				"notes": "",
+				"journal": "Logbook"
+			},
+			{
+				"date": "06-21-2015_10-52_AM",
+				"images": [
+					{
+						"imagePath": "Images/06-21-2015_10-52_AM_00.000-0.jpg",
+						"entryDate": "06-21-2015_10-52_AM",
+						"baitName": ""
+					},
+					{
+						"imagePath": "Images/06-21-2015_10-52_AM_00.000-1.jpg",
+						"entryDate": "06-21-2015_10-52_AM",
+						"baitName": ""
+					}
+				],
+				"fishSpecies": "Freshwater Drum",
+				"fishLength": -1,
+				"fishWeight": -1,
+				"fishOunces": -1,
+				"fishQuantity": -1,
+				"fishResult": 0,
+				"baitUsed": "Crayfish",
+				"fishingMethodNames": [
+					"Bottom",
+					"Casting",
+					"Shore"
+				],
+				"location": "Port Albert",
+				"fishingSpot": "Mouth",
+				"weatherData": {
+					"entry": "06-21-2015_10-52_AM",
+					"temperature": 68,
+					"windSpeed": "4",
+					"skyConditions": "Clear",
+					"imageURL": ""
+				},
+				"waterTemperature": -1,
+				"waterClarity": "Cloudy",
+				"waterDepth": -1,
+				"notes": "",
+				"journal": "Logbook"
+			},
+			{
+				"date": "06-20-2015_8-20_PM",
+				"images": [
+					{
+						"imagePath": "Images/06-20-2015_8-20_PM_00.000-0.jpg",
+						"entryDate": "06-20-2015_8-20_PM",
+						"baitName": ""
+					},
+					{
+						"imagePath": "Images/06-20-2015_8-20_PM_00.000-1.jpg",
+						"entryDate": "06-20-2015_8-20_PM",
+						"baitName": ""
+					}
+				],
+				"fishSpecies": "Freshwater Drum",
+				"fishLength": -1,
+				"fishWeight": 4,
+				"fishOunces": -1,
+				"fishQuantity": -1,
+				"fishResult": 0,
+				"baitUsed": "Crayfish",
+				"fishingMethodNames": [
+					"Bottom",
+					"Casting",
+					"Shore"
+				],
+				"location": "Port Albert",
+				"fishingSpot": "Mouth",
+				"weatherData": {
+				},
+				"waterTemperature": -1,
+				"waterClarity": "Clear",
+				"waterDepth": -1,
+				"notes": "",
+				"journal": "Logbook"
+			},
+			{
+				"date": "06-20-2015_7-17_PM",
+				"images": [
+					{
+						"imagePath": "Images/06-20-2015_7-17_PM_00.000-0.jpg",
+						"entryDate": "06-20-2015_7-17_PM",
+						"baitName": ""
+					}
+				],
+				"fishSpecies": "Freshwater Drum",
+				"fishLength": 23,
+				"fishWeight": 4,
+				"fishOunces": -1,
+				"fishQuantity": -1,
+				"fishResult": 0,
+				"baitUsed": "Crayfish",
+				"fishingMethodNames": [
+					"Bottom",
+					"Casting",
+					"Shore"
+				],
+				"location": "Port Albert",
+				"fishingSpot": "Mouth",
+				"weatherData": {
+				},
+				"waterTemperature": -1,
+				"waterClarity": "Clear",
+				"waterDepth": -1,
+				"notes": "",
+				"journal": "Logbook"
+			},
+			{
+				"date": "05-15-2015_8-08_AM",
+				"images": [
+					{
+						"imagePath": "Images/05-15-2015_8-08_AM_00.000-0.jpg",
+						"entryDate": "05-15-2015_8-08_AM",
+						"baitName": ""
+					},
+					{
+						"imagePath": "Images/05-15-2015_8-08_AM_00.000-1.jpg",
+						"entryDate": "05-15-2015_8-08_AM",
+						"baitName": ""
+					},
+					{
+						"imagePath": "Images/05-15-2015_8-08_AM_00.000-2.jpg",
+						"entryDate": "05-15-2015_8-08_AM",
+						"baitName": ""
+					}
+				],
+				"fishSpecies": "Steelhead",
+				"fishLength": 24,
+				"fishWeight": 2,
+				"fishOunces": -1,
+				"fishQuantity": 1,
+				"fishResult": 0,
+				"baitUsed": "",
+				"fishingMethodNames": [
+					"Drifting",
+					"Fly",
+					"Shore"
+				],
+				"location": "Port Albert",
+				"fishingSpot": "Little Hole",
+				"weatherData": {
+					"entry": "05-15-2015_8-08_AM",
+					"temperature": 56,
+					"windSpeed": "3",
+					"skyConditions": "Clouds",
+					"imageURL": ""
+				},
+				"waterTemperature": -1,
+				"waterClarity": "Cloudy",
+				"waterDepth": -1,
+				"notes": "",
+				"journal": "Logbook"
+			},
+			{
+				"date": "05-15-2015_7-27_AM",
+				"images": [
+					{
+						"imagePath": "Images/05-15-2015_7-27_AM_00.000-0.jpg",
+						"entryDate": "05-15-2015_7-27_AM",
+						"baitName": ""
+					}
+				],
+				"fishSpecies": "Steelhead",
+				"fishLength": 26,
+				"fishWeight": 4,
+				"fishOunces": -1,
+				"fishQuantity": -1,
+				"fishResult": 0,
+				"baitUsed": "",
+				"fishingMethodNames": [
+					"Drifting",
+					"Fly",
+					"Shore"
+				],
+				"location": "Port Albert",
+				"fishingSpot": "Little Hole",
+				"weatherData": {
+					"entry": "05-15-2015_7-27_AM",
+					"temperature": 56,
+					"windSpeed": "3",
+					"skyConditions": "Clouds",
+					"imageURL": ""
+				},
+				"waterTemperature": -1,
+				"waterClarity": "Cloudy",
+				"waterDepth": -1,
+				"notes": "",
+				"journal": "Logbook"
+			},
+			{
+				"date": "05-15-2015_6-51_AM",
+				"images": [
+					{
+						"imagePath": "Images/05-15-2015_6-51_AM_00.000-0.jpg",
+						"entryDate": "05-15-2015_6-51_AM",
+						"baitName": ""
+					}
+				],
+				"fishSpecies": "Steelhead",
+				"fishLength": 21,
+				"fishWeight": 2,
+				"fishOunces": -1,
+				"fishQuantity": -1,
+				"fishResult": 0,
+				"baitUsed": "",
+				"fishingMethodNames": [
+					"Drifting",
+					"Fly",
+					"Shore"
+				],
+				"location": "Port Albert",
+				"fishingSpot": "Beaver Dam",
+				"weatherData": {
+					"entry": "05-15-2015_6-51_AM",
+					"temperature": 56,
+					"windSpeed": "3",
+					"skyConditions": "Clouds",
+					"imageURL": ""
+				},
+				"waterTemperature": -1,
+				"waterClarity": "Cloudy",
+				"waterDepth": -1,
+				"notes": "",
+				"journal": "Logbook"
+			},
+			{
+				"date": "05-15-2015_6-14_AM",
+				"images": [
+					{
+						"imagePath": "Images/05-15-2015_6-14_AM_00.000-0.jpg",
+						"entryDate": "05-15-2015_6-14_AM",
+						"baitName": ""
+					}
+				],
+				"fishSpecies": "Steelhead",
+				"fishLength": 23,
+				"fishWeight": 3,
+				"fishOunces": -1,
+				"fishQuantity": -1,
+				"fishResult": 1,
+				"baitUsed": "Peach",
+				"fishingMethodNames": [
+					"Shore",
+					"Drifting"
+				],
+				"location": "Port Albert",
+				"fishingSpot": "Beaver Dam",
+				"weatherData": {
+					"entry": "05-15-2015_6-14_AM",
+					"temperature": 56,
+					"windSpeed": "3",
+					"skyConditions": "Clouds",
+					"imageURL": ""
+				},
+				"waterTemperature": -1,
+				"waterClarity": "Cloudy",
+				"waterDepth": -1,
+				"notes": "",
+				"journal": "Logbook"
+			},
+			{
+				"date": "05-14-2015_1-14_PM",
+				"images": [
+					{
+						"imagePath": "Images/05-14-2015_1-14_PM_00.000-0.jpg",
+						"entryDate": "05-14-2015_1-14_PM",
+						"baitName": ""
+					}
+				],
+				"fishSpecies": "Steelhead",
+				"fishLength": 28,
+				"fishWeight": 5,
+				"fishOunces": -1,
+				"fishQuantity": -1,
+				"fishResult": 0,
+				"baitUsed": "",
+				"fishingMethodNames": [
+					"Shore",
+					"Drifting"
+				],
+				"location": "Port Albert",
+				"fishingSpot": "Little Hole",
+				"weatherData": {
+				},
+				"waterTemperature": -1,
+				"waterClarity": "Tea Stained",
+				"waterDepth": -1,
+				"notes": "",
+				"journal": "Logbook"
+			},
+			{
+				"date": "05-14-2015_1-08_PM",
+				"images": [
+					{
+						"imagePath": "Images/05-14-2015_1-08_PM_00.000-0.jpg",
+						"entryDate": "05-14-2015_1-08_PM",
+						"baitName": ""
+					}
+				],
+				"fishSpecies": "Steelhead",
+				"fishLength": -1,
+				"fishWeight": -1,
+				"fishOunces": -1,
+				"fishQuantity": -1,
+				"fishResult": 0,
+				"baitUsed": "",
+				"fishingMethodNames": [
+					"Drifting",
+					"Fly",
+					"Shore"
+				],
+				"location": "Port Albert",
+				"fishingSpot": "Little Hole",
+				"weatherData": {
+				},
+				"waterTemperature": -1,
+				"waterClarity": "Tea Stained",
+				"waterDepth": -1,
+				"notes": "",
+				"journal": "Logbook"
+			},
+			{
+				"date": "05-14-2015_10-57_AM",
+				"images": [
+					{
+						"imagePath": "Images/05-14-2015_10-57_AM_00.000-0.jpg",
+						"entryDate": "05-14-2015_10-57_AM",
+						"baitName": ""
+					}
+				],
+				"fishSpecies": "Steelhead",
+				"fishLength": 23,
+				"fishWeight": 2,
+				"fishOunces": -1,
+				"fishQuantity": -1,
+				"fishResult": 0,
+				"baitUsed": "",
+				"fishingMethodNames": [
+					"Drifting",
+					"Fly",
+					"Shore"
+				],
+				"location": "Port Albert",
+				"fishingSpot": "Little Hole",
+				"weatherData": {
+				},
+				"waterTemperature": -1,
+				"waterClarity": "Tea Stained",
+				"waterDepth": -1,
+				"notes": "",
+				"journal": "Logbook"
+			},
+			{
+				"date": "05-14-2015_9-57_AM",
+				"images": [
+					{
+						"imagePath": "Images/05-14-2015_9-57_AM_00.000-0.jpg",
+						"entryDate": "05-14-2015_9-57_AM",
+						"baitName": ""
+					},
+					{
+						"imagePath": "Images/05-14-2015_9-57_AM_00.000-1.jpg",
+						"entryDate": "05-14-2015_9-57_AM",
+						"baitName": ""
+					}
+				],
+				"fishSpecies": "Steelhead",
+				"fishLength": 18,
+				"fishWeight": -1,
+				"fishOunces": -1,
+				"fishQuantity": -1,
+				"fishResult": 0,
+				"baitUsed": "Chartreuse",
+				"fishingMethodNames": [
+					"Drifting",
+					"Fly",
+					"Shore"
+				],
+				"location": "Port Albert",
+				"fishingSpot": "Little Hole",
+				"weatherData": {
+				},
+				"waterTemperature": -1,
+				"waterClarity": "Tea Stained",
+				"waterDepth": -1,
+				"notes": "",
+				"journal": "Logbook"
+			},
+			{
+				"date": "05-14-2015_9-14_AM",
+				"images": [
+					{
+						"imagePath": "Images/05-14-2015_9-14_AM_00.000-0.jpg",
+						"entryDate": "05-14-2015_9-14_AM",
+						"baitName": ""
+					},
+					{
+						"imagePath": "Images/05-14-2015_9-14_AM_00.000-1.jpg",
+						"entryDate": "05-14-2015_9-14_AM",
+						"baitName": ""
+					}
+				],
+				"fishSpecies": "Steelhead",
+				"fishLength": 24,
+				"fishWeight": 3,
+				"fishOunces": -1,
+				"fishQuantity": -1,
+				"fishResult": 0,
+				"baitUsed": "",
+				"fishingMethodNames": [
+					"Drifting",
+					"Fly",
+					"Shore"
+				],
+				"location": "Port Albert",
+				"fishingSpot": "Little Hole",
+				"weatherData": {
+				},
+				"waterTemperature": -1,
+				"waterClarity": "Tea Stained",
+				"waterDepth": -1,
+				"notes": "",
+				"journal": "Logbook"
+			},
+			{
+				"date": "05-14-2015_8-30_AM",
+				"images": [
+					{
+						"imagePath": "Images/05-14-2015_8-30_AM_00.000-0.jpg",
+						"entryDate": "05-14-2015_8-30_AM",
+						"baitName": ""
+					}
+				],
+				"fishSpecies": "Steelhead",
+				"fishLength": 26,
+				"fishWeight": 4,
+				"fishOunces": -1,
+				"fishQuantity": -1,
+				"fishResult": 0,
+				"baitUsed": "Chartreuse",
+				"fishingMethodNames": [
+					"Shore",
+					"Drifting"
+				],
+				"location": "Port Albert",
+				"fishingSpot": "Beaver Dam",
+				"weatherData": {
+				},
+				"waterTemperature": -1,
+				"waterClarity": "Tea Stained",
+				"waterDepth": -1,
+				"notes": "",
+				"journal": "Logbook"
+			},
+			{
+				"date": "05-14-2015_7-33_AM",
+				"images": [
+					{
+						"imagePath": "Images/05-14-2015_7-33_AM_00.000-0.jpg",
+						"entryDate": "05-14-2015_7-33_AM",
+						"baitName": ""
+					}
+				],
+				"fishSpecies": "Steelhead",
+				"fishLength": 28,
+				"fishWeight": 6,
+				"fishOunces": -1,
+				"fishQuantity": -1,
+				"fishResult": 0,
+				"baitUsed": "Peach",
+				"fishingMethodNames": [
+					"Shore",
+					"Drifting"
+				],
+				"location": "Port Albert",
+				"fishingSpot": "Beaver Dam",
+				"weatherData": {
+				},
+				"waterTemperature": -1,
+				"waterClarity": "Tea Stained",
+				"waterDepth": -1,
+				"notes": "",
+				"journal": "Logbook"
+			},
+			{
+				"date": "02-07-2015_4-18_PM",
+				"images": [
+					{
+						"imagePath": "Images/02-07-2015_4-18_PM_00.000-0.jpg",
+						"entryDate": "02-07-2015_4-18_PM",
+						"baitName": ""
+					},
+					{
+						"imagePath": "Images/02-07-2015_4-18_PM_00.000-1.jpg",
+						"entryDate": "02-07-2015_4-18_PM",
+						"baitName": ""
+					},
+					{
+						"imagePath": "Images/02-07-2015_4-18_PM_00.000-2.jpg",
+						"entryDate": "02-07-2015_4-18_PM",
+						"baitName": ""
+					},
+					{
+						"imagePath": "Images/02-07-2015_4-18_PM_00.000-3.jpg",
+						"entryDate": "02-07-2015_4-18_PM",
+						"baitName": ""
+					}
+				],
+				"fishSpecies": "Pike",
+				"fishLength": 21,
+				"fishWeight": 1,
+				"fishOunces": -1,
+				"fishQuantity": 4,
+				"fishResult": 0,
+				"baitUsed": "Shiner Minnow",
+				"fishingMethodNames": [
+					"Rod",
+					"Ice",
+					"Tip Up"
+				],
+				"location": "Harlow Lake",
+				"fishingSpot": "West Hole",
+				"weatherData": {
+				},
+				"waterTemperature": -1,
+				"waterClarity": "",
+				"waterDepth": -1,
+				"notes": "Four pike ranging from 17\"-21\" and 1-2 lbs. between 1:46pm and 4:18pm.",
+				"journal": "Logbook"
+			},
+			{
+				"date": "01-23-2015_10-00_AM",
+				"images": [
+					{
+						"imagePath": "Images/01-23-2015_10-00_AM_00.000-0.jpg",
+						"entryDate": "01-23-2015_10-00_AM",
+						"baitName": ""
+					}
+				],
+				"fishSpecies": "Pike",
+				"fishLength": 23,
+				"fishWeight": 3,
+				"fishOunces": -1,
+				"fishQuantity": -1,
+				"fishResult": 0,
+				"baitUsed": "Shiner Minnow",
+				"fishingMethodNames": [
+					"Ice",
+					"Tip Up"
+				],
+				"location": "Wildwood",
+				"fishingSpot": "Dam",
+				"weatherData": {
+				},
+				"waterTemperature": -1,
+				"waterClarity": "",
+				"waterDepth": -1,
+				"notes": "",
+				"journal": "Logbook"
+			},
+			{
+				"date": "12-30-2014_2-55_PM",
+				"images": [
+					{
+						"imagePath": "Images/12-30-2014_2-55_PM_00.000-0.jpg",
+						"entryDate": "12-30-2014_2-55_PM",
+						"baitName": ""
+					},
+					{
+						"imagePath": "Images/12-30-2014_2-55_PM_00.000-1.jpg",
+						"entryDate": "12-30-2014_2-55_PM",
+						"baitName": ""
+					},
+					{
+						"imagePath": "Images/12-30-2014_2-55_PM_00.000-2.jpg",
+						"entryDate": "12-30-2014_2-55_PM",
+						"baitName": ""
+					}
+				],
+				"fishSpecies": "Pike",
+				"fishLength": -1,
+				"fishWeight": -1,
+				"fishOunces": -1,
+				"fishQuantity": 3,
+				"fishResult": 0,
+				"baitUsed": "Shiner Minnow",
+				"fishingMethodNames": [
+					"Rod",
+					"Ice",
+					"Tip Up"
+				],
+				"location": "Harlow Lake",
+				"fishingSpot": "West Hole",
+				"weatherData": {
+				},
+				"waterTemperature": -1,
+				"waterClarity": "",
+				"waterDepth": -1,
+				"notes": "Caught between 2:55pm and 4:43pm.",
+				"journal": "Logbook"
+			},
+			{
+				"date": "08-22-2014_10-30_AM",
+				"images": [
+					{
+						"imagePath": "Images/08-22-2014_10-30_AM_00.000-0.jpg",
+						"entryDate": "08-22-2014_10-30_AM",
+						"baitName": ""
+					},
+					{
+						"imagePath": "Images/08-22-2014_10-30_AM_00.000-1.jpg",
+						"entryDate": "08-22-2014_10-30_AM",
+						"baitName": ""
+					}
+				],
+				"fishSpecies": "Salmon - King",
+				"fishLength": -1,
+				"fishWeight": 22,
+				"fishOunces": -1,
+				"fishQuantity": -1,
+				"fishResult": 1,
+				"baitUsed": "Knock Out",
+				"fishingMethodNames": [
+					"Dipsy Diver",
+					"Trolling",
+					"Boat"
+				],
+				"location": "Lake Ontario",
+				"fishingSpot": "Wilmot Creek Mouth",
+				"weatherData": {
+				},
+				"waterTemperature": -1,
+				"waterClarity": "Crystal",
+				"waterDepth": 20,
+				"notes": "",
+				"journal": "Logbook"
+			},
+			{
+				"date": "08-22-2014_8-35_AM",
+				"images": [
+					{
+						"imagePath": "Images/08-22-2014_8-35_AM_00.000-0.jpg",
+						"entryDate": "08-22-2014_8-35_AM",
+						"baitName": ""
+					}
+				],
+				"fishSpecies": "Salmon - King",
+				"fishLength": -1,
+				"fishWeight": 21,
+				"fishOunces": -1,
+				"fishQuantity": -1,
+				"fishResult": 1,
+				"baitUsed": "Knock Out",
+				"fishingMethodNames": [
+					"Dipsy Diver",
+					"Trolling",
+					"Boat"
+				],
+				"location": "Lake Ontario",
+				"fishingSpot": "Wilmot Creek Mouth",
+				"weatherData": {
+				},
+				"waterTemperature": -1,
+				"waterClarity": "Crystal",
+				"waterDepth": 25,
+				"notes": "",
+				"journal": "Logbook"
+			},
+			{
+				"date": "06-21-2014_10-46_PM",
+				"images": [
+					{
+						"imagePath": "Images/06-21-2014_10-46_PM_00.000-0.jpg",
+						"entryDate": "06-21-2014_10-46_PM",
+						"baitName": ""
+					}
+				],
+				"fishSpecies": "Walleye",
+				"fishLength": -1,
+				"fishWeight": -1,
+				"fishOunces": -1,
+				"fishQuantity": -1,
+				"fishResult": 1,
+				"baitUsed": "Silver Rapala",
+				"fishingMethodNames": [
+					"Trolling",
+					"Boat"
+				],
+				"location": "Maitland River",
+				"fishingSpot": "Steel Wall",
+				"weatherData": {
+				},
+				"waterTemperature": -1,
+				"waterClarity": "",
+				"waterDepth": -1,
+				"notes": "",
+				"journal": "Logbook"
+			},
+			{
+				"date": "06-01-2014_3-55_PM",
+				"images": [
+					{
+						"imagePath": "Images/06-01-2014_3-55_PM_00.000-0.jpg",
+						"entryDate": "06-01-2014_3-55_PM",
+						"baitName": ""
+					},
+					{
+						"imagePath": "Images/06-01-2014_3-55_PM_00.000-1.jpg",
+						"entryDate": "06-01-2014_3-55_PM",
+						"baitName": ""
+					}
+				],
+				"fishSpecies": "Bluegill",
+				"fishLength": -1,
+				"fishWeight": -1,
+				"fishOunces": -1,
+				"fishQuantity": -1,
+				"fishResult": 0,
+				"baitUsed": "Silver Rapala",
+				"fishingMethodNames": [
+					"Lure",
+					"Casting",
+					"Boat"
+				],
+				"location": "Silver Lake",
+				"fishingSpot": "Gill Grotto",
+				"weatherData": {
+				},
+				"waterTemperature": -1,
+				"waterClarity": "Clear",
+				"waterDepth": 2,
+				"notes": "",
+				"journal": "Logbook"
+			},
+			{
+				"date": "05-20-2014_8-51_PM",
+				"images": [
+					{
+						"imagePath": "Images/05-20-2014_8-51_PM_00.000-0.jpg",
+						"entryDate": "05-20-2014_8-51_PM",
+						"baitName": ""
+					}
+				],
+				"fishSpecies": "Steelhead",
+				"fishLength": -1,
+				"fishWeight": -1,
+				"fishOunces": -1,
+				"fishQuantity": -1,
+				"fishResult": 0,
+				"baitUsed": "Peach",
+				"fishingMethodNames": [
+					"Shore",
+					"Drifting"
+				],
+				"location": "Port Albert",
+				"fishingSpot": "Basket Rocks",
+				"weatherData": {
+				},
+				"waterTemperature": -1,
+				"waterClarity": "",
+				"waterDepth": -1,
+				"notes": "",
+				"journal": "Logbook"
+			},
+			{
+				"date": "05-09-2014_7-17_PM",
+				"images": [
+					{
+						"imagePath": "Images/05-09-2014_7-17_PM_00.000-0.jpg",
+						"entryDate": "05-09-2014_7-17_PM",
+						"baitName": ""
+					}
+				],
+				"fishSpecies": "Steelhead",
+				"fishLength": -1,
+				"fishWeight": -1,
+				"fishOunces": -1,
+				"fishQuantity": -1,
+				"fishResult": 0,
+				"baitUsed": "Peach",
+				"fishingMethodNames": [
+					"Shore",
+					"Drifting"
+				],
+				"location": "Port Albert",
+				"fishingSpot": "Basket Rocks",
+				"weatherData": {
+				},
+				"waterTemperature": -1,
+				"waterClarity": "Clear",
+				"waterDepth": -1,
+				"notes": "",
+				"journal": "Logbook"
+			},
+			{
+				"date": "05-03-2014_12-09_AM",
+				"images": [
+					{
+						"imagePath": "Images/05-03-2014_12-09_AM_00.000-0.jpg",
+						"entryDate": "05-03-2014_12-09_AM",
+						"baitName": ""
+					},
+					{
+						"imagePath": "Images/05-03-2014_12-09_AM_00.000-1.jpg",
+						"entryDate": "05-03-2014_12-09_AM",
+						"baitName": ""
+					}
+				],
+				"fishSpecies": "Trout - Rainbow",
+				"fishLength": -1,
+				"fishWeight": -1,
+				"fishOunces": -1,
+				"fishQuantity": -1,
+				"fishResult": 0,
+				"baitUsed": "Peach",
+				"fishingMethodNames": [
+					"Shore",
+					"Drifting"
+				],
+				"location": "Port Albert",
+				"fishingSpot": "Rapids",
+				"weatherData": {
+				},
+				"waterTemperature": -1,
+				"waterClarity": "",
+				"waterDepth": -1,
+				"notes": "",
+				"journal": "Logbook"
+			},
+			{
+				"date": "05-02-2014_11-42_AM",
+				"images": [
+					{
+						"imagePath": "Images/05-02-2014_11-42_AM_00.000-0.jpg",
+						"entryDate": "05-02-2014_11-42_AM",
+						"baitName": ""
+					}
+				],
+				"fishSpecies": "Steelhead",
+				"fishLength": -1,
+				"fishWeight": -1,
+				"fishOunces": -1,
+				"fishQuantity": -1,
+				"fishResult": 0,
+				"baitUsed": "Peach",
+				"fishingMethodNames": [
+					"Shore",
+					"Drifting"
+				],
+				"location": "Port Albert",
+				"fishingSpot": "Beaver Dam",
+				"weatherData": {
+				},
+				"waterTemperature": -1,
+				"waterClarity": "Clear",
+				"waterDepth": -1,
+				"notes": "",
+				"journal": "Logbook"
+			},
+			{
+				"date": "03-16-2014_1-59_PM",
+				"images": [
+					{
+						"imagePath": "Images/03-16-2014_1-59_PM_00.000-0.jpg",
+						"entryDate": "03-16-2014_1-59_PM",
+						"baitName": ""
+					}
+				],
+				"fishSpecies": "Pike",
+				"fishLength": -1,
+				"fishWeight": -1,
+				"fishOunces": -1,
+				"fishQuantity": -1,
+				"fishResult": 0,
+				"baitUsed": "Shiner Minnow",
+				"fishingMethodNames": [
+					"Ice",
+					"Rod"
+				],
+				"location": "Harlow Lake",
+				"fishingSpot": "West Hole",
+				"weatherData": {
+				},
+				"waterTemperature": -1,
+				"waterClarity": "",
+				"waterDepth": -1,
+				"notes": "",
+				"journal": "Logbook"
+			},
+			{
+				"date": "02-08-2014_11-09_AM",
+				"images": [
+					{
+						"imagePath": "Images/02-08-2014_11-09_AM_00.000-0.jpg",
+						"entryDate": "02-08-2014_11-09_AM",
+						"baitName": ""
+					},
+					{
+						"imagePath": "Images/02-08-2014_11-09_AM_00.000-1.jpg",
+						"entryDate": "02-08-2014_11-09_AM",
+						"baitName": ""
+					}
+				],
+				"fishSpecies": "Pike",
+				"fishLength": -1,
+				"fishWeight": -1,
+				"fishOunces": -1,
+				"fishQuantity": 2,
+				"fishResult": 0,
+				"baitUsed": "Shiner Minnow",
+				"fishingMethodNames": [
+					"Ice",
+					"Rod"
+				],
+				"location": "Harlow Lake",
+				"fishingSpot": "West Hole",
+				"weatherData": {
+				},
+				"waterTemperature": -1,
+				"waterClarity": "",
+				"waterDepth": -1,
+				"notes": "",
+				"journal": "Logbook"
+			},
+			{
+				"date": "01-12-2014_3-32_PM",
+				"images": [
+					{
+						"imagePath": "Images/01-12-2014_3-32_PM_00.000-0.jpg",
+						"entryDate": "01-12-2014_3-32_PM",
+						"baitName": ""
+					}
+				],
+				"fishSpecies": "Pike",
+				"fishLength": -1,
+				"fishWeight": -1,
+				"fishOunces": -1,
+				"fishQuantity": -1,
+				"fishResult": 0,
+				"baitUsed": "Shiner Minnow",
+				"fishingMethodNames": [
+					"Ice",
+					"Rod"
+				],
+				"location": "Harlow Lake",
+				"fishingSpot": "West Hole",
+				"weatherData": {
+				},
+				"waterTemperature": -1,
+				"waterClarity": "",
+				"waterDepth": -1,
+				"notes": "",
+				"journal": "Logbook"
+			},
+			{
+				"date": "01-09-2014_5-27_PM",
+				"images": [
+					{
+						"imagePath": "Images/01-09-2014_5-27_PM_00.000-0.jpg",
+						"entryDate": "01-09-2014_5-27_PM",
+						"baitName": ""
+					}
+				],
+				"fishSpecies": "Pike",
+				"fishLength": -1,
+				"fishWeight": -1,
+				"fishOunces": -1,
+				"fishQuantity": -1,
+				"fishResult": 0,
+				"baitUsed": "Shiner Minnow",
+				"fishingMethodNames": [
+					"Ice",
+					"Rod"
+				],
+				"location": "Harlow Lake",
+				"fishingSpot": "West Hole",
+				"weatherData": {
+				},
+				"waterTemperature": -1,
+				"waterClarity": "",
+				"waterDepth": -1,
+				"notes": "",
+				"journal": "Logbook"
+			},
+			{
+				"date": "12-24-2013_8-54_AM",
+				"images": [
+					{
+						"imagePath": "Images/12-24-2013_8-54_AM_00.000-0.jpg",
+						"entryDate": "12-24-2013_8-54_AM",
+						"baitName": ""
+					}
+				],
+				"fishSpecies": "Walleye",
+				"fishLength": -1,
+				"fishWeight": -1,
+				"fishOunces": -1,
+				"fishQuantity": -1,
+				"fishResult": 1,
+				"baitUsed": "Shiner Minnow",
+				"fishingMethodNames": [
+					"Ice",
+					"Jig"
+				],
+				"location": "Silver Lake",
+				"fishingSpot": "Walleye Way",
+				"weatherData": {
+				},
+				"waterTemperature": -1,
+				"waterClarity": "",
+				"waterDepth": -1,
+				"notes": "",
+				"journal": "Logbook"
+			},
+			{
+				"date": "05-19-2013_8-28_AM",
+				"images": [
+					{
+						"imagePath": "Images/05-19-2013_8-28_AM_00.000-0.jpg",
+						"entryDate": "05-19-2013_8-28_AM",
+						"baitName": ""
+					}
+				],
+				"fishSpecies": "Steelhead",
+				"fishLength": -1,
+				"fishWeight": -1,
+				"fishOunces": -1,
+				"fishQuantity": -1,
+				"fishResult": 0,
+				"baitUsed": "Peach",
+				"fishingMethodNames": [
+					"Shore",
+					"Drifting"
+				],
+				"location": "Port Albert",
+				"fishingSpot": "Baskets",
+				"weatherData": {
+				},
+				"waterTemperature": -1,
+				"waterClarity": "Dirty",
+				"waterDepth": -1,
+				"notes": "",
+				"journal": "Logbook"
+			},
+			{
+				"date": "05-05-2013_2-40_PM",
+				"images": [
+					{
+						"imagePath": "Images/05-05-2013_2-40_PM_00.000-0.jpg",
+						"entryDate": "05-05-2013_2-40_PM",
+						"baitName": ""
+					}
+				],
+				"fishSpecies": "Bass - Smallmouth",
+				"fishLength": -1,
+				"fishWeight": -1,
+				"fishOunces": -1,
+				"fishQuantity": -1,
+				"fishResult": 0,
+				"baitUsed": "",
+				"fishingMethodNames": [
+					"Fly",
+					"Wade"
+				],
+				"location": "Port Albert",
+				"fishingSpot": "Square Rocks",
+				"weatherData": {
+				},
+				"waterTemperature": -1,
+				"waterClarity": "Clear",
+				"waterDepth": -1,
+				"notes": "",
+				"journal": "Logbook"
+			},
+			{
+				"date": "05-05-2013_9-56_AM",
+				"images": [
+					{
+						"imagePath": "Images/05-05-2013_9-56_AM_00.000-0.jpg",
+						"entryDate": "05-05-2013_9-56_AM",
+						"baitName": ""
+					}
+				],
+				"fishSpecies": "Steelhead",
+				"fishLength": -1,
+				"fishWeight": -1,
+				"fishOunces": -1,
+				"fishQuantity": -1,
+				"fishResult": 0,
+				"baitUsed": "Peach",
+				"fishingMethodNames": [
+					"Shore",
+					"Drifting"
+				],
+				"location": "Port Albert",
+				"fishingSpot": "Basket Rocks",
+				"weatherData": {
+				},
+				"waterTemperature": -1,
+				"waterClarity": "Clear",
+				"waterDepth": -1,
+				"notes": "",
+				"journal": "Logbook"
+			},
+			{
+				"date": "08-15-2012_10-56_AM",
+				"images": [
+					{
+						"imagePath": "Images/08-15-2012_10-56_AM_00.000-0.jpg",
+						"entryDate": "08-15-2012_10-56_AM",
+						"baitName": ""
+					}
+				],
+				"fishSpecies": "Pike",
+				"fishLength": -1,
+				"fishWeight": -1,
+				"fishOunces": -1,
+				"fishQuantity": -1,
+				"fishResult": 0,
+				"baitUsed": "",
+				"fishingMethodNames": [
+					"Lure",
+					"Casting",
+					"Boat"
+				],
+				"location": "Kenogami Lake",
+				"fishingSpot": "Reeds",
+				"weatherData": {
+				},
+				"waterTemperature": -1,
+				"waterClarity": "",
+				"waterDepth": -1,
+				"notes": "",
+				"journal": "Logbook"
+			},
+			{
+				"date": "08-14-2012_2-36_PM",
+				"images": [
+					{
+						"imagePath": "Images/08-14-2012_2-36_PM_00.000-0.jpg",
+						"entryDate": "08-14-2012_2-36_PM",
+						"baitName": ""
+					}
+				],
+				"fishSpecies": "Walleye",
+				"fishLength": -1,
+				"fishWeight": -1,
+				"fishOunces": -1,
+				"fishQuantity": -1,
+				"fishResult": 0,
+				"baitUsed": "",
+				"fishingMethodNames": [
+					"Lure",
+					"Casting",
+					"Boat"
+				],
+				"location": "Kenogami Lake",
+				"fishingSpot": "Reeds",
+				"weatherData": {
+				},
+				"waterTemperature": -1,
+				"waterClarity": "",
+				"waterDepth": -1,
+				"notes": "",
+				"journal": "Logbook"
+			},
+			{
+				"date": "08-05-2012_11-57_AM",
+				"images": [
+					{
+						"imagePath": "Images/08-05-2012_11-57_AM_00.000-0.jpg",
+						"entryDate": "08-05-2012_11-57_AM",
+						"baitName": ""
+					},
+					{
+						"imagePath": "Images/08-05-2012_11-57_AM_00.000-1.jpg",
+						"entryDate": "08-05-2012_11-57_AM",
+						"baitName": ""
+					},
+					{
+						"imagePath": "Images/08-05-2012_11-57_AM_00.000-2.jpg",
+						"entryDate": "08-05-2012_11-57_AM",
+						"baitName": ""
+					}
+				],
+				"fishSpecies": "Bass - Smallmouth",
+				"fishLength": -1,
+				"fishWeight": -1,
+				"fishOunces": -1,
+				"fishQuantity": -1,
+				"fishResult": 0,
+				"baitUsed": "",
+				"fishingMethodNames": [
+					"Casting",
+					"Fly"
+				],
+				"location": "Ottawa River",
+				"fishingSpot": "Gatineau Bridge",
+				"weatherData": {
+				},
+				"waterTemperature": -1,
+				"waterClarity": "",
+				"waterDepth": -1,
+				"notes": "Caught a bunch of tiny bass. Just a good day on the river with the bros.",
+				"journal": "Logbook"
+			},
+			{
+				"date": "06-30-2012_11-16_AM",
+				"images": [
+					{
+						"imagePath": "Images/06-30-2012_11-16_AM_00.000-0.jpg",
+						"entryDate": "06-30-2012_11-16_AM",
+						"baitName": ""
+					}
+				],
+				"fishSpecies": "Bass - Smallmouth",
+				"fishLength": -1,
+				"fishWeight": -1,
+				"fishOunces": -1,
+				"fishQuantity": 2,
+				"fishResult": 1,
+				"baitUsed": "Olive",
+				"fishingMethodNames": [
+					"Fly",
+					"Wade"
+				],
+				"location": "Maitland River",
+				"fishingSpot": "Trestle Run",
+				"weatherData": {
+				},
+				"waterTemperature": -1,
+				"waterClarity": "",
+				"waterDepth": -1,
+				"notes": "",
+				"journal": "Logbook"
+			},
+			{
+				"date": "05-21-2012_4-23_PM",
+				"images": [
+					{
+						"imagePath": "Images/05-21-2012_4-23_PM_00.000-0.jpg",
+						"entryDate": "05-21-2012_4-23_PM",
+						"baitName": ""
+					},
+					{
+						"imagePath": "Images/05-21-2012_4-23_PM_00.000-1.jpg",
+						"entryDate": "05-21-2012_4-23_PM",
+						"baitName": ""
+					},
+					{
+						"imagePath": "Images/05-21-2012_4-23_PM_00.000-2.jpg",
+						"entryDate": "05-21-2012_4-23_PM",
+						"baitName": ""
+					},
+					{
+						"imagePath": "Images/05-21-2012_4-23_PM_00.000-3.jpg",
+						"entryDate": "05-21-2012_4-23_PM",
+						"baitName": ""
+					}
+				],
+				"fishSpecies": "Walleye",
+				"fishLength": -1,
+				"fishWeight": -1,
+				"fishOunces": -1,
+				"fishQuantity": 2,
+				"fishResult": 0,
+				"baitUsed": "",
+				"fishingMethodNames": [
+					"Shore",
+					"Jig"
+				],
+				"location": "Grand River",
+				"fishingSpot": "Belwood Lake Dam",
+				"weatherData": {
+				},
+				"waterTemperature": -1,
+				"waterClarity": "Chocolate Milk",
+				"waterDepth": -1,
+				"notes": "",
+				"journal": "Logbook"
+			},
+			{
+				"date": "05-21-2012_3-23_PM",
+				"images": [
+					{
+						"imagePath": "Images/05-21-2012_3-23_PM_00.000-0.jpg",
+						"entryDate": "05-21-2012_3-23_PM",
+						"baitName": ""
+					}
+				],
+				"fishSpecies": "Pike",
+				"fishLength": 33,
+				"fishWeight": -1,
+				"fishOunces": -1,
+				"fishQuantity": -1,
+				"fishResult": 0,
+				"baitUsed": "White",
+				"fishingMethodNames": [
+					"Shore",
+					"Jig"
+				],
+				"location": "Grand River",
+				"fishingSpot": "Belwood Lake Dam",
+				"weatherData": {
+				},
+				"waterTemperature": -1,
+				"waterClarity": "Chocolate Milk",
+				"waterDepth": -1,
+				"notes": "",
+				"journal": "Logbook"
+			},
+			{
+				"date": "03-31-2012_7-34_PM",
+				"images": [
+					{
+						"imagePath": "Images/03-31-2012_7-34_PM_00.000-0.jpg",
+						"entryDate": "03-31-2012_7-34_PM",
+						"baitName": ""
+					}
+				],
+				"fishSpecies": "Perch",
+				"fishLength": -1,
+				"fishWeight": -1,
+				"fishOunces": -1,
+				"fishQuantity": -1,
+				"fishResult": 0,
+				"baitUsed": "",
+				"fishingMethodNames": [
+					"Shore",
+					"Jig"
+				],
+				"location": "Wildwood",
+				"fishingSpot": "31st Line",
+				"weatherData": {
+				},
+				"waterTemperature": -1,
+				"waterClarity": "Chocolate Milk",
+				"waterDepth": -1,
+				"notes": "",
+				"journal": "Logbook"
+			},
+			{
+				"date": "03-31-2012_6-35_PM",
+				"images": [
+					{
+						"imagePath": "Images/03-31-2012_6-35_PM_00.000-0.jpg",
+						"entryDate": "03-31-2012_6-35_PM",
+						"baitName": ""
+					},
+					{
+						"imagePath": "Images/03-31-2012_6-35_PM_00.000-1.jpg",
+						"entryDate": "03-31-2012_6-35_PM",
+						"baitName": ""
+					},
+					{
+						"imagePath": "Images/03-31-2012_6-35_PM_00.000-2.jpg",
+						"entryDate": "03-31-2012_6-35_PM",
+						"baitName": ""
+					},
+					{
+						"imagePath": "Images/03-31-2012_6-35_PM_00.000-3.jpg",
+						"entryDate": "03-31-2012_6-35_PM",
+						"baitName": ""
+					}
+				],
+				"fishSpecies": "Bass - Smallmouth",
+				"fishLength": -1,
+				"fishWeight": -1,
+				"fishOunces": -1,
+				"fishQuantity": -1,
+				"fishResult": 0,
+				"baitUsed": "",
+				"fishingMethodNames": [
+					"Shore",
+					"Jig"
+				],
+				"location": "Wildwood",
+				"fishingSpot": "31st Line",
+				"weatherData": {
+				},
+				"waterTemperature": -1,
+				"waterClarity": "Chocolate Milk",
+				"waterDepth": -1,
+				"notes": "",
+				"journal": "Logbook"
+			},
+			{
+				"date": "06-15-2011_7-02_PM",
+				"images": [
+					{
+						"imagePath": "Images/06-15-2011_7-02_PM_00.000-0.jpg",
+						"entryDate": "06-15-2011_7-02_PM",
+						"baitName": ""
+					}
+				],
+				"fishSpecies": "Bass - Smallmouth",
+				"fishLength": -1,
+				"fishWeight": -1,
+				"fishOunces": -1,
+				"fishQuantity": -1,
+				"fishResult": 0,
+				"baitUsed": "Crayfish",
+				"fishingMethodNames": [
+					"Wade",
+					"Bottom"
+				],
+				"location": "Port Albert",
+				"fishingSpot": "Mouth",
+				"weatherData": {
+				},
+				"waterTemperature": -1,
+				"waterClarity": "",
+				"waterDepth": -1,
+				"notes": "",
+				"journal": "Logbook"
+			}
+		],
+		"userDefines": [
+			{
+				"name": "Species",
+				"journal": "Logbook",
+				"baits": [
+				],
+				"fishingMethods": [
+				],
+				"locations": [
+				],
+				"species": [
+					{
+						"name": "Bass - Largemouth",
+						"numberCaught": 6,
+						"weightCaught": 0,
+						"ouncesCaught": 0
+					},
+					{
+						"name": "Bass - Silver",
+						"numberCaught": 1,
+						"weightCaught": 0,
+						"ouncesCaught": 0
+					},
+					{
+						"name": "Bass - Smallmouth",
+						"numberCaught": 19,
+						"weightCaught": 0,
+						"ouncesCaught": 0
+					},
+					{
+						"name": "Bluefish",
+						"numberCaught": 1,
+						"weightCaught": 0,
+						"ouncesCaught": 0
+					},
+					{
+						"name": "Bluegill",
+						"numberCaught": 1,
+						"weightCaught": 0,
+						"ouncesCaught": 0
+					},
+					{
+						"name": "Carp",
+						"numberCaught": 0,
+						"weightCaught": 0,
+						"ouncesCaught": 0
+					},
+					{
+						"name": "Crappie",
+						"numberCaught": 1,
+						"weightCaught": 0,
+						"ouncesCaught": 0
+					},
+					{
+						"name": "Freshwater Drum",
+						"numberCaught": 5,
+						"weightCaught": 13,
+						"ouncesCaught": 0
+					},
+					{
+						"name": "Jack - Crevalle",
+						"numberCaught": 1,
+						"weightCaught": 0,
+						"ouncesCaught": 0
+					},
+					{
+						"name": "Ladyfish",
+						"numberCaught": 3,
+						"weightCaught": 0,
+						"ouncesCaught": 0
+					},
+					{
+						"name": "Perch",
+						"numberCaught": 1,
+						"weightCaught": 0,
+						"ouncesCaught": 0
+					},
+					{
+						"name": "Pike",
+						"numberCaught": 20,
+						"weightCaught": 4,
+						"ouncesCaught": 0
+					},
+					{
+						"name": "Salmon - Coho",
+						"numberCaught": 0,
+						"weightCaught": 0,
+						"ouncesCaught": 0
+					},
+					{
+						"name": "Salmon - King",
+						"numberCaught": 2,
+						"weightCaught": 43,
+						"ouncesCaught": 0
+					},
+					{
+						"name": "Steelhead",
+						"numberCaught": 19,
+						"weightCaught": 31,
+						"ouncesCaught": 0
+					},
+					{
+						"name": "Sucker - Redhorse",
+						"numberCaught": 2,
+						"weightCaught": 0,
+						"ouncesCaught": 0
+					},
+					{
+						"name": "Sucker - White",
+						"numberCaught": 1,
+						"weightCaught": 0,
+						"ouncesCaught": 0
+					},
+					{
+						"name": "Trout - Rainbow",
+						"numberCaught": 1,
+						"weightCaught": 0,
+						"ouncesCaught": 0
+					},
+					{
+						"name": "Trout - Silver",
+						"numberCaught": 6,
+						"weightCaught": 0,
+						"ouncesCaught": 0
+					},
+					{
+						"name": "Trout - Speckled Sea",
+						"numberCaught": 3,
+						"weightCaught": 2,
+						"ouncesCaught": 0
+					},
+					{
+						"name": "Walleye",
+						"numberCaught": 6,
+						"weightCaught": 0,
+						"ouncesCaught": 0
+					}
+				],
+				"waterClarities": [
+				]
+			},
+			{
+				"name": "Baits",
+				"journal": "Logbook",
+				"baits": [
+					{
+						"name": "Brown Speckled",
+						"baitDescription": "",
+						"image": {
+							"imagePath": "Images/Bait_09-10-2016_11-08_AM_31.097-0.jpg",
+							"entryDate": "",
+							"baitName": "Brown Speckled"
+						},
+						"fishCaught": 7,
+						"size": "",
+						"color": "Brown",
+						"baitType": 0
+					},
+					{
+						"name": "Chartreuse",
+						"baitDescription": "",
+						"image": {
+							"imagePath": "Images/BaitPhoto_c473d20e-6c83-41ae-bbeb-9ab9611939f9_549476760.jpg",
+							"entryDate": "",
+							"baitName": "Chartreuse"
+						},
+						"fishCaught": 2,
+						"size": "12",
+						"color": "",
+						"baitType": 0
+					},
+					{
+						"name": "Crayfish",
+						"baitDescription": "Hooked through the end of the tail.",
+						"image": {
+							"imagePath": "Images/Bait_09-10-2016_11-08_AM_31.210-0.jpg",
+							"entryDate": "",
+							"baitName": "Crayfish"
+						},
+						"fishCaught": 6,
+						"size": "",
+						"color": "",
+						"baitType": 1
+					},
+					{
+						"name": "Cyan",
+						"baitDescription": "",
+						"image": {
+							"imagePath": "Images/BaitPhoto_7d139ede-4ca3-4a66-8492-1a26b60ce969_-1697409522.jpg",
+							"entryDate": "",
+							"baitName": "Cyan"
+						},
+						"fishCaught": 1,
+						"size": "",
+						"color": "",
+						"baitType": 0
+					},
+					{
+						"name": "Fathead Minnow",
+						"baitDescription": "",
+						"image": {
+						},
+						"fishCaught": 1,
+						"size": "Small",
+						"color": "",
+						"baitType": 1
+					},
+					{
+						"name": "Green Belly",
+						"baitDescription": "",
+						"image": {
+						},
+						"fishCaught": 5,
+						"size": "",
+						"color": "Silver And Green",
+						"baitType": 0
+					},
+					{
+						"name": "Knock Out",
+						"baitDescription": "",
+						"image": {
+							"imagePath": "Images/BaitPhoto_52ff4faf-e13b-44fe-802b-14e958a7d5e6_-1787854293.jpg",
+							"entryDate": "",
+							"baitName": "Knock Out"
+						},
+						"fishCaught": 2,
+						"size": "Large",
+						"color": "Black, Yellow, Silver",
+						"baitType": 0
+					},
+					{
+						"name": "Olive",
+						"baitDescription": "",
+						"image": {
+							"imagePath": "Images/BaitPhoto_8fa76218-eb51-4438-b79b-da80f310eebb_1049148361.jpg",
+							"entryDate": "",
+							"baitName": "Olive"
+						},
+						"fishCaught": 11,
+						"size": "6",
+						"color": "Olive",
+						"baitType": 0
+					},
+					{
+						"name": "Peach",
+						"baitDescription": "Bead tied 1-2\" above hook.",
+						"image": {
+							"imagePath": "Images/BaitPhoto_3a826214-bc32-4349-b8af-3722aa596627_852386463.jpg",
+							"entryDate": "",
+							"baitName": "Peach"
+						},
+						"fishCaught": 8,
+						"size": "Regular",
+						"color": "Peach",
+						"baitType": 0
+					},
+					{
+						"name": "Pink Rapala",
+						"baitDescription": "",
+						"image": {
+						},
+						"fishCaught": 1,
+						"size": "",
+						"color": "Pink",
+						"baitType": 0
+					},
+					{
+						"name": "Red Belly",
+						"baitDescription": "",
+						"image": {
+							"imagePath": "Images/BaitPhoto_7b085156-d586-4492-93f7-8375a3ba3b8c_527912146.jpg",
+							"entryDate": "",
+							"baitName": "Red Belly"
+						},
+						"fishCaught": 3,
+						"size": "",
+						"color": "Red And Silver",
+						"baitType": 0
+					},
+					{
+						"name": "Red-tailed Yellow",
+						"baitDescription": "Yellow body with a red tail, hooked on a small plain singer jig head.",
+						"image": {
+						},
+						"fishCaught": 6,
+						"size": "4\"",
+						"color": "Yellow And Red",
+						"baitType": 0
+					},
+					{
+						"name": "Rippin' Rap",
+						"baitDescription": "",
+						"image": {
+							"imagePath": "Images/Bait_09-10-2016_11-06_AM_11.921-0.jpg",
+							"entryDate": "",
+							"baitName": "Rippin' Rap"
+						},
+						"fishCaught": 0,
+						"size": "2",
+						"color": "Blue Chrome",
+						"baitType": 0
+					},
+					{
+						"name": "Shiner Minnow",
+						"baitDescription": "Hooked through the spine; 3-4\" long.",
+						"image": {
+						},
+						"fishCaught": 19,
+						"size": "Medium",
+						"color": "",
+						"baitType": 1
+					},
+					{
+						"name": "Silver Rapala",
+						"baitDescription": "",
+						"image": {
+							"imagePath": "Images/BaitPhoto_305e8639-886e-4c9c-9865-c28a761bf61e_411067377.jpg",
+							"entryDate": "",
+							"baitName": "Silver Rapala"
+						},
+						"fishCaught": 3,
+						"size": "",
+						"color": "",
+						"baitType": 0
+					},
+					{
+						"name": "Spinner - Blue Fox",
+						"baitDescription": "",
+						"image": {
+							"imagePath": "Images/Bait_09-10-2016_11-06_AM_11.949-1.jpg",
+							"entryDate": "",
+							"baitName": "Spinner - Blue Fox"
+						},
+						"fishCaught": 0,
+						"size": "6",
+						"color": "Silver",
+						"baitType": 0
+					},
+					{
+						"name": "Sucker Minnow",
+						"baitDescription": "",
+						"image": {
+						},
+						"fishCaught": 1,
+						"size": "Large",
+						"color": "",
+						"baitType": 1
+					},
+					{
+						"name": "Table",
+						"baitDescription": "Homemade table spoon.",
+						"image": {
+							"imagePath": "Images/BaitPhoto_e96320ac-ecf2-4f9d-bdba-b3b7bbc29432_-450664405.jpg",
+							"entryDate": "",
+							"baitName": "Table"
+						},
+						"fishCaught": 1,
+						"size": "Large",
+						"color": "Silver",
+						"baitType": 0
+					},
+					{
+						"name": "Watermelon Jig",
+						"baitDescription": "Can be tipped with a small Bullhead Minnow.",
+						"image": {
+							"imagePath": "Images/Bait_09-10-2016_11-08_AM_31.288-0.jpg",
+							"entryDate": "",
+							"baitName": "Watermelon Jig"
+						},
+						"fishCaught": 2,
+						"size": "Small",
+						"color": "",
+						"baitType": 0
+					},
+					{
+						"name": "White",
+						"baitDescription": "",
+						"image": {
+							"imagePath": "Images/BaitPhoto_488446b3-80c5-4ab1-8e83-3c92ba8b1323_223509406.jpg",
+							"entryDate": "",
+							"baitName": "White"
+						},
+						"fishCaught": 1,
+						"size": "",
+						"color": "",
+						"baitType": 0
+					},
+					{
+						"name": "White Blood Dot",
+						"baitDescription": "",
+						"image": {
+							"imagePath": "Images/BaitPhoto_21c47667-d8d1-4cb9-862a-5f8dda46bf1d_674694238.jpg",
+							"entryDate": "",
+							"baitName": "White Blood Dot"
+						},
+						"fishCaught": 2,
+						"size": "",
+						"color": "",
+						"baitType": 0
+					}
+				],
+				"fishingMethods": [
+				],
+				"locations": [
+				],
+				"species": [
+				],
+				"waterClarities": [
+				]
+			},
+			{
+				"name": "Water Clarities",
+				"journal": "Logbook",
+				"baits": [
+				],
+				"fishingMethods": [
+				],
+				"locations": [
+				],
+				"species": [
+				],
+				"waterClarities": [
+					{
+						"name": "3 Feet"
+					},
+					{
+						"name": "Chocolate Milk"
+					},
+					{
+						"name": "Clear"
+					},
+					{
+						"name": "Cloudy"
+					},
+					{
+						"name": "Crystal"
+					},
+					{
+						"name": "Crystal Clear"
+					},
+					{
+						"name": "Dirty"
+					},
+					{
+						"name": "Muddy"
+					},
+					{
+						"name": "Tea Stained"
+					}
+				]
+			},
+			{
+				"name": "Locations",
+				"journal": "Logbook",
+				"baits": [
+				],
+				"fishingMethods": [
+				],
+				"locations": [
+					{
+						"name": "Bass Lake",
+						"fishingSpots": [
+							{
+								"name": "Small South Bay",
+								"fishCaught": 2,
+								"coordinates": {
+									"latitude": "46.260986",
+									"longitude": "-87.363205"
+								},
+								"location": "Bass Lake"
+							}
+						]
+					},
+					{
+						"name": "Bayfield River",
+						"fishingSpots": [
+							{
+								"name": "Beginner's Luck",
+								"fishCaught": 1,
+								"coordinates": {
+									"latitude": "43.568939",
+									"longitude": "-81.685287"
+								},
+								"location": "Bayfield River"
+							}
+						]
+					},
+					{
+						"name": "Bellwood Lake",
+						"fishingSpots": [
+							{
+								"name": "West Dam Peninsula",
+								"fishCaught": 0,
+								"coordinates": {
+									"latitude": "43.737865",
+									"longitude": "-80.341873"
+								},
+								"location": "Bellwood Lake"
+							},
+							{
+								"name": "Bridge",
+								"fishCaught": 0,
+								"coordinates": {
+									"latitude": "43.790199",
+									"longitude": "-80.318298"
+								},
+								"location": "Bellwood Lake"
+							},
+							{
+								"name": "Dam",
+								"fishCaught": 0,
+								"coordinates": {
+									"latitude": "43.735348",
+									"longitude": "-80.336746"
+								},
+								"location": "Bellwood Lake"
+							},
+							{
+								"name": "Highland Stretch",
+								"fishCaught": 0,
+								"coordinates": {
+									"latitude": "43.779343",
+									"longitude": "-80.332703"
+								},
+								"location": "Bellwood Lake"
+							}
+						]
+					},
+					{
+						"name": "Grand River",
+						"fishingSpots": [
+							{
+								"name": "Belwood Lake Dam",
+								"fishCaught": 3,
+								"coordinates": {
+									"latitude": "43.733768",
+									"longitude": "-80.337555"
+								},
+								"location": "Grand River"
+							}
+						]
+					},
+					{
+						"name": "Guelph Lake",
+						"fishingSpots": [
+							{
+								"name": "Underwater Bridge",
+								"fishCaught": 0,
+								"coordinates": {
+									"latitude": "43.612156",
+									"longitude": "-80.248169"
+								},
+								"location": "Guelph Lake"
+							},
+							{
+								"name": "Boat Launch",
+								"fishCaught": 0,
+								"coordinates": {
+									"latitude": "43.613132",
+									"longitude": "-80.250992"
+								},
+								"location": "Guelph Lake"
+							},
+							{
+								"name": "Conservation Rd. Bay",
+								"fishCaught": 0,
+								"coordinates": {
+									"latitude": "43.598652",
+									"longitude": "-80.264122"
+								},
+								"location": "Guelph Lake"
+							},
+							{
+								"name": "Highway 124 Pipe",
+								"fishCaught": 0,
+								"coordinates": {
+									"latitude": "43.611065",
+									"longitude": "-80.223351"
+								},
+								"location": "Guelph Lake"
+							},
+							{
+								"name": "Road 29",
+								"fishCaught": 0,
+								"coordinates": {
+									"latitude": "43.610928",
+									"longitude": "-80.207916"
+								},
+								"location": "Guelph Lake"
+							}
+						]
+					},
+					{
+						"name": "Guelph Prison",
+						"fishingSpots": [
+							{
+								"name": "River Path",
+								"fishCaught": 0,
+								"coordinates": {
+									"latitude": "43.554333",
+									"longitude": "-80.212357"
+								},
+								"location": "Guelph Prison"
+							}
+						]
+					},
+					{
+						"name": "Harlow Lake",
+						"fishingSpots": [
+							{
+								"name": "West Hole",
+								"fishCaught": 12,
+								"coordinates": {
+									"latitude": "46.626007",
+									"longitude": "-87.493591"
+								},
+								"location": "Harlow Lake"
+							},
+							{
+								"name": "Point",
+								"fishCaught": 7,
+								"coordinates": {
+									"latitude": "46.624607",
+									"longitude": "-87.491226"
+								},
+								"location": "Harlow Lake"
+							}
+						]
+					},
+					{
+						"name": "Indian River",
+						"fishingSpots": [
+							{
+								"name": "Isles",
+								"fishCaught": 6,
+								"coordinates": {
+									"latitude": "28.245539",
+									"longitude": "-80.675674"
+								},
+								"location": "Indian River"
+							},
+							{
+								"name": "Honeymoon Lake Mouth",
+								"fishCaught": 7,
+								"coordinates": {
+									"latitude": "28.272865",
+									"longitude": "-80.672539"
+								},
+								"location": "Indian River"
+							},
+							{
+								"name": "Island Oaks",
+								"fishCaught": 1,
+								"coordinates": {
+									"latitude": "28.363724",
+									"longitude": "-80.711830"
+								},
+								"location": "Indian River"
+							}
+						]
+					},
+					{
+						"name": "Kenogami Lake",
+						"fishingSpots": [
+							{
+								"name": "Reeds",
+								"fishCaught": 2,
+								"coordinates": {
+									"latitude": "48.099136",
+									"longitude": "-80.227303"
+								},
+								"location": "Kenogami Lake"
+							}
+						]
+					},
+					{
+						"name": "Lake Erie",
+						"fishingSpots": [
+							{
+								"name": "Port Burwell",
+								"fishCaught": 1,
+								"coordinates": {
+									"latitude": "42.632851",
+									"longitude": "-80.803650"
+								},
+								"location": "Lake Erie"
+							}
+						]
+					},
+					{
+						"name": "Lake Ontario",
+						"fishingSpots": [
+							{
+								"name": "Wilmot Creek Mouth",
+								"fishCaught": 2,
+								"coordinates": {
+									"latitude": "43.895447",
+									"longitude": "-78.595741"
+								},
+								"location": "Lake Ontario"
+							}
+						]
+					},
+					{
+						"name": "Maitland River",
+						"fishingSpots": [
+							{
+								"name": "Trestle Run",
+								"fishCaught": 2,
+								"coordinates": {
+									"latitude": "43.750553",
+									"longitude": "-81.716637"
+								},
+								"location": "Maitland River"
+							},
+							{
+								"name": "Balls Bridge South Hole",
+								"fishCaught": 2,
+								"coordinates": {
+									"latitude": "43.728973",
+									"longitude": "-81.544907"
+								},
+								"location": "Maitland River"
+							},
+							{
+								"name": "Steel Wall",
+								"fishCaught": 1,
+								"coordinates": {
+									"latitude": "43.748058",
+									"longitude": "-81.723167"
+								},
+								"location": "Maitland River"
+							}
+						]
+					},
+					{
+						"name": "McCann's Pits",
+						"fishingSpots": [
+							{
+								"name": "South Weed Bed",
+								"fishCaught": 1,
+								"coordinates": {
+									"latitude": "43.409870",
+									"longitude": "-80.993675"
+								},
+								"location": "McCann's Pits"
+							},
+							{
+								"name": "Peninsula East",
+								"fishCaught": 2,
+								"coordinates": {
+									"latitude": "43.413395",
+									"longitude": "-80.992836"
+								},
+								"location": "McCann's Pits"
+							}
+						]
+					},
+					{
+						"name": "Ottawa River",
+						"fishingSpots": [
+							{
+								"name": "Gatineau Bridge",
+								"fishCaught": 1,
+								"coordinates": {
+									"latitude": "45.435261",
+									"longitude": "-75.703087"
+								},
+								"location": "Ottawa River"
+							}
+						]
+					},
+					{
+						"name": "Port Albert",
+						"fishingSpots": [
+							{
+								"name": "Square Rocks",
+								"fishCaught": 1,
+								"coordinates": {
+									"latitude": "43.878494",
+									"longitude": "-81.723167"
+								},
+								"location": "Port Albert"
+							},
+							{
+								"name": "Basket Rocks",
+								"fishCaught": 3,
+								"coordinates": {
+									"latitude": "43.879669",
+									"longitude": "-81.719788"
+								},
+								"location": "Port Albert"
+							},
+							{
+								"name": "Baskets",
+								"fishCaught": 1,
+								"coordinates": {
+									"latitude": "43.879616",
+									"longitude": "-81.720009"
+								},
+								"location": "Port Albert"
+							},
+							{
+								"name": "Beaver Dam",
+								"fishCaught": 6,
+								"coordinates": {
+									"latitude": "43.878662",
+									"longitude": "-81.718742"
+								},
+								"location": "Port Albert"
+							},
+							{
+								"name": "Bridge",
+								"fishCaught": 7,
+								"coordinates": {
+									"latitude": "43.878326",
+									"longitude": "-81.716759"
+								},
+								"location": "Port Albert"
+							},
+							{
+								"name": "Little Hole",
+								"fishCaught": 9,
+								"coordinates": {
+									"latitude": "43.878357",
+									"longitude": "-81.718040"
+								},
+								"location": "Port Albert"
+							},
+							{
+								"name": "Mouth",
+								"fishCaught": 7,
+								"coordinates": {
+									"latitude": "43.879517",
+									"longitude": "-81.724625"
+								},
+								"location": "Port Albert"
+							},
+							{
+								"name": "Rapids",
+								"fishCaught": 1,
+								"coordinates": {
+									"latitude": "43.879730",
+									"longitude": "-81.719223"
+								},
+								"location": "Port Albert"
+							}
+						]
+					},
+					{
+						"name": "Silver Lake",
+						"fishingSpots": [
+							{
+								"name": "Walleye Way",
+								"fishCaught": 1,
+								"coordinates": {
+									"latitude": "44.084557",
+									"longitude": "-81.415489"
+								},
+								"location": "Silver Lake"
+							},
+							{
+								"name": "Gill Grotto",
+								"fishCaught": 1,
+								"coordinates": {
+									"latitude": "44.086990",
+									"longitude": "-81.423965"
+								},
+								"location": "Silver Lake"
+							}
+						]
+					},
+					{
+						"name": "Wildwood",
+						"fishingSpots": [
+							{
+								"name": "South Dock",
+								"fishCaught": 1,
+								"coordinates": {
+									"latitude": "43.257042",
+									"longitude": "-81.069824"
+								},
+								"location": "Wildwood"
+							},
+							{
+								"name": "16 Point Tree",
+								"fishCaught": 1,
+								"coordinates": {
+									"latitude": "43.255596",
+									"longitude": "-81.068062"
+								},
+								"location": "Wildwood"
+							},
+							{
+								"name": "31st Line",
+								"fishCaught": 2,
+								"coordinates": {
+									"latitude": "43.253872",
+									"longitude": "-81.004143"
+								},
+								"location": "Wildwood"
+							},
+							{
+								"name": "Blue Bird Hole",
+								"fishCaught": 4,
+								"coordinates": {
+									"latitude": "43.252525",
+									"longitude": "-81.059814"
+								},
+								"location": "Wildwood"
+							},
+							{
+								"name": "Dam",
+								"fishCaught": 1,
+								"coordinates": {
+									"latitude": "43.261688",
+									"longitude": "-81.072495"
+								},
+								"location": "Wildwood"
+							}
+						]
+					}
+				],
+				"species": [
+				],
+				"waterClarities": [
+				]
+			},
+			{
+				"name": "Fishing Methods",
+				"journal": "Logbook",
+				"baits": [
+				],
+				"fishingMethods": [
+					{
+						"name": "Boat"
+					},
+					{
+						"name": "Bottom"
+					},
+					{
+						"name": "Casting"
+					},
+					{
+						"name": "Crank"
+					},
+					{
+						"name": "Dipsy Diver"
+					},
+					{
+						"name": "Drifting"
+					},
+					{
+						"name": "Flasher"
+					},
+					{
+						"name": "Fly"
+					},
+					{
+						"name": "Ice"
+					},
+					{
+						"name": "Jig"
+					},
+					{
+						"name": "Lure"
+					},
+					{
+						"name": "Rod"
+					},
+					{
+						"name": "Shore"
+					},
+					{
+						"name": "Tip Up"
+					},
+					{
+						"name": "Trolling"
+					},
+					{
+						"name": "Wade"
+					}
+				],
+				"locations": [
+				],
+				"species": [
+				],
+				"waterClarities": [
+				]
+			}
+		],
+		"measurementSystem": 0,
+		"entrySortMethod": 0,
+		"entrySortOrder": 1
+	}
+}
