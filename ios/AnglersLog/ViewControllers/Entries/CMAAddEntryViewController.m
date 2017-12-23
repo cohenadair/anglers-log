@@ -1012,10 +1012,11 @@ NSString *const kNotSelectedString = @"Not Selected";
 }
 
 - (void)initWeatherDataViewWithData:(CMAWeatherData *)someWeatherData {
-    if (someWeatherData.imageURL == nil)
-        [self.weatherDataView.weatherImageView setImage:[UIImage imageNamed:@"no_image.png"]];
-    else
+    if (someWeatherData.imageURL == nil) {
+        self.weatherDataView.weatherImageView.hidden = YES;
+    } else {
         [self.weatherDataView.weatherImageView setImage:[someWeatherData imageURLAsUIImage]];
+    }
     [self.weatherDataView.temperatureLabel setText:[someWeatherData temperatureAsStringWithUnits:[[self journal] temperatureUnitsAsString:YES]]];
     [self.weatherDataView.windSpeedLabel setText:[someWeatherData windSpeedAsStringWithUnits:[[self journal] speedUnitsAsString:YES]]];
     [self.weatherDataView.skyConditionsLabel setText:[someWeatherData skyConditionsAsString]];

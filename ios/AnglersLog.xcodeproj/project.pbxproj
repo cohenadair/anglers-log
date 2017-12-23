@@ -116,7 +116,6 @@
 		0D8F84761A6EC2C300AABAEA /* species_large.png in Resources */ = {isa = PBXBuildFile; fileRef = 0D8F84461A6EC2C300AABAEA /* species_large.png */; };
 		0D8F84771A6EC2C300AABAEA /* stats_large.png in Resources */ = {isa = PBXBuildFile; fileRef = 0D8F84471A6EC2C300AABAEA /* stats_large.png */; };
 		0D8F84781A6EC2C300AABAEA /* water_clarities_large.png in Resources */ = {isa = PBXBuildFile; fileRef = 0D8F84481A6EC2C300AABAEA /* water_clarities_large.png */; };
-		0D8F84791A6EC2C300AABAEA /* no_image.png in Resources */ = {isa = PBXBuildFile; fileRef = 0D8F84491A6EC2C300AABAEA /* no_image.png */; };
 		0D8F847A1A6EC2C300AABAEA /* rectile.png in Resources */ = {isa = PBXBuildFile; fileRef = 0D8F844A1A6EC2C300AABAEA /* rectile.png */; };
 		0D9B76101A76C4C100553177 /* CMAUserDefineObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D9B760F1A76C4C100553177 /* CMAUserDefineObject.m */; };
 		0DB8D7911D8A092100EF7C50 /* NSString+CMA.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DB8D7901D8A092100EF7C50 /* NSString+CMA.m */; };
@@ -144,6 +143,9 @@
 		AC58D6381FEDCC2700C5EC3E /* CMAEntryTest.m in Sources */ = {isa = PBXBuildFile; fileRef = AC58D57C1FEDC6DF00C5EC3E /* CMAEntryTest.m */; };
 		AC58D6391FEDCC2700C5EC3E /* CMAJSONReaderTest.m in Sources */ = {isa = PBXBuildFile; fileRef = ACCC66D81FEB5DB800B681A8 /* CMAJSONReaderTest.m */; };
 		AC6115C61FEDD03A0052BFE5 /* backup_ios.json in Resources */ = {isa = PBXBuildFile; fileRef = AC6115C51FEDD03A0052BFE5 /* backup_ios.json */; };
+		AC6115CA1FEE01E30052BFE5 /* placeholder_circle@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = AC6115C71FEE01E20052BFE5 /* placeholder_circle@3x.png */; };
+		AC6115CB1FEE01E30052BFE5 /* placeholder_circle@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AC6115C81FEE01E30052BFE5 /* placeholder_circle@2x.png */; };
+		AC6115CC1FEE01E30052BFE5 /* placeholder_circle@1x.png in Resources */ = {isa = PBXBuildFile; fileRef = AC6115C91FEE01E30052BFE5 /* placeholder_circle@1x.png */; };
 		AC85D5471FEC8BA800B0FC71 /* backup_ios_legacy.json in Resources */ = {isa = PBXBuildFile; fileRef = AC85D5461FEC8BA800B0FC71 /* backup_ios_legacy.json */; };
 		ACCC66C61FEB4C4400B681A8 /* app_icon_167.png in Resources */ = {isa = PBXBuildFile; fileRef = ACCC66C21FEB4C4400B681A8 /* app_icon_167.png */; };
 		ACCC66C71FEB4C4400B681A8 /* app_icon_87.png in Resources */ = {isa = PBXBuildFile; fileRef = ACCC66C31FEB4C4400B681A8 /* app_icon_87.png */; };
@@ -335,7 +337,6 @@
 		0D8F84461A6EC2C300AABAEA /* species_large.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = species_large.png; sourceTree = "<group>"; };
 		0D8F84471A6EC2C300AABAEA /* stats_large.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = stats_large.png; sourceTree = "<group>"; };
 		0D8F84481A6EC2C300AABAEA /* water_clarities_large.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = water_clarities_large.png; sourceTree = "<group>"; };
-		0D8F84491A6EC2C300AABAEA /* no_image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = no_image.png; path = AnglersLog/Images/no_image.png; sourceTree = SOURCE_ROOT; };
 		0D8F844A1A6EC2C300AABAEA /* rectile.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = rectile.png; path = AnglersLog/Images/rectile.png; sourceTree = SOURCE_ROOT; };
 		0D8F84A41A6EC31500AABAEA /* TheAnglersLog.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = TheAnglersLog.entitlements; path = AnglersLog/TheAnglersLog.entitlements; sourceTree = SOURCE_ROOT; };
 		0D9B760E1A76C4C100553177 /* CMAUserDefineObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMAUserDefineObject.h; sourceTree = "<group>"; };
@@ -376,6 +377,9 @@
 		AC58D5741FEDBBFD00C5EC3E /* Statistics.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Statistics.storyboard; sourceTree = "<group>"; };
 		AC58D57C1FEDC6DF00C5EC3E /* CMAEntryTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CMAEntryTest.m; sourceTree = "<group>"; };
 		AC6115C51FEDD03A0052BFE5 /* backup_ios.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = backup_ios.json; sourceTree = "<group>"; };
+		AC6115C71FEE01E20052BFE5 /* placeholder_circle@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "placeholder_circle@3x.png"; sourceTree = "<group>"; };
+		AC6115C81FEE01E30052BFE5 /* placeholder_circle@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "placeholder_circle@2x.png"; sourceTree = "<group>"; };
+		AC6115C91FEE01E30052BFE5 /* placeholder_circle@1x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "placeholder_circle@1x.png"; sourceTree = "<group>"; };
 		AC85D5461FEC8BA800B0FC71 /* backup_ios_legacy.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = backup_ios_legacy.json; sourceTree = "<group>"; };
 		ACCC66C21FEB4C4400B681A8 /* app_icon_167.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = app_icon_167.png; sourceTree = "<group>"; };
 		ACCC66C31FEB4C4400B681A8 /* app_icon_87.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = app_icon_87.png; sourceTree = "<group>"; };
@@ -797,15 +801,17 @@
 			isa = PBXGroup;
 			children = (
 				0D8F84181A6EC2C300AABAEA /* AppIcons */,
-				0D8F84231A6EC2C300AABAEA /* Icons */,
-				0D8F84401A6EC2C300AABAEA /* LargeIcons */,
-				0D8F84491A6EC2C300AABAEA /* no_image.png */,
-				0D8F844A1A6EC2C300AABAEA /* rectile.png */,
-				0DBC36151D7E2BA50016B898 /* rapala.jpg */,
-				0DBC36161D7E2BA50016B898 /* spinner.jpg */,
 				0D81E4531C8F404300974ED3 /* circle_icon@1x.png */,
 				0D81E4541C8F404300974ED3 /* circle_icon@2x.png */,
 				0D81E4551C8F404300974ED3 /* circle_icon@3x.png */,
+				0D8F84231A6EC2C300AABAEA /* Icons */,
+				0D8F84401A6EC2C300AABAEA /* LargeIcons */,
+				AC6115C91FEE01E30052BFE5 /* placeholder_circle@1x.png */,
+				AC6115C81FEE01E30052BFE5 /* placeholder_circle@2x.png */,
+				AC6115C71FEE01E20052BFE5 /* placeholder_circle@3x.png */,
+				0DBC36151D7E2BA50016B898 /* rapala.jpg */,
+				0D8F844A1A6EC2C300AABAEA /* rectile.png */,
+				0DBC36161D7E2BA50016B898 /* spinner.jpg */,
 			);
 			name = Images;
 			sourceTree = "<group>";
@@ -1012,6 +1018,7 @@
 				AC58D5731FEDA85A00C5EC3E /* Baits.storyboard in Resources */,
 				0D8F84581A6EC2C300AABAEA /* camera@3x.png in Resources */,
 				0D8F84701A6EC2C300AABAEA /* water_clarities.png in Resources */,
+				AC6115CA1FEE01E30052BFE5 /* placeholder_circle@3x.png in Resources */,
 				0D8F845E1A6EC2C300AABAEA /* edit@3x.png in Resources */,
 				0D8F845A1A6EC2C300AABAEA /* checkmark@2x.png in Resources */,
 				ACCC66C81FEB4C4400B681A8 /* app_icon_60.png in Resources */,
@@ -1027,6 +1034,7 @@
 				0D8F845D1A6EC2C300AABAEA /* edit@2x.png in Resources */,
 				0D8F846E1A6EC2C300AABAEA /* stats.png in Resources */,
 				0DBC36181D7E2BA50016B898 /* spinner.jpg in Resources */,
+				AC6115CC1FEE01E30052BFE5 /* placeholder_circle@1x.png in Resources */,
 				0D8F84611A6EC2C300AABAEA /* instagram@2x.png in Resources */,
 				0D81E4581C8F404300974ED3 /* circle_icon@3x.png in Resources */,
 				0D8F84621A6EC2C300AABAEA /* instagram_small.png in Resources */,
@@ -1038,6 +1046,7 @@
 				0D8F845F1A6EC2C300AABAEA /* fishing_methods.png in Resources */,
 				0DBC36171D7E2BA50016B898 /* rapala.jpg in Resources */,
 				0DBC36131D7DBB480016B898 /* iRate.bundle in Resources */,
+				AC6115CB1FEE01E30052BFE5 /* placeholder_circle@2x.png in Resources */,
 				0D8F84551A6EC2C300AABAEA /* bait.png in Resources */,
 				0D8F846B1A6EC2C300AABAEA /* sort@2x.png in Resources */,
 				0D8F84731A6EC2C300AABAEA /* fishing_methods_large.png in Resources */,
@@ -1049,7 +1058,6 @@
 				AC58D5751FEDBBFD00C5EC3E /* Statistics.storyboard in Resources */,
 				0D8F844B1A6EC2C300AABAEA /* app_icon.png in Resources */,
 				0D8F84721A6EC2C300AABAEA /* entries_large.png in Resources */,
-				0D8F84791A6EC2C300AABAEA /* no_image.png in Resources */,
 				0D81E4561C8F404300974ED3 /* circle_icon@1x.png in Resources */,
 				0D8F839D1A6EC15D00AABAEA /* CMALaunchScreen.xib in Resources */,
 				ACCC66C91FEB4C4400B681A8 /* app_icon_20.png in Resources */,

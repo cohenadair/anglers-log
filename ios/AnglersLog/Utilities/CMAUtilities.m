@@ -206,7 +206,7 @@
 }
 
 + (UIImage *)placeholderImage {
-    return [UIImage imageNamed:@"no_image.png"];
+    return [UIImage imageNamed:@"placeholder_circle"];
 }
 
 @end
