@@ -15,16 +15,29 @@
 
 @implementation CMAJSONReaderTest {
     NSBundle *mBundle;
+    CMAJournal *mJournal;
 }
 
 - (void)setUp {
     [super setUp];
     mBundle = [NSBundle bundleForClass:self.class];
+    mJournal = [CMAStorageManager.sharedManager managedJournal];
 }
 
 - (void)tearDown {
     mBundle = nil;
+    mJournal = nil;
     [super tearDown];
+}
+
+- (void)loadJournalFromFile:(NSString *)file {
+    NSString *filePath = [mBundle pathForResource:file ofType:@".json"];
+    NSString *error = nil;
+    
+    [CMAJSONReader JSONToJournal:mJournal jsonFilePath:filePath error:&error];
+    
+    XCTAssertNil(error);
+    XCTAssertTrue(mJournal.entryCount > 0);
 }
 
 /**
@@ -52,16 +65,8 @@
 }
 
 - (void)assertDatesNotNilForFile:(NSString *)file {
-    NSString *filePath = [mBundle pathForResource:file ofType:@".json"];
-    
-    CMAJournal *testJournal = [CMAStorageManager.sharedManager managedJournal];
-    NSString *error = nil;
-    
-    [CMAJSONReader JSONToJournal:testJournal jsonFilePath:filePath error:&error];
-    
-    XCTAssertNil(error);
-    XCTAssertTrue(testJournal.entryCount > 0);
-    for (CMAEntry *entry in testJournal.entries) {
+    [self loadJournalFromFile:file];
+    for (CMAEntry *entry in mJournal.entries) {
         XCTAssertNotNil(entry.date);
     }
 }
