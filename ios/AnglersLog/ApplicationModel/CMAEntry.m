@@ -201,7 +201,8 @@
             unitString = UNIT_METRIC_LENGTH;
     }
     
-    return [NSString stringWithFormat:@"%.2f%@", self.fishLength.floatValue, unitString];
+    return [NSString stringWithFormat:@"%.2f%@%@", self.fishLength.floatValue,
+            useShorthand ? @"" : @" ", unitString];
 }
 
 - (NSString *)fishResultAsString {

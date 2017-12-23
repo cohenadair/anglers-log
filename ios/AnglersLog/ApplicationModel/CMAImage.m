@@ -8,11 +8,11 @@
 
 #import <ImageIO/ImageIO.h>
 #import <MobileCoreServices/MobileCoreServices.h>
-#import "CMAImage.h"
+
 #import "CMABait.h"
-#import "CMAEntry.h"
 #import "CMAConstants.h"
-#import "CMAUtilities.h"
+#import "CMAEntry.h"
+#import "CMAImage.h"
 #import "CMAJSONWriter.h"
 #import "CMAUtilities.h"
 
@@ -79,10 +79,10 @@
 // anIndex is the index of the image in an images array. It's added to create a unique file name.
 - (void)saveWithIndex:(NSInteger)anIndex {
     if (!self.fullImage)
-        NSLog(@"WARNING: Trying to save CMAImage with NULL image value.");
+        NSLog(@"WARNING: Trying to save CMAImage with nil image value.");
     
     if (!self.entry && !self.bait)
-        NSLog(@"WARNING: Trying to save CMAImage with NILL entry/bait value.");
+        NSLog(@"WARNING: Trying to save CMAImage with nil entry/bait value.");
     
     NSString *fileName;
     

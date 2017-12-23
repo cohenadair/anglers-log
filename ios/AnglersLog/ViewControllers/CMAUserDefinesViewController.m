@@ -247,11 +247,6 @@
             [cell setAccessoryType:UITableViewCellAccessoryNone];
     }
     
-    if (indexPath.item % 2 == 0)
-        [cell setBackgroundColor:CELL_COLOR_DARK];
-    else
-        [cell setBackgroundColor:CELL_COLOR_LIGHT];
-    
     return cell;
 }
 

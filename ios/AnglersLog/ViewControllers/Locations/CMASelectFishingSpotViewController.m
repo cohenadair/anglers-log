@@ -37,12 +37,6 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"fishingSpotCell" forIndexPath:indexPath];
     cell.textLabel.text = [[self.location.fishingSpots objectAtIndex:indexPath.row] name];
-    
-    if (indexPath.item % 2 == 0)
-        [cell setBackgroundColor:CELL_COLOR_DARK];
-    else
-        [cell setBackgroundColor:CELL_COLOR_LIGHT];
-    
     return cell;
 }
 

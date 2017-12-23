@@ -6,10 +6,12 @@
 //  Copyright (c) 2014 Cohen Adair. All rights reserved.
 //
 
-#import "CMAUtilities.h"
-#import <sys/socket.h>
 #import <netinet/in.h>
+#import <sys/socket.h>
 #import <SystemConfiguration/SystemConfiguration.h>
+
+#import "CMAConstants.h"
+#import "CMAUtilities.h"
 #import "UIImage+ResizeMagick.h"
 
 @implementation CMAUtilities
@@ -197,6 +199,14 @@
     NSDateFormatter *formatter = [NSDateFormatter new];
     [formatter setDateFormat:format];
     return [formatter stringFromDate:date];
+}
+
++ (NSString *)displayStringForDate:(NSDate *)date {
+    return [self stringForDate:date withFormat:DISPLAY_DATE_FORMAT];
+}
+
++ (UIImage *)placeholderImage {
+    return [UIImage imageNamed:@"no_image.png"];
 }
 
 @end

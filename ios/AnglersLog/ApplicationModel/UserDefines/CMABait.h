@@ -34,5 +34,7 @@
 
 // accessing
 - (NSString *)typeAsString;
+- (NSString *)fishCaughtAsString;
+- (NSString *)colorAsString;
 
 @end

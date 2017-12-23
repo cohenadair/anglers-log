@@ -22,7 +22,7 @@
 
 #pragma mark - Singleton Methods
 
-+ (id)sharedManager {
++ (CMAStorageManager *)sharedManager {
     static CMAStorageManager *sharedStorageManager = nil;
     static dispatch_once_t onceToken;
     

@@ -8,8 +8,12 @@
 
 #import "CMAConstants.h"
 
+#pragma mark - Date Formats
+
 NSString *const DATE_FILE_STRING = @"MM-dd-yyyy_h-mm_a";
 NSString *const ACCURATE_DATE_FILE_STRING = @"MM-dd-yyyy_h-mm_a_ss.SSS";
+
+NSString *const DISPLAY_DATE_FORMAT = @"MMM dd, yyyy 'at' h:mm a";
 
 #pragma mark - Application Constants
 
@@ -88,7 +92,7 @@ CGFloat const TABLE_HEIGHT_FOOTER       = 25.0f;
 CGFloat const TABLE_HEIGHT_HEADER       = 40.0f;
 CGFloat const TABLE_HEIGHT_WEATHER_CELL = 90.0f;
 NSInteger const GALLERY_CELL_SPACING    = 2;
-NSInteger const TABLE_THUMB_SIZE        = 85;
+NSInteger const TABLE_THUMB_SIZE        = 50;
 
 #pragma mark - Math Constants
 

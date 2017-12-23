@@ -36,7 +36,7 @@
 		0D8F83981A6EC10800AABAEA /* CMAWaterClarity.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D8F838A1A6EC10800AABAEA /* CMAWaterClarity.m */; };
 		0D8F839C1A6EC15D00AABAEA /* CMAAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D8F839A1A6EC15D00AABAEA /* CMAAppDelegate.m */; };
 		0D8F839D1A6EC15D00AABAEA /* CMALaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0D8F839B1A6EC15D00AABAEA /* CMALaunchScreen.xib */; };
-		0D8F83A11A6EC1AE00AABAEA /* CMAStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0D8F839F1A6EC1AE00AABAEA /* CMAStoryboard.storyboard */; };
+		0D8F83A11A6EC1AE00AABAEA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0D8F839F1A6EC1AE00AABAEA /* Main.storyboard */; };
 		0D8F83A51A6EC1E600AABAEA /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0D8F83A41A6EC1E600AABAEA /* Images.xcassets */; };
 		0D8F83A91A6EC20800AABAEA /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D8F83A61A6EC20800AABAEA /* main.m */; };
 		0D8F83AD1A6EC22900AABAEA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0D8F83AB1A6EC22900AABAEA /* InfoPlist.strings */; };
@@ -60,17 +60,14 @@
 		0D8F83EE1A6EC28300AABAEA /* CMAAlerts.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D8F83E91A6EC28300AABAEA /* CMAAlerts.m */; };
 		0D8F83EF1A6EC28300AABAEA /* CMAConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D8F83EB1A6EC28300AABAEA /* CMAConstants.m */; };
 		0D8F83F01A6EC28300AABAEA /* CMAUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D8F83ED1A6EC28300AABAEA /* CMAUtilities.m */; };
-		0D8F840A1A6EC29A00AABAEA /* CMABaitTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D8F83F21A6EC29A00AABAEA /* CMABaitTableViewCell.m */; };
 		0D8F840B1A6EC29A00AABAEA /* CMACameraActionSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D8F83F41A6EC29A00AABAEA /* CMACameraActionSheet.m */; };
 		0D8F840C1A6EC29A00AABAEA /* CMACameraButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D8F83F61A6EC29A00AABAEA /* CMACameraButton.m */; };
 		0D8F840D1A6EC29A00AABAEA /* CMACircleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D8F83F81A6EC29A00AABAEA /* CMACircleView.m */; };
 		0D8F840E1A6EC29A00AABAEA /* CMACircleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0D8F83F91A6EC29A00AABAEA /* CMACircleView.xib */; };
-		0D8F840F1A6EC29A00AABAEA /* CMAEntryTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D8F83FB1A6EC29A00AABAEA /* CMAEntryTableViewCell.m */; };
 		0D8F84101A6EC29A00AABAEA /* CMAInstagramActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D8F83FD1A6EC29A00AABAEA /* CMAInstagramActivity.m */; };
 		0D8F84111A6EC29A00AABAEA /* CMANoXView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D8F83FF1A6EC29A00AABAEA /* CMANoXView.m */; };
 		0D8F84121A6EC29A00AABAEA /* CMANoXView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0D8F84001A6EC29A00AABAEA /* CMANoXView.xib */; };
 		0D8F84131A6EC29A00AABAEA /* CMADeleteActionSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D8F84021A6EC29A00AABAEA /* CMADeleteActionSheet.m */; };
-		0D8F84141A6EC29A00AABAEA /* CMAStatisticsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D8F84041A6EC29A00AABAEA /* CMAStatisticsTableViewCell.m */; };
 		0D8F84151A6EC29A00AABAEA /* CMATouchSegmentedControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D8F84061A6EC29A00AABAEA /* CMATouchSegmentedControl.m */; };
 		0D8F84161A6EC29A00AABAEA /* CMAWeatherDataView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D8F84081A6EC29A00AABAEA /* CMAWeatherDataView.m */; };
 		0D8F84171A6EC29A00AABAEA /* CMAWeatherDataView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0D8F84091A6EC29A00AABAEA /* CMAWeatherDataView.xib */; };
@@ -139,12 +136,19 @@
 		0DCAD6551AA5069E0040B03B /* CMASettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DCAD6541AA5069E0040B03B /* CMASettingsViewController.m */; };
 		0DCC26571A520DD300738F04 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DCC26561A520DD300738F04 /* SystemConfiguration.framework */; };
 		1C74E7B8C5364063A0D85F6F /* Pods_AnglersLog_AnglersLogTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FDAFF13CF55D9681BAF299B1 /* Pods_AnglersLog_AnglersLogTests.framework */; };
+		AC58D56C1FED50CC00C5EC3E /* Entries.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AC58D56B1FED50CC00C5EC3E /* Entries.storyboard */; };
+		AC58D5701FED792A00C5EC3E /* CMAThumbnailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = AC58D56E1FED792A00C5EC3E /* CMAThumbnailCell.m */; };
+		AC58D5711FED792A00C5EC3E /* CMAThumbnailCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = AC58D56F1FED792A00C5EC3E /* CMAThumbnailCell.xib */; };
+		AC58D5731FEDA85A00C5EC3E /* Baits.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AC58D5721FEDA85A00C5EC3E /* Baits.storyboard */; };
+		AC58D5751FEDBBFD00C5EC3E /* Statistics.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AC58D5741FEDBBFD00C5EC3E /* Statistics.storyboard */; };
+		AC58D6381FEDCC2700C5EC3E /* CMAEntryTest.m in Sources */ = {isa = PBXBuildFile; fileRef = AC58D57C1FEDC6DF00C5EC3E /* CMAEntryTest.m */; };
+		AC58D6391FEDCC2700C5EC3E /* CMAJSONReaderTest.m in Sources */ = {isa = PBXBuildFile; fileRef = ACCC66D81FEB5DB800B681A8 /* CMAJSONReaderTest.m */; };
+		AC6115C61FEDD03A0052BFE5 /* backup_ios.json in Resources */ = {isa = PBXBuildFile; fileRef = AC6115C51FEDD03A0052BFE5 /* backup_ios.json */; };
 		AC85D5471FEC8BA800B0FC71 /* backup_ios_legacy.json in Resources */ = {isa = PBXBuildFile; fileRef = AC85D5461FEC8BA800B0FC71 /* backup_ios_legacy.json */; };
 		ACCC66C61FEB4C4400B681A8 /* app_icon_167.png in Resources */ = {isa = PBXBuildFile; fileRef = ACCC66C21FEB4C4400B681A8 /* app_icon_167.png */; };
 		ACCC66C71FEB4C4400B681A8 /* app_icon_87.png in Resources */ = {isa = PBXBuildFile; fileRef = ACCC66C31FEB4C4400B681A8 /* app_icon_87.png */; };
 		ACCC66C81FEB4C4400B681A8 /* app_icon_60.png in Resources */ = {isa = PBXBuildFile; fileRef = ACCC66C41FEB4C4400B681A8 /* app_icon_60.png */; };
 		ACCC66C91FEB4C4400B681A8 /* app_icon_20.png in Resources */ = {isa = PBXBuildFile; fileRef = ACCC66C51FEB4C4400B681A8 /* app_icon_20.png */; };
-		ACCC66D91FEB5DB800B681A8 /* CMAJSONReaderTest.m in Sources */ = {isa = PBXBuildFile; fileRef = ACCC66D81FEB5DB800B681A8 /* CMAJSONReaderTest.m */; };
 		ACCC66E51FEC6BC100B681A8 /* backup_android.json in Resources */ = {isa = PBXBuildFile; fileRef = ACCC66E31FEC6BC100B681A8 /* backup_android.json */; };
 		D6E037DE99C4BF212C247133 /* Pods_AnglersLog.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 029851291812FE4E6CF732C9 /* Pods_AnglersLog.framework */; };
 		E705AD7E1A22DD5C0077F16C /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E705AD7D1A22DD5C0077F16C /* QuartzCore.framework */; };
@@ -223,7 +227,7 @@
 		0D8F83991A6EC15D00AABAEA /* CMAAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAAppDelegate.h; path = AnglersLog/CMAAppDelegate.h; sourceTree = SOURCE_ROOT; };
 		0D8F839A1A6EC15D00AABAEA /* CMAAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAAppDelegate.m; path = AnglersLog/CMAAppDelegate.m; sourceTree = SOURCE_ROOT; };
 		0D8F839B1A6EC15D00AABAEA /* CMALaunchScreen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = CMALaunchScreen.xib; path = AnglersLog/CMALaunchScreen.xib; sourceTree = SOURCE_ROOT; };
-		0D8F839F1A6EC1AE00AABAEA /* CMAStoryboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = CMAStoryboard.storyboard; path = AnglersLog/CMAStoryboard.storyboard; sourceTree = SOURCE_ROOT; };
+		0D8F839F1A6EC1AE00AABAEA /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Main.storyboard; path = AnglersLog/Storyboards/Main.storyboard; sourceTree = SOURCE_ROOT; };
 		0D8F83A41A6EC1E600AABAEA /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = AnglersLog/Images.xcassets; sourceTree = SOURCE_ROOT; };
 		0D8F83A61A6EC20800AABAEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = AnglersLog/main.m; sourceTree = SOURCE_ROOT; };
 		0D8F83AC1A6EC22900AABAEA /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = AnglersLog/en.lproj/InfoPlist.strings; sourceTree = SOURCE_ROOT; };
@@ -267,8 +271,6 @@
 		0D8F83EB1A6EC28300AABAEA /* CMAConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAConstants.m; path = AnglersLog/Utilities/CMAConstants.m; sourceTree = SOURCE_ROOT; };
 		0D8F83EC1A6EC28300AABAEA /* CMAUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAUtilities.h; path = AnglersLog/Utilities/CMAUtilities.h; sourceTree = SOURCE_ROOT; };
 		0D8F83ED1A6EC28300AABAEA /* CMAUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAUtilities.m; path = AnglersLog/Utilities/CMAUtilities.m; sourceTree = SOURCE_ROOT; };
-		0D8F83F11A6EC29A00AABAEA /* CMABaitTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMABaitTableViewCell.h; path = AnglersLog/CustomViews/CMABaitTableViewCell.h; sourceTree = SOURCE_ROOT; };
-		0D8F83F21A6EC29A00AABAEA /* CMABaitTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMABaitTableViewCell.m; path = AnglersLog/CustomViews/CMABaitTableViewCell.m; sourceTree = SOURCE_ROOT; };
 		0D8F83F31A6EC29A00AABAEA /* CMACameraActionSheet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMACameraActionSheet.h; path = AnglersLog/CustomViews/CMACameraActionSheet.h; sourceTree = SOURCE_ROOT; };
 		0D8F83F41A6EC29A00AABAEA /* CMACameraActionSheet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMACameraActionSheet.m; path = AnglersLog/CustomViews/CMACameraActionSheet.m; sourceTree = SOURCE_ROOT; };
 		0D8F83F51A6EC29A00AABAEA /* CMACameraButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMACameraButton.h; path = AnglersLog/CustomViews/CMACameraButton.h; sourceTree = SOURCE_ROOT; };
@@ -276,8 +278,6 @@
 		0D8F83F71A6EC29A00AABAEA /* CMACircleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMACircleView.h; path = AnglersLog/CustomViews/CMACircleView.h; sourceTree = SOURCE_ROOT; };
 		0D8F83F81A6EC29A00AABAEA /* CMACircleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMACircleView.m; path = AnglersLog/CustomViews/CMACircleView.m; sourceTree = SOURCE_ROOT; };
 		0D8F83F91A6EC29A00AABAEA /* CMACircleView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = CMACircleView.xib; path = AnglersLog/CustomViews/CMACircleView.xib; sourceTree = SOURCE_ROOT; };
-		0D8F83FA1A6EC29A00AABAEA /* CMAEntryTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAEntryTableViewCell.h; path = AnglersLog/CustomViews/CMAEntryTableViewCell.h; sourceTree = SOURCE_ROOT; };
-		0D8F83FB1A6EC29A00AABAEA /* CMAEntryTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAEntryTableViewCell.m; path = AnglersLog/CustomViews/CMAEntryTableViewCell.m; sourceTree = SOURCE_ROOT; };
 		0D8F83FC1A6EC29A00AABAEA /* CMAInstagramActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAInstagramActivity.h; path = AnglersLog/CustomViews/CMAInstagramActivity.h; sourceTree = SOURCE_ROOT; };
 		0D8F83FD1A6EC29A00AABAEA /* CMAInstagramActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAInstagramActivity.m; path = AnglersLog/CustomViews/CMAInstagramActivity.m; sourceTree = SOURCE_ROOT; };
 		0D8F83FE1A6EC29A00AABAEA /* CMANoXView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMANoXView.h; path = AnglersLog/CustomViews/CMANoXView.h; sourceTree = SOURCE_ROOT; };
@@ -285,8 +285,6 @@
 		0D8F84001A6EC29A00AABAEA /* CMANoXView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = CMANoXView.xib; path = AnglersLog/CustomViews/CMANoXView.xib; sourceTree = SOURCE_ROOT; };
 		0D8F84011A6EC29A00AABAEA /* CMADeleteActionSheet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMADeleteActionSheet.h; path = AnglersLog/CustomViews/CMADeleteActionSheet.h; sourceTree = SOURCE_ROOT; };
 		0D8F84021A6EC29A00AABAEA /* CMADeleteActionSheet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMADeleteActionSheet.m; path = AnglersLog/CustomViews/CMADeleteActionSheet.m; sourceTree = SOURCE_ROOT; };
-		0D8F84031A6EC29A00AABAEA /* CMAStatisticsTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAStatisticsTableViewCell.h; path = AnglersLog/CustomViews/CMAStatisticsTableViewCell.h; sourceTree = SOURCE_ROOT; };
-		0D8F84041A6EC29A00AABAEA /* CMAStatisticsTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAStatisticsTableViewCell.m; path = AnglersLog/CustomViews/CMAStatisticsTableViewCell.m; sourceTree = SOURCE_ROOT; };
 		0D8F84051A6EC29A00AABAEA /* CMATouchSegmentedControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMATouchSegmentedControl.h; path = AnglersLog/CustomViews/CMATouchSegmentedControl.h; sourceTree = SOURCE_ROOT; };
 		0D8F84061A6EC29A00AABAEA /* CMATouchSegmentedControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMATouchSegmentedControl.m; path = AnglersLog/CustomViews/CMATouchSegmentedControl.m; sourceTree = SOURCE_ROOT; };
 		0D8F84071A6EC29A00AABAEA /* CMAWeatherDataView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAWeatherDataView.h; path = AnglersLog/CustomViews/CMAWeatherDataView.h; sourceTree = SOURCE_ROOT; };
@@ -367,7 +365,17 @@
 		0DCC26561A520DD300738F04 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		0DCC43271A99A3AD0019DB2E /* TheAnglersLog 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "TheAnglersLog 2.xcdatamodel"; sourceTree = "<group>"; };
 		0DCC43281A99B0D00019DB2E /* TheAnglersLog 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "TheAnglersLog 3.xcdatamodel"; sourceTree = "<group>"; };
+		449BF41FA0FE38389C066E4B /* Pods_AnglersLogTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AnglersLogTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		493E619A3319133E8D65DB4D /* Pods-AnglersLog.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AnglersLog.debug.xcconfig"; path = "Pods/Target Support Files/Pods-AnglersLog/Pods-AnglersLog.debug.xcconfig"; sourceTree = "<group>"; };
+		74D0C5C3A9825BC7B00515D5 /* Pods-AnglersLogTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AnglersLogTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-AnglersLogTests/Pods-AnglersLogTests.release.xcconfig"; sourceTree = "<group>"; };
+		AC58D56B1FED50CC00C5EC3E /* Entries.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Entries.storyboard; sourceTree = "<group>"; };
+		AC58D56D1FED792A00C5EC3E /* CMAThumbnailCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CMAThumbnailCell.h; path = CustomViews/CMAThumbnailCell.h; sourceTree = "<group>"; };
+		AC58D56E1FED792A00C5EC3E /* CMAThumbnailCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = CMAThumbnailCell.m; path = CustomViews/CMAThumbnailCell.m; sourceTree = "<group>"; };
+		AC58D56F1FED792A00C5EC3E /* CMAThumbnailCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = CMAThumbnailCell.xib; path = CustomViews/CMAThumbnailCell.xib; sourceTree = "<group>"; };
+		AC58D5721FEDA85A00C5EC3E /* Baits.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Baits.storyboard; sourceTree = "<group>"; };
+		AC58D5741FEDBBFD00C5EC3E /* Statistics.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Statistics.storyboard; sourceTree = "<group>"; };
+		AC58D57C1FEDC6DF00C5EC3E /* CMAEntryTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CMAEntryTest.m; sourceTree = "<group>"; };
+		AC6115C51FEDD03A0052BFE5 /* backup_ios.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = backup_ios.json; sourceTree = "<group>"; };
 		AC85D5461FEC8BA800B0FC71 /* backup_ios_legacy.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = backup_ios_legacy.json; sourceTree = "<group>"; };
 		ACCC66C21FEB4C4400B681A8 /* app_icon_167.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = app_icon_167.png; sourceTree = "<group>"; };
 		ACCC66C31FEB4C4400B681A8 /* app_icon_87.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = app_icon_87.png; sourceTree = "<group>"; };
@@ -377,6 +385,7 @@
 		ACCC66D21FEB5BD600B681A8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		ACCC66D81FEB5DB800B681A8 /* CMAJSONReaderTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CMAJSONReaderTest.m; sourceTree = "<group>"; };
 		ACCC66E31FEC6BC100B681A8 /* backup_android.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = backup_android.json; sourceTree = "<group>"; };
+		B729AABA520016321591B815 /* Pods-AnglersLogTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AnglersLogTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-AnglersLogTests/Pods-AnglersLogTests.debug.xcconfig"; sourceTree = "<group>"; };
 		C43B3CB978CF523B47875868 /* Pods-AnglersLog.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AnglersLog.release.xcconfig"; path = "Pods/Target Support Files/Pods-AnglersLog/Pods-AnglersLog.release.xcconfig"; sourceTree = "<group>"; };
 		CE5AEC276E16C3AA41537A21 /* Pods-AnglersLog-AnglersLogTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AnglersLog-AnglersLogTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-AnglersLog-AnglersLogTests/Pods-AnglersLog-AnglersLogTests.release.xcconfig"; sourceTree = "<group>"; };
 		E705AD7D1A22DD5C0077F16C /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
@@ -646,16 +655,30 @@
 				C43B3CB978CF523B47875868 /* Pods-AnglersLog.release.xcconfig */,
 				F4ED68DB960A24DE564C92D5 /* Pods-AnglersLog-AnglersLogTests.debug.xcconfig */,
 				CE5AEC276E16C3AA41537A21 /* Pods-AnglersLog-AnglersLogTests.release.xcconfig */,
+				B729AABA520016321591B815 /* Pods-AnglersLogTests.debug.xcconfig */,
+				74D0C5C3A9825BC7B00515D5 /* Pods-AnglersLogTests.release.xcconfig */,
 			);
 			name = Pods;
+			sourceTree = "<group>";
+		};
+		AC58D56A1FED509B00C5EC3E /* Storyboards */ = {
+			isa = PBXGroup;
+			children = (
+				0D8F839F1A6EC1AE00AABAEA /* Main.storyboard */,
+				AC58D5741FEDBBFD00C5EC3E /* Statistics.storyboard */,
+				AC58D5721FEDA85A00C5EC3E /* Baits.storyboard */,
+				AC58D56B1FED50CC00C5EC3E /* Entries.storyboard */,
+			);
+			path = Storyboards;
 			sourceTree = "<group>";
 		};
 		ACCC66CF1FEB5BD600B681A8 /* AnglersLogTests */ = {
 			isa = PBXGroup;
 			children = (
+				AC58D57C1FEDC6DF00C5EC3E /* CMAEntryTest.m */,
+				ACCC66D81FEB5DB800B681A8 /* CMAJSONReaderTest.m */,
 				ACCC66DA1FEC68CE00B681A8 /* Data */,
 				ACCC66D21FEB5BD600B681A8 /* Info.plist */,
-				ACCC66D81FEB5DB800B681A8 /* CMAJSONReaderTest.m */,
 			);
 			path = AnglersLogTests;
 			sourceTree = "<group>";
@@ -663,8 +686,9 @@
 		ACCC66DA1FEC68CE00B681A8 /* Data */ = {
 			isa = PBXGroup;
 			children = (
-				AC85D5461FEC8BA800B0FC71 /* backup_ios_legacy.json */,
 				ACCC66E31FEC6BC100B681A8 /* backup_android.json */,
+				AC85D5461FEC8BA800B0FC71 /* backup_ios_legacy.json */,
+				AC6115C51FEDD03A0052BFE5 /* backup_ios.json */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -711,6 +735,7 @@
 				E70B637919D3A8E400DFBA85 /* UIKit.framework */,
 				029851291812FE4E6CF732C9 /* Pods_AnglersLog.framework */,
 				FDAFF13CF55D9681BAF299B1 /* Pods_AnglersLog_AnglersLogTests.framework */,
+				449BF41FA0FE38389C066E4B /* Pods_AnglersLogTests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -718,21 +743,21 @@
 		E70B637B19D3A8E400DFBA85 /* AnglersLog */ = {
 			isa = PBXGroup;
 			children = (
-				0D23B26F1A7713C900E89736 /* TheAnglersLog.xcdatamodeld */,
-				0D8F84A41A6EC31500AABAEA /* TheAnglersLog.entitlements */,
-				E7C29D0C1A143A1600015B42 /* Libraries */,
-				E738583B19FCD49100FE122B /* Images */,
-				0DB8D78B1D8A088400EF7C50 /* Categories */,
-				E7A6883D19F7321E00B032E3 /* CustomViews */,
-				E7C9272019EF90C00010A9FE /* Utilities */,
-				E7C926D419EE3B320010A9FE /* ViewControllers */,
 				E72669B119DF1350003C8E0B /* ApplicationModel */,
-				0D8F83A41A6EC1E600AABAEA /* Images.xcassets */,
+				0DB8D78B1D8A088400EF7C50 /* Categories */,
 				0D8F83991A6EC15D00AABAEA /* CMAAppDelegate.h */,
 				0D8F839A1A6EC15D00AABAEA /* CMAAppDelegate.m */,
-				E70B637C19D3A8E400DFBA85 /* SupportingFiles */,
-				0D8F839F1A6EC1AE00AABAEA /* CMAStoryboard.storyboard */,
 				0D8F839B1A6EC15D00AABAEA /* CMALaunchScreen.xib */,
+				E7A6883D19F7321E00B032E3 /* CustomViews */,
+				E738583B19FCD49100FE122B /* Images */,
+				0D8F83A41A6EC1E600AABAEA /* Images.xcassets */,
+				E7C29D0C1A143A1600015B42 /* Libraries */,
+				AC58D56A1FED509B00C5EC3E /* Storyboards */,
+				E70B637C19D3A8E400DFBA85 /* SupportingFiles */,
+				0D8F84A41A6EC31500AABAEA /* TheAnglersLog.entitlements */,
+				0D23B26F1A7713C900E89736 /* TheAnglersLog.xcdatamodeld */,
+				E7C9272019EF90C00010A9FE /* Utilities */,
+				E7C926D419EE3B320010A9FE /* ViewControllers */,
 			);
 			path = AnglersLog;
 			sourceTree = "<group>";
@@ -788,35 +813,32 @@
 		E7A6883D19F7321E00B032E3 /* CustomViews */ = {
 			isa = PBXGroup;
 			children = (
-				0D8F83F11A6EC29A00AABAEA /* CMABaitTableViewCell.h */,
-				0D8F83F21A6EC29A00AABAEA /* CMABaitTableViewCell.m */,
+				0D87D06A1AD6E69C008E732A /* CMAAlertController.h */,
+				0D87D06B1AD6E69C008E732A /* CMAAlertController.m */,
 				0D8F83F31A6EC29A00AABAEA /* CMACameraActionSheet.h */,
 				0D8F83F41A6EC29A00AABAEA /* CMACameraActionSheet.m */,
-				0D8F84011A6EC29A00AABAEA /* CMADeleteActionSheet.h */,
-				0D8F84021A6EC29A00AABAEA /* CMADeleteActionSheet.m */,
 				0D8F83F51A6EC29A00AABAEA /* CMACameraButton.h */,
 				0D8F83F61A6EC29A00AABAEA /* CMACameraButton.m */,
 				0D8F83F71A6EC29A00AABAEA /* CMACircleView.h */,
 				0D8F83F81A6EC29A00AABAEA /* CMACircleView.m */,
 				0D8F83F91A6EC29A00AABAEA /* CMACircleView.xib */,
-				0D8F83FA1A6EC29A00AABAEA /* CMAEntryTableViewCell.h */,
-				0D8F83FB1A6EC29A00AABAEA /* CMAEntryTableViewCell.m */,
+				0D8F84011A6EC29A00AABAEA /* CMADeleteActionSheet.h */,
+				0D8F84021A6EC29A00AABAEA /* CMADeleteActionSheet.m */,
 				0D8F83FC1A6EC29A00AABAEA /* CMAInstagramActivity.h */,
 				0D8F83FD1A6EC29A00AABAEA /* CMAInstagramActivity.m */,
 				0D8F83FE1A6EC29A00AABAEA /* CMANoXView.h */,
 				0D8F83FF1A6EC29A00AABAEA /* CMANoXView.m */,
 				0D8F84001A6EC29A00AABAEA /* CMANoXView.xib */,
-				0D8F84031A6EC29A00AABAEA /* CMAStatisticsTableViewCell.h */,
-				0D8F84041A6EC29A00AABAEA /* CMAStatisticsTableViewCell.m */,
+				0DC75FDB1A9AEDCE0045030C /* CMASinglePhotoCollectionViewCell.h */,
+				0DC75FDC1A9AEDCE0045030C /* CMASinglePhotoCollectionViewCell.m */,
+				AC58D56D1FED792A00C5EC3E /* CMAThumbnailCell.h */,
+				AC58D56E1FED792A00C5EC3E /* CMAThumbnailCell.m */,
+				AC58D56F1FED792A00C5EC3E /* CMAThumbnailCell.xib */,
 				0D8F84051A6EC29A00AABAEA /* CMATouchSegmentedControl.h */,
 				0D8F84061A6EC29A00AABAEA /* CMATouchSegmentedControl.m */,
 				0D8F84071A6EC29A00AABAEA /* CMAWeatherDataView.h */,
 				0D8F84081A6EC29A00AABAEA /* CMAWeatherDataView.m */,
 				0D8F84091A6EC29A00AABAEA /* CMAWeatherDataView.xib */,
-				0DC75FDB1A9AEDCE0045030C /* CMASinglePhotoCollectionViewCell.h */,
-				0DC75FDC1A9AEDCE0045030C /* CMASinglePhotoCollectionViewCell.m */,
-				0D87D06A1AD6E69C008E732A /* CMAAlertController.h */,
-				0D87D06B1AD6E69C008E732A /* CMAAlertController.m */,
 			);
 			name = CustomViews;
 			sourceTree = "<group>";
@@ -964,6 +986,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AC85D5471FEC8BA800B0FC71 /* backup_ios_legacy.json in Resources */,
+				AC6115C61FEDD03A0052BFE5 /* backup_ios.json in Resources */,
 				ACCC66E51FEC6BC100B681A8 /* backup_android.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -973,6 +996,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				0D8F845B1A6EC2C300AABAEA /* checkmark@3x.png in Resources */,
+				AC58D5711FED792A00C5EC3E /* CMAThumbnailCell.xib in Resources */,
+				AC58D56C1FED50CC00C5EC3E /* Entries.storyboard in Resources */,
 				0D8F84711A6EC2C300AABAEA /* baits_large.png in Resources */,
 				0D128F571AD5C1510004CABE /* CMAJSONWriter.json in Resources */,
 				0D8F844F1A6EC2C300AABAEA /* app_icon_180.png in Resources */,
@@ -984,6 +1009,7 @@
 				0D8F84671A6EC2C300AABAEA /* menu@3x.png in Resources */,
 				0D8F844E1A6EC2C300AABAEA /* app_icon_152.png in Resources */,
 				0D8F84171A6EC29A00AABAEA /* CMAWeatherDataView.xib in Resources */,
+				AC58D5731FEDA85A00C5EC3E /* Baits.storyboard in Resources */,
 				0D8F84581A6EC2C300AABAEA /* camera@3x.png in Resources */,
 				0D8F84701A6EC2C300AABAEA /* water_clarities.png in Resources */,
 				0D8F845E1A6EC2C300AABAEA /* edit@3x.png in Resources */,
@@ -1007,7 +1033,7 @@
 				0D8F84541A6EC2C300AABAEA /* app_icon_80.png in Resources */,
 				0D8F84631A6EC2C300AABAEA /* literature.png in Resources */,
 				0D8F84751A6EC2C300AABAEA /* photos_large.png in Resources */,
-				0D8F83A11A6EC1AE00AABAEA /* CMAStoryboard.storyboard in Resources */,
+				0D8F83A11A6EC1AE00AABAEA /* Main.storyboard in Resources */,
 				0D8F844D1A6EC2C300AABAEA /* app_icon_120.png in Resources */,
 				0D8F845F1A6EC2C300AABAEA /* fishing_methods.png in Resources */,
 				0DBC36171D7E2BA50016B898 /* rapala.jpg in Resources */,
@@ -1020,6 +1046,7 @@
 				0D8F84511A6EC2C300AABAEA /* app_icon_40.png in Resources */,
 				0D8F84501A6EC2C300AABAEA /* app_icon_29.png in Resources */,
 				0D8F846A1A6EC2C300AABAEA /* sort@1x.png in Resources */,
+				AC58D5751FEDBBFD00C5EC3E /* Statistics.storyboard in Resources */,
 				0D8F844B1A6EC2C300AABAEA /* app_icon.png in Resources */,
 				0D8F84721A6EC2C300AABAEA /* entries_large.png in Resources */,
 				0D8F84791A6EC2C300AABAEA /* no_image.png in Resources */,
@@ -1200,7 +1227,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				ACCC66D91FEB5DB800B681A8 /* CMAJSONReaderTest.m in Sources */,
+				AC58D6381FEDCC2700C5EC3E /* CMAEntryTest.m in Sources */,
+				AC58D6391FEDCC2700C5EC3E /* CMAJSONReaderTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1226,7 +1254,6 @@
 				0D8F83E21A6EC25200AABAEA /* CMAAddFishingSpotViewController.m in Sources */,
 				0D23B2711A7713C900E89736 /* TheAnglersLog.xcdatamodeld in Sources */,
 				0D8F83941A6EC10800AABAEA /* CMAFishingSpot.m in Sources */,
-				0D8F840A1A6EC29A00AABAEA /* CMABaitTableViewCell.m in Sources */,
 				0D8F83951A6EC10800AABAEA /* CMALocation.m in Sources */,
 				0D8F84111A6EC29A00AABAEA /* CMANoXView.m in Sources */,
 				0D8F838E1A6EC10800AABAEA /* CMAStorageManager.m in Sources */,
@@ -1242,7 +1269,6 @@
 				0DC75FDD1A9AEDCE0045030C /* CMASinglePhotoCollectionViewCell.m in Sources */,
 				0D8F83E01A6EC25200AABAEA /* CMASingleEntryViewController.m in Sources */,
 				0D8F83F01A6EC28300AABAEA /* CMAUtilities.m in Sources */,
-				0D8F84141A6EC29A00AABAEA /* CMAStatisticsTableViewCell.m in Sources */,
 				0D8F83DF1A6EC25200AABAEA /* CMAEntrySortingViewController.m in Sources */,
 				0D8F83E31A6EC25200AABAEA /* CMAAddLocationViewController.m in Sources */,
 				0D8F83DC1A6EC25200AABAEA /* CMAStatisticsViewController.m in Sources */,
@@ -1257,7 +1283,6 @@
 				0D87D06C1AD6E69C008E732A /* CMAAlertController.m in Sources */,
 				0D8F83D71A6EC25200AABAEA /* CMASingleBaitViewController.m in Sources */,
 				0D9B76101A76C4C100553177 /* CMAUserDefineObject.m in Sources */,
-				0D8F840F1A6EC29A00AABAEA /* CMAEntryTableViewCell.m in Sources */,
 				0D128F501AD472340004CABE /* CMAJSONWriter.m in Sources */,
 				0D8F83921A6EC10800AABAEA /* CMABait.m in Sources */,
 				0D8F84101A6EC29A00AABAEA /* CMAInstagramActivity.m in Sources */,
@@ -1266,6 +1291,7 @@
 				0DCAD6551AA5069E0040B03B /* CMASettingsViewController.m in Sources */,
 				0D8F83E11A6EC25200AABAEA /* CMAViewEntriesViewController.m in Sources */,
 				0D8F83E41A6EC25200AABAEA /* CMASelectFishingSpotViewController.m in Sources */,
+				AC58D5701FED792A00C5EC3E /* CMAThumbnailCell.m in Sources */,
 				0D8F83A91A6EC20800AABAEA /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -6,14 +6,14 @@
 //  Copyright (c) 2014 Cohen Adair. All rights reserved.
 //
 
-#import "CMAViewBaitsViewController.h"
-#import "CMAAddBaitViewController.h"
-#import "CMASingleBaitViewController.h"
-#import "CMABaitTableViewCell.h"
-#import "SWRevealViewController.h"
 #import "CMAAppDelegate.h"
+#import "CMAAddBaitViewController.h"
 #import "CMANoXView.h"
+#import "CMASingleBaitViewController.h"
 #import "CMAStorageManager.h"
+#import "CMAThumbnailCell.h"
+#import "CMAViewBaitsViewController.h"
+#import "SWRevealViewController.h"
 
 @interface CMAViewBaitsViewController ()
 
@@ -92,6 +92,7 @@
         self.navigationItem.leftBarButtonItem = self.navigationItem.backBarButtonItem;
     
     [self.tableView setTableFooterView:[[UIView alloc] initWithFrame:CGRectZero]];
+    [CMAThumbnailCell registerWithTableView:self.tableView];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -114,7 +115,7 @@
 #pragma mark - Table View Initializing
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return TABLE_THUMB_SIZE;
+    return CMAThumbnailCell.height;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -126,30 +127,10 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    CMABaitTableViewCell *cell = (CMABaitTableViewCell *)[tableView dequeueReusableCellWithIdentifier:@"baitCell" forIndexPath:indexPath];
-    
-    CMABait *bait = [self.userDefineBaits objectAtIndex:indexPath.row];
-    
-    if (bait.imageData)
-        [cell.thumbImage setImage:bait.imageData.tableCellImage];
-    else
-        [cell.thumbImage setImage:[UIImage imageNamed:@"no_image.png"]];
-    
-    [cell.nameLabel setText:bait.name];
-    
-    if (bait.fishCaught)
-        [cell.fishCaughtLabel setText:[NSString stringWithFormat:@"%@ Fish Caught", [bait.fishCaught stringValue]]];
-    else
-        [cell.fishCaughtLabel setText:@"0 Fish Caught"];
-    
-    if (self.isSelectingForAddEntry || self.isSelectingForStatistics)
-        [cell setAccessoryType:UITableViewCellAccessoryNone];
-    
-    if (indexPath.item % 2 == 0)
-        [cell setBackgroundColor:CELL_COLOR_DARK];
-    else
-        [cell setBackgroundColor:CELL_COLOR_LIGHT];
-    
+    CMAThumbnailCell *cell = [CMAThumbnailCell forTableView:tableView indexPath:indexPath];
+    CMABait *bait = (CMABait *) [self.userDefineBaits objectAtIndex:indexPath.row];
+    BOOL hideAccessory = self.isSelectingForAddEntry || self.isSelectingForStatistics;
+    [cell setBait:bait hideAccessory:hideAccessory];
     return cell;
 }
 
@@ -169,14 +150,10 @@
     [self performSegueWithIdentifier:@"fromViewBaitsToSingleBait" sender:self];
 }
 
-- (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
-    [self performSegueWithIdentifier:@"fromViewBaitsToSingleBait" sender:self];
-}
-
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     // delete from data source
-    CMABaitTableViewCell *cell = (CMABaitTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
-    [[self journal] removeUserDefine:UDN_BAITS objectNamed:cell.nameLabel.text];
+    CMABait *bait = (CMABait *) [self.userDefineBaits objectAtIndex:indexPath.row];
+    [self.journal removeUserDefine:UDN_BAITS objectNamed:bait.name];
     
     // delete from table
     [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
@@ -189,21 +166,6 @@
         [self handleNoBaitView];
         [self.tableView reloadData];
     }
-}
-
-// From: http://stackoverflow.com/questions/25770119/ios-8-uitableview-separator-inset-0-not-working
--(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Remove seperator inset
-    if ([cell respondsToSelector:@selector(setSeparatorInset:)])
-        [cell setSeparatorInset:UIEdgeInsetsZero];
-    
-    // Prevent the cell from inheriting the Table View's margin settings
-    if ([cell respondsToSelector:@selector(setPreservesSuperviewLayoutMargins:)])
-        [cell setPreservesSuperviewLayoutMargins:NO];
-    
-    // Explictly set your cell's layout margins
-    if ([cell respondsToSelector:@selector(setLayoutMargins:)])
-        [cell setLayoutMargins:UIEdgeInsetsZero];
 }
 
 #pragma mark - Events

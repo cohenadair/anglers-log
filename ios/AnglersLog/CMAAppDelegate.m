@@ -77,10 +77,6 @@
 #pragma mark - Appearances
 
 - (void)initAppearances {
-    // Used to alternate background color of UITableViewCells
-    CELL_COLOR_DARK = [UIColor colorWithWhite:0.95 alpha:1.0];
-    CELL_COLOR_LIGHT = [UIColor clearColor];
-    
     [[UINavigationBar appearance] setTranslucent:NO];
     [[UIToolbar appearance] setTranslucent:NO];
     [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(-200.0, 0) forBarMetrics:UIBarMetricsDefault];

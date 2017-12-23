@@ -6,17 +6,18 @@
 //  Copyright (c) 2014 Cohen Adair. All rights reserved.
 //
 
-#import "CMAStatisticsViewController.h"
-#import "CMAUserDefinesViewController.h"
-#import "CMAViewBaitsViewController.h"
-#import "CMASingleEntryViewController.h"
-#import "CMANoXView.h"
 #import "CMAAppDelegate.h"
-#import "CMAStats.h"
-#import "SWRevealViewController.h"
 #import "CMACircleView.h"
-#import "CMAStatisticsTableViewCell.h"
+#import "CMANoXView.h"
+#import "CMASingleEntryViewController.h"
+#import "CMAStatisticsViewController.h"
+#import "CMAStats.h"
 #import "CMAStorageManager.h"
+#import "CMAThumbnailCell.h"
+#import "CMAUserDefinesViewController.h"
+#import "CMAUtilities.h"
+#import "CMAViewBaitsViewController.h"
+#import "SWRevealViewController.h"
 
 @interface CMAStatisticsViewController ()
 
@@ -119,6 +120,7 @@
     
     [self setupView];
     [self.tableView setTableFooterView:[[UIView alloc] initWithFrame:CGRectZero]]; // removes empty cells at the end of the list
+    [CMAThumbnailCell registerWithTableView:self.tableView];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -171,11 +173,11 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return TABLE_THUMB_SIZE;
+    return CMAThumbnailCell.height;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    CMAStatisticsTableViewCell *cell = (CMAStatisticsTableViewCell *)[tableView dequeueReusableCellWithIdentifier:@"statisticsCell"];
+    CMAThumbnailCell *cell = [CMAThumbnailCell forTableView:tableView indexPath:indexPath];
     
     if (indexPath.section == kSectionLongestFish)
         [self initLongestCatchCell:cell];
@@ -186,46 +188,18 @@
     return cell;
 }
 
-- (void)initLongestCatchCell: (CMAStatisticsTableViewCell *)aCell {
+- (void)initLongestCatchCell:(CMAThumbnailCell *)cell {
     self.longestCatchEntry = [self.stats highCatchEntryFor:kHighCatchEntryLength];
-    
-    if (self.longestCatchEntry) {
-        if ([self.longestCatchEntry imageCount] > 0)
-            [aCell.thumbImage setImage:[[self.longestCatchEntry.images objectAtIndex:0] tableCellImage]];
-        else
-            [aCell.thumbImage setImage:[UIImage imageNamed:@"no_image.png"]];
-        
-        [aCell.speciesLabel setText:self.longestCatchEntry.fishSpecies.name];
-        [aCell.valueLabel setText:[NSString stringWithFormat:@"%@ %@", [self.longestCatchEntry.fishLength stringValue], [[self journal] lengthUnitsAsString:NO]]];
-    } else {
-        [aCell.thumbImage setImage:[UIImage imageNamed:@"no_image.png"]];
-        [aCell.speciesLabel setText:@"No Recorded Length"];
-        [aCell.valueLabel setText:[NSString stringWithFormat:@"0 %@", [[self journal] lengthUnitsAsString:NO]]];
-        
-        [aCell setAccessoryType:UITableViewCellAccessoryNone];
-        [aCell setUserInteractionEnabled:NO];
-    }
+    [cell setStatsEntry:self.longestCatchEntry
+             showLength:YES
+      measurementSystem:self.journal.measurementSystem];
 }
 
-- (void)initHeaviestCatchCell: (CMAStatisticsTableViewCell *)aCell {
+- (void)initHeaviestCatchCell:(CMAThumbnailCell *)cell {
     self.heaviestCatchEntry = [self.stats highCatchEntryFor:kHighCatchEntryWeight];
-    
-    if (self.heaviestCatchEntry) {
-        if ([self.heaviestCatchEntry imageCount] > 0)
-            [aCell.thumbImage setImage:[[self.heaviestCatchEntry.images objectAtIndex:0] tableCellImage]];
-        else
-            [aCell.thumbImage setImage:[UIImage imageNamed:@"no_image.png"]];
-        
-        [aCell.speciesLabel setText:self.heaviestCatchEntry.fishSpecies.name];
-        [aCell.valueLabel setText:[self.heaviestCatchEntry weightAsStringWithMeasurementSystem:[[self journal] measurementSystem] shorthand:NO]];
-    } else {
-        [aCell.thumbImage setImage:[UIImage imageNamed:@"no_image.png"]];
-        [aCell.speciesLabel setText:@"No Recorded Weight"];
-        [aCell.valueLabel setText:[NSString stringWithFormat:@"0 %@", [[self journal] weightUnitsAsString:NO]]];
-        
-        [aCell setAccessoryType:UITableViewCellAccessoryNone];
-        [aCell setUserInteractionEnabled:NO];
-    }
+    [cell setStatsEntry:self.heaviestCatchEntry
+             showLength:NO
+      measurementSystem:self.journal.measurementSystem];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {

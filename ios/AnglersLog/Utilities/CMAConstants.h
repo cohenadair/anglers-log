@@ -63,13 +63,9 @@ typedef enum frID_e : int16_t {
 
 #pragma mark - Global Variables
 
-// initialized in CMAAppDelegate.m
-UIColor *CELL_COLOR_DARK;
-UIColor *CELL_COLOR_LIGHT;
-CGSize CELL_SIZE_GALLERY;
-
 extern NSString *const DATE_FILE_STRING;
 extern NSString *const ACCURATE_DATE_FILE_STRING;
+extern NSString *const DISPLAY_DATE_FORMAT;
 
 #pragma mark - Application Constants
 

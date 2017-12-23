@@ -50,7 +50,7 @@
 	<key>UILaunchStoryboardName</key>
 	<string>CMALaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
-	<string>CMAStoryboard</string>
+	<string>Main</string>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>armv7</string>

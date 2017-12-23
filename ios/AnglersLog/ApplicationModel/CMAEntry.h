@@ -26,7 +26,7 @@
 @property (strong, nonatomic)NSDate *date;
 
 // photos
-@property (strong, nonatomic)NSMutableOrderedSet *images;
+@property (strong, nonatomic)NSMutableOrderedSet<CMAImage *> *images;
 
 // fish details
 @property (strong, nonatomic)CMASpecies *fishSpecies;

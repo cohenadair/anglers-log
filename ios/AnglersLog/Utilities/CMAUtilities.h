@@ -33,5 +33,7 @@
 + (UIColor *)themeColorDark;
 + (void)runInBackground:(void(^)(void))aBlock;
 + (NSString *)stringForDate:(NSDate *)date withFormat:(NSString *)format;
++ (NSString *)displayStringForDate:(NSDate *)date;
++ (UIImage *)placeholderImage;
 
 @end

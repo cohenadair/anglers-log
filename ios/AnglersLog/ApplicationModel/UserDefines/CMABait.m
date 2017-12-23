@@ -95,6 +95,15 @@
     return @"";
 }
 
+- (NSString *)fishCaughtAsString {
+    return [NSString stringWithFormat:@"%@ Fish Caught",
+            self.fishCaught == nil ? @"0" : self.fishCaught.stringValue];
+}
+
+- (NSString *)colorAsString {
+    return self.color == nil ? @"" : self.color;
+}
+
 #pragma mark - Visiting
 
 - (void)accept:(id)aVisitor {

@@ -6,33 +6,31 @@
 //  Copyright (c) 2014 Cohen Adair. All rights reserved.
 //
 
-#import "CMAViewEntriesViewController.h"
 #import "CMAAddEntryViewController.h"
-#import "CMASingleEntryViewController.h"
-#import "CMATouchSegmentedControl.h"
-#import "CMAEntryTableViewCell.h"
+#import "CMAAlerts.h"
 #import "CMAAppDelegate.h"
 #import "CMANoXView.h"
-#import "SWRevealViewController.h"
+#import "CMASingleEntryViewController.h"
 #import "CMAStorageManager.h"
-#import "CMAAlerts.h"
+#import "CMAThumbnailCell.h"
+#import "CMATouchSegmentedControl.h"
 #import "CMAUtilities.h"
+#import "CMAViewEntriesViewController.h"
+#import "SWRevealViewController.h"
 
 @interface CMAViewEntriesViewController ()
 
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *tableViewTop;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *deleteButton;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *addButton;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *menuButton;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *sortButton;
 
-@property (strong, nonatomic)NSDateFormatter *dateFormatter;
 @property (strong, nonatomic)CMANoXView *noEntriesView;
 @property (strong, nonatomic)UISearchBar *searchBar;
 @property (strong, nonatomic)UIView *searchResultView;
 
-@property (strong, nonatomic)NSMutableOrderedSet *entries;
+@property (strong, nonatomic)NSMutableOrderedSet<CMAEntry *> *entries;
 @property (nonatomic)BOOL isSearchBarInView;
 @property (nonatomic)CGFloat currentOffsetY;
 
@@ -110,9 +108,6 @@
     
     self.navigationController.toolbarHidden = NO;
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Entries" style:UIBarButtonItemStylePlain target:nil action:nil];
-
-    self.dateFormatter = [NSDateFormatter new];
-    [self.dateFormatter setDateFormat:@"MMM dd, yyyy 'at' h:mm a"];
     
     self.entries = [[self journal] entries];
     self.isSearchBarInView = NO;
@@ -125,6 +120,7 @@
     
     [self initSideBarMenu];
     [self.tableView setTableFooterView:[[UIView alloc] initWithFrame:CGRectZero]]; // removes empty cells at the end of the list
+    [CMAThumbnailCell registerWithTableView:self.tableView];
     
     // contentOffset will not change before the main runloop ends without queueing it, for iPad that is
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -158,11 +154,6 @@
         [self.tableView setContentOffset:CGPointMake(0, kSearchBarHeight)];
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
 #pragma mark - Table View Initializing
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -176,53 +167,28 @@
 
 // Sets the height of each cell.
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return TABLE_THUMB_SIZE;
+    return CMAThumbnailCell.height;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    CMAEntryTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"entriesCell" forIndexPath:indexPath];
-    
-    CMAEntry *entry = [self.entries objectAtIndex:indexPath.row];
-    
-    cell.speciesLabel.text = [entry.fishSpecies name];
-    cell.dateLabel.text = [self.dateFormatter stringFromDate:entry.date];
-    
-    if (entry.location)
-        cell.locationLabel.text = [entry locationAsString];
-    else
-        cell.locationLabel.text = @"No Location";
-    
-    if ([entry imageCount] > 0) {
-        CMAImage *img = [entry.images objectAtIndex:0];
-        cell.thumbImage.image = img.tableCellImage;
-    } else
-        cell.thumbImage.image = [UIImage imageNamed:@"no_image.png"];
-    
-    if (indexPath.item % 2 == 0)
-        [cell setBackgroundColor:CELL_COLOR_DARK];
-    else
-        [cell setBackgroundColor:CELL_COLOR_LIGHT];
-    
+- (UITableViewCell *)tableView:(UITableView *)tableView
+         cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    CMAThumbnailCell *cell = [CMAThumbnailCell forTableView:tableView indexPath:indexPath];
+    [cell setEntry:self.entries[indexPath.row]];
     return cell;
-}
-
-- (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
-    [tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
-    [self performSegueWithIdentifier:@"fromViewEntriesToSingleEntry" sender:self];
 }
 
 // Override to support editing the table view.
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         // delete from data source
-        CMAEntryTableViewCell *cell = (CMAEntryTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
-        [[self journal] removeEntryDated:[self.dateFormatter dateFromString:cell.dateLabel.text]];
+        [self.journal removeEntryDated:self.entries[indexPath.row].date];
         
         // delete from table
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
         self.navigationItem.title = [NSString stringWithFormat:@"Entries (%ld)", (long)[[self journal] entryCount]];
         
-        if ([tableView numberOfRowsInSection:0] == 0) {
+        if (self.journal.entryCount <= 0) {
             [self enableToolbarButtons];
             [self handleNoEntriesView];
             [self.deleteButton setEnabled:NO];
@@ -232,19 +198,8 @@
     }
 }
 
-// From: http://stackoverflow.com/questions/25770119/ios-8-uitableview-separator-inset-0-not-working
--(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Remove seperator inset
-    if ([cell respondsToSelector:@selector(setSeparatorInset:)])
-        [cell setSeparatorInset:UIEdgeInsetsZero];
-    
-    // Prevent the cell from inheriting the Table View's margin settings
-    if ([cell respondsToSelector:@selector(setPreservesSuperviewLayoutMargins:)])
-        [cell setPreservesSuperviewLayoutMargins:NO];
-    
-    // Explictly set your cell's layout margins
-    if ([cell respondsToSelector:@selector(setLayoutMargins:)])
-        [cell setLayoutMargins:UIEdgeInsetsZero];
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [self performSegueWithIdentifier:@"fromViewEntriesToSingleEntry" sender:self];
 }
 
 #pragma mark - Search Bar Initializing
