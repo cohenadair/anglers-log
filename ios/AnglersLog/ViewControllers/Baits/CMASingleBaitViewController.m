@@ -14,6 +14,7 @@
 @interface CMASingleBaitViewController ()
 
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;
+@property (weak, nonatomic) IBOutlet UILabel *baitNameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *baitDescriptionLabel;
 @property (weak, nonatomic) IBOutlet UILabel *baitFishCaughtLabel;
 @property (weak, nonatomic) IBOutlet UILabel *baitTypeLabel;
@@ -25,9 +26,10 @@
 #define kDefaultCellHeight 30
 
 #define kPhotoCellRow 0
-#define kSizeRow 3
-#define kColorRow 4
-#define kDescriptionRow 5
+#define kNameRow 1
+#define kSizeRow 4
+#define kColorRow 5
+#define kDescriptionRow 6
 
 @implementation CMASingleBaitViewController
 
@@ -79,6 +81,10 @@
             return 0;
     }
     
+    if (indexPath.row == kNameRow) {
+        return 44;
+    }
+    
     return kDefaultCellHeight;
 }
 
@@ -95,6 +101,7 @@
 
 - (void)initTableView {
     [self.imageView setImage:[self.bait.imageData image]];
+    self.baitNameLabel.text = self.bait.name;
     [self.baitFishCaughtLabel setText:[self.bait.fishCaught stringValue]];
     [self.baitTypeLabel setText:[self.bait typeAsString]];
     
@@ -127,12 +134,8 @@
 - (IBAction)unwindToSingleBait:(UIStoryboardSegue *)segue {
     if ([segue.identifier isEqualToString:@"unwindToSingleBaitFromAddBait"]) {
         CMAAddBaitViewController *source = segue.sourceViewController;
-        
         self.bait = source.bait;
-        self.navigationItem.title = self.bait.name;
-        
         [self initTableView];
-        
         source.bait = nil;
     }
 }

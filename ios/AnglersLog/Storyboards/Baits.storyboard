@@ -73,13 +73,13 @@
             </objects>
             <point key="canvasLocation" x="3498" y="-185"/>
         </scene>
-        <!--singleBaitScene-->
+        <!--SingleBait-->
         <scene sceneID="N7t-hB-Omv">
             <objects>
-                <viewControllerPlaceholder storyboardName="Main" referencedIdentifier="singleBaitScene" id="wRz-Dy-cAB" sceneMemberID="viewController"/>
+                <viewControllerPlaceholder storyboardName="SingleBait" id="wRz-Dy-cAB" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="CVa-Ko-hp1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4170" y="-165"/>
+            <point key="canvasLocation" x="4139" y="-165"/>
         </scene>
         <!--addBaitNav-->
         <scene sceneID="atI-Bu-NaS">

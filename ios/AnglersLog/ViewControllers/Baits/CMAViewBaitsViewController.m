@@ -210,7 +210,6 @@
         CMASingleBaitViewController *destination = segue.destinationViewController;
         CMABait *baitToDisplay = [self.userDefineBaits objectAtIndex:[self.tableView indexPathForSelectedRow].row];
         destination.bait = baitToDisplay;
-        [destination.navigationItem setTitle:baitToDisplay.name];
     }
     
     self.currentOffsetY = self.tableView.contentOffset.y;
