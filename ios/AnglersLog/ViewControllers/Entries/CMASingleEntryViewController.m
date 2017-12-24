@@ -435,7 +435,6 @@
         CMASingleBaitViewController *destination = segue.destinationViewController;
         destination.bait = self.entry.baitUsed;
         destination.isReadOnly = YES;
-        destination.navigationItem.title = destination.bait.name;
     }
 }
 
