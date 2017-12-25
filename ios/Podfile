@@ -13,6 +13,7 @@ target 'AnglersLog' do
     pod 'Instabug'
     pod 'Fabric'
     pod 'Crashlytics'
+    pod 'ChameleonFramework'
 
     target 'AnglersLogTests' do
     end

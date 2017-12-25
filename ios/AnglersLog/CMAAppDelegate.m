@@ -6,14 +6,17 @@
 //  Copyright (c) 2014 Cohen Adair. All rights reserved.
 //
 
+#import <ChameleonFramework/Chameleon.h>
+#import <Crashlytics/Crashlytics.h>
+#import <Fabric/Fabric.h>
 #import <Instabug/Instabug.h>
+
 #import "CMAAppDelegate.h"
-#import "CMAStorageManager.h"
 #import "CMAConstants.h"
+#import "CMAStorageManager.h"
 #import "CMAUtilities.h"
 #import "iRate.h"
-#import <Fabric/Fabric.h>
-#import <Crashlytics/Crashlytics.h>
+#import "UIColor+CMA.h"
 
 @implementation CMAAppDelegate
 
@@ -77,9 +80,16 @@
 #pragma mark - Appearances
 
 - (void)initAppearances {
-    [[UINavigationBar appearance] setTranslucent:NO];
-    [[UIToolbar appearance] setTranslucent:NO];
-    [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(-200.0, 0) forBarMetrics:UIBarMetricsDefault];
+    UINavigationBar.appearance.translucent = NO;
+    UIToolbar.appearance.translucent = NO;
+    
+    // Hides back button text on all 
+    [UIBarButtonItem.appearance setBackButtonTitlePositionAdjustment:UIOffsetMake(-200.0, 0)
+                                                       forBarMetrics:UIBarMetricsDefault];
+    
+    // Apply a global theme.
+    [Chameleon setGlobalThemeUsingPrimaryColor:UIColor.anglersLogLight
+                              withContentStyle:UIContentStyleDark];
 }
 
 @end

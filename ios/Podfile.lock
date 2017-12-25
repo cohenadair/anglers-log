@@ -1,5 +1,8 @@
 PODS:
   - AFNetworking (1.3.4)
+  - ChameleonFramework (2.1.0):
+    - ChameleonFramework/Default (= 2.1.0)
+  - ChameleonFramework/Default (2.1.0)
   - Crashlytics (3.7.2):
     - Fabric (~> 1.6.3)
   - Fabric (1.6.7)
@@ -12,6 +15,7 @@ PODS:
 
 DEPENDENCIES:
   - AFNetworking (~> 1.3.1)
+  - ChameleonFramework
   - Crashlytics
   - Fabric
   - Instabug
@@ -22,6 +26,7 @@ DEPENDENCIES:
 
 SPEC CHECKSUMS:
   AFNetworking: cf8e418e16f0c9c7e5c3150d019a3c679d015018
+  ChameleonFramework: d21a3cc247abfe5e37609a283a8238b03575cf64
   Crashlytics: 130ab943f8c78cda7a814b434f270b2e2c8a3cba
   Fabric: caf7580c725e64db144f610ac65cd60956911dc7
   Instabug: 16031235d7656f3b7104232a25ec4cecb3c0ce3b
@@ -30,6 +35,6 @@ SPEC CHECKSUMS:
   UIImage-ResizeMagick: f08c2d14d1e8a5f0b402185408785540562f2fe7
   XYPieChart: 0efd8069d26c25d20ab74c01b5ad455f1fc48153
 
-PODFILE CHECKSUM: 7227c9592dad1b83c428b82cb3c6a44124e410ed
+PODFILE CHECKSUM: 0e92bf9a1066e27c6ca7aeef7e2d656181822a14
 
 COCOAPODS: 1.3.1

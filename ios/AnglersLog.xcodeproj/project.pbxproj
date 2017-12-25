@@ -149,6 +149,7 @@
 		AC6115CE1FEE06100052BFE5 /* SingleBait.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AC6115CD1FEE06100052BFE5 /* SingleBait.storyboard */; };
 		AC8083C61FF06B4400D63426 /* SingleLocation.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AC8083C51FF06B4400D63426 /* SingleLocation.storyboard */; };
 		AC8083C81FF06EF100D63426 /* UserDefines.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AC8083C71FF06EF100D63426 /* UserDefines.storyboard */; };
+		AC8083CB1FF0886500D63426 /* UIColor+CMA.m in Sources */ = {isa = PBXBuildFile; fileRef = AC8083CA1FF0886500D63426 /* UIColor+CMA.m */; };
 		AC85D5471FEC8BA800B0FC71 /* backup_ios_legacy.json in Resources */ = {isa = PBXBuildFile; fileRef = AC85D5461FEC8BA800B0FC71 /* backup_ios_legacy.json */; };
 		ACCC66C61FEB4C4400B681A8 /* app_icon_167.png in Resources */ = {isa = PBXBuildFile; fileRef = ACCC66C21FEB4C4400B681A8 /* app_icon_167.png */; };
 		ACCC66C71FEB4C4400B681A8 /* app_icon_87.png in Resources */ = {isa = PBXBuildFile; fileRef = ACCC66C31FEB4C4400B681A8 /* app_icon_87.png */; };
@@ -386,6 +387,8 @@
 		AC6115CD1FEE06100052BFE5 /* SingleBait.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = SingleBait.storyboard; sourceTree = "<group>"; };
 		AC8083C51FF06B4400D63426 /* SingleLocation.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = SingleLocation.storyboard; sourceTree = "<group>"; };
 		AC8083C71FF06EF100D63426 /* UserDefines.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = UserDefines.storyboard; sourceTree = "<group>"; };
+		AC8083C91FF0886500D63426 /* UIColor+CMA.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "UIColor+CMA.h"; path = "Categories/UIColor+CMA.h"; sourceTree = "<group>"; };
+		AC8083CA1FF0886500D63426 /* UIColor+CMA.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "UIColor+CMA.m"; path = "Categories/UIColor+CMA.m"; sourceTree = "<group>"; };
 		AC85D5461FEC8BA800B0FC71 /* backup_ios_legacy.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = backup_ios_legacy.json; sourceTree = "<group>"; };
 		ACCC66C21FEB4C4400B681A8 /* app_icon_167.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = app_icon_167.png; sourceTree = "<group>"; };
 		ACCC66C31FEB4C4400B681A8 /* app_icon_87.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = app_icon_87.png; sourceTree = "<group>"; };
@@ -644,6 +647,8 @@
 			children = (
 				0DB8D78F1D8A092100EF7C50 /* NSString+CMA.h */,
 				0DB8D7901D8A092100EF7C50 /* NSString+CMA.m */,
+				AC8083C91FF0886500D63426 /* UIColor+CMA.h */,
+				AC8083CA1FF0886500D63426 /* UIColor+CMA.m */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -1142,6 +1147,7 @@
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-AnglersLog-AnglersLogTests/Pods-AnglersLog-AnglersLogTests-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/AFNetworking/AFNetworking.framework",
+				"${BUILT_PRODUCTS_DIR}/ChameleonFramework/ChameleonFramework.framework",
 				"${BUILT_PRODUCTS_DIR}/OpenWeatherMapAPI/OpenWeatherMapAPI.framework",
 				"${BUILT_PRODUCTS_DIR}/SSZipArchive/SSZipArchive.framework",
 				"${BUILT_PRODUCTS_DIR}/UIImage-ResizeMagick/UIImage_ResizeMagick.framework",
@@ -1150,6 +1156,7 @@
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AFNetworking.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ChameleonFramework.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OpenWeatherMapAPI.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SSZipArchive.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/UIImage_ResizeMagick.framework",
@@ -1204,6 +1211,7 @@
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-AnglersLog/Pods-AnglersLog-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/AFNetworking/AFNetworking.framework",
+				"${BUILT_PRODUCTS_DIR}/ChameleonFramework/ChameleonFramework.framework",
 				"${BUILT_PRODUCTS_DIR}/OpenWeatherMapAPI/OpenWeatherMapAPI.framework",
 				"${BUILT_PRODUCTS_DIR}/SSZipArchive/SSZipArchive.framework",
 				"${BUILT_PRODUCTS_DIR}/UIImage-ResizeMagick/UIImage_ResizeMagick.framework",
@@ -1212,6 +1220,7 @@
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AFNetworking.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ChameleonFramework.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OpenWeatherMapAPI.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SSZipArchive.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/UIImage_ResizeMagick.framework",
@@ -1299,6 +1308,7 @@
 				0DBC36141D7DBB480016B898 /* iRate.m in Sources */,
 				0D8F83DB1A6EC25200AABAEA /* CMASideMenuViewController.m in Sources */,
 				0D8F84131A6EC29A00AABAEA /* CMADeleteActionSheet.m in Sources */,
+				AC8083CB1FF0886500D63426 /* UIColor+CMA.m in Sources */,
 				0D8F838F1A6EC10800AABAEA /* CMAWeatherData.m in Sources */,
 				0D87D06C1AD6E69C008E732A /* CMAAlertController.m in Sources */,
 				0D8F83D71A6EC25200AABAEA /* CMASingleBaitViewController.m in Sources */,
