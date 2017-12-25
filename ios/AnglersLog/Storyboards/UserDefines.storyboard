@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="6A2-09-VCg">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--User Defines View Controller-->
+        <scene sceneID="ifO-ji-FnT">
+            <objects>
+                <tableViewController id="6A2-09-VCg" customClass="CMAUserDefinesViewController" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" allowsSelectionDuringEditing="YES" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="H8C-A3-qVx">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="559"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" indentationWidth="10" reuseIdentifier="editSettingsCell" textLabel="xMK-aD-kUc" style="IBUITableViewCellStyleDefault" id="XsG-ya-KYc">
+                                <rect key="frame" x="0.0" y="22" width="375" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="XsG-ya-KYc" id="QQP-zp-wDm">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="xMK-aD-kUc">
+                                            <rect key="frame" x="15" y="0.0" width="344" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <gestureRecognizers/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <nil key="highlightedColor"/>
+                                            <variation key="widthClass=compact">
+                                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                            </variation>
+                                        </label>
+                                    </subviews>
+                                </tableViewCellContentView>
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <gestureRecognizers/>
+                                <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="6A2-09-VCg" id="jvM-dD-TMq"/>
+                            <outlet property="delegate" destination="6A2-09-VCg" id="iHJ-Ym-NFc"/>
+                        </connections>
+                    </tableView>
+                    <toolbarItems>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="s75-WA-yBg"/>
+                        <barButtonItem systemItem="add" id="oAT-Nv-Fd9">
+                            <connections>
+                                <action selector="clickAddButton:" destination="6A2-09-VCg" id="lKS-j8-hd5"/>
+                            </connections>
+                        </barButtonItem>
+                    </toolbarItems>
+                    <navigationItem key="navigationItem" id="5ct-CG-ULC">
+                        <barButtonItem key="leftBarButtonItem" image="menu.png" id="jB7-or-ZZq"/>
+                    </navigationItem>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics" translucent="NO"/>
+                    <connections>
+                        <outlet property="addButton" destination="oAT-Nv-Fd9" id="X0S-ah-TEI"/>
+                        <outlet property="menuButton" destination="jB7-or-ZZq" id="fhy-Zm-Lld"/>
+                        <segue destination="ei6-rd-qrR" kind="unwind" identifier="unwindToAddEntryFromEditSettings" unwindAction="unwindToAddEntry:" id="hnK-Ch-Ono"/>
+                        <segue destination="Yyj-Ly-cY8" kind="presentation" identifier="fromEditSettingsToAddLocation" id="iOf-th-u5i"/>
+                        <segue destination="ei6-rd-qrR" kind="unwind" identifier="unwindToStatisticsFromUserDefines" unwindAction="unwindToStatistics:" id="0t1-jL-NOr"/>
+                        <segue destination="5cK-xK-oqm" kind="show" identifier="fromUserDefinesToSingleLocation" id="yVf-ju-IAW"/>
+                        <segue destination="HVa-pH-3Pw" kind="show" identifier="fromUserDefinesToSelectFishingSpot" id="xHN-1T-TEi"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="mRj-jc-hEB" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="ei6-rd-qrR" userLabel="Exit" sceneMemberID="exit"/>
+            </objects>
+            <point key="canvasLocation" x="3441" y="826"/>
+        </scene>
+        <!--SingleLocation-->
+        <scene sceneID="qs9-px-lZw">
+            <objects>
+                <viewControllerPlaceholder storyboardName="SingleLocation" id="5cK-xK-oqm" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="MgY-zZ-HXs" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4093" y="712"/>
+        </scene>
+        <!--addLocationNav-->
+        <scene sceneID="VEx-Dd-jhE">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Main" referencedIdentifier="addLocationNav" id="Yyj-Ly-cY8" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="s4P-rJ-Vqz" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4099" y="825"/>
+        </scene>
+        <!--selectFishingSpotScene-->
+        <scene sceneID="H3h-RL-kzC">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Main" referencedIdentifier="selectFishingSpotScene" id="HVa-pH-3Pw" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="AJV-H2-cEq" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4138" y="932"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="menu.png" width="25" height="25"/>
+    </resources>
+</document>

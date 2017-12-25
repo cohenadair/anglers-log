@@ -195,72 +195,6 @@
             </objects>
             <point key="canvasLocation" x="3563" y="3387"/>
         </scene>
-        <!--User Defines View Controller-->
-        <scene sceneID="ifO-ji-FnT">
-            <objects>
-                <tableViewController storyboardIdentifier="userDefinesScene" id="6A2-09-VCg" customClass="CMAUserDefinesViewController" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelectionDuringEditing="YES" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="H8C-A3-qVx">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="559"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" indentationWidth="10" reuseIdentifier="editSettingsCell" textLabel="xMK-aD-kUc" style="IBUITableViewCellStyleDefault" id="XsG-ya-KYc">
-                                <rect key="frame" x="0.0" y="22" width="375" height="44"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="XsG-ya-KYc" id="QQP-zp-wDm">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="xMK-aD-kUc">
-                                            <rect key="frame" x="16" y="0.0" width="343" height="44"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <gestureRecognizers/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            <nil key="highlightedColor"/>
-                                            <variation key="widthClass=compact">
-                                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                            </variation>
-                                        </label>
-                                    </subviews>
-                                </tableViewCellContentView>
-                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <gestureRecognizers/>
-                            </tableViewCell>
-                        </prototypes>
-                        <connections>
-                            <outlet property="dataSource" destination="6A2-09-VCg" id="jvM-dD-TMq"/>
-                            <outlet property="delegate" destination="6A2-09-VCg" id="iHJ-Ym-NFc"/>
-                        </connections>
-                    </tableView>
-                    <toolbarItems>
-                        <barButtonItem style="plain" systemItem="flexibleSpace" id="s75-WA-yBg"/>
-                        <barButtonItem systemItem="add" id="oAT-Nv-Fd9">
-                            <connections>
-                                <action selector="clickAddButton:" destination="6A2-09-VCg" id="lKS-j8-hd5"/>
-                            </connections>
-                        </barButtonItem>
-                    </toolbarItems>
-                    <navigationItem key="navigationItem" id="5ct-CG-ULC">
-                        <barButtonItem key="leftBarButtonItem" image="menu.png" id="jB7-or-ZZq"/>
-                    </navigationItem>
-                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
-                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics" translucent="NO"/>
-                    <connections>
-                        <outlet property="addButton" destination="oAT-Nv-Fd9" id="X0S-ah-TEI"/>
-                        <outlet property="menuButton" destination="jB7-or-ZZq" id="fhy-Zm-Lld"/>
-                        <segue destination="ei6-rd-qrR" kind="unwind" identifier="unwindToAddEntryFromEditSettings" unwindAction="unwindToAddEntry:" id="hnK-Ch-Ono"/>
-                        <segue destination="Gid-I3-2h4" kind="presentation" identifier="fromEditSettingsToAddLocation" id="iOf-th-u5i"/>
-                        <segue destination="ei6-rd-qrR" kind="unwind" identifier="unwindToStatisticsFromUserDefines" unwindAction="unwindToStatistics:" id="0t1-jL-NOr"/>
-                        <segue destination="5cK-xK-oqm" kind="show" identifier="fromUserDefinesToSingleLocation" id="yVf-ju-IAW"/>
-                        <segue destination="2nW-M9-1OZ" kind="show" identifier="fromUserDefinesToSelectFishingSpot" id="xHN-1T-TEi"/>
-                    </connections>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="mRj-jc-hEB" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <exit id="ei6-rd-qrR" userLabel="Exit" sceneMemberID="exit"/>
-            </objects>
-            <point key="canvasLocation" x="3441" y="826"/>
-        </scene>
         <!--Photo Gallery-->
         <scene sceneID="PSO-ty-hvL">
             <objects>
@@ -1300,7 +1234,7 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <segue destination="6A2-09-VCg" kind="show" identifier="fromAddEntrySpeciesToEditSettings" id="iLd-nY-dx2"/>
+                                            <segue destination="fhQ-YZ-2uP" kind="show" identifier="fromAddEntrySpeciesToEditSettings" id="iLd-nY-dx2"/>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationLevel="1" indentationWidth="10" rowHeight="44" id="yZ0-mi-TN0">
@@ -1586,7 +1520,7 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <segue destination="6A2-09-VCg" kind="show" identifier="fromAddEntryLocationToEditSettings" id="DPp-td-2YA"/>
+                                            <segue destination="fhQ-YZ-2uP" kind="show" identifier="fromAddEntryLocationToEditSettings" id="DPp-td-2YA"/>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="yPF-ba-gKi" detailTextLabel="6dp-Ea-mmb" rowHeight="44" style="IBUITableViewCellStyleValue1" id="OGk-eU-OtJ">
@@ -1613,7 +1547,7 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <segue destination="6A2-09-VCg" kind="show" identifier="fromAddEntryMethodsToEditSettings" id="au3-I1-mtg"/>
+                                            <segue destination="fhQ-YZ-2uP" kind="show" identifier="fromAddEntryMethodsToEditSettings" id="au3-I1-mtg"/>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="Y6c-ny-fDc" detailTextLabel="DKE-eF-o43" rowHeight="44" style="IBUITableViewCellStyleValue1" id="uom-bL-4q2">
@@ -1722,7 +1656,7 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <segue destination="6A2-09-VCg" kind="show" identifier="fromAddEntryWaterClarityToEditSettings" id="MHf-wd-yhv"/>
+                                            <segue destination="fhQ-YZ-2uP" kind="show" identifier="fromAddEntryWaterClarityToEditSettings" id="MHf-wd-yhv"/>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationLevel="1" indentationWidth="10" rowHeight="44" id="zMp-92-p7d">
@@ -2294,7 +2228,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vma-Yt-KJy" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2324" y="1156"/>
+            <point key="canvasLocation" x="1591" y="1155"/>
         </scene>
         <!--Side Menu View Controller-->
         <scene sceneID="Cbv-Va-nu0">
@@ -2430,7 +2364,7 @@
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                         <connections>
-                                            <segue destination="6A2-09-VCg" kind="custom" identifier="fromSideMenuSpeciesToEditSettings" customClass="SWRevealViewControllerSegue" id="8iL-u2-ZVl"/>
+                                            <segue destination="fhQ-YZ-2uP" kind="custom" identifier="fromSideMenuSpeciesToEditSettings" customClass="SWRevealViewControllerSegue" id="8iL-u2-ZVl"/>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="giu-Fa-BF7">
@@ -2454,7 +2388,7 @@
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                         <connections>
-                                            <segue destination="6A2-09-VCg" kind="custom" identifier="fromSideMenuLocationsToEditSettings" customClass="SWRevealViewControllerSegue" id="Q8L-vB-CaK"/>
+                                            <segue destination="fhQ-YZ-2uP" kind="custom" identifier="fromSideMenuLocationsToEditSettings" customClass="SWRevealViewControllerSegue" id="Q8L-vB-CaK"/>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="nQY-io-Ws9">
@@ -2478,7 +2412,7 @@
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                         <connections>
-                                            <segue destination="6A2-09-VCg" kind="custom" identifier="fromSideMenuFishingMethodsToEditSettings" customClass="SWRevealViewControllerSegue" id="aBE-xI-c3y"/>
+                                            <segue destination="fhQ-YZ-2uP" kind="custom" identifier="fromSideMenuFishingMethodsToEditSettings" customClass="SWRevealViewControllerSegue" id="aBE-xI-c3y"/>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="6h5-Un-lVt">
@@ -2502,7 +2436,7 @@
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                         <connections>
-                                            <segue destination="6A2-09-VCg" kind="custom" identifier="fromSideMenuWaterClaritiesToEditSettings" customClass="SWRevealViewControllerSegue" id="Usd-Jw-Xr5"/>
+                                            <segue destination="fhQ-YZ-2uP" kind="custom" identifier="fromSideMenuWaterClaritiesToEditSettings" customClass="SWRevealViewControllerSegue" id="Usd-Jw-Xr5"/>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="uVX-2H-Suf">
@@ -2753,6 +2687,14 @@
             </objects>
             <point key="canvasLocation" x="4251" y="768"/>
         </scene>
+        <!--UserDefines-->
+        <scene sceneID="exY-9Y-7qo">
+            <objects>
+                <viewControllerPlaceholder storyboardIdentifier="userDefinesScene" storyboardName="UserDefines" id="fhQ-YZ-2uP" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="x1d-jN-EMn" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3532" y="853"/>
+        </scene>
     </scenes>
     <resources>
         <image name="bait.png" width="50" height="50"/>
@@ -2773,12 +2715,10 @@
         <image name="water_clarities.png" width="50" height="50"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="e6M-fJ-b24"/>
+        <segue reference="aBE-xI-c3y"/>
         <segue reference="mBP-Qv-19k"/>
-        <segue reference="xJw-cV-13t"/>
         <segue reference="0Og-p6-XEZ"/>
         <segue reference="Jyy-wS-dXA"/>
-        <segue reference="Usd-Jw-Xr5"/>
         <segue reference="gDt-Tw-gtk"/>
     </inferredMetricsTieBreakers>
 </document>

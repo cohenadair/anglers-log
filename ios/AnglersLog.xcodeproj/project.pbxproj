@@ -148,6 +148,7 @@
 		AC6115CC1FEE01E30052BFE5 /* placeholder_circle@1x.png in Resources */ = {isa = PBXBuildFile; fileRef = AC6115C91FEE01E30052BFE5 /* placeholder_circle@1x.png */; };
 		AC6115CE1FEE06100052BFE5 /* SingleBait.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AC6115CD1FEE06100052BFE5 /* SingleBait.storyboard */; };
 		AC8083C61FF06B4400D63426 /* SingleLocation.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AC8083C51FF06B4400D63426 /* SingleLocation.storyboard */; };
+		AC8083C81FF06EF100D63426 /* UserDefines.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AC8083C71FF06EF100D63426 /* UserDefines.storyboard */; };
 		AC85D5471FEC8BA800B0FC71 /* backup_ios_legacy.json in Resources */ = {isa = PBXBuildFile; fileRef = AC85D5461FEC8BA800B0FC71 /* backup_ios_legacy.json */; };
 		ACCC66C61FEB4C4400B681A8 /* app_icon_167.png in Resources */ = {isa = PBXBuildFile; fileRef = ACCC66C21FEB4C4400B681A8 /* app_icon_167.png */; };
 		ACCC66C71FEB4C4400B681A8 /* app_icon_87.png in Resources */ = {isa = PBXBuildFile; fileRef = ACCC66C31FEB4C4400B681A8 /* app_icon_87.png */; };
@@ -384,6 +385,7 @@
 		AC6115C91FEE01E30052BFE5 /* placeholder_circle@1x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "placeholder_circle@1x.png"; sourceTree = "<group>"; };
 		AC6115CD1FEE06100052BFE5 /* SingleBait.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = SingleBait.storyboard; sourceTree = "<group>"; };
 		AC8083C51FF06B4400D63426 /* SingleLocation.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = SingleLocation.storyboard; sourceTree = "<group>"; };
+		AC8083C71FF06EF100D63426 /* UserDefines.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = UserDefines.storyboard; sourceTree = "<group>"; };
 		AC85D5461FEC8BA800B0FC71 /* backup_ios_legacy.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = backup_ios_legacy.json; sourceTree = "<group>"; };
 		ACCC66C21FEB4C4400B681A8 /* app_icon_167.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = app_icon_167.png; sourceTree = "<group>"; };
 		ACCC66C31FEB4C4400B681A8 /* app_icon_87.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = app_icon_87.png; sourceTree = "<group>"; };
@@ -673,6 +675,7 @@
 			isa = PBXGroup;
 			children = (
 				0D8F839F1A6EC1AE00AABAEA /* Main.storyboard */,
+				AC8083C71FF06EF100D63426 /* UserDefines.storyboard */,
 				AC8083C51FF06B4400D63426 /* SingleLocation.storyboard */,
 				AC6115CD1FEE06100052BFE5 /* SingleBait.storyboard */,
 				AC58D5741FEDBBFD00C5EC3E /* Statistics.storyboard */,
@@ -1059,6 +1062,7 @@
 				0D8F846B1A6EC2C300AABAEA /* sort@2x.png in Resources */,
 				0D8F84731A6EC2C300AABAEA /* fishing_methods_large.png in Resources */,
 				0D8F84121A6EC29A00AABAEA /* CMANoXView.xib in Resources */,
+				AC8083C81FF06EF100D63426 /* UserDefines.storyboard in Resources */,
 				0D8F84661A6EC2C300AABAEA /* menu@2x.png in Resources */,
 				0D8F84511A6EC2C300AABAEA /* app_icon_40.png in Resources */,
 				0D8F84501A6EC2C300AABAEA /* app_icon_29.png in Resources */,
