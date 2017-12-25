@@ -9,7 +9,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--View Baits-->
+        <!--Baits-->
         <scene sceneID="Etg-TT-Jp6">
             <objects>
                 <viewController id="nf3-lH-9zk" customClass="CMAViewBaitsViewController" sceneMemberID="viewController">
@@ -51,7 +51,7 @@
                             </connections>
                         </barButtonItem>
                     </toolbarItems>
-                    <navigationItem key="navigationItem" title="View Baits" id="b5T-cQ-QUb">
+                    <navigationItem key="navigationItem" title="Baits" id="b5T-cQ-QUb">
                         <barButtonItem key="leftBarButtonItem" image="menu.png" id="MQZ-Rl-72z"/>
                     </navigationItem>
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
@@ -81,13 +81,13 @@
             </objects>
             <point key="canvasLocation" x="4139" y="-165"/>
         </scene>
-        <!--addBaitNav-->
+        <!--AddBait-->
         <scene sceneID="atI-Bu-NaS">
             <objects>
-                <viewControllerPlaceholder storyboardName="Main" referencedIdentifier="addBaitNav" id="plq-fE-28q" sceneMemberID="viewController"/>
+                <viewControllerPlaceholder storyboardName="AddBait" id="plq-fE-28q" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XG1-rw-I4b" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4147" y="-264"/>
+            <point key="canvasLocation" x="4126" y="-264"/>
         </scene>
     </scenes>
     <resources>

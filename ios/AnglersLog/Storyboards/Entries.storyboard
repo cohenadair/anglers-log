@@ -93,29 +93,29 @@
             </objects>
             <point key="canvasLocation" x="3217" y="-1102"/>
         </scene>
-        <!--singleEntryScene-->
+        <!--SingleEntry-->
         <scene sceneID="Tbz-Bp-EZ8">
             <objects>
-                <viewControllerPlaceholder storyboardName="Main" referencedIdentifier="singleEntryScene" id="0Rs-FM-BP3" sceneMemberID="viewController"/>
+                <viewControllerPlaceholder storyboardName="SingleEntry" id="0Rs-FM-BP3" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QqL-Tr-sDB" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4635" y="-1103"/>
+            <point key="canvasLocation" x="4606" y="-1103"/>
         </scene>
-        <!--sortEntryNav-->
+        <!--EntrySorting-->
         <scene sceneID="cZB-fG-KLi">
             <objects>
-                <viewControllerPlaceholder storyboardName="Main" referencedIdentifier="sortEntryNav" id="kzR-eY-4Fk" sceneMemberID="viewController"/>
+                <viewControllerPlaceholder storyboardName="EntrySorting" id="kzR-eY-4Fk" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zMa-Sr-hgY" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4615" y="-990"/>
+            <point key="canvasLocation" x="4610" y="-990"/>
         </scene>
-        <!--addEntryNav-->
+        <!--AddEntry-->
         <scene sceneID="vQn-Nc-QSa">
             <objects>
-                <viewControllerPlaceholder storyboardName="Main" referencedIdentifier="addEntryNav" id="YEJ-n7-sUb" sceneMemberID="viewController"/>
+                <viewControllerPlaceholder storyboardName="AddEntry" id="YEJ-n7-sUb" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XVP-4l-WGE" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4615" y="-1215"/>
+            <point key="canvasLocation" x="4594" y="-1215"/>
         </scene>
     </scenes>
     <resources>

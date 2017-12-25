@@ -6,10 +6,11 @@
 //  Copyright (c) 2014 Cohen Adair. All rights reserved.
 //
 
-#import "CMAEntrySortingViewController.h"
-#import "CMAAppDelegate.h"
 #import "CMAAlerts.h"
+#import "CMAAppDelegate.h"
+#import "CMAEntrySortingViewController.h"
 #import "CMAStorageManager.h"
+#import "UIColor+CMA.h"
 
 @interface CMAEntrySortingViewController ()
 
@@ -43,9 +44,18 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    
-    [self selectSortMethodCell];
     [self.sortOrderControl setSelectedSegmentIndex:self.sortOrder];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
+    [self.tableView selectRowAtIndexPath:self.sortMethodIndexPath
+                                animated:NO scrollPosition:UITableViewScrollPositionNone];
+    
+    // Clear the "hacked" solution to show the current selection right away.
+    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:self.sortMethodIndexPath];
+    cell.backgroundColor = UIColor.clearColor;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -55,12 +65,8 @@
 
 #pragma mark - Table View Initializing
 
-- (void)selectSortMethodCell {
-    // select current sort method
-    NSIndexPath *sortMethodIndexPath = [NSIndexPath indexPathForItem:self.sortMethod inSection:0];
-    UITableViewCell *sortMethodCell = [self.tableView cellForRowAtIndexPath:sortMethodIndexPath];
-    [self.tableView selectRowAtIndexPath:sortMethodIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
-    sortMethodCell.accessoryType = UITableViewCellAccessoryCheckmark;
+- (NSIndexPath *)sortMethodIndexPath {
+    return [NSIndexPath indexPathForItem:self.sortMethod inSection:0];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -71,6 +77,22 @@
 - (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     cell.accessoryType = UITableViewCellAccessoryNone;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView
+         cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell = [super tableView:tableView cellForRowAtIndexPath:indexPath];
+    
+    cell.textLabel.backgroundColor = UIColor.clearColor;
+
+    // A hack to show the selection right away.
+    if (indexPath.row == self.sortMethod) {
+        cell.accessoryType = UITableViewCellAccessoryCheckmark;
+        cell.backgroundColor = UIColor.anglersLogLightTransparent;
+    }
+    
+    return cell;
 }
 
 #pragma mark - Events

@@ -117,6 +117,10 @@
            ![self.name isEqualToString:UDN_BAITS];
 }
 
+- (NSString *)nameWithCount {
+    return [NSString stringWithFormat:@"%@ (%ld)", self.name, (long) self.count];
+}
+
 #pragma mark - Object Types
 
 // Returns an object of correct type with the name property set to aName.

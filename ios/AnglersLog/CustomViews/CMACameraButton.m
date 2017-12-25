@@ -7,6 +7,7 @@
 //
 
 #import "CMACameraButton.h"
+#import "UIColor+CMA.h"
 
 @implementation CMACameraButton
 
@@ -26,9 +27,9 @@
 }
 
 - (void)addTint {
-    UIImage *image = [[UIImage imageNamed:@"camera.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    [self setImage:image];
-    [self setTintColor:[[[[UIApplication sharedApplication] delegate] window] tintColor]];
+    self.image = [[UIImage imageNamed:@"camera.png"]
+            imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    self.tintColor = UIColor.anglersLogAccent;
 }
 
 @end

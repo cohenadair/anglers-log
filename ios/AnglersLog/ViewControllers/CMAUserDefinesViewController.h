@@ -20,6 +20,6 @@
 @property (strong, nonatomic)NSString *selectedCellLabelText;
 
 // used to check off cells when editing
-@property (strong, nonatomic)NSMutableArray *selectedCellsArray;
+@property (strong, nonatomic)NSMutableArray<NSString *> *selectedCellsArray;
 
 @end

@@ -116,10 +116,10 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.section == kSectionPhoto && indexPath.row == kRowPhoto)
+    if (indexPath.section == kSectionPhoto && indexPath.row == kRowPhoto) {
         [self presentViewController:self.cameraActionSheet animated:YES completion:nil];
-    
-    NSLog(@"Tapped");
+        [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    }
 }
 
 - (void)initTableView {

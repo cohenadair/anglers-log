@@ -105,13 +105,13 @@
             </objects>
             <point key="canvasLocation" x="3561" y="2507"/>
         </scene>
-        <!--singleEntryScene-->
+        <!--SingleEntry-->
         <scene sceneID="2yU-Z6-0jt">
             <objects>
-                <viewControllerPlaceholder storyboardName="Main" referencedIdentifier="singleEntryScene" id="IBg-RK-Ntu" sceneMemberID="viewController"/>
+                <viewControllerPlaceholder storyboardName="SingleEntry" id="IBg-RK-Ntu" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Jic-w3-r9A" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4214" y="2355"/>
+            <point key="canvasLocation" x="4186" y="2354"/>
         </scene>
         <!--Baits-->
         <scene sceneID="3Z6-SP-xOb">

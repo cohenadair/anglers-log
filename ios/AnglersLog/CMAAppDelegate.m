@@ -80,16 +80,29 @@
 #pragma mark - Appearances
 
 - (void)initAppearances {
+    // Ensures top and bottom bars aren't transparent.
     UINavigationBar.appearance.translucent = NO;
     UIToolbar.appearance.translucent = NO;
     
-    // Hides back button text on all 
+    // Hides back button text on all view controllers.
     [UIBarButtonItem.appearance setBackButtonTitlePositionAdjustment:UIOffsetMake(-200.0, 0)
                                                        forBarMetrics:UIBarMetricsDefault];
     
     // Apply a global theme.
     [Chameleon setGlobalThemeUsingPrimaryColor:UIColor.anglersLogLight
                               withContentStyle:UIContentStyleDark];
+    
+    // Override some Chameleon settings.
+    UIButton.appearance.tintColor = UIColor.anglersLogAccent;
+    UIButton.appearance.backgroundColor = UIColor.clearColor;
+    
+    UISegmentedControl.appearance.tintColor = UIColor.anglersLogAccent;
+    
+    // UITableViewCell selection.
+    UIView *view = [UIView new];
+    view.backgroundColor = UIColor.anglersLogLightTransparent;
+    UITableViewCell.appearance.selectedBackgroundView = view;
+    UITableViewCell.appearance.multipleSelectionBackgroundView = view;
 }
 
 @end

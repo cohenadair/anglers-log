@@ -40,6 +40,7 @@
 - (id)objectNamed:(NSString *)aName;
 - (id)objectAtIndex:(NSInteger)anIndex;
 - (BOOL)isSetOfStrings;
+- (NSString *)nameWithCount;
 
 // object types
 - (id)emptyObjectNamed:(NSString *)aName;

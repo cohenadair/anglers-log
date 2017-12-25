@@ -81,6 +81,9 @@
     [self.tableView setContentOffset:CGPointMake(0, self.currentOffsetY)];
     [self handleNoBaitView];
     [self.tableView reloadData];
+    
+    self.navigationItem.title =
+            [NSString stringWithFormat:@"Baits (%ld)", (long)self.journal.baitsCount];
 }
 
 - (void)viewDidLoad {

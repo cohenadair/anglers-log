@@ -41,6 +41,7 @@
 - (CMAUserDefine *)userDefineNamed:(NSString *)aName;
 - (NSInteger)entryCount;
 - (CMAEntry *)entryDated:(NSDate *)aDate;
+- (NSInteger)baitsCount;
 - (NSString *)lengthUnitsAsString:(BOOL)shorthand;
 - (NSString *)weightUnitsAsString:(BOOL)shorthand;
 - (NSString *)depthUnitsAsString:(BOOL)shorthand;

@@ -9,5 +9,7 @@
 @interface UIColor (CMA)
 
 + (UIColor *)anglersLogLight;
++ (UIColor *)anglersLogLightTransparent;
++ (UIColor *)anglersLogAccent;
 
 @end

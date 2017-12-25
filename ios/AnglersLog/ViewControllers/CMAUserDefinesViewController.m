@@ -15,6 +15,7 @@
 #import "SWRevealViewController.h"
 #import "CMAStorageManager.h"
 #import "CMAAlerts.h"
+#import "UIColor+CMA.h"
 
 @interface CMAUserDefinesViewController ()
 
@@ -113,7 +114,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.navigationItem.title = [self.userDefine name]; // sets title according to the setting that was clicked in the previous view
+    self.navigationItem.title = self.userDefine.nameWithCount;
     self.navigationController.toolbarHidden = NO;
     
     // used to populate cells
@@ -178,17 +179,27 @@
         [self setSelectedCellsArray:[NSMutableArray array]];
 }
 
+- (void)setCell:(UITableViewCell *)cell selected:(BOOL)selected {
+    if (selected) {
+        cell.accessoryType = UITableViewCellAccessoryCheckmark;
+        cell.backgroundColor = UIColor.anglersLogLightTransparent;
+        if (![self.selectedCellsArray containsObject:cell.textLabel.text]) {
+            [self.selectedCellsArray addObject:cell.textLabel.text];
+        }
+    } else {
+        cell.accessoryType = UITableViewCellAccessoryNone;
+        cell.backgroundColor = UIColor.clearColor;
+        [self.selectedCellsArray removeObject:cell.textLabel.text];
+    }
+    
+    // Allows the cell's background color to render property beneath the label.
+    cell.textLabel.backgroundColor = UIColor.clearColor;
+}
+
 // Hides/shows a checkmark inside aCell.
 - (void)toggleCellAccessoryCheckmarkAtIndexPath: (NSIndexPath *)anIndexPath {
     UITableViewCell *selectedCell = [self.tableView cellForRowAtIndexPath:anIndexPath];
-
-    if (selectedCell.accessoryType == UITableViewCellAccessoryCheckmark) {
-        [selectedCell setAccessoryType:UITableViewCellAccessoryNone];
-        [self.selectedCellsArray removeObject:selectedCell.textLabel.text];
-    } else {
-        [selectedCell setAccessoryType:UITableViewCellAccessoryCheckmark];
-        [self.selectedCellsArray addObject:selectedCell.textLabel.text];
-    }
+    [self setCell:selectedCell selected:selectedCell.accessoryType == UITableViewCellAccessoryNone];
 }
 
 // Sets each cell's selection style to selectionStyle.
@@ -241,10 +252,7 @@
             [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
     
     if (self.isSelectingMultiple) {
-        if ([self.selectedCellsArray containsObject:cell.textLabel.text])
-            [cell setAccessoryType:UITableViewCellAccessoryCheckmark];
-        else
-            [cell setAccessoryType:UITableViewCellAccessoryNone];
+        [self setCell:cell selected:[self.selectedCellsArray containsObject:cell.textLabel.text]];
     }
     
     return cell;

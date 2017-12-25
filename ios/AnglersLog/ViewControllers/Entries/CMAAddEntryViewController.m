@@ -7,20 +7,20 @@
 //
 
 #import "CMAAddEntryViewController.h"
-#import "CMAUserDefinesViewController.h"
-#import "CMASingleLocationViewController.h"
-#import "CMASelectFishingSpotViewController.h"
-#import "CMAImagePickerViewController.h"
-#import "CMAViewBaitsViewController.h"
-#import "CMAAppDelegate.h"
 #import "CMAAlerts.h"
-#import "CMACameraButton.h"
+#import "CMAAppDelegate.h"
 #import "CMACameraActionSheet.h"
+#import "CMACameraButton.h"
 #import "CMADeleteActionSheet.h"
-#import "CMAWeatherDataView.h"
-#import "CMAUtilities.h"
-#import "CMAStorageManager.h"
 #import "CMAImage.h"
+#import "CMAImagePickerViewController.h"
+#import "CMAUserDefinesViewController.h"
+#import "CMASelectFishingSpotViewController.h"
+#import "CMASingleLocationViewController.h"
+#import "CMAStorageManager.h"
+#import "CMAUtilities.h"
+#import "CMAViewBaitsViewController.h"
+#import "CMAWeatherDataView.h"
 #import "NSString+CMA.h"
 
 @interface CMAAddEntryViewController ()
@@ -410,15 +410,27 @@ NSString *const kNotSelectedString = @"Not Selected";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     // show the date picker cell when the date display cell is selected
-    if (indexPath.section == kDateCellSection && indexPath.row == kDateCellRow)
+    if (indexPath.section == kDateCellSection && indexPath.row == kDateCellRow) {
         [self toggleDatePickerCellHidden:tableView selectedPath:indexPath];
-    else
+        return;
+    } else {
         // hide the date picker cell when any other cell is selected
-        if (self.isEditingDateTime)
+        if (self.isEditingDateTime) {
             [self toggleDatePickerCellHidden:tableView selectedPath:indexPath];
+        }
+    }
     
-    if (indexPath.section == kPhotoCellSection && indexPath.row == kPhotoCellRow)
+    if (indexPath.section == kPhotoCellSection && indexPath.row == kPhotoCellRow) {
         [self showCameraActionSheet];
+        [tableView deselectRowAtIndexPath:indexPath animated:YES];
+        return;
+    }
+    
+    if (indexPath.section == kWeatherCellSection) {
+        [self tapToggleWeatherButton:self.toggleWeatherButton];
+        [tableView deselectRowAtIndexPath:indexPath animated:YES];
+        return;
+    }
 }
 
 #pragma mark - Events

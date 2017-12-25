@@ -135,6 +135,7 @@
 		0DCAD6551AA5069E0040B03B /* CMASettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DCAD6541AA5069E0040B03B /* CMASettingsViewController.m */; };
 		0DCC26571A520DD300738F04 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DCC26561A520DD300738F04 /* SystemConfiguration.framework */; };
 		1C74E7B8C5364063A0D85F6F /* Pods_AnglersLog_AnglersLogTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FDAFF13CF55D9681BAF299B1 /* Pods_AnglersLog_AnglersLogTests.framework */; };
+		AC28B8321FF18183002706C4 /* EntrySorting.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AC28B8311FF18183002706C4 /* EntrySorting.storyboard */; };
 		AC58D56C1FED50CC00C5EC3E /* Entries.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AC58D56B1FED50CC00C5EC3E /* Entries.storyboard */; };
 		AC58D5701FED792A00C5EC3E /* CMAThumbnailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = AC58D56E1FED792A00C5EC3E /* CMAThumbnailCell.m */; };
 		AC58D5711FED792A00C5EC3E /* CMAThumbnailCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = AC58D56F1FED792A00C5EC3E /* CMAThumbnailCell.xib */; };
@@ -150,7 +151,11 @@
 		AC8083C61FF06B4400D63426 /* SingleLocation.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AC8083C51FF06B4400D63426 /* SingleLocation.storyboard */; };
 		AC8083C81FF06EF100D63426 /* UserDefines.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AC8083C71FF06EF100D63426 /* UserDefines.storyboard */; };
 		AC8083CB1FF0886500D63426 /* UIColor+CMA.m in Sources */ = {isa = PBXBuildFile; fileRef = AC8083CA1FF0886500D63426 /* UIColor+CMA.m */; };
+		AC8083CD1FF08F5C00D63426 /* SingleEntry.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AC8083CC1FF08F5C00D63426 /* SingleEntry.storyboard */; };
+		AC8083CF1FF0946700D63426 /* Settings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AC8083CE1FF0946700D63426 /* Settings.storyboard */; };
+		AC8083D11FF099BF00D63426 /* AddEntry.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AC8083D01FF099BF00D63426 /* AddEntry.storyboard */; };
 		AC85D5471FEC8BA800B0FC71 /* backup_ios_legacy.json in Resources */ = {isa = PBXBuildFile; fileRef = AC85D5461FEC8BA800B0FC71 /* backup_ios_legacy.json */; };
+		ACA92F241FF14E4200DC0071 /* AddBait.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = ACA92F231FF14E4200DC0071 /* AddBait.storyboard */; };
 		ACCC66C61FEB4C4400B681A8 /* app_icon_167.png in Resources */ = {isa = PBXBuildFile; fileRef = ACCC66C21FEB4C4400B681A8 /* app_icon_167.png */; };
 		ACCC66C71FEB4C4400B681A8 /* app_icon_87.png in Resources */ = {isa = PBXBuildFile; fileRef = ACCC66C31FEB4C4400B681A8 /* app_icon_87.png */; };
 		ACCC66C81FEB4C4400B681A8 /* app_icon_60.png in Resources */ = {isa = PBXBuildFile; fileRef = ACCC66C41FEB4C4400B681A8 /* app_icon_60.png */; };
@@ -373,6 +378,7 @@
 		449BF41FA0FE38389C066E4B /* Pods_AnglersLogTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AnglersLogTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		493E619A3319133E8D65DB4D /* Pods-AnglersLog.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AnglersLog.debug.xcconfig"; path = "Pods/Target Support Files/Pods-AnglersLog/Pods-AnglersLog.debug.xcconfig"; sourceTree = "<group>"; };
 		74D0C5C3A9825BC7B00515D5 /* Pods-AnglersLogTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AnglersLogTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-AnglersLogTests/Pods-AnglersLogTests.release.xcconfig"; sourceTree = "<group>"; };
+		AC28B8311FF18183002706C4 /* EntrySorting.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = EntrySorting.storyboard; sourceTree = "<group>"; };
 		AC58D56B1FED50CC00C5EC3E /* Entries.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Entries.storyboard; sourceTree = "<group>"; };
 		AC58D56D1FED792A00C5EC3E /* CMAThumbnailCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CMAThumbnailCell.h; path = CustomViews/CMAThumbnailCell.h; sourceTree = "<group>"; };
 		AC58D56E1FED792A00C5EC3E /* CMAThumbnailCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = CMAThumbnailCell.m; path = CustomViews/CMAThumbnailCell.m; sourceTree = "<group>"; };
@@ -389,7 +395,11 @@
 		AC8083C71FF06EF100D63426 /* UserDefines.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = UserDefines.storyboard; sourceTree = "<group>"; };
 		AC8083C91FF0886500D63426 /* UIColor+CMA.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "UIColor+CMA.h"; path = "Categories/UIColor+CMA.h"; sourceTree = "<group>"; };
 		AC8083CA1FF0886500D63426 /* UIColor+CMA.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "UIColor+CMA.m"; path = "Categories/UIColor+CMA.m"; sourceTree = "<group>"; };
+		AC8083CC1FF08F5C00D63426 /* SingleEntry.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = SingleEntry.storyboard; sourceTree = "<group>"; };
+		AC8083CE1FF0946700D63426 /* Settings.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Settings.storyboard; sourceTree = "<group>"; };
+		AC8083D01FF099BF00D63426 /* AddEntry.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = AddEntry.storyboard; sourceTree = "<group>"; };
 		AC85D5461FEC8BA800B0FC71 /* backup_ios_legacy.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = backup_ios_legacy.json; sourceTree = "<group>"; };
+		ACA92F231FF14E4200DC0071 /* AddBait.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = AddBait.storyboard; sourceTree = "<group>"; };
 		ACCC66C21FEB4C4400B681A8 /* app_icon_167.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = app_icon_167.png; sourceTree = "<group>"; };
 		ACCC66C31FEB4C4400B681A8 /* app_icon_87.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = app_icon_87.png; sourceTree = "<group>"; };
 		ACCC66C41FEB4C4400B681A8 /* app_icon_60.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = app_icon_60.png; sourceTree = "<group>"; };
@@ -679,13 +689,18 @@
 		AC58D56A1FED509B00C5EC3E /* Storyboards */ = {
 			isa = PBXGroup;
 			children = (
-				0D8F839F1A6EC1AE00AABAEA /* Main.storyboard */,
-				AC8083C71FF06EF100D63426 /* UserDefines.storyboard */,
-				AC8083C51FF06B4400D63426 /* SingleLocation.storyboard */,
-				AC6115CD1FEE06100052BFE5 /* SingleBait.storyboard */,
-				AC58D5741FEDBBFD00C5EC3E /* Statistics.storyboard */,
+				ACA92F231FF14E4200DC0071 /* AddBait.storyboard */,
+				AC8083D01FF099BF00D63426 /* AddEntry.storyboard */,
 				AC58D5721FEDA85A00C5EC3E /* Baits.storyboard */,
 				AC58D56B1FED50CC00C5EC3E /* Entries.storyboard */,
+				AC28B8311FF18183002706C4 /* EntrySorting.storyboard */,
+				0D8F839F1A6EC1AE00AABAEA /* Main.storyboard */,
+				AC8083CE1FF0946700D63426 /* Settings.storyboard */,
+				AC6115CD1FEE06100052BFE5 /* SingleBait.storyboard */,
+				AC8083CC1FF08F5C00D63426 /* SingleEntry.storyboard */,
+				AC8083C51FF06B4400D63426 /* SingleLocation.storyboard */,
+				AC58D5741FEDBBFD00C5EC3E /* Statistics.storyboard */,
+				AC8083C71FF06EF100D63426 /* UserDefines.storyboard */,
 			);
 			path = Storyboards;
 			sourceTree = "<group>";
@@ -1022,6 +1037,7 @@
 				0D128F571AD5C1510004CABE /* CMAJSONWriter.json in Resources */,
 				0D8F844F1A6EC2C300AABAEA /* app_icon_180.png in Resources */,
 				0D8F84691A6EC2C300AABAEA /* settings.png in Resources */,
+				AC28B8321FF18183002706C4 /* EntrySorting.storyboard in Resources */,
 				0D8F84771A6EC2C300AABAEA /* stats_large.png in Resources */,
 				ACCC66C71FEB4C4400B681A8 /* app_icon_87.png in Resources */,
 				0D8F84571A6EC2C300AABAEA /* camera@2x.png in Resources */,
@@ -1054,6 +1070,8 @@
 				0D81E4581C8F404300974ED3 /* circle_icon@3x.png in Resources */,
 				0D8F84621A6EC2C300AABAEA /* instagram_small.png in Resources */,
 				0D8F84541A6EC2C300AABAEA /* app_icon_80.png in Resources */,
+				AC8083CF1FF0946700D63426 /* Settings.storyboard in Resources */,
+				ACA92F241FF14E4200DC0071 /* AddBait.storyboard in Resources */,
 				0D8F84631A6EC2C300AABAEA /* literature.png in Resources */,
 				0D8F84751A6EC2C300AABAEA /* photos_large.png in Resources */,
 				0D8F83A11A6EC1AE00AABAEA /* Main.storyboard in Resources */,
@@ -1066,6 +1084,7 @@
 				0D8F84551A6EC2C300AABAEA /* bait.png in Resources */,
 				0D8F846B1A6EC2C300AABAEA /* sort@2x.png in Resources */,
 				0D8F84731A6EC2C300AABAEA /* fishing_methods_large.png in Resources */,
+				AC8083D11FF099BF00D63426 /* AddEntry.storyboard in Resources */,
 				0D8F84121A6EC29A00AABAEA /* CMANoXView.xib in Resources */,
 				AC8083C81FF06EF100D63426 /* UserDefines.storyboard in Resources */,
 				0D8F84661A6EC2C300AABAEA /* menu@2x.png in Resources */,
@@ -1074,6 +1093,7 @@
 				0D8F846A1A6EC2C300AABAEA /* sort@1x.png in Resources */,
 				AC58D5751FEDBBFD00C5EC3E /* Statistics.storyboard in Resources */,
 				0D8F844B1A6EC2C300AABAEA /* app_icon.png in Resources */,
+				AC8083CD1FF08F5C00D63426 /* SingleEntry.storyboard in Resources */,
 				0D8F84721A6EC2C300AABAEA /* entries_large.png in Resources */,
 				0D81E4561C8F404300974ED3 /* circle_icon@1x.png in Resources */,
 				0D8F839D1A6EC15D00AABAEA /* CMALaunchScreen.xib in Resources */,

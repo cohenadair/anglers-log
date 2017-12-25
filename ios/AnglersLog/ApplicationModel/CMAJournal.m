@@ -280,6 +280,10 @@
     return [self.entries count];
 }
 
+- (NSInteger)baitsCount {
+    return self.baits.count;
+}
+
 // returns nil if no entry with aDate exist, otherwise returns entry with aDate
 - (CMAEntry *)entryDated: (NSDate *)aDate {
     // calender stuff is needed so only certain date units are compared

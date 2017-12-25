@@ -201,10 +201,10 @@
             </objects>
             <point key="canvasLocation" x="4270" y="-183"/>
         </scene>
-        <!--addBaitNav-->
+        <!--AddBait-->
         <scene sceneID="yDk-rK-axF">
             <objects>
-                <viewControllerPlaceholder storyboardName="Main" referencedIdentifier="addBaitNav" id="nIs-Gi-rkF" sceneMemberID="viewController"/>
+                <viewControllerPlaceholder storyboardName="AddBait" id="nIs-Gi-rkF" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pzD-2L-dnn" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="4942" y="-184"/>

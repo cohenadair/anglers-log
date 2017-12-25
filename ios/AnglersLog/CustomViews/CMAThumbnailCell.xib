@@ -78,7 +78,6 @@
                     <constraint firstAttribute="trailing" secondItem="bZj-V8-CF0" secondAttribute="trailing" id="t9L-2I-mQL"/>
                 </constraints>
             </tableViewCellContentView>
-            <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
             <connections>
                 <outlet property="subtitleView1" destination="6cB-A6-TA6" id="jHK-jM-eAs"/>
                 <outlet property="subtitleView2" destination="3j2-oo-Bi1" id="gA3-U2-Jvm"/>
