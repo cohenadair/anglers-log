@@ -12,6 +12,18 @@
 #import "CMAConstants.h"
 #import "CMAUserDefine.h"
 
+@protocol CMAJournalChangeListener
+
+@optional
+- (void)entriesDidChange;
+- (void)baitsDidChange;
+- (void)locationsDidChange;
+- (void)fishingMethodsDidChange;
+- (void)speciesDidChange;
+- (void)waterClaritiesDidChange;
+
+@end
+
 @interface CMAJournal : NSManagedObject
 
 @property (strong, nonatomic)NSString *name;
@@ -29,13 +41,30 @@
 - (void)archive;
 
 // editing
+- (void)addSceneConfirmWithObject:(id)anObjToAdd
+                        objToEdit:(id)anObjToEdit
+                  checkInputBlock:(BOOL(^)(void))aCheckInputBlock
+                   isEditingBlock:(BOOL(^)(void))anIsEditingBlock
+                  editObjectBlock:(void(^)(void))anEditBlock
+                   addObjectBlock:(BOOL(^)(void))anAddObjectBlock
+                    errorAlertMsg:(NSString *)anErrorMsg
+                   viewController:(id)aVC
+                       segueBlock:(void(^)(void))aSegueBlock
+                  removeObjToEdit:(BOOL)rmObjToEdit;
+
 - (BOOL)addEntry:(CMAEntry *)anEntry;
 - (void)removeEntryDated:(NSDate *)aDate;
 - (void)editEntryDated:(NSDate *)aDate newProperties:(CMAEntry *)aNewEntry;
 
-- (BOOL)addUserDefine:(NSString *)aDefineName objectToAdd:(id)anObject;
+- (BOOL)addUserDefine:(NSString *)userDefineName objectToAdd:(id)obj notify:(BOOL)notify;
 - (void)removeUserDefine:(NSString *)aDefineName objectNamed:(NSString *)anObjectName;
-- (void)editUserDefine:(NSString *)aDefineName objectNamed:(id)aName newProperties:(id)aNewObject;
+- (void)editUserDefine:(NSString *)userDefineName
+           objectNamed:(NSString *)objName
+         newProperties:(id)newObj
+                notify:(BOOL)notify;
+
+- (void)addChangeListener:(id<CMAJournalChangeListener>)listener;
+- (void)removeChangeListener:(id<CMAJournalChangeListener>)listener;
 
 // accessing
 - (CMAUserDefine *)userDefineNamed:(NSString *)aName;
@@ -60,6 +89,7 @@
 
 // filtering
 - (NSMutableOrderedSet *)filterEntries:(NSString *)searchText;
+- (NSOrderedSet<CMABait *> *)filterBaits:(NSString *)searchText;
 
 // visiting
 - (void)accept:(id)aVisitor;

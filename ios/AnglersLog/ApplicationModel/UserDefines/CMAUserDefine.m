@@ -108,7 +108,7 @@
     return nil;
 }
 
-- (id)objectAtIndex:(NSInteger)anIndex {
+- (CMAUserDefineObject *)objectAtIndex:(NSInteger)anIndex {
     return [[self activeSet] objectAtIndex:anIndex];
 }
 
@@ -165,16 +165,24 @@
     return [self.name isEqualToString:UDN_SPECIES];
 }
 
-#pragma mark - Sorting
+#pragma mark - Sorting and Filtering
 
 - (void)sortByNameProperty {
     NSMutableOrderedSet *activeSet = [self activeSet];
     
-    NSArray *sortedArray = [activeSet sortedArrayUsingComparator:^NSComparisonResult(id o1, id o2){
+    NSArray *sortedArray = [activeSet sortedArrayUsingComparator:^NSComparisonResult(id o1, id o2) {
         return [[o1 name] compare:[o2 name]];
     }];
     
     [self setActiveSet:[NSMutableOrderedSet orderedSetWithArray:sortedArray]];
+}
+
+- (NSOrderedSet<CMAUserDefineObject *> *)filter:(NSString *)searchText {
+    NSMutableOrderedSet *activeSet = self.activeSet;
+    return [activeSet filteredOrderedSetUsingPredicate:[NSPredicate predicateWithBlock:
+            ^BOOL(CMAUserDefineObject *userDefine, NSDictionary<NSString *, id> *bindings) {
+                return [userDefine containsSearchText:searchText];
+            }]];
 }
 
 #pragma mark - Visiting

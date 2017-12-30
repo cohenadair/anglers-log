@@ -16,4 +16,8 @@
     return [formatter numberFromString:self];
 }
 
+- (NSString *)stringByRemovingSpaces {
+    return [self stringByReplacingOccurrencesOfString:@" " withString:@""];
+}
+
 @end

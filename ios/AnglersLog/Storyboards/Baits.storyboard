@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="nf3-lH-9zk">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Wgu-TV-UhE">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -10,84 +10,65 @@
     </dependencies>
     <scenes>
         <!--Baits-->
-        <scene sceneID="Etg-TT-Jp6">
+        <scene sceneID="fgt-Lc-Mj2">
             <objects>
-                <viewController id="nf3-lH-9zk" customClass="CMAViewBaitsViewController" sceneMemberID="viewController">
+                <viewController id="Wgu-TV-UhE" customClass="CMAViewBaitsViewController" sceneMemberID="viewController">
                     <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="nCu-lc-pHv"/>
-                        <viewControllerLayoutGuide type="bottom" id="bJX-7O-QuC"/>
+                        <viewControllerLayoutGuide type="top" id="Gtp-v4-LPe"/>
+                        <viewControllerLayoutGuide type="bottom" id="8pt-A1-1XT"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="ssY-SQ-fHC">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="559"/>
+                    <view key="view" contentMode="scaleToFill" id="gfW-Fh-X63">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="WhS-WX-XaN">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="559"/>
-                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <connections>
-                                    <outlet property="dataSource" destination="nf3-lH-9zk" id="PRB-1r-8Po"/>
-                                    <outlet property="delegate" destination="nf3-lH-9zk" id="RQA-AC-FcO"/>
-                                </connections>
-                            </tableView>
-                        </subviews>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <constraints>
-                            <constraint firstItem="WhS-WX-XaN" firstAttribute="leading" secondItem="ssY-SQ-fHC" secondAttribute="leading" id="Bas-cH-KWT"/>
-                            <constraint firstAttribute="trailing" secondItem="WhS-WX-XaN" secondAttribute="trailing" id="Pzj-EV-MXL"/>
-                            <constraint firstItem="WhS-WX-XaN" firstAttribute="bottom" secondItem="bJX-7O-QuC" secondAttribute="top" id="QFL-pp-Lb0"/>
-                            <constraint firstItem="WhS-WX-XaN" firstAttribute="top" secondItem="nCu-lc-pHv" secondAttribute="bottom" id="Td7-Gi-dnj"/>
-                        </constraints>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </view>
                     <toolbarItems>
-                        <barButtonItem systemItem="trash" id="M8M-ab-HpT">
+                        <barButtonItem systemItem="trash" id="Og7-eU-YTU">
                             <connections>
-                                <action selector="tapDeleteButton:" destination="nf3-lH-9zk" id="eLG-6U-KGH"/>
+                                <action selector="tapDeleteButton:" destination="Wgu-TV-UhE" id="Sbt-1f-svj"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem style="plain" systemItem="flexibleSpace" id="Xdb-af-G8c"/>
-                        <barButtonItem systemItem="add" id="Q55-RX-1xz">
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="XWg-bn-fl1"/>
+                        <barButtonItem systemItem="add" id="DbV-tB-pxY">
                             <connections>
-                                <segue destination="plq-fE-28q" kind="presentation" identifier="fromViewBaitsToAddBait" id="Twf-fj-9Lv"/>
+                                <segue destination="UDI-u5-DAT" kind="presentation" identifier="fromViewBaitsToAddBait" id="lHp-lO-Mba"/>
                             </connections>
                         </barButtonItem>
                     </toolbarItems>
-                    <navigationItem key="navigationItem" title="Baits" id="b5T-cQ-QUb">
-                        <barButtonItem key="leftBarButtonItem" image="menu.png" id="MQZ-Rl-72z"/>
+                    <navigationItem key="navigationItem" title="Baits" id="nqA-Nd-RUr">
+                        <barButtonItem key="leftBarButtonItem" image="menu.png" id="e4F-jm-4Cm"/>
                     </navigationItem>
-                    <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
-                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
-                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics" translucent="NO"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
-                        <outlet property="addButton" destination="Q55-RX-1xz" id="opL-SM-Tdn"/>
-                        <outlet property="deleteButton" destination="M8M-ab-HpT" id="oRm-hl-2w7"/>
-                        <outlet property="menuButton" destination="MQZ-Rl-72z" id="LLv-F6-53G"/>
-                        <outlet property="tableView" destination="WhS-WX-XaN" id="Jdb-FN-C8p"/>
-                        <outlet property="tableViewTop" destination="Td7-Gi-dnj" id="TdJ-eA-X4S"/>
-                        <segue destination="ely-5b-fCM" kind="unwind" identifier="unwindToStatisticsFromViewBaits" unwindAction="unwindToStatistics:" id="Zai-FL-cIm"/>
-                        <segue destination="ely-5b-fCM" kind="unwind" identifier="unwindToAddEntryFromViewBaits" unwindAction="unwindToAddEntry:" id="7wd-ZI-k0k"/>
-                        <segue destination="wRz-Dy-cAB" kind="show" identifier="fromViewBaitsToSingleBait" id="LIc-S1-G3c"/>
+                        <outlet property="addButton" destination="DbV-tB-pxY" id="9Jt-9G-ad9"/>
+                        <outlet property="deleteButton" destination="Og7-eU-YTU" id="92T-OU-1EX"/>
+                        <outlet property="menuButton" destination="e4F-jm-4Cm" id="4mG-rK-35F"/>
+                        <segue destination="EV5-Io-NND" kind="unwind" identifier="unwindToStatisticsFromViewBaits" unwindAction="unwindToStatistics:" id="NQr-Pb-Fh4"/>
+                        <segue destination="EV5-Io-NND" kind="unwind" identifier="unwindToAddEntryFromViewBaits" unwindAction="unwindToAddEntry:" id="IjU-Mj-GQQ"/>
+                        <segue destination="a0r-VO-yrX" kind="show" identifier="fromViewBaitsToSingleBait" id="nAf-Bi-TFg"/>
                     </connections>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Ioi-Vb-N0C" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <exit id="ely-5b-fCM" userLabel="Exit" sceneMemberID="exit"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="FmZ-dV-CSz" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="EV5-Io-NND" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="3498" y="-185"/>
-        </scene>
-        <!--SingleBait-->
-        <scene sceneID="N7t-hB-Omv">
-            <objects>
-                <viewControllerPlaceholder storyboardName="SingleBait" id="wRz-Dy-cAB" sceneMemberID="viewController"/>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="CVa-Ko-hp1" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="4139" y="-165"/>
+            <point key="canvasLocation" x="-14362" y="-454"/>
         </scene>
         <!--AddBait-->
-        <scene sceneID="atI-Bu-NaS">
+        <scene sceneID="ABv-w5-DmM">
             <objects>
-                <viewControllerPlaceholder storyboardName="AddBait" id="plq-fE-28q" sceneMemberID="viewController"/>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="XG1-rw-I4b" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <viewControllerPlaceholder storyboardName="AddBait" id="UDI-u5-DAT" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="XE8-WV-uWd" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4126" y="-264"/>
+            <point key="canvasLocation" x="-13805" y="-542"/>
+        </scene>
+        <!--SingleBait-->
+        <scene sceneID="1cA-3n-f1X">
+            <objects>
+                <viewControllerPlaceholder storyboardName="SingleBait" id="a0r-VO-yrX" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="M6r-DM-dlO" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-13794" y="-379"/>
         </scene>
     </scenes>
     <resources>

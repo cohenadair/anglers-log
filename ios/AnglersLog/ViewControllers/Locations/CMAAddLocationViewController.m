@@ -262,12 +262,12 @@ NSInteger const SECTION_DELETE = 3;
 - (IBAction)clickedDone:(id)sender {
     CMALocation *locationToAdd = [[CMAStorageManager sharedManager] managedLocation];
     
-    [CMAUtilities addSceneConfirmWithObject:locationToAdd
+    [self.journal addSceneConfirmWithObject:locationToAdd
                                   objToEdit:self.location
                             checkInputBlock:^BOOL () { return [self checkUserInputAndSetLocation:locationToAdd]; }
                              isEditingBlock:^BOOL () { return self.isEditingLocation; }
-                            editObjectBlock:^void () { [[self journal] editUserDefine:UDN_LOCATIONS objectNamed:self.location.name newProperties:locationToAdd]; }
-                             addObjectBlock:^BOOL () { return [[self journal] addUserDefine:UDN_LOCATIONS objectToAdd:locationToAdd]; }
+                            editObjectBlock:^void () { [[self journal] editUserDefine:UDN_LOCATIONS objectNamed:self.location.name newProperties:locationToAdd notify:NO]; }
+                             addObjectBlock:^BOOL () { return [[self journal] addUserDefine:UDN_LOCATIONS objectToAdd:locationToAdd notify:NO]; }
                               errorAlertMsg:@"There was an error adding a location. Please try again."
                              viewController:self
                                  segueBlock:^void () { [self performSegueToPreviousView]; }

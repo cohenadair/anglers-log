@@ -8,8 +8,6 @@
 
 #import "CMAAddEntryViewController.h"
 #import "CMAAlerts.h"
-#import "CMAAppDelegate.h"
-#import "CMANoXView.h"
 #import "CMASingleEntryViewController.h"
 #import "CMAStorageManager.h"
 #import "CMAThumbnailCell.h"
@@ -18,25 +16,16 @@
 #import "CMAViewEntriesViewController.h"
 #import "SWRevealViewController.h"
 
-@interface CMAViewEntriesViewController ()
+@interface CMAViewEntriesViewController () <CMATableViewControllerDelegate>
 
-@property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *deleteButton;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *addButton;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *menuButton;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *sortButton;
 
-@property (strong, nonatomic)CMANoXView *noEntriesView;
-@property (strong, nonatomic)UISearchBar *searchBar;
-@property (strong, nonatomic)UIView *searchResultView;
-
 @property (strong, nonatomic)NSMutableOrderedSet<CMAEntry *> *entries;
-@property (nonatomic)BOOL isSearchBarInView;
-@property (nonatomic)CGFloat currentOffsetY;
 
 @end
-
-#define kSearchBarHeight 44
 
 @implementation CMAViewEntriesViewController
 
@@ -44,10 +33,6 @@
 
 - (CMAJournal *)journal {
     return [[CMAStorageManager sharedManager] sharedJournal];
-}
-
-- (CMAAppDelegate *)appDelegate {
-    return (CMAAppDelegate *)[[UIApplication sharedApplication] delegate];
 }
 
 #pragma mark - Side Bar Navigation
@@ -61,111 +46,33 @@
 
 #pragma mark - View Management
 
-- (void)initNoEntriesView {
-    NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"CMANoXView" owner:self options:nil];
-    if (nib.count <= 0)
-        return;
-    
-    self.noEntriesView = (CMANoXView *)[nib objectAtIndex:0];
-    
-    self.noEntriesView.imageView.image = [UIImage imageNamed:@"entries_large.png"];
-    self.noEntriesView.titleView.text = @"Entries.";
-    
-    [self.noEntriesView centerInParent:self.view];
-    [self.noEntriesView setAlpha:0.0f];
-    [self.view addSubview:self.noEntriesView];
-}
-
-- (void)handleNoEntriesView {
-    if (!self.noEntriesView)
-        [self initNoEntriesView];
-    
-    if ([self.entries count] <= 0)
-        [UIView animateWithDuration:0.5 animations:^{
-            [self.noEntriesView setAlpha:1.0f];
-        }];
-    else
-        [self.noEntriesView setAlpha:0.0f];
-}
-
 - (void)setupView {
-    self.navigationController.toolbarHidden = NO;
-    self.navigationController.toolbar.userInteractionEnabled = YES;
+    self.delegate = self;
     
-    if ([self.entries count] > 0) {
-        self.deleteButton.enabled = YES;
-        self.sortButton.enabled = YES;
-        [self initSearchBar];
-    }
+    self.noXView.imageView.image = [UIImage imageNamed:@"entries_large.png"];
+    self.noXView.titleView.text = @"Entries.";
     
-    self.navigationItem.title = [NSString stringWithFormat:@"Entries (%ld)", (long)[[self journal] entryCount]];
+    self.quantityTitleText = @"Entries";
+    self.searchBarPlaceholder = @"Search entries";
     
-    [self handleNoEntriesView];
+    [self setupTableViewData];
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    self.navigationController.toolbarHidden = NO;
-    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Entries" style:UIBarButtonItemStylePlain target:nil action:nil];
-    
-    self.entries = [[self journal] entries];
-    self.isSearchBarInView = NO;
-    self.currentOffsetY = 0.0f;
-    
-    if ([self.entries count] <= 0) {
-        [self.deleteButton setEnabled:NO];
-        [self.sortButton setEnabled:NO];
-    }
-    
+    [self setupView];
     [self initSideBarMenu];
-    [self.tableView setTableFooterView:[[UIView alloc] initWithFrame:CGRectZero]]; // removes empty cells at the end of the list
-    [CMAThumbnailCell registerWithTableView:self.tableView];
-    
-    // contentOffset will not change before the main runloop ends without queueing it, for iPad that is
-    dispatch_async(dispatch_get_main_queue(), ^{
-        // The search bar is hidden when the view becomes visible the first time
-        self.tableView.contentOffset = CGPointMake(0, CGRectGetHeight(self.searchBar.bounds));
-    });
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [self setupView];
-    
-    if (self.searchBar && !self.isSearchBarInView) {
-        if (self.currentOffsetY > 0)
-            [self.tableView setContentOffset:CGPointMake(0, self.currentOffsetY)];
-        else
-            [self.tableView setContentOffset:CGPointMake(0, kSearchBarHeight)];
-        
-        [self setIsSearchBarInView:NO];
-    } else
-        [self.tableView setContentOffset:CGPointMake(0, self.currentOffsetY)];
-    
-    self.entries = [[self journal] entries]; // need to reset in case an entry was edited and the order changed
-    [self.tableView reloadData];
-}
-
-- (void)viewWillDisappear:(BOOL)animated {
-    [super viewWillDisappear:animated];
-
-    if (self.searchBar && !self.isSearchBarInView)
-        [self.tableView setContentOffset:CGPointMake(0, kSearchBarHeight)];
+    self.sortButton.enabled = self.deleteButton.enabled = self.tableViewRowCount > 0;
+    self.navigationController.toolbarHidden = NO;
+    self.navigationController.toolbar.userInteractionEnabled = YES;
 }
 
 #pragma mark - Table View Initializing
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    // Return the number of sections.
-    return 1;
-}
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [self.entries count];
-}
-
-// Sets the height of each cell.
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     return CMAThumbnailCell.height;
 }
@@ -178,80 +85,8 @@
     return cell;
 }
 
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // delete from data source
-        [self.journal removeEntryDated:self.entries[indexPath.row].date];
-        
-        // delete from table
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-        self.navigationItem.title = [NSString stringWithFormat:@"Entries (%ld)", (long)[[self journal] entryCount]];
-        
-        if (self.journal.entryCount <= 0) {
-            [self enableToolbarButtons];
-            [self handleNoEntriesView];
-            [self.deleteButton setEnabled:NO];
-            [self.sortButton setEnabled:NO];
-            [self deleteSearchBar];
-        }
-    }
-}
-
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [self performSegueWithIdentifier:@"fromViewEntriesToSingleEntry" sender:self];
-}
-
-#pragma mark - Search Bar Initializing
-
-- (void)initSearchBar {
-    self.searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, kSearchBarHeight)];
-    self.searchBar.delegate = self;
-    self.tableView.tableHeaderView = self.searchBar;
-    
-    [self initSearchResultView];
-}
-
-- (void)initSearchResultView {
-    self.searchResultView = [[UIView alloc] initWithFrame:CGRectMake(0, kSearchBarHeight, self.view.frame.size.width, self.view.frame.size.height)];
-    
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, self.searchBar.frame.size.height + 10, self.view.frame.size.width, 50)];
-    [label setTextAlignment:NSTextAlignmentCenter];
-    [label setText:@"No results found."];
-    [label setTextColor:[UIColor lightGrayColor]];
-    
-    [self.searchResultView addSubview:label];
-    
-    [self.view addSubview:self.searchResultView];
-    [self.searchResultView setHidden:YES];
-}
-
-- (void)deleteSearchBar {
-    [self.searchBar removeFromSuperview];
-    self.searchBar = nil;
-    self.tableView.tableHeaderView = nil;
-    [self.tableView setContentOffset:CGPointMake(0, 0)];
-}
-
-- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
-    NSMutableOrderedSet *searchResults = [[self journal] filterEntries:searchBar.text];
-    
-    if ([searchResults count] <= 0)
-        self.searchResultView.hidden = NO;
-    else
-        self.searchResultView.hidden = YES;
-    
-    self.entries = searchResults;
-    [self.tableView reloadData];
-}
-
-- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
-    if ([searchText isEqualToString:@""]) {
-        NSLog(@"Search was cleared, resetting table...");
-        self.entries = [[self journal] entries];
-        [self.tableView reloadData];
-        [self.searchResultView setHidden:YES];
-    }
 }
 
 #pragma mark - Events
@@ -284,7 +119,6 @@
 // Used to exit out of editing mode.
 - (void)clickDoneButton {
     [self enableToolbarButtons];
-    [[self journal] archive];
 }
 
 #pragma mark - Navigation
@@ -299,19 +133,34 @@
         CMASingleEntryViewController *destination = segue.destinationViewController;
         CMAEntry *entryToDisplay = [[[self journal] entries] objectAtIndex:[self.tableView indexPathForSelectedRow].item];
         destination.entry = entryToDisplay;
-        
-        self.isSearchBarInView = (self.tableView.contentOffset.y == 0.0f);
-        self.currentOffsetY = self.tableView.contentOffset.y;
     }
 }
 
 - (IBAction)unwindToViewEntries:(UIStoryboardSegue *)segue {
-    // reload data to show the newly sorted array
-    self.entries = [[self journal] entries];
-    
-    if ([self.entries count] <= 0) {
-        [self deleteSearchBar];
-    }
+}
+
+#pragma mark - CMASearchTableViewDelegate
+
+- (void)filterTableViewData:(NSString *)searchText {
+    self.entries = [self.journal filterEntries:searchText];
+}
+
+- (void)setupTableViewData {
+    self.entries = self.journal.entries;
+}
+
+- (NSInteger)tableViewRowCount {
+    return self.entries.count;
+}
+
+- (void)onDeleteRowAtIndexPath:(NSIndexPath *)indexPath {
+    [self.journal removeEntryDated:self.entries[indexPath.row].date];
+}
+
+- (void)didDeleteLastItem {
+    [self enableToolbarButtons];
+    self.deleteButton.enabled = NO;
+    self.sortButton.enabled = NO;
 }
 
 @end

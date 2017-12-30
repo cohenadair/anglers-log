@@ -13,7 +13,6 @@
 		0D128F5A1AD5C1BC0004CABE /* CMADataExporter.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D128F591AD5C1BC0004CABE /* CMADataExporter.m */; };
 		0D23B2711A7713C900E89736 /* TheAnglersLog.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 0D23B26F1A7713C900E89736 /* TheAnglersLog.xcdatamodeld */; };
 		0D23B2741A78102B00E89736 /* CMAImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D23B2731A78102B00E89736 /* CMAImage.m */; };
-		0D248B0F1AB0C82200093290 /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D248B0E1AB0C82200093290 /* iAd.framework */; };
 		0D5608121A6F0F3000EE0437 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D5608111A6F0F3000EE0437 /* CoreData.framework */; };
 		0D81E4561C8F404300974ED3 /* circle_icon@1x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0D81E4531C8F404300974ED3 /* circle_icon@1x.png */; };
 		0D81E4571C8F404300974ED3 /* circle_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0D81E4541C8F404300974ED3 /* circle_icon@2x.png */; };
@@ -87,9 +86,6 @@
 		0D8F84591A6EC2C300AABAEA /* checkmark@1x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0D8F84281A6EC2C300AABAEA /* checkmark@1x.png */; };
 		0D8F845A1A6EC2C300AABAEA /* checkmark@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0D8F84291A6EC2C300AABAEA /* checkmark@2x.png */; };
 		0D8F845B1A6EC2C300AABAEA /* checkmark@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0D8F842A1A6EC2C300AABAEA /* checkmark@3x.png */; };
-		0D8F845C1A6EC2C300AABAEA /* edit@1x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0D8F842B1A6EC2C300AABAEA /* edit@1x.png */; };
-		0D8F845D1A6EC2C300AABAEA /* edit@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0D8F842C1A6EC2C300AABAEA /* edit@2x.png */; };
-		0D8F845E1A6EC2C300AABAEA /* edit@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0D8F842D1A6EC2C300AABAEA /* edit@3x.png */; };
 		0D8F845F1A6EC2C300AABAEA /* fishing_methods.png in Resources */ = {isa = PBXBuildFile; fileRef = 0D8F842E1A6EC2C300AABAEA /* fishing_methods.png */; };
 		0D8F84601A6EC2C300AABAEA /* instagram@1x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0D8F842F1A6EC2C300AABAEA /* instagram@1x.png */; };
 		0D8F84611A6EC2C300AABAEA /* instagram@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0D8F84301A6EC2C300AABAEA /* instagram@2x.png */; };
@@ -136,6 +132,9 @@
 		0DCC26571A520DD300738F04 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DCC26561A520DD300738F04 /* SystemConfiguration.framework */; };
 		1C74E7B8C5364063A0D85F6F /* Pods_AnglersLog_AnglersLogTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FDAFF13CF55D9681BAF299B1 /* Pods_AnglersLog_AnglersLogTests.framework */; };
 		AC28B8321FF18183002706C4 /* EntrySorting.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AC28B8311FF18183002706C4 /* EntrySorting.storyboard */; };
+		AC366FD21FF3FE14004D43F0 /* CMATableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AC366FD11FF3FE14004D43F0 /* CMATableViewController.m */; };
+		AC366FD41FF459D7004D43F0 /* CMABaitTest.m in Sources */ = {isa = PBXBuildFile; fileRef = AC366FD31FF459D7004D43F0 /* CMABaitTest.m */; };
+		AC3A99D51FF7EAF900473A5D /* SelectFishingSpot.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AC3A99D41FF7EAF900473A5D /* SelectFishingSpot.storyboard */; };
 		AC58D56C1FED50CC00C5EC3E /* Entries.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AC58D56B1FED50CC00C5EC3E /* Entries.storyboard */; };
 		AC58D5701FED792A00C5EC3E /* CMAThumbnailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = AC58D56E1FED792A00C5EC3E /* CMAThumbnailCell.m */; };
 		AC58D5711FED792A00C5EC3E /* CMAThumbnailCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = AC58D56F1FED792A00C5EC3E /* CMAThumbnailCell.xib */; };
@@ -148,6 +147,7 @@
 		AC6115CB1FEE01E30052BFE5 /* placeholder_circle@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AC6115C81FEE01E30052BFE5 /* placeholder_circle@2x.png */; };
 		AC6115CC1FEE01E30052BFE5 /* placeholder_circle@1x.png in Resources */ = {isa = PBXBuildFile; fileRef = AC6115C91FEE01E30052BFE5 /* placeholder_circle@1x.png */; };
 		AC6115CE1FEE06100052BFE5 /* SingleBait.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AC6115CD1FEE06100052BFE5 /* SingleBait.storyboard */; };
+		AC8028611FF360B700C0A1EA /* UIView+CMAConstraints.m in Sources */ = {isa = PBXBuildFile; fileRef = AC8028601FF360B700C0A1EA /* UIView+CMAConstraints.m */; };
 		AC8083C61FF06B4400D63426 /* SingleLocation.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AC8083C51FF06B4400D63426 /* SingleLocation.storyboard */; };
 		AC8083C81FF06EF100D63426 /* UserDefines.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AC8083C71FF06EF100D63426 /* UserDefines.storyboard */; };
 		AC8083CB1FF0886500D63426 /* UIColor+CMA.m in Sources */ = {isa = PBXBuildFile; fileRef = AC8083CA1FF0886500D63426 /* UIColor+CMA.m */; };
@@ -317,9 +317,6 @@
 		0D8F84281A6EC2C300AABAEA /* checkmark@1x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "checkmark@1x.png"; sourceTree = "<group>"; };
 		0D8F84291A6EC2C300AABAEA /* checkmark@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "checkmark@2x.png"; sourceTree = "<group>"; };
 		0D8F842A1A6EC2C300AABAEA /* checkmark@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "checkmark@3x.png"; sourceTree = "<group>"; };
-		0D8F842B1A6EC2C300AABAEA /* edit@1x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "edit@1x.png"; sourceTree = "<group>"; };
-		0D8F842C1A6EC2C300AABAEA /* edit@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "edit@2x.png"; sourceTree = "<group>"; };
-		0D8F842D1A6EC2C300AABAEA /* edit@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "edit@3x.png"; sourceTree = "<group>"; };
 		0D8F842E1A6EC2C300AABAEA /* fishing_methods.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fishing_methods.png; sourceTree = "<group>"; };
 		0D8F842F1A6EC2C300AABAEA /* instagram@1x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "instagram@1x.png"; sourceTree = "<group>"; };
 		0D8F84301A6EC2C300AABAEA /* instagram@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "instagram@2x.png"; sourceTree = "<group>"; };
@@ -379,6 +376,10 @@
 		493E619A3319133E8D65DB4D /* Pods-AnglersLog.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AnglersLog.debug.xcconfig"; path = "Pods/Target Support Files/Pods-AnglersLog/Pods-AnglersLog.debug.xcconfig"; sourceTree = "<group>"; };
 		74D0C5C3A9825BC7B00515D5 /* Pods-AnglersLogTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AnglersLogTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-AnglersLogTests/Pods-AnglersLogTests.release.xcconfig"; sourceTree = "<group>"; };
 		AC28B8311FF18183002706C4 /* EntrySorting.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = EntrySorting.storyboard; sourceTree = "<group>"; };
+		AC366FD01FF3FE14004D43F0 /* CMATableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CMATableViewController.h; path = ViewControllers/CMATableViewController.h; sourceTree = "<group>"; };
+		AC366FD11FF3FE14004D43F0 /* CMATableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = CMATableViewController.m; path = ViewControllers/CMATableViewController.m; sourceTree = "<group>"; };
+		AC366FD31FF459D7004D43F0 /* CMABaitTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CMABaitTest.m; sourceTree = "<group>"; };
+		AC3A99D41FF7EAF900473A5D /* SelectFishingSpot.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = SelectFishingSpot.storyboard; sourceTree = "<group>"; };
 		AC58D56B1FED50CC00C5EC3E /* Entries.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Entries.storyboard; sourceTree = "<group>"; };
 		AC58D56D1FED792A00C5EC3E /* CMAThumbnailCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CMAThumbnailCell.h; path = CustomViews/CMAThumbnailCell.h; sourceTree = "<group>"; };
 		AC58D56E1FED792A00C5EC3E /* CMAThumbnailCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = CMAThumbnailCell.m; path = CustomViews/CMAThumbnailCell.m; sourceTree = "<group>"; };
@@ -391,6 +392,8 @@
 		AC6115C81FEE01E30052BFE5 /* placeholder_circle@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "placeholder_circle@2x.png"; sourceTree = "<group>"; };
 		AC6115C91FEE01E30052BFE5 /* placeholder_circle@1x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "placeholder_circle@1x.png"; sourceTree = "<group>"; };
 		AC6115CD1FEE06100052BFE5 /* SingleBait.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = SingleBait.storyboard; sourceTree = "<group>"; };
+		AC80285F1FF360B700C0A1EA /* UIView+CMAConstraints.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "UIView+CMAConstraints.h"; path = "Categories/UIView+CMAConstraints.h"; sourceTree = "<group>"; };
+		AC8028601FF360B700C0A1EA /* UIView+CMAConstraints.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "UIView+CMAConstraints.m"; path = "Categories/UIView+CMAConstraints.m"; sourceTree = "<group>"; };
 		AC8083C51FF06B4400D63426 /* SingleLocation.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = SingleLocation.storyboard; sourceTree = "<group>"; };
 		AC8083C71FF06EF100D63426 /* UserDefines.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = UserDefines.storyboard; sourceTree = "<group>"; };
 		AC8083C91FF0886500D63426 /* UIColor+CMA.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "UIColor+CMA.h"; path = "Categories/UIColor+CMA.h"; sourceTree = "<group>"; };
@@ -435,7 +438,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0D248B0F1AB0C82200093290 /* iAd.framework in Frameworks */,
 				0DCAD6521AA5000A0040B03B /* GLKit.framework in Frameworks */,
 				0DCAD6501AA4FFFE0040B03B /* OpenGLES.framework in Frameworks */,
 				0DCAD64E1AA4FFF00040B03B /* MessageUI.framework in Frameworks */,
@@ -610,9 +612,6 @@
 				0D8F84281A6EC2C300AABAEA /* checkmark@1x.png */,
 				0D8F84291A6EC2C300AABAEA /* checkmark@2x.png */,
 				0D8F842A1A6EC2C300AABAEA /* checkmark@3x.png */,
-				0D8F842B1A6EC2C300AABAEA /* edit@1x.png */,
-				0D8F842C1A6EC2C300AABAEA /* edit@2x.png */,
-				0D8F842D1A6EC2C300AABAEA /* edit@3x.png */,
 				0D8F842E1A6EC2C300AABAEA /* fishing_methods.png */,
 				0D8F842F1A6EC2C300AABAEA /* instagram@1x.png */,
 				0D8F84301A6EC2C300AABAEA /* instagram@2x.png */,
@@ -659,6 +658,8 @@
 				0DB8D7901D8A092100EF7C50 /* NSString+CMA.m */,
 				AC8083C91FF0886500D63426 /* UIColor+CMA.h */,
 				AC8083CA1FF0886500D63426 /* UIColor+CMA.m */,
+				AC80285F1FF360B700C0A1EA /* UIView+CMAConstraints.h */,
+				AC8028601FF360B700C0A1EA /* UIView+CMAConstraints.m */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -695,6 +696,7 @@
 				AC58D56B1FED50CC00C5EC3E /* Entries.storyboard */,
 				AC28B8311FF18183002706C4 /* EntrySorting.storyboard */,
 				0D8F839F1A6EC1AE00AABAEA /* Main.storyboard */,
+				AC3A99D41FF7EAF900473A5D /* SelectFishingSpot.storyboard */,
 				AC8083CE1FF0946700D63426 /* Settings.storyboard */,
 				AC6115CD1FEE06100052BFE5 /* SingleBait.storyboard */,
 				AC8083CC1FF08F5C00D63426 /* SingleEntry.storyboard */,
@@ -708,6 +710,7 @@
 		ACCC66CF1FEB5BD600B681A8 /* AnglersLogTests */ = {
 			isa = PBXGroup;
 			children = (
+				AC366FD31FF459D7004D43F0 /* CMABaitTest.m */,
 				AC58D57C1FEDC6DF00C5EC3E /* CMAEntryTest.m */,
 				ACCC66D81FEB5DB800B681A8 /* CMAJSONReaderTest.m */,
 				ACCC66DA1FEC68CE00B681A8 /* Data */,
@@ -890,9 +893,6 @@
 		E7C926D419EE3B320010A9FE /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				0D8F83BF1A6EC25200AABAEA /* Entries */,
-				0D8F83C81A6EC25200AABAEA /* Locations */,
-				0D8F83D11A6EC25200AABAEA /* Photos */,
 				0D8F83AE1A6EC25200AABAEA /* Baits */,
 				0D8F83B51A6EC25200AABAEA /* CMAImagePickerViewController.h */,
 				0D8F83B61A6EC25200AABAEA /* CMAImagePickerViewController.m */,
@@ -904,6 +904,11 @@
 				0D8F83BC1A6EC25200AABAEA /* CMAStatisticsViewController.m */,
 				0D8F83BD1A6EC25200AABAEA /* CMAUserDefinesViewController.h */,
 				0D8F83BE1A6EC25200AABAEA /* CMAUserDefinesViewController.m */,
+				AC366FD01FF3FE14004D43F0 /* CMATableViewController.h */,
+				AC366FD11FF3FE14004D43F0 /* CMATableViewController.m */,
+				0D8F83BF1A6EC25200AABAEA /* Entries */,
+				0D8F83C81A6EC25200AABAEA /* Locations */,
+				0D8F83D11A6EC25200AABAEA /* Photos */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -1049,7 +1054,6 @@
 				0D8F84581A6EC2C300AABAEA /* camera@3x.png in Resources */,
 				0D8F84701A6EC2C300AABAEA /* water_clarities.png in Resources */,
 				AC6115CA1FEE01E30052BFE5 /* placeholder_circle@3x.png in Resources */,
-				0D8F845E1A6EC2C300AABAEA /* edit@3x.png in Resources */,
 				0D8F845A1A6EC2C300AABAEA /* checkmark@2x.png in Resources */,
 				ACCC66C81FEB4C4400B681A8 /* app_icon_60.png in Resources */,
 				0D8F846D1A6EC2C300AABAEA /* species.png in Resources */,
@@ -1062,7 +1066,6 @@
 				0D8F840E1A6EC29A00AABAEA /* CMACircleView.xib in Resources */,
 				ACCC66C61FEB4C4400B681A8 /* app_icon_167.png in Resources */,
 				AC6115CE1FEE06100052BFE5 /* SingleBait.storyboard in Resources */,
-				0D8F845D1A6EC2C300AABAEA /* edit@2x.png in Resources */,
 				0D8F846E1A6EC2C300AABAEA /* stats.png in Resources */,
 				0DBC36181D7E2BA50016B898 /* spinner.jpg in Resources */,
 				AC6115CC1FEE01E30052BFE5 /* placeholder_circle@1x.png in Resources */,
@@ -1098,8 +1101,8 @@
 				0D81E4561C8F404300974ED3 /* circle_icon@1x.png in Resources */,
 				0D8F839D1A6EC15D00AABAEA /* CMALaunchScreen.xib in Resources */,
 				ACCC66C91FEB4C4400B681A8 /* app_icon_20.png in Resources */,
-				0D8F845C1A6EC2C300AABAEA /* edit@1x.png in Resources */,
 				0D8F84741A6EC2C300AABAEA /* locations_large.png in Resources */,
+				AC3A99D51FF7EAF900473A5D /* SelectFishingSpot.storyboard in Resources */,
 				0D8F84531A6EC2C300AABAEA /* app_icon_76.png in Resources */,
 				0D81E4571C8F404300974ED3 /* circle_icon@2x.png in Resources */,
 				0D8F84761A6EC2C300AABAEA /* species_large.png in Resources */,
@@ -1276,6 +1279,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AC366FD41FF459D7004D43F0 /* CMABaitTest.m in Sources */,
 				AC58D6381FEDCC2700C5EC3E /* CMAEntryTest.m in Sources */,
 				AC58D6391FEDCC2700C5EC3E /* CMAJSONReaderTest.m in Sources */,
 			);
@@ -1313,12 +1317,14 @@
 				0D8F83E61A6EC25200AABAEA /* CMASinglePhotoViewController.m in Sources */,
 				0D8F840C1A6EC29A00AABAEA /* CMACameraButton.m in Sources */,
 				0D8F83EE1A6EC28300AABAEA /* CMAAlerts.m in Sources */,
+				AC366FD21FF3FE14004D43F0 /* CMATableViewController.m in Sources */,
 				0D8F83D61A6EC25200AABAEA /* CMAAddBaitViewController.m in Sources */,
 				0D8F83971A6EC10800AABAEA /* CMAUserDefine.m in Sources */,
 				0DC75FDD1A9AEDCE0045030C /* CMASinglePhotoCollectionViewCell.m in Sources */,
 				0D8F83E01A6EC25200AABAEA /* CMASingleEntryViewController.m in Sources */,
 				0D8F83F01A6EC28300AABAEA /* CMAUtilities.m in Sources */,
 				0D8F83DF1A6EC25200AABAEA /* CMAEntrySortingViewController.m in Sources */,
+				AC8028611FF360B700C0A1EA /* UIView+CMAConstraints.m in Sources */,
 				0D8F83E31A6EC25200AABAEA /* CMAAddLocationViewController.m in Sources */,
 				0D8F83DC1A6EC25200AABAEA /* CMAStatisticsViewController.m in Sources */,
 				0D8F84161A6EC29A00AABAEA /* CMAWeatherDataView.m in Sources */,

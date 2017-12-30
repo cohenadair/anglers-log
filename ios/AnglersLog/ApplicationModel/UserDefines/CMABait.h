@@ -37,4 +37,7 @@
 - (NSString *)fishCaughtAsString;
 - (NSString *)colorAsString;
 
+// searching
+- (BOOL)containsSearchText:(NSString *)searchText;
+
 @end

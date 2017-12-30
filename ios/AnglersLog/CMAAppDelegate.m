@@ -90,7 +90,8 @@
     
     // Apply a global theme.
     [Chameleon setGlobalThemeUsingPrimaryColor:UIColor.anglersLogLight
-                              withContentStyle:UIContentStyleDark];
+                            withSecondaryColor:UIColor.anglersLogAccent
+                               andContentStyle:UIContentStyleContrast];
     
     // Override some Chameleon settings.
     UIButton.appearance.tintColor = UIColor.anglersLogAccent;

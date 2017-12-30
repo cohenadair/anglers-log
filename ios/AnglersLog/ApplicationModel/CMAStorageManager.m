@@ -307,17 +307,26 @@
     NSArray *methods = @[@"Boat", @"Ice", @"Casting", @"Fly", @"Shore", @"Trolling"];
     NSArray *clarities = @[@"Clear", @"Crystal", @"Cloudy", @"3 Feet", @"Dirty"];
     
-    for (NSString *s in species)
-        [self.sharedJournal addUserDefine:UDN_SPECIES objectToAdd:[[self.sharedJournal userDefineNamed:UDN_SPECIES] emptyObjectNamed:s]];
+    for (NSString *s in species) {
+        [self.sharedJournal addUserDefine:UDN_SPECIES
+                              objectToAdd:[[self.sharedJournal userDefineNamed:UDN_SPECIES] emptyObjectNamed:s]
+                                   notify:NO];
+    }
     
-    for (NSString *s in methods)
-        [self.sharedJournal addUserDefine:UDN_FISHING_METHODS objectToAdd:[[self.sharedJournal userDefineNamed:UDN_FISHING_METHODS] emptyObjectNamed:s]];
+    for (NSString *s in methods) {
+        [self.sharedJournal addUserDefine:UDN_FISHING_METHODS
+                              objectToAdd:[[self.sharedJournal userDefineNamed:UDN_FISHING_METHODS] emptyObjectNamed:s]
+                                   notify:NO];
+    }
     
-    for (NSString *s in clarities)
-        [self.sharedJournal addUserDefine:UDN_WATER_CLARITIES objectToAdd:[[self.sharedJournal userDefineNamed:UDN_WATER_CLARITIES] emptyObjectNamed:s]];
+    for (NSString *s in clarities) {
+        [self.sharedJournal addUserDefine:UDN_WATER_CLARITIES
+                              objectToAdd:[[self.sharedJournal userDefineNamed:UDN_WATER_CLARITIES] emptyObjectNamed:s]
+                                   notify:NO];
+    }
     
-    [self.sharedJournal addUserDefine:UDN_BAITS objectToAdd:[self rapalaBait]];
-    [self.sharedJournal addUserDefine:UDN_BAITS objectToAdd:[self spinnerBait]];
+    [self.sharedJournal addUserDefine:UDN_BAITS objectToAdd:self.rapalaBait notify:NO];
+    [self.sharedJournal addUserDefine:UDN_BAITS objectToAdd:self.spinnerBait notify:NO];
 }
 
 // Deletes aManagedObject from the context. Will apply changes to context if aBool is true.

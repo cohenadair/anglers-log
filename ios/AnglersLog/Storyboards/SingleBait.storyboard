@@ -179,7 +179,7 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" id="XGM-yf-bjA">
-                        <barButtonItem key="rightBarButtonItem" image="edit.png" id="yc4-M9-a4j">
+                        <barButtonItem key="rightBarButtonItem" systemItem="edit" id="yc4-M9-a4j">
                             <connections>
                                 <segue destination="nIs-Gi-rkF" kind="presentation" identifier="fromSingleBaitToAddBait" id="Mmt-ea-Rlu"/>
                             </connections>
@@ -199,7 +199,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ku7-Ye-KWG" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4270" y="-183"/>
+            <point key="canvasLocation" x="4608.8000000000002" y="-183.05847076461771"/>
         </scene>
         <!--AddBait-->
         <scene sceneID="yDk-rK-axF">
@@ -207,10 +207,7 @@
                 <viewControllerPlaceholder storyboardName="AddBait" id="nIs-Gi-rkF" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pzD-2L-dnn" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4942" y="-184"/>
+            <point key="canvasLocation" x="5280" y="-184.40779610194903"/>
         </scene>
     </scenes>
-    <resources>
-        <image name="edit.png" width="25" height="25"/>
-    </resources>
 </document>

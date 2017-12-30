@@ -341,12 +341,12 @@
 - (IBAction)clickedDoneButton:(UIBarButtonItem *)sender {
     CMABait *baitToAdd = [[CMAStorageManager sharedManager] managedBait];
     
-    [CMAUtilities addSceneConfirmWithObject:baitToAdd
+    [self.journal addSceneConfirmWithObject:baitToAdd
                                   objToEdit:self.bait
                             checkInputBlock:^BOOL () { return [self checkUserInputAndSetBait:baitToAdd]; }
                              isEditingBlock:^BOOL () { return self.isEditingBait; }
-                            editObjectBlock:^void () { [[self journal] editUserDefine:UDN_BAITS objectNamed:self.bait.name newProperties:baitToAdd]; }
-                             addObjectBlock:^BOOL () { return [[self journal] addUserDefine:UDN_BAITS objectToAdd:baitToAdd]; }
+                            editObjectBlock:^void () { [[self journal] editUserDefine:UDN_BAITS objectNamed:self.bait.name newProperties:baitToAdd notify:NO]; }
+                             addObjectBlock:^BOOL () { return [[self journal] addUserDefine:UDN_BAITS objectToAdd:baitToAdd notify:NO]; }
                               errorAlertMsg:@"There was an error adding a bait. Please try again."
                              viewController:self
                                  segueBlock:^void () { [self performSegueToPreviousView]; }

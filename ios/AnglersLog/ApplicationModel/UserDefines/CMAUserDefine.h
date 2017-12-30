@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "CMAUserDefineObject.h"
 
+@class CMABait;
 @class CMAJournal;
 
 @interface CMAUserDefine : NSManagedObject
@@ -19,7 +20,7 @@
 // Objects within these sets have to extend CMAUserDefineObject and abide by the CMAUserDefineProtocol
 // There is a different property for each user define to map the Core Data model.
 // Only one of these will not be NULL.
-@property (strong, nonatomic)NSMutableOrderedSet *baits;
+@property (strong, nonatomic)NSMutableOrderedSet<CMABait *> *baits;
 @property (strong, nonatomic)NSMutableOrderedSet *fishingMethods;
 @property (strong, nonatomic)NSMutableOrderedSet *locations;
 @property (strong, nonatomic)NSMutableOrderedSet *species;
@@ -38,7 +39,7 @@
 - (void)setActiveSet:(NSMutableOrderedSet *)aMutableOrderedSet;
 - (NSInteger)count;
 - (id)objectNamed:(NSString *)aName;
-- (id)objectAtIndex:(NSInteger)anIndex;
+- (CMAUserDefineObject *)objectAtIndex:(NSInteger)anIndex;
 - (BOOL)isSetOfStrings;
 - (NSString *)nameWithCount;
 
@@ -50,8 +51,9 @@
 - (BOOL)isSetOfWaterClarities;
 - (BOOL)isSetOfSpecies;
 
-// sorting
+// sorting and filtering
 - (void)sortByNameProperty;
+- (NSOrderedSet<CMAUserDefineObject *> *)filter:(NSString *)searchText;
 
 // visiting
 - (void)accept:(id)aVisitor;

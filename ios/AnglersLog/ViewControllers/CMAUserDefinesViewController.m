@@ -17,21 +17,21 @@
 #import "CMAAlerts.h"
 #import "UIColor+CMA.h"
 
-@interface CMAUserDefinesViewController ()
+@interface CMAUserDefinesViewController () <CMATableViewControllerDelegate>
 
-@property (strong, nonatomic)UIBarButtonItem *editButton;
 @property (strong, nonatomic)UIBarButtonItem *doneSelectingButton;
+@property (weak, nonatomic)IBOutlet UIBarButtonItem *deleteButton;
 @property (weak, nonatomic)IBOutlet UIBarButtonItem *addButton;
 @property (weak, nonatomic)IBOutlet UIBarButtonItem *menuButton;
 
 @property (strong, nonatomic)UIAlertController *addItemAlert;
 @property (strong, nonatomic)UIAlertController *editItemAlert;
-@property (strong, nonatomic)CMANoXView *noXView;
 
 @property (nonatomic)BOOL isSelectingForAddEntry;
 @property (nonatomic)BOOL isSelectingMultiple;
 @property (nonatomic)BOOL isSelectingForStatistics;
-@property (nonatomic)CGFloat currentOffsetY;
+
+@property (strong, nonatomic) NSOrderedSet<CMAUserDefineObject *> *userDefineObjects;
 
 @end
 
@@ -54,12 +54,8 @@
 
 #pragma mark - View Management
 
-- (void)initNoXView {
-    NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"CMANoXView" owner:self options:nil];
-    if (nib.count <= 0)
-        return;
-    
-    self.noXView = (CMANoXView *)[nib objectAtIndex:0];
+- (void)setupView {
+    self.delegate = self;
     
     NSString *imageName = @"";
     
@@ -75,51 +71,20 @@
     self.noXView.imageView.image = [UIImage imageNamed:imageName];
     self.noXView.titleView.text = [NSString stringWithFormat:@"%@.", self.userDefine.name];
     
-    [self.noXView centerInParent:self.view];
-    [self.noXView setAlpha:0.0f];
-    [self.view addSubview:self.noXView];
+    self.quantityTitleText = self.userDefine.name;
+    self.searchBarPlaceholder = [NSString stringWithFormat:@"Search %@",
+            self.userDefine.name.lowercaseString];
+    
+    [self setupTableViewData];
 }
 
-- (void)handleNoXView {
-    if (!self.noXView)
-        [self initNoXView];
-    
-    if ([self.userDefine count] <= 0) {
-        [UIView animateWithDuration:0.5 animations:^{
-            [self.noXView setAlpha:1.0f];
-        }];
-        
-        [self.editButton setEnabled:NO];
-    } else {
-        [self.editButton setEnabled:YES];
-        [self.noXView setAlpha:0.0f];
-    }
-}
-
-- (void)setupView {
-    [self handleNoXView];
-    [self.editButton setEnabled:[self.userDefine count] > 0];
-    [self.tableView setContentOffset:CGPointMake(0, self.currentOffsetY)];
-    
-    // show the toolbar when navigating back from a push segue
-    self.navigationController.toolbarHidden = NO;
-    self.navigationController.toolbar.userInteractionEnabled = YES;
-    
-    if (self.isSelectingForStatistics)
-        self.navigationController.toolbarHidden = YES;
-    
-    [self.tableView reloadData];
+- (void)setupEditButton {
+    self.deleteButton.enabled = self.tableViewRowCount > 0;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    self.navigationItem.title = self.userDefine.nameWithCount;
-    self.navigationController.toolbarHidden = NO;
-    
-    // used to populate cells
-    if ([self.userDefine count] <= 0)
-        [self.editButton setEnabled:NO];
+    [self setupView];
     
     self.isSelectingForAddEntry = (self.previousViewID == CMAViewControllerIDAddEntry);
     self.isSelectingMultiple = (self.isSelectingForAddEntry && [[self.userDefine name] isEqualToString:UDN_FISHING_METHODS]);
@@ -132,40 +97,23 @@
     
     [self initAddItemAlert];
     [self initEditItemAlert];
-    [self initializeToolbar];
     
     // enable side bar navigation unless the user is adding an entry
     if (!self.isSelectingForAddEntry && !self.isSelectingForStatistics)
         [self initSideBarMenu];
     else
         self.navigationItem.leftBarButtonItem = self.navigationItem.backBarButtonItem;
-    
-    [self.tableView setTableFooterView:[[UIView alloc] initWithFrame:CGRectZero]]; // removes empty cells at the end of the list
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [self setupView];
-}
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-#pragma mark - Toolbar Initializing
-
-- (void)initializeToolbar {
-    // remove editing button for non-string defines
-    if (![self.userDefine isSetOfStrings])
-        self.editButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemTrash target:self action:@selector(clickEditButton:)];
-    else
-        self.editButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"edit.png"] style:UIBarButtonItemStylePlain target:self action:@selector(clickEditButton:)];
     
-    NSMutableArray *barItems = [self.toolbarItems mutableCopy];
-    [barItems insertObject:self.editButton atIndex:0];
+    [self setupEditButton];
+    self.navigationController.toolbarHidden = NO;
+    self.navigationController.toolbar.userInteractionEnabled = YES;
     
-    [self setToolbarItems:barItems];
+    if (self.isSelectingForStatistics)
+        self.navigationController.toolbarHidden = YES;
 }
 
 #pragma mark - Table View Initializing
@@ -192,22 +140,17 @@
         [self.selectedCellsArray removeObject:cell.textLabel.text];
     }
     
-    // Allows the cell's background color to render property beneath the label.
-    cell.textLabel.backgroundColor = UIColor.clearColor;
+    // Override global selection background view settings. This allows multiple selection to work
+    // since it's done manually rather than through the built in UITableView selection.
+    UIView *view = UIView.new;
+    view.backgroundColor = UIColor.clearColor;
+    cell.multipleSelectionBackgroundView = view;
 }
 
 // Hides/shows a checkmark inside aCell.
 - (void)toggleCellAccessoryCheckmarkAtIndexPath: (NSIndexPath *)anIndexPath {
     UITableViewCell *selectedCell = [self.tableView cellForRowAtIndexPath:anIndexPath];
     [self setCell:selectedCell selected:selectedCell.accessoryType == UITableViewCellAccessoryNone];
-}
-
-// Sets each cell's selection style to selectionStyle.
-- (void)toggleCellSelectionStyles: (UITableViewCellSelectionStyle)selectionStyle {
-    for (int i = 0; i < [self.tableView numberOfRowsInSection:0]; i++) {
-        UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0]];
-        [cell setSelectionStyle:selectionStyle];
-    }
 }
 
 // Returns a string with all selected cell labels separated by a comma.
@@ -229,27 +172,16 @@
     return result;
 }
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    // Return the number of sections.
-    return 1;
-}
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    // Return the number of rows in the section.
-    return [self.userDefine count];
-}
-
 // Initialize each cell.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"editSettingsCell" forIndexPath:indexPath];
-    cell.textLabel.text = [[self.userDefine objectAtIndex:indexPath.row] name];
+    UITableViewCell *cell = [UITableViewCell.alloc initWithStyle:UITableViewCellStyleDefault
+                                                 reuseIdentifier:@"defaultCell"];
+    cell.textLabel.text = self.userDefineObjects[indexPath.row].name;
     
     // enable chevron for non-strings
-    if (![self.userDefine isSetOfStrings] && !self.isSelectingForStatistics)
+    if (![self.userDefine isSetOfStrings] && !self.isSelectingForStatistics) {
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    else
-        if ((!self.isSelectingForAddEntry || self.isSelectingMultiple) && !self.tableView.editing)
-            [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+    }
     
     if (self.isSelectingMultiple) {
         [self setCell:cell selected:[self.selectedCellsArray containsObject:cell.textLabel.text]];
@@ -258,7 +190,6 @@
     return cell;
 }
 
-// NO NOT CHANGE ORDER OF IF STATEMENTS!
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (self.isSelectingForStatistics) {
         self.selectedCellLabelText = [[[tableView cellForRowAtIndexPath:indexPath] textLabel] text];
@@ -278,14 +209,6 @@
         return;
     }
     
-    // if in editing mode
-    if (tableView.editing) {
-        self.selectedCellLabelText = [[[tableView cellForRowAtIndexPath:indexPath] textLabel] text];
-        [[[self.editItemAlert textFields] objectAtIndex:0] setText:self.selectedCellLabelText];
-        [self presentViewController:self.editItemAlert animated:YES completion:nil];
-        return;
-    }
-    
     // if selecting multiple
     if (self.isSelectingMultiple) {
         [self toggleCellAccessoryCheckmarkAtIndexPath:indexPath];
@@ -298,36 +221,17 @@
         [self performSegueWithIdentifier:@"unwindToAddEntryFromEditSettings" sender:self];
         return;
     }
+    
+    // if we just want to edit.
+    self.selectedCellLabelText = self.userDefineObjects[indexPath.row].name;
+    self.editItemAlert.textFields[0].text = self.selectedCellLabelText;
+    [self presentViewController:self.editItemAlert animated:YES completion:nil];
 }
 
 - (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath {
     // if selecting multiple
     if (self.isSelectingMultiple) {
         [self toggleCellAccessoryCheckmarkAtIndexPath:indexPath];
-    }
-}
-
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // delete from data source
-        UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-        [[self journal] removeUserDefine:self.userDefine.name objectNamed:cell.textLabel.text];
-        
-        // delete from table
-        @try {
-            [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-        }
-        @catch (NSException *exception) {
-            [CMAAlerts errorAlert:[NSString stringWithFormat:@"Error %@. Failed to delete from %@. Go to Settings > Frequently Asked Questions for more information.", ERROR_USER_DEFINE_DELETE, self.userDefine.name] presentationViewController:self];
-        }
-        
-        if ([tableView numberOfRowsInSection:0] == 0) {
-            [self toggleEditMode:YES];
-            [self handleNoXView];
-            [[self journal] archive];
-            [self.tableView reloadData];
-        }
     }
 }
 
@@ -373,11 +277,15 @@
     
     [self.editItemAlert addTextFieldWithConfigurationHandler:nil];
     
-    UIAlertAction *cancel =
-        [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
+    UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel
+            handler:^(UIAlertAction *action) {
+                [self onClickEditCancel];
+            }];
     
-    UIAlertAction *done =
-        [UIAlertAction actionWithTitle:@"Done" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) { [self onClickEditDone]; }];
+    UIAlertAction *done = [UIAlertAction actionWithTitle:@"Done" style:UIAlertActionStyleDefault
+            handler:^(UIAlertAction *action) {
+                [self onClickEditDone];
+            }];
     
     [self.editItemAlert addAction:cancel];
     [self.editItemAlert addAction:done];
@@ -393,16 +301,11 @@
     
     id objectToAdd = [self.userDefine emptyObjectNamed:enteredText];
     
-    if (![[self journal] addUserDefine:self.userDefine.name objectToAdd:objectToAdd]) {
+    if (![[self journal] addUserDefine:self.userDefine.name objectToAdd:objectToAdd notify:YES]) {
         [self showItemExistsAlert];
         [[CMAStorageManager sharedManager] deleteManagedObject:objectToAdd saveContext:YES];
         return;
     }
-    
-    [[self journal] archive];
-    [self.tableView reloadData];
-    
-    [self handleNoXView];
 }
 
 - (void)onClickEditDone {
@@ -425,10 +328,14 @@
     
     // if the new name is valid
     id newObj = [self.userDefine emptyObjectNamed:newName];
-    [[self journal] editUserDefine:[self.userDefine name] objectNamed:oldName newProperties:newObj];
-    [[CMAStorageManager sharedManager] deleteManagedObject:newObj saveContext:YES];
-    
-    [self.tableView reloadData];
+    [[self journal] editUserDefine:self.userDefine.name
+                       objectNamed:oldName
+                     newProperties:newObj
+                            notify:YES];
+}
+
+- (void)onClickEditCancel {
+    [self.tableView deselectRowAtIndexPath:self.tableView.indexPathForSelectedRow animated:YES];
 }
 
 - (void)showItemExistsAlert {
@@ -439,34 +346,27 @@
 
 - (void)enterEditMode {
     [self.tableView setEditing:YES animated:YES];
-    [self.editButton setEnabled:NO];
-    [self.addButton setEnabled:NO];
+    self.deleteButton.enabled = NO;
+    self.addButton.enabled = NO;
     
     // add a done button that will be used to exit editing mode
     UIBarButtonItem *doneButton = [UIBarButtonItem new];
     doneButton = [doneButton initWithTitle:@"Done" style:UIBarButtonItemStyleDone target:self action:@selector(clickDoneButton)];
     self.navigationItem.rightBarButtonItem = doneButton;
-    
-    if ([self.userDefine isSetOfStrings])
-        [self toggleCellSelectionStyles:UITableViewCellSelectionStyleDefault];
-    else
-        [self.tableView setAllowsSelectionDuringEditing:NO];
 }
 
 - (void)exitEditMode {
     [self.tableView setEditing:NO animated:YES];
-    [self.editButton setEnabled:YES];
-    [self.addButton setEnabled:YES];
+    self.deleteButton.enabled = self.tableViewRowCount > 0;
+    self.addButton.enabled = YES;
     
     if (self.isSelectingMultiple)
         [self.doneSelectingButton setEnabled:YES];
     
     self.navigationItem.rightBarButtonItem = self.doneSelectingButton;
-    
-    [self toggleCellSelectionStyles:UITableViewCellSelectionStyleNone];
 }
 
-- (void)toggleEditMode: (BOOL)exiting {
+- (void)toggleEditMode:(BOOL)exiting {
     if (exiting)
         [self exitEditMode];
     else
@@ -483,7 +383,7 @@
 }
 
 // Enter editing mode.
-- (IBAction)clickEditButton:(UIBarButtonItem *)sender {
+- (IBAction)clickDeleteButton:(UIBarButtonItem *)sender {
     [self toggleEditMode:NO];
 }
 
@@ -495,7 +395,11 @@
 // Used to exit out of editing mode.
 - (void)clickDoneButton {
     [self toggleEditMode:YES];
-    [[self journal] archive];
+}
+
+- (void)reloadData {
+    [super reloadData];
+    [self setupEditButton];
 }
 
 #pragma mark - Navigation
@@ -520,14 +424,34 @@
         destination.location = loc;
         destination.previousViewID = CMAViewControllerIDEditSettings;
         destination.navigationItem.title = loc.name;
-        
-        self.currentOffsetY = self.tableView.contentOffset.y;
     }
 }
 
 - (IBAction)unwindToEditSettings:(UIStoryboardSegue *)segue {
     self.navigationController.toolbarHidden = NO;
-    [self.tableView reloadData];
+}
+
+#pragma mark - CMASearchTableViewDelegate
+
+- (void)filterTableViewData:(NSString *)searchText {
+    self.userDefineObjects = [self.userDefine filter:searchText];
+}
+
+- (void)setupTableViewData {
+    self.userDefineObjects = self.userDefine.activeSet;
+}
+
+- (NSInteger)tableViewRowCount {
+    return self.userDefineObjects.count;
+}
+
+- (void)onDeleteRowAtIndexPath:(NSIndexPath *)indexPath {
+    [self.journal removeUserDefine:self.userDefine.name
+                       objectNamed:self.userDefineObjects[indexPath.row].name];
+}
+
+- (void)didDeleteLastItem {
+    [self toggleEditMode:YES];
 }
 
 @end

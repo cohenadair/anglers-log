@@ -19,7 +19,7 @@
 
 #pragma mark - Singleton Methods
 
-+ (id)sharedManager;
++ (CMAStorageManager *)sharedManager;
 
 #pragma mark - Directories
 

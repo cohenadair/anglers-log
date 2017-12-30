@@ -6,14 +6,17 @@
 //  Copyright (c) 2014 Cohen Adair. All rights reserved.
 //
 
-#import "CMAJournal.h"
-#import "CMASpecies.h"
+#import "CMAAlerts.h"
 #import "CMABait.h"
 #import "CMAFishingMethod.h"
-#import "CMAStorageManager.h"
+#import "CMAJournal.h"
 #import "CMAJSONWriter.h"
+#import "CMASpecies.h"
+#import "CMAStorageManager.h"
 
-@implementation CMAJournal
+@implementation CMAJournal {
+    NSHashTable<id<CMAJournalChangeListener>> *_listeners;
+}
 
 @dynamic name;
 @dynamic entries;
@@ -134,6 +137,58 @@
     [self didChangeValueForKey:@"name"];
 }
 
+// Called when the "Done" button is tapped in the different "add scenes" throughout the app.
+// For example, called in CMAAddEntryViewController.m's clickDoneButton event.
+- (void)addSceneConfirmWithObject:(id)anObjToAdd
+                        objToEdit:(id)anObjToEdit
+                  checkInputBlock:(BOOL(^)(void))aCheckInputBlock
+                   isEditingBlock:(BOOL(^)(void))anIsEditingBlock
+                  editObjectBlock:(void(^)(void))anEditBlock
+                   addObjectBlock:(BOOL(^)(void))anAddObjectBlock
+                    errorAlertMsg:(NSString *)anErrorMsg
+                   viewController:(id)aVC
+                       segueBlock:(void(^)(void))aSegueBlock
+                  removeObjToEdit:(BOOL)rmObjToEdit
+{
+    if (aCheckInputBlock()) {
+        id notifyObject = nil;
+        
+        if (anIsEditingBlock()) {
+            anEditBlock();
+            [CMAStorageManager.sharedManager deleteManagedObject:anObjToAdd saveContext:YES];
+            notifyObject = anObjToEdit;
+        } else {
+            if (!anAddObjectBlock()) {
+                [CMAAlerts errorAlert:anErrorMsg presentationViewController:aVC];
+                [CMAStorageManager.sharedManager deleteManagedObject:anObjToAdd saveContext:YES];
+                return;
+            }
+            
+            if (rmObjToEdit) {
+                [CMAStorageManager.sharedManager deleteManagedObject:anObjToEdit saveContext:YES];
+            }
+            
+            anObjToEdit = nil;
+            notifyObject = anObjToAdd;
+        }
+        
+        [self archive];
+        
+        // Note that this must be done here because this is where the user defined object is
+        // actually saved to the journal. If done prior, the table view's data model won't be
+        // completely up to date, and won't show the updated data.
+        if ([notifyObject isKindOfClass:CMAUserDefineObject.class]) {
+            [self notifyUserDefineDidChange:[notifyObject userDefine].name];
+        } else if ([notifyObject isKindOfClass:CMAEntry.class]) {
+            [self notifyEntriesDidChange];
+        }
+        
+        aSegueBlock();
+    } else {
+        [CMAStorageManager.sharedManager deleteManagedObject:anObjToAdd saveContext:YES];
+    }
+}
+
 - (BOOL)addEntry:(CMAEntry *)anEntry {
     if ([self entryDated:anEntry.date] != nil) {
         NSLog(@"Duplicate entry date.");
@@ -155,6 +210,8 @@
     
     [self decStatsForEntry:entry];
     [self.entries removeObject:entry];
+    
+    [self notifyEntriesDidChange];
 }
 
 // removes entry with aDate and adds aNewEntry
@@ -164,8 +221,14 @@
     [self sortEntriesBy:self.entrySortMethod order:self.entrySortOrder];
 }
 
-- (BOOL)addUserDefine:(NSString *)aDefineName objectToAdd: (id)anObject {
-    return [[self userDefineNamed:aDefineName] addObject:anObject];
+- (BOOL)addUserDefine:(NSString *)userDefineName objectToAdd:(id)obj notify:(BOOL)notify {
+    if ([[self userDefineNamed:userDefineName] addObject:obj]) {
+        if (notify) {
+            [self notifyUserDefineDidChange:userDefineName];
+        }
+        return YES;
+    }
+    return NO;
 }
 
 - (void)removeUserDefine:(NSString *)aDefineName objectNamed: (NSString *)anObjectName {
@@ -178,10 +241,64 @@
     [[CMAStorageManager sharedManager] deleteManagedObject:obj saveContext:YES];
     
     [[self userDefineNamed:aDefineName] removeObjectNamed:anObjectName];
+    
+    [self notifyUserDefineDidChange:aDefineName];
 }
 
-- (void)editUserDefine:(NSString *)aDefineName objectNamed: (NSString *)objectName newProperties: (id)aNewObject {
-    [[self userDefineNamed:aDefineName] editObjectNamed:objectName newObject:aNewObject];
+- (void)editUserDefine:(NSString *)userDefineName
+           objectNamed:(NSString *)objName
+         newProperties:(id)newObj
+                notify:(BOOL)notify
+{
+    [[self userDefineNamed:userDefineName] editObjectNamed:objName newObject:newObj];
+    [CMAStorageManager.sharedManager deleteManagedObject:newObj saveContext:YES];
+    if (notify) {
+        [self notifyUserDefineDidChange:userDefineName];
+    }
+}
+
+#pragma mark - Listener Methods
+
+- (void)addChangeListener:(id<CMAJournalChangeListener>)listener {
+    if (_listeners == nil) {
+        _listeners = [NSHashTable weakObjectsHashTable];
+    }
+    [_listeners addObject:listener];
+}
+
+- (void)removeChangeListener:(id<CMAJournalChangeListener>)listener {
+    [_listeners removeObject:listener];
+}
+
+- (void)notifyEntriesDidChange {
+    [self notifyListeners:@selector(entriesDidChange)];
+}
+
+- (void)notifyUserDefineDidChange:(NSString *)userDefineName {
+    if ([userDefineName isEqualToString:UDN_BAITS]) {
+        [self notifyListeners:@selector(baitsDidChange)];
+    } else if ([userDefineName isEqualToString:UDN_LOCATIONS]) {
+        [self notifyListeners:@selector(locationsDidChange)];
+    } else if ([userDefineName isEqualToString:UDN_SPECIES]) {
+        [self notifyListeners:@selector(speciesDidChange)];
+    } else if ([userDefineName isEqualToString:UDN_FISHING_METHODS]) {
+        [self notifyListeners:@selector(fishingMethodsDidChange)];
+    } else if ([userDefineName isEqualToString:UDN_WATER_CLARITIES]) {
+        [self notifyListeners:@selector(waterClaritiesDidChange)];
+    }
+}
+
+- (void)notifyListeners:(SEL)selector {
+    for (id listener in _listeners) {
+        if ([listener respondsToSelector:selector]) {
+            // By convention, listener methods do not return objects.
+            // If they do, ARC will let them leak.
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+            [listener performSelector:selector];
+#pragma clang diagnostic pop
+        }
+    }
 }
 
 - (void)incStatsForEntry:(CMAEntry *)anEntry {
@@ -497,6 +614,13 @@
     }
     
     return result;
+}
+
+- (NSOrderedSet<CMABait *> *)filterBaits:(NSString *)searchText {
+    return [self.baits filteredOrderedSetUsingPredicate:[NSPredicate predicateWithBlock:
+            ^BOOL(CMABait *bait, NSDictionary<NSString *, id> *bindings) {
+                return [bait containsSearchText:searchText];
+            }]];
 }
 
 - (void)removeDuplicateNames:(CMAUserDefine *)aUserDefine {

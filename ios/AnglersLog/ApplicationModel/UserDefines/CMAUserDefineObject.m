@@ -8,6 +8,7 @@
 
 #import "CMAUserDefineObject.h"
 #import "CMAUtilities.h"
+#import "NSString+CMA.h"
 
 @implementation CMAUserDefineObject
 
@@ -23,6 +24,11 @@
 
 - (void)addEntry:(CMAEntry *)anEntry {
     [self.entries addObject:anEntry];
+}
+
+- (BOOL)containsSearchText:(NSString *)searchText {
+    return [self.name.stringByRemovingSpaces.lowercaseString
+            containsString:searchText.stringByRemovingSpaces.lowercaseString];
 }
 
 @end

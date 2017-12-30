@@ -159,13 +159,13 @@
             </objects>
             <point key="canvasLocation" x="4843" y="791"/>
         </scene>
-        <!--selectFishingSpotScene-->
+        <!--SelectFishingSpot-->
         <scene sceneID="uZ7-PF-7d5">
             <objects>
-                <viewControllerPlaceholder storyboardName="Main" referencedIdentifier="selectFishingSpotScene" id="Xgx-I9-oV2" sceneMemberID="viewController"/>
+                <viewControllerPlaceholder storyboardName="SelectFishingSpot" id="Xgx-I9-oV2" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FN5-wO-T54" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4882" y="661"/>
+            <point key="canvasLocation" x="4852" y="661"/>
         </scene>
     </scenes>
 </document>

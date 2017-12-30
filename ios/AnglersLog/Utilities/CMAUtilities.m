@@ -74,42 +74,6 @@
     return NO;
 }
 
-// Called when the "Done" button is tapped in the different "add scenes" throughout the app.
-// For example, called in CMAAddEntryViewController.m's clickDoneButton event.
-+ (void)addSceneConfirmWithObject:(id)anObjToAdd
-                        objToEdit:(id)anObjToEdit
-                  checkInputBlock:(BOOL(^)(void))aCheckInputBlock
-                   isEditingBlock:(BOOL(^)(void))anIsEditingBlock
-                  editObjectBlock:(void(^)(void))anEditBlock
-                   addObjectBlock:(BOOL(^)(void))anAddObjectBlock
-                    errorAlertMsg:(NSString *)anErrorMsg
-                   viewController:(id)aVC
-                       segueBlock:(void(^)(void))aSegueBlock
-                  removeObjToEdit:(BOOL)rmObjToEdit
-{
-    if (aCheckInputBlock()) {
-        if (anIsEditingBlock()) {
-            anEditBlock();
-            [[CMAStorageManager sharedManager] deleteManagedObject:anObjToAdd saveContext:YES];
-        } else {
-            if (!anAddObjectBlock()) {
-                [CMAAlerts errorAlert:anErrorMsg presentationViewController:aVC];
-                [[CMAStorageManager sharedManager] deleteManagedObject:anObjToAdd saveContext:YES];
-                return;
-            }
-            
-            if (rmObjToEdit)
-                [[CMAStorageManager sharedManager] deleteManagedObject:anObjToEdit saveContext:YES];
-            
-            anObjToEdit = nil;
-        }
-        
-        [[[CMAStorageManager sharedManager] sharedJournal] archive];
-        aSegueBlock();
-    } else
-        [[CMAStorageManager sharedManager] deleteManagedObject:anObjToAdd saveContext:YES];
-}
-
 // From http://stackoverflow.com/questions/2658738/the-simplest-way-to-resize-an-uiimage
 // Scales the given UIImage to the given size, keeping aspect ratio.
 + (UIImage *)imageWithImage:(UIImage *)image scaledToSize:(CGSize)size {
@@ -195,6 +159,13 @@
     });
 }
 
++ (void)run:(void (^)(void))block after:(NSTimeInterval)seconds {
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(seconds * NSEC_PER_SEC)),
+            dispatch_get_main_queue(), ^{
+                block();
+            });
+}
+
 + (NSString *)stringForDate:(NSDate *)date withFormat:(NSString *)format {
     NSDateFormatter *formatter = [NSDateFormatter new];
     [formatter setDateFormat:format];
@@ -209,4 +180,9 @@
     return [UIImage imageNamed:@"placeholder_circle"];
 }
 
++ (BOOL)isEmpty:(NSString *)string {
+    return string == nil || string.length == 0;
+}
+
 @end
+

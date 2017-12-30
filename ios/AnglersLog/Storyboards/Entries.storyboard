@@ -18,25 +18,9 @@
                         <viewControllerLayoutGuide type="bottom" id="6l8-Ib-gNy"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="CVO-GL-3Gf">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="559"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="onDrag" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="UDt-Mu-VIu">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="559"/>
-                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <connections>
-                                    <outlet property="dataSource" destination="cgx-lm-1wU" id="Yse-OR-n6E"/>
-                                    <outlet property="delegate" destination="cgx-lm-1wU" id="eWM-kd-XTQ"/>
-                                </connections>
-                            </tableView>
-                        </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <constraints>
-                            <constraint firstItem="UDt-Mu-VIu" firstAttribute="top" secondItem="cPx-WS-QCz" secondAttribute="bottom" id="3HH-qv-rBy"/>
-                            <constraint firstAttribute="trailing" secondItem="UDt-Mu-VIu" secondAttribute="trailing" id="CYh-TR-3cZ"/>
-                            <constraint firstItem="UDt-Mu-VIu" firstAttribute="bottom" secondItem="6l8-Ib-gNy" secondAttribute="top" id="Cfl-xs-nve"/>
-                            <constraint firstItem="UDt-Mu-VIu" firstAttribute="leading" secondItem="CVO-GL-3Gf" secondAttribute="leading" id="Jg6-eF-i88"/>
-                        </constraints>
                     </view>
                     <toolbarItems>
                         <barButtonItem systemItem="trash" id="Vbe-DO-jJv">
@@ -60,14 +44,13 @@
                     <navigationItem key="navigationItem" title="Entries" id="q6s-CY-hic">
                         <barButtonItem key="leftBarButtonItem" image="menu.png" id="RpG-fA-JQO"/>
                     </navigationItem>
-                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
-                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics" translucent="NO"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="addButton" destination="btG-Cs-BK4" id="otN-fD-bkw"/>
                         <outlet property="deleteButton" destination="Vbe-DO-jJv" id="3eJ-eG-06P"/>
                         <outlet property="menuButton" destination="RpG-fA-JQO" id="0as-XT-DNr"/>
                         <outlet property="sortButton" destination="J3y-J1-599" id="zq9-SN-9tp"/>
-                        <outlet property="tableView" destination="UDt-Mu-VIu" id="WKL-uJ-cbP"/>
                         <segue destination="0Rs-FM-BP3" kind="show" identifier="fromViewEntriesToSingleEntry" id="cYE-Cv-qQt"/>
                     </connections>
                 </viewController>

@@ -94,6 +94,9 @@ CGFloat const TABLE_HEIGHT_WEATHER_CELL = 90.0f;
 NSInteger const GALLERY_CELL_SPACING    = 2;
 NSInteger const TABLE_THUMB_SIZE        = 50;
 
+CGFloat const SEARCH_BAR_HEIGHT = 54;
+CGFloat const SPACING_NORMAL = 16;
+
 #pragma mark - Math Constants
 
 NSInteger const OUNCES_PER_POUND = 16;

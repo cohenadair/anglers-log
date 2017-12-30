@@ -13,16 +13,6 @@
 @interface CMAUtilities : NSObject
 
 + (BOOL)validConnection;
-+ (void)addSceneConfirmWithObject:(id)anObjToAdd
-                        objToEdit:(id)anObjToEdit
-                  checkInputBlock:(BOOL(^)(void))aCheckInputBlock
-                   isEditingBlock:(BOOL(^)(void))anIsEditingBlock
-                  editObjectBlock:(void(^)(void))anEditBlock
-                   addObjectBlock:(BOOL(^)(void))anAddObjectBlock
-                    errorAlertMsg:(NSString *)anErrorMsg
-                   viewController:(id)aVC
-                       segueBlock:(void(^)(void))aSegueBlock
-                  removeObjToEdit:(BOOL)rmObjToEdit;
 + (UIImage *)imageWithImage:(UIImage *)image scaledToSize:(CGSize)size;
 + (UIImage *)scaleImageToScreenSize:(UIImage *)anImage;
 + (CGSize)galleryCellSize;
@@ -32,8 +22,14 @@
 + (CGSize)screenSizeInPixels;
 + (UIColor *)themeColorDark;
 + (void)runInBackground:(void(^)(void))aBlock;
++ (void)run:(void (^)(void))block after:(NSTimeInterval)seconds;
 + (NSString *)stringForDate:(NSDate *)date withFormat:(NSString *)format;
 + (NSString *)displayStringForDate:(NSDate *)date;
 + (UIImage *)placeholderImage;
+
+/**
+ * @return YES if the given NSString is nil or empty; NO otherwise.
+ */
++ (BOOL)isEmpty:(NSString *)string;
 
 @end

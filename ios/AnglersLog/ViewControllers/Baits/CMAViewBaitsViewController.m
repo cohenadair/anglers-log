@@ -8,31 +8,27 @@
 
 #import "CMAAppDelegate.h"
 #import "CMAAddBaitViewController.h"
-#import "CMANoXView.h"
 #import "CMASingleBaitViewController.h"
 #import "CMAStorageManager.h"
 #import "CMAThumbnailCell.h"
+#import "CMAUtilities.h"
 #import "CMAViewBaitsViewController.h"
 #import "SWRevealViewController.h"
+#import "UIView+CMAConstraints.h"
 
-@interface CMAViewBaitsViewController ()
+@interface CMAViewBaitsViewController () <CMATableViewControllerDelegate>
 
-@property (weak, nonatomic)IBOutlet NSLayoutConstraint *tableViewTop;
-@property (weak, nonatomic)IBOutlet UITableView *tableView;
 @property (weak, nonatomic)IBOutlet UIBarButtonItem *menuButton;
 @property (weak, nonatomic)IBOutlet UIBarButtonItem *deleteButton;
 @property (weak, nonatomic)IBOutlet UIBarButtonItem *addButton;
 
-@property (strong, nonatomic)CMAUserDefine *userDefineBaits;
-@property (strong, nonatomic)CMANoXView *noBaitsView;
-
-@property (nonatomic)CGFloat currentOffsetY;
+@property (strong, nonatomic)NSOrderedSet<CMABait *> *baits;
 
 @end
 
 @implementation CMAViewBaitsViewController
 
-#pragma mark - Global Accessing
+#pragma mark - Accessing Helpers
 
 - (CMAJournal *)journal {
     return [[CMAStorageManager sharedManager] sharedJournal];
@@ -49,70 +45,37 @@
 
 #pragma mark - View Management
 
-- (void)initNoBaitView {
-    NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"CMANoXView" owner:self options:nil];
-    if (nib.count <= 0)
-        return;
-    
-    self.noBaitsView = (CMANoXView *)[nib objectAtIndex:0];
-    
-    self.noBaitsView.imageView.image = [UIImage imageNamed:@"baits_large.png"];
-    self.noBaitsView.titleView.text = @"Baits.";
-    
-    [self.noBaitsView centerInParent:self.view];
-    [self.noBaitsView setAlpha:0.0f];
-    [self.view addSubview:self.noBaitsView];
-}
-
-- (void)handleNoBaitView {
-    if (!self.noBaitsView)
-        [self initNoBaitView];
-    
-    if ([self.userDefineBaits count] <= 0)
-        [UIView animateWithDuration:0.5 animations:^{
-            [self.noBaitsView setAlpha:1.0f];
-        }];
-    else
-        [self.noBaitsView setAlpha:0.0f];
-}
-
 - (void)setupView {
-    [self setUserDefineBaits:[[self journal] userDefineNamed:UDN_BAITS]];
-    [self.tableView setContentOffset:CGPointMake(0, self.currentOffsetY)];
-    [self handleNoBaitView];
-    [self.tableView reloadData];
+    self.delegate = self;
     
-    self.navigationItem.title =
-            [NSString stringWithFormat:@"Baits (%ld)", (long)self.journal.baitsCount];
+    self.noXView.imageView.image = [UIImage imageNamed:@"baits_large.png"];
+    self.noXView.titleView.text = @"Baits.";
+    
+    self.quantityTitleText = @"Baits";
+    self.searchBarPlaceholder = @"Search baits";
+    
+    [self setupTableViewData];
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self setupView];
     
     if (!self.isSelectingForAddEntry && !self.isSelectingForStatistics)
         [self initSideBarMenu];
     else
         self.navigationItem.leftBarButtonItem = self.navigationItem.backBarButtonItem;
-    
-    [self.tableView setTableFooterView:[[UIView alloc] initWithFrame:CGRectZero]];
-    [CMAThumbnailCell registerWithTableView:self.tableView];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    [self setupView];
-    
-    [self.deleteButton setEnabled:([self.userDefineBaits count] > 0)];
-    [self.navigationController setToolbarHidden:NO];
-    [self.navigationController.toolbar setUserInteractionEnabled:YES];
+    self.deleteButton.enabled = self.tableViewRowCount > 0;
+    self.navigationController.toolbarHidden = NO;
+    self.navigationController.toolbar.userInteractionEnabled = YES;
     
     if (self.isSelectingForStatistics)
         self.navigationController.toolbarHidden = YES;
-}
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
 }
 
 #pragma mark - Table View Initializing
@@ -121,31 +84,24 @@
     return CMAThumbnailCell.height;
 }
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 1;
-}
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [[[self journal] userDefineNamed:UDN_BAITS] count];
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (UITableViewCell *)tableView:(UITableView *)tableView
+         cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
     CMAThumbnailCell *cell = [CMAThumbnailCell forTableView:tableView indexPath:indexPath];
-    CMABait *bait = (CMABait *) [self.userDefineBaits objectAtIndex:indexPath.row];
     BOOL hideAccessory = self.isSelectingForAddEntry || self.isSelectingForStatistics;
-    [cell setBait:bait hideAccessory:hideAccessory];
+    [cell setBait:self.baits[indexPath.row] hideAccessory:hideAccessory];
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (self.isSelectingForAddEntry) {
-        self.baitForAddEntry = [self.userDefineBaits objectAtIndex:indexPath.row];
+        self.baitForAddEntry = self.baits[indexPath.row];
         [self performSegueWithIdentifier:@"unwindToAddEntryFromViewBaits" sender:self];
         return;
     }
     
     if (self.isSelectingForStatistics) {
-        self.baitNameForStatistics = [[self.userDefineBaits objectAtIndex:indexPath.row] name];
+        self.baitNameForStatistics = self.baits[indexPath.row].name;
         [self performSegueWithIdentifier:@"unwindToStatisticsFromViewBaits" sender:self];
         return;
     }
@@ -153,31 +109,12 @@
     [self performSegueWithIdentifier:@"fromViewBaitsToSingleBait" sender:self];
 }
 
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    // delete from data source
-    CMABait *bait = (CMABait *) [self.userDefineBaits objectAtIndex:indexPath.row];
-    [self.journal removeUserDefine:UDN_BAITS objectNamed:bait.name];
-    
-    // delete from table
-    [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    
-    // if there are no more items in the table
-    if ([tableView numberOfRowsInSection:0] == 0) {
-        [self exitEditMode];
-        [self.deleteButton setEnabled:NO];
-        [[self journal] archive];
-        [self handleNoBaitView];
-        [self.tableView reloadData];
-    }
-}
-
 #pragma mark - Events
 
 - (void)exitEditMode {
     [self.tableView setEditing:NO animated:YES];
-    [self.deleteButton setEnabled:YES];
-    [self.addButton setEnabled:YES];
-    
+    self.deleteButton.enabled = self.tableViewRowCount > 0;
+    self.addButton.enabled = YES;
     self.navigationItem.rightBarButtonItem = nil;
 }
 
@@ -198,7 +135,6 @@
 
 - (void)tapDoneButton {
     [self exitEditMode];
-    [[self journal] archive];
 }
 
 #pragma mark - Navigation
@@ -211,16 +147,33 @@
     
     if ([segue.identifier isEqualToString:@"fromViewBaitsToSingleBait"]) {
         CMASingleBaitViewController *destination = segue.destinationViewController;
-        CMABait *baitToDisplay = [self.userDefineBaits objectAtIndex:[self.tableView indexPathForSelectedRow].row];
-        destination.bait = baitToDisplay;
+        destination.bait = self.baits[self.tableView.indexPathForSelectedRow.row];
     }
-    
-    self.currentOffsetY = self.tableView.contentOffset.y;
 }
 
 - (IBAction)unwindToViewBaits:(UIStoryboardSegue *)segue {
-    [self setUserDefineBaits:[[self journal] userDefineNamed:UDN_BAITS]];
-    [self.tableView reloadData];
+}
+
+#pragma mark - CMASearchTableViewDelegate
+
+- (void)filterTableViewData:(NSString *)searchText {
+    self.baits = [self.journal filterBaits:searchText];
+}
+
+- (void)setupTableViewData {
+    self.baits = [self.journal userDefineNamed:UDN_BAITS].baits;
+}
+
+- (NSInteger)tableViewRowCount {
+    return self.baits.count;
+}
+
+- (void)onDeleteRowAtIndexPath:(NSIndexPath *)indexPath {
+    [self.journal removeUserDefine:UDN_BAITS objectNamed:self.baits[indexPath.row].name];
+}
+
+- (void)didDeleteLastItem {
+    [self exitEditMode];
 }
 
 @end

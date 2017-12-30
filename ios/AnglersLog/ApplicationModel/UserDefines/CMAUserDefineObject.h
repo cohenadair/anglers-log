@@ -18,4 +18,6 @@
 
 - (void)addEntry:(CMAEntry *)anEntry;
 
+- (BOOL)containsSearchText:(NSString *)searchText;
+
 @end

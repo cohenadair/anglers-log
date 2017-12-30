@@ -15,4 +15,6 @@
  */
 - (NSNumber *)formattedFloatValue;
 
+- (NSString *)stringByRemovingSpaces;
+
 @end

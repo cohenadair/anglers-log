@@ -146,6 +146,9 @@ extern CGFloat const TABLE_HEIGHT_WEATHER_CELL;
 extern NSInteger const GALLERY_CELL_SPACING;
 extern NSInteger const TABLE_THUMB_SIZE;
 
+extern CGFloat const SEARCH_BAR_HEIGHT;
+extern CGFloat const SPACING_NORMAL;
+
 #pragma mark - Math Constants
 
 extern NSInteger const OUNCES_PER_POUND;

@@ -410,8 +410,14 @@
 #pragma mark - Navigation
 
 - (void)initNavigationBarItems {
-    self.actionButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(clickActionButton)];
-    self.editButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"edit.png"] style:UIBarButtonItemStylePlain target:self action:@selector(clickEditButton)];
+    self.actionButton =
+        [UIBarButtonItem.alloc initWithBarButtonSystemItem:UIBarButtonSystemItemAction
+                                                    target:self
+                                                    action:@selector(clickActionButton)];
+    self.editButton =
+        [UIBarButtonItem.alloc initWithBarButtonSystemItem:UIBarButtonSystemItemEdit
+                                                    target:self
+                                                    action:@selector(clickEditButton)];
     
     self.navigationItem.rightBarButtonItems = @[self.editButton, self.actionButton];
 }

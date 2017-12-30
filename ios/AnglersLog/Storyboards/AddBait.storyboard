@@ -35,7 +35,7 @@
                                                     </constraints>
                                                     <nil key="textColor"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                                    <textInputTraits key="textInputTraits"/>
+                                                    <textInputTraits key="textInputTraits" autocapitalizationType="words"/>
                                                     <connections>
                                                         <outlet property="delegate" destination="hTK-uR-uLB" id="EKH-CW-nbk"/>
                                                     </connections>

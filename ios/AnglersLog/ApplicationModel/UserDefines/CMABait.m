@@ -7,8 +7,9 @@
 //
 
 #import "CMABait.h"
-#import "CMAStorageManager.h"
 #import "CMAJSONWriter.h"
+#import "CMAStorageManager.h"
+#import "NSString+CMA.h"
 
 @implementation CMABait
 
@@ -102,6 +103,21 @@
 
 - (NSString *)colorAsString {
     return self.color == nil ? @"" : self.color;
+}
+
+#pragma mark - Searching
+
+- (BOOL)containsSearchText:(NSString *)searchText {
+    NSMutableString *stringBuilder = [NSMutableString new];
+    
+    [stringBuilder appendString:self.name];
+    [stringBuilder appendString:self.typeAsString];
+    if (self.size != nil) [stringBuilder appendString:self.size];
+    if (self.color != nil) [stringBuilder appendString:self.color];
+    if (self.baitDescription != nil) [stringBuilder appendString:self.baitDescription];
+    
+    return [stringBuilder.stringByRemovingSpaces.lowercaseString
+            containsString:searchText.stringByRemovingSpaces.lowercaseString];
 }
 
 #pragma mark - Visiting

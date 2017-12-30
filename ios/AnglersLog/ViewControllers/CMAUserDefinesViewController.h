@@ -6,11 +6,11 @@
 //  Copyright (c) 2014 Cohen Adair. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
 #import "CMAJournal.h"
+#import "CMATableViewController.h"
 #import "CMAUserDefine.h"
 
-@interface CMAUserDefinesViewController : UITableViewController
+@interface CMAUserDefinesViewController : CMATableViewController
 
 // a pointer to the journal's userDefine object for the cell clicked in the previous view
 @property (strong, nonatomic)CMAUserDefine *userDefine;

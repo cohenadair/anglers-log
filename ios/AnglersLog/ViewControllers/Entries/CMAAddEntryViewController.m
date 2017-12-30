@@ -442,7 +442,7 @@ NSString *const kNotSelectedString = @"Not Selected";
 - (IBAction)clickedDone:(UIBarButtonItem *)sender {
     CMAEntry *entryToAdd = [[CMAStorageManager sharedManager] managedEntry];
     
-    [CMAUtilities addSceneConfirmWithObject:entryToAdd
+    [self.journal addSceneConfirmWithObject:entryToAdd
                                   objToEdit:self.entry
                             checkInputBlock:^BOOL () { return [self checkUserInputAndSetEntry:entryToAdd]; }
                              isEditingBlock:^BOOL () { return self.isEditingEntry; }

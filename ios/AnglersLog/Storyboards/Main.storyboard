@@ -156,58 +156,6 @@
             </objects>
             <point key="canvasLocation" x="4318" y="1649"/>
         </scene>
-        <!--Select Fishing Spot View Controller-->
-        <scene sceneID="nCx-1L-RVp">
-            <objects>
-                <tableViewController storyboardIdentifier="selectFishingSpotScene" id="2nW-M9-1OZ" customClass="CMASelectFishingSpotViewController" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="2Rl-ym-sf4">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="fishingSpotCell" textLabel="tZu-Sx-Phq" style="IBUITableViewCellStyleDefault" id="UF2-eZ-0Z1">
-                                <rect key="frame" x="0.0" y="22" width="375" height="44"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="UF2-eZ-0Z1" id="GgU-QD-3Fh">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="tZu-Sx-Phq">
-                                            <rect key="frame" x="16" y="0.0" width="343" height="44"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                    </subviews>
-                                </tableViewCellContentView>
-                            </tableViewCell>
-                        </prototypes>
-                        <connections>
-                            <outlet property="dataSource" destination="2nW-M9-1OZ" id="Uyl-Ty-ZOu"/>
-                            <outlet property="delegate" destination="2nW-M9-1OZ" id="RYo-au-0k8"/>
-                        </connections>
-                    </tableView>
-                    <toolbarItems/>
-                    <navigationItem key="navigationItem" id="UzF-hD-R7n">
-                        <barButtonItem key="rightBarButtonItem" image="edit.png" id="SVd-aw-qKH">
-                            <connections>
-                                <segue destination="Gid-I3-2h4" kind="presentation" identifier="fromSelectFishingSpotToAddLocation" id="xJw-cV-13t"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
-                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
-                    <nil key="simulatedBottomBarMetrics"/>
-                    <connections>
-                        <segue destination="fau-sB-z1s" kind="unwind" identifier="unwindToAddEntryFromSelectFishingSpot" unwindAction="unwindToAddEntry:" id="hE0-cc-TQm"/>
-                        <segue destination="fau-sB-z1s" kind="unwind" identifier="unwindToSingleLocationFromSelectFishingSpot" unwindAction="unwindToSingleLocation:" id="PrZ-rc-Jc9"/>
-                    </connections>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="bLU-vg-VYc" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <exit id="fau-sB-z1s" userLabel="Exit" sceneMemberID="exit"/>
-            </objects>
-            <point key="canvasLocation" x="6560" y="722"/>
-        </scene>
         <!--Add Location-->
         <scene sceneID="CJv-EL-FBt">
             <objects>
@@ -527,7 +475,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6gO-HC-kTD" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="a4R-R8-Ii2" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="5710" y="768"/>
+            <point key="canvasLocation" x="5897" y="768"/>
         </scene>
         <!--Reveal View Controller-->
         <scene sceneID="MSp-fZ-sZ6">
@@ -887,7 +835,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Emv-7o-E4e" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4935" y="768"/>
+            <point key="canvasLocation" x="4066" y="768"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="HOj-fX-GSJ">
@@ -905,7 +853,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="AAV-R6-1ii" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3518" y="1649"/>
+            <point key="canvasLocation" x="3423" y="1648"/>
         </scene>
         <!--drawerToEntriesNav-->
         <scene sceneID="leT-Gu-xsY">
@@ -913,7 +861,7 @@
                 <viewControllerPlaceholder storyboardName="Entries" referencedIdentifier="drawerToEntriesNav" id="0iM-dW-8E0" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Zdb-77-2Wq" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3320" y="535"/>
+            <point key="canvasLocation" x="2214" y="684"/>
         </scene>
         <!--viewEntriesScene-->
         <scene sceneID="uZ9-Ph-udu">
@@ -959,7 +907,6 @@
     <resources>
         <image name="bait.png" width="50" height="50"/>
         <image name="circle_icon.png" width="75" height="75"/>
-        <image name="edit.png" width="25" height="25"/>
         <image name="fishing_methods.png" width="50" height="50"/>
         <image name="instagram_small.png" width="50" height="50"/>
         <image name="literature.png" width="50" height="50"/>
@@ -974,8 +921,8 @@
         <image name="water_clarities.png" width="50" height="50"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="Q8L-vB-CaK"/>
+        <segue reference="Usd-Jw-Xr5"/>
         <segue reference="0Og-p6-XEZ"/>
-        <segue reference="Jyy-wS-dXA"/>
+        <segue reference="F91-a2-ToR"/>
     </inferredMetricsTieBreakers>
 </document>
