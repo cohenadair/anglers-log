@@ -434,7 +434,6 @@
         destination.previousViewID = CMAViewControllerIDSingleEntry;
         destination.location = self.entry.location;
         destination.fishingSpotFromSingleEntry = self.entry.fishingSpot;
-        destination.navigationItem.title = destination.location.name;
     }
     
     if ([segue.identifier isEqualToString:@"fromSingleEntryToSingleBait"]) {

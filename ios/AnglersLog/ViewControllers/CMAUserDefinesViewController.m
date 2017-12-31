@@ -415,7 +415,6 @@
         CMALocation *loc = [[[self journal] userDefineNamed:UDN_LOCATIONS] objectNamed:self.selectedCellLabelText];
         destination.location = loc;
         destination.previousViewID = CMAViewControllerIDEditSettings;
-        destination.navigationItem.title = loc.name;
     }
     
     if ([segue.identifier isEqualToString:@"fromUserDefinesToSingleLocation"]) {
@@ -423,7 +422,6 @@
         CMALocation *loc = [[[self journal] userDefineNamed:UDN_LOCATIONS] objectNamed:self.selectedCellLabelText];
         destination.location = loc;
         destination.previousViewID = CMAViewControllerIDEditSettings;
-        destination.navigationItem.title = loc.name;
     }
 }
 

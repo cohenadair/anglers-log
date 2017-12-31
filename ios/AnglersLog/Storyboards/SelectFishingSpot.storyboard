@@ -43,6 +43,7 @@
                     </tableView>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="UzF-hD-R7n">
+                        <barButtonItem key="backBarButtonItem" title=" " id="538-WQ-1rg"/>
                         <barButtonItem key="rightBarButtonItem" systemItem="edit" id="SVd-aw-qKH">
                             <connections>
                                 <segue destination="1j2-XU-LeW" kind="presentation" identifier="fromSelectFishingSpotToAddLocation" id="xJw-cV-13t"/>

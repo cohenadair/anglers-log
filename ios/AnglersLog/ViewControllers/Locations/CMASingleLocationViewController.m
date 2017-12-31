@@ -19,6 +19,7 @@
 @property (strong, nonatomic)UIBarButtonItem *actionButton;
 @property (strong, nonatomic)UIBarButtonItem *editButton;
 
+@property (weak, nonatomic) IBOutlet UILabel *locationNameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *fishingSpotLabel;
 @property (weak, nonatomic) IBOutlet UILabel *coordinateLabel;
 @property (weak, nonatomic) IBOutlet UILabel *fishCaughtLabel;
@@ -34,11 +35,16 @@
 
 @end
 
-#define kSectionSelectFishingSpot 0
+#define kSectionInfo 0
+#define kRowSpacer 0
+#define kRowLocationName 1
+#define kRowFishingSpot 2
+
 #define kSectionMap 1
 
-#define kDefaultCellHeight 72
-#define kBannerHeight 50
+#define kSpacerHeight 14
+#define kLocationNameHeight 29
+#define kFishingSpotHeight 72
 
 @implementation CMASingleLocationViewController
 
@@ -47,6 +53,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    self.locationNameLabel.text = self.location.name;
     self.mapDidRender = NO;
     self.showRenderError = YES;
     self.isReadOnly = self.previousViewID == CMAViewControllerIDSingleEntry;
@@ -86,7 +93,10 @@
 - (void)configureForReadOnly {
     [self.tableView setAllowsSelection:NO];
     [self disableTapRecognizerForMapView:self.mapView];
-    [[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:kSectionSelectFishingSpot]] setAccessoryType:UITableViewCellAccessoryNone];
+
+    NSIndexPath *fishingSpot =
+            [NSIndexPath indexPathForItem:kRowFishingSpot inSection:kSectionInfo];
+    [self.tableView cellForRowAtIndexPath:fishingSpot].accessoryType = UITableViewCellAccessoryNone;
 }
 
 #pragma mark - Table View Initializing
@@ -109,10 +119,26 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.section == kSectionMap)
-        return tableView.frame.size.height - kDefaultCellHeight;
+    if (indexPath.section == kSectionInfo) {
+        if (indexPath.row == kRowSpacer) {
+            return kSpacerHeight;
+        }
+        
+        if (indexPath.row == kRowLocationName) {
+            return kLocationNameHeight;
+        }
+        
+        if (indexPath.row == kRowFishingSpot) {
+            return kFishingSpotHeight;
+        }
+    }
     
-    return kDefaultCellHeight;
+    if (indexPath.section == kSectionMap) {
+        return tableView.frame.size.height - kFishingSpotHeight - kLocationNameHeight -
+                kSpacerHeight;
+    }
+    
+    return [super tableView:tableView heightForRowAtIndexPath:indexPath];
 }
 
 #pragma mark - Events
@@ -207,7 +233,7 @@
         CMAAddLocationViewController *source = segue.sourceViewController;
         
         self.location = source.location;
-        self.navigationItem.title = self.location.name;
+        self.locationNameLabel.text = self.location.name;
         source.location = nil;
     }
     

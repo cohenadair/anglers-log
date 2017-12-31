@@ -21,8 +21,37 @@
                         <sections>
                             <tableViewSection id="02r-2a-y3h">
                                 <cells>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" rowHeight="14" id="1do-On-nIQ">
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="14"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="1do-On-nIQ" id="1nG-HT-9zf">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="14"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" rowHeight="29" id="qvY-B9-nyV">
+                                        <rect key="frame" x="0.0" y="14" width="375" height="29"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="qvY-B9-nyV" id="2gw-p6-L7g">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="29"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Location Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="V73-5r-JEk">
+                                                    <rect key="frame" x="16" y="0.0" width="343" height="29"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="24"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="V73-5r-JEk" firstAttribute="centerY" secondItem="2gw-p6-L7g" secondAttribute="centerY" id="qn0-Q0-J4c"/>
+                                                <constraint firstAttribute="trailing" secondItem="V73-5r-JEk" secondAttribute="trailing" constant="16" id="s1a-5p-zVw"/>
+                                                <constraint firstItem="V73-5r-JEk" firstAttribute="leading" secondItem="2gw-p6-L7g" secondAttribute="leading" constant="16" id="v5v-XM-HGv"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="selectFishingSpotCell" rowHeight="72" id="kVS-U5-0b3">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="72"/>
+                                        <rect key="frame" x="0.0" y="43" width="375" height="72"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="kVS-U5-0b3" id="9Na-tF-EnN">
                                             <rect key="frame" x="0.0" y="0.0" width="341" height="72"/>
@@ -81,7 +110,7 @@
                             <tableViewSection id="wnU-iJ-gld">
                                 <cells>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="mapCell" rowHeight="215" id="zco-K0-oVl">
-                                        <rect key="frame" x="0.0" y="72" width="375" height="215"/>
+                                        <rect key="frame" x="0.0" y="115" width="375" height="215"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="zco-K0-oVl" id="R8n-TW-yoj">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="215"/>
@@ -133,13 +162,16 @@
                             <outlet property="delegate" destination="adr-BS-f2S" id="CT5-K2-3xM"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="WzY-ql-Ziv"/>
+                    <navigationItem key="navigationItem" id="WzY-ql-Ziv">
+                        <barButtonItem key="backBarButtonItem" title=" " id="iwd-9s-eA1"/>
+                    </navigationItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
                     <nil key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="coordinateLabel" destination="2Uf-Lt-Lix" id="Sua-p9-Tq6"/>
                         <outlet property="fishCaughtLabel" destination="2ey-Yi-aJi" id="5c1-KN-GjT"/>
                         <outlet property="fishingSpotLabel" destination="mMI-sH-N3r" id="ErN-ag-1DI"/>
+                        <outlet property="locationNameLabel" destination="V73-5r-JEk" id="6kz-2g-weu"/>
                         <outlet property="mapTypeControl" destination="UJ7-g1-YbQ" id="RQC-RQ-2pa"/>
                         <outlet property="mapView" destination="3ya-dt-qqn" id="nvp-91-UhT"/>
                         <segue destination="aLM-pd-xcd" kind="unwind" identifier="unwindToAddEntryFromSingleLocation" unwindAction="unwindToAddEntry:" id="i4g-iX-B1F"/>
@@ -149,7 +181,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1xd-Vw-zsy" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="aLM-pd-xcd" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="4251" y="768"/>
+            <point key="canvasLocation" x="4250.3999999999996" y="767.76611694152928"/>
         </scene>
         <!--addLocationNav-->
         <scene sceneID="4zA-ub-cOG">
