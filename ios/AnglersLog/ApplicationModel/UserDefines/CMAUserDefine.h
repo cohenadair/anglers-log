@@ -53,7 +53,7 @@
 
 // sorting and filtering
 - (void)sortByNameProperty;
-- (NSOrderedSet<CMAUserDefineObject *> *)filter:(NSString *)searchText;
+- (NSOrderedSet<CMAUserDefineObject *> *)search:(NSString *)searchText;
 
 // visiting
 - (void)accept:(id)aVisitor;

@@ -434,7 +434,7 @@
 #pragma mark - CMASearchTableViewDelegate
 
 - (void)filterTableViewData:(NSString *)searchText {
-    self.userDefineObjects = [self.userDefine filter:searchText];
+    self.userDefineObjects = [self.userDefine search:searchText];
 }
 
 - (void)setupTableViewData {

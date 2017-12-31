@@ -156,6 +156,7 @@
 		AC8083D11FF099BF00D63426 /* AddEntry.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AC8083D01FF099BF00D63426 /* AddEntry.storyboard */; };
 		AC85D5471FEC8BA800B0FC71 /* backup_ios_legacy.json in Resources */ = {isa = PBXBuildFile; fileRef = AC85D5461FEC8BA800B0FC71 /* backup_ios_legacy.json */; };
 		ACA92F241FF14E4200DC0071 /* AddBait.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = ACA92F231FF14E4200DC0071 /* AddBait.storyboard */; };
+		ACC78AB61FF9721000FE32FD /* CMAUserDefineTest.m in Sources */ = {isa = PBXBuildFile; fileRef = ACC78AB51FF9721000FE32FD /* CMAUserDefineTest.m */; };
 		ACCC66C61FEB4C4400B681A8 /* app_icon_167.png in Resources */ = {isa = PBXBuildFile; fileRef = ACCC66C21FEB4C4400B681A8 /* app_icon_167.png */; };
 		ACCC66C71FEB4C4400B681A8 /* app_icon_87.png in Resources */ = {isa = PBXBuildFile; fileRef = ACCC66C31FEB4C4400B681A8 /* app_icon_87.png */; };
 		ACCC66C81FEB4C4400B681A8 /* app_icon_60.png in Resources */ = {isa = PBXBuildFile; fileRef = ACCC66C41FEB4C4400B681A8 /* app_icon_60.png */; };
@@ -403,6 +404,7 @@
 		AC8083D01FF099BF00D63426 /* AddEntry.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = AddEntry.storyboard; sourceTree = "<group>"; };
 		AC85D5461FEC8BA800B0FC71 /* backup_ios_legacy.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = backup_ios_legacy.json; sourceTree = "<group>"; };
 		ACA92F231FF14E4200DC0071 /* AddBait.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = AddBait.storyboard; sourceTree = "<group>"; };
+		ACC78AB51FF9721000FE32FD /* CMAUserDefineTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CMAUserDefineTest.m; sourceTree = "<group>"; };
 		ACCC66C21FEB4C4400B681A8 /* app_icon_167.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = app_icon_167.png; sourceTree = "<group>"; };
 		ACCC66C31FEB4C4400B681A8 /* app_icon_87.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = app_icon_87.png; sourceTree = "<group>"; };
 		ACCC66C41FEB4C4400B681A8 /* app_icon_60.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = app_icon_60.png; sourceTree = "<group>"; };
@@ -713,6 +715,7 @@
 				AC366FD31FF459D7004D43F0 /* CMABaitTest.m */,
 				AC58D57C1FEDC6DF00C5EC3E /* CMAEntryTest.m */,
 				ACCC66D81FEB5DB800B681A8 /* CMAJSONReaderTest.m */,
+				ACC78AB51FF9721000FE32FD /* CMAUserDefineTest.m */,
 				ACCC66DA1FEC68CE00B681A8 /* Data */,
 				ACCC66D21FEB5BD600B681A8 /* Info.plist */,
 			);
@@ -1280,6 +1283,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AC366FD41FF459D7004D43F0 /* CMABaitTest.m in Sources */,
+				ACC78AB61FF9721000FE32FD /* CMAUserDefineTest.m in Sources */,
 				AC58D6381FEDCC2700C5EC3E /* CMAEntryTest.m in Sources */,
 				AC58D6391FEDCC2700C5EC3E /* CMAJSONReaderTest.m in Sources */,
 			);

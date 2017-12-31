@@ -177,7 +177,7 @@
     [self setActiveSet:[NSMutableOrderedSet orderedSetWithArray:sortedArray]];
 }
 
-- (NSOrderedSet<CMAUserDefineObject *> *)filter:(NSString *)searchText {
+- (NSOrderedSet<CMAUserDefineObject *> *)search:(NSString *)searchText {
     NSMutableOrderedSet *activeSet = self.activeSet;
     return [activeSet filteredOrderedSetUsingPredicate:[NSPredicate predicateWithBlock:
             ^BOOL(CMAUserDefineObject *userDefine, NSDictionary<NSString *, id> *bindings) {

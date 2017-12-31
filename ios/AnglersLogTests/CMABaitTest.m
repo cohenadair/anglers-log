@@ -39,7 +39,7 @@
 }
 
 /**
- * Tests that searching a bait for text returns the correct result, event when that bait has nil
+ * Tests that searching a bait for text returns the correct result, even when that bait has nil
  * property values.
  */
 - (void)testSearchingNilValues {
