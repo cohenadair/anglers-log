@@ -36,14 +36,12 @@
 @end
 
 #define kSectionInfo 0
-#define kRowSpacer 0
-#define kRowLocationName 1
-#define kRowFishingSpot 2
+#define kRowLocationName 0
+#define kRowFishingSpot 1
 
 #define kSectionMap 1
 
-#define kSpacerHeight 14
-#define kLocationNameHeight 29
+#define kLocationNameHeight 44
 #define kFishingSpotHeight 72
 
 @implementation CMASingleLocationViewController
@@ -120,10 +118,6 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == kSectionInfo) {
-        if (indexPath.row == kRowSpacer) {
-            return kSpacerHeight;
-        }
-        
         if (indexPath.row == kRowLocationName) {
             return kLocationNameHeight;
         }
@@ -134,8 +128,7 @@
     }
     
     if (indexPath.section == kSectionMap) {
-        return tableView.frame.size.height - kFishingSpotHeight - kLocationNameHeight -
-                kSpacerHeight;
+        return tableView.frame.size.height - kFishingSpotHeight - kLocationNameHeight;
     }
     
     return [super tableView:tableView heightForRowAtIndexPath:indexPath];

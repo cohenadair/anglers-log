@@ -21,37 +21,30 @@
                         <sections>
                             <tableViewSection id="02r-2a-y3h">
                                 <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" rowHeight="14" id="1do-On-nIQ">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="14"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="1do-On-nIQ" id="1nG-HT-9zf">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="14"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" rowHeight="29" id="qvY-B9-nyV">
-                                        <rect key="frame" x="0.0" y="14" width="375" height="29"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" rowHeight="44" id="qvY-B9-nyV">
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="qvY-B9-nyV" id="2gw-p6-L7g">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="29"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Location Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="V73-5r-JEk">
-                                                    <rect key="frame" x="16" y="0.0" width="343" height="29"/>
+                                                    <rect key="frame" x="16" y="7" width="343" height="29"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="24"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="V73-5r-JEk" firstAttribute="centerY" secondItem="2gw-p6-L7g" secondAttribute="centerY" id="qn0-Q0-J4c"/>
+                                                <constraint firstItem="V73-5r-JEk" firstAttribute="centerY" secondItem="2gw-p6-L7g" secondAttribute="centerY" id="Zq4-WM-kWe"/>
                                                 <constraint firstAttribute="trailing" secondItem="V73-5r-JEk" secondAttribute="trailing" constant="16" id="s1a-5p-zVw"/>
                                                 <constraint firstItem="V73-5r-JEk" firstAttribute="leading" secondItem="2gw-p6-L7g" secondAttribute="leading" constant="16" id="v5v-XM-HGv"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" red="0.92156862750000001" green="0.83137254900000002" blue="0.57647058819999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="selectFishingSpotCell" rowHeight="72" id="kVS-U5-0b3">
-                                        <rect key="frame" x="0.0" y="43" width="375" height="72"/>
+                                        <rect key="frame" x="0.0" y="44" width="375" height="72"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="kVS-U5-0b3" id="9Na-tF-EnN">
                                             <rect key="frame" x="0.0" y="0.0" width="341" height="72"/>
@@ -110,7 +103,7 @@
                             <tableViewSection id="wnU-iJ-gld">
                                 <cells>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="mapCell" rowHeight="215" id="zco-K0-oVl">
-                                        <rect key="frame" x="0.0" y="115" width="375" height="215"/>
+                                        <rect key="frame" x="0.0" y="116" width="375" height="215"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="zco-K0-oVl" id="R8n-TW-yoj">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="215"/>
