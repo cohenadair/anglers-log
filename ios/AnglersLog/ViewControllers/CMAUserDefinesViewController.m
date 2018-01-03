@@ -443,6 +443,10 @@
     return self.userDefineObjects.count;
 }
 
+- (NSInteger)unfilteredTableViewRowCount {
+    return self.userDefine.activeSet.count;
+}
+
 - (void)onDeleteRowAtIndexPath:(NSIndexPath *)indexPath {
     [self.journal removeUserDefine:self.userDefine.name
                        objectNamed:self.userDefineObjects[indexPath.row].name];

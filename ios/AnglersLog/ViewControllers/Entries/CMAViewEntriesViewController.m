@@ -153,6 +153,10 @@
     return self.entries.count;
 }
 
+- (NSInteger)unfilteredTableViewRowCount {
+    return self.journal.entries.count;
+}
+
 - (void)onDeleteRowAtIndexPath:(NSIndexPath *)indexPath {
     [self.journal removeEntryDated:self.entries[indexPath.row].date];
 }

@@ -168,6 +168,10 @@
     return self.baits.count;
 }
 
+- (NSInteger)unfilteredTableViewRowCount {
+    return self.journal.baits.count;
+}
+
 - (void)onDeleteRowAtIndexPath:(NSIndexPath *)indexPath {
     [self.journal removeUserDefine:UDN_BAITS objectNamed:self.baits[indexPath.row].name];
 }

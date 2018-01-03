@@ -18,6 +18,7 @@
 @property (strong, nonatomic) UILabel *noResultsLabel;
 
 @property (nonatomic) CGFloat trackedScrollPosition;
+@property (nonatomic) NSString *currentSearchText;
 
 @end
 
@@ -60,7 +61,6 @@
         [view topToAnchor:self.searchBar.bottomAnchor];
     }];
     
-    // Dismiss the keyboard when scrolling the table view.
     self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
     self.tableView.tableFooterView = [UIView.alloc initWithFrame:CGRectZero];
     self.tableView.allowsSelectionDuringEditing = YES;
@@ -120,9 +120,7 @@
     // If there is an active search query when returning to the table view, be sure to update
     // the table. This is necessary to for modifications to the underlying data model to be shown
     // in the filtered table view without searching again.
-    if (![CMAUtilities isEmpty:self.searchBar.text]) {
-        [self filterTableView:self.searchBar.text];
-    }
+    [self reloadData];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -136,22 +134,32 @@
 }
 
 - (void)reloadData {
-    [self.delegate setupTableViewData];
+    if (self.isSearching) {
+        [self filterTableView:self.searchBar.text];
+    } else {
+        [self.delegate setupTableViewData];
+    }
+    
     [self.tableView reloadData];
     [self updateNoXViewVisibilityAnimated:YES];
     [self updateTitle];
 }
 
 - (void)updateTitle {
-    self.navigationItem.title = [NSString stringWithFormat:@"%@ (%ld)", self.quantityTitleText,
-            (long)self.delegate.tableViewRowCount];
+    if (self.isSearching) {
+        self.navigationItem.title = [NSString stringWithFormat:@"%@ (%ld/%ld)",
+                self.quantityTitleText, (long)self.delegate.tableViewRowCount,
+                (long)self.delegate.unfilteredTableViewRowCount];
+    } else {
+        self.navigationItem.title = [NSString stringWithFormat:@"%@ (%ld)", self.quantityTitleText,
+                (long)self.delegate.tableViewRowCount];
+    }
 }
 
 - (void)updateNoXViewVisibilityAnimated:(BOOL)animated {
-    __weak typeof(self) weakSelf = self;
-    BOOL visible = self.delegate.tableViewRowCount <= 0;
-    weakSelf.noXView.alpha = visible;
-    weakSelf.noXView.hidden = !visible;
+    BOOL visible = self.delegate.tableViewRowCount <= 0 && !self.isSearching;
+    self.noXView.alpha = visible;
+    self.noXView.hidden = !visible;
 }
 
 - (void)filterTableView:(NSString *)searchText {
@@ -167,6 +175,10 @@
     self.tableView.hidden = !self.noResultsLabel.hidden;
     
     [self.tableView reloadData];
+}
+
+- (BOOL)isSearching {
+    return ![CMAUtilities isEmpty:self.currentSearchText];
 }
 
 #pragma mark - UITableViewDelegate & UITableViewDataSource
@@ -218,7 +230,9 @@ commitEditingStyle:(UITableViewCellEditingStyle)editingStyle
 #pragma mark - UISearchBarDelegate
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
-    [self filterTableView:searchText];
+    self.currentSearchText = searchText;
+    [self filterTableView:self.currentSearchText];
+    [self updateTitle];
 }
 
 #pragma mark - CMAJournalChangeListener

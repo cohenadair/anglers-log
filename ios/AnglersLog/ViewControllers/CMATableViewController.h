@@ -32,6 +32,12 @@
  */
 - (NSInteger)tableViewRowCount;
 
+/**
+ * @return The row count of the table view for the unfiltered data model. For example, this method
+ *         might return the number of baits for the current user.
+ */
+- (NSInteger)unfilteredTableViewRowCount;
+
 @optional
 
 /**
