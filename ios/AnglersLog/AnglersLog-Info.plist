@@ -2,8 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Allows photos in Anglers&apos; Log to be saved on your device.</string>
 	<key>NSCameraUsageDescription</key>
-	<string>To include photos in your Anglers&apos; Log data.</string>
+	<string>Allows photos to be taken from within Anglers&apos; Log.</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
