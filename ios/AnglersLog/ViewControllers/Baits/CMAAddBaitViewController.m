@@ -47,7 +47,7 @@
 #define kSectionPhoto 1
 #define kRowPhoto 0
 
-#define kImageViewSize 100
+#define kImageViewSize CGSizeMake(100, 100)
 
 @implementation CMAAddBaitViewController
 
@@ -198,7 +198,8 @@
     [img setFullImage:scaledImage];
     [self setImageData:img];
     [self setSaveImageToCameraRoll:pictureWasTaken];
-    [self.imageView setImage:[CMAUtilities imageWithImage:scaledImage scaledToSize:CGSizeMake(kImageViewSize, kImageViewSize)]];
+    self.imageView.image = [CMAUtilities imageWithImage:scaledImage scaledToSize:kImageViewSize];
+    self.imageView.alpha = 1; // If the previous image was removed, be sure to show the new image.
     [self.tableView beginUpdates];
     [self.tableView endUpdates];
     
