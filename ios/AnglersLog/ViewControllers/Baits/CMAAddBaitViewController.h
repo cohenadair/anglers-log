@@ -14,5 +14,6 @@
 
 @property (strong, nonatomic)CMABait *bait;
 @property (nonatomic)CMAViewControllerID previousViewID;
+@property (nonatomic, copy)void (^onSavePhotoBlock)(BOOL);
 
 @end

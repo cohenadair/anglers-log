@@ -128,6 +128,13 @@
         CMAAddBaitViewController *destination = [[segue.destinationViewController viewControllers] objectAtIndex:0];
         destination.bait = self.bait;
         destination.previousViewID = CMAViewControllerIDSingleBait;
+        
+        // Update the image after it's been saved. This ensures that the image view is pointed to
+        // a valid photo.
+        __weak typeof(self) weakSelf = self;
+        destination.onSavePhotoBlock = ^(BOOL success) {
+            weakSelf.imageView.image = weakSelf.bait.imageData.image;
+        };
     }
 }
 

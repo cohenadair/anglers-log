@@ -693,7 +693,7 @@ NSString *const kNotSelectedString = @"Not Selected";
             CMAImage *img = [[CMAStorageManager sharedManager] managedImage];
             [img setFullImage:[self.entryImages objectAtIndex:i]];
             [anEntry addImage:img];
-            [img saveWithIndex:i];
+            [img saveWithIndex:i completion:nil];
 
             if ([[self.saveEntryImagesToGallery objectAtIndex:i] boolValue])
                 UIImageWriteToSavedPhotosAlbum([img fullImage], nil, nil, nil);

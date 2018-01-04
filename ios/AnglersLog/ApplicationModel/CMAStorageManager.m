@@ -282,7 +282,7 @@
     [result setSize:@"2"];
     [result setBaitType:CMABaitTypeArtificial];
     [result setImageData:img];
-    [result.imageData saveWithIndex:0];
+    [result.imageData saveWithIndex:0 completion:nil];
 
     return result;
 }
@@ -297,7 +297,7 @@
     [result setSize:@"6"];
     [result setBaitType:CMABaitTypeArtificial];
     [result setImageData:img];
-    [result.imageData saveWithIndex:1];
+    [result.imageData saveWithIndex:1 completion:nil];
     
     return result;
 }

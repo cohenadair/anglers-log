@@ -53,49 +53,61 @@
 
 // NOTE: Deleting images is done in [[CMAStorageManager sharedManager] cleanImages].
 
-- (void)saveWithImage:(UIImage *)anImage andFileName:(NSString *)aFileName {
+- (void)saveWithImage:(UIImage *)image
+             fileName:(NSString *)fileName
+           completion:(void (^)(BOOL))completion
+{
     NSString *subDirectory = @"Images";
-    NSString *fileName = [aFileName stringByAppendingString:JPG];
+    fileName = [fileName stringByAppendingString:JPG];
     
-    NSString *documentsPath = [[CMAStorageManager sharedManager] documentsSubDirectory:subDirectory].path;
+    NSString *documentsPath = [CMAStorageManager.sharedManager documentsSubDirectory:subDirectory].path;
     NSString *imagePath = [subDirectory stringByAppendingPathComponent:fileName];
     __block NSString *path = [documentsPath stringByAppendingPathComponent:fileName];
-    __block UIImage *img = anImage;
+    __block UIImage *img = image;
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-        [UIImageJPEGRepresentation(img, 0.50f) writeToFile:path atomically:YES];
+        BOOL success = [UIImageJPEGRepresentation(img, 0.50f) writeToFile:path atomically:YES];
         
         dispatch_async(dispatch_get_main_queue(), ^{
+            self.imagePath = imagePath;
             
+            if (completion != nil) {
+                completion(success);
+            }
         });
     });
-
-    self.imagePath = imagePath; // stored path has to be relative, not absolute (iOS8 changes UUID every run)
-    [self initThumbnailsWithImage:anImage];
+    
+    // Generate thumbnail images right away so they're shown even before the image is saved to disk.
+    [self initThumbnailsWithImage:image];
 }
 
 // This method should only be called when adding an image to the journal (ex. adding an entry or bait).
 // This method MUST be called. It sets the CMAImage's imagePath property which is needed to access the image later.
 // anIndex is the index of the image in an images array. It's added to create a unique file name.
-- (void)saveWithIndex:(NSInteger)anIndex {
-    if (!self.fullImage)
-        NSLog(@"WARNING: Trying to save CMAImage with nil image value.");
+- (void)saveWithIndex:(NSInteger)index completion:(void (^)(BOOL success))completion {
+    UIImage *fullImage = self.fullImage;
     
-    if (!self.entry && !self.bait)
+    if (fullImage == nil) {
+        NSLog(@"WARNING: Trying to save CMAImage with nil image value.");
+    }
+    
+    if (self.entry == nil && self.bait == nil) {
         NSLog(@"WARNING: Trying to save CMAImage with nil entry/bait value.");
+    }
     
     NSString *fileName;
     
-    if (self.entry)
-        fileName = [[self.entry accurateDateAsFileNameString] stringByAppendingFormat:@"-%ld", (long)anIndex];
-    else if (self.bait) {
-        NSString *dateString = [CMAUtilities stringForDate:[NSDate date]
-                                                withFormat:ACCURATE_DATE_FILE_STRING];
-        dateString = [dateString stringByAppendingFormat:@"-%ld", (long)anIndex];
+    if (self.entry != nil) {
+        fileName = [self.entry.accurateDateAsFileNameString stringByAppendingFormat:@"-%ld",
+                (long)index];
+    } else if (self.bait != nil) {
+        NSString *dateString =
+                [CMAUtilities stringForDate:[NSDate date] withFormat:ACCURATE_DATE_FILE_STRING];
+        dateString = [dateString stringByAppendingFormat:@"-%ld", (long)index];
         fileName = [@"Bait_" stringByAppendingString:dateString];
     }
     
-    [self saveWithImage:self.fullImage andFileName:fileName];
+    [self saveWithImage:fullImage fileName:fileName completion:completion];
 }
 
 /**
@@ -111,7 +123,7 @@
     NSLog(@"Converting file: %@", self.fileName);
     
     // save new file
-    [self saveWithIndex:index];
+    [self saveWithIndex:index completion:nil];
     
     // delete old file
     [CMAUtilities deleteFileAtPath:oldFilePath];

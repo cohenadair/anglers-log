@@ -323,7 +323,7 @@
     // photo
     if (self.imageData) {
         [aBait setImageData:self.imageData];
-        [aBait.imageData saveWithIndex:0];
+        [aBait.imageData saveWithIndex:0 completion:self.onSavePhotoBlock];
         
         if (self.saveImageToCameraRoll)
             UIImageWriteToSavedPhotosAlbum([self.imageData fullImage], nil, nil, nil);
