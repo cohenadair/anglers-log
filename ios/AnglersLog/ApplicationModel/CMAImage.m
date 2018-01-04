@@ -160,6 +160,22 @@
     return [CMAUtilities imageWithImage:self.fullImage scaledToSize:CGSizeMake(screenSize.width, screenSize.width)];
 }
 
+- (UIImage *)tableCellImage {
+    if (_tableCellImage == nil) {
+        _tableCellImage = [CMAUtilities imageWithImage:self.fullImage
+                scaledToSize:CGSizeMake(TABLE_THUMB_SIZE, TABLE_THUMB_SIZE)];
+    }
+    return _tableCellImage;
+}
+
+- (UIImage *)galleryCellImage {
+    if (_galleryCellImage == nil) {
+        _galleryCellImage = [CMAUtilities imageWithImage:self.fullImage
+                scaledToSize:CMAUtilities.galleryCellSize];
+    }
+    return _galleryCellImage;
+}
+
 #pragma mark - Visiting
 
 - (void)accept:(id)aVisitor {
