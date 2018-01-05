@@ -190,7 +190,7 @@
     
     UIImage *scaledImage;
     if (!pictureWasTaken)
-        scaledImage = [CMAUtilities scaleImageToScreenSize:chosenImage];
+        scaledImage = [CMAUtilities scaleImageToScreenWidth:chosenImage];
     else
         scaledImage = chosenImage;
     

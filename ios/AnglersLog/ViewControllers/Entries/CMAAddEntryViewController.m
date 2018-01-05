@@ -898,7 +898,7 @@ NSString *const kNotSelectedString = @"Not Selected";
     
     UICollectionViewCell *insertedCell = [self.imageCollection cellForItemAtIndexPath:indexPath];
     
-    UIImage *scaledImage = [CMAUtilities scaleImageToScreenSize:anImage];
+    UIImage *scaledImage = [CMAUtilities scaleImageToScreenWidth:anImage];
     [self.entryImages insertObject:scaledImage atIndex:0];
     
     if (saveToGallery)

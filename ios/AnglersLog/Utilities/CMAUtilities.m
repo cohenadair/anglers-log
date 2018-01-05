@@ -89,14 +89,10 @@
     return newImage;
 }
 
-+ (UIImage *)scaleImageToScreenSize:(UIImage *)anImage {
-    NSString *widthStr = [NSString stringWithFormat:@"%f", [CMAUtilities screenSizeInPixels].width];
-    NSString *heightStr = [NSString stringWithFormat:@"x%f", [CMAUtilities screenSizeInPixels].height];
-    
-    if (anImage.size.width < anImage.size.height)
-        return [anImage resizedImageByMagick:widthStr];
-    else
-        return [anImage resizedImageByMagick:heightStr];
++ (UIImage *)scaleImageToScreenWidth:(UIImage *)image {
+    CGFloat imageWidth =
+            MIN(CMAUtilities.screenSizeInPixels.width, CMAUtilities.screenSizeInPixels.height);
+    return [image resizedImageByMagick:[NSString stringWithFormat:@"%f", imageWidth]];
 }
 
 // Uses the current window size to return a CGSize for the photo gallery collection view cells.

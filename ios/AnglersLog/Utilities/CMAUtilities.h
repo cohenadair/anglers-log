@@ -14,7 +14,13 @@
 
 + (BOOL)validConnection;
 + (UIImage *)imageWithImage:(UIImage *)image scaledToSize:(CGSize)size;
-+ (UIImage *)scaleImageToScreenSize:(UIImage *)anImage;
+
+/**
+ * Scales the given UIImage to the screen's width when in portrait orientation
+ * (i.e. the shortest side).
+ */
++ (UIImage *)scaleImageToScreenWidth:(UIImage *)image;
+
 + (CGSize)galleryCellSize;
 + (NSString *)capitalizedString:(NSString *)aString;
 + (void)deleteFileAtPath:(NSString *)aPath;
