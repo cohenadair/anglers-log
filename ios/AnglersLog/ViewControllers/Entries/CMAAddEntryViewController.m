@@ -1007,11 +1007,8 @@ NSString *const kNotSelectedString = @"Not Selected";
         NSArray *weatherArray = result[@"weather"];
         
         if ([weatherArray count] > 0) {
-            NSString *imageString = [NSString stringWithFormat:@"http://openweathermap.org/img/w/%@.png", result[@"weather"][0][@"icon"]];
-            [self.weatherData setImageURL:imageString];
             [self.weatherData setSkyConditions:result[@"weather"][0][@"main"]];
         } else {
-            [self.weatherData setImageURL:nil];
             [self.weatherData setSkyConditions:@"N/A"];
         }
         
@@ -1024,11 +1021,6 @@ NSString *const kNotSelectedString = @"Not Selected";
 }
 
 - (void)initWeatherDataViewWithData:(CMAWeatherData *)someWeatherData {
-    if (someWeatherData.imageURL == nil) {
-        self.weatherDataView.weatherImageView.hidden = YES;
-    } else {
-        [self.weatherDataView.weatherImageView setImage:[someWeatherData imageURLAsUIImage]];
-    }
     [self.weatherDataView.temperatureLabel setText:[someWeatherData temperatureAsStringWithUnits:[[self journal] temperatureUnitsAsString:YES]]];
     [self.weatherDataView.windSpeedLabel setText:[someWeatherData windSpeedAsStringWithUnits:[[self journal] speedUnitsAsString:YES]]];
     [self.weatherDataView.skyConditionsLabel setText:[someWeatherData skyConditionsAsString]];

@@ -15,41 +15,41 @@
             <rect key="frame" x="0.0" y="0.0" width="400" height="90"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="N/A" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fXf-is-apw">
-                    <rect key="frame" x="71" y="9" width="185" height="30"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="N/A" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fXf-is-apw">
+                    <rect key="frame" x="16" y="8" width="49.5" height="36"/>
                     <fontDescription key="fontDescription" type="system" pointSize="30"/>
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Wind Speed: N/A" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Nji-HE-oCh">
-                    <rect key="frame" x="72" y="40" width="153" height="21"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Wind Speed: N/A" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Nji-HE-oCh">
+                    <rect key="frame" x="16" y="44" width="110" height="17"/>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                     <color key="textColor" red="0.66666668653488159" green="0.66666668653488159" blue="0.66666668653488159" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Sky: N/A" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LDl-u4-bTg">
-                    <rect key="frame" x="72" y="60" width="142" height="21"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sky: N/A" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LDl-u4-bTg">
+                    <rect key="frame" x="16" y="63" width="55.5" height="17"/>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                     <color key="textColor" red="0.66666668653488159" green="0.66666668653488159" blue="0.66666668653488159" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rR5-e4-2bw">
-                    <rect key="frame" x="8" y="20" width="50" height="50"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                </imageView>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="fXf-is-apw" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="8" id="QMl-mR-uoC"/>
+                <constraint firstItem="LDl-u4-bTg" firstAttribute="top" secondItem="Nji-HE-oCh" secondAttribute="bottom" constant="2" id="QTw-WO-Pcy"/>
+                <constraint firstItem="fXf-is-apw" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="16" id="SEJ-Tx-9Ec"/>
+                <constraint firstItem="Nji-HE-oCh" firstAttribute="top" secondItem="fXf-is-apw" secondAttribute="bottom" id="Ur3-Tx-kSQ"/>
+                <constraint firstItem="Nji-HE-oCh" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="16" id="hYj-VY-MBe"/>
+                <constraint firstItem="LDl-u4-bTg" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="16" id="yLp-sr-CF1"/>
+            </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
                 <outlet property="skyConditionsLabel" destination="LDl-u4-bTg" id="HHK-QI-oGz"/>
                 <outlet property="temperatureLabel" destination="fXf-is-apw" id="jU0-ln-dti"/>
-                <outlet property="weatherImageView" destination="rR5-e4-2bw" id="7R5-7A-tPC"/>
                 <outlet property="windSpeedLabel" destination="Nji-HE-oCh" id="tF7-vr-ZKD"/>
             </connections>
-            <point key="canvasLocation" x="454" y="189"/>
+            <point key="canvasLocation" x="454" y="199"/>
         </view>
     </objects>
 </document>
