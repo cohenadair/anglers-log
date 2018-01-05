@@ -109,6 +109,11 @@
         
         // select map annotation
         [self.mapView selectAnnotation:[self annotationWithTitle:self.currentFishingSpot.name] animated:YES];
+        
+        // Zoom into the annotation.
+        MKCoordinateRegion viewRegion =
+                MKCoordinateRegionMakeWithDistance(self.currentFishingSpot.coordinate, 300, 300);
+        [self.mapView setRegion:viewRegion animated:YES];
     } else {
         self.fishingSpotLabel.text = @"No Fishing Spot Selected";
         self.coordinateLabel.text = @"Latitude 0.00000, Longitude 0.00000";
