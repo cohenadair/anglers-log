@@ -157,6 +157,7 @@
     [[CMAStorageManager sharedManager] setUserMapType:sender.selectedSegmentIndex];
     self.mapDidRender = NO;
     self.showRenderError = YES;
+    [self initRectileTint];
 }
 
 #pragma mark - Navigation
@@ -172,13 +173,13 @@
 #define kMapAreaY 800
 
 - (void)initMapView {
-    UIImage *image = [[UIImage imageNamed:@"rectile.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    UIImage *image = [[UIImage imageNamed:@"crosshairs"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     [self.rectileImage setImage:image];
-    [self.rectileImage setTintColor:[UIColor whiteColor]];
     
     [self.mapTypeControl.layer setCornerRadius:5.0f];
     [self.mapTypeControl setSelectedSegmentIndex:[[CMAStorageManager sharedManager] getUserMapType]];
     [self.mapView setMapType:self.mapTypeControl.selectedSegmentIndex];
+    [self initRectileTint];
     
     [self.mapTypeControl.superview bringSubviewToFront:self.mapTypeControl];
     [self.mapTypeControl.superview bringSubviewToFront:self.rectileImage];
@@ -194,6 +195,11 @@
         
         [self.mapView addAnnotation:p];
     }
+}
+
+- (void)initRectileTint {
+    self.rectileImage.tintColor = self.mapTypeControl.selectedSegmentIndex == MKMapTypeStandard
+            ? UIColor.blackColor : UIColor.whiteColor;
 }
 
 - (void)mapView:(MKMapView *)mapView regionWillChangeAnimated:(BOOL)animated {
