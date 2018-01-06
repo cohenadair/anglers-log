@@ -272,6 +272,7 @@
 
 - (void)notifyEntriesDidChange {
     [self notifyListeners:@selector(entriesDidChange)];
+    [self initStatistics];
 }
 
 - (void)notifyUserDefineDidChange:(NSString *)userDefineName {
@@ -286,6 +287,8 @@
     } else if ([userDefineName isEqualToString:UDN_WATER_CLARITIES]) {
         [self notifyListeners:@selector(waterClaritiesDidChange)];
     }
+    
+    [self initStatistics];
 }
 
 - (void)notifyListeners:(SEL)selector {
