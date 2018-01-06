@@ -83,7 +83,7 @@ NSString *const UNIT_METRIC_DEPTH_SHORTHAND             = @" m";
 NSString *const UNIT_METRIC_TEMPERATURE                 = @"Celsius";
 NSString *const UNIT_METRIC_TEMPERATURE_SHORTHAND       = @"\u00B0C";
 NSString *const UNIT_METRIC_SPEED                       = @"Kilometers Per Hour";
-NSString *const UNIT_METRIC_SPEED_SHORTHAND             = @" km/h";
+NSString *const UNIT_METRIC_SPEED_SHORTHAND             = @"km/h";
 
 #pragma mark - UI Constants
 
