@@ -158,6 +158,8 @@
 		AC8083CF1FF0946700D63426 /* Settings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AC8083CE1FF0946700D63426 /* Settings.storyboard */; };
 		AC8083D11FF099BF00D63426 /* AddEntry.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AC8083D01FF099BF00D63426 /* AddEntry.storyboard */; };
 		AC85D5471FEC8BA800B0FC71 /* backup_ios_legacy.json in Resources */ = {isa = PBXBuildFile; fileRef = AC85D5461FEC8BA800B0FC71 /* backup_ios_legacy.json */; };
+		AC8D16102001824F00CE0BAF /* About.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AC8D160F2001824F00CE0BAF /* About.storyboard */; };
+		AC8D16132001831700CE0BAF /* CMAAboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AC8D16122001831700CE0BAF /* CMAAboutViewController.m */; };
 		ACA92F241FF14E4200DC0071 /* AddBait.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = ACA92F231FF14E4200DC0071 /* AddBait.storyboard */; };
 		ACC78AB61FF9721000FE32FD /* CMAUserDefineTest.m in Sources */ = {isa = PBXBuildFile; fileRef = ACC78AB51FF9721000FE32FD /* CMAUserDefineTest.m */; };
 		ACCC66C61FEB4C4400B681A8 /* app_icon_167.png in Resources */ = {isa = PBXBuildFile; fileRef = ACCC66C21FEB4C4400B681A8 /* app_icon_167.png */; };
@@ -409,6 +411,9 @@
 		AC8083CE1FF0946700D63426 /* Settings.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Settings.storyboard; sourceTree = "<group>"; };
 		AC8083D01FF099BF00D63426 /* AddEntry.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = AddEntry.storyboard; sourceTree = "<group>"; };
 		AC85D5461FEC8BA800B0FC71 /* backup_ios_legacy.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = backup_ios_legacy.json; sourceTree = "<group>"; };
+		AC8D160F2001824F00CE0BAF /* About.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = About.storyboard; sourceTree = "<group>"; };
+		AC8D16112001831700CE0BAF /* CMAAboutViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CMAAboutViewController.h; path = ViewControllers/CMAAboutViewController.h; sourceTree = "<group>"; };
+		AC8D16122001831700CE0BAF /* CMAAboutViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = CMAAboutViewController.m; path = ViewControllers/CMAAboutViewController.m; sourceTree = "<group>"; };
 		ACA92F231FF14E4200DC0071 /* AddBait.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = AddBait.storyboard; sourceTree = "<group>"; };
 		ACC78AB51FF9721000FE32FD /* CMAUserDefineTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CMAUserDefineTest.m; sourceTree = "<group>"; };
 		ACCC66C21FEB4C4400B681A8 /* app_icon_167.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = app_icon_167.png; sourceTree = "<group>"; };
@@ -701,13 +706,14 @@
 		AC58D56A1FED509B00C5EC3E /* Storyboards */ = {
 			isa = PBXGroup;
 			children = (
+				AC8D160F2001824F00CE0BAF /* About.storyboard */,
 				ACA92F231FF14E4200DC0071 /* AddBait.storyboard */,
 				AC8083D01FF099BF00D63426 /* AddEntry.storyboard */,
+				AC29C4F51FFF6548006C5AED /* AddFishingSpot.storyboard */,
 				AC58D5721FEDA85A00C5EC3E /* Baits.storyboard */,
 				AC58D56B1FED50CC00C5EC3E /* Entries.storyboard */,
 				AC28B8311FF18183002706C4 /* EntrySorting.storyboard */,
 				0D8F839F1A6EC1AE00AABAEA /* Main.storyboard */,
-				AC29C4F51FFF6548006C5AED /* AddFishingSpot.storyboard */,
 				AC3A99D41FF7EAF900473A5D /* SelectFishingSpot.storyboard */,
 				AC8083CE1FF0946700D63426 /* Settings.storyboard */,
 				AC6115CD1FEE06100052BFE5 /* SingleBait.storyboard */,
@@ -906,6 +912,8 @@
 			isa = PBXGroup;
 			children = (
 				0D8F83AE1A6EC25200AABAEA /* Baits */,
+				AC8D16112001831700CE0BAF /* CMAAboutViewController.h */,
+				AC8D16122001831700CE0BAF /* CMAAboutViewController.m */,
 				0D8F83B51A6EC25200AABAEA /* CMAImagePickerViewController.h */,
 				0D8F83B61A6EC25200AABAEA /* CMAImagePickerViewController.m */,
 				0DCAD6531AA5069E0040B03B /* CMASettingsViewController.h */,
@@ -914,10 +922,10 @@
 				0D8F83BA1A6EC25200AABAEA /* CMASideMenuViewController.m */,
 				0D8F83BB1A6EC25200AABAEA /* CMAStatisticsViewController.h */,
 				0D8F83BC1A6EC25200AABAEA /* CMAStatisticsViewController.m */,
-				0D8F83BD1A6EC25200AABAEA /* CMAUserDefinesViewController.h */,
-				0D8F83BE1A6EC25200AABAEA /* CMAUserDefinesViewController.m */,
 				AC366FD01FF3FE14004D43F0 /* CMATableViewController.h */,
 				AC366FD11FF3FE14004D43F0 /* CMATableViewController.m */,
+				0D8F83BD1A6EC25200AABAEA /* CMAUserDefinesViewController.h */,
+				0D8F83BE1A6EC25200AABAEA /* CMAUserDefinesViewController.m */,
 				0D8F83BF1A6EC25200AABAEA /* Entries */,
 				0D8F83C81A6EC25200AABAEA /* Locations */,
 				0D8F83D11A6EC25200AABAEA /* Photos */,
@@ -1079,6 +1087,7 @@
 				0D8F84561A6EC2C300AABAEA /* camera@1x.png in Resources */,
 				0D8F840E1A6EC29A00AABAEA /* CMACircleView.xib in Resources */,
 				ACCC66C61FEB4C4400B681A8 /* app_icon_167.png in Resources */,
+				AC8D16102001824F00CE0BAF /* About.storyboard in Resources */,
 				AC6115CE1FEE06100052BFE5 /* SingleBait.storyboard in Resources */,
 				0D8F846E1A6EC2C300AABAEA /* stats.png in Resources */,
 				0DBC36181D7E2BA50016B898 /* spinner.jpg in Resources */,
@@ -1354,6 +1363,7 @@
 				0D128F501AD472340004CABE /* CMAJSONWriter.m in Sources */,
 				0D8F83921A6EC10800AABAEA /* CMABait.m in Sources */,
 				0D8F84101A6EC29A00AABAEA /* CMAInstagramActivity.m in Sources */,
+				AC8D16132001831700CE0BAF /* CMAAboutViewController.m in Sources */,
 				0D8F840D1A6EC29A00AABAEA /* CMACircleView.m in Sources */,
 				0D8F83EF1A6EC28300AABAEA /* CMAConstants.m in Sources */,
 				0DCAD6551AA5069E0040B03B /* CMASettingsViewController.m in Sources */,
