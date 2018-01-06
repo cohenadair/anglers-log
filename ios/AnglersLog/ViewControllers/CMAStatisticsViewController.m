@@ -308,6 +308,8 @@
     [self.pieChart setShowLabel:NO];
     [self.pieChart setShowPercentage:NO];
     
+    self.pieChart.selectedSliceOffsetRadius = 5;
+    
     [self.chartView setFrame:chartFrame];
     
     // pie chart center

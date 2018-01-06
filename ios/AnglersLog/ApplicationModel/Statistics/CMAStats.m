@@ -211,7 +211,7 @@
     if ([self.sliceObjects count] > 0)
         return [(CMAStatsObject *)[self.sliceObjects objectAtIndex:anIndex] name];
     
-    return [NSString stringWithFormat:@"No Recorded %@", self.userDefineName];
+    return [NSString stringWithFormat:@"No %@", self.userDefineName];
 }
 
 - (NSString *)detailTextAtIndex:(NSInteger)anIndex {
