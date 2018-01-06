@@ -1,4 +1,4 @@
- //
+//
 //  CMAImage.m
 //  AnglersLog
 //
@@ -23,7 +23,6 @@
 @dynamic bait;
 
 @synthesize fullImage = _fullImage;
-@synthesize image = _image;
 @synthesize tableCellImage = _tableCellImage;
 @synthesize galleryCellImage = _galleryCellImage;
 
@@ -45,8 +44,8 @@
 }
 
 - (void)initThumbnailsWithImage:(UIImage *)image {
-    _tableCellImage = [CMAUtilities imageWithImage:image scaledToSize:CGSizeMake(TABLE_THUMB_SIZE, TABLE_THUMB_SIZE)];
-    _galleryCellImage = [CMAUtilities imageWithImage:self.tableCellImage scaledToSize:[CMAUtilities galleryCellSize]];
+    _tableCellImage = [CMAUtilities scaleImage:image toSquareSize:TABLE_THUMB_SIZE];
+    _galleryCellImage = [CMAUtilities scaleImage:image toSize:CMAUtilities.galleryCellSize];
 }
 
 #pragma mark - Saving
@@ -69,8 +68,6 @@
         BOOL success = [UIImageJPEGRepresentation(img, 0.50f) writeToFile:path atomically:YES];
         
         dispatch_async(dispatch_get_main_queue(), ^{
-            self.imagePath = imagePath;
-            
             if (completion != nil) {
                 completion(success);
             }
@@ -79,6 +76,7 @@
     
     // Generate thumbnail images right away so they're shown even before the image is saved to disk.
     [self initThumbnailsWithImage:image];
+    self.imagePath = imagePath;
 }
 
 // This method should only be called when adding an image to the journal (ex. adding an entry or bait).
@@ -129,6 +127,12 @@
     [CMAUtilities deleteFileAtPath:oldFilePath];
 }
 
+- (CGFloat)heightForFullWidthDisplay {
+    CGFloat screenWidth = CMAUtilities.screenSize.width;
+    return MIN([CMAUtilities scaleSize:self.fullImage.size toWidth:screenWidth].height,
+            screenWidth);
+}
+
 #pragma mark - Getters
 
 - (NSString *)imagePath {
@@ -155,23 +159,31 @@
     return [UIImage imageWithData:[NSData dataWithContentsOfFile:self.imagePath]];
 }
 
-- (UIImage *)image {
-    CGSize screenSize = [CMAUtilities screenSize];
-    return [CMAUtilities imageWithImage:self.fullImage scaledToSize:CGSizeMake(screenSize.width, screenSize.width)];
+- (UIImage *)imageForFullWidthDisplay {
+    UIImage *image = self.fullImage;
+    if (image.size.height >= image.size.width) {
+        // If portrait image, scale to square, possibly cutting off the top and bottom.
+        return [CMAUtilities scaleImage:image toSquareSize:CMAUtilities.screenSize.width];
+    } else {
+        return [CMAUtilities scaleImageToScreenWidth:self.fullImage];
+    }
+}
+
+- (UIImage *)thumbnailWithSize:(CGFloat)size {
+    return [CMAUtilities scaleImage:self.fullImage toSquareSize:size];
 }
 
 - (UIImage *)tableCellImage {
     if (_tableCellImage == nil) {
-        _tableCellImage = [CMAUtilities imageWithImage:self.fullImage
-                scaledToSize:CGSizeMake(TABLE_THUMB_SIZE, TABLE_THUMB_SIZE)];
+        _tableCellImage = [self thumbnailWithSize:TABLE_THUMB_SIZE];
     }
     return _tableCellImage;
 }
 
 - (UIImage *)galleryCellImage {
     if (_galleryCellImage == nil) {
-        _galleryCellImage = [CMAUtilities imageWithImage:self.fullImage
-                scaledToSize:CMAUtilities.galleryCellSize];
+        _galleryCellImage = 
+                [CMAUtilities scaleImage:self.fullImage toSize:CMAUtilities.galleryCellSize];
     }
     return _galleryCellImage;
 }

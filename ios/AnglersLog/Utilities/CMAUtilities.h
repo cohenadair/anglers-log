@@ -13,11 +13,33 @@
 @interface CMAUtilities : NSObject
 
 + (BOOL)validConnection;
-+ (UIImage *)imageWithImage:(UIImage *)image scaledToSize:(CGSize)size;
 
 /**
- * Scales the given UIImage to the screen's width when in portrait orientation
- * (i.e. the shortest side).
+ * Scales the given old size to the new width, keeping aspect ratio.
+ */
++ (CGSize)scaleSize:(CGSize)oldSize toWidth:(CGFloat)newWidth;
+
+/**
+ * Scales the given image to an image of the given new size, keeping aspect ratio. This method
+ * may cut off part of the original image.
+ */
++ (UIImage *)scaleImage:(UIImage *)image toSize:(CGSize)size;
+
+/**
+ * Scales the given image to a square image of the given new size, keeping aspect ratio. This method
+ * will cut off part of the original image if the original image isn't already square.
+ */
++ (UIImage *)scaleImage:(UIImage *)image toSquareSize:(CGFloat)size;
+
+/**
+ * Scales the given image to the new width, keeping aspect ratio. This method will not cut off any
+ * of the original image.
+ */
++ (UIImage *)scaleImage:(UIImage *)image toWidth:(CGFloat)newWidth;
+
+/**
+ * Scales the given image to the screen's width. This method will not cut off any of the original
+ * image.
  */
 + (UIImage *)scaleImageToScreenWidth:(UIImage *)image;
 

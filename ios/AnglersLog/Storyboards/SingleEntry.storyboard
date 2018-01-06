@@ -65,7 +65,7 @@
                                         <constraint firstAttribute="trailing" secondItem="5tv-Cu-EOb" secondAttribute="trailing" id="DWb-Li-ISE"/>
                                         <constraint firstItem="5tv-Cu-EOb" firstAttribute="leading" secondItem="Txi-0i-qxs" secondAttribute="leading" id="Gvu-Y3-ftn"/>
                                         <constraint firstItem="5tv-Cu-EOb" firstAttribute="top" secondItem="Txi-0i-qxs" secondAttribute="top" id="dyF-pV-Ejx"/>
-                                        <constraint firstAttribute="bottom" secondItem="5tv-Cu-EOb" secondAttribute="bottom" constant="-0.5" id="obe-wS-mpA"/>
+                                        <constraint firstAttribute="bottom" secondItem="5tv-Cu-EOb" secondAttribute="bottom" id="obe-wS-mpA"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>

@@ -12,7 +12,6 @@
 
 #import "CMAConstants.h"
 #import "CMAUtilities.h"
-#import "UIImage+ResizeMagick.h"
 
 @implementation CMAUtilities
 
@@ -81,7 +80,7 @@
     CGFloat width = image.size.width * scale;
     CGFloat height = image.size.height * scale;
     CGRect imageRect = CGRectMake((size.width - width) / 2.0f, (size.height - height) / 2.0f, width, height);
-    
+
     UIGraphicsBeginImageContextWithOptions(size, NO, 0);
     [image drawInRect:imageRect];
     UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
@@ -89,10 +88,25 @@
     return newImage;
 }
 
++ (CGSize)scaleSize:(CGSize)oldSize toWidth:(CGFloat)newWidth {
+    CGFloat scale = newWidth / oldSize.width;
+    return CGSizeMake(oldSize.width * scale, oldSize.height * scale);
+}
+
++ (UIImage *)scaleImage:(UIImage *)image toSize:(CGSize)size {
+    return [self imageWithImage:image scaledToSize:size];
+}
+
++ (UIImage *)scaleImage:(UIImage *)image toSquareSize:(CGFloat)size {
+    return [self imageWithImage:image scaledToSize:CGSizeMake(size, size)];
+}
+
++ (UIImage *)scaleImage:(UIImage *)image toWidth:(CGFloat)newWidth {
+    return [self imageWithImage:image scaledToSize:[self scaleSize:image.size toWidth:newWidth]];
+}
+
 + (UIImage *)scaleImageToScreenWidth:(UIImage *)image {
-    CGFloat imageWidth =
-            MIN(CMAUtilities.screenSizeInPixels.width, CMAUtilities.screenSizeInPixels.height);
-    return [image resizedImageByMagick:[NSString stringWithFormat:@"%f", imageWidth]];
+    return [self scaleImage:image toWidth:self.screenSize.width];
 }
 
 // Uses the current window size to return a CGSize for the photo gallery collection view cells.

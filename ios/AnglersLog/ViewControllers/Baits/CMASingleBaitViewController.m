@@ -6,10 +6,11 @@
 //  Copyright (c) 2014 Cohen Adair. All rights reserved.
 //
 
-#import "CMASingleBaitViewController.h"
 #import "CMAAddBaitViewController.h"
 #import "CMAConstants.h"
 #import "CMAImage.h"
+#import "CMASingleBaitViewController.h"
+#import "CMAUtilities.h"
 
 @interface CMASingleBaitViewController ()
 
@@ -58,10 +59,11 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.row == kPhotoCellRow) {
-        if (self.bait.imageData)
-            return self.tableView.frame.size.width;
-        else
+        if (self.bait.imageData != nil) {
+            return self.bait.imageData.heightForFullWidthDisplay;
+        } else {
             return 10;
+        }
     }
     
     if ((indexPath.row == kSizeRow && !self.bait.size) || (indexPath.row == kColorRow && !self.bait.color))
@@ -100,7 +102,7 @@
 }
 
 - (void)initTableView {
-    [self.imageView setImage:[self.bait.imageData image]];
+    self.imageView.image = self.bait.imageData.imageForFullWidthDisplay;
     self.baitNameLabel.text = self.bait.name;
     [self.baitFishCaughtLabel setText:[self.bait.fishCaught stringValue]];
     [self.baitTypeLabel setText:[self.bait typeAsString]];
@@ -133,7 +135,7 @@
         // a valid photo.
         __weak typeof(self) weakSelf = self;
         destination.onSavePhotoBlock = ^(BOOL success) {
-            weakSelf.imageView.image = weakSelf.bait.imageData.image;
+            weakSelf.imageView.image = weakSelf.bait.imageData.imageForFullWidthDisplay;
         };
     }
 }

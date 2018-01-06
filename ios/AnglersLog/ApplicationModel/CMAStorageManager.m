@@ -158,25 +158,22 @@
 
 /**
  * Iterates through all the users entries and baits, resaving each image as JPG.
- * This method is run in the background.
  */
 - (void)convertAllPngToJpg {
-    [CMAUtilities runInBackground:^{
-        NSMutableOrderedSet *entries = self.sharedJournal.entries;
-        NSMutableOrderedSet *baits = self.sharedJournal.baits;
-        
-        for (CMAEntry *entry in entries) {
-            for (int i = 0; i < entry.imageCount; i++) {
-                [entry.images[i] resaveAsJpgWithIndex:i];
-            }
+    NSMutableOrderedSet *entries = self.sharedJournal.entries;
+    NSMutableOrderedSet *baits = self.sharedJournal.baits;
+    
+    for (CMAEntry *entry in entries) {
+        for (int i = 0; i < entry.imageCount; i++) {
+            [entry.images[i] resaveAsJpgWithIndex:i];
         }
-        
-        for (CMABait *bait in baits) {
-            [bait.imageData resaveAsJpgWithIndex:0];
-        }
-        
-        [self.sharedJournal archive];
-    }];
+    }
+    
+    for (CMABait *bait in baits) {
+        [bait.imageData resaveAsJpgWithIndex:0];
+    }
+    
+    [self.sharedJournal archive];
 }
 
 - (void)cleanImages {

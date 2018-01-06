@@ -34,11 +34,6 @@
     [self setNavigationTitleForIndexPath:self.startingImageIndexPath];
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
 - (void)setNavigationTitleForIndexPath:(NSIndexPath *)anIndexPath {
     [self.navigationItem setTitle:[NSString stringWithFormat:@"Photos (%ld of %lu)", (unsigned long)anIndexPath.item + 1, (unsigned long)[self.imagesArray count]]];
 }
@@ -87,7 +82,7 @@
     CMAInstagramActivity *instagramActivity = [CMAInstagramActivity new];
     [instagramActivity setPresentView:self.view];
     
-    NSArray *shareItems = @[[anImage image], [anImage.entry shareString]];
+    NSArray *shareItems = @[anImage.fullImage, anImage.entry.shareString];
     
     UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:shareItems applicationActivities:@[instagramActivity]];
     activityController.popoverPresentationController.sourceView = self.view;

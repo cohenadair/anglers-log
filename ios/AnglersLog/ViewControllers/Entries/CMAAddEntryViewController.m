@@ -222,8 +222,9 @@ NSString *const kNotSelectedString = @"Not Selected";
     self.navigationItem.title = @"Edit Entry";
     
     self.entryImages = [NSMutableArray array];
-    for (CMAImage *img in self.entry.images)
-        [self.entryImages addObject:[img.image copy]];
+    for (CMAImage *img in self.entry.images) {
+        [self.entryImages addObject:img.fullImage.copy];
+    }
     
     self.numberOfImages = [self.entryImages count];
     self.hasAttachedImages = (self.numberOfImages > 0);
@@ -908,7 +909,7 @@ NSString *const kNotSelectedString = @"Not Selected";
     
     // image is scaled to the size of the UICollectionViewCell
     UIImageView *imageView = (UIImageView *)[insertedCell viewWithTag:kImageViewTag];
-    [imageView setImage:[CMAUtilities imageWithImage:scaledImage scaledToSize:CGSizeMake(kImageViewSize, kImageViewSize)]];
+    imageView.image = [CMAUtilities scaleImage:scaledImage toSquareSize:kImageViewSize];
 }
 
 - (void)deleteImageFromCollectionAtIndexPath:(NSIndexPath *)anIndexPath {

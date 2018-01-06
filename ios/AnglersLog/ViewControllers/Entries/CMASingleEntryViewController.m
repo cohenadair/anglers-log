@@ -6,16 +6,17 @@
 //  Copyright (c) 2014 Cohen Adair. All rights reserved.
 //
 
-#import "CMASingleEntryViewController.h"
-#import "CMASingleLocationViewController.h"
-#import "CMASingleBaitViewController.h"
 #import "CMAAddEntryViewController.h"
 #import "CMAAppDelegate.h"
 #import "CMAConstants.h"
 #import "CMAFishingMethod.h"
-#import "CMAWeatherDataView.h"
-#import "CMAStorageManager.h"
 #import "CMAInstagramActivity.h"
+#import "CMASingleBaitViewController.h"
+#import "CMASingleEntryViewController.h"
+#import "CMASingleLocationViewController.h"
+#import "CMAStorageManager.h"
+#import "CMAUtilities.h"
+#import "CMAWeatherDataView.h"
 
 // Used to store information on the cells that will be shonw on the table.
 // See initTableSettings.
@@ -75,6 +76,11 @@
 
 @end
 
+#define kSubtitleCellHeight 55
+#define kRightDetailCellHeight 35
+#define kImageCollectionIndex 0
+#define kWeatherCellTitlePadding 25
+
 @interface CMASingleEntryViewController ()
 
 @property (strong, nonatomic)UICollectionView *imageCollectionView;
@@ -82,7 +88,9 @@
 @property (strong, nonatomic)UIBarButtonItem *actionButton;
 @property (strong, nonatomic)UIBarButtonItem *editButton;
 
-@property (strong, nonatomic)NSOrderedSet *entryImageArray;
+@property (strong, nonatomic)NSOrderedSet<CMAImage *> *entryImageArray;
+@property (strong, nonatomic)NSIndexPath *currentImageIndex;
+
 @property (strong, nonatomic)NSMutableArray<CMATableCellProperties *> *tableCellProperties;
 
 @end
@@ -108,6 +116,8 @@
     [self.tableView setTableFooterView:[[UIView alloc] initWithFrame:CGRectZero]]; // removes empty cells at the end of the list
     
     [self.navigationController setToolbarHidden:YES];
+    
+    self.currentImageIndex = [NSIndexPath indexPathForItem:kImageCollectionIndex inSection:0];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -116,17 +126,7 @@
     [self.imageCollectionView reloadData];
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
 #pragma mark - Table View Initializing
-
-#define kSubtitleCellHeight 55
-#define kRightDetailCellHeight 35
-#define kImageCollectionIndex 0
-#define kWeatherCellTitlePadding 25
 
 // Creates a CMATableCellProperties object for each cell that will be shown on the table.
 // Only self.entry properties that were specified by the user are shown.
@@ -266,10 +266,11 @@
     CMATableCellProperties *properties = [self.tableCellProperties objectAtIndex:indexPath.row];
     
     if (indexPath.item == kImageCollectionIndex) {
-        if ([self.entry imageCount] > 0)
-            return self.tableView.frame.size.width;
-        else
+        if (self.entry.imageCount > 0) {
+            return [self heightForImageAtIndexPath:self.currentImageIndex];
+        } else {
             return 0;
+        }
     }
     
     // Notes cell; need to get the occupied space from the notes string
@@ -295,7 +296,9 @@
     
     // images collection view
     if (indexPath.item == kImageCollectionIndex) {
-        self.imageCollectionView = (UICollectionView *)[cell viewWithTag:100];
+        if (self.imageCollectionView == nil) {
+            self.imageCollectionView = (UICollectionView *)[cell viewWithTag:100];
+        }
         return cell;
     }
     
@@ -351,18 +354,33 @@
     UICollectionViewCell * cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"imageCollectionCell" forIndexPath:indexPath];
     
     UIImageView *imageView = (UIImageView *)[cell viewWithTag:100];
-    [imageView setImage:[(CMAImage *)[self.entryImageArray objectAtIndex:indexPath.item] image]];
+    imageView.image = self.entryImageArray[indexPath.item].imageForFullWidthDisplay;
 
     return cell;
 }
 
-- (CGSize)collectionView:(UICollectionView *)collectionView layout: (UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
-    CGSize cellSize;
-    
-    cellSize.width = collectionView.frame.size.width;
-    cellSize.height = collectionView.frame.size.height;
-    
-    return cellSize;
+- (CGSize)collectionView:(UICollectionView *)collectionView
+                  layout:(UICollectionViewLayout *)collectionViewLayout
+  sizeForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    return CGSizeMake(collectionView.frame.size.width, [self heightForImageAtIndexPath:indexPath]);
+}
+
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
+    if (scrollView == self.imageCollectionView) {
+        // Reset the collection view's cell after the image has been fully shown. If done in
+        // collectionView:willShowItem:forRowAtIndexPath, the animation starts too early and
+        // the photos will be cut off if the user cancels the scroll gestrure.
+        self.currentImageIndex = self.imageCollectionView.indexPathsForVisibleItems[0];
+        [UIView performWithoutAnimation:^{
+            [self.tableView beginUpdates];
+            [self.tableView endUpdates];
+        }];
+    }
+}
+
+- (CGFloat)heightForImageAtIndexPath:(NSIndexPath *)indexPath {
+    return [self.entryImageArray objectAtIndex:indexPath.item].heightForFullWidthDisplay;
 }
 
 #pragma mark - Events

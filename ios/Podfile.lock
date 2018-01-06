@@ -10,7 +10,6 @@ PODS:
   - OpenWeatherMapAPI (0.0.5):
     - AFNetworking (~> 1.3.1)
   - SSZipArchive (1.3)
-  - UIImage-ResizeMagick (0.0.1)
   - XYPieChart (0.2)
 
 DEPENDENCIES:
@@ -21,7 +20,6 @@ DEPENDENCIES:
   - Instabug
   - OpenWeatherMapAPI (~> 0.0.5)
   - SSZipArchive
-  - UIImage-ResizeMagick
   - XYPieChart
 
 SPEC CHECKSUMS:
@@ -32,9 +30,8 @@ SPEC CHECKSUMS:
   Instabug: 16031235d7656f3b7104232a25ec4cecb3c0ce3b
   OpenWeatherMapAPI: 53613bba3dffc948f852a66a25f512f7a16643e7
   SSZipArchive: 5525196ee195b473dcc4a0d4d2cba98bfa3eb1c1
-  UIImage-ResizeMagick: f08c2d14d1e8a5f0b402185408785540562f2fe7
   XYPieChart: 0efd8069d26c25d20ab74c01b5ad455f1fc48153
 
-PODFILE CHECKSUM: 0e92bf9a1066e27c6ca7aeef7e2d656181822a14
+PODFILE CHECKSUM: 39d9aa167fa0362af20433dd11218aaf25cab1dc
 
 COCOAPODS: 1.3.1
