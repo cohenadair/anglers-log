@@ -9,11 +9,10 @@
 #import "CMAAddEntryViewController.h"
 #import "CMAAlerts.h"
 #import "CMAAppDelegate.h"
-#import "CMACameraActionSheet.h"
 #import "CMACameraButton.h"
 #import "CMADeleteActionSheet.h"
 #import "CMAImage.h"
-#import "CMAImagePickerViewController.h"
+#import "CMAImagePicker.h"
 #import "CMAUserDefinesViewController.h"
 #import "CMASelectFishingSpotViewController.h"
 #import "CMASingleLocationViewController.h"
@@ -23,7 +22,8 @@
 #import "CMAWeatherDataView.h"
 #import "NSString+CMA.h"
 
-@interface CMAAddEntryViewController ()
+@interface CMAAddEntryViewController () <CMAImagePickerDelegate, UICollectionViewDelegate,
+        UICollectionViewDataSource, UIActionSheetDelegate, CLLocationManagerDelegate>
 
 @property (weak, nonatomic)IBOutlet UIBarButtonItem *doneButton;
 @property (weak, nonatomic)IBOutlet UIBarButtonItem *cancelButton;
@@ -34,6 +34,7 @@
 
 #pragma mark - Photos
 @property (weak, nonatomic)IBOutlet UICollectionView *imageCollection;
+@property (strong, nonatomic) CMAImagePicker *imagePicker;
 
 #pragma mark - Fish Details
 @property (weak, nonatomic)IBOutlet UILabel *speciesDetailLabel;
@@ -72,7 +73,6 @@
 
 #pragma mark - Camera
 @property (weak, nonatomic)IBOutlet CMACameraButton *cameraImage;
-@property (strong, nonatomic)CMACameraActionSheet *cameraActionSheet;
 @property (strong, nonatomic)CMADeleteActionSheet *removeImageActionSheet;
 
 @property (strong, nonatomic)CMADeleteActionSheet *deleteEntryActionSheet;
@@ -147,6 +147,8 @@ NSString *const kNotSelectedString = @"Not Selected";
     [self.imageCollection setAllowsSelection:NO];
     [self.imageCollection setAllowsMultipleSelection:NO];
     
+    self.imagePicker = [CMAImagePicker withViewController:self canSelectMultiple:YES];
+    
     self.isEditingEntry = self.previousViewID == CMAViewControllerIDSingleEntry;
     self.isEditingDateTime = NO;
     self.hasAttachedImages = NO;
@@ -188,7 +190,6 @@ NSString *const kNotSelectedString = @"Not Selected";
     [self.locationManager requestWhenInUseAuthorization];
     
     [self initDeleteEntryActionSheet];
-    [self initCameraActionSheet];
     [self initRemoveImageActionSheet];
     [self.notesTextView setContentInset:UIEdgeInsetsMake(-4, -5, 4, 5)];
 }
@@ -422,7 +423,7 @@ NSString *const kNotSelectedString = @"Not Selected";
     }
     
     if (indexPath.section == kPhotoCellSection && indexPath.row == kPhotoCellRow) {
-        [self showCameraActionSheet];
+        [self.imagePicker present];
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
         return;
     }
@@ -472,10 +473,6 @@ NSString *const kNotSelectedString = @"Not Selected";
     [self.dateTimeDetailLabel setText:[self.dateFormatter stringFromDate:sender.date]];
 }
 
-- (void)showCameraActionSheet {
-    [self.cameraActionSheet showInViewController:self];
-}
-
 - (IBAction)tapToggleWeatherButton:(UIButton *)sender {
     [self toggleWeatherData];
 }
@@ -504,26 +501,6 @@ NSString *const kNotSelectedString = @"Not Selected";
     };
     
     [self.deleteEntryActionSheet addActions];
-}
-
-- (void)initCameraActionSheet {
-    __weak id weakSelf = self;
-    
-    self.cameraActionSheet =
-        [CMACameraActionSheet alertControllerWithTitle:nil
-                                               message:nil
-                                        preferredStyle:UIAlertControllerStyleActionSheet];
-    
-    self.cameraActionSheet.attachPhotoBlock = ^void(UIAlertAction *action) {
-        [weakSelf presentImagePicker:UIImagePickerControllerSourceTypePhotoLibrary];
-    };
-    
-    self.cameraActionSheet.takePhotoBlock = ^void(UIAlertAction *action) {
-        if ([CMAImagePickerViewController cameraAvailable:weakSelf])
-            [weakSelf presentImagePicker:UIImagePickerControllerSourceTypeCamera];
-    };
-    
-    [self.cameraActionSheet addActions];
 }
 
 - (void)initRemoveImageActionSheet {
@@ -844,24 +821,10 @@ NSString *const kNotSelectedString = @"Not Selected";
 
 #pragma mark - Image Picker
 
-// Presents an image picker with sourceType.
-- (void)presentImagePicker:(UIImagePickerControllerSourceType)sourceType {
-    CMAImagePickerViewController *imagePicker = [CMAImagePickerViewController new];
-    
-    [imagePicker setDelegate:self];
-    [imagePicker setSourceType:sourceType];
-    
-    [self presentViewController:imagePicker animated:YES completion:NULL];
-}
-
-- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
-    UIImage *chosenImage = info[UIImagePickerControllerOriginalImage];
-    [self insertImageIntoCollection:chosenImage saveToGallery:(picker.sourceType == UIImagePickerControllerSourceTypeCamera)];
-    [picker dismissViewControllerAnimated:YES completion:NULL];
-}
-
-- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
-    [picker dismissViewControllerAnimated:YES completion:NULL];
+- (void)processPickedImages:(NSArray<UIImage *> *)images wasTaken:(BOOL)wasTaken {
+    for (UIImage *img in images) {
+        [self insertImageIntoCollection:img saveToGallery:wasTaken];
+    }
 }
 
 #pragma mark - Collection View
@@ -1025,6 +988,16 @@ NSString *const kNotSelectedString = @"Not Selected";
     [self.weatherDataView.temperatureLabel setText:[someWeatherData temperatureAsStringWithUnits:[[self journal] temperatureUnitsAsString:YES]]];
     [self.weatherDataView.windSpeedLabel setText:[someWeatherData windSpeedAsStringWithUnits:[[self journal] speedUnitsAsString:YES]]];
     [self.weatherDataView.skyConditionsLabel setText:[someWeatherData skyConditionsAsString]];
+}
+
+#pragma mark - CMAImagePickerDelegate
+
+- (void)didTakePicture:(UIImage *)image {
+    [self processPickedImages:@[image] wasTaken:YES];
+}
+
+- (void)didPickImages:(NSArray<UIImage *> *)images {
+    [self processPickedImages:images wasTaken:YES];
 }
 
 @end

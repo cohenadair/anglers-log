@@ -10,7 +10,7 @@
 #import "CMABait.h"
 #import "CMAConstants.h"
 
-@interface CMAAddBaitViewController : UITableViewController <UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate>
+@interface CMAAddBaitViewController : UITableViewController
 
 @property (strong, nonatomic)CMABait *bait;
 @property (nonatomic)CMAViewControllerID previousViewID;

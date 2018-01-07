@@ -8,13 +8,12 @@
 
 #import "CMAAddBaitViewController.h"
 #import "CMACameraButton.h"
-#import "CMACameraActionSheet.h"
 #import "CMADeleteActionSheet.h"
-#import "CMAImagePickerViewController.h"
+#import "CMAImagePicker.h"
 #import "CMAAppDelegate.h"
 #import "CMAUtilities.h"
 
-@interface CMAAddBaitViewController ()
+@interface CMAAddBaitViewController () <UIActionSheetDelegate, CMAImagePickerDelegate>
 
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *doneButton;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *cancelButton;
@@ -27,10 +26,10 @@
 @property (weak, nonatomic) IBOutlet UISegmentedControl *baitTypeControl;
 @property (weak, nonatomic) IBOutlet UIButton *deleteBaitButton;
 
-@property (strong, nonatomic) CMACameraActionSheet *cameraActionSheet;
 @property (strong, nonatomic) CMADeleteActionSheet *removeImageActionSheet;
 @property (strong, nonatomic) CMADeleteActionSheet *deleteBaitActionSheet;
 
+@property (strong, nonatomic) CMAImagePicker *imagePicker;
 @property (strong, nonatomic) CMAImage *imageData;
 
 @property (nonatomic) BOOL isEditingBait;
@@ -75,13 +74,10 @@
     
     [self initTableView];
     [self initDeleteBaitActionSheet];
-    [self initCameraActionSheet];
     [self initRemoveImageActionSheet];
     [self.descriptionTextView setContentInset:UIEdgeInsetsMake(-4, -5, 4, 5)];
-}
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
+    
+    self.imagePicker = [CMAImagePicker withViewController:self canSelectMultiple:NO];
 }
 
 #pragma mark - Table View Initializing
@@ -117,7 +113,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == kSectionPhoto && indexPath.row == kRowPhoto) {
-        [self presentViewController:self.cameraActionSheet animated:YES completion:nil];
+        [self.imagePicker present];
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
     }
 }
@@ -171,44 +167,36 @@
 
 #pragma mark - Image Picker
 
-// Presents an image picker with sourceType.
-- (void)presentImagePicker:(UIImagePickerControllerSourceType)sourceType {
-    CMAImagePickerViewController *imagePicker = [CMAImagePickerViewController new];
-    
-    [imagePicker setDelegate:self];
-    [imagePicker setSourceType:sourceType];
-    
-    [self presentViewController:imagePicker animated:YES completion:NULL];
-}
-
-- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
-    BOOL pictureWasTaken = (picker.sourceType == UIImagePickerControllerSourceTypeCamera);
-    UIImage *chosenImage = info[UIImagePickerControllerOriginalImage];
+- (void)processPickedImage:(UIImage *)image wasTaken:(BOOL)wasTaken {
+    if (image == nil) {
+        // Should never happen.
+        NSLog(@"Cannot process a nil-picked image");
+        return;
+    }
     
     // remove old image if there was one
-    if (self.imageData)
-        [[CMAStorageManager sharedManager] deleteManagedObject:self.imageData saveContext:YES];
+    if (self.imageData) {
+        [CMAStorageManager.sharedManager deleteManagedObject:self.imageData saveContext:YES];
+    }
     
     UIImage *scaledImage;
-    if (!pictureWasTaken)
-        scaledImage = [CMAUtilities scaleImageToScreenWidth:chosenImage];
-    else
-        scaledImage = chosenImage;
+    if (!wasTaken) {
+        scaledImage = [CMAUtilities scaleImageToScreenWidth:image];
+    } else {
+        scaledImage = image;
+    }
     
-    CMAImage *img = [[CMAStorageManager sharedManager] managedImage];
-    [img setFullImage:scaledImage];
-    [self setImageData:img];
-    [self setSaveImageToCameraRoll:pictureWasTaken];
+    CMAImage *img = CMAStorageManager.sharedManager.managedImage;
+    img.fullImage = scaledImage;
+    self.imageData = img;
+    
+    [self setSaveImageToCameraRoll:wasTaken];
+    
     self.imageView.image = [self.imageData thumbnailWithSize:kImageViewSize];
     self.imageView.alpha = 1; // If the previous image was removed, be sure to show the new image.
+    
     [self.tableView beginUpdates];
     [self.tableView endUpdates];
-    
-    [picker dismissViewControllerAnimated:YES completion:NULL];
-}
-
-- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
-    [picker dismissViewControllerAnimated:YES completion:NULL];
 }
 
 #pragma mark - Action Sheets
@@ -227,26 +215,6 @@
     };
     
     [self.deleteBaitActionSheet addActions];
-}
-
-- (void)initCameraActionSheet {
-    __weak id weakSelf = self;
-    
-    self.cameraActionSheet =
-        [CMACameraActionSheet alertControllerWithTitle:nil
-                                               message:nil
-                                        preferredStyle:UIAlertControllerStyleActionSheet];
-    
-    self.cameraActionSheet.attachPhotoBlock = ^void(UIAlertAction *action) {
-        [weakSelf presentImagePicker:UIImagePickerControllerSourceTypePhotoLibrary];
-    };
-    
-    self.cameraActionSheet.takePhotoBlock = ^void(UIAlertAction *action) {
-        if ([CMAImagePickerViewController cameraAvailable:weakSelf])
-            [weakSelf presentImagePicker:UIImagePickerControllerSourceTypeCamera];
-    };
-    
-    [self.cameraActionSheet addActions];
 }
 
 - (void)initRemoveImageActionSheet {
@@ -389,6 +357,19 @@
         default:
             NSLog(@"Invalid previousViewID value: %ld", (long)self.previousViewID);
             break;
+    }
+}
+
+#pragma mark - CMAImagePickerDelegate
+
+- (void)didTakePicture:(UIImage *)image {
+    [self processPickedImage:image wasTaken:YES];
+}
+
+- (void)didPickImages:(NSArray<UIImage *> *)images {
+    // Only one image can be selected for baits.
+    if (images.count > 0) {
+        [self processPickedImage:images[0] wasTaken:NO];
     }
 }
 

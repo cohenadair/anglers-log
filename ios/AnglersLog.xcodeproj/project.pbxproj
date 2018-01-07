@@ -42,7 +42,7 @@
 		0D8F83D61A6EC25200AABAEA /* CMAAddBaitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D8F83B01A6EC25200AABAEA /* CMAAddBaitViewController.m */; };
 		0D8F83D71A6EC25200AABAEA /* CMASingleBaitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D8F83B21A6EC25200AABAEA /* CMASingleBaitViewController.m */; };
 		0D8F83D81A6EC25200AABAEA /* CMAViewBaitsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D8F83B41A6EC25200AABAEA /* CMAViewBaitsViewController.m */; };
-		0D8F83D91A6EC25200AABAEA /* CMAImagePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D8F83B61A6EC25200AABAEA /* CMAImagePickerViewController.m */; };
+		0D8F83D91A6EC25200AABAEA /* CMAImagePicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D8F83B61A6EC25200AABAEA /* CMAImagePicker.m */; };
 		0D8F83DB1A6EC25200AABAEA /* CMASideMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D8F83BA1A6EC25200AABAEA /* CMASideMenuViewController.m */; };
 		0D8F83DC1A6EC25200AABAEA /* CMAStatisticsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D8F83BC1A6EC25200AABAEA /* CMAStatisticsViewController.m */; };
 		0D8F83DD1A6EC25200AABAEA /* CMAUserDefinesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D8F83BE1A6EC25200AABAEA /* CMAUserDefinesViewController.m */; };
@@ -59,7 +59,6 @@
 		0D8F83EE1A6EC28300AABAEA /* CMAAlerts.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D8F83E91A6EC28300AABAEA /* CMAAlerts.m */; };
 		0D8F83EF1A6EC28300AABAEA /* CMAConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D8F83EB1A6EC28300AABAEA /* CMAConstants.m */; };
 		0D8F83F01A6EC28300AABAEA /* CMAUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D8F83ED1A6EC28300AABAEA /* CMAUtilities.m */; };
-		0D8F840B1A6EC29A00AABAEA /* CMACameraActionSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D8F83F41A6EC29A00AABAEA /* CMACameraActionSheet.m */; };
 		0D8F840C1A6EC29A00AABAEA /* CMACameraButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D8F83F61A6EC29A00AABAEA /* CMACameraButton.m */; };
 		0D8F840D1A6EC29A00AABAEA /* CMACircleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D8F83F81A6EC29A00AABAEA /* CMACircleView.m */; };
 		0D8F840E1A6EC29A00AABAEA /* CMACircleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0D8F83F91A6EC29A00AABAEA /* CMACircleView.xib */; };
@@ -254,8 +253,8 @@
 		0D8F83B21A6EC25200AABAEA /* CMASingleBaitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CMASingleBaitViewController.m; sourceTree = "<group>"; };
 		0D8F83B31A6EC25200AABAEA /* CMAViewBaitsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMAViewBaitsViewController.h; sourceTree = "<group>"; };
 		0D8F83B41A6EC25200AABAEA /* CMAViewBaitsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CMAViewBaitsViewController.m; sourceTree = "<group>"; };
-		0D8F83B51A6EC25200AABAEA /* CMAImagePickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAImagePickerViewController.h; path = AnglersLog/ViewControllers/CMAImagePickerViewController.h; sourceTree = SOURCE_ROOT; };
-		0D8F83B61A6EC25200AABAEA /* CMAImagePickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAImagePickerViewController.m; path = AnglersLog/ViewControllers/CMAImagePickerViewController.m; sourceTree = SOURCE_ROOT; };
+		0D8F83B51A6EC25200AABAEA /* CMAImagePicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAImagePicker.h; path = AnglersLog/ViewControllers/CMAImagePicker.h; sourceTree = SOURCE_ROOT; };
+		0D8F83B61A6EC25200AABAEA /* CMAImagePicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAImagePicker.m; path = AnglersLog/ViewControllers/CMAImagePicker.m; sourceTree = SOURCE_ROOT; };
 		0D8F83B91A6EC25200AABAEA /* CMASideMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMASideMenuViewController.h; path = AnglersLog/ViewControllers/CMASideMenuViewController.h; sourceTree = SOURCE_ROOT; };
 		0D8F83BA1A6EC25200AABAEA /* CMASideMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMASideMenuViewController.m; path = AnglersLog/ViewControllers/CMASideMenuViewController.m; sourceTree = SOURCE_ROOT; };
 		0D8F83BB1A6EC25200AABAEA /* CMAStatisticsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAStatisticsViewController.h; path = AnglersLog/ViewControllers/CMAStatisticsViewController.h; sourceTree = SOURCE_ROOT; };
@@ -288,8 +287,6 @@
 		0D8F83EB1A6EC28300AABAEA /* CMAConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAConstants.m; path = AnglersLog/Utilities/CMAConstants.m; sourceTree = SOURCE_ROOT; };
 		0D8F83EC1A6EC28300AABAEA /* CMAUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMAUtilities.h; path = AnglersLog/Utilities/CMAUtilities.h; sourceTree = SOURCE_ROOT; };
 		0D8F83ED1A6EC28300AABAEA /* CMAUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMAUtilities.m; path = AnglersLog/Utilities/CMAUtilities.m; sourceTree = SOURCE_ROOT; };
-		0D8F83F31A6EC29A00AABAEA /* CMACameraActionSheet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMACameraActionSheet.h; path = AnglersLog/CustomViews/CMACameraActionSheet.h; sourceTree = SOURCE_ROOT; };
-		0D8F83F41A6EC29A00AABAEA /* CMACameraActionSheet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMACameraActionSheet.m; path = AnglersLog/CustomViews/CMACameraActionSheet.m; sourceTree = SOURCE_ROOT; };
 		0D8F83F51A6EC29A00AABAEA /* CMACameraButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMACameraButton.h; path = AnglersLog/CustomViews/CMACameraButton.h; sourceTree = SOURCE_ROOT; };
 		0D8F83F61A6EC29A00AABAEA /* CMACameraButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMACameraButton.m; path = AnglersLog/CustomViews/CMACameraButton.m; sourceTree = SOURCE_ROOT; };
 		0D8F83F71A6EC29A00AABAEA /* CMACircleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMACircleView.h; path = AnglersLog/CustomViews/CMACircleView.h; sourceTree = SOURCE_ROOT; };
@@ -871,8 +868,6 @@
 			children = (
 				0D87D06A1AD6E69C008E732A /* CMAAlertController.h */,
 				0D87D06B1AD6E69C008E732A /* CMAAlertController.m */,
-				0D8F83F31A6EC29A00AABAEA /* CMACameraActionSheet.h */,
-				0D8F83F41A6EC29A00AABAEA /* CMACameraActionSheet.m */,
 				0D8F83F51A6EC29A00AABAEA /* CMACameraButton.h */,
 				0D8F83F61A6EC29A00AABAEA /* CMACameraButton.m */,
 				0D8F83F71A6EC29A00AABAEA /* CMACircleView.h */,
@@ -914,8 +909,6 @@
 				0D8F83AE1A6EC25200AABAEA /* Baits */,
 				AC8D16112001831700CE0BAF /* CMAAboutViewController.h */,
 				AC8D16122001831700CE0BAF /* CMAAboutViewController.m */,
-				0D8F83B51A6EC25200AABAEA /* CMAImagePickerViewController.h */,
-				0D8F83B61A6EC25200AABAEA /* CMAImagePickerViewController.m */,
 				0DCAD6531AA5069E0040B03B /* CMASettingsViewController.h */,
 				0DCAD6541AA5069E0040B03B /* CMASettingsViewController.m */,
 				0D8F83B91A6EC25200AABAEA /* CMASideMenuViewController.h */,
@@ -940,6 +933,8 @@
 				0D8F83E91A6EC28300AABAEA /* CMAAlerts.m */,
 				0D8F83EA1A6EC28300AABAEA /* CMAConstants.h */,
 				0D8F83EB1A6EC28300AABAEA /* CMAConstants.m */,
+				0D8F83B51A6EC25200AABAEA /* CMAImagePicker.h */,
+				0D8F83B61A6EC25200AABAEA /* CMAImagePicker.m */,
 				0D8F83EC1A6EC28300AABAEA /* CMAUtilities.h */,
 				0D8F83ED1A6EC28300AABAEA /* CMAUtilities.m */,
 			);
@@ -1196,6 +1191,7 @@
 				"${BUILT_PRODUCTS_DIR}/AFNetworking/AFNetworking.framework",
 				"${BUILT_PRODUCTS_DIR}/ChameleonFramework/ChameleonFramework.framework",
 				"${BUILT_PRODUCTS_DIR}/OpenWeatherMapAPI/OpenWeatherMapAPI.framework",
+				"${BUILT_PRODUCTS_DIR}/QBImagePickerController/QBImagePickerController.framework",
 				"${BUILT_PRODUCTS_DIR}/SSZipArchive/SSZipArchive.framework",
 				"${BUILT_PRODUCTS_DIR}/XYPieChart/XYPieChart.framework",
 			);
@@ -1204,6 +1200,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AFNetworking.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ChameleonFramework.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OpenWeatherMapAPI.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/QBImagePickerController.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SSZipArchive.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/XYPieChart.framework",
 			);
@@ -1258,6 +1255,7 @@
 				"${BUILT_PRODUCTS_DIR}/AFNetworking/AFNetworking.framework",
 				"${BUILT_PRODUCTS_DIR}/ChameleonFramework/ChameleonFramework.framework",
 				"${BUILT_PRODUCTS_DIR}/OpenWeatherMapAPI/OpenWeatherMapAPI.framework",
+				"${BUILT_PRODUCTS_DIR}/QBImagePickerController/QBImagePickerController.framework",
 				"${BUILT_PRODUCTS_DIR}/SSZipArchive/SSZipArchive.framework",
 				"${BUILT_PRODUCTS_DIR}/XYPieChart/XYPieChart.framework",
 			);
@@ -1266,6 +1264,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AFNetworking.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ChameleonFramework.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OpenWeatherMapAPI.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/QBImagePickerController.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SSZipArchive.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/XYPieChart.framework",
 			);
@@ -1324,7 +1323,7 @@
 				0D128F5A1AD5C1BC0004CABE /* CMADataExporter.m in Sources */,
 				0D8F83E71A6EC25200AABAEA /* CMAViewPhotosViewController.m in Sources */,
 				0D8F839C1A6EC15D00AABAEA /* CMAAppDelegate.m in Sources */,
-				0D8F83D91A6EC25200AABAEA /* CMAImagePickerViewController.m in Sources */,
+				0D8F83D91A6EC25200AABAEA /* CMAImagePicker.m in Sources */,
 				0D8F83E21A6EC25200AABAEA /* CMAAddFishingSpotViewController.m in Sources */,
 				0D23B2711A7713C900E89736 /* TheAnglersLog.xcdatamodeld in Sources */,
 				0D8F83941A6EC10800AABAEA /* CMAFishingSpot.m in Sources */,
@@ -1334,7 +1333,6 @@
 				0D87D06F1AD7158A008E732A /* CMAJSONReader.m in Sources */,
 				0D8F838B1A6EC10800AABAEA /* CMAEntry.m in Sources */,
 				0D006E601D3702BB00DBDA7B /* SWRevealViewController.m in Sources */,
-				0D8F840B1A6EC29A00AABAEA /* CMACameraActionSheet.m in Sources */,
 				0D8F83E61A6EC25200AABAEA /* CMASinglePhotoViewController.m in Sources */,
 				0D8F840C1A6EC29A00AABAEA /* CMACameraButton.m in Sources */,
 				0D8F83EE1A6EC28300AABAEA /* CMAAlerts.m in Sources */,

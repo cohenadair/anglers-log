@@ -117,7 +117,7 @@
     
     [self.navigationController setToolbarHidden:YES];
     
-    self.currentImageIndex = [NSIndexPath indexPathForItem:kImageCollectionIndex inSection:0];
+    self.currentImageIndex = [NSIndexPath indexPathForItem:0 inSection:0];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -262,15 +262,24 @@
                                   hasSeparator: NO]];
 }
 
+- (CGFloat)heightForImageCollection {
+    if (self.entry.imageCount > 0) {
+        // It's possible for the currentImageIndex to exceed the image count if an image was
+        // deleted. Reset it if needed.
+        if (self.currentImageIndex.row > self.entry.imageCount - 1) {
+            self.currentImageIndex = [NSIndexPath indexPathForRow:0 inSection:0];
+        }
+        return [self heightForImageAtIndexPath:self.currentImageIndex];
+    } else {
+        return 0;
+    }
+}
+
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     CMATableCellProperties *properties = [self.tableCellProperties objectAtIndex:indexPath.row];
     
     if (indexPath.item == kImageCollectionIndex) {
-        if (self.entry.imageCount > 0) {
-            return [self heightForImageAtIndexPath:self.currentImageIndex];
-        } else {
-            return 0;
-        }
+        return self.heightForImageCollection;
     }
     
     // Notes cell; need to get the occupied space from the notes string
