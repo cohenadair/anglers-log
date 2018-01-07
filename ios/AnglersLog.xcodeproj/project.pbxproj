@@ -159,6 +159,8 @@
 		AC85D5471FEC8BA800B0FC71 /* backup_ios_legacy.json in Resources */ = {isa = PBXBuildFile; fileRef = AC85D5461FEC8BA800B0FC71 /* backup_ios_legacy.json */; };
 		AC8D16102001824F00CE0BAF /* About.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AC8D160F2001824F00CE0BAF /* About.storyboard */; };
 		AC8D16132001831700CE0BAF /* CMAAboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AC8D16122001831700CE0BAF /* CMAAboutViewController.m */; };
+		AC8D161520028E2E00CE0BAF /* CMAUtilitiesTest.m in Sources */ = {isa = PBXBuildFile; fileRef = AC8D161420028E2E00CE0BAF /* CMAUtilitiesTest.m */; };
+		AC8D161720028FC700CE0BAF /* scale_image.jpg in Resources */ = {isa = PBXBuildFile; fileRef = AC8D161620028FC700CE0BAF /* scale_image.jpg */; };
 		ACA92F241FF14E4200DC0071 /* AddBait.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = ACA92F231FF14E4200DC0071 /* AddBait.storyboard */; };
 		ACC78AB61FF9721000FE32FD /* CMAUserDefineTest.m in Sources */ = {isa = PBXBuildFile; fileRef = ACC78AB51FF9721000FE32FD /* CMAUserDefineTest.m */; };
 		ACCC66C61FEB4C4400B681A8 /* app_icon_167.png in Resources */ = {isa = PBXBuildFile; fileRef = ACCC66C21FEB4C4400B681A8 /* app_icon_167.png */; };
@@ -411,6 +413,8 @@
 		AC8D160F2001824F00CE0BAF /* About.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = About.storyboard; sourceTree = "<group>"; };
 		AC8D16112001831700CE0BAF /* CMAAboutViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CMAAboutViewController.h; path = ViewControllers/CMAAboutViewController.h; sourceTree = "<group>"; };
 		AC8D16122001831700CE0BAF /* CMAAboutViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = CMAAboutViewController.m; path = ViewControllers/CMAAboutViewController.m; sourceTree = "<group>"; };
+		AC8D161420028E2E00CE0BAF /* CMAUtilitiesTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CMAUtilitiesTest.m; sourceTree = "<group>"; };
+		AC8D161620028FC700CE0BAF /* scale_image.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = scale_image.jpg; sourceTree = "<group>"; };
 		ACA92F231FF14E4200DC0071 /* AddBait.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = AddBait.storyboard; sourceTree = "<group>"; };
 		ACC78AB51FF9721000FE32FD /* CMAUserDefineTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CMAUserDefineTest.m; sourceTree = "<group>"; };
 		ACCC66C21FEB4C4400B681A8 /* app_icon_167.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = app_icon_167.png; sourceTree = "<group>"; };
@@ -725,6 +729,7 @@
 		ACCC66CF1FEB5BD600B681A8 /* AnglersLogTests */ = {
 			isa = PBXGroup;
 			children = (
+				AC8D161420028E2E00CE0BAF /* CMAUtilitiesTest.m */,
 				AC366FD31FF459D7004D43F0 /* CMABaitTest.m */,
 				AC58D57C1FEDC6DF00C5EC3E /* CMAEntryTest.m */,
 				ACCC66D81FEB5DB800B681A8 /* CMAJSONReaderTest.m */,
@@ -738,6 +743,7 @@
 		ACCC66DA1FEC68CE00B681A8 /* Data */ = {
 			isa = PBXGroup;
 			children = (
+				AC8D161620028FC700CE0BAF /* scale_image.jpg */,
 				ACCC66E31FEC6BC100B681A8 /* backup_android.json */,
 				AC85D5461FEC8BA800B0FC71 /* backup_ios_legacy.json */,
 				AC6115C51FEDD03A0052BFE5 /* backup_ios.json */,
@@ -1040,6 +1046,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AC8D161720028FC700CE0BAF /* scale_image.jpg in Resources */,
 				AC85D5471FEC8BA800B0FC71 /* backup_ios_legacy.json in Resources */,
 				AC6115C61FEDD03A0052BFE5 /* backup_ios.json in Resources */,
 				ACCC66E51FEC6BC100B681A8 /* backup_android.json in Resources */,
@@ -1301,6 +1308,7 @@
 				AC366FD41FF459D7004D43F0 /* CMABaitTest.m in Sources */,
 				ACC78AB61FF9721000FE32FD /* CMAUserDefineTest.m in Sources */,
 				AC58D6381FEDCC2700C5EC3E /* CMAEntryTest.m in Sources */,
+				AC8D161520028E2E00CE0BAF /* CMAUtilitiesTest.m in Sources */,
 				AC58D6391FEDCC2700C5EC3E /* CMAJSONReaderTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
