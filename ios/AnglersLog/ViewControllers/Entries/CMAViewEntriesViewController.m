@@ -131,7 +131,7 @@
     
     if ([segue.identifier isEqualToString:@"fromViewEntriesToSingleEntry"]) {
         CMASingleEntryViewController *destination = segue.destinationViewController;
-        CMAEntry *entryToDisplay = [[[self journal] entries] objectAtIndex:[self.tableView indexPathForSelectedRow].item];
+        CMAEntry *entryToDisplay = self.entries[self.tableView.indexPathForSelectedRow.row];
         destination.entry = entryToDisplay;
     }
 }
