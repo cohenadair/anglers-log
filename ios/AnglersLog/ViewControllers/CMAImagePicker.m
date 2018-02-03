@@ -19,6 +19,11 @@
 
 @property (nonatomic) BOOL canSelectMultiple;
 
+// Used for showing progress when photos need to be downloaded from cloud storage.
+@property (strong, nonatomic) UIAlertController *downloadProgressController;
+@property (nonatomic) BOOL isProgressAlertShowing;
+@property (nonatomic) int downloadIndex;
+
 @end
 
 @implementation CMAImagePicker
@@ -38,6 +43,13 @@
     if (self = [super init]) {
         _canSelectMultiple = canSelectMultiple;
         _viewController = controller;
+        
+        _isProgressAlertShowing = NO;
+        _downloadIndex = 0;
+        _downloadProgressController =
+                [UIAlertController alertControllerWithTitle:nil
+                                                    message:@"Downloading..."
+                                             preferredStyle:UIAlertControllerStyleAlert];
     }
     return self;
 }
@@ -78,8 +90,7 @@
 - (void)presentCamera {
     // Do nothing if there is no camera. This will only happen in a simulator.
     if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
-        [CMAAlerts alertAlert:@"Camera unavailable."
-   presentationViewController:self.viewController];
+        [CMAAlerts showOk:@"Camera unavailable." inVc:self.viewController];
         return;
     }
     
@@ -152,28 +163,93 @@ didPickDocumentsAtURLs:(NSArray<NSURL *> *)urls
     PHImageRequestOptions *options = PHImageRequestOptions.new;
     options.resizeMode = PHImageRequestOptionsResizeModeExact;
     options.deliveryMode = PHImageRequestOptionsDeliveryModeHighQualityFormat;
-    options.synchronous = YES;
+    
+    // In case photos need to be downloaded.
+    options.networkAccessAllowed = YES;
     
     __block NSMutableArray<UIImage *> *images = NSMutableArray.new;
+    __block BOOL errorGettingPhoto = NO;
+    __block NSInteger index = 0;
+    
+    __weak typeof(QBImagePickerController) *weakImagePicker = imagePickerController;
+    __weak typeof(self) weakSelf = self;
+    
+    options.progressHandler = ^(double progress, NSError * _Nullable error, BOOL * _Nonnull stop,
+            NSDictionary * _Nullable info)
+    {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (error != nil) {
+                errorGettingPhoto = YES;
+            }
+            
+            [weakSelf showDownloadProgressAlert:imagePickerController];
+        });
+    };
+    
+    void (^processImageBlock)(UIImage *, NSDictionary *) = ^(UIImage * _Nullable result,
+            NSDictionary * _Nullable info)
+    {
+        index++;
+        
+        if (result == nil) {
+            errorGettingPhoto = YES;
+        } else {
+            [images addObject:result];
+        }
+        
+        // Dismiss after the last image has been processed.
+        if (index == assets.count) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if (weakSelf.isProgressAlertShowing) {
+                    [weakSelf.downloadProgressController dismissViewControllerAnimated:YES
+                                                                            completion:
+                    ^{
+                        [weakSelf dismissImagePicker:weakImagePicker error:errorGettingPhoto];
+                        weakSelf.isProgressAlertShowing = NO;
+                    }];
+                } else {
+                    [weakSelf dismissImagePicker:weakImagePicker error:errorGettingPhoto];
+                }
+                
+                [weakSelf.viewController didPickImages:images];
+            });
+        }
+    };
     
     for (PHAsset *asset in assets) {
         [PHImageManager.defaultManager requestImageForAsset:asset
                                                  targetSize:PHImageManagerMaximumSize
                                                 contentMode:PHImageContentModeDefault
                                                     options:options
-                                              resultHandler:^(UIImage * _Nullable result,
-                                                              NSDictionary * _Nullable info)
-                                              {
-                                                  [images addObject:result];
-                                              }];
+                                              resultHandler:processImageBlock];
     }
-    
-    [self.viewController didPickImages:images];
-    [imagePickerController dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)qb_imagePickerControllerDidCancel:(QBImagePickerController *)imagePickerController {
     [imagePickerController dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)showDownloadProgressAlert:(QBImagePickerController *)imagePicker {
+    if (self.isProgressAlertShowing) {
+        return;
+    }
+    
+    [imagePicker presentViewController:self.downloadProgressController
+                              animated:YES
+                            completion:nil];
+    
+    self.isProgressAlertShowing = YES;
+}
+
+- (void)dismissImagePicker:(QBImagePickerController *)picker error:(BOOL)error {
+    [picker dismissViewControllerAnimated:YES completion:^{
+        if (error) {
+            NSString *errorMsg = @"Error attaching photo(s). Please check your "
+                    "network connection and try again. If the issue persists, "
+                    "contact support@anglerslog.ca.";
+            [CMAAlerts showError:errorMsg inVc:self.viewController];
+        }
+    }];
 }
 
 @end
