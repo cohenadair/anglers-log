@@ -69,7 +69,7 @@
         NSString *instagramString = [NSString stringWithFormat:@"instagram://tag?name=%@", HASHTAG_TEXT];
         
         if (![[UIApplication sharedApplication] openURL:[NSURL URLWithString:instagramString]])
-            [CMAAlerts errorAlert:@"Please install the Instagram app to use this feature." presentationViewController:self];
+            [CMAAlerts showError:@"Please install the Instagram app to use this feature." inVc:self];
 
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
     }

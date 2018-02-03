@@ -11,22 +11,22 @@
 
 @implementation CMAAlerts
 
-+ (void)errorAlert:(NSString *)msg presentationViewController:(UIViewController *)aViewController {
++ (void)showError:(NSString *)msg inVc:(UIViewController *)viewController {
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Error" message:msg preferredStyle:UIAlertControllerStyleAlert];
     
     UIAlertAction *OKAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:nil];
     [alert addAction:OKAction];
     
-    [aViewController presentViewController:alert animated:YES completion:nil];
+    [viewController presentViewController:alert animated:YES completion:nil];
 }
 
-+ (void)alertAlert:(NSString *)msg presentationViewController:(UIViewController *)aViewController {
++ (void)showOk:(NSString *)msg inVc:(UIViewController *)viewController {
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:msg preferredStyle:UIAlertControllerStyleAlert];
     
     UIAlertAction *OKAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:nil];
     [alert addAction:OKAction];
     
-    [aViewController presentViewController:alert animated:YES completion:nil];
+    [viewController presentViewController:alert animated:YES completion:nil];
 }
 
 @end

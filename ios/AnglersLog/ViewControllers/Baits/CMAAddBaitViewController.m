@@ -252,7 +252,7 @@
 - (BOOL)checkUserInputAndSetBait:(CMABait *)aBait {
     // validate bait name
     if ([self.nameTextField.text isEqualToString:@""] || [self.nameTextField.text isEqualToString:@"Name"]) {
-        [CMAAlerts errorAlert:@"Please enter a bait name." presentationViewController:self];
+        [CMAAlerts showError:@"Please enter a bait name." inVc:self];
         return NO;
     }
     
@@ -261,7 +261,7 @@
     // make sure the bait name doesn't already exist
     if (![self.oldName isEqualToString:newName])
         if ([[[self journal] userDefineNamed:UDN_BAITS] objectNamed:newName] != nil) {
-            [CMAAlerts errorAlert:@"A bait by that name already exists. Please choose a new name or edit the existing bait." presentationViewController:self];
+            [CMAAlerts showError:@"A bait by that name already exists. Please choose a new name or edit the existing bait." inVc:self];
             return NO;
         }
     

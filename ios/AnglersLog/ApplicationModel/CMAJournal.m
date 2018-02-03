@@ -159,7 +159,7 @@
             notifyObject = anObjToEdit;
         } else {
             if (!anAddObjectBlock()) {
-                [CMAAlerts errorAlert:anErrorMsg presentationViewController:aVC];
+                [CMAAlerts showError:anErrorMsg inVc:aVC];
                 [CMAStorageManager.sharedManager deleteManagedObject:anObjToAdd saveContext:YES];
                 return;
             }

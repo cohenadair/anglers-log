@@ -210,7 +210,7 @@ NSInteger const SECTION_DELETE = 3;
 - (BOOL)checkUserInputAndSetLocation:(CMALocation *)aLocation {
     // validate fishing spot name
     if ([self.locationNameTextField.text isEqualToString:@""]) {
-        [CMAAlerts errorAlert:@"Please enter a location name." presentationViewController:self];
+        [CMAAlerts showError:@"Please enter a location name." inVc:self];
         return NO;
     }
     
@@ -219,13 +219,13 @@ NSInteger const SECTION_DELETE = 3;
     // make sure the location name doesn't already exist
     if (![self.oldName isEqualToString:newName])
         if ([[[self journal] userDefineNamed:UDN_LOCATIONS] objectNamed:newName] != nil) {
-            [CMAAlerts errorAlert:@"A location by that name already exists. Please choose a new name or edit the existing location." presentationViewController:self];
+            [CMAAlerts showError:@"A location by that name already exists. Please choose a new name or edit the existing location." inVc:self];
             return NO;
         }
     
     // make sure there is at least one fishing spot
     if ([self.location fishingSpotCount] <= 0) {
-        [CMAAlerts errorAlert:@"Please add at least one fishing spot." presentationViewController:self];
+        [CMAAlerts showError:@"Please add at least one fishing spot." inVc:self];
         return NO;
     }
     

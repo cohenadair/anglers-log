@@ -327,7 +327,7 @@
     NSLog(@"Failed to load map: %@.", error.localizedDescription);
     
     if (!self.mapDidRender && self.showRenderError) {
-        [CMAAlerts errorAlert:@"Failed to render map. Please try again later, zoom out, or select a different map type." presentationViewController:self];
+        [CMAAlerts showError:@"Failed to render map. Please try again later, zoom out, or select a different map type." inVc:self];
         self.showRenderError = NO;
     }
 }

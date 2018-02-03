@@ -106,7 +106,7 @@
     NSIndexPath *selectedIndexPath = [self.tableView indexPathForSelectedRow];
     
     if (selectedIndexPath == nil) {
-        [CMAAlerts errorAlert:@"Please select a sort method." presentationViewController:self];
+        [CMAAlerts showError:@"Please select a sort method." inVc:self];
         return;
     }
     

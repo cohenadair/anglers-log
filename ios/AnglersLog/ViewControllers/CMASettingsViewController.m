@@ -205,9 +205,9 @@
     NSString *errorMsg;
     
     if (![CMADataImporter importToJournal:[self journal] fromFilePath:aURL.path error:&errorMsg])
-        [CMAAlerts errorAlert:[NSString stringWithFormat:@"Error importing data: %@\n\nSee Frequently Asked Questions for details.", errorMsg] presentationViewController:self];
+        [CMAAlerts showError:[NSString stringWithFormat:@"Error importing data: %@\n\nSee Frequently Asked Questions for details.", errorMsg] inVc:self];
     else
-        [CMAAlerts alertAlert:@"Data imported successfully." presentationViewController:self];
+        [CMAAlerts showOk:@"Data imported successfully." inVc:self];
     
     [self hideIndicatorView:self.importIndicator];
 }
@@ -307,11 +307,11 @@
 }
 
 - (void)backupError:(NSString *)msg {
-    [CMAAlerts errorAlert:msg presentationViewController:self];
+    [CMAAlerts showError:msg inVc:self];
 }
 
 - (void)backupSuccess:(NSString *)msg {
-    [CMAAlerts alertAlert:msg presentationViewController:self];
+    [CMAAlerts showOk:msg inVc:self];
 }
 
 @end

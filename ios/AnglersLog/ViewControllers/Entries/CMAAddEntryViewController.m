@@ -642,7 +642,7 @@ NSString *const kNotSelectedString = @"Not Selected";
     if (![[self journal] entryDated:[self.datePicker date]] || self.isEditingEntry)
         [anEntry setDate:[self.datePicker date]];
     else {
-        [CMAAlerts errorAlert:@"An entry with that date and time already exists. Please select a new date or edit the existing entry." presentationViewController:self];
+        [CMAAlerts showError:@"An entry with that date and time already exists. Please select a new date or edit the existing entry." inVc:self];
         return NO;
     }
     
@@ -651,7 +651,7 @@ NSString *const kNotSelectedString = @"Not Selected";
         CMASpecies *species = [[[self journal] userDefineNamed:UDN_SPECIES] objectNamed:[self.speciesDetailLabel text]];
         [anEntry setFishSpecies:species];
     } else {
-        [CMAAlerts errorAlert:@"Please select a species." presentationViewController:self];
+        [CMAAlerts showError:@"Please select a species." inVc:self];
         return NO;
     }
     
@@ -723,7 +723,7 @@ NSString *const kNotSelectedString = @"Not Selected";
         NSArray *locationInfo = [self parseLocationDetailText];
         
         if ([locationInfo count] != 2) {
-            [CMAAlerts errorAlert:@"Selected location has been deleted. Please choose a different location." presentationViewController:self];
+            [CMAAlerts showError:@"Selected location has been deleted. Please choose a different location." inVc:self];
             return NO;
         }
         
@@ -899,7 +899,7 @@ NSString *const kNotSelectedString = @"Not Selected";
 }
 
 - (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error {
-    [CMAAlerts errorAlert:[NSString stringWithFormat:@"Failed to get user location. Error: %@", error.localizedDescription] presentationViewController:self];
+    [CMAAlerts showError:[NSString stringWithFormat:@"Failed to get user location. Error: %@", error.localizedDescription] inVc:self];
     [self.weatherIndicator stopAnimating];
     [self.weatherIndicator setHidden:YES];
 }
@@ -950,7 +950,7 @@ NSString *const kNotSelectedString = @"Not Selected";
 // Sets self.weatherData from data gathered from the OpenWeatherMapAPI.
 - (void)initWeatherDataWithCoordinate:(CLLocationCoordinate2D)coordinate {
     if (![CMAUtilities validConnection]) {
-        [CMAAlerts errorAlert:@"You do not have a valid network connection. Please connect and try again." presentationViewController:self];
+        [CMAAlerts showError:@"You do not have a valid network connection. Please connect and try again." inVc:self];
         [self.weatherIndicator setHidden:YES];
         return;
     }
@@ -961,7 +961,7 @@ NSString *const kNotSelectedString = @"Not Selected";
     [self.weatherData.weatherAPI currentWeatherByCoordinate:self.weatherData.coordinate withCallback:^(NSError *error, NSDictionary *result) {
         if (error) {
             NSLog(@"Error getting weather data: %@", error.localizedDescription);
-            [CMAAlerts errorAlert:@"There was an error getting weather data. Please try again later." presentationViewController:self];
+            [CMAAlerts showError:@"There was an error getting weather data. Please try again later." inVc:self];
             [self.weatherIndicator setHidden:YES];
             [[CMAStorageManager sharedManager] deleteManagedObject:self.weatherData saveContext:YES];
             [self setWeatherData:nil];

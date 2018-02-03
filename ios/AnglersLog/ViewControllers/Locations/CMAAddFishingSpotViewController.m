@@ -127,14 +127,14 @@
 - (IBAction)clickDoneButton:(UIBarButtonItem *)sender {
     // validate fishing spot name
     if ([[self.fishingSpotNameTextField text] isEqualToString:@""]) {
-        [CMAAlerts errorAlert:@"Please enter a fishing spot name." presentationViewController:self];
+        [CMAAlerts showError:@"Please enter a fishing spot name." inVc:self];
         return;
     }
 
     // make sure the fishing spot doesn't already exist
     if (!self.isEditingFishingSpot)
         if ([self.locationFromAddLocation fishingSpotNamed:self.fishingSpotNameTextField.text] != nil) {
-            [CMAAlerts errorAlert:@"A fishing spot by that name already exists. Please choose a new name or edit the existing spot." presentationViewController:self];
+            [CMAAlerts showError:@"A fishing spot by that name already exists. Please choose a new name or edit the existing spot." inVc:self];
             return;
         }
 
@@ -239,7 +239,7 @@
     NSLog(@"Failed to load map: %@.", error.localizedDescription);
     
     if (!self.mapDidRender && self.showRenderError) {
-        [CMAAlerts errorAlert:@"Failed to render map. Please try again later, zoom out, or select a different map type." presentationViewController:self];
+        [CMAAlerts showError:@"Failed to render map. Please try again later, zoom out, or select a different map type." inVc:self];
         self.showRenderError = NO;
     }
 }
@@ -257,7 +257,7 @@
 }
 
 - (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error {
-    [CMAAlerts errorAlert:@"Failed to get location. Try again later or manually drag the map to your location." presentationViewController:self];
+    [CMAAlerts showError:@"Failed to get location. Try again later or manually drag the map to your location." inVc:self];
     NSLog(@"Failed to get user location. Error: %@", error.localizedDescription);
 }
 

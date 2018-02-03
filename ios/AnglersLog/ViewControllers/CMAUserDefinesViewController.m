@@ -339,7 +339,7 @@
 }
 
 - (void)showItemExistsAlert {
-    [CMAAlerts errorAlert:@"An item that name already exists. Please select a new item or edit the existing item." presentationViewController:self];
+    [CMAAlerts showError:@"An item that name already exists. Please select a new item or edit the existing item." inVc:self];
 }
 
 #pragma mark - Events
