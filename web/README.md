@@ -7,7 +7,7 @@ Anglers' Log website can be viewed [here](http://anglerslog.ca).
 ## Testing Locally
 ```
 npm install http-server -g
-http-server <path-to-anglerslog>
+http-server anglers-log/web/public
 ```
 
 ## Deploying
