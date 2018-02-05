@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-	<string>Anglers' Log</string>
+	<string>Anglers&apos; Log</string>
 	<key>CFBundleExecutable</key>
 	<string>${EXECUTABLE_NAME}</string>
 	<key>CFBundleIdentifier</key>
@@ -46,15 +46,15 @@
 		<true/>
 	</dict>
 	<key>NSCameraUsageDescription</key>
-	<string>Allows photos to be taken from within Anglers' Log.</string>
+	<string>Allows photos to be taken from within Anglers&apos; Log.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Location services required to load current location.</string>
+	<string>Your current location will be displayed on maps throughout Anglers&apos; Log, as well as used for location related data, such as weather.</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>Allows voice notes to be used in Anglers' Log.</string>
+	<string>Allows voice notes to be used in Anglers&apos; Log.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>Allows photos in Anglers' Log to be saved on your device.</string>
+	<string>Allows photos in Anglers&apos; Log to be saved on your device.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Allows photos on your device to be used in Anglers' Log.</string>
+	<string>Allows photos on your device to be used in Anglers&apos; Log.</string>
 	<key>UILaunchStoryboardName</key>
 	<string>CMALaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
