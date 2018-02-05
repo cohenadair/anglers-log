@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-	<string>Anglers&apos; Log</string>
+	<string>Anglers' Log</string>
 	<key>CFBundleExecutable</key>
 	<string>${EXECUTABLE_NAME}</string>
 	<key>CFBundleIdentifier</key>
@@ -17,11 +17,11 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0.3</string>
+	<string>1.0.4</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>103</string>
+	<string>104</string>
 	<key>Fabric</key>
 	<dict>
 		<key>APIKey</key>
@@ -46,15 +46,15 @@
 		<true/>
 	</dict>
 	<key>NSCameraUsageDescription</key>
-	<string>Allows photos to be taken from within Anglers&apos; Log.</string>
+	<string>Allows photos to be taken from within Anglers' Log.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Your current location will be displayed on maps throughout Anglers&apos; Log, as well as used for location related data, such as weather.</string>
+	<string>Your current location will be displayed on maps throughout Anglers' Log, as well as used for location related data, such as weather.</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>Allows voice notes to be used in Anglers&apos; Log.</string>
+	<string>Allows voice notes to be used in Anglers' Log.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>Allows photos in Anglers&apos; Log to be saved on your device.</string>
+	<string>Allows photos in Anglers' Log to be saved on your device.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Allows photos on your device to be used in Anglers&apos; Log.</string>
+	<string>Allows photos on your device to be used in Anglers' Log.</string>
 	<key>UILaunchStoryboardName</key>
 	<string>CMALaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
