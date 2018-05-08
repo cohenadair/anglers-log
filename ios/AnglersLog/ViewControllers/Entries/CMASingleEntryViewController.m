@@ -317,7 +317,7 @@
         if ([nib count] > 0) {
             CMAWeatherDataView *view = (CMAWeatherDataView *)[nib objectAtIndex:0];
             view.frame = CGRectMake(0, kWeatherCellTitlePadding, self.tableView.frame.size.width,
-                    TABLE_HEIGHT_WEATHER_CELL);
+                    TABLE_HEIGHT_WEATHER_CELL - kWeatherCellTitlePadding);
             
             [view.temperatureLabel setText:[self.entry.weatherData temperatureAsStringWithUnits:[[self journal] temperatureUnitsAsString:YES]]];
             [view.windSpeedLabel setText:[self.entry.weatherData windSpeedAsStringWithUnits:[[self journal] speedUnitsAsString:YES]]];
