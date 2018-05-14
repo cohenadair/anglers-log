@@ -22,25 +22,31 @@ LatLng {
 ```
 
 ## User
+Structures that are user-specific.
+
+### Users
 A flat structure, where data is managed by the mobile apps.
 ```
-user : {
+users : {
     <user-id> : {
         licenseUrl (#205) : string
     }, ...
 }
+```
 
-trip {
+### Trips
+```
+trips : {
     <user-id> : {
         <trip-id> {
             name : string,
-            startDate : long,
-            endDate : long,
+            startDate : required long,
+            endDate : required long,
             anglers : {
                 <angler-id> : true, ...
             },
-            locations : {
-                <location-id> : true, ...
+            bodiesOfWater : {
+                <body-of-water-id> : true, ...
             },
             catches : {
                 <catch-id> : true, ...
@@ -52,17 +58,21 @@ trip {
         }
     }, ...
 }
+```
 
-catch : {
+### Catches
+```
+catches : {
     <user-id> : {
         <catch-id> : {
-            date : long,
+            createdAt : required long,
+            caughtAt : long,
             generalizedTimeOfDay (#196) : int,
             photos : {
                 <photo-url> : true, ...
             }
-            speciesId : string,
-            locationId : string,
+            speciesId : required string,
+            bodyOfWaterId : string,
             latLng : LatLng,
             baits : {
                 <bait-id> : true, ...
@@ -87,37 +97,36 @@ catch : {
             notes : string,
             anglerId (#213) : string,
             season (#158) : int,
-            rodId (#93) : string,
-            chum (#249) : {
-                name : string,
-                size : string
+            GearId (#93) : string,
+            chumId (#249) : string
+        }
+    }, ...
+}
+```
+
+### Bodies of Water
+```
+bodies-of-water : {
+    <user-id> : {
+        <body-of-water-id> : {
+            name : string
+            fishingSpots : {
+                <fishing-spot-id> : {
+                    name : string,
+                    latLng : required LatLng,
+                    photos (#199) : {
+                        <photo-url> : true, ...
+                    },
+                    notes (#289) : string
+                }
             }
         }
     }, ...
 }
+```
 
-location : {
-    <user-id> : {
-        <location-id> : {
-            name : string
-        }
-    }, ...
-}
-
-fishing-spot : {
-    <user-id> : {
-        <fishing-spot-id> : {
-            name : string,
-            locationId : string,
-            latLng : LatLng,
-            photos (#199) : {
-                <photo-url> : true, ...
-            },
-            notes (#289) : string
-        }
-    }, ...
-}
-
+### Species
+```
 species : {
     <user-id> : {
         <species-id> : {
@@ -125,22 +134,26 @@ species : {
         }
     }, ...
 }
+```
 
-bait-category : {
+### Bait Categories
+```
+bait-categories : {
     <user-id> : {
         <bait-category-id> : {
             name : string
         }
     }, ...
 }
+```
 
-bait {
+### Baits
+```
+baits {
     <user-id> : {
         <bait-id> : {
-            name : string,
-            photos : {
-                <photo-url> : true, ...
-            }
+            name : required string,
+            photoUrl : string,
             categoryId : string,
             colour : string,
             modelNumber (#214) : string,
@@ -151,43 +164,71 @@ bait {
         }
     }, ...
 }
+```
 
-water-clarity : {
+### Water Clarities
+```
+water-clarities : {
     <user-id> : {
         <water-clarity-id> : {
             name : string
         }
     }, ...
 }
+```
 
-water-speed (#251) : {
+### Water Speeds
+```
+water-speeds (#251) : {
     <user-id> : {
         <water-speed-id> : {
             name : string
         }
     }
 }
+```
 
-fishing-method : {
+### Fishing Methods
+```
+fishing-methods : {
     <user-id> : {
         <fishing-method-id> : {
             name : string
         }
     }, ...
 }
+```
 
-angler : {
+### Anglers
+```
+anglers : {
     <user-id> : {
         <angler-id> : {
             name : string
         }
     }, ...
 }
+```
 
-rod (#93) : {
+### Chums
+```
+chums : {
+    <user-id> : {
+        <chum-id> : {
+            name : string,
+            size : string
+        }
+    }
+}
+```
+
+### Gear
+```
+gear (#93) : {
     <user-id> : {
         <gear-id> : {
             name : string,
+            photoUrl : string,
             make : string,
             model : string,
             serialNumber : string,
@@ -206,8 +247,10 @@ rod (#93) : {
 
 ## Development
 Data is managed manually as errors are resolved. This data is in addition to Crashlytics.
+
+### Errors
 ```
-error : {
+errors : {
     <file-name> : {
         <error-message> : <error-count>
     }
