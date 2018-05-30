@@ -89,6 +89,7 @@ Non-entity model objects.
 ```Dart
 class Weather {}
 
+// Note: Flutter may already have a LatLng-like data structure.
 class LatLng {
     LatLng(this.lat, this.lng);
 }
