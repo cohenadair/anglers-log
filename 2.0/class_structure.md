@@ -67,6 +67,11 @@ class BodyOfWater extends LogItem {
 
     BodyOfWater(this.name);
     List<FishingSpot> getFishingSpots() {}
+    List<LatLng> getCoordinates() {}
+
+    // Returns a list of all coordinates (both fishing spots and exact coordinates) 
+    // associated with the BodyOfWater.
+    List<LatLng> getAllLocations() {}
 }
 
 class Bait extends PhotoLogItem {

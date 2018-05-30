@@ -73,11 +73,11 @@ catches : {
             }
             speciesId : required string,
             bodyOfWaterId : string,
-            latLng : LatLng,
+            fishingSpotId : string,
+            coordinateId : string,
             baits : {
                 <bait-id> : true, ...
             },
-            fishingSpotId : string,
             isFavourite : boolean,
             result : int,
             fishingMethods : {
@@ -105,6 +105,13 @@ catches : {
 ```
 
 ### Bodies of Water
+A "body of water" can be a lake, pond, river, stream, etc.; basically, anywhere that can be fished. A "fishing spot" is a specific area within a "body of water" that may include more detail, such as a name, photo, and notes.  A "coordinate", on the other hand, is exact coordinates within a "body of water", and doesn't include any information other than latitude and longitude.
+
+Using exact coordinates in this way is desirable in many contexts. For example, when fishing a river, an angler may walk up and down a river bank several times, catching fish in several different areas. It is much easier to use exact coordinates automatically obtained by the app, rather than creating a new "fishing spot" for each area from which a fish was caught.
+
+A "body of water" can have multiple fishing spots and multiple coordinates.
+
+> Note: Coordinates are managed automatically when catches are managed. Fishing Spots can be managed at any time by the user.
 ```
 bodies-of-water : {
     <user-id> : {
@@ -118,6 +125,11 @@ bodies-of-water : {
                         <photo-url> : true, ...
                     },
                     notes (#289) : string
+                }
+            },
+            coordinates : {
+                <coordinate-id> : {
+                    latLng : required LatLng
                 }
             }
         }

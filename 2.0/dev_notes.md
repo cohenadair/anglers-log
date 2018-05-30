@@ -10,7 +10,7 @@ Anglers' Log 2.0 Dev Notes
 * `anglers` can be inferred from selected catches.
 
 ## Catches
-* When adding a location, give the option to select a fishing spot, use current coordinates, or enter coordinates.
+* When adding a location to a Catch, give the option to select a body of water and fishing spot, use current coordinates, or enter coordinates.
 
 ## Bodies of Water
 * Combine Bodies of Water and Map pages.
