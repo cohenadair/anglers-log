@@ -1,10 +1,10 @@
 Anglers' Log 2.0 Data Structure
 ===============================
 
-In JSON, because Firebase Realtime Database uses JSON.
+The structures below look like JSON, but Anglers' Log 2.0 will use Firebase Cloud Firestore (CF) database instead of Firebase Realtime Database. CF stores data in "documents" and "collections". This structure is always flat and allows for a logical object tree, unlike the Realtime Database where you need to "flatten" data trees in order to lessen the data downloaded by the client.
 
 ## Common
-Common structures that may appear in multiple database trees.
+Common structures that may appear in multiple documents.
 ```
 Weather {
     temperature : float,
@@ -14,25 +14,55 @@ Weather {
     airPressure (#25) : string,
     description (#25) : string
 }
-
-LatLng {
-    lat : float,
-    lng : float
-}
 ```
 
 ## User
-Structures that are user-specific.
+Documents and collections that are user-specific. All this data is managed by the mobile app. Under no circumstances should it be necessary for data to be managed from the Firebase web portal.
 
-### Users
-A flat structure, where data is managed by the mobile apps.
+The idea here is that CF will store the least amount of data possible. For example, although a `Catch` has many fields, most anglers will only use a few of them. CF should only store values for fields that are set by the angler; every other value should be `null` and therefore non-existent in CF.
+
 ```
-users : {
-    <user-id> : {
-        licenseUrl (#205) : string
-    }, ...
-}
-```
+COL: users
+    DOC: <user-id>
+        licenseFrontUrl (#205) : string
+        licenseBackUrl (#205) : string
+        COL: trips
+            DOC: <trip-id>
+            ...
+        COL: catches
+            DOC: <catch-id>
+            ...
+        COL: bodiesOfWater
+            DOC: <body-of-water-id>
+            ...
+        COL: species
+            DOC: <species-id>
+            ...
+        COL: baitCategories
+            DOC: <bait-category-id>
+            ...
+        COL: baits
+            DOC: <bait-id>
+            ...
+        COL: waterClarities
+            DOC: <water-clarity-id>
+            ...
+        COL: waterSpeeds
+            DOC: <water-speed-id>
+            ...
+        COL: fishingMethods
+            DOC: <fishing-method-id>
+            ...
+        COL: anglers
+            DOC: <angler-id>
+            ...
+        COL: chums (#249)
+            DOC: <chum-id>
+            ...
+        COL: gear (#93)
+            DOC: <gear-id>
+            ...
+    ...
 
 ### Trips
 ```
@@ -262,9 +292,8 @@ Data is managed manually as errors are resolved. This data is in addition to Cra
 
 ### Errors
 ```
-errors : {
-    <file-name> : {
+COL: errors
+    DOC: <dart-file-name>
         <error-message> : <error-count>
-    }
-}
+    ...
 ```
