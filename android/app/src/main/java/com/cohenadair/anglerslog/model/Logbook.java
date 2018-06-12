@@ -101,39 +101,54 @@ public class Logbook {
      * Set some default UserDefineObjects if there aren't any.
      */
     public static void setDefaults(Context context) {
+        String lureText = context.getString(R.string.default_bait_category_lure);
+
         if (getBaitCategoryCount() <= 0) {
-            addBaitCategory(new BaitCategory("Lure"));
-            addBaitCategory(new BaitCategory("Minnow"));
-            addBaitCategory(new BaitCategory("Fly"));
+            addBaitCategory(new BaitCategory(lureText));
+            addBaitCategory(new BaitCategory(
+                    context.getString(R.string.default_bait_category_minnow)));
+            addBaitCategory(new BaitCategory(
+                    context.getString(R.string.default_bait_category_fly)));
         }
 
         if (getSpeciesCount() <= 0) {
-            addSpecies(new Species("Steelhead"));
-            addSpecies(new Species("Pike"));
-            addSpecies(new Species("Bass - Smallmouth"));
-            addSpecies(new Species("Salmon - Coho"));
+            addSpecies(new Species(
+                    context.getString(R.string.default_species_steelhead)));
+            addSpecies(new Species(
+                    context.getString(R.string.default_species_pike)));
+            addSpecies(new Species(
+                    context.getString(R.string.default_species_bass)));
+            addSpecies(new Species(
+                    context.getString(R.string.default_species_salmon)));
         }
 
         if (getFishingMethodCount() <= 0) {
-            addFishingMethod(new FishingMethod("Boat"));
-            addFishingMethod(new FishingMethod("Shore"));
-            addFishingMethod(new FishingMethod("Ice"));
-            addFishingMethod(new FishingMethod("Trolling"));
+            addFishingMethod(new FishingMethod(
+                    context.getString(R.string.default_fishing_method_boat)));
+            addFishingMethod(new FishingMethod(
+                    context.getString(R.string.default_fishing_method_shore)));
+            addFishingMethod(new FishingMethod(
+                    context.getString(R.string.default_fishing_method_ice)));
+            addFishingMethod(new FishingMethod(
+                    context.getString(R.string.default_fishing_method_trolling)));
         }
 
         if (getWaterClarityCount() <= 0) {
-            addWaterClarity(new WaterClarity("Crystal Clear"));
-            addWaterClarity(new WaterClarity("Clear"));
-            addWaterClarity(new WaterClarity("Muddy"));
+            addWaterClarity(new WaterClarity(
+                    context.getString(R.string.default_water_clarity_crystal)));
+            addWaterClarity(new WaterClarity(
+                    context.getString(R.string.default_water_clarity_clear)));
+            addWaterClarity(new WaterClarity(
+                    context.getString(R.string.default_water_clarity_muddy)));
         }
 
         if (getBaitCount() <= 0) {
             // ensure the BaitCategory exists
-            BaitCategory baitCategory = getBaitCategory("Lure");
+            BaitCategory baitCategory = getBaitCategory(lureText);
             if (baitCategory == null) {
                 // if for some reason it wasn't added above, try adding it again
-                addBaitCategory(new BaitCategory("Lure"));
-                baitCategory = getBaitCategory("Lure");
+                addBaitCategory(new BaitCategory(lureText));
+                baitCategory = getBaitCategory(lureText);
                 // if the second add attempt failed, don't bother creating example baits
                 if (baitCategory == null) {
                     return;
@@ -148,14 +163,14 @@ public class Logbook {
             Bait bait = new Bait("Blue Fox Spinner", baitCategory);
             bait.setType(Bait.TYPE_ARTIFICIAL);
             bait.setSize("6");
-            bait.setColor("Silver");
+            bait.setColor(context.getString(R.string.default_color_silver));
             bait.addPhoto(spinner);
             Logbook.addBait(bait);
 
             bait = new Bait("Rippin' Rap", baitCategory);
             bait.setType(Bait.TYPE_ARTIFICIAL);
             bait.setSize("2");
-            bait.setColor("Blue Chrome");
+            bait.setColor(context.getString(R.string.default_color_blue));
             bait.addPhoto(rap);
             Logbook.addBait(bait);
         }
