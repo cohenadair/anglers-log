@@ -36,8 +36,8 @@
 
     <!-- Correspond to UNIT_* constants found in Logbook.java -->
     <string-array name="pref_unitTypes_values">
-        <item>0</item>
-        <item>1</item>
+        <item>@string/zero</item>
+        <item>@string/one</item>
     </string-array>
 
     <string-array name="map_types">

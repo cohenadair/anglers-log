@@ -145,6 +145,7 @@
     <string name="ft">ft</string>
     <string name="meters">m</string>
     <string name="zero" translatable="false">0</string>
+    <string name="one" translatable="false">1</string>
     <string name="to">to</string>
     <string name="show_more">Show more</string>
     <string name="all">All</string>
