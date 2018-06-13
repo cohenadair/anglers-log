@@ -63,7 +63,7 @@
     <string name="species_caught">Espèces capturées</string>
     <string name="species_stats">Statistiques sur les espèces</string>
     <string name="species">Espèces</string>
-    <string name="catch_string">Catch</string>
+    <string name="catch_string">Prise</string>
     <string name="catches_on_trip">poisson pris lors de ce voyage</string>
     <string name="longest_catch">Capture la plus longue</string>
     <string name="heaviest_catch">Catch le plus lourd</string>
@@ -103,12 +103,12 @@
     <string name="artificial">Artificiel</string>
     <string name="live">Live</string>
     <string name="real">Réel</string>
-    <string name="released">Publié</string>
+    <string name="released">Relâché</string>
     <string name="kept">Conservé</string>
     <string name="location">Emplacement</string>
     <string name="location_success">Captures d\'emplacement</string>
     <string name="location_stats">Statistiques de localisation</string>
-    <string name="fishing_spot">Spot de pêche</string>
+    <string name="fishing_spot">Lieux de pêche</string>
     <string name="fishing_spots">Points de pêche</string>
     <string name="latitude">Latitude</string>
     <string name="longitude">Longitude</string>
@@ -154,7 +154,7 @@
     <string name="add_bait_category">Ajouter une catégorie d\'appâts</string>
     <string name="add_catches">Ajouter des captures</string>
     <string name="add_locations">Ajouter des emplacements</string>
-    <string name="add_fishing_spot">Ajouter un point de pêche</string>
+    <string name="add_fishing_spot">Ajouter un lieux de peche</string>
     <string name="add_anglers">Ajouter des pêcheurs</string>
     <string name="add_weather">Ajouter une météo</string>
     <string name="update_weather">Mettre à jour la météo</string>
