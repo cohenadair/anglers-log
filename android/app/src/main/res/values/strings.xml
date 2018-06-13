@@ -13,18 +13,18 @@
     <string name="rate_negative">No thanks</string>
     <string name="rate_neutral">Later</string>
 
-    <string name="instabug_sheet_title">Bugs &amp; Suggestions</string>
-    <string name="instabug_sheet_description">Tap the ladybug button to send bug reports and feedback.  The button can be disabled from the Settings menu.</string>
+    <string name="feedback_sheet_title">Bugs &amp; Suggestions</string>
+    <string name="feedback_sheet_description">Visit the Settings menu to make a feature suggestion, give feedback, or report a bug.</string>
     <string name="backup_sheet_title">Backup</string>
     <string name="backup_sheet_description">Be sure to periodically export Anglers\' Log to ensure no data is lost. Visit the Settings menu to learn more.</string>
 
     <string name="pref_units" translatable="false">pref_units</string>
-    <string name="pref_instabug" translatable="false">pref_instabug</string>
     <string name="pref_privacy_policy" translatable="false">pref_privacy_policy</string>
     <string name="pref_about_group" translatable="false">pref_about_group</string>
     <string name="pref_google_maps_terms" translatable="false">pref_google_maps_terms</string>
     <string name="pref_icons8_terms" translatable="false">pref_icons8_terms</string>
     <string name="pref_version" translatable="false">pref_version</string>
+    <string name="pref_feedback" translatable="false">pref_feedback</string>
     <string name="pref_import" translatable="false">pref_import</string>
     <string name="pref_export" translatable="false">pref_export</string>
     <string name="pref_reset" translatable="false">pref_reset</string>
@@ -52,13 +52,14 @@
     <string name="default_color_blue">Blue Chrome</string>
 
     <string name="display_units">Display Units</string>
-    <string name="instabug_title">Bugs and Suggestions</string>
-    <string name="instabug_summary">Enable or disable the Instabug floating button.</string>
-    <string name="instabug_restart">Changes will take effect after Anglers\' Log is restarted.</string>
     <string name="imperial">Imperial</string>
     <string name="metric">Metric</string>
     <string name="about_setting">About, Terms &amp; Privacy</string>
     <string name="version">Version</string>
+    <string name="feedback_name">Bugs &amp; Suggestions</string>
+    <string name="feedback_summary">Send feedback, suggest a feature, or report a bug.</string>
+    <string name="feedback_chooser_title">Send feedback via</string>
+    <string name="feedback_no_email">No email client found on device</string>
     <string name="import_name">Import</string>
     <string name="import_summary">Transfer data from another device platform.</string>
     <string name="import_title">Confirm Import</string>

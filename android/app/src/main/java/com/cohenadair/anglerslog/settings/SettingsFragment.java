@@ -11,6 +11,7 @@ import android.support.v7.preference.CheckBoxPreference;
 import android.support.v7.preference.ListPreference;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 
@@ -31,6 +32,8 @@ import java.io.File;
  */
 public class SettingsFragment extends PreferenceFragmentCompat {
 
+    private static final String SUPPORT_EMAIL = "support@anglerslog.ca";
+
     private static final int REQUEST_IMPORT = 0;
     private static final int REQUEST_EXPORT = 1;
 
@@ -43,7 +46,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         setHasOptionsMenu(true);
 
         initUnits();
-        initInstabug();
+        initFeedback();
         initImport();
         initExport();
         initReset();
@@ -52,7 +55,6 @@ public class SettingsFragment extends PreferenceFragmentCompat {
 
     @Override
     public void onCreatePreferences(Bundle bundle, String s) {
-
     }
 
     @Override
@@ -111,19 +113,6 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         updateUnits(units);
     }
 
-    private void initInstabug() {
-        CheckBoxPreference instabug = (CheckBoxPreference)findPreference(getResources().getString(R.string.pref_instabug));
-        instabug.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-            @Override
-            public boolean onPreferenceChange(Preference preference, Object o) {
-                boolean on = ((CheckBoxPreference)preference).isChecked();
-                LogbookPreferences.setInstabugEnabled(getContext(), on);
-                AlertUtils.show(getContext(), R.string.instabug_restart);
-                return true;
-            }
-        });
-    }
-
     private void startBackupActivity(Intent intent, int request) {
         try {
             startActivityForResult(intent, request);
@@ -138,6 +127,27 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                 AlertUtils.showError(getContext(), R.string.backup_activity_not_found);
             }
         }
+    }
+
+    private void initFeedback() {
+        Preference importPref = findPreference(getResources().getString(R.string.pref_feedback));
+        importPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:"));
+                intent.putExtra(Intent.EXTRA_EMAIL, new String[] { SUPPORT_EMAIL });
+                intent.putExtra(Intent.EXTRA_SUBJECT, "Feedback from Anglers' Log for Android");
+
+                if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
+                    startActivity(Intent.createChooser(intent,
+                            getResources().getString(R.string.feedback_chooser_title)));
+                } else {
+                    Utils.showToast(getContext(), R.string.feedback_no_email);
+                }
+
+                return true;
+            }
+        });
     }
 
     private void initImport() {

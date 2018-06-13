@@ -24,7 +24,7 @@ public class LogbookPreferences {
     private static final String WEATHER_UNITS = "weatherUnits";
     private static final String BACKUP_FILE = "backupFilePath";
     private static final String MAP_TYPE = "mapType";
-    private static final String SHOW_INSTABUG_SHEET = "showInstabugSheet";
+    private static final String SHOW_FEEDBACK_SHEET = "showFeedbackSheet";
     private static final String LAST_BACKUP = "lastBackup";
 
     private static SharedPreferences getCleanup(Context context) {
@@ -94,25 +94,14 @@ public class LogbookPreferences {
                 .putString(context.getResources().getString(R.string.pref_units), Integer.toString(units))
                 .apply();
     }
-
-    public static boolean isInstabugEnabled(Context context) {
-        return getDefaultPreferences(context).getBoolean(context.getResources().getString(R.string.pref_instabug), true);
-    }
-
-    public static void setInstabugEnabled(Context context, boolean enabled) {
-        getDefaultPreferences(context)
-                .edit()
-                .putBoolean(context.getResources().getString(R.string.pref_instabug), enabled)
-                .apply();
-    }
     //endregion
 
-    public static boolean shouldShowInstabugSheet(Context context) {
-        return getDefaultPreferences(context).getBoolean(SHOW_INSTABUG_SHEET, true);
+    public static boolean shouldShowFeedbackSheet(Context context) {
+        return getDefaultPreferences(context).getBoolean(SHOW_FEEDBACK_SHEET, true);
     }
 
-    public static void setShouldShowInstabugSheet(Context context, boolean shouldShow) {
-        getDefaultPreferences(context).edit().putBoolean(SHOW_INSTABUG_SHEET, shouldShow).apply();
+    public static void setShouldShowFeedbackSheet(Context context, boolean shouldShow) {
+        getDefaultPreferences(context).edit().putBoolean(SHOW_FEEDBACK_SHEET, shouldShow).apply();
     }
 
     public static boolean shouldShowBackupSheet(Context context) {

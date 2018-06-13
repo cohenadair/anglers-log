@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="@dimen/margin_default"
-        android:text="@string/instabug_sheet_title"
+        android:text="@string/feedback_sheet_title"
         android:gravity="center_vertical"
         android:drawablePadding="@dimen/margin_default"/>
 
@@ -25,7 +25,7 @@
         android:paddingLeft="@dimen/margin_default"
         android:paddingRight="@dimen/margin_default"
         android:paddingBottom="@dimen/margin_default"
-        android:text="@string/instabug_sheet_description"/>
+        android:text="@string/feedback_sheet_description"/>
 
     <Button
         style="@style/Button.BorderlessColoredText"

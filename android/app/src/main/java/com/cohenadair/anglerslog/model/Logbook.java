@@ -40,8 +40,6 @@ import com.cohenadair.anglerslog.model.utilities.UserDefineArrays;
 import com.cohenadair.anglerslog.utilities.LogbookPreferences;
 import com.cohenadair.anglerslog.utilities.PhotoUtils;
 import com.drew.lang.annotations.NotNull;
-import com.instabug.library.IBGInvocationEvent;
-import com.instabug.library.Instabug;
 
 import org.apache.commons.io.FileUtils;
 
@@ -186,10 +184,6 @@ public class Logbook {
     }
 
     public static void updatePreferences(Context context) {
-        if (LogbookPreferences.isInstabugEnabled(context))
-            Instabug.changeInvocationEvent(IBGInvocationEvent.IBGInvocationEventFloatingButton);
-        else
-            Instabug.changeInvocationEvent(IBGInvocationEvent.IBGInvocationEventNone);
     }
 
     /**

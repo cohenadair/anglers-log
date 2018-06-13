@@ -70,7 +70,7 @@ public class MyListFragment extends MasterFragment {
         initNewButton(view);
         initRecyclerView(view);
         initBackupBottomSheet(view);
-        initInstabugAlert();
+        initFeedbackAlert();
         setSearchInteractionListener(getSearchInteractionListener());
 
         return view;
@@ -145,17 +145,16 @@ public class MyListFragment extends MasterFragment {
         });
     }
 
-    private void initInstabugAlert() {
-        if (LogbookPreferences.shouldShowInstabugSheet(getContext())) {
+    private void initFeedbackAlert() {
+        if (LogbookPreferences.shouldShowFeedbackSheet(getContext())) {
             new AlertDialog.Builder(getContext())
-                    .setIcon(R.drawable.instabug_ic_ibg_logo_dark)
-                    .setTitle(R.string.instabug_sheet_title)
-                    .setMessage(R.string.instabug_sheet_description)
+                    .setTitle(R.string.feedback_sheet_title)
+                    .setMessage(R.string.feedback_sheet_description)
                     .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();
-                            LogbookPreferences.setShouldShowInstabugSheet(getContext(), false);
+                            LogbookPreferences.setShouldShowFeedbackSheet(getContext(), false);
                         }
                     })
                     .show();
