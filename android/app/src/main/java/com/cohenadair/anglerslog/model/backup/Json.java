@@ -7,7 +7,6 @@ package com.cohenadair.anglerslog.model.backup;
 public class Json {
     private static final String TAG = "Json";
 
-    @Deprecated
     public static final String DATE_FORMAT = "MM-dd-yyyy_K-mm_a";
     public static final String DATE_FORMAT_MS = "MM-dd-yyyy_K-mm_a_ss.SSS";
 

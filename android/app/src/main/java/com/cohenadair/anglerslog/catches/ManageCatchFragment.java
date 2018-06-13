@@ -166,7 +166,7 @@ public class ManageCatchFragment extends ManageContentFragment {
 
             @Override
             public UserDefineObject onGetNewBlankObject() {
-                return new Catch(new Date());
+                return new Catch(new Date(), getContext());
             }
         });
     }
@@ -218,8 +218,8 @@ public class ManageCatchFragment extends ManageContentFragment {
 
     @Override
     protected void updateViews() {
-        mDateTimeView.setPrimaryButtonText(getNewCatch().getDateAsString());
-        mDateTimeView.setSecondaryButtonText(getNewCatch().getTimeAsString());
+        mDateTimeView.setPrimaryButtonText(getNewCatch().getDateAsString(getContext()));
+        mDateTimeView.setSecondaryButtonText(getNewCatch().getTimeAsString(getContext()));
         mSpeciesView.setPrimaryButtonText(getNewCatch().getSpeciesAsString());
         mBaitView.setPrimaryButtonText(getNewCatch().getBaitAsString());
         mLocationView.setPrimaryButtonText(getNewCatch().getFishingSpotAsString());
@@ -280,7 +280,8 @@ public class ManageCatchFragment extends ManageContentFragment {
                     @Override
                     public void onFinish(Date date) {
                         setDate(date, getNewCatch().getDate());
-                        mDateTimeView.setPrimaryButtonText(getNewCatch().getDateAsString());
+                        mDateTimeView.setPrimaryButtonText(
+                                getNewCatch().getDateAsString(getContext()));
                     }
                 });
             }
@@ -293,7 +294,8 @@ public class ManageCatchFragment extends ManageContentFragment {
                     @Override
                     public void onFinish(Date date) {
                         setDate(getNewCatch().getDate(), date);
-                        mDateTimeView.setSecondaryButtonText(getNewCatch().getTimeAsString());
+                        mDateTimeView.setSecondaryButtonText(
+                                getNewCatch().getTimeAsString(getContext()));
                     }
                 });
             }

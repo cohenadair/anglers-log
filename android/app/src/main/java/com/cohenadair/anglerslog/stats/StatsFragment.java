@@ -131,7 +131,7 @@ public class StatsFragment extends MasterFragment {
         card.initWithDisplayLabel(
                 getContext().getResources().getString(titleId) + measurementStr,
                 aCatch.getSpeciesAsString(),
-                aCatch.getDateAsString(),
+                aCatch.getDateAsString(getContext()),
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

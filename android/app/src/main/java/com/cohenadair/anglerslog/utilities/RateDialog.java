@@ -38,7 +38,7 @@ public class RateDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         return new AlertDialog.Builder(getActivity())
-                .setTitle(getResources().getString(R.string.rate_title))
+                .setTitle(getResources().getString(R.string.rate_title) + " " + getResources().getString(R.string.version_name))
                 .setMessage(R.string.rate_msg)
                 .setPositiveButton(R.string.rate_positive, getPositiveClick())
                 .setNegativeButton(R.string.rate_negative, getNegativeClick())

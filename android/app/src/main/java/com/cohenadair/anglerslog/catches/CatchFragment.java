@@ -145,7 +145,7 @@ public class CatchFragment extends DetailFragment {
     }
 
     private void updateDateView() {
-        mDateView.setDetail(mCatch.getDateTimeAsString());
+        mDateView.setDetail(mCatch.getDateTimeAsString(getContext()));
     }
 
     private void updateBaitView() {

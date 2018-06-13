@@ -6,8 +6,6 @@ import android.content.Context;
 import com.cohenadair.anglerslog.model.Logbook;
 import com.cohenadair.anglerslog.utilities.PhotoUtils;
 import com.crashlytics.android.Crashlytics;
-import com.instabug.library.IBGInvocationEvent;
-import com.instabug.library.Instabug;
 
 import io.fabric.sdk.android.Fabric;
 
@@ -24,11 +22,6 @@ public class AnglersLogApplication extends Application {
         if (!BuildConfig.DEBUG) {
             Fabric.with(this, new Crashlytics());
         }
-
-        new Instabug
-                .Builder(this, "189b6d0684c10aa4f6426bc9c3665a7c")
-                .setInvocationEvent(IBGInvocationEvent.IBGInvocationEventFloatingButton)
-                .build();
 
         Context context = getApplicationContext();
 
