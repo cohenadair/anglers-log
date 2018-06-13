@@ -158,8 +158,8 @@ public class ManageTripFragment extends ManageContentFragment {
     @Override
     protected void updateViews() {
         mNameView.setInputText(getNewTrip().getNameAsString());
-        mStartDateView.setPrimaryButtonText(getNewTrip().getStartDateAsString());
-        mEndDateView.setPrimaryButtonText(getNewTrip().getEndDateAsString());
+        mStartDateView.setPrimaryButtonText(getNewTrip().getStartDateAsString(getContext()));
+        mEndDateView.setPrimaryButtonText(getNewTrip().getEndDateAsString(getContext()));
         mAnglersView.setPrimaryButtonText(UserDefineArrays.namesAsString(getSelectedAnglers()));
         mNotesView.setInputText(getNewTrip().getNotesAsString());
 
@@ -236,7 +236,8 @@ public class ManageTripFragment extends ManageContentFragment {
                         }
 
                         getNewTrip().setStartDate(date);
-                        mStartDateView.setPrimaryButtonText(getNewTrip().getStartDateAsString());
+                        mStartDateView.setPrimaryButtonText(
+                                getNewTrip().getStartDateAsString(getContext()));
                         mDateChanged = isEditing();
                     }
                 });
@@ -258,7 +259,8 @@ public class ManageTripFragment extends ManageContentFragment {
                         }
 
                         getNewTrip().setEndDate(date);
-                        mEndDateView.setPrimaryButtonText(getNewTrip().getEndDateAsString());
+                        mEndDateView.setPrimaryButtonText(
+                                getNewTrip().getEndDateAsString(getContext()));
                         mDateChanged = isEditing();
                     }
                 });

@@ -117,8 +117,8 @@ public class TripFragment extends DetailFragment {
     }
 
     private void updateDateView() {
-        mStartDateView.setDetail(mTrip.getStartDateAsString());
-        mEndDateView.setDetail(mTrip.getEndDateAsString());
+        mStartDateView.setDetail(mTrip.getStartDateAsString(getContext()));
+        mEndDateView.setDetail(mTrip.getEndDateAsString(getContext()));
     }
 
     private void startPartialListActivity(Intent intent) {

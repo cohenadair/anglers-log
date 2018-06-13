@@ -44,7 +44,7 @@ public class CatchListManager {
             mCatch = aCatch;
 
             setTitle(mCatch.getSpeciesAsString());
-            setSubtitle(mCatch.getDateTimeAsString());
+            setSubtitle(mCatch.getDateTimeAsString(getContext()));
             setIsFavorite(mCatch.isFavorite());
             setImage(mCatch.getRandomPhoto());
 

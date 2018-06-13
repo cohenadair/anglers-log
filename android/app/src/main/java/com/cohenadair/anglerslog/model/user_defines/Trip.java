@@ -38,8 +38,6 @@ import static com.cohenadair.anglerslog.database.LogbookSchema.UsedLocationTable
  */
 public class Trip extends UserDefineObject implements HasCatchesInterface, HasDateInterface {
 
-    private static final String DATE_FORMAT = "MMM dd, yyyy";
-
     private Date mStartDate;
     private Date mEndDate;
     private String mNotes;
@@ -259,17 +257,17 @@ public class Trip extends UserDefineObject implements HasCatchesInterface, HasDa
         return (mNotes != null) ? mNotes : "";
     }
 
-    public String getStartDateAsString() {
-        return DateFormat.format(DATE_FORMAT, mStartDate).toString();
+    public String getStartDateAsString(Context context) {
+        return Utils.getMediumDisplayDate(mStartDate, context);
     }
 
-    public String getEndDateAsString() {
-        return DateFormat.format(DATE_FORMAT, mEndDate).toString();
+    public String getEndDateAsString(Context context) {
+        return Utils.getMediumDisplayDate(mEndDate, context);
     }
 
     public String getDateAsString(Context context) {
-        String to = context.getResources().getString(R.string.to);
-        return DateFormat.format(DATE_FORMAT, mStartDate).toString() + " " + to + " " + DateFormat.format(DATE_FORMAT, mEndDate).toString();
+        return String.format(context.getString(R.string.date_date_format),
+                getStartDateAsString(context), getEndDateAsString(context));
     }
 
     public String getCatchesAsString(Context context) {
@@ -343,8 +341,8 @@ public class Trip extends UserDefineObject implements HasCatchesInterface, HasDa
     public String toKeywordsString(Context context) {
         StringBuilder builder = new StringBuilder(super.toKeywordsString(context));
 
-        appendToBuilder(builder, Utils.getDisplayDate(mStartDate));
-        appendToBuilder(builder, Utils.getDisplayDate(mEndDate));
+        appendToBuilder(builder, Utils.getLongDisplayDate(mStartDate, context));
+        appendToBuilder(builder, Utils.getLongDisplayDate(mEndDate, context));
         appendToBuilder(builder, mNotes);
 
         builder.append(UserDefineArrays.keywordsAsString(context, getAnglers()));

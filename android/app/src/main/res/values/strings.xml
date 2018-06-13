@@ -319,4 +319,7 @@
     <string name="location_permissions">Location Permissions</string>
     <string name="location_permissions_message">Permission to use Location Services allows Anglers\' Log to display your location on its maps.</string>
     <string name="location_permissions_denied">Location permissions were denied and as a result your location will not be shown on Anglers\' Log maps.</string>
+
+    <string name="date_time_format">%1$s at %2$s</string>
+    <string name="date_date_format">%1$s to %2$s</string>
 </resources>

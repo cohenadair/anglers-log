@@ -287,6 +287,9 @@
     <string name="location_permissions">Autorisations de localisation</string>
     <string name="location_permissions_message">L\'autorisation d\'utiliser les services de localisation permet au registre des pêcheurs d\'afficher votre position sur ses cartes.</string>
     <string name="location_permissions_denied">Les permissions de localisation ont été refusées et par conséquent votre position ne sera pas affichée sur les cartes Log des pêcheurs.</string>
+
+    <string name="date_time_format">%1$s à %2$s</string>
+    <string name="date_date_format">%1$s à %2$s</string>
 </resources>
 
 

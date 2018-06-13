@@ -107,20 +107,19 @@ public class Utils {
         return context.getResources().getBoolean(R.bool.has_two_panes);
     }
 
-    /**
-     * @return A String representation of the date of the given {@link Date}.
-     */
     @NonNull
-    public static String getDisplayDate(Date date) {
-        return DateFormat.format("MMMM dd, yyyy", date).toString();
+    public static String getDisplayTime(Date date, Context context) {
+        return DateFormat.getTimeFormat(context).format(date);
     }
 
-    /**
-     * @return A String representation of the time of the given {@link Date}.
-     */
     @NonNull
-    public static String getDisplayTime(Date date) {
-        return DateFormat.format("h:mm a", date).toString();
+    public static String getMediumDisplayDate(Date date, Context context) {
+        return DateFormat.getMediumDateFormat(context).format(date);
+    }
+
+    @NonNull
+    public static String getLongDisplayDate(Date date, Context context) {
+        return DateFormat.getLongDateFormat(context).format(date);
     }
 
     /**

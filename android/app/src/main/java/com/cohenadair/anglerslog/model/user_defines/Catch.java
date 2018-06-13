@@ -91,8 +91,8 @@ public class Catch extends PhotoUserDefineObject implements HasDateInterface {
     }
 
     //region Constructors
-    public Catch(Date date) {
-        super(Utils.getDisplayDate(date), CatchPhotoTable.NAME);
+    public Catch(Date date, Context context) {
+        super(Utils.getLongDisplayDate(date, context), CatchPhotoTable.NAME);
         mDate = date;
         init();
     }
@@ -377,16 +377,17 @@ public class Catch extends PhotoUserDefineObject implements HasDateInterface {
         return (mBait != null) ? mBait.getDisplayName() : "";
     }
 
-    public String getDateAsString() {
-        return Utils.getDisplayDate(mDate);
+    public String getDateAsString(Context context) {
+        return Utils.getLongDisplayDate(mDate, context);
     }
 
-    public String getTimeAsString() {
-        return Utils.getDisplayTime(mDate);
+    public String getTimeAsString(Context context) {
+        return Utils.getDisplayTime(mDate, context);
     }
 
-    public String getDateTimeAsString() {
-        return DateFormat.format("MMM dd, yyyy 'at' h:mm a", mDate).toString();
+    public String getDateTimeAsString(Context context) {
+        return String.format(context.getString(R.string.date_time_format),
+                Utils.getMediumDisplayDate(mDate, context), Utils.getDisplayTime(mDate, context));
     }
 
     public String getFishingSpotAsString() {
@@ -552,7 +553,7 @@ public class Catch extends PhotoUserDefineObject implements HasDateInterface {
         builder.append((mFishingSpot == null) ? "" : mFishingSpot.toKeywordsString(context));
         builder.append(UserDefineArrays.keywordsAsString(context, getFishingMethods()));
 
-        appendToBuilder(builder, getDateAsString());
+        appendToBuilder(builder, getDateAsString(context));
         appendToBuilder(builder, mIsFavorite ? context.getResources().getString(R.string.favorite) : null);
         appendToBuilder(builder, mCatchResult.getString(context));
         appendToBuilder(builder, mQuantity);
