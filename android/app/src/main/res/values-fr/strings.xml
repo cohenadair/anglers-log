@@ -7,8 +7,8 @@
     <string name="rate_positive">Taux</string>
     <string name="rate_negative">Non merci</string>
     <string name="rate_neutral">Plus tard</string>
-    <string name="instabug_sheet_title">Bogues &amp; Suggestions</string>
-    <string name="instabug_sheet_description">Appuyez sur le bouton coccinelle pour envoyer des rapports de bogue et des commentaires. Le bouton peut être désactivé dans le menu Paramètres.</string>
+    <string name="feedback_sheet_title">Bogues &amp; suggestions</string>
+    <string name="feedback_sheet_description">Visitez le menu Paramètres pour faire une suggestion de fonctionnalité, donner votre avis ou signaler un bug.</string>
     <string name="backup_sheet_title">Sauvegarde</string>
     <string name="backup_sheet_description">Veillez à exporter périodiquement le journal des pêcheurs pour vous assurer qu\'aucune donnée n\'est perdue. Visitez le menu Paramètres pour en savoir plus.</string>
     
@@ -35,13 +35,14 @@
     <string name="default_color_blue">Bleu Chrome</string>
 
     <string name="display_units">Afficher les unités</string>
-    <string name="instabug_title">Bogues et suggestions</string>
-    <string name="instabug_summary">Activer ou désactiver le bouton flottant Instabug.</string>
-    <string name="instabug_restart">Les changements prendront effet après le redémarrage de Anglers\' Log.</string>
     <string name="imperial">Impérial</string>
     <string name="metric">Métrique</string>
     <string name="about_setting">À propos, Conditions &amp; Confidentialité</string>
     <string name="version">Version</string>
+    <string name="feedback_name">Bogues et suggestions</string>
+    <string name="feedback_summary">Envoyer un commentaire, suggérer une fonctionnalité ou signaler un bug.</string>
+    <string name="feedback_chooser_title">Envoyer un commentaire via</string>
+    <string name="feedback_no_email">Aucun client de messagerie trouvé sur le périphérique</string>
     <string name="import_name">Import</string>
     <string name="import_summary">Transférer des données d\'une autre plate-forme de périphérique.</string>
     <string name="import_title">Confirmer l\'importation</string>
