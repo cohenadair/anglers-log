@@ -27,111 +27,77 @@ COL: users
         licenseFrontUrl (#205) : string
         licenseBackUrl (#205) : string
         COL: trips
-            DOC: <trip-id>
-            ...
         COL: catches
-            DOC: <catch-id>
-            ...
         COL: bodiesOfWater
-            DOC: <body-of-water-id>
-            ...
         COL: species
-            DOC: <species-id>
-            ...
         COL: baitCategories
-            DOC: <bait-category-id>
-            ...
         COL: baits
-            DOC: <bait-id>
-            ...
         COL: waterClarities
-            DOC: <water-clarity-id>
-            ...
         COL: waterSpeeds
-            DOC: <water-speed-id>
-            ...
         COL: fishingMethods
-            DOC: <fishing-method-id>
-            ...
         COL: anglers
-            DOC: <angler-id>
-            ...
         COL: chums (#249)
-            DOC: <chum-id>
-            ...
         COL: gear (#93)
-            DOC: <gear-id>
-            ...
     ...
+```
 
 ### Trips
 ```
-trips : {
-    <user-id> : {
-        <trip-id> {
-            name : string,
-            startDate : required long,
-            endDate : required long,
-            anglers : {
-                <angler-id> : true, ...
-            },
-            bodiesOfWater : {
-                <body-of-water-id> : true, ...
-            },
-            catches : {
-                <catch-id> : true, ...
-            },
-            notes : string,
-            rating (#209) : int,
-            skunked (#23) : boolean,
-            weather (#239) : Weather
-        }
-    }, ...
-}
+DOC: <trip-id>
+    name : string
+    startDate : required long
+    endDate : required long
+    COL: anglers
+        DOC: <angler-id>
+        ...
+    COL: bodiesOfWater
+        DOC: <body-of-water-id>
+        ...
+    COL: catches : {
+        DOC: <catch-id>
+        ...
+    notes : string
+    rating (#209) : int
+    skunked (#23) : boolean
+    weather (#239) : Weather
 ```
 
 ### Catches
 ```
-catches : {
-    <user-id> : {
-        <catch-id> : {
-            createdAt : required long,
-            caughtAt : long,
-            generalizedTimeOfDay (#196) : int,
-            photos : {
-                <photo-url> : true, ...
-            }
-            speciesId : required string,
-            bodyOfWaterId : string,
-            fishingSpotId : string,
-            coordinateId : string,
-            baits : {
-                <bait-id> : true, ...
-            },
-            isFavourite : boolean,
-            result : int,
-            fishingMethods : {
-                <fishing-method-id> : true, ...
-            },
-            waterClarityId : string,
-            waterDepth : float,
-            waterTempterature : float,
-            waterLevel (#25) : float,
-            waterSpeedId (#251) : string,
-            quantity : int,
-            length : float,
-            weight : float,
-            weather : Weather,
-            tide (#25) : int,
-            moonPhase (#25) : int,
-            notes : string,
-            anglerId (#213) : string,
-            season (#158) : int,
-            GearId (#93) : string,
-            chumId (#249) : string
-        }
-    }, ...
-}
+DOC: <catch-id>
+    caughtAt : long
+    generalizedTimeOfDay (#196) : int
+    COL: photos
+        DOC: <photo-url>
+        ...
+    speciesId : string
+    bodyOfWaterId : string
+    fishingSpotId : string
+    coordinatesId : string
+    COL: baits
+        DOC: <bait-id>
+        ...
+    isFavourite : boolean
+    result : int
+    COL: fishingMethods
+        DOC: <fishing-method-id>
+        ...
+    waterClarityId : string
+    waterDepth : float
+    waterTempterature : float
+    waterLevel (#25) : float
+    waterSpeedId (#251) : string
+    quantity : int
+    length : float
+    weight : float
+    weather : Weather
+    tide (#25) : int
+    moonPhase (#25) : int
+    notes : string,
+    anglerId (#213) : string
+    season (#158) : int
+    gearId (#93) : string
+    chumId (#249) : string
 ```
 
 ### Bodies of Water
@@ -143,28 +109,21 @@ A "body of water" can have multiple fishing spots and multiple coordinates.
 
 > Note: Coordinates are managed automatically when catches are managed. Fishing Spots can be managed at any time by the user.
 ```
-bodies-of-water : {
-    <user-id> : {
-        <body-of-water-id> : {
+DOC: <body-of-water-id>
+    name : string
+    COL: fishingSpots
+        DOC: <fishing-spot-id>
             name : string
-            fishingSpots : {
-                <fishing-spot-id> : {
-                    name : string,
-                    latLng : required LatLng,
-                    photos (#199) : {
-                        <photo-url> : true, ...
-                    },
-                    notes (#289) : string
-                }
-            },
-            coordinates : {
-                <coordinate-id> : {
-                    latLng : required LatLng
-                }
-            }
-        }
-    }, ...
-}
+            latLng : required LatLng
+            COL: photos (#199)
+                DOC: <photo-url>
+                ...
+            notes (#289) : string
+        ...
+    COL: coordinates
+        DOC: <coordinate-id>
+            latLng : required LatLng
+        ...
 ```
 
 ### Species

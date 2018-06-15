@@ -11,6 +11,9 @@ Anglers' Log 2.0 Dev Notes
 
 ## Catches
 * When adding a location to a Catch, give the option to select a body of water and fishing spot, use current coordinates, or enter coordinates.
+* In the Catch summary screen:
+  * Consider showing the location as a map snapshot, rather than just a name and/or coordinates.
+  * When showing weather data, consider using a `GridView` since there will be a lot of information to show.
 
 ## Bodies of Water
 * Combine Bodies of Water and Map pages.
