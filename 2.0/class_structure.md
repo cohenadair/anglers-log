@@ -1,6 +1,9 @@
 Anglers' Log 2.0 Class Structure
 ================================
 
+## Testing
+Unit tests aren't necessary for getters, but there will be unit tests in place for converting to and from Firestore documents and collections, as well importing from legacy JSON data strings.
+
 ## Bases
 ```Dart
 abstract class LogItem {
@@ -36,7 +39,7 @@ class Chum extends LogItem {}
 ## Complex Log Items
 A complex log items is one that has additional properties to those defined in `LogItem`.
 
-> Note: These definitions do not include properties; only methods and constructors.
+> Note: These definitions do not include properties; only methods and constructors. Properties will be derived from Firestore documents and/or collections.
 
 ```Dart
 class Trip extends LogItem {
@@ -87,10 +90,7 @@ class Gear extends PhotoLogItem {
 ## Other
 Non-entity model objects.
 ```Dart
-class Weather {}
-
-// Note: Flutter may already have a LatLng-like data structure.
-class LatLng {
-    LatLng(this.lat, this.lng);
-}
+// The `Atmosphere` class includes include everything to do with atmosphere - weather, 
+// tide, pressure, moon, etc. It is used in multiple log items. All properties are optional.
+class Atmosphere {}
 ```

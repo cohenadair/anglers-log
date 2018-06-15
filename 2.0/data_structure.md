@@ -1,19 +1,21 @@
 Anglers' Log 2.0 Data Structure
 ===============================
 
-The structures below look like JSON, but Anglers' Log 2.0 will use Firebase Cloud Firestore (CF) database instead of Firebase Realtime Database. CF stores data in "documents" and "collections". This structure is always flat and allows for a logical object tree, unlike the Realtime Database where you need to "flatten" data trees in order to lessen the data downloaded by the client.
+Anglers' Log 2.0 will use Firebase Cloud Firestore (CF) database instead of Firebase Realtime Database. CF stores data in "documents" and "collections". This structure is always flat and allows for a logical object tree, unlike the Realtime Database where you need to "flatten" data trees in order to lessen the data downloaded by the client.
 
 ## Common
 Common structures that may appear in multiple documents.
 ```
-Weather {
-    temperature : float,
-    windSpeed : float,
-    windDirection (#25) : string,
-    skyConditions : string,
-    airPressure (#25) : string,
+DOC: atmosphere
+    temperature : float
+    windSpeed : float
+    windDirection (#25) : string
+    skyConditions : string
+    airPressure (#25) : string
+    tide (#25) : int
+    moonPhase (#25) : int
+    season (#158) : int
     description (#25) : string
-}
 ```
 
 ## User
@@ -33,15 +35,18 @@ COL: users
         COL: baitCategories
         COL: baits
         COL: waterClarities
-        COL: waterSpeeds
+        COL: waterSpeeds (#251)
         COL: fishingMethods
         COL: anglers
-        COL: chums (#249)
+        COL: chum (#249)
         COL: gear (#93)
     ...
 ```
 
 ### Trips
+A fishing "trip" is a length of time for which an angler is actually fishing. It can be spread over a few hours, a few days, or even a few weeks; it is totally customizable.  A fishing trip will include information such as anglers involved, catches made, and bodies of water visited. 
+
+Trips are especially useful for tracking when you get "skunked" (when no fish are caught). Using this information, the angler may want to avoid fishing in the same location or under similar atmospheric conditions.
 ```
 DOC: <trip-id>
     name : string
@@ -58,11 +63,15 @@ DOC: <trip-id>
         ...
     notes : string
     rating (#209) : int
-    skunked (#23) : boolean
-    weather (#239) : Weather
+    skunked (#23) : "true" or null
+    atmosphere (#239) : atmosphere
+    isFavorite : "true" or null
 ```
 
 ### Catches
+A "catch" normally represents a _single_ fish caught; however, there are cases where one "catch" entry could represent multiple fish. A good example of this is catching perch. People often limit out on perch (the limit is usually around 20-50), and they're not going to create a new "catch" entry for every single one.
+
+Similarly, someone might catch a dozen bass in a given day, but not want to create a new entry for each one.
 ```
 DOC: <catch-id>
     caughtAt : long
@@ -77,7 +86,7 @@ DOC: <catch-id>
     COL: baits
         DOC: <bait-id>
         ...
-    isFavourite : boolean
+    isFavourite : "true" or null
     result : int
     COL: fishingMethods
         DOC: <fishing-method-id>
@@ -90,12 +99,9 @@ DOC: <catch-id>
     quantity : int
     length : float
     weight : float
-    weather : Weather
-    tide (#25) : int
-    moonPhase (#25) : int
+    atmosphere : atmosphere
     notes : string,
     anglerId (#213) : string
-    season (#158) : int
     gearId (#93) : string
     chumId (#249) : string
 ```
@@ -114,7 +120,7 @@ DOC: <body-of-water-id>
     COL: fishingSpots
         DOC: <fishing-spot-id>
             name : string
-            latLng : required LatLng
+            latLng : required Location
             COL: photos (#199)
                 DOC: <photo-url>
                 ...
@@ -122,128 +128,93 @@ DOC: <body-of-water-id>
         ...
     COL: coordinates
         DOC: <coordinate-id>
-            latLng : required LatLng
+            latLng : required Location
         ...
 ```
 
 ### Species
+Simply, a "species" is a type of fish, such as "Pike" or "Rainbow Trout".
 ```
-species : {
-    <user-id> : {
-        <species-id> : {
-            name : string
-        }
-    }, ...
-}
+DOC: <species-id>
+    name : string
 ```
 
 ### Bait Categories
+A "bait category" is a tool meant to easily organize a user's baits. Categories can be very generic like "Lure" and "Fly", or be specific like "Wooly Bugger", "Rapala", "Stone Fly", etc.
+
+Bait categories are completely controlled by the user, and are "parents" of baits.
 ```
-bait-categories : {
-    <user-id> : {
-        <bait-category-id> : {
-            name : string
-        }
-    }, ...
-}
+DOC: <bait-category-id>
+    name : string
 ```
 
 ### Baits
+Simply, a "bait" is anything an angler uses to catch a fish. Baits can be artificial, real (something dead or non-alive food, such as dough balls), or live.
 ```
-baits {
-    <user-id> : {
-        <bait-id> : {
-            name : required string,
-            photoUrl : string,
-            categoryId : string,
-            colour : string,
-            modelNumber (#214) : string,
-            size : string,
-            type : int,
-            diveDepth (#214) : float,
-            description: string,
-        }
-    }, ...
-}
+DOC: <bait-id>
+    name : required string
+    photoUrl : string
+    categoryId : string
+    colour : string
+    modelNumber (#214) : string
+    size : string
+    type : int
+    diveDepth (#214) : float
+    description: string
 ```
 
 ### Water Clarities
+How clear the water is, such as "clear", "muddy", or "chocolate milk".
 ```
-water-clarities : {
-    <user-id> : {
-        <water-clarity-id> : {
-            name : string
-        }
-    }, ...
-}
+DOC: <water-clarity-id>
+    name : string
 ```
 
-### Water Speeds
+### Water Speeds (#251)
+How fast the water is running. This is more applicable to rivers and streams, rather than lakes or oceans.
 ```
-water-speeds (#251) : {
-    <user-id> : {
-        <water-speed-id> : {
-            name : string
-        }
-    }
-}
+DOC: <water-speed-id>
+    name : string
 ```
 
 ### Fishing Methods
+A "fishing method" is the technique an angler used to catch a fish. Fishing Methods can be thought of as "tags" attached to a Catch. Examples are "Boat", "Casting", "Ice", and "Shore".
 ```
-fishing-methods : {
-    <user-id> : {
-        <fishing-method-id> : {
-            name : string
-        }
-    }, ...
-}
+DOC: <fishing-method-id>
+    name : string
 ```
 
 ### Anglers
+The persion who caught a fish. This gives the user's log a personal feel, and allows them to keep track of all fish caught on a trip, regardless if it was them who made the catch.
 ```
-anglers : {
-    <user-id> : {
-        <angler-id> : {
-            name : string
-        }
-    }, ...
-}
+DOC: <angler-id>
+    name : string
 ```
 
-### Chums
+### Chum (#249)
+A "chum" is an amount of fish attractant, such as a handful of corn, that an angler throws into the water to attract fish to a certain location.
 ```
-chums : {
-    <user-id> : {
-        <chum-id> : {
-            name : string,
-            size : string
-        }
-    }
-}
+DOC: <chum-id>
+    name : string
+    size : string
 ```
 
-### Gear
+### Gear (#93)
 ```
-gear (#93) : {
-    <user-id> : {
-        <gear-id> : {
-            name : string,
-            photoUrl : string,
-            make : string,
-            model : string,
-            serialNumber : string,
-            length : float,
-            action : int,
-            reelMake : string,
-            reelModel : string,
-            reelSize : float,
-            line : string,
-            lineNumberRating : string,
-            lineColour : string
-        }
-    }
-}
+DOC: <gear-id>
+    name : string
+    photoUrl : string
+    make : string
+    model : string
+    serialNumber : string
+    length : float
+    action : int
+    reelMake : string
+    reelModel : string
+    reelSize : float
+    line : string
+    lineNumberRating : string
+    lineColour : string
 ```
 
 ## Development
