@@ -65,6 +65,9 @@ abstract class LogItem {
 
     List<Field> getAllFields();
     List<Field> getAvailableFields();
+
+    // Returns true if users can add fields to this LogItem; false otherwise.
+    bool isCustomizable();
     
     // Returns a JSON representation of the receiver.
     String toJson() {}
