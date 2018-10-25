@@ -5,6 +5,11 @@ Anglers' Log 2.0 will use Firebase Cloud Firestore (CF) database instead of Fire
 
 Note that the fields described in this document will be what Anglers' Log provides, and most fields will be optional.  In addition to the fields in this document, users will be able to create "custom" fields to keep track of any data Anglers' Log does not include.
 
+## Terms
+* COL: Firestore collection of documents.
+* DOC: Firestore document.
+* ARR: Firestore array.
+
 ## Common
 Common structures that may appear in multiple documents.
 ```
@@ -54,15 +59,9 @@ DOC: <trip-id>
     name : string
     startDate : required long
     endDate : required long
-    COL: anglers
-        DOC: <angler-id>
-        ...
-    COL: bodiesOfWater
-        DOC: <body-of-water-id>
-        ...
-    COL: catches : {
-        DOC: <catch-id>
-        ...
+    ARR: anglers : [<angler-id>]
+    ARR: bodiesOfWater : [<body-of-water-id>]
+    ARR: catches : [<catch-id>]
     notes : string
     rating (#209) : int
     skunked (#23) : "true" or null
@@ -78,21 +77,15 @@ Similarly, someone might catch a dozen bass in a given day, but not want to crea
 DOC: <catch-id>
     caughtAt : long
     generalizedTimeOfDay (#196) : int
-    COL: photos
-        DOC: <photo-url>
-        ...
+    ARR: photos  : [<photo-url>]
     speciesId : string
     bodyOfWaterId : string
     fishingSpotId : string
     coordinatesId : string
-    COL: baits
-        DOC: <bait-id>
-        ...
+    ARR: baits : [<bait-id>]
     isFavourite : "true" or null
     result : int
-    COL: fishingMethods
-        DOC: <fishing-method-id>
-        ...
+    ARR: fishingMethods : [<fishing-method-id>]
     waterClarityId : string
     waterDepth : float
     waterTempterature : float
@@ -123,9 +116,7 @@ DOC: <body-of-water-id>
         DOC: <fishing-spot-id>
             name : string
             latLng : required Location
-            COL: photos (#199)
-                DOC: <photo-url>
-                ...
+            ARR: photos (#199) : [<photo-url>]
             notes (#289) : string
         ...
     COL: coordinates
