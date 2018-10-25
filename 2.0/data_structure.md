@@ -81,7 +81,7 @@ DOC: <catch-id>
     speciesId : string
     bodyOfWaterId : string
     fishingSpotId : string
-    coordinatesId : string
+    coordinatesId (#255) : string
     ARR: baits : [<bait-id>]
     isFavourite : "true" or null
     result : int
