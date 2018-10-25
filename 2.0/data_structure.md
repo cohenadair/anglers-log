@@ -152,8 +152,13 @@ DOC: <bait-category-id>
 
 ### Baits
 Simply, a "bait" is anything an angler uses to catch a fish. Baits can be artificial, real (something dead or non-alive food, such as dough balls), or live.
+
+Users can create bait "variants" - variations of existing baits.  For example, suppose a user uses Wooly Buggers often, but doesn't always use the same colour.  It would be very repetitive/cluttered if the user has 5 different bait entires for each colour.
+
+Each bait has an optional "baseId" property that can be used to determine whether or not the bait is the original bait, or a variant.  Variant baits will not appear in the main baits list, but appear as a list in the bait details view.
 ```
 DOC: <bait-id>
+    baseId (#319) : <bait-id>
     name : required string
     photoUrl : string
     categoryId : string
