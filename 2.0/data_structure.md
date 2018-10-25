@@ -3,6 +3,8 @@ Anglers' Log 2.0 Data Structure
 
 Anglers' Log 2.0 will use Firebase Cloud Firestore (CF) database instead of Firebase Realtime Database. CF stores data in "documents" and "collections". This structure is always flat and allows for a logical object tree, unlike the Realtime Database where you need to "flatten" data trees in order to lessen the data downloaded by the client.
 
+Note that the fields described in this document will be what Anglers' Log provides, and most fields will be optional.  In addition to the fields in this document, users will be able to create "custom" fields to keep track of any data Anglers' Log does not include.
+
 ## Common
 Common structures that may appear in multiple documents.
 ```
