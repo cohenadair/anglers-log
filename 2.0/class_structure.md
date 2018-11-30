@@ -14,14 +14,14 @@ abstract class Field {
     isEqual(Field field) {}
 }
 
-class SingleField {
-    final String value;
+class SingleField<T> {
+    final T value;
     SingleField(this.jsonKey, this.displayName, this.value);
     isEqual(Field field) {}
 }
 
-class MultiField {
-    final List<String> values;
+class MultiField<T> {
+    final List<T> values;
     SingleField(this.jsonKey, this.displayName, this.values);
     isEqual(Field field) {}
 }
