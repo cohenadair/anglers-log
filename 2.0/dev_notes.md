@@ -55,6 +55,7 @@ Consider adding a feature that allows users to make some of their data public. I
 ## Atmospheric Data
 * We should get as much atmospheric data as possible automatically.
 * Exactly which data is retrived can be determined in Settings. Not everyone will want to know the lunar tables, or air pressure, for example. We don't want to clutter users' logs with unwanted data.
+* Tide selection should be something like "Low|High on its way in|out".
 
 ## Custom Fields
 * We should consider keeping track of when custom fields are created.
