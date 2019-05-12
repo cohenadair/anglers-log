@@ -35,6 +35,7 @@ Consider adding a feature that allows users to make some of their data public. I
 ## Trips
 * `anglers` can be inferred from selected catches.
 * If "skunked", use a stamp-like graphic on top of the views.
+* For catches, consider a "dumbed" down version, allowing users to select several species without actually adding a new catch for each one.
 
 ## Catches
 * When adding a location to a Catch, give the option to select a body of water and fishing spot, use current coordinates, or enter coordinates.
