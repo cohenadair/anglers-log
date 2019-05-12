@@ -4,7 +4,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'io.fabric.tools:gradle:1.+'
+        classpath 'io.fabric.tools:gradle:1.27.1'
     }
 }
 apply plugin: 'com.android.application'
@@ -21,13 +21,13 @@ allprojects {
 }
 
 android {
-    compileSdkVersion 23
+    compileSdkVersion 26
     buildToolsVersion "22.0.1"
     defaultConfig {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         applicationId "com.cohenadair.anglerslog"
         minSdkVersion 16
-        targetSdkVersion 23
+        targetSdkVersion 26
     }
     buildTypes {
         release {
@@ -54,21 +54,22 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     }
     androidTestCompile 'com.android.support.test:rules:0.4'
-    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
+    androidTestCompile 'com.android.support.test.espresso:espresso-core:3.0.2'
     androidTestCompile ('com.android.support.test.espresso:espresso-contrib:2.2') {
         exclude module: 'support-annotations'
         exclude module: 'support-v4'
         exclude module: 'support-v13'
         exclude module: 'recyclerview-v7'
     }
-    androidTestCompile 'com.android.support.test.uiautomator:uiautomator-v18:2.1.2'
-    androidTestCompile 'com.android.support:support-annotations:23.4.0'
-    compile 'com.android.support:preference-v14:23.4.0'
-    compile 'com.android.support:design:23.4.0'
-    compile 'com.android.support:cardview-v7:23.4.0'
-    compile 'com.android.support:recyclerview-v7:23.4.0'
-    compile 'com.google.android.gms:play-services-location:9.4.0'
-    compile 'com.google.android.gms:play-services-maps:9.4.0'
+    androidTestCompile 'com.android.support.test.uiautomator:uiautomator-v18:2.1.3'
+    androidTestCompile 'com.android.support:support-annotations:26.1.0'
+    compile 'com.android.support:support-annotations:27.1.1'
+    compile 'com.android.support:preference-v14:26.1.0'
+    compile 'com.android.support:design:26.1.0'
+    compile 'com.android.support:cardview-v7:26.1.0'
+    compile 'com.android.support:recyclerview-v7:26.1.0'
+    compile 'com.google.android.gms:play-services-location:16.0.0'
+    compile 'com.google.android.gms:play-services-maps:16.1.0'
     compile 'commons-io:commons-io:2.4'
     compile 'de.hdodenhof:circleimageview:2.0.0'
     compile 'com.github.PhilJay:MPAndroidChart:v3.0.0-beta1'
@@ -76,6 +77,6 @@ dependencies {
     compile 'com.adobe.xmp:xmpcore:5.1.2'
     compile 'com.davemorrissey.labs:subsampling-scale-image-view:3.4.1'
     compile('com.crashlytics.sdk.android:crashlytics:2.5.5@aar') {
-        transitive = true;
+        transitive = true
     }
 }
