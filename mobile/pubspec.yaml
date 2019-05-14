@@ -15,8 +15,8 @@ dependencies:
   flutter_localizations:
     sdk: flutter
 
-  intl: ^0.15.7
-  package_info: 0.4.0+2
+  intl: ^0.15.8
+  package_info: 0.4.0+3
   quiver: '>=2.0.0 <3.0.0'
 
 dev_dependencies:
