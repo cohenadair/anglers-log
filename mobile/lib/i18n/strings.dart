@@ -33,6 +33,24 @@ class Strings {
   }
 
   String get appName => _getString("appName");
+
+  String get loginPageLoginTitle => _getString("loginPage_loginTitle");
+  String get loginPageLoginButtonText => _getString("loginPage_loginButtonText");
+  String get loginPageLoginQuestionText => _getString("loginPage_loginQuestionText");
+  String get loginPageLoginActionText => _getString("loginPage_loginActionText");
+  String get loginPageSignUpTitle => _getString("loginPage_signUpTitle");
+  String get loginPageSignUpButtonText => _getString("loginPage_signUpButtonText");
+  String get loginPageSignUpQuestionText => _getString("loginPage_signUpQuestionText");
+  String get loginPageSignUpActionText => _getString("loginPage_signUpActionText");
+  String get loginPageEmailLabel => _getString("loginPage_emailLabel");
+  String get loginPageEmailRequired => _getString("loginPage_emailRequired");
+  String get loginPageEmailInvalidFormat => _getString("loginPage_emailInvalidFormat");
+  String get loginPagePasswordLabel => _getString("loginPage_passwordLabel");
+  String get loginPagePasswordRequired => _getString("loginPage_passwordRequired");
+  String get loginPagePasswordInvalidLength => _getString("loginPage_passwordInvalidLength");
+  String get loginPageErrorLoginUnknown => _getString("loginPage_errorLoginUnknown");
+  String get loginPageErrorSignUpUnknown => _getString("loginPage_errorSignUpUnknown");
+  String get loginPageErrorCredentials => _getString("loginPage_errorCredentials");
 }
 
 class StringsDelegate extends LocalizationsDelegate<Strings> {

@@ -1,12 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:mobile/app_manager.dart';
 import 'package:mobile/i18n/strings.dart';
+import 'package:mobile/pages/login_page.dart';
 import 'package:mobile/pages/main_page.dart';
 import 'package:mobile/res/color.dart';
+import 'package:mobile/widgets/widget.dart';
 
-void main() => runApp(new MyApp());
+void main() {
+  runApp(new MyApp());
+}
 
 class MyApp extends StatelessWidget {
+  final AppManager _app = AppManager();
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -22,7 +29,11 @@ class MyApp extends StatelessWidget {
         ),
         errorColor: Colors.red,
       ),
-      home: MainPage(),
+      home: _app.authManager.getAuthStateListenerWidget(
+        loading: Empty(),
+        authenticate: LoginPage(_app),
+        finished: MainPage(),
+      ),
       debugShowCheckedModeBanner: false,
       localizationsDelegates: [
         StringsDelegate(),
