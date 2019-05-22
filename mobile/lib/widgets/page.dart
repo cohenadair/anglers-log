@@ -18,27 +18,30 @@ class PageAppBarStyle {
 }
 
 class Page extends StatelessWidget {
-  final Widget _child;
-  final PageAppBarStyle _appBarStyle;
+  final Widget child;
+  final PageAppBarStyle appBarStyle;
+  final EdgeInsets padding;
 
   Page({
-    @required Widget child,
-    PageAppBarStyle appBarStyle,
-  }) : assert(child != null),
-       _child = child,
-       _appBarStyle = appBarStyle;
+    @required this.child,
+    this.appBarStyle,
+    this.padding,
+  }) : assert(child != null);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: _appBarStyle == null ? null : AppBar(
-        title: _appBarStyle.subtitle == null
-            ? Text(_appBarStyle.title == null ? "" : _appBarStyle.title)
+      appBar: appBarStyle == null ? null : AppBar(
+        title: appBarStyle.subtitle == null
+            ? Text(appBarStyle.title == null ? "" : appBarStyle.title)
             : _buildTitleWithSubtitle(context),
-        actions: _appBarStyle.actions,
-        leading: _appBarStyle.leading,
+        actions: appBarStyle.actions,
+        leading: appBarStyle.leading,
       ),
-      body: _child,
+      body: Padding(
+        padding: padding,
+        child: child,
+      ),
     );
   }
 
@@ -50,8 +53,8 @@ class Page extends StatelessWidget {
             ? CrossAxisAlignment.start
             : CrossAxisAlignment.center,
         children: <Widget>[
-          Text(_appBarStyle.title),
-          Text(_appBarStyle.subtitle,
+          Text(appBarStyle.title),
+          Text(appBarStyle.subtitle,
             style: Theme.of(context).textTheme.subtitle.copyWith(
               color: Colors.white,
             ),
