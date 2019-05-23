@@ -242,7 +242,6 @@ class _FeedbackPageState extends State<FeedbackPage> {
             isNotEmpty(name) ? name : "Unknown",
             isNotEmpty(email) ? email : "Unknown",
             isNotEmpty(message) ? message : "N/A",
-
             isNotEmpty(widget.attachment) ? widget.attachment : "N/A",
           ]),
         }

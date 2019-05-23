@@ -17,6 +17,7 @@
 		97C146FC1CF9000F007C117D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FA1CF9000F007C117D /* Main.storyboard */; };
 		97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FD1CF9000F007C117D /* Assets.xcassets */; };
 		97C147011CF9000F007C117D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FF1CF9000F007C117D /* LaunchScreen.storyboard */; };
+		AC29C2E825C05A7F000377EE /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = AC29C2E725C05A7F000377EE /* GoogleService-Info.plist */; };
 		ACC8765825AD3EFC0027466A /* MigrationChannel.m in Sources */ = {isa = PBXBuildFile; fileRef = ACC8765725AD3EFC0027466A /* MigrationChannel.m */; };
 		ACC8768725AD3F160027466A /* CMAEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = ACC8766025AD3F160027466A /* CMAEntry.m */; };
 		ACC8768825AD3F160027466A /* CMAStorageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = ACC8766125AD3F160027466A /* CMAStorageManager.m */; };
@@ -72,6 +73,9 @@
 		97C147001CF9000F007C117D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		97C147021CF9000F007C117D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9AB4A6C094D69D7B60728DEF /* Pods-Runner.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.release.xcconfig"; path = "Pods/Target Support Files/Pods-Runner/Pods-Runner.release.xcconfig"; sourceTree = "<group>"; };
+		AC29C29825C0504F000377EE /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		AC29C29A25C0508F000377EE /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		AC29C2E725C05A7F000377EE /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		ACC8765625AD3EFC0027466A /* MigrationChannel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MigrationChannel.h; sourceTree = "<group>"; };
 		ACC8765725AD3EFC0027466A /* MigrationChannel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MigrationChannel.m; sourceTree = "<group>"; };
 		ACC8765F25AD3F160027466A /* CMAImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMAImage.h; sourceTree = "<group>"; };
@@ -168,8 +172,10 @@
 				7AFFD8EE1D35381100E5BB4D /* AppDelegate.m */,
 				97C146FD1CF9000F007C117D /* Assets.xcassets */,
 				ACC8765525AD3EFC0027466A /* Channels */,
+				AC29C29525C05037000377EE /* Firebase */,
 				1498D2321E8E86230040F4C2 /* GeneratedPluginRegistrant.h */,
 				1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */,
+				AC29C2E725C05A7F000377EE /* GoogleService-Info.plist */,
 				97C147021CF9000F007C117D /* Info.plist */,
 				97C146FF1CF9000F007C117D /* LaunchScreen.storyboard */,
 				ACC8765925AD3F160027466A /* Legacy */,
@@ -200,6 +206,31 @@
 				08DE748AF0F9759F3D481223 /* Pods-Runner.profile-dev.xcconfig */,
 			);
 			name = Pods;
+			sourceTree = "<group>";
+		};
+		AC29C29525C05037000377EE /* Firebase */ = {
+			isa = PBXGroup;
+			children = (
+				AC29C29725C05045000377EE /* Prod */,
+				AC29C29625C0503C000377EE /* Dev */,
+			);
+			path = Firebase;
+			sourceTree = "<group>";
+		};
+		AC29C29625C0503C000377EE /* Dev */ = {
+			isa = PBXGroup;
+			children = (
+				AC29C29825C0504F000377EE /* GoogleService-Info.plist */,
+			);
+			path = Dev;
+			sourceTree = "<group>";
+		};
+		AC29C29725C05045000377EE /* Prod */ = {
+			isa = PBXGroup;
+			children = (
+				AC29C29A25C0508F000377EE /* GoogleService-Info.plist */,
+			);
+			path = Prod;
 			sourceTree = "<group>";
 		};
 		ACC8765525AD3EFC0027466A /* Channels */ = {
@@ -283,6 +314,7 @@
 			buildConfigurationList = 97C147051CF9000F007C117D /* Build configuration list for PBXNativeTarget "Runner" */;
 			buildPhases = (
 				2CEC49DAEC738A147F15AF8C /* [CP] Check Pods Manifest.lock */,
+				AC29C29C25C05111000377EE /* Firebase Setup */,
 				9740EEB61CF901F6004384FC /* Run Script */,
 				97C146EA1CF9000F007C117D /* Sources */,
 				97C146EB1CF9000F007C117D /* Frameworks */,
@@ -346,6 +378,7 @@
 				9740EEB41CF90195004384FC /* Debug.xcconfig in Resources */,
 				97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */,
 				97C146FC1CF9000F007C117D /* Main.storyboard in Resources */,
+				AC29C2E825C05A7F000377EE /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -417,6 +450,24 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "/bin/sh \"$FLUTTER_ROOT/packages/flutter_tools/bin/xcode_backend.sh\" build\n";
+		};
+		AC29C29C25C05111000377EE /* Firebase Setup */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Firebase Setup";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if [ \"${CONFIGURATION}\" == \"Debug-prod\" ] || [ \"${CONFIGURATION}\" == \"Release-prod\" ] || [ \"${CONFIGURATION}\" == \"Release\" ]; then\n    cp -r \"${PROJECT_DIR}/Runner/Firebase/Prod/GoogleService-Info.plist\" \"${PROJECT_DIR}/Runner/GoogleService-Info.plist\"\n        echo \"Production plist copied\"\nelif [ \"${CONFIGURATION}\" == \"Debug-dev\" ] || [ \"${CONFIGURATION}\" == \"Release-dev\" ] || [ \"${CONFIGURATION}\" == \"Debug\" ]; then\n    cp -r \"${PROJECT_DIR}/Runner/Firebase/Dev/GoogleService-Info.plist\" \"${PROJECT_DIR}/Runner/GoogleService-Info.plist\"\n        echo \"Development plist copied\"\nfi\n";
 		};
 		C8F36081C2561D3FD94158F2 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -603,7 +654,7 @@
 					"$(PROJECT_DIR)/Flutter",
 				);
 				INFOPLIST_FILE = Runner/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -629,7 +680,7 @@
 					"$(PROJECT_DIR)/Flutter",
 				);
 				INFOPLIST_FILE = Runner/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -709,7 +760,7 @@
 					"$(PROJECT_DIR)/Flutter",
 				);
 				INFOPLIST_FILE = Runner/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -789,7 +840,7 @@
 					"$(PROJECT_DIR)/Flutter",
 				);
 				INFOPLIST_FILE = Runner/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -863,7 +914,7 @@
 					"$(PROJECT_DIR)/Flutter",
 				);
 				INFOPLIST_FILE = Runner/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -937,7 +988,7 @@
 					"$(PROJECT_DIR)/Flutter",
 				);
 				INFOPLIST_FILE = Runner/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1010,7 +1061,7 @@
 					"$(PROJECT_DIR)/Flutter",
 				);
 				INFOPLIST_FILE = Runner/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",

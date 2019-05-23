@@ -1,6 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'auth_manager.dart';
 import 'bait_category_manager.dart';
 import 'bait_manager.dart';
 import 'catch_manager.dart';
@@ -33,6 +35,7 @@ class AppManager {
       Provider.of<AppManager>(context, listen: false);
 
   // Internal dependencies.
+  AuthManager _authManager;
   BaitCategoryManager _baitCategoryManager;
   BaitManager _baitManager;
   DataManager _dataManager;
@@ -61,6 +64,13 @@ class AppManager {
   PhotoManagerWrapper _photoManagerWrapper;
   ServicesWrapper _servicesWrapper;
   UrlLauncherWrapper _urlLauncherWrapper;
+
+  AuthManager get authManager {
+    if (_authManager == null) {
+      _authManager = AuthManager(this, FirebaseAuth.instance);
+    }
+    return _authManager;
+  }
 
   BaitCategoryManager get baitCategoryManager {
     if (_baitCategoryManager == null) {

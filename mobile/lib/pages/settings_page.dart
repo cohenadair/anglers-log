@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 
+import '../auth_manager.dart';
 import '../i18n/strings.dart';
-import '../res/dimen.dart';
+import '../res/style.dart';
+import '../utils/dialog_utils.dart';
+import '../widgets/list_item.dart';
 import '../widgets/text.dart';
 
 class SettingsPage extends StatelessWidget {
@@ -13,23 +16,22 @@ class SettingsPage extends StatelessWidget {
       ),
       body: ListView(
         children: <Widget>[
-          _buildHeading("Units"),
+          _buildLogout(context),
         ],
       ),
     );
   }
 
-  Widget _buildHeading(String title) {
-    return Padding(
-      padding: EdgeInsets.only(
-        top: paddingDefault,
-        bottom: paddingSmall,
-        left: paddingDefault,
-        right: paddingDefault,
-      ),
-      child: SafeArea(
-        child: HeadingLabel(title),
-      ),
-    );
-  }
+  Widget _buildLogout(BuildContext context) => ListItem(
+        title: Label(
+          Strings.of(context).settingsPageLogout,
+          style: styleError,
+        ),
+        onTap: () => showConfirmYesDialog(
+          context: context,
+          description:
+              Label(Strings.of(context).settingsPageLogoutConfirmMessage),
+          onConfirm: () async => AuthManager.of(context).logout(),
+        ),
+      );
 }

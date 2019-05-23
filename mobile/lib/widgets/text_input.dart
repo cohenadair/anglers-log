@@ -22,6 +22,7 @@ class TextInput extends StatefulWidget {
 
   final bool enabled;
   final bool autofocus;
+  final bool obscureText;
   final int maxLength;
   final int maxLines;
   final TextInputType keyboardType;
@@ -38,6 +39,7 @@ class TextInput extends StatefulWidget {
     this.controller,
     this.enabled = true,
     this.autofocus = false,
+    this.obscureText = false,
     this.maxLength = _inputLimitDefault,
     this.maxLines,
     this.keyboardType,
@@ -117,6 +119,20 @@ class TextInput extends StatefulWidget {
           onChanged: onChanged,
         );
 
+  TextInput.password(
+    BuildContext context, {
+    PasswordInputController controller,
+    VoidCallback onChanged,
+  }) : this(
+          label: Strings.of(context).inputPasswordLabel,
+          capitalization: TextCapitalization.none,
+          maxLength: null,
+          obscureText: true,
+          maxLines: 1,
+          controller: controller,
+          onChanged: onChanged,
+        );
+
   @override
   _TextInputState createState() => _TextInputState();
 }
@@ -154,6 +170,7 @@ class _TextInputState extends State<TextInput> {
           setState(_updateError);
         },
         autofocus: widget.autofocus,
+        obscureText: widget.obscureText,
       ),
     );
   }

@@ -1,11 +1,14 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 
 import 'app_manager.dart';
+import 'auth_manager.dart';
 import 'i18n/strings.dart';
 import 'pages/landing_page.dart';
+import 'pages/login_page.dart';
 import 'pages/main_page.dart';
 import 'pages/onboarding/onboarding_journey.dart';
 import 'preferences_manager.dart';
@@ -29,6 +32,7 @@ class _AnglersLogState extends State<AnglersLog> {
   Future<bool> _appInitializedFuture;
 
   AppManager get _app => widget.appManager;
+  AuthManager get _authManager => _app.authManager;
   PreferencesManager get _preferencesManager => _app.preferencesManager;
 
   @override
@@ -78,9 +82,15 @@ class _AnglersLogState extends State<AnglersLog> {
               );
             }
 
-            return AnimatedSwitcher(
-              duration: defaultAnimationDuration,
-              child: firstPage,
+            // TODO: When transitioning from LoginPage to OnboardingJourney,
+            // a LandingPage is shown briefly.
+            return _authManager.listenerWidget(
+              loading: LandingPage(),
+              authenticate: LoginPage(),
+              finished: AnimatedSwitcher(
+                duration: defaultAnimationDuration,
+                child: firstPage,
+              ),
             );
           },
         ),
@@ -100,6 +110,8 @@ class _AnglersLogState extends State<AnglersLog> {
   }
 
   Future<bool> _initialize() async {
+    await Firebase.initializeApp();
+
     await _app.dataManager.initialize();
     await _app.locationMonitor.initialize();
     await _app.propertiesManager.initialize();

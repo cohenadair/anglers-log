@@ -79,6 +79,9 @@ class Strings {
   String get inputNotSelected => _string("input_notSelected");
   String get inputEmailLabel => _string("input_emailLabel");
   String get inputInvalidEmail => _string("input_invalidEmail");
+  String get inputPasswordLabel => _string("input_passwordLabel");
+  String get inputPasswordInvalidLength =>
+      _string("input_passwordInvalidLength");
 
   String get addAnythingPageCatch => _string("addAnythingPage_catch");
   String get addAnythingPageTrip => _string("addAnythingPage_trip");
@@ -235,6 +238,9 @@ class Strings {
   String get morePageRateApp => _string("morePage_rateApp");
 
   String get settingsPageTitle => _string("settingsPage_title");
+  String get settingsPageLogout => _string("settingsPage_logout");
+  String get settingsPageLogoutConfirmMessage =>
+      _string("settingsPage_logoutConfirmMessage");
 
   String get mapPageMenuLabel => _string("mapPage_menuLabel");
   String get mapPageDeleteFishingSpot => _string("mapPage_deleteFishingSpot");
@@ -455,6 +461,31 @@ class Strings {
       _string("emptyListPlaceholder_noResultsTitle");
   String get emptyListPlaceholderNoResultsDescription =>
       _string("emptyListPlaceholder_noResultsDescription");
+
+  String get loginPageLoginTitle => _string("loginPage_loginTitle");
+  String get loginPageLoginButtonText => _string("loginPage_loginButtonText");
+  String get loginPageLoginQuestionText =>
+      _string("loginPage_loginQuestionText");
+  String get loginPageLoginActionText => _string("loginPage_loginActionText");
+  String get loginPageSignUpTitle => _string("loginPage_signUpTitle");
+  String get loginPageSignUpButtonText => _string("loginPage_signUpButtonText");
+  String get loginPageSignUpQuestionText =>
+      _string("loginPage_signUpQuestionText");
+  String get loginPageSignUpActionText => _string("loginPage_signUpActionText");
+  String get loginPageErrorUnknown => _string("loginPage_errorUnknown");
+  String get loginPageErrorUnknownServer =>
+      _string("loginPage_errorUnknownServer");
+  String get loginPageErrorNoConnection =>
+      _string("loginPage_errorNoConnection");
+  String get loginPageErrorInvalidEmail =>
+      _string("loginPage_errorInvalidEmail");
+  String get loginPageErrorUserDisabled =>
+      _string("loginPage_errorUserDisabled");
+  String get loginPageErrorUserNotFound =>
+      _string("loginPage_errorUserNotFound");
+  String get loginPageErrorWrongPassword =>
+      _string("loginPage_errorWrongPassword");
+  String get loginPageErrorEmailInUse => _string("loginPage_errorEmailInUse");
 }
 
 class StringsDelegate extends LocalizationsDelegate<Strings> {
