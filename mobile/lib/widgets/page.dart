@@ -25,7 +25,7 @@ class Page extends StatelessWidget {
   Page({
     @required this.child,
     this.appBarStyle,
-    this.padding,
+    this.padding = insetsZero,
   }) : assert(child != null);
 
   @override
