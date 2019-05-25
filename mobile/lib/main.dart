@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
       home: _app.authManager.getAuthStateListenerWidget(
         loading: Empty(),
         authenticate: LoginPage(_app),
-        finished: MainPage(),
+        finished: MainPage(_app),
       ),
       debugShowCheckedModeBanner: false,
       localizationsDelegates: [

@@ -34,6 +34,18 @@ class Strings {
 
   String get appName => _getString("appName");
 
+  String get cancel => _getString("cancel");
+  String get done => _getString("done");
+  String get save => _getString("save");
+  String get delete => _getString("delete");
+  String get none => _getString("none");
+  String get ok => _getString("ok");
+  String get error => _getString("error");
+  String get warning => _getString("warning");
+  String get continueString => _getString("continue");
+  String get yes => _getString("yes");
+  String get no => _getString("no");
+
   String get loginPageLoginTitle => _getString("loginPage_loginTitle");
   String get loginPageLoginButtonText => _getString("loginPage_loginButtonText");
   String get loginPageLoginQuestionText => _getString("loginPage_loginQuestionText");
@@ -51,6 +63,11 @@ class Strings {
   String get loginPageErrorLoginUnknown => _getString("loginPage_errorLoginUnknown");
   String get loginPageErrorSignUpUnknown => _getString("loginPage_errorSignUpUnknown");
   String get loginPageErrorCredentials => _getString("loginPage_errorCredentials");
+
+  String get settingsPageTitle => _getString("settingsPage_title");
+  String get settingsPageAccountHeading => _getString("settingsPage_accountHeading");
+  String get settingsPageLogout => _getString("settingsPage_logout");
+  String get settingsPathLogoutConfirmMessage => _getString("settingsPath_logoutConfirmMessage");
 }
 
 class StringsDelegate extends LocalizationsDelegate<Strings> {

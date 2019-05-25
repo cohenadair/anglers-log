@@ -6,6 +6,18 @@ Map<String, Map<String, String>> englishStrings = {
   "default" : {
     "appName" : "Anglers' Log",
 
+    "cancel" : "Cancel",
+    "done" : "Done",
+    "save" : "Save",
+    "delete" : "Delete",
+    "none" : "None",
+    "ok" : "Ok",
+    "error" : "Error",
+    "warning" : "Warning",
+    "continue" : "Continue",
+    "yes" : "Yes",
+    "no" : "No",
+
     "loginPage_loginTitle" : "Login",
     "loginPage_loginButtonText" : "Login",
     "loginPage_loginQuestionText" : "Don't have an account?",
@@ -23,5 +35,10 @@ Map<String, Map<String, String>> englishStrings = {
     "loginPage_errorLoginUnknown" : "Unknown login error. Check your connection and try again.",
     "loginPage_errorSignUpUnknown" : "Unknown sign up error. Check your connection and try again.",
     "loginPage_errorCredentials" : "Invalid login credentials",
+
+    "settingsPage_title" : "Settings",
+    "settingsPage_accountHeading" : "Account",
+    "settingsPage_logout" : "Logout",
+    "settingsPath_logoutConfirmMessage" : "Are you sure you want to logout?",
   },
 };

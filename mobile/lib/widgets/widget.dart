@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/res/dimen.dart';
 
+const defaultAnimationDuration = Duration(milliseconds: 200);
+
 class Empty extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

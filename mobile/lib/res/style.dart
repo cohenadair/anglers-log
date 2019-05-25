@@ -17,5 +17,4 @@ const TextStyle styleHyperlink = TextStyle(
 
 const TextStyle styleError = TextStyle(
   color: Colors.red,
-  fontSize: 12,
 );
