@@ -63,7 +63,7 @@ class ActionButton extends StatelessWidget {
       child: Text((text == null ? Strings.of(context).fromId(_stringId) : text)
           .toUpperCase()
       ),
-      textColor: Colors.white,
+      textColor: Colors.black,
     );
   }
 }

@@ -18,6 +18,8 @@ Map<String, Map<String, String>> englishStrings = {
     "yes" : "Yes",
     "no" : "No",
 
+    "input_requiredMessage" : "%s is required",
+
     "loginPage_loginTitle" : "Login",
     "loginPage_loginButtonText" : "Login",
     "loginPage_loginQuestionText" : "Don't have an account?",
@@ -40,5 +42,7 @@ Map<String, Map<String, String>> englishStrings = {
     "settingsPage_accountHeading" : "Account",
     "settingsPage_logout" : "Logout",
     "settingsPath_logoutConfirmMessage" : "Are you sure you want to logout?",
+
+    "angler_nameLabel" : "Name",
   },
 };

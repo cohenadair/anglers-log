@@ -46,6 +46,8 @@ class Strings {
   String get yes => _getString("yes");
   String get no => _getString("no");
 
+  String get inputRequiredMessage => _getString("input_requiredMessage");
+
   String get loginPageLoginTitle => _getString("loginPage_loginTitle");
   String get loginPageLoginButtonText => _getString("loginPage_loginButtonText");
   String get loginPageLoginQuestionText => _getString("loginPage_loginQuestionText");
@@ -68,6 +70,8 @@ class Strings {
   String get settingsPageAccountHeading => _getString("settingsPage_accountHeading");
   String get settingsPageLogout => _getString("settingsPage_logout");
   String get settingsPathLogoutConfirmMessage => _getString("settingsPath_logoutConfirmMessage");
+
+  String get anglerNameLabel => _getString("angler_nameLabel");
 }
 
 class StringsDelegate extends LocalizationsDelegate<Strings> {
