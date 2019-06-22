@@ -1,18 +1,4 @@
-buildscript {
-    repositories {
-        maven { url 'https://maven.fabric.io/public' }
-    }
-
-    dependencies {
-        classpath 'io.fabric.tools:gradle:1.+'
-    }
-}
 apply plugin: 'com.android.application'
-apply plugin: 'io.fabric'
-
-repositories {
-    maven { url 'https://maven.fabric.io/public' }
-}
 
 allprojects {
     repositories {
@@ -21,13 +7,13 @@ allprojects {
 }
 
 android {
-    compileSdkVersion 23
+    compileSdkVersion 26
     buildToolsVersion "22.0.1"
     defaultConfig {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         applicationId "com.cohenadair.anglerslog"
         minSdkVersion 16
-        targetSdkVersion 23
+        targetSdkVersion 26
     }
     buildTypes {
         release {
@@ -63,10 +49,10 @@ dependencies {
     }
     androidTestCompile 'com.android.support.test.uiautomator:uiautomator-v18:2.1.2'
     androidTestCompile 'com.android.support:support-annotations:23.4.0'
-    compile 'com.android.support:preference-v14:23.4.0'
-    compile 'com.android.support:design:23.4.0'
-    compile 'com.android.support:cardview-v7:23.4.0'
-    compile 'com.android.support:recyclerview-v7:23.4.0'
+    compile 'com.android.support:preference-v14:26.1.0'
+    compile 'com.android.support:design:26.1.0'
+    compile 'com.android.support:cardview-v7:26.1.0'
+    compile 'com.android.support:recyclerview-v7:26.1.0'
     compile 'com.google.android.gms:play-services-location:9.4.0'
     compile 'com.google.android.gms:play-services-maps:9.4.0'
     compile 'commons-io:commons-io:2.4'
@@ -75,7 +61,4 @@ dependencies {
     compile 'com.github.lzyzsd.randomcolor:library:1.0.0'
     compile 'com.adobe.xmp:xmpcore:5.1.2'
     compile 'com.davemorrissey.labs:subsampling-scale-image-view:3.4.1'
-    compile('com.crashlytics.sdk.android:crashlytics:2.5.5@aar') {
-        transitive = true;
-    }
 }
