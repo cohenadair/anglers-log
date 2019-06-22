@@ -250,7 +250,8 @@ public class SettingsFragment extends PreferenceFragmentCompat {
 
                         Intent intent = new Intent();
                         intent.setAction(Intent.ACTION_SEND);
-                        intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(zipFile));
+                        intent.putExtra(Intent.EXTRA_STREAM,
+                                Utils.getFileUri(getContext(), zipFile));
                         intent.setType(Utils.MIME_TYPE_ZIP);
 
                         startBackupActivity(intent, REQUEST_EXPORT);
