@@ -3,7 +3,7 @@
     package="com.cohenadair.anglerslog"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:versionName="@string/version_name"
-    android:versionCode="133">
+    android:versionCode="134">
 
     <uses-feature android:name="android.hardware.camera2" android:required="false"/>
 
