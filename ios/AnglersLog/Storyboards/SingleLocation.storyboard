@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="adr-BS-f2S">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="adr-BS-f2S">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -29,7 +28,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Location Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="V73-5r-JEk">
-                                                    <rect key="frame" x="16" y="7" width="343" height="29"/>
+                                                    <rect key="frame" x="16" y="7.5" width="343" height="29"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="24"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -116,7 +115,7 @@
                                                     </connections>
                                                 </mapView>
                                                 <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="2" translatesAutoresizingMaskIntoConstraints="NO" id="UJ7-g1-YbQ">
-                                                    <rect key="frame" x="16" y="176" width="343" height="29"/>
+                                                    <rect key="frame" x="16" y="171" width="343" height="29"/>
                                                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <segments>
                                                         <segment title="Standard"/>
@@ -133,7 +132,7 @@
                                                 <constraint firstAttribute="trailing" secondItem="3ya-dt-qqn" secondAttribute="trailing" id="9FY-iB-nJb"/>
                                                 <constraint firstItem="3ya-dt-qqn" firstAttribute="centerX" secondItem="UJ7-g1-YbQ" secondAttribute="centerX" id="H6I-JV-HDw"/>
                                                 <constraint firstAttribute="bottom" secondItem="3ya-dt-qqn" secondAttribute="bottom" id="PHR-IU-ATd"/>
-                                                <constraint firstItem="UJ7-g1-YbQ" firstAttribute="bottom" secondItem="R8n-TW-yoj" secondAttribute="bottomMargin" id="VRF-OD-ix5"/>
+                                                <constraint firstItem="UJ7-g1-YbQ" firstAttribute="bottom" secondItem="3ya-dt-qqn" secondAttribute="bottom" constant="-16" id="VZM-OY-EjE"/>
                                                 <constraint firstItem="3ya-dt-qqn" firstAttribute="top" secondItem="R8n-TW-yoj" secondAttribute="top" id="bjy-4h-iQo"/>
                                                 <constraint firstItem="3ya-dt-qqn" firstAttribute="top" secondItem="R8n-TW-yoj" secondAttribute="topMargin" constant="-9" id="dEU-Mf-rBm"/>
                                                 <constraint firstItem="UJ7-g1-YbQ" firstAttribute="leading" secondItem="R8n-TW-yoj" secondAttribute="leadingMargin" id="rlh-2F-rQH"/>
@@ -165,6 +164,7 @@
                         <outlet property="fishCaughtLabel" destination="2ey-Yi-aJi" id="5c1-KN-GjT"/>
                         <outlet property="fishingSpotLabel" destination="mMI-sH-N3r" id="ErN-ag-1DI"/>
                         <outlet property="locationNameLabel" destination="V73-5r-JEk" id="6kz-2g-weu"/>
+                        <outlet property="mapTypeBottomConstraint" destination="VZM-OY-EjE" id="GWD-BH-Rwa"/>
                         <outlet property="mapTypeControl" destination="UJ7-g1-YbQ" id="RQC-RQ-2pa"/>
                         <outlet property="mapView" destination="3ya-dt-qqn" id="nvp-91-UhT"/>
                         <segue destination="aLM-pd-xcd" kind="unwind" identifier="unwindToAddEntryFromSingleLocation" unwindAction="unwindToAddEntry:" id="i4g-iX-B1F"/>

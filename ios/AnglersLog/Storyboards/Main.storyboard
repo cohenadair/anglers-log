@@ -1,19 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="XOe-jZ-fVU">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="XOe-jZ-fVU">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
-    <customFonts key="customFonts">
-        <array key="HelveticaNeue.ttc">
-            <string>HelveticaNeue</string>
-        </array>
-    </customFonts>
     <scenes>
         <!--Photo Gallery-->
         <scene sceneID="PSO-ty-hvL">
@@ -171,8 +165,8 @@
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <textField opaque="NO" clipsSubviews="YES" tag="100" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Location Name" minimumFontSize="17" clearButtonMode="always" translatesAutoresizingMaskIntoConstraints="NO" id="gaf-hb-amO">
-                                            <rect key="frame" x="15" y="7" width="570" height="30"/>
+                                        <textField opaque="NO" clipsSubviews="YES" tag="100" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Location Name" minimumFontSize="17" clearButtonMode="always" translatesAutoresizingMaskIntoConstraints="NO" id="gaf-hb-amO">
+                                            <rect key="frame" x="20" y="7.5" width="335" height="30"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="30" id="2bD-SR-4IF"/>
                                             </constraints>
@@ -182,8 +176,8 @@
                                     </subviews>
                                     <constraints>
                                         <constraint firstAttribute="centerY" secondItem="gaf-hb-amO" secondAttribute="centerY" constant="-0.5" id="7Xc-Og-tGH"/>
-                                        <constraint firstItem="gaf-hb-amO" firstAttribute="leading" secondItem="zKl-GC-REy" secondAttribute="leadingMargin" id="YP9-lT-lpM"/>
-                                        <constraint firstItem="gaf-hb-amO" firstAttribute="trailing" secondItem="zKl-GC-REy" secondAttribute="trailingMargin" id="wwG-Uu-Q5q"/>
+                                        <constraint firstItem="gaf-hb-amO" firstAttribute="leading" secondItem="zKl-GC-REy" secondAttribute="leading" constant="20" id="DOq-Z4-dOi"/>
+                                        <constraint firstAttribute="trailing" secondItem="gaf-hb-amO" secondAttribute="trailing" constant="20" id="rB1-Th-RKL"/>
                                     </constraints>
                                 </tableViewCellContentView>
                             </tableViewCell>
@@ -290,7 +284,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="OFA-qW-P4d" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="3Dt-Rq-3tv" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="4980" y="768"/>
+            <point key="canvasLocation" x="4980" y="767.76611694152928"/>
         </scene>
         <!--Reveal View Controller-->
         <scene sceneID="MSp-fZ-sZ6">
@@ -354,7 +348,7 @@
                                                 </label>
                                             </subviews>
                                         </tableViewCellContentView>
-                                        <color key="backgroundColor" red="0.90196078431372551" green="0.80392156862745101" blue="0.49019607843137253" alpha="0.89189189189189189" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <color key="backgroundColor" red="0.92156862745098034" green="0.83137254901960778" blue="0.57647058823529407" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="UfF-aT-SpT">
                                         <rect key="frame" x="0.0" y="160" width="375" height="44"/>
@@ -375,7 +369,7 @@
                                                 </imageView>
                                             </subviews>
                                         </tableViewCellContentView>
-                                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <connections>
                                             <segue destination="aNb-i6-Pnr" kind="custom" identifier="fromSideMenuToViewEntries" customClass="SWRevealViewControllerSegue" id="5d5-Lp-R9Q"/>
                                         </connections>
@@ -399,7 +393,7 @@
                                                 </label>
                                             </subviews>
                                         </tableViewCellContentView>
-                                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <connections>
                                             <segue destination="Ikc-04-OhE" kind="custom" identifier="fromSideMenuToPhotos" customClass="SWRevealViewControllerSegue" id="Jyy-wS-dXA"/>
                                         </connections>
@@ -423,7 +417,7 @@
                                                 </imageView>
                                             </subviews>
                                         </tableViewCellContentView>
-                                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <connections>
                                             <segue destination="xJb-SX-dQA" kind="custom" identifier="fromSideMenuToStatistics" customClass="SWRevealViewControllerSegue" id="2gI-zo-GiY"/>
                                         </connections>
@@ -447,7 +441,7 @@
                                                 </imageView>
                                             </subviews>
                                         </tableViewCellContentView>
-                                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <connections>
                                             <segue destination="fhQ-YZ-2uP" kind="custom" identifier="fromSideMenuSpeciesToEditSettings" customClass="SWRevealViewControllerSegue" id="8iL-u2-ZVl"/>
                                         </connections>
@@ -471,7 +465,7 @@
                                                 </label>
                                             </subviews>
                                         </tableViewCellContentView>
-                                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <connections>
                                             <segue destination="fhQ-YZ-2uP" kind="custom" identifier="fromSideMenuLocationsToEditSettings" customClass="SWRevealViewControllerSegue" id="Q8L-vB-CaK"/>
                                         </connections>
@@ -495,7 +489,7 @@
                                                 </label>
                                             </subviews>
                                         </tableViewCellContentView>
-                                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <connections>
                                             <segue destination="fhQ-YZ-2uP" kind="custom" identifier="fromSideMenuFishingMethodsToEditSettings" customClass="SWRevealViewControllerSegue" id="aBE-xI-c3y"/>
                                         </connections>
@@ -519,7 +513,7 @@
                                                 </label>
                                             </subviews>
                                         </tableViewCellContentView>
-                                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <connections>
                                             <segue destination="fhQ-YZ-2uP" kind="custom" identifier="fromSideMenuWaterClaritiesToEditSettings" customClass="SWRevealViewControllerSegue" id="Usd-Jw-Xr5"/>
                                         </connections>
@@ -543,7 +537,7 @@
                                                 </label>
                                             </subviews>
                                         </tableViewCellContentView>
-                                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <connections>
                                             <segue destination="3Wg-XO-qfP" kind="custom" identifier="fromSideMenuToViewBaits" customClass="SWRevealViewControllerSegue" id="mBP-Qv-19k"/>
                                         </connections>
@@ -567,7 +561,7 @@
                                                 </label>
                                             </subviews>
                                         </tableViewCellContentView>
-                                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <connections>
                                             <segue destination="jnP-ge-WAM" kind="custom" identifier="fromSideMenuToSettings" customClass="SWRevealViewControllerSegue" id="gDt-Tw-gtk"/>
                                         </connections>
@@ -591,7 +585,7 @@
                                                 </label>
                                             </subviews>
                                         </tableViewCellContentView>
-                                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="PHn-8a-B3Q">
                                         <rect key="frame" x="0.0" y="600" width="375" height="44"/>
@@ -612,7 +606,7 @@
                                                 </label>
                                             </subviews>
                                         </tableViewCellContentView>
-                                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
@@ -739,7 +733,7 @@
         <image name="settings.png" width="50" height="50"/>
         <image name="species.png" width="50" height="50"/>
         <image name="stats.png" width="50" height="50"/>
-        <image name="twitter_blue_small.png" width="50" height="41"/>
+        <image name="twitter_blue_small.png" width="12" height="9.8400001525878906"/>
         <image name="water_clarities.png" width="50" height="50"/>
     </resources>
     <inferredMetricsTieBreakers>

@@ -102,6 +102,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    self.view.backgroundColor = UIColor.whiteColor;
     [self setupSearchBar];
     [self setupTableView];
     [self setupEmptyTableView];

@@ -959,7 +959,6 @@
 				ACCC66CB1FEB5BD600B681A8 /* Frameworks */,
 				ACCC66CC1FEB5BD600B681A8 /* Resources */,
 				79BAD643E50A6155093E9394 /* [CP] Embed Pods Frameworks */,
-				A6ACD957D2529FE095E45763 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -982,7 +981,6 @@
 				0DBFE94A1C8E456900BDCC1D /* ShellScript */,
 				0D30054E1D35CD6A00A1EEDD /* ShellScript */,
 				D671AC50BFFFD85CA40C799F /* [CP] Embed Pods Frameworks */,
-				B1E0DE96047352F4E40C4AB9 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -1194,9 +1192,8 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-AnglersLog-AnglersLogTests/Pods-AnglersLog-AnglersLogTests-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-AnglersLog-AnglersLogTests/Pods-AnglersLog-AnglersLogTests-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/AFNetworking/AFNetworking.framework",
-				"${BUILT_PRODUCTS_DIR}/ChameleonFramework/ChameleonFramework.framework",
 				"${PODS_ROOT}/Instabug/Instabug.framework",
 				"${PODS_ROOT}/Instabug/Instabug.framework.dSYM",
 				"${PODS_ROOT}/Instabug/InstabugCore.framework",
@@ -1209,7 +1206,6 @@
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AFNetworking.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ChameleonFramework.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Instabug.framework",
 				"${DWARF_DSYM_FOLDER_PATH}/Instabug.framework.dSYM",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/InstabugCore.framework",
@@ -1221,43 +1217,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-AnglersLog-AnglersLogTests/Pods-AnglersLog-AnglersLogTests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		A6ACD957D2529FE095E45763 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-AnglersLog-AnglersLogTests/Pods-AnglersLog-AnglersLogTests-resources.sh",
-				"${PODS_ROOT}/Instabug/Instabug.bundle",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-AnglersLog-AnglersLogTests/Pods-AnglersLog-AnglersLogTests-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		B1E0DE96047352F4E40C4AB9 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-AnglersLog/Pods-AnglersLog-resources.sh",
-				"${PODS_ROOT}/Instabug/Instabug.bundle",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-AnglersLog/Pods-AnglersLog-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-AnglersLog-AnglersLogTests/Pods-AnglersLog-AnglersLogTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		D671AC50BFFFD85CA40C799F /* [CP] Embed Pods Frameworks */ = {
@@ -1266,9 +1226,8 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-AnglersLog/Pods-AnglersLog-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-AnglersLog/Pods-AnglersLog-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/AFNetworking/AFNetworking.framework",
-				"${BUILT_PRODUCTS_DIR}/ChameleonFramework/ChameleonFramework.framework",
 				"${PODS_ROOT}/Instabug/Instabug.framework",
 				"${PODS_ROOT}/Instabug/Instabug.framework.dSYM",
 				"${PODS_ROOT}/Instabug/InstabugCore.framework",
@@ -1281,7 +1240,6 @@
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AFNetworking.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ChameleonFramework.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Instabug.framework",
 				"${DWARF_DSYM_FOLDER_PATH}/Instabug.framework.dSYM",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/InstabugCore.framework",
@@ -1293,7 +1251,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-AnglersLog/Pods-AnglersLog-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-AnglersLog/Pods-AnglersLog-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		F2F69295F9908E97EEA52621 /* [CP] Check Pods Manifest.lock */ = {

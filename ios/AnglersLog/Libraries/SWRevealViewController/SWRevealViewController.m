@@ -29,6 +29,7 @@
 
 #import "SWRevealViewController.h"
 #import "CMAUtilities.h"
+#import "UIColor+CMA.h"
 
 //#pragma mark - SWDirectionPanGestureRecognizer
 //
@@ -604,6 +605,10 @@ const int FrontViewPositionNone = 0xff;
 
 #pragma mark - StatusBar
 
+- (CGFloat)statusBarHeight {
+    return UIApplication.sharedApplication.statusBarFrame.size.height;
+}
+
 - (UIViewController *)childViewControllerForStatusBarStyle
 {
     int positionDif =  _frontViewPosition - FrontViewPositionLeft;
@@ -649,7 +654,7 @@ const int FrontViewPositionNone = 0xff;
     [self loadStoryboardControllers];
     
     // Apple also tells us to do this:
-    _contentView.backgroundColor = [UIColor blackColor];
+    _contentView.backgroundColor = [UIColor whiteColor];
     
     // we set the current frontViewPosition to none before seting the
     // desired initial position, this will force proper controller reload
@@ -794,16 +799,16 @@ const int FrontViewPositionNone = 0xff;
         
         [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
     } else {
-        UIView *overlay = [[UIView alloc] initWithFrame:CGRectMake(0, 20, [frontVC view].frame.size.width, [frontVC view].frame.size.height)];
+        UIView *overlay = [[UIView alloc] initWithFrame:CGRectMake(0, self.statusBarHeight, [frontVC view].frame.size.width, [frontVC view].frame.size.height)];
         [overlay setTag:123];
         [overlay setAlpha:0.0f];
         [overlay setBackgroundColor:[UIColor colorWithWhite:0.0 alpha:0.60]];
         [overlay addGestureRecognizer:self.tapGestureRecognizer];
         
-        UIView *status = [[UIView alloc] initWithFrame:CGRectMake(0, 0, [frontVC view].frame.size.width, 20)];
+        UIView *status = [[UIView alloc] initWithFrame:CGRectMake(0, 0, [frontVC view].frame.size.width, self.statusBarHeight)];
         [status setTag:122];
         [overlay setAlpha:0.0f];
-        [status setBackgroundColor:[CMAUtilities themeColorDark]];
+        [status setBackgroundColor:UIColor.anglersLogLight];
         
         [[frontVC view] addSubview:status];
         [[frontVC view] addSubview:overlay];
@@ -811,7 +816,6 @@ const int FrontViewPositionNone = 0xff;
         [UIView animateWithDuration:0.25 animations:^{
             [overlay setAlpha:1.0f];
             [status setAlpha:1.0f];
-            [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
         }];
     }
 }

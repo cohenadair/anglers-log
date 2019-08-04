@@ -6,7 +6,6 @@
 //  Copyright (c) 2014 Cohen Adair. All rights reserved.
 //
 
-#import <ChameleonFramework/Chameleon.h>
 #import <Crashlytics/Crashlytics.h>
 #import <Fabric/Fabric.h>
 #import <Instabug/Instabug.h>
@@ -41,6 +40,8 @@
     //NSLog(@"%@", [[CMAStorageManager sharedManager] documentsDirectory].path);
     //[[CMAStorageManager sharedManager] deleteAllObjectsForEntityName:CDE_WEATHER_DATA];
     //[[CMAStorageManager sharedManager] debugCoreDataObjects];
+    
+    self.window.backgroundColor = UIColor.whiteColor;
     
     return YES;
 }
@@ -80,22 +81,24 @@
 #pragma mark - Appearances
 
 - (void)initAppearances {
-    // Ensures top and bottom bars aren't transparent.
     UINavigationBar.appearance.translucent = NO;
+    UINavigationBar.appearance.barTintColor = UIColor.anglersLogLight;
+    // Remove 1px shadow below.
+    UINavigationBar.appearance.shadowImage = [UIImage new];
+    [UINavigationBar.appearance setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
+    
     UIToolbar.appearance.translucent = NO;
+    UIToolbar.appearance.barTintColor = UIColor.anglersLogLight;
+    
+    UISearchBar.appearance.translucent = NO;
+    UISearchBar.appearance.barTintColor = UIColor.anglersLogLight;
+    UISearchBar.appearance.backgroundColor = UIColor.clearColor;
+    UISearchBar.appearance.backgroundImage = [UIImage new]; // Removes 1px "shadow" above and below
     
     // Hides back button text on all view controllers.
     [UIBarButtonItem.appearance setBackButtonTitlePositionAdjustment:UIOffsetMake(-200.0, 0)
                                                        forBarMetrics:UIBarMetricsDefault];
-    
-    // Apply a global theme.
-    [Chameleon setGlobalThemeUsingPrimaryColor:UIColor.anglersLogLight
-                            withSecondaryColor:UIColor.anglersLogAccent
-                               andContentStyle:UIContentStyleContrast];
-    
-    // Override some Chameleon settings.
-    UIButton.appearance.tintColor = UIColor.anglersLogAccent;
-    UIButton.appearance.backgroundColor = UIColor.clearColor;
+    UIBarButtonItem.appearance.tintColor = UIColor.blackColor;
     
     UISegmentedControl.appearance.tintColor = UIColor.anglersLogAccent;
     
@@ -104,6 +107,7 @@
     view.backgroundColor = UIColor.anglersLogLightTransparent;
     UITableViewCell.appearance.selectedBackgroundView = view;
     UITableViewCell.appearance.multipleSelectionBackgroundView = view;
+    UITableViewCell.appearance.tintColor = UIColor.anglersLogLight;
 }
 
 @end

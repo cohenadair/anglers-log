@@ -13,6 +13,7 @@
 #import "CMAStorageManager.h"
 #import "CMAAlerts.h"
 #import "CMAUtilities.h"
+#import "UIColor+CMA.h"
 
 @interface CMASideMenuViewController ()
 
@@ -25,6 +26,7 @@
 
 @end
 
+#define kBannerCell 9
 #define kInstagramCell 9
 #define kTwitterCell 10
 
@@ -47,8 +49,9 @@
     // Uncomment the following line to preserve selection between presentations.
     self.clearsSelectionOnViewWillAppear = NO;
     
-    self.statusBar = [[UIView alloc] initWithFrame:CGRectMake(0, -20, self.view.frame.size.width, 20)];
-    [self.statusBar setBackgroundColor:[CMAUtilities themeColorDark]];
+    CGFloat statusBarHeight = UIApplication.sharedApplication.statusBarFrame.size.height;
+    self.statusBar = [[UIView alloc] initWithFrame:CGRectMake(0, -statusBarHeight, self.view.frame.size.width, statusBarHeight)];
+    [self.statusBar setBackgroundColor:UIColor.anglersLogLight];
     [self.view addSubview:self.statusBar];
 }
 
