@@ -41,9 +41,9 @@
                                                 </textField>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="0Pc-wS-1HL" firstAttribute="trailing" secondItem="Q5Q-YG-JoQ" secondAttribute="trailingMargin" id="cZ6-LA-SnG"/>
-                                                <constraint firstItem="0Pc-wS-1HL" firstAttribute="leading" secondItem="Q5Q-YG-JoQ" secondAttribute="leadingMargin" id="lGM-YX-1d6"/>
+                                                <constraint firstItem="0Pc-wS-1HL" firstAttribute="leading" secondItem="Q5Q-YG-JoQ" secondAttribute="leadingMargin" id="N2W-Xc-lkp"/>
                                                 <constraint firstAttribute="centerY" secondItem="0Pc-wS-1HL" secondAttribute="centerY" id="poR-DP-A32"/>
+                                                <constraint firstItem="0Pc-wS-1HL" firstAttribute="trailing" secondItem="Q5Q-YG-JoQ" secondAttribute="trailingMargin" id="wSn-Cr-Kfj"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -83,12 +83,12 @@
                                             <constraints>
                                                 <constraint firstItem="KWy-xh-Kse" firstAttribute="centerY" secondItem="Kfk-7j-5tf" secondAttribute="centerY" id="5tP-ri-zxO"/>
                                                 <constraint firstItem="KWy-xh-Kse" firstAttribute="top" secondItem="ubF-mw-eUH" secondAttribute="top" id="6M1-cH-T6t"/>
-                                                <constraint firstItem="eoP-RZ-Mua" firstAttribute="centerX" secondItem="Kfk-7j-5tf" secondAttribute="centerX" id="LPt-0r-2Bp"/>
-                                                <constraint firstItem="eoP-RZ-Mua" firstAttribute="bottom" secondItem="ubF-mw-eUH" secondAttribute="bottomMargin" id="UCs-Qa-2Ks"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="eoP-RZ-Mua" secondAttribute="trailing" id="76A-a2-dzd"/>
+                                                <constraint firstItem="eoP-RZ-Mua" firstAttribute="leading" secondItem="ubF-mw-eUH" secondAttribute="leadingMargin" id="JfZ-U2-Iw0"/>
+                                                <constraint firstItem="eoP-RZ-Mua" firstAttribute="bottom" secondItem="ubF-mw-eUH" secondAttribute="bottomMargin" id="M2M-dw-vxD"/>
                                                 <constraint firstItem="KWy-xh-Kse" firstAttribute="centerX" secondItem="Kfk-7j-5tf" secondAttribute="centerX" id="brk-yQ-10I"/>
                                                 <constraint firstItem="KWy-xh-Kse" firstAttribute="leading" secondItem="ubF-mw-eUH" secondAttribute="leading" id="goJ-XW-dN5"/>
                                                 <constraint firstAttribute="centerY" secondItem="Kfk-7j-5tf" secondAttribute="centerY" id="jYC-Z7-N9s"/>
-                                                <constraint firstItem="eoP-RZ-Mua" firstAttribute="leading" secondItem="ubF-mw-eUH" secondAttribute="leadingMargin" id="plD-vU-AgN"/>
                                                 <constraint firstAttribute="centerX" secondItem="Kfk-7j-5tf" secondAttribute="centerX" id="zoq-hz-5uB"/>
                                             </constraints>
                                         </tableViewCellContentView>

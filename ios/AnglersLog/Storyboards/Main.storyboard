@@ -166,7 +166,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <textField opaque="NO" clipsSubviews="YES" tag="100" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Location Name" minimumFontSize="17" clearButtonMode="always" translatesAutoresizingMaskIntoConstraints="NO" id="gaf-hb-amO">
-                                            <rect key="frame" x="20" y="7.5" width="335" height="30"/>
+                                            <rect key="frame" x="16" y="7.5" width="343" height="30"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="30" id="2bD-SR-4IF"/>
                                             </constraints>
@@ -175,9 +175,9 @@
                                         </textField>
                                     </subviews>
                                     <constraints>
+                                        <constraint firstItem="gaf-hb-amO" firstAttribute="leading" secondItem="zKl-GC-REy" secondAttribute="leadingMargin" id="5Hi-aL-uZN"/>
                                         <constraint firstAttribute="centerY" secondItem="gaf-hb-amO" secondAttribute="centerY" constant="-0.5" id="7Xc-Og-tGH"/>
-                                        <constraint firstItem="gaf-hb-amO" firstAttribute="leading" secondItem="zKl-GC-REy" secondAttribute="leading" constant="20" id="DOq-Z4-dOi"/>
-                                        <constraint firstAttribute="trailing" secondItem="gaf-hb-amO" secondAttribute="trailing" constant="20" id="rB1-Th-RKL"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="gaf-hb-amO" secondAttribute="trailing" id="nHz-Tx-Ykp"/>
                                     </constraints>
                                 </tableViewCellContentView>
                             </tableViewCell>

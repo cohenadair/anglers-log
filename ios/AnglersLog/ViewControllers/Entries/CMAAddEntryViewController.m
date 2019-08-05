@@ -158,7 +158,7 @@ NSString *const kNotSelectedString = @"Not Selected";
     NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"CMAWeatherDataView" owner:self options:nil];
     if ([nib count] > 0)
         self.weatherDataView = (CMAWeatherDataView *)[nib objectAtIndex:0];
-    [self.weatherDataView setFrame:CGRectMake(0, 0, 0, TABLE_HEIGHT_WEATHER_CELL)];
+    [self.weatherDataView setFrame:CGRectMake(0, 0, self.view.frame.size.width / 2, 25)];
     [self.weatherDataView setAlpha:0.0];
     
     // if we're editing rather than adding an entry
@@ -391,10 +391,7 @@ NSString *const kNotSelectedString = @"Not Selected";
     
     // weather cell
     if (indexPath.section == kWeatherCellSection) {
-        UIView *bgView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width - 50, cell.frame.size.height)];
-        [bgView addSubview:self.weatherDataView];
-
-        [cell addSubview:bgView];
+        [cell addSubview:self.weatherDataView];
     }
     
     return cell;
