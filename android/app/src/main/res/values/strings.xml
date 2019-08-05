@@ -1,5 +1,5 @@
 <resources>
-    <string name="version_name" translatable="false">1.3.2</string>
+    <string name="version_name" translatable="false">1.3.3</string>
     <string name="rate_title">Rate Anglers\' Log</string>
     <string name="app_name" translatable="false">Anglers\' Log</string>
     <string name="app_description">Track, analyze, share.</string>
