@@ -918,9 +918,12 @@ public class Logbook {
     public static boolean tripExists(Trip trip) {
         ArrayList<UserDefineObject> trips = getTrips();
 
-        for (UserDefineObject object : trips)
-            if (trip.overlapsTrip((Trip)object))
+        for (UserDefineObject object : trips) {
+            Trip tr = (Trip) object;
+            if (!trip.getId().equals(tr.getId()) && trip.overlapsTrip((Trip) object)) {
                 return true;
+            }
+        }
 
         return false;
     }
