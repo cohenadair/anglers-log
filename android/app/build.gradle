@@ -24,9 +24,12 @@ android {
     testOptions {
         unitTests.returnDefaultValues = true
     }
+    flavorDimensions "version"
     productFlavors {
         releaseFlavor {
-
+            dimension "version"
+            applicationIdSuffix ""
+            versionNameSuffix ""
         }
         uiTesting {
             minSdkVersion 18
