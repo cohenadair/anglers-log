@@ -994,7 +994,7 @@ NSString *const kNotSelectedString = @"Not Selected";
 }
 
 - (void)didPickImages:(NSArray<UIImage *> *)images {
-    [self processPickedImages:images wasTaken:YES];
+    [self processPickedImages:images wasTaken:NO];
 }
 
 @end
