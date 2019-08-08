@@ -25,6 +25,7 @@ class HomePage extends StatelessWidget {
                   label: Strings.of(context).anglerNameLabel,
                   requiredText: format(Strings.of(context).inputRequiredMessage,
                       [Strings.of(context).anglerNameLabel]),
+                  capitalization: TextCapitalization.words,
                 ),
               },
               onSave: (Map<String, dynamic> result) => print(result),
