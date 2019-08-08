@@ -124,7 +124,7 @@ class _LoginPageState extends State<LoginPage> {
                       color: Colors.black,
                     )
                   ),
-                  TextSpan(text: ' '),
+                  TextSpan(text: " "),
                   TextSpan(
                     text: _mode.getActionText(context),
                     style: styleHyperlink,
