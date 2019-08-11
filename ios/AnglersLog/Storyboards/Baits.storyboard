@@ -11,7 +11,7 @@
         <!--Baits-->
         <scene sceneID="fgt-Lc-Mj2">
             <objects>
-                <viewController extendedLayoutIncludesOpaqueBars="YES" id="Wgu-TV-UhE" customClass="CMAViewBaitsViewController" sceneMemberID="viewController">
+                <viewController id="Wgu-TV-UhE" customClass="CMAViewBaitsViewController" sceneMemberID="viewController">
                     <toolbarItems>
                         <barButtonItem systemItem="trash" id="Og7-eU-YTU">
                             <connections>

@@ -27,7 +27,7 @@
         <!--User Defines View Controller-->
         <scene sceneID="1Wc-ux-vdv">
             <objects>
-                <viewController extendedLayoutIncludesOpaqueBars="YES" id="ll8-gc-WE4" customClass="CMAUserDefinesViewController" sceneMemberID="viewController">
+                <viewController id="ll8-gc-WE4" customClass="CMAUserDefinesViewController" sceneMemberID="viewController">
                     <toolbarItems>
                         <barButtonItem systemItem="trash" id="86Q-vM-1dV">
                             <connections>
