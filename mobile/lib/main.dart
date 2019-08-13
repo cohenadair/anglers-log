@@ -14,7 +14,6 @@ void main() {
 class MyApp extends StatelessWidget {
   final AppManager _app = AppManager();
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -22,7 +21,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: colorAppTheme,
         buttonTheme: ButtonThemeData(
-          textTheme: ButtonTextTheme.primary,
+          disabledColor: colorAppTheme.shade500,
         ),
         iconTheme: IconThemeData(
           color: colorAppTheme,

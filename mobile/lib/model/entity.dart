@@ -1,6 +1,7 @@
 import 'package:meta/meta.dart';
 
-/// An [Entity] stores a collection of manageable properties.
+/// An [Entity] stores a collection of manageable properties. An [Entity] is
+/// designed to store business logic data only; nothing UI related.
 @immutable
 abstract class Entity {
   final Map<String, dynamic> _properties;

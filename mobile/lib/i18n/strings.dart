@@ -71,6 +71,12 @@ class Strings {
   String get settingsPageLogout => _getString("settingsPage_logout");
   String get settingsPathLogoutConfirmMessage => _getString("settingsPath_logoutConfirmMessage");
 
+  String get formPageAddFieldText => _getString("formPage_addFieldText");
+  String get formPageRemoveFieldsText => _getString("formPage_removeFieldsText");
+  String get formPageConfirmRemoveField => _getString("formPage_confirmRemoveField");
+  String get formPageConfirmRemoveFields => _getString("formPage_confirmRemoveFields");
+  String get formPageSelectFieldTitle => _getString("formPage_selectFieldTitle");
+
   String get anglerNameLabel => _getString("angler_nameLabel");
 }
 

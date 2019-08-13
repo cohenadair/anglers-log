@@ -43,6 +43,12 @@ Map<String, Map<String, String>> englishStrings = {
     "settingsPage_logout" : "Logout",
     "settingsPath_logoutConfirmMessage" : "Are you sure you want to logout?",
 
-    "angler_nameLabel" : "Name",
+    "formPage_addFieldText" : "Add Field",
+    "formPage_removeFieldsText" : "Remove Fields",
+    "formPage_confirmRemoveField" : "Remove 1 Field",
+    "formPage_confirmRemoveFields" : "Remove %s Fields",
+    "formPage_selectFieldTitle" : "Select Field",
+
+    "angler_nameLabel" : "Angler",
   },
 };

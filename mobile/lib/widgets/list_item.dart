@@ -11,13 +11,15 @@ class ListItem extends StatelessWidget {
   final Widget subtitle;
   final Widget trailing;
   final VoidCallback onTap;
+  final bool enabled;
 
   ListItem({
     this.contentPadding,
     this.title,
     this.subtitle,
     this.trailing,
-    this.onTap
+    this.onTap,
+    this.enabled = true,
   });
 
   @override
@@ -31,6 +33,7 @@ class ListItem extends StatelessWidget {
         subtitle: subtitle,
         trailing: trailing,
         onTap: onTap,
+        enabled: enabled,
       ),
     );
   }
