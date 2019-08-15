@@ -27,7 +27,7 @@ class _MainPageState extends State<MainPage> {
     _BarItemData(
       page: _NavigatorPage(
         navigatorKey: _navStates[0],
-        builder: (BuildContext context) => HomePage(),
+        builder: (BuildContext context) => HomePage(app: widget.app),
       ),
       barItem: BottomNavigationBarItem(
         icon: Icon(Icons.home),

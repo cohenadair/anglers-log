@@ -1,9 +1,12 @@
-import 'package:meta/meta.dart';
-
 /// An [Entity] stores a collection of manageable properties. An [Entity] is
 /// designed to store business logic data only; nothing UI related.
-@immutable
+///
+/// This class should only be subclassed when a dynamic object is desired,
+/// such as a Catch, or Bait.
 abstract class Entity {
+  // Map keys outside dynamic properties.
+  static const keyCustomFields = "customFields";
+
   final Map<String, dynamic> _properties;
 
   Entity() : _properties = Map();
@@ -13,8 +16,13 @@ abstract class Entity {
   Map<String, dynamic> get toMap => properties;
 
   /// Sets the property with the given [key], or overrides the value at [key]
-  /// if it already exists.
+  /// if it already exists. If `value` is `null`, this method does nothing.
+  ///
+  /// To clear a property, call [removeProperty].
   void setProperty({String key, dynamic value}) {
+    if (value == null) {
+      return;
+    }
     _properties[key] = value;
   }
 
@@ -24,5 +32,7 @@ abstract class Entity {
     }
   }
 
-  dynamic getProperty({String key}) => _properties[key];
+  /// Returns `null` if the property at `key` doesn't exist.
+  dynamic property({String key}) => _properties[key];
+  bool hasProperty({String key}) => _properties.containsKey(key);
 }

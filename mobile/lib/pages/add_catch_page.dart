@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/app_manager.dart';
 import 'package:mobile/i18n/strings.dart';
+import 'package:mobile/model/field.dart';
 import 'package:mobile/model/angler.dart';
+import 'package:mobile/model/custom_field.dart';
+import 'package:mobile/model/field_type.dart';
 import 'package:mobile/utils/string_utils.dart';
 import 'package:mobile/widgets/input.dart';
 import 'package:uuid/uuid.dart';
@@ -8,6 +12,10 @@ import 'package:uuid/uuid.dart';
 import 'form_page.dart';
 
 class AddCatchPage extends StatefulWidget {
+  final AppManager app;
+
+  AddCatchPage({this.app}) : assert(app != null);
+
   @override
   _AddCatchPageState createState() => _AddCatchPageState();
 }
@@ -19,22 +27,26 @@ class _AddCatchPageState extends State<AddCatchPage> {
   static final String test3 = Uuid().v1();
   static final String test4 = Uuid().v1();
 
-  Map<String, TextEditingController> _usedInputOptions = {
+  /// Options that are shown in the form, but not necessarily filled out.
+  Map<String, dynamic> _usedInputOptions = {
     Angler.key: TextEditingController(),
   };
 
-  List<String> _allInputOptions = List.unmodifiable([
-    Angler.key,
-    test1,
-    test2,
-    test3,
-    test4,
-  ]);
+  /// All fields that can be added to (or are already a part of) the form.
+  Map<String, Field> _allInputFields = {
+    Angler.key: Field(id: Angler.key, type: FieldType.text),
+    test1: Field(id: test1, type: FieldType.text),
+    test2: Field(id: test2, type: FieldType.text),
+    test3: Field(id: test3, type: FieldType.text),
+    test4: Field(id: test4, type: FieldType.text),
+  };
 
   @override
   void dispose() {
-    for (TextEditingController controller in _usedInputOptions.values) {
-      controller.dispose();
+    for (var value in _usedInputOptions.values) {
+      if (value is TextEditingController) {
+        value.dispose();
+      }
     }
 
     super.dispose();
@@ -44,28 +56,25 @@ class _AddCatchPageState extends State<AddCatchPage> {
   Widget build(BuildContext context) {
     return FormPage(
       key: UniqueKey(),
+      app: widget.app,
       fieldBuilder: (BuildContext context, bool isRemovingFields) {
         return Map.fromIterable(_usedInputOptions.keys,
           key: (item) => item.toString(),
-          value: (item) => _getInputField(
+          value: (item) => _inputField(
             key: item.toString(),
             isRemovingFields: isRemovingFields,
           ),
         );
       },
       onSave: _save,
-      addFieldOptions: _allInputOptions.map((String id) {
+      addFieldOptions: _allInputFields.keys.map((String id) {
         return FormPageFieldOption(
           id: id,
-          userFacingName: _getUserFacingLabel(id),
+          userFacingName: _userFacingLabel(id),
           used: _usedInputOptions.keys.contains(id),
         );
       }).toList(),
-      onAddField: (String id) {
-        setState(() {
-          _usedInputOptions.putIfAbsent(id, () => TextEditingController());
-        });
-      },
+      onAddField: _addField,
       onConfirmRemoveFields: (List<String> fieldsToRemove) {
         setState(() {
           for (String key in fieldsToRemove) {
@@ -76,11 +85,19 @@ class _AddCatchPageState extends State<AddCatchPage> {
     );
   }
 
-  InputField _getInputField({String key, bool isRemovingFields}) {
+  CustomField _customField(String id) =>
+      widget.app.customFieldManager.customField(id);
+
+  Widget _inputField({String key, bool isRemovingFields}) {
+    CustomField customField = _customField(key);
+    if (customField != null) {
+      // TODO: Need default input fields for each FieldType
+    }
+
     switch (key) {
       case Angler.key: return TextInput(
         controller: _usedInputOptions[key],
-        label: _getUserFacingLabel(key),
+        label: _userFacingLabel(key),
         requiredText: format(Strings.of(context).inputRequiredMessage,
             [Strings.of(context).anglerNameLabel]),
         capitalization: TextCapitalization.words,
@@ -89,7 +106,7 @@ class _AddCatchPageState extends State<AddCatchPage> {
 
       default: return TextInput(
         controller: _usedInputOptions[key],
-        label: _getUserFacingLabel(key),
+        label: _userFacingLabel(key),
         requiredText: "Test Field is required",
         capitalization: TextCapitalization.words,
         enabled: !isRemovingFields,
@@ -97,11 +114,29 @@ class _AddCatchPageState extends State<AddCatchPage> {
     }
   }
 
-  String _getUserFacingLabel(String fieldId) {
-    switch (fieldId) {
-      case Angler.key: return Strings.of(context).anglerNameLabel;
-      default: return "Test Field ${fieldId.substring(fieldId.length - 5)}";
+  String _userFacingLabel(String id) {
+    CustomField customField = _customField(id);
+    if (customField != null) {
+      return customField.name;
     }
+
+    switch (id) {
+      case Angler.key: return Strings.of(context).anglerNameLabel;
+      default: return "Test Field ${id.substring(id.length - 5)}";
+    }
+  }
+
+  void _addField(String id) {
+    // Handle the case of a new custom field being added.
+    CustomField customField = _customField(id);
+    if (customField != null) {
+      _allInputFields.putIfAbsent(customField.id, () => customField);
+    }
+
+    setState(() {
+      _usedInputOptions.putIfAbsent(id, () =>
+          defaultFieldTypeValue(_allInputFields[id].type));
+    });
   }
 
   void _save() {

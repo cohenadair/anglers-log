@@ -18,7 +18,14 @@ Map<String, Map<String, String>> englishStrings = {
     "yes" : "Yes",
     "no" : "No",
 
+    "fieldType_number" : "Number",
+    "fieldType_boolean" : "Checkbox",
+    "fieldType_text" : "Text",
+
     "input_requiredMessage" : "%s is required",
+    "input_nameLabel" : "Name",
+    "input_nameRequired" : "Name is required",
+    "input_descriptionLabel" : "Description",
 
     "loginPage_loginTitle" : "Login",
     "loginPage_loginButtonText" : "Login",
@@ -48,6 +55,10 @@ Map<String, Map<String, String>> englishStrings = {
     "formPage_confirmRemoveField" : "Remove 1 Field",
     "formPage_confirmRemoveFields" : "Remove %s Fields",
     "formPage_selectFieldTitle" : "Select Field",
+
+    "selectionPage_addCustomField" : "Add Custom Field",
+
+    "addCustomFieldPage_title" : "New Field",
 
     "angler_nameLabel" : "Angler",
   },

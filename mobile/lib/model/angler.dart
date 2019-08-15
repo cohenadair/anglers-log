@@ -14,5 +14,5 @@ class Angler extends Entity {
     setProperty(key: _keyName, value: name);
   }
 
-  String get name => getProperty(key: name);
+  String get name => property(key: name);
 }

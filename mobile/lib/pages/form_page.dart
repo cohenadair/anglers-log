@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/app_manager.dart';
 import 'package:mobile/i18n/strings.dart';
+import 'package:mobile/model/custom_field.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/utils/page_utils.dart';
 import 'package:mobile/utils/string_utils.dart';
@@ -8,6 +10,21 @@ import 'package:mobile/widgets/input.dart';
 import 'package:mobile/widgets/list_item.dart';
 import 'package:mobile/widgets/page.dart';
 import 'package:mobile/widgets/widget.dart';
+
+import 'add_custom_field_page.dart';
+
+/// A function responsible for building all input widgets.
+///
+/// @param BuildContext
+/// @param bool `true` if the form is in "removing fields mode"
+///
+/// @return The returned map key [String] represents the identifier in the
+/// underlying model object, such as "angler", "baitId", etc. The returned
+/// map value [Widget] is the widget that is displayed.
+///
+/// Note that the returned map key is used keeping track of [InputFields]
+/// that are selected for deletion.
+typedef FieldBuilder = Map<String, Widget> Function(BuildContext, bool);
 
 enum _OverflowOption {
   removeFields,
@@ -40,21 +57,12 @@ class FormPageFieldOption {
 /// validation. The [FormState] validate method is called prior to the
 /// [FormPage.onSave], but before the page is dismissed.
 class FormPage extends StatefulWidget {
+  final AppManager app;
+
   /// The title of the page.
   final String title;
 
-  /// A function responsible for building all input widgets.
-  ///
-  /// @param BuildContext
-  /// @param bool `true` if the form is in "removing fields mode"
-  ///
-  /// @return The returned map key [String] represents the identifier in the
-  /// underlying model object, such as "angler", "baitId", etc. The returned
-  /// map value [InputField] is the widget that is displayed.
-  ///
-  /// Note that the returned map key is used keeping track of [InputFields]
-  /// that are selected for deletion.
-  final Map<String, InputField> Function(BuildContext, bool) fieldBuilder;
+  final FieldBuilder fieldBuilder;
 
   /// Called when a user confirms the deletion of fields. The implementation of
   /// this method is responsible for deleting the correct fields from the
@@ -73,6 +81,7 @@ class FormPage extends StatefulWidget {
   final VoidCallback onSave;
 
   FormPage({
+    @required this.app,
     Key key,
     this.title,
     @required this.fieldBuilder,
@@ -80,7 +89,26 @@ class FormPage extends StatefulWidget {
     this.onConfirmRemoveFields,
     this.addFieldOptions,
     this.onAddField,
-  }) : assert(fieldBuilder != null), super(key: key);
+  }) : assert(app != null),
+       assert(fieldBuilder != null),
+       super(key: key);
+
+  FormPage.immutable({
+    @required AppManager app,
+    Key key,
+    String title,
+    FieldBuilder fieldBuilder,
+    VoidCallback onSave,
+  }) : this(
+    app: app,
+    key: key,
+    title: title,
+    fieldBuilder: fieldBuilder,
+    onSave: onSave,
+    onConfirmRemoveFields: null,
+    addFieldOptions: null,
+    onAddField: null,
+  );
 
   @override
   _FormPageState createState() => _FormPageState();
@@ -91,6 +119,9 @@ class _FormPageState extends State<FormPage> {
 
   bool _isRemovingFields = false;
   List<String> _fieldsToRemove = [];
+
+  bool get canAddFields =>
+      widget.addFieldOptions != null && widget.addFieldOptions.isNotEmpty;
 
   @override
   Widget build(BuildContext context) {
@@ -148,7 +179,7 @@ class _FormPageState extends State<FormPage> {
                           _inputField(key, inputField),
                         )).values.toList(),
               ),
-              Padding(
+              canAddFields ? Padding(
                 padding: insetsTopSmall,
                 child: Button(
                   text: Strings.of(context).formPageAddFieldText,
@@ -160,7 +191,7 @@ class _FormPageState extends State<FormPage> {
                     );
                   },
                 ),
-              ),
+              ) : Empty(),
               _fieldsToRemove.length <= 0 ? Empty() : Button(
                 text: _fieldsToRemove.length == 1
                     ? Strings.of(context).formPageConfirmRemoveField
@@ -175,7 +206,7 @@ class _FormPageState extends State<FormPage> {
     );
   }
 
-  Widget _inputField(String key, InputField field) => Input(
+  Widget _inputField(String key, Widget field) => Input(
     child: Expanded(child: field),
     editing: _isRemovingFields,
     selected: _fieldsToRemove.contains(key),
@@ -191,6 +222,7 @@ class _FormPageState extends State<FormPage> {
   );
 
   Widget _addFieldSelectionPage() => _SelectionPage(
+    app: widget.app,
     options: widget.addFieldOptions,
     onSelectItem: (String selectedId) {
       widget.onAddField(selectedId);
@@ -221,34 +253,74 @@ class _FormPageState extends State<FormPage> {
   }
 }
 
-class _SelectionPage extends StatelessWidget {
+class _SelectionPage extends StatefulWidget {
+  final AppManager app;
   final List<FormPageFieldOption> options;
   final Function(String) onSelectItem;
 
   _SelectionPage({
+    @required this.app,
     @required this.options,
     this.onSelectItem,
-  }) : assert(options != null);
+  }) : assert(app != null),
+       assert(options != null);
+
+  @override
+  _SelectionPageState createState() => _SelectionPageState();
+}
+
+class _SelectionPageState extends State<_SelectionPage> {
+  List<CustomField> _addedCustomFields = [];
 
   @override
   Widget build(BuildContext context) {
+    List<FormPageFieldOption> options = allOptions;
+
     return Page(
       appBarStyle: PageAppBarStyle(
         title: Strings.of(context).formPageSelectFieldTitle,
       ),
       child: ListView.builder(
-        itemCount: options.length,
+        itemCount: options.length + 1,
         itemBuilder: (BuildContext context, int i) {
+          // The last item is always the "Add Custom Field" option.
+          if (i == options.length) {
+            return ListItem(
+              title: Text(Strings.of(context).selectionPageAddCustomField),
+              onTap: () {
+                push(context, AddCustomFieldPage(
+                  app: widget.app,
+                  onSave: (CustomField customField) {
+                    setState(() {
+                      _addedCustomFields.add(customField);
+                    });
+                  },
+                ));
+              },
+              trailing: Icon(Icons.chevron_right),
+            );
+          }
+
           return ListItem(
             title: Text(options[i].userFacingName),
             enabled: !options[i].used,
             onTap: () {
-              onSelectItem?.call(options[i].id);
+              widget.onSelectItem?.call(options[i].id);
               Navigator.pop(context);
             },
           );
         },
       ),
     );
+  }
+
+  List<FormPageFieldOption> get allOptions {
+    return []..addAll(widget.options)
+      ..addAll(_addedCustomFields.map((CustomField field) {
+        return FormPageFieldOption(
+          id: field.id,
+          userFacingName: field.name,
+        );
+      }));
   }
 }
