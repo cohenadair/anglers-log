@@ -1,48 +1,53 @@
+import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 import 'package:quiver/core.dart';
 import 'package:uuid/uuid.dart';
 
-import 'field.dart';
-import 'field_type.dart';
+import 'package:mobile/widgets/field_type.dart';
 
 /// A [CustomField] is a [Field] subclass used to store data for input fields
 /// created by the user.
 @immutable
-class CustomField extends Field {
+class CustomField {
+  static const String _keyId = "id";
   static const String _keyName = "name";
   static const String _keyDescription = "description";
+  static const String _keyType = "type";
 
+  final String id;
   final String name;
   final String description;
+  final FieldType type;
 
   CustomField({
     this.name,
     this.description,
-    FieldType type,
-  }) : super(
-    id: Uuid().v1(),
-    type: type,
-  );
+    this.type,
+  }) : id = Uuid().v1();
 
   CustomField.fromMap(Map<String, dynamic> map)
-      : name = map[_keyName],
+      : id = map[_keyId],
+        name = map[_keyName],
         description = map[_keyDescription],
-        super.fromMap(map);
+        type = map[_keyType];
 
   @override
   bool operator ==(other) {
-    return super == other
+    return other is CustomField
+        && other.id == id
         && other.name == name
-        && other.description == description;
+        && other.description == description
+        && other.type == type;
   }
 
   @override
   int get hashCode =>
-      hash3(super.hashCode, name.hashCode, description.hashCode);
+      hash4(id.hashCode, name.hashCode, description.hashCode, type.hashCode);
 
-  @override
-  Map<String, dynamic> get toMap => super.toMap..addAll({
+  Map<String, dynamic> get toMap => {
+    _keyId: id,
     _keyName: name,
     _keyDescription: description,
-  });
+    _keyType: type,
+  };
 }

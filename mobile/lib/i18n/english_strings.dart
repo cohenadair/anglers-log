@@ -26,6 +26,7 @@ Map<String, Map<String, String>> englishStrings = {
     "input_nameLabel" : "Name",
     "input_nameRequired" : "Name is required",
     "input_descriptionLabel" : "Description",
+    "input_invalidNumber" : "Invalid number input",
 
     "loginPage_loginTitle" : "Login",
     "loginPage_loginButtonText" : "Login",

@@ -54,6 +54,7 @@ class Strings {
   String get inputNameLabel => _string("input_nameLabel");
   String get inputNameRequired => _string("input_nameRequired");
   String get inputDescriptionLabel => _string("input_descriptionLabel");
+  String get inputInvalidNumber => _string("input_invalidNumber");
 
   String get loginPageLoginTitle => _string("loginPage_loginTitle");
   String get loginPageLoginButtonText => _string("loginPage_loginButtonText");

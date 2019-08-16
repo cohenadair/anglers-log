@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/app_manager.dart';
 import 'package:mobile/i18n/strings.dart';
-import 'package:mobile/model/field.dart';
 import 'package:mobile/model/angler.dart';
 import 'package:mobile/model/custom_field.dart';
-import 'package:mobile/model/field_type.dart';
+import 'package:mobile/widgets/field_type.dart';
 import 'package:mobile/utils/string_utils.dart';
 import 'package:mobile/widgets/input.dart';
 import 'package:uuid/uuid.dart';
@@ -27,29 +26,59 @@ class _AddCatchPageState extends State<AddCatchPage> {
   static final String test3 = Uuid().v1();
   static final String test4 = Uuid().v1();
 
-  /// Options that are shown in the form, but not necessarily filled out.
-  Map<String, dynamic> _usedInputOptions = {
-    Angler.key: TextEditingController(),
+  /// All valid fields for the form.
+  Map<String, InputData> _allInputFields = {
+    Angler.key: InputData(
+      id: Angler.key,
+      controller: TextInputController(controller: TextEditingController()),
+      label: (BuildContext context) {
+        return Strings.of(context).anglerNameLabel;
+      },
+    ),
+    test1: InputData(
+      id: test1,
+      controller: TextInputController(controller: TextEditingController()),
+      label: (BuildContext context)
+          => "Test Field ${test1.substring(test1.length - 5)}",
+    ),
+    test2: InputData(
+      id: test2,
+      controller: TextInputController(controller: TextEditingController()),
+      label: (BuildContext context)
+          => "Test Field ${test2.substring(test2.length - 5)}",
+    ),
+    test3: InputData(
+      id: test3,
+      controller: TextInputController(controller: TextEditingController()),
+      label: (BuildContext context)
+          => "Test Field ${test3.substring(test3.length - 5)}",
+    ),
+    test4: InputData(
+      id: test4,
+      controller: TextInputController(controller: TextEditingController()),
+      label: (BuildContext context)
+          => "Test Field ${test4.substring(test4.length - 5)}",
+    ),
   };
 
-  /// All fields that can be added to (or are already a part of) the form.
-  Map<String, Field> _allInputFields = {
-    Angler.key: Field(id: Angler.key, type: FieldType.text),
-    test1: Field(id: test1, type: FieldType.text),
-    test2: Field(id: test2, type: FieldType.text),
-    test3: Field(id: test3, type: FieldType.text),
-    test4: Field(id: test4, type: FieldType.text),
-  };
+  /// Options that are shown in the form, but not necessarily filled out.
+  Map<String, InputData> _usedInputOptions;
 
   @override
   void dispose() {
     for (var value in _usedInputOptions.values) {
-      if (value is TextEditingController) {
-        value.dispose();
-      }
+      value.controller.dispose();
     }
-
     super.dispose();
+  }
+
+
+  @override
+  void initState() {
+    super.initState();
+    _usedInputOptions = {
+      Angler.key: _allInputFields[Angler.key],
+    };
   }
 
   @override
@@ -60,7 +89,7 @@ class _AddCatchPageState extends State<AddCatchPage> {
       fieldBuilder: (BuildContext context, bool isRemovingFields) {
         return Map.fromIterable(_usedInputOptions.keys,
           key: (item) => item.toString(),
-          value: (item) => _inputField(
+          value: (item) => _inputWidget(
             key: item.toString(),
             isRemovingFields: isRemovingFields,
           ),
@@ -70,15 +99,16 @@ class _AddCatchPageState extends State<AddCatchPage> {
       addFieldOptions: _allInputFields.keys.map((String id) {
         return FormPageFieldOption(
           id: id,
-          userFacingName: _userFacingLabel(id),
+          userFacingName: _allInputFields[id].label(context),
           used: _usedInputOptions.keys.contains(id),
         );
       }).toList(),
-      onAddField: _addField,
+      onAddField: _addInputWidget,
       onConfirmRemoveFields: (List<String> fieldsToRemove) {
         setState(() {
           for (String key in fieldsToRemove) {
             _usedInputOptions.remove(key);
+            _allInputFields[key].controller.clear();
           }
         });
       },
@@ -88,25 +118,34 @@ class _AddCatchPageState extends State<AddCatchPage> {
   CustomField _customField(String id) =>
       widget.app.customFieldManager.customField(id);
 
-  Widget _inputField({String key, bool isRemovingFields}) {
+  Widget _inputWidget({String key, bool isRemovingFields}) {
     CustomField customField = _customField(key);
     if (customField != null) {
-      // TODO: Need default input fields for each FieldType
+      return fieldTypeWidget(context,
+        type: customField.type,
+        label: customField.name,
+        controller: _usedInputOptions[key].controller,
+        onCheckboxChanged: (bool newValue) {
+          _usedInputOptions[key].controller.value = newValue;
+        },
+        enabled: !isRemovingFields,
+      );
     }
 
+    var label = _usedInputOptions[key].label(context);
+
     switch (key) {
-      case Angler.key: return TextInput(
-        controller: _usedInputOptions[key],
-        label: _userFacingLabel(key),
+      case Angler.key: return TextInput.name(context,
+        controller: _usedInputOptions[key].controller.value,
+        label: label,
         requiredText: format(Strings.of(context).inputRequiredMessage,
             [Strings.of(context).anglerNameLabel]),
-        capitalization: TextCapitalization.words,
         enabled: !isRemovingFields,
       );
 
       default: return TextInput(
-        controller: _usedInputOptions[key],
-        label: _userFacingLabel(key),
+        controller: _usedInputOptions[key].controller.value,
+        label: label,
         requiredText: "Test Field is required",
         capitalization: TextCapitalization.words,
         enabled: !isRemovingFields,
@@ -114,59 +153,24 @@ class _AddCatchPageState extends State<AddCatchPage> {
     }
   }
 
-  String _userFacingLabel(String id) {
-    CustomField customField = _customField(id);
-    if (customField != null) {
-      return customField.name;
-    }
-
-    switch (id) {
-      case Angler.key: return Strings.of(context).anglerNameLabel;
-      default: return "Test Field ${id.substring(id.length - 5)}";
-    }
-  }
-
-  void _addField(String id) {
+  void _addInputWidget(String id) {
     // Handle the case of a new custom field being added.
     CustomField customField = _customField(id);
     if (customField != null) {
-      _allInputFields.putIfAbsent(customField.id, () => customField);
+      _allInputFields.putIfAbsent(customField.id, () => InputData(
+        id: customField.id,
+        controller: fieldTypeController(customField.type),
+        label: (_) => customField.name,
+      ));
     }
 
     setState(() {
-      _usedInputOptions.putIfAbsent(id, () =>
-          defaultFieldTypeValue(_allInputFields[id].type));
+      _usedInputOptions.putIfAbsent(id, () => _allInputFields[id]);
     });
   }
 
   void _save() {
     Map<String, dynamic> result = {};
-
-    // Angler
-    if (_usedInputOptions.containsKey(Angler.key)) {
-      Angler angler =
-          Angler(name: _usedInputOptions[Angler.key].value.text);
-      result.putIfAbsent(Angler.key, () => angler.toMap);
-    }
-
-    // Test
-    if (_usedInputOptions.containsKey(test1)) {
-      result.putIfAbsent(test1, () =>
-          _usedInputOptions[test1].value.text);
-    }
-    if (_usedInputOptions.containsKey(test2)) {
-      result.putIfAbsent(test2, () =>
-          _usedInputOptions[test2].value.text);
-    }
-    if (_usedInputOptions.containsKey(test3)) {
-      result.putIfAbsent(test3, () =>
-          _usedInputOptions[test3].value.text);
-    }
-    if (_usedInputOptions.containsKey(test4)) {
-      result.putIfAbsent(test4, () =>
-          _usedInputOptions[test4].value.text);
-    }
-
     print(result);
   }
 }

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile/app_manager.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/model/custom_field.dart';
-import 'package:mobile/model/field_type.dart';
+import 'package:mobile/widgets/field_type.dart';
 import 'package:mobile/widgets/input.dart';
 import 'package:mobile/widgets/widget.dart';
 
@@ -63,7 +63,7 @@ class _AddCustomFieldPageState extends State<AddCustomFieldPage> {
         options: FieldType.values,
         value: _inputOptions[key] as FieldType,
         buildOption: (FieldType type) =>
-            Text(localizedFieldType(context, type)),
+            Text(fieldTypeLocalizedString(context, type)),
         onChanged: (FieldType newType) {
           setState(() {
             _inputOptions[key] = newType;

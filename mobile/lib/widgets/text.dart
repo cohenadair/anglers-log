@@ -30,3 +30,32 @@ class ErrorText extends StatelessWidget {
     );
   }
 }
+
+/// Text that matches the primary label in a [ListTile].
+class LabelText extends StatelessWidget {
+  final String text;
+
+  LabelText(this.text);
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      text,
+      style: Theme.of(context).textTheme.subhead,
+    );
+  }
+}
+
+class DisabledText extends StatelessWidget {
+  final String text;
+
+  DisabledText(this.text);
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      text,
+      style: TextStyle(color: Theme.of(context).disabledColor),
+    );
+  }
+}

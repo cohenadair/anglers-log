@@ -1,10 +1,75 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/i18n/strings.dart';
+import 'package:mobile/res/dimen.dart';
 import 'package:mobile/utils/string_utils.dart';
+import 'package:mobile/widgets/text.dart';
 import 'package:mobile/widgets/widget.dart';
 
+import 'list_item.dart';
+
+const int inputLimitDefault = 40;
 const int inputLimitName = 20;
+const int inputLimitNumber = 10;
 const int inputLimitDescription = 140;
+
+class InputController {
+  dynamic value;
+
+  InputController({
+    this.value,
+  });
+
+  void dispose() {
+    clear();
+  }
+
+  void clear() {
+    value = null;
+  }
+}
+
+class TextInputController extends InputController {
+  TextInputController({
+    @required TextEditingController controller,
+  }) : assert(controller != null),
+       super(value: controller);
+
+  @override
+  set value(dynamic controller) {
+    if (!(controller is TextEditingController)) {
+      return;
+    }
+    value = controller;
+  }
+
+  @override
+  void dispose() {
+    value.dispose();
+  }
+
+  @override
+  void clear() {
+    value.clear();
+  }
+}
+
+/// A simple structure for storing build information for a form's input fields.
+class InputData {
+  final String id;
+
+  /// Returns user-visible label text.
+  final String Function(BuildContext) label;
+
+  InputController controller;
+
+  InputData({
+    @required this.id,
+    this.controller,
+    @required this.label,
+  }) : assert(isNotEmpty(id)),
+       assert(label != null),
+       assert(controller != null);
+}
 
 /// A generic [Widget] used for gathering user input. The [Input] widget
 /// supports and "editing mode" that reveals a [CheckBox] to the right of the
@@ -27,7 +92,8 @@ class Input extends StatelessWidget {
     return Row(
       children: <Widget>[
         child,
-        editing ? Checkbox(
+        editing ? CondensedCheckBox(
+          padding: insetsLeftDefault,
           value: selected,
           onChanged: (bool value) {
             onEditingSelectionChanged?.call(value);
@@ -47,6 +113,8 @@ class TextInput extends StatelessWidget {
   final bool enabled;
   final int maxLength;
   final int maxLines;
+  final TextInputType keyboardType;
+  final String Function(String) validator;
 
   TextInput({
     this.initialValue,
@@ -55,31 +123,62 @@ class TextInput extends StatelessWidget {
     this.capitalization = TextCapitalization.none,
     this.controller,
     this.enabled = true,
-    this.maxLength,
+    this.maxLength = inputLimitDefault,
     this.maxLines,
+    this.keyboardType,
+    this.validator,
   });
 
   TextInput.name(BuildContext context, {
+    String label,
+    String requiredText,
     String initialValue,
     TextEditingController controller,
+    bool enabled,
   }) : this(
     initialValue: initialValue,
-    label: Strings.of(context).inputNameLabel,
-    requiredText: Strings.of(context).inputNameRequired,
+    label: isEmpty(label) ? Strings.of(context).inputNameLabel : label,
+    requiredText: isEmpty(requiredText)
+        ? Strings.of(context).inputNameRequired : requiredText,
     capitalization: TextCapitalization.words,
     controller: controller,
     maxLength: inputLimitName,
+    enabled: enabled,
   );
 
   TextInput.description(BuildContext context, {
     String initialValue,
     TextEditingController controller,
+    bool enabled,
   }) : this(
     initialValue: initialValue,
     label: Strings.of(context).inputDescriptionLabel,
     capitalization: TextCapitalization.sentences,
     controller: controller,
     maxLength: inputLimitDescription,
+    enabled: enabled,
+  );
+
+  TextInput.number(BuildContext context, {
+    double initialValue,
+    String label,
+    String requiredText,
+    TextEditingController controller,
+    bool enabled,
+  }) : this(
+    initialValue: initialValue == null ? null : initialValue.toString(),
+    label: label,
+    requiredText: requiredText,
+    controller: controller,
+    keyboardType: TextInputType.numberWithOptions(signed: true, decimal: true),
+    enabled: enabled,
+    maxLength: inputLimitNumber,
+    validator: (String value) {
+      if (double.tryParse(value) == null) {
+        return Strings.of(context).inputInvalidNumber;
+      }
+      return null;
+    }
   );
 
   @override
@@ -91,17 +190,31 @@ class TextInput extends StatelessWidget {
         labelText: label,
       ),
       textCapitalization: capitalization,
-      validator: getValidationError,
+      validator: (String value) {
+        String errorMessage;
+        if (validator != null) {
+          errorMessage = validator(value);
+        }
+
+        if (isEmpty(errorMessage)) {
+          return _validationError(value);
+        }
+
+        return errorMessage;
+      },
       enabled: enabled,
       maxLength: maxLength,
       maxLines: maxLines,
+      keyboardType: keyboardType,
     );
   }
 
-  String getValidationError(String input) =>
+  String _validationError(String input) =>
       isNotEmpty(requiredText) && input.isEmpty ? requiredText : null;
 }
 
+/// A [DropdownButtonFormField] wrapper. To disable, set either [options] or
+/// [onChanged] to `null`.
 class DropdownInput<T> extends StatelessWidget {
   final List<T> options;
   final Function(T) onChanged;
@@ -130,6 +243,81 @@ class DropdownInput<T> extends StatelessWidget {
       }).toList(),
       onChanged: onChanged,
       value: value,
+    );
+  }
+}
+
+class CheckboxInput extends StatelessWidget {
+  final String label;
+  final bool value;
+  final bool enabled;
+  final Function(bool) onChanged;
+
+  CheckboxInput({
+    @required this.label,
+    this.value = false,
+    this.enabled = true,
+    this.onChanged,
+  }) : assert(isNotEmpty(label));
+
+  Widget build(BuildContext context) {
+    return ListItem(
+      contentPadding: insetsZero,
+      title: enabled ? Text(label) : DisabledText(label),
+      trailing: CondensedCheckBox(
+        value: value,
+        enabled: enabled,
+        onChanged: onChanged,
+      ),
+    );
+  }
+}
+
+/// A [Checkbox] widget with optional padding.
+class CondensedCheckBox extends StatefulWidget {
+  final bool value;
+  final bool enabled;
+  final EdgeInsets padding;
+  final Function(bool) onChanged;
+
+  CondensedCheckBox({
+    this.value = false,
+    this.enabled = true,
+    this.padding = insetsZero,
+    this.onChanged,
+  });
+
+  @override
+  _CondensedCheckBoxState createState() => _CondensedCheckBoxState();
+}
+
+class _CondensedCheckBoxState extends State<CondensedCheckBox> {
+  bool checked;
+
+  @override
+  void initState() {
+    super.initState();
+    checked = widget.value;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: widget.padding,
+      child: InkWell(
+        child: Icon(
+          checked ? Icons.check_box : Icons.check_box_outline_blank,
+          color: widget.enabled
+              ? Theme.of(context).primaryColor
+              : Theme.of(context).primaryColorLight,
+        ),
+        onTap: widget.enabled ? () {
+          setState(() {
+            checked = !checked;
+            widget.onChanged(checked);
+          });
+        } : null,
+      ),
     );
   }
 }
