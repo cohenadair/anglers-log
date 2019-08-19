@@ -12,7 +12,6 @@ target 'AnglersLog' do
     pod 'Instabug'
     pod 'Fabric'
     pod 'Crashlytics'
-    pod 'QBImagePickerController'
 
     target 'AnglersLogTests' do
     end
