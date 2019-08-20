@@ -47,9 +47,6 @@ Map<String, Map<String, String>> englishStrings = {
     "loginPage_errorCredentials" : "Invalid login credentials",
 
     "settingsPage_title" : "Settings",
-    "settingsPage_accountHeading" : "Account",
-    "settingsPage_logout" : "Logout",
-    "settingsPath_logoutConfirmMessage" : "Are you sure you want to logout?",
 
     "formPage_addFieldText" : "Add Field",
     "formPage_removeFieldsText" : "Remove Fields",

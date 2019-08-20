@@ -18,7 +18,6 @@ class SettingsPage extends StatelessWidget {
       ),
       child: ListView(
         children: <Widget>[
-          _buildHeading(Strings.of(context).settingsPageAccountHeading),
         ],
       ),
     );

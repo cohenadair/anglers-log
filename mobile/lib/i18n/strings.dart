@@ -75,9 +75,6 @@ class Strings {
   String get loginPageErrorCredentials => _string("loginPage_errorCredentials");
 
   String get settingsPageTitle => _string("settingsPage_title");
-  String get settingsPageAccountHeading => _string("settingsPage_accountHeading");
-  String get settingsPageLogout => _string("settingsPage_logout");
-  String get settingsPathLogoutConfirmMessage => _string("settingsPath_logoutConfirmMessage");
 
   String get formPageAddFieldText => _string("formPage_addFieldText");
   String get formPageRemoveFieldsText => _string("formPage_removeFieldsText");
