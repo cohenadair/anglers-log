@@ -5,8 +5,7 @@ import 'package:uuid/uuid.dart';
 
 import 'package:mobile/widgets/field_type.dart';
 
-/// A [CustomField] is a [Field] subclass used to store data for input fields
-/// created by the user.
+/// A [CustomField] is used to store data for input fields created by the user.
 @immutable
 class CustomField {
   static const String _keyId = "id";
