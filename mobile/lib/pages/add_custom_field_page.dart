@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/app_manager.dart';
 import 'package:mobile/i18n/strings.dart';
-import 'package:mobile/model/custom_field.dart';
-import 'package:mobile/widgets/field_type.dart';
+import 'package:mobile/model/custom_entity.dart';
 import 'package:mobile/widgets/input.dart';
 import 'package:mobile/widgets/widget.dart';
 
@@ -12,7 +11,7 @@ import 'form_page.dart';
 /// app. This form is immutable.
 class AddCustomFieldPage extends StatefulWidget {
   final AppManager app;
-  final Function(CustomField) onSave;
+  final Function(CustomEntity) onSave;
 
   AddCustomFieldPage({
     @required this.app,
@@ -31,7 +30,7 @@ class _AddCustomFieldPageState extends State<AddCustomFieldPage> {
   final Map<String, dynamic> _inputOptions = {
     _keyName: TextEditingController(),
     _keyDescription: TextEditingController(),
-    _keyDataType: FieldType.number,
+    _keyDataType: InputType.number,
   };
 
   @override
@@ -59,12 +58,12 @@ class _AddCustomFieldPageState extends State<AddCustomFieldPage> {
         context,
         controller: _inputOptions[key] as TextEditingController,
       );
-      case _keyDataType: return DropdownInput<FieldType>(
-        options: FieldType.values,
-        value: _inputOptions[key] as FieldType,
-        buildOption: (FieldType type) =>
-            Text(fieldTypeLocalizedString(context, type)),
-        onChanged: (FieldType newType) {
+      case _keyDataType: return DropdownInput<InputType>(
+        options: InputType.values,
+        value: _inputOptions[key] as InputType,
+        buildOption: (InputType type) =>
+            Text(inputTypeLocalizedString(context, type)),
+        onChanged: (InputType newType) {
           setState(() {
             _inputOptions[key] = newType;
           });
@@ -77,7 +76,7 @@ class _AddCustomFieldPageState extends State<AddCustomFieldPage> {
   }
 
   void _save() {
-    var customField = CustomField(
+    var customField = CustomEntity(
       name: (_inputOptions[_keyName] as TextEditingController).text,
       description: (_inputOptions[_keyDescription] as TextEditingController)
           .text,

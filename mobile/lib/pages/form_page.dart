@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/app_manager.dart';
 import 'package:mobile/i18n/strings.dart';
-import 'package:mobile/model/custom_field.dart';
+import 'package:mobile/model/custom_entity.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/utils/page_utils.dart';
 import 'package:mobile/utils/string_utils.dart';
@@ -270,7 +270,7 @@ class _SelectionPage extends StatefulWidget {
 }
 
 class _SelectionPageState extends State<_SelectionPage> {
-  List<CustomField> _addedCustomFields = [];
+  List<CustomEntity> _addedCustomFields = [];
 
   @override
   Widget build(BuildContext context) {
@@ -290,7 +290,7 @@ class _SelectionPageState extends State<_SelectionPage> {
               onTap: () {
                 push(context, AddCustomFieldPage(
                   app: widget.app,
-                  onSave: (CustomField customField) {
+                  onSave: (CustomEntity customField) {
                     setState(() {
                       _addedCustomFields.add(customField);
                     });
@@ -316,7 +316,7 @@ class _SelectionPageState extends State<_SelectionPage> {
 
   List<FormPageFieldOption> get allOptions {
     return []..addAll(widget.options)
-      ..addAll(_addedCustomFields.map((CustomField field) {
+      ..addAll(_addedCustomFields.map((CustomEntity field) {
         return FormPageFieldOption(
           id: field.id,
           userFacingName: field.name,

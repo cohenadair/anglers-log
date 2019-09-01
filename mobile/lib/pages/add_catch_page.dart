@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/app_manager.dart';
 import 'package:mobile/i18n/strings.dart';
-import 'package:mobile/model/angler.dart';
-import 'package:mobile/model/custom_field.dart';
-import 'package:mobile/widgets/field_type.dart';
+import 'package:mobile/model/custom_entity.dart';
 import 'package:mobile/utils/string_utils.dart';
 import 'package:mobile/widgets/input.dart';
 import 'package:uuid/uuid.dart';
@@ -20,6 +18,7 @@ class AddCatchPage extends StatefulWidget {
 }
 
 class _AddCatchPageState extends State<AddCatchPage> {
+  static const String anglerId = "angler";
   // TODO: Remove
   static final String test1 = Uuid().v1();
   static final String test2 = Uuid().v1();
@@ -28,8 +27,8 @@ class _AddCatchPageState extends State<AddCatchPage> {
 
   /// All valid fields for the form.
   Map<String, InputData> _allInputFields = {
-    Angler.key: InputData(
-      id: Angler.key,
+    anglerId: InputData(
+      id: anglerId,
       controller: TextInputController(controller: TextEditingController()),
       label: (BuildContext context) {
         return Strings.of(context).anglerNameLabel;
@@ -77,7 +76,7 @@ class _AddCatchPageState extends State<AddCatchPage> {
   void initState() {
     super.initState();
     _usedInputOptions = {
-      Angler.key: _allInputFields[Angler.key],
+      anglerId: _allInputFields[anglerId],
     };
   }
 
@@ -115,13 +114,13 @@ class _AddCatchPageState extends State<AddCatchPage> {
     );
   }
 
-  CustomField _customField(String id) =>
+  CustomEntity _customField(String id) =>
       widget.app.customFieldManager.customField(id);
 
   Widget _inputWidget({String key, bool isRemovingFields}) {
-    CustomField customField = _customField(key);
+    CustomEntity customField = _customField(key);
     if (customField != null) {
-      return fieldTypeWidget(context,
+      return inputTypeWidget(context,
         type: customField.type,
         label: customField.name,
         controller: _usedInputOptions[key].controller,
@@ -135,7 +134,7 @@ class _AddCatchPageState extends State<AddCatchPage> {
     var label = _usedInputOptions[key].label(context);
 
     switch (key) {
-      case Angler.key: return TextInput.name(context,
+      case anglerId: return TextInput.name(context,
         controller: _usedInputOptions[key].controller.value,
         label: label,
         requiredText: format(Strings.of(context).inputRequiredMessage,
@@ -155,11 +154,11 @@ class _AddCatchPageState extends State<AddCatchPage> {
 
   void _addInputWidget(String id) {
     // Handle the case of a new custom field being added.
-    CustomField customField = _customField(id);
+    CustomEntity customField = _customField(id);
     if (customField != null) {
       _allInputFields.putIfAbsent(customField.id, () => InputData(
         id: customField.id,
-        controller: fieldTypeController(customField.type),
+        controller: inputTypeController(customField.type),
         label: (_) => customField.name,
       ));
     }

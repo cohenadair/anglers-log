@@ -1,38 +1,56 @@
+import 'package:flutter/foundation.dart';
+import 'package:mobile/model/property.dart';
+import 'package:quiver/core.dart';
+import 'package:uuid/uuid.dart';
+
 /// An [Entity] stores a collection of manageable properties. An [Entity] is
 /// designed to store business logic data only; nothing UI related.
 ///
 /// This class should only be subclassed when a dynamic object is desired,
 /// such as a Catch, or Bait.
-abstract class Entity {
-  // Map keys outside dynamic properties.
-  static const keyCustomFields = "customFields";
+@immutable
+class Entity implements Mappable {
+  static const _keyId = "id";
+  static const _keyCustomProperties = "custom_properties";
 
-  final Map<String, dynamic> _properties;
+  final String id;
+  final Map<String, Property> _properties;
 
-  Entity() : _properties = Map();
-  Entity.fromMap(Map<String, dynamic> map) : _properties = map;
+  Entity(List<Property> properties, {String id})
+      : id = id ?? Uuid().v1(),
+        _properties = Map.fromIterable(properties,
+          key: (p) => (p as Property).key,
+          value: (p) => p,
+        );
 
-  Map<String, dynamic> get properties => Map.from(_properties);
-  Map<String, dynamic> get toMap => properties;
+  List<Property> get propertyList => List.unmodifiable(_properties.values);
+  Property propertyWithName(String name) => _properties[name];
 
-  /// Sets the property with the given [key], or overrides the value at [key]
-  /// if it already exists. If `value` is `null`, this method does nothing.
-  ///
-  /// To clear a property, call [removeProperty].
-  void setProperty({String key, dynamic value}) {
-    if (value == null) {
-      return;
+  Map<String, dynamic> toMap() {
+    Map<String, dynamic> result = {};
+    result[_keyId] = id;
+
+    List<Property> customProperties = [];
+
+    for (Property property in propertyList) {
+      if (property is CustomProperty) {
+        customProperties.add(property);
+      } else if (property is Mappable) {
+        result[property.key] = (property as Mappable).toMap();
+      } else if (property is SingleProperty) {
+        result[property.key] = property.value;
+      }
     }
-    _properties[key] = value;
+
+    result[_keyCustomProperties] = customProperties;
+    return result;
   }
 
-  void removeProperty({String key}) {
-    if (!_properties.remove(key)) {
-      print("Property with key $key does not exist in $_properties");
-    }
-  }
+  @override
+  bool operator ==(other) => other is Entity
+      && id == other.id
+      && listEquals(propertyList, other.propertyList);
 
-  /// Returns `null` if the property at `key` doesn't exist.
-  dynamic property({String key}) => _properties[key];
-  bool hasProperty({String key}) => _properties.containsKey(key);
+  @override
+  int get hashCode => hash2(id.hashCode, hashObjects(propertyList));
 }
