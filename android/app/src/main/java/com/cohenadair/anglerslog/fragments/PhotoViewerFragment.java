@@ -199,8 +199,7 @@ public class PhotoViewerFragment extends Fragment {
         }
 
         public Uri getItemUri(int position) {
-            return Uri.fromFile(PhotoUtils.privatePhotoFile(getContext(),
-                    mPhotoNames.get(position)));
+            return PhotoUtils.privatePhotoUri(getContext(), mPhotoNames.get(position));
         }
 
     }

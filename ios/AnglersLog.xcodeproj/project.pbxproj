@@ -137,6 +137,18 @@
 		AC366FD21FF3FE14004D43F0 /* CMATableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AC366FD11FF3FE14004D43F0 /* CMATableViewController.m */; };
 		AC366FD41FF459D7004D43F0 /* CMABaitTest.m in Sources */ = {isa = PBXBuildFile; fileRef = AC366FD31FF459D7004D43F0 /* CMABaitTest.m */; };
 		AC3A99D51FF7EAF900473A5D /* SelectFishingSpot.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AC3A99D41FF7EAF900473A5D /* SelectFishingSpot.storyboard */; };
+		AC45E32C230B400000D9A06B /* QBAlbumsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AC45E317230B3FFE00D9A06B /* QBAlbumsViewController.m */; };
+		AC45E32D230B400000D9A06B /* QBAlbumCell.m in Sources */ = {isa = PBXBuildFile; fileRef = AC45E318230B3FFE00D9A06B /* QBAlbumCell.m */; };
+		AC45E32E230B400000D9A06B /* QBAssetCell.m in Sources */ = {isa = PBXBuildFile; fileRef = AC45E319230B3FFE00D9A06B /* QBAssetCell.m */; };
+		AC45E32F230B400000D9A06B /* QBVideoIconView.m in Sources */ = {isa = PBXBuildFile; fileRef = AC45E31B230B3FFF00D9A06B /* QBVideoIconView.m */; };
+		AC45E330230B400000D9A06B /* QBAssetsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AC45E31C230B3FFF00D9A06B /* QBAssetsViewController.m */; };
+		AC45E331230B400000D9A06B /* QBImagePickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = AC45E31D230B3FFF00D9A06B /* QBImagePickerController.m */; };
+		AC45E332230B400000D9A06B /* QBVideoIndicatorView.m in Sources */ = {isa = PBXBuildFile; fileRef = AC45E31E230B3FFF00D9A06B /* QBVideoIndicatorView.m */; };
+		AC45E333230B400000D9A06B /* QBSlomoIconView.m in Sources */ = {isa = PBXBuildFile; fileRef = AC45E31F230B3FFF00D9A06B /* QBSlomoIconView.m */; };
+		AC45E334230B400000D9A06B /* QBImagePicker.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AC45E321230B3FFF00D9A06B /* QBImagePicker.storyboard */; };
+		AC45E335230B400000D9A06B /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = AC45E326230B400000D9A06B /* Info.plist */; };
+		AC45E336230B400000D9A06B /* QBCheckmarkView.m in Sources */ = {isa = PBXBuildFile; fileRef = AC45E327230B400000D9A06B /* QBCheckmarkView.m */; };
+		AC45E338230B400F00D9A06B /* en.lproj in Resources */ = {isa = PBXBuildFile; fileRef = AC45E337230B400F00D9A06B /* en.lproj */; };
 		AC58D56C1FED50CC00C5EC3E /* Entries.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AC58D56B1FED50CC00C5EC3E /* Entries.storyboard */; };
 		AC58D5701FED792A00C5EC3E /* CMAThumbnailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = AC58D56E1FED792A00C5EC3E /* CMAThumbnailCell.m */; };
 		AC58D5711FED792A00C5EC3E /* CMAThumbnailCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = AC58D56F1FED792A00C5EC3E /* CMAThumbnailCell.xib */; };
@@ -388,6 +400,28 @@
 		AC366FD11FF3FE14004D43F0 /* CMATableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = CMATableViewController.m; path = ViewControllers/CMATableViewController.m; sourceTree = "<group>"; };
 		AC366FD31FF459D7004D43F0 /* CMABaitTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CMABaitTest.m; sourceTree = "<group>"; };
 		AC3A99D41FF7EAF900473A5D /* SelectFishingSpot.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = SelectFishingSpot.storyboard; sourceTree = "<group>"; };
+		AC45E317230B3FFE00D9A06B /* QBAlbumsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QBAlbumsViewController.m; sourceTree = "<group>"; };
+		AC45E318230B3FFE00D9A06B /* QBAlbumCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QBAlbumCell.m; sourceTree = "<group>"; };
+		AC45E319230B3FFE00D9A06B /* QBAssetCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QBAssetCell.m; sourceTree = "<group>"; };
+		AC45E31A230B3FFE00D9A06B /* QBAlbumsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QBAlbumsViewController.h; sourceTree = "<group>"; };
+		AC45E31B230B3FFF00D9A06B /* QBVideoIconView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QBVideoIconView.m; sourceTree = "<group>"; };
+		AC45E31C230B3FFF00D9A06B /* QBAssetsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QBAssetsViewController.m; sourceTree = "<group>"; };
+		AC45E31D230B3FFF00D9A06B /* QBImagePickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QBImagePickerController.m; sourceTree = "<group>"; };
+		AC45E31E230B3FFF00D9A06B /* QBVideoIndicatorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QBVideoIndicatorView.m; sourceTree = "<group>"; };
+		AC45E31F230B3FFF00D9A06B /* QBSlomoIconView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QBSlomoIconView.m; sourceTree = "<group>"; };
+		AC45E320230B3FFF00D9A06B /* QBVideoIconView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QBVideoIconView.h; sourceTree = "<group>"; };
+		AC45E321230B3FFF00D9A06B /* QBImagePicker.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = QBImagePicker.storyboard; sourceTree = "<group>"; };
+		AC45E322230B3FFF00D9A06B /* QBImagePickerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QBImagePickerController.h; sourceTree = "<group>"; };
+		AC45E323230B3FFF00D9A06B /* QBSlomoIconView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QBSlomoIconView.h; sourceTree = "<group>"; };
+		AC45E324230B3FFF00D9A06B /* QBImagePicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QBImagePicker.h; sourceTree = "<group>"; };
+		AC45E325230B400000D9A06B /* QBVideoIndicatorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QBVideoIndicatorView.h; sourceTree = "<group>"; };
+		AC45E326230B400000D9A06B /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		AC45E327230B400000D9A06B /* QBCheckmarkView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QBCheckmarkView.m; sourceTree = "<group>"; };
+		AC45E328230B400000D9A06B /* QBAlbumCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QBAlbumCell.h; sourceTree = "<group>"; };
+		AC45E329230B400000D9A06B /* QBCheckmarkView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QBCheckmarkView.h; sourceTree = "<group>"; };
+		AC45E32A230B400000D9A06B /* QBAssetCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QBAssetCell.h; sourceTree = "<group>"; };
+		AC45E32B230B400000D9A06B /* QBAssetsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QBAssetsViewController.h; sourceTree = "<group>"; };
+		AC45E337230B400F00D9A06B /* en.lproj */ = {isa = PBXFileReference; lastKnownFileType = folder; path = en.lproj; sourceTree = "<group>"; };
 		AC58D56B1FED50CC00C5EC3E /* Entries.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Entries.storyboard; sourceTree = "<group>"; };
 		AC58D56D1FED792A00C5EC3E /* CMAThumbnailCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CMAThumbnailCell.h; path = CustomViews/CMAThumbnailCell.h; sourceTree = "<group>"; };
 		AC58D56E1FED792A00C5EC3E /* CMAThumbnailCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = CMAThumbnailCell.m; path = CustomViews/CMAThumbnailCell.m; sourceTree = "<group>"; };
@@ -704,6 +738,35 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		AC45E2F4230B3DF600D9A06B /* QBImagePicker */ = {
+			isa = PBXGroup;
+			children = (
+				AC45E337230B400F00D9A06B /* en.lproj */,
+				AC45E326230B400000D9A06B /* Info.plist */,
+				AC45E328230B400000D9A06B /* QBAlbumCell.h */,
+				AC45E318230B3FFE00D9A06B /* QBAlbumCell.m */,
+				AC45E31A230B3FFE00D9A06B /* QBAlbumsViewController.h */,
+				AC45E317230B3FFE00D9A06B /* QBAlbumsViewController.m */,
+				AC45E32A230B400000D9A06B /* QBAssetCell.h */,
+				AC45E319230B3FFE00D9A06B /* QBAssetCell.m */,
+				AC45E32B230B400000D9A06B /* QBAssetsViewController.h */,
+				AC45E31C230B3FFF00D9A06B /* QBAssetsViewController.m */,
+				AC45E329230B400000D9A06B /* QBCheckmarkView.h */,
+				AC45E327230B400000D9A06B /* QBCheckmarkView.m */,
+				AC45E324230B3FFF00D9A06B /* QBImagePicker.h */,
+				AC45E321230B3FFF00D9A06B /* QBImagePicker.storyboard */,
+				AC45E322230B3FFF00D9A06B /* QBImagePickerController.h */,
+				AC45E31D230B3FFF00D9A06B /* QBImagePickerController.m */,
+				AC45E323230B3FFF00D9A06B /* QBSlomoIconView.h */,
+				AC45E31F230B3FFF00D9A06B /* QBSlomoIconView.m */,
+				AC45E320230B3FFF00D9A06B /* QBVideoIconView.h */,
+				AC45E31B230B3FFF00D9A06B /* QBVideoIconView.m */,
+				AC45E325230B400000D9A06B /* QBVideoIndicatorView.h */,
+				AC45E31E230B3FFF00D9A06B /* QBVideoIndicatorView.m */,
+			);
+			path = QBImagePicker;
+			sourceTree = "<group>";
+		};
 		AC58D56A1FED509B00C5EC3E /* Storyboards */ = {
 			isa = PBXGroup;
 			children = (
@@ -903,6 +966,7 @@
 		E7C29D0C1A143A1600015B42 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				AC45E2F4230B3DF600D9A06B /* QBImagePicker */,
 				0DBC36191D7E2DCF0016B898 /* iRate */,
 				0D006E5D1D3702A900DBDA7B /* SWRevealViewController */,
 			);
@@ -959,7 +1023,6 @@
 				ACCC66CB1FEB5BD600B681A8 /* Frameworks */,
 				ACCC66CC1FEB5BD600B681A8 /* Resources */,
 				79BAD643E50A6155093E9394 /* [CP] Embed Pods Frameworks */,
-				A6ACD957D2529FE095E45763 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -982,7 +1045,6 @@
 				0DBFE94A1C8E456900BDCC1D /* ShellScript */,
 				0D30054E1D35CD6A00A1EEDD /* ShellScript */,
 				D671AC50BFFFD85CA40C799F /* [CP] Embed Pods Frameworks */,
-				B1E0DE96047352F4E40C4AB9 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -1028,6 +1090,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 			);
 			mainGroup = E70B636919D3A8E400DFBA85;
@@ -1085,6 +1148,7 @@
 				0D8F84521A6EC2C300AABAEA /* app_icon_58.png in Resources */,
 				0D8F83A51A6EC1E600AABAEA /* Images.xcassets in Resources */,
 				0D8F84641A6EC2C300AABAEA /* locations.png in Resources */,
+				AC45E338230B400F00D9A06B /* en.lproj in Resources */,
 				0D8F84591A6EC2C300AABAEA /* checkmark@1x.png in Resources */,
 				0D8F84561A6EC2C300AABAEA /* camera@1x.png in Resources */,
 				0D8F840E1A6EC29A00AABAEA /* CMACircleView.xib in Resources */,
@@ -1093,9 +1157,11 @@
 				AC6115CE1FEE06100052BFE5 /* SingleBait.storyboard in Resources */,
 				0D8F846E1A6EC2C300AABAEA /* stats.png in Resources */,
 				0DBC36181D7E2BA50016B898 /* spinner.jpg in Resources */,
+				AC45E335230B400000D9A06B /* Info.plist in Resources */,
 				AC6115CC1FEE01E30052BFE5 /* placeholder_circle@1x.png in Resources */,
 				0D8F84611A6EC2C300AABAEA /* instagram@2x.png in Resources */,
 				0D81E4581C8F404300974ED3 /* circle_icon@3x.png in Resources */,
+				AC45E334230B400000D9A06B /* QBImagePicker.storyboard in Resources */,
 				0D8F84621A6EC2C300AABAEA /* instagram_small.png in Resources */,
 				0D8F84541A6EC2C300AABAEA /* app_icon_80.png in Resources */,
 				AC8083CF1FF0946700D63426 /* Settings.storyboard in Resources */,
@@ -1194,70 +1260,30 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-AnglersLog-AnglersLogTests/Pods-AnglersLog-AnglersLogTests-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-AnglersLog-AnglersLogTests/Pods-AnglersLog-AnglersLogTests-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/AFNetworking/AFNetworking.framework",
-				"${BUILT_PRODUCTS_DIR}/ChameleonFramework/ChameleonFramework.framework",
 				"${PODS_ROOT}/Instabug/Instabug.framework",
 				"${PODS_ROOT}/Instabug/Instabug.framework.dSYM",
 				"${PODS_ROOT}/Instabug/InstabugCore.framework",
 				"${PODS_ROOT}/Instabug/InstabugCore.framework.dSYM",
 				"${BUILT_PRODUCTS_DIR}/OpenWeatherMapAPI/OpenWeatherMapAPI.framework",
-				"${BUILT_PRODUCTS_DIR}/QBImagePickerController/QBImagePickerController.framework",
 				"${BUILT_PRODUCTS_DIR}/SSZipArchive/SSZipArchive.framework",
 				"${BUILT_PRODUCTS_DIR}/XYPieChart/XYPieChart.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AFNetworking.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ChameleonFramework.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Instabug.framework",
 				"${DWARF_DSYM_FOLDER_PATH}/Instabug.framework.dSYM",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/InstabugCore.framework",
 				"${DWARF_DSYM_FOLDER_PATH}/InstabugCore.framework.dSYM",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OpenWeatherMapAPI.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/QBImagePickerController.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SSZipArchive.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/XYPieChart.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-AnglersLog-AnglersLogTests/Pods-AnglersLog-AnglersLogTests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		A6ACD957D2529FE095E45763 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-AnglersLog-AnglersLogTests/Pods-AnglersLog-AnglersLogTests-resources.sh",
-				"${PODS_ROOT}/Instabug/Instabug.bundle",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-AnglersLog-AnglersLogTests/Pods-AnglersLog-AnglersLogTests-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		B1E0DE96047352F4E40C4AB9 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-AnglersLog/Pods-AnglersLog-resources.sh",
-				"${PODS_ROOT}/Instabug/Instabug.bundle",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-AnglersLog/Pods-AnglersLog-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-AnglersLog-AnglersLogTests/Pods-AnglersLog-AnglersLogTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		D671AC50BFFFD85CA40C799F /* [CP] Embed Pods Frameworks */ = {
@@ -1266,34 +1292,30 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-AnglersLog/Pods-AnglersLog-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-AnglersLog/Pods-AnglersLog-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/AFNetworking/AFNetworking.framework",
-				"${BUILT_PRODUCTS_DIR}/ChameleonFramework/ChameleonFramework.framework",
 				"${PODS_ROOT}/Instabug/Instabug.framework",
 				"${PODS_ROOT}/Instabug/Instabug.framework.dSYM",
 				"${PODS_ROOT}/Instabug/InstabugCore.framework",
 				"${PODS_ROOT}/Instabug/InstabugCore.framework.dSYM",
 				"${BUILT_PRODUCTS_DIR}/OpenWeatherMapAPI/OpenWeatherMapAPI.framework",
-				"${BUILT_PRODUCTS_DIR}/QBImagePickerController/QBImagePickerController.framework",
 				"${BUILT_PRODUCTS_DIR}/SSZipArchive/SSZipArchive.framework",
 				"${BUILT_PRODUCTS_DIR}/XYPieChart/XYPieChart.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AFNetworking.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ChameleonFramework.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Instabug.framework",
 				"${DWARF_DSYM_FOLDER_PATH}/Instabug.framework.dSYM",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/InstabugCore.framework",
 				"${DWARF_DSYM_FOLDER_PATH}/InstabugCore.framework.dSYM",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OpenWeatherMapAPI.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/QBImagePickerController.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SSZipArchive.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/XYPieChart.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-AnglersLog/Pods-AnglersLog-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-AnglersLog/Pods-AnglersLog-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		F2F69295F9908E97EEA52621 /* [CP] Check Pods Manifest.lock */ = {
@@ -1347,16 +1369,20 @@
 				0D128F5A1AD5C1BC0004CABE /* CMADataExporter.m in Sources */,
 				0D8F83E71A6EC25200AABAEA /* CMAViewPhotosViewController.m in Sources */,
 				0D8F839C1A6EC15D00AABAEA /* CMAAppDelegate.m in Sources */,
+				AC45E32D230B400000D9A06B /* QBAlbumCell.m in Sources */,
 				0D8F83D91A6EC25200AABAEA /* CMAImagePicker.m in Sources */,
 				0D8F83E21A6EC25200AABAEA /* CMAAddFishingSpotViewController.m in Sources */,
 				0D23B2711A7713C900E89736 /* TheAnglersLog.xcdatamodeld in Sources */,
 				0D8F83941A6EC10800AABAEA /* CMAFishingSpot.m in Sources */,
 				0D8F83951A6EC10800AABAEA /* CMALocation.m in Sources */,
 				0D8F84111A6EC29A00AABAEA /* CMANoXView.m in Sources */,
+				AC45E32C230B400000D9A06B /* QBAlbumsViewController.m in Sources */,
 				0D8F838E1A6EC10800AABAEA /* CMAStorageManager.m in Sources */,
 				0D87D06F1AD7158A008E732A /* CMAJSONReader.m in Sources */,
+				AC45E336230B400000D9A06B /* QBCheckmarkView.m in Sources */,
 				0D8F838B1A6EC10800AABAEA /* CMAEntry.m in Sources */,
 				0D006E601D3702BB00DBDA7B /* SWRevealViewController.m in Sources */,
+				AC45E32F230B400000D9A06B /* QBVideoIconView.m in Sources */,
 				0D8F83E61A6EC25200AABAEA /* CMASinglePhotoViewController.m in Sources */,
 				0D8F840C1A6EC29A00AABAEA /* CMACameraButton.m in Sources */,
 				0D8F83EE1A6EC28300AABAEA /* CMAAlerts.m in Sources */,
@@ -1373,6 +1399,7 @@
 				0D8F84161A6EC29A00AABAEA /* CMAWeatherDataView.m in Sources */,
 				0D8F84151A6EC29A00AABAEA /* CMATouchSegmentedControl.m in Sources */,
 				0D8F83981A6EC10800AABAEA /* CMAWaterClarity.m in Sources */,
+				AC45E32E230B400000D9A06B /* QBAssetCell.m in Sources */,
 				0D8F83911A6EC10800AABAEA /* CMAStatsObject.m in Sources */,
 				0DBC36141D7DBB480016B898 /* iRate.m in Sources */,
 				0D8F83DB1A6EC25200AABAEA /* CMASideMenuViewController.m in Sources */,
@@ -1384,11 +1411,15 @@
 				0D9B76101A76C4C100553177 /* CMAUserDefineObject.m in Sources */,
 				0D128F501AD472340004CABE /* CMAJSONWriter.m in Sources */,
 				0D8F83921A6EC10800AABAEA /* CMABait.m in Sources */,
+				AC45E332230B400000D9A06B /* QBVideoIndicatorView.m in Sources */,
 				0D8F84101A6EC29A00AABAEA /* CMAInstagramActivity.m in Sources */,
+				AC45E331230B400000D9A06B /* QBImagePickerController.m in Sources */,
 				AC8D16132001831700CE0BAF /* CMAAboutViewController.m in Sources */,
 				0D8F840D1A6EC29A00AABAEA /* CMACircleView.m in Sources */,
 				0D8F83EF1A6EC28300AABAEA /* CMAConstants.m in Sources */,
+				AC45E333230B400000D9A06B /* QBSlomoIconView.m in Sources */,
 				0DCAD6551AA5069E0040B03B /* CMASettingsViewController.m in Sources */,
+				AC45E330230B400000D9A06B /* QBAssetsViewController.m in Sources */,
 				0D8F83E11A6EC25200AABAEA /* CMAViewEntriesViewController.m in Sources */,
 				0D8F83E41A6EC25200AABAEA /* CMASelectFishingSpotViewController.m in Sources */,
 				AC58D5701FED792A00C5EC3E /* CMAThumbnailCell.m in Sources */,

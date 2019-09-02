@@ -259,11 +259,12 @@
     NSString *newName = self.nameTextField.text;
     
     // make sure the bait name doesn't already exist
-    if (![self.oldName isEqualToString:newName])
+    if (self.oldName == nil || [self.oldName caseInsensitiveCompare:newName] != NSOrderedSame) {
         if ([[[self journal] userDefineNamed:UDN_BAITS] objectNamed:newName] != nil) {
             [CMAAlerts showError:@"A bait by that name already exists. Please choose a new name or edit the existing bait." inVc:self];
             return NO;
         }
+    }
     
     // name
     [aBait setName:[self.nameTextField.text mutableCopy]];

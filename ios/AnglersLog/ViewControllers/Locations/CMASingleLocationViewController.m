@@ -26,6 +26,7 @@
 
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *mapTypeControl;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *mapTypeBottomConstraint;
 
 @property (strong, nonatomic)CMAFishingSpot *currentFishingSpot;
 @property (strong, nonatomic)NSMutableArray *fishingSpotAnnotations;
@@ -86,6 +87,13 @@
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
+}
+
+- (void)viewSafeAreaInsetsDidChange {
+    [super viewSafeAreaInsetsDidChange];
+    if (@available(iOS 11.0, *)) {
+        self.mapTypeBottomConstraint.constant = -self.view.safeAreaInsets.bottom;
+    }
 }
 
 - (void)configureForReadOnly {

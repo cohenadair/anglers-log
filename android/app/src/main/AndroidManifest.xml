@@ -3,7 +3,7 @@
     package="com.cohenadair.anglerslog"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:versionName="@string/version_name"
-    android:versionCode="133">
+    android:versionCode="135">
 
     <uses-feature android:name="android.hardware.camera2" android:required="false"/>
 
@@ -87,6 +87,16 @@
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="d570cd50cd2bdb75cf4574dddd2936d781cc03af" />
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths"/>
+        </provider>
     </application>
 
 </manifest>

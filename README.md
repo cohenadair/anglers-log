@@ -32,9 +32,9 @@ Thank-you!
 
 ## License
 
-The source code to Anglers' Log is available under the GNU General Public License. See the [LICENSE](https://github.com/cohenadair/anglers-log/blob/master/LICENCE) file for more information.
+The source code to Anglers' Log is available under the GNU General Public License. See the [LICENSE](https://raw.githubusercontent.com/cohenadair/anglers-log/master/LICENSE) file for more information.
 
-Although allowed by the licensing terms, please do not submit your own version of Anglers' Log to the App Store, Google Play, or any other moible app distribution platform.
+Although allowed by the licensing terms, please do not submit your own version of Anglers' Log to the App Store, Google Play, or any other mobile app distribution platform.
 
 
 ## Contact

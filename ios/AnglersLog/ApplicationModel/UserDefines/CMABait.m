@@ -23,7 +23,7 @@
 #pragma mark - Initialization
 
 - (CMABait *)initWithName:(NSString *)aName andUserDefine:(CMAUserDefine *)aUserDefine {
-    self.name = [aName capitalizedString];
+    self.name = aName;
     self.baitDescription = nil;
     self.imageData = nil;
     self.fishCaught = [NSNumber numberWithInteger:0];
@@ -59,7 +59,7 @@
 }
 
 - (void)edit:(CMABait *)aNewBait {
-    [self setName:[aNewBait.name capitalizedString]];
+    [self setName:aNewBait.name];
     [self setBaitDescription:aNewBait.baitDescription];
     [self setImageData:aNewBait.imageData];
     [self setSize:[aNewBait.size capitalizedString]];

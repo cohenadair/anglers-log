@@ -32,6 +32,7 @@ import com.cohenadair.anglerslog.views.BottomSheetView;
 public class MyListFragment extends MasterFragment {
 
     private RecyclerView mRecyclerView;
+    private FloatingActionButton mFab;
 
     //region Callback Interface
     InteractionListener mCallbacks;
@@ -136,8 +137,8 @@ public class MyListFragment extends MasterFragment {
     }
 
     private void initNewButton(View view) {
-        FloatingActionButton newButton = (FloatingActionButton)view.findViewById(R.id.new_button);
-        newButton.setOnClickListener(new View.OnClickListener() {
+        mFab = view.findViewById(R.id.new_button);
+        mFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mCallbacks.onMyListClickNewButton();
@@ -166,6 +167,7 @@ public class MyListFragment extends MasterFragment {
                 (BottomSheetView)view.findViewById(R.id.backup_bottom_sheet_view);
 
         if (LogbookPreferences.shouldShowBackupSheet(getContext())) {
+            mFab.setVisibility(View.GONE);
             backupSheetView.init(
                     backupSheetView,
                     R.drawable.ic_info,
@@ -177,12 +179,14 @@ public class MyListFragment extends MasterFragment {
                         @Override
                         public void onDismiss() {
                             LogbookPreferences.updateLastBackup(getContext());
+                            mFab.setVisibility(View.VISIBLE);
                         }
                     }
             );
         } else {
             // just a precaution if it happens to be showing
             backupSheetView.setVisibility(View.GONE);
+            mFab.setVisibility(View.VISIBLE);
         }
     }
     //endregion

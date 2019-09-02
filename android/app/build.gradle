@@ -1,18 +1,4 @@
-buildscript {
-    repositories {
-        maven { url 'https://maven.fabric.io/public' }
-    }
-
-    dependencies {
-        classpath 'io.fabric.tools:gradle:1.27.1'
-    }
-}
 apply plugin: 'com.android.application'
-apply plugin: 'io.fabric'
-
-repositories {
-    maven { url 'https://maven.fabric.io/public' }
-}
 
 allprojects {
     repositories {
@@ -38,9 +24,12 @@ android {
     testOptions {
         unitTests.returnDefaultValues = true
     }
+    flavorDimensions "version"
     productFlavors {
         releaseFlavor {
-
+            dimension "version"
+            applicationIdSuffix ""
+            versionNameSuffix ""
         }
         uiTesting {
             minSdkVersion 18
@@ -61,22 +50,18 @@ dependencies {
         exclude module: 'support-v13'
         exclude module: 'recyclerview-v7'
     }
-    androidTestCompile 'com.android.support.test.uiautomator:uiautomator-v18:2.1.3'
-    androidTestCompile 'com.android.support:support-annotations:26.1.0'
-    compile 'com.android.support:support-annotations:27.1.1'
+    androidTestCompile 'com.android.support.test.uiautomator:uiautomator-v18:2.1.2'
+    androidTestCompile 'com.android.support:support-annotations:23.4.0'
     compile 'com.android.support:preference-v14:26.1.0'
     compile 'com.android.support:design:26.1.0'
     compile 'com.android.support:cardview-v7:26.1.0'
     compile 'com.android.support:recyclerview-v7:26.1.0'
-    compile 'com.google.android.gms:play-services-location:16.0.0'
-    compile 'com.google.android.gms:play-services-maps:16.1.0'
+    compile 'com.google.android.gms:play-services-location:9.4.0'
+    compile 'com.google.android.gms:play-services-maps:9.4.0'
     compile 'commons-io:commons-io:2.4'
     compile 'de.hdodenhof:circleimageview:2.0.0'
     compile 'com.github.PhilJay:MPAndroidChart:v3.0.0-beta1'
     compile 'com.github.lzyzsd.randomcolor:library:1.0.0'
     compile 'com.adobe.xmp:xmpcore:5.1.2'
     compile 'com.davemorrissey.labs:subsampling-scale-image-view:3.4.1'
-    compile('com.crashlytics.sdk.android:crashlytics:2.5.5@aar') {
-        transitive = true
-    }
 }

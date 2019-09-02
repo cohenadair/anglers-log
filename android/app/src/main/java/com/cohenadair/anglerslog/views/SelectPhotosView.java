@@ -154,7 +154,7 @@ public class SelectPhotosView extends LinearLayout {
         // photos taken from the camera are saved here
         File publicFile = PhotoUtils.publicPhotoFile(getContext(), mPrivatePhotoFile.getName());
         if (publicFile != null) {
-            mPublicPhotoUri = Uri.fromFile(publicFile);
+            mPublicPhotoUri = Utils.getFileUri(getContext(), publicFile);
         } else {
             // needs to be reset for new/additional user photos
             // if this is null it just means the photo taken by the user will not be saved

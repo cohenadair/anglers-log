@@ -1,8 +1,5 @@
 PODS:
   - AFNetworking (1.3.4)
-  - ChameleonFramework (2.1.0):
-    - ChameleonFramework/Default (= 2.1.0)
-  - ChameleonFramework/Default (2.1.0)
   - Crashlytics (3.7.2):
     - Fabric (~> 1.6.3)
   - Fabric (1.6.7)
@@ -14,32 +11,37 @@ PODS:
   - Instabug/InstabugCore (7.8)
   - OpenWeatherMapAPI (0.0.5):
     - AFNetworking (~> 1.3.1)
-  - QBImagePickerController (3.4.0)
   - SSZipArchive (1.3)
   - XYPieChart (0.2)
 
 DEPENDENCIES:
   - AFNetworking (~> 1.3.1)
-  - ChameleonFramework
   - Crashlytics
   - Fabric
   - Instabug
   - OpenWeatherMapAPI (~> 0.0.5)
-  - QBImagePickerController
   - SSZipArchive
   - XYPieChart
 
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - AFNetworking
+    - Crashlytics
+    - Fabric
+    - Instabug
+    - OpenWeatherMapAPI
+    - SSZipArchive
+    - XYPieChart
+
 SPEC CHECKSUMS:
   AFNetworking: cf8e418e16f0c9c7e5c3150d019a3c679d015018
-  ChameleonFramework: d21a3cc247abfe5e37609a283a8238b03575cf64
   Crashlytics: 130ab943f8c78cda7a814b434f270b2e2c8a3cba
   Fabric: caf7580c725e64db144f610ac65cd60956911dc7
   Instabug: 51b8f0502289c3ec3e2e66672a988d3fe6ab563a
   OpenWeatherMapAPI: 53613bba3dffc948f852a66a25f512f7a16643e7
-  QBImagePickerController: d54cf93db6decf26baf6ed3472f336ef35cae022
   SSZipArchive: 5525196ee195b473dcc4a0d4d2cba98bfa3eb1c1
   XYPieChart: 0efd8069d26c25d20ab74c01b5ad455f1fc48153
 
-PODFILE CHECKSUM: 8dd37d220eeaaed23b91599e59d5d17b69c04fd9
+PODFILE CHECKSUM: 0a44dd759856b0f236c4d9240a6f79a12782cdf5
 
-COCOAPODS: 1.3.1
+COCOAPODS: 1.6.1

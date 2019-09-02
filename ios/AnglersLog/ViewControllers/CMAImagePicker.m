@@ -7,10 +7,10 @@
 //
 
 #import <MobileCoreServices/MobileCoreServices.h>
-#import <QBImagePickerController/QBImagePickerController.h>
 
 #import "CMAAlerts.h"
 #import "CMAImagePicker.h"
+#import "QBImagePickerController.h"
 
 @interface CMAImagePicker () <UIImagePickerControllerDelegate, UINavigationControllerDelegate,
         UIDocumentMenuDelegate, UIDocumentPickerDelegate, QBImagePickerControllerDelegate>

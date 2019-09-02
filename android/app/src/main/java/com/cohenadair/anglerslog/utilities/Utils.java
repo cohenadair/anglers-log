@@ -10,13 +10,16 @@ import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.content.FileProvider;
 import android.text.format.DateFormat;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.Toast;
 
+import com.cohenadair.anglerslog.BuildConfig;
 import com.cohenadair.anglerslog.R;
 
+import java.io.File;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -309,6 +312,10 @@ public class Utils {
             );
             context.startActivity(new Intent(Intent.ACTION_VIEW, uri));
         }
+    }
+
+    public static Uri getFileUri(Context context, File file) {
+        return FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID + ".provider", file);
     }
 
 }

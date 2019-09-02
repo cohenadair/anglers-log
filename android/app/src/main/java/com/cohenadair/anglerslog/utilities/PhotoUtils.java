@@ -342,7 +342,7 @@ public class PhotoUtils {
      * @return A {@link Uri} of the given file name.
      */
     public static Uri privatePhotoUri(Context context, String fileName) {
-        return Uri.fromFile(privatePhotoFile(context, fileName));
+        return Utils.getFileUri(context, privatePhotoFile(context,fileName));
     }
 
     /**

@@ -111,12 +111,17 @@
     if (indexPath.row == kIndexTitle)
         return 44;
     
+    CGFloat safeAreaInset = 0;
+    if (@available(iOS 11.0, *)) {
+        safeAreaInset = self.view.safeAreaInsets.bottom;
+    }
+    
     // so the map covers the remainder of the screen
     if (indexPath.row == kIndexMap)
-        return tableView.frame.size.height - kHeightCoordinates - kHeightTitle;
+        return tableView.frame.size.height - kHeightCoordinates - kHeightTitle - safeAreaInset;
     
     if (indexPath.row == kIndexCoordinates)
-        return kHeightCoordinates;
+        return kHeightCoordinates + safeAreaInset;
     
     // using the super class's implementation gets the height set in storyboard
     return [super tableView:tableView heightForRowAtIndexPath:indexPath];
