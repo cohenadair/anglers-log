@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/app_manager.dart';
 import 'package:mobile/i18n/strings.dart';
-import 'package:mobile/pages/home_page.dart';
-import 'package:mobile/pages/settings_page.dart';
+import 'package:mobile/pages/catch_list_page.dart';
+import 'package:mobile/pages/map_page.dart';
+import 'package:mobile/pages/more_page.dart';
+import 'package:mobile/pages/photos_page.dart';
+import 'package:mobile/pages/stats_page.dart';
+import 'package:mobile/res/gen/custom_icons.dart';
 
 class MainPage extends StatefulWidget {
   final AppManager app;
@@ -21,28 +25,64 @@ class _MainPageState extends State<MainPage> {
   List<GlobalKey<NavigatorState>> _navStates = [
     GlobalKey<NavigatorState>(),
     GlobalKey<NavigatorState>(),
+    GlobalKey<NavigatorState>(),
+    GlobalKey<NavigatorState>(),
+    GlobalKey<NavigatorState>(),
   ];
 
   List<_BarItemData> get _navItems => [
     _BarItemData(
       page: _NavigatorPage(
         navigatorKey: _navStates[0],
-        builder: (BuildContext context) => HomePage(app: widget.app),
+        builder: (BuildContext context) => PhotosPage(app: widget.app),
       ),
       barItem: BottomNavigationBarItem(
-        icon: Icon(Icons.home),
-        title: Text("Home"),
+        icon: Icon(Icons.photo_library),
+        title: Text(Strings.of(context).photosPageMenuLabel),
       ),
     ),
 
     _BarItemData(
       page: _NavigatorPage(
         navigatorKey: _navStates[1],
-        builder: (BuildContext context) => SettingsPage(widget.app),
+        builder: (BuildContext context) => CatchListPage(app: widget.app),
       ),
       barItem: BottomNavigationBarItem(
-        icon: Icon(Icons.settings),
-        title: Text(Strings.of(context).settingsPageTitle),
+        icon: Icon(CustomIcons.catches),
+        title: Text(Strings.of(context).catchListPageMenuLabel),
+      ),
+    ),
+
+    _BarItemData(
+      page: _NavigatorPage(
+        navigatorKey: _navStates[2],
+        builder: (BuildContext context) => MapPage(app: widget.app),
+      ),
+      barItem: BottomNavigationBarItem(
+        icon: Icon(Icons.map),
+        title: Text("Map"),
+      ),
+    ),
+
+    _BarItemData(
+      page: _NavigatorPage(
+        navigatorKey: _navStates[3],
+        builder: (BuildContext context) => StatsPage(app: widget.app),
+      ),
+      barItem: BottomNavigationBarItem(
+        icon: Icon(Icons.show_chart),
+        title: Text(Strings.of(context).statsPageTitle),
+      ),
+    ),
+
+    _BarItemData(
+      page: _NavigatorPage(
+        navigatorKey: _navStates[4],
+        builder: (BuildContext context) => MorePage(app: widget.app),
+      ),
+      barItem: BottomNavigationBarItem(
+        icon: Icon(Icons.more_horiz),
+        title: Text(Strings.of(context).morePageTitle),
       ),
     ),
   ];
@@ -64,6 +104,7 @@ class _MainPageState extends State<MainPage> {
         ),
         bottomNavigationBar: BottomNavigationBar(
           currentIndex: _currentBarItem,
+          type: BottomNavigationBarType.fixed,
           items: navItems.map((_BarItemData data) => data.barItem).toList(),
           onTap: (index) {
             if (_currentBarItem == index) {

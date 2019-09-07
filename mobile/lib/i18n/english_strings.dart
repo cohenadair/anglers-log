@@ -28,23 +28,21 @@ Map<String, Map<String, String>> englishStrings = {
     "input_descriptionLabel" : "Description",
     "input_invalidNumber" : "Invalid number input",
 
-    "loginPage_loginTitle" : "Login",
-    "loginPage_loginButtonText" : "Login",
-    "loginPage_loginQuestionText" : "Don't have an account?",
-    "loginPage_loginActionText" : "Sign up.",
-    "loginPage_signUpTitle" : "Sign up",
-    "loginPage_signUpButtonText" : "Sign up",
-    "loginPage_signUpQuestionText" : "Already have an account?",
-    "loginPage_signUpActionText" : "Login.",
-    "loginPage_emailLabel" : "Email",
-    "loginPage_emailRequired" : "Email address is required",
-    "loginPage_emailInvalidFormat" : "Invalid email address format",
-    "loginPage_passwordLabel" : "Password",
-    "loginPage_passwordRequired" : "Password is required",
-    "loginPage_passwordInvalidLength" : "Password length must be greater than 6 characters",
-    "loginPage_errorLoginUnknown" : "Unknown login error. Check your connection and try again.",
-    "loginPage_errorSignUpUnknown" : "Unknown sign up error. Check your connection and try again.",
-    "loginPage_errorCredentials" : "Invalid login credentials",
+    "catchListPage_menuLabel" : "Catches",
+    "catchListPage_title" : "Catches (%s)",
+
+    "photosPage_menuLabel" : "Photos",
+    "photosPage_title" : "Photos (%s)",
+
+    "baitListPage_menuLabel" : "Baits",
+    "baitListPage_title" : "Baits (%s)",
+
+    "statsPage_title" : "Stats",
+
+    "morePage_title" : "More",
+
+    "tripListPage_menuLabel" : "Trips",
+    "tripListPage_title" : "Trips (%s)",
 
     "settingsPage_title" : "Settings",
 

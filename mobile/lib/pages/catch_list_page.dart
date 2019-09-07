@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/app_manager.dart';
+import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/utils/page_utils.dart';
-import 'package:mobile/widgets/button.dart';
+import 'package:mobile/utils/string_utils.dart';
 import 'package:mobile/widgets/page.dart';
 import 'package:mobile/widgets/widget.dart';
 
 import 'add_catch_page.dart';
 
-class HomePage extends StatelessWidget {
+class CatchListPage extends StatelessWidget {
   final AppManager app;
 
-  HomePage({
+  CatchListPage({
     @required this.app,
   }) : assert(app != null);
 
@@ -19,7 +20,8 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Page(
       appBarStyle: PageAppBarStyle(
-        title: "Home",
+        title: format(Strings.of(context).catchListPageTitle,
+            [app.catchManager.numberOfCatches]),
         actions: [
           IconButton(
             icon: Icon(Icons.add),
@@ -32,15 +34,7 @@ class HomePage extends StatelessWidget {
         ],
       ),
       padding: insetsDefault,
-      child: Button(
-        text: "Push",
-        onPressed: () => push(context, Page(
-          appBarStyle: PageAppBarStyle(
-            title: "Pushed Home Page",
-          ),
-          child: Empty(),
-        )),
-      ),
+      child: Empty(),
     );
   }
 }

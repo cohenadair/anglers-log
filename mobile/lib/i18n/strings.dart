@@ -56,23 +56,21 @@ class Strings {
   String get inputDescriptionLabel => _string("input_descriptionLabel");
   String get inputInvalidNumber => _string("input_invalidNumber");
 
-  String get loginPageLoginTitle => _string("loginPage_loginTitle");
-  String get loginPageLoginButtonText => _string("loginPage_loginButtonText");
-  String get loginPageLoginQuestionText => _string("loginPage_loginQuestionText");
-  String get loginPageLoginActionText => _string("loginPage_loginActionText");
-  String get loginPageSignUpTitle => _string("loginPage_signUpTitle");
-  String get loginPageSignUpButtonText => _string("loginPage_signUpButtonText");
-  String get loginPageSignUpQuestionText => _string("loginPage_signUpQuestionText");
-  String get loginPageSignUpActionText => _string("loginPage_signUpActionText");
-  String get loginPageEmailLabel => _string("loginPage_emailLabel");
-  String get loginPageEmailRequired => _string("loginPage_emailRequired");
-  String get loginPageEmailInvalidFormat => _string("loginPage_emailInvalidFormat");
-  String get loginPagePasswordLabel => _string("loginPage_passwordLabel");
-  String get loginPagePasswordRequired => _string("loginPage_passwordRequired");
-  String get loginPagePasswordInvalidLength => _string("loginPage_passwordInvalidLength");
-  String get loginPageErrorLoginUnknown => _string("loginPage_errorLoginUnknown");
-  String get loginPageErrorSignUpUnknown => _string("loginPage_errorSignUpUnknown");
-  String get loginPageErrorCredentials => _string("loginPage_errorCredentials");
+  String get tripListPageMenuLabel => _string("tripListPage_menuLabel");
+  String get tripListPageTitle => _string("tripListPage_title");
+
+  String get catchListPageMenuLabel => _string("catchListPage_menuLabel");
+  String get catchListPageTitle => _string("catchListPage_title");
+
+  String get photosPageMenuLabel => _string("photosPage_menuLabel");
+  String get photosPageTitle => _string("photosPage_title");
+
+  String get baitListPageMenuLabel => _string("baitListPage_menuLabel");
+  String get baitListPageTitle => _string("baitListPage_title");
+
+  String get statsPageTitle => _string("statsPage_title");
+
+  String get morePageTitle => _string("morePage_title");
 
   String get settingsPageTitle => _string("settingsPage_title");
 

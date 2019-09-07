@@ -8,8 +8,10 @@ import 'package:mobile/widgets/text.dart';
 class SettingsPage extends StatelessWidget {
   final AppManager app;
 
-  SettingsPage(this.app);
-
+  SettingsPage({
+    @required this.app,
+  }) : assert(app != null);
+  
   @override
   Widget build(BuildContext context) {
     return Page(

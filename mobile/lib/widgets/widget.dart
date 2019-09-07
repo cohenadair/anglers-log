@@ -10,6 +10,13 @@ class Empty extends StatelessWidget {
   }
 }
 
+class MinDivider extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Divider(height: 1);
+  }
+}
+
 class Loading extends StatelessWidget {
   static Widget centered() {
     return Row(
