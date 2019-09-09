@@ -33,7 +33,7 @@ class ListItem extends StatelessWidget {
         contentPadding: contentPadding,
         title: title,
         subtitle: subtitle,
-        leading: Icon(icon),
+        leading: icon == null ? null : Icon(icon),
         trailing: trailing,
         onTap: onTap,
         enabled: enabled,
