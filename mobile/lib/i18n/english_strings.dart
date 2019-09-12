@@ -17,6 +17,8 @@ Map<String, Map<String, String>> englishStrings = {
     "continue" : "Continue",
     "yes" : "Yes",
     "no" : "No",
+    "today" : "Today",
+    "yesterday" : "Yesterday",
 
     "fieldType_number" : "Number",
     "fieldType_boolean" : "Checkbox",
@@ -30,6 +32,10 @@ Map<String, Map<String, String>> englishStrings = {
 
     "catchListPage_menuLabel" : "Catches",
     "catchListPage_title" : "Catches (%s)",
+
+    "addCatchPage_dateTimeLabel" : "Date & Time",
+    "addCatchPage_dateLabel" : "Date",
+    "addCatchPage_timeLabel" : "Time",
 
     "photosPage_menuLabel" : "Photos",
     "photosPage_title" : "Photos (%s)",
@@ -57,5 +63,23 @@ Map<String, Map<String, String>> englishStrings = {
     "addCustomFieldPage_title" : "New Field",
 
     "angler_nameLabel" : "Angler",
+
+    "analysisDuration_allDates" : "All dates",
+    "analysisDuration_today" : "Today",
+    "analysisDuration_yesterday" : "Yesterday",
+    "analysisDuration_thisWeek" : "This week",
+    "analysisDuration_thisMonth" : "This month",
+    "analysisDuration_thisYear" : "This year",
+    "analysisDuration_lastWeek" : "Last week",
+    "analysisDuration_lastMonth" : "Last month",
+    "analysisDuration_lastYear" : "Last year",
+    "analysisDuration_last7Days" : "Last 7 days",
+    "analysisDuration_last14Days" : "Last 14 days",
+    "analysisDuration_last30Days" : "Last 30 days",
+    "analysisDuration_last60Days" : "Last 60 days",
+    "analysisDuration_last12Months" : "Last 12 months",
+    "analysisDuration_custom" : "Custom",
+
+    "dateTimeFormat" : "%s at %s",
   },
 };

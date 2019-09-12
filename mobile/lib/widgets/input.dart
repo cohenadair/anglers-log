@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/res/dimen.dart';
+import 'package:mobile/utils/date_time_utils.dart';
 import 'package:mobile/widgets/text.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:quiver/strings.dart';
@@ -81,8 +82,8 @@ Widget inputTypeWidget(BuildContext context, {
   return null;
 }
 
-class InputController {
-  dynamic value;
+class InputController<T> {
+  T value;
 
   InputController({
     this.value,
@@ -97,19 +98,11 @@ class InputController {
   }
 }
 
-class TextInputController extends InputController {
+class TextInputController extends InputController<TextEditingController> {
   TextInputController({
     @required TextEditingController controller,
   }) : assert(controller != null),
        super(value: controller);
-
-  @override
-  set value(dynamic controller) {
-    if (!(controller is TextEditingController)) {
-      return;
-    }
-    value = controller;
-  }
 
   @override
   void dispose() {
@@ -122,6 +115,29 @@ class TextInputController extends InputController {
   }
 }
 
+class TimestampInputController extends InputController<int> {
+  /// The date component of the controller.
+  DateTime date;
+
+  /// The time component of the controller.
+  TimeOfDay time;
+
+  TimestampInputController({
+    this.date,
+    this.time,
+  });
+
+  @override
+  int get value => combine(date, time).millisecondsSinceEpoch;
+
+  @override
+  void clear() {
+    super.clear();
+    date = null;
+    time = null;
+  }
+}
+
 /// A simple structure for storing build information for a form's input fields.
 class InputData {
   final String id;
@@ -129,12 +145,17 @@ class InputData {
   /// Returns user-visible label text.
   final String Function(BuildContext) label;
 
+  /// Whether the input can be removed from the associated form. Defaults to
+  /// `true`.
+  final bool removable;
+
   InputController controller;
 
   InputData({
     @required this.id,
     this.controller,
     @required this.label,
+    this.removable = true,
   }) : assert(isNotEmpty(id)),
        assert(label != null),
        assert(controller != null);
@@ -146,12 +167,18 @@ class InputData {
 /// hierarchy.
 class Input extends StatelessWidget {
   final Widget child;
+
+  /// Set to `true` if the [Input] widget can be editable. If `false`, no
+  /// [CheckBox] is shown in editing mode.
+  final bool editable;
+
   final bool editing;
   final bool selected;
   final Function(bool) onEditingSelectionChanged;
 
   Input({
     @required this.child,
+    this.editable = true,
     this.editing = false,
     this.selected = false,
     this.onEditingSelectionChanged,
@@ -161,7 +188,7 @@ class Input extends StatelessWidget {
     return Row(
       children: <Widget>[
         child,
-        editing ? CondensedCheckBox(
+        editable && editing ? CondensedCheckBox(
           padding: insetsLeftDefault,
           value: selected,
           onChanged: (bool value) {

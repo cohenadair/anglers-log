@@ -3,8 +3,9 @@ import 'package:mobile/app_manager.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/model/custom_entity.dart';
 import 'package:mobile/utils/string_utils.dart';
+import 'package:mobile/widgets/date_time_picker.dart';
 import 'package:mobile/widgets/input.dart';
-import 'package:uuid/uuid.dart';
+import 'package:mobile/widgets/widget.dart';
 
 import 'form_page.dart';
 
@@ -18,45 +19,26 @@ class AddCatchPage extends StatefulWidget {
 }
 
 class _AddCatchPageState extends State<AddCatchPage> {
+  static const String timestampId = "timestamp";
   static const String anglerId = "angler";
-  // TODO: Remove
-  static final String test1 = Uuid().v1();
-  static final String test2 = Uuid().v1();
-  static final String test3 = Uuid().v1();
-  static final String test4 = Uuid().v1();
 
   /// All valid fields for the form.
   Map<String, InputData> _allInputFields = {
+    timestampId: InputData(
+      id: timestampId,
+      controller: TimestampInputController(
+        date: DateTime.now(),
+        time: TimeOfDay.now(),
+      ),
+      label: (BuildContext context) =>
+          Strings.of(context).addCatchPageDateTimeLabel,
+      removable: false,
+    ),
+
     anglerId: InputData(
       id: anglerId,
       controller: TextInputController(controller: TextEditingController()),
-      label: (BuildContext context) {
-        return Strings.of(context).anglerNameLabel;
-      },
-    ),
-    test1: InputData(
-      id: test1,
-      controller: TextInputController(controller: TextEditingController()),
-      label: (BuildContext context)
-          => "Test Field ${test1.substring(test1.length - 5)}",
-    ),
-    test2: InputData(
-      id: test2,
-      controller: TextInputController(controller: TextEditingController()),
-      label: (BuildContext context)
-          => "Test Field ${test2.substring(test2.length - 5)}",
-    ),
-    test3: InputData(
-      id: test3,
-      controller: TextInputController(controller: TextEditingController()),
-      label: (BuildContext context)
-          => "Test Field ${test3.substring(test3.length - 5)}",
-    ),
-    test4: InputData(
-      id: test4,
-      controller: TextInputController(controller: TextEditingController()),
-      label: (BuildContext context)
-          => "Test Field ${test4.substring(test4.length - 5)}",
+      label: (BuildContext context) => Strings.of(context).anglerNameLabel,
     ),
   };
 
@@ -71,11 +53,12 @@ class _AddCatchPageState extends State<AddCatchPage> {
     super.dispose();
   }
 
-
   @override
   void initState() {
     super.initState();
+
     _usedInputOptions = {
+      timestampId: _allInputFields[timestampId],
       anglerId: _allInputFields[anglerId],
     };
   }
@@ -100,6 +83,7 @@ class _AddCatchPageState extends State<AddCatchPage> {
           id: id,
           userFacingName: _allInputFields[id].label(context),
           used: _usedInputOptions.keys.contains(id),
+          removable: _allInputFields[id].removable,
         );
       }).toList(),
       onAddField: _addInputWidget,
@@ -131,26 +115,47 @@ class _AddCatchPageState extends State<AddCatchPage> {
       );
     }
 
-    var label = _usedInputOptions[key].label(context);
-
     switch (key) {
-      case anglerId: return TextInput.name(context,
-        controller: _usedInputOptions[key].controller.value,
-        label: label,
+      case timestampId: return _timestampWidget(isRemovingFields);
+      case anglerId: return _anglerWidget(isRemovingFields);
+      default:
+        print("Unknown input key: $key");
+        return Empty();
+    }
+  }
+
+  Widget _timestampWidget(bool isRemovingFields) {
+    TimestampInputController controller =
+        _allInputFields[timestampId].controller;
+
+    return DateTimePickerContainer(
+      datePicker: DatePicker(
+        initialDate: controller.date,
+        label: Strings.of(context).addCatchPageDateLabel,
+        enabled: !isRemovingFields,
+        onChange: (DateTime newDate) {
+          controller.date = newDate;
+        },
+      ),
+      timePicker: TimePicker(
+        initialTime: controller.time,
+        label: Strings.of(context).addCatchPageTimeLabel,
+        enabled: !isRemovingFields,
+        onChange: (TimeOfDay newTime) {
+          controller.time = newTime;
+        },
+      ),
+    );
+  }
+
+  Widget _anglerWidget(bool isRemovingFields) =>
+      TextInput.name(context,
+        controller: _usedInputOptions[anglerId].controller.value,
+        label: _usedInputOptions[anglerId].label(context),
         requiredText: format(Strings.of(context).inputRequiredMessage,
             [Strings.of(context).anglerNameLabel]),
         enabled: !isRemovingFields,
       );
-
-      default: return TextInput(
-        controller: _usedInputOptions[key].controller.value,
-        label: label,
-        requiredText: "Test Field is required",
-        capitalization: TextCapitalization.words,
-        enabled: !isRemovingFields,
-      );
-    }
-  }
 
   void _addInputWidget(String id) {
     // Handle the case of a new custom field being added.

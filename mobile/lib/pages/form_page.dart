@@ -42,10 +42,14 @@ class FormPageFieldOption {
   /// Whether or not the option is already part of the form.
   final bool used;
 
+  /// Whether or not the field can be removed from the form. Defaults to `true`.
+  final bool removable;
+
   FormPageFieldOption({
     this.id,
     this.userFacingName,
     this.used = false,
+    this.removable = true,
   });
 }
 
@@ -112,6 +116,10 @@ class FormPage extends StatefulWidget {
 
   @override
   _FormPageState createState() => _FormPageState();
+
+  FormPageFieldOption fieldOption(String id) =>
+      addFieldOptions.firstWhere((option) => option.id == id,
+          orElse: () => null);
 }
 
 class _FormPageState extends State<FormPage> {
@@ -206,20 +214,25 @@ class _FormPageState extends State<FormPage> {
     );
   }
 
-  Widget _inputField(String key, Widget field) => Input(
-    child: Expanded(child: field),
-    editing: _isRemovingFields,
-    selected: _fieldsToRemove.contains(key),
-    onEditingSelectionChanged: (bool selected) {
-      setState(() {
-        if (selected) {
-          _fieldsToRemove.add(key);
-        } else {
-          _fieldsToRemove.remove(key);
-        }
-      });
-    },
-  );
+  Widget _inputField(String key, Widget field) {
+    FormPageFieldOption option = widget.fieldOption(key);
+
+    return Input(
+      child: Expanded(child: field),
+      editable: option == null ? true : option.removable,
+      editing: _isRemovingFields,
+      selected: _fieldsToRemove.contains(key),
+      onEditingSelectionChanged: (bool selected) {
+        setState(() {
+          if (selected) {
+            _fieldsToRemove.add(key);
+          } else {
+            _fieldsToRemove.remove(key);
+          }
+        });
+      },
+    );
+  }
 
   Widget _addFieldSelectionPage() => _SelectionPage(
     app: widget.app,

@@ -45,6 +45,8 @@ class Strings {
   String get continueString => _string("continue");
   String get yes => _string("yes");
   String get no => _string("no");
+  String get today => _string("today");
+  String get yesterday => _string("yesterday");
 
   String get fieldTypeNumber => _string("fieldType_number");
   String get fieldTypeBoolean => _string("fieldType_boolean");
@@ -61,6 +63,10 @@ class Strings {
 
   String get catchListPageMenuLabel => _string("catchListPage_menuLabel");
   String get catchListPageTitle => _string("catchListPage_title");
+
+  String get addCatchPageDateTimeLabel => _string("addCatchPage_dateTimeLabel");
+  String get addCatchPageDateLabel => _string("addCatchPage_dateLabel");
+  String get addCatchPageTimeLabel => _string("addCatchPage_timeLabel");
 
   String get photosPageMenuLabel => _string("photosPage_menuLabel");
   String get photosPageTitle => _string("photosPage_title");
@@ -85,6 +91,24 @@ class Strings {
   String get addCustomFieldPageTitle => _string("addCustomFieldPage_title");
 
   String get anglerNameLabel => _string("angler_nameLabel");
+
+  String get analysisDurationAllDates => _string("analysisDuration_allDates");
+  String get analysisDurationToday => _string("analysisDuration_today");
+  String get analysisDurationYesterday => _string("analysisDuration_yesterday");
+  String get analysisDurationThisWeek => _string("analysisDuration_thisWeek");
+  String get analysisDurationThisMonth => _string("analysisDuration_thisMonth");
+  String get analysisDurationThisYear => _string("analysisDuration_thisYear");
+  String get analysisDurationLastWeek => _string("analysisDuration_lastWeek");
+  String get analysisDurationLastMonth => _string("analysisDuration_lastMonth");
+  String get analysisDurationLastYear => _string("analysisDuration_lastYear");
+  String get analysisDurationLast7Days => _string("analysisDuration_last7Days");
+  String get analysisDurationLast14Days => _string("analysisDuration_last14Days");
+  String get analysisDurationLast30Days => _string("analysisDuration_last30Days");
+  String get analysisDurationLast60Days => _string("analysisDuration_last60Days");
+  String get analysisDurationLast12Months => _string("analysisDuration_last12Months");
+  String get analysisDurationCustom => _string("analysisDuration_custom");
+
+  String get dateTimeFormat => _string("dateTimeFormat");
 }
 
 class StringsDelegate extends LocalizationsDelegate<Strings> {
