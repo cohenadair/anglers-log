@@ -9,8 +9,31 @@ class AppManager {
   CustomFieldManager _customFieldManager;
   TripManager _tripManager;
 
-  BaitManager get baitManager => _baitManager ?? BaitManager();
-  CatchManager get catchManager => _catchManager ?? CatchManager();
-  CustomFieldManager get customFieldManager => _customFieldManager ?? CustomFieldManager();
-  TripManager get tripManager => _tripManager ?? TripManager();
+  BaitManager get baitManager {
+    if (_baitManager == null) {
+      _baitManager = BaitManager();
+    }
+    return _baitManager;
+  }
+
+  CatchManager get catchManager {
+    if (_catchManager == null) {
+      _catchManager = CatchManager();
+    }
+    return _catchManager;
+  }
+
+  CustomFieldManager get customFieldManager {
+    if (_customFieldManager == null) {
+      _customFieldManager = CustomFieldManager();
+    }
+    return _customFieldManager;
+  }
+
+  TripManager get tripManager {
+    if (_tripManager == null) {
+      _tripManager = TripManager();
+    }
+    return _tripManager;
+  }
 }
