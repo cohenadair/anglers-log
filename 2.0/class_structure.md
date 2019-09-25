@@ -84,7 +84,7 @@ class Species extends LogItem {}
 class BaitCategory extends LogItem {}
 class WaterClarity extends LogItem {}
 class WaterSpeed extends LogItem {}
-class FishingMethod extends LogItem {}
+class Technique extends LogItem {}
 class Angler extends LogItem {}
 
 class Trip extends LogItem {
@@ -97,7 +97,7 @@ class Trip extends LogItem {
 class Catch extends LogItem {
     Catch(this.createdAt, this.speciesId);
     List<Bait> getBaits() {}
-    List<FishingMethod> getFishingMethods() {}
+    List<Technique> getTechniques() {}
     Species getSpecies() {}
     BodyOfWater getBodyOfWater() {}
     FishingSpot getFishingSpot() {}
@@ -115,11 +115,6 @@ class BodyOfWater extends LogItem {
 
     BodyOfWater(this.name);
     List<FishingSpot> getFishingSpots() {}
-    List<LatLng> getCoordinates() {}
-
-    // Returns a list of all coordinates (both fishing spots and exact coordinates) 
-    // associated with the BodyOfWater.
-    List<LatLng> getAllLocations() {}
 }
 
 class Bait extends LogItem {
@@ -134,6 +129,18 @@ class Gear extends LogItem {
 class Chum extends LogItem {
     String size;
     Chum(this.name, this.size)
+}
+
+class FishingSpot extends LogItem {
+
+}
+
+class CoordinateFishingSpot extends FishingSpot {
+    LatLng coordinates;
+}
+
+class NamedFishingSpot extends FishingSpot {
+
 }
 ```
 
