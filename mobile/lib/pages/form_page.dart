@@ -82,6 +82,9 @@ class FormPage extends StatefulWidget {
   /// @param id The ID of the field that was selected.
   final Function(String id) onAddField;
 
+  /// Whether this form's components can be added or removed.
+  final bool editable;
+
   final VoidCallback onSave;
 
   FormPage({
@@ -93,6 +96,7 @@ class FormPage extends StatefulWidget {
     this.onConfirmRemoveFields,
     this.addFieldOptions,
     this.onAddField,
+    this.editable = true,
   }) : assert(app != null),
        assert(fieldBuilder != null),
        super(key: key);
@@ -112,14 +116,20 @@ class FormPage extends StatefulWidget {
     onConfirmRemoveFields: null,
     addFieldOptions: null,
     onAddField: null,
+    editable: false,
   );
 
   @override
   _FormPageState createState() => _FormPageState();
 
-  FormPageFieldOption fieldOption(String id) =>
-      addFieldOptions.firstWhere((option) => option.id == id,
+  FormPageFieldOption fieldOption(String id) {
+    if (addFieldOptions == null) {
+      return null;
+    } else {
+      return addFieldOptions.firstWhere((option) => option.id == id,
           orElse: () => null);
+    }
+  }
 }
 
 class _FormPageState extends State<FormPage> {
@@ -142,7 +152,7 @@ class _FormPageState extends State<FormPage> {
     } else {
       actionButton = ActionButton.save(
         onPressed: _onPressedSave,
-        condensed: true,
+        condensed: widget.editable,
       );
     }
 
@@ -151,7 +161,7 @@ class _FormPageState extends State<FormPage> {
         title: widget.title,
         actions: [
           actionButton,
-          PopupMenuButton<_OverflowOption>(
+          widget.editable ? PopupMenuButton<_OverflowOption>(
             icon: Icon(Icons.more_vert),
             itemBuilder: (context) => [
               PopupMenuItem<_OverflowOption>(
@@ -167,7 +177,7 @@ class _FormPageState extends State<FormPage> {
                 });
               }
             },
-          ),
+          ) : Empty(),
         ],
       ),
       padding: insetsHorizontalDefault,
