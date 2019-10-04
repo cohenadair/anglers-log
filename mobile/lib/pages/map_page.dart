@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mobile/app_manager.dart';
-import 'package:mobile/res/dimen.dart';
 import 'package:mobile/widgets/page.dart';
-import 'package:mobile/widgets/widget.dart';
 
 class MapPage extends StatelessWidget {
   final AppManager app;
@@ -14,13 +13,13 @@ class MapPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Page(
-      appBarStyle: PageAppBarStyle(
-        title: "Map",
-        actions: [
-        ],
+      child: GoogleMap(
+        initialCameraPosition: CameraPosition(
+          target: LatLng(37.42796133580664, -122.085749655962),
+          zoom: 15,
+        ),
+        myLocationButtonEnabled: false,
       ),
-      padding: insetsDefault,
-      child: Empty(),
     );
   }
 }
