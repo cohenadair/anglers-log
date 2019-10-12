@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mobile/app_manager.dart';
-import 'package:mobile/res/dimen.dart';
 import 'package:mobile/widgets/page.dart';
+import 'package:mobile/widgets/styled_bottom_sheet.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:uuid/uuid.dart';
 
@@ -45,6 +45,9 @@ class _MapPageState extends State<MapPage> {
     },
   );
 
+  /// Material [BottomSheet] widget doesn't work here because it animates from
+  /// the bottom of the screen. We want this bottom sheet to animate from the
+  /// bottom of the map.
   Widget _buildBottomSheet() {
     if (_activeMarker == null) {
       return Empty();
@@ -52,23 +55,17 @@ class _MapPageState extends State<MapPage> {
 
     return Align(
       alignment: Alignment.bottomCenter,
-      child: Container(
-        color: Colors.white,
-        padding: insetsDefault,
+      child: StyledBottomSheet(
+        onDismissed: () => _updateActiveMarker(null),
         child: Row(
           mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            Wrap(
-              direction: Axis.vertical,
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(_activeMarker.position.latitude.toString()),
                 Text(_activeMarker.position.longitude.toString()),
               ],
-            ),
-            IconButton(
-              icon: Icon(Icons.close),
-              onPressed: () => _updateActiveMarker(null),
             ),
           ],
         ),

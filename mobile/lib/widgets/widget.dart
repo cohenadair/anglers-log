@@ -47,3 +47,20 @@ class Loading extends StatelessWidget {
     );
   }
 }
+
+/// A widget used to indicate the parent widget responds to the swipe gesture,
+/// such as swiping down to close a bottom sheet-style widget.
+class SwipeChip extends StatelessWidget {
+  final _width = 20.0;
+  final _height = 5.0;
+
+  @override
+  Widget build(BuildContext context) => Container(
+    width: _width,
+    height: _height,
+    decoration: BoxDecoration(
+      color: Colors.grey.shade300,
+      borderRadius: BorderRadius.all(Radius.circular(_height / 2)),
+    ),
+  );
+}

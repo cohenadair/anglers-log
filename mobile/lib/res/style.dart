@@ -18,3 +18,10 @@ const TextStyle styleHyperlink = TextStyle(
 const TextStyle styleError = TextStyle(
   color: Colors.red,
 );
+
+const List<BoxShadow> boxShadowTop = [
+  BoxShadow(
+    color: Colors.grey,
+    blurRadius: 5.0,
+  ),
+];
