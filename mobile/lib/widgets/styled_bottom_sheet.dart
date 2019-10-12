@@ -5,7 +5,8 @@ import 'package:mobile/widgets/widget.dart';
 
 /// A widget that mimics Material Design bottom sheet behaviour and style. A
 /// [BottomSheet] and [ScaffoldState.showBottomSheet] isn't used here because
-/// it doesn't provide the desired behaviour.
+/// it doesn't provide the desired behaviour of animating from beneath the
+/// bottom navigation bar.
 ///
 /// The style of the [StyledBottomSheet] widget is inspired by bottoms sheet
 /// use in the Google Maps iOS app.
