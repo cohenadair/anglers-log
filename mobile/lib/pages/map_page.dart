@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mobile/app_manager.dart';
+import 'package:mobile/res/dimen.dart';
 import 'package:mobile/widgets/page.dart';
 import 'package:mobile/widgets/styled_bottom_sheet.dart';
 import 'package:mobile/widgets/widget.dart';
@@ -20,10 +21,18 @@ class MapPage extends StatefulWidget {
 }
 
 class _MapPageState extends State<MapPage> {
-  Completer<GoogleMapController> _mapController = Completer();
+  // TODO: See if GoogleMap functionality has been updated to address this.
+  // Unfortunately, the only way to keep the "Google" logo visible when a
+  // bottom sheet is showing, it to add manual padding. This will need to be
+  // adjusted as the bottom sheet changes size, but it should always be the
+  // same height so it shouldn't be a problem.
+  final double _bottomMapPadding = 75;
 
+  Completer<GoogleMapController> _mapController = Completer();
   Set<Marker> _markers = Set();
   Marker _activeMarker;
+
+  bool get hasActiveMarker => _activeMarker != null;
 
   @override
   Widget build(BuildContext context) {
@@ -51,6 +60,9 @@ class _MapPageState extends State<MapPage> {
     onTap: (LatLng latLng) {
       _addMarker(latLng);
     },
+    padding: EdgeInsets.only(
+      bottom: hasActiveMarker ? _bottomMapPadding : 0,
+    ),
   );
 
   /// Material [BottomSheet] widget doesn't work here because it animates from
