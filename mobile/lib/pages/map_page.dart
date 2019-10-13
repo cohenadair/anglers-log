@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mobile/app_manager.dart';
@@ -18,6 +20,8 @@ class MapPage extends StatefulWidget {
 }
 
 class _MapPageState extends State<MapPage> {
+  Completer<GoogleMapController> _mapController = Completer();
+
   Set<Marker> _markers = Set();
   Marker _activeMarker;
 
@@ -39,9 +43,12 @@ class _MapPageState extends State<MapPage> {
       target: LatLng(37.42796133580664, -122.085749655962),
       zoom: 15,
     ),
+    onMapCreated: (GoogleMapController controller) {
+      _mapController.complete(controller);
+    },
     myLocationButtonEnabled: true,
     myLocationEnabled: true,
-    onLongPress: (LatLng latLng) {
+    onTap: (LatLng latLng) {
       _addMarker(latLng);
     },
   );
@@ -84,6 +91,12 @@ class _MapPageState extends State<MapPage> {
             .firstWhere((Marker marker) => marker.markerId == markerId)),
       );
       _markers.add(_activeMarker);
+
+      // Animate the new marker to the middle of the map.
+      _mapController.future.then((controller) {
+        controller.animateCamera(
+            CameraUpdate.newLatLng(_activeMarker.position));
+      });
     });
   }
 
