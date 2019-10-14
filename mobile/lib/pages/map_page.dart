@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mobile/app_manager.dart';
-import 'package:mobile/res/dimen.dart';
 import 'package:mobile/widgets/page.dart';
 import 'package:mobile/widgets/styled_bottom_sheet.dart';
 import 'package:mobile/widgets/widget.dart';
@@ -27,6 +26,10 @@ class _MapPageState extends State<MapPage> {
   // adjusted as the bottom sheet changes size, but it should always be the
   // same height so it shouldn't be a problem.
   final double _bottomMapPadding = 75;
+
+  final BitmapDescriptor _activeMarkerIcon =
+      BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue);
+  final BitmapDescriptor _nonActiveMarkerIcon = BitmapDescriptor.defaultMarker;
 
   Completer<GoogleMapController> _mapController = Completer();
   Set<Marker> _markers = Set();
@@ -109,6 +112,8 @@ class _MapPageState extends State<MapPage> {
         controller.animateCamera(
             CameraUpdate.newLatLng(_activeMarker.position));
       });
+
+      _updateMarkers();
     });
   }
 
@@ -116,5 +121,23 @@ class _MapPageState extends State<MapPage> {
     setState(() {
       _activeMarker = marker;
     });
+  }
+
+  void _updateMarkers() {
+    // A marker's icon property is readonly, so we rebuild the markers to
+    // update icons.
+    final Set<Marker> newMarkers = Set();
+
+    _markers.forEach((Marker marker) {
+      newMarkers.add(Marker(
+        markerId: marker.markerId,
+        position: marker.position,
+        onTap: marker.onTap,
+        icon: marker == _activeMarker
+            ? _activeMarkerIcon : _nonActiveMarkerIcon,
+      ));
+    });
+
+    _markers = newMarkers;
   }
 }
