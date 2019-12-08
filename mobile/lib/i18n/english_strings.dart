@@ -19,6 +19,7 @@ Map<String, Map<String, String>> englishStrings = {
     "no" : "No",
     "today" : "Today",
     "yesterday" : "Yesterday",
+    "directions" : "Directions",
 
     "fieldType_number" : "Number",
     "fieldType_boolean" : "Checkbox",
@@ -81,5 +82,7 @@ Map<String, Map<String, String>> englishStrings = {
     "analysisDuration_custom" : "Custom",
 
     "dateTimeFormat" : "%s at %s",
+
+    "fishingSpotBottomSheet_latLngLabel" : "Lat: %s, Lng: %s",
   },
 };

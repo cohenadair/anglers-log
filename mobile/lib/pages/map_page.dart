@@ -3,9 +3,14 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mobile/app_manager.dart';
+import 'package:mobile/i18n/strings.dart';
+import 'package:mobile/model/fishing_spot.dart';
+import 'package:mobile/utils/string_utils.dart';
 import 'package:mobile/widgets/page.dart';
 import 'package:mobile/widgets/styled_bottom_sheet.dart';
+import 'package:mobile/widgets/text.dart';
 import 'package:mobile/widgets/widget.dart';
+import 'package:quiver/strings.dart';
 import 'package:uuid/uuid.dart';
 
 class MapPage extends StatefulWidget {
@@ -80,18 +85,12 @@ class _MapPageState extends State<MapPage> {
       alignment: Alignment.bottomCenter,
       child: StyledBottomSheet(
         onDismissed: () => _updateActiveMarker(null),
-        child: Row(
-          mainAxisSize: MainAxisSize.max,
-          children: <Widget>[
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(_activeMarker.position.latitude.toString()),
-                Text(_activeMarker.position.longitude.toString()),
-              ],
-            ),
-          ],
-        ),
+        child: _FishingSpotBottomSheet(
+          fishingSpot: FishingSpot(
+            latLng: _activeMarker.position,
+            name: "Test Name",
+          ),
+        )
       ),
     );
   }
@@ -140,4 +139,35 @@ class _MapPageState extends State<MapPage> {
 
     _markers = newMarkers;
   }
+}
+
+/// A widget that shows details of a selected fishing spot.
+class _FishingSpotBottomSheet extends StatelessWidget {
+  final int _coordinateDecimalPlaces = 6;
+
+  final FishingSpot fishingSpot;
+
+  _FishingSpotBottomSheet({
+    @required this.fishingSpot,
+  }) : assert(fishingSpot != null);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: <Widget>[
+        isEmpty(fishingSpot.name) ? Empty() : BoldLabelText(fishingSpot.name),
+        Text(format(Strings.of(context).fishingSpotBottomSheetLatLngLabel, [
+          fishingSpot.lat.toStringAsFixed(_coordinateDecimalPlaces),
+          fishingSpot.lng.toStringAsFixed(_coordinateDecimalPlaces),
+        ])),
+      ],
+    );
+  }
+
+  Widget _buildChips() => ListView.separated(
+    itemBuilder: null,
+    separatorBuilder: null,
+    itemCount: null,
+  );
 }

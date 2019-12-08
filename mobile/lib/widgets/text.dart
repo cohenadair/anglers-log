@@ -42,11 +42,30 @@ class LabelText extends StatelessWidget {
 
   LabelText(this.text);
 
+  static TextStyle style(BuildContext context) =>
+      Theme.of(context).textTheme.subhead;
+
   @override
   Widget build(BuildContext context) {
     return Text(
       text,
-      style: Theme.of(context).textTheme.subhead,
+      style: style(context),
+    );
+  }
+}
+
+class BoldLabelText extends StatelessWidget {
+  final String text;
+
+  BoldLabelText(this.text);
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      text,
+      style: LabelText.style(context).copyWith(
+        fontWeight: FontWeight.w500,
+      ),
     );
   }
 }

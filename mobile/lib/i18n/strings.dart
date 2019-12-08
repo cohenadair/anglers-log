@@ -47,6 +47,7 @@ class Strings {
   String get no => _string("no");
   String get today => _string("today");
   String get yesterday => _string("yesterday");
+  String get directions => _string("directions");
 
   String get fieldTypeNumber => _string("fieldType_number");
   String get fieldTypeBoolean => _string("fieldType_boolean");
@@ -109,6 +110,8 @@ class Strings {
   String get analysisDurationCustom => _string("analysisDuration_custom");
 
   String get dateTimeFormat => _string("dateTimeFormat");
+
+  String get fishingSpotBottomSheetLatLngLabel => _string("fishingSpotBottomSheet_latLngLabel");
 }
 
 class StringsDelegate extends LocalizationsDelegate<Strings> {
