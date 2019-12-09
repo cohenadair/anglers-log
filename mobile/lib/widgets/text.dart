@@ -64,7 +64,7 @@ class BoldLabelText extends StatelessWidget {
     return Text(
       text,
       style: LabelText.style(context).copyWith(
-        fontWeight: FontWeight.w500,
+        fontWeight: fontWeightBold,
       ),
     );
   }

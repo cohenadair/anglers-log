@@ -112,6 +112,7 @@ class Strings {
   String get dateTimeFormat => _string("dateTimeFormat");
 
   String get fishingSpotBottomSheetLatLngLabel => _string("fishingSpotBottomSheet_latLngLabel");
+  String get fishingSpotBottomSheetDroppedPin => _string("fishingSpotBottomSheet_droppedPin");
 }
 
 class StringsDelegate extends LocalizationsDelegate<Strings> {

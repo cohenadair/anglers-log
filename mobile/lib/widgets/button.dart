@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/res/dimen.dart';
+import 'package:mobile/res/style.dart';
+import 'package:quiver/strings.dart';
 
 class Button extends StatelessWidget {
   final String text;
@@ -90,4 +92,37 @@ class ActionButton extends StatelessWidget {
       );
     }
   }
+}
+
+/// An [ActionChip] wrapper.
+class ChipButton extends StatelessWidget {
+  final String label;
+  final IconData icon;
+  final VoidCallback onPressed;
+
+  ChipButton({
+    @required this.label,
+    this.icon,
+    this.onPressed
+  }) : assert(isNotEmpty(label));
+
+  @override
+  Widget build(BuildContext context) => ActionChip(
+    avatar: Icon(
+      icon,
+      size: 20,
+      color: Colors.black,
+    ),
+    label: Text(
+      label,
+      style: TextStyle(
+        color: Colors.black,
+        fontSize: 13,
+        fontWeight: fontWeightBold,
+      ),
+    ),
+    backgroundColor: Theme.of(context).accentColor,
+    pressElevation: 1,
+    onPressed: onPressed == null ? () {} : onPressed,
+  );
 }

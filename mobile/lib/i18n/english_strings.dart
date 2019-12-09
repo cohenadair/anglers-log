@@ -84,5 +84,6 @@ Map<String, Map<String, String>> englishStrings = {
     "dateTimeFormat" : "%s at %s",
 
     "fishingSpotBottomSheet_latLngLabel" : "Lat: %s, Lng: %s",
+    "fishingSpotBottomSheet_droppedPin" : "Dropped Pin",
   },
 };

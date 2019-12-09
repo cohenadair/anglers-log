@@ -5,7 +5,9 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mobile/app_manager.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/model/fishing_spot.dart';
+import 'package:mobile/res/dimen.dart';
 import 'package:mobile/utils/string_utils.dart';
+import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/page.dart';
 import 'package:mobile/widgets/styled_bottom_sheet.dart';
 import 'package:mobile/widgets/text.dart';
@@ -84,11 +86,13 @@ class _MapPageState extends State<MapPage> {
     return Align(
       alignment: Alignment.bottomCenter,
       child: StyledBottomSheet(
-        onDismissed: () => _updateActiveMarker(null),
+        onDismissed: () {
+          _updateActiveMarker(null);
+        },
         child: _FishingSpotBottomSheet(
           fishingSpot: FishingSpot(
             latLng: _activeMarker.position,
-            name: "Test Name",
+            name: Strings.of(context).fishingSpotBottomSheetDroppedPin,
           ),
         )
       ),
@@ -143,6 +147,7 @@ class _MapPageState extends State<MapPage> {
 
 /// A widget that shows details of a selected fishing spot.
 class _FishingSpotBottomSheet extends StatelessWidget {
+  final double _chipHeight = 45;
   final int _coordinateDecimalPlaces = 6;
 
   final FishingSpot fishingSpot;
@@ -156,18 +161,49 @@ class _FishingSpotBottomSheet extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
-        isEmpty(fishingSpot.name) ? Empty() : BoldLabelText(fishingSpot.name),
-        Text(format(Strings.of(context).fishingSpotBottomSheetLatLngLabel, [
-          fishingSpot.lat.toStringAsFixed(_coordinateDecimalPlaces),
-          fishingSpot.lng.toStringAsFixed(_coordinateDecimalPlaces),
-        ])),
+        isEmpty(fishingSpot.name) ? Empty() : Padding(
+          padding: insetsHorizontalDefault,
+          child: BoldLabelText(fishingSpot.name)
+        ),
+        Padding(
+          padding: insetsHorizontalDefault,
+          child: Text(format(
+            Strings.of(context).fishingSpotBottomSheetLatLngLabel, [
+              fishingSpot.lat.toStringAsFixed(_coordinateDecimalPlaces),
+              fishingSpot.lng.toStringAsFixed(_coordinateDecimalPlaces),
+            ],
+          )),
+        ),
+        _buildChips(context),
       ],
     );
   }
 
-  Widget _buildChips() => ListView.separated(
-    itemBuilder: null,
-    separatorBuilder: null,
-    itemCount: null,
+  Widget _buildChips(BuildContext context) => Container(
+    height: _chipHeight,
+    child: ListView(
+      scrollDirection: Axis.horizontal,
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.only(
+            left: paddingDefault,
+            right: paddingWidgetSmall,
+          ),
+          child: ChipButton(
+            label: Strings.of(context).save,
+            icon: Icons.save,
+            onPressed: () {},
+          ),
+        ),
+        Padding(
+          padding: insetsRightDefault,
+          child: ChipButton(
+            label: Strings.of(context).directions,
+            icon: Icons.directions,
+            onPressed: () {},
+          ),
+        ),
+      ],
+    ),
   );
 }

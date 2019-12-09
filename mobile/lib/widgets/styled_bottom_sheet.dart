@@ -74,31 +74,23 @@ class _StyledBottomSheetState extends State<StyledBottomSheet>
               top: Radius.circular(10.0),
             ),
           ),
-          child: Padding(
-            padding: insetsTopSmall,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                SwipeChip(),
-                Padding(
-                  padding: EdgeInsets.only(
-                    left: paddingDefault,
-                    right: paddingDefault,
-                    bottom: paddingDefault,
-                    top: paddingSmall,
-                  ),
-                  child: widget.child,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              SwipeChip(),
+              Padding(
+                padding: insetsBottomSmall,
+                child: widget.child,
+              ),
+              // Add some separation between the bottom sheet and the widget
+              // below.
+              Container(
+                constraints: BoxConstraints.expand(height: 1),
+                decoration: BoxDecoration(
+                  boxShadow: boxShadowTop,
                 ),
-                // Add some separation between the bottom sheet and the widget
-                // below.
-                Container(
-                  constraints: BoxConstraints.expand(height: 1),
-                  decoration: BoxDecoration(
-                    boxShadow: boxShadowTop,
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),

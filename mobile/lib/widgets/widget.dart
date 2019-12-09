@@ -55,12 +55,15 @@ class SwipeChip extends StatelessWidget {
   final _height = 5.0;
 
   @override
-  Widget build(BuildContext context) => Container(
-    width: _width,
-    height: _height,
-    decoration: BoxDecoration(
-      color: Colors.grey.shade300,
-      borderRadius: BorderRadius.all(Radius.circular(_height / 2)),
+  Widget build(BuildContext context) => Padding(
+    padding: insetsVerticalSmall,
+    child: Container(
+      width: _width,
+      height: _height,
+      decoration: BoxDecoration(
+        color: Colors.grey.shade300,
+        borderRadius: BorderRadius.all(Radius.circular(_height / 2)),
+      ),
     ),
   );
 }
