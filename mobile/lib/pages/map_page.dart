@@ -32,7 +32,7 @@ class _MapPageState extends State<MapPage> {
   // bottom sheet is showing, it to add manual padding. This will need to be
   // adjusted as the bottom sheet changes size, but it should always be the
   // same height so it shouldn't be a problem.
-  final double _bottomMapPadding = 75;
+  final double _bottomMapPadding = 110;
 
   final BitmapDescriptor _activeMarkerIcon =
       BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue);
@@ -45,16 +45,14 @@ class _MapPageState extends State<MapPage> {
   bool get hasActiveMarker => _activeMarker != null;
 
   @override
-  Widget build(BuildContext context) {
-    return Page(
-      child: Stack(
-        children: <Widget>[
-          _buildMap(),
-          _buildBottomSheet(),
-        ],
-      ),
-    );
-  }
+  Widget build(BuildContext context) => Page(
+    child: Stack(
+      children: <Widget>[
+        _buildMap(),
+        _buildBottomSheet(),
+      ],
+    ),
+  );
 
   Widget _buildMap() => GoogleMap(
     markers: _markers,
