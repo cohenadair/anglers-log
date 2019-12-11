@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/app_manager.dart';
-import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/model/fishing_spot.dart';
 import 'package:mobile/pages/form_page.dart';
 import 'package:mobile/widgets/input.dart';
