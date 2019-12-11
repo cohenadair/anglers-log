@@ -53,6 +53,8 @@ Map<String, Map<String, String>> englishStrings = {
 
     "settingsPage_title" : "Settings",
 
+    "mapPage_menuLabel" : "Map",
+
     "formPage_addFieldText" : "Add Field",
     "formPage_removeFieldsText" : "Remove Fields",
     "formPage_confirmRemoveField" : "Remove 1 Field",

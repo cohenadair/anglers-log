@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/app_manager.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/pages/catch_list_page.dart';
 import 'package:mobile/pages/map_page.dart';
@@ -9,10 +8,6 @@ import 'package:mobile/pages/stats_page.dart';
 import 'package:mobile/res/gen/custom_icons.dart';
 
 class MainPage extends StatefulWidget {
-  final AppManager app;
-
-  MainPage(this.app);
-
   @override
   _MainPageState createState() => _MainPageState();
 }
@@ -34,7 +29,7 @@ class _MainPageState extends State<MainPage> {
     _BarItemData(
       page: _NavigatorPage(
         navigatorKey: _navStates[0],
-        builder: (BuildContext context) => PhotosPage(app: widget.app),
+        builder: (BuildContext context) => PhotosPage(),
       ),
       barItem: BottomNavigationBarItem(
         icon: Icon(Icons.photo_library),
@@ -45,7 +40,7 @@ class _MainPageState extends State<MainPage> {
     _BarItemData(
       page: _NavigatorPage(
         navigatorKey: _navStates[1],
-        builder: (BuildContext context) => CatchListPage(app: widget.app),
+        builder: (BuildContext context) => CatchListPage(),
       ),
       barItem: BottomNavigationBarItem(
         icon: Icon(CustomIcons.catches),
@@ -56,18 +51,18 @@ class _MainPageState extends State<MainPage> {
     _BarItemData(
       page: _NavigatorPage(
         navigatorKey: _navStates[2],
-        builder: (BuildContext context) => MapPage(app: widget.app),
+        builder: (BuildContext context) => MapPage(),
       ),
       barItem: BottomNavigationBarItem(
         icon: Icon(Icons.map),
-        title: Text("Map"),
+        title: Text(Strings.of(context).mapPageMenuLabel),
       ),
     ),
 
     _BarItemData(
       page: _NavigatorPage(
         navigatorKey: _navStates[3],
-        builder: (BuildContext context) => StatsPage(app: widget.app),
+        builder: (BuildContext context) => StatsPage(),
       ),
       barItem: BottomNavigationBarItem(
         icon: Icon(Icons.show_chart),
@@ -78,7 +73,7 @@ class _MainPageState extends State<MainPage> {
     _BarItemData(
       page: _NavigatorPage(
         navigatorKey: _navStates[4],
-        builder: (BuildContext context) => MorePage(app: widget.app),
+        builder: (BuildContext context) => MorePage(),
       ),
       barItem: BottomNavigationBarItem(
         icon: Icon(Icons.more_horiz),

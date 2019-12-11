@@ -1,7 +1,13 @@
+import 'package:flutter/cupertino.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:mobile/app_manager.dart';
 import 'package:mobile/model/fishing_spot.dart';
+import 'package:provider/provider.dart';
 
 class FishingSpotManager {
+  static FishingSpotManager of(BuildContext context) =>
+      Provider.of<AppManager>(context, listen: false).fishingSpotManager;
+
   final List<FishingSpot> _fishingSpots = List();
 
   List<FishingSpot> get fishingSpots => [

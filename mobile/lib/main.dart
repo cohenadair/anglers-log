@@ -4,6 +4,7 @@ import 'package:mobile/app_manager.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/pages/main_page.dart';
 import 'package:mobile/res/color.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   runApp(new MyApp());
@@ -14,30 +15,33 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      onGenerateTitle: (context) => Strings.of(context).appName,
-      theme: ThemeData(
-        primarySwatch: colorAppTheme,
-        buttonTheme: ButtonThemeData(
-          disabledColor: colorAppTheme.shade500,
+    return Provider<AppManager>.value(
+      value: _app,
+      child: MaterialApp(
+        onGenerateTitle: (context) => Strings.of(context).appName,
+        theme: ThemeData(
+          primarySwatch: colorAppTheme,
+          buttonTheme: ButtonThemeData(
+            disabledColor: colorAppTheme.shade500,
+          ),
+          iconTheme: IconThemeData(
+            color: colorAppTheme,
+          ),
+          errorColor: Colors.red,
         ),
-        iconTheme: IconThemeData(
-          color: colorAppTheme,
-        ),
-        errorColor: Colors.red,
+        home: MainPage(),
+        debugShowCheckedModeBanner: false,
+        localizationsDelegates: [
+          StringsDelegate(),
+          DefaultMaterialLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+        ],
+        supportedLocales: [
+          Locale('en', 'US'),
+          Locale('en', 'CA'),
+        ],
       ),
-      home: MainPage(_app),
-      debugShowCheckedModeBanner: false,
-      localizationsDelegates: [
-        StringsDelegate(),
-        DefaultMaterialLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-      ],
-      supportedLocales: [
-        Locale('en', 'US'),
-        Locale('en', 'CA'),
-      ],
     );
   }
 }

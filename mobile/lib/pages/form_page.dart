@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/app_manager.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/model/custom_entity.dart';
 import 'package:mobile/res/dimen.dart';
@@ -61,8 +60,6 @@ class FormPageFieldOption {
 /// validation. The [FormState] validate method is called prior to the
 /// [FormPage.onSave], but before the page is dismissed.
 class FormPage extends StatefulWidget {
-  final AppManager app;
-
   /// The title of the page.
   final String title;
 
@@ -88,7 +85,6 @@ class FormPage extends StatefulWidget {
   final VoidCallback onSave;
 
   FormPage({
-    @required this.app,
     Key key,
     this.title,
     @required this.fieldBuilder,
@@ -97,18 +93,15 @@ class FormPage extends StatefulWidget {
     this.addFieldOptions,
     this.onAddField,
     this.editable = true,
-  }) : assert(app != null),
-       assert(fieldBuilder != null),
+  }) : assert(fieldBuilder != null),
        super(key: key);
 
   FormPage.immutable({
-    @required AppManager app,
     Key key,
     String title,
     FieldBuilder fieldBuilder,
     VoidCallback onSave,
   }) : this(
-    app: app,
     key: key,
     title: title,
     fieldBuilder: fieldBuilder,
@@ -245,7 +238,6 @@ class _FormPageState extends State<FormPage> {
   }
 
   Widget _addFieldSelectionPage() => _SelectionPage(
-    app: widget.app,
     options: widget.addFieldOptions,
     onSelectItem: (String selectedId) {
       widget.onAddField(selectedId);
@@ -277,16 +269,13 @@ class _FormPageState extends State<FormPage> {
 }
 
 class _SelectionPage extends StatefulWidget {
-  final AppManager app;
   final List<FormPageFieldOption> options;
   final Function(String) onSelectItem;
 
   _SelectionPage({
-    @required this.app,
     @required this.options,
     this.onSelectItem,
-  }) : assert(app != null),
-       assert(options != null);
+  }) : assert(options != null);
 
   @override
   _SelectionPageState createState() => _SelectionPageState();
@@ -312,7 +301,6 @@ class _SelectionPageState extends State<_SelectionPage> {
               title: Text(Strings.of(context).selectionPageAddCustomField),
               onTap: () {
                 push(context, AddCustomFieldPage(
-                  app: widget.app,
                   onSave: (CustomEntity customField) {
                     setState(() {
                       _addedCustomFields.add(customField);

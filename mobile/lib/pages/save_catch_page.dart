@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/app_manager.dart';
+import 'package:mobile/custom_field_manager.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/model/custom_entity.dart';
 import 'package:mobile/utils/string_utils.dart';
@@ -10,10 +10,6 @@ import 'package:mobile/widgets/widget.dart';
 import 'form_page.dart';
 
 class SaveCatchPage extends StatefulWidget {
-  final AppManager app;
-
-  SaveCatchPage({this.app}) : assert(app != null);
-
   @override
   _SaveCatchPageState createState() => _SaveCatchPageState();
 }
@@ -67,7 +63,6 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
   Widget build(BuildContext context) {
     return FormPage(
       key: UniqueKey(),
-      app: widget.app,
       fieldBuilder: (BuildContext context, bool isRemovingFields) {
         return Map.fromIterable(_usedInputOptions.keys,
           key: (item) => item.toString(),
@@ -99,7 +94,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
   }
 
   CustomEntity _customField(String id) =>
-      widget.app.customFieldManager.customField(id);
+      CustomFieldManager.of(context).customField(id);
 
   Widget _inputWidget({String key, bool isRemovingFields}) {
     CustomEntity customField = _customField(key);

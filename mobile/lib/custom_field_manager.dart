@@ -1,6 +1,13 @@
+import 'package:flutter/material.dart';
+import 'package:mobile/app_manager.dart';
+import 'package:provider/provider.dart';
+
 import 'model/custom_entity.dart';
 
 class CustomFieldManager {
+  static CustomFieldManager of(BuildContext context) =>
+      Provider.of<AppManager>(context, listen: false).customFieldManager;
+
   final Map<String, CustomEntity> _customFieldMap = {};
 
   List<CustomEntity> get customFields => 

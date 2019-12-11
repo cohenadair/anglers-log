@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/app_manager.dart';
+import 'package:mobile/custom_field_manager.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/model/custom_entity.dart';
 import 'package:mobile/widgets/input.dart';
@@ -10,13 +10,11 @@ import 'form_page.dart';
 /// A input page for users to create custom fields to be used elsewhere in the
 /// app. This form is immutable.
 class AddCustomFieldPage extends StatefulWidget {
-  final AppManager app;
   final Function(CustomEntity) onSave;
 
   AddCustomFieldPage({
-    @required this.app,
     this.onSave,
-  }) : assert(app != null);
+  });
 
   @override
   _AddCustomFieldPageState createState() => _AddCustomFieldPageState();
@@ -36,7 +34,6 @@ class _AddCustomFieldPageState extends State<AddCustomFieldPage> {
   @override
   Widget build(BuildContext context) {
     return FormPage.immutable(
-      app: widget.app,
       title: Strings.of(context).addCustomFieldPageTitle,
       fieldBuilder: (BuildContext context, _) {
         return Map.fromIterable(_inputOptions.keys,
@@ -83,7 +80,7 @@ class _AddCustomFieldPageState extends State<AddCustomFieldPage> {
       type: _inputOptions[_keyDataType],
     );
 
-    widget.app.customFieldManager.addField(customField);
+    CustomFieldManager.of(context).addField(customField);
     widget.onSave?.call(customField);
   }
 }

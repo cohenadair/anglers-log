@@ -1,22 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/app_manager.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/pages/bait_list_page.dart';
 import 'package:mobile/pages/settings_page.dart';
 import 'package:mobile/pages/trip_list_page.dart';
-import 'package:mobile/res/dimen.dart';
 import 'package:mobile/utils/page_utils.dart';
 import 'package:mobile/widgets/list_item.dart';
 import 'package:mobile/widgets/page.dart';
 import 'package:mobile/widgets/widget.dart';
 
 class MorePage extends StatelessWidget {
-  final AppManager app;
-
-  MorePage({
-    @required this.app,
-  }) : assert(app != null);
-
   @override
   Widget build(BuildContext context) {
     return Page(
@@ -28,18 +20,18 @@ class MorePage extends StatelessWidget {
           _buildPageItem(context,
             icon: Icons.public,
             title: Strings.of(context).tripListPageMenuLabel,
-            page: TripListPage(app: app),
+            page: TripListPage(),
           ),
           _buildPageItem(context,
             icon: Icons.bug_report,
             title: Strings.of(context).baitListPageMenuLabel,
-            page: BaitListPage(app: app),
+            page: BaitListPage(),
           ),
           MinDivider(),
           _buildPageItem(context,
             icon: Icons.settings,
             title: Strings.of(context).settingsPageTitle,
-            page: SettingsPage(app: app),
+            page: SettingsPage(),
           ),
         ],
       ),

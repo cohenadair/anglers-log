@@ -81,6 +81,8 @@ class Strings {
 
   String get settingsPageTitle => _string("settingsPage_title");
 
+  String get mapPageMenuLabel => _string("mapPage_menuLabel");
+
   String get formPageAddFieldText => _string("formPage_addFieldText");
   String get formPageRemoveFieldsText => _string("formPage_removeFieldsText");
   String get formPageConfirmRemoveField => _string("formPage_confirmRemoveField");

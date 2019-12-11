@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:mobile/app_manager.dart';
+import 'package:mobile/fishing_spot_manager.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/model/fishing_spot.dart';
 import 'package:mobile/pages/save_fishing_spot_page.dart';
@@ -18,12 +18,6 @@ import 'package:quiver/strings.dart';
 import 'package:uuid/uuid.dart';
 
 class MapPage extends StatefulWidget {
-  final AppManager app;
-
-  MapPage({
-    @required this.app,
-  }) : assert(app != null);
-
   @override
   _MapPageState createState() => _MapPageState();
 }
@@ -51,7 +45,8 @@ class _MapPageState extends State<MapPage> {
   void initState() {
     super.initState();
 
-    List<FishingSpot> fishingSpots = widget.app.fishingSpotManager.fishingSpots;
+    List<FishingSpot> fishingSpots =
+        FishingSpotManager.of(context).fishingSpots;
     fishingSpots.forEach((f) =>
         _fishingSpotMarkers.add(_createFishingSpotMarker(f)));
   }
@@ -100,7 +95,7 @@ class _MapPageState extends State<MapPage> {
       return Empty();
     }
 
-    FishingSpot fishingSpot = widget.app.fishingSpotManager
+    FishingSpot fishingSpot = FishingSpotManager.of(context)
         .fishingSpot(_activeMarker.markerId.value);
     if (fishingSpot == null) {
       fishingSpot = FishingSpot(latLng: _activeMarker.position);
@@ -113,7 +108,6 @@ class _MapPageState extends State<MapPage> {
           _updateActiveMarker(null);
         },
         child: _FishingSpotBottomSheet(
-          app: widget.app,
           fishingSpot: fishingSpot,
         )
       ),
@@ -204,11 +198,9 @@ class _FishingSpotBottomSheet extends StatelessWidget {
   final double _chipHeight = 45;
   final int _coordinateDecimalPlaces = 6;
 
-  final AppManager app;
   final FishingSpot fishingSpot;
 
   _FishingSpotBottomSheet({
-    @required this.app,
     @required this.fishingSpot,
   }) : assert(fishingSpot != null);
 
@@ -236,7 +228,7 @@ class _FishingSpotBottomSheet extends StatelessWidget {
     String name;
 
     if (isEmpty(fishingSpot.name)
-        && !app.fishingSpotManager.exists(fishingSpot.id))
+        && !FishingSpotManager.of(context).exists(fishingSpot.id))
     {
       // A new pin was dropped.
       name = Strings.of(context).fishingSpotBottomSheetDroppedPin;
@@ -268,7 +260,6 @@ class _FishingSpotBottomSheet extends StatelessWidget {
               push(
                 context,
                 SaveFishingSpotPage(
-                  app: app,
                   oldFishingSpot: fishingSpot,
                 ),
                 fullscreenDialog: true,
