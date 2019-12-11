@@ -7,7 +7,7 @@ import 'package:mobile/utils/string_utils.dart';
 import 'package:mobile/widgets/page.dart';
 import 'package:mobile/widgets/widget.dart';
 
-import 'add_catch_page.dart';
+import 'save_catch_page.dart';
 
 class CatchListPage extends StatelessWidget {
   final AppManager app;
@@ -27,7 +27,7 @@ class CatchListPage extends StatelessWidget {
             icon: Icon(Icons.add),
             onPressed: () => push(
               context,
-              AddCatchPage(app: app),
+              SaveCatchPage(app: app),
               fullscreenDialog: true,
             ),
           )

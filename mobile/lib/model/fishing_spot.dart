@@ -5,26 +5,29 @@ import 'package:mobile/model/property.dart';
 
 @immutable
 class FishingSpot extends Entity {
-  static const _keyLat = "lat";
-  static const _keyLng = "lng";
-  static const _keyName = "name";
+  static const keyLat = "lat";
+  static const keyLng = "lng";
+  static const keyName = "name";
 
   FishingSpot({
     @required LatLng latLng,
     String name,
+    String id,
   }) : assert(latLng != null),
        super([
-         SingleProperty<double>(key: _keyLat, value: latLng.latitude),
-         SingleProperty<double>(key: _keyLng, value: latLng.longitude),
-         SingleProperty<String>(key: _keyName, value: name),
-       ]);
+         SingleProperty<double>(key: keyLat, value: latLng.latitude),
+         SingleProperty<double>(key: keyLng, value: latLng.longitude),
+         SingleProperty<String>(key: keyName, value: name),
+       ], id: id);
 
   double get lat =>
-      (propertyWithName(_keyLat) as SingleProperty<double>).value;
+      (propertyWithName(keyLat) as SingleProperty<double>).value;
 
   double get lng =>
-      (propertyWithName(_keyLng) as SingleProperty<double>).value;
+      (propertyWithName(keyLng) as SingleProperty<double>).value;
+
+  LatLng get latLng => LatLng(lat, lng);
 
   String get name =>
-      (propertyWithName(_keyName) as SingleProperty<String>).value;
+      (propertyWithName(keyName) as SingleProperty<String>).value;
 }

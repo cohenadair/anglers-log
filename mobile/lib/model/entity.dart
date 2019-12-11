@@ -5,9 +5,6 @@ import 'package:uuid/uuid.dart';
 
 /// An [Entity] stores a collection of manageable properties. An [Entity] is
 /// designed to store business logic data only; nothing UI related.
-///
-/// This class should only be subclassed when a dynamic object is desired,
-/// such as a Catch, or Bait.
 @immutable
 class Entity implements Mappable {
   static const _keyId = "id";
@@ -53,4 +50,7 @@ class Entity implements Mappable {
 
   @override
   int get hashCode => hash2(id.hashCode, hashObjects(propertyList));
+
+  @override
+  String toString() => toMap().toString();
 }

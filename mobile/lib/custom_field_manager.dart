@@ -6,8 +6,6 @@ class CustomFieldManager {
   List<CustomEntity> get customFields => 
       List.unmodifiable(_customFieldMap.values);
 
-  CustomFieldManager();
-
   /// Returns the [CustomEntity] with the given ID, or `null` if none is found.
   CustomEntity customField(String id) {
     return _customFieldMap[id];

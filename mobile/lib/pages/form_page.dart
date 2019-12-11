@@ -19,10 +19,10 @@ import 'add_custom_field_page.dart';
 /// @param bool `true` if the form is in "removing fields mode"
 ///
 /// @return The returned map key [String] represents the identifier in the
-/// underlying model object, such as "angler", "baitId", etc. The returned
+/// underlying model object, such as "angler", "bait_id", etc. The returned
 /// map value [Widget] is the widget that is displayed.
 ///
-/// Note that the returned map key is used keeping track of [InputFields]
+/// Note that the returned map key is used in keeping track of [InputFields]
 /// that are selected for deletion.
 typedef FieldBuilder = Map<String, Widget> Function(BuildContext, bool);
 

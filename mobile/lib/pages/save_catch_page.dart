@@ -9,16 +9,16 @@ import 'package:mobile/widgets/widget.dart';
 
 import 'form_page.dart';
 
-class AddCatchPage extends StatefulWidget {
+class SaveCatchPage extends StatefulWidget {
   final AppManager app;
 
-  AddCatchPage({this.app}) : assert(app != null);
+  SaveCatchPage({this.app}) : assert(app != null);
 
   @override
-  _AddCatchPageState createState() => _AddCatchPageState();
+  _SaveCatchPageState createState() => _SaveCatchPageState();
 }
 
-class _AddCatchPageState extends State<AddCatchPage> {
+class _SaveCatchPageState extends State<SaveCatchPage> {
   static const String timestampId = "timestamp";
   static const String anglerId = "angler";
 
