@@ -6,5 +6,9 @@ class TripManager {
   static TripManager of(BuildContext context) =>
       Provider.of<AppManager>(context, listen: false).tripManager;
 
+  static final TripManager _instance = TripManager._internal();
+  factory TripManager.get() => _instance;
+  TripManager._internal();
+
   int get numberOfTrips => 0;
 }

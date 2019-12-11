@@ -8,6 +8,10 @@ class FishingSpotManager {
   static FishingSpotManager of(BuildContext context) =>
       Provider.of<AppManager>(context, listen: false).fishingSpotManager;
 
+  static final FishingSpotManager _instance = FishingSpotManager._internal();
+  factory FishingSpotManager.get() => _instance;
+  FishingSpotManager._internal();
+
   final List<FishingSpot> _fishingSpots = List();
 
   List<FishingSpot> get fishingSpots => [

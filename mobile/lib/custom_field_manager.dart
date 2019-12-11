@@ -8,6 +8,10 @@ class CustomFieldManager {
   static CustomFieldManager of(BuildContext context) =>
       Provider.of<AppManager>(context, listen: false).customFieldManager;
 
+  static final CustomFieldManager _instance = CustomFieldManager._internal();
+  factory CustomFieldManager.get() => _instance;
+  CustomFieldManager._internal();
+
   final Map<String, CustomEntity> _customFieldMap = {};
 
   List<CustomEntity> get customFields => 
