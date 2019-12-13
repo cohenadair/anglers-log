@@ -12,13 +12,13 @@ class FishingSpotManager {
   factory FishingSpotManager.get() => _instance;
   FishingSpotManager._internal();
 
-  final List<FishingSpot> _fishingSpots = List();
-
-  List<FishingSpot> get fishingSpots => [
+  final List<FishingSpot> _fishingSpots = [
     FishingSpot(latLng: LatLng(37.429876, -122.291231), name: "Spot 1"),
     FishingSpot(latLng: LatLng(37.329877, -122.191232), name: "Spot 2"),
     FishingSpot(latLng: LatLng(37.229875, -122.091230)),
   ];
+
+  List<FishingSpot> get fishingSpots => List.of(_fishingSpots);
 
   int get numberOfFishingSpots => _fishingSpots.length;
 
