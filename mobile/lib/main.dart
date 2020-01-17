@@ -7,11 +7,27 @@ import 'package:mobile/res/color.dart';
 import 'package:provider/provider.dart';
 
 void main() {
-  runApp(new MyApp());
+  runApp(new AnglersLog());
 }
 
-class MyApp extends StatelessWidget {
+class AnglersLog extends StatefulWidget {
+  @override
+  _AnglersLogState createState() => _AnglersLogState();
+}
+
+class _AnglersLogState extends State<AnglersLog> {
   final AppManager _app = AppManager();
+  Future<bool> _appInitializedFuture;
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Wait for all app initializations before showing the app as "ready".
+    _appInitializedFuture = Future.wait([
+      _app.dataManager.initialize(_app),
+    ]).then((_) => true);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +45,17 @@ class MyApp extends StatelessWidget {
           ),
           errorColor: Colors.red,
         ),
-        home: MainPage(),
+        home: FutureBuilder<bool>(
+          future: _appInitializedFuture,
+          builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+            if (snapshot.hasError || !snapshot.hasData) {
+              return Scaffold(
+                backgroundColor: Theme.of(context).primaryColor,
+              );
+            }
+            return MainPage();
+          },
+        ),
         debugShowCheckedModeBanner: false,
         localizationsDelegates: [
           StringsDelegate(),

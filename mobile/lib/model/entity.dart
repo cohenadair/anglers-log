@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:mobile/model/property.dart';
 import 'package:quiver/core.dart';
+import 'package:quiver/strings.dart';
 import 'package:uuid/uuid.dart';
 
 /// An [Entity] stores a collection of manageable properties. An [Entity] is
@@ -15,10 +16,12 @@ class Entity implements Mappable {
 
   Entity(List<Property> properties, {String id})
       : id = id ?? Uuid().v1(),
-        _properties = Map.fromIterable(properties,
-          key: (p) => (p as Property).key,
-          value: (p) => p,
-        );
+        _properties = propertyListToMap(properties);
+
+  Entity.fromMap(List<Property> properties, Map<String, dynamic> map)
+      : assert(isNotEmpty(map[_keyId])),
+        id = map[_keyId],
+        _properties = propertyListToMap(properties);
 
   List<Property> get propertyList => List.unmodifiable(_properties.values);
   Property propertyWithName(String name) => _properties[name];

@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mobile/app_manager.dart';
 import 'package:mobile/model/fishing_spot.dart';
 import 'package:provider/provider.dart';
@@ -13,9 +12,9 @@ class FishingSpotManager {
   FishingSpotManager._internal();
 
   final List<FishingSpot> _fishingSpots = [
-    FishingSpot(latLng: LatLng(37.429876, -122.291231), name: "Spot 1"),
-    FishingSpot(latLng: LatLng(37.329877, -122.191232), name: "Spot 2"),
-    FishingSpot(latLng: LatLng(37.229875, -122.091230)),
+    FishingSpot(lat: 37.429876, lng: -122.291231, name: "Spot 1"),
+    FishingSpot(lat: 37.329877, lng: -122.191232, name: "Spot 2"),
+    FishingSpot(lat: 37.229875, lng: -122.091230),
   ];
 
   List<FishingSpot> get fishingSpots => List.of(_fishingSpots);

@@ -9,16 +9,23 @@ class FishingSpot extends Entity {
   static const keyLng = "lng";
   static const keyName = "name";
 
+  static List<Property> _propertyList(double lat, double lng, String name) => [
+    SingleProperty<double>(key: keyLat, value: lat),
+    SingleProperty<double>(key: keyLng, value: lng),
+    SingleProperty<String>(key: keyName, value: name),
+  ];
+
   FishingSpot({
-    @required LatLng latLng,
+    @required double lat,
+    @required double lng,
     String name,
     String id,
-  }) : assert(latLng != null),
-       super([
-         SingleProperty<double>(key: keyLat, value: latLng.latitude),
-         SingleProperty<double>(key: keyLng, value: latLng.longitude),
-         SingleProperty<String>(key: keyName, value: name),
-       ], id: id);
+  }) : assert(lat != null),
+       assert(lng != null),
+       super(_propertyList(lat, lng, name), id: id);
+
+  FishingSpot.fromMap(Map<String, dynamic> map) : super.fromMap(
+      _propertyList(map[keyLat], map[keyLng], map[keyName]), map);
 
   double get lat =>
       (propertyWithName(keyLat) as SingleProperty<double>).value;

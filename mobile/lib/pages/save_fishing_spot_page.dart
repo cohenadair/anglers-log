@@ -30,7 +30,8 @@ class _SaveFishingSpotPageState extends State<SaveFishingSpotPage> {
       editable: false,
       onSave: () {
         FishingSpot newFishingSpot = FishingSpot(
-          latLng: widget.oldFishingSpot.latLng,
+          lat: widget.oldFishingSpot.lat,
+          lng: widget.oldFishingSpot.lng,
           name: isNotEmpty(_nameController.text) ? _nameController.text : null,
           id: widget.oldFishingSpot.id,
         );

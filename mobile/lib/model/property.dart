@@ -56,3 +56,9 @@ class CustomProperty<T> extends SingleProperty<T> implements Mappable {
     key : value,
   };
 }
+
+Map<String, Property> propertyListToMap(List<Property> list) =>
+    Map.fromIterable(list,
+      key: (p) => (p as Property).key,
+      value: (p) => p,
+    );

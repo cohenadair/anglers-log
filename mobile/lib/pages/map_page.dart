@@ -98,7 +98,10 @@ class _MapPageState extends State<MapPage> {
     FishingSpot fishingSpot = FishingSpotManager.of(context)
         .fishingSpot(_activeMarker.markerId.value);
     if (fishingSpot == null) {
-      fishingSpot = FishingSpot(latLng: _activeMarker.position);
+      fishingSpot = FishingSpot(
+        lat: _activeMarker.position.latitude,
+        lng: _activeMarker.position.longitude,
+      );
     }
 
     return Align(

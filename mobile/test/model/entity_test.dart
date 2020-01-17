@@ -1,8 +1,8 @@
 import 'dart:collection';
 
+import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/model/entity.dart';
 import 'package:mobile/model/property.dart';
-import 'package:test/test.dart';
 
 void main() {
   test("Entity equality", () {
@@ -62,5 +62,14 @@ void main() {
     expect(map["custom_properties"][0].value, "black");
     expect(map["custom_properties"][1].key, "ID321");
     expect(map["custom_properties"][1].value, 9);
+
+    map = {
+      "id" : "testId",
+    };
+    var entity2 = Entity.fromMap([], map);
+    expect(entity2.id, "testId");
+
+    map = {};
+    expect(() => Entity.fromMap([], map), throwsAssertionError);
   });
 }
