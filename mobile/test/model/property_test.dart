@@ -1,16 +1,17 @@
 import 'dart:collection';
 
+import 'package:flutter_test/flutter_test.dart';
+import 'package:mobile/model/angler.dart';
 import 'package:mobile/model/property.dart';
-import 'package:test/test.dart';
 
 void main() {
-  test("SingleProperty equality", () {
-    var prop1 = SingleProperty<int>(
+  test("Property equality", () {
+    var prop1 = Property<int>(
       key: "Test Property",
       value: 10,
     );
 
-    var prop2 = SingleProperty<int>(
+    var prop2 = Property<int>(
       key: "Test Property",
       value: 10,
     );
@@ -18,7 +19,7 @@ void main() {
     expect(prop1, prop2);
     expect(prop1.hashCode, prop2.hashCode);
 
-    var prop3 = SingleProperty<int>(
+    var prop3 = Property<int>(
       key: "Test Property",
       value: 15,
     );
@@ -35,11 +36,8 @@ void main() {
     expect(set.length, 2);
   });
 
-  test("CustomProperty mapping", () {
-    var prop1 = CustomProperty<String>(
-      key: "ID12345",
-      value: "A test value",
-    );
-    expect(prop1.toMap()["ID12345"] == "A test value", true);
+  test("Invalid property type", () {
+    expect(() => Property<Angler>(key: "Key", value: Angler(name: "Cohen")),
+        throwsAssertionError);
   });
 }

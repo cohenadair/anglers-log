@@ -10,6 +10,6 @@ class AppManager {
   DataManager get dataManager => DataManager.get();
   CatchManager get catchManager => CatchManager.get();
   CustomFieldManager get customFieldManager => CustomFieldManager.get();
-  FishingSpotManager get fishingSpotManager => FishingSpotManager.get();
+  FishingSpotManager get fishingSpotManager => FishingSpotManager.get(this);
   TripManager get tripManager => TripManager.get();
 }

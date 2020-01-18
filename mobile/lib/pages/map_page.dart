@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mobile/fishing_spot_manager.dart';
 import 'package:mobile/i18n/strings.dart';
+import 'package:mobile/log.dart';
 import 'package:mobile/model/fishing_spot.dart';
 import 'package:mobile/pages/save_fishing_spot_page.dart';
 import 'package:mobile/res/dimen.dart';
@@ -23,6 +24,8 @@ class MapPage extends StatefulWidget {
 }
 
 class _MapPageState extends State<MapPage> {
+  final Log _log = Log("MapPage");
+
   // TODO: See if GoogleMap functionality has been updated to address this.
   // Unfortunately, the only way to keep the "Google" logo visible when a
   // bottom sheet is showing, it to add manual padding. This will need to be
@@ -36,28 +39,42 @@ class _MapPageState extends State<MapPage> {
 
   Completer<GoogleMapController> _mapController = Completer();
 
+  List<FishingSpot> _fishingSpots;
   Set<Marker> _fishingSpotMarkers = Set();
   Marker _activeMarker;
 
   bool get hasActiveMarker => _activeMarker != null;
 
   @override
-  void initState() {
-    super.initState();
-
-    List<FishingSpot> fishingSpots =
-        FishingSpotManager.of(context).fishingSpots;
-    fishingSpots.forEach((f) =>
-        _fishingSpotMarkers.add(_createFishingSpotMarker(f)));
-  }
-
-  @override
   Widget build(BuildContext context) => Page(
-    child: Stack(
-      children: <Widget>[
-        _buildMap(),
-        _buildBottomSheet(),
-      ],
+    child: FishingSpotsBuilder(
+      (BuildContext context, List<FishingSpot> fishingSpots) {
+        // TODO: Don't cache fishing spots in memory.
+        if (fishingSpots != _fishingSpots) {
+          _log.d("Reloading fishing spots...");
+
+          _fishingSpotMarkers.clear();
+          _fishingSpots = fishingSpots;
+          _fishingSpots.forEach((f) =>
+              _fishingSpotMarkers.add(_createFishingSpotMarker(f)));
+
+          // Reset the active marker, if there was one.
+          if (_activeMarker != null) {
+            Marker newMarker = _fishingSpotMarkers.firstWhere(
+              (m) => m.position == _activeMarker.position,
+              orElse: () => null,
+            );
+            _activeMarker = newMarker;
+          }
+        }
+
+        return Stack(
+          children: <Widget>[
+            _buildMap(),
+            _buildBottomSheet(),
+          ],
+        );
+      },
     ),
   );
 
@@ -95,25 +112,26 @@ class _MapPageState extends State<MapPage> {
       return Empty();
     }
 
-    FishingSpot fishingSpot = FishingSpotManager.of(context)
-        .fishingSpot(_activeMarker.markerId.value);
-    if (fishingSpot == null) {
-      fishingSpot = FishingSpot(
-        lat: _activeMarker.position.latitude,
-        lng: _activeMarker.position.longitude,
-      );
-    }
-
-    return Align(
-      alignment: Alignment.bottomCenter,
-      child: StyledBottomSheet(
-        onDismissed: () {
-          _updateActiveMarker(null);
-        },
-        child: _FishingSpotBottomSheet(
-          fishingSpot: fishingSpot,
-        )
-      ),
+    return FutureBuilder<FishingSpot>(
+      future: FishingSpotManager.of(context)
+          .fetch(id: _activeMarker.markerId.value),
+      builder: (BuildContext context, AsyncSnapshot<FishingSpot> snapshot) {
+        return Align(
+          alignment: Alignment.bottomCenter,
+          child: StyledBottomSheet(
+            onDismissed: () {
+              _updateActiveMarker(null);
+            },
+            child: _FishingSpotBottomSheet(
+              fishingSpot: snapshot.data != null ? snapshot.data : FishingSpot(
+                lat: _activeMarker.position.latitude,
+                lng: _activeMarker.position.longitude,
+              ),
+              editing: snapshot.data != null,
+            ),
+          ),
+        );
+      },
     );
   }
 
@@ -168,14 +186,20 @@ class _MapPageState extends State<MapPage> {
       // This only applies if the active marker belongs to an existing fishing
       // spot. A dropped pin is removed from the map when updating the active
       // marker.
-      if (hasActiveMarker && _fishingSpotMarkers.firstWhere(
+      if (hasActiveMarker) {
+        Marker activeMarker = _fishingSpotMarkers.firstWhere(
           (m) => m.markerId.value == _activeMarker.markerId.value,
-          orElse: () => null) != null)
-      {
-        Marker oldActiveMarker =
-            _copyMarker(_activeMarker, _nonActiveMarkerIcon);
-        _fishingSpotMarkers.remove(_activeMarker);
-        _fishingSpotMarkers.add(oldActiveMarker);
+          orElse: () => null,
+        );
+
+        if (activeMarker != null) {
+          if (_fishingSpotMarkers.remove(activeMarker)) {
+            _fishingSpotMarkers.add(_copyMarker(activeMarker,
+                _nonActiveMarkerIcon));
+          } else {
+            _log.e("Error removing marker");
+          }
+        }
       }
 
       _activeMarker = _copyMarker(newActiveMarker, _activeMarkerIcon);
@@ -202,9 +226,11 @@ class _FishingSpotBottomSheet extends StatelessWidget {
   final int _coordinateDecimalPlaces = 6;
 
   final FishingSpot fishingSpot;
+  final bool editing;
 
   _FishingSpotBottomSheet({
     @required this.fishingSpot,
+    this.editing = false,
   }) : assert(fishingSpot != null);
 
   @override
@@ -229,10 +255,7 @@ class _FishingSpotBottomSheet extends StatelessWidget {
 
   Widget _buildName(BuildContext context) {
     String name;
-
-    if (isEmpty(fishingSpot.name)
-        && !FishingSpotManager.of(context).exists(fishingSpot.id))
-    {
+    if (isEmpty(fishingSpot.name)) {
       // A new pin was dropped.
       name = Strings.of(context).fishingSpotBottomSheetDroppedPin;
     } else if (isNotEmpty(fishingSpot.name)) {
@@ -257,8 +280,9 @@ class _FishingSpotBottomSheet extends StatelessWidget {
             right: paddingWidgetSmall,
           ),
           child: ChipButton(
-            label: Strings.of(context).save,
-            icon: Icons.save,
+            label: editing
+                ? Strings.of(context).edit : Strings.of(context).save,
+            icon: editing ? Icons.edit : Icons.save,
             onPressed: () {
               push(
                 context,

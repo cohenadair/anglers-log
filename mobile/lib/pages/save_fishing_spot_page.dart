@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/fishing_spot_manager.dart';
 import 'package:mobile/model/fishing_spot.dart';
 import 'package:mobile/pages/form_page.dart';
 import 'package:mobile/widgets/input.dart';
@@ -29,13 +30,12 @@ class _SaveFishingSpotPageState extends State<SaveFishingSpotPage> {
     return FormPage(
       editable: false,
       onSave: () {
-        FishingSpot newFishingSpot = FishingSpot(
+        FishingSpotManager.of(context).createOrUpdate(FishingSpot(
           lat: widget.oldFishingSpot.lat,
           lng: widget.oldFishingSpot.lng,
           name: isNotEmpty(_nameController.text) ? _nameController.text : null,
           id: widget.oldFishingSpot.id,
-        );
-        print(newFishingSpot.toString());
+        ));
       },
       fieldBuilder: (BuildContext context, bool isRemovingFields) {
         return {

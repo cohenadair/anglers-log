@@ -37,6 +37,7 @@ class Strings {
   String get cancel => _string("cancel");
   String get done => _string("done");
   String get save => _string("save");
+  String get edit => _string("edit");
   String get delete => _string("delete");
   String get none => _string("none");
   String get ok => _string("ok");

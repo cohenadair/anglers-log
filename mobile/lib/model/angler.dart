@@ -11,9 +11,9 @@ class Angler extends Entity {
     @required String name,
   }) : assert(isNotEmpty(name)),
        super([
-         SingleProperty<String>(key: _keyName, value: name),
+         Property<String>(key: _keyName, value: name),
        ]);
 
   String get name =>
-      (propertyWithName(_keyName) as SingleProperty<String>).value;
+      (propertyWithName(_keyName) as Property<String>).value;
 }

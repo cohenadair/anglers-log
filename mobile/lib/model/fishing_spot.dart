@@ -10,9 +10,9 @@ class FishingSpot extends Entity {
   static const keyName = "name";
 
   static List<Property> _propertyList(double lat, double lng, String name) => [
-    SingleProperty<double>(key: keyLat, value: lat),
-    SingleProperty<double>(key: keyLng, value: lng),
-    SingleProperty<String>(key: keyName, value: name),
+    Property<double>(key: keyLat, value: lat),
+    Property<double>(key: keyLng, value: lng),
+    Property<String>(key: keyName, value: name),
   ];
 
   FishingSpot({
@@ -28,13 +28,13 @@ class FishingSpot extends Entity {
       _propertyList(map[keyLat], map[keyLng], map[keyName]), map);
 
   double get lat =>
-      (propertyWithName(keyLat) as SingleProperty<double>).value;
+      (propertyWithName(keyLat) as Property<double>).value;
 
   double get lng =>
-      (propertyWithName(keyLng) as SingleProperty<double>).value;
+      (propertyWithName(keyLng) as Property<double>).value;
 
   LatLng get latLng => LatLng(lat, lng);
 
   String get name =>
-      (propertyWithName(keyName) as SingleProperty<String>).value;
+      (propertyWithName(keyName) as Property<String>).value;
 }

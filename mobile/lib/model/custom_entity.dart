@@ -19,17 +19,17 @@ class CustomEntity extends Entity {
     @required InputType type,
   }) : assert(isNotEmpty(name)),
        super([
-         SingleProperty<String>(key: _keyName, value: name),
-         SingleProperty<String>(key: _keyDescription, value: description),
-         SingleProperty<InputType>(key: _keyType, value: type),
+         Property<String>(key: _keyName, value: name),
+         Property<String>(key: _keyDescription, value: description),
+         Property<InputType>(key: _keyType, value: type),
        ]);
 
   String get name =>
-      (propertyWithName(_keyName) as SingleProperty<String>).value;
+      (propertyWithName(_keyName) as Property<String>).value;
 
   String get description =>
-      (propertyWithName(_keyDescription) as SingleProperty<String>).value;
+      (propertyWithName(_keyDescription) as Property<String>).value;
 
   InputType get type =>
-      (propertyWithName(_keyType) as SingleProperty<InputType>).value;
+      (propertyWithName(_keyType) as Property<InputType>).value;
 }
