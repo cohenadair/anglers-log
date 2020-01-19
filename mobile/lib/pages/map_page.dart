@@ -48,7 +48,7 @@ class _MapPageState extends State<MapPage> {
   @override
   Widget build(BuildContext context) => Page(
     child: FishingSpotsBuilder(
-      onFutureFinished: (List<FishingSpot> fishingSpots) {
+      onUpdate: (List<FishingSpot> fishingSpots) {
         _log.d("Reloading fishing spots...");
 
         _fishingSpotMarkers.clear();
@@ -65,7 +65,7 @@ class _MapPageState extends State<MapPage> {
           _activeMarker = _copyMarker(newMarker, _activeMarkerIcon);
         }
       },
-      builder: (BuildContext context, List<FishingSpot> fishingSpots) {
+      builder: (BuildContext context) {
         return Stack(
           children: <Widget>[
             _buildMap(),
