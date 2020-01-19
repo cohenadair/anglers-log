@@ -240,7 +240,7 @@ class _FishingSpotBottomSheet extends StatelessWidget {
         _buildName(context),
         Padding(
           padding: insetsHorizontalDefault,
-          child: Text(format(
+          child: SecondaryText(format(
             Strings.of(context).fishingSpotBottomSheetLatLngLabel, [
               fishingSpot.lat.toStringAsFixed(_coordinateDecimalPlaces),
               fishingSpot.lng.toStringAsFixed(_coordinateDecimalPlaces),

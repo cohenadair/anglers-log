@@ -12,6 +12,10 @@ const TextStyle styleTitleAlert = TextStyle(
   color: Colors.black,
 );
 
+const TextStyle styleSecondary = TextStyle(
+  color: Colors.black54,
+);
+
 const TextStyle styleHyperlink = TextStyle(
   color: Colors.blue,
   decoration: TextDecoration.underline,
