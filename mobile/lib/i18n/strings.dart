@@ -83,7 +83,8 @@ class Strings {
   String get settingsPageTitle => _string("settingsPage_title");
 
   String get mapPageMenuLabel => _string("mapPage_menuLabel");
-  String get mapPageDeleteFishingSpot => _string("mapPage_DeleteFishingSpot");
+  String get mapPageDeleteFishingSpot => _string("mapPage_deleteFishingSpot");
+  String get mapPageAddCatch => _string("mapPage_addCatch");
 
   String get formPageAddFieldText => _string("formPage_addFieldText");
   String get formPageRemoveFieldsText => _string("formPage_removeFieldsText");
