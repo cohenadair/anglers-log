@@ -94,6 +94,8 @@ class _MapPageState extends State<MapPage> {
       },
       myLocationButtonEnabled: true,
       myLocationEnabled: true,
+      // TODO: Try onLongPress again when Google Maps updated.
+      // Log presses weren't being triggered first time.
       onTap: (LatLng latLng) {
         _addPin(latLng);
       },
