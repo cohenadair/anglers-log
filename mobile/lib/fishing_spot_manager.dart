@@ -85,18 +85,23 @@ class FishingSpotManager {
 
 /// A [FutureListener] wrapper for listening for [FishingSpot] updates.
 class FishingSpotsBuilder extends StatelessWidget {
-  final Widget Function(BuildContext, List<FishingSpot>) _builder;
+  final Widget Function(BuildContext, List<FishingSpot>) builder;
+  final void Function(List<FishingSpot>) onFutureFinished;
 
-  FishingSpotsBuilder(this._builder) : assert(_builder != null);
+  FishingSpotsBuilder({
+    @required this.builder,
+    this.onFutureFinished,
+  }) : assert(builder != null);
 
   @override
   Widget build(BuildContext context) {
     FishingSpotManager fishingSpotManager = FishingSpotManager.of(context);
     return FutureListener.single(
-      futureCallback: fishingSpotManager._fetchAll,
+      future: fishingSpotManager._fetchAll,
       stream: fishingSpotManager._onUpdateController.stream,
-      builder: (context, value) =>
-          _builder(context, value as List<FishingSpot>),
+      builder: (context, value) => builder(context, value as List<FishingSpot>),
+      onFutureFinished: (dynamic result) =>
+          onFutureFinished(result as List<FishingSpot>),
     );
   }
 }

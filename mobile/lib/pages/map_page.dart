@@ -48,26 +48,24 @@ class _MapPageState extends State<MapPage> {
   @override
   Widget build(BuildContext context) => Page(
     child: FishingSpotsBuilder(
-      (BuildContext context, List<FishingSpot> fishingSpots) {
-        // TODO: Don't cache fishing spots in memory.
-        if (fishingSpots != _fishingSpots) {
-          _log.d("Reloading fishing spots...");
+      onFutureFinished: (List<FishingSpot> fishingSpots) {
+        _log.d("Reloading fishing spots...");
 
-          _fishingSpotMarkers.clear();
-          _fishingSpots = fishingSpots;
-          _fishingSpots.forEach((f) =>
-              _fishingSpotMarkers.add(_createFishingSpotMarker(f)));
+        _fishingSpotMarkers.clear();
+        _fishingSpots = fishingSpots;
+        _fishingSpots.forEach((f) =>
+            _fishingSpotMarkers.add(_createFishingSpotMarker(f)));
 
-          // Reset the active marker, if there was one.
-          if (_activeMarker != null) {
-            Marker newMarker = _fishingSpotMarkers.firstWhere(
-              (m) => m.position == _activeMarker.position,
-              orElse: () => null,
-            );
-            _activeMarker = newMarker;
-          }
+        // Reset the active marker, if there was one.
+        if (_activeMarker != null) {
+          Marker newMarker = _fishingSpotMarkers.firstWhere(
+            (m) => m.position == _activeMarker.position,
+            orElse: () => null,
+          );
+          _activeMarker = _copyMarker(newMarker, _activeMarkerIcon);
         }
-
+      },
+      builder: (BuildContext context, List<FishingSpot> fishingSpots) {
         return Stack(
           children: <Widget>[
             _buildMap(),

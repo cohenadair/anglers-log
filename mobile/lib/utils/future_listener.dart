@@ -26,13 +26,24 @@ class FutureListener extends StatefulWidget {
   /// equal to the value returned by [futureCallback].
   final Widget Function(BuildContext, dynamic) singleBuilder;
 
+  /// Invoked when the default constructor is used to instantiate a
+  /// [FutureListener] object. Called when the given [Future] objects are
+  /// finished retrieving data. This callback is called each time the future
+  /// function is invoked (i.e. each time the stream is updated). This is _not_
+  /// called for each `build` sequence.
+  final Function(List<dynamic>) onFuturesFinished;
+
+  /// Invoked when the [FutureListener.single] constructor is used to
+  /// instantiate a [FutureListener] object. Called when the given [Future]
+  /// objects are finished retrieving data. This callback is called each time
+  /// the future function is invoked (i.e. each time the stream is updated).
+  /// This is _not_ called for each `build` sequence.
+  final void Function(dynamic) onFutureFinished;
+
   /// Values to show while the given [Future] objects are being executed.
   /// The types of values in this [List] should be the same as the return
   /// type of each given [Future].
   final List<dynamic> initialValues;
-
-  /// Called when the given [Future] objects are finished retrieving data.
-  final VoidCallback onFuturesFinished;
 
   FutureListener({
     @required this.futures,
@@ -45,18 +56,20 @@ class FutureListener extends StatefulWidget {
        assert(streams != null),
        assert(streams.isNotEmpty),
        assert(builder != null),
-       singleBuilder = null;
+       singleBuilder = null,
+       onFutureFinished = null;
 
   FutureListener.single({
-    @required Future Function() futureCallback,
+    @required Future Function() future,
     @required Stream stream,
     @required Widget Function(BuildContext, dynamic) builder,
     this.initialValues,
-    this.onFuturesFinished,
-  }) : futures = [ futureCallback ],
+    this.onFutureFinished,
+  }) : futures = [ future ],
        streams = [ stream ],
        singleBuilder = builder,
-       builder = null;
+       builder = null,
+       onFuturesFinished = null;
 
   @override
   _FutureListenerState createState() => _FutureListenerState();
@@ -65,6 +78,8 @@ class FutureListener extends StatefulWidget {
 class _FutureListenerState extends State<FutureListener> {
   List<StreamSubscription> _onUpdateEvents = [];
   List<Future> _futures = [];
+
+  bool _futuresUpdated = false;
 
   @override
   void initState() {
@@ -102,7 +117,16 @@ class _FutureListenerState extends State<FutureListener> {
           );
         }
 
-        widget.onFuturesFinished?.call();
+        // Need to check connectionState here because "providing a new but
+        // already-completed future to a FutureBuilder will result in a single
+        // frame in the ConnectionState.waiting state" (Flutter FutureBuilder
+        // doc).
+        if (_futuresUpdated && snapshot.connectionState == ConnectionState.done)
+        {
+          widget.onFuturesFinished?.call(snapshot.data);
+          widget.onFutureFinished?.call((snapshot.data as Iterable).first);
+          _futuresUpdated = false;
+        }
 
         return _build(
           singleValue: snapshot.data.first,
@@ -121,6 +145,7 @@ class _FutureListenerState extends State<FutureListener> {
   }
 
   void _updateFutures() {
+    _futuresUpdated = true;
     _futures.clear();
     widget.futures.forEach((getFuture) {
       _futures.add(getFuture());
