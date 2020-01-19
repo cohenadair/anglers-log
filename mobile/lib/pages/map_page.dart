@@ -8,6 +8,7 @@ import 'package:mobile/log.dart';
 import 'package:mobile/model/fishing_spot.dart';
 import 'package:mobile/pages/save_fishing_spot_page.dart';
 import 'package:mobile/res/dimen.dart';
+import 'package:mobile/utils/dialog_utils.dart';
 import 'package:mobile/utils/page_utils.dart';
 import 'package:mobile/utils/string_utils.dart';
 import 'package:mobile/widgets/button.dart';
@@ -292,6 +293,24 @@ class _FishingSpotBottomSheet extends StatelessWidget {
             },
           ),
         ),
+        editing ? Padding(
+          padding: insetsRightWidgetSmall,
+          child: ChipButton(
+            label: Strings.of(context).delete,
+            icon: Icons.delete,
+            onPressed: () {
+              showDeleteDialog(
+                context: context,
+                title: Strings.of(context).delete,
+                description: format(Strings.of(context)
+                    .mapPageDeleteFishingSpot, [fishingSpot.name]),
+                onDelete: () {
+                  FishingSpotManager.of(context).remove(fishingSpot);
+                }
+              );
+            },
+          ),
+        ) : Empty(),
         Padding(
           padding: insetsRightDefault,
           child: ChipButton(

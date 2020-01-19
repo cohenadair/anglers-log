@@ -55,6 +55,7 @@ Map<String, Map<String, String>> englishStrings = {
     "settingsPage_title" : "Settings",
 
     "mapPage_menuLabel" : "Map",
+    "mapPage_DeleteFishingSpot" : "Are you sure you want to delete fishing spot %s? This cannot be undone.",
 
     "formPage_addFieldText" : "Add Field",
     "formPage_removeFieldsText" : "Remove Fields",
