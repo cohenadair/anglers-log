@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 const paddingDefault = 16.0;
+const paddingMedium = 12.0;
 const paddingSmall = 8.0;
 const paddingWidget = paddingDefault;
 const paddingWidgetSmall = paddingSmall;
@@ -28,6 +29,11 @@ const insetsVerticalSmall = EdgeInsets.only(
 const insetsHorizontalDefault = EdgeInsets.only(
   left: paddingDefault,
   right: paddingDefault,
+);
+
+const insetsHorizontalMedium = EdgeInsets.only(
+  left: paddingMedium,
+  right: paddingMedium,
 );
 
 const insetsTopDefault = EdgeInsets.only(top: paddingDefault);

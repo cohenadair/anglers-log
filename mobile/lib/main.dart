@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:mobile/app_manager.dart';
@@ -42,6 +43,10 @@ class _AnglersLogState extends State<AnglersLog> {
           ),
           iconTheme: IconThemeData(
             color: colorAppTheme,
+          ),
+          cupertinoOverrideTheme: CupertinoThemeData(
+            // Gives TextField cursors a black tint in search bars.
+            primaryColor: Colors.black,
           ),
           errorColor: Colors.red,
         ),

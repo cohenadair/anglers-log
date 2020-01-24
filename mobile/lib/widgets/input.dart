@@ -280,6 +280,7 @@ class TextInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      cursorColor: Theme.of(context).primaryColor,
       initialValue: initialValue,
       controller: controller,
       decoration: InputDecoration(

@@ -8,10 +8,12 @@ import 'package:mobile/log.dart';
 import 'package:mobile/model/fishing_spot.dart';
 import 'package:mobile/pages/save_fishing_spot_page.dart';
 import 'package:mobile/res/dimen.dart';
+import 'package:mobile/res/style.dart';
 import 'package:mobile/utils/dialog_utils.dart';
 import 'package:mobile/utils/page_utils.dart';
 import 'package:mobile/utils/string_utils.dart';
 import 'package:mobile/widgets/button.dart';
+import 'package:mobile/widgets/list_item.dart';
 import 'package:mobile/widgets/page.dart';
 import 'package:mobile/widgets/styled_bottom_sheet.dart';
 import 'package:mobile/widgets/text.dart';
@@ -40,11 +42,12 @@ class _MapPageState extends State<MapPage> {
 
   Completer<GoogleMapController> _mapController = Completer();
 
-  List<FishingSpot> _fishingSpots;
   Set<Marker> _fishingSpotMarkers = Set();
   Marker _activeMarker;
+  FishingSpot _activeFishingSpot;
 
-  bool get hasActiveMarker => _activeMarker != null;
+  bool get _hasActiveMarker => _activeMarker != null;
+  bool get _hasActiveFishingSpot => _activeFishingSpot != null;
 
   @override
   Widget build(BuildContext context) => Page(
@@ -53,8 +56,7 @@ class _MapPageState extends State<MapPage> {
         _log.d("Reloading fishing spots...");
 
         _fishingSpotMarkers.clear();
-        _fishingSpots = fishingSpots;
-        _fishingSpots.forEach((f) =>
+        fishingSpots.forEach((f) =>
             _fishingSpotMarkers.add(_createFishingSpotMarker(f)));
 
         // Reset the active marker, if there was one.
@@ -70,7 +72,21 @@ class _MapPageState extends State<MapPage> {
         return Stack(
           children: <Widget>[
             _buildMap(),
-            _buildBottomSheet(),
+            _hasActiveMarker ? FutureBuilder<FishingSpot>(
+              future: FishingSpotManager.of(context)
+                  .fetch(id: _activeMarker.markerId.value),
+              builder: (BuildContext context,
+                  AsyncSnapshot<FishingSpot> snapshot)
+              {
+                _activeFishingSpot = snapshot.data;
+                return Stack(
+                  children: <Widget>[
+                    _buildSearchBar(),
+                    _buildBottomSheet(),
+                  ],
+                );
+              },
+            ) : _buildSearchBar(),
           ],
         );
       },
@@ -79,7 +95,7 @@ class _MapPageState extends State<MapPage> {
 
   Widget _buildMap() {
     Set<Marker> markers = Set.of(_fishingSpotMarkers);
-    if (hasActiveMarker) {
+    if (_hasActiveMarker) {
       markers.add(_activeMarker);
     }
 
@@ -100,7 +116,77 @@ class _MapPageState extends State<MapPage> {
         _addPin(latLng);
       },
       padding: EdgeInsets.only(
-        bottom: hasActiveMarker ? _bottomMapPadding : 0,
+        bottom: _hasActiveMarker ? _bottomMapPadding : 0,
+      ),
+    );
+  }
+
+  Widget _buildSearchBar() {
+    final cornerRadius = 10.0;
+
+    Widget text = DisabledText(Strings.of(context).mapPageSearchHint);
+    Widget icon = Empty();
+
+    if (_hasActiveMarker) {
+      text = Flexible(
+        child: Text(
+          _hasActiveFishingSpot
+              ? _activeFishingSpot.name : Strings.of(context).mapPageDroppedPin,
+          overflow: TextOverflow.ellipsis,
+        ),
+      );
+
+      icon = SmallIconButton(
+        icon: Icons.clear,
+        onTap: () {
+          _clearSearch();
+        },
+      );
+    }
+
+    return SafeArea(
+      child: Align(
+        alignment: Alignment.topCenter,
+        child: Padding(
+          padding: insetsHorizontalMedium,
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              boxShadow: boxShadowSmallBottom,
+              borderRadius: BorderRadius.all(Radius.circular(cornerRadius)),
+            ),
+            child: Material(
+              color: Colors.transparent,
+              child: InkWell(
+                onTap: () async {
+                  FishingSpot result = await showSearch(
+                    context: context,
+                    delegate: _SearchDelegate(),
+                  );
+                  // Only reset selection if a new selection was made.
+                  if (result != null) {
+                    _updateActiveFishingSpot(result);
+                  }
+                },
+                child: Padding(
+                  padding: EdgeInsets.only(
+                    top: paddingMedium,
+                    bottom: paddingMedium,
+                    left: paddingDefault,
+                    right: paddingDefault,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      text,
+                      icon,
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
       ),
     );
   }
@@ -109,30 +195,24 @@ class _MapPageState extends State<MapPage> {
   /// the bottom of the screen. We want this bottom sheet to animate from the
   /// bottom of the map.
   Widget _buildBottomSheet() {
-    if (_activeMarker == null) {
+    if (!_hasActiveMarker) {
       return Empty();
     }
 
-    return FutureBuilder<FishingSpot>(
-      future: FishingSpotManager.of(context)
-          .fetch(id: _activeMarker.markerId.value),
-      builder: (BuildContext context, AsyncSnapshot<FishingSpot> snapshot) {
-        return Align(
-          alignment: Alignment.bottomCenter,
-          child: StyledBottomSheet(
-            onDismissed: () {
-              _updateActiveMarker(null);
-            },
-            child: _FishingSpotBottomSheet(
-              fishingSpot: snapshot.data != null ? snapshot.data : FishingSpot(
-                lat: _activeMarker.position.latitude,
-                lng: _activeMarker.position.longitude,
-              ),
-              editing: snapshot.data != null,
-            ),
+    return Align(
+      alignment: Alignment.bottomCenter,
+      child: StyledBottomSheet(
+        onDismissed: () {
+          _updateActiveFishingSpot(null);
+        },
+        child: _FishingSpotBottomSheet(
+          fishingSpot: _hasActiveFishingSpot ? _activeFishingSpot : FishingSpot(
+            lat: _activeMarker.position.latitude,
+            lng: _activeMarker.position.longitude,
           ),
-        );
-      },
+          editing: _hasActiveFishingSpot,
+        ),
+      ),
     );
   }
 
@@ -170,41 +250,62 @@ class _MapPageState extends State<MapPage> {
   void _addPin(LatLng latLng) {
     setState(() {
       _updateActiveMarker(_createDroppedPinMarker(latLng));
+      _updateCamera(latLng);
+    });
+  }
 
-      // Animate the new marker to the middle of the map.
-      _mapController.future.then((controller) {
-        controller.animateCamera(CameraUpdate.newLatLng(latLng));
-      });
+  void _updateCamera(LatLng latLng) {
+    // Animate the new marker to the middle of the map.
+    _mapController.future.then((controller) {
+      controller.animateCamera(CameraUpdate.newLatLng(latLng));
     });
   }
 
   void _updateActiveMarker(Marker newActiveMarker) {
     setState(() {
-      // A marker's icon property is readonly, so we rebuild the current active
-      // marker to give it a default icon, then remove and add it to the
-      // fishing spot markers.
-      //
-      // This only applies if the active marker belongs to an existing fishing
-      // spot. A dropped pin is removed from the map when updating the active
-      // marker.
-      if (hasActiveMarker) {
-        Marker activeMarker = _fishingSpotMarkers.firstWhere(
-          (m) => m.markerId.value == _activeMarker.markerId.value,
-          orElse: () => null,
-        );
+      _resetActiveMarker(newActiveMarker);
+    });
+  }
 
-        if (activeMarker != null) {
-          if (_fishingSpotMarkers.remove(activeMarker)) {
-            _fishingSpotMarkers.add(_copyMarker(activeMarker,
-                _nonActiveMarkerIcon));
-          } else {
-            _log.e("Error removing marker");
-          }
+  void _updateActiveFishingSpot(FishingSpot newActiveFishingSpot) {
+    setState(() {
+      _activeFishingSpot = newActiveFishingSpot;
+
+      if (_activeFishingSpot == null) {
+        _resetActiveMarker(null);
+      } else {
+        _resetActiveMarker(_fishingSpotMarkers.firstWhere((Marker marker) =>
+            _activeFishingSpot.id == marker.markerId.value));
+        _updateCamera(_activeFishingSpot.latLng);
+      }
+    });
+  }
+
+  void _resetActiveMarker(Marker newActiveMarker) {
+    // A marker's icon property is readonly, so we rebuild the current active
+    // marker to give it a default icon, then remove and add it to the
+    // fishing spot markers.
+    //
+    // This only applies if the active marker belongs to an existing fishing
+    // spot. A dropped pin is removed from the map when updating the active
+    // marker.
+    if (_hasActiveMarker) {
+      Marker activeMarker = _fishingSpotMarkers.firstWhere(
+        (m) => m.markerId.value == _activeMarker.markerId.value,
+        orElse: () => null,
+      );
+
+      if (activeMarker != null) {
+        if (_fishingSpotMarkers.remove(activeMarker)) {
+          _fishingSpotMarkers.add(_copyMarker(activeMarker,
+              _nonActiveMarkerIcon));
+        } else {
+          _log.e("Error removing marker");
         }
       }
+    }
 
-      _activeMarker = _copyMarker(newActiveMarker, _activeMarkerIcon);
-    });
+    _activeMarker = _copyMarker(newActiveMarker, _activeMarkerIcon);
   }
 
   Marker _copyMarker(Marker marker, BitmapDescriptor icon) {
@@ -219,12 +320,15 @@ class _MapPageState extends State<MapPage> {
       icon: icon,
     );
   }
+
+  void _clearSearch() {
+    _updateActiveFishingSpot(null);
+  }
 }
 
 /// A widget that shows details of a selected fishing spot.
 class _FishingSpotBottomSheet extends StatelessWidget {
   final double _chipHeight = 45;
-  final int _coordinateDecimalPlaces = 6;
 
   final FishingSpot fishingSpot;
   final bool editing;
@@ -242,11 +346,10 @@ class _FishingSpotBottomSheet extends StatelessWidget {
         _buildName(context),
         Padding(
           padding: insetsHorizontalDefault,
-          child: SecondaryText(format(
-            Strings.of(context).fishingSpotBottomSheetLatLngLabel, [
-              fishingSpot.lat.toStringAsFixed(_coordinateDecimalPlaces),
-              fishingSpot.lng.toStringAsFixed(_coordinateDecimalPlaces),
-            ],
+          child: SecondaryText(formatLatLng(
+            context: context,
+            lat: fishingSpot.lat,
+            lng: fishingSpot.lng,
           )),
         ),
         _buildChips(context),
@@ -258,7 +361,7 @@ class _FishingSpotBottomSheet extends StatelessWidget {
     String name;
     if (isEmpty(fishingSpot.name)) {
       // A new pin was dropped.
-      name = Strings.of(context).fishingSpotBottomSheetDroppedPin;
+      name = Strings.of(context).mapPageDroppedPin;
     } else if (isNotEmpty(fishingSpot.name)) {
       // Fishing spot exists, and has a name.
       name = fishingSpot.name;
@@ -332,4 +435,65 @@ class _FishingSpotBottomSheet extends StatelessWidget {
       ],
     ),
   );
+}
+
+class _SearchDelegate extends SearchDelegate<FishingSpot> {
+  List<FishingSpot> _fishingSpots = [];
+
+  @override
+  List<Widget> buildActions(BuildContext context) {
+    return null;
+  }
+
+  @override
+  Widget buildLeading(BuildContext context) {
+    return null;
+  }
+
+  @override
+  Widget buildResults(BuildContext context) {
+    return ListView(
+      children: <Widget>[
+        // TODO: Query database
+      ],
+    );
+  }
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    return FishingSpotsBuilder(
+      onUpdate: (List<FishingSpot> fishingSpots) {
+        _fishingSpots = fishingSpots ?? [];
+      },
+      builder: (BuildContext context) {
+        return ListView.builder(
+          itemCount: _fishingSpots.length,
+          itemBuilder: (BuildContext context, int index) {
+            FishingSpot fishingSpot = _fishingSpots[index];
+
+            Widget title = Empty();
+            if (isNotEmpty(fishingSpot.name)) {
+              title = Text(fishingSpot.name);
+            } else {
+              title = Text(formatLatLng(
+                context: context,
+                lat: fishingSpot.lat,
+                lng: fishingSpot.lng,
+              ));
+            }
+
+            return ListItem(
+              title: title,
+              onTap: () => close(context, fishingSpot),
+            );
+          },
+        );
+      }
+    );
+  }
+
+  @override
+  ThemeData appBarTheme(BuildContext context) {
+    return Theme.of(context);
+  }
 }

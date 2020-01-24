@@ -126,3 +126,26 @@ class ChipButton extends StatelessWidget {
     onPressed: onPressed == null ? () {} : onPressed,
   );
 }
+
+class SmallIconButton extends StatelessWidget {
+  final IconData icon;
+  final VoidCallback onTap;
+
+  SmallIconButton({
+    @required this.icon,
+    this.onTap,
+  }) : assert(icon != null);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: insetsZero,
+      width: 24,
+      height: 24,
+      child: GestureDetector(
+        onTap: onTap,
+        child: Icon(icon),
+      ),
+    );
+  }
+}

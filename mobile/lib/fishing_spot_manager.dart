@@ -68,9 +68,11 @@ class FishingSpotManager {
   }
 
   /// Queries the database and returns a list of all fishing spots in the log.
+  /// Result is sorted alphabetically by fishing spot name.
   Future<List<FishingSpot>> _fetchAll() async {
-    return (await _app.dataManager.query("SELECT * FROM $_tableName"))
-        .map((map) => FishingSpot.fromMap(map)).toList();
+    return (await _app.dataManager.query("""
+      SELECT * FROM $_tableName ORDER BY name
+    """)).map((map) => FishingSpot.fromMap(map)).toList();
   }
 
   Future<FishingSpot> fetch({String id}) async {

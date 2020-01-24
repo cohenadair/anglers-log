@@ -49,6 +49,7 @@ class Strings {
   String get today => _string("today");
   String get yesterday => _string("yesterday");
   String get directions => _string("directions");
+  String get latLng => _string("latLng");
 
   String get fieldTypeNumber => _string("fieldType_number");
   String get fieldTypeBoolean => _string("fieldType_boolean");
@@ -85,6 +86,8 @@ class Strings {
   String get mapPageMenuLabel => _string("mapPage_menuLabel");
   String get mapPageDeleteFishingSpot => _string("mapPage_deleteFishingSpot");
   String get mapPageAddCatch => _string("mapPage_addCatch");
+  String get mapPageSearchHint => _string("mapPage_searchHint");
+  String get mapPageDroppedPin => _string("mapPage_droppedPin");
 
   String get formPageAddFieldText => _string("formPage_addFieldText");
   String get formPageRemoveFieldsText => _string("formPage_removeFieldsText");
@@ -115,9 +118,6 @@ class Strings {
   String get analysisDurationCustom => _string("analysisDuration_custom");
 
   String get dateTimeFormat => _string("dateTimeFormat");
-
-  String get fishingSpotBottomSheetLatLngLabel => _string("fishingSpotBottomSheet_latLngLabel");
-  String get fishingSpotBottomSheetDroppedPin => _string("fishingSpotBottomSheet_droppedPin");
 }
 
 class StringsDelegate extends LocalizationsDelegate<Strings> {

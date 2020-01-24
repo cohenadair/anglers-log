@@ -21,6 +21,7 @@ Map<String, Map<String, String>> englishStrings = {
     "today" : "Today",
     "yesterday" : "Yesterday",
     "directions" : "Directions",
+    "latLng" : "Lat: %s, Lng: %s",
 
     "fieldType_number" : "Number",
     "fieldType_boolean" : "Checkbox",
@@ -57,6 +58,8 @@ Map<String, Map<String, String>> englishStrings = {
     "mapPage_menuLabel" : "Map",
     "mapPage_deleteFishingSpot" : "Are you sure you want to delete fishing spot %s? This cannot be undone.",
     "mapPage_addCatch" : "Add Catch",
+    "mapPage_searchHint" : "Search fishing spots",
+    "mapPage_droppedPin" : "Dropped Pin",
 
     "formPage_addFieldText" : "Add Field",
     "formPage_removeFieldsText" : "Remove Fields",
@@ -87,8 +90,5 @@ Map<String, Map<String, String>> englishStrings = {
     "analysisDuration_custom" : "Custom",
 
     "dateTimeFormat" : "%s at %s",
-
-    "fishingSpotBottomSheet_latLngLabel" : "Lat: %s, Lng: %s",
-    "fishingSpotBottomSheet_droppedPin" : "Dropped Pin",
   },
 };

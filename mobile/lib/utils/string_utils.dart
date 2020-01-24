@@ -85,3 +85,18 @@ String formatDateAsRecent({
     return DateFormat(monthDayYearFormat).format(dateTime);
   }
 }
+
+String formatLatLng({
+  @required BuildContext context,
+  @required double lat,
+  @required double lng,
+}) {
+  final int decimalPlaces = 6;
+
+  return format(
+    Strings.of(context).latLng, [
+      lat.toStringAsFixed(decimalPlaces),
+      lng.toStringAsFixed(decimalPlaces),
+    ],
+  );
+}

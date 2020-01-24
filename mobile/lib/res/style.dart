@@ -25,9 +25,17 @@ const TextStyle styleError = TextStyle(
   color: Colors.red,
 );
 
-const List<BoxShadow> boxShadowTop = [
+const List<BoxShadow> boxShadowDefault = [
   BoxShadow(
     color: Colors.grey,
     blurRadius: 5.0,
+  ),
+];
+
+const List<BoxShadow> boxShadowSmallBottom = [
+  BoxShadow(
+    color: Colors.grey,
+    blurRadius: 2.0,
+    offset: Offset(0, 2.0),
   ),
 ];
