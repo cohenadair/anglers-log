@@ -53,8 +53,12 @@ class SecondaryText extends StatelessWidget {
 /// Text that matches the primary label in a [ListTile].
 class LabelText extends StatelessWidget {
   final String text;
+  final TextOverflow overflow;
 
-  LabelText(this.text);
+  LabelText({
+    @required this.text,
+    this.overflow = TextOverflow.ellipsis,
+  });
 
   static TextStyle style(BuildContext context) =>
       Theme.of(context).textTheme.subhead;
@@ -64,6 +68,23 @@ class LabelText extends StatelessWidget {
     return Text(
       text,
       style: style(context),
+      overflow: overflow,
+    );
+  }
+}
+
+class DisabledLabelText extends StatelessWidget {
+  final String text;
+
+  DisabledLabelText(this.text);
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      text,
+      style: Theme.of(context).textTheme.subhead.copyWith(
+        color: Theme.of(context).disabledColor,
+      ),
     );
   }
 }
@@ -99,6 +120,20 @@ class EnabledText extends StatelessWidget {
       style: TextStyle(
         color: enabled ? null : Theme.of(context).disabledColor,
       ),
+    );
+  }
+}
+
+class DisabledText extends StatelessWidget {
+  final String text;
+
+  DisabledText(this.text);
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      text,
+      style: TextStyle(color: Theme.of(context).disabledColor),
     );
   }
 }
@@ -148,19 +183,5 @@ class TimeText extends StatelessWidget {
 
   String _format(BuildContext context) {
     return formatTimeOfDay(context, time);
-  }
-}
-
-class DisabledText extends StatelessWidget {
-  final String text;
-
-  DisabledText(this.text);
-
-  @override
-  Widget build(BuildContext context) {
-    return Text(
-      text,
-      style: TextStyle(color: Theme.of(context).disabledColor),
-    );
   }
 }

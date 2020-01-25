@@ -96,6 +96,9 @@ class ActionButton extends StatelessWidget {
 
 /// An [ActionChip] wrapper.
 class ChipButton extends StatelessWidget {
+  final double iconSize = 20.0;
+  final double fontSize = 13.0;
+
   final String label;
   final IconData icon;
   final VoidCallback onPressed;
@@ -110,14 +113,14 @@ class ChipButton extends StatelessWidget {
   Widget build(BuildContext context) => ActionChip(
     avatar: Icon(
       icon,
-      size: 20,
+      size: iconSize,
       color: Colors.black,
     ),
     label: Text(
       label,
       style: TextStyle(
         color: Colors.black,
-        fontSize: 13,
+        fontSize: fontSize,
         fontWeight: fontWeightBold,
       ),
     ),
@@ -127,11 +130,15 @@ class ChipButton extends StatelessWidget {
   );
 }
 
-class SmallIconButton extends StatelessWidget {
+/// An icon button Widget that breaks the Material [IconButton] padding/margin
+/// requirement.
+class MinimumIconButton extends StatelessWidget {
+  final double size = 24.0;
+
   final IconData icon;
   final VoidCallback onTap;
 
-  SmallIconButton({
+  MinimumIconButton({
     @required this.icon,
     this.onTap,
   }) : assert(icon != null);
@@ -140,11 +147,14 @@ class SmallIconButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: insetsZero,
-      width: 24,
-      height: 24,
+      width: size,
+      height: size,
       child: GestureDetector(
         onTap: onTap,
-        child: Icon(icon),
+        child: Icon(
+          icon,
+          color: Theme.of(context).primaryColor,
+        ),
       ),
     );
   }

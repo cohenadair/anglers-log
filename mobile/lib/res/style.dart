@@ -2,9 +2,14 @@ import 'package:flutter/material.dart';
 
 const FontWeight fontWeightBold = FontWeight.w500;
 
+const TextStyle styleHeading = TextStyle(
+  fontSize: 18,
+  fontWeight: fontWeightBold,
+);
+
 const TextStyle styleTitle = TextStyle(
   fontSize: 36,
-  fontWeight: FontWeight.bold,
+  fontWeight: fontWeightBold,
 );
 
 const TextStyle styleTitleAlert = TextStyle(

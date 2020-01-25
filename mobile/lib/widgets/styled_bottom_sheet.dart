@@ -8,17 +8,23 @@ import 'package:mobile/widgets/widget.dart';
 /// it doesn't provide the desired behaviour of animating from beneath the
 /// bottom navigation bar.
 ///
-/// The style of the [StyledBottomSheet] widget is inspired by bottoms sheet
+/// The style of the [StyledBottomSheet] widget is inspired by bottom sheet
 /// use in the Google Maps iOS app.
 ///
-/// This widget animates in from the bottom and is dismissible by swiping down.
+/// This widget animates in from the bottom and is dismissible by swiping down,
+/// or by setting the [visible] property to `false`.
 class StyledBottomSheet extends StatefulWidget {
   final Widget child;
+
+  /// Called when the bottom sheet is dismissed by swiping down, and at the end
+  /// of a reverse animation (when [visible] is `false`).
   final VoidCallback onDismissed;
+  final bool visible;
 
   StyledBottomSheet({
     @required this.child,
     @required this.onDismissed,
+    this.visible = true,
   }) : assert(child != null),
        assert(onDismissed != null);
 
@@ -36,6 +42,8 @@ class _StyledBottomSheetState extends State<StyledBottomSheet>
   AnimationController _controller;
   Animation<Offset> _offset;
 
+  void Function(AnimationStatus) _animationStatusListener;
+
   @override
   void initState() {
     super.initState();
@@ -45,22 +53,47 @@ class _StyledBottomSheetState extends State<StyledBottomSheet>
       duration: Duration(milliseconds: _slideInDurationMs),
     );
 
+    _animationStatusListener = (AnimationStatus status) {
+      if (status == AnimationStatus.dismissed) {
+        widget.onDismissed();
+      }
+    };
+
     _offset = Tween<Offset>(
-      begin: Offset(0.0, 1.0),
+      begin: Offset(0.0, 1.1), // +0.1 for the top shadow
       end: Offset.zero,
     ).animate(_controller);
-
-    _controller.forward();
   }
 
   @override
   void dispose() {
+    _controller.removeStatusListener(_animationStatusListener);
     _controller.dispose();
     super.dispose();
   }
 
+
+  @override
+  void didUpdateWidget(StyledBottomSheet oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    if (oldWidget.visible != widget.visible) {
+      if (widget.visible) {
+        _controller.removeStatusListener(_animationStatusListener);
+      } else {
+        _controller.addStatusListener(_animationStatusListener);
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    if (widget.visible) {
+      _controller.forward();
+    } else {
+      _controller.reverse();
+    }
+
     return SlideTransition(
       position: _offset,
       child: Dismissible(

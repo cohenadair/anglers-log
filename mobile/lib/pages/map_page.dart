@@ -29,13 +29,6 @@ class MapPage extends StatefulWidget {
 class _MapPageState extends State<MapPage> {
   final Log _log = Log("MapPage");
 
-  // TODO: See if GoogleMap functionality has been updated to address this.
-  // Unfortunately, the only way to keep the "Google" logo visible when a
-  // bottom sheet is showing, it to add manual padding. This will need to be
-  // adjusted as the bottom sheet changes size, but it should always be the
-  // same height so it shouldn't be a problem.
-  final double _bottomMapPadding = 110;
-
   final BitmapDescriptor _activeMarkerIcon =
       BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue);
   final BitmapDescriptor _nonActiveMarkerIcon = BitmapDescriptor.defaultMarker;
@@ -44,10 +37,21 @@ class _MapPageState extends State<MapPage> {
 
   Set<Marker> _fishingSpotMarkers = Set();
   Marker _activeMarker;
+
   FishingSpot _activeFishingSpot;
+
+  // Used to display old data during dismiss animations and during async
+  // database calls.
+  FishingSpot _lastActiveFishingSpot;
+  bool _waitingForFuture = false;
+  bool _waitingForDismissal = false;
+
+  // Cache future so we don't make redundant database calls.
+  Future<FishingSpot> _activeFishingSpotFuture = Future.value(null);
 
   bool get _hasActiveMarker => _activeMarker != null;
   bool get _hasActiveFishingSpot => _activeFishingSpot != null;
+  bool get _hasLastActiveFishingSpot => _lastActiveFishingSpot != null;
 
   @override
   Widget build(BuildContext context) => Page(
@@ -68,28 +72,35 @@ class _MapPageState extends State<MapPage> {
           _activeMarker = _copyMarker(newMarker, _activeMarkerIcon);
         }
       },
-      builder: (BuildContext context) {
-        return Stack(
-          children: <Widget>[
-            _buildMap(),
-            _hasActiveMarker ? FutureBuilder<FishingSpot>(
-              future: FishingSpotManager.of(context)
-                  .fetch(id: _activeMarker.markerId.value),
-              builder: (BuildContext context,
-                  AsyncSnapshot<FishingSpot> snapshot)
+      builder: (BuildContext context) => Stack(
+        children: <Widget>[
+          _buildMap(),
+          FutureBuilder<FishingSpot>(
+            future: _activeFishingSpotFuture,
+            builder: (BuildContext context, AsyncSnapshot<FishingSpot> snapshot)
+            {
+              if (snapshot.connectionState == ConnectionState.none
+                  || snapshot.connectionState == ConnectionState.done)
               {
                 _activeFishingSpot = snapshot.data;
-                return Stack(
-                  children: <Widget>[
-                    _buildSearchBar(),
-                    _buildBottomSheet(),
-                  ],
-                );
-              },
-            ) : _buildSearchBar(),
-          ],
-        );
-      },
+                if (_activeFishingSpot != null) {
+                  _lastActiveFishingSpot = _activeFishingSpot;
+                }
+                _waitingForFuture = false;
+              } else {
+                _waitingForFuture = true;
+              }
+
+              return Stack(
+                children: <Widget>[
+                  _buildSearchBar(),
+                  _buildBottomSheet(),
+                ],
+              );
+            },
+          ),
+        ],
+      )
     ),
   );
 
@@ -99,6 +110,8 @@ class _MapPageState extends State<MapPage> {
       markers.add(_activeMarker);
     }
 
+    // TODO: Move Google logo when better solution is available.
+    // https://github.com/flutter/flutter/issues/39610
     return GoogleMap(
       markers: markers,
       initialCameraPosition: CameraPosition(
@@ -113,80 +126,103 @@ class _MapPageState extends State<MapPage> {
       // TODO: Try onLongPress again when Google Maps updated.
       // Log presses weren't being triggered first time.
       onTap: (LatLng latLng) {
-        _addPin(latLng);
+        setState(() {
+          _setActiveMarker(_createDroppedPinMarker(latLng));
+          _updateCamera(latLng);
+        });
       },
-      padding: EdgeInsets.only(
-        bottom: _hasActiveMarker ? _bottomMapPadding : 0,
-      ),
     );
   }
 
   Widget _buildSearchBar() {
     final cornerRadius = 10.0;
 
-    Widget text = DisabledText(Strings.of(context).mapPageSearchHint);
-    Widget icon = Empty();
-
-    if (_hasActiveMarker) {
-      text = Flexible(
-        child: Text(
-          _hasActiveFishingSpot
-              ? _activeFishingSpot.name : Strings.of(context).mapPageDroppedPin,
-          overflow: TextOverflow.ellipsis,
-        ),
-      );
-
-      icon = SmallIconButton(
-        icon: Icons.clear,
-        onTap: () {
-          _clearSearch();
-        },
-      );
+    String name;
+    if (_hasActiveMarker && _hasLastActiveFishingSpot && _waitingForFuture) {
+      // Active fishing spot is being updated.
+      name = _lastActiveFishingSpot.name;
+    } else if (_hasActiveMarker && _hasActiveFishingSpot) {
+      name = _activeFishingSpot.name;
+    } else if (_hasActiveMarker) {
+      name = Strings.of(context).mapPageDroppedPin;
     }
 
-    return SafeArea(
-      child: Align(
-        alignment: Alignment.topCenter,
-        child: Padding(
-          padding: insetsHorizontalMedium,
-          child: Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-              boxShadow: boxShadowSmallBottom,
-              borderRadius: BorderRadius.all(Radius.circular(cornerRadius)),
-            ),
-            child: Material(
-              color: Colors.transparent,
-              child: InkWell(
-                onTap: () async {
-                  FishingSpot result = await showSearch(
-                    context: context,
-                    delegate: _SearchDelegate(),
-                  );
-                  // Only reset selection if a new selection was made.
-                  if (result != null) {
-                    _updateActiveFishingSpot(result);
-                  }
-                },
-                child: Padding(
-                  padding: EdgeInsets.only(
-                    top: paddingMedium,
-                    bottom: paddingMedium,
-                    left: paddingDefault,
-                    right: paddingDefault,
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      text,
-                      icon,
-                    ],
-                  ),
+    Widget text;
+    if (isNotEmpty(name)) {
+      text = Flexible(
+        child: LabelText(
+          text: name,
+        ),
+      );
+    } else {
+      text = DisabledLabelText(Strings.of(context).mapPageSearchHint);
+    }
+
+    // Wrap AppBar in Positioned Widget to prevent it from taking up the entire
+    // screen, which happens when using inside a Stack.
+    return Positioned(
+      top: 0,
+      left: 0,
+      right: 0,
+      child: AppBar(
+        title: Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            boxShadow: boxShadowSmallBottom,
+            borderRadius: BorderRadius.all(Radius.circular(cornerRadius)),
+          ),
+          // Wrap InkWell in a Material widget so the fill animation is shown
+          // on top of the parent Container widget.
+          child: Material(
+            color: Colors.transparent,
+            child: InkWell(
+              onTap: () async {
+                FishingSpot result = await showSearch(
+                  context: context,
+                  delegate: _SearchDelegate(),
+                );
+                // Only reset selection if a new selection was made.
+                if (result != null) {
+                  setState(() {
+                    _setActiveMarker(_findMarker(result.id));
+                    _activeFishingSpotFuture = Future.value(result);
+                    _updateCamera(result.latLng);
+                  });
+                }
+              },
+              child: Padding(
+                padding: EdgeInsets.only(
+                  top: paddingMedium,
+                  bottom: paddingMedium,
+                  left: paddingDefault,
+                  right: paddingDefault,
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    text,
+                    Visibility(
+                      maintainState: true,
+                      maintainAnimation: true,
+                      maintainSize: true,
+                      visible: isNotEmpty(name),
+                      child: MinimumIconButton(
+                        icon: Icons.clear,
+                        onTap: () {
+                          setState(() {
+                            _waitingForDismissal = true;
+                          });
+                        },
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
           ),
         ),
+        elevation: 0.0,
+        backgroundColor: Colors.transparent,
       ),
     );
   }
@@ -195,22 +231,36 @@ class _MapPageState extends State<MapPage> {
   /// the bottom of the screen. We want this bottom sheet to animate from the
   /// bottom of the map.
   Widget _buildBottomSheet() {
-    if (!_hasActiveMarker) {
-      return Empty();
+    if (!_hasActiveMarker && !_waitingForDismissal) {
+      // Use empty container here instead of Empty() so the search bar size is
+      // set correctly.
+      return Container();
+    }
+
+    bool editing = true;
+    if (!_hasActiveFishingSpot && _hasActiveMarker) {
+      // Dropped pin case.
+      _lastActiveFishingSpot = FishingSpot(
+        lat: _activeMarker.position.latitude,
+        lng: _activeMarker.position.longitude,
+      );
+      editing = false;
     }
 
     return Align(
       alignment: Alignment.bottomCenter,
       child: StyledBottomSheet(
+        visible: _hasActiveMarker && !_waitingForDismissal,
         onDismissed: () {
-          _updateActiveFishingSpot(null);
+          setState(() {
+            _setActiveMarker(null);
+            _waitingForDismissal = false;
+            _activeFishingSpotFuture = Future.value(null);
+          });
         },
         child: _FishingSpotBottomSheet(
-          fishingSpot: _hasActiveFishingSpot ? _activeFishingSpot : FishingSpot(
-            lat: _activeMarker.position.latitude,
-            lng: _activeMarker.position.longitude,
-          ),
-          editing: _hasActiveFishingSpot,
+          fishingSpot: _lastActiveFishingSpot ?? FishingSpot(lat: 0, lng: 0),
+          editing: editing,
         ),
       ),
     );
@@ -241,17 +291,16 @@ class _MapPageState extends State<MapPage> {
     return Marker(
       markerId: markerId,
       position: latLng,
-      onTap: tappable ? () => _updateActiveMarker(_fishingSpotMarkers
-          .firstWhere((Marker marker) => marker.markerId == markerId)) : null,
+      onTap: !tappable ? null : () {
+        setState(() {
+          _setActiveMarker(_fishingSpotMarkers
+              .firstWhere((Marker marker) => marker.markerId == markerId));
+          _activeFishingSpotFuture = FishingSpotManager.of(context)
+              .fetch(id: _activeMarker.markerId.value);
+        });
+      },
       icon: icon,
     );
-  }
-
-  void _addPin(LatLng latLng) {
-    setState(() {
-      _updateActiveMarker(_createDroppedPinMarker(latLng));
-      _updateCamera(latLng);
-    });
   }
 
   void _updateCamera(LatLng latLng) {
@@ -261,27 +310,7 @@ class _MapPageState extends State<MapPage> {
     });
   }
 
-  void _updateActiveMarker(Marker newActiveMarker) {
-    setState(() {
-      _resetActiveMarker(newActiveMarker);
-    });
-  }
-
-  void _updateActiveFishingSpot(FishingSpot newActiveFishingSpot) {
-    setState(() {
-      _activeFishingSpot = newActiveFishingSpot;
-
-      if (_activeFishingSpot == null) {
-        _resetActiveMarker(null);
-      } else {
-        _resetActiveMarker(_fishingSpotMarkers.firstWhere((Marker marker) =>
-            _activeFishingSpot.id == marker.markerId.value));
-        _updateCamera(_activeFishingSpot.latLng);
-      }
-    });
-  }
-
-  void _resetActiveMarker(Marker newActiveMarker) {
+  void _setActiveMarker(Marker newActiveMarker) {
     // A marker's icon property is readonly, so we rebuild the current active
     // marker to give it a default icon, then remove and add it to the
     // fishing spot markers.
@@ -290,11 +319,7 @@ class _MapPageState extends State<MapPage> {
     // spot. A dropped pin is removed from the map when updating the active
     // marker.
     if (_hasActiveMarker) {
-      Marker activeMarker = _fishingSpotMarkers.firstWhere(
-        (m) => m.markerId.value == _activeMarker.markerId.value,
-        orElse: () => null,
-      );
-
+      Marker activeMarker = _findMarker(_activeMarker.markerId.value);
       if (activeMarker != null) {
         if (_fishingSpotMarkers.remove(activeMarker)) {
           _fishingSpotMarkers.add(_copyMarker(activeMarker,
@@ -321,8 +346,11 @@ class _MapPageState extends State<MapPage> {
     );
   }
 
-  void _clearSearch() {
-    _updateActiveFishingSpot(null);
+  Marker _findMarker(String id) {
+    return _fishingSpotMarkers.firstWhere(
+      (Marker marker) => marker.markerId.value == id,
+      orElse: () => null,
+    );
   }
 }
 
@@ -369,7 +397,10 @@ class _FishingSpotBottomSheet extends StatelessWidget {
 
     return isEmpty(name) ? Empty() : Padding(
       padding: insetsHorizontalDefault,
-      child: BoldLabelText(name),
+      child: Text(
+        name,
+        style: styleHeading,
+      ),
     );
   }
 
