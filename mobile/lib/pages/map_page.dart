@@ -311,10 +311,14 @@ class _MapPageState extends State<MapPage> {
     );
   }
 
-  void _updateCamera(LatLng latLng) {
+  void _updateCamera(LatLng latLng, {bool animate = true}) {
     // Animate the new marker to the middle of the map.
     _mapController.future.then((controller) {
-      controller.animateCamera(CameraUpdate.newLatLng(latLng));
+      if (animate) {
+        controller.animateCamera(CameraUpdate.newLatLng(latLng));
+      } else {
+        controller.moveCamera(CameraUpdate.newLatLng(latLng));
+      }
     });
   }
 
