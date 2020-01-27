@@ -145,8 +145,6 @@ class _MapPageState extends State<MapPage> {
   }
 
   Widget _buildSearchBar() {
-    final cornerRadius = 10.0;
-
     String name;
     if (_hasActiveMarker && _hasLastActiveFishingSpot && _waitingForFuture) {
       // Active fishing spot is being updated.
@@ -157,17 +155,6 @@ class _MapPageState extends State<MapPage> {
       name = Strings.of(context).mapPageDroppedPin;
     }
 
-    Widget text;
-    if (isNotEmpty(name)) {
-      text = Flexible(
-        child: LabelText(
-          text: name,
-        ),
-      );
-    } else {
-      text = DisabledLabelText(Strings.of(context).mapPageSearchHint);
-    }
-
     // Wrap AppBar in Positioned Widget to prevent it from taking up the entire
     // screen, which happens when using inside a Stack.
     return Positioned(
@@ -175,11 +162,15 @@ class _MapPageState extends State<MapPage> {
       left: 0,
       right: 0,
       child: AppBar(
+        elevation: 0.0,
+        backgroundColor: Colors.transparent,
         title: Container(
           decoration: BoxDecoration(
             color: Colors.white,
             boxShadow: boxShadowSmallBottom,
-            borderRadius: BorderRadius.all(Radius.circular(cornerRadius)),
+            borderRadius: BorderRadius.all(
+              Radius.circular(floatingCornerRadius),
+            ),
           ),
           // Wrap InkWell in a Material widget so the fill animation is shown
           // on top of the parent Container widget.
@@ -210,7 +201,16 @@ class _MapPageState extends State<MapPage> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    text,
+                    Expanded(
+                      child: Row(
+                        children: <Widget>[
+                          Icon(Icons.search),
+                          SizedBox(width: paddingWidget),
+                          LabelText(text: isEmpty(name)
+                              ? Strings.of(context).mapPageSearchHint : name),
+                        ],
+                      ),
+                    ),
                     Visibility(
                       maintainState: true,
                       maintainAnimation: true,
@@ -231,8 +231,6 @@ class _MapPageState extends State<MapPage> {
             ),
           ),
         ),
-        elevation: 0.0,
-        backgroundColor: Colors.transparent,
       ),
     );
   }

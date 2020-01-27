@@ -57,7 +57,7 @@ class LabelText extends StatelessWidget {
 
   LabelText({
     @required this.text,
-    this.overflow = TextOverflow.ellipsis,
+    this.overflow = TextOverflow.fade,
   });
 
   static TextStyle style(BuildContext context) =>

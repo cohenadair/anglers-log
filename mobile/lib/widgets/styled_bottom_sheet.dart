@@ -37,7 +37,6 @@ class _StyledBottomSheetState extends State<StyledBottomSheet>
 {
   final _keyBottomSheet = "key_bottom_sheet";
   final _slideInDurationMs = 150;
-  final _cornerRadius = 10.0;
 
   AnimationController _controller;
   Animation<Offset> _offset;
@@ -105,7 +104,7 @@ class _StyledBottomSheetState extends State<StyledBottomSheet>
             color: Colors.white,
             boxShadow: boxShadowDefault,
             borderRadius: BorderRadius.vertical(
-              top: Radius.circular(_cornerRadius),
+              top: Radius.circular(floatingCornerRadius),
             ),
           ),
           child: Column(
