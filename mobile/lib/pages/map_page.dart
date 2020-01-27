@@ -63,8 +63,17 @@ class _MapPageState extends State<MapPage> {
         fishingSpots.forEach((f) =>
             _fishingSpotMarkers.add(_createFishingSpotMarker(f)));
 
-        // Reset the active marker, if there was one.
+        // Reset the active marker and fishing spot, if there was one.
         if (_activeMarker != null) {
+          FishingSpot activeFishingSpot = fishingSpots.firstWhere(
+            (FishingSpot fishingSpot) =>
+                fishingSpot.latLng == _activeMarker.position,
+            orElse: () => null,
+          );
+          if (activeFishingSpot != null) {
+            _activeFishingSpotFuture = Future.value(activeFishingSpot);
+          }
+
           Marker newMarker = _fishingSpotMarkers.firstWhere(
             (m) => m.position == _activeMarker.position,
             orElse: () => null,
@@ -128,6 +137,7 @@ class _MapPageState extends State<MapPage> {
       onTap: (LatLng latLng) {
         setState(() {
           _setActiveMarker(_createDroppedPinMarker(latLng));
+          _activeFishingSpotFuture = Future.value(null);
           _updateCamera(latLng);
         });
       },
