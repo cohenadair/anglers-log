@@ -138,7 +138,7 @@ class _MapPageState extends State<MapPage> {
         setState(() {
           _setActiveMarker(_createDroppedPinMarker(latLng));
           _activeFishingSpotFuture = Future.value(null);
-          _updateCamera(latLng);
+          _animateCamera(latLng);
         });
       },
     );
@@ -187,7 +187,7 @@ class _MapPageState extends State<MapPage> {
                   setState(() {
                     _setActiveMarker(_findMarker(result.id));
                     _activeFishingSpotFuture = Future.value(result);
-                    _updateCamera(result.latLng);
+                    _moveCamera(result.latLng);
                   });
                 }
               },
@@ -311,14 +311,15 @@ class _MapPageState extends State<MapPage> {
     );
   }
 
-  void _updateCamera(LatLng latLng, {bool animate = true}) {
-    // Animate the new marker to the middle of the map.
+  void _animateCamera(LatLng latLng) {
     _mapController.future.then((controller) {
-      if (animate) {
-        controller.animateCamera(CameraUpdate.newLatLng(latLng));
-      } else {
-        controller.moveCamera(CameraUpdate.newLatLng(latLng));
-      }
+      controller.animateCamera(CameraUpdate.newLatLng(latLng));
+    });
+  }
+
+  void _moveCamera(LatLng latLng) {
+    _mapController.future.then((controller) {
+      controller.moveCamera(CameraUpdate.newLatLng(latLng));
     });
   }
 
