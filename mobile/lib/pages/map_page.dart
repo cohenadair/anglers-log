@@ -343,10 +343,14 @@ class _MapPageState extends State<MapPage> {
       }
     }
 
-    _activeMarker = _copyMarker(newActiveMarker, _activeMarkerIcon);
+    _activeMarker = _copyMarker(
+      newActiveMarker,
+      _activeMarkerIcon,
+      zIndex: 1000, // Active marker should always appear on top.
+    );
   }
 
-  Marker _copyMarker(Marker marker, BitmapDescriptor icon) {
+  Marker _copyMarker(Marker marker, BitmapDescriptor icon, {double zIndex}) {
     if (marker == null) {
       return null;
     }
@@ -356,6 +360,7 @@ class _MapPageState extends State<MapPage> {
       position: marker.position,
       onTap: marker.onTap,
       icon: icon,
+      zIndex: zIndex ?? 0.0,
     );
   }
 
