@@ -5,6 +5,7 @@ import 'package:mobile/model/fishing_spot.dart';
 import 'package:mobile/utils/future_listener.dart';
 import 'package:mobile/utils/void_stream_controller.dart';
 import 'package:provider/provider.dart';
+import 'package:quiver/strings.dart';
 
 class FishingSpotManager {
   static FishingSpotManager of(BuildContext context) =>
@@ -69,12 +70,18 @@ class FishingSpotManager {
 
   /// Queries the database and returns a list of all fishing spots in the log.
   /// Result is sorted alphabetically by fishing spot name.
-  Future<List<FishingSpot>> _fetchAll() async {
-    _log.w("_fetchAll called");
+  Future<List<FishingSpot>> _fetchAll({String searchText}) async {
+    _log.w("_fetchAll($searchText) called");
 
-    return (await _app.dataManager.query("""
-      SELECT * FROM $_tableName ORDER BY name
-    """)).map((map) => FishingSpot.fromMap(map)).toList();
+    List<Map<String, dynamic>> results;
+    if (isEmpty(searchText)) {
+      results = await
+          _app.dataManager.query("SELECT * FROM $_tableName ORDER BY name");
+    } else {
+      results = await _app.dataManager.search(_tableName, "name", searchText);
+    }
+
+    return results.map((map) => FishingSpot.fromMap(map)).toList();
   }
 
   Future<FishingSpot> fetch({String id}) async {
@@ -91,10 +98,12 @@ class FishingSpotManager {
 
 /// A [FutureListener] wrapper for listening for [FishingSpot] updates.
 class FishingSpotsBuilder extends StatelessWidget {
+  final String searchText;
   final Widget Function(BuildContext) builder;
   final void Function(List<FishingSpot>) onUpdate;
 
   FishingSpotsBuilder({
+    this.searchText,
     @required this.builder,
     @required this.onUpdate,
   }) : assert(builder != null);
@@ -103,7 +112,7 @@ class FishingSpotsBuilder extends StatelessWidget {
   Widget build(BuildContext context) {
     FishingSpotManager fishingSpotManager = FishingSpotManager.of(context);
     return FutureListener.single(
-      future: fishingSpotManager._fetchAll,
+      future: () => fishingSpotManager._fetchAll(searchText: searchText),
       stream: fishingSpotManager._onUpdateController.stream,
       builder: (context) => builder(context),
       onUpdate: (dynamic result) => onUpdate(result as List<FishingSpot>),

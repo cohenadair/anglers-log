@@ -60,4 +60,25 @@ class DataManager {
   Future<bool> exists(String sql, [List<dynamic> args]) async {
     return Sqflite.firstIntValue(await _database.rawQuery(sql, args)) == 1;
   }
+
+  /// Runs a basic search on the given table and column. The given [searchText]
+  /// is used as an entire term, and split, per word, into search tokens.
+  /// Returns rows whose [column] value contains [searchText] or at least one
+  /// of the tokens.
+  Future<List<Map<String, dynamic>>> search(String table, String column,
+    String searchText) async
+  {
+    String query = "SELECT * FROM $table WHERE $column LIKE '%$searchText%'";
+    List<String> tokens = searchText.split(" ");
+    if (tokens.length > 1) {
+      for (var token in tokens) {
+        query += " OR $column LIKE '%$token%'";
+      }
+    } else {
+      tokens = [];
+    }
+    query += " ORDER BY $column";
+
+    return await _database.rawQuery(query, [searchText]..addAll(tokens));
+  }
 }

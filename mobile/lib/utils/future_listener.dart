@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:mobile/widgets/widget.dart';
 
 /// A utility [Widget] capable of listening to multiple [Stream]s.
 ///

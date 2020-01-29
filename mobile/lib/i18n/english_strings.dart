@@ -59,6 +59,7 @@ Map<String, Map<String, String>> englishStrings = {
     "mapPage_deleteFishingSpot" : "Are you sure you want to delete fishing spot %s? This cannot be undone.",
     "mapPage_addCatch" : "Add Catch",
     "mapPage_searchHint" : "Search fishing spots",
+    "mapPage_noSearchResults" : "No fishing spots found",
     "mapPage_droppedPin" : "Dropped Pin",
 
     "formPage_addFieldText" : "Add Field",

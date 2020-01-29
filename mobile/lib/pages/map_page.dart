@@ -180,7 +180,9 @@ class _MapPageState extends State<MapPage> {
               onTap: () async {
                 FishingSpot result = await showSearch(
                   context: context,
-                  delegate: _SearchDelegate(),
+                  delegate: _SearchDelegate(
+                    searchFieldLabel: Strings.of(context).mapPageSearchHint,
+                  ),
                 );
                 // Only reset selection if a new selection was made.
                 if (result != null) {
@@ -487,11 +489,26 @@ class _FishingSpotBottomSheet extends StatelessWidget {
 }
 
 class _SearchDelegate extends SearchDelegate<FishingSpot> {
-  List<FishingSpot> _fishingSpots = [];
+  List<FishingSpot> _allFishingSpots = [];
+  List<FishingSpot> _searchFishingSpots = [];
+
+  _SearchDelegate({
+    String searchFieldLabel,
+  }) : super(
+    searchFieldLabel: searchFieldLabel,
+  );
 
   @override
   List<Widget> buildActions(BuildContext context) {
-    return null;
+    return isEmpty(query) ? null : [
+      IconButton(
+        icon: Icon(Icons.clear),
+        onPressed: () {
+          query = "";
+          showSuggestions(context);
+        },
+      ),
+    ];
   }
 
   @override
@@ -501,10 +518,29 @@ class _SearchDelegate extends SearchDelegate<FishingSpot> {
 
   @override
   Widget buildResults(BuildContext context) {
-    return ListView(
-      children: <Widget>[
-        // TODO: Query database
-      ],
+    return FishingSpotsBuilder(
+      searchText: query,
+      onUpdate: (List<FishingSpot> fishingSpots) {
+        _searchFishingSpots = fishingSpots ?? [];
+      },
+      builder: (BuildContext context) {
+        if (_searchFishingSpots.isNotEmpty) {
+          return _buildList(_searchFishingSpots);
+        }
+        return Padding(
+          padding: insetsDefault,
+          child: Column(
+            children: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  LabelText(text: Strings.of(context).mapPageNoSearchResults),
+                ],
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 
@@ -512,37 +548,41 @@ class _SearchDelegate extends SearchDelegate<FishingSpot> {
   Widget buildSuggestions(BuildContext context) {
     return FishingSpotsBuilder(
       onUpdate: (List<FishingSpot> fishingSpots) {
-        _fishingSpots = fishingSpots ?? [];
+        _allFishingSpots = fishingSpots ?? [];
       },
       builder: (BuildContext context) {
-        return ListView.builder(
-          itemCount: _fishingSpots.length,
-          itemBuilder: (BuildContext context, int index) {
-            FishingSpot fishingSpot = _fishingSpots[index];
-
-            Widget title = Empty();
-            if (isNotEmpty(fishingSpot.name)) {
-              title = Text(fishingSpot.name);
-            } else {
-              title = Text(formatLatLng(
-                context: context,
-                lat: fishingSpot.lat,
-                lng: fishingSpot.lng,
-              ));
-            }
-
-            return ListItem(
-              title: title,
-              onTap: () => close(context, fishingSpot),
-            );
-          },
-        );
-      }
+        return _buildList(_allFishingSpots);
+      },
     );
   }
 
   @override
   ThemeData appBarTheme(BuildContext context) {
     return Theme.of(context);
+  }
+
+  Widget _buildList(List<FishingSpot> fishingSpots) {
+    return ListView.builder(
+      itemCount: fishingSpots.length,
+      itemBuilder: (BuildContext context, int index) {
+        FishingSpot fishingSpot = fishingSpots[index];
+
+        Widget title = Empty();
+        if (isNotEmpty(fishingSpot.name)) {
+          title = Text(fishingSpot.name);
+        } else {
+          title = Text(formatLatLng(
+            context: context,
+            lat: fishingSpot.lat,
+            lng: fishingSpot.lng,
+          ));
+        }
+
+        return ListItem(
+          title: title,
+          onTap: () => close(context, fishingSpot),
+        );
+      },
+    );
   }
 }

@@ -27,8 +27,8 @@ String format(String s, List<dynamic> args) {
 ///   9:35 PM
 String formatTimeOfDay(BuildContext context, TimeOfDay time) {
   return MaterialLocalizations.of(context).formatTimeOfDay(
-      time,
-      alwaysUse24HourFormat: MediaQuery.of(context).alwaysUse24HourFormat
+    time,
+    alwaysUse24HourFormat: MediaQuery.of(context).alwaysUse24HourFormat,
   );
 }
 
