@@ -34,11 +34,9 @@ class DataManager {
 
   /// Returns `true` if the row from the given table with the given ID was
   /// updated.
-  Future<bool> updateId({
-    String tableName,
-    String id,
-    Map<String, dynamic> values,
-  }) async {
+  Future<bool> updateId(String tableName, String id,
+      Map<String, dynamic> values) async
+  {
     return await _database.update(
       tableName,
       values,
@@ -66,7 +64,7 @@ class DataManager {
   /// Returns rows whose [column] value contains [searchText] or at least one
   /// of the tokens.
   Future<List<Map<String, dynamic>>> search(String table, String column,
-    String searchText) async
+      String searchText) async
   {
     String query = "SELECT * FROM $table WHERE $column LIKE '%$searchText%'";
     List<String> tokens = searchText.split(" ");

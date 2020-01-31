@@ -38,11 +38,9 @@ class FishingSpotManager {
   void createOrUpdate(FishingSpot fishingSpot) async {
     if (await exists(id: fishingSpot.id)) {
       // Update if fishing spot with ID already exists.
-      if (await _app.dataManager.updateId(
-        tableName: _tableName,
-        id: fishingSpot.id,
-        values: fishingSpot.toMap(),
-      )) {
+      if (await _app.dataManager.updateId(_tableName, fishingSpot.id,
+          fishingSpot.toMap()))
+      {
         _onUpdateController.notify();
       } else {
         _log.e("Failed to update FishingSpot(${fishingSpot.id}");

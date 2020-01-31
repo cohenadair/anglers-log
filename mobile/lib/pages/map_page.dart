@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mobile/fishing_spot_manager.dart';
 import 'package:mobile/i18n/strings.dart';
+import 'package:mobile/location_monitor.dart';
 import 'package:mobile/log.dart';
 import 'package:mobile/model/fishing_spot.dart';
 import 'package:mobile/pages/save_fishing_spot_page.dart';
@@ -48,6 +49,8 @@ class _MapPageState extends State<MapPage> {
 
   // Cache future so we don't make redundant database calls.
   Future<FishingSpot> _activeFishingSpotFuture = Future.value(null);
+
+  MapType _mapType = MapType.normal;
 
   bool get _hasActiveMarker => _activeMarker != null;
   bool get _hasActiveFishingSpot => _activeFishingSpot != null;
@@ -102,7 +105,7 @@ class _MapPageState extends State<MapPage> {
 
               return Stack(
                 children: <Widget>[
-                  _buildSearchBar(),
+                  _buildFloatingWidgets(),
                   _buildBottomSheet(),
                 ],
               );
@@ -122,15 +125,16 @@ class _MapPageState extends State<MapPage> {
     // TODO: Move Google logo when better solution is available.
     // https://github.com/flutter/flutter/issues/39610
     return GoogleMap(
+      mapType: _mapType,
       markers: markers,
       initialCameraPosition: CameraPosition(
-        target: LatLng(37.42796133580664, -122.085749655962),
-        zoom: 10,
+        target: LocationMonitor.of(context).currentLocation,
+        zoom: 15,
       ),
       onMapCreated: (GoogleMapController controller) {
         _mapController.complete(controller);
       },
-      myLocationButtonEnabled: true,
+      myLocationButtonEnabled: false,
       myLocationEnabled: true,
       // TODO: Try onLongPress again when Google Maps updated.
       // Log presses weren't being triggered first time.
@@ -141,6 +145,46 @@ class _MapPageState extends State<MapPage> {
           _animateCamera(latLng);
         });
       },
+    );
+  }
+
+  Widget _buildFloatingWidgets() {
+    return SafeArea(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: <Widget>[
+          _buildSearchBar(),
+          FloatingIconButton(
+            icon: Icons.layers,
+            onPressed: () {
+              showModalBottomSheet(
+                isScrollControlled: true,
+                useRootNavigator: true,
+                context: context,
+                builder: (BuildContext context) {
+                  return MapTypeBottomSheet(
+                    currentMapType: _mapType,
+                    onMapTypeSelected: (MapType newMapType) {
+                      if (newMapType != _mapType) {
+                        setState(() {
+                          _mapType = newMapType;
+                        });
+                      }
+                    },
+                  );
+                },
+              );
+            },
+          ),
+          FloatingIconButton(
+            padding: insetsHorizontalDefault,
+            icon: Icons.my_location,
+            onPressed: () {
+              _animateCamera(LocationMonitor.of(context).currentLocation);
+            },
+          ),
+        ],
+      ),
     );
   }
 
@@ -155,80 +199,73 @@ class _MapPageState extends State<MapPage> {
       name = Strings.of(context).mapPageDroppedPin;
     }
 
-    // Wrap AppBar in Positioned Widget to prevent it from taking up the entire
-    // screen, which happens when using inside a Stack.
-    return Positioned(
-      top: 0,
-      left: 0,
-      right: 0,
-      child: AppBar(
-        elevation: 0.0,
-        backgroundColor: Colors.transparent,
-        title: Container(
-          decoration: BoxDecoration(
-            color: Colors.white,
-            boxShadow: boxShadowSmallBottom,
-            borderRadius: BorderRadius.all(
-              Radius.circular(floatingCornerRadius),
-            ),
+    return AppBar(
+      elevation: 0.0,
+      backgroundColor: Colors.transparent,
+      title: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          boxShadow: boxShadowSmallBottom,
+          borderRadius: BorderRadius.all(
+            Radius.circular(floatingCornerRadius),
           ),
-          // Wrap InkWell in a Material widget so the fill animation is shown
-          // on top of the parent Container widget.
-          child: Material(
-            color: Colors.transparent,
-            child: InkWell(
-              onTap: () async {
-                FishingSpot result = await showSearch(
-                  context: context,
-                  delegate: _SearchDelegate(
-                    searchFieldLabel: Strings.of(context).mapPageSearchHint,
+        ),
+        // Wrap InkWell in a Material widget so the fill animation is shown
+        // on top of the parent Container widget.
+        child: Material(
+          color: Colors.transparent,
+          child: InkWell(
+            onTap: () async {
+              FishingSpot result = await showSearch(
+                context: context,
+                delegate: _SearchDelegate(
+                  searchFieldLabel: Strings.of(context).mapPageSearchHint,
+                ),
+              );
+              // Only reset selection if a new selection was made.
+              if (result != null) {
+                setState(() {
+                  _setActiveMarker(_findMarker(result.id));
+                  _activeFishingSpotFuture = Future.value(result);
+                  _moveCamera(result.latLng);
+                });
+              }
+            },
+            child: Padding(
+              padding: EdgeInsets.only(
+                top: paddingMedium,
+                bottom: paddingMedium,
+                left: paddingDefault,
+                right: paddingDefault,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Expanded(
+                    child: Row(
+                      children: <Widget>[
+                        Icon(Icons.search),
+                        SizedBox(width: paddingWidget),
+                        LabelText(text: isEmpty(name)
+                            ? Strings.of(context).mapPageSearchHint : name),
+                      ],
+                    ),
                   ),
-                );
-                // Only reset selection if a new selection was made.
-                if (result != null) {
-                  setState(() {
-                    _setActiveMarker(_findMarker(result.id));
-                    _activeFishingSpotFuture = Future.value(result);
-                    _moveCamera(result.latLng);
-                  });
-                }
-              },
-              child: Padding(
-                padding: EdgeInsets.only(
-                  top: paddingMedium,
-                  bottom: paddingMedium,
-                  left: paddingDefault,
-                  right: paddingDefault,
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Expanded(
-                      child: Row(
-                        children: <Widget>[
-                          Icon(Icons.search),
-                          SizedBox(width: paddingWidget),
-                          LabelText(text: isEmpty(name)
-                              ? Strings.of(context).mapPageSearchHint : name),
-                        ],
-                      ),
+                  Visibility(
+                    maintainState: true,
+                    maintainAnimation: true,
+                    maintainSize: true,
+                    visible: isNotEmpty(name),
+                    child: MinimumIconButton(
+                      icon: Icons.clear,
+                      onTap: () {
+                        setState(() {
+                          _waitingForDismissal = true;
+                        });
+                      },
                     ),
-                    Visibility(
-                      maintainState: true,
-                      maintainAnimation: true,
-                      maintainSize: true,
-                      visible: isNotEmpty(name),
-                      child: MinimumIconButton(
-                        icon: Icons.clear,
-                        onTap: () {
-                          setState(() {
-                            _waitingForDismissal = true;
-                          });
-                        },
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ),
@@ -388,20 +425,24 @@ class _FishingSpotBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: <Widget>[
-        _buildName(context),
-        Padding(
-          padding: insetsHorizontalDefault,
-          child: SecondaryText(formatLatLng(
-            context: context,
-            lat: fishingSpot.lat,
-            lng: fishingSpot.lng,
-          )),
-        ),
-        _buildChips(context),
-      ],
+    return SafeArea(
+      top: false,
+      bottom: false,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          _buildName(context),
+          Padding(
+            padding: insetsHorizontalDefault,
+            child: SecondaryText(formatLatLng(
+              context: context,
+              lat: fishingSpot.lat,
+              lng: fishingSpot.lng,
+            )),
+          ),
+          _buildChips(context),
+        ],
+      ),
     );
   }
 
@@ -582,6 +623,54 @@ class _SearchDelegate extends SearchDelegate<FishingSpot> {
           title: title,
           onTap: () => close(context, fishingSpot),
         );
+      },
+    );
+  }
+}
+
+class MapTypeBottomSheet extends StatelessWidget {
+  final Function(MapType) onMapTypeSelected;
+  final MapType currentMapType;
+
+  MapTypeBottomSheet({
+    this.onMapTypeSelected,
+    this.currentMapType = MapType.normal,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      bottom: true,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          SwipeChip(),
+          _buildItem(context, Strings.of(context).mapPageMapTypeNormal,
+              MapType.normal),
+          _buildItem(context, Strings.of(context).mapPageMapTypeSatellite,
+              MapType.satellite),
+          _buildItem(context, Strings.of(context).mapPageMapTypeHybrid,
+              MapType.hybrid),
+          _buildItem(context, Strings.of(context).mapPageMapTypeTerrain,
+              MapType.terrain),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildItem(BuildContext context, String title, MapType mapType) {
+    return ListItem(
+      title: Text(title),
+      trailing: Visibility(
+        visible: currentMapType == mapType,
+        child: Icon(
+          Icons.check,
+          color: Colors.black,
+        ),
+      ),
+      onTap: () {
+        Navigator.pop(context);
+        onMapTypeSelected?.call(mapType);
       },
     );
   }

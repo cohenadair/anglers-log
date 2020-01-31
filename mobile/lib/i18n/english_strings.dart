@@ -61,6 +61,10 @@ Map<String, Map<String, String>> englishStrings = {
     "mapPage_searchHint" : "Search fishing spots",
     "mapPage_noSearchResults" : "No fishing spots found",
     "mapPage_droppedPin" : "Dropped Pin",
+    "mapPage_mapTypeNormal" : "Normal",
+    "mapPage_mapTypeSatellite" : "Satellite",
+    "mapPage_mapTypeTerrain" : "Terrain",
+    "mapPage_mapTypeHybrid" : "Hybrid",
 
     "formPage_addFieldText" : "Add Field",
     "formPage_removeFieldsText" : "Remove Fields",

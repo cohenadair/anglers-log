@@ -89,6 +89,10 @@ class Strings {
   String get mapPageSearchHint => _string("mapPage_searchHint");
   String get mapPageNoSearchResults => _string("mapPage_noSearchResults");
   String get mapPageDroppedPin => _string("mapPage_droppedPin");
+  String get mapPageMapTypeNormal => _string("mapPage_mapTypeNormal");
+  String get mapPageMapTypeSatellite => _string("mapPage_mapTypeSatellite");
+  String get mapPageMapTypeTerrain => _string("mapPage_mapTypeTerrain");
+  String get mapPageMapTypeHybrid => _string("mapPage_mapTypeHybrid");
 
   String get formPageAddFieldText => _string("formPage_addFieldText");
   String get formPageRemoveFieldsText => _string("formPage_removeFieldsText");

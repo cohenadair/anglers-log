@@ -159,3 +159,42 @@ class MinimumIconButton extends StatelessWidget {
     );
   }
 }
+
+class FloatingIconButton extends StatelessWidget {
+  final double size = 40.0;
+
+  final EdgeInsets padding;
+  final IconData icon;
+  final VoidCallback onPressed;
+
+  FloatingIconButton({
+    this.padding,
+    @required this.icon,
+    @required this.onPressed,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: padding ?? insetsDefault,
+      child: Container(
+        decoration: BoxDecoration(
+          boxShadow: boxShadowSmallBottom,
+          shape: BoxShape.circle,
+        ),
+        width: size,
+        height: size,
+        child: RawMaterialButton(
+          child: Icon(
+            icon,
+            color: Colors.black,
+          ),
+          shape: CircleBorder(),
+          fillColor: Colors.white,
+          onPressed: onPressed,
+        ),
+      ),
+    );
+  }
+
+}
