@@ -36,20 +36,6 @@ class ErrorText extends StatelessWidget {
   }
 }
 
-class SecondaryText extends StatelessWidget {
-  final String text;
-
-  SecondaryText(this.text);
-
-  @override
-  Widget build(BuildContext context) {
-    return Text(
-      text,
-      style: styleSecondary,
-    );
-  }
-}
-
 /// Text that matches the primary label in a [ListTile].
 class LabelText extends StatelessWidget {
   final String text;

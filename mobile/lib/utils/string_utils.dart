@@ -90,11 +90,13 @@ String formatLatLng({
   @required BuildContext context,
   @required double lat,
   @required double lng,
+  bool includeLabels = true,
 }) {
   final int decimalPlaces = 6;
 
   return format(
-    Strings.of(context).latLng, [
+    includeLabels
+        ? Strings.of(context).latLng : Strings.of(context).latLngNoLabels, [
       lat.toStringAsFixed(decimalPlaces),
       lng.toStringAsFixed(decimalPlaces),
     ],

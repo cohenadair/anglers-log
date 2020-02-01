@@ -50,6 +50,7 @@ class Strings {
   String get yesterday => _string("yesterday");
   String get directions => _string("directions");
   String get latLng => _string("latLng");
+  String get latLngNoLabels => _string("latLng_noLabels");
 
   String get fieldTypeNumber => _string("fieldType_number");
   String get fieldTypeBoolean => _string("fieldType_boolean");

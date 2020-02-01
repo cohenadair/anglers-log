@@ -41,6 +41,7 @@ class _SaveFishingSpotPageState extends State<SaveFishingSpotPage> {
         return {
           FishingSpot.keyName : TextInput.name(
             context,
+            required: false,
             controller: _nameController,
           ),
         };

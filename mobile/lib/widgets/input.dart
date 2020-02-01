@@ -207,6 +207,7 @@ class TextInput extends StatelessWidget {
   final TextCapitalization capitalization;
   final TextEditingController controller;
   final bool enabled;
+  final bool required;
   final int maxLength;
   final int maxLines;
   final TextInputType keyboardType;
@@ -219,6 +220,7 @@ class TextInput extends StatelessWidget {
     this.capitalization = TextCapitalization.none,
     this.controller,
     this.enabled = true,
+    this.required = true,
     this.maxLength = inputLimitDefault,
     this.maxLines,
     this.keyboardType,
@@ -231,6 +233,7 @@ class TextInput extends StatelessWidget {
     String initialValue,
     TextEditingController controller,
     bool enabled,
+    bool required,
   }) : this(
     initialValue: initialValue,
     label: isEmpty(label) ? Strings.of(context).inputNameLabel : label,
@@ -240,12 +243,14 @@ class TextInput extends StatelessWidget {
     controller: controller,
     maxLength: inputLimitName,
     enabled: enabled,
+    required: required,
   );
 
   TextInput.description(BuildContext context, {
     String initialValue,
     TextEditingController controller,
     bool enabled,
+    bool required,
   }) : this(
     initialValue: initialValue,
     label: Strings.of(context).inputDescriptionLabel,
@@ -253,6 +258,7 @@ class TextInput extends StatelessWidget {
     controller: controller,
     maxLength: inputLimitDescription,
     enabled: enabled,
+    required: required,
   );
 
   TextInput.number(BuildContext context, {
@@ -261,6 +267,7 @@ class TextInput extends StatelessWidget {
     String requiredText,
     TextEditingController controller,
     bool enabled,
+    bool required,
   }) : this(
     initialValue: initialValue == null ? null : initialValue.toString(),
     label: label,
@@ -274,7 +281,8 @@ class TextInput extends StatelessWidget {
         return Strings.of(context).inputInvalidNumber;
       }
       return null;
-    }
+    },
+    required: required,
   );
 
   @override
@@ -287,7 +295,7 @@ class TextInput extends StatelessWidget {
         labelText: label,
       ),
       textCapitalization: capitalization,
-      validator: (String value) {
+      validator: required ? (String value) {
         String errorMessage;
         if (validator != null) {
           errorMessage = validator(value);
@@ -298,7 +306,7 @@ class TextInput extends StatelessWidget {
         }
 
         return errorMessage;
-      },
+      } : null,
       enabled: enabled,
       maxLength: maxLength,
       maxLines: maxLines,

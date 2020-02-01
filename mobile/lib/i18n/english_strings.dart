@@ -22,6 +22,7 @@ Map<String, Map<String, String>> englishStrings = {
     "yesterday" : "Yesterday",
     "directions" : "Directions",
     "latLng" : "Lat: %s, Lng: %s",
+    "latLng_noLabels" : "%s, %s",
 
     "fieldType_number" : "Number",
     "fieldType_boolean" : "Checkbox",

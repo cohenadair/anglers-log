@@ -194,8 +194,19 @@ class _MapPageState extends State<MapPage> {
       // Active fishing spot is being updated.
       name = _lastActiveFishingSpot.name;
     } else if (_hasActiveMarker && _hasActiveFishingSpot) {
-      name = _activeFishingSpot.name;
+      // Showing active fishing spot.
+      if (isNotEmpty(_activeFishingSpot.name)) {
+        name = _activeFishingSpot.name;
+      } else {
+        name = formatLatLng(
+          context: context,
+          lat: _activeFishingSpot.lat,
+          lng: _activeFishingSpot.lng,
+          includeLabels: false,
+        );
+      }
     } else if (_hasActiveMarker) {
+      // A pin was dropped.
       name = Strings.of(context).mapPageDroppedPin;
     }
 
@@ -418,6 +429,8 @@ class _FishingSpotBottomSheet extends StatelessWidget {
   final FishingSpot fishingSpot;
   final bool editing;
 
+  bool get hasName => isNotEmpty(fishingSpot.name) && editing;
+
   _FishingSpotBottomSheet({
     @required this.fishingSpot,
     this.editing = false,
@@ -425,6 +438,7 @@ class _FishingSpotBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(fishingSpot);
     return SafeArea(
       top: false,
       bottom: false,
@@ -434,11 +448,14 @@ class _FishingSpotBottomSheet extends StatelessWidget {
           _buildName(context),
           Padding(
             padding: insetsHorizontalDefault,
-            child: SecondaryText(formatLatLng(
-              context: context,
-              lat: fishingSpot.lat,
-              lng: fishingSpot.lng,
-            )),
+            child: Text(
+              formatLatLng(
+                context: context,
+                lat: fishingSpot.lat,
+                lng: fishingSpot.lng,
+              ),
+              style: styleSecondary,
+            ),
           ),
           _buildChips(context),
         ],
@@ -448,12 +465,12 @@ class _FishingSpotBottomSheet extends StatelessWidget {
 
   Widget _buildName(BuildContext context) {
     String name;
-    if (isEmpty(fishingSpot.name)) {
-      // A new pin was dropped.
-      name = Strings.of(context).mapPageDroppedPin;
-    } else if (isNotEmpty(fishingSpot.name)) {
+    if (isNotEmpty(fishingSpot.name)) {
       // Fishing spot exists, and has a name.
       name = fishingSpot.name;
+    } else if (!editing) {
+      // A new pin was dropped.
+      name = Strings.of(context).mapPageDroppedPin;
     }
 
     return isEmpty(name) ? Empty() : Padding(
