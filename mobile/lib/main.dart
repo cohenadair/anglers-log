@@ -27,6 +27,7 @@ class _AnglersLogState extends State<AnglersLog> {
     // Wait for all app initializations before showing the app as "ready".
     _appInitializedFuture = Future.wait([
       _app.dataManager.initialize(_app),
+      _app.locationMonitor.initialize(),
     ]).then((_) => true);
   }
 
