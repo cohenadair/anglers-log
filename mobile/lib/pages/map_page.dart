@@ -319,6 +319,11 @@ class _MapPageState extends State<MapPage> {
         child: _FishingSpotBottomSheet(
           fishingSpot: _lastActiveFishingSpot ?? FishingSpot(lat: 0, lng: 0),
           editing: editing,
+          onDelete: () {
+            setState(() {
+              _waitingForDismissal = true;
+            });
+          },
         ),
       ),
     );
@@ -428,17 +433,18 @@ class _FishingSpotBottomSheet extends StatelessWidget {
 
   final FishingSpot fishingSpot;
   final bool editing;
+  final VoidCallback onDelete;
 
   bool get hasName => isNotEmpty(fishingSpot.name) && editing;
 
   _FishingSpotBottomSheet({
     @required this.fishingSpot,
     this.editing = false,
+    this.onDelete,
   }) : assert(fishingSpot != null);
 
   @override
   Widget build(BuildContext context) {
-    print(fishingSpot);
     return SafeArea(
       top: false,
       bottom: false,
@@ -519,6 +525,7 @@ class _FishingSpotBottomSheet extends StatelessWidget {
                 description: format(Strings.of(context)
                     .mapPageDeleteFishingSpot, [fishingSpot.name]),
                 onDelete: () {
+                  onDelete?.call();
                   FishingSpotManager.of(context).remove(fishingSpot);
                 },
               );
