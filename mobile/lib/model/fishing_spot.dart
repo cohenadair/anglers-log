@@ -3,6 +3,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mobile/model/entity.dart';
 import 'package:mobile/model/property.dart';
 
+/// A [FishingSpot] is a single location at which an angler can fish.
 @immutable
 class FishingSpot extends Entity {
   static const keyLat = "lat";
