@@ -1,11 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:mobile/app_manager.dart';
-import 'package:mobile/log.dart';
 import 'package:mobile/model/fishing_spot.dart';
 import 'package:mobile/utils/future_listener.dart';
 import 'package:mobile/utils/void_stream_controller.dart';
 import 'package:provider/provider.dart';
-import 'package:quiver/strings.dart';
 
 class FishingSpotManager {
   static FishingSpotManager of(BuildContext context) =>
@@ -20,7 +18,6 @@ class FishingSpotManager {
   }
   FishingSpotManager._internal(AppManager app) : _app = app;
 
-  final Log _log = Log("FishingSpotManager");
   final String _tableName = "fishing_spot";
 
   final AppManager _app;
@@ -30,67 +27,28 @@ class FishingSpotManager {
     return _app.dataManager.count(_tableName);
   }
 
-  Future<bool> exists({String id}) {
-    return _app.dataManager
-        .exists("SELECT COUNT(*) FROM $_tableName WHERE id = ?", [id]);
-  }
-
   void createOrUpdate(FishingSpot fishingSpot) async {
-    if (await exists(id: fishingSpot.id)) {
-      // Update if fishing spot with ID already exists.
-      if (await _app.dataManager.updateId(_tableName, fishingSpot.id,
-          fishingSpot.toMap()))
-      {
-        _onUpdateController.notify();
-      } else {
-        _log.e("Failed to update FishingSpot(${fishingSpot.id}");
-      }
-    } else {
-      // Otherwise, create new fishing spot.
-      if (await _app.dataManager.insert(_tableName, fishingSpot.toMap())) {
-        _onUpdateController.notify();
-      } else {
-        _log.e("Failed to insert FishingSpot(${fishingSpot.id}");
-      }
-    }
+    _app.dataManager.insertOrUpdateEntity(fishingSpot, _tableName,
+        controller: _onUpdateController);
   }
 
-  void remove(FishingSpot fishingSpot) async {
-    if (await _app.dataManager
-        .delete("DELETE FROM $_tableName WHERE id = ?", [fishingSpot.id]))
-    {
-      _onUpdateController.notify();
-    } else {
-      _log.e("Failed to delete FishingSpot(${fishingSpot.id} "
-          "from database");
-    }
+  void delete(FishingSpot fishingSpot) async {
+    _app.dataManager.deleteEntity(fishingSpot, _tableName,
+        controller: _onUpdateController);
   }
 
   /// Queries the database and returns a list of all fishing spots in the log.
-  /// Result is sorted alphabetically by fishing spot name.
+  /// If [searchText] is not empty, only fishing spots whose `name` property
+  /// includes [searchText] will be returned.
   Future<List<FishingSpot>> _fetchAll({String searchText}) async {
-    _log.w("_fetchAll($searchText) called");
-
-    List<Map<String, dynamic>> results;
-    if (isEmpty(searchText)) {
-      results = await
-          _app.dataManager.query("SELECT * FROM $_tableName ORDER BY name");
-    } else {
-      results = await _app.dataManager.search(_tableName, "name", searchText);
-    }
-
+    var results =
+        await _app.dataManager.fetchAllEntities(_tableName, searchText: searchText);
     return results.map((map) => FishingSpot.fromMap(map)).toList();
   }
 
   Future<FishingSpot> fetch({String id}) async {
-    _log.w("fetch called");
-
-    List<Map<String, dynamic>> result = await _app.dataManager
-        .query("SELECT * FROM $_tableName WHERE id = ?", [id]);
-    if (result.isEmpty) {
-      return null;
-    }
-    return FishingSpot.fromMap(result.first);
+    return FishingSpot
+        .fromMap(await _app.dataManager.fetchEntity(_tableName, id));
   }
 }
 

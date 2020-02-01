@@ -9,7 +9,6 @@ import 'entity.dart';
 /// A [CustomEntity] is used to store data for input fields created by the user.
 @immutable
 class CustomEntity extends Entity {
-  static const String _keyName = "name";
   static const String _keyDescription = "description";
   static const String _keyType = "type";
 
@@ -18,14 +17,10 @@ class CustomEntity extends Entity {
     String description,
     @required InputType type,
   }) : assert(isNotEmpty(name)),
-       super([
-         Property<String>(key: _keyName, value: name),
+       super(properties: [
          Property<String>(key: _keyDescription, value: description),
          Property<InputType>(key: _keyType, value: type),
-       ]);
-
-  String get name =>
-      (propertyWithName(_keyName) as Property<String>).value;
+       ], name: name);
 
   String get description =>
       (propertyWithName(_keyDescription) as Property<String>).value;

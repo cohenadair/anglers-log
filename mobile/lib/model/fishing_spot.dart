@@ -8,12 +8,10 @@ import 'package:mobile/model/property.dart';
 class FishingSpot extends Entity {
   static const keyLat = "lat";
   static const keyLng = "lng";
-  static const keyName = "name";
 
-  static List<Property> _propertyList(double lat, double lng, String name) => [
+  static List<Property> _propertyList(double lat, double lng) => [
     Property<double>(key: keyLat, value: lat),
     Property<double>(key: keyLng, value: lng),
-    Property<String>(key: keyName, value: name),
   ];
 
   FishingSpot({
@@ -23,10 +21,14 @@ class FishingSpot extends Entity {
     String id,
   }) : assert(lat != null),
        assert(lng != null),
-       super(_propertyList(lat, lng, name), id: id);
+       super(
+         properties: _propertyList(lat, lng),
+         id: id,
+         name: name,
+       );
 
-  FishingSpot.fromMap(Map<String, dynamic> map) : super.fromMap(
-      _propertyList(map[keyLat], map[keyLng], map[keyName]), map);
+  FishingSpot.fromMap(Map<String, dynamic> map) : super.fromMap(map,
+      properties: _propertyList(map[keyLat], map[keyLng]));
 
   double get lat =>
       (propertyWithName(keyLat) as Property<double>).value;
@@ -35,7 +37,4 @@ class FishingSpot extends Entity {
       (propertyWithName(keyLng) as Property<double>).value;
 
   LatLng get latLng => LatLng(lat, lng);
-
-  String get name =>
-      (propertyWithName(keyName) as Property<String>).value;
 }

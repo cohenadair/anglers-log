@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:mobile/model/bait.dart';
 import 'package:mobile/widgets/input.dart';
 import 'package:quiver/core.dart';
 import 'package:quiver/strings.dart';
@@ -25,7 +26,8 @@ class Property<T> {
     @required this.value,
   }) : assert(isNotEmpty(key)),
        assert(value == null || value is int || value is double
-           || value is String || value is bool || value is InputType);
+           || value is String || value is bool || value is InputType
+           || value is BaitType);
 
   @override
   bool operator ==(other) => other is Property<T>
@@ -37,7 +39,7 @@ class Property<T> {
 }
 
 Map<String, Property> propertyListToMap(List<Property> list) =>
-    Map.fromIterable(list,
+    list == null ? {} : Map.fromIterable(list,
       key: (p) => (p as Property).key,
       value: (p) => p,
     );

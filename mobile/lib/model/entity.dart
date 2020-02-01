@@ -8,41 +8,51 @@ import 'package:uuid/uuid.dart';
 /// designed to store business logic data only; nothing UI related.
 @immutable
 class Entity implements Mappable {
-  static const _keyId = "id";
+  static const keyId = "id";
+  static const keyName = "name";
 
-  final String id;
+  static List<Property> _propertyList(String id, String name) => [
+    Property<String>(key: keyId, value: id),
+    Property<String>(key: keyName, value: name),
+  ];
+
   final Map<String, Property> _properties;
 
-  Entity(List<Property> properties, {String id})
-      : id = id ?? Uuid().v1(),
-        _properties = propertyListToMap(properties);
+  Entity({
+    List<Property> properties = const [],
+    String id,
+    String name,
+  }) : _properties = propertyListToMap(List<Property>.from(properties)
+         ..addAll(_propertyList(id ?? Uuid().v1(), name))
+       );
 
-  Entity.fromMap(List<Property> properties, Map<String, dynamic> map)
-      : assert(isNotEmpty(map[_keyId])),
-        id = map[_keyId],
-        _properties = propertyListToMap(properties);
+  Entity.fromMap(Map<String, dynamic> map, {
+    List<Property> properties = const [],
+  }) : assert(isNotEmpty(map[keyId])),
+       _properties = propertyListToMap(List<Property>.from(properties)
+         ..addAll(_propertyList(map[keyId], map[keyName])),
+       );
 
   List<Property> get propertyList => List.unmodifiable(_properties.values);
   Property propertyWithName(String name) => _properties[name];
 
+  String get id => (propertyWithName(keyId) as Property<String>).value;
+  String get name => (propertyWithName(keyName) as Property<String>)?.value;
+
   Map<String, dynamic> toMap() {
     Map<String, dynamic> result = {};
-
-    result[_keyId] = id;
     for (Property property in propertyList) {
       result[property.key] = property.value;
     }
-
     return result;
   }
 
   @override
   bool operator ==(other) => other is Entity
-      && id == other.id
       && listEquals(propertyList, other.propertyList);
 
   @override
-  int get hashCode => hash2(id.hashCode, hashObjects(propertyList));
+  int get hashCode => hashObjects(propertyList);
 
   @override
   String toString() => toMap().toString();

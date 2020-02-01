@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/fishing_spot_manager.dart';
+import 'package:mobile/model/entity.dart';
 import 'package:mobile/model/fishing_spot.dart';
 import 'package:mobile/pages/form_page.dart';
 import 'package:mobile/widgets/input.dart';
@@ -39,7 +40,7 @@ class _SaveFishingSpotPageState extends State<SaveFishingSpotPage> {
       },
       fieldBuilder: (BuildContext context, bool isRemovingFields) {
         return {
-          FishingSpot.keyName : TextInput.name(
+          Entity.keyName : TextInput.name(
             context,
             required: false,
             controller: _nameController,

@@ -2,12 +2,7 @@ import 'package:mobile/model/fishing_spot.dart';
 import 'package:test/test.dart';
 
 void main() {
-  test("Name is set properly", () {
-    var fishingSpot = FishingSpot(lat: 0, lng: 0, name: "Narrow Bend");
-    expect(fishingSpot.name, "Narrow Bend");
-  });
-
-  test("Entity mapping", () {
+  test("Mapping", () {
     FishingSpot fishingSpot = FishingSpot(
       lat: 0.1,
       lng: 0.3,

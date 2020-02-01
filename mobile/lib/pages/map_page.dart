@@ -526,7 +526,7 @@ class _FishingSpotBottomSheet extends StatelessWidget {
                     .mapPageDeleteFishingSpot, [fishingSpot.name]),
                 onDelete: () {
                   onDelete?.call();
-                  FishingSpotManager.of(context).remove(fishingSpot);
+                  FishingSpotManager.of(context).delete(fishingSpot);
                 },
               );
             },
