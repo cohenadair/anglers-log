@@ -17,7 +17,7 @@ dependencies:
 
   geolocator: ^5.2.1
   google_maps_flutter: any
-  intl: ^0.15.8
+  intl: 0.16.0
   package_info: 0.4.0+3
   provider: 3.2.0
   quiver: '>=2.0.0 <3.0.0'

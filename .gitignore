@@ -1,1 +1,3 @@
 .DS_Store
+mobile/.flutter-plugins-dependencies
+mobile/ios/Flutter/Flutter.podspec
