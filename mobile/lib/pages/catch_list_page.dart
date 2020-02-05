@@ -23,7 +23,7 @@ class CatchListPage extends StatelessWidget {
               SaveCatchPage(),
               fullscreenDialog: true,
             ),
-          )
+          ),
         ],
       ),
       padding: insetsDefault,

@@ -6,17 +6,11 @@ import 'package:mobile/widgets/date_time_picker.dart';
 import 'package:mobile/widgets/input.dart';
 import 'package:mobile/widgets/widget.dart';
 
-class SaveCatchPage extends StatefulWidget {
-  @override
-  _SaveCatchPageState createState() => _SaveCatchPageState();
-}
-
-class _SaveCatchPageState extends State<SaveCatchPage> {
+class SaveCatchPage extends StatelessWidget {
   static const String timestampId = "timestamp";
   static const String anglerId = "angler";
 
-  /// All valid fields for the form.
-  Map<String, InputData> _allInputFields = {
+  final Map<String, InputData> _allInputFields = {
     timestampId: InputData(
       id: timestampId,
       controller: TimestampInputController(
@@ -40,23 +34,28 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
     return EditableFormPage(
       allFields: _allInputFields,
       initialFields: {
-        timestampId : _allInputFields[timestampId],
-        anglerId : _allInputFields[anglerId],
+        timestampId: _allInputFields[timestampId],
+        anglerId: _allInputFields[anglerId],
       },
-      onBuildField: (id, isRemovingFields) {
-        switch (id) {
-          case timestampId: return _timestampWidget(isRemovingFields);
-          case anglerId: return _anglerWidget(isRemovingFields);
-          default:
-            print("Unknown input key: $id");
-            return Empty();
-        }
-      },
+      onBuildField: (id, isRemovingFields) =>
+          _buildField(context, id, isRemovingFields),
       onSave: _save,
     );
   }
 
-  Widget _timestampWidget(bool isRemovingFields) {
+  Widget _buildField(BuildContext context, String id, bool isRemovingFields) {
+    switch (id) {
+      case timestampId:
+        return _buildTimestamp(context, isRemovingFields);
+      case anglerId:
+        return _buildAngler(context, isRemovingFields);
+      default:
+        print("Unknown input key: $id");
+        return Empty();
+    }
+  }
+
+  Widget _buildTimestamp(BuildContext context, bool isRemovingFields) {
     TimestampInputController controller =
         _allInputFields[timestampId].controller;
 
@@ -80,13 +79,15 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
     );
   }
 
-  Widget _anglerWidget(bool isRemovingFields) => TextInput.name(context,
-    controller: _allInputFields[anglerId].controller.value,
-    label: _allInputFields[anglerId].label(context),
-    requiredText: format(Strings.of(context).inputRequiredMessage,
-        [Strings.of(context).anglerNameLabel]),
-    enabled: !isRemovingFields,
-  );
+  Widget _buildAngler(BuildContext context, bool isRemovingFields) {
+    return TextInput.name(context,
+      controller: _allInputFields[anglerId].controller.value,
+      label: _allInputFields[anglerId].label(context),
+      requiredText: format(Strings.of(context).inputRequiredMessage,
+          [Strings.of(context).anglerNameLabel]),
+      enabled: !isRemovingFields,
+    );
+  }
 
   void _save(Map<String, InputData> result) {
     print(result);
