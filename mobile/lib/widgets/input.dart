@@ -233,7 +233,7 @@ class TextInput extends StatelessWidget {
     String initialValue,
     TextEditingController controller,
     bool enabled,
-    bool required,
+    bool required = false,
   }) : this(
     initialValue: initialValue,
     label: isEmpty(label) ? Strings.of(context).inputNameLabel : label,
@@ -250,7 +250,7 @@ class TextInput extends StatelessWidget {
     String initialValue,
     TextEditingController controller,
     bool enabled,
-    bool required,
+    bool required = false,
   }) : this(
     initialValue: initialValue,
     label: Strings.of(context).inputDescriptionLabel,
@@ -267,7 +267,7 @@ class TextInput extends StatelessWidget {
     String requiredText,
     TextEditingController controller,
     bool enabled,
-    bool required,
+    bool required = false,
   }) : this(
     initialValue: initialValue == null ? null : initialValue.toString(),
     label: label,
