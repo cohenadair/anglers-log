@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:mobile/custom_field_manager.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/model/custom_entity.dart';
-import 'package:mobile/widgets/input.dart';
+import 'package:mobile/widgets/dropdown_input.dart';
+import 'package:mobile/widgets/input_type.dart';
+import 'package:mobile/widgets/text_input.dart';
 import 'package:mobile/widgets/widget.dart';
 
 import 'form_page.dart';

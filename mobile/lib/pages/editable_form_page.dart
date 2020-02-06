@@ -3,6 +3,7 @@ import 'package:mobile/custom_field_manager.dart';
 import 'package:mobile/model/custom_entity.dart';
 import 'package:mobile/pages/form_page.dart';
 import 'package:mobile/widgets/input.dart';
+import 'package:mobile/widgets/input_type.dart';
 
 class EditableFormPage extends StatefulWidget {
   /// A unique ID to [InputData] map of all valid fields for the form. The

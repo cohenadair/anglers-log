@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:mobile/model/bait.dart';
-import 'package:mobile/widgets/input.dart';
+import 'package:mobile/widgets/input_type.dart';
 import 'package:quiver/core.dart';
 import 'package:quiver/strings.dart';
 

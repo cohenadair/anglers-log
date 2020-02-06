@@ -1,5 +1,5 @@
 import 'package:mobile/model/custom_entity.dart';
-import 'package:mobile/widgets/input.dart';
+import 'package:mobile/widgets/input_type.dart';
 import 'package:test/test.dart';
 
 void main() {

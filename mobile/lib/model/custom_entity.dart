@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 import 'package:mobile/model/property.dart';
-import 'package:mobile/widgets/input.dart';
+import 'package:mobile/widgets/input_type.dart';
 import 'package:quiver/strings.dart';
 
 import 'entity.dart';
