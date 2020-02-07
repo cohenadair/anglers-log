@@ -66,6 +66,7 @@ Map<String, Map<String, String>> englishStrings = {
     "mapPage_mapTypeSatellite" : "Satellite",
     "mapPage_mapTypeTerrain" : "Terrain",
     "mapPage_mapTypeHybrid" : "Hybrid",
+    "mapPage_errorGettingLocation" : "Unable to retrieve current location. Please try again later.",
 
     "formPage_addFieldText" : "Add Field",
     "formPage_removeFieldsText" : "Remove Fields",

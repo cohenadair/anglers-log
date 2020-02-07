@@ -94,6 +94,7 @@ class Strings {
   String get mapPageMapTypeSatellite => _string("mapPage_mapTypeSatellite");
   String get mapPageMapTypeTerrain => _string("mapPage_mapTypeTerrain");
   String get mapPageMapTypeHybrid => _string("mapPage_mapTypeHybrid");
+  String get mapPageErrorGettingLocation => _string("mapPage_errorGettingLocation");
 
   String get formPageAddFieldText => _string("formPage_addFieldText");
   String get formPageRemoveFieldsText => _string("formPage_removeFieldsText");

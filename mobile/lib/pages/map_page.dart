@@ -12,6 +12,7 @@ import 'package:mobile/res/dimen.dart';
 import 'package:mobile/res/style.dart';
 import 'package:mobile/utils/dialog_utils.dart';
 import 'package:mobile/utils/page_utils.dart';
+import 'package:mobile/utils/snackbar_utils.dart';
 import 'package:mobile/utils/string_utils.dart';
 import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/list_item.dart';
@@ -122,14 +123,16 @@ class _MapPageState extends State<MapPage> {
       markers.add(_activeMarker);
     }
 
+    LatLng currentLocation = LocationMonitor.of(context).currentLocation;
+
     // TODO: Move Google logo when better solution is available.
     // https://github.com/flutter/flutter/issues/39610
     return GoogleMap(
       mapType: _mapType,
       markers: markers,
       initialCameraPosition: CameraPosition(
-        target: LocationMonitor.of(context).currentLocation,
-        zoom: 15,
+        target: currentLocation == null ? LatLng(0.0, 0.0) : currentLocation,
+        zoom: currentLocation == null ? 0 : 15,
       ),
       onMapCreated: (GoogleMapController controller) {
         _mapController.complete(controller);
@@ -180,7 +183,14 @@ class _MapPageState extends State<MapPage> {
             padding: insetsHorizontalDefault,
             icon: Icons.my_location,
             onPressed: () {
-              _animateCamera(LocationMonitor.of(context).currentLocation);
+              LatLng currentLocation =
+                  LocationMonitor.of(context).currentLocation;
+              if (currentLocation == null) {
+                showErrorSnackBar(context,
+                    Strings.of(context).mapPageErrorGettingLocation);
+              } else {
+                _animateCamera(currentLocation);
+              }
             },
           ),
         ],

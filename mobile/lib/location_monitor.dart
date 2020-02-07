@@ -26,12 +26,12 @@ class LocationMonitor {
       distanceFilter: distanceFilterMeters,
     )).listen((Position position) {
       if (position != null) {
-        _log.d("Received location update $currentLocation");
         _lastKnownPosition = position;
+        _log.d("Received location update $currentLocation");
       }
     });
   }
 
-  LatLng get currentLocation =>
+  LatLng get currentLocation => _lastKnownPosition == null ? null :
       LatLng(_lastKnownPosition.latitude, _lastKnownPosition.longitude);
 }
