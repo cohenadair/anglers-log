@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile/custom_field_manager.dart';
 import 'package:mobile/model/custom_entity.dart';
 import 'package:mobile/pages/form_page.dart';
+import 'package:mobile/res/dimen.dart';
 import 'package:mobile/widgets/input.dart';
 import 'package:mobile/widgets/input_type.dart';
 
@@ -25,11 +26,14 @@ class EditableFormPage extends StatefulWidget {
   /// the function.
   final Function(Map<String, InputData>) onSave;
 
+  final EdgeInsets padding;
+
   EditableFormPage({
     this.allFields = const {},
     this.initialFields = const {},
     this.onBuildField,
     this.onSave,
+    this.padding = insetsHorizontalDefault,
   });
 
   @override
@@ -60,6 +64,7 @@ class _EditableFormPageState extends State<EditableFormPage> {
   Widget build(BuildContext context) {
     return FormPage(
       key: UniqueKey(),
+      padding: widget.padding,
       fieldBuilder: (BuildContext context, bool isRemovingFields) {
         return Map.fromIterable(_usedInputOptions.keys,
           key: (item) => item.toString(),

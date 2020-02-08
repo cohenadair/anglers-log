@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/res/color.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/widgets/text.dart';
 import 'package:mobile/widgets/widget.dart';
@@ -172,9 +173,9 @@ class _Picker extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             type.getValue(),
-            Icon(
-              Icons.arrow_drop_down,
-              color: enabled ? null : Theme.of(context).disabledColor,
+            EnabledOpacity(
+              enabled: enabled,
+              child: DropdownIcon(),
             ),
           ],
         ),

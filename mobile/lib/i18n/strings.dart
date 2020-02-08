@@ -61,6 +61,8 @@ class Strings {
   String get inputNameRequired => _string("input_nameRequired");
   String get inputDescriptionLabel => _string("input_descriptionLabel");
   String get inputInvalidNumber => _string("input_invalidNumber");
+  String get inputPhotoLabel => _string("input_photoLabel");
+  String get inputPhotosLabel => _string("input_photosLabel");
 
   String get tripListPageMenuLabel => _string("tripListPage_menuLabel");
   String get tripListPageTitle => _string("tripListPage_title");
@@ -103,6 +105,12 @@ class Strings {
   String get formPageSelectFieldTitle => _string("formPage_selectFieldTitle");
 
   String get selectionPageAddCustomField => _string("selectionPage_addCustomField");
+
+  String get imagePickerPageNoPhotosFound => _string("imagePickerPage_noPhotosFound");
+  String get imagePickerPageOpenCameraLabel => _string("imagePickerPage_openCameraLabel");
+  String get imagePickerPageCameraLabel => _string("imagePickerPage_cameraLabel");
+  String get imagePickerPageGalleryLabel => _string("imagePickerPage_galleryLabel");
+  String get imagePickerPageBrowseLabel => _string("imagePickerPage_browseLabel");
 
   String get addCustomFieldPageTitle => _string("addCustomFieldPage_title");
 

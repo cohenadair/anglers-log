@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:mobile/utils/date_time_utils.dart';
 
@@ -17,6 +19,9 @@ class InputController<T> {
   void clear() {
     value = null;
   }
+}
+
+class ImageInputController extends InputController<File> {
 }
 
 class TextInputController extends InputController<TextEditingController> {

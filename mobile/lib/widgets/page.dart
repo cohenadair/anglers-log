@@ -4,12 +4,16 @@ import 'package:flutter/material.dart';
 import 'package:mobile/res/dimen.dart';
 
 class PageAppBarStyle {
+  /// Overrides [title] if set.
+  final Widget titleWidget;
+
   final String title;
   final String subtitle;
   final List<Widget> actions;
   final Widget leading;
 
   PageAppBarStyle({
+    this.titleWidget,
     this.title,
     this.subtitle,
     this.actions,
@@ -30,11 +34,20 @@ class Page extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Widget title;
+    if (appBarStyle != null) {
+      if (appBarStyle.titleWidget != null) {
+        title = appBarStyle.titleWidget;
+      } else {
+        title = appBarStyle.subtitle == null
+            ? Text(appBarStyle.title == null ? "" : appBarStyle.title)
+            : _buildTitleWithSubtitle(context);
+      }
+    }
+
     return Scaffold(
       appBar: appBarStyle == null ? null : AppBar(
-        title: appBarStyle.subtitle == null
-            ? Text(appBarStyle.title == null ? "" : appBarStyle.title)
-            : _buildTitleWithSubtitle(context),
+        title: title,
         actions: appBarStyle.actions,
         leading: appBarStyle.leading,
       ),

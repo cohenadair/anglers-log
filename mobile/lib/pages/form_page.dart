@@ -83,6 +83,7 @@ class FormPage extends StatefulWidget {
   final bool editable;
 
   final VoidCallback onSave;
+  final EdgeInsets padding;
 
   FormPage({
     Key key,
@@ -93,6 +94,7 @@ class FormPage extends StatefulWidget {
     this.addFieldOptions,
     this.onAddField,
     this.editable = true,
+    this.padding = insetsHorizontalDefault,
   }) : assert(fieldBuilder != null),
        super(key: key);
 
@@ -101,6 +103,7 @@ class FormPage extends StatefulWidget {
     String title,
     FieldBuilder fieldBuilder,
     VoidCallback onSave,
+    EdgeInsets padding = insetsHorizontalDefault,
   }) : this(
     key: key,
     title: title,
@@ -110,6 +113,7 @@ class FormPage extends StatefulWidget {
     addFieldOptions: null,
     onAddField: null,
     editable: false,
+    padding: padding,
   );
 
   @override
@@ -173,7 +177,7 @@ class _FormPageState extends State<FormPage> {
           ) : Empty(),
         ],
       ),
-      padding: insetsHorizontalDefault,
+      padding: widget.padding,
       child: Form(
         key: _key,
         child: SingleChildScrollView(
@@ -191,7 +195,12 @@ class _FormPageState extends State<FormPage> {
                         )).values.toList(),
               ),
               canAddFields ? Padding(
-                padding: insetsTopSmall,
+                padding: EdgeInsets.only(
+                  top: paddingSmall,
+                  // Include right edge padding on the button, even if the
+                  // parent widget is handling padding.
+                  right: insetsZero == widget.padding ? paddingDefault : 0,
+                ),
                 child: Button(
                   text: Strings.of(context).formPageAddFieldText,
                   onPressed: _isRemovingFields ? null : () {
@@ -308,7 +317,7 @@ class _SelectionPageState extends State<_SelectionPage> {
                   },
                 ));
               },
-              trailing: Icon(Icons.chevron_right),
+              trailing: RightChevronIcon(),
             );
           }
 

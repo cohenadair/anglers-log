@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/res/color.dart';
 import 'package:mobile/res/dimen.dart';
 
 const defaultAnimationDuration = Duration(milliseconds: 200);
@@ -66,4 +67,43 @@ class SwipeChip extends StatelessWidget {
       ),
     ),
   );
+}
+
+/// An [Opacity] wrapper whose state depends on the [enabled] property.
+class EnabledOpacity extends StatelessWidget {
+  static const double _disabledOpacity = 0.5;
+
+  final bool enabled;
+  final Widget child;
+
+  EnabledOpacity({
+    @required this.child,
+    this.enabled = true,
+  }) : assert(child != null);
+
+  @override
+  Widget build(BuildContext context) {
+    return Opacity(
+      opacity: enabled ? 1.0 : _disabledOpacity,
+      child: child,
+    );
+  }
+}
+
+class RightChevronIcon extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Icon(Icons.chevron_right,
+      color: colorInputIconAccent,
+    );
+  }
+}
+
+class DropdownIcon extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Icon(Icons.arrow_drop_down,
+      color: colorInputIconAccent,
+    );
+  }
 }

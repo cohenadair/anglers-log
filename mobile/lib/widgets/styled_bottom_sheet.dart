@@ -71,7 +71,6 @@ class _StyledBottomSheetState extends State<StyledBottomSheet>
     super.dispose();
   }
 
-
   @override
   void didUpdateWidget(StyledBottomSheet oldWidget) {
     super.didUpdateWidget(oldWidget);

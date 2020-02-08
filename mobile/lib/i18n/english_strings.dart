@@ -33,6 +33,8 @@ Map<String, Map<String, String>> englishStrings = {
     "input_nameRequired" : "Name is required",
     "input_descriptionLabel" : "Description",
     "input_invalidNumber" : "Invalid number input",
+    "input_photoLabel" : "Photo",
+    "input_photosLabel" : "Photos",
 
     "catchListPage_menuLabel" : "Catches",
     "catchListPage_title" : "Catches (%s)",
@@ -77,6 +79,12 @@ Map<String, Map<String, String>> englishStrings = {
     "selectionPage_addCustomField" : "Add Custom Field",
 
     "addCustomFieldPage_title" : "New Field",
+
+    "imagePickerPage_noPhotosFound" : "No photos found",
+    "imagePickerPage_openCameraLabel" : "Open Camera",
+    "imagePickerPage_cameraLabel" : "Camera",
+    "imagePickerPage_galleryLabel" : "Gallery",
+    "imagePickerPage_browseLabel" : "Browse",
 
     "angler_nameLabel" : "Angler",
 

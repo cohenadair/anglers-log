@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/widgets/widget.dart';
 
 /// A [DropdownButtonFormField] wrapper. To disable, set either [options] or
 /// [onChanged] to `null`.
@@ -22,6 +23,7 @@ class DropdownInput<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DropdownButtonFormField<T>(
+      icon: DropdownIcon(),
       items: options.map((T option) {
         return DropdownMenuItem(
           child: buildOption(option),

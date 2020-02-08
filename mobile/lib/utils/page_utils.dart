@@ -7,6 +7,6 @@ push(BuildContext context, Widget page, {
     MaterialPageRoute(
       builder: (BuildContext context) => page,
       fullscreenDialog: fullscreenDialog,
-    )
+    ),
   );
 }

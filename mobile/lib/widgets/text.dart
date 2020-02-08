@@ -40,54 +40,31 @@ class ErrorText extends StatelessWidget {
 class LabelText extends StatelessWidget {
   final String text;
   final TextOverflow overflow;
+  final bool enabled;
 
   LabelText({
     @required this.text,
     this.overflow = TextOverflow.fade,
+    this.enabled = true,
   });
-
-  static TextStyle style(BuildContext context) =>
-      Theme.of(context).textTheme.subhead;
 
   @override
   Widget build(BuildContext context) {
     return Text(
       text,
-      style: style(context),
+      style: _style(context),
       overflow: overflow,
     );
   }
-}
 
-class DisabledLabelText extends StatelessWidget {
-  final String text;
-
-  DisabledLabelText(this.text);
-
-  @override
-  Widget build(BuildContext context) {
-    return Text(
-      text,
-      style: Theme.of(context).textTheme.subhead.copyWith(
+  TextStyle _style(BuildContext context) {
+    TextStyle style = Theme.of(context).textTheme.subhead;
+    if (!enabled) {
+      style = style.copyWith(
         color: Theme.of(context).disabledColor,
-      ),
-    );
-  }
-}
-
-class BoldLabelText extends StatelessWidget {
-  final String text;
-
-  BoldLabelText(this.text);
-
-  @override
-  Widget build(BuildContext context) {
-    return Text(
-      text,
-      style: LabelText.style(context).copyWith(
-        fontWeight: fontWeightBold,
-      ),
-    );
+      );
+    }
+    return style;
   }
 }
 

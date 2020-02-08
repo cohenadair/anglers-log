@@ -16,6 +16,7 @@ import 'package:mobile/utils/snackbar_utils.dart';
 import 'package:mobile/utils/string_utils.dart';
 import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/list_item.dart';
+import 'package:mobile/widgets/no_results.dart';
 import 'package:mobile/widgets/page.dart';
 import 'package:mobile/widgets/styled_bottom_sheet.dart';
 import 'package:mobile/widgets/text.dart';
@@ -602,19 +603,7 @@ class _SearchDelegate extends SearchDelegate<FishingSpot> {
         if (_searchFishingSpots.isNotEmpty) {
           return _buildList(_searchFishingSpots);
         }
-        return Padding(
-          padding: insetsDefault,
-          child: Column(
-            children: <Widget>[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  LabelText(text: Strings.of(context).mapPageNoSearchResults),
-                ],
-              ),
-            ],
-          ),
-        );
+        return NoResults(Strings.of(context).mapPageNoSearchResults);
       },
     );
   }

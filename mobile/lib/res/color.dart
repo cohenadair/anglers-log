@@ -12,3 +12,5 @@ const colorAppTheme = MaterialColor(0xFFE3C165, {
   800: Color.fromRGBO(227, 193, 101, .9),
   900: Color.fromRGBO(227, 193, 101, 1)
 });
+
+const colorInputIconAccent = Colors.black45;

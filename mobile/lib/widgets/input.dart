@@ -9,7 +9,8 @@ import 'package:quiver/strings.dart';
 class InputData {
   final String id;
 
-  /// Returns user-visible label text.
+  /// Returns user-visible label text. This is required for displaying this
+  /// input in the list of available inputs in an [EditableFormPage].
   final String Function(BuildContext) label;
 
   /// Whether the input can be removed from the associated form. Defaults to

@@ -62,3 +62,6 @@ const iconSizeDefault = 24.0;
 const iconSizeLarge = 32.0;
 
 const floatingCornerRadius = 10.0;
+
+const galleryMaxThumbSize = 120.0;
+const gallerySpacing = 2.0;

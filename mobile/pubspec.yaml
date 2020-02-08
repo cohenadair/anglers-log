@@ -15,14 +15,18 @@ dependencies:
   flutter_localizations:
     sdk: flutter
 
+  file_picker: ^1.4.3+2
   geolocator: ^5.2.1
-  google_maps_flutter: any
-  intl: 0.16.0
-  package_info: 0.4.0+3
-  provider: 3.2.0
-  quiver: '>=2.0.0 <3.0.0'
-  sqflite:
-  uuid: 2.0.2
+  google_maps_flutter: ^0.5.22+2  # Flutter
+  image_picker: ^0.6.3+1          # Flutter
+  intl: ^0.16.0                   # Dart - Version restricted by flutter_localizations
+  package_info: ^0.4.0+13         # Flutter
+  photo_manager: ^0.4.8
+  path: ^1.6.4                    # Dart
+  provider: ^3.2.0                # Version update requires migration
+  quiver: ^2.0.5                  # Google - Version restricted by flutter_test
+  sqflite: ^1.2.0                 # Endorsed by Flutter
+  uuid: ^2.0.4
 
 dev_dependencies:
   flutter_test:
