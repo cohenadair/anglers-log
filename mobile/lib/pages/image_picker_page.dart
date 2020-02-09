@@ -233,8 +233,7 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
       ),
       itemCount: _assets.length,
       itemBuilder: (context, i) {
-        var assetId = _assets[i].id;
-        var future = _thumbFutures[assetId];
+        var future = _thumbFutures[i];
         if (future == null) {
           future = _assets[i].thumbData;
           _thumbFutures[i] = future;
