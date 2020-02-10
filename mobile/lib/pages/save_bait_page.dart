@@ -61,7 +61,7 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
           case photosId: return PhotoInput(
             padding: insetsDefault,
             enabled: !isRemovingFields,
-            currentImages: _currentImages,
+            initialImages: _currentImages,
             onImagesPicked: (images) {
               if (images != null) {
                 setState(() {
