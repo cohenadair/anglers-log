@@ -34,7 +34,7 @@ class ImagePickerPageResult {
 /// Advantages of a custom solution over Flutter's image_picker plugin:
 /// - Supports picking multiple photos
 /// - Supports picking from cloud sources, such as Google Drive or iCloud Drive
-/// - Consistent app UI
+/// - Consistent with the rest of the app's UI
 /// - Complete control over how photos are presented to the user.
 ///
 /// [ImagePickerPage] uses the photo_manager plugin to get a list of all images
@@ -43,11 +43,12 @@ class ImagePickerPageResult {
 ///
 /// [ImagePickerPage] uses the file_picker plugin to allow users to select
 /// images from cloud sources. Unfortunately, there's no way to get cloud
-/// documents to present a custom UI.
+/// documents to present a custom UI, so the system default is used.
 /// - https://pub.dev/packages/file_picker
 ///
 /// [ImagePickerPage] uses the image_picker plugin for taking photos with the
 /// device camera.
+/// - https://pub.dev/packages/image_picker
 class ImagePickerPage extends StatefulWidget {
   final Function(List<ImagePickerPageResult>) onImagesPicked;
   final bool allowsMultipleSelection;
@@ -71,16 +72,18 @@ class ImagePickerPage extends StatefulWidget {
 class _ImagePickerPageState extends State<ImagePickerPage> {
   static const double _selectedPadding = 2.0;
 
+  // A future that gets a list of all albums in the user's gallery.
   Future<List<AssetPathEntity>> _albumListFuture;
-  Future<List<List<AssetEntity>>> _allAssetsFuture;
 
-  // Use a map here so we don't get duplicate images, from the same image
-  // existing in multiple albums.
+  // A future that gets a list of all available assets.
+  Future<List<AssetEntity>> _allAssetsFuture;
+
+  // A list of all assets available from the user's gallery.
   List<AssetEntity> _assets;
 
-  // Cache thumb futures so they're not recreated each time the widget tree is
-  // rebuilt.
-  Map<int, Future<Uint8List>> _thumbFutures = {};
+  // Cache thumbnail futures so they're not recreated each time the widget
+  // tree is rebuilt.
+  Map<int, Future<Uint8List>> _thumbnailFutures = {};
 
   Set<int> _selectedIndexes = {};
   _ImagePickerSource _currentSource = _ImagePickerSource.gallery;
@@ -88,6 +91,9 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
   @override
   void initState() {
     super.initState();
+
+    // TODO: Fix significant UI lag when calling this method:
+    // https://github.com/CaiJingLong/flutter_photo_manager/issues/178
     _albumListFuture = PhotoManager.getAssetPathList(type: RequestType.image);
   }
 
@@ -100,8 +106,7 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
           _buildDoneButton(),
         ],
       ),
-      // First, get a list of all the asset packages, called albums in this
-      // case.
+      // First, get a list of all the available albums.
       child: FutureBuilder<List<AssetPathEntity>>(
         future: _albumListFuture,
         builder: (context, snapshot) {
@@ -109,49 +114,32 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
             return Empty();
           }
 
-          // Second, get a list of all assets in each album.
-          // Only initialize _allAssetsFuture once.
+          // Second, get a list of all assets in the "all" album.
+          // Lazy initialize _allAssetsFuture.
           if (_allAssetsFuture == null) {
-            // Futures to get assets from each album.
-            List<Future<List<AssetEntity>>> albumAssetFutures = [];
-            List<AssetPathEntity> albums = snapshot.data;
-            for (var album in albums) {
-              albumAssetFutures.add(album.assetList);
-            }
             // Create a future that waits for all assets.
-            _allAssetsFuture = Future.wait(albumAssetFutures);
+            _allAssetsFuture =
+                snapshot.data.firstWhere((album) => album.isAll).assetList;
           }
 
           // Third, wait to get assets from each album.
-          return FutureBuilder<List<List<AssetEntity>>>(
+          return FutureBuilder<List<AssetEntity>>(
             future: _allAssetsFuture,
             builder: (context, snapshot) {
               if (!snapshot.hasData) {
                 return Empty();
               }
 
-              // Only initialize _assets once.
+              // Lazy initialize _assets.
               if (_assets == null) {
-                // Collect assets in a map to avoid duplicate assets that
-                // appear in multiple albums.
-                Map<String, AssetEntity> assetMap = {};
-                List<List<AssetEntity>> albumAssets = snapshot.data;
-                for (var assets in albumAssets) {
-                  for (var asset in assets) {
-                    assetMap[asset.id] = asset;
-                  }
-                }
-                _assets = assetMap.values.toList();
+                _assets = snapshot.data;
                 // Sort by most recent first.
                 _assets.sort((lhs, rhs) =>
                     rhs.createDateTime.compareTo(lhs.createDateTime));
               }
 
-              if (_assets.isEmpty) {
-                return _buildNoPhotosFound();
-              } else {
-                return _buildImageGrid();
-              }
+              return _assets.isEmpty
+                  ? _buildNoPhotosFound() : _buildImageGrid();
             },
           );
         },
@@ -198,6 +186,7 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
   {
     return DropdownMenuItem<_ImagePickerSource>(
       child: Text(text,
+        // Use the same theme as default AppBar title text.
         style: Theme.of(context).textTheme.headline6,
       ),
       value: value,
@@ -233,10 +222,10 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
       ),
       itemCount: _assets.length,
       itemBuilder: (context, i) {
-        var future = _thumbFutures[i];
+        var future = _thumbnailFutures[i];
         if (future == null) {
           future = _assets[i].thumbData;
-          _thumbFutures[i] = future;
+          _thumbnailFutures[i] = future;
         }
 
         var selected = _selectedIndexes.contains(i);
