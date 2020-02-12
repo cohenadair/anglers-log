@@ -17,14 +17,18 @@ enum _ImagePickerSource {
   gallery, camera, browse
 }
 
-class ImagePickerPageResult {
+class PickedImage {
   final File originalFile;
+
+  /// The [AssetEntity.id] for the picked image. This can be `null` if the
+  /// image was taken with the camera, or picked from a cloud source.
+  final String originalFileId;
 
   /// May be `null`. For example, if a photo was taken with the camera, or
   /// selected from a cloud source.
   final Uint8List thumbData;
 
-  ImagePickerPageResult(this.originalFile, this.thumbData);
+  PickedImage(this.originalFile, this.thumbData, this.originalFileId);
 }
 
 /// [ImagePickerPage] is a custom image picking widget that allows the user to
@@ -50,16 +54,20 @@ class ImagePickerPageResult {
 /// device camera.
 /// - https://pub.dev/packages/image_picker
 class ImagePickerPage extends StatefulWidget {
-  final Function(List<ImagePickerPageResult>) onImagesPicked;
+  final Function(List<PickedImage>) onImagesPicked;
   final bool allowsMultipleSelection;
+
+  /// A list of images to be selected when the page opens.
+  final List<PickedImage> initialImages;
 
   ImagePickerPage({
     @required this.onImagesPicked,
     this.allowsMultipleSelection = true,
+    this.initialImages = const [],
   }) : assert(onImagesPicked != null);
 
   ImagePickerPage.single({
-    @required Function(ImagePickerPageResult) onImagePicked,
+    @required Function(PickedImage) onImagePicked,
   }) : this(
     onImagesPicked: (files) => onImagePicked(files.first),
     allowsMultipleSelection: false,
@@ -72,25 +80,31 @@ class ImagePickerPage extends StatefulWidget {
 class _ImagePickerPageState extends State<ImagePickerPage> {
   static const double _selectedPadding = 2.0;
 
-  // A future that gets a list of all albums in the user's gallery.
+  /// A future that gets a list of all albums in the user's gallery.
   Future<List<AssetPathEntity>> _albumListFuture;
 
-  // A future that gets a list of all available assets.
+  /// A future that gets a list of all available assets.
   Future<List<AssetEntity>> _allAssetsFuture;
 
-  // A list of all assets available from the user's gallery.
+  /// A list of all assets available from the user's gallery.
   List<AssetEntity> _assets;
 
-  // Cache thumbnail futures so they're not recreated each time the widget
-  // tree is rebuilt.
+  /// Cache thumbnail futures so they're not recreated each time the widget
+  /// tree is rebuilt.
   Map<int, Future<Uint8List>> _thumbnailFutures = {};
 
   Set<int> _selectedIndexes = {};
   _ImagePickerSource _currentSource = _ImagePickerSource.gallery;
 
+  /// Images that are initially selected. Elements of this array are removed
+  /// as that element is loaded into the picker.
+  List<PickedImage> _initialImages;
+
   @override
   void initState() {
     super.initState();
+
+    _initialImages = List.of(widget.initialImages);
 
     // TODO: Fix significant UI lag when calling this method:
     // https://github.com/CaiJingLong/flutter_photo_manager/issues/178
@@ -198,18 +212,21 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
       return Empty();
     }
 
+    bool enabled =
+        _selectedIndexes.isNotEmpty || widget.initialImages.isNotEmpty;
+
     return ActionButton(
       text: Strings.of(context).done,
-      onPressed: () async {
-        List<ImagePickerPageResult> result = [];
+      onPressed: enabled ? () async {
+        List<PickedImage> result = [];
         for (var i in _selectedIndexes) {
           File file = await _assets[i].originFile;
           Uint8List thumb = await _assets[i].thumbData;
-          result.add(ImagePickerPageResult(file, thumb));
+          result.add(PickedImage(file, thumb, _assets[i].id));
         }
 
         _pop(result);
-      },
+      } : null,
     );
   }
 
@@ -226,6 +243,16 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
         if (future == null) {
           future = _assets[i].thumbData;
           _thumbnailFutures[i] = future;
+        }
+
+        for (PickedImage image in _initialImages.reversed) {
+          if (image.originalFileId != null
+              && image.originalFileId == _assets[i].id)
+          {
+            _selectedIndexes.add(i);
+            _initialImages.remove(image);
+            break;
+          }
         }
 
         var selected = _selectedIndexes.contains(i);
@@ -272,7 +299,7 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
           });
         } else {
           File file = await _assets[index].originFile;
-          _pop([ImagePickerPageResult(file, data)]);
+          _pop([PickedImage(file, data, _assets[index].id)]);
         }
       },
       child: Container(
@@ -303,7 +330,7 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
   void _openCamera() async {
     File image = await ImagePicker.pickImage(source: ImageSource.camera);
     if (image != null) {
-      _pop([ImagePickerPageResult(image, null)]);
+      _pop([PickedImage(image, null, null)]);
     }
   }
 
@@ -343,10 +370,11 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
       }
     }
 
-    _pop(images.map((image) => ImagePickerPageResult(image, null)).toList());
+    _pop(images.map((image) => PickedImage(image, null, null))
+        .toList());
   }
 
-  void _pop(List<ImagePickerPageResult> results) {
+  void _pop(List<PickedImage> results) {
     widget.onImagesPicked(results);
     Navigator.pop(context);
   }

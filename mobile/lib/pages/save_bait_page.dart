@@ -17,8 +17,8 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
   static const String photoId = "photo";
   static const String photosId = "photos";
 
-  ImagePickerPageResult _currentImage;
-  List<ImagePickerPageResult> _currentImages = [];
+  PickedImage _currentImage;
+  List<PickedImage> _currentImages = [];
 
   final Map<String, InputData> _allInputFields = {
     photoId: InputData(

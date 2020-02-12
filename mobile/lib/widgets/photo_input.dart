@@ -12,14 +12,14 @@ import 'package:photo_manager/photo_manager.dart';
 class PhotoInput extends StatelessWidget {
   final bool enabled;
   final bool allowsMultipleSelection;
-  final List<ImagePickerPageResult> currentImages;
-  final Function(List<ImagePickerPageResult>) onImagesPicked;
+  final List<PickedImage> currentImages;
+  final Function(List<PickedImage>) onImagesPicked;
   final EdgeInsets padding;
 
   PhotoInput({
     @required this.enabled,
     this.allowsMultipleSelection = true,
-    List<ImagePickerPageResult> initialImages = const [],
+    List<PickedImage> initialImages = const [],
     @required this.onImagesPicked,
     this.padding = insetsZero,
   }) : assert(onImagesPicked != null),
@@ -28,8 +28,8 @@ class PhotoInput extends StatelessWidget {
 
   PhotoInput.single({
     @required enabled,
-    ImagePickerPageResult currentImage,
-    @required Function(ImagePickerPageResult) onImagePicked,
+    PickedImage currentImage,
+    @required Function(PickedImage) onImagePicked,
     EdgeInsets padding = insetsZero,
   }) : this(
     enabled: enabled,
@@ -52,6 +52,7 @@ class PhotoInput extends StatelessWidget {
 
           push(context, ImagePickerPage(
             allowsMultipleSelection: allowsMultipleSelection,
+            initialImages: currentImages,
             onImagesPicked: (images) {
               onImagesPicked(images);
             },
@@ -93,7 +94,7 @@ class PhotoInput extends StatelessWidget {
         scrollDirection: Axis.horizontal,
         itemCount: currentImages.length,
         itemBuilder: (context, i) {
-          ImagePickerPageResult image = currentImages[i];
+          PickedImage image = currentImages[i];
           return Container(
             width: galleryMaxThumbSize,
             child: image.thumbData == null
