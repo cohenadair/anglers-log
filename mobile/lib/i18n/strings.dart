@@ -113,6 +113,8 @@ class Strings {
   String get imagePickerPageGalleryLabel => _string("imagePickerPage_galleryLabel");
   String get imagePickerPageBrowseLabel => _string("imagePickerPage_browseLabel");
   String get imagePickerPageSelectedLabel => _string("imagePickerPage_selectedLabel");
+  String get imagePickerPageInvalidSelectionSingle => _string("imagePickerPage_invalidSelectionSingle");
+  String get imagePickerPageInvalidSelectionPlural => _string("imagePickerPage_invalidSelectionPlural");
 
   String get addCustomFieldPageTitle => _string("addCustomFieldPage_title");
 

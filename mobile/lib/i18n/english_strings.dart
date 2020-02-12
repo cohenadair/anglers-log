@@ -87,6 +87,8 @@ Map<String, Map<String, String>> englishStrings = {
     "imagePickerPage_galleryLabel" : "Gallery",
     "imagePickerPage_browseLabel" : "Browse",
     "imagePickerPage_selectedLabel" : "%s / %s Selected",
+    "imagePickerPage_invalidSelectionSingle" : "Must select an image file.",
+    "imagePickerPage_invalidSelectionPlural" : "Must select image files.",
 
     "angler_nameLabel" : "Angler",
 

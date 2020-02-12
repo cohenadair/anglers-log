@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/res/dimen.dart';
+import 'package:mobile/utils/dialog_utils.dart';
 import 'package:mobile/utils/string_utils.dart';
 import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/no_results.dart';
@@ -398,15 +399,24 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
       ".heif", ".heic",
     ];
     List<String> invalidFiles = [];
-    for (File image in images.reversed) {
+    for (int i = images.length - 1; i >= 0; i--) {
+      File image = images[i];
       if (!supportedFileExtensions.contains(Path.extension(image.path))) {
         invalidFiles.add(Path.basename(image.path));
-        images.remove(image);
+        images.removeAt(i);
       }
     }
 
-    _pop(images.map((image) => PickedImage(image, null, null))
-        .toList());
+    if (images.isEmpty) {
+      String msg = Strings.of(context).imagePickerPageInvalidSelectionSingle;
+      if (widget.allowsMultipleSelection) {
+        msg = Strings.of(context).imagePickerPageInvalidSelectionPlural;
+      }
+      showErrorDialog(context: context, description: msg);
+    } else {
+      _pop(images.map((image) => PickedImage(image, null, null))
+          .toList());
+    }
   }
 
   void _pop(List<PickedImage> results) {
