@@ -46,6 +46,7 @@ class Strings {
   String get continueString => _string("continue");
   String get yes => _string("yes");
   String get no => _string("no");
+  String get clear => _string("clear");
   String get today => _string("today");
   String get yesterday => _string("yesterday");
   String get directions => _string("directions");
@@ -111,6 +112,7 @@ class Strings {
   String get imagePickerPageCameraLabel => _string("imagePickerPage_cameraLabel");
   String get imagePickerPageGalleryLabel => _string("imagePickerPage_galleryLabel");
   String get imagePickerPageBrowseLabel => _string("imagePickerPage_browseLabel");
+  String get imagePickerPageSelectedLabel => _string("imagePickerPage_selectedLabel");
 
   String get addCustomFieldPageTitle => _string("addCustomFieldPage_title");
 

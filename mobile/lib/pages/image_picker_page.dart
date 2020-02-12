@@ -6,9 +6,11 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/res/dimen.dart';
+import 'package:mobile/utils/string_utils.dart';
 import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/no_results.dart';
 import 'package:mobile/widgets/page.dart';
+import 'package:mobile/widgets/text.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:path/path.dart' as Path;
 import 'package:photo_manager/photo_manager.dart';
@@ -150,6 +152,18 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
                 // Sort by most recent first.
                 _assets.sort((lhs, rhs) =>
                     rhs.createDateTime.compareTo(lhs.createDateTime));
+
+                for (int i = 0; i < _assets.length; i++) {
+                  for (PickedImage image in _initialImages.reversed) {
+                    if (image.originalFileId != null
+                        && image.originalFileId == _assets[i].id)
+                    {
+                      _selectedIndexes.add(i);
+                      _initialImages.remove(image);
+                      break;
+                    }
+                  }
+                }
               }
 
               return _assets.isEmpty
@@ -231,58 +245,79 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
   }
 
   Widget _buildImageGrid() {
-    return GridView.builder(
-      gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-        maxCrossAxisExtent: galleryMaxThumbSize,
-        crossAxisSpacing: gallerySpacing,
-        mainAxisSpacing: gallerySpacing,
-      ),
-      itemCount: _assets.length,
-      itemBuilder: (context, i) {
-        var future = _thumbnailFutures[i];
-        if (future == null) {
-          future = _assets[i].thumbData;
-          _thumbnailFutures[i] = future;
-        }
-
-        for (PickedImage image in _initialImages.reversed) {
-          if (image.originalFileId != null
-              && image.originalFileId == _assets[i].id)
-          {
-            _selectedIndexes.add(i);
-            _initialImages.remove(image);
-            break;
-          }
-        }
-
-        var selected = _selectedIndexes.contains(i);
-
-        return Stack(
-          fit: StackFit.expand,
-          children: <Widget>[
-            FutureBuilder<Uint8List>(
-              future: future,
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  return _buildThumbnail(snapshot.data, i, selected);
-                } else {
-                  return Empty();
-                }
-              },
+    return Column(
+      children: <Widget>[
+        Expanded(
+          child: GridView.builder(
+            gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+              maxCrossAxisExtent: galleryMaxThumbSize,
+              crossAxisSpacing: gallerySpacing,
+              mainAxisSpacing: gallerySpacing,
             ),
-            Visibility(
-              visible: selected,
-              child: Padding(
-                padding: const EdgeInsets.all(_selectedPadding),
-                child: Align(
-                  alignment: Alignment.topRight,
-                  child: Icon(Icons.check_circle),
+            itemCount: _assets.length,
+            itemBuilder: (context, i) {
+              var future = _thumbnailFutures[i];
+              if (future == null) {
+                future = _assets[i].thumbData;
+                _thumbnailFutures[i] = future;
+              }
+
+              var selected = _selectedIndexes.contains(i);
+
+              return Stack(
+                fit: StackFit.expand,
+                children: <Widget>[
+                  FutureBuilder<Uint8List>(
+                    future: future,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        return _buildThumbnail(snapshot.data, i, selected);
+                      } else {
+                        return Empty();
+                      }
+                    },
+                  ),
+                  Visibility(
+                    visible: selected,
+                    child: Padding(
+                      padding: const EdgeInsets.all(_selectedPadding),
+                      child: Align(
+                        alignment: Alignment.topRight,
+                        child: Icon(Icons.check_circle),
+                      ),
+                    ),
+                  ),
+                ],
+              );
+            },
+          ),
+        ),
+        Container(
+          color: Theme.of(context).primaryColor,
+          child: SafeArea(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Padding(
+                  padding: insetsHorizontalDefault,
+                  child: LabelText(
+                    format(Strings.of(context).imagePickerPageSelectedLabel,
+                        [_selectedIndexes.length, _assets.length]),
+                  ),
                 ),
-              ),
+                ActionButton(
+                  text: Strings.of(context).clear,
+                  onPressed: () {
+                    setState(() {
+                      _selectedIndexes.clear();
+                    });
+                  },
+                ),
+              ],
             ),
-          ],
-        );
-      },
+          ),
+        ),
+      ],
     );
   }
 

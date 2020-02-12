@@ -15,7 +15,7 @@ class HeadingText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       _text,
-      style: Theme.of(context).textTheme.body2.copyWith(
+      style: Theme.of(context).textTheme.bodyText1.copyWith(
         color: Theme.of(context).primaryColor,
       ),
     );
@@ -42,8 +42,7 @@ class LabelText extends StatelessWidget {
   final TextOverflow overflow;
   final bool enabled;
 
-  LabelText({
-    @required this.text,
+  LabelText(this.text, {
     this.overflow = TextOverflow.fade,
     this.enabled = true,
   });
@@ -58,7 +57,7 @@ class LabelText extends StatelessWidget {
   }
 
   TextStyle _style(BuildContext context) {
-    TextStyle style = Theme.of(context).textTheme.subhead;
+    TextStyle style = Theme.of(context).textTheme.subtitle1;
     if (!enabled) {
       style = style.copyWith(
         color: Theme.of(context).disabledColor,

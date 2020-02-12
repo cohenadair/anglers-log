@@ -268,7 +268,7 @@ class _MapPageState extends State<MapPage> {
                       children: <Widget>[
                         Icon(Icons.search),
                         SizedBox(width: paddingWidget),
-                        LabelText(text: isEmpty(name)
+                        LabelText(isEmpty(name)
                             ? Strings.of(context).mapPageSearchHint : name),
                       ],
                     ),

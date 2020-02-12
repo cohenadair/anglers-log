@@ -18,6 +18,7 @@ Map<String, Map<String, String>> englishStrings = {
     "continue" : "Continue",
     "yes" : "Yes",
     "no" : "No",
+    "clear" : "Clear",
     "today" : "Today",
     "yesterday" : "Yesterday",
     "directions" : "Directions",
@@ -85,6 +86,7 @@ Map<String, Map<String, String>> englishStrings = {
     "imagePickerPage_cameraLabel" : "Camera",
     "imagePickerPage_galleryLabel" : "Gallery",
     "imagePickerPage_browseLabel" : "Browse",
+    "imagePickerPage_selectedLabel" : "%s / %s Selected",
 
     "angler_nameLabel" : "Angler",
 
