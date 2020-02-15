@@ -51,11 +51,9 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
             enabled: !isRemovingFields,
             currentImage: _currentImage,
             onImagePicked: (image) {
-              if (image != null) {
-                setState(() {
-                  _currentImage = image;
-                });
-              }
+              setState(() {
+                _currentImage = image;
+              });
             },
           );
           case photosId: return PhotoInput(

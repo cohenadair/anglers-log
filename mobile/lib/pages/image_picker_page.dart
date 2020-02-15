@@ -299,18 +299,21 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Padding(
+                widget.allowsMultipleSelection ? Padding(
                   padding: insetsHorizontalDefault,
                   child: LabelText(
                     format(Strings.of(context).imagePickerPageSelectedLabel,
                         [_selectedIndexes.length, _assets.length]),
                   ),
-                ),
+                ) : Empty(),
                 ActionButton(
                   text: Strings.of(context).clear,
                   onPressed: () {
                     setState(() {
                       _selectedIndexes.clear();
+                      if (!widget.allowsMultipleSelection) {
+                        _pop([]);
+                      }
                     });
                   },
                 ),
