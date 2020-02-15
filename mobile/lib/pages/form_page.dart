@@ -153,6 +153,13 @@ class _FormPageState extends State<FormPage> {
       );
     }
 
+    // If we're editing and the form's padding has been set to zero, we need
+    // to add some padding for the checkboxes.
+    var padding = widget.padding;
+    if (_isRemovingFields && padding == insetsZero) {
+      padding = insetsRightDefault;
+    }
+
     return Page(
       appBarStyle: PageAppBarStyle(
         title: widget.title,
@@ -177,7 +184,7 @@ class _FormPageState extends State<FormPage> {
           ) : Empty(),
         ],
       ),
-      padding: widget.padding,
+      padding: padding,
       child: Form(
         key: _key,
         child: SingleChildScrollView(
@@ -199,7 +206,7 @@ class _FormPageState extends State<FormPage> {
                   top: paddingSmall,
                   // Include right edge padding on the button, even if the
                   // parent widget is handling padding.
-                  right: insetsZero == widget.padding ? paddingDefault : 0,
+                  right: insetsZero == padding ? paddingDefault : 0,
                 ),
                 child: Button(
                   text: Strings.of(context).formPageAddFieldText,

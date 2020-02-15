@@ -7,7 +7,7 @@ import 'package:mobile/location_monitor.dart';
 import 'package:mobile/trip_manager.dart';
 
 class AppManager {
-  BaitManager get baitManager => BaitManager.get();
+  BaitManager get baitManager => BaitManager.get(this);
   DataManager get dataManager => DataManager.get();
   CatchManager get catchManager => CatchManager.get();
   CustomFieldManager get customFieldManager => CustomFieldManager.get();

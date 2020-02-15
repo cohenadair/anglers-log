@@ -14,14 +14,12 @@ class PhotoInput extends StatelessWidget {
   final bool allowsMultipleSelection;
   final List<PickedImage> currentImages;
   final Function(List<PickedImage>) onImagesPicked;
-  final EdgeInsets padding;
 
   PhotoInput({
     @required this.enabled,
     this.allowsMultipleSelection = true,
     List<PickedImage> initialImages = const [],
     @required this.onImagesPicked,
-    this.padding = insetsZero,
   }) : assert(onImagesPicked != null),
        assert(initialImages != null),
        currentImages = initialImages;
@@ -30,14 +28,12 @@ class PhotoInput extends StatelessWidget {
     @required enabled,
     PickedImage currentImage,
     @required Function(PickedImage) onImagePicked,
-    EdgeInsets padding = insetsZero,
   }) : this(
     enabled: enabled,
     allowsMultipleSelection: false,
     initialImages: currentImage == null ? [] : [currentImage],
     onImagesPicked: (images) =>
         onImagePicked(images.isNotEmpty ? images.first : null),
-    padding: padding,
   );
 
   @override
@@ -59,7 +55,12 @@ class PhotoInput extends StatelessWidget {
           ));
         } : null,
         child: Padding(
-          padding: padding,
+          padding: EdgeInsets.only(
+            left: paddingDefault,
+            right: enabled ? paddingDefault : 0,
+            top: paddingDefault,
+            bottom: paddingDefault,
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[

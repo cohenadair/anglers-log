@@ -1,6 +1,6 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
+import 'package:mobile/model/bait_category.dart';
+import 'package:mobile/pages/image_picker_page.dart';
 import 'package:mobile/utils/date_time_utils.dart';
 
 /// An abstract class for storing a value of an input widget, such as a
@@ -21,7 +21,10 @@ class InputController<T> {
   }
 }
 
-class ImageInputController extends InputController<File> {
+class BaitCategoryController extends InputController<BaitCategory> {
+}
+
+class ImageInputController extends InputController<PickedImage> {
 }
 
 class TextInputController extends InputController<TextEditingController> {

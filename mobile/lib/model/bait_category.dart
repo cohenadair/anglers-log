@@ -12,4 +12,6 @@ class BaitCategory extends Entity {
     String id,
   }) : assert(isNotEmpty(name)),
        super(id: id, name: name);
+
+  BaitCategory.fromMap(Map<String, dynamic> map) : super.fromMap(map);
 }

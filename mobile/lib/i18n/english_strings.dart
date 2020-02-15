@@ -50,6 +50,8 @@ Map<String, Map<String, String>> englishStrings = {
     "baitListPage_menuLabel" : "Baits",
     "baitListPage_title" : "Baits (%s)",
 
+    "saveBaitPage_categoryLabel" : "Bait Category",
+
     "statsPage_title" : "Stats",
 
     "morePage_title" : "More",

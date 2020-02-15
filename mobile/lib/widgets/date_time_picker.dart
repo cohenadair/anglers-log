@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/res/color.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/widgets/text.dart';
 import 'package:mobile/widgets/widget.dart';

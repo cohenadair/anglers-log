@@ -67,6 +67,17 @@ class LabelText extends StatelessWidget {
   }
 }
 
+class SecondaryLabelText extends StatelessWidget {
+  final String text;
+
+  SecondaryLabelText(this.text);
+
+  @override
+  Widget build(BuildContext context) {
+    return LabelText(text, enabled: false);
+  }
+}
+
 /// A [Text] widget with an enabled state. If `enabled = false`, the [Text] is
 /// rendered with a `Theme.of(context).disabledColor` color.
 class EnabledText extends StatelessWidget {
