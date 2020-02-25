@@ -1,8 +1,13 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:mobile/i18n/strings.dart';
+import 'package:mobile/res/dimen.dart';
 import 'package:mobile/res/style.dart';
+import 'package:mobile/widgets/text_input.dart';
+import 'package:quiver/strings.dart';
 
-showDeleteDialog({
+void showDeleteDialog({
   @required BuildContext context,
   String title,
   String description,
@@ -17,7 +22,7 @@ showDeleteDialog({
   );
 }
 
-showConfirmYesDialog({
+void showConfirmYesDialog({
   @required BuildContext context,
   String description,
   VoidCallback onConfirm,
@@ -31,7 +36,7 @@ showConfirmYesDialog({
   );
 }
 
-showWarningDialog({
+void showWarningDialog({
   @required BuildContext context,
   String description,
   VoidCallback onContinue,
@@ -44,7 +49,7 @@ showWarningDialog({
   );
 }
 
-showErrorDialog({
+void showErrorDialog({
   @required BuildContext context,
   String description,
 }) {
@@ -55,7 +60,7 @@ showErrorDialog({
   );
 }
 
-showOkDialog({
+void showOkDialog({
   @required BuildContext context,
   String title,
   String description,
@@ -69,6 +74,24 @@ showOkDialog({
       actions: <Widget>[
         _buildDialogButton(context: context, name: Strings.of(context).ok),
       ],
+    ),
+  );
+}
+
+void showTextFieldAddDialog({
+  @required BuildContext context,
+  String title,
+  String labelText,
+  FutureOr<String> Function(String) validate,
+  void Function(String) onAdd,
+}) {
+  showDialog(
+    context: context,
+    builder: (context) => _TextFieldDialog(
+      title: title,
+      labelText: labelText,
+      validate: validate,
+      onAdd: onAdd,
     ),
   );
 }
@@ -108,13 +131,87 @@ Widget _buildDialogButton({
   @required String name,
   Color textColor,
   VoidCallback onTap,
+  bool popOnTap = true,
+  bool enabled = true,
 }) {
   return FlatButton(
     child: Text(name.toUpperCase()),
     textColor: textColor,
-    onPressed: () {
+    onPressed: enabled ? () {
       onTap?.call();
-      Navigator.pop(context);
-    },
+      if (popOnTap) {
+        Navigator.pop(context);
+      }
+    } : null,
   );
+}
+
+class _TextFieldDialog extends StatefulWidget {
+  final String title;
+  final String labelText;
+  final FutureOr<String> Function(String) validate;
+  final void Function(String) onAdd;
+
+  _TextFieldDialog({
+    this.title,
+    this.labelText,
+    this.validate,
+    this.onAdd,
+  });
+
+  @override
+  _TextFieldDialogState createState() => _TextFieldDialogState();
+}
+
+class _TextFieldDialogState extends State<_TextFieldDialog> {
+  final TextEditingController _controller = TextEditingController();
+
+  bool _valid = false;
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: Text(widget.title),
+      titleTextStyle: styleTitleAlert,
+      content: TextInput.name(context,
+        controller: _controller,
+        autofocus: true,
+        validator: (text) async {
+          String error = await widget.validate(text);
+          setState(() {
+            _valid = isEmpty(error);
+          });
+          return error;
+        },
+      ),
+      actions: <Widget>[
+        _buildDialogButton(
+          context: context,
+          name: Strings.of(context).add,
+          onTap: () => widget.onAdd?.call(_controller.value.text),
+          enabled: _valid,
+        ),
+        _buildDialogButton(
+          context: context,
+          name: Strings.of(context).addAnother,
+          popOnTap: false,
+          onTap: () {
+            widget.onAdd?.call(_controller.value.text);
+            _controller.value = TextEditingValue(text: "");
+          },
+          enabled: _valid,
+        ),
+        _buildDialogButton(
+          context: context,
+          name: Strings.of(context).cancel,
+        ),
+      ],
+    );
+  }
 }

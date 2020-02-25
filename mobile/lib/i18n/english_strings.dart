@@ -24,6 +24,8 @@ Map<String, Map<String, String>> englishStrings = {
     "directions" : "Directions",
     "latLng" : "Lat: %s, Lng: %s",
     "latLng_noLabels" : "%s, %s",
+    "add" : "Add",
+    "addAnother" : "Add and add another",
 
     "fieldType_number" : "Number",
     "fieldType_boolean" : "Checkbox",
@@ -51,6 +53,8 @@ Map<String, Map<String, String>> englishStrings = {
     "baitListPage_title" : "Baits (%s)",
 
     "saveBaitPage_categoryLabel" : "Bait Category",
+    "saveBaitPage_addCategoryLabel" : "Add Bait Category",
+    "saveBaitPage_categoryExistsMessage" : "Bait category already exists",
 
     "statsPage_title" : "Stats",
 

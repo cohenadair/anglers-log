@@ -52,6 +52,8 @@ class Strings {
   String get directions => _string("directions");
   String get latLng => _string("latLng");
   String get latLngNoLabels => _string("latLng_noLabels");
+  String get add => _string("add");
+  String get addAnother => _string("addAnother");
 
   String get fieldTypeNumber => _string("fieldType_number");
   String get fieldTypeBoolean => _string("fieldType_boolean");
@@ -82,6 +84,8 @@ class Strings {
   String get baitListPageTitle => _string("baitListPage_title");
 
   String get saveBaitPageCategoryLabel => _string("saveBaitPage_categoryLabel");
+  String get saveBaitPageAddCategoryLabel => _string("saveBaitPage_addCategoryLabel");
+  String get saveBaitPageCategoryExistsMessage => _string("saveBaitPage_categoryExistsMessage");
 
   String get statsPageTitle => _string("statsPage_title");
 

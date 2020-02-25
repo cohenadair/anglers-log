@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/app_manager.dart';
 import 'package:mobile/model/bait_category.dart';
-import 'package:mobile/utils/future_listener.dart';
+import 'package:mobile/utils/future_stream_builder.dart';
 import 'package:mobile/utils/void_stream_controller.dart';
 import 'package:provider/provider.dart';
 
@@ -21,10 +21,19 @@ class BaitManager {
   final String _categoryTableName = "bait_category";
 
   final AppManager _app;
-  final VoidStreamController _onCategoryUpdateController =
+  final VoidStreamController onCategoryUpdateController =
       VoidStreamController();
 
   int get numberOfBaits => 0;
+
+  Future<bool> categoryNameExists(String name) {
+    return _app.dataManager.exists(_categoryTableName, "name", name);
+  }
+
+  void createOrUpdateCategory(BaitCategory baitCategory) async {
+    _app.dataManager.insertOrUpdateEntity(baitCategory, _categoryTableName,
+        controller: onCategoryUpdateController);
+  }
 
   Future<List<BaitCategory>> _fetchAllCategories() async {
     var results = await _app.dataManager.fetchAllEntities(_categoryTableName);
@@ -32,7 +41,18 @@ class BaitManager {
   }
 }
 
-/// A [FutureListener] wrapper for listening for [BaitCategory] updates.
+/// A [FutureStreamHolder] subclass for [BaitCategory] objects.
+class BaitCategoriesFutureStreamHolder extends FutureStreamHolder {
+  BaitCategoriesFutureStreamHolder(BuildContext context, {
+    void Function(List<BaitCategory>) onUpdate,
+  }) : super.single(
+    futureCallback: BaitManager.of(context)._fetchAllCategories,
+    stream: BaitManager.of(context).onCategoryUpdateController.stream,
+    onUpdate: (result) => onUpdate(result as List<BaitCategory>),
+  );
+}
+
+/// A [FutureStreamBuilder] wrapper for listening for [BaitCategory] updates.
 class BaitCategoriesBuilder extends StatelessWidget {
   final Widget Function(BuildContext) builder;
   final void Function(List<BaitCategory>) onUpdate;
@@ -44,12 +64,9 @@ class BaitCategoriesBuilder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    BaitManager baitManager = BaitManager.of(context);
-    return FutureListener.single(
-      future: baitManager._fetchAllCategories,
-      stream: baitManager._onCategoryUpdateController.stream,
+    return FutureStreamBuilder(
+      holder: BaitCategoriesFutureStreamHolder(context, onUpdate: onUpdate),
       builder: (context) => builder(context),
-      onUpdate: (dynamic result) => onUpdate(result as List<BaitCategory>),
     );
   }
 }

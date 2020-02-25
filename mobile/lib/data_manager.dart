@@ -63,8 +63,14 @@ class DataManager {
 
   /// Returns true if the given ID exists in the given table; false otherwise.
   Future<bool> _idExists(String tableName, String id) async {
+    return exists(tableName, "id", id);
+  }
+
+  Future<bool> exists(String tableName, String columnName, dynamic value) async
+  {
     return Sqflite.firstIntValue(await _database
-        .rawQuery("SELECT COUNT(*) FROM $tableName WHERE id = ?", [id])) == 1;
+        .rawQuery("SELECT COUNT(*) FROM $tableName WHERE $columnName = ?",
+            [value])) > 0;
   }
 
   /// Inserts a new [Entity] into the given [tableName] or updates the existing

@@ -11,6 +11,7 @@ import 'package:mobile/widgets/input_controller.dart';
 import 'package:mobile/widgets/photo_input.dart';
 import 'package:mobile/widgets/list_picker_input.dart';
 import 'package:mobile/widgets/widget.dart';
+import 'package:quiver/strings.dart';
 
 class SaveBaitPage extends StatefulWidget {
   final Bait oldBait;
@@ -67,22 +68,41 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
     );
   }
 
-  Widget _buildCategoryPicker(bool isRemovingFields) => BaitCategoriesBuilder(
-    onUpdate: (categories) {
-      _log.d("Bait categories updated...");
-      _categories = categories;
-    },
-    builder: (context) => ListPickerInput<BaitCategory>.single(
+  Widget _buildCategoryPicker(bool isRemovingFields) {
+    return ListPickerInput<BaitCategory>.single(
       enabled: !isRemovingFields,
       labelText: Strings.of(context).saveBaitPageCategoryLabel,
-      items: _categories.map((e) => PickerInputItem(
+      futureStreamHolder: BaitCategoriesFutureStreamHolder(context,
+        onUpdate: (categories) {
+          _log.d("Bait categories updated...");
+          _categories = categories;
+        },
+      ),
+      itemBuilder: () => _categories.map((e) => ListPickerInputItem(
         title: e.name,
         value: e,
       )).toList(),
       onChanged: (category) =>
           _allInputFields[baitCategoryId].controller.value = category,
-    ),
-  );
+      addItemHelper: ListPickerInputAddHelper(
+        title: Strings.of(context).saveBaitPageAddCategoryLabel,
+        labelText: Strings.of(context).inputNameLabel,
+        validate: (potentialName) async {
+          if (isEmpty(potentialName)) {
+            return Strings.of(context).inputNameRequired;
+          } else if (await BaitManager.of(context)
+              .categoryNameExists(potentialName))
+          {
+            return Strings.of(context).saveBaitPageCategoryExistsMessage;
+          } else {
+            return null;
+          }
+        },
+        onAdd: (newName) => BaitManager.of(context).createOrUpdateCategory(
+            BaitCategory(name: newName)),
+      ),
+    );
+  }
 
   Widget _buildPhotoPicker(bool isRemovingFields) => PhotoInput.single(
     enabled: !isRemovingFields,

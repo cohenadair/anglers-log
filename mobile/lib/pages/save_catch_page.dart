@@ -85,8 +85,6 @@ class SaveCatchPage extends StatelessWidget {
     return TextInput.name(context,
       controller: _allInputFields[anglerId].controller.value,
       label: _allInputFields[anglerId].label(context),
-      requiredText: format(Strings.of(context).inputRequiredMessage,
-          [Strings.of(context).anglerNameLabel]),
       enabled: !isRemovingFields,
     );
   }

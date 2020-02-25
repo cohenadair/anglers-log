@@ -1,8 +1,10 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:quiver/strings.dart';
 
-class TextInput extends StatelessWidget {
+class TextInput extends StatefulWidget {
   static const int inputLimitDefault = 40;
   static const int inputLimitName = 20;
   static const int inputLimitNumber = 10;
@@ -10,54 +12,56 @@ class TextInput extends StatelessWidget {
 
   final String initialValue;
   final String label;
-  final String requiredText;
   final TextCapitalization capitalization;
   final TextEditingController controller;
   final bool enabled;
-  final bool required;
+  final bool autofocus;
   final int maxLength;
   final int maxLines;
   final TextInputType keyboardType;
-  final String Function(String) validator;
+  final FutureOr<String> Function(String) validator;
+
+  /// If true, invokes [validator] in the [TextFormField.onChanged] callback,
+  /// and updates [errorText].
+  final bool validateOnChange;
 
   TextInput({
     this.initialValue,
     this.label,
-    this.requiredText,
     this.capitalization = TextCapitalization.none,
     this.controller,
     this.enabled = true,
-    this.required = true,
+    this.autofocus = false,
     this.maxLength = inputLimitDefault,
     this.maxLines,
     this.keyboardType,
     this.validator,
+    this.validateOnChange = true,
   });
 
   TextInput.name(BuildContext context, {
     String label,
-    String requiredText,
     String initialValue,
     TextEditingController controller,
     bool enabled,
-    bool required = false,
+    bool autofocus = false,
+    FutureOr<String> Function(String) validator,
   }) : this(
     initialValue: initialValue,
     label: isEmpty(label) ? Strings.of(context).inputNameLabel : label,
-    requiredText: isEmpty(requiredText)
-        ? Strings.of(context).inputNameRequired : requiredText,
     capitalization: TextCapitalization.words,
     controller: controller,
     maxLength: inputLimitName,
     enabled: enabled,
-    required: required,
+    autofocus: autofocus,
+    validator: validator,
   );
 
   TextInput.description(BuildContext context, {
     String initialValue,
     TextEditingController controller,
     bool enabled,
-    bool required = false,
+    bool autofocus = false,
   }) : this(
     initialValue: initialValue,
     label: Strings.of(context).inputDescriptionLabel,
@@ -65,7 +69,7 @@ class TextInput extends StatelessWidget {
     controller: controller,
     maxLength: inputLimitDescription,
     enabled: enabled,
-    required: required,
+    autofocus: autofocus,
   );
 
   TextInput.number(BuildContext context, {
@@ -74,14 +78,15 @@ class TextInput extends StatelessWidget {
     String requiredText,
     TextEditingController controller,
     bool enabled,
+    bool autofocus = false,
     bool required = false,
   }) : this(
     initialValue: initialValue == null ? null : initialValue.toString(),
     label: label,
-    requiredText: requiredText,
     controller: controller,
     keyboardType: TextInputType.numberWithOptions(signed: true, decimal: true),
     enabled: enabled,
+    autofocus: autofocus,
     maxLength: inputLimitNumber,
     validator: (String value) {
       if (double.tryParse(value) == null) {
@@ -89,38 +94,50 @@ class TextInput extends StatelessWidget {
       }
       return null;
     },
-    required: required,
   );
+
+  @override
+  _TextInputState createState() => _TextInputState();
+}
+
+class _TextInputState extends State<TextInput> {
+  String _errorText;
+
+  @override
+  void initState() {
+    super.initState();
+    _updateErrorText(widget.controller.value.text);
+  }
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       cursorColor: Theme.of(context).primaryColor,
-      initialValue: initialValue,
-      controller: controller,
+      initialValue: widget.initialValue,
+      controller: widget.controller,
       decoration: InputDecoration(
-        labelText: label,
+        labelText: widget.label,
+        errorText: _errorText,
       ),
-      textCapitalization: capitalization,
-      validator: required ? (String value) {
-        String errorMessage;
-        if (validator != null) {
-          errorMessage = validator(value);
+      textCapitalization: widget.capitalization,
+      validator: (text) => widget.validator?.call(text),
+      enabled: widget.enabled,
+      maxLength: widget.maxLength,
+      maxLines: widget.maxLines,
+      keyboardType: widget.keyboardType,
+      onChanged: (newText) async {
+        if (widget.validateOnChange) {
+          _updateErrorText(newText);
         }
-
-        if (isEmpty(errorMessage)) {
-          return _validationError(value);
-        }
-
-        return errorMessage;
-      } : null,
-      enabled: enabled,
-      maxLength: maxLength,
-      maxLines: maxLines,
-      keyboardType: keyboardType,
+      },
+      autofocus: widget.autofocus,
     );
   }
 
-  String _validationError(String input) =>
-      isNotEmpty(requiredText) && input.isEmpty ? requiredText : null;
+  void _updateErrorText(String inputText) async {
+    var error = await widget.validator?.call(inputText);
+    setState(() {
+      _errorText = error;
+    });
+  }
 }

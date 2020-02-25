@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:mobile/app_manager.dart';
 import 'package:mobile/model/fishing_spot.dart';
-import 'package:mobile/utils/future_listener.dart';
+import 'package:mobile/utils/future_stream_builder.dart';
 import 'package:mobile/utils/void_stream_controller.dart';
 import 'package:provider/provider.dart';
 
@@ -52,7 +52,7 @@ class FishingSpotManager {
   }
 }
 
-/// A [FutureListener] wrapper for listening for [FishingSpot] updates.
+/// A [FutureStreamBuilder] wrapper for listening for [FishingSpot] updates.
 class FishingSpotsBuilder extends StatelessWidget {
   final String searchText;
   final Widget Function(BuildContext) builder;
@@ -67,11 +67,14 @@ class FishingSpotsBuilder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     FishingSpotManager fishingSpotManager = FishingSpotManager.of(context);
-    return FutureListener.single(
-      future: () => fishingSpotManager._fetchAll(searchText: searchText),
-      stream: fishingSpotManager._onUpdateController.stream,
+    return FutureStreamBuilder(
+      holder: FutureStreamHolder.single(
+        futureCallback: () => fishingSpotManager
+            ._fetchAll(searchText: searchText),
+        stream: fishingSpotManager._onUpdateController.stream,
+        onUpdate: (result) => onUpdate(result as List<FishingSpot>),
+      ),
       builder: (context) => builder(context),
-      onUpdate: (dynamic result) => onUpdate(result as List<FishingSpot>),
     );
   }
 }
