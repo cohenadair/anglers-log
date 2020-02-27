@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/model/custom_entity.dart';
+import 'package:mobile/pages/picker_page.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/utils/page_utils.dart';
 import 'package:mobile/utils/string_utils.dart';
 import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/input.dart';
-import 'package:mobile/widgets/list_picker_input.dart';
 import 'package:mobile/widgets/page.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:quiver/core.dart';
@@ -219,7 +219,7 @@ class _FormPageState extends State<FormPage> {
                   right: insetsZero == padding ? paddingDefault : 0,
                 ),
                 child: Button(
-                  text: Strings.of(context).formPageAddFieldText,
+                  text: Strings.of(context).formPageManageFieldText,
                   onPressed: _isRemovingFields ? null : () {
                     present(context, _addFieldSelectionPage());
                   },
@@ -309,11 +309,11 @@ class _SelectionPageState extends State<_SelectionPage> {
     List<FormPageFieldOption> options = allOptions;
     Set<FormPageFieldOption> used = options.where((e) => e.used).toSet();
 
-    return ListPickerInputPage<FormPageFieldOption>(
+    return PickerPage<FormPageFieldOption>(
       pageTitle: Strings.of(context).formPageSelectFieldsTitle,
       initialValues: used,
       itemBuilder: () => options.map((o) =>
-          ListPickerInputItem<FormPageFieldOption>(
+          PickerPageItem<FormPageFieldOption>(
             title: o.userFacingName,
             value: o,
             enabled: o.removable,
@@ -322,7 +322,7 @@ class _SelectionPageState extends State<_SelectionPage> {
         widget.onSelectItems(options.map((o) => o.id).toSet());
         Navigator.pop(context);
       },
-      addItemHelper: ListPickerInputAddCustomHelper(
+      addItemHelper: PickerPageAddCustomHelper(
         onAddPressed: () => present(context, AddCustomFieldPage(
           onSave: (customField) {
             setState(() {

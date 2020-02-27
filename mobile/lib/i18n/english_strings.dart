@@ -77,7 +77,7 @@ Map<String, Map<String, String>> get englishStrings => {
     "mapPage_mapTypeHybrid" : "Hybrid",
     "mapPage_errorGettingLocation" : "Unable to retrieve current location. Please try again later.",
 
-    "formPage_addFieldText" : "Add Fields",
+    "formPage_manageFieldText" : "Manage Fields",
     "formPage_removeFieldsText" : "Remove Fields",
     "formPage_confirmRemoveField" : "Remove 1 Field",
     "formPage_confirmRemoveFields" : "Remove %s Fields",

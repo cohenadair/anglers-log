@@ -105,7 +105,7 @@ class Strings {
   String get mapPageMapTypeHybrid => _string("mapPage_mapTypeHybrid");
   String get mapPageErrorGettingLocation => _string("mapPage_errorGettingLocation");
 
-  String get formPageAddFieldText => _string("formPage_addFieldText");
+  String get formPageManageFieldText => _string("formPage_manageFieldText");
   String get formPageRemoveFieldsText => _string("formPage_removeFieldsText");
   String get formPageConfirmRemoveField => _string("formPage_confirmRemoveField");
   String get formPageConfirmRemoveFields => _string("formPage_confirmRemoveFields");

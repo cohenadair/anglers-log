@@ -5,6 +5,7 @@ import 'package:mobile/log.dart';
 import 'package:mobile/model/bait.dart';
 import 'package:mobile/model/bait_category.dart';
 import 'package:mobile/pages/editable_form_page.dart';
+import 'package:mobile/pages/picker_page.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/widgets/input.dart';
 import 'package:mobile/widgets/input_controller.dart';
@@ -78,13 +79,13 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
           _categories = categories;
         },
       ),
-      itemBuilder: () => _categories.map((e) => ListPickerInputItem(
+      itemBuilder: () => _categories.map((e) => PickerPageItem(
         title: e.name,
         value: e,
       )).toList(),
       onChanged: (category) =>
           _allInputFields[baitCategoryId].controller.value = category,
-      addItemHelper: ListPickerInputAddStringHelper(
+      addItemHelper: PickerPageAddStringHelper(
         title: Strings.of(context).saveBaitPageAddCategoryLabel,
         labelText: Strings.of(context).inputNameLabel,
         validate: (potentialName) async {

@@ -1,13 +1,9 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
+import 'package:mobile/pages/picker_page.dart';
 import 'package:mobile/res/dimen.dart';
-import 'package:mobile/utils/dialog_utils.dart';
 import 'package:mobile/utils/future_stream_builder.dart';
 import 'package:mobile/utils/page_utils.dart';
-import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/list_item.dart';
-import 'package:mobile/widgets/page.dart';
 import 'package:mobile/widgets/text.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:quiver/strings.dart';
@@ -23,38 +19,34 @@ typedef OnListPickerChanged<T> = void Function(T);
 /// in place of a [DropdownButton] when there are a lot of options, or if
 /// multi-select is desired.
 ///
-/// Note that a [Set] is used to determine which items are selected, and as
-/// such, `T` must override `==`.
+/// This widget shows a [PickerPage] for selecting items.
 class ListPickerInput<T> extends StatefulWidget {
-  /// A title for the [AppBar].
+  /// See [PickerPage.pageTitle].
   final String pageTitle;
 
-  /// A [Set] of initially selected options.
+  /// See [PickerPage.initialValues].
   final Set<T> initialValues;
 
-  /// This option works differently in that, no matter what, if it is selected
-  /// nothing else can be selected at the same time. If another item is
-  /// selected while this item is selected, this item is deselected.
-  ///
-  /// This is meant to be used as a "pick everything" option. For example,
-  /// in filter picker that allows selection of all of something, this
-  /// value could be "Include All".
-  final ListPickerInputItem<T> allItem;
+  /// See [PickerPage.allItem].
+  final PickerPageItem<T> allItem;
 
-  /// All items that can be selected. Dividers can be added between items by
-  /// using [ListPickerInputItem.divider]. This function will be invoked
-  /// whenever the picker list needs to be rebuilt, such as when an item is
-  /// added to the list.
-  final List<ListPickerInputItem<T>> Function() itemBuilder;
+  /// See [PickerPage.itemBuilder].
+  final List<PickerPageItem<T>> Function() itemBuilder;
 
-  /// Invoked when a new item is picked, or when the "Done" button is pressed
-  /// for multi-select pickers.
+  /// See [PickerPage.onFinishedPicking].
   final OnListPickerChanged<Set<T>> onChanged;
 
-  /// 'true' allows multi-select; `false` otherwise. When multi-select is
-  /// enabled, the picker is dismissed via "Done" button in the app bar,
-  /// otherwise the picker is dismissed when an item is selected.
+  /// See [PickerPage.multiSelect].
   final bool allowsMultiSelect;
+
+  /// See [PickerPage.listHeader].
+  final Widget listHeader;
+
+  /// See [PickerPage.addItemHelper].
+  final PickerPageAddHelper addItemHelper;
+
+  /// See [PickerPage.futureStreamHolder].
+  final FutureStreamHolder futureStreamHolder;
 
   /// If `true`, the selected value will render on the right side of the
   /// picker. This does not apply to multi-select pickers.
@@ -62,21 +54,8 @@ class ListPickerInput<T> extends StatefulWidget {
 
   /// Implement this property to create a custom title widget for displaying
   /// which items are selected. Default behaviour is to display a [Column] of
-  /// all [ListPickerInputItem.title] properties.
+  /// all [PickerPageItem.title] properties.
   final Widget Function(Set<T>) titleBuilder;
-
-  /// A [Widget] to show at the top of the underlying [ListView]. This [Widget]
-  /// will scroll with the [ListView].
-  final Widget listHeader;
-
-  /// If non-null, an "Add" button will be present in the [AppBar] that allows
-  /// users to input a name. This name is passed to the [addItemHelper]
-  /// property of this object.
-  final ListPickerInputAddHelper addItemHelper;
-
-  /// If non-null, will update the picker when changes to the underlying stream
-  /// are made.
-  final FutureStreamHolder futureStreamHolder;
 
   /// If `false`, picker is disabled and cannot be tapped.
   final bool enabled;
@@ -112,12 +91,12 @@ class ListPickerInput<T> extends StatefulWidget {
   ListPickerInput.single({
     String pageTitle,
     T initialValue,
-    @required List<ListPickerInputItem<T>> Function() itemBuilder,
+    @required List<PickerPageItem<T>> Function() itemBuilder,
     @required OnListPickerChanged<T> onChanged,
     @required String labelText,
     EdgeInsets padding,
     bool enabled = true,
-    ListPickerInputAddHelper addItemHelper,
+    PickerPageAddHelper addItemHelper,
     FutureStreamHolder futureStreamHolder,
   }) : this(
     pageTitle: pageTitle,
@@ -135,7 +114,7 @@ class ListPickerInput<T> extends StatefulWidget {
   @override
   _ListPickerInputState<T> createState() => _ListPickerInputState<T>();
 
-  ListPickerInputItem<T> _getListPickerItem(T item) {
+  PickerPageItem<T> _getListPickerItem(T item) {
     if (allItem != null && item == allItem.value) {
       return allItem;
     }
@@ -168,7 +147,7 @@ class _ListPickerInputState<T> extends State<ListPickerInput<T>> {
           ],
         ),
         onTap: () {
-          push(context, ListPickerInputPage<T>(
+          push(context, PickerPage<T>(
             futureStreamHolder: widget.futureStreamHolder,
             addItemHelper: widget.addItemHelper,
             pageTitle: widget.pageTitle,
@@ -211,274 +190,5 @@ class _ListPickerInputState<T> extends State<ListPickerInput<T>> {
     });
     widget.onChanged(pickedItems);
     Navigator.pop(context);
-  }
-}
-
-/// A class to be used with [ListPickerInput].
-class ListPickerInputItem<T> {
-  final String title;
-  final String subtitle;
-  final bool enabled;
-  final T value;
-
-  /// Allows custom behaviour of individual items. Returns a non-null object
-  /// of type T that was picked to invoke [ListPickerInput.onChanged]; `null`
-  /// otherwise.
-  ///
-  /// Implemented as a [Future] because presumably, setting this method is
-  /// for custom picker behaviour and will need to wait for that behaviour to
-  /// finish.
-  final Future<T> Function() onTap;
-
-  final bool _divider;
-
-  ListPickerInputItem.divider()
-    : value = null,
-      title = null,
-      subtitle = null,
-      onTap = null,
-      enabled = false,
-      _divider = true;
-
-  ListPickerInputItem({
-    @required this.title,
-    this.subtitle,
-    this.value,
-    this.onTap,
-    this.enabled = true,
-  }) : assert(value != null || (value == null && onTap != null)),
-       assert(title != null),
-       _divider = false;
-}
-
-abstract class ListPickerInputAddHelper {
-  void help(BuildContext context);
-}
-
-/// A convenience class used to add items to the list picker. Use when the only
-/// input when adding an item is a [String].
-///
-/// Shows a dialog with a single [TextInput] field.
-class ListPickerInputAddStringHelper implements ListPickerInputAddHelper {
-  /// The title for the input dialog.
-  final String title;
-
-  /// The label for the [TextField].
-  final String labelText;
-
-  /// Invoked on [TextField.onChange]. Return error message, or `nil` if there
-  /// is none.
-  final FutureOr<String> Function(String) validate;
-
-  /// Invoked when an item has been added.
-  final void Function(String) onAdd;
-
-  ListPickerInputAddStringHelper({
-    this.title,
-    this.labelText,
-    this.validate,
-    this.onAdd,
-  });
-
-  @override
-  void help(BuildContext context) {
-    showTextFieldAddDialog(
-      context: context,
-      title: title,
-      labelText: labelText,
-      validate: validate,
-      onAdd: onAdd,
-    );
-  }
-}
-
-/// A convenience class used to add items to the list picker. Use customize
-/// what happens when the "Add" button is pressed in a [ListPickerInputPage].
-class ListPickerInputAddCustomHelper implements ListPickerInputAddHelper {
-  final VoidCallback onAddPressed;
-
-  ListPickerInputAddCustomHelper({
-    @required this.onAddPressed
-  }) : assert(onAddPressed != null);
-
-  @override
-  void help(BuildContext context) {
-    onAddPressed();
-  }
-}
-
-/// A helper page for [ListPickerInput] that renders a list of options.
-class ListPickerInputPage<T> extends StatefulWidget {
-  final String pageTitle;
-  final Widget listHeader;
-  final Set<T> initialValues;
-  final ListPickerInputItem<T> allItem;
-  final List<ListPickerInputItem<T>> Function() itemBuilder;
-  final void Function(Set<T>) onFinishedPicking;
-  final ListPickerInputAddHelper addItemHelper;
-  final FutureStreamHolder futureStreamHolder;
-
-  final bool multiSelect;
-
-  ListPickerInputPage({
-    @required this.itemBuilder,
-    @required this.onFinishedPicking,
-    this.initialValues = const {},
-    this.multiSelect = true,
-    this.pageTitle,
-    this.listHeader,
-    this.allItem,
-    this.addItemHelper,
-    this.futureStreamHolder,
-  }) : assert(initialValues != null),
-       assert(itemBuilder != null);
-
-  ListPickerInputPage.single({
-    @required List<ListPickerInputItem<T>> Function() itemBuilder,
-    @required void Function(T) onFinishedPicking,
-    T initialValue,
-    String pageTitle,
-    Widget listHeader,
-    ListPickerInputItem<T> allItem,
-    ListPickerInputAddHelper addItemHelper,
-    FutureStreamHolder futureStreamHolder,
-  }) : this(
-    itemBuilder: itemBuilder,
-    onFinishedPicking: (items) => onFinishedPicking(items.first),
-    initialValues: initialValue == null ? {} : { initialValue },
-    multiSelect: false,
-    pageTitle: pageTitle,
-    listHeader: listHeader,
-    allItem: allItem,
-    addItemHelper: addItemHelper,
-    futureStreamHolder: futureStreamHolder,
-  );
-
-  @override
-  _ListPickerInputPageState<T> createState() => _ListPickerInputPageState();
-}
-
-class _ListPickerInputPageState<T> extends State<ListPickerInputPage<T>> {
-  Set<T> _selectedValues;
-
-  bool get allowsAdding => widget.addItemHelper != null;
-
-  @override
-  void initState() {
-    super.initState();
-    _selectedValues = Set.of(widget.initialValues);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    Widget child;
-    if (widget.futureStreamHolder == null) {
-      child = _buildListView(context);
-    } else {
-      child = FutureStreamBuilder(
-        holder: widget.futureStreamHolder,
-        builder: (context) => _buildListView(context),
-      );
-    }
-
-    return Page(
-      appBarStyle: PageAppBarStyle(
-        title: widget.pageTitle,
-        actions: [
-          widget.multiSelect ? ActionButton.done(
-            condensed: allowsAdding,
-            onPressed: () {
-              widget.onFinishedPicking(_selectedValues);
-            },
-          ) : Empty(),
-          allowsAdding ? IconButton(
-            icon: Icon(Icons.add),
-            onPressed: () {
-              widget.addItemHelper.help(context);
-            },
-          ) : Empty(),
-        ],
-      ),
-      child: child,
-    );
-  }
-
-  Widget _buildListView(BuildContext context) {
-    List<ListPickerInputItem<T>> items =
-        (widget.allItem == null ? [] : [widget.allItem])
-            ..addAll(widget.itemBuilder());
-
-    return ListView(
-      children: [
-        widget.listHeader == null ? Empty() : Padding(
-          padding: insetsDefault,
-          child: widget.listHeader,
-        ),
-      ]..addAll(items.map((ListPickerInputItem<T> item) {
-        if (item._divider) {
-          return Divider();
-        }
-
-        return ListItem(
-          enabled: item.enabled,
-          title: Text(item.title),
-          subtitle: item.subtitle == null ? null : Text(item.subtitle),
-          trailing: _selectedValues.contains(item.value) ? EnabledOpacity(
-            enabled: item.enabled,
-            child: Icon(
-              Icons.check,
-              color: Theme.of(context).primaryColor,
-            ),
-          ) : null,
-          onTap: () async {
-            if (item.onTap == null) {
-              // Do not trigger the callback for an item that was selected,
-              // but not picked -- multi select picker items aren't
-              // technically picked until "Done" is pressed.
-              if (!widget.multiSelect) {
-                widget.onFinishedPicking({ item.value });
-              }
-              _updateState(item.value);
-            } else {
-              T pickedItem = await item.onTap();
-              if (pickedItem != null) {
-                widget.onFinishedPicking({ pickedItem });
-                _updateState(pickedItem);
-              }
-            }
-          },
-        );
-      }).toList()),
-    );
-  }
-
-  void _updateState(T pickedItem) {
-    setState(() {
-      if (widget.multiSelect) {
-        if (widget.allItem != null && widget.allItem.value == pickedItem) {
-          // If the "all" item was picked, deselect all other items.
-          _selectedValues = Set.of([widget.allItem.value]);
-        } else {
-          // Otherwise, toggle the picked item, and deselect the "all" item
-          // if it exists.
-          _toggleItemSelected(pickedItem);
-
-          if (widget.allItem != null) {
-            _selectedValues.remove(widget.allItem.value);
-          }
-        }
-      } else {
-        // For single selection pickers, always have only one item selected.
-        _selectedValues = Set.of([pickedItem]);
-      }
-    });
-  }
-
-  void _toggleItemSelected(T item) {
-    if (_selectedValues.contains(item)) {
-      _selectedValues.remove(item);
-    } else {
-      _selectedValues.add(item);
-    }
   }
 }
