@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-push(BuildContext context, Widget page, {
+void push(BuildContext context, Widget page, {
   bool fullscreenDialog = false
 }) {
   Navigator.of(context, rootNavigator: fullscreenDialog).push(
@@ -9,4 +9,8 @@ push(BuildContext context, Widget page, {
       fullscreenDialog: fullscreenDialog,
     ),
   );
+}
+
+void present(BuildContext context, Widget page) {
+  push(context, page, fullscreenDialog: true);
 }

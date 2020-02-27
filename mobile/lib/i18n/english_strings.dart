@@ -1,4 +1,4 @@
-Map<String, Map<String, String>> englishStrings = {
+Map<String, Map<String, String>> get englishStrings => {
   "US" : {
   },
   "CA" : {
@@ -77,11 +77,11 @@ Map<String, Map<String, String>> englishStrings = {
     "mapPage_mapTypeHybrid" : "Hybrid",
     "mapPage_errorGettingLocation" : "Unable to retrieve current location. Please try again later.",
 
-    "formPage_addFieldText" : "Add Field",
+    "formPage_addFieldText" : "Add Fields",
     "formPage_removeFieldsText" : "Remove Fields",
     "formPage_confirmRemoveField" : "Remove 1 Field",
     "formPage_confirmRemoveFields" : "Remove %s Fields",
-    "formPage_selectFieldTitle" : "Select Field",
+    "formPage_selectFieldsTitle" : "Select Fields",
 
     "selectionPage_addCustomField" : "Add Custom Field",
 

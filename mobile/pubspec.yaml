@@ -21,7 +21,7 @@ dependencies:
   image_picker: ^0.6.3+1          # Flutter
   intl: ^0.16.0                   # Dart - Version restricted by flutter_localizations
   package_info: ^0.4.0+13         # Flutter
-  photo_manager: ^0.4.8
+  photo_manager: ^0.4.8           # TODO: Update when released for iOS background fetch fix.
   path: ^1.6.4                    # Dart
   provider: ^3.2.0                # Version update requires migration
   quiver: ^2.0.5                  # Google - Version restricted by flutter_test

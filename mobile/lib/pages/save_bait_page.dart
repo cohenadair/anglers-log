@@ -84,7 +84,7 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
       )).toList(),
       onChanged: (category) =>
           _allInputFields[baitCategoryId].controller.value = category,
-      addItemHelper: ListPickerInputAddHelper(
+      addItemHelper: ListPickerInputAddStringHelper(
         title: Strings.of(context).saveBaitPageAddCategoryLabel,
         labelText: Strings.of(context).inputNameLabel,
         validate: (potentialName) async {

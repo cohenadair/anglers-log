@@ -85,7 +85,7 @@ class _EditableFormPageState extends State<EditableFormPage> {
           removable: _allInputFields[id].removable,
         );
       }).toList(),
-      onAddField: _addInputWidget,
+      onAddFields: _addInputWidgets,
       onConfirmRemoveFields: (List<String> fieldsToRemove) {
         setState(() {
           for (String key in fieldsToRemove) {
@@ -117,19 +117,23 @@ class _EditableFormPageState extends State<EditableFormPage> {
     return widget.onBuildField?.call(key, isRemovingFields);
   }
 
-  void _addInputWidget(String id) {
+  void _addInputWidgets(Set<String> ids) {
     // Handle the case of a new custom field being added.
-    CustomEntity customField = _customField(id);
-    if (customField != null) {
-      _allInputFields.putIfAbsent(customField.id, () => InputData(
-        id: customField.id,
-        controller: inputTypeController(customField.type),
-        label: (_) => customField.name,
-      ));
+    for (String id in ids) {
+      CustomEntity customField = _customField(id);
+      if (customField != null) {
+        _allInputFields.putIfAbsent(customField.id, () => InputData(
+          id: customField.id,
+          controller: inputTypeController(customField.type),
+          label: (_) => customField.name,
+        ));
+      }
     }
 
     setState(() {
-      _usedInputOptions.putIfAbsent(id, () => _allInputFields[id]);
+      _usedInputOptions.clear();
+      ids.forEach((id) =>
+          _usedInputOptions.putIfAbsent(id, () => _allInputFields[id]));
     });
   }
 }

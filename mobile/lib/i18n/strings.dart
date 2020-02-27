@@ -7,7 +7,7 @@ import 'package:mobile/i18n/english_strings.dart';
 class Strings {
   static const List<String> _supportedLanguages = ["en"];
 
-  static Map<String, Map<String, Map<String, String>>> _values = {
+  static Map<String, Map<String, Map<String, String>>> get _values => {
     "en" : englishStrings,
   };
 
@@ -109,7 +109,7 @@ class Strings {
   String get formPageRemoveFieldsText => _string("formPage_removeFieldsText");
   String get formPageConfirmRemoveField => _string("formPage_confirmRemoveField");
   String get formPageConfirmRemoveFields => _string("formPage_confirmRemoveFields");
-  String get formPageSelectFieldTitle => _string("formPage_selectFieldTitle");
+  String get formPageSelectFieldsTitle => _string("formPage_selectFieldsTitle");
 
   String get selectionPageAddCustomField => _string("selectionPage_addCustomField");
 

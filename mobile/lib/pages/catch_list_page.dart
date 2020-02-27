@@ -18,11 +18,7 @@ class CatchListPage extends StatelessWidget {
         actions: [
           IconButton(
             icon: Icon(Icons.add),
-            onPressed: () => push(
-              context,
-              SaveCatchPage(),
-              fullscreenDialog: true,
-            ),
+            onPressed: () => present(context, SaveCatchPage()),
           ),
         ],
       ),

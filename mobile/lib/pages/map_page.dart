@@ -514,12 +514,11 @@ class _FishingSpotBottomSheet extends StatelessWidget {
                 ? Strings.of(context).edit : Strings.of(context).save,
             icon: editing ? Icons.edit : Icons.save,
             onPressed: () {
-              push(
+              present(
                 context,
                 SaveFishingSpotPage(
                   oldFishingSpot: fishingSpot,
                 ),
-                fullscreenDialog: true,
               );
             },
           ),

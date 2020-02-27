@@ -18,11 +18,7 @@ class BaitListPage extends StatelessWidget {
         actions: [
           IconButton(
             icon: Icon(Icons.add),
-            onPressed: () => push(
-              context,
-              SaveBaitPage(),
-              fullscreenDialog: true,
-            ),
+            onPressed: () => present(context, SaveBaitPage()),
           ),
         ],
       ),

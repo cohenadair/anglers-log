@@ -6,9 +6,10 @@ import 'package:mobile/utils/page_utils.dart';
 import 'package:mobile/utils/string_utils.dart';
 import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/input.dart';
-import 'package:mobile/widgets/list_item.dart';
+import 'package:mobile/widgets/list_picker_input.dart';
 import 'package:mobile/widgets/page.dart';
 import 'package:mobile/widgets/widget.dart';
+import 'package:quiver/core.dart';
 
 import 'add_custom_field_page.dart';
 
@@ -50,6 +51,16 @@ class FormPageFieldOption {
     this.used = false,
     this.removable = true,
   });
+
+  @override
+  bool operator ==(other) => other is FormPageFieldOption
+      && id == other.id
+      && userFacingName == other.userFacingName
+      && used == other.used
+      && removable == other.removable;
+
+  @override
+  int get hashCode => hash4(id, userFacingName, used, removable);
 }
 
 /// A customizable user input page that supports user-manageable input fields.
@@ -76,8 +87,7 @@ class FormPage extends StatefulWidget {
   final List<FormPageFieldOption> addFieldOptions;
 
   /// Called when a field is added to the form.
-  /// @param id The ID of the field that was selected.
-  final Function(String id) onAddField;
+  final Function(Set<String> ids) onAddFields;
 
   /// Whether this form's components can be added or removed.
   final bool editable;
@@ -92,7 +102,7 @@ class FormPage extends StatefulWidget {
     this.onSave,
     this.onConfirmRemoveFields,
     this.addFieldOptions,
-    this.onAddField,
+    this.onAddFields,
     this.editable = true,
     this.padding = insetsHorizontalDefault,
   }) : assert(fieldBuilder != null),
@@ -111,7 +121,7 @@ class FormPage extends StatefulWidget {
     onSave: onSave,
     onConfirmRemoveFields: null,
     addFieldOptions: null,
-    onAddField: null,
+    onAddFields: null,
     editable: false,
     padding: padding,
   );
@@ -211,11 +221,7 @@ class _FormPageState extends State<FormPage> {
                 child: Button(
                   text: Strings.of(context).formPageAddFieldText,
                   onPressed: _isRemovingFields ? null : () {
-                    push(
-                      context,
-                      _addFieldSelectionPage(),
-                      fullscreenDialog: true,
-                    );
+                    present(context, _addFieldSelectionPage());
                   },
                 ),
               ) : Empty(),
@@ -255,9 +261,7 @@ class _FormPageState extends State<FormPage> {
 
   Widget _addFieldSelectionPage() => _SelectionPage(
     options: widget.addFieldOptions,
-    onSelectItem: (String selectedId) {
-      widget.onAddField(selectedId);
-    },
+    onSelectItems: (selectedIds) => widget.onAddFields(selectedIds),
   );
 
   void _onPressedSave() {
@@ -286,11 +290,11 @@ class _FormPageState extends State<FormPage> {
 
 class _SelectionPage extends StatefulWidget {
   final List<FormPageFieldOption> options;
-  final Function(String) onSelectItem;
+  final Function(Set<String>) onSelectItems;
 
   _SelectionPage({
     @required this.options,
-    this.onSelectItem,
+    this.onSelectItems,
   }) : assert(options != null);
 
   @override
@@ -303,41 +307,30 @@ class _SelectionPageState extends State<_SelectionPage> {
   @override
   Widget build(BuildContext context) {
     List<FormPageFieldOption> options = allOptions;
+    Set<FormPageFieldOption> used = options.where((e) => e.used).toSet();
 
-    return Page(
-      appBarStyle: PageAppBarStyle(
-        title: Strings.of(context).formPageSelectFieldTitle,
-      ),
-      child: ListView.builder(
-        itemCount: options.length + 1,
-        itemBuilder: (BuildContext context, int i) {
-          // The last item is always the "Add Custom Field" option.
-          if (i == options.length) {
-            return ListItem(
-              title: Text(Strings.of(context).selectionPageAddCustomField),
-              onTap: () {
-                push(context, AddCustomFieldPage(
-                  onSave: (CustomEntity customField) {
-                    setState(() {
-                      _addedCustomFields.add(customField);
-                    });
-                  },
-                ));
-              },
-              trailing: RightChevronIcon(),
-            );
-          }
-
-          return ListItem(
-            title: Text(options[i].userFacingName),
-            enabled: !options[i].used,
-            onTap: () {
-              widget.onSelectItem?.call(options[i].id);
-              Navigator.pop(context);
-            },
-          );
-        },
-      ),
+    return ListPickerInputPage<FormPageFieldOption>(
+      pageTitle: Strings.of(context).formPageSelectFieldsTitle,
+      initialValues: used,
+      itemBuilder: () => options.map((o) =>
+          ListPickerInputItem<FormPageFieldOption>(
+            title: o.userFacingName,
+            value: o,
+            enabled: o.removable,
+          )).toList(),
+      onFinishedPicking: (options) {
+        widget.onSelectItems(options.map((o) => o.id).toSet());
+        Navigator.pop(context);
+      },
+      addItemHelper: ListPickerInputAddCustomHelper(
+        onAddPressed: () => present(context, AddCustomFieldPage(
+          onSave: (customField) {
+            setState(() {
+              _addedCustomFields.add(customField);
+            });
+          },
+        ),
+      )),
     );
   }
 
