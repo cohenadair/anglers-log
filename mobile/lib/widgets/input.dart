@@ -56,7 +56,7 @@ class Input extends StatelessWidget {
     return Row(
       children: <Widget>[
         child,
-        editable && editing ? CondensedCheckBox(
+        editable && editing ? PaddedCheckbox(
           padding: insetsLeftDefault,
           value: selected,
           onChanged: (bool value) {

@@ -60,6 +60,7 @@ const insetsVerticalDefaultHorizontalSmall = EdgeInsets.only(
 
 const iconSizeDefault = 24.0;
 const iconSizeLarge = 32.0;
+const checkboxSizeDefault = 24.0;
 
 const floatingCornerRadius = 10.0;
 

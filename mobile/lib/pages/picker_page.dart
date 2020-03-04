@@ -5,6 +5,7 @@ import 'package:mobile/res/dimen.dart';
 import 'package:mobile/utils/dialog_utils.dart';
 import 'package:mobile/utils/future_stream_builder.dart';
 import 'package:mobile/widgets/button.dart';
+import 'package:mobile/widgets/checkbox_input.dart';
 import 'package:mobile/widgets/list_item.dart';
 import 'package:mobile/widgets/page.dart';
 import 'package:mobile/widgets/widget.dart';
@@ -162,27 +163,26 @@ class _PickerPageState<T> extends State<PickerPage<T>> {
           enabled: item.enabled,
           title: Text(item.title),
           subtitle: item.subtitle == null ? null : Text(item.subtitle),
-          trailing: _selectedValues.contains(item.value) ? EnabledOpacity(
+          trailing: widget.multiSelect ? EnabledOpacity(
             enabled: item.enabled,
-            child: Icon(
-              Icons.check,
-              color: Theme.of(context).primaryColor,
+            child: PaddedCheckbox(
+              value: _selectedValues.contains(item.value),
+              onChanged: (value) {
+                setState(() {
+                  _checkboxUpdated(item.value);
+                });
+              },
             ),
           ) : null,
-          onTap: () async {
+          onTap: widget.multiSelect ? null : () async {
             if (item.onTap == null) {
-              // Do not trigger the callback for an item that was selected,
-              // but not picked -- multi select picker items aren't
-              // technically picked until "Done" is pressed.
-              if (!widget.multiSelect) {
-                widget.onFinishedPicking({ item.value });
-              }
-              _updateState(item.value);
+              _listItemTapped(item.value);
+              widget.onFinishedPicking({ item.value });
             } else {
               T pickedItem = await item.onTap();
               if (pickedItem != null) {
+                _listItemTapped(pickedItem);
                 widget.onFinishedPicking({ pickedItem });
-                _updateState(pickedItem);
               }
             }
           },
@@ -191,33 +191,28 @@ class _PickerPageState<T> extends State<PickerPage<T>> {
     );
   }
 
-  void _updateState(T pickedItem) {
+  void _listItemTapped(T pickedItem) {
     setState(() {
-      if (widget.multiSelect) {
-        if (widget.allItem != null && widget.allItem.value == pickedItem) {
-          // If the "all" item was picked, deselect all other items.
-          _selectedValues = Set.of([widget.allItem.value]);
-        } else {
-          // Otherwise, toggle the picked item, and deselect the "all" item
-          // if it exists.
-          _toggleItemSelected(pickedItem);
-
-          if (widget.allItem != null) {
-            _selectedValues.remove(widget.allItem.value);
-          }
-        }
-      } else {
-        // For single selection pickers, always have only one item selected.
-        _selectedValues = Set.of([pickedItem]);
-      }
+      _selectedValues = Set.of([pickedItem]);
     });
   }
 
-  void _toggleItemSelected(T item) {
-    if (_selectedValues.contains(item)) {
-      _selectedValues.remove(item);
+  void _checkboxUpdated(T pickedItem) {
+    if (widget.allItem != null && widget.allItem.value == pickedItem) {
+      // If the "all" item was picked, deselect all other items.
+      _selectedValues = Set.of([widget.allItem.value]);
     } else {
-      _selectedValues.add(item);
+      // Otherwise, toggle the picked item, and deselect the "all" item
+      // if it exists.
+      if (_selectedValues.contains(pickedItem)) {
+        _selectedValues.remove(pickedItem);
+      } else {
+        _selectedValues.add(pickedItem);
+      }
+
+      if (widget.allItem != null) {
+        _selectedValues.remove(widget.allItem.value);
+      }
     }
   }
 }

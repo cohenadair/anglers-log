@@ -21,7 +21,7 @@ class CheckboxInput extends StatelessWidget {
     return ListItem(
       contentPadding: insetsZero,
       title: enabled ? Text(label) : DisabledText(label),
-      trailing: CondensedCheckBox(
+      trailing: PaddedCheckbox(
         value: value,
         enabled: enabled,
         onChanged: onChanged,
@@ -31,13 +31,13 @@ class CheckboxInput extends StatelessWidget {
 }
 
 /// A [Checkbox] widget with optional padding.
-class CondensedCheckBox extends StatefulWidget {
+class PaddedCheckbox extends StatefulWidget {
   final bool value;
   final bool enabled;
   final EdgeInsets padding;
   final Function(bool) onChanged;
 
-  CondensedCheckBox({
+  PaddedCheckbox({
     this.value = false,
     this.enabled = true,
     this.padding = insetsZero,
@@ -45,10 +45,10 @@ class CondensedCheckBox extends StatefulWidget {
   });
 
   @override
-  _CondensedCheckBoxState createState() => _CondensedCheckBoxState();
+  _PaddedCheckboxState createState() => _PaddedCheckboxState();
 }
 
-class _CondensedCheckBoxState extends State<CondensedCheckBox> {
+class _PaddedCheckboxState extends State<PaddedCheckbox> {
   bool checked;
 
   @override
@@ -61,19 +61,18 @@ class _CondensedCheckBoxState extends State<CondensedCheckBox> {
   Widget build(BuildContext context) {
     return Padding(
       padding: widget.padding,
-      child: InkWell(
-        child: Icon(
-          checked ? Icons.check_box : Icons.check_box_outline_blank,
-          color: widget.enabled
-              ? Theme.of(context).primaryColor
-              : Theme.of(context).primaryColorLight,
+      child: SizedBox(
+        width: checkboxSizeDefault,
+        height: checkboxSizeDefault,
+        child: Checkbox(
+          value: checked,
+          onChanged: (value) {
+            setState(() {
+              checked = !checked;
+              widget.onChanged(checked);
+            });
+          },
         ),
-        onTap: widget.enabled ? () {
-          setState(() {
-            checked = !checked;
-            widget.onChanged(checked);
-          });
-        } : null,
       ),
     );
   }
