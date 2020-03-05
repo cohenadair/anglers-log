@@ -66,7 +66,7 @@ Map<String, Map<String, String>> get englishStrings => {
     "settingsPage_title" : "Settings",
 
     "mapPage_menuLabel" : "Map",
-    "mapPage_deleteFishingSpot" : "Are you sure you want to delete fishing spot %s? This cannot be undone.",
+    "mapPage_deleteFishingSpot" : "Are you sure you want to delete this fishing spot? This cannot be undone.",
     "mapPage_addCatch" : "Add Catch",
     "mapPage_searchHint" : "Search fishing spots",
     "mapPage_noSearchResults" : "No fishing spots found",
