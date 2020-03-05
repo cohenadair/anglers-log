@@ -25,7 +25,7 @@ class SaveCatchPage extends StatelessWidget {
 
     anglerId: InputData(
       id: anglerId,
-      controller: TextInputController(controller: TextEditingController()),
+      controller: TextInputController(),
       label: (BuildContext context) => Strings.of(context).anglerNameLabel,
     ),
   };
@@ -82,7 +82,7 @@ class SaveCatchPage extends StatelessWidget {
 
   Widget _buildAngler(BuildContext context, bool isRemovingFields) {
     return TextInput.name(context,
-      controller: _allInputFields[anglerId].controller.value,
+      controller: _allInputFields[anglerId].controller,
       label: _allInputFields[anglerId].label(context),
       enabled: !isRemovingFields,
     );

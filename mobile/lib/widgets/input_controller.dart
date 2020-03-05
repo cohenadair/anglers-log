@@ -3,13 +3,19 @@ import 'package:mobile/model/bait_category.dart';
 import 'package:mobile/pages/image_picker_page.dart';
 import 'package:mobile/utils/date_time_utils.dart';
 
-/// An abstract class for storing a value of an input widget, such as a
-/// text field or check box.
+/// A class for storing a value of an input widget, such as a text field or
+/// check box.
 class InputController<T> {
+  /// The value of the controller, such as [bool] or [TextEditingController].
   T value;
+
+  /// A callback for rendering an error message for the input. A function is
+  /// required for use with localized strings.
+  String Function(BuildContext) errorCallback;
 
   InputController({
     this.value,
+    this.errorCallback,
   });
 
   void dispose() {
@@ -19,6 +25,8 @@ class InputController<T> {
   void clear() {
     value = null;
   }
+
+  String error(BuildContext context) => errorCallback?.call(context);
 }
 
 class BaitCategoryController extends InputController<BaitCategory> {
@@ -29,9 +37,15 @@ class ImageInputController extends InputController<PickedImage> {
 
 class TextInputController extends InputController<TextEditingController> {
   TextInputController({
-    @required TextEditingController controller,
-  }) : assert(controller != null),
-       super(value: controller);
+    TextEditingController controller,
+    String Function(BuildContext) errorCallback,
+  }) : super(
+    value: controller == null ? TextEditingController() : controller,
+    errorCallback: errorCallback,
+  );
+
+  String get text => value.text;
+  set text(String text) => value.text = text;
 
   @override
   void dispose() {
@@ -41,6 +55,10 @@ class TextInputController extends InputController<TextEditingController> {
   @override
   void clear() {
     value.clear();
+  }
+
+  void clearText() {
+    value.value = TextEditingValue(text: "");
   }
 }
 

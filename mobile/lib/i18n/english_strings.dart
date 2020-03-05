@@ -86,6 +86,7 @@ Map<String, Map<String, String>> get englishStrings => {
     "selectionPage_addCustomField" : "Add Custom Field",
 
     "addCustomFieldPage_title" : "New Field",
+    "addCustomFieldPage_nameExists" : "Field name already exists",
 
     "imagePickerPage_noPhotosFound" : "No photos found",
     "imagePickerPage_openCameraLabel" : "Open Camera",

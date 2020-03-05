@@ -3,6 +3,7 @@ import 'package:mobile/fishing_spot_manager.dart';
 import 'package:mobile/model/entity.dart';
 import 'package:mobile/model/fishing_spot.dart';
 import 'package:mobile/pages/form_page.dart';
+import 'package:mobile/widgets/input_controller.dart';
 import 'package:mobile/widgets/text_input.dart';
 import 'package:quiver/strings.dart';
 
@@ -18,7 +19,7 @@ class SaveFishingSpotPage extends StatefulWidget {
 }
 
 class _SaveFishingSpotPageState extends State<SaveFishingSpotPage> {
-  final _nameController = TextEditingController();
+  final _nameController = TextInputController();
   
   @override
   void initState() {
@@ -46,6 +47,7 @@ class _SaveFishingSpotPageState extends State<SaveFishingSpotPage> {
           ),
         };
       },
+      isInputValid: true,
     );
   }
 }

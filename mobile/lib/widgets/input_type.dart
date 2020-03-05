@@ -26,7 +26,7 @@ InputController inputTypeController(InputType fieldType) {
   switch (fieldType) {
     case InputType.text:
     case InputType.number:
-      return TextInputController(controller: TextEditingController());
+      return TextInputController();
     case InputType.boolean:
       return InputController();
   }
@@ -35,17 +35,17 @@ InputController inputTypeController(InputType fieldType) {
   return null;
 }
 
-/// Converts the [CustomField] object to the appropriate [Widget].
+/// Returns a widget based on the given [InputType].
 /// @param controller The object that controls the value of the [CustomField].
 ///        Could be a [TextEditingController], or a primitive data type.
 Widget inputTypeWidget(BuildContext context, {
   InputType type,
   String label,
-  dynamic controller,
+  InputController controller,
   Function(bool) onCheckboxChanged,
   bool enabled = false,
 }) {
-  TextEditingController textController = controller is TextEditingController
+  TextInputController textController = controller is TextInputController
       ? controller : null;
 
   switch (type) {
@@ -57,7 +57,7 @@ Widget inputTypeWidget(BuildContext context, {
     );
     case InputType.boolean: return CheckboxInput(
       label: label,
-      value: controller is bool ? controller : false,
+      value: controller.value is bool ? controller : false,
       onChanged: onCheckboxChanged,
       enabled: enabled,
     );

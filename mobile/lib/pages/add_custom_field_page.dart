@@ -3,9 +3,11 @@ import 'package:mobile/custom_field_manager.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/model/custom_entity.dart';
 import 'package:mobile/widgets/dropdown_input.dart';
+import 'package:mobile/widgets/input_controller.dart';
 import 'package:mobile/widgets/input_type.dart';
 import 'package:mobile/widgets/text_input.dart';
 import 'package:mobile/widgets/widget.dart';
+import 'package:quiver/strings.dart';
 
 import 'form_page.dart';
 
@@ -23,15 +25,28 @@ class AddCustomFieldPage extends StatefulWidget {
 }
 
 class _AddCustomFieldPageState extends State<AddCustomFieldPage> {
-  static const String _keyName = "name";
-  static const String _keyDescription = "description";
-  static const String _keyDataType = "dataType";
+  static const String _nameId = "name";
+  static const String _descriptionId = "description";
+  static const String _dataTypeId = "dataType";
 
-  final Map<String, dynamic> _inputOptions = {
-    _keyName: TextEditingController(),
-    _keyDescription: TextEditingController(),
-    _keyDataType: InputType.number,
+  final Map<String, InputController> _inputOptions = {
+    _nameId: TextInputController(
+      errorCallback: (context) => Strings.of(context).inputNameRequired,
+    ),
+    _descriptionId: TextInputController(),
+    _dataTypeId: InputController<InputType>(
+      value: InputType.number,
+    ),
   };
+
+  TextInputController get _nameController =>
+      _inputOptions[_nameId] as TextInputController;
+
+  TextInputController get _descriptionController =>
+      _inputOptions[_descriptionId] as TextInputController;
+
+  InputController<InputType> get _dataTypeController =>
+      _inputOptions[_dataTypeId] as InputController<InputType>;
 
   @override
   Widget build(BuildContext context) {
@@ -44,27 +59,30 @@ class _AddCustomFieldPageState extends State<AddCustomFieldPage> {
         );
       },
       onSave: _save,
+      isInputValid: isEmpty(_nameController.error(context)),
     );
   }
 
   Widget _inputField(BuildContext context, String key) {
     switch (key) {
-      case _keyName: return TextInput.name(
+      case _nameId: return TextInput.name(
         context,
-        controller: _inputOptions[key] as TextEditingController,
+        controller: _nameController,
+        autofocus: true,
+        onTextChange: _validateName,
       );
-      case _keyDescription: return TextInput.description(
+      case _descriptionId: return TextInput.description(
         context,
-        controller: _inputOptions[key] as TextEditingController,
+        controller: _descriptionController,
       );
-      case _keyDataType: return DropdownInput<InputType>(
+      case _dataTypeId: return DropdownInput<InputType>(
         options: InputType.values,
-        value: _inputOptions[key] as InputType,
+        value: _dataTypeController.value,
         buildOption: (InputType type) =>
             Text(inputTypeLocalizedString(context, type)),
         onChanged: (InputType newType) {
           setState(() {
-            _inputOptions[key] = newType;
+            _dataTypeController.value = newType;
           });
         },
       );
@@ -76,13 +94,30 @@ class _AddCustomFieldPageState extends State<AddCustomFieldPage> {
 
   void _save() {
     var customField = CustomEntity(
-      name: (_inputOptions[_keyName] as TextEditingController).text,
-      description: (_inputOptions[_keyDescription] as TextEditingController)
-          .text,
-      type: _inputOptions[_keyDataType],
+      name: _nameController.text,
+      description: _descriptionController.text,
+      type: _dataTypeController.value,
     );
 
     CustomFieldManager.of(context).addField(customField);
     widget.onSave?.call(customField);
+  }
+
+  void _validateName() async {
+    String name = _nameController.text;
+    String error;
+
+    if (isEmpty(name)) {
+      error = Strings.of(context).inputNameRequired;
+    } else if (await CustomFieldManager.of(context).nameExists(name)) {
+      error = Strings.of(context).addCustomFieldPageNameExists;
+    }
+
+    // Only update state if the error message has changed.
+    if (_nameController.error(context) != error) {
+      setState(() {
+        _nameController.errorCallback = (context) => error;
+      });
+    }
   }
 }

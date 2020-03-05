@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/app_manager.dart';
+import 'package:mobile/utils/string_utils.dart';
 import 'package:provider/provider.dart';
 
 import 'model/custom_entity.dart';
@@ -16,6 +17,11 @@ class CustomFieldManager {
 
   List<CustomEntity> get customFields => 
       List.unmodifiable(_customFieldMap.values);
+
+  Future<bool> nameExists(String name) {
+    return Future.value(customFields.firstWhere((field) =>
+        isEqualTrimmedLowercase(name, field.name), orElse: () => null) != null);
+  }
 
   /// Returns the [CustomEntity] with the given ID, or `null` if none is found.
   CustomEntity customField(String id) {

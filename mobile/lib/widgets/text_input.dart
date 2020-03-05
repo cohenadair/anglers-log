@@ -1,10 +1,9 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:mobile/i18n/strings.dart';
+import 'package:mobile/widgets/input_controller.dart';
 import 'package:quiver/strings.dart';
 
-class TextInput extends StatefulWidget {
+class TextInput extends StatelessWidget {
   static const int inputLimitDefault = 40;
   static const int inputLimitName = 20;
   static const int inputLimitNumber = 10;
@@ -13,17 +12,16 @@ class TextInput extends StatefulWidget {
   final String initialValue;
   final String label;
   final TextCapitalization capitalization;
-  final TextEditingController controller;
+  final TextInputController controller;
   final bool enabled;
   final bool autofocus;
   final int maxLength;
   final int maxLines;
   final TextInputType keyboardType;
-  final FutureOr<String> Function(String) validator;
 
-  /// If true, invokes [validator] in the [TextFormField.onChanged] callback,
-  /// and updates [errorText].
-  final bool validateOnChange;
+  /// Invoked when the [TextInput] text changes. The updated text value can be
+  /// read from the [TextInputController] used when creating this widget.
+  final void Function() onTextChange;
 
   TextInput({
     this.initialValue,
@@ -35,17 +33,16 @@ class TextInput extends StatefulWidget {
     this.maxLength = inputLimitDefault,
     this.maxLines,
     this.keyboardType,
-    this.validator,
-    this.validateOnChange = true,
+    this.onTextChange,
   });
 
   TextInput.name(BuildContext context, {
     String label,
     String initialValue,
-    TextEditingController controller,
+    TextInputController controller,
     bool enabled,
     bool autofocus = false,
-    FutureOr<String> Function(String) validator,
+    void Function() onTextChange,
   }) : this(
     initialValue: initialValue,
     label: isEmpty(label) ? Strings.of(context).inputNameLabel : label,
@@ -54,12 +51,12 @@ class TextInput extends StatefulWidget {
     maxLength: inputLimitName,
     enabled: enabled,
     autofocus: autofocus,
-    validator: validator,
+    onTextChange: onTextChange,
   );
 
   TextInput.description(BuildContext context, {
     String initialValue,
-    TextEditingController controller,
+    TextInputController controller,
     bool enabled,
     bool autofocus = false,
   }) : this(
@@ -76,7 +73,7 @@ class TextInput extends StatefulWidget {
     double initialValue,
     String label,
     String requiredText,
-    TextEditingController controller,
+    TextInputController controller,
     bool enabled,
     bool autofocus = false,
     bool required = false,
@@ -88,56 +85,33 @@ class TextInput extends StatefulWidget {
     enabled: enabled,
     autofocus: autofocus,
     maxLength: inputLimitNumber,
-    validator: (String value) {
-      if (double.tryParse(value) == null) {
-        return Strings.of(context).inputInvalidNumber;
+    onTextChange: () {
+      if (double.tryParse(controller.value.text) == null) {
+        controller.errorCallback =
+            (context) => Strings.of(context).inputInvalidNumber;
       }
-      return null;
+      controller.errorCallback = null;
     },
   );
-
-  @override
-  _TextInputState createState() => _TextInputState();
-}
-
-class _TextInputState extends State<TextInput> {
-  String _errorText;
-
-  @override
-  void initState() {
-    super.initState();
-    _updateErrorText(widget.controller.value.text);
-  }
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       cursorColor: Theme.of(context).primaryColor,
-      initialValue: widget.initialValue,
-      controller: widget.controller,
+      initialValue: initialValue,
+      controller: controller.value,
       decoration: InputDecoration(
-        labelText: widget.label,
-        errorText: _errorText,
+        labelText: label,
+        errorText: controller.error(context),
       ),
-      textCapitalization: widget.capitalization,
-      validator: (text) => widget.validator?.call(text),
-      enabled: widget.enabled,
-      maxLength: widget.maxLength,
-      maxLines: widget.maxLines,
-      keyboardType: widget.keyboardType,
-      onChanged: (newText) async {
-        if (widget.validateOnChange) {
-          _updateErrorText(newText);
-        }
-      },
-      autofocus: widget.autofocus,
+      textCapitalization: capitalization,
+      validator: (text) => controller.error(context),
+      enabled: enabled,
+      maxLength: maxLength,
+      maxLines: maxLines,
+      keyboardType: keyboardType,
+      onChanged: (_) => onTextChange?.call(),
+      autofocus: autofocus,
     );
-  }
-
-  void _updateErrorText(String inputText) async {
-    var error = await widget.validator?.call(inputText);
-    setState(() {
-      _errorText = error;
-    });
   }
 }

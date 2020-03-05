@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/res/style.dart';
+import 'package:mobile/widgets/input_controller.dart';
 import 'package:mobile/widgets/text_input.dart';
 import 'package:quiver/strings.dart';
 
@@ -163,7 +164,7 @@ class _TextFieldDialog extends StatefulWidget {
 }
 
 class _TextFieldDialogState extends State<_TextFieldDialog> {
-  final TextEditingController _controller = TextEditingController();
+  final TextInputController _controller = TextInputController();
 
   bool _valid = false;
 
@@ -181,8 +182,8 @@ class _TextFieldDialogState extends State<_TextFieldDialog> {
       content: TextInput.name(context,
         controller: _controller,
         autofocus: true,
-        validator: (text) async {
-          String error = await widget.validate(text);
+        onTextChange: () async {
+          String error = await widget.validate(_controller.text);
           setState(() {
             _valid = isEmpty(error);
           });
@@ -202,7 +203,7 @@ class _TextFieldDialogState extends State<_TextFieldDialog> {
           popOnTap: false,
           onTap: () {
             widget.onAdd?.call(_controller.value.text);
-            _controller.value = TextEditingValue(text: "");
+            _controller.clearText();
           },
           enabled: _valid,
         ),

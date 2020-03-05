@@ -123,6 +123,7 @@ class Strings {
   String get imagePickerPageInvalidSelectionPlural => _string("imagePickerPage_invalidSelectionPlural");
 
   String get addCustomFieldPageTitle => _string("addCustomFieldPage_title");
+  String get addCustomFieldPageNameExists => _string("addCustomFieldPage_nameExists");
 
   String get anglerNameLabel => _string("angler_nameLabel");
 

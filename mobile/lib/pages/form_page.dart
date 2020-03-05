@@ -67,9 +67,7 @@ class FormPageFieldOption {
 /// If desired, users can add and remove input fields.
 ///
 /// Widgets using the [FormPage] widget are responsible for tracking field input
-/// values, as well as form validation outside the normal [FormState]
-/// validation. The [FormState] validate method is called prior to the
-/// [FormPage.onSave], but before the page is dismissed.
+/// values and input validation.
 class FormPage extends StatefulWidget {
   /// The title of the page.
   final String title;
@@ -87,7 +85,12 @@ class FormPage extends StatefulWidget {
   final List<FormPageFieldOption> addFieldOptions;
 
   /// Called when a field is added to the form.
-  final Function(Set<String> ids) onAddFields;
+  final void Function(Set<String> ids) onAddFields;
+
+  /// Used when state is set. Common form components need to be updated
+  /// based on whether or not the form has valid input. For example, the "Save"
+  /// button is disabled when the input is not valid.
+  final bool isInputValid;
 
   /// Whether this form's components can be added or removed.
   final bool editable;
@@ -105,7 +108,9 @@ class FormPage extends StatefulWidget {
     this.onAddFields,
     this.editable = true,
     this.padding = insetsHorizontalDefault,
+    @required this.isInputValid,
   }) : assert(fieldBuilder != null),
+       assert(isInputValid != null),
        super(key: key);
 
   FormPage.immutable({
@@ -114,6 +119,7 @@ class FormPage extends StatefulWidget {
     FieldBuilder fieldBuilder,
     VoidCallback onSave,
     EdgeInsets padding = insetsHorizontalDefault,
+    @required bool isInputValid,
   }) : this(
     key: key,
     title: title,
@@ -124,6 +130,7 @@ class FormPage extends StatefulWidget {
     onAddFields: null,
     editable: false,
     padding: padding,
+    isInputValid: isInputValid,
   );
 
   @override
@@ -158,7 +165,7 @@ class _FormPageState extends State<FormPage> {
       );
     } else {
       actionButton = ActionButton.save(
-        onPressed: _onPressedSave,
+        onPressed: widget.isInputValid ? _onPressedSave : null,
         condensed: widget.editable,
       );
     }

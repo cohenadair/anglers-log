@@ -26,6 +26,9 @@ class EditableFormPage extends StatefulWidget {
   /// the function.
   final Function(Map<String, InputData>) onSave;
 
+  /// See [FormPage.isInputValid].
+  final bool isInputValid;
+
   final EdgeInsets padding;
 
   EditableFormPage({
@@ -34,6 +37,7 @@ class EditableFormPage extends StatefulWidget {
     this.onBuildField,
     this.onSave,
     this.padding = insetsHorizontalDefault,
+    this.isInputValid = true,
   });
 
   @override
@@ -94,6 +98,7 @@ class _EditableFormPageState extends State<EditableFormPage> {
           }
         });
       },
+      isInputValid: widget.isInputValid,
     );
   }
 
