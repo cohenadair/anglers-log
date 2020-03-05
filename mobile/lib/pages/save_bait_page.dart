@@ -88,6 +88,7 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
       addItemHelper: PickerPageAddStringHelper(
         title: Strings.of(context).saveBaitPageAddCategoryLabel,
         labelText: Strings.of(context).inputNameLabel,
+        initialError: Strings.of(context).inputNameRequired,
         validate: (potentialName) async {
           if (isEmpty(potentialName)) {
             return Strings.of(context).inputNameRequired;

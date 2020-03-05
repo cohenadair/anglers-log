@@ -272,8 +272,10 @@ class PickerPageAddStringHelper implements PickerPageAddHelper {
   /// The label for the [TextField].
   final String labelText;
 
-  /// Invoked on [TextField.onChange]. Return error message, or `nil` if there
-  /// is none.
+  /// An [TextField] validation error to show when the dialog shows.
+  final String initialError;
+
+  /// Invoked on [TextField.onChange].
   final FutureOr<String> Function(String) validate;
 
   /// Invoked when an item has been added.
@@ -282,6 +284,7 @@ class PickerPageAddStringHelper implements PickerPageAddHelper {
   PickerPageAddStringHelper({
     this.title,
     this.labelText,
+    this.initialError,
     this.validate,
     this.onAdd,
   });
@@ -292,6 +295,7 @@ class PickerPageAddStringHelper implements PickerPageAddHelper {
       context: context,
       title: title,
       labelText: labelText,
+      initialError: initialError,
       validate: validate,
       onAdd: onAdd,
     );

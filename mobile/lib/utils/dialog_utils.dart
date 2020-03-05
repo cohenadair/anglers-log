@@ -82,6 +82,7 @@ void showTextFieldAddDialog({
   @required BuildContext context,
   String title,
   String labelText,
+  String initialError,
   FutureOr<String> Function(String) validate,
   void Function(String) onAdd,
 }) {
@@ -90,6 +91,7 @@ void showTextFieldAddDialog({
     builder: (context) => _TextFieldDialog(
       title: title,
       labelText: labelText,
+      initialError: initialError,
       validate: validate,
       onAdd: onAdd,
     ),
@@ -149,12 +151,14 @@ Widget _buildDialogButton({
 class _TextFieldDialog extends StatefulWidget {
   final String title;
   final String labelText;
+  final String initialError;
   final FutureOr<String> Function(String) validate;
   final void Function(String) onAdd;
 
   _TextFieldDialog({
     this.title,
     this.labelText,
+    this.initialError,
     this.validate,
     this.onAdd,
   });
@@ -166,7 +170,13 @@ class _TextFieldDialog extends StatefulWidget {
 class _TextFieldDialogState extends State<_TextFieldDialog> {
   final TextInputController _controller = TextInputController();
 
-  bool _valid = false;
+  bool get _valid => isEmpty(_controller.error(context));
+
+  @override
+  void initState() {
+    super.initState();
+    _controller.errorCallback = (_) => widget.initialError;
+  }
 
   @override
   void dispose() {
@@ -182,13 +192,7 @@ class _TextFieldDialogState extends State<_TextFieldDialog> {
       content: TextInput.name(context,
         controller: _controller,
         autofocus: true,
-        onTextChange: () async {
-          String error = await widget.validate(_controller.text);
-          setState(() {
-            _valid = isEmpty(error);
-          });
-          return error;
-        },
+        onTextChange: _validateName,
       ),
       actions: <Widget>[
         _buildDialogButton(
@@ -213,5 +217,14 @@ class _TextFieldDialogState extends State<_TextFieldDialog> {
         ),
       ],
     );
+  }
+
+  void _validateName() async {
+    String error = await widget.validate(_controller.text);
+    if (_controller.error(context) != error) {
+      setState(() {
+        _controller.errorCallback = (context) => error;
+      });
+    }
   }
 }
