@@ -33,7 +33,7 @@ Map<String, Map<String, String>> get englishStrings => {
 
     "input_requiredMessage" : "%s is required",
     "input_nameLabel" : "Name",
-    "input_nameRequired" : "Name is required",
+    "input_genericRequired" : "Required",
     "input_descriptionLabel" : "Description",
     "input_invalidNumber" : "Invalid number input",
     "input_photoLabel" : "Photo",
@@ -53,7 +53,7 @@ Map<String, Map<String, String>> get englishStrings => {
     "baitListPage_title" : "Baits (%s)",
 
     "saveBaitPage_categoryLabel" : "Bait Category",
-    "saveBaitPage_addCategoryLabel" : "Add Bait Category",
+    "saveBaitPage_newCategoryLabel" : "New Bait Category",
     "saveBaitPage_categoryExistsMessage" : "Bait category already exists",
 
     "statsPage_title" : "Stats",

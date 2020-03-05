@@ -1,9 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:mobile/pages/save_name_page.dart';
 import 'package:mobile/res/dimen.dart';
-import 'package:mobile/utils/dialog_utils.dart';
 import 'package:mobile/utils/future_stream_builder.dart';
+import 'package:mobile/utils/page_utils.dart';
 import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/checkbox_input.dart';
 import 'package:mobile/widgets/list_item.dart';
@@ -262,43 +263,31 @@ abstract class PickerPageAddHelper {
   void help(BuildContext context);
 }
 
-/// Use when the only input when adding an item is a [String], such as a name.
+/// Use when the only input when adding an item is a name.
 ///
-/// Shows a dialog with a single [TextInput] field.
-class PickerPageAddStringHelper implements PickerPageAddHelper {
-  /// The title for the input dialog.
+/// Shows a full screen [FormPage] with a single [TextInput].
+class PickerPageAddNameHelper implements PickerPageAddHelper {
   final String title;
 
-  /// The label for the [TextField].
-  final String labelText;
-
-  /// An [TextField] validation error to show when the dialog shows.
-  final String initialError;
-
-  /// Invoked on [TextField.onChange].
+  /// See [SaveNamePage.validate].
   final FutureOr<String> Function(String) validate;
 
-  /// Invoked when an item has been added.
-  final void Function(String) onAdd;
+  /// Invoked when an item has been saved.
+  final void Function(String) onSave;
 
-  PickerPageAddStringHelper({
-    this.title,
-    this.labelText,
-    this.initialError,
+  PickerPageAddNameHelper({
+    @required this.title,
     this.validate,
-    this.onAdd,
+    this.onSave,
   });
 
   @override
   void help(BuildContext context) {
-    showTextFieldAddDialog(
-      context: context,
+    present(context, SaveNamePage(
       title: title,
-      labelText: labelText,
-      initialError: initialError,
+      onSave: onSave,
       validate: validate,
-      onAdd: onAdd,
-    );
+    ));
   }
 }
 

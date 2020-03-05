@@ -85,13 +85,11 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
       )).toList(),
       onChanged: (category) =>
           _allInputFields[baitCategoryId].controller.value = category,
-      addItemHelper: PickerPageAddStringHelper(
-        title: Strings.of(context).saveBaitPageAddCategoryLabel,
-        labelText: Strings.of(context).inputNameLabel,
-        initialError: Strings.of(context).inputNameRequired,
+      addItemHelper: PickerPageAddNameHelper(
+        title: Strings.of(context).saveBaitPageNewCategoryLabel,
         validate: (potentialName) async {
           if (isEmpty(potentialName)) {
-            return Strings.of(context).inputNameRequired;
+            return Strings.of(context).inputGenericRequired;
           } else if (await BaitManager.of(context)
               .categoryNameExists(potentialName))
           {
@@ -100,7 +98,7 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
             return null;
           }
         },
-        onAdd: (newName) => BaitManager.of(context).createOrUpdateCategory(
+        onSave: (newName) => BaitManager.of(context).createOrUpdateCategory(
             BaitCategory(name: newName)),
       ),
     );

@@ -61,7 +61,7 @@ class Strings {
 
   String get inputRequiredMessage => _string("input_requiredMessage");
   String get inputNameLabel => _string("input_nameLabel");
-  String get inputNameRequired => _string("input_nameRequired");
+  String get inputGenericRequired => _string("input_genericRequired");
   String get inputDescriptionLabel => _string("input_descriptionLabel");
   String get inputInvalidNumber => _string("input_invalidNumber");
   String get inputPhotoLabel => _string("input_photoLabel");
@@ -84,7 +84,7 @@ class Strings {
   String get baitListPageTitle => _string("baitListPage_title");
 
   String get saveBaitPageCategoryLabel => _string("saveBaitPage_categoryLabel");
-  String get saveBaitPageAddCategoryLabel => _string("saveBaitPage_addCategoryLabel");
+  String get saveBaitPageNewCategoryLabel => _string("saveBaitPage_newCategoryLabel");
   String get saveBaitPageCategoryExistsMessage => _string("saveBaitPage_categoryExistsMessage");
 
   String get statsPageTitle => _string("statsPage_title");

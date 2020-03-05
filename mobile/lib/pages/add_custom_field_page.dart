@@ -31,7 +31,7 @@ class _AddCustomFieldPageState extends State<AddCustomFieldPage> {
 
   final Map<String, InputController> _inputOptions = {
     _nameId: TextInputController(
-      errorCallback: (context) => Strings.of(context).inputNameRequired,
+      errorCallback: (context) => Strings.of(context).inputGenericRequired,
     ),
     _descriptionId: TextInputController(),
     _dataTypeId: InputController<InputType>(
@@ -108,7 +108,7 @@ class _AddCustomFieldPageState extends State<AddCustomFieldPage> {
     String error;
 
     if (isEmpty(name)) {
-      error = Strings.of(context).inputNameRequired;
+      error = Strings.of(context).inputGenericRequired;
     } else if (await CustomFieldManager.of(context).nameExists(name)) {
       error = Strings.of(context).addCustomFieldPageNameExists;
     }

@@ -44,8 +44,8 @@ class TextInputController extends InputController<TextEditingController> {
     errorCallback: errorCallback,
   );
 
-  String get text => value.text;
-  set text(String text) => value.text = text;
+  String get text => value.text.trim();
+  set text(String text) => value.text = text.trim();
 
   @override
   void dispose() {
