@@ -206,40 +206,46 @@ class _FormPageState extends State<FormPage> {
         key: _key,
         child: SingleChildScrollView(
           padding: insetsBottomDefault,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: <Widget>[
-              Wrap(
-                runSpacing: paddingSmall,
-                children: widget.fieldBuilder(context, _isRemovingFields)
-                    .map((key, inputField) =>
-                        MapEntry<String, Widget>(
-                          key,
-                          _inputField(key, inputField),
-                        )).values.toList(),
-              ),
-              canAddFields ? Padding(
-                padding: EdgeInsets.only(
-                  top: paddingSmall,
-                  // Include right edge padding on the button, even if the
-                  // parent widget is handling padding.
-                  right: insetsZero == padding ? paddingDefault : 0,
+          child: SafeArea(
+            left: true,
+            right: true,
+            top: true,
+            bottom: true,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: <Widget>[
+                Wrap(
+                  runSpacing: paddingSmall,
+                  children: widget.fieldBuilder(context, _isRemovingFields)
+                      .map((key, inputField) =>
+                          MapEntry<String, Widget>(
+                            key,
+                            _inputField(key, inputField),
+                          )).values.toList(),
                 ),
-                child: Button(
-                  text: Strings.of(context).formPageManageFieldText,
-                  onPressed: _isRemovingFields ? null : () {
-                    present(context, _addFieldSelectionPage());
-                  },
+                canAddFields ? Padding(
+                  padding: EdgeInsets.only(
+                    top: paddingSmall,
+                    // Include right edge padding on the button, even if the
+                    // parent widget is handling padding.
+                    right: insetsZero == padding ? paddingDefault : 0,
+                  ),
+                  child: Button(
+                    text: Strings.of(context).formPageManageFieldText,
+                    onPressed: _isRemovingFields ? null : () {
+                      present(context, _addFieldSelectionPage());
+                    },
+                  ),
+                ) : Empty(),
+                _fieldsToRemove.length <= 0 ? Empty() : Button(
+                  text: _fieldsToRemove.length == 1
+                      ? Strings.of(context).formPageConfirmRemoveField
+                      : format(Strings.of(context).formPageConfirmRemoveFields,
+                          [_fieldsToRemove.length]),
+                  onPressed: _onConfirmRemoveFields,
                 ),
-              ) : Empty(),
-              _fieldsToRemove.length <= 0 ? Empty() : Button(
-                text: _fieldsToRemove.length == 1
-                    ? Strings.of(context).formPageConfirmRemoveField
-                    : format(Strings.of(context).formPageConfirmRemoveFields,
-                        [_fieldsToRemove.length]),
-                onPressed: _onConfirmRemoveFields,
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
