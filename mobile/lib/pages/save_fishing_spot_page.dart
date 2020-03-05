@@ -44,6 +44,7 @@ class _SaveFishingSpotPageState extends State<SaveFishingSpotPage> {
           Entity.keyName : TextInput.name(
             context,
             controller: _nameController,
+            autofocus: true,
           ),
         };
       },
