@@ -8,11 +8,6 @@ import 'package:mobile/widgets/text.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:quiver/strings.dart';
 
-// TODO: Add deleting
-// TODO: Add editing
-// TODO: Increase space between trailing value and right chevron
-// TODO: Fix add dialog button alignment
-
 typedef OnListPickerChanged<T> = void Function(T);
 
 /// A generic picker widget for selecting items from a list. This should be used
@@ -179,7 +174,10 @@ class _ListPickerInputState<T> extends State<ListPickerInput<T>> {
         && widget.showsValueOnTrailing)
     {
       String title = widget._getListPickerItem(_values.first).title;
-      return isEmpty(title) ? Empty() : SecondaryLabelText(title);
+      return isEmpty(title) ? Empty() : Padding(
+        padding: insetsRightWidgetSmall,
+        child: SecondaryLabelText(title),
+      );
     }
     return Empty();
   }
