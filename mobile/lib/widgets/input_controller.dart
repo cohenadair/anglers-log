@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile/model/bait_category.dart';
 import 'package:mobile/pages/image_picker_page.dart';
 import 'package:mobile/utils/date_time_utils.dart';
+import 'package:quiver/strings.dart';
 
 /// A class for storing a value of an input widget, such as a text field or
 /// check box.
@@ -45,7 +46,7 @@ class TextInputController extends InputController<TextEditingController> {
   );
 
   String get text => value.text.trim();
-  set text(String text) => value.text = text.trim();
+  set text(String text) => value.text = isEmpty(text) ? text : text.trim();
 
   @override
   void dispose() {
