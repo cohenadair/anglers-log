@@ -73,6 +73,7 @@ class Strings {
   String get catchListPageMenuLabel => _string("catchListPage_menuLabel");
   String get catchListPageTitle => _string("catchListPage_title");
 
+  String get addCatchPageNewTitle => _string("addCatchPage_newTitle");
   String get addCatchPageDateTimeLabel => _string("addCatchPage_dateTimeLabel");
   String get addCatchPageDateLabel => _string("addCatchPage_dateLabel");
   String get addCatchPageTimeLabel => _string("addCatchPage_timeLabel");
@@ -83,6 +84,7 @@ class Strings {
   String get baitListPageMenuLabel => _string("baitListPage_menuLabel");
   String get baitListPageTitle => _string("baitListPage_title");
 
+  String get saveBaitPageNewTitle => _string("saveBaitPage_newTitle");
   String get saveBaitPageCategoryLabel => _string("saveBaitPage_categoryLabel");
   String get saveBaitPageNewCategoryLabel => _string("saveBaitPage_newCategoryLabel");
   String get saveBaitPageCategoryExistsMessage => _string("saveBaitPage_categoryExistsMessage");
@@ -104,6 +106,9 @@ class Strings {
   String get mapPageMapTypeTerrain => _string("mapPage_mapTypeTerrain");
   String get mapPageMapTypeHybrid => _string("mapPage_mapTypeHybrid");
   String get mapPageErrorGettingLocation => _string("mapPage_errorGettingLocation");
+
+  String get saveFishingSpotPageNewTitle => _string("saveFishingSpotPage_newTitle");
+  String get saveFishingSpotPageEditTitle => _string("saveFishingSpotPage_editTitle");
 
   String get formPageManageFieldText => _string("formPage_manageFieldText");
   String get formPageRemoveFieldsText => _string("formPage_removeFieldsText");

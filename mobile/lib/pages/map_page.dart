@@ -518,6 +518,7 @@ class _FishingSpotBottomSheet extends StatelessWidget {
                 context,
                 SaveFishingSpotPage(
                   oldFishingSpot: fishingSpot,
+                  editing: editing,
                 ),
               );
             },

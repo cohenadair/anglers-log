@@ -7,6 +7,8 @@ import 'package:mobile/widgets/input.dart';
 import 'package:mobile/widgets/input_type.dart';
 
 class EditableFormPage extends StatefulWidget {
+  final String title;
+
   /// A unique ID to [InputData] map of all valid fields for the form. The
   /// items in this map may or may not need to be added by the user via
   /// "Add Field" button.
@@ -32,6 +34,7 @@ class EditableFormPage extends StatefulWidget {
   final EdgeInsets padding;
 
   EditableFormPage({
+    this.title,
     this.allFields = const {},
     this.initialFields = const {},
     this.onBuildField,
@@ -67,6 +70,7 @@ class _EditableFormPageState extends State<EditableFormPage> {
   @override
   Widget build(BuildContext context) {
     return FormPage(
+      title: widget.title,
       key: UniqueKey(),
       padding: widget.padding,
       fieldBuilder: (BuildContext context, bool isRemovingFields) {

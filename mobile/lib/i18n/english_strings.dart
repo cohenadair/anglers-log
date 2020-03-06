@@ -42,6 +42,7 @@ Map<String, Map<String, String>> get englishStrings => {
     "catchListPage_menuLabel" : "Catches",
     "catchListPage_title" : "Catches (%s)",
 
+    "addCatchPage_newTitle" : "New Catch",
     "addCatchPage_dateTimeLabel" : "Date & Time",
     "addCatchPage_dateLabel" : "Date",
     "addCatchPage_timeLabel" : "Time",
@@ -52,6 +53,7 @@ Map<String, Map<String, String>> get englishStrings => {
     "baitListPage_menuLabel" : "Baits",
     "baitListPage_title" : "Baits (%s)",
 
+    "saveBaitPage_newTitle" : "New Bait",
     "saveBaitPage_categoryLabel" : "Bait Category",
     "saveBaitPage_newCategoryLabel" : "New Bait Category",
     "saveBaitPage_categoryExistsMessage" : "Bait category already exists",
@@ -76,6 +78,9 @@ Map<String, Map<String, String>> get englishStrings => {
     "mapPage_mapTypeTerrain" : "Terrain",
     "mapPage_mapTypeHybrid" : "Hybrid",
     "mapPage_errorGettingLocation" : "Unable to retrieve current location. Please try again later.",
+
+    "saveFishingSpotPage_newTitle" : "New Fishing Spot",
+    "saveFishingSpotPage_editTitle" : "Edit Fishing Spot",
 
     "formPage_manageFieldText" : "Manage Fields",
     "formPage_removeFieldsText" : "Remove Fields",

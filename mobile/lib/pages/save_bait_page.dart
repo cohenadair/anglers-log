@@ -50,6 +50,7 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
   @override
   Widget build(BuildContext context) {
     return EditableFormPage(
+      title: Strings.of(context).saveBaitPageNewTitle,
       padding: insetsZero,
       allFields: _allInputFields,
       initialFields: {

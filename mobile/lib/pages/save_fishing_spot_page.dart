@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/fishing_spot_manager.dart';
+import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/model/entity.dart';
 import 'package:mobile/model/fishing_spot.dart';
 import 'package:mobile/pages/form_page.dart';
@@ -9,9 +10,11 @@ import 'package:quiver/strings.dart';
 
 class SaveFishingSpotPage extends StatefulWidget {
   final FishingSpot oldFishingSpot;
+  final bool editing;
 
   SaveFishingSpotPage({
     @required this.oldFishingSpot,
+    this.editing = false,
   }) : assert(oldFishingSpot != null);
 
   @override
@@ -29,8 +32,13 @@ class _SaveFishingSpotPageState extends State<SaveFishingSpotPage> {
 
   @override
   Widget build(BuildContext context) {
-    return FormPage(
-      editable: false,
+    String title = Strings.of(context).saveFishingSpotPageNewTitle;
+    if (widget.editing) {
+      title = Strings.of(context).saveFishingSpotPageEditTitle;
+    }
+
+    return FormPage.immutable(
+      title: title,
       onSave: () {
         FishingSpotManager.of(context).createOrUpdate(FishingSpot(
           lat: widget.oldFishingSpot.lat,
