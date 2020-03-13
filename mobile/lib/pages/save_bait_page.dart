@@ -72,12 +72,24 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
 
   Widget _buildCategoryPicker(bool isRemovingFields) {
     return ListPickerInput<BaitCategory>.single(
+      initialValue: _allInputFields[baitCategoryId].controller.value,
+      pageTitle: Strings.of(context).saveBaitPageCategoryPickerTitle,
       enabled: !isRemovingFields,
       labelText: Strings.of(context).saveBaitPageCategoryLabel,
       futureStreamHolder: BaitCategoriesFutureStreamHolder(context,
         onUpdate: (categories) {
           _log.d("Bait categories updated...");
           _categories = categories;
+
+          // Update bait category in case the selected category has changed, or
+          // been deleted.
+          BaitCategory currentCategory =
+              _allInputFields[baitCategoryId].controller.value;
+          BaitCategory updatedCategory = _categories.firstWhere(
+            (e) => e.id == currentCategory?.id,
+            orElse: () => null,
+          );
+          _allInputFields[baitCategoryId].controller.value = updatedCategory;
         },
       ),
       itemBuilder: () => _categories.map((e) => PickerPageItem(
@@ -86,9 +98,11 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
       )).toList(),
       onChanged: (category) =>
           _allInputFields[baitCategoryId].controller.value = category,
-      addItemHelper: PickerPageAddNameHelper(
-        title: Strings.of(context).saveBaitPageNewCategoryLabel,
-        validate: (potentialName) async {
+      addItemHelper: PickerPageSaveNameHelper<BaitCategory>(
+        addTitle: Strings.of(context).saveBaitPageNewCategoryLabel,
+        editTitle: Strings.of(context).saveBaitPageEditCategoryLabel,
+        oldNameCallback: (oldCategory) => oldCategory.name,
+        validate: (potentialName, oldCategory) async {
           if (isEmpty(potentialName)) {
             return Strings.of(context).inputGenericRequired;
           } else if (await BaitManager.of(context)
@@ -99,9 +113,18 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
             return null;
           }
         },
-        onSave: (newName) => BaitManager.of(context).createOrUpdateCategory(
-            BaitCategory(name: newName)),
+        onSave: (newName, oldCategory) {
+          var newCategory = BaitCategory(name: newName);
+          if (oldCategory != null) {
+            newCategory = BaitCategory(name: newName, id: oldCategory.id);
+          }
+
+          BaitManager.of(context).createOrUpdateCategory(newCategory);
+        },
       ),
+      itemEqualsOldValue: (item, oldCategory) {
+        return item.value.id == oldCategory.id;
+      },
     );
   }
 

@@ -335,7 +335,7 @@ class _SelectionPageState extends State<_SelectionPage> {
         widget.onSelectItems(options.map((o) => o.id).toSet());
         Navigator.pop(context);
       },
-      addItemHelper: PickerPageAddCustomHelper(
+      saveItemHelper: PickerPageAddCustomHelper(
         onAddPressed: () => present(context, AddCustomFieldPage(
           onSave: (customField) {
             setState(() {

@@ -56,7 +56,9 @@ Map<String, Map<String, String>> get englishStrings => {
     "saveBaitPage_newTitle" : "New Bait",
     "saveBaitPage_categoryLabel" : "Bait Category",
     "saveBaitPage_newCategoryLabel" : "New Bait Category",
+    "saveBaitPage_editCategoryLabel" : "Edit Bait Category",
     "saveBaitPage_categoryExistsMessage" : "Bait category already exists",
+    "saveBaitPage_categoryPickerTitle" : "Select Bait Category",
 
     "statsPage_title" : "Stats",
 

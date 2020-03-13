@@ -37,8 +37,8 @@ class ListPickerInput<T> extends StatefulWidget {
   /// See [PickerPage.listHeader].
   final Widget listHeader;
 
-  /// See [PickerPage.addItemHelper].
-  final PickerPageAddHelper addItemHelper;
+  /// See [PickerPage.saveItemHelper].
+  final PickerPageSaveHelper addItemHelper;
 
   /// See [PickerPage.futureStreamHolder].
   final FutureStreamHolder futureStreamHolder;
@@ -55,8 +55,13 @@ class ListPickerInput<T> extends StatefulWidget {
   /// If `false`, picker is disabled and cannot be tapped.
   final bool enabled;
 
+  /// Invoked when the underlying data model has updated, and the value
+  /// of the [ListPickerInput] needs to be updated. Returns true if the
+  /// new [PickerPageItem] is equal to the old value [T].
+  final bool Function(PickerPageItem<T>, T) itemEqualsOldValue;
+
   ListPickerInput({
-    this.pageTitle,
+    @required this.pageTitle,
     Set<T> initialValues = const {},
     this.allItem,
     @required this.itemBuilder,
@@ -68,6 +73,7 @@ class ListPickerInput<T> extends StatefulWidget {
     this.enabled = true,
     this.addItemHelper,
     this.futureStreamHolder,
+    this.itemEqualsOldValue,
   }) : assert(itemBuilder != null),
        assert(onChanged != null),
        initialValues = initialValues ?? {}
@@ -84,15 +90,16 @@ class ListPickerInput<T> extends StatefulWidget {
   }
 
   ListPickerInput.single({
-    String pageTitle,
+    @required String pageTitle,
     T initialValue,
     @required List<PickerPageItem<T>> Function() itemBuilder,
     @required OnListPickerChanged<T> onChanged,
     @required String labelText,
     EdgeInsets padding,
     bool enabled = true,
-    PickerPageAddHelper addItemHelper,
+    PickerPageSaveHelper addItemHelper,
     FutureStreamHolder futureStreamHolder,
+    bool Function(PickerPageItem<T>, T) itemEqualsOldValue,
   }) : this(
     pageTitle: pageTitle,
     initialValues: initialValue == null ? {} : { initialValue },
@@ -104,6 +111,7 @@ class ListPickerInput<T> extends StatefulWidget {
     addItemHelper: addItemHelper,
     allowsMultiSelect: false,
     futureStreamHolder: futureStreamHolder,
+    itemEqualsOldValue: itemEqualsOldValue,
   );
 
   @override
@@ -113,7 +121,8 @@ class ListPickerInput<T> extends StatefulWidget {
     if (allItem != null && item == allItem.value) {
       return allItem;
     }
-    return itemBuilder().singleWhere((indexItem) => indexItem.value == item);
+    return itemBuilder().singleWhere((indexItem) => indexItem.value == item,
+        orElse: () => null);
   }
 }
 
@@ -144,7 +153,7 @@ class _ListPickerInputState<T> extends State<ListPickerInput<T>> {
         onTap: () {
           push(context, PickerPage<T>(
             futureStreamHolder: widget.futureStreamHolder,
-            addItemHelper: widget.addItemHelper,
+            saveItemHelper: widget.addItemHelper,
             pageTitle: widget.pageTitle,
             listHeader: widget.listHeader,
             multiSelect: widget.allowsMultiSelect,
@@ -173,10 +182,25 @@ class _ListPickerInputState<T> extends State<ListPickerInput<T>> {
     if (_values.length == 1 && !widget.allowsMultiSelect
         && widget.showsValueOnTrailing)
     {
-      String title = widget._getListPickerItem(_values.first).title;
-      return isEmpty(title) ? Empty() : Padding(
-        padding: insetsRightWidgetSmall,
-        child: SecondaryLabelText(title),
+      return FutureStreamBuilder(
+        holder: widget.futureStreamHolder,
+        builder: (context) {
+          // Retrieve the title from the most up to date items.
+          String title;
+          if (widget.itemEqualsOldValue != null) {
+            for (var item in widget.itemBuilder()) {
+              if (widget.itemEqualsOldValue(item, _values.first)) {
+                title = item.title;
+                break;
+              }
+            }
+          }
+
+          return isEmpty(title) ? Empty() : Padding(
+            padding: insetsRightWidgetSmall,
+            child: SecondaryLabelText(title),
+          );
+        },
       );
     }
     return Empty();

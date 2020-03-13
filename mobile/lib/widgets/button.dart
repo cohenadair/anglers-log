@@ -66,6 +66,10 @@ class ActionButton extends StatelessWidget {
       : _stringId = "cancel",
         text = null;
 
+  ActionButton.edit({this.onPressed, this.condensed = false})
+      : _stringId = "edit",
+        text = null;
+
   @override
   Widget build(BuildContext context) {
     Widget textWidget = Text(
@@ -137,9 +141,11 @@ class MinimumIconButton extends StatelessWidget {
 
   final IconData icon;
   final VoidCallback onTap;
+  final Color color;
 
   MinimumIconButton({
     @required this.icon,
+    this.color,
     this.onTap,
   }) : assert(icon != null);
 
@@ -153,7 +159,7 @@ class MinimumIconButton extends StatelessWidget {
         onTap: onTap,
         child: Icon(
           icon,
-          color: Theme.of(context).primaryColor,
+          color: color ?? Theme.of(context).primaryColor,
         ),
       ),
     );

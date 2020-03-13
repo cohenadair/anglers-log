@@ -9,7 +9,7 @@ class ListItem extends StatelessWidget {
   final EdgeInsets contentPadding;
   final Widget title;
   final Widget subtitle;
-  final IconData icon;
+  final Widget leading;
   final Widget trailing;
   final VoidCallback onTap;
   final bool enabled;
@@ -18,7 +18,7 @@ class ListItem extends StatelessWidget {
     this.contentPadding,
     this.title,
     this.subtitle,
-    this.icon,
+    this.leading,
     this.trailing,
     this.onTap,
     this.enabled = true,
@@ -33,7 +33,7 @@ class ListItem extends StatelessWidget {
         contentPadding: contentPadding,
         title: title,
         subtitle: subtitle,
-        leading: icon == null ? null : Icon(icon),
+        leading: leading,
         trailing: trailing,
         onTap: onTap,
         enabled: enabled,

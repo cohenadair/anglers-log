@@ -87,7 +87,9 @@ class Strings {
   String get saveBaitPageNewTitle => _string("saveBaitPage_newTitle");
   String get saveBaitPageCategoryLabel => _string("saveBaitPage_categoryLabel");
   String get saveBaitPageNewCategoryLabel => _string("saveBaitPage_newCategoryLabel");
+  String get saveBaitPageEditCategoryLabel => _string("saveBaitPage_editCategoryLabel");
   String get saveBaitPageCategoryExistsMessage => _string("saveBaitPage_categoryExistsMessage");
+  String get saveBaitPageCategoryPickerTitle => _string("saveBaitPage_categoryPickerTitle");
 
   String get statsPageTitle => _string("statsPage_title");
 

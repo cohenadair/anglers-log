@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:mobile/log.dart';
 import 'package:mobile/pages/save_name_page.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/utils/future_stream_builder.dart';
@@ -15,6 +16,8 @@ import 'package:mobile/widgets/widget.dart';
 /// following functionality:
 /// - Select one or more items
 /// - Add items
+/// - Edit items
+/// - Delete items
 ///
 /// Note that a [Set] is used to determine which items are selected, and as
 /// such, `T` must override `==`.
@@ -48,9 +51,9 @@ class PickerPage<T> extends StatefulWidget {
   /// for multi-select pickers.
   final void Function(Set<T>) onFinishedPicking;
 
-  /// If non-null, an "Add" button will be present in the [AppBar]. The add
-  /// button behaviour is determined by this value.
-  final PickerPageAddHelper addItemHelper;
+  /// If non-null, "Add" and "Edit" buttons will be present in the [AppBar].
+  /// The add button behaviour is determined by this value.
+  final PickerPageSaveHelper saveItemHelper;
 
   /// If non-null, will update the picker when changes to the underlying stream
   /// are made.
@@ -69,7 +72,7 @@ class PickerPage<T> extends StatefulWidget {
     this.pageTitle,
     this.listHeader,
     this.allItem,
-    this.addItemHelper,
+    this.saveItemHelper,
     this.futureStreamHolder,
   }) : assert(initialValues != null),
        assert(itemBuilder != null);
@@ -81,7 +84,7 @@ class PickerPage<T> extends StatefulWidget {
     String pageTitle,
     Widget listHeader,
     PickerPageItem<T> allItem,
-    PickerPageAddHelper addItemHelper,
+    PickerPageSaveHelper addItemHelper,
     FutureStreamHolder futureStreamHolder,
   }) : this(
     itemBuilder: itemBuilder,
@@ -91,7 +94,7 @@ class PickerPage<T> extends StatefulWidget {
     pageTitle: pageTitle,
     listHeader: listHeader,
     allItem: allItem,
-    addItemHelper: addItemHelper,
+    saveItemHelper: addItemHelper,
     futureStreamHolder: futureStreamHolder,
   );
 
@@ -100,9 +103,12 @@ class PickerPage<T> extends StatefulWidget {
 }
 
 class _PickerPageState<T> extends State<PickerPage<T>> {
-  Set<T> _selectedValues;
+  final _log = Log("PickerPage");
 
-  bool get allowsAdding => widget.addItemHelper != null;
+  Set<T> _selectedValues;
+  bool _editing = false;
+
+  bool get allowsSaving => widget.saveItemHelper != null;
 
   @override
   void initState() {
@@ -122,20 +128,36 @@ class _PickerPageState<T> extends State<PickerPage<T>> {
       );
     }
 
+    Widget editDoneButton = Empty();
+    if (widget.saveItemHelper.editable) {
+      if (_editing) {
+        editDoneButton = ActionButton.done(
+          onPressed: _onDoneEditingPressed,
+          condensed: true,
+        );
+      } else {
+        editDoneButton = ActionButton.edit(
+          onPressed: _onEditPressed,
+          condensed: true,
+        );
+      }
+    }
+
     return Page(
       appBarStyle: PageAppBarStyle(
         title: widget.pageTitle,
         actions: [
           widget.multiSelect ? ActionButton.done(
-            condensed: allowsAdding,
+            condensed: allowsSaving,
             onPressed: () {
               widget.onFinishedPicking(_selectedValues);
             },
           ) : Empty(),
-          allowsAdding ? IconButton(
+          editDoneButton,
+          allowsSaving ? IconButton(
             icon: Icon(Icons.add),
             onPressed: () {
-              widget.addItemHelper.help(context);
+              widget.saveItemHelper.presentAddItem(context);
             },
           ) : Empty(),
         ],
@@ -164,38 +186,64 @@ class _PickerPageState<T> extends State<PickerPage<T>> {
           enabled: item.enabled,
           title: Text(item.title),
           subtitle: item.subtitle == null ? null : Text(item.subtitle),
-          trailing: widget.multiSelect ? EnabledOpacity(
-            enabled: item.enabled,
-            child: PaddedCheckbox(
-              value: _selectedValues.contains(item.value),
-              onChanged: (value) {
-                setState(() {
-                  _checkboxUpdated(item.value);
-                });
-              },
-            ),
+          leading: _editing ? MinimumIconButton(
+            icon: Icons.delete,
+            color: Colors.red,
+            onTap: () {
+            },
           ) : null,
-          onTap: widget.multiSelect ? null : () async {
-            if (item.onTap == null) {
-              _listItemTapped(item.value);
-              widget.onFinishedPicking({ item.value });
-            } else {
-              T pickedItem = await item.onTap();
-              if (pickedItem != null) {
-                _listItemTapped(pickedItem);
-                widget.onFinishedPicking({ pickedItem });
-              }
-            }
+          trailing: _buildListItemTrailing(item),
+          onTap: widget.multiSelect ? null : () {
+            _listItemTapped(item);
           },
         );
       }).toList()),
     );
   }
 
-  void _listItemTapped(T pickedItem) {
-    setState(() {
-      _selectedValues = Set.of([pickedItem]);
-    });
+  Widget _buildListItemTrailing(PickerPageItem<T> item) {
+    Widget trailing;
+
+    if (_editing) {
+      trailing = RightChevronIcon();
+    } else if (widget.multiSelect) {
+      trailing = EnabledOpacity(
+        enabled: item.enabled,
+        child: PaddedCheckbox(
+          value: _selectedValues.contains(item.value),
+          onChanged: (value) {
+            setState(() {
+              _checkboxUpdated(item.value);
+            });
+          },
+        ),
+      );
+    }
+
+    return trailing;
+  }
+
+  void _listItemTapped(PickerPageItem<T> item) async {
+    T pickedItem;
+    if (item.onTap == null) {
+      pickedItem = item.value;
+    } else {
+      pickedItem = await item.onTap();
+    }
+
+    if (pickedItem == null) {
+      _log.w("Picked item is null");
+      return;
+    }
+
+    if (_editing) {
+      widget.saveItemHelper.showEditItem(context, pickedItem);
+    } else {
+      setState(() {
+        _selectedValues = Set.of([pickedItem]);
+      });
+      widget.onFinishedPicking({ pickedItem });
+    }
   }
 
   void _checkboxUpdated(T pickedItem) {
@@ -215,6 +263,18 @@ class _PickerPageState<T> extends State<PickerPage<T>> {
         _selectedValues.remove(widget.allItem.value);
       }
     }
+  }
+
+  void _onEditPressed() {
+    setState(() {
+      _editing = true;
+    });
+  }
+
+  void _onDoneEditingPressed() {
+    setState(() {
+      _editing = false;
+    });
   }
 }
 
@@ -254,54 +314,82 @@ class PickerPageItem<T> {
        _divider = false;
 }
 
-/// A convenience class used to add items to the list picker. A helper's
-/// behaviour is determined by the subclasses [PickerPageAddHelper.help]
-/// implementation.
-///
-/// The help method is invoked with the "Add" button is pressed.
-abstract class PickerPageAddHelper {
-  void help(BuildContext context);
+/// A convenience class used to add items to the list picker.
+abstract class PickerPageSaveHelper<T> {
+  /// True items are editable. If `true`, an "Edit" button is rendered in the
+  /// `AppBar`.
+  bool get editable;
+
+  void presentAddItem(BuildContext context);
+  void showEditItem(BuildContext context, T itemToEdit) {}
 }
 
 /// Use when the only input when adding an item is a name.
 ///
 /// Shows a full screen [FormPage] with a single [TextInput].
-class PickerPageAddNameHelper implements PickerPageAddHelper {
-  final String title;
+class PickerPageSaveNameHelper<T> extends PickerPageSaveHelper<T> {
+  final String addTitle;
+  final String editTitle;
 
-  /// See [SaveNamePage.validate].
-  final FutureOr<String> Function(String) validate;
+  /// See [SaveNamePage.validate]. [String] is the input to validate, and [T]
+  /// is the old value or `null` if creating a new item.
+  final FutureOr<String> Function(String, T) validate;
 
-  /// Invoked when an item has been saved.
-  final void Function(String) onSave;
+  /// Invoked when an item has been saved. [String] is the new input, and [T]
+  /// is the old value or `null` if creating a new item.
+  final void Function(String, T) onSave;
 
-  PickerPageAddNameHelper({
-    @required this.title,
+  /// Invoked when editing an item. Returns the name value of [T]. This value
+  /// will be set as the initial value of the [TextInputField].
+  final String Function(T) oldNameCallback;
+
+  bool get editable => true;
+
+  PickerPageSaveNameHelper({
+    @required this.addTitle,
+    @required this.editTitle,
     this.validate,
     this.onSave,
+    this.oldNameCallback,
   });
 
   @override
-  void help(BuildContext context) {
+  void presentAddItem(BuildContext context) {
     present(context, SaveNamePage(
-      title: title,
-      onSave: onSave,
-      validate: validate,
+      title: addTitle,
+      onSave: (newName) {
+        onSave(newName, null);
+      },
+      validate: (potentialName) => validate(potentialName, null),
+    ));
+  }
+
+  @override
+  void showEditItem(BuildContext context, T itemToEdit) {
+    push(context, SaveNamePage(
+      title: editTitle,
+      oldName: oldNameCallback?.call(itemToEdit),
+      onSave: (newName) {
+        onSave(newName, itemToEdit);
+      },
+      validate: (potentialName) => validate(potentialName, itemToEdit),
     ));
   }
 }
 
 /// Use to customize what happens when the "Add" button is pressed in a
 /// [ListPickerInputPage].
-class PickerPageAddCustomHelper implements PickerPageAddHelper {
+class PickerPageAddCustomHelper extends PickerPageSaveHelper {
   final VoidCallback onAddPressed;
+
+  bool get editable => false;
 
   PickerPageAddCustomHelper({
     @required this.onAddPressed
   }) : assert(onAddPressed != null);
 
   @override
-  void help(BuildContext context) {
+  void presentAddItem(BuildContext context) {
     onAddPressed();
   }
 }

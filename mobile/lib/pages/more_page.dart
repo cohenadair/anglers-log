@@ -43,7 +43,7 @@ class MorePage extends StatelessWidget {
     @required String title,
     @required Widget page,
   }) => ListItem(
-    icon: icon,
+    leading: Icon(icon),
     title: Text(title),
     onTap: () => push(context, page),
   );
