@@ -90,6 +90,7 @@ class Strings {
   String get saveBaitPageEditCategoryLabel => _string("saveBaitPage_editCategoryLabel");
   String get saveBaitPageCategoryExistsMessage => _string("saveBaitPage_categoryExistsMessage");
   String get saveBaitPageCategoryPickerTitle => _string("saveBaitPage_categoryPickerTitle");
+  String get saveBaitPageConfirmDeleteCategory => _string("saveBaitPage_confirmDeleteCategory");
 
   String get statsPageTitle => _string("statsPage_title");
 

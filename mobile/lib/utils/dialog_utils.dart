@@ -5,12 +5,12 @@ import 'package:mobile/res/style.dart';
 void showDeleteDialog({
   @required BuildContext context,
   String title,
-  String description,
+  Widget description,
   VoidCallback onDelete
 }) {
   _showDestructiveDialog(
     context: context,
-    title: title,
+    title: title ?? Strings.of(context).delete,
     description: description,
     destroyText: Strings.of(context).delete,
     onTapDestroy: onDelete,
@@ -19,7 +19,7 @@ void showDeleteDialog({
 
 void showConfirmYesDialog({
   @required BuildContext context,
-  String description,
+  Widget description,
   VoidCallback onConfirm,
 }) {
   _showDestructiveDialog(
@@ -33,7 +33,7 @@ void showConfirmYesDialog({
 
 void showWarningDialog({
   @required BuildContext context,
-  String description,
+  Widget description,
   VoidCallback onContinue,
 }) {
   _showDestructiveDialog(
@@ -46,7 +46,7 @@ void showWarningDialog({
 
 void showErrorDialog({
   @required BuildContext context,
-  String description,
+  Widget description,
 }) {
   showOkDialog(
     context: context,
@@ -58,14 +58,14 @@ void showErrorDialog({
 void showOkDialog({
   @required BuildContext context,
   String title,
-  String description,
+  Widget description,
 }) {
   showDialog(
     context: context,
     builder: (BuildContext context) => AlertDialog(
       title: title == null ? null : Text(title),
       titleTextStyle: styleTitleAlert,
-      content: description == null ? null : Text(description),
+      content: description == null ? null : description,
       actions: <Widget>[
         _buildDialogButton(context: context, name: Strings.of(context).ok),
       ],
@@ -76,7 +76,7 @@ void showOkDialog({
 void _showDestructiveDialog({
   @required BuildContext context,
   String title,
-  String description,
+  Widget description,
   String cancelText,
   String destroyText,
   VoidCallback onTapDestroy,
@@ -86,7 +86,7 @@ void _showDestructiveDialog({
     builder: (BuildContext context) => AlertDialog(
       title: title == null ? null : Text(title),
       titleTextStyle: styleTitleAlert,
-      content: description == null ? null : Text(description),
+      content: description == null ? null : description,
       actions: <Widget>[
         _buildDialogButton(
           context: context,

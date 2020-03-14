@@ -11,6 +11,7 @@ import 'package:mobile/widgets/input.dart';
 import 'package:mobile/widgets/input_controller.dart';
 import 'package:mobile/widgets/photo_input.dart';
 import 'package:mobile/widgets/list_picker_input.dart';
+import 'package:mobile/widgets/text.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:quiver/strings.dart';
 
@@ -98,9 +99,13 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
       )).toList(),
       onChanged: (category) =>
           _allInputFields[baitCategoryId].controller.value = category,
-      addItemHelper: PickerPageSaveNameHelper<BaitCategory>(
+      addItemHelper: PickerPageItemNameManager<BaitCategory>(
         addTitle: Strings.of(context).saveBaitPageNewCategoryLabel,
         editTitle: Strings.of(context).saveBaitPageEditCategoryLabel,
+        deleteMessageBuilder: (context, category) => InsertedBoldText(
+          text: Strings.of(context).saveBaitPageConfirmDeleteCategory,
+          args: [category.name],
+        ),
         oldNameCallback: (oldCategory) => oldCategory.name,
         validate: (potentialName, oldCategory) async {
           if (isEmpty(potentialName)) {
@@ -121,6 +126,8 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
 
           BaitManager.of(context).createOrUpdateCategory(newCategory);
         },
+        onDelete: (categoryToDelete) =>
+            BaitManager.of(context).deleteCategory(categoryToDelete),
       ),
       itemEqualsOldValue: (item, oldCategory) {
         return item.value.id == oldCategory.id;

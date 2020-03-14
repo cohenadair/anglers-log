@@ -532,8 +532,10 @@ class _FishingSpotBottomSheet extends StatelessWidget {
             onPressed: () {
               showDeleteDialog(
                 context: context,
-                title: Strings.of(context).delete,
-                description: Strings.of(context).mapPageDeleteFishingSpot,
+                description: InsertedBoldText(
+                  text: Strings.of(context).mapPageDeleteFishingSpot,
+                  args: [fishingSpot.name],
+                ),
                 onDelete: () {
                   onDelete?.call();
                   FishingSpotManager.of(context).delete(fishingSpot);

@@ -37,8 +37,8 @@ class ListPickerInput<T> extends StatefulWidget {
   /// See [PickerPage.listHeader].
   final Widget listHeader;
 
-  /// See [PickerPage.saveItemHelper].
-  final PickerPageSaveHelper addItemHelper;
+  /// See [PickerPage.itemManager].
+  final PickerPageItemManager itemManager;
 
   /// See [PickerPage.futureStreamHolder].
   final FutureStreamHolder futureStreamHolder;
@@ -71,7 +71,7 @@ class ListPickerInput<T> extends StatefulWidget {
     this.listHeader,
     this.showsValueOnTrailing = false,
     this.enabled = true,
-    this.addItemHelper,
+    this.itemManager,
     this.futureStreamHolder,
     this.itemEqualsOldValue,
   }) : assert(itemBuilder != null),
@@ -97,7 +97,7 @@ class ListPickerInput<T> extends StatefulWidget {
     @required String labelText,
     EdgeInsets padding,
     bool enabled = true,
-    PickerPageSaveHelper addItemHelper,
+    PickerPageItemManager addItemHelper,
     FutureStreamHolder futureStreamHolder,
     bool Function(PickerPageItem<T>, T) itemEqualsOldValue,
   }) : this(
@@ -108,7 +108,7 @@ class ListPickerInput<T> extends StatefulWidget {
     showsValueOnTrailing: true,
     titleBuilder: (_) => Text(labelText),
     enabled: enabled,
-    addItemHelper: addItemHelper,
+    itemManager: addItemHelper,
     allowsMultiSelect: false,
     futureStreamHolder: futureStreamHolder,
     itemEqualsOldValue: itemEqualsOldValue,
@@ -153,7 +153,7 @@ class _ListPickerInputState<T> extends State<ListPickerInput<T>> {
         onTap: () {
           push(context, PickerPage<T>(
             futureStreamHolder: widget.futureStreamHolder,
-            saveItemHelper: widget.addItemHelper,
+            itemManager: widget.itemManager,
             pageTitle: widget.pageTitle,
             listHeader: widget.listHeader,
             multiSelect: widget.allowsMultiSelect,

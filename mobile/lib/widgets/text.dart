@@ -158,3 +158,44 @@ class TimeText extends StatelessWidget {
     return formatTimeOfDay(context, time);
   }
 }
+
+/// A text [Widget] that formats given arguments as bold. Supported formats:
+///   - %s
+class InsertedBoldText extends StatelessWidget {
+  final String text;
+  final List<String> args;
+
+  InsertedBoldText({
+    this.text,
+    this.args,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    var components = text.split(RegExp(r'%s'));
+    assert (args.length == components.length - 1);
+
+    List<TextSpan> spans = [];
+    for (var i = 0; i < components.length; i++) {
+      spans.add(TextSpan(
+        text: components[i],
+      ));
+      if (i < args.length) {
+        spans.add(TextSpan(
+          text: args[i],
+          style: TextStyle(
+            fontWeight: fontWeightBold,
+          ),
+        ));
+      }
+    }
+
+    // TODO: Check that text style and weight is fixed on next beta release.
+    return RichText(
+      text: TextSpan(
+        style: DefaultTextStyle.of(context).style,
+        children: spans,
+      ),
+    );
+  }
+}

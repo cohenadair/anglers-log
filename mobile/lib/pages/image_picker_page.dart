@@ -415,7 +415,7 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
       if (widget.allowsMultipleSelection) {
         msg = Strings.of(context).imagePickerPageInvalidSelectionPlural;
       }
-      showErrorDialog(context: context, description: msg);
+      showErrorDialog(context: context, description: Text(msg));
     } else {
       _pop(images.map((image) => PickedImage(image, null, null))
           .toList());

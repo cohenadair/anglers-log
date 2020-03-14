@@ -35,6 +35,11 @@ class BaitManager {
         controller: onCategoryUpdateController);
   }
 
+  void deleteCategory(BaitCategory baitCategory) async {
+    _app.dataManager.deleteEntity(baitCategory, _categoryTableName,
+        controller: onCategoryUpdateController);
+  }
+
   Future<List<BaitCategory>> _fetchAllCategories() async {
     var results = await _app.dataManager.fetchAllEntities(_categoryTableName);
     return results.map((map) => BaitCategory.fromMap(map)).toList();
