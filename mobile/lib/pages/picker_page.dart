@@ -102,8 +102,16 @@ class PickerPage<T> extends StatefulWidget {
   _PickerPageState<T> createState() => _PickerPageState();
 }
 
-class _PickerPageState<T> extends State<PickerPage<T>> {
+class _PickerPageState<T> extends State<PickerPage<T>> with
+    SingleTickerProviderStateMixin
+{
   final _log = Log("PickerPage");
+
+  final Duration _editingAnimationDuration = Duration(milliseconds: 150);
+
+  AnimationController _deleteIconAnimController;
+  Animation<Offset> _deleteIconAnim;
+  bool _deleteIconDismissed = true;
 
   Set<T> _selectedValues;
   bool _editing = false;
@@ -114,11 +122,35 @@ class _PickerPageState<T> extends State<PickerPage<T>> {
   void initState() {
     super.initState();
     _selectedValues = Set.of(widget.initialValues);
+
+    _deleteIconAnimController = AnimationController(
+      duration: _editingAnimationDuration,
+      vsync: this,
+    );
+    _deleteIconAnimController.addStatusListener((status) {
+      setState(() {
+        _deleteIconDismissed = status == AnimationStatus.dismissed;
+      });
+    });
+    _deleteIconAnim = Tween<Offset>(
+      begin: Offset(-2.0, 0.0),
+      end: Offset.zero,
+    ).animate(_deleteIconAnimController);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _deleteIconAnimController.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-//    print("PickerPage.build: ${widget.itemManager.deleteMessageBuilder}");
+    if (_editing) {
+      _deleteIconAnimController.forward();
+    } else {
+      _deleteIconAnimController.reverse();
+    }
 
     Widget child;
     if (widget.futureStreamHolder == null) {
@@ -149,7 +181,7 @@ class _PickerPageState<T> extends State<PickerPage<T>> {
       appBarStyle: PageAppBarStyle(
         title: widget.pageTitle,
         actions: [
-          widget.multiSelect ? ActionButton.done(
+          widget.multiSelect && !_editing ? ActionButton.done(
             condensed: allowsSaving,
             onPressed: () {
               widget.onFinishedPicking(_selectedValues);
@@ -188,22 +220,9 @@ class _PickerPageState<T> extends State<PickerPage<T>> {
           enabled: item.enabled,
           title: Text(item.title),
           subtitle: item.subtitle == null ? null : Text(item.subtitle),
-          leading: _editing ? MinimumIconButton(
-            icon: Icons.delete,
-            color: Colors.red,
-            onTap: () {
-              showDeleteDialog(
-                context: context,
-                description: widget.itemManager.deleteMessageBuilder(
-                    context, item.value),
-                onDelete: () {
-                  widget.itemManager.onDeleteItem(item.value);
-                }
-              );
-            },
-          ) : null,
+          leading: _buildDeleteItemButton(item),
           trailing: _buildListItemTrailing(item),
-          onTap: widget.multiSelect ? null : () {
+          onTap: widget.multiSelect && !_editing ? null : () {
             _listItemTapped(item);
           },
         );
@@ -211,13 +230,42 @@ class _PickerPageState<T> extends State<PickerPage<T>> {
     );
   }
 
-  Widget _buildListItemTrailing(PickerPageItem<T> item) {
-    Widget trailing;
+  Widget _buildDeleteItemButton(PickerPageItem<T> item) {
+    if (_deleteIconDismissed) {
+      // TODO: Fix animation jump
+      // Returning null in this case causes the text widgets to "jump" back
+      // when the delete button dismiss animation is completed. This is because
+      // when using a ListTile, the only way to hide the leading space is to
+      // set leading to null. You can't animate to null, so there's no way to
+      // animate the leading off the view and animate the text widgets.
+      // Solution is likely to use a custom ListTile and handle animations
+      // there.
+      return null;
+    }
+    return SlideTransition(
+      position: _deleteIconAnim,
+      child: MinimumIconButton(
+        icon: Icons.delete,
+        color: Colors.red,
+        onTap: () {
+          showDeleteDialog(
+            context: context,
+            description: widget.itemManager.deleteMessageBuilder(
+                context, item.value),
+            onDelete: () {
+              widget.itemManager.onDeleteItem(item.value);
+            },
+          );
+        },
+      ),
+    );
+  }
 
+  Widget _buildListItemTrailing(PickerPageItem<T> item) {
+    Widget trailing = Empty();
     if (_editing) {
       trailing = RightChevronIcon();
     } else if (widget.multiSelect) {
-      // Only checkbox should appear disabled if the item is disabled.
       trailing = EnabledOpacity(
         enabled: item.enabled,
         child: PaddedCheckbox(
@@ -231,7 +279,17 @@ class _PickerPageState<T> extends State<PickerPage<T>> {
       );
     }
 
-    return trailing;
+    return AnimatedSwitcher(
+      duration: _editingAnimationDuration,
+      child: trailing,
+      transitionBuilder: (widget, animation) => SlideTransition(
+        child: widget,
+        position: Tween<Offset>(
+          begin: Offset(2.0, 0.0),
+          end: Offset.zero,
+        ).animate(animation),
+      ),
+    );
   }
 
   void _listItemTapped(PickerPageItem<T> item) async {
