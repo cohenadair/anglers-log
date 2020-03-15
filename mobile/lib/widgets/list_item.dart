@@ -2,6 +2,10 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:mobile/res/dimen.dart';
+import 'package:mobile/utils/dialog_utils.dart';
+import 'package:mobile/widgets/button.dart';
+import 'package:mobile/widgets/checkbox_input.dart';
 import 'package:mobile/widgets/widget.dart';
 
 /// A [ListTile] wrapper with app default properties.
@@ -105,6 +109,164 @@ class _ExpansionListItemState extends State<ExpansionListItem> {
           _previousScrollOffset + box.size.height),
       duration: defaultAnimationDuration,
       curve: Curves.linear,
+    );
+  }
+}
+
+/// A custom [ListTile]-like [Widget] that animates leading and trailing
+/// widgets for managing the item associated with [ManageableListItem].
+///
+/// When editing:
+/// - A "Delete" icon is rendered as the leading [Widget].
+/// - A [RightChevronIcon] is rendered as the trailing [Widget].
+/// - When the "Delete" button is pressed, a delete confirmation dialog is
+///   shown.
+class ManageableListItem extends StatefulWidget {
+  final Widget title;
+
+  /// The trailing [Widget] to show when not editing.
+  final Widget trailing;
+
+  /// Invoked when the item is tapped.
+  final VoidCallback onTap;
+
+  /// Return the message that is shown in the delete confirmation dialog.
+  final Widget Function(BuildContext) deleteMessageBuilder;
+
+  /// Invoked when the delete action is confirmed by the user.
+  final VoidCallback onConfirmDelete;
+
+  /// When true, a "Delete" icon is rendered as the leading [Widget], and a
+  /// [RightChevronIcon] as the trailing.
+  final bool editing;
+
+  /// When true, renders the entire [Widget] as disabled, and is not clickable.
+  final bool enabled;
+
+  ManageableListItem({
+    @required this.title,
+    this.deleteMessageBuilder,
+    this.onConfirmDelete,
+    this.onTap,
+    this.trailing,
+    this.editing = false,
+    this.enabled = true,
+  });
+
+  @override
+  _ManageableListItemState createState() => _ManageableListItemState();
+}
+
+class _ManageableListItemState extends State<ManageableListItem> with
+    SingleTickerProviderStateMixin
+{
+  final Duration _editAnimDuration = Duration(milliseconds: 150);
+
+  AnimationController _editAnimController;
+  Animation<double> _deleteIconSizeAnim;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _editAnimController = AnimationController(
+      duration: _editAnimDuration,
+      vsync: this,
+    );
+    _deleteIconSizeAnim = Tween<double>(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(_editAnimController);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _editAnimController.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (widget.editing) {
+      _editAnimController.forward();
+    } else {
+      _editAnimController.reverse();
+    }
+
+    return SafeArea(
+      top: false,
+      bottom: false,
+      child: EnabledOpacity(
+        enabled: widget.enabled,
+        child: InkWell(
+          onTap: widget.onTap,
+          child: Row(
+            mainAxisSize: MainAxisSize.max,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              _buildDeleteIcon(),
+              Padding(
+                padding: insetsDefault,
+                child: DefaultTextStyle(
+                  style: Theme.of(context).textTheme.subtitle1,
+                  child: widget.title,
+                ),
+              ),
+              Spacer(),
+              _buildTrailing(),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDeleteIcon() {
+    return SizeTransition(
+      axis: Axis.horizontal,
+      sizeFactor: _deleteIconSizeAnim,
+      child: Padding(
+        padding: insetsLeftDefault,
+        child: MinimumIconButton(
+          icon: Icons.delete,
+          color: Colors.red,
+          onTap: () => showDeleteDialog(
+            context: context,
+            description: widget.deleteMessageBuilder(context),
+            onDelete: widget.onConfirmDelete,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTrailing() {
+    Key key;
+    Widget trailing = Empty();
+    if (widget.editing) {
+      key = ValueKey(1);
+      trailing = RightChevronIcon();
+    } else if (widget.trailing != null) {
+      key = ValueKey(2);
+      trailing = widget.trailing;
+    }
+
+    return AnimatedSwitcher(
+      duration: _editAnimDuration,
+      child: Padding(
+        // Key is required here for animation (since widget type doesn't
+        // change).
+        key: key,
+        padding: insetsRightDefault,
+        child: trailing,
+      ),
+      transitionBuilder: (widget, animation) => SlideTransition(
+        child: widget,
+        position: Tween<Offset>(
+          begin: Offset(2.0, 0.0),
+          end: Offset.zero,
+        ).animate(animation),
+      ),
     );
   }
 }

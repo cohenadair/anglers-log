@@ -73,17 +73,20 @@ class SwipeChip extends StatelessWidget {
 class EnabledOpacity extends StatelessWidget {
   static const double _disabledOpacity = 0.5;
 
+  final Key key;
   final bool enabled;
   final Widget child;
 
   EnabledOpacity({
     @required this.child,
+    this.key,
     this.enabled = true,
   }) : assert(child != null);
 
   @override
   Widget build(BuildContext context) {
     return Opacity(
+      key: key,
       opacity: enabled ? 1.0 : _disabledOpacity,
       child: child,
     );

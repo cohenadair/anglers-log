@@ -102,16 +102,8 @@ class PickerPage<T> extends StatefulWidget {
   _PickerPageState<T> createState() => _PickerPageState();
 }
 
-class _PickerPageState<T> extends State<PickerPage<T>> with
-    SingleTickerProviderStateMixin
-{
+class _PickerPageState<T> extends State<PickerPage<T>> {
   final _log = Log("PickerPage");
-
-  final Duration _editingAnimationDuration = Duration(milliseconds: 150);
-
-  AnimationController _deleteIconAnimController;
-  Animation<Offset> _deleteIconAnim;
-  bool _deleteIconDismissed = true;
 
   Set<T> _selectedValues;
   bool _editing = false;
@@ -122,36 +114,10 @@ class _PickerPageState<T> extends State<PickerPage<T>> with
   void initState() {
     super.initState();
     _selectedValues = Set.of(widget.initialValues);
-
-    _deleteIconAnimController = AnimationController(
-      duration: _editingAnimationDuration,
-      vsync: this,
-    );
-    _deleteIconAnimController.addStatusListener((status) {
-      setState(() {
-        _deleteIconDismissed = status == AnimationStatus.dismissed;
-      });
-    });
-    _deleteIconAnim = Tween<Offset>(
-      begin: Offset(-2.0, 0.0),
-      end: Offset.zero,
-    ).animate(_deleteIconAnimController);
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _deleteIconAnimController.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    if (_editing) {
-      _deleteIconAnimController.forward();
-    } else {
-      _deleteIconAnimController.reverse();
-    }
-
     Widget child;
     if (widget.futureStreamHolder == null) {
       child = _buildListView(context);
@@ -216,79 +182,30 @@ class _PickerPageState<T> extends State<PickerPage<T>> with
           return Divider();
         }
 
-        return ListItem(
-          enabled: item.enabled,
+        return ManageableListItem(
           title: Text(item.title),
-          subtitle: item.subtitle == null ? null : Text(item.subtitle),
-          leading: _buildDeleteItemButton(item),
-          trailing: _buildListItemTrailing(item),
+          enabled: item.enabled,
+          editing: _editing,
+          deleteMessageBuilder: (context) =>
+              widget.itemManager.deleteMessageBuilder(context, item.value),
+          onConfirmDelete: () => widget.itemManager.onDeleteItem(item.value),
           onTap: widget.multiSelect && !_editing ? null : () {
             _listItemTapped(item);
           },
+          trailing: widget.multiSelect ? _buildListItemCheckbox(item) : null,
         );
       }).toList()),
     );
   }
 
-  Widget _buildDeleteItemButton(PickerPageItem<T> item) {
-    if (_deleteIconDismissed) {
-      // TODO: Fix animation jump
-      // Returning null in this case causes the text widgets to "jump" back
-      // when the delete button dismiss animation is completed. This is because
-      // when using a ListTile, the only way to hide the leading space is to
-      // set leading to null. You can't animate to null, so there's no way to
-      // animate the leading off the view and animate the text widgets.
-      // Solution is likely to use a custom ListTile and handle animations
-      // there.
-      return null;
-    }
-    return SlideTransition(
-      position: _deleteIconAnim,
-      child: MinimumIconButton(
-        icon: Icons.delete,
-        color: Colors.red,
-        onTap: () {
-          showDeleteDialog(
-            context: context,
-            description: widget.itemManager.deleteMessageBuilder(
-                context, item.value),
-            onDelete: () {
-              widget.itemManager.onDeleteItem(item.value);
-            },
-          );
-        },
-      ),
-    );
-  }
-
-  Widget _buildListItemTrailing(PickerPageItem<T> item) {
-    Widget trailing = Empty();
-    if (_editing) {
-      trailing = RightChevronIcon();
-    } else if (widget.multiSelect) {
-      trailing = EnabledOpacity(
-        enabled: item.enabled,
-        child: PaddedCheckbox(
-          value: _selectedValues.contains(item.value),
-          onChanged: (value) {
-            setState(() {
-              _checkboxUpdated(item.value);
-            });
-          },
-        ),
-      );
-    }
-
-    return AnimatedSwitcher(
-      duration: _editingAnimationDuration,
-      child: trailing,
-      transitionBuilder: (widget, animation) => SlideTransition(
-        child: widget,
-        position: Tween<Offset>(
-          begin: Offset(2.0, 0.0),
-          end: Offset.zero,
-        ).animate(animation),
-      ),
+  Widget _buildListItemCheckbox(PickerPageItem<T> item) {
+    return PaddedCheckbox(
+      value: _selectedValues.contains(item.value),
+      onChanged: (value) {
+        setState(() {
+          _checkboxUpdated(item.value);
+        });
+      },
     );
   }
 
