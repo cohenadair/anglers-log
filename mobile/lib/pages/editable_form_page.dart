@@ -71,7 +71,6 @@ class _EditableFormPageState extends State<EditableFormPage> {
   Widget build(BuildContext context) {
     return FormPage(
       title: widget.title,
-      key: UniqueKey(),
       padding: widget.padding,
       fieldBuilder: (BuildContext context, bool isRemovingFields) {
         return Map.fromIterable(_usedInputOptions.keys,

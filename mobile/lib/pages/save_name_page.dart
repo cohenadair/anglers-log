@@ -19,7 +19,7 @@ class SaveNamePage extends StatefulWidget {
   final void Function(String) onSave;
 
   /// Invoked when the name input changes.
-  final FutureOr<String> Function(String) validate;
+  final FutureOr<ValidationCallback> Function(String) validate;
 
   SaveNamePage({
     @required this.title,
@@ -34,7 +34,7 @@ class SaveNamePage extends StatefulWidget {
 
 class _SaveNamePageState extends State<SaveNamePage> {
   final _controller = TextInputController(
-    errorCallback: (context) => Strings.of(context).inputGenericRequired,
+    validate: (context) => Strings.of(context).inputGenericRequired,
   );
 
   bool get inputEqualsOld => widget.oldName != null
@@ -48,7 +48,7 @@ class _SaveNamePageState extends State<SaveNamePage> {
       _controller.text = widget.oldName;
 
       // If editing an old name, that old name is valid.
-      _controller.errorCallback = null;
+      _controller.validate = null;
     }
   }
 
@@ -72,21 +72,15 @@ class _SaveNamePageState extends State<SaveNamePage> {
             context,
             controller: _controller,
             autofocus: true,
-            onTextChange: () async {
-              if (inputEqualsOld) {
-                // Entering the same name is acceptable.
-                setState(() {
-                  _controller.errorCallback = null;
-                });
-                return;
+            validate: () async {
+              var callback;
+              if (!inputEqualsOld) {
+                callback = await widget.validate(_controller.text);
               }
 
-              String error = await widget.validate(_controller.text);
-              if (_controller.error(context) != error) {
-                setState(() {
-                  _controller.errorCallback = (context) => error;
-                });
-              }
+              // Trigger "Save" button state refresh.
+              setState(() {});
+              return callback;
             },
           ),
         };

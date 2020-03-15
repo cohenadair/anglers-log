@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/utils/dialog_utils.dart';
 import 'package:mobile/widgets/button.dart';
-import 'package:mobile/widgets/checkbox_input.dart';
 import 'package:mobile/widgets/widget.dart';
 
 /// A [ListTile] wrapper with app default properties.

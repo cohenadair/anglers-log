@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/res/style.dart';
+import 'package:mobile/widgets/widget.dart';
 import 'package:quiver/strings.dart';
 
 class Button extends StatelessWidget {
@@ -78,15 +79,18 @@ class ActionButton extends StatelessWidget {
     );
 
     if (condensed) {
-      return RawMaterialButton(
-        constraints: BoxConstraints(),
-        padding: EdgeInsets.all(paddingSmall),
-        onPressed: onPressed,
-        child: textWidget,
-        shape: CircleBorder(side: BorderSide(color: Colors.transparent)),
-        textStyle: TextStyle(
-          fontWeight: FontWeight.w500,
-          color: Colors.black,
+      return EnabledOpacity(
+        enabled: onPressed != null,
+        child: RawMaterialButton(
+          constraints: BoxConstraints(),
+          padding: EdgeInsets.all(paddingSmall),
+          onPressed: onPressed,
+          child: textWidget,
+          shape: CircleBorder(side: BorderSide(color: Colors.transparent)),
+          textStyle: TextStyle(
+            fontWeight: FontWeight.w500,
+            color: Colors.black,
+          ),
         ),
       );
     } else {

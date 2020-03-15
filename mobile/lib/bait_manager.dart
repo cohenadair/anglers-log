@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/app_manager.dart';
+import 'package:mobile/model/bait.dart';
 import 'package:mobile/model/bait_category.dart';
 import 'package:mobile/utils/future_stream_builder.dart';
 import 'package:mobile/utils/void_stream_controller.dart';
@@ -18,6 +19,7 @@ class BaitManager {
   }
   BaitManager._internal(AppManager app) : _app = app;
 
+  final String _baitTableName = "bait";
   final String _categoryTableName = "bait_category";
 
   final AppManager _app;
@@ -43,6 +45,27 @@ class BaitManager {
   Future<List<BaitCategory>> _fetchAllCategories() async {
     var results = await _app.dataManager.fetchAllEntities(_categoryTableName);
     return results.map((map) => BaitCategory.fromMap(map)).toList();
+  }
+
+  Future<bool> baitExists(Bait bait) {
+    return _app.dataManager.rawExists("""
+      SELECT COUNT(*) FROM $_baitTableName
+      WHERE category_id = ?
+      AND name = ?
+      AND color = ?
+      AND model = ?
+      AND type = ?
+      AND min_dive_depth = ?
+      AND max_dive_depth = ?
+    """, [
+      bait.categoryId,
+      bait.name,
+      bait.color,
+      bait.model,
+      bait.type,
+      bait.minDiveDepth,
+      bait.maxDiveDepth
+    ]);
   }
 }
 

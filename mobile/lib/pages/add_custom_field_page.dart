@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:mobile/custom_field_manager.dart';
 import 'package:mobile/i18n/strings.dart';
@@ -31,7 +33,7 @@ class _AddCustomFieldPageState extends State<AddCustomFieldPage> {
 
   final Map<String, InputController> _inputOptions = {
     _nameId: TextInputController(
-      errorCallback: (context) => Strings.of(context).inputGenericRequired,
+      validate: (context) => Strings.of(context).inputGenericRequired,
     ),
     _descriptionId: TextInputController(),
     _dataTypeId: InputController<InputType>(
@@ -69,7 +71,7 @@ class _AddCustomFieldPageState extends State<AddCustomFieldPage> {
         context,
         controller: _nameController,
         autofocus: true,
-        onTextChange: _validateName,
+        validate: _validateName,
       );
       case _descriptionId: return TextInput.description(
         context,
@@ -103,21 +105,18 @@ class _AddCustomFieldPageState extends State<AddCustomFieldPage> {
     widget.onSave?.call(customField);
   }
 
-  void _validateName() async {
+  FutureOr<ValidationCallback> _validateName() async {
     String name = _nameController.text;
-    String error;
+    ValidationCallback callback;
 
     if (isEmpty(name)) {
-      error = Strings.of(context).inputGenericRequired;
+      callback = (context) => Strings.of(context).inputGenericRequired;
     } else if (await CustomFieldManager.of(context).nameExists(name)) {
-      error = Strings.of(context).addCustomFieldPageNameExists;
+      callback = (context) => Strings.of(context).addCustomFieldPageNameExists;
     }
 
-    // Only update state if the error message has changed.
-    if (_nameController.error(context) != error) {
-      setState(() {
-        _nameController.errorCallback = (context) => error;
-      });
-    }
+    // Trigger "Save" button state refresh.
+    setState(() {});
+    return callback;
   }
 }

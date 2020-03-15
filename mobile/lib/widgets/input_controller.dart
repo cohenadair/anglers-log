@@ -4,19 +4,22 @@ import 'package:mobile/pages/image_picker_page.dart';
 import 'package:mobile/utils/date_time_utils.dart';
 import 'package:quiver/strings.dart';
 
+/// A function called to validate input. A function is used so pass a
+/// BuildContext instance for using localized strings.
+typedef String ValidationCallback(BuildContext context);
+
 /// A class for storing a value of an input widget, such as a text field or
 /// check box.
 class InputController<T> {
   /// The value of the controller, such as [bool] or [TextEditingController].
   T value;
 
-  /// A callback for rendering an error message for the input. A function is
-  /// required for use with localized strings.
-  String Function(BuildContext) errorCallback;
+  /// Invoked when validating input.
+  ValidationCallback validate;
 
   InputController({
     this.value,
-    this.errorCallback,
+    this.validate,
   });
 
   void dispose() {
@@ -27,7 +30,7 @@ class InputController<T> {
     value = null;
   }
 
-  String error(BuildContext context) => errorCallback?.call(context);
+  String error(BuildContext context) => validate?.call(context);
 }
 
 class BaitCategoryController extends InputController<BaitCategory> {
@@ -39,10 +42,10 @@ class ImageInputController extends InputController<PickedImage> {
 class TextInputController extends InputController<TextEditingController> {
   TextInputController({
     TextEditingController controller,
-    String Function(BuildContext) errorCallback,
+    ValidationCallback validate,
   }) : super(
     value: controller == null ? TextEditingController() : controller,
-    errorCallback: errorCallback,
+    validate: validate,
   );
 
   String get text => value.text.trim();

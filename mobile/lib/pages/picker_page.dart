@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:mobile/log.dart';
 import 'package:mobile/pages/save_name_page.dart';
 import 'package:mobile/res/dimen.dart';
-import 'package:mobile/utils/dialog_utils.dart';
 import 'package:mobile/utils/future_stream_builder.dart';
 import 'package:mobile/utils/page_utils.dart';
 import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/checkbox_input.dart';
+import 'package:mobile/widgets/input_controller.dart';
 import 'package:mobile/widgets/list_item.dart';
 import 'package:mobile/widgets/page.dart';
 import 'package:mobile/widgets/widget.dart';
@@ -328,7 +328,7 @@ class PickerPageItemNameManager<T> extends PickerPageItemManager<T> {
 
   /// See [SaveNamePage.validate]. [String] is the input to validate, and [T]
   /// is the old value or `null` if creating a new item.
-  final FutureOr<String> Function(String, T) validate;
+  final FutureOr<ValidationCallback> Function(String, T) validate;
 
   /// Invoked when an item has been saved. [String] is the new input, and [T]
   /// is the old value or `null` if creating a new item.

@@ -9,9 +9,9 @@ import 'package:mobile/pages/picker_page.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/widgets/input.dart';
 import 'package:mobile/widgets/input_controller.dart';
-import 'package:mobile/widgets/photo_input.dart';
 import 'package:mobile/widgets/list_picker_input.dart';
 import 'package:mobile/widgets/text.dart';
+import 'package:mobile/widgets/text_input.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:quiver/strings.dart';
 
@@ -26,7 +26,7 @@ class SaveBaitPage extends StatefulWidget {
 
 class _SaveBaitPageState extends State<SaveBaitPage> {
   static const String baitCategoryId = "bait_category";
-  static const String photoId = "photo";
+  static const String nameId = "name";
 
   final _log = Log("SaveBaitPage");
   List<BaitCategory> _categories = [];
@@ -40,11 +40,12 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
       controller: BaitCategoryController(),
       removable: true,
     ),
-    photoId: InputData(
-      id: photoId,
-      label: (context) => Strings.of(context).inputPhotoLabel,
-      controller: ImageInputController(),
-      removable: true,
+    nameId: InputData(
+      id: nameId,
+      label: (context) => Strings.of(context).inputNameLabel,
+      controller: TextInputController(
+        validate: (context) => Strings.of(context).inputGenericRequired,
+      ),
     ),
   };
 
@@ -56,18 +57,19 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
       allFields: _allInputFields,
       initialFields: {
         baitCategoryId: _allInputFields[baitCategoryId],
-        photoId: _allInputFields[photoId],
+        nameId: _allInputFields[nameId],
       },
       onBuildField: (id, isRemovingFields) {
         switch (id) {
+          case nameId: return _buildNameField(isRemovingFields);
           case baitCategoryId: return _buildCategoryPicker(isRemovingFields);
-          case photoId: return _buildPhotoPicker(isRemovingFields);
           default:
             print("Unknown input key: $id");
             return Empty();
         }
       },
       onSave: _save,
+      isInputValid: isEmpty(_allInputFields[nameId].controller.error(context)),
     );
   }
 
@@ -109,11 +111,12 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
         oldNameCallback: (oldCategory) => oldCategory.name,
         validate: (potentialName, oldCategory) async {
           if (isEmpty(potentialName)) {
-            return Strings.of(context).inputGenericRequired;
+            return (context) => Strings.of(context).inputGenericRequired;
           } else if (await BaitManager.of(context)
               .categoryNameExists(potentialName))
           {
-            return Strings.of(context).saveBaitPageCategoryExistsMessage;
+            return (context) =>
+                Strings.of(context).saveBaitPageCategoryExistsMessage;
           } else {
             return null;
           }
@@ -135,14 +138,23 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
     );
   }
 
-  Widget _buildPhotoPicker(bool isRemovingFields) => PhotoInput.single(
-    enabled: !isRemovingFields,
-    currentImage: _allInputFields[photoId].controller.value,
-    onImagePicked: (image) {
-      setState(() {
-        _allInputFields[photoId].controller.value = image;
-      });
-    },
+  Widget _buildNameField(bool isRemovingFields) => Padding(
+    padding: insetsHorizontalDefault,
+    child: TextInput.name(context,
+      enabled: !isRemovingFields,
+      controller: _allInputFields[nameId].controller,
+      autofocus: true,
+      validate: () {
+        var callback;
+        if (isEmpty(_allInputFields[nameId].controller.value.text)) {
+          callback = (context) => Strings.of(context).inputGenericRequired;
+        }
+
+        // Trigger "Save" button state refresh.
+        setState(() {});
+        return callback;
+      },
+    ),
   );
 
   void _save(Map<String, InputData> result) {

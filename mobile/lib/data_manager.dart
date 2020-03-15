@@ -73,6 +73,10 @@ class DataManager {
             [value])) > 0;
   }
 
+  Future<bool> rawExists(String query, dynamic value) async {
+    return Sqflite.firstIntValue(await _database.rawQuery(query, [value])) > 0;
+  }
+
   /// Inserts a new [Entity] into the given [tableName] or updates the existing
   /// [Entity] if one with the same ID already exists.
   ///
