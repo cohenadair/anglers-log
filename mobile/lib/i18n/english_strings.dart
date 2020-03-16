@@ -38,6 +38,7 @@ Map<String, Map<String, String>> get englishStrings => {
     "input_invalidNumber" : "Invalid number input",
     "input_photoLabel" : "Photo",
     "input_photosLabel" : "Photos",
+    "input_notSelected" : "Not Selected",
 
     "catchListPage_menuLabel" : "Catches",
     "catchListPage_title" : "Catches (%s)",

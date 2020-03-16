@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:mobile/custom_field_manager.dart';
 import 'package:mobile/model/custom_entity.dart';
@@ -26,7 +28,9 @@ class EditableFormPage extends StatefulWidget {
   /// Called when the "Save" button is pressed and form validation passes.
   /// A map of used input fields, including any custom fields, is passed into
   /// the function.
-  final Function(Map<String, InputData>) onSave;
+  ///
+  /// See [FormPage.onSave].
+  final FutureOr<bool> Function(Map<String, InputData>) onSave;
 
   /// See [FormPage.isInputValid].
   final bool isInputValid;
@@ -81,8 +85,11 @@ class _EditableFormPageState extends State<EditableFormPage> {
           ),
         );
       },
-      onSave: () {
-        widget.onSave?.call(_usedInputOptions);
+      onSave: () async {
+        if (widget.onSave == null || await widget.onSave(_usedInputOptions)) {
+          return true;
+        }
+        return false;
       },
       addFieldOptions: _allInputFields.keys.map((String id) {
         return FormPageFieldOption(

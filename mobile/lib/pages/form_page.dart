@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/model/custom_entity.dart';
@@ -95,7 +97,10 @@ class FormPage extends StatefulWidget {
   /// Whether this form's components can be added or removed.
   final bool editable;
 
-  final VoidCallback onSave;
+  /// Called when the save button is pressed. Returning true will close dismiss
+  /// the form page; false will leave it open.
+  final FutureOr<bool> Function() onSave;
+
   final EdgeInsets padding;
 
   FormPage({
@@ -277,15 +282,16 @@ class _FormPageState extends State<FormPage> {
     onSelectItems: (selectedIds) => widget.onAddFields(selectedIds),
   );
 
-  void _onPressedSave() {
+  void _onPressedSave() async {
     if (!_key.currentState.validate()) {
       return;
     }
 
     _key.currentState.save();
-    widget.onSave?.call();
 
-    Navigator.pop(context);
+    if (widget.onSave == null || await widget.onSave()) {
+      Navigator.pop(context);
+    }
   }
 
   void _onConfirmRemoveFields() {

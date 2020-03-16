@@ -23,8 +23,8 @@ class BaitManager {
   final String _categoryTableName = "bait_category";
 
   final AppManager _app;
-  final VoidStreamController onCategoryUpdateController =
-      VoidStreamController();
+  final VoidStreamController onCategoryUpdate = VoidStreamController();
+  final VoidStreamController onBaitUpdate = VoidStreamController();
 
   int get numberOfBaits => 0;
 
@@ -34,12 +34,12 @@ class BaitManager {
 
   void createOrUpdateCategory(BaitCategory baitCategory) async {
     _app.dataManager.insertOrUpdateEntity(baitCategory, _categoryTableName,
-        controller: onCategoryUpdateController);
+        controller: onCategoryUpdate);
   }
 
   void deleteCategory(BaitCategory baitCategory) async {
     _app.dataManager.deleteEntity(baitCategory, _categoryTableName,
-        controller: onCategoryUpdateController);
+        controller: onCategoryUpdate);
   }
 
   Future<List<BaitCategory>> _fetchAllCategories() async {
@@ -51,12 +51,14 @@ class BaitManager {
     return _app.dataManager.rawExists("""
       SELECT COUNT(*) FROM $_baitTableName
       WHERE category_id = ?
-      AND name = ?
-      AND color = ?
-      AND model = ?
-      AND type = ?
-      AND min_dive_depth = ?
-      AND max_dive_depth = ?
+        AND name = ?
+        AND color """ + (bait.color == null ? "IS NULL" : "= ?") + """
+        AND model """ + (bait.model == null ? "IS NULL" : "= ?") + """
+        AND type """ + (bait.type == null ? "IS NULL" : "= ?") + """
+        AND min_dive_depth """
+            + (bait.minDiveDepth== null ? "IS NULL" : "= ?") + """
+        AND max_dive_depth """
+            + (bait.maxDiveDepth == null ? "IS NULL" : "= ?") + """
     """, [
       bait.categoryId,
       bait.name,
@@ -67,6 +69,16 @@ class BaitManager {
       bait.maxDiveDepth
     ]);
   }
+
+  void createOrUpdateBait(Bait bait) async {
+    _app.dataManager.insertOrUpdateEntity(bait, _baitTableName,
+        controller: onBaitUpdate);
+  }
+
+  Future<List<Bait>> _fetchAllBaits() async {
+    var results = await _app.dataManager.fetchAllEntities(_baitTableName);
+    return results.map((map) => Bait.fromMap(map)).toList();
+  }
 }
 
 /// A [FutureStreamHolder] subclass for [BaitCategory] objects.
@@ -75,7 +87,7 @@ class BaitCategoriesFutureStreamHolder extends FutureStreamHolder {
     void Function(List<BaitCategory>) onUpdate,
   }) : super.single(
     futureCallback: BaitManager.of(context)._fetchAllCategories,
-    stream: BaitManager.of(context).onCategoryUpdateController.stream,
+    stream: BaitManager.of(context).onCategoryUpdate.stream,
     onUpdate: (result) => onUpdate(result as List<BaitCategory>),
   );
 }

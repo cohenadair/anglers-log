@@ -361,6 +361,7 @@ class PickerPageItemNameManager<T> extends PickerPageItemManager<T> {
       title: addTitle,
       onSave: (newName) {
         onSave(newName, null);
+        return true;
       },
       validate: (potentialName) => validate(potentialName, null),
     ));
@@ -373,6 +374,7 @@ class PickerPageItemNameManager<T> extends PickerPageItemManager<T> {
       oldName: oldNameCallback?.call(itemToEdit),
       onSave: (newName) {
         onSave(newName, itemToEdit);
+        return true;
       },
       validate: (potentialName) => validate(potentialName, itemToEdit),
     ));

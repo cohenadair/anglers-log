@@ -66,6 +66,7 @@ class Strings {
   String get inputInvalidNumber => _string("input_invalidNumber");
   String get inputPhotoLabel => _string("input_photoLabel");
   String get inputPhotosLabel => _string("input_photosLabel");
+  String get inputNotSelected => _string("input_notSelected");
 
   String get tripListPageMenuLabel => _string("tripListPage_menuLabel");
   String get tripListPageTitle => _string("tripListPage_title");

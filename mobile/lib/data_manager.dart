@@ -73,8 +73,8 @@ class DataManager {
             [value])) > 0;
   }
 
-  Future<bool> rawExists(String query, dynamic value) async {
-    return Sqflite.firstIntValue(await _database.rawQuery(query, [value])) > 0;
+  Future<bool> rawExists(String query, [List<dynamic> args]) async {
+    return Sqflite.firstIntValue(await _database.rawQuery(query, args)) > 0;
   }
 
   /// Inserts a new [Entity] into the given [tableName] or updates the existing

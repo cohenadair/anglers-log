@@ -14,9 +14,11 @@ class SaveNamePage extends StatefulWidget {
   final String title;
   final String oldName;
 
-  /// Invoked when the "Save" button is pressed. The value entered is padded to
+  /// Invoked when the "Save" button is pressed. The value entered is passed to
   /// this callback.
-  final void Function(String) onSave;
+  ///
+  /// See [FormPage.onSave].
+  final bool Function(String) onSave;
 
   /// Invoked when the name input changes.
   final FutureOr<ValidationCallback> Function(String) validate;
@@ -61,10 +63,14 @@ class _SaveNamePageState extends State<SaveNamePage> {
         if (inputEqualsOld) {
           // If the name didn't change, act as though "back" or "cancel" was
           // pressed.
-          return;
+          return true;
         }
 
-        widget.onSave?.call(_controller.text);
+        if (widget.onSave == null || widget.onSave(_controller.text)) {
+          return true;
+        }
+
+        return false;
       },
       fieldBuilder: (context, _) {
         return {

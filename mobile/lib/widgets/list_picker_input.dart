@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/pages/picker_page.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/utils/future_stream_builder.dart';
@@ -179,15 +180,13 @@ class _ListPickerInputState<T> extends State<ListPickerInput<T>> {
   }
 
   Widget _buildSingleDetail() {
-    if (_values.length == 1 && !widget.allowsMultiSelect
-        && widget.showsValueOnTrailing)
-    {
+    if (!widget.allowsMultiSelect && widget.showsValueOnTrailing) {
       return FutureStreamBuilder(
         holder: widget.futureStreamHolder,
         builder: (context) {
           // Retrieve the title from the most up to date items.
-          String title;
-          if (widget.itemEqualsOldValue != null) {
+          String title = Strings.of(context).inputNotSelected;
+          if (_values.isNotEmpty && widget.itemEqualsOldValue != null) {
             for (var item in widget.itemBuilder()) {
               if (widget.itemEqualsOldValue(item, _values.first)) {
                 title = item.title;
@@ -195,8 +194,7 @@ class _ListPickerInputState<T> extends State<ListPickerInput<T>> {
               }
             }
           }
-
-          return isEmpty(title) ? Empty() : Padding(
+          return Padding(
             padding: insetsRightWidgetSmall,
             child: SecondaryLabelText(title),
           );
