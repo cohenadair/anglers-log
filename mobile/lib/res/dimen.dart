@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+const paddingDefaultDouble = 32.0;
 const paddingDefault = 16.0;
 const paddingMedium = 12.0;
 const paddingSmall = 8.0;

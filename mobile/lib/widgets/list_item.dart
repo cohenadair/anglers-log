@@ -205,7 +205,12 @@ class _ManageableListItemState extends State<ManageableListItem> with
             children: <Widget>[
               _buildDeleteIcon(),
               Padding(
-                padding: insetsDefault,
+                padding: EdgeInsets.only(
+                  left: widget.editing ? paddingDefaultDouble : paddingDefault,
+                  right: paddingDefault,
+                  top: paddingDefault,
+                  bottom: paddingDefault,
+                ),
                 child: DefaultTextStyle(
                   style: Theme.of(context).textTheme.subtitle1,
                   child: widget.title,
