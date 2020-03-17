@@ -47,6 +47,11 @@ class BaitManager {
     return results.map((map) => BaitCategory.fromMap(map)).toList();
   }
 
+  Future<BaitCategory> fetchCategory(String id) async {
+    var result = await _app.dataManager.fetchEntity(_categoryTableName, id);
+    return BaitCategory.fromMap(result);
+  }
+
   Future<bool> baitExists(Bait bait) {
     return _app.dataManager.rawExists("""
       SELECT COUNT(*) FROM $_baitTableName
