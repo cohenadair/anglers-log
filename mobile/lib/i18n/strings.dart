@@ -84,6 +84,7 @@ class Strings {
 
   String get baitListPageMenuLabel => _string("baitListPage_menuLabel");
   String get baitListPageTitle => _string("baitListPage_title");
+  String get baitListPageOtherCategory => _string("baitListPage_otherCategory");
 
   String get saveBaitPageNewTitle => _string("saveBaitPage_newTitle");
   String get saveBaitPageCategoryLabel => _string("saveBaitPage_categoryLabel");
