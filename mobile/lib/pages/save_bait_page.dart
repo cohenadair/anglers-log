@@ -7,6 +7,7 @@ import 'package:mobile/model/bait_category.dart';
 import 'package:mobile/pages/editable_form_page.dart';
 import 'package:mobile/pages/picker_page.dart';
 import 'package:mobile/res/dimen.dart';
+import 'package:mobile/utils/dialog_utils.dart';
 import 'package:mobile/widgets/input.dart';
 import 'package:mobile/widgets/input_controller.dart';
 import 'package:mobile/widgets/list_picker_input.dart';
@@ -17,8 +18,13 @@ import 'package:quiver/strings.dart';
 
 class SaveBaitPage extends StatefulWidget {
   final Bait oldBait;
+  final BaitCategory oldBaitCategory;
 
-  SaveBaitPage({this.oldBait});
+  SaveBaitPage({
+    this.oldBait,
+    this.oldBaitCategory,
+  }) : assert(oldBaitCategory == null
+      || (oldBaitCategory != null && oldBait != null));
 
   @override
   _SaveBaitPageState createState() => _SaveBaitPageState();
@@ -55,9 +61,22 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
   };
 
   @override
+  void initState() {
+    super.initState();
+
+    if (widget.oldBait != null) {
+      _baitCategoryController.value = widget.oldBaitCategory;
+      _nameController.text = widget.oldBait.name;
+      _nameController.validate = null;
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return EditableFormPage(
-      title: Strings.of(context).saveBaitPageNewTitle,
+      title: editing
+          ? Strings.of(context).saveBaitPageEditTitle
+          : Strings.of(context).saveBaitPageNewTitle,
       padding: insetsZero,
       allFields: _allInputFields,
       initialFields: {
@@ -162,13 +181,16 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
 
   Future<bool> _save(Map<String, InputData> result) async {
     Bait newBait = Bait(
+      id: widget.oldBait?.id,
       name: _nameController.text,
       baitCategoryId: _baitCategoryController.value?.id,
     );
 
     if (await BaitManager.of(context).baitExists(newBait)) {
-      // TODO: Show dialog
-      print("Bait exists");
+      showErrorDialog(
+        context: context,
+        description: Text(Strings.of(context).saveBaitPageBaitExists),
+      );
       return false;
     }
 

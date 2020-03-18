@@ -77,18 +77,7 @@ class ListPickerInput<T> extends StatefulWidget {
     this.itemEqualsOldValue,
   }) : assert(itemBuilder != null),
        assert(onChanged != null),
-       initialValues = initialValues ?? {}
-  {
-    // Assert that all initial values exist in the given items, and that there
-    // are no duplicates.
-    initialValues.forEach((T value) {
-      try {
-        assert(_getListPickerItem(value) != null);
-      } on StateError catch(_) {
-        assert(false, "Initial value must appear 1 time in items");
-      }
-    });
-  }
+       initialValues = initialValues ?? {};
 
   ListPickerInput.single({
     @required String pageTitle,

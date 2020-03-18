@@ -53,26 +53,28 @@ class BaitManager {
   }
 
   Future<bool> baitExists(Bait bait) {
-    return _app.dataManager.rawExists("""
-      SELECT COUNT(*) FROM $_baitTableName
-      WHERE category_id = ?
-        AND name = ?
-        AND color """ + (bait.color == null ? "IS NULL" : "= ?") + """
-        AND model """ + (bait.model == null ? "IS NULL" : "= ?") + """
-        AND type """ + (bait.type == null ? "IS NULL" : "= ?") + """
-        AND min_dive_depth """
-            + (bait.minDiveDepth== null ? "IS NULL" : "= ?") + """
-        AND max_dive_depth """
-            + (bait.maxDiveDepth == null ? "IS NULL" : "= ?") + """
-    """, [
-      bait.categoryId,
-      bait.name,
-      bait.color,
-      bait.model,
-      bait.type,
-      bait.minDiveDepth,
-      bait.maxDiveDepth
-    ]);
+    return _app.dataManager.rawExists(
+      "SELECT COUNT(*) FROM $_baitTableName "
+          "WHERE category_id "
+              + (bait.categoryId == null ? "IS NULL " : "= ? ")
+          + "AND name = ? "
+          + "AND color " + (bait.color == null ? "IS NULL " : "= ? ")
+          + "AND model " + (bait.model == null ? "IS NULL " : "= ? ")
+          + "AND type " + (bait.type == null ? "IS NULL " : "= ? ")
+          + "AND min_dive_depth "
+              + (bait.minDiveDepth == null ? "IS NULL " : "= ? ")
+          + "AND max_dive_depth "
+              + (bait.maxDiveDepth == null ? "IS NULL " : "= ? ")
+          + "AND id != ?", []
+      ..addAll(bait.categoryId == null ? [] : [bait.categoryId])
+      ..add(bait.name)
+      ..addAll(bait.color == null ? [] : [bait.color])
+      ..addAll(bait.model == null ? [] : [bait.model])
+      ..addAll(bait.type == null ? [] : [bait.type])
+      ..addAll(bait.minDiveDepth == null ? [] : [bait.minDiveDepth])
+      ..addAll(bait.maxDiveDepth == null ? [] : [bait.maxDiveDepth])
+      ..add(bait.id),
+    );
   }
 
   void createOrUpdateBait(Bait bait) async {
@@ -80,9 +82,19 @@ class BaitManager {
         controller: onBaitUpdate);
   }
 
+  void deleteBait(Bait bait) async {
+    _app.dataManager.deleteEntity(bait, _baitTableName,
+        controller: onBaitUpdate);
+  }
+
   Future<List<Bait>> _fetchAllBaits() async {
     var results = await _app.dataManager.fetchAllEntities(_baitTableName);
     return results.map((map) => Bait.fromMap(map)).toList();
+  }
+
+  Future<Bait> fetchBait(String id) async {
+    var result = await _app.dataManager.fetchEntity(_baitTableName, id);
+    return Bait.fromMap(result);
   }
 }
 

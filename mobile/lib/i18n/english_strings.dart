@@ -55,13 +55,17 @@ Map<String, Map<String, String>> get englishStrings => {
     "baitListPage_title" : "Baits (%s)",
     "baitListPage_otherCategory" : "No Category",
 
+    "baitPage_deleteMessage" : "Are you sure you want to delete this bait? This cannot be undone.",
+
     "saveBaitPage_newTitle" : "New Bait",
+    "saveBaitPage_editTitle" : "Edit Bait",
     "saveBaitPage_categoryLabel" : "Bait Category",
     "saveBaitPage_newCategoryLabel" : "New Bait Category",
     "saveBaitPage_editCategoryLabel" : "Edit Bait Category",
     "saveBaitPage_categoryExistsMessage" : "Bait category already exists",
     "saveBaitPage_categoryPickerTitle" : "Select Bait Category",
     "saveBaitPage_confirmDeleteCategory" : "Are you sure you want to delete bait category %s? This cannot be undone.",
+    "saveBaitPage_baitExists" : "A bait with these properties already exists. Please change at least one field and try again.",
 
     "statsPage_title" : "Stats",
 
