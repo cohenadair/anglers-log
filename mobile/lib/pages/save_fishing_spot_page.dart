@@ -46,6 +46,7 @@ class _SaveFishingSpotPageState extends State<SaveFishingSpotPage> {
           name: isNotEmpty(_nameController.text) ? _nameController.text : null,
           id: widget.oldFishingSpot.id,
         ));
+        return true;
       },
       fieldBuilder: (BuildContext context, bool isRemovingFields) {
         return {

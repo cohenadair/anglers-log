@@ -16,7 +16,7 @@ import 'form_page.dart';
 /// A input page for users to create custom fields to be used elsewhere in the
 /// app. This form is immutable.
 class AddCustomFieldPage extends StatefulWidget {
-  final Function(CustomEntity) onSave;
+  final void Function(CustomEntity) onSave;
 
   AddCustomFieldPage({
     this.onSave,
@@ -94,7 +94,7 @@ class _AddCustomFieldPageState extends State<AddCustomFieldPage> {
     return Empty();
   }
 
-  void _save() {
+  FutureOr<bool> _save() {
     var customField = CustomEntity(
       name: _nameController.text,
       description: _descriptionController.text,
@@ -103,6 +103,7 @@ class _AddCustomFieldPageState extends State<AddCustomFieldPage> {
 
     CustomFieldManager.of(context).addField(customField);
     widget.onSave?.call(customField);
+    return true;
   }
 
   FutureOr<ValidationCallback> _validateName() async {

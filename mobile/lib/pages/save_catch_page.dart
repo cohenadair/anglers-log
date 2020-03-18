@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/pages/editable_form_page.dart';
@@ -89,7 +91,8 @@ class SaveCatchPage extends StatelessWidget {
     );
   }
 
-  void _save(Map<String, InputData> result) {
+  FutureOr<bool> _save(Map<String, InputData> result) {
     print(result);
+    return true;
   }
 }

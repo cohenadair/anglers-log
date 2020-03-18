@@ -122,7 +122,7 @@ class FormPage extends StatefulWidget {
     Key key,
     String title,
     FieldBuilder fieldBuilder,
-    VoidCallback onSave,
+    FutureOr<bool> Function() onSave,
     EdgeInsets padding = insetsHorizontalDefault,
     @required bool isInputValid,
   }) : this(
