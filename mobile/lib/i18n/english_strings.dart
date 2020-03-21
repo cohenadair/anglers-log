@@ -12,6 +12,7 @@ Map<String, Map<String, String>> get englishStrings => {
     "edit" : "Edit",
     "delete" : "Delete",
     "none" : "None",
+    "next" : "Next",
     "ok" : "Ok",
     "error" : "Error",
     "warning" : "Warning",
@@ -110,6 +111,14 @@ Map<String, Map<String, String>> get englishStrings => {
     "imagePickerPage_selectedLabel" : "%s / %s Selected",
     "imagePickerPage_invalidSelectionSingle" : "Must select an image file.",
     "imagePickerPage_invalidSelectionPlural" : "Must select image files.",
+
+    "speciesPickerPage_newTitle" : "New Species",
+    "speciesPickerPage_editTitle" : "Edit Species",
+    "speciesPickerPage_speciesExists" : "Species already exists",
+    "speciesPickerPage_title" : "Select Species",
+    "speciesPickerPage_confirmDelete" : "Are you sure you want to delete species %s? This cannot be undone.",
+
+    "fishingSpotPickerPage_title" : "Select Fishing Spot",
 
     "angler_nameLabel" : "Angler",
 

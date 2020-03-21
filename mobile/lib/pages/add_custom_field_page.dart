@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile/custom_field_manager.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/model/custom_entity.dart';
+import 'package:mobile/utils/validator.dart';
 import 'package:mobile/widgets/dropdown_input.dart';
 import 'package:mobile/widgets/input_controller.dart';
 import 'package:mobile/widgets/input_type.dart';
@@ -71,7 +72,12 @@ class _AddCustomFieldPageState extends State<AddCustomFieldPage> {
         context,
         controller: _nameController,
         autofocus: true,
-        validate: _validateName,
+        validator: NameValidator(
+          nameExistsMessage: Strings.of(context).addCustomFieldPageNameExists,
+          nameExistsFuture: CustomFieldManager.of(context).nameExists,
+        ),
+        // Trigger "Save" button state refresh.
+        onChanged: () => setState(() {}),
       );
       case _descriptionId: return TextInput.description(
         context,
@@ -104,20 +110,5 @@ class _AddCustomFieldPageState extends State<AddCustomFieldPage> {
     CustomFieldManager.of(context).addField(customField);
     widget.onSave?.call(customField);
     return true;
-  }
-
-  FutureOr<ValidationCallback> _validateName() async {
-    String name = _nameController.text;
-    ValidationCallback callback;
-
-    if (isEmpty(name)) {
-      callback = (context) => Strings.of(context).inputGenericRequired;
-    } else if (await CustomFieldManager.of(context).nameExists(name)) {
-      callback = (context) => Strings.of(context).addCustomFieldPageNameExists;
-    }
-
-    // Trigger "Save" button state refresh.
-    setState(() {});
-    return callback;
   }
 }

@@ -7,7 +7,6 @@ import 'package:sqflite/sqflite.dart';
 final Log _log = Log("SQLiteOpenHelper");
 
 final String _name = "anglerslog.db";
-final int _version = 1;
 
 final List<String> _schema0 = [
   """
@@ -20,7 +19,7 @@ final List<String> _schema0 = [
   );
   """,
   """
-  CREATE TABLE bait_category(
+  CREATE TABLE bait_category (
     id TEXT PRIMARY KEY,
     name TEXT UNIQUE NOT NULL
   );
@@ -41,11 +40,19 @@ final List<String> _schema0 = [
     description TEXT
   );
   """,
+  """
+  CREATE TABLE species (
+    id TEXT PRIMARY KEY,
+    name TEXT UNIQUE NOT NULL
+  );
+  """
 ];
 
 final List<List<String>> _schema = [
   _schema0,
 ];
+
+final int _version = 1;
 
 Future<Database> openDb() async {
   String path = join(await getDatabasesPath(), _name);

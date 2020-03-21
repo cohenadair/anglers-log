@@ -2,11 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:mobile/model/bait_category.dart';
 import 'package:mobile/pages/image_picker_page.dart';
 import 'package:mobile/utils/date_time_utils.dart';
+import 'package:mobile/utils/validator.dart';
 import 'package:quiver/strings.dart';
-
-/// A function called to validate input. A function is used so pass a
-/// BuildContext instance for using localized strings.
-typedef String ValidationCallback(BuildContext context);
 
 /// A class for storing a value of an input widget, such as a text field or
 /// check box.

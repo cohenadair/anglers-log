@@ -1,10 +1,9 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/model/entity.dart';
 import 'package:mobile/pages/form_page.dart';
 import 'package:mobile/utils/string_utils.dart';
+import 'package:mobile/utils/validator.dart';
 import 'package:mobile/widgets/input_controller.dart';
 import 'package:mobile/widgets/text_input.dart';
 import 'package:quiver/strings.dart';
@@ -21,13 +20,13 @@ class SaveNamePage extends StatefulWidget {
   final bool Function(String) onSave;
 
   /// Invoked when the name input changes.
-  final FutureOr<ValidationCallback> Function(String) validate;
+  final NameValidator validator;
 
   SaveNamePage({
     @required this.title,
     this.oldName,
     this.onSave,
-    this.validate,
+    this.validator,
   });
 
   @override
@@ -78,16 +77,13 @@ class _SaveNamePageState extends State<SaveNamePage> {
             context,
             controller: _controller,
             autofocus: true,
-            validate: () async {
-              var callback;
-              if (!inputEqualsOld) {
-                callback = await widget.validate(_controller.text);
-              }
-
-              // Trigger "Save" button state refresh.
-              setState(() {});
-              return callback;
-            },
+            validator: NameValidator(
+              nameExistsFuture: widget.validator.nameExistsFuture,
+              nameExistsMessage: widget.validator.nameExistsMessage,
+              oldName: widget.validator.oldName ?? widget.oldName,
+            ),
+            // Trigger "Save" button state refresh.
+            onChanged: () => setState(() {}),
           ),
         };
       },

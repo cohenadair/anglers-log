@@ -85,12 +85,7 @@ class _EditableFormPageState extends State<EditableFormPage> {
           ),
         );
       },
-      onSave: () async {
-        if (widget.onSave == null || await widget.onSave(_usedInputOptions)) {
-          return true;
-        }
-        return false;
-      },
+      onSave: () => widget.onSave(_usedInputOptions),
       addFieldOptions: _allInputFields.keys.map((String id) {
         return FormPageFieldOption(
           id: id,

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:mobile/bait_manager.dart';
 import 'package:mobile/i18n/strings.dart';
@@ -8,6 +10,7 @@ import 'package:mobile/pages/editable_form_page.dart';
 import 'package:mobile/pages/picker_page.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/utils/dialog_utils.dart';
+import 'package:mobile/utils/validator.dart';
 import 'package:mobile/widgets/input.dart';
 import 'package:mobile/widgets/input_controller.dart';
 import 'package:mobile/widgets/list_picker_input.dart';
@@ -131,18 +134,12 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
           args: [category.name],
         ),
         oldNameCallback: (oldCategory) => oldCategory.name,
-        validate: (potentialName, oldCategory) async {
-          if (isEmpty(potentialName)) {
-            return (context) => Strings.of(context).inputGenericRequired;
-          } else if (await BaitManager.of(context)
-              .categoryNameExists(potentialName))
-          {
-            return (context) =>
-                Strings.of(context).saveBaitPageCategoryExistsMessage;
-          } else {
-            return null;
-          }
-        },
+        validator: NameValidator(
+          nameExistsMessage:
+              Strings.of(context).saveBaitPageCategoryExistsMessage,
+          nameExistsFuture: (name) =>
+              BaitManager.of(context).categoryNameExists(name),
+        ),
         onSave: (newName, oldCategory) {
           var newCategory = BaitCategory(name: newName);
           if (oldCategory != null) {
@@ -166,16 +163,16 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
       enabled: !isRemovingFields,
       controller: _nameController,
       autofocus: true,
-      validate: () {
-        var callback;
+      validator: GenericValidator(runner: (context, newName) {
+        Future<ValidationCallback> callback;
         if (isEmpty(_nameController.text)) {
-          callback = (context) => Strings.of(context).inputGenericRequired;
+          callback = Future.value((context) =>
+              Strings.of(context).inputGenericRequired);
         }
-
-        // Trigger "Save" button state refresh.
-        setState(() {});
         return callback;
-      },
+      }),
+      // Trigger "Save" button state refresh.
+      onChanged: () => setState(() {}),
     ),
   );
 

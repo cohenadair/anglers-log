@@ -6,9 +6,9 @@ import 'package:mobile/pages/save_name_page.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/utils/future_stream_builder.dart';
 import 'package:mobile/utils/page_utils.dart';
+import 'package:mobile/utils/validator.dart';
 import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/checkbox_input.dart';
-import 'package:mobile/widgets/input_controller.dart';
 import 'package:mobile/widgets/list_item.dart';
 import 'package:mobile/widgets/page.dart';
 import 'package:mobile/widgets/widget.dart';
@@ -50,7 +50,7 @@ class PickerPage<T> extends StatefulWidget {
 
   /// Invoked when an item is picked, or when the "Done" button is pressed
   /// for multi-select pickers.
-  final void Function(Set<T>) onFinishedPicking;
+  final void Function(BuildContext, Set<T>) onFinishedPicking;
 
   /// If non-null, "Add" and "Edit" buttons will be present in the [AppBar].
   final PickerPageItemManager<T> itemManager;
@@ -79,7 +79,7 @@ class PickerPage<T> extends StatefulWidget {
 
   PickerPage.single({
     @required List<PickerPageItem<T>> Function() itemBuilder,
-    @required void Function(T) onFinishedPicking,
+    @required void Function(BuildContext, T) onFinishedPicking,
     T initialValue,
     String pageTitle,
     Widget listHeader,
@@ -88,7 +88,8 @@ class PickerPage<T> extends StatefulWidget {
     FutureStreamHolder futureStreamHolder,
   }) : this(
     itemBuilder: itemBuilder,
-    onFinishedPicking: (items) => onFinishedPicking(items.first),
+    onFinishedPicking: (context, items) =>
+        onFinishedPicking(context, items.first),
     initialValues: initialValue == null ? {} : { initialValue },
     multiSelect: false,
     pageTitle: pageTitle,
@@ -129,7 +130,7 @@ class _PickerPageState<T> extends State<PickerPage<T>> {
     }
 
     Widget editDoneButton = Empty();
-    if (widget.itemManager.editable) {
+    if (widget.itemManager != null && widget.itemManager.editable) {
       if (_editing) {
         editDoneButton = ActionButton.done(
           onPressed: _onDoneEditingPressed,
@@ -150,7 +151,7 @@ class _PickerPageState<T> extends State<PickerPage<T>> {
           widget.multiSelect && !_editing ? ActionButton.done(
             condensed: allowsSaving,
             onPressed: () {
-              widget.onFinishedPicking(_selectedValues);
+              widget.onFinishedPicking(context, _selectedValues);
             },
           ) : Empty(),
           editDoneButton,
@@ -228,7 +229,7 @@ class _PickerPageState<T> extends State<PickerPage<T>> {
       setState(() {
         _selectedValues = Set.of([pickedItem]);
       });
-      widget.onFinishedPicking({ pickedItem });
+      widget.onFinishedPicking(context, { pickedItem });
     }
   }
 
@@ -326,9 +327,8 @@ class PickerPageItemNameManager<T> extends PickerPageItemManager<T> {
   final String addTitle;
   final String editTitle;
 
-  /// See [SaveNamePage.validate]. [String] is the input to validate, and [T]
-  /// is the old value or `null` if creating a new item.
-  final FutureOr<ValidationCallback> Function(String, T) validate;
+  /// See [SaveNamePage.validator].
+  final Validator validator;
 
   /// Invoked when an item has been saved. [String] is the new input, and [T]
   /// is the old value or `null` if creating a new item.
@@ -346,7 +346,7 @@ class PickerPageItemNameManager<T> extends PickerPageItemManager<T> {
     @required this.addTitle,
     @required this.editTitle,
     @required Widget Function(BuildContext, T) deleteMessageBuilder,
-    this.validate,
+    this.validator,
     this.onSave,
     this.onDelete,
     this.oldNameCallback,
@@ -363,7 +363,7 @@ class PickerPageItemNameManager<T> extends PickerPageItemManager<T> {
         onSave(newName, null);
         return true;
       },
-      validate: (potentialName) => validate(potentialName, null),
+      validator: validator,
     ));
   }
 
@@ -376,7 +376,7 @@ class PickerPageItemNameManager<T> extends PickerPageItemManager<T> {
         onSave(newName, itemToEdit);
         return true;
       },
-      validate: (potentialName) => validate(potentialName, itemToEdit),
+      validator: validator,
     ));
   }
 

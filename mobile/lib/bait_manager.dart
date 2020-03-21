@@ -26,7 +26,7 @@ class BaitManager {
   final VoidStreamController onCategoryUpdate = VoidStreamController();
   final VoidStreamController onBaitUpdate = VoidStreamController();
 
-  int get numberOfBaits => 0;
+  Future<int> get numberOfBaits => _app.dataManager.count(_baitTableName);
 
   Future<bool> categoryNameExists(String name) {
     return _app.dataManager.exists(_categoryTableName, "name", name);

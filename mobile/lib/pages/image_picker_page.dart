@@ -57,22 +57,40 @@ class PickedImage {
 /// device camera.
 /// - https://pub.dev/packages/image_picker
 class ImagePickerPage extends StatefulWidget {
-  final Function(List<PickedImage>) onImagesPicked;
+  final Function(BuildContext context, List<PickedImage>) onImagesPicked;
   final bool allowsMultipleSelection;
 
   /// A list of images to be selected when the page opens.
   final List<PickedImage> initialImages;
 
+  /// Text for the "Done" button. If `null`, uses "Done".
+  final String doneButtonText;
+
+  /// If `true`, pops the navigation stack when images are picked. Defaults to
+  /// true.
+  final bool popsOnFinish;
+
+  /// If `true`, an image must be picked for the "Done" button to be enabled.
+  /// Defaults to true.
+  final bool requiresPick;
+
+  /// A [Widget] to override the default [AppBar] leading behaviour.
+  final Widget appBarLeading;
+
   ImagePickerPage({
     @required this.onImagesPicked,
     this.allowsMultipleSelection = true,
     this.initialImages = const [],
+    this.doneButtonText,
+    this.popsOnFinish = true,
+    this.requiresPick = true,
+    this.appBarLeading,
   }) : assert(onImagesPicked != null);
 
   ImagePickerPage.single({
-    @required Function(PickedImage) onImagePicked,
+    @required Function(BuildContext, PickedImage) onImagePicked,
   }) : this(
-    onImagesPicked: (files) => onImagePicked(files.first),
+    onImagesPicked: (context, files) => onImagePicked(context, files.first),
     allowsMultipleSelection: false,
   );
 
@@ -122,6 +140,7 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
         actions: [
           _buildDoneButton(),
         ],
+        leading: widget.appBarLeading,
       ),
       // First, get a list of all the available albums.
       child: FutureBuilder<List<AssetPathEntity>>(
@@ -227,11 +246,11 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
       return Empty();
     }
 
-    bool enabled =
-        _selectedIndexes.isNotEmpty || widget.initialImages.isNotEmpty;
+    bool enabled = !widget.requiresPick || _selectedIndexes.isNotEmpty
+        || widget.initialImages.isNotEmpty;
 
     return ActionButton(
-      text: Strings.of(context).done,
+      text: widget.doneButtonText ?? Strings.of(context).done,
       onPressed: enabled ? () async {
         List<PickedImage> result = [];
         for (var i in _selectedIndexes) {
@@ -423,7 +442,10 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
   }
 
   void _pop(List<PickedImage> results) {
-    widget.onImagesPicked(results);
-    Navigator.pop(context);
+    widget.onImagesPicked(context, results);
+
+    if (widget.popsOnFinish) {
+      Navigator.pop(context);
+    }
   }
 }

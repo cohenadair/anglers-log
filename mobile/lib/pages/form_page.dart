@@ -337,7 +337,7 @@ class _SelectionPageState extends State<_SelectionPage> {
             value: o,
             enabled: o.removable,
           )).toList(),
-      onFinishedPicking: (options) {
+      onFinishedPicking: (context, options) {
         widget.onSelectItems(options.map((o) => o.id).toSet());
         Navigator.pop(context);
       },

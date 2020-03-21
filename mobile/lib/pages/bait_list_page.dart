@@ -29,8 +29,18 @@ class _BaitListPageState extends State<BaitListPage> {
   Widget build(BuildContext context) {
     return Page(
       appBarStyle: PageAppBarStyle(
-        title: format(Strings.of(context).baitListPageTitle,
-            [BaitManager.of(context).numberOfBaits]),
+        titleWidget: FutureBuilder<int>(
+          future: BaitManager.of(context).numberOfBaits,
+          builder: (context, snapshot) {
+            int numberOfBaits = 0;
+            if (snapshot.hasData) {
+              numberOfBaits = snapshot.data;
+            }
+
+            return Text(format(Strings.of(context).baitListPageTitle,
+                [numberOfBaits]));
+          },
+        ),
         actions: [
           IconButton(
             icon: Icon(Icons.add),

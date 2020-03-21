@@ -12,7 +12,7 @@ import 'package:mobile/widgets/widget.dart';
 class SaveCatchPage extends StatelessWidget {
   static const String timestampId = "timestamp";
   static const String anglerId = "angler";
-
+  
   final Map<String, InputData> _allInputFields = {
     timestampId: InputData(
       id: timestampId,
@@ -31,6 +31,13 @@ class SaveCatchPage extends StatelessWidget {
       label: (BuildContext context) => Strings.of(context).anglerNameLabel,
     ),
   };
+
+  /// If set, invoked when it's time to pop the page from the navigation stack.
+  final VoidCallback popOverride;
+
+  SaveCatchPage({
+    this.popOverride,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -93,6 +100,10 @@ class SaveCatchPage extends StatelessWidget {
 
   FutureOr<bool> _save(Map<String, InputData> result) {
     print(result);
+    if (popOverride != null) {
+      popOverride();
+      return false;
+    }
     return true;
   }
 }

@@ -49,7 +49,7 @@ class PhotoInput extends StatelessWidget {
           push(context, ImagePickerPage(
             allowsMultipleSelection: allowsMultipleSelection,
             initialImages: currentImages,
-            onImagesPicked: (images) {
+            onImagesPicked: (context, images) {
               onImagesPicked(images);
             },
           ));

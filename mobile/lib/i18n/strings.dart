@@ -40,6 +40,7 @@ class Strings {
   String get edit => _string("edit");
   String get delete => _string("delete");
   String get none => _string("none");
+  String get next => _string("next");
   String get ok => _string("ok");
   String get error => _string("error");
   String get warning => _string("warning");
@@ -135,6 +136,14 @@ class Strings {
   String get imagePickerPageSelectedLabel => _string("imagePickerPage_selectedLabel");
   String get imagePickerPageInvalidSelectionSingle => _string("imagePickerPage_invalidSelectionSingle");
   String get imagePickerPageInvalidSelectionPlural => _string("imagePickerPage_invalidSelectionPlural");
+
+  String get speciesPickerPageNewTitle => _string("speciesPickerPage_newTitle");
+  String get speciesPickerPageEditTitle => _string("speciesPickerPage_editTitle");
+  String get speciesPickerPageSpeciesExists => _string("speciesPickerPage_speciesExists");
+  String get speciesPickerPageTitle => _string("speciesPickerPage_title");
+  String get speciesPickerPageConfirmDelete => _string("speciesPickerPage_confirmDelete");
+
+  String get fishingSpotPickerPageTitle => _string("fishingSpotPickerPage_title");
 
   String get addCustomFieldPageTitle => _string("addCustomFieldPage_title");
   String get addCustomFieldPageNameExists => _string("addCustomFieldPage_nameExists");

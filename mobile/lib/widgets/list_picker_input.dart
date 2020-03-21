@@ -149,7 +149,7 @@ class _ListPickerInputState<T> extends State<ListPickerInput<T>> {
             initialValues: _values,
             allItem: widget.allItem,
             itemBuilder: widget.itemBuilder,
-            onFinishedPicking: (pickedItems) {
+            onFinishedPicking: (context, pickedItems) {
               _popPickerPage(context, pickedItems);
             },
           ));

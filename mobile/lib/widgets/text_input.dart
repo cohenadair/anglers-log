@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:mobile/i18n/strings.dart';
+import 'package:mobile/utils/validator.dart';
 import 'package:mobile/widgets/input_controller.dart';
 import 'package:quiver/strings.dart';
 
@@ -25,9 +26,15 @@ class TextInput extends StatefulWidget {
   final int maxLines;
   final TextInputType keyboardType;
 
-  /// Invoked when the [TextInput] text changes. The updated text value can be
+  /// The [Validator.run] method is invoked when the [TextInput] is first
+  /// created, and when the text changes. The updated text updated value can be
   /// read from the [TextInputController] used when creating this widget.
-  final FutureOr<ValidationCallback> Function() validate;
+  final Validator validator;
+
+  /// Invoked when the [TextInput] text changes, _after_ [Validator.run] is
+  /// invoked. Implement this property to update the state of the parent
+  /// widget.
+  final VoidCallback onChanged;
 
   TextInput({
     this.initialValue,
@@ -39,7 +46,8 @@ class TextInput extends StatefulWidget {
     this.maxLength = inputLimitDefault,
     this.maxLines,
     this.keyboardType,
-    this.validate,
+    this.validator,
+    this.onChanged,
   });
 
   TextInput.name(BuildContext context, {
@@ -48,7 +56,8 @@ class TextInput extends StatefulWidget {
     TextInputController controller,
     bool enabled,
     bool autofocus = false,
-    FutureOr<ValidationCallback> Function() validate,
+    Validator validator,
+    VoidCallback onChanged,
   }) : this(
     initialValue: initialValue,
     label: isEmpty(label) ? Strings.of(context).inputNameLabel : label,
@@ -57,7 +66,8 @@ class TextInput extends StatefulWidget {
     maxLength: inputLimitName,
     enabled: enabled,
     autofocus: autofocus,
-    validate: validate,
+    validator: validator,
+    onChanged: onChanged,
   );
 
   TextInput.description(BuildContext context, {
@@ -91,12 +101,7 @@ class TextInput extends StatefulWidget {
     enabled: enabled,
     autofocus: autofocus,
     maxLength: inputLimitNumber,
-    validate: () {
-      if (double.tryParse(controller.value.text) == null) {
-        return (context) => Strings.of(context).inputInvalidNumber;
-      }
-      return null;
-    },
+    validator: DoubleValidator(),
   );
 
   @override
@@ -104,40 +109,51 @@ class TextInput extends StatefulWidget {
 }
 
 class _TextInputState extends State<TextInput> {
-  ValidationCallback _validate;
+  Future<ValidationCallback> _validationCallback;
 
   @override
   void initState() {
     super.initState();
-    _validate = widget.controller.validate;
+    _validationCallback =
+        widget.validator?.run(context, widget.controller.text);
   }
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
-      cursorColor: Theme.of(context).primaryColor,
-      initialValue: widget.initialValue,
-      controller: widget.controller.value,
-      decoration: InputDecoration(
-        labelText: widget.label,
-        errorText: widget.controller.error(context),
-      ),
-      textCapitalization: widget.capitalization,
-      validator: (text) => _validate?.call(context),
-      enabled: widget.enabled,
-      maxLength: widget.maxLength,
-      maxLines: widget.maxLines,
-      keyboardType: widget.keyboardType,
-      onChanged: (_) async {
-        var callback = await widget.validate?.call();
-        if (widget.controller.validate != callback) {
-          setState(() {
-            _validate = callback;
-          });
-          widget.controller.validate = _validate;
-        }
+    return FutureBuilder<ValidationCallback>(
+      future: _validationCallback,
+      builder: (context, snapshot) {
+        return TextFormField(
+          cursorColor: Theme.of(context).primaryColor,
+          initialValue: widget.initialValue,
+          controller: widget.controller.value,
+          decoration: InputDecoration(
+            labelText: widget.label,
+            errorText: widget.controller.error(context),
+          ),
+          textCapitalization: widget.capitalization,
+          validator: (text) => snapshot.hasData ? snapshot.data(context) : null,
+          enabled: widget.enabled,
+          maxLength: widget.maxLength,
+          maxLines: widget.maxLines,
+          keyboardType: widget.keyboardType,
+          onChanged: (_) async {
+            Future<ValidationCallback> callbackFuture =
+                widget.validator?.run(context, widget.controller.text);
+            ValidationCallback callback = await callbackFuture;
+
+            if (widget.controller.validate != callback) {
+              widget.controller.validate = callback;
+              setState(() {
+                _validationCallback = Future(() => callbackFuture);
+              });
+            }
+
+            widget.onChanged?.call();
+          },
+          autofocus: widget.autofocus,
+        );
       },
-      autofocus: widget.autofocus,
     );
   }
 }
