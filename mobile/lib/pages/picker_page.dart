@@ -10,7 +10,6 @@ import 'package:mobile/utils/validator.dart';
 import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/checkbox_input.dart';
 import 'package:mobile/widgets/list_item.dart';
-import 'package:mobile/widgets/page.dart';
 import 'package:mobile/widgets/widget.dart';
 
 /// A generic picker page for selecting items from a list. Includes the
@@ -23,8 +22,8 @@ import 'package:mobile/widgets/widget.dart';
 /// Note that a [Set] is used to determine which items are selected, and as
 /// such, `T` must override `==`.
 class PickerPage<T> extends StatefulWidget {
-  /// A title for the [AppBar].
-  final String pageTitle;
+  /// See [AppBar.title].
+  final Widget title;
 
   /// A [Widget] to show at the top of the underlying [ListView]. This [Widget]
   /// will scroll with the [ListView].
@@ -69,7 +68,7 @@ class PickerPage<T> extends StatefulWidget {
     @required this.onFinishedPicking,
     this.initialValues = const {},
     this.multiSelect = true,
-    this.pageTitle,
+    this.title,
     this.listHeader,
     this.allItem,
     this.itemManager,
@@ -81,7 +80,7 @@ class PickerPage<T> extends StatefulWidget {
     @required List<PickerPageItem<T>> Function() itemBuilder,
     @required void Function(BuildContext, T) onFinishedPicking,
     T initialValue,
-    String pageTitle,
+    Widget title,
     Widget listHeader,
     PickerPageItem<T> allItem,
     PickerPageItemManager itemManager,
@@ -92,7 +91,7 @@ class PickerPage<T> extends StatefulWidget {
         onFinishedPicking(context, items.first),
     initialValues: initialValue == null ? {} : { initialValue },
     multiSelect: false,
-    pageTitle: pageTitle,
+    title: title,
     listHeader: listHeader,
     allItem: allItem,
     itemManager: itemManager,
@@ -144,9 +143,9 @@ class _PickerPageState<T> extends State<PickerPage<T>> {
       }
     }
 
-    return Page(
-      appBarStyle: PageAppBarStyle(
-        title: widget.pageTitle,
+    return Scaffold(
+      appBar: AppBar(
+        title: widget.title,
         actions: [
           widget.multiSelect && !_editing ? ActionButton.done(
             condensed: allowsSaving,
@@ -163,7 +162,7 @@ class _PickerPageState<T> extends State<PickerPage<T>> {
           ) : Empty(),
         ],
       ),
-      child: child,
+      body: child,
     );
   }
 
@@ -324,8 +323,8 @@ abstract class PickerPageItemManager<T> {
 ///
 /// Shows a full screen [FormPage] with a single [TextInput].
 class PickerPageItemNameManager<T> extends PickerPageItemManager<T> {
-  final String addTitle;
-  final String editTitle;
+  final Widget addTitle;
+  final Widget editTitle;
 
   /// See [SaveNamePage.validator].
   final Validator validator;

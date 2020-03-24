@@ -17,7 +17,7 @@ typedef OnListPickerChanged<T> = void Function(T);
 /// This widget shows a [PickerPage] for selecting items.
 class ListPickerInput<T> extends StatefulWidget {
   /// See [PickerPage.pageTitle].
-  final String pageTitle;
+  final Widget pageTitle;
 
   /// See [PickerPage.initialValues].
   final Set<T> initialValues;
@@ -79,7 +79,7 @@ class ListPickerInput<T> extends StatefulWidget {
        initialValues = initialValues ?? {};
 
   ListPickerInput.single({
-    @required String pageTitle,
+    @required Widget pageTitle,
     T initialValue,
     @required List<PickerPageItem<T>> Function() itemBuilder,
     @required OnListPickerChanged<T> onChanged,
@@ -143,7 +143,7 @@ class _ListPickerInputState<T> extends State<ListPickerInput<T>> {
           push(context, PickerPage<T>(
             futureStreamHolder: widget.futureStreamHolder,
             itemManager: widget.itemManager,
-            pageTitle: widget.pageTitle,
+            title: widget.pageTitle,
             listHeader: widget.listHeader,
             multiSelect: widget.allowsMultiSelect,
             initialValues: _values,

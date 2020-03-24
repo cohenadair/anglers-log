@@ -27,15 +27,15 @@ class _SpeciesPickerPageState extends State<SpeciesPickerPage> {
         _species = species;
       },
       builder: (context) => PickerPage<Species>.single(
-        pageTitle: Strings.of(context).speciesPickerPageTitle,
+        title: Text(Strings.of(context).speciesPickerPageTitle),
         itemBuilder: () => _species.map((species) => PickerPageItem<Species>(
           title: species.name,
           value: species,
         )).toList(),
         onFinishedPicking: widget.onPicked,
         itemManager: PickerPageItemNameManager<Species>(
-          addTitle: Strings.of(context).speciesPickerPageNewTitle,
-          editTitle: Strings.of(context).speciesPickerPageEditTitle,
+          addTitle: Text(Strings.of(context).speciesPickerPageNewTitle),
+          editTitle: Text(Strings.of(context).speciesPickerPageEditTitle),
           deleteMessageBuilder: (context, species) => InsertedBoldText(
             text: Strings.of(context).speciesPickerPageConfirmDelete,
             args: [species.name],

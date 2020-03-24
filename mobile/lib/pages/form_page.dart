@@ -9,7 +9,6 @@ import 'package:mobile/utils/page_utils.dart';
 import 'package:mobile/utils/string_utils.dart';
 import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/input.dart';
-import 'package:mobile/widgets/page.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:quiver/core.dart';
 
@@ -71,8 +70,8 @@ class FormPageFieldOption {
 /// Widgets using the [FormPage] widget are responsible for tracking field input
 /// values and input validation.
 class FormPage extends StatefulWidget {
-  /// The title of the page.
-  final String title;
+  /// See [AppBar.title].
+  final Widget title;
 
   final FieldBuilder fieldBuilder;
 
@@ -120,7 +119,7 @@ class FormPage extends StatefulWidget {
 
   FormPage.immutable({
     Key key,
-    String title,
+    Widget title,
     FieldBuilder fieldBuilder,
     FutureOr<bool> Function() onSave,
     EdgeInsets padding = insetsHorizontalDefault,
@@ -182,8 +181,8 @@ class _FormPageState extends State<FormPage> {
       padding = insetsRightDefault;
     }
 
-    return Page(
-      appBarStyle: PageAppBarStyle(
+    return Scaffold(
+      appBar: AppBar(
         title: widget.title,
         actions: [
           actionButton,
@@ -206,54 +205,59 @@ class _FormPageState extends State<FormPage> {
           ) : Empty(),
         ],
       ),
-      padding: padding,
-      child: Form(
-        key: _key,
-        child: SingleChildScrollView(
-          padding: insetsBottomDefault,
-          child: SafeArea(
-            left: true,
-            right: true,
-            top: true,
-            bottom: true,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: <Widget>[
-                Wrap(
-                  runSpacing: paddingSmall,
-                  children: widget.fieldBuilder(context, _isRemovingFields)
-                      .map((key, inputField) =>
-                          MapEntry<String, Widget>(
-                            key,
-                            _inputField(key, inputField),
-                          )).values.toList(),
-                ),
-                canAddFields ? Padding(
-                  padding: EdgeInsets.only(
-                    top: paddingSmall,
-                    // Include right edge padding on the button, even if the
-                    // parent widget is handling padding.
-                    right: insetsZero == padding ? paddingDefault : 0,
-                  ),
-                  child: Button(
-                    text: Strings.of(context).formPageManageFieldText,
-                    onPressed: _isRemovingFields ? null : () {
-                      present(context, _addFieldSelectionPage());
-                    },
-                  ),
-                ) : Empty(),
-                _fieldsToRemove.length <= 0 ? Empty() : Button(
-                  text: _fieldsToRemove.length == 1
-                      ? Strings.of(context).formPageConfirmRemoveField
-                      : format(Strings.of(context).formPageConfirmRemoveFields,
-                          [_fieldsToRemove.length]),
-                  onPressed: _onConfirmRemoveFields,
-                ),
-              ],
+      body: Padding(
+        padding: padding,
+        child: Form(
+          key: _key,
+          child: SingleChildScrollView(
+            padding: insetsBottomDefault,
+            child: SafeArea(
+              left: true,
+              right: true,
+              top: true,
+              bottom: true,
+              child: _buildForm(padding),
             ),
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildForm(EdgeInsets padding) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: <Widget>[
+        Wrap(
+          runSpacing: paddingSmall,
+          children: widget.fieldBuilder(context, _isRemovingFields)
+              .map((key, inputField) => MapEntry<String, Widget>(
+                key,
+                _inputField(key, inputField),
+              )).values.toList(),
+        ),
+        canAddFields ? Padding(
+          padding: EdgeInsets.only(
+            top: paddingSmall,
+            // Include right edge padding on the button, even if the
+            // parent widget is handling padding.
+            right: insetsZero == padding ? paddingDefault : 0,
+          ),
+          child: Button(
+            text: Strings.of(context).formPageManageFieldText,
+            onPressed: _isRemovingFields ? null : () {
+              present(context, _addFieldSelectionPage());
+            },
+          ),
+        ) : Empty(),
+        _fieldsToRemove.length <= 0 ? Empty() : Button(
+          text: _fieldsToRemove.length == 1
+              ? Strings.of(context).formPageConfirmRemoveField
+              : format(Strings.of(context).formPageConfirmRemoveFields,
+                  [_fieldsToRemove.length]),
+          onPressed: _onConfirmRemoveFields,
+        ),
+      ],
     );
   }
 
@@ -329,7 +333,7 @@ class _SelectionPageState extends State<_SelectionPage> {
     Set<FormPageFieldOption> used = options.where((e) => e.used).toSet();
 
     return PickerPage<FormPageFieldOption>(
-      pageTitle: Strings.of(context).formPageSelectFieldsTitle,
+      title: Text(Strings.of(context).formPageSelectFieldsTitle),
       initialValues: used,
       itemBuilder: () => options.map((o) =>
           PickerPageItem<FormPageFieldOption>(

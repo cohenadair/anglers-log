@@ -9,7 +9,7 @@ import 'package:mobile/widgets/input.dart';
 import 'package:mobile/widgets/input_type.dart';
 
 class EditableFormPage extends StatefulWidget {
-  final String title;
+  final Widget title;
 
   /// A unique ID to [InputData] map of all valid fields for the form. The
   /// items in this map may or may not need to be added by the user via

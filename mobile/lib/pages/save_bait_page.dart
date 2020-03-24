@@ -78,8 +78,8 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
   Widget build(BuildContext context) {
     return EditableFormPage(
       title: editing
-          ? Strings.of(context).saveBaitPageEditTitle
-          : Strings.of(context).saveBaitPageNewTitle,
+          ? Text(Strings.of(context).saveBaitPageEditTitle)
+          : Text(Strings.of(context).saveBaitPageNewTitle),
       padding: insetsZero,
       allFields: _allInputFields,
       initialFields: {
@@ -103,7 +103,7 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
   Widget _buildCategoryPicker(bool isRemovingFields) {
     return ListPickerInput<BaitCategory>.single(
       initialValue: _baitCategoryController.value,
-      pageTitle: Strings.of(context).saveBaitPageCategoryPickerTitle,
+      pageTitle: Text(Strings.of(context).saveBaitPageCategoryPickerTitle),
       enabled: !isRemovingFields,
       labelText: Strings.of(context).saveBaitPageCategoryLabel,
       futureStreamHolder: BaitCategoriesFutureStreamHolder(context,
@@ -127,8 +127,8 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
       )).toList(),
       onChanged: (category) => _baitCategoryController.value = category,
       addItemHelper: PickerPageItemNameManager<BaitCategory>(
-        addTitle: Strings.of(context).saveBaitPageNewCategoryLabel,
-        editTitle: Strings.of(context).saveBaitPageEditCategoryLabel,
+        addTitle: Text(Strings.of(context).saveBaitPageNewCategoryLabel),
+        editTitle: Text(Strings.of(context).saveBaitPageEditCategoryLabel),
         deleteMessageBuilder: (context, category) => InsertedBoldText(
           text: Strings.of(context).saveBaitPageConfirmDeleteCategory,
           args: [category.name],

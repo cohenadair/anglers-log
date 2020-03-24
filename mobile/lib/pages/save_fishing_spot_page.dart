@@ -38,7 +38,7 @@ class _SaveFishingSpotPageState extends State<SaveFishingSpotPage> {
     }
 
     return FormPage.immutable(
-      title: title,
+      title: Text(title),
       onSave: () {
         FishingSpotManager.of(context).createOrUpdate(FishingSpot(
           lat: widget.oldFishingSpot.lat,

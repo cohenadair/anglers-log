@@ -1,8 +1,7 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/model/fishing_spot.dart';
 import 'package:mobile/widgets/button.dart';
-import 'package:mobile/widgets/page.dart';
 import 'package:mobile/widgets/widget.dart';
 
 class FishingSpotPickerPage extends StatefulWidget {
@@ -19,9 +18,9 @@ class FishingSpotPickerPage extends StatefulWidget {
 class _FishingSpotPickerPageState extends State<FishingSpotPickerPage> {
   @override
   Widget build(BuildContext context) {
-    return Page(
-      appBarStyle: PageAppBarStyle(
-        title: Strings.of(context).fishingSpotPickerPageTitle,
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(Strings.of(context).fishingSpotPickerPageTitle),
         centerTitle: false,
         actions: [
           ActionButton(
@@ -30,7 +29,7 @@ class _FishingSpotPickerPageState extends State<FishingSpotPickerPage> {
           ),
         ],
       ),
-      child: Empty(),
+      body: Empty(),
     );
   }
 }

@@ -10,7 +10,9 @@ import 'package:quiver/strings.dart';
 
 /// A generic page for getting a "Name" input from the user.
 class SaveNamePage extends StatefulWidget {
-  final String title;
+  /// See [AppBar.title].
+  final Widget title;
+
   final String oldName;
 
   /// Invoked when the "Save" button is pressed. The value entered is passed to

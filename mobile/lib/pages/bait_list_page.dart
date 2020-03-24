@@ -10,7 +10,6 @@ import 'package:mobile/res/dimen.dart';
 import 'package:mobile/utils/page_utils.dart';
 import 'package:mobile/utils/string_utils.dart';
 import 'package:mobile/widgets/list_item.dart';
-import 'package:mobile/widgets/page.dart';
 import 'package:mobile/widgets/text.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:quiver/strings.dart';
@@ -27,9 +26,9 @@ class _BaitListPageState extends State<BaitListPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Page(
-      appBarStyle: PageAppBarStyle(
-        titleWidget: FutureBuilder<int>(
+    return Scaffold(
+      appBar: AppBar(
+        title: FutureBuilder<int>(
           future: BaitManager.of(context).numberOfBaits,
           builder: (context, snapshot) {
             int numberOfBaits = 0;
@@ -48,7 +47,7 @@ class _BaitListPageState extends State<BaitListPage> {
           ),
         ],
       ),
-      child: BaitsBuilder(
+      body: BaitsBuilder(
         onUpdate: (baits, categories) {
           _log.d("Baits updated...");
           _updateItems(baits, categories);

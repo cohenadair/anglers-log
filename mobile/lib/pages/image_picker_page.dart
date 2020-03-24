@@ -10,7 +10,6 @@ import 'package:mobile/utils/dialog_utils.dart';
 import 'package:mobile/utils/string_utils.dart';
 import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/no_results.dart';
-import 'package:mobile/widgets/page.dart';
 import 'package:mobile/widgets/text.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:path/path.dart' as Path;
@@ -126,24 +125,21 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
     super.initState();
 
     _initialImages = List.of(widget.initialImages);
-
-    // TODO: Fix significant UI lag when calling this method:
-    // https://github.com/CaiJingLong/flutter_photo_manager/issues/178
     _albumListFuture = PhotoManager.getAssetPathList(type: RequestType.image);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Page(
-      appBarStyle: PageAppBarStyle(
-        titleWidget: _buildSourceDropdown(),
+    return Scaffold(
+      appBar: AppBar(
+        title: _buildSourceDropdown(),
         actions: [
           _buildDoneButton(),
         ],
         leading: widget.appBarLeading,
       ),
       // First, get a list of all the available albums.
-      child: FutureBuilder<List<AssetPathEntity>>(
+      body: FutureBuilder<List<AssetPathEntity>>(
         future: _albumListFuture,
         builder: (context, snapshot) {
           if (!snapshot.hasData) {

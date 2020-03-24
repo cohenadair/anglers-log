@@ -11,7 +11,6 @@ import 'package:mobile/res/style.dart';
 import 'package:mobile/utils/dialog_utils.dart';
 import 'package:mobile/utils/page_utils.dart';
 import 'package:mobile/widgets/button.dart';
-import 'package:mobile/widgets/page.dart';
 import 'package:mobile/widgets/text.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:quiver/strings.dart';
@@ -52,8 +51,8 @@ class _BaitPageState extends State<BaitPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Page(
-      appBarStyle: PageAppBarStyle(
+    return Scaffold(
+      appBar: AppBar(
         actions: [
           ActionButton.edit(
             condensed: true,
@@ -76,26 +75,28 @@ class _BaitPageState extends State<BaitPage> {
           ),
         ],
       ),
-      padding: insetsDefault,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          isNotEmpty(_bait.categoryId) ? FutureBuilder<BaitCategory>(
-            future: BaitManager.of(context)
-                .fetchCategory(_bait.categoryId),
-            builder: (context, snapshot) {
-              if (!snapshot.hasData) {
-                return Empty();
-              }
-              _category = snapshot.data;
-              return HeadingText(_category.name);
-            },
-          ) : Empty(),
-          Text(
-            _bait.name,
-            style: styleTitle,
-          ),
-        ],
+      body: Padding(
+        padding: insetsDefault,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            isNotEmpty(_bait.categoryId) ? FutureBuilder<BaitCategory>(
+              future: BaitManager.of(context)
+                  .fetchCategory(_bait.categoryId),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) {
+                  return Empty();
+                }
+                _category = snapshot.data;
+                return HeadingText(_category.name);
+              },
+            ) : Empty(),
+            Text(
+              _bait.name,
+              style: styleTitle,
+            ),
+          ],
+        ),
       ),
     );
   }

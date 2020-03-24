@@ -42,7 +42,7 @@ class SaveCatchPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return EditableFormPage(
-      title: Strings.of(context).addCatchPageNewTitle,
+      title: Text(Strings.of(context).addCatchPageNewTitle),
       allFields: _allInputFields,
       initialFields: {
         timestampId: _allInputFields[timestampId],

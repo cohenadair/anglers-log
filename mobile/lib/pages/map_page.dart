@@ -17,7 +17,6 @@ import 'package:mobile/utils/string_utils.dart';
 import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/list_item.dart';
 import 'package:mobile/widgets/no_results.dart';
-import 'package:mobile/widgets/page.dart';
 import 'package:mobile/widgets/styled_bottom_sheet.dart';
 import 'package:mobile/widgets/text.dart';
 import 'package:mobile/widgets/widget.dart';
@@ -59,8 +58,8 @@ class _MapPageState extends State<MapPage> {
   bool get _hasLastActiveFishingSpot => _lastActiveFishingSpot != null;
 
   @override
-  Widget build(BuildContext context) => Page(
-    child: FishingSpotsBuilder(
+  Widget build(BuildContext context) => Scaffold(
+    body: FishingSpotsBuilder(
       onUpdate: (List<FishingSpot> fishingSpots) {
         _log.d("Reloading fishing spots...");
 
