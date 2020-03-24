@@ -22,6 +22,7 @@ class _FishingSpotPickerPageState extends State<FishingSpotPickerPage> {
     return Page(
       appBarStyle: PageAppBarStyle(
         title: Strings.of(context).fishingSpotPickerPageTitle,
+        centerTitle: false,
         actions: [
           ActionButton(
             text: Strings.of(context).next,

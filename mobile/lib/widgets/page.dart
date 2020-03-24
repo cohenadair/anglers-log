@@ -11,6 +11,7 @@ class PageAppBarStyle {
   final String subtitle;
   final List<Widget> actions;
   final Widget leading;
+  final bool centerTitle;
 
   PageAppBarStyle({
     this.titleWidget,
@@ -18,6 +19,7 @@ class PageAppBarStyle {
     this.subtitle,
     this.actions,
     this.leading,
+    this.centerTitle,
   });
 }
 
@@ -50,6 +52,7 @@ class Page extends StatelessWidget {
         title: title,
         actions: appBarStyle.actions,
         leading: appBarStyle.leading,
+        centerTitle: appBarStyle.centerTitle,
       ),
       body: Padding(
         padding: padding,
