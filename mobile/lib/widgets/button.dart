@@ -46,6 +46,7 @@ class ActionButton extends StatelessWidget {
   final String text;
   final VoidCallback onPressed;
   final bool condensed;
+  final Color textColor;
 
   final String _stringId;
 
@@ -53,21 +54,22 @@ class ActionButton extends StatelessWidget {
     @required this.text,
     this.onPressed,
     this.condensed = false,
+    this.textColor,
   }) : _stringId = null;
 
-  ActionButton.done({this.onPressed, this.condensed = false})
+  ActionButton.done({this.onPressed, this.condensed = false, this.textColor})
       : _stringId = "done",
         text = null;
 
-  ActionButton.save({this.onPressed, this.condensed = false})
+  ActionButton.save({this.onPressed, this.condensed = false, this.textColor})
       : _stringId = "save",
         text = null;
 
-  ActionButton.cancel({this.onPressed, this.condensed = false})
+  ActionButton.cancel({this.onPressed, this.condensed = false, this.textColor})
       : _stringId = "cancel",
         text = null;
 
-  ActionButton.edit({this.onPressed, this.condensed = false})
+  ActionButton.edit({this.onPressed, this.condensed = false, this.textColor})
       : _stringId = "edit",
         text = null;
 
@@ -76,6 +78,9 @@ class ActionButton extends StatelessWidget {
     Widget textWidget = Text(
       (text == null ? Strings.of(context).fromId(_stringId) : text)
           .toUpperCase(),
+      style: textColor == null ? null : TextStyle(
+        color: textColor
+      ),
     );
 
     if (condensed) {
@@ -188,10 +193,7 @@ class FloatingIconButton extends StatelessWidget {
     return Padding(
       padding: padding ?? insetsDefault,
       child: Container(
-        decoration: BoxDecoration(
-          boxShadow: boxShadowSmallBottom,
-          shape: BoxShape.circle,
-        ),
+        decoration: FloatingBoxDecoration.circle(),
         width: size,
         height: size,
         child: RawMaterialButton(

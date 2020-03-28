@@ -119,6 +119,7 @@ Map<String, Map<String, String>> get englishStrings => {
     "speciesPickerPage_confirmDelete" : "Are you sure you want to delete species %s? This cannot be undone.",
 
     "fishingSpotPickerPage_title" : "Select Fishing Spot",
+    "fishingSpotPickerPage_hint" : "Drag the map to use exact coordinates, or select an existing fishing spot.",
 
     "angler_nameLabel" : "Angler",
 

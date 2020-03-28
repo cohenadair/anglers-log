@@ -144,6 +144,7 @@ class Strings {
   String get speciesPickerPageConfirmDelete => _string("speciesPickerPage_confirmDelete");
 
   String get fishingSpotPickerPageTitle => _string("fishingSpotPickerPage_title");
+  String get fishingSpotPickerPageHint => _string("fishingSpotPickerPage_hint");
 
   String get addCustomFieldPageTitle => _string("addCustomFieldPage_title");
   String get addCustomFieldPageNameExists => _string("addCustomFieldPage_nameExists");

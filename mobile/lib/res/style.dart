@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/res/dimen.dart';
 
 const FontWeight fontWeightBold = FontWeight.w500;
 
@@ -44,3 +45,23 @@ const List<BoxShadow> boxShadowSmallBottom = [
     offset: Offset(0, 2.0),
   ),
 ];
+
+/// A [BoxDecoration] wrapper that should be used for any "floating" widgets
+/// used throughout the app.
+class FloatingBoxDecoration extends BoxDecoration {
+  final Color color = Colors.white;
+
+  FloatingBoxDecoration.rectangle() : super(
+    color: Colors.white,
+    boxShadow: boxShadowSmallBottom,
+    borderRadius: BorderRadius.all(
+      Radius.circular(floatingCornerRadius),
+    ),
+  );
+
+  FloatingBoxDecoration.circle() : super(
+    color: Colors.white,
+    boxShadow: boxShadowSmallBottom,
+    shape: BoxShape.circle,
+  );
+}
