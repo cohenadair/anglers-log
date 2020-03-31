@@ -12,9 +12,15 @@ class SaveFishingSpotPage extends StatefulWidget {
   final FishingSpot oldFishingSpot;
   final bool editing;
 
+  /// If non-null, is invoked when the save button is pressed. In this case,
+  /// a database call is _not_ made. Instead, the new fishing spot is passed
+  /// to this callback.
+  final void Function(FishingSpot) onSave;
+
   SaveFishingSpotPage({
     @required this.oldFishingSpot,
     this.editing = false,
+    this.onSave,
   }) : assert(oldFishingSpot != null);
 
   @override
@@ -40,12 +46,19 @@ class _SaveFishingSpotPageState extends State<SaveFishingSpotPage> {
     return FormPage.immutable(
       title: Text(title),
       onSave: () {
-        FishingSpotManager.of(context).createOrUpdate(FishingSpot(
+        FishingSpot newFishingSpot = FishingSpot(
           lat: widget.oldFishingSpot.lat,
           lng: widget.oldFishingSpot.lng,
           name: isNotEmpty(_nameController.text) ? _nameController.text : null,
           id: widget.oldFishingSpot.id,
-        ));
+        );
+
+        if (widget.onSave != null) {
+          widget.onSave(newFishingSpot);
+        } else {
+          FishingSpotManager.of(context).createOrUpdate(newFishingSpot);
+        }
+
         return true;
       },
       fieldBuilder: (BuildContext context, bool isRemovingFields) {

@@ -96,7 +96,7 @@ class FormPage extends StatefulWidget {
   /// Whether this form's components can be added or removed.
   final bool editable;
 
-  /// Called when the save button is pressed. Returning true will close dismiss
+  /// Called when the save button is pressed. Returning true will dismiss
   /// the form page; false will leave it open.
   final FutureOr<bool> Function() onSave;
 

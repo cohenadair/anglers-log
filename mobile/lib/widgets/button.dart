@@ -40,6 +40,8 @@ class Button extends StatelessWidget {
 /// A button wrapper meant to be used as an action in an [AppBar]. If this
 /// button is to be rendered to the left of an [IconButton], such as an overflow
 /// menu button, set [condensed] to true to remove extra padding.
+///
+/// This button can also be used as a [FlatButton] replacement.
 class ActionButton extends StatelessWidget {
   final double defaultSize = 40;
 
@@ -102,6 +104,7 @@ class ActionButton extends StatelessWidget {
       return FlatButton(
         child: textWidget,
         onPressed: onPressed,
+        textColor: textColor,
       );
     }
   }

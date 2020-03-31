@@ -258,7 +258,7 @@ class _ManageableListItemState extends State<ManageableListItem> with
     return AnimatedSwitcher(
       duration: _editAnimDuration,
       child: Padding(
-        // Key is required here for animation (since widget type doesn't
+        // Key is required here for animation (since widget type might not
         // change).
         key: key,
         padding: insetsRightDefault,

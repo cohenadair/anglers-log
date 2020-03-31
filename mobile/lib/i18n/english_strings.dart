@@ -26,7 +26,7 @@ Map<String, Map<String, String>> get englishStrings => {
     "latLng" : "Lat: %s, Lng: %s",
     "latLng_noLabels" : "%s, %s",
     "add" : "Add",
-    "addAnother" : "Add and add another",
+    "more" : "More",
 
     "fieldType_number" : "Number",
     "fieldType_boolean" : "Checkbox",

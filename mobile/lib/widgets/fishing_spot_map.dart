@@ -39,7 +39,22 @@ class FishingSpotMap extends StatefulWidget {
 
   final Completer<GoogleMapController> mapController;
   final LatLng currentLocation;
+
+  /// See [GoogleMap.onTap].
   final void Function(LatLng) onTap;
+
+  /// See [GoogleMap.onCameraIdle].
+  final VoidCallback onIdle;
+
+  /// See [GoogleMap.onCameraMove].
+  final void Function(LatLng) onMove;
+
+  /// See [GoogleMap.onCameraMoveStarted].
+  final VoidCallback onMoveStarted;
+
+  /// Invoked when the map type changes.
+  final void Function(MapType) onMapTypeChanged;
+
   final Set<Marker> markers;
 
   FishingSpotMap({
@@ -47,6 +62,10 @@ class FishingSpotMap extends StatefulWidget {
     this.searchBar,
     this.currentLocation,
     this.onTap,
+    this.onIdle,
+    this.onMove,
+    this.onMoveStarted,
+    this.onMapTypeChanged,
     this.markers,
   }) : assert(mapController != null);
 
@@ -111,6 +130,11 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
           onTap: (latLng) {
             widget.onTap?.call(latLng);
           },
+          onCameraIdle: widget.onIdle,
+          onCameraMove: (position) {
+            widget.onMove?.call(position.target);
+          },
+          onCameraMoveStarted: widget.onMoveStarted,
         );
       },
     );
@@ -180,6 +204,7 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
                   setState(() {
                     _mapType = newMapType;
                   });
+                  widget.onMapTypeChanged?.call(newMapType);
                 }
               },
             );

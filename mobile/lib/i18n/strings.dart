@@ -54,7 +54,7 @@ class Strings {
   String get latLng => _string("latLng");
   String get latLngNoLabels => _string("latLng_noLabels");
   String get add => _string("add");
-  String get addAnother => _string("addAnother");
+  String get more => _string("more");
 
   String get fieldTypeNumber => _string("fieldType_number");
   String get fieldTypeBoolean => _string("fieldType_boolean");
