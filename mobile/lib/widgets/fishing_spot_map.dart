@@ -55,6 +55,10 @@ class FishingSpotMap extends StatefulWidget {
   /// Invoked when the map type changes.
   final void Function(MapType) onMapTypeChanged;
 
+  /// If non-null, a "help" floating action button is rendered on the map, and
+  /// a [HelpTooltip] with this widget as its child is toggled when tapped.
+  final Widget help;
+
   final Set<Marker> markers;
 
   FishingSpotMap({
@@ -66,6 +70,7 @@ class FishingSpotMap extends StatefulWidget {
     this.onMove,
     this.onMoveStarted,
     this.onMapTypeChanged,
+    this.help,
     this.markers,
   }) : assert(mapController != null);
 
@@ -79,8 +84,21 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
   Future _mapFuture = Future.delayed(Duration(milliseconds: 150), () => true);
 
   MapType _mapType = MapType.normal;
+  bool _showHelp = true;
 
   Completer<GoogleMapController> get _mapController => widget.mapController;
+
+
+  @override
+  void initState() {
+    super.initState();
+
+    Future.delayed(Duration(milliseconds: 2000), () {
+      setState(() {
+        _showHelp = false;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -94,6 +112,8 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
               widget.searchBar == null ? Empty() : _buildSearchBar(),
               _buildMapTypeButton(),
               _buildCurrentLocationButton(),
+              _buildHelpButton(),
+              _buildHelp(),
             ],
           ),
         ),
@@ -113,6 +133,8 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
 
         // TODO: Move Google logo when better solution is available.
         // https://github.com/flutter/flutter/issues/39610
+        // TODO: Test onCameraIdle fix when merged. Event sometimes stops after interaction with map buttons.
+        // https://github.com/flutter/flutter/issues/33988
         return GoogleMap(
           mapType: _mapType,
           markers: widget.markers,
@@ -134,7 +156,14 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
           onCameraMove: (position) {
             widget.onMove?.call(position.target);
           },
-          onCameraMoveStarted: widget.onMoveStarted,
+          onCameraMoveStarted: () {
+            widget.onMoveStarted?.call();
+            if (widget.help != null) {
+              setState(() {
+                _showHelp = false;
+              });
+            }
+          },
         );
       },
     );
@@ -228,6 +257,34 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
           moveMap(_mapController, currentLocation);
         }
       },
+    );
+  }
+
+  Widget _buildHelpButton() {
+    if (widget.help == null) {
+      return Empty();
+    }
+
+    return FloatingIconButton(
+      icon: Icons.help,
+      pushed: _showHelp,
+      onPressed: () {
+        setState(() {
+          _showHelp = !_showHelp;
+        });
+      },
+    );
+  }
+
+  Widget _buildHelp() {
+    if (widget.help == null) {
+      return Empty();
+    }
+
+    return HelpTooltip(
+      margin: insetsHorizontalDefault,
+      showing: _showHelp,
+      child: widget.help,
     );
   }
 }

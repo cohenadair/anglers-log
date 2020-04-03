@@ -188,6 +188,9 @@ class _FishingSpotPickerPageState extends State<FishingSpotPickerPage>
           }
         },
       ),
+      help: Text(Strings.of(context).fishingSpotPickerPageHint,
+        style: styleLight,
+      ),
     );
   }
 

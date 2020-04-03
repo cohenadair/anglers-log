@@ -185,10 +185,15 @@ class FloatingIconButton extends StatelessWidget {
   final IconData icon;
   final VoidCallback onPressed;
 
+  /// When true, renders the button with a different background color, to
+  /// imply the button has been "toggled".
+  final bool pushed;
+
   FloatingIconButton({
     this.padding,
     @required this.icon,
     @required this.onPressed,
+    this.pushed = false,
   });
 
   @override
@@ -205,7 +210,7 @@ class FloatingIconButton extends StatelessWidget {
             color: Colors.black,
           ),
           shape: CircleBorder(),
-          fillColor: Colors.white,
+          fillColor: pushed ? Colors.grey : Colors.white,
           onPressed: onPressed,
         ),
       ),

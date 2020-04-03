@@ -31,6 +31,11 @@ const TextStyle styleError = TextStyle(
   color: Colors.red,
 );
 
+/// For displaying on dark backgrounds.
+const TextStyle styleLight = TextStyle(
+  color: Colors.white,
+);
+
 const List<BoxShadow> boxShadowDefault = [
   BoxShadow(
     color: Colors.grey,

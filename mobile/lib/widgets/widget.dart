@@ -110,3 +110,35 @@ class DropdownIcon extends StatelessWidget {
     );
   }
 }
+
+/// A help popup that fades in and out of view.
+class HelpTooltip extends StatelessWidget {
+  final Duration _animDuration = Duration(milliseconds: 150);
+
+  final Widget child;
+  final bool showing;
+  final EdgeInsets margin;
+
+  HelpTooltip({
+    @required this.child,
+    this.showing = false,
+    this.margin = insetsDefault,
+  }) : assert(child != null);
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedOpacity(
+      duration: _animDuration,
+      opacity: showing ? 1.0 : 0.0,
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.black.withOpacity(0.65),
+          borderRadius: BorderRadius.all(Radius.circular(5.0)),
+        ),
+        padding: insetsDefault,
+        margin: margin,
+        child: child,
+      ),
+    );
+  }
+}

@@ -22,7 +22,7 @@ class AddCatchJourney extends StatelessWidget {
         var name = routeSettings.name;
         if (name == _rootRoute) {
           return MaterialPageRoute(
-            settings: routeSettings.copyWith(isInitialRoute: true),
+            settings: routeSettings,
             builder: (context) => ImagePickerPage(
               doneButtonText: Strings.of(context).next,
               requiresPick: false,
