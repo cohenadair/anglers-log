@@ -132,7 +132,7 @@ class HelpTooltip extends StatelessWidget {
       opacity: showing ? 1.0 : 0.0,
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.black.withOpacity(0.65),
+          color: Colors.black.withOpacity(0.70),
           borderRadius: BorderRadius.all(Radius.circular(5.0)),
         ),
         padding: insetsDefault,
