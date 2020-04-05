@@ -80,7 +80,7 @@ class Strings {
   String get saveCatchPageDateLabel => _string("saveCatchPage_dateLabel");
   String get saveCatchPageTimeLabel => _string("saveCatchPage_timeLabel");
   String get saveCatchPageSpeciesLabel => _string("saveCatchPage_speciesLabel");
-  String get saveCatchPagePhotosLabel => _string("saveCatchPage_photosLabel");
+  String get saveCatchPageImagesLabel => _string("saveCatchPage_imagesLabel");
   String get saveCatchPageFishingSpotLabel => _string("saveCatchPage_fishingSpotLabel");
   String get saveCatchPageBaitLabel => _string("saveCatchPage_baitLabel");
 

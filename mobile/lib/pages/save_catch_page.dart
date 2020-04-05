@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/log.dart';
 import 'package:mobile/model/fishing_spot.dart';
@@ -9,12 +10,17 @@ import 'package:mobile/pages/editable_form_page.dart';
 import 'package:mobile/pages/image_picker_page.dart';
 import 'package:mobile/pages/picker_page.dart';
 import 'package:mobile/res/dimen.dart';
+import 'package:mobile/res/style.dart';
 import 'package:mobile/species_manager.dart';
+import 'package:mobile/utils/string_utils.dart';
 import 'package:mobile/widgets/date_time_picker.dart';
 import 'package:mobile/widgets/input.dart';
 import 'package:mobile/widgets/input_controller.dart';
+import 'package:mobile/widgets/list_item.dart';
 import 'package:mobile/widgets/list_picker_input.dart';
+import 'package:mobile/widgets/photo_input.dart';
 import 'package:mobile/widgets/widget.dart';
+import 'package:quiver/strings.dart';
 
 /// A utility class to store properties picked in a catch journey.
 class CatchPageJourneyHelper {
@@ -50,12 +56,14 @@ class SaveCatchPage extends StatefulWidget {
 
 class _SaveCatchPageState extends State<SaveCatchPage> {
   static const String _timestampKey = "timestamp";
-  static const String _photosKey = "photos";
+  static const String _imagesKey = "images";
   static const String _speciesKey = "species";
   static const String _fishingSpotKey = "fishing_spot";
   static const String _baitKey = "bait";
 
   final _log = Log("SaveBaitPage");
+
+  final _fishingSpotMapHeight = 250.0;
 
   final Map<String, InputData> _allInputFields = {};
 
@@ -63,8 +71,8 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
 
   SpeciesInputController get _speciesController =>
       _allInputFields[_speciesKey].controller;
-  ImagesInputController get _photosController =>
-      _allInputFields[_photosKey].controller;
+  ImagesInputController get _imagesController =>
+      _allInputFields[_imagesKey].controller;
   FishingSpotInputController get _fishingSpotController =>
       _allInputFields[_fishingSpotKey].controller;
 
@@ -91,11 +99,11 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
       removable: false,
     );
 
-    _allInputFields[_photosKey] = InputData(
-      id: _photosKey,
+    _allInputFields[_imagesKey] = InputData(
+      id: _imagesKey,
       controller: ImagesInputController(),
       label: (BuildContext context) =>
-          Strings.of(context).saveCatchPagePhotosLabel,
+          Strings.of(context).saveCatchPageImagesLabel,
     );
 
     _allInputFields[_fishingSpotKey] = InputData(
@@ -114,7 +122,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
 
     if (widget.journeyHelper != null) {
       _speciesController.value = widget.journeyHelper.species;
-      _photosController.value = widget.journeyHelper.images;
+      _imagesController.value = widget.journeyHelper.images;
       _fishingSpotController.value = widget.journeyHelper.fishingSpot;
     }
   }
@@ -123,11 +131,12 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
   Widget build(BuildContext context) {
     return EditableFormPage(
       title: Text(Strings.of(context).saveCatchPageNewTitle),
+      runSpacing: 0,
       padding: insetsZero,
       allFields: _allInputFields,
       initialFields: {
+        _imagesKey: _allInputFields[_imagesKey],
         _timestampKey: _allInputFields[_timestampKey],
-        _photosKey: _allInputFields[_photosKey],
         _speciesKey: _allInputFields[_speciesKey],
         _fishingSpotKey: _allInputFields[_fishingSpotKey],
         _baitKey: _allInputFields[_baitKey],
@@ -142,8 +151,8 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
     switch (id) {
       case _timestampKey:
         return _buildTimestamp(context, isRemovingFields);
-      case _photosKey:
-        return _buildPhotos(context, isRemovingFields);
+      case _imagesKey:
+        return _buildImages(context, isRemovingFields);
       case _speciesKey:
         return _buildSpecies(context, isRemovingFields);
       case _fishingSpotKey:
@@ -161,7 +170,11 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
         _allInputFields[_timestampKey].controller;
 
     return Padding(
-      padding: insetsHorizontalDefault,
+      padding: EdgeInsets.only(
+        left: paddingDefault,
+        right: isRemovingFields ? 0 : paddingDefault,
+        bottom: paddingWidgetSmall,
+      ),
       child: DateTimePickerContainer(
         datePicker: DatePicker(
           initialDate: controller.date,
@@ -188,7 +201,101 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
   }
 
   Widget _buildFishingSpot(BuildContext context, bool isRemovingFields) {
-    return Empty();
+    FishingSpot fishingSpot = _fishingSpotController.value;
+
+    if (fishingSpot == null) {
+      return EnabledOpacity(
+        enabled: !isRemovingFields,
+        child: ListItem(
+          contentPadding: isRemovingFields ? insetsLeftDefault : null,
+          title: Text(Strings.of(context).saveCatchPageFishingSpotLabel),
+          trailing: RightChevronIcon(),
+          onTap: isRemovingFields ? null : () {
+
+          },
+        ),
+      );
+    }
+
+    Widget name = isEmpty(fishingSpot.name) ? null : Text(fishingSpot.name,
+      style: TextStyle(fontWeight: FontWeight.bold),
+    );
+
+    String latLngString = formatLatLng(context: context, lat: fishingSpot.lat,
+        lng: fishingSpot.lng);
+    Widget coordinates = Text(latLngString);
+    if (name == null) {
+      coordinates = Text(latLngString,
+          style: Theme.of(context).textTheme.bodyText2);
+    }
+
+    return Container(
+      padding: EdgeInsets.only(
+        left: paddingDefault,
+        right: paddingDefault,
+        top: paddingSmall,
+        bottom: paddingSmall,
+      ),
+      height: _fishingSpotMapHeight,
+      child: Stack(
+        children: [
+          EnabledOpacity(
+            enabled: !isRemovingFields,
+            child: GoogleMap(
+              onMapCreated: (controller) {
+                // TODO: Remove when fixed in Google Maps.
+                // https://github.com/flutter/flutter/issues/27550
+                Future.delayed(Duration(milliseconds: 10), () {
+                  controller.moveCamera(
+                      CameraUpdate.newLatLng(fishingSpot.latLng));
+                });
+              },
+              initialCameraPosition: CameraPosition(
+                target: fishingSpot.latLng,
+                zoom: 15,
+              ),
+              myLocationEnabled: false,
+              myLocationButtonEnabled: false,
+              markers: Set.from([
+                Marker(
+                  markerId: MarkerId(fishingSpot.id),
+                  position: fishingSpot.latLng,
+                ),
+              ]),
+              rotateGesturesEnabled: false,
+              scrollGesturesEnabled: false,
+              tiltGesturesEnabled: false,
+              zoomGesturesEnabled: false,
+            ),
+          ),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Container(
+              margin: insetsSmall,
+              decoration: FloatingBoxDecoration.rectangle(),
+              child: Material(
+                color: Colors.transparent,
+                child: EnabledOpacity(
+                  enabled: !isRemovingFields,
+                  child: ListItem(
+                    contentPadding: EdgeInsets.only(
+                      left: paddingDefault,
+                      right: paddingSmall,
+                    ),
+                    title: name ?? coordinates,
+                    subtitle: name == null ? null : coordinates,
+                    onTap: isRemovingFields ? null : () {
+
+                    },
+                    trailing: RightChevronIcon(),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ]
+      ),
+    );
   }
 
   Widget _buildSpecies(BuildContext context, bool isRemovingFields) {
@@ -214,13 +321,21 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
     );
   }
 
-  Widget _buildPhotos(BuildContext context, bool isRemovingFields) {
-    return Empty();
+  Widget _buildImages(BuildContext context, bool isRemovingFields) {
+    return ImageInput(
+      initialImages: _imagesController.value,
+      enabled: !isRemovingFields,
+      onImagesPicked: (images) {
+        setState(() {
+          _imagesController.value = images;
+        });
+      },
+    );
   }
 
   FutureOr<bool> _save(Map<String, InputData> result) {
     print("Timestamp: ${_allInputFields[_timestampKey].controller.value}");
-    print("Photos: ${_allInputFields[_photosKey].controller.value}");
+    print("Images: ${_allInputFields[_imagesKey].controller.value}");
     print("Species: ${_allInputFields[_speciesKey].controller.value}");
     print("Fishing spot: ${_allInputFields[_fishingSpotKey].controller.value}");
     print("Bait: ${_allInputFields[_baitKey].controller.value}");

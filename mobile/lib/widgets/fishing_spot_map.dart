@@ -32,6 +32,7 @@ class FishingSpotMapSearchBar {
   });
 }
 
+/// A [GoogleMap] wrapper that listens and responds to [FishingSpot] changes.
 class FishingSpotMap extends StatefulWidget {
   /// Properties for the map's search bar. If `null`, no search bar will be
   /// shown.

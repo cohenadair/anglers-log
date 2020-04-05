@@ -49,7 +49,7 @@ Map<String, Map<String, String>> get englishStrings => {
     "saveCatchPage_dateLabel" : "Date",
     "saveCatchPage_timeLabel" : "Time",
     "saveCatchPage_speciesLabel" : "Species",
-    "saveCatchPage_photosLabel" : "Photos",
+    "saveCatchPage_imagesLabel" : "Photos",
     "saveCatchPage_fishingSpotLabel" : "Fishing Spot",
     "saveCatchPage_baitLabel" : "Bait",
 

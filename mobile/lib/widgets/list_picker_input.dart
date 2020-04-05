@@ -139,7 +139,7 @@ class _ListPickerInputState<T> extends State<ListPickerInput<T>> {
             Icon(Icons.chevron_right),
           ],
         ),
-        onTap: () {
+        onTap: widget.enabled ? () {
           push(context, PickerPage<T>(
             futureStreamHolder: widget.futureStreamHolder,
             itemManager: widget.itemManager,
@@ -153,7 +153,7 @@ class _ListPickerInputState<T> extends State<ListPickerInput<T>> {
               _popPickerPage(context, pickedItems);
             },
           ));
-        },
+        } : null,
       ),
     );
   }

@@ -17,7 +17,7 @@ dependencies:
 
   file_picker: ^1.4.3+2
   geolocator: ^5.2.1
-  google_maps_flutter: ^0.5.22+2  # Flutter
+  google_maps_flutter: ^0.5.25+3  # Flutter
   image_picker: ^0.6.3+1          # Flutter
   intl: ^0.16.0                   # Dart - Version restricted by flutter_localizations
   package_info: ^0.4.0+13         # Flutter

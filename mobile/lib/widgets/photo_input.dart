@@ -9,13 +9,13 @@ import 'package:photo_manager/photo_manager.dart';
 
 /// An input widget that allows selection of one or more photos, as well as
 /// taking a photo from the device's camera.
-class PhotoInput extends StatelessWidget {
+class ImageInput extends StatelessWidget {
   final bool enabled;
   final bool allowsMultipleSelection;
   final List<PickedImage> currentImages;
   final Function(List<PickedImage>) onImagesPicked;
 
-  PhotoInput({
+  ImageInput({
     @required this.enabled,
     this.allowsMultipleSelection = true,
     List<PickedImage> initialImages = const [],
@@ -24,7 +24,7 @@ class PhotoInput extends StatelessWidget {
        assert(initialImages != null),
        currentImages = initialImages;
 
-  PhotoInput.single({
+  ImageInput.single({
     @required enabled,
     PickedImage currentImage,
     @required Function(PickedImage) onImagePicked,

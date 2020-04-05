@@ -36,6 +36,9 @@ class EditableFormPage extends StatefulWidget {
   /// See [FormPage.isInputValid].
   final bool isInputValid;
 
+  /// See [FormPage.runSpacing].
+  final double runSpacing;
+
   final EdgeInsets padding;
 
   EditableFormPage({
@@ -46,6 +49,7 @@ class EditableFormPage extends StatefulWidget {
     this.onSave,
     this.padding = insetsHorizontalDefault,
     this.isInputValid = true,
+    this.runSpacing,
   });
 
   @override
@@ -76,6 +80,7 @@ class _EditableFormPageState extends State<EditableFormPage> {
   Widget build(BuildContext context) {
     return FormPage(
       title: widget.title,
+      runSpacing: widget.runSpacing,
       padding: widget.padding,
       fieldBuilder: (BuildContext context, bool isRemovingFields) {
         return Map.fromIterable(_usedInputOptions.keys,

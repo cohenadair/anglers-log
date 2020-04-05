@@ -100,6 +100,9 @@ class FormPage extends StatefulWidget {
   /// the form page; false will leave it open.
   final FutureOr<bool> Function() onSave;
 
+  /// Space between form input widgets.
+  final double runSpacing;
+
   final EdgeInsets padding;
 
   FormPage({
@@ -112,6 +115,7 @@ class FormPage extends StatefulWidget {
     this.onAddFields,
     this.editable = true,
     this.padding = insetsHorizontalDefault,
+    this.runSpacing = paddingSmall,
     @required this.isInputValid,
   }) : assert(fieldBuilder != null),
        assert(isInputValid != null),
@@ -229,7 +233,7 @@ class _FormPageState extends State<FormPage> {
       crossAxisAlignment: CrossAxisAlignment.end,
       children: <Widget>[
         Wrap(
-          runSpacing: paddingSmall,
+          runSpacing: widget.runSpacing,
           children: widget.fieldBuilder(context, _isRemovingFields)
               .map((key, inputField) => MapEntry<String, Widget>(
                 key,
