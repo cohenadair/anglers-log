@@ -44,10 +44,14 @@ Map<String, Map<String, String>> get englishStrings => {
     "catchListPage_menuLabel" : "Catches",
     "catchListPage_title" : "Catches (%s)",
 
-    "addCatchPage_newTitle" : "New Catch",
-    "addCatchPage_dateTimeLabel" : "Date & Time",
-    "addCatchPage_dateLabel" : "Date",
-    "addCatchPage_timeLabel" : "Time",
+    "saveCatchPage_newTitle" : "New Catch",
+    "saveCatchPage_dateTimeLabel" : "Date & Time",
+    "saveCatchPage_dateLabel" : "Date",
+    "saveCatchPage_timeLabel" : "Time",
+    "saveCatchPage_speciesLabel" : "Species",
+    "saveCatchPage_photosLabel" : "Photos",
+    "saveCatchPage_fishingSpotLabel" : "Fishing Spot",
+    "saveCatchPage_baitLabel" : "Bait",
 
     "photosPage_menuLabel" : "Photos",
     "photosPage_title" : "Photos (%s)",

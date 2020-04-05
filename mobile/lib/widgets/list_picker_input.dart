@@ -86,7 +86,7 @@ class ListPickerInput<T> extends StatefulWidget {
     @required String labelText,
     EdgeInsets padding,
     bool enabled = true,
-    PickerPageItemManager addItemHelper,
+    PickerPageItemManager itemManager,
     FutureStreamHolder futureStreamHolder,
     bool Function(PickerPageItem<T>, T) itemEqualsOldValue,
   }) : this(
@@ -97,7 +97,7 @@ class ListPickerInput<T> extends StatefulWidget {
     showsValueOnTrailing: true,
     titleBuilder: (_) => Text(labelText),
     enabled: enabled,
-    itemManager: addItemHelper,
+    itemManager: itemManager,
     allowsMultiSelect: false,
     futureStreamHolder: futureStreamHolder,
     itemEqualsOldValue: itemEqualsOldValue,

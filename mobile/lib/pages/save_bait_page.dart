@@ -42,30 +42,31 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
 
   bool get editing => widget.oldBait != null;
 
-  BaitCategoryController get _baitCategoryController =>
-      _allInputFields[baitCategoryId].controller as BaitCategoryController;
+  BaitCategoryInputController get _baitCategoryController =>
+      _allInputFields[baitCategoryId].controller as BaitCategoryInputController;
   TextInputController get _nameController =>
       _allInputFields[nameId].controller as TextInputController;
 
-  final Map<String, InputData> _allInputFields = {
-    baitCategoryId: InputData(
+  final Map<String, InputData> _allInputFields = {};
+
+  @override
+  void initState() {
+    super.initState();
+
+    _allInputFields[baitCategoryId] = InputData(
       id: baitCategoryId,
       label: (context) => Strings.of(context).saveBaitPageCategoryLabel,
-      controller: BaitCategoryController(),
+      controller: BaitCategoryInputController(),
       removable: true,
-    ),
-    nameId: InputData(
+    );
+
+    _allInputFields[nameId] = InputData(
       id: nameId,
       label: (context) => Strings.of(context).inputNameLabel,
       controller: TextInputController(
         validate: (context) => Strings.of(context).inputGenericRequired,
       ),
-    ),
-  };
-
-  @override
-  void initState() {
-    super.initState();
+    );
 
     if (widget.oldBait != null) {
       _baitCategoryController.value = widget.oldBaitCategory;
@@ -106,27 +107,18 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
       pageTitle: Text(Strings.of(context).saveBaitPageCategoryPickerTitle),
       enabled: !isRemovingFields,
       labelText: Strings.of(context).saveBaitPageCategoryLabel,
-      futureStreamHolder: BaitCategoriesFutureStreamHolder(context,
-        onUpdate: (categories) {
+      futureStreamHolder: BaitCategoriesPickerFutureStreamHolder(context,
+        currentValue: () => _baitCategoryController.value,
+        onUpdate: (categories, updatedCategory) {
           _log.d("Bait categories updated...");
           _categories = categories;
-
-          // Update bait category in case the selected category has changed, or
-          // been deleted.
-          BaitCategory currentCategory = _baitCategoryController.value;
-          BaitCategory updatedCategory = _categories.firstWhere(
-            (e) => e.id == currentCategory?.id,
-            orElse: () => null,
-          );
           _baitCategoryController.value = updatedCategory;
         },
       ),
-      itemBuilder: () => _categories.map((e) => PickerPageItem(
-        title: e.name,
-        value: e,
-      )).toList(),
+      itemBuilder: () =>
+          entityListToPickerPageItemList<BaitCategory>(_categories),
       onChanged: (category) => _baitCategoryController.value = category,
-      addItemHelper: PickerPageItemNameManager<BaitCategory>(
+      itemManager: PickerPageItemNameManager<BaitCategory>(
         addTitle: Text(Strings.of(context).saveBaitPageNewCategoryLabel),
         editTitle: Text(Strings.of(context).saveBaitPageEditCategoryLabel),
         deleteMessageBuilder: (context, category) => InsertedBoldText(

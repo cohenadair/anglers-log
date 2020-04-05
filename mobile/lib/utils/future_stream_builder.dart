@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:mobile/model/entity.dart';
 
 /// A helper class for use with [FutureStreamBuilder].
 ///
@@ -29,6 +30,33 @@ class FutureStreamHolder {
     futureCallbacks: futureCallback == null ? null : [futureCallback],
     streams: stream == null ? null : [stream],
     onUpdate: onUpdate,
+  );
+
+  /// A [FutureStreamHolder] meant to be used for [Entity] picker widgets.
+  /// When data is updated, the provided current value is compared to the new
+  /// values, and the most up to date value is provided in the [onUpdate]
+  /// callback.
+  ///
+  /// This was originally introduced to handle the case where an entity, such as
+  /// a [Species] is updated or deleted from within a [PickerPage].
+  FutureStreamHolder.entityPicker({
+    @required Future<dynamic> Function() futureCallback,
+    @required Stream stream,
+    @required Entity Function() currentValue,
+    @required void Function(List<Entity>, Entity) onUpdate,
+  }) : this(
+    futureCallbacks: futureCallback == null ? null : [futureCallback],
+    streams: stream == null ? null : [stream],
+    onUpdate: (result) {
+      var entities = result as List<Entity>;
+
+      // Provide the most up to date entity, in case it was updated or
+      // been deleted.
+      onUpdate(entities, entities.firstWhere(
+        (e) => e.id == currentValue?.call()?.id,
+        orElse: () => null,
+      ));
+    },
   );
 
   FutureStreamHolder({

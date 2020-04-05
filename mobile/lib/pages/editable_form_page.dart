@@ -18,6 +18,7 @@ class EditableFormPage extends StatefulWidget {
 
   /// A sub-collection of [allFields]. All items in [initialFields] will be
   /// available to fill out immediately, without using the "Add Field" button.
+  /// The order of this map is the order in which the fields are rendered.
   final Map<String, InputData> initialFields;
 
   /// Called when an input field needs to be built. The ID of the input field

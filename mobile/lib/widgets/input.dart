@@ -21,12 +21,12 @@ class InputData {
 
   InputData({
     @required this.id,
-    this.controller,
+    @required this.controller,
     @required this.label,
     this.removable = true,
   }) : assert(isNotEmpty(id)),
-        assert(label != null),
-        assert(controller != null);
+       assert(label != null),
+       assert(controller != null);
 }
 
 /// A generic [Widget] used for gathering user input. The [Input] widget

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/model/bait.dart';
 import 'package:mobile/model/bait_category.dart';
+import 'package:mobile/model/fishing_spot.dart';
+import 'package:mobile/model/species.dart';
 import 'package:mobile/pages/image_picker_page.dart';
 import 'package:mobile/utils/date_time_utils.dart';
 import 'package:mobile/utils/validator.dart';
@@ -28,12 +31,6 @@ class InputController<T> {
   }
 
   String error(BuildContext context) => validate?.call(context);
-}
-
-class BaitCategoryController extends InputController<BaitCategory> {
-}
-
-class ImageInputController extends InputController<PickedImage> {
 }
 
 class TextInputController extends InputController<TextEditingController> {
@@ -84,4 +81,22 @@ class TimestampInputController extends InputController<int> {
     date = null;
     time = null;
   }
+}
+
+class BaitCategoryInputController extends InputController<BaitCategory> {
+}
+
+class SpeciesInputController extends InputController<Species> {
+}
+
+class FishingSpotInputController extends InputController<FishingSpot> {
+}
+
+class BaitInputController extends InputController<Bait> {
+}
+
+class ImageInputController extends InputController<PickedImage> {
+}
+
+class ImagesInputController extends InputController<List<PickedImage>> {
 }

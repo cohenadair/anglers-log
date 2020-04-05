@@ -75,10 +75,14 @@ class Strings {
   String get catchListPageMenuLabel => _string("catchListPage_menuLabel");
   String get catchListPageTitle => _string("catchListPage_title");
 
-  String get addCatchPageNewTitle => _string("addCatchPage_newTitle");
-  String get addCatchPageDateTimeLabel => _string("addCatchPage_dateTimeLabel");
-  String get addCatchPageDateLabel => _string("addCatchPage_dateLabel");
-  String get addCatchPageTimeLabel => _string("addCatchPage_timeLabel");
+  String get saveCatchPageNewTitle => _string("saveCatchPage_newTitle");
+  String get saveCatchPageDateTimeLabel => _string("saveCatchPage_dateTimeLabel");
+  String get saveCatchPageDateLabel => _string("saveCatchPage_dateLabel");
+  String get saveCatchPageTimeLabel => _string("saveCatchPage_timeLabel");
+  String get saveCatchPageSpeciesLabel => _string("saveCatchPage_speciesLabel");
+  String get saveCatchPagePhotosLabel => _string("saveCatchPage_photosLabel");
+  String get saveCatchPageFishingSpotLabel => _string("saveCatchPage_fishingSpotLabel");
+  String get saveCatchPageBaitLabel => _string("saveCatchPage_baitLabel");
 
   String get photosPageMenuLabel => _string("photosPage_menuLabel");
   String get photosPageTitle => _string("photosPage_title");

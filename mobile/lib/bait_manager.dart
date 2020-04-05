@@ -98,14 +98,18 @@ class BaitManager {
   }
 }
 
-/// A [FutureStreamHolder] subclass for [BaitCategory] objects.
-class BaitCategoriesFutureStreamHolder extends FutureStreamHolder {
-  BaitCategoriesFutureStreamHolder(BuildContext context, {
-    void Function(List<BaitCategory>) onUpdate,
-  }) : super.single(
+/// A [FutureStreamHolder] subclass for [BaitCategory] objects meant to be used
+/// with a [PickerPage].
+class BaitCategoriesPickerFutureStreamHolder extends FutureStreamHolder {
+  BaitCategoriesPickerFutureStreamHolder(BuildContext context, {
+    BaitCategory Function() currentValue,
+    void Function(List<BaitCategory>, BaitCategory) onUpdate,
+  }) : super.entityPicker(
     futureCallback: BaitManager.of(context)._fetchAllCategories,
     stream: BaitManager.of(context).onCategoryUpdate.stream,
-    onUpdate: (result) => onUpdate(result as List<BaitCategory>),
+    currentValue: currentValue,
+    onUpdate: (species, updatedSpecies) =>
+        onUpdate(species as List<BaitCategory>, updatedSpecies as BaitCategory),
   );
 }
 
@@ -122,7 +126,11 @@ class BaitCategoriesBuilder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureStreamBuilder(
-      holder: BaitCategoriesFutureStreamHolder(context, onUpdate: onUpdate),
+      holder: FutureStreamHolder.single(
+        futureCallback: BaitManager.of(context)._fetchAllCategories,
+        stream: BaitManager.of(context).onCategoryUpdate.stream,
+        onUpdate: (result) => onUpdate(result as List<BaitCategory>),
+      ),
       builder: (context) => builder(context),
     );
   }

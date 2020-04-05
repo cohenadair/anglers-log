@@ -89,6 +89,12 @@ class _FishingSpotPickerPageState extends State<FishingSpotPickerPage>
   }
 
   @override
+  void dispose() {
+    _fishingSpotAnimController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
@@ -177,9 +183,9 @@ class _FishingSpotPickerPageState extends State<FishingSpotPickerPage>
             condensed: true,
             text: Strings.of(context).next,
             textColor: Theme.of(context).primaryColor,
-            onPressed: () {
+            onPressed: _hasPendingFishingSpot || _hasFishingSpot ? () {
               widget.onPicked(context, _fishingSpot ?? _pendingFishingSpot);
-            },
+            } : null,
           ),
         ),
         onFishingSpotPicked: (fishingSpot) {

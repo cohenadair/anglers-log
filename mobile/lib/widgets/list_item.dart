@@ -180,8 +180,8 @@ class _ManageableListItemState extends State<ManageableListItem> with
 
   @override
   void dispose() {
-    super.dispose();
     _editAnimController.dispose();
+    super.dispose();
   }
 
   @override
