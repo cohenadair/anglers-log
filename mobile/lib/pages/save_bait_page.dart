@@ -11,7 +11,7 @@ import 'package:mobile/pages/picker_page.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/utils/dialog_utils.dart';
 import 'package:mobile/utils/validator.dart';
-import 'package:mobile/widgets/input.dart';
+import 'package:mobile/widgets/input_data.dart';
 import 'package:mobile/widgets/input_controller.dart';
 import 'package:mobile/widgets/list_picker_input.dart';
 import 'package:mobile/widgets/text.dart';
@@ -66,6 +66,7 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
       controller: TextInputController(
         validate: (context) => Strings.of(context).inputGenericRequired,
       ),
+      removable: false,
     );
 
     if (widget.oldBait != null) {
@@ -87,10 +88,10 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
         baitCategoryId: _allInputFields[baitCategoryId],
         nameId: _allInputFields[nameId],
       },
-      onBuildField: (id, isRemovingFields) {
+      onBuildField: (id) {
         switch (id) {
-          case nameId: return _buildNameField(isRemovingFields);
-          case baitCategoryId: return _buildCategoryPicker(isRemovingFields);
+          case nameId: return _buildNameField();
+          case baitCategoryId: return _buildCategoryPicker();
           default:
             print("Unknown input key: $id");
             return Empty();
@@ -101,11 +102,10 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
     );
   }
 
-  Widget _buildCategoryPicker(bool isRemovingFields) {
+  Widget _buildCategoryPicker() {
     return ListPickerInput<BaitCategory>.single(
       initialValue: _baitCategoryController.value,
       pageTitle: Text(Strings.of(context).saveBaitPageCategoryPickerTitle),
-      enabled: !isRemovingFields,
       labelText: Strings.of(context).saveBaitPageCategoryLabel,
       futureStreamHolder: BaitCategoriesPickerFutureStreamHolder(context,
         currentValue: () => _baitCategoryController.value,
@@ -149,10 +149,9 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
     );
   }
 
-  Widget _buildNameField(bool isRemovingFields) => Padding(
+  Widget _buildNameField() => Padding(
     padding: insetsHorizontalDefault,
     child: TextInput.name(context,
-      enabled: !isRemovingFields,
       controller: _nameController,
       autofocus: true,
       validator: GenericValidator(runner: (context, newName) {

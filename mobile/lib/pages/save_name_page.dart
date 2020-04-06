@@ -73,7 +73,7 @@ class _SaveNamePageState extends State<SaveNamePage> {
 
         return false;
       },
-      fieldBuilder: (context, _) {
+      fieldBuilder: (context) {
         return {
           Entity.keyName : TextInput.name(
             context,

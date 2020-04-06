@@ -16,7 +16,7 @@ class ImageInput extends StatelessWidget {
   final Function(List<PickedImage>) onImagesPicked;
 
   ImageInput({
-    @required this.enabled,
+    this.enabled = true,
     this.allowsMultipleSelection = true,
     List<PickedImage> initialImages = const [],
     @required this.onImagesPicked,

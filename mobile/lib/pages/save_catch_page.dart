@@ -14,7 +14,7 @@ import 'package:mobile/res/style.dart';
 import 'package:mobile/species_manager.dart';
 import 'package:mobile/utils/string_utils.dart';
 import 'package:mobile/widgets/date_time_picker.dart';
-import 'package:mobile/widgets/input.dart';
+import 'package:mobile/widgets/input_data.dart';
 import 'package:mobile/widgets/input_controller.dart';
 import 'package:mobile/widgets/list_item.dart';
 import 'package:mobile/widgets/list_picker_input.dart';
@@ -141,45 +141,43 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
         _fishingSpotKey: _allInputFields[_fishingSpotKey],
         _baitKey: _allInputFields[_baitKey],
       },
-      onBuildField: (id, isRemovingFields) =>
-          _buildField(context, id, isRemovingFields),
+      onBuildField: (id) => _buildField(id),
       onSave: _save,
     );
   }
 
-  Widget _buildField(BuildContext context, String id, bool isRemovingFields) {
+  Widget _buildField(String id) {
     switch (id) {
       case _timestampKey:
-        return _buildTimestamp(context, isRemovingFields);
+        return _buildTimestamp();
       case _imagesKey:
-        return _buildImages(context, isRemovingFields);
+        return _buildImages();
       case _speciesKey:
-        return _buildSpecies(context, isRemovingFields);
+        return _buildSpecies();
       case _fishingSpotKey:
-        return _buildFishingSpot(context, isRemovingFields);
+        return _buildFishingSpot();
       case _baitKey:
-        return _buildBait(context, isRemovingFields);
+        return _buildBait();
       default:
         print("Unknown input key: $id");
         return Empty();
     }
   }
 
-  Widget _buildTimestamp(BuildContext context, bool isRemovingFields) {
+  Widget _buildTimestamp() {
     TimestampInputController controller =
         _allInputFields[_timestampKey].controller;
 
     return Padding(
       padding: EdgeInsets.only(
         left: paddingDefault,
-        right: isRemovingFields ? 0 : paddingDefault,
+        right: paddingDefault,
         bottom: paddingWidgetSmall,
       ),
       child: DateTimePickerContainer(
         datePicker: DatePicker(
           initialDate: controller.date,
           label: Strings.of(context).saveCatchPageDateLabel,
-          enabled: !isRemovingFields,
           onChange: (DateTime newDate) {
             controller.date = newDate;
           },
@@ -187,7 +185,6 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
         timePicker: TimePicker(
           initialTime: controller.time,
           label: Strings.of(context).saveCatchPageTimeLabel,
-          enabled: !isRemovingFields,
           onChange: (TimeOfDay newTime) {
             controller.time = newTime;
           },
@@ -196,24 +193,20 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
     );
   }
 
-  Widget _buildBait(BuildContext context, bool isRemovingFields) {
+  Widget _buildBait() {
     return Empty();
   }
 
-  Widget _buildFishingSpot(BuildContext context, bool isRemovingFields) {
+  Widget _buildFishingSpot() {
     FishingSpot fishingSpot = _fishingSpotController.value;
 
     if (fishingSpot == null) {
-      return EnabledOpacity(
-        enabled: !isRemovingFields,
-        child: ListItem(
-          contentPadding: isRemovingFields ? insetsLeftDefault : null,
-          title: Text(Strings.of(context).saveCatchPageFishingSpotLabel),
-          trailing: RightChevronIcon(),
-          onTap: isRemovingFields ? null : () {
+      return ListItem(
+        title: Text(Strings.of(context).saveCatchPageFishingSpotLabel),
+        trailing: RightChevronIcon(),
+        onTap: () {
 
-          },
-        ),
+        },
       );
     }
 
@@ -239,34 +232,31 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
       height: _fishingSpotMapHeight,
       child: Stack(
         children: [
-          EnabledOpacity(
-            enabled: !isRemovingFields,
-            child: GoogleMap(
-              onMapCreated: (controller) {
-                // TODO: Remove when fixed in Google Maps.
-                // https://github.com/flutter/flutter/issues/27550
-                Future.delayed(Duration(milliseconds: 10), () {
-                  controller.moveCamera(
-                      CameraUpdate.newLatLng(fishingSpot.latLng));
-                });
-              },
-              initialCameraPosition: CameraPosition(
-                target: fishingSpot.latLng,
-                zoom: 15,
-              ),
-              myLocationEnabled: false,
-              myLocationButtonEnabled: false,
-              markers: Set.from([
-                Marker(
-                  markerId: MarkerId(fishingSpot.id),
-                  position: fishingSpot.latLng,
-                ),
-              ]),
-              rotateGesturesEnabled: false,
-              scrollGesturesEnabled: false,
-              tiltGesturesEnabled: false,
-              zoomGesturesEnabled: false,
+          GoogleMap(
+            onMapCreated: (controller) {
+              // TODO: Remove when fixed in Google Maps.
+              // https://github.com/flutter/flutter/issues/27550
+              Future.delayed(Duration(milliseconds: 250), () {
+                controller.moveCamera(
+                    CameraUpdate.newLatLng(fishingSpot.latLng));
+              });
+            },
+            initialCameraPosition: CameraPosition(
+              target: fishingSpot.latLng,
+              zoom: 15,
             ),
+            myLocationEnabled: false,
+            myLocationButtonEnabled: false,
+            markers: Set.from([
+              Marker(
+                markerId: MarkerId(fishingSpot.id),
+                position: fishingSpot.latLng,
+              ),
+            ]),
+            rotateGesturesEnabled: false,
+            scrollGesturesEnabled: false,
+            tiltGesturesEnabled: false,
+            zoomGesturesEnabled: false,
           ),
           Align(
             alignment: Alignment.bottomCenter,
@@ -275,20 +265,17 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
               decoration: FloatingBoxDecoration.rectangle(),
               child: Material(
                 color: Colors.transparent,
-                child: EnabledOpacity(
-                  enabled: !isRemovingFields,
-                  child: ListItem(
-                    contentPadding: EdgeInsets.only(
-                      left: paddingDefault,
-                      right: paddingSmall,
-                    ),
-                    title: name ?? coordinates,
-                    subtitle: name == null ? null : coordinates,
-                    onTap: isRemovingFields ? null : () {
-
-                    },
-                    trailing: RightChevronIcon(),
+                child: ListItem(
+                  contentPadding: EdgeInsets.only(
+                    left: paddingDefault,
+                    right: paddingSmall,
                   ),
+                  title: name ?? coordinates,
+                  subtitle: name == null ? null : coordinates,
+                  onTap: () {
+
+                  },
+                  trailing: RightChevronIcon(),
                 ),
               ),
             ),
@@ -298,11 +285,10 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
     );
   }
 
-  Widget _buildSpecies(BuildContext context, bool isRemovingFields) {
+  Widget _buildSpecies() {
     return ListPickerInput<Species>.single(
       initialValue: _speciesController.value,
       pageTitle: Text(Strings.of(context).speciesPickerPageTitle),
-      enabled: !isRemovingFields,
       labelText: Strings.of(context).saveCatchPageSpeciesLabel,
       futureStreamHolder: SpeciesPickerFutureStreamHolder(context,
         currentValue: () => _speciesController.value,
@@ -321,10 +307,9 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
     );
   }
 
-  Widget _buildImages(BuildContext context, bool isRemovingFields) {
+  Widget _buildImages() {
     return ImageInput(
       initialImages: _imagesController.value,
-      enabled: !isRemovingFields,
       onImagesPicked: (images) {
         setState(() {
           _imagesController.value = images;

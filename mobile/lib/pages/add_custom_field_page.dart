@@ -55,7 +55,7 @@ class _AddCustomFieldPageState extends State<AddCustomFieldPage> {
   Widget build(BuildContext context) {
     return FormPage.immutable(
       title: Text(Strings.of(context).addCustomFieldPageTitle),
-      fieldBuilder: (BuildContext context, _) {
+      fieldBuilder: (BuildContext context) {
         return Map.fromIterable(_inputOptions.keys,
           key: (dynamic item) => item.toString(),
           value: (dynamic item) => _inputField(context, item.toString()),

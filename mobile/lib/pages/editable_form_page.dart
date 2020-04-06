@@ -5,7 +5,7 @@ import 'package:mobile/custom_field_manager.dart';
 import 'package:mobile/model/custom_entity.dart';
 import 'package:mobile/pages/form_page.dart';
 import 'package:mobile/res/dimen.dart';
-import 'package:mobile/widgets/input.dart';
+import 'package:mobile/widgets/input_data.dart';
 import 'package:mobile/widgets/input_type.dart';
 
 class EditableFormPage extends StatefulWidget {
@@ -22,9 +22,8 @@ class EditableFormPage extends StatefulWidget {
   final Map<String, InputData> initialFields;
 
   /// Called when an input field needs to be built. The ID of the input field
-  /// is passed into the function, as well as whether the user is currently
-  /// removing fields.
-  final Function(String, bool) onBuildField;
+  /// is passed into the function.
+  final Function(String) onBuildField;
 
   /// Called when the "Save" button is pressed and form validation passes.
   /// A map of used input fields, including any custom fields, is passed into
@@ -82,12 +81,11 @@ class _EditableFormPageState extends State<EditableFormPage> {
       title: widget.title,
       runSpacing: widget.runSpacing,
       padding: widget.padding,
-      fieldBuilder: (BuildContext context, bool isRemovingFields) {
+      fieldBuilder: (BuildContext context) {
         return Map.fromIterable(_usedInputOptions.keys,
           key: (item) => item.toString(),
           value: (item) => _inputWidget(
             key: item.toString(),
-            isRemovingFields: isRemovingFields,
           ),
         );
       },
@@ -101,14 +99,6 @@ class _EditableFormPageState extends State<EditableFormPage> {
         );
       }).toList(),
       onAddFields: _addInputWidgets,
-      onConfirmRemoveFields: (List<String> fieldsToRemove) {
-        setState(() {
-          for (String key in fieldsToRemove) {
-            _usedInputOptions.remove(key);
-            _allInputFields[key].controller.clear();
-          }
-        });
-      },
       isInputValid: widget.isInputValid,
     );
   }
@@ -116,7 +106,7 @@ class _EditableFormPageState extends State<EditableFormPage> {
   CustomEntity _customField(String id) =>
       CustomFieldManager.of(context).customField(id);
 
-  Widget _inputWidget({String key, bool isRemovingFields}) {
+  Widget _inputWidget({String key}) {
     CustomEntity customField = _customField(key);
     if (customField != null) {
       return inputTypeWidget(context,
@@ -126,11 +116,10 @@ class _EditableFormPageState extends State<EditableFormPage> {
         onCheckboxChanged: (bool newValue) {
           _usedInputOptions[key].controller.value = newValue;
         },
-        enabled: !isRemovingFields,
       );
     }
 
-    return widget.onBuildField?.call(key, isRemovingFields);
+    return widget.onBuildField?.call(key);
   }
 
   void _addInputWidgets(Set<String> ids) {

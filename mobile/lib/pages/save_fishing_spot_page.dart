@@ -61,7 +61,7 @@ class _SaveFishingSpotPageState extends State<SaveFishingSpotPage> {
 
         return true;
       },
-      fieldBuilder: (BuildContext context, bool isRemovingFields) {
+      fieldBuilder: (BuildContext context) {
         return {
           Entity.keyName : TextInput.name(
             context,

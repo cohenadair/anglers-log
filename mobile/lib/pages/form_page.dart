@@ -6,9 +6,7 @@ import 'package:mobile/model/custom_entity.dart';
 import 'package:mobile/pages/picker_page.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/utils/page_utils.dart';
-import 'package:mobile/utils/string_utils.dart';
 import 'package:mobile/widgets/button.dart';
-import 'package:mobile/widgets/input.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:quiver/core.dart';
 
@@ -16,19 +14,16 @@ import 'add_custom_field_page.dart';
 
 /// A function responsible for building all input widgets.
 ///
-/// @param BuildContext
-/// @param bool `true` if the form is in "removing fields mode"
-///
 /// @return The returned map key [String] represents the identifier in the
 /// underlying model object, such as "angler", "bait_id", etc. The returned
 /// map value [Widget] is the widget that is displayed.
 ///
 /// Note that the returned map key is used in keeping track of [InputFields]
 /// that are selected for deletion.
-typedef FieldBuilder = Map<String, Widget> Function(BuildContext, bool);
+typedef FieldBuilder = Map<String, Widget> Function(BuildContext);
 
 enum _OverflowOption {
-  removeFields,
+  manageFields,
 }
 
 /// A small data structure that stores information on fields that can be added
@@ -75,13 +70,6 @@ class FormPage extends StatefulWidget {
 
   final FieldBuilder fieldBuilder;
 
-  /// Called when a user confirms the deletion of fields. The implementation of
-  /// this method is responsible for deleting the correct fields from the
-  /// underlying data model.
-  ///
-  /// @param A [List] of field IDs to be deleted.
-  final Function(List<String>) onConfirmRemoveFields;
-
   /// A [List] of fields that can be added to the form, if the user desires.
   final List<FormPageFieldOption> addFieldOptions;
 
@@ -110,12 +98,11 @@ class FormPage extends StatefulWidget {
     this.title,
     @required this.fieldBuilder,
     this.onSave,
-    this.onConfirmRemoveFields,
     this.addFieldOptions,
     this.onAddFields,
     this.editable = true,
     this.padding = insetsHorizontalDefault,
-    this.runSpacing = paddingSmall,
+    this.runSpacing,
     @required this.isInputValid,
   }) : assert(fieldBuilder != null),
        assert(isInputValid != null),
@@ -127,17 +114,18 @@ class FormPage extends StatefulWidget {
     FieldBuilder fieldBuilder,
     FutureOr<bool> Function() onSave,
     EdgeInsets padding = insetsHorizontalDefault,
+    double runSpacing,
     @required bool isInputValid,
   }) : this(
     key: key,
     title: title,
     fieldBuilder: fieldBuilder,
     onSave: onSave,
-    onConfirmRemoveFields: null,
     addFieldOptions: null,
     onAddFields: null,
     editable: false,
     padding: padding,
+    runSpacing: runSpacing,
     isInputValid: isInputValid,
   );
 
@@ -157,60 +145,37 @@ class FormPage extends StatefulWidget {
 class _FormPageState extends State<FormPage> {
   final _key = GlobalKey<FormState>();
 
-  bool _isRemovingFields = false;
-  List<String> _fieldsToRemove = [];
-
   bool get canAddFields =>
       widget.addFieldOptions != null && widget.addFieldOptions.isNotEmpty;
 
   @override
   Widget build(BuildContext context) {
-    Widget actionButton;
-    if (_isRemovingFields) {
-      actionButton = ActionButton.cancel(
-        onPressed: _stopRemovingFields,
-        condensed: true,
-      );
-    } else {
-      actionButton = ActionButton.save(
-        onPressed: widget.isInputValid ? _onPressedSave : null,
-        condensed: widget.editable,
-      );
-    }
-
-    // If we're editing and the form's padding has been set to zero, we need
-    // to add some padding for the checkboxes.
-    var padding = widget.padding;
-    if (_isRemovingFields && padding == insetsZero) {
-      padding = insetsRightDefault;
-    }
-
     return Scaffold(
       appBar: AppBar(
         title: widget.title,
         actions: [
-          actionButton,
+          ActionButton.save(
+            onPressed: widget.isInputValid ? _onPressedSave : null,
+            condensed: widget.editable,
+          ),
           widget.editable ? PopupMenuButton<_OverflowOption>(
             icon: Icon(Icons.more_vert),
             itemBuilder: (context) => [
               PopupMenuItem<_OverflowOption>(
-                value: _OverflowOption.removeFields,
-                child: Text(Strings.of(context).formPageRemoveFieldsText),
-                enabled: !_isRemovingFields,
+                value: _OverflowOption.manageFields,
+                child: Text(Strings.of(context).formPageManageFieldText),
               ),
             ],
             onSelected: (option) {
-              if (option == _OverflowOption.removeFields) {
-                setState(() {
-                  _isRemovingFields = true;
-                });
+              if (option == _OverflowOption.manageFields) {
+                present(context, _addFieldSelectionPage());
               }
             },
           ) : Empty(),
         ],
       ),
       body: Padding(
-        padding: padding,
+        padding: widget.padding,
         child: Form(
           key: _key,
           child: SingleChildScrollView(
@@ -220,7 +185,7 @@ class _FormPageState extends State<FormPage> {
               right: true,
               top: true,
               bottom: true,
-              child: _buildForm(padding),
+              child: _buildForm(),
             ),
           ),
         ),
@@ -228,60 +193,19 @@ class _FormPageState extends State<FormPage> {
     );
   }
 
-  Widget _buildForm(EdgeInsets padding) {
+  Widget _buildForm() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.end,
       children: <Widget>[
         Wrap(
-          runSpacing: widget.runSpacing,
-          children: widget.fieldBuilder(context, _isRemovingFields)
+          runSpacing: widget.runSpacing ?? paddingSmall,
+          children: widget.fieldBuilder(context)
               .map((key, inputField) => MapEntry<String, Widget>(
                 key,
-                _inputField(key, inputField),
+                inputField,
               )).values.toList(),
         ),
-        canAddFields ? Padding(
-          padding: EdgeInsets.only(
-            top: paddingSmall,
-            // Include right edge padding on the button, even if the
-            // parent widget is handling padding.
-            right: insetsZero == padding ? paddingDefault : 0,
-          ),
-          child: Button(
-            text: Strings.of(context).formPageManageFieldText,
-            onPressed: _isRemovingFields ? null : () {
-              present(context, _addFieldSelectionPage());
-            },
-          ),
-        ) : Empty(),
-        _fieldsToRemove.length <= 0 ? Empty() : Button(
-          text: _fieldsToRemove.length == 1
-              ? Strings.of(context).formPageConfirmRemoveField
-              : format(Strings.of(context).formPageConfirmRemoveFields,
-                  [_fieldsToRemove.length]),
-          onPressed: _onConfirmRemoveFields,
-        ),
       ],
-    );
-  }
-
-  Widget _inputField(String key, Widget field) {
-    FormPageFieldOption option = widget.fieldOption(key);
-
-    return Input(
-      child: Expanded(child: field),
-      editable: option == null ? true : option.removable,
-      editing: _isRemovingFields,
-      selected: _fieldsToRemove.contains(key),
-      onEditingSelectionChanged: (bool selected) {
-        setState(() {
-          if (selected) {
-            _fieldsToRemove.add(key);
-          } else {
-            _fieldsToRemove.remove(key);
-          }
-        });
-      },
     );
   }
 
@@ -300,18 +224,6 @@ class _FormPageState extends State<FormPage> {
     if (widget.onSave == null || await widget.onSave()) {
       Navigator.pop(context);
     }
-  }
-
-  void _onConfirmRemoveFields() {
-    widget.onConfirmRemoveFields?.call(_fieldsToRemove);
-    _stopRemovingFields();
-  }
-
-  void _stopRemovingFields() {
-    setState(() {
-      _isRemovingFields = false;
-      _fieldsToRemove.clear();
-    });
   }
 }
 
