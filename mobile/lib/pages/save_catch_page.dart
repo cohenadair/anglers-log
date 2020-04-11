@@ -7,11 +7,14 @@ import 'package:mobile/log.dart';
 import 'package:mobile/model/fishing_spot.dart';
 import 'package:mobile/model/species.dart';
 import 'package:mobile/pages/editable_form_page.dart';
+import 'package:mobile/pages/fishing_spot_picker_page.dart';
 import 'package:mobile/pages/image_picker_page.dart';
 import 'package:mobile/pages/picker_page.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/res/style.dart';
 import 'package:mobile/species_manager.dart';
+import 'package:mobile/utils/map_utils.dart';
+import 'package:mobile/utils/page_utils.dart';
 import 'package:mobile/utils/string_utils.dart';
 import 'package:mobile/widgets/date_time_picker.dart';
 import 'package:mobile/widgets/input_data.dart';
@@ -66,6 +69,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
   final _fishingSpotMapHeight = 250.0;
 
   final Map<String, InputData> _allInputFields = {};
+  final Completer<GoogleMapController> _fishingSpotMapController = Completer();
 
   List<Species> _species = [];
 
@@ -234,6 +238,8 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
         children: [
           GoogleMap(
             onMapCreated: (controller) {
+              _fishingSpotMapController.complete(controller);
+
               // TODO: Remove when fixed in Google Maps.
               // https://github.com/flutter/flutter/issues/27550
               Future.delayed(Duration(milliseconds: 250), () {
@@ -273,7 +279,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
                   title: name ?? coordinates,
                   subtitle: name == null ? null : coordinates,
                   onTap: () {
-
+                    _pushFishingSpotPicker();
                   },
                   trailing: RightChevronIcon(),
                 ),
@@ -330,5 +336,20 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
       return false;
     }
     return true;
+  }
+
+  void _pushFishingSpotPicker() {
+    push(context, FishingSpotPickerPage(
+      fishingSpot: _fishingSpotController.value,
+      onPicked: (context, pickedFishingSpot) {
+        if (pickedFishingSpot != _fishingSpotController.value) {
+          setState(() {
+            _fishingSpotController.value = pickedFishingSpot;
+            moveMap(_fishingSpotMapController, pickedFishingSpot.latLng);
+          });
+        }
+        Navigator.pop(context);
+      },
+    ));
   }
 }

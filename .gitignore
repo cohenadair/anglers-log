@@ -1,3 +1,4 @@
 .DS_Store
 mobile/.flutter-plugins-dependencies
 mobile/ios/Flutter/Flutter.podspec
+mobile/ios/Flutter/.last_build_id

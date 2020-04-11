@@ -127,17 +127,19 @@ class HelpTooltip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedOpacity(
-      duration: _animDuration,
-      opacity: showing ? 1.0 : 0.0,
-      child: Container(
-        decoration: BoxDecoration(
-          color: Colors.black.withOpacity(0.70),
-          borderRadius: BorderRadius.all(Radius.circular(5.0)),
+    return IgnorePointer(
+      child: AnimatedOpacity(
+        duration: _animDuration,
+        opacity: showing ? 1.0 : 0.0,
+        child: Container(
+          decoration: BoxDecoration(
+            color: Colors.black.withOpacity(0.70),
+            borderRadius: BorderRadius.all(Radius.circular(5.0)),
+          ),
+          padding: insetsDefault,
+          margin: margin,
+          child: child,
         ),
-        padding: insetsDefault,
-        margin: margin,
-        child: child,
       ),
     );
   }

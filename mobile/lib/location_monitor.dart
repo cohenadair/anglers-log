@@ -32,6 +32,7 @@ class LocationMonitor {
     });
   }
 
-  LatLng get currentLocation => _lastKnownPosition == null ? null :
-      LatLng(_lastKnownPosition.latitude, _lastKnownPosition.longitude);
+  LatLng get currentLocation => _lastKnownPosition == null
+      ? null
+      : LatLng(_lastKnownPosition.latitude, _lastKnownPosition.longitude);
 }

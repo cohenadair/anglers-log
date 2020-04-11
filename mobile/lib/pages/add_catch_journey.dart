@@ -68,6 +68,7 @@ class _AddCatchJourneyState extends State<AddCatchJourney> {
                 _fishingSpot = fishingSpot;
                 Navigator.of(context).pushNamed(_saveCatchRoute);
               },
+              doneButtonText: Strings.of(context).next,
             ),
           );
         } else if (name == _saveCatchRoute) {

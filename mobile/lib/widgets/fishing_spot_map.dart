@@ -39,7 +39,7 @@ class FishingSpotMap extends StatefulWidget {
   final FishingSpotMapSearchBar searchBar;
 
   final Completer<GoogleMapController> mapController;
-  final LatLng currentLocation;
+  final LatLng startLocation;
 
   /// See [GoogleMap.onTap].
   final void Function(LatLng) onTap;
@@ -65,7 +65,7 @@ class FishingSpotMap extends StatefulWidget {
   FishingSpotMap({
     @required this.mapController,
     this.searchBar,
-    this.currentLocation,
+    this.startLocation,
     this.onTap,
     this.onIdle,
     this.onMove,
@@ -123,8 +123,6 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
   }
 
   Widget _buildMap() {
-    LatLng currentLocation = widget.currentLocation;
-
     return FutureBuilder(
       future: _mapFuture,
       builder: (context, snapshot) {
@@ -140,8 +138,8 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
           mapType: _mapType,
           markers: widget.markers,
           initialCameraPosition: CameraPosition(
-            target: currentLocation ?? LatLng(0.0, 0.0),
-            zoom: currentLocation == null ? 0 : 15,
+            target: widget.startLocation ?? LatLng(0.0, 0.0),
+            zoom: widget.startLocation == null ? 0 : 15,
           ),
           onMapCreated: (GoogleMapController controller) {
             _mapController.complete(controller);
@@ -150,12 +148,10 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
           myLocationEnabled: true,
           // TODO: Try onLongPress again when Google Maps updated.
           // Long presses weren't being triggered first time.
-          onTap: (latLng) {
-            widget.onTap?.call(latLng);
-          },
+          onTap: widget.onTap,
           onCameraIdle: widget.onIdle,
-          onCameraMove: (position) {
-            widget.onMove?.call(position.target);
+          onCameraMove: widget.onMove == null ? null : (position) {
+            widget.onMove(position.target);
           },
           onCameraMoveStarted: () {
             widget.onMoveStarted?.call();

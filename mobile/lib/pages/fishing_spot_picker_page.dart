@@ -9,6 +9,7 @@ import 'package:mobile/model/fishing_spot.dart';
 import 'package:mobile/pages/save_fishing_spot_page.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/res/style.dart';
+import 'package:mobile/utils/map_utils.dart';
 import 'package:mobile/utils/page_utils.dart';
 import 'package:mobile/utils/string_utils.dart';
 import 'package:mobile/widgets/button.dart';
@@ -18,9 +19,13 @@ import 'package:quiver/strings.dart';
 
 class FishingSpotPickerPage extends StatefulWidget {
   final void Function(BuildContext, FishingSpot) onPicked;
+  final FishingSpot fishingSpot;
+  final String doneButtonText;
 
   FishingSpotPickerPage({
     @required this.onPicked,
+    this.fishingSpot,
+    this.doneButtonText,
   }) : assert(onPicked != null);
 
   @override
@@ -40,22 +45,19 @@ class _FishingSpotPickerPageState extends State<FishingSpotPickerPage>
 
   AnimationController _fishingSpotAnimController;
   Animation<Offset> _fishingSpotAnimOffset;
+  double _pendingMarkerOffset = _pendingMarkerAnimOffset;
 
   Map<FishingSpot, Marker> _fishingSpotMarkerMap = {};
 
-  /// The selected fishing spot when it exists in the database.
-  FishingSpot _fishingSpot;
+  /// The selected fishing spot.
+  FishingSpot _currentFishingSpot;
 
-  /// A [FishingSpot] object that doesn't exist in the database, but is
-  /// currently showing on the map.
-  FishingSpot _pendingFishingSpot;
-
-  /// The last set fishing spot. Used for dismiss animations.
-  FishingSpot _lastFishingSpot;
-
+  /// Updated as the map moves.
   LatLng _currentPosition;
+  LatLng _startPosition;
 
   /// The color of the centered icon that represents the "bulls eye" of the map.
+  /// Color will change based on [MapType].
   Color _targetColor = Colors.black;
 
   /// Set to true a fishing spot is selected, either via tapping a marker, or
@@ -66,12 +68,10 @@ class _FishingSpotPickerPageState extends State<FishingSpotPickerPage>
   /// otherwise.
   bool _isMoving = false;
 
-  double _pendingMarkerOffset = _pendingMarkerAnimOffset;
-
-  bool get _hasFishingSpot => _fishingSpot != null;
-  bool get _hasPendingFishingSpot => _pendingFishingSpot != null;
-
+  bool get _hasFishingSpot => _currentFishingSpot != null;
   bool get _fishingSpotShowing => _fishingSpotAnimController.isCompleted;
+  bool get _fishingSpotInDatabase =>
+      _fishingSpotMarkerMap.containsKey(_currentFishingSpot);
 
   @override
   void initState() {
@@ -86,6 +86,19 @@ class _FishingSpotPickerPageState extends State<FishingSpotPickerPage>
       begin: Offset(0.0, 2.0),
       end: Offset.zero,
     ).animate(_fishingSpotAnimController);
+
+    _startPosition = LocationMonitor.of(context).currentLocation;
+
+    // Show fishing spot widgets if the picker is shown with a fishing spot
+    // selected.
+    if (widget.fishingSpot != null) {
+      _fishingSpotAnimController.value = _fishingSpotAnimController.upperBound;
+      _pendingMarkerOffset = _pendingMarkerSize;
+      _currentFishingSpot = widget.fishingSpot;
+      _startPosition = widget.fishingSpot.latLng;
+    }
+
+    _currentPosition = _startPosition;
   }
 
   @override
@@ -96,64 +109,53 @@ class _FishingSpotPickerPageState extends State<FishingSpotPickerPage>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(
-        children: [
-          FishingSpotsBuilder(
-            onUpdate: (fishingSpots) {
-              for (var fishingSpot in fishingSpots) {
-                Marker marker = Marker(
-                  markerId: MarkerId(fishingSpot.id),
-                  position: fishingSpot.latLng,
-                  onTap: () {
-                    _selectFishingSpot(fishingSpot);
-                  }
-                );
-                _fishingSpotMarkerMap.update(fishingSpot, (_) => marker,
-                    ifAbsent: () => marker);
-              }
-            },
-            builder: (context) => _buildMap(context),
-          ),
-          _buildPendingFishingSpotMarker(),
-          Visibility(
-            visible: !_hasFishingSpot && !_hasPendingFishingSpot,
-            child: Align(
-              alignment: Alignment.center,
-              child: Icon(Icons.add,
-                color: _targetColor,
+    return FishingSpotsBuilder(
+      onUpdate: (fishingSpots) => _updateMarkers(fishingSpots),
+      builder: (context) => Scaffold(
+        body: Stack(
+          children: [
+            _buildMap(),
+            _buildPendingFishingSpotMarker(),
+            Visibility(
+              visible: !_hasFishingSpot,
+              child: Align(
+                alignment: Alignment.center,
+                child: Icon(Icons.add,
+                  color: _targetColor,
+                ),
               ),
             ),
-          ),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: _buildCurrentSpot(),
-          ),
-        ],
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: _buildCurrentSpot(),
+            ),
+          ]
+        ),
       ),
     );
   }
 
-  Widget _buildMap(BuildContext context) {
+  Widget _buildMap() {
     return FishingSpotMap(
       mapController: _mapController,
-      currentLocation: LocationMonitor.of(context).currentLocation,
+      startLocation: _startPosition,
       markers: _fishingSpotMarkerMap.values.toSet(),
       onIdle: () {
         _isMoving = false;
         _didSelectFishingSpot = false;
 
-        // An existing fishing spot was selected, don't create a "pending"
+        // An existing fishing spot was selected, don't update to a "pending"
         // fishing spot.
-        if (_hasFishingSpot) {
+        if (_hasFishingSpot || _fishingSpotInDatabase) {
           return;
         }
 
         _mapController.future.then((controller) {
-          _updatePendingFishingSpot(FishingSpot(
+          FishingSpot spot = FishingSpot(
             lat: _currentPosition.latitude,
             lng: _currentPosition.longitude,
-          ));
+          );
+          _updateFishingSpotDelayed(spot);
         });
       },
       onMove: (latLng) {
@@ -162,10 +164,11 @@ class _FishingSpotPickerPageState extends State<FishingSpotPickerPage>
       onMoveStarted: () {
         setState(() {
           if (!_didSelectFishingSpot) {
-            _fishingSpot = null;
+            _currentFishingSpot = null;
             _fishingSpotAnimController.reverse();
+            _updateMarkers();
           }
-          _clearPendingFishingSpot();
+          _pendingMarkerOffset = _pendingMarkerAnimOffset;
           _isMoving = true;
         });
       },
@@ -181,15 +184,15 @@ class _FishingSpotPickerPageState extends State<FishingSpotPickerPage>
           padding: insetsRightWidgetSmall,
           child: ActionButton(
             condensed: true,
-            text: Strings.of(context).next,
+            text: widget.doneButtonText ?? Strings.of(context).done,
             textColor: Theme.of(context).primaryColor,
-            onPressed: _hasPendingFishingSpot || _hasFishingSpot ? () {
-              widget.onPicked(context, _fishingSpot ?? _pendingFishingSpot);
+            onPressed: _hasFishingSpot ? () {
+              widget.onPicked(context, _currentFishingSpot);
             } : null,
           ),
         ),
         onFishingSpotPicked: (fishingSpot) {
-          if (fishingSpot != null && fishingSpot != _fishingSpot) {
+          if (fishingSpot != null && fishingSpot != _currentFishingSpot) {
             _selectFishingSpot(fishingSpot);
           }
         },
@@ -201,18 +204,15 @@ class _FishingSpotPickerPageState extends State<FishingSpotPickerPage>
   }
 
   Widget _buildCurrentSpot() {
-    FishingSpot fishingSpot =
-        _fishingSpot ?? _pendingFishingSpot ?? _lastFishingSpot;
-
-    if (fishingSpot == null) {
+    if (_currentFishingSpot == null) {
       return Empty();
     }
 
     Widget name = Empty();
-    if (isNotEmpty(fishingSpot.name)) {
+    if (isNotEmpty(_currentFishingSpot.name)) {
       name = Padding(
         padding: insetsRightDefault,
-        child: Text(fishingSpot.name, style: styleHeading),
+        child: Text(_currentFishingSpot.name, style: styleHeading),
       );
     }
 
@@ -220,27 +220,23 @@ class _FishingSpotPickerPageState extends State<FishingSpotPickerPage>
       padding: insetsRightDefault,
       child: Text(formatLatLng(
         context: context,
-        lat: fishingSpot.lat,
-        lng: fishingSpot.lng,
+        lat: _currentFishingSpot.lat,
+        lng: _currentFishingSpot.lng,
       )),
     );
 
-    Widget moreButton = Padding(
+    Widget editButton = Padding(
       padding: insetsRightWidgetSmall,
       child: ActionButton.edit(
         condensed: true,
         textColor: Theme.of(context).primaryColor,
         onPressed: () {
           present(context, SaveFishingSpotPage(
-            oldFishingSpot: _fishingSpot ?? _pendingFishingSpot,
-            editing: _fishingSpot != null,
+            oldFishingSpot: _currentFishingSpot,
+            editing: _currentFishingSpot != null,
             onSave: (updatedFishingSpot) {
               setState(() {
-                if (_fishingSpot != null) {
-                  _fishingSpot = updatedFishingSpot;
-                } else {
-                  _pendingFishingSpot = updatedFishingSpot;
-                }
+                _currentFishingSpot = updatedFishingSpot;
               });
             },
           ));
@@ -271,7 +267,7 @@ class _FishingSpotPickerPageState extends State<FishingSpotPickerPage>
               coordinates,
               Align(
                 alignment: Alignment.bottomRight,
-                child: moreButton,
+                child: editButton,
               ),
             ],
           ),
@@ -287,7 +283,7 @@ class _FishingSpotPickerPageState extends State<FishingSpotPickerPage>
       top: screenSize.height / 2 - _pendingMarkerOffset,
       left: screenSize.width / 2 - _pendingMarkerSize / 2,
       child: Visibility(
-        visible: _hasPendingFishingSpot,
+        visible: _hasFishingSpot && !_fishingSpotInDatabase,
         child: Icon(
           Icons.place,
           size: _pendingMarkerSize,
@@ -299,18 +295,20 @@ class _FishingSpotPickerPageState extends State<FishingSpotPickerPage>
   void _selectFishingSpot(FishingSpot fishingSpot) {
     setState(() {
       _didSelectFishingSpot = true;
-      _fishingSpot = fishingSpot;
-      _clearPendingFishingSpot();
+      _currentFishingSpot = fishingSpot;
+      _pendingMarkerOffset = _pendingMarkerAnimOffset;
 
       if (!_fishingSpotShowing) {
         _fishingSpotAnimController.forward();
       }
+
+      _updateMarkers();
     });
   }
 
   /// Updates the pending fishing spot after a delay. This is so a new marker
   /// isn't animated immediately every time the map finishes moving.
-  void _updatePendingFishingSpot(FishingSpot fishingSpot) {
+  void _updateFishingSpotDelayed(FishingSpot fishingSpot) {
     Future.delayed(_pendingMarkerSlideInDelay, () {
       // Prevents the pending spot from being created if the user briefly
       // pauses dragging.
@@ -319,15 +317,27 @@ class _FishingSpotPickerPageState extends State<FishingSpotPickerPage>
       }
 
       setState(() {
-        _pendingFishingSpot = fishingSpot;
+        _currentFishingSpot = fishingSpot;
         _pendingMarkerOffset = _pendingMarkerSize;
         _fishingSpotAnimController.forward();
       });
     });
   }
 
-  void _clearPendingFishingSpot() {
-    _pendingFishingSpot = null;
-    _pendingMarkerOffset = _pendingMarkerAnimOffset;
+  void _updateMarkers([List<FishingSpot> fishingSpots]) {
+    if (fishingSpots == null || fishingSpots.isEmpty) {
+      fishingSpots = List.from(_fishingSpotMarkerMap.keys);
+    }
+
+    _fishingSpotMarkerMap.clear();
+    for (var fishingSpot in fishingSpots) {
+      Marker marker = FishingSpotMarker(
+        fishingSpot: fishingSpot,
+        onTap: _selectFishingSpot,
+        active: fishingSpot == _currentFishingSpot,
+      );
+      _fishingSpotMarkerMap.update(fishingSpot, (_) => marker,
+          ifAbsent: () => marker);
+    }
   }
 }

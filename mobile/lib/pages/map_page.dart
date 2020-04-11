@@ -20,7 +20,6 @@ import 'package:mobile/widgets/styled_bottom_sheet.dart';
 import 'package:mobile/widgets/text.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:quiver/strings.dart';
-import 'package:uuid/uuid.dart';
 
 class MapPage extends StatefulWidget {
   @override
@@ -114,8 +113,6 @@ class _MapPageState extends State<MapPage> {
       markers.add(_activeMarker);
     }
 
-    LatLng currentLocation = LocationMonitor.of(context).currentLocation;
-
     String name;
     if (_hasActiveMarker && _hasLastActiveFishingSpot && _waitingForFuture) {
       // Active fishing spot is being updated.
@@ -140,7 +137,7 @@ class _MapPageState extends State<MapPage> {
     return FishingSpotMap(
       markers: markers,
       mapController: _mapController,
-      currentLocation: currentLocation,
+      startLocation: LocationMonitor.of(context).currentLocation,
       searchBar: FishingSpotMapSearchBar(
         leading: Padding(
           padding: EdgeInsets.only(left: paddingDefault),
@@ -231,36 +228,28 @@ class _MapPageState extends State<MapPage> {
     if (fishingSpot == null) {
       return null;
     }
-    return _createMarker(fishingSpot.latLng, id: fishingSpot.id);
+    return FishingSpotMarker(
+      fishingSpot: fishingSpot,
+      active: false,
+      onTap: (fishingSpot) {
+        setState(() {
+          _setActiveMarker(_fishingSpotMarkers.firstWhere((Marker marker) =>
+              marker.markerId.value == fishingSpot.id));
+          _activeFishingSpotFuture = FishingSpotManager.of(context)
+              .fetch(id: _activeMarker.markerId.value);
+        });
+      }
+    );
   }
 
   Marker _createDroppedPinMarker(LatLng latLng) {
     // All dropped pins become active, and shouldn't be tappable.
-    return _createMarker(
-      latLng,
-      tappable: false,
-      icon: _activeMarkerIcon,
-    );
-  }
-
-  Marker _createMarker(LatLng latLng, {
-    String id,
-    BitmapDescriptor icon,
-    bool tappable = true,
-  }) {
-    MarkerId markerId = MarkerId(id ?? Uuid().v1().toString());
-    return Marker(
-      markerId: markerId,
-      position: latLng,
-      onTap: !tappable ? null : () {
-        setState(() {
-          _setActiveMarker(_fishingSpotMarkers
-              .firstWhere((Marker marker) => marker.markerId == markerId));
-          _activeFishingSpotFuture = FishingSpotManager.of(context)
-              .fetch(id: _activeMarker.markerId.value);
-        });
-      },
-      icon: icon,
+    return FishingSpotMarker(
+      fishingSpot: FishingSpot(
+        lat: latLng.latitude,
+        lng: latLng.longitude,
+      ),
+      active: true,
     );
   }
 
