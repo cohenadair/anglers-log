@@ -9,6 +9,7 @@ import 'package:mobile/model/fishing_spot.dart';
 import 'package:mobile/pages/save_fishing_spot_page.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/res/style.dart';
+import 'package:mobile/utils/device_utils.dart';
 import 'package:mobile/utils/map_utils.dart';
 import 'package:mobile/utils/page_utils.dart';
 import 'package:mobile/utils/string_utils.dart';
@@ -113,25 +114,7 @@ class _FishingSpotPickerPageState extends State<FishingSpotPickerPage>
     return FishingSpotsBuilder(
       onUpdate: (fishingSpots) => _updateMarkers(fishingSpots),
       builder: (context) => Scaffold(
-        body: Stack(
-          children: [
-            _buildMap(),
-            _buildPendingFishingSpotMarker(),
-            Visibility(
-              visible: !_hasFishingSpot,
-              child: Align(
-                alignment: Alignment.center,
-                child: Icon(Icons.add,
-                  color: _targetColor,
-                ),
-              ),
-            ),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: _buildCurrentSpot(),
-            ),
-          ]
-        ),
+        body: _buildMap(),
       ),
     );
   }
@@ -141,6 +124,22 @@ class _FishingSpotPickerPageState extends State<FishingSpotPickerPage>
       mapController: _mapController,
       startLocation: _startPosition,
       markers: _fishingSpotMarkerMap.values.toSet(),
+      children: [
+        _buildPendingFishingSpotMarker(),
+        Visibility(
+          visible: !_hasFishingSpot,
+          child: Align(
+            alignment: Alignment.center,
+            child: Icon(Icons.add,
+              color: _targetColor,
+            ),
+          ),
+        ),
+        Align(
+          alignment: Alignment.bottomCenter,
+          child: _buildCurrentSpot(),
+        ),
+      ],
       onIdle: () {
         _isMoving = false;
         _didSelectFishingSpot = false;
@@ -253,7 +252,7 @@ class _FishingSpotPickerPageState extends State<FishingSpotPickerPage>
             top: paddingDefault,
             left: paddingDefault,
             right: paddingDefault,
-            bottom: paddingSmall,
+            bottom: hasBottomSafeArea(context) ? paddingSmall : paddingDefault,
           ),
           padding: EdgeInsets.only(
             top: paddingDefault,

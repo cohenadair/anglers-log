@@ -96,12 +96,7 @@ class _MapPageState extends State<MapPage> {
             _waitingForFuture = true;
           }
 
-          return Stack(
-            children: <Widget>[
-              _buildMap(),
-              _buildBottomSheet(),
-            ],
-          );
+          return _buildMap();
         },
       ),
     ),
@@ -138,6 +133,9 @@ class _MapPageState extends State<MapPage> {
       markers: markers,
       mapController: _mapController,
       startLocation: LocationMonitor.of(context).currentLocation,
+      children: [
+        _buildBottomSheet(),
+      ],
       searchBar: FishingSpotMapSearchBar(
         leading: Padding(
           padding: EdgeInsets.only(left: paddingDefault),

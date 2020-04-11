@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -8,6 +9,7 @@ import 'package:mobile/location_monitor.dart';
 import 'package:mobile/model/fishing_spot.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/res/style.dart';
+import 'package:mobile/utils/device_utils.dart';
 import 'package:mobile/utils/map_utils.dart';
 import 'package:mobile/utils/snackbar_utils.dart';
 import 'package:mobile/utils/string_utils.dart';
@@ -60,6 +62,11 @@ class FishingSpotMap extends StatefulWidget {
   /// a [HelpTooltip] with this widget as its child is toggled when tapped.
   final Widget help;
 
+  /// Widgets placed in the map's stack, between the actual map, and the search
+  /// bar and floating action buttons. This is used as an easy way to show
+  /// the [HelpTooltip] above all widgets.
+  final List<Widget> children;
+
   final Set<Marker> markers;
 
   FishingSpotMap({
@@ -73,6 +80,7 @@ class FishingSpotMap extends StatefulWidget {
     this.onMapTypeChanged,
     this.help,
     this.markers,
+    this.children = const [],
   }) : assert(mapController != null);
 
   @override
@@ -89,7 +97,6 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
 
   Completer<GoogleMapController> get _mapController => widget.mapController;
 
-
   @override
   void initState() {
     super.initState();
@@ -105,7 +112,8 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
   Widget build(BuildContext context) {
     return Stack(
       children: <Widget>[
-        _buildMap(),
+        _buildMap()
+      ]..addAll(widget.children)..add(
         SafeArea(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.end,
@@ -118,7 +126,7 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
             ],
           ),
         ),
-      ],
+      ),
     );
   }
 
@@ -169,7 +177,9 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
   Widget _buildSearchBar() {
     return Container(
       margin: EdgeInsets.only(
-        top: paddingSmall,
+        // iOS "safe area" includes some padding, so keep the additional padding
+        // small.
+        top: Platform.isAndroid ? paddingDefault : paddingSmall,
         left: paddingDefault,
         right: paddingDefault,
       ),
