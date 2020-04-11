@@ -150,8 +150,10 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
           // Lazy initialize _allAssetsFuture.
           if (_allAssetsFuture == null) {
             // Create a future that waits for all assets.
-            _allAssetsFuture =
-                snapshot.data.firstWhere((album) => album.isAll).assetList;
+            AssetPathEntity entity = snapshot.data.firstWhere(
+                (album) => album.isAll, orElse: () => null);
+            _allAssetsFuture = entity == null
+                ? Future.value([]) : entity.assetList;
           }
 
           // Third, wait to get assets from each album.
@@ -183,7 +185,8 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
               }
 
               return _assets.isEmpty
-                  ? _buildNoPhotosFound() : _buildImageGrid();
+                  ? NoResults(Strings.of(context).imagePickerPageNoPhotosFound)
+                  : _buildImageGrid();
             },
           );
         },
@@ -366,18 +369,6 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
           ),
         ),
       ),
-    );
-  }
-
-  Widget _buildNoPhotosFound() {
-    return Column(
-      children: <Widget>[
-        NoResults(Strings.of(context).imagePickerPageNoPhotosFound),
-        Button(
-          text: Strings.of(context).imagePickerPageOpenCameraLabel,
-          onPressed: _openCamera,
-        ),
-      ],
     );
   }
 
