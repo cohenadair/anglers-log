@@ -345,7 +345,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
         if (pickedFishingSpot != _fishingSpotController.value) {
           setState(() {
             _fishingSpotController.value = pickedFishingSpot;
-            moveMap(_fishingSpotMapController, pickedFishingSpot.latLng);
+            moveMap(_fishingSpotMapController, pickedFishingSpot.latLng, false);
           });
         }
         Navigator.pop(context);
