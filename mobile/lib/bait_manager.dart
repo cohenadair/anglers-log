@@ -136,6 +136,22 @@ class BaitCategoriesBuilder extends StatelessWidget {
   }
 }
 
+class BaitsFutureStreamHolder extends FutureStreamHolder {
+  BaitsFutureStreamHolder(BuildContext context, {
+    void Function(List<Bait>, List<BaitCategory>) onUpdate,
+  }) : super(
+    futureCallbacks: [
+      BaitManager.of(context)._fetchAllBaits,
+      BaitManager.of(context)._fetchAllCategories,
+    ],
+    streams: [
+      BaitManager.of(context).onBaitUpdate.stream,
+      BaitManager.of(context).onCategoryUpdate.stream,
+    ],
+    onUpdate: (result) =>
+        onUpdate(result[0] as List<Bait>, result[1] as List<BaitCategory>),
+  );
+}
 /// A [FutureStreamBuilder] wrapper for listening for [Bait] updates.
 class BaitsBuilder extends StatelessWidget {
   final Widget Function(BuildContext) builder;
@@ -149,18 +165,7 @@ class BaitsBuilder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureStreamBuilder(
-      holder: FutureStreamHolder(
-        futureCallbacks: [
-          BaitManager.of(context)._fetchAllBaits,
-          BaitManager.of(context)._fetchAllCategories,
-        ],
-        streams: [
-          BaitManager.of(context).onBaitUpdate.stream,
-          BaitManager.of(context).onCategoryUpdate.stream,
-        ],
-        onUpdate: (result) =>
-            onUpdate(result[0] as List<Bait>, result[1] as List<BaitCategory>),
-      ),
+      holder: BaitsFutureStreamHolder(context, onUpdate: onUpdate),
       builder: (context) => builder(context),
     );
   }

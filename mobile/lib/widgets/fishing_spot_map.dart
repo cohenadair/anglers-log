@@ -150,7 +150,9 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
             zoom: widget.startLocation == null ? 0 : 15,
           ),
           onMapCreated: (GoogleMapController controller) {
-            _mapController.complete(controller);
+            if (!_mapController.isCompleted) {
+              _mapController.complete(controller);
+            }
           },
           myLocationButtonEnabled: false,
           myLocationEnabled: true,

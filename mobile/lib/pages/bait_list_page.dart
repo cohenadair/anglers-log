@@ -15,6 +15,14 @@ import 'package:mobile/widgets/widget.dart';
 import 'package:quiver/strings.dart';
 
 class BaitListPage extends StatefulWidget {
+  final void Function(Bait) onPicked;
+
+  BaitListPage() : onPicked = null;
+
+  BaitListPage.picker({
+    this.onPicked,
+  });
+
   @override
   _BaitListPageState createState() => _BaitListPageState();
 }
@@ -23,6 +31,8 @@ class _BaitListPageState extends State<BaitListPage> {
   final _log = Log("BaitListPage");
 
   List<dynamic> _items = [];
+
+  bool get isPicking => widget.onPicked != null;
 
   @override
   Widget build(BuildContext context) {
@@ -65,9 +75,14 @@ class _BaitListPageState extends State<BaitListPage> {
             } else if (item is Bait) {
               return ListItem(
                 title: Text(item.name),
-                trailing: RightChevronIcon(),
+                trailing: isPicking ? Empty() : RightChevronIcon(),
                 onTap: () {
-                  push(context, BaitPage(item));
+                  if (isPicking) {
+                    widget.onPicked(item);
+                    Navigator.pop(context);
+                  } else {
+                    push(context, BaitPage(item));
+                  }
                 },
               );
             } else {

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/pages/picker_page.dart';
@@ -60,6 +62,15 @@ class ListPickerInput<T> extends StatefulWidget {
   /// new [PickerPageItem] is equal to the old value [T].
   final bool Function(PickerPageItem<T>, T) itemEqualsOldValue;
 
+  /// Invoked when building the value widget and not enough information is
+  /// provided to create said widget, such as when using
+  /// [ListPickerInput.customTap] constructor.
+  final Future<String> Function() valueBuilder;
+
+  /// Invoked when the [ListPickerInput] widget is tapped. This is only
+  /// applicable when using the [ListPickerInput.customTap] constructor.
+  final VoidCallback onTap;
+
   ListPickerInput({
     @required this.pageTitle,
     Set<T> initialValues = const {},
@@ -74,6 +85,8 @@ class ListPickerInput<T> extends StatefulWidget {
     this.itemManager,
     this.futureStreamHolder,
     this.itemEqualsOldValue,
+    this.valueBuilder,
+    this.onTap,
   }) : assert(itemBuilder != null),
        assert(onChanged != null),
        initialValues = initialValues ?? {};
@@ -103,6 +116,26 @@ class ListPickerInput<T> extends StatefulWidget {
     itemEqualsOldValue: itemEqualsOldValue,
   );
 
+  /// A [ListPickerInput] with a custom [onTap] handler. This should be used
+  /// anywhere a custom picker is required, such as when picking a bait, catch
+  /// or a more complex object.
+  ListPickerInput.customTap({
+    String label,
+    @required Future<String> Function() valueBuilder,
+    FutureStreamHolder futureStreamHolder,
+    @required VoidCallback onTap,
+  }) : this(
+    pageTitle: Text(""),
+    itemBuilder: () => [],
+    onChanged: (_) {},
+    titleBuilder: (_) => Text(label),
+    allowsMultiSelect: false,
+    showsValueOnTrailing: true,
+    futureStreamHolder: futureStreamHolder,
+    valueBuilder: valueBuilder,
+    onTap: onTap,
+  );
+
   @override
   _ListPickerInputState<T> createState() => _ListPickerInputState<T>();
 
@@ -126,20 +159,10 @@ class _ListPickerInputState<T> extends State<ListPickerInput<T>> {
 
   @override
   Widget build(BuildContext context) {
-    return EnabledOpacity(
-      enabled: widget.enabled,
-      child: ListItem(
-        contentPadding: widget.enabled ? null : insetsLeftDefault,
-        title: widget.titleBuilder == null
-            ? _buildTitle() : widget.titleBuilder(_values),
-        trailing: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            _buildSingleDetail(),
-            Icon(Icons.chevron_right),
-          ],
-        ),
-        onTap: widget.enabled ? () {
+    var onTap;
+    if (widget.enabled) {
+      if (widget.onTap == null) {
+        onTap = () {
           push(context, PickerPage<T>(
             futureStreamHolder: widget.futureStreamHolder,
             itemManager: widget.itemManager,
@@ -153,7 +176,26 @@ class _ListPickerInputState<T> extends State<ListPickerInput<T>> {
               _popPickerPage(context, pickedItems);
             },
           ));
-        } : null,
+        };
+      } else {
+        onTap = widget.onTap;
+      }
+    }
+
+    return EnabledOpacity(
+      enabled: widget.enabled,
+      child: ListItem(
+        contentPadding: widget.enabled ? null : insetsLeftDefault,
+        title: widget.titleBuilder == null
+            ? _buildTitle() : widget.titleBuilder(_values),
+        trailing: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            _buildSingleDetail(),
+            Icon(Icons.chevron_right),
+          ],
+        ),
+        onTap: onTap,
       ),
     );
   }
@@ -173,18 +215,35 @@ class _ListPickerInputState<T> extends State<ListPickerInput<T>> {
         holder: widget.futureStreamHolder,
         builder: (context) {
           // Retrieve the title from the most up to date items.
-          String title = Strings.of(context).inputNotSelected;
+          Future<String> titleFuture = Future.value(null);
+
           if (_values.isNotEmpty && widget.itemEqualsOldValue != null) {
             for (var item in widget.itemBuilder()) {
               if (widget.itemEqualsOldValue(item, _values.first)) {
-                title = item.title;
+                titleFuture = Future.value(item.title);
                 break;
               }
             }
+          } else if (widget.valueBuilder != null) {
+            titleFuture = widget.valueBuilder();
           }
-          return Padding(
-            padding: insetsRightWidgetSmall,
-            child: SecondaryLabelText(title),
+
+          return FutureBuilder<String>(
+            future: titleFuture,
+            builder: (context, snapshot) {
+              String text;
+
+              if (snapshot.hasData) {
+                text = snapshot.data;
+              } else {
+                text = Strings.of(context).inputNotSelected;
+              }
+
+              return Padding(
+                padding: insetsRightWidgetSmall,
+                child: SecondaryLabelText(text),
+              );
+            },
           );
         },
       );

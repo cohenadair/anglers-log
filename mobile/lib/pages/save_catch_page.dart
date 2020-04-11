@@ -2,10 +2,13 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:mobile/bait_manager.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/log.dart';
+import 'package:mobile/model/bait.dart';
 import 'package:mobile/model/fishing_spot.dart';
 import 'package:mobile/model/species.dart';
+import 'package:mobile/pages/bait_list_page.dart';
 import 'package:mobile/pages/editable_form_page.dart';
 import 'package:mobile/pages/fishing_spot_picker_page.dart';
 import 'package:mobile/pages/image_picker_page.dart';
@@ -79,6 +82,8 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
       _allInputFields[_imagesKey].controller;
   FishingSpotInputController get _fishingSpotController =>
       _allInputFields[_fishingSpotKey].controller;
+  BaitInputController get _baitController =>
+      _allInputFields[_baitKey].controller;
 
   @override
   void initState() {
@@ -142,8 +147,8 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
         _imagesKey: _allInputFields[_imagesKey],
         _timestampKey: _allInputFields[_timestampKey],
         _speciesKey: _allInputFields[_speciesKey],
-        _fishingSpotKey: _allInputFields[_fishingSpotKey],
         _baitKey: _allInputFields[_baitKey],
+        _fishingSpotKey: _allInputFields[_fishingSpotKey],
       },
       onBuildField: (id) => _buildField(id),
       onSave: _save,
@@ -198,7 +203,40 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
   }
 
   Widget _buildBait() {
-    return Empty();
+    return ListPickerInput<Bait>.customTap(
+      label: Strings.of(context).saveCatchPageBaitLabel,
+      futureStreamHolder: BaitsFutureStreamHolder(context,
+        onUpdate: (baits, baitCategories) {
+        }
+      ),
+      valueBuilder: () async {
+        var bait = _baitController.value;
+        if (bait == null) {
+          return null;
+        }
+
+        var category;
+        if (bait.categoryId != null) {
+          category = await
+              BaitManager.of(context).fetchCategory(bait.categoryId);
+        }
+
+        if (category == null) {
+          return bait.name;
+        } else {
+          return "${category.name} - ${bait.name}";
+        }
+      },
+      onTap: () {
+        push(context, BaitListPage.picker(
+          onPicked: (pickedBait) {
+            setState(() {
+              _baitController.value = pickedBait;
+            });
+          },
+        ));
+      },
+    );
   }
 
   Widget _buildFishingSpot() {
@@ -209,7 +247,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
         title: Text(Strings.of(context).saveCatchPageFishingSpotLabel),
         trailing: RightChevronIcon(),
         onTap: () {
-
+          _pushFishingSpotPicker();
         },
       );
     }
@@ -238,7 +276,9 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
         children: [
           GoogleMap(
             onMapCreated: (controller) {
-              _fishingSpotMapController.complete(controller);
+              if (!_fishingSpotMapController.isCompleted) {
+                _fishingSpotMapController.complete(controller);
+              }
 
               // TODO: Remove when fixed in Google Maps.
               // https://github.com/flutter/flutter/issues/27550
@@ -330,6 +370,8 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
     print("Species: ${_allInputFields[_speciesKey].controller.value}");
     print("Fishing spot: ${_allInputFields[_fishingSpotKey].controller.value}");
     print("Bait: ${_allInputFields[_baitKey].controller.value}");
+
+    return false;
 
     if (widget.popOverride != null) {
       widget.popOverride();
