@@ -3,6 +3,7 @@ import 'dart:typed_data';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart' as GoogleMaps;
 import 'package:image_picker/image_picker.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/res/dimen.dart';
@@ -30,7 +31,19 @@ class PickedImage {
   /// selected from a cloud source.
   final Uint8List thumbData;
 
-  PickedImage(this.originalFile, this.thumbData, this.originalFileId);
+  /// The location the image was taken, or null if unknown.
+  final GoogleMaps.LatLng position;
+
+  /// The date and time the photo was taken, or null if unknown.
+  final DateTime dateTime;
+
+  PickedImage({
+    @required this.originalFile,
+    this.thumbData,
+    this.originalFileId,
+    this.position,
+    this.dateTime,
+  }) : assert(originalFile != null);
 }
 
 /// [ImagePickerPage] is a custom image picking widget that allows the user to
@@ -98,6 +111,9 @@ class ImagePickerPage extends StatefulWidget {
 }
 
 class _ImagePickerPageState extends State<ImagePickerPage> {
+  static const double _pickedImageOpacity = 0.6;
+  static const double _normalImageOpacity = 1.0;
+
   static const double _selectedPadding = 2.0;
 
   /// A future that gets a list of all albums in the user's gallery.
@@ -253,9 +269,7 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
       onPressed: enabled ? () async {
         List<PickedImage> result = [];
         for (var i in _selectedIndexes) {
-          File file = await _assets[i].originFile;
-          Uint8List thumb = await _assets[i].thumbData;
-          result.add(PickedImage(file, thumb, _assets[i].id));
+          result.add(await _pickedImageFromAsset(_assets[i]));
         }
 
         _pop(result);
@@ -355,14 +369,13 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
             }
           });
         } else {
-          File file = await _assets[index].originFile;
-          _pop([PickedImage(file, data, _assets[index].id)]);
+          _pop([await _pickedImageFromAsset(_assets[index], thumbData: data)]);
         }
       },
       child: Container(
         color: Colors.black87,
         child: Opacity(
-          opacity: selected ? 0.6 : 1.0,
+          opacity: selected ? _pickedImageOpacity : _normalImageOpacity,
           child: Image.memory(
             data,
             fit: BoxFit.cover,
@@ -375,7 +388,7 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
   void _openCamera() async {
     File image = await ImagePicker.pickImage(source: ImageSource.camera);
     if (image != null) {
-      _pop([PickedImage(image, null, null)]);
+      _pop([PickedImage(originalFile: image)]);
     }
   }
 
@@ -423,8 +436,10 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
       }
       showErrorDialog(context: context, description: Text(msg));
     } else {
-      _pop(images.map((image) => PickedImage(image, null, null))
-          .toList());
+      // TODO #391: Extract EXIF data from image.
+      _pop(images.map((image) => PickedImage(
+        originalFile: image,
+      )).toList());
     }
   }
 
@@ -434,5 +449,35 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
     if (widget.popsOnFinish) {
       Navigator.pop(context);
     }
+  }
+
+  Future<PickedImage> _pickedImageFromAsset(AssetEntity entity, {
+    Uint8List thumbData,
+  }) async {
+    double lat = entity.latitude;
+    double lng = entity.longitude;
+    GoogleMaps.LatLng position;
+
+    if (_coordinatesAreValid(lat, lng)) {
+      position = GoogleMaps.LatLng(lat, lng);
+    } else {
+      // Coordinates are invalid, attempt to retrieve from OS.
+      LatLng latLng = await entity.latlngAsync();
+      if (_coordinatesAreValid(latLng.latitude, latLng.longitude)) {
+        position = GoogleMaps.LatLng(latLng.latitude, latLng.longitude);
+      }
+    }
+
+    return PickedImage(
+      originalFile: await entity.originFile,
+      originalFileId: entity.id,
+      thumbData: thumbData ?? await entity.thumbData,
+      position: position,
+      dateTime: entity.createDateTime,
+    );
+  }
+
+  bool _coordinatesAreValid(double lat, double lng) {
+    return lat != null && lng != null && lat != 0 && lng != 0;
   }
 }

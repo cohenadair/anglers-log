@@ -8,7 +8,7 @@ import 'package:quiver/strings.dart';
 
 class TextInput extends StatefulWidget {
   static const int inputLimitDefault = 40;
-  static const int inputLimitName = 20;
+  static const int inputLimitName = inputLimitDefault;
   static const int inputLimitNumber = 10;
   static const int inputLimitDescription = 140;
 

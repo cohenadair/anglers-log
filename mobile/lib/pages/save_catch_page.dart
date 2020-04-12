@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mobile/bait_manager.dart';
+import 'package:mobile/fishing_spot_manager.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/log.dart';
 import 'package:mobile/model/bait.dart';
@@ -29,23 +30,17 @@ import 'package:mobile/widgets/widget.dart';
 import 'package:quiver/strings.dart';
 
 /// A utility class to store properties picked in a catch journey.
-class CatchPageJourneyHelper {
-  final List<PickedImage> images;
-  final Species species;
-  final FishingSpot fishingSpot;
-
-  CatchPageJourneyHelper({
-    this.images,
-    this.species,
-    this.fishingSpot,
-  }) : assert(species != null);
+class CatchJourneyHelper {
+  List<PickedImage> images;
+  Species species;
+  FishingSpot fishingSpot;
 }
 
 class SaveCatchPage extends StatefulWidget {
   /// If set, invoked when it's time to pop the page from the navigation stack.
   final VoidCallback popOverride;
 
-  final CatchPageJourneyHelper journeyHelper;
+  final CatchJourneyHelper journeyHelper;
 
   SaveCatchPage({
     this.popOverride,
@@ -76,6 +71,8 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
 
   List<Species> _species = [];
 
+  TimestampInputController get _timestampController =>
+      _fields[_timestampKey].controller;
   SpeciesInputController get _speciesController =>
       _fields[_speciesKey].controller;
   ImagesInputController get _imagesController => _fields[_imagesKey].controller;
@@ -133,6 +130,13 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
     );
 
     if (widget.journeyHelper != null) {
+      if (widget.journeyHelper.images.isNotEmpty) {
+        PickedImage image = widget.journeyHelper.images.first;
+        _timestampController.date = image.dateTime;
+        if (image.dateTime != null) {
+          _timestampController.time = TimeOfDay.fromDateTime(image.dateTime);
+        }
+      }
       _speciesController.value = widget.journeyHelper.species;
       _imagesController.value = widget.journeyHelper.images;
       _fishingSpotController.value = widget.journeyHelper.fishingSpot;
@@ -367,7 +371,8 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
     print("Fishing spot: ${_fields[_fishingSpotKey].controller.value}");
     print("Bait: ${_fields[_baitKey].controller.value}");
 
-    return false;
+    FishingSpotManager.of(context)
+        .createOrUpdate(_fields[_fishingSpotKey].controller.value);
 
     if (widget.popOverride != null) {
       widget.popOverride();

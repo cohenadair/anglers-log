@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/fishing_spot_manager.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/log.dart';
 import 'package:mobile/model/fishing_spot.dart';
-import 'package:mobile/model/species.dart';
 import 'package:mobile/pages/fishing_spot_picker_page.dart';
 import 'package:mobile/pages/image_picker_page.dart';
 import 'package:mobile/pages/save_catch_page.dart';
@@ -20,11 +20,13 @@ class _AddCatchJourneyState extends State<AddCatchJourney> {
   final String _pickFishingSpotRoute = "pick_fishing_spot";
   final String _saveCatchRoute = "save_catch";
 
+  /// If an image is picked with a location within [_existingFishingSpotMeters]
+  /// of an existing [FishingSpot], the existing [FishingSpot] will be used.
+  final int _existingFishingSpotMeters = 30;
+
   final _log = Log("AddCatchJourney");
 
-  List<PickedImage> _images = [];
-  Species _species;
-  FishingSpot _fishingSpot;
+  CatchJourneyHelper _journeyHelper = CatchJourneyHelper();
 
   @override
   Widget build(BuildContext context) {
@@ -38,8 +40,34 @@ class _AddCatchJourneyState extends State<AddCatchJourney> {
               doneButtonText: Strings.of(context).next,
               requiresPick: false,
               popsOnFinish: false,
-              onImagesPicked: (context, images) {
-                _images = images;
+              onImagesPicked: (context, images) async {
+                _journeyHelper.images = images;
+
+                // If one of the attached images has location data, use it to
+                // fetch an existing fishing spot, or to create a new one.
+                for (var image in _journeyHelper.images) {
+                  if (image.position == null) {
+                    continue;
+                  }
+
+                  FishingSpot existingSpot = await
+                      FishingSpotManager.of(context).withinRadius(
+                        latLng: image.position,
+                        meters: _existingFishingSpotMeters,
+                      );
+
+                  if (existingSpot == null) {
+                    _journeyHelper.fishingSpot = FishingSpot(
+                      lat: image.position.latitude,
+                      lng: image.position.longitude,
+                    );
+                  } else {
+                    _journeyHelper.fishingSpot = existingSpot;
+                  }
+
+                  break;
+                }
+
                 Navigator.of(context).pushNamed(_pickSpeciesRoute);
               },
               // Custom close button is required here because a nested
@@ -56,8 +84,15 @@ class _AddCatchJourneyState extends State<AddCatchJourney> {
           return MaterialPageRoute(
             builder: (context) => SpeciesPickerPage(
               onPicked: (context, species) {
-                _species = species;
-                Navigator.of(context).pushNamed(_pickFishingSpotRoute);
+                _journeyHelper.species = species;
+
+                // If a fishing spot already exists, skip the fishing spot
+                // picker page.
+                if (_journeyHelper.fishingSpot == null) {
+                  Navigator.of(context).pushNamed(_pickFishingSpotRoute);
+                } else {
+                  Navigator.of(context).pushNamed(_saveCatchRoute);
+                }
               },
             ),
           );
@@ -65,7 +100,7 @@ class _AddCatchJourneyState extends State<AddCatchJourney> {
           return MaterialPageRoute(
             builder: (context) => FishingSpotPickerPage(
               onPicked: (context, fishingSpot) {
-                _fishingSpot = fishingSpot;
+                _journeyHelper.fishingSpot = fishingSpot;
                 Navigator.of(context).pushNamed(_saveCatchRoute);
               },
               doneButtonText: Strings.of(context).next,
@@ -76,11 +111,7 @@ class _AddCatchJourneyState extends State<AddCatchJourney> {
             builder: (context) => SaveCatchPage.fromJourney(
               popOverride: () =>
                   Navigator.of(context, rootNavigator: true).pop(),
-              journeyHelper: CatchPageJourneyHelper(
-                images: _images,
-                species: _species,
-                fishingSpot: _fishingSpot,
-              ),
+              journeyHelper: _journeyHelper,
             ),
           );
         } else {

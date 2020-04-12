@@ -63,6 +63,6 @@ void main() {
         "AND id != ?"
     );
     expect(args[1], ["bait_category_id", "Bait Name", "Green", "GX5",
-      BaitType.live, 3.5, 5.5, "bait_id"]);
+        BaitType.live, 3.5, 5.5, "bait_id"]);
   });
 }

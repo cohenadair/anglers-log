@@ -9,7 +9,6 @@ import 'package:mobile/location_monitor.dart';
 import 'package:mobile/model/fishing_spot.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/res/style.dart';
-import 'package:mobile/utils/device_utils.dart';
 import 'package:mobile/utils/map_utils.dart';
 import 'package:mobile/utils/snackbar_utils.dart';
 import 'package:mobile/utils/string_utils.dart';

@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mobile/app_manager.dart';
 import 'package:mobile/model/fishing_spot.dart';
 import 'package:mobile/utils/future_stream_builder.dart';
+import 'package:mobile/utils/map_utils.dart';
 import 'package:mobile/utils/void_stream_controller.dart';
 import 'package:provider/provider.dart';
 
@@ -41,14 +43,39 @@ class FishingSpotManager {
   /// If [searchText] is not empty, only fishing spots whose `name` property
   /// includes [searchText] will be returned.
   Future<List<FishingSpot>> _fetchAll({String searchText}) async {
-    var results =
-        await _app.dataManager.fetchAllEntities(_tableName, searchText: searchText);
+    var results = await _app.dataManager
+        .fetchAllEntities(_tableName, searchText: searchText);
     return results.map((map) => FishingSpot.fromMap(map)).toList();
   }
 
   Future<FishingSpot> fetch({String id}) async {
     return FishingSpot
         .fromMap(await _app.dataManager.fetchEntity(_tableName, id));
+  }
+
+  /// Returns the closest [FishingSpot] within [meters] of [latLng], or null if
+  /// one does not exist.
+  Future<FishingSpot> withinRadius({LatLng latLng, int meters}) async {
+    List<FishingSpot> allFishingSpots = await _fetchAll();
+    Map<FishingSpot, double> eligibleFishingSpotsMap = {};
+    for (FishingSpot fishingSpot in allFishingSpots) {
+      double distance = distanceBetween(fishingSpot.latLng, latLng);
+      if (distance <= meters) {
+        eligibleFishingSpotsMap[fishingSpot] = distance;
+      }
+    }
+
+    FishingSpot result;
+    double minDistance = (meters + 1).toDouble();
+
+    eligibleFishingSpotsMap.forEach((fishingSpot, distance) {
+      if (distance < minDistance) {
+        minDistance = distance;
+        result = fishingSpot;
+      }
+    });
+
+    return result;
   }
 }
 
