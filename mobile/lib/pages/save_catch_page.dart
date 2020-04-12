@@ -71,25 +71,23 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
 
   final _fishingSpotMapHeight = 250.0;
 
-  final Map<String, InputData> _allInputFields = {};
+  final Map<String, InputData> _fields = {};
   final Completer<GoogleMapController> _fishingSpotMapController = Completer();
 
   List<Species> _species = [];
 
   SpeciesInputController get _speciesController =>
-      _allInputFields[_speciesKey].controller;
-  ImagesInputController get _imagesController =>
-      _allInputFields[_imagesKey].controller;
+      _fields[_speciesKey].controller;
+  ImagesInputController get _imagesController => _fields[_imagesKey].controller;
   FishingSpotInputController get _fishingSpotController =>
-      _allInputFields[_fishingSpotKey].controller;
-  BaitInputController get _baitController =>
-      _allInputFields[_baitKey].controller;
+      _fields[_fishingSpotKey].controller;
+  BaitInputController get _baitController => _fields[_baitKey].controller;
 
   @override
   void initState() {
     super.initState();
 
-    _allInputFields[_timestampKey] = InputData(
+    _fields[_timestampKey] = InputData(
       id: _timestampKey,
       controller: TimestampInputController(
         date: DateTime.now(),
@@ -98,35 +96,40 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
       label: (BuildContext context) =>
           Strings.of(context).saveCatchPageDateTimeLabel,
       removable: false,
+      showing: true,
     );
 
-    _allInputFields[_speciesKey] = InputData(
+    _fields[_speciesKey] = InputData(
       id: _speciesKey,
       controller: SpeciesInputController(),
       label: (BuildContext context) =>
           Strings.of(context).saveCatchPageSpeciesLabel,
       removable: false,
+      showing: true,
     );
 
-    _allInputFields[_imagesKey] = InputData(
-      id: _imagesKey,
-      controller: ImagesInputController(),
-      label: (BuildContext context) =>
-          Strings.of(context).saveCatchPageImagesLabel,
-    );
-
-    _allInputFields[_fishingSpotKey] = InputData(
-      id: _fishingSpotKey,
-      controller: FishingSpotInputController(),
-      label: (BuildContext context) =>
-          Strings.of(context).saveCatchPageFishingSpotLabel,
-    );
-
-    _allInputFields[_baitKey] = InputData(
+    _fields[_baitKey] = InputData(
       id: _baitKey,
       controller: BaitInputController(),
       label: (BuildContext context) =>
           Strings.of(context).saveCatchPageBaitLabel,
+      showing: true,
+    );
+
+    _fields[_imagesKey] = InputData(
+      id: _imagesKey,
+      controller: ImagesInputController(),
+      label: (BuildContext context) =>
+          Strings.of(context).saveCatchPageImagesLabel,
+      showing: true,
+    );
+
+    _fields[_fishingSpotKey] = InputData(
+      id: _fishingSpotKey,
+      controller: FishingSpotInputController(),
+      label: (BuildContext context) =>
+          Strings.of(context).saveCatchPageFishingSpotLabel,
+      showing: true,
     );
 
     if (widget.journeyHelper != null) {
@@ -142,14 +145,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
       title: Text(Strings.of(context).saveCatchPageNewTitle),
       runSpacing: 0,
       padding: insetsZero,
-      allFields: _allInputFields,
-      initialFields: {
-        _imagesKey: _allInputFields[_imagesKey],
-        _timestampKey: _allInputFields[_timestampKey],
-        _speciesKey: _allInputFields[_speciesKey],
-        _baitKey: _allInputFields[_baitKey],
-        _fishingSpotKey: _allInputFields[_fishingSpotKey],
-      },
+      fields: _fields,
       onBuildField: (id) => _buildField(id),
       onSave: _save,
     );
@@ -175,7 +171,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
 
   Widget _buildTimestamp() {
     TimestampInputController controller =
-        _allInputFields[_timestampKey].controller;
+        _fields[_timestampKey].controller;
 
     return Padding(
       padding: EdgeInsets.only(
@@ -365,11 +361,11 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
   }
 
   FutureOr<bool> _save(Map<String, InputData> result) {
-    print("Timestamp: ${_allInputFields[_timestampKey].controller.value}");
-    print("Images: ${_allInputFields[_imagesKey].controller.value}");
-    print("Species: ${_allInputFields[_speciesKey].controller.value}");
-    print("Fishing spot: ${_allInputFields[_fishingSpotKey].controller.value}");
-    print("Bait: ${_allInputFields[_baitKey].controller.value}");
+    print("Timestamp: ${_fields[_timestampKey].controller.value}");
+    print("Images: ${_fields[_imagesKey].controller.value}");
+    print("Species: ${_fields[_speciesKey].controller.value}");
+    print("Fishing spot: ${_fields[_fishingSpotKey].controller.value}");
+    print("Bait: ${_fields[_baitKey].controller.value}");
 
     return false;
 

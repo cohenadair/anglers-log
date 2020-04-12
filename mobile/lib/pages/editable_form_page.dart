@@ -7,19 +7,13 @@ import 'package:mobile/pages/form_page.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/widgets/input_data.dart';
 import 'package:mobile/widgets/input_type.dart';
+import 'package:mobile/widgets/widget.dart';
 
 class EditableFormPage extends StatefulWidget {
   final Widget title;
 
-  /// A unique ID to [InputData] map of all valid fields for the form. The
-  /// items in this map may or may not need to be added by the user via
-  /// "Add Field" button.
-  final Map<String, InputData> allFields;
-
-  /// A sub-collection of [allFields]. All items in [initialFields] will be
-  /// available to fill out immediately, without using the "Add Field" button.
-  /// The order of this map is the order in which the fields are rendered.
-  final Map<String, InputData> initialFields;
+  /// A unique ID to [InputData] map of all valid fields for the form.
+  final Map<String, InputData> fields;
 
   /// Called when an input field needs to be built. The ID of the input field
   /// is passed into the function.
@@ -42,8 +36,7 @@ class EditableFormPage extends StatefulWidget {
 
   EditableFormPage({
     this.title,
-    this.allFields = const {},
-    this.initialFields = const {},
+    this.fields = const {},
     this.onBuildField,
     this.onSave,
     this.padding = insetsHorizontalDefault,
@@ -57,19 +50,19 @@ class EditableFormPage extends StatefulWidget {
 
 class _EditableFormPageState extends State<EditableFormPage> {
   /// Options that are shown in the form, but not necessarily filled out.
-  Map<String, InputData> _usedInputOptions = {};
+  Map<String, InputData> _fields = {};
 
-  Map<String, InputData> get _allInputFields => widget.allFields;
+  Map<String, InputData> get _allInputFields => widget.fields;
 
   @override
   void initState() {
     super.initState();
-    _usedInputOptions.addAll(widget.initialFields);
+    _fields.addAll(widget.fields);
   }
 
   @override
   void dispose() {
-    for (var value in _usedInputOptions.values) {
+    for (var value in _fields.values) {
       value.controller.dispose();
     }
     super.dispose();
@@ -82,19 +75,19 @@ class _EditableFormPageState extends State<EditableFormPage> {
       runSpacing: widget.runSpacing,
       padding: widget.padding,
       fieldBuilder: (BuildContext context) {
-        return Map.fromIterable(_usedInputOptions.keys,
+        return Map.fromIterable(_fields.keys,
           key: (item) => item.toString(),
           value: (item) => _inputWidget(
             key: item.toString(),
           ),
         );
       },
-      onSave: () => widget.onSave(_usedInputOptions),
+      onSave: () => widget.onSave(_fields),
       addFieldOptions: _allInputFields.keys.map((String id) {
         return FormPageFieldOption(
           id: id,
           userFacingName: _allInputFields[id].label(context),
-          used: _usedInputOptions.keys.contains(id),
+          used: _fields[id].showing,
           removable: _allInputFields[id].removable,
         );
       }).toList(),
@@ -107,14 +100,18 @@ class _EditableFormPageState extends State<EditableFormPage> {
       CustomFieldManager.of(context).customField(id);
 
   Widget _inputWidget({String key}) {
+    if (!_fields[key].showing) {
+      return Empty();
+    }
+
     CustomEntity customField = _customField(key);
     if (customField != null) {
       return inputTypeWidget(context,
         type: customField.type,
         label: customField.name,
-        controller: _usedInputOptions[key].controller,
+        controller: _fields[key].controller,
         onCheckboxChanged: (bool newValue) {
-          _usedInputOptions[key].controller.value = newValue;
+          _fields[key].controller.value = newValue;
         },
       );
     }
@@ -127,18 +124,19 @@ class _EditableFormPageState extends State<EditableFormPage> {
     for (String id in ids) {
       CustomEntity customField = _customField(id);
       if (customField != null) {
-        _allInputFields.putIfAbsent(customField.id, () => InputData(
+        _fields.putIfAbsent(customField.id, () => InputData(
           id: customField.id,
           controller: inputTypeController(customField.type),
           label: (_) => customField.name,
+          showing: true,
         ));
       }
     }
 
     setState(() {
-      _usedInputOptions.clear();
-      ids.forEach((id) =>
-          _usedInputOptions.putIfAbsent(id, () => _allInputFields[id]));
+      for (var field in _fields.values) {
+        field.showing = ids.contains(field.id);
+      }
     });
   }
 }

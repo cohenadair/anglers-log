@@ -43,30 +43,32 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
   bool get editing => widget.oldBait != null;
 
   BaitCategoryInputController get _baitCategoryController =>
-      _allInputFields[baitCategoryId].controller as BaitCategoryInputController;
+      _fields[baitCategoryId].controller as BaitCategoryInputController;
   TextInputController get _nameController =>
-      _allInputFields[nameId].controller as TextInputController;
+      _fields[nameId].controller as TextInputController;
 
-  final Map<String, InputData> _allInputFields = {};
+  final Map<String, InputData> _fields = {};
 
   @override
   void initState() {
     super.initState();
 
-    _allInputFields[baitCategoryId] = InputData(
+    _fields[baitCategoryId] = InputData(
       id: baitCategoryId,
       label: (context) => Strings.of(context).saveBaitPageCategoryLabel,
       controller: BaitCategoryInputController(),
       removable: true,
+      showing: true,
     );
 
-    _allInputFields[nameId] = InputData(
+    _fields[nameId] = InputData(
       id: nameId,
       label: (context) => Strings.of(context).inputNameLabel,
       controller: TextInputController(
         validate: (context) => Strings.of(context).inputGenericRequired,
       ),
       removable: false,
+      showing: true,
     );
 
     if (widget.oldBait != null) {
@@ -83,11 +85,7 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
           ? Text(Strings.of(context).saveBaitPageEditTitle)
           : Text(Strings.of(context).saveBaitPageNewTitle),
       padding: insetsZero,
-      allFields: _allInputFields,
-      initialFields: {
-        baitCategoryId: _allInputFields[baitCategoryId],
-        nameId: _allInputFields[nameId],
-      },
+      fields: _fields,
       onBuildField: (id) {
         switch (id) {
           case nameId: return _buildNameField();

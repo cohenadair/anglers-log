@@ -14,12 +14,18 @@ class InputData {
   /// `true`.
   final bool removable;
 
+  /// True if the [Widget] associated with this [InputData] is currently showing
+  /// in the form; false otherwise. This value may be updated when used in an
+  /// [EditableFormPage].
+  bool showing;
+
   InputController controller;
 
   InputData({
     @required this.id,
     @required this.controller,
     @required this.label,
+    @required this.showing,
     this.removable = true,
   }) : assert(isNotEmpty(id)),
        assert(label != null),

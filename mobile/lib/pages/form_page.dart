@@ -199,11 +199,7 @@ class _FormPageState extends State<FormPage> {
       children: <Widget>[
         Wrap(
           runSpacing: widget.runSpacing ?? paddingSmall,
-          children: widget.fieldBuilder(context)
-              .map((key, inputField) => MapEntry<String, Widget>(
-                key,
-                inputField,
-              )).values.toList(),
+          children: widget.fieldBuilder(context).values.toList(),
         ),
       ],
     );
