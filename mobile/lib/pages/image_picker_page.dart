@@ -155,34 +155,26 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
         leading: widget.appBarLeading,
       ),
       // First, get a list of all the available albums.
-      body: FutureBuilder<List<AssetPathEntity>>(
+      body: EmptyFutureBuilder<List<AssetPathEntity>>(
         future: _albumListFuture,
-        builder: (context, snapshot) {
-          if (!snapshot.hasData) {
-            return Empty();
-          }
-
+        builder: (context, assets) {
           // Second, get a list of all assets in the "all" album.
           // Lazy initialize _allAssetsFuture.
           if (_allAssetsFuture == null) {
             // Create a future that waits for all assets.
-            AssetPathEntity entity = snapshot.data.firstWhere(
+            AssetPathEntity entity = assets.firstWhere(
                 (album) => album.isAll, orElse: () => null);
             _allAssetsFuture = entity == null
                 ? Future.value([]) : entity.assetList;
           }
 
           // Third, wait to get assets from each album.
-          return FutureBuilder<List<AssetEntity>>(
+          return EmptyFutureBuilder<List<AssetEntity>>(
             future: _allAssetsFuture,
-            builder: (context, snapshot) {
-              if (!snapshot.hasData) {
-                return Empty();
-              }
-
+            builder: (context, assets) {
               // Lazy initialize _assets.
               if (_assets == null) {
-                _assets = snapshot.data;
+                _assets = assets;
                 // Sort by most recent first.
                 _assets.sort((lhs, rhs) =>
                     rhs.createDateTime.compareTo(lhs.createDateTime));

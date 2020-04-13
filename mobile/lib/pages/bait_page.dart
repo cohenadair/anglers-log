@@ -80,14 +80,11 @@ class _BaitPageState extends State<BaitPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            isNotEmpty(_bait.categoryId) ? FutureBuilder<BaitCategory>(
+            isNotEmpty(_bait.categoryId) ? EmptyFutureBuilder<BaitCategory>(
               future: BaitManager.of(context)
                   .fetchCategory(_bait.categoryId),
-              builder: (context, snapshot) {
-                if (!snapshot.hasData) {
-                  return Empty();
-                }
-                _category = snapshot.data;
+              builder: (context, category) {
+                _category = category;
                 return HeadingText(_category.name);
               },
             ) : Empty(),

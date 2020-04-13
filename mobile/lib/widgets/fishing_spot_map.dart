@@ -89,7 +89,8 @@ class FishingSpotMap extends StatefulWidget {
 class _FishingSpotMapState extends State<FishingSpotMap> {
   // TODO: Remove this when Google Maps performance issue is fixed.
   // https://github.com/flutter/flutter/issues/28493
-  Future _mapFuture = Future.delayed(Duration(milliseconds: 150), () => true);
+  Future<bool> _mapFuture =
+      Future.delayed(Duration(milliseconds: 150), () => true);
 
   MapType _mapType = MapType.normal;
   bool _showHelp = true;
@@ -130,13 +131,9 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
   }
 
   Widget _buildMap() {
-    return FutureBuilder(
+    return EmptyFutureBuilder<bool>(
       future: _mapFuture,
-      builder: (context, snapshot) {
-        if (!snapshot.hasData) {
-          return Empty();
-        }
-
+      builder: (context, _) {
         // TODO: Move Google logo when better solution is available.
         // https://github.com/flutter/flutter/issues/39610
         // TODO: Test onCameraIdle fix when merged. Event sometimes stops after interaction with map buttons.
