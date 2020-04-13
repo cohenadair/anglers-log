@@ -28,6 +28,13 @@ class DataManager {
     }
   }
 
+  /// Commits a batch of SQL statements. See [Batch].
+  Future<List<dynamic>> commitBatch(void Function(Batch) execute) async {
+    Batch batch = _database.batch();
+    execute(batch);
+    return await batch.commit();
+  }
+
   /// Returns `true` if values were successfully added.
   Future<bool> _insert(String tableName, Map<String, dynamic> values) async {
     return await _database.insert(tableName, values) > 0;

@@ -38,8 +38,20 @@ class BaitManager {
   }
 
   void deleteCategory(BaitCategory baitCategory) async {
-    _app.dataManager.deleteEntity(baitCategory, _categoryTableName,
-        controller: onCategoryUpdate);
+    List<dynamic> resultList = await _app.dataManager.commitBatch((batch) {
+      batch.rawDelete("DELETE FROM $_categoryTableName WHERE id = ?",
+          [baitCategory.id]);
+      batch.rawUpdate(
+          "UPDATE bait SET category_id = null WHERE category_id = ?",
+          [baitCategory.id]);
+    });
+
+    if (resultList[0] > 0) {
+      onCategoryUpdate.notify();
+      if (resultList[1] > 0) {
+        onBaitUpdate.notify();
+      }
+    }
   }
 
   Future<List<BaitCategory>> _fetchAllCategories() async {
