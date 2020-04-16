@@ -55,11 +55,11 @@ class BaitManager {
   }
 
   Future<List<BaitCategory>> _fetchAllCategories() async {
-    var results = await _app.dataManager.fetchAllEntities(_categoryTableName);
+    var results = await _app.dataManager.fetchAllNamedEntities(_categoryTableName);
     return results.map((map) => BaitCategory.fromMap(map)).toList();
   }
 
-  Future<BaitCategory> fetchCategory(String id) async {
+  Future<BaitCategory> fetchCategory({String id}) async {
     var result = await _app.dataManager.fetchEntity(_categoryTableName, id);
     return BaitCategory.fromMap(result);
   }
@@ -100,11 +100,11 @@ class BaitManager {
   }
 
   Future<List<Bait>> _fetchAllBaits() async {
-    var results = await _app.dataManager.fetchAllEntities(_baitTableName);
+    var results = await _app.dataManager.fetchAllNamedEntities(_baitTableName);
     return results.map((map) => Bait.fromMap(map)).toList();
   }
 
-  Future<Bait> fetchBait(String id) async {
+  Future<Bait> fetchBait({String id}) async {
     var result = await _app.dataManager.fetchEntity(_baitTableName, id);
     return Bait.fromMap(result);
   }
@@ -164,6 +164,7 @@ class BaitsFutureStreamHolder extends FutureStreamHolder {
         onUpdate(result[0] as List<Bait>, result[1] as List<BaitCategory>),
   );
 }
+
 /// A [FutureStreamBuilder] wrapper for listening for [Bait] updates.
 class BaitsBuilder extends StatelessWidget {
   final Widget Function(BuildContext) builder;

@@ -10,7 +10,7 @@ import 'package:mobile/trip_manager.dart';
 class AppManager {
   BaitManager get baitManager => BaitManager.get(this);
   DataManager get dataManager => DataManager.get();
-  CatchManager get catchManager => CatchManager.get();
+  CatchManager get catchManager => CatchManager.get(this);
   CustomFieldManager get customFieldManager => CustomFieldManager.get();
   FishingSpotManager get fishingSpotManager => FishingSpotManager.get(this);
   LocationMonitor get locationMonitor => LocationMonitor.get();

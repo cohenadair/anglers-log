@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/i18n/strings.dart';
-import 'package:mobile/model/entity.dart';
+import 'package:mobile/model/named_entity.dart';
 import 'package:mobile/pages/form_page.dart';
 import 'package:mobile/utils/string_utils.dart';
 import 'package:mobile/utils/validator.dart';
@@ -75,7 +75,7 @@ class _SaveNamePageState extends State<SaveNamePage> {
       },
       fieldBuilder: (context) {
         return {
-          Entity.keyName : TextInput.name(
+          NamedEntity.keyName : TextInput.name(
             context,
             controller: _controller,
             autofocus: true,

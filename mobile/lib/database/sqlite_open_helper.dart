@@ -27,8 +27,8 @@ final List<String> _schema0 = [
   """
   CREATE TABLE bait (
     id TEXT PRIMARY KEY,
-    base_id TEXT REFERENCES bait(id),
-    category_id TEXT REFERENCES bait_category(id),
+    base_id TEXT,
+    category_id TEXT,
     name TEXT,
     photo_id TEXT,
     color TEXT,
@@ -45,7 +45,22 @@ final List<String> _schema0 = [
     id TEXT PRIMARY KEY,
     name TEXT UNIQUE NOT NULL
   );
+  """,
   """
+  CREATE TABLE catch (
+    id TEXT PRIMARY KEY,
+    timestamp INTEGER NOT NULL,
+    fishing_spot_id TEXT,
+    bait_id TEXT,
+    species_id TEXT
+  );
+  """,
+  """
+  CREATE TABLE catch_image (
+    id TEXT PRIMARY KEY,
+    catch_id TEXT NOT NULL
+  );
+  """,
 ];
 
 final List<List<String>> _schema = [

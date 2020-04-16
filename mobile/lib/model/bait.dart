@@ -12,6 +12,7 @@ enum BaitType {
 /// or live.
 @immutable
 class Bait extends Entity {
+  static const keyName = "name";
   static const keyBaseId = "base_id";
   static const keyPhotoId = "photo_id";
   static const keyBaitCategoryId = "category_id";
@@ -24,6 +25,7 @@ class Bait extends Entity {
   static const keyDescription = "description";
 
   static List<Property> _propertyList({
+    @required String name,
     @required String baseId,
     @required String photoId,
     @required String baitCategoryId,
@@ -35,6 +37,7 @@ class Bait extends Entity {
     @required double maxDiveDepth,
     @required String description,
   }) => [
+    Property<String>(key: keyName, value: name),
     Property<String>(key: keyBaseId, value: baseId),
     Property<String>(key: keyPhotoId, value: photoId),
     Property<String>(key: keyBaitCategoryId, value: baitCategoryId),
@@ -63,6 +66,7 @@ class Bait extends Entity {
   }) : assert(isNotEmpty(name)),
        super(
          properties: _propertyList(
+           name: name,
            baseId: baseId,
            photoId: photoId,
            baitCategoryId: baitCategoryId,
@@ -75,11 +79,11 @@ class Bait extends Entity {
            description: description,
          ),
          id: id,
-         name: name,
        );
 
   Bait.fromMap(Map<String, dynamic> map) : super.fromMap(map,
       properties: _propertyList(
+        name: map[keyName],
         baseId: map[keyBaseId],
         photoId: map[keyPhotoId],
         baitCategoryId: map[keyBaitCategoryId],
@@ -91,6 +95,8 @@ class Bait extends Entity {
         maxDiveDepth: map[keyMaxDiveDepth],
         description: map[keyDescription],
       ));
+
+  String get name => (propertyWithName(keyName) as Property<String>)?.value;
 
   String get baseId =>
       (propertyWithName(keyBaseId) as Property<String>).value;

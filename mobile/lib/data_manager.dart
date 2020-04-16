@@ -124,7 +124,7 @@ class DataManager {
   }
 
   /// Result is sorted alphabetically by [Entity.name].
-  Future<List<Map<String, dynamic>>> fetchAllEntities(String tableName, {
+  Future<List<Map<String, dynamic>>> fetchAllNamedEntities(String tableName, {
     String searchText,
   }) async {
     _log.w("fetchAll($tableName, searchText: $searchText) called");

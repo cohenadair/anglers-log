@@ -1,5 +1,6 @@
 import 'package:mobile/model/bait.dart';
 import 'package:mobile/model/entity.dart';
+import 'package:mobile/model/named_entity.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -19,7 +20,7 @@ void main() {
     );
     var map = bait.toMap();
     expect(map[Entity.keyId], isNotNull);
-    expect(map[Entity.keyName], "Test name");
+    expect(map[NamedEntity.keyName], "Test name");
     expect(map[Bait.keyBaseId], "BaseId");
     expect(map[Bait.keyPhotoId], "PhotoId");
     expect(map[Bait.keyBaitCategoryId], "CategoryId");
@@ -33,7 +34,7 @@ void main() {
 
     map = {
       Entity.keyId : "ID",
-      Entity.keyName : "Test name",
+      NamedEntity.keyName : "Test name",
       Bait.keyBaseId : "BaseId",
       Bait.keyPhotoId : "PhotoId",
       Bait.keyBaitCategoryId : "CategoryId",

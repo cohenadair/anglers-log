@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/fishing_spot_manager.dart';
 import 'package:mobile/i18n/strings.dart';
-import 'package:mobile/model/entity.dart';
 import 'package:mobile/model/fishing_spot.dart';
+import 'package:mobile/model/named_entity.dart';
 import 'package:mobile/pages/form_page.dart';
 import 'package:mobile/widgets/input_controller.dart';
 import 'package:mobile/widgets/text_input.dart';
@@ -63,7 +63,7 @@ class _SaveFishingSpotPageState extends State<SaveFishingSpotPage> {
       },
       fieldBuilder: (BuildContext context) {
         return {
-          Entity.keyName : TextInput.name(
+          NamedEntity.keyName : TextInput.name(
             context,
             controller: _nameController,
             autofocus: true,

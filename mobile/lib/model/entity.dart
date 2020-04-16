@@ -9,11 +9,9 @@ import 'package:uuid/uuid.dart';
 @immutable
 class Entity implements Mappable {
   static const keyId = "id";
-  static const keyName = "name";
 
-  static List<Property> _propertyList(String id, String name) => [
+  static List<Property> _propertyList(String id) => [
     Property<String>(key: keyId, value: id),
-    Property<String>(key: keyName, value: name),
   ];
 
   final Map<String, Property> _properties;
@@ -21,23 +19,21 @@ class Entity implements Mappable {
   Entity({
     List<Property> properties = const [],
     String id,
-    String name,
   }) : _properties = propertyListToMap(List<Property>.from(properties)
-         ..addAll(_propertyList(id ?? Uuid().v1(), name))
+         ..addAll(_propertyList(id ?? Uuid().v1()))
        );
 
   Entity.fromMap(Map<String, dynamic> map, {
     List<Property> properties = const [],
   }) : assert(isNotEmpty(map[keyId])),
        _properties = propertyListToMap(List<Property>.from(properties)
-         ..addAll(_propertyList(map[keyId], map[keyName])),
+         ..addAll(_propertyList(map[keyId])),
        );
 
   List<Property> get propertyList => List.unmodifiable(_properties.values);
   Property propertyWithName(String name) => _properties[name];
 
   String get id => (propertyWithName(keyId) as Property<String>).value;
-  String get name => (propertyWithName(keyName) as Property<String>)?.value;
 
   Map<String, dynamic> toMap() {
     Map<String, dynamic> result = {};

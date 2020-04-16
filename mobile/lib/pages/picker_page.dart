@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/log.dart';
-import 'package:mobile/model/entity.dart';
+import 'package:mobile/model/named_entity.dart';
 import 'package:mobile/model/species.dart';
 import 'package:mobile/pages/save_name_page.dart';
 import 'package:mobile/res/dimen.dart';
@@ -305,7 +305,7 @@ class PickerPageItem<T> {
        _divider = false;
 }
 
-List<PickerPageItem<T>> entityListToPickerPageItemList<T extends Entity>(
+List<PickerPageItem<T>> entityListToPickerPageItemList<T extends NamedEntity>(
     List<T> entities)
 {
   return entities.map((entity) => PickerPageItem<T>(

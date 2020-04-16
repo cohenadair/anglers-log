@@ -1,9 +1,9 @@
 import 'package:meta/meta.dart';
-import 'package:mobile/model/entity.dart';
+import 'package:mobile/model/named_entity.dart';
 import 'package:quiver/strings.dart';
 
 @immutable
-class Species extends Entity {
+class Species extends NamedEntity {
   Species({
     @required String name,
     String id,

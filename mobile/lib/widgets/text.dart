@@ -78,6 +78,22 @@ class SecondaryLabelText extends StatelessWidget {
   }
 }
 
+class SubtitleText extends StatelessWidget {
+  final String text;
+
+  SubtitleText(this.text);
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(text,
+      style: Theme.of(context).textTheme.subtitle2.copyWith(
+        color: Colors.grey,
+        fontWeight: FontWeight.normal,
+      ),
+    );
+  }
+}
+
 /// A [Text] widget with an enabled state. If `enabled = false`, the [Text] is
 /// rendered with a `Theme.of(context).disabledColor` color.
 class EnabledText extends StatelessWidget {

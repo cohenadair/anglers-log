@@ -44,7 +44,7 @@ class FishingSpotManager {
   /// includes [searchText] will be returned.
   Future<List<FishingSpot>> _fetchAll({String searchText}) async {
     var results = await _app.dataManager
-        .fetchAllEntities(_tableName, searchText: searchText);
+        .fetchAllNamedEntities(_tableName, searchText: searchText);
     return results.map((map) => FishingSpot.fromMap(map)).toList();
   }
 
@@ -76,6 +76,21 @@ class FishingSpotManager {
     });
 
     return result;
+  }
+
+  /// Returns a [FishingSpot] with the given [LatLng], or null if one doesn't
+  /// exist.
+  Future<FishingSpot> withLatLng(LatLng latLng) async {
+    var fishingSpotMap = await _app.dataManager.query(
+      "SELECT * FROM $_tableName WHERE lat = ? AND lng = ? LIMIT 1",
+      [latLng.latitude, latLng.longitude],
+    );
+
+    if (fishingSpotMap.isEmpty) {
+      return null;
+    }
+
+    return FishingSpot.fromMap(fishingSpotMap.first);
   }
 }
 

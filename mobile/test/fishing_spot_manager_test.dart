@@ -24,7 +24,7 @@ void main() {
 
   test("Fishing spot within radius", () async {
     List<FishingSpot> fishingSpots = [];
-    when(dataManager.fetchAllEntities(any)).thenAnswer((_) => Future.value(
+    when(dataManager.fetchAllNamedEntities(any)).thenAnswer((_) => Future.value(
       fishingSpots.map((f) => f.toMap()).toList()
     ));
 

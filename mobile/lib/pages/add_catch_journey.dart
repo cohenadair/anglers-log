@@ -99,8 +99,10 @@ class _AddCatchJourneyState extends State<AddCatchJourney> {
         } else if (name == _pickFishingSpotRoute) {
           return MaterialPageRoute(
             builder: (context) => FishingSpotPickerPage(
-              onPicked: (context, fishingSpot) {
-                _journeyHelper.fishingSpot = fishingSpot;
+              onPicked: (context, fishingSpot) async {
+                FishingSpot existingSpot = await FishingSpotManager.of(context)
+                    .withLatLng(fishingSpot.latLng);
+                _journeyHelper.fishingSpot = existingSpot ?? fishingSpot;
                 Navigator.of(context).pushNamed(_saveCatchRoute);
               },
               doneButtonText: Strings.of(context).next,

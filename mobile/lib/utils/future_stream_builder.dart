@@ -129,7 +129,7 @@ class _FutureStreamBuilderState extends State<FutureStreamBuilder> {
         if (_futuresUpdated && snapshot.connectionState == ConnectionState.done)
         {
           _listener.onUpdate(
-              _futures.length > 1 ? snapshot.data : snapshot.data.first);
+              _futures.length > 1 ? snapshot.data : snapshot.data?.first);
           _futuresUpdated = false;
         }
 

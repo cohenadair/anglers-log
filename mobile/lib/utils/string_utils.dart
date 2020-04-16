@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mobile/i18n/strings.dart';
+import 'package:mobile/model/bait.dart';
+import 'package:mobile/model/bait_category.dart';
 import 'package:mobile/utils/date_time_utils.dart';
 import 'package:mobile/widgets/text.dart';
 import 'package:quiver/time.dart';
@@ -41,9 +43,7 @@ String formatTimeOfDay(BuildContext context, TimeOfDay time) {
 ///   - Monday at 2:35 PM
 ///   - Jan. 8 at 2:35 PM
 ///   - Dec. 8, 2018 at 2:35 PM
-String formatDateTime({
-  BuildContext context,
-  DateTime dateTime,
+String formatDateTime(BuildContext context, DateTime dateTime, {
   clock = const Clock(),
 }) {
   return format(Strings.of(context).dateTimeFormat, [
@@ -101,4 +101,13 @@ String formatLatLng({
       lng.toStringAsFixed(decimalPlaces),
     ],
   );
+}
+
+String formatBaitName(Bait bait, [BaitCategory category]) {
+  assert(bait != null);
+  if (category == null) {
+    return bait.name;
+  } else {
+    return "${category.name} - ${bait.name}";
+  }
 }

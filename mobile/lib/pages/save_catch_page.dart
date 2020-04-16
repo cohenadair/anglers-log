@@ -3,10 +3,12 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mobile/bait_manager.dart';
+import 'package:mobile/catch_manager.dart';
 import 'package:mobile/fishing_spot_manager.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/log.dart';
 import 'package:mobile/model/bait.dart';
+import 'package:mobile/model/catch.dart';
 import 'package:mobile/model/fishing_spot.dart';
 import 'package:mobile/model/species.dart';
 import 'package:mobile/pages/bait_list_page.dart';
@@ -218,14 +220,10 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
         var category;
         if (bait.categoryId != null) {
           category = await
-              BaitManager.of(context).fetchCategory(bait.categoryId);
+              BaitManager.of(context).fetchCategory(id: bait.categoryId);
         }
 
-        if (category == null) {
-          return bait.name;
-        } else {
-          return "${category.name} - ${bait.name}";
-        }
+        return formatBaitName(bait, category);
       },
       onTap: () {
         push(context, BaitListPage.picker(
@@ -365,14 +363,15 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
   }
 
   FutureOr<bool> _save(Map<String, InputData> result) {
-    print("Timestamp: ${_fields[_timestampKey].controller.value}");
-    print("Images: ${_fields[_imagesKey].controller.value}");
-    print("Species: ${_fields[_speciesKey].controller.value}");
-    print("Fishing spot: ${_fields[_fishingSpotKey].controller.value}");
-    print("Bait: ${_fields[_baitKey].controller.value}");
-
     FishingSpotManager.of(context)
         .createOrUpdate(_fields[_fishingSpotKey].controller.value);
+
+    CatchManager.of(context).createOrUpdate(Catch(
+      timestamp: _timestampController.value,
+      speciesId: _speciesController.value.id,
+      fishingSpotId: _fishingSpotController.value?.id,
+      baitId: _baitController.value?.id,
+    ));
 
     if (widget.popOverride != null) {
       widget.popOverride();

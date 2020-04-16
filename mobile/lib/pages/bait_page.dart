@@ -36,7 +36,7 @@ class _BaitPageState extends State<BaitPage> {
     _bait = widget.bait;
     _baitsSubscription = BaitManager.of(context).onBaitUpdate.stream
         .listen((_) async {
-          Bait bait = await BaitManager.of(context).fetchBait(_bait.id);
+          Bait bait = await BaitManager.of(context).fetchBait(id: _bait.id);
           setState(() {
             _bait = bait;
           });
@@ -82,7 +82,7 @@ class _BaitPageState extends State<BaitPage> {
           children: <Widget>[
             isNotEmpty(_bait.categoryId) ? EmptyFutureBuilder<BaitCategory>(
               future: BaitManager.of(context)
-                  .fetchCategory(_bait.categoryId),
+                  .fetchCategory(id: _bait.categoryId),
               builder: (context, category) {
                 _category = category;
                 return HeadingText(_category.name);

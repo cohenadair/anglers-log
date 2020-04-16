@@ -39,11 +39,11 @@ class SpeciesManager {
   }
 
   Future<List<Species>> _fetchAll() async {
-    var results = await _app.dataManager.fetchAllEntities(_tableName);
+    var results = await _app.dataManager.fetchAllNamedEntities(_tableName);
     return results.map((map) => Species.fromMap(map)).toList();
   }
 
-  Future<Species> fetchCategory(String id) async {
+  Future<Species> fetch({String id}) async {
     var result = await _app.dataManager.fetchEntity(_tableName, id);
     return Species.fromMap(result);
   }
