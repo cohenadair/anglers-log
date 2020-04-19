@@ -17,6 +17,13 @@ class CatchManager extends EntityManager<Catch> {
   }
   CatchManager._internal(AppManager app) : super(app);
 
+  /// Returns all catches, sorted from newest to oldest.
+  List<Catch> get entityListSortedByTimestamp {
+    List<Catch> result = List.of(entities.values);
+    result.sort((lhs, rhs) => rhs.timestamp.compareTo(lhs.timestamp));
+    return result;
+  }
+
   @override
   Catch entityFromMap(Map<String, dynamic> map) => Catch.fromMap(map);
 

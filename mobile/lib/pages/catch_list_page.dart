@@ -7,6 +7,7 @@ import 'package:mobile/fishing_spot_manager.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/model/catch.dart';
 import 'package:mobile/pages/add_catch_journey.dart';
+import 'package:mobile/res/dimen.dart';
 import 'package:mobile/species_manager.dart';
 import 'package:mobile/utils/page_utils.dart';
 import 'package:mobile/utils/string_utils.dart';
@@ -30,7 +31,7 @@ class _CatchListPageState extends State<CatchListPage> {
   FishingSpotManager get _fishingSpotManager => FishingSpotManager.of(context);
   SpeciesManager get _speciesManager => SpeciesManager.of(context);
 
-  List<Catch> get _catches => _catchManager.entityList;
+  List<Catch> get _catches => _catchManager.entityListSortedByTimestamp;
 
   Widget build(BuildContext context) {
     return EntityListenerBuilder<Catch>(
@@ -73,17 +74,27 @@ class _CatchListPageState extends State<CatchListPage> {
       }
     }
 
-    return Row(children: [
-      ImagePlaceholder(size: _thumbnailSize),
-      Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          LabelText(_speciesManager.entity(id: cat.speciesId).name),
-          SubtitleText(formatDateTime(context, cat.dateTime)),
-          subtitle2,
-        ],
+    return InkWell(
+      onTap: () {
+      },
+      child: Padding(
+        padding: insetsDefault,
+        child: Row(children: [
+          ImagePlaceholder(size: _thumbnailSize),
+          Container(width: paddingWidget),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              LabelText(_speciesManager.entity(id: cat.speciesId).name),
+              SubtitleText(formatDateTime(context, cat.dateTime)),
+              subtitle2,
+            ],
+          ),
+          Spacer(),
+          Container(width: paddingWidget),
+          RightChevronIcon(),
+        ]),
       ),
-      RightChevronIcon(),
-    ]);
+    );
   }
 }
