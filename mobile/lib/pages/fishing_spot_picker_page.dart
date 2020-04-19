@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:mobile/entity_manager.dart';
 import 'package:mobile/fishing_spot_manager.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/location_monitor.dart';
@@ -69,6 +70,8 @@ class _FishingSpotPickerPageState extends State<FishingSpotPickerPage>
   /// otherwise.
   bool _isMoving = false;
 
+  FishingSpotManager get _fishingSpotManager => FishingSpotManager.of(context);
+
   bool get _hasFishingSpot => _currentFishingSpot != null;
   bool get _fishingSpotShowing => _fishingSpotAnimController.isCompleted;
   bool get _fishingSpotInDatabase =>
@@ -111,11 +114,14 @@ class _FishingSpotPickerPageState extends State<FishingSpotPickerPage>
 
   @override
   Widget build(BuildContext context) {
-    return FishingSpotsBuilder(
-      onUpdate: (fishingSpots) => _updateMarkers(fishingSpots),
-      builder: (context) => Scaffold(
-        body: _buildMap(),
-      ),
+    return EntityListenerBuilder<FishingSpot>(
+      manager: _fishingSpotManager,
+      builder: (context) {
+        _updateMarkers();
+        return Scaffold(
+          body: _buildMap(),
+        );
+      },
     );
   }
 
@@ -324,7 +330,8 @@ class _FishingSpotPickerPageState extends State<FishingSpotPickerPage>
     });
   }
 
-  void _updateMarkers([List<FishingSpot> fishingSpots]) {
+  void _updateMarkers() {
+    List<FishingSpot> fishingSpots = _fishingSpotManager.entityList;
     if (fishingSpots == null || fishingSpots.isEmpty) {
       fishingSpots = List.from(_fishingSpotMarkerMap.keys);
     }

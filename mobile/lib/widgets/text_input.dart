@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/utils/validator.dart';
@@ -109,51 +107,37 @@ class TextInput extends StatefulWidget {
 }
 
 class _TextInputState extends State<TextInput> {
-  Future<ValidationCallback> _validationCallback;
-
-  @override
-  void initState() {
-    super.initState();
-    _validationCallback =
-        widget.validator?.run(context, widget.controller.text);
-  }
+  ValidationCallback get _validationCallback =>
+      widget.validator?.run(context, widget.controller.text);
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<ValidationCallback>(
-      future: _validationCallback,
-      builder: (context, snapshot) {
-        return TextFormField(
-          cursorColor: Theme.of(context).primaryColor,
-          initialValue: widget.initialValue,
-          controller: widget.controller.value,
-          decoration: InputDecoration(
-            labelText: widget.label,
-            errorText: widget.controller.error(context),
-          ),
-          textCapitalization: widget.capitalization,
-          validator: (text) => snapshot.hasData ? snapshot.data(context) : null,
-          enabled: widget.enabled,
-          maxLength: widget.maxLength,
-          maxLines: widget.maxLines,
-          keyboardType: widget.keyboardType,
-          onChanged: (_) async {
-            Future<ValidationCallback> callbackFuture =
-                widget.validator?.run(context, widget.controller.text);
-            ValidationCallback callback = await callbackFuture;
-
-            if (widget.controller.validate != callback) {
-              widget.controller.validate = callback;
-              setState(() {
-                _validationCallback = Future(() => callbackFuture);
-              });
-            }
-
-            widget.onChanged?.call();
-          },
-          autofocus: widget.autofocus,
-        );
+    return TextFormField(
+      cursorColor: Theme.of(context).primaryColor,
+      initialValue: widget.initialValue,
+      controller: widget.controller.value,
+      decoration: InputDecoration(
+        labelText: widget.label,
+        errorText: widget.controller.error(context),
+      ),
+      textCapitalization: widget.capitalization,
+      validator: (text) {
+        String validationError = _validationCallback?.call(context);
+        return isEmpty(validationError) ? null : validationError;
       },
+      enabled: widget.enabled,
+      maxLength: widget.maxLength,
+      maxLines: widget.maxLines,
+      keyboardType: widget.keyboardType,
+      onChanged: (_) {
+        ValidationCallback callback = _validationCallback;
+        if (widget.controller.validate != callback) {
+          widget.controller.validate = callback;
+          setState(() {});
+        }
+        widget.onChanged?.call();
+      },
+      autofocus: widget.autofocus,
     );
   }
 }

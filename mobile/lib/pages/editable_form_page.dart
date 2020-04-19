@@ -97,7 +97,7 @@ class _EditableFormPageState extends State<EditableFormPage> {
   }
 
   CustomEntity _customField(String id) =>
-      CustomFieldManager.of(context).customField(id);
+      CustomFieldManager.of(context).entity(id:id);
 
   Widget _inputWidget({String key}) {
     if (!_fields[key].showing) {

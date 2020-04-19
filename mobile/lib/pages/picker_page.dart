@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:mobile/entity_manager.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/log.dart';
 import 'package:mobile/model/named_entity.dart';
@@ -8,7 +9,7 @@ import 'package:mobile/model/species.dart';
 import 'package:mobile/pages/save_name_page.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/species_manager.dart';
-import 'package:mobile/utils/future_stream_builder.dart';
+import 'package:mobile/utils/listener_manager.dart';
 import 'package:mobile/utils/page_utils.dart';
 import 'package:mobile/utils/validator.dart';
 import 'package:mobile/widgets/button.dart';
@@ -59,9 +60,9 @@ class PickerPage<T> extends StatefulWidget {
   /// If non-null, "Add" and "Edit" buttons will be present in the [AppBar].
   final PickerPageItemManager<T> itemManager;
 
-  /// If non-null, will update the picker when changes to the underlying stream
+  /// If non-null, will update the picker when changes to the manager's data
   /// are made.
-  final FutureStreamHolder futureStreamHolder;
+  final ListenerManager<EntityListener> listenerManager;
 
   /// 'true' allows multi-select; `false` otherwise. When multi-select is
   /// enabled, the picker is dismissed via "Done" button in the app bar,
@@ -77,7 +78,7 @@ class PickerPage<T> extends StatefulWidget {
     this.listHeader,
     this.allItem,
     this.itemManager,
-    this.futureStreamHolder,
+    this.listenerManager,
   }) : assert(initialValues != null),
        assert(itemBuilder != null);
 
@@ -89,7 +90,7 @@ class PickerPage<T> extends StatefulWidget {
     Widget listHeader,
     PickerPageItem<T> allItem,
     PickerPageItemManager itemManager,
-    FutureStreamHolder futureStreamHolder,
+    ListenerManager<EntityListener> listenerManager,
   }) : this(
     itemBuilder: itemBuilder,
     onFinishedPicking: (context, items) =>
@@ -100,7 +101,7 @@ class PickerPage<T> extends StatefulWidget {
     listHeader: listHeader,
     allItem: allItem,
     itemManager: itemManager,
-    futureStreamHolder: futureStreamHolder,
+    listenerManager: listenerManager,
   );
 
   @override
@@ -124,11 +125,11 @@ class _PickerPageState<T> extends State<PickerPage<T>> {
   @override
   Widget build(BuildContext context) {
     Widget child;
-    if (widget.futureStreamHolder == null) {
+    if (widget.listenerManager == null) {
       child = _buildListView(context);
     } else {
-      child = FutureStreamBuilder(
-        holder: widget.futureStreamHolder,
+      child = EntityListenerBuilder<T>(
+        manager: widget.listenerManager,
         builder: (context) => _buildListView(context),
       );
     }
@@ -440,8 +441,7 @@ class PickerPageItemSpeciesManager extends PickerPageItemNameManager<Species> {
     validator: NameValidator(
       nameExistsMessage:
       Strings.of(context).speciesPickerPageSpeciesExists,
-      nameExistsFuture: (name) =>
-          SpeciesManager.of(context).nameExists(name),
+      nameExists: (name) => SpeciesManager.of(context).nameExists(name),
     ),
     onSave: (newName, oldSpecies) {
       var newSpecies = Species(name: newName);
@@ -449,7 +449,7 @@ class PickerPageItemSpeciesManager extends PickerPageItemNameManager<Species> {
         newSpecies = Species(name: newName, id: oldSpecies.id);
       }
 
-      SpeciesManager.of(context).createOrUpdate(newSpecies);
+      SpeciesManager.of(context).addOrUpdate(newSpecies);
     },
     onDelete: (speciesToDelete) =>
         SpeciesManager.of(context).delete(speciesToDelete),

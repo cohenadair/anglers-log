@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:mobile/entity_manager.dart';
 import 'package:mobile/fishing_spot_manager.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/location_monitor.dart';
@@ -42,37 +43,26 @@ class _MapPageState extends State<MapPage> {
 
   // Used to display old data during dismiss animations and during async
   // database calls.
-  FishingSpot _lastActiveFishingSpot;
-  bool _waitingForFuture = false;
   bool _waitingForDismissal = false;
 
-  // Cache future so we don't make redundant database calls.
-  Future<FishingSpot> _activeFishingSpotFuture = Future.value(null);
+  FishingSpotManager get _fishingSpotManager => FishingSpotManager.of(context);
 
   bool get _hasActiveMarker => _activeMarker != null;
   bool get _hasActiveFishingSpot => _activeFishingSpot != null;
-  bool get _hasLastActiveFishingSpot => _lastActiveFishingSpot != null;
 
   @override
   Widget build(BuildContext context) => Scaffold(
-    body: FishingSpotsBuilder(
-      onUpdate: (List<FishingSpot> fishingSpots) {
-        _log.d("Reloading fishing spots...");
-
+    body: EntityListenerBuilder<FishingSpot>(
+      manager: _fishingSpotManager,
+      onUpdate: () {
         _fishingSpotMarkers.clear();
-        fishingSpots.forEach((f) =>
+        _fishingSpotManager.entityList.forEach((f) =>
             _fishingSpotMarkers.add(_createFishingSpotMarker(f)));
 
         // Reset the active marker and fishing spot, if there was one.
         if (_activeMarker != null) {
-          FishingSpot activeFishingSpot = fishingSpots.firstWhere(
-            (FishingSpot fishingSpot) =>
-                fishingSpot.latLng == _activeMarker.position,
-            orElse: () => null,
-          );
-          if (activeFishingSpot != null) {
-            _activeFishingSpotFuture = Future.value(activeFishingSpot);
-          }
+          _activeFishingSpot =
+              _fishingSpotManager.withLatLng(_activeMarker.position);
 
           Marker newMarker = _fishingSpotMarkers.firstWhere(
             (m) => m.position == _activeMarker.position,
@@ -81,38 +71,18 @@ class _MapPageState extends State<MapPage> {
           _activeMarker = _copyMarker(newMarker, _activeMarkerIcon);
         }
       },
-      builder: (BuildContext context) => FutureBuilder<FishingSpot>(
-        future: _activeFishingSpotFuture,
-        builder: (BuildContext context, AsyncSnapshot<FishingSpot> snapshot) {
-          if (snapshot.connectionState == ConnectionState.none
-              || snapshot.connectionState == ConnectionState.done)
-          {
-            _activeFishingSpot = snapshot.data;
-            if (_activeFishingSpot != null) {
-              _lastActiveFishingSpot = _activeFishingSpot;
-            }
-            _waitingForFuture = false;
-          } else {
-            _waitingForFuture = true;
-          }
-
-          return _buildMap();
-        },
-      ),
+      builder: _buildMap,
     ),
   );
 
-  Widget _buildMap() {
+  Widget _buildMap(BuildContext context) {
     Set<Marker> markers = Set.of(_fishingSpotMarkers);
     if (_hasActiveMarker) {
       markers.add(_activeMarker);
     }
 
     String name;
-    if (_hasActiveMarker && _hasLastActiveFishingSpot && _waitingForFuture) {
-      // Active fishing spot is being updated.
-      name = _lastActiveFishingSpot.name;
-    } else if (_hasActiveMarker && _hasActiveFishingSpot) {
+    if (_hasActiveFishingSpot) {
       // Showing active fishing spot.
       if (isNotEmpty(_activeFishingSpot.name)) {
         name = _activeFishingSpot.name;
@@ -163,7 +133,7 @@ class _MapPageState extends State<MapPage> {
           if (fishingSpot != null) {
             setState(() {
               _setActiveMarker(_findMarker(fishingSpot.id));
-              _activeFishingSpotFuture = Future.value(fishingSpot);
+              _activeFishingSpot = fishingSpot;
             });
           }
         }
@@ -171,7 +141,7 @@ class _MapPageState extends State<MapPage> {
       onTap: (latLng) {
         setState(() {
           _setActiveMarker(_createDroppedPinMarker(latLng));
-          _activeFishingSpotFuture = Future.value(null);
+          _activeFishingSpot = null;
           moveMap(_mapController, latLng);
         });
       },
@@ -188,10 +158,11 @@ class _MapPageState extends State<MapPage> {
       return Container();
     }
 
+    FishingSpot fishingSpot = _activeFishingSpot;
     bool editing = true;
     if (!_hasActiveFishingSpot && _hasActiveMarker) {
       // Dropped pin case.
-      _lastActiveFishingSpot = FishingSpot(
+      fishingSpot = FishingSpot(
         lat: _activeMarker.position.latitude,
         lng: _activeMarker.position.longitude,
       );
@@ -201,16 +172,16 @@ class _MapPageState extends State<MapPage> {
     return Align(
       alignment: Alignment.bottomCenter,
       child: StyledBottomSheet(
-        visible: _hasActiveMarker && !_waitingForDismissal,
+        visible: fishingSpot != null && !_waitingForDismissal,
         onDismissed: () {
           setState(() {
             _setActiveMarker(null);
             _waitingForDismissal = false;
-            _activeFishingSpotFuture = Future.value(null);
+            _activeFishingSpot = null;
           });
         },
         child: _FishingSpotBottomSheet(
-          fishingSpot: _lastActiveFishingSpot ?? FishingSpot(lat: 0, lng: 0),
+          fishingSpot: fishingSpot ?? FishingSpot(lat: 0, lng: 0),
           editing: editing,
           onDelete: () {
             setState(() {
@@ -233,8 +204,8 @@ class _MapPageState extends State<MapPage> {
         setState(() {
           _setActiveMarker(_fishingSpotMarkers.firstWhere((Marker marker) =>
               marker.markerId.value == fishingSpot.id));
-          _activeFishingSpotFuture = FishingSpotManager.of(context)
-              .fetch(id: _activeMarker.markerId.value);
+          _activeFishingSpot = _fishingSpotManager.entity(
+              id: _activeMarker.markerId.value);
         });
       }
     );
@@ -307,8 +278,6 @@ class _FishingSpotBottomSheet extends StatelessWidget {
   final FishingSpot fishingSpot;
   final bool editing;
   final VoidCallback onDelete;
-
-  bool get hasName => isNotEmpty(fishingSpot.name) && editing;
 
   _FishingSpotBottomSheet({
     @required this.fishingSpot,

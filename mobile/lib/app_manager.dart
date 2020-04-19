@@ -1,3 +1,4 @@
+import 'package:mobile/bait_category_manager.dart';
 import 'package:mobile/bait_manager.dart';
 import 'package:mobile/catch_manager.dart';
 import 'package:mobile/custom_field_manager.dart';
@@ -8,10 +9,11 @@ import 'package:mobile/species_manager.dart';
 import 'package:mobile/trip_manager.dart';
 
 class AppManager {
+  BaitCategoryManager get baitCategoryManager => BaitCategoryManager.get(this);
   BaitManager get baitManager => BaitManager.get(this);
   DataManager get dataManager => DataManager.get();
   CatchManager get catchManager => CatchManager.get(this);
-  CustomFieldManager get customFieldManager => CustomFieldManager.get();
+  CustomFieldManager get customFieldManager => CustomFieldManager.get(this);
   FishingSpotManager get fishingSpotManager => FishingSpotManager.get(this);
   LocationMonitor get locationMonitor => LocationMonitor.get();
   SpeciesManager get speciesManager => SpeciesManager.get(this);

@@ -1,14 +1,14 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
+import 'package:mobile/entity_manager.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/pages/picker_page.dart';
 import 'package:mobile/res/dimen.dart';
-import 'package:mobile/utils/future_stream_builder.dart';
+import 'package:mobile/utils/listener_manager.dart';
 import 'package:mobile/utils/page_utils.dart';
 import 'package:mobile/widgets/list_item.dart';
 import 'package:mobile/widgets/text.dart';
 import 'package:mobile/widgets/widget.dart';
+import 'package:quiver/strings.dart';
 
 typedef OnListPickerChanged<T> = void Function(T);
 
@@ -42,8 +42,8 @@ class ListPickerInput<T> extends StatefulWidget {
   /// See [PickerPage.itemManager].
   final PickerPageItemManager itemManager;
 
-  /// See [PickerPage.futureStreamHolder].
-  final FutureStreamHolder futureStreamHolder;
+  /// See [PickerPage.listenerManager].
+  final ListenerManager<EntityListener> listenerManager;
 
   /// If `true`, the selected value will render on the right side of the
   /// picker. This does not apply to multi-select pickers.
@@ -65,7 +65,7 @@ class ListPickerInput<T> extends StatefulWidget {
   /// Invoked when building the value widget and not enough information is
   /// provided to create said widget, such as when using
   /// [ListPickerInput.customTap] constructor.
-  final Future<String> Function() valueBuilder;
+  final String Function() valueBuilder;
 
   /// Invoked when the [ListPickerInput] widget is tapped. This is only
   /// applicable when using the [ListPickerInput.customTap] constructor.
@@ -83,7 +83,7 @@ class ListPickerInput<T> extends StatefulWidget {
     this.showsValueOnTrailing = false,
     this.enabled = true,
     this.itemManager,
-    this.futureStreamHolder,
+    this.listenerManager,
     this.itemEqualsOldValue,
     this.valueBuilder,
     this.onTap,
@@ -100,7 +100,7 @@ class ListPickerInput<T> extends StatefulWidget {
     EdgeInsets padding,
     bool enabled = true,
     PickerPageItemManager itemManager,
-    FutureStreamHolder futureStreamHolder,
+    ListenerManager<EntityListener> listenerManager,
     bool Function(PickerPageItem<T>, T) itemEqualsOldValue,
   }) : this(
     pageTitle: pageTitle,
@@ -112,7 +112,7 @@ class ListPickerInput<T> extends StatefulWidget {
     enabled: enabled,
     itemManager: itemManager,
     allowsMultiSelect: false,
-    futureStreamHolder: futureStreamHolder,
+    listenerManager: listenerManager,
     itemEqualsOldValue: itemEqualsOldValue,
   );
 
@@ -121,8 +121,8 @@ class ListPickerInput<T> extends StatefulWidget {
   /// or a more complex object.
   ListPickerInput.customTap({
     String label,
-    @required Future<String> Function() valueBuilder,
-    FutureStreamHolder futureStreamHolder,
+    @required String Function() valueBuilder,
+    ListenerManager<EntityListener> listenerManager,
     @required VoidCallback onTap,
   }) : this(
     pageTitle: Text(""),
@@ -131,7 +131,7 @@ class ListPickerInput<T> extends StatefulWidget {
     titleBuilder: (_) => Text(label),
     allowsMultiSelect: false,
     showsValueOnTrailing: true,
-    futureStreamHolder: futureStreamHolder,
+    listenerManager: listenerManager,
     valueBuilder: valueBuilder,
     onTap: onTap,
   );
@@ -164,7 +164,7 @@ class _ListPickerInputState<T> extends State<ListPickerInput<T>> {
       if (widget.onTap == null) {
         onTap = () {
           push(context, PickerPage<T>(
-            futureStreamHolder: widget.futureStreamHolder,
+            listenerManager: widget.listenerManager,
             itemManager: widget.itemManager,
             title: widget.pageTitle,
             listHeader: widget.listHeader,
@@ -211,39 +211,27 @@ class _ListPickerInputState<T> extends State<ListPickerInput<T>> {
 
   Widget _buildSingleDetail() {
     if (!widget.allowsMultiSelect && widget.showsValueOnTrailing) {
-      return FutureStreamBuilder(
-        holder: widget.futureStreamHolder,
+      return EntityListenerBuilder<T>(
+        manager: widget.listenerManager,
         builder: (context) {
           // Retrieve the title from the most up to date items.
-          Future<String> titleFuture = Future.value(null);
+          String title;
 
           if (_values.isNotEmpty && widget.itemEqualsOldValue != null) {
             for (var item in widget.itemBuilder()) {
               if (widget.itemEqualsOldValue(item, _values.first)) {
-                titleFuture = Future.value(item.title);
+                title = item.title;
                 break;
               }
             }
           } else if (widget.valueBuilder != null) {
-            titleFuture = widget.valueBuilder();
+            title = widget.valueBuilder();
           }
 
-          return FutureBuilder<String>(
-            future: titleFuture,
-            builder: (context, snapshot) {
-              String text;
-
-              if (snapshot.hasData) {
-                text = snapshot.data;
-              } else {
-                text = Strings.of(context).inputNotSelected;
-              }
-
-              return Padding(
-                padding: insetsRightWidgetSmall,
-                child: SecondaryLabelText(text),
-              );
-            },
+          return Padding(
+            padding: insetsRightWidgetSmall,
+            child: SecondaryLabelText(isEmpty(title)
+                ? Strings.of(context).inputNotSelected : title),
           );
         },
       );

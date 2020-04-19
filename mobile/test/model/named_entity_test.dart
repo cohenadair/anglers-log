@@ -1,7 +1,6 @@
 import 'dart:collection';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mobile/model/entity.dart';
 import 'package:mobile/model/named_entity.dart';
 import 'package:mobile/model/property.dart';
 

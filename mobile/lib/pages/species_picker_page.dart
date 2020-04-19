@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/entity_manager.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/model/species.dart';
 import 'package:mobile/pages/picker_page.dart';
@@ -16,17 +17,16 @@ class SpeciesPickerPage extends StatefulWidget {
 }
 
 class _SpeciesPickerPageState extends State<SpeciesPickerPage> {
-  List<Species> _species = [];
+  SpeciesManager get _speciesManager => SpeciesManager.of(context);
 
   @override
   Widget build(BuildContext context) {
-    return SpeciesBuilder(
-      onUpdate: (species) {
-        _species = species;
-      },
+    return EntityListenerBuilder<Species>(
+      manager: _speciesManager,
       builder: (context) => PickerPage<Species>.single(
         title: Text(Strings.of(context).speciesPickerPageTitle),
-        itemBuilder: () => entityListToPickerPageItemList<Species>(_species),
+        itemBuilder: () => entityListToPickerPageItemList<Species>(
+            _speciesManager.entityList),
         onFinishedPicking: widget.onPicked,
         itemManager: PickerPageItemSpeciesManager(context),
       ),

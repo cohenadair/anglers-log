@@ -80,7 +80,7 @@ class _SaveNamePageState extends State<SaveNamePage> {
             controller: _controller,
             autofocus: true,
             validator: NameValidator(
-              nameExistsFuture: widget.validator.nameExistsFuture,
+              nameExists: widget.validator.nameExists,
               nameExistsMessage: widget.validator.nameExistsMessage,
               oldName: widget.validator.oldName ?? widget.oldName,
             ),

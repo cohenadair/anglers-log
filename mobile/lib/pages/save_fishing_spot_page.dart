@@ -29,7 +29,9 @@ class SaveFishingSpotPage extends StatefulWidget {
 
 class _SaveFishingSpotPageState extends State<SaveFishingSpotPage> {
   final _nameController = TextInputController();
-  
+
+  FishingSpotManager get _fishingSpotManager => FishingSpotManager.of(context);
+
   @override
   void initState() {
     super.initState();
@@ -56,7 +58,7 @@ class _SaveFishingSpotPageState extends State<SaveFishingSpotPage> {
         if (widget.onSave != null) {
           widget.onSave(newFishingSpot);
         } else {
-          FishingSpotManager.of(context).createOrUpdate(newFishingSpot);
+          _fishingSpotManager.addOrUpdate(newFishingSpot);
         }
 
         return true;

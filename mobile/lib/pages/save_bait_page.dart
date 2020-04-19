@@ -1,9 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:mobile/bait_category_manager.dart';
 import 'package:mobile/bait_manager.dart';
 import 'package:mobile/i18n/strings.dart';
-import 'package:mobile/log.dart';
 import 'package:mobile/model/bait.dart';
 import 'package:mobile/model/bait_category.dart';
 import 'package:mobile/pages/editable_form_page.dart';
@@ -37,17 +37,21 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
   static const String baitCategoryId = "bait_category";
   static const String nameId = "name";
 
-  final _log = Log("SaveBaitPage");
-  List<BaitCategory> _categories = [];
+  final Map<String, InputData> _fields = {};
 
   bool get editing => widget.oldBait != null;
+
+  BaitCategoryManager get _baitCategoryManager =>
+      BaitCategoryManager.of(context);
+  BaitManager get _baitManager => BaitManager.of(context);
+
+  List<BaitCategory> get _categories =>
+      _baitCategoryManager.entityListSortedByName;
 
   BaitCategoryInputController get _baitCategoryController =>
       _fields[baitCategoryId].controller as BaitCategoryInputController;
   TextInputController get _nameController =>
       _fields[nameId].controller as TextInputController;
-
-  final Map<String, InputData> _fields = {};
 
   @override
   void initState() {
@@ -105,14 +109,7 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
       initialValue: _baitCategoryController.value,
       pageTitle: Text(Strings.of(context).saveBaitPageCategoryPickerTitle),
       labelText: Strings.of(context).saveBaitPageCategoryLabel,
-      futureStreamHolder: BaitCategoriesPickerFutureStreamHolder(context,
-        currentValue: () => _baitCategoryController.value,
-        onUpdate: (categories, updatedCategory) {
-          _log.d("Bait categories updated...");
-          _categories = categories;
-          _baitCategoryController.value = updatedCategory;
-        },
-      ),
+      listenerManager: _baitCategoryManager,
       itemBuilder: () =>
           entityListToPickerPageItemList<BaitCategory>(_categories),
       onChanged: (category) => _baitCategoryController.value = category,
@@ -127,8 +124,7 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
         validator: NameValidator(
           nameExistsMessage:
               Strings.of(context).saveBaitPageCategoryExistsMessage,
-          nameExistsFuture: (name) =>
-              BaitManager.of(context).categoryNameExists(name),
+          nameExists: (name) => _baitCategoryManager.nameExists(name),
         ),
         onSave: (newName, oldCategory) {
           var newCategory = BaitCategory(name: newName);
@@ -136,10 +132,10 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
             newCategory = BaitCategory(name: newName, id: oldCategory.id);
           }
 
-          BaitManager.of(context).createOrUpdateCategory(newCategory);
+          _baitCategoryManager.addOrUpdate(newCategory);
         },
         onDelete: (categoryToDelete) =>
-            BaitManager.of(context).deleteCategory(categoryToDelete),
+            _baitCategoryManager.delete(categoryToDelete),
       ),
       itemEqualsOldValue: (item, oldCategory) {
         return item.value.id == oldCategory.id;
@@ -153,12 +149,10 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
       controller: _nameController,
       autofocus: true,
       validator: GenericValidator(runner: (context, newName) {
-        Future<ValidationCallback> callback;
         if (isEmpty(_nameController.text)) {
-          callback = Future.value((context) =>
-              Strings.of(context).inputGenericRequired);
+          return (context) => Strings.of(context).inputGenericRequired;
         }
-        return callback;
+        return null;
       }),
       // Trigger "Save" button state refresh.
       onChanged: () => setState(() {}),
@@ -169,10 +163,10 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
     Bait newBait = Bait(
       id: widget.oldBait?.id,
       name: _nameController.text,
-      baitCategoryId: _baitCategoryController.value?.id,
+      categoryId: _baitCategoryController.value?.id,
     );
 
-    if (await BaitManager.of(context).baitExists(newBait)) {
+    if (_baitManager.isDuplicate(newBait)) {
       showErrorDialog(
         context: context,
         description: Text(Strings.of(context).saveBaitPageBaitExists),
@@ -180,7 +174,7 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
       return false;
     }
 
-    BaitManager.of(context).createOrUpdateBait(newBait);
+    _baitManager.addOrUpdate(newBait);
     return true;
   }
 }

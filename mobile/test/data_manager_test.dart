@@ -33,6 +33,6 @@ void main() {
         "'%that%' OR $column LIKE '%does%' OR $column LIKE '%nothing%'"
         " ORDER BY $column");
     expect(args[1], ["Some random text that does nothing", "Some", "random",
-      "text", "that", "does", "nothing"]);
+        "text", "that", "does", "nothing"]);
   });
 }

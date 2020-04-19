@@ -43,6 +43,17 @@ class Entity implements Mappable {
     return result;
   }
 
+  /// Returns true if any of the entity's properties contain the given
+  /// [filter].
+  bool meetsFilter(String filter) {
+    for (Property property in _properties.values) {
+      if (property.toString().contains(filter)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   @override
   bool operator ==(other) => other is Entity
       && listEquals(propertyList, other.propertyList);

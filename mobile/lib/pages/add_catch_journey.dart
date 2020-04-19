@@ -26,6 +26,8 @@ class _AddCatchJourneyState extends State<AddCatchJourney> {
 
   final _log = Log("AddCatchJourney");
 
+  FishingSpotManager get _fishingSpotManager => FishingSpotManager.of(context);
+
   CatchJourneyHelper _journeyHelper = CatchJourneyHelper();
 
   @override
@@ -40,7 +42,7 @@ class _AddCatchJourneyState extends State<AddCatchJourney> {
               doneButtonText: Strings.of(context).next,
               requiresPick: false,
               popsOnFinish: false,
-              onImagesPicked: (context, images) async {
+              onImagesPicked: (context, images) {
                 _journeyHelper.images = images;
 
                 // If one of the attached images has location data, use it to
@@ -50,11 +52,10 @@ class _AddCatchJourneyState extends State<AddCatchJourney> {
                     continue;
                   }
 
-                  FishingSpot existingSpot = await
-                      FishingSpotManager.of(context).withinRadius(
-                        latLng: image.position,
-                        meters: _existingFishingSpotMeters,
-                      );
+                  var existingSpot = _fishingSpotManager.withinRadius(
+                    latLng: image.position,
+                    meters: _existingFishingSpotMeters,
+                  );
 
                   if (existingSpot == null) {
                     _journeyHelper.fishingSpot = FishingSpot(
@@ -99,9 +100,9 @@ class _AddCatchJourneyState extends State<AddCatchJourney> {
         } else if (name == _pickFishingSpotRoute) {
           return MaterialPageRoute(
             builder: (context) => FishingSpotPickerPage(
-              onPicked: (context, fishingSpot) async {
-                FishingSpot existingSpot = await FishingSpotManager.of(context)
-                    .withLatLng(fishingSpot.latLng);
+              onPicked: (context, fishingSpot) {
+                var existingSpot =
+                    _fishingSpotManager.withLatLng(fishingSpot.latLng);
                 _journeyHelper.fishingSpot = existingSpot ?? fishingSpot;
                 Navigator.of(context).pushNamed(_saveCatchRoute);
               },

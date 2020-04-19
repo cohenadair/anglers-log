@@ -74,7 +74,7 @@ class _AddCustomFieldPageState extends State<AddCustomFieldPage> {
         autofocus: true,
         validator: NameValidator(
           nameExistsMessage: Strings.of(context).addCustomFieldPageNameExists,
-          nameExistsFuture: CustomFieldManager.of(context).nameExists,
+          nameExists: CustomFieldManager.of(context).nameExists,
         ),
         // Trigger "Save" button state refresh.
         onChanged: () => setState(() {}),
@@ -107,7 +107,7 @@ class _AddCustomFieldPageState extends State<AddCustomFieldPage> {
       type: _dataTypeController.value,
     );
 
-    CustomFieldManager.of(context).addField(customField);
+    CustomFieldManager.of(context).addOrUpdate(customField);
     widget.onSave?.call(customField);
     return true;
   }

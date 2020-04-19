@@ -2,11 +2,11 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:mobile/bait_category_manager.dart';
 import 'package:mobile/bait_manager.dart';
 import 'package:mobile/catch_manager.dart';
 import 'package:mobile/fishing_spot_manager.dart';
 import 'package:mobile/i18n/strings.dart';
-import 'package:mobile/log.dart';
 import 'package:mobile/model/bait.dart';
 import 'package:mobile/model/catch.dart';
 import 'package:mobile/model/fishing_spot.dart';
@@ -64,14 +64,19 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
   static const String _fishingSpotKey = "fishing_spot";
   static const String _baitKey = "bait";
 
-  final _log = Log("SaveBaitPage");
-
   final _fishingSpotMapHeight = 250.0;
 
   final Map<String, InputData> _fields = {};
   final Completer<GoogleMapController> _fishingSpotMapController = Completer();
 
-  List<Species> _species = [];
+  BaitCategoryManager get _baitCategoryManager =>
+      BaitCategoryManager.of(context);
+  BaitManager get _baitManager => BaitManager.of(context);
+  CatchManager get _catchManager => CatchManager.of(context);
+  FishingSpotManager get _fishingSpotManager => FishingSpotManager.of(context);
+  SpeciesManager get _speciesManager => SpeciesManager.of(context);
+
+  List<Species> get _species => _speciesManager.entityList;
 
   TimestampInputController get _timestampController =>
       _fields[_timestampKey].controller;
@@ -207,11 +212,8 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
   Widget _buildBait() {
     return ListPickerInput<Bait>.customTap(
       label: Strings.of(context).saveCatchPageBaitLabel,
-      futureStreamHolder: BaitsFutureStreamHolder(context,
-        onUpdate: (baits, baitCategories) {
-        }
-      ),
-      valueBuilder: () async {
+      listenerManager: _baitManager,
+      valueBuilder: () {
         var bait = _baitController.value;
         if (bait == null) {
           return null;
@@ -219,8 +221,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
 
         var category;
         if (bait.categoryId != null) {
-          category = await
-              BaitManager.of(context).fetchCategory(id: bait.categoryId);
+          category = _baitCategoryManager.entity(id: bait.categoryId);
         }
 
         return formatBaitName(bait, category);
@@ -334,14 +335,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
       initialValue: _speciesController.value,
       pageTitle: Text(Strings.of(context).speciesPickerPageTitle),
       labelText: Strings.of(context).saveCatchPageSpeciesLabel,
-      futureStreamHolder: SpeciesPickerFutureStreamHolder(context,
-        currentValue: () => _speciesController.value,
-        onUpdate: (allSpecies, currentSpecies) {
-          _log.d("Species updated...");
-          _species = allSpecies;
-          _speciesController.value = currentSpecies;
-        }
-      ),
+      listenerManager: _speciesManager,
       itemBuilder: () => entityListToPickerPageItemList<Species>(_species),
       onChanged: (species) => _speciesController.value = species,
       itemManager: PickerPageItemSpeciesManager(context),
@@ -363,10 +357,8 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
   }
 
   FutureOr<bool> _save(Map<String, InputData> result) {
-    FishingSpotManager.of(context)
-        .createOrUpdate(_fields[_fishingSpotKey].controller.value);
-
-    CatchManager.of(context).createOrUpdate(Catch(
+    _fishingSpotManager.addOrUpdate(_fields[_fishingSpotKey].controller.value);
+    _catchManager.addOrUpdate(Catch(
       timestamp: _timestampController.value,
       speciesId: _speciesController.value.id,
       fishingSpotId: _fishingSpotController.value?.id,

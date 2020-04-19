@@ -28,7 +28,16 @@ class _AnglersLogState extends State<AnglersLog> {
     _appInitializedFuture = Future.wait([
       _app.dataManager.initialize(_app),
       _app.locationMonitor.initialize(),
-    ]).then((_) => true);
+    ]).then((_) async {
+      // Initializations that depend on first initializations to be finished.
+      return Future.wait([
+        _app.baitCategoryManager.initialize(),
+        _app.baitManager.initialize(),
+        _app.catchManager.initialize(),
+        _app.fishingSpotManager.initialize(),
+        _app.speciesManager.initialize(),
+      ]).then((_) => true);
+    });
   }
 
   @override

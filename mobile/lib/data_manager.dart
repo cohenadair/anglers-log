@@ -3,9 +3,7 @@ import 'package:mobile/app_manager.dart';
 import 'package:mobile/database/sqlite_open_helper.dart';
 import 'package:mobile/log.dart';
 import 'package:mobile/model/entity.dart';
-import 'package:mobile/utils/void_stream_controller.dart';
 import 'package:provider/provider.dart';
-import 'package:quiver/strings.dart';
 import 'package:sqflite/sqflite.dart';
 
 class DataManager {
@@ -58,86 +56,58 @@ class DataManager {
     ) > 0;
   }
 
+  /// Returns true if the given ID exists in the given table; false otherwise.
+  Future<bool> _idExists(String tableName, String id) async {
+    return Sqflite.firstIntValue(await _database.rawQuery(
+        "SELECT COUNT(*) FROM $tableName WHERE id = ?", [id])) > 0;
+  }
+
   /// Allows a raw query to be sent to the database.
   Future<List<Map<String, dynamic>>> query(String sql, [List<dynamic> args]) {
     return _database.rawQuery(sql, args);
-  }
-
-  Future<int> count(String tableName) async {
-    return Sqflite.firstIntValue(
-        await _database.rawQuery("SELECT COUNT(*) FROM $tableName"));
-  }
-
-  /// Returns true if the given ID exists in the given table; false otherwise.
-  Future<bool> _idExists(String tableName, String id) async {
-    return exists(tableName, "id", id);
-  }
-
-  Future<bool> exists(String tableName, String columnName, dynamic value) async
-  {
-    return Sqflite.firstIntValue(await _database
-        .rawQuery("SELECT COUNT(*) FROM $tableName WHERE $columnName = ?",
-            [value])) > 0;
   }
 
   Future<bool> rawExists(String query, [List<dynamic> args]) async {
     return Sqflite.firstIntValue(await _database.rawQuery(query, args)) > 0;
   }
 
+  Future<bool> rawUpdate(String query, [List<dynamic> args]) async {
+    return await _database.rawUpdate(query, args) > 0;
+  }
+
   /// Inserts a new [Entity] into the given [tableName] or updates the existing
   /// [Entity] if one with the same ID already exists.
-  ///
-  /// If the given [VoidStreamController] is not `null`, its `notify()` method
-  /// is called if the [Entity] is successfully updated or inserted.
-  void insertOrUpdateEntity(Entity entity, String tableName, {
-    VoidStreamController controller,
-  }) async {
+  Future<bool> insertOrUpdateEntity(Entity entity, String tableName) async {
     if (await _idExists(tableName, entity.id)) {
       // Update if entity with ID already exists.
       if (await _updateId(tableName, entity.id, entity.toMap())) {
-        controller?.notify();
+        return true;
       } else {
         _log.e("Failed to update $tableName(${entity.id}");
       }
     } else {
       // Otherwise, create new entity.
       if (await _insert(tableName, entity.toMap())) {
-        controller?.notify();
+        return true;
       } else {
         _log.e("Failed to insert $tableName(${entity.id}");
       }
     }
+    return false;
   }
 
   /// Deletes a given [Entity] from the given [tableName].
-  ///
-  /// If the given [VoidStreamController] is not `null`, its `notify()` method
-  /// is called if the [Entity] is successfully deleted.
-  void deleteEntity(Entity entity, String tableName, {
-    VoidStreamController controller,
-  }) async {
+  Future<bool> deleteEntity(Entity entity, String tableName) async {
     if (await _delete("DELETE FROM $tableName WHERE id = ?", [entity.id])) {
-      controller?.notify();
+      return true;
     } else {
       _log.e("Failed to delete $tableName(${entity.id} from database");
     }
+    return false;
   }
 
-  /// Result is sorted alphabetically by [Entity.name].
-  Future<List<Map<String, dynamic>>> fetchAllNamedEntities(String tableName, {
-    String searchText,
-  }) async {
-    _log.w("fetchAll($tableName, searchText: $searchText) called");
-
-    List<Map<String, dynamic>> results;
-    if (isEmpty(searchText)) {
-      results = await
-      query("SELECT * FROM $tableName ORDER BY name");
-    } else {
-      results = await search(tableName, "name", searchText);
-    }
-
-    return results;
+  Future<List<Map<String, dynamic>>> fetchAllEntities(String tableName) async {
+    return await query("SELECT * FROM $tableName");
   }
 
   Future<Map<String, dynamic>> fetchEntity(String tableName, String id) async {

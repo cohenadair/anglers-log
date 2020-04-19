@@ -295,9 +295,6 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
 }
 
 class _SearchDelegate extends SearchDelegate<FishingSpot> {
-  List<FishingSpot> _allFishingSpots = [];
-  List<FishingSpot> _searchFishingSpots = [];
-
   _SearchDelegate({
     String searchFieldLabel,
   }) : super(
@@ -324,31 +321,18 @@ class _SearchDelegate extends SearchDelegate<FishingSpot> {
 
   @override
   Widget buildResults(BuildContext context) {
-    return FishingSpotsBuilder(
-      searchText: query,
-      onUpdate: (List<FishingSpot> fishingSpots) {
-        _searchFishingSpots = fishingSpots ?? [];
-      },
-      builder: (BuildContext context) {
-        if (_searchFishingSpots.isNotEmpty) {
-          return _buildList(_searchFishingSpots);
-        }
-        return NoResults(Strings.of(context).mapPageNoSearchResults);
-      },
-    );
+    var fishingSpots = FishingSpotManager.of(context).filteredEntityList(query);
+    fishingSpots.sort((lhs, rhs) => lhs.compareNameTo(rhs));
+
+    if (fishingSpots.isEmpty) {
+      return NoResults(Strings.of(context).mapPageNoSearchResults);
+    }
+    return _buildList(fishingSpots);
   }
 
   @override
-  Widget buildSuggestions(BuildContext context) {
-    return FishingSpotsBuilder(
-      onUpdate: (List<FishingSpot> fishingSpots) {
-        _allFishingSpots = fishingSpots ?? [];
-      },
-      builder: (BuildContext context) {
-        return _buildList(_allFishingSpots);
-      },
-    );
-  }
+  Widget buildSuggestions(BuildContext context) =>
+      _buildList(FishingSpotManager.of(context).entityListSortedByName);
 
   @override
   ThemeData appBarTheme(BuildContext context) {
