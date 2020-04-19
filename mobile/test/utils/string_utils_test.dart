@@ -1,3 +1,5 @@
+import 'package:mobile/model/bait.dart';
+import 'package:mobile/model/bait_category.dart';
 import 'package:mobile/utils/string_utils.dart';
 import 'package:test/test.dart';
 
@@ -9,5 +11,12 @@ void main() {
     formatString = format("You've added angler %s to your log.",
         ["Cohen Adair"]);
     expect(formatString, "You've added angler Cohen Adair to your log.");
+  });
+
+  test("Format bait name", () {
+    var bait = Bait(name: "Bait");
+    var category = BaitCategory(name: "Category");
+    expect(formatBaitName(bait), "Bait");
+    expect(formatBaitName(bait, category), "Category - Bait");
   });
 }

@@ -47,7 +47,9 @@ class Entity implements Mappable {
   /// [filter].
   bool meetsFilter(String filter) {
     for (Property property in _properties.values) {
-      if (property.toString().contains(filter)) {
+      if (property.value.toString().toLowerCase()
+          .contains(filter.toLowerCase()))
+      {
         return true;
       }
     }

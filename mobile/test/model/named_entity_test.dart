@@ -13,7 +13,7 @@ void main() {
     expect(entity.id, isNotNull);
   });
 
-  test("Entity equality", () {
+  test("Equality", () {
     var entity1 = NamedEntity(properties: [
       Property<int>(key: "numberOfLegs", value: 4),
       Property<bool>(key: "hasTail", value: true),
@@ -44,7 +44,7 @@ void main() {
     expect(set.length, 2);
   });
 
-  test("Entity mapping", () {
+  test("Mapping", () {
     var entity1 = NamedEntity(properties: [
       Property<int>(key: "numberOfLegs", value: 4),
       Property<bool>(key: "hasTail", value: true),
@@ -66,5 +66,28 @@ void main() {
     map = {};
     expect(() => NamedEntity.fromMap(map, properties: []),
         throwsAssertionError);
+  });
+
+  test("Name compare", () {
+    var entity1 = NamedEntity(name: "Test Name");
+    var entity2 = NamedEntity(name: "Test Name");
+    expect(entity1.compareNameTo(entity2), 0);
+    expect(entity1.compareNameTo(null), -1);
+
+    entity1 = NamedEntity(name: "Test Name");
+    entity2 = NamedEntity();
+    expect(entity1.compareNameTo(entity2), -1);
+
+    entity1 = NamedEntity();
+    entity2 = NamedEntity(name: "Test Name");
+    expect(entity1.compareNameTo(entity2), 1);
+
+    entity1 = NamedEntity(name: "A Test Name");
+    entity2 = NamedEntity(name: "Test Name");
+    expect(entity1.compareNameTo(entity2), -1);
+
+    entity1 = NamedEntity(name: "");
+    entity2 = NamedEntity(name: "");
+    expect(entity1.compareNameTo(entity2), 0);
   });
 }

@@ -13,7 +13,7 @@ void main() {
     expect(entity.id, isNotNull);
   });
 
-  test("Entity equality", () {
+  test("Equality", () {
     var entity1 = Entity(properties: [
       Property<int>(key: "numberOfLegs", value: 4),
       Property<bool>(key: "hasTail", value: true),
@@ -44,7 +44,7 @@ void main() {
     expect(set.length, 2);
   });
 
-  test("Entity mapping", () {
+  test("Mapping", () {
     var entity1 = Entity(properties: [
       Property<int>(key: "numberOfLegs", value: 4),
       Property<bool>(key: "hasTail", value: true),
@@ -62,5 +62,17 @@ void main() {
 
     map = {};
     expect(() => Entity.fromMap(map, properties: []), throwsAssertionError);
+  });
+
+  test("Filtering", () {
+    var entity = Entity(properties: [
+      Property<int>(key: "numberOfLegs", value: 4),
+      Property<bool>(key: "hasTail", value: true),
+      Property<String>(key: "description", value: "Example description"),
+    ]);
+
+    expect(entity.meetsFilter("4"), true);
+    expect(entity.meetsFilter("Ten"), false);
+    expect(entity.meetsFilter("script"), true);
   });
 }
