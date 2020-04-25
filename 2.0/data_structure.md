@@ -98,6 +98,7 @@ DOC: <catch-id>
     notes : string,
     anglerId (#213) : string
     gearId (#93) : string
+    floatDepth (user requested) : float
     chumId (#249) : string
 ```
 
