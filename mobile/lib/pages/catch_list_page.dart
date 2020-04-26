@@ -10,6 +10,7 @@ import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/image_manager.dart';
 import 'package:mobile/model/catch.dart';
 import 'package:mobile/pages/add_catch_journey.dart';
+import 'package:mobile/pages/catch_page.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/species_manager.dart';
 import 'package:mobile/utils/page_utils.dart';
@@ -59,8 +60,9 @@ class _CatchListPageState extends State<CatchListPage> {
 
   Widget _buildListItem(Catch cat) {
     Widget subtitle2 = Empty();
-    if (isNotEmpty(cat.fishingSpotId)) {
-      var fishingSpot = _fishingSpotManager.entity(id: cat.fishingSpotId);
+
+    var fishingSpot = _fishingSpotManager.entity(id: cat.fishingSpotId);
+    if (fishingSpot != null && isNotEmpty(fishingSpot.name)) {
       subtitle2 = SubtitleText(fishingSpot.name ?? formatLatLng(
         context: context,
         lat: fishingSpot.lat,
@@ -79,8 +81,7 @@ class _CatchListPageState extends State<CatchListPage> {
     List<File> imageFiles = _imageManager.imageFiles(entityId: cat.id);
 
     return InkWell(
-      onTap: () {
-      },
+      onTap: () => push(context, CatchPage(cat.id)),
       child: Padding(
         padding: insetsDefault,
         child: Row(children: [

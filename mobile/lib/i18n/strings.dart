@@ -75,6 +75,8 @@ class Strings {
   String get catchListPageMenuLabel => _string("catchListPage_menuLabel");
   String get catchListPageTitle => _string("catchListPage_title");
 
+  String get catchPageDeleteMessage => _string("catchPage_deleteMessage");
+
   String get saveCatchPageNewTitle => _string("saveCatchPage_newTitle");
   String get saveCatchPageDateTimeLabel => _string("saveCatchPage_dateTimeLabel");
   String get saveCatchPageDateLabel => _string("saveCatchPage_dateLabel");

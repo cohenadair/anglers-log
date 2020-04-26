@@ -5,12 +5,10 @@ import 'package:mobile/entity_manager.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/model/bait.dart';
 import 'package:mobile/model/bait_category.dart';
+import 'package:mobile/pages/entity_page.dart';
 import 'package:mobile/pages/save_bait_page.dart';
-import 'package:mobile/res/dimen.dart';
 import 'package:mobile/res/style.dart';
-import 'package:mobile/utils/dialog_utils.dart';
 import 'package:mobile/utils/page_utils.dart';
-import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/text.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:quiver/strings.dart';
@@ -39,43 +37,21 @@ class _BaitPageState extends State<BaitPage> {
       manager: _baitManager,
       // When deleted, we pop immediately. Don't reload; bait will be null.
       onDeleteEnabled: false,
-      builder: (context) => Scaffold(
-        appBar: AppBar(
-          actions: [
-            ActionButton.edit(
-              condensed: true,
-              onPressed: () => present(context, SaveBaitPage(
-                oldBait: _bait,
-                oldBaitCategory: _category,
-              )),
-            ),
-            IconButton(
-              icon: Icon(Icons.delete),
-              onPressed: () => showDeleteDialog(
-                context: context,
-                description: Text(Strings.of(context).baitPageDeleteMessage),
-                onDelete: () {
-                  BaitManager.of(context).delete(_bait);
-                  Navigator.pop(context);
-                },
-              ),
-            ),
-          ],
-        ),
-        body: Padding(
-          padding: insetsDefault,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              isNotEmpty(_bait.categoryId)
-                  ? HeadingText(_category.name) : Empty(),
-              Text(
-                _bait.name,
-                style: styleTitle,
-              ),
-            ],
+      builder: (context) => EntityPage(
+        onEdit: () => present(context, SaveBaitPage(
+          oldBait: _bait,
+          oldBaitCategory: _category,
+        )),
+        onDelete: () => BaitManager.of(context).delete(_bait),
+        deleteMessage: Strings.of(context).baitPageDeleteMessage,
+        children: [
+          isNotEmpty(_bait.categoryId)
+              ? HeadingText(_category.name) : Empty(),
+          Text(
+            _bait.name,
+            style: styleTitle,
           ),
-        ),
+        ],
       ),
     );
   }

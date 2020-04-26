@@ -345,7 +345,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
 
   Widget _buildImages() {
     return ImageInput(
-      initialImages: _imagesController.value,
+      initialImages: _imagesController.value ?? [],
       onImagesPicked: (images) {
         setState(() {
           _imagesController.value = images;
