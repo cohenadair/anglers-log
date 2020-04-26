@@ -37,7 +37,7 @@ void main() {
   });
 
   test("Test initialize", () async {
-    when(dataManager.fetchAllEntities("species")).thenAnswer((_) =>
+    when(dataManager.fetchAll("species")).thenAnswer((_) =>
         Future.value([
           Species(name: "Bass").toMap(),
           Species(name: "Bluegill").toMap(),

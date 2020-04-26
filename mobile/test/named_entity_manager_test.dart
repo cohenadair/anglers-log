@@ -19,28 +19,28 @@ class TestNamedEntityManager extends NamedEntityManager<Species> {
 }
 
 void main() {
-  MockAppManager appManager;
-  MockDataManager dataManager;
-  TestNamedEntityManager entityManager;
+  MockAppManager _appManager;
+  MockDataManager _dataManager;
+  TestNamedEntityManager _entityManager;
 
   setUp(() async {
-    appManager = MockAppManager();
-    dataManager = MockDataManager();
-    when(appManager.dataManager).thenReturn(dataManager);
-    when(dataManager.insertOrUpdateEntity(any, any))
+    _appManager = MockAppManager();
+    _dataManager = MockDataManager();
+    when(_appManager.dataManager).thenReturn(_dataManager);
+    when(_dataManager.insertOrUpdateEntity(any, any))
         .thenAnswer((_) => Future.value(true));
 
-    entityManager = TestNamedEntityManager(appManager);
+    _entityManager = TestNamedEntityManager(_appManager);
   });
 
   test("Name exists", () async {
-    await entityManager.addOrUpdate(Species(name: "Bass"));
-    await entityManager.addOrUpdate(Species(name: "Bluegill"));
-    await entityManager.addOrUpdate(Species(name: "Catfish"));
+    await _entityManager.addOrUpdate(Species(name: "Bass"));
+    await _entityManager.addOrUpdate(Species(name: "Bluegill"));
+    await _entityManager.addOrUpdate(Species(name: "Catfish"));
 
-    expect(entityManager.nameExists("bass"), true);
-    expect(entityManager.nameExists("  Catfish"), true);
-    expect(entityManager.nameExists("  catfish "), true);
-    expect(entityManager.nameExists("perch"), false);
+    expect(_entityManager.nameExists("bass"), true);
+    expect(_entityManager.nameExists("  Catfish"), true);
+    expect(_entityManager.nameExists("  catfish "), true);
+    expect(_entityManager.nameExists("perch"), false);
   });
 }

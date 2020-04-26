@@ -71,7 +71,7 @@ abstract class EntityManager<T extends Entity> extends
   }
 
   Future<List<T>> _fetchAll() async {
-    var results = await dataManager.fetchAllEntities(tableName);
+    var results = await dataManager.fetchAll(tableName);
     return results.map((map) => entityFromMap(map)).toList();
   }
 

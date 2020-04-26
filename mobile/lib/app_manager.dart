@@ -4,6 +4,7 @@ import 'package:mobile/catch_manager.dart';
 import 'package:mobile/custom_field_manager.dart';
 import 'package:mobile/data_manager.dart';
 import 'package:mobile/fishing_spot_manager.dart';
+import 'package:mobile/image_manager.dart';
 import 'package:mobile/location_monitor.dart';
 import 'package:mobile/species_manager.dart';
 import 'package:mobile/trip_manager.dart';
@@ -15,6 +16,7 @@ class AppManager {
   CatchManager get catchManager => CatchManager.get(this);
   CustomFieldManager get customFieldManager => CustomFieldManager.get(this);
   FishingSpotManager get fishingSpotManager => FishingSpotManager.get(this);
+  ImageManager get imageManager => ImageManager.get(this);
   LocationMonitor get locationMonitor => LocationMonitor.get();
   SpeciesManager get speciesManager => SpeciesManager.get(this);
   TripManager get tripManager => TripManager.get();

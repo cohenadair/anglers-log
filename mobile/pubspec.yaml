@@ -15,17 +15,20 @@ dependencies:
   flutter_localizations:
     sdk: flutter
 
+  crypto: ^2.1.4                    # Dart
   file_picker: ^1.4.3+2
+  flutter_image_compress: ^0.6.5+1  # https://pub.dev/packages/flutter_image_compress
   geolocator: ^5.2.1
-  google_maps_flutter: ^0.5.25+3  # Flutter
-  image_picker: ^0.6.3+1          # Flutter
-  intl: ^0.16.0                   # Dart - Version restricted by flutter_localizations
-  package_info: ^0.4.0+13         # Flutter
-  photo_manager: ^0.5.0           # https://pub.dev/packages/photo_manager
-  path: ^1.6.4                    # Dart
-  provider: ^3.2.0                # Version update requires migration
-  quiver: ^2.0.5                  # Google - Version restricted by flutter_test
-  sqflite: ^1.2.0                 # Endorsed by Flutter
+  google_maps_flutter: ^0.5.25+3    # Flutter
+  image_picker: ^0.6.3+1            # Flutter
+  intl: ^0.16.0                     # Dart - Version restricted by flutter_localizations
+  package_info: ^0.4.0+13           # Flutter
+  photo_manager: ^0.5.0             # https://pub.dev/packages/photo_manager
+  path: ^1.6.4                      # Dart
+  path_provider: ^1.6.7             # Flutter
+  provider: ^3.2.0                  # Version update requires migration
+  quiver: ^2.0.5                    # Google - Version restricted by flutter_test
+  sqflite: ^1.2.0                   # Endorsed by Flutter
   uuid: ^2.0.4
 
 dev_dependencies:

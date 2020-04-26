@@ -56,9 +56,10 @@ final List<String> _schema0 = [
   );
   """,
   """
-  CREATE TABLE catch_image (
-    id TEXT PRIMARY KEY,
-    catch_id TEXT NOT NULL
+  CREATE TABLE entity_image (
+    entity_id TEXT NOT NULL,
+    image_name TEXT NOT NULL,
+    PRIMARY KEY (entity_id, image_name)
   );
   """,
 ];

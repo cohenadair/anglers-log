@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:mobile/bait_category_manager.dart';
 import 'package:mobile/bait_manager.dart';
@@ -5,13 +7,14 @@ import 'package:mobile/catch_manager.dart';
 import 'package:mobile/entity_manager.dart';
 import 'package:mobile/fishing_spot_manager.dart';
 import 'package:mobile/i18n/strings.dart';
+import 'package:mobile/image_manager.dart';
 import 'package:mobile/model/catch.dart';
 import 'package:mobile/pages/add_catch_journey.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/species_manager.dart';
 import 'package:mobile/utils/page_utils.dart';
 import 'package:mobile/utils/string_utils.dart';
-import 'package:mobile/widgets/image_placeholder.dart';
+import 'package:mobile/widgets/thumbnail.dart';
 import 'package:mobile/widgets/text.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:quiver/strings.dart';
@@ -22,13 +25,12 @@ class CatchListPage extends StatefulWidget {
 }
 
 class _CatchListPageState extends State<CatchListPage> {
-  final double _thumbnailSize = 45;
-
   BaitCategoryManager get _baitCategoryManager =>
       BaitCategoryManager.of(context);
   BaitManager get _baitManager => BaitManager.of(context);
   CatchManager get _catchManager => CatchManager.of(context);
   FishingSpotManager get _fishingSpotManager => FishingSpotManager.of(context);
+  ImageManager get _imageManager => ImageManager.of(context);
   SpeciesManager get _speciesManager => SpeciesManager.of(context);
 
   List<Catch> get _catches => _catchManager.entityListSortedByTimestamp;
@@ -74,13 +76,16 @@ class _CatchListPageState extends State<CatchListPage> {
       }
     }
 
+    List<File> imageFiles = _imageManager.imageFiles(entityId: cat.id);
+
     return InkWell(
       onTap: () {
       },
       child: Padding(
         padding: insetsDefault,
         child: Row(children: [
-          ImagePlaceholder(size: _thumbnailSize),
+          Thumbnail.listItem(
+              file: imageFiles.isNotEmpty ? imageFiles.first : null),
           Container(width: paddingWidget),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,

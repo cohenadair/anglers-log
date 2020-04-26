@@ -34,7 +34,7 @@ class DataManager {
   }
 
   /// Returns `true` if values were successfully added.
-  Future<bool> _insert(String tableName, Map<String, dynamic> values) async {
+  Future<bool> insert(String tableName, Map<String, dynamic> values) async {
     return await _database.insert(tableName, values) > 0;
   }
 
@@ -87,7 +87,7 @@ class DataManager {
       }
     } else {
       // Otherwise, create new entity.
-      if (await _insert(tableName, entity.toMap())) {
+      if (await insert(tableName, entity.toMap())) {
         return true;
       } else {
         _log.e("Failed to insert $tableName(${entity.id}");
@@ -106,7 +106,7 @@ class DataManager {
     return false;
   }
 
-  Future<List<Map<String, dynamic>>> fetchAllEntities(String tableName) async {
+  Future<List<Map<String, dynamic>>> fetchAll(String tableName) async {
     return await query("SELECT * FROM $tableName");
   }
 

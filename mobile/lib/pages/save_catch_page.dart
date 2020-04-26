@@ -5,7 +5,6 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mobile/bait_category_manager.dart';
 import 'package:mobile/bait_manager.dart';
 import 'package:mobile/catch_manager.dart';
-import 'package:mobile/fishing_spot_manager.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/model/bait.dart';
 import 'package:mobile/model/catch.dart';
@@ -27,7 +26,7 @@ import 'package:mobile/widgets/input_data.dart';
 import 'package:mobile/widgets/input_controller.dart';
 import 'package:mobile/widgets/list_item.dart';
 import 'package:mobile/widgets/list_picker_input.dart';
-import 'package:mobile/widgets/photo_input.dart';
+import 'package:mobile/widgets/image_input.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:quiver/strings.dart';
 
@@ -73,7 +72,6 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
       BaitCategoryManager.of(context);
   BaitManager get _baitManager => BaitManager.of(context);
   CatchManager get _catchManager => CatchManager.of(context);
-  FishingSpotManager get _fishingSpotManager => FishingSpotManager.of(context);
   SpeciesManager get _speciesManager => SpeciesManager.of(context);
 
   List<Species> get _species => _speciesManager.entityList;
@@ -357,13 +355,18 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
   }
 
   FutureOr<bool> _save(Map<String, InputData> result) {
-    _fishingSpotManager.addOrUpdate(_fields[_fishingSpotKey].controller.value);
-    _catchManager.addOrUpdate(Catch(
+    Catch cat = Catch(
       timestamp: _timestampController.value,
       speciesId: _speciesController.value.id,
       fishingSpotId: _fishingSpotController.value?.id,
       baitId: _baitController.value?.id,
-    ));
+    );
+
+    _catchManager.addOrUpdate(cat,
+      fishingSpot: _fields[_fishingSpotKey].controller.value,
+      imageFiles: _imagesController.value.map((img) => img.originalFile)
+          .toList(),
+    );
 
     if (widget.popOverride != null) {
       widget.popOverride();
