@@ -50,14 +50,19 @@ class _MapPageState extends State<MapPage> {
   bool get _hasActiveMarker => _activeMarker != null;
   bool get _hasActiveFishingSpot => _activeFishingSpot != null;
 
+
+  @override
+  void initState() {
+    super.initState();
+    _updateMarkers();
+  }
+
   @override
   Widget build(BuildContext context) => Scaffold(
     body: EntityListenerBuilder<FishingSpot>(
       manager: _fishingSpotManager,
       onUpdate: () {
-        _fishingSpotMarkers.clear();
-        _fishingSpotManager.entityList.forEach((f) =>
-            _fishingSpotMarkers.add(_createFishingSpotMarker(f)));
+        _updateMarkers();
 
         // Reset the active marker and fishing spot, if there was one.
         if (_activeMarker != null) {
@@ -268,6 +273,12 @@ class _MapPageState extends State<MapPage> {
       (Marker marker) => marker.markerId.value == id,
       orElse: () => null,
     );
+  }
+
+  void _updateMarkers() {
+    _fishingSpotMarkers.clear();
+    _fishingSpotManager.entityList.forEach((f) =>
+        _fishingSpotMarkers.add(_createFishingSpotMarker(f)));
   }
 }
 
