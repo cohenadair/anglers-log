@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/utils/dialog_utils.dart';
 import 'package:mobile/widgets/button.dart';
+import 'package:mobile/widgets/widget.dart';
 import 'package:quiver/strings.dart';
 
 /// A page for displaying details of an [Entity]. This page includes a delete
@@ -15,15 +16,20 @@ class EntityPage extends StatefulWidget {
   final String deleteMessage;
   final VoidCallback onEdit;
   final VoidCallback onDelete;
+  final EdgeInsets padding;
+
+  /// When true, the underlying [Entity] cannot be modified.
+  final bool static;
 
   EntityPage({
     @required this.children,
     this.images,
-    @required this.deleteMessage,
+    this.deleteMessage,
     this.onEdit,
     this.onDelete,
-  }) : assert(children != null),
-       assert(isNotEmpty(deleteMessage));
+    this.padding = insetsDefault,
+    this.static = false,
+  }) : assert(children != null);
 
   @override
   _EntityPageState createState() => _EntityPageState();
@@ -59,20 +65,21 @@ class _EntityPageState extends State<EntityPage> {
         slivers: [
           SliverAppBar(
             actions: [
-              ActionButton.edit(
+              widget.static ? Empty() : ActionButton.edit(
                 condensed: true,
                 onPressed: widget.onEdit,
               ),
-              IconButton(
+              widget.static ? Empty() : IconButton(
                 icon: Icon(Icons.delete),
-                onPressed: () => showDeleteDialog(
-                  context: context,
-                  description: Text(widget.deleteMessage),
-                  onDelete: () {
-                    widget.onDelete?.call();
-                    Navigator.pop(context);
-                  },
-                ),
+                onPressed: isEmpty(widget.deleteMessage) ? null : () =>
+                    showDeleteDialog(
+                      context: context,
+                      description: Text(widget.deleteMessage),
+                      onDelete: () {
+                        widget.onDelete?.call();
+                        Navigator.pop(context);
+                      },
+                    ),
               ),
             ],
             flexibleSpace: FlexibleSpaceBar(
@@ -85,7 +92,7 @@ class _EntityPageState extends State<EntityPage> {
             forceElevated: true,
           ),
           SliverPadding(
-            padding: insetsDefault,
+            padding: widget.padding,
             sliver: SliverList(
               delegate: SliverChildBuilderDelegate(
                 (context, i) => widget.children[i],

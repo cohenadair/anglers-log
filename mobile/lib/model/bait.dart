@@ -153,6 +153,8 @@ class Bait extends NamedEntity {
   String get description =>
       (propertyWithName(keyDescription) as Property<String>).value;
 
+  bool get hasCategory => isNotEmpty(categoryId);
+
   bool isDuplicateOf(Bait bait) {
     if (bait == null) {
       return false;

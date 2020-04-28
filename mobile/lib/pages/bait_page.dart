@@ -16,7 +16,12 @@ import 'package:quiver/strings.dart';
 class BaitPage extends StatefulWidget {
   final String baitId;
 
-  BaitPage(this.baitId) : assert(isNotEmpty(baitId));
+  /// See [EntityPage.static].
+  final bool static;
+
+  BaitPage(this.baitId, {
+    this.static = false,
+  }) : assert(isNotEmpty(baitId));
 
   @override
   _BaitPageState createState() => _BaitPageState();
@@ -38,6 +43,7 @@ class _BaitPageState extends State<BaitPage> {
       // When deleted, we pop immediately. Don't reload; bait will be null.
       onDeleteEnabled: false,
       builder: (context) => EntityPage(
+        static: widget.static,
         onEdit: () => present(context, SaveBaitPage(
           oldBait: _bait,
           oldBaitCategory: _category,

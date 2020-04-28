@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/model/entity.dart';
 import 'package:mobile/model/property.dart';
+import 'package:quiver/strings.dart';
 
 /// A [Catch] is a record of fish caught by an anglers. A [Catch] can be a
 /// single catch, or multiple catches, but one catch can only be associated
@@ -63,4 +64,7 @@ class Catch extends Entity {
 
   String get speciesId =>
       (propertyWithName(keySpeciesId) as Property<String>).value;
+
+  bool get hasBait => isNotEmpty(baitId);
+  bool get hasFishingSpot => isNotEmpty(fishingSpotId);
 }

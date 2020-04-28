@@ -22,20 +22,6 @@ class HeadingText extends StatelessWidget {
   }
 }
 
-class ErrorText extends StatelessWidget {
-  final String text;
-
-  ErrorText(this.text);
-
-  @override
-  Widget build(BuildContext context) {
-    return Text(
-      text,
-      style: styleError,
-    );
-  }
-}
-
 /// Text that matches the primary label in a [ListTile].
 class LabelText extends StatelessWidget {
   final String text;

@@ -16,7 +16,6 @@ import 'package:mobile/pages/fishing_spot_picker_page.dart';
 import 'package:mobile/pages/image_picker_page.dart';
 import 'package:mobile/pages/picker_page.dart';
 import 'package:mobile/res/dimen.dart';
-import 'package:mobile/res/style.dart';
 import 'package:mobile/species_manager.dart';
 import 'package:mobile/utils/map_utils.dart';
 import 'package:mobile/utils/page_utils.dart';
@@ -27,8 +26,8 @@ import 'package:mobile/widgets/input_controller.dart';
 import 'package:mobile/widgets/list_item.dart';
 import 'package:mobile/widgets/list_picker_input.dart';
 import 'package:mobile/widgets/image_input.dart';
+import 'package:mobile/widgets/static_fishing_spot.dart';
 import 'package:mobile/widgets/widget.dart';
-import 'package:quiver/strings.dart';
 
 /// A utility class to store properties picked in a catch journey.
 class CatchJourneyHelper {
@@ -62,8 +61,6 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
   static const String _speciesKey = "species";
   static const String _fishingSpotKey = "fishing_spot";
   static const String _baitKey = "bait";
-
-  final _fishingSpotMapHeight = 250.0;
 
   final Map<String, InputData> _fields = {};
   final Completer<GoogleMapController> _fishingSpotMapController = Completer();
@@ -249,82 +246,15 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
       );
     }
 
-    Widget name = isEmpty(fishingSpot.name) ? null : Text(fishingSpot.name,
-      style: TextStyle(fontWeight: FontWeight.bold),
-    );
-
-    String latLngString = formatLatLng(context: context, lat: fishingSpot.lat,
-        lng: fishingSpot.lng);
-    Widget coordinates = Text(latLngString);
-    if (name == null) {
-      coordinates = Text(latLngString,
-          style: Theme.of(context).textTheme.bodyText2);
-    }
-
-    return Container(
+    return StaticFishingSpot(fishingSpot,
       padding: EdgeInsets.only(
         left: paddingDefault,
         right: paddingDefault,
         top: paddingSmall,
         bottom: paddingSmall,
       ),
-      height: _fishingSpotMapHeight,
-      child: Stack(
-        children: [
-          GoogleMap(
-            onMapCreated: (controller) {
-              if (!_fishingSpotMapController.isCompleted) {
-                _fishingSpotMapController.complete(controller);
-              }
-
-              // TODO: Remove when fixed in Google Maps.
-              // https://github.com/flutter/flutter/issues/27550
-              Future.delayed(Duration(milliseconds: 250), () {
-                controller.moveCamera(
-                    CameraUpdate.newLatLng(fishingSpot.latLng));
-              });
-            },
-            initialCameraPosition: CameraPosition(
-              target: fishingSpot.latLng,
-              zoom: 15,
-            ),
-            myLocationEnabled: false,
-            myLocationButtonEnabled: false,
-            markers: Set.from([
-              Marker(
-                markerId: MarkerId(fishingSpot.id),
-                position: fishingSpot.latLng,
-              ),
-            ]),
-            rotateGesturesEnabled: false,
-            scrollGesturesEnabled: false,
-            tiltGesturesEnabled: false,
-            zoomGesturesEnabled: false,
-          ),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Container(
-              margin: insetsSmall,
-              decoration: FloatingBoxDecoration.rectangle(),
-              child: Material(
-                color: Colors.transparent,
-                child: ListItem(
-                  contentPadding: EdgeInsets.only(
-                    left: paddingDefault,
-                    right: paddingSmall,
-                  ),
-                  title: name ?? coordinates,
-                  subtitle: name == null ? null : coordinates,
-                  onTap: () {
-                    _pushFishingSpotPicker();
-                  },
-                  trailing: RightChevronIcon(),
-                ),
-              ),
-            ),
-          ),
-        ]
-      ),
+      mapController: _fishingSpotMapController,
+      onTap: _pushFishingSpotPicker,
     );
   }
 
