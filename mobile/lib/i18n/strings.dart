@@ -148,6 +148,7 @@ class Strings {
   String get speciesPickerPageSpeciesExists => _string("speciesPickerPage_speciesExists");
   String get speciesPickerPageTitle => _string("speciesPickerPage_title");
   String get speciesPickerPageConfirmDelete => _string("speciesPickerPage_confirmDelete");
+  String get speciesPickerPageCatchDeleteError => _string("speciesPickerPage_catchDeleteError");
 
   String get fishingSpotPickerPageTitle => _string("fishingSpotPickerPage_title");
   String get fishingSpotPickerPageHint => _string("fishingSpotPickerPage_hint");

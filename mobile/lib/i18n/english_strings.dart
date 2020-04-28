@@ -123,6 +123,7 @@ Map<String, Map<String, String>> get englishStrings => {
     "speciesPickerPage_speciesExists" : "Species already exists",
     "speciesPickerPage_title" : "Select Species",
     "speciesPickerPage_confirmDelete" : "Are you sure you want to delete species %s? This cannot be undone.",
+    "speciesPickerPage_catchDeleteError" : "Unable to delete %s because it is attached to one or more catches.",
 
     "fishingSpotPickerPage_title" : "Select Fishing Spot",
     "fishingSpotPickerPage_hint" : "Drag the map to use exact coordinates, or select an existing fishing spot.",

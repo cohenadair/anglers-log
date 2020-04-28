@@ -9,8 +9,10 @@ import 'package:mobile/model/species.dart';
 import 'package:mobile/pages/save_name_page.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/species_manager.dart';
+import 'package:mobile/utils/dialog_utils.dart';
 import 'package:mobile/utils/listener_manager.dart';
 import 'package:mobile/utils/page_utils.dart';
+import 'package:mobile/utils/string_utils.dart';
 import 'package:mobile/utils/validator.dart';
 import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/checkbox_input.dart';
@@ -451,7 +453,14 @@ class PickerPageItemSpeciesManager extends PickerPageItemNameManager<Species> {
 
       SpeciesManager.of(context).addOrUpdate(newSpecies);
     },
-    onDelete: (speciesToDelete) =>
-        SpeciesManager.of(context).delete(speciesToDelete),
+    onDelete: (speciesToDelete) async {
+      if (!await SpeciesManager.of(context).delete(speciesToDelete)) {
+        showErrorDialog(
+          context: context,
+          description: Text(format(Strings.of(context)
+              .speciesPickerPageCatchDeleteError, [speciesToDelete.name])),
+        );
+      }
+    }
   );
 }

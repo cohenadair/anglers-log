@@ -58,4 +58,12 @@ class CatchManager extends EntityManager<Catch> {
 
   @override
   String get tableName => "catch";
+
+  /// Returns true if a [Catch] with the given properties exists.
+  bool existsWith({
+    String speciesId,
+  }) {
+    return entityList.firstWhere((cat) => cat.speciesId == speciesId,
+        orElse: () => null) != null;
+  }
 }
