@@ -33,14 +33,7 @@ class ImageManager {
   static ImageManager of(BuildContext context) =>
       Provider.of<AppManager>(context, listen: false).imageManager;
 
-  static ImageManager _instance;
-  factory ImageManager.get(AppManager app) {
-    if (_instance == null) {
-      _instance = ImageManager._internal(app);
-    }
-    return _instance;
-  }
-  ImageManager._internal(AppManager app) : _dataManager = app.dataManager;
+  ImageManager(AppManager app) : _dataManager = app.dataManager;
 
   final Log _log = Log("ImageManager");
   final String _tableName = "entity_image";

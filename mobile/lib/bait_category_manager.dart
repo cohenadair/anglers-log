@@ -8,14 +8,7 @@ class BaitCategoryManager extends NamedEntityManager<BaitCategory> {
   static BaitCategoryManager of(BuildContext context) =>
       Provider.of<AppManager>(context, listen: false).baitCategoryManager;
 
-  static BaitCategoryManager _instance;
-  factory BaitCategoryManager.get(AppManager app) {
-    if (_instance == null) {
-      _instance = BaitCategoryManager._internal(app);
-    }
-    return _instance;
-  }
-  BaitCategoryManager._internal(AppManager app) : super(app);
+  BaitCategoryManager(AppManager app) : super(app);
 
   @override
   BaitCategory entityFromMap(Map<String, dynamic> map) =>

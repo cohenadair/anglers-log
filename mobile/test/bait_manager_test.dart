@@ -24,10 +24,10 @@ void main() {
     dataManager = MockDataManager();
     when(appManager.dataManager).thenReturn(dataManager);
 
-    baitCategoryManager = BaitCategoryManager.get(appManager);
+    baitCategoryManager = BaitCategoryManager(appManager);
     when(appManager.baitCategoryManager).thenReturn(baitCategoryManager);
 
-    baitManager = BaitManager.get(appManager);
+    baitManager = BaitManager(appManager);
   });
 
   test("When a bait category is deleted, existing baits are updated", () async {

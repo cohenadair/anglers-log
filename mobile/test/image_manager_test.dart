@@ -22,7 +22,7 @@ void main() {
     _dataManager = MockDataManager();
     when(_appManager.dataManager).thenReturn(_dataManager);
 
-    _imageManager = ImageManager.get(_appManager);
+    _imageManager = ImageManager(_appManager);
   });
 
   test("Initialize", () async {

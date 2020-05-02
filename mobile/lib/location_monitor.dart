@@ -9,10 +9,6 @@ class LocationMonitor {
   static LocationMonitor of(BuildContext context) =>
       Provider.of<AppManager>(context, listen: false).locationMonitor;
 
-  static final LocationMonitor _instance = LocationMonitor._internal();
-  factory LocationMonitor.get() => _instance;
-  LocationMonitor._internal();
-
   final Log _log = Log("LocationMonitor");
   final distanceFilterMeters = 20;
 

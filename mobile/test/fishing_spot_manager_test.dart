@@ -23,7 +23,7 @@ void main() {
     when(dataManager.deleteEntity(any, any))
         .thenAnswer((_) => Future.value(true));
 
-    fishingSpotManager = FishingSpotManager.get(appManager);
+    fishingSpotManager = FishingSpotManager(appManager);
   });
 
   test("Fishing spot within radius", () async {

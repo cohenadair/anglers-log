@@ -10,10 +10,6 @@ class DataManager {
   static DataManager of(BuildContext context) =>
       Provider.of<AppManager>(context, listen: false).dataManager;
 
-  static final DataManager _instance = DataManager._internal();
-  factory DataManager.get() => _instance;
-  DataManager._internal();
-
   final Log _log = Log("DataManager");
 
   Database _database;

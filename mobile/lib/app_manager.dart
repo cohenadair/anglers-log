@@ -10,14 +10,84 @@ import 'package:mobile/species_manager.dart';
 import 'package:mobile/trip_manager.dart';
 
 class AppManager {
-  BaitCategoryManager get baitCategoryManager => BaitCategoryManager.get(this);
-  BaitManager get baitManager => BaitManager.get(this);
-  DataManager get dataManager => DataManager.get();
-  CatchManager get catchManager => CatchManager.get(this);
-  CustomFieldManager get customFieldManager => CustomFieldManager.get(this);
-  FishingSpotManager get fishingSpotManager => FishingSpotManager.get(this);
-  ImageManager get imageManager => ImageManager.get(this);
-  LocationMonitor get locationMonitor => LocationMonitor.get();
-  SpeciesManager get speciesManager => SpeciesManager.get(this);
-  TripManager get tripManager => TripManager.get();
+  BaitCategoryManager _baitCategoryManager;
+  BaitManager _baitManager;
+  DataManager _dataManager;
+  CatchManager _catchManager;
+  CustomFieldManager _customFieldManager;
+  FishingSpotManager _fishingSpotManager;
+  ImageManager _imageManager;
+  LocationMonitor _locationMonitor;
+  SpeciesManager _speciesManager;
+  TripManager _tripManager;
+
+  BaitCategoryManager get baitCategoryManager {
+    if (_baitCategoryManager == null) {
+      _baitCategoryManager = BaitCategoryManager(this);
+    }
+    return _baitCategoryManager;
+  }
+
+  BaitManager get baitManager {
+    if (_baitManager == null) {
+      _baitManager = BaitManager(this);
+    }
+    return _baitManager;
+  }
+
+  DataManager get dataManager {
+    if (_dataManager == null) {
+      _dataManager = DataManager();
+    }
+    return _dataManager;
+  }
+
+  CatchManager get catchManager {
+    if (_catchManager == null) {
+      _catchManager = CatchManager(this);
+    }
+    return _catchManager;
+  }
+
+  CustomFieldManager get customFieldManager {
+    if (_customFieldManager == null) {
+      _customFieldManager = CustomFieldManager(this);
+    }
+    return _customFieldManager;
+  }
+
+  FishingSpotManager get fishingSpotManager {
+    if (_fishingSpotManager == null) {
+      _fishingSpotManager = FishingSpotManager(this);
+    }
+    return _fishingSpotManager;
+  }
+
+  ImageManager get imageManager {
+    if (_imageManager == null) {
+      _imageManager = ImageManager(this);
+    }
+    return _imageManager;
+  }
+
+  LocationMonitor get locationMonitor {
+    if (_locationMonitor == null) {
+      _locationMonitor = LocationMonitor();
+    }
+    return _locationMonitor;
+  }
+
+  SpeciesManager get speciesManager {
+    if (_speciesManager == null) {
+      _speciesManager = SpeciesManager(this);
+    }
+    return _speciesManager;
+  }
+
+  TripManager get tripManager {
+    if (_tripManager == null) {
+      _tripManager = TripManager();
+    }
+    return _tripManager;
+  }
 }

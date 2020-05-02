@@ -11,16 +11,7 @@ class BaitManager extends NamedEntityManager<Bait> {
   static BaitManager of(BuildContext context) =>
       Provider.of<AppManager>(context, listen: false).baitManager;
 
-  static BaitManager _instance;
-
-  factory BaitManager.get(AppManager app) {
-    if (_instance == null) {
-      _instance = BaitManager._internal(app);
-    }
-    return _instance;
-  }
-
-  BaitManager._internal(AppManager app) : super(app) {
+  BaitManager(AppManager app) : super(app) {
     app.baitCategoryManager.addListener(SimpleEntityListener(
       onDelete: _onDeleteBaitCategory,
     ));

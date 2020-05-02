@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/model/entity.dart';
 import 'package:mobile/model/property.dart';
+import 'package:quiver/core.dart';
 import 'package:quiver/strings.dart';
 
 /// A [Catch] is a record of fish caught by an anglers. A [Catch] can be a
@@ -50,6 +51,21 @@ class Catch extends Entity {
         fishingSpotId: map[keyFishingSpotId],
         speciesId: map[keySpeciesId],
       ));
+
+  Catch copyWith({
+    String id,
+    int timestamp,
+    String speciesId,
+    Optional<String> baitId,
+    Optional<String> fishingSpotId,
+  }) => Catch(
+    id: id ?? this.id,
+    timestamp: timestamp ?? this.timestamp,
+    speciesId: speciesId ?? this.speciesId,
+    baitId: baitId == null ? this.baitId : baitId.orNull,
+    fishingSpotId: fishingSpotId == null
+        ? this.fishingSpotId : fishingSpotId.orNull,
+  );
 
   int get timestamp =>
       (propertyWithName(keyTimestamp) as Property<int>).value;

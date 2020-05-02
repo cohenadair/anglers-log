@@ -9,14 +9,7 @@ class CustomFieldManager extends NamedEntityManager<CustomEntity> {
   static CustomFieldManager of(BuildContext context) =>
       Provider.of<AppManager>(context, listen: false).customFieldManager;
 
-  static CustomFieldManager _instance;
-  factory CustomFieldManager.get(AppManager app) {
-    if (_instance == null) {
-      _instance = CustomFieldManager._internal(app);
-    }
-    return _instance;
-  }
-  CustomFieldManager._internal(AppManager app) : super(app);
+  CustomFieldManager(AppManager app) : super(app);
 
   @override
   CustomEntity entityFromMap(Map<String, dynamic> map) =>

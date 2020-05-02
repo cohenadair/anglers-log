@@ -9,16 +9,7 @@ class SpeciesManager extends NamedEntityManager<Species> {
   static SpeciesManager of(BuildContext context) =>
       Provider.of<AppManager>(context, listen: false).speciesManager;
 
-  static SpeciesManager _instance;
-  factory SpeciesManager.get(AppManager app) {
-    if (_instance == null) {
-      _instance = SpeciesManager._internal(app);
-    }
-    return _instance;
-  }
-  SpeciesManager._internal(AppManager app)
-      : _catchManager = app.catchManager,
-        super(app);
+  SpeciesManager(AppManager app) : _catchManager = app.catchManager, super(app);
 
   final CatchManager _catchManager;
 

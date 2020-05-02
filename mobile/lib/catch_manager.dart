@@ -5,25 +5,28 @@ import 'package:mobile/app_manager.dart';
 import 'package:mobile/entity_manager.dart';
 import 'package:mobile/fishing_spot_manager.dart';
 import 'package:mobile/image_manager.dart';
+import 'package:mobile/model/bait.dart';
 import 'package:mobile/model/catch.dart';
 import 'package:mobile/model/fishing_spot.dart';
 import 'package:provider/provider.dart';
+import 'package:quiver/core.dart';
 
 class CatchManager extends EntityManager<Catch> {
   static CatchManager of(BuildContext context) =>
       Provider.of<AppManager>(context, listen: false).catchManager;
 
-  static CatchManager _instance;
-  factory CatchManager.get(AppManager app) {
-    if (_instance == null) {
-      _instance = CatchManager._internal(app);
-    }
-    return _instance;
-  }
-  CatchManager._internal(AppManager app)
+  CatchManager(AppManager app)
       : _fishingSpotManager = app.fishingSpotManager,
         _imageManager = app.imageManager,
-        super(app);
+        super(app)
+  {
+    app.baitManager.addListener(SimpleEntityListener(
+      onDelete: _onDeleteBait,
+    ));
+    _fishingSpotManager.addListener(SimpleEntityListener(
+      onDelete: _onDeleteFishingSpot,
+    ));
+  }
 
   final FishingSpotManager _fishingSpotManager;
   final ImageManager _imageManager;
@@ -65,5 +68,43 @@ class CatchManager extends EntityManager<Catch> {
   }) {
     return entityList.firstWhere((cat) => cat.speciesId == speciesId,
         orElse: () => null) != null;
+  }
+
+  void _onDeleteBait(Bait bait) async {
+    // First, update database. If there are no affected catches, exit early.
+    if (!await dataManager.rawUpdate(
+        "UPDATE catch SET bait_id = null WHERE bait_id = ?",
+        [bait.id]))
+    {
+      return;
+    }
+
+    // Then, update memory cache.
+    List<Catch>.from(entityList
+        .where((cat) => bait.id == cat.baitId))
+        .forEach((cat) {
+          entities[cat.id] = cat.copyWith(baitId: Optional.absent());
+        });
+
+    notifyOnAddOrUpdate();
+  }
+
+  void _onDeleteFishingSpot(FishingSpot fishingSpot) async {
+    // First, update database. If there are no affected catches, exit early.
+    if (!await dataManager.rawUpdate(
+        "UPDATE catch SET fishing_spot_id = null WHERE fishing_spot_id = ?",
+        [fishingSpot.id]))
+    {
+      return;
+    }
+
+    // Then, update memory cache.
+    List<Catch>.from(entityList
+        .where((cat) => fishingSpot.id == cat.fishingSpotId))
+        .forEach((cat) {
+          entities[cat.id] = cat.copyWith(fishingSpotId: Optional.absent());
+        });
+
+    notifyOnAddOrUpdate();
   }
 }

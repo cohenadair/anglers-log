@@ -15,7 +15,7 @@ void main() {
   setUp(() async {
     appManager = MockAppManager();
     database = MockDatabase();
-    dataManager = DataManager.get();
+    dataManager = DataManager();
     await dataManager.initialize(appManager, database);
   });
 

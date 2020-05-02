@@ -1,6 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/model/catch.dart';
 import 'package:mobile/model/entity.dart';
+import 'package:quiver/core.dart';
 
 void main() {
   test("Mapping", () {
@@ -52,5 +53,51 @@ void main() {
       timestamp: 5000,
       speciesId: "ID",
     ), isNotNull);
+  });
+
+  test("Copy", () {
+    var cat = Catch(
+      id: "CatchId",
+      timestamp: 5000,
+      speciesId: "SpeciesId",
+      baitId: "BaitId",
+      fishingSpotId: "FishingSpotId",
+    );
+
+    // No changes.
+    var copy = cat.copyWith();
+    expect(copy.id, "CatchId");
+    expect(copy.timestamp, 5000);
+    expect(copy.speciesId, "SpeciesId");
+    expect(copy.baitId, "BaitId");
+    expect(copy.fishingSpotId, "FishingSpotId");
+
+    // Changed.
+    copy = cat.copyWith(
+      id: "CatchId2",
+      timestamp: 5002,
+      speciesId: "SpeciesId2",
+      baitId: Optional.of("BaitId2"),
+      fishingSpotId: Optional.of("FishingSpotId2"),
+    );
+    expect(copy.id, "CatchId2");
+    expect(copy.timestamp, 5002);
+    expect(copy.speciesId, "SpeciesId2");
+    expect(copy.baitId, "BaitId2");
+    expect(copy.fishingSpotId, "FishingSpotId2");
+
+    // Null properties.
+    copy = cat.copyWith(
+      id: "CatchId2",
+      timestamp: 5002,
+      speciesId: "SpeciesId2",
+      baitId: Optional.absent(),
+      fishingSpotId: Optional.absent(),
+    );
+    expect(copy.id, "CatchId2");
+    expect(copy.timestamp, 5002);
+    expect(copy.speciesId, "SpeciesId2");
+    expect(copy.baitId, isNull);
+    expect(copy.fishingSpotId, isNull);
   });
 }

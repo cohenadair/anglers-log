@@ -10,14 +10,7 @@ class FishingSpotManager extends NamedEntityManager<FishingSpot> {
   static FishingSpotManager of(BuildContext context) =>
       Provider.of<AppManager>(context, listen: false).fishingSpotManager;
 
-  static FishingSpotManager _instance;
-  factory FishingSpotManager.get(AppManager app) {
-    if (_instance == null) {
-      _instance = FishingSpotManager._internal(app);
-    }
-    return _instance;
-  }
-  FishingSpotManager._internal(AppManager app) : super(app);
+  FishingSpotManager(AppManager app) : super(app);
 
   @override
   FishingSpot entityFromMap(Map<String, dynamic> map) =>
