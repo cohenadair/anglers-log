@@ -72,7 +72,7 @@ final int _version = 1;
 
 Future<Database> openDb() async {
   String path = join(await getDatabasesPath(), _name);
-  print(path.toString());
+  _log.d(path.toString());
   return openDatabase(
     path,
     version: _version,

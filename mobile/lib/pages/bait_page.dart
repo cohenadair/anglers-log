@@ -44,10 +44,7 @@ class _BaitPageState extends State<BaitPage> {
       onDeleteEnabled: false,
       builder: (context) => EntityPage(
         static: widget.static,
-        onEdit: () => present(context, SaveBaitPage(
-          oldBait: _bait,
-          oldBaitCategory: _category,
-        )),
+        onEdit: () => present(context, SaveBaitPage.edit(_bait)),
         onDelete: () => BaitManager.of(context).delete(_bait),
         deleteMessage: Strings.of(context).baitPageDeleteMessage,
         children: [

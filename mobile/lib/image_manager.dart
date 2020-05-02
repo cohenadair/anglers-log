@@ -18,9 +18,8 @@ class ImageManagerProvider {
   /// created.
   final Directory directory;
 
-  /// A function for compressing the image at [sourcePath]. The compressed
-  /// image is saved to [destPath] and returned.
-  final Future<File> Function(String sourcePath, String destPath) compress;
+  /// A function for compressing the image at [sourcePath].
+  final Future<List<int>> Function(String sourcePath) compress;
 
   ImageManagerProvider({
     @required this.directory,
@@ -41,8 +40,8 @@ class ImageManager {
 
   final DataManager _dataManager;
 
-  /// Memory cache of entity ID to image files.
-  final Map<String, Set<File>> _entityImages = {};
+  /// Memory cache of entity ID to image names.
+  final Map<String, Set<String>> _entityImages = {};
 
   ImageManagerProvider _provider;
 
@@ -54,8 +53,8 @@ class ImageManager {
           (await getApplicationDocumentsDirectory()).path + "/images"),
       // TODO: Compression freezes UI until finished.
       // https://github.com/OpenFlutter/flutter_image_compress/issues/131
-      compress: (source, dest) => FlutterImageCompress
-          .compressAndGetFile(source, dest, quality: _imageCompressionQuality),
+      compress: (source) => FlutterImageCompress.compressWithFile(
+          source, quality: _imageCompressionQuality),
     );
 
     // Create images directory if it doesn't already exist.
@@ -67,50 +66,73 @@ class ImageManager {
     (await _fetchAll()).forEach((image) async => _addToMemoryCache(image));
   }
 
-  String fullPath(String imageName) => "$_path/$imageName";
+  String _fullPath(String imageName) => "$_path/$imageName";
 
   List<File> imageFiles({String entityId}) {
     if (isEmpty(entityId)) {
       return [];
     }
-    return List.unmodifiable(_entityImages[entityId] ?? []);
+    return List.unmodifiable(_entityImages[entityId] ?? [])
+        .map((name) => _file(name)).toList();
   }
 
-  File _file(String imageName) => File(fullPath(imageName));
+  /// Returns a list of all images in the log.
+  Set<File> allFiles() {
+    Set<File> result = {};
+    _entityImages.values.forEach((imageList) {
+      result.addAll(imageList.map((name) => _file(name)));
+    });
+    return result;
+  }
+
+  File _file(String imageName) => File(_fullPath(imageName));
 
   void _addToMemoryCache(EntityImage image) {
     if (_entityImages[image.entityId] == null) {
-      _entityImages[image.entityId] = <File>[].toSet();
+      _entityImages[image.entityId] = <String>[].toSet();
     }
-    _entityImages[image.entityId].add(_file(image.imageName));
+    _entityImages[image.entityId].add(image.imageName);
   }
 
   /// Compresses the given image files, converts them to JPG format, and saves
-  /// them to the app's sandbox.
+  /// them to the app's sandbox if the file doesn't already exit.
+  ///
+  /// This method will update the database such that the given entity ID will
+  /// only be associated with the given image files. Any previous association
+  /// will be overridden.
   ///
   /// Files are named by the image's MD5 hash value to ensure uniqueness, and
   /// that the same image isn't saved multiple times.
   Future<void> save({String entityId, List<File> files}) async {
-    if (files.isEmpty) {
+    if (files == null || files.isEmpty) {
+      await _delete(entityId);
       return;
     }
 
     List<EntityImage> dbImages = [];
 
-    for (File file in files) {
-      // Use MD5 hash in file name to ensure unique names, and to prevent
-      // unnecessary writing to the file system.
-      Digest fileMd5 = md5.convert(file.readAsBytesSync().toList());
-      var fileName = "${fileMd5.toString()}.jpg";
+    for (var file in files) {
+      // If the file already exists in the app's sandbox, don't copy it again.
+      if (file.path.contains(_provider.directory.path) && await file.exists()) {
+        _log.d("File exists, nothing to do");
+        continue;
+      }
+
+      // Compress first, so image MD5 hashes are equal to existing files.
+      List<int> jpgBytes = await _provider.compress(file.path);
+
+      Digest digest = md5.convert(jpgBytes);
+      var fileName = "${digest.toString()}.jpg";
       var newFile = _file(fileName);
 
-      // Only copy the file if it doesn't already exist.
-      if (!(await newFile.exists())) {
-        // Compress and copy to app's sandbox.
-        if (await _provider.compress(file.path, newFile.path) != null) {
-          _log.d("Copied image to ${newFile.path}");
-        } else {
-          _log.e("Error copying image to ${newFile.path}");
+      if (await newFile.exists()) {
+        _log.d("Using existing file");
+      } else {
+        _log.d("New file doesn't exist, copying to ${newFile.path}");
+        try {
+          newFile.writeAsBytesSync(jpgBytes, flush: true);
+        } on FileSystemException catch (e) {
+          _log.e("Error copying image to ${newFile.path}: $e}");
         }
       }
 
@@ -121,18 +143,46 @@ class ImageManager {
       ));
     }
 
-    // Create database entries.
-    List<dynamic> batchResult = await _dataManager.commitBatch((batch) {
-      dbImages.forEach((i) => batch.insert(_tableName, i.toMap(),
-          conflictAlgorithm: ConflictAlgorithm.replace));
+    if (dbImages.isNotEmpty) {
+      _delete(entityId);
+      dbImages.forEach((i) async => _addToMemoryCache(i));
+
+      // Create database entries.
+      List<dynamic> batchResult = await _dataManager.commitBatch((batch) {
+        dbImages.forEach((i) => batch.insert(_tableName, i.toMap(),
+            conflictAlgorithm: ConflictAlgorithm.replace));
+      });
+
+      if (batchResult.isEmpty || batchResult.length != dbImages.length) {
+        _log.e("Error saving images to database");
+      }
+    }
+  }
+
+  /// Deletes all images associated with the given entity ID. This applies
+  /// only to the database and memory cache; not the file system. Any given
+  /// file could be used in other entities.
+  Future<void> _delete(String entityId) async {
+    Set<String> imageNames = _entityImages[entityId] ?? {};
+    if (imageNames.isEmpty) {
+      return;
+    }
+
+    // Update database.
+    List<dynamic> batchResults = await _dataManager.commitBatch((batch) async {
+      for (var imageName in imageNames) {
+        batch.rawDelete(
+            "DELETE FROM $_tableName WHERE entity_id = ? AND image_name = ?",
+            [entityId, imageName]);
+      }
     });
 
-    // Update memory cache if database commit was successful.
-    if (batchResult.isNotEmpty && batchResult.length == dbImages.length) {
-      dbImages.forEach((i) async => _addToMemoryCache(i));
-    } else {
-      _log.e("Error saving image to database");
-    }
+    var numberDeleted = 0;
+    batchResults.forEach((result) => numberDeleted += result);
+    _log.d("Deleted $numberDeleted database images");
+
+    // Update memory cache.
+    _entityImages[entityId].clear();
   }
 
   Future<List<EntityImage>> _fetchAll() async {

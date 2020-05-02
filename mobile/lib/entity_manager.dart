@@ -3,6 +3,7 @@ import 'package:mobile/app_manager.dart';
 import 'package:mobile/data_manager.dart';
 import 'package:mobile/model/entity.dart';
 import 'package:mobile/utils/listener_manager.dart';
+import 'package:quiver/strings.dart';
 
 class EntityListener<T> {
   void Function(T) onDelete;
@@ -50,7 +51,7 @@ abstract class EntityManager<T extends Entity> extends
   }
 
   int get entityCount => entities.length;
-  T entity({String id}) => entities[id];
+  T entity({@required String id}) => isEmpty(id) ? null : entities[id];
 
   Future<bool> addOrUpdate(T entity) async {
     if (await dataManager.insertOrUpdateEntity(entity, tableName)) {

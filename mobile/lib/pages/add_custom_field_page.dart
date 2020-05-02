@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:mobile/custom_field_manager.dart';
 import 'package:mobile/i18n/strings.dart';
+import 'package:mobile/log.dart';
 import 'package:mobile/model/custom_entity.dart';
 import 'package:mobile/utils/validator.dart';
 import 'package:mobile/widgets/dropdown_input.dart';
@@ -31,6 +32,8 @@ class _AddCustomFieldPageState extends State<AddCustomFieldPage> {
   static const String _nameId = "name";
   static const String _descriptionId = "description";
   static const String _dataTypeId = "dataType";
+
+  final Log _log = Log("AddCustomFieldPage");
 
   final Map<String, InputController> _inputOptions = {
     _nameId: TextInputController(
@@ -94,7 +97,7 @@ class _AddCustomFieldPageState extends State<AddCustomFieldPage> {
           });
         },
       );
-      default: print("Unknown key: $key");
+      default: _log.e("Unknown key: $key");
     }
 
     return Empty();

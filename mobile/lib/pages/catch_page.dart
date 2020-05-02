@@ -56,7 +56,7 @@ class _CatchPageState extends State<CatchPage> {
       onDeleteEnabled: false,
       builder: (context) => EntityPage(
         padding: insetsZero,
-        onEdit: () => present(context, SaveCatchPage()),
+        onEdit: () => present(context, SaveCatchPage.edit(_catch)),
         onDelete: () => CatchManager.of(context).delete(_catch),
         deleteMessage: Strings.of(context).catchPageDeleteMessage,
         images: _imageManager.imageFiles(entityId: widget.catchId),

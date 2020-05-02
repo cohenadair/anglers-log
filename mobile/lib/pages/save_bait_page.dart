@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile/bait_category_manager.dart';
 import 'package:mobile/bait_manager.dart';
 import 'package:mobile/i18n/strings.dart';
+import 'package:mobile/log.dart';
 import 'package:mobile/model/bait.dart';
 import 'package:mobile/model/bait_category.dart';
 import 'package:mobile/pages/editable_form_page.dart';
@@ -20,14 +21,11 @@ import 'package:mobile/widgets/widget.dart';
 import 'package:quiver/strings.dart';
 
 class SaveBaitPage extends StatefulWidget {
+  /// Set to a non-null value when editing an existing [Bait].
   final Bait oldBait;
-  final BaitCategory oldBaitCategory;
 
-  SaveBaitPage({
-    this.oldBait,
-    this.oldBaitCategory,
-  }) : assert(oldBaitCategory == null
-      || (oldBaitCategory != null && oldBait != null));
+  SaveBaitPage() : oldBait = null;
+  SaveBaitPage.edit(this.oldBait);
 
   @override
   _SaveBaitPageState createState() => _SaveBaitPageState();
@@ -36,6 +34,8 @@ class SaveBaitPage extends StatefulWidget {
 class _SaveBaitPageState extends State<SaveBaitPage> {
   static const String baitCategoryId = "bait_category";
   static const String nameId = "name";
+
+  final Log _log = Log("SaveCatchPage");
 
   final Map<String, InputData> _fields = {};
 
@@ -76,7 +76,8 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
     );
 
     if (widget.oldBait != null) {
-      _baitCategoryController.value = widget.oldBaitCategory;
+      _baitCategoryController.value =
+          _baitCategoryManager.entity(id: widget.oldBait.categoryId);
       _nameController.text = widget.oldBait.name;
       _nameController.validate = null;
     }
@@ -95,7 +96,7 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
           case nameId: return _buildNameField();
           case baitCategoryId: return _buildCategoryPicker();
           default:
-            print("Unknown input key: $id");
+            _log.e("Unknown input key: $id");
             return Empty();
         }
       },

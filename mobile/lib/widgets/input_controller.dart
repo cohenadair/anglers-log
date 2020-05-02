@@ -76,6 +76,17 @@ class TimestampInputController extends InputController<int> {
   int get value => combine(date, time).millisecondsSinceEpoch;
 
   @override
+  set value(int millisSinceEpoch) {
+    if (millisSinceEpoch == null) {
+      date = null;
+      time = null;
+      return;
+    }
+    date = DateTime.fromMillisecondsSinceEpoch(millisSinceEpoch);
+    time = TimeOfDay.fromDateTime(date);
+  }
+
+  @override
   void clear() {
     super.clear();
     date = null;

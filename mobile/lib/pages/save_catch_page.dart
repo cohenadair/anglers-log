@@ -5,11 +5,15 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mobile/bait_category_manager.dart';
 import 'package:mobile/bait_manager.dart';
 import 'package:mobile/catch_manager.dart';
+import 'package:mobile/fishing_spot_manager.dart';
 import 'package:mobile/i18n/strings.dart';
+import 'package:mobile/image_manager.dart';
+import 'package:mobile/log.dart';
 import 'package:mobile/model/bait.dart';
 import 'package:mobile/model/catch.dart';
 import 'package:mobile/model/fishing_spot.dart';
 import 'package:mobile/model/species.dart';
+import 'package:mobile/pages/add_catch_journey.dart';
 import 'package:mobile/pages/bait_list_page.dart';
 import 'package:mobile/pages/editable_form_page.dart';
 import 'package:mobile/pages/fishing_spot_picker_page.dart';
@@ -40,16 +44,27 @@ class SaveCatchPage extends StatefulWidget {
   /// If set, invoked when it's time to pop the page from the navigation stack.
   final VoidCallback popOverride;
 
+  /// Provides preselected values when displaying a [SaveCatchPage] from an
+  /// [AddCatchJourney].
   final CatchJourneyHelper journeyHelper;
 
-  SaveCatchPage({
-    this.popOverride,
-  }) : journeyHelper = null;
+  /// Set to a non-null value when editing an existing [Catch].
+  final Catch oldCatch;
+
+  SaveCatchPage()
+      : oldCatch = null,
+        popOverride = null,
+        journeyHelper = null;
+
+  SaveCatchPage.edit(this.oldCatch)
+      : popOverride = null,
+        journeyHelper = null;
 
   SaveCatchPage.fromJourney({
     this.popOverride,
     @required this.journeyHelper,
-  });
+  }) : assert(journeyHelper != null),
+       oldCatch = null;
 
   @override
   _SaveCatchPageState createState() => _SaveCatchPageState();
@@ -62,6 +77,8 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
   static const String _fishingSpotKey = "fishing_spot";
   static const String _baitKey = "bait";
 
+  final Log _log = Log("SaveCatchPage");
+
   final Map<String, InputData> _fields = {};
   final Completer<GoogleMapController> _fishingSpotMapController = Completer();
 
@@ -69,6 +86,8 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
       BaitCategoryManager.of(context);
   BaitManager get _baitManager => BaitManager.of(context);
   CatchManager get _catchManager => CatchManager.of(context);
+  FishingSpotManager get _fishingSpotManager => FishingSpotManager.of(context);
+  ImageManager get _imageManager => ImageManager.of(context);
   SpeciesManager get _speciesManager => SpeciesManager.of(context);
 
   List<Species> get _species => _speciesManager.entityList;
@@ -143,12 +162,26 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
       _imagesController.value = widget.journeyHelper.images;
       _fishingSpotController.value = widget.journeyHelper.fishingSpot;
     }
+
+    if (widget.oldCatch != null) {
+      _timestampController.value = widget.oldCatch.timestamp;
+      _speciesController.value =
+          _speciesManager.entity(id: widget.oldCatch.speciesId);
+      _baitController.value = _baitManager.entity(id: widget.oldCatch.baitId);
+      _fishingSpotController.value =
+          _fishingSpotManager.entity(id: widget.oldCatch.fishingSpotId);
+      _imagesController.value = _imageManager
+          .imageFiles(entityId: widget.oldCatch.id)
+          .map((file) => PickedImage(originalFile: file)).toList();
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return EditableFormPage(
-      title: Text(Strings.of(context).saveCatchPageNewTitle),
+      title: Text(widget.oldCatch == null
+          ? Strings.of(context).saveCatchPageNewTitle
+          : Strings.of(context).saveCatchPageEditTitle),
       runSpacing: 0,
       padding: insetsZero,
       fields: _fields,
@@ -170,7 +203,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
       case _baitKey:
         return _buildBait();
       default:
-        print("Unknown input key: $id");
+        _log.e("Unknown input key: $id");
         return Empty();
     }
   }
@@ -286,6 +319,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
 
   FutureOr<bool> _save(Map<String, InputData> result) {
     Catch cat = Catch(
+      id: widget.oldCatch?.id,
       timestamp: _timestampController.value,
       speciesId: _speciesController.value.id,
       fishingSpotId: _fishingSpotController.value?.id,

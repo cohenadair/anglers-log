@@ -47,6 +47,7 @@ Map<String, Map<String, String>> get englishStrings => {
     "catchPage_deleteMessage" : "Are you sure you want to delete this catch? This cannot be undone.",
 
     "saveCatchPage_newTitle" : "New Catch",
+    "saveCatchPage_editTitle" : "Edit Catch",
     "saveCatchPage_dateTimeLabel" : "Date & Time",
     "saveCatchPage_dateLabel" : "Date",
     "saveCatchPage_timeLabel" : "Time",

@@ -5,6 +5,7 @@ import 'package:mobile/catch_manager.dart';
 import 'package:mobile/data_manager.dart';
 import 'package:mobile/entity_manager.dart';
 import 'package:mobile/fishing_spot_manager.dart';
+import 'package:mobile/image_manager.dart';
 import 'package:mobile/model/bait.dart';
 import 'package:mobile/model/catch.dart';
 import 'package:mobile/model/fishing_spot.dart';
@@ -13,13 +14,15 @@ import 'package:test/test.dart';
 
 class MockAppManager extends Mock implements AppManager {}
 class MockBaitCategoryManager extends Mock implements BaitCategoryManager {}
-class MockDataManager extends Mock implements DataManager {}
 class MockCatchListener extends Mock implements EntityListener<Catch> {}
+class MockDataManager extends Mock implements DataManager {}
+class MockImageManager extends Mock implements ImageManager {}
 
 void main() {
   MockAppManager appManager;
   MockBaitCategoryManager baitCategoryManager;
   MockDataManager dataManager;
+  MockImageManager imageManager;
   BaitManager baitManager;
   FishingSpotManager fishingSpotManager;
   CatchManager catchManager;
@@ -33,6 +36,11 @@ void main() {
     baitCategoryManager = MockBaitCategoryManager();
     when(appManager.baitCategoryManager).thenReturn(baitCategoryManager);
     when(baitCategoryManager.addListener(any)).thenAnswer((_) {});
+
+    imageManager = MockImageManager();
+    when(appManager.imageManager).thenReturn(imageManager);
+    when(imageManager.save(entityId: anyNamed("entityId"),
+        files: anyNamed("files"))).thenAnswer((realInvocation) => null);
 
     fishingSpotManager = FishingSpotManager(appManager);
     when(appManager.fishingSpotManager).thenReturn(fishingSpotManager);
