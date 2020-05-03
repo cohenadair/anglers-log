@@ -144,7 +144,10 @@ class ImageManager {
     }
 
     if (dbImages.isNotEmpty) {
-      _delete(entityId);
+      // Remove old references.
+      await _delete(entityId);
+
+      // Update memory cache.
       dbImages.forEach((i) async => _addToMemoryCache(i));
 
       // Create database entries.
