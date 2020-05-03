@@ -26,41 +26,48 @@ class Thumbnail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Widget fishIcon = Icon(CustomIcons.catches,
-      size: size / 2,
-      color: Colors.white,
-    );
+    // A CircleAvatar widget is not used here because we want to have a nice
+    // animation for transitioning between the placeholder and image.
 
-    return Container(
+    Widget placeholder = Container(
       width: size,
       height: size,
       decoration: BoxDecoration(
         color: Theme.of(context).primaryColor,
         shape: BoxShape.circle,
       ),
-      child: file == null ? fishIcon : ClipOval(
-        child: Image.file(file,
-          fit: BoxFit.cover,
-          gaplessPlayback: true,
-          cacheWidth: size.toInt(),
-          cacheHeight: size.toInt(),
-          frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
-            if (wasSynchronouslyLoaded) {
-              return child;
-            }
+      child: Icon(CustomIcons.catches,
+        size: size / 2,
+        color: Colors.white,
+      ),
+    );
 
-            return AnimatedCrossFade(
-              crossFadeState: frame == null
-                  ? CrossFadeState.showFirst : CrossFadeState.showSecond,
-              firstChild: Align(
-                child: fishIcon,
-                alignment: Alignment.center,
-              ),
-              secondChild: child,
-              duration: _crossFadeDuration,
-            );
-          },
-        ),
+    if (file == null) {
+      return placeholder;
+    }
+
+    return ClipOval(
+      child: Image.file(file,
+        width: size,
+        height: size,
+        fit: BoxFit.cover,
+        gaplessPlayback: true,
+        frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
+          if (wasSynchronouslyLoaded) {
+            return child;
+          }
+
+          return AnimatedCrossFade(
+            crossFadeState: frame == null
+                ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+            firstChild: Align(
+              child: placeholder,
+              alignment: Alignment.center,
+            ),
+            secondChild: child,
+            duration: _crossFadeDuration,
+          );
+        },
       ),
     );
   }
