@@ -27,10 +27,15 @@ void main() {
   });
 
   test("Fishing spot within radius", () async {
-    // Null case.
+    // Null cases.
     FishingSpot fishingSpot = fishingSpotManager.withinRadius(
       latLng: LatLng(0, 0),
       meters: 20,
+    );
+    expect(fishingSpot, isNull);
+
+    fishingSpot = fishingSpotManager.withinRadius(
+      latLng: null,
     );
     expect(fishingSpot, isNull);
 
@@ -77,5 +82,6 @@ void main() {
         isNotNull);
     expect(fishingSpotManager.withLatLng(LatLng(35.955297, -84.240337)),
         isNull);
+    expect(fishingSpotManager.withLatLng(null), isNull);
   });
 }

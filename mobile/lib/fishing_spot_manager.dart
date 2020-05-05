@@ -21,7 +21,11 @@ class FishingSpotManager extends NamedEntityManager<FishingSpot> {
 
   /// Returns the closest [FishingSpot] within [meters] of [latLng], or null if
   /// one does not exist.
-  FishingSpot withinRadius({LatLng latLng, int meters}) {
+  FishingSpot withinRadius({@required LatLng latLng, int meters = 0}) {
+    if (latLng == null) {
+      return null;
+    }
+
     Map<FishingSpot, double> eligibleFishingSpotsMap = {};
     for (FishingSpot fishingSpot in entities.values) {
       double distance = distanceBetween(fishingSpot.latLng, latLng);
@@ -45,7 +49,10 @@ class FishingSpotManager extends NamedEntityManager<FishingSpot> {
 
   /// Returns a [FishingSpot] with the given [LatLng], or null if one doesn't
   /// exist.
-  FishingSpot withLatLng(LatLng latLng) {
+  FishingSpot withLatLng(LatLng latLng, {double radiusInMeters}) {
+    if (latLng == null) {
+      return null;
+    }
     return entities.values.firstWhere(
       (fishingSpot) => fishingSpot.latLng == latLng,
       orElse: () => null,

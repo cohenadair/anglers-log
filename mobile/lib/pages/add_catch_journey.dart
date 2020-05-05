@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/fishing_spot_manager.dart';
 import 'package:mobile/i18n/strings.dart';
+import 'package:mobile/location_monitor.dart';
 import 'package:mobile/log.dart';
 import 'package:mobile/model/fishing_spot.dart';
 import 'package:mobile/pages/fishing_spot_picker_page.dart';
@@ -27,6 +28,7 @@ class _AddCatchJourneyState extends State<AddCatchJourney> {
   final _log = Log("AddCatchJourney");
 
   FishingSpotManager get _fishingSpotManager => FishingSpotManager.of(context);
+  LocationMonitor get _locationMonitor => LocationMonitor.of(context);
 
   CatchJourneyHelper _journeyHelper = CatchJourneyHelper();
 
@@ -100,6 +102,10 @@ class _AddCatchJourneyState extends State<AddCatchJourney> {
         } else if (name == _pickFishingSpotRoute) {
           return MaterialPageRoute(
             builder: (context) => FishingSpotPickerPage(
+              fishingSpot: _fishingSpotManager.withinRadius(
+                latLng: _locationMonitor.currentLocation,
+                meters: _existingFishingSpotMeters,
+              ),
               onPicked: (context, fishingSpot) {
                 var existingSpot =
                     _fishingSpotManager.withLatLng(fishingSpot.latLng);
