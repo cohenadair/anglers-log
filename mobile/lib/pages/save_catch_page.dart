@@ -153,8 +153,8 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
     if (widget.journeyHelper != null) {
       if (widget.journeyHelper.images.isNotEmpty) {
         PickedImage image = widget.journeyHelper.images.first;
-        _timestampController.date = image.dateTime;
         if (image.dateTime != null) {
+          _timestampController.date = image.dateTime;
           _timestampController.time = TimeOfDay.fromDateTime(image.dateTime);
         }
       }
