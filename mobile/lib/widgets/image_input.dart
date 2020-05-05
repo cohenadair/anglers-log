@@ -4,6 +4,7 @@ import 'package:mobile/pages/image_picker_page.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/utils/page_utils.dart';
 import 'package:mobile/widgets/text.dart';
+import 'package:mobile/widgets/thumbnail.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:photo_manager/photo_manager.dart';
 
@@ -98,9 +99,14 @@ class ImageInput extends StatelessWidget {
           PickedImage image = currentImages[i];
           return Container(
             width: galleryMaxThumbSize,
-            child: image.thumbData == null
+            child: ClipRRect(
+              child: image.thumbData == null
                 ? Image.file(image.originalFile, fit: BoxFit.cover)
                 : Image.memory(image.thumbData, fit: BoxFit.cover),
+              borderRadius: BorderRadius.all(
+                Radius.circular(floatingCornerRadius),
+              ),
+            ),
           );
         },
         separatorBuilder: (context, i) => Container(width: gallerySpacing),

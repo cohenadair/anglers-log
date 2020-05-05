@@ -46,8 +46,12 @@ class StaticFishingSpot extends StatelessWidget {
       padding: padding,
       height: _mapHeight,
       child: Stack(
-          children: [
-            GoogleMap(
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.all(
+              Radius.circular(floatingCornerRadius),
+            ),
+            child: GoogleMap(
               onMapCreated: (controller) {
                 if (!_mapController.isCompleted) {
                   _mapController.complete(controller);
@@ -77,27 +81,28 @@ class StaticFishingSpot extends StatelessWidget {
               tiltGesturesEnabled: false,
               zoomGesturesEnabled: false,
             ),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: Container(
-                margin: insetsSmall,
-                decoration: FloatingBoxDecoration.rectangle(),
-                child: Material(
-                  color: Colors.transparent,
-                  child: ListItem(
-                    contentPadding: EdgeInsets.only(
-                      left: paddingDefault,
-                      right: paddingSmall,
-                    ),
-                    title: name ?? coordinates,
-                    subtitle: name == null ? null : coordinates,
-                    onTap: onTap,
-                    trailing: onTap == null ? null : RightChevronIcon(),
+          ),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Container(
+              margin: insetsSmall,
+              decoration: FloatingBoxDecoration.rectangle(),
+              child: Material(
+                color: Colors.transparent,
+                child: ListItem(
+                  contentPadding: EdgeInsets.only(
+                    left: paddingDefault,
+                    right: paddingSmall,
                   ),
+                  title: name ?? coordinates,
+                  subtitle: name == null ? null : coordinates,
+                  onTap: onTap,
+                  trailing: onTap == null ? null : RightChevronIcon(),
                 ),
               ),
             ),
-          ]
+          ),
+        ],
       ),
     );
   }
