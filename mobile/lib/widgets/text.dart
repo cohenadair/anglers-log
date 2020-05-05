@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:mobile/res/dimen.dart';
 import 'package:mobile/res/style.dart';
 import 'package:mobile/utils/string_utils.dart';
 
@@ -61,6 +62,25 @@ class SecondaryLabelText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return LabelText(text, enabled: false);
+  }
+}
+
+class OffsetTitleText extends StatelessWidget {
+  final String text;
+
+  OffsetTitleText(this.text);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      // For large text, there is some additional leading padding for some
+      // reason, so large text won't horizontally align with widgets around it.
+      // Offset the leading padding to compensate for this.
+      padding: const EdgeInsets.only(
+        left: paddingDefault - 2.0,
+      ),
+      child: Text(text, style: styleTitle),
+    );
   }
 }
 

@@ -64,20 +64,22 @@ class _CatchPageState extends State<CatchPage> {
           Container(
             padding: EdgeInsets.only(
               top: paddingDefault,
-              left: paddingDefault,
               right: paddingDefault,
               bottom: paddingSmall,
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  _speciesManager.entity(id: _catch.speciesId).name,
-                  style: styleTitle,
-                ),
-                SubtitleText(
-                  formatDateTime(context,
-                      DateTime.fromMillisecondsSinceEpoch(_catch.timestamp)),
+                OffsetTitleText(
+                    _speciesManager.entity(id: _catch.speciesId).name),
+                Padding(
+                  padding: const EdgeInsets.only(
+                    left: paddingDefault,
+                  ),
+                  child: SubtitleText(
+                    formatDateTime(context,
+                        DateTime.fromMillisecondsSinceEpoch(_catch.timestamp)),
+                  ),
                 ),
               ],
             ),

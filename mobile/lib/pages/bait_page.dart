@@ -7,6 +7,7 @@ import 'package:mobile/model/bait.dart';
 import 'package:mobile/model/bait_category.dart';
 import 'package:mobile/pages/entity_page.dart';
 import 'package:mobile/pages/save_bait_page.dart';
+import 'package:mobile/res/dimen.dart';
 import 'package:mobile/res/style.dart';
 import 'package:mobile/utils/page_utils.dart';
 import 'package:mobile/widgets/text.dart';
@@ -43,17 +44,21 @@ class _BaitPageState extends State<BaitPage> {
       // When deleted, we pop immediately. Don't reload; bait will be null.
       onDeleteEnabled: false,
       builder: (context) => EntityPage(
+        padding: EdgeInsets.only(
+          top: paddingDefault,
+          right: paddingDefault,
+          bottom: paddingDefault,
+        ),
         static: widget.static,
         onEdit: () => present(context, SaveBaitPage.edit(_bait)),
         onDelete: () => BaitManager.of(context).delete(_bait),
         deleteMessage: Strings.of(context).baitPageDeleteMessage,
         children: [
-          isNotEmpty(_bait.categoryId)
-              ? HeadingText(_category.name) : Empty(),
-          Text(
-            _bait.name,
-            style: styleTitle,
-          ),
+          isNotEmpty(_bait.categoryId) ? Padding(
+            padding: insetsLeftDefault,
+            child: HeadingText(_category.name),
+          ) : Empty(),
+          OffsetTitleText(_bait.name),
         ],
       ),
     );
