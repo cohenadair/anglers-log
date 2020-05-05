@@ -51,6 +51,7 @@ class StaticFishingSpot extends StatelessWidget {
             borderRadius: BorderRadius.all(
               Radius.circular(floatingCornerRadius),
             ),
+            // TODO: Use a real static Google Map image if an API is ever made for Flutter.
             child: GoogleMap(
               onMapCreated: (controller) {
                 if (!_mapController.isCompleted) {
