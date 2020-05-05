@@ -6,7 +6,7 @@ import 'package:mobile/res/gen/custom_icons.dart';
 /// When an image is being fetched, or the passed in [File] object is null,
 /// [Thumbnail] will render a placeholder widget.
 class Thumbnail extends StatelessWidget {
-  static final double _listItemSize = 45;
+  static final double _listItemSize = 55;
   static final Duration _crossFadeDuration = Duration(milliseconds: 150);
 
   final File file;
