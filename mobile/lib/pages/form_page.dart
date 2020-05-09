@@ -86,10 +86,16 @@ class FormPage extends StatefulWidget {
 
   /// Called when the save button is pressed. Returning true will dismiss
   /// the form page; false will leave it open.
-  final FutureOr<bool> Function() onSave;
+  ///
+  /// A unique [BuildContext] is passed into the function if the current
+  /// [Scaffold] needs to be accessed. For example, to show a [SnackBar].
+  final FutureOr<bool> Function(BuildContext) onSave;
 
   /// Space between form input widgets.
   final double runSpacing;
+
+  /// The text for the "save" button. Defaults to "Save".
+  final String saveButtonText;
 
   final EdgeInsets padding;
 
@@ -103,6 +109,7 @@ class FormPage extends StatefulWidget {
     this.editable = true,
     this.padding = insetsHorizontalDefault,
     this.runSpacing,
+    this.saveButtonText,
     @required this.isInputValid,
   }) : assert(fieldBuilder != null),
        assert(isInputValid != null),
@@ -112,10 +119,11 @@ class FormPage extends StatefulWidget {
     Key key,
     Widget title,
     FieldBuilder fieldBuilder,
-    FutureOr<bool> Function() onSave,
+    FutureOr<bool> Function(BuildContext) onSave,
     EdgeInsets padding = insetsHorizontalDefault,
     double runSpacing,
     @required bool isInputValid,
+    String saveButtonText,
   }) : this(
     key: key,
     title: title,
@@ -127,6 +135,7 @@ class FormPage extends StatefulWidget {
     padding: padding,
     runSpacing: runSpacing,
     isInputValid: isInputValid,
+    saveButtonText: saveButtonText,
   );
 
   @override
@@ -154,10 +163,12 @@ class _FormPageState extends State<FormPage> {
       appBar: AppBar(
         title: widget.title,
         actions: [
-          ActionButton.save(
-            onPressed: widget.isInputValid ? _onPressedSave : null,
+          Builder(builder: (context) => ActionButton(
+            text: widget.saveButtonText ?? Strings.of(context).save,
+            onPressed: widget.isInputValid
+                ? () => _onPressedSave(context) : null,
             condensed: widget.editable,
-          ),
+          )),
           widget.editable ? PopupMenuButton<_OverflowOption>(
             icon: Icon(Icons.more_vert),
             itemBuilder: (context) => [
@@ -210,14 +221,14 @@ class _FormPageState extends State<FormPage> {
     onSelectItems: (selectedIds) => widget.onAddFields(selectedIds),
   );
 
-  void _onPressedSave() async {
+  void _onPressedSave(BuildContext saveContext) async {
     if (!_key.currentState.validate()) {
       return;
     }
 
     _key.currentState.save();
 
-    if (widget.onSave == null || await widget.onSave()) {
+    if (widget.onSave == null || await widget.onSave(saveContext)) {
       Navigator.pop(context);
     }
   }

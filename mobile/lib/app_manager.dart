@@ -6,6 +6,7 @@ import 'package:mobile/data_manager.dart';
 import 'package:mobile/fishing_spot_manager.dart';
 import 'package:mobile/image_manager.dart';
 import 'package:mobile/location_monitor.dart';
+import 'package:mobile/properties_manager.dart';
 import 'package:mobile/species_manager.dart';
 import 'package:mobile/trip_manager.dart';
 
@@ -18,6 +19,7 @@ class AppManager {
   FishingSpotManager _fishingSpotManager;
   ImageManager _imageManager;
   LocationMonitor _locationMonitor;
+  PropertiesManager _propertiesManager;
   SpeciesManager _speciesManager;
   TripManager _tripManager;
 
@@ -75,6 +77,13 @@ class AppManager {
       _locationMonitor = LocationMonitor();
     }
     return _locationMonitor;
+  }
+
+  PropertiesManager get propertiesManager {
+    if (_propertiesManager == null) {
+      _propertiesManager = PropertiesManager();
+    }
+    return _propertiesManager;
   }
 
   SpeciesManager get speciesManager {

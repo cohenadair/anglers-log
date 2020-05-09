@@ -9,6 +9,7 @@ class TextInput extends StatefulWidget {
   static const int inputLimitName = inputLimitDefault;
   static const int inputLimitNumber = 10;
   static const int inputLimitDescription = 140;
+  static const int inputLimitEmail = 64;
 
   final String initialValue;
   final String label;
@@ -100,6 +101,25 @@ class TextInput extends StatefulWidget {
     autofocus: autofocus,
     maxLength: inputLimitNumber,
     validator: DoubleValidator(),
+  );
+
+  TextInput.email(BuildContext context, {
+    String initialValue,
+    TextInputController controller,
+    bool enabled,
+    bool autofocus = false,
+    bool required = false,
+    VoidCallback onChanged,
+  }) : this(
+    initialValue: initialValue,
+    label: Strings.of(context).inputEmailLabel,
+    capitalization: TextCapitalization.none,
+    controller: controller,
+    maxLength: inputLimitEmail,
+    enabled: enabled,
+    autofocus: autofocus,
+    validator: EmailValidator(required: required),
+    onChanged: onChanged,
   );
 
   @override

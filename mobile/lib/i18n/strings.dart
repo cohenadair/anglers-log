@@ -68,6 +68,8 @@ class Strings {
   String get inputPhotoLabel => _string("input_photoLabel");
   String get inputPhotosLabel => _string("input_photosLabel");
   String get inputNotSelected => _string("input_notSelected");
+  String get inputEmailLabel => _string("input_emailLabel");
+  String get inputInvalidEmail => _string("input_invalidEmail");
 
   String get tripListPageMenuLabel => _string("tripListPage_menuLabel");
   String get tripListPageTitle => _string("tripListPage_title");
@@ -156,6 +158,16 @@ class Strings {
 
   String get addCustomFieldPageTitle => _string("addCustomFieldPage_title");
   String get addCustomFieldPageNameExists => _string("addCustomFieldPage_nameExists");
+
+  String get feedbackPageTitle => _string("feedbackPage_title");
+  String get feedbackPageSend => _string("feedbackPage_send");
+  String get feedbackPageMessage => _string("feedbackPage_message");
+  String get feedbackPageBugType => _string("feedbackPage_bugType");
+  String get feedbackPageSuggestionType => _string("feedbackPage_suggestionType");
+  String get feedbackPageFeedbackType => _string("feedbackPage_feedbackType");
+  String get feedbackPageErrorSending => _string("feedbackPage_errorSending");
+  String get feedbackPageConnectionError => _string("feedbackPage_connectionError");
+  String get feedbackPageSending => _string("feedbackPage_sending");
 
   String get anglerNameLabel => _string("angler_nameLabel");
 

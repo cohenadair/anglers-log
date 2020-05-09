@@ -57,10 +57,9 @@ class _SaveNamePageState extends State<SaveNamePage> {
 
   @override
   Widget build(BuildContext context) {
-    return FormPage(
+    return FormPage.immutable(
       title: widget.title,
-      editable: false,
-      onSave: () {
+      onSave: (_) {
         if (inputEqualsOld) {
           // If the name didn't change, act as though "back" or "cancel" was
           // pressed.

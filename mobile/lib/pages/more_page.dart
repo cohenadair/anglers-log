@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/pages/bait_list_page.dart';
+import 'package:mobile/pages/feedback_page.dart';
 import 'package:mobile/pages/settings_page.dart';
 import 'package:mobile/pages/trip_list_page.dart';
 import 'package:mobile/utils/page_utils.dart';
@@ -28,6 +29,12 @@ class MorePage extends StatelessWidget {
           ),
           MinDivider(),
           _buildPageItem(context,
+            icon: Icons.feedback,
+            title: Strings.of(context).feedbackPageTitle,
+            page: FeedbackPage(),
+            presentPage: true,
+          ),
+          _buildPageItem(context,
             icon: Icons.settings,
             title: Strings.of(context).settingsPageTitle,
             page: SettingsPage(),
@@ -41,9 +48,17 @@ class MorePage extends StatelessWidget {
     @required IconData icon,
     @required String title,
     @required Widget page,
+    bool presentPage = false,
   }) => ListItem(
-    leading: Icon(icon),
     title: Text(title),
-    onTap: () => push(context, page),
+    leading: Icon(icon),
+    trailing: presentPage ? null : RightChevronIcon(),
+    onTap: () {
+      if (presentPage) {
+        present(context, page);
+      } else {
+        push(context, page);
+      }
+    },
   );
 }

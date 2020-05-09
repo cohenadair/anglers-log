@@ -40,6 +40,8 @@ Map<String, Map<String, String>> get englishStrings => {
     "input_photoLabel" : "Photo",
     "input_photosLabel" : "Photos",
     "input_notSelected" : "Not Selected",
+    "input_emailLabel" : "Email",
+    "input_invalidEmail" : "Invalid email",
 
     "catchListPage_menuLabel" : "Catches",
     "catchListPage_title" : "Catches (%s)",
@@ -128,6 +130,16 @@ Map<String, Map<String, String>> get englishStrings => {
 
     "fishingSpotPickerPage_title" : "Select Fishing Spot",
     "fishingSpotPickerPage_hint" : "Drag the map to use exact coordinates, or select an existing fishing spot.",
+
+    "feedbackPage_title" : "Send Feedback",
+    "feedbackPage_send" : "Send",
+    "feedbackPage_message" : "Message",
+    "feedbackPage_bugType" : "Bug",
+    "feedbackPage_suggestionType" : "Suggestion",
+    "feedbackPage_feedbackType" : "Feedback",
+    "feedbackPage_errorSending" : "Error sending feedback. Please try again later.",
+    "feedbackPage_connectionError" : "No internet connection. Please check your connection and try again.",
+    "feedbackPage_sending" : "Sending feedback...",
 
     "angler_nameLabel" : "Angler",
 

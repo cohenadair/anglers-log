@@ -62,3 +62,35 @@ class DoubleValidator implements Validator {
     return null;
   }
 }
+
+class EmailValidator implements Validator {
+  final bool required;
+
+  EmailValidator({
+    this.required = false,
+  });
+
+  @override
+  ValidationCallback run(BuildContext context, String newValue) {
+    if (!required && isEmpty(newValue)) {
+      return null;
+    }
+    if (!RegExp(r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$')
+        .hasMatch(newValue))
+    {
+      return (context) => Strings.of(context).inputInvalidEmail;
+    }
+    return null;
+  }
+}
+
+/// A validator that ensures input is not empty.
+class EmptyValidator implements Validator {
+  @override
+  ValidationCallback run(BuildContext context, String newValue) {
+    if (isNotEmpty(newValue)) {
+      return null;
+    }
+    return (context) => Strings.of(context).inputGenericRequired;
+  }
+}

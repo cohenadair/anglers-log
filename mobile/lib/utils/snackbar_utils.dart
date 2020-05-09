@@ -9,3 +9,10 @@ void showErrorSnackBar(BuildContext context, String errorMessage) {
     backgroundColor: Colors.red,
   ));
 }
+
+void showPermanentSnackBar(BuildContext context, String message) {
+  Scaffold.of(context).showSnackBar(SnackBar(
+    content: Text(message),
+    duration: Duration(days: 365),
+  ));
+}

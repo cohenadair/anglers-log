@@ -103,7 +103,7 @@ class _AddCustomFieldPageState extends State<AddCustomFieldPage> {
     return Empty();
   }
 
-  FutureOr<bool> _save() {
+  FutureOr<bool> _save(BuildContext _) {
     var customField = CustomEntity(
       name: _nameController.text,
       description: _descriptionController.text,
