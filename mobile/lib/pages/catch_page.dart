@@ -13,7 +13,6 @@ import 'package:mobile/pages/bait_page.dart';
 import 'package:mobile/pages/entity_page.dart';
 import 'package:mobile/pages/save_catch_page.dart';
 import 'package:mobile/res/dimen.dart';
-import 'package:mobile/res/style.dart';
 import 'package:mobile/species_manager.dart';
 import 'package:mobile/utils/page_utils.dart';
 import 'package:mobile/utils/string_utils.dart';
