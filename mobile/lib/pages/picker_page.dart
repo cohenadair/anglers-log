@@ -191,7 +191,7 @@ class _PickerPageState<T> extends State<PickerPage<T>> {
         }
 
         return ManageableListItem(
-          title: Text(item.title),
+          child: Text(item.title),
           enabled: item.enabled,
           editing: _editing,
           deleteMessageBuilder: (context) =>
