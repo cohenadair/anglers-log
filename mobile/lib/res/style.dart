@@ -55,18 +55,23 @@ const List<BoxShadow> boxShadowSmallBottom = [
 /// used throughout the app.
 class FloatingBoxDecoration extends BoxDecoration {
   final Color color = Colors.white;
+  final bool elevated;
 
-  FloatingBoxDecoration.rectangle() : super(
+  FloatingBoxDecoration.rectangle({
+    this.elevated = true,
+  }) : super(
     color: Colors.white,
-    boxShadow: boxShadowSmallBottom,
+    boxShadow: elevated ? boxShadowSmallBottom : null,
     borderRadius: BorderRadius.all(
       Radius.circular(floatingCornerRadius),
     ),
   );
 
-  FloatingBoxDecoration.circle() : super(
+  FloatingBoxDecoration.circle({
+    this.elevated = true,
+  }) : super(
     color: Colors.white,
-    boxShadow: boxShadowSmallBottom,
+    boxShadow: elevated ? boxShadowSmallBottom : null,
     shape: BoxShape.circle,
   );
 }
