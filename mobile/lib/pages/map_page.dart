@@ -112,13 +112,7 @@ class _MapPageState extends State<MapPage> {
         _buildBottomSheet(),
       ],
       searchBar: FishingSpotMapSearchBar(
-        leading: Padding(
-          padding: EdgeInsets.only(left: paddingDefault),
-          child: Icon(Icons.search,
-            color: Colors.black,
-          ),
-        ),
-        title: isEmpty(name) ? null : LabelText(name),
+        title: isEmpty(name) ? null : name,
         trailing: Visibility(
           maintainState: true,
           maintainAnimation: true,

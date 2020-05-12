@@ -8,19 +8,18 @@ import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/location_monitor.dart';
 import 'package:mobile/model/fishing_spot.dart';
 import 'package:mobile/res/dimen.dart';
-import 'package:mobile/res/style.dart';
 import 'package:mobile/utils/map_utils.dart';
 import 'package:mobile/utils/snackbar_utils.dart';
 import 'package:mobile/utils/string_utils.dart';
 import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/list_item.dart';
 import 'package:mobile/widgets/no_results.dart';
-import 'package:mobile/widgets/text.dart';
+import 'package:mobile/widgets/search_bar.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:quiver/strings.dart';
 
 class FishingSpotMapSearchBar {
-  final Widget title;
+  final String title;
   final Widget leading;
   final Widget trailing;
   final void Function(FishingSpot) onFishingSpotPicked;
@@ -173,7 +172,11 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
   }
 
   Widget _buildSearchBar() {
-    return Container(
+    return SearchBar(
+      leading: widget.searchBar.leading,
+      trailing: widget.searchBar.trailing,
+      text: widget.searchBar.title,
+      hint: Strings.of(context).mapPageSearchHint,
       margin: EdgeInsets.only(
         // iOS "safe area" includes some padding, so keep the additional padding
         // small.
@@ -181,44 +184,19 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
         left: paddingDefault,
         right: paddingDefault,
       ),
-      decoration: FloatingBoxDecoration.rectangle(),
-      // Wrap InkWell in a Material widget so the fill animation is shown
-      // on top of the parent Container widget.
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          onTap: () async {
-            FishingSpot result = await showSearch(
-              context: context,
-              delegate: _SearchDelegate(
-                searchFieldLabel: Strings.of(context).mapPageSearchHint,
-              ),
-            );
-            widget.searchBar.onFishingSpotPicked?.call(result);
-
-            if (result != null) {
-              moveMap(_mapController, result.latLng, false);
-            }
-          },
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Expanded(
-                child: Row(
-                  children: <Widget>[
-                    widget.searchBar.leading ?? Empty(),
-                    widget.searchBar.leading != null
-                        ? SizedBox(width: paddingWidget) : Empty(),
-                    widget.searchBar.title ?? SecondaryLabelText(
-                        Strings.of(context).mapPageSearchHint),
-                  ],
-                ),
-              ),
-              widget.searchBar.trailing ?? Empty(),
-            ],
+      onTap: () async {
+        FishingSpot result = await showSearch(
+          context: context,
+          delegate: _SearchDelegate(
+            searchFieldLabel: Strings.of(context).mapPageSearchHint,
           ),
-        ),
-      ),
+        );
+        widget.searchBar.onFishingSpotPicked?.call(result);
+
+        if (result != null) {
+          moveMap(_mapController, result.latLng, false);
+        }
+      },
     );
   }
 
