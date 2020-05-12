@@ -121,7 +121,7 @@ class _ExpansionListItemState extends State<ExpansionListItem> {
 /// - When the "Delete" button is pressed, a delete confirmation dialog is
 ///   shown.
 class ManageableListItem extends StatefulWidget {
-  final Widget title;
+  final Widget child;
 
   /// The trailing [Widget] to show when not editing.
   final Widget trailing;
@@ -143,7 +143,7 @@ class ManageableListItem extends StatefulWidget {
   final bool enabled;
 
   ManageableListItem({
-    @required this.title,
+    @required this.child,
     this.deleteMessageBuilder,
     this.onConfirmDelete,
     this.onTap,
@@ -211,10 +211,7 @@ class _ManageableListItemState extends State<ManageableListItem> with
                   top: paddingDefault,
                   bottom: paddingDefault,
                 ),
-                child: DefaultTextStyle(
-                  style: Theme.of(context).textTheme.subtitle1,
-                  child: widget.title,
-                ),
+                child: widget.child,
               ),
               Spacer(),
               _buildTrailing(),
@@ -245,9 +242,13 @@ class _ManageableListItemState extends State<ManageableListItem> with
   }
 
   Widget _buildTrailing() {
-    Key key;
+    Key key = ValueKey(0);
     Widget trailing = Empty();
-    if (widget.editing) {
+    if (widget.trailing is RightChevronIcon) {
+      // If trailing widget is of the same type as editing trailer, do not
+      // reset and therefore, do not animate.
+      trailing = widget.trailing;
+    } else if (widget.editing) {
       key = ValueKey(1);
       trailing = RightChevronIcon();
     } else if (widget.trailing != null) {
