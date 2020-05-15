@@ -7,7 +7,7 @@ import 'package:mobile/model/fishing_spot.dart';
 import 'package:mobile/pages/fishing_spot_picker_page.dart';
 import 'package:mobile/pages/image_picker_page.dart';
 import 'package:mobile/pages/save_catch_page.dart';
-import 'package:mobile/pages/species_picker_page.dart';
+import 'package:mobile/pages/species_list_page.dart';
 
 /// Presents a workflow (journey) for adding a [Catch].
 class AddCatchJourney extends StatefulWidget {
@@ -85,7 +85,7 @@ class _AddCatchJourneyState extends State<AddCatchJourney> {
           );
         } else if (name == _pickSpeciesRoute) {
           return MaterialPageRoute(
-            builder: (context) => SpeciesPickerPage(
+            builder: (context) => SpeciesListPage.picker(
               onPicked: (context, species) {
                 _journeyHelper.species = species;
 
@@ -96,6 +96,8 @@ class _AddCatchJourneyState extends State<AddCatchJourney> {
                 } else {
                   Navigator.of(context).pushNamed(_saveCatchRoute);
                 }
+
+                return false;
               },
             ),
           );

@@ -6,17 +6,16 @@ import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/model/bait.dart';
 import 'package:mobile/model/bait_category.dart';
 import 'package:mobile/pages/bait_page.dart';
+import 'package:mobile/pages/manageable_list_page.dart';
 import 'package:mobile/pages/save_bait_page.dart';
 import 'package:mobile/res/dimen.dart';
-import 'package:mobile/utils/page_utils.dart';
 import 'package:mobile/utils/string_utils.dart';
-import 'package:mobile/widgets/list_item.dart';
 import 'package:mobile/widgets/text.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:quiver/strings.dart';
 
 class BaitListPage extends StatefulWidget {
-  final void Function(Bait) onPicked;
+  final bool Function(BuildContext, Bait) onPicked;
 
   BaitListPage() : onPicked = null;
 
@@ -33,53 +32,65 @@ class _BaitListPageState extends State<BaitListPage> {
       BaitCategoryManager.of(context);
   BaitManager get _baitManager => BaitManager.of(context);
 
-  bool get isPicking => widget.onPicked != null;
+  bool get _picking => widget.onPicked != null;
 
   @override
   Widget build(BuildContext context) {
     return EntityListenerBuilder<Bait>(
-      manager: BaitManager.of(context),
+      manager: _baitManager,
       builder: (context) {
         List<dynamic> items = _buildItems();
 
-        return Scaffold(
-          appBar: AppBar(
-            title: Text(format(Strings.of(context).baitListPageTitle,
-                [_baitManager.entityCount])),
-            actions: [
-              IconButton(
-                icon: Icon(Icons.add),
-                onPressed: () => present(context, SaveBaitPage()),
-              ),
-            ],
+        return ManageableListPage(
+          title: _picking
+              ? Text(Strings.of(context).baitListPagePickerTitle)
+              : Text(format(Strings.of(context).baitListPageTitle,
+                  [_baitManager.entityCount])),
+          searchSettings: ManageableListPageSearchSettings(
+            hint: Strings.of(context).baitListPageSearchHint,
+            onStart: () {
+              // TODO
+            },
           ),
-          body: ListView.builder(
-            itemCount: items.length,
-            itemBuilder: (context, i) {
-              var item = items[i];
+          pickerSettings: _picking
+              ? ManageableListPageSinglePickerSettings<dynamic>(
+                  onPicked: (context, baitPicked) =>
+                      widget.onPicked(context, baitPicked as Bait)
+                )
+              : null,
+          itemCount: items.length,
+          itemBuilder: (context, i) {
+            var item = items[i];
 
-              if (item is BaitCategory) {
-                return Padding(
+            if (item is BaitCategory) {
+              return ManageableListPageItemModel(
+                editable: false,
+                value: item,
+                child: Padding(
                   padding: insetsDefault,
                   child: HeadingText(item.name),
-                );
-              } else if (item is Bait) {
-                return ListItem(
-                  title: Text(item.name),
-                  trailing: isPicking ? Empty() : RightChevronIcon(),
-                  onTap: () {
-                    if (isPicking) {
-                      widget.onPicked(item);
-                      Navigator.pop(context);
-                    } else {
-                      push(context, BaitPage(item.id));
-                    }
-                  },
-                );
-              } else {
-                return item;
-              }
-            },
+                ),
+              );
+            } else if (item is Bait) {
+              return ManageableListPageItemModel(
+                value: item,
+                child: Text(item.name),
+              );
+            } else {
+              return ManageableListPageItemModel(
+                editable: false,
+                value: item,
+                child: item,
+              );
+            }
+          },
+          itemManager: ManageableListPageItemManager(
+            deleteText: (context, bait) =>
+                Text(Strings.of(context).baitPageDeleteMessage),
+            deleteItem: (context, bait) => _baitManager.delete(bait),
+            addPageBuilder: () => SaveBaitPage(),
+            detailPageBuilder: (bait) => BaitPage(bait.id),
+            editPageBuilder: (bait) => SaveBaitPage.edit(bait),
           ),
         );
       },

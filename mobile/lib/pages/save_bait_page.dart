@@ -7,21 +7,20 @@ import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/log.dart';
 import 'package:mobile/model/bait.dart';
 import 'package:mobile/model/bait_category.dart';
+import 'package:mobile/pages/bait_category_list_page.dart';
 import 'package:mobile/pages/editable_form_page.dart';
-import 'package:mobile/pages/picker_page.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/utils/dialog_utils.dart';
+import 'package:mobile/utils/page_utils.dart';
 import 'package:mobile/utils/validator.dart';
 import 'package:mobile/widgets/input_data.dart';
 import 'package:mobile/widgets/input_controller.dart';
 import 'package:mobile/widgets/list_picker_input.dart';
-import 'package:mobile/widgets/text.dart';
 import 'package:mobile/widgets/text_input.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:quiver/strings.dart';
 
 class SaveBaitPage extends StatefulWidget {
-  /// Set to a non-null value when editing an existing [Bait].
   final Bait oldBait;
 
   SaveBaitPage() : oldBait = null;
@@ -39,14 +38,11 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
 
   final Map<String, InputData> _fields = {};
 
-  bool get editing => widget.oldBait != null;
+  bool get _editing => widget.oldBait != null;
 
   BaitCategoryManager get _baitCategoryManager =>
       BaitCategoryManager.of(context);
   BaitManager get _baitManager => BaitManager.of(context);
-
-  List<BaitCategory> get _categories =>
-      _baitCategoryManager.entityListSortedByName;
 
   BaitCategoryInputController get _baitCategoryController =>
       _fields[baitCategoryId].controller as BaitCategoryInputController;
@@ -86,7 +82,7 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
   @override
   Widget build(BuildContext context) {
     return EditableFormPage(
-      title: editing
+      title: _editing
           ? Text(Strings.of(context).saveBaitPageEditTitle)
           : Text(Strings.of(context).saveBaitPageNewTitle),
       padding: insetsZero,
@@ -106,40 +102,21 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
   }
 
   Widget _buildCategoryPicker() {
-    return ListPickerInput<BaitCategory>.single(
-      initialValue: _baitCategoryController.value,
-      pageTitle: Text(Strings.of(context).saveBaitPageCategoryPickerTitle),
-      labelText: Strings.of(context).saveBaitPageCategoryLabel,
+    return ListPickerInput<BaitCategory>.customTap(
+      label: Strings.of(context).saveBaitPageCategoryLabel,
       listenerManager: _baitCategoryManager,
-      itemBuilder: () =>
-          entityListToPickerPageItemList<BaitCategory>(_categories),
-      onChanged: (category) => _baitCategoryController.value = category,
-      itemManager: PickerPageItemNameManager<BaitCategory>(
-        addTitle: Text(Strings.of(context).saveBaitPageNewCategoryLabel),
-        editTitle: Text(Strings.of(context).saveBaitPageEditCategoryLabel),
-        deleteMessageBuilder: (context, category) => InsertedBoldText(
-          text: Strings.of(context).saveBaitPageConfirmDeleteCategory,
-          args: [category.name],
-        ),
-        oldNameCallback: (oldCategory) => oldCategory.name,
-        validator: NameValidator(
-          nameExistsMessage:
-              Strings.of(context).saveBaitPageCategoryExistsMessage,
-          nameExists: (name) => _baitCategoryManager.nameExists(name),
-        ),
-        onSave: (newName, oldCategory) {
-          var newCategory = BaitCategory(name: newName);
-          if (oldCategory != null) {
-            newCategory = BaitCategory(name: newName, id: oldCategory.id);
-          }
-
-          _baitCategoryManager.addOrUpdate(newCategory);
-        },
-        onDelete: (categoryToDelete) =>
-            _baitCategoryManager.delete(categoryToDelete),
-      ),
-      itemEqualsOldValue: (item, oldCategory) {
-        return item.value.id == oldCategory.id;
+      valueBuilder: () => _baitCategoryController.value == null
+          ? null
+          : _baitCategoryController.value.name,
+      onTap: () {
+        push(context, BaitCategoryListPage.picker(
+          onPicked: (context, pickedCategory) {
+            setState(() {
+              _baitCategoryController.value = pickedCategory;
+            });
+            return true;
+          },
+        ));
       },
     );
   }

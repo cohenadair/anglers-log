@@ -11,57 +11,60 @@ import 'package:mobile/image_manager.dart';
 import 'package:mobile/model/catch.dart';
 import 'package:mobile/pages/add_catch_journey.dart';
 import 'package:mobile/pages/catch_page.dart';
+import 'package:mobile/pages/manageable_list_page.dart';
+import 'package:mobile/pages/save_catch_page.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/species_manager.dart';
-import 'package:mobile/utils/page_utils.dart';
 import 'package:mobile/utils/string_utils.dart';
 import 'package:mobile/widgets/thumbnail.dart';
 import 'package:mobile/widgets/text.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:quiver/strings.dart';
 
-class CatchListPage extends StatefulWidget {
-  @override
-  _CatchListPageState createState() => _CatchListPageState();
-}
-
-class _CatchListPageState extends State<CatchListPage> {
-  BaitCategoryManager get _baitCategoryManager =>
-      BaitCategoryManager.of(context);
-  BaitManager get _baitManager => BaitManager.of(context);
-  CatchManager get _catchManager => CatchManager.of(context);
-  FishingSpotManager get _fishingSpotManager => FishingSpotManager.of(context);
-  ImageManager get _imageManager => ImageManager.of(context);
-  SpeciesManager get _speciesManager => SpeciesManager.of(context);
-
-  List<Catch> get _catches => _catchManager.entityListSortedByTimestamp;
-
+class CatchListPage extends StatelessWidget {
   Widget build(BuildContext context) {
+    CatchManager catchManager = CatchManager.of(context);
+    List<Catch> catches = catchManager.entityListSortedByTimestamp;
+
     return EntityListenerBuilder<Catch>(
-      manager: _catchManager,
-      builder: (context) => Scaffold(
-        appBar: AppBar(
-          title: Text(format(Strings.of(context).catchListPageTitle,
-              [_catchManager.entityCount])),
-          actions: [
-            IconButton(
-              icon: Icon(Icons.add),
-              onPressed: () => present(context, AddCatchJourney()),
-            ),
-          ],
+      manager: catchManager,
+      builder: (context) => ManageableListPage<Catch>(
+        title: Text(format(Strings.of(context).catchListPageTitle,
+            [catchManager.entityCount])),
+        forceCenterTitle: true,
+        searchSettings: ManageableListPageSearchSettings(
+          hint: Strings.of(context).catchListPageSearchHint,
+          onStart: () {
+            // TODO
+          },
         ),
-        body: ListView.builder(
-          itemCount: _catches.length,
-          itemBuilder: (context, i) => _buildListItem(_catches[i]),
+        itemCount: catches.length,
+        itemBuilder: (context, i) => _buildListItem(context, catches[i]),
+        itemsHaveThumbnail: true,
+        itemManager: ManageableListPageItemManager(
+          deleteText: (context, cat) =>
+              Text(Strings.of(context).catchPageDeleteMessage),
+          deleteItem: (context, cat) => catchManager.delete(cat),
+          addPageBuilder: () => AddCatchJourney(),
+          detailPageBuilder: (cat) => CatchPage(cat.id),
+          editPageBuilder: (cat) => SaveCatchPage.edit(cat),
         ),
       ),
     );
   }
 
-  Widget _buildListItem(Catch cat) {
+  ManageableListPageItemModel<Catch> _buildListItem(BuildContext context,
+      Catch cat)
+  {
+    BaitCategoryManager baitCategoryManager = BaitCategoryManager.of(context);
+    BaitManager baitManager = BaitManager.of(context);
+    FishingSpotManager fishingSpotManager = FishingSpotManager.of(context);
+    ImageManager imageManager = ImageManager.of(context);
+    SpeciesManager speciesManager = SpeciesManager.of(context);
+
     Widget subtitle2 = Empty();
 
-    var fishingSpot = _fishingSpotManager.entity(id: cat.fishingSpotId);
+    var fishingSpot = fishingSpotManager.entity(id: cat.fishingSpotId);
     if (fishingSpot != null && isNotEmpty(fishingSpot.name)) {
       subtitle2 = SubtitleText(fishingSpot.name ?? formatLatLng(
         context: context,
@@ -69,37 +72,33 @@ class _CatchListPageState extends State<CatchListPage> {
         lng: fishingSpot.lng,
       ));
     } else if (isNotEmpty(cat.baitId)) {
-      var bait = _baitManager.entity(id: cat.baitId);
+      var bait = baitManager.entity(id: cat.baitId);
       if (isNotEmpty(bait.categoryId)) {
-        var category = _baitCategoryManager.entity(id: bait.categoryId);
+        var category = baitCategoryManager.entity(id: bait.categoryId);
         subtitle2 = SubtitleText(formatBaitName(bait, category));
       } else {
         subtitle2 = SubtitleText(formatBaitName(bait));
       }
     }
 
-    List<File> imageFiles = _imageManager.imageFiles(entityId: cat.id);
+    List<File> imageFiles = imageManager.imageFiles(entityId: cat.id);
 
-    return InkWell(
-      onTap: () => push(context, CatchPage(cat.id)),
-      child: Padding(
-        padding: insetsDefault,
-        child: Row(children: [
+    return ManageableListPageItemModel<Catch>(
+      value: cat,
+      child: Row(
+        children: [
           Thumbnail.listItem(
               file: imageFiles.isNotEmpty ? imageFiles.first : null),
           Container(width: paddingWidget),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              LabelText(_speciesManager.entity(id: cat.speciesId).name),
+              LabelText(speciesManager.entity(id: cat.speciesId).name),
               SubtitleText(formatDateTime(context, cat.dateTime)),
               subtitle2,
             ],
           ),
-          Spacer(),
-          Container(width: paddingWidget),
-          RightChevronIcon(),
-        ]),
+        ],
       ),
     );
   }

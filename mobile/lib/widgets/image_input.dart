@@ -4,7 +4,6 @@ import 'package:mobile/pages/image_picker_page.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/utils/page_utils.dart';
 import 'package:mobile/widgets/text.dart';
-import 'package:mobile/widgets/thumbnail.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:photo_manager/photo_manager.dart';
 

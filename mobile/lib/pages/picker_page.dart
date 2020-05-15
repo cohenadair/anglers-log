@@ -2,22 +2,16 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:mobile/entity_manager.dart';
-import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/log.dart';
 import 'package:mobile/model/named_entity.dart';
-import 'package:mobile/model/species.dart';
 import 'package:mobile/pages/save_name_page.dart';
 import 'package:mobile/res/dimen.dart';
-import 'package:mobile/species_manager.dart';
-import 'package:mobile/utils/dialog_utils.dart';
 import 'package:mobile/utils/listener_manager.dart';
 import 'package:mobile/utils/page_utils.dart';
-import 'package:mobile/utils/string_utils.dart';
 import 'package:mobile/utils/validator.dart';
 import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/checkbox_input.dart';
 import 'package:mobile/widgets/list_item.dart';
-import 'package:mobile/widgets/text.dart';
 import 'package:mobile/widgets/widget.dart';
 
 /// A generic picker page for selecting items from a list. Includes the
@@ -208,7 +202,7 @@ class _PickerPageState<T> extends State<PickerPage<T>> {
 
   Widget _buildListItemCheckbox(PickerPageItem<T> item) {
     return PaddedCheckbox(
-      value: _selectedValues.contains(item.value),
+      checked: _selectedValues.contains(item.value),
       onChanged: (value) {
         setState(() {
           _checkboxUpdated(item.value);
@@ -428,39 +422,4 @@ class PickerPageItemAddManager<T> extends PickerPageItemManager<T> {
   void showEditItem(BuildContext context, itemToEdit) {
     // Do nothing.
   }
-}
-
-/// A convenience class for managing [Species].
-class PickerPageItemSpeciesManager extends PickerPageItemNameManager<Species> {
-  PickerPageItemSpeciesManager(BuildContext context) : super(
-    addTitle: Text(Strings.of(context).speciesPickerPageNewTitle),
-    editTitle: Text(Strings.of(context).speciesPickerPageEditTitle),
-    deleteMessageBuilder: (context, species) => InsertedBoldText(
-      text: Strings.of(context).speciesPickerPageConfirmDelete,
-      args: [species.name],
-    ),
-    oldNameCallback: (oldSpecies) => oldSpecies.name,
-    validator: NameValidator(
-      nameExistsMessage:
-      Strings.of(context).speciesPickerPageSpeciesExists,
-      nameExists: (name) => SpeciesManager.of(context).nameExists(name),
-    ),
-    onSave: (newName, oldSpecies) {
-      var newSpecies = Species(name: newName);
-      if (oldSpecies != null) {
-        newSpecies = Species(name: newName, id: oldSpecies.id);
-      }
-
-      SpeciesManager.of(context).addOrUpdate(newSpecies);
-    },
-    onDelete: (speciesToDelete) async {
-      if (!await SpeciesManager.of(context).delete(speciesToDelete)) {
-        showErrorDialog(
-          context: context,
-          description: Text(format(Strings.of(context)
-              .speciesPickerPageCatchDeleteError, [speciesToDelete.name])),
-        );
-      }
-    }
-  );
 }

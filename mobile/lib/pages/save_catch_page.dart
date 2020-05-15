@@ -18,7 +18,7 @@ import 'package:mobile/pages/bait_list_page.dart';
 import 'package:mobile/pages/editable_form_page.dart';
 import 'package:mobile/pages/fishing_spot_picker_page.dart';
 import 'package:mobile/pages/image_picker_page.dart';
-import 'package:mobile/pages/picker_page.dart';
+import 'package:mobile/pages/species_list_page.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/species_manager.dart';
 import 'package:mobile/utils/map_utils.dart';
@@ -48,7 +48,6 @@ class SaveCatchPage extends StatefulWidget {
   /// [AddCatchJourney].
   final CatchJourneyHelper journeyHelper;
 
-  /// Set to a non-null value when editing an existing [Catch].
   final Catch oldCatch;
 
   SaveCatchPage()
@@ -89,8 +88,6 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
   FishingSpotManager get _fishingSpotManager => FishingSpotManager.of(context);
   ImageManager get _imageManager => ImageManager.of(context);
   SpeciesManager get _speciesManager => SpeciesManager.of(context);
-
-  List<Species> get _species => _speciesManager.entityList;
 
   TimestampInputController get _timestampController =>
       _fields[_timestampKey].controller;
@@ -256,10 +253,11 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
       },
       onTap: () {
         push(context, BaitListPage.picker(
-          onPicked: (pickedBait) {
+          onPicked: (context, pickedBait) {
             setState(() {
               _baitController.value = pickedBait;
             });
+            return true;
           },
         ));
       },
@@ -292,16 +290,21 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
   }
 
   Widget _buildSpecies() {
-    return ListPickerInput<Species>.single(
-      initialValue: _speciesController.value,
-      pageTitle: Text(Strings.of(context).speciesPickerPageTitle),
-      labelText: Strings.of(context).saveCatchPageSpeciesLabel,
+    return ListPickerInput<Species>.customTap(
+      label: Strings.of(context).saveCatchPageSpeciesLabel,
       listenerManager: _speciesManager,
-      itemBuilder: () => entityListToPickerPageItemList<Species>(_species),
-      onChanged: (species) => _speciesController.value = species,
-      itemManager: PickerPageItemSpeciesManager(context),
-      itemEqualsOldValue: (item, oldSpecies) {
-        return item.value.id == oldSpecies.id;
+      valueBuilder: () => _speciesController.value == null
+          ? null
+          : _speciesController.value.name,
+      onTap: () {
+        push(context, SpeciesListPage.picker(
+          onPicked: (context, pickedSpecies) {
+            setState(() {
+              _speciesController.value = pickedSpecies;
+            });
+            return true;
+          },
+        ));
       },
     );
   }

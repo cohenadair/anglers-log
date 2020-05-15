@@ -45,6 +45,7 @@ Map<String, Map<String, String>> get englishStrings => {
 
     "catchListPage_menuLabel" : "Catches",
     "catchListPage_title" : "Catches (%s)",
+    "catchListPage_searchHint" : "Search catches",
 
     "catchPage_deleteMessage" : "Are you sure you want to delete this catch? This cannot be undone.",
 
@@ -63,19 +64,26 @@ Map<String, Map<String, String>> get englishStrings => {
 
     "baitListPage_menuLabel" : "Baits",
     "baitListPage_title" : "Baits (%s)",
+    "baitListPage_pickerTitle" : "Select Bait",
     "baitListPage_otherCategory" : "No Category",
+    "baitListPage_searchHint" : "Search baits",
 
     "baitPage_deleteMessage" : "Are you sure you want to delete this bait? This cannot be undone.",
 
     "saveBaitPage_newTitle" : "New Bait",
     "saveBaitPage_editTitle" : "Edit Bait",
     "saveBaitPage_categoryLabel" : "Bait Category",
-    "saveBaitPage_newCategoryLabel" : "New Bait Category",
-    "saveBaitPage_editCategoryLabel" : "Edit Bait Category",
-    "saveBaitPage_categoryExistsMessage" : "Bait category already exists",
-    "saveBaitPage_categoryPickerTitle" : "Select Bait Category",
-    "saveBaitPage_confirmDeleteCategory" : "Are you sure you want to delete bait category %s? This cannot be undone.",
     "saveBaitPage_baitExists" : "A bait with these properties already exists. Please change at least one field and try again.",
+
+    "saveBaitCategoryPage_newTitle" : "New Bait Category",
+    "saveBaitCategoryPage_editTitle" : "Edit Bait Category",
+    "saveBaitCategoryPage_existsMessage" : "Bait category already exists",
+
+    "baitCategoryListPage_menuTitle" : "Bait Categories",
+    "baitCategoryListPage_title" : "Bait Categories (%s)",
+    "baitCategoryListPage_pickerTitle" : "Select Bait Category",
+    "baitCategoryListPage_confirmDelete" : "Are you sure you want to delete bait category %s? This cannot be undone.",
+    "baitCategoryListPage_searchHint" : "Search bait categories",
 
     "statsPage_title" : "Stats",
 
@@ -121,12 +129,16 @@ Map<String, Map<String, String>> get englishStrings => {
     "imagePickerPage_invalidSelectionSingle" : "Must select an image file.",
     "imagePickerPage_invalidSelectionPlural" : "Must select image files.",
 
-    "speciesPickerPage_newTitle" : "New Species",
-    "speciesPickerPage_editTitle" : "Edit Species",
-    "speciesPickerPage_speciesExists" : "Species already exists",
-    "speciesPickerPage_title" : "Select Species",
-    "speciesPickerPage_confirmDelete" : "Are you sure you want to delete species %s? This cannot be undone.",
-    "speciesPickerPage_catchDeleteError" : "Unable to delete %s because it is attached to one or more catches.",
+    "saveSpeciesPage_newTitle" : "New Species",
+    "saveSpeciesPage_editTitle" : "Edit Species",
+    "saveSpeciesPage_existsError" : "Species already exists",
+
+    "speciesListPage_menuTitle" : "Species",
+    "speciesListPage_title" : "Species (%s)",
+    "speciesListPage_pickerTitle" : "Select Species",
+    "speciesListPage_confirmDelete" : "Are you sure you want to delete species %s? This cannot be undone.",
+    "speciesListPage_catchDeleteError" : "Unable to delete %s because it is attached to one or more catches.",
+    "speciesListPage_searchHint" : "Search species",
 
     "fishingSpotPickerPage_title" : "Select Fishing Spot",
     "fishingSpotPickerPage_hint" : "Drag the map to use exact coordinates, or select an existing fishing spot.",

@@ -22,7 +22,7 @@ class CheckboxInput extends StatelessWidget {
       contentPadding: insetsZero,
       title: enabled ? Text(label) : DisabledText(label),
       trailing: PaddedCheckbox(
-        value: value,
+        checked: value,
         enabled: enabled,
         onChanged: onChanged,
       ),
@@ -32,13 +32,13 @@ class CheckboxInput extends StatelessWidget {
 
 /// A [Checkbox] widget with optional padding.
 class PaddedCheckbox extends StatefulWidget {
-  final bool value;
+  final bool checked;
   final bool enabled;
   final EdgeInsets padding;
   final Function(bool) onChanged;
 
   PaddedCheckbox({
-    this.value = false,
+    this.checked = false,
     this.enabled = true,
     this.padding = insetsZero,
     this.onChanged,
@@ -54,7 +54,7 @@ class _PaddedCheckboxState extends State<PaddedCheckbox> {
   @override
   void initState() {
     super.initState();
-    checked = widget.value;
+    checked = widget.checked;
   }
 
   @override

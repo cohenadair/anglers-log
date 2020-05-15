@@ -76,6 +76,7 @@ class Strings {
 
   String get catchListPageMenuLabel => _string("catchListPage_menuLabel");
   String get catchListPageTitle => _string("catchListPage_title");
+  String get catchListPageSearchHint => _string("catchListPage_searchHint");
 
   String get catchPageDeleteMessage => _string("catchPage_deleteMessage");
 
@@ -94,19 +95,26 @@ class Strings {
 
   String get baitListPageMenuLabel => _string("baitListPage_menuLabel");
   String get baitListPageTitle => _string("baitListPage_title");
+  String get baitListPagePickerTitle => _string("baitListPage_pickerTitle");
   String get baitListPageOtherCategory => _string("baitListPage_otherCategory");
+  String get baitListPageSearchHint => _string("baitListPage_searchHint");
 
   String get baitPageDeleteMessage => _string("baitPage_deleteMessage");
 
   String get saveBaitPageNewTitle => _string("saveBaitPage_newTitle");
   String get saveBaitPageEditTitle => _string("saveBaitPage_editTitle");
   String get saveBaitPageCategoryLabel => _string("saveBaitPage_categoryLabel");
-  String get saveBaitPageNewCategoryLabel => _string("saveBaitPage_newCategoryLabel");
-  String get saveBaitPageEditCategoryLabel => _string("saveBaitPage_editCategoryLabel");
-  String get saveBaitPageCategoryExistsMessage => _string("saveBaitPage_categoryExistsMessage");
-  String get saveBaitPageCategoryPickerTitle => _string("saveBaitPage_categoryPickerTitle");
-  String get saveBaitPageConfirmDeleteCategory => _string("saveBaitPage_confirmDeleteCategory");
   String get saveBaitPageBaitExists => _string("saveBaitPage_baitExists");
+
+  String get saveBaitCategoryPageNewTitle => _string("saveBaitCategoryPage_newTitle");
+  String get saveBaitCategoryPageEditTitle => _string("saveBaitCategoryPage_editTitle");
+  String get saveBaitCategoryPageExistsMessage => _string("saveBaitCategoryPage_existsMessage");
+
+  String get baitCategoryListPageMenuTitle => _string("baitCategoryListPage_menuTitle");
+  String get baitCategoryListPageTitle => _string("baitCategoryListPage_title");
+  String get baitCategoryListPagePickerTitle => _string("baitCategoryListPage_pickerTitle");
+  String get baitCategoryListPageConfirmDelete => _string("baitCategoryListPage_confirmDelete");
+  String get baitCategoryListPageSearchHint => _string("baitCategoryListPage_searchHint");
 
   String get statsPageTitle => _string("statsPage_title");
 
@@ -146,12 +154,16 @@ class Strings {
   String get imagePickerPageInvalidSelectionSingle => _string("imagePickerPage_invalidSelectionSingle");
   String get imagePickerPageInvalidSelectionPlural => _string("imagePickerPage_invalidSelectionPlural");
 
-  String get speciesPickerPageNewTitle => _string("speciesPickerPage_newTitle");
-  String get speciesPickerPageEditTitle => _string("speciesPickerPage_editTitle");
-  String get speciesPickerPageSpeciesExists => _string("speciesPickerPage_speciesExists");
-  String get speciesPickerPageTitle => _string("speciesPickerPage_title");
-  String get speciesPickerPageConfirmDelete => _string("speciesPickerPage_confirmDelete");
-  String get speciesPickerPageCatchDeleteError => _string("speciesPickerPage_catchDeleteError");
+  String get saveSpeciesPageNewTitle => _string("saveSpeciesPage_newTitle");
+  String get saveSpeciesPageEditTitle => _string("saveSpeciesPage_editTitle");
+  String get saveSpeciesPageExistsError => _string("saveSpeciesPage_existsError");
+
+  String get speciesListPageMenuTitle => _string("speciesListPage_menuTitle");
+  String get speciesListPageTitle => _string("speciesListPage_title");
+  String get speciesListPagePickerTitle => _string("speciesListPage_pickerTitle");
+  String get speciesListPageConfirmDelete => _string("speciesListPage_confirmDelete");
+  String get speciesListPageCatchDeleteError => _string("speciesListPage_catchDeleteError");
+  String get speciesListPageSearchHint => _string("speciesListPage_searchHint");
 
   String get fishingSpotPickerPageTitle => _string("fishingSpotPickerPage_title");
   String get fishingSpotPickerPageHint => _string("fishingSpotPickerPage_hint");
