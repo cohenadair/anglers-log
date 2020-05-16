@@ -235,22 +235,20 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
   }
 
   Widget _buildBait() {
-    return ListPickerInput<Bait>.customTap(
-      label: Strings.of(context).saveCatchPageBaitLabel,
-      listenerManager: _baitManager,
-      valueBuilder: () {
-        var bait = _baitController.value;
-        if (bait == null) {
-          return null;
-        }
+    String value;
+    var bait = _baitController.value;
+    if (bait != null) {
+      var category;
+      if (bait.categoryId != null) {
+        category = _baitCategoryManager.entity(id: bait.categoryId);
+      }
 
-        var category;
-        if (bait.categoryId != null) {
-          category = _baitCategoryManager.entity(id: bait.categoryId);
-        }
+      value = formatBaitName(bait, category);
+    }
 
-        return formatBaitName(bait, category);
-      },
+    return ListPickerInput<Bait>(
+      title: Strings.of(context).saveCatchPageBaitLabel,
+      value: value,
       onTap: () {
         push(context, BaitListPage.picker(
           onPicked: (context, pickedBait) {
@@ -290,12 +288,9 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
   }
 
   Widget _buildSpecies() {
-    return ListPickerInput<Species>.customTap(
-      label: Strings.of(context).saveCatchPageSpeciesLabel,
-      listenerManager: _speciesManager,
-      valueBuilder: () => _speciesController.value == null
-          ? null
-          : _speciesController.value.name,
+    return ListPickerInput<Species>(
+      title: Strings.of(context).saveCatchPageSpeciesLabel,
+      value: _speciesController.value?.name,
       onTap: () {
         push(context, SpeciesListPage.picker(
           onPicked: (context, pickedSpecies) {

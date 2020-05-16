@@ -82,6 +82,7 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
   bool get _pickingMulti => _viewingState == _ViewingState.pickingMulti;
   bool get _pickingSingle => _viewingState == _ViewingState.pickingSingle;
   bool get _hasSearch => widget.searchSettings != null;
+  bool get _editable => widget.itemManager.editPageBuilder != null;
 
   @override
   void initState() {
@@ -152,7 +153,7 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
   List<Widget> _buildActions() {
     List<Widget> result = [];
 
-    if (_pickingMulti) {
+    if (_pickingMulti && _editable) {
       // If picking multiple items, use overflow menu for "Add" and "Edit"
       // options.
       result..add(ActionButton.done(
@@ -189,26 +190,25 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
         },
       ));
     } else {
-      Widget editOrDoneButton;
       if (_editing) {
-        editOrDoneButton = ActionButton.done(
+        result.add(ActionButton.done(
           condensed: true,
           onPressed: () => setEditingUpdateState(false),
-        );
-      } else {
-        editOrDoneButton = ActionButton.edit(
+        ));
+      } else if (_editable) {
+        // Only include the edit button if the items can be modified.
+        result.add(ActionButton.edit(
           condensed: true,
           onPressed: () => setEditingUpdateState(true),
-        ) ;
+        ));
       }
 
-      // For any other case, use normal "Add" and "Edit" buttons.
-      result..add(editOrDoneButton)
-        ..add(IconButton(
-          icon: Icon(Icons.add),
-          onPressed: () =>
-              present(context, widget.itemManager.addPageBuilder()),
-        ));
+      // Always include the "Add" button.
+      result.add(IconButton(
+        icon: Icon(Icons.add),
+        onPressed: () =>
+            present(context, widget.itemManager.addPageBuilder()),
+      ));
     }
 
     return result;
@@ -243,18 +243,8 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
       trailing = Empty();
     }
 
-    Widget child = item.child;
-    if (child is Text) {
-      // If the child is just a pain Text widget, style it the same as a
-      // system ListTile.
-      child = DefaultTextStyle(
-        style: Theme.of(context).textTheme.subtitle1,
-        child: child,
-      );
-    }
-
     return ManageableListItem(
-      child: child,
+      child: item.child,
       editing: _editing,
       deleteMessageBuilder: (context) =>
           widget.itemManager.deleteText(context, item.value),
@@ -410,16 +400,18 @@ class ManageableListPageItemManager<T> {
   /// navigator, and should be a page that shows details of [T].
   final Widget Function(T) detailPageBuilder;
 
-  /// Invoked when an item is tapped while not "editing" mode. The [Widget]
-  /// returned by this function is pushed to the current navigator, and
-  /// should be a page that allows editing of [T].
+  /// If non-null, is invoked when an item is tapped while in "editing" mode.
+  /// The [Widget] returned by this function is pushed to the current navigator,
+  /// and should be a page that allows editing of [T].
+  ///
+  /// If null, editing is disabled for the [ManageableListPage].
   final Widget Function(T) editPageBuilder;
 
   ManageableListPageItemManager({
     @required this.deleteText,
     @required this.deleteItem,
     @required this.addPageBuilder,
-    @required this.editPageBuilder,
+    this.editPageBuilder,
     this.detailPageBuilder,
   }) : assert(deleteText != null),
        assert(deleteItem != null),

@@ -1,7 +1,7 @@
 import 'package:mobile/bait_category_manager.dart';
 import 'package:mobile/bait_manager.dart';
 import 'package:mobile/catch_manager.dart';
-import 'package:mobile/custom_field_manager.dart';
+import 'package:mobile/custom_entity_manager.dart';
 import 'package:mobile/data_manager.dart';
 import 'package:mobile/fishing_spot_manager.dart';
 import 'package:mobile/image_manager.dart';
@@ -15,7 +15,7 @@ class AppManager {
   BaitManager _baitManager;
   DataManager _dataManager;
   CatchManager _catchManager;
-  CustomFieldManager _customFieldManager;
+  CustomEntityManager _customFieldManager;
   FishingSpotManager _fishingSpotManager;
   ImageManager _imageManager;
   LocationMonitor _locationMonitor;
@@ -51,9 +51,9 @@ class AppManager {
     return _catchManager;
   }
 
-  CustomFieldManager get customFieldManager {
+  CustomEntityManager get customFieldManager {
     if (_customFieldManager == null) {
-      _customFieldManager = CustomFieldManager(this);
+      _customFieldManager = CustomEntityManager(this);
     }
     return _customFieldManager;
   }

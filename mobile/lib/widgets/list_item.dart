@@ -192,6 +192,16 @@ class _ManageableListItemState extends State<ManageableListItem> with
       _editAnimController.reverse();
     }
 
+    Widget child = widget.child;
+    if (child is Text) {
+      // If the child is just a plain Text widget, style it the same as a
+      // system ListTile.
+      child = DefaultTextStyle(
+        style: Theme.of(context).textTheme.subtitle1,
+        child: child,
+      );
+    }
+
     return SafeArea(
       top: false,
       bottom: false,
@@ -211,7 +221,7 @@ class _ManageableListItemState extends State<ManageableListItem> with
                   top: paddingDefault,
                   bottom: paddingDefault,
                 ),
-                child: widget.child,
+                child: child,
               ),
               Spacer(),
               _buildTrailing(),

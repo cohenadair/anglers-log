@@ -5,11 +5,11 @@ import 'package:provider/provider.dart';
 
 import 'model/custom_entity.dart';
 
-class CustomFieldManager extends NamedEntityManager<CustomEntity> {
-  static CustomFieldManager of(BuildContext context) =>
+class CustomEntityManager extends NamedEntityManager<CustomEntity> {
+  static CustomEntityManager of(BuildContext context) =>
       Provider.of<AppManager>(context, listen: false).customFieldManager;
 
-  CustomFieldManager(AppManager app) : super(app);
+  CustomEntityManager(AppManager app) : super(app);
 
   @override
   CustomEntity entityFromMap(Map<String, dynamic> map) =>

@@ -4,13 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/model/custom_entity.dart';
 import 'package:mobile/pages/picker_page.dart';
+import 'package:mobile/pages/save_custom_entity_page.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/utils/page_utils.dart';
 import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:quiver/core.dart';
-
-import 'add_custom_field_page.dart';
 
 /// A function responsible for building all input widgets.
 ///
@@ -268,16 +267,17 @@ class _SelectionPageState extends State<_SelectionPage> {
         widget.onSelectItems(options.map((o) => o.id).toSet());
         Navigator.pop(context);
       },
-      itemManager: PickerPageItemAddManager<FormPageFieldOption>(
-        onAddPressed: () => present(context, AddCustomFieldPage(
+      action: IconButton(
+        icon: Icon(Icons.add),
+        onPressed: () => present(context, SaveCustomEntityPage(
           onSave: (customField) {
             setState(() {
               _addedCustomFields.add(customField);
             });
           },
         ),
-      )),
-    );
+      ),
+    ));
   }
 
   List<FormPageFieldOption> get allOptions {

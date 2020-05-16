@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:mobile/custom_field_manager.dart';
+import 'package:mobile/custom_entity_manager.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/log.dart';
 import 'package:mobile/model/custom_entity.dart';
@@ -17,23 +17,23 @@ import 'form_page.dart';
 
 /// A input page for users to create custom fields to be used elsewhere in the
 /// app. This form is immutable.
-class AddCustomFieldPage extends StatefulWidget {
+class SaveCustomEntityPage extends StatefulWidget {
   final void Function(CustomEntity) onSave;
 
-  AddCustomFieldPage({
+  SaveCustomEntityPage({
     this.onSave,
   });
 
   @override
-  _AddCustomFieldPageState createState() => _AddCustomFieldPageState();
+  _SaveCustomEntityPageState createState() => _SaveCustomEntityPageState();
 }
 
-class _AddCustomFieldPageState extends State<AddCustomFieldPage> {
+class _SaveCustomEntityPageState extends State<SaveCustomEntityPage> {
   static const String _nameId = "name";
   static const String _descriptionId = "description";
   static const String _dataTypeId = "dataType";
 
-  final Log _log = Log("AddCustomFieldPage");
+  final Log _log = Log("SaveCustomEntityPage");
 
   final Map<String, InputController> _inputOptions = {
     _nameId: TextInputController(
@@ -57,7 +57,7 @@ class _AddCustomFieldPageState extends State<AddCustomFieldPage> {
   @override
   Widget build(BuildContext context) {
     return FormPage.immutable(
-      title: Text(Strings.of(context).addCustomFieldPageTitle),
+      title: Text(Strings.of(context).saveCustomEntityPageNewTitle),
       fieldBuilder: (BuildContext context) {
         return Map.fromIterable(_inputOptions.keys,
           key: (dynamic item) => item.toString(),
@@ -76,8 +76,8 @@ class _AddCustomFieldPageState extends State<AddCustomFieldPage> {
         controller: _nameController,
         autofocus: true,
         validator: NameValidator(
-          nameExistsMessage: Strings.of(context).addCustomFieldPageNameExists,
-          nameExists: CustomFieldManager.of(context).nameExists,
+          nameExistsMessage: Strings.of(context).saveCustomEntityPageNameExists,
+          nameExists: CustomEntityManager.of(context).nameExists,
         ),
         // Trigger "Save" button state refresh.
         onChanged: () => setState(() {}),
@@ -110,7 +110,7 @@ class _AddCustomFieldPageState extends State<AddCustomFieldPage> {
       type: _dataTypeController.value,
     );
 
-    CustomFieldManager.of(context).addOrUpdate(customField);
+    CustomEntityManager.of(context).addOrUpdate(customField);
     widget.onSave?.call(customField);
     return true;
   }

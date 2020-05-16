@@ -102,12 +102,9 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
   }
 
   Widget _buildCategoryPicker() {
-    return ListPickerInput<BaitCategory>.customTap(
-      label: Strings.of(context).saveBaitPageCategoryLabel,
-      listenerManager: _baitCategoryManager,
-      valueBuilder: () => _baitCategoryController.value == null
-          ? null
-          : _baitCategoryController.value.name,
+    return ListPickerInput<BaitCategory>(
+      title: Strings.of(context).saveBaitPageCategoryLabel,
+      value: _baitCategoryController.value?.name,
       onTap: () {
         push(context, BaitCategoryListPage.picker(
           onPicked: (context, pickedCategory) {

@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:mobile/custom_field_manager.dart';
+import 'package:mobile/custom_entity_manager.dart';
 import 'package:mobile/model/custom_entity.dart';
 import 'package:mobile/pages/form_page.dart';
 import 'package:mobile/res/dimen.dart';
@@ -97,7 +97,7 @@ class _EditableFormPageState extends State<EditableFormPage> {
   }
 
   CustomEntity _customField(String id) =>
-      CustomFieldManager.of(context).entity(id:id);
+      CustomEntityManager.of(context).entity(id: id);
 
   Widget _inputWidget({String key}) {
     if (!_fields[key].showing) {

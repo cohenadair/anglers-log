@@ -143,8 +143,6 @@ class Strings {
   String get formPageConfirmRemoveFields => _string("formPage_confirmRemoveFields");
   String get formPageSelectFieldsTitle => _string("formPage_selectFieldsTitle");
 
-  String get selectionPageAddCustomField => _string("selectionPage_addCustomField");
-
   String get imagePickerPageNoPhotosFound => _string("imagePickerPage_noPhotosFound");
   String get imagePickerPageOpenCameraLabel => _string("imagePickerPage_openCameraLabel");
   String get imagePickerPageCameraLabel => _string("imagePickerPage_cameraLabel");
@@ -168,8 +166,9 @@ class Strings {
   String get fishingSpotPickerPageTitle => _string("fishingSpotPickerPage_title");
   String get fishingSpotPickerPageHint => _string("fishingSpotPickerPage_hint");
 
-  String get addCustomFieldPageTitle => _string("addCustomFieldPage_title");
-  String get addCustomFieldPageNameExists => _string("addCustomFieldPage_nameExists");
+  String get saveCustomEntityPageNewTitle => _string("saveCustomEntityPage_newTitle");
+  String get saveCustomEntityPageEditTitle => _string("saveCustomEntityPage_editTitle");
+  String get saveCustomEntityPageNameExists => _string("saveCustomEntityPage_nameExists");
 
   String get feedbackPageTitle => _string("feedbackPage_title");
   String get feedbackPageSend => _string("feedbackPage_send");

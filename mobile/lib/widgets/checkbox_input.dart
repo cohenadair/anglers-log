@@ -66,12 +66,12 @@ class _PaddedCheckboxState extends State<PaddedCheckbox> {
         height: checkboxSizeDefault,
         child: Checkbox(
           value: checked,
-          onChanged: (value) {
+          onChanged: widget.enabled ? (value) {
             setState(() {
               checked = !checked;
               widget.onChanged(checked);
             });
-          },
+          } : null,
         ),
       ),
     );
