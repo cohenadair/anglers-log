@@ -10,7 +10,7 @@ import 'package:mobile/image_manager.dart';
 import 'package:mobile/model/catch.dart';
 import 'package:mobile/pages/add_catch_journey.dart';
 import 'package:mobile/pages/catch_page.dart';
-import 'package:mobile/pages/manageable_list_page.dart';
+import 'package:mobile/pages/entity_list_page.dart';
 import 'package:mobile/pages/save_catch_page.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/species_manager.dart';
@@ -22,9 +22,13 @@ import 'package:quiver/strings.dart';
 
 class CatchListPage extends StatelessWidget {
   Widget build(BuildContext context) {
+    BaitCategoryManager baitCategoryManager = BaitCategoryManager.of(context);
+    BaitManager baitManager = BaitManager.of(context);
     CatchManager catchManager = CatchManager.of(context);
+    FishingSpotManager fishingSpotManager = FishingSpotManager.of(context);
+    SpeciesManager speciesManager = SpeciesManager.of(context);
 
-    return ManageableListPage<Catch>(
+    return EntityListPage<Catch>(
       title: Text(format(Strings.of(context).catchListPageTitle,
           [catchManager.entityCount])),
       forceCenterTitle: true,
@@ -36,8 +40,14 @@ class CatchListPage extends StatelessWidget {
       ),
       itemBuilder: _buildListItem,
       itemsHaveThumbnail: true,
-      itemManager: ManageableListPageItemManager(
-        listenerManager: catchManager,
+      itemManager: ManageableListPageItemManager<Catch>(
+        listenerManagers: [
+          baitCategoryManager,
+          baitManager,
+          catchManager,
+          fishingSpotManager,
+          speciesManager,
+        ],
         loadItems: () => catchManager.entityListSortedByTimestamp,
         deleteText: (context, cat) =>
             Text(Strings.of(context).catchPageDeleteMessage),

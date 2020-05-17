@@ -103,8 +103,8 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
   }
 
   Widget _buildCategoryPicker() {
-    return EntityListenerBuilder<BaitCategory>(
-      manager: _baitCategoryManager,
+    return EntityListenerBuilder(
+      managers: [ _baitCategoryManager ],
       builder: (context) {
         // Update value with latest from database.
         _baitCategoryController.value =

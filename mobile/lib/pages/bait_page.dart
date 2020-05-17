@@ -38,8 +38,11 @@ class _BaitPageState extends State<BaitPage> {
 
   @override
   Widget build(BuildContext context) {
-    return EntityListenerBuilder<Bait>(
-      manager: _baitManager,
+    return EntityListenerBuilder(
+      managers: [
+        _baitCategoryManager,
+        _baitManager,
+      ],
       // When deleted, we pop immediately. Don't reload; bait will be null.
       onDeleteEnabled: false,
       builder: (context) => EntityPage(

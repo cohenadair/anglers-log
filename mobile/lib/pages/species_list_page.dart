@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/model/species.dart';
-import 'package:mobile/pages/manageable_list_page.dart';
+import 'package:mobile/pages/entity_list_page.dart';
 import 'package:mobile/pages/save_species_page.dart';
 import 'package:mobile/species_manager.dart';
 import 'package:mobile/utils/dialog_utils.dart';
@@ -21,7 +21,7 @@ class SpeciesListPage extends StatelessWidget {
   Widget build(BuildContext context) {
     SpeciesManager speciesManager = SpeciesManager.of(context);
 
-    return ManageableListPage<Species>(
+    return EntityListPage<Species>(
       title: _picking
           ? Text(Strings.of(context).speciesListPagePickerTitle)
           : Text(Strings.of(context).speciesListPageTitle),
@@ -40,7 +40,7 @@ class SpeciesListPage extends StatelessWidget {
             )
           : null,
       itemManager: ManageableListPageItemManager<Species>(
-        listenerManager: speciesManager,
+        listenerManagers: [ speciesManager ],
         loadItems: () => speciesManager.entityListSortedByName,
         deleteText: (context, species) => InsertedBoldText(
           text: Strings.of(context).speciesListPageConfirmDelete,

@@ -236,8 +236,11 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
   }
 
   Widget _buildBait() {
-    return EntityListenerBuilder<Bait>(
-      manager: _baitManager,
+    return EntityListenerBuilder(
+      managers: [
+        _baitCategoryManager,
+        _baitManager,
+      ],
       builder: (context) {
         // Update value with latest from database.
         _baitController.value =
@@ -298,8 +301,8 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
   }
 
   Widget _buildSpecies() {
-    return EntityListenerBuilder<Species>(
-      manager: _speciesManager,
+    return EntityListenerBuilder(
+      managers: [ _speciesManager ],
       builder: (context) {
         // Update value with latest from database.
         _speciesController.value =

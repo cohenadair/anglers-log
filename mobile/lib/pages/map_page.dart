@@ -59,8 +59,8 @@ class _MapPageState extends State<MapPage> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-    body: EntityListenerBuilder<FishingSpot>(
-      manager: _fishingSpotManager,
+    body: EntityListenerBuilder(
+      managers: [ _fishingSpotManager ],
       onUpdate: () {
         _updateMarkers();
 

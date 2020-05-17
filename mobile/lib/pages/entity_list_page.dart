@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:mobile/entity_manager.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/res/dimen.dart';
-import 'package:mobile/utils/listener_manager.dart';
 import 'package:mobile/utils/page_utils.dart';
 import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/checkbox_input.dart';
@@ -14,7 +13,7 @@ import 'package:quiver/strings.dart';
 
 /// A page that is able to manage a list of a given type, [T]. The page includes
 /// an optional [SearchBar] and can be used a single or multi-item picker.
-class ManageableListPage<T> extends StatefulWidget {
+class EntityListPage<T> extends StatefulWidget {
   /// See [ManageableListPageItemModel].
   final ManageableListPageItemModel Function(BuildContext, T) itemBuilder;
 
@@ -36,19 +35,19 @@ class ManageableListPage<T> extends StatefulWidget {
   /// See [SliverAppBar.centerTitle].
   final bool forceCenterTitle;
 
-  /// If non-null, the [ManageableListPage] acts like a picker.
+  /// If non-null, the [EntityListPage] acts like a picker.
   ///
   /// See [ManageableListPageSinglePickerSettings].
   /// See [ManageableListPageMultiPickerSettings].
   final ManageableListPagePickerSettings<T> pickerSettings;
 
-  /// If non-null, the [ManageableListPage] includes a [SearchBar] in the
+  /// If non-null, the [EntityListPage] includes a [SearchBar] in the
   /// [AppBar].
   ///
   /// See [ManageableListPageSearchSettings].
   final ManageableListPageSearchSettings searchSettings;
 
-  ManageableListPage({
+  EntityListPage({
     @required this.itemManager,
     @required this.itemBuilder,
     this.title,
@@ -60,10 +59,10 @@ class ManageableListPage<T> extends StatefulWidget {
        assert(itemManager != null);
 
   @override
-  _ManageableListPageState<T> createState() => _ManageableListPageState<T>();
+  _EntityListPageState<T> createState() => _EntityListPageState<T>();
 }
 
-class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
+class _EntityListPageState<T> extends State<EntityListPage<T>> {
   final double _appBarExpandedHeight = 100.0;
   final double _searchBarHeight = 40.0;
 
@@ -91,12 +90,12 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
   }
 
   Widget build(BuildContext context) {
-    if (widget.itemManager?.listenerManager == null) {
+    if (widget.itemManager?.listenerManagers == null) {
       return _buildScaffold(widget.itemManager.loadItems());
     }
 
-    return EntityListenerBuilder<T>(
-      manager: widget.itemManager.listenerManager,
+    return EntityListenerBuilder(
+      managers: widget.itemManager.listenerManagers,
       builder: (context) => _buildScaffold(widget.itemManager.loadItems()),
     );
   }
@@ -348,7 +347,7 @@ class ManageableListPageMultiPickerSettings<T>
 }
 
 /// A convenience class for storing the properties of an option [SearchBar] in
-/// the [AppBar] of a [ManageableListPage].
+/// the [AppBar] of a [EntityListPage].
 class ManageableListPageSearchSettings {
   /// The search hint text.
   final String hint;
@@ -364,7 +363,7 @@ class ManageableListPageSearchSettings {
 }
 
 /// A convenient class for storing properties for a single item in a
-/// [ManageableListPage].
+/// [EntityListPage].
 class ManageableListPageItemModel {
   /// True if this item can be edited; false otherwise. This may be false for
   /// section headers or dividers. Defaults to true.
@@ -382,7 +381,9 @@ class ManageableListPageItemModel {
 }
 
 /// A convenience class to handle the adding, deleting, and editing of an item
-/// in a [ManageableListPage].
+/// in a [EntityListPage].
+///
+/// [T] is the type of object being managed.
 class ManageableListPageItemManager<T> {
   /// Invoked when the widget tree needs to be rebuilt. Required so data is
   /// almost the most up to date from the database.
@@ -400,8 +401,10 @@ class ManageableListPageItemManager<T> {
   /// function is presented in the current navigator.
   final Widget Function() addPageBuilder;
 
-  /// If non-null and notified, will rebuild the [ManageableListPage].
-  final ListenerManager<EntityListener<T>> listenerManager;
+  /// If non-null, will rebuild the [EntityListPage] when one
+  /// of the [EntityManager] objects is notified of updates. In most cases,
+  /// this [List] will only have one value.
+  final List<EntityManager> listenerManagers;
 
   /// If non-null, is invoked when an item is tapped while not in "editing"
   /// mode. The [Widget] returned by this function is pushed to the current
@@ -412,7 +415,7 @@ class ManageableListPageItemManager<T> {
   /// The [Widget] returned by this function is pushed to the current navigator,
   /// and should be a page that allows editing of [T].
   ///
-  /// If null, editing is disabled for the [ManageableListPage].
+  /// If null, editing is disabled for the [EntityListPage].
   final Widget Function(T) editPageBuilder;
 
   ManageableListPageItemManager({
@@ -420,12 +423,13 @@ class ManageableListPageItemManager<T> {
     @required this.deleteText,
     @required this.deleteItem,
     @required this.addPageBuilder,
-    this.listenerManager,
+    this.listenerManagers,
     this.editPageBuilder,
     this.detailPageBuilder,
   }) : assert(loadItems != null),
        assert(deleteText != null),
        assert(deleteItem != null),
+       assert(listenerManagers == null || listenerManagers.isNotEmpty),
        assert(addPageBuilder != null),
        assert(editPageBuilder != null);
 }

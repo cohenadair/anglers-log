@@ -49,8 +49,14 @@ class _CatchPageState extends State<CatchPage> {
 
   @override
   Widget build(BuildContext context) {
-    return EntityListenerBuilder<Catch>(
-      manager: _catchManager,
+    return EntityListenerBuilder(
+      managers: [
+        _baitCategoryManager,
+        _baitManager,
+        _catchManager,
+        _fishingSpotManager,
+        _speciesManager,
+      ],
       // When deleted, we pop immediately. Don't reload; catch will be null.
       onDeleteEnabled: false,
       builder: (context) => EntityPage(

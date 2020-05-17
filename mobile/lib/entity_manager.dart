@@ -83,60 +83,71 @@ abstract class EntityManager<T extends Entity> extends
   void notifyOnDelete(T entity) {
     notify((listener) => listener.onDelete(entity));
   }
+  
+  SimpleEntityListener addSimpleListener({
+    void Function(T entity) onDelete,
+    VoidCallback onAddOrUpdate,
+  }) {
+    var listener = SimpleEntityListener<T>(
+      onDelete: onDelete,
+      onAddOrUpdate: onAddOrUpdate,
+    );
+    addListener(listener);
+    return listener;
+  }
 }
 
-class EntityListenerBuilder<T> extends StatefulWidget {
-  final ListenerManager<EntityListener<T>> manager;
+class EntityListenerBuilder extends StatefulWidget {
+  final List<EntityManager> managers;
   final Widget Function(BuildContext) builder;
 
   /// Invoked _before_ the call to [setState].
   final VoidCallback onUpdate;
 
-  /// If false, the widget is not rebuilt when data is added or updated.
-  final bool onAddOrUpdateEnabled;
-
-  /// If false, the widget is not rebuilt when data is deleted.
+  /// If false, the widget is not rebuilt when data is deleted. This is useful
+  /// when we need to pop an item from a [Navigator] when data is deleted
+  /// without updating UI. Makes more a smoother transition.
   final bool onDeleteEnabled;
 
   EntityListenerBuilder({
-    @required this.manager,
+    @required this.managers,
     @required this.builder,
     this.onUpdate,
-    this.onAddOrUpdateEnabled = true,
     this.onDeleteEnabled = true,
-  }) : assert(manager != null),
+  }) : assert(managers != null && managers.isNotEmpty),
        assert(builder != null);
 
   @override
-  _EntityListenerBuilderState<T> createState() =>
-      _EntityListenerBuilderState<T>();
+  _EntityListenerBuilderState createState() => _EntityListenerBuilderState();
 }
 
-class _EntityListenerBuilderState<T> extends
-    State<EntityListenerBuilder<T>>
-{
-  EntityListener _listener;
+class _EntityListenerBuilderState extends State<EntityListenerBuilder> {
+  List<EntityListener> _listeners = [];
 
   @override
   void initState() {
     super.initState();
 
-    _listener = SimpleEntityListener<T>(
-      onDelete: widget.onDeleteEnabled ? (_) {
-        widget.onUpdate?.call();
-        setState(() {});
-      } : null,
-      onAddOrUpdate: widget.onAddOrUpdateEnabled ? () {
-        widget.onUpdate?.call();
-        setState(() {});
-      } : null,
-    );
-    widget.manager.addListener(_listener);
+    widget.managers.forEach((manager) => {
+      _listeners.add(manager.addSimpleListener(
+        onDelete: widget.onDeleteEnabled ? (_) {
+          widget.onUpdate?.call();
+          setState(() {});
+        } : null,
+        onAddOrUpdate: () {
+          widget.onUpdate?.call();
+          setState(() {});
+        },
+      ))
+    });
   }
 
   @override
   void dispose() {
-    widget.manager.removeListener(_listener);
+    for (var i = 0; i < _listeners.length; i++) {
+      widget.managers[i].removeListener(_listeners[i]);
+    }
+
     super.dispose();
   }
 

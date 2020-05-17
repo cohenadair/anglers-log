@@ -114,8 +114,8 @@ class _FishingSpotPickerPageState extends State<FishingSpotPickerPage>
 
   @override
   Widget build(BuildContext context) {
-    return EntityListenerBuilder<FishingSpot>(
-      manager: _fishingSpotManager,
+    return EntityListenerBuilder(
+      managers: [ _fishingSpotManager ],
       builder: (context) {
         _updateMarkers();
         return Scaffold(
