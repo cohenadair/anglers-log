@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:mobile/bait_category_manager.dart';
 import 'package:mobile/bait_manager.dart';
 import 'package:mobile/catch_manager.dart';
-import 'package:mobile/entity_manager.dart';
 import 'package:mobile/fishing_spot_manager.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/image_manager.dart';
@@ -24,36 +23,33 @@ import 'package:quiver/strings.dart';
 class CatchListPage extends StatelessWidget {
   Widget build(BuildContext context) {
     CatchManager catchManager = CatchManager.of(context);
-    List<Catch> catches = catchManager.entityListSortedByTimestamp;
 
-    return EntityListenerBuilder<Catch>(
-      manager: catchManager,
-      builder: (context) => ManageableListPage<Catch>(
-        title: Text(format(Strings.of(context).catchListPageTitle,
-            [catchManager.entityCount])),
-        forceCenterTitle: true,
-        searchSettings: ManageableListPageSearchSettings(
-          hint: Strings.of(context).catchListPageSearchHint,
-          onStart: () {
-            // TODO
-          },
-        ),
-        itemCount: catches.length,
-        itemBuilder: (context, i) => _buildListItem(context, catches[i]),
-        itemsHaveThumbnail: true,
-        itemManager: ManageableListPageItemManager(
-          deleteText: (context, cat) =>
-              Text(Strings.of(context).catchPageDeleteMessage),
-          deleteItem: (context, cat) => catchManager.delete(cat),
-          addPageBuilder: () => AddCatchJourney(),
-          detailPageBuilder: (cat) => CatchPage(cat.id),
-          editPageBuilder: (cat) => SaveCatchPage.edit(cat),
-        ),
+    return ManageableListPage<Catch>(
+      title: Text(format(Strings.of(context).catchListPageTitle,
+          [catchManager.entityCount])),
+      forceCenterTitle: true,
+      searchSettings: ManageableListPageSearchSettings(
+        hint: Strings.of(context).catchListPageSearchHint,
+        onStart: () {
+          // TODO
+        },
+      ),
+      itemBuilder: _buildListItem,
+      itemsHaveThumbnail: true,
+      itemManager: ManageableListPageItemManager(
+        listenerManager: catchManager,
+        loadItems: () => catchManager.entityListSortedByTimestamp,
+        deleteText: (context, cat) =>
+            Text(Strings.of(context).catchPageDeleteMessage),
+        deleteItem: (context, cat) => catchManager.delete(cat),
+        addPageBuilder: () => AddCatchJourney(),
+        detailPageBuilder: (cat) => CatchPage(cat.id),
+        editPageBuilder: (cat) => SaveCatchPage.edit(cat),
       ),
     );
   }
 
-  ManageableListPageItemModel<Catch> _buildListItem(BuildContext context,
+  ManageableListPageItemModel _buildListItem(BuildContext context,
       Catch cat)
   {
     BaitCategoryManager baitCategoryManager = BaitCategoryManager.of(context);
@@ -83,8 +79,7 @@ class CatchListPage extends StatelessWidget {
 
     List<File> imageFiles = imageManager.imageFiles(entityId: cat.id);
 
-    return ManageableListPageItemModel<Catch>(
-      value: cat,
+    return ManageableListPageItemModel(
       child: Row(
         children: [
           Thumbnail.listItem(

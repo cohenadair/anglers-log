@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/entity_manager.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/res/dimen.dart';
+import 'package:mobile/utils/listener_manager.dart';
 import 'package:mobile/utils/page_utils.dart';
 import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/checkbox_input.dart';
@@ -13,14 +15,9 @@ import 'package:quiver/strings.dart';
 /// A page that is able to manage a list of a given type, [T]. The page includes
 /// an optional [SearchBar] and can be used a single or multi-item picker.
 class ManageableListPage<T> extends StatefulWidget {
-  /// See [SliverChildBuilderDelegate.childCount].
-  final int itemCount;
-
   /// See [ManageableListPageItemModel].
-  final ManageableListPageItemModel<T> Function(BuildContext, int) itemBuilder;
+  final ManageableListPageItemModel Function(BuildContext, T) itemBuilder;
 
-  /// If non-null, items in the list can be added, deleted, and modified.
-  ///
   /// See [ManageableListPageItemManager].
   final ManageableListPageItemManager<T> itemManager;
 
@@ -52,16 +49,14 @@ class ManageableListPage<T> extends StatefulWidget {
   final ManageableListPageSearchSettings searchSettings;
 
   ManageableListPage({
-    @required this.itemCount,
+    @required this.itemManager,
     @required this.itemBuilder,
     this.title,
     this.itemsHaveThumbnail = false,
     this.forceCenterTitle = false,
     this.pickerSettings,
     this.searchSettings,
-    @required this.itemManager,
   }) : assert(itemBuilder != null),
-       assert(itemCount != null),
        assert(itemManager != null);
 
   @override
@@ -96,6 +91,17 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
   }
 
   Widget build(BuildContext context) {
+    if (widget.itemManager?.listenerManager == null) {
+      return _buildScaffold(widget.itemManager.loadItems());
+    }
+
+    return EntityListenerBuilder<T>(
+      manager: widget.itemManager.listenerManager,
+      builder: (context) => _buildScaffold(widget.itemManager.loadItems()),
+    );
+  }
+
+  Widget _buildScaffold(List<T> items) {
     return Scaffold(
       body: CustomScrollView(
         slivers: [
@@ -112,8 +118,8 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
           ),
           SliverList(
             delegate: SliverChildBuilderDelegate(
-              _buildItem,
-              childCount: widget.itemCount,
+                  (context, i) => _buildItem(context, items[i]),
+              childCount: items.length,
             ),
           ),
         ],
@@ -214,8 +220,8 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
     return result;
   }
 
-  Widget _buildItem(BuildContext context, int i) {
-    ManageableListPageItemModel<T> item = widget.itemBuilder(context, i);
+  Widget _buildItem(BuildContext context, T itemValue) {
+    ManageableListPageItemModel item = widget.itemBuilder(context, itemValue);
 
     if (!item.editable) {
       // If this item can't be edited, return it; we don't want to use a
@@ -226,13 +232,13 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
     Widget trailing = RightChevronIcon();
     if (_pickingMulti) {
       trailing = PaddedCheckbox(
-        checked: _selectedValues.contains(item.value),
+        checked: _selectedValues.contains(itemValue),
         onChanged: (checked) {
           setState(() {
-            if (_selectedValues.contains(item.value)) {
-              _selectedValues.remove(item.value);
+            if (_selectedValues.contains(itemValue)) {
+              _selectedValues.remove(itemValue);
             } else {
-              _selectedValues.add(item.value);
+              _selectedValues.add(itemValue);
             }
           });
         },
@@ -247,8 +253,8 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
       child: item.child,
       editing: _editing,
       deleteMessageBuilder: (context) =>
-          widget.itemManager.deleteText(context, item.value),
-      onConfirmDelete: () => widget.itemManager.deleteItem(context, item.value),
+          widget.itemManager.deleteText(context, itemValue),
+      onConfirmDelete: () => widget.itemManager.deleteItem(context, itemValue),
       onTap: () {
         if (_pickingMulti && !_editing) {
           // Taps are consumed by trailing checkbox in this case.
@@ -256,11 +262,11 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
         }
 
         if (_editing) {
-          push(context, widget.itemManager.editPageBuilder(item.value));
+          push(context, widget.itemManager.editPageBuilder(itemValue));
         } else if (_pickingSingle) {
-          _finishPicking({item.value});
+          _finishPicking({itemValue});
         } else if (widget.itemManager.detailPageBuilder != null) {
-          push(context, widget.itemManager.detailPageBuilder(item.value));
+          push(context, widget.itemManager.detailPageBuilder(itemValue));
         }
       },
       trailing: trailing,
@@ -359,7 +365,7 @@ class ManageableListPageSearchSettings {
 
 /// A convenient class for storing properties for a single item in a
 /// [ManageableListPage].
-class ManageableListPageItemModel<T> {
+class ManageableListPageItemModel {
   /// True if this item can be edited; false otherwise. This may be false for
   /// section headers or dividers. Defaults to true.
   final bool editable;
@@ -369,20 +375,19 @@ class ManageableListPageItemModel<T> {
   /// is most commonly a [Text] widget.
   final Widget child;
 
-  /// The value of the item, required for picking.
-  final T value;
-
   ManageableListPageItemModel({
     @required this.child,
-    @required this.value,
     this.editable = true,
-  }) : assert(child != null),
-       assert(value != null);
+  }) : assert(child != null);
 }
 
 /// A convenience class to handle the adding, deleting, and editing of an item
 /// in a [ManageableListPage].
 class ManageableListPageItemManager<T> {
+  /// Invoked when the widget tree needs to be rebuilt. Required so data is
+  /// almost the most up to date from the database.
+  final List<T> Function() loadItems;
+
   /// The [Widget] to display is a delete confirmation dialog. This should be
   /// some kind of [Text] widget.
   final Widget Function(BuildContext, T) deleteText;
@@ -394,6 +399,9 @@ class ManageableListPageItemManager<T> {
   /// Invoked when the "Add" button is pressed. The [Widget] returned by this
   /// function is presented in the current navigator.
   final Widget Function() addPageBuilder;
+
+  /// If non-null and notified, will rebuild the [ManageableListPage].
+  final ListenerManager<EntityListener<T>> listenerManager;
 
   /// If non-null, is invoked when an item is tapped while not in "editing"
   /// mode. The [Widget] returned by this function is pushed to the current
@@ -408,12 +416,15 @@ class ManageableListPageItemManager<T> {
   final Widget Function(T) editPageBuilder;
 
   ManageableListPageItemManager({
+    @required this.loadItems,
     @required this.deleteText,
     @required this.deleteItem,
     @required this.addPageBuilder,
+    this.listenerManager,
     this.editPageBuilder,
     this.detailPageBuilder,
-  }) : assert(deleteText != null),
+  }) : assert(loadItems != null),
+       assert(deleteText != null),
        assert(deleteItem != null),
        assert(addPageBuilder != null),
        assert(editPageBuilder != null);

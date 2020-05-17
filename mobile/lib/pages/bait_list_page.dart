@@ -38,62 +38,53 @@ class _BaitListPageState extends State<BaitListPage> {
   Widget build(BuildContext context) {
     return EntityListenerBuilder<Bait>(
       manager: _baitManager,
-      builder: (context) {
-        List<dynamic> items = _buildItems();
-
-        return ManageableListPage(
-          title: _picking
-              ? Text(Strings.of(context).baitListPagePickerTitle)
-              : Text(format(Strings.of(context).baitListPageTitle,
-                  [_baitManager.entityCount])),
-          searchSettings: ManageableListPageSearchSettings(
-            hint: Strings.of(context).baitListPageSearchHint,
-            onStart: () {
-              // TODO
-            },
-          ),
-          pickerSettings: _picking
-              ? ManageableListPageSinglePickerSettings<dynamic>(
-                  onPicked: (context, baitPicked) =>
-                      widget.onPicked(context, baitPicked as Bait)
-                )
-              : null,
-          itemCount: items.length,
-          itemBuilder: (context, i) {
-            var item = items[i];
-
-            if (item is BaitCategory) {
-              return ManageableListPageItemModel(
-                editable: false,
-                value: item,
-                child: Padding(
-                  padding: insetsDefault,
-                  child: HeadingText(item.name),
-                ),
-              );
-            } else if (item is Bait) {
-              return ManageableListPageItemModel(
-                value: item,
-                child: Text(item.name),
-              );
-            } else {
-              return ManageableListPageItemModel(
-                editable: false,
-                value: item,
-                child: item,
-              );
-            }
+      builder: (context) => ManageableListPage<dynamic>(
+        title: _picking
+            ? Text(Strings.of(context).baitListPagePickerTitle)
+            : Text(format(Strings.of(context).baitListPageTitle,
+                [_baitManager.entityCount])),
+        searchSettings: ManageableListPageSearchSettings(
+          hint: Strings.of(context).baitListPageSearchHint,
+          onStart: () {
+            // TODO
           },
-          itemManager: ManageableListPageItemManager(
-            deleteText: (context, bait) =>
-                Text(Strings.of(context).baitPageDeleteMessage),
-            deleteItem: (context, bait) => _baitManager.delete(bait),
-            addPageBuilder: () => SaveBaitPage(),
-            detailPageBuilder: (bait) => BaitPage(bait.id),
-            editPageBuilder: (bait) => SaveBaitPage.edit(bait),
-          ),
-        );
-      },
+        ),
+        pickerSettings: _picking
+            ? ManageableListPageSinglePickerSettings<dynamic>(
+                onPicked: (context, baitPicked) =>
+                    widget.onPicked(context, baitPicked as Bait)
+              )
+            : null,
+        itemBuilder: (context, item) {
+          if (item is BaitCategory) {
+            return ManageableListPageItemModel(
+              editable: false,
+              child: Padding(
+                padding: insetsDefault,
+                child: HeadingText(item.name),
+              ),
+            );
+          } else if (item is Bait) {
+            return ManageableListPageItemModel(
+              child: Text(item.name),
+            );
+          } else {
+            return ManageableListPageItemModel(
+              editable: false,
+              child: item,
+            );
+          }
+        },
+        itemManager: ManageableListPageItemManager<dynamic>(
+          loadItems: _buildItems,
+          deleteText: (context, bait) =>
+              Text(Strings.of(context).baitPageDeleteMessage),
+          deleteItem: (context, bait) => _baitManager.delete(bait),
+          addPageBuilder: () => SaveBaitPage(),
+          detailPageBuilder: (bait) => BaitPage(bait.id),
+          editPageBuilder: (bait) => SaveBaitPage.edit(bait),
+        ),
+      ),
     );
   }
 
