@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:mobile/bait_category_manager.dart';
 import 'package:mobile/bait_manager.dart';
+import 'package:mobile/entity_manager.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/log.dart';
 import 'package:mobile/model/bait.dart';
@@ -102,18 +103,27 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
   }
 
   Widget _buildCategoryPicker() {
-    return ListPickerInput<BaitCategory>(
-      title: Strings.of(context).saveBaitPageCategoryLabel,
-      value: _baitCategoryController.value?.name,
-      onTap: () {
-        push(context, BaitCategoryListPage.picker(
-          onPicked: (context, pickedCategory) {
-            setState(() {
-              _baitCategoryController.value = pickedCategory;
-            });
-            return true;
+    return EntityListenerBuilder<BaitCategory>(
+      manager: _baitCategoryManager,
+      builder: (context) {
+        // Update value with latest from database.
+        _baitCategoryController.value =
+            _baitCategoryManager.entity(id: _baitCategoryController.value?.id);
+
+        return ListPickerInput<BaitCategory>(
+          title: Strings.of(context).saveBaitPageCategoryLabel,
+          value: _baitCategoryController.value?.name,
+          onTap: () {
+            push(context, BaitCategoryListPage.picker(
+              onPicked: (context, pickedCategory) {
+                setState(() {
+                  _baitCategoryController.value = pickedCategory;
+                });
+                return true;
+              },
+            ));
           },
-        ));
+        );
       },
     );
   }

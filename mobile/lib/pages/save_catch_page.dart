@@ -5,6 +5,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mobile/bait_category_manager.dart';
 import 'package:mobile/bait_manager.dart';
 import 'package:mobile/catch_manager.dart';
+import 'package:mobile/entity_manager.dart';
 import 'package:mobile/fishing_spot_manager.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/image_manager.dart';
@@ -235,29 +236,38 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
   }
 
   Widget _buildBait() {
-    String value;
-    var bait = _baitController.value;
-    if (bait != null) {
-      var category;
-      if (bait.categoryId != null) {
-        category = _baitCategoryManager.entity(id: bait.categoryId);
-      }
+    return EntityListenerBuilder<Bait>(
+      manager: _baitManager,
+      builder: (context) {
+        // Update value with latest from database.
+        _baitController.value =
+            _baitManager.entity(id: _baitController.value?.id);
 
-      value = formatBaitName(bait, category);
-    }
+        String value;
+        var bait = _baitController.value;
+        if (bait != null) {
+          var category;
+          if (bait.categoryId != null) {
+            category = _baitCategoryManager.entity(id: bait.categoryId);
+          }
 
-    return ListPickerInput<Bait>(
-      title: Strings.of(context).saveCatchPageBaitLabel,
-      value: value,
-      onTap: () {
-        push(context, BaitListPage.picker(
-          onPicked: (context, pickedBait) {
-            setState(() {
-              _baitController.value = pickedBait;
-            });
-            return true;
+          value = formatBaitName(bait, category);
+        }
+
+        return ListPickerInput<Bait>(
+          title: Strings.of(context).saveCatchPageBaitLabel,
+          value: value,
+          onTap: () {
+            push(context, BaitListPage.picker(
+              onPicked: (context, pickedBait) {
+                setState(() {
+                  _baitController.value = pickedBait;
+                });
+                return true;
+              },
+            ));
           },
-        ));
+        );
       },
     );
   }
@@ -288,18 +298,27 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
   }
 
   Widget _buildSpecies() {
-    return ListPickerInput<Species>(
-      title: Strings.of(context).saveCatchPageSpeciesLabel,
-      value: _speciesController.value?.name,
-      onTap: () {
-        push(context, SpeciesListPage.picker(
-          onPicked: (context, pickedSpecies) {
-            setState(() {
-              _speciesController.value = pickedSpecies;
-            });
-            return true;
+    return EntityListenerBuilder<Species>(
+      manager: _speciesManager,
+      builder: (context) {
+        // Update value with latest from database.
+        _speciesController.value =
+            _speciesManager.entity(id: _speciesController.value?.id);
+
+        return ListPickerInput<Species>(
+          title: Strings.of(context).saveCatchPageSpeciesLabel,
+          value: _speciesController.value?.name,
+          onTap: () {
+            push(context, SpeciesListPage.picker(
+              onPicked: (context, pickedSpecies) {
+                setState(() {
+                  _speciesController.value = pickedSpecies;
+                });
+                return true;
+              },
+            ));
           },
-        ));
+        );
       },
     );
   }
