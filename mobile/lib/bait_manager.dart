@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/app_manager.dart';
+import 'package:mobile/bait_category_manager.dart';
+import 'package:mobile/catch_manager.dart';
 import 'package:mobile/entity_manager.dart';
+import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/model/bait.dart';
 import 'package:mobile/model/bait_category.dart';
 import 'package:mobile/named_entity_manager.dart';
+import 'package:mobile/utils/string_utils.dart';
 import 'package:provider/provider.dart';
 import 'package:quiver/core.dart';
 
@@ -11,11 +15,17 @@ class BaitManager extends NamedEntityManager<Bait> {
   static BaitManager of(BuildContext context) =>
       Provider.of<AppManager>(context, listen: false).baitManager;
 
-  BaitManager(AppManager app) : super(app) {
-    app.baitCategoryManager.addListener(SimpleEntityListener(
-      onDelete: _onDeleteBaitCategory,
-    ));
-  }
+  final BaitCategoryManager _baitCategoryManager;
+
+  BaitManager(AppManager app)
+      : _baitCategoryManager = app.baitCategoryManager,
+        super(app) {
+          _baitCategoryManager.addListener(SimpleEntityListener(
+            onDelete: _onDeleteBaitCategory,
+          ));
+        }
+
+  CatchManager get _catchManager => appManager.catchManager;
 
   @override
   Bait entityFromMap(Map<String, dynamic> map) => Bait.fromMap(map);
@@ -28,6 +38,52 @@ class BaitManager extends NamedEntityManager<Bait> {
   bool isDuplicate(Bait lhs) {
     return entityList.firstWhere((rhs) => lhs.isDuplicateOf(lhs),
         orElse: () => null) != null;
+  }
+
+  /// Returns the number of [Catch] objects associated with the given [Bait].
+  int numberOfCatches(Bait bait) {
+    if (bait == null) {
+      return 0;
+    }
+
+    int result = 0;
+    _catchManager.entityList.forEach((cat) {
+      if (cat.baitId == bait.id) {
+        result++;
+      }
+    });
+
+    return result;
+  }
+
+  String formatNameWithCategory(Bait bait) {
+    if (bait == null) {
+      return null;
+    }
+
+    BaitCategory category = _baitCategoryManager.entity(id: bait.categoryId);
+    if (category == null) {
+      return bait.name;
+    } else {
+      return "${category.name} - ${bait.name}";
+    }
+  }
+
+  String deleteMessage(BuildContext context, Bait bait) {
+    int numOfCatches = numberOfCatches(bait);
+    String string = numOfCatches == 1
+        ? Strings.of(context).baitPageDeleteMessageSingular
+        : Strings.of(context).baitPageDeleteMessage;
+
+    BaitCategory category = _baitCategoryManager.entity(id: bait.categoryId);
+    String baitName;
+    if (category == null) {
+      baitName =  bait.name;
+    } else {
+      baitName = "${category.name} (${bait.name})";
+    }
+
+    return format(string, [baitName, numOfCatches]);
   }
 
   void _onDeleteBaitCategory(BaitCategory baitCategory) async {

@@ -6,7 +6,6 @@ import 'package:mobile/pages/save_species_page.dart';
 import 'package:mobile/species_manager.dart';
 import 'package:mobile/utils/dialog_utils.dart';
 import 'package:mobile/utils/string_utils.dart';
-import 'package:mobile/widgets/text.dart';
 
 class SpeciesListPage extends StatelessWidget {
   final bool Function(BuildContext, Species) onPicked;
@@ -42,10 +41,8 @@ class SpeciesListPage extends StatelessWidget {
       itemManager: ManageableListPageItemManager<Species>(
         listenerManagers: [ speciesManager ],
         loadItems: () => speciesManager.entityListSortedByName,
-        deleteText: (context, species) => InsertedBoldText(
-          text: Strings.of(context).speciesListPageConfirmDelete,
-          args: [species.name],
-        ),
+        deleteText: (context, species) => Text(format(Strings.of(context)
+            .speciesListPageConfirmDelete, [species.name])),
         deleteItem: (context, species) async {
           if (!await speciesManager.delete(species)) {
             showErrorDialog(
@@ -54,6 +51,22 @@ class SpeciesListPage extends StatelessWidget {
                   .speciesListPageCatchDeleteError, [species.name])),
             );
           }
+        },
+        onTapDeleteButton: (species) {
+          int numOfCatches = speciesManager.numberOfCatches(species);
+          if (numOfCatches <= 0) {
+            return null;
+          }
+
+          return () {
+            showErrorDialog(
+              context: context,
+              description: Text(format(
+                Strings.of(context).speciesListPageCatchDeleteError,
+                [species.name, numOfCatches]),
+              ),
+            );
+          };
         },
         addPageBuilder: () => SaveSpeciesPage(),
         editPageBuilder: (species) => SaveSpeciesPage.edit(species),

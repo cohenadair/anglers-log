@@ -4,10 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:mobile/app_manager.dart';
 import 'package:mobile/entity_manager.dart';
 import 'package:mobile/fishing_spot_manager.dart';
+import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/image_manager.dart';
 import 'package:mobile/model/bait.dart';
 import 'package:mobile/model/catch.dart';
 import 'package:mobile/model/fishing_spot.dart';
+import 'package:mobile/model/species.dart';
+import 'package:mobile/species_manager.dart';
+import 'package:mobile/utils/string_utils.dart';
 import 'package:provider/provider.dart';
 import 'package:quiver/core.dart';
 
@@ -15,9 +19,10 @@ class CatchManager extends EntityManager<Catch> {
   static CatchManager of(BuildContext context) =>
       Provider.of<AppManager>(context, listen: false).catchManager;
 
+  final FishingSpotManager _fishingSpotManager;
+
   CatchManager(AppManager app)
       : _fishingSpotManager = app.fishingSpotManager,
-        _imageManager = app.imageManager,
         super(app)
   {
     app.baitManager.addListener(SimpleEntityListener(
@@ -28,8 +33,8 @@ class CatchManager extends EntityManager<Catch> {
     ));
   }
 
-  final FishingSpotManager _fishingSpotManager;
-  final ImageManager _imageManager;
+  ImageManager get _imageManager => appManager.imageManager;
+  SpeciesManager get _speciesManager => appManager.speciesManager;
 
   /// Returns all catches, sorted from newest to oldest.
   List<Catch> get entityListSortedByTimestamp {
@@ -65,6 +70,16 @@ class CatchManager extends EntityManager<Catch> {
   }) {
     return entityList.firstWhere((cat) => cat.speciesId == speciesId,
         orElse: () => null) != null;
+  }
+
+  String deleteMessage(BuildContext context, Catch cat) {
+    if (cat == null) {
+      return null;
+    }
+
+    Species species = _speciesManager.entity(id: cat.speciesId);
+    String name = "${species.name} (${formatDateTime(context, cat.dateTime)})";
+    return format(Strings.of(context).catchPageDeleteMessage, [name]);
   }
 
   void _onDeleteBait(Bait bait) async {

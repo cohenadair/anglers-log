@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:mobile/bait_category_manager.dart';
 import 'package:mobile/bait_manager.dart';
 import 'package:mobile/entity_manager.dart';
-import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/model/bait.dart';
 import 'package:mobile/model/bait_category.dart';
 import 'package:mobile/pages/entity_page.dart';
@@ -54,7 +53,7 @@ class _BaitPageState extends State<BaitPage> {
         static: widget.static,
         onEdit: () => present(context, SaveBaitPage.edit(_bait)),
         onDelete: () => BaitManager.of(context).delete(_bait),
-        deleteMessage: Strings.of(context).baitPageDeleteMessage,
+        deleteMessage: _baitManager.deleteMessage(context, _bait),
         children: [
           isNotEmpty(_bait.categoryId) ? Padding(
             padding: insetsLeftDefault,

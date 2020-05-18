@@ -1,25 +1,32 @@
 import 'package:mobile/app_manager.dart';
 import 'package:mobile/bait_category_manager.dart';
 import 'package:mobile/bait_manager.dart';
+import 'package:mobile/catch_manager.dart';
 import 'package:mobile/data_manager.dart';
 import 'package:mobile/entity_manager.dart';
 import 'package:mobile/model/bait.dart';
 import 'package:mobile/model/bait_category.dart';
+import 'package:mobile/model/catch.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 
 class MockAppManager extends Mock implements AppManager {}
-class MockDataManager extends Mock implements DataManager {}
 class MockBaitListener extends Mock implements EntityListener<Bait> {}
+class MockCatchManager extends Mock implements CatchManager {}
+class MockDataManager extends Mock implements DataManager {}
 
 void main() {
   MockAppManager appManager;
+  MockCatchManager catchManager;
   MockDataManager dataManager;
   BaitManager baitManager;
   BaitCategoryManager baitCategoryManager;
 
   setUp(() {
     appManager = MockAppManager();
+
+    catchManager = MockCatchManager();
+    when(appManager.catchManager).thenReturn(catchManager);
 
     dataManager = MockDataManager();
     when(appManager.dataManager).thenReturn(dataManager);
@@ -82,5 +89,33 @@ void main() {
       expect(baitManager.entity(id: "bait_id").categoryId, isNull);
       expect(baitManager.entity(id: "bait_id_2").categoryId, isNull);
     });
+  });
+
+  test("Number of catches", () {
+    when(catchManager.entityList).thenReturn([
+      Catch(timestamp: 0, speciesId: "species_1", baitId: "bait_1"),
+      Catch(timestamp: 0, speciesId: "species_1", baitId: "bait_5"),
+      Catch(timestamp: 0, speciesId: "species_1", baitId: "bait_4"),
+      Catch(timestamp: 0, speciesId: "species_1", baitId: "bait_1"),
+      Catch(timestamp: 0, speciesId: "species_1"),
+    ]);
+
+    expect(baitManager.numberOfCatches(null), 0);
+    expect(baitManager.numberOfCatches(Bait(name: "Bait 1", id: "bait_1")), 2);
+    expect(baitManager.numberOfCatches(Bait(name: "Bait 1", id: "bait_4")), 1);
+    expect(baitManager.numberOfCatches(Bait(name: "Bait 1", id: "bait_5")), 1);
+  });
+
+  test("Format bait name", () async {
+    when(dataManager.insertOrUpdateEntity(any, any))
+        .thenAnswer((_) => Future.value(true));
+
+    await baitCategoryManager.addOrUpdate(
+        BaitCategory(name: "Test Category", id: "category_id"));
+
+    expect(baitManager.formatNameWithCategory(null), null);
+    expect(baitManager.formatNameWithCategory(
+        Bait(name: "Test", categoryId: "category_id")), "Test Category - Test");
+    expect(baitManager.formatNameWithCategory(Bait(name: "Test")), "Test");
   });
 }

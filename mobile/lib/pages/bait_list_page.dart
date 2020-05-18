@@ -81,7 +81,7 @@ class _BaitListPageState extends State<BaitListPage> {
         itemManager: ManageableListPageItemManager<dynamic>(
           loadItems: _buildItems,
           deleteText: (context, bait) =>
-              Text(Strings.of(context).baitPageDeleteMessage),
+              Text(_baitManager.deleteMessage(context, bait)),
           deleteItem: (context, bait) => _baitManager.delete(bait),
           addPageBuilder: () => SaveBaitPage(),
           detailPageBuilder: (bait) => BaitPage(bait.id),

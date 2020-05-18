@@ -100,6 +100,7 @@ class Strings {
   String get baitListPageSearchHint => _string("baitListPage_searchHint");
 
   String get baitPageDeleteMessage => _string("baitPage_deleteMessage");
+  String get baitPageDeleteMessageSingular => _string("baitPage_deleteMessageSingular");
 
   String get saveBaitPageNewTitle => _string("saveBaitPage_newTitle");
   String get saveBaitPageEditTitle => _string("saveBaitPage_editTitle");
@@ -113,7 +114,8 @@ class Strings {
   String get baitCategoryListPageMenuTitle => _string("baitCategoryListPage_menuTitle");
   String get baitCategoryListPageTitle => _string("baitCategoryListPage_title");
   String get baitCategoryListPagePickerTitle => _string("baitCategoryListPage_pickerTitle");
-  String get baitCategoryListPageConfirmDelete => _string("baitCategoryListPage_confirmDelete");
+  String get baitCategoryListPageDeleteMessage => _string("baitCategoryListPage_deleteMessage");
+  String get baitCategoryListPageDeleteMessageSingular => _string("baitCategoryListPage_deleteMessageSingular");
   String get baitCategoryListPageSearchHint => _string("baitCategoryListPage_searchHint");
 
   String get statsPageTitle => _string("statsPage_title");
@@ -124,6 +126,7 @@ class Strings {
 
   String get mapPageMenuLabel => _string("mapPage_menuLabel");
   String get mapPageDeleteFishingSpot => _string("mapPage_deleteFishingSpot");
+  String get mapPageDeleteFishingSpotNoName => _string("mapPage_deleteFishingSpotNoName");
   String get mapPageAddCatch => _string("mapPage_addCatch");
   String get mapPageSearchHint => _string("mapPage_searchHint");
   String get mapPageNoSearchResults => _string("mapPage_noSearchResults");

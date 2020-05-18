@@ -4,7 +4,6 @@ import 'package:mobile/bait_manager.dart';
 import 'package:mobile/catch_manager.dart';
 import 'package:mobile/entity_manager.dart';
 import 'package:mobile/fishing_spot_manager.dart';
-import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/image_manager.dart';
 import 'package:mobile/model/bait.dart';
 import 'package:mobile/model/catch.dart';
@@ -62,8 +61,8 @@ class _CatchPageState extends State<CatchPage> {
       builder: (context) => EntityPage(
         padding: insetsZero,
         onEdit: () => present(context, SaveCatchPage.edit(_catch)),
-        onDelete: () => CatchManager.of(context).delete(_catch),
-        deleteMessage: Strings.of(context).catchPageDeleteMessage,
+        onDelete: () => _catchManager.delete(_catch),
+        deleteMessage: _catchManager.deleteMessage(context, _catch),
         images: _imageManager.imageFiles(entityId: widget.catchId),
         children: <Widget>[
           Container(

@@ -4,7 +4,6 @@ import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/model/bait_category.dart';
 import 'package:mobile/pages/entity_list_page.dart';
 import 'package:mobile/pages/save_bait_category_page.dart';
-import 'package:mobile/widgets/text.dart';
 
 class BaitCategoryListPage extends StatelessWidget {
   final bool Function(BuildContext, BaitCategory) onPicked;
@@ -40,10 +39,8 @@ class BaitCategoryListPage extends StatelessWidget {
       itemManager: ManageableListPageItemManager<BaitCategory>(
         listenerManagers: [ baitCategoryManager ],
         loadItems: () => baitCategoryManager.entityListSortedByName,
-        deleteText: (context, category) => InsertedBoldText(
-          text: Strings.of(context).baitCategoryListPageConfirmDelete,
-          args: [category.name],
-        ),
+        deleteText: (context, category) =>
+            Text(baitCategoryManager.deleteMessage(context, category)),
         deleteItem: (context, category) =>
             baitCategoryManager.delete(category),
         addPageBuilder: () => SaveBaitCategoryPage(),

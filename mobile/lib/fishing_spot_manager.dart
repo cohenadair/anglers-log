@@ -1,9 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mobile/app_manager.dart';
+import 'package:mobile/catch_manager.dart';
+import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/model/fishing_spot.dart';
 import 'package:mobile/named_entity_manager.dart';
 import 'package:mobile/utils/map_utils.dart';
+import 'package:mobile/utils/string_utils.dart';
 import 'package:provider/provider.dart';
 
 class FishingSpotManager extends NamedEntityManager<FishingSpot> {
@@ -11,6 +14,8 @@ class FishingSpotManager extends NamedEntityManager<FishingSpot> {
       Provider.of<AppManager>(context, listen: false).fishingSpotManager;
 
   FishingSpotManager(AppManager app) : super(app);
+
+  CatchManager get _catchManager => appManager.catchManager;
 
   @override
   FishingSpot entityFromMap(Map<String, dynamic> map) =>
@@ -57,5 +62,31 @@ class FishingSpotManager extends NamedEntityManager<FishingSpot> {
       (fishingSpot) => fishingSpot.latLng == latLng,
       orElse: () => null,
     );
+  }
+
+  int numberOfCatches(FishingSpot fishingSpot) {
+    if (fishingSpot == null) {
+      return 0;
+    }
+
+    int result = 0;
+    _catchManager.entityList.forEach((cat) {
+      if (cat.hasFishingSpot && cat.fishingSpotId == fishingSpot.id) {
+        result++;
+      }
+    });
+    return result;
+  }
+
+  String deleteMessage(BuildContext context, FishingSpot fishingSpot) {
+    int numOfCatches = numberOfCatches(fishingSpot);
+
+    if (fishingSpot.hasName) {
+      return format(Strings.of(context).mapPageDeleteFishingSpot,
+          [fishingSpot.name, numOfCatches]);
+    } else {
+      return format(Strings.of(context).mapPageDeleteFishingSpotNoName,
+          [numOfCatches]);
+    }
   }
 }

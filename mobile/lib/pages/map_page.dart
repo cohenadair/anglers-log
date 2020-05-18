@@ -18,7 +18,6 @@ import 'package:mobile/utils/string_utils.dart';
 import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/fishing_spot_map.dart';
 import 'package:mobile/widgets/styled_bottom_sheet.dart';
-import 'package:mobile/widgets/text.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:quiver/strings.dart';
 
@@ -335,68 +334,70 @@ class _FishingSpotBottomSheet extends StatelessWidget {
     );
   }
 
-  Widget _buildChips(BuildContext context) => Container(
-    height: _chipHeight,
-    child: ListView(
-      scrollDirection: Axis.horizontal,
-      children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.only(
-            left: paddingDefault,
-            right: paddingWidgetSmall,
+  Widget _buildChips(BuildContext context) {
+    FishingSpotManager fishingSpotManager = FishingSpotManager.of(context);
+
+    return Container(
+      height: _chipHeight,
+      child: ListView(
+        scrollDirection: Axis.horizontal,
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.only(
+              left: paddingDefault,
+              right: paddingWidgetSmall,
+            ),
+            child: ChipButton(
+              label: editing
+                  ? Strings.of(context).edit : Strings.of(context).save,
+              icon: editing ? Icons.edit : Icons.save,
+              onPressed: () {
+                present(
+                  context,
+                  SaveFishingSpotPage(
+                    oldFishingSpot: fishingSpot,
+                    editing: editing,
+                  ),
+                );
+              },
+            ),
           ),
-          child: ChipButton(
-            label: editing
-                ? Strings.of(context).edit : Strings.of(context).save,
-            icon: editing ? Icons.edit : Icons.save,
-            onPressed: () {
-              present(
-                context,
-                SaveFishingSpotPage(
-                  oldFishingSpot: fishingSpot,
-                  editing: editing,
-                ),
-              );
-            },
+          editing ? Padding(
+            padding: insetsRightWidgetSmall,
+            child: ChipButton(
+              label: Strings.of(context).delete,
+              icon: Icons.delete,
+              onPressed: () {
+                showDeleteDialog(
+                  context: context,
+                  description: Text(fishingSpotManager
+                      .deleteMessage(context, fishingSpot)),
+                  onDelete: () {
+                    onDelete?.call();
+                    FishingSpotManager.of(context).delete(fishingSpot);
+                  },
+                );
+              },
+            ),
+          ) : Empty(),
+          editing ? Padding(
+            padding: insetsRightWidgetSmall,
+            child: ChipButton(
+              label: Strings.of(context).mapPageAddCatch,
+              icon: Icons.add,
+              onPressed: () {},
+            ),
+          ) : Empty(),
+          Padding(
+            padding: insetsRightDefault,
+            child: ChipButton(
+              label: Strings.of(context).directions,
+              icon: Icons.directions,
+              onPressed: () {},
+            ),
           ),
-        ),
-        editing ? Padding(
-          padding: insetsRightWidgetSmall,
-          child: ChipButton(
-            label: Strings.of(context).delete,
-            icon: Icons.delete,
-            onPressed: () {
-              showDeleteDialog(
-                context: context,
-                description: InsertedBoldText(
-                  text: Strings.of(context).mapPageDeleteFishingSpot,
-                  args: [fishingSpot.name],
-                ),
-                onDelete: () {
-                  onDelete?.call();
-                  FishingSpotManager.of(context).delete(fishingSpot);
-                },
-              );
-            },
-          ),
-        ) : Empty(),
-        editing ? Padding(
-          padding: insetsRightWidgetSmall,
-          child: ChipButton(
-            label: Strings.of(context).mapPageAddCatch,
-            icon: Icons.add,
-            onPressed: () {},
-          ),
-        ) : Empty(),
-        Padding(
-          padding: insetsRightDefault,
-          child: ChipButton(
-            label: Strings.of(context).directions,
-            icon: Icons.directions,
-            onPressed: () {},
-          ),
-        ),
-      ],
-    ),
-  );
+        ],
+      ),
+    );
+  }
 }

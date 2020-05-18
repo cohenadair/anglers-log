@@ -30,6 +30,9 @@ abstract class EntityManager<T extends Entity> extends
     ListenerManager<EntityListener<T>>
 {
   @protected
+  final AppManager appManager;
+
+  @protected
   final DataManager dataManager;
 
   @protected
@@ -38,7 +41,10 @@ abstract class EntityManager<T extends Entity> extends
   String get tableName;
   T entityFromMap(Map<String, dynamic> map);
 
-  EntityManager(AppManager app) : dataManager = app.dataManager, super();
+  EntityManager(AppManager app)
+      : appManager = app,
+        dataManager = app.dataManager,
+        super();
 
   Future<void> initialize() async {
     (await _fetchAll()).forEach((e) => entities[e.id] = e);
@@ -83,7 +89,7 @@ abstract class EntityManager<T extends Entity> extends
   void notifyOnDelete(T entity) {
     notify((listener) => listener.onDelete(entity));
   }
-  
+
   SimpleEntityListener addSimpleListener({
     void Function(T entity) onDelete,
     VoidCallback onAddOrUpdate,

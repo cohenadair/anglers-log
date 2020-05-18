@@ -30,6 +30,8 @@ class NamedEntity extends Entity {
 
   String get name => (propertyWithName(keyName) as Property<String>)?.value;
 
+  bool get hasName => isNotEmpty(name);
+
   int compareNameTo(NamedEntity other) {
     if (other == null) {
       return -1;

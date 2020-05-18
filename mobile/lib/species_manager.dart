@@ -28,4 +28,19 @@ class SpeciesManager extends NamedEntityManager<Species> {
     }
     return super.delete(species);
   }
+
+  int numberOfCatches(Species species) {
+    if (species == null) {
+      return 0;
+
+    }
+    int result = 0;
+    _catchManager.entityList.forEach((cat) {
+      if (cat.speciesId == species.id) {
+        result++;
+      }
+    });
+
+    return result;
+  }
 }

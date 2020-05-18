@@ -268,6 +268,9 @@ class _EntityListPageState<T> extends State<EntityListPage<T>> {
           push(context, widget.itemManager.detailPageBuilder(itemValue));
         }
       },
+      onTapDeleteButton: widget.itemManager.onTapDeleteButton == null
+          ? null
+          : widget.itemManager.onTapDeleteButton(itemValue),
       trailing: trailing,
     );
   }
@@ -397,6 +400,9 @@ class ManageableListPageItemManager<T> {
   /// actually delete the item [T] from the database.
   final void Function(BuildContext, T) deleteItem;
 
+  /// See [ManageableListItem.onTapDeleteButton].
+  final VoidCallback Function(T) onTapDeleteButton;
+
   /// Invoked when the "Add" button is pressed. The [Widget] returned by this
   /// function is presented in the current navigator.
   final Widget Function() addPageBuilder;
@@ -426,6 +432,7 @@ class ManageableListPageItemManager<T> {
     this.listenerManagers,
     this.editPageBuilder,
     this.detailPageBuilder,
+    this.onTapDeleteButton,
   }) : assert(loadItems != null),
        assert(deleteText != null),
        assert(deleteItem != null),

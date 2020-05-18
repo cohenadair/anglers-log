@@ -50,7 +50,7 @@ class CatchListPage extends StatelessWidget {
         ],
         loadItems: () => catchManager.entityListSortedByTimestamp,
         deleteText: (context, cat) =>
-            Text(Strings.of(context).catchPageDeleteMessage),
+            Text(catchManager.deleteMessage(context, cat)),
         deleteItem: (context, cat) => catchManager.delete(cat),
         addPageBuilder: () => AddCatchJourney(),
         detailPageBuilder: (cat) => CatchPage(cat.id),
@@ -62,7 +62,6 @@ class CatchListPage extends StatelessWidget {
   ManageableListPageItemModel _buildListItem(BuildContext context,
       Catch cat)
   {
-    BaitCategoryManager baitCategoryManager = BaitCategoryManager.of(context);
     BaitManager baitManager = BaitManager.of(context);
     FishingSpotManager fishingSpotManager = FishingSpotManager.of(context);
     ImageManager imageManager = ImageManager.of(context);
@@ -78,13 +77,8 @@ class CatchListPage extends StatelessWidget {
         lng: fishingSpot.lng,
       ));
     } else if (isNotEmpty(cat.baitId)) {
-      var bait = baitManager.entity(id: cat.baitId);
-      if (isNotEmpty(bait.categoryId)) {
-        var category = baitCategoryManager.entity(id: bait.categoryId);
-        subtitle2 = SubtitleText(formatBaitName(bait, category));
-      } else {
-        subtitle2 = SubtitleText(formatBaitName(bait));
-      }
+      subtitle2 = SubtitleText(baitManager
+          .formatNameWithCategory(baitManager.entity(id: cat.baitId)));
     }
 
     List<File> imageFiles = imageManager.imageFiles(entityId: cat.id);

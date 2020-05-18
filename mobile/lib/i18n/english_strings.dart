@@ -47,7 +47,7 @@ Map<String, Map<String, String>> get englishStrings => {
     "catchListPage_title" : "Catches (%s)",
     "catchListPage_searchHint" : "Search catches",
 
-    "catchPage_deleteMessage" : "Are you sure you want to delete this catch? This cannot be undone.",
+    "catchPage_deleteMessage" : "Are you sure you want to delete catch %s? This cannot be undone.",
 
     "saveCatchPage_newTitle" : "New Catch",
     "saveCatchPage_editTitle" : "Edit Catch",
@@ -68,7 +68,8 @@ Map<String, Map<String, String>> get englishStrings => {
     "baitListPage_otherCategory" : "No Category",
     "baitListPage_searchHint" : "Search baits",
 
-    "baitPage_deleteMessage" : "Are you sure you want to delete this bait? This cannot be undone.",
+    "baitPage_deleteMessage" : "%s is associated with %s catches; are you sure you want to delete it? This cannot be undone.",
+    "baitPage_deleteMessageSingular" : "%s is associated with %s catch; are you sure you want to delete it? This cannot be undone.",
 
     "saveBaitPage_newTitle" : "New Bait",
     "saveBaitPage_editTitle" : "Edit Bait",
@@ -82,7 +83,8 @@ Map<String, Map<String, String>> get englishStrings => {
     "baitCategoryListPage_menuTitle" : "Bait Categories",
     "baitCategoryListPage_title" : "Bait Categories (%s)",
     "baitCategoryListPage_pickerTitle" : "Select Bait Category",
-    "baitCategoryListPage_confirmDelete" : "Are you sure you want to delete bait category %s? This cannot be undone.",
+    "baitCategoryListPage_deleteMessage" : "%s is associated with %s baits; are you sure you want to delete it? This cannot be undone.",
+    "baitCategoryListPage_deleteMessageSingular" : "%s is associated with %s bait; are you sure you want to delete it? This cannot be undone.",
     "baitCategoryListPage_searchHint" : "Search bait categories",
 
     "statsPage_title" : "Stats",
@@ -95,7 +97,8 @@ Map<String, Map<String, String>> get englishStrings => {
     "settingsPage_title" : "Settings",
 
     "mapPage_menuLabel" : "Map",
-    "mapPage_deleteFishingSpot" : "Are you sure you want to delete fishing spot %s? This cannot be undone.",
+    "mapPage_deleteFishingSpot" : "%s is associated with %s catches; are you sure you want to delete it? This cannot be undone.",
+    "mapPage_deleteFishingSpotNoName" : "This fishing spot is associated with %s catches; are you sure you want to delete it? This cannot be undone.",
     "mapPage_addCatch" : "Add Catch",
     "mapPage_searchHint" : "Search fishing spots",
     "mapPage_noSearchResults" : "No fishing spots found",
@@ -134,8 +137,8 @@ Map<String, Map<String, String>> get englishStrings => {
     "speciesListPage_menuTitle" : "Species",
     "speciesListPage_title" : "Species (%s)",
     "speciesListPage_pickerTitle" : "Select Species",
-    "speciesListPage_confirmDelete" : "Are you sure you want to delete species %s? This cannot be undone.",
-    "speciesListPage_catchDeleteError" : "Unable to delete %s because it is attached to one or more catches.",
+    "speciesListPage_confirmDelete" : "%s is associated with 0 catches; are you sure you want to delete it? This cannot be undone.",
+    "speciesListPage_catchDeleteError" : "%s is associated with %s catches and cannot be deleted.",
     "speciesListPage_searchHint" : "Search species",
 
     "fishingSpotPickerPage_title" : "Select Fishing Spot",

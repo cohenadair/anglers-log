@@ -24,7 +24,6 @@ import 'package:mobile/res/dimen.dart';
 import 'package:mobile/species_manager.dart';
 import 'package:mobile/utils/map_utils.dart';
 import 'package:mobile/utils/page_utils.dart';
-import 'package:mobile/utils/string_utils.dart';
 import 'package:mobile/widgets/date_time_picker.dart';
 import 'package:mobile/widgets/input_data.dart';
 import 'package:mobile/widgets/input_controller.dart';
@@ -249,12 +248,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
         String value;
         var bait = _baitController.value;
         if (bait != null) {
-          var category;
-          if (bait.categoryId != null) {
-            category = _baitCategoryManager.entity(id: bait.categoryId);
-          }
-
-          value = formatBaitName(bait, category);
+          value = _baitManager.formatNameWithCategory(bait);
         }
 
         return ListPickerInput<Bait>(
