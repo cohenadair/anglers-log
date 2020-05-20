@@ -113,8 +113,6 @@ class DropdownIcon extends StatelessWidget {
 
 /// A help popup that fades in and out of view.
 class HelpTooltip extends StatelessWidget {
-  final Duration _animDuration = Duration(milliseconds: 150);
-
   final Widget child;
   final bool showing;
   final EdgeInsets margin;
@@ -128,9 +126,8 @@ class HelpTooltip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return IgnorePointer(
-      child: AnimatedOpacity(
-        duration: _animDuration,
-        opacity: showing ? 1.0 : 0.0,
+      child: AnimatedVisibility(
+        visible: showing,
         child: Container(
           decoration: BoxDecoration(
             color: Colors.black.withOpacity(0.70),
@@ -141,6 +138,28 @@ class HelpTooltip extends StatelessWidget {
           child: child,
         ),
       ),
+    );
+  }
+}
+
+/// A wrapper for [AnimatedOpacity] with a default duration.
+class AnimatedVisibility extends StatelessWidget {
+  final Duration _animDuration = Duration(milliseconds: 150);
+
+  final bool visible;
+  final Widget child;
+
+  AnimatedVisibility({
+    this.visible = true,
+    @required this.child,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedOpacity(
+      opacity: visible ? 1.0 : 0.0,
+      duration: _animDuration,
+      child: child,
     );
   }
 }

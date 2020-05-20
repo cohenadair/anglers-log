@@ -112,10 +112,7 @@ class _MapPageState extends State<MapPage> {
       ],
       searchBar: FishingSpotMapSearchBar(
         title: isEmpty(name) ? null : name,
-        trailing: Visibility(
-          maintainState: true,
-          maintainAnimation: true,
-          maintainSize: true,
+        trailing: AnimatedVisibility(
           visible: isNotEmpty(name),
           child: IconButton(
             icon: Icon(Icons.clear),
