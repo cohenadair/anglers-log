@@ -140,15 +140,14 @@ class _EntityListPageState<T> extends State<EntityListPage<T>> {
         ),
         child: Align(
           alignment: Alignment.bottomCenter,
-          child: Container(
-            height: _searchBarHeight,
-            child: SearchBar(
-              hint: widget.searchSettings.hint,
-              leadingPadding: widget.itemsHaveThumbnail
-                  ? _thumbSearchTextOffset : null,
-              elevated: false,
-              onTap: widget.searchSettings.onStart,
-            ),
+          child: SearchBar(
+            hint: widget.searchSettings.hint,
+            leadingPadding: widget.itemsHaveThumbnail
+                ? _thumbSearchTextOffset : null,
+            elevated: false,
+            delegate: InputSearchBarDelegate((String text) {
+              print(text);
+            }),
           ),
         ),
       ),

@@ -184,7 +184,7 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
         left: paddingDefault,
         right: paddingDefault,
       ),
-      onTap: () async {
+      delegate: ButtonSearchBarDelegate(() async {
         FishingSpot result = await showSearch(
           context: context,
           delegate: _SearchDelegate(
@@ -196,7 +196,7 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
         if (result != null) {
           moveMap(_mapController, result.latLng, false);
         }
-      },
+      }),
     );
   }
 
@@ -281,13 +281,16 @@ class _SearchDelegate extends SearchDelegate<FishingSpot> {
 
   @override
   List<Widget> buildActions(BuildContext context) {
-    return isEmpty(query) ? null : [
-      IconButton(
-        icon: Icon(Icons.clear),
-        onPressed: () {
-          query = "";
-          showSuggestions(context);
-        },
+    return [
+      AnimatedVisibility(
+        visible: isNotEmpty(query),
+        child: IconButton(
+          icon: Icon(Icons.clear),
+          onPressed: () {
+            query = "";
+            showSuggestions(context);
+          },
+        ),
       ),
     ];
   }
