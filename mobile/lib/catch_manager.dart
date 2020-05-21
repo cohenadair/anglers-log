@@ -37,8 +37,8 @@ class CatchManager extends EntityManager<Catch> {
   SpeciesManager get _speciesManager => appManager.speciesManager;
 
   /// Returns all catches, sorted from newest to oldest.
-  List<Catch> get entityListSortedByTimestamp {
-    List<Catch> result = List.of(entities.values);
+  List<Catch> entityListSortedByTimestamp({String filter}) {
+    List<Catch> result = List.of(filteredEntityList(filter));
     result.sort((lhs, rhs) => rhs.timestamp.compareTo(lhs.timestamp));
     return result;
   }

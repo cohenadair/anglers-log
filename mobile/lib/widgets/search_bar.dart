@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/res/style.dart';
 import 'package:mobile/widgets/widget.dart';
+import 'package:quiver/strings.dart';
 
 class SearchBar extends StatefulWidget {
   final String text;
@@ -57,6 +58,8 @@ class _SearchBarState extends State<SearchBar> {
   void initState() {
     super.initState();
 
+    _updateControllerText();
+
     _onFocusChanged = () => setState(() {});
     _focusNode.addListener(_onFocusChanged);
   }
@@ -64,7 +67,10 @@ class _SearchBarState extends State<SearchBar> {
   @override
   void didUpdateWidget(SearchBar oldWidget) {
     super.didUpdateWidget(oldWidget);
-    _controller.text = widget.text ?? "";
+
+    // Reset controller text and cursor position in case the parent changed
+    // the input text.
+    _updateControllerText();
   }
 
   @override
@@ -93,13 +99,18 @@ class _SearchBarState extends State<SearchBar> {
       trailing = widget.trailing;
     } else if (input) {
       trailing = AnimatedVisibility(
-        visible: focused,
+        visible: focused || isNotEmpty(_controller.text),
         child: IconButton(
           icon: Icon(Icons.close),
           onPressed: () {
             setState(() {
               _focusNode.unfocus();
-              _controller.text = "";
+
+              // Only notify delegate if text changes.
+              if (isNotEmpty(_controller.text)) {
+                _controller.text = "";
+                widget.delegate.onTextChanged(_controller.text);
+              }
             });
           },
         ),
@@ -142,6 +153,16 @@ class _SearchBarState extends State<SearchBar> {
       ),
     );
   }
+
+  void _updateControllerText() {
+    String text = widget.text ?? "";
+    _controller.value = _controller.value.copyWith(
+      text: text,
+      // Ensures cursor is at the end of the text. By default, setting
+      // TextEditingController.text resets cursor to beginning of text.
+      selection: TextSelection.collapsed(offset: text.length),
+    );
+  }
 }
 
 enum SearchBarType {
@@ -157,8 +178,8 @@ abstract class SearchBarDelegate {
   /// Return a non-null value to use the Flutter [showSearch] function.
   VoidCallback onTap();
 
-  /// Called when the text input changes. This only applies when [searchBarType]
-  /// is equal to [SearchBarType.input].
+  /// Called when the text input changes, or the input is cleared. This only
+  /// applies when [searchBarType] is equal to [SearchBarType.input].
   ///
   /// See [CupertinoTextField.onChanged].
   void onTextChanged(String text);

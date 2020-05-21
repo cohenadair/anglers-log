@@ -25,11 +25,10 @@ class BaitCategoryListPage extends StatelessWidget {
       itemBuilder: (context, category) => ManageableListPageItemModel(
         child: Text(category.name),
       ),
-      searchSettings: ManageableListPageSearchSettings(
+      searchDelegate: ManageableListPageSearchDelegate(
         hint: Strings.of(context).baitCategoryListPageSearchHint,
-        onStart: () {
-          // TODO
-        },
+        noResultsMessage:
+            Strings.of(context).baitCategoryListPageNoSearchResults,
       ),
       pickerSettings: _picking
           ? ManageableListPageSinglePickerSettings<BaitCategory>(
@@ -38,7 +37,8 @@ class BaitCategoryListPage extends StatelessWidget {
           : null,
       itemManager: ManageableListPageItemManager<BaitCategory>(
         listenerManagers: [ baitCategoryManager ],
-        loadItems: () => baitCategoryManager.entityListSortedByName,
+        loadItems: (String query) =>
+            baitCategoryManager.entityListSortedByName(filter: query),
         deleteText: (context, category) =>
             Text(baitCategoryManager.deleteMessage(context, category)),
         deleteItem: (context, category) =>

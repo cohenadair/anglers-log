@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:mobile/entity_manager.dart';
 import 'package:mobile/i18n/strings.dart';
@@ -6,6 +8,7 @@ import 'package:mobile/utils/page_utils.dart';
 import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/checkbox_input.dart';
 import 'package:mobile/widgets/list_item.dart';
+import 'package:mobile/widgets/no_results.dart';
 import 'package:mobile/widgets/search_bar.dart';
 import 'package:mobile/widgets/thumbnail.dart';
 import 'package:mobile/widgets/widget.dart';
@@ -44,8 +47,8 @@ class EntityListPage<T> extends StatefulWidget {
   /// If non-null, the [EntityListPage] includes a [SearchBar] in the
   /// [AppBar].
   ///
-  /// See [ManageableListPageSearchSettings].
-  final ManageableListPageSearchSettings searchSettings;
+  /// See [ManageableListPageSearchDelegate].
+  final ManageableListPageSearchDelegate searchDelegate;
 
   EntityListPage({
     @required this.itemManager,
@@ -54,7 +57,7 @@ class EntityListPage<T> extends StatefulWidget {
     this.itemsHaveThumbnail = false,
     this.forceCenterTitle = false,
     this.pickerSettings,
-    this.searchSettings,
+    this.searchDelegate,
   }) : assert(itemBuilder != null),
        assert(itemManager != null);
 
@@ -63,19 +66,21 @@ class EntityListPage<T> extends StatefulWidget {
 }
 
 class _EntityListPageState<T> extends State<EntityListPage<T>> {
+  final Duration _inputDelayDuration = Duration(milliseconds: 500);
   final double _appBarExpandedHeight = 100.0;
-  final double _searchBarHeight = 40.0;
 
   /// Additional padding required to line up search text with [ListItem] text.
   final double _thumbSearchTextOffset = 24.0;
 
+  Timer _textChangedTimer;
   bool _editing = false;
   Set<T> _selectedValues = {};
   _ViewingState _viewingState = _ViewingState.viewing;
+  String _searchText;
 
   bool get _pickingMulti => _viewingState == _ViewingState.pickingMulti;
   bool get _pickingSingle => _viewingState == _ViewingState.pickingSingle;
-  bool get _hasSearch => widget.searchSettings != null;
+  bool get _hasSearch => widget.searchDelegate != null;
   bool get _editable => widget.itemManager.editPageBuilder != null;
 
   @override
@@ -91,12 +96,13 @@ class _EntityListPageState<T> extends State<EntityListPage<T>> {
 
   Widget build(BuildContext context) {
     if (widget.itemManager?.listenerManagers == null) {
-      return _buildScaffold(widget.itemManager.loadItems());
+      return _buildScaffold(widget.itemManager.loadItems(_searchText));
     }
 
     return EntityListenerBuilder(
       managers: widget.itemManager.listenerManagers,
-      builder: (context) => _buildScaffold(widget.itemManager.loadItems()),
+      builder: (context) =>
+          _buildScaffold(widget.itemManager.loadItems(_searchText)),
     );
   }
 
@@ -115,10 +121,16 @@ class _EntityListPageState<T> extends State<EntityListPage<T>> {
             flexibleSpace: _buildSearchBar(),
             centerTitle: widget.forceCenterTitle,
           ),
-          SliverList(
-            delegate: SliverChildBuilderDelegate(
-                  (context, i) => _buildItem(context, items[i]),
-              childCount: items.length,
+          SliverVisibility(
+            visible: items.isNotEmpty,
+            sliver: SliverList(
+              delegate: SliverChildBuilderDelegate(
+                (context, i) => _buildItem(context, items[i]),
+                childCount: items.length,
+              ),
+            ),
+            replacementSliver: SliverToBoxAdapter(
+              child: NoResults(widget.searchDelegate.noResultsMessage),
             ),
           ),
         ],
@@ -141,12 +153,14 @@ class _EntityListPageState<T> extends State<EntityListPage<T>> {
         child: Align(
           alignment: Alignment.bottomCenter,
           child: SearchBar(
-            hint: widget.searchSettings.hint,
+            text: _searchText,
+            hint: widget.searchDelegate.hint,
             leadingPadding: widget.itemsHaveThumbnail
                 ? _thumbSearchTextOffset : null,
             elevated: false,
             delegate: InputSearchBarDelegate((String text) {
-              print(text);
+              _searchText = text;
+              _resetTimer();
             }),
           ),
         ),
@@ -283,6 +297,22 @@ class _EntityListPageState<T> extends State<EntityListPage<T>> {
       Navigator.of(context).pop();
     }
   }
+
+  void _resetTimer() {
+    if (_textChangedTimer != null && _textChangedTimer.isActive) {
+      _textChangedTimer.cancel();
+    }
+
+    if (isEmpty(_searchText)) {
+      // When text is cleared, update list immediately.
+      setState(() {});
+    } else {
+      // Only use a timer if the user is typing.
+      _textChangedTimer = Timer(_inputDelayDuration, () {
+        setState(() {});
+      });
+    }
+  }
 }
 
 enum _ViewingState {
@@ -350,18 +380,18 @@ class ManageableListPageMultiPickerSettings<T>
 
 /// A convenience class for storing the properties of an option [SearchBar] in
 /// the [AppBar] of a [EntityListPage].
-class ManageableListPageSearchSettings {
+class ManageableListPageSearchDelegate {
   /// The search hint text.
   final String hint;
 
-  /// Invoked when the [SearchBar] is tapped.
-  final VoidCallback onStart;
+  /// The message to show when searching returns 0 results.
+  final String noResultsMessage;
 
-  ManageableListPageSearchSettings({
+  ManageableListPageSearchDelegate({
     @required this.hint,
-    @required this.onStart,
+    @required this.noResultsMessage,
   }) : assert(isNotEmpty(hint)),
-       assert(onStart != null);
+       assert(isNotEmpty(noResultsMessage));
 }
 
 /// A convenient class for storing properties for a single item in a
@@ -388,8 +418,9 @@ class ManageableListPageItemModel {
 /// [T] is the type of object being managed.
 class ManageableListPageItemManager<T> {
   /// Invoked when the widget tree needs to be rebuilt. Required so data is
-  /// almost the most up to date from the database.
-  final List<T> Function() loadItems;
+  /// almost the most up to date from the database. The passed in [String] is
+  /// the text in the [SearchBar].
+  final List<T> Function(String) loadItems;
 
   /// The [Widget] to display is a delete confirmation dialog. This should be
   /// some kind of [Text] widget.

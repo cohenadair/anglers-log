@@ -8,8 +8,8 @@ abstract class NamedEntityManager<T extends NamedEntity>
 {
   NamedEntityManager(AppManager app) : super(app);
 
-  List<T> get entityListSortedByName {
-    List<T> result = List.from(entityList);
+  List<T> entityListSortedByName({String filter}) {
+    List<T> result = List.from(filteredEntityList(filter));
     result.sort((T lhs, T rhs) => lhs.compareNameTo(rhs));
     return result;
   }

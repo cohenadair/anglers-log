@@ -32,11 +32,9 @@ class CatchListPage extends StatelessWidget {
       title: Text(format(Strings.of(context).catchListPageTitle,
           [catchManager.entityCount])),
       forceCenterTitle: true,
-      searchSettings: ManageableListPageSearchSettings(
+      searchDelegate: ManageableListPageSearchDelegate(
         hint: Strings.of(context).catchListPageSearchHint,
-        onStart: () {
-          // TODO
-        },
+        noResultsMessage: Strings.of(context).catchListPageNoSearchResults,
       ),
       itemBuilder: _buildListItem,
       itemsHaveThumbnail: true,
@@ -48,7 +46,8 @@ class CatchListPage extends StatelessWidget {
           fishingSpotManager,
           speciesManager,
         ],
-        loadItems: () => catchManager.entityListSortedByTimestamp,
+        loadItems: (String query) =>
+            catchManager.entityListSortedByTimestamp(filter: query),
         deleteText: (context, cat) =>
             Text(catchManager.deleteMessage(context, cat)),
         deleteItem: (context, cat) => catchManager.delete(cat),

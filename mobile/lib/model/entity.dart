@@ -46,6 +46,10 @@ class Entity implements Mappable {
   /// Returns true if any of the entity's properties contain the given
   /// [filter].
   bool meetsFilter(String filter) {
+    if (isEmpty(filter)) {
+      return true;
+    }
+
     for (Property property in _properties.values) {
       if (property.value.toString().toLowerCase()
           .contains(filter.toLowerCase()))

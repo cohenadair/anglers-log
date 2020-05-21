@@ -46,11 +46,9 @@ class _BaitListPageState extends State<BaitListPage> {
             ? Text(Strings.of(context).baitListPagePickerTitle)
             : Text(format(Strings.of(context).baitListPageTitle,
                 [_baitManager.entityCount])),
-        searchSettings: ManageableListPageSearchSettings(
+        searchDelegate: ManageableListPageSearchDelegate(
           hint: Strings.of(context).baitListPageSearchHint,
-          onStart: () {
-            // TODO
-          },
+          noResultsMessage: Strings.of(context).baitListPageNoSearchResults,
         ),
         pickerSettings: _picking
             ? ManageableListPageSinglePickerSettings<dynamic>(
@@ -91,11 +89,11 @@ class _BaitListPageState extends State<BaitListPage> {
     );
   }
 
-  List<dynamic> _buildItems() {
+  List<dynamic> _buildItems(String query) {
     List<dynamic> result = [];
 
-    var categories = List.from(_baitCategoryManager.entityListSortedByName);
-    var baits = _baitManager.entityListSortedByName;
+    var categories = List.from(_baitCategoryManager.entityListSortedByName());
+    var baits = _baitManager.entityListSortedByName(filter: query);
 
     // Add a category for baits that don't have a category. This is purposely
     // added to the end of the sorted list.

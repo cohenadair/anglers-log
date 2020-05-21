@@ -46,6 +46,7 @@ Map<String, Map<String, String>> get englishStrings => {
     "catchListPage_menuLabel" : "Catches",
     "catchListPage_title" : "Catches (%s)",
     "catchListPage_searchHint" : "Search catches",
+    "catchListPage_noSearchResults" : "No catches found",
 
     "catchPage_deleteMessage" : "Are you sure you want to delete catch %s? This cannot be undone.",
 
@@ -67,6 +68,7 @@ Map<String, Map<String, String>> get englishStrings => {
     "baitListPage_pickerTitle" : "Select Bait",
     "baitListPage_otherCategory" : "No Category",
     "baitListPage_searchHint" : "Search baits",
+    "baitListPage_noSearchResults" : "No baits found",
 
     "baitPage_deleteMessage" : "%s is associated with %s catches; are you sure you want to delete it? This cannot be undone.",
     "baitPage_deleteMessageSingular" : "%s is associated with %s catch; are you sure you want to delete it? This cannot be undone.",
@@ -86,6 +88,7 @@ Map<String, Map<String, String>> get englishStrings => {
     "baitCategoryListPage_deleteMessage" : "%s is associated with %s baits; are you sure you want to delete it? This cannot be undone.",
     "baitCategoryListPage_deleteMessageSingular" : "%s is associated with %s bait; are you sure you want to delete it? This cannot be undone.",
     "baitCategoryListPage_searchHint" : "Search bait categories",
+    "baitCategoryListPage_noSearchResults" : "No bait categories found",
 
     "statsPage_title" : "Stats",
 
@@ -140,6 +143,7 @@ Map<String, Map<String, String>> get englishStrings => {
     "speciesListPage_confirmDelete" : "%s is associated with 0 catches; are you sure you want to delete it? This cannot be undone.",
     "speciesListPage_catchDeleteError" : "%s is associated with %s catches and cannot be deleted.",
     "speciesListPage_searchHint" : "Search species",
+    "speciesListPage_noSearchResults" : "No species found",
 
     "fishingSpotPickerPage_title" : "Select Fishing Spot",
     "fishingSpotPickerPage_hint" : "Drag the map to use exact coordinates, or select an existing fishing spot.",

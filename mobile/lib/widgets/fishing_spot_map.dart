@@ -313,7 +313,7 @@ class _SearchDelegate extends SearchDelegate<FishingSpot> {
 
   @override
   Widget buildSuggestions(BuildContext context) =>
-      _buildList(FishingSpotManager.of(context).entityListSortedByName);
+      _buildList(FishingSpotManager.of(context).entityListSortedByName());
 
   @override
   ThemeData appBarTheme(BuildContext context) {

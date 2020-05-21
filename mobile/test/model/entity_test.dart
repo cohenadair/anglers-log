@@ -71,6 +71,8 @@ void main() {
       Property<String>(key: "description", value: "Example description"),
     ]);
 
+    expect(entity.meetsFilter(null), true);
+    expect(entity.meetsFilter(""), true);
     expect(entity.meetsFilter("4"), true);
     expect(entity.meetsFilter("Ten"), false);
     expect(entity.meetsFilter("script"), true);

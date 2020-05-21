@@ -27,11 +27,9 @@ class SpeciesListPage extends StatelessWidget {
       itemBuilder: (context, species) => ManageableListPageItemModel(
         child: Text(species.name),
       ),
-      searchSettings: ManageableListPageSearchSettings(
+      searchDelegate: ManageableListPageSearchDelegate(
         hint: Strings.of(context).speciesListPageSearchHint,
-        onStart: () {
-          // TODO
-        },
+        noResultsMessage: Strings.of(context).speciesListPageNoSearchResults,
       ),
       pickerSettings: _picking
           ? ManageableListPageSinglePickerSettings<Species>(
@@ -40,7 +38,8 @@ class SpeciesListPage extends StatelessWidget {
           : null,
       itemManager: ManageableListPageItemManager<Species>(
         listenerManagers: [ speciesManager ],
-        loadItems: () => speciesManager.entityListSortedByName,
+        loadItems: (String query) =>
+            speciesManager.entityListSortedByName(filter: query),
         deleteText: (context, species) => Text(format(Strings.of(context)
             .speciesListPageConfirmDelete, [species.name])),
         deleteItem: (context, species) async {
