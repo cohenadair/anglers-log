@@ -10,6 +10,7 @@ import 'package:mobile/named_entity_manager.dart';
 import 'package:mobile/utils/string_utils.dart';
 import 'package:provider/provider.dart';
 import 'package:quiver/core.dart';
+import 'package:quiver/strings.dart';
 
 class BaitManager extends NamedEntityManager<Bait> {
   static BaitManager of(BuildContext context) =>
@@ -36,6 +37,14 @@ class BaitManager extends NamedEntityManager<Bait> {
   bool duplicate(Bait lhs) {
     return entityList.firstWhere((rhs) => lhs.isDuplicateOf(lhs),
         orElse: () => null) != null;
+  }
+
+  List<Bait> filteredBaits(String filter) {
+    if (isEmpty(filter)) {
+      return entities.values.toList();
+    }
+    return entities.values.where((bait) => matchesFilter(bait.id, filter))
+        .toList();
   }
 
   bool matchesFilter(String baitId, String filter) {

@@ -49,21 +49,13 @@ class CatchManager extends EntityManager<Catch> {
       return entities.values.toList();
     }
 
-    List<Catch> result = [];
-    for (Catch cat in entities.values) {
-      if (cat.matchesFilter(filter)
-          || _speciesManager.entity(id: cat.speciesId).matchesFilter(filter)
-          || (cat.hasFishingSpot && _fishingSpotManager
-              .entity(id: cat.fishingSpotId).matchesFilter(filter))
-          || (cat.hasBait && _baitManager.matchesFilter(cat.baitId, filter))
-          || formatDateTime(context, cat.dateTime).toLowerCase()
-              .contains(filter.toLowerCase()))
-      {
-        result.add(cat);
-      }
-    }
-
-    return result;
+    return entities.values.where((cat) => cat.matchesFilter(filter)
+        || _speciesManager.entity(id: cat.speciesId).matchesFilter(filter)
+        || (cat.hasFishingSpot && _fishingSpotManager
+            .entity(id: cat.fishingSpotId).matchesFilter(filter))
+        || (cat.hasBait && _baitManager.matchesFilter(cat.baitId, filter))
+        || formatDateTime(context, cat.dateTime).toLowerCase()
+            .contains(filter.toLowerCase())).toList();
   }
 
   @override
