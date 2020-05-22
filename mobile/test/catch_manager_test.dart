@@ -1,3 +1,4 @@
+import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/app_manager.dart';
 import 'package:mobile/bait_category_manager.dart';
 import 'package:mobile/bait_manager.dart';
@@ -9,23 +10,31 @@ import 'package:mobile/image_manager.dart';
 import 'package:mobile/model/bait.dart';
 import 'package:mobile/model/catch.dart';
 import 'package:mobile/model/fishing_spot.dart';
+import 'package:mobile/model/species.dart';
+import 'package:mobile/species_manager.dart';
+import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
-import 'package:test/test.dart';
+
+import 'test_utils.dart';
 
 class MockAppManager extends Mock implements AppManager {}
 class MockBaitCategoryManager extends Mock implements BaitCategoryManager {}
+class MockBaitManager extends Mock implements BaitManager {}
 class MockCatchListener extends Mock implements EntityListener<Catch> {}
 class MockDataManager extends Mock implements DataManager {}
+class MockFishingSpotManager extends Mock implements FishingSpotManager {}
 class MockImageManager extends Mock implements ImageManager {}
+class MockSpeciesManager extends Mock implements SpeciesManager {}
 
 void main() {
   MockAppManager appManager;
   MockBaitCategoryManager baitCategoryManager;
   MockDataManager dataManager;
   MockImageManager imageManager;
+  MockSpeciesManager speciesManager;
   BaitManager baitManager;
-  FishingSpotManager fishingSpotManager;
   CatchManager catchManager;
+  FishingSpotManager fishingSpotManager;
 
   setUp(() {
     appManager = MockAppManager();
@@ -47,6 +56,9 @@ void main() {
 
     baitManager = BaitManager(appManager);
     when(appManager.baitManager).thenReturn(baitManager);
+    
+    speciesManager = MockSpeciesManager();
+    when(appManager.speciesManager).thenReturn(speciesManager);
 
     catchManager = CatchManager(appManager);
   });
@@ -170,5 +182,98 @@ void main() {
       expect(catchManager.entity(id: "catch_id").fishingSpotId, isNull);
       expect(catchManager.entity(id: "catch_id_2").fishingSpotId, isNull);
     });
+  });
+
+  testWidgets("Filtering", (WidgetTester tester) async {
+    var mockFishingSpotManager = MockFishingSpotManager();
+    when(mockFishingSpotManager.addOrUpdate(any)).thenAnswer((_) => null);
+    when(appManager.fishingSpotManager).thenReturn(mockFishingSpotManager);
+
+    var mockBaitManager = MockBaitManager();
+    when(appManager.baitManager).thenReturn(mockBaitManager);
+
+    when(dataManager.insertOrUpdateEntity(any, any))
+        .thenAnswer((_) => Future.value(true));
+
+    await catchManager.addOrUpdate(Catch(
+      timestamp: DateTime(2020, 1, 1).millisecondsSinceEpoch,
+      speciesId: "species_id_1",
+    ));
+    await catchManager.addOrUpdate(Catch(
+      timestamp: DateTime(2020, 2, 2).millisecondsSinceEpoch,
+      speciesId: "species_id_2",
+    ));
+
+    when(speciesManager.entity(id: argThat(equals("species_id_1"),
+      named: "id",
+    ))).thenReturn(Species(name: "Smallmouth Bass"));
+    when(speciesManager.entity(id: argThat(equals("species_id_2"),
+      named: "id",
+    ))).thenReturn(Species(name: "Blue Catfish"));
+
+    await tester.pumpWidget(Testable((context) {
+      List<Catch> catches = catchManager.filteredCatches(context, "");
+      expect(catches.length, 2);
+
+      catches = catchManager.filteredCatches(context, "Bluegill");
+      expect(true, catches.isEmpty);
+
+      catches = catchManager.filteredCatches(context, "bass");
+      expect(catches.length, 1);
+
+      catches = catchManager.filteredCatches(context, "BLUE");
+      expect(catches.length, 1);
+
+      catches = catchManager.filteredCatches(context, "janua");
+      expect(catches.length, 1);
+
+      catches = catchManager.filteredCatches(context, "feb");
+      expect(catches.length, 1);
+
+      return Empty();
+    }));
+
+    await catchManager.addOrUpdate(Catch(
+      timestamp: DateTime(2020, 1, 1).millisecondsSinceEpoch,
+      speciesId: "species_id_1",
+      fishingSpotId: "fishing_spot_id_1",
+      baitId: "bait_id_1",
+    ));
+    await catchManager.addOrUpdate(Catch(
+      timestamp: DateTime(2020, 2, 2).millisecondsSinceEpoch,
+      speciesId: "species_id_2",
+      fishingSpotId: "fishing_spot_id_2",
+      baitId: "bait_id_2",
+    ));
+
+    when(mockFishingSpotManager.entity(id: argThat(equals("fishing_spot_id_1"),
+      named: "id",
+    ))).thenReturn(FishingSpot(name: "Tennessee River", lat: 0.0, lng: 0.0));
+    when(mockFishingSpotManager.entity(id: argThat(equals("fishing_spot_id_2"),
+      named: "id",
+    ))).thenReturn(FishingSpot(name: "9 Mile River", lat: 0.0, lng: 0.0));
+
+    when(mockBaitManager.matchesFilter("bait_id_1", any)).thenReturn(false);
+
+    await tester.pumpWidget(Testable((context) {
+      when(mockBaitManager.matchesFilter(any, any)).thenReturn(true);
+      List<Catch> catches = catchManager.filteredCatches(context, "RAP");
+      expect(catches.length, 2);
+
+      when(mockBaitManager.matchesFilter(any, any)).thenReturn(false);
+      catches = catchManager.filteredCatches(context, "test");
+      expect(true, catches.isEmpty);
+
+      catches = catchManager.filteredCatches(context, "9 mile");
+      expect(catches.length, 1);
+
+      catches = catchManager.filteredCatches(context, "Tennessee");
+      expect(catches.length, 1);
+
+      catches = catchManager.filteredCatches(context, "River");
+      expect(catches.length, 2);
+
+      return Empty();
+    }));
   });
 }

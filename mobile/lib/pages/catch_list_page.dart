@@ -47,7 +47,7 @@ class CatchListPage extends StatelessWidget {
           speciesManager,
         ],
         loadItems: (String query) =>
-            catchManager.entityListSortedByTimestamp(filter: query),
+            catchManager.catchesSortedByTimestamp(context, filter: query),
         deleteText: (context, cat) =>
             Text(catchManager.deleteMessage(context, cat)),
         deleteItem: (context, cat) => catchManager.delete(cat),

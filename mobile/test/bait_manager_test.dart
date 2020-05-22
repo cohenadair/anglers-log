@@ -118,4 +118,17 @@ void main() {
         Bait(name: "Test", categoryId: "category_id")), "Test Category - Test");
     expect(baitManager.formatNameWithCategory(Bait(name: "Test")), "Test");
   });
+
+  test("Filtering", () async {
+    when(dataManager.insertOrUpdateEntity(any, any))
+        .thenAnswer((_) => Future.value(true));
+
+    expect(baitManager.matchesFilter("invalid_id", ""), false);
+
+    await baitManager.addOrUpdate(Bait(id: "id", name: "Rapala"));
+    expect(baitManager.matchesFilter("id", ""), true);
+    expect(baitManager.matchesFilter("id", null), true);
+    expect(baitManager.matchesFilter("id", "Cut Bait"), false);
+    expect(baitManager.matchesFilter("id", "RAP"), true);
+  });
 }

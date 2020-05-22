@@ -151,7 +151,7 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
       categoryId: _baitCategoryController.value?.id,
     );
 
-    if (_baitManager.isDuplicate(newBait)) {
+    if (_baitManager.duplicate(newBait)) {
       showErrorDialog(
         context: context,
         description: Text(Strings.of(context).saveBaitPageBaitExists),

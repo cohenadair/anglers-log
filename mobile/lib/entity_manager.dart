@@ -53,7 +53,7 @@ abstract class EntityManager<T extends Entity> extends
   List<T> get entityList => List.unmodifiable(entities.values);
 
   List<T> filteredEntityList(String filter) {
-    return entityList.where((entity) => entity.meetsFilter(filter)).toList();
+    return entityList.where((entity) => entity.matchesFilter(filter)).toList();
   }
 
   int get entityCount => entities.length;

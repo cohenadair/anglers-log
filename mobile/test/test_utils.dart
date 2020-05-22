@@ -5,9 +5,12 @@ import 'package:mobile/utils/date_time_utils.dart';
 
 /// A widget that wraps a child in default localizations.
 class Testable extends StatelessWidget {
-  final Widget _child;
+  final Function(BuildContext) builder;
+  final MediaQueryData mediaQueryData;
 
-  Testable(this._child) : assert(_child != null);
+  Testable(this.builder, {
+    this.mediaQueryData = const MediaQueryData(),
+  }) : assert(builder != null);
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +22,12 @@ class Testable extends StatelessWidget {
         GlobalWidgetsLocalizations.delegate,
       ],
       locale: Locale("en", "CA"),
-      child: _child,
+      child: MediaQuery(
+        data: mediaQueryData,
+        child: Builder(
+          builder: builder,
+        ),
+      ),
     );
   }
 }

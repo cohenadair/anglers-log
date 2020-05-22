@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:mobile/app_manager.dart';
+import 'package:mobile/bait_manager.dart';
 import 'package:mobile/entity_manager.dart';
 import 'package:mobile/fishing_spot_manager.dart';
 import 'package:mobile/i18n/strings.dart';
@@ -14,32 +15,54 @@ import 'package:mobile/species_manager.dart';
 import 'package:mobile/utils/string_utils.dart';
 import 'package:provider/provider.dart';
 import 'package:quiver/core.dart';
+import 'package:quiver/strings.dart';
 
 class CatchManager extends EntityManager<Catch> {
   static CatchManager of(BuildContext context) =>
       Provider.of<AppManager>(context, listen: false).catchManager;
 
-  final FishingSpotManager _fishingSpotManager;
-
-  CatchManager(AppManager app)
-      : _fishingSpotManager = app.fishingSpotManager,
-        super(app)
-  {
+  CatchManager(AppManager app) : super(app) {
     app.baitManager.addListener(SimpleEntityListener(
       onDelete: _onDeleteBait,
     ));
-    _fishingSpotManager.addListener(SimpleEntityListener(
+    app.fishingSpotManager.addListener(SimpleEntityListener(
       onDelete: _onDeleteFishingSpot,
     ));
   }
 
+  BaitManager get _baitManager => appManager.baitManager;
+  FishingSpotManager get _fishingSpotManager => appManager.fishingSpotManager;
   ImageManager get _imageManager => appManager.imageManager;
   SpeciesManager get _speciesManager => appManager.speciesManager;
 
   /// Returns all catches, sorted from newest to oldest.
-  List<Catch> entityListSortedByTimestamp({String filter}) {
-    List<Catch> result = List.of(filteredEntityList(filter));
+  List<Catch> catchesSortedByTimestamp(BuildContext context, {
+    String filter,
+  }) {
+    List<Catch> result = List.of(filteredCatches(context, filter));
     result.sort((lhs, rhs) => rhs.timestamp.compareTo(lhs.timestamp));
+    return result;
+  }
+
+  List<Catch> filteredCatches(BuildContext context, String filter) {
+    if (isEmpty(filter)) {
+      return entities.values.toList();
+    }
+
+    List<Catch> result = [];
+    for (Catch cat in entities.values) {
+      if (cat.matchesFilter(filter)
+          || _speciesManager.entity(id: cat.speciesId).matchesFilter(filter)
+          || (cat.hasFishingSpot && _fishingSpotManager
+              .entity(id: cat.fishingSpotId).matchesFilter(filter))
+          || (cat.hasBait && _baitManager.matchesFilter(cat.baitId, filter))
+          || formatDateTime(context, cat.dateTime).toLowerCase()
+              .contains(filter.toLowerCase()))
+      {
+        result.add(cat);
+      }
+    }
+
     return result;
   }
 

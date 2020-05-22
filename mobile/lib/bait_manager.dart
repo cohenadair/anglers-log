@@ -35,9 +35,20 @@ class BaitManager extends NamedEntityManager<Bait> {
 
   /// Returns true if the given [Bait] is a duplicate of an existing bait.
   /// [Bait.isDuplicateOf] is called on each existing bait.
-  bool isDuplicate(Bait lhs) {
+  bool duplicate(Bait lhs) {
     return entityList.firstWhere((rhs) => lhs.isDuplicateOf(lhs),
         orElse: () => null) != null;
+  }
+
+  bool matchesFilter(String baitId, String filter) {
+    Bait bait = entity(id: baitId);
+    if (bait != null && (bait.matchesFilter(filter)
+        || (bait.hasCategory && _baitCategoryManager
+            .entity(id: bait.categoryId).matchesFilter(filter))))
+    {
+      return true;
+    }
+    return false;
   }
 
   /// Returns the number of [Catch] objects associated with the given [Bait].

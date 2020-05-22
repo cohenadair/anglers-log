@@ -45,7 +45,7 @@ class Entity implements Mappable {
 
   /// Returns true if any of the entity's properties contain the given
   /// [filter].
-  bool meetsFilter(String filter) {
+  bool matchesFilter(String filter) {
     if (isEmpty(filter)) {
       return true;
     }
