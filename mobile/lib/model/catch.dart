@@ -20,10 +20,11 @@ class Catch extends Entity {
     @required String fishingSpotId,
     @required String speciesId,
   }) => [
-    Property<int>(key: keyTimestamp, value: timestamp),
-    Property<String>(key: keyBaitId, value: baitId),
-    Property<String>(key: keyFishingSpotId, value: fishingSpotId),
-    Property<String>(key: keySpeciesId, value: speciesId),
+    Property<int>(key: keyTimestamp, value: timestamp, searchable: false),
+    Property<String>(key: keyBaitId, value: baitId, searchable: false),
+    Property<String>(key: keyFishingSpotId, value: fishingSpotId,
+        searchable: false),
+    Property<String>(key: keySpeciesId, value: speciesId, searchable: false),
   ];
 
   Catch({

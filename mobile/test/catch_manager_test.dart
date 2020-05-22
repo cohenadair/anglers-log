@@ -200,7 +200,7 @@ void main() {
       speciesId: "species_id_1",
     ));
     await catchManager.addOrUpdate(Catch(
-      timestamp: DateTime(2020, 2, 2).millisecondsSinceEpoch,
+      timestamp: DateTime(2020, 4, 4).millisecondsSinceEpoch,
       speciesId: "species_id_2",
     ));
 
@@ -227,7 +227,10 @@ void main() {
       catches = catchManager.filteredCatches(context, "janua");
       expect(catches.length, 1);
 
-      catches = catchManager.filteredCatches(context, "feb");
+      catches = catchManager.filteredCatches(context, "april");
+      expect(catches.length, 1);
+
+      catches = catchManager.filteredCatches(context, "4");
       expect(catches.length, 1);
 
       return Empty();

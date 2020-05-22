@@ -11,7 +11,7 @@ class Entity implements Mappable {
   static const keyId = "id";
 
   static List<Property> _propertyList(String id) => [
-    Property<String>(key: keyId, value: id),
+    Property<String>(key: keyId, value: id, searchable: false),
   ];
 
   final Map<String, Property> _properties;
@@ -51,6 +51,11 @@ class Entity implements Mappable {
     }
 
     for (Property property in _properties.values) {
+      // Don't include random ID in "searchable" properties.
+      if (!property.searchable) {
+        continue;
+      }
+
       if (property.value.toString().toLowerCase()
           .contains(filter.toLowerCase()))
       {

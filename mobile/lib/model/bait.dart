@@ -36,9 +36,10 @@ class Bait extends NamedEntity {
     @required double maxDiveDepth,
     @required String description,
   }) => [
-    Property<String>(key: keyBaseId, value: baseId),
-    Property<String>(key: keyPhotoId, value: photoId),
-    Property<String>(key: keyBaitCategoryId, value: categoryId),
+    Property<String>(key: keyBaseId, value: baseId, searchable: false),
+    Property<String>(key: keyPhotoId, value: photoId, searchable: false),
+    Property<String>(key: keyBaitCategoryId, value: categoryId,
+        searchable: false),
     Property<String>(key: keyColor, value: color),
     Property<String>(key: keyModel, value: model),
     Property<String>(key: keySize, value: size),

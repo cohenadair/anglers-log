@@ -21,9 +21,14 @@ class Property<T> {
   final String key;
   final T value;
 
+  /// If true, this [Property] will be included in when filtering and searching.
+  /// Defaults to true.
+  final bool searchable;
+
   Property({
     @required this.key,
     @required this.value,
+    this.searchable = true,
   }) : assert(isNotEmpty(key)),
        assert(value == null || value is int || value is double
            || value is String || value is bool || value is InputType

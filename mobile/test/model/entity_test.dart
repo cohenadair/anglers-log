@@ -69,6 +69,7 @@ void main() {
       Property<int>(key: "numberOfLegs", value: 4),
       Property<bool>(key: "hasTail", value: true),
       Property<String>(key: "description", value: "Example description"),
+      Property<String>(key: "exclude", value: "fishing", searchable: false),
     ]);
 
     expect(entity.matchesFilter(null), true);
@@ -76,5 +77,6 @@ void main() {
     expect(entity.matchesFilter("4"), true);
     expect(entity.matchesFilter("Ten"), false);
     expect(entity.matchesFilter("script"), true);
+    expect(entity.matchesFilter("fishing"), false);
   });
 }
