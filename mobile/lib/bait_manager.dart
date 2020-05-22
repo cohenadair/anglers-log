@@ -15,16 +15,14 @@ class BaitManager extends NamedEntityManager<Bait> {
   static BaitManager of(BuildContext context) =>
       Provider.of<AppManager>(context, listen: false).baitManager;
 
-  final BaitCategoryManager _baitCategoryManager;
+  BaitManager(AppManager app) : super(app) {
+    app.baitCategoryManager.addListener(SimpleEntityListener(
+      onDelete: _onDeleteBaitCategory,
+    ));
+  }
 
-  BaitManager(AppManager app)
-      : _baitCategoryManager = app.baitCategoryManager,
-        super(app) {
-          _baitCategoryManager.addListener(SimpleEntityListener(
-            onDelete: _onDeleteBaitCategory,
-          ));
-        }
-
+  BaitCategoryManager get _baitCategoryManager =>
+      appManager.baitCategoryManager;
   CatchManager get _catchManager => appManager.catchManager;
 
   @override

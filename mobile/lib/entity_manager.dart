@@ -33,22 +33,19 @@ abstract class EntityManager<T extends Entity> extends
   final AppManager appManager;
 
   @protected
-  final DataManager dataManager;
-
-  @protected
   final Map<String, T> entities = {};
 
   String get tableName;
   T entityFromMap(Map<String, dynamic> map);
 
-  EntityManager(AppManager app)
-      : appManager = app,
-        dataManager = app.dataManager,
-        super();
+  EntityManager(AppManager app) : appManager = app, super();
 
   Future<void> initialize() async {
     (await _fetchAll()).forEach((e) => entities[e.id] = e);
   }
+
+  @protected
+  DataManager get dataManager => appManager.dataManager;
 
   List<T> get entityList => List.unmodifiable(entities.values);
 

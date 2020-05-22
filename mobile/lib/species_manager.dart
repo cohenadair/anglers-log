@@ -9,9 +9,9 @@ class SpeciesManager extends NamedEntityManager<Species> {
   static SpeciesManager of(BuildContext context) =>
       Provider.of<AppManager>(context, listen: false).speciesManager;
 
-  SpeciesManager(AppManager app) : _catchManager = app.catchManager, super(app);
+  SpeciesManager(AppManager app) : super(app);
 
-  final CatchManager _catchManager;
+  CatchManager get _catchManager => appManager.catchManager;
 
   @override
   Species entityFromMap(Map<String, dynamic> map) => Species.fromMap(map);
