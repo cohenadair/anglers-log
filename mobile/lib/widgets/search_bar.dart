@@ -104,8 +104,6 @@ class _SearchBarState extends State<SearchBar> {
           icon: Icon(Icons.close),
           onPressed: () {
             setState(() {
-              _focusNode.unfocus();
-
               // Only notify delegate if text changes.
               if (isNotEmpty(_controller.text)) {
                 _controller.text = "";
