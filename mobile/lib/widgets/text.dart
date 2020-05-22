@@ -4,9 +4,6 @@ import 'package:mobile/res/dimen.dart';
 import 'package:mobile/res/style.dart';
 import 'package:mobile/utils/string_utils.dart';
 
-const monthDayFormat = "MMM. d";
-const monthDayYearFormat = "MMM. d, yyyy";
-
 class HeadingText extends StatelessWidget {
   final String _text;
 

@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/utils/date_time_utils.dart';
-import 'package:mobile/widgets/text.dart';
 import 'package:quiver/time.dart';
+
+const monthDayFormat = "MMMM d";
+const monthDayYearFormat = "MMMM d, yyyy";
 
 /// A trimmed, case-insensitive string comparison.
 bool isEqualTrimmedLowercase(String s1, String s2) {
