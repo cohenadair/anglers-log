@@ -7,8 +7,10 @@ import 'package:mobile/fishing_spot_manager.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/location_monitor.dart';
 import 'package:mobile/model/fishing_spot.dart';
+import 'package:mobile/pages/search_page.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/utils/map_utils.dart';
+import 'package:mobile/utils/page_utils.dart';
 import 'package:mobile/utils/snackbar_utils.dart';
 import 'package:mobile/utils/string_utils.dart';
 import 'package:mobile/widgets/button.dart';
@@ -53,6 +55,9 @@ class FishingSpotMap extends StatefulWidget {
   /// See [GoogleMap.onCameraMoveStarted].
   final VoidCallback onMoveStarted;
 
+  /// Invoked when the "current location" button is pressed.
+  final VoidCallback onCurrentLocationPressed;
+
   /// Invoked when the map type changes.
   final void Function(MapType) onMapTypeChanged;
 
@@ -75,6 +80,7 @@ class FishingSpotMap extends StatefulWidget {
     this.onIdle,
     this.onMove,
     this.onMoveStarted,
+    this.onCurrentLocationPressed,
     this.onMapTypeChanged,
     this.help,
     this.markers,
@@ -93,6 +99,8 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
 
   MapType _mapType = MapType.normal;
   bool _showHelp = true;
+
+  FishingSpotManager get _fishingSpotManager => FishingSpotManager.of(context);
 
   Completer<GoogleMapController> get _mapController => widget.mapController;
 
@@ -184,19 +192,53 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
         left: paddingDefault,
         right: paddingDefault,
       ),
-      delegate: ButtonSearchBarDelegate(() async {
-        FishingSpot result = await showSearch(
-          context: context,
-          delegate: _SearchDelegate(
-            searchFieldLabel: Strings.of(context).mapPageSearchHint,
-          ),
-        );
-        widget.searchBar.onFishingSpotPicked?.call(result);
+      delegate: ButtonSearchBarDelegate(() {
+        present(context, SearchPage(
+          hint: Strings.of(context).mapPageSearchHint,
+          suggestionsBuilder: (context) => _buildSearchPageList(
+              _fishingSpotManager.entityListSortedByName()),
+          resultsBuilder: (context, query) {
+            var fishingSpots =
+                _fishingSpotManager.entityListSortedByName(filter: query);
 
-        if (result != null) {
-          moveMap(_mapController, result.latLng, false);
-        }
+            if (fishingSpots.isEmpty) {
+              return NoResults(Strings.of(context).mapPageNoSearchResults);
+            }
+
+            return _buildSearchPageList(fishingSpots);
+          }
+        ),
+        );
       }),
+    );
+  }
+
+  Widget _buildSearchPageList(List<FishingSpot> fishingSpots) {
+    return ListView.builder(
+      itemCount: fishingSpots.length,
+      itemBuilder: (BuildContext context, int index) {
+        FishingSpot fishingSpot = fishingSpots[index];
+
+        Widget title = Empty();
+        if (isNotEmpty(fishingSpot.name)) {
+          title = Text(fishingSpot.name);
+        } else {
+          title = Text(formatLatLng(
+            context: context,
+            lat: fishingSpot.lat,
+            lng: fishingSpot.lng,
+          ));
+        }
+
+        return ListItem(
+          title: title,
+          onTap: () {
+            widget.searchBar.onFishingSpotPicked?.call(fishingSpot);
+            moveMap(_mapController, fishingSpot.latLng, false);
+            Navigator.pop(context);
+          },
+        );
+      },
     );
   }
 
@@ -238,6 +280,7 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
               Strings.of(context).mapPageErrorGettingLocation);
         } else {
           moveMap(_mapController, currentLocation);
+          widget.onCurrentLocationPressed?.call();
         }
       },
     );
@@ -268,80 +311,6 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
       margin: insetsHorizontalDefault,
       showing: _showHelp,
       child: widget.help,
-    );
-  }
-}
-
-class _SearchDelegate extends SearchDelegate<FishingSpot> {
-  _SearchDelegate({
-    String searchFieldLabel,
-  }) : super(
-    searchFieldLabel: searchFieldLabel,
-  );
-
-  @override
-  List<Widget> buildActions(BuildContext context) {
-    return [
-      AnimatedVisibility(
-        visible: isNotEmpty(query),
-        child: IconButton(
-          icon: Icon(Icons.clear),
-          onPressed: () {
-            query = "";
-            showSuggestions(context);
-          },
-        ),
-      ),
-    ];
-  }
-
-  @override
-  Widget buildLeading(BuildContext context) {
-    return null;
-  }
-
-  @override
-  Widget buildResults(BuildContext context) {
-    var fishingSpots = FishingSpotManager.of(context).filteredEntityList(query);
-    fishingSpots.sort((lhs, rhs) => lhs.compareNameTo(rhs));
-
-    if (fishingSpots.isEmpty) {
-      return NoResults(Strings.of(context).mapPageNoSearchResults);
-    }
-    return _buildList(fishingSpots);
-  }
-
-  @override
-  Widget buildSuggestions(BuildContext context) =>
-      _buildList(FishingSpotManager.of(context).entityListSortedByName());
-
-  @override
-  ThemeData appBarTheme(BuildContext context) {
-    return Theme.of(context);
-  }
-
-  Widget _buildList(List<FishingSpot> fishingSpots) {
-    return ListView.builder(
-      itemCount: fishingSpots.length,
-      itemBuilder: (BuildContext context, int index) {
-        FishingSpot fishingSpot = fishingSpots[index];
-
-        Widget title = Empty();
-        if (isNotEmpty(fishingSpot.name)) {
-          title = Text(fishingSpot.name);
-        } else {
-          title = Text(formatLatLng(
-            context: context,
-            lat: fishingSpot.lat,
-            lng: fishingSpot.lng,
-          ));
-        }
-
-        return ListItem(
-          title: title,
-          onTap: () => close(context, fishingSpot),
-        );
-      },
     );
   }
 }

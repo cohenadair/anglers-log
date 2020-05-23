@@ -140,6 +140,11 @@ class _MapPageState extends State<MapPage> {
           moveMap(_mapController, latLng);
         });
       },
+      onCurrentLocationPressed: () => setState(() {
+        setState(() {
+          _clearActiveFishingSpot();
+        });
+      }),
     );
   }
 
@@ -170,9 +175,7 @@ class _MapPageState extends State<MapPage> {
         visible: fishingSpot != null && !_waitingForDismissal,
         onDismissed: () {
           setState(() {
-            _setActiveMarker(null);
-            _waitingForDismissal = false;
-            _activeFishingSpot = null;
+            _clearActiveFishingSpot();
           });
         },
         child: _FishingSpotBottomSheet(
@@ -269,6 +272,12 @@ class _MapPageState extends State<MapPage> {
     _fishingSpotMarkers.clear();
     _fishingSpotManager.entityList.forEach((f) =>
         _fishingSpotMarkers.add(_createFishingSpotMarker(f)));
+  }
+
+  void _clearActiveFishingSpot() {
+    _setActiveMarker(null);
+    _waitingForDismissal = false;
+    _activeFishingSpot = null;
   }
 }
 

@@ -1,10 +1,9 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:mobile/entity_manager.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/utils/page_utils.dart';
+import 'package:mobile/utils/search_timer.dart';
 import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/checkbox_input.dart';
 import 'package:mobile/widgets/list_item.dart';
@@ -66,13 +65,12 @@ class EntityListPage<T> extends StatefulWidget {
 }
 
 class _EntityListPageState<T> extends State<EntityListPage<T>> {
-  final Duration _inputDelayDuration = Duration(milliseconds: 500);
   final double _appBarExpandedHeight = 100.0;
 
   /// Additional padding required to line up search text with [ListItem] text.
   final double _thumbSearchTextOffset = 24.0;
 
-  Timer _textChangedTimer;
+  SearchTimer _searchTimer;
   bool _editing = false;
   Set<T> _selectedValues = {};
   _ViewingState _viewingState = _ViewingState.viewing;
@@ -92,6 +90,14 @@ class _EntityListPageState<T> extends State<EntityListPage<T>> {
           ? _ViewingState.pickingMulti : _ViewingState.pickingSingle;
       _selectedValues = Set.of(widget.pickerSettings.initialValues);
     }
+
+    _searchTimer = SearchTimer(() => setState(() {}));
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _searchTimer.finish();
   }
 
   Widget build(BuildContext context) {
@@ -160,7 +166,7 @@ class _EntityListPageState<T> extends State<EntityListPage<T>> {
             elevated: false,
             delegate: InputSearchBarDelegate((String text) {
               _searchText = text;
-              _resetTimer();
+              _searchTimer.reset(_searchText);
             }),
           ),
         ),
@@ -295,22 +301,6 @@ class _EntityListPageState<T> extends State<EntityListPage<T>> {
   void _finishPicking(Set<T> pickedValues) {
     if (widget.pickerSettings.onFinishedPicking(context, pickedValues)) {
       Navigator.of(context).pop();
-    }
-  }
-
-  void _resetTimer() {
-    if (_textChangedTimer != null && _textChangedTimer.isActive) {
-      _textChangedTimer.cancel();
-    }
-
-    if (isEmpty(_searchText)) {
-      // When text is cleared, update list immediately.
-      setState(() {});
-    } else {
-      // Only use a timer if the user is typing.
-      _textChangedTimer = Timer(_inputDelayDuration, () {
-        setState(() {});
-      });
     }
   }
 }
