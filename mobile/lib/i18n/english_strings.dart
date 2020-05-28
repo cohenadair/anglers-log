@@ -158,6 +158,8 @@ Map<String, Map<String, String>> get englishStrings => {
     "feedbackPage_connectionError" : "No internet connection. Please check your connection and try again.",
     "feedbackPage_sending" : "Sending feedback...",
 
+    "importPage_title" : "Import",
+
     "angler_nameLabel" : "Angler",
 
     "analysisDuration_allDates" : "All dates",

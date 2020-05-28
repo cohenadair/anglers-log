@@ -69,7 +69,7 @@ class CatchManager extends EntityManager<Catch> {
       await _fishingSpotManager.addOrUpdate(fishingSpot);
     }
 
-    await _imageManager.save(entityId: cat.id, files: imageFiles);
+    await _imageManager.save(cat.id, imageFiles);
     return super.addOrUpdate(cat);
   }
 

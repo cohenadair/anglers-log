@@ -15,7 +15,11 @@ abstract class NamedEntityManager<T extends NamedEntity>
   }
 
   bool nameExists(String name) {
+    return entityNamed(name) != null;
+  }
+
+  T entityNamed(String name) {
     return entities.values.firstWhere((entity) =>
-        isEqualTrimmedLowercase(name, entity.name), orElse: () => null) != null;
+        isEqualTrimmedLowercase(name, entity.name), orElse: () => null);
   }
 }

@@ -103,7 +103,7 @@ class ImageManager {
   ///
   /// Files are named by the image's MD5 hash value to ensure uniqueness, and
   /// that the same image isn't saved multiple times.
-  Future<void> save({String entityId, List<File> files}) async {
+  Future<void> save(String entityId, List<File> files) async {
     if (files == null || files.isEmpty) {
       await _delete(entityId);
       return;

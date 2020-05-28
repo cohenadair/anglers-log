@@ -48,8 +48,7 @@ void main() {
 
     imageManager = MockImageManager();
     when(appManager.imageManager).thenReturn(imageManager);
-    when(imageManager.save(entityId: anyNamed("entityId"),
-        files: anyNamed("files"))).thenAnswer((realInvocation) => null);
+    when(imageManager.save(any, any)).thenAnswer((realInvocation) => null);
 
     fishingSpotManager = FishingSpotManager(appManager);
     when(appManager.fishingSpotManager).thenReturn(fishingSpotManager);

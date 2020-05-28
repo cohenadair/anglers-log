@@ -90,7 +90,7 @@ void main() {
     await _imageManager.initialize(provider: _imageProvider);
 
     // No image files.
-    await _imageManager.save(entityId: "ID", files: []);
+    await _imageManager.save("ID", []);
     verifyNever(_imageProvider.compress);
     verifyNever(_dataManager.commitBatch(any));
 
@@ -103,7 +103,7 @@ void main() {
     image1.writeAsBytesSync([1, 2, 3]);
     File image2 = File("IDIMAGE2.jpg");
     image2.writeAsBytesSync([3, 2, 1]);
-    await _imageManager.save(entityId: "ID", files: [image1, image2]);
+    await _imageManager.save("ID", [image1, image2]);
     expect(_imageManager.imageFiles(entityId: "ID").length, 2);
     expect(_imageManager.allFiles().length, 2);
     verify(_imageProvider.compress).called(2);
@@ -113,10 +113,10 @@ void main() {
   });
 
   test("Save empty list, nothing to delete", () async {
-    await _imageManager.save(entityId: "1", files: []);
+    await _imageManager.save("1", []);
     verifyNever(_dataManager.commitBatch(any));
 
-    await _imageManager.save(entityId: "1", files: null);
+    await _imageManager.save("1", null);
     verifyNever(_dataManager.commitBatch(any));
   });
 
@@ -131,7 +131,7 @@ void main() {
 
     // Set images to empty list.
     when(_dataManager.commitBatch(any)).thenAnswer((_) => Future.value([1]));
-    await _imageManager.save(entityId: "ID", files: []);
+    await _imageManager.save("ID", []);
     verify(_dataManager.commitBatch(any)).called(1);
     expect(_imageManager.allFiles().length, 1);
   });
@@ -140,7 +140,7 @@ void main() {
     File image = File("test/IDIMAGE1.jpg");
     image.writeAsBytesSync([1, 2, 3]);
 
-    await _imageManager.save(entityId: "1", files: [File("test/IDIMAGE1.jpg")]);
+    await _imageManager.save("1", [File("test/IDIMAGE1.jpg")]);
     verifyNever(_imageProvider.compress);
 
     image.delete();
@@ -153,7 +153,7 @@ void main() {
     when(_imageProvider.compress).thenAnswer((_) =>
         (_) => Future.value([1, 2, 3]));
     when(_dataManager.commitBatch(any)).thenAnswer((_) => Future.value([1]));
-    await _imageManager.save(entityId: "1", files: [File("dir/IDIMAGE1.jpg")]);
+    await _imageManager.save("1", [File("dir/IDIMAGE1.jpg")]);
     verify(_imageProvider.compress).called(1);
 
     image.delete();
@@ -165,12 +165,12 @@ void main() {
 
     // Empty batch result.
     when(_dataManager.commitBatch(any)).thenAnswer((_) => Future.value([]));
-    await _imageManager.save(entityId: "1", files: [File("test/IDIMAGE1.jpg")]);
+    await _imageManager.save("1", [File("test/IDIMAGE1.jpg")]);
     expect(_imageManager.allFiles().length, 1);
 
     // Non-empty batch result.
     when(_dataManager.commitBatch(any)).thenAnswer((_) => Future.value([4]));
-    await _imageManager.save(entityId: "2", files: [File("test/IDIMAGE2.jpg")]);
+    await _imageManager.save("2", [File("test/IDIMAGE2.jpg")]);
     expect(_imageManager.allFiles().length, 2);
   });
 }

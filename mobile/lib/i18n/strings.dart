@@ -187,6 +187,8 @@ class Strings {
   String get feedbackPageConnectionError => _string("feedbackPage_connectionError");
   String get feedbackPageSending => _string("feedbackPage_sending");
 
+  String get importPageTitle => _string("importPage_title");
+
   String get anglerNameLabel => _string("angler_nameLabel");
 
   String get analysisDurationAllDates => _string("analysisDuration_allDates");
