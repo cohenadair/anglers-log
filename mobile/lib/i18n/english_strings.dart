@@ -159,6 +159,15 @@ Map<String, Map<String, String>> get englishStrings => {
     "feedbackPage_sending" : "Sending feedback...",
 
     "importPage_title" : "Import",
+    "importPage_description" : "Import data that you previously exported using Anglers' Log. This may take several minutes.",
+    "importPage_chooseFile" : "Choose File",
+    "importPage_importingImages" : "Copying images...",
+    "importPage_importingData" : "Copying fishing data...",
+    "importPage_success" : "Successfully imported data!",
+    "importPage_error" : "There was an error importing your data. If the backup file you chose was created using Anglers' Log, please send it to us for investigation.",
+    "importPage_sendReport" : "Send Report",
+    "importPage_errorWarningTitle" : "Warning",
+    "importPage_errorWarningMessage" : "You are about to send Anglers' Log all your fishing data (excluding photos).",
 
     "angler_nameLabel" : "Angler",
 

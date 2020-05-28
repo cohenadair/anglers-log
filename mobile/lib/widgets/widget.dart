@@ -19,18 +19,17 @@ class MinDivider extends StatelessWidget {
 }
 
 class Loading extends StatelessWidget {
-  static Widget centered() {
+  static Widget centered({EdgeInsets padding}) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        Loading(padding: insetsDefault),
+        Loading(padding: padding ?? insetsDefault),
       ],
     );
   }
 
   final EdgeInsets _padding;
 
-  // ignore: missing_identifier
   Loading({
     EdgeInsets padding = insetsZero
   }) : _padding = padding;
@@ -187,4 +186,15 @@ class EmptyFutureBuilder<T> extends StatelessWidget {
       },
     );
   }
+}
+
+class VerticalSpace extends StatelessWidget {
+  final double size;
+
+  VerticalSpace(this.size);
+
+  @override
+  Widget build(BuildContext context) => Container(
+    height: size,
+  );
 }

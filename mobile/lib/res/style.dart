@@ -31,6 +31,10 @@ const TextStyle styleError = TextStyle(
   color: Colors.red,
 );
 
+const TextStyle styleSuccess = TextStyle(
+  color: Colors.green,
+);
+
 /// For displaying on dark backgrounds.
 const TextStyle styleLight = TextStyle(
   color: Colors.white,

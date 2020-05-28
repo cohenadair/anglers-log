@@ -188,6 +188,15 @@ class Strings {
   String get feedbackPageSending => _string("feedbackPage_sending");
 
   String get importPageTitle => _string("importPage_title");
+  String get importPageDescription => _string("importPage_description");
+  String get importPageChooseFile => _string("importPage_chooseFile");
+  String get importPageImportingImages => _string("importPage_importingImages");
+  String get importPageImportingData => _string("importPage_importingData");
+  String get importPageSuccess => _string("importPage_success");
+  String get importPageError => _string("importPage_error");
+  String get importPageSendReport => _string("importPage_sendReport");
+  String get importPageErrorWarningTitle => _string("importPage_errorWarningTitle");
+  String get importPageErrorWarningMessage => _string("importPage_errorWarningMessage");
 
   String get anglerNameLabel => _string("angler_nameLabel");
 

@@ -33,14 +33,17 @@ void showConfirmYesDialog({
 
 void showWarningDialog({
   @required BuildContext context,
+  String title,
   Widget description,
   VoidCallback onContinue,
 }) {
   _showDestructiveDialog(
     context: context,
+    title: title,
     description: description,
     destroyText: Strings.of(context).continueString,
     onTapDestroy: onContinue,
+    warning: true,
   );
 }
 
@@ -80,6 +83,7 @@ void _showDestructiveDialog({
   String cancelText,
   String destroyText,
   VoidCallback onTapDestroy,
+  bool warning = false,
 }) {
   showDialog(
     context: context,
@@ -95,7 +99,7 @@ void _showDestructiveDialog({
         _buildDialogButton(
           context: context,
           name: destroyText,
-          textColor: Colors.red,
+          textColor: warning ? null : Colors.red,
           onTap: onTapDestroy,
         ),
       ],
