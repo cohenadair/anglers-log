@@ -24,7 +24,7 @@ DEPENDENCIES:
   - XYPieChart
 
 SPEC REPOS:
-  https://github.com/cocoapods/specs.git:
+  https://github.com/CocoaPods/Specs.git:
     - AFNetworking
     - Crashlytics
     - Fabric
@@ -44,4 +44,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 0a44dd759856b0f236c4d9240a6f79a12782cdf5
 
-COCOAPODS: 1.6.1
+COCOAPODS: 1.8.3
