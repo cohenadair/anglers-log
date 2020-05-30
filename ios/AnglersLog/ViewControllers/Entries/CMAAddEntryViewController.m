@@ -420,7 +420,7 @@ NSString *const kNotSelectedString = @"Not Selected";
     }
     
     if (indexPath.section == kPhotoCellSection && indexPath.row == kPhotoCellRow) {
-        [self.imagePicker present];
+        [self.imagePicker presentFromView:self.cameraImage];
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
         return;
     }
