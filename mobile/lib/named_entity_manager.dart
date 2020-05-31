@@ -2,6 +2,7 @@ import 'package:mobile/app_manager.dart';
 import 'package:mobile/entity_manager.dart';
 import 'package:mobile/model/named_entity.dart';
 import 'package:mobile/utils/string_utils.dart';
+import 'package:quiver/strings.dart';
 
 abstract class NamedEntityManager<T extends NamedEntity>
     extends EntityManager<T>
@@ -19,6 +20,9 @@ abstract class NamedEntityManager<T extends NamedEntity>
   }
 
   T entityNamed(String name) {
+    if (isEmpty(name)) {
+      return null;
+    }
     return entities.values.firstWhere((entity) =>
         isEqualTrimmedLowercase(name, entity.name), orElse: () => null);
   }

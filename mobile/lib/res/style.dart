@@ -31,6 +31,10 @@ const TextStyle styleError = TextStyle(
   color: Colors.red,
 );
 
+const TextStyle styleWarning = TextStyle(
+  color: Colors.orange,
+);
+
 const TextStyle styleSuccess = TextStyle(
   color: Colors.green,
 );

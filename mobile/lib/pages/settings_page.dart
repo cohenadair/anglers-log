@@ -27,7 +27,7 @@ class SettingsPage extends StatelessWidget {
         right: paddingDefault,
       ),
       child: SafeArea(
-        child: HeadingText(title),
+        child: HeadingLabel(title),
       ),
     );
   }

@@ -74,13 +74,13 @@ class _CatchPageState extends State<CatchPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                OffsetTitleText(
+                TitleLabel(
                     _speciesManager.entity(id: _catch.speciesId).name),
                 Padding(
                   padding: const EdgeInsets.only(
                     left: paddingDefault,
                   ),
-                  child: SubtitleText(
+                  child: SubtitleLabel(
                     formatDateTime(context,
                         DateTime.fromMillisecondsSinceEpoch(_catch.timestamp)),
                   ),
@@ -107,12 +107,12 @@ class _CatchPageState extends State<CatchPage> {
 
     Widget subtitle = Empty();
     if (bait.hasCategory) {
-      subtitle = SubtitleText(
+      subtitle = SubtitleLabel(
           _baitCategoryManager.entity(id: bait.categoryId).name);
     }
 
     return ListItem(
-      title: Text(bait.name),
+      title: Label(bait.name),
       subtitle: subtitle,
       trailing: RightChevronIcon(),
       onTap: () => push(context, BaitPage(bait.id,

@@ -32,9 +32,9 @@ class ListPickerInput<T> extends StatelessWidget {
   Widget build(BuildContext context) {
     Widget titleWidget;
     if (title != null) {
-      titleWidget = Text(title);
+      titleWidget = Label(title);
     } else {
-      titleWidget = Text(value);
+      titleWidget = Label(value);
     }
 
     return EnabledOpacity(
@@ -63,7 +63,7 @@ class ListPickerInput<T> extends StatelessWidget {
 
     return Padding(
       padding: insetsRightWidgetSmall,
-      child: SecondaryLabelText(value ?? Strings.of(context).inputNotSelected),
+      child: SecondaryLabel(value ?? Strings.of(context).inputNotSelected),
     );
   }
 }

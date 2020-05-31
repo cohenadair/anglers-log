@@ -6,6 +6,7 @@ import 'package:mobile/pages/save_species_page.dart';
 import 'package:mobile/species_manager.dart';
 import 'package:mobile/utils/dialog_utils.dart';
 import 'package:mobile/utils/string_utils.dart';
+import 'package:mobile/widgets/text.dart';
 
 class SpeciesListPage extends StatelessWidget {
   final bool Function(BuildContext, Species) onPicked;
@@ -25,7 +26,7 @@ class SpeciesListPage extends StatelessWidget {
           ? Text(Strings.of(context).speciesListPagePickerTitle)
           : Text(Strings.of(context).speciesListPageTitle),
       itemBuilder: (context, species) => ManageableListPageItemModel(
-        child: Text(species.name),
+        child: PrimaryLabel(species.name),
       ),
       searchDelegate: ManageableListPageSearchDelegate(
         hint: Strings.of(context).speciesListPageSearchHint,

@@ -4,15 +4,32 @@ import 'package:mobile/res/dimen.dart';
 import 'package:mobile/res/style.dart';
 import 'package:mobile/utils/string_utils.dart';
 
-class HeadingText extends StatelessWidget {
-  final String _text;
+/// A default text Widget that should be used in place of [Text].
+class Label extends StatelessWidget {
+  final String text;
+  final TextStyle style;
 
-  HeadingText(this._text);
+  Label(this.text, {
+    this.style,
+  });
+
+  @override
+  Widget build(BuildContext context) => Text(
+    text,
+    style: style,
+    overflow: TextOverflow.ellipsis,
+  );
+}
+
+class HeadingLabel extends StatelessWidget {
+  final String text;
+
+  HeadingLabel(this.text);
 
   @override
   Widget build(BuildContext context) {
-    return Text(
-      _text,
+    return Label(
+      text,
       style: Theme.of(context).textTheme.bodyText1.copyWith(
         color: Theme.of(context).primaryColor,
       ),
@@ -21,23 +38,17 @@ class HeadingText extends StatelessWidget {
 }
 
 /// Text that matches the primary label in a [ListTile].
-class LabelText extends StatelessWidget {
+class PrimaryLabel extends StatelessWidget {
   final String text;
-  final TextOverflow overflow;
   final bool enabled;
 
-  LabelText(this.text, {
-    this.overflow = TextOverflow.fade,
+  PrimaryLabel(this.text, {
     this.enabled = true,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Text(
-      text,
-      style: _style(context),
-      overflow: overflow,
-    );
+    return Label(text, style: _style(context));
   }
 
   TextStyle _style(BuildContext context) {
@@ -51,21 +62,21 @@ class LabelText extends StatelessWidget {
   }
 }
 
-class SecondaryLabelText extends StatelessWidget {
+class SecondaryLabel extends StatelessWidget {
   final String text;
 
-  SecondaryLabelText(this.text);
+  SecondaryLabel(this.text);
 
   @override
   Widget build(BuildContext context) {
-    return LabelText(text, enabled: false);
+    return PrimaryLabel(text, enabled: false);
   }
 }
 
-class OffsetTitleText extends StatelessWidget {
+class TitleLabel extends StatelessWidget {
   final String text;
 
-  OffsetTitleText(this.text);
+  TitleLabel(this.text);
 
   @override
   Widget build(BuildContext context) {
@@ -76,19 +87,20 @@ class OffsetTitleText extends StatelessWidget {
       padding: const EdgeInsets.only(
         left: paddingDefault - 2.0,
       ),
-      child: Text(text, style: styleTitle),
+      child: Label(text, style: styleTitle),
     );
   }
 }
 
-class SubtitleText extends StatelessWidget {
+class SubtitleLabel extends StatelessWidget {
   final String text;
 
-  SubtitleText(this.text);
+  SubtitleLabel(this.text);
 
   @override
   Widget build(BuildContext context) {
-    return Text(text,
+    return Label(
+      text,
       style: Theme.of(context).textTheme.subtitle2.copyWith(
         color: Colors.grey,
         fontWeight: FontWeight.normal,
@@ -99,15 +111,17 @@ class SubtitleText extends StatelessWidget {
 
 /// A [Text] widget with an enabled state. If `enabled = false`, the [Text] is
 /// rendered with a `Theme.of(context).disabledColor` color.
-class EnabledText extends StatelessWidget {
+class EnabledLabel extends StatelessWidget {
   final String text;
   final bool enabled;
 
-  EnabledText(this.text, {this.enabled = false});
+  EnabledLabel(this.text, {
+    this.enabled = false,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Text(
+    return Label(
       text,
       style: TextStyle(
         color: enabled ? null : Theme.of(context).disabledColor,
@@ -116,17 +130,14 @@ class EnabledText extends StatelessWidget {
   }
 }
 
-class DisabledText extends StatelessWidget {
+class DisabledLabel extends StatelessWidget {
   final String text;
 
-  DisabledText(this.text);
+  DisabledLabel(this.text);
 
   @override
   Widget build(BuildContext context) {
-    return Text(
-      text,
-      style: TextStyle(color: Theme.of(context).disabledColor),
-    );
+    return EnabledLabel(text, enabled: false);
   }
 }
 
@@ -134,17 +145,17 @@ class DisabledText extends StatelessWidget {
 ///
 /// Example:
 ///   Dec. 8, 2018
-class DateText extends StatelessWidget {
+class DateLabel extends StatelessWidget {
   final DateTime date;
   final bool enabled;
 
-  DateText(this.date, {
+  DateLabel(this.date, {
     this.enabled = true,
   });
 
   @override
   Widget build(BuildContext context) {
-    return EnabledText(
+    return EnabledLabel(
       DateFormat(monthDayYearFormat).format(date),
       enabled: enabled,
     );
@@ -157,17 +168,17 @@ class DateText extends StatelessWidget {
 /// Example:
 ///   21:35, or
 ///   9:35 PM
-class TimeText extends StatelessWidget {
+class TimeLabel extends StatelessWidget {
   final TimeOfDay time;
   final bool enabled;
 
-  TimeText(this.time, {
+  TimeLabel(this.time, {
     this.enabled = true,
   });
 
   @override
   Widget build(BuildContext context) {
-    return EnabledText(
+    return EnabledLabel(
       _format(context),
       enabled: enabled,
     );
@@ -175,46 +186,5 @@ class TimeText extends StatelessWidget {
 
   String _format(BuildContext context) {
     return formatTimeOfDay(context, time);
-  }
-}
-
-/// A text [Widget] that formats given arguments as bold. Supported formats:
-///   - %s
-class InsertedBoldText extends StatelessWidget {
-  final String text;
-  final List<String> args;
-
-  InsertedBoldText({
-    this.text,
-    this.args,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    var components = text.split(RegExp(r'%s'));
-    assert (args.length == components.length - 1);
-
-    List<TextSpan> spans = [];
-    for (var i = 0; i < components.length; i++) {
-      spans.add(TextSpan(
-        text: components[i],
-      ));
-      if (i < args.length) {
-        spans.add(TextSpan(
-          text: args[i],
-          style: TextStyle(
-            fontWeight: fontWeightBold,
-          ),
-        ));
-      }
-    }
-
-    // TODO: Check that text style and weight is fixed on next beta release.
-    return RichText(
-      text: TextSpan(
-        style: DefaultTextStyle.of(context).style,
-        children: spans,
-      ),
-    );
   }
 }

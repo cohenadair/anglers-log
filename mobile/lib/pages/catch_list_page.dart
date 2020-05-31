@@ -70,13 +70,13 @@ class CatchListPage extends StatelessWidget {
 
     var fishingSpot = fishingSpotManager.entity(id: cat.fishingSpotId);
     if (fishingSpot != null && isNotEmpty(fishingSpot.name)) {
-      subtitle2 = SubtitleText(fishingSpot.name ?? formatLatLng(
+      subtitle2 = SubtitleLabel(fishingSpot.name ?? formatLatLng(
         context: context,
         lat: fishingSpot.lat,
         lng: fishingSpot.lng,
       ));
     } else if (isNotEmpty(cat.baitId)) {
-      subtitle2 = SubtitleText(baitManager
+      subtitle2 = SubtitleLabel(baitManager
           .formatNameWithCategory(baitManager.entity(id: cat.baitId)));
     }
 
@@ -88,13 +88,15 @@ class CatchListPage extends StatelessWidget {
           Thumbnail.listItem(
               file: imageFiles.isNotEmpty ? imageFiles.first : null),
           Container(width: paddingWidget),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              LabelText(speciesManager.entity(id: cat.speciesId).name),
-              SubtitleText(formatDateTime(context, cat.dateTime)),
-              subtitle2,
-            ],
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                PrimaryLabel(speciesManager.entity(id: cat.speciesId).name),
+                SubtitleLabel(formatDateTime(context, cat.dateTime)),
+                subtitle2,
+              ],
+            ),
           ),
         ],
       ),

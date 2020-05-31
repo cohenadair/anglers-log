@@ -1,11 +1,16 @@
+import 'dart:io';
+
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:mobile/app_manager.dart';
+import 'package:mobile/database/legacy_importer.dart';
 import 'package:mobile/i18n/strings.dart';
+import 'package:mobile/pages/feedback_page.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/res/style.dart';
-import 'package:mobile/utils/dialog_utils.dart';
+import 'package:mobile/utils/page_utils.dart';
 import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/widget.dart';
-import 'package:quiver/strings.dart';
 
 class ImportPage extends StatefulWidget {
   @override
@@ -18,9 +23,12 @@ class _ImportPageState extends State<ImportPage> {
   final Duration _feedbackAnimDuration = Duration(milliseconds: 150);
 
   _State _importState = _State.none;
-  String _feedbackText = "";
+  LegacyImporterError _importError;
+  String _importErrorJson;
 
   bool get _loading => _importState == _State.loading;
+
+  AppManager get _appManager => AppManager.of(context);
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +57,10 @@ class _ImportPageState extends State<ImportPage> {
             Align(
               child: Button(
                 text: Strings.of(context).importPageChooseFile,
-                onPressed: _loading ? null : () { },
+                onPressed: _loading ? null : () {
+                  _updateImportState(_State.loading);
+                  _chooseFile();
+                },
               ),
             ),
             VerticalSpace(paddingWidget),
@@ -63,17 +74,13 @@ class _ImportPageState extends State<ImportPage> {
   Widget _buildFeedbackWidgets() {
     List<Widget> children = [];
 
-    _feedbackText = Strings.of(context).importPageImportingData;
-
     switch (_importState) {
       case _State.none:
         // Nothing to add here.
         break;
       case _State.loading:
         children.add(Loading.centered(padding: insetsBottomWidget));
-        if (isNotEmpty(_feedbackText)) {
-          children.add(Text(_feedbackText));
-        }
+        children.add(Text(Strings.of(context).importPageImportingData));
         break;
       case _State.success:
         children.add(Icon(Icons.check_circle,
@@ -98,15 +105,12 @@ class _ImportPageState extends State<ImportPage> {
         children.add(VerticalSpace(paddingWidget));
         children.add(Button(
           text: Strings.of(context).importPageSendReport,
-          onPressed: () => showWarningDialog(
-            context: context,
-            title: Strings.of(context).importPageErrorWarningTitle,
-            description:
-                Text(Strings.of(context).importPageErrorWarningMessage),
-            onContinue: () {
-              // TODO
-            },
-          ),
+          onPressed: () => present(context, FeedbackPage(
+            title: Strings.of(context).importPageErrorTitle,
+            error: _importError.toString(),
+            warningMessage: Strings.of(context).importPageErrorWarningMessage,
+            attachment: _importErrorJson,
+          )),
         ));
         break;
     }
@@ -119,6 +123,31 @@ class _ImportPageState extends State<ImportPage> {
       ),
     );
   }
+
+  void _chooseFile() async {
+    File zipFile = await FilePicker.getFile(
+      type: FileType.CUSTOM,
+      fileExtension: "zip",
+    );
+
+    if (zipFile == null) {
+      _updateImportState(_State.none);
+      return;
+    }
+
+    var importer = LegacyImporter(_appManager, zipFile);
+    importer.start().then((_) {
+      _updateImportState(_State.success);
+    }).catchError((error) {
+      _importError = error;
+      _importErrorJson = importer.jsonString;
+      _updateImportState(_State.error);
+    }, test: (error) => error is LegacyImporterError);
+  }
+
+  void _updateImportState(_State state) => setState(() {
+    _importState = state;
+  });
 }
 
 enum _State {

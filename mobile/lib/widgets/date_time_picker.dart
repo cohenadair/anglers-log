@@ -65,7 +65,7 @@ class DatePicker extends FormField<DateTime> {
         errorText: state.errorText,
         enabled: enabled,
         type: _PickerType(
-          getValue: () => DateText(
+          getValue: () => DateLabel(
             state.value,
             enabled: enabled,
           ),
@@ -109,7 +109,7 @@ class TimePicker extends FormField<TimeOfDay> {
         errorText: state.errorText,
         enabled: enabled,
         type: _PickerType(
-          getValue: () => TimeText(
+          getValue: () => TimeLabel(
             state.value,
             enabled: enabled,
           ),

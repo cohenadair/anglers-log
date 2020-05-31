@@ -16,7 +16,7 @@ class NoResults extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              LabelText(text),
+              PrimaryLabel(text),
             ],
           ),
         ],

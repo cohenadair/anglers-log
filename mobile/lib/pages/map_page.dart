@@ -18,6 +18,7 @@ import 'package:mobile/utils/string_utils.dart';
 import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/fishing_spot_map.dart';
 import 'package:mobile/widgets/styled_bottom_sheet.dart';
+import 'package:mobile/widgets/text.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:quiver/strings.dart';
 
@@ -306,7 +307,7 @@ class _FishingSpotBottomSheet extends StatelessWidget {
           _buildName(context),
           Padding(
             padding: insetsHorizontalDefault,
-            child: Text(
+            child: Label(
               formatLatLng(
                 context: context,
                 lat: fishingSpot.lat,
@@ -333,7 +334,7 @@ class _FishingSpotBottomSheet extends StatelessWidget {
 
     return isEmpty(name) ? Empty() : Padding(
       padding: insetsHorizontalDefault,
-      child: Text(
+      child: Label(
         name,
         style: styleHeading,
       ),

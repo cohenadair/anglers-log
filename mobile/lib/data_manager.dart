@@ -12,14 +12,31 @@ class DataManager {
 
   final Log _log = Log("DataManager");
 
+  AppManager _appManager;
   Database _database;
 
   Future<void> initialize(AppManager app, [Database database]) async {
+    _appManager = app;
     if (database == null) {
       _database = await openDb();
     } else {
       _database = database;
     }
+  }
+
+  /// Completely resets the database by deleting the SQLite file and recreating
+  /// it from scratch. All [EntityManager] subclasses are synced with the
+  /// database after it has been recreated.
+  Future<void> reset() async {
+    await _database.close();
+    _database = await resetDb();
+
+    // Sync all memory cache entities with database.
+    _appManager.baitCategoryManager.sync();
+    _appManager.baitManager.sync();
+    _appManager.catchManager.sync();
+    _appManager.fishingSpotManager.sync();
+    _appManager.speciesManager.sync();
   }
 
   /// Commits a batch of SQL statements. See [Batch].
@@ -54,8 +71,9 @@ class DataManager {
 
   /// Returns true if the given ID exists in the given table; false otherwise.
   Future<bool> _idExists(String tableName, String id) async {
-    return Sqflite.firstIntValue(await _database.rawQuery(
-        "SELECT COUNT(*) FROM $tableName WHERE id = ?", [id])) > 0;
+    int count = Sqflite.firstIntValue(await _database.rawQuery(
+        "SELECT COUNT(*) FROM $tableName WHERE id = ?", [id]));
+    return count != null && count > 0;
   }
 
   /// Allows a raw query to be sent to the database.

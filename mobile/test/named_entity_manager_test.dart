@@ -33,11 +33,13 @@ void main() {
     _entityManager = TestNamedEntityManager(_appManager);
   });
 
-  test("Name exists", () async {
+  test("Entity named and name exists", () async {
     await _entityManager.addOrUpdate(Species(name: "Bass"));
     await _entityManager.addOrUpdate(Species(name: "Bluegill"));
     await _entityManager.addOrUpdate(Species(name: "Catfish"));
 
+    expect(_entityManager.nameExists(null), false);
+    expect(_entityManager.nameExists(""), false);
     expect(_entityManager.nameExists("bass"), true);
     expect(_entityManager.nameExists("  Catfish"), true);
     expect(_entityManager.nameExists("  catfish "), true);

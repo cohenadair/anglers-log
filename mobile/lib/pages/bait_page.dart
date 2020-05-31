@@ -57,9 +57,9 @@ class _BaitPageState extends State<BaitPage> {
         children: [
           isNotEmpty(_bait.categoryId) ? Padding(
             padding: insetsLeftDefault,
-            child: HeadingText(_category.name),
+            child: HeadingLabel(_category.name),
           ) : Empty(),
-          OffsetTitleText(_bait.name),
+          TitleLabel(_bait.name),
         ],
       ),
     );

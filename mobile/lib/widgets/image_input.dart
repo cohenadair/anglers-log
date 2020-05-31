@@ -67,7 +67,7 @@ class ImageInput extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  LabelText(allowsMultipleSelection
+                  PrimaryLabel(allowsMultipleSelection
                       ? Strings.of(context).inputPhotosLabel
                       : Strings.of(context).inputPhotoLabel
                   ),

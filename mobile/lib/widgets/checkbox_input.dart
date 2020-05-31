@@ -20,7 +20,7 @@ class CheckboxInput extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListItem(
       contentPadding: insetsZero,
-      title: enabled ? Text(label) : DisabledText(label),
+      title: enabled ? Label(label) : DisabledLabel(label),
       trailing: PaddedCheckbox(
         checked: value,
         enabled: enabled,

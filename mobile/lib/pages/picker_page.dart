@@ -135,7 +135,7 @@ class _PickerPageState<T> extends State<PickerPage<T>> {
         return EnabledOpacity(
           enabled: item.enabled,
           child: ListItem(
-            title: LabelText(item.title),
+            title: PrimaryLabel(item.title),
             enabled: item.enabled,
             onTap: onTap,
             trailing: widget.multiSelect ? _buildListItemCheckbox(item) : null,

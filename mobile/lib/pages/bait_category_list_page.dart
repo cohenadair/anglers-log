@@ -4,6 +4,7 @@ import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/model/bait_category.dart';
 import 'package:mobile/pages/entity_list_page.dart';
 import 'package:mobile/pages/save_bait_category_page.dart';
+import 'package:mobile/widgets/text.dart';
 
 class BaitCategoryListPage extends StatelessWidget {
   final bool Function(BuildContext, BaitCategory) onPicked;
@@ -23,7 +24,7 @@ class BaitCategoryListPage extends StatelessWidget {
           ? Text(Strings.of(context).baitCategoryListPagePickerTitle)
           : Text(Strings.of(context).baitCategoryListPageTitle),
       itemBuilder: (context, category) => ManageableListPageItemModel(
-        child: Text(category.name),
+        child: PrimaryLabel(category.name),
       ),
       searchDelegate: ManageableListPageSearchDelegate(
         hint: Strings.of(context).baitCategoryListPageSearchHint,

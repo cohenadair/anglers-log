@@ -195,8 +195,8 @@ class Strings {
   String get importPageSuccess => _string("importPage_success");
   String get importPageError => _string("importPage_error");
   String get importPageSendReport => _string("importPage_sendReport");
-  String get importPageErrorWarningTitle => _string("importPage_errorWarningTitle");
   String get importPageErrorWarningMessage => _string("importPage_errorWarningMessage");
+  String get importPageErrorTitle => _string("importPage_errorTitle");
 
   String get anglerNameLabel => _string("angler_nameLabel");
 

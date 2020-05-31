@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:mobile/bait_category_manager.dart';
 import 'package:mobile/bait_manager.dart';
 import 'package:mobile/catch_manager.dart';
@@ -9,8 +10,12 @@ import 'package:mobile/location_monitor.dart';
 import 'package:mobile/properties_manager.dart';
 import 'package:mobile/species_manager.dart';
 import 'package:mobile/trip_manager.dart';
+import 'package:provider/provider.dart';
 
 class AppManager {
+  static AppManager of(BuildContext context) =>
+      Provider.of<AppManager>(context, listen: false);
+
   BaitCategoryManager _baitCategoryManager;
   BaitManager _baitManager;
   DataManager _dataManager;

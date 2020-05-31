@@ -117,35 +117,37 @@ class _SearchBarState extends State<SearchBar> {
       trailing = Empty();
     }
 
-    return Container(
-      height: _height,
-      margin: widget.margin,
-      decoration: FloatingBoxDecoration.rectangle(elevated: widget.elevated),
-      // Wrap InkWell in a Material widget so the fill animation is shown
-      // on top of the parent Container widget.
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          onTap: widget.delegate.onTap(),
-          child: Row(
-            children: <Widget>[
-              leading,
-              Expanded(
-                child: CupertinoTextField(
-                  padding: insetsZero,
-                  decoration: null,
-                  onChanged: widget.delegate.onTextChanged,
-                  placeholder: widget.hint,
-                  placeholderStyle: Theme.of(context).textTheme.subtitle1
-                      .copyWith(color: Theme.of(context).disabledColor),
-                  enabled: input,
-                  controller: _controller,
-                  focusNode: _focusNode,
-                  cursorColor: Theme.of(context).primaryColor,
+    return SafeArea(
+      child: Container(
+        height: _height,
+        margin: widget.margin,
+        decoration: FloatingBoxDecoration.rectangle(elevated: widget.elevated),
+        // Wrap InkWell in a Material widget so the fill animation is shown
+        // on top of the parent Container widget.
+        child: Material(
+          color: Colors.transparent,
+          child: InkWell(
+            onTap: widget.delegate.onTap(),
+            child: Row(
+              children: <Widget>[
+                leading,
+                Expanded(
+                  child: CupertinoTextField(
+                    padding: insetsZero,
+                    decoration: null,
+                    onChanged: widget.delegate.onTextChanged,
+                    placeholder: widget.hint,
+                    placeholderStyle: Theme.of(context).textTheme.subtitle1
+                        .copyWith(color: Theme.of(context).disabledColor),
+                    enabled: input,
+                    controller: _controller,
+                    focusNode: _focusNode,
+                    cursorColor: Theme.of(context).primaryColor,
+                  ),
                 ),
-              ),
-              trailing,
-            ],
+                trailing,
+              ],
+            ),
           ),
         ),
       ),

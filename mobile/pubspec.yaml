@@ -15,6 +15,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
 
+  archive: ^2.0.13                  # https://pub.dev/packages/archive
   crypto: ^2.1.4                    # Dart
   device_info: ^0.4.2+3             # Flutter
   file_picker: ^1.4.3+2

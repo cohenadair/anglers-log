@@ -325,7 +325,7 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
               children: <Widget>[
                 widget.allowsMultipleSelection ? Padding(
                   padding: insetsHorizontalDefault,
-                  child: LabelText(
+                  child: PrimaryLabel(
                     format(Strings.of(context).imagePickerPageSelectedLabel,
                         [_selectedIndexes.length, _assets.length]),
                   ),

@@ -63,12 +63,12 @@ class _BaitListPageState extends State<BaitListPage> {
               editable: false,
               child: Padding(
                 padding: insetsDefault,
-                child: HeadingText(item.name),
+                child: HeadingLabel(item.name),
               ),
             );
           } else if (item is Bait) {
             return ManageableListPageItemModel(
-              child: Text(item.name),
+              child: PrimaryLabel(item.name),
             );
           } else {
             return ManageableListPageItemModel(

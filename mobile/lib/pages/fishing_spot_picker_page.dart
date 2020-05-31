@@ -16,6 +16,7 @@ import 'package:mobile/utils/page_utils.dart';
 import 'package:mobile/utils/string_utils.dart';
 import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/fishing_spot_map.dart';
+import 'package:mobile/widgets/text.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:quiver/strings.dart';
 
@@ -218,13 +219,13 @@ class _FishingSpotPickerPageState extends State<FishingSpotPickerPage>
     if (isNotEmpty(_currentFishingSpot.name)) {
       name = Padding(
         padding: insetsRightDefault,
-        child: Text(_currentFishingSpot.name, style: styleHeading),
+        child: Label(_currentFishingSpot.name, style: styleHeading),
       );
     }
 
     Widget coordinates = Padding(
       padding: insetsRightDefault,
-      child: Text(formatLatLng(
+      child: Label(formatLatLng(
         context: context,
         lat: _currentFishingSpot.lat,
         lng: _currentFishingSpot.lng,

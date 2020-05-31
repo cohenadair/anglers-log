@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:mobile/log.dart';
 import 'package:path/path.dart';
@@ -70,15 +71,23 @@ final List<List<String>> _schema = [
 
 final int _version = 1;
 
+Future<String> get _databasePath async => join(await getDatabasesPath(), _name);
+
 Future<Database> openDb() async {
-  String path = join(await getDatabasesPath(), _name);
-  _log.d(path.toString());
+  String path = await _databasePath;
+  _log.d(path);
   return openDatabase(
     path,
     version: _version,
     onCreate: _onCreateDatabase,
     onUpgrade: _onUpgradeDatabase,
   );
+}
+
+/// Deletes and recreates the database from scratch.
+Future<Database> resetDb() async {
+  File(await _databasePath).deleteSync();
+  return openDb();
 }
 
 void _onCreateDatabase(Database db, int version) {

@@ -127,16 +127,19 @@ class _EntityListPageState<T> extends State<EntityListPage<T>> {
             flexibleSpace: _buildSearchBar(),
             centerTitle: widget.forceCenterTitle,
           ),
-          SliverVisibility(
-            visible: items.isNotEmpty,
-            sliver: SliverList(
-              delegate: SliverChildBuilderDelegate(
-                (context, i) => _buildItem(context, items[i]),
-                childCount: items.length,
+          SliverSafeArea(
+            top: false,
+            sliver: SliverVisibility(
+              visible: items.isNotEmpty,
+              sliver: SliverList(
+                delegate: SliverChildBuilderDelegate(
+                  (context, i) => _buildItem(context, items[i]),
+                  childCount: items.length,
+                ),
               ),
-            ),
-            replacementSliver: SliverToBoxAdapter(
-              child: NoResults(widget.searchDelegate.noResultsMessage),
+              replacementSliver: SliverToBoxAdapter(
+                child: NoResults(widget.searchDelegate.noResultsMessage),
+              ),
             ),
           ),
         ],

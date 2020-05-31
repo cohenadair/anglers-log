@@ -220,16 +220,18 @@ class _ManageableListItemState extends State<ManageableListItem> with
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               _buildDeleteIcon(),
-              Padding(
-                padding: EdgeInsets.only(
-                  left: widget.editing ? paddingDefaultDouble : paddingDefault,
-                  right: paddingDefault,
-                  top: paddingDefault,
-                  bottom: paddingDefault,
+              Expanded(
+                child: Padding(
+                  padding: EdgeInsets.only(
+                    left: widget.editing
+                        ? paddingDefaultDouble : paddingDefault,
+                    right: paddingDefault,
+                    top: paddingDefault,
+                    bottom: paddingDefault,
+                  ),
+                  child: child,
                 ),
-                child: child,
               ),
-              Spacer(),
               _buildTrailing(),
             ],
           ),

@@ -1,8 +1,14 @@
+import 'dart:convert';
+import 'dart:io';
+import 'dart:typed_data';
+
+import 'package:archive/archive.dart';
 import 'package:intl/intl.dart';
 import 'package:mobile/app_manager.dart';
 import 'package:mobile/bait_category_manager.dart';
 import 'package:mobile/bait_manager.dart';
 import 'package:mobile/catch_manager.dart';
+import 'package:mobile/data_manager.dart';
 import 'package:mobile/fishing_spot_manager.dart';
 import 'package:mobile/log.dart';
 import 'package:mobile/model/bait.dart';
@@ -12,15 +18,20 @@ import 'package:mobile/model/fishing_spot.dart';
 import 'package:mobile/model/species.dart';
 import 'package:mobile/species_manager.dart';
 import 'package:mobile/utils/string_utils.dart';
+import 'package:path/path.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:quiver/strings.dart';
 
 enum LegacyImporterError {
+  invalidZipFile,
   missingJournal,
   missingUserDefines,
 }
 
 /// Imports data from pre-Anglers' Log 2.0 backups.
 class LegacyImporter {
+  final String _jsonFileExtension = ".json";
+
   final String _baitCategoriesKey = "baitCategories";
   final String _baitCategoryKey = "baitCategory";
   final String _baitsKey = "baits";
@@ -32,6 +43,8 @@ class LegacyImporter {
   final String _fishingSpotsKey = "fishingSpots";
   final String _fishSpeciesKey = "fishSpecies";
   final String _idKey = "id";
+  final String _imagePathKey = "imagePath";
+  final String _imagesKey = "images";
   final String _journalKey = "journal";
   final String _latitudeKey = "latitude";
   final String _locationKey = "location";
@@ -47,20 +60,52 @@ class LegacyImporter {
 
   final Log _log = Log("LegacyImporter");
 
-  final AppManager appManager;
-  final Map<String, dynamic> json;
+  final AppManager _appManager;
+  final File _zipFile;
+  Directory _temporaryFileDirectory;
 
-  LegacyImporter(this.appManager, this.json);
+  Map<String, dynamic> _json = {};
+  Map<String, File> _images = {};
+
+  LegacyImporter(AppManager appManager, File zipFile, [
+    Directory temporaryFileDirectory,
+  ]) : _appManager = appManager,
+       _zipFile = zipFile,
+       _temporaryFileDirectory = temporaryFileDirectory;
 
   BaitCategoryManager get _baitCategoryManager =>
-      appManager.baitCategoryManager;
-  BaitManager get _baitManager => appManager.baitManager;
-  CatchManager get _catchManager => appManager.catchManager;
-  FishingSpotManager get _fishingSpotManager => appManager.fishingSpotManager;
-  SpeciesManager get _speciesManager => appManager.speciesManager;
+      _appManager.baitCategoryManager;
+  BaitManager get _baitManager => _appManager.baitManager;
+  CatchManager get _catchManager => _appManager.catchManager;
+  DataManager get _dataManager => _appManager.dataManager;
+  FishingSpotManager get _fishingSpotManager => _appManager.fishingSpotManager;
+  SpeciesManager get _speciesManager => _appManager.speciesManager;
 
-  Future<void> start() {
-    if (json[_journalKey] == null) {
+  String get jsonString => jsonEncode(_json);
+
+  Future<void> start() async {
+    if (_zipFile == null) {
+      return Future.error(LegacyImporterError.invalidZipFile);
+    }
+
+    await _dataManager.reset();
+    Directory tmpDir = _temporaryFileDirectory ?? await getTemporaryDirectory();
+
+    Archive archive = ZipDecoder().decodeBytes(_zipFile.readAsBytesSync());
+    for (var archiveFile in archive) {
+      Uint8List content = Uint8List.fromList(archiveFile.content);
+
+      if (extension(archiveFile.name) == _jsonFileExtension) {
+        _json = jsonDecode(Utf8Decoder().convert(content));
+      } else {
+        // Copy all images to a temporary directory.
+        var tmpFile = File("${tmpDir.path}/${archiveFile.name}")
+          ..writeAsBytesSync(content, flush: true);
+        _images[archiveFile.name] = tmpFile;
+      }
+    }
+
+    if (_json[_journalKey] == null) {
       return Future.error(LegacyImporterError.missingJournal);
     } else {
       return _import();
@@ -68,7 +113,7 @@ class LegacyImporter {
   }
 
   Future<void> _import() async {
-    var userDefines = json[_journalKey][_userDefinesKey];
+    var userDefines = _json[_journalKey][_userDefinesKey];
     if (userDefines == null || !(userDefines is List)) {
       return Future.error(LegacyImporterError.missingUserDefines);
     }
@@ -106,7 +151,12 @@ class LegacyImporter {
 
     // Catches are always imported last since they reference most other
     // entities.
-    await _importCatches(json[_journalKey][_entriesKey]);
+    await _importCatches(_json[_journalKey][_entriesKey]);
+
+    // Cleanup temporary images.
+    for (File tmpImg in _images.values) {
+      tmpImg.deleteSync();
+    }
 
     return Future.value();
   }
@@ -224,12 +274,23 @@ class LegacyImporter {
         _log.w("Species (${map[_fishSpeciesKey]}) not found");
       }
 
-      _catchManager.addOrUpdate(Catch(
+      List<File> images = [];
+      List<dynamic> imagesJson = map[_imagesKey];
+      for (Map<String, dynamic> imageMap in imagesJson) {
+        var fileName = basename(imageMap[_imagePathKey]);
+        if (_images.containsKey(fileName)) {
+          images.add(_images[fileName]);
+        } else {
+          _log.w("Image $fileName not found in archive");
+        }
+      }
+
+      await _catchManager.addOrUpdate(Catch(
         timestamp: dateTime.millisecondsSinceEpoch,
         speciesId: species.id,
         baitId: bait?.id,
         fishingSpotId: fishingSpot?.id,
-      ));
+      ), imageFiles: images);
     }
   }
 }

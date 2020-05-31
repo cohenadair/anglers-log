@@ -9,6 +9,7 @@ import 'package:mobile/log.dart';
 import 'package:mobile/pages/form_page.dart';
 import 'package:mobile/properties_manager.dart';
 import 'package:mobile/res/dimen.dart';
+import 'package:mobile/res/style.dart';
 import 'package:mobile/utils/device_utils.dart';
 import 'package:mobile/utils/snackbar_utils.dart';
 import 'package:mobile/utils/string_utils.dart';
@@ -17,15 +18,37 @@ import 'package:mobile/widgets/dropdown_input.dart';
 import 'package:mobile/widgets/input_controller.dart';
 import 'package:mobile/widgets/input_data.dart';
 import 'package:mobile/widgets/text_input.dart';
+import 'package:mobile/widgets/widget.dart';
 import 'package:package_info/package_info.dart';
 import 'package:quiver/strings.dart';
 
 class FeedbackPage extends StatefulWidget {
+  /// An optional page title.
+  final String title;
+
+  /// An error string to be sent with the feedback message, if applicable.
+  final String error;
+
+  /// A warning message to display to the user, such as when they're about to
+  /// send their fishing data.
+  final String warningMessage;
+
+  /// If set, will be sent with the feedback message as an attachment.
+  final String attachment;
+
+  FeedbackPage({
+    this.title,
+    this.error,
+    this.warningMessage,
+    this.attachment,
+  });
+
   @override
   _FeedbackPageState createState() => _FeedbackPageState();
 }
 
 class _FeedbackPageState extends State<FeedbackPage> {
+  static const String _warningId = "warning";
   static const String _nameId = "name";
   static const String _emailId = "email";
   static const String _typeId = "type";
@@ -43,9 +66,18 @@ class _FeedbackPageState extends State<FeedbackPage> {
       _fields[_typeId].controller;
   TextInputController get _messageController => _fields[_messageId].controller;
 
+  bool get _error => isNotEmpty(widget.error);
+
   @override
   void initState() {
     super.initState();
+
+    _fields[_warningId] = InputData(
+      id: _warningId,
+      label: (context) => "",
+      controller: InputController(),
+      showing: true,
+    );
 
     _fields[_nameId] = InputData(
       id: _nameId,
@@ -74,7 +106,9 @@ class _FeedbackPageState extends State<FeedbackPage> {
       id: _messageId,
       label: (context) => "",
       controller: TextInputController(
-        validate: (context) => Strings.of(context).inputGenericRequired,
+        // Message field is only required if an error isn't being sent.
+        validate: _error
+            ? null : (context) => Strings.of(context).inputGenericRequired,
       ),
       showing: true,
     );
@@ -83,11 +117,17 @@ class _FeedbackPageState extends State<FeedbackPage> {
   @override
   Widget build(BuildContext context) {
     return FormPage.immutable(
-      title: Text(Strings.of(context).feedbackPageTitle),
+      title: Text(widget.title ?? Strings.of(context).feedbackPageTitle),
       isInputValid: isEmpty(_emailController.error(context))
           && isEmpty(_messageController.error(context)),
       saveButtonText: Strings.of(context).feedbackPageSend,
       fieldBuilder: (context) => {
+        _warningId: _error && isNotEmpty(widget.warningMessage) ? Padding(
+          padding: insetsTopDefault,
+          child: Text(widget.warningMessage,
+            style: styleWarning,
+          ),
+        ) : Empty(),
         _nameId: TextInput.name(context,
           controller: _nameController,
           autofocus: true,
@@ -97,7 +137,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
           // To update "Send" button state.
           onChanged: () => setState(() {}),
         ),
-        _typeId: Padding(
+        _typeId: _error ? Empty() : Padding(
           padding: insetsBottomDefault,
           child: Column(
             children: <Widget>[
@@ -122,7 +162,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
           maxLength: null,
           // To update "Send" button state.
           onChanged: () => setState(() {}),
-          validator: EmptyValidator(),
+          validator: _error ? null : EmptyValidator(),
         ),
       },
       onSave: (context) async {
@@ -157,19 +197,26 @@ class _FeedbackPageState extends State<FeedbackPage> {
         SmtpServer server = gmail(_propertiesManager.clientSenderEmail,
             _propertiesManager.clientSenderPassword);
 
+        Attachment attachment;
+        if (widget.attachment != null) {
+          attachment = StringAttachment(widget.attachment);
+        }
+
         Message content = Message()
             ..from = Address(_propertiesManager.clientSenderEmail,
                 "Anglers' Log Client")
             ..recipients.add(_propertiesManager.supportEmail)
+            ..attachments = attachment == null ? null : [attachment]
             ..subject = "Feedback from Anglers' Log"
             ..text = format(_propertiesManager.feedbackTemplate, [
               appVersion,
               isNotEmpty(osVersion) ? osVersion : "Unknown",
               isNotEmpty(deviceModel) ? deviceModel : "Unknown",
               type,
+              _error ? widget.error : "N/A",
               isNotEmpty(name) ? name : "Unknown",
               isNotEmpty(email) ? email : "Unknown",
-              message,
+              isNotEmpty(message) ? message : "N/A",
             ]);
 
         try {

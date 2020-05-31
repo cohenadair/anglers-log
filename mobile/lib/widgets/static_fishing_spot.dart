@@ -7,6 +7,7 @@ import 'package:mobile/res/dimen.dart';
 import 'package:mobile/res/style.dart';
 import 'package:mobile/utils/string_utils.dart';
 import 'package:mobile/widgets/list_item.dart';
+import 'package:mobile/widgets/text.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:quiver/strings.dart';
 
@@ -30,15 +31,15 @@ class StaticFishingSpot extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Widget name = isEmpty(fishingSpot.name) ? null : Text(fishingSpot.name,
+    Widget name = isEmpty(fishingSpot.name) ? null : Label(fishingSpot.name,
       style: TextStyle(fontWeight: FontWeight.bold),
     );
 
     String latLngString = formatLatLng(context: context, lat: fishingSpot.lat,
         lng: fishingSpot.lng);
-    Widget coordinates = Text(latLngString);
+    Widget coordinates = Label(latLngString);
     if (name == null) {
-      coordinates = Text(latLngString,
+      coordinates = Label(latLngString,
           style: Theme.of(context).textTheme.bodyText2);
     }
 

@@ -44,6 +44,13 @@ abstract class EntityManager<T extends Entity> extends
     (await _fetchAll()).forEach((e) => entities[e.id] = e);
   }
 
+  /// Forces a synchronization between the memory cache and database.
+  Future<void> sync() async {
+    entities.clear();
+    await initialize();
+    notifyOnAddOrUpdate();
+  }
+
   @protected
   DataManager get dataManager => appManager.dataManager;
 

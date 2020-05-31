@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
@@ -35,6 +34,8 @@ void main() {
   ImageManager imageManager;
   SpeciesManager speciesManager;
 
+  Directory tmpDir;
+
   setUp(() {
     appManager = MockAppManager();
 
@@ -61,33 +62,44 @@ void main() {
 
     speciesManager = SpeciesManager(appManager);
     when(appManager.speciesManager).thenReturn(speciesManager);
+
+    // Create a temporary directory for images.
+    tmpDir = Directory("test/resources/tmp");
+    tmpDir.createSync();
+  });
+
+  tearDown(() {
+    tmpDir.deleteSync(recursive: true);
   });
 
   group("Error cases", () {
+    test("Bad input", () async {
+      await LegacyImporter(appManager, null).start()
+          .catchError(expectAsync1((error) {
+            expect(error, equals(LegacyImporterError.invalidZipFile));
+          }));
+    });
+
     test("Missing journal key", () async {
-      LegacyImporter(appManager, Map()).start()
+      File file = File("test/resources/backups/no_journal.zip");
+      await LegacyImporter(appManager, file, tmpDir).start()
           .catchError(expectAsync1((error) {
             expect(error, equals(LegacyImporterError.missingJournal));
           }));
     });
 
     test("Missing userDefines key", () async {
-      var json = {
-        "journal": {
-        }
-      };
-
-      LegacyImporter(appManager, json).start().catchError(expectAsync1((error) {
-        expect(error, equals(LegacyImporterError.missingUserDefines));
-      }));
+      File file = File("test/resources/backups/no_user_defines.zip");
+      await LegacyImporter(appManager, file, tmpDir).start()
+          .catchError(expectAsync1((error) {
+            expect(error, equals(LegacyImporterError.missingUserDefines));
+          }));
     });
   });
 
   test("Import legacy iOS", () async {
-    File file = File("test/resources/backups/legacy_ios_real.json");
-    var json = jsonDecode(file.readAsStringSync());
-
-    await LegacyImporter(appManager, json).start();
+    File file = File("test/resources/backups/legacy_ios_real.zip");
+    await LegacyImporter(appManager, file, tmpDir).start();
 
     // Bait categories were never added to Anglers' Log iOS, so none should
     // be added here.
@@ -99,10 +111,9 @@ void main() {
   });
 
   test("Import legacy Android", () async {
-    File file = File("test/resources/backups/legacy_android_real.json");
-    var json = jsonDecode(file.readAsStringSync());
+    File file = File("test/resources/backups/legacy_android_real.zip");
 
-    await LegacyImporter(appManager, json).start();
+    await LegacyImporter(appManager, file, tmpDir).start();
 
     expect(baitCategoryManager.entityCount, 3);
     expect(baitManager.entityCount, 72);
@@ -112,9 +123,8 @@ void main() {
   });
 
   test("Empty user defines", () async {
-    File file = File("test/resources/backups/legacy_empty_entities.json");
-    var json = jsonDecode(file.readAsStringSync());
-    await LegacyImporter(appManager, json).start();
+    File file = File("test/resources/backups/legacy_empty_entities.zip");
+    await LegacyImporter(appManager, file, tmpDir).start();
     expect(baitCategoryManager.entityCount, 0);
     expect(baitManager.entityCount, 0);
     expect(catchManager.entityCount, 0);
@@ -123,9 +133,8 @@ void main() {
   });
 
   testWidgets("Import iOS catches", (WidgetTester tester) async {
-    File file = File("test/resources/backups/legacy_ios_entities.json");
-    var json = jsonDecode(file.readAsStringSync());
-    await LegacyImporter(appManager, json).start();
+    File file = File("test/resources/backups/legacy_ios_entities.zip");
+    await LegacyImporter(appManager, file, tmpDir).start();
 
     List<Catch> catches;
     await tester.pumpWidget(Testable((context) {
@@ -152,9 +161,8 @@ void main() {
   });
 
   test("Import iOS locations", () async {
-    File file = File("test/resources/backups/legacy_ios_entities.json");
-    var json = jsonDecode(file.readAsStringSync());
-    await LegacyImporter(appManager, json).start();
+    File file = File("test/resources/backups/legacy_ios_entities.zip");
+    await LegacyImporter(appManager, file, tmpDir).start();
 
     List<FishingSpot> fishingSpots = fishingSpotManager.entityList;
     expect(fishingSpots, isNotNull);
@@ -165,9 +173,8 @@ void main() {
   });
 
   test("Import iOS baits", () async {
-    File file = File("test/resources/backups/legacy_ios_entities.json");
-    var json = jsonDecode(file.readAsStringSync());
-    await LegacyImporter(appManager, json).start();
+    File file = File("test/resources/backups/legacy_ios_entities.zip");
+    await LegacyImporter(appManager, file, tmpDir).start();
 
     List<Bait> baits = baitManager.entityList;
     expect(baits, isNotNull);
@@ -177,9 +184,8 @@ void main() {
   });
 
   test("Import iOS species", () async {
-    File file = File("test/resources/backups/legacy_ios_entities.json");
-    var json = jsonDecode(file.readAsStringSync());
-    await LegacyImporter(appManager, json).start();
+    File file = File("test/resources/backups/legacy_ios_entities.zip");
+    await LegacyImporter(appManager, file, tmpDir).start();
 
     List<Species> species = speciesManager.entityList;
     expect(species, isNotNull);
@@ -187,10 +193,35 @@ void main() {
     expect(species.first.name, "Carp - Common");
   });
 
+  testWidgets("Import iOS images", (WidgetTester tester) async {
+    File zip = File("test/resources/backups/legacy_ios_photos.zip");
+
+    Map<String, List<File>> importedImages = {};
+    when(imageManager.save(any, any)).thenAnswer((invocation) {
+      importedImages[invocation.positionalArguments[0]] =
+          invocation.positionalArguments[1];
+      return Future.value();
+    });
+
+    await LegacyImporter(appManager, zip, tmpDir).start();
+
+    List<Catch> catches;
+    await tester.pumpWidget(Testable((context) {
+      catches = catchManager.catchesSortedByTimestamp(context);
+      return Empty();
+    }));
+
+    expect(catches, isNotNull);
+    expect(catches.length, 2);
+    expect(importedImages[catches[0].id], isNotNull);
+    expect(importedImages[catches[0].id].length, 1);
+    expect(importedImages[catches[1].id], isNotNull);
+    expect(importedImages[catches[1].id].length, 2);
+  });
+
   test("Import Android catches", () async {
-    File file = File("test/resources/backups/legacy_android_entities.json");
-    var json = jsonDecode(file.readAsStringSync());
-    await LegacyImporter(appManager, json).start();
+    File file = File("test/resources/backups/legacy_android_entities.zip");
+    await LegacyImporter(appManager, file, tmpDir).start();
 
     List<Catch> catches = catchManager.entityList;
     expect(catches, isNotNull);
@@ -209,9 +240,8 @@ void main() {
   });
 
   test("Import Android locations", () async {
-    File file = File("test/resources/backups/legacy_android_entities.json");
-    var json = jsonDecode(file.readAsStringSync());
-    await LegacyImporter(appManager, json).start();
+    File file = File("test/resources/backups/legacy_android_entities.zip");
+    await LegacyImporter(appManager, file, tmpDir).start();
 
     List<FishingSpot> fishingSpots = fishingSpotManager.entityList;
     expect(fishingSpots, isNotNull);
@@ -222,9 +252,8 @@ void main() {
   });
 
   test("Import Android baits", () async {
-    File file = File("test/resources/backups/legacy_android_entities.json");
-    var json = jsonDecode(file.readAsStringSync());
-    await LegacyImporter(appManager, json).start();
+    File file = File("test/resources/backups/legacy_android_entities.zip");
+    await LegacyImporter(appManager, file, tmpDir).start();
 
     List<Bait> baits = baitManager.entityListSortedByName();
     expect(baits, isNotNull);
@@ -240,9 +269,8 @@ void main() {
   });
 
   test("Import Android species", () async {
-    File file = File("test/resources/backups/legacy_android_entities.json");
-    var json = jsonDecode(file.readAsStringSync());
-    await LegacyImporter(appManager, json).start();
+    File file = File("test/resources/backups/legacy_android_entities.zip");
+    await LegacyImporter(appManager, file, tmpDir).start();
 
     List<Species> species = speciesManager.entityList;
     expect(species, isNotNull);
@@ -251,14 +279,39 @@ void main() {
   });
 
   test("Import Android bait categories", () async {
-    File file = File("test/resources/backups/legacy_android_entities.json");
-    var json = jsonDecode(file.readAsStringSync());
-    await LegacyImporter(appManager, json).start();
+    File file = File("test/resources/backups/legacy_android_entities.zip");
+    await LegacyImporter(appManager, file, tmpDir).start();
 
     List<BaitCategory> categories = baitCategoryManager.entityList;
     expect(categories, isNotNull);
     expect(categories.length, 1);
     expect(categories.first.id, "b860cddd-dc47-48a2-8d02-c8112a2ed5eb");
     expect(categories.first.name, "Other");
+  });
+
+  testWidgets("Import iOS images", (WidgetTester tester) async {
+    File zip = File("test/resources/backups/legacy_android_photos.zip");
+
+    Map<String, List<File>> importedImages = {};
+    when(imageManager.save(any, any)).thenAnswer((invocation) {
+      importedImages[invocation.positionalArguments[0]] =
+          invocation.positionalArguments[1];
+      return Future.value();
+    });
+
+    await LegacyImporter(appManager, zip, tmpDir).start();
+
+    List<Catch> catches;
+    await tester.pumpWidget(Testable((context) {
+      catches = catchManager.catchesSortedByTimestamp(context);
+      return Empty();
+    }));
+
+    expect(catches, isNotNull);
+    expect(catches.length, 2);
+    expect(importedImages[catches[0].id], isNotNull);
+    expect(importedImages[catches[0].id].length, 1);
+    expect(importedImages[catches[1].id], isNotNull);
+    expect(importedImages[catches[1].id].length, 2);
   });
 }

@@ -17,6 +17,7 @@ import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/list_item.dart';
 import 'package:mobile/widgets/no_results.dart';
 import 'package:mobile/widgets/search_bar.dart';
+import 'package:mobile/widgets/text.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:quiver/strings.dart';
 
@@ -221,9 +222,9 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
 
         Widget title = Empty();
         if (isNotEmpty(fishingSpot.name)) {
-          title = Text(fishingSpot.name);
+          title = Label(fishingSpot.name);
         } else {
-          title = Text(formatLatLng(
+          title = Label(formatLatLng(
             context: context,
             lat: fishingSpot.lat,
             lng: fishingSpot.lng,
@@ -347,7 +348,7 @@ class _MapTypeBottomSheet extends StatelessWidget {
 
   Widget _buildItem(BuildContext context, String title, MapType mapType) {
     return ListItem(
-      title: Text(title),
+      title: Label(title),
       trailing: Visibility(
         visible: currentMapType == mapType,
         child: Icon(
