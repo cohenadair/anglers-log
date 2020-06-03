@@ -26,9 +26,9 @@ dependencies:
   intl: ^0.16.0                     # Dart - Version restricted by flutter_localizations
   mailer: 3.0.4                     # https://github.com/kaisellgren/mailer
   package_info: ^0.4.0+13           # Flutter
-  photo_manager: ^0.5.0             # https://pub.dev/packages/photo_manager
   path: ^1.6.4                      # Dart
   path_provider: ^1.6.7             # Flutter
+  photo_manager: ^0.5.0             # https://pub.dev/packages/photo_manager
   provider: ^3.2.0                  # Version update requires migration
   quiver: ^2.0.5                    # Google - Version restricted by flutter_test
   sqflite: ^1.2.0                   # Endorsed by Flutter

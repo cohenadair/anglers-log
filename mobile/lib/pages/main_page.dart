@@ -148,6 +148,9 @@ class _NavigatorPage extends StatelessWidget {
         settings: settings,
         builder: builder,
       ),
+      observers: [
+        HeroController(),
+      ],
     );
   }
 }

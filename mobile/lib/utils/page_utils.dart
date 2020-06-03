@@ -14,3 +14,16 @@ void push(BuildContext context, Widget page, {
 void present(BuildContext context, Widget page) {
   push(context, page, fullscreenDialog: true);
 }
+
+/// Shows the given page immediately with a [FadeAnimation].
+void fade(BuildContext context, Widget page) {
+  Navigator.of(context, rootNavigator: true).push(PageRouteBuilder(
+    pageBuilder: (_, __, ___) => page,
+    transitionsBuilder: (context, animation, _, child) {
+      return FadeTransition(
+        opacity: animation,
+        child: child,
+      );
+    },
+  ));
+}

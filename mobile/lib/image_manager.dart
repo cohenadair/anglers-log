@@ -32,18 +32,20 @@ class ImageManager {
   static ImageManager of(BuildContext context) =>
       Provider.of<AppManager>(context, listen: false).imageManager;
 
-  ImageManager(AppManager app) : _dataManager = app.dataManager;
+  ImageManager(AppManager app) : _appManager = app;
 
   final Log _log = Log("ImageManager");
   final String _tableName = "entity_image";
   final int _imageCompressionQuality = 80;
 
-  final DataManager _dataManager;
+  final AppManager _appManager;
 
   /// Memory cache of entity ID to image names.
   final Map<String, Set<String>> _entityImages = {};
 
   ImageManagerProvider _provider;
+
+  DataManager get _dataManager => _appManager.dataManager;
 
   String get _path => _provider.directory.path;
 
