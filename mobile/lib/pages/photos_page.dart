@@ -54,12 +54,9 @@ class PhotosPage extends StatelessWidget {
         fileNames: allFileNames,
         initialFileName: allFileNames[index],
       )),
-      child: Hero(
-        tag: allFileNames[index],
-        child: Photo(
-          fileName: allFileNames[index],
-          cacheSize: galleryMaxThumbSize,
-        ),
+      child: Photo(
+        fileName: allFileNames[index],
+        cacheSize: galleryMaxThumbSize,
       ),
     );
   }

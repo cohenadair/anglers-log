@@ -54,8 +54,6 @@ class Photo extends StatefulWidget {
 }
 
 class _PhotoState extends State<Photo> {
-  final _crossFadeDuration = Duration(milliseconds: 150);
-
   Future<ui.Image> _imageFuture;
 
   ImageManager get _imageManager => ImageManager.of(context);
@@ -76,35 +74,32 @@ class _PhotoState extends State<Photo> {
         double h = widget.height;
         bool hasSize = w != null && h != null;
 
-        // Use a default icon placeholder if a size was specified, otherwise
-        // use an empty widget.
-        Widget placeholder = Container(
-          width: w,
-          height: h,
-          decoration: BoxDecoration(
-            color: Theme.of(context).primaryColor,
-            shape: widget.circular ? BoxShape.circle : BoxShape.rectangle,
-          ),
-          child: hasSize ? Icon(CustomIcons.catches,
-            size: min<double>(w, h) / 2,
-            color: Colors.white,
-          ) : Empty(),
-        );
-
-        var child = AnimatedCrossFade(
-          crossFadeState: image == null
-              ? CrossFadeState.showFirst : CrossFadeState.showSecond,
-          firstChild: placeholder,
-          // Use RawImage over Image to remove the built in Flutter image
-          // cache overhead.
-          secondChild: RawImage(
+        Widget child;
+        if (image == null) {
+          // Use a default icon placeholder if a size was specified, otherwise
+          // use an empty widget.
+          child = hasSize ? Container(
+            width: w,
+            height: h,
+            decoration: BoxDecoration(
+              color: Theme.of(context).primaryColor,
+              shape: widget.circular ? BoxShape.circle : BoxShape.rectangle,
+            ),
+            child: Icon(CustomIcons.catches,
+              size: min<double>(w, h) / 2,
+              color: Colors.white,
+            ),
+          ) : Empty();
+        } else {
+          // Use RawImage instead of Image to avoid the overhead of Flutter's
+          // image caching.
+          child = RawImage(
             width: w,
             height: h,
             image: image,
             fit: BoxFit.cover,
-          ),
-          duration: _crossFadeDuration,
-        );
+          );
+        }
 
         if (widget.circular) {
           return ClipOval(
@@ -122,11 +117,16 @@ class _PhotoState extends State<Photo> {
       return null;
     }
 
+    double size = widget.cacheSize;
+    if (size == null) {
+      size = widget.width == null
+          ? null : max<double>(widget.width, widget.height);
+    }
+
     // Get image from cache.
     Uint8List bytes = await _imageManager.image(context,
       fileName: widget.fileName,
-      size: widget.cacheSize ?? widget.width == null
-          ? null : max<double>(widget.width, widget.height),
+      size: size,
     );
 
     return (await (await ui.instantiateImageCodec(bytes)).getNextFrame()).image;

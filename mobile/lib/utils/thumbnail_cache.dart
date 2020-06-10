@@ -83,7 +83,6 @@ class ThumbnailCache {
       async
   {
     if (isEmpty(fileName) || size == null) {
-      _log.d("Cannot fetch cached image: empty name or null size");
       return null;
     }
 

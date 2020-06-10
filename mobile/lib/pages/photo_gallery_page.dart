@@ -50,10 +50,7 @@ class _PhotoGalleryPageState extends State<PhotoGalleryPage> {
         itemBuilder: (context, i) => Container(
           color: Colors.black,
           child: Center(
-            child: Hero(
-              tag: widget.fileNames[i],
-              child: Photo(fileName: widget.fileNames[i]),
-            ),
+            child: Photo(fileName: widget.fileNames[i]),
           ),
         ),
       ),
