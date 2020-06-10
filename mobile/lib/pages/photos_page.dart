@@ -1,18 +1,14 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:mobile/catch_manager.dart';
 import 'package:mobile/entity_manager.dart';
 import 'package:mobile/image_manager.dart';
 import 'package:mobile/model/catch.dart';
 import 'package:mobile/pages/photo_gallery_page.dart';
+import 'package:mobile/res/dimen.dart';
 import 'package:mobile/utils/page_utils.dart';
+import 'package:mobile/widgets/photo.dart';
 
 class PhotosPage extends StatelessWidget {
-  final _maxImageSize = 150.0;
-  final _imageSpacing = 2.0;
-  final _imageAspectRatio = 1.0;
-
   @override
   Widget build(BuildContext context) {
     CatchManager catchManager = CatchManager.of(context);
@@ -24,23 +20,23 @@ class PhotosPage extends StatelessWidget {
           catchManager,
         ],
         builder: (context) {
-          List<File> catchImages = [];
+          List<String> fileNames = [];
           for (Catch cat in catchManager.catchesSortedByTimestamp(context)) {
-            catchImages.addAll(imageManager.imageFiles(entityId: cat.id));
+            fileNames.addAll(imageManager.imageNames(entityId: cat.id));
           }
 
           return CustomScrollView(
             slivers: [
               SliverGrid(
                 gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                  maxCrossAxisExtent: _maxImageSize,
-                  mainAxisSpacing: _imageSpacing,
-                  crossAxisSpacing: _imageSpacing,
-                  childAspectRatio: _imageAspectRatio,
+                  maxCrossAxisExtent: galleryMaxThumbSize,
+                  crossAxisSpacing: gallerySpacing,
+                  mainAxisSpacing: gallerySpacing,
+                  childAspectRatio: 1.0,
                 ),
                 delegate: SliverChildBuilderDelegate(
-                  (context, i) => _buildThumbnail(context, catchImages, i),
-                  childCount: catchImages.length,
+                  (context, i) => _buildThumbnail(context, fileNames, i),
+                  childCount: fileNames.length,
                 ),
               ),
             ],
@@ -50,18 +46,19 @@ class PhotosPage extends StatelessWidget {
     );
   }
 
-  Widget _buildThumbnail(BuildContext context, List<File> allImages,
+  Widget _buildThumbnail(BuildContext context, List<String> allFileNames,
       int index)
   {
     return GestureDetector(
       onTap: () => fade(context, PhotoGalleryPage(
-        images: allImages,
-        initialImage: allImages[index],
+        fileNames: allFileNames,
+        initialFileName: allFileNames[index],
       )),
       child: Hero(
-        tag: allImages[index].path,
-        child: Image.file(allImages[index],
-          fit: BoxFit.cover,
+        tag: allFileNames[index],
+        child: Photo(
+          fileName: allFileNames[index],
+          cacheSize: galleryMaxThumbSize,
         ),
       ),
     );

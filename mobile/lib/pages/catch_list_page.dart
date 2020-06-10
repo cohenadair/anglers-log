@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:mobile/bait_category_manager.dart';
 import 'package:mobile/bait_manager.dart';
@@ -15,7 +13,7 @@ import 'package:mobile/pages/save_catch_page.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/species_manager.dart';
 import 'package:mobile/utils/string_utils.dart';
-import 'package:mobile/widgets/thumbnail.dart';
+import 'package:mobile/widgets/photo.dart';
 import 'package:mobile/widgets/text.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:quiver/strings.dart';
@@ -80,13 +78,13 @@ class CatchListPage extends StatelessWidget {
           .formatNameWithCategory(baitManager.entity(id: cat.baitId)));
     }
 
-    List<File> imageFiles = imageManager.imageFiles(entityId: cat.id);
+    List<String> imageNames = imageManager.imageNames(entityId: cat.id);
 
     return ManageableListPageItemModel(
       child: Row(
         children: [
-          Thumbnail.listItem(
-              file: imageFiles.isNotEmpty ? imageFiles.first : null),
+          Photo.listThumbnail(
+              fileName: imageNames.isNotEmpty ? imageNames.first : null),
           Container(width: paddingWidget),
           Expanded(
             child: Column(

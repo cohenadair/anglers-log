@@ -62,6 +62,8 @@ class CatchManager extends EntityManager<Catch> {
   Future<bool> addOrUpdate(Catch cat, {
     FishingSpot fishingSpot,
     List<File> imageFiles,
+    bool compressImages = true,
+    bool notify = true,
   }) async {
     // Update any catch dependencies first, so when catch listeners are
     // notified, all dependent data is updated as well.
@@ -69,8 +71,8 @@ class CatchManager extends EntityManager<Catch> {
       await _fishingSpotManager.addOrUpdate(fishingSpot);
     }
 
-    await _imageManager.save(cat.id, imageFiles);
-    return super.addOrUpdate(cat);
+    await _imageManager.save(cat.id, imageFiles, compress: compressImages);
+    return super.addOrUpdate(cat, notify: notify);
   }
 
   @override

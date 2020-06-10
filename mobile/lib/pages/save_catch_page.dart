@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -80,6 +81,8 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
 
   final Map<String, InputData> _fields = {};
   final Completer<GoogleMapController> _fishingSpotMapController = Completer();
+
+  Future<List<Uint8List>> _imagesFuture = Future.value([]);
 
   BaitCategoryManager get _baitCategoryManager =>
       BaitCategoryManager.of(context);
@@ -167,9 +170,11 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
       _baitController.value = _baitManager.entity(id: widget.oldCatch.baitId);
       _fishingSpotController.value =
           _fishingSpotManager.entity(id: widget.oldCatch.fishingSpotId);
-      _imagesController.value = _imageManager
-          .imageFiles(entityId: widget.oldCatch.id)
-          .map((file) => PickedImage(originalFile: file)).toList();
+
+      _imagesFuture = _imageManager.images(context,
+        entityId: widget.oldCatch.id,
+        size: galleryMaxThumbSize,
+      );
     }
   }
 
@@ -321,12 +326,20 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
   }
 
   Widget _buildImages() {
-    return ImageInput(
-      initialImages: _imagesController.value ?? [],
-      onImagesPicked: (images) {
-        setState(() {
-          _imagesController.value = images;
-        });
+    return EmptyFutureBuilder<List<Uint8List>>(
+      future: _imagesFuture,
+      builder: (context, images) {
+        _imagesController.value = images.map((bytes) =>
+            PickedImage(thumbData: bytes));
+
+        return ImageInput(
+          initialImages: _imagesController.value ?? [],
+          onImagesPicked: (images) {
+            setState(() {
+              _imagesController.value = images;
+            });
+          },
+        );
       },
     );
   }

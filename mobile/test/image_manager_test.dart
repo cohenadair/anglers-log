@@ -59,7 +59,7 @@ void main() {
     await _imageManager.initialize(provider: _imageProvider);
     verify(_directory.createSync()).called(1);
     verify(_dataManager.fetchAll(any)).called(1);
-    expect(_imageManager.imageFiles(), []);
+    expect(_imageManager.images(), []);
 
     // Directory already exists.
     when(_directory.exists()).thenAnswer((_) => Future.value(true));
@@ -79,8 +79,8 @@ void main() {
       entity1, entity2,
     ]));
     await _imageManager.initialize(provider: _imageProvider);
-    expect(_imageManager.imageFiles(entityId: "ID").length, 1);
-    expect(_imageManager.imageFiles(entityId: "ID2").length, 1);
+    expect(_imageManager.images(entityId: "ID").length, 1);
+    expect(_imageManager.images(entityId: "ID2").length, 1);
   });
 
   test("Normal saving images", () async {
@@ -104,7 +104,7 @@ void main() {
     File image2 = File("IDIMAGE2.jpg");
     image2.writeAsBytesSync([3, 2, 1]);
     await _imageManager.save("ID", [image1, image2]);
-    expect(_imageManager.imageFiles(entityId: "ID").length, 2);
+    expect(_imageManager.images(entityId: "ID").length, 2);
     expect(_imageManager.allFiles().length, 2);
     verify(_imageProvider.compress).called(2);
     verify(_dataManager.commitBatch(any)).called(1);

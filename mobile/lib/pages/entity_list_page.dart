@@ -9,7 +9,6 @@ import 'package:mobile/widgets/checkbox_input.dart';
 import 'package:mobile/widgets/list_item.dart';
 import 'package:mobile/widgets/no_results.dart';
 import 'package:mobile/widgets/search_bar.dart';
-import 'package:mobile/widgets/thumbnail.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:quiver/strings.dart';
 
@@ -27,7 +26,7 @@ class EntityListPage<T> extends StatefulWidget {
 
   /// If true, adds additional padding between search icon and search text so
   /// the search text is horizontally aligned with an item's main text.
-  /// Defaults to false. If an item has a thumbnail, the [Thumbnail.listItem]
+  /// Defaults to false. If an item has a thumbnail, the [Photo.listThumbnail]
   /// constructor should be used.
   final bool itemsHaveThumbnail;
 
