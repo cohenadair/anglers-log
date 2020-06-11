@@ -10,7 +10,7 @@ import 'package:mockito/mockito.dart';
 class MockAppManager extends Mock implements AppManager {}
 class MockDataManager extends Mock implements DataManager {}
 class MockDirectory extends Mock implements Directory {}
-class MockImageProvider extends Mock implements ImageManagerProvider {}
+class MockImageProvider extends Mock implements ImageManagerDelegate {}
 
 void main() {
   MockAppManager _appManager;
@@ -32,7 +32,7 @@ void main() {
     when(_directory.path).thenReturn("test");
 
     _imageProvider = MockImageProvider();
-    when(_imageProvider.directory).thenReturn(_directory);
+    when(_imageProvider.imageDir).thenReturn(_directory);
 
     _imageManager = ImageManager(_appManager);
     await _imageManager.initialize(provider: _imageProvider);
