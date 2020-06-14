@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/app_manager.dart';
 import 'package:mobile/bait_category_manager.dart';
@@ -210,30 +211,28 @@ void main() {
       named: "id",
     ))).thenReturn(Species(name: "Blue Catfish"));
 
-    await tester.pumpWidget(Testable((context) {
-      List<Catch> catches = catchManager.filteredCatches(context, "");
-      expect(catches.length, 2);
+    BuildContext context = await buildContext(tester);
 
-      catches = catchManager.filteredCatches(context, "Bluegill");
-      expect(true, catches.isEmpty);
+    List<Catch> catches = catchManager.filteredCatches(context, "");
+    expect(catches.length, 2);
 
-      catches = catchManager.filteredCatches(context, "bass");
-      expect(catches.length, 1);
+    catches = catchManager.filteredCatches(context, "Bluegill");
+    expect(true, catches.isEmpty);
 
-      catches = catchManager.filteredCatches(context, "BLUE");
-      expect(catches.length, 1);
+    catches = catchManager.filteredCatches(context, "bass");
+    expect(catches.length, 1);
 
-      catches = catchManager.filteredCatches(context, "janua");
-      expect(catches.length, 1);
+    catches = catchManager.filteredCatches(context, "BLUE");
+    expect(catches.length, 1);
 
-      catches = catchManager.filteredCatches(context, "april");
-      expect(catches.length, 1);
+    catches = catchManager.filteredCatches(context, "janua");
+    expect(catches.length, 1);
 
-      catches = catchManager.filteredCatches(context, "4");
-      expect(catches.length, 1);
+    catches = catchManager.filteredCatches(context, "april");
+    expect(catches.length, 1);
 
-      return Empty();
-    }));
+    catches = catchManager.filteredCatches(context, "4");
+    expect(catches.length, 1);
 
     await catchManager.addOrUpdate(Catch(
       timestamp: DateTime(2020, 1, 1).millisecondsSinceEpoch,
@@ -257,25 +256,21 @@ void main() {
 
     when(mockBaitManager.matchesFilter("bait_id_1", any)).thenReturn(false);
 
-    await tester.pumpWidget(Testable((context) {
-      when(mockBaitManager.matchesFilter(any, any)).thenReturn(true);
-      List<Catch> catches = catchManager.filteredCatches(context, "RAP");
-      expect(catches.length, 2);
+    when(mockBaitManager.matchesFilter(any, any)).thenReturn(true);
+    catches = catchManager.filteredCatches(context, "RAP");
+    expect(catches.length, 2);
 
-      when(mockBaitManager.matchesFilter(any, any)).thenReturn(false);
-      catches = catchManager.filteredCatches(context, "test");
-      expect(true, catches.isEmpty);
+    when(mockBaitManager.matchesFilter(any, any)).thenReturn(false);
+    catches = catchManager.filteredCatches(context, "test");
+    expect(true, catches.isEmpty);
 
-      catches = catchManager.filteredCatches(context, "9 mile");
-      expect(catches.length, 1);
+    catches = catchManager.filteredCatches(context, "9 mile");
+    expect(catches.length, 1);
 
-      catches = catchManager.filteredCatches(context, "Tennessee");
-      expect(catches.length, 1);
+    catches = catchManager.filteredCatches(context, "Tennessee");
+    expect(catches.length, 1);
 
-      catches = catchManager.filteredCatches(context, "River");
-      expect(catches.length, 2);
-
-      return Empty();
-    }));
+    catches = catchManager.filteredCatches(context, "River");
+    expect(catches.length, 2);
   });
 }

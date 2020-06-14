@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/app_manager.dart';
 import 'package:mobile/bait_category_manager.dart';
@@ -15,7 +16,6 @@ import 'package:mobile/model/catch.dart';
 import 'package:mobile/model/fishing_spot.dart';
 import 'package:mobile/model/species.dart';
 import 'package:mobile/species_manager.dart';
-import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
 
 import '../test_utils.dart';
@@ -136,11 +136,8 @@ void main() {
     File file = File("test/resources/backups/legacy_ios_entities.zip");
     await LegacyImporter(appManager, file, tmpDir).start();
 
-    List<Catch> catches;
-    await tester.pumpWidget(Testable((context) {
-      catches = catchManager.catchesSortedByTimestamp(context);
-      return Empty();
-    }));
+    BuildContext context = await buildContext(tester);
+    List<Catch> catches = catchManager.catchesSortedByTimestamp(context);
 
     expect(catches, isNotNull);
     expect(catches.length, 4);
@@ -197,19 +194,17 @@ void main() {
     File zip = File("test/resources/backups/legacy_ios_photos.zip");
 
     Map<String, List<File>> importedImages = {};
-    when(imageManager.save(any, any)).thenAnswer((invocation) {
-      importedImages[invocation.positionalArguments[0]] =
-          invocation.positionalArguments[1];
-      return Future.value();
-    });
+    when(imageManager.save(any, any, compress: anyNamed("compress")))
+        .thenAnswer((invocation) {
+          importedImages[invocation.positionalArguments[0]] =
+              invocation.positionalArguments[1];
+          return Future.value();
+        });
 
     await LegacyImporter(appManager, zip, tmpDir).start();
 
-    List<Catch> catches;
-    await tester.pumpWidget(Testable((context) {
-      catches = catchManager.catchesSortedByTimestamp(context);
-      return Empty();
-    }));
+    BuildContext context = await buildContext(tester);
+    List<Catch> catches = catchManager.catchesSortedByTimestamp(context);
 
     expect(catches, isNotNull);
     expect(catches.length, 2);
@@ -293,19 +288,17 @@ void main() {
     File zip = File("test/resources/backups/legacy_android_photos.zip");
 
     Map<String, List<File>> importedImages = {};
-    when(imageManager.save(any, any)).thenAnswer((invocation) {
-      importedImages[invocation.positionalArguments[0]] =
-          invocation.positionalArguments[1];
-      return Future.value();
-    });
+    when(imageManager.save(any, any, compress: anyNamed("compress")))
+        .thenAnswer((invocation) {
+          importedImages[invocation.positionalArguments[0]] =
+              invocation.positionalArguments[1];
+          return Future.value();
+        });
 
     await LegacyImporter(appManager, zip, tmpDir).start();
 
-    List<Catch> catches;
-    await tester.pumpWidget(Testable((context) {
-      catches = catchManager.catchesSortedByTimestamp(context);
-      return Empty();
-    }));
+    BuildContext context = await buildContext(tester);
+    List<Catch> catches = catchManager.catchesSortedByTimestamp(context);
 
     expect(catches, isNotNull);
     expect(catches.length, 2);

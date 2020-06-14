@@ -14,32 +14,6 @@ import 'package:quiver/collection.dart';
 import 'package:quiver/strings.dart';
 import 'package:sqflite/sqflite.dart';
 
-/// A function for compressing and scaling thumbnails.
-typedef Future<Uint8List> ImageManagerCompressionCallback(String path,
-    int quality, int size);
-
-/// A class used for dependency injection for non-Anglers' Log dependencies.
-class ImageManagerDelegate {
-  /// The directory in which to save images. If it doesn't exist, it will be
-  /// created.
-  final Directory imageDir;
-
-  /// The director in which to save thumbnails. If it doesn't exist, it will be
-  /// created.
-  final Directory cacheDir;
-
-  /// See [ImageManagerCompressionCallback].
-  final ImageManagerCompressionCallback compress;
-
-  ImageManagerDelegate({
-    @required this.imageDir,
-    @required this.cacheDir,
-    @required this.compress,
-  }) : assert(imageDir != null),
-       assert(cacheDir != null),
-       assert(compress != null);
-}
-
 class ImageManager {
   static ImageManager of(BuildContext context) =>
       Provider.of<AppManager>(context, listen: false).imageManager;
@@ -51,48 +25,40 @@ class ImageManager {
 
   static final _tableName = "entity_image";
   static final _memoryCacheCapacity = 250;
-  static final _imagesDirName = "images";
   static final _imageCompressionQuality = 80;
-  static final _thumbnailsDirName = "thumbs";
   static final _thumbnailCompressionQuality = 50;
 
   final AppManager _appManager;
 
-  /// Memory cache of entity ID to image names.
+  /// Memory cache of entity ID to image names, synced with the database.
   final Map<String, Set<String>> _entityImageNames = {};
 
-  /// A file name to [_CachedThumbnail] map.
+  /// A memory cache map of file name to [_CachedThumbnail] objects.
   final Map<String, _CachedThumbnail> _thumbnails =
       LinkedLruHashMap(maximumSize: _memoryCacheCapacity);
 
-  ImageManagerDelegate _provider;
+  ImageManagerDelegate _delegate;
 
   DataManager get _dataManager => _appManager.dataManager;
 
   Future<void> initialize({
-    ImageManagerDelegate provider,
+    ImageManagerDelegate delegate,
   }) async {
-    _provider = provider;
-    if (_provider == null) {
-      _provider = await _defaultDelegate;
+    _delegate = delegate;
+    if (_delegate == null) {
+      _delegate = await ImageManagerDelegate.create();
     }
 
-    // Create cache directory if it doesn't already exist.
-    if (!await _provider.cacheDir.exists()) {
-      await _provider.cacheDir.create();
-    }
-
-    // Create image directory if it doesn't already exist.
-    if (!await _provider.imageDir.exists()) {
-      await _provider.imageDir.create();
-    }
+    // Create directories if needed.
+    await _delegate.directory(_delegate.imagePath).create(recursive: true);
+    await _delegate.directory(_delegate.cachePath).create(recursive: true);
 
     // Fetch image map from database.
     (await _fetchAll()).forEach((image) => _addToCache(image));
   }
 
   File _imageFile(String imageName) =>
-      File("${_provider.imageDir.path}/$imageName");
+      _delegate.file("${_delegate.imagePath}/$imageName");
 
   /// Returns a list of image names associated with the given [entityId].
   List<String> imageNames({
@@ -108,8 +74,18 @@ class ImageManager {
     @required String fileName,
     double size,
   }) async {
-    return (await _thumbnail(context, fileName, size))
-        ?? (await _imageFile(fileName).readAsBytes());
+    if (isEmpty(fileName)) {
+      return null;
+    }
+
+    Uint8List thumb = await _thumbnail(context, fileName, size);
+    if (thumb == null) {
+      File file = _imageFile(fileName);
+      if (await file.exists()) {
+        return await file.readAsBytes();
+      }
+    }
+    return thumb;
   }
 
   /// Returns a list of encoded images for the given [entityId] of the given
@@ -120,7 +96,7 @@ class ImageManager {
   /// is returned.
   Future<List<Uint8List>> images(BuildContext context, {
     @required String entityId,
-    @required double size,
+    double size,
   }) async {
     if (isEmpty(entityId)) {
       _log.w("Attempting to fetch images for an empty entity ID");
@@ -128,20 +104,23 @@ class ImageManager {
     }
 
     List<Uint8List> result = [];
+    if (_entityImageNames[entityId] == null) {
+      return result;
+    }
 
-    _entityImageNames[entityId]?.forEach((fileName) async {
-      Uint8List image = await _thumbnail(context, fileName, size);
+    for (var fileName in _entityImageNames[entityId]) {
+      Uint8List bytes = await image(context,
+        fileName: fileName,
+        size: size,
+      );
 
-      if (image == null) {
+      if (bytes != null) {
+        result.add(bytes);
+      } else {
         _log.e("Image $fileName doesn't exist in cache, and couldn't be "
             "created");
-        image = await _imageFile(fileName).readAsBytes();
       }
-
-      if (image != null) {
-        result.add(image);
-      }
-    });
+    }
 
     return result;
   }
@@ -175,8 +154,7 @@ class ImageManager {
 
     for (var file in files) {
       // If the file already exists in the app's sandbox, don't copy it again.
-      if (file.path.contains(_provider.imageDir.path) &&
-          await file.exists()) {
+      if (file.path.contains(_delegate.imagePath) && await file.exists()) {
         _log.d("File exists, nothing to do");
         continue;
       }
@@ -184,7 +162,7 @@ class ImageManager {
       // Compress first, so image MD5 hashes are equal to existing files.
       List<int> jpgBytes;
       if (compress) {
-        jpgBytes = await _compress(null, file.path, _imageCompressionQuality,
+        jpgBytes = await _compress(null, file, _imageCompressionQuality,
             null);
       } else {
         jpgBytes = await file.readAsBytes();
@@ -199,9 +177,10 @@ class ImageManager {
       } else {
         _log.d("New file doesn't exist, copying to ${newFile.path}");
         try {
-          newFile.writeAsBytesSync(jpgBytes, flush: true);
+          await newFile.writeAsBytes(jpgBytes, flush: true);
         } on FileSystemException catch (e) {
           _log.e("Error copying image to ${newFile.path}: $e}");
+          continue;
         }
       }
 
@@ -216,9 +195,6 @@ class ImageManager {
       // Remove old references.
       await _delete(entityId);
 
-      // Update memory cache.
-      dbImages.forEach((i) async => _addToCache(i));
-
       // Create database entries.
       List<dynamic> batchResult = await _dataManager.commitBatch((batch) {
         dbImages.forEach((i) =>
@@ -228,24 +204,29 @@ class ImageManager {
 
       if (batchResult.isEmpty || batchResult.length != dbImages.length) {
         _log.e("Error saving images to database");
+      } else {
+        // Database write was successful, update memory cache.
+        dbImages.forEach((i) async => _addToCache(i));
       }
     }
   }
 
-  Future<Uint8List> _compress(BuildContext context, String path,
-      int quality, double size) async
+  Future<Uint8List> _compress(BuildContext context, File source, int quality,
+      double size) async
   {
-    List<int> intBytes;
+    List<int> intBytes = [];
 
-    if (await File(path).exists()) {
+    if (await source.exists()) {
       double pixels;
       if (size != null) {
         double pixelRatio = MediaQuery.of(context).devicePixelRatio;
         pixels = size == null ? null : pixelRatio * size;
       }
-      intBytes = await _provider.compress(path, quality, pixels.round());
+      intBytes = await _delegate.compress(source.path, quality,
+          pixels?.round());
     } else {
-      _log.e("Attempting to compress file that doesn't exist: $path");
+      _log.e("Attempting to compress file that doesn't exist: "
+          "${source.path}");
     }
 
     return Uint8List.fromList(intBytes);
@@ -255,7 +236,7 @@ class ImageManager {
   /// if one doesn't exist or an error occurs.
   ///
   /// If the image doesn't exist in the memory or file system cache,
-  /// [_provider.compress] is invoked and the result is saved to the file system
+  /// [_delegate.compress] is invoked and the result is saved to the file system
   /// and added to the memory cache.
   Future<Uint8List> _thumbnail(BuildContext context, String fileName,
       double size) async
@@ -278,14 +259,11 @@ class ImageManager {
       cachedImage = _CachedThumbnail(fileName);
     }
 
-    // Create the sized directory if it doesn't exist.
-    var sizeDir = Directory("${_provider.cacheDir.path}/${size.round()}");
-    if (!await sizeDir.exists()) {
-      await sizeDir.create();
-    }
+    // Create sized directory if it doesn't exist.
+    var sizePath = "${_delegate.cachePath}/${size.round()}";
+    await _delegate.directory(sizePath).create(recursive: true);
 
-    var thumbnail = File("${sizeDir.path}/$fileName");
-
+    var thumbnail = _delegate.file("$sizePath/$fileName");
     if (!await thumbnail.exists()) {
       if (_debug) {
         _log.d("Thumbnail does not exist in file system, writing to file...");
@@ -293,7 +271,7 @@ class ImageManager {
 
       try {
         await thumbnail.writeAsBytes(
-          await _compress(context, _imageFile(fileName).path,
+          await _compress(context, _imageFile(fileName),
               _thumbnailCompressionQuality, size),
           flush: true,
         );
@@ -362,40 +340,48 @@ class ImageManager {
     var results = await _dataManager.fetchAll(_tableName);
     return results.map((map) => EntityImage.fromMap(map)).toList();
   }
+}
 
-  Future<ImageManagerDelegate> get _defaultDelegate async {
+class ImageManagerDelegate {
+  static final _imagesDirName = "images";
+  static final _thumbnailsDirName = "thumbs";
+
+  static Future<ImageManagerDelegate> create() async {
     var imagePath = (await getApplicationDocumentsDirectory()).path;
     var cachePath = (await getTemporaryDirectory()).path;
+    return ImageManagerDelegate._("$cachePath/$_thumbnailsDirName",
+        "$imagePath/$_imagesDirName");
+  }
 
-    return ImageManagerDelegate(
-      imageDir: Directory("$imagePath/$_imagesDirName"),
-      cacheDir: Directory("$cachePath/$_thumbnailsDirName"),
-      compress: (path, quality, size) async {
-        List<int> intBytes;
+  final String cachePath;
+  final String imagePath;
 
-        // TODO: Compression freezes UI until finished.
-        // https://github.com/OpenFlutter/flutter_image_compress/issues/131
-        if (size == null) {
-          // Note that passing null minWidth/minHeight will not use the
-          // default values in compressWithFile, so we have to explicitly
-          // exclude minWidth/minHeight when we don't have a size.
-          intBytes = await FlutterImageCompress.compressWithFile(path,
-            quality: quality,
-          );
-        } else {
-          intBytes = await FlutterImageCompress.compressWithFile(path,
-            quality: quality,
-            minWidth: size.round(),
-            minHeight: size.round(),
-          );
-        }
+  ImageManagerDelegate._(this.cachePath, this.imagePath);
 
-        return Uint8List.fromList(intBytes);
-      },
-    );
+  Directory directory(String path) => Directory(path);
+  File file(String path) => File(path);
+
+  Future<Uint8List> compress(String path, int quality, int size) async {
+    // TODO: Compression freezes UI until finished.
+    // https://github.com/OpenFlutter/flutter_image_compress/issues/131
+    if (size == null) {
+      // Note that passing null minWidth/minHeight will not use the
+      // default values in compressWithFile, so we have to explicitly
+      // exclude minWidth/minHeight when we don't have a size.
+      return Uint8List.fromList(await FlutterImageCompress
+          .compressWithFile(path, quality: quality));
+    }
+
+    return Uint8List.fromList(await FlutterImageCompress.compressWithFile(
+      path,
+      quality: quality,
+      minWidth: size.round(),
+      minHeight: size.round(),
+    ));
   }
 }
 
+/// Stores image thumbnails of various sizes in memory as [Uint8List] objects.
 class _CachedThumbnail {
   final String name;
   final Map<double, Uint8List> _thumbnails = {};
@@ -409,7 +395,7 @@ class _CachedThumbnail {
   Uint8List thumbnail(double size) => _thumbnails[size];
 
   int get numberOfBytes => _thumbnails.values.fold<int>(
-      0, (previousValue, bytes) => previousValue += bytes.length);
+      0, (previousValue, bytes) => previousValue += bytes?.length ?? 0);
 
   int get numberOfImages => _thumbnails.length;
 }
