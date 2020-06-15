@@ -73,6 +73,15 @@ void main() {
     expect(entityManager.entityCount, 1);
     expect(entityManager.entity(id: "ID").name, "Bass");
     verify(listener.onAddOrUpdate).called(1);
+
+    // No notify.
+    expect(await entityManager.addOrUpdate(Species(
+      id: "ID2",
+      name: "Catfish",
+    ), notify: false), true);
+    expect(entityManager.entityCount, 2);
+    expect(entityManager.entity(id: "ID2").name, "Catfish");
+    verifyNever(listener.onAddOrUpdate);
   });
 
   test("Test delete", () async {

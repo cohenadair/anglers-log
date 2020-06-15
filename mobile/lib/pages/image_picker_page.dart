@@ -38,12 +38,12 @@ class PickedImage {
   final DateTime dateTime;
 
   PickedImage({
-    @required this.originalFile,
+    this.originalFile,
     this.thumbData,
     this.originalFileId,
     this.position,
     this.dateTime,
-  }) : assert(originalFile != null);
+  });
 }
 
 /// [ImagePickerPage] is a custom image picking widget that allows the user to

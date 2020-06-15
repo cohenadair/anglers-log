@@ -63,10 +63,16 @@ abstract class EntityManager<T extends Entity> extends
   int get entityCount => entities.length;
   T entity({@required String id}) => isEmpty(id) ? null : entities[id];
 
-  Future<bool> addOrUpdate(T entity) async {
+  /// Adds or updates the given [Entity]. If [notify] is false (default true),
+  /// listeners are not notified.
+  Future<bool> addOrUpdate(T entity, {
+    bool notify = true,
+  }) async {
     if (await dataManager.insertOrUpdateEntity(entity, tableName)) {
       entities[entity.id] = entity;
-      notifyOnAddOrUpdate();
+      if (notify) {
+        notifyOnAddOrUpdate();
+      }
       return true;
     }
     return false;

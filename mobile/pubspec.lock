@@ -103,7 +103,7 @@ packages:
       name: flutter_image_compress
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.6.5+1"
+    version: "0.6.8"
   flutter_localizations:
     dependency: "direct main"
     description: flutter

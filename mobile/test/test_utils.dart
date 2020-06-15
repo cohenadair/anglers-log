@@ -1,7 +1,11 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/utils/date_time_utils.dart';
+import 'package:mobile/widgets/widget.dart';
 
 /// A widget that wraps a child in default localizations.
 class Testable extends StatelessWidget {
@@ -37,4 +41,15 @@ DisplayDateRange stubDateRange(DateRange dateRange) {
     getValue: (_) => dateRange,
     getTitle: (_) => "",
   );
+}
+
+Future<BuildContext> buildContext(WidgetTester tester) async {
+  BuildContext context;
+  await tester.pumpWidget(Testable((buildContext) {
+    context = buildContext;
+    return Empty();
+  }, mediaQueryData: MediaQueryData(
+    devicePixelRatio: 1.0,
+  )));
+  return context;
 }

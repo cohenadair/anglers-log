@@ -1,9 +1,8 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/utils/dialog_utils.dart';
 import 'package:mobile/widgets/button.dart';
+import 'package:mobile/widgets/photo.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:quiver/strings.dart';
 
@@ -12,7 +11,7 @@ import 'package:quiver/strings.dart';
 /// within a [SliverAppBar.flexibleSpace].
 class EntityPage extends StatefulWidget {
   final List<Widget> children;
-  final List<File> images;
+  final List<String> imageNames;
   final String deleteMessage;
   final VoidCallback onEdit;
   final VoidCallback onDelete;
@@ -23,7 +22,7 @@ class EntityPage extends StatefulWidget {
 
   EntityPage({
     @required this.children,
-    this.images,
+    this.imageNames,
     this.deleteMessage,
     this.onEdit,
     this.onDelete,
@@ -46,7 +45,8 @@ class _EntityPageState extends State<EntityPage> {
   int _imageIndex = 0;
   PageController _imageController;
 
-  bool get _hasImages => widget.images != null && widget.images.isNotEmpty;
+  bool get _hasImages => widget.imageNames != null
+      && widget.imageNames.isNotEmpty;
   double get _imageHeight =>
       MediaQuery.of(context).size.height / _imageHeightFactor;
 
@@ -107,20 +107,22 @@ class _EntityPageState extends State<EntityPage> {
 
   Widget _buildImages() {
     List<Widget> carousel = [];
-    if (widget.images.length > 1) {
-      for (var i = 0; i < widget.images.length; i++) {
+    List<String> imageNames = widget.imageNames;
+
+    if (imageNames.length > 1) {
+      for (var i = 0; i < imageNames.length; i++) {
         carousel.add(Container(
           width: _carouselDotSize,
           height: _carouselDotSize,
           decoration: BoxDecoration(
-            color: widget.images.indexOf(widget.images[i]) == _imageIndex
+            color: imageNames.indexOf(imageNames[i]) == _imageIndex
                 ? Theme.of(context).primaryColor
                 : Colors.white.withOpacity(_carouselOpacity),
             shape: BoxShape.circle,
           ),
         ));
 
-        if (i < widget.images.length - 1) {
+        if (i < imageNames.length - 1) {
           carousel.add(Container(
             width: paddingWidgetSmall,
             height: 0,
@@ -134,9 +136,11 @@ class _EntityPageState extends State<EntityPage> {
       children: [
         PageView(
           controller: _imageController,
-          children: []..addAll(widget.images.map((file) => Image.file(
-            file,
-            fit: BoxFit.cover,
+          children: []..addAll(imageNames.map((fileName) => Photo(
+            fileName: fileName,
+            width: MediaQuery.of(context).size.width,
+            // Top padding adds status bar/safe area padding.
+            height: MediaQuery.of(context).padding.top + _imageHeight,
           )).toList()),
           onPageChanged: (newPage) => setState(() {
             _imageIndex = newPage;

@@ -158,6 +158,10 @@ class LegacyImporter {
       tmpImg.deleteSync();
     }
 
+    // Notify CatchManager of updates. CatchManager is done after to increase
+    // efficiency when dealing with images.
+    _appManager.catchManager.notifyOnAddOrUpdate();
+
     return Future.value();
   }
 
@@ -285,12 +289,19 @@ class LegacyImporter {
         }
       }
 
-      await _catchManager.addOrUpdate(Catch(
-        timestamp: dateTime.millisecondsSinceEpoch,
-        speciesId: species.id,
-        baitId: bait?.id,
-        fishingSpotId: fishingSpot?.id,
-      ), imageFiles: images);
+      await _catchManager.addOrUpdate(
+        Catch(
+          timestamp: dateTime.millisecondsSinceEpoch,
+          speciesId: species.id,
+          baitId: bait?.id,
+          fishingSpotId: fishingSpot?.id,
+        ),
+        imageFiles: images,
+        // Images were already compressed by legacy Anglers' Log versions.
+        compressImages: false,
+        // Suppress listener updates until all image manipulation has finished.
+        notify: false,
+      );
     }
   }
 }

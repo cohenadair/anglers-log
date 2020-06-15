@@ -19,7 +19,7 @@ dependencies:
   crypto: ^2.1.4                    # Dart
   device_info: ^0.4.2+3             # Flutter
   file_picker: ^1.4.3+2
-  flutter_image_compress: ^0.6.5+1  # https://pub.dev/packages/flutter_image_compress
+  flutter_image_compress: ^0.6.8    # https://pub.dev/packages/flutter_image_compress
   geolocator: ^5.2.1
   google_maps_flutter: ^0.5.25+3    # Flutter
   image_picker: ^0.6.3+1            # Flutter
