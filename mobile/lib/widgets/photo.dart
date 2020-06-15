@@ -25,10 +25,10 @@ class Photo extends StatefulWidget {
   final double width;
   final double height;
 
-  /// If null, set to the larger of [width] and [height], otherwise
+  /// If null, is set to the larger of [width] and [height].
   final double cacheSize;
 
-  /// If true, [Photo] will be rendered in a circle.
+  /// If true, [Photo] will be rendered in a circle. Default is false.
   final bool circular;
 
   Photo({

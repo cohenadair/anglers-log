@@ -18,15 +18,15 @@ class ImageManager {
   static ImageManager of(BuildContext context) =>
       Provider.of<AppManager>(context, listen: false).imageManager;
 
-  ImageManager(AppManager app) : _appManager = app;
-
-  static final _debug = true;
+  static final _debug = false;
   static final _log = Log("ImageManager");
 
   static final _tableName = "entity_image";
   static final _memoryCacheCapacity = 250;
   static final _imageCompressionQuality = 80;
   static final _thumbnailCompressionQuality = 50;
+
+  ImageManager(AppManager app) : _appManager = app;
 
   final AppManager _appManager;
 
@@ -68,7 +68,7 @@ class ImageManager {
   }
 
   /// Returns encoded image data with the given [fileName] at the given [size].
-  /// The an image of [size] does not exist in the cache, the full image is
+  /// If an image of [size] does not exist in the cache, the full image is
   /// returned.
   Future<Uint8List> image(BuildContext context, {
     @required String fileName,
