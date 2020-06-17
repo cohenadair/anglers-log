@@ -75,9 +75,11 @@ class _EntityListPageState<T> extends State<EntityListPage<T>> {
   _ViewingState _viewingState = _ViewingState.viewing;
   String _searchText;
 
+  bool get _viewing => _viewingState == _ViewingState.viewing;
   bool get _pickingMulti => _viewingState == _ViewingState.pickingMulti;
   bool get _pickingSingle => _viewingState == _ViewingState.pickingSingle;
   bool get _hasSearch => widget.searchDelegate != null;
+  bool get _hasDetailPage => widget.itemManager.detailPageBuilder != null;
   bool get _editable => widget.itemManager.editPageBuilder != null;
 
   @override
@@ -275,7 +277,7 @@ class _EntityListPageState<T> extends State<EntityListPage<T>> {
       deleteMessageBuilder: (context) =>
           widget.itemManager.deleteText(context, itemValue),
       onConfirmDelete: () => widget.itemManager.deleteItem(context, itemValue),
-      onTap: () {
+      onTap: _viewing && !_hasDetailPage && !_editing ? null : () {
         if (_pickingMulti && !_editing) {
           // Taps are consumed by trailing checkbox in this case.
           return;
