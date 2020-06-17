@@ -82,7 +82,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
   final Map<String, InputData> _fields = {};
   final Completer<GoogleMapController> _fishingSpotMapController = Completer();
 
-  Future<List<Uint8List>> _imagesFuture = Future.value([]);
+  Future<List<PickedImage>> _imagesFuture = Future.value([]);
 
   BaitCategoryManager get _baitCategoryManager =>
       BaitCategoryManager.of(context);
@@ -171,10 +171,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
       _fishingSpotController.value =
           _fishingSpotManager.entity(id: widget.oldCatch.fishingSpotId);
 
-      _imagesFuture = _imageManager.images(context,
-        entityId: widget.oldCatch.id,
-        size: galleryMaxThumbSize,
-      );
+      _imagesFuture = _pickedImagesForOldCatch;
     }
   }
 
@@ -326,17 +323,15 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
   }
 
   Widget _buildImages() {
-    return EmptyFutureBuilder<List<Uint8List>>(
+    return EmptyFutureBuilder<List<PickedImage>>(
       future: _imagesFuture,
       builder: (context, images) {
-        _imagesController.value = images.map((bytes) =>
-            PickedImage(thumbData: bytes)).toList();
-
         return ImageInput(
           initialImages: _imagesController.value ?? [],
-          onImagesPicked: (images) {
+          onImagesPicked: (pickedImages) {
             setState(() {
-              _imagesController.value = images;
+              _imagesController.value = pickedImages;
+              _imagesFuture = Future.value(_imagesController.value);
             });
           },
         );
@@ -379,5 +374,22 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
         Navigator.pop(context);
       },
     ));
+  }
+
+  /// Converts [oldCatch] images into a list of [PickedImage] objects to be
+  /// managed by the [ImageInput].
+  Future<List<PickedImage>> get _pickedImagesForOldCatch async {
+    if (widget.oldCatch == null) {
+      return Future.value([]);
+    }
+
+    List<Uint8List> bytesList = await _imageManager.images(context,
+      entityId: widget.oldCatch.id,
+      size: galleryMaxThumbSize,
+    );
+
+    _imagesController.value =
+        bytesList.map((bytes) => PickedImage(thumbData: bytes)).toList();
+    return _imagesController.value;
   }
 }
