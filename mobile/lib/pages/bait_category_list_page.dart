@@ -4,10 +4,13 @@ import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/model/bait_category.dart';
 import 'package:mobile/pages/entity_list_page.dart';
 import 'package:mobile/pages/save_bait_category_page.dart';
+import 'package:mobile/utils/string_utils.dart';
 import 'package:mobile/widgets/text.dart';
 
 class BaitCategoryListPage extends StatelessWidget {
   final bool Function(BuildContext, BaitCategory) onPicked;
+
+  BaitCategoryListPage() : onPicked = null;
 
   BaitCategoryListPage.picker({
     this.onPicked,
@@ -22,7 +25,8 @@ class BaitCategoryListPage extends StatelessWidget {
     return EntityListPage<BaitCategory>(
       title: _picking
           ? Text(Strings.of(context).baitCategoryListPagePickerTitle)
-          : Text(Strings.of(context).baitCategoryListPageTitle),
+          : Text(format(Strings.of(context).baitCategoryListPageTitle,
+              [baitCategoryManager.entityCount])),
       itemBuilder: (context, category) => ManageableListPageItemModel(
         child: PrimaryLabel(category.name),
       ),
@@ -38,7 +42,7 @@ class BaitCategoryListPage extends StatelessWidget {
           : null,
       itemManager: ManageableListPageItemManager<BaitCategory>(
         listenerManagers: [ baitCategoryManager ],
-        loadItems: (String query) =>
+        loadItems: (query) =>
             baitCategoryManager.entityListSortedByName(filter: query),
         deleteText: (context, category) =>
             Text(baitCategoryManager.deleteMessage(context, category)),

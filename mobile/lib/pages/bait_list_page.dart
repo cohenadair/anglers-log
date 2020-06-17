@@ -46,7 +46,7 @@ class _BaitListPageState extends State<BaitListPage> {
             ? Text(Strings.of(context).baitListPagePickerTitle)
             : Text(format(Strings.of(context).baitListPageTitle,
                 [_baitManager.entityCount])),
-        forceCenterTitle: true,
+        forceCenterTitle: !_picking,
         searchDelegate: ManageableListPageSearchDelegate(
           hint: Strings.of(context).baitListPageSearchHint,
           noResultsMessage: Strings.of(context).baitListPageNoSearchResults,

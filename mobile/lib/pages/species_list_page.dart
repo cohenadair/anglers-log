@@ -11,6 +11,8 @@ import 'package:mobile/widgets/text.dart';
 class SpeciesListPage extends StatelessWidget {
   final bool Function(BuildContext, Species) onPicked;
 
+  SpeciesListPage() : onPicked = null;
+
   SpeciesListPage.picker({
     this.onPicked,
   }) : assert(onPicked != null);
@@ -24,7 +26,9 @@ class SpeciesListPage extends StatelessWidget {
     return EntityListPage<Species>(
       title: _picking
           ? Text(Strings.of(context).speciesListPagePickerTitle)
-          : Text(Strings.of(context).speciesListPageTitle),
+          : Text(format(Strings.of(context).speciesListPageTitle,
+              [speciesManager.entityCount])),
+      forceCenterTitle: !_picking,
       itemBuilder: (context, species) => ManageableListPageItemModel(
         child: PrimaryLabel(species.name),
       ),
