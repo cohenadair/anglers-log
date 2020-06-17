@@ -266,7 +266,7 @@ class _EntityListPageState<T> extends State<EntityListPage<T>> {
         },
       );
     } else if (_pickingSingle || widget.itemManager.detailPageBuilder == null) {
-      // Don't know detail disclosure indicator if we're picking a single
+      // Don't show detail disclosure indicator if we're picking a single
       // value, or if there isn't any detail to show.
       trailing = Empty();
     }
