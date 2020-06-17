@@ -65,6 +65,16 @@ class _PhotoState extends State<Photo> {
   }
 
   @override
+  void didUpdateWidget(Photo oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    // Reload image if it changed.
+    if (oldWidget.fileName != widget.fileName) {
+      _imageFuture = _decodeImage();
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return FutureBuilder<ui.Image>(
       future: _imageFuture,
