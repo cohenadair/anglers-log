@@ -330,7 +330,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
       future: _imagesFuture,
       builder: (context, images) {
         _imagesController.value = images.map((bytes) =>
-            PickedImage(thumbData: bytes));
+            PickedImage(thumbData: bytes)).toList();
 
         return ImageInput(
           initialImages: _imagesController.value ?? [],
