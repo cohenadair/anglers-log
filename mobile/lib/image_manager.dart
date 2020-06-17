@@ -153,6 +153,13 @@ class ImageManager {
     List<EntityImage> dbImages = [];
 
     for (var file in files) {
+      // This can happen if an entity is edited, but the images associated with
+      // that entity didn't change. In these cases, there are no "files" to
+      // copy, but we don't want to clear the entity's images.
+      if (file == null) {
+        continue;
+      }
+
       // If the file already exists in the app's sandbox, don't copy it again.
       if (file.path.contains(_delegate.imagePath) && await file.exists()) {
         _log.d("File exists, nothing to do");
