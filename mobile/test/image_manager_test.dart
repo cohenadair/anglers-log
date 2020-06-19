@@ -284,6 +284,11 @@ void main() {
     expect(_imageManager.imageNames(entityId: "ID").length, 2);
   });
 
+  test("Null image files are skipped when saving", () async {
+    await _imageManager.save("1", [null, null]);
+    verifyNever(_dataManager.commitBatch(any));
+  });
+
   test("Saving an empty list does nothing if entity ID doesn't have any "
       "associated images", () async
   {
