@@ -14,73 +14,62 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   int _currentBarItem = 0;
+  List<_BarItemData> _navItems;
 
-  // Keep reference to states so navigation stack is persisted when switching
-  // tabs.
-  List<GlobalKey<NavigatorState>> _navStates = [
-    GlobalKey<NavigatorState>(),
-    GlobalKey<NavigatorState>(),
-    GlobalKey<NavigatorState>(),
-    GlobalKey<NavigatorState>(),
-    GlobalKey<NavigatorState>(),
-  ];
+  NavigatorState get _currentNavState =>
+      _navItems[_currentBarItem].page.navigatorKey.currentState;
 
-  List<_BarItemData> get _navItems => [
-    _BarItemData(
-      page: _NavigatorPage(
-        navigatorKey: _navStates[0],
-        builder: (BuildContext context) => PhotosPage(),
-      ),
-      barItem: BottomNavigationBarItem(
-        icon: Icon(Icons.photo_library),
-        title: Text(Strings.of(context).photosPageMenuLabel),
-      ),
-    ),
+  @override
+  void initState() {
+    super.initState();
 
-    _BarItemData(
-      page: _NavigatorPage(
-        navigatorKey: _navStates[1],
-        builder: (BuildContext context) => CatchListPage(),
+    _navItems = [
+      _BarItemData(
+        page: _NavigatorPage(
+          navigatorKey: GlobalKey<NavigatorState>(),
+          builder: (BuildContext context) => PhotosPage(),
+        ),
+        icon: Icons.photo_library,
+        titleBuilder: (context) => Strings.of(context).photosPageMenuLabel,
       ),
-      barItem: BottomNavigationBarItem(
-        icon: Icon(CustomIcons.catches),
-        title: Text(Strings.of(context).catchListPageMenuLabel),
-      ),
-    ),
 
-    _BarItemData(
-      page: _NavigatorPage(
-        navigatorKey: _navStates[2],
-        builder: (BuildContext context) => MapPage(),
+      _BarItemData(
+        page: _NavigatorPage(
+          navigatorKey: GlobalKey<NavigatorState>(),
+          builder: (BuildContext context) => CatchListPage(),
+        ),
+        icon: CustomIcons.catches,
+        titleBuilder: (context) => Strings.of(context).catchListPageMenuLabel,
       ),
-      barItem: BottomNavigationBarItem(
-        icon: Icon(Icons.map),
-        title: Text(Strings.of(context).mapPageMenuLabel),
-      ),
-    ),
 
-    _BarItemData(
-      page: _NavigatorPage(
-        navigatorKey: _navStates[3],
-        builder: (BuildContext context) => StatsPage(),
+      _BarItemData(
+        page: _NavigatorPage(
+          navigatorKey: GlobalKey<NavigatorState>(),
+          builder: (BuildContext context) => MapPage(),
+        ),
+        icon: Icons.map,
+        titleBuilder: (context) => Strings.of(context).mapPageMenuLabel,
       ),
-      barItem: BottomNavigationBarItem(
-        icon: Icon(Icons.show_chart),
-        title: Text(Strings.of(context).statsPageTitle),
-      ),
-    ),
 
-    _BarItemData(
-      page: _NavigatorPage(
-        navigatorKey: _navStates[4],
-        builder: (BuildContext context) => MorePage(),
+      _BarItemData(
+        page: _NavigatorPage(
+          navigatorKey: GlobalKey<NavigatorState>(),
+          builder: (BuildContext context) => StatsPage(),
+        ),
+        icon: Icons.show_chart,
+        titleBuilder: (context) => Strings.of(context).statsPageTitle,
       ),
-      barItem: BottomNavigationBarItem(
-        icon: Icon(Icons.more_horiz),
-        title: Text(Strings.of(context).morePageTitle),
+
+      _BarItemData(
+        page: _NavigatorPage(
+          navigatorKey: GlobalKey<NavigatorState>(),
+          builder: (BuildContext context) => MorePage(),
+        ),
+        icon: Icons.more_horiz,
+        titleBuilder: (context) => Strings.of(context).morePageTitle,
       ),
-    ),
-  ];
+    ];
+  }
 
   Widget build(BuildContext context) {
     final navItems = _navItems;
@@ -88,8 +77,7 @@ class _MainPageState extends State<MainPage> {
     return WillPopScope(
       // Ensure clicking the Android physical back button closes a pushed page
       // rather than the entire app, if possible.
-      onWillPop: () async =>
-          !await _navStates[_currentBarItem].currentState.maybePop(),
+      onWillPop: () async => !await _currentNavState.maybePop(),
       child: Scaffold(
         // An IndexedStack is an easy way to persist state when switching
         // between pages.
@@ -100,12 +88,14 @@ class _MainPageState extends State<MainPage> {
         bottomNavigationBar: BottomNavigationBar(
           currentIndex: _currentBarItem,
           type: BottomNavigationBarType.fixed,
-          items: navItems.map((_BarItemData data) => data.barItem).toList(),
+          items: navItems.map((_BarItemData data) => BottomNavigationBarItem(
+            icon: Icon(data.icon),
+            title: Text(data.titleBuilder(context)),
+          )).toList(),
           onTap: (index) {
             if (_currentBarItem == index) {
               // Reset navigation stack if already on the current item.
-              _navStates[_currentBarItem].currentState
-                  .popUntil((r) => r.isFirst);
+              _currentNavState.popUntil((r) => r.isFirst);
             } else {
               setState(() {
                 _currentBarItem = index;
@@ -120,12 +110,16 @@ class _MainPageState extends State<MainPage> {
 
 class _BarItemData {
   final _NavigatorPage page;
-  final BottomNavigationBarItem barItem;
+  final String Function(BuildContext) titleBuilder;
+  final IconData icon;
 
   _BarItemData({
     @required this.page,
-    @required this.barItem,
-  });
+    @required this.titleBuilder,
+    @required this.icon,
+  }) : assert(page != null),
+       assert(titleBuilder!= null),
+       assert(icon != null);
 }
 
 /// A page with its own [Navigator]. Meant to be used in combination with a
