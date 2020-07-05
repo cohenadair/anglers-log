@@ -1,8 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:mobile/custom_entity_manager.dart';
+import 'package:mobile/entity_manager.dart';
 import 'package:mobile/i18n/strings.dart';
-import 'package:mobile/model/custom_entity.dart';
 import 'package:mobile/pages/picker_page.dart';
 import 'package:mobile/pages/save_custom_entity_page.dart';
 import 'package:mobile/res/dimen.dart';
@@ -64,6 +65,8 @@ class FormPageFieldOption {
 /// Widgets using the [FormPage] widget are responsible for tracking field input
 /// values and input validation.
 class FormPage extends StatefulWidget {
+  static IconData moreMenuIcon = Icons.more_vert;
+
   /// See [AppBar.title].
   final Widget title;
 
@@ -169,7 +172,7 @@ class _FormPageState extends State<FormPage> {
             condensed: widget.editable,
           )),
           widget.editable ? PopupMenuButton<_OverflowOption>(
-            icon: Icon(Icons.more_vert),
+            icon: Icon(FormPage.moreMenuIcon),
             itemBuilder: (context) => [
               PopupMenuItem<_OverflowOption>(
                 value: _OverflowOption.manageFields,
@@ -247,46 +250,94 @@ class _SelectionPage extends StatefulWidget {
 }
 
 class _SelectionPageState extends State<_SelectionPage> {
-  List<CustomEntity> _addedCustomFields = [];
+  CustomEntityManager get entityManager => CustomEntityManager.of(context);
+
+  IconData get _addItemIconData => Icons.add;
 
   @override
   Widget build(BuildContext context) {
-    List<FormPageFieldOption> options = allOptions;
-    Set<FormPageFieldOption> used = options.where((e) => e.used).toSet();
+    return EntityListenerBuilder(
+      managers: [entityManager],
+      builder: (context) {
+        List<PickerPageItem> items = pickerItems;
+        Set<FormPageFieldOption> used = items
+            .where((item) => item.value is FormPageFieldOption
+                && item.value.used)
+            .map((item) => item.value as FormPageFieldOption)
+            .toSet();
 
-    return PickerPage<FormPageFieldOption>(
-      title: Text(Strings.of(context).formPageSelectFieldsTitle),
-      initialValues: used,
-      itemBuilder: () => options.map((o) =>
-          PickerPageItem<FormPageFieldOption>(
-            title: o.userFacingName,
-            value: o,
-            enabled: o.removable,
-          )).toList(),
-      onFinishedPicking: (context, options) {
-        widget.onSelectItems(options.map((o) => o.id).toSet());
-        Navigator.pop(context);
-      },
-      action: IconButton(
-        icon: Icon(Icons.add),
-        onPressed: () => present(context, SaveCustomEntityPage(
-          onSave: (customField) {
-            setState(() {
-              _addedCustomFields.add(customField);
-            });
+        return PickerPage(
+          title: Text(Strings.of(context).formPageSelectFieldsTitle),
+          initialValues: used,
+          itemBuilder: () => items,
+          onFinishedPicking: (context, items) {
+            widget.onSelectItems(items.map((item) =>
+                (item as FormPageFieldOption).id).toSet());
+            Navigator.pop(context);
           },
-        ),
-      ),
-    ));
+          action: IconButton(
+            icon: Icon(_addItemIconData),
+            onPressed: () => present(context, SaveCustomEntityPage()),
+          ),
+        );
+      },
+    );
   }
 
-  List<FormPageFieldOption> get allOptions {
-    return []..addAll(widget.options)
-      ..addAll(_addedCustomFields.map((CustomEntity field) {
-        return FormPageFieldOption(
-          id: field.id,
-          userFacingName: field.name,
-        );
-      }));
+  List<PickerPageItem> get pickerItems {
+    List<PickerPageItem> result = [];
+
+    // Split custom fields and normal fields that are already included in the
+    // form.
+    List<FormPageFieldOption> customFields = [];
+    List<FormPageFieldOption> normalFields = [];
+    for (var option in widget.options) {
+      if (entityManager.entity(id: option.id) == null) {
+        normalFields.add(option);
+      } else {
+        customFields.add(option);
+      }
+    }
+
+    // Add included field options.
+    result.addAll(normalFields.map((o) => PickerPageItem<FormPageFieldOption>(
+      title: o.userFacingName,
+      value: o,
+      enabled: o.removable,
+    )));
+
+    // Add custom field separator/title.
+    result..add(PickerPageItem.heading(Strings.of(context).customFields));
+
+    // Add customs fields that aren't already part of the form.
+    for (var entity in entityManager.entityList) {
+      if (customFields.firstWhere((field) => field.id == entity.id,
+          orElse: () => null) == null)
+      {
+        customFields.add(FormPageFieldOption(
+          id: entity.id,
+          userFacingName: entity.name,
+        ));
+      }
+    }
+
+    // Ensure alphabetical order.
+    customFields.sort((a, b) => a.userFacingName.compareTo(b.userFacingName));
+
+    // If there are no custom fields, show a note on how to add them.
+    if (customFields.isEmpty) {
+      result.add(PickerPageItem.note(
+        Strings.of(context).formPageItemAddCustomFieldNote,
+        noteIcon: _addItemIconData,
+      ));
+    }
+
+    result.addAll(customFields.map((field) =>
+        PickerPageItem<FormPageFieldOption>(
+          title: field.userFacingName,
+          value: field,
+        )));
+
+    return result;
   }
 }

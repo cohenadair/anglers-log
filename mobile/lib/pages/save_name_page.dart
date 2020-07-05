@@ -41,14 +41,14 @@ class _SaveNamePageState extends State<SaveNamePage> {
   );
 
   bool get inputEqualsOld => widget.oldName != null
-      && isEqualTrimmedLowercase(widget.oldName, _controller.text);
+      && isEqualTrimmedLowercase(widget.oldName, _controller.value);
 
   @override
   void initState() {
     super.initState();
 
     if (isNotEmpty(widget.oldName)) {
-      _controller.text = widget.oldName;
+      _controller.value = widget.oldName;
 
       // If editing an old name, that old name is valid.
       _controller.validate = null;
@@ -66,7 +66,7 @@ class _SaveNamePageState extends State<SaveNamePage> {
           return true;
         }
 
-        if (widget.onSave == null || widget.onSave(_controller.text)) {
+        if (widget.onSave == null || widget.onSave(_controller.value)) {
           return true;
         }
 

@@ -6,6 +6,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mobile/bait_category_manager.dart';
 import 'package:mobile/bait_manager.dart';
 import 'package:mobile/catch_manager.dart';
+import 'package:mobile/custom_entity_value_manager.dart';
 import 'package:mobile/entity_manager.dart';
 import 'package:mobile/fishing_spot_manager.dart';
 import 'package:mobile/i18n/strings.dart';
@@ -13,6 +14,7 @@ import 'package:mobile/image_manager.dart';
 import 'package:mobile/log.dart';
 import 'package:mobile/model/bait.dart';
 import 'package:mobile/model/catch.dart';
+import 'package:mobile/model/custom_entity_value.dart';
 import 'package:mobile/model/fishing_spot.dart';
 import 'package:mobile/model/species.dart';
 import 'package:mobile/pages/add_catch_journey.dart';
@@ -21,6 +23,7 @@ import 'package:mobile/pages/editable_form_page.dart';
 import 'package:mobile/pages/fishing_spot_picker_page.dart';
 import 'package:mobile/pages/image_picker_page.dart';
 import 'package:mobile/pages/species_list_page.dart';
+import 'package:mobile/preferences_manager.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/species_manager.dart';
 import 'package:mobile/utils/map_utils.dart';
@@ -83,13 +86,17 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
   final Completer<GoogleMapController> _fishingSpotMapController = Completer();
 
   Future<List<PickedImage>> _imagesFuture = Future.value([]);
+  List<CustomEntityValue> _customEntityValues = [];
 
   BaitCategoryManager get _baitCategoryManager =>
       BaitCategoryManager.of(context);
   BaitManager get _baitManager => BaitManager.of(context);
   CatchManager get _catchManager => CatchManager.of(context);
+  CustomEntityValueManager get _entityValueManager =>
+      CustomEntityValueManager.of(context);
   FishingSpotManager get _fishingSpotManager => FishingSpotManager.of(context);
   ImageManager get _imageManager => ImageManager.of(context);
+  PreferencesManager get _preferencesManager => PreferencesManager.of(context);
   SpeciesManager get _speciesManager => SpeciesManager.of(context);
 
   TimestampInputController get _timestampController =>
@@ -172,6 +179,8 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
           _fishingSpotManager.entity(id: widget.oldCatch.fishingSpotId);
 
       _imagesFuture = _pickedImagesForOldCatch;
+      _customEntityValues =
+          _entityValueManager.values(entityId: widget.oldCatch.id);
     }
   }
 
@@ -184,6 +193,8 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
       runSpacing: 0,
       padding: insetsZero,
       fields: _fields,
+      customEntityIds: _preferencesManager.catchCustomEntityIds,
+      customEntityValues: _customEntityValues,
       onBuildField: (id) => _buildField(id),
       onSave: _save,
     );
@@ -339,7 +350,10 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
     );
   }
 
-  FutureOr<bool> _save(Map<String, InputData> result) {
+  FutureOr<bool> _save(Map<String, dynamic> customFieldValueMap) {
+    _preferencesManager.catchCustomEntityIds =
+        customFieldValueMap.keys.toList();
+
     Catch cat = Catch(
       id: widget.oldCatch?.id,
       timestamp: _timestampController.value,
@@ -352,12 +366,15 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
       fishingSpot: _fields[_fishingSpotKey].controller.value,
       imageFiles: _imagesController.value.map((img) => img.originalFile)
           .toList(),
+      customEntityValues: CustomEntityValue.listFromIdValueMap(cat.id,
+          EntityType.fishCatch, customFieldValueMap),
     );
 
     if (widget.popOverride != null) {
       widget.popOverride();
       return false;
     }
+
     return true;
   }
 

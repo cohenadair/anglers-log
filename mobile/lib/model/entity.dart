@@ -7,7 +7,7 @@ import 'package:uuid/uuid.dart';
 /// An [Entity] stores a collection of manageable properties. An [Entity] is
 /// designed to store business logic data only; nothing UI related.
 @immutable
-class Entity implements Mappable {
+class Entity {
   static const keyId = "id";
 
   static List<Property> _propertyList(String id) => [
@@ -38,7 +38,7 @@ class Entity implements Mappable {
   Map<String, dynamic> toMap() {
     Map<String, dynamic> result = {};
     for (Property property in propertyList) {
-      result[property.key] = property.value;
+      result[property.key] = property.dbValue;
     }
     return result;
   }

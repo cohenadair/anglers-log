@@ -4,17 +4,15 @@ import 'package:mobile/widgets/input_type.dart';
 import 'package:quiver/core.dart';
 import 'package:quiver/strings.dart';
 
-abstract class Mappable {
-  Map<String, dynamic> toMap();
-}
-
-/// A [Property] represents a single element of an [Entity]. A [Property] is
-/// saved to the database and is restricted to the following types:
+/// A [Property] represents a single element of an [Entity] object. A
+/// [Property] is saved to the database and is restricted to the following
+/// types:
 ///   - int
 ///   - double
 ///   - String
 ///   - bool
 ///   - [InputType]
+///   - [BaitType]
 @immutable
 class Property<T> {
   /// The column name in the local database.
@@ -33,6 +31,17 @@ class Property<T> {
        assert(value == null || value is int || value is double
            || value is String || value is bool || value is InputType
            || value is BaitType);
+
+  /// Returns [value] as a valid SQLite database data type.
+  dynamic get dbValue {
+    if (value is InputType) {
+      return (value as InputType).index;
+    } else if (value is BaitType) {
+      return (value as BaitType).index;
+    } else {
+      return value;
+    }
+  }
 
   @override
   bool operator ==(other) => other is Property<T>

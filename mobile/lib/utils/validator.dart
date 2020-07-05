@@ -56,7 +56,7 @@ class NameValidator implements Validator {
 class DoubleValidator implements Validator {
   @override
   ValidationCallback run(BuildContext context, String newValue) {
-    if (double.tryParse(newValue) == null) {
+    if (isNotEmpty(newValue) && double.tryParse(newValue) == null) {
       return (context) => Strings.of(context).inputInvalidNumber;
     }
     return null;

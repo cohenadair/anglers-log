@@ -11,12 +11,13 @@ class CustomEntity extends NamedEntity {
   static const String _keyDescription = "description";
   static const String _keyType = "type";
 
-  static List<Property> _propertyList(String description, String type) => [
+  static List<Property> _propertyList(String description, InputType type) => [
     Property<String>(key: _keyDescription, value: description),
-    Property<String>(key: _keyType, value: type),
+    Property<InputType>(key: _keyType, value: type),
   ];
 
   CustomEntity({
+    String id,
     @required String name,
     String description,
     @required InputType type,
@@ -24,10 +25,14 @@ class CustomEntity extends NamedEntity {
        super(properties: [
          Property<String>(key: _keyDescription, value: description),
          Property<InputType>(key: _keyType, value: type),
-       ], name: name);
+       ], name: name, id: id);
 
   CustomEntity.fromMap(Map<String, dynamic> map) : super.fromMap(map,
-      properties: _propertyList(map[_keyDescription], map[_keyType]));
+      properties: _propertyList(
+        map[_keyDescription],
+        map[_keyType] >= InputType.values.length
+            ? InputType.text : InputType.values[map[_keyType]],
+      ));
 
   String get description =>
       (propertyWithName(_keyDescription) as Property<String>).value;

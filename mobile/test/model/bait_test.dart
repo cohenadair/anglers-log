@@ -28,7 +28,7 @@ void main() {
     expect(map[Bait.keyColor], "Red");
     expect(map[Bait.keyModel], "CD37");
     expect(map[Bait.keySize], "8");
-    expect(map[Bait.keyType], BaitType.artificial);
+    expect(map[Bait.keyType], 0);
     expect(map[Bait.keyMinDiveDepth], 5.0);
     expect(map[Bait.keyMaxDiveDepth], 9.0);
     expect(map[Bait.keyDescription], "Crazy action. Good for dirty water.");

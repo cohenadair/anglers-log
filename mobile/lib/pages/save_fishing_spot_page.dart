@@ -35,7 +35,7 @@ class _SaveFishingSpotPageState extends State<SaveFishingSpotPage> {
   @override
   void initState() {
     super.initState();
-    _nameController.text = widget.oldFishingSpot.name;
+    _nameController.value = widget.oldFishingSpot.name;
   }
 
   @override
@@ -51,7 +51,8 @@ class _SaveFishingSpotPageState extends State<SaveFishingSpotPage> {
         FishingSpot newFishingSpot = FishingSpot(
           lat: widget.oldFishingSpot.lat,
           lng: widget.oldFishingSpot.lng,
-          name: isNotEmpty(_nameController.text) ? _nameController.text : null,
+          name: isNotEmpty(_nameController.value)
+              ? _nameController.value : null,
           id: widget.oldFishingSpot.id,
         );
 

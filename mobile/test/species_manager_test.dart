@@ -1,6 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/app_manager.dart';
 import 'package:mobile/catch_manager.dart';
+import 'package:mobile/data_manager.dart';
 import 'package:mobile/model/catch.dart';
 import 'package:mobile/model/species.dart';
 import 'package:mobile/species_manager.dart';
@@ -8,10 +9,12 @@ import 'package:mockito/mockito.dart';
 
 class MockAppManager extends Mock implements AppManager {}
 class MockCatchManager extends Mock implements CatchManager {}
+class MockDataManager extends Mock implements DataManager {}
 
 void main() {
   MockAppManager appManager;
   MockCatchManager catchManager;
+  MockDataManager dataManager;
 
   SpeciesManager speciesManager;
 
@@ -20,6 +23,10 @@ void main() {
 
     catchManager = MockCatchManager();
     when(appManager.catchManager).thenReturn(catchManager);
+
+    dataManager = MockDataManager();
+    when(appManager.dataManager).thenReturn(dataManager);
+    when(dataManager.addListener(any)).thenAnswer((_) {});
 
     speciesManager = SpeciesManager(appManager);
   });

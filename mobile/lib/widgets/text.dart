@@ -37,6 +37,55 @@ class HeadingLabel extends StatelessWidget {
   }
 }
 
+class NoteLabel extends StatelessWidget {
+  static TextStyle style(BuildContext context) =>
+      Theme.of(context).textTheme.subtitle1.copyWith(
+        fontStyle: FontStyle.italic,
+      );
+
+  final String text;
+
+  NoteLabel(this.text);
+
+  @override
+  Widget build(BuildContext context) {
+    return Label(
+      text,
+      style: style(context),
+    );
+  }
+}
+
+/// A note widget that inserts an [Icon] into a [String]. The given [String]
+/// can only have a single "%s" substitution.
+class IconNoteLabel extends StatelessWidget {
+  final String text;
+  final Icon icon;
+
+  IconNoteLabel({
+    this.text,
+    this.icon,
+  }) : assert(text.split("%s").length == 2);
+
+  @override
+  Widget build(BuildContext context) {
+    List<String> strings = text.split("%s");
+
+    return RichText(
+      text: TextSpan(
+        children: [
+          TextSpan(text: strings.first, style: NoteLabel.style(context)),
+          WidgetSpan(
+            child: icon,
+            alignment: PlaceholderAlignment.middle,
+          ),
+          TextSpan(text: strings.last, style: NoteLabel.style(context)),
+        ],
+      ),
+    );
+  }
+}
+
 /// Text that matches the primary label in a [ListTile].
 class PrimaryLabel extends StatelessWidget {
   final String text;

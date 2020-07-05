@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:mobile/app_manager.dart';
 import 'package:mobile/bait_category_manager.dart';
 import 'package:mobile/catch_manager.dart';
+import 'package:mobile/custom_entity_value_manager.dart';
 import 'package:mobile/entity_manager.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/model/bait.dart';
 import 'package:mobile/model/bait_category.dart';
+import 'package:mobile/model/custom_entity_value.dart';
 import 'package:mobile/named_entity_manager.dart';
 import 'package:mobile/utils/string_utils.dart';
 import 'package:provider/provider.dart';
@@ -25,12 +27,23 @@ class BaitManager extends NamedEntityManager<Bait> {
   BaitCategoryManager get _baitCategoryManager =>
       appManager.baitCategoryManager;
   CatchManager get _catchManager => appManager.catchManager;
+  CustomEntityValueManager get _entityValueManager =>
+      appManager.customEntityValueManager;
 
   @override
   Bait entityFromMap(Map<String, dynamic> map) => Bait.fromMap(map);
 
   @override
   String get tableName => "bait";
+
+  @override
+  Future<bool> addOrUpdate(Bait bait, {
+    List<CustomEntityValue> customEntityValues = const [],
+    bool notify = true,
+  }) async {
+    await _entityValueManager.setValues(bait.id, customEntityValues);
+    return super.addOrUpdate(bait, notify: notify);
+  }
 
   /// Returns true if the given [Bait] is a duplicate of an existing bait.
   /// [Bait.isDuplicateOf] is called on each existing bait.

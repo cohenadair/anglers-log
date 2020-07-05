@@ -5,9 +5,9 @@ import 'package:mobile/widgets/checkbox_input.dart';
 import 'package:mobile/widgets/list_item.dart';
 import 'package:mobile/widgets/text.dart';
 import 'package:mobile/widgets/widget.dart';
+import 'package:quiver/strings.dart';
 
 /// A generic picker page for selecting a single or multiple items from a list.
-/// Includes the
 ///
 /// Note that a [Set] is used to determine which items are selected, and as
 /// such, `T` must override `==`.
@@ -35,8 +35,9 @@ class PickerPage<T> extends StatefulWidget {
   final PickerPageItem<T> allItem;
 
   /// All items that can be selected. Dividers can be added between items by
-  /// using [PickerPageItem.divider]. This function will be invoked
-  /// whenever the picker list needs to be rebuilt, such as when an item is
+  /// using [PickerPageItem.divider]. Headings can be added between items by
+  /// using [PickerPageItem.heading]. This function will be invoked whenever
+  /// the picker list needs to be rebuilt, such as when an item is
   /// added to the list.
   final List<PickerPageItem<T>> Function() itemBuilder;
 
@@ -124,7 +125,27 @@ class _PickerPageState<T> extends State<PickerPage<T>> {
         ),
       ]..addAll(items.map((item) {
         if (item._divider) {
-          return Divider();
+          return MinDivider();
+        }
+
+        if (item._heading) {
+          return Padding(
+            padding: EdgeInsets.only(
+              bottom: paddingWidget,
+            ),
+            child: HeadingDivider(item.title),
+          );
+        }
+
+        if (item._note) {
+          return Padding(
+            padding: insetsHorizontalDefault,
+            child: item.noteIcon == null
+                ? NoteLabel(item.title)
+                : IconNoteLabel(text: item.title, icon: Icon(item.noteIcon,
+                    color: Colors.black,
+                  )),
+          );
         }
 
         VoidCallback onTap;
@@ -190,15 +211,44 @@ class PickerPageItem<T> {
   final String subtitle;
   final bool enabled;
   final T value;
+  final IconData noteIcon;
 
   final bool _divider;
+  final bool _heading;
+  final bool _note;
 
   PickerPageItem.divider()
       : value = null,
         title = null,
         subtitle = null,
         enabled = false,
-        _divider = true;
+        noteIcon = null,
+        _divider = true,
+        _heading = false,
+        _note = false;
+
+  PickerPageItem.heading(this.title)
+      : assert(isNotEmpty(title)),
+        value = null,
+        subtitle = null,
+        enabled = false,
+        noteIcon = null,
+        _divider = false,
+        _heading = true,
+        _note = false;
+
+  /// When used, a [NoteLabel] widget is rendered. This is normally used after
+  /// to give an explanation as to why there are no items to show beneath a
+  /// [PickerPageItem.heading].
+  PickerPageItem.note(this.title, {
+    this.noteIcon,
+  }): assert(isNotEmpty(title)),
+      value = null,
+      subtitle = null,
+      enabled = false,
+      _divider = false,
+      _heading = false,
+      _note = true;
 
   PickerPageItem({
     @required this.title,
@@ -207,5 +257,8 @@ class PickerPageItem<T> {
     this.enabled = true,
   }) : assert(value != null),
        assert(title != null),
-       _divider = false;
+       noteIcon = null,
+       _divider = false,
+       _heading = false,
+       _note = false;
 }

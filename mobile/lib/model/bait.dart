@@ -4,6 +4,8 @@ import 'package:mobile/model/property.dart';
 import 'package:quiver/core.dart';
 import 'package:quiver/strings.dart';
 
+// Do not change order of enum values as their ordinal number is recorded in the
+// database.
 enum BaitType {
   artificial, live, real
 }

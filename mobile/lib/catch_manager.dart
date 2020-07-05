@@ -3,12 +3,14 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:mobile/app_manager.dart';
 import 'package:mobile/bait_manager.dart';
+import 'package:mobile/custom_entity_value_manager.dart';
 import 'package:mobile/entity_manager.dart';
 import 'package:mobile/fishing_spot_manager.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/image_manager.dart';
 import 'package:mobile/model/bait.dart';
 import 'package:mobile/model/catch.dart';
+import 'package:mobile/model/custom_entity_value.dart';
 import 'package:mobile/model/fishing_spot.dart';
 import 'package:mobile/model/species.dart';
 import 'package:mobile/species_manager.dart';
@@ -31,6 +33,8 @@ class CatchManager extends EntityManager<Catch> {
   }
 
   BaitManager get _baitManager => appManager.baitManager;
+  CustomEntityValueManager get _entityValueManager =>
+      appManager.customEntityValueManager;
   FishingSpotManager get _fishingSpotManager => appManager.fishingSpotManager;
   ImageManager get _imageManager => appManager.imageManager;
   SpeciesManager get _speciesManager => appManager.speciesManager;
@@ -62,6 +66,7 @@ class CatchManager extends EntityManager<Catch> {
   Future<bool> addOrUpdate(Catch cat, {
     FishingSpot fishingSpot,
     List<File> imageFiles,
+    List<CustomEntityValue> customEntityValues = const [],
     bool compressImages = true,
     bool notify = true,
   }) async {
@@ -72,6 +77,8 @@ class CatchManager extends EntityManager<Catch> {
     }
 
     await _imageManager.save(cat.id, imageFiles, compress: compressImages);
+    await _entityValueManager.setValues(cat.id, customEntityValues);
+
     return super.addOrUpdate(cat, notify: notify);
   }
 

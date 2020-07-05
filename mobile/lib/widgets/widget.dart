@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/res/color.dart';
 import 'package:mobile/res/dimen.dart';
+import 'package:mobile/widgets/text.dart';
 
 const defaultAnimationDuration = Duration(milliseconds: 200);
 
@@ -15,6 +16,30 @@ class MinDivider extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Divider(height: 1);
+  }
+}
+
+class HeadingDivider extends StatelessWidget {
+  final String text;
+
+  HeadingDivider(this.text);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        MinDivider(),
+        Padding(
+          padding: EdgeInsets.only(
+            top: paddingWidget,
+            left: paddingDefault,
+            right: paddingDefault,
+          ),
+          child: HeadingLabel(text),
+        ),
+      ],
+    );
   }
 }
 

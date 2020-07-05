@@ -4,6 +4,8 @@ import 'package:mobile/widgets/checkbox_input.dart';
 import 'package:mobile/widgets/input_controller.dart';
 import 'package:mobile/widgets/text_input.dart';
 
+// Do not change order of enum values as their ordinal number is recorded in the
+// database.
 enum InputType {
   number, boolean, text
 }
@@ -28,7 +30,7 @@ InputController inputTypeController(InputType fieldType) {
     case InputType.number:
       return TextInputController();
     case InputType.boolean:
-      return InputController();
+      return InputController<bool>();
   }
 
   // To remove static warning.
@@ -43,7 +45,7 @@ Widget inputTypeWidget(BuildContext context, {
   String label,
   InputController controller,
   Function(bool) onCheckboxChanged,
-  bool enabled = false,
+  bool enabled = true,
 }) {
   TextInputController textController = controller is TextInputController
       ? controller : null;
@@ -57,11 +59,12 @@ Widget inputTypeWidget(BuildContext context, {
     );
     case InputType.boolean: return CheckboxInput(
       label: label,
-      value: controller.value is bool ? controller : false,
+      value: controller.value is bool ? controller.value : false,
       onChanged: onCheckboxChanged,
       enabled: enabled,
     );
     case InputType.text: return TextInput(
+      capitalization: TextCapitalization.sentences,
       label: label,
       initialValue: null,
       controller: textController,

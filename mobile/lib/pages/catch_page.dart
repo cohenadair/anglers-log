@@ -59,6 +59,7 @@ class _CatchPageState extends State<CatchPage> {
       // When deleted, we pop immediately. Don't reload; catch will be null.
       onDeleteEnabled: false,
       builder: (context) => EntityPage(
+        entityId: _catch.id,
         padding: insetsZero,
         onEdit: () => present(context, SaveCatchPage.edit(_catch)),
         onDelete: () => _catchManager.delete(_catch),

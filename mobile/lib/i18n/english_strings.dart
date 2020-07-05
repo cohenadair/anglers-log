@@ -27,6 +27,7 @@ Map<String, Map<String, String>> get englishStrings => {
     "latLng_noLabels" : "%s, %s",
     "add" : "Add",
     "more" : "More",
+    "customFields" : "Custom Fields",
 
     "fieldType_number" : "Number",
     "fieldType_boolean" : "Checkbox",
@@ -120,9 +121,16 @@ Map<String, Map<String, String>> get englishStrings => {
     "formPage_confirmRemoveField" : "Remove 1 Field",
     "formPage_confirmRemoveFields" : "Remove %s Fields",
     "formPage_selectFieldsTitle" : "Select Fields",
+    "formPage_addCustomFieldNote" : "To add a custom field, tap the %s icon.",
 
     "saveCustomEntityPage_newTitle" : "New Field",
+    "saveCustomEntityPage_editTitle" : "Edit Field",
     "saveCustomEntityPage_nameExists" : "Field name already exists",
+
+    "customEntityListPage_title": "Custom Fields (%s)",
+    "customEntityListPage_delete" : "The custom field %s will no longer be associated with catches (%s) or baits (%s), are you sure you want to delete it? This cannot be undone.",
+    "customEntityListPage_searchHint" : "Search fields",
+    "customEntityListPage_noSearchResults" : "No custom fields found",
 
     "imagePickerPage_noPhotosFound" : "No photos found",
     "imagePickerPage_openCameraLabel" : "Open Camera",

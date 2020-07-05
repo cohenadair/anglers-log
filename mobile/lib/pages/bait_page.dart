@@ -45,9 +45,9 @@ class _BaitPageState extends State<BaitPage> {
       // When deleted, we pop immediately. Don't reload; bait will be null.
       onDeleteEnabled: false,
       builder: (context) => EntityPage(
+        entityId: _bait.id,
         padding: EdgeInsets.only(
           top: paddingDefault,
-          right: paddingDefault,
           bottom: paddingDefault,
         ),
         static: widget.static,
@@ -56,7 +56,7 @@ class _BaitPageState extends State<BaitPage> {
         deleteMessage: _baitManager.deleteMessage(context, _bait),
         children: [
           isNotEmpty(_bait.categoryId) ? Padding(
-            padding: insetsLeftDefault,
+            padding: insetsHorizontalDefault,
             child: HeadingLabel(_category.name),
           ) : Empty(),
           TitleLabel(_bait.name),

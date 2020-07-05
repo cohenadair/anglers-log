@@ -3,13 +3,16 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:mobile/bait_category_manager.dart';
 import 'package:mobile/bait_manager.dart';
+import 'package:mobile/custom_entity_value_manager.dart';
 import 'package:mobile/entity_manager.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/log.dart';
 import 'package:mobile/model/bait.dart';
 import 'package:mobile/model/bait_category.dart';
+import 'package:mobile/model/custom_entity_value.dart';
 import 'package:mobile/pages/bait_category_list_page.dart';
 import 'package:mobile/pages/editable_form_page.dart';
+import 'package:mobile/preferences_manager.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/utils/dialog_utils.dart';
 import 'package:mobile/utils/page_utils.dart';
@@ -38,12 +41,16 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
   final Log _log = Log("SaveCatchPage");
 
   final Map<String, InputData> _fields = {};
+  List<CustomEntityValue> _customEntityValues = [];
 
   bool get _editing => widget.oldBait != null;
 
   BaitCategoryManager get _baitCategoryManager =>
       BaitCategoryManager.of(context);
   BaitManager get _baitManager => BaitManager.of(context);
+  CustomEntityValueManager get _entityValueManager =>
+      CustomEntityValueManager.of(context);
+  PreferencesManager get _preferencesManager => PreferencesManager.of(context);
 
   BaitCategoryInputController get _baitCategoryController =>
       _fields[baitCategoryId].controller as BaitCategoryInputController;
@@ -75,8 +82,10 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
     if (widget.oldBait != null) {
       _baitCategoryController.value =
           _baitCategoryManager.entity(id: widget.oldBait.categoryId);
-      _nameController.text = widget.oldBait.name;
+      _nameController.value = widget.oldBait.name;
       _nameController.validate = null;
+      _customEntityValues = _entityValueManager.values(
+          entityId: widget.oldBait.id);
     }
   }
 
@@ -88,6 +97,8 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
           : Text(Strings.of(context).saveBaitPageNewTitle),
       padding: insetsZero,
       fields: _fields,
+      customEntityIds: _preferencesManager.baitCustomEntityIds,
+      customEntityValues: _customEntityValues,
       onBuildField: (id) {
         switch (id) {
           case nameId: return _buildNameField();
@@ -134,7 +145,7 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
       controller: _nameController,
       autofocus: true,
       validator: GenericValidator(runner: (context, newName) {
-        if (isEmpty(_nameController.text)) {
+        if (isEmpty(_nameController.value)) {
           return (context) => Strings.of(context).inputGenericRequired;
         }
         return null;
@@ -144,10 +155,12 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
     ),
   );
 
-  Future<bool> _save(Map<String, InputData> result) async {
+  FutureOr<bool> _save(Map<String, dynamic> customFieldValueMap) {
+    _preferencesManager.baitCustomEntityIds = customFieldValueMap.keys.toList();
+
     Bait newBait = Bait(
       id: widget.oldBait?.id,
-      name: _nameController.text,
+      name: _nameController.value,
       categoryId: _baitCategoryController.value?.id,
     );
 
@@ -159,7 +172,11 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
       return false;
     }
 
-    _baitManager.addOrUpdate(newBait);
+    _baitManager.addOrUpdate(newBait,
+      customEntityValues: CustomEntityValue.listFromIdValueMap(newBait.id,
+          EntityType.bait, customFieldValueMap),
+    );
+
     return true;
   }
 }

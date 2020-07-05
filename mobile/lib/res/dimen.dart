@@ -28,9 +28,24 @@ const insetsVerticalSmall = EdgeInsets.only(
   bottom: paddingSmall,
 );
 
+const insetsVerticalWidget = EdgeInsets.only(
+  top: paddingWidget,
+  bottom: paddingWidget,
+);
+
+const insetsVerticalWidgetSmall = EdgeInsets.only(
+  top: paddingWidgetSmall,
+  bottom: paddingWidgetSmall,
+);
+
 const insetsHorizontalDefault = EdgeInsets.only(
   left: paddingDefault,
   right: paddingDefault,
+);
+
+const insetsHorizontalWidgetSmall = EdgeInsets.only(
+  left: paddingWidgetSmall,
+  right: paddingWidgetSmall,
 );
 
 const insetsHorizontalMedium = EdgeInsets.only(

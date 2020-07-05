@@ -2,6 +2,7 @@ import 'package:mobile/app_manager.dart';
 import 'package:mobile/bait_category_manager.dart';
 import 'package:mobile/bait_manager.dart';
 import 'package:mobile/catch_manager.dart';
+import 'package:mobile/custom_entity_value_manager.dart';
 import 'package:mobile/data_manager.dart';
 import 'package:mobile/entity_manager.dart';
 import 'package:mobile/model/bait.dart';
@@ -12,12 +13,15 @@ import 'package:test/test.dart';
 
 class MockAppManager extends Mock implements AppManager {}
 class MockBaitListener extends Mock implements EntityListener<Bait> {}
+class MockCustomEntityValueManager extends Mock
+    implements CustomEntityValueManager {}
 class MockCatchManager extends Mock implements CatchManager {}
 class MockDataManager extends Mock implements DataManager {}
 
 void main() {
   MockAppManager appManager;
   MockCatchManager catchManager;
+  MockCustomEntityValueManager entityValueManager;
   MockDataManager dataManager;
   BaitManager baitManager;
   BaitCategoryManager baitCategoryManager;
@@ -27,6 +31,11 @@ void main() {
 
     catchManager = MockCatchManager();
     when(appManager.catchManager).thenReturn(catchManager);
+
+    entityValueManager = MockCustomEntityValueManager();
+    when(appManager.customEntityValueManager).thenReturn(entityValueManager);
+    when(entityValueManager.setValues(any, any)).thenAnswer((_) =>
+        Future.value());
 
     dataManager = MockDataManager();
     when(appManager.dataManager).thenReturn(dataManager);

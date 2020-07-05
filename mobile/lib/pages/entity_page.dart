@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/custom_entity_value_manager.dart';
+import 'package:mobile/i18n/strings.dart';
+import 'package:mobile/model/custom_entity_value.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/utils/dialog_utils.dart';
 import 'package:mobile/widgets/button.dart';
+import 'package:mobile/widgets/custom_entity_values.dart';
 import 'package:mobile/widgets/photo.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:quiver/strings.dart';
@@ -20,7 +24,12 @@ class EntityPage extends StatefulWidget {
   /// When true, the underlying [Entity] cannot be modified.
   final bool static;
 
+  /// The ID of the [Entity] object being shown. This is used to show a
+  /// [CustomEntityValues] widget.
+  final String entityId;
+
   EntityPage({
+    @required this.entityId,
     @required this.children,
     this.imageNames,
     this.deleteMessage,
@@ -28,7 +37,8 @@ class EntityPage extends StatefulWidget {
     this.onDelete,
     this.padding = insetsDefault,
     this.static = false,
-  }) : assert(children != null);
+  }) : assert(isNotEmpty(entityId)),
+       assert(children != null);
 
   @override
   _EntityPageState createState() => _EntityPageState();
@@ -50,6 +60,9 @@ class _EntityPageState extends State<EntityPage> {
   double get _imageHeight =>
       MediaQuery.of(context).size.height / _imageHeightFactor;
 
+  CustomEntityValueManager get _entityValueManager =>
+      CustomEntityValueManager.of(context);
+
   @override
   void initState() {
     super.initState();
@@ -60,6 +73,27 @@ class _EntityPageState extends State<EntityPage> {
 
   @override
   Widget build(BuildContext context) {
+    List<CustomEntityValue> customValues =
+        _entityValueManager.values(entityId: widget.entityId);
+
+    List<Widget> children = widget.children;
+    if (customValues.isNotEmpty) {
+      children.addAll([
+        Padding(
+          padding: insetsVerticalWidget,
+          child: HeadingDivider(Strings.of(context).customFields),
+        ),
+        Padding(
+          padding: EdgeInsets.only(
+            left: paddingDefault,
+            right: paddingDefault,
+            bottom: paddingSmall,
+          ),
+          child: CustomEntityValues(customValues),
+        ),
+      ]);
+    }
+
     return Scaffold(
       body: CustomScrollView(
         slivers: [
@@ -91,12 +125,16 @@ class _EntityPageState extends State<EntityPage> {
             expandedHeight: _hasImages ? _imageHeight : null,
             forceElevated: true,
           ),
-          SliverPadding(
-            padding: widget.padding,
-            sliver: SliverList(
-              delegate: SliverChildBuilderDelegate(
-                (context, i) => widget.children[i],
-                childCount: widget.children.length,
+          SliverSafeArea(
+            top: false,
+            bottom: false,
+            sliver: SliverPadding(
+              padding: widget.padding,
+              sliver: SliverList(
+                delegate: SliverChildBuilderDelegate(
+                  (context, i) => children[i],
+                  childCount: children.length,
+                ),
               ),
             ),
           ),

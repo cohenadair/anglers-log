@@ -11,7 +11,7 @@ import 'package:quiver/strings.dart';
 /// A class for storing a value of an input widget, such as a text field or
 /// check box.
 class InputController<T> {
-  /// The value of the controller, such as [bool] or [TextEditingController].
+  /// The value of the controller, such as [bool] or [String].
   T value;
 
   /// Invoked when validating input.
@@ -33,30 +33,35 @@ class InputController<T> {
   String error(BuildContext context) => validate?.call(context);
 }
 
-class TextInputController extends InputController<TextEditingController> {
+class TextInputController extends InputController<String> {
+  final TextEditingController editingController = TextEditingController();
+
   TextInputController({
-    TextEditingController controller,
+    TextEditingController editingController,
     ValidationCallback validate,
   }) : super(
-    value: controller == null ? TextEditingController() : controller,
     validate: validate,
   );
 
-  String get text => value.text.trim();
-  set text(String text) => value.text = isEmpty(text) ? text : text.trim();
+  @override
+  get value => editingController.text.trim();
+
+  @override
+  set value(String value) =>
+      editingController.text = isEmpty(value) ? value : value.trim();
 
   @override
   void dispose() {
-    value.dispose();
+    editingController.dispose();
   }
 
   @override
   void clear() {
-    value.clear();
+    editingController.clear();
   }
 
   void clearText() {
-    value.value = TextEditingValue(text: "");
+    editingController.value = TextEditingValue(text: "");
   }
 }
 

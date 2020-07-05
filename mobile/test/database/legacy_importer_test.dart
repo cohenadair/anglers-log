@@ -6,6 +6,7 @@ import 'package:mobile/app_manager.dart';
 import 'package:mobile/bait_category_manager.dart';
 import 'package:mobile/bait_manager.dart';
 import 'package:mobile/catch_manager.dart';
+import 'package:mobile/custom_entity_value_manager.dart';
 import 'package:mobile/data_manager.dart';
 import 'package:mobile/database/legacy_importer.dart';
 import 'package:mobile/fishing_spot_manager.dart';
@@ -21,23 +22,32 @@ import 'package:mockito/mockito.dart';
 import '../test_utils.dart';
 
 class MockAppManager extends Mock implements AppManager {}
+class MockCustomEntityValueManager extends Mock
+    implements CustomEntityValueManager {}
 class MockDataManager extends Mock implements DataManager {}
 class MockImageManager extends Mock implements ImageManager {}
 
 void main() {
-  AppManager appManager;
+  MockAppManager appManager;
+  MockCustomEntityValueManager entityValueManager;
+  MockDataManager dataManager;
+  MockImageManager imageManager;
+
   BaitCategoryManager baitCategoryManager;
   BaitManager baitManager;
   CatchManager catchManager;
-  DataManager dataManager;
   FishingSpotManager fishingSpotManager;
-  ImageManager imageManager;
   SpeciesManager speciesManager;
 
   Directory tmpDir;
 
   setUp(() {
     appManager = MockAppManager();
+
+    entityValueManager = MockCustomEntityValueManager();
+    when(appManager.customEntityValueManager).thenReturn(entityValueManager);
+    when(entityValueManager.setValues(any, any)).thenAnswer((_) =>
+        Future.value());
 
     dataManager = MockDataManager();
     when(dataManager.insertOrUpdateEntity(any, any))

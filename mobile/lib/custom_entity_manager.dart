@@ -7,7 +7,7 @@ import 'model/custom_entity.dart';
 
 class CustomEntityManager extends NamedEntityManager<CustomEntity> {
   static CustomEntityManager of(BuildContext context) =>
-      Provider.of<AppManager>(context, listen: false).customFieldManager;
+      Provider.of<AppManager>(context, listen: false).customEntityManager;
 
   CustomEntityManager(AppManager app) : super(app);
 

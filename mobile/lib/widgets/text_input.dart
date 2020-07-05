@@ -128,14 +128,14 @@ class TextInput extends StatefulWidget {
 
 class _TextInputState extends State<TextInput> {
   ValidationCallback get _validationCallback =>
-      widget.validator?.run(context, widget.controller.text);
+      widget.validator?.run(context, widget.controller.value);
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       cursorColor: Theme.of(context).primaryColor,
       initialValue: widget.initialValue,
-      controller: widget.controller.value,
+      controller: widget.controller.editingController,
       decoration: InputDecoration(
         labelText: widget.label,
         errorText: widget.controller.error(context),

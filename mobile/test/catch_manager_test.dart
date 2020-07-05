@@ -4,6 +4,7 @@ import 'package:mobile/app_manager.dart';
 import 'package:mobile/bait_category_manager.dart';
 import 'package:mobile/bait_manager.dart';
 import 'package:mobile/catch_manager.dart';
+import 'package:mobile/custom_entity_value_manager.dart';
 import 'package:mobile/data_manager.dart';
 import 'package:mobile/entity_manager.dart';
 import 'package:mobile/fishing_spot_manager.dart';
@@ -21,6 +22,8 @@ class MockAppManager extends Mock implements AppManager {}
 class MockBaitCategoryManager extends Mock implements BaitCategoryManager {}
 class MockBaitManager extends Mock implements BaitManager {}
 class MockCatchListener extends Mock implements EntityListener<Catch> {}
+class MockCustomEntityValueManager extends Mock
+    implements CustomEntityValueManager {}
 class MockDataManager extends Mock implements DataManager {}
 class MockFishingSpotManager extends Mock implements FishingSpotManager {}
 class MockImageManager extends Mock implements ImageManager {}
@@ -29,6 +32,7 @@ class MockSpeciesManager extends Mock implements SpeciesManager {}
 void main() {
   MockAppManager appManager;
   MockBaitCategoryManager baitCategoryManager;
+  MockCustomEntityValueManager entityValueManager;
   MockDataManager dataManager;
   MockImageManager imageManager;
   MockSpeciesManager speciesManager;
@@ -41,14 +45,20 @@ void main() {
 
     dataManager = MockDataManager();
     when(appManager.dataManager).thenReturn(dataManager);
+    when(dataManager.insertOrUpdateEntity(any, any)).thenAnswer((_) =>
+        Future.value(true));
 
     baitCategoryManager = MockBaitCategoryManager();
     when(appManager.baitCategoryManager).thenReturn(baitCategoryManager);
     when(baitCategoryManager.addListener(any)).thenAnswer((_) {});
 
+    entityValueManager = MockCustomEntityValueManager();
+    when(appManager.customEntityValueManager).thenReturn(entityValueManager);
+    when(entityValueManager.setValues(any, any)).thenAnswer((_) => null);
+
     imageManager = MockImageManager();
     when(appManager.imageManager).thenReturn(imageManager);
-    when(imageManager.save(any, any)).thenAnswer((realInvocation) => null);
+    when(imageManager.save(any, any)).thenAnswer((_) => null);
 
     fishingSpotManager = FishingSpotManager(appManager);
     when(appManager.fishingSpotManager).thenReturn(fishingSpotManager);

@@ -174,10 +174,10 @@ class _FeedbackPageState extends State<FeedbackPage> {
 
         showPermanentSnackBar(context, Strings.of(context).feedbackPageSending);
 
-        String name = _nameController.text;
-        String email = _emailController.text;
+        String name = _nameController.value;
+        String email = _emailController.value;
         String type = _feedbackTypeToString(_typeController.value);
-        String message = _messageController.text;
+        String message = _messageController.value;
 
         String appVersion = (await PackageInfo.fromPlatform()).version;
         String osVersion;

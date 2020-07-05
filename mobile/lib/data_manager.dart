@@ -3,25 +3,41 @@ import 'package:mobile/app_manager.dart';
 import 'package:mobile/database/sqlite_open_helper.dart';
 import 'package:mobile/log.dart';
 import 'package:mobile/model/entity.dart';
+import 'package:mobile/utils/listener_manager.dart';
 import 'package:provider/provider.dart';
 import 'package:sqflite/sqflite.dart';
 
-class DataManager {
+class DataListener {
+  /// Invoked when the database has been completely reset.
+  VoidCallback onReset;
+
+  DataListener({
+    this.onReset,
+  });
+}
+
+class DataManager extends ListenerManager<DataListener> {
   static DataManager of(BuildContext context) =>
       Provider.of<AppManager>(context, listen: false).dataManager;
 
   final Log _log = Log("DataManager");
 
-  AppManager _appManager;
   Database _database;
+  Future<Database> Function() _openDatabase;
+  Future<Database> Function() _resetDatabase;
 
-  Future<void> initialize(AppManager app, [Database database]) async {
-    _appManager = app;
-    if (database == null) {
-      _database = await openDb();
-    } else {
-      _database = database;
-    }
+  Future<void> initialize({
+    Database database,
+    Future<Database> Function() openDatabase,
+    Future<Database> Function() resetDatabase,
+  }) async {
+    _openDatabase = openDatabase ?? openDb;
+    _resetDatabase = resetDatabase ?? resetDb;
+    _database = database ?? (await _openDatabase());
+  }
+
+  void _notifyOnReset() {
+    notify((listener) => listener.onReset());
   }
 
   /// Completely resets the database by deleting the SQLite file and recreating
@@ -29,14 +45,8 @@ class DataManager {
   /// database after it has been recreated.
   Future<void> reset() async {
     await _database.close();
-    _database = await resetDb();
-
-    // Sync all memory cache entities with database.
-    _appManager.baitCategoryManager.sync();
-    _appManager.baitManager.sync();
-    _appManager.catchManager.sync();
-    _appManager.fishingSpotManager.sync();
-    _appManager.speciesManager.sync();
+    _database = await _resetDatabase();
+    _notifyOnReset();
   }
 
   /// Commits a batch of SQL statements. See [Batch].
@@ -51,9 +61,20 @@ class DataManager {
     return await _database.insert(tableName, values) > 0;
   }
 
+  /// Returns `true` if values were successfully added or replaced.
+  Future<bool> insertOrReplace(String tableName, Map<String, dynamic> values)
+      async
+  {
+    return await _database.insert(tableName, values,
+        conflictAlgorithm: ConflictAlgorithm.replace) > 0;
+  }
+
   /// Returns `true` if at least one row was removed.
-  Future<bool> _delete(String sql, [List<dynamic> args]) async {
-    return await _database.rawDelete(sql, args) > 0;
+  Future<bool> delete(String table, {String where, List<dynamic> whereArgs})
+      async
+  {
+    return await _database.delete(table, where: where, whereArgs: whereArgs)
+        > 0;
   }
 
   /// Returns `true` if the row from the given table with the given ID was
@@ -112,7 +133,7 @@ class DataManager {
 
   /// Deletes a given [Entity] from the given [tableName].
   Future<bool> deleteEntity(Entity entity, String tableName) async {
-    if (await _delete("DELETE FROM $tableName WHERE id = ?", [entity.id])) {
+    if (await delete(tableName, where: "id = ?", whereArgs: [entity.id])) {
       return true;
     } else {
       _log.e("Failed to delete $tableName(${entity.id} from database");
@@ -134,26 +155,5 @@ class DataManager {
     }
 
     return result.first;
-  }
-
-  /// Runs a basic search on the given table and column. The given [searchText]
-  /// is used as an entire term, and split, per word, into search tokens.
-  /// Returns rows whose [column] value contains [searchText] or at least one
-  /// of the tokens.
-  Future<List<Map<String, dynamic>>> search(String table, String column,
-      String searchText) async
-  {
-    String query = "SELECT * FROM $table WHERE $column LIKE '%$searchText%'";
-    List<String> tokens = searchText.split(" ");
-    if (tokens.length > 1) {
-      for (var token in tokens) {
-        query += " OR $column LIKE '%$token%'";
-      }
-    } else {
-      tokens = [];
-    }
-    query += " ORDER BY $column";
-
-    return await _database.rawQuery(query, [searchText]..addAll(tokens));
   }
 }

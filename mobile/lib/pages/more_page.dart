@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/pages/bait_category_list_page.dart';
 import 'package:mobile/pages/bait_list_page.dart';
+import 'package:mobile/pages/custom_entity_list_page.dart';
 import 'package:mobile/pages/feedback_page.dart';
 import 'package:mobile/pages/import_page.dart';
 import 'package:mobile/pages/settings_page.dart';
@@ -30,6 +31,11 @@ class MorePage extends StatelessWidget {
             icon: Icons.bug_report,
             title: Strings.of(context).baitListPageMenuLabel,
             page: BaitListPage(),
+          ),
+          _buildPageItem(context,
+            icon: Icons.build,
+            title: Strings.of(context).customFields,
+            page: CustomEntityListPage(),
           ),
           _buildPageItem(context,
             icon: CustomIcons.species,

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:quiver/strings.dart';
 
 /// An object that stores an entity ID to image name pair.
+@immutable
 class EntityImage {
   static const keyEntityId = "entity_id";
   static const keyImageName = "image_name";

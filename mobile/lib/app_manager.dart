@@ -3,10 +3,12 @@ import 'package:mobile/bait_category_manager.dart';
 import 'package:mobile/bait_manager.dart';
 import 'package:mobile/catch_manager.dart';
 import 'package:mobile/custom_entity_manager.dart';
+import 'package:mobile/custom_entity_value_manager.dart';
 import 'package:mobile/data_manager.dart';
 import 'package:mobile/fishing_spot_manager.dart';
 import 'package:mobile/image_manager.dart';
 import 'package:mobile/location_monitor.dart';
+import 'package:mobile/preferences_manager.dart';
 import 'package:mobile/properties_manager.dart';
 import 'package:mobile/species_manager.dart';
 import 'package:mobile/trip_manager.dart';
@@ -20,10 +22,12 @@ class AppManager {
   BaitManager _baitManager;
   DataManager _dataManager;
   CatchManager _catchManager;
-  CustomEntityManager _customFieldManager;
+  CustomEntityManager _customEntityManager;
+  CustomEntityValueManager _customEntityValueManager;
   FishingSpotManager _fishingSpotManager;
   ImageManager _imageManager;
   LocationMonitor _locationMonitor;
+  PreferencesManager _preferencesManager;
   PropertiesManager _propertiesManager;
   SpeciesManager _speciesManager;
   TripManager _tripManager;
@@ -56,11 +60,18 @@ class AppManager {
     return _catchManager;
   }
 
-  CustomEntityManager get customFieldManager {
-    if (_customFieldManager == null) {
-      _customFieldManager = CustomEntityManager(this);
+  CustomEntityManager get customEntityManager {
+    if (_customEntityManager == null) {
+      _customEntityManager = CustomEntityManager(this);
     }
-    return _customFieldManager;
+    return _customEntityManager;
+  }
+
+  CustomEntityValueManager get customEntityValueManager {
+    if (_customEntityValueManager == null) {
+      _customEntityValueManager = CustomEntityValueManager(this);
+    }
+    return _customEntityValueManager;
   }
 
   FishingSpotManager get fishingSpotManager {
@@ -82,6 +93,13 @@ class AppManager {
       _locationMonitor = LocationMonitor();
     }
     return _locationMonitor;
+  }
+
+  PreferencesManager get preferencesManager {
+    if (_preferencesManager == null) {
+      _preferencesManager = PreferencesManager(this);
+    }
+    return _preferencesManager;
   }
 
   PropertiesManager get propertiesManager {

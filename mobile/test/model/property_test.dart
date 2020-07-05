@@ -2,7 +2,9 @@ import 'dart:collection';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/model/angler.dart';
+import 'package:mobile/model/bait.dart';
 import 'package:mobile/model/property.dart';
+import 'package:mobile/widgets/input_type.dart';
 
 void main() {
   test("Property equality", () {
@@ -39,5 +41,25 @@ void main() {
   test("Invalid property type", () {
     expect(() => Property<Angler>(key: "Key", value: Angler(name: "Cohen")),
         throwsAssertionError);
+  });
+
+  test("Get database value", () {
+    var prop = Property<InputType>(
+      key: "Test Property",
+      value: InputType.boolean,
+    );
+    expect(prop.dbValue, 1);
+
+    var prop2 = Property<BaitType>(
+      key: "Test Property",
+      value: BaitType.live,
+    );
+    expect(prop2.dbValue, 1);
+
+    var prop3 = Property<int>(
+      key: "Test Property",
+      value: 5,
+    );
+    expect(prop3.dbValue, 5);
   });
 }

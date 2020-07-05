@@ -18,11 +18,16 @@ import 'form_page.dart';
 /// A input page for users to create custom fields to be used elsewhere in the
 /// app. This form is immutable.
 class SaveCustomEntityPage extends StatefulWidget {
+  final CustomEntity oldEntity;
   final void Function(CustomEntity) onSave;
 
   SaveCustomEntityPage({
     this.onSave,
-  });
+  }) : oldEntity = null;
+
+  SaveCustomEntityPage.edit(this.oldEntity, {
+    this.onSave,
+  }) : assert(oldEntity != null);
 
   @override
   _SaveCustomEntityPageState createState() => _SaveCustomEntityPageState();
@@ -54,10 +59,28 @@ class _SaveCustomEntityPageState extends State<SaveCustomEntityPage> {
   InputController<InputType> get _dataTypeController =>
       _inputOptions[_dataTypeId] as InputController<InputType>;
 
+  bool get _editing => widget.oldEntity != null;
+
+  @override
+  void initState() {
+    super.initState();
+
+    if (_editing) {
+      // If editing an entity, the name will be set, and therefore, valid.
+      _nameController.validate = null;
+      _nameController.value = widget.oldEntity.name;
+
+      _descriptionController.value = widget.oldEntity.description;
+      _dataTypeController.value = widget.oldEntity.type ?? InputType.number;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return FormPage.immutable(
-      title: Text(Strings.of(context).saveCustomEntityPageNewTitle),
+      title: _editing
+          ? Text(Strings.of(context).saveCustomEntityPageEditTitle)
+          : Text(Strings.of(context).saveCustomEntityPageNewTitle),
       fieldBuilder: (BuildContext context) {
         return Map.fromIterable(_inputOptions.keys,
           key: (dynamic item) => item.toString(),
@@ -78,6 +101,7 @@ class _SaveCustomEntityPageState extends State<SaveCustomEntityPage> {
         validator: NameValidator(
           nameExistsMessage: Strings.of(context).saveCustomEntityPageNameExists,
           nameExists: CustomEntityManager.of(context).nameExists,
+          oldName: widget.oldEntity?.name,
         ),
         // Trigger "Save" button state refresh.
         onChanged: () => setState(() {}),
@@ -105,8 +129,9 @@ class _SaveCustomEntityPageState extends State<SaveCustomEntityPage> {
 
   FutureOr<bool> _save(BuildContext _) {
     var customField = CustomEntity(
-      name: _nameController.text,
-      description: _descriptionController.text,
+      id: widget.oldEntity?.id,
+      name: _nameController.value,
+      description: _descriptionController.value,
       type: _dataTypeController.value,
     );
 

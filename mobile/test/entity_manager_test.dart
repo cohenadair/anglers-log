@@ -4,9 +4,13 @@ import 'package:mobile/data_manager.dart';
 import 'package:mobile/entity_manager.dart';
 import 'package:mobile/model/species.dart';
 import 'package:mockito/mockito.dart';
+import 'package:sqflite/sqlite_api.dart';
 
 class MockAppManager extends Mock implements AppManager {}
+class MockBatch extends Mock implements Batch {}
+class MockDatabase extends Mock implements Database {}
 class MockDataManager extends Mock implements DataManager {}
+class MockEntityListener extends Mock implements EntityListener<Species> {}
 class MockSpeciesListener extends Mock implements EntityListener<Species> {}
 
 class TestEntityManager extends EntityManager<Species> {
@@ -103,5 +107,51 @@ void main() {
     )), true);
     expect(entityManager.entityCount, 0);
     verify(listener.onDelete).called(1);
+  });
+
+  test("Data is cleared and listeners notified when database is reset",
+      () async
+  {
+    // Setup real DataManager to initiate callback.
+    var batch = MockBatch();
+    when(batch.commit()).thenAnswer((_) => Future.value([]));
+    when(batch.delete(
+      any,
+      where: anyNamed("where"),
+      whereArgs: anyNamed("whereArgs"),
+    )).thenAnswer((_) {});
+    when(batch.insert(any, any)).thenAnswer((_) {});
+
+    var database = MockDatabase();
+    when(database.rawQuery(any, any)).thenAnswer((_) => Future.value([]));
+    when(database.insert(any, any)).thenAnswer((_) => Future.value(1));
+
+    var realDataManager = DataManager();
+    await realDataManager.initialize(
+      database: database,
+      openDatabase: () => Future.value(database),
+      resetDatabase: () => Future.value(database),
+    );
+
+    when(appManager.dataManager).thenReturn(realDataManager);
+    entityManager = TestEntityManager(appManager);
+
+    // Add some entities.
+    await entityManager.addOrUpdate(Species(name: "Test"));
+    expect(entityManager.entityCount, 1);
+
+    // Setup listener.
+    var listener = MockEntityListener();
+    when(listener.onClear).thenReturn(() {});
+    entityManager.addListener(listener);
+
+    // Clear data.
+    await realDataManager.reset();
+    expect(entityManager.entityCount, 0);
+
+    // Wait for manager to reinitialize.
+    await Future.delayed(Duration(milliseconds: 250));
+
+    verify(listener.onClear).called(1);
   });
 }

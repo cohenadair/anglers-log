@@ -26,7 +26,7 @@ class _AnglersLogState extends State<AnglersLog> {
 
     // Wait for all app initializations before showing the app as "ready".
     _appInitializedFuture = Future.wait([
-      _app.dataManager.initialize(_app),
+      _app.dataManager.initialize(),
       _app.locationMonitor.initialize(),
       _app.propertiesManager.initialize(),
     ]).then((_) async {
@@ -35,8 +35,11 @@ class _AnglersLogState extends State<AnglersLog> {
         _app.baitCategoryManager.initialize(),
         _app.baitManager.initialize(),
         _app.catchManager.initialize(),
+        _app.customEntityManager.initialize(),
+        _app.customEntityValueManager.initialize(),
         _app.fishingSpotManager.initialize(),
         _app.imageManager.initialize(),
+        _app.preferencesManager.initialize(),
         _app.speciesManager.initialize(),
       ]).then((_) => true);
     });
