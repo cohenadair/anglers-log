@@ -28,6 +28,7 @@ Map<String, Map<String, String>> get englishStrings => {
     "add" : "Add",
     "more" : "More",
     "customFields" : "Custom Fields",
+    "na" : "N/A",
 
     "fieldType_number" : "Number",
     "fieldType_boolean" : "Checkbox",
@@ -91,7 +92,17 @@ Map<String, Map<String, String>> get englishStrings => {
     "baitCategoryListPage_searchHint" : "Search bait categories",
     "baitCategoryListPage_noSearchResults" : "No bait categories found",
 
-    "statsPage_title" : "Stats",
+    "statsPage_menuTitle" : "Stats",
+    "statsPage_title" : "Overview",
+    "statsPage_headingSummary" : "Summary",
+    "statsPage_catchesByWeight" : "Catches by weight",
+    "statsPage_catchesByLength" : "Catches by length",
+    "statsPage_overviewSinceLastCatch" : "Since last catch",
+    "statsPage_overviewTotalCatches" : "Total catches",
+    "statsPage_overviewShowAllSpecies" : "Show all species",
+    "statsPage_overviewShowOnlySpecies" : "Show only %s species",
+
+    "dateRangePickerPage_title" : "Select Date Range",
 
     "morePage_title" : "More",
 
@@ -195,6 +206,11 @@ Map<String, Map<String, String>> get englishStrings => {
     "analysisDuration_last12Months" : "Last 12 months",
     "analysisDuration_custom" : "Custom",
 
+    "daysFormat" : "%sd",
+    "hoursFormat" : "%sh",
+    "minutesFormat" : "%sm",
+    "secondsFormat" : "%ss",
     "dateTimeFormat" : "%s at %s",
+    "dateDurationFormat" : "%s (%s)",
   },
 };

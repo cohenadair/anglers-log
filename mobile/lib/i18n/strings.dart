@@ -56,6 +56,7 @@ class Strings {
   String get add => _string("add");
   String get more => _string("more");
   String get customFields => _string("customFields");
+  String get na => _string("na");
 
   String get fieldTypeNumber => _string("fieldType_number");
   String get fieldTypeBoolean => _string("fieldType_boolean");
@@ -122,7 +123,17 @@ class Strings {
   String get baitCategoryListPageSearchHint => _string("baitCategoryListPage_searchHint");
   String get baitCategoryListPageNoSearchResults => _string("baitCategoryListPage_noSearchResults");
 
+  String get statsPageMenuTitle => _string("statsPage_menuTitle");
   String get statsPageTitle => _string("statsPage_title");
+  String get statsPageHeadingSummary => _string("statsPage_headingSummary");
+  String get statsPageCatchesByWeight => _string("statsPage_catchesByWeight");
+  String get statsPageCatchesByLength => _string("statsPage_catchesByLength");
+  String get statsPageOverviewSinceLastCatch => _string("statsPage_overviewSinceLastCatch");
+  String get statsPageOverviewTotalCatches => _string("statsPage_overviewTotalCatches");
+  String get statsPageOverviewShowAllSpecies => _string("statsPage_overviewShowAllSpecies");
+  String get statsPageOverviewShowOnlySpecies => _string("statsPage_overviewShowOnlySpecies");
+
+  String get dateRangePickerPageTitle => _string("dateRangePickerPage_title");
 
   String get morePageTitle => _string("morePage_title");
 
@@ -223,7 +234,12 @@ class Strings {
   String get analysisDurationLast12Months => _string("analysisDuration_last12Months");
   String get analysisDurationCustom => _string("analysisDuration_custom");
 
+  String get daysFormat => _string("daysFormat");
+  String get hoursFormat => _string("hoursFormat");
+  String get minutesFormat => _string("minutesFormat");
+  String get secondsFormat => _string("secondsFormat");
   String get dateTimeFormat => _string("dateTimeFormat");
+  String get dateDurationFormat => _string("dateDurationFormat");
 }
 
 class StringsDelegate extends LocalizationsDelegate<Strings> {

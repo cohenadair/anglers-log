@@ -52,6 +52,16 @@ String formatDateTime(BuildContext context, DateTime dateTime, {
   ]);
 }
 
+/// Returns a formatted [DateRange] to be displayed to the user.
+///
+/// Example:
+///   Dec. 8, 2018 - Dec. 29, 2018
+String formatDateRange(DateRange dateRange) {
+  return DateFormat(monthDayYearFormat).format(dateRange.startDate)
+      + " - "
+      + DateFormat(monthDayYearFormat).format(dateRange.endDate);
+}
+
 /// Returns a formatted [DateTime] to be displayed to the user. Includes
 /// date only.
 ///
@@ -101,4 +111,94 @@ String formatLatLng({
       lng.toStringAsFixed(decimalPlaces),
     ],
   );
+}
+
+/// Returns formatted text to display the duration, in the format Dd Hh Mm Ss.
+///
+/// Example:
+///   - 0d 5h 30m 0s
+String formatDuration({
+  BuildContext context,
+  int millisecondsDuration,
+  bool includesDays = true,
+  bool includesHours = true,
+  bool includesMinutes = true,
+  bool includesSeconds = true,
+
+  /// If `true`, values equal to 0 will not be included.
+  bool condensed = false,
+
+  /// If `true`, only the largest 2 quantities will be shown.
+  ///
+  /// Examples:
+  ///   - 1d 12h
+  ///   - 12h 30m
+  ///   - 30m 45s
+  bool showHighestTwoOnly = false,
+
+  /// The largest [DurationUnit] to use. For example, if equal to
+  /// [DurationUnit.hours], 2 days and 3 hours will be formatted as `51h`
+  /// rather than `2d 3h`. The same effect can be done by setting `includesDays`
+  /// to `false`.
+  ///
+  /// This is primarily meant for use with a user-preference where the
+  /// [DurationUnit] is read from [SharedPreferences].
+  DurationUnit largestDurationUnit = DurationUnit.days,
+}) {
+  includesDays = includesDays && largestDurationUnit == DurationUnit.days;
+  includesHours = includesHours && largestDurationUnit != DurationUnit.minutes;
+
+  DisplayDuration duration = DisplayDuration(
+    Duration(milliseconds: millisecondsDuration),
+    includesDays: includesDays,
+    includesHours: includesHours,
+    includesMinutes: includesMinutes,
+  );
+
+  String result = "";
+
+  maybeAddSpace() {
+    if (result.isNotEmpty) {
+      result += " ";
+    }
+  }
+
+  int numberIncluded = 0;
+
+  bool shouldAdd(bool include, int value) {
+    return include
+        && (!condensed || value > 0)
+        && (!showHighestTwoOnly || numberIncluded < 2);
+  }
+
+  if (shouldAdd(includesDays, duration.days)) {
+    result += format(Strings.of(context).daysFormat, [duration.days]);
+    numberIncluded++;
+  }
+
+  if (shouldAdd(includesHours, duration.hours)) {
+    maybeAddSpace();
+    result += format(Strings.of(context).hoursFormat, [duration.hours]);
+    numberIncluded++;
+  }
+
+  if (shouldAdd(includesMinutes, duration.minutes)) {
+    maybeAddSpace();
+    result += format(Strings.of(context).minutesFormat, [duration.minutes]);
+    numberIncluded++;
+  }
+
+  if (shouldAdd(includesSeconds, duration.seconds)) {
+    maybeAddSpace();
+    result += format(Strings.of(context).secondsFormat, [duration.seconds]);
+  }
+
+  // If there is no result and not everything is excluded, default to 0m.
+  if (result.isEmpty && (includesSeconds || includesMinutes || includesHours
+      || includesDays))
+  {
+    result += format(Strings.of(context).minutesFormat, [0]);
+  }
+
+  return result;
 }

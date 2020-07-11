@@ -4,15 +4,10 @@ import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/model/custom_entity.dart';
 import 'package:mobile/model/custom_entity_value.dart';
 import 'package:mobile/res/dimen.dart';
-import 'package:mobile/res/style.dart';
 import 'package:mobile/widgets/input_type.dart';
-import 'package:mobile/widgets/text.dart';
+import 'package:mobile/widgets/label_value.dart';
 
 class CustomEntityValues extends StatelessWidget {
-  /// The maximum length of a value's text before rendering as a title-subtitle
-  /// [Column] instead of a [Row].
-  static const _textWrapLength = 20;
-
   final List<CustomEntityValue> values;
 
   CustomEntityValues(this.values);
@@ -29,52 +24,29 @@ class CustomEntityValues extends StatelessWidget {
   }
 
   Widget _buildWidget(BuildContext context, CustomEntityManager entityManager,
-      CustomEntityValue value)
+      CustomEntityValue entityValue)
   {
-    CustomEntity entity = entityManager.entity(id: value.customEntityId);
+    CustomEntity entity = entityManager.entity(id: entityValue.customEntityId);
 
-    var title = Label(
-      entity.name,
-      style: TextStyle(
-        fontWeight: fontWeightBold,
-      ),
-    );
-
-    var subtitle;
+    var value;
     switch (entity.type) {
       case InputType.number:
       // Fallthrough.
       case InputType.text:
-        subtitle = SecondaryLabel(value.textValue);
+        value = entityValue.textValue;
         break;
       case InputType.boolean:
-        subtitle = SecondaryLabel(value.boolValue
-            ? Strings.of(context).yes : Strings.of(context).no);
+        value = entityValue.boolValue
+            ? Strings.of(context).yes : Strings.of(context).no;
         break;
-    }
-
-    var child;
-    if (value.textValue.length > _textWrapLength) {
-      child = Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          title,
-          subtitle,
-        ],
-      );
-    } else {
-      child = Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          title,
-          subtitle,
-        ],
-      );
     }
 
     return Padding(
       padding: insetsVerticalWidgetSmall,
-      child: child,
+      child: LabelValue(
+        label: entity.name,
+        value: value,
+      ),
     );
   }
 }

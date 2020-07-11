@@ -57,7 +57,7 @@ class _MainPageState extends State<MainPage> {
           builder: (BuildContext context) => StatsPage(),
         ),
         icon: Icons.show_chart,
-        titleBuilder: (context) => Strings.of(context).statsPageTitle,
+        titleBuilder: (context) => Strings.of(context).statsPageMenuTitle,
       ),
 
       _BarItemData(
