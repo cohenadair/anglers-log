@@ -2,6 +2,7 @@ import 'dart:collection';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:mobile/app_manager.dart';
 import 'package:mobile/catch_manager.dart';
 import 'package:mobile/model/catch.dart';
 import 'package:mobile/model/species.dart';
@@ -12,9 +13,10 @@ import 'package:quiver/time.dart';
 /// A class, that when instantiated, gathers all the data required to display
 /// an overview of the user's log.
 class StatsOverviewData {
+  final AppManager appManager;
+  final Clock clock;
   final BuildContext context;
   final DisplayDateRange displayDateRange;
-  final Clock clock;
 
   final DateRange _dateRange;
   int _msSinceLastCatch = 0;
@@ -25,14 +27,16 @@ class StatsOverviewData {
   int get totalCatches => _totalCatches;
   Map<Species, int> get allCatchesPerSpecies => _catchesPerSpecies;
 
-  CatchManager get _catchManager => CatchManager.of(context);
-  SpeciesManager get _speciesManager => SpeciesManager.of(context);
+  CatchManager get _catchManager => appManager.catchManager;
+  SpeciesManager get _speciesManager => appManager.speciesManager;
 
   StatsOverviewData({
+    this.appManager,
+    this.clock = const Clock(),
     this.context,
     this.displayDateRange,
-    this.clock = const Clock(),
-  }) : assert(context != null),
+  }) : assert(appManager != null),
+       assert(context != null),
        assert(displayDateRange!= null),
        _dateRange = displayDateRange.getValue(clock.now())
   {

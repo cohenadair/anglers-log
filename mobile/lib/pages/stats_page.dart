@@ -1,5 +1,6 @@
 import 'package:charts_flutter/flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:mobile/app_manager.dart';
 import 'package:mobile/catch_manager.dart';
 import 'package:mobile/entity_manager.dart';
 import 'package:mobile/i18n/strings.dart';
@@ -206,6 +207,7 @@ class _StatsPageState extends State<StatsPage> {
 
   void _resetOverviewData() {
     _overviewData = StatsOverviewData(
+      appManager: AppManager.of(context),
       context: context,
       displayDateRange: _currentDateRange,
     );

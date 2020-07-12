@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/res/style.dart';
-import 'package:mobile/utils/string_utils.dart';
+import 'package:mobile/utils/date_time_utils.dart';
 
 /// A default text Widget that should be used in place of [Text].
 class Label extends StatelessWidget {

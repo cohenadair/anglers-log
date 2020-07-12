@@ -193,7 +193,7 @@ void main() {
     });
   });
 
-  testWidgets("Filtering", (WidgetTester tester) async {
+  testWidgets("Filtering by search query", (WidgetTester tester) async {
     var mockFishingSpotManager = MockFishingSpotManager();
     when(mockFishingSpotManager.addOrUpdate(any)).thenAnswer((_) => null);
     when(appManager.fishingSpotManager).thenReturn(mockFishingSpotManager);
@@ -281,5 +281,37 @@ void main() {
 
     catches = catchManager.filteredCatches(context, filter: "River");
     expect(catches.length, 2);
+  });
+
+  testWidgets("Filtering by species", (WidgetTester tester) async {
+    when(dataManager.insertOrUpdateEntity(any, any))
+        .thenAnswer((_) => Future.value(true));
+
+    await catchManager.addOrUpdate(Catch(
+      timestamp: DateTime(2020, 1, 1).millisecondsSinceEpoch,
+      speciesId: "species_id_1",
+    ));
+    await catchManager.addOrUpdate(Catch(
+      timestamp: DateTime(2020, 2, 2).millisecondsSinceEpoch,
+      speciesId: "species_id_2",
+    ));
+    await catchManager.addOrUpdate(Catch(
+      timestamp: DateTime(2020, 2, 2).millisecondsSinceEpoch,
+      speciesId: "species_id_2",
+    ));
+
+    BuildContext context = await buildContext(tester);
+    List<Catch> catches = catchManager.filteredCatches(context,
+      species: Species(id: "species_id_2", name: "Bass"),
+    );
+    expect(catches.length, 2);
+
+    catches = catchManager.filteredCatches(context);
+    expect(catches.length, 3);
+
+    catches = catchManager.filteredCatches(context,
+      species: Species(id: "species_id_3", name: "Bluegill"),
+    );
+    expect(catches.isEmpty, true);
   });
 }

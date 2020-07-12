@@ -14,6 +14,7 @@ import 'package:mobile/model/custom_entity_value.dart';
 import 'package:mobile/model/fishing_spot.dart';
 import 'package:mobile/model/species.dart';
 import 'package:mobile/species_manager.dart';
+import 'package:mobile/utils/date_time_utils.dart';
 import 'package:mobile/utils/string_utils.dart';
 import 'package:provider/provider.dart';
 import 'package:quiver/core.dart';
@@ -65,7 +66,8 @@ class CatchManager extends EntityManager<Catch> {
         return false;
       }
 
-      return cat.matchesFilter(filter)
+      return isEmpty(filter)
+          || cat.matchesFilter(filter)
           || _speciesManager.entity(id: cat.speciesId).matchesFilter(filter)
           || (cat.hasFishingSpot && _fishingSpotManager
               .entity(id: cat.fishingSpotId).matchesFilter(filter))
