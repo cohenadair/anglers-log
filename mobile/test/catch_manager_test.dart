@@ -222,25 +222,25 @@ void main() {
 
     BuildContext context = await buildContext(tester);
 
-    List<Catch> catches = catchManager.filteredCatches(context, "");
+    List<Catch> catches = catchManager.filteredCatches(context, filter: "");
     expect(catches.length, 2);
 
-    catches = catchManager.filteredCatches(context, "Bluegill");
+    catches = catchManager.filteredCatches(context, filter: "Bluegill");
     expect(true, catches.isEmpty);
 
-    catches = catchManager.filteredCatches(context, "bass");
+    catches = catchManager.filteredCatches(context, filter: "bass");
     expect(catches.length, 1);
 
-    catches = catchManager.filteredCatches(context, "BLUE");
+    catches = catchManager.filteredCatches(context, filter: "BLUE");
     expect(catches.length, 1);
 
-    catches = catchManager.filteredCatches(context, "janua");
+    catches = catchManager.filteredCatches(context, filter: "janua");
     expect(catches.length, 1);
 
-    catches = catchManager.filteredCatches(context, "april");
+    catches = catchManager.filteredCatches(context, filter: "april");
     expect(catches.length, 1);
 
-    catches = catchManager.filteredCatches(context, "4");
+    catches = catchManager.filteredCatches(context, filter: "4");
     expect(catches.length, 1);
 
     await catchManager.addOrUpdate(Catch(
@@ -266,20 +266,20 @@ void main() {
     when(mockBaitManager.matchesFilter("bait_id_1", any)).thenReturn(false);
 
     when(mockBaitManager.matchesFilter(any, any)).thenReturn(true);
-    catches = catchManager.filteredCatches(context, "RAP");
+    catches = catchManager.filteredCatches(context, filter: "RAP");
     expect(catches.length, 2);
 
     when(mockBaitManager.matchesFilter(any, any)).thenReturn(false);
-    catches = catchManager.filteredCatches(context, "test");
+    catches = catchManager.filteredCatches(context, filter: "test");
     expect(true, catches.isEmpty);
 
-    catches = catchManager.filteredCatches(context, "9 mile");
+    catches = catchManager.filteredCatches(context, filter: "9 mile");
     expect(catches.length, 1);
 
-    catches = catchManager.filteredCatches(context, "Tennessee");
+    catches = catchManager.filteredCatches(context, filter: "Tennessee");
     expect(catches.length, 1);
 
-    catches = catchManager.filteredCatches(context, "River");
+    catches = catchManager.filteredCatches(context, filter: "River");
     expect(catches.length, 2);
   });
 }

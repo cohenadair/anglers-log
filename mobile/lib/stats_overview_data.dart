@@ -23,6 +23,7 @@ class StatsOverviewData {
 
   int get msSinceLastCatch => _msSinceLastCatch;
   int get totalCatches => _totalCatches;
+  Map<Species, int> get allCatchesPerSpecies => _catchesPerSpecies;
 
   CatchManager get _catchManager => CatchManager.of(context);
   SpeciesManager get _speciesManager => SpeciesManager.of(context);

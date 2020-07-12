@@ -4,6 +4,7 @@ import 'package:mobile/catch_manager.dart';
 import 'package:mobile/entity_manager.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/model/species.dart';
+import 'package:mobile/pages/catch_list_page.dart';
 import 'package:mobile/pages/date_range_picker_page.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/stats_overview_data.dart';
@@ -21,14 +22,19 @@ class StatsPage extends StatefulWidget {
 }
 
 class _StatsPageState extends State<StatsPage> {
+  static const _summarySpeciesChartId = "CatchQuantityChart";
+
   static const _chartRowHeight = 50.0;
+  static const _chartAnimDuration = Duration(milliseconds: 150);
   static const _summarySpeciesMaxCount = 5;
 
   DisplayDateRange _currentDateRange =
       DisplayDateRange.of(DisplayDateRange.allDates.id);
 
   StatsOverviewData _overviewData;
+  Map<Species, int> _catchesPerSpecies;
   bool _summaryShowingAllSpecies = false;
+  double _summarySpeciesChartHeight = 0.0;
 
   bool get _hasCatches => _overviewData.totalCatches > 0;
 
@@ -59,10 +65,6 @@ class _StatsPageState extends State<StatsPage> {
                 _buildDurationPicker(),
                 HeadingDivider(Strings.of(context).statsPageHeadingSummary),
                 _buildSummary(),
-                HeadingDivider(Strings.of(context).statsPageCatchesByWeight),
-                _buildCatchesByWeight(),
-                HeadingDivider(Strings.of(context).statsPageCatchesByLength),
-                _buildCatchesByLength(),
               ],
             ),
           ),
@@ -89,101 +91,132 @@ class _StatsPageState extends State<StatsPage> {
   );
 
   Widget _buildSummary() {
-    Map<Species, int> catchesPerSpecies =
-        _overviewData.catchesPerSpecies(
-          maxResultLength: _summaryShowingAllSpecies
-              ? null : _summarySpeciesMaxCount,
-        );
-
     return Padding(
       padding: insetsVerticalWidget,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          LabelValue(
-            padding: insetsHorizontalDefault,
+          _hasCatches ? LabelValue(
+            padding: EdgeInsets.only(
+              left: paddingDefault,
+              right: paddingDefault,
+              bottom: paddingWidget,
+            ),
             label: Strings.of(context).statsPageOverviewSinceLastCatch,
-            value: _hasCatches ? formatDuration(
+            value: formatDuration(
               context: context,
               millisecondsDuration: _overviewData.msSinceLastCatch,
               includesSeconds: false,
               condensed: true,
-            ) : Strings.of(context).na,
-          ),
-          VerticalSpace(paddingWidget),
+            ),
+          ) : Empty(),
           LabelValue(
             padding: insetsHorizontalDefault,
             label: Strings.of(context).statsPageOverviewTotalCatches,
             value: _overviewData.totalCatches.toString(),
           ),
-          _hasCatches ? Container(
+          _hasCatches ? AnimatedContainer(
+            duration: _chartAnimDuration,
             padding: insetsDefault,
-            height: _chartRowHeight * catchesPerSpecies.length,
-            child: BarChart(
-              [
-                Series<Species, String>(
-                  id: "CatchQuantityChart",
-                  data: catchesPerSpecies.keys.toList(),
-                  domainFn: (species, _) => species.name,
-                  measureFn: (species, _) => catchesPerSpecies[species],
-                  seriesColor: ColorUtil
-                      .fromDartColor(Theme.of(context).primaryColor),
-                  labelAccessorFn: (species, _) => "${species.name} "
-                      "(${catchesPerSpecies[species]})",
-                  insideLabelStyleAccessorFn: (species, _) => TextStyleSpec(
-                    color: ColorUtil.fromDartColor(Colors.black),
-                  ),
-                ),
-              ],
-              animate: true,
-              vertical: false,
-              barRendererDecorator: BarLabelDecorator<String>(),
-              domainAxis: OrdinalAxisSpec(
-                renderSpec: NoneRenderSpec(),
-              ),
-              layoutConfig: LayoutConfig(
-                leftMarginSpec: MarginSpec.fixedPixel(0),
-                topMarginSpec: MarginSpec.fixedPixel(0),
-                rightMarginSpec: MarginSpec.fixedPixel(0),
-                bottomMarginSpec: MarginSpec.fixedPixel(0),
-              ),
-            ),
+            height: _summarySpeciesChartHeight,
+            child: _buildSpeciesCountChart(),
           ) : Empty(),
-          VerticalSpace(paddingWidget),
-          Padding(
-            padding: insetsHorizontalDefault,
-            child: Align(
-              alignment: Alignment.centerRight,
-              child: Button(
-                text: _summaryShowingAllSpecies ? format(
-                  Strings.of(context).statsPageOverviewShowOnlySpecies,
-                      [_summarySpeciesMaxCount],
-                ) : Strings.of(context).statsPageOverviewShowAllSpecies,
-                onPressed: () => setState(() {
-                  _summaryShowingAllSpecies = !_summaryShowingAllSpecies;
-                }),
-              ),
-            ),
-          ),
+          _buildShowMoreSpeciesButton(),
         ],
       ),
     );
   }
 
-  Widget _buildCatchesByWeight() => Padding(
-    padding: insetsBottomWidget,
-    child: Empty(),
-  );
+  Widget _buildSpeciesCountChart() {
+    // TODO: Set bar width instead of full chart width
+    // https://github.com/google/charts/issues/167
+    return BarChart(
+      [
+        Series<Species, String>(
+          id: _summarySpeciesChartId,
+          data: _catchesPerSpecies.keys.toList(),
+          domainFn: (species, _) => species.name,
+          measureFn: (species, _) => _catchesPerSpecies[species],
+          seriesColor: ColorUtil
+              .fromDartColor(Theme.of(context).primaryColor),
+          labelAccessorFn: (species, _) => "${species.name} "
+              "(${_catchesPerSpecies[species]})",
+          insideLabelStyleAccessorFn: (species, _) => TextStyleSpec(
+            color: ColorUtil.fromDartColor(Colors.black),
+          ),
+        ),
+      ],
+      animate: true,
+      vertical: false,
+      barRendererDecorator: BarLabelDecorator<String>(),
+      domainAxis: OrdinalAxisSpec(
+        renderSpec: NoneRenderSpec(),
+      ),
+      layoutConfig: LayoutConfig(
+        leftMarginSpec: MarginSpec.fixedPixel(0),
+        topMarginSpec: MarginSpec.fixedPixel(0),
+        rightMarginSpec: MarginSpec.fixedPixel(0),
+        bottomMarginSpec: MarginSpec.fixedPixel(0),
+      ),
+      selectionModels: [
+        SelectionModelConfig(
+          changedListener: (model) {
+            push(context, CatchListPage(
+              species: model.selectedDatum.first.datum as Species,
+            ));
+            // Delay clearing selection so there is visual feedback that the
+            // row was tapped.
+            Future.delayed(Duration(milliseconds: 1000), () {
+              setState(() {});
+            });
+          },
+        ),
+      ],
+    );
+  }
 
-  Widget _buildCatchesByLength() => Padding(
-    padding: insetsBottomWidget,
-    child: Empty(),
-  );
+  Widget _buildShowMoreSpeciesButton() {
+    if (!_hasCatches
+        || _overviewData.allCatchesPerSpecies.length <= _summarySpeciesMaxCount)
+    {
+      return Empty();
+    }
+
+    return Padding(
+      padding: EdgeInsets.only(
+        left: paddingDefault,
+        right: paddingDefault,
+        top: paddingWidget,
+      ),
+      child: Align(
+        alignment: Alignment.centerRight,
+        child: Button(
+          text: _summaryShowingAllSpecies
+              ? format(Strings.of(context).statsPageOverviewShowOnlySpecies,
+                  [_summarySpeciesMaxCount])
+              : Strings.of(context).statsPageOverviewShowAllSpecies,
+          onPressed: () => setState(() {
+            _summaryShowingAllSpecies = !_summaryShowingAllSpecies;
+            _resetSummarySpeciesChart();
+          }),
+        ),
+      ),
+    );
+  }
 
   void _resetOverviewData() {
     _overviewData = StatsOverviewData(
       context: context,
       displayDateRange: _currentDateRange,
     );
+    _resetSummarySpeciesChart();
+  }
+
+  void _resetSummarySpeciesChart() {
+    _catchesPerSpecies = _overviewData.catchesPerSpecies(
+      maxResultLength: _summaryShowingAllSpecies
+          ? null : _summarySpeciesMaxCount,
+    );
+    _summarySpeciesChartHeight = _chartRowHeight * _catchesPerSpecies.length;
   }
 }

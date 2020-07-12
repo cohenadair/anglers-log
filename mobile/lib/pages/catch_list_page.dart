@@ -6,6 +6,7 @@ import 'package:mobile/fishing_spot_manager.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/image_manager.dart';
 import 'package:mobile/model/catch.dart';
+import 'package:mobile/model/species.dart';
 import 'package:mobile/pages/add_catch_journey.dart';
 import 'package:mobile/pages/catch_page.dart';
 import 'package:mobile/pages/entity_list_page.dart';
@@ -19,6 +20,13 @@ import 'package:mobile/widgets/widget.dart';
 import 'package:quiver/strings.dart';
 
 class CatchListPage extends StatelessWidget {
+  /// If not-null, shows only the catches of [species].
+  final Species species;
+
+  CatchListPage({
+    this.species,
+  });
+
   Widget build(BuildContext context) {
     BaitCategoryManager baitCategoryManager = BaitCategoryManager.of(context);
     BaitManager baitManager = BaitManager.of(context);
@@ -27,8 +35,10 @@ class CatchListPage extends StatelessWidget {
     SpeciesManager speciesManager = SpeciesManager.of(context);
 
     return EntityListPage<Catch>(
-      title: Text(format(Strings.of(context).catchListPageTitle,
-          [catchManager.entityCount])),
+      title: species == null
+          ? Text(format(Strings.of(context).catchListPageTitle,
+              [catchManager.entityCount]))
+          : null,
       forceCenterTitle: true,
       searchDelegate: ManageableListPageSearchDelegate(
         hint: Strings.of(context).catchListPageSearchHint,
@@ -44,8 +54,11 @@ class CatchListPage extends StatelessWidget {
           fishingSpotManager,
           speciesManager,
         ],
-        loadItems: (String query) =>
-            catchManager.catchesSortedByTimestamp(context, filter: query),
+        loadItems: (String query) => catchManager.catchesSortedByTimestamp(
+          context,
+          filter: query,
+          species: species,
+        ),
         deleteText: (context, cat) =>
             Text(catchManager.deleteMessage(context, cat)),
         deleteItem: (context, cat) => catchManager.delete(cat),

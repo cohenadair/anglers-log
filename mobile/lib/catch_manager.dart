@@ -1,4 +1,3 @@
-import 'dart:collection';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -43,24 +42,37 @@ class CatchManager extends EntityManager<Catch> {
   /// Returns all catches, sorted from newest to oldest.
   List<Catch> catchesSortedByTimestamp(BuildContext context, {
     String filter,
+    Species species,
   }) {
-    List<Catch> result = List.of(filteredCatches(context, filter));
+    List<Catch> result = List.of(filteredCatches(context,
+      filter: filter,
+      species: species,
+    ));
     result.sort((lhs, rhs) => rhs.timestamp.compareTo(lhs.timestamp));
     return result;
   }
 
-  List<Catch> filteredCatches(BuildContext context, String filter) {
-    if (isEmpty(filter)) {
+  List<Catch> filteredCatches(BuildContext context, {
+    String filter,
+    Species species,
+  }) {
+    if (isEmpty(filter) && species == null) {
       return entities.values.toList();
     }
 
-    return entities.values.where((cat) => cat.matchesFilter(filter)
-        || _speciesManager.entity(id: cat.speciesId).matchesFilter(filter)
-        || (cat.hasFishingSpot && _fishingSpotManager
-            .entity(id: cat.fishingSpotId).matchesFilter(filter))
-        || (cat.hasBait && _baitManager.matchesFilter(cat.baitId, filter))
-        || formatDateTime(context, cat.dateTime).toLowerCase()
-            .contains(filter.toLowerCase())).toList();
+    return entities.values.where((cat) {
+      if (species != null && species.id != cat.speciesId) {
+        return false;
+      }
+
+      return cat.matchesFilter(filter)
+          || _speciesManager.entity(id: cat.speciesId).matchesFilter(filter)
+          || (cat.hasFishingSpot && _fishingSpotManager
+              .entity(id: cat.fishingSpotId).matchesFilter(filter))
+          || (cat.hasBait && _baitManager.matchesFilter(cat.baitId, filter))
+          || formatDateTime(context, cat.dateTime).toLowerCase()
+              .contains(filter.toLowerCase());
+    }).toList();
   }
 
   @override
