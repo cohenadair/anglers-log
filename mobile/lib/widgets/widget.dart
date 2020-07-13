@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile/res/color.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/widgets/text.dart';
+import 'package:quiver/strings.dart';
 
 const defaultAnimationDuration = Duration(milliseconds: 200);
 
@@ -222,4 +223,23 @@ class VerticalSpace extends StatelessWidget {
   Widget build(BuildContext context) => Container(
     height: size,
   );
+}
+
+class AppBarDropdownItem<T> extends DropdownMenuItem<T> {
+  final String text;
+  final T value;
+
+  AppBarDropdownItem({
+    @required BuildContext context,
+    @required this.text,
+    @required this.value,
+  }) : assert(isNotEmpty(text)),
+       assert(value != null),
+       super(
+         child: Text(text,
+           // Use the same theme as default AppBar title text.
+           style: Theme.of(context).textTheme.headline6,
+         ),
+         value: value,
+       );
 }

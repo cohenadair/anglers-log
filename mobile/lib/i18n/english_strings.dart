@@ -93,14 +93,14 @@ Map<String, Map<String, String>> get englishStrings => {
     "baitCategoryListPage_noSearchResults" : "No bait categories found",
 
     "statsPage_menuTitle" : "Stats",
-    "statsPage_title" : "Overview",
-    "statsPage_headingSummary" : "Summary",
-    "statsPage_catchesByWeight" : "Catches by weight",
-    "statsPage_catchesByLength" : "Catches by length",
-    "statsPage_overviewSinceLastCatch" : "Since last catch",
-    "statsPage_overviewTotalCatches" : "Total catches",
-    "statsPage_overviewShowAllSpecies" : "Show all species",
-    "statsPage_overviewShowOnlySpecies" : "Show only %s species",
+    "statsPage_reportOverview" : "Overview",
+    "statsPage_newReport" : "New Report",
+
+    "statsOverview_summary" : "Summary",
+    "statsOverview_sinceLastCatch" : "Since last catch",
+    "statsOverview_totalCatches" : "Total catches",
+    "statsOverview_showAllSpecies" : "Show all species",
+    "statsOverview_showOnlySpecies" : "Show only %s species",
 
     "dateRangePickerPage_title" : "Select Date Range",
 

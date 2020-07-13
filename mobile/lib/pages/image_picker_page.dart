@@ -208,15 +208,21 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
       icon: DropdownIcon(),
       value: _currentSource,
       items: <DropdownMenuItem>[
-        _buildSourceDropdownItem(
-            Strings.of(context).imagePickerPageGalleryLabel,
-            _ImagePickerSource.gallery),
-        _buildSourceDropdownItem(
-            Strings.of(context).imagePickerPageCameraLabel,
-            _ImagePickerSource.camera),
-        _buildSourceDropdownItem(
-            Strings.of(context).imagePickerPageBrowseLabel,
-            _ImagePickerSource.browse),
+        AppBarDropdownItem<_ImagePickerSource>(
+          context: context,
+          text: Strings.of(context).imagePickerPageGalleryLabel,
+          value: _ImagePickerSource.gallery,
+        ),
+        AppBarDropdownItem<_ImagePickerSource>(
+          context: context,
+          text: Strings.of(context).imagePickerPageCameraLabel,
+          value: _ImagePickerSource.camera,
+        ),
+        AppBarDropdownItem<_ImagePickerSource>(
+          context: context,
+          text: Strings.of(context).imagePickerPageBrowseLabel,
+          value: _ImagePickerSource.browse,
+        ),
       ],
       onChanged: (value) {
         setState(() {
@@ -233,18 +239,6 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
           }
         });
       },
-    );
-  }
-
-  DropdownMenuItem _buildSourceDropdownItem(String text,
-      _ImagePickerSource value)
-  {
-    return DropdownMenuItem<_ImagePickerSource>(
-      child: Text(text,
-        // Use the same theme as default AppBar title text.
-        style: Theme.of(context).textTheme.headline6,
-      ),
-      value: value,
     );
   }
 

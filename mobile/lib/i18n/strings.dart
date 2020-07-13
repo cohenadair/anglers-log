@@ -124,14 +124,14 @@ class Strings {
   String get baitCategoryListPageNoSearchResults => _string("baitCategoryListPage_noSearchResults");
 
   String get statsPageMenuTitle => _string("statsPage_menuTitle");
-  String get statsPageTitle => _string("statsPage_title");
-  String get statsPageHeadingSummary => _string("statsPage_headingSummary");
-  String get statsPageCatchesByWeight => _string("statsPage_catchesByWeight");
-  String get statsPageCatchesByLength => _string("statsPage_catchesByLength");
-  String get statsPageOverviewSinceLastCatch => _string("statsPage_overviewSinceLastCatch");
-  String get statsPageOverviewTotalCatches => _string("statsPage_overviewTotalCatches");
-  String get statsPageOverviewShowAllSpecies => _string("statsPage_overviewShowAllSpecies");
-  String get statsPageOverviewShowOnlySpecies => _string("statsPage_overviewShowOnlySpecies");
+  String get statsPageReportOverview => _string("statsPage_reportOverview");
+  String get statsPageNewReport => _string("statsPage_newReport");
+
+  String get statsOverviewSummary => _string("statsOverview_summary");
+  String get statsOverviewSinceLastCatch => _string("statsOverview_sinceLastCatch");
+  String get statsOverviewTotalCatches => _string("statsOverview_totalCatches");
+  String get statsOverviewShowAllSpecies => _string("statsOverview_showAllSpecies");
+  String get statsOverviewShowOnlySpecies => _string("statsOverview_showOnlySpecies");
 
   String get dateRangePickerPageTitle => _string("dateRangePickerPage_title");
 

@@ -5,7 +5,7 @@ import 'package:mobile/catch_manager.dart';
 import 'package:mobile/model/catch.dart';
 import 'package:mobile/model/species.dart';
 import 'package:mobile/species_manager.dart';
-import 'package:mobile/stats_overview_data.dart';
+import 'package:mobile/stats/stats_overview_data.dart';
 import 'package:mobile/utils/date_time_utils.dart';
 import 'package:mockito/mockito.dart';
 import 'package:quiver/time.dart';
