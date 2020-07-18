@@ -40,7 +40,7 @@ class _PhotoGalleryPageState extends State<PhotoGalleryPage> {
       appBar: AppBar(
         elevation: 0.0,
         backgroundColor: Colors.transparent,
-        leading: BackButton(
+        leading: CloseButton(
           color: Colors.white,
         ),
       ),

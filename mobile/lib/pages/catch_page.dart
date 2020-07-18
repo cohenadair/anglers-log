@@ -106,7 +106,7 @@ class _CatchPageState extends State<CatchPage> {
 
     Bait bait = _baitManager.entity(id: _catch.baitId);
 
-    Widget subtitle = Empty();
+    Widget subtitle;
     if (bait.hasCategory) {
       subtitle = SubtitleLabel(
           _baitCategoryManager.entity(id: bait.categoryId).name);

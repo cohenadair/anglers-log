@@ -124,14 +124,20 @@ class Strings {
   String get baitCategoryListPageNoSearchResults => _string("baitCategoryListPage_noSearchResults");
 
   String get statsPageMenuTitle => _string("statsPage_menuTitle");
+  String get statsPageTitle => _string("statsPage_title");
   String get statsPageReportOverview => _string("statsPage_reportOverview");
   String get statsPageNewReport => _string("statsPage_newReport");
 
-  String get statsOverviewSummary => _string("statsOverview_summary");
-  String get statsOverviewSinceLastCatch => _string("statsOverview_sinceLastCatch");
-  String get statsOverviewTotalCatches => _string("statsOverview_totalCatches");
-  String get statsOverviewShowAllSpecies => _string("statsOverview_showAllSpecies");
-  String get statsOverviewShowOnlySpecies => _string("statsOverview_showOnlySpecies");
+  String get overviewReportViewNoCatches => _string("overviewReportView_noCatches");
+  String get overviewReportViewViewCatches => _string("overviewReportView_viewCatches");
+  String get overviewReportViewSummary => _string("overviewReportView_summary");
+  String get overviewReportViewSpecies => _string("overviewReportView_species");
+  String get overviewReportViewSinceLastCatch => _string("overviewReportView_sinceLastCatch");
+  String get overviewReportViewNumberOfCatches => _string("overviewReportView_numberOfCatches");
+  String get overviewReportViewFishingSpots => _string("overviewReportView_fishingSpots");
+  String get overviewReportViewNumberOfFishingSpots => _string("overviewReportView_numberOfFishingSpots");
+  String get overviewReportViewBaits => _string("overviewReportView_baits");
+  String get overviewReportViewNumberOfBaits => _string("overviewReportView_numberOfBaits");
 
   String get dateRangePickerPageTitle => _string("dateRangePickerPage_title");
 

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/i18n/strings.dart';
-import 'package:mobile/widgets/stats_overview.dart';
-import 'package:mobile/widgets/widget.dart';
+import 'package:mobile/widgets/overview_report_view.dart';
 
 class StatsPage extends StatefulWidget {
   @override
@@ -13,32 +12,9 @@ class _StatsPageState extends State<StatsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: _buildReportDropdown(),
+        title: Text(Strings.of(context).statsPageTitle),
       ),
-      body: StatsOverview(),
-    );
-  }
-
-  Widget _buildReportDropdown() {
-    return DropdownButton(
-      underline: Empty(),
-      icon: DropdownIcon(),
-      value: "Overview",
-      items: <DropdownMenuItem>[
-        AppBarDropdownItem<String>(
-          context: context,
-          text: Strings.of(context).statsPageNewReport,
-          value: "New Report",
-        ),
-        AppBarDropdownItem<String>(
-          context: context,
-          text: Strings.of(context).statsPageReportOverview,
-          value: "Overview",
-        ),
-      ],
-      onChanged: (value) {
-        print(value);
-      },
+      body: OverviewReportView(),
     );
   }
 }

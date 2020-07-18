@@ -14,6 +14,7 @@ import 'package:mobile/model/catch.dart';
 import 'package:mobile/model/fishing_spot.dart';
 import 'package:mobile/model/species.dart';
 import 'package:mobile/species_manager.dart';
+import 'package:mobile/utils/date_time_utils.dart';
 import 'package:mockito/mockito.dart';
 
 import 'test_utils.dart';
@@ -311,6 +312,151 @@ void main() {
 
     catches = catchManager.filteredCatches(context,
       species: Species(id: "species_id_3", name: "Bluegill"),
+    );
+    expect(catches.isEmpty, true);
+  });
+
+  testWidgets("Filtering by date range", (WidgetTester tester) async {
+    when(dataManager.insertOrUpdateEntity(any, any))
+        .thenAnswer((_) => Future.value(true));
+
+    await catchManager.addOrUpdate(Catch(
+      timestamp: 5000,
+      speciesId: "species_id_1",
+    ));
+    await catchManager.addOrUpdate(Catch(
+      timestamp: 10000,
+      speciesId: "species_id_2",
+    ));
+    await catchManager.addOrUpdate(Catch(
+      timestamp: 20000,
+      speciesId: "species_id_2",
+    ));
+
+    BuildContext context = await buildContext(tester);
+    List<Catch> catches = catchManager.filteredCatches(context,
+      dateRange: DateRange(
+        startDate: DateTime.fromMillisecondsSinceEpoch(0),
+        endDate: DateTime.fromMillisecondsSinceEpoch(15000),
+      ),
+    );
+    expect(catches.length, 2);
+
+    catches = catchManager.filteredCatches(context);
+    expect(catches.length, 3);
+
+    catches = catchManager.filteredCatches(context,
+      dateRange: DateRange(
+        startDate: DateTime.fromMillisecondsSinceEpoch(20001),
+        endDate: DateTime.fromMillisecondsSinceEpoch(30000),
+      ),
+    );
+    expect(catches.isEmpty, true);
+  });
+
+  testWidgets("Filtering by fishing spot", (WidgetTester tester) async {
+    when(dataManager.insertOrUpdateEntity(any, any))
+        .thenAnswer((_) => Future.value(true));
+
+    await catchManager.addOrUpdate(Catch(
+      timestamp: 5000,
+      speciesId: "species_id_1",
+      fishingSpotId: "fishing_spot_1",
+    ));
+    await catchManager.addOrUpdate(Catch(
+      timestamp: 10000,
+      speciesId: "species_id_2",
+      fishingSpotId: "fishing_spot_2",
+    ));
+    await catchManager.addOrUpdate(Catch(
+      timestamp: 20000,
+      speciesId: "species_id_2",
+      fishingSpotId: "fishing_spot_1",
+    ));
+
+    BuildContext context = await buildContext(tester);
+    List<Catch> catches = catchManager.filteredCatches(context,
+      fishingSpot: FishingSpot(id: "fishing_spot_1", lat: 0, lng: 0),
+    );
+    expect(catches.length, 2);
+
+    catches = catchManager.filteredCatches(context);
+    expect(catches.length, 3);
+
+    catches = catchManager.filteredCatches(context,
+      fishingSpot: FishingSpot(id: "fishing_spot_3", lat: 0, lng: 0),
+    );
+    expect(catches.isEmpty, true);
+  });
+
+  testWidgets("Filtering by bait", (WidgetTester tester) async {
+    when(dataManager.insertOrUpdateEntity(any, any))
+        .thenAnswer((_) => Future.value(true));
+
+    await catchManager.addOrUpdate(Catch(
+      timestamp: 5000,
+      speciesId: "species_id_1",
+      baitId: "bait_1",
+    ));
+    await catchManager.addOrUpdate(Catch(
+      timestamp: 10000,
+      speciesId: "species_id_2",
+      baitId: "bait_2",
+    ));
+    await catchManager.addOrUpdate(Catch(
+      timestamp: 20000,
+      speciesId: "species_id_2",
+      baitId: "bait_1",
+    ));
+
+    BuildContext context = await buildContext(tester);
+    List<Catch> catches = catchManager.filteredCatches(context,
+      bait: Bait(id: "bait_1", name: "Test"),
+    );
+    expect(catches.length, 2);
+
+    catches = catchManager.filteredCatches(context);
+    expect(catches.length, 3);
+
+    catches = catchManager.filteredCatches(context,
+      bait: Bait(id: "bait_3", name: "Test"),
+    );
+    expect(catches.isEmpty, true);
+  });
+
+  testWidgets("Filtering by multiple things", (WidgetTester tester) async {
+    when(dataManager.insertOrUpdateEntity(any, any))
+        .thenAnswer((_) => Future.value(true));
+
+    await catchManager.addOrUpdate(Catch(
+      timestamp: 5000,
+      speciesId: "species_id_1",
+      baitId: "bait_1",
+    ));
+    await catchManager.addOrUpdate(Catch(
+      timestamp: 10000,
+      speciesId: "species_id_2",
+      baitId: "bait_2",
+    ));
+    await catchManager.addOrUpdate(Catch(
+      timestamp: 20000,
+      speciesId: "species_id_2",
+      baitId: "bait_1",
+    ));
+
+    BuildContext context = await buildContext(tester);
+    List<Catch> catches = catchManager.filteredCatches(context,
+      species: Species(id: "species_id_1", name: "Test"),
+      bait: Bait(id: "bait_1", name: "Test"),
+    );
+    expect(catches.length, 1);
+
+    catches = catchManager.filteredCatches(context);
+    expect(catches.length, 3);
+
+    catches = catchManager.filteredCatches(context,
+      species: Species(id: "species_id_4", name: "Test"),
+      bait: Bait(id: "bait_1", name: "Test"),
     );
     expect(catches.isEmpty, true);
   });

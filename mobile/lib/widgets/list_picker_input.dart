@@ -46,7 +46,7 @@ class ListPickerInput<T> extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             _buildSingleDetail(context),
-            Icon(Icons.chevron_right),
+            RightChevronIcon(),
           ],
         ),
         onTap: enabled ? onTap : null,

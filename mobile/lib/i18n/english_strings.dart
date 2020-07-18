@@ -93,14 +93,20 @@ Map<String, Map<String, String>> get englishStrings => {
     "baitCategoryListPage_noSearchResults" : "No bait categories found",
 
     "statsPage_menuTitle" : "Stats",
+    "statsPage_title" : "Stats",
     "statsPage_reportOverview" : "Overview",
     "statsPage_newReport" : "New Report",
 
-    "statsOverview_summary" : "Summary",
-    "statsOverview_sinceLastCatch" : "Since last catch",
-    "statsOverview_totalCatches" : "Total catches",
-    "statsOverview_showAllSpecies" : "Show all species",
-    "statsOverview_showOnlySpecies" : "Show only %s species",
+    "overviewReportView_noCatches" : "No catches found",
+    "overviewReportView_viewCatches" : "View catches",
+    "overviewReportView_summary" : "Catch Summary",
+    "overviewReportView_species" : "Catches Per Species",
+    "overviewReportView_sinceLastCatch" : "Since last catch",
+    "overviewReportView_numberOfCatches" : "Number of catches",
+    "overviewReportView_fishingSpots" : "Catches Per Fishing Spot",
+    "overviewReportView_numberOfFishingSpots" : "Fishing spots with catches",
+    "overviewReportView_baits" : "Catches Per Bait",
+    "overviewReportView_numberOfBaits" : "Baits with catches",
 
     "dateRangePickerPage_title" : "Select Date Range",
 

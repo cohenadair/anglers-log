@@ -64,8 +64,8 @@ class DateRange {
   final DateTime endDate;
 
   DateRange({this.startDate, this.endDate})
-      : assert(startDate.isAtSameMomentAs(endDate) ||
-          startDate.isBefore(endDate));
+      : assert(startDate.isAtSameMomentAs(endDate)
+          || startDate.isBefore(endDate));
 
   int get startMs => startDate.millisecondsSinceEpoch;
   int get endMs => endDate.millisecondsSinceEpoch;
@@ -88,6 +88,8 @@ class DateRange {
   /// the number of milliseconds in a month. A month length is defined as 30
   /// days.
   num get months => durationMs / (Duration.millisecondsPerDay * _daysInMonth);
+
+  bool contains(int ms) => ms >= startMs && ms <= endMs;
 }
 
 /// A pre-defined set of date ranges meant for user section. Includes ranges
@@ -100,7 +102,7 @@ class DisplayDateRange {
       startDate: DateTime.fromMicrosecondsSinceEpoch(0),
       endDate: now,
     ),
-    getTitle: (context) => Strings.of(context).analysisDurationAllDates,
+    title: (context) => Strings.of(context).analysisDurationAllDates,
   );
 
   static final today = DisplayDateRange._(
@@ -109,7 +111,7 @@ class DisplayDateRange {
       startDate: dateTimeToDayAccuracy(now),
       endDate: now,
     ),
-    getTitle: (context) => Strings.of(context).analysisDurationToday,
+    title: (context) => Strings.of(context).analysisDurationToday,
   );
 
   static final yesterday = DisplayDateRange._(
@@ -118,7 +120,7 @@ class DisplayDateRange {
       startDate: dateTimeToDayAccuracy(now).subtract(Duration(days: 1)),
       endDate: dateTimeToDayAccuracy(now),
     ),
-    getTitle: (context) => Strings.of(context).analysisDurationYesterday,
+    title: (context) => Strings.of(context).analysisDurationYesterday,
   );
 
   static final thisWeek = DisplayDateRange._(
@@ -127,7 +129,7 @@ class DisplayDateRange {
       startDate: getStartOfWeek(now),
       endDate: now,
     ),
-    getTitle: (context) => Strings.of(context).analysisDurationThisWeek,
+    title: (context) => Strings.of(context).analysisDurationThisWeek,
   );
 
   static final thisMonth = DisplayDateRange._(
@@ -136,7 +138,7 @@ class DisplayDateRange {
       startDate: getStartOfMonth(now),
       endDate: now,
     ),
-    getTitle: (context) => Strings.of(context).analysisDurationThisMonth,
+    title: (context) => Strings.of(context).analysisDurationThisMonth,
   );
 
   static final thisYear = DisplayDateRange._(
@@ -145,7 +147,7 @@ class DisplayDateRange {
       startDate: getStartOfYear(now),
       endDate: now,
     ),
-    getTitle: (context) => Strings.of(context).analysisDurationThisYear,
+    title: (context) => Strings.of(context).analysisDurationThisYear,
   );
 
   static final lastWeek = DisplayDateRange._(
@@ -157,7 +159,7 @@ class DisplayDateRange {
       );
       return DateRange(startDate: startOfLastWeek, endDate: endOfLastWeek);
     },
-    getTitle: (context) => Strings.of(context).analysisDurationLastWeek,
+    title: (context) => Strings.of(context).analysisDurationLastWeek,
   );
 
   static final lastMonth = DisplayDateRange._(
@@ -175,7 +177,7 @@ class DisplayDateRange {
         endDate: endOfLastMonth,
       );
     },
-    getTitle: (context) => Strings.of(context).analysisDurationLastMonth,
+    title: (context) => Strings.of(context).analysisDurationLastMonth,
   );
 
   static final lastYear = DisplayDateRange._(
@@ -184,7 +186,7 @@ class DisplayDateRange {
       startDate: DateTime(now.year - 1),
       endDate: getStartOfYear(now),
     ),
-    getTitle: (context) => Strings.of(context).analysisDurationLastYear,
+    title: (context) => Strings.of(context).analysisDurationLastYear,
   );
 
   static final last7Days = DisplayDateRange._(
@@ -193,7 +195,7 @@ class DisplayDateRange {
       startDate: now.subtract(Duration(days: 7)),
       endDate: now,
     ),
-    getTitle: (context) => Strings.of(context).analysisDurationLast7Days,
+    title: (context) => Strings.of(context).analysisDurationLast7Days,
   );
 
   static final last14Days = DisplayDateRange._(
@@ -202,7 +204,7 @@ class DisplayDateRange {
       startDate: now.subtract(Duration(days: 14)),
       endDate: now,
     ),
-    getTitle: (context) => Strings.of(context).analysisDurationLast14Days,
+    title: (context) => Strings.of(context).analysisDurationLast14Days,
   );
 
   static final last30Days = DisplayDateRange._(
@@ -211,7 +213,7 @@ class DisplayDateRange {
       startDate: now.subtract(Duration(days: 30)),
       endDate: now,
     ),
-    getTitle: (context) => Strings.of(context).analysisDurationLast30Days,
+    title: (context) => Strings.of(context).analysisDurationLast30Days,
   );
 
   static final last60Days = DisplayDateRange._(
@@ -220,7 +222,7 @@ class DisplayDateRange {
       startDate: now.subtract(Duration(days: 60)),
       endDate: now,
     ),
-    getTitle: (context) => Strings.of(context).analysisDurationLast60Days,
+    title: (context) => Strings.of(context).analysisDurationLast60Days,
   );
 
   static final last12Months = DisplayDateRange._(
@@ -229,13 +231,13 @@ class DisplayDateRange {
       startDate: now.subtract(Duration(days: 365)),
       endDate: now,
     ),
-    getTitle: (context) => Strings.of(context).analysisDurationLast12Months,
+    title: (context) => Strings.of(context).analysisDurationLast12Months,
   );
 
   static final custom = DisplayDateRange._(
     id: "custom",
     getValue: (now) => DisplayDateRange.thisMonth.getValue(now),
-    getTitle: (context) => Strings.of(context).analysisDurationCustom,
+    title: (context) => Strings.of(context).analysisDurationCustom,
   );
 
   static final all = [
@@ -255,10 +257,10 @@ class DisplayDateRange {
 
   final String id;
   final DateRange Function(DateTime now) getValue;
-  final String Function(BuildContext context) getTitle;
+  final String Function(BuildContext context) title;
 
   DisplayDateRange._({
-    this.id, this.getValue, this.getTitle
+    this.id, this.getValue, this.title
   });
 
   /// Used to create a [DisplayDateRange] with custom start and end dates, but
@@ -269,7 +271,7 @@ class DisplayDateRange {
   }) : this._(
     id: custom.id,
     getValue: getValue,
-    getTitle: getTitle,
+    title: getTitle,
   );
 
   DateRange get value => getValue(DateTime.now());

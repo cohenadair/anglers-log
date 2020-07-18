@@ -64,7 +64,7 @@ class _DateRangePickerPageState extends State<DateRangePickerPage> {
         PickerPageItem.divider(),
         PickerPageItem<DisplayDateRange>(
           popsOnPicked: false,
-          title: _customDateRange.getTitle(context),
+          title: _customDateRange.title(context),
           onTap: () => _onTapCustom(context),
           value: _customDateRange,
         ),
@@ -76,7 +76,7 @@ class _DateRangePickerPageState extends State<DateRangePickerPage> {
       DisplayDateRange duration)
   {
     return PickerPageItem<DisplayDateRange>(
-      title: duration.getTitle(context),
+      title: duration.title(context),
       value: duration,
     );
   }

@@ -43,11 +43,17 @@ class CatchManager extends EntityManager<Catch> {
   /// Returns all catches, sorted from newest to oldest.
   List<Catch> catchesSortedByTimestamp(BuildContext context, {
     String filter,
+    DateRange dateRange,
     Species species,
+    FishingSpot fishingSpot,
+    Bait bait,
   }) {
     List<Catch> result = List.of(filteredCatches(context,
       filter: filter,
+      dateRange: dateRange,
       species: species,
+      fishingSpot: fishingSpot,
+      bait: bait,
     ));
     result.sort((lhs, rhs) => rhs.timestamp.compareTo(lhs.timestamp));
     return result;
@@ -55,14 +61,24 @@ class CatchManager extends EntityManager<Catch> {
 
   List<Catch> filteredCatches(BuildContext context, {
     String filter,
+    DateRange dateRange,
     Species species,
+    FishingSpot fishingSpot,
+    Bait bait,
   }) {
-    if (isEmpty(filter) && species == null) {
+    if (isEmpty(filter) && dateRange == null && species == null
+        && fishingSpot == null && bait == null)
+    {
       return entities.values.toList();
     }
 
     return entities.values.where((cat) {
-      if (species != null && species.id != cat.speciesId) {
+      bool invalid = false;
+      invalid |= dateRange != null && !dateRange.contains(cat.timestamp);
+      invalid |= species != null && species.id != cat.speciesId;
+      invalid |= fishingSpot != null && fishingSpot.id != cat.fishingSpotId;
+      invalid |= bait != null && bait.id != cat.baitId;
+      if (invalid) {
         return false;
       }
 
