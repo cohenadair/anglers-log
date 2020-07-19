@@ -78,8 +78,10 @@
 - (void)writeKeyValueString:(NSString *)aKey andString:(NSString *)aString andComma:(BOOL)comma {
     if (aString == nil)
         aString = @"";
-    else
+    else {
         aString = [self escapeQuotesInString:aString];
+        aString = [aString stringByReplacingOccurrencesOfString:@"\n" withString:@"\\n"];
+    }
     
     [self writeString:[NSString stringWithFormat:@"\"%@\": \"%@\"", aKey, aString]];
     if (comma)
