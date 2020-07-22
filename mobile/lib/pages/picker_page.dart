@@ -117,13 +117,16 @@ class _PickerPageState<T> extends State<PickerPage<T>> {
         (widget.allItem == null ? [] : [widget.allItem])
             ..addAll(widget.itemBuilder());
 
+    List<Widget> children = [];
+    if (widget.listHeader != null) {
+      children.add(Padding(
+        padding: insetsDefault,
+        child: widget.listHeader,
+      ));
+    }
+
     return ListView(
-      children: [
-        widget.listHeader == null ? Empty() : Padding(
-          padding: insetsDefault,
-          child: widget.listHeader,
-        ),
-      ]..addAll(items.map((item) {
+      children: children..addAll(items.map((item) {
         if (item._divider) {
           return Divider();
         }

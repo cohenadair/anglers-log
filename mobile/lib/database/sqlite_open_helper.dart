@@ -93,11 +93,20 @@ final List<String> _schema0 = [
   """,
 ];
 
-final List<List<String>> _schema = [
-  _schema0,
+final List<String> _schema1 = [
+  """
+  CREATE TABLE custom_report (
+    id TEXT PRIMARY KEY,
+    name TEXT NOT NULL
+  );
+  """,
 ];
 
-final int _version = 1;
+final List<List<String>> _schema = [
+  _schema0, _schema1,
+];
+
+final int _version = 2;
 
 Future<String> get _databasePath async => join(await getDatabasesPath(), _name);
 

@@ -43,7 +43,7 @@ class SpeciesListPage extends StatelessWidget {
           : null,
       itemManager: ManageableListPageItemManager<Species>(
         listenerManagers: [ speciesManager ],
-        loadItems: (String query) =>
+        loadItems: (query) =>
             speciesManager.entityListSortedByName(filter: query),
         deleteText: (context, species) => Text(format(Strings.of(context)
             .speciesListPageConfirmDelete, [species.name])),

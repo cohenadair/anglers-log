@@ -7,6 +7,7 @@ import 'package:mobile/entity_manager.dart';
 import 'package:mobile/fishing_spot_manager.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/model/bait.dart';
+import 'package:mobile/model/catch.dart';
 import 'package:mobile/model/fishing_spot.dart';
 import 'package:mobile/model/named_entity.dart';
 import 'package:mobile/model/species.dart';
@@ -14,7 +15,6 @@ import 'package:mobile/pages/catch_list_page.dart';
 import 'package:mobile/pages/date_range_picker_page.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/species_manager.dart';
-import 'package:mobile/stats/overview_report.dart';
 import 'package:mobile/utils/collection_utils.dart';
 import 'package:mobile/utils/date_time_utils.dart';
 import 'package:mobile/utils/page_utils.dart';
@@ -23,6 +23,7 @@ import 'package:mobile/widgets/list_item.dart';
 import 'package:mobile/widgets/list_picker_input.dart';
 import 'package:mobile/widgets/text.dart';
 import 'package:mobile/widgets/widget.dart';
+import 'package:quiver/time.dart';
 
 class OverviewReportView extends StatefulWidget {
   @override
@@ -38,7 +39,7 @@ class _OverviewReportViewState extends State<OverviewReportView> {
   DisplayDateRange _currentDateRange =
       DisplayDateRange.of(DisplayDateRange.allDates.id);
 
-  OverviewReport _overview;
+  OverviewReportViewData _overview;
 
   bool get _hasCatches => _overview.totalCatches > 0;
   bool get _hasFishingSpots => _overview.totalFishingSpots > 0;
@@ -52,26 +53,20 @@ class _OverviewReportViewState extends State<OverviewReportView> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      top: false,
-      bottom: false,
-      child: SingleChildScrollView(
-        child: EntityListenerBuilder(
-          managers: [
-            BaitManager.of(context),
-            CatchManager.of(context),
-            FishingSpotManager.of(context),
-            SpeciesManager.of(context),
-          ],
-          onUpdate: () => _resetOverview(),
-          builder: (context) => Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _buildDurationPicker(),
-              _buildCatchItems(),
-            ],
-          ),
-        ),
+    return EntityListenerBuilder(
+      managers: [
+        BaitManager.of(context),
+        CatchManager.of(context),
+        FishingSpotManager.of(context),
+        SpeciesManager.of(context),
+      ],
+      onUpdate: () => _resetOverview(),
+      builder: (context) => Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _buildDurationPicker(),
+          _buildCatchItems(),
+        ],
       ),
     );
   }
@@ -246,11 +241,123 @@ class _OverviewReportViewState extends State<OverviewReportView> {
   }
 
   void _resetOverview() {
-    _overview = OverviewReport(
+    _overview = OverviewReportViewData(
       appManager: AppManager.of(context),
       context: context,
       displayDateRange: _currentDateRange,
     );
+  }
+}
+
+/// A class, that when instantiated, gathers all the data required to display
+/// an overview of the user's log.
+class OverviewReportViewData {
+  final AppManager appManager;
+  final Clock clock;
+  final BuildContext context;
+  final DisplayDateRange displayDateRange;
+
+  DateRange _dateRange;
+
+  // Catches
+  int _msSinceLastCatch = 0;
+
+  /// True if the date range of the report includes "now"; false otherwise.
+  bool _isCurrentDate = true;
+
+  /// Total number of catches within the given time period.
+  int _totalCatches = 0;
+  Map<Species, int> _catchesPerSpecies = {};
+
+  /// Total number of fishing spots from which a catch was made within the
+  /// given time period.
+  int _fishingSpotsWithCatches = 0;
+  Map<FishingSpot, int> _catchesPerFishingSpot = {};
+
+  /// Total number of fishing spots from which a catch was made within the
+  /// given time period.
+  int _baitsWithCatches = 0;
+  Map<Bait, int> _catchesPerBait = {};
+
+  BaitManager get _baitManager => appManager.baitManager;
+  CatchManager get _catchManager => appManager.catchManager;
+  FishingSpotManager get _fishingSpotManager => appManager.fishingSpotManager;
+  SpeciesManager get _speciesManager => appManager.speciesManager;
+
+  DateRange get dateRange => _dateRange;
+  bool get isCurrentDate => _isCurrentDate;
+  int get msSinceLastCatch => _msSinceLastCatch;
+  int get totalCatches => _totalCatches;
+  Map<Species, int> get catchesPerSpecies => _catchesPerSpecies;
+
+  int get totalFishingSpots => _fishingSpotsWithCatches;
+  Map<FishingSpot, int> get catchesPerFishingSpot => _catchesPerFishingSpot;
+
+  int get totalBaits => _baitsWithCatches;
+  Map<Bait, int> get catchesPerBait => _catchesPerBait;
+
+  OverviewReportViewData({
+    this.appManager,
+    this.clock = const Clock(),
+    this.context,
+    DisplayDateRange displayDateRange,
+  }) : assert(appManager != null),
+       assert(context != null),
+       displayDateRange = displayDateRange ?? DisplayDateRange.allDates
+  {
+    DateTime now = clock.now();
+    _dateRange = displayDateRange.getValue(clock.now());
+    _isCurrentDate = _dateRange.endDate == now;
+
+    List<Catch> catches = _catchManager.catchesSortedByTimestamp(context);
+    _msSinceLastCatch = catches.isEmpty
+        ? 0 : clock.now().millisecondsSinceEpoch - catches.first.timestamp;
+
+    // Initialize all entities. We want to include everything, even ones with
+    // no catches.
+    _speciesManager.entityList
+        .forEach((species) => _catchesPerSpecies[species] = 0);
+    _fishingSpotManager.entityList
+        .forEach((fishingSpot) => _catchesPerFishingSpot[fishingSpot] = 0);
+    _baitManager.entityList.forEach((bait) => _catchesPerBait[bait] = 0);
+
+    for (Catch cat in _catchManager.entityList) {
+      // Skip catches that don't fall within the desired time range.
+      if (cat.timestamp < _dateRange.startMs
+          || cat.timestamp > _dateRange.endMs)
+      {
+        continue;
+      }
+
+      _catchesPerSpecies[_speciesManager.entity(id: cat.speciesId)]++;
+      _totalCatches++;
+
+      if (cat.hasFishingSpot) {
+        _catchesPerFishingSpot[
+        _fishingSpotManager.entity(id: cat.fishingSpotId)]++;
+      }
+
+      if (cat.hasBait) {
+        _catchesPerBait[_baitManager.entity(id: cat.baitId)]++;
+      }
+    }
+
+    // Add up total catch count for other entities.
+    _catchesPerFishingSpot.forEach((_, value) {
+      if (value > 0) {
+        _fishingSpotsWithCatches++;
+      }
+    });
+    _catchesPerBait.forEach((_, value) {
+      if (value > 0) {
+        _baitsWithCatches++;
+      }
+    });
+
+    // Sort all maps.
+    _catchesPerSpecies = sortedMap<Species>(_catchesPerSpecies);
+    _catchesPerFishingSpot = sortedMap<FishingSpot>(_catchesPerFishingSpot);
+    _catchesPerBait = sortedMap<Bait>(_catchesPerBait);
   }
 }
 

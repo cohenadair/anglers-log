@@ -10,6 +10,7 @@ import 'package:mobile/image_manager.dart';
 import 'package:mobile/location_monitor.dart';
 import 'package:mobile/preferences_manager.dart';
 import 'package:mobile/properties_manager.dart';
+import 'package:mobile/custom_report_manager.dart';
 import 'package:mobile/species_manager.dart';
 import 'package:mobile/trip_manager.dart';
 import 'package:provider/provider.dart';
@@ -24,6 +25,7 @@ class AppManager {
   CatchManager _catchManager;
   CustomEntityManager _customEntityManager;
   CustomEntityValueManager _customEntityValueManager;
+  CustomReportManager _customReportManager;
   FishingSpotManager _fishingSpotManager;
   ImageManager _imageManager;
   LocationMonitor _locationMonitor;
@@ -72,6 +74,13 @@ class AppManager {
       _customEntityValueManager = CustomEntityValueManager(this);
     }
     return _customEntityValueManager;
+  }
+
+  CustomReportManager get customReportManager {
+    if (_customReportManager == null) {
+      _customReportManager = CustomReportManager(this);
+    }
+    return _customReportManager;
   }
 
   FishingSpotManager get fishingSpotManager {

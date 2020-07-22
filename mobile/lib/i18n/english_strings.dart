@@ -158,6 +158,9 @@ Map<String, Map<String, String>> get englishStrings => {
     "imagePickerPage_invalidSelectionSingle" : "Must select an image file.",
     "imagePickerPage_invalidSelectionPlural" : "Must select image files.",
 
+    "reportListPage_pickerTitle" : "Select Report",
+    "reportListPage_confirmDelete" : "Are you sure you want to delete report %s? This cannot be undone.",
+
     "saveSpeciesPage_newTitle" : "New Species",
     "saveSpeciesPage_editTitle" : "Edit Species",
     "saveSpeciesPage_existsError" : "Species already exists",

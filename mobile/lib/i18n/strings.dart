@@ -106,6 +106,9 @@ class Strings {
   String get baitPageDeleteMessage => _string("baitPage_deleteMessage");
   String get baitPageDeleteMessageSingular => _string("baitPage_deleteMessageSingular");
 
+  String get reportListPagePickerTitle => _string("reportListPage_pickerTitle");
+  String get reportListPageConfirmDelete => _string("reportListPage_confirmDelete");
+
   String get saveBaitPageNewTitle => _string("saveBaitPage_newTitle");
   String get saveBaitPageEditTitle => _string("saveBaitPage_editTitle");
   String get saveBaitPageCategoryLabel => _string("saveBaitPage_categoryLabel");

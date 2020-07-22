@@ -61,6 +61,7 @@ class _BaitListPageState extends State<BaitListPage> {
           if (item is BaitCategory) {
             return ManageableListPageItemModel(
               editable: false,
+              selectable: false,
               child: Padding(
                 padding: insetsDefault,
                 child: HeadingLabel(item.name),
@@ -73,6 +74,7 @@ class _BaitListPageState extends State<BaitListPage> {
           } else {
             return ManageableListPageItemModel(
               editable: false,
+              selectable: false,
               child: item,
             );
           }

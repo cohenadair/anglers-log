@@ -9,12 +9,12 @@ import 'package:mobile/model/catch.dart';
 import 'package:mobile/model/fishing_spot.dart';
 import 'package:mobile/model/species.dart';
 import 'package:mobile/species_manager.dart';
-import 'package:mobile/stats/overview_report.dart';
 import 'package:mobile/utils/date_time_utils.dart';
+import 'package:mobile/widgets/overview_report_view.dart';
 import 'package:mockito/mockito.dart';
 import 'package:quiver/time.dart';
 
-import 'test_utils.dart';
+import '../test_utils.dart';
 
 class MockAppManager extends Mock implements AppManager {}
 class MockBaitManager extends Mock implements BaitManager {}
@@ -135,7 +135,7 @@ void main() {
     when(clock.now()).thenReturn(DateTime.fromMillisecondsSinceEpoch(105000));
 
     // Normal use case.
-    var data = OverviewReport(
+    var data = OverviewReportViewData(
       appManager: appManager,
       context: context,
       displayDateRange: DisplayDateRange.allDates,
@@ -168,7 +168,7 @@ void main() {
     expect(data.catchesPerBait[baitMap["Grub"]], 1);
 
     // Different date range.
-    data = OverviewReport(
+    data = OverviewReportViewData(
       appManager: appManager,
       context: context,
       displayDateRange: DisplayDateRange.newCustom(

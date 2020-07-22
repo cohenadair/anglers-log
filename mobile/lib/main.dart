@@ -37,6 +37,7 @@ class _AnglersLogState extends State<AnglersLog> {
         _app.catchManager.initialize(),
         _app.customEntityManager.initialize(),
         _app.customEntityValueManager.initialize(),
+        _app.customReportManager.initialize(),
         _app.fishingSpotManager.initialize(),
         _app.imageManager.initialize(),
         _app.preferencesManager.initialize(),

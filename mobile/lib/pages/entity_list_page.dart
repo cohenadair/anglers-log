@@ -139,7 +139,9 @@ class _EntityListPageState<T> extends State<EntityListPage<T>> {
                 ),
               ),
               replacementSliver: SliverToBoxAdapter(
-                child: NoResults(widget.searchDelegate.noResultsMessage),
+                child: widget.searchDelegate == null
+                    ? Empty()
+                    : NoResults(widget.searchDelegate.noResultsMessage),
               ),
             ),
           ),
@@ -245,9 +247,9 @@ class _EntityListPageState<T> extends State<EntityListPage<T>> {
   Widget _buildItem(BuildContext context, T itemValue) {
     ManageableListPageItemModel item = widget.itemBuilder(context, itemValue);
 
-    if (!item.editable) {
-      // If this item can't be edited, return it; we don't want to use a
-      // ManageableListItem.
+    if (!item.editable && !item.selectable) {
+      // If this item can't be edited or selected, return it; we don't want
+      // to use a ManageableListItem.
       return item.child;
     }
 
@@ -268,22 +270,27 @@ class _EntityListPageState<T> extends State<EntityListPage<T>> {
     } else if (_pickingSingle || widget.itemManager.detailPageBuilder == null) {
       // Don't show detail disclosure indicator if we're picking a single
       // value, or if there isn't any detail to show.
-      trailing = Empty();
+      trailing = _selectedValues.contains(itemValue)
+          ? Icon(Icons.check) : Empty();
     }
+
+    bool canEdit = _editing && item.editable;
+    bool enabled = !_editing || canEdit;
 
     return ManageableListItem(
       child: item.child,
-      editing: _editing,
+      editing: canEdit,
+      enabled: enabled,
       deleteMessageBuilder: (context) =>
           widget.itemManager.deleteText(context, itemValue),
       onConfirmDelete: () => widget.itemManager.deleteItem(context, itemValue),
-      onTap: _viewing && !_hasDetailPage && !_editing ? null : () {
-        if (_pickingMulti && !_editing) {
+      onTap: !enabled || (_viewing && !_hasDetailPage && !canEdit) ? null : () {
+        if (_pickingMulti && !canEdit) {
           // Taps are consumed by trailing checkbox in this case.
           return;
         }
 
-        if (_editing) {
+        if (canEdit) {
           push(context, widget.itemManager.editPageBuilder(itemValue));
         } else if (_pickingSingle) {
           _finishPicking({itemValue});
@@ -331,13 +338,16 @@ abstract class ManageableListPagePickerSettings<T> {
 class ManageableListPageSinglePickerSettings<T>
     extends ManageableListPagePickerSettings<T>
 {
+  final T initialValue;
+
   /// See [ManageableListPagePickerSettings.onFinishedPicking].
   final bool Function(BuildContext context, T) onPicked;
 
   ManageableListPageSinglePickerSettings({
+    this.initialValue,
     this.onPicked,
   }) : super(
-    initialValues: {},
+    initialValues: initialValue == null ? {} : {initialValue},
   );
 
   @override
@@ -395,6 +405,8 @@ class ManageableListPageItemModel {
   /// section headers or dividers. Defaults to true.
   final bool editable;
 
+  final bool selectable;
+
   /// The child of item. [Padding] is added automatically, as is a trailing
   /// [RightChevronIcon] or [CheckBox] depending on the situation. This
   /// is most commonly a [Text] widget.
@@ -403,6 +415,7 @@ class ManageableListPageItemModel {
   ManageableListPageItemModel({
     @required this.child,
     this.editable = true,
+    this.selectable = true,
   }) : assert(child != null);
 }
 
