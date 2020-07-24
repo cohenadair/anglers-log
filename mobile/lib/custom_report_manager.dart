@@ -4,6 +4,7 @@ import 'package:mobile/model/custom_report.dart';
 import 'package:mobile/named_entity_manager.dart';
 import 'package:provider/provider.dart';
 
+/// Manages all reports created by the user.
 class CustomReportManager extends NamedEntityManager<CustomReport> {
   static CustomReportManager of(BuildContext context) =>
       Provider.of<AppManager>(context, listen: false).customReportManager;
@@ -16,16 +17,4 @@ class CustomReportManager extends NamedEntityManager<CustomReport> {
 
   @override
   String get tableName => "custom_report";
-
-  @override
-  int get entityCount => 3;
-
-  @override
-  List<CustomReport> entityListSortedByName({String filter}) {
-    return [
-      CustomReport(name: "Steelhead Summary", id: "2"),
-      CustomReport(name: "Walleye Summary", id: "3"),
-      CustomReport(name: "Previous Year Comparison", id: "4"),
-    ];
-  }
 }

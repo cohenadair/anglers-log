@@ -52,7 +52,7 @@ abstract class EntityManager<T extends Entity> extends
   T entityFromMap(Map<String, dynamic> map);
 
   EntityManager(AppManager app) : appManager = app, super() {
-    appManager.dataManager.addListener(DataListener(
+    dataManager.addListener(DataListener(
       onReset: _clear,
     ));
   }
@@ -110,19 +110,22 @@ abstract class EntityManager<T extends Entity> extends
     return results.map((map) => entityFromMap(map)).toList();
   }
 
+  @protected
   void notifyOnAddOrUpdate() {
     notify((listener) => listener.onAddOrUpdate());
   }
 
+  @protected
   void notifyOnDelete(T entity) {
     notify((listener) => listener.onDelete(entity));
   }
 
+  @protected
   void notifyOnClear() {
     notify((listener) => listener.onClear());
   }
 
-  SimpleEntityListener addSimpleListener({
+  SimpleEntityListener _addSimpleListener({
     void Function(T entity) onDelete,
     VoidCallback onAddOrUpdate,
     VoidCallback onClear,
@@ -169,7 +172,7 @@ class _EntityListenerBuilderState extends State<EntityListenerBuilder> {
     super.initState();
 
     widget.managers.forEach((manager) => {
-      _listeners.add(manager.addSimpleListener(
+      _listeners.add(manager._addSimpleListener(
         onDelete: widget.onDeleteEnabled ? (_) => _update() : null,
         onAddOrUpdate: _update,
         onClear: _update,

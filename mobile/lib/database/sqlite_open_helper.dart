@@ -74,39 +74,64 @@ final List<String> _schema0 = [
   """
   CREATE TABLE preference (
     id TEXT PRIMARY KEY,
-    -- A JSON serialized value for the preference.
     value TEXT NOT NULL
   );
   """,
   """
-  -- Values for custom entity instances attached to catches.
   CREATE TABLE custom_entity_value (
-    -- The normal entity, such as bait or catch, ID.
     entity_id TEXT NOT NULL,
     custom_entity_id TEXT NOT NULL,
-    -- Store value as text, to capture exactly what the user entered.
     value TEXT NOT NULL,
-    -- Corresponds to EntityType enum.
     entity_type INTEGER NOT NULL,
     PRIMARY KEY (entity_id, custom_entity_id)
   );
   """,
-];
-
-final List<String> _schema1 = [
   """
   CREATE TABLE custom_report (
     id TEXT PRIMARY KEY,
-    name TEXT NOT NULL
+    name TEXT NOT NULL,
+    description TEXT,
+    type INTEGER NOT NULL,
+    entity_type INTEGER NOT NULL
+  );
+  """,
+  """
+  CREATE TABLE catch_report (
+    id TEXT PRIMARY KEY,
+    custom_report_id TEXT NOT NULL,
+    display_date_range_id TEXT NOT NULL,
+    start_timestamp INTEGER,
+    end_timestamp INTEGER
+  );
+  """,
+  """
+  CREATE TABLE catch_report_species (
+    catch_report_id TEXT NOT NULL,
+    species_id TEXT NOT NULL,
+    PRIMARY KEY (catch_report_id, species_id)
+  );
+  """,
+  """
+  CREATE TABLE catch_report_bait (
+    catch_report_id TEXT NOT NULL,
+    bait_id TEXT NOT NULL,
+    PRIMARY KEY (catch_report_id, bait_id)
+  );
+  """,
+  """
+  CREATE TABLE catch_report_fishing_spot (
+    catch_report_id TEXT NOT NULL,
+    fishing_spot_id TEXT NOT NULL,
+    PRIMARY KEY (catch_report_id, fishing_spot)
   );
   """,
 ];
 
 final List<List<String>> _schema = [
-  _schema0, _schema1,
+  _schema0,
 ];
 
-final int _version = 2;
+final int _version = 1;
 
 Future<String> get _databasePath async => join(await getDatabasesPath(), _name);
 
