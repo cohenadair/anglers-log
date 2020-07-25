@@ -32,7 +32,7 @@ class SaveBaitCategoryPage extends StatelessWidget {
         return true;
       },
       validator: NameValidator(
-        nameExistsMessage:
+        nameExistsMessage: (context) =>
             Strings.of(context).saveBaitCategoryPageExistsMessage,
         nameExists: (name) => categoryManager.nameExists(name),
       ),

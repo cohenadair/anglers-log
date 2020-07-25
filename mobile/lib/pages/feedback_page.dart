@@ -89,7 +89,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
     _fields[_emailId] = InputData(
       id: _emailId,
       label: (context) => "",
-      controller: TextInputController(),
+      controller: EmailInputController(),
       showing: true,
     );
 
@@ -107,8 +107,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
       label: (context) => "",
       controller: TextInputController(
         // Message field is only required if an error isn't being sent.
-        validate: _error
-            ? null : (context) => Strings.of(context).inputGenericRequired,
+        validator: _error ? null : EmptyValidator(),
       ),
       showing: true,
     );
@@ -118,8 +117,8 @@ class _FeedbackPageState extends State<FeedbackPage> {
   Widget build(BuildContext context) {
     return FormPage.immutable(
       title: Text(widget.title ?? Strings.of(context).feedbackPageTitle),
-      isInputValid: isEmpty(_emailController.error(context))
-          && isEmpty(_messageController.error(context)),
+      isInputValid: _emailController.valid(context)
+          && _messageController.valid(context),
       saveButtonText: Strings.of(context).feedbackPageSend,
       fieldBuilder: (context) => {
         _warningId: _error && isNotEmpty(widget.warningMessage) ? Padding(
@@ -162,7 +161,6 @@ class _FeedbackPageState extends State<FeedbackPage> {
           maxLength: null,
           // To update "Send" button state.
           onChanged: () => setState(() {}),
-          validator: _error ? null : EmptyValidator(),
         ),
       },
       onSave: (context) async {

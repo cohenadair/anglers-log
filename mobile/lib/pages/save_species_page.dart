@@ -32,7 +32,8 @@ class SaveSpeciesPage extends StatelessWidget {
         return true;
       },
       validator: NameValidator(
-        nameExistsMessage: Strings.of(context).saveSpeciesPageExistsError,
+        nameExistsMessage: (context) =>
+            Strings.of(context).saveSpeciesPageExistsError,
         nameExists: (name) => speciesManager.nameExists(name),
       ),
     );

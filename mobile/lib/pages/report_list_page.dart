@@ -3,7 +3,7 @@ import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/model/custom_report.dart';
 import 'package:mobile/model/report.dart';
 import 'package:mobile/pages/entity_list_page.dart';
-import 'package:mobile/pages/save_report_page.dart';
+import 'package:mobile/pages/save_custom_report_page.dart';
 import 'package:mobile/custom_report_manager.dart';
 import 'package:mobile/model/overview_report.dart';
 import 'package:mobile/utils/string_utils.dart';
@@ -31,8 +31,8 @@ class ReportListPage extends StatelessWidget {
         deleteText: (context, report) => Text(format(Strings.of(context)
             .reportListPageConfirmDelete, [report.title(context)])),
         deleteItem: (context, report) => reportManager.delete(report),
-        addPageBuilder: () => SaveReportPage(),
-        editPageBuilder: (report) => SaveReportPage.edit(report),
+        addPageBuilder: () => SaveCustomReportPage(),
+        editPageBuilder: (report) => SaveCustomReportPage.edit(report),
       ),
       pickerSettings: ManageableListPageSinglePickerSettings<dynamic>(
         initialValue: currentItem,

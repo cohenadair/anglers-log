@@ -14,12 +14,11 @@ class InputController<T> {
   /// The value of the controller, such as [bool] or [String].
   T value;
 
-  /// Invoked when validating input.
-  ValidationCallback validate;
+  /// The current error message for the [InputController], if there is one.
+  String error;
 
   InputController({
-    this.value,
-    this.validate,
+    this.value
   });
 
   void dispose() {
@@ -29,19 +28,16 @@ class InputController<T> {
   void clear() {
     value = null;
   }
-
-  String error(BuildContext context) => validate?.call(context);
 }
 
 class TextInputController extends InputController<String> {
   final TextEditingController editingController = TextEditingController();
+  final Validator validator;
 
   TextInputController({
     TextEditingController editingController,
-    ValidationCallback validate,
-  }) : super(
-    validate: validate,
-  );
+    this.validator,
+  }) : super();
 
   @override
   get value => editingController.text.trim();
@@ -63,6 +59,28 @@ class TextInputController extends InputController<String> {
   void clearText() {
     editingController.value = TextEditingValue(text: "");
   }
+
+  bool valid(BuildContext context) =>
+      isEmpty(validator?.run(context, value)?.call(context));
+}
+
+class NumberInputController extends TextInputController {
+  NumberInputController({
+    TextEditingController editingController,
+  }) : super(
+    editingController: editingController ?? TextEditingController(),
+    validator: DoubleValidator(),
+  );
+}
+
+class EmailInputController extends TextInputController {
+  EmailInputController({
+    TextEditingController editingController,
+    bool required = false,
+  }) : super(
+    editingController: editingController ?? TextEditingController(),
+    validator: EmailValidator(required: required),
+  );
 }
 
 class TimestampInputController extends InputController<int> {
@@ -99,20 +117,12 @@ class TimestampInputController extends InputController<int> {
   }
 }
 
-class BaitCategoryInputController extends InputController<BaitCategory> {
-}
-
-class SpeciesInputController extends InputController<Species> {
-}
-
-class FishingSpotInputController extends InputController<FishingSpot> {
-}
-
-class BaitInputController extends InputController<Bait> {
-}
-
-class ImageInputController extends InputController<PickedImage> {
-}
-
-class ImagesInputController extends InputController<List<PickedImage>> {
-}
+class BaitCategoryInputController extends InputController<BaitCategory> {}
+class SpeciesInputController extends InputController<Species> {}
+class SpeciesListInputController extends InputController<List<Species>> {}
+class FishingSpotInputController extends InputController<FishingSpot> {}
+class FishingSpotsInputController extends InputController<List<FishingSpot>> {}
+class BaitInputController extends InputController<Bait> {}
+class BaitsInputController extends InputController<List<Bait>> {}
+class ImageInputController extends InputController<PickedImage> {}
+class ImagesInputController extends InputController<List<PickedImage>> {}

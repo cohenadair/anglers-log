@@ -22,7 +22,6 @@ import 'package:mobile/widgets/input_controller.dart';
 import 'package:mobile/widgets/list_picker_input.dart';
 import 'package:mobile/widgets/text_input.dart';
 import 'package:mobile/widgets/widget.dart';
-import 'package:quiver/strings.dart';
 
 class SaveBaitPage extends StatefulWidget {
   final Bait oldBait;
@@ -73,7 +72,7 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
       id: nameId,
       label: (context) => Strings.of(context).inputNameLabel,
       controller: TextInputController(
-        validate: (context) => Strings.of(context).inputGenericRequired,
+        validator: NameValidator(),
       ),
       removable: false,
       showing: true,
@@ -83,7 +82,6 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
       _baitCategoryController.value =
           _baitCategoryManager.entity(id: widget.oldBait.categoryId);
       _nameController.value = widget.oldBait.name;
-      _nameController.validate = null;
       _customEntityValues = _entityValueManager.values(
           entityId: widget.oldBait.id);
     }
@@ -109,7 +107,7 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
         }
       },
       onSave: _save,
-      isInputValid: isEmpty(_nameController.error(context)),
+      isInputValid: _nameController.valid(context),
     );
   }
 
@@ -144,12 +142,6 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
     child: TextInput.name(context,
       controller: _nameController,
       autofocus: true,
-      validator: GenericValidator(runner: (context, newName) {
-        if (isEmpty(_nameController.value)) {
-          return (context) => Strings.of(context).inputGenericRequired;
-        }
-        return null;
-      }),
       // Trigger "Save" button state refresh.
       onChanged: () => setState(() {}),
     ),
