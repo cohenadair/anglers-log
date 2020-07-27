@@ -51,8 +51,8 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
       CustomEntityValueManager.of(context);
   PreferencesManager get _preferencesManager => PreferencesManager.of(context);
 
-  BaitCategoryInputController get _baitCategoryController =>
-      _fields[baitCategoryId].controller as BaitCategoryInputController;
+  InputController<BaitCategory> get _baitCategoryController =>
+      _fields[baitCategoryId].controller;
   TextInputController get _nameController =>
       _fields[nameId].controller as TextInputController;
 
@@ -63,7 +63,7 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
     _fields[baitCategoryId] = InputData(
       id: baitCategoryId,
       label: (context) => Strings.of(context).saveBaitPageCategoryLabel,
-      controller: BaitCategoryInputController(),
+      controller: InputController<BaitCategory>(),
       removable: true,
       showing: true,
     );

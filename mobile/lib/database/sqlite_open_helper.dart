@@ -122,7 +122,7 @@ final List<String> _schema0 = [
   CREATE TABLE catch_report_fishing_spot (
     catch_report_id TEXT NOT NULL,
     fishing_spot_id TEXT NOT NULL,
-    PRIMARY KEY (catch_report_id, fishing_spot)
+    PRIMARY KEY (catch_report_id, fishing_spot_id)
   );
   """,
 ];

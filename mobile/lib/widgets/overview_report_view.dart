@@ -18,6 +18,7 @@ import 'package:mobile/species_manager.dart';
 import 'package:mobile/utils/collection_utils.dart';
 import 'package:mobile/utils/date_time_utils.dart';
 import 'package:mobile/utils/page_utils.dart';
+import 'package:mobile/widgets/date_range_picker_input.dart';
 import 'package:mobile/widgets/label_value.dart';
 import 'package:mobile/widgets/list_item.dart';
 import 'package:mobile/widgets/list_picker_input.dart';
@@ -71,21 +72,12 @@ class _OverviewReportViewState extends State<OverviewReportView> {
     );
   }
 
-  Widget _buildDurationPicker() => ListPickerInput<DisplayDateRange>(
-    initialValues: Set.of([_currentDateRange]),
-    value: _currentDateRange.title(context),
-    onTap: () {
-      push(context, DateRangePickerPage(
-        initialValue: _currentDateRange,
-        onDateRangePicked: (dateRange) {
-          setState(() {
-            _currentDateRange = dateRange;
-            _resetOverview();
-          });
-          Navigator.of(context).pop();
-        },
-      ));
-    },
+  Widget _buildDurationPicker() => DateRangePickerInput(
+    initialDateRange: _currentDateRange,
+    onPicked: (dateRange) => setState(() {
+      _currentDateRange = dateRange;
+      _resetOverview();
+    }),
   );
 
   Widget _buildCatchItems() {

@@ -93,6 +93,15 @@ class Strings {
   String get saveCatchPageFishingSpotLabel => _string("saveCatchPage_fishingSpotLabel");
   String get saveCatchPageBaitLabel => _string("saveCatchPage_baitLabel");
 
+  String get saveCustomReportPageNewTitle => _string("saveCustomReportPage_newTitle");
+  String get saveCustomReportPageEditTitle => _string("saveCustomReportPage_editTitle");
+  String get saveCustomReportPageNameExists => _string("saveCustomReportPage_nameExists");
+  String get saveCustomReportTypeTitle => _string("saveCustomReportPage_typeTitle");
+  String get saveCustomReportPageComparison => _string("saveCustomReportPage_comparison");
+  String get saveCustomReportPageSummary => _string("saveCustomReportPage_summary");
+  String get saveCustomReportPageStartDateRangeLabel => _string("saveCustomReportPage_startDateRangeLabel");
+  String get saveCustomReportPageEndDateRangeLabel => _string("saveCustomReportPage_endDateRangeLabel");
+
   String get photosPageMenuLabel => _string("photosPage_menuLabel");
   String get photosPageTitle => _string("photosPage_title");
 

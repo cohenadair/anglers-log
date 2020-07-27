@@ -74,42 +74,32 @@ class _FeedbackPageState extends State<FeedbackPage> {
 
     _fields[_warningId] = InputData(
       id: _warningId,
-      label: (context) => "",
       controller: InputController(),
-      showing: true,
     );
 
     _fields[_nameId] = InputData(
       id: _nameId,
-      label: (context) => "",
       controller: TextInputController(),
-      showing: true,
     );
 
     _fields[_emailId] = InputData(
       id: _emailId,
-      label: (context) => "",
       controller: EmailInputController(),
-      showing: true,
     );
 
     _fields[_typeId] = InputData(
       id: _typeId,
-      label: (context) => "",
       controller: InputController<_FeedbackType>(
         value: _FeedbackType.bug,
       ),
-      showing: true,
     );
 
     _fields[_messageId] = InputData(
       id: _messageId,
-      label: (context) => "",
       controller: TextInputController(
         // Message field is only required if an error isn't being sent.
         validator: _error ? null : EmptyValidator(),
       ),
-      showing: true,
     );
   }
 

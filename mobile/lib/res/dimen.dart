@@ -43,6 +43,11 @@ const insetsHorizontalDefault = EdgeInsets.only(
   right: paddingDefault,
 );
 
+const insetsHorizontalWidget = EdgeInsets.only(
+  left: paddingWidget,
+  right: paddingWidget,
+);
+
 const insetsHorizontalWidgetSmall = EdgeInsets.only(
   left: paddingWidgetSmall,
   right: paddingWidgetSmall,

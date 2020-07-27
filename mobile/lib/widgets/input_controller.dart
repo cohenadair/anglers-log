@@ -116,13 +116,3 @@ class TimestampInputController extends InputController<int> {
     time = null;
   }
 }
-
-class BaitCategoryInputController extends InputController<BaitCategory> {}
-class SpeciesInputController extends InputController<Species> {}
-class SpeciesListInputController extends InputController<List<Species>> {}
-class FishingSpotInputController extends InputController<FishingSpot> {}
-class FishingSpotsInputController extends InputController<List<FishingSpot>> {}
-class BaitInputController extends InputController<Bait> {}
-class BaitsInputController extends InputController<List<Bait>> {}
-class ImageInputController extends InputController<PickedImage> {}
-class ImagesInputController extends InputController<List<PickedImage>> {}

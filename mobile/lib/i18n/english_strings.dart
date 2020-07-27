@@ -62,6 +62,15 @@ Map<String, Map<String, String>> get englishStrings => {
     "saveCatchPage_fishingSpotLabel" : "Fishing Spot",
     "saveCatchPage_baitLabel" : "Bait",
 
+    "saveCustomReportPage_newTitle" : "New Report",
+    "saveCustomReportPage_editTitle" : "Edit Report",
+    "saveCustomReportPage_nameExists" : "Report name already exists",
+    "saveCustomReportPage_typeTitle" : "Type",
+    "saveCustomReportPage_comparison" : "Comparison",
+    "saveCustomReportPage_summary" : "Summary",
+    "saveCustomReportPage_startDateRangeLabel" : "Compare",
+    "saveCustomReportPage_endDateRangeLabel" : "To",
+
     "photosPage_menuLabel" : "Photos",
     "photosPage_title" : "Photos (%s)",
 
