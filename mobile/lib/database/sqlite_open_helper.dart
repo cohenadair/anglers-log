@@ -92,37 +92,31 @@ final List<String> _schema0 = [
     name TEXT NOT NULL,
     description TEXT,
     type INTEGER NOT NULL,
-    entity_type INTEGER NOT NULL
-  );
-  """,
-  """
-  CREATE TABLE catch_report (
-    id TEXT PRIMARY KEY,
-    custom_report_id TEXT NOT NULL,
+    entity_type INTEGER NOT NULL,
     display_date_range_id TEXT NOT NULL,
     start_timestamp INTEGER,
     end_timestamp INTEGER
   );
   """,
   """
-  CREATE TABLE catch_report_species (
-    catch_report_id TEXT NOT NULL,
+  CREATE TABLE custom_report_species (
+    custom_report_id TEXT NOT NULL,
     species_id TEXT NOT NULL,
-    PRIMARY KEY (catch_report_id, species_id)
+    PRIMARY KEY (custom_report_id, species_id)
   );
   """,
   """
-  CREATE TABLE catch_report_bait (
-    catch_report_id TEXT NOT NULL,
+  CREATE TABLE custom_report_bait (
+    custom_report_id TEXT NOT NULL,
     bait_id TEXT NOT NULL,
-    PRIMARY KEY (catch_report_id, bait_id)
+    PRIMARY KEY (custom_report_id, bait_id)
   );
   """,
   """
-  CREATE TABLE catch_report_fishing_spot (
-    catch_report_id TEXT NOT NULL,
+  CREATE TABLE custom_report_fishing_spot (
+    custom_report_id TEXT NOT NULL,
     fishing_spot_id TEXT NOT NULL,
-    PRIMARY KEY (catch_report_id, fishing_spot_id)
+    PRIMARY KEY (custom_report_id, fishing_spot_id)
   );
   """,
 ];

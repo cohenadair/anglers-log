@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:mobile/bait_category_manager.dart';
 import 'package:mobile/bait_manager.dart';
 import 'package:mobile/catch_manager.dart';
-import 'package:mobile/catch_report_manager.dart';
 import 'package:mobile/custom_entity_manager.dart';
 import 'package:mobile/custom_entity_value_manager.dart';
 import 'package:mobile/data_manager.dart';
@@ -24,7 +23,6 @@ class AppManager {
   BaitManager _baitManager;
   DataManager _dataManager;
   CatchManager _catchManager;
-  CatchReportManager _catchReportManager;
   CustomEntityManager _customEntityManager;
   CustomEntityValueManager _customEntityValueManager;
   CustomReportManager _customReportManager;
@@ -62,13 +60,6 @@ class AppManager {
       _catchManager = CatchManager(this);
     }
     return _catchManager;
-  }
-
-  CatchReportManager get catchReportManager {
-    if (_catchReportManager == null) {
-      _catchReportManager = CatchReportManager(this);
-    }
-    return _catchReportManager;
   }
 
   CustomEntityManager get customEntityManager {
