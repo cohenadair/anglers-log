@@ -14,7 +14,7 @@ import 'package:quiver/strings.dart';
 
 /// A page that is able to manage a list of a given type, [T]. The page includes
 /// an optional [SearchBar] and can be used a single or multi-item picker.
-class EntityListPage<T> extends StatefulWidget {
+class ManageableListPage<T> extends StatefulWidget {
   /// See [ManageableListPageItemModel].
   final ManageableListPageItemModel Function(BuildContext, T) itemBuilder;
 
@@ -36,19 +36,19 @@ class EntityListPage<T> extends StatefulWidget {
   /// See [SliverAppBar.centerTitle].
   final bool forceCenterTitle;
 
-  /// If non-null, the [EntityListPage] acts like a picker.
+  /// If non-null, the [ManageableListPage] acts like a picker.
   ///
   /// See [ManageableListPageSinglePickerSettings].
   /// See [ManageableListPageMultiPickerSettings].
   final ManageableListPagePickerSettings<T> pickerSettings;
 
-  /// If non-null, the [EntityListPage] includes a [SearchBar] in the
+  /// If non-null, the [ManageableListPage] includes a [SearchBar] in the
   /// [AppBar].
   ///
   /// See [ManageableListPageSearchDelegate].
   final ManageableListPageSearchDelegate searchDelegate;
 
-  EntityListPage({
+  ManageableListPage({
     @required this.itemManager,
     @required this.itemBuilder,
     this.title,
@@ -60,10 +60,10 @@ class EntityListPage<T> extends StatefulWidget {
        assert(itemManager != null);
 
   @override
-  _EntityListPageState<T> createState() => _EntityListPageState<T>();
+  _ManageableListPageState<T> createState() => _ManageableListPageState<T>();
 }
 
-class _EntityListPageState<T> extends State<EntityListPage<T>> {
+class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
   final double _appBarExpandedHeight = 100.0;
 
   /// Additional padding required to line up search text with [ListItem] text.
@@ -310,7 +310,7 @@ class _EntityListPageState<T> extends State<EntityListPage<T>> {
   });
 
   void _finishPicking(Set<T> pickedValues) {
-    if (widget.pickerSettings.onFinishedPicking(context, pickedValues)) {
+    if (widget.pickerSettings.onPicked(context, pickedValues)) {
       Navigator.of(context).pop();
     }
   }
@@ -320,70 +320,26 @@ enum _ViewingState {
   pickingSingle, pickingMulti, viewing
 }
 
-abstract class ManageableListPagePickerSettings<T> {
+class ManageableListPagePickerSettings<T> {
   final Set<T> initialValues;
-
-  ManageableListPagePickerSettings({
-    this.initialValues = const {},
-  });
-
-  bool get multi;
+  final bool multi;
 
   /// Invoked when picking has finished. Returning true will pop the picker
-  /// from the current [Navigator].
-  bool onFinishedPicking(BuildContext context, Set<T> pickedValues);
-}
+  /// from the current [Navigator]. [pickedItems] is guaranteed to have on
+  /// and only one item if [multi] is true, otherwise includes all items that
+  /// were picked.
+  final bool Function(BuildContext context, Set<T> pickedItems) onPicked;
 
-/// A convenience class to indicate a single-item picker.
-class ManageableListPageSinglePickerSettings<T>
-    extends ManageableListPagePickerSettings<T>
-{
-  final T initialValue;
-
-  /// See [ManageableListPagePickerSettings.onFinishedPicking].
-  final bool Function(BuildContext context, T) onPicked;
-
-  ManageableListPageSinglePickerSettings({
-    this.initialValue,
-    this.onPicked,
-  }) : super(
-    initialValues: initialValue == null ? {} : {initialValue},
-  );
-
-  @override
-  bool get multi => false;
-
-  @override
-  bool onFinishedPicking(BuildContext context, Set<T> pickedValues) {
-    return onPicked?.call(context, pickedValues.first);
-  }
-}
-
-/// A convenience class to indicate a multi-item picker.
-class ManageableListPageMultiPickerSettings<T>
-    extends ManageableListPagePickerSettings<T>
-{
-  /// See [ManageableListPagePickerSettings.onFinishedPicking].
-  final bool Function(BuildContext context, Set<T>) onPicked;
-
-  ManageableListPageMultiPickerSettings({
-    Set<T> initialValues = const {},
-    this.onPicked,
-  }) : super(
-    initialValues: initialValues,
-  );
-
-  @override
-  bool get multi => true;
-
-  @override
-  bool onFinishedPicking(BuildContext context, Set<T> pickedValues) {
-    return onPicked?.call(context, pickedValues);
-  }
+  ManageableListPagePickerSettings({
+    @required this.onPicked,
+    Set<T> initialValues,
+    this.multi = false,
+  }) : assert(onPicked != null),
+       initialValues = initialValues ?? const {};
 }
 
 /// A convenience class for storing the properties of an option [SearchBar] in
-/// the [AppBar] of a [EntityListPage].
+/// the [AppBar] of a [ManageableListPage].
 class ManageableListPageSearchDelegate {
   /// The search hint text.
   final String hint;
@@ -399,7 +355,7 @@ class ManageableListPageSearchDelegate {
 }
 
 /// A convenient class for storing properties for a single item in a
-/// [EntityListPage].
+/// [ManageableListPage].
 class ManageableListPageItemModel {
   /// True if this item can be edited; false otherwise. This may be false for
   /// section headers or dividers. Defaults to true.
@@ -420,7 +376,7 @@ class ManageableListPageItemModel {
 }
 
 /// A convenience class to handle the adding, deleting, and editing of an item
-/// in a [EntityListPage].
+/// in a [ManageableListPage].
 ///
 /// [T] is the type of object being managed.
 class ManageableListPageItemManager<T> {
@@ -444,7 +400,7 @@ class ManageableListPageItemManager<T> {
   /// function is presented in the current navigator.
   final Widget Function() addPageBuilder;
 
-  /// If non-null, will rebuild the [EntityListPage] when one
+  /// If non-null, will rebuild the [ManageableListPage] when one
   /// of the [EntityManager] objects is notified of updates. In most cases,
   /// this [List] will only have one value.
   final List<EntityManager> listenerManagers;
@@ -458,7 +414,7 @@ class ManageableListPageItemManager<T> {
   /// The [Widget] returned by this function is pushed to the current navigator,
   /// and should be a page that allows editing of [T].
   ///
-  /// If null, editing is disabled for the [EntityListPage].
+  /// If null, editing is disabled for the [ManageableListPage].
   final Widget Function(T) editPageBuilder;
 
   ManageableListPageItemManager({

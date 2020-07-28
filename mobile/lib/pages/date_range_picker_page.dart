@@ -25,7 +25,6 @@ class DateRangePickerPage extends StatefulWidget {
 class _DateRangePickerPageState extends State<DateRangePickerPage> {
   DisplayDateRange _customDateRange = DisplayDateRange.custom;
 
-
   @override
   void initState() {
     super.initState();

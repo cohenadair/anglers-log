@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/model/custom_report.dart';
 import 'package:mobile/model/report.dart';
-import 'package:mobile/pages/entity_list_page.dart';
+import 'package:mobile/pages/manageable_list_page.dart';
 import 'package:mobile/pages/save_custom_report_page.dart';
 import 'package:mobile/custom_report_manager.dart';
 import 'package:mobile/model/overview_report.dart';
@@ -22,7 +22,7 @@ class ReportListPage extends StatelessWidget {
   Widget build(BuildContext context) {
     var reportManager = CustomReportManager.of(context);
 
-    return EntityListPage<dynamic>(
+    return ManageableListPage<dynamic>(
       title: Text(Strings.of(context).reportListPagePickerTitle),
       itemBuilder: (context, item) => _buildItem(context, item),
       itemManager: ManageableListPageItemManager<dynamic>(
@@ -34,9 +34,9 @@ class ReportListPage extends StatelessWidget {
         addPageBuilder: () => SaveCustomReportPage(),
         editPageBuilder: (report) => SaveCustomReportPage.edit(report),
       ),
-      pickerSettings: ManageableListPageSinglePickerSettings<dynamic>(
-        initialValue: currentItem,
-        onPicked: onPicked,
+      pickerSettings: ManageableListPagePickerSettings<dynamic>(
+        initialValues: Set.of([currentItem]),
+        onPicked: (context, reports) => onPicked(context, reports.first),
       ),
     );
   }

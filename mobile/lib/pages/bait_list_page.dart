@@ -6,7 +6,7 @@ import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/model/bait.dart';
 import 'package:mobile/model/bait_category.dart';
 import 'package:mobile/pages/bait_page.dart';
-import 'package:mobile/pages/entity_list_page.dart';
+import 'package:mobile/pages/manageable_list_page.dart';
 import 'package:mobile/pages/save_bait_page.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/utils/string_utils.dart';
@@ -41,7 +41,7 @@ class _BaitListPageState extends State<BaitListPage> {
         _baitCategoryManager,
         _baitManager,
       ],
-      builder: (context) => EntityListPage<dynamic>(
+      builder: (context) => ManageableListPage<dynamic>(
         title: _picking
             ? Text(Strings.of(context).baitListPagePickerTitle)
             : Text(format(Strings.of(context).baitListPageTitle,
@@ -52,9 +52,9 @@ class _BaitListPageState extends State<BaitListPage> {
           noResultsMessage: Strings.of(context).baitListPageNoSearchResults,
         ),
         pickerSettings: _picking
-            ? ManageableListPageSinglePickerSettings<dynamic>(
-                onPicked: (context, baitPicked) =>
-                    widget.onPicked(context, baitPicked as Bait)
+            ? ManageableListPagePickerSettings<dynamic>(
+                onPicked: (context, baits) =>
+                    widget.onPicked(context, baits.first as Bait)
               )
             : null,
         itemBuilder: (context, item) {

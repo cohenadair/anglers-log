@@ -4,7 +4,7 @@ import 'package:mobile/res/dimen.dart';
 import 'package:mobile/widgets/text.dart';
 import 'package:quiver/strings.dart';
 
-const defaultAnimationDuration = Duration(milliseconds: 200);
+const defaultAnimationDuration = Duration(milliseconds: 150);
 
 class Empty extends StatelessWidget {
   @override

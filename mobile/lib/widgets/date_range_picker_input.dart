@@ -36,9 +36,8 @@ class _DateRangePickerInputState extends State<DateRangePickerInput> {
 
   @override
   Widget build(BuildContext context) {
-    return ListPickerInput<DisplayDateRange>(
+    return ListPickerInput(
       title: widget.title,
-      initialValues: Set.of([_currentDateRange]),
       value: _currentDateRange.title(context),
       onTap: () {
         push(context, DateRangePickerPage(

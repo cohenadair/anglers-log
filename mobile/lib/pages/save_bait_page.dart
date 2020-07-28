@@ -119,7 +119,7 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
         _baitCategoryController.value =
             _baitCategoryManager.entity(id: _baitCategoryController.value?.id);
 
-        return ListPickerInput<BaitCategory>(
+        return ListPickerInput(
           title: Strings.of(context).saveBaitPageCategoryLabel,
           value: _baitCategoryController.value?.name,
           onTap: () {

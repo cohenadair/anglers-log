@@ -2,13 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:mobile/custom_report_manager.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/model/custom_report.dart';
+import 'package:mobile/model/species.dart';
 import 'package:mobile/pages/form_page.dart';
+import 'package:mobile/pages/species_list_page.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/utils/date_time_utils.dart';
+import 'package:mobile/utils/page_utils.dart';
 import 'package:mobile/utils/validator.dart';
 import 'package:mobile/widgets/date_range_picker_input.dart';
 import 'package:mobile/widgets/input_controller.dart';
 import 'package:mobile/widgets/input_data.dart';
+import 'package:mobile/widgets/multi_list_picker_input.dart';
 import 'package:mobile/widgets/radio_input.dart';
 import 'package:mobile/widgets/text_input.dart';
 import 'package:mobile/widgets/widget.dart';
@@ -42,7 +46,6 @@ class _SaveCustomReportPageState extends State<SaveCustomReportPage> {
 
   CustomReportManager get _customReportManager =>
       CustomReportManager.of(context);
-  Strings get _strings => Strings.of(context);
 
   TextInputController get _nameController => _fields[_keyName].controller;
   TextInputController get _descriptionController =>
@@ -53,6 +56,8 @@ class _SaveCustomReportPageState extends State<SaveCustomReportPage> {
       _fields[_keyStartDateRange].controller;
   InputController<DisplayDateRange> get _endDateRangeController =>
       _fields[_keyEndDateRange].controller;
+  InputController<Set<Species>> get _speciesController =>
+      _fields[_keySpecies].controller;
 
   bool get _editing => widget.oldReport != null;
   bool get _summary => _typeController.value == CustomReportType.summary;
@@ -66,7 +71,7 @@ class _SaveCustomReportPageState extends State<SaveCustomReportPage> {
       controller: TextInputController(
         validator: NameValidator(
           nameExistsMessage: (context) =>
-              _strings.saveCustomReportPageNameExists,
+              Strings.of(context).saveCustomReportPageNameExists,
           nameExists: (newName) => _customReportManager.nameExists(newName),
           oldName: widget.oldReport?.name,
         ),
@@ -93,6 +98,11 @@ class _SaveCustomReportPageState extends State<SaveCustomReportPage> {
       controller: InputController<DisplayDateRange>(),
     );
 
+    _fields[_keySpecies] = InputData(
+      id: _keySpecies,
+      controller: InputController<Set<Species>>(),
+    );
+
     if (widget.oldReport != null) {
       _nameController.value = widget.oldReport.name;
       _descriptionController.value = widget.oldReport.description;
@@ -110,8 +120,8 @@ class _SaveCustomReportPageState extends State<SaveCustomReportPage> {
       runSpacing: 0,
       padding: insetsZero,
       title: Text(_editing
-          ? _strings.saveCustomReportPageEditTitle
-          : _strings.saveCustomReportPageNewTitle),
+          ? Strings.of(context).saveCustomReportPageEditTitle
+          : Strings.of(context).saveCustomReportPageNewTitle),
       isInputValid: _nameController.valid(context),
       fieldBuilder: (context) => {
         _keyName: _buildName(),
@@ -119,6 +129,7 @@ class _SaveCustomReportPageState extends State<SaveCustomReportPage> {
         _keyType: _buildType(),
         _keyStartDateRange: _buildStartDateRange(),
         _keyEndDateRange: _buildEndDateRange(),
+        _keySpecies: _buildSpeciesPicker(),
       },
     );
   }
@@ -154,7 +165,7 @@ class _SaveCustomReportPageState extends State<SaveCustomReportPage> {
 
   Widget _buildType() {
     return RadioInput(
-      title: _strings.saveCustomReportTypeTitle,
+      title: Strings.of(context).saveCustomReportTypeTitle,
       padding: insetsVerticalWidgetSmall,
       initialSelectedIndex: _typeController.value.index,
       optionCount: CustomReportType.values.length,
@@ -162,9 +173,9 @@ class _SaveCustomReportPageState extends State<SaveCustomReportPage> {
         var type = CustomReportType.values[index];
         switch (type) {
           case CustomReportType.comparison:
-            return _strings.saveCustomReportPageComparison;
+            return Strings.of(context).saveCustomReportPageComparison;
           case CustomReportType.summary:
-            return _strings.saveCustomReportPageSummary;
+            return Strings.of(context).saveCustomReportPageSummary;
         }
         // Shouldn't ever happen.
         return null;
@@ -181,7 +192,7 @@ class _SaveCustomReportPageState extends State<SaveCustomReportPage> {
       child: _summary
         ? _startDateRangePicker(_keySummaryStart, null)
         : _startDateRangePicker(_keyComparisonStart,
-            _strings.saveCustomReportPageStartDateRangeLabel),
+            Strings.of(context).saveCustomReportPageStartDateRangeLabel),
     );
   }
 
@@ -200,12 +211,33 @@ class _SaveCustomReportPageState extends State<SaveCustomReportPage> {
     return AnimatedSwitcher(
       duration: _endDateRangeAnimDuration,
       child: _summary ? Empty() : DateRangePickerInput(
-        title: _strings.saveCustomReportPageEndDateRangeLabel,
+        title: Strings.of(context).saveCustomReportPageEndDateRangeLabel,
         initialDateRange: _endDateRangeController.value,
         onPicked: (dateRange) => setState(() {
           _endDateRangeController.value = dateRange;
         }),
       ),
+    );
+  }
+
+  Widget _buildSpeciesPicker() {
+    return MultiListPickerInput(
+      padding: insetsHorizontalDefaultVerticalSmall,
+      title: Strings.of(context).saveCustomReportPageSpecies,
+      values: _speciesController.value?.map((species) => species.name)?.toSet(),
+      emptyValue: (context) => Strings.of(context).all,
+      onTap: () {
+        push(context, SpeciesListPage.picker(
+          multiPicker: true,
+          initialValues: _speciesController.value,
+          onPicked: (context, pickedSpecies) {
+            setState(() {
+              _speciesController.value = pickedSpecies;
+            });
+            return true;
+          },
+        ));
+      },
     );
   }
 }

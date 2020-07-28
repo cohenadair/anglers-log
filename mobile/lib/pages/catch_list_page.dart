@@ -11,7 +11,7 @@ import 'package:mobile/model/fishing_spot.dart';
 import 'package:mobile/model/species.dart';
 import 'package:mobile/pages/add_catch_journey.dart';
 import 'package:mobile/pages/catch_page.dart';
-import 'package:mobile/pages/entity_list_page.dart';
+import 'package:mobile/pages/manageable_list_page.dart';
 import 'package:mobile/pages/save_catch_page.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/species_manager.dart';
@@ -52,7 +52,7 @@ class CatchListPage extends StatelessWidget {
     FishingSpotManager fishingSpotManager = FishingSpotManager.of(context);
     SpeciesManager speciesManager = SpeciesManager.of(context);
 
-    return EntityListPage<Catch>(
+    return ManageableListPage<Catch>(
       title: !filtered
           ? Text(format(Strings.of(context).catchListPageTitle,
               [catchManager.entityCount]))

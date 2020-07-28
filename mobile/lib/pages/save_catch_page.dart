@@ -265,7 +265,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
           value = _baitManager.formatNameWithCategory(bait);
         }
 
-        return ListPickerInput<Bait>(
+        return ListPickerInput(
           title: Strings.of(context).saveCatchPageBaitLabel,
           value: value,
           onTap: () {
@@ -316,14 +316,14 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
         _speciesController.value =
             _speciesManager.entity(id: _speciesController.value?.id);
 
-        return ListPickerInput<Species>(
+        return ListPickerInput(
           title: Strings.of(context).saveCatchPageSpeciesLabel,
           value: _speciesController.value?.name,
           onTap: () {
             push(context, SpeciesListPage.picker(
               onPicked: (context, pickedSpecies) {
                 setState(() {
-                  _speciesController.value = pickedSpecies;
+                  _speciesController.value = pickedSpecies.first;
                 });
                 return true;
               },
