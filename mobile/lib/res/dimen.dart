@@ -89,6 +89,13 @@ const insetsHorizontalDefaultVerticalSmall = EdgeInsets.only(
   bottom: paddingSmall,
 );
 
+const insetsHorizontalDefaultVerticalWidget = EdgeInsets.only(
+  left: paddingDefault,
+  right: paddingDefault,
+  top: paddingWidget,
+  bottom: paddingWidget,
+);
+
 const iconSizeDefault = 24.0;
 const iconSizeLarge = 32.0;
 const checkboxSizeDefault = 24.0;

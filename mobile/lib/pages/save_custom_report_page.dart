@@ -165,7 +165,6 @@ class _SaveCustomReportPageState extends State<SaveCustomReportPage> {
 
   Widget _buildType() {
     return RadioInput(
-      title: Strings.of(context).saveCustomReportTypeTitle,
       padding: insetsVerticalWidgetSmall,
       initialSelectedIndex: _typeController.value.index,
       optionCount: CustomReportType.values.length,
@@ -222,10 +221,10 @@ class _SaveCustomReportPageState extends State<SaveCustomReportPage> {
 
   Widget _buildSpeciesPicker() {
     return MultiListPickerInput(
-      padding: insetsHorizontalDefaultVerticalSmall,
-      title: Strings.of(context).saveCustomReportPageSpecies,
+      padding: insetsHorizontalDefaultVerticalWidget,
       values: _speciesController.value?.map((species) => species.name)?.toSet(),
-      emptyValue: (context) => Strings.of(context).all,
+      emptyValue: (context) =>
+          Strings.of(context).saveCustomReportPageAllSpecies,
       onTap: () {
         push(context, SpeciesListPage.picker(
           multiPicker: true,

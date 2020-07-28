@@ -29,7 +29,6 @@ Map<String, Map<String, String>> get englishStrings => {
     "more" : "More",
     "customFields" : "Custom Fields",
     "na" : "N/A",
-    "all" : "All",
 
     "fieldType_number" : "Number",
     "fieldType_boolean" : "Checkbox",
@@ -72,6 +71,9 @@ Map<String, Map<String, String>> get englishStrings => {
     "saveCustomReportPage_startDateRangeLabel" : "Compare",
     "saveCustomReportPage_endDateRangeLabel" : "To",
     "saveCustomReportPage_species" : "Species",
+    "saveCustomReportPage_allSpecies" : "All species",
+    "saveCustomReportPage_allBaits" : "All baits",
+    "saveCustomReportPage_allFishingSpots" : "All fishing spots",
 
     "photosPage_menuLabel" : "Photos",
     "photosPage_title" : "Photos (%s)",

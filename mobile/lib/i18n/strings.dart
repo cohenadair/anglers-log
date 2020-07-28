@@ -57,7 +57,6 @@ class Strings {
   String get more => _string("more");
   String get customFields => _string("customFields");
   String get na => _string("na");
-  String get all => _string("all");
 
   String get fieldTypeNumber => _string("fieldType_number");
   String get fieldTypeBoolean => _string("fieldType_boolean");
@@ -103,6 +102,9 @@ class Strings {
   String get saveCustomReportPageStartDateRangeLabel => _string("saveCustomReportPage_startDateRangeLabel");
   String get saveCustomReportPageEndDateRangeLabel => _string("saveCustomReportPage_endDateRangeLabel");
   String get saveCustomReportPageSpecies => _string("saveCustomReportPage_species");
+  String get saveCustomReportPageAllSpecies => _string("saveCustomReportPage_allSpecies");
+  String get saveCustomReportPageAllBaits => _string("saveCustomReportPage_allBaits");
+  String get saveCustomReportPageAllFishingSpots => _string("saveCustomReportPage_allFishingSpots");
 
   String get photosPageMenuLabel => _string("photosPage_menuLabel");
   String get photosPageTitle => _string("photosPage_title");

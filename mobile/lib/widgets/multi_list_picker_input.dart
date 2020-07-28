@@ -3,12 +3,14 @@ import 'package:mobile/res/dimen.dart';
 import 'package:mobile/widgets/list_picker_input.dart';
 import 'package:mobile/widgets/text.dart';
 import 'package:mobile/widgets/widget.dart';
-import 'package:quiver/strings.dart';
 
 /// A generic picker widget for selecting multiple items from a list. For
 /// selecting only a single item, use [ListPickerInput].
+///
+/// This widget should not be used with a title widget such as [HeadingLabel].
+/// The [emptyValue] property should be descriptive enough to clearly show
+/// what the [MultiListPickerInput] is for.
 class MultiListPickerInput extends StatelessWidget {
-  final String title;
   final Set<String> values;
   final VoidCallback onTap;
   final EdgeInsets padding;
@@ -17,7 +19,6 @@ class MultiListPickerInput extends StatelessWidget {
   final String Function(BuildContext) emptyValue;
 
   MultiListPickerInput({
-    this.title,
     this.values,
     this.padding,
     @required this.emptyValue,
@@ -27,18 +28,6 @@ class MultiListPickerInput extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> children = [];
-    if (isNotEmpty(title)) {
-      children.add(Padding(
-        padding: EdgeInsets.only(
-          left: padding?.left ?? 0,
-          right: padding?.right ?? 0,
-          bottom: paddingWidgetSmall
-        ),
-        child: HeadingLabel(title),
-      ));
-    }
-
     List<Widget> chips = [];
     if (values == null || values.isEmpty) {
       chips.add(_chip(emptyValue(context)));
@@ -48,15 +37,10 @@ class MultiListPickerInput extends StatelessWidget {
       }
     }
 
-    children.add(InkWell(
+    return InkWell(
       onTap: onTap,
       child: Padding(
-        padding: EdgeInsets.only(
-          left: padding?.left ?? 0,
-          right: padding?.right ?? 0,
-          top: paddingWidgetSmall,
-          bottom: paddingWidgetSmall,
-        ),
+        padding: padding ?? insetsZero,
         child: Row(
           mainAxisSize: MainAxisSize.max,
           children: [
@@ -70,17 +54,6 @@ class MultiListPickerInput extends StatelessWidget {
             RightChevronIcon(),
           ],
         ),
-      ),
-    ));
-
-    return Padding(
-      padding: EdgeInsets.only(
-        top: padding?.top ?? 0,
-        bottom: padding?.bottom ?? 0,
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: children,
       ),
     );
   }
