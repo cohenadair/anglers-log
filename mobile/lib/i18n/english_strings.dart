@@ -84,9 +84,8 @@ Map<String, Map<String, String>> get englishStrings => {
     "baitListPage_otherCategory" : "No Category",
     "baitListPage_searchHint" : "Search baits",
     "baitListPage_noSearchResults" : "No baits found",
-
-    "baitPage_deleteMessage" : "%s is associated with %s catches; are you sure you want to delete it? This cannot be undone.",
-    "baitPage_deleteMessageSingular" : "%s is associated with %s catch; are you sure you want to delete it? This cannot be undone.",
+    "baitListPage_deleteMessage" : "%s is associated with %s catches; are you sure you want to delete it? This cannot be undone.",
+    "baitListPage_deleteMessageSingular" : "%s is associated with %s catch; are you sure you want to delete it? This cannot be undone.",
 
     "saveBaitPage_newTitle" : "New Bait",
     "saveBaitPage_editTitle" : "Edit Bait",
@@ -132,6 +131,7 @@ Map<String, Map<String, String>> get englishStrings => {
 
     "mapPage_menuLabel" : "Map",
     "mapPage_deleteFishingSpot" : "%s is associated with %s catches; are you sure you want to delete it? This cannot be undone.",
+    "mapPage_deleteFishingSpotSingular" : "%s is associated with %s catch; are you sure you want to delete it? This cannot be undone.",
     "mapPage_deleteFishingSpotNoName" : "This fishing spot is associated with %s catches; are you sure you want to delete it? This cannot be undone.",
     "mapPage_addCatch" : "Add Catch",
     "mapPage_searchHint" : "Search fishing spots",
@@ -188,6 +188,11 @@ Map<String, Map<String, String>> get englishStrings => {
 
     "fishingSpotPickerPage_title" : "Select Fishing Spot",
     "fishingSpotPickerPage_hint" : "Drag the map to use exact coordinates, or select an existing fishing spot.",
+
+    "fishingSpotListPage_title" : "Fishing Spots (%s)",
+    "fishingSpotListPage_pickerTitle" : "Select Fishing Spots",
+    "fishingSpotListPage_searchHint" : "Search fishing spots",
+    "fishingSpotListPage_noSearchResults" : "No fishing spots found",
 
     "feedbackPage_title" : "Send Feedback",
     "feedbackPage_send" : "Send",

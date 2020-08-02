@@ -1,8 +1,15 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
-import 'package:mobile/custom_report_manager.dart';
+import 'package:mobile/custom_comparison_report_manager.dart';
+import 'package:mobile/custom_summary_report_manager.dart';
 import 'package:mobile/i18n/strings.dart';
+import 'package:mobile/model/bait.dart';
 import 'package:mobile/model/custom_report.dart';
+import 'package:mobile/model/fishing_spot.dart';
 import 'package:mobile/model/species.dart';
+import 'package:mobile/pages/bait_list_page.dart';
+import 'package:mobile/pages/fishing_spot_list_page.dart';
 import 'package:mobile/pages/form_page.dart';
 import 'package:mobile/pages/species_list_page.dart';
 import 'package:mobile/res/dimen.dart';
@@ -44,8 +51,10 @@ class _SaveCustomReportPageState extends State<SaveCustomReportPage> {
 
   final Map<String, InputData> _fields = {};
 
-  CustomReportManager get _customReportManager =>
-      CustomReportManager.of(context);
+  CustomComparisonReportManager get _customComparisonReportManager =>
+      CustomComparisonReportManager.of(context);
+  CustomSummaryReportManager get _customSummaryReportManager =>
+      CustomSummaryReportManager.of(context);
 
   TextInputController get _nameController => _fields[_keyName].controller;
   TextInputController get _descriptionController =>
@@ -58,6 +67,10 @@ class _SaveCustomReportPageState extends State<SaveCustomReportPage> {
       _fields[_keyEndDateRange].controller;
   InputController<Set<Species>> get _speciesController =>
       _fields[_keySpecies].controller;
+  InputController<Set<Bait>> get _baitController =>
+      _fields[_keyBaits].controller;
+  InputController<Set<FishingSpot>> get _fishingSpotController =>
+      _fields[_keyFishingSpots].controller;
 
   bool get _editing => widget.oldReport != null;
   bool get _summary => _typeController.value == CustomReportType.summary;
@@ -72,7 +85,9 @@ class _SaveCustomReportPageState extends State<SaveCustomReportPage> {
         validator: NameValidator(
           nameExistsMessage: (context) =>
               Strings.of(context).saveCustomReportPageNameExists,
-          nameExists: (newName) => _customReportManager.nameExists(newName),
+          nameExists: (newName) =>
+              _customComparisonReportManager.nameExists(newName)
+                  || _customSummaryReportManager.nameExists(newName),
           oldName: widget.oldReport?.name,
         ),
       ),
@@ -103,11 +118,21 @@ class _SaveCustomReportPageState extends State<SaveCustomReportPage> {
       controller: InputController<Set<Species>>(),
     );
 
+    _fields[_keyBaits] = InputData(
+      id: _keyBaits,
+      controller: InputController<Set<Bait>>(),
+    );
+
+    _fields[_keyFishingSpots] = InputData(
+      id: _keyFishingSpots,
+      controller: InputController<Set<FishingSpot>>(),
+    );
+
     if (widget.oldReport != null) {
       _nameController.value = widget.oldReport.name;
       _descriptionController.value = widget.oldReport.description;
       _typeController.value = widget.oldReport.type;
-      // TODO: Set CatchReport properties
+      // TODO: Set mapping properties
     } else {
       _typeController.value = CustomReportType.summary;
       _startDateRangeController.value = DisplayDateRange.allDates;
@@ -130,7 +155,10 @@ class _SaveCustomReportPageState extends State<SaveCustomReportPage> {
         _keyStartDateRange: _buildStartDateRange(),
         _keyEndDateRange: _buildEndDateRange(),
         _keySpecies: _buildSpeciesPicker(),
+        _keyBaits: _buildBaitsPicker(),
+        _keyFishingSpots: _buildFishingSpotsPicker(),
       },
+      onSave: _save,
     );
   }
 
@@ -224,7 +252,7 @@ class _SaveCustomReportPageState extends State<SaveCustomReportPage> {
       padding: insetsHorizontalDefaultVerticalWidget,
       values: _speciesController.value?.map((species) => species.name)?.toSet(),
       emptyValue: (context) =>
-          Strings.of(context).saveCustomReportPageAllSpecies,
+      Strings.of(context).saveCustomReportPageAllSpecies,
       onTap: () {
         push(context, SpeciesListPage.picker(
           multiPicker: true,
@@ -238,5 +266,53 @@ class _SaveCustomReportPageState extends State<SaveCustomReportPage> {
         ));
       },
     );
+  }
+
+  Widget _buildBaitsPicker() {
+    return MultiListPickerInput(
+      padding: insetsHorizontalDefaultVerticalWidget,
+      values: _baitController.value?.map((bait) => bait.name)?.toSet(),
+      emptyValue: (context) =>
+      Strings.of(context).saveCustomReportPageAllBaits,
+      onTap: () {
+        push(context, BaitListPage.picker(
+          multiPicker: true,
+          initialValues: _baitController.value,
+          onPicked: (context, pickedBaits) {
+            setState(() {
+              _baitController.value = pickedBaits;
+            });
+            return true;
+          },
+        ));
+      },
+    );
+  }
+
+  Widget _buildFishingSpotsPicker() {
+    return MultiListPickerInput(
+      padding: insetsHorizontalDefaultVerticalWidget,
+      values: _fishingSpotController.value?.map((bait) => bait.name)?.toSet(),
+      emptyValue: (context) =>
+          Strings.of(context).saveCustomReportPageAllFishingSpots,
+      onTap: () {
+        push(context, FishingSpotListPage.picker(
+          multiPicker: true,
+          initialValues: _fishingSpotController.value,
+          onPicked: (context, pickedFishingSpots) {
+            setState(() {
+              _fishingSpotController.value = pickedFishingSpots;
+            });
+            return true;
+          },
+        ));
+      },
+    );
+  }
+
+  FutureOr<bool> _save(BuildContext context) {
+    var report;
+    print(report);
+    return false;
   }
 }

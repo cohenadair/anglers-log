@@ -115,9 +115,8 @@ class Strings {
   String get baitListPageOtherCategory => _string("baitListPage_otherCategory");
   String get baitListPageSearchHint => _string("baitListPage_searchHint");
   String get baitListPageNoSearchResults => _string("baitListPage_noSearchResults");
-
-  String get baitPageDeleteMessage => _string("baitPage_deleteMessage");
-  String get baitPageDeleteMessageSingular => _string("baitPage_deleteMessageSingular");
+  String get baitListPageDeleteMessage => _string("baitListPage_deleteMessage");
+  String get baitListPageDeleteMessageSingular => _string("baitListPage_deleteMessageSingular");
 
   String get reportListPagePickerTitle => _string("reportListPage_pickerTitle");
   String get reportListPageConfirmDelete => _string("reportListPage_confirmDelete");
@@ -163,6 +162,7 @@ class Strings {
 
   String get mapPageMenuLabel => _string("mapPage_menuLabel");
   String get mapPageDeleteFishingSpot => _string("mapPage_deleteFishingSpot");
+  String get mapPageDeleteFishingSpotSingular => _string("mapPage_deleteFishingSpotSingular");
   String get mapPageDeleteFishingSpotNoName => _string("mapPage_deleteFishingSpotNoName");
   String get mapPageAddCatch => _string("mapPage_addCatch");
   String get mapPageSearchHint => _string("mapPage_searchHint");
@@ -207,6 +207,11 @@ class Strings {
 
   String get fishingSpotPickerPageTitle => _string("fishingSpotPickerPage_title");
   String get fishingSpotPickerPageHint => _string("fishingSpotPickerPage_hint");
+
+  String get fishingSpotListPageTitle => _string("fishingSpotListPage_title");
+  String get fishingSpotListPagePickerTitle => _string("fishingSpotListPage_pickerTitle");
+  String get fishingSpotListPageSearchHint => _string("fishingSpotListPage_searchHint");
+  String get fishingSpotListPageNoSearchResults => _string("fishingSpotListPage_noSearchResults");
 
   String get customEntityListPageTitle => _string("customEntityListPage_title");
   String get customEntityListPageDelete => _string("customEntityListPage_delete");

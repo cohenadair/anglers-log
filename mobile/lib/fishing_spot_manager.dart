@@ -80,10 +80,12 @@ class FishingSpotManager extends NamedEntityManager<FishingSpot> {
 
   String deleteMessage(BuildContext context, FishingSpot fishingSpot) {
     int numOfCatches = numberOfCatches(fishingSpot);
+    String hasNameString = numOfCatches == 1
+        ? Strings.of(context).mapPageDeleteFishingSpotSingular
+        : Strings.of(context).mapPageDeleteFishingSpot;
 
     if (fishingSpot.hasName) {
-      return format(Strings.of(context).mapPageDeleteFishingSpot,
-          [fishingSpot.name, numOfCatches]);
+      return format(hasNameString, [fishingSpot.name, numOfCatches]);
     } else {
       return format(Strings.of(context).mapPageDeleteFishingSpotNoName,
           [numOfCatches]);

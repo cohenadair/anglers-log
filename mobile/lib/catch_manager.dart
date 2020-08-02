@@ -101,8 +101,8 @@ class CatchManager extends EntityManager<Catch> {
     bool compressImages = true,
     bool notify = true,
   }) async {
-    // Update any catch dependencies first, so when catch listeners are
-    // notified, all dependent data is updated as well.
+    // Update dependencies first, so when listeners are notified, all data is
+    // available.
     if (fishingSpot != null) {
       await _fishingSpotManager.addOrUpdate(fishingSpot);
     }

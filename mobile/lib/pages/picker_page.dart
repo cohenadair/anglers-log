@@ -53,14 +53,14 @@ class PickerPage<T> extends StatefulWidget {
   PickerPage({
     @required this.itemBuilder,
     @required this.onFinishedPicking,
-    this.initialValues = const {},
+    Set<T> initialValues,
     this.multiSelect = true,
     this.title,
     this.listHeader,
     this.allItem,
     this.action,
-  }) : assert(initialValues != null),
-       assert(itemBuilder != null);
+  }) : assert(itemBuilder != null),
+       initialValues = initialValues ?? const {};
 
   PickerPage.single({
     @required List<PickerPageItem<T>> Function() itemBuilder,
@@ -164,6 +164,8 @@ class _PickerPageState<T> extends State<PickerPage<T>> {
           enabled: item.enabled,
           child: ListItem(
             title: PrimaryLabel(item.title),
+            subtitle: isNotEmpty(item.subtitle)
+                ? SubtitleLabel(item.subtitle) : null,
             enabled: item.enabled,
             onTap: onTap,
             trailing: _buildListItemTrailing(item),

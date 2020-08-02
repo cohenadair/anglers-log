@@ -6,6 +6,8 @@ import 'package:mobile/model/species.dart';
 import 'package:mockito/mockito.dart';
 import 'package:sqflite/sqlite_api.dart';
 
+import 'test_utils.dart';
+
 class MockAppManager extends Mock implements AppManager {}
 class MockBatch extends Mock implements Batch {}
 class MockDatabase extends Mock implements Database {}
@@ -149,9 +151,8 @@ void main() {
     await realDataManager.reset();
     expect(entityManager.entityCount, 0);
 
-    // Wait for manager to reinitialize.
-    await Future.delayed(Duration(milliseconds: 250));
-
-    verify(listener.onClear).called(1);
+    verifyListener(() {
+      verify(listener.onClear).called(1);
+    });
   });
 }

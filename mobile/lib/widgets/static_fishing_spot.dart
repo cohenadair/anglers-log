@@ -39,8 +39,7 @@ class StaticFishingSpot extends StatelessWidget {
         lng: fishingSpot.lng);
     Widget coordinates = Label(latLngString);
     if (name == null) {
-      coordinates = Label(latLngString,
-          style: Theme.of(context).textTheme.bodyText2);
+      coordinates = SubtitleLabel(latLngString);
     }
 
     return Container(

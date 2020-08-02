@@ -12,7 +12,6 @@ import 'package:mobile/model/fishing_spot.dart';
 import 'package:mobile/model/named_entity.dart';
 import 'package:mobile/model/species.dart';
 import 'package:mobile/pages/catch_list_page.dart';
-import 'package:mobile/pages/date_range_picker_page.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/species_manager.dart';
 import 'package:mobile/utils/collection_utils.dart';
@@ -21,7 +20,6 @@ import 'package:mobile/utils/page_utils.dart';
 import 'package:mobile/widgets/date_range_picker_input.dart';
 import 'package:mobile/widgets/label_value.dart';
 import 'package:mobile/widgets/list_item.dart';
-import 'package:mobile/widgets/list_picker_input.dart';
 import 'package:mobile/widgets/text.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:quiver/time.dart';
@@ -324,12 +322,12 @@ class OverviewReportViewData {
       _catchesPerSpecies[_speciesManager.entity(id: cat.speciesId)]++;
       _totalCatches++;
 
-      if (cat.hasFishingSpot) {
+      if (_fishingSpotManager.entityExists(id: cat.fishingSpotId)) {
         _catchesPerFishingSpot[
-        _fishingSpotManager.entity(id: cat.fishingSpotId)]++;
+            _fishingSpotManager.entity(id: cat.fishingSpotId)]++;
       }
 
-      if (cat.hasBait) {
+      if (_baitManager.entityExists(id: cat.baitId)) {
         _catchesPerBait[_baitManager.entity(id: cat.baitId)]++;
       }
     }

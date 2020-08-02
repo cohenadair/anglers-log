@@ -11,6 +11,8 @@ import 'package:mobile/model/catch.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 
+import 'test_utils.dart';
+
 class MockAppManager extends Mock implements AppManager {}
 class MockBaitListener extends Mock implements EntityListener<Bait> {}
 class MockCustomEntityValueManager extends Mock
@@ -67,7 +69,9 @@ void main() {
     // Verify listeners aren't notified.
     await baitCategoryManager.delete(category);
     verify(dataManager.rawUpdate(any, any)).called(1);
-    verifyNever(baitListener.onAddOrUpdate);
+    verifyListener(() {
+      verifyNever(baitListener.onAddOrUpdate);
+    });
 
     // Stub database does an update.
     when(dataManager.rawUpdate(any, any))
@@ -90,8 +94,7 @@ void main() {
 
     await baitCategoryManager.delete(category);
 
-    // BaitManager onDelete callback is async; wait to finish.
-    await Future.delayed(Duration(milliseconds: 500), () {
+    verifyListener(() {
       // Verify listeners are notified and memory cache updated.
       verify(dataManager.rawUpdate(any, any)).called(1);
       verify(baitListener.onAddOrUpdate).called(1);

@@ -53,7 +53,7 @@ abstract class EntityManager<T extends Entity> extends
 
   EntityManager(AppManager app) : appManager = app, super() {
     dataManager.addListener(DataListener(
-      onReset: _clear,
+      onReset: clear,
     ));
   }
 
@@ -68,7 +68,8 @@ abstract class EntityManager<T extends Entity> extends
 
   /// Clears the [Entity] memory collection. This method assumes the database
   /// has already been cleared.
-  Future<void> _clear() async {
+  @protected
+  Future<void> clear() async {
     entities.clear();
     await initialize();
     notifyOnClear();
@@ -80,6 +81,8 @@ abstract class EntityManager<T extends Entity> extends
 
   int get entityCount => entities.length;
   T entity({@required String id}) => isEmpty(id) ? null : entities[id];
+  bool entityExists({@required String id}) =>
+      isEmpty(id) ? false : entities[id] != null;
 
   /// Adds or updates the given [Entity]. If [notify] is false (default true),
   /// listeners are not notified.

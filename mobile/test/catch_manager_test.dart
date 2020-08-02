@@ -80,8 +80,8 @@ void main() {
         .thenAnswer((_) => Future.value(true));
 
     MockCatchListener catchListener = MockCatchListener();
-    when(catchListener.onDelete).thenReturn((_) { });
-    when(catchListener.onAddOrUpdate).thenReturn(() { });
+    when(catchListener.onDelete).thenReturn((_) {});
+    when(catchListener.onAddOrUpdate).thenReturn(() {});
     catchManager.addListener(catchListener);
 
     Bait bait = Bait(id: "bait_id", name: "Rapala");
@@ -94,7 +94,9 @@ void main() {
     // Verify listeners aren't notified.
     await baitManager.delete(bait);
     verify(dataManager.rawUpdate(any, any)).called(1);
-    verifyNever(catchListener.onAddOrUpdate);
+    verifyListener(() {
+      verifyNever(catchListener.onAddOrUpdate);
+    });
 
     // Stub database does an update.
     when(dataManager.rawUpdate(any, any))
@@ -118,9 +120,7 @@ void main() {
     expect(catchManager.entity(id: "catch_id_2").baitId, "bait_id");
 
     await baitManager.delete(bait);
-
-    // CatchManager onDelete callback is async; wait to finish.
-    await Future.delayed(Duration(milliseconds: 500), () {
+    verifyListener(() {
       // Verify listeners are notified and memory cache updated.
       verify(dataManager.rawUpdate(any, any)).called(1);
       verify(catchListener.onAddOrUpdate).called(1);
@@ -155,6 +155,9 @@ void main() {
     // Verify listeners aren't notified.
     await fishingSpotManager.delete(fishingSpot);
     verify(dataManager.rawUpdate(any, any)).called(1);
+    verifyListener(() {
+
+    });
     verifyNever(catchListener.onAddOrUpdate);
 
     // Stub database does an update.
@@ -184,8 +187,7 @@ void main() {
 
     await fishingSpotManager.delete(fishingSpot);
 
-    // CatchManager onDelete callback is async; wait to finish.
-    await Future.delayed(Duration(milliseconds: 500), () {
+    verifyListener(() {
       // Verify listeners are notified and memory cache updated.
       verify(dataManager.rawUpdate(any, any)).called(1);
       verify(catchListener.onAddOrUpdate).called(1);

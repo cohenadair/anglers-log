@@ -1,7 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:mobile/entity_manager.dart';
 import 'package:mobile/model/bait.dart';
-import 'package:mobile/model/custom_report.dart';
 import 'package:mobile/widgets/input_type.dart';
 import 'package:quiver/core.dart';
 import 'package:quiver/strings.dart';
@@ -32,8 +31,7 @@ class Property<T> {
   }) : assert(isNotEmpty(key)),
        assert(value == null || value is int || value is double
            || value is String || value is bool || value is InputType
-           || value is BaitType || value is EntityType
-           || value is CustomReportType);
+           || value is BaitType || value is EntityType);
 
   /// Returns [value] as a valid SQLite database data type.
   dynamic get dbValue {
@@ -43,8 +41,6 @@ class Property<T> {
       return (value as BaitType).index;
     } else if (value is EntityType) {
       return (value as EntityType).index;
-    } else if (value is CustomReportType) {
-      return (value as CustomReportType).index;
     } else {
       return value;
     }

@@ -103,15 +103,15 @@ class BaitManager extends NamedEntityManager<Bait> {
   String deleteMessage(BuildContext context, Bait bait) {
     int numOfCatches = numberOfCatches(bait);
     String string = numOfCatches == 1
-        ? Strings.of(context).baitPageDeleteMessageSingular
-        : Strings.of(context).baitPageDeleteMessage;
+        ? Strings.of(context).baitListPageDeleteMessageSingular
+        : Strings.of(context).baitListPageDeleteMessage;
 
     BaitCategory category = _baitCategoryManager.entity(id: bait.categoryId);
     String baitName;
     if (category == null) {
       baitName =  bait.name;
     } else {
-      baitName = "${category.name} (${bait.name})";
+      baitName = "${bait.name} (${category.name})";
     }
 
     return format(string, [baitName, numOfCatches]);

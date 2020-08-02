@@ -1,10 +1,10 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mobile/model/catch_report_bait.dart';
+import 'package:mobile/model/custom_report_bait.dart';
 
 void main() {
   test("Mapping", () {
-    var bait = CatchReportBait(
-      catchReportId: "catch_report_0",
+    var bait = CustomReportBait(
+      customReportId: "catch_report_0",
       baitId: "bait_0",
     );
 
@@ -16,8 +16,8 @@ void main() {
       "catch_report_id" : "catch_report_1",
       "bait_id" : "bait_1",
     };
-    bait = CatchReportBait.fromMap(map);
-    expect(bait.catchReportId, "catch_report_1");
+    bait = CustomReportBait.fromMap(map);
+    expect(bait.customReportId, "catch_report_1");
     expect(bait.baitId, "bait_1");
   });
 }

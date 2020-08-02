@@ -53,3 +53,10 @@ Future<BuildContext> buildContext(WidgetTester tester) async {
   )));
   return context;
 }
+
+/// Verifies a listener is called after 500 ms.
+void verifyListener(VoidCallback callback) async {
+  await Future.delayed(Duration(milliseconds: 500), () {
+    callback();
+  });
+}

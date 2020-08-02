@@ -81,6 +81,7 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
   bool get _hasSearch => widget.searchDelegate != null;
   bool get _hasDetailPage => widget.itemManager.detailPageBuilder != null;
   bool get _editable => widget.itemManager.editPageBuilder != null;
+  bool get _addable => widget.itemManager.addPageBuilder != null;
 
   @override
   void initState() {
@@ -184,8 +185,6 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
     List<Widget> result = [];
 
     if (_pickingMulti && _editable) {
-      // If picking multiple items, use overflow menu for "Add" and "Edit"
-      // options.
       result..add(ActionButton.done(
         condensed: true,
         onPressed: () {
@@ -195,19 +194,32 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
             _finishPicking(_selectedValues);
           }
         },
-      ))..add(PopupMenuButton<_OverflowOption>(
-        icon: Icon(Icons.more_vert),
-        itemBuilder: (context) => [
-          PopupMenuItem<_OverflowOption>(
+      ));
+
+      // If picking multiple items, use overflow menu for "Add" and "Edit"
+      // options.
+      var optionBuilder = (context) {
+        List<PopupMenuItem<_OverflowOption>> overflowOptions = [];
+        print(_addable);
+        if (_addable) {
+          overflowOptions.add(PopupMenuItem<_OverflowOption>(
             value: _OverflowOption.add,
             child: Text(Strings.of(context).add),
-          ),
-          PopupMenuItem<_OverflowOption>(
-            value: _OverflowOption.edit,
-            child: Text(Strings.of(context).edit),
-            enabled: !_editing,
-          ),
-        ],
+          ));
+        }
+
+        overflowOptions.add(PopupMenuItem<_OverflowOption>(
+          value: _OverflowOption.edit,
+          child: Text(Strings.of(context).edit),
+          enabled: !_editing,
+        ));
+
+        return overflowOptions;
+      };
+
+      result..add(PopupMenuButton<_OverflowOption>(
+        icon: Icon(Icons.more_vert),
+        itemBuilder: optionBuilder,
         onSelected: (option) {
           switch (option) {
             case _OverflowOption.add:
@@ -233,12 +245,14 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
         ));
       }
 
-      // Always include the "Add" button.
-      result.add(IconButton(
-        icon: Icon(Icons.add),
-        onPressed: () =>
-            present(context, widget.itemManager.addPageBuilder()),
-      ));
+      // Only include the edit button if new items can be added.
+      if (_addable) {
+        result.add(IconButton(
+          icon: Icon(Icons.add),
+          onPressed: () =>
+              present(context, widget.itemManager.addPageBuilder()),
+        ));
+      }
     }
 
     return result;
@@ -421,7 +435,7 @@ class ManageableListPageItemManager<T> {
     @required this.loadItems,
     @required this.deleteText,
     @required this.deleteItem,
-    @required this.addPageBuilder,
+    this.addPageBuilder,
     this.listenerManagers,
     this.editPageBuilder,
     this.detailPageBuilder,
@@ -429,9 +443,7 @@ class ManageableListPageItemManager<T> {
   }) : assert(loadItems != null),
        assert(deleteText != null),
        assert(deleteItem != null),
-       assert(listenerManagers == null || listenerManagers.isNotEmpty),
-       assert(addPageBuilder != null),
-       assert(editPageBuilder != null);
+       assert(listenerManagers == null || listenerManagers.isNotEmpty);
 }
 
 enum _OverflowOption {

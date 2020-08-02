@@ -56,15 +56,7 @@ class SpeciesListPage extends StatelessWidget {
             speciesManager.entityListSortedByName(filter: query),
         deleteText: (context, species) => Text(format(Strings.of(context)
             .speciesListPageConfirmDelete, [species.name])),
-        deleteItem: (context, species) async {
-          if (!await speciesManager.delete(species)) {
-            showErrorDialog(
-              context: context,
-              description: Text(format(Strings.of(context)
-                  .speciesListPageCatchDeleteError, [species.name])),
-            );
-          }
-        },
+        deleteItem: (context, species) => speciesManager.delete(species),
         onTapDeleteButton: (species) {
           int numOfCatches = speciesManager.numberOfCatches(species);
           if (numOfCatches <= 0) {

@@ -15,13 +15,20 @@ import 'package:mobile/widgets/widget.dart';
 import 'package:quiver/strings.dart';
 
 class BaitListPage extends StatefulWidget {
-  final bool Function(BuildContext, Bait) onPicked;
+  final bool Function(BuildContext, Set<Bait>) onPicked;
+  final bool multiPicker;
+  final Set<Bait> initialValues;
 
-  BaitListPage() : onPicked = null;
+  BaitListPage()
+      : onPicked = null,
+        multiPicker = false,
+        initialValues = null;
 
   BaitListPage.picker({
     this.onPicked,
-  });
+    this.multiPicker = false,
+    this.initialValues = const {},
+  }) : assert(onPicked != null);
 
   @override
   _BaitListPageState createState() => _BaitListPageState();
@@ -53,8 +60,10 @@ class _BaitListPageState extends State<BaitListPage> {
         ),
         pickerSettings: _picking
             ? ManageableListPagePickerSettings<dynamic>(
-                onPicked: (context, baits) =>
-                    widget.onPicked(context, baits.first as Bait)
+                onPicked: (context, baits) => widget.onPicked(context,
+                    baits.map((item) => item as Bait).toSet()),
+                multi: widget.multiPicker,
+                initialValues: widget.initialValues,
               )
             : null,
         itemBuilder: (context, item) {

@@ -21,7 +21,16 @@ class SaveFishingSpotPage extends StatefulWidget {
     @required this.oldFishingSpot,
     this.editing = false,
     this.onSave,
-  }) : assert(oldFishingSpot != null);
+  }) : assert((editing && oldFishingSpot != null)
+      || oldFishingSpot != null);
+
+  SaveFishingSpotPage.edit({
+    @required FishingSpot oldFishingSpot,
+  }) : this(
+    oldFishingSpot: oldFishingSpot,
+    editing: true,
+    onSave: null,
+  );
 
   @override
   _SaveFishingSpotPageState createState() => _SaveFishingSpotPageState();
@@ -35,7 +44,7 @@ class _SaveFishingSpotPageState extends State<SaveFishingSpotPage> {
   @override
   void initState() {
     super.initState();
-    _nameController.value = widget.oldFishingSpot.name;
+    _nameController.value = widget.oldFishingSpot?.name;
   }
 
   @override

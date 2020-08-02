@@ -270,9 +270,9 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
           value: value,
           onTap: () {
             push(context, BaitListPage.picker(
-              onPicked: (context, pickedBait) {
+              onPicked: (context, pickedBaits) {
                 setState(() {
-                  _baitController.value = pickedBait;
+                  _baitController.value = pickedBaits.first;
                 });
                 return true;
               },

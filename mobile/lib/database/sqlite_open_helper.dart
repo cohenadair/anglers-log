@@ -87,15 +87,28 @@ final List<String> _schema0 = [
   );
   """,
   """
-  CREATE TABLE custom_report (
+  CREATE TABLE custom_summary_report (
     id TEXT PRIMARY KEY,
     name TEXT NOT NULL,
     description TEXT,
-    type INTEGER NOT NULL,
     entity_type INTEGER NOT NULL,
     display_date_range_id TEXT NOT NULL,
     start_timestamp INTEGER,
     end_timestamp INTEGER
+  );
+  """,
+  """
+  CREATE TABLE custom_comparison_report (
+    id TEXT PRIMARY KEY,
+    name TEXT NOT NULL,
+    description TEXT,
+    entity_type INTEGER NOT NULL,
+    from_display_date_range_id TEXT NOT NULL,
+    from_start_timestamp INTEGER,
+    from_end_timestamp INTEGER,
+    to_display_date_range_id TEXT NOT NULL,
+    to_start_timestamp INTEGER,
+    to_end_timestamp INTEGER
   );
   """,
   """
