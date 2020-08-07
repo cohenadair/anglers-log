@@ -63,6 +63,9 @@ void main() {
     when(baitManager.entityList).thenReturn(baitMap.values.toList());
     when(baitManager.entity(id: anyNamed("id"))).thenAnswer((invocation) =>
         baitMap[invocation.namedArguments[Symbol("id")]]);
+    when(baitManager.entityExists(id: anyNamed("id")))
+        .thenAnswer((invocation) =>
+            baitMap.containsKey(invocation.namedArguments[Symbol("id")]));
 
     catchManager = MockCatchManager();
     when(appManager.catchManager).thenReturn(catchManager);
@@ -76,6 +79,9 @@ void main() {
     when(fishingSpotManager.entity(id: anyNamed("id")))
         .thenAnswer((invocation) =>
             fishingSpotMap[invocation.namedArguments[Symbol("id")]]);
+    when(fishingSpotManager.entityExists(id: anyNamed("id")))
+        .thenAnswer((invocation) => fishingSpotMap
+            .containsKey(invocation.namedArguments[Symbol("id")]));
 
     speciesManager = MockSpeciesManager();
     when(appManager.speciesManager).thenReturn(speciesManager);

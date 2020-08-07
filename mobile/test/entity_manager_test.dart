@@ -150,9 +150,7 @@ void main() {
     // Clear data.
     await realDataManager.reset();
     expect(entityManager.entityCount, 0);
-
-    verifyListener(() {
-      verify(listener.onClear).called(1);
-    });
+    await untilCalled(listener.onClear);
+    verify(listener.onClear).called(1);
   });
 }

@@ -1,7 +1,5 @@
 import 'dart:collection';
 
-import 'dart:math';
-
 /// Returns a largest-to-smallest, sorted-by-value version of [map].
 Map<T, int> sortedMap<T>(Map<T, int> map) {
   var sortedKeys = map.keys.toList()

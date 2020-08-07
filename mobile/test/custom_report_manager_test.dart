@@ -16,7 +16,6 @@ import 'package:mockito/mockito.dart';
 import 'package:sqflite/sqflite.dart';
 
 import 'mock_app_manager.dart';
-import 'test_utils.dart';
 
 class MockBatch extends Mock implements Batch {}
 class MockCustomReportListener extends Mock implements
@@ -76,6 +75,13 @@ void main() {
     reportManager.addListener(reportListener);
   });
 
+  Future<void> awaitDataManagerDelete() async {
+    await untilCalled(appManager.mockDataManager.delete(any,
+      where: anyNamed("where"),
+      whereArgs: anyNamed("whereArgs"),
+    ));
+  }
+
   test("On species deleted, reports updated and listeners notified", () async {
     when(appManager.mockCatchManager.existsWith(
       speciesId: anyNamed("speciesId"),
@@ -90,9 +96,8 @@ void main() {
     var species = Species(name: "Bass");
     await speciesManager.addOrUpdate(species);
     await speciesManager.delete(species);
-    verifyListener(() {
-      verifyNever(reportListener.onAddOrUpdate);
-    });
+    await awaitDataManagerDelete();
+    verifyNever(reportListener.onAddOrUpdate);
 
     // Successful delete.
     when(appManager.mockDataManager.delete(any,
@@ -102,9 +107,8 @@ void main() {
 
     await speciesManager.addOrUpdate(species);
     await speciesManager.delete(species);
-    verifyListener(() {
-      verify(reportListener.onAddOrUpdate).called(1);
-    });
+    await awaitDataManagerDelete();
+    verify(reportListener.onAddOrUpdate).called(1);
   });
 
   test("On baits deleted, reports updated and listeners notified",
@@ -119,9 +123,8 @@ void main() {
     var bait = Bait(name: "Lure");
     await baitManager.addOrUpdate(bait);
     await baitManager.delete(bait);
-    verifyListener(() {
-      verifyNever(reportListener.onAddOrUpdate);
-    });
+    await awaitDataManagerDelete();
+    verifyNever(reportListener.onAddOrUpdate);
 
     // Successful delete.
     when(appManager.mockDataManager.delete(any,
@@ -131,9 +134,8 @@ void main() {
 
     await baitManager.addOrUpdate(bait);
     await baitManager.delete(bait);
-    verifyListener(() {
-      verify(reportListener.onAddOrUpdate).called(1);
-    });
+    await awaitDataManagerDelete();
+    verify(reportListener.onAddOrUpdate).called(1);
   });
 
   test("On fishing spots deleted, reports updated and listeners notified",
@@ -148,9 +150,8 @@ void main() {
     var fishingSpot = FishingSpot(lat: 0.03, lng: 0.05);
     await fishingSpotManager.addOrUpdate(fishingSpot);
     await fishingSpotManager.delete(fishingSpot);
-    verifyListener(() {
-      verifyNever(reportListener.onAddOrUpdate);
-    });
+    await awaitDataManagerDelete();
+    verifyNever(reportListener.onAddOrUpdate);
 
     // Successful delete.
     when(appManager.mockDataManager.delete(any,
@@ -160,9 +161,8 @@ void main() {
 
     await fishingSpotManager.addOrUpdate(fishingSpot);
     await fishingSpotManager.delete(fishingSpot);
-    verifyListener(() {
-      verify(reportListener.onAddOrUpdate).called(1);
-    });
+    await awaitDataManagerDelete();
+    verify(reportListener.onAddOrUpdate).called(1);
   });
 
   test("Add or update", () async {
@@ -276,12 +276,10 @@ void main() {
     // Clear data.
     await realDataManager.reset();
     expect(reportManager.entityCount, 0);
-
-    verifyListener(() {
-      expect(reportManager.species(id: report.id), isEmpty);
-      expect(reportManager.baits(id: report.id), isEmpty);
-      expect(reportManager.fishingSpots(id: report.id), isEmpty);
-      verify(listener.onClear).called(1);
-    });
+    await untilCalled(database.rawQuery(any, any));
+    expect(reportManager.species(id: report.id), isEmpty);
+    expect(reportManager.baits(id: report.id), isEmpty);
+    expect(reportManager.fishingSpots(id: report.id), isEmpty);
+    verify(listener.onClear).called(1);
   });
 }

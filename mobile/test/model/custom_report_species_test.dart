@@ -9,11 +9,11 @@ void main() {
     );
 
     var map = species.toMap();
-    expect(map["catch_report_id"], "catch_report_0");
+    expect(map["custom_report_id"], "catch_report_0");
     expect(map["species_id"], "species_0");
 
     map = {
-      "catch_report_id" : "catch_report_1",
+      "custom_report_id" : "catch_report_1",
       "species_id" : "species_1",
     };
     species = CustomReportSpecies.fromMap(map);

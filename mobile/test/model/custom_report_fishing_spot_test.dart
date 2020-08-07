@@ -9,11 +9,11 @@ void main() {
     );
 
     var map = fishingSpot.toMap();
-    expect(map["catch_report_id"], "catch_report_0");
+    expect(map["custom_report_id"], "catch_report_0");
     expect(map["fishing_spot_id"], "fishing_spot_0");
 
     map = {
-      "catch_report_id" : "catch_report_1",
+      "custom_report_id" : "catch_report_1",
       "fishing_spot_id" : "fishing_spot_1",
     };
     fishingSpot = CustomReportFishingSpot.fromMap(map);

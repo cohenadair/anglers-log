@@ -1,9 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/model/bait.dart';
-import 'package:mobile/model/bait_category.dart';
-import 'package:mobile/model/fishing_spot.dart';
-import 'package:mobile/model/species.dart';
-import 'package:mobile/pages/image_picker_page.dart';
 import 'package:mobile/utils/date_time_utils.dart';
 import 'package:mobile/utils/validator.dart';
 import 'package:quiver/strings.dart';
@@ -40,7 +35,13 @@ class TextInputController extends InputController<String> {
   }) : super();
 
   @override
-  get value => editingController.text.trim();
+  get value {
+    var text = editingController.text.trim();
+    if (isEmpty(text)) {
+      return null;
+    }
+    return text;
+  }
 
   @override
   set value(String value) =>

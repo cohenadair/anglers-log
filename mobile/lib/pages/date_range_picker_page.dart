@@ -108,9 +108,7 @@ class _DateRangePickerPageState extends State<DateRangePickerPage> {
       endDate: endDate ?? pickedRange.last,
     );
 
-    widget.onDateRangePicked(DisplayDateRange.newCustom(
-      getValue: (_) => dateRange,
-      getTitle: (_) => formatDateRange(dateRange),
-    ));
+    widget.onDateRangePicked(
+        DisplayDateRange.newCustomFromDateRange(dateRange));
   }
 }

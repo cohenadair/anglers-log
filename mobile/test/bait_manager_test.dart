@@ -11,8 +11,6 @@ import 'package:mobile/model/catch.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 
-import 'test_utils.dart';
-
 class MockAppManager extends Mock implements AppManager {}
 class MockBaitListener extends Mock implements EntityListener<Bait> {}
 class MockCustomEntityValueManager extends Mock
@@ -68,10 +66,9 @@ void main() {
 
     // Verify listeners aren't notified.
     await baitCategoryManager.delete(category);
+    await untilCalled(dataManager.rawUpdate(any, any));
     verify(dataManager.rawUpdate(any, any)).called(1);
-    verifyListener(() {
-      verifyNever(baitListener.onAddOrUpdate);
-    });
+    verifyNever(baitListener.onAddOrUpdate);
 
     // Stub database does an update.
     when(dataManager.rawUpdate(any, any))
@@ -93,14 +90,13 @@ void main() {
     expect(baitManager.entity(id: "bait_id_2").categoryId, "category_id");
 
     await baitCategoryManager.delete(category);
+    await untilCalled(dataManager.rawUpdate(any, any));
+    verify(dataManager.rawUpdate(any, any)).called(1);
 
-    verifyListener(() {
-      // Verify listeners are notified and memory cache updated.
-      verify(dataManager.rawUpdate(any, any)).called(1);
-      verify(baitListener.onAddOrUpdate).called(1);
-      expect(baitManager.entity(id: "bait_id").categoryId, isNull);
-      expect(baitManager.entity(id: "bait_id_2").categoryId, isNull);
-    });
+    // Verify listeners are notified and memory cache updated.
+    verify(baitListener.onAddOrUpdate).called(1);
+    expect(baitManager.entity(id: "bait_id").categoryId, isNull);
+    expect(baitManager.entity(id: "bait_id_2").categoryId, isNull);
   });
 
   test("Number of catches", () {

@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/i18n/strings.dart';
+import 'package:quiver/strings.dart';
 
 /// A trimmed, case-insensitive string comparison.
 bool isEqualTrimmedLowercase(String s1, String s2) {
-  return s1.trim().toLowerCase() == s2.trim().toLowerCase();
+  if (isNotEmpty(s1) && isNotEmpty(s2)) {
+    return s1.trim().toLowerCase() == s2.trim().toLowerCase();
+  }
+  return s1 == s2;
 }
 
 /// Supported formats:

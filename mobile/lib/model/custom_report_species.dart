@@ -6,7 +6,7 @@ import 'package:mobile/model/species.dart';
 /// An object that stores a [CustomReport] ID to [Species] ID pair.
 @immutable
 class CustomReportSpecies extends OneToManyRow {
-  static const keyCustomReportId = "catch_report_id";
+  static const keyCustomReportId = "custom_report_id";
   static const keySpeciesId = "species_id";
 
   CustomReportSpecies({

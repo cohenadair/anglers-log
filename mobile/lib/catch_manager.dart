@@ -88,7 +88,7 @@ class CatchManager extends EntityManager<Catch> {
           || (cat.hasFishingSpot && _fishingSpotManager
               .entity(id: cat.fishingSpotId).matchesFilter(filter))
           || (cat.hasBait && _baitManager.matchesFilter(cat.baitId, filter))
-          || formatDateTime(context, cat.dateTime).toLowerCase()
+          || dateTimeToSearchingString(context, cat.dateTime).toLowerCase()
               .contains(filter.toLowerCase());
     }).toList();
   }

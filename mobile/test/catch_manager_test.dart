@@ -93,10 +93,9 @@ void main() {
 
     // Verify listeners aren't notified.
     await baitManager.delete(bait);
+    await untilCalled(dataManager.rawUpdate(any, any));
     verify(dataManager.rawUpdate(any, any)).called(1);
-    verifyListener(() {
-      verifyNever(catchListener.onAddOrUpdate);
-    });
+    verifyNever(catchListener.onAddOrUpdate);
 
     // Stub database does an update.
     when(dataManager.rawUpdate(any, any))
@@ -120,13 +119,13 @@ void main() {
     expect(catchManager.entity(id: "catch_id_2").baitId, "bait_id");
 
     await baitManager.delete(bait);
-    verifyListener(() {
-      // Verify listeners are notified and memory cache updated.
-      verify(dataManager.rawUpdate(any, any)).called(1);
-      verify(catchListener.onAddOrUpdate).called(1);
-      expect(catchManager.entity(id: "catch_id").baitId, isNull);
-      expect(catchManager.entity(id: "catch_id_2").baitId, isNull);
-    });
+    await untilCalled(dataManager.rawUpdate(any, any));
+    verify(dataManager.rawUpdate(any, any)).called(1);
+
+    // Verify listeners are notified and memory cache updated.
+    verify(catchListener.onAddOrUpdate).called(1);
+    expect(catchManager.entity(id: "catch_id").baitId, isNull);
+    expect(catchManager.entity(id: "catch_id_2").baitId, isNull);
   });
 
   test("When a fishing spot is deleted, existing catches are updated", () async
@@ -154,10 +153,8 @@ void main() {
 
     // Verify listeners aren't notified.
     await fishingSpotManager.delete(fishingSpot);
+    await untilCalled(dataManager.rawUpdate(any, any));
     verify(dataManager.rawUpdate(any, any)).called(1);
-    verifyListener(() {
-
-    });
     verifyNever(catchListener.onAddOrUpdate);
 
     // Stub database does an update.
@@ -186,14 +183,13 @@ void main() {
         "fishing_spot_id");
 
     await fishingSpotManager.delete(fishingSpot);
+    await untilCalled(dataManager.rawUpdate(any, any));
+    verify(dataManager.rawUpdate(any, any)).called(1);
 
-    verifyListener(() {
-      // Verify listeners are notified and memory cache updated.
-      verify(dataManager.rawUpdate(any, any)).called(1);
-      verify(catchListener.onAddOrUpdate).called(1);
-      expect(catchManager.entity(id: "catch_id").fishingSpotId, isNull);
-      expect(catchManager.entity(id: "catch_id_2").fishingSpotId, isNull);
-    });
+    // Verify listeners are notified and memory cache updated.
+    verify(catchListener.onAddOrUpdate).called(1);
+    expect(catchManager.entity(id: "catch_id").fishingSpotId, isNull);
+    expect(catchManager.entity(id: "catch_id_2").fishingSpotId, isNull);
   });
 
   testWidgets("Filtering by search query", (WidgetTester tester) async {

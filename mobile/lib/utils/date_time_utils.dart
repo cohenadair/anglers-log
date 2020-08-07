@@ -4,8 +4,9 @@ import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/utils/string_utils.dart';
 import 'package:quiver/time.dart';
 
-const monthDayFormat = "MMMM d";
-const monthDayYearFormat = "MMMM d, yyyy";
+const monthDayFormat = "MMM d";
+const monthDayYearFormat = "MMM d, yyyy";
+const monthDayYearFormatFull = "MMMM d, yyyy";
 
 enum DurationUnit {
   days,
@@ -66,6 +67,14 @@ class DateRange {
   DateRange({this.startDate, this.endDate})
       : assert(startDate.isAtSameMomentAs(endDate)
           || startDate.isBefore(endDate));
+
+  DateRange.fromMillis({
+    int start,
+    int end,
+  }) : this(
+    startDate: DateTime.fromMillisecondsSinceEpoch(start),
+    endDate: DateTime.fromMillisecondsSinceEpoch(end),
+  );
 
   int get startMs => startDate.millisecondsSinceEpoch;
   int get endMs => endDate.millisecondsSinceEpoch;
@@ -274,6 +283,12 @@ class DisplayDateRange {
     title: getTitle,
   );
 
+  /// Wrapper for [DisplayDateRange.newCustom].
+  DisplayDateRange.newCustomFromDateRange(DateRange dateRange) : this.newCustom(
+    getValue: (_) => dateRange,
+    getTitle: (_) => formatDateRange(dateRange),
+  );
+
   DateRange get value => getValue(DateTime.now());
 
   @override
@@ -415,13 +430,26 @@ String formatTimeOfDay(BuildContext context, TimeOfDay time) {
 ///   - Monday at 2:35 PM
 ///   - Jan. 8 at 2:35 PM
 ///   - Dec. 8, 2018 at 2:35 PM
-String formatDateTime(BuildContext context, DateTime dateTime, {
+String formatDateTime(BuildContext context, DateTime dateTime, [
   clock = const Clock(),
-}) {
+]) {
   return format(Strings.of(context).dateTimeFormat, [
     formatDateAsRecent(context: context, dateTime: dateTime, clock: clock),
     formatTimeOfDay(context, TimeOfDay.fromDateTime(dateTime)),
   ]);
+}
+
+/// Returns a [DateTime] as a searchable [String]. This value should not be
+/// shown to users, but to be used for searching through list items that include
+/// timestamps.
+///
+/// The value returned is just a concatenation of different ways of representing
+/// a date and time.
+String dateTimeToSearchingString(BuildContext context, DateTime dateTime, [
+  clock = const Clock(),
+]) {
+  return "${formatDateTime(context, dateTime, clock)} "
+      "${DateFormat(monthDayYearFormatFull).format(dateTime)}";
 }
 
 /// Returns a formatted [DateRange] to be displayed to the user.

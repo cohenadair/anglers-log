@@ -2,10 +2,14 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:mobile/custom_comparison_report_manager.dart';
+import 'package:mobile/custom_report_manager.dart';
 import 'package:mobile/custom_summary_report_manager.dart';
+import 'package:mobile/entity_manager.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/model/bait.dart';
+import 'package:mobile/model/custom_comparison_report.dart';
 import 'package:mobile/model/custom_report.dart';
+import 'package:mobile/model/custom_summary_report.dart';
 import 'package:mobile/model/fishing_spot.dart';
 import 'package:mobile/model/species.dart';
 import 'package:mobile/pages/bait_list_page.dart';
@@ -61,15 +65,15 @@ class _SaveCustomReportPageState extends State<SaveCustomReportPage> {
       _fields[_keyDescription].controller;
   InputController<CustomReportType> get _typeController =>
       _fields[_keyType].controller;
-  InputController<DisplayDateRange> get _startDateRangeController =>
+  InputController<DisplayDateRange> get _fromDateRangeController =>
       _fields[_keyStartDateRange].controller;
-  InputController<DisplayDateRange> get _endDateRangeController =>
+  InputController<DisplayDateRange> get _toDateRangeController =>
       _fields[_keyEndDateRange].controller;
   InputController<Set<Species>> get _speciesController =>
       _fields[_keySpecies].controller;
-  InputController<Set<Bait>> get _baitController =>
+  InputController<Set<Bait>> get _baitsController =>
       _fields[_keyBaits].controller;
-  InputController<Set<FishingSpot>> get _fishingSpotController =>
+  InputController<Set<FishingSpot>> get _fishingSpotsController =>
       _fields[_keyFishingSpots].controller;
 
   bool get _editing => widget.oldReport != null;
@@ -132,10 +136,32 @@ class _SaveCustomReportPageState extends State<SaveCustomReportPage> {
       _nameController.value = widget.oldReport.name;
       _descriptionController.value = widget.oldReport.description;
       _typeController.value = widget.oldReport.type;
-      // TODO: Set mapping properties
+
+      if (widget.oldReport is CustomSummaryReport) {
+        var report = widget.oldReport as CustomSummaryReport;
+        _fromDateRangeController.value = _displayDateRangeFromReport(
+            report.displayDateRangeId, report.startTimestamp,
+            report.endTimestamp);
+      } else if (widget.oldReport is CustomComparisonReport) {
+        var report = widget.oldReport as CustomComparisonReport;
+        _fromDateRangeController.value = _displayDateRangeFromReport(
+            report.fromDisplayDateRangeId, report.fromStartTimestamp,
+            report.fromEndTimestamp);
+        _toDateRangeController.value = _displayDateRangeFromReport(
+            report.toDisplayDateRangeId, report.toStartTimestamp,
+            report.toEndTimestamp);
+      }
+
+      CustomReportManager manager = _customReportManager();
+      _baitsController.value =
+          manager.baits(id: widget.oldReport.id).toSet();
+      _fishingSpotsController.value =
+          manager.fishingSpots(id: widget.oldReport.id).toSet();
+      _speciesController.value =
+          manager.species(id: widget.oldReport.id).toSet();
     } else {
       _typeController.value = CustomReportType.summary;
-      _startDateRangeController.value = DisplayDateRange.allDates;
+      _fromDateRangeController.value = DisplayDateRange.allDates;
     }
   }
 
@@ -227,9 +253,9 @@ class _SaveCustomReportPageState extends State<SaveCustomReportPage> {
     return DateRangePickerInput(
       key: key,
       title: title,
-      initialDateRange: _startDateRangeController.value,
+      initialDateRange: _fromDateRangeController.value,
       onPicked: (dateRange) => setState(() {
-        _startDateRangeController.value = dateRange;
+        _fromDateRangeController.value = dateRange;
       }),
     );
   }
@@ -239,9 +265,9 @@ class _SaveCustomReportPageState extends State<SaveCustomReportPage> {
       duration: _endDateRangeAnimDuration,
       child: _summary ? Empty() : DateRangePickerInput(
         title: Strings.of(context).saveCustomReportPageEndDateRangeLabel,
-        initialDateRange: _endDateRangeController.value,
+        initialDateRange: _toDateRangeController.value,
         onPicked: (dateRange) => setState(() {
-          _endDateRangeController.value = dateRange;
+          _toDateRangeController.value = dateRange;
         }),
       ),
     );
@@ -271,16 +297,16 @@ class _SaveCustomReportPageState extends State<SaveCustomReportPage> {
   Widget _buildBaitsPicker() {
     return MultiListPickerInput(
       padding: insetsHorizontalDefaultVerticalWidget,
-      values: _baitController.value?.map((bait) => bait.name)?.toSet(),
+      values: _baitsController.value?.map((bait) => bait.name)?.toSet(),
       emptyValue: (context) =>
       Strings.of(context).saveCustomReportPageAllBaits,
       onTap: () {
         push(context, BaitListPage.picker(
           multiPicker: true,
-          initialValues: _baitController.value,
+          initialValues: _baitsController.value,
           onPicked: (context, pickedBaits) {
             setState(() {
-              _baitController.value = pickedBaits;
+              _baitsController.value = pickedBaits;
             });
             return true;
           },
@@ -292,16 +318,16 @@ class _SaveCustomReportPageState extends State<SaveCustomReportPage> {
   Widget _buildFishingSpotsPicker() {
     return MultiListPickerInput(
       padding: insetsHorizontalDefaultVerticalWidget,
-      values: _fishingSpotController.value?.map((bait) => bait.name)?.toSet(),
+      values: _fishingSpotsController.value?.map((bait) => bait.name)?.toSet(),
       emptyValue: (context) =>
           Strings.of(context).saveCustomReportPageAllFishingSpots,
       onTap: () {
         push(context, FishingSpotListPage.picker(
           multiPicker: true,
-          initialValues: _fishingSpotController.value,
+          initialValues: _fishingSpotsController.value,
           onPicked: (context, pickedFishingSpots) {
             setState(() {
-              _fishingSpotController.value = pickedFishingSpots;
+              _fishingSpotsController.value = pickedFishingSpots;
             });
             return true;
           },
@@ -311,8 +337,83 @@ class _SaveCustomReportPageState extends State<SaveCustomReportPage> {
   }
 
   FutureOr<bool> _save(BuildContext context) {
-    var report;
-    print(report);
-    return false;
+    CustomReport report;
+    switch (_typeController.value) {
+      case CustomReportType.summary:
+        report = _createSummaryReport();
+        break;
+      case CustomReportType.comparison:
+        report = _createComparisonReport();
+        break;
+    }
+
+    _customReportManager().addOrUpdate(
+      report,
+      baits: _baitsController.value,
+      fishingSpots: _fishingSpotsController.value,
+      species: _speciesController.value,
+    );
+
+    return true;
+  }
+
+  CustomReportManager<CustomReport> _customReportManager() {
+    switch (_typeController.value) {
+      case CustomReportType.summary:
+        return _customSummaryReportManager;
+      case CustomReportType.comparison:
+        return _customComparisonReportManager;
+    }
+    
+    // Can't happen. Silence compiler warning.
+    return null;
+  }
+  
+  CustomSummaryReport _createSummaryReport() {
+    DisplayDateRange dateRange = _fromDateRangeController.value; 
+    bool custom = dateRange == DisplayDateRange.custom;
+
+    return CustomSummaryReport(
+      id: widget.oldReport?.id,
+      name: _nameController.value,
+      description: _descriptionController.value,
+      entityType: EntityType.fishCatch,
+      displayDateRangeId: dateRange.id,
+      startTimestamp: custom ? dateRange.value.startMs : null,
+      endTimestamp: custom ? dateRange.value.endMs : null,
+    );
+  }
+  
+  CustomComparisonReport _createComparisonReport() {
+    DisplayDateRange fromDateRange = _fromDateRangeController.value;
+    DisplayDateRange toDateRange = _toDateRangeController.value;
+    bool customFrom = fromDateRange == DisplayDateRange.custom;
+    bool customTo = toDateRange == DisplayDateRange.custom;
+
+    return CustomComparisonReport(
+      id: widget.oldReport?.id,
+      name: _nameController.value,
+      description: _descriptionController.value,
+      entityType: EntityType.fishCatch,
+      fromDisplayDateRangeId: fromDateRange.id,
+      fromStartTimestamp: customFrom ? fromDateRange.value.startMs : null,
+      fromEndTimestamp: customFrom ? fromDateRange.value.endMs : null,
+      toDisplayDateRangeId: toDateRange.id,
+      toStartTimestamp: customTo ? toDateRange.value.startMs : null,
+      toEndTimestamp: customTo ? toDateRange.value.endMs : null,
+    );
+  }
+
+  DisplayDateRange _displayDateRangeFromReport(String displayDateRangeId,
+      int startTimestamp, int endTimestamp)
+  {
+    if (displayDateRangeId == DisplayDateRange.custom.id) {
+      return DisplayDateRange.newCustomFromDateRange(DateRange.fromMillis(
+        start: startTimestamp,
+        end: endTimestamp,
+      ));
+    } else {
+      return DisplayDateRange.of(displayDateRangeId);
+    }
   }
 }
