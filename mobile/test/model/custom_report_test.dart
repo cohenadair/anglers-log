@@ -60,11 +60,20 @@ void main() {
     map = {
       "id": "report_1",
       "description": "A test report 2.",
-      "entity_type": EntityType.custom,
+      "entity_type": 2,
     };
     report = TestCustomReport.fromMap(map);
     expect(report.id, "report_1");
     expect(report.description, "A test report 2.");
     expect(report.entityType, EntityType.custom);
+
+    // Invalid BaitType value returns null.
+    map["entity_type"] = 10;
+    report = TestCustomReport.fromMap(map);
+    expect(report.entityType, isNull);
+
+    map["entity_type"] = null;
+    report = TestCustomReport.fromMap(map);
+    expect(report.entityType, isNull);
   });
 }

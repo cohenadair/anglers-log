@@ -21,8 +21,8 @@ class CustomComparisonReport extends CustomReport {
     @required int toStartTimestamp,
     @required int toEndTimestamp,
   }) => [
-    Property<String>(key: keyFromDisplayDateRangeId, value: fromDisplayDateRangeId,
-        searchable: false),
+    Property<String>(key: keyFromDisplayDateRangeId,
+        value: fromDisplayDateRangeId, searchable: false),
     Property<int>(key: keyFromStartTimestamp, value: fromStartTimestamp,
         searchable: false),
     Property<int>(key: keyFromEndTimestamp, value: fromEndTimestamp,

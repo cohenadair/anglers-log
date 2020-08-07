@@ -42,7 +42,7 @@ void main() {
       Bait.keyColor : "Red",
       Bait.keyModel : "CD37",
       Bait.keySize : "8",
-      Bait.keyType : BaitType.artificial,
+      Bait.keyType : 0,
       Bait.keyMinDiveDepth : 5.0,
       Bait.keyMaxDiveDepth : 9.0,
       Bait.keyDescription : "Crazy action. Good for dirty water.",
@@ -60,6 +60,15 @@ void main() {
     expect(bait.minDiveDepth, 5.0);
     expect(bait.maxDiveDepth, 9.0);
     expect(bait.description, "Crazy action. Good for dirty water.");
+
+    // Invalid BaitType value returns null.
+    map[Bait.keyType] = 10;
+    bait = Bait.fromMap(map);
+    expect(bait.type, isNull);
+
+    map[Bait.keyType] = null;
+    bait = Bait.fromMap(map);
+    expect(bait.type, isNull);
   });
 
   test("Copy", () {

@@ -15,7 +15,7 @@ class CustomSummaryReportManager extends CustomReportManager {
   CustomSummaryReportManager(AppManager app) : super(app);
 
   @override
-  CustomReport entityFromMap(Map<String, dynamic> map) =>
+  CustomSummaryReport entityFromMap(Map<String, dynamic> map) =>
       CustomSummaryReport.fromMap(map);
 
   @override

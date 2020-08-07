@@ -3,6 +3,7 @@ import 'package:mobile/entity_manager.dart';
 import 'package:mobile/model/named_entity.dart';
 import 'package:mobile/model/property.dart';
 import 'package:mobile/model/report.dart';
+import 'package:mobile/utils/collection_utils.dart';
 import 'package:quiver/strings.dart';
 
 enum CustomReportType {
@@ -47,7 +48,7 @@ abstract class CustomReport extends NamedEntity implements Report {
     List<Property> properties,
   }) : super.fromMap(map, properties: _propertyList(
     description: map[keyDescription],
-    entityType: map[keyEntityType],
+    entityType: valueOf<EntityType>(EntityType.values, map[keyEntityType]),
     properties: properties,
   ));
 

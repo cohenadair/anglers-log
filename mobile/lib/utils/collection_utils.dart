@@ -26,3 +26,12 @@ Map<T, int> firstElements<T>(Map<T, int> map, {int numberOfElements}) {
 
   return result;
 }
+
+/// Used to get the value of an enum from an index. Returns null of [index]
+/// falls out of bounds of the enum.
+T valueOf<T>(List<T> values, int index) {
+  if (index == null || index >= values.length) {
+    return null;
+  }
+  return values[index];
+}

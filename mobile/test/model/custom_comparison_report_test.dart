@@ -116,7 +116,7 @@ void main() {
     map = {
       "id": "report_1",
       "description": "A test report 2.",
-      "entity_type": EntityType.custom,
+      "entity_type": 2,
       "from_display_date_range_id" : "custom",
       "to_display_date_range_id" : "custom",
       "from_start_timestamp" : 5000,
