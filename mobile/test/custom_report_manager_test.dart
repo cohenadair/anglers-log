@@ -7,6 +7,9 @@ import 'package:mobile/entity_manager.dart';
 import 'package:mobile/fishing_spot_manager.dart';
 import 'package:mobile/model/bait.dart';
 import 'package:mobile/model/custom_report.dart';
+import 'package:mobile/model/custom_report_bait.dart';
+import 'package:mobile/model/custom_report_fishing_spot.dart';
+import 'package:mobile/model/custom_report_species.dart';
 import 'package:mobile/model/custom_summary_report.dart';
 import 'package:mobile/model/fishing_spot.dart';
 import 'package:mobile/model/species.dart';
@@ -81,6 +84,45 @@ void main() {
       whereArgs: anyNamed("whereArgs"),
     ));
   }
+
+  test("Initialize", () async {
+    when(appManager.mockDataManager.fetchAll(reportManager.tableName))
+        .thenAnswer((_) => Future.value([
+          CustomSummaryReport(
+            name: "Summary report",
+            displayDateRangeId: DisplayDateRange.last7Days.id,
+            entityType: EntityType.fishCatch,
+          ).toMap(),
+        ]));
+    when(appManager.mockDataManager.fetchAll("custom_report_bait"))
+        .thenAnswer((_) => Future.value([
+          CustomReportBait(
+            customReportId: "report_id_1",
+            baitId: "bait_id_1",
+          ).toMap(),
+        ]));
+    when(appManager.mockDataManager.fetchAll("custom_report_fishing_spot"))
+        .thenAnswer((_) => Future.value([
+          CustomReportFishingSpot(
+            customReportId: "report_id_2",
+            fishingSpotId: "fishing_spot_id_1",
+          ).toMap(),
+        ]));
+    when(appManager.mockDataManager.fetchAll("custom_report_species"))
+        .thenAnswer((_) => Future.value([
+          CustomReportSpecies(
+            customReportId: "report_id_3",
+            speciesId: "species_id_1",
+          ).toMap(),
+        ]));
+    await reportManager.initialize();
+    expect(reportManager.baitIds("report_id_1").length, 1);
+    expect(reportManager.fishingSpotIds("report_id_2").length, 1);
+    expect(reportManager.speciesIds("report_id_3").length, 1);
+    expect(reportManager.baitIds("report_id_3"), isEmpty);
+    expect(reportManager.fishingSpotIds("report_id_1"), isEmpty);
+    expect(reportManager.speciesIds("report_id_2"), isEmpty);
+  });
 
   test("On species deleted, reports updated and listeners notified", () async {
     when(appManager.mockCatchManager.existsWith(
@@ -184,9 +226,9 @@ void main() {
 
     // Don't add any mappings.
     await reportManager.addOrUpdate(report);
-    expect(reportManager.species(id: report.id), isEmpty);
-    expect(reportManager.baits(id: report.id), isEmpty);
-    expect(reportManager.fishingSpots(id: report.id), isEmpty);
+    expect(reportManager.species(report.id), isEmpty);
+    expect(reportManager.baits(report.id), isEmpty);
+    expect(reportManager.fishingSpots(report.id), isEmpty);
 
     // Update with some mappings.
     await reportManager.addOrUpdate(report,
@@ -203,15 +245,15 @@ void main() {
         FishingSpot(lat: 0.5, lng: 0.6),
       },
     );
-    expect(reportManager.species(id: report.id).length, 2);
-    expect(reportManager.baits(id: report.id).length, 1);
-    expect(reportManager.fishingSpots(id: report.id).length, 3);
+    expect(reportManager.species(report.id).length, 2);
+    expect(reportManager.baits(report.id).length, 1);
+    expect(reportManager.fishingSpots(report.id).length, 3);
 
     // Update with no mappings removes existing mappings.
     await reportManager.addOrUpdate(report);
-    expect(reportManager.species(id: report.id), isEmpty);
-    expect(reportManager.baits(id: report.id), isEmpty);
-    expect(reportManager.fishingSpots(id: report.id), isEmpty);
+    expect(reportManager.species(report.id), isEmpty);
+    expect(reportManager.baits(report.id), isEmpty);
+    expect(reportManager.fishingSpots(report.id), isEmpty);
   });
 
   test("On database cleared, mappings are cleared", () async {
@@ -264,9 +306,9 @@ void main() {
     );
 
     expect(reportManager.entityCount, 1);
-    expect(reportManager.species(id: report.id).length, 2);
-    expect(reportManager.baits(id: report.id).length, 1);
-    expect(reportManager.fishingSpots(id: report.id).length, 3);
+    expect(reportManager.species(report.id).length, 2);
+    expect(reportManager.baits(report.id).length, 1);
+    expect(reportManager.fishingSpots(report.id).length, 3);
 
     // Setup listener.
     var listener = MockCustomReportListener();
@@ -276,10 +318,10 @@ void main() {
     // Clear data.
     await realDataManager.reset();
     expect(reportManager.entityCount, 0);
-    await untilCalled(database.rawQuery(any, any));
-    expect(reportManager.species(id: report.id), isEmpty);
-    expect(reportManager.baits(id: report.id), isEmpty);
-    expect(reportManager.fishingSpots(id: report.id), isEmpty);
+    await untilCalled(listener.onClear);
+    expect(reportManager.species(report.id), isEmpty);
+    expect(reportManager.baits(report.id), isEmpty);
+    expect(reportManager.fishingSpots(report.id), isEmpty);
     verify(listener.onClear).called(1);
   });
 }

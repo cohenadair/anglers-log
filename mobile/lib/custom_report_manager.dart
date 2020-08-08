@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:mobile/app_manager.dart';
 import 'package:mobile/bait_manager.dart';
 import 'package:mobile/data_manager.dart';
@@ -11,6 +10,7 @@ import 'package:mobile/model/custom_report_fishing_spot.dart';
 import 'package:mobile/model/custom_report_species.dart';
 import 'package:mobile/model/entity.dart';
 import 'package:mobile/model/fishing_spot.dart';
+import 'package:mobile/model/one-to-many-row.dart';
 import 'package:mobile/model/species.dart';
 import 'package:mobile/named_entity_manager.dart';
 import 'package:mobile/species_manager.dart';
@@ -21,43 +21,13 @@ import 'package:sqflite/sqflite.dart';
 abstract class CustomReportManager<T extends CustomReport>
     extends NamedEntityManager<T>
 {
-  static const _tableCustomReportBait = "custom_report_bait";
-  static const _tableCustomReportFishingSpot = "custom_report_fishing_spot";
-  static const _tableCustomReportSpecies = "custom_report_species";
-
   final BaitManager _baitManager;
   final FishingSpotManager _fishingSpotManager;
   final SpeciesManager _speciesManager;
 
-  final _baits = _CustomReportEntityList<Bait, T>(
-    tableName: _tableCustomReportBait,
-    customReportIdKey: CustomReportBait.keyCustomReportId,
-    entityIdKey: CustomReportBait.keyBaitId,
-    mapBuilder: (reportId, valueId) => CustomReportBait(
-      customReportId: reportId,
-      baitId: valueId,
-    ).toMap(),
-  );
-
-  final _fishingSpots = _CustomReportEntityList<FishingSpot, T>(
-    tableName: _tableCustomReportFishingSpot,
-    customReportIdKey: CustomReportFishingSpot.keyCustomReportId,
-    entityIdKey: CustomReportFishingSpot.keyFishingSpotId,
-    mapBuilder: (reportId, valueId) => CustomReportFishingSpot(
-      customReportId: reportId,
-      fishingSpotId: valueId,
-    ).toMap(),
-  );
-
-  final _species = _CustomReportEntityList<Species, T>(
-    tableName: _tableCustomReportSpecies,
-    customReportIdKey: CustomReportSpecies.keyCustomReportId,
-    entityIdKey: CustomReportSpecies.keySpeciesId,
-    mapBuilder: (reportId, valueId) => CustomReportSpecies(
-      customReportId: reportId,
-      speciesId: valueId,
-    ).toMap(),
-  );
+  final _baits = _CustomReportBaitList<T>();
+  final _fishingSpots = _CustomReportFishingSpotList<T>();
+  final _species = _CustomReportSpeciesList<T>();
 
   CustomReportManager(AppManager app)
       : _baitManager = app.baitManager,
@@ -74,6 +44,14 @@ abstract class CustomReportManager<T extends CustomReport>
     _speciesManager.addListener(SimpleEntityListener(
       onDelete: _onDeleteSpecies,
     ));
+  }
+
+  @override
+  Future<void> initialize() async {
+    await _baits.load(dataManager);
+    await _fishingSpots.load(dataManager);
+    await _species.load(dataManager);
+    await super.initialize();
   }
 
   @override
@@ -104,19 +82,20 @@ abstract class CustomReportManager<T extends CustomReport>
 
   Set<String> baitIds(String reportId) =>
       _baits.ids(reportId: reportId).toSet();
-  List<Bait> baits({String id}) => _baits.ids(reportId: id).map((baitId) =>
-      _baitManager.entity(id: baitId)).toList();
+  List<Bait> baits(String reportId) =>
+      _baits.ids(reportId: reportId).map((baitId) =>
+          _baitManager.entity(id: baitId)).toList();
 
   Set<String> fishingSpotIds(String reportId) =>
       _fishingSpots.ids(reportId: reportId).toSet();
-  List<FishingSpot> fishingSpots({String id}) =>
-      _fishingSpots.ids(reportId: id).map((fishingSpotId) =>
+  List<FishingSpot> fishingSpots(String reportId) =>
+      _fishingSpots.ids(reportId: reportId).map((fishingSpotId) =>
           _fishingSpotManager.entity(id: fishingSpotId)).toList();
 
   Set<String> speciesIds(String reportId) =>
       _species.ids(reportId: reportId).toSet();
-  List<Species> species({String id}) =>
-      _species.ids(reportId: id).map((speciesId) =>
+  List<Species> species(String reportId) =>
+      _species.ids(reportId: reportId).map((speciesId) =>
           _speciesManager.entity(id: speciesId)).toList();
 
   void _onDeleteBait(Bait bait) async {
@@ -138,21 +117,32 @@ abstract class CustomReportManager<T extends CustomReport>
   }
 }
 
-class _CustomReportEntityList<E extends Entity, R extends CustomReport> {
-  final String tableName;
-  final String customReportIdKey;
-  final String entityIdKey;
-  final Map<String, dynamic>
-      Function(String reportId, String valueId) mapBuilder;
+abstract class _CustomReportEntityList<E extends Entity, M extends OneToManyRow,
+    R extends CustomReport> 
+{
+  String get tableName;
+  String get customReportIdKey;
+  String get entityIdKey;
+  Map<String, dynamic> itemToMap(String reportId, String valueId);
+  M mapToItem(Map<String, dynamic> map);
+  String customReportId(M item);
+  String entityId(M item);
 
   Map<String, Set<String>> _mapping = {};
+  
+  Future<void> load(DataManager dataManager) async {
+    _mapping.clear();
 
-  _CustomReportEntityList({
-    @required this.tableName,
-    @required this.customReportIdKey,
-    @required this.entityIdKey,
-    @required this.mapBuilder,
-  });
+    (await dataManager.fetchAll(tableName))
+        .map((map) => mapToItem(map))
+        .forEach((item) {
+          String reportId = customReportId(item);
+          if (_mapping[reportId] == null) {
+            _mapping[reportId] = {};
+          }
+          _mapping[reportId].add(entityId(item));
+        });
+  }
 
   void update(R report, Batch batch, Set<E> values) {
     // First, remove old mappings.
@@ -166,7 +156,7 @@ class _CustomReportEntityList<E extends Entity, R extends CustomReport> {
     if (values != null) {
       for (var value in values) {
         _mapping[report.id].add(value.id);
-        batch.insert(tableName, mapBuilder(report.id, value.id));
+        batch.insert(tableName, itemToMap(report.id, value.id));
       }
     }
   }
@@ -185,4 +175,101 @@ class _CustomReportEntityList<E extends Entity, R extends CustomReport> {
 
   Set<String> ids({String reportId}) =>
       isEmpty(reportId) ? {} : _mapping[reportId] ?? {};
+}
+
+class _CustomReportBaitList<T extends CustomReport>
+    extends _CustomReportEntityList<Bait, CustomReportBait, T>
+{
+  @override
+  String get tableName => "custom_report_bait";
+
+  @override
+  String get customReportIdKey => CustomReportBait.keyCustomReportId;
+
+  @override
+  String get entityIdKey => CustomReportBait.keyBaitId;
+
+  @override
+  Map<String, dynamic> itemToMap(String reportId, String valueId) {
+    return CustomReportBait(
+      customReportId: reportId,
+      baitId: valueId,
+    ).toMap();
+  }
+
+  @override
+  CustomReportBait mapToItem(Map<String, dynamic> map) =>
+      CustomReportBait.fromMap(map);
+
+  @override
+  String customReportId(CustomReportBait reportBait) =>
+      reportBait.customReportId;
+
+  @override
+  String entityId(CustomReportBait reportBait) => reportBait.baitId;
+}
+
+class _CustomReportFishingSpotList<T extends CustomReport>
+    extends _CustomReportEntityList<FishingSpot, CustomReportFishingSpot, T>
+{
+  @override
+  String get tableName => "custom_report_fishing_spot";
+
+  @override
+  String get customReportIdKey => CustomReportFishingSpot.keyCustomReportId;
+
+  @override
+  String get entityIdKey => CustomReportFishingSpot.keyFishingSpotId;
+
+  @override
+  Map<String, dynamic> itemToMap(String reportId, String valueId) {
+    return CustomReportFishingSpot(
+      customReportId: reportId,
+      fishingSpotId: valueId,
+    ).toMap();
+  }
+
+  @override
+  CustomReportFishingSpot mapToItem(Map<String, dynamic> map) =>
+      CustomReportFishingSpot.fromMap(map);
+
+  @override
+  String customReportId(CustomReportFishingSpot reportFishingSpot) =>
+      reportFishingSpot.customReportId;
+
+  @override
+  String entityId(CustomReportFishingSpot reportFishingSpot) =>
+      reportFishingSpot.fishingSpotId;
+}
+
+class _CustomReportSpeciesList<T extends CustomReport>
+    extends _CustomReportEntityList<Species, CustomReportSpecies, T>
+{
+  @override
+  String get tableName => "custom_report_species";
+
+  @override
+  String get customReportIdKey => CustomReportSpecies.keyCustomReportId;
+
+  @override
+  String get entityIdKey => CustomReportSpecies.keySpeciesId;
+
+  @override
+  Map<String, dynamic> itemToMap(String reportId, String valueId) {
+    return CustomReportSpecies(
+      customReportId: reportId,
+      speciesId: valueId,
+    ).toMap();
+  }
+
+  @override
+  CustomReportSpecies mapToItem(Map<String, dynamic> map) =>
+      CustomReportSpecies.fromMap(map);
+
+  @override
+  String customReportId(CustomReportSpecies reportSpecies) =>
+      reportSpecies.customReportId;
+
+  @override
+  String entityId(CustomReportSpecies reportSpecies) => reportSpecies.speciesId;
 }

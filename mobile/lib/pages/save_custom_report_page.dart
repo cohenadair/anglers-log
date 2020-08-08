@@ -154,11 +154,11 @@ class _SaveCustomReportPageState extends State<SaveCustomReportPage> {
 
       CustomReportManager manager = _customReportManager();
       _baitsController.value =
-          manager.baits(id: widget.oldReport.id).toSet();
+          manager.baits(widget.oldReport.id).toSet();
       _fishingSpotsController.value =
-          manager.fishingSpots(id: widget.oldReport.id).toSet();
+          manager.fishingSpots(widget.oldReport.id).toSet();
       _speciesController.value =
-          manager.species(id: widget.oldReport.id).toSet();
+          manager.species(widget.oldReport.id).toSet();
     } else {
       _typeController.value = CustomReportType.summary;
       _fromDateRangeController.value = DisplayDateRange.allDates;
