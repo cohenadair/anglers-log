@@ -332,7 +332,7 @@ class _FishingSpotPickerPageState extends State<FishingSpotPickerPage>
   }
 
   void _updateMarkers() {
-    List<FishingSpot> fishingSpots = _fishingSpotManager.entityList;
+    List<FishingSpot> fishingSpots = _fishingSpotManager.entityList();
     if (fishingSpots == null || fishingSpots.isEmpty) {
       fishingSpots = List.from(_fishingSpotMarkerMap.keys);
     }

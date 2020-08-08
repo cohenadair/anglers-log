@@ -145,8 +145,9 @@ class Strings {
   String get statsPageReportOverview => _string("statsPage_reportOverview");
   String get statsPageNewReport => _string("statsPage_newReport");
 
+  String get reportViewViewCatches => _string("reportView_viewCatches");
+
   String get overviewReportViewNoCatches => _string("overviewReportView_noCatches");
-  String get overviewReportViewViewCatches => _string("overviewReportView_viewCatches");
   String get overviewReportViewSummary => _string("overviewReportView_summary");
   String get overviewReportViewSpecies => _string("overviewReportView_species");
   String get overviewReportViewSinceLastCatch => _string("overviewReportView_sinceLastCatch");

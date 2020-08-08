@@ -64,7 +64,12 @@ abstract class EntityManager<T extends Entity> extends
   @protected
   DataManager get dataManager => appManager.dataManager;
 
-  List<T> get entityList => List.unmodifiable(entities.values);
+  List<T> entityList([List<String> ids]) {
+    if (ids == null || ids.isEmpty) {
+      return List.unmodifiable(entities.values);
+    }
+    return entities.values.where((entity) => ids.contains(entity.id)).toList();
+  }
 
   /// Clears the [Entity] memory collection. This method assumes the database
   /// has already been cleared.
@@ -76,7 +81,8 @@ abstract class EntityManager<T extends Entity> extends
   }
 
   List<T> filteredEntityList(String filter) {
-    return entityList.where((entity) => entity.matchesFilter(filter)).toList();
+    return entityList().where((entity) =>
+        entity.matchesFilter(filter)).toList();
   }
 
   int get entityCount => entities.length;

@@ -5,4 +5,5 @@ import 'package:flutter/material.dart';
 abstract class Report {
   String get id;
   String title(BuildContext context);
+  bool get custom;
 }

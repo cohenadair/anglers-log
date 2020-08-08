@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:mobile/app_manager.dart';
 import 'package:mobile/bait_manager.dart';
 import 'package:mobile/catch_manager.dart';
-import 'package:mobile/entity_manager.dart';
 import 'package:mobile/fishing_spot_manager.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/model/bait.dart';
@@ -20,6 +19,7 @@ import 'package:mobile/utils/page_utils.dart';
 import 'package:mobile/widgets/date_range_picker_input.dart';
 import 'package:mobile/widgets/label_value.dart';
 import 'package:mobile/widgets/list_item.dart';
+import 'package:mobile/widgets/report_view.dart';
 import 'package:mobile/widgets/text.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:quiver/time.dart';
@@ -52,13 +52,7 @@ class _OverviewReportViewState extends State<OverviewReportView> {
 
   @override
   Widget build(BuildContext context) {
-    return EntityListenerBuilder(
-      managers: [
-        BaitManager.of(context),
-        CatchManager.of(context),
-        FishingSpotManager.of(context),
-        SpeciesManager.of(context),
-      ],
+    return ReportView(
       onUpdate: () => _resetOverview(),
       builder: (context) => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -107,7 +101,7 @@ class _OverviewReportViewState extends State<OverviewReportView> {
 
   Widget _buildViewCatchesRow() {
     return ListItem(
-      title: Text(Strings.of(context).overviewReportViewViewCatches),
+      title: Text(Strings.of(context).reportViewViewCatches),
       onTap: () => push(context, CatchListPage(
         dateRange: _overview.dateRange,
       )),
@@ -176,7 +170,7 @@ class _OverviewReportViewState extends State<OverviewReportView> {
             right: paddingDefault,
           ),
           onTapRow: (species) => push(context, CatchListPage(
-            species: species,
+            speciesIds: {species.id},
           )),
         ),
         VerticalSpace(paddingDefaultDouble),
@@ -199,7 +193,7 @@ class _OverviewReportViewState extends State<OverviewReportView> {
           data: _overview.catchesPerFishingSpot,
           padding: insetsHorizontalDefault,
           onTapRow: (fishingSpot) => push(context, CatchListPage(
-            fishingSpot: fishingSpot,
+            fishingSpotIds: {fishingSpot.id},
           )),
         ),
         VerticalSpace(paddingDefaultDouble),
@@ -222,7 +216,7 @@ class _OverviewReportViewState extends State<OverviewReportView> {
           data: _overview.catchesPerBait,
           padding: insetsHorizontalDefault,
           onTapRow: (bait) => push(context, CatchListPage(
-            bait: bait,
+            baitIds: {bait.id},
           )),
         ),
         VerticalSpace(paddingDefaultDouble),
@@ -305,13 +299,13 @@ class OverviewReportViewData {
 
     // Initialize all entities. We want to include everything, even ones with
     // no catches.
-    _speciesManager.entityList
+    _speciesManager.entityList()
         .forEach((species) => _catchesPerSpecies[species] = 0);
-    _fishingSpotManager.entityList
+    _fishingSpotManager.entityList()
         .forEach((fishingSpot) => _catchesPerFishingSpot[fishingSpot] = 0);
-    _baitManager.entityList.forEach((bait) => _catchesPerBait[bait] = 0);
+    _baitManager.entityList().forEach((bait) => _catchesPerBait[bait] = 0);
 
-    for (Catch cat in _catchManager.entityList) {
+    for (Catch cat in _catchManager.entityList()) {
       // Skip catches that don't fall within the desired time range.
       if (cat.timestamp < _dateRange.startMs
           || cat.timestamp > _dateRange.endMs)

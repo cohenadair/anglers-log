@@ -70,7 +70,7 @@ class FishingSpotManager extends NamedEntityManager<FishingSpot> {
     }
 
     int result = 0;
-    _catchManager.entityList.forEach((cat) {
+    _catchManager.entityList().forEach((cat) {
       if (cat.hasFishingSpot && cat.fishingSpotId == fishingSpot.id) {
         result++;
       }

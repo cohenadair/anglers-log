@@ -6,8 +6,6 @@ import 'package:mobile/model/species.dart';
 import 'package:mockito/mockito.dart';
 import 'package:sqflite/sqlite_api.dart';
 
-import 'test_utils.dart';
-
 class MockAppManager extends Mock implements AppManager {}
 class MockBatch extends Mock implements Batch {}
 class MockDatabase extends Mock implements Database {}
@@ -152,5 +150,27 @@ void main() {
     expect(entityManager.entityCount, 0);
     await untilCalled(listener.onClear);
     verify(listener.onClear).called(1);
+  });
+
+  test("Entity list by ID", () async {
+    when(dataManager.insertOrUpdateEntity(any, any))
+        .thenAnswer((_) => Future.value(true));
+
+    // Add.
+    expect(await entityManager.addOrUpdate(Species(
+      id: "id_1",
+      name: "Bluegill",
+    )), true);
+    expect(await entityManager.addOrUpdate(Species(
+      id: "id_2",
+      name: "Catfish",
+    )), true);
+    expect(await entityManager.addOrUpdate(Species(
+      id: "id_3",
+      name: "Bass",
+    )), true);
+    expect(entityManager.entityCount, 3);
+    expect(entityManager.entityList().length, 3);
+    expect(entityManager.entityList(["id_1", "id_3"]).length, 2);
   });
 }

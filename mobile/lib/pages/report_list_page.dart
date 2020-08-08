@@ -86,8 +86,9 @@ class ReportListPage extends StatelessWidget {
     var summaryReportManager = CustomSummaryReportManager.of(context);
     var comparisonReportManager = CustomComparisonReportManager.of(context);
 
-    List<CustomReport> customReports = List.of(summaryReportManager.entityList)
-        ..addAll(comparisonReportManager.entityList);
+    List<CustomReport> customReports =
+        List.of(summaryReportManager.entityList())
+            ..addAll(comparisonReportManager.entityList());
 
     // Separate pre-defined reports from custom reports.
     result.add(HeadingNoteDivider(

@@ -171,7 +171,7 @@ void main() {
     File file = File("test/resources/backups/legacy_ios_entities.zip");
     await LegacyImporter(appManager, file, tmpDir).start();
 
-    List<FishingSpot> fishingSpots = fishingSpotManager.entityList;
+    List<FishingSpot> fishingSpots = fishingSpotManager.entityList();
     expect(fishingSpots, isNotNull);
     expect(fishingSpots.length, 1);
     expect(fishingSpots.first.name, "Tennessee River - Sequoyah Hills Park");
@@ -183,7 +183,7 @@ void main() {
     File file = File("test/resources/backups/legacy_ios_entities.zip");
     await LegacyImporter(appManager, file, tmpDir).start();
 
-    List<Bait> baits = baitManager.entityList;
+    List<Bait> baits = baitManager.entityList();
     expect(baits, isNotNull);
     expect(baits.length, 1);
     expect(baits.first.name, "Corn");
@@ -194,7 +194,7 @@ void main() {
     File file = File("test/resources/backups/legacy_ios_entities.zip");
     await LegacyImporter(appManager, file, tmpDir).start();
 
-    List<Species> species = speciesManager.entityList;
+    List<Species> species = speciesManager.entityList();
     expect(species, isNotNull);
     expect(species.length, 1);
     expect(species.first.name, "Carp - Common");
@@ -228,7 +228,7 @@ void main() {
     File file = File("test/resources/backups/legacy_android_entities.zip");
     await LegacyImporter(appManager, file, tmpDir).start();
 
-    List<Catch> catches = catchManager.entityList;
+    List<Catch> catches = catchManager.entityList();
     expect(catches, isNotNull);
     expect(catches.length, 1);
 
@@ -248,7 +248,7 @@ void main() {
     File file = File("test/resources/backups/legacy_android_entities.zip");
     await LegacyImporter(appManager, file, tmpDir).start();
 
-    List<FishingSpot> fishingSpots = fishingSpotManager.entityList;
+    List<FishingSpot> fishingSpots = fishingSpotManager.entityList();
     expect(fishingSpots, isNotNull);
     expect(fishingSpots.length, 1);
     expect(fishingSpots.first.name, "Bow River - Sewer Run");
@@ -277,7 +277,7 @@ void main() {
     File file = File("test/resources/backups/legacy_android_entities.zip");
     await LegacyImporter(appManager, file, tmpDir).start();
 
-    List<Species> species = speciesManager.entityList;
+    List<Species> species = speciesManager.entityList();
     expect(species, isNotNull);
     expect(species.length, 1);
     expect(species.first.name, "Trout - Rainbow");
@@ -287,7 +287,7 @@ void main() {
     File file = File("test/resources/backups/legacy_android_entities.zip");
     await LegacyImporter(appManager, file, tmpDir).start();
 
-    List<BaitCategory> categories = baitCategoryManager.entityList;
+    List<BaitCategory> categories = baitCategoryManager.entityList();
     expect(categories, isNotNull);
     expect(categories.length, 1);
     expect(categories.first.id, "b860cddd-dc47-48a2-8d02-c8112a2ed5eb");

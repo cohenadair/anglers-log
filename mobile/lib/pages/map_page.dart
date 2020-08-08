@@ -271,7 +271,7 @@ class _MapPageState extends State<MapPage> {
 
   void _updateMarkers() {
     _fishingSpotMarkers.clear();
-    _fishingSpotManager.entityList.forEach((f) =>
+    _fishingSpotManager.entityList().forEach((f) =>
         _fishingSpotMarkers.add(_createFishingSpotMarker(f)));
   }
 

@@ -298,18 +298,30 @@ void main() {
       timestamp: DateTime(2020, 2, 2).millisecondsSinceEpoch,
       speciesId: "species_id_2",
     ));
+    await catchManager.addOrUpdate(Catch(
+      timestamp: DateTime(2020, 4, 4).millisecondsSinceEpoch,
+      speciesId: "species_id_4",
+    ));
 
     BuildContext context = await buildContext(tester);
     List<Catch> catches = catchManager.filteredCatches(context,
-      species: Species(id: "species_id_2", name: "Bass"),
+      speciesIds: {"species_id_2"},
     );
     expect(catches.length, 2);
 
-    catches = catchManager.filteredCatches(context);
+    catches = catchManager.filteredCatches(context,
+      speciesIds: {
+        "species_id_2",
+        "species_id_4",
+      },
+    );
     expect(catches.length, 3);
 
+    catches = catchManager.filteredCatches(context);
+    expect(catches.length, 4);
+
     catches = catchManager.filteredCatches(context,
-      species: Species(id: "species_id_3", name: "Bluegill"),
+      speciesIds: {"species_id_3"},
     );
     expect(catches.isEmpty, true);
   });
@@ -371,18 +383,31 @@ void main() {
       speciesId: "species_id_2",
       fishingSpotId: "fishing_spot_1",
     ));
+    await catchManager.addOrUpdate(Catch(
+      timestamp: 40000,
+      speciesId: "species_id_2",
+      fishingSpotId: "fishing_spot_4",
+    ));
 
     BuildContext context = await buildContext(tester);
     List<Catch> catches = catchManager.filteredCatches(context,
-      fishingSpot: FishingSpot(id: "fishing_spot_1", lat: 0, lng: 0),
+      fishingSpotIds: {"fishing_spot_1"},
     );
     expect(catches.length, 2);
 
-    catches = catchManager.filteredCatches(context);
+    catches = catchManager.filteredCatches(context,
+      fishingSpotIds: {
+        "fishing_spot_1",
+        "fishing_spot_4",
+      },
+    );
     expect(catches.length, 3);
 
+    catches = catchManager.filteredCatches(context);
+    expect(catches.length, 4);
+
     catches = catchManager.filteredCatches(context,
-      fishingSpot: FishingSpot(id: "fishing_spot_3", lat: 0, lng: 0),
+      fishingSpotIds: {"fishing_spot_3"},
     );
     expect(catches.isEmpty, true);
   });
@@ -406,18 +431,31 @@ void main() {
       speciesId: "species_id_2",
       baitId: "bait_1",
     ));
+    await catchManager.addOrUpdate(Catch(
+      timestamp: 40000,
+      speciesId: "species_id_3",
+      baitId: "bait_4",
+    ));
 
     BuildContext context = await buildContext(tester);
     List<Catch> catches = catchManager.filteredCatches(context,
-      bait: Bait(id: "bait_1", name: "Test"),
+      baitIds: {"bait_1"},
     );
     expect(catches.length, 2);
 
-    catches = catchManager.filteredCatches(context);
+    catches = catchManager.filteredCatches(context,
+      baitIds: {
+        "bait_1",
+        "bait_4",
+      },
+    );
     expect(catches.length, 3);
 
+    catches = catchManager.filteredCatches(context);
+    expect(catches.length, 4);
+
     catches = catchManager.filteredCatches(context,
-      bait: Bait(id: "bait_3", name: "Test"),
+      baitIds: {"bait_3"},
     );
     expect(catches.isEmpty, true);
   });
@@ -444,8 +482,8 @@ void main() {
 
     BuildContext context = await buildContext(tester);
     List<Catch> catches = catchManager.filteredCatches(context,
-      species: Species(id: "species_id_1", name: "Test"),
-      bait: Bait(id: "bait_1", name: "Test"),
+      speciesIds: {"species_id_1"},
+      baitIds: {"bait_1"},
     );
     expect(catches.length, 1);
 
@@ -453,8 +491,8 @@ void main() {
     expect(catches.length, 3);
 
     catches = catchManager.filteredCatches(context,
-      species: Species(id: "species_id_4", name: "Test"),
-      bait: Bait(id: "bait_1", name: "Test"),
+      speciesIds: {"species_id_4"},
+      baitIds: {"bait_1"},
     );
     expect(catches.isEmpty, true);
   });

@@ -32,7 +32,7 @@ void main() {
   });
 
   test("Number of baits", () {
-    when(catchManager.entityList).thenReturn([
+    when(catchManager.entityList()).thenReturn([
       Catch(timestamp: 0, speciesId: "species_1"),
       Catch(timestamp: 0, speciesId: "species_1"),
       Catch(timestamp: 0, speciesId: "species_5"),

@@ -15,6 +15,9 @@ class OverviewReport implements Report {
       Strings.of(context).statsPageReportOverview;
 
   @override
+  bool get custom => false;
+
+  @override
   bool operator ==(Object other) => other is OverviewReport && id == other.id;
 
   @override

@@ -55,6 +55,11 @@ abstract class CustomReport extends NamedEntity implements Report {
   @override
   String title(BuildContext context) => super.name;
 
+  @override
+  bool get custom => true;
+
+  bool get hasDescription => isNotEmpty(description);
+
   String get description =>
       (propertyWithName(keyDescription) as Property<String>).value;
 

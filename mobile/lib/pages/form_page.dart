@@ -310,7 +310,7 @@ class _SelectionPageState extends State<_SelectionPage> {
     result..add(PickerPageItem.heading(Strings.of(context).customFields));
 
     // Add customs fields that aren't already part of the form.
-    for (var entity in entityManager.entityList) {
+    for (var entity in entityManager.entityList()) {
       if (customFields.firstWhere((field) => field.id == entity.id,
           orElse: () => null) == null)
       {

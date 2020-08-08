@@ -1,9 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/custom_comparison_report_manager.dart';
+import 'package:mobile/custom_summary_report_manager.dart';
+import 'package:mobile/entity_manager.dart';
+import 'package:mobile/model/custom_summary_report.dart';
 import 'package:mobile/model/overview_report.dart';
 import 'package:mobile/model/report.dart';
 import 'package:mobile/pages/report_list_page.dart';
+import 'package:mobile/pages/save_custom_report_page.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/utils/page_utils.dart';
+import 'package:mobile/widgets/button.dart';
+import 'package:mobile/widgets/custom_summary_report_view.dart';
 import 'package:mobile/widgets/overview_report_view.dart';
 import 'package:mobile/widgets/widget.dart';
 
@@ -14,6 +21,11 @@ class StatsPage extends StatefulWidget {
 
 class _StatsPageState extends State<StatsPage> {
   Report _currentReport;
+
+  CustomComparisonReportManager get _customComparisonReportManager =>
+      CustomComparisonReportManager.of(context);
+  CustomSummaryReportManager get _customSummaryReportManager =>
+      CustomSummaryReportManager.of(context);
 
   @override
   void initState() {
@@ -31,7 +43,13 @@ class _StatsPageState extends State<StatsPage> {
         top: false,
         bottom: false,
         child: SingleChildScrollView(
-          child: _buildBody(),
+          child: EntityListenerBuilder(
+            managers: [
+              _customComparisonReportManager,
+              _customSummaryReportManager,
+            ],
+            builder: (context) => _buildBody(context),
+          ),
         ),
       ),
     );
@@ -63,9 +81,12 @@ class _StatsPageState extends State<StatsPage> {
     );
   }
 
-  Widget _buildBody() {
+  Widget _buildBody(BuildContext context) {
+    // TODO: Show OverviewReportView when a report is showing and is deleted.
     if (_currentReport is OverviewReport) {
       return OverviewReportView();
+    } else if (_currentReport is CustomSummaryReport) {
+      return CustomSummaryReportView(_currentReport.id);
     } else {
       return Text(_currentReport.title(context));
     }

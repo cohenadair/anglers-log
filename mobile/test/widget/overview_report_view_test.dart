@@ -60,7 +60,7 @@ void main() {
 
     baitManager = MockBaitManager();
     when(appManager.baitManager).thenReturn(baitManager);
-    when(baitManager.entityList).thenReturn(baitMap.values.toList());
+    when(baitManager.entityList()).thenReturn(baitMap.values.toList());
     when(baitManager.entity(id: anyNamed("id"))).thenAnswer((invocation) =>
         baitMap[invocation.namedArguments[Symbol("id")]]);
     when(baitManager.entityExists(id: anyNamed("id")))
@@ -74,7 +74,7 @@ void main() {
 
     fishingSpotManager = MockFishingSpotManager();
     when(appManager.fishingSpotManager).thenReturn(fishingSpotManager);
-    when(fishingSpotManager.entityList)
+    when(fishingSpotManager.entityList())
         .thenReturn(fishingSpotMap.values.toList());
     when(fishingSpotManager.entity(id: anyNamed("id")))
         .thenAnswer((invocation) =>
@@ -85,7 +85,7 @@ void main() {
 
     speciesManager = MockSpeciesManager();
     when(appManager.speciesManager).thenReturn(speciesManager);
-    when(speciesManager.entityList).thenReturn(speciesMap.values.toList());
+    when(speciesManager.entityList()).thenReturn(speciesMap.values.toList());
     when(speciesManager.entity(id: anyNamed("id"))).thenAnswer((invocation) =>
         speciesMap[invocation.namedArguments[Symbol("id")]]);
   });
@@ -135,7 +135,7 @@ void main() {
         baitId: "Worm",
       ),
     ];
-    when(catchManager.entityList).thenReturn(catches);
+    when(catchManager.entityList()).thenReturn(catches);
     when(catchManager.catchesSortedByTimestamp(context)).thenReturn(
         catches..sort((lhs, rhs) => rhs.timestamp.compareTo(lhs.timestamp)));
     when(clock.now()).thenReturn(DateTime.fromMillisecondsSinceEpoch(105000));

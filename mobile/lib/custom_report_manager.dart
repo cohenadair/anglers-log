@@ -102,13 +102,19 @@ abstract class CustomReportManager<T extends CustomReport>
     return super.addOrUpdate(report, notify: true);
   }
 
+  Set<String> baitIds(String reportId) =>
+      _baits.ids(reportId: reportId).toSet();
   List<Bait> baits({String id}) => _baits.ids(reportId: id).map((baitId) =>
       _baitManager.entity(id: baitId)).toList();
 
+  Set<String> fishingSpotIds(String reportId) =>
+      _fishingSpots.ids(reportId: reportId).toSet();
   List<FishingSpot> fishingSpots({String id}) =>
       _fishingSpots.ids(reportId: id).map((fishingSpotId) =>
           _fishingSpotManager.entity(id: fishingSpotId)).toList();
 
+  Set<String> speciesIds(String reportId) =>
+      _species.ids(reportId: reportId).toSet();
   List<Species> species({String id}) =>
       _species.ids(reportId: id).map((speciesId) =>
           _speciesManager.entity(id: speciesId)).toList();
