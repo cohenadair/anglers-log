@@ -42,7 +42,7 @@ class NameValidator implements Validator {
 
   @override
   ValidationCallback run(BuildContext context, String newName) {
-    if (isEqualTrimmedLowercase(oldName, newName)) {
+    if (!isEmpty(oldName) && isEqualTrimmedLowercase(oldName, newName)) {
       return null;
     } else if (isEmpty(newName)) {
       return (context) => Strings.of(context).inputGenericRequired;

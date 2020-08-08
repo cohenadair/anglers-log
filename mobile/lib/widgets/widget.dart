@@ -44,6 +44,53 @@ class HeadingDivider extends StatelessWidget {
   }
 }
 
+/// A [HeadingDivider] widget with an optional [IconNoteLabel].
+class HeadingNoteDivider extends StatelessWidget {
+  final bool hideNote;
+  final String title;
+  final String note;
+  final IconData noteIcon;
+  final EdgeInsets padding;
+
+  HeadingNoteDivider({
+    this.hideNote = true,
+    @required this.title,
+    @required this.note,
+    @required this.noteIcon,
+    this.padding,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: padding ?? insetsZero,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: hideNote ? insetsZero : EdgeInsets.only(
+              bottom: paddingWidget,
+            ),
+            child: HeadingDivider(title),
+          ),
+          AnimatedSwitcher(
+            duration: defaultAnimationDuration,
+            child: hideNote ? Empty() : Padding(
+              padding: insetsHorizontalDefault,
+              child: IconNoteLabel(
+                text: note,
+                icon: Icon(noteIcon,
+                  color: Colors.black,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 class Loading extends StatelessWidget {
   static Widget centered({EdgeInsets padding}) {
     return Row(

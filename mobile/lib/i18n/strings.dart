@@ -120,6 +120,8 @@ class Strings {
 
   String get reportListPagePickerTitle => _string("reportListPage_pickerTitle");
   String get reportListPageConfirmDelete => _string("reportListPage_confirmDelete");
+  String get reportListPageCustomReportTitle => _string("reportListPage_customReportTitle");
+  String get reportListPageCustomReportAddNote => _string("reportListPage_customReportAddNote");
 
   String get saveBaitPageNewTitle => _string("saveBaitPage_newTitle");
   String get saveBaitPageEditTitle => _string("saveBaitPage_editTitle");
@@ -183,6 +185,7 @@ class Strings {
   String get formPageConfirmRemoveFields => _string("formPage_confirmRemoveFields");
   String get formPageSelectFieldsTitle => _string("formPage_selectFieldsTitle");
   String get formPageItemAddCustomFieldNote => _string("formPage_addCustomFieldNote");
+  String get formPageManageFieldsNote => _string("formPage_manageFieldsNote");
 
   String get imagePickerPageNoPhotosFound => _string("imagePickerPage_noPhotosFound");
   String get imagePickerPageOpenCameraLabel => _string("imagePickerPage_openCameraLabel");

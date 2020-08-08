@@ -10,8 +10,10 @@ import 'package:mobile/model/report.dart';
 import 'package:mobile/pages/manageable_list_page.dart';
 import 'package:mobile/pages/save_custom_report_page.dart';
 import 'package:mobile/model/overview_report.dart';
+import 'package:mobile/res/dimen.dart';
 import 'package:mobile/utils/string_utils.dart';
 import 'package:mobile/widgets/text.dart';
+import 'package:mobile/widgets/widget.dart';
 
 class ReportListPage extends StatelessWidget {
   static const _log = Log("ReportListPage");
@@ -88,9 +90,13 @@ class ReportListPage extends StatelessWidget {
         ..addAll(comparisonReportManager.entityList);
 
     // Separate pre-defined reports from custom reports.
-    if (customReports.isNotEmpty) {
-      result.add(Divider());
-    }
+    result.add(HeadingNoteDivider(
+      hideNote: customReports.isNotEmpty,
+      title: Strings.of(context).reportListPageCustomReportTitle,
+      note: Strings.of(context).reportListPageCustomReportAddNote,
+      noteIcon: Icons.add,
+      padding: insetsBottomWidgetSmall,
+    ));
 
     // Sort alphabetically.
     customReports.sort(

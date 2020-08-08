@@ -151,28 +151,12 @@ class _EditableFormPageState extends State<EditableFormPage> {
             orElse: () => null,
           ) != null;
 
-      return Padding(
+      return HeadingNoteDivider(
+        hideNote: hasCustomFields,
+        title: Strings.of(context).customFields,
+        note: Strings.of(context).formPageManageFieldsNote,
+        noteIcon: FormPage.moreMenuIcon,
         padding: insetsVerticalWidgetSmall,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: hasCustomFields ? insetsZero : EdgeInsets.only(
-                bottom: paddingWidget,
-              ),
-              child: HeadingDivider(Strings.of(context).customFields),
-            ),
-            hasCustomFields ? Empty() : Padding(
-              padding: insetsHorizontalDefault,
-              child: IconNoteLabel(
-                text: Strings.of(context).formPageItemAddCustomFieldNote,
-                icon: Icon(FormPage.moreMenuIcon,
-                  color: Colors.black,
-                ),
-              ),
-            ),
-          ],
-        ),
       );
     }
 

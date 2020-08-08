@@ -152,6 +152,7 @@ Map<String, Map<String, String>> get englishStrings => {
     "formPage_confirmRemoveFields" : "Remove %s Fields",
     "formPage_selectFieldsTitle" : "Select Fields",
     "formPage_addCustomFieldNote" : "To add a custom field, tap the %s icon.",
+    "formPage_manageFieldsNote" : "To manage fields, tap the %s icon.",
 
     "saveCustomEntityPage_newTitle" : "New Field",
     "saveCustomEntityPage_editTitle" : "Edit Field",
@@ -173,6 +174,8 @@ Map<String, Map<String, String>> get englishStrings => {
 
     "reportListPage_pickerTitle" : "Select Report",
     "reportListPage_confirmDelete" : "Are you sure you want to delete report %s? This cannot be undone.",
+    "reportListPage_customReportTitle" : "Custom Reports",
+    "reportListPage_customReportAddNote" : "To add a custom report, tap the %s icon.",
 
     "saveSpeciesPage_newTitle" : "New Species",
     "saveSpeciesPage_editTitle" : "Edit Species",
