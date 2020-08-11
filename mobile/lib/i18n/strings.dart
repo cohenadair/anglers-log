@@ -156,6 +156,12 @@ class Strings {
   String get overviewReportViewNumberOfFishingSpots => _string("overviewReportView_numberOfFishingSpots");
   String get overviewReportViewBaits => _string("overviewReportView_baits");
   String get overviewReportViewNumberOfBaits => _string("overviewReportView_numberOfBaits");
+  String get overviewReportViewViewSpecies => _string("overviewReportView_viewSpecies");
+  String get overviewReportViewViewSpeciesDescription => _string("overviewReportView_viewSpeciesDescription");
+  String get overviewReportViewViewFishingSpots => _string("overviewReportView_viewFishingSpots");
+  String get overviewReportViewViewFishingSpotsDescription => _string("overviewReportView_viewFishingSpotsDescription");
+  String get overviewReportViewViewBaits => _string("overviewReportView_viewBaits");
+  String get overviewReportViewViewBaitsDescription => _string("overviewReportView_viewBaitsDescription");
 
   String get dateRangePickerPageTitle => _string("dateRangePickerPage_title");
 

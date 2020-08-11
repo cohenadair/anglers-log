@@ -120,6 +120,12 @@ Map<String, Map<String, String>> get englishStrings => {
     "overviewReportView_numberOfFishingSpots" : "Fishing spots with catches",
     "overviewReportView_baits" : "Catches Per Bait",
     "overviewReportView_numberOfBaits" : "Baits with catches",
+    "overviewReportView_viewSpecies" : "View all species",
+    "overviewReportView_viewSpeciesDescription" : "Viewing number of catches per species for all species in your log.",
+    "overviewReportView_viewFishingSpots" : "View all fishing spots",
+    "overviewReportView_viewFishingSpotsDescription" : "Viewing number of catches per fishing spot for all fishing spots your log.",
+    "overviewReportView_viewBaits" : "View all baits",
+    "overviewReportView_viewBaitsDescription" : "Viewing number of catches per bait for all baits in your log.",
 
     "dateRangePickerPage_title" : "Select Date Range",
 

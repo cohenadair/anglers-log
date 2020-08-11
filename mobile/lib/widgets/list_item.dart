@@ -50,6 +50,7 @@ class ExpansionListItem extends StatefulWidget {
   final List<Widget> children;
   final Function(bool) onExpansionChanged;
   final bool toBottomSafeArea;
+  final bool hideDividers;
   final ScrollController scrollController;
 
   ExpansionListItem({
@@ -57,8 +58,11 @@ class ExpansionListItem extends StatefulWidget {
     this.children,
     this.onExpansionChanged,
     this.toBottomSafeArea = false,
+    this.hideDividers = true,
     this.scrollController,
-  });
+  }) : assert(toBottomSafeArea != null),
+       assert(hideDividers != null),
+       assert(title != null);
 
   @override
   _ExpansionListItemState createState() => _ExpansionListItemState();
@@ -70,29 +74,37 @@ class _ExpansionListItemState extends State<ExpansionListItem> {
 
   @override
   Widget build(BuildContext context) {
+    ThemeData themeData = widget.hideDividers
+        ? Theme.of(context).copyWith(dividerColor: Colors.transparent)
+        : Theme.of(context);
+
     return SafeArea(
       top: false,
       bottom: widget.toBottomSafeArea,
-      child: ExpansionTile(
-        key: _key,
-        title: widget.title,
-        children: widget.children,
-        onExpansionChanged: (bool isExpanded) {
-          widget.onExpansionChanged?.call(isExpanded);
+      child: Theme(
+        data: themeData,
+        child: ExpansionTile(
+          key: _key,
+          title: widget.title,
+          children: widget.children,
+          onExpansionChanged: (bool isExpanded) {
+            widget.onExpansionChanged?.call(isExpanded);
 
-          if (isExpanded && widget.scrollController != null) {
-            _previousScrollOffset = widget.scrollController.offset;
+            if (isExpanded && widget.scrollController != null) {
+              _previousScrollOffset = widget.scrollController.offset;
 
-            // This is a hack to scroll after ExpansionTile has finished
-            // animating, since there is no built in functionality to fire an
-            // event after the expansion animation is finished.
-            //
-            // Duration is the duration of the expansion + 25 ms for insurance.
-            Timer(Duration(milliseconds: 200 + 25), () {
-              _scrollIfNeeded();
-            });
-          }
-        },
+              // This is a hack to scroll after ExpansionTile has finished
+              // animating, since there is no built in functionality to fire an
+              // event after the expansion animation is finished.
+              //
+              // Duration is the duration of the expansion + 25 ms for
+              // insurance.
+              Timer(Duration(milliseconds: 200 + 25), () {
+                _scrollIfNeeded();
+              });
+            }
+          },
+        ),
       ),
     );
   }

@@ -6,10 +6,8 @@ import 'package:mobile/model/custom_summary_report.dart';
 import 'package:mobile/model/overview_report.dart';
 import 'package:mobile/model/report.dart';
 import 'package:mobile/pages/report_list_page.dart';
-import 'package:mobile/pages/save_custom_report_page.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/utils/page_utils.dart';
-import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/custom_summary_report_view.dart';
 import 'package:mobile/widgets/overview_report_view.dart';
 import 'package:mobile/widgets/widget.dart';
@@ -21,6 +19,7 @@ class StatsPage extends StatefulWidget {
 
 class _StatsPageState extends State<StatsPage> {
   Report _currentReport;
+  ScrollController _scrollController = ScrollController();
 
   CustomComparisonReportManager get _customComparisonReportManager =>
       CustomComparisonReportManager.of(context);
@@ -43,6 +42,7 @@ class _StatsPageState extends State<StatsPage> {
         top: false,
         bottom: false,
         child: SingleChildScrollView(
+          controller: _scrollController,
           child: EntityListenerBuilder(
             managers: [
               _customComparisonReportManager,
@@ -84,7 +84,9 @@ class _StatsPageState extends State<StatsPage> {
   Widget _buildBody(BuildContext context) {
     // TODO: Show OverviewReportView when a report is showing and is deleted.
     if (_currentReport is OverviewReport) {
-      return OverviewReportView();
+      return OverviewReportView(
+        scrollController: _scrollController,
+      );
     } else if (_currentReport is CustomSummaryReport) {
       return CustomSummaryReportView(_currentReport.id);
     } else {
