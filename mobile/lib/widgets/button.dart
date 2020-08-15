@@ -196,8 +196,22 @@ class FloatingIconButton extends StatelessWidget {
     this.pushed = false,
   });
 
+  FloatingIconButton.back({
+    this.padding,
+    this.pushed = false,
+  }) : icon = null,
+       onPressed = null;
+
   @override
   Widget build(BuildContext context) {
+    Widget iconWidget = BackButtonIcon();
+    if (icon != null) {
+      iconWidget = Icon(
+        icon,
+        color: Colors.black,
+      );
+    }
+
     return Padding(
       padding: padding ?? insetsDefault,
       child: Container(
@@ -205,16 +219,12 @@ class FloatingIconButton extends StatelessWidget {
         width: size,
         height: size,
         child: RawMaterialButton(
-          child: Icon(
-            icon,
-            color: Colors.black,
-          ),
+          child: iconWidget,
           shape: CircleBorder(),
           fillColor: pushed ? Colors.grey : Colors.white,
-          onPressed: onPressed,
+          onPressed: onPressed ?? () => Navigator.of(context).pop(),
         ),
       ),
     );
   }
-
 }

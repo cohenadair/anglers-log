@@ -8,7 +8,9 @@ import 'package:mobile/model/bait.dart';
 import 'package:mobile/model/catch.dart';
 import 'package:mobile/model/fishing_spot.dart';
 import 'package:mobile/model/species.dart';
+import 'package:mobile/pages/bait_page.dart';
 import 'package:mobile/pages/catch_list_page.dart';
+import 'package:mobile/pages/fishing_spot_page.dart';
 import 'package:mobile/pages/species_list_page.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/species_manager.dart';
@@ -251,8 +253,10 @@ class _OverviewReportViewState extends State<OverviewReportView> {
             Strings.of(context).overviewReportViewBaitsPerSpeciesDescription,
             [_currentSpecies.name],
           ),
-          // TODO
-          onTapRow: (species) => print("show bait list"),
+          onTapRow: (bait) => push(
+            context,
+            BaitPage(bait.id, static: true),
+          ),
         ),
         MinDivider(),
       ],
@@ -278,8 +282,10 @@ class _OverviewReportViewState extends State<OverviewReportView> {
                 .overviewReportViewFishingSpotsPerSpeciesDescription,
             [_currentSpecies.name],
           ),
-          // TODO
-          onTapRow: (species) => print("show fishing spots map"),
+          onTapRow: (fishingSpot) => push(
+            context,
+            FishingSpotPage(fishingSpot.id),
+          ),
         ),
         MinDivider(),
       ],

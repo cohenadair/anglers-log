@@ -43,6 +43,7 @@ class FishingSpotMap extends StatefulWidget {
 
   final Completer<GoogleMapController> mapController;
   final LatLng startLocation;
+  final bool showMyLocationButton;
 
   /// See [GoogleMap.onTap].
   final void Function(LatLng) onTap;
@@ -77,6 +78,7 @@ class FishingSpotMap extends StatefulWidget {
     @required this.mapController,
     this.searchBar,
     this.startLocation,
+    this.showMyLocationButton = true,
     this.onTap,
     this.onIdle,
     this.onMove,
@@ -93,10 +95,14 @@ class FishingSpotMap extends StatefulWidget {
 }
 
 class _FishingSpotMapState extends State<FishingSpotMap> {
+  static const _zoomDefault = 15.0;
+
   // TODO: Remove this when Google Maps performance issue is fixed.
   // https://github.com/flutter/flutter/issues/28493
   Future<bool> _mapFuture =
       Future.delayed(Duration(milliseconds: 150), () => true);
+
+  Timer _hideHelpTimer;
 
   MapType _mapType = MapType.normal;
   bool _showHelp = true;
@@ -109,11 +115,17 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
   void initState() {
     super.initState();
 
-    Future.delayed(Duration(milliseconds: 2000), () {
+    _hideHelpTimer = Timer(Duration(milliseconds: 2000), () {
       setState(() {
         _showHelp = false;
       });
     });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _hideHelpTimer.cancel();
   }
 
   @override
@@ -126,7 +138,10 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              widget.searchBar == null ? Empty() : _buildSearchBar(),
+              // Row to extend column across page.
+              widget.searchBar == null ? Row(
+                children: [Empty()],
+              ) : _buildSearchBar(),
               _buildMapTypeButton(),
               _buildCurrentLocationButton(),
               _buildHelpButton(),
@@ -151,7 +166,7 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
           markers: widget.markers,
           initialCameraPosition: CameraPosition(
             target: widget.startLocation ?? LatLng(0.0, 0.0),
-            zoom: widget.startLocation == null ? 0 : 15,
+            zoom: widget.startLocation == null ? 0 : _zoomDefault,
           ),
           onMapCreated: (GoogleMapController controller) {
             if (!_mapController.isCompleted) {
@@ -270,6 +285,10 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
   }
 
   Widget _buildCurrentLocationButton() {
+    if (!widget.showMyLocationButton) {
+      return Empty();
+    }
+
     return FloatingIconButton(
       padding: insetsHorizontalDefault,
       icon: Icons.my_location,

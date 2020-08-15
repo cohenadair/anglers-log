@@ -4,12 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mobile/model/fishing_spot.dart';
 import 'package:mobile/res/dimen.dart';
-import 'package:mobile/res/style.dart';
 import 'package:mobile/utils/string_utils.dart';
-import 'package:mobile/widgets/list_item.dart';
-import 'package:mobile/widgets/text.dart';
-import 'package:mobile/widgets/widget.dart';
-import 'package:quiver/strings.dart';
+import 'package:mobile/widgets/floating_bottom_container.dart';
 
 /// A widget for displaying a fishing spot on a small [GoogleMap]. The
 /// [FishingSpot] name and coordinates are rendered in a floating widget
@@ -31,17 +27,6 @@ class StaticFishingSpot extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Widget name = isEmpty(fishingSpot.name) ? null : Label(fishingSpot.name,
-      style: TextStyle(fontWeight: FontWeight.bold),
-    );
-
-    String latLngString = formatLatLng(context: context, lat: fishingSpot.lat,
-        lng: fishingSpot.lng);
-    Widget coordinates = Label(latLngString);
-    if (name == null) {
-      coordinates = SubtitleLabel(latLngString);
-    }
-
     return Container(
       padding: padding,
       height: _mapHeight,
@@ -83,25 +68,15 @@ class StaticFishingSpot extends StatelessWidget {
               zoomGesturesEnabled: false,
             ),
           ),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Container(
-              margin: insetsSmall,
-              decoration: FloatingBoxDecoration.rectangle(),
-              child: Material(
-                color: Colors.transparent,
-                child: ListItem(
-                  contentPadding: EdgeInsets.only(
-                    left: paddingDefault,
-                    right: paddingSmall,
-                  ),
-                  title: name ?? coordinates,
-                  subtitle: name == null ? null : coordinates,
-                  onTap: onTap,
-                  trailing: onTap == null ? null : RightChevronIcon(),
-                ),
-              ),
+          FloatingBottomContainer(
+            title: fishingSpot.name,
+            subtitle: formatLatLng(
+              context: context,
+              lat: fishingSpot.lat,
+              lng: fishingSpot.lng,
             ),
+            margin: insetsSmall,
+            onTap: onTap,
           ),
         ],
       ),
