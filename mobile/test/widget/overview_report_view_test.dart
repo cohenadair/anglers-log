@@ -94,43 +94,63 @@ void main() {
     BuildContext context = await buildContext(tester);
 
     List<Catch> catches = [
-      Catch(timestamp: 10, speciesId: "Bass",
+      Catch(
+        timestamp: 10,
+        speciesId: "Bass",
         fishingSpotId: "C",
         baitId: "Worm",
       ),
-      Catch(timestamp: 5000, speciesId: "Steelhead",
+      Catch(
+        timestamp: 5000,
+        speciesId: "Steelhead",
         fishingSpotId: "D",
         baitId: "Grub",
       ),
-      Catch(timestamp: 100, speciesId: "Bluegill",
+      Catch(
+        timestamp: 100,
+        speciesId: "Bluegill",
         fishingSpotId: "A",
         baitId: "Worm",
       ),
-      Catch(timestamp: 900, speciesId: "Pike",
+      Catch(
+        timestamp: 900,
+        speciesId: "Pike",
         fishingSpotId: "E",
         baitId: "Bugger",
       ),
-      Catch(timestamp: 78000, speciesId: "Steelhead",
+      Catch(
+        timestamp: 78000,
+        speciesId: "Steelhead",
         fishingSpotId: "C",
         baitId: "Worm",
       ),
-      Catch(timestamp: 100000, speciesId: "Bass",
+      Catch(
+        timestamp: 100000,
+        speciesId: "Bass",
         fishingSpotId: "C",
         baitId: "Minnow",
       ),
-      Catch(timestamp: 800, speciesId: "Pike",
+      Catch(
+        timestamp: 800,
+        speciesId: "Pike",
         fishingSpotId: "B",
         baitId: "Bugger",
       ),
-      Catch(timestamp: 70, speciesId: "Pike",
+      Catch(
+        timestamp: 70,
+        speciesId: "Pike",
         fishingSpotId: "C",
         baitId: "Worm",
       ),
-      Catch(timestamp: 15, speciesId: "Pike",
+      Catch(
+        timestamp: 15,
+        speciesId: "Pike",
         fishingSpotId: "C",
         baitId: "Bugger",
       ),
-      Catch(timestamp: 6000, speciesId: "Steelhead",
+      Catch(
+        timestamp: 6000,
+        speciesId: "Steelhead",
         fishingSpotId: "C",
         baitId: "Worm",
       ),
@@ -148,16 +168,16 @@ void main() {
       clock: clock,
     );
 
+    expect(data.containsNow, true);
     expect(data.msSinceLastCatch, 5000);
     expect(data.totalCatches, 10);
-    expect(data.catchesPerSpecies.length, 5);
+    expect(data.catchesPerSpecies.length, 4);
     expect(data.catchesPerSpecies[speciesMap["Bass"]], 2);
     expect(data.catchesPerSpecies[speciesMap["Steelhead"]], 3);
     expect(data.catchesPerSpecies[speciesMap["Pike"]], 4);
     expect(data.catchesPerSpecies[speciesMap["Bluegill"]], 1);
-    expect(data.catchesPerSpecies[speciesMap["Catfish"]], 0);
+    expect(data.catchesPerSpecies[speciesMap["Catfish"]], null);
 
-    expect(data.totalFishingSpots, 5);
     expect(data.catchesPerFishingSpot.length, 5);
     expect(data.catchesPerFishingSpot[fishingSpotMap["A"]], 1);
     expect(data.catchesPerFishingSpot[fishingSpotMap["B"]], 1);
@@ -165,13 +185,76 @@ void main() {
     expect(data.catchesPerFishingSpot[fishingSpotMap["D"]], 1);
     expect(data.catchesPerFishingSpot[fishingSpotMap["E"]], 1);
 
-    expect(data.totalBaits, 4);
-    expect(data.catchesPerBait.length, 5);
+    expect(data.catchesPerBait.length, 4);
     expect(data.catchesPerBait[baitMap["Worm"]], 5);
     expect(data.catchesPerBait[baitMap["Bugger"]], 3);
     expect(data.catchesPerBait[baitMap["Minnow"]], 1);
-    expect(data.catchesPerBait[baitMap["Grasshopper"]], 0);
+    expect(data.catchesPerBait[baitMap["Grasshopper"]], null);
     expect(data.catchesPerBait[baitMap["Grub"]], 1);
+
+    expect(data.baitsPerSpecies(speciesMap["Pike"])[baitMap["Bugger"]], 3);
+    expect(data.baitsPerSpecies(speciesMap["Pike"])[baitMap["Worm"]], 1);
+    expect(data.baitsPerSpecies(speciesMap["Pike"])[baitMap["Grub"]], null);
+    expect(data.baitsPerSpecies(speciesMap["Pike"])[baitMap["Minnow"]], null);
+    expect(data.baitsPerSpecies(speciesMap["Steelhead"])[baitMap["Bugger"]],
+        null);
+    expect(data.baitsPerSpecies(speciesMap["Steelhead"])[baitMap["Worm"]], 2);
+    expect(data.baitsPerSpecies(speciesMap["Steelhead"])[baitMap["Grub"]], 1);
+    expect(data.baitsPerSpecies(speciesMap["Steelhead"])[baitMap["Minnow"]],
+        null);
+    expect(data.baitsPerSpecies(speciesMap["Bass"])[baitMap["Bugger"]], null);
+    expect(data.baitsPerSpecies(speciesMap["Bass"])[baitMap["Worm"]], 1);
+    expect(data.baitsPerSpecies(speciesMap["Bass"])[baitMap["Grub"]], null);
+    expect(data.baitsPerSpecies(speciesMap["Bass"])[baitMap["Minnow"]], 1);
+    expect(data.baitsPerSpecies(speciesMap["Bluegill"])[baitMap["Bugger"]],
+        null);
+    expect(data.baitsPerSpecies(speciesMap["Bluegill"])[baitMap["Worm"]], 1);
+    expect(data.baitsPerSpecies(speciesMap["Bluegill"])[baitMap["Grub"]], null);
+    expect(data.baitsPerSpecies(speciesMap["Bluegill"])[baitMap["Minnow"]],
+        null);
+    expect(data.baitsPerSpecies(speciesMap["Catfish"]), {});
+
+    expect(data.fishingSpotsPerSpecies(speciesMap["Pike"])[fishingSpotMap["A"]],
+        null);
+    expect(data.fishingSpotsPerSpecies(speciesMap["Pike"])[fishingSpotMap["B"]],
+        1);
+    expect(data.fishingSpotsPerSpecies(speciesMap["Pike"])[fishingSpotMap["C"]],
+        2);
+    expect(data.fishingSpotsPerSpecies(speciesMap["Pike"])[fishingSpotMap["D"]],
+        null);
+    expect(data.fishingSpotsPerSpecies(speciesMap["Pike"])[fishingSpotMap["E"]],
+        1);
+    expect(data.fishingSpotsPerSpecies(
+        speciesMap["Steelhead"])[fishingSpotMap["A"]], null);
+    expect(data.fishingSpotsPerSpecies(
+        speciesMap["Steelhead"])[fishingSpotMap["B"]], null);
+    expect(data.fishingSpotsPerSpecies(
+        speciesMap["Steelhead"])[fishingSpotMap["C"]], 2);
+    expect(data.fishingSpotsPerSpecies(
+        speciesMap["Steelhead"])[fishingSpotMap["D"]], 1);
+    expect(data.fishingSpotsPerSpecies(
+        speciesMap["Steelhead"])[fishingSpotMap["E"]], null);
+    expect(data.fishingSpotsPerSpecies(speciesMap["Bass"])[fishingSpotMap["A"]],
+        null);
+    expect(data.fishingSpotsPerSpecies(speciesMap["Bass"])[fishingSpotMap["B"]],
+        null);
+    expect(data.fishingSpotsPerSpecies(speciesMap["Bass"])[fishingSpotMap["C"]],
+        2);
+    expect(data.fishingSpotsPerSpecies(speciesMap["Bass"])[fishingSpotMap["D"]],
+        null);
+    expect(data.fishingSpotsPerSpecies(speciesMap["Bass"])[fishingSpotMap["E"]],
+        null);
+    expect(data.fishingSpotsPerSpecies(
+        speciesMap["Bluegill"])[fishingSpotMap["A"]], 1);
+    expect(data.fishingSpotsPerSpecies(
+        speciesMap["Bluegill"])[fishingSpotMap["B"]], null);
+    expect(data.fishingSpotsPerSpecies(
+        speciesMap["Bluegill"])[fishingSpotMap["C"]], null);
+    expect(data.fishingSpotsPerSpecies(
+        speciesMap["Bluegill"])[fishingSpotMap["D"]], null);
+    expect(data.fishingSpotsPerSpecies(
+        speciesMap["Bluegill"])[fishingSpotMap["E"]], null);
+    expect(data.fishingSpotsPerSpecies(speciesMap["Catfish"]), {});
 
     // Different date range.
     data = OverviewReportViewData(
@@ -187,29 +270,28 @@ void main() {
       clock: clock,
     );
 
+    expect(data.containsNow, false);
     expect(data.msSinceLastCatch, 5000);
     expect(data.totalCatches, 6);
-    expect(data.catchesPerSpecies.length, 5);
+    expect(data.catchesPerSpecies.length, 3);
     expect(data.catchesPerSpecies[speciesMap["Bass"]], 1);
-    expect(data.catchesPerSpecies[speciesMap["Steelhead"]], 0);
+    expect(data.catchesPerSpecies[speciesMap["Steelhead"]], null);
     expect(data.catchesPerSpecies[speciesMap["Pike"]], 4);
     expect(data.catchesPerSpecies[speciesMap["Bluegill"]], 1);
-    expect(data.catchesPerSpecies[speciesMap["Catfish"]], 0);
+    expect(data.catchesPerSpecies[speciesMap["Catfish"]], null);
 
-    expect(data.totalFishingSpots, 4);
-    expect(data.catchesPerFishingSpot.length, 5);
+    expect(data.catchesPerFishingSpot.length, 4);
     expect(data.catchesPerFishingSpot[fishingSpotMap["A"]], 1);
     expect(data.catchesPerFishingSpot[fishingSpotMap["B"]], 1);
     expect(data.catchesPerFishingSpot[fishingSpotMap["C"]], 3);
-    expect(data.catchesPerFishingSpot[fishingSpotMap["D"]], 0);
+    expect(data.catchesPerFishingSpot[fishingSpotMap["D"]], null);
     expect(data.catchesPerFishingSpot[fishingSpotMap["E"]], 1);
 
-    expect(data.totalBaits, 2);
-    expect(data.catchesPerBait.length, 5);
+    expect(data.catchesPerBait.length, 2);
     expect(data.catchesPerBait[baitMap["Worm"]], 3);
     expect(data.catchesPerBait[baitMap["Bugger"]], 3);
-    expect(data.catchesPerBait[baitMap["Minnow"]], 0);
-    expect(data.catchesPerBait[baitMap["Grasshopper"]], 0);
-    expect(data.catchesPerBait[baitMap["Grub"]], 0);
+    expect(data.catchesPerBait[baitMap["Minnow"]], null);
+    expect(data.catchesPerBait[baitMap["Grasshopper"]], null);
+    expect(data.catchesPerBait[baitMap["Grub"]], null);
   });
 }

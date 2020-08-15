@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/app_manager.dart';
 import 'package:mobile/custom_report_manager.dart';
-import 'package:mobile/model/custom_report.dart';
 import 'package:mobile/model/custom_summary_report.dart';
 import 'package:provider/provider.dart';
 

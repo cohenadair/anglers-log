@@ -153,15 +153,18 @@ class Strings {
   String get overviewReportViewSinceLastCatch => _string("overviewReportView_sinceLastCatch");
   String get overviewReportViewNumberOfCatches => _string("overviewReportView_numberOfCatches");
   String get overviewReportViewFishingSpots => _string("overviewReportView_fishingSpots");
-  String get overviewReportViewNumberOfFishingSpots => _string("overviewReportView_numberOfFishingSpots");
   String get overviewReportViewBaits => _string("overviewReportView_baits");
-  String get overviewReportViewNumberOfBaits => _string("overviewReportView_numberOfBaits");
   String get overviewReportViewViewSpecies => _string("overviewReportView_viewSpecies");
   String get overviewReportViewViewSpeciesDescription => _string("overviewReportView_viewSpeciesDescription");
   String get overviewReportViewViewFishingSpots => _string("overviewReportView_viewFishingSpots");
   String get overviewReportViewViewFishingSpotsDescription => _string("overviewReportView_viewFishingSpotsDescription");
   String get overviewReportViewViewBaits => _string("overviewReportView_viewBaits");
   String get overviewReportViewViewBaitsDescription => _string("overviewReportView_viewBaitsDescription");
+  String get overviewReportViewSpeciesSummary => _string("overviewReportView_speciesSummary");
+  String get overviewReportViewSpeciesPerFishingSpotDescription => _string("overviewReportView_speciesPerFishingSpotDescription");
+  String get overviewReportViewSpeciesPerBaitDescription => _string("overviewReportView_speciesPerBaitDescription");
+  String get overviewReportViewFishingSpotsPerSpeciesDescription => _string("overviewReportView_fishingSpotsPerSpeciesDescription");
+  String get overviewReportViewBaitsPerSpeciesDescription => _string("overviewReportView_baitsPerSpeciesDescription");
 
   String get dateRangePickerPageTitle => _string("dateRangePickerPage_title");
 

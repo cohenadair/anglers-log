@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:charts_flutter/flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/model/named_entity.dart';
@@ -35,7 +37,9 @@ class Chart<T extends NamedEntity> extends StatefulWidget {
     this.onTapRow,
   }) : assert(showAll || (!showAll && isNotEmpty(viewAllTitle)
            && isNotEmpty(viewAllDescription)),
-           "showAll is false; viewAllTitle is required");
+           "showAll is false; viewAllTitle is required"),
+       assert(data != null),
+       assert(data.isNotEmpty);
 
   @override
   _ChartState<T> createState() => _ChartState<T>();
@@ -48,7 +52,8 @@ class _ChartState<T extends NamedEntity> extends State<Chart<T>> {
   /// A subset of [widget.data] of size [_condensedRowCount].
   Map<T, int> _displayData;
 
-  int get _rowCount => widget.showAll ? widget.data.length : _condensedRowCount;
+  int get _rowCount => widget.showAll
+      ? widget.data.length : min(_condensedRowCount, widget.data.length);
 
   @override
   void initState() {
@@ -146,8 +151,10 @@ class _ChartState<T extends NamedEntity> extends State<Chart<T>> {
   }
 
   Widget _buildViewAll() {
-    if (isEmpty(widget.viewAllTitle) || widget.data.length <= _condensedRowCount) {
-      return Empty();
+    if (isEmpty(widget.viewAllTitle)
+        || widget.data.length <= _condensedRowCount)
+    {
+      return VerticalSpace(paddingWidget);
     }
 
     return ListItem(

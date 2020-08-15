@@ -19,7 +19,6 @@ class StatsPage extends StatefulWidget {
 
 class _StatsPageState extends State<StatsPage> {
   Report _currentReport;
-  ScrollController _scrollController = ScrollController();
 
   CustomComparisonReportManager get _customComparisonReportManager =>
       CustomComparisonReportManager.of(context);
@@ -42,7 +41,6 @@ class _StatsPageState extends State<StatsPage> {
         top: false,
         bottom: false,
         child: SingleChildScrollView(
-          controller: _scrollController,
           child: EntityListenerBuilder(
             managers: [
               _customComparisonReportManager,
@@ -84,9 +82,7 @@ class _StatsPageState extends State<StatsPage> {
   Widget _buildBody(BuildContext context) {
     // TODO: Show OverviewReportView when a report is showing and is deleted.
     if (_currentReport is OverviewReport) {
-      return OverviewReportView(
-        scrollController: _scrollController,
-      );
+      return OverviewReportView();
     } else if (_currentReport is CustomSummaryReport) {
       return CustomSummaryReportView(_currentReport.id);
     } else {

@@ -36,6 +36,7 @@ class _AnglersLogState extends State<AnglersLog> {
         onGenerateTitle: (context) => Strings.of(context).appName,
         theme: ThemeData(
           primarySwatch: colorAppTheme,
+          accentColor: colorAppTheme,
           buttonTheme: ButtonThemeData(
             disabledColor: colorAppTheme.shade500,
           ),
