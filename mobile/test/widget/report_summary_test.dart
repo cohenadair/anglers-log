@@ -10,7 +10,7 @@ import 'package:mobile/model/fishing_spot.dart';
 import 'package:mobile/model/species.dart';
 import 'package:mobile/species_manager.dart';
 import 'package:mobile/utils/date_time_utils.dart';
-import 'package:mobile/widgets/overview_report_view.dart';
+import 'package:mobile/widgets/reports/report_summary.dart';
 import 'package:mockito/mockito.dart';
 import 'package:quiver/time.dart';
 
@@ -161,7 +161,7 @@ void main() {
     when(clock.now()).thenReturn(DateTime.fromMillisecondsSinceEpoch(105000));
 
     // Normal use case.
-    var data = OverviewReportViewData(
+    var data = ReportSummaryModel(
       appManager: appManager,
       context: context,
       displayDateRange: DisplayDateRange.allDates,
@@ -257,7 +257,7 @@ void main() {
     expect(data.fishingSpotsPerSpecies(speciesMap["Catfish"]), {});
 
     // Different date range.
-    data = OverviewReportViewData(
+    data = ReportSummaryModel(
       appManager: appManager,
       context: context,
       displayDateRange: DisplayDateRange.newCustom(

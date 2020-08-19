@@ -7,6 +7,7 @@ import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/model/bait.dart';
 import 'package:mobile/model/catch.dart';
 import 'package:mobile/model/fishing_spot.dart';
+import 'package:mobile/model/named_entity.dart';
 import 'package:mobile/model/species.dart';
 import 'package:mobile/pages/bait_page.dart';
 import 'package:mobile/pages/catch_list_page.dart';
@@ -19,204 +20,127 @@ import 'package:mobile/utils/date_time_utils.dart';
 import 'package:mobile/utils/page_utils.dart';
 import 'package:mobile/utils/string_utils.dart';
 import 'package:mobile/widgets/chart.dart';
-import 'package:mobile/widgets/date_range_picker_input.dart';
 import 'package:mobile/widgets/list_item.dart';
 import 'package:mobile/widgets/list_picker_input.dart';
-import 'package:mobile/widgets/report_view.dart';
 import 'package:mobile/widgets/text.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:quiver/time.dart';
 
-class OverviewReportView extends StatefulWidget {
+/// A widget that includes all "summary" sections for a report.
+class ReportSummary extends StatefulWidget {
+  final ReportSummaryModel model;
+
+  ReportSummary({
+    @required this.model,
+  }) : assert(model != null);
+
   @override
-  _OverviewReportViewState createState() => _OverviewReportViewState();
+  _ReportSummary createState() => _ReportSummary();
 }
 
-class _OverviewReportViewState extends State<OverviewReportView> {
+class _ReportSummary extends State<ReportSummary> {
   static const _chartIdCatchesPerSpecies = "catches_per_species";
   static const _chartIdCatchesPerFishingSpot = "catches_per_fishing_spot";
   static const _chartIdCatchesPerBait = "catches_per_bait";
   static const _chartIdFishingSpotsPerSpecies = "fishing_spots_per_species";
   static const _chartIdBaitPerSpecies = "baits_per_species";
 
-  DisplayDateRange _currentDateRange =
-      DisplayDateRange.of(DisplayDateRange.allDates.id);
-
-  OverviewReportViewData _overview;
+  /// The currently selected species in the species summary.
   Species _currentSpecies;
 
-  bool get _hasCatches => _overview.totalCatches > 0;
-  bool get _hasFishingSpots => _overview.catchesPerFishingSpot.isNotEmpty;
-  bool get _hasBaits => _overview.catchesPerBait.isNotEmpty;
+  ReportSummaryModel get model => widget.model;
 
   @override
   void initState() {
     super.initState();
-    _resetOverview();
+
+    if (model.catchesPerSpecies.isNotEmpty) {
+      _currentSpecies = model.catchesPerSpecies.keys.first;
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return ReportView(
-      onUpdate: () => _resetOverview(),
-      builder: (context) => Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _buildDurationPicker(),
-          _buildCatchItems(),
-        ],
+    return Column(
+      children: [
+        HeadingDivider(Strings.of(context).reportSummaryCatchTitle),
+        VerticalSpace(paddingWidget),
+        _buildNumberOfCatches(model.totalCatches),
+        _buildSinceLastCatch(),
+        _buildCatchesPerSpecies(),
+        _buildCatchesPerFishingSpot(),
+        _buildCatchesPerBait(),
+        HeadingDivider(Strings.of(context).reportSummarySpeciesTitle),
+        VerticalSpace(paddingWidget),
+        _buildSpeciesPicker(),
+        _buildNumberOfCatches(model.catchesPerSpecies[_currentSpecies]),
+        _buildFishingSpotsPerSpecies(),
+        _buildBaitsPerSpecies(),
+      ],
+    );
+  }
+
+  Widget _buildCatchesPerSpecies() => _buildChart(
+    _chartIdCatchesPerSpecies,
+    Strings.of(context).reportSummaryPerSpecies,
+    Strings.of(context).reportSummaryViewSpecies,
+    Strings.of(context).reportSummaryViewSpeciesDescription,
+    model.catchesPerSpecies,
+    (species) => CatchListPage(
+      dateRange: model.dateRange,
+      speciesIds: {species.id},
+    ),
+  );
+
+  Widget _buildCatchesPerFishingSpot() {
+    if (model.catchesPerFishingSpot.isEmpty) {
+      return Empty();
+    }
+
+    return _buildChart(
+      _chartIdCatchesPerFishingSpot,
+      Strings.of(context).reportSummaryPerFishingSpot,
+      Strings.of(context).reportSummaryViewFishingSpots,
+      Strings.of(context).reportSummaryViewFishingSpotsDescription,
+      model.catchesPerFishingSpot,
+      (fishingSpot) => CatchListPage(
+        dateRange: model.dateRange,
+        fishingSpotIds: {fishingSpot.id},
       ),
     );
   }
 
-  Widget _buildDurationPicker() => DateRangePickerInput(
-    initialDateRange: _currentDateRange,
-    onPicked: (dateRange) => setState(() {
-      _currentDateRange = dateRange;
-      _resetOverview();
-    }),
-  );
-
-  Widget _buildCatchItems() {
-    if (!_hasCatches) {
-      return Column(
-        children: [
-          MinDivider(),
-          Padding(
-            padding: insetsDefault,
-            child: PrimaryLabel(
-              Strings.of(context).overviewReportViewNoCatches,
-            ),
-          ),
-        ],
-      );
-    }
-
-    return Column(
-      children: [
-        _buildViewCatchesRow(),
-        _buildCatchSummary(),
-        _buildSpeciesSummary(),
-      ],
-    );
-  }
-
-  Widget _buildViewCatchesRow() {
-    return ListItem(
-      title: Text(Strings.of(context).reportViewViewCatches),
-      onTap: () => push(context, CatchListPage(
-        dateRange: _overview.dateRange,
-      )),
-      trailing: RightChevronIcon(),
-    );
-  }
-
-  Widget _buildCatchSummary() {
-    return Column(
-      children: [
-        HeadingDivider(Strings.of(context).overviewReportViewSummary),
-        VerticalSpace(paddingWidget),
-        ListItem(
-          title: Text(Strings.of(context).overviewReportViewNumberOfCatches),
-          trailing: SecondaryLabel("${_overview.totalCatches}"),
-        ),
-        _hasCatches && _overview.containsNow ? ListItem(
-          title: Text(Strings.of(context).overviewReportViewSinceLastCatch),
-          trailing: SecondaryLabel(formatDuration(
-            context: context,
-            millisecondsDuration: _overview.msSinceLastCatch,
-            includesSeconds: false,
-            condensed: true,
-          )),
-        ) : Empty(),
-        _buildCatchesPerSpecies(),
-        _buildCatchesPerFishingSpot(),
-        _buildCatchesPerBait(),
-      ],
-    );
-  }
-
-  Widget _buildCatchesPerSpecies() {
-    return ExpansionListItem(
-      title: Text(Strings.of(context).overviewReportViewSpecies),
-      children: [
-        Chart<Species>(
-          id: _chartIdCatchesPerSpecies,
-          data: _overview.catchesPerSpecies,
-          viewAllTitle: Strings.of(context).overviewReportViewViewSpecies,
-          viewAllDescription: Strings.of(context)
-              .overviewReportViewViewSpeciesDescription,
-          onTapRow: (species) => push(context, CatchListPage(
-            dateRange: _overview.dateRange,
-            speciesIds: {species.id},
-          )),
-        ),
-        MinDivider(),
-      ],
-    );
-  }
-
-  Widget _buildCatchesPerFishingSpot() {
-    if (!_hasFishingSpots) {
-      return Empty();
-    }
-
-    return ExpansionListItem(
-      title: Text(Strings.of(context).overviewReportViewFishingSpots),
-      children: [
-        Chart<FishingSpot>(
-          id: _chartIdCatchesPerFishingSpot,
-          data: _overview.catchesPerFishingSpot,
-          viewAllTitle: Strings.of(context).overviewReportViewViewFishingSpots,
-          viewAllDescription: Strings.of(context)
-              .overviewReportViewViewFishingSpotsDescription,
-          onTapRow: (fishingSpot) => push(context, CatchListPage(
-            dateRange: _overview.dateRange,
-            fishingSpotIds: {fishingSpot.id},
-          )),
-        ),
-        MinDivider(),
-      ],
-    );
-  }
-
   Widget _buildCatchesPerBait() {
-    if (!_hasBaits) {
+    if (model.catchesPerBait.isEmpty) {
       return Empty();
     }
 
-    return ExpansionListItem(
-      title: Text(Strings.of(context).overviewReportViewBaits),
-      children: [
-        Chart<Bait>(
-          id: _chartIdCatchesPerBait,
-          data: _overview.catchesPerBait,
-          viewAllTitle: Strings.of(context).overviewReportViewViewBaits,
-          viewAllDescription: Strings.of(context)
-              .overviewReportViewViewBaitsDescription,
-          onTapRow: (bait) => push(context, CatchListPage(
-            dateRange: _overview.dateRange,
-            baitIds: {bait.id},
-          )),
-        ),
-      ],
+    return _buildChart(
+      _chartIdCatchesPerBait,
+      Strings.of(context).reportSummaryPerBait,
+      Strings.of(context).reportSummaryViewBaits,
+      Strings.of(context).reportSummaryViewBaitsDescription,
+      model.catchesPerBait,
+      (bait) => CatchListPage(
+        dateRange: model.dateRange,
+        baitIds: {bait.id},
+      ),
     );
   }
-  
-  Widget _buildSpeciesSummary() {
-    return Column(
-      children: [
-        HeadingDivider(Strings.of(context).overviewReportViewSpeciesSummary),
-        VerticalSpace(paddingWidget),
-        _buildSpeciesPicker(),
-        ListItem(
-          title: Text(Strings.of(context).overviewReportViewNumberOfCatches),
-          trailing: SecondaryLabel(
-              "${_overview.catchesPerSpecies[_currentSpecies] ?? 0}"),
-        ),
-        _buildFishingSpotsPerSpecies(),
-        _buildBaitsPerSpecies(),
-      ],
+
+  Widget _buildSinceLastCatch() {
+    if (model.totalCatches <= 0 || model.msSinceLastCatch == null) {
+      return Empty();
+    }
+
+    return ListItem(
+      title: Text(Strings.of(context).reportSummarySinceLastCatch),
+      trailing: SecondaryLabel(formatDuration(
+        context: context,
+        millisecondsDuration: model.msSinceLastCatch,
+        includesSeconds: false,
+        condensed: true,
+      )),
     );
   }
 
@@ -237,81 +161,86 @@ class _OverviewReportViewState extends State<OverviewReportView> {
   }
 
   Widget _buildBaitsPerSpecies() {
-    Map<Bait, int> baits = _overview.baitsPerSpecies(_currentSpecies);
+    Map<Bait, int> baits = model.baitsPerSpecies(_currentSpecies);
     if (baits.isEmpty) {
       return Empty();
     }
 
-    return ExpansionListItem(
-      title: Text(Strings.of(context).overviewReportViewBaits),
-      children: [
-        Chart<Bait>(
-          id: _chartIdBaitPerSpecies,
-          data: baits,
-          viewAllTitle: Strings.of(context).overviewReportViewViewBaits,
-          viewAllDescription: format(
-            Strings.of(context).overviewReportViewBaitsPerSpeciesDescription,
-            [_currentSpecies.name],
-          ),
-          onTapRow: (bait) => push(
-            context,
-            BaitPage(bait.id, static: true),
-          ),
-        ),
-        MinDivider(),
-      ],
+    return _buildChart(
+      _chartIdBaitPerSpecies,
+      Strings.of(context).reportSummaryPerBait,
+      Strings.of(context).reportSummaryViewBaits,
+      format(Strings.of(context).reportSummaryBaitsPerSpeciesDescription,
+          [_currentSpecies.name]),
+      baits,
+      (bait) => BaitPage(bait.id, static: true),
     );
   }
 
   Widget _buildFishingSpotsPerSpecies() {
     Map<FishingSpot, int> fishingSpots =
-        _overview.fishingSpotsPerSpecies(_currentSpecies);
+        model.fishingSpotsPerSpecies(_currentSpecies);
     if (fishingSpots.isEmpty) {
       return Empty();
     }
 
-    return ExpansionListItem(
-      title: Text(Strings.of(context).overviewReportViewFishingSpots),
-      children: [
-        Chart<FishingSpot>(
-          id: _chartIdFishingSpotsPerSpecies,
-          data: fishingSpots,
-          viewAllTitle: Strings.of(context).overviewReportViewViewFishingSpots,
-          viewAllDescription: format(
-            Strings.of(context)
-                .overviewReportViewFishingSpotsPerSpeciesDescription,
-            [_currentSpecies.name],
-          ),
-          onTapRow: (fishingSpot) => push(
-            context,
-            FishingSpotPage(fishingSpot.id),
-          ),
-        ),
-        MinDivider(),
-      ],
+    return _buildChart(
+      _chartIdFishingSpotsPerSpecies,
+      Strings.of(context).reportSummaryPerFishingSpot,
+      Strings.of(context).reportSummaryViewFishingSpots,
+      format(Strings.of(context)
+          .reportSummarySpeciesPerFishingSpotDescription,
+          [_currentSpecies.name]),
+      fishingSpots,
+      (fishingSpot) => FishingSpotPage(fishingSpot.id),
     );
   }
 
-  void _resetOverview() {
-    _overview = OverviewReportViewData(
-      appManager: AppManager.of(context),
-      context: context,
-      displayDateRange: _currentDateRange,
+  Widget _buildNumberOfCatches(int numberOfCatches) {
+    return ListItem(
+      title: Text(Strings.of(context).reportSummaryNumberOfCatches),
+      trailing: SecondaryLabel("${numberOfCatches ?? 0}"),
     );
+  }
 
-    if (_overview.catchesPerSpecies.isNotEmpty) {
-      _currentSpecies = _overview.catchesPerSpecies.keys.first;
-    }
+  Widget _buildChart<T extends NamedEntity>(String id, String title,
+      String viewAllTitle, String viewAllDescription, Map<T, int> data,
+      Widget Function(T) rowDetailsPage)
+  {
+    return ExpansionListItem(
+      title: Text(title),
+      children: [
+        Chart<T>(
+          id: id,
+          data: data,
+          viewAllTitle: viewAllTitle,
+          viewAllDescription: viewAllDescription,
+          onTapRow: (entity) => push(context, rowDetailsPage(entity)),
+        ),
+      ],
+    );
   }
 }
 
 /// A class, that when instantiated, gathers all the data required to display
-/// an overview of the user's log.
-class OverviewReportViewData {
+/// a [ReportSummary] widget.
+class ReportSummaryModel {
   final AppManager appManager;
   final BuildContext context;
   final Clock clock;
   final DisplayDateRange displayDateRange;
+
+  /// When set, data is only included in this model if associated with these
+  /// [Bait] IDs.
+  final Set<String> baitIds;
+
+  /// When set, data is only included in this model if associated with these
+  /// [FishingSpot] IDs.
+  final Set<String> fishingSpotIds;
+
+  /// When set, data is only included in this model if associated with these
+  /// [Species] IDs.
+  final Set<String> speciesIds;
 
   DateRange _dateRange;
   int _msSinceLastCatch = 0;
@@ -356,13 +285,19 @@ class OverviewReportViewData {
   Map<FishingSpot, int> fishingSpotsPerSpecies(Species species) =>
       _fishingSpotsPerSpecies[species] ?? {};
 
-  OverviewReportViewData({
-    this.appManager,
+  ReportSummaryModel({
+    @required this.appManager,
+    @required this.context,
     this.clock = const Clock(),
-    this.context,
+    this.baitIds = const {},
+    this.fishingSpotIds = const {},
+    this.speciesIds = const {},
     DisplayDateRange displayDateRange,
   }) : assert(appManager != null),
        assert(context != null),
+       assert(baitIds != null),
+       assert(fishingSpotIds != null),
+       assert(speciesIds != null),
        displayDateRange = displayDateRange ?? DisplayDateRange.allDates
   {
     DateTime now = clock.now();
@@ -388,7 +323,7 @@ class OverviewReportViewData {
 
       if (_fishingSpotManager.entityExists(id: cat.fishingSpotId)) {
         FishingSpot fishingSpot =
-            _fishingSpotManager.entity(id: cat.fishingSpotId);
+        _fishingSpotManager.entity(id: cat.fishingSpotId);
         _catchesPerFishingSpot.putIfAbsent(fishingSpot, () => 0);
         _catchesPerFishingSpot[fishingSpot]++;
         _fishingSpotsPerSpecies.inc(species, fishingSpot);

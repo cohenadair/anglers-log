@@ -139,15 +139,15 @@ class _SaveCustomReportPageState extends State<SaveCustomReportPage> {
 
       if (widget.oldReport is CustomSummaryReport) {
         var report = widget.oldReport as CustomSummaryReport;
-        _fromDateRangeController.value = _displayDateRangeFromReport(
+        _fromDateRangeController.value = DisplayDateRange.of(
             report.displayDateRangeId, report.startTimestamp,
             report.endTimestamp);
       } else if (widget.oldReport is CustomComparisonReport) {
         var report = widget.oldReport as CustomComparisonReport;
-        _fromDateRangeController.value = _displayDateRangeFromReport(
+        _fromDateRangeController.value = DisplayDateRange.of(
             report.fromDisplayDateRangeId, report.fromStartTimestamp,
             report.fromEndTimestamp);
-        _toDateRangeController.value = _displayDateRangeFromReport(
+        _toDateRangeController.value = DisplayDateRange.of(
             report.toDisplayDateRangeId, report.toStartTimestamp,
             report.toEndTimestamp);
       }
@@ -402,18 +402,5 @@ class _SaveCustomReportPageState extends State<SaveCustomReportPage> {
       toStartTimestamp: customTo ? toDateRange.value.startMs : null,
       toEndTimestamp: customTo ? toDateRange.value.endMs : null,
     );
-  }
-
-  DisplayDateRange _displayDateRangeFromReport(String displayDateRangeId,
-      int startTimestamp, int endTimestamp)
-  {
-    if (displayDateRangeId == DisplayDateRange.custom.id) {
-      return DisplayDateRange.newCustomFromDateRange(DateRange.fromMillis(
-        start: startTimestamp,
-        end: endTimestamp,
-      ));
-    } else {
-      return DisplayDateRange.of(displayDateRangeId);
-    }
   }
 }

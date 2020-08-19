@@ -256,11 +256,23 @@ class DisplayDateRange {
   ];
 
   /// Returns the [DisplayDateRange] for the given ID, or `null` if none exists.
-  static DisplayDateRange of(String id) {
-    try {
-      return all.firstWhere((range) => range.id == id);
-    } on StateError {
-      return null;
+  static DisplayDateRange of(String id, [
+    int startTimestamp,
+    int endTimestamp,
+  ]) {
+    assert(id != custom.id || (startTimestamp != null && endTimestamp != null));
+
+    if (id == custom.id) {
+      return DisplayDateRange.newCustomFromDateRange(DateRange.fromMillis(
+        start: startTimestamp,
+        end: endTimestamp,
+      ));
+    } else {
+      try {
+        return all.firstWhere((range) => range.id == id);
+      } on StateError {
+        return null;
+      }
     }
   }
 
