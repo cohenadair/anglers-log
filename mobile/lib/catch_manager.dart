@@ -44,10 +44,12 @@ class CatchManager extends EntityManager<Catch> {
   List<Catch> catchesSortedByTimestamp(BuildContext context, {
     String filter,
     DateRange dateRange,
+    Set<String> catchIds = const {},
     Set<String> baitIds = const {},
     Set<String> fishingSpotIds = const {},
     Set<String> speciesIds = const {},
   }) {
+    assert(catchIds != null);
     assert(baitIds != null);
     assert(fishingSpotIds != null);
     assert(speciesIds != null);
@@ -55,6 +57,7 @@ class CatchManager extends EntityManager<Catch> {
     List<Catch> result = List.of(filteredCatches(context,
       filter: filter,
       dateRange: dateRange,
+      catchIds: catchIds,
       fishingSpotIds: fishingSpotIds,
       baitIds: baitIds,
       speciesIds: speciesIds,
@@ -67,16 +70,18 @@ class CatchManager extends EntityManager<Catch> {
   List<Catch> filteredCatches(BuildContext context, {
     String filter,
     DateRange dateRange,
+    Set<String> catchIds = const {},
     Set<String> baitIds = const {},
     Set<String> fishingSpotIds = const {},
     Set<String> speciesIds = const {},
   }) {
+    assert(catchIds != null);
     assert(baitIds != null);
     assert(fishingSpotIds != null);
     assert(speciesIds != null);
 
-    if (isEmpty(filter) && dateRange == null && baitIds.isEmpty
-        && fishingSpotIds.isEmpty && speciesIds.isEmpty)
+    if (isEmpty(filter) && dateRange == null && catchIds.isEmpty
+        && baitIds.isEmpty && fishingSpotIds.isEmpty && speciesIds.isEmpty)
     {
       return entities.values.toList();
     }
@@ -84,6 +89,7 @@ class CatchManager extends EntityManager<Catch> {
     return entities.values.where((cat) {
       bool valid = true;
       valid &= dateRange == null || dateRange.contains(cat.timestamp);
+      valid &= catchIds.isEmpty || catchIds.contains(cat.id);
       valid &= baitIds.isEmpty || baitIds.contains(cat.baitId);
       valid &= fishingSpotIds.isEmpty
           || fishingSpotIds.contains(cat.fishingSpotId);

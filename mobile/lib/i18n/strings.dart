@@ -145,9 +145,9 @@ class Strings {
   String get statsPageReportOverview => _string("statsPage_reportOverview");
   String get statsPageNewReport => _string("statsPage_newReport");
 
-  String get reportViewViewCatches => _string("reportView_viewCatches");
   String get reportViewNoCatches => _string("reportView_noCatches");
 
+  String get reportSummaryViewCatches => _string("reportSummary_viewCatches");
   String get reportSummaryCatchTitle => _string("reportSummary_catchTitle");
   String get reportSummaryPerSpecies => _string("reportSummary_perSpecies");
   String get reportSummaryPerFishingSpot => _string("reportSummary_perFishingSpot");

@@ -23,27 +23,31 @@ class CatchListPage extends StatelessWidget {
   /// If not-null, shows only the catches of within [dateRange].
   final DateRange dateRange;
 
-  /// If set, shows only the catches whose species is included in
-  /// [speciesIds].
+  /// If set, shows only the catches whose ID is included in [catchIds].
+  final Set<String> catchIds;
+
+  /// If set, shows only the catches whose species is included in [speciesIds].
   final Set<String> speciesIds;
 
   /// If set, shows only the catches whose fishingSpot is included in
   /// [fishingSpotIds].
   final Set<String> fishingSpotIds;
 
-  /// If set, shows only the catches whose bait is included in
-  /// [baitIds].
+  /// If set, shows only the catches whose bait is included in [baitIds].
   final Set<String> baitIds;
 
-  bool get filtered => dateRange != null || speciesIds.isNotEmpty
-      || fishingSpotIds.isNotEmpty || baitIds.isNotEmpty;
+  bool get filtered => dateRange != null || catchIds.isNotEmpty
+      || speciesIds.isNotEmpty || fishingSpotIds.isNotEmpty
+      || baitIds.isNotEmpty;
 
   CatchListPage({
     this.dateRange,
+    this.catchIds = const {},
     this.baitIds = const {},
     this.fishingSpotIds = const {},
     this.speciesIds = const {},
-  }) : assert(baitIds != null),
+  }) : assert(catchIds != null),
+       assert(baitIds != null),
        assert(fishingSpotIds != null),
        assert(speciesIds != null);
 
@@ -78,6 +82,7 @@ class CatchListPage extends StatelessWidget {
           context,
           filter: query,
           dateRange: dateRange,
+          catchIds: catchIds,
           speciesIds: speciesIds,
           fishingSpotIds: fishingSpotIds,
           baitIds: baitIds,

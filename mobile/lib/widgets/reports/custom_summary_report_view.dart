@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/app_manager.dart';
 import 'package:mobile/custom_summary_report_manager.dart';
-import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/model/custom_summary_report.dart';
-import 'package:mobile/pages/catch_list_page.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/utils/date_time_utils.dart';
-import 'package:mobile/utils/page_utils.dart';
-import 'package:mobile/widgets/list_item.dart';
 import 'package:mobile/widgets/reports/report_summary.dart';
 import 'package:mobile/widgets/reports/report_view.dart';
 import 'package:mobile/widgets/text.dart';
@@ -49,9 +45,7 @@ class _CustomSummaryReportViewState extends State<CustomSummaryReportView> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _buildDescription(),
-          _buildViewCatches(),
           _buildSummary(),
-          _buildCharts(),
         ],
       ),
     );
@@ -67,24 +61,7 @@ class _CustomSummaryReportViewState extends State<CustomSummaryReportView> {
     );
   }
 
-  Widget _buildViewCatches() {
-    return ListItem(
-      title: Text(Strings.of(context).reportViewViewCatches),
-      onTap: () => push(context, CatchListPage(
-        dateRange: _model.dateRange,
-        baitIds: _model.baitIds,
-        fishingSpotIds: _model.fishingSpotIds,
-        speciesIds: _model.speciesIds,
-      )),
-      trailing: RightChevronIcon(),
-    );
-  }
-
   Widget _buildSummary() {
-    return Empty();
-  }
-
-  Widget _buildCharts() {
     return Empty();
   }
 

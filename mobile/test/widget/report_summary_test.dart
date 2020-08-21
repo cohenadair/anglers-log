@@ -95,60 +95,70 @@ void main() {
 
     List<Catch> catches = [
       Catch(
+        id: "0",
         timestamp: 10,
         speciesId: "Bass",
         fishingSpotId: "C",
         baitId: "Worm",
       ),
       Catch(
+        id: "1",
         timestamp: 5000,
         speciesId: "Steelhead",
         fishingSpotId: "D",
         baitId: "Grub",
       ),
       Catch(
+        id: "2",
         timestamp: 100,
         speciesId: "Bluegill",
         fishingSpotId: "A",
         baitId: "Worm",
       ),
       Catch(
+        id: "3",
         timestamp: 900,
         speciesId: "Pike",
         fishingSpotId: "E",
         baitId: "Bugger",
       ),
       Catch(
+        id: "4",
         timestamp: 78000,
         speciesId: "Steelhead",
         fishingSpotId: "C",
         baitId: "Worm",
       ),
       Catch(
+        id: "5",
         timestamp: 100000,
         speciesId: "Bass",
         fishingSpotId: "C",
         baitId: "Minnow",
       ),
       Catch(
+        id: "6",
         timestamp: 800,
         speciesId: "Pike",
         fishingSpotId: "B",
         baitId: "Bugger",
       ),
       Catch(
+        id: "7",
         timestamp: 70,
         speciesId: "Pike",
         fishingSpotId: "C",
         baitId: "Worm",
       ),
       Catch(
+        id: "8",
         timestamp: 15,
         speciesId: "Pike",
         fishingSpotId: "C",
         baitId: "Bugger",
       ),
       Catch(
+        id: "9",
         timestamp: 6000,
         speciesId: "Steelhead",
         fishingSpotId: "C",
@@ -172,6 +182,12 @@ void main() {
     expect(data.msSinceLastCatch, 5000);
     expect(data.totalCatches, 10);
     expect(data.catchesPerSpecies.length, 4);
+    expect(data.allCatchIds, catches.map((c) => c.id).toSet());
+    expect(data.catchIdsPerSpecies[speciesMap["Bass"]], {"0", "5"});
+    expect(data.catchIdsPerSpecies[speciesMap["Steelhead"]], {"9", "4", "1"});
+    expect(data.catchIdsPerSpecies[speciesMap["Pike"]], {"8", "7", "6", "3"});
+    expect(data.catchIdsPerSpecies[speciesMap["Bluegill"]], {"2"});
+    expect(data.catchIdsPerSpecies[speciesMap["Catfish"]], null);
     expect(data.catchesPerSpecies[speciesMap["Bass"]], 2);
     expect(data.catchesPerSpecies[speciesMap["Steelhead"]], 3);
     expect(data.catchesPerSpecies[speciesMap["Pike"]], 4);

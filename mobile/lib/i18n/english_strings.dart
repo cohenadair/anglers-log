@@ -109,9 +109,9 @@ Map<String, Map<String, String>> get englishStrings => {
     "statsPage_reportOverview" : "Overview",
     "statsPage_newReport" : "New Report",
 
-    "reportView_viewCatches" : "View catches",
     "reportView_noCatches" : "No catches found",
 
+    "reportSummary_viewCatches" : "View catches (%s)",
     "reportSummary_catchTitle" : "Catch Summary",
     "reportSummary_perSpecies" : "Per species",
     "reportSummary_perFishingSpot" : "Per fishing spot",

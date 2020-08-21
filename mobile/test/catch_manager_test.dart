@@ -460,21 +460,68 @@ void main() {
     expect(catches.isEmpty, true);
   });
 
-  testWidgets("Filtering by multiple things", (WidgetTester tester) async {
+  testWidgets("Filtering by catch", (WidgetTester tester) async {
     when(dataManager.insertOrUpdateEntity(any, any))
         .thenAnswer((_) => Future.value(true));
 
     await catchManager.addOrUpdate(Catch(
+      id: "0",
       timestamp: 5000,
       speciesId: "species_id_1",
       baitId: "bait_1",
     ));
     await catchManager.addOrUpdate(Catch(
+      id: "1",
       timestamp: 10000,
       speciesId: "species_id_2",
       baitId: "bait_2",
     ));
     await catchManager.addOrUpdate(Catch(
+      id: "2",
+      timestamp: 20000,
+      speciesId: "species_id_2",
+      baitId: "bait_1",
+    ));
+    await catchManager.addOrUpdate(Catch(
+      id: "3",
+      timestamp: 40000,
+      speciesId: "species_id_3",
+      baitId: "bait_4",
+    ));
+
+    BuildContext context = await buildContext(tester);
+    List<Catch> catches = catchManager.filteredCatches(context,
+      catchIds: {"3", "1"},
+    );
+    expect(catches.length, 2);
+
+    catches = catchManager.filteredCatches(context);
+    expect(catches.length, 4);
+
+    catches = catchManager.filteredCatches(context,
+      catchIds: {"8"},
+    );
+    expect(catches.isEmpty, true);
+  });
+
+  testWidgets("Filtering by multiple things", (WidgetTester tester) async {
+    when(dataManager.insertOrUpdateEntity(any, any))
+        .thenAnswer((_) => Future.value(true));
+
+    await catchManager.addOrUpdate(Catch(
+      id: "0",
+      timestamp: 5000,
+      speciesId: "species_id_1",
+      baitId: "bait_1",
+    ));
+    await catchManager.addOrUpdate(Catch(
+      id: "1",
+      timestamp: 10000,
+      speciesId: "species_id_2",
+      baitId: "bait_2",
+    ));
+    await catchManager.addOrUpdate(Catch(
+      id: "2",
       timestamp: 20000,
       speciesId: "species_id_2",
       baitId: "bait_1",
@@ -482,6 +529,7 @@ void main() {
 
     BuildContext context = await buildContext(tester);
     List<Catch> catches = catchManager.filteredCatches(context,
+      catchIds: {"0"},
       speciesIds: {"species_id_1"},
       baitIds: {"bait_1"},
     );
@@ -491,6 +539,7 @@ void main() {
     expect(catches.length, 3);
 
     catches = catchManager.filteredCatches(context,
+      catchIds: {"0"},
       speciesIds: {"species_id_4"},
       baitIds: {"bait_1"},
     );

@@ -37,7 +37,7 @@ class _OverviewReportViewState extends State<OverviewReportView> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _buildDurationPicker(),
-          _buildCatchItems(),
+          _buildSummary(),
         ],
       ),
     );
@@ -51,7 +51,7 @@ class _OverviewReportViewState extends State<OverviewReportView> {
     }),
   );
 
-  Widget _buildCatchItems() {
+  Widget _buildSummary() {
     if (_model.totalCatches <= 0) {
       return Column(
         children: [
@@ -66,22 +66,7 @@ class _OverviewReportViewState extends State<OverviewReportView> {
       );
     }
 
-    return Column(
-      children: [
-        _buildViewCatchesRow(),
-        ReportSummary(model: _model),
-      ],
-    );
-  }
-
-  Widget _buildViewCatchesRow() {
-    return ListItem(
-      title: Text(Strings.of(context).reportViewViewCatches),
-      onTap: () => push(context, CatchListPage(
-        dateRange: _model.dateRange,
-      )),
-      trailing: RightChevronIcon(),
-    );
+    return ReportSummary(model: _model);
   }
 
   void _updateModel() {
