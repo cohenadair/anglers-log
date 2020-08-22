@@ -154,17 +154,16 @@ class Strings {
   String get reportSummaryPerBait => _string("reportSummary_perBait");
   String get reportSummarySinceLastCatch => _string("reportSummary_sinceLastCatch");
   String get reportSummaryNumberOfCatches => _string("reportSummary_numberOfCatches");
+  String get reportSummaryFilters => _string("reportSummary_filters");
   String get reportSummaryViewSpecies => _string("reportSummary_viewSpecies");
-  String get reportSummaryViewSpeciesDescription => _string("reportSummary_viewSpeciesDescription");
+  String get reportSummaryCatchesPerSpeciesDescription => _string("reportSummary_catchesPerSpeciesDescription");
   String get reportSummaryViewFishingSpots => _string("reportSummary_viewFishingSpots");
-  String get reportSummaryViewFishingSpotsDescription => _string("reportSummary_viewFishingSpotsDescription");
+  String get reportSummaryCatchesPerFishingSpotDescription => _string("reportSummary_catchesPerFishingSpotDescription");
   String get reportSummaryViewBaits => _string("reportSummary_viewBaits");
-  String get reportSummaryViewBaitsDescription => _string("reportSummary_viewBaitsDescription");
+  String get reportSummaryCatchesPerBaitDescription => _string("reportSummary_catchesPerBaitDescription");
   String get reportSummarySpeciesTitle => _string("reportSummary_speciesTitle");
   String get reportSummarySpeciesPerFishingSpotDescription => _string("reportSummary_speciesPerFishingSpotDescription");
   String get reportSummarySpeciesPerBaitDescription => _string("reportSummary_speciesPerBaitDescription");
-  String get reportSummaryFishingSpotsPerSpeciesDescription => _string("reportSummary_fishingSpotsPerSpeciesDescription");
-  String get reportSummaryBaitsPerSpeciesDescription => _string("reportSummary_baitsPerSpeciesDescription");
 
   String get dateRangePickerPageTitle => _string("dateRangePickerPage_title");
 

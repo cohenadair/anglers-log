@@ -22,7 +22,7 @@ class ManageableListPage<T> extends StatefulWidget {
   final ManageableListPageItemManager<T> itemManager;
 
   /// See [SliverAppBar.title].
-  final Widget title;
+  final Widget Function(List<T>) titleBuilder;
 
   /// If true, adds additional padding between search icon and search text so
   /// the search text is horizontally aligned with an item's main text.
@@ -51,7 +51,7 @@ class ManageableListPage<T> extends StatefulWidget {
   ManageableListPage({
     @required this.itemManager,
     @required this.itemBuilder,
-    this.title,
+    this.titleBuilder,
     this.itemsHaveThumbnail = false,
     this.forceCenterTitle = false,
     this.pickerSettings,
@@ -123,7 +123,7 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
             floating: true,
             pinned: false,
             snap: true,
-            title: widget.title,
+            title: widget.titleBuilder?.call(items),
             actions: _buildActions(),
             expandedHeight: _hasSearch ? _appBarExpandedHeight : 0.0,
             flexibleSpace: _buildSearchBar(),
@@ -234,18 +234,18 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
     } else {
       if (_editing) {
         result.add(ActionButton.done(
-          condensed: true,
+          condensed: _addable,
           onPressed: () => setEditingUpdateState(false),
         ));
       } else if (_editable) {
         // Only include the edit button if the items can be modified.
         result.add(ActionButton.edit(
-          condensed: true,
+          condensed: _addable,
           onPressed: () => setEditingUpdateState(true),
         ));
       }
 
-      // Only include the edit button if new items can be added.
+      // Only include the add button if new items can be added.
       if (_addable) {
         result.add(IconButton(
           icon: Icon(Icons.add),

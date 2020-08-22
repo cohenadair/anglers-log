@@ -49,9 +49,13 @@ class NoteLabel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Label(
-      text,
-      style: style(context),
+    return SafeArea(
+      top: false,
+      bottom: false,
+      child: Label(
+        text,
+        style: style(context),
+      ),
     );
   }
 }
@@ -71,16 +75,20 @@ class IconNoteLabel extends StatelessWidget {
   Widget build(BuildContext context) {
     List<String> strings = text.split("%s");
 
-    return RichText(
-      text: TextSpan(
-        children: [
-          TextSpan(text: strings.first, style: NoteLabel.style(context)),
-          WidgetSpan(
-            child: icon,
-            alignment: PlaceholderAlignment.middle,
-          ),
-          TextSpan(text: strings.last, style: NoteLabel.style(context)),
-        ],
+    return SafeArea(
+      top: false,
+      bottom: false,
+      child: RichText(
+        text: TextSpan(
+          children: [
+            TextSpan(text: strings.first, style: NoteLabel.style(context)),
+            WidgetSpan(
+              child: icon,
+              alignment: PlaceholderAlignment.middle,
+            ),
+            TextSpan(text: strings.last, style: NoteLabel.style(context)),
+          ],
+        ),
       ),
     );
   }
@@ -97,7 +105,11 @@ class PrimaryLabel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Label(text, style: _style(context));
+    return SafeArea(
+      top: false,
+      bottom: false,
+      child: Label(text, style: _style(context)),
+    );
   }
 
   TextStyle _style(BuildContext context) {

@@ -127,26 +127,30 @@ class _TextInputState extends State<TextInput> {
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
-      cursorColor: Theme.of(context).primaryColor,
-      initialValue: widget.initialValue,
-      controller: widget.controller.editingController,
-      decoration: InputDecoration(
-        labelText: widget.label,
-        errorText: widget.controller.error,
+    return SafeArea(
+      top: false,
+      bottom: false,
+      child: TextFormField(
+        cursorColor: Theme.of(context).primaryColor,
+        initialValue: widget.initialValue,
+        controller: widget.controller.editingController,
+        decoration: InputDecoration(
+          labelText: widget.label,
+          errorText: widget.controller.error,
+        ),
+        textCapitalization: widget.capitalization,
+        enabled: widget.enabled,
+        maxLength: widget.maxLength,
+        maxLines: widget.maxLines,
+        keyboardType: widget.keyboardType,
+        onChanged: (_) {
+          setState(() {
+            _updateError();
+          });
+          widget.onChanged?.call();
+        },
+        autofocus: widget.autofocus,
       ),
-      textCapitalization: widget.capitalization,
-      enabled: widget.enabled,
-      maxLength: widget.maxLength,
-      maxLines: widget.maxLines,
-      keyboardType: widget.keyboardType,
-      onChanged: (_) {
-        setState(() {
-          _updateError();
-        });
-        widget.onChanged?.call();
-      },
-      autofocus: widget.autofocus,
     );
   }
 

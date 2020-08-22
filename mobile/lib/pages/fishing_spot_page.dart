@@ -5,12 +5,9 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mobile/fishing_spot_manager.dart';
 import 'package:mobile/model/fishing_spot.dart';
 import 'package:mobile/res/dimen.dart';
-import 'package:mobile/res/style.dart';
 import 'package:mobile/utils/string_utils.dart';
 import 'package:mobile/widgets/fishing_spot_map.dart';
 import 'package:mobile/widgets/floating_bottom_container.dart';
-import 'package:mobile/widgets/text.dart';
-import 'package:mobile/widgets/widget.dart';
 
 class FishingSpotPage extends StatefulWidget {
   final String fishingSpotId;

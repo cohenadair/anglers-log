@@ -49,10 +49,10 @@ class _BaitListPageState extends State<BaitListPage> {
         _baitManager,
       ],
       builder: (context) => ManageableListPage<dynamic>(
-        title: _picking
-            ? Text(Strings.of(context).baitListPagePickerTitle)
-            : Text(format(Strings.of(context).baitListPageTitle,
-                [_baitManager.entityCount])),
+        titleBuilder: _picking
+            ? (_) => Text(Strings.of(context).baitListPagePickerTitle)
+            : (baits) => Text(format(Strings.of(context).baitListPageTitle,
+                [baits.length])),
         forceCenterTitle: !_picking,
         searchDelegate: ManageableListPageSearchDelegate(
           hint: Strings.of(context).baitListPageSearchHint,

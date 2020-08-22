@@ -161,22 +161,26 @@ class _Picker extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: enabled ? type.openPicker : null,
-      child: InputDecorator(
-        decoration: InputDecoration(
-          enabled: enabled,
-          labelText: label,
-          errorText: errorText,
-          errorMaxLines: 2,
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            type.getValue(),
-            EnabledOpacity(
-              enabled: enabled,
-              child: DropdownIcon(),
-            ),
-          ],
+      child: SafeArea(
+        top: false,
+        bottom: false,
+        child: InputDecorator(
+          decoration: InputDecoration(
+            enabled: enabled,
+            labelText: label,
+            errorText: errorText,
+            errorMaxLines: 2,
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              type.getValue(),
+              EnabledOpacity(
+                enabled: enabled,
+                child: DropdownIcon(),
+              ),
+            ],
+          ),
         ),
       ),
     );

@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:charts_flutter/flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/model/named_entity.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/utils/collection_utils.dart';
@@ -15,8 +16,18 @@ class Chart<T extends NamedEntity> extends StatefulWidget {
   final String id;
   final Map<T, int> data;
   final String title;
+  
+  /// The title for the "view all" [ListItem] shown when there are more chart
+  /// rows to see.
   final String viewAllTitle;
-  final String viewAllDescription;
+  
+  /// A description to render on the full page chart shown when the "view all"
+  /// row is tapped. This property is ignored when [showAll] is true.
+  final String chartPageDescription;
+
+  /// A list of filters that have already been applied to [data]. This property
+  /// is ignored when [showAll] is true.
+  final Set<String> chartPageFilters;
 
   /// If true, will render all items in [data], otherwise, will show a limited
   /// number of items, with a "show all" button to view the entire chart. This
@@ -31,15 +42,17 @@ class Chart<T extends NamedEntity> extends StatefulWidget {
     @required this.data,
     this.title,
     this.viewAllTitle,
-    this.viewAllDescription,
+    this.chartPageDescription,
+    this.chartPageFilters = const {},
     this.showAll = false,
     this.labelBuilder,
     this.onTapRow,
   }) : assert(showAll || (!showAll && isNotEmpty(viewAllTitle)
-           && isNotEmpty(viewAllDescription)),
+           && isNotEmpty(chartPageDescription)),
            "showAll is false; viewAllTitle is required"),
        assert(data != null),
-       assert(data.isNotEmpty);
+       assert(data.isNotEmpty),
+       assert(chartPageFilters != null);
 
   @override
   _ChartState<T> createState() => _ChartState<T>();
@@ -162,7 +175,8 @@ class _ChartState<T extends NamedEntity> extends State<Chart<T>> {
       trailing: RightChevronIcon(),
       onTap: () => push(context, _ChartPage<T>(
         data: widget.data,
-        description: widget.viewAllDescription,
+        description: widget.chartPageDescription,
+        filters: widget.chartPageFilters,
         labelBuilder: widget.labelBuilder,
         onTapRow: widget.onTapRow,
       )),
@@ -185,16 +199,19 @@ class _ChartPage<T extends NamedEntity> extends StatelessWidget {
 
   final Map<T, int> data;
   final String description;
+  final Set<String> filters;
   final String Function(T) labelBuilder;
   final void Function(T) onTapRow;
 
   _ChartPage({
     @required this.data,
     @required this.description,
+    this.filters = const {},
     this.labelBuilder,
     this.onTapRow,
   }) : assert(data != null),
-       assert(isNotEmpty(description));
+       assert(isNotEmpty(description)),
+       assert(filters != null);
 
   @override
   Widget build(BuildContext context) {
@@ -211,6 +228,7 @@ class _ChartPage<T extends NamedEntity> extends StatelessWidget {
                 padding: insetsDefault,
                 child: Text(description),
               ),
+              _buildFilters(context),
               Padding(
                 padding: insetsBottomDefault,
                 child: Chart<T>(
@@ -224,6 +242,33 @@ class _ChartPage<T extends NamedEntity> extends StatelessWidget {
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildFilters(BuildContext context) {
+    if (filters.isEmpty) {
+      return Empty();
+    }
+
+    return Padding(
+      padding: EdgeInsets.only(
+        left: paddingDefault,
+        right: paddingDefault,
+        bottom: paddingWidgetSmall,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          HeadingLabel(Strings.of(context).reportSummaryFilters),
+          Wrap(
+            spacing: paddingWidgetSmall,
+            runSpacing: paddingWidgetSmall,
+            children: filters.map((filter) => Chip(
+              label: Text(filter),
+            )).toList(),
+          ),
+        ],
       ),
     );
   }

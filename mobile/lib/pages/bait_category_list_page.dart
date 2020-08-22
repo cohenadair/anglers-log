@@ -23,10 +23,10 @@ class BaitCategoryListPage extends StatelessWidget {
     BaitCategoryManager baitCategoryManager = BaitCategoryManager.of(context);
 
     return ManageableListPage<BaitCategory>(
-      title: _picking
-          ? Text(Strings.of(context).baitCategoryListPagePickerTitle)
-          : Text(format(Strings.of(context).baitCategoryListPageTitle,
-              [baitCategoryManager.entityCount])),
+      titleBuilder: _picking
+          ? (_) => Text(Strings.of(context).baitCategoryListPagePickerTitle)
+          : (categories) => Text(format(Strings.of(context)
+              .baitCategoryListPageTitle, [categories.length])),
       itemBuilder: (context, category) => ManageableListPageItemModel(
         child: PrimaryLabel(category.name),
       ),

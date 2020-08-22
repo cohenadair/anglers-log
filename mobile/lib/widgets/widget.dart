@@ -37,7 +37,13 @@ class HeadingDivider extends StatelessWidget {
             left: paddingDefault,
             right: paddingDefault,
           ),
-          child: HeadingLabel(text),
+          // Add SafeArea here so the divider always stretches to the edges
+          // of the page.
+          child: SafeArea(
+            top: false,
+            bottom: false,
+            child: HeadingLabel(text),
+          ),
         ),
       ],
     );
@@ -168,8 +174,12 @@ class EnabledOpacity extends StatelessWidget {
 class RightChevronIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Icon(Icons.chevron_right,
-      color: colorInputIconAccent,
+    return SafeArea(
+      top: false,
+      bottom: false,
+      child: Icon(Icons.chevron_right,
+        color: colorInputIconAccent,
+      ),
     );
   }
 }

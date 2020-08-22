@@ -32,18 +32,14 @@ class _StatsPageState extends State<StatsPage> {
       appBar: AppBar(
         title: _buildReportDropdown(),
       ),
-      body: SafeArea(
-        top: false,
-        bottom: false,
-        child: SingleChildScrollView(
-          child: EntityListenerBuilder(
-            managers: [
-              _customComparisonReportManager,
-              _customSummaryReportManager,
-            ],
-            onUpdate: () => _updateCurrentReport(),
-            builder: (context) => _buildBody(context),
-          ),
+      body: SingleChildScrollView(
+        child: EntityListenerBuilder(
+          managers: [
+            _customComparisonReportManager,
+            _customSummaryReportManager,
+          ],
+          onUpdate: () => _updateCurrentReport(),
+          builder: (context) => _buildBody(context),
         ),
       ),
     );

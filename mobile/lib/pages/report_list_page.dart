@@ -32,7 +32,7 @@ class ReportListPage extends StatelessWidget {
     var comparisonReportManager = CustomComparisonReportManager.of(context);
 
     return ManageableListPage<dynamic>(
-      title: Text(Strings.of(context).reportListPagePickerTitle),
+      titleBuilder: (_) => Text(Strings.of(context).reportListPagePickerTitle),
       itemBuilder: (context, item) => _buildItem(context, item),
       itemManager: ManageableListPageItemManager<dynamic>(
         listenerManagers: [

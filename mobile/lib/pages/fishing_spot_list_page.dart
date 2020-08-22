@@ -30,10 +30,10 @@ class FishingSpotListPage extends StatelessWidget {
     FishingSpotManager fishingSpotManager = FishingSpotManager.of(context);
 
     return ManageableListPage<FishingSpot>(
-      title: _picking
-          ? Text(Strings.of(context).fishingSpotListPagePickerTitle)
-          : Text(format(Strings.of(context).fishingSpotListPageTitle,
-              [fishingSpotManager.entityCount])),
+      titleBuilder: _picking
+          ? (_) => Text(Strings.of(context).fishingSpotListPagePickerTitle)
+          : (fishingSpots) => Text(format(Strings.of(context)
+              .fishingSpotListPageTitle, [fishingSpots.length])),
       forceCenterTitle: !_picking,
       itemBuilder: (context, fishingSpot) => ManageableListPageItemModel(
         child: Column(

@@ -193,13 +193,7 @@ class _FormPageState extends State<FormPage> {
           key: _key,
           child: SingleChildScrollView(
             padding: insetsBottomDefault,
-            child: SafeArea(
-              left: true,
-              right: true,
-              top: true,
-              bottom: true,
-              child: _buildForm(),
-            ),
+            child: _buildForm(),
           ),
         ),
       ),

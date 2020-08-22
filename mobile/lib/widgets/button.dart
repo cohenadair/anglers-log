@@ -85,28 +85,20 @@ class ActionButton extends StatelessWidget {
       ),
     );
 
-    if (condensed) {
-      return EnabledOpacity(
-        enabled: onPressed != null,
-        child: RawMaterialButton(
-          constraints: BoxConstraints(),
-          padding: EdgeInsets.all(paddingSmall),
-          onPressed: onPressed,
-          child: textWidget,
-          shape: CircleBorder(side: BorderSide(color: Colors.transparent)),
-          textStyle: TextStyle(
-            fontWeight: FontWeight.w500,
-            color: Colors.black,
-          ),
-        ),
-      );
-    } else {
-      return FlatButton(
-        child: textWidget,
+    return EnabledOpacity(
+      enabled: onPressed != null,
+      child: RawMaterialButton(
+        constraints: BoxConstraints(),
+        padding: EdgeInsets.all(condensed ? paddingSmall : paddingDefault),
         onPressed: onPressed,
-        textColor: textColor,
-      );
-    }
+        child: textWidget,
+        shape: CircleBorder(side: BorderSide(color: Colors.transparent)),
+        textStyle: TextStyle(
+          fontWeight: FontWeight.w500,
+          color: Colors.black,
+        ),
+      ),
+    );
   }
 }
 

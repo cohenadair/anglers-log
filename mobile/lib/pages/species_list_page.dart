@@ -31,9 +31,9 @@ class SpeciesListPage extends StatelessWidget {
     SpeciesManager speciesManager = SpeciesManager.of(context);
 
     return ManageableListPage<Species>(
-      title: _picking
-          ? Text(Strings.of(context).speciesListPagePickerTitle)
-          : Text(format(Strings.of(context).speciesListPageTitle,
+      titleBuilder: _picking
+          ? (_) => Text(Strings.of(context).speciesListPagePickerTitle)
+          : (species) => Text(format(Strings.of(context).speciesListPageTitle,
               [speciesManager.entityCount])),
       forceCenterTitle: !_picking,
       itemBuilder: (context, species) => ManageableListPageItemModel(

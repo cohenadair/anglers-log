@@ -53,10 +53,13 @@ class _ReportSummary extends State<ReportSummary> {
   @override
   void initState() {
     super.initState();
+    _updateCurrentSpecies();
+  }
 
-    if (_model.catchesPerSpecies.isNotEmpty) {
-      _currentSpecies = _model.catchesPerSpecies.keys.first;
-    }
+  @override
+  void didUpdateWidget(ReportSummary oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    _updateCurrentSpecies();
   }
 
   @override
@@ -81,12 +84,17 @@ class _ReportSummary extends State<ReportSummary> {
   }
 
   Widget _buildCatchesPerSpecies() => _buildChart(
-    _chartIdCatchesPerSpecies,
-    Strings.of(context).reportSummaryPerSpecies,
-    Strings.of(context).reportSummaryViewSpecies,
-    Strings.of(context).reportSummaryViewSpeciesDescription,
-    _model.catchesPerSpecies,
-    (species) => CatchListPage(
+    id: _chartIdCatchesPerSpecies,
+    title: Strings.of(context).reportSummaryPerSpecies,
+    viewAllTitle: Strings.of(context).reportSummaryViewSpecies,
+    viewAllDescription: Strings.of(context)
+        .reportSummaryCatchesPerSpeciesDescription,
+    filters: {
+      _model.displayDateRange.title(context),
+    },
+    data: _model.catchesPerSpecies,
+    rowDetailsPage: (species) => CatchListPage(
+      enableAdding: false,
       dateRange: _model.dateRange,
       speciesIds: {species.id},
     ),
@@ -98,12 +106,17 @@ class _ReportSummary extends State<ReportSummary> {
     }
 
     return _buildChart(
-      _chartIdCatchesPerFishingSpot,
-      Strings.of(context).reportSummaryPerFishingSpot,
-      Strings.of(context).reportSummaryViewFishingSpots,
-      Strings.of(context).reportSummaryViewFishingSpotsDescription,
-      _model.catchesPerFishingSpot,
-      (fishingSpot) => CatchListPage(
+      id: _chartIdCatchesPerFishingSpot,
+      title: Strings.of(context).reportSummaryPerFishingSpot,
+      viewAllTitle: Strings.of(context).reportSummaryViewFishingSpots,
+      viewAllDescription: Strings.of(context)
+          .reportSummaryCatchesPerFishingSpotDescription,
+      filters: {
+        _model.displayDateRange.title(context),
+      },
+      data: _model.catchesPerFishingSpot,
+      rowDetailsPage: (fishingSpot) => CatchListPage(
+        enableAdding: false,
         dateRange: _model.dateRange,
         fishingSpotIds: {fishingSpot.id},
       ),
@@ -116,12 +129,17 @@ class _ReportSummary extends State<ReportSummary> {
     }
 
     return _buildChart(
-      _chartIdCatchesPerBait,
-      Strings.of(context).reportSummaryPerBait,
-      Strings.of(context).reportSummaryViewBaits,
-      Strings.of(context).reportSummaryViewBaitsDescription,
-      _model.catchesPerBait,
-      (bait) => CatchListPage(
+      id: _chartIdCatchesPerBait,
+      title: Strings.of(context).reportSummaryPerBait,
+      viewAllTitle: Strings.of(context).reportSummaryViewBaits,
+      viewAllDescription: Strings.of(context)
+          .reportSummaryCatchesPerBaitDescription,
+      filters: {
+        _model.displayDateRange.title(context),
+      },
+      data: _model.catchesPerBait,
+      rowDetailsPage: (bait) => CatchListPage(
+        enableAdding: false,
         dateRange: _model.dateRange,
         baitIds: {bait.id},
       ),
@@ -167,13 +185,17 @@ class _ReportSummary extends State<ReportSummary> {
     }
 
     return _buildChart(
-      _chartIdBaitPerSpecies,
-      Strings.of(context).reportSummaryPerBait,
-      Strings.of(context).reportSummaryViewBaits,
-      format(Strings.of(context).reportSummaryBaitsPerSpeciesDescription,
-          [_currentSpecies.name]),
-      baits,
-      (bait) => BaitPage(bait.id, static: true),
+      id: _chartIdBaitPerSpecies,
+      title: Strings.of(context).reportSummaryPerBait,
+      viewAllTitle: Strings.of(context).reportSummaryViewBaits,
+      viewAllDescription: Strings.of(context)
+          .reportSummarySpeciesPerBaitDescription,
+      filters: {
+        _currentSpecies.name,
+        _model.displayDateRange.title(context),
+      },
+      data: baits,
+      rowDetailsPage: (bait) => BaitPage(bait.id, static: true),
     );
   }
 
@@ -185,18 +207,23 @@ class _ReportSummary extends State<ReportSummary> {
     }
 
     return _buildChart(
-      _chartIdFishingSpotsPerSpecies,
-      Strings.of(context).reportSummaryPerFishingSpot,
-      Strings.of(context).reportSummaryViewFishingSpots,
-      format(Strings.of(context)
+      id: _chartIdFishingSpotsPerSpecies,
+      title: Strings.of(context).reportSummaryPerFishingSpot,
+      viewAllTitle: Strings.of(context).reportSummaryViewFishingSpots,
+      viewAllDescription: Strings.of(context)
           .reportSummarySpeciesPerFishingSpotDescription,
-          [_currentSpecies.name]),
-      fishingSpots,
-      (fishingSpot) => FishingSpotPage(fishingSpot.id),
+      filters: {
+        _currentSpecies.name,
+        _model.displayDateRange.title(context),
+      },
+      data: fishingSpots,
+      rowDetailsPage: (fishingSpot) => FishingSpotPage(fishingSpot.id),
     );
   }
 
-  Widget _buildViewCatches([Set<String> catchIds = const {}]) {
+  Widget _buildViewCatches([Set<String> catchIds]) {
+    catchIds = catchIds ?? {};
+
     if (catchIds.isEmpty) {
       return ListItem(
         title: Text(Strings.of(context).reportSummaryNumberOfCatches),
@@ -208,16 +235,24 @@ class _ReportSummary extends State<ReportSummary> {
       title: Text(format(Strings.of(context).reportSummaryViewCatches,
           [catchIds.length])),
       onTap: () => push(context, CatchListPage(
+        enableAdding: false,
         catchIds: catchIds,
       )),
       trailing: RightChevronIcon(),
     );
   }
 
-  Widget _buildChart<T extends NamedEntity>(String id, String title,
-      String viewAllTitle, String viewAllDescription, Map<T, int> data,
-      Widget Function(T) rowDetailsPage)
-  {
+  Widget _buildChart<T extends NamedEntity>({
+    String id,
+    String title,
+    String viewAllTitle,
+    String viewAllDescription,
+    Set<String> filters = const {},
+    Map<T, int> data,
+    Widget Function(T) rowDetailsPage,
+  }) {
+    assert(filters != null);
+
     return ExpansionListItem(
       title: Text(title),
       children: [
@@ -225,11 +260,18 @@ class _ReportSummary extends State<ReportSummary> {
           id: id,
           data: data,
           viewAllTitle: viewAllTitle,
-          viewAllDescription: viewAllDescription,
+          chartPageDescription: viewAllDescription,
+          chartPageFilters: filters,
           onTapRow: (entity) => push(context, rowDetailsPage(entity)),
         ),
       ],
     );
+  }
+
+  void _updateCurrentSpecies() {
+    if (_model.catchesPerSpecies.isNotEmpty) {
+      _currentSpecies = _model.catchesPerSpecies.keys.first;
+    }
   }
 }
 

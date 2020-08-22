@@ -20,6 +20,9 @@ import 'package:mobile/widgets/widget.dart';
 import 'package:quiver/strings.dart';
 
 class CatchListPage extends StatelessWidget {
+  /// If false, catches cannot be added. Defaults to true.
+  final bool enableAdding;
+
   /// If not-null, shows only the catches of within [dateRange].
   final DateRange dateRange;
 
@@ -41,12 +44,14 @@ class CatchListPage extends StatelessWidget {
       || baitIds.isNotEmpty;
 
   CatchListPage({
+    this.enableAdding = true,
     this.dateRange,
     this.catchIds = const {},
     this.baitIds = const {},
     this.fishingSpotIds = const {},
     this.speciesIds = const {},
-  }) : assert(catchIds != null),
+  }) : assert(enableAdding != null),
+       assert(catchIds != null),
        assert(baitIds != null),
        assert(fishingSpotIds != null),
        assert(speciesIds != null);
@@ -59,10 +64,8 @@ class CatchListPage extends StatelessWidget {
     SpeciesManager speciesManager = SpeciesManager.of(context);
 
     return ManageableListPage<Catch>(
-      title: !filtered
-          ? Text(format(Strings.of(context).catchListPageTitle,
-              [catchManager.entityCount]))
-          : null,
+      titleBuilder: (catches) => Text(format(
+          Strings.of(context).catchListPageTitle, [catches.length])),
       forceCenterTitle: true,
       searchDelegate: ManageableListPageSearchDelegate(
         hint: Strings.of(context).catchListPageSearchHint,
@@ -90,7 +93,7 @@ class CatchListPage extends StatelessWidget {
         deleteText: (context, cat) =>
             Text(catchManager.deleteMessage(context, cat)),
         deleteItem: (context, cat) => catchManager.delete(cat),
-        addPageBuilder: () => AddCatchJourney(),
+        addPageBuilder: enableAdding ? () => AddCatchJourney() : null,
         detailPageBuilder: (cat) => CatchPage(cat.id),
         editPageBuilder: (cat) => SaveCatchPage.edit(cat),
       ),
