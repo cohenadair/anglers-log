@@ -126,8 +126,6 @@ Map<String, Map<String, String>> get englishStrings => {
     "reportSummary_viewBaits" : "View all baits",
     "reportSummary_catchesPerBaitDescription" : "Viewing number of catches per bait.",
     "reportSummary_speciesTitle" : "Species Summary",
-    "reportSummary_speciesPerFishingSpotDescription" : "Viewing number of each species caught per fishing spot.",
-    "reportSummary_speciesPerBaitDescription" : "Viewing number of each species caught per bait.",
 
     "dateRangePickerPage_title" : "Select Date Range",
 

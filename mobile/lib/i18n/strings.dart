@@ -162,8 +162,6 @@ class Strings {
   String get reportSummaryViewBaits => _string("reportSummary_viewBaits");
   String get reportSummaryCatchesPerBaitDescription => _string("reportSummary_catchesPerBaitDescription");
   String get reportSummarySpeciesTitle => _string("reportSummary_speciesTitle");
-  String get reportSummarySpeciesPerFishingSpotDescription => _string("reportSummary_speciesPerFishingSpotDescription");
-  String get reportSummarySpeciesPerBaitDescription => _string("reportSummary_speciesPerBaitDescription");
 
   String get dateRangePickerPageTitle => _string("dateRangePickerPage_title");
 

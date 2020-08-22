@@ -64,6 +64,20 @@ class _ReportSummary extends State<ReportSummary> {
 
   @override
   Widget build(BuildContext context) {
+    if (_model.totalCatches <= 0) {
+      return Column(
+        children: [
+          MinDivider(),
+          Padding(
+            padding: insetsDefault,
+            child: PrimaryLabel(
+              Strings.of(context).reportViewNoCatches,
+            ),
+          ),
+        ],
+      );
+    }
+
     return Column(
       children: [
         HeadingDivider(Strings.of(context).reportSummaryCatchTitle),
@@ -89,9 +103,7 @@ class _ReportSummary extends State<ReportSummary> {
     viewAllTitle: Strings.of(context).reportSummaryViewSpecies,
     viewAllDescription: Strings.of(context)
         .reportSummaryCatchesPerSpeciesDescription,
-    filters: {
-      _model.displayDateRange.title(context),
-    },
+    filters: _model.filters,
     data: _model.catchesPerSpecies,
     rowDetailsPage: (species) => CatchListPage(
       enableAdding: false,
@@ -111,9 +123,7 @@ class _ReportSummary extends State<ReportSummary> {
       viewAllTitle: Strings.of(context).reportSummaryViewFishingSpots,
       viewAllDescription: Strings.of(context)
           .reportSummaryCatchesPerFishingSpotDescription,
-      filters: {
-        _model.displayDateRange.title(context),
-      },
+      filters: _model.filters,
       data: _model.catchesPerFishingSpot,
       rowDetailsPage: (fishingSpot) => CatchListPage(
         enableAdding: false,
@@ -134,9 +144,7 @@ class _ReportSummary extends State<ReportSummary> {
       viewAllTitle: Strings.of(context).reportSummaryViewBaits,
       viewAllDescription: Strings.of(context)
           .reportSummaryCatchesPerBaitDescription,
-      filters: {
-        _model.displayDateRange.title(context),
-      },
+      filters: _model.filters,
       data: _model.catchesPerBait,
       rowDetailsPage: (bait) => CatchListPage(
         enableAdding: false,
@@ -147,7 +155,7 @@ class _ReportSummary extends State<ReportSummary> {
   }
 
   Widget _buildSinceLastCatch() {
-    if (_model.totalCatches <= 0 || _model.msSinceLastCatch == null) {
+    if (_model.totalCatches <= 0 || !_model.containsNow) {
       return Empty();
     }
 
@@ -189,11 +197,8 @@ class _ReportSummary extends State<ReportSummary> {
       title: Strings.of(context).reportSummaryPerBait,
       viewAllTitle: Strings.of(context).reportSummaryViewBaits,
       viewAllDescription: Strings.of(context)
-          .reportSummarySpeciesPerBaitDescription,
-      filters: {
-        _currentSpecies.name,
-        _model.displayDateRange.title(context),
-      },
+          .reportSummaryCatchesPerBaitDescription,
+      filters: _model.filters,
       data: baits,
       rowDetailsPage: (bait) => BaitPage(bait.id, static: true),
     );
@@ -211,11 +216,8 @@ class _ReportSummary extends State<ReportSummary> {
       title: Strings.of(context).reportSummaryPerFishingSpot,
       viewAllTitle: Strings.of(context).reportSummaryViewFishingSpots,
       viewAllDescription: Strings.of(context)
-          .reportSummarySpeciesPerFishingSpotDescription,
-      filters: {
-        _currentSpecies.name,
-        _model.displayDateRange.title(context),
-      },
+          .reportSummaryCatchesPerFishingSpotDescription,
+      filters: _model.filters,
       data: fishingSpots,
       rowDetailsPage: (fishingSpot) => FishingSpotPage(fishingSpot.id),
     );
@@ -336,6 +338,15 @@ class ReportSummaryModel {
   Map<FishingSpot, int> get catchesPerFishingSpot => _catchesPerFishingSpot;
   Map<Bait, int> get catchesPerBait => _catchesPerBait;
 
+  Set<String> get filters {
+    Set<String> result = {};
+    result.add(displayDateRange.title(context));
+    result.addAll(speciesIds.map((id) => _speciesManager.entity(id: id).name).toSet());
+    result.addAll(baitIds.map((id) => _baitManager.entity(id: id).name).toSet());
+    result.addAll(fishingSpotIds.map((id) => _fishingSpotManager.entity(id: id).name).toSet());
+    return result;
+  }
+
   Map<Bait, int> baitsPerSpecies(Species species) =>
       _baitsPerSpecies[species] ?? {};
   Map<FishingSpot, int> fishingSpotsPerSpecies(Species species) =>
@@ -360,11 +371,17 @@ class ReportSummaryModel {
     _dateRange = displayDateRange.getValue(now);
     _containsNow = _dateRange.endDate == now;
 
-    List<Catch> catches = _catchManager.catchesSortedByTimestamp(context);
+    List<Catch> catches = _catchManager.catchesSortedByTimestamp(
+      context,
+      baitIds: baitIds,
+      fishingSpotIds: fishingSpotIds,
+      speciesIds: speciesIds,
+    );
+
     _msSinceLastCatch = catches.isEmpty
         ? 0 : clock.now().millisecondsSinceEpoch - catches.first.timestamp;
 
-    for (Catch cat in _catchManager.entityList()) {
+    for (Catch cat in catches) {
       // Skip catches that don't fall within the desired time range.
       if (cat.timestamp < _dateRange.startMs
           || cat.timestamp > _dateRange.endMs)
@@ -381,7 +398,7 @@ class ReportSummaryModel {
 
       if (_fishingSpotManager.entityExists(id: cat.fishingSpotId)) {
         FishingSpot fishingSpot =
-        _fishingSpotManager.entity(id: cat.fishingSpotId);
+            _fishingSpotManager.entity(id: cat.fishingSpotId);
         _catchesPerFishingSpot.putIfAbsent(fishingSpot, () => 0);
         _catchesPerFishingSpot[fishingSpot]++;
         _fishingSpotsPerSpecies.inc(species, fishingSpot);

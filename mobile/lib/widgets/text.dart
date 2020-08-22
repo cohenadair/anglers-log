@@ -8,16 +8,25 @@ import 'package:mobile/utils/date_time_utils.dart';
 class Label extends StatelessWidget {
   final String text;
   final TextStyle style;
+  final TextOverflow overflow;
 
   Label(this.text, {
     this.style,
-  });
+  }) : overflow = TextOverflow.ellipsis;
+
+  Label.multiline(this.text, {
+    this.style,
+  }) : overflow = null;
 
   @override
-  Widget build(BuildContext context) => Text(
-    text,
-    style: style,
-    overflow: TextOverflow.ellipsis,
+  Widget build(BuildContext context) => SafeArea(
+    top: false,
+    bottom: false,
+    child: Text(
+      text,
+      style: style,
+      overflow: overflow,
+    ),
   );
 }
 
@@ -49,13 +58,9 @@ class NoteLabel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      top: false,
-      bottom: false,
-      child: Label(
-        text,
-        style: style(context),
-      ),
+    return Label(
+      text,
+      style: style(context),
     );
   }
 }
@@ -105,11 +110,7 @@ class PrimaryLabel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      top: false,
-      bottom: false,
-      child: Label(text, style: _style(context)),
-    );
+    return Label(text, style: _style(context));
   }
 
   TextStyle _style(BuildContext context) {

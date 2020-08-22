@@ -263,7 +263,6 @@ class _ChartPage<T extends NamedEntity> extends StatelessWidget {
           HeadingLabel(Strings.of(context).reportSummaryFilters),
           Wrap(
             spacing: paddingWidgetSmall,
-            runSpacing: paddingWidgetSmall,
             children: filters.map((filter) => Chip(
               label: Text(filter),
             )).toList(),

@@ -34,7 +34,7 @@ class _OverviewReportViewState extends State<OverviewReportView> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _buildDurationPicker(),
-          _buildSummary(),
+          ReportSummary(model: _model),
         ],
       ),
     );
@@ -47,24 +47,6 @@ class _OverviewReportViewState extends State<OverviewReportView> {
       _updateModel();
     }),
   );
-
-  Widget _buildSummary() {
-    if (_model.totalCatches <= 0) {
-      return Column(
-        children: [
-          MinDivider(),
-          Padding(
-            padding: insetsDefault,
-            child: PrimaryLabel(
-              Strings.of(context).reportViewNoCatches,
-            ),
-          ),
-        ],
-      );
-    }
-
-    return ReportSummary(model: _model);
-  }
 
   void _updateModel() {
     _model = ReportSummaryModel(

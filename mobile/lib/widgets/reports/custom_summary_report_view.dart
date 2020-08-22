@@ -35,6 +35,14 @@ class _CustomSummaryReportViewState extends State<CustomSummaryReportView> {
   }
 
   @override
+  void didUpdateWidget(CustomSummaryReportView oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.reportId != widget.reportId) {
+      _updateModel();
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return ReportView(
       managers: [
@@ -45,7 +53,7 @@ class _CustomSummaryReportViewState extends State<CustomSummaryReportView> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _buildDescription(),
-          _buildSummary(),
+          ReportSummary(model: _model),
         ],
       ),
     );
@@ -57,26 +65,26 @@ class _CustomSummaryReportViewState extends State<CustomSummaryReportView> {
     }
     return Padding(
       padding: insetsDefault,
-      child: Label(_report.description),
+      child: Label.multiline(
+        _report.description,
+      ),
     );
   }
 
-  Widget _buildSummary() {
-    return Empty();
-  }
-
   void _updateModel() {
-    if (_summaryReportManager.entityExists(id: widget.reportId)) {
-      _report = _summaryReportManager.entity(id: widget.reportId);
-      _model = ReportSummaryModel(
-        appManager: _appManager,
-        context: context,
-        displayDateRange: DisplayDateRange.of(_report.displayDateRangeId,
-            _report.startTimestamp, _report.endTimestamp),
-        baitIds: _summaryReportManager.baitIds(_report.id),
-        fishingSpotIds: _summaryReportManager.fishingSpotIds(_report.id),
-        speciesIds: _summaryReportManager.speciesIds(_report.id),
-      );
+    if (!_summaryReportManager.entityExists(id: widget.reportId)) {
+      return;
     }
+
+    _report = _summaryReportManager.entity(id: widget.reportId);
+    _model = ReportSummaryModel(
+      appManager: _appManager,
+      context: context,
+      displayDateRange: DisplayDateRange.of(_report.displayDateRangeId,
+          _report.startTimestamp, _report.endTimestamp),
+      baitIds: _summaryReportManager.baitIds(_report.id),
+      fishingSpotIds: _summaryReportManager.fishingSpotIds(_report.id),
+      speciesIds: _summaryReportManager.speciesIds(_report.id),
+    );
   }
 }
