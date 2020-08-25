@@ -7,7 +7,6 @@ import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/model/bait.dart';
 import 'package:mobile/model/catch.dart';
 import 'package:mobile/model/fishing_spot.dart';
-import 'package:mobile/model/named_entity.dart';
 import 'package:mobile/model/species.dart';
 import 'package:mobile/pages/bait_page.dart';
 import 'package:mobile/pages/catch_list_page.dart';
@@ -19,9 +18,9 @@ import 'package:mobile/utils/collection_utils.dart';
 import 'package:mobile/utils/date_time_utils.dart';
 import 'package:mobile/utils/page_utils.dart';
 import 'package:mobile/utils/string_utils.dart';
-import 'package:mobile/widgets/chart.dart';
 import 'package:mobile/widgets/list_item.dart';
 import 'package:mobile/widgets/list_picker_input.dart';
+import 'package:mobile/widgets/chart.dart';
 import 'package:mobile/widgets/text.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:quiver/time.dart';
@@ -39,12 +38,6 @@ class ReportSummary extends StatefulWidget {
 }
 
 class _ReportSummary extends State<ReportSummary> {
-  static const _chartIdCatchesPerSpecies = "catches_per_species";
-  static const _chartIdCatchesPerFishingSpot = "catches_per_fishing_spot";
-  static const _chartIdCatchesPerBait = "catches_per_bait";
-  static const _chartIdFishingSpotsPerSpecies = "fishing_spots_per_species";
-  static const _chartIdBaitPerSpecies = "baits_per_species";
-
   /// The currently selected species in the species summary.
   Species _currentSpecies;
 
@@ -97,14 +90,13 @@ class _ReportSummary extends State<ReportSummary> {
     );
   }
 
-  Widget _buildCatchesPerSpecies() => _buildChart(
-    id: _chartIdCatchesPerSpecies,
+  Widget _buildCatchesPerSpecies() => ExpandableChart<Species>.singleSeries(
     title: Strings.of(context).reportSummaryPerSpecies,
     viewAllTitle: Strings.of(context).reportSummaryViewSpecies,
     viewAllDescription: Strings.of(context)
         .reportSummaryCatchesPerSpeciesDescription,
     filters: _model.filters,
-    data: _model.catchesPerSpecies,
+    series: ChartSeries<Species>(_model.catchesPerSpecies),
     rowDetailsPage: (species) => CatchListPage(
       enableAdding: false,
       dateRange: _model.dateRange,
@@ -117,14 +109,13 @@ class _ReportSummary extends State<ReportSummary> {
       return Empty();
     }
 
-    return _buildChart(
-      id: _chartIdCatchesPerFishingSpot,
+    return ExpandableChart<FishingSpot>.singleSeries(
       title: Strings.of(context).reportSummaryPerFishingSpot,
       viewAllTitle: Strings.of(context).reportSummaryViewFishingSpots,
       viewAllDescription: Strings.of(context)
           .reportSummaryCatchesPerFishingSpotDescription,
       filters: _model.filters,
-      data: _model.catchesPerFishingSpot,
+      series: ChartSeries<FishingSpot>(_model.catchesPerFishingSpot),
       rowDetailsPage: (fishingSpot) => CatchListPage(
         enableAdding: false,
         dateRange: _model.dateRange,
@@ -138,14 +129,13 @@ class _ReportSummary extends State<ReportSummary> {
       return Empty();
     }
 
-    return _buildChart(
-      id: _chartIdCatchesPerBait,
+    return ExpandableChart<Bait>.singleSeries(
       title: Strings.of(context).reportSummaryPerBait,
       viewAllTitle: Strings.of(context).reportSummaryViewBaits,
       viewAllDescription: Strings.of(context)
           .reportSummaryCatchesPerBaitDescription,
       filters: _model.filters,
-      data: _model.catchesPerBait,
+      series: ChartSeries<Bait>(_model.catchesPerBait),
       rowDetailsPage: (bait) => CatchListPage(
         enableAdding: false,
         dateRange: _model.dateRange,
@@ -192,14 +182,13 @@ class _ReportSummary extends State<ReportSummary> {
       return Empty();
     }
 
-    return _buildChart(
-      id: _chartIdBaitPerSpecies,
+    return ExpandableChart<Bait>.singleSeries(
       title: Strings.of(context).reportSummaryPerBait,
       viewAllTitle: Strings.of(context).reportSummaryViewBaits,
       viewAllDescription: Strings.of(context)
           .reportSummaryCatchesPerBaitDescription,
       filters: _model.filters,
-      data: baits,
+      series: ChartSeries<Bait>(_model.catchesPerBait),
       rowDetailsPage: (bait) => BaitPage(bait.id, static: true),
     );
   }
@@ -211,14 +200,13 @@ class _ReportSummary extends State<ReportSummary> {
       return Empty();
     }
 
-    return _buildChart(
-      id: _chartIdFishingSpotsPerSpecies,
+    return ExpandableChart<FishingSpot>.singleSeries(
       title: Strings.of(context).reportSummaryPerFishingSpot,
       viewAllTitle: Strings.of(context).reportSummaryViewFishingSpots,
       viewAllDescription: Strings.of(context)
           .reportSummaryCatchesPerFishingSpotDescription,
       filters: _model.filters,
-      data: fishingSpots,
+      series: ChartSeries<FishingSpot>(fishingSpots),
       rowDetailsPage: (fishingSpot) => FishingSpotPage(fishingSpot.id),
     );
   }
@@ -241,32 +229,6 @@ class _ReportSummary extends State<ReportSummary> {
         catchIds: catchIds,
       )),
       trailing: RightChevronIcon(),
-    );
-  }
-
-  Widget _buildChart<T extends NamedEntity>({
-    String id,
-    String title,
-    String viewAllTitle,
-    String viewAllDescription,
-    Set<String> filters = const {},
-    Map<T, int> data,
-    Widget Function(T) rowDetailsPage,
-  }) {
-    assert(filters != null);
-
-    return ExpansionListItem(
-      title: Text(title),
-      children: [
-        Chart<T>(
-          id: id,
-          data: data,
-          viewAllTitle: viewAllTitle,
-          chartPageDescription: viewAllDescription,
-          chartPageFilters: filters,
-          onTapRow: (entity) => push(context, rowDetailsPage(entity)),
-        ),
-      ],
     );
   }
 
