@@ -3,7 +3,6 @@ import 'package:mobile/app_manager.dart';
 import 'package:mobile/utils/date_time_utils.dart';
 import 'package:mobile/widgets/date_range_picker_input.dart';
 import 'package:mobile/widgets/reports/report_summary.dart';
-import 'package:mobile/widgets/reports/report_view.dart';
 
 class OverviewReportView extends StatefulWidget {
   @override
@@ -14,25 +13,15 @@ class _OverviewReportViewState extends State<OverviewReportView> {
   DisplayDateRange _currentDateRange =
       DisplayDateRange.of(DisplayDateRange.allDates.id);
 
-  ReportSummaryModel _model;
-
-  @override
-  void initState() {
-    super.initState();
-    _updateModel();
-  }
-
   @override
   Widget build(BuildContext context) {
-    return ReportView(
-      onUpdate: _updateModel,
-      builder: (context) => Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _buildDurationPicker(),
-          ReportSummary(model: _model),
-        ],
+    return ReportSummary(
+      onUpdate: () => ReportSummaryModel(
+        appManager: AppManager.of(context),
+        context: context,
+        displayDateRange: _currentDateRange,
       ),
+      headerBuilder: (context) => _buildDurationPicker(),
     );
   }
 
@@ -40,15 +29,6 @@ class _OverviewReportViewState extends State<OverviewReportView> {
     initialDateRange: _currentDateRange,
     onPicked: (dateRange) => setState(() {
       _currentDateRange = dateRange;
-      _updateModel();
     }),
   );
-
-  void _updateModel() {
-    _model = ReportSummaryModel(
-      appManager: AppManager.of(context),
-      context: context,
-      displayDateRange: _currentDateRange,
-    );
-  }
 }

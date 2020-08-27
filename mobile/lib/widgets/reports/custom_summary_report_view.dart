@@ -44,18 +44,12 @@ class _CustomSummaryReportViewState extends State<CustomSummaryReportView> {
 
   @override
   Widget build(BuildContext context) {
-    return ReportView(
+    return ReportSummary(
       managers: [
         _summaryReportManager,
       ],
       onUpdate: _updateModel,
-      builder: (context) => Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _buildDescription(),
-          ReportSummary(model: _model),
-        ],
-      ),
+      headerBuilder: (context) => _buildDescription(),
     );
   }
 
@@ -71,9 +65,9 @@ class _CustomSummaryReportViewState extends State<CustomSummaryReportView> {
     );
   }
 
-  void _updateModel() {
+  ReportSummaryModel _updateModel() {
     if (!_summaryReportManager.entityExists(id: widget.reportId)) {
-      return;
+      return _model;
     }
 
     _report = _summaryReportManager.entity(id: widget.reportId);
@@ -86,5 +80,7 @@ class _CustomSummaryReportViewState extends State<CustomSummaryReportView> {
       fishingSpotIds: _summaryReportManager.fishingSpotIds(_report.id),
       speciesIds: _summaryReportManager.speciesIds(_report.id),
     );
+
+    return _model;
   }
 }

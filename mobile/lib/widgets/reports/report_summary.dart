@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile/app_manager.dart';
 import 'package:mobile/bait_manager.dart';
 import 'package:mobile/catch_manager.dart';
+import 'package:mobile/entity_manager.dart';
 import 'package:mobile/fishing_spot_manager.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/model/bait.dart';
@@ -21,17 +22,28 @@ import 'package:mobile/utils/string_utils.dart';
 import 'package:mobile/widgets/list_item.dart';
 import 'package:mobile/widgets/list_picker_input.dart';
 import 'package:mobile/widgets/chart.dart';
+import 'package:mobile/widgets/reports/report_view.dart';
 import 'package:mobile/widgets/text.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:quiver/time.dart';
 
 /// A widget that includes all "summary" sections for a report.
 class ReportSummary extends StatefulWidget {
-  final ReportSummaryModel model;
+  /// Returns an updated non-null [ReportSummaryModel]. This method is called
+  /// when the widget is initialized an updated.
+  final ReportSummaryModel Function() onUpdate;
+
+  /// A list of [EntityManager] objects that trigger [ReportSummary] updates,
+  /// in addition to the managers already handled in [ReportView].
+  final List<EntityManager> managers;
+  final Widget Function(BuildContext) headerBuilder;
 
   ReportSummary({
-    @required this.model,
-  }) : assert(model != null);
+    @required this.onUpdate,
+    this.managers = const [],
+    this.headerBuilder,
+  }) : assert(onUpdate != null),
+       assert(managers != null);
 
   @override
   _ReportSummary createState() => _ReportSummary();
@@ -41,38 +53,38 @@ class _ReportSummary extends State<ReportSummary> {
   /// The currently selected species in the species summary.
   Species _currentSpecies;
 
-  ReportSummaryModel get _model => widget.model;
+  ReportSummaryModel _model;
 
   @override
   void initState() {
     super.initState();
-    _updateCurrentSpecies();
+    _updateModel();
   }
 
   @override
   void didUpdateWidget(ReportSummary oldWidget) {
     super.didUpdateWidget(oldWidget);
-    _updateCurrentSpecies();
+    _updateModel();
   }
 
   @override
   Widget build(BuildContext context) {
+    List<Widget> children = [];
+    CrossAxisAlignment crossAxisAlignment;
     if (_model.totalCatches <= 0) {
-      return Column(
-        children: [
-          MinDivider(),
-          Padding(
-            padding: insetsDefault,
-            child: PrimaryLabel(
-              Strings.of(context).reportViewNoCatches,
-            ),
+      crossAxisAlignment = CrossAxisAlignment.center;
+      children.addAll([
+        MinDivider(),
+        Padding(
+          padding: insetsDefault,
+          child: PrimaryLabel(
+            Strings.of(context).reportViewNoCatches,
           ),
-        ],
-      );
-    }
-
-    return Column(
-      children: [
+        ),
+      ]);
+    } else {
+      crossAxisAlignment = CrossAxisAlignment.start;
+      children.addAll([
         HeadingDivider(Strings.of(context).reportSummaryCatchTitle),
         VerticalSpace(paddingWidget),
         _buildViewCatches(_model.allCatchIds),
@@ -86,7 +98,18 @@ class _ReportSummary extends State<ReportSummary> {
         _buildViewCatches(_model.catchIdsPerSpecies[_currentSpecies]),
         _buildFishingSpotsPerSpecies(),
         _buildBaitsPerSpecies(),
-      ],
+      ]);
+    }
+
+    return ReportView(
+      managers: widget.managers,
+      onUpdate: _updateModel,
+      builder: (context) => Column(
+        crossAxisAlignment: crossAxisAlignment,
+        children: [
+          widget.headerBuilder?.call(context) ?? Empty(),
+        ]..addAll(children),
+      ),
     );
   }
 
@@ -100,6 +123,8 @@ class _ReportSummary extends State<ReportSummary> {
     rowDetailsPage: (species) => CatchListPage(
       enableAdding: false,
       dateRange: _model.dateRange,
+      baitIds: _model.baitIds,
+      fishingSpotIds: _model.fishingSpotIds,
       speciesIds: {species.id},
     ),
   );
@@ -119,7 +144,9 @@ class _ReportSummary extends State<ReportSummary> {
       rowDetailsPage: (fishingSpot) => CatchListPage(
         enableAdding: false,
         dateRange: _model.dateRange,
+        baitIds: _model.baitIds,
         fishingSpotIds: {fishingSpot.id},
+        speciesIds: _model.speciesIds,
       ),
     );
   }
@@ -140,6 +167,8 @@ class _ReportSummary extends State<ReportSummary> {
         enableAdding: false,
         dateRange: _model.dateRange,
         baitIds: {bait.id},
+        fishingSpotIds: _model.fishingSpotIds,
+        speciesIds: _model.speciesIds,
       ),
     );
   }
@@ -232,7 +261,10 @@ class _ReportSummary extends State<ReportSummary> {
     );
   }
 
-  void _updateCurrentSpecies() {
+  void _updateModel() {
+    _model = widget.onUpdate();
+    assert(_model != null);
+
     if (_model.catchesPerSpecies.isNotEmpty) {
       _currentSpecies = _model.catchesPerSpecies.keys.first;
     }
@@ -303,9 +335,12 @@ class ReportSummaryModel {
   Set<String> get filters {
     Set<String> result = {};
     result.add(displayDateRange.title(context));
-    result.addAll(speciesIds.map((id) => _speciesManager.entity(id: id).name).toSet());
-    result.addAll(baitIds.map((id) => _baitManager.entity(id: id).name).toSet());
-    result.addAll(fishingSpotIds.map((id) => _fishingSpotManager.entity(id: id).name).toSet());
+    result.addAll(speciesIds.map((id) =>
+        _speciesManager.entity(id: id).name).toSet());
+    result.addAll(baitIds.map((id) =>
+        _baitManager.entity(id: id).name).toSet());
+    result.addAll(fishingSpotIds.map((id) =>
+        _fishingSpotManager.entity(id: id).name).toSet());
     return result;
   }
 
@@ -335,6 +370,7 @@ class ReportSummaryModel {
 
     List<Catch> catches = _catchManager.catchesSortedByTimestamp(
       context,
+      dateRange: _dateRange,
       baitIds: baitIds,
       fishingSpotIds: fishingSpotIds,
       speciesIds: speciesIds,
@@ -344,13 +380,6 @@ class ReportSummaryModel {
         ? 0 : clock.now().millisecondsSinceEpoch - catches.first.timestamp;
 
     for (Catch cat in catches) {
-      // Skip catches that don't fall within the desired time range.
-      if (cat.timestamp < _dateRange.startMs
-          || cat.timestamp > _dateRange.endMs)
-      {
-        continue;
-      }
-
       Species species = _speciesManager.entity(id: cat.speciesId);
       _catchIdsPerSpecies.putIfAbsent(species, () => {});
       _catchIdsPerSpecies[species].add(cat.id);

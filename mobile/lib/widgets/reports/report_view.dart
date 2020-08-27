@@ -11,10 +11,10 @@ class ReportView extends StatelessWidget {
   final Widget Function(BuildContext) builder;
 
   ReportView({
-    this.managers,
+    this.managers = const [],
     @required this.onUpdate,
     @required this.builder,
-  });
+  }) : assert(managers != null);
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +24,7 @@ class ReportView extends StatelessWidget {
         CatchManager.of(context),
         FishingSpotManager.of(context),
         SpeciesManager.of(context),
-      ]..addAll(managers ?? []),
+      ]..addAll(managers),
       onUpdate: onUpdate,
       builder: builder,
     );

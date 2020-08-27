@@ -234,7 +234,7 @@ class _ChartState<T extends NamedEntity> extends State<Chart<T>> {
 
   Widget _buildViewAll() {
     if (isEmpty(widget.viewAllTitle) || _maxRowCount <= _condensedRowCount) {
-      return VerticalSpace(paddingWidget);
+      return VerticalSpace(paddingWidgetSmall);
     }
 
     return ListItem(
