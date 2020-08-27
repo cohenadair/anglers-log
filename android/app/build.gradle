@@ -7,13 +7,13 @@ allprojects {
 }
 
 android {
-    compileSdkVersion 26
+    compileSdkVersion 29
     buildToolsVersion "22.0.1"
     defaultConfig {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         applicationId "com.cohenadair.anglerslog"
         minSdkVersion 16
-        targetSdkVersion 26
+        targetSdkVersion 29
     }
     buildTypes {
         release {
