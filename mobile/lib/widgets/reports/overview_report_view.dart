@@ -16,11 +16,13 @@ class _OverviewReportViewState extends State<OverviewReportView> {
   @override
   Widget build(BuildContext context) {
     return ReportSummary(
-      onUpdate: () => ReportSummaryModel(
-        appManager: AppManager.of(context),
-        context: context,
-        displayDateRange: _currentDateRange,
-      ),
+      onUpdate: () => [
+        ReportSummaryModel(
+          appManager: AppManager.of(context),
+          context: context,
+          displayDateRange: _currentDateRange,
+        ),
+      ],
       headerBuilder: (context) => _buildDurationPicker(),
     );
   }

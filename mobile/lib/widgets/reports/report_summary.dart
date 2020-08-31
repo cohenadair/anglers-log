@@ -25,35 +25,41 @@ import 'package:mobile/widgets/chart.dart';
 import 'package:mobile/widgets/reports/report_view.dart';
 import 'package:mobile/widgets/text.dart';
 import 'package:mobile/widgets/widget.dart';
+import 'package:quiver/strings.dart';
 import 'package:quiver/time.dart';
 
 /// A widget that includes all "summary" sections for a report.
 class ReportSummary extends StatefulWidget {
-  /// Returns an updated non-null [ReportSummaryModel]. This method is called
-  /// when the widget is initialized an updated.
-  final ReportSummaryModel Function() onUpdate;
+  /// Returns an updated non-null, non-empty list of [ReportSummaryModel]
+  /// objects. This method is called when the widget is initialized an updated.
+  final List<ReportSummaryModel> Function() onUpdate;
 
   /// A list of [EntityManager] objects that trigger [ReportSummary] updates,
   /// in addition to the managers already handled in [ReportView].
   final List<EntityManager> managers;
+
+  final String Function(BuildContext) descriptionBuilder;
   final Widget Function(BuildContext) headerBuilder;
 
   ReportSummary({
     @required this.onUpdate,
     this.managers = const [],
+    this.descriptionBuilder,
     this.headerBuilder,
   }) : assert(onUpdate != null),
        assert(managers != null);
 
   @override
-  _ReportSummary createState() => _ReportSummary();
+  _ReportSummaryState createState() => _ReportSummaryState();
 }
 
-class _ReportSummary extends State<ReportSummary> {
+class _ReportSummaryState extends State<ReportSummary> {
   /// The currently selected species in the species summary.
   Species _currentSpecies;
 
-  ReportSummaryModel _model;
+  List<ReportSummaryModel> _models = [];
+
+  bool get comparing => _models.length > 1;
 
   @override
   void initState() {
@@ -70,24 +76,24 @@ class _ReportSummary extends State<ReportSummary> {
   @override
   Widget build(BuildContext context) {
     List<Widget> children = [];
-    CrossAxisAlignment crossAxisAlignment;
-    if (_model.totalCatches <= 0) {
-      crossAxisAlignment = CrossAxisAlignment.center;
+    if (!_hasCatches) {
       children.addAll([
         MinDivider(),
         Padding(
           padding: insetsDefault,
-          child: PrimaryLabel(
-            Strings.of(context).reportViewNoCatches,
+          child: Align(
+            alignment: Alignment.center,
+            child: PrimaryLabel(
+              Strings.of(context).reportViewNoCatches,
+            ),
           ),
         ),
       ]);
     } else {
-      crossAxisAlignment = CrossAxisAlignment.start;
       children.addAll([
         HeadingDivider(Strings.of(context).reportSummaryCatchTitle),
         VerticalSpace(paddingWidget),
-        _buildViewCatches(_model.allCatchIds),
+        _buildViewCatches(),
         _buildSinceLastCatch(),
         _buildCatchesPerSpecies(),
         _buildCatchesPerFishingSpot(),
@@ -95,7 +101,7 @@ class _ReportSummary extends State<ReportSummary> {
         HeadingDivider(Strings.of(context).reportSummarySpeciesTitle),
         VerticalSpace(paddingWidget),
         _buildSpeciesPicker(),
-        _buildViewCatches(_model.catchIdsPerSpecies[_currentSpecies]),
+        _buildViewCatchesPerSpecies(),
         _buildFishingSpotsPerSpecies(),
         _buildBaitsPerSpecies(),
       ]);
@@ -105,76 +111,93 @@ class _ReportSummary extends State<ReportSummary> {
       managers: widget.managers,
       onUpdate: _updateModel,
       builder: (context) => Column(
-        crossAxisAlignment: crossAxisAlignment,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          _buildDescription(),
           widget.headerBuilder?.call(context) ?? Empty(),
         ]..addAll(children),
       ),
     );
   }
 
-  Widget _buildCatchesPerSpecies() => ExpandableChart<Species>.singleSeries(
+  Widget _buildDescription() {
+    String description = widget.descriptionBuilder?.call(context);
+    if (isEmpty(description)) {
+      return Empty();
+    }
+
+    return Padding(
+      padding: insetsDefault,
+      child: Label.multiline(description),
+    );
+  }
+
+  Widget _buildCatchesPerSpecies() => ExpandableChart<Species>(
     title: Strings.of(context).reportSummaryPerSpecies,
     viewAllTitle: Strings.of(context).reportSummaryViewSpecies,
     viewAllDescription: Strings.of(context)
         .reportSummaryCatchesPerSpeciesDescription,
-    filters: _model.filters,
-    series: ChartSeries<Species>(_model.catchesPerSpecies),
-    rowDetailsPage: (species) => CatchListPage(
+    filters: filters(includeDateRange: !comparing),
+    series: _models.map((model) => Series<Species>(model.catchesPerSpecies,
+        model.displayDateRange)).toList(),
+    rowDetailsPage: (species, dateRange) => CatchListPage(
       enableAdding: false,
-      dateRange: _model.dateRange,
-      baitIds: _model.baitIds,
-      fishingSpotIds: _model.fishingSpotIds,
+      dateRange: dateRange,
+      baitIds: _models.first.baitIds,
+      fishingSpotIds: _models.first.fishingSpotIds,
       speciesIds: {species.id},
     ),
   );
 
   Widget _buildCatchesPerFishingSpot() {
-    if (_model.catchesPerFishingSpot.isEmpty) {
+    if (!_hasCatchesPerFishingSpot) {
       return Empty();
     }
 
-    return ExpandableChart<FishingSpot>.singleSeries(
+    return ExpandableChart<FishingSpot>(
       title: Strings.of(context).reportSummaryPerFishingSpot,
       viewAllTitle: Strings.of(context).reportSummaryViewFishingSpots,
       viewAllDescription: Strings.of(context)
           .reportSummaryCatchesPerFishingSpotDescription,
-      filters: _model.filters,
-      series: ChartSeries<FishingSpot>(_model.catchesPerFishingSpot),
-      rowDetailsPage: (fishingSpot) => CatchListPage(
+      filters: filters(includeDateRange: !comparing),
+      series: _models.map((model) =>
+          Series<FishingSpot>(model.catchesPerFishingSpot,
+              model.displayDateRange)).toList(),
+      rowDetailsPage: (fishingSpot, dateRange) => CatchListPage(
         enableAdding: false,
-        dateRange: _model.dateRange,
-        baitIds: _model.baitIds,
+        dateRange: dateRange,
+        baitIds: _models.first.baitIds,
         fishingSpotIds: {fishingSpot.id},
-        speciesIds: _model.speciesIds,
+        speciesIds: _models.first.speciesIds,
       ),
     );
   }
 
   Widget _buildCatchesPerBait() {
-    if (_model.catchesPerBait.isEmpty) {
+    if (!_hasCatchesPerBait) {
       return Empty();
     }
 
-    return ExpandableChart<Bait>.singleSeries(
+    return ExpandableChart<Bait>(
       title: Strings.of(context).reportSummaryPerBait,
       viewAllTitle: Strings.of(context).reportSummaryViewBaits,
       viewAllDescription: Strings.of(context)
           .reportSummaryCatchesPerBaitDescription,
-      filters: _model.filters,
-      series: ChartSeries<Bait>(_model.catchesPerBait),
-      rowDetailsPage: (bait) => CatchListPage(
+      filters: filters(includeDateRange: !comparing),
+      series: _models.map((model) => Series<Bait>(model.catchesPerBait,
+          model.displayDateRange)).toList(),
+      rowDetailsPage: (bait, dateRange) => CatchListPage(
         enableAdding: false,
-        dateRange: _model.dateRange,
+        dateRange: dateRange,
         baitIds: {bait.id},
-        fishingSpotIds: _model.fishingSpotIds,
-        speciesIds: _model.speciesIds,
+        fishingSpotIds: _models.first.fishingSpotIds,
+        speciesIds: _models.first.speciesIds,
       ),
     );
   }
 
   Widget _buildSinceLastCatch() {
-    if (_model.totalCatches <= 0 || !_model.containsNow) {
+    if (!_hasCatches || comparing || !_models.first.containsNow) {
       return Empty();
     }
 
@@ -182,7 +205,7 @@ class _ReportSummary extends State<ReportSummary> {
       title: Text(Strings.of(context).reportSummarySinceLastCatch),
       trailing: SecondaryLabel(formatDuration(
         context: context,
-        millisecondsDuration: _model.msSinceLastCatch,
+        millisecondsDuration: _models.first.msSinceLastCatch,
         includesSeconds: false,
         condensed: true,
       )),
@@ -206,46 +229,69 @@ class _ReportSummary extends State<ReportSummary> {
   }
 
   Widget _buildBaitsPerSpecies() {
-    Map<Bait, int> baits = _model.baitsPerSpecies(_currentSpecies);
-    if (baits.isEmpty) {
+    if (!_hasBaitsPerSpecies) {
       return Empty();
     }
 
-    return ExpandableChart<Bait>.singleSeries(
+    return ExpandableChart<Bait>(
       title: Strings.of(context).reportSummaryPerBait,
       viewAllTitle: Strings.of(context).reportSummaryViewBaits,
       viewAllDescription: Strings.of(context)
           .reportSummaryCatchesPerBaitDescription,
-      filters: _model.filters,
-      series: ChartSeries<Bait>(_model.catchesPerBait),
-      rowDetailsPage: (bait) => BaitPage(bait.id, static: true),
+      filters: filters(
+        includeSpecies: false,
+        includeDateRange: !comparing,
+      )..add(_currentSpecies.name),
+      series: _models.map((model) => Series<Bait>(
+          model.baitsPerSpecies(_currentSpecies),
+          model.displayDateRange)).toList(),
+      rowDetailsPage: (bait, _) => BaitPage(bait.id, static: true),
     );
   }
 
   Widget _buildFishingSpotsPerSpecies() {
-    Map<FishingSpot, int> fishingSpots =
-        _model.fishingSpotsPerSpecies(_currentSpecies);
-    if (fishingSpots.isEmpty) {
+    if (!_hasFishingSpotsPerSpecies) {
       return Empty();
     }
 
-    return ExpandableChart<FishingSpot>.singleSeries(
+    return ExpandableChart<FishingSpot>(
       title: Strings.of(context).reportSummaryPerFishingSpot,
       viewAllTitle: Strings.of(context).reportSummaryViewFishingSpots,
       viewAllDescription: Strings.of(context)
           .reportSummaryCatchesPerFishingSpotDescription,
-      filters: _model.filters,
-      series: ChartSeries<FishingSpot>(fishingSpots),
-      rowDetailsPage: (fishingSpot) => FishingSpotPage(fishingSpot.id),
+      filters: filters(
+        includeSpecies: false,
+        includeDateRange: !comparing,
+      )..add(_currentSpecies.name),
+      series: _models.map((model) => Series<FishingSpot>(
+          model.fishingSpotsPerSpecies(_currentSpecies),
+          model.displayDateRange)).toList(),
+      rowDetailsPage: (fishingSpot, _) => FishingSpotPage(fishingSpot.id),
     );
   }
 
-  Widget _buildViewCatches([Set<String> catchIds]) {
+  Widget _buildViewCatches() {
+    return Column(
+      children: _models.map((model) => _buildViewCatchesRow(model.allCatchIds,
+          model.displayDateRange)).toList(),
+    );
+  }
+
+  Widget _buildViewCatchesPerSpecies() {
+    return Column(
+      children: _models.map((model) => _buildViewCatchesRow(
+          model.catchIdsPerSpecies[_currentSpecies],
+          model.displayDateRange)).toList(),
+    );
+  }
+
+  Widget _buildViewCatchesRow(Set<String> catchIds, DisplayDateRange dateRange) {
     catchIds = catchIds ?? {};
 
     if (catchIds.isEmpty) {
       return ListItem(
         title: Text(Strings.of(context).reportSummaryNumberOfCatches),
+        subtitle: Text(dateRange.title(context)),
         trailing: SecondaryLabel("0"),
       );
     }
@@ -253,6 +299,7 @@ class _ReportSummary extends State<ReportSummary> {
     return ListItem(
       title: Text(format(Strings.of(context).reportSummaryViewCatches,
           [catchIds.length])),
+      subtitle: Text(dateRange.title(context)),
       onTap: () => push(context, CatchListPage(
         enableAdding: false,
         catchIds: catchIds,
@@ -262,13 +309,44 @@ class _ReportSummary extends State<ReportSummary> {
   }
 
   void _updateModel() {
-    _model = widget.onUpdate();
-    assert(_model != null);
+    _models = widget.onUpdate();
+    assert(_models != null && _models.isNotEmpty);
 
-    if (_model.catchesPerSpecies.isNotEmpty) {
-      _currentSpecies = _model.catchesPerSpecies.keys.first;
+    if (_currentSpecies == null && _models.first.catchesPerSpecies.isNotEmpty) {
+      _currentSpecies = _models.first.catchesPerSpecies.keys.first;
     }
   }
+
+  Set<String> filters({
+    bool includeSpecies = true,
+    bool includeDateRange = true,
+  }) => _models.fold<Set<String>>({}, (previousValue, element) =>
+      previousValue..addAll(element.filters(
+        includeSpecies: includeSpecies,
+        includeDateRange: includeDateRange,
+      )));
+
+  bool get _hasCatches => _meets((model) => model.totalCatches > 0);
+
+  bool get _hasCatchesPerFishingSpot => _meets((model) =>
+      model.catchesPerFishingSpot.isNotEmpty);
+
+  bool get _hasCatchesPerBait => _meets((model) =>
+      model.catchesPerBait.isNotEmpty);
+
+  bool get _hasBaitsPerSpecies => _meets((model) =>
+      model.baitsPerSpecies(_currentSpecies).isNotEmpty);
+
+  bool get _hasFishingSpotsPerSpecies => _meets((model) =>
+      model.fishingSpotsPerSpecies(_currentSpecies).isNotEmpty);
+
+  bool _meets(bool Function(ReportSummaryModel model) condition) =>
+      _models.firstWhere((model) => condition(model), orElse: () => null)
+          != null;
+}
+
+enum ReportSummaryModelSortOrder {
+  alphabetical, largestToSmallest,
 }
 
 /// A class, that when instantiated, gathers all the data required to display
@@ -278,6 +356,10 @@ class ReportSummaryModel {
   final BuildContext context;
   final Clock clock;
   final DisplayDateRange displayDateRange;
+  final ReportSummaryModelSortOrder sortOrder;
+
+  /// When true, calculated collections include 0 quantities. Defaults to false.
+  final bool includeZeros;
 
   /// When set, data is only included in this model if associated with these
   /// [Bait] IDs.
@@ -332,11 +414,18 @@ class ReportSummaryModel {
   Map<FishingSpot, int> get catchesPerFishingSpot => _catchesPerFishingSpot;
   Map<Bait, int> get catchesPerBait => _catchesPerBait;
 
-  Set<String> get filters {
+  Set<String> filters({
+    bool includeSpecies = true,
+    bool includeDateRange = true,
+  }) {
     Set<String> result = {};
-    result.add(displayDateRange.title(context));
-    result.addAll(speciesIds.map((id) =>
-        _speciesManager.entity(id: id).name).toSet());
+    if (includeDateRange) {
+      result.add(displayDateRange.title(context));
+    }
+    if (includeSpecies) {
+      result.addAll(speciesIds.map((id) => _speciesManager.entity(id: id).name)
+          .toSet());
+    }
     result.addAll(baitIds.map((id) =>
         _baitManager.entity(id: id).name).toSet());
     result.addAll(fishingSpotIds.map((id) =>
@@ -352,6 +441,8 @@ class ReportSummaryModel {
   ReportSummaryModel({
     @required this.appManager,
     @required this.context,
+    this.includeZeros = false,
+    this.sortOrder = ReportSummaryModelSortOrder.largestToSmallest,
     this.clock = const Clock(),
     this.baitIds = const {},
     this.fishingSpotIds = const {},
@@ -379,6 +470,24 @@ class ReportSummaryModel {
     _msSinceLastCatch = catches.isEmpty
         ? 0 : clock.now().millisecondsSinceEpoch - catches.first.timestamp;
 
+    // Fill all collections with zero quantities if necessary.
+    if (includeZeros) {
+      _speciesManager.entityList().forEach((species) {
+        _catchesPerSpecies.putIfAbsent(species, () => 0);
+        _fishingSpotsPerSpecies[species] = {};
+        _baitsPerSpecies[species] = {};
+      });
+      _fishingSpotManager.entityList().forEach((fishingSpot) {
+        _catchesPerFishingSpot.putIfAbsent(fishingSpot, () => 0);
+        _fishingSpotsPerSpecies.value
+            .forEach((species, map) => map[fishingSpot] = 0);
+      });
+      _baitManager.entityList().forEach((bait) {
+        _catchesPerBait.putIfAbsent(bait, () => 0);
+        _baitsPerSpecies.value.forEach((species, map) => map[bait] = 0);
+      });
+    }
+
     for (Catch cat in catches) {
       Species species = _speciesManager.entity(id: cat.speciesId);
       _catchIdsPerSpecies.putIfAbsent(species, () => {});
@@ -404,11 +513,58 @@ class ReportSummaryModel {
     }
 
     // Sort all maps.
-    _catchesPerSpecies = sortedMap<Species>(_catchesPerSpecies);
-    _catchesPerFishingSpot = sortedMap<FishingSpot>(_catchesPerFishingSpot);
-    _catchesPerBait = sortedMap<Bait>(_catchesPerBait);
-    _fishingSpotsPerSpecies = _fishingSpotsPerSpecies.sorted();
-    _baitsPerSpecies = _baitsPerSpecies.sorted();
+    switch (sortOrder) {
+      case ReportSummaryModelSortOrder.alphabetical:
+        _catchesPerSpecies = sortedMap<Species>(_catchesPerSpecies,
+            (lhs, rhs) => lhs.compareNameTo(rhs));
+        _catchesPerFishingSpot = sortedMap<FishingSpot>(_catchesPerFishingSpot,
+            (lhs, rhs) => lhs.compareNameTo(rhs));
+        _catchesPerBait = sortedMap<Bait>(_catchesPerBait,
+            (lhs, rhs) => lhs.compareNameTo(rhs));
+        _fishingSpotsPerSpecies = _fishingSpotsPerSpecies
+            .sorted((lhs, rhs) => lhs.compareNameTo(rhs));
+        _baitsPerSpecies = _baitsPerSpecies
+            .sorted((lhs, rhs) => lhs.compareNameTo(rhs));
+        break;
+      case ReportSummaryModelSortOrder.largestToSmallest:
+        _catchesPerSpecies = sortedMap<Species>(_catchesPerSpecies);
+        _catchesPerFishingSpot = sortedMap<FishingSpot>(_catchesPerFishingSpot);
+        _catchesPerBait = sortedMap<Bait>(_catchesPerBait);
+        _fishingSpotsPerSpecies = _fishingSpotsPerSpecies.sorted();
+        _baitsPerSpecies = _baitsPerSpecies.sorted();
+        break;
+    }
+  }
+
+  /// Removes data if this model and [other] both have 0 values for a given
+  /// data point. Data is removed from both this and [other].
+  void removeZerosComparedTo(ReportSummaryModel other) {
+    removeZeros(_catchesPerSpecies, other._catchesPerSpecies);
+    removeZeros(_catchesPerFishingSpot, other._catchesPerFishingSpot);
+    removeZeros(_catchesPerBait, other._catchesPerBait);
+
+    for (Species key in _fishingSpotsPerSpecies.value.keys) {
+      removeZeros(_fishingSpotsPerSpecies[key],
+          other._fishingSpotsPerSpecies[key]);
+    }
+
+    for (Species key in _baitsPerSpecies.value.keys) {
+      removeZeros(_baitsPerSpecies[key], other._baitsPerSpecies[key]);
+    }
+  }
+
+  void removeZeros<T>(Map<T, int> map1, Map<T, int> map2) {
+    List<T> keys = map1.keys.toList();
+    for (T key in keys) {
+      if (!map1.containsKey(key) || !map2.containsKey(key)) {
+        continue;
+      }
+
+      if (map1[key] == 0 && map2[key] == 0) {
+        map1.remove(key);
+        map2.remove(key);
+      }
+    }
   }
 }
 
@@ -417,19 +573,19 @@ class ReportSummaryModel {
 class _MapOfMappedInt<K1, K2> {
   final Map<K1, Map<K2, int>> value = {};
 
-  void inc(K1 key, K2 valueKey) {
+  void inc(K1 key, K2 valueKey, [int incBy]) {
     value.putIfAbsent(key, () => {});
     value[key].putIfAbsent(valueKey, () => 0);
-    value[key][valueKey]++;
+    value[key][valueKey] += incBy ?? 1;
   }
 
   Map<K2, int> operator [](K1 key) => value[key];
   void operator []=(K1 key, Map<K2, int> newValue) => value[key] = newValue;
 
-  _MapOfMappedInt<K1, K2> sorted() {
+  _MapOfMappedInt<K1, K2> sorted([int Function(K2 lhs, K2 rhs) comparator]) {
     var newValue = _MapOfMappedInt<K1, K2>();
     for (K1 key in value.keys) {
-      newValue[key] = sortedMap(value[key]);
+      newValue[key] = sortedMap(value[key], comparator);
     }
     return newValue;
   }

@@ -4,8 +4,10 @@ const paddingDefaultDouble = 32.0;
 const paddingDefault = 16.0;
 const paddingMedium = 12.0;
 const paddingSmall = 8.0;
+const paddingTiny = 4.0;
 const paddingWidget = paddingDefault;
 const paddingWidgetSmall = paddingSmall;
+const paddingWidgetTiny = paddingTiny;
 
 const insetsZero = EdgeInsets.all(0);
 const insetsDefault = EdgeInsets.all(paddingDefault);
@@ -52,6 +54,11 @@ const insetsHorizontalWidget = EdgeInsets.only(
 const insetsHorizontalWidgetSmall = EdgeInsets.only(
   left: paddingWidgetSmall,
   right: paddingWidgetSmall,
+);
+
+const insetsHorizontalWidgetTiny = EdgeInsets.only(
+  left: paddingWidgetTiny,
+  right: paddingWidgetTiny,
 );
 
 const insetsHorizontalMedium = EdgeInsets.only(

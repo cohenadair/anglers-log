@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/res/color.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/utils/dialog_utils.dart';
 import 'package:mobile/widgets/button.dart';
@@ -47,16 +48,13 @@ class ExpansionListItem extends StatefulWidget {
   final List<Widget> children;
   final Function(bool) onExpansionChanged;
   final bool toBottomSafeArea;
-  final bool hideDividers;
 
   ExpansionListItem({
     @required this.title,
     this.children,
     this.onExpansionChanged,
     this.toBottomSafeArea = false,
-    this.hideDividers = true,
   }) : assert(toBottomSafeArea != null),
-       assert(hideDividers != null),
        assert(title != null);
 
   @override
@@ -66,28 +64,42 @@ class ExpansionListItem extends StatefulWidget {
 class _ExpansionListItemState extends State<ExpansionListItem> {
   final GlobalKey _key = GlobalKey();
 
+  bool _expanded = false;
+
   @override
   Widget build(BuildContext context) {
-    ThemeData themeData = widget.hideDividers
-        ? Theme.of(context).copyWith(dividerColor: Colors.transparent)
-        : Theme.of(context);
-
     return SafeArea(
       top: false,
       bottom: widget.toBottomSafeArea,
-      child: Theme(
-        data: themeData,
-        child: ExpansionTile(
-          key: _key,
-          title: widget.title,
-          children: widget.children,
-          onExpansionChanged: (bool isExpanded) {
-            widget.onExpansionChanged?.call(isExpanded);
-          },
-        ),
+      child: Column(
+        children: [
+          _divider,
+          Theme(
+            data: Theme.of(context).copyWith(
+              dividerColor: Colors.transparent,
+              accentColor: colorInputIconAccent,
+              unselectedWidgetColor: colorInputIconAccent,
+            ),
+            child: ExpansionTile(
+              key: _key,
+              title: widget.title,
+              children: widget.children,
+              onExpansionChanged: (bool expanded) {
+                setState(() {
+                  _expanded = expanded;
+                });
+                widget.onExpansionChanged?.call(expanded);
+              },
+            ),
+          ),
+          _divider,
+        ],
       ),
     );
   }
+
+  Widget get _divider => MinDivider(color: _expanded
+      ? null : Colors.transparent);
 }
 
 /// A custom [ListTile]-like [Widget] that animates leading and trailing

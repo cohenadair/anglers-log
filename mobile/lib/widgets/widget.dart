@@ -14,9 +14,16 @@ class Empty extends StatelessWidget {
 }
 
 class MinDivider extends StatelessWidget {
+  final Color color;
+
+  MinDivider({this.color});
+
   @override
   Widget build(BuildContext context) {
-    return Divider(height: 1);
+    return Divider(
+      height: 1,
+      color: color,
+    );
   }
 }
 
@@ -279,6 +286,17 @@ class VerticalSpace extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Container(
     height: size,
+  );
+}
+
+class HorizontalSpace extends StatelessWidget {
+  final double size;
+
+  HorizontalSpace(this.size);
+
+  @override
+  Widget build(BuildContext context) => Container(
+    width: size,
   );
 }
 

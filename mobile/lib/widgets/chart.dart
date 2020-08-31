@@ -1,15 +1,17 @@
 import 'dart:math';
 
-import 'package:charts_flutter/flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/i18n/strings.dart';
+import 'package:mobile/log.dart';
 import 'package:mobile/model/named_entity.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/utils/collection_utils.dart';
+import 'package:mobile/utils/date_time_utils.dart';
 import 'package:mobile/utils/page_utils.dart';
 import 'package:mobile/widgets/list_item.dart';
 import 'package:mobile/widgets/text.dart';
 import 'package:mobile/widgets/widget.dart';
+import 'package:quiver/iterables.dart';
 import 'package:quiver/strings.dart';
 
 /// An [ExpandableListItem] that, when tapped, shows a condensed [Chart] widget.
@@ -18,8 +20,8 @@ class ExpandableChart<T extends NamedEntity> extends StatelessWidget {
   final String viewAllTitle;
   final String viewAllDescription;
   final Set<String> filters;
-  final List<ChartSeries<T>> series;
-  final Widget Function(T) rowDetailsPage;
+  final List<Series<T>> series;
+  final Widget Function(T, DateRange) rowDetailsPage;
 
   ExpandableChart({
     this.title,
@@ -30,57 +32,53 @@ class ExpandableChart<T extends NamedEntity> extends StatelessWidget {
     this.rowDetailsPage,
   }) : assert(series != null),
        assert(filters != null);
-  
-  ExpandableChart.singleSeries({
-    String title,
-    String viewAllTitle,
-    String viewAllDescription,
-    Set<String> filters = const {},
-    ChartSeries<T> series,
-    Widget Function(T) rowDetailsPage,
-  }) : this(
-    title: title,
-    viewAllTitle: viewAllTitle,
-    viewAllDescription: viewAllDescription,
-    filters: filters,
-    series: series == null ? const [] : [series],
-    rowDetailsPage: rowDetailsPage,
-  );
 
   @override
   Widget build(BuildContext context) {
     return ExpansionListItem(
-      title: Text(title),
+      title: Text(title, style: TextStyle(color: Colors.black),),
       children: [
         Chart<T>(
           series: series,
+          padding: insetsHorizontalDefaultVerticalSmall,
           viewAllTitle: viewAllTitle,
           chartPageDescription: viewAllDescription,
           chartPageFilters: filters,
-          onTapRow: (entity) => push(context, rowDetailsPage(entity)),
+          onTapRow: (entity, dateRange) =>
+              push(context, rowDetailsPage(entity, dateRange)),
         ),
       ],
     );
   }
 }
 
-class ChartSeries<T extends NamedEntity> {
+class Series<T extends NamedEntity> {
   final Map<T, int> data;
-  final String legendLabel;
+  final DisplayDateRange displayDateRange;
+
+  Color _color;
+
+  Series(this.data, this.displayDateRange)
+      : assert (data != null && data.isNotEmpty),
+        assert(displayDateRange != null);
 
   int get length => data.length;
+  int get maxValue => max(data.values);
 
-  ChartSeries(this.data, [this.legendLabel]);
-
-  ChartSeries<T> limitToFirst(int count) {
-    return ChartSeries<T>(firstElements(data, numberOfElements: count),
-        legendLabel);
+  Series<T> limitToFirst(int count) {
+    return Series<T>(firstElements(data, numberOfElements: count),
+        displayDateRange).._color = _color;
   }
 }
 
 class Chart<T extends NamedEntity> extends StatefulWidget {
-  final List<ChartSeries<T>> series;
-  final String title;
+  static const _rowColorOpacity = 0.65;
+
+  final EdgeInsets padding;
+
+  /// The data shown in the chart. Length must be >= 1. All [Series]
+  /// elements must have equal data lengths.
+  final List<Series<T>> series;
 
   /// The title for the "view all" [ListItem] shown when there are more chart
   /// rows to see.
@@ -100,11 +98,11 @@ class Chart<T extends NamedEntity> extends StatefulWidget {
   final bool showAll;
 
   final String Function(T) labelBuilder;
-  final void Function(T) onTapRow;
+  final void Function(T, DateRange) onTapRow;
 
   Chart({
     @required this.series,
-    this.title,
+    this.padding = insetsZero,
     this.viewAllTitle,
     this.chartPageDescription,
     this.chartPageFilters = const {},
@@ -115,21 +113,40 @@ class Chart<T extends NamedEntity> extends StatefulWidget {
            && isNotEmpty(chartPageDescription)),
            "showAll is false; viewAllTitle is required"),
        assert(series != null),
+       assert(padding != null),
        assert(series.isNotEmpty),
-       assert(chartPageFilters != null);
+       assert(chartPageFilters != null)
+  {
+    List<Color> colors = List.of(Colors.primaries)
+        ..remove(Colors.brown)
+        ..remove(Colors.blueGrey);
+
+    int seriesLen = series.first.length;
+    for (Series series in series) {
+      assert(series.length == seriesLen,
+          "All data lengths in series must be equal");
+      Color color = colors[Random().nextInt(colors.length)];
+      colors.remove(color);
+      series._color = color.withOpacity(_rowColorOpacity);
+    }
+  }
 
   @override
   _ChartState<T> createState() => _ChartState<T>();
 }
 
 class _ChartState<T extends NamedEntity> extends State<Chart<T>> {
-  static const _rowHeight = 35.0;
+  static final _log = Log("MyChart");
+
+  static final Color _emptyBgColor = Colors.grey.withOpacity(0.15);
+
+  static const _legendIndicatorSize = 15.0;
+  static const _rowHeight = 20.0;
   static const _condensedRowCount = 3;
 
   /// A subset of [widget.series] of size [_condensedRowCount].
-  List<ChartSeries<T>> _displayData = [];
+  List<Series<T>> _displayData = [];
 
-  int _rowCount = 0;
   int _maxRowCount = 0;
 
   @override
@@ -151,83 +168,111 @@ class _ChartState<T extends NamedEntity> extends State<Chart<T>> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _buildTitle(),
+        _buildLegend(),
         _buildChart(),
         _buildViewAll(),
       ],
     );
   }
 
-  Widget _buildTitle() {
-    if (isEmpty(widget.title)) {
+  Widget _buildLegend() {
+    if (widget.series.length <= 1) {
       return Empty();
     }
-
     return Padding(
-      padding: EdgeInsets.only(
-        left: paddingDefault,
-        right: paddingDefault,
-        bottom: paddingWidget,
+      padding: widget.padding.copyWith(
+        top: paddingWidgetSmall,
+        bottom: paddingWidgetSmall,
       ),
-      child: HeadingLabel(widget.title),
+      child: Wrap(
+        spacing: paddingWidget,
+        runSpacing: paddingWidgetTiny,
+        children: widget.series.map((series) => Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              width: _legendIndicatorSize,
+              height: _legendIndicatorSize,
+              color: series._color,
+            ),
+            HorizontalSpace(paddingWidgetSmall),
+            Text(series.displayDateRange.title(context)),
+          ],
+        )).toList(),
+      ),
     );
   }
 
   Widget _buildChart() {
+    List<Widget> children = [];
+
+    // Get largest column value.
+    double maxValue = 0;
+    for (Series series in _displayData) {
+      int max = series.maxValue;
+      if (max > maxValue) {
+        maxValue = max.toDouble();
+      }
+    }
+
+    double maxWidth = MediaQuery.of(context).size.width;
+
+    // For every unique NamedEntity in the series, create a child widget.
+    List<T> entities = _displayData.first.data.keys.toList();
+    for (T entity in entities) {
+      for (Series series in _displayData) {
+        children.add(_buildChartRow(maxWidth, maxValue, entity, series,
+            series.data[entity],
+            series._color ?? Theme.of(context).primaryColor));
+
+        // Add space between series rows.
+        children.add(VerticalSpace(series == _displayData.last
+            ? 0 : paddingWidgetTiny));
+      }
+
+      // Add space between rows.
+      children.add(VerticalSpace(entity == entities.last ? 0 : paddingDefault));
+    }
+
     return Container(
-      padding: insetsHorizontalDefault,
-      height: _rowHeight * _rowCount,
-      child: BarChart(
-        _displayData.map((data) => _buildSeries(data)).toList(),
-        animate: true,
-        vertical: false,
-        barRendererDecorator: BarLabelDecorator<String>(),
-        domainAxis: OrdinalAxisSpec(
-          renderSpec: NoneRenderSpec(),
-        ),
-        primaryMeasureAxis: NumericAxisSpec(
-          renderSpec: NoneRenderSpec(),
-        ),
-        layoutConfig: LayoutConfig(
-          leftMarginSpec: MarginSpec.fixedPixel(0),
-          topMarginSpec: MarginSpec.fixedPixel(0),
-          rightMarginSpec: MarginSpec.fixedPixel(0),
-          bottomMarginSpec: MarginSpec.defaultSpec,
-        ),
-        selectionModels: [
-          SelectionModelConfig(
-            changedListener: (model) {
-              widget.onTapRow?.call(model.selectedDatum.first.datum as T);
-              // Delay clearing selection so there is visual feedback that the
-              // row was tapped.
-              Future.delayed(Duration(milliseconds: 50), () {
-                setState(() {});
-              });
-            },
-          ),
-        ],
-        behaviors: widget.series.length > 1 ? [
-          SeriesLegend(),
-        ] : [],
+      padding: widget.padding,
+      width: maxWidth,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: children,
       ),
     );
   }
 
-  Series<T, String> _buildSeries(ChartSeries<T> series) {
-    return Series<T, String>(
-      id: series.legendLabel,
-      data: series.data.keys.toList(),
-      domainFn: (entity, _) => widget.labelBuilder?.call(entity)
-          ?? entity.name,
-      measureFn: (entity, _) => series.data[entity],
-      seriesColor: ColorUtil
-          .fromDartColor(Theme.of(context).primaryColor),
-      labelAccessorFn: (entity, _) {
-        String label = widget.labelBuilder?.call(entity);
-        return "${label ?? entity.name} (${series.data[entity]})";
-      },
-      insideLabelStyleAccessorFn: (_, __) => TextStyleSpec(
-        color: ColorUtil.fromDartColor(Colors.black),
+  Widget _buildChartRow(double maxWidth, double maxValue, T entity,
+      Series<T> series, int value, Color color)
+  {
+    if (maxValue <= 0) {
+      _log.w("Can't create a chart row with maxValue = 0");
+      return Empty();
+    }
+
+    return InkWell(
+      onTap: () => widget.onTapRow?.call(entity, series.displayDateRange.value),
+      child: Stack(
+        alignment: Alignment.centerLeft,
+        children: [
+          Container(
+            height: _rowHeight,
+            width: maxWidth,
+            color: _emptyBgColor,
+          ),
+          Container(
+            height: _rowHeight,
+            width: value.toDouble() / maxValue
+                * (maxWidth - widget.padding.left - widget.padding.right),
+            color: color,
+          ),
+          Padding(
+            padding: insetsHorizontalWidgetTiny,
+            child: Label("${entity.name} ($value)"),
+          ),
+        ],
       ),
     );
   }
@@ -267,18 +312,16 @@ class _ChartState<T extends NamedEntity> extends State<Chart<T>> {
         _maxRowCount = data.length;
       }
     }
-    _rowCount = widget.showAll
-        ? _maxRowCount : min(_condensedRowCount, _maxRowCount);
   }
 }
 
 /// A full page widget that displays a [Chart] with a lot of rows.
 class _ChartPage<T extends NamedEntity> extends StatelessWidget {
-  final List<ChartSeries<T>> series;
+  final List<Series<T>> series;
   final String description;
   final Set<String> filters;
   final String Function(T) labelBuilder;
-  final void Function(T) onTapRow;
+  final void Function(T, DateRange) onTapRow;
 
   _ChartPage({
     @required this.series,
@@ -306,14 +349,17 @@ class _ChartPage<T extends NamedEntity> extends StatelessWidget {
                 child: Text(description),
               ),
               _buildFilters(context),
-              Padding(
-                padding: insetsBottomDefault,
-                child: Chart<T>(
-                  series: series,
-                  labelBuilder: labelBuilder,
-                  onTapRow: onTapRow,
-                  showAll: true,
+              Chart<T>(
+                series: series,
+                padding: EdgeInsets.only(
+                  left: paddingDefault,
+                  right: paddingDefault,
+                  bottom: paddingSmall,
+                  top: paddingSmall,
                 ),
+                labelBuilder: labelBuilder,
+                onTapRow: onTapRow,
+                showAll: true,
               ),
             ],
           ),

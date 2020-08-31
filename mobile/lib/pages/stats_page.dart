@@ -9,6 +9,7 @@ import 'package:mobile/model/report.dart';
 import 'package:mobile/pages/report_list_page.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/utils/page_utils.dart';
+import 'package:mobile/widgets/reports/custom_comparison_report_view.dart';
 import 'package:mobile/widgets/reports/custom_summary_report_view.dart';
 import 'package:mobile/widgets/reports/overview_report_view.dart';
 import 'package:mobile/widgets/widget.dart';
@@ -77,7 +78,7 @@ class _StatsPageState extends State<StatsPage> {
     } else if (_currentReport is CustomSummaryReport) {
       return CustomSummaryReportView(_currentReport.id);
     } else {
-      return Text(_currentReport.title(context));
+      return CustomComparisonReportView(_currentReport.id);
     }
   }
 
