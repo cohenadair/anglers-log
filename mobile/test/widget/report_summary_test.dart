@@ -32,19 +32,19 @@ void main() {
   MockSpeciesManager speciesManager;
 
   Map<String, Species> speciesMap = {
-    "Bass": Species(id: "Bass", name: "Bass"),
     "Bluegill": Species(id: "Bluegill", name: "Bluegill"),
-    "Catfish": Species(id: "Catfish", name: "Catfish"),
-    "Steelhead": Species(id: "Steelhead", name: "Steelhead"),
     "Pike": Species(id: "Pike", name: "Pike"),
+    "Catfish": Species(id: "Catfish", name: "Catfish"),
+    "Bass": Species(id: "Bass", name: "Bass"),
+    "Steelhead": Species(id: "Steelhead", name: "Steelhead"),
   };
 
   Map<String, FishingSpot> fishingSpotMap = {
-    "A": FishingSpot(id: "A", lat: 0.0, lng: 0.4),
-    "B": FishingSpot(id: "B", lat: 0.1, lng: 0.3),
-    "C": FishingSpot(id: "C", lat: 0.2, lng: 0.2),
-    "D": FishingSpot(id: "D", lat: 0.3, lng: 0.1),
-    "E": FishingSpot(id: "E", lat: 0.4, lng: 0.0),
+    "E": FishingSpot(id: "E", name: "E", lat: 0.4, lng: 0.0),
+    "C": FishingSpot(id: "C", name: "C",  lat: 0.2, lng: 0.2),
+    "B": FishingSpot(id: "B", name: "B",  lat: 0.1, lng: 0.3),
+    "D": FishingSpot(id: "D", name: "D",  lat: 0.3, lng: 0.1),
+    "A": FishingSpot(id: "A", name: "A",  lat: 0.0, lng: 0.4),
   };
 
   Map<String, Bait> baitMap = {
@@ -54,6 +54,79 @@ void main() {
     "Grasshopper": Bait(id: "Grasshopper", name: "Grasshopper"),
     "Grub": Bait(id: "Grub", name: "Grub"),
   };
+
+  List<Catch> _catches = [
+    Catch(
+      id: "0",
+      timestamp: 10,
+      speciesId: "Bass",
+      fishingSpotId: "C",
+      baitId: "Worm",
+    ),
+    Catch(
+      id: "1",
+      timestamp: 5000,
+      speciesId: "Steelhead",
+      fishingSpotId: "D",
+      baitId: "Grub",
+    ),
+    Catch(
+      id: "2",
+      timestamp: 100,
+      speciesId: "Bluegill",
+      fishingSpotId: "A",
+      baitId: "Worm",
+    ),
+    Catch(
+      id: "3",
+      timestamp: 900,
+      speciesId: "Pike",
+      fishingSpotId: "E",
+      baitId: "Bugger",
+    ),
+    Catch(
+      id: "4",
+      timestamp: 78000,
+      speciesId: "Steelhead",
+      fishingSpotId: "C",
+      baitId: "Worm",
+    ),
+    Catch(
+      id: "5",
+      timestamp: 100000,
+      speciesId: "Bass",
+      fishingSpotId: "C",
+      baitId: "Minnow",
+    ),
+    Catch(
+      id: "6",
+      timestamp: 800,
+      speciesId: "Pike",
+      fishingSpotId: "B",
+      baitId: "Bugger",
+    ),
+    Catch(
+      id: "7",
+      timestamp: 70,
+      speciesId: "Pike",
+      fishingSpotId: "C",
+      baitId: "Worm",
+    ),
+    Catch(
+      id: "8",
+      timestamp: 15,
+      speciesId: "Pike",
+      fishingSpotId: "C",
+      baitId: "Bugger",
+    ),
+    Catch(
+      id: "9",
+      timestamp: 6000,
+      speciesId: "Steelhead",
+      fishingSpotId: "C",
+      baitId: "Worm",
+    ),
+  ];
 
   setUp(() {
     appManager = MockAppManager();
@@ -68,9 +141,11 @@ void main() {
             baitMap.containsKey(invocation.namedArguments[Symbol("id")]));
 
     catchManager = MockCatchManager();
+    when(catchManager.entityList()).thenReturn(_catches);
     when(appManager.catchManager).thenReturn(catchManager);
 
     clock = MockClock();
+    when(clock.now()).thenReturn(DateTime.fromMillisecondsSinceEpoch(105000));
 
     fishingSpotManager = MockFishingSpotManager();
     when(appManager.fishingSpotManager).thenReturn(fishingSpotManager);
@@ -90,85 +165,19 @@ void main() {
         speciesMap[invocation.namedArguments[Symbol("id")]]);
   });
 
-  testWidgets("Gather data", (WidgetTester tester) async {
-    BuildContext context = await buildContext(tester);
+  void _stubCatchesByTimestamp(BuildContext context) {
+    when(catchManager.catchesSortedByTimestamp(context,
+      dateRange: anyNamed("dateRange"),
+      baitIds: anyNamed("baitIds"),
+      fishingSpotIds: anyNamed("fishingSpotIds"),
+      speciesIds: anyNamed("speciesIds"),
+    )).thenReturn(
+        _catches..sort((lhs, rhs) => rhs.timestamp.compareTo(lhs.timestamp)));
+  }
 
-    List<Catch> catches = [
-      Catch(
-        id: "0",
-        timestamp: 10,
-        speciesId: "Bass",
-        fishingSpotId: "C",
-        baitId: "Worm",
-      ),
-      Catch(
-        id: "1",
-        timestamp: 5000,
-        speciesId: "Steelhead",
-        fishingSpotId: "D",
-        baitId: "Grub",
-      ),
-      Catch(
-        id: "2",
-        timestamp: 100,
-        speciesId: "Bluegill",
-        fishingSpotId: "A",
-        baitId: "Worm",
-      ),
-      Catch(
-        id: "3",
-        timestamp: 900,
-        speciesId: "Pike",
-        fishingSpotId: "E",
-        baitId: "Bugger",
-      ),
-      Catch(
-        id: "4",
-        timestamp: 78000,
-        speciesId: "Steelhead",
-        fishingSpotId: "C",
-        baitId: "Worm",
-      ),
-      Catch(
-        id: "5",
-        timestamp: 100000,
-        speciesId: "Bass",
-        fishingSpotId: "C",
-        baitId: "Minnow",
-      ),
-      Catch(
-        id: "6",
-        timestamp: 800,
-        speciesId: "Pike",
-        fishingSpotId: "B",
-        baitId: "Bugger",
-      ),
-      Catch(
-        id: "7",
-        timestamp: 70,
-        speciesId: "Pike",
-        fishingSpotId: "C",
-        baitId: "Worm",
-      ),
-      Catch(
-        id: "8",
-        timestamp: 15,
-        speciesId: "Pike",
-        fishingSpotId: "C",
-        baitId: "Bugger",
-      ),
-      Catch(
-        id: "9",
-        timestamp: 6000,
-        speciesId: "Steelhead",
-        fishingSpotId: "C",
-        baitId: "Worm",
-      ),
-    ];
-    when(catchManager.entityList()).thenReturn(catches);
-    when(catchManager.catchesSortedByTimestamp(context)).thenReturn(
-        catches..sort((lhs, rhs) => rhs.timestamp.compareTo(lhs.timestamp)));
-    when(clock.now()).thenReturn(DateTime.fromMillisecondsSinceEpoch(105000));
+  testWidgets("Gather data normal case", (WidgetTester tester) async {
+    BuildContext context = await buildContext(tester);
+    _stubCatchesByTimestamp(context);
 
     // Normal use case.
     var data = ReportSummaryModel(
@@ -182,7 +191,7 @@ void main() {
     expect(data.msSinceLastCatch, 5000);
     expect(data.totalCatches, 10);
     expect(data.catchesPerSpecies.length, 4);
-    expect(data.allCatchIds, catches.map((c) => c.id).toSet());
+    expect(data.allCatchIds, _catches.map((c) => c.id).toSet());
     expect(data.catchIdsPerSpecies[speciesMap["Bass"]], {"0", "5"});
     expect(data.catchIdsPerSpecies[speciesMap["Steelhead"]], {"9", "4", "1"});
     expect(data.catchIdsPerSpecies[speciesMap["Pike"]], {"8", "7", "6", "3"});
@@ -271,43 +280,203 @@ void main() {
     expect(data.fishingSpotsPerSpecies(
         speciesMap["Bluegill"])[fishingSpotMap["E"]], null);
     expect(data.fishingSpotsPerSpecies(speciesMap["Catfish"]), {});
+  });
 
-    // Different date range.
-    data = ReportSummaryModel(
+  testWidgets("Gather data including zeros", (WidgetTester tester) async {
+    BuildContext context = await buildContext(tester);
+    _stubCatchesByTimestamp(context);
+
+    var data = ReportSummaryModel(
       appManager: appManager,
       context: context,
-      displayDateRange: DisplayDateRange.newCustom(
-        getTitle: (_) => "",
-        getValue: (_) => DateRange(
-          startDate: DateTime.fromMillisecondsSinceEpoch(0),
-          endDate: DateTime.fromMillisecondsSinceEpoch(1000),
-        ),
-      ),
+      displayDateRange: DisplayDateRange.allDates,
+      clock: clock,
+      includeZeros: true,
+    );
+
+    expect(data.catchesPerSpecies.length, 5);
+  });
+
+  testWidgets("Gather data alphabetical order", (WidgetTester tester) async {
+    BuildContext context = await buildContext(tester);
+    _stubCatchesByTimestamp(context);
+
+    var data = ReportSummaryModel(
+      appManager: appManager,
+      context: context,
+      displayDateRange: DisplayDateRange.allDates,
+      clock: clock,
+      sortOrder: ReportSummaryModelSortOrder.alphabetical,
+    );
+
+    expect(data.catchesPerSpecies.keys.toList(), [
+      speciesMap["Bass"],
+      speciesMap["Bluegill"],
+      speciesMap["Pike"],
+      speciesMap["Steelhead"],
+    ]);
+    expect(data.catchesPerFishingSpot.keys.toList(), [
+      fishingSpotMap["A"],
+      fishingSpotMap["B"],
+      fishingSpotMap["C"],
+      fishingSpotMap["D"],
+      fishingSpotMap["E"],
+    ]);
+    expect(data.catchesPerBait.keys.toList(), [
+      baitMap["Bugger"],
+      baitMap["Grub"],
+      baitMap["Minnow"],
+      baitMap["Worm"],
+    ]);
+    expect(data.fishingSpotsPerSpecies(speciesMap["Bass"]).keys.toList(), [
+      fishingSpotMap["C"],
+    ]);
+    expect(data.fishingSpotsPerSpecies(speciesMap["Bluegill"]).keys.toList(), [
+      fishingSpotMap["A"],
+    ]);
+    expect(data.fishingSpotsPerSpecies(speciesMap["Catfish"]).keys.toList(),
+        []);
+    expect(data.fishingSpotsPerSpecies(speciesMap["Steelhead"]).keys.toList(), [
+      fishingSpotMap["C"],
+      fishingSpotMap["D"],
+    ]);
+    expect(data.fishingSpotsPerSpecies(speciesMap["Pike"]).keys.toList(), [
+      fishingSpotMap["B"],
+      fishingSpotMap["C"],
+      fishingSpotMap["E"],
+    ]);
+    expect(data.baitsPerSpecies(speciesMap["Bass"]).keys.toList(), [
+      baitMap["Minnow"],
+      baitMap["Worm"],
+    ]);
+    expect(data.baitsPerSpecies(speciesMap["Bluegill"]).keys.toList(), [
+      baitMap["Worm"],
+    ]);
+    expect(data.baitsPerSpecies(speciesMap["Catfish"]).keys.toList(), []);
+    expect(data.baitsPerSpecies(speciesMap["Steelhead"]).keys.toList(), [
+      baitMap["Grub"],
+      baitMap["Worm"],
+    ]);
+    expect(data.baitsPerSpecies(speciesMap["Pike"]).keys.toList(), [
+      baitMap["Bugger"],
+      baitMap["Worm"],
+    ]);
+  });
+
+  testWidgets("Gather data sequential order", (WidgetTester tester) async {
+    BuildContext context = await buildContext(tester);
+    _stubCatchesByTimestamp(context);
+
+    var data = ReportSummaryModel(
+      appManager: appManager,
+      context: context,
+      displayDateRange: DisplayDateRange.allDates,
       clock: clock,
     );
 
-    expect(data.containsNow, false);
-    expect(data.msSinceLastCatch, 5000);
-    expect(data.totalCatches, 6);
-    expect(data.catchesPerSpecies.length, 3);
-    expect(data.catchesPerSpecies[speciesMap["Bass"]], 1);
-    expect(data.catchesPerSpecies[speciesMap["Steelhead"]], null);
-    expect(data.catchesPerSpecies[speciesMap["Pike"]], 4);
-    expect(data.catchesPerSpecies[speciesMap["Bluegill"]], 1);
-    expect(data.catchesPerSpecies[speciesMap["Catfish"]], null);
+    expect(data.catchesPerSpecies.keys.toList(), [
+      speciesMap["Pike"],
+      speciesMap["Steelhead"],
+      speciesMap["Bass"],
+      speciesMap["Bluegill"],
+    ]);
+    expect(data.catchesPerFishingSpot.keys.toList(), [
+      fishingSpotMap["C"],
+      fishingSpotMap["D"],
+      fishingSpotMap["E"],
+      fishingSpotMap["B"],
+      fishingSpotMap["A"],
+    ]);
+    expect(data.catchesPerBait.keys.toList(), [
+      baitMap["Worm"],
+      baitMap["Bugger"],
+      baitMap["Minnow"],
+      baitMap["Grub"],
+    ]);
+    expect(data.fishingSpotsPerSpecies(speciesMap["Bass"]).keys.toList(), [
+      fishingSpotMap["C"],
+    ]);
+    expect(data.fishingSpotsPerSpecies(speciesMap["Bluegill"]).keys.toList(), [
+      fishingSpotMap["A"],
+    ]);
+    expect(data.fishingSpotsPerSpecies(speciesMap["Catfish"]).keys.toList(),
+        []);
+    expect(data.fishingSpotsPerSpecies(speciesMap["Steelhead"]).keys.toList(), [
+      fishingSpotMap["C"],
+      fishingSpotMap["D"],
+    ]);
+    expect(data.fishingSpotsPerSpecies(speciesMap["Pike"]).keys.toList(), [
+      fishingSpotMap["C"],
+      fishingSpotMap["E"],
+      fishingSpotMap["B"],
+    ]);
+    expect(data.baitsPerSpecies(speciesMap["Bass"]).keys.toList(), [
+      baitMap["Minnow"],
+      baitMap["Worm"],
+    ]);
+    expect(data.baitsPerSpecies(speciesMap["Bluegill"]).keys.toList(), [
+      baitMap["Worm"],
+    ]);
+    expect(data.baitsPerSpecies(speciesMap["Catfish"]).keys.toList(), []);
+    expect(data.baitsPerSpecies(speciesMap["Steelhead"]).keys.toList(), [
+      baitMap["Worm"],
+      baitMap["Grub"],
+    ]);
+    expect(data.baitsPerSpecies(speciesMap["Pike"]).keys.toList(), [
+      baitMap["Bugger"],
+      baitMap["Worm"],
+    ]);
+  });
 
-    expect(data.catchesPerFishingSpot.length, 4);
-    expect(data.catchesPerFishingSpot[fishingSpotMap["A"]], 1);
-    expect(data.catchesPerFishingSpot[fishingSpotMap["B"]], 1);
-    expect(data.catchesPerFishingSpot[fishingSpotMap["C"]], 3);
-    expect(data.catchesPerFishingSpot[fishingSpotMap["D"]], null);
-    expect(data.catchesPerFishingSpot[fishingSpotMap["E"]], 1);
+  testWidgets("Filters", (WidgetTester tester) async {
+    BuildContext context = await buildContext(tester);
+    _stubCatchesByTimestamp(context);
 
-    expect(data.catchesPerBait.length, 2);
-    expect(data.catchesPerBait[baitMap["Worm"]], 3);
-    expect(data.catchesPerBait[baitMap["Bugger"]], 3);
-    expect(data.catchesPerBait[baitMap["Minnow"]], null);
-    expect(data.catchesPerBait[baitMap["Grasshopper"]], null);
-    expect(data.catchesPerBait[baitMap["Grub"]], null);
+    var data = ReportSummaryModel(
+      appManager: appManager,
+      context: context,
+      displayDateRange: DisplayDateRange.allDates,
+      clock: clock,
+      baitIds: {"Worm", "Grub"},
+      fishingSpotIds: {"E", "B", "C"},
+      speciesIds: {"Steelhead", "Catfish"},
+    );
+
+    expect(data.filters(),
+        {"All dates", "Worm", "Grub", "E", "B", "C", "Steelhead", "Catfish"});
+    expect(data.filters(includeSpecies: false),
+        {"All dates", "Worm", "Grub", "E", "B", "C"});
+    expect(data.filters(includeDateRange: false),
+        {"Worm", "Grub", "E", "B", "C", "Steelhead", "Catfish"});
+    expect(data.filters(includeSpecies: false, includeDateRange: false),
+        {"Worm", "Grub", "E", "B", "C"});
+  });
+
+  testWidgets("removeZerosComparedTo", (WidgetTester tester) async {
+    BuildContext context = await buildContext(tester);
+    _stubCatchesByTimestamp(context);
+
+    var data1 = ReportSummaryModel(
+      appManager: appManager,
+      context: context,
+      displayDateRange: DisplayDateRange.allDates,
+      clock: clock,
+      includeZeros: true,
+    );
+    expect(data1.catchesPerSpecies.length, 5);
+
+    var data2 = ReportSummaryModel(
+      appManager: appManager,
+      context: context,
+      displayDateRange: DisplayDateRange.allDates,
+      clock: clock,
+      includeZeros: true,
+    );
+    expect(data2.catchesPerSpecies.length, 5);
+
+    // Both data sets will be missing catfish.
+    data1.removeZerosComparedTo(data2);
+    expect(data1.catchesPerSpecies.length, 4);
+    expect(data2.catchesPerSpecies.length, 4);
   });
 }

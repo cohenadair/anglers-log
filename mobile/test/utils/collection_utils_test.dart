@@ -6,7 +6,7 @@ enum TestEnum {
 }
 
 void main() {
-  test("sortedMap", () {
+  test("Default sortedMap", () {
     expect(sortedMap<String>({
       "0": 200,
       "6": 5678,
@@ -14,14 +14,35 @@ void main() {
       "2": 1035,
       "8": 109,
       "1": 100,
-    }), {
+    }).values, {
       "6": 5678,
       "2": 1035,
       "3": 1000,
       "0": 200,
       "8": 109,
       "1": 100,
-    });
+    }.values);
+  });
+
+  test("sortedMap with comparator", () {
+    var map = {
+      "0": 200,
+      "6": 5678,
+      "3": 1000,
+      "2": 1035,
+      "8": 109,
+      "1": 100,
+    };
+
+    expect(sortedMap<String>(map, (lhs, rhs) => map[lhs].compareTo(map[rhs]))
+        .values, {
+          "1": 100,
+          "8": 109,
+          "0": 200,
+          "3": 1000,
+          "2": 1035,
+          "6": 5678,
+        }.values);
   });
 
   test("firstElements", () {

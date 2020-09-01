@@ -137,7 +137,7 @@ class _ReportSummaryState extends State<ReportSummary> {
     viewAllTitle: Strings.of(context).reportSummaryViewSpecies,
     viewAllDescription: Strings.of(context)
         .reportSummaryCatchesPerSpeciesDescription,
-    filters: filters(includeDateRange: !comparing),
+    filters: _filters(includeDateRange: !comparing),
     series: _models.map((model) => Series<Species>(model.catchesPerSpecies,
         model.displayDateRange)).toList(),
     rowDetailsPage: (species, dateRange) => CatchListPage(
@@ -159,7 +159,7 @@ class _ReportSummaryState extends State<ReportSummary> {
       viewAllTitle: Strings.of(context).reportSummaryViewFishingSpots,
       viewAllDescription: Strings.of(context)
           .reportSummaryCatchesPerFishingSpotDescription,
-      filters: filters(includeDateRange: !comparing),
+      filters: _filters(includeDateRange: !comparing),
       series: _models.map((model) =>
           Series<FishingSpot>(model.catchesPerFishingSpot,
               model.displayDateRange)).toList(),
@@ -183,7 +183,7 @@ class _ReportSummaryState extends State<ReportSummary> {
       viewAllTitle: Strings.of(context).reportSummaryViewBaits,
       viewAllDescription: Strings.of(context)
           .reportSummaryCatchesPerBaitDescription,
-      filters: filters(includeDateRange: !comparing),
+      filters: _filters(includeDateRange: !comparing),
       series: _models.map((model) => Series<Bait>(model.catchesPerBait,
           model.displayDateRange)).toList(),
       rowDetailsPage: (bait, dateRange) => CatchListPage(
@@ -238,7 +238,7 @@ class _ReportSummaryState extends State<ReportSummary> {
       viewAllTitle: Strings.of(context).reportSummaryViewBaits,
       viewAllDescription: Strings.of(context)
           .reportSummaryCatchesPerBaitDescription,
-      filters: filters(
+      filters: _filters(
         includeSpecies: false,
         includeDateRange: !comparing,
       )..add(_currentSpecies.name),
@@ -259,7 +259,7 @@ class _ReportSummaryState extends State<ReportSummary> {
       viewAllTitle: Strings.of(context).reportSummaryViewFishingSpots,
       viewAllDescription: Strings.of(context)
           .reportSummaryCatchesPerFishingSpotDescription,
-      filters: filters(
+      filters: _filters(
         includeSpecies: false,
         includeDateRange: !comparing,
       )..add(_currentSpecies.name),
@@ -317,7 +317,7 @@ class _ReportSummaryState extends State<ReportSummary> {
     }
   }
 
-  Set<String> filters({
+  Set<String> _filters({
     bool includeSpecies = true,
     bool includeDateRange = true,
   }) => _models.fold<Set<String>>({}, (previousValue, element) =>
@@ -539,21 +539,21 @@ class ReportSummaryModel {
   /// Removes data if this model and [other] both have 0 values for a given
   /// data point. Data is removed from both this and [other].
   void removeZerosComparedTo(ReportSummaryModel other) {
-    removeZeros(_catchesPerSpecies, other._catchesPerSpecies);
-    removeZeros(_catchesPerFishingSpot, other._catchesPerFishingSpot);
-    removeZeros(_catchesPerBait, other._catchesPerBait);
+    _removeZeros(_catchesPerSpecies, other._catchesPerSpecies);
+    _removeZeros(_catchesPerFishingSpot, other._catchesPerFishingSpot);
+    _removeZeros(_catchesPerBait, other._catchesPerBait);
 
     for (Species key in _fishingSpotsPerSpecies.value.keys) {
-      removeZeros(_fishingSpotsPerSpecies[key],
+      _removeZeros(_fishingSpotsPerSpecies[key],
           other._fishingSpotsPerSpecies[key]);
     }
 
     for (Species key in _baitsPerSpecies.value.keys) {
-      removeZeros(_baitsPerSpecies[key], other._baitsPerSpecies[key]);
+      _removeZeros(_baitsPerSpecies[key], other._baitsPerSpecies[key]);
     }
   }
 
-  void removeZeros<T>(Map<T, int> map1, Map<T, int> map2) {
+  void _removeZeros<T>(Map<T, int> map1, Map<T, int> map2) {
     List<T> keys = map1.keys.toList();
     for (T key in keys) {
       if (!map1.containsKey(key) || !map2.containsKey(key)) {
