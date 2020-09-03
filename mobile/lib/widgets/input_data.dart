@@ -13,7 +13,9 @@ class InputData {
   final String id;
 
   /// Returns user-visible label text. This is required for displaying this
-  /// input in the list of available inputs in an [EditableFormPage].
+  /// input in the list of available inputs in an [EditableFormPage]. If the
+  /// [InputData] does not belong to an [EditableFormPage], this value can be
+  /// null.
   final String Function(BuildContext) label;
 
   /// Whether the input can be removed from the associated form. Defaults to
@@ -34,11 +36,10 @@ class InputData {
   InputData({
     @required this.id,
     @required this.controller,
-    @required this.label,
-    @required this.showing,
+    this.label,
+    this.showing = true,
     this.removable = true,
   }) : assert(isNotEmpty(id)),
-       assert(label != null),
        assert(controller != null),
        fake = false;
 

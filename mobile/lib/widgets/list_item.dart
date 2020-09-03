@@ -1,7 +1,5 @@
-import 'dart:async';
-import 'dart:math';
-
 import 'package:flutter/material.dart';
+import 'package:mobile/res/color.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/utils/dialog_utils.dart';
 import 'package:mobile/widgets/button.dart';
@@ -50,15 +48,14 @@ class ExpansionListItem extends StatefulWidget {
   final List<Widget> children;
   final Function(bool) onExpansionChanged;
   final bool toBottomSafeArea;
-  final ScrollController scrollController;
 
   ExpansionListItem({
     @required this.title,
     this.children,
     this.onExpansionChanged,
     this.toBottomSafeArea = false,
-    this.scrollController,
-  });
+  }) : assert(toBottomSafeArea != null),
+       assert(title != null);
 
   @override
   _ExpansionListItemState createState() => _ExpansionListItemState();
@@ -66,50 +63,43 @@ class ExpansionListItem extends StatefulWidget {
 
 class _ExpansionListItemState extends State<ExpansionListItem> {
   final GlobalKey _key = GlobalKey();
-  double _previousScrollOffset;
+
+  bool _expanded = false;
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       top: false,
       bottom: widget.toBottomSafeArea,
-      child: ExpansionTile(
-        key: _key,
-        title: widget.title,
-        children: widget.children,
-        onExpansionChanged: (bool isExpanded) {
-          widget.onExpansionChanged?.call(isExpanded);
-
-          if (isExpanded && widget.scrollController != null) {
-            _previousScrollOffset = widget.scrollController.offset;
-
-            // This is a hack to scroll after ExpansionTile has finished
-            // animating, since there is no built in functionality to fire an
-            // event after the expansion animation is finished.
-            //
-            // Duration is the duration of the expansion + 25 ms for insurance.
-            Timer(Duration(milliseconds: 200 + 25), () {
-              _scrollIfNeeded();
-            });
-          }
-        },
+      child: Column(
+        children: [
+          _divider,
+          Theme(
+            data: Theme.of(context).copyWith(
+              dividerColor: Colors.transparent,
+              accentColor: colorInputIconAccent,
+              unselectedWidgetColor: colorInputIconAccent,
+            ),
+            child: ExpansionTile(
+              key: _key,
+              title: widget.title,
+              children: widget.children,
+              onExpansionChanged: (bool expanded) {
+                setState(() {
+                  _expanded = expanded;
+                });
+                widget.onExpansionChanged?.call(expanded);
+              },
+            ),
+          ),
+          _divider,
+        ],
       ),
     );
   }
 
-  void _scrollIfNeeded() {
-    if (_key.currentContext == null || widget.scrollController == null) {
-      return;
-    }
-
-    RenderBox box = _key.currentContext.findRenderObject() as RenderBox;
-    widget.scrollController.animateTo(
-      min(widget.scrollController.position.maxScrollExtent,
-          _previousScrollOffset + box.size.height),
-      duration: defaultAnimationDuration,
-      curve: Curves.linear,
-    );
-  }
+  Widget get _divider => MinDivider(color: _expanded
+      ? null : Colors.transparent);
 }
 
 /// A custom [ListTile]-like [Widget] that animates leading and trailing
@@ -165,8 +155,6 @@ class ManageableListItem extends StatefulWidget {
 class _ManageableListItemState extends State<ManageableListItem> with
     SingleTickerProviderStateMixin
 {
-  final Duration _editAnimDuration = Duration(milliseconds: 150);
-
   AnimationController _editAnimController;
   Animation<double> _deleteIconSizeAnim;
 
@@ -175,7 +163,7 @@ class _ManageableListItemState extends State<ManageableListItem> with
     super.initState();
 
     _editAnimController = AnimationController(
-      duration: _editAnimDuration,
+      duration: defaultAnimationDuration,
       vsync: this,
     );
     _deleteIconSizeAnim = Tween<double>(
@@ -275,7 +263,7 @@ class _ManageableListItemState extends State<ManageableListItem> with
     }
 
     return AnimatedSwitcher(
-      duration: _editAnimDuration,
+      duration: defaultAnimationDuration,
       child: Padding(
         // Key is required here for animation (since widget type might not
         // change).

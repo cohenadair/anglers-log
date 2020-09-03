@@ -66,6 +66,7 @@ void main() {
 
     // Verify listeners aren't notified.
     await baitCategoryManager.delete(category);
+    await untilCalled(dataManager.rawUpdate(any, any));
     verify(dataManager.rawUpdate(any, any)).called(1);
     verifyNever(baitListener.onAddOrUpdate);
 
@@ -89,19 +90,17 @@ void main() {
     expect(baitManager.entity(id: "bait_id_2").categoryId, "category_id");
 
     await baitCategoryManager.delete(category);
+    await untilCalled(dataManager.rawUpdate(any, any));
+    verify(dataManager.rawUpdate(any, any)).called(1);
 
-    // BaitManager onDelete callback is async; wait to finish.
-    await Future.delayed(Duration(milliseconds: 500), () {
-      // Verify listeners are notified and memory cache updated.
-      verify(dataManager.rawUpdate(any, any)).called(1);
-      verify(baitListener.onAddOrUpdate).called(1);
-      expect(baitManager.entity(id: "bait_id").categoryId, isNull);
-      expect(baitManager.entity(id: "bait_id_2").categoryId, isNull);
-    });
+    // Verify listeners are notified and memory cache updated.
+    verify(baitListener.onAddOrUpdate).called(1);
+    expect(baitManager.entity(id: "bait_id").categoryId, isNull);
+    expect(baitManager.entity(id: "bait_id_2").categoryId, isNull);
   });
 
   test("Number of catches", () {
-    when(catchManager.entityList).thenReturn([
+    when(catchManager.entityList()).thenReturn([
       Catch(timestamp: 0, speciesId: "species_1", baitId: "bait_1"),
       Catch(timestamp: 0, speciesId: "species_1", baitId: "bait_5"),
       Catch(timestamp: 0, speciesId: "species_1", baitId: "bait_4"),

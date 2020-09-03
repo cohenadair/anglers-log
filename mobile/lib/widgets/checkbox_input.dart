@@ -58,6 +58,15 @@ class _PaddedCheckboxState extends State<PaddedCheckbox> {
   }
 
   @override
+  void didUpdateWidget(PaddedCheckbox oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    if (oldWidget.checked != widget.checked) {
+      checked = widget.checked;
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Padding(
       padding: widget.padding,

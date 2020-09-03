@@ -53,14 +53,14 @@ class PickerPage<T> extends StatefulWidget {
   PickerPage({
     @required this.itemBuilder,
     @required this.onFinishedPicking,
-    this.initialValues = const {},
+    Set<T> initialValues,
     this.multiSelect = true,
     this.title,
     this.listHeader,
     this.allItem,
     this.action,
-  }) : assert(initialValues != null),
-       assert(itemBuilder != null);
+  }) : assert(itemBuilder != null),
+       initialValues = initialValues ?? const {};
 
   PickerPage.single({
     @required List<PickerPageItem<T>> Function() itemBuilder,
@@ -117,15 +117,18 @@ class _PickerPageState<T> extends State<PickerPage<T>> {
         (widget.allItem == null ? [] : [widget.allItem])
             ..addAll(widget.itemBuilder());
 
+    List<Widget> children = [];
+    if (widget.listHeader != null) {
+      children.add(Padding(
+        padding: insetsDefault,
+        child: widget.listHeader,
+      ));
+    }
+
     return ListView(
-      children: [
-        widget.listHeader == null ? Empty() : Padding(
-          padding: insetsDefault,
-          child: widget.listHeader,
-        ),
-      ]..addAll(items.map((item) {
+      children: children..addAll(items.map((item) {
         if (item._divider) {
-          return MinDivider();
+          return Divider();
         }
 
         if (item._heading) {
@@ -149,33 +152,51 @@ class _PickerPageState<T> extends State<PickerPage<T>> {
         }
 
         VoidCallback onTap;
-        if (item.enabled && !widget.multiSelect) {
-          onTap = () => _listItemTapped(item);
+        if (item.enabled) {
+          if (item.onTap != null) {
+            onTap = item.onTap;
+          } else if (item.popsOnPicked && !widget.multiSelect) {
+            onTap = () => _listItemTapped(item);
+          }
         }
 
         return EnabledOpacity(
           enabled: item.enabled,
           child: ListItem(
             title: PrimaryLabel(item.title),
+            subtitle: isNotEmpty(item.subtitle)
+                ? SubtitleLabel(item.subtitle) : null,
             enabled: item.enabled,
             onTap: onTap,
-            trailing: widget.multiSelect ? _buildListItemCheckbox(item) : null,
+            trailing: _buildListItemTrailing(item),
           ),
         );
       }).toList()),
     );
   }
 
-  Widget _buildListItemCheckbox(PickerPageItem<T> item) {
-    return PaddedCheckbox(
-      enabled: item.enabled,
-      checked: _selectedValues.contains(item.value),
-      onChanged: (value) {
-        setState(() {
-          _checkboxUpdated(item.value);
-        });
-      },
-    );
+  Widget _buildListItemTrailing(PickerPageItem<T> item) {
+    if (widget.multiSelect) {
+      // Checkboxes for multi-select pickers.
+      return PaddedCheckbox(
+        enabled: item.enabled,
+        checked: _selectedValues.contains(item.value),
+        onChanged: (value) {
+          setState(() {
+            _checkboxUpdated(item.value);
+          });
+        },
+      );
+    } else if (widget.initialValues.isNotEmpty
+        && widget.initialValues.first == item.value)
+    {
+      // A simple check mark icon for initial value for single item pickers.
+      return Icon(Icons.check,
+        color: Theme.of(context).primaryColor,
+      );
+    }
+
+    return null;
   }
 
   void _listItemTapped(PickerPageItem<T> item) async {
@@ -210,6 +231,15 @@ class PickerPageItem<T> {
   final String title;
   final String subtitle;
   final bool enabled;
+
+  /// True if the (single item) picker should be popped off the navigation stack
+  /// when this item is tapped. Defaults to true.
+  final bool popsOnPicked;
+
+  /// A custom on tapped event for the [PickerPageItem]. If this value is
+  /// non-null, [popsOnPicked] is ignored.
+  final VoidCallback onTap;
+
   final T value;
   final IconData noteIcon;
 
@@ -222,6 +252,8 @@ class PickerPageItem<T> {
         title = null,
         subtitle = null,
         enabled = false,
+        popsOnPicked = false,
+        onTap = null,
         noteIcon = null,
         _divider = true,
         _heading = false,
@@ -232,6 +264,8 @@ class PickerPageItem<T> {
         value = null,
         subtitle = null,
         enabled = false,
+        popsOnPicked = false,
+        onTap = null,
         noteIcon = null,
         _divider = false,
         _heading = true,
@@ -242,19 +276,23 @@ class PickerPageItem<T> {
   /// [PickerPageItem.heading].
   PickerPageItem.note(this.title, {
     this.noteIcon,
-  }): assert(isNotEmpty(title)),
-      value = null,
-      subtitle = null,
-      enabled = false,
-      _divider = false,
-      _heading = false,
-      _note = true;
+  }) : assert(isNotEmpty(title)),
+       value = null,
+       subtitle = null,
+       enabled = false,
+       popsOnPicked = false,
+        onTap = null,
+       _divider = false,
+       _heading = false,
+       _note = true;
 
   PickerPageItem({
     @required this.title,
     this.subtitle,
     @required this.value,
     this.enabled = true,
+    this.popsOnPicked = true,
+    this.onTap,
   }) : assert(value != null),
        assert(title != null),
        noteIcon = null,

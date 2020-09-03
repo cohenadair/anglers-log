@@ -25,11 +25,6 @@ class TextInput extends StatefulWidget {
   final int maxLines;
   final TextInputType keyboardType;
 
-  /// The [Validator.run] method is invoked when the [TextInput] is first
-  /// created, and when the text changes. The updated text updated value can be
-  /// read from the [TextInputController] used when creating this widget.
-  final Validator validator;
-
   /// Invoked when the [TextInput] text changes, _after_ [Validator.run] is
   /// invoked. Implement this property to update the state of the parent
   /// widget.
@@ -45,7 +40,6 @@ class TextInput extends StatefulWidget {
     this.maxLength = inputLimitDefault,
     this.maxLines,
     this.keyboardType,
-    this.validator,
     this.onChanged,
   });
 
@@ -55,7 +49,6 @@ class TextInput extends StatefulWidget {
     TextInputController controller,
     bool enabled,
     bool autofocus = false,
-    Validator validator,
     VoidCallback onChanged,
   }) : this(
     initialValue: initialValue,
@@ -65,7 +58,6 @@ class TextInput extends StatefulWidget {
     maxLength: inputLimitName,
     enabled: enabled,
     autofocus: autofocus,
-    validator: validator,
     onChanged: onChanged,
   );
 
@@ -88,7 +80,7 @@ class TextInput extends StatefulWidget {
     double initialValue,
     String label,
     String requiredText,
-    TextInputController controller,
+    NumberInputController controller,
     bool enabled,
     bool autofocus = false,
     bool required = false,
@@ -100,15 +92,13 @@ class TextInput extends StatefulWidget {
     enabled: enabled,
     autofocus: autofocus,
     maxLength: inputLimitNumber,
-    validator: DoubleValidator(),
   );
 
   TextInput.email(BuildContext context, {
     String initialValue,
-    TextInputController controller,
+    EmailInputController controller,
     bool enabled,
     bool autofocus = false,
-    bool required = false,
     VoidCallback onChanged,
   }) : this(
     initialValue: initialValue,
@@ -118,7 +108,6 @@ class TextInput extends StatefulWidget {
     maxLength: inputLimitEmail,
     enabled: enabled,
     autofocus: autofocus,
-    validator: EmailValidator(required: required),
     onChanged: onChanged,
   );
 
@@ -128,36 +117,44 @@ class TextInput extends StatefulWidget {
 
 class _TextInputState extends State<TextInput> {
   ValidationCallback get _validationCallback =>
-      widget.validator?.run(context, widget.controller.value);
+      widget.controller?.validator?.run(context, widget.controller.value);
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _updateError();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
-      cursorColor: Theme.of(context).primaryColor,
-      initialValue: widget.initialValue,
-      controller: widget.controller.editingController,
-      decoration: InputDecoration(
-        labelText: widget.label,
-        errorText: widget.controller.error(context),
+    return SafeArea(
+      top: false,
+      bottom: false,
+      child: TextFormField(
+        cursorColor: Theme.of(context).primaryColor,
+        initialValue: widget.initialValue,
+        controller: widget.controller.editingController,
+        decoration: InputDecoration(
+          labelText: widget.label,
+          errorText: widget.controller.error,
+        ),
+        textCapitalization: widget.capitalization,
+        enabled: widget.enabled,
+        maxLength: widget.maxLength,
+        maxLines: widget.maxLines,
+        keyboardType: widget.keyboardType,
+        onChanged: (_) {
+          setState(() {
+            _updateError();
+          });
+          widget.onChanged?.call();
+        },
+        autofocus: widget.autofocus,
       ),
-      textCapitalization: widget.capitalization,
-      validator: (text) {
-        String validationError = _validationCallback?.call(context);
-        return isEmpty(validationError) ? null : validationError;
-      },
-      enabled: widget.enabled,
-      maxLength: widget.maxLength,
-      maxLines: widget.maxLines,
-      keyboardType: widget.keyboardType,
-      onChanged: (_) {
-        ValidationCallback callback = _validationCallback;
-        if (widget.controller.validate != callback) {
-          widget.controller.validate = callback;
-          setState(() {});
-        }
-        widget.onChanged?.call();
-      },
-      autofocus: widget.autofocus,
     );
+  }
+
+  void _updateError() {
+    widget.controller.error = _validationCallback?.call(context);
   }
 }

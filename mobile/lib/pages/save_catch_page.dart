@@ -101,12 +101,13 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
 
   TimestampInputController get _timestampController =>
       _fields[_timestampKey].controller;
-  SpeciesInputController get _speciesController =>
+  InputController<Species> get _speciesController =>
       _fields[_speciesKey].controller;
-  ImagesInputController get _imagesController => _fields[_imagesKey].controller;
-  FishingSpotInputController get _fishingSpotController =>
+  InputController<List<PickedImage>> get _imagesController =>
+      _fields[_imagesKey].controller;
+  InputController<FishingSpot> get _fishingSpotController =>
       _fields[_fishingSpotKey].controller;
-  BaitInputController get _baitController => _fields[_baitKey].controller;
+  InputController<Bait> get _baitController => _fields[_baitKey].controller;
 
   @override
   void initState() {
@@ -126,7 +127,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
 
     _fields[_speciesKey] = InputData(
       id: _speciesKey,
-      controller: SpeciesInputController(),
+      controller: InputController<Species>(),
       label: (BuildContext context) =>
           Strings.of(context).saveCatchPageSpeciesLabel,
       removable: false,
@@ -135,7 +136,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
 
     _fields[_baitKey] = InputData(
       id: _baitKey,
-      controller: BaitInputController(),
+      controller: InputController<Bait>(),
       label: (BuildContext context) =>
           Strings.of(context).saveCatchPageBaitLabel,
       showing: true,
@@ -143,7 +144,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
 
     _fields[_imagesKey] = InputData(
       id: _imagesKey,
-      controller: ImagesInputController(),
+      controller: InputController<List<PickedImage>>(),
       label: (BuildContext context) =>
           Strings.of(context).saveCatchPageImagesLabel,
       showing: true,
@@ -151,7 +152,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
 
     _fields[_fishingSpotKey] = InputData(
       id: _fishingSpotKey,
-      controller: FishingSpotInputController(),
+      controller: InputController<FishingSpot>(),
       label: (BuildContext context) =>
           Strings.of(context).saveCatchPageFishingSpotLabel,
       showing: true,
@@ -264,14 +265,14 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
           value = _baitManager.formatNameWithCategory(bait);
         }
 
-        return ListPickerInput<Bait>(
+        return ListPickerInput(
           title: Strings.of(context).saveCatchPageBaitLabel,
           value: value,
           onTap: () {
             push(context, BaitListPage.picker(
-              onPicked: (context, pickedBait) {
+              onPicked: (context, pickedBaits) {
                 setState(() {
-                  _baitController.value = pickedBait;
+                  _baitController.value = pickedBaits.first;
                 });
                 return true;
               },
@@ -315,14 +316,14 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
         _speciesController.value =
             _speciesManager.entity(id: _speciesController.value?.id);
 
-        return ListPickerInput<Species>(
+        return ListPickerInput(
           title: Strings.of(context).saveCatchPageSpeciesLabel,
           value: _speciesController.value?.name,
           onTap: () {
             push(context, SpeciesListPage.picker(
               onPicked: (context, pickedSpecies) {
                 setState(() {
-                  _speciesController.value = pickedSpecies;
+                  _speciesController.value = pickedSpecies.first;
                 });
                 return true;
               },

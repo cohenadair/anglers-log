@@ -28,6 +28,7 @@ Map<String, Map<String, String>> get englishStrings => {
     "add" : "Add",
     "more" : "More",
     "customFields" : "Custom Fields",
+    "na" : "N/A",
 
     "fieldType_number" : "Number",
     "fieldType_boolean" : "Checkbox",
@@ -61,6 +62,19 @@ Map<String, Map<String, String>> get englishStrings => {
     "saveCatchPage_fishingSpotLabel" : "Fishing Spot",
     "saveCatchPage_baitLabel" : "Bait",
 
+    "saveCustomReportPage_newTitle" : "New Report",
+    "saveCustomReportPage_editTitle" : "Edit Report",
+    "saveCustomReportPage_nameExists" : "Report name already exists",
+    "saveCustomReportPage_typeTitle" : "Type",
+    "saveCustomReportPage_comparison" : "Comparison",
+    "saveCustomReportPage_summary" : "Summary",
+    "saveCustomReportPage_startDateRangeLabel" : "Compare",
+    "saveCustomReportPage_endDateRangeLabel" : "To",
+    "saveCustomReportPage_species" : "Species",
+    "saveCustomReportPage_allSpecies" : "All species",
+    "saveCustomReportPage_allBaits" : "All baits",
+    "saveCustomReportPage_allFishingSpots" : "All fishing spots",
+
     "photosPage_menuLabel" : "Photos",
     "photosPage_title" : "Photos (%s)",
 
@@ -70,9 +84,8 @@ Map<String, Map<String, String>> get englishStrings => {
     "baitListPage_otherCategory" : "No Category",
     "baitListPage_searchHint" : "Search baits",
     "baitListPage_noSearchResults" : "No baits found",
-
-    "baitPage_deleteMessage" : "%s is associated with %s catches; are you sure you want to delete it? This cannot be undone.",
-    "baitPage_deleteMessageSingular" : "%s is associated with %s catch; are you sure you want to delete it? This cannot be undone.",
+    "baitListPage_deleteMessage" : "%s is associated with %s catches; are you sure you want to delete it? This cannot be undone.",
+    "baitListPage_deleteMessageSingular" : "%s is associated with %s catch; are you sure you want to delete it? This cannot be undone.",
 
     "saveBaitPage_newTitle" : "New Bait",
     "saveBaitPage_editTitle" : "Edit Bait",
@@ -91,7 +104,30 @@ Map<String, Map<String, String>> get englishStrings => {
     "baitCategoryListPage_searchHint" : "Search bait categories",
     "baitCategoryListPage_noSearchResults" : "No bait categories found",
 
+    "statsPage_menuTitle" : "Stats",
     "statsPage_title" : "Stats",
+    "statsPage_reportOverview" : "Overview",
+    "statsPage_newReport" : "New Report",
+
+    "reportView_noCatches" : "No catches found",
+
+    "reportSummary_viewCatches" : "View catches (%s)",
+    "reportSummary_catchTitle" : "Catch Summary",
+    "reportSummary_perSpecies" : "Per species",
+    "reportSummary_perFishingSpot" : "Per fishing spot",
+    "reportSummary_perBait" : "Per bait",
+    "reportSummary_sinceLastCatch" : "Since last catch",
+    "reportSummary_numberOfCatches" : "Number of catches",
+    "reportSummary_filters" : "Filters",
+    "reportSummary_viewSpecies" : "View all species",
+    "reportSummary_catchesPerSpeciesDescription" : "Viewing number of catches per species.",
+    "reportSummary_viewFishingSpots" : "View all fishing spots",
+    "reportSummary_catchesPerFishingSpotDescription" : "Viewing number of catches per fishing spot.",
+    "reportSummary_viewBaits" : "View all baits",
+    "reportSummary_catchesPerBaitDescription" : "Viewing number of catches per bait.",
+    "reportSummary_speciesTitle" : "Species Summary",
+
+    "dateRangePickerPage_title" : "Select Date Range",
 
     "morePage_title" : "More",
 
@@ -102,6 +138,7 @@ Map<String, Map<String, String>> get englishStrings => {
 
     "mapPage_menuLabel" : "Map",
     "mapPage_deleteFishingSpot" : "%s is associated with %s catches; are you sure you want to delete it? This cannot be undone.",
+    "mapPage_deleteFishingSpotSingular" : "%s is associated with %s catch; are you sure you want to delete it? This cannot be undone.",
     "mapPage_deleteFishingSpotNoName" : "This fishing spot is associated with %s catches; are you sure you want to delete it? This cannot be undone.",
     "mapPage_addCatch" : "Add Catch",
     "mapPage_searchHint" : "Search fishing spots",
@@ -122,6 +159,7 @@ Map<String, Map<String, String>> get englishStrings => {
     "formPage_confirmRemoveFields" : "Remove %s Fields",
     "formPage_selectFieldsTitle" : "Select Fields",
     "formPage_addCustomFieldNote" : "To add a custom field, tap the %s icon.",
+    "formPage_manageFieldsNote" : "To manage fields, tap the %s icon.",
 
     "saveCustomEntityPage_newTitle" : "New Field",
     "saveCustomEntityPage_editTitle" : "Edit Field",
@@ -141,6 +179,11 @@ Map<String, Map<String, String>> get englishStrings => {
     "imagePickerPage_invalidSelectionSingle" : "Must select an image file.",
     "imagePickerPage_invalidSelectionPlural" : "Must select image files.",
 
+    "reportListPage_pickerTitle" : "Select Report",
+    "reportListPage_confirmDelete" : "Are you sure you want to delete report %s? This cannot be undone.",
+    "reportListPage_customReportTitle" : "Custom Reports",
+    "reportListPage_customReportAddNote" : "To add a custom report, tap the %s icon.",
+
     "saveSpeciesPage_newTitle" : "New Species",
     "saveSpeciesPage_editTitle" : "Edit Species",
     "saveSpeciesPage_existsError" : "Species already exists",
@@ -155,6 +198,11 @@ Map<String, Map<String, String>> get englishStrings => {
 
     "fishingSpotPickerPage_title" : "Select Fishing Spot",
     "fishingSpotPickerPage_hint" : "Drag the map to use exact coordinates, or select an existing fishing spot.",
+
+    "fishingSpotListPage_title" : "Fishing Spots (%s)",
+    "fishingSpotListPage_pickerTitle" : "Select Fishing Spots",
+    "fishingSpotListPage_searchHint" : "Search fishing spots",
+    "fishingSpotListPage_noSearchResults" : "No fishing spots found",
 
     "feedbackPage_title" : "Send Feedback",
     "feedbackPage_send" : "Send",
@@ -195,6 +243,11 @@ Map<String, Map<String, String>> get englishStrings => {
     "analysisDuration_last12Months" : "Last 12 months",
     "analysisDuration_custom" : "Custom",
 
+    "daysFormat" : "%sd",
+    "hoursFormat" : "%sh",
+    "minutesFormat" : "%sm",
+    "secondsFormat" : "%ss",
     "dateTimeFormat" : "%s at %s",
+    "dateDurationFormat" : "%s (%s)",
   },
 };

@@ -158,10 +158,6 @@ class LegacyImporter {
       tmpImg.deleteSync();
     }
 
-    // Notify CatchManager of updates. CatchManager is done after to increase
-    // efficiency when dealing with images.
-    _appManager.catchManager.notifyOnAddOrUpdate();
-
     return Future.value();
   }
 
@@ -299,8 +295,8 @@ class LegacyImporter {
         imageFiles: images,
         // Images were already compressed by legacy Anglers' Log versions.
         compressImages: false,
-        // Suppress listener updates until all image manipulation has finished.
-        notify: false,
+        // Suppress listener updates until the last catch is added.
+        notify: item == catches.last,
       );
     }
   }

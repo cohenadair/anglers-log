@@ -14,6 +14,7 @@ import 'package:mobile/model/catch.dart';
 import 'package:mobile/model/fishing_spot.dart';
 import 'package:mobile/model/species.dart';
 import 'package:mobile/species_manager.dart';
+import 'package:mobile/utils/date_time_utils.dart';
 import 'package:mockito/mockito.dart';
 
 import 'test_utils.dart';
@@ -79,8 +80,8 @@ void main() {
         .thenAnswer((_) => Future.value(true));
 
     MockCatchListener catchListener = MockCatchListener();
-    when(catchListener.onDelete).thenReturn((_) { });
-    when(catchListener.onAddOrUpdate).thenReturn(() { });
+    when(catchListener.onDelete).thenReturn((_) {});
+    when(catchListener.onAddOrUpdate).thenReturn(() {});
     catchManager.addListener(catchListener);
 
     Bait bait = Bait(id: "bait_id", name: "Rapala");
@@ -92,6 +93,7 @@ void main() {
 
     // Verify listeners aren't notified.
     await baitManager.delete(bait);
+    await untilCalled(dataManager.rawUpdate(any, any));
     verify(dataManager.rawUpdate(any, any)).called(1);
     verifyNever(catchListener.onAddOrUpdate);
 
@@ -117,15 +119,13 @@ void main() {
     expect(catchManager.entity(id: "catch_id_2").baitId, "bait_id");
 
     await baitManager.delete(bait);
+    await untilCalled(dataManager.rawUpdate(any, any));
+    verify(dataManager.rawUpdate(any, any)).called(1);
 
-    // CatchManager onDelete callback is async; wait to finish.
-    await Future.delayed(Duration(milliseconds: 500), () {
-      // Verify listeners are notified and memory cache updated.
-      verify(dataManager.rawUpdate(any, any)).called(1);
-      verify(catchListener.onAddOrUpdate).called(1);
-      expect(catchManager.entity(id: "catch_id").baitId, isNull);
-      expect(catchManager.entity(id: "catch_id_2").baitId, isNull);
-    });
+    // Verify listeners are notified and memory cache updated.
+    verify(catchListener.onAddOrUpdate).called(1);
+    expect(catchManager.entity(id: "catch_id").baitId, isNull);
+    expect(catchManager.entity(id: "catch_id_2").baitId, isNull);
   });
 
   test("When a fishing spot is deleted, existing catches are updated", () async
@@ -153,6 +153,7 @@ void main() {
 
     // Verify listeners aren't notified.
     await fishingSpotManager.delete(fishingSpot);
+    await untilCalled(dataManager.rawUpdate(any, any));
     verify(dataManager.rawUpdate(any, any)).called(1);
     verifyNever(catchListener.onAddOrUpdate);
 
@@ -182,18 +183,16 @@ void main() {
         "fishing_spot_id");
 
     await fishingSpotManager.delete(fishingSpot);
+    await untilCalled(dataManager.rawUpdate(any, any));
+    verify(dataManager.rawUpdate(any, any)).called(1);
 
-    // CatchManager onDelete callback is async; wait to finish.
-    await Future.delayed(Duration(milliseconds: 500), () {
-      // Verify listeners are notified and memory cache updated.
-      verify(dataManager.rawUpdate(any, any)).called(1);
-      verify(catchListener.onAddOrUpdate).called(1);
-      expect(catchManager.entity(id: "catch_id").fishingSpotId, isNull);
-      expect(catchManager.entity(id: "catch_id_2").fishingSpotId, isNull);
-    });
+    // Verify listeners are notified and memory cache updated.
+    verify(catchListener.onAddOrUpdate).called(1);
+    expect(catchManager.entity(id: "catch_id").fishingSpotId, isNull);
+    expect(catchManager.entity(id: "catch_id_2").fishingSpotId, isNull);
   });
 
-  testWidgets("Filtering", (WidgetTester tester) async {
+  testWidgets("Filtering by search query", (WidgetTester tester) async {
     var mockFishingSpotManager = MockFishingSpotManager();
     when(mockFishingSpotManager.addOrUpdate(any)).thenAnswer((_) => null);
     when(appManager.fishingSpotManager).thenReturn(mockFishingSpotManager);
@@ -222,25 +221,25 @@ void main() {
 
     BuildContext context = await buildContext(tester);
 
-    List<Catch> catches = catchManager.filteredCatches(context, "");
+    List<Catch> catches = catchManager.filteredCatches(context, filter: "");
     expect(catches.length, 2);
 
-    catches = catchManager.filteredCatches(context, "Bluegill");
+    catches = catchManager.filteredCatches(context, filter: "Bluegill");
     expect(true, catches.isEmpty);
 
-    catches = catchManager.filteredCatches(context, "bass");
+    catches = catchManager.filteredCatches(context, filter: "bass");
     expect(catches.length, 1);
 
-    catches = catchManager.filteredCatches(context, "BLUE");
+    catches = catchManager.filteredCatches(context, filter: "BLUE");
     expect(catches.length, 1);
 
-    catches = catchManager.filteredCatches(context, "janua");
+    catches = catchManager.filteredCatches(context, filter: "janua");
     expect(catches.length, 1);
 
-    catches = catchManager.filteredCatches(context, "april");
+    catches = catchManager.filteredCatches(context, filter: "april");
     expect(catches.length, 1);
 
-    catches = catchManager.filteredCatches(context, "4");
+    catches = catchManager.filteredCatches(context, filter: "4");
     expect(catches.length, 1);
 
     await catchManager.addOrUpdate(Catch(
@@ -266,20 +265,284 @@ void main() {
     when(mockBaitManager.matchesFilter("bait_id_1", any)).thenReturn(false);
 
     when(mockBaitManager.matchesFilter(any, any)).thenReturn(true);
-    catches = catchManager.filteredCatches(context, "RAP");
+    catches = catchManager.filteredCatches(context, filter: "RAP");
     expect(catches.length, 2);
 
     when(mockBaitManager.matchesFilter(any, any)).thenReturn(false);
-    catches = catchManager.filteredCatches(context, "test");
+    catches = catchManager.filteredCatches(context, filter: "test");
     expect(true, catches.isEmpty);
 
-    catches = catchManager.filteredCatches(context, "9 mile");
+    catches = catchManager.filteredCatches(context, filter: "9 mile");
     expect(catches.length, 1);
 
-    catches = catchManager.filteredCatches(context, "Tennessee");
+    catches = catchManager.filteredCatches(context, filter: "Tennessee");
     expect(catches.length, 1);
 
-    catches = catchManager.filteredCatches(context, "River");
+    catches = catchManager.filteredCatches(context, filter: "River");
     expect(catches.length, 2);
+  });
+
+  testWidgets("Filtering by species", (WidgetTester tester) async {
+    when(dataManager.insertOrUpdateEntity(any, any))
+        .thenAnswer((_) => Future.value(true));
+
+    await catchManager.addOrUpdate(Catch(
+      timestamp: DateTime(2020, 1, 1).millisecondsSinceEpoch,
+      speciesId: "species_id_1",
+    ));
+    await catchManager.addOrUpdate(Catch(
+      timestamp: DateTime(2020, 2, 2).millisecondsSinceEpoch,
+      speciesId: "species_id_2",
+    ));
+    await catchManager.addOrUpdate(Catch(
+      timestamp: DateTime(2020, 2, 2).millisecondsSinceEpoch,
+      speciesId: "species_id_2",
+    ));
+    await catchManager.addOrUpdate(Catch(
+      timestamp: DateTime(2020, 4, 4).millisecondsSinceEpoch,
+      speciesId: "species_id_4",
+    ));
+
+    BuildContext context = await buildContext(tester);
+    List<Catch> catches = catchManager.filteredCatches(context,
+      speciesIds: {"species_id_2"},
+    );
+    expect(catches.length, 2);
+
+    catches = catchManager.filteredCatches(context,
+      speciesIds: {
+        "species_id_2",
+        "species_id_4",
+      },
+    );
+    expect(catches.length, 3);
+
+    catches = catchManager.filteredCatches(context);
+    expect(catches.length, 4);
+
+    catches = catchManager.filteredCatches(context,
+      speciesIds: {"species_id_3"},
+    );
+    expect(catches.isEmpty, true);
+  });
+
+  testWidgets("Filtering by date range", (WidgetTester tester) async {
+    when(dataManager.insertOrUpdateEntity(any, any))
+        .thenAnswer((_) => Future.value(true));
+
+    await catchManager.addOrUpdate(Catch(
+      timestamp: 5000,
+      speciesId: "species_id_1",
+    ));
+    await catchManager.addOrUpdate(Catch(
+      timestamp: 10000,
+      speciesId: "species_id_2",
+    ));
+    await catchManager.addOrUpdate(Catch(
+      timestamp: 20000,
+      speciesId: "species_id_2",
+    ));
+
+    BuildContext context = await buildContext(tester);
+    List<Catch> catches = catchManager.filteredCatches(context,
+      dateRange: DateRange(
+        startDate: DateTime.fromMillisecondsSinceEpoch(0),
+        endDate: DateTime.fromMillisecondsSinceEpoch(15000),
+      ),
+    );
+    expect(catches.length, 2);
+
+    catches = catchManager.filteredCatches(context);
+    expect(catches.length, 3);
+
+    catches = catchManager.filteredCatches(context,
+      dateRange: DateRange(
+        startDate: DateTime.fromMillisecondsSinceEpoch(20001),
+        endDate: DateTime.fromMillisecondsSinceEpoch(30000),
+      ),
+    );
+    expect(catches.isEmpty, true);
+  });
+
+  testWidgets("Filtering by fishing spot", (WidgetTester tester) async {
+    when(dataManager.insertOrUpdateEntity(any, any))
+        .thenAnswer((_) => Future.value(true));
+
+    await catchManager.addOrUpdate(Catch(
+      timestamp: 5000,
+      speciesId: "species_id_1",
+      fishingSpotId: "fishing_spot_1",
+    ));
+    await catchManager.addOrUpdate(Catch(
+      timestamp: 10000,
+      speciesId: "species_id_2",
+      fishingSpotId: "fishing_spot_2",
+    ));
+    await catchManager.addOrUpdate(Catch(
+      timestamp: 20000,
+      speciesId: "species_id_2",
+      fishingSpotId: "fishing_spot_1",
+    ));
+    await catchManager.addOrUpdate(Catch(
+      timestamp: 40000,
+      speciesId: "species_id_2",
+      fishingSpotId: "fishing_spot_4",
+    ));
+
+    BuildContext context = await buildContext(tester);
+    List<Catch> catches = catchManager.filteredCatches(context,
+      fishingSpotIds: {"fishing_spot_1"},
+    );
+    expect(catches.length, 2);
+
+    catches = catchManager.filteredCatches(context,
+      fishingSpotIds: {
+        "fishing_spot_1",
+        "fishing_spot_4",
+      },
+    );
+    expect(catches.length, 3);
+
+    catches = catchManager.filteredCatches(context);
+    expect(catches.length, 4);
+
+    catches = catchManager.filteredCatches(context,
+      fishingSpotIds: {"fishing_spot_3"},
+    );
+    expect(catches.isEmpty, true);
+  });
+
+  testWidgets("Filtering by bait", (WidgetTester tester) async {
+    when(dataManager.insertOrUpdateEntity(any, any))
+        .thenAnswer((_) => Future.value(true));
+
+    await catchManager.addOrUpdate(Catch(
+      timestamp: 5000,
+      speciesId: "species_id_1",
+      baitId: "bait_1",
+    ));
+    await catchManager.addOrUpdate(Catch(
+      timestamp: 10000,
+      speciesId: "species_id_2",
+      baitId: "bait_2",
+    ));
+    await catchManager.addOrUpdate(Catch(
+      timestamp: 20000,
+      speciesId: "species_id_2",
+      baitId: "bait_1",
+    ));
+    await catchManager.addOrUpdate(Catch(
+      timestamp: 40000,
+      speciesId: "species_id_3",
+      baitId: "bait_4",
+    ));
+
+    BuildContext context = await buildContext(tester);
+    List<Catch> catches = catchManager.filteredCatches(context,
+      baitIds: {"bait_1"},
+    );
+    expect(catches.length, 2);
+
+    catches = catchManager.filteredCatches(context,
+      baitIds: {
+        "bait_1",
+        "bait_4",
+      },
+    );
+    expect(catches.length, 3);
+
+    catches = catchManager.filteredCatches(context);
+    expect(catches.length, 4);
+
+    catches = catchManager.filteredCatches(context,
+      baitIds: {"bait_3"},
+    );
+    expect(catches.isEmpty, true);
+  });
+
+  testWidgets("Filtering by catch", (WidgetTester tester) async {
+    when(dataManager.insertOrUpdateEntity(any, any))
+        .thenAnswer((_) => Future.value(true));
+
+    await catchManager.addOrUpdate(Catch(
+      id: "0",
+      timestamp: 5000,
+      speciesId: "species_id_1",
+      baitId: "bait_1",
+    ));
+    await catchManager.addOrUpdate(Catch(
+      id: "1",
+      timestamp: 10000,
+      speciesId: "species_id_2",
+      baitId: "bait_2",
+    ));
+    await catchManager.addOrUpdate(Catch(
+      id: "2",
+      timestamp: 20000,
+      speciesId: "species_id_2",
+      baitId: "bait_1",
+    ));
+    await catchManager.addOrUpdate(Catch(
+      id: "3",
+      timestamp: 40000,
+      speciesId: "species_id_3",
+      baitId: "bait_4",
+    ));
+
+    BuildContext context = await buildContext(tester);
+    List<Catch> catches = catchManager.filteredCatches(context,
+      catchIds: {"3", "1"},
+    );
+    expect(catches.length, 2);
+
+    catches = catchManager.filteredCatches(context);
+    expect(catches.length, 4);
+
+    catches = catchManager.filteredCatches(context,
+      catchIds: {"8"},
+    );
+    expect(catches.isEmpty, true);
+  });
+
+  testWidgets("Filtering by multiple things", (WidgetTester tester) async {
+    when(dataManager.insertOrUpdateEntity(any, any))
+        .thenAnswer((_) => Future.value(true));
+
+    await catchManager.addOrUpdate(Catch(
+      id: "0",
+      timestamp: 5000,
+      speciesId: "species_id_1",
+      baitId: "bait_1",
+    ));
+    await catchManager.addOrUpdate(Catch(
+      id: "1",
+      timestamp: 10000,
+      speciesId: "species_id_2",
+      baitId: "bait_2",
+    ));
+    await catchManager.addOrUpdate(Catch(
+      id: "2",
+      timestamp: 20000,
+      speciesId: "species_id_2",
+      baitId: "bait_1",
+    ));
+
+    BuildContext context = await buildContext(tester);
+    List<Catch> catches = catchManager.filteredCatches(context,
+      catchIds: {"0"},
+      speciesIds: {"species_id_1"},
+      baitIds: {"bait_1"},
+    );
+    expect(catches.length, 1);
+
+    catches = catchManager.filteredCatches(context);
+    expect(catches.length, 3);
+
+    catches = catchManager.filteredCatches(context,
+      catchIds: {"0"},
+      speciesIds: {"species_id_4"},
+      baitIds: {"bait_1"},
+    );
+    expect(catches.isEmpty, true);
   });
 }

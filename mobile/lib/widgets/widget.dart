@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:mobile/res/color.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/widgets/text.dart';
+import 'package:quiver/strings.dart';
 
-const defaultAnimationDuration = Duration(milliseconds: 200);
+const defaultAnimationDuration = Duration(milliseconds: 150);
 
 class Empty extends StatelessWidget {
   @override
@@ -13,9 +14,16 @@ class Empty extends StatelessWidget {
 }
 
 class MinDivider extends StatelessWidget {
+  final Color color;
+
+  MinDivider({this.color});
+
   @override
   Widget build(BuildContext context) {
-    return Divider(height: 1);
+    return Divider(
+      height: 1,
+      color: color,
+    );
   }
 }
 
@@ -36,9 +44,63 @@ class HeadingDivider extends StatelessWidget {
             left: paddingDefault,
             right: paddingDefault,
           ),
-          child: HeadingLabel(text),
+          // Add SafeArea here so the divider always stretches to the edges
+          // of the page.
+          child: SafeArea(
+            top: false,
+            bottom: false,
+            child: HeadingLabel(text),
+          ),
         ),
       ],
+    );
+  }
+}
+
+/// A [HeadingDivider] widget with an optional [IconNoteLabel].
+class HeadingNoteDivider extends StatelessWidget {
+  final bool hideNote;
+  final String title;
+  final String note;
+  final IconData noteIcon;
+  final EdgeInsets padding;
+
+  HeadingNoteDivider({
+    this.hideNote = true,
+    @required this.title,
+    @required this.note,
+    @required this.noteIcon,
+    this.padding,
+  }) : assert(isNotEmpty(title)),
+       assert(hideNote || (isNotEmpty(note) && noteIcon != null));
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: padding ?? insetsZero,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: hideNote ? insetsZero : EdgeInsets.only(
+              bottom: paddingWidget,
+            ),
+            child: HeadingDivider(title),
+          ),
+          AnimatedSwitcher(
+            duration: defaultAnimationDuration,
+            child: hideNote ? Empty() : Padding(
+              padding: insetsHorizontalDefault,
+              child: IconNoteLabel(
+                text: note,
+                icon: Icon(noteIcon,
+                  color: Colors.black,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -120,8 +182,12 @@ class EnabledOpacity extends StatelessWidget {
 class RightChevronIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Icon(Icons.chevron_right,
-      color: colorInputIconAccent,
+    return SafeArea(
+      top: false,
+      bottom: false,
+      child: Icon(Icons.chevron_right,
+        color: colorInputIconAccent,
+      ),
     );
   }
 }
@@ -168,8 +234,6 @@ class HelpTooltip extends StatelessWidget {
 
 /// A wrapper for [AnimatedOpacity] with a default duration.
 class AnimatedVisibility extends StatelessWidget {
-  final Duration _animDuration = Duration(milliseconds: 150);
-
   final bool visible;
   final Widget child;
 
@@ -182,7 +246,7 @@ class AnimatedVisibility extends StatelessWidget {
   Widget build(BuildContext context) {
     return AnimatedOpacity(
       opacity: visible ? 1.0 : 0.0,
-      duration: _animDuration,
+      duration: defaultAnimationDuration,
       child: child,
     );
   }
@@ -222,4 +286,52 @@ class VerticalSpace extends StatelessWidget {
   Widget build(BuildContext context) => Container(
     height: size,
   );
+}
+
+class HorizontalSpace extends StatelessWidget {
+  final double size;
+
+  HorizontalSpace(this.size);
+
+  @override
+  Widget build(BuildContext context) => Container(
+    width: size,
+  );
+}
+
+class AppBarDropdownItem<T> extends DropdownMenuItem<T> {
+  final String text;
+  final T value;
+
+  AppBarDropdownItem({
+    @required BuildContext context,
+    @required this.text,
+    @required this.value,
+  }) : assert(isNotEmpty(text)),
+       assert(value != null),
+       super(
+         child: Text(text,
+           // Use the same theme as default AppBar title text.
+           style: Theme.of(context).textTheme.headline6,
+         ),
+         value: value,
+       );
+}
+
+class ChipWrap extends StatelessWidget {
+  final Set<String> items;
+
+  ChipWrap([this.items = const {}]);
+
+  @override
+  Widget build(BuildContext context) {
+    return Wrap(
+      spacing: paddingWidgetSmall,
+      runSpacing: paddingWidgetSmall,
+      children: items.map((item) => Chip(
+        label: Text(item),
+        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+      )).toList(),
+    );
+  }
 }

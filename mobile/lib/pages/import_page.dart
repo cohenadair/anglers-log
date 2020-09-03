@@ -20,7 +20,6 @@ class ImportPage extends StatefulWidget {
 class _ImportPageState extends State<ImportPage> {
   final double _cloudIconSize = 150.0;
   final double _feedbackIconSize = 40.0;
-  final Duration _feedbackAnimDuration = Duration(milliseconds: 150);
 
   _State _importState = _State.none;
   LegacyImporterError _importError;
@@ -40,32 +39,37 @@ class _ImportPageState extends State<ImportPage> {
           color: Theme.of(context).primaryColor,
         ),
       ),
-      body: Padding(
-        padding: insetsDefault,
-        child: ListView(
-          children: [
-            Icon(
-              Icons.cloud_download,
-              size: _cloudIconSize,
-              color: Colors.black12,
-            ),
-            Text(Strings.of(context).importPageDescription,
-              style: Theme.of(context).textTheme.subtitle1,
-              textAlign: TextAlign.center,
-            ),
-            VerticalSpace(paddingWidget),
-            Align(
-              child: Button(
-                text: Strings.of(context).importPageChooseFile,
-                onPressed: _loading ? null : () {
-                  _updateImportState(_State.loading);
-                  _chooseFile();
-                },
+      extendBodyBehindAppBar: true,
+      body: SafeArea(
+        top: false,
+        bottom: false,
+        child: Padding(
+          padding: insetsDefault,
+          child: ListView(
+            children: [
+              Icon(
+                Icons.cloud_download,
+                size: _cloudIconSize,
+                color: Colors.black12,
               ),
-            ),
-            VerticalSpace(paddingWidget),
-            _buildFeedbackWidgets(),
-          ],
+              Text(Strings.of(context).importPageDescription,
+                style: Theme.of(context).textTheme.subtitle1,
+                textAlign: TextAlign.center,
+              ),
+              VerticalSpace(paddingWidget),
+              Align(
+                child: Button(
+                  text: Strings.of(context).importPageChooseFile,
+                  onPressed: _loading ? null : () {
+                    _updateImportState(_State.loading);
+                    _chooseFile();
+                  },
+                ),
+              ),
+              VerticalSpace(paddingWidget),
+              _buildFeedbackWidgets(),
+            ],
+          ),
         ),
       ),
     );
@@ -116,7 +120,7 @@ class _ImportPageState extends State<ImportPage> {
     }
 
     return AnimatedSwitcher(
-      duration: _feedbackAnimDuration,
+      duration: defaultAnimationDuration,
       child: Column(
         key: ValueKey<_State>(_importState),
         children: children,

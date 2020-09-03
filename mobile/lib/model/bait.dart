@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/model/named_entity.dart';
 import 'package:mobile/model/property.dart';
+import 'package:mobile/utils/collection_utils.dart';
 import 'package:quiver/core.dart';
 import 'package:quiver/strings.dart';
 
@@ -90,7 +91,7 @@ class Bait extends NamedEntity {
         color: map[keyColor],
         model: map[keyModel],
         size: map[keySize],
-        type: map[keyType],
+        type: valueOf<BaitType>(BaitType.values, map[keyType]),
         minDiveDepth: map[keyMinDiveDepth],
         maxDiveDepth: map[keyMaxDiveDepth],
         description: map[keyDescription],

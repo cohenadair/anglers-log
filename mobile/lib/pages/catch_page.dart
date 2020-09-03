@@ -13,8 +13,8 @@ import 'package:mobile/pages/entity_page.dart';
 import 'package:mobile/pages/save_catch_page.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/species_manager.dart';
+import 'package:mobile/utils/date_time_utils.dart';
 import 'package:mobile/utils/page_utils.dart';
-import 'package:mobile/utils/string_utils.dart';
 import 'package:mobile/widgets/list_item.dart';
 import 'package:mobile/widgets/static_fishing_spot.dart';
 import 'package:mobile/widgets/text.dart';
@@ -106,7 +106,7 @@ class _CatchPageState extends State<CatchPage> {
 
     Bait bait = _baitManager.entity(id: _catch.baitId);
 
-    Widget subtitle = Empty();
+    Widget subtitle;
     if (bait.hasCategory) {
       subtitle = SubtitleLabel(
           _baitCategoryManager.entity(id: bait.categoryId).name);

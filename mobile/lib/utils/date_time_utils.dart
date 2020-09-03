@@ -1,7 +1,62 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mobile/i18n/strings.dart';
+import 'package:mobile/utils/string_utils.dart';
 import 'package:quiver/time.dart';
+
+const monthDayFormat = "MMM d";
+const monthDayYearFormat = "MMM d, yyyy";
+const monthDayYearFormatFull = "MMMM d, yyyy";
+
+enum DurationUnit {
+  days,
+  hours,
+  minutes
+}
+
+/// A representation of a [Duration] object meant to be shown to the user. Units
+/// are split by largest possible. For example, the hours property is the
+/// number of hours in the duration, minus the number of days.
+class DisplayDuration {
+  final Duration _duration;
+  final bool _includesDays;
+  final bool _includesHours;
+  final bool _includesMinutes;
+
+  DisplayDuration(this._duration, {
+    bool includesDays = true,
+    bool includesHours = true,
+    bool includesMinutes = true,
+  }) : _includesDays = includesDays,
+       _includesHours = includesHours,
+       _includesMinutes = includesMinutes;
+
+  int get days => _duration.inDays;
+
+  int get hours {
+    if (_includesDays) {
+      return _duration.inHours.remainder(Duration.hoursPerDay);
+    } else {
+      return _duration.inHours;
+    }
+  }
+
+  int get minutes {
+    if (_includesHours) {
+      return _duration.inMinutes.remainder(Duration.minutesPerHour);
+    } else {
+      return _duration.inMinutes;
+    }
+  }
+
+  int get seconds {
+    if (_includesMinutes) {
+      return _duration.inSeconds.remainder(Duration.secondsPerMinute);
+    } else {
+      return _duration.inSeconds;
+    }
+  }
+}
 
 class DateRange {
   final int _daysInMonth = 30;
@@ -10,8 +65,16 @@ class DateRange {
   final DateTime endDate;
 
   DateRange({this.startDate, this.endDate})
-      : assert(startDate.isAtSameMomentAs(endDate) ||
-          startDate.isBefore(endDate));
+      : assert(startDate.isAtSameMomentAs(endDate)
+          || startDate.isBefore(endDate));
+
+  DateRange.fromMillis({
+    int start,
+    int end,
+  }) : this(
+    startDate: DateTime.fromMillisecondsSinceEpoch(start),
+    endDate: DateTime.fromMillisecondsSinceEpoch(end),
+  );
 
   int get startMs => startDate.millisecondsSinceEpoch;
   int get endMs => endDate.millisecondsSinceEpoch;
@@ -34,6 +97,8 @@ class DateRange {
   /// the number of milliseconds in a month. A month length is defined as 30
   /// days.
   num get months => durationMs / (Duration.millisecondsPerDay * _daysInMonth);
+
+  bool contains(int ms) => ms >= startMs && ms <= endMs;
 }
 
 /// A pre-defined set of date ranges meant for user section. Includes ranges
@@ -46,7 +111,7 @@ class DisplayDateRange {
       startDate: DateTime.fromMicrosecondsSinceEpoch(0),
       endDate: now,
     ),
-    getTitle: (context) => Strings.of(context).analysisDurationAllDates,
+    title: (context) => Strings.of(context).analysisDurationAllDates,
   );
 
   static final today = DisplayDateRange._(
@@ -55,7 +120,7 @@ class DisplayDateRange {
       startDate: dateTimeToDayAccuracy(now),
       endDate: now,
     ),
-    getTitle: (context) => Strings.of(context).analysisDurationToday,
+    title: (context) => Strings.of(context).analysisDurationToday,
   );
 
   static final yesterday = DisplayDateRange._(
@@ -64,7 +129,7 @@ class DisplayDateRange {
       startDate: dateTimeToDayAccuracy(now).subtract(Duration(days: 1)),
       endDate: dateTimeToDayAccuracy(now),
     ),
-    getTitle: (context) => Strings.of(context).analysisDurationYesterday,
+    title: (context) => Strings.of(context).analysisDurationYesterday,
   );
 
   static final thisWeek = DisplayDateRange._(
@@ -73,7 +138,7 @@ class DisplayDateRange {
       startDate: getStartOfWeek(now),
       endDate: now,
     ),
-    getTitle: (context) => Strings.of(context).analysisDurationThisWeek,
+    title: (context) => Strings.of(context).analysisDurationThisWeek,
   );
 
   static final thisMonth = DisplayDateRange._(
@@ -82,7 +147,7 @@ class DisplayDateRange {
       startDate: getStartOfMonth(now),
       endDate: now,
     ),
-    getTitle: (context) => Strings.of(context).analysisDurationThisMonth,
+    title: (context) => Strings.of(context).analysisDurationThisMonth,
   );
 
   static final thisYear = DisplayDateRange._(
@@ -91,7 +156,7 @@ class DisplayDateRange {
       startDate: getStartOfYear(now),
       endDate: now,
     ),
-    getTitle: (context) => Strings.of(context).analysisDurationThisYear,
+    title: (context) => Strings.of(context).analysisDurationThisYear,
   );
 
   static final lastWeek = DisplayDateRange._(
@@ -103,7 +168,7 @@ class DisplayDateRange {
       );
       return DateRange(startDate: startOfLastWeek, endDate: endOfLastWeek);
     },
-    getTitle: (context) => Strings.of(context).analysisDurationLastWeek,
+    title: (context) => Strings.of(context).analysisDurationLastWeek,
   );
 
   static final lastMonth = DisplayDateRange._(
@@ -121,7 +186,7 @@ class DisplayDateRange {
         endDate: endOfLastMonth,
       );
     },
-    getTitle: (context) => Strings.of(context).analysisDurationLastMonth,
+    title: (context) => Strings.of(context).analysisDurationLastMonth,
   );
 
   static final lastYear = DisplayDateRange._(
@@ -130,7 +195,7 @@ class DisplayDateRange {
       startDate: DateTime(now.year - 1),
       endDate: getStartOfYear(now),
     ),
-    getTitle: (context) => Strings.of(context).analysisDurationLastYear,
+    title: (context) => Strings.of(context).analysisDurationLastYear,
   );
 
   static final last7Days = DisplayDateRange._(
@@ -139,7 +204,7 @@ class DisplayDateRange {
       startDate: now.subtract(Duration(days: 7)),
       endDate: now,
     ),
-    getTitle: (context) => Strings.of(context).analysisDurationLast7Days,
+    title: (context) => Strings.of(context).analysisDurationLast7Days,
   );
 
   static final last14Days = DisplayDateRange._(
@@ -148,7 +213,7 @@ class DisplayDateRange {
       startDate: now.subtract(Duration(days: 14)),
       endDate: now,
     ),
-    getTitle: (context) => Strings.of(context).analysisDurationLast14Days,
+    title: (context) => Strings.of(context).analysisDurationLast14Days,
   );
 
   static final last30Days = DisplayDateRange._(
@@ -157,7 +222,7 @@ class DisplayDateRange {
       startDate: now.subtract(Duration(days: 30)),
       endDate: now,
     ),
-    getTitle: (context) => Strings.of(context).analysisDurationLast30Days,
+    title: (context) => Strings.of(context).analysisDurationLast30Days,
   );
 
   static final last60Days = DisplayDateRange._(
@@ -166,7 +231,7 @@ class DisplayDateRange {
       startDate: now.subtract(Duration(days: 60)),
       endDate: now,
     ),
-    getTitle: (context) => Strings.of(context).analysisDurationLast60Days,
+    title: (context) => Strings.of(context).analysisDurationLast60Days,
   );
 
   static final last12Months = DisplayDateRange._(
@@ -175,13 +240,13 @@ class DisplayDateRange {
       startDate: now.subtract(Duration(days: 365)),
       endDate: now,
     ),
-    getTitle: (context) => Strings.of(context).analysisDurationLast12Months,
+    title: (context) => Strings.of(context).analysisDurationLast12Months,
   );
 
   static final custom = DisplayDateRange._(
     id: "custom",
     getValue: (now) => DisplayDateRange.thisMonth.getValue(now),
-    getTitle: (context) => Strings.of(context).analysisDurationCustom,
+    title: (context) => Strings.of(context).analysisDurationCustom,
   );
 
   static final all = [
@@ -191,20 +256,28 @@ class DisplayDateRange {
   ];
 
   /// Returns the [DisplayDateRange] for the given ID, or `null` if none exists.
-  static DisplayDateRange of(String id) {
-    try {
-      return all.firstWhere((range) => range.id == id);
-    } on StateError {
-      return null;
+  static DisplayDateRange of(String id, [
+    int startTimestamp,
+    int endTimestamp,
+  ]) {
+    assert(id != custom.id || (startTimestamp != null && endTimestamp != null));
+
+    if (id == custom.id) {
+      return DisplayDateRange.newCustomFromDateRange(DateRange.fromMillis(
+        start: startTimestamp,
+        end: endTimestamp,
+      ));
+    } else {
+      return all.firstWhere((range) => range.id == id, orElse: () => null);
     }
   }
 
   final String id;
   final DateRange Function(DateTime now) getValue;
-  final String Function(BuildContext context) getTitle;
+  final String Function(BuildContext context) title;
 
   DisplayDateRange._({
-    this.id, this.getValue, this.getTitle
+    this.id, this.getValue, this.title
   });
 
   /// Used to create a [DisplayDateRange] with custom start and end dates, but
@@ -215,7 +288,13 @@ class DisplayDateRange {
   }) : this._(
     id: custom.id,
     getValue: getValue,
-    getTitle: getTitle,
+    title: getTitle,
+  );
+
+  /// Wrapper for [DisplayDateRange.newCustom].
+  DisplayDateRange.newCustomFromDateRange(DateRange dateRange) : this.newCustom(
+    getValue: (_) => dateRange,
+    getTitle: (_) => formatDateRange(dateRange),
   );
 
   DateRange get value => getValue(DateTime.now());
@@ -227,6 +306,9 @@ class DisplayDateRange {
 
   @override
   int get hashCode => id.hashCode;
+
+  @override
+  String toString() => id;
 }
 
 bool isSameYear(DateTime a, DateTime b) {
@@ -332,4 +414,182 @@ int weekOfYear(DateTime date) {
 /// Returns the day of the year for the given [DateTime]. For example, 185.
 int dayOfYear(DateTime date) {
   return int.parse(DateFormat("D").format(date));
+}
+
+/// Returns a formatted [String] for a time of day. The format depends on a
+/// combination of the current locale and the user's system time format setting.
+///
+/// Example:
+///   21:35, or
+///   9:35 PM
+String formatTimeOfDay(BuildContext context, TimeOfDay time) {
+  return MaterialLocalizations.of(context).formatTimeOfDay(
+    time,
+    alwaysUse24HourFormat: MediaQuery.of(context).alwaysUse24HourFormat,
+  );
+}
+
+/// Returns a formatted [DateTime] to be displayed to the user. Includes date
+/// and time.
+///
+/// Examples:
+///   - Today at 2:35 PM
+///   - Yesterday at 2:35 PM
+///   - Monday at 2:35 PM
+///   - Jan. 8 at 2:35 PM
+///   - Dec. 8, 2018 at 2:35 PM
+String formatDateTime(BuildContext context, DateTime dateTime, [
+  clock = const Clock(),
+]) {
+  return format(Strings.of(context).dateTimeFormat, [
+    formatDateAsRecent(context: context, dateTime: dateTime, clock: clock),
+    formatTimeOfDay(context, TimeOfDay.fromDateTime(dateTime)),
+  ]);
+}
+
+/// Returns a [DateTime] as a searchable [String]. This value should not be
+/// shown to users, but to be used for searching through list items that include
+/// timestamps.
+///
+/// The value returned is just a concatenation of different ways of representing
+/// a date and time.
+String dateTimeToSearchingString(BuildContext context, DateTime dateTime, [
+  clock = const Clock(),
+]) {
+  return "${formatDateTime(context, dateTime, clock)} "
+      "${DateFormat(monthDayYearFormatFull).format(dateTime)}";
+}
+
+/// Returns a formatted [DateRange] to be displayed to the user.
+///
+/// Example:
+///   Dec. 8, 2018 - Dec. 29, 2018
+String formatDateRange(DateRange dateRange) {
+  return DateFormat(monthDayYearFormat).format(dateRange.startDate)
+      + " - "
+      + DateFormat(monthDayYearFormat).format(dateRange.endDate);
+}
+
+/// Returns a formatted [DateTime] to be displayed to the user. Includes
+/// date only.
+///
+/// Examples:
+///   - Today
+///   - Yesterday
+///   - Monday
+///   - Jan. 8
+///   - Dec. 8, 2018
+String formatDateAsRecent({
+  @required BuildContext context,
+  @required DateTime dateTime,
+  clock = const Clock(),
+}) {
+  final DateTime now = clock.now();
+
+  if (isSameDate(dateTime, now)) {
+    // Today.
+    return Strings.of(context).today;
+  } else if (isYesterday(now, dateTime)) {
+    // Yesterday.
+    return Strings.of(context).yesterday;
+  } else if (isWithinOneWeek(dateTime, now)) {
+    // 2 days ago to 6 days ago.
+    return DateFormat("EEEE").format(dateTime);
+  } else if (isSameYear(dateTime, now)) {
+    // Same year.
+    return DateFormat(monthDayFormat).format(dateTime);
+  } else {
+    // Different year.
+    return DateFormat(monthDayYearFormat).format(dateTime);
+  }
+}
+
+/// Returns formatted text to display the duration, in the format Dd Hh Mm Ss.
+///
+/// Example:
+///   - 0d 5h 30m 0s
+String formatDuration({
+  BuildContext context,
+  int millisecondsDuration,
+  bool includesDays = true,
+  bool includesHours = true,
+  bool includesMinutes = true,
+  bool includesSeconds = true,
+
+  /// If `true`, values equal to 0 will not be included.
+  bool condensed = false,
+
+  /// If `true`, only the largest 2 quantities will be shown.
+  ///
+  /// Examples:
+  ///   - 1d 12h
+  ///   - 12h 30m
+  ///   - 30m 45s
+  bool showHighestTwoOnly = false,
+
+  /// The largest [DurationUnit] to use. For example, if equal to
+  /// [DurationUnit.hours], 2 days and 3 hours will be formatted as `51h`
+  /// rather than `2d 3h`. The same effect can be done by setting `includesDays`
+  /// to `false`.
+  ///
+  /// This is primarily meant for use with a user-preference where the
+  /// [DurationUnit] is read from [SharedPreferences].
+  DurationUnit largestDurationUnit = DurationUnit.days,
+}) {
+  includesDays = includesDays && largestDurationUnit == DurationUnit.days;
+  includesHours = includesHours && largestDurationUnit != DurationUnit.minutes;
+
+  DisplayDuration duration = DisplayDuration(
+    Duration(milliseconds: millisecondsDuration),
+    includesDays: includesDays,
+    includesHours: includesHours,
+    includesMinutes: includesMinutes,
+  );
+
+  String result = "";
+
+  maybeAddSpace() {
+    if (result.isNotEmpty) {
+      result += " ";
+    }
+  }
+
+  int numberIncluded = 0;
+
+  bool shouldAdd(bool include, int value) {
+    return include
+        && (!condensed || value > 0)
+        && (!showHighestTwoOnly || numberIncluded < 2);
+  }
+
+  if (shouldAdd(includesDays, duration.days)) {
+    result += format(Strings.of(context).daysFormat, [duration.days]);
+    numberIncluded++;
+  }
+
+  if (shouldAdd(includesHours, duration.hours)) {
+    maybeAddSpace();
+    result += format(Strings.of(context).hoursFormat, [duration.hours]);
+    numberIncluded++;
+  }
+
+  if (shouldAdd(includesMinutes, duration.minutes)) {
+    maybeAddSpace();
+    result += format(Strings.of(context).minutesFormat, [duration.minutes]);
+    numberIncluded++;
+  }
+
+  if (shouldAdd(includesSeconds, duration.seconds)) {
+    maybeAddSpace();
+    result += format(Strings.of(context).secondsFormat, [duration.seconds]);
+  }
+
+  // If there is no result and not everything is excluded, default to 0m.
+  if (result.isEmpty && (includesSeconds || includesMinutes || includesHours
+      || includesDays))
+  {
+    result += format(Strings.of(context).minutesFormat, [0]);
+  }
+
+  return result;
 }

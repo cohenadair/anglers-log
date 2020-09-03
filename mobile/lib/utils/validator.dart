@@ -30,23 +30,24 @@ class NameValidator implements Validator {
   /// If non-null, input equal to [oldName] is considered valid.
   final String oldName;
 
-  final String nameExistsMessage;
+  final String Function(BuildContext) nameExistsMessage;
   final bool Function(String) nameExists;
 
   NameValidator({
-    @required this.nameExistsMessage,
-    @required this.nameExists,
+    this.nameExistsMessage,
+    this.nameExists,
     this.oldName,
-  });
+  }) : assert((nameExists != null && nameExistsMessage != null)
+      || (nameExists == null && nameExistsMessage == null));
 
   @override
   ValidationCallback run(BuildContext context, String newName) {
-    if (oldName != null && isEqualTrimmedLowercase(oldName, newName)) {
+    if (!isEmpty(oldName) && isEqualTrimmedLowercase(oldName, newName)) {
       return null;
     } else if (isEmpty(newName)) {
       return (context) => Strings.of(context).inputGenericRequired;
-    } else if (nameExists(newName)) {
-      return (context) => nameExistsMessage;
+    } else if (nameExists != null && nameExists(newName)) {
+      return nameExistsMessage;
     } else {
       return null;
     }

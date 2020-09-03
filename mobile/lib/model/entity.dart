@@ -5,7 +5,8 @@ import 'package:quiver/strings.dart';
 import 'package:uuid/uuid.dart';
 
 /// An [Entity] stores a collection of manageable properties. An [Entity] is
-/// designed to store business logic data only; nothing UI related.
+/// designed to store business logic data only; nothing UI related. It is
+/// generally used to represent a single row in a database table.
 @immutable
 class Entity {
   static const keyId = "id";

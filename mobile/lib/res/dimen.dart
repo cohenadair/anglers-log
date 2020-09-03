@@ -4,12 +4,15 @@ const paddingDefaultDouble = 32.0;
 const paddingDefault = 16.0;
 const paddingMedium = 12.0;
 const paddingSmall = 8.0;
+const paddingTiny = 4.0;
 const paddingWidget = paddingDefault;
 const paddingWidgetSmall = paddingSmall;
+const paddingWidgetTiny = paddingTiny;
 
 const insetsZero = EdgeInsets.all(0);
 const insetsDefault = EdgeInsets.all(paddingDefault);
 const insetsSmall = EdgeInsets.all(paddingSmall);
+const insetsMedium = EdgeInsets.all(paddingMedium);
 
 const insetsRowDefault = EdgeInsets.only(
   left: paddingDefault,
@@ -43,9 +46,19 @@ const insetsHorizontalDefault = EdgeInsets.only(
   right: paddingDefault,
 );
 
+const insetsHorizontalWidget = EdgeInsets.only(
+  left: paddingWidget,
+  right: paddingWidget,
+);
+
 const insetsHorizontalWidgetSmall = EdgeInsets.only(
   left: paddingWidgetSmall,
   right: paddingWidgetSmall,
+);
+
+const insetsHorizontalWidgetTiny = EdgeInsets.only(
+  left: paddingWidgetTiny,
+  right: paddingWidgetTiny,
 );
 
 const insetsHorizontalMedium = EdgeInsets.only(
@@ -82,6 +95,13 @@ const insetsHorizontalDefaultVerticalSmall = EdgeInsets.only(
   right: paddingDefault,
   top: paddingSmall,
   bottom: paddingSmall,
+);
+
+const insetsHorizontalDefaultVerticalWidget = EdgeInsets.only(
+  left: paddingDefault,
+  right: paddingDefault,
+  top: paddingWidget,
+  bottom: paddingWidget,
 );
 
 const iconSizeDefault = 24.0;

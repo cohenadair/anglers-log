@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/model/named_entity.dart';
 import 'package:mobile/pages/form_page.dart';
 import 'package:mobile/utils/string_utils.dart';
@@ -36,9 +35,7 @@ class SaveNamePage extends StatefulWidget {
 }
 
 class _SaveNamePageState extends State<SaveNamePage> {
-  final _controller = TextInputController(
-    validate: (context) => Strings.of(context).inputGenericRequired,
-  );
+  TextInputController _controller;
 
   bool get inputEqualsOld => widget.oldName != null
       && isEqualTrimmedLowercase(widget.oldName, _controller.value);
@@ -47,11 +44,16 @@ class _SaveNamePageState extends State<SaveNamePage> {
   void initState() {
     super.initState();
 
+    _controller = TextInputController(
+      validator: NameValidator(
+        nameExists: widget.validator.nameExists,
+        nameExistsMessage: widget.validator.nameExistsMessage,
+        oldName: widget.validator.oldName ?? widget.oldName,
+      ),
+    );
+
     if (isNotEmpty(widget.oldName)) {
       _controller.value = widget.oldName;
-
-      // If editing an old name, that old name is valid.
-      _controller.validate = null;
     }
   }
 
@@ -78,17 +80,12 @@ class _SaveNamePageState extends State<SaveNamePage> {
             context,
             controller: _controller,
             autofocus: true,
-            validator: NameValidator(
-              nameExists: widget.validator.nameExists,
-              nameExistsMessage: widget.validator.nameExistsMessage,
-              oldName: widget.validator.oldName ?? widget.oldName,
-            ),
             // Trigger "Save" button state refresh.
             onChanged: () => setState(() {}),
           ),
         };
       },
-      isInputValid: isEmpty(_controller.error(context)),
+      isInputValid: _controller.valid(context),
     );
   }
 }

@@ -56,6 +56,7 @@ class Strings {
   String get add => _string("add");
   String get more => _string("more");
   String get customFields => _string("customFields");
+  String get na => _string("na");
 
   String get fieldTypeNumber => _string("fieldType_number");
   String get fieldTypeBoolean => _string("fieldType_boolean");
@@ -92,6 +93,19 @@ class Strings {
   String get saveCatchPageFishingSpotLabel => _string("saveCatchPage_fishingSpotLabel");
   String get saveCatchPageBaitLabel => _string("saveCatchPage_baitLabel");
 
+  String get saveCustomReportPageNewTitle => _string("saveCustomReportPage_newTitle");
+  String get saveCustomReportPageEditTitle => _string("saveCustomReportPage_editTitle");
+  String get saveCustomReportPageNameExists => _string("saveCustomReportPage_nameExists");
+  String get saveCustomReportTypeTitle => _string("saveCustomReportPage_typeTitle");
+  String get saveCustomReportPageComparison => _string("saveCustomReportPage_comparison");
+  String get saveCustomReportPageSummary => _string("saveCustomReportPage_summary");
+  String get saveCustomReportPageStartDateRangeLabel => _string("saveCustomReportPage_startDateRangeLabel");
+  String get saveCustomReportPageEndDateRangeLabel => _string("saveCustomReportPage_endDateRangeLabel");
+  String get saveCustomReportPageSpecies => _string("saveCustomReportPage_species");
+  String get saveCustomReportPageAllSpecies => _string("saveCustomReportPage_allSpecies");
+  String get saveCustomReportPageAllBaits => _string("saveCustomReportPage_allBaits");
+  String get saveCustomReportPageAllFishingSpots => _string("saveCustomReportPage_allFishingSpots");
+
   String get photosPageMenuLabel => _string("photosPage_menuLabel");
   String get photosPageTitle => _string("photosPage_title");
 
@@ -101,9 +115,13 @@ class Strings {
   String get baitListPageOtherCategory => _string("baitListPage_otherCategory");
   String get baitListPageSearchHint => _string("baitListPage_searchHint");
   String get baitListPageNoSearchResults => _string("baitListPage_noSearchResults");
+  String get baitListPageDeleteMessage => _string("baitListPage_deleteMessage");
+  String get baitListPageDeleteMessageSingular => _string("baitListPage_deleteMessageSingular");
 
-  String get baitPageDeleteMessage => _string("baitPage_deleteMessage");
-  String get baitPageDeleteMessageSingular => _string("baitPage_deleteMessageSingular");
+  String get reportListPagePickerTitle => _string("reportListPage_pickerTitle");
+  String get reportListPageConfirmDelete => _string("reportListPage_confirmDelete");
+  String get reportListPageCustomReportTitle => _string("reportListPage_customReportTitle");
+  String get reportListPageCustomReportAddNote => _string("reportListPage_customReportAddNote");
 
   String get saveBaitPageNewTitle => _string("saveBaitPage_newTitle");
   String get saveBaitPageEditTitle => _string("saveBaitPage_editTitle");
@@ -122,7 +140,30 @@ class Strings {
   String get baitCategoryListPageSearchHint => _string("baitCategoryListPage_searchHint");
   String get baitCategoryListPageNoSearchResults => _string("baitCategoryListPage_noSearchResults");
 
+  String get statsPageMenuTitle => _string("statsPage_menuTitle");
   String get statsPageTitle => _string("statsPage_title");
+  String get statsPageReportOverview => _string("statsPage_reportOverview");
+  String get statsPageNewReport => _string("statsPage_newReport");
+
+  String get reportViewNoCatches => _string("reportView_noCatches");
+
+  String get reportSummaryViewCatches => _string("reportSummary_viewCatches");
+  String get reportSummaryCatchTitle => _string("reportSummary_catchTitle");
+  String get reportSummaryPerSpecies => _string("reportSummary_perSpecies");
+  String get reportSummaryPerFishingSpot => _string("reportSummary_perFishingSpot");
+  String get reportSummaryPerBait => _string("reportSummary_perBait");
+  String get reportSummarySinceLastCatch => _string("reportSummary_sinceLastCatch");
+  String get reportSummaryNumberOfCatches => _string("reportSummary_numberOfCatches");
+  String get reportSummaryFilters => _string("reportSummary_filters");
+  String get reportSummaryViewSpecies => _string("reportSummary_viewSpecies");
+  String get reportSummaryCatchesPerSpeciesDescription => _string("reportSummary_catchesPerSpeciesDescription");
+  String get reportSummaryViewFishingSpots => _string("reportSummary_viewFishingSpots");
+  String get reportSummaryCatchesPerFishingSpotDescription => _string("reportSummary_catchesPerFishingSpotDescription");
+  String get reportSummaryViewBaits => _string("reportSummary_viewBaits");
+  String get reportSummaryCatchesPerBaitDescription => _string("reportSummary_catchesPerBaitDescription");
+  String get reportSummarySpeciesTitle => _string("reportSummary_speciesTitle");
+
+  String get dateRangePickerPageTitle => _string("dateRangePickerPage_title");
 
   String get morePageTitle => _string("morePage_title");
 
@@ -130,6 +171,7 @@ class Strings {
 
   String get mapPageMenuLabel => _string("mapPage_menuLabel");
   String get mapPageDeleteFishingSpot => _string("mapPage_deleteFishingSpot");
+  String get mapPageDeleteFishingSpotSingular => _string("mapPage_deleteFishingSpotSingular");
   String get mapPageDeleteFishingSpotNoName => _string("mapPage_deleteFishingSpotNoName");
   String get mapPageAddCatch => _string("mapPage_addCatch");
   String get mapPageSearchHint => _string("mapPage_searchHint");
@@ -150,6 +192,7 @@ class Strings {
   String get formPageConfirmRemoveFields => _string("formPage_confirmRemoveFields");
   String get formPageSelectFieldsTitle => _string("formPage_selectFieldsTitle");
   String get formPageItemAddCustomFieldNote => _string("formPage_addCustomFieldNote");
+  String get formPageManageFieldsNote => _string("formPage_manageFieldsNote");
 
   String get imagePickerPageNoPhotosFound => _string("imagePickerPage_noPhotosFound");
   String get imagePickerPageOpenCameraLabel => _string("imagePickerPage_openCameraLabel");
@@ -174,6 +217,11 @@ class Strings {
 
   String get fishingSpotPickerPageTitle => _string("fishingSpotPickerPage_title");
   String get fishingSpotPickerPageHint => _string("fishingSpotPickerPage_hint");
+
+  String get fishingSpotListPageTitle => _string("fishingSpotListPage_title");
+  String get fishingSpotListPagePickerTitle => _string("fishingSpotListPage_pickerTitle");
+  String get fishingSpotListPageSearchHint => _string("fishingSpotListPage_searchHint");
+  String get fishingSpotListPageNoSearchResults => _string("fishingSpotListPage_noSearchResults");
 
   String get customEntityListPageTitle => _string("customEntityListPage_title");
   String get customEntityListPageDelete => _string("customEntityListPage_delete");
@@ -223,7 +271,12 @@ class Strings {
   String get analysisDurationLast12Months => _string("analysisDuration_last12Months");
   String get analysisDurationCustom => _string("analysisDuration_custom");
 
+  String get daysFormat => _string("daysFormat");
+  String get hoursFormat => _string("hoursFormat");
+  String get minutesFormat => _string("minutesFormat");
+  String get secondsFormat => _string("secondsFormat");
   String get dateTimeFormat => _string("dateTimeFormat");
+  String get dateDurationFormat => _string("dateDurationFormat");
 }
 
 class StringsDelegate extends LocalizationsDelegate<Strings> {

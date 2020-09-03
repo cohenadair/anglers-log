@@ -16,9 +16,8 @@ import 'package:mobile/utils/page_utils.dart';
 import 'package:mobile/utils/string_utils.dart';
 import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/fishing_spot_map.dart';
-import 'package:mobile/widgets/text.dart';
+import 'package:mobile/widgets/floating_bottom_container.dart';
 import 'package:mobile/widgets/widget.dart';
-import 'package:quiver/strings.dart';
 
 class FishingSpotPickerPage extends StatefulWidget {
   final void Function(BuildContext, FishingSpot) onPicked;
@@ -42,7 +41,6 @@ class _FishingSpotPickerPageState extends State<FishingSpotPickerPage>
   static final _pendingMarkerAnimOffset = _pendingMarkerSize * 3;
 
   final _pendingMarkerSlideInDelay = Duration(milliseconds: 1000);
-  final _pendingMarkerSlideInDuration = Duration(milliseconds: 150);
 
   final Completer<GoogleMapController> _mapController = Completer();
 
@@ -84,7 +82,7 @@ class _FishingSpotPickerPageState extends State<FishingSpotPickerPage>
 
     _fishingSpotAnimController = AnimationController(
       vsync: this,
-      duration: _pendingMarkerSlideInDuration,
+      duration: defaultAnimationDuration,
     );
 
     _fishingSpotAnimOffset = Tween<Offset>(
@@ -215,23 +213,6 @@ class _FishingSpotPickerPageState extends State<FishingSpotPickerPage>
       return Empty();
     }
 
-    Widget name = Empty();
-    if (isNotEmpty(_currentFishingSpot.name)) {
-      name = Padding(
-        padding: insetsRightDefault,
-        child: Label(_currentFishingSpot.name, style: styleHeading),
-      );
-    }
-
-    Widget coordinates = Padding(
-      padding: insetsRightDefault,
-      child: Label(formatLatLng(
-        context: context,
-        lat: _currentFishingSpot.lat,
-        lng: _currentFishingSpot.lng,
-      )),
-    );
-
     Widget editButton = Padding(
       padding: insetsRightWidgetSmall,
       child: ActionButton.edit(
@@ -253,32 +234,25 @@ class _FishingSpotPickerPageState extends State<FishingSpotPickerPage>
 
     return SlideTransition(
       position: _fishingSpotAnimOffset,
-      child: SafeArea(
-        child: Container(
-          margin: EdgeInsets.only(
-            top: paddingDefault,
-            left: paddingDefault,
-            right: paddingDefault,
-            bottom: hasBottomSafeArea(context) ? paddingSmall : paddingDefault,
-          ),
-          padding: EdgeInsets.only(
-            top: paddingDefault,
-            left: paddingDefault,
-          ),
-          decoration: FloatingBoxDecoration.rectangle(),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              name,
-              coordinates,
-              Align(
-                alignment: Alignment.bottomRight,
-                child: editButton,
-              ),
-            ],
-          ),
+      child: FloatingBottomContainer(
+        title: _currentFishingSpot.name,
+        subtitle: formatLatLng(
+          context: context,
+          lat: _currentFishingSpot.lat,
+          lng: _currentFishingSpot.lng,
         ),
+        margin: EdgeInsets.only(
+          top: paddingDefault,
+          left: paddingDefault,
+          right: paddingDefault,
+          bottom: hasBottomSafeArea(context) ? paddingSmall : paddingDefault,
+        ),
+        children: [
+          Align(
+            alignment: Alignment.bottomRight,
+            child: editButton,
+          ),
+        ],
       ),
     );
   }
@@ -286,7 +260,7 @@ class _FishingSpotPickerPageState extends State<FishingSpotPickerPage>
   Widget _buildPendingFishingSpotMarker() {
     Size screenSize = MediaQuery.of(context).size;
     return AnimatedPositioned(
-      duration: _pendingMarkerSlideInDuration,
+      duration: defaultAnimationDuration,
       top: screenSize.height / 2 - _pendingMarkerOffset,
       left: screenSize.width / 2 - _pendingMarkerSize / 2,
       child: Visibility(
@@ -332,7 +306,7 @@ class _FishingSpotPickerPageState extends State<FishingSpotPickerPage>
   }
 
   void _updateMarkers() {
-    List<FishingSpot> fishingSpots = _fishingSpotManager.entityList;
+    List<FishingSpot> fishingSpots = _fishingSpotManager.entityList();
     if (fishingSpots == null || fishingSpots.isEmpty) {
       fishingSpots = List.from(_fishingSpotMarkerMap.keys);
     }

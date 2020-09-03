@@ -52,8 +52,8 @@ abstract class EntityManager<T extends Entity> extends
   T entityFromMap(Map<String, dynamic> map);
 
   EntityManager(AppManager app) : appManager = app, super() {
-    appManager.dataManager.addListener(DataListener(
-      onReset: _clear,
+    dataManager.addListener(DataListener(
+      onReset: clear,
     ));
   }
 
@@ -64,22 +64,31 @@ abstract class EntityManager<T extends Entity> extends
   @protected
   DataManager get dataManager => appManager.dataManager;
 
-  List<T> get entityList => List.unmodifiable(entities.values);
+  List<T> entityList([List<String> ids]) {
+    if (ids == null || ids.isEmpty) {
+      return List.unmodifiable(entities.values);
+    }
+    return entities.values.where((entity) => ids.contains(entity.id)).toList();
+  }
 
   /// Clears the [Entity] memory collection. This method assumes the database
   /// has already been cleared.
-  Future<void> _clear() async {
+  @protected
+  Future<void> clear() async {
     entities.clear();
     await initialize();
     notifyOnClear();
   }
 
   List<T> filteredEntityList(String filter) {
-    return entityList.where((entity) => entity.matchesFilter(filter)).toList();
+    return entityList().where((entity) =>
+        entity.matchesFilter(filter)).toList();
   }
 
   int get entityCount => entities.length;
   T entity({@required String id}) => isEmpty(id) ? null : entities[id];
+  bool entityExists({@required String id}) =>
+      isEmpty(id) ? false : entities[id] != null;
 
   /// Adds or updates the given [Entity]. If [notify] is false (default true),
   /// listeners are not notified.
@@ -110,19 +119,22 @@ abstract class EntityManager<T extends Entity> extends
     return results.map((map) => entityFromMap(map)).toList();
   }
 
+  @protected
   void notifyOnAddOrUpdate() {
     notify((listener) => listener.onAddOrUpdate());
   }
 
+  @protected
   void notifyOnDelete(T entity) {
     notify((listener) => listener.onDelete(entity));
   }
 
+  @protected
   void notifyOnClear() {
     notify((listener) => listener.onClear());
   }
 
-  SimpleEntityListener addSimpleListener({
+  SimpleEntityListener _addSimpleListener({
     void Function(T entity) onDelete,
     VoidCallback onAddOrUpdate,
     VoidCallback onClear,
@@ -169,7 +181,7 @@ class _EntityListenerBuilderState extends State<EntityListenerBuilder> {
     super.initState();
 
     widget.managers.forEach((manager) => {
-      _listeners.add(manager.addSimpleListener(
+      _listeners.add(manager._addSimpleListener(
         onDelete: widget.onDeleteEnabled ? (_) => _update() : null,
         onAddOrUpdate: _update,
         onClear: _update,

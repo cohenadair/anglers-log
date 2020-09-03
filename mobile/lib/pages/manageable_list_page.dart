@@ -14,7 +14,7 @@ import 'package:quiver/strings.dart';
 
 /// A page that is able to manage a list of a given type, [T]. The page includes
 /// an optional [SearchBar] and can be used a single or multi-item picker.
-class EntityListPage<T> extends StatefulWidget {
+class ManageableListPage<T> extends StatefulWidget {
   /// See [ManageableListPageItemModel].
   final ManageableListPageItemModel Function(BuildContext, T) itemBuilder;
 
@@ -22,7 +22,7 @@ class EntityListPage<T> extends StatefulWidget {
   final ManageableListPageItemManager<T> itemManager;
 
   /// See [SliverAppBar.title].
-  final Widget title;
+  final Widget Function(List<T>) titleBuilder;
 
   /// If true, adds additional padding between search icon and search text so
   /// the search text is horizontally aligned with an item's main text.
@@ -36,22 +36,22 @@ class EntityListPage<T> extends StatefulWidget {
   /// See [SliverAppBar.centerTitle].
   final bool forceCenterTitle;
 
-  /// If non-null, the [EntityListPage] acts like a picker.
+  /// If non-null, the [ManageableListPage] acts like a picker.
   ///
   /// See [ManageableListPageSinglePickerSettings].
   /// See [ManageableListPageMultiPickerSettings].
   final ManageableListPagePickerSettings<T> pickerSettings;
 
-  /// If non-null, the [EntityListPage] includes a [SearchBar] in the
+  /// If non-null, the [ManageableListPage] includes a [SearchBar] in the
   /// [AppBar].
   ///
   /// See [ManageableListPageSearchDelegate].
   final ManageableListPageSearchDelegate searchDelegate;
 
-  EntityListPage({
+  ManageableListPage({
     @required this.itemManager,
     @required this.itemBuilder,
-    this.title,
+    this.titleBuilder,
     this.itemsHaveThumbnail = false,
     this.forceCenterTitle = false,
     this.pickerSettings,
@@ -60,10 +60,10 @@ class EntityListPage<T> extends StatefulWidget {
        assert(itemManager != null);
 
   @override
-  _EntityListPageState<T> createState() => _EntityListPageState<T>();
+  _ManageableListPageState<T> createState() => _ManageableListPageState<T>();
 }
 
-class _EntityListPageState<T> extends State<EntityListPage<T>> {
+class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
   final double _appBarExpandedHeight = 100.0;
 
   /// Additional padding required to line up search text with [ListItem] text.
@@ -81,6 +81,7 @@ class _EntityListPageState<T> extends State<EntityListPage<T>> {
   bool get _hasSearch => widget.searchDelegate != null;
   bool get _hasDetailPage => widget.itemManager.detailPageBuilder != null;
   bool get _editable => widget.itemManager.editPageBuilder != null;
+  bool get _addable => widget.itemManager.addPageBuilder != null;
 
   @override
   void initState() {
@@ -122,7 +123,7 @@ class _EntityListPageState<T> extends State<EntityListPage<T>> {
             floating: true,
             pinned: false,
             snap: true,
-            title: widget.title,
+            title: widget.titleBuilder?.call(items),
             actions: _buildActions(),
             expandedHeight: _hasSearch ? _appBarExpandedHeight : 0.0,
             flexibleSpace: _buildSearchBar(),
@@ -139,7 +140,9 @@ class _EntityListPageState<T> extends State<EntityListPage<T>> {
                 ),
               ),
               replacementSliver: SliverToBoxAdapter(
-                child: NoResults(widget.searchDelegate.noResultsMessage),
+                child: widget.searchDelegate == null
+                    ? Empty()
+                    : NoResults(widget.searchDelegate.noResultsMessage),
               ),
             ),
           ),
@@ -182,8 +185,6 @@ class _EntityListPageState<T> extends State<EntityListPage<T>> {
     List<Widget> result = [];
 
     if (_pickingMulti && _editable) {
-      // If picking multiple items, use overflow menu for "Add" and "Edit"
-      // options.
       result..add(ActionButton.done(
         condensed: true,
         onPressed: () {
@@ -193,19 +194,31 @@ class _EntityListPageState<T> extends State<EntityListPage<T>> {
             _finishPicking(_selectedValues);
           }
         },
-      ))..add(PopupMenuButton<_OverflowOption>(
-        icon: Icon(Icons.more_vert),
-        itemBuilder: (context) => [
-          PopupMenuItem<_OverflowOption>(
+      ));
+
+      // If picking multiple items, use overflow menu for "Add" and "Edit"
+      // options.
+      var optionBuilder = (context) {
+        List<PopupMenuItem<_OverflowOption>> overflowOptions = [];
+        if (_addable) {
+          overflowOptions.add(PopupMenuItem<_OverflowOption>(
             value: _OverflowOption.add,
             child: Text(Strings.of(context).add),
-          ),
-          PopupMenuItem<_OverflowOption>(
-            value: _OverflowOption.edit,
-            child: Text(Strings.of(context).edit),
-            enabled: !_editing,
-          ),
-        ],
+          ));
+        }
+
+        overflowOptions.add(PopupMenuItem<_OverflowOption>(
+          value: _OverflowOption.edit,
+          child: Text(Strings.of(context).edit),
+          enabled: !_editing,
+        ));
+
+        return overflowOptions;
+      };
+
+      result..add(PopupMenuButton<_OverflowOption>(
+        icon: Icon(Icons.more_vert),
+        itemBuilder: optionBuilder,
         onSelected: (option) {
           switch (option) {
             case _OverflowOption.add:
@@ -220,23 +233,25 @@ class _EntityListPageState<T> extends State<EntityListPage<T>> {
     } else {
       if (_editing) {
         result.add(ActionButton.done(
-          condensed: true,
+          condensed: _addable,
           onPressed: () => setEditingUpdateState(false),
         ));
       } else if (_editable) {
         // Only include the edit button if the items can be modified.
         result.add(ActionButton.edit(
-          condensed: true,
+          condensed: _addable,
           onPressed: () => setEditingUpdateState(true),
         ));
       }
 
-      // Always include the "Add" button.
-      result.add(IconButton(
-        icon: Icon(Icons.add),
-        onPressed: () =>
-            present(context, widget.itemManager.addPageBuilder()),
-      ));
+      // Only include the add button if new items can be added.
+      if (_addable) {
+        result.add(IconButton(
+          icon: Icon(Icons.add),
+          onPressed: () =>
+              present(context, widget.itemManager.addPageBuilder()),
+        ));
+      }
     }
 
     return result;
@@ -245,9 +260,9 @@ class _EntityListPageState<T> extends State<EntityListPage<T>> {
   Widget _buildItem(BuildContext context, T itemValue) {
     ManageableListPageItemModel item = widget.itemBuilder(context, itemValue);
 
-    if (!item.editable) {
-      // If this item can't be edited, return it; we don't want to use a
-      // ManageableListItem.
+    if (!item.editable && !item.selectable) {
+      // If this item can't be edited or selected, return it; we don't want
+      // to use a ManageableListItem.
       return item.child;
     }
 
@@ -268,22 +283,27 @@ class _EntityListPageState<T> extends State<EntityListPage<T>> {
     } else if (_pickingSingle || widget.itemManager.detailPageBuilder == null) {
       // Don't show detail disclosure indicator if we're picking a single
       // value, or if there isn't any detail to show.
-      trailing = Empty();
+      trailing = _selectedValues.contains(itemValue)
+          ? Icon(Icons.check) : Empty();
     }
+
+    bool canEdit = _editing && item.editable;
+    bool enabled = !_editing || canEdit;
 
     return ManageableListItem(
       child: item.child,
-      editing: _editing,
+      editing: canEdit,
+      enabled: enabled,
       deleteMessageBuilder: (context) =>
           widget.itemManager.deleteText(context, itemValue),
       onConfirmDelete: () => widget.itemManager.deleteItem(context, itemValue),
-      onTap: _viewing && !_hasDetailPage && !_editing ? null : () {
-        if (_pickingMulti && !_editing) {
+      onTap: !enabled || (_viewing && !_hasDetailPage && !canEdit) ? null : () {
+        if (_pickingMulti && !canEdit) {
           // Taps are consumed by trailing checkbox in this case.
           return;
         }
 
-        if (_editing) {
+        if (canEdit) {
           push(context, widget.itemManager.editPageBuilder(itemValue));
         } else if (_pickingSingle) {
           _finishPicking({itemValue});
@@ -303,7 +323,7 @@ class _EntityListPageState<T> extends State<EntityListPage<T>> {
   });
 
   void _finishPicking(Set<T> pickedValues) {
-    if (widget.pickerSettings.onFinishedPicking(context, pickedValues)) {
+    if (widget.pickerSettings.onPicked(context, pickedValues)) {
       Navigator.of(context).pop();
     }
   }
@@ -313,67 +333,26 @@ enum _ViewingState {
   pickingSingle, pickingMulti, viewing
 }
 
-abstract class ManageableListPagePickerSettings<T> {
+class ManageableListPagePickerSettings<T> {
   final Set<T> initialValues;
-
-  ManageableListPagePickerSettings({
-    this.initialValues = const {},
-  });
-
-  bool get multi;
+  final bool multi;
 
   /// Invoked when picking has finished. Returning true will pop the picker
-  /// from the current [Navigator].
-  bool onFinishedPicking(BuildContext context, Set<T> pickedValues);
-}
+  /// from the current [Navigator]. [pickedItems] is guaranteed to have on
+  /// and only one item if [multi] is true, otherwise includes all items that
+  /// were picked.
+  final bool Function(BuildContext context, Set<T> pickedItems) onPicked;
 
-/// A convenience class to indicate a single-item picker.
-class ManageableListPageSinglePickerSettings<T>
-    extends ManageableListPagePickerSettings<T>
-{
-  /// See [ManageableListPagePickerSettings.onFinishedPicking].
-  final bool Function(BuildContext context, T) onPicked;
-
-  ManageableListPageSinglePickerSettings({
-    this.onPicked,
-  }) : super(
-    initialValues: {},
-  );
-
-  @override
-  bool get multi => false;
-
-  @override
-  bool onFinishedPicking(BuildContext context, Set<T> pickedValues) {
-    return onPicked?.call(context, pickedValues.first);
-  }
-}
-
-/// A convenience class to indicate a multi-item picker.
-class ManageableListPageMultiPickerSettings<T>
-    extends ManageableListPagePickerSettings<T>
-{
-  /// See [ManageableListPagePickerSettings.onFinishedPicking].
-  final bool Function(BuildContext context, Set<T>) onPicked;
-
-  ManageableListPageMultiPickerSettings({
-    Set<T> initialValues = const {},
-    this.onPicked,
-  }) : super(
-    initialValues: initialValues,
-  );
-
-  @override
-  bool get multi => true;
-
-  @override
-  bool onFinishedPicking(BuildContext context, Set<T> pickedValues) {
-    return onPicked?.call(context, pickedValues);
-  }
+  ManageableListPagePickerSettings({
+    @required this.onPicked,
+    Set<T> initialValues,
+    this.multi = false,
+  }) : assert(onPicked != null),
+       initialValues = initialValues ?? const {};
 }
 
 /// A convenience class for storing the properties of an option [SearchBar] in
-/// the [AppBar] of a [EntityListPage].
+/// the [AppBar] of a [ManageableListPage].
 class ManageableListPageSearchDelegate {
   /// The search hint text.
   final String hint;
@@ -389,11 +368,13 @@ class ManageableListPageSearchDelegate {
 }
 
 /// A convenient class for storing properties for a single item in a
-/// [EntityListPage].
+/// [ManageableListPage].
 class ManageableListPageItemModel {
   /// True if this item can be edited; false otherwise. This may be false for
   /// section headers or dividers. Defaults to true.
   final bool editable;
+
+  final bool selectable;
 
   /// The child of item. [Padding] is added automatically, as is a trailing
   /// [RightChevronIcon] or [CheckBox] depending on the situation. This
@@ -403,11 +384,12 @@ class ManageableListPageItemModel {
   ManageableListPageItemModel({
     @required this.child,
     this.editable = true,
+    this.selectable = true,
   }) : assert(child != null);
 }
 
 /// A convenience class to handle the adding, deleting, and editing of an item
-/// in a [EntityListPage].
+/// in a [ManageableListPage].
 ///
 /// [T] is the type of object being managed.
 class ManageableListPageItemManager<T> {
@@ -431,7 +413,7 @@ class ManageableListPageItemManager<T> {
   /// function is presented in the current navigator.
   final Widget Function() addPageBuilder;
 
-  /// If non-null, will rebuild the [EntityListPage] when one
+  /// If non-null, will rebuild the [ManageableListPage] when one
   /// of the [EntityManager] objects is notified of updates. In most cases,
   /// this [List] will only have one value.
   final List<EntityManager> listenerManagers;
@@ -445,14 +427,14 @@ class ManageableListPageItemManager<T> {
   /// The [Widget] returned by this function is pushed to the current navigator,
   /// and should be a page that allows editing of [T].
   ///
-  /// If null, editing is disabled for the [EntityListPage].
+  /// If null, editing is disabled for the [ManageableListPage].
   final Widget Function(T) editPageBuilder;
 
   ManageableListPageItemManager({
     @required this.loadItems,
     @required this.deleteText,
     @required this.deleteItem,
-    @required this.addPageBuilder,
+    this.addPageBuilder,
     this.listenerManagers,
     this.editPageBuilder,
     this.detailPageBuilder,
@@ -460,9 +442,7 @@ class ManageableListPageItemManager<T> {
   }) : assert(loadItems != null),
        assert(deleteText != null),
        assert(deleteItem != null),
-       assert(listenerManagers == null || listenerManagers.isNotEmpty),
-       assert(addPageBuilder != null),
-       assert(editPageBuilder != null);
+       assert(listenerManagers == null || listenerManagers.isNotEmpty);
 }
 
 enum _OverflowOption {

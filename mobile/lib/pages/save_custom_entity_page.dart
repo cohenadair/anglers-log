@@ -11,7 +11,6 @@ import 'package:mobile/widgets/input_controller.dart';
 import 'package:mobile/widgets/input_type.dart';
 import 'package:mobile/widgets/text_input.dart';
 import 'package:mobile/widgets/widget.dart';
-import 'package:quiver/strings.dart';
 
 import 'form_page.dart';
 
@@ -40,15 +39,10 @@ class _SaveCustomEntityPageState extends State<SaveCustomEntityPage> {
 
   final Log _log = Log("SaveCustomEntityPage");
 
-  final Map<String, InputController> _inputOptions = {
-    _nameId: TextInputController(
-      validate: (context) => Strings.of(context).inputGenericRequired,
-    ),
-    _descriptionId: TextInputController(),
-    _dataTypeId: InputController<InputType>(
-      value: InputType.number,
-    ),
-  };
+  Map<String, InputController> _inputOptions;
+
+  CustomEntityManager get _customEntityManager =>
+      CustomEntityManager.of(context);
 
   TextInputController get _nameController =>
       _inputOptions[_nameId] as TextInputController;
@@ -65,11 +59,23 @@ class _SaveCustomEntityPageState extends State<SaveCustomEntityPage> {
   void initState() {
     super.initState();
 
-    if (_editing) {
-      // If editing an entity, the name will be set, and therefore, valid.
-      _nameController.validate = null;
-      _nameController.value = widget.oldEntity.name;
+    _inputOptions = {
+      _nameId: TextInputController(
+        validator: NameValidator(
+          nameExistsMessage: (context) =>
+              Strings.of(context).saveCustomEntityPageNameExists,
+          nameExists: _customEntityManager.nameExists,
+          oldName: widget.oldEntity?.name,
+        ),
+      ),
+      _descriptionId: TextInputController(),
+      _dataTypeId: InputController<InputType>(
+        value: InputType.number,
+      ),
+    };
 
+    if (_editing) {
+      _nameController.value = widget.oldEntity.name;
       _descriptionController.value = widget.oldEntity.description;
       _dataTypeController.value = widget.oldEntity.type ?? InputType.number;
     }
@@ -88,7 +94,7 @@ class _SaveCustomEntityPageState extends State<SaveCustomEntityPage> {
         );
       },
       onSave: _save,
-      isInputValid: isEmpty(_nameController.error(context)),
+      isInputValid: _nameController.valid(context),
     );
   }
 
@@ -98,11 +104,6 @@ class _SaveCustomEntityPageState extends State<SaveCustomEntityPage> {
         context,
         controller: _nameController,
         autofocus: true,
-        validator: NameValidator(
-          nameExistsMessage: Strings.of(context).saveCustomEntityPageNameExists,
-          nameExists: CustomEntityManager.of(context).nameExists,
-          oldName: widget.oldEntity?.name,
-        ),
         // Trigger "Save" button state refresh.
         onChanged: () => setState(() {}),
       );

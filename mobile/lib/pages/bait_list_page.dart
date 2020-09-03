@@ -6,7 +6,7 @@ import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/model/bait.dart';
 import 'package:mobile/model/bait_category.dart';
 import 'package:mobile/pages/bait_page.dart';
-import 'package:mobile/pages/entity_list_page.dart';
+import 'package:mobile/pages/manageable_list_page.dart';
 import 'package:mobile/pages/save_bait_page.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/utils/string_utils.dart';
@@ -15,13 +15,20 @@ import 'package:mobile/widgets/widget.dart';
 import 'package:quiver/strings.dart';
 
 class BaitListPage extends StatefulWidget {
-  final bool Function(BuildContext, Bait) onPicked;
+  final bool Function(BuildContext, Set<Bait>) onPicked;
+  final bool multiPicker;
+  final Set<Bait> initialValues;
 
-  BaitListPage() : onPicked = null;
+  BaitListPage()
+      : onPicked = null,
+        multiPicker = false,
+        initialValues = null;
 
   BaitListPage.picker({
     this.onPicked,
-  });
+    this.multiPicker = false,
+    this.initialValues = const {},
+  }) : assert(onPicked != null);
 
   @override
   _BaitListPageState createState() => _BaitListPageState();
@@ -41,26 +48,29 @@ class _BaitListPageState extends State<BaitListPage> {
         _baitCategoryManager,
         _baitManager,
       ],
-      builder: (context) => EntityListPage<dynamic>(
-        title: _picking
-            ? Text(Strings.of(context).baitListPagePickerTitle)
-            : Text(format(Strings.of(context).baitListPageTitle,
-                [_baitManager.entityCount])),
+      builder: (context) => ManageableListPage<dynamic>(
+        titleBuilder: _picking
+            ? (_) => Text(Strings.of(context).baitListPagePickerTitle)
+            : (baits) => Text(format(Strings.of(context).baitListPageTitle,
+                [baits.length])),
         forceCenterTitle: !_picking,
         searchDelegate: ManageableListPageSearchDelegate(
           hint: Strings.of(context).baitListPageSearchHint,
           noResultsMessage: Strings.of(context).baitListPageNoSearchResults,
         ),
         pickerSettings: _picking
-            ? ManageableListPageSinglePickerSettings<dynamic>(
-                onPicked: (context, baitPicked) =>
-                    widget.onPicked(context, baitPicked as Bait)
+            ? ManageableListPagePickerSettings<dynamic>(
+                onPicked: (context, baits) => widget.onPicked(context,
+                    baits.map((item) => item as Bait).toSet()),
+                multi: widget.multiPicker,
+                initialValues: widget.initialValues,
               )
             : null,
         itemBuilder: (context, item) {
           if (item is BaitCategory) {
             return ManageableListPageItemModel(
               editable: false,
+              selectable: false,
               child: Padding(
                 padding: insetsDefault,
                 child: HeadingLabel(item.name),
@@ -73,6 +83,7 @@ class _BaitListPageState extends State<BaitListPage> {
           } else {
             return ManageableListPageItemModel(
               editable: false,
+              selectable: false,
               child: item,
             );
           }

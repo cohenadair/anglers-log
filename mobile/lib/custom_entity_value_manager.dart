@@ -57,8 +57,8 @@ class CustomEntityValueManager {
     await initialize();
   }
 
-  /// Replaces all [CustomEntityValue] rows for the [Entity] with [entityId], with
-  /// [values].
+  /// Replaces all [CustomEntityValue] rows for the [Entity] with [entityId],
+  /// with [values].
   Future<void> setValues(String entityId, List<CustomEntityValue> values)
       async
   {

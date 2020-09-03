@@ -85,28 +85,20 @@ class ActionButton extends StatelessWidget {
       ),
     );
 
-    if (condensed) {
-      return EnabledOpacity(
-        enabled: onPressed != null,
-        child: RawMaterialButton(
-          constraints: BoxConstraints(),
-          padding: EdgeInsets.all(paddingSmall),
-          onPressed: onPressed,
-          child: textWidget,
-          shape: CircleBorder(side: BorderSide(color: Colors.transparent)),
-          textStyle: TextStyle(
-            fontWeight: FontWeight.w500,
-            color: Colors.black,
-          ),
-        ),
-      );
-    } else {
-      return FlatButton(
-        child: textWidget,
+    return EnabledOpacity(
+      enabled: onPressed != null,
+      child: RawMaterialButton(
+        constraints: BoxConstraints(),
+        padding: EdgeInsets.all(condensed ? paddingSmall : paddingDefault),
         onPressed: onPressed,
-        textColor: textColor,
-      );
-    }
+        child: textWidget,
+        shape: CircleBorder(side: BorderSide(color: Colors.transparent)),
+        textStyle: TextStyle(
+          fontWeight: FontWeight.w500,
+          color: Colors.black,
+        ),
+      ),
+    );
   }
 }
 
@@ -196,8 +188,22 @@ class FloatingIconButton extends StatelessWidget {
     this.pushed = false,
   });
 
+  FloatingIconButton.back({
+    this.padding,
+    this.pushed = false,
+  }) : icon = null,
+       onPressed = null;
+
   @override
   Widget build(BuildContext context) {
+    Widget iconWidget = BackButtonIcon();
+    if (icon != null) {
+      iconWidget = Icon(
+        icon,
+        color: Colors.black,
+      );
+    }
+
     return Padding(
       padding: padding ?? insetsDefault,
       child: Container(
@@ -205,16 +211,12 @@ class FloatingIconButton extends StatelessWidget {
         width: size,
         height: size,
         child: RawMaterialButton(
-          child: Icon(
-            icon,
-            color: Colors.black,
-          ),
+          child: iconWidget,
           shape: CircleBorder(),
           fillColor: pushed ? Colors.grey : Colors.white,
-          onPressed: onPressed,
+          onPressed: onPressed ?? () => Navigator.of(context).pop(),
         ),
       ),
     );
   }
-
 }

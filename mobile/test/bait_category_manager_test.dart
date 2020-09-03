@@ -32,7 +32,7 @@ void main() {
   });
 
   test("Number of baits", () {
-    when(baitManager.entityList).thenReturn([
+    when(baitManager.entityList()).thenReturn([
       Bait(name: "Bait 1", categoryId: "category_1"),
       Bait(name: "Bait 1", categoryId: "category_5"),
       Bait(name: "Bait 1", categoryId: "category_4"),

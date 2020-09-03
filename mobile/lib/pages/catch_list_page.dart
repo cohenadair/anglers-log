@@ -8,10 +8,11 @@ import 'package:mobile/image_manager.dart';
 import 'package:mobile/model/catch.dart';
 import 'package:mobile/pages/add_catch_journey.dart';
 import 'package:mobile/pages/catch_page.dart';
-import 'package:mobile/pages/entity_list_page.dart';
+import 'package:mobile/pages/manageable_list_page.dart';
 import 'package:mobile/pages/save_catch_page.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/species_manager.dart';
+import 'package:mobile/utils/date_time_utils.dart';
 import 'package:mobile/utils/string_utils.dart';
 import 'package:mobile/widgets/photo.dart';
 import 'package:mobile/widgets/text.dart';
@@ -19,6 +20,42 @@ import 'package:mobile/widgets/widget.dart';
 import 'package:quiver/strings.dart';
 
 class CatchListPage extends StatelessWidget {
+  /// If false, catches cannot be added. Defaults to true.
+  final bool enableAdding;
+
+  /// If not-null, shows only the catches within [dateRange].
+  final DateRange dateRange;
+
+  /// If set, shows only the catches whose ID is included in [catchIds].
+  final Set<String> catchIds;
+
+  /// If set, shows only the catches whose species is included in [speciesIds].
+  final Set<String> speciesIds;
+
+  /// If set, shows only the catches whose fishingSpot is included in
+  /// [fishingSpotIds].
+  final Set<String> fishingSpotIds;
+
+  /// If set, shows only the catches whose bait is included in [baitIds].
+  final Set<String> baitIds;
+
+  bool get filtered => dateRange != null || catchIds.isNotEmpty
+      || speciesIds.isNotEmpty || fishingSpotIds.isNotEmpty
+      || baitIds.isNotEmpty;
+
+  CatchListPage({
+    this.enableAdding = true,
+    this.dateRange,
+    this.catchIds = const {},
+    this.baitIds = const {},
+    this.fishingSpotIds = const {},
+    this.speciesIds = const {},
+  }) : assert(enableAdding != null),
+       assert(catchIds != null),
+       assert(baitIds != null),
+       assert(fishingSpotIds != null),
+       assert(speciesIds != null);
+
   Widget build(BuildContext context) {
     BaitCategoryManager baitCategoryManager = BaitCategoryManager.of(context);
     BaitManager baitManager = BaitManager.of(context);
@@ -26,9 +63,9 @@ class CatchListPage extends StatelessWidget {
     FishingSpotManager fishingSpotManager = FishingSpotManager.of(context);
     SpeciesManager speciesManager = SpeciesManager.of(context);
 
-    return EntityListPage<Catch>(
-      title: Text(format(Strings.of(context).catchListPageTitle,
-          [catchManager.entityCount])),
+    return ManageableListPage<Catch>(
+      titleBuilder: (catches) => Text(format(
+          Strings.of(context).catchListPageTitle, [catches.length])),
       forceCenterTitle: true,
       searchDelegate: ManageableListPageSearchDelegate(
         hint: Strings.of(context).catchListPageSearchHint,
@@ -44,12 +81,19 @@ class CatchListPage extends StatelessWidget {
           fishingSpotManager,
           speciesManager,
         ],
-        loadItems: (String query) =>
-            catchManager.catchesSortedByTimestamp(context, filter: query),
+        loadItems: (String query) => catchManager.catchesSortedByTimestamp(
+          context,
+          filter: query,
+          dateRange: dateRange,
+          catchIds: catchIds,
+          speciesIds: speciesIds,
+          fishingSpotIds: fishingSpotIds,
+          baitIds: baitIds,
+        ),
         deleteText: (context, cat) =>
             Text(catchManager.deleteMessage(context, cat)),
         deleteItem: (context, cat) => catchManager.delete(cat),
-        addPageBuilder: () => AddCatchJourney(),
+        addPageBuilder: enableAdding ? () => AddCatchJourney() : null,
         detailPageBuilder: (cat) => CatchPage(cat.id),
         editPageBuilder: (cat) => SaveCatchPage.edit(cat),
       ),

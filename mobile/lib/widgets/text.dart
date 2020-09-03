@@ -2,22 +2,31 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/res/style.dart';
-import 'package:mobile/utils/string_utils.dart';
+import 'package:mobile/utils/date_time_utils.dart';
 
 /// A default text Widget that should be used in place of [Text].
 class Label extends StatelessWidget {
   final String text;
   final TextStyle style;
+  final TextOverflow overflow;
 
   Label(this.text, {
     this.style,
-  });
+  }) : overflow = TextOverflow.ellipsis;
+
+  Label.multiline(this.text, {
+    this.style,
+  }) : overflow = null;
 
   @override
-  Widget build(BuildContext context) => Text(
-    text,
-    style: style,
-    overflow: TextOverflow.ellipsis,
+  Widget build(BuildContext context) => SafeArea(
+    top: false,
+    bottom: false,
+    child: Text(
+      text,
+      style: style,
+      overflow: overflow,
+    ),
   );
 }
 
@@ -71,16 +80,20 @@ class IconNoteLabel extends StatelessWidget {
   Widget build(BuildContext context) {
     List<String> strings = text.split("%s");
 
-    return RichText(
-      text: TextSpan(
-        children: [
-          TextSpan(text: strings.first, style: NoteLabel.style(context)),
-          WidgetSpan(
-            child: icon,
-            alignment: PlaceholderAlignment.middle,
-          ),
-          TextSpan(text: strings.last, style: NoteLabel.style(context)),
-        ],
+    return SafeArea(
+      top: false,
+      bottom: false,
+      child: RichText(
+        text: TextSpan(
+          children: [
+            TextSpan(text: strings.first, style: NoteLabel.style(context)),
+            WidgetSpan(
+              child: icon,
+              alignment: PlaceholderAlignment.middle,
+            ),
+            TextSpan(text: strings.last, style: NoteLabel.style(context)),
+          ],
+        ),
       ),
     );
   }

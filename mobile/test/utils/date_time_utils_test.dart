@@ -2,30 +2,44 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/utils/date_time_utils.dart';
 
+import '../test_utils.dart';
+
 void main() {
   group("IsInFutureWithMinuteAccuracy", () {
     DateTime now = DateTime(2015, 5, 15, 12, 30, 45, 10000);
 
     test("Value should be in the past", () {
-      expect(isInFutureWithMinuteAccuracy(DateTime(2014, 6, 16, 13, 31, 46, 10001), now), isFalse);
-      expect(isInFutureWithMinuteAccuracy(DateTime(2015, 4, 16, 13, 31, 46, 10001), now), isFalse);
-      expect(isInFutureWithMinuteAccuracy(DateTime(2015, 5, 14, 13, 31, 46, 10001), now), isFalse);
-      expect(isInFutureWithMinuteAccuracy(DateTime(2015, 5, 15, 11, 31, 46, 10001), now), isFalse);
-      expect(isInFutureWithMinuteAccuracy(DateTime(2015, 5, 15, 12, 29, 46, 10001), now), isFalse);
+      expect(isInFutureWithMinuteAccuracy(
+          DateTime(2014, 6, 16, 13, 31, 46, 10001), now), isFalse);
+      expect(isInFutureWithMinuteAccuracy(
+          DateTime(2015, 4, 16, 13, 31, 46, 10001), now), isFalse);
+      expect(isInFutureWithMinuteAccuracy(
+          DateTime(2015, 5, 14, 13, 31, 46, 10001), now), isFalse);
+      expect(isInFutureWithMinuteAccuracy(
+          DateTime(2015, 5, 15, 11, 31, 46, 10001), now), isFalse);
+      expect(isInFutureWithMinuteAccuracy(
+          DateTime(2015, 5, 15, 12, 29, 46, 10001), now), isFalse);
     });
 
     test("Value should be in the future", () {
-      expect(isInFutureWithMinuteAccuracy(DateTime(2016, 4, 14, 11, 29, 44, 9999), now), isTrue);
-      expect(isInFutureWithMinuteAccuracy(DateTime(2015, 6, 14, 11, 29, 44, 9999), now), isTrue);
-      expect(isInFutureWithMinuteAccuracy(DateTime(2015, 5, 16, 11, 29, 44, 9999), now), isTrue);
-      expect(isInFutureWithMinuteAccuracy(DateTime(2015, 5, 15, 13, 29, 44, 9999), now), isTrue);
+      expect(isInFutureWithMinuteAccuracy(
+          DateTime(2016, 4, 14, 11, 29, 44, 9999), now), isTrue);
+      expect(isInFutureWithMinuteAccuracy(
+          DateTime(2015, 6, 14, 11, 29, 44, 9999), now), isTrue);
+      expect(isInFutureWithMinuteAccuracy(
+          DateTime(2015, 5, 16, 11, 29, 44, 9999), now), isTrue);
+      expect(isInFutureWithMinuteAccuracy(
+          DateTime(2015, 5, 15, 13, 29, 44, 9999), now), isTrue);
     });
 
     test("Values are equal, but isInFuture returns false", () {
       // Equal, since seconds and milliseconds aren't considered.
-      expect(isInFutureWithMinuteAccuracy(DateTime(2015, 5, 15, 12, 30, 44, 10001), now), isFalse);
-      expect(isInFutureWithMinuteAccuracy(DateTime(2015, 5, 15, 12, 30, 45, 9999), now), isFalse);
-      expect(isInFutureWithMinuteAccuracy(DateTime(2015, 5, 15, 12, 30, 44, 9999), now), isFalse);
+      expect(isInFutureWithMinuteAccuracy(
+          DateTime(2015, 5, 15, 12, 30, 44, 10001), now), isFalse);
+      expect(isInFutureWithMinuteAccuracy(
+          DateTime(2015, 5, 15, 12, 30, 45, 9999), now), isFalse);
+      expect(isInFutureWithMinuteAccuracy(
+          DateTime(2015, 5, 15, 12, 30, 44, 9999), now), isFalse);
     });
   });
 
@@ -33,22 +47,31 @@ void main() {
     DateTime now = DateTime(2015, 5, 15, 12, 30, 45, 10000);
 
     test("Value should be in the past", () {
-      expect(isInFutureWithDayAccuracy(DateTime(2014, 6, 16, 13, 31, 46, 10001), now), isFalse);
-      expect(isInFutureWithDayAccuracy(DateTime(2015, 4, 16, 13, 31, 46, 10001), now), isFalse);
-      expect(isInFutureWithDayAccuracy(DateTime(2015, 5, 14, 13, 31, 46, 10001), now), isFalse);
+      expect(isInFutureWithDayAccuracy(
+          DateTime(2014, 6, 16, 13, 31, 46, 10001), now), isFalse);
+      expect(isInFutureWithDayAccuracy(
+          DateTime(2015, 4, 16, 13, 31, 46, 10001), now), isFalse);
+      expect(isInFutureWithDayAccuracy(
+          DateTime(2015, 5, 14, 13, 31, 46, 10001), now), isFalse);
     });
 
     test("Value should be in the future", () {
-      expect(isInFutureWithDayAccuracy(DateTime(2016, 4, 14, 11, 29, 44, 9999), now), isTrue);
-      expect(isInFutureWithDayAccuracy(DateTime(2015, 6, 14, 11, 29, 44, 9999), now), isTrue);
-      expect(isInFutureWithDayAccuracy(DateTime(2015, 5, 16, 11, 29, 44, 9999), now), isTrue);
+      expect(isInFutureWithDayAccuracy(
+          DateTime(2016, 4, 14, 11, 29, 44, 9999), now), isTrue);
+      expect(isInFutureWithDayAccuracy(
+          DateTime(2015, 6, 14, 11, 29, 44, 9999), now), isTrue);
+      expect(isInFutureWithDayAccuracy(
+          DateTime(2015, 5, 16, 11, 29, 44, 9999), now), isTrue);
     });
 
     test("Values are equal, but isInFuture returns false", () {
       // Equal, since seconds and milliseconds aren't considered.
-      expect(isInFutureWithDayAccuracy(DateTime(2015, 5, 15, 11, 31, 46, 10001), now), isFalse);
-      expect(isInFutureWithDayAccuracy(DateTime(2015, 5, 15, 12, 29, 46, 10001), now), isFalse);
-      expect(isInFutureWithDayAccuracy(DateTime(2015, 5, 15, 13, 29, 44, 9999), now), isFalse);
+      expect(isInFutureWithDayAccuracy(
+          DateTime(2015, 5, 15, 11, 31, 46, 10001), now), isFalse);
+      expect(isInFutureWithDayAccuracy(
+          DateTime(2015, 5, 15, 12, 29, 46, 10001), now), isFalse);
+      expect(isInFutureWithDayAccuracy(
+          DateTime(2015, 5, 15, 13, 29, 44, 9999), now), isFalse);
     });
   });
 
@@ -464,6 +487,271 @@ void main() {
         now: DateTime(2019, 3, 13, 15, 30),
         expectedStart: DateTime(2018, 3, 13, 15, 30),
       );
+    });
+  });
+
+  group("Format duration", () {
+    testWidgets("0 duration", (WidgetTester tester) async {
+      BuildContext context = await buildContext(tester);
+
+      expect(formatDuration(
+        context: context,
+        millisecondsDuration: 0,
+      ), "0d 0h 0m 0s");
+
+      expect(formatDuration(
+        context: context,
+        millisecondsDuration: 0,
+        condensed: true,
+      ), "0m");
+    });
+
+    testWidgets("All units", (WidgetTester tester) async {
+      int ms = Duration(
+        days: 2,
+        hours: 5,
+        minutes: 45,
+        seconds: 30,
+      ).inMilliseconds;
+
+      BuildContext context = await buildContext(tester);
+
+      expect(formatDuration(
+        context: context,
+        millisecondsDuration: ms,
+      ), "2d 5h 45m 30s");
+
+      expect(formatDuration(
+        context: context,
+        millisecondsDuration: ms,
+        condensed: true,
+      ), "2d 5h 45m 30s");
+    });
+
+    testWidgets("Days only", (WidgetTester tester) async {
+      int ms = Duration(
+        days: 2,
+      ).inMilliseconds;
+
+      BuildContext context = await buildContext(tester);
+
+      expect(formatDuration(
+        context: context,
+        millisecondsDuration: ms,
+      ), "2d 0h 0m 0s");
+
+      expect(formatDuration(
+        context: context,
+        millisecondsDuration: ms,
+        condensed: true,
+      ), "2d");
+    });
+
+    testWidgets("Hours only", (WidgetTester tester) async {
+      int ms = Duration(
+        hours: 10,
+      ).inMilliseconds;
+
+      BuildContext context = await buildContext(tester);
+
+      expect(formatDuration(
+        context: context,
+        millisecondsDuration: ms,
+      ), "0d 10h 0m 0s");
+
+      expect(formatDuration(
+        context: context,
+        millisecondsDuration: ms,
+        condensed: true,
+      ), "10h");
+    });
+
+    testWidgets("Minutes only", (WidgetTester tester) async {
+      int ms = Duration(
+        minutes: 20,
+      ).inMilliseconds;
+
+      BuildContext context = await buildContext(tester);
+
+      expect(formatDuration(
+        context: context,
+        millisecondsDuration: ms,
+      ), "0d 0h 20m 0s");
+
+      expect(formatDuration(
+        context: context,
+        millisecondsDuration: ms,
+        condensed: true,
+      ), "20m");
+    });
+
+    testWidgets("Seconds only", (WidgetTester tester) async {
+      int ms = Duration(
+        seconds: 50,
+      ).inMilliseconds;
+
+      BuildContext context = await buildContext(tester);
+
+      expect(formatDuration(
+        context: context,
+        millisecondsDuration: ms,
+      ), "0d 0h 0m 50s");
+
+      expect(formatDuration(
+        context: context,
+        millisecondsDuration: ms,
+        condensed: true,
+      ), "50s");
+    });
+
+    testWidgets("Excluding days", (WidgetTester tester) async {
+      int ms = Duration(
+        days: 2,
+        hours: 5,
+        minutes: 45,
+        seconds: 30,
+      ).inMilliseconds;
+
+      BuildContext context = await buildContext(tester);
+
+      expect(formatDuration(
+        context: context,
+        millisecondsDuration: ms,
+        includesDays: false,
+      ), "53h 45m 30s");
+    });
+
+    testWidgets("Excluding hours", (WidgetTester tester) async {
+      int ms = Duration(
+        days: 2,
+        hours: 5,
+        minutes: 45,
+        seconds: 30,
+      ).inMilliseconds;
+
+      BuildContext context = await buildContext(tester);
+
+      expect(formatDuration(
+        context: context,
+        millisecondsDuration: ms,
+        includesDays: false,
+        includesHours: false,
+      ), "3225m 30s");
+    });
+
+    testWidgets("Excluding minutes", (WidgetTester tester) async {
+      int ms = Duration(
+        days: 2,
+        hours: 5,
+        minutes: 45,
+        seconds: 30,
+      ).inMilliseconds;
+
+      BuildContext context = await buildContext(tester);
+
+      expect(formatDuration(
+        context: context,
+        millisecondsDuration: ms,
+        includesDays: false,
+        includesHours: false,
+        includesMinutes: false,
+      ), "193530s");
+    });
+
+    testWidgets("Excluding all", (WidgetTester tester) async {
+      int ms = Duration(
+        days: 2,
+        hours: 5,
+        minutes: 45,
+        seconds: 30,
+      ).inMilliseconds;
+
+      BuildContext context = await buildContext(tester);
+
+      expect(formatDuration(
+        context: context,
+        millisecondsDuration: ms,
+        includesDays: false,
+        includesHours: false,
+        includesMinutes: false,
+        includesSeconds: false,
+      ), "");
+    });
+
+    testWidgets("Show highest two only", (WidgetTester tester) async {
+      int ms = Duration(
+        days: 2,
+        hours: 5,
+        minutes: 45,
+        seconds: 30,
+      ).inMilliseconds;
+
+      BuildContext context = await buildContext(tester);
+
+      expect(formatDuration(
+        context: context,
+        millisecondsDuration: ms,
+        showHighestTwoOnly: true,
+      ), "2d 5h");
+
+      ms = Duration(
+        hours: 5,
+        minutes: 45,
+        seconds: 30,
+      ).inMilliseconds;
+
+      expect(formatDuration(
+        context: context,
+        millisecondsDuration: ms,
+        condensed: true,
+        showHighestTwoOnly: true,
+      ), "5h 45m");
+
+      ms = Duration(
+        minutes: 45,
+        seconds: 30,
+      ).inMilliseconds;
+
+      expect(formatDuration(
+        context: context,
+        millisecondsDuration: ms,
+        condensed: true,
+        showHighestTwoOnly: true,
+      ), "45m 30s");
+
+      ms = Duration(
+        seconds: 30,
+      ).inMilliseconds;
+
+      expect(formatDuration(
+        context: context,
+        millisecondsDuration: ms,
+        condensed: true,
+        showHighestTwoOnly: true,
+      ), "30s");
+    });
+
+    testWidgets("With duration unit", (WidgetTester tester) async {
+      int ms = Duration(
+        days: 2,
+        hours: 5,
+        minutes: 45,
+        seconds: 30,
+      ).inMilliseconds;
+
+      BuildContext context = await buildContext(tester);
+
+      expect(formatDuration(
+        context: context,
+        millisecondsDuration: ms,
+        largestDurationUnit: DurationUnit.hours,
+      ), "53h 45m 30s");
+
+      expect(formatDuration(
+        context: context,
+        millisecondsDuration: ms,
+        largestDurationUnit: DurationUnit.minutes,
+      ), "3225m 30s");
     });
   });
 }

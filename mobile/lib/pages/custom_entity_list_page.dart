@@ -3,7 +3,7 @@ import 'package:mobile/custom_entity_manager.dart';
 import 'package:mobile/custom_entity_value_manager.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/model/custom_entity.dart';
-import 'package:mobile/pages/entity_list_page.dart';
+import 'package:mobile/pages/manageable_list_page.dart';
 import 'package:mobile/pages/save_custom_entity_page.dart';
 import 'package:mobile/utils/string_utils.dart';
 import 'package:mobile/widgets/text.dart';
@@ -17,9 +17,9 @@ class CustomEntityListPage extends StatelessWidget {
     CustomEntityValueManager entityValueManager =
         CustomEntityValueManager.of(context);
 
-    return EntityListPage<CustomEntity>(
-      title: Text(format(Strings.of(context).customEntityListPageTitle,
-          [entityManager.entityCount])),
+    return ManageableListPage<CustomEntity>(
+      titleBuilder: (entities) => Text(format(
+          Strings.of(context).customEntityListPageTitle, [entities.length])),
       itemBuilder: (context, entity) => ManageableListPageItemModel(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

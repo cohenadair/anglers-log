@@ -28,7 +28,7 @@ class BaitCategoryManager extends NamedEntityManager<BaitCategory> {
     }
 
     int result = 0;
-    _baitManager.entityList.forEach((bait) {
+    _baitManager.entityList().forEach((bait) {
       if (bait.hasCategory && bait.categoryId == baitCategory.id) {
         result++;
       }

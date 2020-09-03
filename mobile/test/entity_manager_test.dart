@@ -148,10 +148,29 @@ void main() {
     // Clear data.
     await realDataManager.reset();
     expect(entityManager.entityCount, 0);
-
-    // Wait for manager to reinitialize.
-    await Future.delayed(Duration(milliseconds: 250));
-
+    await untilCalled(listener.onClear);
     verify(listener.onClear).called(1);
+  });
+
+  test("Entity list by ID", () async {
+    when(dataManager.insertOrUpdateEntity(any, any))
+        .thenAnswer((_) => Future.value(true));
+
+    // Add.
+    expect(await entityManager.addOrUpdate(Species(
+      id: "id_1",
+      name: "Bluegill",
+    )), true);
+    expect(await entityManager.addOrUpdate(Species(
+      id: "id_2",
+      name: "Catfish",
+    )), true);
+    expect(await entityManager.addOrUpdate(Species(
+      id: "id_3",
+      name: "Bass",
+    )), true);
+    expect(entityManager.entityCount, 3);
+    expect(entityManager.entityList().length, 3);
+    expect(entityManager.entityList(["id_1", "id_3"]).length, 2);
   });
 }

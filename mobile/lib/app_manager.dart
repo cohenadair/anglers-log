@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:mobile/bait_category_manager.dart';
 import 'package:mobile/bait_manager.dart';
 import 'package:mobile/catch_manager.dart';
+import 'package:mobile/custom_comparison_report_manager.dart';
 import 'package:mobile/custom_entity_manager.dart';
 import 'package:mobile/custom_entity_value_manager.dart';
+import 'package:mobile/custom_summary_report_manager.dart';
 import 'package:mobile/data_manager.dart';
 import 'package:mobile/fishing_spot_manager.dart';
 import 'package:mobile/image_manager.dart';
@@ -22,8 +24,10 @@ class AppManager {
   BaitManager _baitManager;
   DataManager _dataManager;
   CatchManager _catchManager;
+  CustomComparisonReportManager _customComparisonReportManager;
   CustomEntityManager _customEntityManager;
   CustomEntityValueManager _customEntityValueManager;
+  CustomSummaryReportManager _customSummaryReportManager;
   FishingSpotManager _fishingSpotManager;
   ImageManager _imageManager;
   LocationMonitor _locationMonitor;
@@ -60,6 +64,13 @@ class AppManager {
     return _catchManager;
   }
 
+  CustomComparisonReportManager get customComparisonReportManager {
+    if (_customComparisonReportManager == null) {
+      _customComparisonReportManager = CustomComparisonReportManager(this);
+    }
+    return _customComparisonReportManager;
+  }
+
   CustomEntityManager get customEntityManager {
     if (_customEntityManager == null) {
       _customEntityManager = CustomEntityManager(this);
@@ -72,6 +83,13 @@ class AppManager {
       _customEntityValueManager = CustomEntityValueManager(this);
     }
     return _customEntityValueManager;
+  }
+
+  CustomSummaryReportManager get customSummaryReportManager {
+    if (_customSummaryReportManager == null) {
+      _customSummaryReportManager = CustomSummaryReportManager(this);
+    }
+    return _customSummaryReportManager;
   }
 
   FishingSpotManager get fishingSpotManager {

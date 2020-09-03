@@ -74,43 +74,32 @@ class _FeedbackPageState extends State<FeedbackPage> {
 
     _fields[_warningId] = InputData(
       id: _warningId,
-      label: (context) => "",
       controller: InputController(),
-      showing: true,
     );
 
     _fields[_nameId] = InputData(
       id: _nameId,
-      label: (context) => "",
       controller: TextInputController(),
-      showing: true,
     );
 
     _fields[_emailId] = InputData(
       id: _emailId,
-      label: (context) => "",
-      controller: TextInputController(),
-      showing: true,
+      controller: EmailInputController(),
     );
 
     _fields[_typeId] = InputData(
       id: _typeId,
-      label: (context) => "",
       controller: InputController<_FeedbackType>(
         value: _FeedbackType.bug,
       ),
-      showing: true,
     );
 
     _fields[_messageId] = InputData(
       id: _messageId,
-      label: (context) => "",
       controller: TextInputController(
         // Message field is only required if an error isn't being sent.
-        validate: _error
-            ? null : (context) => Strings.of(context).inputGenericRequired,
+        validator: _error ? null : EmptyValidator(),
       ),
-      showing: true,
     );
   }
 
@@ -118,8 +107,8 @@ class _FeedbackPageState extends State<FeedbackPage> {
   Widget build(BuildContext context) {
     return FormPage.immutable(
       title: Text(widget.title ?? Strings.of(context).feedbackPageTitle),
-      isInputValid: isEmpty(_emailController.error(context))
-          && isEmpty(_messageController.error(context)),
+      isInputValid: _emailController.valid(context)
+          && _messageController.valid(context),
       saveButtonText: Strings.of(context).feedbackPageSend,
       fieldBuilder: (context) => {
         _warningId: _error && isNotEmpty(widget.warningMessage) ? Padding(
@@ -162,7 +151,6 @@ class _FeedbackPageState extends State<FeedbackPage> {
           maxLength: null,
           // To update "Send" button state.
           onChanged: () => setState(() {}),
-          validator: _error ? null : EmptyValidator(),
         ),
       },
       onSave: (context) async {

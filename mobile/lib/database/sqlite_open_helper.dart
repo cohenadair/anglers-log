@@ -74,21 +74,62 @@ final List<String> _schema0 = [
   """
   CREATE TABLE preference (
     id TEXT PRIMARY KEY,
-    -- A JSON serialized value for the preference.
     value TEXT NOT NULL
   );
   """,
   """
-  -- Values for custom entity instances attached to catches.
   CREATE TABLE custom_entity_value (
-    -- The normal entity, such as bait or catch, ID.
     entity_id TEXT NOT NULL,
     custom_entity_id TEXT NOT NULL,
-    -- Store value as text, to capture exactly what the user entered.
     value TEXT NOT NULL,
-    -- Corresponds to EntityType enum.
     entity_type INTEGER NOT NULL,
     PRIMARY KEY (entity_id, custom_entity_id)
+  );
+  """,
+  """
+  CREATE TABLE custom_summary_report (
+    id TEXT PRIMARY KEY,
+    name TEXT NOT NULL,
+    description TEXT,
+    entity_type INTEGER NOT NULL,
+    display_date_range_id TEXT NOT NULL,
+    start_timestamp INTEGER,
+    end_timestamp INTEGER
+  );
+  """,
+  """
+  CREATE TABLE custom_comparison_report (
+    id TEXT PRIMARY KEY,
+    name TEXT NOT NULL,
+    description TEXT,
+    entity_type INTEGER NOT NULL,
+    from_display_date_range_id TEXT NOT NULL,
+    from_start_timestamp INTEGER,
+    from_end_timestamp INTEGER,
+    to_display_date_range_id TEXT NOT NULL,
+    to_start_timestamp INTEGER,
+    to_end_timestamp INTEGER
+  );
+  """,
+  """
+  CREATE TABLE custom_report_species (
+    custom_report_id TEXT NOT NULL,
+    species_id TEXT NOT NULL,
+    PRIMARY KEY (custom_report_id, species_id)
+  );
+  """,
+  """
+  CREATE TABLE custom_report_bait (
+    custom_report_id TEXT NOT NULL,
+    bait_id TEXT NOT NULL,
+    PRIMARY KEY (custom_report_id, bait_id)
+  );
+  """,
+  """
+  CREATE TABLE custom_report_fishing_spot (
+    custom_report_id TEXT NOT NULL,
+    fishing_spot_id TEXT NOT NULL,
+    PRIMARY KEY (custom_report_id, fishing_spot_id)
   );
   """,
 ];

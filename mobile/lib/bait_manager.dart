@@ -48,7 +48,7 @@ class BaitManager extends NamedEntityManager<Bait> {
   /// Returns true if the given [Bait] is a duplicate of an existing bait.
   /// [Bait.isDuplicateOf] is called on each existing bait.
   bool duplicate(Bait lhs) {
-    return entityList.firstWhere((rhs) => lhs.isDuplicateOf(lhs),
+    return entityList().firstWhere((rhs) => lhs.isDuplicateOf(lhs),
         orElse: () => null) != null;
   }
 
@@ -78,7 +78,7 @@ class BaitManager extends NamedEntityManager<Bait> {
     }
 
     int result = 0;
-    _catchManager.entityList.forEach((cat) {
+    _catchManager.entityList().forEach((cat) {
       if (cat.baitId == bait.id) {
         result++;
       }
@@ -103,15 +103,15 @@ class BaitManager extends NamedEntityManager<Bait> {
   String deleteMessage(BuildContext context, Bait bait) {
     int numOfCatches = numberOfCatches(bait);
     String string = numOfCatches == 1
-        ? Strings.of(context).baitPageDeleteMessageSingular
-        : Strings.of(context).baitPageDeleteMessage;
+        ? Strings.of(context).baitListPageDeleteMessageSingular
+        : Strings.of(context).baitListPageDeleteMessage;
 
     BaitCategory category = _baitCategoryManager.entity(id: bait.categoryId);
     String baitName;
     if (category == null) {
       baitName =  bait.name;
     } else {
-      baitName = "${category.name} (${bait.name})";
+      baitName = "${bait.name} (${category.name})";
     }
 
     return format(string, [baitName, numOfCatches]);
@@ -127,7 +127,7 @@ class BaitManager extends NamedEntityManager<Bait> {
     }
 
     // Then, update memory cache.
-    List<Bait>.from(entityList
+    List<Bait>.from(entityList()
         .where((bait) => baitCategory.id == bait.categoryId))
         .forEach((bait) {
           entities[bait.id] = bait.copyWith(categoryId: Optional.absent());

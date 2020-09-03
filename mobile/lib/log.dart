@@ -1,7 +1,7 @@
 class Log {
   final String _className;
 
-  Log(this._className) : assert(_className != null);
+  const Log(this._className) : assert(_className != null);
 
   String get _prefix => "AL-$_className: ";
 
