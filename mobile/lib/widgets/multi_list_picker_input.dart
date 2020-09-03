@@ -28,12 +28,12 @@ class MultiListPickerInput extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> chips = [];
+    Set<String> items = {};
     if (values == null || values.isEmpty) {
-      chips.add(_chip(emptyValue(context)));
+      items.add(emptyValue(context));
     } else {
       for (String value in values) {
-        chips.add(_chip(value));
+        items.add(value);
       }
     }
 
@@ -45,23 +45,12 @@ class MultiListPickerInput extends StatelessWidget {
           mainAxisSize: MainAxisSize.max,
           children: [
             Expanded(
-              child: Wrap(
-                spacing: paddingWidgetSmall,
-                runSpacing: paddingWidgetSmall,
-                children: chips,
-              ),
+              child: ChipWrap(items)
             ),
             RightChevronIcon(),
           ],
         ),
       ),
-    );
-  }
-
-  Widget _chip(String label) {
-    return Chip(
-      label: Text(label),
-      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
     );
   }
 }

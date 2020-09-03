@@ -382,18 +382,14 @@ class _ChartPage<T extends NamedEntity> extends StatelessWidget {
       padding: EdgeInsets.only(
         left: paddingDefault,
         right: paddingDefault,
-        bottom: paddingWidgetSmall,
+        bottom: paddingWidget,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           HeadingLabel(Strings.of(context).reportSummaryFilters),
-          Wrap(
-            spacing: paddingWidgetSmall,
-            children: filters.map((filter) => Chip(
-              label: Text(filter),
-            )).toList(),
-          ),
+          VerticalSpace(paddingWidget),
+          ChipWrap(filters),
         ],
       ),
     );

@@ -317,3 +317,21 @@ class AppBarDropdownItem<T> extends DropdownMenuItem<T> {
          value: value,
        );
 }
+
+class ChipWrap extends StatelessWidget {
+  final Set<String> items;
+
+  ChipWrap([this.items = const {}]);
+
+  @override
+  Widget build(BuildContext context) {
+    return Wrap(
+      spacing: paddingWidgetSmall,
+      runSpacing: paddingWidgetSmall,
+      children: items.map((item) => Chip(
+        label: Text(item),
+        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+      )).toList(),
+    );
+  }
+}
