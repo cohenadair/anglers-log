@@ -145,6 +145,8 @@ abstract class _CustomReportEntityList<E extends Entity, M extends OneToManyRow,
   }
 
   void update(R report, Batch batch, Set<E> values) {
+    values = values ?? {};
+
     // First, remove old mappings.
     batch.delete(tableName,
       where: "$customReportIdKey = ?",
@@ -153,11 +155,9 @@ abstract class _CustomReportEntityList<E extends Entity, M extends OneToManyRow,
     _mapping[report.id] = {};
 
     // Then, add new mappings.
-    if (values != null) {
-      for (var value in values) {
-        _mapping[report.id].add(value.id);
-        batch.insert(tableName, itemToMap(report.id, value.id));
-      }
+    for (var value in values) {
+      _mapping[report.id].add(value.id);
+      batch.insert(tableName, itemToMap(report.id, value.id));
     }
   }
 

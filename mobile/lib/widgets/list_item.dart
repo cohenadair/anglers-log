@@ -155,8 +155,6 @@ class ManageableListItem extends StatefulWidget {
 class _ManageableListItemState extends State<ManageableListItem> with
     SingleTickerProviderStateMixin
 {
-  final Duration _editAnimDuration = Duration(milliseconds: 150);
-
   AnimationController _editAnimController;
   Animation<double> _deleteIconSizeAnim;
 
@@ -165,7 +163,7 @@ class _ManageableListItemState extends State<ManageableListItem> with
     super.initState();
 
     _editAnimController = AnimationController(
-      duration: _editAnimDuration,
+      duration: defaultAnimationDuration,
       vsync: this,
     );
     _deleteIconSizeAnim = Tween<double>(
@@ -265,7 +263,7 @@ class _ManageableListItemState extends State<ManageableListItem> with
     }
 
     return AnimatedSwitcher(
-      duration: _editAnimDuration,
+      duration: defaultAnimationDuration,
       child: Padding(
         // Key is required here for animation (since widget type might not
         // change).

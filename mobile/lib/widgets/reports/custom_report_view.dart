@@ -43,7 +43,7 @@ class _CustomReportViewState extends State<CustomReportView> {
   Widget build(BuildContext context) {
     return ReportSummary(
       managers: [widget.reportManager],
-      onUpdate: () => _updateModels(),
+      onUpdate: _updateModels,
       descriptionBuilder: (context) => _report.description,
     );
   }

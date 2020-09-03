@@ -48,8 +48,6 @@ class _SaveCustomReportPageState extends State<SaveCustomReportPage> {
   static const _keyBaits = "baits";
   static const _keyFishingSpots = "fishing_spots";
 
-  static const _endDateRangeAnimDuration = Duration(milliseconds: 150);
-
   final Key _keySummaryStart = ValueKey(0);
   final Key _keyComparisonStart = ValueKey(1);
 
@@ -152,7 +150,7 @@ class _SaveCustomReportPageState extends State<SaveCustomReportPage> {
             report.toEndTimestamp);
       }
 
-      CustomReportManager manager = _customReportManager();
+      CustomReportManager manager = _customReportManager;
       _baitsController.value =
           manager.baits(widget.oldReport.id).toSet();
       _fishingSpotsController.value =
@@ -241,7 +239,7 @@ class _SaveCustomReportPageState extends State<SaveCustomReportPage> {
 
   Widget _buildStartDateRange() {
     return AnimatedSwitcher(
-      duration: _endDateRangeAnimDuration,
+      duration: defaultAnimationDuration,
       child: _summary
         ? _startDateRangePicker(_keySummaryStart, null)
         : _startDateRangePicker(_keyComparisonStart,
@@ -262,7 +260,7 @@ class _SaveCustomReportPageState extends State<SaveCustomReportPage> {
 
   Widget _buildEndDateRange() {
     return AnimatedSwitcher(
-      duration: _endDateRangeAnimDuration,
+      duration: defaultAnimationDuration,
       child: _summary ? Empty() : DateRangePickerInput(
         title: Strings.of(context).saveCustomReportPageEndDateRangeLabel,
         initialDateRange: _toDateRangeController.value,
@@ -278,7 +276,7 @@ class _SaveCustomReportPageState extends State<SaveCustomReportPage> {
       padding: insetsHorizontalDefaultVerticalWidget,
       values: _speciesController.value?.map((species) => species.name)?.toSet(),
       emptyValue: (context) =>
-      Strings.of(context).saveCustomReportPageAllSpecies,
+          Strings.of(context).saveCustomReportPageAllSpecies,
       onTap: () {
         push(context, SpeciesListPage.picker(
           multiPicker: true,
@@ -299,7 +297,7 @@ class _SaveCustomReportPageState extends State<SaveCustomReportPage> {
       padding: insetsHorizontalDefaultVerticalWidget,
       values: _baitsController.value?.map((bait) => bait.name)?.toSet(),
       emptyValue: (context) =>
-      Strings.of(context).saveCustomReportPageAllBaits,
+          Strings.of(context).saveCustomReportPageAllBaits,
       onTap: () {
         push(context, BaitListPage.picker(
           multiPicker: true,
@@ -340,14 +338,14 @@ class _SaveCustomReportPageState extends State<SaveCustomReportPage> {
     CustomReport report;
     switch (_typeController.value) {
       case CustomReportType.summary:
-        report = _createSummaryReport();
+        report = _createSummaryReport;
         break;
       case CustomReportType.comparison:
         report = _createComparisonReport();
         break;
     }
 
-    _customReportManager().addOrUpdate(
+    _customReportManager.addOrUpdate(
       report,
       baits: _baitsController.value,
       fishingSpots: _fishingSpotsController.value,
@@ -357,7 +355,7 @@ class _SaveCustomReportPageState extends State<SaveCustomReportPage> {
     return true;
   }
 
-  CustomReportManager<CustomReport> _customReportManager() {
+  CustomReportManager<CustomReport> get _customReportManager {
     switch (_typeController.value) {
       case CustomReportType.summary:
         return _customSummaryReportManager;
@@ -369,7 +367,7 @@ class _SaveCustomReportPageState extends State<SaveCustomReportPage> {
     return null;
   }
   
-  CustomSummaryReport _createSummaryReport() {
+  CustomSummaryReport get _createSummaryReport {
     DisplayDateRange dateRange = _fromDateRangeController.value; 
     bool custom = dateRange == DisplayDateRange.custom;
 

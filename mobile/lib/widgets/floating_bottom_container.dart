@@ -29,7 +29,8 @@ class FloatingBottomContainer extends StatelessWidget {
     this.margin,
     this.onTap,
     this.children = const [],
-  }) : assert(children != null);
+  }) : assert(isNotEmpty(title) || isNotEmpty(subtitle)),
+       assert(children != null);
 
   bool get _tapEnabled => onTap != null;
 

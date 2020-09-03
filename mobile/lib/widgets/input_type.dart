@@ -27,8 +27,9 @@ String inputTypeLocalizedString(BuildContext context, InputType fieldType) {
 InputController inputTypeController(InputType fieldType) {
   switch (fieldType) {
     case InputType.text:
-    case InputType.number:
       return TextInputController();
+    case InputType.number:
+      return NumberInputController();
     case InputType.boolean:
       return InputController<bool>();
   }
@@ -47,14 +48,11 @@ Widget inputTypeWidget(BuildContext context, {
   Function(bool) onCheckboxChanged,
   bool enabled = true,
 }) {
-  TextInputController textController = controller is TextInputController
-      ? controller : null;
-
   switch (type) {
     case InputType.number: return TextInput.number(context,
       label: label,
       initialValue: null,
-      controller: textController,
+      controller: controller,
       enabled: enabled,
     );
     case InputType.boolean: return CheckboxInput(
@@ -67,7 +65,7 @@ Widget inputTypeWidget(BuildContext context, {
       capitalization: TextCapitalization.sentences,
       label: label,
       initialValue: null,
-      controller: textController,
+      controller: controller,
       enabled: enabled,
     );
   }

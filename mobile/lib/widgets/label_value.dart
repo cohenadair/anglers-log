@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/res/style.dart';
 import 'package:mobile/widgets/text.dart';
+import 'package:quiver/strings.dart';
 
 /// A widget that displays a bold label with a slightly larger and lighter
 /// value text. By default, the label and value are displayed in a [Row].
@@ -20,7 +21,8 @@ class LabelValue extends StatelessWidget {
     @required this.label,
     @required this.value,
     this.padding,
-  });
+  }) : assert(isNotEmpty(label)),
+       assert(isNotEmpty(value));
 
   @override
   Widget build(BuildContext context) {

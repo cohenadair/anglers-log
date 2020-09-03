@@ -54,7 +54,8 @@ class CatchManager extends EntityManager<Catch> {
     assert(fishingSpotIds != null);
     assert(speciesIds != null);
 
-    List<Catch> result = List.of(filteredCatches(context,
+    List<Catch> result = List.of(filteredCatches(
+      context,
       filter: filter,
       dateRange: dateRange,
       catchIds: catchIds,

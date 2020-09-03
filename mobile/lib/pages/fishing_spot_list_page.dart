@@ -20,7 +20,7 @@ class FishingSpotListPage extends StatelessWidget {
   FishingSpotListPage.picker({
     this.onPicked,
     this.multiPicker = false,
-    this.initialValues = const {},
+    this.initialValues,
   }) : assert(onPicked != null);
 
   bool get _picking => onPicked != null;

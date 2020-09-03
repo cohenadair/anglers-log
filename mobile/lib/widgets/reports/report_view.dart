@@ -14,7 +14,8 @@ class ReportView extends StatelessWidget {
     this.managers = const [],
     @required this.onUpdate,
     @required this.builder,
-  }) : assert(managers != null);
+  }) : assert(managers != null),
+       assert(builder != null);
 
   @override
   Widget build(BuildContext context) {

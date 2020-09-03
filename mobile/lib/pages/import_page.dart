@@ -20,7 +20,6 @@ class ImportPage extends StatefulWidget {
 class _ImportPageState extends State<ImportPage> {
   final double _cloudIconSize = 150.0;
   final double _feedbackIconSize = 40.0;
-  final Duration _feedbackAnimDuration = Duration(milliseconds: 150);
 
   _State _importState = _State.none;
   LegacyImporterError _importError;
@@ -121,7 +120,7 @@ class _ImportPageState extends State<ImportPage> {
     }
 
     return AnimatedSwitcher(
-      duration: _feedbackAnimDuration,
+      duration: defaultAnimationDuration,
       child: Column(
         key: ValueKey<_State>(_importState),
         children: children,

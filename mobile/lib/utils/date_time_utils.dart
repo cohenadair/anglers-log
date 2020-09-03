@@ -268,11 +268,7 @@ class DisplayDateRange {
         end: endTimestamp,
       ));
     } else {
-      try {
-        return all.firstWhere((range) => range.id == id);
-      } on StateError {
-        return null;
-      }
+      return all.firstWhere((range) => range.id == id, orElse: () => null);
     }
   }
 

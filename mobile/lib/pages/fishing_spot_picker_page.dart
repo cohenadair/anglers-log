@@ -41,7 +41,6 @@ class _FishingSpotPickerPageState extends State<FishingSpotPickerPage>
   static final _pendingMarkerAnimOffset = _pendingMarkerSize * 3;
 
   final _pendingMarkerSlideInDelay = Duration(milliseconds: 1000);
-  final _pendingMarkerSlideInDuration = Duration(milliseconds: 150);
 
   final Completer<GoogleMapController> _mapController = Completer();
 
@@ -83,7 +82,7 @@ class _FishingSpotPickerPageState extends State<FishingSpotPickerPage>
 
     _fishingSpotAnimController = AnimationController(
       vsync: this,
-      duration: _pendingMarkerSlideInDuration,
+      duration: defaultAnimationDuration,
     );
 
     _fishingSpotAnimOffset = Tween<Offset>(
@@ -261,7 +260,7 @@ class _FishingSpotPickerPageState extends State<FishingSpotPickerPage>
   Widget _buildPendingFishingSpotMarker() {
     Size screenSize = MediaQuery.of(context).size;
     return AnimatedPositioned(
-      duration: _pendingMarkerSlideInDuration,
+      duration: defaultAnimationDuration,
       top: screenSize.height / 2 - _pendingMarkerOffset,
       left: screenSize.width / 2 - _pendingMarkerSize / 2,
       child: Visibility(

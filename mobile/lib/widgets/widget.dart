@@ -71,7 +71,8 @@ class HeadingNoteDivider extends StatelessWidget {
     @required this.note,
     @required this.noteIcon,
     this.padding,
-  });
+  }) : assert(isNotEmpty(title)),
+       assert(hideNote || (isNotEmpty(note) && noteIcon != null));
 
   @override
   Widget build(BuildContext context) {
@@ -233,8 +234,6 @@ class HelpTooltip extends StatelessWidget {
 
 /// A wrapper for [AnimatedOpacity] with a default duration.
 class AnimatedVisibility extends StatelessWidget {
-  final Duration _animDuration = Duration(milliseconds: 150);
-
   final bool visible;
   final Widget child;
 
@@ -247,7 +246,7 @@ class AnimatedVisibility extends StatelessWidget {
   Widget build(BuildContext context) {
     return AnimatedOpacity(
       opacity: visible ? 1.0 : 0.0,
-      duration: _animDuration,
+      duration: defaultAnimationDuration,
       child: child,
     );
   }

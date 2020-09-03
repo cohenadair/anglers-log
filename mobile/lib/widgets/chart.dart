@@ -36,7 +36,10 @@ class ExpandableChart<T extends NamedEntity> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ExpansionListItem(
-      title: Text(title, style: TextStyle(color: Colors.black),),
+      title: Text(
+        title,
+        style: TextStyle(color: Colors.black),
+      ),
       children: [
         Chart<T>(
           series: series,
@@ -88,8 +91,8 @@ class Chart<T extends NamedEntity> extends StatefulWidget {
   /// row is tapped. This property is ignored when [showAll] is true.
   final String chartPageDescription;
 
-  /// A list of filters that have already been applied to [data]. This property
-  /// is ignored when [showAll] is true.
+  /// A list of filters that have already been applied to [data]. Values in this
+  /// set are rendered at the top of a full page chart view.
   final Set<String> chartPageFilters;
 
   /// If true, will render all items in [data], otherwise, will show a limited
@@ -253,7 +256,9 @@ class _ChartState<T extends NamedEntity> extends State<Chart<T>> {
     }
 
     return InkWell(
-      onTap: () => widget.onTapRow?.call(entity, series.displayDateRange.value),
+      onTap: widget.onTapRow == null
+          ? null
+          : () => widget.onTapRow.call(entity, series.displayDateRange.value),
       child: Stack(
         alignment: Alignment.centerLeft,
         children: [

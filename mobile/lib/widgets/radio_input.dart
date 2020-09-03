@@ -4,6 +4,9 @@ import 'package:mobile/widgets/text.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:quiver/strings.dart';
 
+/// A radio button selection widget. This should be used with three or fewer
+/// options are available. Anything more, or for dynamic lists,
+/// [ListPickerInput] should be used.
 class RadioInput extends StatefulWidget {
   final String title;
   final int optionCount;

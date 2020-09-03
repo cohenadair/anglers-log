@@ -23,7 +23,7 @@ class CatchListPage extends StatelessWidget {
   /// If false, catches cannot be added. Defaults to true.
   final bool enableAdding;
 
-  /// If not-null, shows only the catches of within [dateRange].
+  /// If not-null, shows only the catches within [dateRange].
   final DateRange dateRange;
 
   /// If set, shows only the catches whose ID is included in [catchIds].

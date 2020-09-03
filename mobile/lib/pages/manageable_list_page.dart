@@ -200,7 +200,6 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
       // options.
       var optionBuilder = (context) {
         List<PopupMenuItem<_OverflowOption>> overflowOptions = [];
-        print(_addable);
         if (_addable) {
           overflowOptions.add(PopupMenuItem<_OverflowOption>(
             value: _OverflowOption.add,

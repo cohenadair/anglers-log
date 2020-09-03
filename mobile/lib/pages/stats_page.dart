@@ -84,11 +84,8 @@ class _StatsPageState extends State<StatsPage> {
 
   void _updateCurrentReport() {
     // If the current report no longer exists, show an overview.
-    if ((_currentReport is CustomSummaryReport
-        && !_customSummaryReportManager.entityExists(id: _currentReport.id))
-        || (_currentReport is CustomComparisonReport
-            && !_customComparisonReportManager
-                .entityExists(id: _currentReport.id)))
+    if (!_customSummaryReportManager.entityExists(id: _currentReport.id)
+        && !_customComparisonReportManager.entityExists(id: _currentReport.id))
     {
         _currentReport = OverviewReport();
     }
