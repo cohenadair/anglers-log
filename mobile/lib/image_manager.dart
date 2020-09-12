@@ -5,14 +5,11 @@ import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:mobile/app_manager.dart';
-import 'package:mobile/data_manager.dart';
 import 'package:mobile/log.dart';
-import 'package:mobile/model/entity_image.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:quiver/collection.dart';
 import 'package:quiver/strings.dart';
-import 'package:sqflite/sqflite.dart';
 
 class ImageManager {
   static ImageManager of(BuildContext context) =>
@@ -21,25 +18,15 @@ class ImageManager {
   static final _debug = false;
   static final _log = Log("ImageManager");
 
-  static final _tableName = "entity_image";
   static final _memoryCacheCapacity = 250;
   static final _imageCompressionQuality = 80;
   static final _thumbnailCompressionQuality = 50;
-
-  ImageManager(AppManager app) : _appManager = app;
-
-  final AppManager _appManager;
-
-  /// Memory cache of entity ID to image names, synced with the database.
-  final Map<String, Set<String>> _entityImageNames = {};
 
   /// A memory cache map of file name to [_CachedThumbnail] objects.
   final Map<String, _CachedThumbnail> _thumbnails =
       LinkedLruHashMap(maximumSize: _memoryCacheCapacity);
 
   ImageManagerDelegate _delegate;
-
-  DataManager get _dataManager => _appManager.dataManager;
 
   Future<void> initialize({
     ImageManagerDelegate delegate,
@@ -52,20 +39,10 @@ class ImageManager {
     // Create directories if needed.
     await _delegate.directory(_delegate.imagePath).create(recursive: true);
     await _delegate.directory(_delegate.cachePath).create(recursive: true);
-
-    // Fetch image map from database.
-    (await _fetchAll()).forEach((image) => _addToCache(image));
   }
 
   File _imageFile(String imageName) =>
       _delegate.file("${_delegate.imagePath}/$imageName");
-
-  /// Returns a list of image names associated with the given [entityId].
-  List<String> imageNames({
-    @required String entityId,
-  }) {
-    return List.unmodifiable(_entityImageNames[entityId] ?? []);
-  }
 
   /// Returns encoded image data with the given [fileName] at the given [size].
   /// If an image of [size] does not exist in the cache, the full image is
@@ -88,27 +65,24 @@ class ImageManager {
     return thumb;
   }
 
-  /// Returns a list of encoded images for the given [entityId] of the given
+  /// Returns a list of encoded images for the given [names] of the given
   /// [size]. This method will attempt to get the image from thumbnail cache
   /// before falling back on the full image.
   ///
-  /// If there are no images associated with the given [entityId], an empty list
+  /// If there are no images associated with the given [names], an empty list
   /// is returned.
   Future<List<Uint8List>> images(BuildContext context, {
-    @required String entityId,
+    @required List<String> imageNames,
     double size,
   }) async {
-    if (isEmpty(entityId)) {
-      _log.w("Attempting to fetch images for an empty entity ID");
+    if (imageNames == null || imageNames.isEmpty) {
       return [];
     }
 
     List<Uint8List> result = [];
-    if (_entityImageNames[entityId] == null) {
-      return result;
-    }
+    for (String fileName in imageNames) {
+      _addToCache(fileName);
 
-    for (var fileName in _entityImageNames[entityId]) {
       Uint8List bytes = await image(context,
         fileName: fileName,
         size: size,
@@ -125,12 +99,8 @@ class ImageManager {
     return result;
   }
 
-  void _addToCache(EntityImage image) {
-    if (_entityImageNames[image.entityId] == null) {
-      _entityImageNames[image.entityId] = <String>[].toSet();
-    }
-    _entityImageNames[image.entityId].add(image.imageName);
-    _thumbnails[image.imageName] = _CachedThumbnail(image.imageName);
+  void _addToCache(String fileName) {
+    _thumbnails.putIfAbsent(fileName, () => _CachedThumbnail(fileName));
   }
 
   /// Compresses the given image files, converts them to JPG format, and saves
@@ -142,20 +112,17 @@ class ImageManager {
   ///
   /// Files are named by the image's MD5 hash value to ensure uniqueness, and so
   /// that the same image isn't saved multiple times.
-  Future<void> save(String entityId, List<File> files, {
+  Future<void> save(List<File> files, {
     bool compress = true,
   }) async {
     if (files == null || files.isEmpty) {
-      await _delete(entityId);
       return;
     }
-
-    List<EntityImage> dbImages = [];
 
     for (var file in files) {
       // This can happen if an entity is edited, but the images associated with
       // that entity didn't change. In these cases, there are no "files" to
-      // copy, but we don't want to clear the entity's images.
+      // copy.
       if (file == null) {
         continue;
       }
@@ -169,8 +136,7 @@ class ImageManager {
       // Compress first, so image MD5 hashes are equal to existing files.
       List<int> jpgBytes;
       if (compress) {
-        jpgBytes = await _compress(null, file, _imageCompressionQuality,
-            null);
+        jpgBytes = await _compress(null, file, _imageCompressionQuality, null);
       } else {
         jpgBytes = await file.readAsBytes();
       }
@@ -191,31 +157,13 @@ class ImageManager {
         }
       }
 
-      // Cache database entries so they can be committed in a batch.
-      dbImages.add(EntityImage(
-        entityId: entityId,
-        imageName: fileName,
-      ));
+      _addToCache(fileName);
     }
+  }
 
-    if (dbImages.isNotEmpty) {
-      // Remove old references.
-      await _delete(entityId);
-
-      // Create database entries.
-      List<dynamic> batchResult = await _dataManager.commitBatch((batch) {
-        dbImages.forEach((i) =>
-            batch.insert(_tableName, i.toMap(),
-                conflictAlgorithm: ConflictAlgorithm.replace));
-      });
-
-      if (batchResult.isEmpty || batchResult.length != dbImages.length) {
-        _log.e("Error saving images to database");
-      } else {
-        // Database write was successful, update memory cache.
-        dbImages.forEach((i) async => _addToCache(i));
-      }
-    }
+  /// Clears the memory cache for [fileNames].
+  void clearMemoryCache(List<String> fileNames) {
+    fileNames.forEach((fileName) => _thumbnails.remove(fileName));
   }
 
   Future<Uint8List> _compress(BuildContext context, File source, int quality,
@@ -313,39 +261,6 @@ class ImageManager {
     }
 
     return cachedImage.thumbnail(size);
-  }
-
-  /// Deletes all images associated with the given entity ID. This applies
-  /// only to the database and memory cache; not the file system. Any given
-  /// file could be used in other entities.
-  Future<void> _delete(String entityId) async {
-    Set<String> imageNames = _entityImageNames[entityId] ?? {};
-    if (imageNames.isEmpty) {
-      return;
-    }
-
-    // Update database.
-    List<dynamic> batchResults = await _dataManager.commitBatch((batch) async {
-      for (var imageName in imageNames) {
-        batch.rawDelete(
-            "DELETE FROM $_tableName WHERE entity_id = ? AND image_name = ?",
-            [entityId, imageName]);
-      }
-    });
-
-    var numberDeleted = 0;
-    batchResults.forEach((result) => numberDeleted += result);
-    _log.d("Deleted $numberDeleted database images");
-
-    // Clear cache.
-    _entityImageNames[entityId].forEach((fileName) =>
-        _thumbnails.remove(fileName));
-    _entityImageNames[entityId].clear();
-  }
-
-  Future<List<EntityImage>> _fetchAll() async {
-    var results = await _dataManager.fetchAll(_tableName);
-    return results.map((map) => EntityImage.fromMap(map)).toList();
   }
 }
 

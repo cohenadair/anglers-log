@@ -1,0 +1,84 @@
+syntax = "proto3";
+package anglerslog;
+
+import "google/protobuf/timestamp.proto";
+
+message CustomEntity {
+  enum Type {
+    UNKNOWN = 0;
+    BOOL = 1;
+    NUMBER = 2;
+    TEXT = 3;
+  }
+
+  bytes id = 1;
+  string name = 2;
+  string description = 3;
+  Type type = 4;
+}
+
+message CustomEntityValue {
+  bytes custom_entity_id = 1;
+  string value = 2;
+}
+
+message Bait {
+  bytes id = 1;
+  string name = 2;
+  bytes bait_category_id = 3;
+  repeated CustomEntityValue custom_entity_values = 4;
+}
+
+message BaitCategory {
+  bytes id = 1;
+  string name = 2;
+}
+
+message Catch {
+  bytes id = 1;
+  google.protobuf.Timestamp timestamp = 2;
+  bytes bait_id = 3;
+  bytes fishing_spot_id = 4;
+  bytes species_id = 5;
+  repeated string image_names = 6;
+  repeated CustomEntityValue custom_entity_values = 7;
+}
+
+message FishingSpot {
+  bytes id = 1;
+  string name = 2;
+  double lat = 3;
+  double lng = 4;
+}
+
+message Species {
+  bytes id = 1;
+  string name = 2;
+}
+
+message SummaryReport {
+  bytes id = 1;
+  string name = 2;
+  string description = 3;
+  string display_date_range_id = 4;
+  google.protobuf.Timestamp start_timestamp = 5;
+  google.protobuf.Timestamp end_timestamp = 6;
+  repeated bytes bait_ids = 7;
+  repeated bytes fishing_spot_ids = 8;
+  repeated bytes species_ids = 9;
+}
+
+message ComparisonReport {
+  bytes id = 1;
+  string name = 2;
+  string description = 3;
+  string from_display_date_range_id = 4;
+  string to_display_date_range_id = 5;
+  google.protobuf.Timestamp from_start_timestamp = 6;
+  google.protobuf.Timestamp to_start_timestamp = 7;
+  google.protobuf.Timestamp from_end_timestamp = 8;
+  google.protobuf.Timestamp to_end_timestamp = 9;
+  repeated bytes bait_ids = 10;
+  repeated bytes fishing_spot_ids = 11;
+  repeated bytes species_ids = 12;
+}

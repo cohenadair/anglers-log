@@ -12,124 +12,56 @@ final String _name = "anglerslog.db";
 final List<String> _schema0 = [
   """
   CREATE TABLE fishing_spot ( 
-    id TEXT PRIMARY KEY, 
-    lat DOUBLE NOT NULL, 
-    lng DOUBLE NOT NULL, 
-    name TEXT DEFAULT NULL,
-    CONSTRAINT unique_coordinates UNIQUE (lat, lng)
+    id BLOB PRIMARY KEY, 
+    bytes BLOB NOT NULL
   );
   """,
   """
   CREATE TABLE bait_category (
-    id TEXT PRIMARY KEY,
-    name TEXT UNIQUE NOT NULL
+    id BLOB PRIMARY KEY,
+    bytes BLOB NOT NULL
   );
   """,
   """
   CREATE TABLE bait (
-    id TEXT PRIMARY KEY,
-    base_id TEXT,
-    category_id TEXT,
-    name TEXT,
-    photo_id TEXT,
-    color TEXT,
-    model TEXT,
-    size TEXT,
-    type INTEGER,
-    min_dive_depth double,
-    max_dive_depth double,
-    description TEXT
+    id BLOB PRIMARY KEY,
+    bytes BLOB NOT NULL
   );
   """,
   """
   CREATE TABLE species (
-    id TEXT PRIMARY KEY,
-    name TEXT UNIQUE NOT NULL
+    id BLOB PRIMARY KEY,
+    bytes BLOB NOT NULL
   );
   """,
   """
   CREATE TABLE catch (
-    id TEXT PRIMARY KEY,
-    timestamp INTEGER NOT NULL,
-    fishing_spot_id TEXT,
-    bait_id TEXT,
-    species_id TEXT
-  );
-  """,
-  """
-  CREATE TABLE entity_image (
-    entity_id TEXT NOT NULL,
-    image_name TEXT NOT NULL,
-    PRIMARY KEY (entity_id, image_name)
+    id BLOB PRIMARY KEY,
+    bytes BLOB NOT NULL
   );
   """,
   """
   CREATE TABLE custom_entity (
-    id TEXT PRIMARY KEY,
-    name TEXT NOT NULL,
-    description TEXT,
-    type INTEGER
+    id BLOB PRIMARY KEY,
+    bytes BLOB NOT NULL
   );
   """,
   """
   CREATE TABLE preference (
     id TEXT PRIMARY KEY,
-    value TEXT NOT NULL
+    bytes TEXT NOT NULL
   );
   """,
   """
-  CREATE TABLE custom_entity_value (
-    entity_id TEXT NOT NULL,
-    custom_entity_id TEXT NOT NULL,
-    value TEXT NOT NULL,
-    entity_type INTEGER NOT NULL,
-    PRIMARY KEY (entity_id, custom_entity_id)
+  CREATE TABLE summary_report (
+    id BLOB PRIMARY KEY,
+    bytes BLOB NOT NULL
   );
   """,
   """
-  CREATE TABLE custom_summary_report (
-    id TEXT PRIMARY KEY,
-    name TEXT NOT NULL,
-    description TEXT,
-    entity_type INTEGER NOT NULL,
-    display_date_range_id TEXT NOT NULL,
-    start_timestamp INTEGER,
-    end_timestamp INTEGER
-  );
-  """,
-  """
-  CREATE TABLE custom_comparison_report (
-    id TEXT PRIMARY KEY,
-    name TEXT NOT NULL,
-    description TEXT,
-    entity_type INTEGER NOT NULL,
-    from_display_date_range_id TEXT NOT NULL,
-    from_start_timestamp INTEGER,
-    from_end_timestamp INTEGER,
-    to_display_date_range_id TEXT NOT NULL,
-    to_start_timestamp INTEGER,
-    to_end_timestamp INTEGER
-  );
-  """,
-  """
-  CREATE TABLE custom_report_species (
-    custom_report_id TEXT NOT NULL,
-    species_id TEXT NOT NULL,
-    PRIMARY KEY (custom_report_id, species_id)
-  );
-  """,
-  """
-  CREATE TABLE custom_report_bait (
-    custom_report_id TEXT NOT NULL,
-    bait_id TEXT NOT NULL,
-    PRIMARY KEY (custom_report_id, bait_id)
-  );
-  """,
-  """
-  CREATE TABLE custom_report_fishing_spot (
-    custom_report_id TEXT NOT NULL,
-    fishing_spot_id TEXT NOT NULL,
-    PRIMARY KEY (custom_report_id, fishing_spot_id)
+  CREATE TABLE comparison_report (
+    id BLOB PRIMARY KEY,
+    bytes BLOB NOT NULL
   );
   """,
 ];

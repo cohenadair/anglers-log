@@ -3,8 +3,8 @@ import 'package:mobile/bait_category_manager.dart';
 import 'package:mobile/bait_manager.dart';
 import 'package:mobile/entity_manager.dart';
 import 'package:mobile/i18n/strings.dart';
-import 'package:mobile/model/bait.dart';
-import 'package:mobile/model/bait_category.dart';
+import 'package:mobile/model/gen/anglerslog.pb.dart';
+import 'package:mobile/model/id.dart';
 import 'package:mobile/pages/bait_page.dart';
 import 'package:mobile/pages/manageable_list_page.dart';
 import 'package:mobile/pages/save_bait_page.dart';
@@ -12,12 +12,11 @@ import 'package:mobile/res/dimen.dart';
 import 'package:mobile/utils/string_utils.dart';
 import 'package:mobile/widgets/text.dart';
 import 'package:mobile/widgets/widget.dart';
-import 'package:quiver/strings.dart';
 
 class BaitListPage extends StatefulWidget {
-  final bool Function(BuildContext, Set<Bait>) onPicked;
+  final bool Function(BuildContext, Set<Id>) onPicked;
   final bool multiPicker;
-  final Set<Bait> initialValues;
+  final Set<Id> initialValues;
 
   BaitListPage()
       : onPicked = null,
@@ -61,9 +60,9 @@ class _BaitListPageState extends State<BaitListPage> {
         pickerSettings: _picking
             ? ManageableListPagePickerSettings<dynamic>(
                 onPicked: (context, baits) => widget.onPicked(context,
-                    baits.map((item) => item as Bait).toSet()),
+                    baits.map((item) => Id((item as Bait).id)).toSet()),
                 multi: widget.multiPicker,
-                initialValues: widget.initialValues,
+                initialValues: _baitManager.idListToList(widget.initialValues),
               )
             : null,
         itemBuilder: (context, item) {
@@ -104,19 +103,21 @@ class _BaitListPageState extends State<BaitListPage> {
   List<dynamic> _buildItems(String query) {
     List<dynamic> result = [];
 
-    var categories = List.from(_baitCategoryManager.entityListSortedByName());
-    var baits = _baitManager.filteredBaits(query);
+    var categories = List.from(_baitCategoryManager.listSortedByName());
+    var baits = _baitManager.filteredList(query);
 
     // Add a category for baits that don't have a category. This is purposely
     // added to the end of the sorted list.
-    BaitCategory noCategory =
-        BaitCategory(name: Strings.of(context).baitListPageOtherCategory);
+    BaitCategory noCategory = BaitCategory()
+      ..id = Id.random().bytes
+      ..name = Strings.of(context).baitListPageOtherCategory;
     categories.add(noCategory);
 
     // First, organize baits in to category collections.
-    Map<String, List<Bait>> map = {};
+    Map<Id, List<Bait>> map = {};
     for (var bait in baits) {
-      var id = isEmpty(bait.categoryId) ? noCategory.id : bait.categoryId;
+      Id id =
+          Id(bait.hasBaitCategoryId() ? noCategory.id : bait.baitCategoryId);
       map.putIfAbsent(id, () => []);
       map[id].add(bait);
     }

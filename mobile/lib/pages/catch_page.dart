@@ -4,10 +4,8 @@ import 'package:mobile/bait_manager.dart';
 import 'package:mobile/catch_manager.dart';
 import 'package:mobile/entity_manager.dart';
 import 'package:mobile/fishing_spot_manager.dart';
-import 'package:mobile/image_manager.dart';
-import 'package:mobile/model/bait.dart';
-import 'package:mobile/model/catch.dart';
-import 'package:mobile/model/fishing_spot.dart';
+import 'package:mobile/model/gen/anglerslog.pb.dart';
+import 'package:mobile/model/id.dart';
 import 'package:mobile/pages/bait_page.dart';
 import 'package:mobile/pages/entity_page.dart';
 import 'package:mobile/pages/save_catch_page.dart';
@@ -19,12 +17,11 @@ import 'package:mobile/widgets/list_item.dart';
 import 'package:mobile/widgets/static_fishing_spot.dart';
 import 'package:mobile/widgets/text.dart';
 import 'package:mobile/widgets/widget.dart';
-import 'package:quiver/strings.dart';
 
 class CatchPage extends StatefulWidget {
-  final String catchId;
+  final Id catchId;
 
-  CatchPage(this.catchId) : assert(isNotEmpty(catchId));
+  CatchPage(this.catchId) : assert(catchId != null);
 
   @override
   _CatchPageState createState() => _CatchPageState();
@@ -36,10 +33,9 @@ class _CatchPageState extends State<CatchPage> {
       BaitCategoryManager.of(context);
   CatchManager get _catchManager => CatchManager.of(context);
   FishingSpotManager get _fishingSpotManager => FishingSpotManager.of(context);
-  ImageManager get _imageManager => ImageManager.of(context);
   SpeciesManager get _speciesManager => SpeciesManager.of(context);
 
-  Catch get _catch => _catchManager.entity(id: widget.catchId);
+  Catch get _catch => _catchManager.entity(widget.catchId);
 
   // TODO: Remove this when Google Maps performance issue is fixed.
   // https://github.com/flutter/flutter/issues/28493
@@ -59,12 +55,12 @@ class _CatchPageState extends State<CatchPage> {
       // When deleted, we pop immediately. Don't reload; catch will be null.
       onDeleteEnabled: false,
       builder: (context) => EntityPage(
-        entityId: _catch.id,
+        customEntityValues: _catch.customEntityValues,
         padding: insetsZero,
         onEdit: () => present(context, SaveCatchPage.edit(_catch)),
-        onDelete: () => _catchManager.delete(_catch),
+        onDelete: () => _catchManager.delete(Id(_catch.id)),
         deleteMessage: _catchManager.deleteMessage(context, _catch),
-        imageNames: _imageManager.imageNames(entityId: widget.catchId),
+        imageNames: _catch.imageNames,
         children: <Widget>[
           Container(
             padding: EdgeInsets.only(
@@ -76,14 +72,13 @@ class _CatchPageState extends State<CatchPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 TitleLabel(
-                    _speciesManager.entity(id: _catch.speciesId).name),
+                    _speciesManager.entity(Id(_catch.speciesId)).name),
                 Padding(
                   padding: const EdgeInsets.only(
                     left: paddingDefault,
                   ),
                   child: SubtitleLabel(
-                    formatDateTime(context,
-                        DateTime.fromMillisecondsSinceEpoch(_catch.timestamp)),
+                    formatTimestamp(context, _catch.timestamp),
                   ),
                 ),
               ],
@@ -100,36 +95,35 @@ class _CatchPageState extends State<CatchPage> {
   }
 
   Widget _buildBait() {
-    if (!_catch.hasBait) {
+    if (!_catch.hasBaitId()) {
       return Empty();
     }
 
-    Bait bait = _baitManager.entity(id: _catch.baitId);
+    Bait bait = _baitManager.entity(Id(_catch.baitId));
 
     Widget subtitle;
-    if (bait.hasCategory) {
+    if (bait.hasBaitCategoryId()) {
       subtitle = SubtitleLabel(
-          _baitCategoryManager.entity(id: bait.categoryId).name);
+          _baitCategoryManager.entity(Id(bait.baitCategoryId)).name);
     }
 
     return ListItem(
       title: Label(bait.name),
       subtitle: subtitle,
       trailing: RightChevronIcon(),
-      onTap: () => push(context, BaitPage(bait.id,
+      onTap: () => push(context, BaitPage(Id(bait.id),
         static: true,
       )),
     );
   }
 
   Widget _buildFishingSpot() {
-    if (!_catch.hasFishingSpot) {
+    if (!_catch.hasFishingSpotId()) {
       return Empty();
     }
 
     FishingSpot fishingSpot =
-        _fishingSpotManager.entity(id: _catch.fishingSpotId);
-
+        _fishingSpotManager.entity(Id(_catch.fishingSpotId));
     return StaticFishingSpot(fishingSpot,
       padding: insetsHorizontalDefaultVerticalSmall,
     );

@@ -2,10 +2,9 @@ import 'package:mobile/app_manager.dart';
 import 'package:mobile/bait_category_manager.dart';
 import 'package:mobile/bait_manager.dart';
 import 'package:mobile/catch_manager.dart';
-import 'package:mobile/custom_comparison_report_manager.dart';
+import 'package:mobile/comparison_report_manager.dart';
 import 'package:mobile/custom_entity_manager.dart';
-import 'package:mobile/custom_entity_value_manager.dart';
-import 'package:mobile/custom_summary_report_manager.dart';
+import 'package:mobile/summary_report_manager.dart';
 import 'package:mobile/data_manager.dart';
 import 'package:mobile/fishing_spot_manager.dart';
 import 'package:mobile/image_manager.dart';
@@ -23,12 +22,10 @@ class MockDatabase extends Mock implements Database {}
 class MockDataManager extends Mock implements DataManager {}
 class MockCatchManager extends Mock implements CatchManager {}
 class MockCustomComparisonReportManager extends Mock implements
-    CustomComparisonReportManager {}
+    ComparisonReportManager {}
 class MockCustomEntityManager extends Mock implements CustomEntityManager {}
-class MockCustomEntityValueManager extends Mock implements
-    CustomEntityValueManager {}
 class MockCustomSummaryReportManager extends Mock implements
-    CustomSummaryReportManager {}
+    SummaryReportManager {}
 class MockFishingSpotManager extends Mock implements FishingSpotManager {}
 class MockImageManager extends Mock implements ImageManager {}
 class MockLocationMonitor extends Mock implements LocationMonitor {}
@@ -44,7 +41,6 @@ class MockAppManager extends Mock implements AppManager {
   MockCatchManager mockCatchManager;
   MockCustomComparisonReportManager mockCustomComparisonReportManager;
   MockCustomEntityManager mockCustomEntityManager;
-  MockCustomEntityValueManager mockCustomEntityValueManager;
   MockCustomSummaryReportManager mockCustomSummaryReportManager;
   MockFishingSpotManager mockFishingSpotManager;
   MockImageManager mockImageManager;
@@ -101,12 +97,6 @@ class MockAppManager extends Mock implements AppManager {
     if (mockCustomEntityManager) {
       this.mockCustomEntityManager = MockCustomEntityManager();
       when(customEntityManager).thenReturn(this.mockCustomEntityManager);
-    }
-
-    if (mockCustomEntityValueManager) {
-      this.mockCustomEntityValueManager = MockCustomEntityValueManager();
-      when(customEntityValueManager)
-          .thenReturn(this.mockCustomEntityValueManager);
     }
 
     if (mockCustomSummaryReportManager) {

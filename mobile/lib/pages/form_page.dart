@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile/custom_entity_manager.dart';
 import 'package:mobile/entity_manager.dart';
 import 'package:mobile/i18n/strings.dart';
+import 'package:mobile/model/id.dart';
 import 'package:mobile/pages/picker_page.dart';
 import 'package:mobile/pages/save_custom_entity_page.dart';
 import 'package:mobile/res/dimen.dart';
@@ -14,13 +15,13 @@ import 'package:quiver/core.dart';
 
 /// A function responsible for building all input widgets.
 ///
-/// @return The returned map key [String] represents the identifier in the
-/// underlying model object, such as "angler", "bait_id", etc. The returned
+/// @return The returned map key [Id] corresponds to the identifier in the
+/// underlying model object, such as "angler" or "bait_id". The returned
 /// map value [Widget] is the widget that is displayed.
 ///
 /// Note that the returned map key is used in keeping track of [InputFields]
 /// that are selected for deletion.
-typedef FieldBuilder = Map<String, Widget> Function(BuildContext);
+typedef FieldBuilder = Map<Id, Widget> Function(BuildContext);
 
 enum _OverflowOption {
   manageFields,
@@ -30,7 +31,7 @@ enum _OverflowOption {
 /// to the form by a user.
 class FormPageFieldOption {
   /// The unique ID of the field. Used for identification purposes.
-  final String id;
+  final Id id;
 
   /// The name of the field, as seen and selected by the user.
   final String userFacingName;
@@ -76,7 +77,7 @@ class FormPage extends StatefulWidget {
   final List<FormPageFieldOption> addFieldOptions;
 
   /// Called when a field is added to the form.
-  final void Function(Set<String> ids) onAddFields;
+  final void Function(Set<Id> ids) onAddFields;
 
   /// Used when state is set. Common form components need to be updated
   /// based on whether or not the form has valid input. For example, the "Save"
@@ -143,7 +144,7 @@ class FormPage extends StatefulWidget {
   @override
   _FormPageState createState() => _FormPageState();
 
-  FormPageFieldOption fieldOption(String id) {
+  FormPageFieldOption fieldOption(Id id) {
     if (addFieldOptions == null) {
       return null;
     } else {
@@ -232,7 +233,7 @@ class _FormPageState extends State<FormPage> {
 
 class _SelectionPage extends StatefulWidget {
   final List<FormPageFieldOption> options;
-  final Function(Set<String>) onSelectItems;
+  final Function(Set<Id>) onSelectItems;
 
   _SelectionPage({
     @required this.options,
@@ -244,14 +245,15 @@ class _SelectionPage extends StatefulWidget {
 }
 
 class _SelectionPageState extends State<_SelectionPage> {
-  CustomEntityManager get entityManager => CustomEntityManager.of(context);
+  CustomEntityManager get customEntityManager =>
+      CustomEntityManager.of(context);
 
   IconData get _addItemIconData => Icons.add;
 
   @override
   Widget build(BuildContext context) {
     return EntityListenerBuilder(
-      managers: [entityManager],
+      managers: [customEntityManager],
       builder: (context) {
         List<PickerPageItem> items = pickerItems;
         Set<FormPageFieldOption> used = items
@@ -286,7 +288,7 @@ class _SelectionPageState extends State<_SelectionPage> {
     List<FormPageFieldOption> customFields = [];
     List<FormPageFieldOption> normalFields = [];
     for (var option in widget.options) {
-      if (entityManager.entity(id: option.id) == null) {
+      if (customEntityManager.entity(option.id) == null) {
         normalFields.add(option);
       } else {
         customFields.add(option);
@@ -304,12 +306,12 @@ class _SelectionPageState extends State<_SelectionPage> {
     result..add(PickerPageItem.heading(Strings.of(context).customFields));
 
     // Add customs fields that aren't already part of the form.
-    for (var entity in entityManager.entityList()) {
-      if (customFields.firstWhere((field) => field.id == entity.id,
+    for (var entity in customEntityManager.list()) {
+      if (customFields.firstWhere((field) => field.id == Id(entity.id),
           orElse: () => null) == null)
       {
         customFields.add(FormPageFieldOption(
-          id: entity.id,
+          id: Id(entity.id),
           userFacingName: entity.name,
         ));
       }

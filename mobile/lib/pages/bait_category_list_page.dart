@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/bait_category_manager.dart';
 import 'package:mobile/i18n/strings.dart';
-import 'package:mobile/model/bait_category.dart';
+import 'package:mobile/model/gen/anglerslog.pb.dart';
+import 'package:mobile/model/id.dart';
 import 'package:mobile/pages/manageable_list_page.dart';
 import 'package:mobile/pages/save_bait_category_page.dart';
 import 'package:mobile/utils/string_utils.dart';
 import 'package:mobile/widgets/text.dart';
 
 class BaitCategoryListPage extends StatelessWidget {
-  final bool Function(BuildContext, BaitCategory) onPicked;
+  final bool Function(BuildContext, Id) onPicked;
 
   BaitCategoryListPage() : onPicked = null;
 
@@ -38,17 +39,17 @@ class BaitCategoryListPage extends StatelessWidget {
       pickerSettings: _picking
           ? ManageableListPagePickerSettings<BaitCategory>(
               onPicked: (context, categories) =>
-                  onPicked(context, categories.first),
+                  onPicked(context, Id(categories.first.id)),
             )
           : null,
       itemManager: ManageableListPageItemManager<BaitCategory>(
         listenerManagers: [ baitCategoryManager ],
         loadItems: (query) =>
-            baitCategoryManager.entityListSortedByName(filter: query),
+            baitCategoryManager.listSortedByName(filter: query),
         deleteText: (context, category) =>
             Text(baitCategoryManager.deleteMessage(context, category)),
         deleteItem: (context, category) =>
-            baitCategoryManager.delete(category),
+            baitCategoryManager.delete(Id(category.id)),
         addPageBuilder: () => SaveBaitCategoryPage(),
         editPageBuilder: (category) => SaveBaitCategoryPage.edit(category),
       ),

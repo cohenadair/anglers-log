@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:mobile/bait_category_manager.dart';
 import 'package:mobile/bait_manager.dart';
 import 'package:mobile/catch_manager.dart';
-import 'package:mobile/custom_comparison_report_manager.dart';
+import 'package:mobile/comparison_report_manager.dart';
 import 'package:mobile/custom_entity_manager.dart';
-import 'package:mobile/custom_entity_value_manager.dart';
-import 'package:mobile/custom_summary_report_manager.dart';
+import 'package:mobile/summary_report_manager.dart';
 import 'package:mobile/data_manager.dart';
 import 'package:mobile/fishing_spot_manager.dart';
 import 'package:mobile/image_manager.dart';
@@ -24,10 +23,9 @@ class AppManager {
   BaitManager _baitManager;
   DataManager _dataManager;
   CatchManager _catchManager;
-  CustomComparisonReportManager _customComparisonReportManager;
+  ComparisonReportManager _comparisonReportManager;
   CustomEntityManager _customEntityManager;
-  CustomEntityValueManager _customEntityValueManager;
-  CustomSummaryReportManager _customSummaryReportManager;
+  SummaryReportManager _summaryReportManager;
   FishingSpotManager _fishingSpotManager;
   ImageManager _imageManager;
   LocationMonitor _locationMonitor;
@@ -64,11 +62,11 @@ class AppManager {
     return _catchManager;
   }
 
-  CustomComparisonReportManager get customComparisonReportManager {
-    if (_customComparisonReportManager == null) {
-      _customComparisonReportManager = CustomComparisonReportManager(this);
+  ComparisonReportManager get customComparisonReportManager {
+    if (_comparisonReportManager == null) {
+      _comparisonReportManager = ComparisonReportManager(this);
     }
-    return _customComparisonReportManager;
+    return _comparisonReportManager;
   }
 
   CustomEntityManager get customEntityManager {
@@ -78,18 +76,11 @@ class AppManager {
     return _customEntityManager;
   }
 
-  CustomEntityValueManager get customEntityValueManager {
-    if (_customEntityValueManager == null) {
-      _customEntityValueManager = CustomEntityValueManager(this);
+  SummaryReportManager get customSummaryReportManager {
+    if (_summaryReportManager == null) {
+      _summaryReportManager = SummaryReportManager(this);
     }
-    return _customEntityValueManager;
-  }
-
-  CustomSummaryReportManager get customSummaryReportManager {
-    if (_customSummaryReportManager == null) {
-      _customSummaryReportManager = CustomSummaryReportManager(this);
-    }
-    return _customSummaryReportManager;
+    return _summaryReportManager;
   }
 
   FishingSpotManager get fishingSpotManager {
@@ -101,7 +92,7 @@ class AppManager {
 
   ImageManager get imageManager {
     if (_imageManager == null) {
-      _imageManager = ImageManager(this);
+      _imageManager = ImageManager();
     }
     return _imageManager;
   }

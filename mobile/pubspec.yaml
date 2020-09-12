@@ -30,6 +30,7 @@ dependencies:
   path: ^1.6.4                      # Dart
   path_provider: ^1.6.7             # Flutter
   photo_manager: ^0.5.0             # https://pub.dev/packages/photo_manager (verified)
+  protobuf: ^1.0.1                  # Dart
   provider: ^3.2.0                  # Version update requires migration
   quiver: ^2.0.5                    # Google - Version restricted by flutter_test
   sqflite: ^1.2.0                   # Endorsed by Flutter

@@ -1,8 +1,11 @@
+import 'dart:typed_data';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/app_manager.dart';
 import 'package:mobile/data_manager.dart';
 import 'package:mobile/entity_manager.dart';
-import 'package:mobile/model/species.dart';
+import 'package:mobile/model/gen/anglerslog.pb.dart';
+import 'package:mobile/model/id.dart';
 import 'package:mockito/mockito.dart';
 import 'package:sqflite/sqlite_api.dart';
 
@@ -17,7 +20,13 @@ class TestEntityManager extends EntityManager<Species> {
   TestEntityManager(AppManager app) : super(app);
 
   @override
-  Species entityFromMap(Map<String, dynamic> map) => Species.fromMap(map);
+  Species entityFromBytes(List<int> bytes) => Species.fromBuffer(bytes);
+
+  @override
+  Id id(Species species) => Id(species.id);
+
+  @override
+  bool matchesFilter(Id id, String filter) => true;
 
   @override
   String get tableName => "species";
@@ -32,7 +41,7 @@ void main() {
     appManager = MockAppManager();
     dataManager = MockDataManager();
     when(appManager.dataManager).thenReturn(dataManager);
-    when(dataManager.insertOrUpdateEntity(any, any))
+    when(dataManager.insertOrUpdateEntity(any, any, any))
         .thenAnswer((_) => Future.value(true));
     when(dataManager.deleteEntity(any, any))
         .thenAnswer((_) => Future.value(true));
@@ -41,18 +50,25 @@ void main() {
   });
 
   test("Test initialize", () async {
-    when(dataManager.fetchAll("species")).thenAnswer((_) =>
-        Future.value([
-          Species(name: "Bass").toMap(),
-          Species(name: "Bluegill").toMap(),
-          Species(name: "Catfish").toMap(),
-        ]));
+    Id id0 = Id.random();
+    Id id1 = Id.random();
+    Id id2 = Id.random();
+
+    Species species0 = Species()..id = id0.bytes;
+    Species species1 = Species()..id = id1.bytes;
+    Species species2 = Species()..id = id2.bytes;
+
+    when(dataManager.fetchAll("species")).thenAnswer((_) => Future.value([
+      {"id": Uint8List.fromList(id0.bytes), "bytes": species0.writeToBuffer()},
+      {"id": Uint8List.fromList(id1.bytes), "bytes": species1.writeToBuffer()},
+      {"id": Uint8List.fromList(id2.bytes), "bytes": species2.writeToBuffer()},
+    ]));
     await entityManager.initialize();
     expect(entityManager.entityCount, 3);
   });
 
   test("Test add or update", () async {
-    when(dataManager.insertOrUpdateEntity(any, any))
+    when(dataManager.insertOrUpdateEntity(any, any, any))
         .thenAnswer((_) => Future.value(true));
 
     MockSpeciesListener listener = MockSpeciesListener();
@@ -61,30 +77,30 @@ void main() {
     entityManager.addListener(listener);
 
     // Add.
-    expect(await entityManager.addOrUpdate(Species(
-      id: "ID",
-      name: "Bluegill",
-    )), true);
+    Id speciesId0 = Id.random();
+    Id speciesId1 = Id.random();
+
+    expect(await entityManager.addOrUpdate(Species()
+      ..id = speciesId0.bytes
+      ..name = "Bluegill"), true);
     expect(entityManager.entityCount, 1);
-    expect(entityManager.entity(id: "ID").name, "Bluegill");
+    expect(entityManager.entity(speciesId0).name, "Bluegill");
     verify(listener.onAddOrUpdate).called(1);
 
     // Update.
-    expect(await entityManager.addOrUpdate(Species(
-      id: "ID",
-      name: "Bass",
-    )), true);
+    expect(await entityManager.addOrUpdate(Species()
+      ..id = speciesId0.bytes
+      ..name = "Bass"), true);
     expect(entityManager.entityCount, 1);
-    expect(entityManager.entity(id: "ID").name, "Bass");
+    expect(entityManager.entity(speciesId0).name, "Bass");
     verify(listener.onAddOrUpdate).called(1);
 
     // No notify.
-    expect(await entityManager.addOrUpdate(Species(
-      id: "ID2",
-      name: "Catfish",
-    ), notify: false), true);
+    expect(await entityManager.addOrUpdate(Species()
+      ..id = speciesId1.bytes
+      ..name = "Catfish", notify: false), true);
     expect(entityManager.entityCount, 2);
-    expect(entityManager.entity(id: "ID2").name, "Catfish");
+    expect(entityManager.entity(speciesId1).name, "Catfish");
     verifyNever(listener.onAddOrUpdate);
   });
 
@@ -96,15 +112,13 @@ void main() {
     when(listener.onAddOrUpdate).thenReturn(() {});
     when(listener.onDelete).thenReturn((_) {});
     entityManager.addListener(listener);
-    await entityManager.addOrUpdate(Species(
-      id: "ID",
-      name: "Bluegill",
-    ));
 
-    expect(await entityManager.delete(Species(
-      id: "ID",
-      name: "Bluegill",
-    )), true);
+    Id speciesId0 = Id.random();
+    await entityManager.addOrUpdate(Species()
+      ..id = speciesId0.bytes
+      ..name = "Bluegill");
+
+    expect(await entityManager.delete(speciesId0), true);
     expect(entityManager.entityCount, 0);
     verify(listener.onDelete).called(1);
   });
@@ -137,7 +151,9 @@ void main() {
     entityManager = TestEntityManager(appManager);
 
     // Add some entities.
-    await entityManager.addOrUpdate(Species(name: "Test"));
+    await entityManager.addOrUpdate(Species()
+      ..id = Id.random().bytes
+      ..name = "Test");
     expect(entityManager.entityCount, 1);
 
     // Setup listener.
@@ -153,24 +169,27 @@ void main() {
   });
 
   test("Entity list by ID", () async {
-    when(dataManager.insertOrUpdateEntity(any, any))
+    when(dataManager.insertOrUpdateEntity(any, any, any))
         .thenAnswer((_) => Future.value(true));
 
     // Add.
-    expect(await entityManager.addOrUpdate(Species(
-      id: "id_1",
-      name: "Bluegill",
-    )), true);
-    expect(await entityManager.addOrUpdate(Species(
-      id: "id_2",
-      name: "Catfish",
-    )), true);
-    expect(await entityManager.addOrUpdate(Species(
-      id: "id_3",
-      name: "Bass",
-    )), true);
+    Id speciesId0 = Id.random();
+    Id speciesId1 = Id.random();
+    Id speciesId2 = Id.random();
+
+    expect(await entityManager.addOrUpdate(Species()
+      ..id = speciesId0.bytes
+      ..name = "Bluegill"), true);
+    expect(await entityManager.addOrUpdate(Species()
+      ..id = speciesId1.bytes
+      ..name = "Catfish"), true);
+    expect(await entityManager.addOrUpdate(Species()
+      ..id = speciesId2.bytes
+      ..name = "Bass"), true);
     expect(entityManager.entityCount, 3);
-    expect(entityManager.entityList().length, 3);
-    expect(entityManager.entityList(["id_1", "id_3"]).length, 2);
+    expect(entityManager.list().length, 3);
+    expect(entityManager.list([speciesId0, speciesId2]).length, 2);
   });
+
+  // TODO: Test filtered list
 }

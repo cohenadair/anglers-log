@@ -7,7 +7,8 @@ import 'package:mobile/fishing_spot_manager.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/location_monitor.dart';
 import 'package:mobile/log.dart';
-import 'package:mobile/model/fishing_spot.dart';
+import 'package:mobile/model/gen/anglerslog.pb.dart';
+import 'package:mobile/model/id.dart';
 import 'package:mobile/pages/save_fishing_spot_page.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/res/style.dart';
@@ -36,8 +37,8 @@ class _MapPageState extends State<MapPage> {
 
   Completer<GoogleMapController> _mapController = Completer();
 
-  Set<Marker> _fishingSpotMarkers = Set();
-  Marker _activeMarker;
+  Set<FishingSpotMarker> _fishingSpotMarkers = Set();
+  FishingSpotMarker _activeMarker;
 
   FishingSpot _activeFishingSpot;
 
@@ -49,7 +50,6 @@ class _MapPageState extends State<MapPage> {
 
   bool get _hasActiveMarker => _activeMarker != null;
   bool get _hasActiveFishingSpot => _activeFishingSpot != null;
-
 
   @override
   void initState() {
@@ -67,7 +67,7 @@ class _MapPageState extends State<MapPage> {
         // Reset the active marker and fishing spot, if there was one.
         if (_activeMarker != null) {
           _activeFishingSpot =
-              _fishingSpotManager.withLatLng(_activeMarker.position);
+              _fishingSpotManager.withLatLng(_activeMarker.fishingSpot);
 
           Marker newMarker = _fishingSpotMarkers.firstWhere(
             (m) => m.position == _activeMarker.position,
@@ -128,7 +128,7 @@ class _MapPageState extends State<MapPage> {
           // Only reset selection if a new selection was made.
           if (fishingSpot != null) {
             setState(() {
-              _setActiveMarker(_findMarker(fishingSpot.id));
+              _setActiveMarker(_findMarker(Id(fishingSpot.id)));
               _activeFishingSpot = fishingSpot;
             });
           }
@@ -163,10 +163,10 @@ class _MapPageState extends State<MapPage> {
     bool editing = true;
     if (!_hasActiveFishingSpot && _hasActiveMarker) {
       // Dropped pin case.
-      fishingSpot = FishingSpot(
-        lat: _activeMarker.position.latitude,
-        lng: _activeMarker.position.longitude,
-      );
+      fishingSpot = FishingSpot()
+        ..id = Id.random().bytes
+        ..lat = _activeMarker.position.latitude
+        ..lng = _activeMarker.position.longitude;
       editing = false;
     }
 
@@ -180,7 +180,10 @@ class _MapPageState extends State<MapPage> {
           });
         },
         child: _FishingSpotBottomSheet(
-          fishingSpot: fishingSpot ?? FishingSpot(lat: 0, lng: 0),
+          fishingSpot: fishingSpot ?? FishingSpot()
+            ..id = Id.random().bytes
+            ..lat = 0
+            ..lng = 0,
           editing: editing,
           onDelete: () {
             setState(() {
@@ -201,27 +204,26 @@ class _MapPageState extends State<MapPage> {
       active: false,
       onTap: (fishingSpot) {
         setState(() {
-          _setActiveMarker(_fishingSpotMarkers.firstWhere((Marker marker) =>
-              marker.markerId.value == fishingSpot.id));
-          _activeFishingSpot = _fishingSpotManager.entity(
-              id: _activeMarker.markerId.value);
+          _setActiveMarker(_fishingSpotMarkers.firstWhere((marker) =>
+              marker.id == fishingSpot.id));
+          _activeFishingSpot = _fishingSpotManager.entity(_activeMarker.id);
         });
       }
     );
   }
 
   Marker _createDroppedPinMarker(LatLng latLng) {
-    // All dropped pins become active, and shouldn't be tappable.
+    // All dropped pins become active, and shouldn't be clickable.
     return FishingSpotMarker(
-      fishingSpot: FishingSpot(
-        lat: latLng.latitude,
-        lng: latLng.longitude,
-      ),
+      fishingSpot: FishingSpot()
+        ..id = Id.random().bytes
+        ..lat = latLng.latitude
+        ..lng = latLng.longitude,
       active: true,
     );
   }
 
-  void _setActiveMarker(Marker newActiveMarker) {
+  void _setActiveMarker(FishingSpotMarker newActiveMarker) {
     // A marker's icon property is readonly, so we rebuild the current active
     // marker to give it a default icon, then remove and add it to the
     // fishing spot markers.
@@ -230,7 +232,7 @@ class _MapPageState extends State<MapPage> {
     // spot. A dropped pin is removed from the map when updating the active
     // marker.
     if (_hasActiveMarker) {
-      Marker activeMarker = _findMarker(_activeMarker.markerId.value);
+      FishingSpotMarker activeMarker = _findMarker(_activeMarker.id);
       if (activeMarker != null) {
         if (_fishingSpotMarkers.remove(activeMarker)) {
           _fishingSpotMarkers.add(_copyMarker(activeMarker,
@@ -241,14 +243,13 @@ class _MapPageState extends State<MapPage> {
       }
     }
 
-    _activeMarker = _copyMarker(
-      newActiveMarker,
-      _activeMarkerIcon,
-      zIndex: 1000, // Active marker should always appear on top.
-    );
+    // Active marker should always appear on top.
+    _activeMarker = _copyMarker(newActiveMarker, _activeMarkerIcon, 1000);
   }
 
-  Marker _copyMarker(Marker marker, BitmapDescriptor icon, {double zIndex}) {
+  Marker _copyMarker(FishingSpotMarker marker, BitmapDescriptor icon,
+      [double zIndex])
+  {
     if (marker == null) {
       return null;
     }
@@ -262,16 +263,14 @@ class _MapPageState extends State<MapPage> {
     );
   }
 
-  Marker _findMarker(String id) {
-    return _fishingSpotMarkers.firstWhere(
-      (Marker marker) => marker.markerId.value == id,
-      orElse: () => null,
-    );
+  Marker _findMarker(Id id) {
+    return _fishingSpotMarkers.firstWhere((marker) => marker.id == id,
+        orElse: () => null);
   }
 
   void _updateMarkers() {
     _fishingSpotMarkers.clear();
-    _fishingSpotManager.entityList().forEach((f) =>
+    _fishingSpotManager.list().forEach((f) =>
         _fishingSpotMarkers.add(_createFishingSpotMarker(f)));
   }
 
@@ -381,7 +380,7 @@ class _FishingSpotBottomSheet extends StatelessWidget {
                       .deleteMessage(context, fishingSpot)),
                   onDelete: () {
                     onDelete?.call();
-                    FishingSpotManager.of(context).delete(fishingSpot);
+                    fishingSpotManager.delete(Id(fishingSpot.id));
                   },
                 );
               },

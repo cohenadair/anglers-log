@@ -3,12 +3,8 @@ import 'package:mobile/i18n/strings.dart';
 import 'package:quiver/strings.dart';
 
 /// A trimmed, case-insensitive string comparison.
-bool isEqualTrimmedLowercase(String s1, String s2) {
-  if (isNotEmpty(s1) && isNotEmpty(s2)) {
-    return s1.trim().toLowerCase() == s2.trim().toLowerCase();
-  }
-  return s1 == s2;
-}
+bool equalsTrimmedIgnoreCase(String s1, String s2) =>
+    equalsIgnoreCase(s1.trim(), s2.trim());
 
 /// Supported formats:
 ///   - %s
@@ -34,4 +30,13 @@ String formatLatLng({
       lng.toStringAsFixed(decimalPlaces),
     ],
   );
+}
+
+bool parseBool(String str) {
+  int intBool = int.tryParse(str);
+  if (intBool == null) {
+    return false;
+  } else {
+    return intBool == 1 ? true : false;
+  }
 }

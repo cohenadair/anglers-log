@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/fishing_spot_manager.dart';
 import 'package:mobile/i18n/strings.dart';
-import 'package:mobile/model/fishing_spot.dart';
+import 'package:mobile/model/gen/anglerslog.pb.dart';
+import 'package:mobile/model/id.dart';
 import 'package:mobile/pages/manageable_list_page.dart';
 import 'package:mobile/pages/save_fishing_spot_page.dart';
 import 'package:mobile/utils/string_utils.dart';
 import 'package:mobile/widgets/text.dart';
 
 class FishingSpotListPage extends StatelessWidget {
-  final bool Function(BuildContext, Set<FishingSpot>) onPicked;
+  final bool Function(BuildContext, Set<Id>) onPicked;
   final bool multiPicker;
-  final Set<FishingSpot> initialValues;
+  final Set<Id> initialValues;
 
   FishingSpotListPage()
       : onPicked = null,
@@ -55,19 +56,20 @@ class FishingSpotListPage extends StatelessWidget {
       ),
       pickerSettings: _picking
           ? ManageableListPagePickerSettings<FishingSpot>(
-              onPicked: onPicked,
+              onPicked: (context, fishingSpots) => onPicked(context,
+                  fishingSpotManager.listToIdList(fishingSpots.toList())),
               multi: multiPicker,
-              initialValues: initialValues,
+              initialValues: fishingSpotManager.idListToList(initialValues),
             )
           : null,
       itemManager: ManageableListPageItemManager<FishingSpot>(
         listenerManagers: [ fishingSpotManager ],
         loadItems: (query) =>
-            fishingSpotManager.entityListSortedByName(filter: query),
+            fishingSpotManager.listSortedByName(filter: query),
         deleteText: (context, fishingSpot) => Text(fishingSpotManager
             .deleteMessage(context, fishingSpot)),
         deleteItem: (context, fishingSpot) =>
-            fishingSpotManager.delete(fishingSpot),
+            fishingSpotManager.delete(Id(fishingSpot.id)),
         editPageBuilder: (fishingSpot) => SaveFishingSpotPage.edit(
           oldFishingSpot: fishingSpot,
         ),

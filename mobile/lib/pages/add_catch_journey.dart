@@ -3,7 +3,8 @@ import 'package:mobile/fishing_spot_manager.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/location_monitor.dart';
 import 'package:mobile/log.dart';
-import 'package:mobile/model/fishing_spot.dart';
+import 'package:mobile/model/gen/anglerslog.pb.dart';
+import 'package:mobile/model/id.dart';
 import 'package:mobile/pages/fishing_spot_picker_page.dart';
 import 'package:mobile/pages/image_picker_page.dart';
 import 'package:mobile/pages/save_catch_page.dart';
@@ -49,21 +50,19 @@ class _AddCatchJourneyState extends State<AddCatchJourney> {
 
                 // If one of the attached images has location data, use it to
                 // fetch an existing fishing spot, or to create a new one.
-                for (var image in _journeyHelper.images) {
+                for (PickedImage image in _journeyHelper.images) {
                   if (image.position == null) {
                     continue;
                   }
 
-                  var existingSpot = _fishingSpotManager.withinRadius(
-                    latLng: image.position,
-                    meters: _existingFishingSpotMeters,
-                  );
+                  FishingSpot existingSpot = _fishingSpotManager.withinRadius(
+                      image.position, _existingFishingSpotMeters);
 
                   if (existingSpot == null) {
-                    _journeyHelper.fishingSpot = FishingSpot(
-                      lat: image.position.latitude,
-                      lng: image.position.longitude,
-                    );
+                    _journeyHelper.fishingSpot = FishingSpot()
+                      ..id = Id.random().bytes
+                      ..lat = image.position.latitude
+                      ..lng = image.position.longitude;
                   } else {
                     _journeyHelper.fishingSpot = existingSpot;
                   }
@@ -86,8 +85,8 @@ class _AddCatchJourneyState extends State<AddCatchJourney> {
         } else if (name == _pickSpeciesRoute) {
           return MaterialPageRoute(
             builder: (context) => SpeciesListPage.picker(
-              onPicked: (context, species) {
-                _journeyHelper.species = species.first;
+              onPicked: (context, speciesIds) {
+                _journeyHelper.speciesId = speciesIds.first;
 
                 // If a fishing spot already exists, skip the fishing spot
                 // picker page.
@@ -105,13 +104,10 @@ class _AddCatchJourneyState extends State<AddCatchJourney> {
           return MaterialPageRoute(
             builder: (context) => FishingSpotPickerPage(
               fishingSpot: _fishingSpotManager.withinRadius(
-                latLng: _locationMonitor.currentLocation,
-                meters: _existingFishingSpotMeters,
-              ),
+                  _locationMonitor.currentLocation, _existingFishingSpotMeters),
               onPicked: (context, fishingSpot) {
-                var existingSpot =
-                    _fishingSpotManager.withLatLng(fishingSpot.latLng);
-                _journeyHelper.fishingSpot = existingSpot ?? fishingSpot;
+                _journeyHelper.fishingSpot =
+                    _fishingSpotManager.withLatLng(fishingSpot) ?? fishingSpot;
                 Navigator.of(context).pushNamed(_saveCatchRoute);
               },
               doneButtonText: Strings.of(context).next,

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/fishing_spot_manager.dart';
 import 'package:mobile/i18n/strings.dart';
-import 'package:mobile/model/fishing_spot.dart';
-import 'package:mobile/model/named_entity.dart';
+import 'package:mobile/model/gen/anglerslog.pb.dart';
+import 'package:mobile/model/id.dart';
 import 'package:mobile/pages/form_page.dart';
 import 'package:mobile/widgets/input_controller.dart';
 import 'package:mobile/widgets/text_input.dart';
@@ -37,6 +37,8 @@ class SaveFishingSpotPage extends StatefulWidget {
 }
 
 class _SaveFishingSpotPageState extends State<SaveFishingSpotPage> {
+  static final _idName = Id.random();
+
   final _nameController = TextInputController();
 
   FishingSpotManager get _fishingSpotManager => FishingSpotManager.of(context);
@@ -57,13 +59,12 @@ class _SaveFishingSpotPageState extends State<SaveFishingSpotPage> {
     return FormPage.immutable(
       title: Text(title),
       onSave: (_) {
-        FishingSpot newFishingSpot = FishingSpot(
-          lat: widget.oldFishingSpot.lat,
-          lng: widget.oldFishingSpot.lng,
-          name: isNotEmpty(_nameController.value)
-              ? _nameController.value : null,
-          id: widget.oldFishingSpot.id,
-        );
+        FishingSpot newFishingSpot = FishingSpot()
+          ..id = widget.oldFishingSpot?.id ?? Id.random()
+          ..lat = widget.oldFishingSpot?.lat
+          ..lng = widget.oldFishingSpot?.lng
+          ..name = isNotEmpty(_nameController.value)
+              ? _nameController.value : null;
 
         if (widget.onSave != null) {
           widget.onSave(newFishingSpot);
@@ -75,7 +76,7 @@ class _SaveFishingSpotPageState extends State<SaveFishingSpotPage> {
       },
       fieldBuilder: (BuildContext context) {
         return {
-          NamedEntity.keyName : TextInput.name(
+          _idName : TextInput.name(
             context,
             controller: _nameController,
             autofocus: true,

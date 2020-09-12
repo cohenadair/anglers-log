@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/app_manager.dart';
+import 'package:mobile/model/gen/anglerslog.pb.dart';
+import 'package:mobile/model/id.dart';
 import 'package:mobile/named_entity_manager.dart';
 import 'package:provider/provider.dart';
-
-import 'model/custom_entity.dart';
 
 class CustomEntityManager extends NamedEntityManager<CustomEntity> {
   static CustomEntityManager of(BuildContext context) =>
@@ -12,8 +12,14 @@ class CustomEntityManager extends NamedEntityManager<CustomEntity> {
   CustomEntityManager(AppManager app) : super(app);
 
   @override
-  CustomEntity entityFromMap(Map<String, dynamic> map) =>
-      CustomEntity.fromMap(map);
+  CustomEntity entityFromBytes(List<int> bytes) =>
+      CustomEntity.fromBuffer(bytes);
+
+  @override
+  Id id(CustomEntity entity) => Id(entity.id);
+
+  @override
+  String name(CustomEntity entity) => entity.name;
 
   @override
   String get tableName => "custom_entity";

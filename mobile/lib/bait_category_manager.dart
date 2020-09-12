@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:mobile/app_manager.dart';
 import 'package:mobile/bait_manager.dart';
 import 'package:mobile/i18n/strings.dart';
-import 'package:mobile/model/bait_category.dart';
+import 'package:mobile/model/gen/anglerslog.pb.dart';
+import 'package:mobile/model/id.dart';
 import 'package:mobile/named_entity_manager.dart';
 import 'package:mobile/utils/string_utils.dart';
 import 'package:provider/provider.dart';
@@ -11,25 +12,33 @@ class BaitCategoryManager extends NamedEntityManager<BaitCategory> {
   static BaitCategoryManager of(BuildContext context) =>
       Provider.of<AppManager>(context, listen: false).baitCategoryManager;
 
-  BaitCategoryManager(AppManager app) : super(app);
-
   BaitManager get _baitManager => appManager.baitManager;
 
+  BaitCategoryManager(AppManager app) : super(app);
+
   @override
-  BaitCategory entityFromMap(Map<String, dynamic> map) =>
-      BaitCategory.fromMap(map);
+  BaitCategory entityFromBytes(List<int> bytes) =>
+      BaitCategory.fromBuffer(bytes);
+
+  @override
+  Id id(BaitCategory baitCategory) => Id(baitCategory.id);
+
+  @override
+  String name(BaitCategory baitCategory) => baitCategory.name;
 
   @override
   String get tableName => "bait_category";
 
-  int numberOfBaits(BaitCategory baitCategory) {
-    if (baitCategory == null) {
+  int numberOfBaits(Id baitCategoryId) {
+    if (baitCategoryId == null) {
       return 0;
     }
 
     int result = 0;
-    _baitManager.entityList().forEach((bait) {
-      if (bait.hasCategory && bait.categoryId == baitCategory.id) {
+    _baitManager.list().forEach((bait) {
+      if (bait.baitCategoryId.isNotEmpty
+          && Id(bait.baitCategoryId) == baitCategoryId)
+      {
         result++;
       }
     });
@@ -41,7 +50,7 @@ class BaitCategoryManager extends NamedEntityManager<BaitCategory> {
     if (context == null || baitCategory == null) {
       return null;
     }
-    int numOfBaits = numberOfBaits(baitCategory);
+    int numOfBaits = numberOfBaits(Id(baitCategory.id));
     String string = numOfBaits == 1
         ? Strings.of(context).baitCategoryListPageDeleteMessageSingular
         : Strings.of(context).baitCategoryListPageDeleteMessage;

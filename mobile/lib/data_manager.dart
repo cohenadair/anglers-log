@@ -1,8 +1,10 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:mobile/app_manager.dart';
 import 'package:mobile/database/sqlite_open_helper.dart';
 import 'package:mobile/log.dart';
-import 'package:mobile/model/entity.dart';
+import 'package:mobile/model/id.dart';
 import 'package:mobile/utils/listener_manager.dart';
 import 'package:provider/provider.dart';
 import 'package:sqflite/sqflite.dart';
@@ -79,21 +81,22 @@ class DataManager extends ListenerManager<DataListener> {
 
   /// Returns `true` if the row from the given table with the given ID was
   /// updated.
-  Future<bool> _updateId(String tableName, String id,
-      Map<String, dynamic> values) async
+  Future<bool> _updateId(String tableName, Id id, Map<String, dynamic> values)
+      async
   {
     return await _database.update(
       tableName,
       values,
       where: "id = ?",
-      whereArgs: [id],
+      whereArgs: [Uint8List.fromList(id.bytes)],
     ) > 0;
   }
 
   /// Returns true if the given ID exists in the given table; false otherwise.
-  Future<bool> _idExists(String tableName, String id) async {
+  Future<bool> _idExists(String tableName, Id id) async {
     int count = Sqflite.firstIntValue(await _database.rawQuery(
-        "SELECT COUNT(*) FROM $tableName WHERE id = ?", [id]));
+        "SELECT COUNT(*) FROM $tableName WHERE id = ?",
+        [Uint8List.fromList(id.bytes)]));
     return count != null && count > 0;
   }
 
@@ -112,31 +115,34 @@ class DataManager extends ListenerManager<DataListener> {
 
   /// Inserts a new [Entity] into the given [tableName] or updates the existing
   /// [Entity] if one with the same ID already exists.
-  Future<bool> insertOrUpdateEntity(Entity entity, String tableName) async {
-    if (await _idExists(tableName, entity.id)) {
+  Future<bool> insertOrUpdateEntity(Id entityId,
+      Map<String, dynamic> map, String tableName) async
+  {
+    if (await _idExists(tableName, entityId)) {
       // Update if entity with ID already exists.
-      if (await _updateId(tableName, entity.id, entity.toMap())) {
+      if (await _updateId(tableName, entityId, map)) {
         return true;
       } else {
-        _log.e("Failed to update $tableName(${entity.id}");
+        _log.e("Failed to update $tableName($entityId");
       }
     } else {
       // Otherwise, create new entity.
-      if (await insert(tableName, entity.toMap())) {
+      if (await insert(tableName, map)) {
         return true;
       } else {
-        _log.e("Failed to insert $tableName(${entity.id}");
+        _log.e("Failed to insert $tableName($entityId)");
       }
     }
     return false;
   }
 
   /// Deletes a given [Entity] from the given [tableName].
-  Future<bool> deleteEntity(Entity entity, String tableName) async {
-    if (await delete(tableName, where: "id = ?", whereArgs: [entity.id])) {
+  Future<bool> deleteEntity(Id entityId, String tableName) async {
+    var id = Uint8List.fromList(entityId.bytes);
+    if (await delete(tableName, where: "id = ?", whereArgs: [id])) {
       return true;
     } else {
-      _log.e("Failed to delete $tableName(${entity.id} from database");
+      _log.e("Failed to delete $tableName($id) from database");
     }
     return false;
   }
@@ -155,5 +161,17 @@ class DataManager extends ListenerManager<DataListener> {
     }
 
     return result.first;
+  }
+
+  /// Completely replaces the contents of [tableName] with [newRows].
+  Future<void> replaceRows(String tableName,
+      List<Map<String, dynamic>> newRows) async
+  {
+    await commitBatch((batch) {
+      batch.rawQuery("DELETE FROM $tableName");
+      for (var row in newRows) {
+        batch.insert(tableName, row);
+      }
+    });
   }
 }

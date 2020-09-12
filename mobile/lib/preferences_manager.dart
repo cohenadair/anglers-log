@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:mobile/app_manager.dart';
 import 'package:mobile/data_manager.dart';
 import 'package:mobile/entity_manager.dart';
-import 'package:mobile/model/custom_entity.dart';
+import 'package:mobile/model/gen/anglerslog.pb.dart';
+import 'package:mobile/model/id.dart';
 import 'package:provider/provider.dart';
+import 'package:uuid/uuid.dart';
 
 class PreferencesManager {
   static PreferencesManager of(BuildContext context) =>
@@ -37,16 +39,15 @@ class PreferencesManager {
         _preferences[row[_keyId]] = jsonDecode(row[_keyValue]));
   }
 
-  set baitCustomEntityIds(List<String> ids) =>
-      _putStringList(_keyBaitCustomEntityIds, ids);
+  set baitCustomEntityIds(List<Id> ids) =>
+      _putIdList(_keyBaitCustomEntityIds, ids);
 
-  List<String> get baitCustomEntityIds => _stringList(_keyBaitCustomEntityIds);
+  List<Id> get baitCustomEntityIds => _idList(_keyBaitCustomEntityIds);
 
-  set catchCustomEntityIds(List<String> ids) =>
-      _putStringList(_keyCatchCustomEntityIds, ids);
+  set catchCustomEntityIds(List<Id> ids) =>
+      _putIdList(_keyCatchCustomEntityIds, ids);
 
-  List<String> get catchCustomEntityIds =>
-      _stringList(_keyCatchCustomEntityIds);
+  List<Id> get catchCustomEntityIds => _idList(_keyCatchCustomEntityIds);
 
   void _putStringList(String key, List<String> value) {
     if (value == null) {
@@ -71,9 +72,19 @@ class PreferencesManager {
         .toList();
   }
 
+  void _putIdList(String key, List<Id> value) {
+    _putStringList(key, value == null
+        ? null : value.map((id) => id.toString()).toList());
+  }
+
+  List<Id> _idList(String key) {
+    return _stringList(key).map((str) => Id(Uuid().parse(str).toList()))
+        .toList();
+  }
+
   void _onDeleteCustomEntity(CustomEntity entity) {
-    baitCustomEntityIds = baitCustomEntityIds..remove(entity.id);
-    catchCustomEntityIds = catchCustomEntityIds..remove(entity.id);
+    baitCustomEntityIds = baitCustomEntityIds..remove(Id(entity.id));
+    catchCustomEntityIds = catchCustomEntityIds..remove(Id(entity.id));
   }
 
   void _onDatabaseReset() {

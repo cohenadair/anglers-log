@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/i18n/strings.dart';
-import 'package:mobile/model/species.dart';
+import 'package:mobile/model/gen/anglerslog.pb.dart';
+import 'package:mobile/model/id.dart';
 import 'package:mobile/pages/manageable_list_page.dart';
 import 'package:mobile/pages/save_species_page.dart';
 import 'package:mobile/species_manager.dart';
@@ -9,9 +10,9 @@ import 'package:mobile/utils/string_utils.dart';
 import 'package:mobile/widgets/text.dart';
 
 class SpeciesListPage extends StatelessWidget {
-  final bool Function(BuildContext, Set<Species>) onPicked;
+  final bool Function(BuildContext, Set<Id>) onPicked;
   final bool multiPicker;
-  final Set<Species> initialValues;
+  final Set<Id> initialValues;
 
   SpeciesListPage()
       : onPicked = null,
@@ -45,18 +46,18 @@ class SpeciesListPage extends StatelessWidget {
       ),
       pickerSettings: _picking
           ? ManageableListPagePickerSettings<Species>(
-              onPicked: onPicked,
+              onPicked: (context, species) => onPicked(context,
+                  speciesManager.listToIdList(species.toList())),
               multi: multiPicker,
-              initialValues: initialValues,
+              initialValues: speciesManager.idListToList(initialValues),
             )
           : null,
       itemManager: ManageableListPageItemManager<Species>(
         listenerManagers: [ speciesManager ],
-        loadItems: (query) =>
-            speciesManager.entityListSortedByName(filter: query),
+        loadItems: (query) => speciesManager.listSortedByName(filter: query),
         deleteText: (context, species) => Text(format(Strings.of(context)
             .speciesListPageConfirmDelete, [species.name])),
-        deleteItem: (context, species) => speciesManager.delete(species),
+        deleteItem: (context, species) => speciesManager.delete(Id(species.id)),
         onTapDeleteButton: (species) {
           int numOfCatches = speciesManager.numberOfCatches(species);
           if (numOfCatches <= 0) {

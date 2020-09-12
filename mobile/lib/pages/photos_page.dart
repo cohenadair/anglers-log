@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/catch_manager.dart';
 import 'package:mobile/entity_manager.dart';
-import 'package:mobile/image_manager.dart';
-import 'package:mobile/model/catch.dart';
+import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/pages/photo_gallery_page.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/utils/page_utils.dart';
@@ -12,7 +11,6 @@ class PhotosPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     CatchManager catchManager = CatchManager.of(context);
-    ImageManager imageManager = ImageManager.of(context);
 
     return Scaffold(
       body: EntityListenerBuilder(
@@ -22,7 +20,7 @@ class PhotosPage extends StatelessWidget {
         builder: (context) {
           List<String> fileNames = [];
           for (Catch cat in catchManager.catchesSortedByTimestamp(context)) {
-            fileNames.addAll(imageManager.imageNames(entityId: cat.id));
+            fileNames.addAll(cat.imageNames);
           }
 
           return CustomScrollView(

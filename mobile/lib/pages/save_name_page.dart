@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/model/named_entity.dart';
+import 'package:mobile/model/id.dart';
 import 'package:mobile/pages/form_page.dart';
 import 'package:mobile/utils/string_utils.dart';
 import 'package:mobile/utils/validator.dart';
@@ -35,10 +35,12 @@ class SaveNamePage extends StatefulWidget {
 }
 
 class _SaveNamePageState extends State<SaveNamePage> {
+  static final _idName = Id.random();
+
   TextInputController _controller;
 
   bool get inputEqualsOld => widget.oldName != null
-      && isEqualTrimmedLowercase(widget.oldName, _controller.value);
+      && equalsTrimmedIgnoreCase(widget.oldName, _controller.value);
 
   @override
   void initState() {
@@ -76,7 +78,7 @@ class _SaveNamePageState extends State<SaveNamePage> {
       },
       fieldBuilder: (context) {
         return {
-          NamedEntity.keyName : TextInput.name(
+          _idName : TextInput.name(
             context,
             controller: _controller,
             autofocus: true,
