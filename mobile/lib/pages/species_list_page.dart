@@ -59,7 +59,7 @@ class SpeciesListPage extends StatelessWidget {
             .speciesListPageConfirmDelete, [species.name])),
         deleteItem: (context, species) => speciesManager.delete(Id(species.id)),
         onTapDeleteButton: (species) {
-          int numOfCatches = speciesManager.numberOfCatches(species);
+          int numOfCatches = speciesManager.numberOfCatches(Id(species.id));
           if (numOfCatches <= 0) {
             return null;
           }

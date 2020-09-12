@@ -61,8 +61,8 @@ void main() {
     ]);
 
     expect(speciesManager.numberOfCatches(null), 0);
-    expect(speciesManager.numberOfCatches(Species()..id = speciesId0.bytes), 3);
-    expect(speciesManager.numberOfCatches(Species()..id = speciesId3.bytes), 1);
-    expect(speciesManager.numberOfCatches(Species()..id = speciesId4.bytes), 1);
+    expect(speciesManager.numberOfCatches(speciesId0), 3);
+    expect(speciesManager.numberOfCatches(speciesId3), 1);
+    expect(speciesManager.numberOfCatches(speciesId4), 1);
   });
 }
