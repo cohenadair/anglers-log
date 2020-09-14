@@ -44,6 +44,8 @@ class _CatchPageState extends State<CatchPage> {
 
   @override
   Widget build(BuildContext context) {
+    assert(_catch != null);
+
     return EntityListenerBuilder(
       managers: [
         _baitCategoryManager,
@@ -57,7 +59,7 @@ class _CatchPageState extends State<CatchPage> {
       builder: (context) => EntityPage(
         customEntityValues: _catch.customEntityValues,
         padding: insetsZero,
-        onEdit: () => present(context, SaveCatchPage.edit(_catch)),
+        onEdit: () => present(context, SaveCatchPage.edit(Id(_catch.id))),
         onDelete: () => _catchManager.delete(Id(_catch.id)),
         deleteMessage: _catchManager.deleteMessage(context, _catch),
         imageNames: _catch.imageNames,
@@ -72,7 +74,7 @@ class _CatchPageState extends State<CatchPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 TitleLabel(
-                    _speciesManager.entity(Id(_catch.speciesId)).name),
+                    _speciesManager.entityFromPbId(_catch.speciesId).name),
                 Padding(
                   padding: const EdgeInsets.only(
                     left: paddingDefault,
@@ -95,16 +97,16 @@ class _CatchPageState extends State<CatchPage> {
   }
 
   Widget _buildBait() {
-    if (!_catch.hasBaitId()) {
+    Bait bait = _baitManager.entityFromPbId(_catch.baitId);
+    if (bait == null) {
       return Empty();
     }
 
-    Bait bait = _baitManager.entity(Id(_catch.baitId));
-
     Widget subtitle;
-    if (bait.hasBaitCategoryId()) {
-      subtitle = SubtitleLabel(
-          _baitCategoryManager.entity(Id(bait.baitCategoryId)).name);
+    BaitCategory baitCategory =
+          _baitCategoryManager.entityFromPbId(bait.baitCategoryId);
+    if (baitCategory != null) {
+      subtitle = SubtitleLabel(baitCategory.name);
     }
 
     return ListItem(
@@ -118,12 +120,12 @@ class _CatchPageState extends State<CatchPage> {
   }
 
   Widget _buildFishingSpot() {
-    if (!_catch.hasFishingSpotId()) {
+    FishingSpot fishingSpot =
+        _fishingSpotManager.entityFromPbId(_catch.fishingSpotId);
+    if (fishingSpot == null) {
       return Empty();
     }
 
-    FishingSpot fishingSpot =
-        _fishingSpotManager.entity(Id(_catch.fishingSpotId));
     return StaticFishingSpot(fishingSpot,
       padding: insetsHorizontalDefaultVerticalSmall,
     );

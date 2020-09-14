@@ -75,7 +75,7 @@ class SpeciesListPage extends StatelessWidget {
           };
         },
         addPageBuilder: () => SaveSpeciesPage(),
-        editPageBuilder: (species) => SaveSpeciesPage.edit(species),
+        editPageBuilder: (species) => SaveSpeciesPage.edit(Id(species.id)),
       ),
     );
   }

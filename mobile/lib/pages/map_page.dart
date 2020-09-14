@@ -205,7 +205,7 @@ class _MapPageState extends State<MapPage> {
       onTap: (fishingSpot) {
         setState(() {
           _setActiveMarker(_fishingSpotMarkers.firstWhere((marker) =>
-              marker.id == fishingSpot.id));
+              marker.id == Id(fishingSpot.id)));
           _activeFishingSpot = _fishingSpotManager.entity(_activeMarker.id);
         });
       }
@@ -285,7 +285,10 @@ class _MapPageState extends State<MapPage> {
 class _FishingSpotBottomSheet extends StatelessWidget {
   final double _chipHeight = 45;
 
+  /// Note that an [Id] is not used here because the [FishingSpot] being shown
+  /// hasn't necessarily been added to [FishingSpotManager] yet.
   final FishingSpot fishingSpot;
+
   final bool editing;
   final VoidCallback onDelete;
 
@@ -361,7 +364,7 @@ class _FishingSpotBottomSheet extends StatelessWidget {
                 present(
                   context,
                   SaveFishingSpotPage(
-                    oldFishingSpot: fishingSpot,
+                    oldFishingSpotId: Id(fishingSpot.id),
                     editing: editing,
                   ),
                 );

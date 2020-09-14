@@ -5,6 +5,7 @@ import 'package:mobile/model/id.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/widgets/label_value.dart';
+import 'package:mobile/widgets/widget.dart';
 
 class CustomEntityValues extends StatelessWidget {
   final List<CustomEntityValue> values;
@@ -25,7 +26,12 @@ class CustomEntityValues extends StatelessWidget {
   Widget _buildWidget(BuildContext context, CustomEntityManager entityManager,
       CustomEntityValue entityValue)
   {
-    CustomEntity entity = entityManager.entity(Id(entityValue.customEntityId));
+    CustomEntity entity =
+        entityManager.entityFromPbId(entityValue.customEntityId);
+    if (entity == null) {
+      return Empty();
+    }
+
     var value = valueForCustomEntityType(entity.type, entityValue, context);
     return Padding(
       padding: insetsVerticalWidgetSmall,

@@ -23,10 +23,10 @@ import 'package:mobile/widgets/text_input.dart';
 import 'package:mobile/widgets/widget.dart';
 
 class SaveBaitPage extends StatefulWidget {
-  final Bait oldBait;
+  final Id oldBaitId;
 
-  SaveBaitPage() : oldBait = null;
-  SaveBaitPage.edit(this.oldBait);
+  SaveBaitPage() : oldBaitId = null;
+  SaveBaitPage.edit(this.oldBaitId);
 
   @override
   _SaveBaitPageState createState() => _SaveBaitPageState();
@@ -40,8 +40,9 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
 
   final Map<Id, InputData> _fields = {};
   List<CustomEntityValue> _customEntityValues = [];
+  Bait _oldBait;
 
-  bool get _editing => widget.oldBait != null;
+  bool get _editing => _oldBait != null;
 
   BaitCategoryManager get _baitCategoryManager =>
       BaitCategoryManager.of(context);
@@ -75,10 +76,12 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
       showing: true,
     );
 
-    if (widget.oldBait != null) {
-      _baitCategoryController.value = Id(widget.oldBait.baitCategoryId);
-      _nameController.value = widget.oldBait.name;
-      _customEntityValues = widget.oldBait.customEntityValues;
+    _oldBait = _baitManager.entity(widget.oldBaitId);
+    if (_editing) {
+      _baitCategoryController.value = _oldBait.baitCategoryId.isEmpty
+          ? null : Id(_oldBait.baitCategoryId);
+      _nameController.value = _oldBait.name;
+      _customEntityValues = _oldBait.customEntityValues;
     }
   }
 
@@ -144,9 +147,9 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
     _preferencesManager.baitCustomEntityIds = customFieldValueMap.keys.toList();
 
     Bait newBait = Bait()
-      ..id = widget.oldBait?.id
+      ..id = _oldBait?.id ?? Id.random().bytes
       ..name = _nameController.value
-      ..baitCategoryId = _baitCategoryController.value.bytes
+      ..baitCategoryId = _baitCategoryController.value.bytes ?? []
       ..customEntityValues.addAll(entityValuesFromMap(customFieldValueMap));
 
     if (_baitManager.duplicate(newBait)) {

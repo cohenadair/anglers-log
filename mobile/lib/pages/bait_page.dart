@@ -31,11 +31,11 @@ class _BaitPageState extends State<BaitPage> {
   BaitManager get _baitManager => BaitManager.of(context);
 
   Bait get _bait => _baitManager.entity(widget.baitId);
-  BaitCategory get _category =>
-      _baitCategoryManager.entity(Id(_bait.baitCategoryId));
 
   @override
   Widget build(BuildContext context) {
+    assert(_bait != null);
+
     return EntityListenerBuilder(
       managers: [
         _baitCategoryManager,
@@ -50,17 +50,27 @@ class _BaitPageState extends State<BaitPage> {
           bottom: paddingDefault,
         ),
         static: widget.static,
-        onEdit: () => present(context, SaveBaitPage.edit(_bait)),
+        onEdit: () => present(context, SaveBaitPage.edit(Id(_bait.id))),
         onDelete: () => _baitManager.delete(Id(_bait.id)),
         deleteMessage: _baitManager.deleteMessage(context, _bait),
         children: [
-          _bait.hasBaitCategoryId() ? Padding(
-            padding: insetsHorizontalDefault,
-            child: HeadingLabel(_category.name),
-          ) : Empty(),
+          _buildBaitCategory(),
           TitleLabel(_bait.name),
         ],
       ),
+    );
+  }
+
+  Widget _buildBaitCategory() {
+    BaitCategory baitCategory =
+        _baitCategoryManager.entityFromPbId(_bait.baitCategoryId);
+    if (baitCategory == null) {
+      return Empty();
+    }
+
+    return Padding(
+      padding: insetsHorizontalDefault,
+      child: HeadingLabel(baitCategory.name),
     );
   }
 }

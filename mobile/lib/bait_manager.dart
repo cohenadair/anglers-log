@@ -102,7 +102,7 @@ class BaitManager extends NamedEntityManager<Bait> {
 
     if (bait.baitCategoryId.isNotEmpty) {
       BaitCategory category =
-          _baitCategoryManager.entity(Id(bait.baitCategoryId));
+          _baitCategoryManager.entityFromPbId(bait.baitCategoryId);
       if (category != null) {
         return "${category.name} - ${bait.name}";
       }
@@ -118,7 +118,7 @@ class BaitManager extends NamedEntityManager<Bait> {
         : Strings.of(context).baitListPageDeleteMessage;
 
     BaitCategory category =
-        _baitCategoryManager.entity(Id(bait.baitCategoryId));
+        _baitCategoryManager.entityFromPbId(bait.baitCategoryId);
     String baitName;
     if (category == null) {
       baitName =  bait.name;

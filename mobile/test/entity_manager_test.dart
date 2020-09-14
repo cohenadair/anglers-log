@@ -121,6 +121,8 @@ void main() {
     expect(await entityManager.delete(speciesId0), true);
     expect(entityManager.entityCount, 0);
     verify(listener.onDelete).called(1);
+
+    // TODO: Verify no callback if nothing was deleted
   });
 
   test("Data is cleared and listeners notified when database is reset",

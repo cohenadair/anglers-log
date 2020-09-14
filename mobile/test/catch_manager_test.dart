@@ -51,7 +51,9 @@ void main() {
 
     imageManager = MockImageManager();
     when(appManager.imageManager).thenReturn(imageManager);
-    when(imageManager.save(any)).thenAnswer((_) => null);
+    when(imageManager
+        .save(any, compress: anyNamed("compress")))
+        .thenAnswer((_) => Future.value([]));
 
     fishingSpotManager = FishingSpotManager(appManager);
     when(appManager.fishingSpotManager).thenReturn(fishingSpotManager);
@@ -476,4 +478,7 @@ void main() {
     );
     expect(catches.isEmpty, true);
   });
+
+  // TODO: Add test for imageNamesSortedByTimestamp
+  // TODO: Add test for addOrUpdate; specifically, images
 }

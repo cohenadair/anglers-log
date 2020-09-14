@@ -152,10 +152,8 @@ void main() {
     baitManager = MockBaitManager();
     when(appManager.baitManager).thenReturn(baitManager);
     when(baitManager.list()).thenReturn(baitMap.values.toList());
-    when(baitManager.entity(any)).thenAnswer((invocation) =>
-        baitMap[invocation.positionalArguments[0]]);
-    when(baitManager.entityExists(any)).thenAnswer((invocation) =>
-        baitMap.containsKey(invocation.positionalArguments[0]));
+    when(baitManager.entityFromPbId(any)).thenAnswer((invocation) =>
+        baitMap[Id(invocation.positionalArguments[0])]);
 
     catchManager = MockCatchManager();
     when(catchManager.list()).thenReturn(_catches);
@@ -167,17 +165,14 @@ void main() {
     fishingSpotManager = MockFishingSpotManager();
     when(appManager.fishingSpotManager).thenReturn(fishingSpotManager);
     when(fishingSpotManager.list()).thenReturn(fishingSpotMap.values.toList());
-    when(fishingSpotManager.entity(any)).thenAnswer((invocation) =>
-        fishingSpotMap[invocation.positionalArguments[0]]);
-    when(fishingSpotManager.entityExists(any))
-        .thenAnswer((invocation) => fishingSpotMap
-            .containsKey(invocation.positionalArguments[0]));
+    when(fishingSpotManager.entityFromPbId(any)).thenAnswer((invocation) =>
+        fishingSpotMap[Id(invocation.positionalArguments[0])]);
 
     speciesManager = MockSpeciesManager();
     when(appManager.speciesManager).thenReturn(speciesManager);
     when(speciesManager.list()).thenReturn(speciesMap.values.toList());
-    when(speciesManager.entity(any)).thenAnswer((invocation) =>
-        speciesMap[invocation.positionalArguments[0]]);
+    when(speciesManager.entityFromPbId(any)).thenAnswer((invocation) =>
+        speciesMap[Id(invocation.positionalArguments[0])]);
   });
 
   void _stubCatchesByTimestamp(BuildContext context) {
@@ -446,6 +441,13 @@ void main() {
   });
 
   testWidgets("Filters", (WidgetTester tester) async {
+    when(baitManager.entity(any)).thenAnswer((invocation) =>
+        baitMap[invocation.positionalArguments[0]]);
+    when(fishingSpotManager.entity(any)).thenAnswer((invocation) =>
+        fishingSpotMap[invocation.positionalArguments[0]]);
+    when(speciesManager.entity(any)).thenAnswer((invocation) =>
+        speciesMap[invocation.positionalArguments[0]]);
+
     BuildContext context = await buildContext(tester);
     _stubCatchesByTimestamp(context);
 
@@ -467,6 +469,29 @@ void main() {
         {"Worm", "Grub", "E", "B", "C", "Steelhead", "Catfish"});
     expect(data.filters(includeSpecies: false, includeDateRange: false),
         {"Worm", "Grub", "E", "B", "C"});
+  });
+
+  testWidgets("Filters with null values", (WidgetTester tester) async {
+    BuildContext context = await buildContext(tester);
+    _stubCatchesByTimestamp(context);
+
+    var data = ReportSummaryModel(
+      appManager: appManager,
+      context: context,
+      displayDateRange: DisplayDateRange.allDates,
+      clock: clock,
+      baitIds: {baitId0, baitId4},
+      fishingSpotIds: {fishingSpotId0, fishingSpotId2, fishingSpotId1},
+      speciesIds: {speciesId4, speciesId2},
+    );
+
+    // By not stubbing EntityManager.entity() methods, no filters should
+    // entity names.
+    expect(data.filters(), {"All dates"});
+    expect(data.filters(includeSpecies: false), {"All dates"});
+    expect(data.filters(includeDateRange: false), Set.of([]));
+    expect(data.filters(includeSpecies: false, includeDateRange: false),
+        Set.of([]));
   });
 
   testWidgets("removeZerosComparedTo", (WidgetTester tester) async {

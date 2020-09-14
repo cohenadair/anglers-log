@@ -95,30 +95,33 @@ class CatchListPage extends StatelessWidget {
         deleteItem: (context, cat) => catchManager.delete(Id(cat.id)),
         addPageBuilder: enableAdding ? () => AddCatchJourney() : null,
         detailPageBuilder: (cat) => CatchPage(Id(cat.id)),
-        editPageBuilder: (cat) => SaveCatchPage.edit(cat),
+        editPageBuilder: (cat) => SaveCatchPage.edit(Id(cat.id)),
       ),
     );
   }
 
-  ManageableListPageItemModel _buildListItem(BuildContext context,
-      Catch cat)
-  {
+  ManageableListPageItemModel _buildListItem(BuildContext context, Catch cat) {
     BaitManager baitManager = BaitManager.of(context);
     FishingSpotManager fishingSpotManager = FishingSpotManager.of(context);
     SpeciesManager speciesManager = SpeciesManager.of(context);
 
     Widget subtitle2 = Empty();
 
-    var fishingSpot = fishingSpotManager.entity(Id(cat.fishingSpotId));
+    FishingSpot fishingSpot =
+        fishingSpotManager.entityFromPbId(cat.fishingSpotId);
     if (fishingSpot != null && isNotEmpty(fishingSpot.name)) {
+      // Use fishing spot as subtitle if available.
       subtitle2 = SubtitleLabel(fishingSpot.name ?? formatLatLng(
         context: context,
         lat: fishingSpot.lat,
         lng: fishingSpot.lng,
       ));
-    } else if (cat.hasBaitId() && cat.baitId.isNotEmpty) {
-      subtitle2 = SubtitleLabel(baitManager
-          .formatNameWithCategory(baitManager.entity(Id(cat.baitId))));
+    } else if (cat.baitId.isNotEmpty) {
+      // Fallback on bait as a subtitle.
+      Bait bait = baitManager.entityFromPbId(cat.baitId);
+      if (bait != null) {
+        subtitle2 = SubtitleLabel(baitManager.formatNameWithCategory(bait));
+      }
     }
 
     return ManageableListPageItemModel(

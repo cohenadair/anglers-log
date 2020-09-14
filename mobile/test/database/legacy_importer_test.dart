@@ -15,6 +15,7 @@ import 'package:mobile/model/id.dart';
 import 'package:mobile/species_manager.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mockito/mockito.dart';
+import 'package:path/path.dart' as Path;
 import 'package:uuid/uuid.dart';
 
 import '../test_utils.dart';
@@ -46,6 +47,9 @@ void main() {
 
     imageManager = MockImageManager();
     when(imageManager.save(any)).thenAnswer((_) => Future.value());
+    when(imageManager
+        .save(any, compress: anyNamed("compress")))
+        .thenAnswer((_) => Future.value([]));
     when(appManager.imageManager).thenReturn(imageManager);
 
     baitCategoryManager = BaitCategoryManager(appManager);
@@ -233,7 +237,8 @@ void main() {
     when(imageManager.save(any, compress: anyNamed("compress")))
         .thenAnswer((invocation) {
           importedImages.addAll(invocation.positionalArguments[0]);
-          return Future.value();
+          return Future.value(importedImages
+              .map((f) => Path.basename(f.path)).toList());
         });
 
     await LegacyImporter(appManager, zip, tmpDir).start();
@@ -325,7 +330,8 @@ void main() {
     when(imageManager.save(any, compress: anyNamed("compress")))
         .thenAnswer((invocation) {
           importedImages.addAll(invocation.positionalArguments[0]);
-          return Future.value();
+          return Future.value(importedImages
+              .map((f) => Path.basename(f.path)).toList());
         });
 
     await LegacyImporter(appManager, zip, tmpDir).start();

@@ -52,22 +52,23 @@ class SaveCatchPage extends StatefulWidget {
   /// [AddCatchJourney].
   final CatchJourneyHelper journeyHelper;
 
-  final Catch oldCatch;
+  final Id oldCatchId;
 
   SaveCatchPage()
-      : oldCatch = null,
+      : oldCatchId = null,
         popOverride = null,
         journeyHelper = null;
 
-  SaveCatchPage.edit(this.oldCatch)
-      : popOverride = null,
+  SaveCatchPage.edit(this.oldCatchId)
+      : assert(oldCatchId != null),
+        popOverride = null,
         journeyHelper = null;
 
   SaveCatchPage.fromJourney({
     this.popOverride,
     @required this.journeyHelper,
   }) : assert(journeyHelper != null),
-       oldCatch = null;
+       oldCatchId = null;
 
   @override
   _SaveCatchPageState createState() => _SaveCatchPageState();
@@ -87,6 +88,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
 
   Future<List<PickedImage>> _imagesFuture = Future.value([]);
   List<CustomEntityValue> _customEntityValues = [];
+  Catch _oldCatch;
 
   BaitCategoryManager get _baitCategoryManager =>
       BaitCategoryManager.of(context);
@@ -102,9 +104,15 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
   InputController<Id> get _speciesController => _fields[_idSpecies].controller;
   InputController<List<PickedImage>> get _imagesController =>
       _fields[_idImages].controller;
+
+  /// Note this doesn't use an [Id] as a value because a new [FishingSpot]
+  /// isn't added to [FishingSpotManager] until _after_ the [Catch] is saved.
   InputController<FishingSpot> get _fishingSpotController =>
       _fields[_idFishingSpot].controller;
+
   InputController<Id> get _baitController => _fields[_idBait].controller;
+
+  bool get _editing => _oldCatch != null;
 
   @override
   void initState() {
@@ -168,13 +176,15 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
       _fishingSpotController.value = widget.journeyHelper.fishingSpot;
     }
 
-    if (widget.oldCatch != null) {
-      _timestampController.value = widget.oldCatch.timestamp;
-      _speciesController.value = Id(widget.oldCatch.speciesId);
-      _baitController.value = Id(widget.oldCatch.baitId);
-      _fishingSpotController.value =
-          _fishingSpotManager.entity(Id(widget.oldCatch.fishingSpotId));
-      _customEntityValues = widget.oldCatch.customEntityValues;
+    _oldCatch = _catchManager.entity(widget.oldCatchId);
+    if (_editing) {
+      _timestampController.value = _oldCatch.timestamp;
+      _speciesController.value = Id(_oldCatch.speciesId);
+      _baitController.value = _oldCatch.baitId.isEmpty
+          ? null : Id(_oldCatch.baitId);
+      _fishingSpotController.value = _fishingSpotManager.entity(
+          _oldCatch.fishingSpotId.isEmpty ? null : Id(_oldCatch.fishingSpotId));
+      _customEntityValues = _oldCatch.customEntityValues;
       _imagesFuture = _pickedImagesForOldCatch;
     }
   }
@@ -182,9 +192,9 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
   @override
   Widget build(BuildContext context) {
     return EditableFormPage(
-      title: Text(widget.oldCatch == null
-          ? Strings.of(context).saveCatchPageNewTitle
-          : Strings.of(context).saveCatchPageEditTitle),
+      title: Text(_editing
+          ? Strings.of(context).saveCatchPageEditTitle
+          : Strings.of(context).saveCatchPageNewTitle),
       runSpacing: 0,
       padding: insetsZero,
       fields: _fields,
@@ -341,12 +351,13 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
         customFieldValueMap.keys.toList();
 
     Catch cat = Catch()
-      ..id = widget.oldCatch?.id
+      ..id = _oldCatch?.id ?? Id.random()
       ..timestamp = _timestampController.value
       ..speciesId = _speciesController.value?.bytes ?? []
       ..fishingSpotId = _fishingSpotController.value?.id ?? []
       ..baitId = _baitController.value?.bytes ?? []
       ..customEntityValues.addAll(entityValuesFromMap(customFieldValueMap));
+      // imageNames is set in _catchManager.addOrUpdate
 
     _catchManager.addOrUpdate(cat,
       fishingSpot: _fields[_idFishingSpot].controller.value,
@@ -381,12 +392,12 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
   /// Converts [oldCatch] images into a list of [PickedImage] objects to be
   /// managed by the [ImageInput].
   Future<List<PickedImage>> get _pickedImagesForOldCatch async {
-    if (widget.oldCatch == null || widget.oldCatch.imageNames.isEmpty) {
+    if (!_editing || _oldCatch.imageNames.isEmpty) {
       return Future.value([]);
     }
 
     List<Uint8List> bytesList = await _imageManager.images(context,
-      imageNames: widget.oldCatch.imageNames,
+      imageNames: _oldCatch.imageNames,
       size: galleryMaxThumbSize,
     );
 

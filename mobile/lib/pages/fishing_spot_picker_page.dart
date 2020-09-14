@@ -7,6 +7,7 @@ import 'package:mobile/fishing_spot_manager.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/location_monitor.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
+import 'package:mobile/model/id.dart';
 import 'package:mobile/pages/save_fishing_spot_page.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/res/style.dart';
@@ -21,7 +22,12 @@ import 'package:mobile/widgets/widget.dart';
 
 class FishingSpotPickerPage extends StatefulWidget {
   final void Function(BuildContext, FishingSpot) onPicked;
+
+  /// Note that an [Id] is not used here because this page is sometimes
+  /// displayed before the [FishingSpot] is actually added to
+  /// [FishingSpotManager].
   final FishingSpot fishingSpot;
+
   final String doneButtonText;
 
   FishingSpotPickerPage({
@@ -218,7 +224,7 @@ class _FishingSpotPickerPageState extends State<FishingSpotPickerPage>
         textColor: Theme.of(context).primaryColor,
         onPressed: () {
           present(context, SaveFishingSpotPage(
-            oldFishingSpot: _currentFishingSpot,
+            oldFishingSpotId: Id(_currentFishingSpot.id),
             editing: _currentFishingSpot != null,
             onSave: (updatedFishingSpot) {
               setState(() {

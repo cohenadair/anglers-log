@@ -6,11 +6,19 @@ import 'package:uuid/uuid.dart';
 /// representation of [List<int>] that can be used as keys in a [Map], since
 /// [List==] does not do a deep comparison of its elements.
 class Id {
-  static Set<Id> fromByteList(List<List<int>> byteList) =>
-      byteList.map((bytes) => Id(bytes)).toSet();
+  static Set<Id> fromByteList(List<List<int>> byteList) => byteList == null
+      ? {} : byteList.map((bytes) => Id(bytes)).toSet();
 
-  static List<List<int>> toByteList(Set<Id> ids) =>
-      ids.map((id) => id.bytes).toList();
+  static List<List<int>> toByteList(Set<Id> ids) => ids == null
+      ? [] : ids.map((id) => id.bytes).toList();
+
+  static Id fromBytes(List<int> bytes) {
+    try {
+      return Id(bytes);
+    } catch (e) {
+      return null;
+    }
+  }
 
   List<int> _bytes;
 

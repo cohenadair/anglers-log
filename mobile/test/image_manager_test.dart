@@ -257,4 +257,6 @@ void main() {
     await _imageManager.save([img1]);
     verifyNever(_imageManagerDelegate.compress(any, any, any));
   });
+
+  // TODO: Verify result of save method
 }

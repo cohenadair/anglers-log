@@ -37,6 +37,8 @@ class _FishingSpotPageState extends State<FishingSpotPage> {
   Widget build(BuildContext context) {
     FishingSpot fishingSpot =
         FishingSpotManager.of(context).entity(widget.fishingSpotId);
+    assert(fishingSpot != null);
+
     LatLng latLng = LatLng(fishingSpot.lat, fishingSpot.lng);
 
     return Scaffold(

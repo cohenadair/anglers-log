@@ -33,6 +33,9 @@ class MultiListPickerInput extends StatelessWidget {
       items.add(emptyValue(context));
     } else {
       for (String value in values) {
+        if (value == null) {
+          continue;
+        }
         items.add(value);
       }
     }

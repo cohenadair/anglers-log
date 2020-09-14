@@ -18,16 +18,16 @@ import 'form_page.dart';
 /// A input page for users to create custom fields to be used elsewhere in the
 /// app. This form is immutable.
 class SaveCustomEntityPage extends StatefulWidget {
-  final CustomEntity oldEntity;
+  final Id oldEntityId;
   final void Function(CustomEntity) onSave;
 
   SaveCustomEntityPage({
     this.onSave,
-  }) : oldEntity = null;
+  }) : oldEntityId = null;
 
-  SaveCustomEntityPage.edit(this.oldEntity, {
+  SaveCustomEntityPage.edit(this.oldEntityId, {
     this.onSave,
-  }) : assert(oldEntity != null);
+  }) : assert(oldEntityId != null);
 
   @override
   _SaveCustomEntityPageState createState() => _SaveCustomEntityPageState();
@@ -41,6 +41,7 @@ class _SaveCustomEntityPageState extends State<SaveCustomEntityPage> {
   final Log _log = Log("SaveCustomEntityPage");
 
   Map<Id, InputController> _inputOptions;
+  CustomEntity _oldEntity;
 
   CustomEntityManager get _customEntityManager =>
       CustomEntityManager.of(context);
@@ -54,7 +55,7 @@ class _SaveCustomEntityPageState extends State<SaveCustomEntityPage> {
   InputController<CustomEntity_Type> get _dataTypeController =>
       _inputOptions[_idType] as InputController<CustomEntity_Type>;
 
-  bool get _editing => widget.oldEntity != null;
+  bool get _editing => _oldEntity != null;
 
   @override
   void initState() {
@@ -66,7 +67,7 @@ class _SaveCustomEntityPageState extends State<SaveCustomEntityPage> {
           nameExistsMessage: (context) =>
               Strings.of(context).saveCustomEntityPageNameExists,
           nameExists: _customEntityManager.nameExists,
-          oldName: widget.oldEntity?.name,
+          oldName: _oldEntity?.name,
         ),
       ),
       _idDescription: TextInputController(),
@@ -75,11 +76,11 @@ class _SaveCustomEntityPageState extends State<SaveCustomEntityPage> {
       ),
     };
 
+    _oldEntity = _customEntityManager.entity(widget.oldEntityId);
     if (_editing) {
-      _nameController.value = widget.oldEntity.name;
-      _descriptionController.value = widget.oldEntity.description;
-      _dataTypeController.value =
-          widget.oldEntity.type ?? CustomEntity_Type.NUMBER;
+      _nameController.value = _oldEntity.name;
+      _descriptionController.value = _oldEntity.description;
+      _dataTypeController.value = _oldEntity.type ?? CustomEntity_Type.NUMBER;
     }
   }
 
@@ -134,7 +135,7 @@ class _SaveCustomEntityPageState extends State<SaveCustomEntityPage> {
 
   FutureOr<bool> _save(BuildContext _) {
     var customEntity = CustomEntity()
-      ..id = widget.oldEntity?.id ?? Id.random().bytes
+      ..id = _oldEntity?.id ?? Id.random().bytes
       ..name = _nameController.value
       ..description = _descriptionController.value
       ..type = _dataTypeController.value;

@@ -47,7 +47,8 @@ class CatchManager extends EntityManager<Catch> {
   bool matchesFilter(Id id, String filter, [BuildContext context]) {
     Catch cat = entity(id);
 
-    if (isEmpty(filter)
+    if (cat == null
+        || isEmpty(filter)
         || (cat.speciesId.isNotEmpty
             && _speciesManager.matchesFilter(Id(cat.speciesId), filter))
         || (cat.fishingSpotId.isNotEmpty
@@ -132,6 +133,13 @@ class CatchManager extends EntityManager<Catch> {
     }).toList();
   }
 
+  /// Returns all image names from [Catch] objects, where the [Catch] objects
+  /// are sorted by timestamp.
+  List<String> imageNamesSortedByTimestamp(BuildContext context) {
+    return catchesSortedByTimestamp(context)
+        .expand((cat) => cat.imageNames).toList();
+  }
+
   @override
   Future<bool> addOrUpdate(Catch cat, {
     FishingSpot fishingSpot,
@@ -145,7 +153,10 @@ class CatchManager extends EntityManager<Catch> {
       await _fishingSpotManager.addOrUpdate(fishingSpot);
     }
 
-    await _imageManager.save(imageFiles, compress: compressImages);
+    cat.imageNames.clear();
+    cat.imageNames.addAll(
+        await _imageManager.save(imageFiles, compress: compressImages));
+
     return super.addOrUpdate(cat, notify: notify);
   }
 
@@ -162,9 +173,15 @@ class CatchManager extends EntityManager<Catch> {
       return null;
     }
 
-    Species species = _speciesManager.entity(Id(cat.speciesId));
-    String name = "${species.name} (${formatTimestamp(context,
-        cat.timestamp)})";
+    Species species = _speciesManager.entityFromPbId(cat.speciesId);
+    String timeString = formatTimestamp(context, cat.timestamp);
+    String name;
+    if (species == null) {
+      name = "$timeString}";
+    } else {
+      name = "${species.name} ($timeString)";
+    }
+
     return format(Strings.of(context).catchPageDeleteMessage, [name]);
   }
 

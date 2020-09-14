@@ -28,4 +28,6 @@ void main() {
     expect(map[Id(uuid2)], 15);
     expect(map[Id(Uuid().parse(Uuid().v1()))], isNull);
   });
+
+  // TODO: Test fromPbId
 }

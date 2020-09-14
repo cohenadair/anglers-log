@@ -51,7 +51,8 @@ class BaitCategoryListPage extends StatelessWidget {
         deleteItem: (context, category) =>
             baitCategoryManager.delete(Id(category.id)),
         addPageBuilder: () => SaveBaitCategoryPage(),
-        editPageBuilder: (category) => SaveBaitCategoryPage.edit(category),
+        editPageBuilder: (category) =>
+            SaveBaitCategoryPage.edit(Id(category.id)),
       ),
     );
   }

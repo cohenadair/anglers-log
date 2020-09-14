@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile/bait_manager.dart';
 import 'package:mobile/comparison_report_manager.dart';
 import 'package:mobile/fishing_spot_manager.dart';
+import 'package:mobile/log.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/model/gen/google/protobuf/timestamp.pb.dart';
 import 'package:mobile/model/id.dart';
@@ -28,10 +29,10 @@ import 'package:mobile/widgets/text_input.dart';
 import 'package:mobile/widgets/widget.dart';
 
 class SaveReportPage extends StatefulWidget {
-  final dynamic oldReport;
+  final Id oldReportId;
 
-  SaveReportPage() : oldReport = null;
-  SaveReportPage.edit(this.oldReport) : assert(oldReport != null);
+  SaveReportPage() : oldReportId = null;
+  SaveReportPage.edit(this.oldReportId) : assert(oldReportId != null);
 
   @override
   _SaveReportPageState createState() => _SaveReportPageState();
@@ -47,10 +48,14 @@ class _SaveReportPageState extends State<SaveReportPage> {
   static final _idBaits = Id.random();
   static final _idFishingSpots = Id.random();
 
+  static const _log = Log("SaveReportPage");
+
   final Key _keySummaryStart = ValueKey(0);
   final Key _keyComparisonStart = ValueKey(1);
 
   final Map<Id, InputData> _fields = {};
+
+  dynamic _oldReport;
 
   BaitManager get _baitManager => BaitManager.of(context);
   ComparisonReportManager get _comparisonReportManager =>
@@ -75,7 +80,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
   InputController<Set<Id>> get _fishingSpotsController =>
       _fields[_idFishingSpots].controller;
 
-  bool get _editing => widget.oldReport != null;
+  bool get _editing => _oldReport != null;
   bool get _summary => _typeController.value == _ReportType.summary;
 
   @override
@@ -91,7 +96,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
           nameExists: (newName) =>
               _comparisonReportManager.nameExists(newName)
                   || _summaryReportManager.nameExists(newName),
-          oldName: widget.oldReport?.name,
+          oldName: _oldReport?.name,
         ),
       ),
     );
@@ -131,9 +136,10 @@ class _SaveReportPageState extends State<SaveReportPage> {
       controller: InputController<Set<FishingSpot>>(),
     );
 
-    if (widget.oldReport != null) {
-      if (widget.oldReport is SummaryReport) {
-        var report = widget.oldReport as SummaryReport;
+    _oldReport = _customReportManager.entity(widget.oldReportId);
+    if (_editing) {
+      if (_oldReport is SummaryReport) {
+        var report = _oldReport as SummaryReport;
         _nameController.value = report.name;
         _descriptionController.value = report.description;
         _typeController.value = _ReportType.summary;
@@ -143,8 +149,8 @@ class _SaveReportPageState extends State<SaveReportPage> {
         _baitsController.value = Id.fromByteList(report.baitIds);
         _fishingSpotsController.value = Id.fromByteList(report.fishingSpotIds);
         _speciesController.value = Id.fromByteList(report.speciesIds);
-      } else if (widget.oldReport is ComparisonReport) {
-        var report = widget.oldReport as ComparisonReport;
+      } else if (_oldReport is ComparisonReport) {
+        var report = _oldReport as ComparisonReport;
         _nameController.value = report.name;
         _descriptionController.value = report.description;
         _typeController.value = _ReportType.comparison;
@@ -276,7 +282,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
     return MultiListPickerInput(
       padding: insetsHorizontalDefaultVerticalWidget,
       values: _speciesController
-          .value?.map((id) => _speciesManager.entity(id).name)?.toSet(),
+          .value?.map((id) => _speciesManager.entity(id)?.name)?.toSet(),
       emptyValue: (context) =>
           Strings.of(context).saveCustomReportPageAllSpecies,
       onTap: () {
@@ -349,8 +355,18 @@ class _SaveReportPageState extends State<SaveReportPage> {
         break;
     }
 
-    _customReportManager.addOrUpdate(report);
+    // Remove old report, in case an edit changed the type of report.
+    if (_editing) {
+      if (_oldReport is SummaryReport) {
+        _summaryReportManager.delete(_oldReport.id);
+      } else if (_oldReport is ComparisonReport) {
+        _comparisonReportManager.delete(_oldReport.id);
+      } else {
+        _log.w("Unknown report type $_oldReport");
+      }
+    }
 
+    _customReportManager.addOrUpdate(report);
     return true;
   }
 
@@ -371,7 +387,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
     bool custom = dateRange == DisplayDateRange.custom;
 
     return SummaryReport()
-      ..id = widget.oldReport?.id
+      ..id = _oldReport?.id ?? Id.random()
       ..name = _nameController.value
       ..description = _descriptionController.value
       ..displayDateRangeId = dateRange.id
@@ -391,7 +407,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
     bool customTo = toDateRange == DisplayDateRange.custom;
 
     return ComparisonReport()
-      ..id = widget.oldReport?.id
+      ..id = _oldReport?.id ?? Id.random()
       ..name = _nameController.value
       ..description = _descriptionController.value
       ..fromDisplayDateRangeId = fromDateRange.id

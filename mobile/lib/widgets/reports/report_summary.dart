@@ -428,13 +428,24 @@ class ReportSummaryModel {
     if (includeDateRange) {
       result.add(displayDateRange.title(context));
     }
+
     if (includeSpecies) {
-      result.addAll(speciesIds.map((id) => _speciesManager.entity(id).name)
-          .toSet());
+      result.addAll(speciesIds
+          .map((id) => _speciesManager.entity(id)?.name)
+          .toSet()
+          ..removeWhere((e) => e == null));
     }
-    result.addAll(baitIds.map((id) => _baitManager.entity(id).name).toSet());
-    result.addAll(fishingSpotIds.map((id) =>
-        _fishingSpotManager.entity(id).name).toSet());
+
+    result.addAll(baitIds
+        .map((id) => _baitManager.entity(id)?.name)
+        .toSet()
+        ..removeWhere((e) => e == null));
+
+    result.addAll(fishingSpotIds
+        .map((id) => _fishingSpotManager.entity(id)?.name)
+        .toSet()
+        ..removeWhere((e) => e == null));
+
     return result;
   }
 
@@ -494,23 +505,23 @@ class ReportSummaryModel {
     }
 
     for (Catch cat in catches) {
-      Species species = _speciesManager.entity(Id(cat.speciesId));
+      Species species = _speciesManager.entityFromPbId(cat.speciesId);
       _catchIdsPerSpecies.putIfAbsent(species, () => {});
       _catchIdsPerSpecies[species].add(Id(cat.id));
       _catchesPerSpecies.putIfAbsent(species, () => 0);
       _catchesPerSpecies[species]++;
       _catchIds.add(Id(cat.id));
 
-      if (_fishingSpotManager.entityExists(Id(cat.fishingSpotId))) {
-        FishingSpot fishingSpot =
-            _fishingSpotManager.entity(Id(cat.fishingSpotId));
+      FishingSpot fishingSpot =
+          _fishingSpotManager.entityFromPbId(cat.fishingSpotId);
+      if (fishingSpot != null) {
         _catchesPerFishingSpot.putIfAbsent(fishingSpot, () => 0);
         _catchesPerFishingSpot[fishingSpot]++;
         _fishingSpotsPerSpecies.inc(species, fishingSpot);
       }
 
-      if (_baitManager.entityExists(Id(cat.baitId))) {
-        Bait bait = _baitManager.entity(Id(cat.baitId));
+      Bait bait = _baitManager.entityFromPbId(cat.baitId);
+      if (bait != null) {
         _catchesPerBait.putIfAbsent(bait, () => 0);
         _catchesPerBait[bait]++;
         _baitsPerSpecies.inc(species, bait);

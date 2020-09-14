@@ -90,7 +90,10 @@ class _EditableFormPageState extends State<EditableFormPage> {
     // Set custom fields' initial values.
     for (CustomEntityValue value in widget.customEntityValues) {
       CustomEntity entity =
-          _customEntityManager.entity(Id(value.customEntityId));
+          _customEntityManager.entityFromPbId(value.customEntityId);
+      if (entity == null) {
+        continue;
+      }
       _fields[entity.id].controller.value =
           valueForCustomEntityType(entity.type, value);
     }

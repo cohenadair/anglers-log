@@ -103,6 +103,8 @@ class ImageManager {
     _thumbnails.putIfAbsent(fileName, () => _CachedThumbnail(fileName));
   }
 
+  /// Returns a list of file names that were saved to disk.
+  ///
   /// Compresses the given image files, converts them to JPG format, and saves
   /// them to the app's sandbox if the file doesn't already exit.
   ///
@@ -112,12 +114,14 @@ class ImageManager {
   ///
   /// Files are named by the image's MD5 hash value to ensure uniqueness, and so
   /// that the same image isn't saved multiple times.
-  Future<void> save(List<File> files, {
+  Future<List<String>> save(List<File> files, {
     bool compress = true,
   }) async {
     if (files == null || files.isEmpty) {
-      return;
+      return [];
     }
+
+    List<String> result = [];
 
     for (var file in files) {
       // This can happen if an entity is edited, but the images associated with
@@ -157,8 +161,11 @@ class ImageManager {
         }
       }
 
+      result.add(fileName);
       _addToCache(fileName);
     }
+
+    return result;
   }
 
   /// Clears the memory cache for [fileNames].

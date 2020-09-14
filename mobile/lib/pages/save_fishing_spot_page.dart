@@ -6,10 +6,9 @@ import 'package:mobile/model/id.dart';
 import 'package:mobile/pages/form_page.dart';
 import 'package:mobile/widgets/input_controller.dart';
 import 'package:mobile/widgets/text_input.dart';
-import 'package:quiver/strings.dart';
 
 class SaveFishingSpotPage extends StatefulWidget {
-  final FishingSpot oldFishingSpot;
+  final Id oldFishingSpotId;
   final bool editing;
 
   /// If non-null, is invoked when the save button is pressed. In this case,
@@ -18,16 +17,16 @@ class SaveFishingSpotPage extends StatefulWidget {
   final void Function(FishingSpot) onSave;
 
   SaveFishingSpotPage({
-    @required this.oldFishingSpot,
+    @required this.oldFishingSpotId,
     this.editing = false,
     this.onSave,
-  }) : assert((editing && oldFishingSpot != null)
-      || oldFishingSpot != null);
+  }) : assert((editing && oldFishingSpotId != null)
+      || oldFishingSpotId != null);
 
   SaveFishingSpotPage.edit({
-    @required FishingSpot oldFishingSpot,
+    @required Id oldFishingSpotId,
   }) : this(
-    oldFishingSpot: oldFishingSpot,
+    oldFishingSpotId: oldFishingSpotId,
     editing: true,
     onSave: null,
   );
@@ -41,12 +40,15 @@ class _SaveFishingSpotPageState extends State<SaveFishingSpotPage> {
 
   final _nameController = TextInputController();
 
+  FishingSpot _oldFishingSpot;
+
   FishingSpotManager get _fishingSpotManager => FishingSpotManager.of(context);
 
   @override
   void initState() {
     super.initState();
-    _nameController.value = widget.oldFishingSpot?.name;
+    _oldFishingSpot = _fishingSpotManager.entity(widget.oldFishingSpotId);
+    _nameController.value = _oldFishingSpot?.name;
   }
 
   @override
@@ -60,11 +62,10 @@ class _SaveFishingSpotPageState extends State<SaveFishingSpotPage> {
       title: Text(title),
       onSave: (_) {
         FishingSpot newFishingSpot = FishingSpot()
-          ..id = widget.oldFishingSpot?.id ?? Id.random()
-          ..lat = widget.oldFishingSpot?.lat
-          ..lng = widget.oldFishingSpot?.lng
-          ..name = isNotEmpty(_nameController.value)
-              ? _nameController.value : null;
+          ..id = _oldFishingSpot?.id ?? Id.random()
+          ..lat = _oldFishingSpot?.lat
+          ..lng = _oldFishingSpot?.lng
+          ..name = _nameController.value;
 
         if (widget.onSave != null) {
           widget.onSave(newFishingSpot);

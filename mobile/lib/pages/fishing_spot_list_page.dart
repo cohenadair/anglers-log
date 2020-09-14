@@ -71,7 +71,7 @@ class FishingSpotListPage extends StatelessWidget {
         deleteItem: (context, fishingSpot) =>
             fishingSpotManager.delete(Id(fishingSpot.id)),
         editPageBuilder: (fishingSpot) => SaveFishingSpotPage.edit(
-          oldFishingSpot: fishingSpot,
+          oldFishingSpotId: Id(fishingSpot.id),
         ),
       ),
     );

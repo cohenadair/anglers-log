@@ -7,32 +7,31 @@ import 'package:mobile/pages/save_name_page.dart';
 import 'package:mobile/utils/validator.dart';
 
 class SaveBaitCategoryPage extends StatelessWidget {
-  final BaitCategory oldCategory;
+  final Id oldCategoryId;
 
-  SaveBaitCategoryPage() : oldCategory = null;
-  SaveBaitCategoryPage.edit(this.oldCategory);
-
-  bool get _editing => oldCategory != null;
+  SaveBaitCategoryPage() : oldCategoryId = null;
+  SaveBaitCategoryPage.edit(this.oldCategoryId) : assert(oldCategoryId != null);
 
   @override
   Widget build(BuildContext context) {
-    BaitCategoryManager categoryManager = BaitCategoryManager.of(context);
+    BaitCategoryManager baitCategoryManager = BaitCategoryManager.of(context);
+    BaitCategory oldBaitCategory = baitCategoryManager.entity(oldCategoryId);
 
     return SaveNamePage(
-      title: _editing
-          ? Text(Strings.of(context).saveBaitCategoryPageEditTitle)
-          : Text(Strings.of(context).saveBaitCategoryPageNewTitle),
-      oldName: oldCategory?.name,
+      title: oldBaitCategory == null
+          ? Text(Strings.of(context).saveBaitCategoryPageNewTitle)
+          : Text(Strings.of(context).saveBaitCategoryPageEditTitle),
+      oldName: oldBaitCategory?.name,
       onSave: (newName) {
-        categoryManager.addOrUpdate(BaitCategory()
-          ..id = oldCategory?.id ?? Id.random().bytes
+        baitCategoryManager.addOrUpdate(BaitCategory()
+          ..id = oldBaitCategory?.id ?? Id.random().bytes
           ..name = newName);
         return true;
       },
       validator: NameValidator(
         nameExistsMessage: (context) =>
             Strings.of(context).saveBaitCategoryPageExistsMessage,
-        nameExists: (name) => categoryManager.nameExists(name),
+        nameExists: (name) => baitCategoryManager.nameExists(name),
       ),
     );
   }
