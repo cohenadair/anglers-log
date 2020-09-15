@@ -5,28 +5,38 @@ import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:mobile/app_manager.dart';
+import 'package:mobile/catch_manager.dart';
 import 'package:mobile/log.dart';
+import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:quiver/collection.dart';
 import 'package:quiver/strings.dart';
 
+import 'model/gen/anglerslog.pb.dart';
+
 class ImageManager {
   static ImageManager of(BuildContext context) =>
       Provider.of<AppManager>(context, listen: false).imageManager;
 
-  static final _debug = false;
-  static final _log = Log("ImageManager");
+  static const _debug = false;
+  static const _log = Log("ImageManager");
 
-  static final _memoryCacheCapacity = 250;
-  static final _imageCompressionQuality = 80;
-  static final _thumbnailCompressionQuality = 50;
+  static const _memoryCacheCapacity = 250;
+  static const _imageCompressionQuality = 80;
+  static const _thumbnailCompressionQuality = 50;
 
   /// A memory cache map of file name to [_CachedThumbnail] objects.
   final Map<String, _CachedThumbnail> _thumbnails =
       LinkedLruHashMap(maximumSize: _memoryCacheCapacity);
 
+  final AppManager _appManager;
+
   ImageManagerDelegate _delegate;
+
+  CatchManager get _catchManager => _appManager.catchManager;
+
+  ImageManager(this._appManager);
 
   Future<void> initialize({
     ImageManagerDelegate delegate,
@@ -39,6 +49,9 @@ class ImageManager {
     // Create directories if needed.
     await _delegate.directory(_delegate.imagePath).create(recursive: true);
     await _delegate.directory(_delegate.cachePath).create(recursive: true);
+
+    // Cleanup images that are no longer used.
+    await _clearStaleImages();
   }
 
   File _imageFile(String imageName) =>
@@ -268,6 +281,26 @@ class ImageManager {
     }
 
     return cachedImage.thumbnail(size);
+  }
+
+  /// Deletes images that are no longer used from memory cache and file
+  /// system.
+  Future<void> _clearStaleImages() async {
+    await _delegate.directory(_delegate.imagePath).list().forEach((entity) {
+      String name = basename(entity.path);
+
+      for (Catch cat in _catchManager.list()) {
+        // Image found, continue on to the next image.
+        if (cat.imageNames.contains(name)) {
+          break;
+        }
+      }
+
+      // Image isn't found, delete it.
+      entity.deleteSync();
+      _thumbnails.remove(name);
+      _log.d("Deleted stale image $name");
+    });
   }
 }
 

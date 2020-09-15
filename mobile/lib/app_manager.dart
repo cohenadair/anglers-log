@@ -92,7 +92,7 @@ class AppManager {
 
   ImageManager get imageManager {
     if (_imageManager == null) {
-      _imageManager = ImageManager();
+      _imageManager = ImageManager(this);
     }
     return _imageManager;
   }
