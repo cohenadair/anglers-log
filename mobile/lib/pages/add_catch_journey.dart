@@ -85,8 +85,8 @@ class _AddCatchJourneyState extends State<AddCatchJourney> {
         } else if (name == _pickSpeciesRoute) {
           return MaterialPageRoute(
             builder: (context) => SpeciesListPage.picker(
-              onPicked: (context, speciesIds) {
-                _journeyHelper.speciesId = speciesIds.first;
+              onPicked: (context, species) {
+                _journeyHelper.species = species.first;
 
                 // If a fishing spot already exists, skip the fishing spot
                 // picker page.

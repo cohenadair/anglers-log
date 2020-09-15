@@ -29,10 +29,10 @@ import 'package:mobile/widgets/text_input.dart';
 import 'package:mobile/widgets/widget.dart';
 
 class SaveReportPage extends StatefulWidget {
-  final Id oldReportId;
+  final dynamic oldReport;
 
-  SaveReportPage() : oldReportId = null;
-  SaveReportPage.edit(this.oldReportId) : assert(oldReportId != null);
+  SaveReportPage() : oldReport = null;
+  SaveReportPage.edit(this.oldReport) : assert(oldReport != null);
 
   @override
   _SaveReportPageState createState() => _SaveReportPageState();
@@ -55,8 +55,6 @@ class _SaveReportPageState extends State<SaveReportPage> {
 
   final Map<Id, InputData> _fields = {};
 
-  dynamic _oldReport;
-
   BaitManager get _baitManager => BaitManager.of(context);
   ComparisonReportManager get _comparisonReportManager =>
       ComparisonReportManager.of(context);
@@ -74,12 +72,14 @@ class _SaveReportPageState extends State<SaveReportPage> {
       _fields[_idStartDateRange].controller;
   InputController<DisplayDateRange> get _toDateRangeController =>
       _fields[_idEndDateRange].controller;
-  InputController<Set<Id>> get _speciesController =>
+  InputController<Set<Species>> get _speciesController =>
       _fields[_idSpecies].controller;
-  InputController<Set<Id>> get _baitsController => _fields[_idBaits].controller;
-  InputController<Set<Id>> get _fishingSpotsController =>
+  InputController<Set<Bait>> get _baitsController =>
+      _fields[_idBaits].controller;
+  InputController<Set<FishingSpot>> get _fishingSpotsController =>
       _fields[_idFishingSpots].controller;
 
+  dynamic get _oldReport => widget.oldReport;
   bool get _editing => _oldReport != null;
   bool get _summary => _typeController.value == _ReportType.summary;
 
@@ -136,7 +136,6 @@ class _SaveReportPageState extends State<SaveReportPage> {
       controller: InputController<Set<FishingSpot>>(),
     );
 
-    _oldReport = _customReportManager.entity(widget.oldReportId);
     if (_editing) {
       if (_oldReport is SummaryReport) {
         var report = _oldReport as SummaryReport;
@@ -146,9 +145,11 @@ class _SaveReportPageState extends State<SaveReportPage> {
         _fromDateRangeController.value = DisplayDateRange.of(
             report.displayDateRangeId, report.startTimestamp,
             report.endTimestamp);
-        _baitsController.value = Id.fromByteList(report.baitIds);
-        _fishingSpotsController.value = Id.fromByteList(report.fishingSpotIds);
-        _speciesController.value = Id.fromByteList(report.speciesIds);
+        _baitsController.value = _baitManager.pbIdListToSet(report.baitIds);
+        _fishingSpotsController.value =
+            _fishingSpotManager.pbIdListToSet(report.fishingSpotIds);
+        _speciesController.value =
+            _speciesManager.pbIdListToSet(report.speciesIds);
       } else if (_oldReport is ComparisonReport) {
         var report = _oldReport as ComparisonReport;
         _nameController.value = report.name;
@@ -160,9 +161,11 @@ class _SaveReportPageState extends State<SaveReportPage> {
         _toDateRangeController.value = DisplayDateRange.of(
             report.toDisplayDateRangeId, report.toStartTimestamp,
             report.toEndTimestamp);
-        _baitsController.value = Id.fromByteList(report.baitIds);
-        _fishingSpotsController.value = Id.fromByteList(report.fishingSpotIds);
-        _speciesController.value = Id.fromByteList(report.speciesIds);
+        _baitsController.value = _baitManager.pbIdListToSet(report.baitIds);
+        _fishingSpotsController.value =
+            _fishingSpotManager.pbIdListToSet(report.fishingSpotIds);
+        _speciesController.value =
+            _speciesManager.pbIdListToSet(report.speciesIds);
       }
     } else {
       _typeController.value = _ReportType.summary;
@@ -281,8 +284,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
   Widget _buildSpeciesPicker() {
     return MultiListPickerInput(
       padding: insetsHorizontalDefaultVerticalWidget,
-      values: _speciesController
-          .value?.map((id) => _speciesManager.entity(id)?.name)?.toSet(),
+      values: _speciesController.value?.map((species) => species.name)?.toSet(),
       emptyValue: (context) =>
           Strings.of(context).saveCustomReportPageAllSpecies,
       onTap: () {
@@ -303,10 +305,8 @@ class _SaveReportPageState extends State<SaveReportPage> {
   Widget _buildBaitsPicker() {
     return MultiListPickerInput(
       padding: insetsHorizontalDefaultVerticalWidget,
-      values: _baitsController
-          .value?.map((id) => _baitManager.entity(id).name)?.toSet(),
-      emptyValue: (context) =>
-          Strings.of(context).saveCustomReportPageAllBaits,
+      values: _baitsController.value?.map((bait) => bait.name)?.toSet(),
+      emptyValue: (context) => Strings.of(context).saveCustomReportPageAllBaits,
       onTap: () {
         push(context, BaitListPage.picker(
           multiPicker: true,
@@ -326,7 +326,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
     return MultiListPickerInput(
       padding: insetsHorizontalDefaultVerticalWidget,
       values: _fishingSpotsController
-          .value?.map((id) => _fishingSpotManager.entity(id).name)?.toSet(),
+          .value?.map((fishingSpot) => fishingSpot.name)?.toSet(),
       emptyValue: (context) =>
           Strings.of(context).saveCustomReportPageAllFishingSpots,
       onTap: () {
@@ -395,9 +395,9 @@ class _SaveReportPageState extends State<SaveReportPage> {
           ? Timestamp.fromDateTime(dateRange.value.startDate) : null
       ..endTimestamp = custom
           ? Timestamp.fromDateTime(dateRange.value.endDate) : null
-      ..baitIds.addAll(Id.toByteList(_baitsController.value))
-      ..fishingSpotIds.addAll(Id.toByteList(_fishingSpotsController.value))
-      ..speciesIds.addAll(Id.toByteList(_speciesController.value));
+      ..baitIds.addAll(_baitsController.value.map((e) => e.id))
+      ..fishingSpotIds.addAll(_fishingSpotsController.value.map((e) => e.id))
+      ..speciesIds.addAll(_speciesController.value.map((e) => e.id));
   }
   
   ComparisonReport _createComparisonReport() {
@@ -420,9 +420,9 @@ class _SaveReportPageState extends State<SaveReportPage> {
           ? Timestamp.fromDateTime(toDateRange.value.startDate) : null
       ..toEndTimestamp = customTo
           ? Timestamp.fromDateTime(toDateRange.value.endDate) : null
-      ..baitIds.addAll(Id.toByteList(_baitsController.value))
-      ..fishingSpotIds.addAll(Id.toByteList(_fishingSpotsController.value))
-      ..speciesIds.addAll(Id.toByteList(_speciesController.value));
+      ..baitIds.addAll(_baitsController.value.map((e) => e.id))
+      ..fishingSpotIds.addAll(_fishingSpotsController.value.map((e) => e.id))
+      ..speciesIds.addAll(_speciesController.value.map((e) => e.id));
   }
 }
 

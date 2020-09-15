@@ -23,10 +23,10 @@ import 'package:mobile/widgets/text_input.dart';
 import 'package:mobile/widgets/widget.dart';
 
 class SaveBaitPage extends StatefulWidget {
-  final Id oldBaitId;
+  final Bait oldBait;
 
-  SaveBaitPage() : oldBaitId = null;
-  SaveBaitPage.edit(this.oldBaitId);
+  SaveBaitPage() : oldBait = null;
+  SaveBaitPage.edit(this.oldBait);
 
   @override
   _SaveBaitPageState createState() => _SaveBaitPageState();
@@ -40,8 +40,8 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
 
   final Map<Id, InputData> _fields = {};
   List<CustomEntityValue> _customEntityValues = [];
-  Bait _oldBait;
 
+  Bait get _oldBait => widget.oldBait;
   bool get _editing => _oldBait != null;
 
   BaitCategoryManager get _baitCategoryManager =>
@@ -49,7 +49,7 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
   BaitManager get _baitManager => BaitManager.of(context);
   PreferencesManager get _preferencesManager => PreferencesManager.of(context);
 
-  InputController<Id> get _baitCategoryController =>
+  InputController<BaitCategory> get _baitCategoryController =>
       _fields[_idBaitCategory].controller;
   TextInputController get _nameController =>
       _fields[_idName].controller as TextInputController;
@@ -76,10 +76,9 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
       showing: true,
     );
 
-    _oldBait = _baitManager.entity(widget.oldBaitId);
     if (_editing) {
-      _baitCategoryController.value = _oldBait.baitCategoryId.isEmpty
-          ? null : Id(_oldBait.baitCategoryId);
+      _baitCategoryController.value =
+          _baitCategoryManager.entityFromPbId(_oldBait.baitCategoryId);
       _nameController.value = _oldBait.name;
       _customEntityValues = _oldBait.customEntityValues;
     }
@@ -116,8 +115,7 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
       builder: (context) {
         return ListPickerInput(
           title: Strings.of(context).saveBaitPageCategoryLabel,
-          value: _baitCategoryManager.entity(_baitCategoryController.value)
-              .name,
+          value: _baitCategoryController.value?.name,
           onTap: () {
             push(context, BaitCategoryListPage.picker(
               onPicked: (context, pickedCategoryId) {
@@ -149,7 +147,7 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
     Bait newBait = Bait()
       ..id = _oldBait?.id ?? Id.random().bytes
       ..name = _nameController.value
-      ..baitCategoryId = _baitCategoryController.value.bytes ?? []
+      ..baitCategoryId = _baitCategoryController.value?.id ?? []
       ..customEntityValues.addAll(entityValuesFromMap(customFieldValueMap));
 
     if (_baitManager.duplicate(newBait)) {

@@ -8,7 +8,7 @@ import 'package:mobile/widgets/input_controller.dart';
 import 'package:mobile/widgets/text_input.dart';
 
 class SaveFishingSpotPage extends StatefulWidget {
-  final Id oldFishingSpotId;
+  final FishingSpot oldFishingSpot;
   final bool editing;
 
   /// If non-null, is invoked when the save button is pressed. In this case,
@@ -17,16 +17,14 @@ class SaveFishingSpotPage extends StatefulWidget {
   final void Function(FishingSpot) onSave;
 
   SaveFishingSpotPage({
-    @required this.oldFishingSpotId,
+    @required this.oldFishingSpot,
     this.editing = false,
     this.onSave,
-  }) : assert((editing && oldFishingSpotId != null)
-      || oldFishingSpotId != null);
+  }) : assert((editing && oldFishingSpot != null)
+      || oldFishingSpot != null);
 
-  SaveFishingSpotPage.edit({
-    @required Id oldFishingSpotId,
-  }) : this(
-    oldFishingSpotId: oldFishingSpotId,
+  SaveFishingSpotPage.edit(FishingSpot oldFishingSpot) : this(
+    oldFishingSpot: oldFishingSpot,
     editing: true,
     onSave: null,
   );
@@ -40,14 +38,13 @@ class _SaveFishingSpotPageState extends State<SaveFishingSpotPage> {
 
   final _nameController = TextInputController();
 
-  FishingSpot _oldFishingSpot;
-
   FishingSpotManager get _fishingSpotManager => FishingSpotManager.of(context);
+
+  FishingSpot get _oldFishingSpot => widget.oldFishingSpot;
 
   @override
   void initState() {
     super.initState();
-    _oldFishingSpot = _fishingSpotManager.entity(widget.oldFishingSpotId);
     _nameController.value = _oldFishingSpot?.name;
   }
 

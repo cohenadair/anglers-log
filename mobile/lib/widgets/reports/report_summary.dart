@@ -58,8 +58,6 @@ class _ReportSummaryState extends State<ReportSummary> {
 
   List<ReportSummaryModel> _models = [];
 
-  SpeciesManager get _speciesManager => SpeciesManager.of(context);
-
   bool get comparing => _models.length > 1;
 
   @override
@@ -221,9 +219,9 @@ class _ReportSummaryState extends State<ReportSummary> {
       value: _currentSpecies.name,
       onTap: () {
         push(context, SpeciesListPage.picker(
-          onPicked: (context, speciesId) {
+          onPicked: (context, species) {
             setState(() {
-              _currentSpecies = _speciesManager.entity(speciesId.first);
+              _currentSpecies = species.first;
             });
             return true;
           },

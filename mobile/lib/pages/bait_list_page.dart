@@ -14,9 +14,9 @@ import 'package:mobile/widgets/text.dart';
 import 'package:mobile/widgets/widget.dart';
 
 class BaitListPage extends StatefulWidget {
-  final bool Function(BuildContext, Set<Id>) onPicked;
+  final bool Function(BuildContext, Set<Bait>) onPicked;
   final bool multiPicker;
-  final Set<Id> initialValues;
+  final Set<Bait> initialValues;
 
   BaitListPage()
       : onPicked = null,
@@ -59,10 +59,9 @@ class _BaitListPageState extends State<BaitListPage> {
         ),
         pickerSettings: _picking
             ? ManageableListPagePickerSettings<dynamic>(
-                onPicked: (context, baits) => widget.onPicked(context,
-                    baits.map((item) => Id((item as Bait).id)).toSet()),
+                onPicked: (context, baits) => widget.onPicked(context, baits),
                 multi: widget.multiPicker,
-                initialValues: _baitManager.idListToList(widget.initialValues),
+                initialValues: widget.initialValues,
               )
             : null,
         itemBuilder: (context, item) {

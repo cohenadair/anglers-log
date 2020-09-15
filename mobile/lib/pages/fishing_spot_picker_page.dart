@@ -224,12 +224,10 @@ class _FishingSpotPickerPageState extends State<FishingSpotPickerPage>
         textColor: Theme.of(context).primaryColor,
         onPressed: () {
           present(context, SaveFishingSpotPage(
-            oldFishingSpotId: Id(_currentFishingSpot.id),
+            oldFishingSpot: _currentFishingSpot,
             editing: _currentFishingSpot != null,
             onSave: (updatedFishingSpot) {
-              setState(() {
-                _currentFishingSpot = updatedFishingSpot;
-              });
+              setState(() => _currentFishingSpot = updatedFishingSpot);
             },
           ));
         },

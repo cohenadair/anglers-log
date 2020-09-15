@@ -50,7 +50,7 @@ class CustomEntityListPage extends StatelessWidget {
         deleteItem: (context, entity) async =>
             await customEntityManager.delete(Id(entity.id)),
         addPageBuilder: () => SaveCustomEntityPage(),
-        editPageBuilder: (entity) => SaveCustomEntityPage.edit(Id(entity.id)),
+        editPageBuilder: (entity) => SaveCustomEntityPage.edit(entity),
       ),
     );
   }

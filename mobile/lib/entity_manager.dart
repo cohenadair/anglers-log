@@ -79,6 +79,10 @@ abstract class EntityManager<T extends GeneratedMessage>
 
   Set<Id> listToIdList(List<T> entities) => entities.map((e) => id(e)).toSet();
   Set<T> idListToList(Set<Id> ids) => ids.map((id) => entity(id)).toSet();
+  Set<T> pbIdListToSet(List<List<int>> pbIds) => pbIds
+      .map((id) => entityFromPbId(id))
+      .toSet()
+      ..removeWhere((e) => e == null);
 
   /// Clears the [Entity] memory collection. This method assumes the database
   /// has already been cleared.

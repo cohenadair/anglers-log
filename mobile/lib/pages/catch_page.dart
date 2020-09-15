@@ -59,7 +59,7 @@ class _CatchPageState extends State<CatchPage> {
       builder: (context) => EntityPage(
         customEntityValues: _catch.customEntityValues,
         padding: insetsZero,
-        onEdit: () => present(context, SaveCatchPage.edit(Id(_catch.id))),
+        onEdit: () => present(context, SaveCatchPage.edit(_catch)),
         onDelete: () => _catchManager.delete(Id(_catch.id)),
         deleteMessage: _catchManager.deleteMessage(context, _catch),
         imageNames: _catch.imageNames,

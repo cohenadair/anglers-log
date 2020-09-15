@@ -7,15 +7,14 @@ import 'package:mobile/species_manager.dart';
 import 'package:mobile/utils/validator.dart';
 
 class SaveSpeciesPage extends StatelessWidget {
-  final Id oldSpeciesId;
+  final Species oldSpecies;
 
-  SaveSpeciesPage() : oldSpeciesId = null;
-  SaveSpeciesPage.edit(this.oldSpeciesId);
+  SaveSpeciesPage() : oldSpecies = null;
+  SaveSpeciesPage.edit(this.oldSpecies);
 
   @override
   Widget build(BuildContext context) {
     SpeciesManager speciesManager = SpeciesManager.of(context);
-    Species oldSpecies = speciesManager.entity(oldSpeciesId);
 
     return SaveNamePage(
       title: oldSpecies == null

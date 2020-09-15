@@ -95,7 +95,7 @@ class CatchListPage extends StatelessWidget {
         deleteItem: (context, cat) => catchManager.delete(Id(cat.id)),
         addPageBuilder: enableAdding ? () => AddCatchJourney() : null,
         detailPageBuilder: (cat) => CatchPage(Id(cat.id)),
-        editPageBuilder: (cat) => SaveCatchPage.edit(Id(cat.id)),
+        editPageBuilder: (cat) => SaveCatchPage.edit(cat),
       ),
     );
   }

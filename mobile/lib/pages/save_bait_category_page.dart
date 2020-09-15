@@ -7,15 +7,15 @@ import 'package:mobile/pages/save_name_page.dart';
 import 'package:mobile/utils/validator.dart';
 
 class SaveBaitCategoryPage extends StatelessWidget {
-  final Id oldCategoryId;
+  final BaitCategory oldBaitCategory;
 
-  SaveBaitCategoryPage() : oldCategoryId = null;
-  SaveBaitCategoryPage.edit(this.oldCategoryId) : assert(oldCategoryId != null);
+  SaveBaitCategoryPage() : oldBaitCategory = null;
+  SaveBaitCategoryPage.edit(this.oldBaitCategory)
+      : assert(oldBaitCategory != null);
 
   @override
   Widget build(BuildContext context) {
     BaitCategoryManager baitCategoryManager = BaitCategoryManager.of(context);
-    BaitCategory oldBaitCategory = baitCategoryManager.entity(oldCategoryId);
 
     return SaveNamePage(
       title: oldBaitCategory == null

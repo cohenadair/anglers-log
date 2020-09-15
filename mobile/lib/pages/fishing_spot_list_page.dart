@@ -9,9 +9,9 @@ import 'package:mobile/utils/string_utils.dart';
 import 'package:mobile/widgets/text.dart';
 
 class FishingSpotListPage extends StatelessWidget {
-  final bool Function(BuildContext, Set<Id>) onPicked;
+  final bool Function(BuildContext, Set<FishingSpot>) onPicked;
   final bool multiPicker;
-  final Set<Id> initialValues;
+  final Set<FishingSpot> initialValues;
 
   FishingSpotListPage()
       : onPicked = null,
@@ -57,9 +57,9 @@ class FishingSpotListPage extends StatelessWidget {
       pickerSettings: _picking
           ? ManageableListPagePickerSettings<FishingSpot>(
               onPicked: (context, fishingSpots) => onPicked(context,
-                  fishingSpotManager.listToIdList(fishingSpots.toList())),
+                  fishingSpots),
               multi: multiPicker,
-              initialValues: fishingSpotManager.idListToList(initialValues),
+              initialValues: initialValues,
             )
           : null,
       itemManager: ManageableListPageItemManager<FishingSpot>(
@@ -70,9 +70,7 @@ class FishingSpotListPage extends StatelessWidget {
             .deleteMessage(context, fishingSpot)),
         deleteItem: (context, fishingSpot) =>
             fishingSpotManager.delete(Id(fishingSpot.id)),
-        editPageBuilder: (fishingSpot) => SaveFishingSpotPage.edit(
-          oldFishingSpotId: Id(fishingSpot.id),
-        ),
+        editPageBuilder: (fishingSpot) => SaveFishingSpotPage.edit(fishingSpot),
       ),
     );
   }

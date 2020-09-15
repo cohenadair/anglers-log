@@ -10,9 +10,9 @@ import 'package:mobile/utils/string_utils.dart';
 import 'package:mobile/widgets/text.dart';
 
 class SpeciesListPage extends StatelessWidget {
-  final bool Function(BuildContext, Set<Id>) onPicked;
+  final bool Function(BuildContext, Set<Species>) onPicked;
   final bool multiPicker;
-  final Set<Id> initialValues;
+  final Set<Species> initialValues;
 
   SpeciesListPage()
       : onPicked = null,
@@ -46,10 +46,9 @@ class SpeciesListPage extends StatelessWidget {
       ),
       pickerSettings: _picking
           ? ManageableListPagePickerSettings<Species>(
-              onPicked: (context, species) => onPicked(context,
-                  speciesManager.listToIdList(species.toList())),
+              onPicked: (context, species) => onPicked(context, species),
               multi: multiPicker,
-              initialValues: speciesManager.idListToList(initialValues),
+              initialValues: initialValues,
             )
           : null,
       itemManager: ManageableListPageItemManager<Species>(
@@ -75,7 +74,7 @@ class SpeciesListPage extends StatelessWidget {
           };
         },
         addPageBuilder: () => SaveSpeciesPage(),
-        editPageBuilder: (species) => SaveSpeciesPage.edit(Id(species.id)),
+        editPageBuilder: (species) => SaveSpeciesPage.edit(species),
       ),
     );
   }

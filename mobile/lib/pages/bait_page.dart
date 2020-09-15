@@ -50,7 +50,7 @@ class _BaitPageState extends State<BaitPage> {
           bottom: paddingDefault,
         ),
         static: widget.static,
-        onEdit: () => present(context, SaveBaitPage.edit(Id(_bait.id))),
+        onEdit: () => present(context, SaveBaitPage.edit(_bait)),
         onDelete: () => _baitManager.delete(Id(_bait.id)),
         deleteMessage: _baitManager.deleteMessage(context, _bait),
         children: [

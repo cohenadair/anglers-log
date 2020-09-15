@@ -18,16 +18,16 @@ import 'form_page.dart';
 /// A input page for users to create custom fields to be used elsewhere in the
 /// app. This form is immutable.
 class SaveCustomEntityPage extends StatefulWidget {
-  final Id oldEntityId;
+  final CustomEntity oldEntity;
   final void Function(CustomEntity) onSave;
 
   SaveCustomEntityPage({
     this.onSave,
-  }) : oldEntityId = null;
+  }) : oldEntity = null;
 
-  SaveCustomEntityPage.edit(this.oldEntityId, {
+  SaveCustomEntityPage.edit(this.oldEntity, {
     this.onSave,
-  }) : assert(oldEntityId != null);
+  }) : assert(oldEntity != null);
 
   @override
   _SaveCustomEntityPageState createState() => _SaveCustomEntityPageState();
@@ -41,7 +41,6 @@ class _SaveCustomEntityPageState extends State<SaveCustomEntityPage> {
   final Log _log = Log("SaveCustomEntityPage");
 
   Map<Id, InputController> _inputOptions;
-  CustomEntity _oldEntity;
 
   CustomEntityManager get _customEntityManager =>
       CustomEntityManager.of(context);
@@ -55,6 +54,7 @@ class _SaveCustomEntityPageState extends State<SaveCustomEntityPage> {
   InputController<CustomEntity_Type> get _dataTypeController =>
       _inputOptions[_idType] as InputController<CustomEntity_Type>;
 
+  CustomEntity get _oldEntity => widget.oldEntity;
   bool get _editing => _oldEntity != null;
 
   @override
@@ -76,7 +76,6 @@ class _SaveCustomEntityPageState extends State<SaveCustomEntityPage> {
       ),
     };
 
-    _oldEntity = _customEntityManager.entity(widget.oldEntityId);
     if (_editing) {
       _nameController.value = _oldEntity.name;
       _descriptionController.value = _oldEntity.description;

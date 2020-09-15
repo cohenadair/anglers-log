@@ -9,7 +9,7 @@ import 'package:mobile/utils/string_utils.dart';
 import 'package:mobile/widgets/text.dart';
 
 class BaitCategoryListPage extends StatelessWidget {
-  final bool Function(BuildContext, Id) onPicked;
+  final bool Function(BuildContext, BaitCategory) onPicked;
 
   BaitCategoryListPage() : onPicked = null;
 
@@ -39,7 +39,7 @@ class BaitCategoryListPage extends StatelessWidget {
       pickerSettings: _picking
           ? ManageableListPagePickerSettings<BaitCategory>(
               onPicked: (context, categories) =>
-                  onPicked(context, Id(categories.first.id)),
+                  onPicked(context, categories?.first),
             )
           : null,
       itemManager: ManageableListPageItemManager<BaitCategory>(
@@ -51,8 +51,7 @@ class BaitCategoryListPage extends StatelessWidget {
         deleteItem: (context, category) =>
             baitCategoryManager.delete(Id(category.id)),
         addPageBuilder: () => SaveBaitCategoryPage(),
-        editPageBuilder: (category) =>
-            SaveBaitCategoryPage.edit(Id(category.id)),
+        editPageBuilder: (category) => SaveBaitCategoryPage.edit(category),
       ),
     );
   }

@@ -37,10 +37,7 @@ import 'package:mobile/widgets/widget.dart';
 /// A utility class to store properties picked in a catch journey.
 class CatchJourneyHelper {
   List<PickedImage> images;
-  Id speciesId;
-
-  // At this point, the FishingSpot may not be in the database, but picked on
-  // the fly, so passing an ID will not work.
+  Species species;
   FishingSpot fishingSpot;
 }
 
@@ -52,15 +49,15 @@ class SaveCatchPage extends StatefulWidget {
   /// [AddCatchJourney].
   final CatchJourneyHelper journeyHelper;
 
-  final Id oldCatchId;
+  final Catch oldCatch;
 
   SaveCatchPage()
-      : oldCatchId = null,
+      : oldCatch = null,
         popOverride = null,
         journeyHelper = null;
 
-  SaveCatchPage.edit(this.oldCatchId)
-      : assert(oldCatchId != null),
+  SaveCatchPage.edit(this.oldCatch)
+      : assert(oldCatch != null),
         popOverride = null,
         journeyHelper = null;
 
@@ -68,7 +65,7 @@ class SaveCatchPage extends StatefulWidget {
     this.popOverride,
     @required this.journeyHelper,
   }) : assert(journeyHelper != null),
-       oldCatchId = null;
+       oldCatch = null;
 
   @override
   _SaveCatchPageState createState() => _SaveCatchPageState();
@@ -88,7 +85,6 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
 
   Future<List<PickedImage>> _imagesFuture = Future.value([]);
   List<CustomEntityValue> _customEntityValues = [];
-  Catch _oldCatch;
 
   BaitCategoryManager get _baitCategoryManager =>
       BaitCategoryManager.of(context);
@@ -99,18 +95,17 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
   PreferencesManager get _preferencesManager => PreferencesManager.of(context);
   SpeciesManager get _speciesManager => SpeciesManager.of(context);
 
+  Catch get _oldCatch => widget.oldCatch;
+
   TimestampInputController get _timestampController =>
       _fields[_idTimestamp].controller;
-  InputController<Id> get _speciesController => _fields[_idSpecies].controller;
+  InputController<Species> get _speciesController =>
+      _fields[_idSpecies].controller;
   InputController<List<PickedImage>> get _imagesController =>
       _fields[_idImages].controller;
-
-  /// Note this doesn't use an [Id] as a value because a new [FishingSpot]
-  /// isn't added to [FishingSpotManager] until _after_ the [Catch] is saved.
   InputController<FishingSpot> get _fishingSpotController =>
       _fields[_idFishingSpot].controller;
-
-  InputController<Id> get _baitController => _fields[_idBait].controller;
+  InputController<Bait> get _baitController => _fields[_idBait].controller;
 
   bool get _editing => _oldCatch != null;
 
@@ -171,19 +166,18 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
           _timestampController.time = TimeOfDay.fromDateTime(image.dateTime);
         }
       }
-      _speciesController.value = widget.journeyHelper.speciesId;
+      _speciesController.value = widget.journeyHelper.species;
       _imagesController.value = widget.journeyHelper.images;
       _fishingSpotController.value = widget.journeyHelper.fishingSpot;
     }
 
-    _oldCatch = _catchManager.entity(widget.oldCatchId);
     if (_editing) {
       _timestampController.value = _oldCatch.timestamp;
-      _speciesController.value = Id(_oldCatch.speciesId);
-      _baitController.value = _oldCatch.baitId.isEmpty
-          ? null : Id(_oldCatch.baitId);
-      _fishingSpotController.value = _fishingSpotManager.entity(
-          _oldCatch.fishingSpotId.isEmpty ? null : Id(_oldCatch.fishingSpotId));
+      _speciesController.value =
+          _speciesManager.entityFromPbId(_oldCatch.speciesId);
+      _baitController.value = _baitManager.entityFromPbId(_oldCatch.baitId);
+      _fishingSpotController.value =
+          _fishingSpotManager.entityFromPbId(_oldCatch.fishingSpotId);
       _customEntityValues = _oldCatch.customEntityValues;
       _imagesFuture = _pickedImagesForOldCatch;
     }
@@ -223,9 +217,6 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
   }
 
   Widget _buildTimestamp() {
-    TimestampInputController controller =
-        _fields[_idTimestamp].controller;
-
     return Padding(
       padding: EdgeInsets.only(
         left: paddingDefault,
@@ -234,17 +225,17 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
       ),
       child: DateTimePickerContainer(
         datePicker: DatePicker(
-          initialDate: controller.date,
+          initialDate: _timestampController.date,
           label: Strings.of(context).saveCatchPageDateLabel,
           onChange: (DateTime newDate) {
-            controller.date = newDate;
+            _timestampController.date = newDate;
           },
         ),
         timePicker: TimePicker(
-          initialTime: controller.time,
+          initialTime: _timestampController.time,
           label: Strings.of(context).saveCatchPageTimeLabel,
           onChange: (TimeOfDay newTime) {
-            controller.time = newTime;
+            _timestampController.time = newTime;
           },
         ),
       ),
@@ -259,9 +250,8 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
       ],
       builder: (context) {
         String value;
-        Bait bait = _baitManager.entity(_baitController.value);
-        if (bait != null) {
-          value = _baitManager.formatNameWithCategory(bait);
+        if (_baitController.value != null) {
+          value = _baitManager.formatNameWithCategory(_baitController.value);
         }
 
         return ListPickerInput(
@@ -313,7 +303,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
       builder: (context) {
         return ListPickerInput(
           title: Strings.of(context).saveCatchPageSpeciesLabel,
-          value: _speciesManager.entity(_speciesController.value)?.name,
+          value: _speciesController.value?.name,
           onTap: () {
             push(context, SpeciesListPage.picker(
               onPicked: (context, pickedSpecies) {
@@ -353,9 +343,9 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
     Catch cat = Catch()
       ..id = _oldCatch?.id ?? Id.random()
       ..timestamp = _timestampController.value
-      ..speciesId = _speciesController.value?.bytes ?? []
+      ..speciesId = _speciesController.value?.id ?? []
       ..fishingSpotId = _fishingSpotController.value?.id ?? []
-      ..baitId = _baitController.value?.bytes ?? []
+      ..baitId = _baitController.value?.id ?? []
       ..customEntityValues.addAll(entityValuesFromMap(customFieldValueMap));
       // imageNames is set in _catchManager.addOrUpdate
 
