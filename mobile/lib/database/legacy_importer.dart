@@ -176,13 +176,10 @@ class LegacyImporter {
             _baitCategoryManager.named(map[_keyBaitCategory])?.id;
 
         if (baitCategoryId == null) {
-          print(map[_keyBaitCategory]);
-          print(_parseJsonId(map[_keyBaitCategory]));
-          print(_baitCategoryManager
-              .entity(_parseJsonId(map[_keyBaitCategory])));
           baitCategoryId = _baitCategoryManager
               .entity(_parseJsonId(map[_keyBaitCategory]))?.id;
         }
+        
         if (baitCategoryId != null) {
           bait.baitCategoryId = baitCategoryId;
         }
