@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:mobile/custom_entity_manager.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
-import 'package:mobile/model/id.dart';
 import 'package:mobile/pages/form_page.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
@@ -90,7 +89,7 @@ class _EditableFormPageState extends State<EditableFormPage> {
     // Set custom fields' initial values.
     for (CustomEntityValue value in widget.customEntityValues) {
       CustomEntity entity =
-          _customEntityManager.entityFromPbId(value.customEntityId);
+          _customEntityManager.entity(value.customEntityId);
       if (entity == null) {
         continue;
       }

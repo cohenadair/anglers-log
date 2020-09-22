@@ -4,7 +4,7 @@ import 'package:mobile/bait_category_manager.dart';
 import 'package:mobile/bait_manager.dart';
 import 'package:mobile/data_manager.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
-import 'package:mobile/model/id.dart';
+import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mockito/mockito.dart';
 
 class MockAppManager extends Mock implements AppManager {}
@@ -32,32 +32,32 @@ void main() {
   });
 
   test("Number of baits", () {
-    Id baitCategoryId0 = Id.random();
-    Id baitCategoryId1 = Id.random();
-    Id baitCategoryId2 = Id.random();
-    Id baitCategoryId3 = Id.random();
+    Id baitCategoryId0 = randomId();
+    Id baitCategoryId1 = randomId();
+    Id baitCategoryId2 = randomId();
+    Id baitCategoryId3 = randomId();
 
     when(baitManager.list()).thenReturn([
       Bait()
-        ..id = Id.random().bytes
+        ..id = randomId()
         ..name = "Bait 1"
-        ..baitCategoryId = baitCategoryId0.bytes,
+        ..baitCategoryId = baitCategoryId0,
       Bait()
-        ..id = Id.random().bytes
+        ..id = randomId()
         ..name = "Bait 1"
-        ..baitCategoryId = baitCategoryId1.bytes,
+        ..baitCategoryId = baitCategoryId1,
       Bait()
-        ..id = Id.random().bytes
+        ..id = randomId()
         ..name = "Bait 1"
-        ..baitCategoryId = baitCategoryId2.bytes,
+        ..baitCategoryId = baitCategoryId2,
       Bait()
-        ..id = Id.random().bytes
+        ..id = randomId()
         ..name = "Bait 2"
-        ..baitCategoryId = baitCategoryId0.bytes,
+        ..baitCategoryId = baitCategoryId0,
       Bait()
-        ..id = Id.random().bytes
+        ..id = randomId()
         ..name = "Bait 1"
-        ..baitCategoryId = baitCategoryId3.bytes,
+        ..baitCategoryId = baitCategoryId3,
     ]);
 
     expect(baitCategoryManager.numberOfBaits(null), 0);

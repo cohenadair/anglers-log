@@ -2,11 +2,11 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/app_manager.dart';
 import 'package:mobile/bait_manager.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
-import 'package:mobile/model/id.dart';
 import 'package:mobile/report_manager.dart';
 import 'package:mobile/entity_manager.dart';
 import 'package:mobile/fishing_spot_manager.dart';
 import 'package:mobile/species_manager.dart';
+import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mockito/mockito.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -17,13 +17,13 @@ class MockCustomReportListener extends Mock implements
     EntityListener<SummaryReport> {}
 
 class TestCustomReportManager extends ReportManager<SummaryReport> {
-  final _id = Id.random();
+  final _id = randomId();
 
   TestCustomReportManager(AppManager app) : super(app);
 
   @override
   SummaryReport entityFromBytes(List<int> bytes) => SummaryReport()
-    ..id = _id.bytes
+    ..id = _id
     ..name = "Summary Report";
 
   @override
@@ -99,9 +99,9 @@ void main() {
     )).thenReturn(true);
 
     var species = Species()
-      ..id = Id.random().bytes
+      ..id = randomId()
       ..name = "Bass";
-    await speciesManager.delete(Id(species.id));
+    await speciesManager.delete(species.id);
     verifyNever(reportListener.onAddOrUpdate);
 
     // Successful delete.
@@ -110,7 +110,7 @@ void main() {
     )).thenReturn(false);
 
     await speciesManager.addOrUpdate(species);
-    await speciesManager.delete(Id(species.id));
+    await speciesManager.delete(species.id);
     verify(reportListener.onAddOrUpdate).called(1);
   });
 
@@ -120,9 +120,9 @@ void main() {
         .thenAnswer((_) => Future.value(false));
 
     var bait = Bait()
-      ..id = Id.random().bytes
+      ..id = randomId()
       ..name = "Lure";
-    await baitManager.delete(Id(bait.id));
+    await baitManager.delete(bait.id);
     verifyNever(reportListener.onAddOrUpdate);
 
     // Successful delete.
@@ -130,7 +130,7 @@ void main() {
         .thenAnswer((_) => Future.value(true));
 
     await baitManager.addOrUpdate(bait);
-    await baitManager.delete(Id(bait.id));
+    await baitManager.delete(bait.id);
     verify(reportListener.onAddOrUpdate).called(1);
   });
 
@@ -142,10 +142,10 @@ void main() {
         .thenAnswer((_) => Future.value(false));
 
     var fishingSpot = FishingSpot()
-      ..id = Id.random().bytes
+      ..id = randomId()
       ..lat = 0.03
       ..lng = 0.05;
-    await fishingSpotManager.delete(Id(fishingSpot.id));
+    await fishingSpotManager.delete(fishingSpot.id);
     verifyNever(reportListener.onAddOrUpdate);
 
     // Successful delete.
@@ -153,7 +153,7 @@ void main() {
         .thenAnswer((_) => Future.value(true));
 
     await fishingSpotManager.addOrUpdate(fishingSpot);
-    await fishingSpotManager.delete(Id(fishingSpot.id));
+    await fishingSpotManager.delete(fishingSpot.id);
     verify(reportListener.onAddOrUpdate).called(1);
   });
 }

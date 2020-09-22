@@ -6,7 +6,6 @@ import 'package:mobile/entity_manager.dart';
 import 'package:mobile/fishing_spot_manager.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
-import 'package:mobile/model/id.dart';
 import 'package:mobile/pages/bait_page.dart';
 import 'package:mobile/pages/catch_list_page.dart';
 import 'package:mobile/pages/fishing_spot_page.dart';
@@ -145,7 +144,7 @@ class _ReportSummaryState extends State<ReportSummary> {
       dateRange: dateRange,
       baitIds: _models.first.baitIds,
       fishingSpotIds: _models.first.fishingSpotIds,
-      speciesIds: {Id(species.id)},
+      speciesIds: {species.id},
     ),
   );
 
@@ -168,7 +167,7 @@ class _ReportSummaryState extends State<ReportSummary> {
         enableAdding: false,
         dateRange: dateRange,
         baitIds: _models.first.baitIds,
-        fishingSpotIds: {Id(fishingSpot.id)},
+        fishingSpotIds: {fishingSpot.id},
         speciesIds: _models.first.speciesIds,
       ),
     );
@@ -191,7 +190,7 @@ class _ReportSummaryState extends State<ReportSummary> {
       rowDetailsPage: (bait, dateRange) => CatchListPage(
         enableAdding: false,
         dateRange: dateRange,
-        baitIds: {Id(bait.id)},
+        baitIds: {bait.id},
         fishingSpotIds: _models.first.fishingSpotIds,
         speciesIds: _models.first.speciesIds,
       ),
@@ -248,7 +247,7 @@ class _ReportSummaryState extends State<ReportSummary> {
       series: _models.map((model) => Series<Bait>(
           model.baitsPerSpecies(_currentSpecies),
           model.displayDateRange)).toList(),
-      rowDetailsPage: (bait, _) => BaitPage(Id(bait.id), static: true),
+      rowDetailsPage: (bait, _) => BaitPage(bait.id, static: true),
     );
   }
 
@@ -270,7 +269,7 @@ class _ReportSummaryState extends State<ReportSummary> {
       series: _models.map((model) => Series<FishingSpot>(
           model.fishingSpotsPerSpecies(_currentSpecies),
           model.displayDateRange)).toList(),
-      rowDetailsPage: (fishingSpot, _) => FishingSpotPage(Id(fishingSpot.id)),
+      rowDetailsPage: (fishingSpot, _) => FishingSpotPage(fishingSpot.id),
     );
   }
 
@@ -503,22 +502,22 @@ class ReportSummaryModel {
     }
 
     for (Catch cat in catches) {
-      Species species = _speciesManager.entityFromPbId(cat.speciesId);
+      Species species = _speciesManager.entity(cat.speciesId);
       _catchIdsPerSpecies.putIfAbsent(species, () => {});
-      _catchIdsPerSpecies[species].add(Id(cat.id));
+      _catchIdsPerSpecies[species].add(cat.id);
       _catchesPerSpecies.putIfAbsent(species, () => 0);
       _catchesPerSpecies[species]++;
-      _catchIds.add(Id(cat.id));
+      _catchIds.add(cat.id);
 
       FishingSpot fishingSpot =
-          _fishingSpotManager.entityFromPbId(cat.fishingSpotId);
+          _fishingSpotManager.entity(cat.fishingSpotId);
       if (fishingSpot != null) {
         _catchesPerFishingSpot.putIfAbsent(fishingSpot, () => 0);
         _catchesPerFishingSpot[fishingSpot]++;
         _fishingSpotsPerSpecies.inc(species, fishingSpot);
       }
 
-      Bait bait = _baitManager.entityFromPbId(cat.baitId);
+      Bait bait = _baitManager.entity(cat.baitId);
       if (bait != null) {
         _catchesPerBait.putIfAbsent(bait, () => 0);
         _catchesPerBait[bait]++;

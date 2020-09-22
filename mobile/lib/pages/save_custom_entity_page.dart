@@ -5,7 +5,7 @@ import 'package:mobile/custom_entity_manager.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/log.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
-import 'package:mobile/model/id.dart';
+import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/utils/validator.dart';
 import 'package:mobile/widgets/dropdown_input.dart';
 import 'package:mobile/widgets/input_controller.dart';
@@ -34,9 +34,9 @@ class SaveCustomEntityPage extends StatefulWidget {
 }
 
 class _SaveCustomEntityPageState extends State<SaveCustomEntityPage> {
-  static final _idName = Id.random();
-  static final _idDescription = Id.random();
-  static final _idType = Id.random();
+  static final _idName = randomId();
+  static final _idDescription = randomId();
+  static final _idType = randomId();
 
   final Log _log = Log("SaveCustomEntityPage");
 
@@ -79,7 +79,7 @@ class _SaveCustomEntityPageState extends State<SaveCustomEntityPage> {
     if (_editing) {
       _nameController.value = _oldEntity.name;
       _descriptionController.value = _oldEntity.description;
-      _dataTypeController.value = _oldEntity.type ?? CustomEntity_Type.NUMBER;
+      _dataTypeController.value = _oldEntity.type;
     }
   }
 
@@ -134,7 +134,7 @@ class _SaveCustomEntityPageState extends State<SaveCustomEntityPage> {
 
   FutureOr<bool> _save(BuildContext _) {
     var customEntity = CustomEntity()
-      ..id = _oldEntity?.id ?? Id.random().bytes
+      ..id = _oldEntity?.id ?? randomId()
       ..name = _nameController.value
       ..description = _descriptionController.value
       ..type = _dataTypeController.value;

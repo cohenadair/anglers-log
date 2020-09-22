@@ -3,7 +3,6 @@ import 'package:mobile/app_manager.dart';
 import 'package:mobile/comparison_report_manager.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/model/gen/google/protobuf/timestamp.pb.dart';
-import 'package:mobile/model/id.dart';
 import 'package:mobile/utils/date_time_utils.dart';
 import 'package:mobile/widgets/reports/pb_report_view.dart';
 import 'package:mobile/widgets/reports/report_summary.dart';
@@ -58,9 +57,9 @@ class _ComparisonReportViewState extends State<ComparisonReportView> {
       sortOrder: ReportSummaryModelSortOrder.alphabetical,
       displayDateRange: DisplayDateRange.of(displayDateRangeId, startTimestamp,
           endTimestamp),
-      baitIds: Id.fromByteList(report.baitIds),
-      fishingSpotIds: Id.fromByteList(report.fishingSpotIds),
-      speciesIds: Id.fromByteList(report.speciesIds),
+      baitIds: report.baitIds.toSet(),
+      fishingSpotIds: report.fishingSpotIds.toSet(),
+      speciesIds: report.speciesIds.toSet(),
     );
   }
 }

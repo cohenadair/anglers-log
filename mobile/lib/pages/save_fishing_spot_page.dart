@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:mobile/fishing_spot_manager.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
-import 'package:mobile/model/id.dart';
 import 'package:mobile/pages/form_page.dart';
+import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/widgets/input_controller.dart';
 import 'package:mobile/widgets/text_input.dart';
 
@@ -34,7 +34,7 @@ class SaveFishingSpotPage extends StatefulWidget {
 }
 
 class _SaveFishingSpotPageState extends State<SaveFishingSpotPage> {
-  static final _idName = Id.random();
+  static final _idName = randomId();
 
   final _nameController = TextInputController();
 
@@ -59,7 +59,7 @@ class _SaveFishingSpotPageState extends State<SaveFishingSpotPage> {
       title: Text(title),
       onSave: (_) {
         FishingSpot newFishingSpot = FishingSpot()
-          ..id = _oldFishingSpot?.id ?? Id.random()
+          ..id = _oldFishingSpot?.id ?? randomId()
           ..lat = _oldFishingSpot?.lat
           ..lng = _oldFishingSpot?.lng
           ..name = _nameController.value;

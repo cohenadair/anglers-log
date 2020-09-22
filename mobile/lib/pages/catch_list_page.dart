@@ -5,7 +5,6 @@ import 'package:mobile/catch_manager.dart';
 import 'package:mobile/fishing_spot_manager.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
-import 'package:mobile/model/id.dart';
 import 'package:mobile/pages/add_catch_journey.dart';
 import 'package:mobile/pages/catch_page.dart';
 import 'package:mobile/pages/manageable_list_page.dart';
@@ -92,9 +91,9 @@ class CatchListPage extends StatelessWidget {
         ),
         deleteText: (context, cat) =>
             Text(catchManager.deleteMessage(context, cat)),
-        deleteItem: (context, cat) => catchManager.delete(Id(cat.id)),
+        deleteItem: (context, cat) => catchManager.delete(cat.id),
         addPageBuilder: enableAdding ? () => AddCatchJourney() : null,
-        detailPageBuilder: (cat) => CatchPage(Id(cat.id)),
+        detailPageBuilder: (cat) => CatchPage(cat.id),
         editPageBuilder: (cat) => SaveCatchPage.edit(cat),
       ),
     );
@@ -108,7 +107,7 @@ class CatchListPage extends StatelessWidget {
     Widget subtitle2 = Empty();
 
     FishingSpot fishingSpot =
-        fishingSpotManager.entityFromPbId(cat.fishingSpotId);
+        fishingSpotManager.entity(cat.fishingSpotId);
     if (fishingSpot != null && isNotEmpty(fishingSpot.name)) {
       // Use fishing spot as subtitle if available.
       subtitle2 = SubtitleLabel(fishingSpot.name ?? formatLatLng(
@@ -116,9 +115,9 @@ class CatchListPage extends StatelessWidget {
         lat: fishingSpot.lat,
         lng: fishingSpot.lng,
       ));
-    } else if (cat.baitId.isNotEmpty) {
+    } else {
       // Fallback on bait as a subtitle.
-      Bait bait = baitManager.entityFromPbId(cat.baitId);
+      Bait bait = baitManager.entity(cat.baitId);
       if (bait != null) {
         subtitle2 = SubtitleLabel(baitManager.formatNameWithCategory(bait));
       }
@@ -134,7 +133,7 @@ class CatchListPage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                PrimaryLabel(speciesManager.entity(Id(cat.speciesId)).name),
+                PrimaryLabel(speciesManager.entity(cat.speciesId).name),
                 SubtitleLabel(formatTimestamp(context, cat.timestamp)),
                 subtitle2,
               ],

@@ -2,8 +2,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/app_manager.dart';
 import 'package:mobile/data_manager.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
-import 'package:mobile/model/id.dart';
 import 'package:mobile/named_entity_manager.dart';
+import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mockito/mockito.dart';
 
 class MockAppManager extends Mock implements AppManager {}
@@ -16,7 +16,7 @@ class TestNamedEntityManager extends NamedEntityManager<Species> {
   Species entityFromBytes(List<int> bytes) => Species.fromBuffer(bytes);
 
   @override
-  Id id(Species species) => Id(species.id);
+  Id id(Species species) => species.id;
 
   @override
   String name(Species species) => species.name;
@@ -42,13 +42,13 @@ void main() {
 
   test("Entity named and name exists", () async {
     await _entityManager.addOrUpdate(Species()
-      ..id = Id.random().bytes
+      ..id = randomId()
       ..name = "Bass");
     await _entityManager.addOrUpdate(Species()
-      ..id = Id.random().bytes
+      ..id = randomId()
       ..name = "Bluegill");
     await _entityManager.addOrUpdate(Species()
-      ..id = Id.random().bytes
+      ..id = randomId()
       ..name = "Catfish");
 
     expect(_entityManager.nameExists(null), false);

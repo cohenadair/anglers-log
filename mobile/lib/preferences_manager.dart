@@ -5,9 +5,8 @@ import 'package:mobile/app_manager.dart';
 import 'package:mobile/data_manager.dart';
 import 'package:mobile/entity_manager.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
-import 'package:mobile/model/id.dart';
+import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:provider/provider.dart';
-import 'package:uuid/uuid.dart';
 
 class PreferencesManager {
   static PreferencesManager of(BuildContext context) =>
@@ -78,13 +77,12 @@ class PreferencesManager {
   }
 
   List<Id> _idList(String key) {
-    return _stringList(key).map((str) => Id(Uuid().parse(str).toList()))
-        .toList();
+    return _stringList(key).map((str) => parseId(str)).toList();
   }
 
   void _onDeleteCustomEntity(CustomEntity entity) {
-    baitCustomEntityIds = baitCustomEntityIds..remove(Id(entity.id));
-    catchCustomEntityIds = catchCustomEntityIds..remove(Id(entity.id));
+    baitCustomEntityIds = baitCustomEntityIds..remove(entity.id);
+    catchCustomEntityIds = catchCustomEntityIds..remove(entity.id);
   }
 
   void _onDatabaseReset() {

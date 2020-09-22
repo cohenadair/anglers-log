@@ -10,7 +10,6 @@ import 'package:mobile/fishing_spot_manager.dart';
 import 'package:mobile/image_manager.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/model/gen/google/protobuf/timestamp.pb.dart';
-import 'package:mobile/model/id.dart';
 import 'package:mobile/species_manager.dart';
 import 'package:mobile/utils/date_time_utils.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
@@ -63,6 +62,7 @@ void main() {
     
     speciesManager = MockSpeciesManager();
     when(appManager.speciesManager).thenReturn(speciesManager);
+    when(speciesManager.matchesFilter(any, any)).thenReturn(false);
 
     catchManager = CatchManager(appManager);
   });
@@ -80,32 +80,32 @@ void main() {
     catchManager.addListener(catchListener);
 
     // Add a bait.
-    Id baitId0 = Id.random();
+    Id baitId0 = randomId();
     Bait bait = Bait()
-      ..id = baitId0.bytes
+      ..id = baitId0
       ..name = "Rapala";
     await baitManager.addOrUpdate(bait);
 
     // Add a couple catches that use the new bait.
-    Id catchId0 = Id.random();
-    Id catchId1 = Id.random();
+    Id catchId0 = randomId();
+    Id catchId1 = randomId();
     await catchManager.addOrUpdate(Catch()
-      ..id = catchId0.bytes
-      ..baitId = baitId0.bytes);
+      ..id = catchId0
+      ..baitId = baitId0);
     await catchManager.addOrUpdate(Catch()
-      ..id = catchId1.bytes
-      ..baitId = baitId0.bytes);
+      ..id = catchId1
+      ..baitId = baitId0);
     verify(catchListener.onAddOrUpdate).called(2);
-    expect(catchManager.entity(catchId0).baitId, baitId0.bytes);
-    expect(catchManager.entity(catchId1).baitId, baitId0.bytes);
+    expect(catchManager.entity(catchId0).baitId, baitId0);
+    expect(catchManager.entity(catchId1).baitId, baitId0);
 
     // Delete the new bait.
     await baitManager.delete(baitId0);
 
     // Verify listeners are notified and memory cache updated.
     verify(catchListener.onAddOrUpdate).called(1);
-    expect(catchManager.entity(catchId0).baitId, isEmpty);
-    expect(catchManager.entity(catchId1).baitId, isEmpty);
+    expect(catchManager.entity(catchId0).hasBaitId(), false);
+    expect(catchManager.entity(catchId1).hasBaitId(), false);
   });
 
   test("When a fishing spot is deleted, existing catches are updated", () async
@@ -122,41 +122,41 @@ void main() {
     catchManager.addListener(catchListener);
 
     // Add a fishing spot.
-    Id fishingSpotId0 = Id.random();
+    Id fishingSpotId0 = randomId();
     FishingSpot fishingSpot = FishingSpot()
-      ..id = fishingSpotId0.bytes;
+      ..id = fishingSpotId0;
     await fishingSpotManager.addOrUpdate(fishingSpot);
 
     // Add a couple catches that use the new fishing spot.
-    Id catchId0 = Id.random();
-    Id catchId1 = Id.random();
+    Id catchId0 = randomId();
+    Id catchId1 = randomId();
     await catchManager.addOrUpdate(Catch()
-      ..id = catchId0.bytes
-      ..fishingSpotId = fishingSpotId0.bytes);
+      ..id = catchId0
+      ..fishingSpotId = fishingSpotId0);
     await catchManager.addOrUpdate(Catch()
-      ..id = catchId1.bytes
-      ..fishingSpotId = fishingSpotId0.bytes);
+      ..id = catchId1
+      ..fishingSpotId = fishingSpotId0);
     verify(catchListener.onAddOrUpdate).called(2);
-    expect(catchManager.entity(catchId0).fishingSpotId, fishingSpotId0.bytes);
-    expect(catchManager.entity(catchId1).fishingSpotId, fishingSpotId0.bytes);
+    expect(catchManager.entity(catchId0).fishingSpotId, fishingSpotId0);
+    expect(catchManager.entity(catchId1).fishingSpotId, fishingSpotId0);
 
     // Delete the new fishing spot.
     await fishingSpotManager.delete(fishingSpotId0);
 
     // Verify listeners are notified and memory cache updated.
     verify(catchListener.onAddOrUpdate).called(1);
-    expect(catchManager.entity(catchId0).fishingSpotId, isEmpty);
-    expect(catchManager.entity(catchId1).fishingSpotId, isEmpty);
+    expect(catchManager.entity(catchId0).hasFishingSpotId(), false);
+    expect(catchManager.entity(catchId1).hasFishingSpotId(), false);
   });
 
   testWidgets("Filtering by search query; non-ID reference properties",
       (WidgetTester tester) async
   {
     await catchManager.addOrUpdate(Catch()
-      ..id = Id.random().bytes
+      ..id = randomId()
       ..timestamp = Timestamp.fromDateTime(DateTime(2020, 1, 1)));
     await catchManager.addOrUpdate(Catch()
-      ..id = Id.random().bytes
+      ..id = randomId()
       ..timestamp = Timestamp.fromDateTime(DateTime(2020, 4, 4)));
 
     BuildContext context = await buildContext(tester);
@@ -182,11 +182,11 @@ void main() {
     when(baitManager.matchesFilter(any, any)).thenReturn(true);
 
     await catchManager.addOrUpdate(Catch()
-      ..id = Id.random().bytes
-      ..baitId = Id.random().bytes);
+      ..id = randomId()
+      ..baitId = randomId());
     await catchManager.addOrUpdate(Catch()
-      ..id = Id.random().bytes
-      ..baitId = Id.random().bytes);
+      ..id = randomId()
+      ..baitId = randomId());
 
     BuildContext context = await buildContext(tester);
     expect(catchManager.filteredCatches(context, filter: "Bait").length, 2);
@@ -200,11 +200,11 @@ void main() {
     when(fishingSpotManager.matchesFilter(any, any)).thenReturn(true);
 
     await catchManager.addOrUpdate(Catch()
-      ..id = Id.random().bytes
-      ..fishingSpotId = Id.random().bytes);
+      ..id = randomId()
+      ..fishingSpotId = randomId());
     await catchManager.addOrUpdate(Catch()
-      ..id = Id.random().bytes
-      ..fishingSpotId = Id.random().bytes);
+      ..id = randomId()
+      ..fishingSpotId = randomId());
 
     BuildContext context = await buildContext(tester);
     expect(catchManager.filteredCatches(context, filter: "Spot").length, 2);
@@ -218,11 +218,11 @@ void main() {
     when(speciesManager.matchesFilter(any, any)).thenReturn(true);
 
     await catchManager.addOrUpdate(Catch()
-      ..id = Id.random().bytes
-      ..speciesId = Id.random().bytes);
+      ..id = randomId()
+      ..speciesId = randomId());
     await catchManager.addOrUpdate(Catch()
-      ..id = Id.random().bytes
-      ..speciesId = Id.random().bytes);
+      ..id = randomId()
+      ..speciesId = randomId());
 
     BuildContext context = await buildContext(tester);
     expect(catchManager.filteredCatches(context, filter: "Species").length, 2);
@@ -232,26 +232,26 @@ void main() {
     when(dataManager.insertOrUpdateEntity(any, any, any))
         .thenAnswer((_) => Future.value(true));
 
-    Id speciesId0 = Id.random();
-    Id speciesId1 = Id.random();
-    Id speciesId2 = Id.random();
+    Id speciesId0 = randomId();
+    Id speciesId1 = randomId();
+    Id speciesId2 = randomId();
 
     await catchManager.addOrUpdate(Catch()
-      ..id = Id.random().bytes
+      ..id = randomId()
       ..timestamp = Timestamp.fromDateTime(DateTime(2020, 1, 1))
-      ..speciesId = speciesId0.bytes);
+      ..speciesId = speciesId0);
     await catchManager.addOrUpdate(Catch()
-      ..id = Id.random().bytes
+      ..id = randomId()
       ..timestamp = Timestamp.fromDateTime(DateTime(2020, 2, 2))
-      ..speciesId = speciesId1.bytes);
+      ..speciesId = speciesId1);
     await catchManager.addOrUpdate(Catch()
-      ..id = Id.random().bytes
+      ..id = randomId()
       ..timestamp = Timestamp.fromDateTime(DateTime(2020, 2, 2))
-      ..speciesId = speciesId1.bytes);
+      ..speciesId = speciesId1);
     await catchManager.addOrUpdate(Catch()
-      ..id = Id.random().bytes
+      ..id = randomId()
       ..timestamp = Timestamp.fromDateTime(DateTime(2020, 4, 4))
-      ..speciesId = speciesId2.bytes);
+      ..speciesId = speciesId2);
 
     BuildContext context = await buildContext(tester);
     List<Catch> catches = catchManager.filteredCatches(context,
@@ -268,7 +268,7 @@ void main() {
     expect(catches.length, 4);
 
     catches = catchManager.filteredCatches(context,
-      speciesIds: {Id.random()},
+      speciesIds: {randomId()},
     );
     expect(catches.isEmpty, true);
   });
@@ -278,14 +278,14 @@ void main() {
         .thenAnswer((_) => Future.value(true));
 
     await catchManager.addOrUpdate(Catch()
-      ..id = Id.random().bytes
-      ..timestamp = Timestamps.fromMillis(5000));
+      ..id = randomId()
+      ..timestamp = timestampFromMillis(5000));
     await catchManager.addOrUpdate(Catch()
-      ..id = Id.random().bytes
-      ..timestamp = Timestamps.fromMillis(10000));
+      ..id = randomId()
+      ..timestamp = timestampFromMillis(10000));
     await catchManager.addOrUpdate(Catch()
-      ..id = Id.random().bytes
-      ..timestamp = Timestamps.fromMillis(20000));
+      ..id = randomId()
+      ..timestamp = timestampFromMillis(20000));
 
     BuildContext context = await buildContext(tester);
     List<Catch> catches = catchManager.filteredCatches(context,
@@ -312,23 +312,23 @@ void main() {
     when(dataManager.insertOrUpdateEntity(any, any, any))
         .thenAnswer((_) => Future.value(true));
 
-    Id fishingSpotId0 = Id.random();
-    Id fishingSpotId1 = Id.random();
-    Id fishingSpotId2 = Id.random();
-    Id fishingSpotId3 = Id.random();
+    Id fishingSpotId0 = randomId();
+    Id fishingSpotId1 = randomId();
+    Id fishingSpotId2 = randomId();
+    Id fishingSpotId3 = randomId();
 
     await catchManager.addOrUpdate(Catch()
-      ..id = Id.random().bytes
-      ..fishingSpotId = fishingSpotId0.bytes);
+      ..id = randomId()
+      ..fishingSpotId = fishingSpotId0);
     await catchManager.addOrUpdate(Catch()
-      ..id = Id.random().bytes
-      ..fishingSpotId = fishingSpotId1.bytes);
+      ..id = randomId()
+      ..fishingSpotId = fishingSpotId1);
     await catchManager.addOrUpdate(Catch()
-      ..id = Id.random().bytes
-      ..fishingSpotId = fishingSpotId0.bytes);
+      ..id = randomId()
+      ..fishingSpotId = fishingSpotId0);
     await catchManager.addOrUpdate(Catch()
-      ..id = Id.random().bytes
-      ..fishingSpotId = fishingSpotId3.bytes);
+      ..id = randomId()
+      ..fishingSpotId = fishingSpotId3);
 
     BuildContext context = await buildContext(tester);
     List<Catch> catches = catchManager.filteredCatches(context,
@@ -354,23 +354,23 @@ void main() {
     when(dataManager.insertOrUpdateEntity(any, any, any))
         .thenAnswer((_) => Future.value(true));
 
-    Id baitId0 = Id.random();
-    Id baitId1 = Id.random();
-    Id baitId2 = Id.random();
-    Id baitId3 = Id.random();
+    Id baitId0 = randomId();
+    Id baitId1 = randomId();
+    Id baitId2 = randomId();
+    Id baitId3 = randomId();
 
     await catchManager.addOrUpdate(Catch()
-      ..id = Id.random().bytes
-      ..baitId = baitId0.bytes);
+      ..id = randomId()
+      ..baitId = baitId0);
     await catchManager.addOrUpdate(Catch()
-      ..id = Id.random().bytes
-      ..baitId = baitId1.bytes);
+      ..id = randomId()
+      ..baitId = baitId1);
     await catchManager.addOrUpdate(Catch()
-      ..id = Id.random().bytes
-      ..baitId = baitId0.bytes);
+      ..id = randomId()
+      ..baitId = baitId0);
     await catchManager.addOrUpdate(Catch()
-      ..id = Id.random().bytes
-      ..baitId = baitId3.bytes);
+      ..id = randomId()
+      ..baitId = baitId3);
 
     BuildContext context = await buildContext(tester);
     List<Catch> catches = catchManager.filteredCatches(context,
@@ -396,19 +396,19 @@ void main() {
     when(dataManager.insertOrUpdateEntity(any, any, any))
         .thenAnswer((_) => Future.value(true));
 
-    Id catchId0 = Id.random();
-    Id catchId1 = Id.random();
-    Id catchId2 = Id.random();
-    Id catchId3 = Id.random();
+    Id catchId0 = randomId();
+    Id catchId1 = randomId();
+    Id catchId2 = randomId();
+    Id catchId3 = randomId();
 
     await catchManager.addOrUpdate(Catch()
-      ..id = catchId0.bytes);
+      ..id = catchId0);
     await catchManager.addOrUpdate(Catch()
-      ..id = catchId1.bytes);
+      ..id = catchId1);
     await catchManager.addOrUpdate(Catch()
-      ..id = catchId2.bytes);
+      ..id = catchId2);
     await catchManager.addOrUpdate(Catch()
-      ..id = catchId3.bytes);
+      ..id = catchId3);
 
     BuildContext context = await buildContext(tester);
     List<Catch> catches = catchManager.filteredCatches(context,
@@ -420,7 +420,7 @@ void main() {
     expect(catches.length, 4);
 
     catches = catchManager.filteredCatches(context,
-      catchIds: {Id.random()},
+      catchIds: {randomId()},
     );
     expect(catches.isEmpty, true);
   });
@@ -429,35 +429,35 @@ void main() {
     when(dataManager.insertOrUpdateEntity(any, any, any))
         .thenAnswer((_) => Future.value(true));
 
-    Id catchId0 = Id.random();
+    Id catchId0 = randomId();
 
-    Id speciesId0 = Id.random();
-    Id speciesId1 = Id.random();
+    Id speciesId0 = randomId();
+    Id speciesId1 = randomId();
 
-    Id baitId0 = Id.random();
-    Id baitId1 = Id.random();
+    Id baitId0 = randomId();
+    Id baitId1 = randomId();
 
-    Id fishingSpotId0 = Id.random();
-    Id fishingSpotId1 = Id.random();
+    Id fishingSpotId0 = randomId();
+    Id fishingSpotId1 = randomId();
 
     await catchManager.addOrUpdate(Catch()
-      ..id = catchId0.bytes
-      ..timestamp = Timestamps.fromMillis(5000)
-      ..speciesId = speciesId0.bytes
-      ..baitId = baitId0.bytes
-      ..fishingSpotId = fishingSpotId0.bytes);
+      ..id = catchId0
+      ..timestamp = timestampFromMillis(5000)
+      ..speciesId = speciesId0
+      ..baitId = baitId0
+      ..fishingSpotId = fishingSpotId0);
     await catchManager.addOrUpdate(Catch()
-      ..id = Id.random().bytes
-      ..timestamp = Timestamps.fromMillis(10000)
-      ..speciesId = speciesId1.bytes
-      ..baitId = baitId1.bytes
-      ..fishingSpotId = fishingSpotId1.bytes);
+      ..id = randomId()
+      ..timestamp = timestampFromMillis(10000)
+      ..speciesId = speciesId1
+      ..baitId = baitId1
+      ..fishingSpotId = fishingSpotId1);
     await catchManager.addOrUpdate(Catch()
-      ..id = Id.random().bytes
-      ..timestamp = Timestamps.fromMillis(20000)
-      ..speciesId = speciesId1.bytes
-      ..baitId = baitId0.bytes
-      ..fishingSpotId = fishingSpotId1.bytes);
+      ..id = randomId()
+      ..timestamp = timestampFromMillis(20000)
+      ..speciesId = speciesId1
+      ..baitId = baitId0
+      ..fishingSpotId = fishingSpotId1);
 
     BuildContext context = await buildContext(tester);
     List<Catch> catches = catchManager.filteredCatches(context,
@@ -473,7 +473,7 @@ void main() {
 
     catches = catchManager.filteredCatches(context,
       catchIds: {catchId0},
-      speciesIds: {Id.random()},
+      speciesIds: {randomId()},
       baitIds: {baitId0},
     );
     expect(catches.isEmpty, true);

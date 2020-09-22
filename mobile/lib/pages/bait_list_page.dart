@@ -4,11 +4,11 @@ import 'package:mobile/bait_manager.dart';
 import 'package:mobile/entity_manager.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
-import 'package:mobile/model/id.dart';
 import 'package:mobile/pages/bait_page.dart';
 import 'package:mobile/pages/manageable_list_page.dart';
 import 'package:mobile/pages/save_bait_page.dart';
 import 'package:mobile/res/dimen.dart';
+import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/utils/string_utils.dart';
 import 'package:mobile/widgets/text.dart';
 import 'package:mobile/widgets/widget.dart';
@@ -108,15 +108,14 @@ class _BaitListPageState extends State<BaitListPage> {
     // Add a category for baits that don't have a category. This is purposely
     // added to the end of the sorted list.
     BaitCategory noCategory = BaitCategory()
-      ..id = Id.random().bytes
+      ..id = randomId()
       ..name = Strings.of(context).baitListPageOtherCategory;
     categories.add(noCategory);
 
     // First, organize baits in to category collections.
     Map<Id, List<Bait>> map = {};
     for (var bait in baits) {
-      Id id =
-          Id(bait.hasBaitCategoryId() ? noCategory.id : bait.baitCategoryId);
+      Id id = bait.hasBaitCategoryId() ? noCategory.id : bait.baitCategoryId;
       map.putIfAbsent(id, () => []);
       map[id].add(bait);
     }

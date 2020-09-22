@@ -181,11 +181,6 @@ class ImageManager {
     return result;
   }
 
-  /// Clears the memory cache for [fileNames].
-  void clearMemoryCache(List<String> fileNames) {
-    fileNames.forEach((fileName) => _thumbnails.remove(fileName));
-  }
-
   Future<Uint8List> _compress(BuildContext context, File source, int quality,
       double size) async
   {

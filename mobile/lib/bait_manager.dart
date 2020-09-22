@@ -6,12 +6,10 @@ import 'package:mobile/custom_entity_manager.dart';
 import 'package:mobile/entity_manager.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
-import 'package:mobile/model/id.dart';
 import 'package:mobile/named_entity_manager.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/utils/string_utils.dart';
 import 'package:provider/provider.dart';
-import 'package:quiver/strings.dart';
 
 class BaitManager extends NamedEntityManager<Bait> {
   static BaitManager of(BuildContext context) =>
@@ -33,7 +31,7 @@ class BaitManager extends NamedEntityManager<Bait> {
   Bait entityFromBytes(List<int> bytes) => Bait.fromBuffer(bytes);
 
   @override
-  Id id(Bait bait) => Id(bait.id);
+  Id id(Bait bait) => bait.id;
 
   @override
   String name(Bait bait) => bait.name;
@@ -49,9 +47,7 @@ class BaitManager extends NamedEntityManager<Bait> {
     }
 
     if (super.matchesFilter(id, filter)
-        || (bait.baitCategoryId.isNotEmpty
-            && _baitCategoryManager.matchesFilter(Id(bait.baitCategoryId),
-                filter))
+        || _baitCategoryManager.matchesFilter(bait.baitCategoryId, filter)
         || entityValuesMatchesFilter(bait.customEntityValues, filter,
             _customEntityManager))
     {
@@ -67,8 +63,6 @@ class BaitManager extends NamedEntityManager<Bait> {
     return list().firstWhere((lhs) => lhs.baitCategoryId == rhs.baitCategoryId
         && equalsTrimmedIgnoreCase(lhs.name, rhs.name)
         && lhs.customEntityValues == rhs.customEntityValues
-        // When checking for duplicates, the IDs must be different, otherwise
-        // they'd be considered the same Bait.
         && lhs.id != rhs.id, orElse: () => null) != null;
   }
 
@@ -100,12 +94,9 @@ class BaitManager extends NamedEntityManager<Bait> {
       return null;
     }
 
-    if (bait.baitCategoryId.isNotEmpty) {
-      BaitCategory category =
-          _baitCategoryManager.entityFromPbId(bait.baitCategoryId);
-      if (category != null) {
-        return "${category.name} - ${bait.name}";
-      }
+    BaitCategory category = _baitCategoryManager.entity(bait.baitCategoryId);
+    if (category != null) {
+      return "${category.name} - ${bait.name}";
     }
 
     return bait.name;
@@ -117,8 +108,7 @@ class BaitManager extends NamedEntityManager<Bait> {
         ? Strings.of(context).baitListPageDeleteMessageSingular
         : Strings.of(context).baitListPageDeleteMessage;
 
-    BaitCategory category =
-        _baitCategoryManager.entityFromPbId(bait.baitCategoryId);
+    BaitCategory category = _baitCategoryManager.entity(bait.baitCategoryId);
     String baitName;
     if (category == null) {
       baitName =  bait.name;
@@ -133,7 +123,7 @@ class BaitManager extends NamedEntityManager<Bait> {
     List<Bait>.from(list()
         .where((bait) => baitCategory.id == bait.baitCategoryId))
         .forEach((bait) {
-          entities[Id(bait.id)] = bait.copyWith((b) => b.baitCategoryId = []);
+          entities[bait.id].clearBaitCategoryId();
         });
 
     replaceDatabaseWithCache();

@@ -7,7 +7,6 @@ import 'package:mobile/entity_manager.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/log.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
-import 'package:mobile/model/id.dart';
 import 'package:mobile/pages/bait_category_list_page.dart';
 import 'package:mobile/pages/editable_form_page.dart';
 import 'package:mobile/preferences_manager.dart';
@@ -33,8 +32,8 @@ class SaveBaitPage extends StatefulWidget {
 }
 
 class _SaveBaitPageState extends State<SaveBaitPage> {
-  static final _idBaitCategory = Id.random();
-  static final _idName = Id.random();
+  static final _idBaitCategory = randomId();
+  static final _idName = randomId();
 
   final Log _log = Log("SaveCatchPage");
 
@@ -78,7 +77,7 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
 
     if (_editing) {
       _baitCategoryController.value =
-          _baitCategoryManager.entityFromPbId(_oldBait.baitCategoryId);
+          _baitCategoryManager.entity(_oldBait.baitCategoryId);
       _nameController.value = _oldBait.name;
       _customEntityValues = _oldBait.customEntityValues;
     }
@@ -145,7 +144,7 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
     _preferencesManager.baitCustomEntityIds = customFieldValueMap.keys.toList();
 
     Bait newBait = Bait()
-      ..id = _oldBait?.id ?? Id.random().bytes
+      ..id = _oldBait?.id ?? randomId()
       ..name = _nameController.value
       ..baitCategoryId = _baitCategoryController.value?.id ?? []
       ..customEntityValues.addAll(entityValuesFromMap(customFieldValueMap));

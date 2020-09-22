@@ -4,7 +4,6 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
-import 'package:mobile/model/id.dart';
 
 void moveMap(Completer<GoogleMapController> controller, LatLng latLng,
     [bool animate = true])
@@ -44,8 +43,8 @@ class FishingSpotMarker extends Marker {
     @required this.fishingSpot,
     void Function(FishingSpot) onTap,
     bool active = false,
-  }) : id = Id(fishingSpot.id), super(
-    markerId: MarkerId(Id(fishingSpot.id).toString()),
+  }) : id = fishingSpot.id, super(
+    markerId: MarkerId(fishingSpot.id.uuid),
     position: LatLng(fishingSpot.lat, fishingSpot.lng),
     onTap: onTap == null ? null : () {
       onTap(fishingSpot);

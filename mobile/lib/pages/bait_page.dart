@@ -3,7 +3,6 @@ import 'package:mobile/bait_category_manager.dart';
 import 'package:mobile/bait_manager.dart';
 import 'package:mobile/entity_manager.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
-import 'package:mobile/model/id.dart';
 import 'package:mobile/pages/entity_page.dart';
 import 'package:mobile/pages/save_bait_page.dart';
 import 'package:mobile/res/dimen.dart';
@@ -51,7 +50,7 @@ class _BaitPageState extends State<BaitPage> {
         ),
         static: widget.static,
         onEdit: () => present(context, SaveBaitPage.edit(_bait)),
-        onDelete: () => _baitManager.delete(Id(_bait.id)),
+        onDelete: () => _baitManager.delete(_bait.id),
         deleteMessage: _baitManager.deleteMessage(context, _bait),
         children: [
           _buildBaitCategory(),
@@ -63,7 +62,7 @@ class _BaitPageState extends State<BaitPage> {
 
   Widget _buildBaitCategory() {
     BaitCategory baitCategory =
-        _baitCategoryManager.entityFromPbId(_bait.baitCategoryId);
+        _baitCategoryManager.entity(_bait.baitCategoryId);
     if (baitCategory == null) {
       return Empty();
     }

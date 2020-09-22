@@ -1,11 +1,13 @@
+import 'dart:typed_data';
+
 import 'package:flutter/cupertino.dart';
 import 'package:mobile/custom_entity_manager.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/model/gen/google/protobuf/timestamp.pb.dart';
-import 'package:mobile/model/id.dart';
 import 'package:mobile/utils/string_utils.dart';
 import 'package:quiver/strings.dart';
+import 'package:uuid/uuid.dart';
 
 int entityValuesCount<T>(List<T> entities, Id customEntityId,
     List<CustomEntityValue> Function(T) getValues)
@@ -15,7 +17,7 @@ int entityValuesCount<T>(List<T> entities, Id customEntityId,
     List<CustomEntityValue> values = getValues(entity) ?? [];
     if (values.isNotEmpty) {
       for (CustomEntityValue value in values) {
-        if (Id(value.customEntityId) == customEntityId) {
+        if (value.customEntityId == customEntityId) {
           result++;
         }
       }
@@ -33,7 +35,7 @@ bool entityValuesMatchesFilter(List<CustomEntityValue> values, String filter,
   }
 
   for (CustomEntityValue value in values) {
-    if (customEntityManager.matchesFilter(Id(value.customEntityId), filter)
+    if (customEntityManager.matchesFilter(value.customEntityId, filter)
         || isEmpty(value.value)
         || value.value.toLowerCase().contains(filter.toLowerCase()))
     {
@@ -57,7 +59,7 @@ List<CustomEntityValue> entityValuesFromMap(Map<Id, dynamic> keyValues) {
     }
 
     result.add(CustomEntityValue()
-      ..customEntityId = entry.key.bytes
+      ..customEntityId = entry.key
       ..value = entry.value.toString());
   }
 
@@ -67,7 +69,6 @@ List<CustomEntityValue> entityValuesFromMap(Map<Id, dynamic> keyValues) {
 dynamic valueForCustomEntityType(CustomEntity_Type type,
     CustomEntityValue value, [BuildContext context])
 {
-  var value;
   switch (type) {
     case CustomEntity_Type.NUMBER:
     // Fallthrough.
@@ -83,11 +84,38 @@ dynamic valueForCustomEntityType(CustomEntity_Type type,
   }
 }
 
+Id randomId() => Id()..uuid = Uuid().v1();
+
+/// Parses [idString] into an [Id] object. Throws an [AssertionError] if
+/// [idString] is null or empty, or if [idString] isn't a valid UUID.
+Id parseId(String idString) {
+  assert(isNotEmpty(idString));
+
+  String uuid = Uuid().unparse(Uuid().parse(idString));
+  if (uuid == Uuid.NAMESPACE_NIL) {
+    throw ArgumentError("Input String is not a valid UUID");
+  }
+
+  return Id()..uuid = uuid;
+}
+
+Id safeParseId(String idString) {
+  try {
+    return parseId(idString);
+  } catch (e) {
+    return null;
+  }
+}
+
+Timestamp timestampFromMillis(int millisSinceEpoch) => Timestamp.fromDateTime(
+    DateTime.fromMillisecondsSinceEpoch(millisSinceEpoch));
+
+extension Ids on Id {
+  List<int> get bytes => Uuid().parse(uuid);
+  Uint8List get uint8List => Uint8List.fromList(bytes);
+}
+
 extension Timestamps on Timestamp {
-  static Timestamp fromMillis(int millisSinceEpoch) => Timestamp.fromDateTime(
-      DateTime.fromMillisecondsSinceEpoch(millisSinceEpoch));
-
   int compareTo(Timestamp other) => toDateTime().compareTo(other.toDateTime());
-
   int get ms => toDateTime().millisecondsSinceEpoch;
 }

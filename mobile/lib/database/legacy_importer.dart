@@ -13,8 +13,8 @@ import 'package:mobile/fishing_spot_manager.dart';
 import 'package:mobile/log.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/model/gen/google/protobuf/timestamp.pb.dart';
-import 'package:mobile/model/id.dart';
 import 'package:mobile/species_manager.dart';
+import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/utils/string_utils.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
@@ -166,21 +166,36 @@ class LegacyImporter {
 
     for (var item in baits) {
       Map<String, dynamic> map = item as Map<String, dynamic>;
-      await _baitManager.addOrUpdate(Bait()
-        ..id = Id.random().bytes
-        ..name = map[_keyName]
-        ..baitCategoryId = _baitCategoryManager.named(map[_keyBaitCategory])?.id
-            ?? _baitCategoryManager
-                .entity(_parseJsonId(map[_keyBaitCategory]))?.id
-            ?? [],
-      );
+      Bait bait = Bait()
+        ..id = randomId()
+        ..name = map[_keyName];
+
+      if (isNotEmpty(map[_keyBaitCategory])) {
+        // See if JSON is using the name as the ID.
+        Id baitCategoryId =
+            _baitCategoryManager.named(map[_keyBaitCategory])?.id;
+
+        if (baitCategoryId == null) {
+          print(map[_keyBaitCategory]);
+          print(_parseJsonId(map[_keyBaitCategory]));
+          print(_baitCategoryManager
+              .entity(_parseJsonId(map[_keyBaitCategory])));
+          baitCategoryId = _baitCategoryManager
+              .entity(_parseJsonId(map[_keyBaitCategory]))?.id;
+        }
+        if (baitCategoryId != null) {
+          bait.baitCategoryId = baitCategoryId;
+        }
+      }
+
+      await _baitManager.addOrUpdate(bait);
     }
   }
 
   Future<void> _importBaitCategories(List<dynamic> categories) async {
     await _importNamedEntity(categories, (name, id) async =>
         await _baitCategoryManager.addOrUpdate(BaitCategory()
-          ..id = id.bytes ?? Id.random().bytes
+          ..id = id ?? randomId()
           ..name = name));
   }
 
@@ -216,7 +231,7 @@ class LegacyImporter {
         }
 
         await _fishingSpotManager.addOrUpdate(FishingSpot()
-          ..id = Id.random().bytes
+          ..id = randomId()
           ..name = isNotEmpty(fishingSpotName) ? fishingSpotName : null
           ..lat = lat
           ..lng = lng
@@ -228,7 +243,7 @@ class LegacyImporter {
   Future<void> _importSpecies(List<dynamic> species) async {
     await _importNamedEntity(species, (name, id) async =>
         await _speciesManager.addOrUpdate(Species()
-          ..id = id.bytes ?? Id.random().bytes
+          ..id = id ?? randomId()
           ..name = name
         ));
   }
@@ -291,13 +306,21 @@ class LegacyImporter {
         }
       }
 
+      Catch cat = Catch()
+        ..id = randomId()
+        ..timestamp = Timestamp.fromDateTime(dateTime)
+        ..speciesId = species.id;
+
+      if (bait != null) {
+        cat.baitId = bait.id;
+      }
+
+      if (fishingSpot != null) {
+        cat.fishingSpotId = fishingSpot.id;
+      }
+
       await _catchManager.addOrUpdate(
-        Catch()
-          ..id = Id.random().bytes
-          ..timestamp = Timestamp.fromDateTime(dateTime)
-          ..speciesId = species.id
-          ..baitId = bait?.id ?? []
-          ..fishingSpotId = fishingSpot?.id ?? [],
+        cat,
         imageFiles: images,
         // Images were already compressed by legacy Anglers' Log versions.
         compressImages: false,
@@ -309,14 +332,15 @@ class LegacyImporter {
 
   Id _parseJsonId(String jsonId) {
     if (isEmpty(jsonId)) {
-      return Id.random();
+      return randomId();
     }
 
-    try {
-      return Id.parse(jsonId);
-    } catch (e) {
+    Id result = safeParseId(jsonId);
+    if (result == null) {
       _log.w("Invalid UUID string: $jsonId");
-      return Id.random();
+      return randomId();
     }
+
+    return result;
   }
 }

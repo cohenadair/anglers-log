@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile/custom_entity_manager.dart';
 import 'package:mobile/entity_manager.dart';
 import 'package:mobile/i18n/strings.dart';
-import 'package:mobile/model/id.dart';
+import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/pages/picker_page.dart';
 import 'package:mobile/pages/save_custom_entity_page.dart';
 import 'package:mobile/res/dimen.dart';
@@ -307,11 +307,11 @@ class _SelectionPageState extends State<_SelectionPage> {
 
     // Add customs fields that aren't already part of the form.
     for (var entity in customEntityManager.list()) {
-      if (customFields.firstWhere((field) => field.id == Id(entity.id),
+      if (customFields.firstWhere((field) => field.id == entity.id,
           orElse: () => null) == null)
       {
         customFields.add(FormPageFieldOption(
-          id: Id(entity.id),
+          id: entity.id,
           userFacingName: entity.name,
         ));
       }

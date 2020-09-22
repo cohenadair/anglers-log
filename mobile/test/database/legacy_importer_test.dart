@@ -11,12 +11,10 @@ import 'package:mobile/database/legacy_importer.dart';
 import 'package:mobile/fishing_spot_manager.dart';
 import 'package:mobile/image_manager.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
-import 'package:mobile/model/id.dart';
 import 'package:mobile/species_manager.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mockito/mockito.dart';
 import 'package:path/path.dart' as Path;
-import 'package:uuid/uuid.dart';
 
 import '../test_utils.dart';
 
@@ -80,27 +78,27 @@ void main() {
     // Legacy iOS files don't use UUIDs, so verify IDs are present and valid.
     for (BaitCategory baitCategory in baitCategoryManager.list()) {
       expect(baitCategory.id, isNotNull);
-      expect(Uuid().unparse(baitCategory.id), isNotEmpty);
+      expect(baitCategory.id.uuid, isNotEmpty);
     }
 
     for (Bait bait in baitManager.list()) {
       expect(bait.id, isNotNull);
-      expect(Uuid().unparse(bait.id), isNotEmpty);
+      expect(bait.id.uuid, isNotEmpty);
     }
 
     for (Catch cat in catchManager.list()) {
       expect(cat.id, isNotNull);
-      expect(Uuid().unparse(cat.id), isNotEmpty);
+      expect(cat.id.uuid, isNotEmpty);
     }
 
     for (FishingSpot fishingSpot in fishingSpotManager.list()) {
       expect(fishingSpot.id, isNotNull);
-      expect(Uuid().unparse(fishingSpot.id), isNotEmpty);
+      expect(fishingSpot.id.uuid, isNotEmpty);
     }
 
     for (Species species in speciesManager.list()) {
       expect(species.id, isNotNull);
-      expect(Uuid().unparse(species.id), isNotEmpty);
+      expect(species.id.uuid, isNotEmpty);
     }
   }
 
@@ -180,13 +178,13 @@ void main() {
 
     expect(catches[0].timestamp.ms,
         DateTime(2019, 8, 13, 0, 44).millisecondsSinceEpoch);
-    expect(catches[0].speciesId, isNotEmpty);
-    expect(speciesManager.entity(Id(catches[0].speciesId)).name,
+    expect(catches[0].hasFishingSpotId(), true);
+    expect(speciesManager.entity(catches[0].speciesId).name,
         "Carp - Common");
-    expect(catches[0].baitId, isNotEmpty);
-    expect(baitManager.entity(Id(catches[0].baitId)).name, "Corn");
-    expect(catches[0].fishingSpotId, isNotEmpty);
-    expect(fishingSpotManager.entity(Id(catches[0].fishingSpotId)).name,
+    expect(catches[0].hasBaitId(), true);
+    expect(baitManager.entity(catches[0].baitId).name, "Corn");
+    expect(catches[0].hasFishingSpotId(), true);
+    expect(fishingSpotManager.entity(catches[0].fishingSpotId).name,
         "Tennessee River - Sequoyah Hills Park");
 
     expect(catches[1].timestamp.ms,
@@ -261,14 +259,14 @@ void main() {
 
     expect(catches.first.timestamp.ms,
         DateTime(2017, 10, 11, 17, 19, 19, 420).millisecondsSinceEpoch);
-    expect(catches.first.speciesId, isNotEmpty);
-    expect(speciesManager.entity(Id(catches[0].speciesId)).name,
+    expect(catches.first.hasFishingSpotId(), true);
+    expect(speciesManager.entity(catches[0].speciesId).name,
         "Trout - Rainbow");
-    expect(catches.first.baitId, isNotEmpty);
-    expect(baitManager.entity(Id(catches[0].baitId)).name,
+    expect(catches.first.hasBaitId(), true);
+    expect(baitManager.entity(catches[0].baitId).name,
         "Rapala F-7 - Brown Trout");
-    expect(catches.first.fishingSpotId, isNotEmpty);
-    expect(fishingSpotManager.entity(Id(catches[0].fishingSpotId)).name,
+    expect(catches.first.hasFishingSpotId(), true);
+    expect(fishingSpotManager.entity(catches[0].fishingSpotId).name,
         "Bow River - Sewer Run");
   });
 
@@ -294,8 +292,7 @@ void main() {
 
     expect(baits[0].name, "Rapala F-7 - Brown Trout");
     expect(baits[0].hasBaitCategoryId(), true);
-    expect(baitCategoryManager.entity(Id(baits[0].baitCategoryId)).name,
-        "Other");
+    expect(baitCategoryManager.entity(baits[0].baitCategoryId).name, "Other");
 
     expect(baits[1].name, "Z-Man");
     expect(baits[1].hasBaitCategoryId(), false);
@@ -318,8 +315,7 @@ void main() {
     List<BaitCategory> categories = baitCategoryManager.list();
     expect(categories, isNotNull);
     expect(categories.length, 1);
-    expect(Id(categories.first.id).toString(),
-        "b860cddd-dc47-48a2-8d02-c8112a2ed5eb");
+    expect(categories.first.id.uuid, "b860cddd-dc47-48a2-8d02-c8112a2ed5eb");
     expect(categories.first.name, "Other");
   });
 

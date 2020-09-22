@@ -8,13 +8,13 @@ import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/location_monitor.dart';
 import 'package:mobile/log.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
-import 'package:mobile/model/id.dart';
 import 'package:mobile/pages/save_fishing_spot_page.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/res/style.dart';
 import 'package:mobile/utils/dialog_utils.dart';
 import 'package:mobile/utils/map_utils.dart';
 import 'package:mobile/utils/page_utils.dart';
+import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/utils/string_utils.dart';
 import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/fishing_spot_map.dart';
@@ -128,7 +128,7 @@ class _MapPageState extends State<MapPage> {
           // Only reset selection if a new selection was made.
           if (fishingSpot != null) {
             setState(() {
-              _setActiveMarker(_findMarker(Id(fishingSpot.id)));
+              _setActiveMarker(_findMarker(fishingSpot.id));
               _activeFishingSpot = fishingSpot;
             });
           }
@@ -164,7 +164,7 @@ class _MapPageState extends State<MapPage> {
     if (!_hasActiveFishingSpot && _hasActiveMarker) {
       // Dropped pin case.
       fishingSpot = FishingSpot()
-        ..id = Id.random().bytes
+        ..id = randomId()
         ..lat = _activeMarker.position.latitude
         ..lng = _activeMarker.position.longitude;
       editing = false;
@@ -181,7 +181,7 @@ class _MapPageState extends State<MapPage> {
         },
         child: _FishingSpotBottomSheet(
           fishingSpot: fishingSpot ?? FishingSpot()
-            ..id = Id.random().bytes
+            ..id = randomId()
             ..lat = 0
             ..lng = 0,
           editing: editing,
@@ -205,7 +205,7 @@ class _MapPageState extends State<MapPage> {
       onTap: (fishingSpot) {
         setState(() {
           _setActiveMarker(_fishingSpotMarkers.firstWhere((marker) =>
-              marker.id == Id(fishingSpot.id)));
+              marker.id == fishingSpot.id));
           _activeFishingSpot = _fishingSpotManager.entity(_activeMarker.id);
         });
       }
@@ -216,7 +216,7 @@ class _MapPageState extends State<MapPage> {
     // All dropped pins become active, and shouldn't be clickable.
     return FishingSpotMarker(
       fishingSpot: FishingSpot()
-        ..id = Id.random().bytes
+        ..id = randomId()
         ..lat = latLng.latitude
         ..lng = latLng.longitude,
       active: true,
@@ -383,7 +383,7 @@ class _FishingSpotBottomSheet extends StatelessWidget {
                       .deleteMessage(context, fishingSpot)),
                   onDelete: () {
                     onDelete?.call();
-                    fishingSpotManager.delete(Id(fishingSpot.id));
+                    fishingSpotManager.delete(fishingSpot.id);
                   },
                 );
               },

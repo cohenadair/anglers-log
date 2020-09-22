@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:mobile/bait_category_manager.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
-import 'package:mobile/model/id.dart';
 import 'package:mobile/pages/save_name_page.dart';
+import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/utils/validator.dart';
 
 class SaveBaitCategoryPage extends StatelessWidget {
@@ -24,7 +24,7 @@ class SaveBaitCategoryPage extends StatelessWidget {
       oldName: oldBaitCategory?.name,
       onSave: (newName) {
         baitCategoryManager.addOrUpdate(BaitCategory()
-          ..id = oldBaitCategory?.id ?? Id.random().bytes
+          ..id = oldBaitCategory?.id ?? randomId()
           ..name = newName);
         return true;
       },

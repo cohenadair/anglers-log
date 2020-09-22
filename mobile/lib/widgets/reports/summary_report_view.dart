@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/app_manager.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
-import 'package:mobile/model/id.dart';
 import 'package:mobile/summary_report_manager.dart';
 import 'package:mobile/utils/date_time_utils.dart';
 import 'package:mobile/widgets/reports/pb_report_view.dart';
@@ -39,9 +38,9 @@ class _SummaryReportViewState extends State<SummaryReportView> {
         context: context,
         displayDateRange: DisplayDateRange.of(report.displayDateRangeId,
             report.startTimestamp, report.endTimestamp),
-        baitIds: Id.fromByteList(report.baitIds),
-        fishingSpotIds: Id.fromByteList(report.fishingSpotIds),
-        speciesIds: Id.fromByteList(report.speciesIds),
+        baitIds: report.baitIds.toSet(),
+        fishingSpotIds: report.fishingSpotIds.toSet(),
+        speciesIds: report.speciesIds.toSet(),
       )
     ];
   }

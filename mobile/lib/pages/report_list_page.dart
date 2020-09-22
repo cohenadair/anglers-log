@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/comparison_report_manager.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
-import 'package:mobile/model/id.dart';
 import 'package:mobile/summary_report_manager.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/log.dart';
@@ -74,9 +73,9 @@ class ReportListPage extends StatelessWidget {
 
   void _deleteItem(BuildContext context, dynamic item) {
     if (item is SummaryReport) {
-      SummaryReportManager.of(context).delete(Id(item.id));
+      SummaryReportManager.of(context).delete(item.id);
     } else if (item is ComparisonReport) {
-      ComparisonReportManager.of(context).delete(Id(item.id));
+      ComparisonReportManager.of(context).delete(item.id);
     } else {
       _log.w("Can't delete item: $item");
     }

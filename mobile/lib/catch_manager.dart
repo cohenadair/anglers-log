@@ -9,7 +9,6 @@ import 'package:mobile/fishing_spot_manager.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/image_manager.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
-import 'package:mobile/model/id.dart';
 import 'package:mobile/species_manager.dart';
 import 'package:mobile/utils/date_time_utils.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
@@ -41,7 +40,7 @@ class CatchManager extends EntityManager<Catch> {
   Catch entityFromBytes(List<int> bytes) => Catch.fromBuffer(bytes);
 
   @override
-  Id id(Catch cat) => Id(cat.id);
+  Id id(Catch cat) => cat.id;
 
   @override
   bool matchesFilter(Id id, String filter, [BuildContext context]) {
@@ -49,12 +48,9 @@ class CatchManager extends EntityManager<Catch> {
 
     if (cat == null
         || isEmpty(filter)
-        || (cat.speciesId.isNotEmpty
-            && _speciesManager.matchesFilter(Id(cat.speciesId), filter))
-        || (cat.fishingSpotId.isNotEmpty
-            && _fishingSpotManager.matchesFilter(Id(cat.fishingSpotId), filter))
-        || (cat.baitId.isNotEmpty
-            && _baitManager.matchesFilter(Id(cat.baitId), filter))
+        || _speciesManager.matchesFilter(cat.speciesId, filter)
+        || _fishingSpotManager.matchesFilter(cat.fishingSpotId, filter)
+        || _baitManager.matchesFilter(cat.baitId, filter)
         || context == null
         || timestampToSearchString(context, cat.timestamp).toLowerCase()
             .contains(filter.toLowerCase())
@@ -120,16 +116,16 @@ class CatchManager extends EntityManager<Catch> {
     return entities.values.where((cat) {
       bool valid = true;
       valid &= dateRange == null || dateRange.contains(cat.timestamp);
-      valid &= catchIds.isEmpty || catchIds.contains(Id(cat.id));
-      valid &= baitIds.isEmpty || baitIds.contains(Id(cat.baitId));
+      valid &= catchIds.isEmpty || catchIds.contains(cat.id);
+      valid &= baitIds.isEmpty || baitIds.contains(cat.baitId);
       valid &= fishingSpotIds.isEmpty
-          || fishingSpotIds.contains(Id(cat.fishingSpotId));
-      valid &= speciesIds.isEmpty || speciesIds.contains(Id(cat.speciesId));
+          || fishingSpotIds.contains(cat.fishingSpotId);
+      valid &= speciesIds.isEmpty || speciesIds.contains(cat.speciesId);
       if (!valid) {
         return false;
       }
 
-      return matchesFilter(Id(cat.id), filter, context);
+      return matchesFilter(cat.id, filter, context);
     }).toList();
   }
 
@@ -164,7 +160,8 @@ class CatchManager extends EntityManager<Catch> {
   bool existsWith({
     Id speciesId,
   }) {
-    return list().firstWhere((cat) => Id(cat.speciesId) == speciesId,
+    return list().firstWhere(
+        (cat) => cat.hasSpeciesId() && cat.speciesId == speciesId,
         orElse: () => null) != null;
   }
 
@@ -173,7 +170,7 @@ class CatchManager extends EntityManager<Catch> {
       return null;
     }
 
-    Species species = _speciesManager.entityFromPbId(cat.speciesId);
+    Species species = _speciesManager.entity(cat.speciesId);
     String timeString = formatTimestamp(context, cat.timestamp);
     String name;
     if (species == null) {
@@ -196,8 +193,7 @@ class CatchManager extends EntityManager<Catch> {
     List<Catch>.from(list()
         .where((cat) => bait.id == cat.baitId))
         .forEach((cat) {
-          entities[Id(cat.id)] =
-              cat.copyWith((updates) => updates.baitId = []);
+          entities[cat.id].clearBaitId();
         });
 
     replaceDatabaseWithCache();
@@ -208,8 +204,7 @@ class CatchManager extends EntityManager<Catch> {
     List<Catch>.from(list()
         .where((cat) => fishingSpot.id == cat.fishingSpotId))
         .forEach((cat) {
-          entities[Id(cat.id)] =
-              cat.copyWith((updates) => updates.fishingSpotId = []);
+          entities[cat.id].clearFishingSpotId();
         });
 
     replaceDatabaseWithCache();

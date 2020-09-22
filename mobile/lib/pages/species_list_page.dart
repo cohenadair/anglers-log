@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
-import 'package:mobile/model/id.dart';
 import 'package:mobile/pages/manageable_list_page.dart';
 import 'package:mobile/pages/save_species_page.dart';
 import 'package:mobile/species_manager.dart';
@@ -56,9 +55,9 @@ class SpeciesListPage extends StatelessWidget {
         loadItems: (query) => speciesManager.listSortedByName(filter: query),
         deleteText: (context, species) => Text(format(Strings.of(context)
             .speciesListPageConfirmDelete, [species.name])),
-        deleteItem: (context, species) => speciesManager.delete(Id(species.id)),
+        deleteItem: (context, species) => speciesManager.delete(species.id),
         onTapDeleteButton: (species) {
-          int numOfCatches = speciesManager.numberOfCatches(Id(species.id));
+          int numOfCatches = speciesManager.numberOfCatches(species.id);
           if (numOfCatches <= 0) {
             return null;
           }

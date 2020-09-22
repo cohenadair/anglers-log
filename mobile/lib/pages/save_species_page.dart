@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
-import 'package:mobile/model/id.dart';
 import 'package:mobile/pages/save_name_page.dart';
 import 'package:mobile/species_manager.dart';
+import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/utils/validator.dart';
 
 class SaveSpeciesPage extends StatelessWidget {
@@ -23,7 +23,7 @@ class SaveSpeciesPage extends StatelessWidget {
       oldName: oldSpecies?.name,
       onSave: (newName) {
         var newSpecies = Species()
-          ..id = oldSpecies?.id ?? Id.random()
+          ..id = oldSpecies?.id ?? randomId()
           ..name = newName;
 
         speciesManager.addOrUpdate(newSpecies);

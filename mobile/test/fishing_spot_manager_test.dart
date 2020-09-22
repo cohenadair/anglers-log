@@ -5,7 +5,6 @@ import 'package:mobile/catch_manager.dart';
 import 'package:mobile/data_manager.dart';
 import 'package:mobile/fishing_spot_manager.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
-import 'package:mobile/model/id.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mockito/mockito.dart';
 
@@ -43,45 +42,45 @@ void main() {
     fishingSpot = fishingSpotManager.withinRadius(null);
     expect(fishingSpot, isNull);
 
-    Id fishingSpotId0 = Id.random();
-    Id fishingSpotId1 = Id.random();
-    Id fishingSpotId2 = Id.random();
-    Id fishingSpotId3 = Id.random();
-    Id fishingSpotId4 = Id.random();
+    Id fishingSpotId0 = randomId();
+    Id fishingSpotId1 = randomId();
+    Id fishingSpotId2 = randomId();
+    Id fishingSpotId3 = randomId();
+    Id fishingSpotId4 = randomId();
 
     // Single fishing spot in radius.
     var newSpot = FishingSpot()
-      ..id = fishingSpotId0.bytes
+      ..id = fishingSpotId0
       ..lat = 35.955348
       ..lng = -84.240310;
     await fishingSpotManager.addOrUpdate(newSpot);
     fishingSpot = fishingSpotManager.withinRadius(LatLng(35.955348, -84.240310),
         20);
     expect(fishingSpot, isNotNull);
-    await fishingSpotManager.delete(Id(newSpot.id));
+    await fishingSpotManager.delete(newSpot.id);
 
     // Single fishing spot outside radius.
     newSpot = FishingSpot()
-      ..id = fishingSpotId1.bytes
+      ..id = fishingSpotId1
       ..lat = 35.953638
       ..lng = -84.241233;
     await fishingSpotManager.addOrUpdate(newSpot);
     fishingSpot = fishingSpotManager.withinRadius(LatLng(35.955348, -84.240310),
         20);
     expect(fishingSpot, isNull);
-    await fishingSpotManager.delete(Id(newSpot.id));
+    await fishingSpotManager.delete(newSpot.id);
 
     // Multiple fishing spots within radius.
     await fishingSpotManager.addOrUpdate(FishingSpot()
-      ..id = fishingSpotId2.bytes
+      ..id = fishingSpotId2
       ..lat = 35.955296
       ..lng = -84.240337);
     await fishingSpotManager.addOrUpdate(FishingSpot()
-      ..id = fishingSpotId3.bytes
+      ..id = fishingSpotId3
       ..lat = 35.955196
       ..lng = -84.240437);
     await fishingSpotManager.addOrUpdate(FishingSpot()
-      ..id = fishingSpotId4.bytes
+      ..id = fishingSpotId4
       ..lat = 35.955335
       ..lng = -84.240300);
 
@@ -94,68 +93,68 @@ void main() {
 
   test("Fishing spot with LatLng", () async {
     await fishingSpotManager.addOrUpdate(FishingSpot()
-      ..id = Id.random().bytes
+      ..id = randomId()
       ..lat = 35.955296
       ..lng = -84.240337);
     expect(fishingSpotManager.withLatLng(FishingSpot()
-      ..id = Id.random().bytes
+      ..id = randomId()
       ..lat = 35.955296
       ..lng = -84.240337), isNotNull);
     expect(fishingSpotManager.withLatLng(FishingSpot()
-      ..id = Id.random().bytes
+      ..id = randomId()
       ..lat = 35.955297
       ..lng = -84.240337), isNull);
     expect(fishingSpotManager.withLatLng(null), isNull);
   });
 
   test("Number of catches", () {
-    Id speciesId0 = Id.random();
+    Id speciesId0 = randomId();
 
-    Id fishingSpotId0 = Id.random();
-    Id fishingSpotId4 = Id.random();
-    Id fishingSpotId3 = Id.random();
+    Id fishingSpotId0 = randomId();
+    Id fishingSpotId4 = randomId();
+    Id fishingSpotId3 = randomId();
 
     when(catchManager.list()).thenReturn([
       Catch()
-        ..id = Id.random().bytes
-        ..timestamp = Timestamps.fromMillis(0)
-        ..speciesId = speciesId0.bytes
-        ..fishingSpotId = fishingSpotId0.bytes,
+        ..id = randomId()
+        ..timestamp = timestampFromMillis(0)
+        ..speciesId = speciesId0
+        ..fishingSpotId = fishingSpotId0,
       Catch()
-        ..id = Id.random().bytes
-        ..timestamp = Timestamps.fromMillis(0)
-        ..speciesId = speciesId0.bytes
-        ..fishingSpotId = fishingSpotId4.bytes,
+        ..id = randomId()
+        ..timestamp = timestampFromMillis(0)
+        ..speciesId = speciesId0
+        ..fishingSpotId = fishingSpotId4,
       Catch()
-        ..id = Id.random().bytes
-        ..timestamp = Timestamps.fromMillis(0)
-        ..speciesId = speciesId0.bytes
-        ..fishingSpotId = fishingSpotId3.bytes,
+        ..id = randomId()
+        ..timestamp = timestampFromMillis(0)
+        ..speciesId = speciesId0
+        ..fishingSpotId = fishingSpotId3,
       Catch()
-        ..id = Id.random().bytes
-        ..timestamp = Timestamps.fromMillis(0)
-        ..speciesId = speciesId0.bytes
-        ..fishingSpotId = fishingSpotId0.bytes,
+        ..id = randomId()
+        ..timestamp = timestampFromMillis(0)
+        ..speciesId = speciesId0
+        ..fishingSpotId = fishingSpotId0,
       Catch()
-        ..id = Id.random().bytes
-        ..timestamp = Timestamps.fromMillis(0)
-        ..speciesId = speciesId0.bytes,
+        ..id = randomId()
+        ..timestamp = timestampFromMillis(0)
+        ..speciesId = speciesId0,
     ]);
 
     expect(fishingSpotManager.numberOfCatches(null), 0);
     expect(fishingSpotManager.numberOfCatches(FishingSpot()
       ..name = "Spot 1"
-      ..id = fishingSpotId0.bytes
+      ..id = fishingSpotId0
       ..lat = 0
       ..lng = 0), 2);
     expect(fishingSpotManager.numberOfCatches(FishingSpot()
       ..name = "Spot 1"
-      ..id = fishingSpotId3.bytes
+      ..id = fishingSpotId3
       ..lat = 0
       ..lng = 0), 1);
     expect(fishingSpotManager.numberOfCatches(FishingSpot()
       ..name = "Spot 1"
-      ..id = fishingSpotId4.bytes
+      ..id = fishingSpotId4
       ..lat = 0
       ..lng = 0), 1);
   });

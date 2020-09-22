@@ -3,8 +3,9 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:mobile/app_manager.dart';
 import 'package:mobile/data_manager.dart';
-import 'package:mobile/model/id.dart';
+import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/utils/listener_manager.dart';
+import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:protobuf/protobuf.dart';
 import 'package:quiver/strings.dart';
 
@@ -77,13 +78,6 @@ abstract class EntityManager<T extends GeneratedMessage>
         .toList();
   }
 
-  Set<Id> listToIdList(List<T> entities) => entities.map((e) => id(e)).toSet();
-  Set<T> idListToList(Set<Id> ids) => ids.map((id) => entity(id)).toSet();
-  Set<T> pbIdListToSet(List<List<int>> pbIds) => pbIds
-      .map((id) => entityFromPbId(id))
-      .toSet()
-      ..removeWhere((e) => e == null);
-
   /// Clears the [Entity] memory collection. This method assumes the database
   /// has already been cleared.
   @protected
@@ -96,10 +90,8 @@ abstract class EntityManager<T extends GeneratedMessage>
   int get entityCount => entities.length;
 
   T entity(Id id) => entities[id];
-  T entityFromPbId(List<int> pbId) => entity(Id.fromBytes(pbId));
 
   bool entityExists(Id id) => entity(id) != null;
-  bool entityExistsFromPbId(List<int> pbId) => entityExists(Id.fromBytes(pbId));
 
   /// Adds or updates the given [Entity]. If [notify] is false (default true),
   /// listeners are not notified.
@@ -136,7 +128,7 @@ abstract class EntityManager<T extends GeneratedMessage>
   }
 
   Map<String, dynamic> _entityToMap(T entity) => {
-    _columnId: Uint8List.fromList(id(entity).bytes),
+    _columnId: id(entity).uint8List,
     _columnBytes: entity.writeToBuffer(),
   };
 

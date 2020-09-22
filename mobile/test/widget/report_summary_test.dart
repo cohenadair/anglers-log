@@ -5,7 +5,6 @@ import 'package:mobile/bait_manager.dart';
 import 'package:mobile/catch_manager.dart';
 import 'package:mobile/fishing_spot_manager.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
-import 'package:mobile/model/id.dart';
 import 'package:mobile/species_manager.dart';
 import 'package:mobile/utils/date_time_utils.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
@@ -30,120 +29,140 @@ void main() {
   MockFishingSpotManager fishingSpotManager;
   MockSpeciesManager speciesManager;
 
-  Id speciesId0 = Id.random();
-  Id speciesId1 = Id.random();
-  Id speciesId2 = Id.random();
-  Id speciesId3 = Id.random();
-  Id speciesId4 = Id.random();
+  Id speciesId0 = randomId();
+  Id speciesId1 = randomId();
+  Id speciesId2 = randomId();
+  Id speciesId3 = randomId();
+  Id speciesId4 = randomId();
 
-  Id fishingSpotId0 = Id.random();
-  Id fishingSpotId1 = Id.random();
-  Id fishingSpotId2 = Id.random();
-  Id fishingSpotId3 = Id.random();
-  Id fishingSpotId4 = Id.random();
+  Id fishingSpotId0 = randomId();
+  Id fishingSpotId1 = randomId();
+  Id fishingSpotId2 = randomId();
+  Id fishingSpotId3 = randomId();
+  Id fishingSpotId4 = randomId();
 
-  Id baitId0 = Id.random();
-  Id baitId1 = Id.random();
-  Id baitId2 = Id.random();
-  Id baitId3 = Id.random();
-  Id baitId4 = Id.random();
+  Id baitId0 = randomId();
+  Id baitId1 = randomId();
+  Id baitId2 = randomId();
+  Id baitId3 = randomId();
+  Id baitId4 = randomId();
 
-  Id catchId0 = Id.random();
-  Id catchId1 = Id.random();
-  Id catchId2 = Id.random();
-  Id catchId3 = Id.random();
-  Id catchId4 = Id.random();
-  Id catchId5 = Id.random();
-  Id catchId6 = Id.random();
-  Id catchId7 = Id.random();
-  Id catchId8 = Id.random();
-  Id catchId9 = Id.random();
+  Id catchId0 = randomId();
+  Id catchId1 = randomId();
+  Id catchId2 = randomId();
+  Id catchId3 = randomId();
+  Id catchId4 = randomId();
+  Id catchId5 = randomId();
+  Id catchId6 = randomId();
+  Id catchId7 = randomId();
+  Id catchId8 = randomId();
+  Id catchId9 = randomId();
 
   Map<Id, Species> speciesMap = {
-    speciesId0: Species()..id = speciesId0.bytes..name = "Bluegill",
-    speciesId1: Species()..id = speciesId1.bytes..name = "Pike",
-    speciesId2: Species()..id = speciesId2.bytes..name = "Catfish",
-    speciesId3: Species()..id = speciesId3.bytes..name = "Bass",
-    speciesId4: Species()..id = speciesId4.bytes..name = "Steelhead",
+    speciesId0: Species()..id = speciesId0..name = "Bluegill",
+    speciesId1: Species()..id = speciesId1..name = "Pike",
+    speciesId2: Species()..id = speciesId2..name = "Catfish",
+    speciesId3: Species()..id = speciesId3..name = "Bass",
+    speciesId4: Species()..id = speciesId4..name = "Steelhead",
   };
 
   Map<Id, FishingSpot> fishingSpotMap = {
-    fishingSpotId0: FishingSpot()..id = fishingSpotId0.bytes..name = "E"..lat = 0.4..lng = 0.0,
-    fishingSpotId1: FishingSpot()..id = fishingSpotId1.bytes..name = "C"..lat = 0.2..lng = 0.2,
-    fishingSpotId2: FishingSpot()..id = fishingSpotId2.bytes..name = "B"..lat = 0.1..lng = 0.3,
-    fishingSpotId3: FishingSpot()..id = fishingSpotId3.bytes..name = "D"..lat = 0.3..lng = 0.1,
-    fishingSpotId4: FishingSpot()..id = fishingSpotId4.bytes..name = "A"..lat = 0.0..lng = 0.4,
+    fishingSpotId0: FishingSpot()
+      ..id = fishingSpotId0
+      ..name = "E"
+      ..lat = 0.4
+      ..lng = 0.0,
+    fishingSpotId1: FishingSpot()
+      ..id = fishingSpotId1
+      ..name = "C"
+      ..lat = 0.2
+      ..lng = 0.2,
+    fishingSpotId2: FishingSpot()
+      ..id = fishingSpotId2
+      ..name = "B"
+      ..lat = 0.1
+      ..lng = 0.3,
+    fishingSpotId3: FishingSpot()
+      ..id = fishingSpotId3
+      ..name = "D"
+      ..lat = 0.3
+      ..lng = 0.1,
+    fishingSpotId4: FishingSpot()
+      ..id = fishingSpotId4
+      ..name = "A"
+      ..lat = 0.0
+      ..lng = 0.4,
   };
 
   Map<Id, Bait> baitMap = {
-    baitId0: Bait()..id = baitId0.bytes..name = "Worm",
-    baitId1: Bait()..id = baitId1.bytes..name = "Bugger",
-    baitId2: Bait()..id = baitId2.bytes..name = "Minnow",
-    baitId3: Bait()..id = baitId3.bytes..name = "Grasshopper",
-    baitId4: Bait()..id = baitId4.bytes..name = "Grub",
+    baitId0: Bait()..id = baitId0..name = "Worm",
+    baitId1: Bait()..id = baitId1..name = "Bugger",
+    baitId2: Bait()..id = baitId2..name = "Minnow",
+    baitId3: Bait()..id = baitId3..name = "Grasshopper",
+    baitId4: Bait()..id = baitId4..name = "Grub",
   };
 
   List<Catch> _catches = [
     Catch()
-      ..id = catchId0.bytes
-      ..timestamp = Timestamps.fromMillis(10)
-      ..speciesId = speciesId3.bytes
-      ..fishingSpotId = fishingSpotId1.bytes
-      ..baitId = baitId0.bytes,
+      ..id = catchId0
+      ..timestamp = timestampFromMillis(10)
+      ..speciesId = speciesId3
+      ..fishingSpotId = fishingSpotId1
+      ..baitId = baitId0,
     Catch()
-      ..id = catchId1.bytes
-      ..timestamp = Timestamps.fromMillis(5000)
-      ..speciesId = speciesId4.bytes
-      ..fishingSpotId = fishingSpotId3.bytes
-      ..baitId = baitId4.bytes,
+      ..id = catchId1
+      ..timestamp = timestampFromMillis(5000)
+      ..speciesId = speciesId4
+      ..fishingSpotId = fishingSpotId3
+      ..baitId = baitId4,
     Catch()
-      ..id = catchId2.bytes
-      ..timestamp = Timestamps.fromMillis(100)
-      ..speciesId = speciesId0.bytes
-      ..fishingSpotId = fishingSpotId4.bytes
-      ..baitId = baitId0.bytes,
+      ..id = catchId2
+      ..timestamp = timestampFromMillis(100)
+      ..speciesId = speciesId0
+      ..fishingSpotId = fishingSpotId4
+      ..baitId = baitId0,
     Catch()
-      ..id = catchId3.bytes
-      ..timestamp = Timestamps.fromMillis(900)
-      ..speciesId = speciesId1.bytes
-      ..fishingSpotId = fishingSpotId0.bytes
-      ..baitId = baitId1.bytes,
+      ..id = catchId3
+      ..timestamp = timestampFromMillis(900)
+      ..speciesId = speciesId1
+      ..fishingSpotId = fishingSpotId0
+      ..baitId = baitId1,
     Catch()
-      ..id = catchId4.bytes
-      ..timestamp = Timestamps.fromMillis(78000)
-      ..speciesId = speciesId4.bytes
-      ..fishingSpotId = fishingSpotId1.bytes
-      ..baitId = baitId0.bytes,
+      ..id = catchId4
+      ..timestamp = timestampFromMillis(78000)
+      ..speciesId = speciesId4
+      ..fishingSpotId = fishingSpotId1
+      ..baitId = baitId0,
     Catch()
-      ..id = catchId5.bytes
-      ..timestamp = Timestamps.fromMillis(100000)
-      ..speciesId = speciesId3.bytes
-      ..fishingSpotId = fishingSpotId1.bytes
-      ..baitId = baitId2.bytes,
+      ..id = catchId5
+      ..timestamp = timestampFromMillis(100000)
+      ..speciesId = speciesId3
+      ..fishingSpotId = fishingSpotId1
+      ..baitId = baitId2,
     Catch()
-      ..id = catchId6.bytes
-      ..timestamp = Timestamps.fromMillis(800)
-      ..speciesId = speciesId1.bytes
-      ..fishingSpotId = fishingSpotId2.bytes
-      ..baitId = baitId1.bytes,
+      ..id = catchId6
+      ..timestamp = timestampFromMillis(800)
+      ..speciesId = speciesId1
+      ..fishingSpotId = fishingSpotId2
+      ..baitId = baitId1,
     Catch()
-      ..id = catchId7.bytes
-      ..timestamp = Timestamps.fromMillis(70)
-      ..speciesId = speciesId1.bytes
-      ..fishingSpotId = fishingSpotId1.bytes
-      ..baitId = baitId0.bytes,
+      ..id = catchId7
+      ..timestamp = timestampFromMillis(70)
+      ..speciesId = speciesId1
+      ..fishingSpotId = fishingSpotId1
+      ..baitId = baitId0,
     Catch()
-      ..id = catchId8.bytes
-      ..timestamp = Timestamps.fromMillis(15)
-      ..speciesId = speciesId1.bytes
-      ..fishingSpotId = fishingSpotId1.bytes
-      ..baitId = baitId1.bytes,
+      ..id = catchId8
+      ..timestamp = timestampFromMillis(15)
+      ..speciesId = speciesId1
+      ..fishingSpotId = fishingSpotId1
+      ..baitId = baitId1,
     Catch()
-      ..id = catchId9.bytes
-      ..timestamp = Timestamps.fromMillis(6000)
-      ..speciesId = speciesId4.bytes
-      ..fishingSpotId = fishingSpotId1.bytes
-      ..baitId = baitId0.bytes,
+      ..id = catchId9
+      ..timestamp = timestampFromMillis(6000)
+      ..speciesId = speciesId4
+      ..fishingSpotId = fishingSpotId1
+      ..baitId = baitId0,
   ];
 
   setUp(() {
@@ -152,8 +171,8 @@ void main() {
     baitManager = MockBaitManager();
     when(appManager.baitManager).thenReturn(baitManager);
     when(baitManager.list()).thenReturn(baitMap.values.toList());
-    when(baitManager.entityFromPbId(any)).thenAnswer((invocation) =>
-        baitMap[Id(invocation.positionalArguments[0])]);
+    when(baitManager.entity(any)).thenAnswer((invocation) =>
+        baitMap[invocation.positionalArguments[0]]);
 
     catchManager = MockCatchManager();
     when(catchManager.list()).thenReturn(_catches);
@@ -165,14 +184,14 @@ void main() {
     fishingSpotManager = MockFishingSpotManager();
     when(appManager.fishingSpotManager).thenReturn(fishingSpotManager);
     when(fishingSpotManager.list()).thenReturn(fishingSpotMap.values.toList());
-    when(fishingSpotManager.entityFromPbId(any)).thenAnswer((invocation) =>
-        fishingSpotMap[Id(invocation.positionalArguments[0])]);
+    when(fishingSpotManager.entity(any)).thenAnswer((invocation) =>
+        fishingSpotMap[invocation.positionalArguments[0]]);
 
     speciesManager = MockSpeciesManager();
     when(appManager.speciesManager).thenReturn(speciesManager);
     when(speciesManager.list()).thenReturn(speciesMap.values.toList());
-    when(speciesManager.entityFromPbId(any)).thenAnswer((invocation) =>
-        speciesMap[Id(invocation.positionalArguments[0])]);
+    when(speciesManager.entity(any)).thenAnswer((invocation) =>
+        speciesMap[invocation.positionalArguments[0]]);
   });
 
   void _stubCatchesByTimestamp(BuildContext context) {
@@ -201,7 +220,7 @@ void main() {
     expect(data.msSinceLastCatch, 5000);
     expect(data.totalCatches, 10);
     expect(data.catchesPerSpecies.length, 4);
-    expect(data.allCatchIds, _catches.map((c) => Id(c.id)).toSet());
+    expect(data.allCatchIds, _catches.map((c) => c.id).toSet());
     expect(data.catchIdsPerSpecies[speciesMap[speciesId3]], {catchId0, catchId5});
     expect(data.catchIdsPerSpecies[speciesMap[speciesId4]],
         {catchId9, catchId4, catchId1});
@@ -291,7 +310,7 @@ void main() {
         speciesMap[speciesId0])[fishingSpotMap[fishingSpotId3]], null);
     expect(data.fishingSpotsPerSpecies(
         speciesMap[speciesId0])[fishingSpotMap[fishingSpotId0]], null);
-    expect(data.fishingSpotsPerSpecies(speciesMap[speciesId2.bytes]), {});
+    expect(data.fishingSpotsPerSpecies(speciesMap[speciesId2]), {});
   });
 
   testWidgets("Gather data including zeros", (WidgetTester tester) async {
@@ -485,8 +504,12 @@ void main() {
       speciesIds: {speciesId4, speciesId2},
     );
 
-    // By not stubbing EntityManager.entity() methods, no filters should
+    // By not stubbing EntityManager.entity() methods, no filters should be
     // entity names.
+    when(baitManager.entity(any)).thenReturn(null);
+    when(fishingSpotManager.entity(any)).thenReturn(null);
+    when(speciesManager.entity(any)).thenReturn(null);
+
     expect(data.filters(), {"All dates"});
     expect(data.filters(includeSpecies: false), {"All dates"});
     expect(data.filters(includeDateRange: false), Set.of([]));

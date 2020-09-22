@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/app_manager.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
-import 'package:mobile/model/id.dart';
 import 'package:mobile/named_entity_manager.dart';
 import 'package:provider/provider.dart';
 
@@ -16,7 +15,7 @@ class CustomEntityManager extends NamedEntityManager<CustomEntity> {
       CustomEntity.fromBuffer(bytes);
 
   @override
-  Id id(CustomEntity entity) => Id(entity.id);
+  Id id(CustomEntity entity) => entity.id;
 
   @override
   String name(CustomEntity entity) => entity.name;

@@ -3,7 +3,6 @@ import 'package:mobile/app_manager.dart';
 import 'package:mobile/bait_manager.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
-import 'package:mobile/model/id.dart';
 import 'package:mobile/named_entity_manager.dart';
 import 'package:mobile/utils/string_utils.dart';
 import 'package:provider/provider.dart';
@@ -21,7 +20,7 @@ class BaitCategoryManager extends NamedEntityManager<BaitCategory> {
       BaitCategory.fromBuffer(bytes);
 
   @override
-  Id id(BaitCategory baitCategory) => Id(baitCategory.id);
+  Id id(BaitCategory baitCategory) => baitCategory.id;
 
   @override
   String name(BaitCategory baitCategory) => baitCategory.name;
@@ -35,13 +34,8 @@ class BaitCategoryManager extends NamedEntityManager<BaitCategory> {
     }
 
     int result = 0;
-    _baitManager.list().forEach((bait) {
-      if (bait.baitCategoryId.isNotEmpty
-          && Id(bait.baitCategoryId) == baitCategoryId)
-      {
-        result++;
-      }
-    });
+    _baitManager.list().forEach((bait) =>
+        result += baitCategoryId == bait.baitCategoryId ? 1 : 0);
 
     return result;
   }
@@ -50,7 +44,7 @@ class BaitCategoryManager extends NamedEntityManager<BaitCategory> {
     if (context == null || baitCategory == null) {
       return null;
     }
-    int numOfBaits = numberOfBaits(Id(baitCategory.id));
+    int numOfBaits = numberOfBaits(baitCategory.id);
     String string = numOfBaits == 1
         ? Strings.of(context).baitCategoryListPageDeleteMessageSingular
         : Strings.of(context).baitCategoryListPageDeleteMessage;

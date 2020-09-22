@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/custom_entity_manager.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
-import 'package:mobile/model/id.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/widgets/label_value.dart';
@@ -27,12 +26,12 @@ class CustomEntityValues extends StatelessWidget {
       CustomEntityValue entityValue)
   {
     CustomEntity entity =
-        entityManager.entityFromPbId(entityValue.customEntityId);
+        entityManager.entity(entityValue.customEntityId);
     if (entity == null) {
       return Empty();
     }
 
-    var value = valueForCustomEntityType(entity.type, entityValue, context);
+    dynamic value = valueForCustomEntityType(entity.type, entityValue, context);
     return Padding(
       padding: insetsVerticalWidgetSmall,
       child: LabelValue(

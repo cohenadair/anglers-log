@@ -128,8 +128,8 @@ void main() {
     expect(bytes, isNotNull);
     expect(bytes, equals(Uint8List.fromList([1, 2, 3])));
 
-    // Clear memory cache and verify file cache is used.
-    imageManager.clearMemoryCache(["image.jpg"]);
+    // Clear memory cache by reinitializing manager.
+    imageManager.initialize(delegate: imageManagerDelegate);
 
     // Ensure thumbnail exists.
     when(thumb.exists()).thenAnswer((_) => Future.value(true));

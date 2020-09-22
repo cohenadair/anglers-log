@@ -5,7 +5,6 @@ import 'package:mobile/catch_manager.dart';
 import 'package:mobile/entity_manager.dart';
 import 'package:mobile/fishing_spot_manager.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
-import 'package:mobile/model/id.dart';
 import 'package:mobile/pages/bait_page.dart';
 import 'package:mobile/pages/entity_page.dart';
 import 'package:mobile/pages/save_catch_page.dart';
@@ -60,7 +59,7 @@ class _CatchPageState extends State<CatchPage> {
         customEntityValues: _catch.customEntityValues,
         padding: insetsZero,
         onEdit: () => present(context, SaveCatchPage.edit(_catch)),
-        onDelete: () => _catchManager.delete(Id(_catch.id)),
+        onDelete: () => _catchManager.delete(_catch.id),
         deleteMessage: _catchManager.deleteMessage(context, _catch),
         imageNames: _catch.imageNames,
         children: <Widget>[
@@ -73,8 +72,7 @@ class _CatchPageState extends State<CatchPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                TitleLabel(
-                    _speciesManager.entityFromPbId(_catch.speciesId).name),
+                TitleLabel(_speciesManager.entity(_catch.speciesId).name),
                 Padding(
                   padding: const EdgeInsets.only(
                     left: paddingDefault,
@@ -97,14 +95,14 @@ class _CatchPageState extends State<CatchPage> {
   }
 
   Widget _buildBait() {
-    Bait bait = _baitManager.entityFromPbId(_catch.baitId);
+    Bait bait = _baitManager.entity(_catch.baitId);
     if (bait == null) {
       return Empty();
     }
 
     Widget subtitle;
     BaitCategory baitCategory =
-          _baitCategoryManager.entityFromPbId(bait.baitCategoryId);
+          _baitCategoryManager.entity(bait.baitCategoryId);
     if (baitCategory != null) {
       subtitle = SubtitleLabel(baitCategory.name);
     }
@@ -113,7 +111,7 @@ class _CatchPageState extends State<CatchPage> {
       title: Label(bait.name),
       subtitle: subtitle,
       trailing: RightChevronIcon(),
-      onTap: () => push(context, BaitPage(Id(bait.id),
+      onTap: () => push(context, BaitPage(bait.id,
         static: true,
       )),
     );
@@ -121,7 +119,7 @@ class _CatchPageState extends State<CatchPage> {
 
   Widget _buildFishingSpot() {
     FishingSpot fishingSpot =
-        _fishingSpotManager.entityFromPbId(_catch.fishingSpotId);
+        _fishingSpotManager.entity(_catch.fishingSpotId);
     if (fishingSpot == null) {
       return Empty();
     }

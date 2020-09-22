@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:mobile/app_manager.dart';
 import 'package:mobile/catch_manager.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
-import 'package:mobile/model/id.dart';
 import 'package:mobile/named_entity_manager.dart';
 import 'package:provider/provider.dart';
 
@@ -18,7 +17,7 @@ class SpeciesManager extends NamedEntityManager<Species> {
   Species entityFromBytes(List<int> bytes) => Species.fromBuffer(bytes);
 
   @override
-  Id id(Species species) => Id(species.id);
+  Id id(Species species) => species.id;
 
   @override
   String name(Species species) => species.name;
@@ -42,7 +41,7 @@ class SpeciesManager extends NamedEntityManager<Species> {
     }
     int result = 0;
     _catchManager.list().forEach((cat) {
-      if (Id(cat.speciesId) == speciesId) {
+      if (speciesId == cat.speciesId) {
         result++;
       }
     });

@@ -12,7 +12,6 @@ import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/image_manager.dart';
 import 'package:mobile/log.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
-import 'package:mobile/model/id.dart';
 import 'package:mobile/pages/add_catch_journey.dart';
 import 'package:mobile/pages/bait_list_page.dart';
 import 'package:mobile/pages/editable_form_page.dart';
@@ -72,11 +71,11 @@ class SaveCatchPage extends StatefulWidget {
 }
 
 class _SaveCatchPageState extends State<SaveCatchPage> {
-  static final _idTimestamp = Id.random();
-  static final _idImages = Id.random();
-  static final _idSpecies = Id.random();
-  static final _idFishingSpot = Id.random();
-  static final _idBait = Id.random();
+  static final _idTimestamp = randomId();
+  static final _idImages = randomId();
+  static final _idSpecies = randomId();
+  static final _idFishingSpot = randomId();
+  static final _idBait = randomId();
 
   final Log _log = Log("SaveCatchPage");
 
@@ -174,10 +173,10 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
     if (_editing) {
       _timestampController.value = _oldCatch.timestamp;
       _speciesController.value =
-          _speciesManager.entityFromPbId(_oldCatch.speciesId);
-      _baitController.value = _baitManager.entityFromPbId(_oldCatch.baitId);
+          _speciesManager.entity(_oldCatch.speciesId);
+      _baitController.value = _baitManager.entity(_oldCatch.baitId);
       _fishingSpotController.value =
-          _fishingSpotManager.entityFromPbId(_oldCatch.fishingSpotId);
+          _fishingSpotManager.entity(_oldCatch.fishingSpotId);
       _customEntityValues = _oldCatch.customEntityValues;
       _imagesFuture = _pickedImagesForOldCatch;
     }
@@ -341,7 +340,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
         customFieldValueMap.keys.toList();
 
     Catch cat = Catch()
-      ..id = _oldCatch?.id ?? Id.random()
+      ..id = _oldCatch?.id ?? randomId()
       ..timestamp = _timestampController.value
       ..speciesId = _speciesController.value?.id ?? []
       ..fishingSpotId = _fishingSpotController.value?.id ?? []

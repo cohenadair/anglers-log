@@ -5,7 +5,6 @@ import 'package:mobile/catch_manager.dart';
 import 'package:mobile/data_manager.dart';
 import 'package:mobile/entity_manager.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
-import 'package:mobile/model/id.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
@@ -50,89 +49,89 @@ void main() {
     baitManager.addListener(baitListener);
 
     // Add a BaitCategory.
-    Id baitCategoryId0 = Id.random();
+    Id baitCategoryId0 = randomId();
     BaitCategory category = BaitCategory()
-      ..id = baitCategoryId0.bytes
+      ..id = baitCategoryId0
       ..name = "Rapala";
     await baitCategoryManager.addOrUpdate(category);
 
     // Add a couple Baits that use the new category.
-    Id baitId0 = Id.random();
-    Id baitId1 = Id.random();
+    Id baitId0 = randomId();
+    Id baitId1 = randomId();
     await baitManager.addOrUpdate(Bait()
-      ..id = baitId0.bytes
+      ..id = baitId0
       ..name = "Test Bait"
-      ..baitCategoryId = baitCategoryId0.bytes);
+      ..baitCategoryId = baitCategoryId0);
     await baitManager.addOrUpdate(Bait()
-      ..id = baitId1.bytes
+      ..id = baitId1
       ..name = "Test Bait 2"
-      ..baitCategoryId = baitCategoryId0.bytes);
+      ..baitCategoryId = baitCategoryId0);
     verify(baitListener.onAddOrUpdate).called(2);
-    expect(baitManager.entity(baitId0).baitCategoryId, baitCategoryId0.bytes);
-    expect(baitManager.entity(baitId1).baitCategoryId, baitCategoryId0.bytes);
+    expect(baitManager.entity(baitId0).baitCategoryId, baitCategoryId0);
+    expect(baitManager.entity(baitId1).baitCategoryId, baitCategoryId0);
 
     // Delete the bait category.
-    await baitCategoryManager.delete(Id(category.id));
+    await baitCategoryManager.delete(category.id);
 
     // Verify listeners are notified and memory cache updated.
     verify(baitListener.onAddOrUpdate).called(1);
-    expect(baitManager.entity(baitId0).baitCategoryId, isEmpty);
-    expect(baitManager.entity(baitId1).baitCategoryId, isEmpty);
+    expect(baitManager.entity(baitId0).hasBaitCategoryId(), false);
+    expect(baitManager.entity(baitId1).hasBaitCategoryId(), false);
   });
 
   test("Number of catches", () {
-    Id speciesId0 = Id.random();
+    Id speciesId0 = randomId();
 
-    Id baitId0 = Id.random();
-    Id baitId1 = Id.random();
-    Id baitId2 = Id.random();
+    Id baitId0 = randomId();
+    Id baitId1 = randomId();
+    Id baitId2 = randomId();
 
     when(catchManager.list()).thenReturn([
       Catch()
-        ..id = Id.random().bytes
-        ..timestamp = Timestamps.fromMillis(0)
-        ..speciesId = speciesId0.bytes
-        ..baitId = baitId0.bytes,
+        ..id = randomId()
+        ..timestamp = timestampFromMillis(0)
+        ..speciesId = speciesId0
+        ..baitId = baitId0,
       Catch()
-        ..id = Id.random().bytes
-        ..timestamp = Timestamps.fromMillis(0)
-        ..speciesId = speciesId0.bytes
-        ..baitId = baitId1.bytes,
+        ..id = randomId()
+        ..timestamp = timestampFromMillis(0)
+        ..speciesId = speciesId0
+        ..baitId = baitId1,
       Catch()
-        ..id = Id.random().bytes
-        ..timestamp = Timestamps.fromMillis(0)
-        ..speciesId = speciesId0.bytes
-        ..baitId = baitId2.bytes,
+        ..id = randomId()
+        ..timestamp = timestampFromMillis(0)
+        ..speciesId = speciesId0
+        ..baitId = baitId2,
       Catch()
-        ..id = Id.random().bytes
-        ..timestamp = Timestamps.fromMillis(0)
-        ..speciesId = speciesId0.bytes
-        ..baitId = baitId0.bytes,
+        ..id = randomId()
+        ..timestamp = timestampFromMillis(0)
+        ..speciesId = speciesId0
+        ..baitId = baitId0,
       Catch()
-        ..id = Id.random().bytes
-        ..timestamp = Timestamps.fromMillis(0)
-        ..speciesId = speciesId0.bytes,
+        ..id = randomId()
+        ..timestamp = timestampFromMillis(0)
+        ..speciesId = speciesId0,
     ]);
 
     expect(baitManager.numberOfCatches(null), 0);
-    expect(baitManager.numberOfCatches(Bait()..id = baitId0.bytes), 2);
-    expect(baitManager.numberOfCatches(Bait()..id = baitId1.bytes), 1);
-    expect(baitManager.numberOfCatches(Bait()..id = baitId2.bytes), 1);
+    expect(baitManager.numberOfCatches(Bait()..id = baitId0), 2);
+    expect(baitManager.numberOfCatches(Bait()..id = baitId1), 1);
+    expect(baitManager.numberOfCatches(Bait()..id = baitId2), 1);
   });
 
   test("Format bait name", () async {
     when(dataManager.insertOrUpdateEntity(any, any, any))
         .thenAnswer((_) => Future.value(true));
 
-    Id baitCategoryId0 = Id.random();
+    Id baitCategoryId0 = randomId();
     await baitCategoryManager.addOrUpdate(BaitCategory()
-      ..id = baitCategoryId0.bytes
+      ..id = baitCategoryId0
       ..name = "Test Category");
 
     expect(baitManager.formatNameWithCategory(null), null);
     expect(baitManager.formatNameWithCategory(Bait()
       ..name = "Test"
-      ..baitCategoryId = baitCategoryId0.bytes), "Test Category - Test");
+      ..baitCategoryId = baitCategoryId0), "Test Category - Test");
     expect(baitManager.formatNameWithCategory(Bait()..name = "Test"), "Test");
   });
 
@@ -140,13 +139,13 @@ void main() {
     when(dataManager.insertOrUpdateEntity(any, any, any))
         .thenAnswer((_) => Future.value(true));
 
-    Id baitId0 = Id.random();
-    Id baitId1 = Id.random();
+    Id baitId0 = randomId();
+    Id baitId1 = randomId();
 
     expect(baitManager.matchesFilter(baitId0, ""), false);
 
     await baitManager.addOrUpdate(Bait()
-      ..id = baitId1.bytes
+      ..id = baitId1
       ..name = "Rapala");
     expect(baitManager.matchesFilter(baitId1, ""), true);
     expect(baitManager.matchesFilter(baitId1, null), true);

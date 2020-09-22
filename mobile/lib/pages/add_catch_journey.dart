@@ -4,11 +4,11 @@ import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/location_monitor.dart';
 import 'package:mobile/log.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
-import 'package:mobile/model/id.dart';
 import 'package:mobile/pages/fishing_spot_picker_page.dart';
 import 'package:mobile/pages/image_picker_page.dart';
 import 'package:mobile/pages/save_catch_page.dart';
 import 'package:mobile/pages/species_list_page.dart';
+import 'package:mobile/utils/protobuf_utils.dart';
 
 /// Presents a workflow (journey) for adding a [Catch].
 class AddCatchJourney extends StatefulWidget {
@@ -60,7 +60,7 @@ class _AddCatchJourneyState extends State<AddCatchJourney> {
 
                   if (existingSpot == null) {
                     _journeyHelper.fishingSpot = FishingSpot()
-                      ..id = Id.random().bytes
+                      ..id = randomId()
                       ..lat = image.position.latitude
                       ..lng = image.position.longitude;
                   } else {

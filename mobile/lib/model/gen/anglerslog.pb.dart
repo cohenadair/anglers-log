@@ -15,9 +15,40 @@ import 'anglerslog.pbenum.dart';
 
 export 'anglerslog.pbenum.dart';
 
+class Id extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo('Id', package: const $pb.PackageName('anglerslog'), createEmptyInstance: create)
+    ..aOS(1, 'uuid')
+    ..hasRequiredFields = false
+  ;
+
+  Id._() : super();
+  factory Id() => create();
+  factory Id.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory Id.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  Id clone() => Id()..mergeFromMessage(this);
+  Id copyWith(void Function(Id) updates) => super.copyWith((message) => updates(message as Id));
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static Id create() => Id._();
+  Id createEmptyInstance() => create();
+  static $pb.PbList<Id> createRepeated() => $pb.PbList<Id>();
+  @$core.pragma('dart2js:noInline')
+  static Id getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Id>(create);
+  static Id _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get uuid => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set uuid($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasUuid() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearUuid() => clearField(1);
+}
+
 class CustomEntity extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('CustomEntity', package: const $pb.PackageName('anglerslog'), createEmptyInstance: create)
-    ..a<$core.List<$core.int>>(1, 'id', $pb.PbFieldType.OY)
+    ..aOM<Id>(1, 'id', subBuilder: Id.create)
     ..aOS(2, 'name')
     ..aOS(3, 'description')
     ..e<CustomEntity_Type>(4, 'type', $pb.PbFieldType.OE, defaultOrMaker: CustomEntity_Type.UNKNOWN, valueOf: CustomEntity_Type.valueOf, enumValues: CustomEntity_Type.values)
@@ -40,13 +71,15 @@ class CustomEntity extends $pb.GeneratedMessage {
   static CustomEntity _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.List<$core.int> get id => $_getN(0);
+  Id get id => $_getN(0);
   @$pb.TagNumber(1)
-  set id($core.List<$core.int> v) { $_setBytes(0, v); }
+  set id(Id v) { setField(1, v); }
   @$pb.TagNumber(1)
   $core.bool hasId() => $_has(0);
   @$pb.TagNumber(1)
   void clearId() => clearField(1);
+  @$pb.TagNumber(1)
+  Id ensureId() => $_ensure(0);
 
   @$pb.TagNumber(2)
   $core.String get name => $_getSZ(1);
@@ -78,7 +111,7 @@ class CustomEntity extends $pb.GeneratedMessage {
 
 class CustomEntityValue extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('CustomEntityValue', package: const $pb.PackageName('anglerslog'), createEmptyInstance: create)
-    ..a<$core.List<$core.int>>(1, 'customEntityId', $pb.PbFieldType.OY)
+    ..aOM<Id>(1, 'customEntityId', subBuilder: Id.create)
     ..aOS(2, 'value')
     ..hasRequiredFields = false
   ;
@@ -99,13 +132,15 @@ class CustomEntityValue extends $pb.GeneratedMessage {
   static CustomEntityValue _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.List<$core.int> get customEntityId => $_getN(0);
+  Id get customEntityId => $_getN(0);
   @$pb.TagNumber(1)
-  set customEntityId($core.List<$core.int> v) { $_setBytes(0, v); }
+  set customEntityId(Id v) { setField(1, v); }
   @$pb.TagNumber(1)
   $core.bool hasCustomEntityId() => $_has(0);
   @$pb.TagNumber(1)
   void clearCustomEntityId() => clearField(1);
+  @$pb.TagNumber(1)
+  Id ensureCustomEntityId() => $_ensure(0);
 
   @$pb.TagNumber(2)
   $core.String get value => $_getSZ(1);
@@ -119,9 +154,9 @@ class CustomEntityValue extends $pb.GeneratedMessage {
 
 class Bait extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('Bait', package: const $pb.PackageName('anglerslog'), createEmptyInstance: create)
-    ..a<$core.List<$core.int>>(1, 'id', $pb.PbFieldType.OY)
+    ..aOM<Id>(1, 'id', subBuilder: Id.create)
     ..aOS(2, 'name')
-    ..a<$core.List<$core.int>>(3, 'baitCategoryId', $pb.PbFieldType.OY)
+    ..aOM<Id>(3, 'baitCategoryId', subBuilder: Id.create)
     ..pc<CustomEntityValue>(4, 'customEntityValues', $pb.PbFieldType.PM, subBuilder: CustomEntityValue.create)
     ..hasRequiredFields = false
   ;
@@ -142,13 +177,15 @@ class Bait extends $pb.GeneratedMessage {
   static Bait _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.List<$core.int> get id => $_getN(0);
+  Id get id => $_getN(0);
   @$pb.TagNumber(1)
-  set id($core.List<$core.int> v) { $_setBytes(0, v); }
+  set id(Id v) { setField(1, v); }
   @$pb.TagNumber(1)
   $core.bool hasId() => $_has(0);
   @$pb.TagNumber(1)
   void clearId() => clearField(1);
+  @$pb.TagNumber(1)
+  Id ensureId() => $_ensure(0);
 
   @$pb.TagNumber(2)
   $core.String get name => $_getSZ(1);
@@ -160,13 +197,15 @@ class Bait extends $pb.GeneratedMessage {
   void clearName() => clearField(2);
 
   @$pb.TagNumber(3)
-  $core.List<$core.int> get baitCategoryId => $_getN(2);
+  Id get baitCategoryId => $_getN(2);
   @$pb.TagNumber(3)
-  set baitCategoryId($core.List<$core.int> v) { $_setBytes(2, v); }
+  set baitCategoryId(Id v) { setField(3, v); }
   @$pb.TagNumber(3)
   $core.bool hasBaitCategoryId() => $_has(2);
   @$pb.TagNumber(3)
   void clearBaitCategoryId() => clearField(3);
+  @$pb.TagNumber(3)
+  Id ensureBaitCategoryId() => $_ensure(2);
 
   @$pb.TagNumber(4)
   $core.List<CustomEntityValue> get customEntityValues => $_getList(3);
@@ -174,7 +213,7 @@ class Bait extends $pb.GeneratedMessage {
 
 class BaitCategory extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('BaitCategory', package: const $pb.PackageName('anglerslog'), createEmptyInstance: create)
-    ..a<$core.List<$core.int>>(1, 'id', $pb.PbFieldType.OY)
+    ..aOM<Id>(1, 'id', subBuilder: Id.create)
     ..aOS(2, 'name')
     ..hasRequiredFields = false
   ;
@@ -195,13 +234,15 @@ class BaitCategory extends $pb.GeneratedMessage {
   static BaitCategory _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.List<$core.int> get id => $_getN(0);
+  Id get id => $_getN(0);
   @$pb.TagNumber(1)
-  set id($core.List<$core.int> v) { $_setBytes(0, v); }
+  set id(Id v) { setField(1, v); }
   @$pb.TagNumber(1)
   $core.bool hasId() => $_has(0);
   @$pb.TagNumber(1)
   void clearId() => clearField(1);
+  @$pb.TagNumber(1)
+  Id ensureId() => $_ensure(0);
 
   @$pb.TagNumber(2)
   $core.String get name => $_getSZ(1);
@@ -215,11 +256,11 @@ class BaitCategory extends $pb.GeneratedMessage {
 
 class Catch extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('Catch', package: const $pb.PackageName('anglerslog'), createEmptyInstance: create)
-    ..a<$core.List<$core.int>>(1, 'id', $pb.PbFieldType.OY)
+    ..aOM<Id>(1, 'id', subBuilder: Id.create)
     ..aOM<$0.Timestamp>(2, 'timestamp', subBuilder: $0.Timestamp.create)
-    ..a<$core.List<$core.int>>(3, 'baitId', $pb.PbFieldType.OY)
-    ..a<$core.List<$core.int>>(4, 'fishingSpotId', $pb.PbFieldType.OY)
-    ..a<$core.List<$core.int>>(5, 'speciesId', $pb.PbFieldType.OY)
+    ..aOM<Id>(3, 'baitId', subBuilder: Id.create)
+    ..aOM<Id>(4, 'fishingSpotId', subBuilder: Id.create)
+    ..aOM<Id>(5, 'speciesId', subBuilder: Id.create)
     ..pPS(6, 'imageNames')
     ..pc<CustomEntityValue>(7, 'customEntityValues', $pb.PbFieldType.PM, subBuilder: CustomEntityValue.create)
     ..hasRequiredFields = false
@@ -241,13 +282,15 @@ class Catch extends $pb.GeneratedMessage {
   static Catch _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.List<$core.int> get id => $_getN(0);
+  Id get id => $_getN(0);
   @$pb.TagNumber(1)
-  set id($core.List<$core.int> v) { $_setBytes(0, v); }
+  set id(Id v) { setField(1, v); }
   @$pb.TagNumber(1)
   $core.bool hasId() => $_has(0);
   @$pb.TagNumber(1)
   void clearId() => clearField(1);
+  @$pb.TagNumber(1)
+  Id ensureId() => $_ensure(0);
 
   @$pb.TagNumber(2)
   $0.Timestamp get timestamp => $_getN(1);
@@ -261,31 +304,37 @@ class Catch extends $pb.GeneratedMessage {
   $0.Timestamp ensureTimestamp() => $_ensure(1);
 
   @$pb.TagNumber(3)
-  $core.List<$core.int> get baitId => $_getN(2);
+  Id get baitId => $_getN(2);
   @$pb.TagNumber(3)
-  set baitId($core.List<$core.int> v) { $_setBytes(2, v); }
+  set baitId(Id v) { setField(3, v); }
   @$pb.TagNumber(3)
   $core.bool hasBaitId() => $_has(2);
   @$pb.TagNumber(3)
   void clearBaitId() => clearField(3);
+  @$pb.TagNumber(3)
+  Id ensureBaitId() => $_ensure(2);
 
   @$pb.TagNumber(4)
-  $core.List<$core.int> get fishingSpotId => $_getN(3);
+  Id get fishingSpotId => $_getN(3);
   @$pb.TagNumber(4)
-  set fishingSpotId($core.List<$core.int> v) { $_setBytes(3, v); }
+  set fishingSpotId(Id v) { setField(4, v); }
   @$pb.TagNumber(4)
   $core.bool hasFishingSpotId() => $_has(3);
   @$pb.TagNumber(4)
   void clearFishingSpotId() => clearField(4);
+  @$pb.TagNumber(4)
+  Id ensureFishingSpotId() => $_ensure(3);
 
   @$pb.TagNumber(5)
-  $core.List<$core.int> get speciesId => $_getN(4);
+  Id get speciesId => $_getN(4);
   @$pb.TagNumber(5)
-  set speciesId($core.List<$core.int> v) { $_setBytes(4, v); }
+  set speciesId(Id v) { setField(5, v); }
   @$pb.TagNumber(5)
   $core.bool hasSpeciesId() => $_has(4);
   @$pb.TagNumber(5)
   void clearSpeciesId() => clearField(5);
+  @$pb.TagNumber(5)
+  Id ensureSpeciesId() => $_ensure(4);
 
   @$pb.TagNumber(6)
   $core.List<$core.String> get imageNames => $_getList(5);
@@ -296,7 +345,7 @@ class Catch extends $pb.GeneratedMessage {
 
 class FishingSpot extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('FishingSpot', package: const $pb.PackageName('anglerslog'), createEmptyInstance: create)
-    ..a<$core.List<$core.int>>(1, 'id', $pb.PbFieldType.OY)
+    ..aOM<Id>(1, 'id', subBuilder: Id.create)
     ..aOS(2, 'name')
     ..a<$core.double>(3, 'lat', $pb.PbFieldType.OD)
     ..a<$core.double>(4, 'lng', $pb.PbFieldType.OD)
@@ -319,13 +368,15 @@ class FishingSpot extends $pb.GeneratedMessage {
   static FishingSpot _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.List<$core.int> get id => $_getN(0);
+  Id get id => $_getN(0);
   @$pb.TagNumber(1)
-  set id($core.List<$core.int> v) { $_setBytes(0, v); }
+  set id(Id v) { setField(1, v); }
   @$pb.TagNumber(1)
   $core.bool hasId() => $_has(0);
   @$pb.TagNumber(1)
   void clearId() => clearField(1);
+  @$pb.TagNumber(1)
+  Id ensureId() => $_ensure(0);
 
   @$pb.TagNumber(2)
   $core.String get name => $_getSZ(1);
@@ -357,7 +408,7 @@ class FishingSpot extends $pb.GeneratedMessage {
 
 class Species extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('Species', package: const $pb.PackageName('anglerslog'), createEmptyInstance: create)
-    ..a<$core.List<$core.int>>(1, 'id', $pb.PbFieldType.OY)
+    ..aOM<Id>(1, 'id', subBuilder: Id.create)
     ..aOS(2, 'name')
     ..hasRequiredFields = false
   ;
@@ -378,13 +429,15 @@ class Species extends $pb.GeneratedMessage {
   static Species _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.List<$core.int> get id => $_getN(0);
+  Id get id => $_getN(0);
   @$pb.TagNumber(1)
-  set id($core.List<$core.int> v) { $_setBytes(0, v); }
+  set id(Id v) { setField(1, v); }
   @$pb.TagNumber(1)
   $core.bool hasId() => $_has(0);
   @$pb.TagNumber(1)
   void clearId() => clearField(1);
+  @$pb.TagNumber(1)
+  Id ensureId() => $_ensure(0);
 
   @$pb.TagNumber(2)
   $core.String get name => $_getSZ(1);
@@ -398,15 +451,15 @@ class Species extends $pb.GeneratedMessage {
 
 class SummaryReport extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('SummaryReport', package: const $pb.PackageName('anglerslog'), createEmptyInstance: create)
-    ..a<$core.List<$core.int>>(1, 'id', $pb.PbFieldType.OY)
+    ..aOM<Id>(1, 'id', subBuilder: Id.create)
     ..aOS(2, 'name')
     ..aOS(3, 'description')
     ..aOS(4, 'displayDateRangeId')
     ..aOM<$0.Timestamp>(5, 'startTimestamp', subBuilder: $0.Timestamp.create)
     ..aOM<$0.Timestamp>(6, 'endTimestamp', subBuilder: $0.Timestamp.create)
-    ..p<$core.List<$core.int>>(7, 'baitIds', $pb.PbFieldType.PY)
-    ..p<$core.List<$core.int>>(8, 'fishingSpotIds', $pb.PbFieldType.PY)
-    ..p<$core.List<$core.int>>(9, 'speciesIds', $pb.PbFieldType.PY)
+    ..pc<Id>(7, 'baitIds', $pb.PbFieldType.PM, subBuilder: Id.create)
+    ..pc<Id>(8, 'fishingSpotIds', $pb.PbFieldType.PM, subBuilder: Id.create)
+    ..pc<Id>(9, 'speciesIds', $pb.PbFieldType.PM, subBuilder: Id.create)
     ..hasRequiredFields = false
   ;
 
@@ -426,13 +479,15 @@ class SummaryReport extends $pb.GeneratedMessage {
   static SummaryReport _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.List<$core.int> get id => $_getN(0);
+  Id get id => $_getN(0);
   @$pb.TagNumber(1)
-  set id($core.List<$core.int> v) { $_setBytes(0, v); }
+  set id(Id v) { setField(1, v); }
   @$pb.TagNumber(1)
   $core.bool hasId() => $_has(0);
   @$pb.TagNumber(1)
   void clearId() => clearField(1);
+  @$pb.TagNumber(1)
+  Id ensureId() => $_ensure(0);
 
   @$pb.TagNumber(2)
   $core.String get name => $_getSZ(1);
@@ -484,18 +539,18 @@ class SummaryReport extends $pb.GeneratedMessage {
   $0.Timestamp ensureEndTimestamp() => $_ensure(5);
 
   @$pb.TagNumber(7)
-  $core.List<$core.List<$core.int>> get baitIds => $_getList(6);
+  $core.List<Id> get baitIds => $_getList(6);
 
   @$pb.TagNumber(8)
-  $core.List<$core.List<$core.int>> get fishingSpotIds => $_getList(7);
+  $core.List<Id> get fishingSpotIds => $_getList(7);
 
   @$pb.TagNumber(9)
-  $core.List<$core.List<$core.int>> get speciesIds => $_getList(8);
+  $core.List<Id> get speciesIds => $_getList(8);
 }
 
 class ComparisonReport extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('ComparisonReport', package: const $pb.PackageName('anglerslog'), createEmptyInstance: create)
-    ..a<$core.List<$core.int>>(1, 'id', $pb.PbFieldType.OY)
+    ..aOM<Id>(1, 'id', subBuilder: Id.create)
     ..aOS(2, 'name')
     ..aOS(3, 'description')
     ..aOS(4, 'fromDisplayDateRangeId')
@@ -504,9 +559,9 @@ class ComparisonReport extends $pb.GeneratedMessage {
     ..aOM<$0.Timestamp>(7, 'toStartTimestamp', subBuilder: $0.Timestamp.create)
     ..aOM<$0.Timestamp>(8, 'fromEndTimestamp', subBuilder: $0.Timestamp.create)
     ..aOM<$0.Timestamp>(9, 'toEndTimestamp', subBuilder: $0.Timestamp.create)
-    ..p<$core.List<$core.int>>(10, 'baitIds', $pb.PbFieldType.PY)
-    ..p<$core.List<$core.int>>(11, 'fishingSpotIds', $pb.PbFieldType.PY)
-    ..p<$core.List<$core.int>>(12, 'speciesIds', $pb.PbFieldType.PY)
+    ..pc<Id>(10, 'baitIds', $pb.PbFieldType.PM, subBuilder: Id.create)
+    ..pc<Id>(11, 'fishingSpotIds', $pb.PbFieldType.PM, subBuilder: Id.create)
+    ..pc<Id>(12, 'speciesIds', $pb.PbFieldType.PM, subBuilder: Id.create)
     ..hasRequiredFields = false
   ;
 
@@ -526,13 +581,15 @@ class ComparisonReport extends $pb.GeneratedMessage {
   static ComparisonReport _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.List<$core.int> get id => $_getN(0);
+  Id get id => $_getN(0);
   @$pb.TagNumber(1)
-  set id($core.List<$core.int> v) { $_setBytes(0, v); }
+  set id(Id v) { setField(1, v); }
   @$pb.TagNumber(1)
   $core.bool hasId() => $_has(0);
   @$pb.TagNumber(1)
   void clearId() => clearField(1);
+  @$pb.TagNumber(1)
+  Id ensureId() => $_ensure(0);
 
   @$pb.TagNumber(2)
   $core.String get name => $_getSZ(1);
@@ -615,12 +672,12 @@ class ComparisonReport extends $pb.GeneratedMessage {
   $0.Timestamp ensureToEndTimestamp() => $_ensure(8);
 
   @$pb.TagNumber(10)
-  $core.List<$core.List<$core.int>> get baitIds => $_getList(9);
+  $core.List<Id> get baitIds => $_getList(9);
 
   @$pb.TagNumber(11)
-  $core.List<$core.List<$core.int>> get fishingSpotIds => $_getList(10);
+  $core.List<Id> get fishingSpotIds => $_getList(10);
 
   @$pb.TagNumber(12)
-  $core.List<$core.List<$core.int>> get speciesIds => $_getList(11);
+  $core.List<Id> get speciesIds => $_getList(11);
 }
 

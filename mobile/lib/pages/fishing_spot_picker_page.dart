@@ -7,13 +7,13 @@ import 'package:mobile/fishing_spot_manager.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/location_monitor.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
-import 'package:mobile/model/id.dart';
 import 'package:mobile/pages/save_fishing_spot_page.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/res/style.dart';
 import 'package:mobile/utils/device_utils.dart';
 import 'package:mobile/utils/map_utils.dart';
 import 'package:mobile/utils/page_utils.dart';
+import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/utils/string_utils.dart';
 import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/fishing_spot_map.dart';
@@ -22,12 +22,7 @@ import 'package:mobile/widgets/widget.dart';
 
 class FishingSpotPickerPage extends StatefulWidget {
   final void Function(BuildContext, FishingSpot) onPicked;
-
-  /// Note that an [Id] is not used here because this page is sometimes
-  /// displayed before the [FishingSpot] is actually added to
-  /// [FishingSpotManager].
   final FishingSpot fishingSpot;
-
   final String doneButtonText;
 
   FishingSpotPickerPage({
@@ -163,6 +158,7 @@ class _FishingSpotPickerPageState extends State<FishingSpotPickerPage>
 
         _mapController.future.then((controller) {
           _updateFishingSpotDelayed(FishingSpot()
+            ..id = randomId()
             ..lat = _currentPosition.latitude
             ..lng = _currentPosition.longitude);
         });

@@ -6,12 +6,13 @@ import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/log.dart';
-import 'package:mobile/model/id.dart';
+import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/pages/form_page.dart';
 import 'package:mobile/properties_manager.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/res/style.dart';
 import 'package:mobile/utils/device_utils.dart';
+import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/utils/snackbar_utils.dart';
 import 'package:mobile/utils/string_utils.dart';
 import 'package:mobile/utils/validator.dart';
@@ -49,11 +50,11 @@ class FeedbackPage extends StatefulWidget {
 }
 
 class _FeedbackPageState extends State<FeedbackPage> {
-  static final _idWarning = Id.random();
-  static final _idName = Id.random();
-  static final _idEmail = Id.random();
-  static final _idType = Id.random();
-  static final _idMessage = Id.random();
+  static final _idWarning = randomId();
+  static final _idName = randomId();
+  static final _idEmail = randomId();
+  static final _idType = randomId();
+  static final _idMessage = randomId();
 
   final Log _log = Log("FeedbackPage");
 

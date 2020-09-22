@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/model/id.dart';
+import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/report_manager.dart';
 import 'package:mobile/widgets/reports/report_summary.dart';
 import 'package:protobuf/protobuf.dart';

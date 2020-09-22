@@ -4,12 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mobile/fishing_spot_manager.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
-import 'package:mobile/model/id.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/utils/string_utils.dart';
 import 'package:mobile/widgets/fishing_spot_map.dart';
 import 'package:mobile/widgets/floating_bottom_container.dart';
-import 'package:uuid/uuid.dart';
 
 class FishingSpotPage extends StatefulWidget {
   final Id fishingSpotId;
@@ -54,7 +52,7 @@ class _FishingSpotPageState extends State<FishingSpotPage> {
         },
         markers: {
           Marker(
-            markerId: MarkerId(Uuid().unparse(fishingSpot.id)),
+            markerId: MarkerId(fishingSpot.id.uuid),
             position: latLng,
           ),
         },

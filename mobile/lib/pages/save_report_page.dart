@@ -7,7 +7,6 @@ import 'package:mobile/fishing_spot_manager.dart';
 import 'package:mobile/log.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/model/gen/google/protobuf/timestamp.pb.dart';
-import 'package:mobile/model/id.dart';
 import 'package:mobile/report_manager.dart';
 import 'package:mobile/species_manager.dart';
 import 'package:mobile/summary_report_manager.dart';
@@ -19,6 +18,7 @@ import 'package:mobile/pages/species_list_page.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/utils/date_time_utils.dart';
 import 'package:mobile/utils/page_utils.dart';
+import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/utils/validator.dart';
 import 'package:mobile/widgets/date_range_picker_input.dart';
 import 'package:mobile/widgets/input_controller.dart';
@@ -39,14 +39,14 @@ class SaveReportPage extends StatefulWidget {
 }
 
 class _SaveReportPageState extends State<SaveReportPage> {
-  static final _idName = Id.random();
-  static final _idDescription = Id.random();
-  static final _idType = Id.random();
-  static final _idStartDateRange = Id.random();
-  static final _idEndDateRange = Id.random();
-  static final _idSpecies = Id.random();
-  static final _idBaits = Id.random();
-  static final _idFishingSpots = Id.random();
+  static final _idName = randomId();
+  static final _idDescription = randomId();
+  static final _idType = randomId();
+  static final _idStartDateRange = randomId();
+  static final _idEndDateRange = randomId();
+  static final _idSpecies = randomId();
+  static final _idBaits = randomId();
+  static final _idFishingSpots = randomId();
 
   static const _log = Log("SaveReportPage");
 
@@ -145,11 +145,11 @@ class _SaveReportPageState extends State<SaveReportPage> {
         _fromDateRangeController.value = DisplayDateRange.of(
             report.displayDateRangeId, report.startTimestamp,
             report.endTimestamp);
-        _baitsController.value = _baitManager.pbIdListToSet(report.baitIds);
+        _baitsController.value = _baitManager.list(report.baitIds).toSet();
         _fishingSpotsController.value =
-            _fishingSpotManager.pbIdListToSet(report.fishingSpotIds);
+            _fishingSpotManager.list(report.fishingSpotIds).toSet();
         _speciesController.value =
-            _speciesManager.pbIdListToSet(report.speciesIds);
+            _speciesManager.list(report.speciesIds).toSet();
       } else if (_oldReport is ComparisonReport) {
         var report = _oldReport as ComparisonReport;
         _nameController.value = report.name;
@@ -161,11 +161,11 @@ class _SaveReportPageState extends State<SaveReportPage> {
         _toDateRangeController.value = DisplayDateRange.of(
             report.toDisplayDateRangeId, report.toStartTimestamp,
             report.toEndTimestamp);
-        _baitsController.value = _baitManager.pbIdListToSet(report.baitIds);
+        _baitsController.value = _baitManager.list(report.baitIds).toSet();
         _fishingSpotsController.value =
-            _fishingSpotManager.pbIdListToSet(report.fishingSpotIds);
+            _fishingSpotManager.list(report.fishingSpotIds).toSet();
         _speciesController.value =
-            _speciesManager.pbIdListToSet(report.speciesIds);
+            _speciesManager.list(report.speciesIds).toSet();
       }
     } else {
       _typeController.value = _ReportType.summary;
@@ -387,7 +387,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
     bool custom = dateRange == DisplayDateRange.custom;
 
     return SummaryReport()
-      ..id = _oldReport?.id ?? Id.random()
+      ..id = _oldReport?.id ?? randomId()
       ..name = _nameController.value
       ..description = _descriptionController.value
       ..displayDateRangeId = dateRange.id
@@ -407,7 +407,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
     bool customTo = toDateRange == DisplayDateRange.custom;
 
     return ComparisonReport()
-      ..id = _oldReport?.id ?? Id.random()
+      ..id = _oldReport?.id ?? randomId()
       ..name = _nameController.value
       ..description = _descriptionController.value
       ..fromDisplayDateRangeId = fromDateRange.id

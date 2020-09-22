@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/model/id.dart';
 import 'package:mobile/pages/form_page.dart';
+import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/utils/string_utils.dart';
 import 'package:mobile/utils/validator.dart';
 import 'package:mobile/widgets/input_controller.dart';
@@ -35,7 +35,7 @@ class SaveNamePage extends StatefulWidget {
 }
 
 class _SaveNamePageState extends State<SaveNamePage> {
-  static final _idName = Id.random();
+  static final _idName = randomId();
 
   TextInputController _controller;
 

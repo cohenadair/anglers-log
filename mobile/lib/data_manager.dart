@@ -4,8 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:mobile/app_manager.dart';
 import 'package:mobile/database/sqlite_open_helper.dart';
 import 'package:mobile/log.dart';
-import 'package:mobile/model/id.dart';
+import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/utils/listener_manager.dart';
+import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:provider/provider.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -88,7 +89,7 @@ class DataManager extends ListenerManager<DataListener> {
       tableName,
       values,
       where: "id = ?",
-      whereArgs: [Uint8List.fromList(id.bytes)],
+      whereArgs: [id.uint8List],
     ) > 0;
   }
 
@@ -96,7 +97,7 @@ class DataManager extends ListenerManager<DataListener> {
   Future<bool> _idExists(String tableName, Id id) async {
     int count = Sqflite.firstIntValue(await _database.rawQuery(
         "SELECT COUNT(*) FROM $tableName WHERE id = ?",
-        [Uint8List.fromList(id.bytes)]));
+        [id.uint8List]));
     return count != null && count > 0;
   }
 
@@ -138,7 +139,7 @@ class DataManager extends ListenerManager<DataListener> {
 
   /// Deletes a given [Entity] from the given [tableName].
   Future<bool> deleteEntity(Id entityId, String tableName) async {
-    var id = Uint8List.fromList(entityId.bytes);
+    Uint8List id = entityId.uint8List;
     if (await delete(tableName, where: "id = ?", whereArgs: [id])) {
       return true;
     } else {

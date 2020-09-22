@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
-import 'package:mobile/model/id.dart';
+import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/widgets/input_controller.dart';
 import 'package:mobile/widgets/input_type.dart';
 
@@ -44,7 +44,7 @@ class InputData {
 
   InputData.fromCustomEntity(CustomEntity entity)
       : assert(entity != null),
-        id = Id(entity.id),
+        id = entity.id,
         controller = inputTypeController(entity.type),
         label = _customEntityLabel(entity),
         showing = true,
@@ -52,7 +52,7 @@ class InputData {
         fake = false;
 
   InputData.fake()
-      : id = Id.random(),
+      : id = randomId(),
         controller = InputController(),
         label = null,
         showing = true,

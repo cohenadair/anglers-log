@@ -3,6 +3,14 @@ package anglerslog;
 
 import "google/protobuf/timestamp.proto";
 
+// A unique ID. An Id is a wrapper for UUID string representation of protobuf bytes type that can
+// be used as keys in a map. The Dart type for protobuf bytes is a List<int>, and [List==] does
+// not do a deep comparison of its elements. An [Id] message wrapper here is purely for semantics
+// to differentiate between a "string" and a "string that is an ID".
+message Id {
+  string uuid = 1;
+}
+
 message CustomEntity {
   enum Type {
     UNKNOWN = 0;
@@ -11,65 +19,65 @@ message CustomEntity {
     TEXT = 3;
   }
 
-  bytes id = 1;
+  Id id = 1;
   string name = 2;
   string description = 3;
   Type type = 4;
 }
 
 message CustomEntityValue {
-  bytes custom_entity_id = 1;
+  Id custom_entity_id = 1;
   string value = 2;
 }
 
 message Bait {
-  bytes id = 1;
+  Id id = 1;
   string name = 2;
-  bytes bait_category_id = 3;
+  Id bait_category_id = 3;
   repeated CustomEntityValue custom_entity_values = 4;
 }
 
 message BaitCategory {
-  bytes id = 1;
+  Id id = 1;
   string name = 2;
 }
 
 message Catch {
-  bytes id = 1;
+  Id id = 1;
   google.protobuf.Timestamp timestamp = 2;
-  bytes bait_id = 3;
-  bytes fishing_spot_id = 4;
-  bytes species_id = 5;
+  Id bait_id = 3;
+  Id fishing_spot_id = 4;
+  Id species_id = 5;
   repeated string image_names = 6;
   repeated CustomEntityValue custom_entity_values = 7;
 }
 
 message FishingSpot {
-  bytes id = 1;
+  Id id = 1;
   string name = 2;
   double lat = 3;
   double lng = 4;
 }
 
 message Species {
-  bytes id = 1;
+  Id id = 1;
   string name = 2;
 }
 
 message SummaryReport {
-  bytes id = 1;
+  Id id = 1;
   string name = 2;
   string description = 3;
   string display_date_range_id = 4;
   google.protobuf.Timestamp start_timestamp = 5;
   google.protobuf.Timestamp end_timestamp = 6;
-  repeated bytes bait_ids = 7;
-  repeated bytes fishing_spot_ids = 8;
-  repeated bytes species_ids = 9;
+  repeated Id bait_ids = 7;
+  repeated Id fishing_spot_ids = 8;
+  repeated Id species_ids = 9;
 }
 
 message ComparisonReport {
-  bytes id = 1;
+  Id id = 1;
   string name = 2;
   string description = 3;
   string from_display_date_range_id = 4;
@@ -78,7 +86,7 @@ message ComparisonReport {
   google.protobuf.Timestamp to_start_timestamp = 7;
   google.protobuf.Timestamp from_end_timestamp = 8;
   google.protobuf.Timestamp to_end_timestamp = 9;
-  repeated bytes bait_ids = 10;
-  repeated bytes fishing_spot_ids = 11;
-  repeated bytes species_ids = 12;
+  repeated Id bait_ids = 10;
+  repeated Id fishing_spot_ids = 11;
+  repeated Id species_ids = 12;
 }

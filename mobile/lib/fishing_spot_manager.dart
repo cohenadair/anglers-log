@@ -4,7 +4,6 @@ import 'package:mobile/app_manager.dart';
 import 'package:mobile/catch_manager.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
-import 'package:mobile/model/id.dart';
 import 'package:mobile/named_entity_manager.dart';
 import 'package:mobile/utils/map_utils.dart';
 import 'package:mobile/utils/string_utils.dart';
@@ -23,7 +22,7 @@ class FishingSpotManager extends NamedEntityManager<FishingSpot> {
   FishingSpot entityFromBytes(List<int> bytes) => FishingSpot.fromBuffer(bytes);
 
   @override
-  Id id(FishingSpot fishingSpot) => Id(fishingSpot.id);
+  Id id(FishingSpot fishingSpot) => fishingSpot.id;
 
   @override
   String name(FishingSpot fishingSpot) => fishingSpot.name;
@@ -78,9 +77,7 @@ class FishingSpotManager extends NamedEntityManager<FishingSpot> {
 
     int result = 0;
     _catchManager.list().forEach((cat) {
-      if (cat.fishingSpotId.isNotEmpty && cat.fishingSpotId == fishingSpot.id) {
-        result++;
-      }
+      result += fishingSpot.id == cat.fishingSpotId ? 1 : 0;
     });
     return result;
   }

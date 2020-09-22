@@ -6,7 +6,6 @@ import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/utils/string_utils.dart';
 import 'package:mobile/widgets/floating_bottom_container.dart';
-import 'package:uuid/uuid.dart';
 
 /// A widget for displaying a fishing spot on a small [GoogleMap]. The
 /// [FishingSpot] name and coordinates are rendered in a floating widget
@@ -61,7 +60,7 @@ class StaticFishingSpot extends StatelessWidget {
                 myLocationButtonEnabled: false,
                 markers: Set.from([
                   Marker(
-                    markerId: MarkerId(Uuid().unparse(fishingSpot.id)),
+                    markerId: MarkerId(fishingSpot.id.uuid),
                     position: _latLng,
                   ),
                 ]),

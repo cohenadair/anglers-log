@@ -5,7 +5,7 @@ import 'package:mobile/app_manager.dart';
 import 'package:mobile/data_manager.dart';
 import 'package:mobile/entity_manager.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
-import 'package:mobile/model/id.dart';
+import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mockito/mockito.dart';
 import 'package:sqflite/sqlite_api.dart';
 
@@ -23,7 +23,7 @@ class TestEntityManager extends EntityManager<Species> {
   Species entityFromBytes(List<int> bytes) => Species.fromBuffer(bytes);
 
   @override
-  Id id(Species species) => Id(species.id);
+  Id id(Species species) => species.id;
 
   @override
   bool matchesFilter(Id id, String filter) => true;
@@ -50,13 +50,13 @@ void main() {
   });
 
   test("Test initialize", () async {
-    Id id0 = Id.random();
-    Id id1 = Id.random();
-    Id id2 = Id.random();
+    Id id0 = randomId();
+    Id id1 = randomId();
+    Id id2 = randomId();
 
-    Species species0 = Species()..id = id0.bytes;
-    Species species1 = Species()..id = id1.bytes;
-    Species species2 = Species()..id = id2.bytes;
+    Species species0 = Species()..id = id0;
+    Species species1 = Species()..id = id1;
+    Species species2 = Species()..id = id2;
 
     when(dataManager.fetchAll("species")).thenAnswer((_) => Future.value([
       {"id": Uint8List.fromList(id0.bytes), "bytes": species0.writeToBuffer()},
@@ -77,11 +77,11 @@ void main() {
     entityManager.addListener(listener);
 
     // Add.
-    Id speciesId0 = Id.random();
-    Id speciesId1 = Id.random();
+    Id speciesId0 = randomId();
+    Id speciesId1 = randomId();
 
     expect(await entityManager.addOrUpdate(Species()
-      ..id = speciesId0.bytes
+      ..id = speciesId0
       ..name = "Bluegill"), true);
     expect(entityManager.entityCount, 1);
     expect(entityManager.entity(speciesId0).name, "Bluegill");
@@ -89,7 +89,7 @@ void main() {
 
     // Update.
     expect(await entityManager.addOrUpdate(Species()
-      ..id = speciesId0.bytes
+      ..id = speciesId0
       ..name = "Bass"), true);
     expect(entityManager.entityCount, 1);
     expect(entityManager.entity(speciesId0).name, "Bass");
@@ -97,7 +97,7 @@ void main() {
 
     // No notify.
     expect(await entityManager.addOrUpdate(Species()
-      ..id = speciesId1.bytes
+      ..id = speciesId1
       ..name = "Catfish", notify: false), true);
     expect(entityManager.entityCount, 2);
     expect(entityManager.entity(speciesId1).name, "Catfish");
@@ -113,9 +113,9 @@ void main() {
     when(listener.onDelete).thenReturn((_) {});
     entityManager.addListener(listener);
 
-    Id speciesId0 = Id.random();
+    Id speciesId0 = randomId();
     await entityManager.addOrUpdate(Species()
-      ..id = speciesId0.bytes
+      ..id = speciesId0
       ..name = "Bluegill");
 
     expect(await entityManager.delete(speciesId0), true);
@@ -154,7 +154,7 @@ void main() {
 
     // Add some entities.
     await entityManager.addOrUpdate(Species()
-      ..id = Id.random().bytes
+      ..id = randomId()
       ..name = "Test");
     expect(entityManager.entityCount, 1);
 
@@ -175,18 +175,18 @@ void main() {
         .thenAnswer((_) => Future.value(true));
 
     // Add.
-    Id speciesId0 = Id.random();
-    Id speciesId1 = Id.random();
-    Id speciesId2 = Id.random();
+    Id speciesId0 = randomId();
+    Id speciesId1 = randomId();
+    Id speciesId2 = randomId();
 
     expect(await entityManager.addOrUpdate(Species()
-      ..id = speciesId0.bytes
+      ..id = speciesId0
       ..name = "Bluegill"), true);
     expect(await entityManager.addOrUpdate(Species()
-      ..id = speciesId1.bytes
+      ..id = speciesId1
       ..name = "Catfish"), true);
     expect(await entityManager.addOrUpdate(Species()
-      ..id = speciesId2.bytes
+      ..id = speciesId2
       ..name = "Bass"), true);
     expect(entityManager.entityCount, 3);
     expect(entityManager.list().length, 3);

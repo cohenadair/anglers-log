@@ -3,7 +3,6 @@ import 'package:mobile/app_manager.dart';
 import 'package:mobile/catch_manager.dart';
 import 'package:mobile/data_manager.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
-import 'package:mobile/model/id.dart';
 import 'package:mobile/species_manager.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mockito/mockito.dart';
@@ -33,31 +32,31 @@ void main() {
   });
 
   test("Number of catches", () {
-    Id speciesId0 = Id.random();
-    Id speciesId3 = Id.random();
-    Id speciesId4 = Id.random();
+    Id speciesId0 = randomId();
+    Id speciesId3 = randomId();
+    Id speciesId4 = randomId();
 
     when(catchManager.list()).thenReturn([
       Catch()
-        ..id = Id.random().bytes
-        ..timestamp = Timestamps.fromMillis(0)
-        ..speciesId = speciesId0.bytes,
+        ..id = randomId()
+        ..timestamp = timestampFromMillis(0)
+        ..speciesId = speciesId0,
       Catch()
-        ..id = Id.random().bytes
-        ..timestamp = Timestamps.fromMillis(0)
-        ..speciesId = speciesId0.bytes,
+        ..id = randomId()
+        ..timestamp = timestampFromMillis(0)
+        ..speciesId = speciesId0,
       Catch()
-        ..id = Id.random().bytes
-        ..timestamp = Timestamps.fromMillis(0)
-        ..speciesId = speciesId4.bytes,
+        ..id = randomId()
+        ..timestamp = timestampFromMillis(0)
+        ..speciesId = speciesId4,
       Catch()
-        ..id = Id.random().bytes
-        ..timestamp = Timestamps.fromMillis(0)
-        ..speciesId = speciesId3.bytes,
+        ..id = randomId()
+        ..timestamp = timestampFromMillis(0)
+        ..speciesId = speciesId3,
       Catch()
-        ..id = Id.random().bytes
-        ..timestamp = Timestamps.fromMillis(0)
-        ..speciesId = speciesId0.bytes,
+        ..id = randomId()
+        ..timestamp = timestampFromMillis(0)
+        ..speciesId = speciesId0,
     ]);
 
     expect(speciesManager.numberOfCatches(null), 0);

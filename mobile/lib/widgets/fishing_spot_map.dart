@@ -214,7 +214,7 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
           suggestionsBuilder: (context) => _buildSearchPageList(
               _fishingSpotManager.listSortedByName()),
           resultsBuilder: (context, query) {
-            var fishingSpots =
+            List<FishingSpot> fishingSpots =
                 _fishingSpotManager.listSortedByName(filter: query);
 
             if (fishingSpots.isEmpty) {
