@@ -1,40 +1,37 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/bait_category_manager.dart';
 import 'package:mobile/i18n/strings.dart';
-import 'package:mobile/model/bait_category.dart';
+import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/pages/save_name_page.dart';
+import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/utils/validator.dart';
 
 class SaveBaitCategoryPage extends StatelessWidget {
-  final BaitCategory oldCategory;
+  final BaitCategory oldBaitCategory;
 
-  SaveBaitCategoryPage() : oldCategory = null;
-  SaveBaitCategoryPage.edit(this.oldCategory);
-
-  bool get _editing => oldCategory != null;
+  SaveBaitCategoryPage() : oldBaitCategory = null;
+  SaveBaitCategoryPage.edit(this.oldBaitCategory)
+      : assert(oldBaitCategory != null);
 
   @override
   Widget build(BuildContext context) {
-    BaitCategoryManager categoryManager = BaitCategoryManager.of(context);
+    BaitCategoryManager baitCategoryManager = BaitCategoryManager.of(context);
 
     return SaveNamePage(
-      title: _editing
-          ? Text(Strings.of(context).saveBaitCategoryPageEditTitle)
-          : Text(Strings.of(context).saveBaitCategoryPageNewTitle),
-      oldName: oldCategory?.name,
+      title: oldBaitCategory == null
+          ? Text(Strings.of(context).saveBaitCategoryPageNewTitle)
+          : Text(Strings.of(context).saveBaitCategoryPageEditTitle),
+      oldName: oldBaitCategory?.name,
       onSave: (newName) {
-        var newCategory = BaitCategory(name: newName);
-        if (_editing) {
-          newCategory = BaitCategory(name: newName, id: oldCategory.id);
-        }
-
-        categoryManager.addOrUpdate(newCategory);
+        baitCategoryManager.addOrUpdate(BaitCategory()
+          ..id = oldBaitCategory?.id ?? randomId()
+          ..name = newName);
         return true;
       },
       validator: NameValidator(
         nameExistsMessage: (context) =>
             Strings.of(context).saveBaitCategoryPageExistsMessage,
-        nameExists: (name) => categoryManager.nameExists(name),
+        nameExists: (name) => baitCategoryManager.nameExists(name),
       ),
     );
   }

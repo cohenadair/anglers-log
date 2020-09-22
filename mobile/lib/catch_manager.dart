@@ -3,26 +3,29 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:mobile/app_manager.dart';
 import 'package:mobile/bait_manager.dart';
-import 'package:mobile/custom_entity_value_manager.dart';
+import 'package:mobile/custom_entity_manager.dart';
 import 'package:mobile/entity_manager.dart';
 import 'package:mobile/fishing_spot_manager.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/image_manager.dart';
-import 'package:mobile/model/bait.dart';
-import 'package:mobile/model/catch.dart';
-import 'package:mobile/model/custom_entity_value.dart';
-import 'package:mobile/model/fishing_spot.dart';
-import 'package:mobile/model/species.dart';
+import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/species_manager.dart';
 import 'package:mobile/utils/date_time_utils.dart';
+import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/utils/string_utils.dart';
 import 'package:provider/provider.dart';
-import 'package:quiver/core.dart';
 import 'package:quiver/strings.dart';
 
 class CatchManager extends EntityManager<Catch> {
   static CatchManager of(BuildContext context) =>
       Provider.of<AppManager>(context, listen: false).catchManager;
+
+  BaitManager get _baitManager => appManager.baitManager;
+  CustomEntityManager get _customEntityManager =>
+      appManager.customEntityManager;
+  FishingSpotManager get _fishingSpotManager => appManager.fishingSpotManager;
+  ImageManager get _imageManager => appManager.imageManager;
+  SpeciesManager get _speciesManager => appManager.speciesManager;
 
   CatchManager(AppManager app) : super(app) {
     app.baitManager.addListener(SimpleEntityListener(
@@ -33,21 +36,44 @@ class CatchManager extends EntityManager<Catch> {
     ));
   }
 
-  BaitManager get _baitManager => appManager.baitManager;
-  CustomEntityValueManager get _entityValueManager =>
-      appManager.customEntityValueManager;
-  FishingSpotManager get _fishingSpotManager => appManager.fishingSpotManager;
-  ImageManager get _imageManager => appManager.imageManager;
-  SpeciesManager get _speciesManager => appManager.speciesManager;
+  @override
+  Catch entityFromBytes(List<int> bytes) => Catch.fromBuffer(bytes);
+
+  @override
+  Id id(Catch cat) => cat.id;
+
+  @override
+  bool matchesFilter(Id id, String filter, [BuildContext context]) {
+    Catch cat = entity(id);
+
+    if (cat == null
+        || isEmpty(filter)
+        || _speciesManager.matchesFilter(cat.speciesId, filter)
+        || _fishingSpotManager.matchesFilter(cat.fishingSpotId, filter)
+        || _baitManager.matchesFilter(cat.baitId, filter)
+        || context == null
+        || timestampToSearchString(context, cat.timestamp).toLowerCase()
+            .contains(filter.toLowerCase())
+        || entityValuesMatchesFilter(cat.customEntityValues, filter,
+            _customEntityManager))
+    {
+      return true;
+    }
+
+    return false;
+  }
+
+  @override
+  String get tableName => "catch";
 
   /// Returns all catches, sorted from newest to oldest.
   List<Catch> catchesSortedByTimestamp(BuildContext context, {
     String filter,
     DateRange dateRange,
-    Set<String> catchIds = const {},
-    Set<String> baitIds = const {},
-    Set<String> fishingSpotIds = const {},
-    Set<String> speciesIds = const {},
+    Set<Id> catchIds = const {},
+    Set<Id> baitIds = const {},
+    Set<Id> fishingSpotIds = const {},
+    Set<Id> speciesIds = const {},
   }) {
     assert(catchIds != null);
     assert(baitIds != null);
@@ -71,10 +97,10 @@ class CatchManager extends EntityManager<Catch> {
   List<Catch> filteredCatches(BuildContext context, {
     String filter,
     DateRange dateRange,
-    Set<String> catchIds = const {},
-    Set<String> baitIds = const {},
-    Set<String> fishingSpotIds = const {},
-    Set<String> speciesIds = const {},
+    Set<Id> catchIds = const {},
+    Set<Id> baitIds = const {},
+    Set<Id> fishingSpotIds = const {},
+    Set<Id> speciesIds = const {},
   }) {
     assert(catchIds != null);
     assert(baitIds != null);
@@ -99,22 +125,21 @@ class CatchManager extends EntityManager<Catch> {
         return false;
       }
 
-      return isEmpty(filter)
-          || cat.matchesFilter(filter)
-          || _speciesManager.entity(id: cat.speciesId).matchesFilter(filter)
-          || (cat.hasFishingSpot && _fishingSpotManager
-              .entity(id: cat.fishingSpotId).matchesFilter(filter))
-          || (cat.hasBait && _baitManager.matchesFilter(cat.baitId, filter))
-          || dateTimeToSearchingString(context, cat.dateTime).toLowerCase()
-              .contains(filter.toLowerCase());
+      return matchesFilter(cat.id, filter, context);
     }).toList();
+  }
+
+  /// Returns all image names from [Catch] objects, where the [Catch] objects
+  /// are sorted by timestamp.
+  List<String> imageNamesSortedByTimestamp(BuildContext context) {
+    return catchesSortedByTimestamp(context)
+        .expand((cat) => cat.imageNames).toList();
   }
 
   @override
   Future<bool> addOrUpdate(Catch cat, {
     FishingSpot fishingSpot,
     List<File> imageFiles,
-    List<CustomEntityValue> customEntityValues = const [],
     bool compressImages = true,
     bool notify = true,
   }) async {
@@ -124,23 +149,19 @@ class CatchManager extends EntityManager<Catch> {
       await _fishingSpotManager.addOrUpdate(fishingSpot);
     }
 
-    await _imageManager.save(cat.id, imageFiles, compress: compressImages);
-    await _entityValueManager.setValues(cat.id, customEntityValues);
+    cat.imageNames.clear();
+    cat.imageNames.addAll(
+        await _imageManager.save(imageFiles, compress: compressImages));
 
     return super.addOrUpdate(cat, notify: notify);
   }
 
-  @override
-  Catch entityFromMap(Map<String, dynamic> map) => Catch.fromMap(map);
-
-  @override
-  String get tableName => "catch";
-
   /// Returns true if a [Catch] with the given properties exists.
   bool existsWith({
-    String speciesId,
+    Id speciesId,
   }) {
-    return entityList().firstWhere((cat) => cat.speciesId == speciesId,
+    return list().firstWhere(
+        (cat) => cat.hasSpeciesId() && cat.speciesId == speciesId,
         orElse: () => null) != null;
   }
 
@@ -149,46 +170,44 @@ class CatchManager extends EntityManager<Catch> {
       return null;
     }
 
-    Species species = _speciesManager.entity(id: cat.speciesId);
-    String name = "${species.name} (${formatDateTime(context, cat.dateTime)})";
+    Species species = _speciesManager.entity(cat.speciesId);
+    String timeString = formatTimestamp(context, cat.timestamp);
+    String name;
+    if (species == null) {
+      name = "$timeString}";
+    } else {
+      name = "${species.name} ($timeString)";
+    }
+
     return format(Strings.of(context).catchPageDeleteMessage, [name]);
   }
 
-  void _onDeleteBait(Bait bait) async {
-    // First, update database. If there are no affected catches, exit early.
-    if (!await dataManager.rawUpdate(
-        "UPDATE catch SET bait_id = null WHERE bait_id = ?",
-        [bait.id]))
-    {
-      return;
-    }
+  /// Returns the total number of [CustomEntityValue] objects associated with
+  /// [Catch] objects and [customEntityId].
+  int numberOfCustomEntityValues(Id customEntityId) {
+    return entityValuesCount<Catch>(list(), customEntityId,
+        (cat) => cat.customEntityValues);
+  }
 
-    // Then, update memory cache.
-    List<Catch>.from(entityList()
+  void _onDeleteBait(Bait bait) async {
+    List<Catch>.from(list()
         .where((cat) => bait.id == cat.baitId))
         .forEach((cat) {
-          entities[cat.id] = cat.copyWith(baitId: Optional.absent());
+          entities[cat.id].clearBaitId();
         });
 
+    replaceDatabaseWithCache();
     notifyOnAddOrUpdate();
   }
 
   void _onDeleteFishingSpot(FishingSpot fishingSpot) async {
-    // First, update database. If there are no affected catches, exit early.
-    if (!await dataManager.rawUpdate(
-        "UPDATE catch SET fishing_spot_id = null WHERE fishing_spot_id = ?",
-        [fishingSpot.id]))
-    {
-      return;
-    }
-
-    // Then, update memory cache.
-    List<Catch>.from(entityList()
+    List<Catch>.from(list()
         .where((cat) => fishingSpot.id == cat.fishingSpotId))
         .forEach((cat) {
-          entities[cat.id] = cat.copyWith(fishingSpotId: Optional.absent());
+          entities[cat.id].clearFishingSpotId();
         });
 
+    replaceDatabaseWithCache();
     notifyOnAddOrUpdate();
   }
 }

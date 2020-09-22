@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:mobile/model/fishing_spot.dart';
+import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/utils/string_utils.dart';
 import 'package:mobile/widgets/floating_bottom_container.dart';
@@ -49,20 +49,19 @@ class StaticFishingSpot extends StatelessWidget {
                   // TODO: Remove when fixed in Google Maps.
                   // https://github.com/flutter/flutter/issues/27550
                   Future.delayed(Duration(milliseconds: 250), () {
-                    controller.moveCamera(
-                        CameraUpdate.newLatLng(fishingSpot.latLng));
+                    controller.moveCamera(CameraUpdate.newLatLng(_latLng));
                   });
                 },
                 initialCameraPosition: CameraPosition(
-                  target: fishingSpot.latLng,
+                  target: _latLng,
                   zoom: 15,
                 ),
                 myLocationEnabled: false,
                 myLocationButtonEnabled: false,
                 markers: Set.from([
                   Marker(
-                    markerId: MarkerId(fishingSpot.id),
-                    position: fishingSpot.latLng,
+                    markerId: MarkerId(fishingSpot.id.uuid),
+                    position: _latLng,
                   ),
                 ]),
                 rotateGesturesEnabled: false,
@@ -86,4 +85,6 @@ class StaticFishingSpot extends StatelessWidget {
       ),
     );
   }
+
+  LatLng get _latLng => LatLng(fishingSpot.lat, fishingSpot.lng);
 }

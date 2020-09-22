@@ -6,11 +6,13 @@ import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/log.dart';
+import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/pages/form_page.dart';
 import 'package:mobile/properties_manager.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/res/style.dart';
 import 'package:mobile/utils/device_utils.dart';
+import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/utils/snackbar_utils.dart';
 import 'package:mobile/utils/string_utils.dart';
 import 'package:mobile/utils/validator.dart';
@@ -48,23 +50,23 @@ class FeedbackPage extends StatefulWidget {
 }
 
 class _FeedbackPageState extends State<FeedbackPage> {
-  static const String _warningId = "warning";
-  static const String _nameId = "name";
-  static const String _emailId = "email";
-  static const String _typeId = "type";
-  static const String _messageId = "message";
+  static final _idWarning = randomId();
+  static final _idName = randomId();
+  static final _idEmail = randomId();
+  static final _idType = randomId();
+  static final _idMessage = randomId();
 
   final Log _log = Log("FeedbackPage");
 
-  final Map<String, InputData> _fields = {};
+  final Map<Id, InputData> _fields = {};
 
   PropertiesManager get _propertiesManager => PropertiesManager.of(context);
 
-  TextInputController get _nameController => _fields[_nameId].controller;
-  TextInputController get _emailController => _fields[_emailId].controller;
+  TextInputController get _nameController => _fields[_idName].controller;
+  TextInputController get _emailController => _fields[_idEmail].controller;
   InputController<_FeedbackType> get _typeController =>
-      _fields[_typeId].controller;
-  TextInputController get _messageController => _fields[_messageId].controller;
+      _fields[_idType].controller;
+  TextInputController get _messageController => _fields[_idMessage].controller;
 
   bool get _error => isNotEmpty(widget.error);
 
@@ -72,30 +74,30 @@ class _FeedbackPageState extends State<FeedbackPage> {
   void initState() {
     super.initState();
 
-    _fields[_warningId] = InputData(
-      id: _warningId,
+    _fields[_idWarning] = InputData(
+      id: _idWarning,
       controller: InputController(),
     );
 
-    _fields[_nameId] = InputData(
-      id: _nameId,
+    _fields[_idName] = InputData(
+      id: _idName,
       controller: TextInputController(),
     );
 
-    _fields[_emailId] = InputData(
-      id: _emailId,
+    _fields[_idEmail] = InputData(
+      id: _idEmail,
       controller: EmailInputController(),
     );
 
-    _fields[_typeId] = InputData(
-      id: _typeId,
+    _fields[_idType] = InputData(
+      id: _idType,
       controller: InputController<_FeedbackType>(
         value: _FeedbackType.bug,
       ),
     );
 
-    _fields[_messageId] = InputData(
-      id: _messageId,
+    _fields[_idMessage] = InputData(
+      id: _idMessage,
       controller: TextInputController(
         // Message field is only required if an error isn't being sent.
         validator: _error ? null : EmptyValidator(),
@@ -111,22 +113,22 @@ class _FeedbackPageState extends State<FeedbackPage> {
           && _messageController.valid(context),
       saveButtonText: Strings.of(context).feedbackPageSend,
       fieldBuilder: (context) => {
-        _warningId: _error && isNotEmpty(widget.warningMessage) ? Padding(
+        _idWarning: _error && isNotEmpty(widget.warningMessage) ? Padding(
           padding: insetsTopDefault,
           child: Text(widget.warningMessage,
             style: styleWarning,
           ),
         ) : Empty(),
-        _nameId: TextInput.name(context,
+        _idName: TextInput.name(context,
           controller: _nameController,
           autofocus: true,
         ),
-        _emailId: TextInput.email(context,
+        _idEmail: TextInput.email(context,
           controller: _emailController,
           // To update "Send" button state.
           onChanged: () => setState(() {}),
         ),
-        _typeId: _error ? Empty() : Padding(
+        _idType: _error ? Empty() : Padding(
           padding: insetsBottomDefault,
           child: Column(
             children: <Widget>[
@@ -144,7 +146,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
             ],
           ),
         ),
-        _messageId: TextInput(
+        _idMessage: TextInput(
           label: Strings.of(context).feedbackPageMessage,
           controller: _messageController,
           capitalization: TextCapitalization.sentences,

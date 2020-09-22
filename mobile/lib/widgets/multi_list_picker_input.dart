@@ -3,6 +3,7 @@ import 'package:mobile/res/dimen.dart';
 import 'package:mobile/widgets/list_picker_input.dart';
 import 'package:mobile/widgets/text.dart';
 import 'package:mobile/widgets/widget.dart';
+import 'package:quiver/strings.dart';
 
 /// A generic picker widget for selecting multiple items from a list. For
 /// selecting only a single item, use [ListPickerInput].
@@ -33,6 +34,9 @@ class MultiListPickerInput extends StatelessWidget {
       items.add(emptyValue(context));
     } else {
       for (String value in values) {
+        if (isEmpty(value)) {
+          continue;
+        }
         items.add(value);
       }
     }

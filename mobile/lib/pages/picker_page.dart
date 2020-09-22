@@ -101,9 +101,7 @@ class _PickerPageState<T> extends State<PickerPage<T>> {
         actions: [
           widget.multiSelect ? ActionButton.done(
             condensed: widget.action != null,
-            onPressed: () {
-              widget.onFinishedPicking(context, _selectedValues);
-            },
+            onPressed: () => widget.onFinishedPicking(context, _selectedValues),
           ) : Empty(),
           widget.action == null ? Empty() : widget.action,
         ],

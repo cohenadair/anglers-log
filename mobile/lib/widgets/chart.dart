@@ -3,7 +3,6 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/log.dart';
-import 'package:mobile/model/named_entity.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/utils/collection_utils.dart';
 import 'package:mobile/utils/date_time_utils.dart';
@@ -15,13 +14,16 @@ import 'package:quiver/iterables.dart';
 import 'package:quiver/strings.dart';
 
 /// An [ExpandableListItem] that, when tapped, shows a condensed [Chart] widget.
-class ExpandableChart<T extends NamedEntity> extends StatelessWidget {
+class ExpandableChart<T> extends StatelessWidget {
   final String title;
   final String viewAllTitle;
   final String viewAllDescription;
   final Set<String> filters;
   final List<Series<T>> series;
   final Widget Function(T, DateRange) rowDetailsPage;
+
+  /// See [Chart.labelBuilder].
+  final String Function(T) labelBuilder;
 
   ExpandableChart({
     this.title,
@@ -30,8 +32,10 @@ class ExpandableChart<T extends NamedEntity> extends StatelessWidget {
     this.filters = const {},
     this.series = const [],
     this.rowDetailsPage,
+    @required this.labelBuilder,
   }) : assert(series != null),
-       assert(filters != null);
+       assert(filters != null),
+       assert(labelBuilder != null);
 
   @override
   Widget build(BuildContext context) {
@@ -49,13 +53,14 @@ class ExpandableChart<T extends NamedEntity> extends StatelessWidget {
           chartPageFilters: filters,
           onTapRow: (entity, dateRange) =>
               push(context, rowDetailsPage(entity, dateRange)),
+          labelBuilder: labelBuilder,
         ),
       ],
     );
   }
 }
 
-class Series<T extends NamedEntity> {
+class Series<T> {
   final Map<T, int> data;
   final DisplayDateRange displayDateRange;
 
@@ -74,7 +79,7 @@ class Series<T extends NamedEntity> {
   }
 }
 
-class Chart<T extends NamedEntity> extends StatefulWidget {
+class Chart<T> extends StatefulWidget {
   static const _rowColorOpacity = 0.65;
 
   final EdgeInsets padding;
@@ -100,17 +105,19 @@ class Chart<T extends NamedEntity> extends StatefulWidget {
   /// value defaults to false.
   final bool showAll;
 
+  /// A builder for the label widget on each row of the chart.
   final String Function(T) labelBuilder;
+
   final void Function(T, DateRange) onTapRow;
 
   Chart({
     @required this.series,
+    @required this.labelBuilder,
     this.padding = insetsZero,
     this.viewAllTitle,
     this.chartPageDescription,
     this.chartPageFilters = const {},
     this.showAll = false,
-    this.labelBuilder,
     this.onTapRow,
   }) : assert(showAll || (!showAll && isNotEmpty(viewAllTitle)
            && isNotEmpty(chartPageDescription)),
@@ -118,11 +125,12 @@ class Chart<T extends NamedEntity> extends StatefulWidget {
        assert(series != null),
        assert(padding != null),
        assert(series.isNotEmpty),
-       assert(chartPageFilters != null)
+       assert(chartPageFilters != null),
+       assert(labelBuilder != null)
   {
     List<Color> colors = List.of(Colors.primaries)
-        ..remove(Colors.brown)
-        ..remove(Colors.blueGrey);
+      ..remove(Colors.brown)
+      ..remove(Colors.blueGrey);
 
     int seriesLen = series.first.length;
     for (Series series in series) {
@@ -138,7 +146,7 @@ class Chart<T extends NamedEntity> extends StatefulWidget {
   _ChartState<T> createState() => _ChartState<T>();
 }
 
-class _ChartState<T extends NamedEntity> extends State<Chart<T>> {
+class _ChartState<T> extends State<Chart<T>> {
   static final _log = Log("MyChart");
 
   static final Color _emptyBgColor = Colors.grey.withOpacity(0.15);
@@ -275,7 +283,7 @@ class _ChartState<T extends NamedEntity> extends State<Chart<T>> {
           ),
           Padding(
             padding: insetsHorizontalWidgetTiny,
-            child: Label("${entity.name} ($value)"),
+            child: Label("${widget.labelBuilder(entity)} ($value)"),
           ),
         ],
       ),
@@ -321,7 +329,7 @@ class _ChartState<T extends NamedEntity> extends State<Chart<T>> {
 }
 
 /// A full page widget that displays a [Chart] with a lot of rows.
-class _ChartPage<T extends NamedEntity> extends StatelessWidget {
+class _ChartPage<T> extends StatelessWidget {
   final List<Series<T>> series;
   final String description;
   final Set<String> filters;
@@ -331,12 +339,13 @@ class _ChartPage<T extends NamedEntity> extends StatelessWidget {
   _ChartPage({
     @required this.series,
     @required this.description,
+    @required this.labelBuilder,
     this.filters = const {},
-    this.labelBuilder,
     this.onTapRow,
   }) : assert(series != null),
        assert(isNotEmpty(description)),
-       assert(filters != null);
+       assert(filters != null),
+       assert(labelBuilder != null);
 
   @override
   Widget build(BuildContext context) {

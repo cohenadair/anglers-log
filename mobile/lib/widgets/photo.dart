@@ -40,9 +40,7 @@ class Photo extends StatefulWidget {
   }) : assert((width != null && height != null)
       || (width == null && height == null));
 
-  Photo.listThumbnail({
-    @required String fileName,
-  }) : this(
+  Photo.listThumbnail(String fileName) : this(
     fileName: fileName,
     width: _listItemSize,
     height: _listItemSize,

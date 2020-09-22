@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/i18n/strings.dart';
-import 'package:mobile/model/species.dart';
+import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/pages/manageable_list_page.dart';
 import 'package:mobile/pages/save_species_page.dart';
 import 'package:mobile/species_manager.dart';
@@ -45,20 +45,19 @@ class SpeciesListPage extends StatelessWidget {
       ),
       pickerSettings: _picking
           ? ManageableListPagePickerSettings<Species>(
-              onPicked: onPicked,
+              onPicked: (context, species) => onPicked(context, species),
               multi: multiPicker,
               initialValues: initialValues,
             )
           : null,
       itemManager: ManageableListPageItemManager<Species>(
         listenerManagers: [ speciesManager ],
-        loadItems: (query) =>
-            speciesManager.entityListSortedByName(filter: query),
+        loadItems: (query) => speciesManager.listSortedByName(filter: query),
         deleteText: (context, species) => Text(format(Strings.of(context)
             .speciesListPageConfirmDelete, [species.name])),
-        deleteItem: (context, species) => speciesManager.delete(species),
+        deleteItem: (context, species) => speciesManager.delete(species.id),
         onTapDeleteButton: (species) {
-          int numOfCatches = speciesManager.numberOfCatches(species);
+          int numOfCatches = speciesManager.numberOfCatches(species.id);
           if (numOfCatches <= 0) {
             return null;
           }

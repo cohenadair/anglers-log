@@ -6,13 +6,14 @@ import 'package:mobile/entity_manager.dart';
 import 'package:mobile/fishing_spot_manager.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/location_monitor.dart';
-import 'package:mobile/model/fishing_spot.dart';
+import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/pages/save_fishing_spot_page.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/res/style.dart';
 import 'package:mobile/utils/device_utils.dart';
 import 'package:mobile/utils/map_utils.dart';
 import 'package:mobile/utils/page_utils.dart';
+import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/utils/string_utils.dart';
 import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/fishing_spot_map.dart';
@@ -99,7 +100,7 @@ class _FishingSpotPickerPageState extends State<FishingSpotPickerPage>
       _fishingSpotAnimController.value = _fishingSpotAnimController.upperBound;
       _pendingMarkerOffset = _pendingMarkerSize;
       _currentFishingSpot = widget.fishingSpot;
-      _startPosition = widget.fishingSpot.latLng;
+      _startPosition = LatLng(widget.fishingSpot.lat, widget.fishingSpot.lng);
     }
 
     _currentPosition = _startPosition;
@@ -156,11 +157,10 @@ class _FishingSpotPickerPageState extends State<FishingSpotPickerPage>
         }
 
         _mapController.future.then((controller) {
-          FishingSpot spot = FishingSpot(
-            lat: _currentPosition.latitude,
-            lng: _currentPosition.longitude,
-          );
-          _updateFishingSpotDelayed(spot);
+          _updateFishingSpotDelayed(FishingSpot()
+            ..id = randomId()
+            ..lat = _currentPosition.latitude
+            ..lng = _currentPosition.longitude);
         });
       },
       onMove: (latLng) {
@@ -223,9 +223,7 @@ class _FishingSpotPickerPageState extends State<FishingSpotPickerPage>
             oldFishingSpot: _currentFishingSpot,
             editing: _currentFishingSpot != null,
             onSave: (updatedFishingSpot) {
-              setState(() {
-                _currentFishingSpot = updatedFishingSpot;
-              });
+              setState(() => _currentFishingSpot = updatedFishingSpot);
             },
           ));
         },
@@ -306,7 +304,7 @@ class _FishingSpotPickerPageState extends State<FishingSpotPickerPage>
   }
 
   void _updateMarkers() {
-    List<FishingSpot> fishingSpots = _fishingSpotManager.entityList();
+    List<FishingSpot> fishingSpots = _fishingSpotManager.list();
     if (fishingSpots == null || fishingSpots.isEmpty) {
       fishingSpots = List.from(_fishingSpotMarkerMap.keys);
     }

@@ -2,9 +2,9 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/app_manager.dart';
 import 'package:mobile/catch_manager.dart';
 import 'package:mobile/data_manager.dart';
-import 'package:mobile/model/catch.dart';
-import 'package:mobile/model/species.dart';
+import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/species_manager.dart';
+import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mockito/mockito.dart';
 
 class MockAppManager extends Mock implements AppManager {}
@@ -31,21 +31,37 @@ void main() {
     speciesManager = SpeciesManager(appManager);
   });
 
-  test("Number of baits", () {
-    when(catchManager.entityList()).thenReturn([
-      Catch(timestamp: 0, speciesId: "species_1"),
-      Catch(timestamp: 0, speciesId: "species_1"),
-      Catch(timestamp: 0, speciesId: "species_5"),
-      Catch(timestamp: 0, speciesId: "species_4"),
-      Catch(timestamp: 0, speciesId: "species_1"),
+  test("Number of catches", () {
+    Id speciesId0 = randomId();
+    Id speciesId3 = randomId();
+    Id speciesId4 = randomId();
+
+    when(catchManager.list()).thenReturn([
+      Catch()
+        ..id = randomId()
+        ..timestamp = timestampFromMillis(0)
+        ..speciesId = speciesId0,
+      Catch()
+        ..id = randomId()
+        ..timestamp = timestampFromMillis(0)
+        ..speciesId = speciesId0,
+      Catch()
+        ..id = randomId()
+        ..timestamp = timestampFromMillis(0)
+        ..speciesId = speciesId4,
+      Catch()
+        ..id = randomId()
+        ..timestamp = timestampFromMillis(0)
+        ..speciesId = speciesId3,
+      Catch()
+        ..id = randomId()
+        ..timestamp = timestampFromMillis(0)
+        ..speciesId = speciesId0,
     ]);
 
     expect(speciesManager.numberOfCatches(null), 0);
-    expect(speciesManager.numberOfCatches(
-        Species(name: "Species 1", id: "species_1")), 3);
-    expect(speciesManager.numberOfCatches(
-        Species(name: "Species 1", id: "species_4")), 1);
-    expect(speciesManager.numberOfCatches(
-        Species(name: "Species 1", id: "species_5")), 1);
+    expect(speciesManager.numberOfCatches(speciesId0), 3);
+    expect(speciesManager.numberOfCatches(speciesId3), 1);
+    expect(speciesManager.numberOfCatches(speciesId4), 1);
   });
 }

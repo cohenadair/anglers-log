@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mobile/i18n/strings.dart';
+import 'package:mobile/model/gen/google/protobuf/timestamp.pb.dart';
 import 'package:mobile/utils/string_utils.dart';
 import 'package:quiver/time.dart';
 
@@ -68,12 +69,12 @@ class DateRange {
       : assert(startDate.isAtSameMomentAs(endDate)
           || startDate.isBefore(endDate));
 
-  DateRange.fromMillis({
-    int start,
-    int end,
+  DateRange.fromTimestamps({
+    Timestamp start,
+    Timestamp end,
   }) : this(
-    startDate: DateTime.fromMillisecondsSinceEpoch(start),
-    endDate: DateTime.fromMillisecondsSinceEpoch(end),
+    startDate: start.toDateTime(),
+    endDate: end.toDateTime(),
   );
 
   int get startMs => startDate.millisecondsSinceEpoch;
@@ -98,7 +99,10 @@ class DateRange {
   /// days.
   num get months => durationMs / (Duration.millisecondsPerDay * _daysInMonth);
 
-  bool contains(int ms) => ms >= startMs && ms <= endMs;
+  bool contains(Timestamp timestamp) {
+    int ms = timestamp.toDateTime().millisecondsSinceEpoch;
+    return ms >= startMs && ms <= endMs;
+  }
 }
 
 /// A pre-defined set of date ranges meant for user section. Includes ranges
@@ -257,13 +261,13 @@ class DisplayDateRange {
 
   /// Returns the [DisplayDateRange] for the given ID, or `null` if none exists.
   static DisplayDateRange of(String id, [
-    int startTimestamp,
-    int endTimestamp,
+    Timestamp startTimestamp,
+    Timestamp endTimestamp,
   ]) {
     assert(id != custom.id || (startTimestamp != null && endTimestamp != null));
 
     if (id == custom.id) {
-      return DisplayDateRange.newCustomFromDateRange(DateRange.fromMillis(
+      return DisplayDateRange.newCustomFromDateRange(DateRange.fromTimestamps(
         start: startTimestamp,
         end: endTimestamp,
       ));
@@ -447,15 +451,22 @@ String formatDateTime(BuildContext context, DateTime dateTime, [
   ]);
 }
 
-/// Returns a [DateTime] as a searchable [String]. This value should not be
+String formatTimestamp(BuildContext context, Timestamp timestamp, [
+  clock = const Clock(),
+]) {
+  return formatDateTime(context, timestamp.toDateTime(), clock);
+}
+
+/// Returns a [Timestamp] as a searchable [String]. This value should not be
 /// shown to users, but to be used for searching through list items that include
 /// timestamps.
 ///
 /// The value returned is just a concatenation of different ways of representing
 /// a date and time.
-String dateTimeToSearchingString(BuildContext context, DateTime dateTime, [
+String timestampToSearchString(BuildContext context, Timestamp timestamp, [
   clock = const Clock(),
 ]) {
+  DateTime dateTime = timestamp.toDateTime();
   return "${formatDateTime(context, dateTime, clock)} "
       "${DateFormat(monthDayYearFormatFull).format(dateTime)}";
 }

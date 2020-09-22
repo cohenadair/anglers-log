@@ -1,18 +1,13 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:mobile/app_manager.dart';
 import 'package:mobile/data_manager.dart';
-import 'package:mobile/model/entity.dart';
+import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/utils/listener_manager.dart';
+import 'package:mobile/utils/protobuf_utils.dart';
+import 'package:protobuf/protobuf.dart';
 import 'package:quiver/strings.dart';
-
-enum EntityType {
-  baitCategory,
-  bait,
-  custom,
-  fishCatch, // "catch" is a reserved keyword
-  fishingSpot,
-  species,
-}
 
 class EntityListener<T> {
   void Function(T) onDelete;
@@ -39,17 +34,24 @@ class SimpleEntityListener<T> extends EntityListener<T> {
 }
 
 /// An abstract class for managing a collection of [Entity] objects.
-abstract class EntityManager<T extends Entity> extends
-    ListenerManager<EntityListener<T>>
+abstract class EntityManager<T extends GeneratedMessage>
+    extends ListenerManager<EntityListener<T>>
 {
+  static const _columnId = "id";
+  static const _columnBytes = "bytes";
+
   @protected
   final AppManager appManager;
 
   @protected
-  final Map<String, T> entities = {};
+  final Map<Id, T> entities = {};
 
   String get tableName;
-  T entityFromMap(Map<String, dynamic> map);
+  Id id(T entity);
+  bool matchesFilter(Id id, String filter);
+
+  /// Parses a Protobuf byte representation.
+  T entityFromBytes(List<int> bytes);
 
   EntityManager(AppManager app) : appManager = app, super() {
     dataManager.addListener(DataListener(
@@ -58,17 +60,22 @@ abstract class EntityManager<T extends Entity> extends
   }
 
   Future<void> initialize() async {
-    (await _fetchAll()).forEach((e) => entities[e.id] = e);
+    (await _fetchAll()).forEach((e) => entities[id(e)] = e);
   }
 
   @protected
   DataManager get dataManager => appManager.dataManager;
 
-  List<T> entityList([List<String> ids]) {
+  List<T> list([List<Id> ids]) {
     if (ids == null || ids.isEmpty) {
       return List.unmodifiable(entities.values);
     }
-    return entities.values.where((entity) => ids.contains(entity.id)).toList();
+    return entities.values.where((e) => ids.contains(id(e))).toList();
+  }
+
+  List<T> filteredList(String filter) {
+    return list().where((e) => isEmpty(filter) || matchesFilter(id(e), filter))
+        .toList();
   }
 
   /// Clears the [Entity] memory collection. This method assumes the database
@@ -80,23 +87,22 @@ abstract class EntityManager<T extends Entity> extends
     notifyOnClear();
   }
 
-  List<T> filteredEntityList(String filter) {
-    return entityList().where((entity) =>
-        entity.matchesFilter(filter)).toList();
-  }
-
   int get entityCount => entities.length;
-  T entity({@required String id}) => isEmpty(id) ? null : entities[id];
-  bool entityExists({@required String id}) =>
-      isEmpty(id) ? false : entities[id] != null;
+
+  T entity(Id id) => entities[id];
+
+  bool entityExists(Id id) => entity(id) != null;
 
   /// Adds or updates the given [Entity]. If [notify] is false (default true),
   /// listeners are not notified.
   Future<bool> addOrUpdate(T entity, {
     bool notify = true,
   }) async {
-    if (await dataManager.insertOrUpdateEntity(entity, tableName)) {
-      entities[entity.id] = entity;
+    Id id = this.id(entity);
+    if (await dataManager.insertOrUpdateEntity(id, _entityToMap(entity),
+        tableName))
+    {
+      entities[id] = entity;
       if (notify) {
         notifyOnAddOrUpdate();
       }
@@ -105,18 +111,32 @@ abstract class EntityManager<T extends Entity> extends
     return false;
   }
 
-  Future<bool> delete(T entity) async {
-    if (await dataManager.deleteEntity(entity, tableName)) {
-      entities.remove(entity.id);
-      notifyOnDelete(entity);
+  Future<bool> delete(Id entityId) async {
+    if (await dataManager.deleteEntity(entityId, tableName)) {
+      T deletedEntity = entity(entityId);
+      if (entities.remove(entityId) != null) {
+        notifyOnDelete(deletedEntity);
+      }
       return true;
     }
     return false;
   }
 
   Future<List<T>> _fetchAll() async {
-    var results = await dataManager.fetchAll(tableName);
-    return results.map((map) => entityFromMap(map)).toList();
+    return (await dataManager.fetchAll(tableName)).map((map) =>
+        entityFromBytes((map[_columnBytes] as Uint8List).toList())).toList();
+  }
+
+  Map<String, dynamic> _entityToMap(T entity) => {
+    _columnId: id(entity).uint8List,
+    _columnBytes: entity.writeToBuffer(),
+  };
+
+  /// Replaces the database table contents with the manager's memory cache.
+  @protected
+  Future<void> replaceDatabaseWithCache() async {
+    await dataManager
+        .replaceRows(tableName, list().map((e) => _entityToMap(e)).toList());
   }
 
   @protected

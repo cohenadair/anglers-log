@@ -5,10 +5,9 @@ import 'package:mobile/app_manager.dart';
 import 'package:mobile/custom_entity_manager.dart';
 import 'package:mobile/data_manager.dart';
 import 'package:mobile/entity_manager.dart';
-import 'package:mobile/model/custom_entity.dart';
-import 'package:mobile/model/species.dart';
+import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/preferences_manager.dart';
-import 'package:mobile/widgets/input_type.dart';
+import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mockito/mockito.dart';
 import 'package:sqflite/sqlite_api.dart';
 
@@ -32,7 +31,7 @@ void main() {
 
     dataManager = MockDataManager();
     when(appManager.dataManager).thenReturn(dataManager);
-    when(dataManager.insertOrUpdateEntity(any, any))
+    when(dataManager.insertOrUpdateEntity(any, any, any))
         .thenAnswer((_) => Future.value(true));
     when(dataManager.deleteEntity(any, any))
         .thenAnswer((_) => Future.value(true));
@@ -47,20 +46,25 @@ void main() {
     expect(preferencesManager.baitCustomEntityIds.isEmpty, true);
     expect(preferencesManager.catchCustomEntityIds.isEmpty, true);
 
+    Id id0 = randomId();
+    Id id1 = randomId();
+    Id id2 = randomId();
+    Id id3 = randomId();
+
     when(dataManager.fetchAll("preference")).thenAnswer((_) =>
         Future.value([
           {
             "id": "bait_custom_entity_ids",
-            "value": jsonEncode(["id0", "id1"])
+            "value": jsonEncode([id0.toString(), id1.toString()])
           },
           {
             "id": "catch_custom_entity_ids",
-            "value": jsonEncode(["id2", "id3"])
+            "value": jsonEncode([id2.toString(), id3.toString()])
           },
         ]));
     await preferencesManager.initialize();
-    expect(preferencesManager.baitCustomEntityIds, ["id0", "id1"]);
-    expect(preferencesManager.catchCustomEntityIds, ["id2", "id3"]);
+    expect(preferencesManager.baitCustomEntityIds, [id0, id1]);
+    expect(preferencesManager.catchCustomEntityIds, [id2, id3]);
   });
 
   test("String no values returns empty String list", () {
@@ -70,32 +74,37 @@ void main() {
   test("Setting String list", () {
     when(dataManager.query(any, any)).thenAnswer((_) => Future.value([]));
 
-    preferencesManager.baitCustomEntityIds = ["id0", "id1"];
-    expect(preferencesManager.baitCustomEntityIds, ["id0", "id1"]);
+    Id id0 = randomId();
+    Id id1 = randomId();
+    Id id2 = randomId();
+    Id id3 = randomId();
 
-    preferencesManager.catchCustomEntityIds = ["id2", "id3"];
-    expect(preferencesManager.catchCustomEntityIds, ["id2", "id3"]);
+    preferencesManager.baitCustomEntityIds = [id0, id1];
+    expect(preferencesManager.baitCustomEntityIds, [id0, id1]);
+
+    preferencesManager.catchCustomEntityIds = [id2, id3];
+    expect(preferencesManager.catchCustomEntityIds, [id2, id3]);
   });
 
   test("Custom entity IDs are deleted from preferences when custom entity "
       "objects are deleted", () async
   {
-    var deleteEntity = CustomEntity(
-      id: "id0",
-      name: "Size",
-      type: InputType.number,
-    );
+    var deleteEntity = CustomEntity()
+      ..id = randomId()
+      ..name = "Size"
+      ..type = CustomEntity_Type.NUMBER;
     var realEntityManager = CustomEntityManager(appManager);
     await realEntityManager.addOrUpdate(deleteEntity);
     expect(realEntityManager.entityCount, 1);
 
     when(appManager.customEntityManager).thenReturn(realEntityManager);
+
     preferencesManager = PreferencesManager(appManager);
-    preferencesManager.baitCustomEntityIds = ["id0", "id1"];
-    preferencesManager.catchCustomEntityIds = ["id0"];
+    preferencesManager.baitCustomEntityIds = [deleteEntity.id, randomId()];
+    preferencesManager.catchCustomEntityIds = [deleteEntity.id];
 
     // Delete custom entity.
-    await realEntityManager.delete(deleteEntity);
+    await realEntityManager.delete(deleteEntity.id);
     expect(preferencesManager.baitCustomEntityIds.length, 1);
     expect(preferencesManager.catchCustomEntityIds.isEmpty, true);
   });
@@ -118,9 +127,12 @@ void main() {
     );
 
     when(appManager.dataManager).thenReturn(realDataManager);
+
+    Id id0 = randomId();
+    Id id1 = randomId();
     preferencesManager = PreferencesManager(appManager);
-    preferencesManager.baitCustomEntityIds = ["id0", "id1"];
-    preferencesManager.catchCustomEntityIds = ["id0"];
+    preferencesManager.baitCustomEntityIds = [id0, id1];
+    preferencesManager.catchCustomEntityIds = [id0];
 
     // Reset database.
     await realDataManager.reset();

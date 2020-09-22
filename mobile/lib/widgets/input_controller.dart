@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/model/gen/google/protobuf/timestamp.pb.dart';
 import 'package:mobile/utils/date_time_utils.dart';
 import 'package:mobile/utils/validator.dart';
 import 'package:quiver/strings.dart';
@@ -84,7 +85,7 @@ class EmailInputController extends TextInputController {
   );
 }
 
-class TimestampInputController extends InputController<int> {
+class TimestampInputController extends InputController<Timestamp> {
   /// The date component of the controller.
   DateTime date;
 
@@ -97,16 +98,16 @@ class TimestampInputController extends InputController<int> {
   });
 
   @override
-  int get value => combine(date, time).millisecondsSinceEpoch;
+  Timestamp get value => Timestamp.fromDateTime(combine(date, time));
 
   @override
-  set value(int millisSinceEpoch) {
-    if (millisSinceEpoch == null) {
+  set value(Timestamp timestamp) {
+    if (timestamp == null) {
       date = null;
       time = null;
       return;
     }
-    date = DateTime.fromMillisecondsSinceEpoch(millisSinceEpoch);
+    date = timestamp.toDateTime();
     time = TimeOfDay.fromDateTime(date);
   }
 

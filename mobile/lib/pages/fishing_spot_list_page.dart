@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/fishing_spot_manager.dart';
 import 'package:mobile/i18n/strings.dart';
-import 'package:mobile/model/fishing_spot.dart';
+import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/pages/manageable_list_page.dart';
 import 'package:mobile/pages/save_fishing_spot_page.dart';
 import 'package:mobile/utils/string_utils.dart';
@@ -55,7 +55,8 @@ class FishingSpotListPage extends StatelessWidget {
       ),
       pickerSettings: _picking
           ? ManageableListPagePickerSettings<FishingSpot>(
-              onPicked: onPicked,
+              onPicked: (context, fishingSpots) => onPicked(context,
+                  fishingSpots),
               multi: multiPicker,
               initialValues: initialValues,
             )
@@ -63,14 +64,12 @@ class FishingSpotListPage extends StatelessWidget {
       itemManager: ManageableListPageItemManager<FishingSpot>(
         listenerManagers: [ fishingSpotManager ],
         loadItems: (query) =>
-            fishingSpotManager.entityListSortedByName(filter: query),
+            fishingSpotManager.listSortedByName(filter: query),
         deleteText: (context, fishingSpot) => Text(fishingSpotManager
             .deleteMessage(context, fishingSpot)),
         deleteItem: (context, fishingSpot) =>
-            fishingSpotManager.delete(fishingSpot),
-        editPageBuilder: (fishingSpot) => SaveFishingSpotPage.edit(
-          oldFishingSpot: fishingSpot,
-        ),
+            fishingSpotManager.delete(fishingSpot.id),
+        editPageBuilder: (fishingSpot) => SaveFishingSpotPage.edit(fishingSpot),
       ),
     );
   }

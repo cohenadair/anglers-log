@@ -1,21 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/i18n/strings.dart';
+import 'package:mobile/model/gen/anglerslog.pbenum.dart';
 import 'package:mobile/widgets/checkbox_input.dart';
 import 'package:mobile/widgets/input_controller.dart';
 import 'package:mobile/widgets/text_input.dart';
 
-// Do not change order of enum values as their ordinal number is recorded in the
-// database.
-enum InputType {
-  number, boolean, text
-}
-
 /// Returns a user-visible label for the given [InputType].
-String inputTypeLocalizedString(BuildContext context, InputType fieldType) {
+String inputTypeLocalizedString(BuildContext context,
+    CustomEntity_Type fieldType)
+{
   switch (fieldType) {
-    case InputType.number:  return Strings.of(context).fieldTypeNumber;
-    case InputType.boolean: return Strings.of(context).fieldTypeBoolean;
-    case InputType.text:    return Strings.of(context).fieldTypeText;
+    case CustomEntity_Type.NUMBER: return Strings.of(context).fieldTypeNumber;
+    case CustomEntity_Type.BOOL: return Strings.of(context).fieldTypeBoolean;
+    case CustomEntity_Type.TEXT: return Strings.of(context).fieldTypeText;
   }
 
   // To remove static warning.
@@ -24,14 +21,14 @@ String inputTypeLocalizedString(BuildContext context, InputType fieldType) {
 
 /// Returns the default object used for value tracking for the given
 /// [InputType].
-InputController inputTypeController(InputType fieldType) {
+InputController inputTypeController(CustomEntity_Type fieldType) {
   switch (fieldType) {
-    case InputType.text:
-      return TextInputController();
-    case InputType.number:
+    case CustomEntity_Type.NUMBER:
       return NumberInputController();
-    case InputType.boolean:
+    case CustomEntity_Type.BOOL:
       return InputController<bool>();
+    case CustomEntity_Type.TEXT:
+      return TextInputController();
   }
 
   // To remove static warning.
@@ -42,26 +39,26 @@ InputController inputTypeController(InputType fieldType) {
 /// @param controller The object that controls the value of the [CustomField].
 ///        Could be a [TextEditingController], or a primitive data type.
 Widget inputTypeWidget(BuildContext context, {
-  InputType type,
+  CustomEntity_Type type,
   String label,
   InputController controller,
   Function(bool) onCheckboxChanged,
   bool enabled = true,
 }) {
   switch (type) {
-    case InputType.number: return TextInput.number(context,
+    case CustomEntity_Type.NUMBER: return TextInput.number(context,
       label: label,
       initialValue: null,
       controller: controller,
       enabled: enabled,
     );
-    case InputType.boolean: return CheckboxInput(
+    case CustomEntity_Type.BOOL: return CheckboxInput(
       label: label,
       value: controller.value is bool ? controller.value : false,
       onChanged: onCheckboxChanged,
       enabled: enabled,
     );
-    case InputType.text: return TextInput(
+    case CustomEntity_Type.TEXT: return TextInput(
       capitalization: TextCapitalization.sentences,
       label: label,
       initialValue: null,

@@ -3,7 +3,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:mobile/model/fishing_spot.dart';
+import 'package:mobile/model/gen/anglerslog.pb.dart';
 
 void moveMap(Completer<GoogleMapController> controller, LatLng latLng,
     [bool animate = true])
@@ -34,15 +34,18 @@ double distanceBetween(LatLng latLng1, LatLng latLng2) {
 class FishingSpotMarker extends Marker {
   static final _normalIcon = BitmapDescriptor.defaultMarker;
   static final _activeIcon =
-  BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue);
+      BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue);
+
+  final Id id;
+  final FishingSpot fishingSpot;
 
   FishingSpotMarker({
-    @required FishingSpot fishingSpot,
+    @required this.fishingSpot,
     void Function(FishingSpot) onTap,
     bool active = false,
-  }) : super(
-    markerId: MarkerId(fishingSpot.id),
-    position: fishingSpot.latLng,
+  }) : id = fishingSpot.id, super(
+    markerId: MarkerId(fishingSpot.id.uuid),
+    position: LatLng(fishingSpot.lat, fishingSpot.lng),
     onTap: onTap == null ? null : () {
       onTap(fishingSpot);
     },

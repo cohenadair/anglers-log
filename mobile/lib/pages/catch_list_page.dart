@@ -4,8 +4,7 @@ import 'package:mobile/bait_manager.dart';
 import 'package:mobile/catch_manager.dart';
 import 'package:mobile/fishing_spot_manager.dart';
 import 'package:mobile/i18n/strings.dart';
-import 'package:mobile/image_manager.dart';
-import 'package:mobile/model/catch.dart';
+import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/pages/add_catch_journey.dart';
 import 'package:mobile/pages/catch_page.dart';
 import 'package:mobile/pages/manageable_list_page.dart';
@@ -27,17 +26,17 @@ class CatchListPage extends StatelessWidget {
   final DateRange dateRange;
 
   /// If set, shows only the catches whose ID is included in [catchIds].
-  final Set<String> catchIds;
+  final Set<Id> catchIds;
 
   /// If set, shows only the catches whose species is included in [speciesIds].
-  final Set<String> speciesIds;
+  final Set<Id> speciesIds;
 
   /// If set, shows only the catches whose fishingSpot is included in
   /// [fishingSpotIds].
-  final Set<String> fishingSpotIds;
+  final Set<Id> fishingSpotIds;
 
   /// If set, shows only the catches whose bait is included in [baitIds].
-  final Set<String> baitIds;
+  final Set<Id> baitIds;
 
   bool get filtered => dateRange != null || catchIds.isNotEmpty
       || speciesIds.isNotEmpty || fishingSpotIds.isNotEmpty
@@ -92,7 +91,7 @@ class CatchListPage extends StatelessWidget {
         ),
         deleteText: (context, cat) =>
             Text(catchManager.deleteMessage(context, cat)),
-        deleteItem: (context, cat) => catchManager.delete(cat),
+        deleteItem: (context, cat) => catchManager.delete(cat.id),
         addPageBuilder: enableAdding ? () => AddCatchJourney() : null,
         detailPageBuilder: (cat) => CatchPage(cat.id),
         editPageBuilder: (cat) => SaveCatchPage.edit(cat),
@@ -100,42 +99,42 @@ class CatchListPage extends StatelessWidget {
     );
   }
 
-  ManageableListPageItemModel _buildListItem(BuildContext context,
-      Catch cat)
-  {
+  ManageableListPageItemModel _buildListItem(BuildContext context, Catch cat) {
     BaitManager baitManager = BaitManager.of(context);
     FishingSpotManager fishingSpotManager = FishingSpotManager.of(context);
-    ImageManager imageManager = ImageManager.of(context);
     SpeciesManager speciesManager = SpeciesManager.of(context);
 
     Widget subtitle2 = Empty();
 
-    var fishingSpot = fishingSpotManager.entity(id: cat.fishingSpotId);
+    FishingSpot fishingSpot =
+        fishingSpotManager.entity(cat.fishingSpotId);
     if (fishingSpot != null && isNotEmpty(fishingSpot.name)) {
+      // Use fishing spot as subtitle if available.
       subtitle2 = SubtitleLabel(fishingSpot.name ?? formatLatLng(
         context: context,
         lat: fishingSpot.lat,
         lng: fishingSpot.lng,
       ));
-    } else if (isNotEmpty(cat.baitId)) {
-      subtitle2 = SubtitleLabel(baitManager
-          .formatNameWithCategory(baitManager.entity(id: cat.baitId)));
+    } else {
+      // Fallback on bait as a subtitle.
+      Bait bait = baitManager.entity(cat.baitId);
+      if (bait != null) {
+        subtitle2 = SubtitleLabel(baitManager.formatNameWithCategory(bait));
+      }
     }
-
-    List<String> imageNames = imageManager.imageNames(entityId: cat.id);
 
     return ManageableListPageItemModel(
       child: Row(
         children: [
-          Photo.listThumbnail(
-              fileName: imageNames.isNotEmpty ? imageNames.first : null),
+          Photo.listThumbnail(cat.imageNames.isNotEmpty
+              ? cat.imageNames.first : null),
           Container(width: paddingWidget),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                PrimaryLabel(speciesManager.entity(id: cat.speciesId).name),
-                SubtitleLabel(formatDateTime(context, cat.dateTime)),
+                PrimaryLabel(speciesManager.entity(cat.speciesId).name),
+                SubtitleLabel(formatTimestamp(context, cat.timestamp)),
                 subtitle2,
               ],
             ),

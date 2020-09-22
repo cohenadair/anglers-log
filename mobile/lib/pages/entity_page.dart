@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/custom_entity_value_manager.dart';
 import 'package:mobile/i18n/strings.dart';
-import 'package:mobile/model/custom_entity_value.dart';
+import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/utils/dialog_utils.dart';
 import 'package:mobile/widgets/button.dart';
@@ -24,21 +23,19 @@ class EntityPage extends StatefulWidget {
   /// When true, the underlying [Entity] cannot be modified.
   final bool static;
 
-  /// The ID of the [Entity] object being shown. This is used to show a
-  /// [CustomEntityValues] widget.
-  final String entityId;
+  final List<CustomEntityValue> customEntityValues;
 
   EntityPage({
-    @required this.entityId,
     @required this.children,
+    this.customEntityValues = const [],
     this.imageNames,
     this.deleteMessage,
     this.onEdit,
     this.onDelete,
     this.padding = insetsDefault,
     this.static = false,
-  }) : assert(isNotEmpty(entityId)),
-       assert(children != null);
+  }) : assert(children != null),
+       assert(customEntityValues != null);
 
   @override
   _EntityPageState createState() => _EntityPageState();
@@ -60,9 +57,6 @@ class _EntityPageState extends State<EntityPage> {
   double get _imageHeight =>
       MediaQuery.of(context).size.height / _imageHeightFactor;
 
-  CustomEntityValueManager get _entityValueManager =>
-      CustomEntityValueManager.of(context);
-
   @override
   void initState() {
     super.initState();
@@ -73,11 +67,8 @@ class _EntityPageState extends State<EntityPage> {
 
   @override
   Widget build(BuildContext context) {
-    List<CustomEntityValue> customValues =
-        _entityValueManager.values(entityId: widget.entityId);
-
     List<Widget> children = widget.children;
-    if (customValues.isNotEmpty) {
+    if (widget.customEntityValues.isNotEmpty) {
       children.addAll([
         Padding(
           padding: insetsVerticalWidget,
@@ -89,7 +80,7 @@ class _EntityPageState extends State<EntityPage> {
             right: paddingDefault,
             bottom: paddingSmall,
           ),
-          child: CustomEntityValues(customValues),
+          child: CustomEntityValues(widget.customEntityValues),
         ),
       ]);
     }

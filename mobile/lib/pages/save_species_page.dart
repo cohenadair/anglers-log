@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/i18n/strings.dart';
-import 'package:mobile/model/species.dart';
+import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/pages/save_name_page.dart';
 import 'package:mobile/species_manager.dart';
+import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/utils/validator.dart';
 
 class SaveSpeciesPage extends StatelessWidget {
@@ -11,22 +12,19 @@ class SaveSpeciesPage extends StatelessWidget {
   SaveSpeciesPage() : oldSpecies = null;
   SaveSpeciesPage.edit(this.oldSpecies);
 
-  bool get _editing => oldSpecies != null;
-
   @override
   Widget build(BuildContext context) {
     SpeciesManager speciesManager = SpeciesManager.of(context);
 
     return SaveNamePage(
-      title: _editing
-          ? Text(Strings.of(context).saveSpeciesPageEditTitle)
-          : Text(Strings.of(context).saveSpeciesPageNewTitle),
+      title: oldSpecies == null
+          ? Text(Strings.of(context).saveSpeciesPageNewTitle)
+          : Text(Strings.of(context).saveSpeciesPageEditTitle),
       oldName: oldSpecies?.name,
       onSave: (newName) {
-        var newSpecies = Species(name: newName);
-        if (_editing) {
-          newSpecies = Species(name: newName, id: oldSpecies.id);
-        }
+        var newSpecies = Species()
+          ..id = oldSpecies?.id ?? randomId()
+          ..name = newName;
 
         speciesManager.addOrUpdate(newSpecies);
         return true;

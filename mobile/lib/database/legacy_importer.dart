@@ -11,12 +11,10 @@ import 'package:mobile/catch_manager.dart';
 import 'package:mobile/data_manager.dart';
 import 'package:mobile/fishing_spot_manager.dart';
 import 'package:mobile/log.dart';
-import 'package:mobile/model/bait.dart';
-import 'package:mobile/model/bait_category.dart';
-import 'package:mobile/model/catch.dart';
-import 'package:mobile/model/fishing_spot.dart';
-import 'package:mobile/model/species.dart';
+import 'package:mobile/model/gen/anglerslog.pb.dart';
+import 'package:mobile/model/gen/google/protobuf/timestamp.pb.dart';
 import 'package:mobile/species_manager.dart';
+import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/utils/string_utils.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
@@ -30,33 +28,33 @@ enum LegacyImporterError {
 
 /// Imports data from pre-Anglers' Log 2.0 backups.
 class LegacyImporter {
-  final String _jsonFileExtension = ".json";
+  static const _fileExtensionJson = ".json";
 
-  final String _baitCategoriesKey = "baitCategories";
-  final String _baitCategoryKey = "baitCategory";
-  final String _baitsKey = "baits";
-  final String _baitUsedKey = "baitUsed";
-  final String _coordinatesKey = "coordinates";
-  final String _dateKey = "date";
-  final String _entriesKey = "entries";
-  final String _fishingSpotKey = "fishingSpot";
-  final String _fishingSpotsKey = "fishingSpots";
-  final String _fishSpeciesKey = "fishSpecies";
-  final String _idKey = "id";
-  final String _imagePathKey = "imagePath";
-  final String _imagesKey = "images";
-  final String _journalKey = "journal";
-  final String _latitudeKey = "latitude";
-  final String _locationKey = "location";
-  final String _locationsKey = "locations";
-  final String _longitudeKey = "longitude";
-  final String _nameKey = "name";
-  final String _speciesKey = "species";
-  final String _userDefinesKey = "userDefines";
+  static const _keyBaitCategories = "baitCategories";
+  static const _keyBaitCategory = "baitCategory";
+  static const _keyBaits = "baits";
+  static const _keyBaitUsed = "baitUsed";
+  static const _keyCoordinates = "coordinates";
+  static const _keyDate = "date";
+  static const _keyEntries = "entries";
+  static const _keyFishingSpot = "fishingSpot";
+  static const _keyFishingSpots = "fishingSpots";
+  static const _keyFishSpecies = "fishSpecies";
+  static const _keyId = "id";
+  static const _keyImagePath = "imagePath";
+  static const _keyImages = "images";
+  static const _keyJournal = "journal";
+  static const _keyLatitude = "latitude";
+  static const _keyLocation = "location";
+  static const _keyLocations = "locations";
+  static const _keyLongitude = "longitude";
+  static const _keyName = "name";
+  static const _keySpecies = "species";
+  static const _keyUserDefines = "userDefines";
 
   /// Format of how fishing spot names are imported. The first argument is the
   /// location name, the second argument is the fishing spot name.
-  final String _fishingSpotNameFormat = "%s - %s";
+  static final _nameFormatFishingSpot = "%s - %s";
 
   final Log _log = Log("LegacyImporter");
 
@@ -95,7 +93,7 @@ class LegacyImporter {
     for (var archiveFile in archive) {
       Uint8List content = Uint8List.fromList(archiveFile.content);
 
-      if (extension(archiveFile.name) == _jsonFileExtension) {
+      if (extension(archiveFile.name) == _fileExtensionJson) {
         _json = jsonDecode(Utf8Decoder().convert(content));
       } else {
         // Copy all images to a temporary directory.
@@ -105,7 +103,7 @@ class LegacyImporter {
       }
     }
 
-    if (_json[_journalKey] == null) {
+    if (_json[_keyJournal] == null) {
       return Future.error(LegacyImporterError.missingJournal);
     } else {
       return _import();
@@ -113,7 +111,7 @@ class LegacyImporter {
   }
 
   Future<void> _import() async {
-    var userDefines = _json[_journalKey][_userDefinesKey];
+    var userDefines = _json[_keyJournal][_keyUserDefines];
     if (userDefines == null || !(userDefines is List)) {
       return Future.error(LegacyImporterError.missingUserDefines);
     }
@@ -124,21 +122,21 @@ class LegacyImporter {
     List<dynamic> species;
 
     for (Map<String, dynamic> map in userDefines) {
-      switch (map[_nameKey]) {
+      switch (map[_keyName]) {
         case "Baits":
-          baits = map[_baitsKey];
+          baits = map[_keyBaits];
           break;
         case "Bait Categories":
-          baitCategories = map[_baitCategoriesKey];
+          baitCategories = map[_keyBaitCategories];
           break;
         case "Locations":
-          locations = map[_locationsKey];
+          locations = map[_keyLocations];
           break;
         case "Species":
-          species = map[_speciesKey];
+          species = map[_keySpecies];
           break;
         default:
-          _log.w("Entity (${map[_nameKey]}) not yet implemented");
+          _log.w("Entity (${map[_keyName]}) not yet implemented");
           break;
       }
     }
@@ -151,7 +149,7 @@ class LegacyImporter {
 
     // Catches are always imported last since they reference most other
     // entities.
-    await _importCatches(_json[_journalKey][_entriesKey]);
+    await _importCatches(_json[_keyJournal][_keyEntries]);
 
     // Cleanup temporary images.
     for (File tmpImg in _images.values) {
@@ -168,18 +166,34 @@ class LegacyImporter {
 
     for (var item in baits) {
       Map<String, dynamic> map = item as Map<String, dynamic>;
-      await _baitManager.addOrUpdate(Bait(
-        name: map[_nameKey],
-        categoryId: _baitCategoryManager.entityNamed(map[_baitCategoryKey])?.id
-            ?? _baitCategoryManager.entity(id: map[_baitCategoryKey])?.id,
-      ));
+      Bait bait = Bait()
+        ..id = randomId()
+        ..name = map[_keyName];
+
+      if (isNotEmpty(map[_keyBaitCategory])) {
+        // See if JSON is using the name as the ID.
+        Id baitCategoryId =
+            _baitCategoryManager.named(map[_keyBaitCategory])?.id;
+
+        if (baitCategoryId == null) {
+          baitCategoryId = _baitCategoryManager
+              .entity(_parseJsonId(map[_keyBaitCategory]))?.id;
+        }
+        
+        if (baitCategoryId != null) {
+          bait.baitCategoryId = baitCategoryId;
+        }
+      }
+
+      await _baitManager.addOrUpdate(bait);
     }
   }
 
   Future<void> _importBaitCategories(List<dynamic> categories) async {
     await _importNamedEntity(categories, (name, id) async =>
-        await _baitCategoryManager.addOrUpdate(BaitCategory(
-            name: name, id: id)));
+        await _baitCategoryManager.addOrUpdate(BaitCategory()
+          ..id = id ?? randomId()
+          ..name = name));
   }
 
   Future<void> _importLocations(List<dynamic> locations) async  {
@@ -189,46 +203,50 @@ class LegacyImporter {
 
     for (var location in locations) {
       var locationMap = location as Map<String, dynamic>;
-      var locationName = locationMap[_nameKey];
+      var locationName = locationMap[_keyName];
 
-      for (var fishingSpot in locationMap[_fishingSpotsKey]) {
+      for (var fishingSpot in locationMap[_keyFishingSpots]) {
         var fishingSpotMap = fishingSpot as Map<String, dynamic>;
-        var fishingSpotName = format(_fishingSpotNameFormat,
-            [locationName, fishingSpotMap[_nameKey]]);
+        var fishingSpotName = format(_nameFormatFishingSpot,
+            [locationName, fishingSpotMap[_keyName]]);
 
         var coordinatesMap =
-            fishingSpotMap[_coordinatesKey] as Map<String, dynamic>;
+            fishingSpotMap[_keyCoordinates] as Map<String, dynamic>;
 
         // iOS backed up coordinates as strings, while Android was doubles.
         double lat;
         double lng;
-        if (coordinatesMap[_longitudeKey] is double) {
-          lng = coordinatesMap[_longitudeKey];
+        if (coordinatesMap[_keyLongitude] is double) {
+          lng = coordinatesMap[_keyLongitude];
         } else {
-          lng = double.parse(coordinatesMap[_longitudeKey]);
+          lng = double.parse(coordinatesMap[_keyLongitude]);
         }
-        if (coordinatesMap[_latitudeKey] is double) {
-          lat = coordinatesMap[_latitudeKey];
+        if (coordinatesMap[_keyLatitude] is double) {
+          lat = coordinatesMap[_keyLatitude];
         } else {
-          lat = double.parse(coordinatesMap[_latitudeKey]);
+          lat = double.parse(coordinatesMap[_keyLatitude]);
         }
 
-        await _fishingSpotManager.addOrUpdate(FishingSpot(
-          name: isNotEmpty(fishingSpotName) ? fishingSpotName : null,
-          lat: lat,
-          lng: lng,
-        ));
+        await _fishingSpotManager.addOrUpdate(FishingSpot()
+          ..id = randomId()
+          ..name = isNotEmpty(fishingSpotName) ? fishingSpotName : null
+          ..lat = lat
+          ..lng = lng
+        );
       }
     }
   }
 
   Future<void> _importSpecies(List<dynamic> species) async {
     await _importNamedEntity(species, (name, id) async =>
-        await _speciesManager.addOrUpdate(Species(name: name, id: id)));
+        await _speciesManager.addOrUpdate(Species()
+          ..id = id ?? randomId()
+          ..name = name
+        ));
   }
 
   Future<void> _importNamedEntity(List<dynamic> entities,
-      Future<bool> Function(String name, String id) addEntity) async
+      Future<bool> Function(String name, Id id) addEntity) async
   {
     if (entities == null || entities.isEmpty) {
       return;
@@ -236,7 +254,7 @@ class LegacyImporter {
 
     for (var item in entities) {
       Map<String, dynamic> map = item as Map<String, dynamic>;
-      await addEntity(map[_nameKey], map[_idKey]);
+      await addEntity(map[_keyName], _parseJsonId(map[_keyId]));
     }
   }
 
@@ -249,35 +267,35 @@ class LegacyImporter {
       Map<String, dynamic> map = item as Map<String, dynamic>;
 
       // iOS and Android backed up dates differently.
-      String dateString = map[_dateKey];
+      String dateString = map[_keyDate];
       String dateFormat;
       if (dateString.contains(".")) {
         dateFormat = "M-d-y_h-m_a_s.S";
       } else {
         dateFormat = "M-d-y_h-m_a";
       }
-      DateTime dateTime = DateFormat(dateFormat).parse(map[_dateKey]);
+      DateTime dateTime = DateFormat(dateFormat).parse(map[_keyDate]);
 
-      Bait bait = _baitManager.entityNamed(map[_baitUsedKey]);
-      if (bait == null && isNotEmpty(map[_baitUsedKey])) {
-        _log.w("Bait (${map[_baitUsedKey]}) not found");
+      Bait bait = _baitManager.named(map[_keyBaitUsed]);
+      if (bait == null && isNotEmpty(map[_keyBaitUsed])) {
+        _log.w("Bait (${map[_keyBaitUsed]}) not found");
       }
 
-      FishingSpot fishingSpot = _fishingSpotManager.entityNamed(format(
-          _fishingSpotNameFormat, [map[_locationKey], map[_fishingSpotKey]]));
-      if (fishingSpot == null && isNotEmpty(map[_fishingSpotKey])) {
-        _log.w("Fishing spot (${map[_fishingSpotKey]}) not found");
+      FishingSpot fishingSpot = _fishingSpotManager.named(format(
+          _nameFormatFishingSpot, [map[_keyLocation], map[_keyFishingSpot]]));
+      if (fishingSpot == null && isNotEmpty(map[_keyFishingSpot])) {
+        _log.w("Fishing spot (${map[_keyFishingSpot]}) not found");
       }
 
-      Species species = _speciesManager.entityNamed(map[_fishSpeciesKey]);
-      if (species == null && isNotEmpty(map[_fishSpeciesKey])) {
-        _log.w("Species (${map[_fishSpeciesKey]}) not found");
+      Species species = _speciesManager.named(map[_keyFishSpecies]);
+      if (species == null && isNotEmpty(map[_keyFishSpecies])) {
+        _log.w("Species (${map[_keyFishSpecies]}) not found");
       }
 
       List<File> images = [];
-      List<dynamic> imagesJson = map[_imagesKey];
+      List<dynamic> imagesJson = map[_keyImages];
       for (Map<String, dynamic> imageMap in imagesJson) {
-        var fileName = basename(imageMap[_imagePathKey]);
+        var fileName = basename(imageMap[_keyImagePath]);
         if (_images.containsKey(fileName)) {
           images.add(_images[fileName]);
         } else {
@@ -285,13 +303,21 @@ class LegacyImporter {
         }
       }
 
+      Catch cat = Catch()
+        ..id = randomId()
+        ..timestamp = Timestamp.fromDateTime(dateTime)
+        ..speciesId = species.id;
+
+      if (bait != null) {
+        cat.baitId = bait.id;
+      }
+
+      if (fishingSpot != null) {
+        cat.fishingSpotId = fishingSpot.id;
+      }
+
       await _catchManager.addOrUpdate(
-        Catch(
-          timestamp: dateTime.millisecondsSinceEpoch,
-          speciesId: species.id,
-          baitId: bait?.id,
-          fishingSpotId: fishingSpot?.id,
-        ),
+        cat,
         imageFiles: images,
         // Images were already compressed by legacy Anglers' Log versions.
         compressImages: false,
@@ -299,5 +325,19 @@ class LegacyImporter {
         notify: item == catches.last,
       );
     }
+  }
+
+  Id _parseJsonId(String jsonId) {
+    if (isEmpty(jsonId)) {
+      return randomId();
+    }
+
+    Id result = safeParseId(jsonId);
+    if (result == null) {
+      _log.w("Invalid UUID string: $jsonId");
+      return randomId();
+    }
+
+    return result;
   }
 }

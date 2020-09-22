@@ -6,7 +6,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mobile/fishing_spot_manager.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/location_monitor.dart';
-import 'package:mobile/model/fishing_spot.dart';
+import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/pages/search_page.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/utils/map_utils.dart';
@@ -212,10 +212,10 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
         present(context, SearchPage(
           hint: Strings.of(context).mapPageSearchHint,
           suggestionsBuilder: (context) => _buildSearchPageList(
-              _fishingSpotManager.entityListSortedByName()),
+              _fishingSpotManager.listSortedByName()),
           resultsBuilder: (context, query) {
-            var fishingSpots =
-                _fishingSpotManager.entityListSortedByName(filter: query);
+            List<FishingSpot> fishingSpots =
+                _fishingSpotManager.listSortedByName(filter: query);
 
             if (fishingSpots.isEmpty) {
               return NoResults(Strings.of(context).mapPageNoSearchResults);
@@ -250,7 +250,8 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
           title: title,
           onTap: () {
             widget.searchBar.onFishingSpotPicked?.call(fishingSpot);
-            moveMap(_mapController, fishingSpot.latLng, false);
+            moveMap(_mapController, LatLng(fishingSpot.lat, fishingSpot.lng),
+                false);
             Navigator.pop(context);
           },
         );

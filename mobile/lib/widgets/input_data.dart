@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/model/custom_entity.dart';
+import 'package:mobile/model/gen/anglerslog.pb.dart';
+import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/widgets/input_controller.dart';
 import 'package:mobile/widgets/input_type.dart';
-import 'package:quiver/strings.dart';
-import 'package:uuid/uuid.dart';
 
 /// A simple structure for storing build information for a form's input fields.
 class InputData {
   static String Function(BuildContext)
       _customEntityLabel(CustomEntity entity) => (_) => entity.name;
 
-  final String id;
+  final Id id;
 
   /// Returns user-visible label text. This is required for displaying this
   /// input in the list of available inputs in an [EditableFormPage]. If the
@@ -39,7 +38,7 @@ class InputData {
     this.label,
     this.showing = true,
     this.removable = true,
-  }) : assert(isNotEmpty(id)),
+  }) : assert(id != null),
        assert(controller != null),
        fake = false;
 
@@ -53,7 +52,7 @@ class InputData {
         fake = false;
 
   InputData.fake()
-      : id = Uuid().v1(),
+      : id = randomId(),
         controller = InputController(),
         label = null,
         showing = true,

@@ -86,7 +86,6 @@ class _AnglersLogState extends State<AnglersLog> {
     await _app.catchManager.initialize();
     await _app.customComparisonReportManager.initialize();
     await _app.customEntityManager.initialize();
-    await _app.customEntityValueManager.initialize();
     await _app.customSummaryReportManager.initialize();
     await _app.fishingSpotManager.initialize();
     await _app.imageManager.initialize();

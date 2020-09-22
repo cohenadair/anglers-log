@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:mobile/custom_entity_manager.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/log.dart';
-import 'package:mobile/model/custom_entity.dart';
+import 'package:mobile/model/gen/anglerslog.pb.dart';
+import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/utils/validator.dart';
 import 'package:mobile/widgets/dropdown_input.dart';
 import 'package:mobile/widgets/input_controller.dart';
@@ -33,51 +34,52 @@ class SaveCustomEntityPage extends StatefulWidget {
 }
 
 class _SaveCustomEntityPageState extends State<SaveCustomEntityPage> {
-  static const String _nameId = "name";
-  static const String _descriptionId = "description";
-  static const String _dataTypeId = "dataType";
+  static final _idName = randomId();
+  static final _idDescription = randomId();
+  static final _idType = randomId();
 
   final Log _log = Log("SaveCustomEntityPage");
 
-  Map<String, InputController> _inputOptions;
+  Map<Id, InputController> _inputOptions;
 
   CustomEntityManager get _customEntityManager =>
       CustomEntityManager.of(context);
 
   TextInputController get _nameController =>
-      _inputOptions[_nameId] as TextInputController;
+      _inputOptions[_idName] as TextInputController;
 
   TextInputController get _descriptionController =>
-      _inputOptions[_descriptionId] as TextInputController;
+      _inputOptions[_idDescription] as TextInputController;
 
-  InputController<InputType> get _dataTypeController =>
-      _inputOptions[_dataTypeId] as InputController<InputType>;
+  InputController<CustomEntity_Type> get _dataTypeController =>
+      _inputOptions[_idType] as InputController<CustomEntity_Type>;
 
-  bool get _editing => widget.oldEntity != null;
+  CustomEntity get _oldEntity => widget.oldEntity;
+  bool get _editing => _oldEntity != null;
 
   @override
   void initState() {
     super.initState();
 
     _inputOptions = {
-      _nameId: TextInputController(
+      _idName: TextInputController(
         validator: NameValidator(
           nameExistsMessage: (context) =>
               Strings.of(context).saveCustomEntityPageNameExists,
           nameExists: _customEntityManager.nameExists,
-          oldName: widget.oldEntity?.name,
+          oldName: _oldEntity?.name,
         ),
       ),
-      _descriptionId: TextInputController(),
-      _dataTypeId: InputController<InputType>(
-        value: InputType.number,
+      _idDescription: TextInputController(),
+      _idType: InputController<CustomEntity_Type>(
+        value: CustomEntity_Type.NUMBER,
       ),
     };
 
     if (_editing) {
-      _nameController.value = widget.oldEntity.name;
-      _descriptionController.value = widget.oldEntity.description;
-      _dataTypeController.value = widget.oldEntity.type ?? InputType.number;
+      _nameController.value = _oldEntity.name;
+      _descriptionController.value = _oldEntity.description;
+      _dataTypeController.value = _oldEntity.type;
     }
   }
 
@@ -89,8 +91,8 @@ class _SaveCustomEntityPageState extends State<SaveCustomEntityPage> {
           : Text(Strings.of(context).saveCustomEntityPageNewTitle),
       fieldBuilder: (BuildContext context) {
         return Map.fromIterable(_inputOptions.keys,
-          key: (dynamic item) => item.toString(),
-          value: (dynamic item) => _inputField(context, item.toString()),
+          key: (item) => item,
+          value: (item) => _inputField(context, item),
         );
       },
       onSave: _save,
@@ -98,46 +100,47 @@ class _SaveCustomEntityPageState extends State<SaveCustomEntityPage> {
     );
   }
 
-  Widget _inputField(BuildContext context, String key) {
-    switch (key) {
-      case _nameId: return TextInput.name(
+  Widget _inputField(BuildContext context, Id id) {
+    if (id == _idName) {
+      return TextInput.name(
         context,
         controller: _nameController,
         autofocus: true,
         // Trigger "Save" button state refresh.
         onChanged: () => setState(() {}),
       );
-      case _descriptionId: return TextInput.description(
+    } else if (id == _idDescription) {
+      return TextInput.description(
         context,
         controller: _descriptionController,
       );
-      case _dataTypeId: return DropdownInput<InputType>(
-        options: InputType.values,
+    } else if (id == _idType) {
+      return DropdownInput<CustomEntity_Type>(
+        options: CustomEntity_Type.values,
         value: _dataTypeController.value,
-        buildOption: (InputType type) =>
+        buildOption: (type) =>
             Text(inputTypeLocalizedString(context, type)),
-        onChanged: (InputType newType) {
+        onChanged: (newType) {
           setState(() {
             _dataTypeController.value = newType;
           });
         },
       );
-      default: _log.e("Unknown key: $key");
+    } else {
+      _log.e("Unknown id: $id");
+      return Empty();
     }
-
-    return Empty();
   }
 
   FutureOr<bool> _save(BuildContext _) {
-    var customField = CustomEntity(
-      id: widget.oldEntity?.id,
-      name: _nameController.value,
-      description: _descriptionController.value,
-      type: _dataTypeController.value,
-    );
+    var customEntity = CustomEntity()
+      ..id = _oldEntity?.id ?? randomId()
+      ..name = _nameController.value
+      ..description = _descriptionController.value
+      ..type = _dataTypeController.value;
 
-    CustomEntityManager.of(context).addOrUpdate(customField);
-    widget.onSave?.call(customField);
+    _customEntityManager.addOrUpdate(customEntity);
+    widget.onSave?.call(customEntity);
     return true;
   }
 }
