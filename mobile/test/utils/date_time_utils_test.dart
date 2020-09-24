@@ -1,11 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mobile/model/gen/google/protobuf/timestamp.pb.dart';
 import 'package:mobile/utils/date_time_utils.dart';
+import 'package:quiver/time.dart';
 
 import '../test_utils.dart';
 
 void main() {
-  group("IsInFutureWithMinuteAccuracy", () {
+  test("isLater", () {
+    expect(isLater(TimeOfDay(hour: 10, minute: 30),
+        TimeOfDay(hour: 8, minute: 30)), true);
+    expect(isLater(TimeOfDay(hour: 10, minute: 30),
+        TimeOfDay(hour: 10, minute: 30)), false);
+    expect(isLater(TimeOfDay(hour: 10, minute: 30),
+        TimeOfDay(hour: 10, minute: 45)), false);
+    expect(isLater(TimeOfDay(hour: 10, minute: 30),
+        TimeOfDay(hour: 10, minute: 15)), true);
+  });
+
+  group("isInFutureWithMinuteAccuracy", () {
     DateTime now = DateTime(2015, 5, 15, 12, 30, 45, 10000);
 
     test("Value should be in the past", () {
@@ -43,7 +56,7 @@ void main() {
     });
   });
 
-  group("IsInFutureWithDayAccuracy", () {
+  group("isInFutureWithDayAccuracy", () {
     DateTime now = DateTime(2015, 5, 15, 12, 30, 45, 10000);
 
     test("Value should be in the past", () {
@@ -73,6 +86,57 @@ void main() {
       expect(isInFutureWithDayAccuracy(
           DateTime(2015, 5, 15, 13, 29, 44, 9999), now), isFalse);
     });
+  });
+
+  test("combine", () {
+    expect(combine(DateTime(2020, 10, 26, 15, 30, 20, 1000),
+        TimeOfDay(hour: 16, minute: 45)),
+        DateTime(2020, 10, 26, 16, 45, 20, 1000));
+  });
+
+  test("dateTimeToDayAccuracy", () {
+    expect(dateTimeToDayAccuracy(DateTime(2020, 10, 26, 15, 30, 20, 1000)),
+        DateTime(2020, 10, 26, 0, 0, 0, 0));
+  });
+
+  test("getStartOfWeek", () {
+    expect(startOfWeek(DateTime(2020, 9, 24)), DateTime(2020, 9, 21));
+  });
+
+  test("weekOfYear", () {
+    expect(weekOfYear(DateTime(2020, 2, 15)), 7);
+  });
+
+  test("dayOfYear", () {
+    expect(dayOfYear(DateTime(2020, 2, 15)), 46);
+  });
+
+  testWidgets("formatTimeOfDay", (WidgetTester tester) async {
+    expect(formatTimeOfDay(await buildContext(tester),
+        TimeOfDay(hour: 15, minute: 30)), "3:30 PM");
+    expect(formatTimeOfDay(await buildContext(tester, use24Hour: true),
+        TimeOfDay(hour: 15, minute: 30)), "15:30");
+  });
+
+  testWidgets("timestampToSearchString", (WidgetTester tester) async {
+    Clock clock = Clock(() => DateTime(2020, 9, 24));
+    expect(timestampToSearchString(await buildContext(tester),
+        Timestamp.fromDateTime(DateTime(2020, 9, 24)), clock),
+        "Today at 4:00 AM September 24, 2020");
+  });
+
+  testWidgets("formatDateAsRecent", (WidgetTester tester) async {
+    Clock clock = Clock(() => DateTime(2020, 9, 24));
+    BuildContext context = await buildContext(tester);
+    expect(formatDateAsRecent(context, DateTime(2020, 9, 24), clock), "Today");
+    expect(formatDateAsRecent(context, DateTime(2020, 9, 23), clock),
+        "Yesterday");
+    expect(formatDateAsRecent(context, DateTime(2020, 9, 22), clock),
+        "Tuesday");
+    expect(formatDateAsRecent(context, DateTime(2020, 8, 22), clock),
+        "Aug 22");
+    expect(formatDateAsRecent(context, DateTime(2019, 8, 22), clock),
+        "Aug 22, 2019");
   });
 
   group("DateTime", () {

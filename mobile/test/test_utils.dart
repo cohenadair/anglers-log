@@ -43,13 +43,16 @@ DisplayDateRange stubDateRange(DateRange dateRange) {
   );
 }
 
-Future<BuildContext> buildContext(WidgetTester tester) async {
+Future<BuildContext> buildContext(WidgetTester tester, {
+  bool use24Hour = false,
+}) async {
   BuildContext context;
   await tester.pumpWidget(Testable((buildContext) {
     context = buildContext;
     return Empty();
   }, mediaQueryData: MediaQueryData(
     devicePixelRatio: 1.0,
+    alwaysUse24HourFormat: use24Hour,
   )));
   return context;
 }

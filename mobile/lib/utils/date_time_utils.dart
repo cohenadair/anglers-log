@@ -139,7 +139,7 @@ class DisplayDateRange {
   static final thisWeek = DisplayDateRange._(
     id: "thisWeek",
     getValue: (DateTime now) => DateRange(
-      startDate: getStartOfWeek(now),
+      startDate: startOfWeek(now),
       endDate: now,
     ),
     title: (context) => Strings.of(context).analysisDurationThisWeek,
@@ -148,7 +148,7 @@ class DisplayDateRange {
   static final thisMonth = DisplayDateRange._(
     id: "thisMonth",
     getValue: (DateTime now) => DateRange(
-      startDate: getStartOfMonth(now),
+      startDate: startOfMonth(now),
       endDate: now,
     ),
     title: (context) => Strings.of(context).analysisDurationThisMonth,
@@ -157,7 +157,7 @@ class DisplayDateRange {
   static final thisYear = DisplayDateRange._(
     id: "thisYear",
     getValue: (DateTime now) => DateRange(
-      startDate: getStartOfYear(now),
+      startDate: startOfYear(now),
       endDate: now,
     ),
     title: (context) => Strings.of(context).analysisDurationThisYear,
@@ -166,7 +166,7 @@ class DisplayDateRange {
   static final lastWeek = DisplayDateRange._(
     id: "lastWeek",
     getValue: (DateTime now) {
-      DateTime endOfLastWeek = getStartOfWeek(now);
+      DateTime endOfLastWeek = startOfWeek(now);
       DateTime startOfLastWeek = endOfLastWeek.subtract(Duration(
           days: DateTime.daysPerWeek),
       );
@@ -178,7 +178,7 @@ class DisplayDateRange {
   static final lastMonth = DisplayDateRange._(
     id: "lastMonth",
     getValue: (DateTime now) {
-      DateTime endOfLastMonth = getStartOfMonth(now);
+      DateTime endOfLastMonth = startOfMonth(now);
       int year = now.year;
       int month = now.month - 1;
       if (month < DateTime.january) {
@@ -197,7 +197,7 @@ class DisplayDateRange {
     id: "lastYear",
     getValue: (DateTime now) => DateRange(
       startDate: DateTime(now.year - 1),
-      endDate: getStartOfYear(now),
+      endDate: startOfYear(now),
     ),
     title: (context) => Strings.of(context).analysisDurationLastYear,
   );
@@ -393,19 +393,19 @@ DateTime dateTimeToDayAccuracy(DateTime dateTime) {
 
 /// Returns a [DateTime] representing the start of the week to which `now`
 /// belongs.
-DateTime getStartOfWeek(DateTime now) {
+DateTime startOfWeek(DateTime now) {
   return dateTimeToDayAccuracy(now).subtract(Duration(days: now.weekday - 1));
 }
 
 /// Returns a [DateTime] representing the start of the month to which `now`
 /// belongs.
-DateTime getStartOfMonth(DateTime now) {
+DateTime startOfMonth(DateTime now) {
   return DateTime(now.year, now.month);
 }
 
 /// Returns a [DateTime] representing the start of the year to which `now`
 /// belongs.
-DateTime getStartOfYear(DateTime now) {
+DateTime startOfYear(DateTime now) {
   return DateTime(now.year);
 }
 
@@ -446,7 +446,7 @@ String formatDateTime(BuildContext context, DateTime dateTime, [
   clock = const Clock(),
 ]) {
   return format(Strings.of(context).dateTimeFormat, [
-    formatDateAsRecent(context: context, dateTime: dateTime, clock: clock),
+    formatDateAsRecent(context, dateTime, clock),
     formatTimeOfDay(context, TimeOfDay.fromDateTime(dateTime)),
   ]);
 }
@@ -490,11 +490,9 @@ String formatDateRange(DateRange dateRange) {
 ///   - Monday
 ///   - Jan. 8
 ///   - Dec. 8, 2018
-String formatDateAsRecent({
-  @required BuildContext context,
-  @required DateTime dateTime,
+String formatDateAsRecent(BuildContext context, DateTime dateTime, [
   clock = const Clock(),
-}) {
+]) {
   final DateTime now = clock.now();
 
   if (isSameDate(dateTime, now)) {
