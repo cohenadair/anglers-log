@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/app_manager.dart';
@@ -52,7 +54,8 @@ void main() {
     when(appManager.imageManager).thenReturn(imageManager);
     when(imageManager
         .save(any, compress: anyNamed("compress")))
-        .thenAnswer((_) => Future.value([]));
+        .thenAnswer((invocation) => Future.value((invocation.positionalArguments
+            .first as List<File>)?.map((f) => f.path)?.toList() ?? []));
 
     fishingSpotManager = FishingSpotManager(appManager);
     when(appManager.fishingSpotManager).thenReturn(fishingSpotManager);
@@ -172,8 +175,6 @@ void main() {
 
     catches = catchManager.filteredCatches(context, filter: "4");
     expect(catches.length, 1);
-
-    // TODO: Test custom entity values
   });
 
   testWidgets("Filtering by search query; bait", (WidgetTester tester) async {
@@ -479,6 +480,72 @@ void main() {
     expect(catches.isEmpty, true);
   });
 
-  // TODO: Add test for imageNamesSortedByTimestamp
-  // TODO: Add test for addOrUpdate; specifically, images
+  testWidgets("imageNamesSortedByTimestamp", (WidgetTester tester) async {
+    Catch catch1 = Catch()
+      ..id = randomId()
+      ..timestamp = timestampFromMillis(10000);
+    catch1.imageNames.addAll(["img0", "img1"]);
+
+    Catch catch2 = Catch()
+      ..id = randomId()
+      ..timestamp = timestampFromMillis(20000);
+    catch2.imageNames.addAll(["img2", "img3"]);
+
+    Catch catch3 = Catch()
+      ..id = randomId()
+      ..timestamp = timestampFromMillis(5000);
+    catch3.imageNames.add("img4");
+
+    await catchManager.addOrUpdate(catch1,
+        imageFiles: catch1.imageNames.map((e) => File(e)).toList());
+    await catchManager.addOrUpdate(catch2,
+        imageFiles: catch2.imageNames.map((e) => File(e)).toList());
+    await catchManager.addOrUpdate(catch3,
+        imageFiles: catch3.imageNames.map((e) => File(e)).toList());
+
+    BuildContext context = await buildContext(tester);
+    expect(catchManager.imageNamesSortedByTimestamp(context), [
+      "img2", "img3", "img0", "img1", "img4",
+    ]);
+  });
+
+  group("deleteMessage", () {
+    testWidgets("Input", (WidgetTester tester) async {
+      expect(() => catchManager.deleteMessage(null, Catch()
+        ..id = randomId()
+      ), throwsAssertionError);
+
+      BuildContext context = await buildContext(tester);
+      expect(() => baitManager.deleteMessage(context, null),
+          throwsAssertionError);
+    });
+
+    testWidgets("No species", (WidgetTester tester) async {
+      Catch cat = Catch()
+        ..id = randomId()
+        ..timestamp = Timestamp.fromDateTime(DateTime(2020, 9, 25));
+
+      BuildContext context = await buildContext(tester);
+      expect(catchManager.deleteMessage(context, cat),
+          "Are you sure you want to delete catch (Today at 4:00 AM)? "
+              "This cannot be undone.");
+    });
+
+    testWidgets("With species", (WidgetTester tester) async {
+      Species species = Species()
+        ..id = randomId()
+        ..name = "Steelhead";
+      Catch cat = Catch()
+        ..id = randomId()
+        ..timestamp = Timestamp.fromDateTime(DateTime(2020, 9, 25))
+        ..speciesId = species.id;
+
+      when(speciesManager.entity(any)).thenReturn(species);
+
+      BuildContext context = await buildContext(tester);
+      expect(catchManager.deleteMessage(context, cat),
+          "Are you sure you want to delete catch Steelhead (Today at 4:00 AM)? "
+              "This cannot be undone.");
+    });
+  });
 }

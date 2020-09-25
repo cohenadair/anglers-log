@@ -140,6 +140,7 @@ Map<String, Map<String, String>> get englishStrings => {
     "mapPage_deleteFishingSpot" : "%s is associated with %s catches; are you sure you want to delete it? This cannot be undone.",
     "mapPage_deleteFishingSpotSingular" : "%s is associated with %s catch; are you sure you want to delete it? This cannot be undone.",
     "mapPage_deleteFishingSpotNoName" : "This fishing spot is associated with %s catches; are you sure you want to delete it? This cannot be undone.",
+    "mapPage_deleteFishingSpotNoNameSingular" : "This fishing spot is associated with %s catch; are you sure you want to delete it? This cannot be undone.",
     "mapPage_addCatch" : "Add Catch",
     "mapPage_searchHint" : "Search fishing spots",
     "mapPage_noSearchResults" : "No fishing spots found",

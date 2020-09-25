@@ -83,6 +83,9 @@ class FishingSpotManager extends NamedEntityManager<FishingSpot> {
   }
 
   String deleteMessage(BuildContext context, FishingSpot fishingSpot) {
+    assert(context != null);
+    assert(fishingSpot != null);
+
     int numOfCatches = numberOfCatches(fishingSpot);
     String hasNameString = numOfCatches == 1
         ? Strings.of(context).mapPageDeleteFishingSpotSingular
@@ -90,6 +93,9 @@ class FishingSpotManager extends NamedEntityManager<FishingSpot> {
 
     if (isNotEmpty(fishingSpot.name)) {
       return format(hasNameString, [fishingSpot.name, numOfCatches]);
+    } else if (numOfCatches == 1) {
+      return format(Strings.of(context).mapPageDeleteFishingSpotNoNameSingular,
+          [numOfCatches]);
     } else {
       return format(Strings.of(context).mapPageDeleteFishingSpotNoName,
           [numOfCatches]);

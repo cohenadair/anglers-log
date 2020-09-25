@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mobile/app_manager.dart';
@@ -7,6 +8,8 @@ import 'package:mobile/fishing_spot_manager.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mockito/mockito.dart';
+
+import 'test_utils.dart';
 
 class MockAppManager extends Mock implements AppManager {}
 class MockCatchManager extends Mock implements CatchManager {}
@@ -157,5 +160,118 @@ void main() {
       ..id = fishingSpotId4
       ..lat = 0
       ..lng = 0), 1);
+  });
+
+  group("deleteMessage", () {
+    testWidgets("Input", (WidgetTester tester) async {
+      expect(() => fishingSpotManager.deleteMessage(null, FishingSpot()
+        ..id = randomId()
+        ..name = "A"), throwsAssertionError);
+
+      BuildContext context = await buildContext(tester);
+      expect(() => fishingSpotManager.deleteMessage(context, null),
+          throwsAssertionError);
+    });
+
+    testWidgets("Singular", (WidgetTester tester) async {
+      FishingSpot fishingSpot = FishingSpot()
+        ..id = randomId()
+        ..name = "A";
+
+      when(catchManager.list()).thenReturn([
+        Catch()
+          ..id = randomId()
+          ..timestamp = timestampFromMillis(0)
+          ..speciesId = randomId()
+          ..fishingSpotId = fishingSpot.id,
+      ]);
+
+      BuildContext context = await buildContext(tester);
+      expect(fishingSpotManager.deleteMessage(context, fishingSpot),
+          "A is associated with 1 catch; are you sure you want to delete it?"
+              " This cannot be undone.");
+    });
+
+    testWidgets("Plural zero", (WidgetTester tester) async {
+      FishingSpot fishingSpot = FishingSpot()
+        ..id = randomId()
+        ..name = "A";
+
+      when(catchManager.list()).thenReturn([]);
+
+      BuildContext context = await buildContext(tester);
+      expect(fishingSpotManager.deleteMessage(context, fishingSpot),
+          "A is associated with 0 catches; are you sure you want to delete it?"
+              " This cannot be undone.");
+    });
+
+    testWidgets("Plural none zero", (WidgetTester tester) async {
+      FishingSpot fishingSpot = FishingSpot()
+        ..id = randomId()
+        ..name = "A";
+
+      when(catchManager.list()).thenReturn([
+        Catch()
+          ..id = randomId()
+          ..timestamp = timestampFromMillis(0)
+          ..speciesId = randomId()
+          ..fishingSpotId = fishingSpot.id,
+        Catch()
+          ..id = randomId()
+          ..timestamp = timestampFromMillis(5)
+          ..speciesId = randomId()
+          ..fishingSpotId = fishingSpot.id,
+      ]);
+
+      BuildContext context = await buildContext(tester);
+      expect(fishingSpotManager.deleteMessage(context, fishingSpot),
+          "A is associated with 2 catches; are you sure you want to delete it?"
+              " This cannot be undone.");
+    });
+
+    testWidgets("Without a name singular", (WidgetTester tester) async {
+      FishingSpot fishingSpot = FishingSpot()
+        ..id = randomId()
+        ..lat = 0.000006
+        ..lng = 0.000007;
+
+      when(catchManager.list()).thenReturn([
+        Catch()
+          ..id = randomId()
+          ..timestamp = timestampFromMillis(0)
+          ..speciesId = randomId()
+          ..fishingSpotId = fishingSpot.id,
+      ]);
+
+      BuildContext context = await buildContext(tester);
+      expect(fishingSpotManager.deleteMessage(context, fishingSpot),
+          "This fishing spot is associated with 1 catch; are you sure you "
+              "want to delete it? This cannot be undone.");
+    });
+
+    testWidgets("Without a name plural", (WidgetTester tester) async {
+      FishingSpot fishingSpot = FishingSpot()
+        ..id = randomId()
+        ..lat = 0.000006
+        ..lng = 0.000007;
+
+      when(catchManager.list()).thenReturn([
+        Catch()
+          ..id = randomId()
+          ..timestamp = timestampFromMillis(0)
+          ..speciesId = randomId()
+          ..fishingSpotId = fishingSpot.id,
+        Catch()
+          ..id = randomId()
+          ..timestamp = timestampFromMillis(5)
+          ..speciesId = randomId()
+          ..fishingSpotId = fishingSpot.id,
+      ]);
+
+      BuildContext context = await buildContext(tester);
+      expect(fishingSpotManager.deleteMessage(context, fishingSpot),
+          "This fishing spot is associated with 2 catches; are you sure you "
+              "want to delete it? This cannot be undone.");
+    });
   });
 }

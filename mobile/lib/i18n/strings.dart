@@ -173,6 +173,7 @@ class Strings {
   String get mapPageDeleteFishingSpot => _string("mapPage_deleteFishingSpot");
   String get mapPageDeleteFishingSpotSingular => _string("mapPage_deleteFishingSpotSingular");
   String get mapPageDeleteFishingSpotNoName => _string("mapPage_deleteFishingSpotNoName");
+  String get mapPageDeleteFishingSpotNoNameSingular => _string("mapPage_deleteFishingSpotNoNameSingular");
   String get mapPageAddCatch => _string("mapPage_addCatch");
   String get mapPageSearchHint => _string("mapPage_searchHint");
   String get mapPageNoSearchResults => _string("mapPage_noSearchResults");
