@@ -1,33 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mobile/app_manager.dart';
-import 'package:mobile/bait_manager.dart';
-import 'package:mobile/catch_manager.dart';
-import 'package:mobile/fishing_spot_manager.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
-import 'package:mobile/species_manager.dart';
 import 'package:mobile/utils/date_time_utils.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/widgets/reports/report_summary.dart';
 import 'package:mockito/mockito.dart';
 import 'package:quiver/time.dart';
 
+import '../mock_app_manager.dart';
 import '../test_utils.dart';
-
-class MockAppManager extends Mock implements AppManager {}
-class MockBaitManager extends Mock implements BaitManager {}
-class MockCatchManager extends Mock implements CatchManager {}
-class MockClock extends Mock implements Clock {}
-class MockFishingSpotManager extends Mock implements FishingSpotManager {}
-class MockSpeciesManager extends Mock implements SpeciesManager {}
 
 void main() {
   MockAppManager appManager;
   MockBaitManager baitManager;
   MockCatchManager catchManager;
-  MockClock clock;
   MockFishingSpotManager fishingSpotManager;
   MockSpeciesManager speciesManager;
+
+  Clock clock;
 
   Id speciesId0 = randomId();
   Id speciesId1 = randomId();
@@ -166,28 +156,32 @@ void main() {
   ];
 
   setUp(() {
-    appManager = MockAppManager();
+    appManager = MockAppManager(
+      mockBaitManager: true,
+      mockCatchManager: true,
+      mockFishingSpotManager: true,
+      mockSpeciesManager: true,
+    );
 
-    baitManager = MockBaitManager();
+    baitManager = appManager.mockBaitManager;
     when(appManager.baitManager).thenReturn(baitManager);
     when(baitManager.list()).thenReturn(baitMap.values.toList());
     when(baitManager.entity(any)).thenAnswer((invocation) =>
         baitMap[invocation.positionalArguments[0]]);
 
-    catchManager = MockCatchManager();
+    catchManager = appManager.mockCatchManager;
     when(catchManager.list()).thenReturn(_catches);
     when(appManager.catchManager).thenReturn(catchManager);
 
-    clock = MockClock();
-    when(clock.now()).thenReturn(DateTime.fromMillisecondsSinceEpoch(105000));
+    clock = Clock(() => DateTime.fromMillisecondsSinceEpoch(105000));
 
-    fishingSpotManager = MockFishingSpotManager();
+    fishingSpotManager = appManager.mockFishingSpotManager;
     when(appManager.fishingSpotManager).thenReturn(fishingSpotManager);
     when(fishingSpotManager.list()).thenReturn(fishingSpotMap.values.toList());
     when(fishingSpotManager.entity(any)).thenAnswer((invocation) =>
         fishingSpotMap[invocation.positionalArguments[0]]);
 
-    speciesManager = MockSpeciesManager();
+    speciesManager = appManager.mockSpeciesManager;
     when(appManager.speciesManager).thenReturn(speciesManager);
     when(speciesManager.list()).thenReturn(speciesMap.values.toList());
     when(speciesManager.entity(any)).thenAnswer((invocation) =>

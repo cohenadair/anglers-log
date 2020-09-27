@@ -1,19 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:mobile/app_manager.dart';
-import 'package:mobile/catch_manager.dart';
-import 'package:mobile/data_manager.dart';
 import 'package:mobile/fishing_spot_manager.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mockito/mockito.dart';
 
+import 'mock_app_manager.dart';
 import 'test_utils.dart';
-
-class MockAppManager extends Mock implements AppManager {}
-class MockCatchManager extends Mock implements CatchManager {}
-class MockDataManager extends Mock implements DataManager {}
 
 void main() {
   MockAppManager appManager;
@@ -22,12 +16,15 @@ void main() {
   FishingSpotManager fishingSpotManager;
 
   setUp(() async {
-    appManager = MockAppManager();
+    appManager = MockAppManager(
+      mockCatchManager: true,
+      mockDataManager: true,
+    );
 
-    catchManager = MockCatchManager();
+    catchManager = appManager.mockCatchManager;
     when(appManager.catchManager).thenReturn(catchManager);
 
-    dataManager = MockDataManager();
+    dataManager = appManager.mockDataManager;
     when(appManager.dataManager).thenReturn(dataManager);
     when(dataManager.insertOrUpdateEntity(any, any, any))
         .thenAnswer((_) => Future.value(true));

@@ -1,18 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mobile/app_manager.dart';
 import 'package:mobile/bait_category_manager.dart';
-import 'package:mobile/bait_manager.dart';
-import 'package:mobile/data_manager.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mockito/mockito.dart';
 
+import 'mock_app_manager.dart';
 import 'test_utils.dart';
-
-class MockAppManager extends Mock implements AppManager {}
-class MockBaitManager extends Mock implements BaitManager {}
-class MockDataManager extends Mock implements DataManager {}
 
 void main() {
   MockAppManager appManager;
@@ -22,12 +16,15 @@ void main() {
   BaitCategoryManager baitCategoryManager;
 
   setUp(() {
-    appManager = MockAppManager();
+    appManager = MockAppManager(
+      mockBaitManager: true,
+      mockDataManager: true,
+    );
 
-    baitManager = MockBaitManager();
+    baitManager = appManager.mockBaitManager;
     when(appManager.baitManager).thenReturn(baitManager);
 
-    dataManager = MockDataManager();
+    dataManager = appManager.mockDataManager;
     when(appManager.dataManager).thenReturn(dataManager);
     when(dataManager.addListener(any)).thenAnswer((_) {});
 

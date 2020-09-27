@@ -2,25 +2,19 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mobile/app_manager.dart';
 import 'package:mobile/bait_category_manager.dart';
 import 'package:mobile/bait_manager.dart';
 import 'package:mobile/catch_manager.dart';
-import 'package:mobile/data_manager.dart';
 import 'package:mobile/database/legacy_importer.dart';
 import 'package:mobile/fishing_spot_manager.dart';
-import 'package:mobile/image_manager.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/species_manager.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mockito/mockito.dart';
 import 'package:path/path.dart' as Path;
 
+import '../mock_app_manager.dart';
 import '../test_utils.dart';
-
-class MockAppManager extends Mock implements AppManager {}
-class MockDataManager extends Mock implements DataManager {}
-class MockImageManager extends Mock implements ImageManager {}
 
 void main() {
   MockAppManager appManager;
@@ -36,14 +30,17 @@ void main() {
   Directory tmpDir;
 
   setUp(() {
-    appManager = MockAppManager();
+    appManager = MockAppManager(
+      mockDataManager: true,
+      mockImageManager: true,
+    );
 
-    dataManager = MockDataManager();
+    dataManager = appManager.mockDataManager;
     when(dataManager.insertOrUpdateEntity(any, any, any))
         .thenAnswer((_) => Future.value(true));
     when(appManager.dataManager).thenReturn(dataManager);
 
-    imageManager = MockImageManager();
+    imageManager = appManager.mockImageManager;
     when(imageManager.save(any)).thenAnswer((_) => Future.value());
     when(imageManager
         .save(any, compress: anyNamed("compress")))

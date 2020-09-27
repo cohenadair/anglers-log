@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mobile/app_manager.dart';
 import 'package:mobile/custom_entity_manager.dart';
 import 'package:mobile/data_manager.dart';
 import 'package:mobile/entity_manager.dart';
@@ -11,10 +10,9 @@ import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mockito/mockito.dart';
 import 'package:sqflite/sqlite_api.dart';
 
-class MockAppManager extends Mock implements AppManager {}
-class MockCustomEntityManager extends Mock implements CustomEntityManager {}
+import 'mock_app_manager.dart';
+
 class MockDatabase extends Mock implements Database {}
-class MockDataManager extends Mock implements DataManager {}
 class MockSpeciesListener extends Mock implements EntityListener<Species> {}
 
 void main() {

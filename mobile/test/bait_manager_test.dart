@@ -1,43 +1,41 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mobile/app_manager.dart';
 import 'package:mobile/bait_category_manager.dart';
 import 'package:mobile/bait_manager.dart';
-import 'package:mobile/catch_manager.dart';
-import 'package:mobile/custom_entity_manager.dart';
-import 'package:mobile/data_manager.dart';
 import 'package:mobile/entity_manager.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mockito/mockito.dart';
 
+import 'mock_app_manager.dart';
 import 'test_utils.dart';
 
-class MockAppManager extends Mock implements AppManager {}
 class MockBaitListener extends Mock implements EntityListener<Bait> {}
-class MockCatchManager extends Mock implements CatchManager {}
-class MockCustomEntityManager extends Mock implements CustomEntityManager {}
-class MockDataManager extends Mock implements DataManager {}
 
 void main() {
   MockAppManager appManager;
   MockCatchManager catchManager;
   MockCustomEntityManager customEntityManager;
   MockDataManager dataManager;
+
   BaitManager baitManager;
   BaitCategoryManager baitCategoryManager;
 
   setUp(() {
-    appManager = MockAppManager();
+    appManager = MockAppManager(
+      mockCatchManager: true,
+      mockCustomEntityManager: true,
+      mockDataManager: true,
+    );
 
-    catchManager = MockCatchManager();
+    catchManager = appManager.mockCatchManager;
     when(appManager.catchManager).thenReturn(catchManager);
 
-    customEntityManager = MockCustomEntityManager();
+    customEntityManager = appManager.mockCustomEntityManager;
     when(appManager.customEntityManager).thenReturn(customEntityManager);
     when(customEntityManager.matchesFilter(any, any)).thenReturn(true);
 
-    dataManager = MockDataManager();
+    dataManager = appManager.mockDataManager;
     when(appManager.dataManager).thenReturn(dataManager);
     when(dataManager.insertOrUpdateEntity(any, any, any))
         .thenAnswer((_) => Future.value(true));

@@ -2,32 +2,21 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mobile/app_manager.dart';
-import 'package:mobile/bait_category_manager.dart';
 import 'package:mobile/bait_manager.dart';
 import 'package:mobile/catch_manager.dart';
-import 'package:mobile/data_manager.dart';
 import 'package:mobile/entity_manager.dart';
 import 'package:mobile/fishing_spot_manager.dart';
-import 'package:mobile/image_manager.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/model/gen/google/protobuf/timestamp.pb.dart';
-import 'package:mobile/species_manager.dart';
 import 'package:mobile/utils/date_time_utils.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mockito/mockito.dart';
 import 'package:quiver/time.dart';
 
+import 'mock_app_manager.dart';
 import 'test_utils.dart';
 
-class MockAppManager extends Mock implements AppManager {}
-class MockBaitCategoryManager extends Mock implements BaitCategoryManager {}
-class MockBaitManager extends Mock implements BaitManager {}
 class MockCatchListener extends Mock implements EntityListener<Catch> {}
-class MockDataManager extends Mock implements DataManager {}
-class MockFishingSpotManager extends Mock implements FishingSpotManager {}
-class MockImageManager extends Mock implements ImageManager {}
-class MockSpeciesManager extends Mock implements SpeciesManager {}
 
 void main() {
   MockAppManager appManager;
@@ -40,18 +29,23 @@ void main() {
   FishingSpotManager fishingSpotManager;
 
   setUp(() {
-    appManager = MockAppManager();
+    appManager = MockAppManager(
+      mockBaitCategoryManager: true,
+      mockDataManager: true,
+      mockImageManager: true,
+      mockSpeciesManager: true,
+    );
 
-    dataManager = MockDataManager();
+    baitCategoryManager = appManager.mockBaitCategoryManager;
+    when(appManager.baitCategoryManager).thenReturn(baitCategoryManager);
+    when(baitCategoryManager.addListener(any)).thenAnswer((_) {});
+
+    dataManager = appManager.mockDataManager;
     when(appManager.dataManager).thenReturn(dataManager);
     when(dataManager.insertOrUpdateEntity(any, any, any)).thenAnswer((_) =>
         Future.value(true));
 
-    baitCategoryManager = MockBaitCategoryManager();
-    when(appManager.baitCategoryManager).thenReturn(baitCategoryManager);
-    when(baitCategoryManager.addListener(any)).thenAnswer((_) {});
-
-    imageManager = MockImageManager();
+    imageManager = appManager.mockImageManager;
     when(appManager.imageManager).thenReturn(imageManager);
     when(imageManager
         .save(any, compress: anyNamed("compress")))
@@ -64,7 +58,7 @@ void main() {
     baitManager = BaitManager(appManager);
     when(appManager.baitManager).thenReturn(baitManager);
     
-    speciesManager = MockSpeciesManager();
+    speciesManager = appManager.mockSpeciesManager;
     when(appManager.speciesManager).thenReturn(speciesManager);
     when(speciesManager.matchesFilter(any, any)).thenReturn(false);
 

@@ -9,10 +9,10 @@ import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mockito/mockito.dart';
 import 'package:sqflite/sqlite_api.dart';
 
-class MockAppManager extends Mock implements AppManager {}
+import 'mock_app_manager.dart';
+
 class MockBatch extends Mock implements Batch {}
 class MockDatabase extends Mock implements Database {}
-class MockDataManager extends Mock implements DataManager {}
 class MockEntityListener extends Mock implements EntityListener<Species> {}
 class MockSpeciesListener extends Mock implements EntityListener<Species> {}
 
@@ -38,8 +38,11 @@ void main() {
   TestEntityManager entityManager;
 
   setUp(() async {
-    appManager = MockAppManager();
-    dataManager = MockDataManager();
+    appManager = MockAppManager(
+      mockDataManager: true,
+    );
+
+    dataManager = appManager.mockDataManager;
     when(appManager.dataManager).thenReturn(dataManager);
     when(dataManager.insertOrUpdateEntity(any, any, any))
         .thenAnswer((_) => Future.value(true));
