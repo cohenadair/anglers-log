@@ -23,8 +23,8 @@ void main() {
   });
 
   test("Parse boolean", () {
-    expect(parseBool("123123"), false);
-    expect(parseBool("0"), false);
-    expect(parseBool("1"), true);
+    expect(parseBoolFromInt("123123"), false);
+    expect(parseBoolFromInt("0"), false);
+    expect(parseBoolFromInt("1"), true);
   });
 }

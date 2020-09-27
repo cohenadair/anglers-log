@@ -32,7 +32,7 @@ String formatLatLng({
   );
 }
 
-bool parseBool(String str) {
+bool parseBoolFromInt(String str) {
   int intBool = int.tryParse(str);
   if (intBool == null) {
     return false;
