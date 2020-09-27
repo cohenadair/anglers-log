@@ -44,6 +44,11 @@ const TextStyle styleLight = TextStyle(
   color: Colors.white,
 );
 
+TextStyle styleNote(BuildContext context) =>
+    Theme.of(context).textTheme.subtitle1.copyWith(
+      fontStyle: FontStyle.italic,
+    );
+
 const List<BoxShadow> boxShadowDefault = [
   BoxShadow(
     color: Colors.grey,

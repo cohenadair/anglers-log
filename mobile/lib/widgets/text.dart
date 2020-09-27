@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/res/style.dart';
 import 'package:mobile/utils/date_time_utils.dart';
+import 'package:quiver/strings.dart';
 
 /// A default text Widget that should be used in place of [Text].
 class Label extends StatelessWidget {
@@ -47,11 +48,6 @@ class HeadingLabel extends StatelessWidget {
 }
 
 class NoteLabel extends StatelessWidget {
-  static TextStyle style(BuildContext context) =>
-      Theme.of(context).textTheme.subtitle1.copyWith(
-        fontStyle: FontStyle.italic,
-      );
-
   final String text;
 
   NoteLabel(this.text);
@@ -60,7 +56,7 @@ class NoteLabel extends StatelessWidget {
   Widget build(BuildContext context) {
     return Label(
       text,
-      style: style(context),
+      style: styleNote(context),
     );
   }
 }
@@ -72,9 +68,11 @@ class IconNoteLabel extends StatelessWidget {
   final Icon icon;
 
   IconNoteLabel({
-    this.text,
-    this.icon,
-  }) : assert(text.split("%s").length == 2);
+    @required this.text,
+    @required this.icon,
+  }) : assert(isNotEmpty(text)),
+       assert(icon != null),
+       assert(text.split("%s").length == 2);
 
   @override
   Widget build(BuildContext context) {
@@ -86,12 +84,12 @@ class IconNoteLabel extends StatelessWidget {
       child: RichText(
         text: TextSpan(
           children: [
-            TextSpan(text: strings.first, style: NoteLabel.style(context)),
+            TextSpan(text: strings.first, style: styleNote(context)),
             WidgetSpan(
               child: icon,
               alignment: PlaceholderAlignment.middle,
             ),
-            TextSpan(text: strings.last, style: NoteLabel.style(context)),
+            TextSpan(text: strings.last, style: styleNote(context)),
           ],
         ),
       ),

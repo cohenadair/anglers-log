@@ -28,8 +28,10 @@ class Testable extends StatelessWidget {
       locale: Locale("en", "CA"),
       child: MediaQuery(
         data: mediaQueryData,
-        child: Builder(
-          builder: builder,
+        child: Material(
+          child: Builder(
+            builder: builder,
+          ),
         ),
       ),
     );
@@ -56,3 +58,5 @@ Future<BuildContext> buildContext(WidgetTester tester, {
   )));
   return context;
 }
+
+T findFirst<T>(WidgetTester tester) => tester.firstWidget(find.byType(T)) as T;

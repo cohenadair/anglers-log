@@ -5,33 +5,57 @@ import 'package:mobile/widgets/text.dart';
 import '../test_utils.dart';
 
 void main() {
-  group("TimeText", () {
-    testWidgets("12 hour", (WidgetTester tester) async {
-      await tester.pumpWidget(Testable(
-        (_) => TimeLabel(TimeOfDay(hour: 15, minute: 30)),
-        mediaQueryData: MediaQueryData(alwaysUse24HourFormat: false),
-      ));
-      expect(find.text("3:30 PM"), findsOneWidget);
-
-      await tester.pumpWidget(Testable(
-        (_) => TimeLabel(TimeOfDay(hour: 4, minute: 30)),
-        mediaQueryData: MediaQueryData(alwaysUse24HourFormat: false),
-      ));
-      expect(find.text("4:30 AM"), findsOneWidget);
+  group("IconNoteLabel", () {
+    testWidgets("Bad input", (WidgetTester tester) async {
+      await tester.pumpWidget(Testable((_) => IconNoteLabel(
+        text: "Test",
+        icon: Icon(Icons.group),
+      )));
+      expect(tester.takeException(), isAssertionError);
     });
 
-    testWidgets("24 hour", (WidgetTester tester) async {
-      await tester.pumpWidget(Testable(
-        (_) => TimeLabel(TimeOfDay(hour: 15, minute: 30)),
-        mediaQueryData: MediaQueryData(alwaysUse24HourFormat: true),
-      ));
-      expect(find.text("15:30"), findsOneWidget);
+    testWidgets("Valid input", (WidgetTester tester) async {
+      await tester.pumpWidget(Testable((_) => IconNoteLabel(
+        text: "Test %s",
+        icon: Icon(Icons.group),
+      )));
+      expect(find.byType(IconNoteLabel), findsOneWidget);
+    });
+  });
 
-      await tester.pumpWidget(Testable(
-        (_) => TimeLabel(TimeOfDay(hour: 4, minute: 30)),
-        mediaQueryData: MediaQueryData(alwaysUse24HourFormat: true),
-      ));
-      expect(find.text("04:30"), findsOneWidget);
+  group("PrimaryLabel", () {
+    testWidgets("State color", (WidgetTester tester) async {
+      await tester.pumpWidget(Testable((_) => PrimaryLabel("Test",
+        enabled: true,
+      )));
+      Color enabledColor =
+          (tester.firstWidget(find.text("Test")) as Text).style.color;
+
+      await tester.pumpWidget(Testable((_) => PrimaryLabel("Test 2",
+        enabled: false,
+      )));
+      Color disabledColor =
+          (tester.firstWidget(find.text("Test 2")) as Text).style.color;
+
+      expect(enabledColor != disabledColor, isTrue);
+    });
+  });
+
+  group("EnabledLabel", () {
+    testWidgets("State color", (WidgetTester tester) async {
+      await tester.pumpWidget(Testable((_) => EnabledLabel("Test",
+        enabled: true,
+      )));
+      Color enabledColor =
+          (tester.firstWidget(find.text("Test")) as Text).style.color;
+
+      await tester.pumpWidget(Testable((_) => EnabledLabel("Test 2",
+        enabled: false,
+      )));
+      Color disabledColor =
+          (tester.firstWidget(find.text("Test 2")) as Text).style.color;
+
+      expect(enabledColor != disabledColor, isTrue);
     });
   });
 }
