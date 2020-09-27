@@ -16,6 +16,7 @@ import 'package:mobile/species_manager.dart';
 import 'package:mobile/utils/date_time_utils.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mockito/mockito.dart';
+import 'package:quiver/time.dart';
 
 import 'test_utils.dart';
 
@@ -526,7 +527,8 @@ void main() {
         ..timestamp = Timestamp.fromDateTime(DateTime(2020, 9, 25));
 
       BuildContext context = await buildContext(tester);
-      expect(catchManager.deleteMessage(context, cat),
+      expect(catchManager.deleteMessage(context, cat,
+          Clock(() => DateTime(2020, 9, 25))),
           "Are you sure you want to delete catch (Today at 4:00 AM)? "
               "This cannot be undone.");
     });
@@ -543,7 +545,8 @@ void main() {
       when(speciesManager.entity(any)).thenReturn(species);
 
       BuildContext context = await buildContext(tester);
-      expect(catchManager.deleteMessage(context, cat),
+      expect(catchManager.deleteMessage(context, cat,
+          Clock(() => DateTime(2020, 9, 25))),
           "Are you sure you want to delete catch Steelhead (Today at 4:00 AM)? "
               "This cannot be undone.");
     });

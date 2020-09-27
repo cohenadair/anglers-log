@@ -29,6 +29,4 @@ void main() {
     expect(map[Id()..uuid = String.fromCharCodes(uuid2.codeUnits)], 15);
     expect(map[randomId()], isNull);
   });
-
-  // TODO: Test fromPbId
 }

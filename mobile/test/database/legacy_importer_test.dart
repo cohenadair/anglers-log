@@ -339,6 +339,4 @@ void main() {
     expect(catches.length, 2);
     expect(importedImages.length, 3);
   });
-
-  // TODO: Test bad UUID string case
 }

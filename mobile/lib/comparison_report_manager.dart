@@ -27,11 +27,11 @@ class ComparisonReportManager extends ReportManager<ComparisonReport> {
 
   @override
   void onDeleteFishingSpot(FishingSpot fishingSpot) => entities.values
-      .forEach((report) => report.baitIds.remove(fishingSpot.id));
+      .forEach((report) => report.fishingSpotIds.remove(fishingSpot.id));
 
   @override
   void onDeleteSpecies(Species species) => entities.values
-      .forEach((report) => report.baitIds.remove(species.id));
+      .forEach((report) => report.speciesIds.remove(species.id));
 
   @override
   String get tableName => "custom_comparison_report";

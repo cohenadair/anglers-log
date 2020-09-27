@@ -74,8 +74,10 @@ abstract class EntityManager<T extends GeneratedMessage>
   }
 
   List<T> filteredList(String filter) {
-    return list().where((e) => isEmpty(filter) || matchesFilter(id(e), filter))
-        .toList();
+    if (isEmpty(filter)) {
+      return list();
+    }
+    return list().where((e) => matchesFilter(id(e), filter)).toList();
   }
 
   /// Clears the [Entity] memory collection. This method assumes the database

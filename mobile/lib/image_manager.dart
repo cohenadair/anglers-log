@@ -147,6 +147,7 @@ class ImageManager {
       // If the file already exists in the app's sandbox, don't copy it again.
       if (file.path.contains(_delegate.imagePath) && await file.exists()) {
         _log.d("File exists, nothing to do");
+        result.add(basename(file.path));
         continue;
       }
 
@@ -283,18 +284,21 @@ class ImageManager {
   Future<void> _clearStaleImages() async {
     await _delegate.directory(_delegate.imagePath).list().forEach((entity) {
       String name = basename(entity.path);
-
+      bool found = false;
       for (Catch cat in _catchManager.list()) {
         // Image found, continue on to the next image.
         if (cat.imageNames.contains(name)) {
+          found = true;
           break;
         }
       }
 
       // Image isn't found, delete it.
-      entity.deleteSync();
-      _thumbnails.remove(name);
-      _log.d("Deleted stale image $name");
+      if (!found) {
+        entity.deleteSync();
+        _thumbnails.remove(name);
+        _log.d("Deleted stale image $name");
+      }
     });
   }
 }

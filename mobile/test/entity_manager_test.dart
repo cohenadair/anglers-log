@@ -122,7 +122,9 @@ void main() {
     expect(entityManager.entityCount, 0);
     verify(listener.onDelete).called(1);
 
-    // TODO: Verify no callback if nothing was deleted
+    // If there's nothing to delete, the listener shouldn't be called.
+    expect(await entityManager.delete(speciesId0), true);
+    verifyNever(listener.onDelete);
   });
 
   test("Data is cleared and listeners notified when database is reset",
@@ -193,5 +195,20 @@ void main() {
     expect(entityManager.list([speciesId0, speciesId2]).length, 2);
   });
 
-  // TODO: Test filtered list
+  group("filteredList", () {
+    test("Empty filter always returns all entities", () async {
+      await entityManager.addOrUpdate(Species()
+        ..id = randomId()
+        ..name = "Bluegill");
+      await entityManager.addOrUpdate(Species()
+        ..id = randomId()
+        ..name = "Catfish");
+      await entityManager.addOrUpdate(Species()
+        ..id = randomId()
+        ..name = "Bass");
+
+      expect(entityManager.filteredList(null).length, 3);
+      expect(entityManager.filteredList("").length, 3);
+    });
+  });
 }

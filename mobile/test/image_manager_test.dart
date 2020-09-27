@@ -4,6 +4,8 @@ import 'dart:typed_data';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/image_manager.dart';
+import 'package:mobile/model/gen/anglerslog.pb.dart';
+import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mockito/mockito.dart';
 
 import 'mock_app_manager.dart';
@@ -11,6 +13,7 @@ import 'test_utils.dart';
 
 class MockDirectory extends Mock implements Directory {}
 class MockFile extends Mock implements File {}
+class MockFileSystemEntity extends Mock implements FileSystemEntity {}
 class MockImageManagerDelegate extends Mock implements ImageManagerDelegate {}
 
 const _imagePath = "test/tmp_image";
@@ -200,7 +203,7 @@ void main() {
     await imageManager.initialize(delegate: imageManagerDelegate);
 
     // Verify there no images are saved.
-    await imageManager.save([]);
+    expect(await imageManager.save([]), isEmpty);
     verifyNever(imageManagerDelegate.compress(any, any, any));
 
     // Add some images.
@@ -230,7 +233,7 @@ void main() {
       return newFile;
     });
 
-    await imageManager.save([img0, img1]);
+    expect((await imageManager.save([img0, img1])).length, 2);
     expect(addedImages.length, 2);
     addedImages.forEach((img) {
       verify(img.writeAsBytes(any, flush: true)).called(1);
@@ -240,14 +243,14 @@ void main() {
 
   test("Null image files are skipped when saving", () async {
     await imageManager.save([null, null]);
+    expect(await imageManager.save([null, null]), isEmpty);
     verifyNever(imageManagerDelegate.compress(any, any, any));
   });
 
   test("Saving an empty list does nothing", () async {
-    // TODO: Test that this actually works
     try {
-      await imageManager.save([]);
-      await imageManager.save(null);
+      expect(await imageManager.save([]), isEmpty);
+      expect(await imageManager.save(null), isEmpty);
     } catch (e) {
       fail("Invalid input should be handled gracefully");
     }
@@ -266,10 +269,44 @@ void main() {
     when(img1.exists()).thenAnswer((_) => Future.value(true));
 
     await imageManager.initialize(delegate: imageManagerDelegate);
-    await imageManager.save([img1]);
+    List<String> images = await imageManager.save([img1]);
+    expect(images.length, 1);
+    expect(images.first, "image.jpg");
     verifyNever(imageManagerDelegate.compress(any, any, any));
   });
 
-  // TODO: Verify result of save method
-  // TODO: Test stale images are deleted
+  test("Clearing stale images", () async {
+    MockFile img1 = MockFile();
+    when(img1.path).thenReturn("$_imagePath/image1.jpg");
+    when(img1.deleteSync()).thenAnswer((_) { });
+
+    MockFile img2 = MockFile();
+    when(img2.path).thenReturn("$_imagePath/image2.jpg");
+    when(img2.deleteSync()).thenAnswer((_) { });
+
+    when(directory.list()).thenAnswer((_) =>
+        Stream.fromFutures([img1, img2].map((img) => Future.value(img))));
+
+    Catch catch1 = Catch()
+      ..id = randomId()
+      ..timestamp = timestampFromMillis(5);
+    catch1.imageNames.add("image1.jpg");
+
+    Catch catch2 = Catch()
+      ..id = randomId()
+      ..timestamp = timestampFromMillis(5);
+    catch2.imageNames.add("image2.jpg");
+
+    when(appManager.mockCatchManager.list()).thenReturn([
+      catch1, catch2
+    ]);
+    await imageManager.initialize(delegate: imageManagerDelegate);
+    verifyNever(img1.deleteSync());
+    verifyNever(img2.deleteSync());
+
+    catch2.imageNames.clear();
+    await imageManager.initialize(delegate: imageManagerDelegate);
+    verifyNever(img1.deleteSync());
+    verify(img2.deleteSync()).called(1);
+  });
 }
