@@ -6,27 +6,33 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/utils/date_time_utils.dart';
 import 'package:mobile/widgets/widget.dart';
+import 'package:mockito/mockito.dart';
+
+class MockNavigatorObserver extends Mock implements NavigatorObserver {}
 
 /// A widget that wraps a child in default localizations.
 class Testable extends StatelessWidget {
   final Function(BuildContext) builder;
   final MediaQueryData mediaQueryData;
+  final MockNavigatorObserver navigatorObserver;
 
   Testable(this.builder, {
     this.mediaQueryData = const MediaQueryData(),
+    this.navigatorObserver,
   }) : assert(builder != null);
 
   @override
   Widget build(BuildContext context) {
-    return Localizations(
-      delegates: [
+    return MaterialApp(
+      localizationsDelegates: [
         StringsDelegate(),
         DefaultMaterialLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
       ],
       locale: Locale("en", "CA"),
-      child: MediaQuery(
+      navigatorObservers: navigatorObserver == null ? [] : [navigatorObserver],
+      home: MediaQuery(
         data: mediaQueryData,
         child: Material(
           child: Builder(
