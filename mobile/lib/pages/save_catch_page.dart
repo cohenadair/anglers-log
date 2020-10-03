@@ -222,7 +222,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
         right: paddingDefault,
         bottom: paddingWidgetSmall,
       ),
-      child: DateTimePickerContainer(
+      child: DateTimePicker(
         datePicker: DatePicker(
           initialDate: _timestampController.date,
           label: Strings.of(context).saveCatchPageDateLabel,

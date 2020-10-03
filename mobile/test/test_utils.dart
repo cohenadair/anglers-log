@@ -3,10 +3,12 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mobile/app_manager.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/utils/date_time_utils.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
+import 'package:provider/provider.dart';
 
 class MockNavigatorObserver extends Mock implements NavigatorObserver {}
 
@@ -14,29 +16,34 @@ class MockNavigatorObserver extends Mock implements NavigatorObserver {}
 class Testable extends StatelessWidget {
   final Function(BuildContext) builder;
   final MediaQueryData mediaQueryData;
-  final MockNavigatorObserver navigatorObserver;
+  final NavigatorObserver navigatorObserver;
+  final AppManager appManager;
 
   Testable(this.builder, {
     this.mediaQueryData = const MediaQueryData(),
     this.navigatorObserver,
+    this.appManager,
   }) : assert(builder != null);
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      localizationsDelegates: [
-        StringsDelegate(),
-        DefaultMaterialLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-      ],
-      locale: Locale("en", "CA"),
-      navigatorObservers: navigatorObserver == null ? [] : [navigatorObserver],
-      home: MediaQuery(
-        data: mediaQueryData,
-        child: Material(
-          child: Builder(
-            builder: builder,
+    return Provider<AppManager>.value(
+      value: appManager,
+      child: MaterialApp(
+        localizationsDelegates: [
+          StringsDelegate(),
+          DefaultMaterialLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+        ],
+        locale: Locale("en", "CA"),
+        navigatorObservers: navigatorObserver == null ? [] : [navigatorObserver],
+        home: MediaQuery(
+          data: mediaQueryData,
+          child: Material(
+            child: Builder(
+              builder: builder,
+            ),
           ),
         ),
       ),

@@ -6,12 +6,12 @@ import 'package:quiver/strings.dart';
 
 /// A container for separate date and time pickers. Renders a horizontal [Flex]
 /// widget with a 3:2 ratio for [DatePicker] and [TimePicker] respectively.
-class DateTimePickerContainer extends StatelessWidget {
+class DateTimePicker extends StatelessWidget {
   final DatePicker datePicker;
   final TimePicker timePicker;
   final Widget helper;
 
-  DateTimePickerContainer({
+  DateTimePicker({
     @required this.datePicker,
     @required this.timePicker,
     this.helper,
@@ -57,7 +57,7 @@ class DatePicker extends FormField<DateTime> {
     String Function(DateTime) validator,
     bool enabled = true,
   }) : assert(isNotEmpty(label)), super(
-    initialValue: initialDate,
+    initialValue: initialDate ?? DateTime.now(),
     validator: validator,
     builder: (FormFieldState<DateTime> state) {
       return _Picker(
@@ -82,9 +82,7 @@ class DatePicker extends FormField<DateTime> {
                 return;
               }
               state.didChange(dateTime);
-              if (onChange != null) {
-                onChange(dateTime);
-              }
+              onChange?.call(dateTime);
             });
           }
         ),
@@ -101,7 +99,7 @@ class TimePicker extends FormField<TimeOfDay> {
     String Function(TimeOfDay) validator,
     bool enabled = true,
   }) : assert(isNotEmpty(label)), super(
-    initialValue: initialTime,
+    initialValue: initialTime ?? TimeOfDay.now(),
     validator: validator,
     builder: (FormFieldState<TimeOfDay> state) {
       return _Picker(
@@ -122,9 +120,7 @@ class TimePicker extends FormField<TimeOfDay> {
                 return;
               }
               state.didChange(time);
-              if (onChange != null) {
-                onChange(time);
-              }
+              onChange?.call(time);
             });
           }
         ),

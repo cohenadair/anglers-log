@@ -204,7 +204,7 @@ class DisabledLabel extends StatelessWidget {
 /// A formatted Text widget for a date.
 ///
 /// Example:
-///   Dec. 8, 2018
+///   Dec 8, 2018
 class DateLabel extends StatelessWidget {
   final DateTime date;
   final bool enabled;
