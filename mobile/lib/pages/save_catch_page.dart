@@ -32,6 +32,7 @@ import 'package:mobile/widgets/list_picker_input.dart';
 import 'package:mobile/widgets/image_input.dart';
 import 'package:mobile/widgets/static_fishing_spot.dart';
 import 'package:mobile/widgets/widget.dart';
+import 'package:photo_manager/photo_manager.dart' as Pm;
 
 /// A utility class to store properties picked in a catch journey.
 class CatchJourneyHelper {
@@ -323,6 +324,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
       future: _imagesFuture,
       builder: (context, images) {
         return ImageInput(
+          requestPhotoPermission: () => Pm.PhotoManager.requestPermission(),
           initialImages: _imagesController.value ?? [],
           onImagesPicked: (pickedImages) {
             setState(() {

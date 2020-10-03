@@ -27,13 +27,14 @@ class InputController<T> {
 }
 
 class TextInputController extends InputController<String> {
-  final TextEditingController editingController = TextEditingController();
+  final TextEditingController editingController;
   final Validator validator;
 
   TextInputController({
     TextEditingController editingController,
     this.validator,
-  }) : super();
+  }) : editingController = editingController ?? TextEditingController(),
+       super();
 
   @override
   get value {
@@ -93,12 +94,14 @@ class TimestampInputController extends InputController<Timestamp> {
   TimeOfDay time;
 
   TimestampInputController({
-    this.date,
+    DateTime date,
     this.time,
-  });
+  }) : date = date?.toUtc();
 
   @override
-  Timestamp get value => Timestamp.fromDateTime(combine(date, time));
+  Timestamp get value => date != null && time != null
+      ? Timestamp.fromDateTime(combine(date, time).toUtc())
+      : null;
 
   @override
   set value(Timestamp timestamp) {
@@ -109,6 +112,7 @@ class TimestampInputController extends InputController<Timestamp> {
     }
     date = timestamp.toDateTime();
     time = TimeOfDay.fromDateTime(date);
+    print(date);
   }
 
   @override

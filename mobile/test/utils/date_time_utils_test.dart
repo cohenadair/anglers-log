@@ -91,7 +91,7 @@ void main() {
   test("combine", () {
     expect(combine(DateTime(2020, 10, 26, 15, 30, 20, 1000),
         TimeOfDay(hour: 16, minute: 45)),
-        DateTime(2020, 10, 26, 16, 45, 20, 1000));
+        DateTime.utc(2020, 10, 26, 16, 45, 20, 1000));
   });
 
   test("dateTimeToDayAccuracy", () {

@@ -368,14 +368,14 @@ bool isWithinOneWeek(DateTime a, DateTime b) {
   return a.difference(b).inMilliseconds.abs() <= aWeek.inMilliseconds;
 }
 
-/// Returns a [DateTime] object with the given [DateTime] and [TimeOfDay]
+/// Returns a UTC [DateTime] object with the given [DateTime] and [TimeOfDay]
 /// combined.  Accurate to the millisecond.
 ///
 /// Due to the lack of granularity in [TimeOfDay], the seconds and milliseconds
 /// value of the result are that of the given [DateTime].
 DateTime combine(DateTime dateTime, TimeOfDay timeOfDay) {
-  return DateTime(dateTime.year, dateTime.month, dateTime.day, timeOfDay.hour,
-      timeOfDay.minute, dateTime.second, dateTime.millisecond);
+  return DateTime.utc(dateTime.year, dateTime.month, dateTime.day,
+      timeOfDay.hour, timeOfDay.minute, dateTime.second, dateTime.millisecond);
 }
 
 /// Returns a new [DateTime] object, with time properties more granular than
