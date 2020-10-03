@@ -16,9 +16,9 @@ import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/utils/snackbar_utils.dart';
 import 'package:mobile/utils/string_utils.dart';
 import 'package:mobile/utils/validator.dart';
-import 'package:mobile/widgets/dropdown_input.dart';
 import 'package:mobile/widgets/input_controller.dart';
 import 'package:mobile/widgets/input_data.dart';
+import 'package:mobile/widgets/radio_input.dart';
 import 'package:mobile/widgets/text_input.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:package_info/package_info.dart';
@@ -132,16 +132,15 @@ class _FeedbackPageState extends State<FeedbackPage> {
           padding: insetsBottomDefault,
           child: Column(
             children: <Widget>[
-              DropdownInput(
-                options: _FeedbackType.values,
-                value: _typeController.value,
-                buildOption: (_FeedbackType type) =>
-                    Text(_feedbackTypeToString(type)),
-                onChanged: (_FeedbackType newType) {
-                  setState(() {
-                    _typeController.value = newType;
-                  });
-                },
+              RadioInput(
+                initialSelectedIndex: _FeedbackType.values
+                    .indexOf(_typeController.value),
+                optionCount: _FeedbackType.values.length,
+                optionBuilder: (context, i) =>
+                    _feedbackTypeToString(_FeedbackType.values[i]),
+                onSelect: (i) => setState(() {
+                  _typeController.value = _FeedbackType.values[i];
+                }),
               ),
             ],
           ),
