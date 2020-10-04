@@ -37,7 +37,8 @@ class Testable extends StatelessWidget {
           GlobalWidgetsLocalizations.delegate,
         ],
         locale: Locale("en", "CA"),
-        navigatorObservers: navigatorObserver == null ? [] : [navigatorObserver],
+        navigatorObservers: navigatorObserver == null
+            ? [] : [navigatorObserver],
         home: MediaQuery(
           data: mediaQueryData,
           child: Material(

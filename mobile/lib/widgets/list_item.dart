@@ -146,7 +146,8 @@ class ManageableListItem extends StatefulWidget {
     this.trailing,
     this.editing = false,
     this.enabled = true,
-  });
+  }) : assert(onTapDeleteButton != null
+      || (deleteMessageBuilder != null && onConfirmDelete != null));
 
   @override
   _ManageableListItemState createState() => _ManageableListItemState();

@@ -10,7 +10,7 @@ import 'package:quiver/strings.dart';
 ///
 /// This widget should not be used with a title widget such as [HeadingLabel].
 /// The [emptyValue] property should be descriptive enough to clearly show
-/// what the [MultiListPickerInput] is for.
+/// the [MultiListPickerInput]'s purpose.
 class MultiListPickerInput extends StatelessWidget {
   final Set<String> values;
   final VoidCallback onTap;
@@ -20,17 +20,18 @@ class MultiListPickerInput extends StatelessWidget {
   final String Function(BuildContext) emptyValue;
 
   MultiListPickerInput({
-    this.values,
+    this.values = const {},
     this.padding,
     @required this.emptyValue,
     @required this.onTap,
   }) : assert(emptyValue != null),
-       assert(onTap != null);
+       assert(onTap != null),
+       assert(values != null);
 
   @override
   Widget build(BuildContext context) {
     Set<String> items = {};
-    if (values == null || values.isEmpty) {
+    if (values.isEmpty) {
       items.add(emptyValue(context));
     } else {
       for (String value in values) {
