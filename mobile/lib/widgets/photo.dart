@@ -31,8 +31,13 @@ class Photo extends StatefulWidget {
   /// If true, [Photo] will be rendered in a circle. Default is false.
   final bool circular;
 
+  /// Encodes given bytes into a Dart [ui.Image] object. By default, uses
+  /// [ui.instantiateImageCodec].
+  final ui.Image Function(Uint8List) encode;
+
   Photo({
     @required this.fileName,
+    this.encode,
     this.width,
     this.height,
     this.cacheSize,
@@ -136,6 +141,10 @@ class _PhotoState extends State<Photo> {
       fileName: widget.fileName,
       size: size,
     );
+
+    if (widget.encode != null) {
+      return widget.encode(bytes);
+    }
 
     return (await (await ui.instantiateImageCodec(bytes)).getNextFrame()).image;
   }
