@@ -51,7 +51,7 @@ class _SearchBarState extends State<SearchBar> {
 
   VoidCallback _onFocusChanged;
 
-  bool get input => widget.delegate.searchBarType == SearchBarType.input;
+  bool get _isInput => widget.delegate.searchBarType == SearchBarType.input;
   bool get focused => _focusNode.hasFocus;
 
   @override
@@ -97,7 +97,7 @@ class _SearchBarState extends State<SearchBar> {
     Widget trailing;
     if (widget.trailing != null) {
       trailing = widget.trailing;
-    } else if (input) {
+    } else if (_isInput) {
       trailing = AnimatedVisibility(
         visible: focused || isNotEmpty(_controller.text),
         child: IconButton(
@@ -139,7 +139,7 @@ class _SearchBarState extends State<SearchBar> {
                     placeholder: widget.hint,
                     placeholderStyle: Theme.of(context).textTheme.subtitle1
                         .copyWith(color: Theme.of(context).disabledColor),
-                    enabled: input,
+                    enabled: _isInput,
                     controller: _controller,
                     focusNode: _focusNode,
                     cursorColor: Theme.of(context).primaryColor,
