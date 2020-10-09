@@ -14,6 +14,7 @@ import 'package:mobile/properties_manager.dart';
 import 'package:mobile/species_manager.dart';
 import 'package:mobile/trip_manager.dart';
 import 'package:mockito/mockito.dart';
+import 'package:quiver/time.dart';
 import 'package:sqflite/sqflite.dart';
 
 class MockBaitCategoryManager extends Mock implements BaitCategoryManager {}
@@ -21,6 +22,7 @@ class MockBaitManager extends Mock implements BaitManager {}
 class MockDatabase extends Mock implements Database {}
 class MockDataManager extends Mock implements DataManager {}
 class MockCatchManager extends Mock implements CatchManager {}
+class MockClock extends Mock implements Clock {}
 class MockCustomComparisonReportManager extends Mock implements
     ComparisonReportManager {}
 class MockCustomEntityManager extends Mock implements CustomEntityManager {}
@@ -39,6 +41,7 @@ class MockAppManager extends Mock implements AppManager {
   MockBaitManager mockBaitManager;
   MockDataManager mockDataManager;
   MockCatchManager mockCatchManager;
+  MockClock mockClock;
   MockCustomComparisonReportManager mockCustomComparisonReportManager;
   MockCustomEntityManager mockCustomEntityManager;
   MockCustomSummaryReportManager mockCustomSummaryReportManager;
@@ -55,6 +58,7 @@ class MockAppManager extends Mock implements AppManager {
     bool mockBaitManager = false,
     bool mockDataManager = false,
     bool mockCatchManager = false,
+    bool mockClock = false,
     bool mockCustomComparisonReportManager = false,
     bool mockCustomEntityManager = false,
     bool mockCustomEntityValueManager = false,
@@ -85,6 +89,14 @@ class MockAppManager extends Mock implements AppManager {
     if (mockCatchManager) {
       this.mockCatchManager = MockCatchManager();
       when(catchManager).thenReturn(this.mockCatchManager);
+    }
+
+    if (mockClock) {
+      this.mockClock = MockClock();
+
+      // Default to the current time.
+      when(this.mockClock.now()).thenReturn(Clock().now());
+      when(clock).thenReturn(this.mockClock);
     }
 
     if (mockCustomComparisonReportManager) {

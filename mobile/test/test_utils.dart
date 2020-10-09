@@ -61,16 +61,41 @@ DisplayDateRange stubDateRange(DateRange dateRange) {
 
 Future<BuildContext> buildContext(WidgetTester tester, {
   bool use24Hour = false,
+  AppManager appManager,
 }) async {
   BuildContext context;
-  await tester.pumpWidget(Testable((buildContext) {
-    context = buildContext;
-    return Empty();
-  }, mediaQueryData: MediaQueryData(
-    devicePixelRatio: 1.0,
-    alwaysUse24HourFormat: use24Hour,
-  )));
+  await tester.pumpWidget(
+    Testable((buildContext) {
+      context = buildContext;
+      return Empty();
+    },
+    mediaQueryData: MediaQueryData(
+      devicePixelRatio: 1.0,
+      alwaysUse24HourFormat: use24Hour,
+    ),
+    appManager: appManager,
+  ));
   return context;
 }
 
 T findFirst<T>(WidgetTester tester) => tester.firstWidget(find.byType(T)) as T;
+
+/// Different from [Finder.widgetWithText] in that it works for widgets with
+/// generic arguments.
+T findFirstWithText<T>(WidgetTester tester, String text) =>
+    tester.firstWidget(find.ancestor(
+      of: find.text(text),
+      matching: find.byWidgetPredicate((widget) => widget is T),
+    )) as T;
+
+/// Different from [Finder.byType] in that it works for widgets with generic
+/// arguments.
+List<T> findType<T>(WidgetTester tester) =>
+    tester.widgetList(find.byWidgetPredicate((widget) => widget is T))
+        .map((e) => e as T)
+        .toList();
+
+Future<void> tapAndSettle(WidgetTester tester, Finder finder) async {
+  await tester.tap(finder);
+  await tester.pumpAndSettle();
+}

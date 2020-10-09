@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/model/gen/google/protobuf/timestamp.pb.dart';
 import 'package:mobile/utils/date_time_utils.dart';
-import 'package:quiver/time.dart';
+import 'package:mockito/mockito.dart';
 
+import '../mock_app_manager.dart';
 import '../test_utils.dart';
 
 void main() {
@@ -119,23 +120,31 @@ void main() {
   });
 
   testWidgets("timestampToSearchString", (WidgetTester tester) async {
-    Clock clock = Clock(() => DateTime(2020, 9, 24));
-    expect(timestampToSearchString(await buildContext(tester),
-        Timestamp.fromDateTime(DateTime(2020, 9, 24)), clock),
+    MockAppManager appManager = MockAppManager(
+      mockClock: true,
+    );
+    when(appManager.mockClock.now()).thenReturn(DateTime(2020, 9, 24));
+    expect(timestampToSearchString(
+        await buildContext(tester, appManager: appManager),
+        Timestamp.fromDateTime(DateTime(2020, 9, 24))),
         "Today at 4:00 AM September 24, 2020");
   });
 
   testWidgets("formatDateAsRecent", (WidgetTester tester) async {
-    Clock clock = Clock(() => DateTime(2020, 9, 24));
-    BuildContext context = await buildContext(tester);
-    expect(formatDateAsRecent(context, DateTime(2020, 9, 24), clock), "Today");
-    expect(formatDateAsRecent(context, DateTime(2020, 9, 23), clock),
+    MockAppManager appManager = MockAppManager(
+      mockClock: true,
+    );
+    when(appManager.mockClock.now()).thenReturn(DateTime(2020, 9, 24));
+    BuildContext context = await buildContext(tester, appManager: appManager);
+
+    expect(formatDateAsRecent(context, DateTime(2020, 9, 24)), "Today");
+    expect(formatDateAsRecent(context, DateTime(2020, 9, 23)),
         "Yesterday");
-    expect(formatDateAsRecent(context, DateTime(2020, 9, 22), clock),
+    expect(formatDateAsRecent(context, DateTime(2020, 9, 22)),
         "Tuesday");
-    expect(formatDateAsRecent(context, DateTime(2020, 8, 22), clock),
+    expect(formatDateAsRecent(context, DateTime(2020, 8, 22)),
         "Aug 22");
-    expect(formatDateAsRecent(context, DateTime(2019, 8, 22), clock),
+    expect(formatDateAsRecent(context, DateTime(2019, 8, 22)),
         "Aug 22, 2019");
   });
 

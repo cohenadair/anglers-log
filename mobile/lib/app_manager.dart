@@ -14,11 +14,13 @@ import 'package:mobile/properties_manager.dart';
 import 'package:mobile/species_manager.dart';
 import 'package:mobile/trip_manager.dart';
 import 'package:provider/provider.dart';
+import 'package:quiver/time.dart';
 
 class AppManager {
   static AppManager of(BuildContext context) =>
       Provider.of<AppManager>(context, listen: false);
 
+  // Internal dependencies.
   BaitCategoryManager _baitCategoryManager;
   BaitManager _baitManager;
   DataManager _dataManager;
@@ -33,6 +35,9 @@ class AppManager {
   PropertiesManager _propertiesManager;
   SpeciesManager _speciesManager;
   TripManager _tripManager;
+
+  // External dependencies.
+  Clock _clock;
 
   BaitCategoryManager get baitCategoryManager {
     if (_baitCategoryManager == null) {
@@ -130,5 +135,12 @@ class AppManager {
       _tripManager = TripManager();
     }
     return _tripManager;
+  }
+
+  Clock get clock {
+    if (_clock == null) {
+      _clock = Clock();
+    }
+    return _clock;
   }
 }

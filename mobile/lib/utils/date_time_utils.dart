@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:mobile/app_manager.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/model/gen/google/protobuf/timestamp.pb.dart';
 import 'package:mobile/utils/string_utils.dart';
@@ -442,19 +443,15 @@ String formatTimeOfDay(BuildContext context, TimeOfDay time) {
 ///   - Monday at 2:35 PM
 ///   - Jan. 8 at 2:35 PM
 ///   - Dec. 8, 2018 at 2:35 PM
-String formatDateTime(BuildContext context, DateTime dateTime, [
-  clock = const Clock(),
-]) {
+String formatDateTime(BuildContext context, DateTime dateTime) {
   return format(Strings.of(context).dateTimeFormat, [
-    formatDateAsRecent(context, dateTime, clock),
+    formatDateAsRecent(context, dateTime),
     formatTimeOfDay(context, TimeOfDay.fromDateTime(dateTime)),
   ]);
 }
 
-String formatTimestamp(BuildContext context, Timestamp timestamp, [
-  clock = const Clock(),
-]) {
-  return formatDateTime(context, timestamp.toDateTime(), clock);
+String formatTimestamp(BuildContext context, Timestamp timestamp) {
+  return formatDateTime(context, timestamp.toDateTime());
 }
 
 /// Returns a [Timestamp] as a searchable [String]. This value should not be
@@ -463,11 +460,9 @@ String formatTimestamp(BuildContext context, Timestamp timestamp, [
 ///
 /// The value returned is just a concatenation of different ways of representing
 /// a date and time.
-String timestampToSearchString(BuildContext context, Timestamp timestamp, [
-  clock = const Clock(),
-]) {
+String timestampToSearchString(BuildContext context, Timestamp timestamp) {
   DateTime dateTime = timestamp.toDateTime();
-  return "${formatDateTime(context, dateTime, clock)} "
+  return "${formatDateTime(context, dateTime)} "
       "${DateFormat(monthDayYearFormatFull).format(dateTime)}";
 }
 
@@ -490,10 +485,8 @@ String formatDateRange(DateRange dateRange) {
 ///   - Monday
 ///   - Jan. 8
 ///   - Dec. 8, 2018
-String formatDateAsRecent(BuildContext context, DateTime dateTime, [
-  clock = const Clock(),
-]) {
-  final DateTime now = clock.now();
+String formatDateAsRecent(BuildContext context, DateTime dateTime) {
+  final DateTime now = AppManager.of(context).clock.now();
 
   if (isSameDate(dateTime, now)) {
     // Today.

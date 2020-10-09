@@ -166,14 +166,12 @@ class CatchManager extends EntityManager<Catch> {
         orElse: () => null) != null;
   }
 
-  String deleteMessage(BuildContext context, Catch cat, [
-    Clock clock = const Clock()
-  ]) {
+  String deleteMessage(BuildContext context, Catch cat) {
     assert(context != null);
     assert(cat != null);
 
     Species species = _speciesManager.entity(cat.speciesId);
-    String timeString = formatTimestamp(context, cat.timestamp, clock);
+    String timeString = formatTimestamp(context, cat.timestamp);
     String name;
     if (species == null) {
       name = "($timeString)";

@@ -313,7 +313,7 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
       },
       onTapDeleteButton: widget.itemManager.onTapDeleteButton == null
           ? null
-          : widget.itemManager.onTapDeleteButton(itemValue),
+          : () => widget.itemManager.onTapDeleteButton(itemValue),
       trailing: trailing,
     );
   }
