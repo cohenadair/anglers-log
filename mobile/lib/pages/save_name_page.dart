@@ -39,18 +39,15 @@ class _SaveNamePageState extends State<SaveNamePage> {
 
   TextInputController _controller;
 
-  bool get inputEqualsOld => widget.oldName != null
-      && equalsTrimmedIgnoreCase(widget.oldName, _controller.value);
-
   @override
   void initState() {
     super.initState();
 
     _controller = TextInputController(
       validator: NameValidator(
-        nameExists: widget.validator.nameExists,
-        nameExistsMessage: widget.validator.nameExistsMessage,
-        oldName: widget.validator.oldName ?? widget.oldName,
+        nameExists: widget.validator?.nameExists,
+        nameExistsMessage: widget.validator?.nameExistsMessage,
+        oldName: widget.validator?.oldName ?? widget.oldName,
       ),
     );
 
@@ -64,7 +61,9 @@ class _SaveNamePageState extends State<SaveNamePage> {
     return FormPage.immutable(
       title: widget.title,
       onSave: (_) {
-        if (inputEqualsOld) {
+        if (widget.oldName != null
+            && equalsTrimmedIgnoreCase(widget.oldName, _controller.value))
+        {
           // If the name didn't change, act as though "back" or "cancel" was
           // pressed.
           return true;

@@ -99,3 +99,10 @@ Future<void> tapAndSettle(WidgetTester tester, Finder finder) async {
   await tester.tap(finder);
   await tester.pumpAndSettle();
 }
+
+Future<void> enterTextAndSettle(WidgetTester tester, Finder finder, String text)
+    async
+{
+  await tester.enterText(finder, text);
+  await tester.pumpAndSettle();
+}

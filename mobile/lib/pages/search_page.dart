@@ -30,7 +30,7 @@ class _SearchPageState extends State<SearchPage> {
   @override
   void initState() {
     super.initState();
-    _timer = SearchTimer(showResults);
+    _timer = SearchTimer(_showResults);
   }
 
   @override
@@ -67,7 +67,7 @@ class _SearchPageState extends State<SearchPage> {
               text: Strings.of(context).clear,
               onPressed: () {
                 _controller.text = "";
-                showSuggestions();
+                _showSuggestions();
               },
             ),
           ),
@@ -79,13 +79,13 @@ class _SearchPageState extends State<SearchPage> {
     );
   }
 
-  void showSuggestions() {
+  void _showSuggestions() {
     setState(() {
       _suggesting = true;
     });
   }
 
-  void showResults() {
+  void _showResults() {
     setState(() {
       _suggesting = false;
     });
