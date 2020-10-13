@@ -302,7 +302,8 @@ class DisplayDateRange {
     getTitle: (_) => formatDateRange(dateRange),
   );
 
-  DateRange get value => getValue(DateTime.now());
+  DateRange value(BuildContext context) =>
+      getValue(AppManager.of(context).clock.now());
 
   @override
   bool operator ==(other) {

@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 class SummaryReportManager extends ReportManager<SummaryReport> {
   static SummaryReportManager of(BuildContext context) =>
       Provider.of<AppManager>(context, listen: false)
-          .customSummaryReportManager;
+          .summaryReportManager;
 
   SummaryReportManager(AppManager app) : super(app);
 

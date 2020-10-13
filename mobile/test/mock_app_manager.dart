@@ -23,17 +23,16 @@ class MockDatabase extends Mock implements Database {}
 class MockDataManager extends Mock implements DataManager {}
 class MockCatchManager extends Mock implements CatchManager {}
 class MockClock extends Mock implements Clock {}
-class MockCustomComparisonReportManager extends Mock implements
+class MockComparisonReportManager extends Mock implements 
     ComparisonReportManager {}
 class MockCustomEntityManager extends Mock implements CustomEntityManager {}
-class MockCustomSummaryReportManager extends Mock implements
-    SummaryReportManager {}
 class MockFishingSpotManager extends Mock implements FishingSpotManager {}
 class MockImageManager extends Mock implements ImageManager {}
 class MockLocationMonitor extends Mock implements LocationMonitor {}
 class MockPreferencesManager extends Mock implements PreferencesManager {}
 class MockPropertiesManager extends Mock implements PropertiesManager {}
 class MockSpeciesManager extends Mock implements SpeciesManager {}
+class MockSummaryReportManager extends Mock implements SummaryReportManager {}
 class MockTripManager extends Mock implements TripManager {}
 
 class MockAppManager extends Mock implements AppManager {
@@ -42,15 +41,15 @@ class MockAppManager extends Mock implements AppManager {
   MockDataManager mockDataManager;
   MockCatchManager mockCatchManager;
   MockClock mockClock;
-  MockCustomComparisonReportManager mockCustomComparisonReportManager;
+  MockComparisonReportManager mockComparisonReportManager;
   MockCustomEntityManager mockCustomEntityManager;
-  MockCustomSummaryReportManager mockCustomSummaryReportManager;
   MockFishingSpotManager mockFishingSpotManager;
   MockImageManager mockImageManager;
   MockLocationMonitor mockLocationMonitor;
   MockPreferencesManager mockPreferencesManager;
   MockPropertiesManager mockPropertiesManager;
   MockSpeciesManager mockSpeciesManager;
+  MockSummaryReportManager mockSummaryReportManager;
   MockTripManager mockTripManager;
 
   MockAppManager({
@@ -59,16 +58,16 @@ class MockAppManager extends Mock implements AppManager {
     bool mockDataManager = false,
     bool mockCatchManager = false,
     bool mockClock = false,
-    bool mockCustomComparisonReportManager = false,
+    bool mockComparisonReportManager = false,
     bool mockCustomEntityManager = false,
     bool mockCustomEntityValueManager = false,
-    bool mockCustomSummaryReportManager = false,
     bool mockFishingSpotManager = false,
     bool mockImageManager = false,
     bool mockLocationMonitor = false,
     bool mockPreferencesManager = false,
     bool mockPropertiesManager = false,
     bool mockSpeciesManager = false,
+    bool mockSummaryReportManager = false,
     bool mockTripManager = false,
   }) {
     if (mockBaitCategoryManager) {
@@ -99,22 +98,15 @@ class MockAppManager extends Mock implements AppManager {
       when(clock).thenReturn(this.mockClock);
     }
 
-    if (mockCustomComparisonReportManager) {
-      this.mockCustomComparisonReportManager =
-          MockCustomComparisonReportManager();
-      when(customComparisonReportManager)
-          .thenReturn(this.mockCustomComparisonReportManager);
+    if (mockComparisonReportManager) {
+      this.mockComparisonReportManager = MockComparisonReportManager();
+      when(comparisonReportManager)
+          .thenReturn(this.mockComparisonReportManager);
     }
 
     if (mockCustomEntityManager) {
       this.mockCustomEntityManager = MockCustomEntityManager();
       when(customEntityManager).thenReturn(this.mockCustomEntityManager);
-    }
-
-    if (mockCustomSummaryReportManager) {
-      this.mockCustomSummaryReportManager = MockCustomSummaryReportManager();
-      when(customSummaryReportManager)
-          .thenReturn(this.mockCustomSummaryReportManager);
     }
 
     if (mockFishingSpotManager) {
@@ -145,6 +137,11 @@ class MockAppManager extends Mock implements AppManager {
     if (mockSpeciesManager) {
       this.mockSpeciesManager = MockSpeciesManager();
       when(speciesManager).thenReturn(this.mockSpeciesManager);
+    }
+
+    if (mockSummaryReportManager) {
+      this.mockSummaryReportManager = MockSummaryReportManager();
+      when(summaryReportManager).thenReturn(this.mockSummaryReportManager);
     }
 
     if (mockTripManager) {

@@ -95,9 +95,15 @@ List<T> findType<T>(WidgetTester tester) =>
         .map((e) => e as T)
         .toList();
 
-Future<void> tapAndSettle(WidgetTester tester, Finder finder) async {
+Future<void> tapAndSettle(WidgetTester tester, Finder finder,
+    [int durationMillis]) async
+{
   await tester.tap(finder);
-  await tester.pumpAndSettle();
+  if (durationMillis == null) {
+    await tester.pumpAndSettle();
+  } else {
+    await tester.pumpAndSettle(Duration(milliseconds: durationMillis));
+  }
 }
 
 Future<void> enterTextAndSettle(WidgetTester tester, Finder finder, String text)

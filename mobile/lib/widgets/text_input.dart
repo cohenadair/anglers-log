@@ -144,10 +144,10 @@ class _TextInputState extends State<TextInput> {
         maxLines: widget.maxLines,
         keyboardType: widget.keyboardType,
         onChanged: (_) {
+          widget.onChanged?.call();
           setState(() {
             _updateError();
           });
-          widget.onChanged?.call();
         },
         autofocus: widget.autofocus,
       ),

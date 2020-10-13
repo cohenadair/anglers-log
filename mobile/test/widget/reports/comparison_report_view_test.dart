@@ -17,7 +17,7 @@ main() {
     appManager = MockAppManager(
       mockCatchManager: true,
       mockClock: true,
-      mockCustomComparisonReportManager: true,
+      mockComparisonReportManager: true,
       mockSpeciesManager: true,
       mockFishingSpotManager: true,
       mockBaitManager: true,
@@ -53,7 +53,7 @@ main() {
       ..id = randomId()
       ..toDisplayDateRangeId = DisplayDateRange.last7Days.id
       ..fromDisplayDateRangeId = DisplayDateRange.last30Days.id;
-    when(appManager.mockCustomComparisonReportManager.entity(any))
+    when(appManager.mockComparisonReportManager.entity(any))
         .thenReturn(report);
 
     await tester.pumpWidget(
@@ -67,7 +67,7 @@ main() {
   });
 
   testWidgets("Report ID doesn't exist", (WidgetTester tester) async {
-    when(appManager.mockCustomComparisonReportManager.entity(any))
+    when(appManager.mockComparisonReportManager.entity(any))
         .thenReturn(null);
 
     await tester.pumpWidget(

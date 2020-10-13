@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 class ComparisonReportManager extends ReportManager<ComparisonReport> {
   static ComparisonReportManager of(BuildContext context) =>
       Provider.of<AppManager>(context, listen: false)
-          .customComparisonReportManager;
+          .comparisonReportManager;
 
   ComparisonReportManager(AppManager app) : super(app);
 

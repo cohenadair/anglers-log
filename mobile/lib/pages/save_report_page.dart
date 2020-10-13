@@ -27,6 +27,7 @@ import 'package:mobile/widgets/multi_list_picker_input.dart';
 import 'package:mobile/widgets/radio_input.dart';
 import 'package:mobile/widgets/text_input.dart';
 import 'package:mobile/widgets/widget.dart';
+import 'package:quiver/strings.dart';
 
 class SaveReportPage extends StatefulWidget {
   final dynamic oldReport;
@@ -170,6 +171,9 @@ class _SaveReportPageState extends State<SaveReportPage> {
     } else {
       _typeController.value = _ReportType.summary;
       _fromDateRangeController.value = DisplayDateRange.allDates;
+      _baitsController.value = {};
+      _fishingSpotsController.value = {};
+      _speciesController.value = {};
     }
   }
 
@@ -386,18 +390,26 @@ class _SaveReportPageState extends State<SaveReportPage> {
     DisplayDateRange dateRange = _fromDateRangeController.value; 
     bool custom = dateRange == DisplayDateRange.custom;
 
-    return SummaryReport()
+    SummaryReport report =  SummaryReport()
       ..id = _oldReport?.id ?? randomId()
       ..name = _nameController.value
-      ..description = _descriptionController.value
       ..displayDateRangeId = dateRange.id
-      ..startTimestamp = custom
-          ? Timestamp.fromDateTime(dateRange.value.startDate) : null
-      ..endTimestamp = custom
-          ? Timestamp.fromDateTime(dateRange.value.endDate) : null
       ..baitIds.addAll(_baitsController.value.map((e) => e.id))
       ..fishingSpotIds.addAll(_fishingSpotsController.value.map((e) => e.id))
       ..speciesIds.addAll(_speciesController.value.map((e) => e.id));
+
+    if (isNotEmpty(_descriptionController.value)) {
+      report.description = _descriptionController.value;
+    }
+
+    if (custom) {
+      report.startTimestamp =
+          Timestamp.fromDateTime(dateRange.value(context).startDate);
+      report.endTimestamp =
+          Timestamp.fromDateTime(dateRange.value(context).endDate);
+    }
+
+    return report;
   }
   
   ComparisonReport _createComparisonReport() {
@@ -406,23 +418,34 @@ class _SaveReportPageState extends State<SaveReportPage> {
     bool customFrom = fromDateRange == DisplayDateRange.custom;
     bool customTo = toDateRange == DisplayDateRange.custom;
 
-    return ComparisonReport()
+    ComparisonReport report = ComparisonReport()
       ..id = _oldReport?.id ?? randomId()
       ..name = _nameController.value
-      ..description = _descriptionController.value
       ..fromDisplayDateRangeId = fromDateRange.id
-      ..fromStartTimestamp = customFrom
-          ? Timestamp.fromDateTime(fromDateRange.value.startDate) : null
-      ..fromEndTimestamp = customFrom
-          ? Timestamp.fromDateTime(fromDateRange.value.endDate) : null
       ..toDisplayDateRangeId = toDateRange.id
-      ..toStartTimestamp = customTo
-          ? Timestamp.fromDateTime(toDateRange.value.startDate) : null
-      ..toEndTimestamp = customTo
-          ? Timestamp.fromDateTime(toDateRange.value.endDate) : null
       ..baitIds.addAll(_baitsController.value.map((e) => e.id))
       ..fishingSpotIds.addAll(_fishingSpotsController.value.map((e) => e.id))
       ..speciesIds.addAll(_speciesController.value.map((e) => e.id));
+
+    if (isNotEmpty(_descriptionController.value)) {
+      report.description = _descriptionController.value;
+    }
+
+    if (customFrom) {
+      report.fromStartTimestamp =
+          Timestamp.fromDateTime(fromDateRange.value(context).startDate);
+      report.fromEndTimestamp =
+          Timestamp.fromDateTime(fromDateRange.value(context).endDate);
+    }
+
+    if (customTo) {
+      report.toStartTimestamp =
+          Timestamp.fromDateTime(toDateRange.value(context).startDate);
+      report.toEndTimestamp =
+          Timestamp.fromDateTime(toDateRange.value(context).endDate);
+    }
+
+    return report;
   }
 }
 

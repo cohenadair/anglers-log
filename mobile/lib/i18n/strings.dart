@@ -214,7 +214,8 @@ class Strings {
   String get speciesListPageTitle => _string("speciesListPage_title");
   String get speciesListPagePickerTitle => _string("speciesListPage_pickerTitle");
   String get speciesListPageConfirmDelete => _string("speciesListPage_confirmDelete");
-  String get speciesListPageCatchDeleteError => _string("speciesListPage_catchDeleteError");
+  String get speciesListPageCatchDeleteErrorSingular => _string("speciesListPage_catchDeleteErrorSingular");
+  String get speciesListPageCatchDeleteErrorPlural => _string("speciesListPage_catchDeleteErrorPlural");
   String get speciesListPageSearchHint => _string("speciesListPage_searchHint");
   String get speciesListPageNoSearchResults => _string("speciesListPage_noSearchResults");
 

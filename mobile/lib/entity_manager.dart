@@ -156,7 +156,7 @@ abstract class EntityManager<T extends GeneratedMessage>
     notify((listener) => listener.onClear());
   }
 
-  SimpleEntityListener _addSimpleListener({
+  SimpleEntityListener addSimpleListener({
     void Function(T entity) onDelete,
     VoidCallback onAddOrUpdate,
     VoidCallback onClear,
@@ -202,13 +202,13 @@ class _EntityListenerBuilderState extends State<EntityListenerBuilder> {
   void initState() {
     super.initState();
 
-    widget.managers.forEach((manager) => {
-      _listeners.add(manager._addSimpleListener(
+    widget.managers.forEach((manager) =>
+      _listeners.add(manager.addSimpleListener(
         onDelete: widget.onDeleteEnabled ? (_) => _update() : null,
         onAddOrUpdate: _update,
         onClear: _update,
       ))
-    });
+    );
   }
 
   @override
@@ -224,6 +224,8 @@ class _EntityListenerBuilderState extends State<EntityListenerBuilder> {
   Widget build(BuildContext context) => widget.builder(context);
 
   void _update() {
+    // Called outside of setState because it's likely the onUpdate callback
+    // calls setState for the parent widget.
     widget.onUpdate?.call();
     setState(() {});
   }

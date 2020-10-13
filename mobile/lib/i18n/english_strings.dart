@@ -195,7 +195,8 @@ Map<String, Map<String, String>> get englishStrings => {
     "speciesListPage_title" : "Species (%s)",
     "speciesListPage_pickerTitle" : "Select Species",
     "speciesListPage_confirmDelete" : "%s is associated with 0 catches; are you sure you want to delete it? This cannot be undone.",
-    "speciesListPage_catchDeleteError" : "%s is associated with %s catches and cannot be deleted.",
+    "speciesListPage_catchDeleteErrorSingular" : "%s is associated with 1 catch and cannot be deleted.",
+    "speciesListPage_catchDeleteErrorPlural" : "%s is associated with %s catches and cannot be deleted.",
     "speciesListPage_searchHint" : "Search species",
     "speciesListPage_noSearchResults" : "No species found",
 

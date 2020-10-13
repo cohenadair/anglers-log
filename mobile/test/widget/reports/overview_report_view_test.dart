@@ -14,7 +14,7 @@ main() {
     appManager = MockAppManager(
       mockCatchManager: true,
       mockClock: true,
-      mockCustomComparisonReportManager: true,
+      mockComparisonReportManager: true,
       mockSpeciesManager: true,
       mockFishingSpotManager: true,
       mockBaitManager: true,

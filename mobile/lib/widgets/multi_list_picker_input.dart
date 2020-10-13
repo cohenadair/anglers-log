@@ -20,13 +20,13 @@ class MultiListPickerInput extends StatelessWidget {
   final String Function(BuildContext) emptyValue;
 
   MultiListPickerInput({
-    this.values = const {},
+    Set<String> values,
     this.padding,
     @required this.emptyValue,
     @required this.onTap,
   }) : assert(emptyValue != null),
        assert(onTap != null),
-       assert(values != null);
+       this.values = values ?? const {};
 
   @override
   Widget build(BuildContext context) {

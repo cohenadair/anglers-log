@@ -67,7 +67,7 @@ class AppManager {
     return _catchManager;
   }
 
-  ComparisonReportManager get customComparisonReportManager {
+  ComparisonReportManager get comparisonReportManager {
     if (_comparisonReportManager == null) {
       _comparisonReportManager = ComparisonReportManager(this);
     }
@@ -79,13 +79,6 @@ class AppManager {
       _customEntityManager = CustomEntityManager(this);
     }
     return _customEntityManager;
-  }
-
-  SummaryReportManager get customSummaryReportManager {
-    if (_summaryReportManager == null) {
-      _summaryReportManager = SummaryReportManager(this);
-    }
-    return _summaryReportManager;
   }
 
   FishingSpotManager get fishingSpotManager {
@@ -128,6 +121,13 @@ class AppManager {
       _speciesManager = SpeciesManager(this);
     }
     return _speciesManager;
+  }
+
+  SummaryReportManager get summaryReportManager {
+    if (_summaryReportManager == null) {
+      _summaryReportManager = SummaryReportManager(this);
+    }
+    return _summaryReportManager;
   }
 
   TripManager get tripManager {

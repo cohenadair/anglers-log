@@ -272,7 +272,8 @@ class _ChartState<T> extends State<Chart<T>> {
     return InkWell(
       onTap: widget.onTapRow == null
           ? null
-          : () => widget.onTapRow.call(item, series.displayDateRange.value),
+          : () => widget.onTapRow.call(item,
+              series.displayDateRange.value(context)),
       child: Stack(
         alignment: Alignment.centerLeft,
         children: [

@@ -4,7 +4,9 @@ import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/utils/date_time_utils.dart';
 import 'package:mobile/widgets/chart.dart';
 import 'package:mobile/widgets/widget.dart';
+import 'package:mockito/mockito.dart';
 
+import '../mock_app_manager.dart';
 import '../test_utils.dart';
 
 main() {
@@ -122,6 +124,11 @@ main() {
     });
 
     testWidgets("Row with non-null onTap action", (WidgetTester tester) async {
+      MockAppManager appManager = MockAppManager(
+        mockClock: true,
+      );
+      when(appManager.mockClock.now()).thenReturn(DateTime.now());
+
       Series<Species> series = Series({
         Species()..name = "Bass": 10,
       }, DisplayDateRange.lastMonth);
@@ -140,6 +147,7 @@ main() {
           // size to tap.
           size: Size(500, 500),
         ),
+        appManager: appManager,
       ));
       expect(find.byType(InkWell), findsOneWidget);
       await tester.tap(find.byType(InkWell));

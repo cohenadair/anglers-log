@@ -19,7 +19,7 @@ class SpeciesListPage extends StatelessWidget {
         initialValues = null;
 
   SpeciesListPage.picker({
-    this.onPicked,
+    @required this.onPicked,
     this.multiPicker = false,
     this.initialValues,
   }) : assert(onPicked != null);
@@ -59,18 +59,26 @@ class SpeciesListPage extends StatelessWidget {
         onTapDeleteButton: (species) {
           int numOfCatches = speciesManager.numberOfCatches(species.id);
           if (numOfCatches <= 0) {
-            return null;
+            return false;
           }
 
-          return () {
-            showErrorDialog(
-              context: context,
-              description: Text(format(
-                Strings.of(context).speciesListPageCatchDeleteError,
-                [species.name, numOfCatches]),
-              ),
-            );
-          };
+          String message;
+          if (numOfCatches == 1) {
+            message = format(
+                Strings.of(context).speciesListPageCatchDeleteErrorSingular,
+                [species.name]);
+          } else {
+            message = format(
+                Strings.of(context).speciesListPageCatchDeleteErrorPlural,
+                [species.name, numOfCatches]);
+          }
+
+          showErrorDialog(
+            context: context,
+            description: Text(message),
+          );
+
+          return true;
         },
         addPageBuilder: () => SaveSpeciesPage(),
         editPageBuilder: (species) => SaveSpeciesPage.edit(species),

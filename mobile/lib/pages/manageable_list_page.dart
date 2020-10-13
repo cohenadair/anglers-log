@@ -407,7 +407,7 @@ class ManageableListPageItemManager<T> {
   final void Function(BuildContext, T) deleteItem;
 
   /// See [ManageableListItem.onTapDeleteButton].
-  final VoidCallback Function(T) onTapDeleteButton;
+  final bool Function(T) onTapDeleteButton;
 
   /// Invoked when the "Add" button is pressed. The [Widget] returned by this
   /// function is presented in the current navigator.

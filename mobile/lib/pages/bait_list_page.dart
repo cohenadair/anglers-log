@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/bait_category_manager.dart';
 import 'package:mobile/bait_manager.dart';
-import 'package:mobile/entity_manager.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/pages/bait_page.dart';
@@ -42,59 +41,58 @@ class _BaitListPageState extends State<BaitListPage> {
 
   @override
   Widget build(BuildContext context) {
-    return EntityListenerBuilder(
-      managers: [
-        _baitCategoryManager,
-        _baitManager,
-      ],
-      builder: (context) => ManageableListPage<dynamic>(
-        titleBuilder: _picking
-            ? (_) => Text(Strings.of(context).baitListPagePickerTitle)
-            : (baits) => Text(format(Strings.of(context).baitListPageTitle,
-                [baits.length])),
-        forceCenterTitle: !_picking,
-        searchDelegate: ManageableListPageSearchDelegate(
-          hint: Strings.of(context).baitListPageSearchHint,
-          noResultsMessage: Strings.of(context).baitListPageNoSearchResults,
-        ),
-        pickerSettings: _picking
-            ? ManageableListPagePickerSettings<dynamic>(
-                onPicked: (context, baits) => widget.onPicked(context, baits),
-                multi: widget.multiPicker,
-                initialValues: widget.initialValues,
-              )
-            : null,
-        itemBuilder: (context, item) {
-          if (item is BaitCategory) {
-            return ManageableListPageItemModel(
-              editable: false,
-              selectable: false,
-              child: Padding(
-                padding: insetsDefault,
-                child: HeadingLabel(item.name),
-              ),
-            );
-          } else if (item is Bait) {
-            return ManageableListPageItemModel(
-              child: PrimaryLabel(item.name),
-            );
-          } else {
-            return ManageableListPageItemModel(
-              editable: false,
-              selectable: false,
-              child: item,
-            );
-          }
-        },
-        itemManager: ManageableListPageItemManager<dynamic>(
-          loadItems: _buildItems,
-          deleteText: (context, bait) =>
-              Text(_baitManager.deleteMessage(context, bait)),
-          deleteItem: (context, bait) => _baitManager.delete(bait),
-          addPageBuilder: () => SaveBaitPage(),
-          detailPageBuilder: (bait) => BaitPage(bait.id),
-          editPageBuilder: (bait) => SaveBaitPage.edit(bait),
-        ),
+    return ManageableListPage<dynamic>(
+      titleBuilder: _picking
+          ? (_) => Text(Strings.of(context).baitListPagePickerTitle)
+          : (baits) => Text(format(Strings.of(context).baitListPageTitle,
+              [baits.length])),
+      forceCenterTitle: !_picking,
+      searchDelegate: ManageableListPageSearchDelegate(
+        hint: Strings.of(context).baitListPageSearchHint,
+        noResultsMessage: Strings.of(context).baitListPageNoSearchResults,
+      ),
+      pickerSettings: _picking
+          ? ManageableListPagePickerSettings<dynamic>(
+              onPicked: (context, items) => widget.onPicked(context,
+                  items.map((e) => (e as Bait)).toSet()),
+              multi: widget.multiPicker,
+              initialValues: widget.initialValues,
+            )
+          : null,
+      itemBuilder: (context, item) {
+        if (item is BaitCategory) {
+          return ManageableListPageItemModel(
+            editable: false,
+            selectable: false,
+            child: Padding(
+              padding: insetsDefault,
+              child: HeadingLabel(item.name),
+            ),
+          );
+        } else if (item is Bait) {
+          return ManageableListPageItemModel(
+            child: PrimaryLabel(item.name),
+          );
+        } else {
+          return ManageableListPageItemModel(
+            editable: false,
+            selectable: false,
+            child: item,
+          );
+        }
+      },
+      itemManager: ManageableListPageItemManager<dynamic>(
+        listenerManagers: [
+          _baitCategoryManager,
+          _baitManager,
+        ],
+        loadItems: _buildItems,
+        deleteText: (context, bait) =>
+            Text(_baitManager.deleteMessage(context, bait)),
+        deleteItem: (context, bait) => _baitManager.delete(bait),
+        addPageBuilder: () => SaveBaitPage(),
+        detailPageBuilder: (bait) => BaitPage(bait.id),
+        editPageBuilder: (bait) => SaveBaitPage.edit(bait),
       ),
     );
   }
@@ -115,7 +113,7 @@ class _BaitListPageState extends State<BaitListPage> {
     // First, organize baits in to category collections.
     Map<Id, List<Bait>> map = {};
     for (var bait in baits) {
-      Id id = bait.hasBaitCategoryId() ? noCategory.id : bait.baitCategoryId;
+      Id id = bait.hasBaitCategoryId() ? bait.baitCategoryId : noCategory.id;
       map.putIfAbsent(id, () => []);
       map[id].add(bait);
     }
