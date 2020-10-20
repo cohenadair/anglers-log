@@ -20,12 +20,12 @@ main() {
     appManager = MockAppManager(
       mockBaitManager: true,
       mockCatchManager: true,
-      mockClock: true,
       mockComparisonReportManager: true,
       mockDataManager: true,
       mockFishingSpotManager: true,
       mockSummaryReportManager: true,
       mockSpeciesManager: true,
+      mockTimeManager: true,
     );
 
     when(appManager.mockBaitManager.addSimpleListener(
@@ -47,8 +47,6 @@ main() {
       onAddOrUpdate: anyNamed("onAddOrUpdate"),
       onClear: anyNamed("onClear"),
     )).thenReturn(SimpleEntityListener<Catch>());
-
-    when(appManager.mockClock.now()).thenReturn(DateTime.now());
 
     when(appManager.mockComparisonReportManager.addSimpleListener(
       onDelete: anyNamed("onDelete"),

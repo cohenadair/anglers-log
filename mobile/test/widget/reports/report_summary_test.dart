@@ -8,7 +8,6 @@ import 'package:mobile/widgets/list_item.dart';
 import 'package:mobile/widgets/reports/report_summary.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
-import 'package:quiver/time.dart';
 
 import '../../mock_app_manager.dart';
 import '../../test_utils.dart';
@@ -19,8 +18,6 @@ void main() {
   MockCatchManager catchManager;
   MockFishingSpotManager fishingSpotManager;
   MockSpeciesManager speciesManager;
-
-  Clock clock;
 
   Id speciesId0 = randomId();
   Id speciesId1 = randomId();
@@ -164,6 +161,7 @@ void main() {
       mockCatchManager: true,
       mockFishingSpotManager: true,
       mockSpeciesManager: true,
+      mockTimeManager: true,
     );
 
     baitManager = appManager.mockBaitManager;
@@ -176,8 +174,10 @@ void main() {
     when(catchManager.list()).thenReturn(_catches);
     when(appManager.catchManager).thenReturn(catchManager);
 
-    clock = Clock(() => DateTime.fromMillisecondsSinceEpoch(105000));
-    when(appManager.clock).thenReturn(clock);
+    when(appManager.mockTimeManager.currentDateTime)
+        .thenReturn(DateTime.fromMillisecondsSinceEpoch(105000));
+    when(appManager.mockTimeManager.msSinceEpoch).thenReturn(
+        DateTime.fromMillisecondsSinceEpoch(105000).millisecondsSinceEpoch);
 
     fishingSpotManager = appManager.mockFishingSpotManager;
     when(appManager.fishingSpotManager).thenReturn(fishingSpotManager);

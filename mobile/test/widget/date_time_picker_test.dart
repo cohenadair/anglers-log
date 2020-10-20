@@ -3,34 +3,47 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/widgets/date_time_picker.dart';
 import 'package:mobile/widgets/widget.dart';
 
+import '../mock_app_manager.dart';
 import '../test_utils.dart';
 
 main() {
+  MockAppManager appManager;
+
+  setUp(() {
+    appManager = MockAppManager(
+      mockTimeManager: true,
+    );
+  });
+
   group("DateTimePickerContainer", () {
     testWidgets("With helper", (WidgetTester tester) async {
-      await tester.pumpWidget(Testable((_) => DateTimePicker(
+      await tester.pumpWidget(Testable((context) => DateTimePicker(
         datePicker: DatePicker(
+          context,
           label: "Date Picker",
         ),
         timePicker: TimePicker(
+          context,
           label: "Time Picker",
         ),
         helper: Text("A helping message"),
-      )));
+      ), appManager: appManager));
 
       expect(find.text("A helping message"), findsOneWidget);
       expect(find.byType(Empty), findsNothing);
     });
 
     testWidgets("Without helper", (WidgetTester tester) async {
-      await tester.pumpWidget(Testable((_) => DateTimePicker(
+      await tester.pumpWidget(Testable((context) => DateTimePicker(
         datePicker: DatePicker(
+          context,
           label: "Date Picker",
         ),
         timePicker: TimePicker(
+          context,
           label: "Time Picker",
         ),
-      )));
+      ), appManager: appManager));
 
       expect(find.byType(Empty), findsOneWidget);
     });
@@ -38,9 +51,10 @@ main() {
 
   group("Date and time pickers", () {
     testWidgets("Enabled", (WidgetTester tester) async {
-      await tester.pumpWidget(Testable((_) => DatePicker(
+      await tester.pumpWidget(Testable((context) => DatePicker(
+        context,
         label: "Date Picker",
-      )));
+      ), appManager: appManager));
       await tester.tap(find.byType(DatePicker));
       await tester.pumpAndSettle();
 
@@ -49,10 +63,11 @@ main() {
     });
 
     testWidgets("Disabled", (WidgetTester tester) async {
-      await tester.pumpWidget(Testable((_) => DatePicker(
+      await tester.pumpWidget(Testable((context) => DatePicker(
+        context,
         label: "Date Picker",
         enabled: false,
-      )));
+      ), appManager: appManager));
       await tester.tap(find.byType(DatePicker));
       await tester.pumpAndSettle();
 
@@ -62,11 +77,12 @@ main() {
 
     testWidgets("DatePicker date picked", (WidgetTester tester) async {
       bool changed = false;
-      await tester.pumpWidget(Testable((_) => DatePicker(
+      await tester.pumpWidget(Testable((context) => DatePicker(
+        context,
         label: "Date Picker",
         onChange: (_) => changed = true,
         initialDate: DateTime(2020, 1, 25),
-      )));
+      ), appManager: appManager));
 
       // Date doesn't change.
       await tester.tap(find.byType(DatePicker));
@@ -89,11 +105,12 @@ main() {
 
     testWidgets("TimePicker time picked", (WidgetTester tester) async {
       bool changed = false;
-      await tester.pumpWidget(Testable((_) => TimePicker(
+      await tester.pumpWidget(Testable((context) => TimePicker(
+        context,
         label: "Time Picker",
         onChange: (_) => changed = true,
         initialTime: TimeOfDay(hour: 5, minute: 20),
-      )));
+      ), appManager: appManager));
 
       expect(find.text("5:20 AM"), findsOneWidget);
 

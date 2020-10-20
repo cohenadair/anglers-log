@@ -125,9 +125,9 @@ main() {
 
     testWidgets("Row with non-null onTap action", (WidgetTester tester) async {
       MockAppManager appManager = MockAppManager(
-        mockClock: true,
+        mockTimeManager: true,
       );
-      when(appManager.mockClock.now()).thenReturn(DateTime.now());
+      when(appManager.mockTimeManager.currentDateTime).thenReturn(DateTime.now());
 
       Series<Species> series = Series({
         Species()..name = "Bass": 10,

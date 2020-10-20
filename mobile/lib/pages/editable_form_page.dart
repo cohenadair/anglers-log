@@ -173,9 +173,8 @@ class _EditableFormPageState extends State<EditableFormPage> {
           type: customField.type,
           label: customField.name,
           controller: _fields[id].controller,
-          onCheckboxChanged: (bool newValue) {
-            _fields[id].controller.value = newValue;
-          },
+          onCheckboxChanged: (newValue) =>
+              _fields[id].controller.value = newValue,
         ),
       );
     }

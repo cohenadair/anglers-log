@@ -92,7 +92,7 @@ void main() {
   test("combine", () {
     expect(combine(DateTime(2020, 10, 26, 15, 30, 20, 1000),
         TimeOfDay(hour: 16, minute: 45)),
-        DateTime.utc(2020, 10, 26, 16, 45, 20, 1000));
+        DateTime(2020, 10, 26, 16, 45, 20, 1000));
   });
 
   test("dateTimeToDayAccuracy", () {
@@ -121,9 +121,9 @@ void main() {
 
   testWidgets("timestampToSearchString", (WidgetTester tester) async {
     MockAppManager appManager = MockAppManager(
-      mockClock: true,
+      mockTimeManager: true,
     );
-    when(appManager.mockClock.now()).thenReturn(DateTime(2020, 9, 24));
+    when(appManager.mockTimeManager.currentDateTime).thenReturn(DateTime(2020, 9, 24));
     expect(timestampToSearchString(
         await buildContext(tester, appManager: appManager),
         Timestamp.fromDateTime(DateTime(2020, 9, 24))),
@@ -132,9 +132,9 @@ void main() {
 
   testWidgets("formatDateAsRecent", (WidgetTester tester) async {
     MockAppManager appManager = MockAppManager(
-      mockClock: true,
+      mockTimeManager: true,
     );
-    when(appManager.mockClock.now()).thenReturn(DateTime(2020, 9, 24));
+    when(appManager.mockTimeManager.currentDateTime).thenReturn(DateTime(2020, 9, 24));
     BuildContext context = await buildContext(tester, appManager: appManager);
 
     expect(formatDateAsRecent(context, DateTime(2020, 9, 24)), "Today");

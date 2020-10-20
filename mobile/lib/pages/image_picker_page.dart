@@ -21,6 +21,8 @@ enum _ImagePickerSource {
 }
 
 class PickedImage {
+  /// The original image file. This may be null if the [PickedImage] represents
+  /// only a thumbnail image.
   final File originalFile;
 
   /// The [AssetEntity.id] for the picked image. This can be `null` if the

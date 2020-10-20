@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/model/gen/google/protobuf/timestamp.pb.dart';
 import 'package:mobile/utils/date_time_utils.dart';
+import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/utils/validator.dart';
 import 'package:quiver/strings.dart';
 
@@ -86,6 +87,8 @@ class EmailInputController extends TextInputController {
   );
 }
 
+/// A [TimestampInputController] value, [Timestamp], is always in UTC. However,
+/// the [date] and [time] properties are in the local timezone.
 class TimestampInputController extends InputController<Timestamp> {
   /// The date component of the controller.
   DateTime date;
@@ -96,11 +99,11 @@ class TimestampInputController extends InputController<Timestamp> {
   TimestampInputController({
     DateTime date,
     this.time,
-  }) : date = date?.toUtc();
+  }) : date = date;
 
   @override
   Timestamp get value => date != null && time != null
-      ? Timestamp.fromDateTime(combine(date, time).toUtc())
+      ? Timestamp.fromDateTime(combine(date, time))
       : null;
 
   @override
@@ -110,9 +113,8 @@ class TimestampInputController extends InputController<Timestamp> {
       time = null;
       return;
     }
-    date = timestamp.toDateTime();
+    date = timestamp.localDateTime;
     time = TimeOfDay.fromDateTime(date);
-    print(date);
   }
 
   @override

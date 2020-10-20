@@ -49,11 +49,11 @@ main() {
     appManager = MockAppManager(
       mockBaitCategoryManager: true,
       mockBaitManager: true,
-      mockClock: true,
       mockComparisonReportManager: true,
       mockFishingSpotManager: true,
       mockSpeciesManager: true,
       mockSummaryReportManager: true,
+      mockTimeManager: true,
     );
 
     when(appManager.mockBaitCategoryManager.listSortedByName()).thenReturn([]);
@@ -64,7 +64,7 @@ main() {
     when(appManager.mockBaitManager.filteredList(any)).thenReturn(baitList);
 
     // Sunday, September 13, 2020 12:26:40 PM GMT
-    when(appManager.mockClock.now())
+    when(appManager.mockTimeManager.currentDateTime)
         .thenReturn(DateTime.fromMillisecondsSinceEpoch(1600000000000));
 
     when(appManager.mockComparisonReportManager.nameExists(any))

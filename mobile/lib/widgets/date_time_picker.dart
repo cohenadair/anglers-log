@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/res/dimen.dart';
+import 'package:mobile/time_manager.dart';
 import 'package:mobile/widgets/text.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:quiver/strings.dart';
@@ -50,14 +51,14 @@ class DateTimePicker extends StatelessWidget {
 }
 
 class DatePicker extends FormField<DateTime> {
-  DatePicker({
+  DatePicker(BuildContext context, {
     @required String label,
     DateTime initialDate,
     void Function(DateTime) onChange,
     String Function(DateTime) validator,
     bool enabled = true,
   }) : assert(isNotEmpty(label)), super(
-    initialValue: initialDate ?? DateTime.now(),
+    initialValue: initialDate ?? TimeManager.of(context).currentDateTime,
     validator: validator,
     builder: (FormFieldState<DateTime> state) {
       return _Picker(
@@ -92,14 +93,14 @@ class DatePicker extends FormField<DateTime> {
 }
 
 class TimePicker extends FormField<TimeOfDay> {
-  TimePicker({
+  TimePicker(BuildContext context, {
     @required String label,
     TimeOfDay initialTime,
     Function(TimeOfDay) onChange,
     String Function(TimeOfDay) validator,
     bool enabled = true,
   }) : assert(isNotEmpty(label)), super(
-    initialValue: initialTime ?? TimeOfDay.now(),
+    initialValue: initialTime ?? TimeManager.of(context).currentTime,
     validator: validator,
     builder: (FormFieldState<TimeOfDay> state) {
       return _Picker(

@@ -13,10 +13,9 @@ message Id {
 
 message CustomEntity {
   enum Type {
-    UNKNOWN = 0;
-    BOOL = 1;
-    NUMBER = 2;
-    TEXT = 3;
+    BOOL = 0;
+    NUMBER = 1;
+    TEXT = 2;
   }
 
   Id id = 1;

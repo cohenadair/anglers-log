@@ -10,13 +10,11 @@ import 'dart:core' as $core;
 import 'package:protobuf/protobuf.dart' as $pb;
 
 class CustomEntity_Type extends $pb.ProtobufEnum {
-  static const CustomEntity_Type UNKNOWN = CustomEntity_Type._(0, 'UNKNOWN');
-  static const CustomEntity_Type BOOL = CustomEntity_Type._(1, 'BOOL');
-  static const CustomEntity_Type NUMBER = CustomEntity_Type._(2, 'NUMBER');
-  static const CustomEntity_Type TEXT = CustomEntity_Type._(3, 'TEXT');
+  static const CustomEntity_Type BOOL = CustomEntity_Type._(0, 'BOOL');
+  static const CustomEntity_Type NUMBER = CustomEntity_Type._(1, 'NUMBER');
+  static const CustomEntity_Type TEXT = CustomEntity_Type._(2, 'TEXT');
 
   static const $core.List<CustomEntity_Type> values = <CustomEntity_Type> [
-    UNKNOWN,
     BOOL,
     NUMBER,
     TEXT,

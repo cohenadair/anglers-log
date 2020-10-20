@@ -26,10 +26,9 @@ const CustomEntity$json = const {
 const CustomEntity_Type$json = const {
   '1': 'Type',
   '2': const [
-    const {'1': 'UNKNOWN', '2': 0},
-    const {'1': 'BOOL', '2': 1},
-    const {'1': 'NUMBER', '2': 2},
-    const {'1': 'TEXT', '2': 3},
+    const {'1': 'BOOL', '2': 0},
+    const {'1': 'NUMBER', '2': 1},
+    const {'1': 'TEXT', '2': 2},
   ],
 };
 

@@ -68,7 +68,7 @@ main() {
         time: TimeOfDay(hour: 15, minute: 30),
       );
       expect(controller.value.ms,
-          DateTime.utc(2020, 1, 15, 15, 30).millisecondsSinceEpoch);
+          DateTime(2020, 1, 15, 15, 30).millisecondsSinceEpoch);
     });
 
     test("Set to non-null", () {

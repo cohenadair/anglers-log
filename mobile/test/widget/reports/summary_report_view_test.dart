@@ -16,18 +16,18 @@ main() {
   setUp(() {
     appManager = MockAppManager(
       mockCatchManager: true,
-      mockClock: true,
       mockSummaryReportManager: true,
       mockSpeciesManager: true,
       mockFishingSpotManager: true,
       mockBaitManager: true,
+      mockTimeManager: true,
     );
 
     Species species = Species()
       ..id = randomId()
       ..name = "Bass";
 
-    when(appManager.mockClock.now())
+    when(appManager.mockTimeManager.currentDateTime)
         .thenReturn(DateTime.fromMillisecondsSinceEpoch(10000));
     when(appManager.mockCatchManager.catchesSortedByTimestamp(any,
       dateRange: anyNamed("dateRange"),

@@ -1,6 +1,4 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mobile/model/gen/anglerslog.pb.dart';
-import 'package:mobile/pages/date_range_picker_page.dart';
 import 'package:mobile/widgets/reports/overview_report_view.dart';
 import 'package:mockito/mockito.dart';
 
@@ -13,14 +11,14 @@ main() {
   setUp(() {
     appManager = MockAppManager(
       mockCatchManager: true,
-      mockClock: true,
       mockComparisonReportManager: true,
       mockSpeciesManager: true,
       mockFishingSpotManager: true,
       mockBaitManager: true,
+      mockTimeManager: true,
     );
 
-    when(appManager.mockClock.now())
+    when(appManager.mockTimeManager.currentDateTime)
         .thenReturn(DateTime.fromMillisecondsSinceEpoch(10000));
     when(appManager.mockCatchManager.catchesSortedByTimestamp(any,
       dateRange: anyNamed("dateRange"),

@@ -12,6 +12,7 @@ import 'package:mobile/widgets/input_type.dart';
 import 'package:mobile/widgets/radio_input.dart';
 import 'package:mobile/widgets/text_input.dart';
 import 'package:mobile/widgets/widget.dart';
+import 'package:quiver/strings.dart';
 
 import 'form_page.dart';
 
@@ -89,7 +90,7 @@ class _SaveCustomEntityPageState extends State<SaveCustomEntityPage> {
       title: _editing
           ? Text(Strings.of(context).saveCustomEntityPageEditTitle)
           : Text(Strings.of(context).saveCustomEntityPageNewTitle),
-      fieldBuilder: (BuildContext context) {
+      fieldBuilder: (context) {
         return Map.fromIterable(_inputOptions.keys,
           key: (item) => item,
           value: (item) => _inputField(context, item),
@@ -135,8 +136,11 @@ class _SaveCustomEntityPageState extends State<SaveCustomEntityPage> {
     var customEntity = CustomEntity()
       ..id = _oldEntity?.id ?? randomId()
       ..name = _nameController.value
-      ..description = _descriptionController.value
       ..type = _dataTypeController.value;
+
+    if (isNotEmpty(_descriptionController.value)) {
+      customEntity.description = _descriptionController.value;
+    }
 
     _customEntityManager.addOrUpdate(customEntity);
     widget.onSave?.call(customEntity);

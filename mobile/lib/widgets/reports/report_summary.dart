@@ -12,6 +12,7 @@ import 'package:mobile/pages/fishing_spot_page.dart';
 import 'package:mobile/pages/species_list_page.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/species_manager.dart';
+import 'package:mobile/time_manager.dart';
 import 'package:mobile/utils/collection_utils.dart';
 import 'package:mobile/utils/date_time_utils.dart';
 import 'package:mobile/utils/page_utils.dart';
@@ -387,7 +388,7 @@ class ReportSummaryModel {
   final Set<Id> speciesIds;
 
   AppManager _appManager;
-  Clock _clock;
+  TimeManager _timeManager;
 
   DateRange _dateRange;
   int _msSinceLastCatch = 0;
@@ -448,10 +449,10 @@ class ReportSummaryModel {
        assert(fishingSpotIds != null),
        assert(speciesIds != null),
        _appManager = AppManager.of(context),
-       _clock = AppManager.of(context).clock,
+       _timeManager = AppManager.of(context).timeManager,
        displayDateRange = displayDateRange ?? DisplayDateRange.allDates
   {
-    DateTime now = _clock.now();
+    DateTime now = _timeManager.currentDateTime;
     _dateRange = this.displayDateRange.getValue(now);
     _containsNow = _dateRange.endDate == now;
 
@@ -464,7 +465,7 @@ class ReportSummaryModel {
     );
 
     _msSinceLastCatch = catches.isEmpty
-        ? 0 : _clock.now().millisecondsSinceEpoch - catches.first.timestamp.ms;
+        ? 0 : _timeManager.msSinceEpoch - catches.first.timestamp.ms;
 
     // Fill all collections with zero quantities if necessary.
     if (includeZeros) {

@@ -126,4 +126,5 @@ extension Ids on Id {
 extension Timestamps on Timestamp {
   int compareTo(Timestamp other) => toDateTime().compareTo(other.toDateTime());
   int get ms => toDateTime().millisecondsSinceEpoch;
+  DateTime get localDateTime => DateTime.fromMillisecondsSinceEpoch(ms);
 }

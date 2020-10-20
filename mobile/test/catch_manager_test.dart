@@ -33,7 +33,7 @@ void main() {
       mockDataManager: true,
       mockImageManager: true,
       mockSpeciesManager: true,
-      mockClock: true,
+      mockTimeManager: true,
     );
 
     baitCategoryManager = appManager.mockBaitCategoryManager;
@@ -520,7 +520,7 @@ void main() {
         ..id = randomId()
         ..timestamp = Timestamp.fromDateTime(DateTime(2020, 9, 25));
 
-      when(appManager.mockClock.now()).thenReturn(DateTime(2020, 9, 25));
+      when(appManager.mockTimeManager.currentDateTime).thenReturn(DateTime(2020, 9, 25));
       BuildContext context = await buildContext(tester, appManager: appManager);
       expect(catchManager.deleteMessage(context, cat),
           "Are you sure you want to delete catch (Today at 4:00 AM)? "
@@ -537,7 +537,7 @@ void main() {
         ..speciesId = species.id;
 
       when(speciesManager.entity(any)).thenReturn(species);
-      when(appManager.mockClock.now()).thenReturn(DateTime(2020, 9, 25));
+      when(appManager.mockTimeManager.currentDateTime).thenReturn(DateTime(2020, 9, 25));
       BuildContext context = await buildContext(tester, appManager: appManager);
       expect(catchManager.deleteMessage(context, cat),
           "Are you sure you want to delete catch Steelhead (Today at 4:00 AM)? "

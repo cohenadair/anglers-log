@@ -303,7 +303,7 @@ class DisplayDateRange {
   );
 
   DateRange value(BuildContext context) =>
-      getValue(AppManager.of(context).clock.now());
+      getValue(AppManager.of(context).timeManager.currentDateTime);
 
   @override
   bool operator ==(other) {
@@ -370,13 +370,13 @@ bool isWithinOneWeek(DateTime a, DateTime b) {
   return a.difference(b).inMilliseconds.abs() <= aWeek.inMilliseconds;
 }
 
-/// Returns a UTC [DateTime] object with the given [DateTime] and [TimeOfDay]
+/// Returns a [DateTime] object with the given [DateTime] and [TimeOfDay]
 /// combined.  Accurate to the millisecond.
 ///
 /// Due to the lack of granularity in [TimeOfDay], the seconds and milliseconds
 /// value of the result are that of the given [DateTime].
 DateTime combine(DateTime dateTime, TimeOfDay timeOfDay) {
-  return DateTime.utc(dateTime.year, dateTime.month, dateTime.day,
+  return DateTime(dateTime.year, dateTime.month, dateTime.day,
       timeOfDay.hour, timeOfDay.minute, dateTime.second, dateTime.millisecond);
 }
 
@@ -487,7 +487,7 @@ String formatDateRange(DateRange dateRange) {
 ///   - Jan. 8
 ///   - Dec. 8, 2018
 String formatDateAsRecent(BuildContext context, DateTime dateTime) {
-  final DateTime now = AppManager.of(context).clock.now();
+  final DateTime now = AppManager.of(context).timeManager.currentDateTime;
 
   if (isSameDate(dateTime, now)) {
     // Today.

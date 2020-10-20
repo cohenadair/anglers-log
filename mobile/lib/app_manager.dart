@@ -12,9 +12,12 @@ import 'package:mobile/location_monitor.dart';
 import 'package:mobile/preferences_manager.dart';
 import 'package:mobile/properties_manager.dart';
 import 'package:mobile/species_manager.dart';
+import 'package:mobile/time_manager.dart';
 import 'package:mobile/trip_manager.dart';
+import 'package:mobile/wrappers/image_compress_wrapper.dart';
+import 'package:mobile/wrappers/io_wrapper.dart';
+import 'package:mobile/wrappers/path_provider_wrapper.dart';
 import 'package:provider/provider.dart';
-import 'package:quiver/time.dart';
 
 class AppManager {
   static AppManager of(BuildContext context) =>
@@ -34,10 +37,13 @@ class AppManager {
   PreferencesManager _preferencesManager;
   PropertiesManager _propertiesManager;
   SpeciesManager _speciesManager;
+  TimeManager _timeManager;
   TripManager _tripManager;
 
-  // External dependencies.
-  Clock _clock;
+  // External dependency wrappers.
+  ImageCompressWrapper _imageCompressWrapper;
+  IoWrapper _ioWrapper;
+  PathProviderWrapper _pathProviderWrapper;
 
   BaitCategoryManager get baitCategoryManager {
     if (_baitCategoryManager == null) {
@@ -130,6 +136,13 @@ class AppManager {
     return _summaryReportManager;
   }
 
+  TimeManager get timeManager {
+    if (_timeManager == null) {
+      _timeManager = TimeManager();
+    }
+    return _timeManager;
+  }
+
   TripManager get tripManager {
     if (_tripManager == null) {
       _tripManager = TripManager();
@@ -137,10 +150,24 @@ class AppManager {
     return _tripManager;
   }
 
-  Clock get clock {
-    if (_clock == null) {
-      _clock = Clock();
+  IoWrapper get ioWrapper {
+    if (_ioWrapper == null) {
+      _ioWrapper = IoWrapper();
     }
-    return _clock;
+    return _ioWrapper;
+  }
+
+  ImageCompressWrapper get imageCompressWrapper {
+    if (_imageCompressWrapper == null) {
+      _imageCompressWrapper = ImageCompressWrapper();
+    }
+    return _imageCompressWrapper;
+  }
+
+  PathProviderWrapper get pathProviderWrapper {
+    if (_pathProviderWrapper == null) {
+      _pathProviderWrapper = PathProviderWrapper();
+    }
+    return _pathProviderWrapper;
   }
 }
