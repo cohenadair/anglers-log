@@ -55,6 +55,7 @@ class EditableFormPage extends StatefulWidget {
     this.isInputValid = true,
     this.runSpacing,
   }) : assert(
+    // TODO: Need to remove this restriction. The custom fields associated with an entity can change after an entity is created.
     customEntityValues.length <= customEntityIds.length,
     "Cannot have more custom entity values than available input widgets",
   );
