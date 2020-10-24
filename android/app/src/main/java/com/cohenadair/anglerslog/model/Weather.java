@@ -31,7 +31,7 @@ import static com.cohenadair.anglerslog.database.LogbookSchema.WeatherTable;
 public class Weather {
 
     private static final String API_KEY = "35f69a23678dead2c75e0599eadbb4e1";
-    private static final String API_URL = "http://api.openweathermap.org/data/2.5/weather?";
+    private static final String API_URL = "https://api.openweathermap.org/data/2.5/weather?";
 
     private LatLng mCoordinates;
 
