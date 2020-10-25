@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:flutter/cupertino.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mobile/custom_entity_manager.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
@@ -121,6 +122,10 @@ Timestamp timestampFromMillis(int millisSinceEpoch) => Timestamp.fromDateTime(
 extension Ids on Id {
   List<int> get bytes => Uuid().parse(uuid);
   Uint8List get uint8List => Uint8List.fromList(bytes);
+}
+
+extension FishingSpots on FishingSpot {
+  LatLng get latLng => LatLng(lat, lng);
 }
 
 extension Timestamps on Timestamp {

@@ -38,17 +38,34 @@ class FishingSpotMarker extends Marker {
 
   final Id id;
   final FishingSpot fishingSpot;
+  final void Function(FishingSpot) onTapFishingSpot;
+  final bool active;
+  final double zIndex;
 
   FishingSpotMarker({
     @required this.fishingSpot,
-    void Function(FishingSpot) onTap,
-    bool active = false,
+    this.onTapFishingSpot,
+    this.active = false,
+    this.zIndex,
   }) : id = fishingSpot.id, super(
     markerId: MarkerId(fishingSpot.id.uuid),
     position: LatLng(fishingSpot.lat, fishingSpot.lng),
-    onTap: onTap == null ? null : () {
-      onTap(fishingSpot);
+    onTap: onTapFishingSpot == null ? null : () {
+      onTapFishingSpot(fishingSpot);
     },
     icon: active ? _activeIcon : _normalIcon,
+    zIndex: zIndex,
   );
+
+  FishingSpotMarker duplicate({
+    bool active = false,
+    double zIndex,
+  }) {
+    return FishingSpotMarker(
+      fishingSpot: fishingSpot,
+      onTapFishingSpot: onTapFishingSpot,
+      active: active,
+      zIndex: zIndex ?? this.zIndex,
+    );
+  }
 }

@@ -318,4 +318,17 @@ void main() {
     verifyNever(img1.deleteSync());
     verify(img2.deleteSync()).called(1);
   });
+
+  group("dartImage", () {
+    testWidgets("Invalid image returns null", (WidgetTester tester) async {
+      await imageManager.initialize();
+      BuildContext context = await buildContext(tester);
+      var image = await imageManager.dartImage(context, "", 50);
+      expect(image, isNull);
+    });
+
+    test("Converting valid image gives non-null result", () async {
+      // Nothing to do here. Assume instantiateImageCodec works as it should.
+    });
+  });
 }

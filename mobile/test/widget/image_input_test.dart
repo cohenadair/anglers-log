@@ -66,8 +66,8 @@ main() {
       onImagesPicked: (_) => {},
       requestPhotoPermission: () => Future.value(true),
       initialImages: [
-        PickedImage(originalFile: File("test/resources/logo.png")),
-        PickedImage(originalFile: File("test/resources/logo.png")),
+        PickedImage(originalFile: File("test/resources/flutter_logo.png")),
+        PickedImage(originalFile: File("test/resources/flutter_logo.png")),
       ],
     )));
 
@@ -80,8 +80,8 @@ main() {
       onImagesPicked: (_) => {},
       requestPhotoPermission: () => Future.value(true),
       initialImages: [
-        PickedImage(originalFile: File("test/resources/logo.png")),
-        PickedImage(originalFile: File("test/resources/logo.png")),
+        PickedImage(originalFile: File("test/resources/flutter_logo.png")),
+        PickedImage(originalFile: File("test/resources/flutter_logo.png")),
       ],
       enabled: false,
     )));
@@ -95,7 +95,7 @@ main() {
       onImagesPicked: (_) => {},
       requestPhotoPermission: () => Future.value(true),
       initialImages: [
-        PickedImage(originalFile: File("test/resources/logo.png")),
+        PickedImage(originalFile: File("test/resources/flutter_logo.png")),
       ],
     )));
 
@@ -108,7 +108,7 @@ main() {
       requestPhotoPermission: () => Future.value(true),
       initialImages: [
         PickedImage(
-          thumbData: File("test/resources/logo.png").readAsBytesSync(),
+          thumbData: File("test/resources/flutter_logo.png").readAsBytesSync(),
         ),
       ],
     )));

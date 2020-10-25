@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
@@ -18,12 +17,6 @@ main() {
     appManager = MockAppManager(
       mockImageManager: true,
     );
-
-    when(appManager.mockImageManager.image(any,
-      fileName: anyNamed("fileName"),
-      size: anyNamed("size"),
-    )).thenAnswer((_) => Future.value(File("test/resources/logo.png")
-        .readAsBytesSync()));
   });
 
   testWidgets("Invalid image shows placeholder", (WidgetTester tester) async {
@@ -77,16 +70,12 @@ main() {
   });
 
   testWidgets("No cache size uses default", (WidgetTester tester) async {
-    ui.Image image;
-    await tester.runAsync(() async {
-      image = (await (await ui.instantiateImageCodec(
-          File("test/resources/logo.png").readAsBytesSync())).getNextFrame())
-      .image;
-    });
+    ui.Image image = await loadImage(tester, "test/resources/flutter_logo.png");
+    when(appManager.mockImageManager.dartImage(any, any, any))
+        .thenAnswer((_) => Future.value(image));
 
     await tester.pumpWidget(Testable((_) => Photo(
-      fileName: "logo.png",
-      encode: (_) => image,
+      fileName: "flutter_logo.png",
     ), appManager: appManager));
     await tester.pump(Duration(milliseconds: 250));
 
@@ -95,30 +84,26 @@ main() {
 
   testWidgets("Given cache size is honored", (WidgetTester tester) async {
     await tester.pumpWidget(Testable((_) => Photo(
-      fileName: "logo.png",
+      fileName: "flutter_logo.png",
       cacheSize: 50,
     ), appManager: appManager));
     await tester.pump(Duration(milliseconds: 250));
 
-    expect(verify(appManager.mockImageManager.image(any,
-      fileName: anyNamed("fileName"),
-      size: captureAnyNamed("size"),
-    )).captured.single, 50);
+    expect(verify(appManager.mockImageManager.dartImage(any, any, captureAny))
+        .captured.single, 50);
   });
 
   testWidgets("If no cache size, widget size is used", (WidgetTester tester)
       async
   {
     await tester.pumpWidget(Testable((_) => Photo(
-      fileName: "logo.png",
+      fileName: "flutter_logo.png",
       width: 50,
       height: 50,
     ), appManager: appManager));
     await tester.pump(Duration(milliseconds: 250));
 
-    expect(verify(appManager.mockImageManager.image(any,
-      fileName: anyNamed("fileName"),
-      size: captureAnyNamed("size"),
-    )).captured.single, 50);
+    expect(verify(appManager.mockImageManager.dartImage(any, any, captureAny))
+        .captured.single, 50);
   });
 }

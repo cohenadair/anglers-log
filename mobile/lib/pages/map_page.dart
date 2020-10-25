@@ -31,9 +31,9 @@ class MapPage extends StatefulWidget {
 class _MapPageState extends State<MapPage> {
   final Log _log = Log("MapPage");
 
-  final BitmapDescriptor _activeMarkerIcon =
-      BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue);
-  final BitmapDescriptor _nonActiveMarkerIcon = BitmapDescriptor.defaultMarker;
+//  final BitmapDescriptor _activeMarkerIcon =
+//      BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue);
+//  final BitmapDescriptor _nonActiveMarkerIcon = BitmapDescriptor.defaultMarker;
 
   Completer<GoogleMapController> _mapController = Completer();
 
@@ -47,6 +47,7 @@ class _MapPageState extends State<MapPage> {
   bool _waitingForDismissal = false;
 
   FishingSpotManager get _fishingSpotManager => FishingSpotManager.of(context);
+  LocationMonitor get _locationMonitor => LocationMonitor.of(context);
 
   bool get _hasActiveMarker => _activeMarker != null;
   bool get _hasActiveFishingSpot => _activeFishingSpot != null;
@@ -73,7 +74,7 @@ class _MapPageState extends State<MapPage> {
             (m) => m.position == _activeMarker.position,
             orElse: () => null,
           );
-          _activeMarker = _copyMarker(newMarker, _activeMarkerIcon);
+          _activeMarker = _copyMarker(newMarker, true);
         }
       },
       builder: _buildMap,
@@ -107,7 +108,7 @@ class _MapPageState extends State<MapPage> {
     return FishingSpotMap(
       markers: markers,
       mapController: _mapController,
-      startLocation: LocationMonitor.of(context).currentLocation,
+      startLocation: _locationMonitor.currentLocation,
       children: [
         _buildBottomSheet(),
       ],
@@ -125,16 +126,19 @@ class _MapPageState extends State<MapPage> {
           ),
         ),
         onFishingSpotPicked: (fishingSpot) {
-          // Only reset selection if a new selection was made.
-          if (fishingSpot != null) {
-            setState(() {
-              _setActiveMarker(_findMarker(fishingSpot.id));
-              _activeFishingSpot = fishingSpot;
-            });
+          if (fishingSpot == null) {
+            return;
           }
+
+          setState(() {
+            _setActiveMarker(_findMarker(fishingSpot.id));
+            _activeFishingSpot = fishingSpot;
+            moveMap(_mapController, _activeFishingSpot.latLng, false);
+          });
         }
       ),
       onTap: (latLng) {
+        print("Tapped map");
         setState(() {
           _setActiveMarker(_createDroppedPinMarker(latLng));
           _activeFishingSpot = null;
@@ -159,9 +163,9 @@ class _MapPageState extends State<MapPage> {
       return Container();
     }
 
-    FishingSpot fishingSpot = _activeFishingSpot;
+    FishingSpot fishingSpot = _activeFishingSpot?.clone();
     bool editing = true;
-    if (!_hasActiveFishingSpot && _hasActiveMarker) {
+    if (fishingSpot == null && _hasActiveMarker) {
       // Dropped pin case.
       fishingSpot = FishingSpot()
         ..id = randomId()
@@ -180,10 +184,7 @@ class _MapPageState extends State<MapPage> {
           });
         },
         child: _FishingSpotBottomSheet(
-          fishingSpot: fishingSpot ?? FishingSpot()
-            ..id = randomId()
-            ..lat = 0
-            ..lng = 0,
+          fishingSpot: fishingSpot,
           editing: editing,
           onDelete: () {
             setState(() {
@@ -202,7 +203,7 @@ class _MapPageState extends State<MapPage> {
     return FishingSpotMarker(
       fishingSpot: fishingSpot,
       active: false,
-      onTap: (fishingSpot) {
+      onTapFishingSpot: (fishingSpot) {
         setState(() {
           _setActiveMarker(_fishingSpotMarkers.firstWhere((marker) =>
               marker.id == fishingSpot.id));
@@ -235,8 +236,7 @@ class _MapPageState extends State<MapPage> {
       FishingSpotMarker activeMarker = _findMarker(_activeMarker.id);
       if (activeMarker != null) {
         if (_fishingSpotMarkers.remove(activeMarker)) {
-          _fishingSpotMarkers.add(_copyMarker(activeMarker,
-              _nonActiveMarkerIcon));
+          _fishingSpotMarkers.add(_copyMarker(activeMarker, false));
         } else {
           _log.e("Error removing marker");
         }
@@ -244,22 +244,19 @@ class _MapPageState extends State<MapPage> {
     }
 
     // Active marker should always appear on top.
-    _activeMarker = _copyMarker(newActiveMarker, _activeMarkerIcon, 1000);
+    _activeMarker = _copyMarker(newActiveMarker, true, 1000);
   }
 
-  Marker _copyMarker(FishingSpotMarker marker, BitmapDescriptor icon,
+  FishingSpotMarker _copyMarker(FishingSpotMarker marker, bool active,
       [double zIndex])
   {
     if (marker == null) {
       return null;
     }
 
-    return Marker(
-      markerId: marker.markerId,
-      position: marker.position,
-      onTap: marker.onTap,
-      icon: icon,
-      zIndex: zIndex ?? 0.0,
+    return marker.duplicate(
+      active: active,
+      zIndex: zIndex,
     );
   }
 

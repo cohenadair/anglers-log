@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'dart:io';
+import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -88,6 +90,12 @@ T findFirstWithText<T>(WidgetTester tester, String text) =>
       matching: find.byWidgetPredicate((widget) => widget is T),
     )) as T;
 
+T findFirstWithIcon<T>(WidgetTester tester, IconData icon) =>
+    tester.firstWidget(find.ancestor(
+      of: find.byIcon(icon),
+      matching: find.byWidgetPredicate((widget) => widget is T),
+    )) as T;
+
 /// Different from [Finder.byType] in that it works for widgets with generic
 /// arguments.
 List<T> findType<T>(WidgetTester tester) =>
@@ -111,4 +119,15 @@ Future<void> enterTextAndSettle(WidgetTester tester, Finder finder, String text)
 {
   await tester.enterText(finder, text);
   await tester.pumpAndSettle();
+}
+
+Future<ui.Image> loadImage(WidgetTester tester, String path) async {
+  ui.Image image;
+  // runAsync is required here because instantiateImageCodec does real async
+  // work and can't be used with pump().
+  await tester.runAsync(() async {
+    image = (await (await ui.instantiateImageCodec(
+        File(path).readAsBytesSync())).getNextFrame()).image;
+  });
+  return image;
 }

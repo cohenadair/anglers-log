@@ -35,5 +35,4 @@ class SaveBaitCategoryPage extends StatelessWidget {
       ),
     );
   }
-
 }

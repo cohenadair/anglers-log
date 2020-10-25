@@ -41,7 +41,7 @@ main() {
         (_) => SaveCatchPage(
           images: [
             PickedImage(
-              originalFile: File("test/resources/logo.png"),
+              originalFile: File("test/resources/flutter_logo.png"),
               dateTime: DateTime(2020, 1, 1, 15, 30),
             ),
           ],
@@ -67,7 +67,7 @@ main() {
         (_) => SaveCatchPage(
           images: [
             PickedImage(
-              originalFile: File("test/resources/logo.png"),
+              originalFile: File("test/resources/flutter_logo.png"),
             ),
           ],
           species: Species()
@@ -92,7 +92,7 @@ main() {
         (_) => SaveCatchPage(
           images: [
             PickedImage(
-              originalFile: File("test/resources/logo.png"),
+              originalFile: File("test/resources/flutter_logo.png"),
               dateTime: DateTime(2020, 1, 1, 15, 30),
             ),
           ],
@@ -125,7 +125,7 @@ main() {
         (_) => SaveCatchPage(
           images: [
             PickedImage(
-              originalFile: File("test/resources/logo.png"),
+              originalFile: File("test/resources/flutter_logo.png"),
               dateTime: DateTime(2020, 1, 1, 15, 30),
             ),
           ],
@@ -183,14 +183,14 @@ main() {
         ..customEntityValues.add(CustomEntityValue()
           ..customEntityId = customEntity.id
           ..value = "Minnow")
-        ..imageNames.add("logo.png");
+        ..imageNames.add("flutter_logo.png");
 
       when(appManager.mockImageManager.images(
         any,
         imageNames: anyNamed("imageNames"),
         size: anyNamed("size"),
       )).thenAnswer((_) => Future.value([
-        File("test/resources/logo.png").readAsBytesSync()
+        File("test/resources/flutter_logo.png").readAsBytesSync()
       ]));
 
       await tester.pumpWidget(Testable(
@@ -277,14 +277,14 @@ main() {
         ..customEntityValues.add(CustomEntityValue()
           ..customEntityId = customEntity.id
           ..value = "Minnow")
-        ..imageNames.add("logo.png");
+        ..imageNames.add("flutter_logo.png");
 
       when(appManager.mockImageManager.images(
         any,
         imageNames: anyNamed("imageNames"),
         size: anyNamed("size"),
       )).thenAnswer((_) => Future.value([
-        File("test/resources/logo.png").readAsBytesSync()
+        File("test/resources/flutter_logo.png").readAsBytesSync()
       ]));
 
       await tester.pumpWidget(Testable(
@@ -301,7 +301,7 @@ main() {
         imageFiles: anyNamed("imageFiles"),
       )).thenAnswer((invocation) {
         // Assume image is saved correctly.
-        invocation.positionalArguments.first.imageNames.add("logo.png");
+        invocation.positionalArguments.first.imageNames.add("flutter_logo.png");
         return Future.value(true);
       });
       await tapAndSettle(tester, find.text("SAVE"));
