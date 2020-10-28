@@ -89,7 +89,7 @@ class CatchListPage extends StatelessWidget {
           fishingSpotIds: fishingSpotIds,
           baitIds: baitIds,
         ),
-        deleteText: (context, cat) =>
+        deleteWidget: (context, cat) =>
             Text(catchManager.deleteMessage(context, cat)),
         deleteItem: (context, cat) => catchManager.delete(cat.id),
         addPageBuilder: enableAdding ? () => AddCatchJourney() : null,

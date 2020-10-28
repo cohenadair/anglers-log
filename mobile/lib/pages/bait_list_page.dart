@@ -87,7 +87,7 @@ class _BaitListPageState extends State<BaitListPage> {
           _baitManager,
         ],
         loadItems: _buildItems,
-        deleteText: (context, bait) =>
+        deleteWidget: (context, bait) =>
             Text(_baitManager.deleteMessage(context, bait)),
         deleteItem: (context, bait) => _baitManager.delete(bait),
         addPageBuilder: () => SaveBaitPage(),

@@ -65,7 +65,7 @@ class FishingSpotListPage extends StatelessWidget {
         listenerManagers: [ fishingSpotManager ],
         loadItems: (query) =>
             fishingSpotManager.listSortedByName(filter: query),
-        deleteText: (context, fishingSpot) => Text(fishingSpotManager
+        deleteWidget: (context, fishingSpot) => Text(fishingSpotManager
             .deleteMessage(context, fishingSpot)),
         deleteItem: (context, fishingSpot) =>
             fishingSpotManager.delete(fishingSpot.id),

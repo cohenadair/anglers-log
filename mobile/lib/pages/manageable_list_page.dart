@@ -182,43 +182,50 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
   }
 
   List<Widget> _buildActions() {
+    if (_pickingMulti) {
+      return _buildMultiPickerActions();
+    } else {
+      return _buildSinglePickerActions();
+    }
+  }
+
+  List<Widget> _buildMultiPickerActions() {
     List<Widget> result = [];
 
-    if (_pickingMulti && _editable) {
-      result..add(ActionButton.done(
-        condensed: true,
-        onPressed: () {
-          if (_editing) {
-            setEditingUpdateState(false);
-          } else {
-            _finishPicking(_selectedValues);
-          }
-        },
-      ));
-
-      // If picking multiple items, use overflow menu for "Add" and "Edit"
-      // options.
-      var optionBuilder = (context) {
-        List<PopupMenuItem<_OverflowOption>> overflowOptions = [];
-        if (_addable) {
-          overflowOptions.add(PopupMenuItem<_OverflowOption>(
-            value: _OverflowOption.add,
-            child: Text(Strings.of(context).add),
-          ));
+    // Done button, for finishing picking.
+    result..add(ActionButton.done(
+      condensed: true,
+      onPressed: () {
+        if (_editing) {
+          setEditingUpdateState(false);
+        } else {
+          _finishPicking(_selectedValues);
         }
+      },
+    ));
 
-        overflowOptions.add(PopupMenuItem<_OverflowOption>(
-          value: _OverflowOption.edit,
-          child: Text(Strings.of(context).edit),
-          enabled: !_editing,
-        ));
+    // Overflow add/edit items for modifying the list.
+    List<PopupMenuItem<_OverflowOption>> overflowOptions = [];
 
-        return overflowOptions;
-      };
+    if (_addable) {
+      overflowOptions.add(PopupMenuItem<_OverflowOption>(
+        value: _OverflowOption.add,
+        child: Text(Strings.of(context).add),
+      ));
+    }
 
+    if (_editable) {
+      overflowOptions.add(PopupMenuItem<_OverflowOption>(
+        value: _OverflowOption.edit,
+        child: Text(Strings.of(context).edit),
+        enabled: !_editing,
+      ));
+    }
+
+    if (overflowOptions.isNotEmpty) {
       result..add(PopupMenuButton<_OverflowOption>(
         icon: Icon(Icons.more_vert),
-        itemBuilder: optionBuilder,
+        itemBuilder: (_) => overflowOptions,
         onSelected: (option) {
           switch (option) {
             case _OverflowOption.add:
@@ -230,28 +237,34 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
           }
         },
       ));
-    } else {
-      if (_editing) {
-        result.add(ActionButton.done(
-          condensed: _addable,
-          onPressed: () => setEditingUpdateState(false),
-        ));
-      } else if (_editable) {
-        // Only include the edit button if the items can be modified.
-        result.add(ActionButton.edit(
-          condensed: _addable,
-          onPressed: () => setEditingUpdateState(true),
-        ));
-      }
+    }
 
-      // Only include the add button if new items can be added.
-      if (_addable) {
-        result.add(IconButton(
-          icon: Icon(Icons.add),
-          onPressed: () =>
-              present(context, widget.itemManager.addPageBuilder()),
-        ));
-      }
+    return result;
+  }
+
+  List<Widget> _buildSinglePickerActions() {
+    List<Widget> result = [];
+
+    if (_editing) {
+      result.add(ActionButton.done(
+        condensed: _addable,
+        onPressed: () => setEditingUpdateState(false),
+      ));
+    } else if (_editable) {
+      // Only include the edit button if the items can be modified.
+      result.add(ActionButton.edit(
+        condensed: _addable,
+        onPressed: () => setEditingUpdateState(true),
+      ));
+    }
+
+    // Only include the add button if new items can be added.
+    if (_addable) {
+      result.add(IconButton(
+        icon: Icon(Icons.add),
+        onPressed: () =>
+            present(context, widget.itemManager.addPageBuilder()),
+      ));
     }
 
     return result;
@@ -295,7 +308,7 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
       editing: canEdit,
       enabled: enabled,
       deleteMessageBuilder: (context) =>
-          widget.itemManager.deleteText(context, itemValue),
+          widget.itemManager.deleteWidget(context, itemValue),
       onConfirmDelete: () => widget.itemManager.deleteItem(context, itemValue),
       onTap: !enabled || (_viewing && !_hasDetailPage && !canEdit) ? null : () {
         if (_pickingMulti && !canEdit) {
@@ -400,7 +413,7 @@ class ManageableListPageItemManager<T> {
 
   /// The [Widget] to display is a delete confirmation dialog. This should be
   /// some kind of [Text] widget.
-  final Widget Function(BuildContext, T) deleteText;
+  final Widget Function(BuildContext, T) deleteWidget;
 
   /// Invoked when the user confirms the delete operation. This method should
   /// actually delete the item [T] from the database.
@@ -432,7 +445,7 @@ class ManageableListPageItemManager<T> {
 
   ManageableListPageItemManager({
     @required this.loadItems,
-    @required this.deleteText,
+    @required this.deleteWidget,
     @required this.deleteItem,
     this.addPageBuilder,
     this.listenerManagers,
@@ -440,7 +453,7 @@ class ManageableListPageItemManager<T> {
     this.detailPageBuilder,
     this.onTapDeleteButton,
   }) : assert(loadItems != null),
-       assert(deleteText != null),
+       assert(deleteWidget != null),
        assert(deleteItem != null),
        assert(listenerManagers == null || listenerManagers.isNotEmpty);
 }

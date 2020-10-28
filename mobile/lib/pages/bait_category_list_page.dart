@@ -45,7 +45,7 @@ class BaitCategoryListPage extends StatelessWidget {
         listenerManagers: [ baitCategoryManager ],
         loadItems: (query) =>
             baitCategoryManager.listSortedByName(filter: query),
-        deleteText: (context, category) =>
+        deleteWidget: (context, category) =>
             Text(baitCategoryManager.deleteMessage(context, category)),
         deleteItem: (context, category) =>
             baitCategoryManager.delete(category.id),
