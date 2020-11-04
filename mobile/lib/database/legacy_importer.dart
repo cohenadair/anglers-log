@@ -16,8 +16,8 @@ import 'package:mobile/model/gen/google/protobuf/timestamp.pb.dart';
 import 'package:mobile/species_manager.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/utils/string_utils.dart';
+import 'package:mobile/wrappers/path_provider_wrapper.dart';
 import 'package:path/path.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:quiver/strings.dart';
 
 enum LegacyImporterError {
@@ -60,16 +60,13 @@ class LegacyImporter {
 
   final AppManager _appManager;
   final File _zipFile;
-  Directory _temporaryFileDirectory;
 
   Map<String, dynamic> _json = {};
   Map<String, File> _images = {};
 
-  LegacyImporter(AppManager appManager, File zipFile, [
-    Directory temporaryFileDirectory,
-  ]) : _appManager = appManager,
-       _zipFile = zipFile,
-       _temporaryFileDirectory = temporaryFileDirectory;
+  LegacyImporter(AppManager appManager, File zipFile)
+      : _appManager = appManager,
+        _zipFile = zipFile;
 
   BaitCategoryManager get _baitCategoryManager =>
       _appManager.baitCategoryManager;
@@ -79,6 +76,9 @@ class LegacyImporter {
   FishingSpotManager get _fishingSpotManager => _appManager.fishingSpotManager;
   SpeciesManager get _speciesManager => _appManager.speciesManager;
 
+  PathProviderWrapper get _pathProviderWrapper =>
+      _appManager.pathProviderWrapper;
+
   String get jsonString => jsonEncode(_json);
 
   Future<void> start() async {
@@ -87,7 +87,7 @@ class LegacyImporter {
     }
 
     await _dataManager.reset();
-    Directory tmpDir = _temporaryFileDirectory ?? await getTemporaryDirectory();
+    Directory tmpDir = Directory(await _pathProviderWrapper.temporaryPath);
 
     Archive archive = ZipDecoder().decodeBytes(_zipFile.readAsBytesSync());
     for (var archiveFile in archive) {

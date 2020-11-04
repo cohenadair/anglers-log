@@ -15,9 +15,12 @@ import 'package:mobile/properties_manager.dart';
 import 'package:mobile/species_manager.dart';
 import 'package:mobile/time_manager.dart';
 import 'package:mobile/trip_manager.dart';
+import 'package:mobile/wrappers/file_picker_wrapper.dart';
 import 'package:mobile/wrappers/image_compress_wrapper.dart';
+import 'package:mobile/wrappers/image_picker_wrapper.dart';
 import 'package:mobile/wrappers/io_wrapper.dart';
 import 'package:mobile/wrappers/path_provider_wrapper.dart';
+import 'package:mobile/wrappers/photo_manager_wrapper.dart';
 import 'package:mockito/mockito.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -39,9 +42,12 @@ class MockSummaryReportManager extends Mock implements SummaryReportManager {}
 class MockTimeManager extends Mock implements TimeManager {}
 class MockTripManager extends Mock implements TripManager {}
 
-class MockIoWrapper extends Mock implements IoWrapper {}
+class MockFilePickerWrapper extends Mock implements FilePickerWrapper {}
 class MockImageCompressWrapper extends Mock implements ImageCompressWrapper {}
+class MockImagePickerWrapper extends Mock implements ImagePickerWrapper {}
+class MockIoWrapper extends Mock implements IoWrapper {}
 class MockPathProviderWrapper extends Mock implements PathProviderWrapper {}
+class MockPhotoManagerWrapper extends Mock implements PhotoManagerWrapper {}
 
 class MockAppManager extends Mock implements AppManager {
   MockBaitCategoryManager mockBaitCategoryManager;
@@ -60,9 +66,12 @@ class MockAppManager extends Mock implements AppManager {
   MockTimeManager mockTimeManager;
   MockTripManager mockTripManager;
 
-  MockIoWrapper mockIoWrapper;
+  MockFilePickerWrapper mockFilePickerWrapper;
   MockImageCompressWrapper mockImageCompressWrapper;
+  MockImagePickerWrapper mockImagePickerWrapper;
+  MockIoWrapper mockIoWrapper;
   MockPathProviderWrapper mockPathProviderWrapper;
+  MockPhotoManagerWrapper mockPhotoManagerWrapper;
 
   MockAppManager({
     bool mockBaitCategoryManager = false,
@@ -81,9 +90,12 @@ class MockAppManager extends Mock implements AppManager {
     bool mockSummaryReportManager = false,
     bool mockTimeManager = false,
     bool mockTripManager = false,
-    bool mockIoWrapper = false,
+    bool mockFilePickerWrapper = false,
     bool mockImageCompressWrapper = false,
+    bool mockImagePickerWrapper = false,
+    bool mockIoWrapper = false,
     bool mockPathProviderWrapper = false,
+    bool mockPhotoManagerWrapper = false,
   }) {
     if (mockBaitCategoryManager) {
       this.mockBaitCategoryManager = MockBaitCategoryManager();
@@ -164,9 +176,9 @@ class MockAppManager extends Mock implements AppManager {
       when(tripManager).thenReturn(this.mockTripManager);
     }
 
-    if (mockIoWrapper) {
-      this.mockIoWrapper = MockIoWrapper();
-      when(ioWrapper).thenReturn(this.mockIoWrapper);
+    if (mockFilePickerWrapper) {
+      this.mockFilePickerWrapper = MockFilePickerWrapper();
+      when(filePickerWrapper).thenReturn(this.mockFilePickerWrapper);
     }
 
     if (mockImageCompressWrapper) {
@@ -174,9 +186,24 @@ class MockAppManager extends Mock implements AppManager {
       when(imageCompressWrapper).thenReturn(this.mockImageCompressWrapper);
     }
 
+    if (mockImagePickerWrapper) {
+      this.mockImagePickerWrapper = MockImagePickerWrapper();
+      when(imagePickerWrapper).thenReturn(this.mockImagePickerWrapper);
+    }
+
+    if (mockIoWrapper) {
+      this.mockIoWrapper = MockIoWrapper();
+      when(ioWrapper).thenReturn(this.mockIoWrapper);
+    }
+
     if (mockPathProviderWrapper) {
       this.mockPathProviderWrapper = MockPathProviderWrapper();
       when(pathProviderWrapper).thenReturn(this.mockPathProviderWrapper);
+    }
+
+    if (mockPhotoManagerWrapper) {
+      this.mockPhotoManagerWrapper = MockPhotoManagerWrapper();
+      when(photoManagerWrapper).thenReturn(this.mockPhotoManagerWrapper);
     }
   }
 

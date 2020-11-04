@@ -6,14 +6,26 @@ import 'package:mobile/pages/image_picker_page.dart';
 import 'package:mobile/widgets/image_input.dart';
 import 'package:mobile/widgets/widget.dart';
 
+import '../mock_app_manager.dart';
 import '../test_utils.dart';
 
 main() {
+  MockAppManager appManager;
+
+  setUp(() {
+    appManager = MockAppManager(
+      mockPhotoManagerWrapper: true,
+    );
+  });
+
   testWidgets("Enabled", (WidgetTester tester) async {
-    await tester.pumpWidget(Testable((_) => ImageInput(
-      onImagesPicked: (_) => {},
-      requestPhotoPermission: () => Future.value(true),
-    )));
+    await tester.pumpWidget(Testable(
+      (_) => ImageInput(
+        onImagesPicked: (_) => {},
+        requestPhotoPermission: () => Future.value(true),
+      ),
+      appManager: appManager,
+    ));
 
     await tester.tap(find.byType(InkWell));
     await tester.pumpAndSettle();

@@ -14,9 +14,12 @@ import 'package:mobile/properties_manager.dart';
 import 'package:mobile/species_manager.dart';
 import 'package:mobile/time_manager.dart';
 import 'package:mobile/trip_manager.dart';
+import 'package:mobile/wrappers/file_picker_wrapper.dart';
 import 'package:mobile/wrappers/image_compress_wrapper.dart';
+import 'package:mobile/wrappers/image_picker_wrapper.dart';
 import 'package:mobile/wrappers/io_wrapper.dart';
 import 'package:mobile/wrappers/path_provider_wrapper.dart';
+import 'package:mobile/wrappers/photo_manager_wrapper.dart';
 import 'package:provider/provider.dart';
 
 class AppManager {
@@ -41,9 +44,12 @@ class AppManager {
   TripManager _tripManager;
 
   // External dependency wrappers.
+  FilePickerWrapper _filePickerWrapper;
   ImageCompressWrapper _imageCompressWrapper;
+  ImagePickerWrapper _imagePickerWrapper;
   IoWrapper _ioWrapper;
   PathProviderWrapper _pathProviderWrapper;
+  PhotoManagerWrapper _photoManagerWrapper;
 
   BaitCategoryManager get baitCategoryManager {
     if (_baitCategoryManager == null) {
@@ -157,6 +163,13 @@ class AppManager {
     return _ioWrapper;
   }
 
+  FilePickerWrapper get filePickerWrapper {
+    if (_filePickerWrapper == null) {
+      _filePickerWrapper = FilePickerWrapper();
+    }
+    return _filePickerWrapper;
+  }
+
   ImageCompressWrapper get imageCompressWrapper {
     if (_imageCompressWrapper == null) {
       _imageCompressWrapper = ImageCompressWrapper();
@@ -164,10 +177,24 @@ class AppManager {
     return _imageCompressWrapper;
   }
 
+  ImagePickerWrapper get imagePickerWrapper {
+    if (_imagePickerWrapper == null) {
+      _imagePickerWrapper = ImagePickerWrapper();
+    }
+    return _imagePickerWrapper;
+  }
+
   PathProviderWrapper get pathProviderWrapper {
     if (_pathProviderWrapper == null) {
       _pathProviderWrapper = PathProviderWrapper();
     }
     return _pathProviderWrapper;
+  }
+
+  PhotoManagerWrapper get photoManagerWrapper {
+    if (_photoManagerWrapper == null) {
+      _photoManagerWrapper = PhotoManagerWrapper();
+    }
+    return _photoManagerWrapper;
   }
 }

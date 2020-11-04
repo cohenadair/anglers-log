@@ -31,10 +31,6 @@ class MapPage extends StatefulWidget {
 class _MapPageState extends State<MapPage> {
   final Log _log = Log("MapPage");
 
-//  final BitmapDescriptor _activeMarkerIcon =
-//      BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue);
-//  final BitmapDescriptor _nonActiveMarkerIcon = BitmapDescriptor.defaultMarker;
-
   Completer<GoogleMapController> _mapController = Completer();
 
   Set<FishingSpotMarker> _fishingSpotMarkers = Set();

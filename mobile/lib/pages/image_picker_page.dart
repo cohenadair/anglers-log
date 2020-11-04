@@ -13,6 +13,9 @@ import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/no_results.dart';
 import 'package:mobile/widgets/text.dart';
 import 'package:mobile/widgets/widget.dart';
+import 'package:mobile/wrappers/file_picker_wrapper.dart';
+import 'package:mobile/wrappers/image_picker_wrapper.dart';
+import 'package:mobile/wrappers/photo_manager_wrapper.dart';
 import 'package:path/path.dart' as Path;
 import 'package:photo_manager/photo_manager.dart';
 
@@ -71,7 +74,7 @@ class PickedImage {
 /// device camera.
 /// - https://pub.dev/packages/image_picker
 class ImagePickerPage extends StatefulWidget {
-  final Function(BuildContext context, List<PickedImage>) onImagesPicked;
+  final void Function(BuildContext context, List<PickedImage>) onImagesPicked;
   final bool allowsMultipleSelection;
 
   /// A list of images to be selected when the page opens.
@@ -104,7 +107,8 @@ class ImagePickerPage extends StatefulWidget {
   ImagePickerPage.single({
     @required Function(BuildContext, PickedImage) onImagePicked,
   }) : this(
-    onImagesPicked: (context, files) => onImagePicked(context, files.first),
+    onImagesPicked: (context, files) =>
+        onImagePicked(context, files.isEmpty ? null : files.first),
     allowsMultipleSelection: false,
   );
 
@@ -138,12 +142,16 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
   /// as that element is loaded into the picker.
   List<PickedImage> _initialImages;
 
+  FilePickerWrapper get _filePicker => FilePickerWrapper.of(context);
+  ImagePickerWrapper get _imagePicker => ImagePickerWrapper.of(context);
+  PhotoManagerWrapper get _photoManager => PhotoManagerWrapper.of(context);
+
   @override
   void initState() {
     super.initState();
 
     _initialImages = List.of(widget.initialImages);
-    _albumListFuture = PhotoManager.getAssetPathList(type: RequestType.image);
+    _albumListFuture = _photoManager.getAssetPathList(RequestType.image);
   }
 
   @override
@@ -176,7 +184,7 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
             builder: (context, assets) {
               // Lazy initialize _assets.
               if (_assets == null) {
-                _assets = assets;
+                _assets = assets ?? [];
                 // Sort by most recent first.
                 _assets.sort((lhs, rhs) =>
                     rhs.createDateTime.compareTo(lhs.createDateTime));
@@ -205,11 +213,11 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
   }
 
   Widget _buildSourceDropdown() {
-    return DropdownButton(
+    return DropdownButton<_ImagePickerSource>(
       underline: Empty(),
       icon: DropdownIcon(),
       value: _currentSource,
-      items: <DropdownMenuItem>[
+      items: [
         AppBarDropdownItem<_ImagePickerSource>(
           context: context,
           text: Strings.of(context).imagePickerPageGalleryLabel,
@@ -374,7 +382,7 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
   }
 
   void _openCamera() async {
-    File image = await ImagePicker.pickImage(source: ImageSource.camera);
+    File image = await _imagePicker.pickImage(ImageSource.camera);
     if (image != null) {
       _pop([PickedImage(originalFile: image)]);
     }
@@ -383,16 +391,16 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
   void _openFilePicker() async {
     List<File> images;
     if (widget.allowsMultipleSelection) {
-      images = await FilePicker.getMultiFile(type: FileType.ANY);
+      images = await _filePicker.getMultiFile(FileType.ANY);
     } else {
-      File image = await FilePicker.getFile(type: FileType.ANY);
+      File image = await _filePicker.getFile(type: FileType.ANY);
       if (image != null) {
         images = [image];
       }
     }
 
     // No images were selected.
-    if (images == null) {
+    if (images == null || images.isEmpty) {
       return;
     }
 
@@ -414,6 +422,7 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
       if (!supportedFileExtensions.contains(Path.extension(image.path))) {
         invalidFiles.add(Path.basename(image.path));
         images.removeAt(i);
+        // TODO: Record metrics for invalid file extensions; may be legit.
       }
     }
 
@@ -451,7 +460,9 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
     } else {
       // Coordinates are invalid, attempt to retrieve from OS.
       LatLng latLng = await entity.latlngAsync();
-      if (_coordinatesAreValid(latLng.latitude, latLng.longitude)) {
+      if (latLng != null
+          && _coordinatesAreValid(latLng.latitude, latLng.longitude))
+      {
         position = GoogleMaps.LatLng(latLng.latitude, latLng.longitude);
       }
     }
