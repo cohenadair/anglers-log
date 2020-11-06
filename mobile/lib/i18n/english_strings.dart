@@ -204,7 +204,8 @@ Map<String, Map<String, String>> get englishStrings => {
     "fishingSpotPickerPage_hint" : "Drag the map to use exact coordinates, or select an existing fishing spot.",
 
     "fishingSpotListPage_title" : "Fishing Spots (%s)",
-    "fishingSpotListPage_pickerTitle" : "Select Fishing Spots",
+    "fishingSpotListPage_multiPickerTitle" : "Select Fishing Spots",
+    "fishingSpotListPage_singlePickerTitle" : "Select Fishing Spot",
     "fishingSpotListPage_searchHint" : "Search fishing spots",
     "fishingSpotListPage_noSearchResults" : "No fishing spots found",
 

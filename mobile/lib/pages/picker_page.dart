@@ -279,7 +279,7 @@ class PickerPageItem<T> {
        subtitle = null,
        enabled = false,
        popsOnPicked = false,
-        onTap = null,
+       onTap = null,
        _divider = false,
        _heading = false,
        _note = true;

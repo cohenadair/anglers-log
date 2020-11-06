@@ -223,7 +223,8 @@ class Strings {
   String get fishingSpotPickerPageHint => _string("fishingSpotPickerPage_hint");
 
   String get fishingSpotListPageTitle => _string("fishingSpotListPage_title");
-  String get fishingSpotListPagePickerTitle => _string("fishingSpotListPage_pickerTitle");
+  String get fishingSpotListPageMultiPickerTitle => _string("fishingSpotListPage_multiPickerTitle");
+  String get fishingSpotListPageSinglePickerTitle => _string("fishingSpotListPage_singlePickerTitle");
   String get fishingSpotListPageSearchHint => _string("fishingSpotListPage_searchHint");
   String get fishingSpotListPageNoSearchResults => _string("fishingSpotListPage_noSearchResults");
 

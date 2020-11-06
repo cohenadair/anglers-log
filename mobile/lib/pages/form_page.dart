@@ -66,7 +66,7 @@ class FormPageFieldOption {
 /// Widgets using the [FormPage] widget are responsible for tracking field input
 /// values and input validation.
 class FormPage extends StatefulWidget {
-  static IconData moreMenuIcon = Icons.more_vert;
+  static const IconData moreMenuIcon = Icons.more_vert;
 
   /// See [AppBar.title].
   final Widget title;
@@ -107,7 +107,7 @@ class FormPage extends StatefulWidget {
     this.title,
     @required this.fieldBuilder,
     this.onSave,
-    this.addFieldOptions,
+    this.addFieldOptions = const [],
     this.onAddFields,
     this.editable = true,
     this.padding = insetsHorizontalDefault,
@@ -143,15 +143,6 @@ class FormPage extends StatefulWidget {
 
   @override
   _FormPageState createState() => _FormPageState();
-
-  FormPageFieldOption fieldOption(Id id) {
-    if (addFieldOptions == null) {
-      return null;
-    } else {
-      return addFieldOptions.firstWhere((option) => option.id == id,
-          orElse: () => null);
-    }
-  }
 }
 
 class _FormPageState extends State<FormPage> {

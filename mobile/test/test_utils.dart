@@ -96,6 +96,12 @@ T findFirstWithIcon<T>(WidgetTester tester, IconData icon) =>
       matching: find.byWidgetPredicate((widget) => widget is T),
     )) as T;
 
+T findSiblingOfText<T>(WidgetTester tester, Type parentType, String text) =>
+    tester.firstWidget(find.descendant(
+      of: find.widgetWithText(parentType, text),
+      matching: find.byType(T),
+    )) as T;
+
 /// Different from [Finder.byType] in that it works for widgets with generic
 /// arguments.
 List<T> findType<T>(WidgetTester tester) =>

@@ -6,6 +6,7 @@ import 'package:mobile/pages/manageable_list_page.dart';
 import 'package:mobile/pages/save_fishing_spot_page.dart';
 import 'package:mobile/utils/string_utils.dart';
 import 'package:mobile/widgets/text.dart';
+import 'package:quiver/strings.dart';
 
 class FishingSpotListPage extends StatelessWidget {
   final bool Function(BuildContext, Set<FishingSpot>) onPicked;
@@ -18,7 +19,7 @@ class FishingSpotListPage extends StatelessWidget {
         initialValues = null;
 
   FishingSpotListPage.picker({
-    this.onPicked,
+    @required this.onPicked,
     this.multiPicker = false,
     this.initialValues,
   }) : assert(onPicked != null);
@@ -29,9 +30,16 @@ class FishingSpotListPage extends StatelessWidget {
   Widget build(BuildContext context) {
     FishingSpotManager fishingSpotManager = FishingSpotManager.of(context);
 
+    String title;
+    if (_picking && multiPicker) {
+      title = Strings.of(context).fishingSpotListPageMultiPickerTitle;
+    } else if (_picking && !multiPicker) {
+      title = Strings.of(context).fishingSpotListPageSinglePickerTitle;
+    }
+
     return ManageableListPage<FishingSpot>(
-      titleBuilder: _picking
-          ? (_) => Text(Strings.of(context).fishingSpotListPagePickerTitle)
+      titleBuilder: isNotEmpty(title)
+          ? (_) => Text(title)
           : (fishingSpots) => Text(format(Strings.of(context)
               .fishingSpotListPageTitle, [fishingSpots.length])),
       forceCenterTitle: !_picking,
