@@ -29,7 +29,7 @@ main() {
     await image(tester, "flutter_logo.png");
     await image(tester, "anglers_log_logo.png");
     await image(tester, "android_logo.png");
-    ui.Image apple = await image(tester, "apple_logo.png");
+    await image(tester, "apple_logo.png");
 
     await tester.pumpWidget(Testable(
       (_) => PhotoGalleryPage(

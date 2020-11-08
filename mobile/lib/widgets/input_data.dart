@@ -35,7 +35,7 @@ class InputData {
   InputData({
     @required this.id,
     @required this.controller,
-    this.label,
+    @required this.label,
     this.showing = true,
     this.removable = true,
   }) : assert(id != null),

@@ -7,6 +7,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/app_manager.dart';
 import 'package:mobile/i18n/strings.dart';
+import 'package:mobile/res/color.dart';
 import 'package:mobile/utils/date_time_utils.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
@@ -32,6 +33,9 @@ class Testable extends StatelessWidget {
     return Provider<AppManager>.value(
       value: appManager,
       child: MaterialApp(
+        theme: ThemeData(
+          primarySwatch: colorAppTheme,
+        ),
         localizationsDelegates: [
           StringsDelegate(),
           DefaultMaterialLocalizations.delegate,

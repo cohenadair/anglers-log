@@ -18,6 +18,8 @@ import 'package:mobile/wrappers/file_picker_wrapper.dart';
 import 'package:mobile/wrappers/image_compress_wrapper.dart';
 import 'package:mobile/wrappers/image_picker_wrapper.dart';
 import 'package:mobile/wrappers/io_wrapper.dart';
+import 'package:mobile/wrappers/mail_sender_wrapper.dart';
+import 'package:mobile/wrappers/package_info_wrapper.dart';
 import 'package:mobile/wrappers/path_provider_wrapper.dart';
 import 'package:mobile/wrappers/photo_manager_wrapper.dart';
 import 'package:provider/provider.dart';
@@ -48,6 +50,8 @@ class AppManager {
   ImageCompressWrapper _imageCompressWrapper;
   ImagePickerWrapper _imagePickerWrapper;
   IoWrapper _ioWrapper;
+  MailSenderWrapper _mailSenderWrapper;
+  PackageInfoWrapper _packageInfoWrapper;
   PathProviderWrapper _pathProviderWrapper;
   PhotoManagerWrapper _photoManagerWrapper;
 
@@ -182,6 +186,20 @@ class AppManager {
       _imagePickerWrapper = ImagePickerWrapper();
     }
     return _imagePickerWrapper;
+  }
+
+  MailSenderWrapper get mailSenderWrapper {
+    if (_mailSenderWrapper == null) {
+      _mailSenderWrapper = MailSenderWrapper();
+    }
+    return _mailSenderWrapper;
+  }
+
+  PackageInfoWrapper get packageInfoWrapper {
+    if (_packageInfoWrapper == null) {
+      _packageInfoWrapper = PackageInfoWrapper();
+    }
+    return _packageInfoWrapper;
   }
 
   PathProviderWrapper get pathProviderWrapper {

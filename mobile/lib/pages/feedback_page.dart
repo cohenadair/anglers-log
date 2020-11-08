@@ -11,7 +11,6 @@ import 'package:mobile/pages/form_page.dart';
 import 'package:mobile/properties_manager.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/res/style.dart';
-import 'package:mobile/utils/device_utils.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/utils/snackbar_utils.dart';
 import 'package:mobile/utils/string_utils.dart';
@@ -21,7 +20,9 @@ import 'package:mobile/widgets/input_data.dart';
 import 'package:mobile/widgets/radio_input.dart';
 import 'package:mobile/widgets/text_input.dart';
 import 'package:mobile/widgets/widget.dart';
-import 'package:package_info/package_info.dart';
+import 'package:mobile/wrappers/io_wrapper.dart';
+import 'package:mobile/wrappers/mail_sender_wrapper.dart';
+import 'package:mobile/wrappers/package_info_wrapper.dart';
 import 'package:quiver/strings.dart';
 
 class FeedbackPage extends StatefulWidget {
@@ -60,6 +61,9 @@ class _FeedbackPageState extends State<FeedbackPage> {
 
   final Map<Id, InputData> _fields = {};
 
+  IoWrapper get _io => IoWrapper.of(context);
+  MailSenderWrapper get _mailSender => MailSenderWrapper.of(context);
+  PackageInfoWrapper get _packageInfo => PackageInfoWrapper.of(context);
   PropertiesManager get _propertiesManager => PropertiesManager.of(context);
 
   TextInputController get _nameController => _fields[_idName].controller;
@@ -155,7 +159,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
         ),
       },
       onSave: (context) async {
-        if (!await isConnected()) {
+        if (!await _io.isConnected()) {
           showErrorSnackBar(context,
               Strings.of(context).feedbackPageConnectionError);
           return false;
@@ -168,7 +172,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
         String type = _feedbackTypeToString(_typeController.value);
         String message = _messageController.value;
 
-        String appVersion = (await PackageInfo.fromPlatform()).version;
+        String appVersion = (await _packageInfo.fromPlatform()).version;
         String osVersion;
         String deviceModel;
 
@@ -183,7 +187,8 @@ class _FeedbackPageState extends State<FeedbackPage> {
           deviceModel = info.model;
         }
 
-        SmtpServer server = gmail(_propertiesManager.clientSenderEmail,
+        SmtpServer server = _mailSender.gmail(
+            _propertiesManager.clientSenderEmail,
             _propertiesManager.clientSenderPassword);
 
         Attachment attachment;
@@ -209,7 +214,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
             ]);
 
         try {
-          await send(content, server);
+          await _mailSender.send(content, server);
         } on MailerException catch(e) {
           for (var p in e.problems) {
             _log.e("Error sending feedback: ${p.code}: ${p.msg}");

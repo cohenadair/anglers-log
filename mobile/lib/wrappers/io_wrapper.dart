@@ -10,4 +10,9 @@ class IoWrapper {
 
   Directory directory(String path) => Directory(path);
   File file(String path) => File(path);
+
+  Future<bool> isConnected() async {
+    // A quick DNS lookup will tell us if there's a current internet connection.
+    return (await InternetAddress.lookup("example.com")).isNotEmpty;
+  }
 }

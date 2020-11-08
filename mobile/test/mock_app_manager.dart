@@ -19,6 +19,8 @@ import 'package:mobile/wrappers/file_picker_wrapper.dart';
 import 'package:mobile/wrappers/image_compress_wrapper.dart';
 import 'package:mobile/wrappers/image_picker_wrapper.dart';
 import 'package:mobile/wrappers/io_wrapper.dart';
+import 'package:mobile/wrappers/mail_sender_wrapper.dart';
+import 'package:mobile/wrappers/package_info_wrapper.dart';
 import 'package:mobile/wrappers/path_provider_wrapper.dart';
 import 'package:mobile/wrappers/photo_manager_wrapper.dart';
 import 'package:mockito/mockito.dart';
@@ -46,6 +48,8 @@ class MockFilePickerWrapper extends Mock implements FilePickerWrapper {}
 class MockImageCompressWrapper extends Mock implements ImageCompressWrapper {}
 class MockImagePickerWrapper extends Mock implements ImagePickerWrapper {}
 class MockIoWrapper extends Mock implements IoWrapper {}
+class MockMailSenderWrapper extends Mock implements MailSenderWrapper {}
+class MockPackageInfoWrapper extends Mock implements PackageInfoWrapper {}
 class MockPathProviderWrapper extends Mock implements PathProviderWrapper {}
 class MockPhotoManagerWrapper extends Mock implements PhotoManagerWrapper {}
 
@@ -70,6 +74,8 @@ class MockAppManager extends Mock implements AppManager {
   MockImageCompressWrapper mockImageCompressWrapper;
   MockImagePickerWrapper mockImagePickerWrapper;
   MockIoWrapper mockIoWrapper;
+  MockMailSenderWrapper mockMailSenderWrapper;
+  MockPackageInfoWrapper mockPackageInfoWrapper;
   MockPathProviderWrapper mockPathProviderWrapper;
   MockPhotoManagerWrapper mockPhotoManagerWrapper;
 
@@ -94,6 +100,8 @@ class MockAppManager extends Mock implements AppManager {
     bool mockImageCompressWrapper = false,
     bool mockImagePickerWrapper = false,
     bool mockIoWrapper = false,
+    bool mockMailSenderWrapper = false,
+    bool mockPackageInfoWrapper = false,
     bool mockPathProviderWrapper = false,
     bool mockPhotoManagerWrapper = false,
   }) {
@@ -194,6 +202,16 @@ class MockAppManager extends Mock implements AppManager {
     if (mockIoWrapper) {
       this.mockIoWrapper = MockIoWrapper();
       when(ioWrapper).thenReturn(this.mockIoWrapper);
+    }
+
+    if (mockMailSenderWrapper) {
+      this.mockMailSenderWrapper = MockMailSenderWrapper();
+      when(mailSenderWrapper).thenReturn(this.mockMailSenderWrapper);
+    }
+
+    if (mockPackageInfoWrapper) {
+      this.mockPackageInfoWrapper = MockPackageInfoWrapper();
+      when(packageInfoWrapper).thenReturn(this.mockPackageInfoWrapper);
     }
 
     if (mockPathProviderWrapper) {
