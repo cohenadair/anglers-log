@@ -13,7 +13,7 @@ class BaitCategoryListPage extends StatelessWidget {
   BaitCategoryListPage() : onPicked = null;
 
   BaitCategoryListPage.picker({
-    this.onPicked,
+    @required this.onPicked,
   }) : assert(onPicked != null);
 
   bool get _picking => onPicked != null;

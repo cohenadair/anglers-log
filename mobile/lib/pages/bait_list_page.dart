@@ -23,7 +23,7 @@ class BaitListPage extends StatefulWidget {
         initialValues = null;
 
   BaitListPage.picker({
-    this.onPicked,
+    @required this.onPicked,
     this.multiPicker = false,
     this.initialValues = const {},
   }) : assert(onPicked != null);
@@ -45,7 +45,7 @@ class _BaitListPageState extends State<BaitListPage> {
       titleBuilder: _picking
           ? (_) => Text(Strings.of(context).baitListPagePickerTitle)
           : (baits) => Text(format(Strings.of(context).baitListPageTitle,
-              [baits.length])),
+              [baits.where((b) => b is Bait).length])),
       forceCenterTitle: !_picking,
       searchDelegate: ManageableListPageSearchDelegate(
         hint: Strings.of(context).baitListPageSearchHint,
@@ -133,6 +133,8 @@ class _BaitListPageState extends State<BaitListPage> {
       }
 
       result.add(category);
+      map[category.id]
+          .sort((Bait lhs, Bait rhs) => lhs.name.compareTo(rhs.name));
       result.addAll(map[category.id]);
     }
 

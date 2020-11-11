@@ -11,7 +11,11 @@ import 'package:mobile/res/color.dart';
 import 'package:mobile/utils/date_time_utils.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
+import 'package:photo_manager/photo_manager.dart';
 import 'package:provider/provider.dart';
+
+class MockAssetEntity extends Mock implements AssetEntity {}
+class MockAssetPathEntity extends Mock implements AssetPathEntity {}
 
 class MockNavigatorObserver extends Mock implements NavigatorObserver {}
 
@@ -82,6 +86,23 @@ Future<BuildContext> buildContext(WidgetTester tester, {
     appManager: appManager,
   ));
   return context;
+}
+
+MockAssetEntity createMockAssetEntity({
+  @required String fileName,
+  DateTime dateTime,
+  LatLng latLngAsync,
+  LatLng latLngLegacy,
+}) {
+  var entity = MockAssetEntity();
+  when(entity.id).thenReturn(fileName);
+  when(entity.createDateTime).thenReturn(dateTime ?? DateTime.now());
+  when(entity.thumbData).thenAnswer((_) =>
+      Future.value(File("test/resources/$fileName").readAsBytesSync()));
+  when(entity.latlngAsync()).thenAnswer((_) => Future.value(latLngAsync));
+  when(entity.latitude).thenReturn(latLngLegacy?.latitude);
+  when(entity.longitude).thenReturn(latLngLegacy?.longitude);
+  return entity;
 }
 
 T findFirst<T>(WidgetTester tester) => tester.firstWidget(find.byType(T)) as T;

@@ -11,29 +11,9 @@ import 'package:photo_manager/photo_manager.dart';
 import '../mock_app_manager.dart';
 import '../test_utils.dart';
 
-class MockAssetEntity extends Mock implements AssetEntity {}
-class MockAssetPathEntity extends Mock implements AssetPathEntity {}
-
 main() {
   MockAppManager appManager;
   MockAssetPathEntity allAlbum;
-
-  MockAssetEntity createMockAssetEntity({
-    @required String fileName,
-    DateTime dateTime,
-    LatLng latLngAsync,
-    LatLng latLngLegacy,
-  }) {
-    var entity = MockAssetEntity();
-    when(entity.id).thenReturn(fileName);
-    when(entity.createDateTime).thenReturn(dateTime ?? DateTime.now());
-    when(entity.thumbData).thenAnswer((_) =>
-        Future.value(File("test/resources/$fileName").readAsBytesSync()));
-    when(entity.latlngAsync()).thenAnswer((_) => Future.value(latLngAsync));
-    when(entity.latitude).thenReturn(latLngLegacy?.latitude);
-    when(entity.longitude).thenReturn(latLngLegacy?.longitude);
-    return entity;
-  }
 
   setUp(() {
     appManager = MockAppManager(

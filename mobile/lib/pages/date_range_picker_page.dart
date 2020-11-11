@@ -97,7 +97,7 @@ class _DateRangePickerPageState extends State<DateRangePickerPage> {
     );
 
     if (pickedRange == null) {
-      return widget.initialValue;
+      return;
     }
 
     DateTime endDate;

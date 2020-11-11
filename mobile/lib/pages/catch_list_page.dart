@@ -109,12 +109,8 @@ class CatchListPage extends StatelessWidget {
     FishingSpot fishingSpot =
         fishingSpotManager.entity(cat.fishingSpotId);
     if (fishingSpot != null && isNotEmpty(fishingSpot.name)) {
-      // Use fishing spot as subtitle if available.
-      subtitle2 = SubtitleLabel(fishingSpot.name ?? formatLatLng(
-        context: context,
-        lat: fishingSpot.lat,
-        lng: fishingSpot.lng,
-      ));
+      // Use fishing spot name as subtitle if available.
+      subtitle2 = SubtitleLabel(fishingSpot.name);
     } else {
       // Fallback on bait as a subtitle.
       Bait bait = baitManager.entity(cat.baitId);
