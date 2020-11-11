@@ -8,7 +8,12 @@ Anglers' Log 2.0 Beta Testers
 * Terry Ng - tng@truedealemployment.com
 * Steve Book - stevebook66@gmail.com
 * Mark Zulinski - zulinskis@gmail.com
+* Dov - dovfeder@optonline.net
+
+### Donators
+* Dov - dovfeder@optonline.net
 
 ## Android
 * batchelor96@aol.com
 * Michael Beam - mikebeam39@gmail.com
+* Willy Lin - willy_lin@msn.com
