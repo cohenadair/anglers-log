@@ -74,8 +74,10 @@ abstract class EntityManager<T extends GeneratedMessage>
   }
 
   List<T> filteredList(String filter) {
-    return list().where((e) => isEmpty(filter) || matchesFilter(id(e), filter))
-        .toList();
+    if (isEmpty(filter)) {
+      return list();
+    }
+    return list().where((e) => matchesFilter(id(e), filter)).toList();
   }
 
   /// Clears the [Entity] memory collection. This method assumes the database
@@ -154,7 +156,7 @@ abstract class EntityManager<T extends GeneratedMessage>
     notify((listener) => listener.onClear());
   }
 
-  SimpleEntityListener _addSimpleListener({
+  SimpleEntityListener addSimpleListener({
     void Function(T entity) onDelete,
     VoidCallback onAddOrUpdate,
     VoidCallback onClear,
@@ -200,13 +202,13 @@ class _EntityListenerBuilderState extends State<EntityListenerBuilder> {
   void initState() {
     super.initState();
 
-    widget.managers.forEach((manager) => {
-      _listeners.add(manager._addSimpleListener(
+    widget.managers.forEach((manager) =>
+      _listeners.add(manager.addSimpleListener(
         onDelete: widget.onDeleteEnabled ? (_) => _update() : null,
         onAddOrUpdate: _update,
         onClear: _update,
       ))
-    });
+    );
   }
 
   @override
@@ -222,6 +224,8 @@ class _EntityListenerBuilderState extends State<EntityListenerBuilder> {
   Widget build(BuildContext context) => widget.builder(context);
 
   void _update() {
+    // Called outside of setState because it's likely the onUpdate callback
+    // calls setState for the parent widget.
     widget.onUpdate?.call();
     setState(() {});
   }

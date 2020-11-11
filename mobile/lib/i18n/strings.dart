@@ -162,6 +162,8 @@ class Strings {
   String get reportSummaryViewBaits => _string("reportSummary_viewBaits");
   String get reportSummaryCatchesPerBaitDescription => _string("reportSummary_catchesPerBaitDescription");
   String get reportSummarySpeciesTitle => _string("reportSummary_speciesTitle");
+  String get reportSummaryBaitsPerSpeciesDescription => _string("reportSummary_baitsPerSpeciesDescription");
+  String get reportSummaryFishingSpotsPerSpeciesDescription => _string("reportSummary_fishingSpotsPerSpeciesDescription");
 
   String get dateRangePickerPageTitle => _string("dateRangePickerPage_title");
 
@@ -173,6 +175,7 @@ class Strings {
   String get mapPageDeleteFishingSpot => _string("mapPage_deleteFishingSpot");
   String get mapPageDeleteFishingSpotSingular => _string("mapPage_deleteFishingSpotSingular");
   String get mapPageDeleteFishingSpotNoName => _string("mapPage_deleteFishingSpotNoName");
+  String get mapPageDeleteFishingSpotNoNameSingular => _string("mapPage_deleteFishingSpotNoNameSingular");
   String get mapPageAddCatch => _string("mapPage_addCatch");
   String get mapPageSearchHint => _string("mapPage_searchHint");
   String get mapPageNoSearchResults => _string("mapPage_noSearchResults");
@@ -211,7 +214,8 @@ class Strings {
   String get speciesListPageTitle => _string("speciesListPage_title");
   String get speciesListPagePickerTitle => _string("speciesListPage_pickerTitle");
   String get speciesListPageConfirmDelete => _string("speciesListPage_confirmDelete");
-  String get speciesListPageCatchDeleteError => _string("speciesListPage_catchDeleteError");
+  String get speciesListPageCatchDeleteErrorSingular => _string("speciesListPage_catchDeleteErrorSingular");
+  String get speciesListPageCatchDeleteErrorPlural => _string("speciesListPage_catchDeleteErrorPlural");
   String get speciesListPageSearchHint => _string("speciesListPage_searchHint");
   String get speciesListPageNoSearchResults => _string("speciesListPage_noSearchResults");
 
@@ -219,7 +223,8 @@ class Strings {
   String get fishingSpotPickerPageHint => _string("fishingSpotPickerPage_hint");
 
   String get fishingSpotListPageTitle => _string("fishingSpotListPage_title");
-  String get fishingSpotListPagePickerTitle => _string("fishingSpotListPage_pickerTitle");
+  String get fishingSpotListPageMultiPickerTitle => _string("fishingSpotListPage_multiPickerTitle");
+  String get fishingSpotListPageSinglePickerTitle => _string("fishingSpotListPage_singlePickerTitle");
   String get fishingSpotListPageSearchHint => _string("fishingSpotListPage_searchHint");
   String get fishingSpotListPageNoSearchResults => _string("fishingSpotListPage_noSearchResults");
 

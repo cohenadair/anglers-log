@@ -318,6 +318,11 @@ class AppBarDropdownItem<T> extends DropdownMenuItem<T> {
        );
 }
 
+/// A widget that shows a list of horizontal [Chip] widgets that wrap vertically
+/// when there is no longer enough horizontal space.
+///
+/// This widget should be places inside some kind of scroll view, otherwise
+/// it could overflow its container.
 class ChipWrap extends StatelessWidget {
   final Set<String> items;
 
@@ -325,6 +330,10 @@ class ChipWrap extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (items.isEmpty) {
+      return Empty();
+    }
+
     return Wrap(
       spacing: paddingWidgetSmall,
       runSpacing: paddingWidgetSmall,

@@ -3,12 +3,13 @@ import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/pages/picker_page.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/widgets/list_item.dart';
+import 'package:mobile/widgets/radio_input.dart';
 import 'package:mobile/widgets/text.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:quiver/strings.dart';
 
 /// A generic picker widget for selecting items from a list. This should be used
-/// in place of a [DropdownButton] when there are a lot of options. If multiple,
+/// in place of a [RadioInput] when there are a lot of options. If multiple,
 /// items can be picked, use [MultiListPickerInput].
 ///
 /// If [title] is not provided, [value] is rendered at the beginning of the
@@ -27,11 +28,11 @@ class ListPickerInput extends StatelessWidget {
     this.value,
     this.enabled = true,
     this.onTap,
-  }) : assert(title != null || value != null);
+  }) : assert(isNotEmpty(title) || isNotEmpty(value));
 
   Widget build(BuildContext context) {
     Widget titleWidget;
-    if (title != null) {
+    if (isNotEmpty(title)) {
       titleWidget = Label(title);
     } else {
       titleWidget = Label(value);
@@ -55,7 +56,7 @@ class ListPickerInput extends StatelessWidget {
   }
 
   Widget _buildSingleDetail(BuildContext context) {
-    if (title == null || isEmpty(value)) {
+    if (isEmpty(title)) {
       // If there's no title widget, the value widget will render at the
       // start of the row.
       return Empty();
@@ -63,7 +64,8 @@ class ListPickerInput extends StatelessWidget {
 
     return Padding(
       padding: insetsRightWidgetSmall,
-      child: SecondaryLabel(value ?? Strings.of(context).inputNotSelected),
+      child: SecondaryLabel(isEmpty(value)
+          ? Strings.of(context).inputNotSelected : value),
     );
   }
 }

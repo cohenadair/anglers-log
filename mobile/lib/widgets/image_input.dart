@@ -5,7 +5,6 @@ import 'package:mobile/res/dimen.dart';
 import 'package:mobile/utils/page_utils.dart';
 import 'package:mobile/widgets/text.dart';
 import 'package:mobile/widgets/widget.dart';
-import 'package:photo_manager/photo_manager.dart';
 
 /// An input widget that allows selection of one or more photos, as well as
 /// taking a photo from the device's camera.
@@ -13,23 +12,28 @@ class ImageInput extends StatelessWidget {
   final bool enabled;
   final bool allowsMultipleSelection;
   final List<PickedImage> currentImages;
-  final Function(List<PickedImage>) onImagesPicked;
+  final void Function(List<PickedImage>) onImagesPicked;
+  final Future<bool> Function() requestPhotoPermission;
 
   ImageInput({
+    @required this.onImagesPicked,
+    @required this.requestPhotoPermission,
     this.enabled = true,
     this.allowsMultipleSelection = true,
     List<PickedImage> initialImages = const [],
-    @required this.onImagesPicked,
   }) : assert(onImagesPicked != null),
        assert(initialImages != null),
+       assert(requestPhotoPermission != null),
        currentImages = initialImages;
 
   ImageInput.single({
-    @required enabled,
+    @required Future<bool> Function() requestPhotoPermission,
+    bool enabled,
     PickedImage currentImage,
     @required Function(PickedImage) onImagePicked,
   }) : this(
-    enabled: enabled,
+    requestPhotoPermission: requestPhotoPermission,
+    enabled: enabled ?? true,
     allowsMultipleSelection: false,
     initialImages: currentImage == null ? [] : [currentImage],
     onImagesPicked: (images) =>
@@ -42,25 +46,18 @@ class ImageInput extends StatelessWidget {
       enabled: enabled,
       child: InkWell(
         onTap: enabled ? () async {
-          if (!(await PhotoManager.requestPermission())) {
+          if (!(await requestPhotoPermission())) {
             return;
           }
 
           push(context, ImagePickerPage(
             allowsMultipleSelection: allowsMultipleSelection,
             initialImages: currentImages,
-            onImagesPicked: (context, images) {
-              onImagesPicked(images);
-            },
+            onImagesPicked: (_, images) => onImagesPicked(images),
           ));
         } : null,
         child: Padding(
-          padding: EdgeInsets.only(
-            left: paddingDefault,
-            right: enabled ? paddingDefault : 0,
-            top: paddingDefault,
-            bottom: paddingDefault,
-          ),
+          padding: insetsDefault,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[

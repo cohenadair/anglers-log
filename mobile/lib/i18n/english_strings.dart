@@ -126,6 +126,8 @@ Map<String, Map<String, String>> get englishStrings => {
     "reportSummary_viewBaits" : "View all baits",
     "reportSummary_catchesPerBaitDescription" : "Viewing number of catches per bait.",
     "reportSummary_speciesTitle" : "Species Summary",
+    "reportSummary_baitsPerSpeciesDescription" : "Viewing number of catches per species per bait.",
+    "reportSummary_fishingSpotsPerSpeciesDescription" : "Viewing number of catches per species per fishing spot.",
 
     "dateRangePickerPage_title" : "Select Date Range",
 
@@ -140,6 +142,7 @@ Map<String, Map<String, String>> get englishStrings => {
     "mapPage_deleteFishingSpot" : "%s is associated with %s catches; are you sure you want to delete it? This cannot be undone.",
     "mapPage_deleteFishingSpotSingular" : "%s is associated with %s catch; are you sure you want to delete it? This cannot be undone.",
     "mapPage_deleteFishingSpotNoName" : "This fishing spot is associated with %s catches; are you sure you want to delete it? This cannot be undone.",
+    "mapPage_deleteFishingSpotNoNameSingular" : "This fishing spot is associated with %s catch; are you sure you want to delete it? This cannot be undone.",
     "mapPage_addCatch" : "Add Catch",
     "mapPage_searchHint" : "Search fishing spots",
     "mapPage_noSearchResults" : "No fishing spots found",
@@ -192,7 +195,8 @@ Map<String, Map<String, String>> get englishStrings => {
     "speciesListPage_title" : "Species (%s)",
     "speciesListPage_pickerTitle" : "Select Species",
     "speciesListPage_confirmDelete" : "%s is associated with 0 catches; are you sure you want to delete it? This cannot be undone.",
-    "speciesListPage_catchDeleteError" : "%s is associated with %s catches and cannot be deleted.",
+    "speciesListPage_catchDeleteErrorSingular" : "%s is associated with 1 catch and cannot be deleted.",
+    "speciesListPage_catchDeleteErrorPlural" : "%s is associated with %s catches and cannot be deleted.",
     "speciesListPage_searchHint" : "Search species",
     "speciesListPage_noSearchResults" : "No species found",
 
@@ -200,7 +204,8 @@ Map<String, Map<String, String>> get englishStrings => {
     "fishingSpotPickerPage_hint" : "Drag the map to use exact coordinates, or select an existing fishing spot.",
 
     "fishingSpotListPage_title" : "Fishing Spots (%s)",
-    "fishingSpotListPage_pickerTitle" : "Select Fishing Spots",
+    "fishingSpotListPage_multiPickerTitle" : "Select Fishing Spots",
+    "fishingSpotListPage_singlePickerTitle" : "Select Fishing Spot",
     "fishingSpotListPage_searchHint" : "Search fishing spots",
     "fishingSpotListPage_noSearchResults" : "No fishing spots found",
 

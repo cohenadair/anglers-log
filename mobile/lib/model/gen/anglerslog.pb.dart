@@ -51,7 +51,7 @@ class CustomEntity extends $pb.GeneratedMessage {
     ..aOM<Id>(1, 'id', subBuilder: Id.create)
     ..aOS(2, 'name')
     ..aOS(3, 'description')
-    ..e<CustomEntity_Type>(4, 'type', $pb.PbFieldType.OE, defaultOrMaker: CustomEntity_Type.UNKNOWN, valueOf: CustomEntity_Type.valueOf, enumValues: CustomEntity_Type.values)
+    ..e<CustomEntity_Type>(4, 'type', $pb.PbFieldType.OE, defaultOrMaker: CustomEntity_Type.BOOL, valueOf: CustomEntity_Type.valueOf, enumValues: CustomEntity_Type.values)
     ..hasRequiredFields = false
   ;
 

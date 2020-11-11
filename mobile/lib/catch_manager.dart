@@ -15,6 +15,7 @@ import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/utils/string_utils.dart';
 import 'package:provider/provider.dart';
 import 'package:quiver/strings.dart';
+import 'package:quiver/time.dart';
 
 class CatchManager extends EntityManager<Catch> {
   static CatchManager of(BuildContext context) =>
@@ -166,15 +167,14 @@ class CatchManager extends EntityManager<Catch> {
   }
 
   String deleteMessage(BuildContext context, Catch cat) {
-    if (cat == null) {
-      return null;
-    }
+    assert(context != null);
+    assert(cat != null);
 
     Species species = _speciesManager.entity(cat.speciesId);
     String timeString = formatTimestamp(context, cat.timestamp);
     String name;
     if (species == null) {
-      name = "$timeString}";
+      name = "($timeString)";
     } else {
       name = "${species.name} ($timeString)";
     }

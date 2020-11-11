@@ -13,7 +13,7 @@ class BaitCategoryListPage extends StatelessWidget {
   BaitCategoryListPage() : onPicked = null;
 
   BaitCategoryListPage.picker({
-    this.onPicked,
+    @required this.onPicked,
   }) : assert(onPicked != null);
 
   bool get _picking => onPicked != null;
@@ -45,7 +45,7 @@ class BaitCategoryListPage extends StatelessWidget {
         listenerManagers: [ baitCategoryManager ],
         loadItems: (query) =>
             baitCategoryManager.listSortedByName(filter: query),
-        deleteText: (context, category) =>
+        deleteWidget: (context, category) =>
             Text(baitCategoryManager.deleteMessage(context, category)),
         deleteItem: (context, category) =>
             baitCategoryManager.delete(category.id),

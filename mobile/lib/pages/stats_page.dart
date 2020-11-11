@@ -62,12 +62,20 @@ class _StatsPageState extends State<StatsPage> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(_currentReport.title(context)),
+            _buildDropdownLabel(context),
             DropdownIcon(),
           ],
         ),
       ),
     );
+  }
+
+  Widget _buildDropdownLabel(BuildContext context) {
+    if (_currentReport is OverviewReport) {
+      return Text(_currentReport.title(context));
+    } else {
+      return Text(_currentReport.name);
+    }
   }
 
   Widget _buildBody(BuildContext context) {
@@ -85,7 +93,9 @@ class _StatsPageState extends State<StatsPage> {
     if (!_summaryReportManager.entityExists(_currentReport.id)
         && !_comparisonReportManager.entityExists(_currentReport.id))
     {
+      setState(() {
         _currentReport = OverviewReport();
+      });
     }
   }
 }

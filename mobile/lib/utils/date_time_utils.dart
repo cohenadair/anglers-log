@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:mobile/app_manager.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/model/gen/google/protobuf/timestamp.pb.dart';
 import 'package:mobile/utils/string_utils.dart';
@@ -139,7 +140,7 @@ class DisplayDateRange {
   static final thisWeek = DisplayDateRange._(
     id: "thisWeek",
     getValue: (DateTime now) => DateRange(
-      startDate: getStartOfWeek(now),
+      startDate: startOfWeek(now),
       endDate: now,
     ),
     title: (context) => Strings.of(context).analysisDurationThisWeek,
@@ -148,7 +149,7 @@ class DisplayDateRange {
   static final thisMonth = DisplayDateRange._(
     id: "thisMonth",
     getValue: (DateTime now) => DateRange(
-      startDate: getStartOfMonth(now),
+      startDate: startOfMonth(now),
       endDate: now,
     ),
     title: (context) => Strings.of(context).analysisDurationThisMonth,
@@ -157,7 +158,7 @@ class DisplayDateRange {
   static final thisYear = DisplayDateRange._(
     id: "thisYear",
     getValue: (DateTime now) => DateRange(
-      startDate: getStartOfYear(now),
+      startDate: startOfYear(now),
       endDate: now,
     ),
     title: (context) => Strings.of(context).analysisDurationThisYear,
@@ -166,7 +167,7 @@ class DisplayDateRange {
   static final lastWeek = DisplayDateRange._(
     id: "lastWeek",
     getValue: (DateTime now) {
-      DateTime endOfLastWeek = getStartOfWeek(now);
+      DateTime endOfLastWeek = startOfWeek(now);
       DateTime startOfLastWeek = endOfLastWeek.subtract(Duration(
           days: DateTime.daysPerWeek),
       );
@@ -178,7 +179,7 @@ class DisplayDateRange {
   static final lastMonth = DisplayDateRange._(
     id: "lastMonth",
     getValue: (DateTime now) {
-      DateTime endOfLastMonth = getStartOfMonth(now);
+      DateTime endOfLastMonth = startOfMonth(now);
       int year = now.year;
       int month = now.month - 1;
       if (month < DateTime.january) {
@@ -197,7 +198,7 @@ class DisplayDateRange {
     id: "lastYear",
     getValue: (DateTime now) => DateRange(
       startDate: DateTime(now.year - 1),
-      endDate: getStartOfYear(now),
+      endDate: startOfYear(now),
     ),
     title: (context) => Strings.of(context).analysisDurationLastYear,
   );
@@ -301,7 +302,8 @@ class DisplayDateRange {
     getTitle: (_) => formatDateRange(dateRange),
   );
 
-  DateRange get value => getValue(DateTime.now());
+  DateRange value(BuildContext context) =>
+      getValue(AppManager.of(context).timeManager.currentDateTime);
 
   @override
   bool operator ==(other) {
@@ -374,8 +376,8 @@ bool isWithinOneWeek(DateTime a, DateTime b) {
 /// Due to the lack of granularity in [TimeOfDay], the seconds and milliseconds
 /// value of the result are that of the given [DateTime].
 DateTime combine(DateTime dateTime, TimeOfDay timeOfDay) {
-  return DateTime(dateTime.year, dateTime.month, dateTime.day, timeOfDay.hour,
-      timeOfDay.minute, dateTime.second, dateTime.millisecond);
+  return DateTime(dateTime.year, dateTime.month, dateTime.day,
+      timeOfDay.hour, timeOfDay.minute, dateTime.second, dateTime.millisecond);
 }
 
 /// Returns a new [DateTime] object, with time properties more granular than
@@ -393,19 +395,19 @@ DateTime dateTimeToDayAccuracy(DateTime dateTime) {
 
 /// Returns a [DateTime] representing the start of the week to which `now`
 /// belongs.
-DateTime getStartOfWeek(DateTime now) {
+DateTime startOfWeek(DateTime now) {
   return dateTimeToDayAccuracy(now).subtract(Duration(days: now.weekday - 1));
 }
 
 /// Returns a [DateTime] representing the start of the month to which `now`
 /// belongs.
-DateTime getStartOfMonth(DateTime now) {
+DateTime startOfMonth(DateTime now) {
   return DateTime(now.year, now.month);
 }
 
 /// Returns a [DateTime] representing the start of the year to which `now`
 /// belongs.
-DateTime getStartOfYear(DateTime now) {
+DateTime startOfYear(DateTime now) {
   return DateTime(now.year);
 }
 
@@ -442,19 +444,15 @@ String formatTimeOfDay(BuildContext context, TimeOfDay time) {
 ///   - Monday at 2:35 PM
 ///   - Jan. 8 at 2:35 PM
 ///   - Dec. 8, 2018 at 2:35 PM
-String formatDateTime(BuildContext context, DateTime dateTime, [
-  clock = const Clock(),
-]) {
+String formatDateTime(BuildContext context, DateTime dateTime) {
   return format(Strings.of(context).dateTimeFormat, [
-    formatDateAsRecent(context: context, dateTime: dateTime, clock: clock),
+    formatDateAsRecent(context, dateTime),
     formatTimeOfDay(context, TimeOfDay.fromDateTime(dateTime)),
   ]);
 }
 
-String formatTimestamp(BuildContext context, Timestamp timestamp, [
-  clock = const Clock(),
-]) {
-  return formatDateTime(context, timestamp.toDateTime(), clock);
+String formatTimestamp(BuildContext context, Timestamp timestamp) {
+  return formatDateTime(context, timestamp.toDateTime());
 }
 
 /// Returns a [Timestamp] as a searchable [String]. This value should not be
@@ -463,11 +461,9 @@ String formatTimestamp(BuildContext context, Timestamp timestamp, [
 ///
 /// The value returned is just a concatenation of different ways of representing
 /// a date and time.
-String timestampToSearchString(BuildContext context, Timestamp timestamp, [
-  clock = const Clock(),
-]) {
+String timestampToSearchString(BuildContext context, Timestamp timestamp) {
   DateTime dateTime = timestamp.toDateTime();
-  return "${formatDateTime(context, dateTime, clock)} "
+  return "${formatDateTime(context, dateTime)} "
       "${DateFormat(monthDayYearFormatFull).format(dateTime)}";
 }
 
@@ -490,12 +486,8 @@ String formatDateRange(DateRange dateRange) {
 ///   - Monday
 ///   - Jan. 8
 ///   - Dec. 8, 2018
-String formatDateAsRecent({
-  @required BuildContext context,
-  @required DateTime dateTime,
-  clock = const Clock(),
-}) {
-  final DateTime now = clock.now();
+String formatDateAsRecent(BuildContext context, DateTime dateTime) {
+  final DateTime now = AppManager.of(context).timeManager.currentDateTime;
 
   if (isSameDate(dateTime, now)) {
     // Today.

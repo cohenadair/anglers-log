@@ -146,8 +146,11 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
     Bait newBait = Bait()
       ..id = _oldBait?.id ?? randomId()
       ..name = _nameController.value
-      ..baitCategoryId = _baitCategoryController.value?.id ?? []
       ..customEntityValues.addAll(entityValuesFromMap(customFieldValueMap));
+
+    if (_baitCategoryController.value != null) {
+      newBait.baitCategoryId = _baitCategoryController.value.id;
+    }
 
     if (_baitManager.duplicate(newBait)) {
       showErrorDialog(

@@ -62,12 +62,14 @@ class ExpandableChart<T> extends StatelessWidget {
 
 class Series<T> {
   final Map<T, int> data;
+
+  /// Used as a title in the legend.
   final DisplayDateRange displayDateRange;
 
   Color _color;
 
   Series(this.data, this.displayDateRange)
-      : assert (data != null && data.isNotEmpty),
+      : assert(data != null && data.isNotEmpty),
         assert(displayDateRange != null);
 
   int get length => data.length;
@@ -217,7 +219,7 @@ class _ChartState<T> extends State<Chart<T>> {
   Widget _buildChart() {
     List<Widget> children = [];
 
-    // Get largest column value.
+    // Get largest row value.
     double maxValue = 0;
     for (Series series in _displayData) {
       int max = series.maxValue;
@@ -228,12 +230,12 @@ class _ChartState<T> extends State<Chart<T>> {
 
     double maxWidth = MediaQuery.of(context).size.width;
 
-    // For every unique NamedEntity in the series, create a child widget.
-    List<T> entities = _displayData.first.data.keys.toList();
-    for (T entity in entities) {
+    // For every unique item in the series, create a child widget.
+    List<T> items = _displayData.first.data.keys.toList();
+    for (T item in items) {
       for (Series series in _displayData) {
-        children.add(_buildChartRow(maxWidth, maxValue, entity, series,
-            series.data[entity],
+        children.add(_buildChartRow(maxWidth, maxValue, item, series,
+            series.data[item],
             series._color ?? Theme.of(context).primaryColor));
 
         // Add space between series rows.
@@ -242,7 +244,7 @@ class _ChartState<T> extends State<Chart<T>> {
       }
 
       // Add space between rows.
-      children.add(VerticalSpace(entity == entities.last ? 0 : paddingDefault));
+      children.add(VerticalSpace(item == items.last ? 0 : paddingDefault));
     }
 
     return Container(
@@ -255,7 +257,7 @@ class _ChartState<T> extends State<Chart<T>> {
     );
   }
 
-  Widget _buildChartRow(double maxWidth, double maxValue, T entity,
+  Widget _buildChartRow(double maxWidth, double maxValue, T item,
       Series<T> series, int value, Color color)
   {
     if (maxValue <= 0) {
@@ -263,10 +265,15 @@ class _ChartState<T> extends State<Chart<T>> {
       return Empty();
     }
 
+    // Value can be null here if, for example, item A exists in one series but
+    // not another.
+    value = value ?? 0;
+
     return InkWell(
       onTap: widget.onTapRow == null
           ? null
-          : () => widget.onTapRow.call(entity, series.displayDateRange.value),
+          : () => widget.onTapRow.call(item,
+              series.displayDateRange.value(context)),
       child: Stack(
         alignment: Alignment.centerLeft,
         children: [
@@ -283,7 +290,7 @@ class _ChartState<T> extends State<Chart<T>> {
           ),
           Padding(
             padding: insetsHorizontalWidgetTiny,
-            child: Label("${widget.labelBuilder(entity)} ($value)"),
+            child: Label("${widget.labelBuilder(item)} ($value)"),
           ),
         ],
       ),
@@ -291,7 +298,10 @@ class _ChartState<T> extends State<Chart<T>> {
   }
 
   Widget _buildViewAll() {
-    if (isEmpty(widget.viewAllTitle) || _maxRowCount <= _condensedRowCount) {
+    if (widget.showAll
+        || isEmpty(widget.viewAllTitle)
+        || _maxRowCount <= _condensedRowCount)
+    {
       return VerticalSpace(paddingWidgetSmall);
     }
 

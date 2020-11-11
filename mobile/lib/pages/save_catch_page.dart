@@ -12,7 +12,6 @@ import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/image_manager.dart';
 import 'package:mobile/log.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
-import 'package:mobile/pages/add_catch_journey.dart';
 import 'package:mobile/pages/bait_list_page.dart';
 import 'package:mobile/pages/editable_form_page.dart';
 import 'package:mobile/pages/fishing_spot_picker_page.dart';
@@ -21,6 +20,7 @@ import 'package:mobile/pages/species_list_page.dart';
 import 'package:mobile/preferences_manager.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/species_manager.dart';
+import 'package:mobile/time_manager.dart';
 import 'package:mobile/utils/map_utils.dart';
 import 'package:mobile/utils/page_utils.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
@@ -32,39 +32,36 @@ import 'package:mobile/widgets/list_picker_input.dart';
 import 'package:mobile/widgets/image_input.dart';
 import 'package:mobile/widgets/static_fishing_spot.dart';
 import 'package:mobile/widgets/widget.dart';
-
-/// A utility class to store properties picked in a catch journey.
-class CatchJourneyHelper {
-  List<PickedImage> images;
-  Species species;
-  FishingSpot fishingSpot;
-}
+import 'package:photo_manager/photo_manager.dart' as Pm;
 
 class SaveCatchPage extends StatefulWidget {
   /// If set, invoked when it's time to pop the page from the navigation stack.
   final VoidCallback popOverride;
 
-  /// Provides preselected values when displaying a [SaveCatchPage] from an
-  /// [AddCatchJourney].
-  final CatchJourneyHelper journeyHelper;
+  final List<PickedImage> images;
+  final Species species;
+  final FishingSpot fishingSpot;
 
   final Catch oldCatch;
 
-  SaveCatchPage()
-      : oldCatch = null,
-        popOverride = null,
-        journeyHelper = null;
+  /// A [Catch] cannot be created without first selecting a [Species] and
+  /// [FishingSpot], normally from an [AddCatchJourney] widget.
+  SaveCatchPage({
+    this.images = const [],
+    @required this.species,
+    @required this.fishingSpot,
+    this.popOverride,
+  }) : assert(images != null),
+       assert(species != null),
+       assert(fishingSpot != null),
+       oldCatch = null;
 
   SaveCatchPage.edit(this.oldCatch)
       : assert(oldCatch != null),
         popOverride = null,
-        journeyHelper = null;
-
-  SaveCatchPage.fromJourney({
-    this.popOverride,
-    @required this.journeyHelper,
-  }) : assert(journeyHelper != null),
-       oldCatch = null;
+        images = const [],
+        species = null,
+        fishingSpot = null;
 
   @override
   _SaveCatchPageState createState() => _SaveCatchPageState();
@@ -93,6 +90,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
   ImageManager get _imageManager => ImageManager.of(context);
   PreferencesManager get _preferencesManager => PreferencesManager.of(context);
   SpeciesManager get _speciesManager => SpeciesManager.of(context);
+  TimeManager get _timeManager => TimeManager.of(context);
 
   Catch get _oldCatch => widget.oldCatch;
 
@@ -114,10 +112,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
 
     _fields[_idTimestamp] = InputData(
       id: _idTimestamp,
-      controller: TimestampInputController(
-        date: DateTime.now(),
-        time: TimeOfDay.now(),
-      ),
+      controller: TimestampInputController(),
       label: (BuildContext context) =>
           Strings.of(context).saveCatchPageDateTimeLabel,
       removable: false,
@@ -157,33 +152,35 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
       showing: true,
     );
 
-    if (widget.journeyHelper != null) {
-      if (widget.journeyHelper.images.isNotEmpty) {
-        PickedImage image = widget.journeyHelper.images.first;
-        if (image.dateTime != null) {
-          _timestampController.date = image.dateTime;
-          _timestampController.time = TimeOfDay.fromDateTime(image.dateTime);
-        }
-      }
-      _speciesController.value = widget.journeyHelper.species;
-      _imagesController.value = widget.journeyHelper.images;
-      _fishingSpotController.value = widget.journeyHelper.fishingSpot;
-    }
-
     if (_editing) {
       _timestampController.value = _oldCatch.timestamp;
-      _speciesController.value =
-          _speciesManager.entity(_oldCatch.speciesId);
+      _speciesController.value = _speciesManager.entity(_oldCatch.speciesId);
       _baitController.value = _baitManager.entity(_oldCatch.baitId);
       _fishingSpotController.value =
           _fishingSpotManager.entity(_oldCatch.fishingSpotId);
       _customEntityValues = _oldCatch.customEntityValues;
       _imagesFuture = _pickedImagesForOldCatch;
+    } else {
+      if (widget.images.isNotEmpty) {
+        PickedImage image = widget.images.first;
+        if (image.dateTime != null) {
+          _timestampController.date = image.dateTime;
+          _timestampController.time = TimeOfDay.fromDateTime(image.dateTime);
+        }
+      }
+      _speciesController.value = widget.species;
+      _imagesController.value = widget.images;
+      _fishingSpotController.value = widget.fishingSpot;
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    _timestampController.date =
+        _timestampController.date ?? _timeManager.currentDateTime;
+    _timestampController.time =
+        _timestampController.time ?? _timeManager.currentTime;
+
     return EditableFormPage(
       title: Text(_editing
           ? Strings.of(context).saveCatchPageEditTitle
@@ -222,20 +219,18 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
         right: paddingDefault,
         bottom: paddingWidgetSmall,
       ),
-      child: DateTimePickerContainer(
+      child: DateTimePicker(
         datePicker: DatePicker(
+          context,
           initialDate: _timestampController.date,
           label: Strings.of(context).saveCatchPageDateLabel,
-          onChange: (DateTime newDate) {
-            _timestampController.date = newDate;
-          },
+          onChange: (newDate) => _timestampController.date = newDate,
         ),
         timePicker: TimePicker(
+          context,
           initialTime: _timestampController.time,
           label: Strings.of(context).saveCatchPageTimeLabel,
-          onChange: (TimeOfDay newTime) {
-            _timestampController.time = newTime;
-          },
+          onChange: (newTime) => _timestampController.time = newTime,
         ),
       ),
     );
@@ -278,9 +273,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
       return ListItem(
         title: Text(Strings.of(context).saveCatchPageFishingSpotLabel),
         trailing: RightChevronIcon(),
-        onTap: () {
-          _pushFishingSpotPicker();
-        },
+        onTap: _pushFishingSpotPicker,
       );
     }
 
@@ -323,6 +316,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
       future: _imagesFuture,
       builder: (context, images) {
         return ImageInput(
+          requestPhotoPermission: () => Pm.PhotoManager.requestPermission(),
           initialImages: _imagesController.value ?? [],
           onImagesPicked: (pickedImages) {
             setState(() {
@@ -342,11 +336,14 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
     Catch cat = Catch()
       ..id = _oldCatch?.id ?? randomId()
       ..timestamp = _timestampController.value
-      ..speciesId = _speciesController.value?.id ?? []
-      ..fishingSpotId = _fishingSpotController.value?.id ?? []
-      ..baitId = _baitController.value?.id ?? []
+      ..speciesId = _speciesController.value.id
+      ..fishingSpotId = _fishingSpotController.value.id
       ..customEntityValues.addAll(entityValuesFromMap(customFieldValueMap));
       // imageNames is set in _catchManager.addOrUpdate
+
+    if (_baitController.value != null) {
+      cat.baitId = _baitController.value.id;
+    }
 
     _catchManager.addOrUpdate(cat,
       fishingSpot: _fields[_idFishingSpot].controller.value,

@@ -22,7 +22,9 @@ class RadioInput extends StatefulWidget {
     this.title,
     this.initialSelectedIndex,
     this.padding,
-  });
+  }) : assert(optionCount != null),
+       assert(optionBuilder != null),
+       assert(onSelect != null);
 
   @override
   _RadioInputState createState() => _RadioInputState();

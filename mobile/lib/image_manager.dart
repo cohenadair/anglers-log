@@ -1,14 +1,16 @@
 import 'dart:io';
 import 'dart:typed_data';
+import 'dart:ui' as ui;
 
 import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:mobile/app_manager.dart';
 import 'package:mobile/catch_manager.dart';
 import 'package:mobile/log.dart';
+import 'package:mobile/wrappers/image_compress_wrapper.dart';
+import 'package:mobile/wrappers/io_wrapper.dart';
+import 'package:mobile/wrappers/path_provider_wrapper.dart';
 import 'package:path/path.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:quiver/collection.dart';
 import 'package:quiver/strings.dart';
@@ -18,6 +20,9 @@ import 'model/gen/anglerslog.pb.dart';
 class ImageManager {
   static ImageManager of(BuildContext context) =>
       Provider.of<AppManager>(context, listen: false).imageManager;
+
+  static final _dirNameImages = "images";
+  static final _dirNameThumbs = "thumbs";
 
   static const _debug = false;
   static const _log = Log("ImageManager");
@@ -32,30 +37,35 @@ class ImageManager {
 
   final AppManager _appManager;
 
-  ImageManagerDelegate _delegate;
+  String _imagePath;
+  String _cachePath;
 
   CatchManager get _catchManager => _appManager.catchManager;
+  ImageCompressWrapper get _imageCompressWrapper =>
+      _appManager.imageCompressWrapper;
+  IoWrapper get _ioWrapper => _appManager.ioWrapper;
+  PathProviderWrapper get _pathProviderWrapper =>
+      _appManager.pathProviderWrapper;
 
   ImageManager(this._appManager);
 
-  Future<void> initialize({
-    ImageManagerDelegate delegate,
-  }) async {
-    _delegate = delegate;
-    if (_delegate == null) {
-      _delegate = await ImageManagerDelegate.create();
-    }
+  Future<void> initialize() async {
+    String imagesPath = await _pathProviderWrapper.appDocumentsPath;
+    _imagePath = "$imagesPath/$_dirNameImages";
+
+    String cachePath = await _pathProviderWrapper.temporaryPath;
+    _cachePath = "$cachePath/$_dirNameThumbs";
 
     // Create directories if needed.
-    await _delegate.directory(_delegate.imagePath).create(recursive: true);
-    await _delegate.directory(_delegate.cachePath).create(recursive: true);
+    await _ioWrapper.directory(_imagePath).create(recursive: true);
+    await _ioWrapper.directory(_cachePath).create(recursive: true);
 
     // Cleanup images that are no longer used.
     await _clearStaleImages();
   }
 
   File _imageFile(String imageName) =>
-      _delegate.file("${_delegate.imagePath}/$imageName");
+      _ioWrapper.file("$_imagePath/$imageName");
 
   /// Returns encoded image data with the given [fileName] at the given [size].
   /// If an image of [size] does not exist in the cache, the full image is
@@ -145,8 +155,9 @@ class ImageManager {
       }
 
       // If the file already exists in the app's sandbox, don't copy it again.
-      if (file.path.contains(_delegate.imagePath) && await file.exists()) {
+      if (file.path.contains(_imagePath) && await file.exists()) {
         _log.d("File exists, nothing to do");
+        result.add(basename(file.path));
         continue;
       }
 
@@ -181,6 +192,23 @@ class ImageManager {
     return result;
   }
 
+  /// Returns a Dart [ui.Image] object with the given [fileName] and [size].
+  /// Returns null if the image doesn't exist.
+  Future<ui.Image> dartImage(BuildContext context, String fileName, double size)
+      async
+  {
+    Uint8List bytes = await image(context,
+      fileName: fileName,
+      size: size,
+    );
+
+    if (bytes == null || bytes.isEmpty) {
+      return null;
+    }
+
+    return (await (await ui.instantiateImageCodec(bytes)).getNextFrame()).image;
+  }
+
   Future<Uint8List> _compress(BuildContext context, File source, int quality,
       double size) async
   {
@@ -192,7 +220,7 @@ class ImageManager {
         double pixelRatio = MediaQuery.of(context).devicePixelRatio;
         pixels = size == null ? null : pixelRatio * size;
       }
-      intBytes = await _delegate.compress(source.path, quality,
+      intBytes = await _imageCompressWrapper.compress(source.path, quality,
           pixels?.round());
     } else {
       _log.e("Attempting to compress file that doesn't exist: "
@@ -230,10 +258,10 @@ class ImageManager {
     }
 
     // Create sized directory if it doesn't exist.
-    var sizePath = "${_delegate.cachePath}/${size.round()}";
-    await _delegate.directory(sizePath).create(recursive: true);
+    var sizePath = "$_cachePath/${size.round()}";
+    await _ioWrapper.directory(sizePath).create(recursive: true);
 
-    var thumbnail = _delegate.file("$sizePath/$fileName");
+    var thumbnail = _ioWrapper.file("$sizePath/$fileName");
     if (!await thumbnail.exists()) {
       if (_debug) {
         _log.d("Thumbnail does not exist in file system, writing to file...");
@@ -281,60 +309,24 @@ class ImageManager {
   /// Deletes images that are no longer used from memory cache and file
   /// system.
   Future<void> _clearStaleImages() async {
-    await _delegate.directory(_delegate.imagePath).list().forEach((entity) {
+    await _ioWrapper.directory(_imagePath).list().forEach((entity) {
       String name = basename(entity.path);
-
+      bool found = false;
       for (Catch cat in _catchManager.list()) {
         // Image found, continue on to the next image.
         if (cat.imageNames.contains(name)) {
+          found = true;
           break;
         }
       }
 
       // Image isn't found, delete it.
-      entity.deleteSync();
-      _thumbnails.remove(name);
-      _log.d("Deleted stale image $name");
+      if (!found) {
+        entity.deleteSync();
+        _thumbnails.remove(name);
+        _log.d("Deleted stale image $name");
+      }
     });
-  }
-}
-
-class ImageManagerDelegate {
-  static final _imagesDirName = "images";
-  static final _thumbnailsDirName = "thumbs";
-
-  static Future<ImageManagerDelegate> create() async {
-    var imagePath = (await getApplicationDocumentsDirectory()).path;
-    var cachePath = (await getTemporaryDirectory()).path;
-    return ImageManagerDelegate._("$cachePath/$_thumbnailsDirName",
-        "$imagePath/$_imagesDirName");
-  }
-
-  final String cachePath;
-  final String imagePath;
-
-  ImageManagerDelegate._(this.cachePath, this.imagePath);
-
-  Directory directory(String path) => Directory(path);
-  File file(String path) => File(path);
-
-  Future<Uint8List> compress(String path, int quality, int size) async {
-    // TODO: Compression freezes UI until finished.
-    // https://github.com/OpenFlutter/flutter_image_compress/issues/131
-    if (size == null) {
-      // Note that passing null minWidth/minHeight will not use the
-      // default values in compressWithFile, so we have to explicitly
-      // exclude minWidth/minHeight when we don't have a size.
-      return Uint8List.fromList(await FlutterImageCompress
-          .compressWithFile(path, quality: quality));
-    }
-
-    return Uint8List.fromList(await FlutterImageCompress.compressWithFile(
-      path,
-      quality: quality,
-      minWidth: size.round(),
-      minHeight: size.round(),
-    ));
   }
 }
 

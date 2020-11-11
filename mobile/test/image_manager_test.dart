@@ -4,6 +4,8 @@ import 'dart:typed_data';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/image_manager.dart';
+import 'package:mobile/model/gen/anglerslog.pb.dart';
+import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mockito/mockito.dart';
 
 import 'mock_app_manager.dart';
@@ -11,7 +13,7 @@ import 'test_utils.dart';
 
 class MockDirectory extends Mock implements Directory {}
 class MockFile extends Mock implements File {}
-class MockImageManagerDelegate extends Mock implements ImageManagerDelegate {}
+class MockFileSystemEntity extends Mock implements FileSystemEntity {}
 
 const _imagePath = "test/tmp_image";
 const _cachePath = "test/tmp_cache";
@@ -19,13 +21,15 @@ const _cachePath = "test/tmp_cache";
 void main() {
   MockAppManager appManager;
   MockDirectory directory;
-  MockImageManagerDelegate imageManagerDelegate;
 
   ImageManager imageManager;
 
   setUp(() async {
     appManager = MockAppManager(
       mockCatchManager: true,
+      mockIoWrapper: true,
+      mockImageCompressWrapper: true,
+      mockPathProviderWrapper: true,
     );
 
     when(appManager.mockCatchManager.list()).thenReturn([]);
@@ -33,13 +37,16 @@ void main() {
     directory = MockDirectory();
     when(directory.list()).thenAnswer((_) => Stream.empty());
 
-    imageManagerDelegate = MockImageManagerDelegate();
-    when(imageManagerDelegate.imagePath).thenReturn(_imagePath);
-    when(imageManagerDelegate.cachePath).thenReturn(_cachePath);
-    when(imageManagerDelegate.directory(any)).thenReturn(directory);
-    when(imageManagerDelegate.file(any)).thenReturn(MockFile());
-    when(imageManagerDelegate.compress(any, any, any)).thenAnswer((_) =>
-        Future.value(Uint8List.fromList([10, 11, 12])));
+    when(appManager.mockImageCompressWrapper.compress(any, any, any))
+        .thenAnswer((_) => Future.value(Uint8List.fromList([10, 11, 12])));
+
+    when(appManager.mockIoWrapper.directory(any)).thenReturn(directory);
+    when(appManager.mockIoWrapper.file(any)).thenReturn(MockFile());
+
+    when(appManager.mockPathProviderWrapper.appDocumentsPath)
+        .thenAnswer((_) => Future.value(_imagePath));
+    when(appManager.mockPathProviderWrapper.temporaryPath)
+        .thenAnswer((_) => Future.value(_cachePath));
 
     imageManager = ImageManager(appManager);
   });
@@ -47,7 +54,7 @@ void main() {
   testWidgets("Invalid fileName input to image method", (WidgetTester tester)
       async
   {
-    await imageManager.initialize(delegate: imageManagerDelegate);
+    await imageManager.initialize();
     BuildContext context = await buildContext(tester);
 
     // Empty/null.
@@ -55,7 +62,7 @@ void main() {
 
     var img = MockFile();
     when(img.exists()).thenAnswer((_) => Future.value(false));
-    when(imageManagerDelegate.file(any)).thenReturn(img);
+    when(appManager.mockIoWrapper.file(any)).thenReturn(img);
 
     // File doesn't exist.
     expect(await imageManager.image(context,
@@ -67,14 +74,14 @@ void main() {
   testWidgets("Error getting thumbnail returns full image",
       (WidgetTester tester) async
   {
-    await imageManager.initialize(delegate: imageManagerDelegate);
+    await imageManager.initialize();
     BuildContext context = await buildContext(tester);
 
     File img = MockFile();
     when(img.exists()).thenAnswer((_) => Future.value(true));
     when(img.readAsBytes()).thenAnswer((_) =>
         Future.value(Uint8List.fromList([1, 2, 3])));
-    when(imageManagerDelegate.file(any)).thenReturn(img);
+    when(appManager.mockIoWrapper.file(any)).thenReturn(img);
 
     // Empty/null.
     Uint8List bytes = await imageManager.image(context,
@@ -86,11 +93,10 @@ void main() {
   });
 
   testWidgets("Thumbnail cache", (WidgetTester tester) async {
-    await imageManager.initialize(delegate: imageManagerDelegate);
+    await imageManager.initialize();
 
     // Clear call counts.
-    verify(imageManagerDelegate.cachePath).called(1);
-    verify(imageManagerDelegate.imagePath).called(2);
+    verify(appManager.mockIoWrapper.directory(any)).called(3);
 
     BuildContext context = await buildContext(tester);
 
@@ -99,14 +105,15 @@ void main() {
     when(img.writeAsBytes(any)).thenAnswer((_) => Future.value(img));
     when(img.readAsBytes()).thenAnswer((_) =>
         Future.value(Uint8List.fromList([1, 2, 3])));
-    when(imageManagerDelegate.file("$_imagePath/image.jpg")).thenReturn(img);
+    when(appManager.mockIoWrapper.file("$_imagePath/images/image.jpg"))
+        .thenReturn(img);
 
     var thumb = MockFile();
     when(thumb.exists()).thenAnswer((_) => Future.value(false));
     when(thumb.writeAsBytes(any)).thenAnswer((_) => Future.value(thumb));
     when(thumb.readAsBytes()).thenAnswer((_) =>
         Future.value(Uint8List.fromList([1, 2, 3])));
-    when(imageManagerDelegate.file("$_cachePath/50/image.jpg"))
+    when(appManager.mockIoWrapper.file("$_cachePath/thumbs/50/image.jpg"))
         .thenReturn(thumb);
 
     // Cache does not include image; image should be compressed.
@@ -114,8 +121,9 @@ void main() {
       fileName: "image.jpg",
       size: 50,
     );
-    verify(imageManagerDelegate.cachePath).called(1);
-    verify(imageManagerDelegate.compress(any, any, any)).called(1);
+    verify(appManager.mockIoWrapper.directory(any)).called(1);
+    verify(appManager.mockImageCompressWrapper.compress(any, any, any))
+        .called(1);
     expect(bytes, isNotNull);
     expect(bytes, equals(Uint8List.fromList([1, 2, 3])));
 
@@ -124,12 +132,12 @@ void main() {
       fileName: "image.jpg",
       size: 50,
     );
-    verifyNever(imageManagerDelegate.cachePath);
+    verifyNever(appManager.mockIoWrapper.directory(any));
     expect(bytes, isNotNull);
     expect(bytes, equals(Uint8List.fromList([1, 2, 3])));
 
     // Clear memory cache by reinitializing manager.
-    imageManager.initialize(delegate: imageManagerDelegate);
+    imageManager.initialize();
 
     // Ensure thumbnail exists.
     when(thumb.exists()).thenAnswer((_) => Future.value(true));
@@ -138,14 +146,15 @@ void main() {
       fileName: "image.jpg",
       size: 50,
     );
-    verify(imageManagerDelegate.cachePath).called(1);
-    verifyNever(imageManagerDelegate.compress(any, any, any));
+    verify(appManager.mockIoWrapper.file("$_cachePath/thumbs/50/image.jpg"))
+        .called(1);
+    verifyNever(appManager.mockImageCompressWrapper.compress(any, any, any));
     expect(bytes, isNotNull);
     expect(bytes, equals(Uint8List.fromList([1, 2, 3])));
   });
 
   testWidgets("Get images", (WidgetTester tester) async {
-    await imageManager.initialize(delegate: imageManagerDelegate);
+    await imageManager.initialize();
     BuildContext context = await buildContext(tester);
 
     // Invalid input.
@@ -163,13 +172,15 @@ void main() {
     when(img0.exists()).thenAnswer((_) => Future.value(true));
     when(img0.readAsBytes()).thenAnswer((_) =>
         Future.value(Uint8List.fromList([1, 2, 3])));
-    when(imageManagerDelegate.file("$_imagePath/image0.jpg")).thenReturn(img0);
+    when(appManager.mockIoWrapper.file("$_imagePath/images/image0.jpg"))
+        .thenReturn(img0);
 
     File img1 = MockFile();
     when(img1.exists()).thenAnswer((_) => Future.value(false));
     when(img1.readAsBytes()).thenAnswer((_) =>
         Future.value(Uint8List.fromList([3, 2, 1])));
-    when(imageManagerDelegate.file("$_imagePath/image1.jpg")).thenReturn(img1);
+    when(appManager.mockIoWrapper.file("$_imagePath/images/image1.jpg"))
+        .thenReturn(img1);
 
     List<Uint8List> byteList = await imageManager.images(context,
         imageNames: ["image0.jpg", "image1.jpg"]);
@@ -197,11 +208,11 @@ void main() {
   });
 
   test("Normal saving images", () async {
-    await imageManager.initialize(delegate: imageManagerDelegate);
+    await imageManager.initialize();
 
     // Verify there no images are saved.
-    await imageManager.save([]);
-    verifyNever(imageManagerDelegate.compress(any, any, any));
+    expect(await imageManager.save([]), isEmpty);
+    verifyNever(appManager.mockImageCompressWrapper.compress(any, any, any));
 
     // Add some images.
     var img0 = MockFile();
@@ -209,7 +220,7 @@ void main() {
     when(img0.exists()).thenAnswer((_) => Future.value(true));
     when(img0.readAsBytes()).thenAnswer((_) =>
         Future.value(Uint8List.fromList([1, 2, 3])));
-    when(imageManagerDelegate.compress("image0.jpg", any, any))
+    when(appManager.mockImageCompressWrapper.compress("image0.jpg", any, any))
         .thenAnswer((_) => img0.readAsBytes());
 
     var img1 = MockFile();
@@ -217,11 +228,11 @@ void main() {
     when(img1.exists()).thenAnswer((_) => Future.value(true));
     when(img1.readAsBytes()).thenAnswer((_) =>
         Future.value(Uint8List.fromList([3, 2, 1])));
-    when(imageManagerDelegate.compress("image1.jpg", any, any))
+    when(appManager.mockImageCompressWrapper.compress("image1.jpg", any, any))
         .thenAnswer((_) => img1.readAsBytes());
 
     List<MockFile> addedImages = [];
-    when(imageManagerDelegate.file(any)).thenAnswer((invocation) {
+    when(appManager.mockIoWrapper.file(any)).thenAnswer((invocation) {
       var newFile = MockFile();
       when(newFile.path).thenReturn(invocation.positionalArguments.first);
       when(newFile.exists()).thenAnswer((_) => Future.value(false));
@@ -230,24 +241,25 @@ void main() {
       return newFile;
     });
 
-    await imageManager.save([img0, img1]);
+    expect((await imageManager.save([img0, img1])).length, 2);
     expect(addedImages.length, 2);
     addedImages.forEach((img) {
       verify(img.writeAsBytes(any, flush: true)).called(1);
     });
-    verify(imageManagerDelegate.compress(any, any, any)).called(2);
+    verify(appManager.mockImageCompressWrapper.compress(any, any, any))
+        .called(2);
   });
 
   test("Null image files are skipped when saving", () async {
     await imageManager.save([null, null]);
-    verifyNever(imageManagerDelegate.compress(any, any, any));
+    expect(await imageManager.save([null, null]), isEmpty);
+    verifyNever(appManager.mockImageCompressWrapper.compress(any, any, any));
   });
 
   test("Saving an empty list does nothing", () async {
-    // TODO: Test that this actually works
     try {
-      await imageManager.save([]);
-      await imageManager.save(null);
+      expect(await imageManager.save([]), isEmpty);
+      expect(await imageManager.save(null), isEmpty);
     } catch (e) {
       fail("Invalid input should be handled gracefully");
     }
@@ -257,19 +269,66 @@ void main() {
       () async
   {
     var img0 = MockFile();
-    when(img0.path).thenReturn("$_imagePath/image.jpg");
+    when(img0.path).thenReturn("$_imagePath/images/image.jpg");
     when(img0.exists()).thenAnswer((_) => Future.value(true));
-    when(imageManagerDelegate.file(any)).thenReturn(img0);
+    when(appManager.mockIoWrapper.file(any)).thenReturn(img0);
 
     var img1 = MockFile();
-    when(img1.path).thenReturn("$_imagePath/image.jpg");
+    when(img1.path).thenReturn("$_imagePath/images/image.jpg");
     when(img1.exists()).thenAnswer((_) => Future.value(true));
 
-    await imageManager.initialize(delegate: imageManagerDelegate);
-    await imageManager.save([img1]);
-    verifyNever(imageManagerDelegate.compress(any, any, any));
+    await imageManager.initialize();
+    List<String> images = await imageManager.save([img1]);
+    expect(images.length, 1);
+    expect(images.first, "image.jpg");
+    verifyNever(appManager.mockImageCompressWrapper.compress(any, any, any));
   });
 
-  // TODO: Verify result of save method
-  // TODO: Test stale images are deleted
+  test("Clearing stale images", () async {
+    MockFile img1 = MockFile();
+    when(img1.path).thenReturn("$_imagePath/image1.jpg");
+    when(img1.deleteSync()).thenAnswer((_) { });
+
+    MockFile img2 = MockFile();
+    when(img2.path).thenReturn("$_imagePath/image2.jpg");
+    when(img2.deleteSync()).thenAnswer((_) { });
+
+    when(directory.list()).thenAnswer((_) =>
+        Stream.fromFutures([img1, img2].map((img) => Future.value(img))));
+
+    Catch catch1 = Catch()
+      ..id = randomId()
+      ..timestamp = timestampFromMillis(5);
+    catch1.imageNames.add("image1.jpg");
+
+    Catch catch2 = Catch()
+      ..id = randomId()
+      ..timestamp = timestampFromMillis(5);
+    catch2.imageNames.add("image2.jpg");
+
+    when(appManager.mockCatchManager.list()).thenReturn([
+      catch1, catch2
+    ]);
+    await imageManager.initialize();
+    verifyNever(img1.deleteSync());
+    verifyNever(img2.deleteSync());
+
+    catch2.imageNames.clear();
+    await imageManager.initialize();
+    verifyNever(img1.deleteSync());
+    verify(img2.deleteSync()).called(1);
+  });
+
+  group("dartImage", () {
+    testWidgets("Invalid image returns null", (WidgetTester tester) async {
+      await imageManager.initialize();
+      BuildContext context = await buildContext(tester);
+      var image = await imageManager.dartImage(context, "", 50);
+      expect(image, isNull);
+    });
+
+    test("Converting valid image gives non-null result", () async {
+      // Nothing to do here. Assume instantiateImageCodec works as it should.
+    });
+  });
 }

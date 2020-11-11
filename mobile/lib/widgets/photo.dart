@@ -1,5 +1,4 @@
 import 'dart:math';
-import 'dart:typed_data';
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
@@ -131,12 +130,6 @@ class _PhotoState extends State<Photo> {
           ? null : max<double>(widget.width, widget.height);
     }
 
-    // Get image from cache.
-    Uint8List bytes = await _imageManager.image(context,
-      fileName: widget.fileName,
-      size: size,
-    );
-
-    return (await (await ui.instantiateImageCodec(bytes)).getNextFrame()).image;
+    return await _imageManager.dartImage(context, widget.fileName, size);
   }
 }

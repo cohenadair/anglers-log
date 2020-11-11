@@ -9,10 +9,10 @@ import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mockito/mockito.dart';
 import 'package:sqflite/sqlite_api.dart';
 
-class MockAppManager extends Mock implements AppManager {}
+import 'mock_app_manager.dart';
+
 class MockBatch extends Mock implements Batch {}
 class MockDatabase extends Mock implements Database {}
-class MockDataManager extends Mock implements DataManager {}
 class MockEntityListener extends Mock implements EntityListener<Species> {}
 class MockSpeciesListener extends Mock implements EntityListener<Species> {}
 
@@ -38,8 +38,11 @@ void main() {
   TestEntityManager entityManager;
 
   setUp(() async {
-    appManager = MockAppManager();
-    dataManager = MockDataManager();
+    appManager = MockAppManager(
+      mockDataManager: true,
+    );
+
+    dataManager = appManager.mockDataManager;
     when(appManager.dataManager).thenReturn(dataManager);
     when(dataManager.insertOrUpdateEntity(any, any, any))
         .thenAnswer((_) => Future.value(true));
@@ -122,7 +125,9 @@ void main() {
     expect(entityManager.entityCount, 0);
     verify(listener.onDelete).called(1);
 
-    // TODO: Verify no callback if nothing was deleted
+    // If there's nothing to delete, the listener shouldn't be called.
+    expect(await entityManager.delete(speciesId0), true);
+    verifyNever(listener.onDelete);
   });
 
   test("Data is cleared and listeners notified when database is reset",
@@ -193,5 +198,20 @@ void main() {
     expect(entityManager.list([speciesId0, speciesId2]).length, 2);
   });
 
-  // TODO: Test filtered list
+  group("filteredList", () {
+    test("Empty filter always returns all entities", () async {
+      await entityManager.addOrUpdate(Species()
+        ..id = randomId()
+        ..name = "Bluegill");
+      await entityManager.addOrUpdate(Species()
+        ..id = randomId()
+        ..name = "Catfish");
+      await entityManager.addOrUpdate(Species()
+        ..id = randomId()
+        ..name = "Bass");
+
+      expect(entityManager.filteredList(null).length, 3);
+      expect(entityManager.filteredList("").length, 3);
+    });
+  });
 }

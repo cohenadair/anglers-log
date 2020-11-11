@@ -29,7 +29,13 @@ class _BaitPageState extends State<BaitPage> {
       BaitCategoryManager.of(context);
   BaitManager get _baitManager => BaitManager.of(context);
 
-  Bait get _bait => _baitManager.entity(widget.baitId);
+  Bait _bait;
+
+  @override
+  void initState() {
+    super.initState();
+    _bait = _baitManager.entity(widget.baitId);
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -7,11 +7,12 @@ import 'package:mobile/log.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/utils/validator.dart';
-import 'package:mobile/widgets/dropdown_input.dart';
 import 'package:mobile/widgets/input_controller.dart';
 import 'package:mobile/widgets/input_type.dart';
+import 'package:mobile/widgets/radio_input.dart';
 import 'package:mobile/widgets/text_input.dart';
 import 'package:mobile/widgets/widget.dart';
+import 'package:quiver/strings.dart';
 
 import 'form_page.dart';
 
@@ -89,7 +90,7 @@ class _SaveCustomEntityPageState extends State<SaveCustomEntityPage> {
       title: _editing
           ? Text(Strings.of(context).saveCustomEntityPageEditTitle)
           : Text(Strings.of(context).saveCustomEntityPageNewTitle),
-      fieldBuilder: (BuildContext context) {
+      fieldBuilder: (context) {
         return Map.fromIterable(_inputOptions.keys,
           key: (item) => item,
           value: (item) => _inputField(context, item),
@@ -115,16 +116,15 @@ class _SaveCustomEntityPageState extends State<SaveCustomEntityPage> {
         controller: _descriptionController,
       );
     } else if (id == _idType) {
-      return DropdownInput<CustomEntity_Type>(
-        options: CustomEntity_Type.values,
-        value: _dataTypeController.value,
-        buildOption: (type) =>
-            Text(inputTypeLocalizedString(context, type)),
-        onChanged: (newType) {
-          setState(() {
-            _dataTypeController.value = newType;
-          });
-        },
+      return RadioInput(
+        initialSelectedIndex: CustomEntity_Type.values
+            .indexOf(_dataTypeController.value),
+        optionCount: CustomEntity_Type.values.length,
+        optionBuilder: (context, i) =>
+            inputTypeLocalizedString(context, CustomEntity_Type.values[i]),
+        onSelect: (i) => setState(() {
+          _dataTypeController.value = CustomEntity_Type.values[i];
+        }),
       );
     } else {
       _log.e("Unknown id: $id");
@@ -136,8 +136,11 @@ class _SaveCustomEntityPageState extends State<SaveCustomEntityPage> {
     var customEntity = CustomEntity()
       ..id = _oldEntity?.id ?? randomId()
       ..name = _nameController.value
-      ..description = _descriptionController.value
       ..type = _dataTypeController.value;
+
+    if (isNotEmpty(_descriptionController.value)) {
+      customEntity.description = _descriptionController.value;
+    }
 
     _customEntityManager.addOrUpdate(customEntity);
     widget.onSave?.call(customEntity);

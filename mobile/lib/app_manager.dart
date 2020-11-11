@@ -12,13 +12,23 @@ import 'package:mobile/location_monitor.dart';
 import 'package:mobile/preferences_manager.dart';
 import 'package:mobile/properties_manager.dart';
 import 'package:mobile/species_manager.dart';
+import 'package:mobile/time_manager.dart';
 import 'package:mobile/trip_manager.dart';
+import 'package:mobile/wrappers/file_picker_wrapper.dart';
+import 'package:mobile/wrappers/image_compress_wrapper.dart';
+import 'package:mobile/wrappers/image_picker_wrapper.dart';
+import 'package:mobile/wrappers/io_wrapper.dart';
+import 'package:mobile/wrappers/mail_sender_wrapper.dart';
+import 'package:mobile/wrappers/package_info_wrapper.dart';
+import 'package:mobile/wrappers/path_provider_wrapper.dart';
+import 'package:mobile/wrappers/photo_manager_wrapper.dart';
 import 'package:provider/provider.dart';
 
 class AppManager {
   static AppManager of(BuildContext context) =>
       Provider.of<AppManager>(context, listen: false);
 
+  // Internal dependencies.
   BaitCategoryManager _baitCategoryManager;
   BaitManager _baitManager;
   DataManager _dataManager;
@@ -32,7 +42,18 @@ class AppManager {
   PreferencesManager _preferencesManager;
   PropertiesManager _propertiesManager;
   SpeciesManager _speciesManager;
+  TimeManager _timeManager;
   TripManager _tripManager;
+
+  // External dependency wrappers.
+  FilePickerWrapper _filePickerWrapper;
+  ImageCompressWrapper _imageCompressWrapper;
+  ImagePickerWrapper _imagePickerWrapper;
+  IoWrapper _ioWrapper;
+  MailSenderWrapper _mailSenderWrapper;
+  PackageInfoWrapper _packageInfoWrapper;
+  PathProviderWrapper _pathProviderWrapper;
+  PhotoManagerWrapper _photoManagerWrapper;
 
   BaitCategoryManager get baitCategoryManager {
     if (_baitCategoryManager == null) {
@@ -62,7 +83,7 @@ class AppManager {
     return _catchManager;
   }
 
-  ComparisonReportManager get customComparisonReportManager {
+  ComparisonReportManager get comparisonReportManager {
     if (_comparisonReportManager == null) {
       _comparisonReportManager = ComparisonReportManager(this);
     }
@@ -74,13 +95,6 @@ class AppManager {
       _customEntityManager = CustomEntityManager(this);
     }
     return _customEntityManager;
-  }
-
-  SummaryReportManager get customSummaryReportManager {
-    if (_summaryReportManager == null) {
-      _summaryReportManager = SummaryReportManager(this);
-    }
-    return _summaryReportManager;
   }
 
   FishingSpotManager get fishingSpotManager {
@@ -125,10 +139,80 @@ class AppManager {
     return _speciesManager;
   }
 
+  SummaryReportManager get summaryReportManager {
+    if (_summaryReportManager == null) {
+      _summaryReportManager = SummaryReportManager(this);
+    }
+    return _summaryReportManager;
+  }
+
+  TimeManager get timeManager {
+    if (_timeManager == null) {
+      _timeManager = TimeManager();
+    }
+    return _timeManager;
+  }
+
   TripManager get tripManager {
     if (_tripManager == null) {
       _tripManager = TripManager();
     }
     return _tripManager;
+  }
+
+  IoWrapper get ioWrapper {
+    if (_ioWrapper == null) {
+      _ioWrapper = IoWrapper();
+    }
+    return _ioWrapper;
+  }
+
+  FilePickerWrapper get filePickerWrapper {
+    if (_filePickerWrapper == null) {
+      _filePickerWrapper = FilePickerWrapper();
+    }
+    return _filePickerWrapper;
+  }
+
+  ImageCompressWrapper get imageCompressWrapper {
+    if (_imageCompressWrapper == null) {
+      _imageCompressWrapper = ImageCompressWrapper();
+    }
+    return _imageCompressWrapper;
+  }
+
+  ImagePickerWrapper get imagePickerWrapper {
+    if (_imagePickerWrapper == null) {
+      _imagePickerWrapper = ImagePickerWrapper();
+    }
+    return _imagePickerWrapper;
+  }
+
+  MailSenderWrapper get mailSenderWrapper {
+    if (_mailSenderWrapper == null) {
+      _mailSenderWrapper = MailSenderWrapper();
+    }
+    return _mailSenderWrapper;
+  }
+
+  PackageInfoWrapper get packageInfoWrapper {
+    if (_packageInfoWrapper == null) {
+      _packageInfoWrapper = PackageInfoWrapper();
+    }
+    return _packageInfoWrapper;
+  }
+
+  PathProviderWrapper get pathProviderWrapper {
+    if (_pathProviderWrapper == null) {
+      _pathProviderWrapper = PathProviderWrapper();
+    }
+    return _pathProviderWrapper;
+  }
+
+  PhotoManagerWrapper get photoManagerWrapper {
+    if (_photoManagerWrapper == null) {
+      _photoManagerWrapper = PhotoManagerWrapper();
+    }
+    return _photoManagerWrapper;
   }
 }

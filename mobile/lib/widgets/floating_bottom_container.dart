@@ -57,7 +57,8 @@ class FloatingBottomContainer extends StatelessWidget {
                   ),
                   title: isNotEmpty(title)
                       ? Label(title, style: styleHeading) : Label(subtitle),
-                  subtitle: isEmpty(title) ? null : SubtitleLabel(subtitle),
+                  subtitle: isEmpty(title) || isEmpty(subtitle)
+                      ? null : SubtitleLabel(subtitle),
                   onTap: onTap,
                   trailing: _tapEnabled ? RightChevronIcon() : null,
                 ),

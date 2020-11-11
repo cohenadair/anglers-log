@@ -6,6 +6,8 @@ import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/widgets/label_value.dart';
 import 'package:mobile/widgets/widget.dart';
 
+/// A widget that displays a list of [LabelValue] widgets backed by
+/// [CustomEntityValue] objects.
 class CustomEntityValues extends StatelessWidget {
   final List<CustomEntityValue> values;
 
@@ -13,6 +15,10 @@ class CustomEntityValues extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (values == null || values.isEmpty) {
+      return Empty();
+    }
+
     CustomEntityManager entityManager = CustomEntityManager.of(context);
 
     return Column(

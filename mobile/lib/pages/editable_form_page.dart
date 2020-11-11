@@ -27,7 +27,7 @@ class EditableFormPage extends StatefulWidget {
 
   /// Called when an input field needs to be built. The ID of the input field
   /// is passed into the function.
-  final Function(Id) onBuildField;
+  final Widget Function(Id) onBuildField;
 
   /// Called when the "Save" button is pressed and form validation passes.
   /// A map of [CustomEntity] ID to value objects included in the form is passed
@@ -54,10 +54,11 @@ class EditableFormPage extends StatefulWidget {
     this.padding = insetsHorizontalDefault,
     this.isInputValid = true,
     this.runSpacing,
-  }) : assert(
-    customEntityValues.length <= customEntityIds.length,
-    "Cannot have more custom entity values than available input widgets",
-  );
+  }) : assert(fields != null),
+       assert(customEntityIds != null),
+       assert(customEntityValues != null),
+       assert(isInputValid != null),
+       assert(padding != null);
 
   @override
   _EditableFormPageState createState() => _EditableFormPageState();
@@ -88,11 +89,19 @@ class _EditableFormPageState extends State<EditableFormPage> {
 
     // Set custom fields' initial values.
     for (CustomEntityValue value in widget.customEntityValues) {
-      CustomEntity entity =
-          _customEntityManager.entity(value.customEntityId);
+      CustomEntity entity = _customEntityManager.entity(value.customEntityId);
       if (entity == null) {
         continue;
       }
+
+      // If a CustomEntityValue doesn't exist in widget.customEntityIds, it
+      // means the field was removed from the form at some point by the user.
+      // In these cases, add the related custom field so the user can edit all
+      // values of the form.
+      if (!_fields.containsKey(entity.id)) {
+        _fields[entity.id] = InputData.fromCustomEntity(entity);
+      }
+
       _fields[entity.id].controller.value =
           valueForCustomEntityType(entity.type, value);
     }
@@ -173,9 +182,8 @@ class _EditableFormPageState extends State<EditableFormPage> {
           type: customField.type,
           label: customField.name,
           controller: _fields[id].controller,
-          onCheckboxChanged: (bool newValue) {
-            _fields[id].controller.value = newValue;
-          },
+          onCheckboxChanged: (newValue) =>
+              _fields[id].controller.value = newValue,
         ),
       );
     }

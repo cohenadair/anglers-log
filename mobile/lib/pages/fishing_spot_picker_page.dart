@@ -313,7 +313,7 @@ class _FishingSpotPickerPageState extends State<FishingSpotPickerPage>
     for (var fishingSpot in fishingSpots) {
       Marker marker = FishingSpotMarker(
         fishingSpot: fishingSpot,
-        onTap: _selectFishingSpot,
+        onTapFishingSpot: _selectFishingSpot,
         active: fishingSpot == _currentFishingSpot,
       );
       _fishingSpotMarkerMap.update(fishingSpot, (_) => marker,

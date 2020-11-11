@@ -2,8 +2,10 @@ import 'dart:async';
 
 import 'package:date_range_picker/date_range_picker.dart' as DateRangePicker;
 import 'package:flutter/material.dart';
+import 'package:mobile/app_manager.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/pages/picker_page.dart';
+import 'package:mobile/time_manager.dart';
 import 'package:mobile/utils/date_time_utils.dart';
 
 /// A [ListPicker] wrapper widget for selecting a date range, such as the
@@ -24,6 +26,8 @@ class DateRangePickerPage extends StatefulWidget {
 
 class _DateRangePickerPageState extends State<DateRangePickerPage> {
   DisplayDateRange _customDateRange = DisplayDateRange.custom;
+
+  TimeManager get _timeManager => AppManager.of(context).timeManager;
 
   @override
   void initState() {
@@ -81,7 +85,7 @@ class _DateRangePickerPageState extends State<DateRangePickerPage> {
   }
 
   Future<void> _onTapCustom(BuildContext context) async {
-    DateTime now = DateTime.now();
+    DateTime now = _timeManager.currentDateTime;
     DateRange customValue = _customDateRange.getValue(now);
 
     List<DateTime> pickedRange = await DateRangePicker.showDatePicker(
@@ -93,7 +97,7 @@ class _DateRangePickerPageState extends State<DateRangePickerPage> {
     );
 
     if (pickedRange == null) {
-      return widget.initialValue;
+      return;
     }
 
     DateTime endDate;

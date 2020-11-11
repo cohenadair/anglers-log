@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:flutter/cupertino.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mobile/custom_entity_manager.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
@@ -9,9 +10,12 @@ import 'package:mobile/utils/string_utils.dart';
 import 'package:quiver/strings.dart';
 import 'package:uuid/uuid.dart';
 
+/// Returns the number of occurrences of [customEntityId] in [entities].
 int entityValuesCount<T>(List<T> entities, Id customEntityId,
     List<CustomEntityValue> Function(T) getValues)
 {
+  assert(entities.isEmpty || getValues != null);
+
   int result = 0;
   for (T entity in entities) {
     List<CustomEntityValue> values = getValues(entity) ?? [];
@@ -29,15 +33,16 @@ int entityValuesCount<T>(List<T> entities, Id customEntityId,
 bool entityValuesMatchesFilter(List<CustomEntityValue> values, String filter,
     CustomEntityManager customEntityManager)
 {
-  values = values ?? [];
-  if (values.isEmpty) {
-    return false;
+  if (isEmpty(filter) && (values == null || values.isEmpty)) {
+    return true;
   }
+
+  values = values ?? [];
 
   for (CustomEntityValue value in values) {
     if (customEntityManager.matchesFilter(value.customEntityId, filter)
-        || isEmpty(value.value)
-        || value.value.toLowerCase().contains(filter.toLowerCase()))
+        || (isNotEmpty(value.value)
+            && value.value.toLowerCase().contains(filter.toLowerCase())))
     {
       return true;
     }
@@ -49,6 +54,10 @@ bool entityValuesMatchesFilter(List<CustomEntityValue> values, String filter,
 /// Converts the given [keyValues] map into a list of [CustomEntityValue]
 /// objects.
 List<CustomEntityValue> entityValuesFromMap(Map<Id, dynamic> keyValues) {
+  if (keyValues == null) {
+    return [];
+  }
+
   List<CustomEntityValue> result = [];
 
   for (var entry in keyValues.entries) {
@@ -75,7 +84,7 @@ dynamic valueForCustomEntityType(CustomEntity_Type type,
     case CustomEntity_Type.TEXT:
       return value.value;
     case CustomEntity_Type.BOOL:
-      bool boolValue = parseBool(value.value);
+      bool boolValue = parseBoolFromInt(value.value);
       if (context == null) {
         return boolValue;
       } else {
@@ -115,7 +124,12 @@ extension Ids on Id {
   Uint8List get uint8List => Uint8List.fromList(bytes);
 }
 
+extension FishingSpots on FishingSpot {
+  LatLng get latLng => LatLng(lat, lng);
+}
+
 extension Timestamps on Timestamp {
   int compareTo(Timestamp other) => toDateTime().compareTo(other.toDateTime());
   int get ms => toDateTime().millisecondsSinceEpoch;
+  DateTime get localDateTime => DateTime.fromMillisecondsSinceEpoch(ms);
 }

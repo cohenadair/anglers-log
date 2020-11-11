@@ -5,11 +5,11 @@ import 'package:mobile/widgets/input_controller.dart';
 import 'package:quiver/strings.dart';
 
 class TextInput extends StatefulWidget {
-  static const int inputLimitDefault = 40;
-  static const int inputLimitName = inputLimitDefault;
-  static const int inputLimitNumber = 10;
-  static const int inputLimitDescription = 140;
-  static const int inputLimitEmail = 64;
+  static const int _inputLimitDefault = 40;
+  static const int _inputLimitName = _inputLimitDefault;
+  static const int _inputLimitNumber = 10;
+  static const int _inputLimitDescription = 140;
+  static const int _inputLimitEmail = 64;
 
   final String initialValue;
   final String label;
@@ -37,7 +37,7 @@ class TextInput extends StatefulWidget {
     this.controller,
     this.enabled = true,
     this.autofocus = false,
-    this.maxLength = inputLimitDefault,
+    this.maxLength = _inputLimitDefault,
     this.maxLines,
     this.keyboardType,
     this.onChanged,
@@ -55,7 +55,7 @@ class TextInput extends StatefulWidget {
     label: isEmpty(label) ? Strings.of(context).inputNameLabel : label,
     capitalization: TextCapitalization.words,
     controller: controller,
-    maxLength: inputLimitName,
+    maxLength: _inputLimitName,
     enabled: enabled,
     autofocus: autofocus,
     onChanged: onChanged,
@@ -71,7 +71,7 @@ class TextInput extends StatefulWidget {
     label: Strings.of(context).inputDescriptionLabel,
     capitalization: TextCapitalization.sentences,
     controller: controller,
-    maxLength: inputLimitDescription,
+    maxLength: _inputLimitDescription,
     enabled: enabled,
     autofocus: autofocus,
   );
@@ -91,7 +91,7 @@ class TextInput extends StatefulWidget {
     keyboardType: TextInputType.numberWithOptions(signed: true, decimal: true),
     enabled: enabled,
     autofocus: autofocus,
-    maxLength: inputLimitNumber,
+    maxLength: _inputLimitNumber,
   );
 
   TextInput.email(BuildContext context, {
@@ -105,7 +105,7 @@ class TextInput extends StatefulWidget {
     label: Strings.of(context).inputEmailLabel,
     capitalization: TextCapitalization.none,
     controller: controller,
-    maxLength: inputLimitEmail,
+    maxLength: _inputLimitEmail,
     enabled: enabled,
     autofocus: autofocus,
     onChanged: onChanged,
@@ -133,10 +133,10 @@ class _TextInputState extends State<TextInput> {
       child: TextFormField(
         cursorColor: Theme.of(context).primaryColor,
         initialValue: widget.initialValue,
-        controller: widget.controller.editingController,
+        controller: widget.controller?.editingController,
         decoration: InputDecoration(
           labelText: widget.label,
-          errorText: widget.controller.error,
+          errorText: widget.controller?.error,
         ),
         textCapitalization: widget.capitalization,
         enabled: widget.enabled,
@@ -144,10 +144,10 @@ class _TextInputState extends State<TextInput> {
         maxLines: widget.maxLines,
         keyboardType: widget.keyboardType,
         onChanged: (_) {
+          widget.onChanged?.call();
           setState(() {
             _updateError();
           });
-          widget.onChanged?.call();
         },
         autofocus: widget.autofocus,
       ),
@@ -155,6 +155,6 @@ class _TextInputState extends State<TextInput> {
   }
 
   void _updateError() {
-    widget.controller.error = _validationCallback?.call(context);
+    widget.controller?.error = _validationCallback?.call(context);
   }
 }

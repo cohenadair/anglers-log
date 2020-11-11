@@ -49,12 +49,12 @@ class PaddedCheckbox extends StatefulWidget {
 }
 
 class _PaddedCheckboxState extends State<PaddedCheckbox> {
-  bool checked;
+  bool _checked;
 
   @override
   void initState() {
     super.initState();
-    checked = widget.checked;
+    _checked = widget.checked;
   }
 
   @override
@@ -62,7 +62,7 @@ class _PaddedCheckboxState extends State<PaddedCheckbox> {
     super.didUpdateWidget(oldWidget);
 
     if (oldWidget.checked != widget.checked) {
-      checked = widget.checked;
+      _checked = widget.checked;
     }
   }
 
@@ -74,11 +74,11 @@ class _PaddedCheckboxState extends State<PaddedCheckbox> {
         width: checkboxSizeDefault,
         height: checkboxSizeDefault,
         child: Checkbox(
-          value: checked,
+          value: _checked,
           onChanged: widget.enabled ? (value) {
             setState(() {
-              checked = !checked;
-              widget.onChanged(checked);
+              _checked = !_checked;
+              widget.onChanged(_checked);
             });
           } : null,
         ),

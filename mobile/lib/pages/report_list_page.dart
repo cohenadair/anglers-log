@@ -38,8 +38,8 @@ class ReportListPage extends StatelessWidget {
           comparisonReportManager,
         ],
         loadItems: (_) => _loadItems(context),
-        deleteText: (context, report) => Text(format(Strings.of(context)
-            .reportListPageConfirmDelete, [report.title(context)])),
+        deleteWidget: (context, report) => Text(format(Strings.of(context)
+            .reportListPageConfirmDelete, [report.name])),
         deleteItem: _deleteItem,
         addPageBuilder: () => SaveReportPage(),
         editPageBuilder: (report) => SaveReportPage.edit(report),

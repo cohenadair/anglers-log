@@ -11,6 +11,7 @@ import 'package:mobile/res/style.dart';
 import 'package:mobile/utils/page_utils.dart';
 import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/widget.dart';
+import 'package:mobile/wrappers/file_picker_wrapper.dart';
 
 class ImportPage extends StatefulWidget {
   @override
@@ -28,6 +29,7 @@ class _ImportPageState extends State<ImportPage> {
   bool get _loading => _importState == _State.loading;
 
   AppManager get _appManager => AppManager.of(context);
+  FilePickerWrapper get _filePickerWrapper => _appManager.filePickerWrapper;
 
   @override
   Widget build(BuildContext context) {
@@ -57,14 +59,12 @@ class _ImportPageState extends State<ImportPage> {
                 textAlign: TextAlign.center,
               ),
               VerticalSpace(paddingWidget),
-              Align(
-                child: Button(
-                  text: Strings.of(context).importPageChooseFile,
-                  onPressed: _loading ? null : () {
-                    _updateImportState(_State.loading);
-                    _chooseFile();
-                  },
-                ),
+              Button(
+                text: Strings.of(context).importPageChooseFile,
+                onPressed: _loading ? null : () {
+                  _updateImportState(_State.loading);
+                  _chooseFile();
+                },
               ),
               VerticalSpace(paddingWidget),
               _buildFeedbackWidgets(),
@@ -129,7 +129,7 @@ class _ImportPageState extends State<ImportPage> {
   }
 
   void _chooseFile() async {
-    File zipFile = await FilePicker.getFile(
+    File zipFile = await _filePickerWrapper.getFile(
       type: FileType.CUSTOM,
       fileExtension: "zip",
     );

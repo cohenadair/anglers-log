@@ -119,10 +119,16 @@ class ManageableListItem extends StatefulWidget {
   /// Invoked when the item is tapped.
   final VoidCallback onTap;
 
-  /// When non-null, overrides the default behavior of showing a delete
-  /// confirmation dialog. Useful for pre-database validation, such as when
-  /// trying to delete an [Entity] required by another [Entity].
-  final VoidCallback onTapDeleteButton;
+  /// Called when the delete button is pressed. Useful for pre-database
+  /// validation, such as when trying to delete an [Entity] required by another
+  /// [Entity].
+  ///
+  /// If null, or false is returned, a default delete confirmation dialog is
+  /// shown.
+  ///
+  /// If non-null and true is returned, the default delete confirmation dialog
+  /// is not shown.
+  final bool Function() onTapDeleteButton;
 
   /// Return the message that is shown in the delete confirmation dialog.
   final Widget Function(BuildContext) deleteMessageBuilder;
@@ -146,7 +152,8 @@ class ManageableListItem extends StatefulWidget {
     this.trailing,
     this.editing = false,
     this.enabled = true,
-  });
+  }) : assert(onTapDeleteButton != null
+      || (deleteMessageBuilder != null && onConfirmDelete != null));
 
   @override
   _ManageableListItemState createState() => _ManageableListItemState();
@@ -237,13 +244,25 @@ class _ManageableListItemState extends State<ManageableListItem> with
         child: MinimumIconButton(
           icon: Icons.delete,
           color: Colors.red,
-          onTap: widget.onTapDeleteButton ?? () => showDeleteDialog(
-            context: context,
-            description: widget.deleteMessageBuilder(context),
-            onDelete: widget.onConfirmDelete,
-          ),
+          onTap: () {
+            if (widget.onTapDeleteButton == null) {
+              _showDeleteConfirmation();
+            } else {
+              if (!widget.onTapDeleteButton()) {
+                _showDeleteConfirmation();
+              }
+            }
+          },
         ),
       ),
+    );
+  }
+
+  void _showDeleteConfirmation() {
+    showDeleteDialog(
+      context: context,
+      description: widget.deleteMessageBuilder(context),
+      onDelete: widget.onConfirmDelete,
     );
   }
 

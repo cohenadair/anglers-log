@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 class ComparisonReportManager extends ReportManager<ComparisonReport> {
   static ComparisonReportManager of(BuildContext context) =>
       Provider.of<AppManager>(context, listen: false)
-          .customComparisonReportManager;
+          .comparisonReportManager;
 
   ComparisonReportManager(AppManager app) : super(app);
 
@@ -27,11 +27,11 @@ class ComparisonReportManager extends ReportManager<ComparisonReport> {
 
   @override
   void onDeleteFishingSpot(FishingSpot fishingSpot) => entities.values
-      .forEach((report) => report.baitIds.remove(fishingSpot.id));
+      .forEach((report) => report.fishingSpotIds.remove(fishingSpot.id));
 
   @override
   void onDeleteSpecies(Species species) => entities.values
-      .forEach((report) => report.baitIds.remove(species.id));
+      .forEach((report) => report.speciesIds.remove(species.id));
 
   @override
   String get tableName => "custom_comparison_report";

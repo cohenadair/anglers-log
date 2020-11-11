@@ -111,10 +111,6 @@ class _PickerPageState<T> extends State<PickerPage<T>> {
   }
 
   Widget _buildListView(BuildContext context) {
-    List<PickerPageItem<T>> items =
-        (widget.allItem == null ? [] : [widget.allItem])
-            ..addAll(widget.itemBuilder());
-
     List<Widget> children = [];
     if (widget.listHeader != null) {
       children.add(Padding(
@@ -122,6 +118,10 @@ class _PickerPageState<T> extends State<PickerPage<T>> {
         child: widget.listHeader,
       ));
     }
+
+    List<PickerPageItem<T>> items =
+        (widget.allItem == null ? [] : [widget.allItem])
+          ..addAll(widget.itemBuilder());
 
     return ListView(
       children: children..addAll(items.map((item) {
@@ -279,7 +279,7 @@ class PickerPageItem<T> {
        subtitle = null,
        enabled = false,
        popsOnPicked = false,
-        onTap = null,
+       onTap = null,
        _divider = false,
        _heading = false,
        _note = true;

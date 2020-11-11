@@ -15,7 +15,7 @@ abstract class Validator {
 class GenericValidator implements Validator {
   final ValidationCallback Function(BuildContext, String) runner;
 
-  GenericValidator({@required this.runner}) : assert(runner != null);
+  GenericValidator(this.runner) : assert(runner != null);
 
   ValidationCallback run(BuildContext context, String newValue) {
     return runner(context, newValue);
@@ -76,8 +76,9 @@ class EmailValidator implements Validator {
     if (!required && isEmpty(newValue)) {
       return null;
     }
-    if (!RegExp(r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$')
-        .hasMatch(newValue))
+    if (newValue == null
+        || !RegExp(r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$')
+            .hasMatch(newValue))
     {
       return (context) => Strings.of(context).inputInvalidEmail;
     }

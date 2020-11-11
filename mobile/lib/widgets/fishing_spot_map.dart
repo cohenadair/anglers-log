@@ -115,17 +115,20 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
   void initState() {
     super.initState();
 
-    _hideHelpTimer = Timer(Duration(milliseconds: 2000), () {
-      setState(() {
-        _showHelp = false;
+    // No need to setup a timer if there is no help widget to show.
+    if (widget.help != null) {
+      _hideHelpTimer = Timer(Duration(milliseconds: 2000), () {
+        setState(() {
+          _showHelp = false;
+        });
       });
-    });
+    }
   }
 
   @override
   void dispose() {
     super.dispose();
-    _hideHelpTimer.cancel();
+    _hideHelpTimer?.cancel();
   }
 
   @override
@@ -223,8 +226,7 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
 
             return _buildSearchPageList(fishingSpots);
           }
-        ),
-        );
+        ));
       }),
     );
   }

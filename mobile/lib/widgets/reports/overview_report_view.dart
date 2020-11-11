@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/app_manager.dart';
 import 'package:mobile/utils/date_time_utils.dart';
 import 'package:mobile/widgets/date_range_picker_input.dart';
 import 'package:mobile/widgets/reports/report_summary.dart';
@@ -18,7 +17,6 @@ class _OverviewReportViewState extends State<OverviewReportView> {
     return ReportSummary(
       onUpdate: () => [
         ReportSummaryModel(
-          appManager: AppManager.of(context),
           context: context,
           displayDateRange: _currentDateRange,
         ),

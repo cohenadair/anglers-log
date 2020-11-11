@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/app_manager.dart';
 import 'package:mobile/bait_category_manager.dart';
@@ -62,7 +63,7 @@ class BaitManager extends NamedEntityManager<Bait> {
   bool duplicate(Bait rhs) {
     return list().firstWhere((lhs) => lhs.baitCategoryId == rhs.baitCategoryId
         && equalsTrimmedIgnoreCase(lhs.name, rhs.name)
-        && lhs.customEntityValues == rhs.customEntityValues
+        && listEquals(lhs.customEntityValues, rhs.customEntityValues)
         && lhs.id != rhs.id, orElse: () => null) != null;
   }
 
@@ -103,6 +104,9 @@ class BaitManager extends NamedEntityManager<Bait> {
   }
 
   String deleteMessage(BuildContext context, Bait bait) {
+    assert(context != null);
+    assert(bait != null);
+
     int numOfCatches = numberOfCatches(bait);
     String string = numOfCatches == 1
         ? Strings.of(context).baitListPageDeleteMessageSingular

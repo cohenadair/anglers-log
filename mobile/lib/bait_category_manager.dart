@@ -41,9 +41,9 @@ class BaitCategoryManager extends NamedEntityManager<BaitCategory> {
   }
 
   String deleteMessage(BuildContext context, BaitCategory baitCategory) {
-    if (context == null || baitCategory == null) {
-      return null;
-    }
+    assert(context != null);
+    assert(baitCategory != null);
+
     int numOfBaits = numberOfBaits(baitCategory.id);
     String string = numOfBaits == 1
         ? Strings.of(context).baitCategoryListPageDeleteMessageSingular
