@@ -34,5 +34,5 @@ class ComparisonReportManager extends ReportManager<ComparisonReport> {
       .forEach((report) => report.speciesIds.remove(species.id));
 
   @override
-  String get tableName => "custom_comparison_report";
+  String get tableName => "comparison_report";
 }
