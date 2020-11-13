@@ -17,8 +17,9 @@ void present(BuildContext context, Widget page) {
 }
 
 /// Shows the given page immediately with a [FadeAnimation].
-void fade(BuildContext context, Widget page) {
+void fade(BuildContext context, Widget page, [bool opaque = false]) {
   Navigator.of(context, rootNavigator: true).push(PageRouteBuilder(
+    opaque: opaque,
     pageBuilder: (_, __, ___) => page,
     transitionDuration: defaultAnimationDuration,
     transitionsBuilder: (context, animation, _, child) {

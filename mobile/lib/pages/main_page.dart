@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/i18n/strings.dart';
+import 'package:mobile/pages/add_anything_page.dart';
 import 'package:mobile/pages/catch_list_page.dart';
 import 'package:mobile/pages/map_page.dart';
 import 'package:mobile/pages/more_page.dart';
-import 'package:mobile/pages/photos_page.dart';
 import 'package:mobile/pages/stats_page.dart';
 import 'package:mobile/res/gen/custom_icons.dart';
+import 'package:mobile/utils/page_utils.dart';
+import 'package:mobile/widgets/widget.dart';
 
 class MainPage extends StatefulWidget {
   @override
@@ -13,7 +15,7 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  int _currentBarItem = 0;
+  int _currentBarItem = 1; // Default to the "Catches" tab.
   List<_BarItemData> _navItems;
 
   NavigatorState get _currentNavState =>
@@ -27,10 +29,10 @@ class _MainPageState extends State<MainPage> {
       _BarItemData(
         page: _NavigatorPage(
           navigatorKey: GlobalKey<NavigatorState>(),
-          builder: (BuildContext context) => PhotosPage(),
+          builder: (BuildContext context) => MapPage(),
         ),
-        icon: Icons.photo_library,
-        titleBuilder: (context) => Strings.of(context).photosPageMenuLabel,
+        icon: Icons.map,
+        titleBuilder: (context) => Strings.of(context).mapPageMenuLabel,
       ),
 
       _BarItemData(
@@ -43,12 +45,11 @@ class _MainPageState extends State<MainPage> {
       ),
 
       _BarItemData(
-        page: _NavigatorPage(
-          navigatorKey: GlobalKey<NavigatorState>(),
-          builder: (BuildContext context) => MapPage(),
-        ),
-        icon: Icons.map,
-        titleBuilder: (context) => Strings.of(context).mapPageMenuLabel,
+        icon: Icons.add_box_rounded,
+        titleBuilder: (context) => Strings.of(context).add,
+        onTapOverride: () {
+          fade(context, AddAnythingPage(), false);
+        }
       ),
 
       _BarItemData(
@@ -72,8 +73,6 @@ class _MainPageState extends State<MainPage> {
   }
 
   Widget build(BuildContext context) {
-    final navItems = _navItems;
-
     return WillPopScope(
       // Ensure clicking the Android physical back button closes a pushed page
       // rather than the entire app, if possible.
@@ -83,16 +82,22 @@ class _MainPageState extends State<MainPage> {
         // between pages.
         body: IndexedStack(
           index: _currentBarItem,
-          children: navItems.map((_BarItemData data) => data.page).toList(),
+          children: _navItems.map((_BarItemData data) => data.page ?? Empty())
+              .toList(),
         ),
         bottomNavigationBar: BottomNavigationBar(
           currentIndex: _currentBarItem,
           type: BottomNavigationBarType.fixed,
-          items: navItems.map((_BarItemData data) => BottomNavigationBarItem(
+          items: _navItems.map((_BarItemData data) => BottomNavigationBarItem(
             icon: Icon(data.icon),
-            title: Text(data.titleBuilder(context)),
+            label: data.titleBuilder(context),
           )).toList(),
           onTap: (index) {
+            if (_navItems[index].onTapOverride != null) {
+              _navItems[index].onTapOverride();
+              return;
+            }
+
             if (_currentBarItem == index) {
               // Reset navigation stack if already on the current item.
               _currentNavState.popUntil((r) => r.isFirst);
@@ -113,11 +118,16 @@ class _BarItemData {
   final String Function(BuildContext) titleBuilder;
   final IconData icon;
 
+  /// If set, overrides the default behaviour of showing the associated
+  /// [Widget].
+  final VoidCallback onTapOverride;
+
   _BarItemData({
-    @required this.page,
+    this.page,
     @required this.titleBuilder,
     @required this.icon,
-  }) : assert(page != null),
+    this.onTapOverride,
+  }) : assert(page != null || onTapOverride != null),
        assert(titleBuilder!= null),
        assert(icon != null);
 }

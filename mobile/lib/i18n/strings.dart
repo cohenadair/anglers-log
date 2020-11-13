@@ -73,6 +73,9 @@ class Strings {
   String get inputEmailLabel => _string("input_emailLabel");
   String get inputInvalidEmail => _string("input_invalidEmail");
 
+  String get addAnythingPageCatch => _string("addAnythingPage_catch");
+  String get addAnythingPageTrip => _string("addAnythingPage_trip");
+
   String get tripListPageMenuLabel => _string("tripListPage_menuLabel");
   String get tripListPageTitle => _string("tripListPage_title");
 

@@ -171,10 +171,11 @@ class MinimumIconButton extends StatelessWidget {
 }
 
 class FloatingIconButton extends StatelessWidget {
-  final double size = 40.0;
+  static const double _fabSize = 40.0;
 
   final EdgeInsets padding;
   final IconData icon;
+  final String label;
   final VoidCallback onPressed;
 
   /// When true, renders the button with a different background color, to
@@ -185,37 +186,38 @@ class FloatingIconButton extends StatelessWidget {
     this.padding,
     @required this.icon,
     @required this.onPressed,
+    this.label,
     this.pushed = false,
   });
 
-  FloatingIconButton.back({
-    this.padding,
-    this.pushed = false,
-  }) : icon = null,
-       onPressed = null;
-
   @override
   Widget build(BuildContext context) {
-    Widget iconWidget = BackButtonIcon();
-    if (icon != null) {
-      iconWidget = Icon(
-        icon,
-        color: Colors.black,
-      );
-    }
-
     return Padding(
       padding: padding ?? insetsDefault,
-      child: Container(
-        decoration: FloatingBoxDecoration.circle(),
-        width: size,
-        height: size,
-        child: RawMaterialButton(
-          child: iconWidget,
-          shape: CircleBorder(),
-          fillColor: pushed ? Colors.grey : Colors.white,
-          onPressed: onPressed ?? () => Navigator.of(context).pop(),
-        ),
+      child: Column(
+        children: [
+          Container(
+            decoration: FloatingBoxDecoration.circle(),
+            width: _fabSize,
+            height: _fabSize,
+            child: RawMaterialButton(
+              child: Icon(
+                icon,
+                color: Colors.black,
+              ),
+              shape: CircleBorder(),
+              fillColor: pushed ? Colors.grey : Colors.white,
+              onPressed: onPressed ?? () => Navigator.of(context).pop(),
+            ),
+          ),
+          isNotEmpty(label) ? Padding(
+            padding: insetsTopSmall,
+            child: Text(
+              label,
+              style: styleHeadingSmall,
+            ),
+          ) : Empty(),
+        ],
       ),
     );
   }

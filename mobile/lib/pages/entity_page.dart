@@ -3,6 +3,7 @@ import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/utils/dialog_utils.dart';
+import 'package:mobile/widgets/app_bar_gradient.dart';
 import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/custom_entity_values.dart';
 import 'package:mobile/widgets/photo.dart';
@@ -44,8 +45,6 @@ class EntityPage extends StatefulWidget {
 class _EntityPageState extends State<EntityPage> {
   final double _imageHeightFactor = 3;
   final double _expandedOpacityHeightFactor = 2.5;
-  final double _expandedStartOpacity = 0.7;
-  final double _expandedEndOpacity = 0.0;
   final double _carouselDotSize = 8.0;
   final double _carouselOpacity = 0.5;
 
@@ -175,25 +174,8 @@ class _EntityPageState extends State<EntityPage> {
             _imageIndex = newPage;
           }),
         ),
-        // Add a gradient background behind app bar buttons so they're always
-        // visible, no matter the color of the background image.
-        Align(
-          alignment: Alignment.topCenter,
-          child: Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  Colors.white.withOpacity(_expandedStartOpacity),
-                  Colors.white.withOpacity(_expandedEndOpacity),
-                ],
-              ),
-            ),
-            width: MediaQuery.of(context).size.width,
-            height: _imageHeight / _expandedOpacityHeightFactor,
-            alignment: Alignment.topCenter,
-          ),
+        AppBarGradient(
+          height: _imageHeight / _expandedOpacityHeightFactor,
         ),
         Align(
           alignment: Alignment.bottomCenter,

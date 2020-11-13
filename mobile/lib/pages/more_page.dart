@@ -5,6 +5,7 @@ import 'package:mobile/pages/bait_list_page.dart';
 import 'package:mobile/pages/custom_entity_list_page.dart';
 import 'package:mobile/pages/feedback_page.dart';
 import 'package:mobile/pages/import_page.dart';
+import 'package:mobile/pages/photos_page.dart';
 import 'package:mobile/pages/settings_page.dart';
 import 'package:mobile/pages/species_list_page.dart';
 import 'package:mobile/pages/trip_list_page.dart';
@@ -36,6 +37,11 @@ class MorePage extends StatelessWidget {
             icon: Icons.build,
             title: Strings.of(context).customFields,
             page: CustomEntityListPage(),
+          ),
+          _buildPageItem(context,
+            icon: Icons.photo_library,
+            title: Strings.of(context).photosPageMenuLabel,
+            page: PhotosPage(),
           ),
           _buildPageItem(context,
             icon: CustomIcons.species,

@@ -45,6 +45,9 @@ Map<String, Map<String, String>> get englishStrings => {
     "input_emailLabel" : "Email",
     "input_invalidEmail" : "Invalid email",
 
+    "addAnythingPage_catch" : "Catch",
+    "addAnythingPage_trip" : "Trip",
+
     "catchListPage_menuLabel" : "Catches",
     "catchListPage_title" : "Catches (%s)",
     "catchListPage_searchHint" : "Search catches",

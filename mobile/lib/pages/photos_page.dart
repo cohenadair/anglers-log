@@ -4,6 +4,7 @@ import 'package:mobile/entity_manager.dart';
 import 'package:mobile/pages/photo_gallery_page.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/utils/page_utils.dart';
+import 'package:mobile/widgets/app_bar_gradient.dart';
 import 'package:mobile/widgets/photo.dart';
 
 class PhotosPage extends StatelessWidget {
@@ -21,18 +22,34 @@ class PhotosPage extends StatelessWidget {
         builder: (context) {
           List<String> fileNames =
               catchManager.imageNamesSortedByTimestamp(context);
-          return CustomScrollView(
-            slivers: [
-              SliverGrid(
-                gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                  maxCrossAxisExtent: galleryMaxThumbSize,
-                  crossAxisSpacing: gallerySpacing,
-                  mainAxisSpacing: gallerySpacing,
-                  childAspectRatio: _aspectRatioThumb,
-                ),
-                delegate: SliverChildBuilderDelegate(
-                  (context, i) => _buildThumbnail(context, fileNames, i),
-                  childCount: fileNames.length,
+          return Stack(
+            children: [
+              CustomScrollView(
+                slivers: [
+                  SliverGrid(
+                    gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                      maxCrossAxisExtent: galleryMaxThumbSize,
+                      crossAxisSpacing: gallerySpacing,
+                      mainAxisSpacing: gallerySpacing,
+                      childAspectRatio: _aspectRatioThumb,
+                    ),
+                    delegate: SliverChildBuilderDelegate(
+                      (context, i) => _buildThumbnail(context, fileNames, i),
+                      childCount: fileNames.length,
+                    ),
+                  ),
+                ],
+              ),
+              IgnorePointer(
+                child: AppBarGradient(),
+              ),
+              SafeArea(
+                top: true,
+                child: Align(
+                  alignment: Alignment.topLeft,
+                  child: BackButton(
+                    color: Colors.black,
+                  ),
                 ),
               ),
             ],

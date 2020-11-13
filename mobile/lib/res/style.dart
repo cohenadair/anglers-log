@@ -8,6 +8,11 @@ const TextStyle styleHeading = TextStyle(
   fontWeight: fontWeightBold,
 );
 
+const TextStyle styleHeadingSmall = TextStyle(
+  fontSize: 14,
+  fontWeight: fontWeightBold,
+);
+
 const TextStyle styleTitle = TextStyle(
   fontSize: 36,
   fontWeight: fontWeightBold,

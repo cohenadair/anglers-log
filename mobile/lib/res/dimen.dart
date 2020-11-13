@@ -11,8 +11,9 @@ const paddingWidgetTiny = paddingTiny;
 
 const insetsZero = EdgeInsets.all(0);
 const insetsDefault = EdgeInsets.all(paddingDefault);
-const insetsSmall = EdgeInsets.all(paddingSmall);
 const insetsMedium = EdgeInsets.all(paddingMedium);
+const insetsSmall = EdgeInsets.all(paddingSmall);
+const insetsTiny = EdgeInsets.all(paddingTiny);
 
 const insetsRowDefault = EdgeInsets.only(
   left: paddingDefault,
