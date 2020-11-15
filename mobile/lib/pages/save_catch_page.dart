@@ -253,6 +253,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
           value: value,
           onTap: () {
             push(context, BaitListPage.picker(
+              initialValues: { _baitController.value },
               onPicked: (context, pickedBaits) {
                 setState(() {
                   _baitController.value = pickedBaits.first;
@@ -293,6 +294,7 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
           value: _speciesController.value?.name,
           onTap: () {
             push(context, SpeciesListPage.picker(
+              initialValues: { _speciesController.value },
               onPicked: (context, pickedSpecies) {
                 setState(() {
                   _speciesController.value = pickedSpecies.first;

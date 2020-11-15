@@ -117,6 +117,7 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
           value: _baitCategoryController.value?.name,
           onTap: () {
             push(context, BaitCategoryListPage.picker(
+              initialValue: _baitCategoryController.value,
               onPicked: (context, pickedCategoryId) {
                 setState(() {
                   _baitCategoryController.value = pickedCategoryId;

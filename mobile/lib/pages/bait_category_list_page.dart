@@ -9,11 +9,13 @@ import 'package:mobile/widgets/text.dart';
 
 class BaitCategoryListPage extends StatelessWidget {
   final bool Function(BuildContext, BaitCategory) onPicked;
+  final BaitCategory initialValue;
 
-  BaitCategoryListPage() : onPicked = null;
+  BaitCategoryListPage() : onPicked = null, initialValue = null;
 
   BaitCategoryListPage.picker({
     @required this.onPicked,
+    this.initialValue,
   }) : assert(onPicked != null);
 
   bool get _picking => onPicked != null;
@@ -37,6 +39,7 @@ class BaitCategoryListPage extends StatelessWidget {
       ),
       pickerSettings: _picking
           ? ManageableListPagePickerSettings<BaitCategory>(
+              initialValues: { initialValue },
               onPicked: (context, categories) =>
                   onPicked(context, categories?.first),
             )
