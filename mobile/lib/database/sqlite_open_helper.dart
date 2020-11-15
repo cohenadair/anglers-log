@@ -49,7 +49,7 @@ final List<String> _schema0 = [
   """
   CREATE TABLE preference (
     id TEXT PRIMARY KEY,
-    bytes TEXT NOT NULL
+    value TEXT NOT NULL
   );
   """,
   """
