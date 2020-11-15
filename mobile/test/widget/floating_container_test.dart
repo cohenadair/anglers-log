@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/res/dimen.dart';
-import 'package:mobile/widgets/floating_bottom_container.dart';
+import 'package:mobile/widgets/floating_container.dart';
 import 'package:mobile/widgets/list_item.dart';
 import 'package:mobile/widgets/text.dart';
 import 'package:mobile/widgets/widget.dart';
@@ -10,14 +10,14 @@ import '../test_utils.dart';
 
 main() {
   testWidgets("Default margins", (WidgetTester tester) async {
-    await tester.pumpWidget(Testable((_) => FloatingBottomContainer(
+    await tester.pumpWidget(Testable((_) => FloatingContainer(
       title: "Test",
     )));
     expect(findFirst<Container>(tester).margin, insetsDefault);
   });
 
   testWidgets("Custom margins", (WidgetTester tester) async {
-    await tester.pumpWidget(Testable((_) => FloatingBottomContainer(
+    await tester.pumpWidget(Testable((_) => FloatingContainer(
       title: "Test",
       margin: EdgeInsets.all(37),
     )));
@@ -26,7 +26,7 @@ main() {
 
   testWidgets("Tap enabled", (WidgetTester tester) async {
     bool tapped = false;
-    await tester.pumpWidget(Testable((_) => FloatingBottomContainer(
+    await tester.pumpWidget(Testable((_) => FloatingContainer(
       title: "Test",
       onTap: () => tapped = true,
     )));
@@ -39,7 +39,7 @@ main() {
   });
 
   testWidgets("Tap disabled", (WidgetTester tester) async {
-    await tester.pumpWidget(Testable((_) => FloatingBottomContainer(
+    await tester.pumpWidget(Testable((_) => FloatingContainer(
       title: "Test",
     )));
     expect(find.byType(RightChevronIcon), findsNothing);
@@ -47,7 +47,7 @@ main() {
   });
 
   testWidgets("Empty title shows subtitle", (WidgetTester tester) async {
-    await tester.pumpWidget(Testable((_) => FloatingBottomContainer(
+    await tester.pumpWidget(Testable((_) => FloatingContainer(
       subtitle: "Subtitle",
     )));
     expect(find.byType(SubtitleLabel), findsNothing);
@@ -55,7 +55,7 @@ main() {
   });
 
   testWidgets("Title and subtitle", (WidgetTester tester) async {
-    await tester.pumpWidget(Testable((_) => FloatingBottomContainer(
+    await tester.pumpWidget(Testable((_) => FloatingContainer(
       title: "Title",
       subtitle: "Subtitle",
     )));
@@ -68,12 +68,12 @@ main() {
   testWidgets("Title/subtitle cannot both be empty", (WidgetTester tester)
       async
   {
-    await tester.pumpWidget(Testable((_) => FloatingBottomContainer()));
+    await tester.pumpWidget(Testable((_) => FloatingContainer()));
     expect(tester.takeException(), isAssertionError);
   });
 
   testWidgets("Children are added", (WidgetTester tester) async {
-    await tester.pumpWidget(Testable((_) => FloatingBottomContainer(
+    await tester.pumpWidget(Testable((_) => FloatingContainer(
       title: "Title",
       subtitle: "Subtitle",
       children: [

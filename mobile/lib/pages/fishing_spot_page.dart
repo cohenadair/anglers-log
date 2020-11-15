@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mobile/fishing_spot_manager.dart';
@@ -7,7 +5,7 @@ import 'package:mobile/model/gen/anglerslog.pb.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/utils/string_utils.dart';
 import 'package:mobile/widgets/fishing_spot_map.dart';
-import 'package:mobile/widgets/floating_bottom_container.dart';
+import 'package:mobile/widgets/floating_container.dart';
 
 class FishingSpotPage extends StatefulWidget {
   final Id fishingSpotId;
@@ -19,7 +17,10 @@ class FishingSpotPage extends StatefulWidget {
 }
 
 class _FishingSpotPageState extends State<FishingSpotPage> {
-  final Completer<GoogleMapController> _mapController = Completer();
+  static const _mapPadding = EdgeInsets.only(
+    bottom: 90,
+    left: 8,
+  );
 
   Color _backButtonColor = Colors.black;
 
@@ -42,7 +43,7 @@ class _FishingSpotPageState extends State<FishingSpotPage> {
     return Scaffold(
       extendBodyBehindAppBar: true,
       body: FishingSpotMap(
-        mapController: _mapController,
+        mapPadding: _mapPadding,
         startLocation: latLng,
         showMyLocationButton: false,
         onMapTypeChanged: (mapType) {
@@ -81,7 +82,7 @@ class _FishingSpotPageState extends State<FishingSpotPage> {
   }
 
   Widget _buildBottomSheet(FishingSpot fishingSpot) {
-    return FloatingBottomContainer(
+    return FloatingContainer(
       title: fishingSpot.name,
       subtitle: formatLatLng(
         context: context,

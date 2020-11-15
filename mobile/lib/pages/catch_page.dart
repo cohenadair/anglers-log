@@ -124,7 +124,8 @@ class _CatchPageState extends State<CatchPage> {
       return Empty();
     }
 
-    return StaticFishingSpot(fishingSpot,
+    return StaticFishingSpot(
+      fishingSpot,
       padding: insetsHorizontalDefaultVerticalSmall,
     );
   }

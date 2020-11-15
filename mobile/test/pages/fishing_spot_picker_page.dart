@@ -6,7 +6,7 @@ import 'package:mobile/pages/save_fishing_spot_page.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/widgets/button.dart';
 import 'package:mobile/widgets/fishing_spot_map.dart';
-import 'package:mobile/widgets/floating_bottom_container.dart';
+import 'package:mobile/widgets/floating_container.dart';
 import 'package:mobile/widgets/search_bar.dart';
 import 'package:mockito/mockito.dart';
 
@@ -66,7 +66,7 @@ main() {
     ));
     await tester.pumpAndSettle(Duration(milliseconds: 250));
 
-    expect(find.byType(FloatingBottomContainer), findsNothing);
+    expect(find.byType(FloatingContainer), findsNothing);
   });
 
   testWidgets("Center widget hidden with fishing spot is selected",
@@ -211,7 +211,7 @@ main() {
     await tapAndSettle(tester, find.byType(SearchBar));
     await tapAndSettle(tester, find.text("Test Fishing Spot"));
 
-    expect(find.byType(FloatingBottomContainer), findsOneWidget);
+    expect(find.byType(FloatingContainer), findsOneWidget);
     expect(find.text("Test Fishing Spot"), findsOneWidget);
     expect(find.text("Lat: 1.234567, Lng: 7.654321"), findsOneWidget);
   });
@@ -230,7 +230,7 @@ main() {
     await tapAndSettle(tester, find.byType(SearchBar));
     await tapAndSettle(tester, find.byType(CloseButton));
 
-    expect(find.byType(FloatingBottomContainer), findsNothing);
+    expect(find.byType(FloatingContainer), findsNothing);
   });
 
   testWidgets("Editing fishing spot updates bottom sheet", (WidgetTester tester)

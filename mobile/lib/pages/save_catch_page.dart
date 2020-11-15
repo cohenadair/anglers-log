@@ -277,14 +277,9 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
       );
     }
 
-    return StaticFishingSpot(fishingSpot,
-      padding: EdgeInsets.only(
-        left: paddingDefault,
-        right: paddingDefault,
-        top: paddingSmall,
-        bottom: paddingSmall,
-      ),
-      mapController: _fishingSpotMapController,
+    return StaticFishingSpot(
+      fishingSpot,
+      padding: insetsHorizontalDefaultVerticalSmall,
       onTap: _pushFishingSpotPicker,
     );
   }
@@ -366,8 +361,6 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
         if (pickedFishingSpot != _fishingSpotController.value) {
           setState(() {
             _fishingSpotController.value = pickedFishingSpot;
-            moveMap(_fishingSpotMapController,
-                LatLng(pickedFishingSpot.lat, pickedFishingSpot.lng), false);
           });
         }
         Navigator.pop(context);

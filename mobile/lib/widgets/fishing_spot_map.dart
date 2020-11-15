@@ -42,6 +42,11 @@ class FishingSpotMap extends StatefulWidget {
   final FishingSpotMapSearchBar searchBar;
 
   final Completer<GoogleMapController> mapController;
+
+  /// Adds padding to the [GoogleMap] widget. This allows you to move the
+  /// Google logo that is required to be visible as per Google Maps TOS.
+  final EdgeInsets mapPadding;
+
   final LatLng startLocation;
   final bool showMyLocationButton;
 
@@ -75,7 +80,8 @@ class FishingSpotMap extends StatefulWidget {
   final Set<Marker> markers;
 
   FishingSpotMap({
-    @required this.mapController,
+    this.mapController,
+    this.mapPadding,
     this.searchBar,
     this.startLocation,
     this.showMyLocationButton = true,
@@ -88,7 +94,7 @@ class FishingSpotMap extends StatefulWidget {
     this.help,
     this.markers,
     this.children = const [],
-  }) : assert(mapController != null);
+  });
 
   @override
   _FishingSpotMapState createState() => _FishingSpotMapState();
@@ -109,11 +115,13 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
 
   FishingSpotManager get _fishingSpotManager => FishingSpotManager.of(context);
 
-  Completer<GoogleMapController> get _mapController => widget.mapController;
+  Completer<GoogleMapController> _mapController;
 
   @override
   void initState() {
     super.initState();
+
+    _mapController = widget.mapController ?? Completer();
 
     // No need to setup a timer if there is no help widget to show.
     if (widget.help != null) {
@@ -165,6 +173,7 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
         // TODO: Test onCameraIdle fix when merged. Event sometimes stops after interaction with map buttons.
         // https://github.com/flutter/flutter/issues/33988
         return GoogleMap(
+          padding: widget.mapPadding ?? insetsZero,
           mapType: _mapType,
           markers: widget.markers,
           initialCameraPosition: CameraPosition(
