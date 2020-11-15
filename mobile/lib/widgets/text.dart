@@ -13,7 +13,8 @@ class Label extends StatelessWidget {
 
   Label(this.text, {
     this.style,
-  }) : overflow = TextOverflow.ellipsis;
+    this.overflow = TextOverflow.ellipsis,
+  }) : assert(overflow != null);
 
   Label.multiline(this.text, {
     this.style,
@@ -135,8 +136,11 @@ class SecondaryLabel extends StatelessWidget {
 
 class TitleLabel extends StatelessWidget {
   final String text;
+  final TextOverflow overflow;
 
-  TitleLabel(this.text);
+  TitleLabel(this.text, {
+    this.overflow,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -148,7 +152,11 @@ class TitleLabel extends StatelessWidget {
         left: paddingDefault - 2.0,
         right: paddingDefault,
       ),
-      child: Label(text, style: styleTitle),
+      child: Label(
+        text,
+        style: styleTitle,
+        overflow: overflow,
+      ),
     );
   }
 }

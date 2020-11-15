@@ -60,7 +60,10 @@ class _BaitPageState extends State<BaitPage> {
         deleteMessage: _baitManager.deleteMessage(context, _bait),
         children: [
           _buildBaitCategory(),
-          TitleLabel(_bait.name),
+          TitleLabel(
+            _bait.name,
+            overflow: TextOverflow.visible,
+          ),
         ],
       ),
     );
