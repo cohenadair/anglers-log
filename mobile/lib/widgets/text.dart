@@ -146,6 +146,7 @@ class TitleLabel extends StatelessWidget {
       // Offset the leading padding to compensate for this.
       padding: const EdgeInsets.only(
         left: paddingDefault - 2.0,
+        right: paddingDefault,
       ),
       child: Label(text, style: styleTitle),
     );
