@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mobile/bait_category_manager.dart';
 import 'package:mobile/bait_manager.dart';
 import 'package:mobile/catch_manager.dart';
@@ -21,7 +20,6 @@ import 'package:mobile/preferences_manager.dart';
 import 'package:mobile/res/dimen.dart';
 import 'package:mobile/species_manager.dart';
 import 'package:mobile/time_manager.dart';
-import 'package:mobile/utils/map_utils.dart';
 import 'package:mobile/utils/page_utils.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/widgets/date_time_picker.dart';
@@ -77,7 +75,6 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
   final Log _log = Log("SaveCatchPage");
 
   final Map<Id, InputData> _fields = {};
-  final Completer<GoogleMapController> _fishingSpotMapController = Completer();
 
   Future<List<PickedImage>> _imagesFuture = Future.value([]);
   List<CustomEntityValue> _customEntityValues = [];

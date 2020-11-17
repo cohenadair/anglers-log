@@ -5,7 +5,6 @@ import 'package:mobile/pages/fishing_spot_picker_page.dart';
 import 'package:mobile/pages/save_fishing_spot_page.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/widgets/button.dart';
-import 'package:mobile/widgets/fishing_spot_map.dart';
 import 'package:mobile/widgets/floating_container.dart';
 import 'package:mobile/widgets/search_bar.dart';
 import 'package:mockito/mockito.dart';

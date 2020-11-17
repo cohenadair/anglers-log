@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:mailer/mailer.dart' as Mailer;
 import 'package:mailer/smtp_server.dart' as Smtp;

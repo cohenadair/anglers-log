@@ -24,7 +24,6 @@ import 'package:mobile/widgets/chart.dart';
 import 'package:mobile/widgets/text.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:quiver/strings.dart';
-import 'package:quiver/time.dart';
 
 /// A widget that includes all "summary" sections for a report. This widget
 /// should always be placed within a scroll view, otherwise it may overflow

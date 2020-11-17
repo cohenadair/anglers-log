@@ -42,7 +42,7 @@ main() {
       await tester.pumpWidget(Testable((_) => ManageableListItem(
         child: Text("Child"),
         editing: true,
-        onTapDeleteButton: () {},
+        onTapDeleteButton: () => false,
       )));
       expect(find.byIcon(Icons.delete), findsOneWidget);
       expect(find.byType(RightChevronIcon), findsOneWidget);
@@ -53,7 +53,7 @@ main() {
     {
       await tester.pumpWidget(Testable((_) => ManageableListItem(
         child: NoteLabel("Child"),
-        onTapDeleteButton: () {},
+        onTapDeleteButton: () => false,
       )));
       expect(find.byType(NoteLabel), findsOneWidget);
     });
@@ -107,7 +107,7 @@ main() {
     {
       await tester.pumpWidget(Testable((_) => ManageableListItem(
         child: Text("Child"),
-        onTapDeleteButton: () {},
+        onTapDeleteButton: () => false,
         editing: true,
         trailing: Icon(Icons.style),
       )));
@@ -121,7 +121,7 @@ main() {
     {
       await tester.pumpWidget(Testable((_) => ManageableListItem(
         child: Text("Child"),
-        onTapDeleteButton: () {},
+        onTapDeleteButton: () => false,
         trailing: Icon(Icons.style),
       )));
       await tester.pumpAndSettle();
@@ -134,7 +134,7 @@ main() {
     {
       await tester.pumpWidget(Testable((_) => ManageableListItem(
         child: Text("Child"),
-        onTapDeleteButton: () {},
+        onTapDeleteButton: () => false,
         editing: true,
       )));
       await tester.pumpAndSettle();
