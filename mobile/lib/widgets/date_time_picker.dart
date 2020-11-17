@@ -30,14 +30,28 @@ class DateTimePicker extends StatelessWidget {
           children: <Widget>[
             Flexible(
               flex: 3,
-              child: Padding(
-                padding: insetsRightWidget,
-                child: datePicker,
+              child: SafeArea(
+                right: false,
+                bottom: false,
+                child: Padding(
+                  padding: EdgeInsets.only(
+                    left: paddingDefault,
+                    right: paddingWidget,
+                  ),
+                  child: datePicker,
+                ),
               )
             ),
             Flexible(
               flex: 2,
-              child: timePicker,
+              child: SafeArea(
+                left: false,
+                bottom: false,
+                child: Padding(
+                  padding: insetsRightDefault,
+                  child: timePicker,
+                ),
+              ),
             ),
           ],
         ),
@@ -158,26 +172,22 @@ class _Picker extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: enabled ? type.openPicker : null,
-      child: SafeArea(
-        top: false,
-        bottom: false,
-        child: InputDecorator(
-          decoration: InputDecoration(
-            enabled: enabled,
-            labelText: label,
-            errorText: errorText,
-            errorMaxLines: 2,
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              type.getValue(),
-              EnabledOpacity(
-                enabled: enabled,
-                child: DropdownIcon(),
-              ),
-            ],
-          ),
+      child: InputDecorator(
+        decoration: InputDecoration(
+          enabled: enabled,
+          labelText: label,
+          errorText: errorText,
+          errorMaxLines: 2,
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            type.getValue(),
+            EnabledOpacity(
+              enabled: enabled,
+              child: DropdownIcon(),
+            ),
+          ],
         ),
       ),
     );

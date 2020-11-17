@@ -91,10 +91,14 @@ class HeadingNoteDivider extends StatelessWidget {
             duration: defaultAnimationDuration,
             child: hideNote ? Empty() : Padding(
               padding: insetsHorizontalDefault,
-              child: IconNoteLabel(
-                text: note,
-                icon: Icon(noteIcon,
-                  color: Colors.black,
+              child: SafeArea(
+                top: false,
+                bottom: false,
+                child: IconNoteLabel(
+                  text: note,
+                  icon: Icon(noteIcon,
+                    color: Colors.black,
+                  ),
                 ),
               ),
             ),
@@ -182,12 +186,8 @@ class EnabledOpacity extends StatelessWidget {
 class RightChevronIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      top: false,
-      bottom: false,
-      child: Icon(Icons.chevron_right,
-        color: colorInputIconAccent,
-      ),
+    return Icon(Icons.chevron_right,
+      color: colorInputIconAccent,
     );
   }
 }
@@ -343,4 +343,19 @@ class ChipWrap extends StatelessWidget {
       )).toList(),
     );
   }
+}
+
+class HorizontalSafeArea extends StatelessWidget {
+  final Widget child;
+
+  HorizontalSafeArea({
+    this.child,
+  });
+
+  @override
+  Widget build(BuildContext context) => SafeArea(
+    top: false,
+    bottom: false,
+    child: child,
+  );
 }

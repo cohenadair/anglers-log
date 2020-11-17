@@ -23,26 +23,6 @@ main() {
     expect(find.byType(Empty), findsOneWidget);
   });
 
-  testWidgets("Enabled", (WidgetTester tester) async {
-    bool tapped = false;
-    await tester.pumpWidget(Testable((_) => ListPickerInput(
-      value: "Value",
-      onTap: () => tapped = true,
-    )));
-    expect(findFirst<ListItem>(tester).contentPadding, isNull);
-
-    await tester.tap(find.byType(ListItem));
-    expect(tapped, isTrue);
-  });
-
-  testWidgets("Disabled", (WidgetTester tester) async {
-    await tester.pumpWidget(Testable((_) => ListPickerInput(
-      value: "Value",
-      enabled: false,
-    )));
-    expect(findFirst<ListItem>(tester).contentPadding, isNotNull);
-  });
-
   testWidgets("Empty value renders not selected message", (WidgetTester tester)
       async
   {

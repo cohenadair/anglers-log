@@ -132,22 +132,15 @@ class _FeedbackPageState extends State<FeedbackPage> {
           // To update "Send" button state.
           onChanged: () => setState(() {}),
         ),
-        _idType: _error ? Empty() : Padding(
-          padding: insetsBottomDefault,
-          child: Column(
-            children: <Widget>[
-              RadioInput(
-                initialSelectedIndex: _FeedbackType.values
-                    .indexOf(_typeController.value),
-                optionCount: _FeedbackType.values.length,
-                optionBuilder: (context, i) =>
-                    _feedbackTypeToString(_FeedbackType.values[i]),
-                onSelect: (i) => setState(() {
-                  _typeController.value = _FeedbackType.values[i];
-                }),
-              ),
-            ],
-          ),
+        _idType: _error ? Empty() : RadioInput(
+          initialSelectedIndex: _FeedbackType.values
+              .indexOf(_typeController.value),
+          optionCount: _FeedbackType.values.length,
+          optionBuilder: (context, i) =>
+              _feedbackTypeToString(_FeedbackType.values[i]),
+          onSelect: (i) => setState(() {
+            _typeController.value = _FeedbackType.values[i];
+          }),
         ),
         _idMessage: TextInput(
           label: Strings.of(context).feedbackPageMessage,

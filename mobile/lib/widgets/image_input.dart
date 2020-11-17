@@ -58,21 +58,22 @@ class ImageInput extends StatelessWidget {
         } : null,
         child: Padding(
           padding: insetsDefault,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  PrimaryLabel(allowsMultipleSelection
-                      ? Strings.of(context).inputPhotosLabel
-                      : Strings.of(context).inputPhotoLabel
-                  ),
-                  RightChevronIcon(),
-                ],
-              ),
-              _buildThumbnails(),
-            ],
+          child: HorizontalSafeArea(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    PrimaryLabel(allowsMultipleSelection
+                        ? Strings.of(context).inputPhotosLabel
+                        : Strings.of(context).inputPhotoLabel),
+                    RightChevronIcon(),
+                  ],
+                ),
+                _buildThumbnails(),
+              ],
+            ),
           ),
         ),
       ),

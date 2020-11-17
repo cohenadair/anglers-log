@@ -66,17 +66,21 @@ class _RadioInputState extends State<RadioInput> {
         widget.onSelect?.call(index);
       },
       child: Padding(
-        padding: insetsHorizontalDefaultVerticalSmall,
-        child: Row(
-          children: [
-            _selectedIndex == index
-                ? Icon(Icons.radio_button_checked)
-                : Icon(Icons.radio_button_unchecked),
-            Padding(
-              padding: insetsHorizontalWidget,
-              child: PrimaryLabel(widget.optionBuilder(context, index)),
-            ),
-          ],
+        padding: insetsVerticalSmall,
+        child: HorizontalSafeArea(
+          child: Row(
+            children: [
+              _selectedIndex == index
+                  ? Icon(Icons.radio_button_checked)
+                  : Icon(Icons.radio_button_unchecked),
+              Expanded(
+                child: Padding(
+                  padding: insetsLeftWidget,
+                  child: PrimaryLabel(widget.optionBuilder(context, index)),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

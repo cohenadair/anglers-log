@@ -8,27 +8,27 @@ import 'package:quiver/strings.dart';
 /// A default text Widget that should be used in place of [Text].
 class Label extends StatelessWidget {
   final String text;
-  final TextStyle style;
+  final TextAlign align;
   final TextOverflow overflow;
+  final TextStyle style;
 
   Label(this.text, {
+    this.align,
+    this.overflow,
     this.style,
-    this.overflow = TextOverflow.ellipsis,
-  }) : assert(overflow != null);
+  });
 
   Label.multiline(this.text, {
+    this.align,
     this.style,
   }) : overflow = null;
 
   @override
-  Widget build(BuildContext context) => SafeArea(
-    top: false,
-    bottom: false,
-    child: Text(
-      text,
-      style: style,
-      overflow: overflow,
-    ),
+  Widget build(BuildContext context) => Text(
+    text,
+    textAlign: align,
+    overflow: overflow ?? TextOverflow.ellipsis,
+    style: style,
   );
 }
 
@@ -79,20 +79,16 @@ class IconNoteLabel extends StatelessWidget {
   Widget build(BuildContext context) {
     List<String> strings = text.split("%s");
 
-    return SafeArea(
-      top: false,
-      bottom: false,
-      child: RichText(
-        text: TextSpan(
-          children: [
-            TextSpan(text: strings.first, style: styleNote(context)),
-            WidgetSpan(
-              child: icon,
-              alignment: PlaceholderAlignment.middle,
-            ),
-            TextSpan(text: strings.last, style: styleNote(context)),
-          ],
-        ),
+    return RichText(
+      text: TextSpan(
+        children: [
+          TextSpan(text: strings.first, style: styleNote(context)),
+          WidgetSpan(
+            child: icon,
+            alignment: PlaceholderAlignment.middle,
+          ),
+          TextSpan(text: strings.last, style: styleNote(context)),
+        ],
       ),
     );
   }
@@ -101,15 +97,21 @@ class IconNoteLabel extends StatelessWidget {
 /// Text that matches the primary label in a [ListTile].
 class PrimaryLabel extends StatelessWidget {
   final String text;
+  final TextAlign align;
   final bool enabled;
 
   PrimaryLabel(this.text, {
+    this.align,
     this.enabled = true,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Label(text, style: _style(context));
+    return Label(
+      text,
+      align: align,
+      style: _style(context),
+    );
   }
 
   TextStyle _style(BuildContext context) {
@@ -125,12 +127,19 @@ class PrimaryLabel extends StatelessWidget {
 
 class SecondaryLabel extends StatelessWidget {
   final String text;
+  final TextAlign align;
 
-  SecondaryLabel(this.text);
+  SecondaryLabel(this.text, {
+    this.align,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return PrimaryLabel(text, enabled: false);
+    return PrimaryLabel(
+      text,
+      enabled: false,
+      align: align,
+    );
   }
 }
 

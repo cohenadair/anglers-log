@@ -139,13 +139,17 @@ class _PickerPageState<T> extends State<PickerPage<T>> {
         }
 
         if (item._note) {
-          return Padding(
-            padding: insetsHorizontalDefault,
-            child: item.noteIcon == null
-                ? NoteLabel(item.title)
-                : IconNoteLabel(text: item.title, icon: Icon(item.noteIcon,
-                    color: Colors.black,
-                  )),
+          return SafeArea(
+            top: false,
+            bottom: false,
+            child: Padding(
+              padding: insetsHorizontalDefault,
+              child: item.noteIcon == null
+                  ? NoteLabel(item.title)
+                  : IconNoteLabel(text: item.title, icon: Icon(item.noteIcon,
+                      color: Colors.black,
+                    )),
+            ),
           );
         }
 

@@ -15,7 +15,6 @@ import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/utils/string_utils.dart';
 import 'package:provider/provider.dart';
 import 'package:quiver/strings.dart';
-import 'package:quiver/time.dart';
 
 class CatchManager extends EntityManager<Catch> {
   static CatchManager of(BuildContext context) =>

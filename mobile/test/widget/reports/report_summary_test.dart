@@ -5,6 +5,7 @@ import 'package:mobile/utils/date_time_utils.dart';
 import 'package:mobile/utils/protobuf_utils.dart';
 import 'package:mobile/widgets/chart.dart';
 import 'package:mobile/widgets/list_item.dart';
+import 'package:mobile/widgets/list_picker_input.dart';
 import 'package:mobile/widgets/reports/report_summary.dart';
 import 'package:mobile/widgets/widget.dart';
 import 'package:mockito/mockito.dart';
@@ -983,7 +984,7 @@ void main() {
       await tester.tap(find.text("Bluegill"));
       await tester.pumpAndSettle();
 
-      expect(find.widgetWithText(ListItem, "Bluegill"), findsOneWidget);
+      expect(find.widgetWithText(ListPickerInput, "Bluegill"), findsOneWidget);
     });
 
     testWidgets("View catches/catches per species row for each series",

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:mobile/i18n/strings.dart';
 import 'package:mobile/pages/picker_page.dart';
 import 'package:mobile/res/dimen.dart';
-import 'package:mobile/widgets/list_item.dart';
 import 'package:mobile/widgets/radio_input.dart';
 import 'package:mobile/widgets/text.dart';
 import 'package:mobile/widgets/widget.dart';
@@ -20,52 +19,39 @@ import 'package:quiver/strings.dart';
 class ListPickerInput extends StatelessWidget {
   final String title;
   final String value;
-  final bool enabled;
   final VoidCallback onTap;
 
   ListPickerInput({
     this.title,
     this.value,
-    this.enabled = true,
     this.onTap,
   }) : assert(isNotEmpty(title) || isNotEmpty(value));
 
   Widget build(BuildContext context) {
-    Widget titleWidget;
-    if (isNotEmpty(title)) {
-      titleWidget = Label(title);
-    } else {
-      titleWidget = Label(value);
-    }
-
-    return EnabledOpacity(
-      enabled: enabled,
-      child: ListItem(
-        contentPadding: enabled ? null : insetsLeftDefault,
-        title: titleWidget,
-        trailing: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            _buildSingleDetail(context),
-            RightChevronIcon(),
-          ],
+    return InkWell(
+      child: Padding(
+        padding: insetsDefault,
+        child: HorizontalSafeArea(
+          child: Row(
+            children: [
+              PrimaryLabel(isEmpty(title) ? value : title),
+              Expanded(
+                // If there's no title widget, the value widget will render at the
+                // start of the row.
+                child: isEmpty(title) ? Empty() : SecondaryLabel(
+                  isEmpty(value) ? Strings.of(context).inputNotSelected : value,
+                  align: TextAlign.right,
+                ),
+              ),
+              Padding(
+                padding: insetsLeftWidgetSmall,
+                child: RightChevronIcon(),
+              ),
+            ],
+          ),
         ),
-        onTap: enabled ? onTap : null,
       ),
-    );
-  }
-
-  Widget _buildSingleDetail(BuildContext context) {
-    if (isEmpty(title)) {
-      // If there's no title widget, the value widget will render at the
-      // start of the row.
-      return Empty();
-    }
-
-    return Padding(
-      padding: insetsRightWidgetSmall,
-      child: SecondaryLabel(isEmpty(value)
-          ? Strings.of(context).inputNotSelected : value),
+      onTap: onTap,
     );
   }
 }
