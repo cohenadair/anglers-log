@@ -35,8 +35,8 @@ class EntityPage extends StatefulWidget {
     this.onDelete,
     this.padding = insetsDefault,
     this.static = false,
-  }) : assert(children != null),
-       assert(customEntityValues != null);
+  })  : assert(children != null),
+        assert(customEntityValues != null);
 
   @override
   _EntityPageState createState() => _EntityPageState();
@@ -51,8 +51,8 @@ class _EntityPageState extends State<EntityPage> {
   int _imageIndex = 0;
   PageController _imageController;
 
-  bool get _hasImages => widget.imageNames != null
-      && widget.imageNames.isNotEmpty;
+  bool get _hasImages =>
+      widget.imageNames != null && widget.imageNames.isNotEmpty;
   double get _imageHeight =>
       MediaQuery.of(context).size.height / _imageHeightFactor;
 
@@ -89,22 +89,27 @@ class _EntityPageState extends State<EntityPage> {
         slivers: [
           SliverAppBar(
             actions: [
-              widget.static ? Empty() : ActionButton.edit(
-                condensed: true,
-                onPressed: widget.onEdit,
-              ),
-              widget.static ? Empty() : IconButton(
-                icon: Icon(Icons.delete),
-                onPressed: isEmpty(widget.deleteMessage) ? null : () =>
-                    showDeleteDialog(
-                      context: context,
-                      description: Text(widget.deleteMessage),
-                      onDelete: () {
-                        widget.onDelete?.call();
-                        Navigator.pop(context);
-                      },
+              widget.static
+                  ? Empty()
+                  : ActionButton.edit(
+                      condensed: true,
+                      onPressed: widget.onEdit,
                     ),
-              ),
+              widget.static
+                  ? Empty()
+                  : IconButton(
+                      icon: Icon(Icons.delete),
+                      onPressed: isEmpty(widget.deleteMessage)
+                          ? null
+                          : () => showDeleteDialog(
+                                context: context,
+                                description: Text(widget.deleteMessage),
+                                onDelete: () {
+                                  widget.onDelete?.call();
+                                  Navigator.pop(context);
+                                },
+                              ),
+                    ),
             ],
             flexibleSpace: FlexibleSpaceBar(
               background: _hasImages ? _buildImages() : null,
@@ -164,12 +169,14 @@ class _EntityPageState extends State<EntityPage> {
       children: [
         PageView(
           controller: _imageController,
-          children: []..addAll(imageNames.map((fileName) => Photo(
-            fileName: fileName,
-            width: MediaQuery.of(context).size.width,
-            // Top padding adds status bar/safe area padding.
-            height: MediaQuery.of(context).padding.top + _imageHeight,
-          )).toList()),
+          children: []..addAll(imageNames
+              .map((fileName) => Photo(
+                    fileName: fileName,
+                    width: MediaQuery.of(context).size.width,
+                    // Top padding adds status bar/safe area padding.
+                    height: MediaQuery.of(context).padding.top + _imageHeight,
+                  ))
+              .toList()),
           onPageChanged: (newPage) => setState(() {
             _imageIndex = newPage;
           }),

@@ -39,8 +39,8 @@ class FishingSpotManager extends NamedEntityManager<FishingSpot> {
 
     Map<FishingSpot, double> eligibleFishingSpotsMap = {};
     for (FishingSpot fishingSpot in entities.values) {
-      double distance = distanceBetween(
-          LatLng(fishingSpot.lat, fishingSpot.lng), latLng);
+      double distance =
+          distanceBetween(LatLng(fishingSpot.lat, fishingSpot.lng), latLng);
       if (distance <= meters) {
         eligibleFishingSpotsMap[fishingSpot] = distance;
       }
@@ -65,8 +65,9 @@ class FishingSpotManager extends NamedEntityManager<FishingSpot> {
     if (rhs == null) {
       return null;
     }
-    return entities.values.firstWhere((fishingSpot) =>
-        fishingSpot.lat == rhs.lat && fishingSpot.lng == rhs.lng,
+    return entities.values.firstWhere(
+        (fishingSpot) =>
+            fishingSpot.lat == rhs.lat && fishingSpot.lng == rhs.lng,
         orElse: () => null);
   }
 
@@ -97,8 +98,8 @@ class FishingSpotManager extends NamedEntityManager<FishingSpot> {
       return format(Strings.of(context).mapPageDeleteFishingSpotNoNameSingular,
           [numOfCatches]);
     } else {
-      return format(Strings.of(context).mapPageDeleteFishingSpotNoName,
-          [numOfCatches]);
+      return format(
+          Strings.of(context).mapPageDeleteFishingSpotNoName, [numOfCatches]);
     }
   }
 }

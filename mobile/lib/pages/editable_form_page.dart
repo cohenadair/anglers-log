@@ -54,11 +54,11 @@ class EditableFormPage extends StatefulWidget {
     this.padding = insetsHorizontalDefault,
     this.isInputValid = true,
     this.runSpacing,
-  }) : assert(fields != null),
-       assert(customEntityIds != null),
-       assert(customEntityValues != null),
-       assert(isInputValid != null),
-       assert(padding != null);
+  })  : assert(fields != null),
+        assert(customEntityIds != null),
+        assert(customEntityValues != null),
+        assert(isInputValid != null),
+        assert(padding != null);
 
   @override
   _EditableFormPageState createState() => _EditableFormPageState();
@@ -123,7 +123,8 @@ class _EditableFormPageState extends State<EditableFormPage> {
       runSpacing: widget.runSpacing,
       padding: widget.padding,
       fieldBuilder: (BuildContext context) {
-        return Map.fromIterable(_fields.keys,
+        return Map.fromIterable(
+          _fields.keys,
           key: (item) => item,
           value: (item) => _inputWidget(item),
         );
@@ -131,10 +132,9 @@ class _EditableFormPageState extends State<EditableFormPage> {
       onSave: (_) {
         Map<Id, dynamic> customFieldValues = {};
         for (Id id in _fields.keys) {
-          if (_customEntityManager.entity(id) != null
-              && _fields[id].showing
-              && !_fields[id].fake)
-          {
+          if (_customEntityManager.entity(id) != null &&
+              _fields[id].showing &&
+              !_fields[id].fake) {
             customFieldValues[id] = _fields[id].controller.value;
           }
         }
@@ -144,11 +144,12 @@ class _EditableFormPageState extends State<EditableFormPage> {
       addFieldOptions: _fields.keys
           .where((id) => !_fields[id].fake)
           .map((Id id) => FormPageFieldOption(
-            id: id,
-            userFacingName: _fields[id].label(context),
-            used: _fields[id].showing,
-            removable: _fields[id].removable,
-          )).toList(),
+                id: id,
+                userFacingName: _fields[id].label(context),
+                used: _fields[id].showing,
+                removable: _fields[id].removable,
+              ))
+          .toList(),
       onAddFields: _addInputWidgets,
       isInputValid: widget.isInputValid,
     );
@@ -158,8 +159,9 @@ class _EditableFormPageState extends State<EditableFormPage> {
     // For now, always show "fake" fields.
     if (_fields[id].fake) {
       bool hasCustomFields = _fields.keys.firstWhere(
-          (id) => _customEntityManager.entity(id) != null,
-          orElse: () => null) != null;
+              (id) => _customEntityManager.entity(id) != null,
+              orElse: () => null) !=
+          null;
 
       return HeadingNoteDivider(
         hideNote: hasCustomFields,
@@ -178,7 +180,8 @@ class _EditableFormPageState extends State<EditableFormPage> {
     if (customField != null) {
       return Padding(
         padding: insetsHorizontalDefault,
-        child: inputTypeWidget(context,
+        child: inputTypeWidget(
+          context,
           type: customField.type,
           label: customField.name,
           controller: _fields[id].controller,
@@ -196,12 +199,14 @@ class _EditableFormPageState extends State<EditableFormPage> {
     for (Id id in ids) {
       CustomEntity customField = _customEntityManager.entity(id);
       if (customField != null) {
-        _fields.putIfAbsent(id, () => InputData(
-          id: id,
-          controller: inputTypeController(customField.type),
-          label: (_) => customField.name,
-          showing: true,
-        ));
+        _fields.putIfAbsent(
+            id,
+            () => InputData(
+                  id: id,
+                  controller: inputTypeController(customField.type),
+                  label: (_) => customField.name,
+                  showing: true,
+                ));
       }
     }
 

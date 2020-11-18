@@ -10,11 +10,7 @@ const monthDayFormat = "MMM d";
 const monthDayYearFormat = "MMM d, yyyy";
 const monthDayYearFormatFull = "MMMM d, yyyy";
 
-enum DurationUnit {
-  days,
-  hours,
-  minutes
-}
+enum DurationUnit { days, hours, minutes }
 
 /// A representation of a [Duration] object meant to be shown to the user. Units
 /// are split by largest possible. For example, the hours property is the
@@ -25,13 +21,14 @@ class DisplayDuration {
   final bool _includesHours;
   final bool _includesMinutes;
 
-  DisplayDuration(this._duration, {
+  DisplayDuration(
+    this._duration, {
     bool includesDays = true,
     bool includesHours = true,
     bool includesMinutes = true,
-  }) : _includesDays = includesDays,
-       _includesHours = includesHours,
-       _includesMinutes = includesMinutes;
+  })  : _includesDays = includesDays,
+        _includesHours = includesHours,
+        _includesMinutes = includesMinutes;
 
   int get days => _duration.inDays;
 
@@ -67,16 +64,16 @@ class DateRange {
   final DateTime endDate;
 
   DateRange({this.startDate, this.endDate})
-      : assert(startDate.isAtSameMomentAs(endDate)
-          || startDate.isBefore(endDate));
+      : assert(
+            startDate.isAtSameMomentAs(endDate) || startDate.isBefore(endDate));
 
   DateRange.fromTimestamps({
     Timestamp start,
     Timestamp end,
   }) : this(
-    startDate: start.toDateTime(),
-    endDate: end.toDateTime(),
-  );
+          startDate: start.toDateTime(),
+          endDate: end.toDateTime(),
+        );
 
   int get startMs => startDate.millisecondsSinceEpoch;
   int get endMs => endDate.millisecondsSinceEpoch;
@@ -168,8 +165,8 @@ class DisplayDateRange {
     id: "lastWeek",
     getValue: (DateTime now) {
       DateTime endOfLastWeek = startOfWeek(now);
-      DateTime startOfLastWeek = endOfLastWeek.subtract(Duration(
-          days: DateTime.daysPerWeek),
+      DateTime startOfLastWeek = endOfLastWeek.subtract(
+        Duration(days: DateTime.daysPerWeek),
       );
       return DateRange(startDate: startOfLastWeek, endDate: endOfLastWeek);
     },
@@ -255,13 +252,26 @@ class DisplayDateRange {
   );
 
   static final all = [
-    allDates, today, yesterday, thisWeek, thisMonth, thisYear, lastWeek,
-    lastMonth, lastYear, last7Days, last14Days, last30Days, last60Days,
-    last12Months, custom,
+    allDates,
+    today,
+    yesterday,
+    thisWeek,
+    thisMonth,
+    thisYear,
+    lastWeek,
+    lastMonth,
+    lastYear,
+    last7Days,
+    last14Days,
+    last30Days,
+    last60Days,
+    last12Months,
+    custom,
   ];
 
   /// Returns the [DisplayDateRange] for the given ID, or `null` if none exists.
-  static DisplayDateRange of(String id, [
+  static DisplayDateRange of(
+    String id, [
     Timestamp startTimestamp,
     Timestamp endTimestamp,
   ]) {
@@ -281,9 +291,7 @@ class DisplayDateRange {
   final DateRange Function(DateTime now) getValue;
   final String Function(BuildContext context) title;
 
-  DisplayDateRange._({
-    this.id, this.getValue, this.title
-  });
+  DisplayDateRange._({this.id, this.getValue, this.title});
 
   /// Used to create a [DisplayDateRange] with custom start and end dates, but
   /// with the same ID as [DisplayDateRange.custom].
@@ -291,16 +299,17 @@ class DisplayDateRange {
     DateRange Function(DateTime now) getValue,
     String Function(BuildContext context) getTitle,
   }) : this._(
-    id: custom.id,
-    getValue: getValue,
-    title: getTitle,
-  );
+          id: custom.id,
+          getValue: getValue,
+          title: getTitle,
+        );
 
   /// Wrapper for [DisplayDateRange.newCustom].
-  DisplayDateRange.newCustomFromDateRange(DateRange dateRange) : this.newCustom(
-    getValue: (_) => dateRange,
-    getTitle: (_) => formatDateRange(dateRange),
-  );
+  DisplayDateRange.newCustomFromDateRange(DateRange dateRange)
+      : this.newCustom(
+          getValue: (_) => dateRange,
+          getTitle: (_) => formatDateRange(dateRange),
+        );
 
   DateRange value(BuildContext context) =>
       getValue(AppManager.of(context).timeManager.currentDateTime);
@@ -376,8 +385,8 @@ bool isWithinOneWeek(DateTime a, DateTime b) {
 /// Due to the lack of granularity in [TimeOfDay], the seconds and milliseconds
 /// value of the result are that of the given [DateTime].
 DateTime combine(DateTime dateTime, TimeOfDay timeOfDay) {
-  return DateTime(dateTime.year, dateTime.month, dateTime.day,
-      timeOfDay.hour, timeOfDay.minute, dateTime.second, dateTime.millisecond);
+  return DateTime(dateTime.year, dateTime.month, dateTime.day, timeOfDay.hour,
+      timeOfDay.minute, dateTime.second, dateTime.millisecond);
 }
 
 /// Returns a new [DateTime] object, with time properties more granular than
@@ -472,9 +481,9 @@ String timestampToSearchString(BuildContext context, Timestamp timestamp) {
 /// Example:
 ///   Dec. 8, 2018 - Dec. 29, 2018
 String formatDateRange(DateRange dateRange) {
-  return DateFormat(monthDayYearFormat).format(dateRange.startDate)
-      + " - "
-      + DateFormat(monthDayYearFormat).format(dateRange.endDate);
+  return DateFormat(monthDayYearFormat).format(dateRange.startDate) +
+      " - " +
+      DateFormat(monthDayYearFormat).format(dateRange.endDate);
 }
 
 /// Returns a formatted [DateTime] to be displayed to the user. Includes
@@ -560,9 +569,9 @@ String formatDuration({
   int numberIncluded = 0;
 
   bool shouldAdd(bool include, int value) {
-    return include
-        && (!condensed || value > 0)
-        && (!showHighestTwoOnly || numberIncluded < 2);
+    return include &&
+        (!condensed || value > 0) &&
+        (!showHighestTwoOnly || numberIncluded < 2);
   }
 
   if (shouldAdd(includesDays, duration.days)) {
@@ -588,9 +597,8 @@ String formatDuration({
   }
 
   // If there is no result and not everything is excluded, default to 0m.
-  if (result.isEmpty && (includesSeconds || includesMinutes || includesHours
-      || includesDays))
-  {
+  if (result.isEmpty &&
+      (includesSeconds || includesMinutes || includesHours || includesDays)) {
     result += format(Strings.of(context).minutesFormat, [0]);
   }
 

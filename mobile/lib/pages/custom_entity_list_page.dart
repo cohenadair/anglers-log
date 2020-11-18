@@ -27,7 +27,8 @@ class CustomEntityListPage extends StatelessWidget {
           children: [
             PrimaryLabel(entity.name),
             isEmpty(entity.description)
-                ? Empty() : SecondaryLabel(entity.description),
+                ? Empty()
+                : SecondaryLabel(entity.description),
           ],
         ),
       ),
@@ -42,10 +43,10 @@ class CustomEntityListPage extends StatelessWidget {
             customEntityManager.listSortedByName(filter: query),
         deleteWidget: (context, entity) =>
             Text(format(Strings.of(context).customEntityListPageDelete, [
-              entity.name,
-              catchManager.numberOfCustomEntityValues(entity.id),
-              baitManager.numberOfCustomEntityValues(entity.id),
-            ])),
+          entity.name,
+          catchManager.numberOfCustomEntityValues(entity.id),
+          baitManager.numberOfCustomEntityValues(entity.id),
+        ])),
         deleteItem: (context, entity) async =>
             await customEntityManager.delete(entity.id),
         addPageBuilder: () => SaveCustomEntityPage(),

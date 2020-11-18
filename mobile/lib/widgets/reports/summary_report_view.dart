@@ -24,14 +24,13 @@ class SummaryReportView extends StatelessWidget {
     return ReportSummary(
       managers: [summaryReportManager],
       onUpdate: () => _updateModels(context, report),
-      descriptionBuilder: (context) => isEmpty(report?.description)
-          ? null : report?.description,
+      descriptionBuilder: (context) =>
+          isEmpty(report?.description) ? null : report?.description,
     );
   }
 
-  List<ReportSummaryModel> _updateModels(BuildContext context,
-      SummaryReport report)
-  {
+  List<ReportSummaryModel> _updateModels(
+      BuildContext context, SummaryReport report) {
     return [
       ReportSummaryModel(
         context: context,

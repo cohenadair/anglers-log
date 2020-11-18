@@ -56,8 +56,8 @@ class ManageableListPage<T> extends StatefulWidget {
     this.forceCenterTitle = false,
     this.pickerSettings,
     this.searchDelegate,
-  }) : assert(itemBuilder != null),
-       assert(itemManager != null);
+  })  : assert(itemBuilder != null),
+        assert(itemManager != null);
 
   @override
   _ManageableListPageState<T> createState() => _ManageableListPageState<T>();
@@ -89,7 +89,8 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
 
     if (widget.pickerSettings != null) {
       _viewingState = widget.pickerSettings.multi
-          ? _ViewingState.pickingMulti : _ViewingState.pickingSingle;
+          ? _ViewingState.pickingMulti
+          : _ViewingState.pickingSingle;
       _selectedValues = Set.of(widget.pickerSettings.initialValues);
     }
 
@@ -168,8 +169,8 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
           child: SearchBar(
             text: _searchText,
             hint: widget.searchDelegate.hint,
-            leadingPadding: widget.itemsHaveThumbnail
-                ? _thumbSearchTextOffset : null,
+            leadingPadding:
+                widget.itemsHaveThumbnail ? _thumbSearchTextOffset : null,
             elevated: false,
             delegate: InputSearchBarDelegate((String text) {
               _searchText = text;
@@ -193,16 +194,17 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
     List<Widget> result = [];
 
     // Done button, for finishing picking.
-    result..add(ActionButton.done(
-      condensed: true,
-      onPressed: () {
-        if (_editing) {
-          setEditingUpdateState(false);
-        } else {
-          _finishPicking(_selectedValues);
-        }
-      },
-    ));
+    result
+      ..add(ActionButton.done(
+        condensed: true,
+        onPressed: () {
+          if (_editing) {
+            setEditingUpdateState(false);
+          } else {
+            _finishPicking(_selectedValues);
+          }
+        },
+      ));
 
     // Overflow add/edit items for modifying the list.
     List<PopupMenuItem<_OverflowOption>> overflowOptions = [];
@@ -223,20 +225,21 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
     }
 
     if (overflowOptions.isNotEmpty) {
-      result..add(PopupMenuButton<_OverflowOption>(
-        icon: Icon(Icons.more_vert),
-        itemBuilder: (_) => overflowOptions,
-        onSelected: (option) {
-          switch (option) {
-            case _OverflowOption.add:
-              present(context, widget.itemManager.addPageBuilder());
-              break;
-            case _OverflowOption.edit:
-              setEditingUpdateState(true);
-              break;
-          }
-        },
-      ));
+      result
+        ..add(PopupMenuButton<_OverflowOption>(
+          icon: Icon(Icons.more_vert),
+          itemBuilder: (_) => overflowOptions,
+          onSelected: (option) {
+            switch (option) {
+              case _OverflowOption.add:
+                present(context, widget.itemManager.addPageBuilder());
+                break;
+              case _OverflowOption.edit:
+                setEditingUpdateState(true);
+                break;
+            }
+          },
+        ));
     }
 
     return result;
@@ -262,8 +265,7 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
     if (_addable) {
       result.add(IconButton(
         icon: Icon(Icons.add),
-        onPressed: () =>
-            present(context, widget.itemManager.addPageBuilder()),
+        onPressed: () => present(context, widget.itemManager.addPageBuilder()),
       ));
     }
 
@@ -296,8 +298,8 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
     } else if (_pickingSingle || widget.itemManager.detailPageBuilder == null) {
       // Don't show detail disclosure indicator if we're picking a single
       // value, or if there isn't any detail to show.
-      trailing = _selectedValues.contains(itemValue)
-          ? Icon(Icons.check) : Empty();
+      trailing =
+          _selectedValues.contains(itemValue) ? Icon(Icons.check) : Empty();
     }
 
     bool canEdit = _editing && item.editable;
@@ -310,20 +312,22 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
       deleteMessageBuilder: (context) =>
           widget.itemManager.deleteWidget(context, itemValue),
       onConfirmDelete: () => widget.itemManager.deleteItem(context, itemValue),
-      onTap: !enabled || (_viewing && !_hasDetailPage && !canEdit) ? null : () {
-        if (_pickingMulti && !canEdit) {
-          // Taps are consumed by trailing checkbox in this case.
-          return;
-        }
+      onTap: !enabled || (_viewing && !_hasDetailPage && !canEdit)
+          ? null
+          : () {
+              if (_pickingMulti && !canEdit) {
+                // Taps are consumed by trailing checkbox in this case.
+                return;
+              }
 
-        if (canEdit) {
-          push(context, widget.itemManager.editPageBuilder(itemValue));
-        } else if (_pickingSingle) {
-          _finishPicking({itemValue});
-        } else if (widget.itemManager.detailPageBuilder != null) {
-          push(context, widget.itemManager.detailPageBuilder(itemValue));
-        }
-      },
+              if (canEdit) {
+                push(context, widget.itemManager.editPageBuilder(itemValue));
+              } else if (_pickingSingle) {
+                _finishPicking({itemValue});
+              } else if (widget.itemManager.detailPageBuilder != null) {
+                push(context, widget.itemManager.detailPageBuilder(itemValue));
+              }
+            },
       onTapDeleteButton: widget.itemManager.onTapDeleteButton == null
           ? null
           : () => widget.itemManager.onTapDeleteButton(itemValue),
@@ -332,8 +336,8 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
   }
 
   void setEditingUpdateState(bool editing) => setState(() {
-    _editing = editing;
-  });
+        _editing = editing;
+      });
 
   void _finishPicking(Set<T> pickedValues) {
     if (widget.pickerSettings.onPicked(context, pickedValues)) {
@@ -342,9 +346,7 @@ class _ManageableListPageState<T> extends State<ManageableListPage<T>> {
   }
 }
 
-enum _ViewingState {
-  pickingSingle, pickingMulti, viewing
-}
+enum _ViewingState { pickingSingle, pickingMulti, viewing }
 
 class ManageableListPagePickerSettings<T> {
   final Set<T> initialValues;
@@ -360,8 +362,8 @@ class ManageableListPagePickerSettings<T> {
     @required this.onPicked,
     Set<T> initialValues,
     this.multi = false,
-  }) : assert(onPicked != null),
-       initialValues = initialValues ?? const {};
+  })  : assert(onPicked != null),
+        initialValues = initialValues ?? const {};
 }
 
 /// A convenience class for storing the properties of an option [SearchBar] in
@@ -376,8 +378,8 @@ class ManageableListPageSearchDelegate {
   ManageableListPageSearchDelegate({
     @required this.hint,
     @required this.noResultsMessage,
-  }) : assert(isNotEmpty(hint)),
-       assert(isNotEmpty(noResultsMessage));
+  })  : assert(isNotEmpty(hint)),
+        assert(isNotEmpty(noResultsMessage));
 }
 
 /// A convenient class for storing properties for a single item in a
@@ -452,12 +454,10 @@ class ManageableListPageItemManager<T> {
     this.editPageBuilder,
     this.detailPageBuilder,
     this.onTapDeleteButton,
-  }) : assert(loadItems != null),
-       assert(deleteWidget != null),
-       assert(deleteItem != null),
-       assert(listenerManagers == null || listenerManagers.isNotEmpty);
+  })  : assert(loadItems != null),
+        assert(deleteWidget != null),
+        assert(deleteItem != null),
+        assert(listenerManagers == null || listenerManagers.isNotEmpty);
 }
 
-enum _OverflowOption {
-  add, edit
-}
+enum _OverflowOption { add, edit }

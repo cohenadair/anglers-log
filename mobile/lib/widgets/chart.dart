@@ -33,9 +33,9 @@ class ExpandableChart<T> extends StatelessWidget {
     this.series = const [],
     this.rowDetailsPage,
     @required this.labelBuilder,
-  }) : assert(series != null),
-       assert(filters != null),
-       assert(labelBuilder != null);
+  })  : assert(series != null),
+        assert(filters != null),
+        assert(labelBuilder != null);
 
   @override
   Widget build(BuildContext context) {
@@ -76,8 +76,9 @@ class Series<T> {
   int get maxValue => max(data.values);
 
   Series<T> limitToFirst(int count) {
-    return Series<T>(firstElements(data, numberOfElements: count),
-        displayDateRange).._color = _color;
+    return Series<T>(
+        firstElements(data, numberOfElements: count), displayDateRange)
+      .._color = _color;
   }
 }
 
@@ -121,15 +122,17 @@ class Chart<T> extends StatefulWidget {
     this.chartPageFilters = const {},
     this.showAll = false,
     this.onTapRow,
-  }) : assert(showAll || (!showAll && isNotEmpty(viewAllTitle)
-           && isNotEmpty(chartPageDescription)),
-           "showAll is false; viewAllTitle is required"),
-       assert(series != null),
-       assert(padding != null),
-       assert(series.isNotEmpty),
-       assert(chartPageFilters != null),
-       assert(labelBuilder != null)
-  {
+  })  : assert(
+            showAll ||
+                (!showAll &&
+                    isNotEmpty(viewAllTitle) &&
+                    isNotEmpty(chartPageDescription)),
+            "showAll is false; viewAllTitle is required"),
+        assert(series != null),
+        assert(padding != null),
+        assert(series.isNotEmpty),
+        assert(chartPageFilters != null),
+        assert(labelBuilder != null) {
     List<Color> colors = List.of(Colors.primaries)
       ..remove(Colors.brown)
       ..remove(Colors.blueGrey);
@@ -200,18 +203,20 @@ class _ChartState<T> extends State<Chart<T>> {
       child: Wrap(
         spacing: paddingWidget,
         runSpacing: paddingWidgetTiny,
-        children: widget.series.map((series) => Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              width: _legendIndicatorSize,
-              height: _legendIndicatorSize,
-              color: series._color,
-            ),
-            HorizontalSpace(paddingWidgetSmall),
-            Text(series.displayDateRange.title(context)),
-          ],
-        )).toList(),
+        children: widget.series
+            .map((series) => Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Container(
+                      width: _legendIndicatorSize,
+                      height: _legendIndicatorSize,
+                      color: series._color,
+                    ),
+                    HorizontalSpace(paddingWidgetSmall),
+                    Text(series.displayDateRange.title(context)),
+                  ],
+                ))
+            .toList(),
       ),
     );
   }
@@ -234,13 +239,17 @@ class _ChartState<T> extends State<Chart<T>> {
     List<T> items = _displayData.first.data.keys.toList();
     for (T item in items) {
       for (Series series in _displayData) {
-        children.add(_buildChartRow(maxWidth, maxValue, item, series,
+        children.add(_buildChartRow(
+            maxWidth,
+            maxValue,
+            item,
+            series,
             series.data[item],
             series._color ?? Theme.of(context).primaryColor));
 
         // Add space between series rows.
-        children.add(VerticalSpace(series == _displayData.last
-            ? 0 : paddingWidgetTiny));
+        children.add(
+            VerticalSpace(series == _displayData.last ? 0 : paddingWidgetTiny));
       }
 
       // Add space between rows.
@@ -258,8 +267,7 @@ class _ChartState<T> extends State<Chart<T>> {
   }
 
   Widget _buildChartRow(double maxWidth, double maxValue, T item,
-      Series<T> series, int value, Color color)
-  {
+      Series<T> series, int value, Color color) {
     if (maxValue <= 0) {
       _log.w("Can't create a chart row with maxValue = 0");
       return Empty();
@@ -272,8 +280,8 @@ class _ChartState<T> extends State<Chart<T>> {
     return InkWell(
       onTap: widget.onTapRow == null
           ? null
-          : () => widget.onTapRow.call(item,
-              series.displayDateRange.value(context)),
+          : () => widget.onTapRow
+              .call(item, series.displayDateRange.value(context)),
       child: Stack(
         alignment: Alignment.centerLeft,
         children: [
@@ -284,8 +292,9 @@ class _ChartState<T> extends State<Chart<T>> {
           ),
           Container(
             height: _rowHeight,
-            width: value.toDouble() / maxValue
-                * (maxWidth - widget.padding.left - widget.padding.right),
+            width: value.toDouble() /
+                maxValue *
+                (maxWidth - widget.padding.left - widget.padding.right),
             color: color,
           ),
           Padding(
@@ -298,23 +307,24 @@ class _ChartState<T> extends State<Chart<T>> {
   }
 
   Widget _buildViewAll() {
-    if (widget.showAll
-        || isEmpty(widget.viewAllTitle)
-        || _maxRowCount <= _condensedRowCount)
-    {
+    if (widget.showAll ||
+        isEmpty(widget.viewAllTitle) ||
+        _maxRowCount <= _condensedRowCount) {
       return VerticalSpace(paddingWidgetSmall);
     }
 
     return ListItem(
       title: Text(widget.viewAllTitle),
       trailing: RightChevronIcon(),
-      onTap: () => push(context, _ChartPage<T>(
-        series: widget.series,
-        description: widget.chartPageDescription,
-        filters: widget.chartPageFilters,
-        labelBuilder: widget.labelBuilder,
-        onTapRow: widget.onTapRow,
-      )),
+      onTap: () => push(
+          context,
+          _ChartPage<T>(
+            series: widget.series,
+            description: widget.chartPageDescription,
+            filters: widget.chartPageFilters,
+            labelBuilder: widget.labelBuilder,
+            onTapRow: widget.onTapRow,
+          )),
     );
   }
 
@@ -352,10 +362,10 @@ class _ChartPage<T> extends StatelessWidget {
     @required this.labelBuilder,
     this.filters = const {},
     this.onTapRow,
-  }) : assert(series != null),
-       assert(isNotEmpty(description)),
-       assert(filters != null),
-       assert(labelBuilder != null);
+  })  : assert(series != null),
+        assert(isNotEmpty(description)),
+        assert(filters != null),
+        assert(labelBuilder != null);
 
   @override
   Widget build(BuildContext context) {

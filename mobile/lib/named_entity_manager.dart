@@ -6,8 +6,7 @@ import 'package:protobuf/protobuf.dart';
 import 'package:quiver/strings.dart';
 
 abstract class NamedEntityManager<T extends GeneratedMessage>
-    extends EntityManager<T>
-{
+    extends EntityManager<T> {
   String name(T entity);
 
   NamedEntityManager(AppManager app) : super(app);
@@ -40,7 +39,8 @@ abstract class NamedEntityManager<T extends GeneratedMessage>
     if (isEmpty(name)) {
       return null;
     }
-    return entities.values.firstWhere((e) =>
-        equalsTrimmedIgnoreCase(name, this.name(e)), orElse: () => null);
+    return entities.values.firstWhere(
+        (e) => equalsTrimmedIgnoreCase(name, this.name(e)),
+        orElse: () => null);
   }
 }

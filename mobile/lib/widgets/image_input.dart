@@ -21,10 +21,10 @@ class ImageInput extends StatelessWidget {
     this.enabled = true,
     this.allowsMultipleSelection = true,
     List<PickedImage> initialImages = const [],
-  }) : assert(onImagesPicked != null),
-       assert(initialImages != null),
-       assert(requestPhotoPermission != null),
-       currentImages = initialImages;
+  })  : assert(onImagesPicked != null),
+        assert(initialImages != null),
+        assert(requestPhotoPermission != null),
+        currentImages = initialImages;
 
   ImageInput.single({
     @required Future<bool> Function() requestPhotoPermission,
@@ -32,30 +32,34 @@ class ImageInput extends StatelessWidget {
     PickedImage currentImage,
     @required Function(PickedImage) onImagePicked,
   }) : this(
-    requestPhotoPermission: requestPhotoPermission,
-    enabled: enabled ?? true,
-    allowsMultipleSelection: false,
-    initialImages: currentImage == null ? [] : [currentImage],
-    onImagesPicked: (images) =>
-        onImagePicked(images.isNotEmpty ? images.first : null),
-  );
+          requestPhotoPermission: requestPhotoPermission,
+          enabled: enabled ?? true,
+          allowsMultipleSelection: false,
+          initialImages: currentImage == null ? [] : [currentImage],
+          onImagesPicked: (images) =>
+              onImagePicked(images.isNotEmpty ? images.first : null),
+        );
 
   @override
   Widget build(BuildContext context) {
     return EnabledOpacity(
       enabled: enabled,
       child: InkWell(
-        onTap: enabled ? () async {
-          if (!(await requestPhotoPermission())) {
-            return;
-          }
+        onTap: enabled
+            ? () async {
+                if (!(await requestPhotoPermission())) {
+                  return;
+                }
 
-          push(context, ImagePickerPage(
-            allowsMultipleSelection: allowsMultipleSelection,
-            initialImages: currentImages,
-            onImagesPicked: (_, images) => onImagesPicked(images),
-          ));
-        } : null,
+                push(
+                    context,
+                    ImagePickerPage(
+                      allowsMultipleSelection: allowsMultipleSelection,
+                      initialImages: currentImages,
+                      onImagesPicked: (_, images) => onImagesPicked(images),
+                    ));
+              }
+            : null,
         child: Padding(
           padding: insetsDefault,
           child: HorizontalSafeArea(
@@ -98,8 +102,8 @@ class ImageInput extends StatelessWidget {
             width: galleryMaxThumbSize,
             child: ClipRRect(
               child: image.thumbData == null
-                ? Image.file(image.originalFile, fit: BoxFit.cover)
-                : Image.memory(image.thumbData, fit: BoxFit.cover),
+                  ? Image.file(image.originalFile, fit: BoxFit.cover)
+                  : Image.memory(image.thumbData, fit: BoxFit.cover),
               borderRadius: BorderRadius.all(
                 Radius.circular(floatingCornerRadius),
               ),

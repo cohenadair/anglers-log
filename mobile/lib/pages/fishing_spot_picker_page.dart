@@ -36,8 +36,7 @@ class FishingSpotPickerPage extends StatefulWidget {
 }
 
 class _FishingSpotPickerPageState extends State<FishingSpotPickerPage>
-    with SingleTickerProviderStateMixin
-{
+    with SingleTickerProviderStateMixin {
   static final _pendingMarkerSize = 40.0;
   static final _pendingMarkerAnimOffset = _pendingMarkerSize * 3;
 
@@ -115,7 +114,7 @@ class _FishingSpotPickerPageState extends State<FishingSpotPickerPage>
   @override
   Widget build(BuildContext context) {
     return EntityListenerBuilder(
-      managers: [ _fishingSpotManager ],
+      managers: [_fishingSpotManager],
       builder: (context) {
         _updateMarkers();
         return Scaffold(
@@ -136,7 +135,8 @@ class _FishingSpotPickerPageState extends State<FishingSpotPickerPage>
           visible: !_hasFishingSpot,
           child: Align(
             alignment: Alignment.center,
-            child: Icon(Icons.add,
+            child: Icon(
+              Icons.add,
               color: _targetColor,
             ),
           ),
@@ -180,7 +180,8 @@ class _FishingSpotPickerPageState extends State<FishingSpotPickerPage>
       onMapTypeChanged: (mapType) {
         setState(() {
           _targetColor = mapType == MapType.normal || mapType == MapType.terrain
-              ? Colors.black : Colors.white;
+              ? Colors.black
+              : Colors.white;
         });
       },
       searchBar: FishingSpotMapSearchBar(
@@ -191,9 +192,11 @@ class _FishingSpotPickerPageState extends State<FishingSpotPickerPage>
             condensed: true,
             text: widget.doneButtonText ?? Strings.of(context).done,
             textColor: Theme.of(context).primaryColor,
-            onPressed: _hasFishingSpot ? () {
-              widget.onPicked(context, _currentFishingSpot);
-            } : null,
+            onPressed: _hasFishingSpot
+                ? () {
+                    widget.onPicked(context, _currentFishingSpot);
+                  }
+                : null,
           ),
         ),
         onFishingSpotPicked: (fishingSpot) {
@@ -202,7 +205,8 @@ class _FishingSpotPickerPageState extends State<FishingSpotPickerPage>
           }
         },
       ),
-      help: Text(Strings.of(context).fishingSpotPickerPageHint,
+      help: Text(
+        Strings.of(context).fishingSpotPickerPageHint,
         style: styleLight,
       ),
     );
@@ -219,13 +223,15 @@ class _FishingSpotPickerPageState extends State<FishingSpotPickerPage>
         condensed: true,
         textColor: Theme.of(context).primaryColor,
         onPressed: () {
-          present(context, SaveFishingSpotPage(
-            oldFishingSpot: _currentFishingSpot,
-            editing: _currentFishingSpot != null,
-            onSave: (updatedFishingSpot) {
-              setState(() => _currentFishingSpot = updatedFishingSpot);
-            },
-          ));
+          present(
+              context,
+              SaveFishingSpotPage(
+                oldFishingSpot: _currentFishingSpot,
+                editing: _currentFishingSpot != null,
+                onSave: (updatedFishingSpot) {
+                  setState(() => _currentFishingSpot = updatedFishingSpot);
+                },
+              ));
         },
       ),
     );

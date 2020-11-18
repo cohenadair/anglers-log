@@ -9,8 +9,8 @@ class PhotoGalleryPage extends StatefulWidget {
   PhotoGalleryPage({
     @required this.fileNames,
     @required this.initialFileName,
-  }) : assert(fileNames != null && fileNames.isNotEmpty),
-       assert(initialFileName != null);
+  })  : assert(fileNames != null && fileNames.isNotEmpty),
+        assert(initialFileName != null);
 
   @override
   _PhotoGalleryPageState createState() => _PhotoGalleryPageState();

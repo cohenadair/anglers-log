@@ -46,17 +46,17 @@ class CatchManager extends EntityManager<Catch> {
   bool matchesFilter(Id id, String filter, [BuildContext context]) {
     Catch cat = entity(id);
 
-    if (cat == null
-        || isEmpty(filter)
-        || _speciesManager.matchesFilter(cat.speciesId, filter)
-        || _fishingSpotManager.matchesFilter(cat.fishingSpotId, filter)
-        || _baitManager.matchesFilter(cat.baitId, filter)
-        || context == null
-        || timestampToSearchString(context, cat.timestamp).toLowerCase()
-            .contains(filter.toLowerCase())
-        || entityValuesMatchesFilter(cat.customEntityValues, filter,
-            _customEntityManager))
-    {
+    if (cat == null ||
+        isEmpty(filter) ||
+        _speciesManager.matchesFilter(cat.speciesId, filter) ||
+        _fishingSpotManager.matchesFilter(cat.fishingSpotId, filter) ||
+        _baitManager.matchesFilter(cat.baitId, filter) ||
+        context == null ||
+        timestampToSearchString(context, cat.timestamp)
+            .toLowerCase()
+            .contains(filter.toLowerCase()) ||
+        entityValuesMatchesFilter(
+            cat.customEntityValues, filter, _customEntityManager)) {
       return true;
     }
 
@@ -67,7 +67,8 @@ class CatchManager extends EntityManager<Catch> {
   String get tableName => "catch";
 
   /// Returns all catches, sorted from newest to oldest.
-  List<Catch> catchesSortedByTimestamp(BuildContext context, {
+  List<Catch> catchesSortedByTimestamp(
+    BuildContext context, {
     String filter,
     DateRange dateRange,
     Set<Id> catchIds = const {},
@@ -94,7 +95,8 @@ class CatchManager extends EntityManager<Catch> {
     return result;
   }
 
-  List<Catch> filteredCatches(BuildContext context, {
+  List<Catch> filteredCatches(
+    BuildContext context, {
     String filter,
     DateRange dateRange,
     Set<Id> catchIds = const {},
@@ -107,9 +109,12 @@ class CatchManager extends EntityManager<Catch> {
     assert(fishingSpotIds != null);
     assert(speciesIds != null);
 
-    if (isEmpty(filter) && dateRange == null && catchIds.isEmpty
-        && baitIds.isEmpty && fishingSpotIds.isEmpty && speciesIds.isEmpty)
-    {
+    if (isEmpty(filter) &&
+        dateRange == null &&
+        catchIds.isEmpty &&
+        baitIds.isEmpty &&
+        fishingSpotIds.isEmpty &&
+        speciesIds.isEmpty) {
       return entities.values.toList();
     }
 
@@ -118,8 +123,8 @@ class CatchManager extends EntityManager<Catch> {
       valid &= dateRange == null || dateRange.contains(cat.timestamp);
       valid &= catchIds.isEmpty || catchIds.contains(cat.id);
       valid &= baitIds.isEmpty || baitIds.contains(cat.baitId);
-      valid &= fishingSpotIds.isEmpty
-          || fishingSpotIds.contains(cat.fishingSpotId);
+      valid &=
+          fishingSpotIds.isEmpty || fishingSpotIds.contains(cat.fishingSpotId);
       valid &= speciesIds.isEmpty || speciesIds.contains(cat.speciesId);
       if (!valid) {
         return false;
@@ -133,11 +138,13 @@ class CatchManager extends EntityManager<Catch> {
   /// are sorted by timestamp.
   List<String> imageNamesSortedByTimestamp(BuildContext context) {
     return catchesSortedByTimestamp(context)
-        .expand((cat) => cat.imageNames).toList();
+        .expand((cat) => cat.imageNames)
+        .toList();
   }
 
   @override
-  Future<bool> addOrUpdate(Catch cat, {
+  Future<bool> addOrUpdate(
+    Catch cat, {
     FishingSpot fishingSpot,
     List<File> imageFiles,
     bool compressImages = true,
@@ -150,8 +157,8 @@ class CatchManager extends EntityManager<Catch> {
     }
 
     cat.imageNames.clear();
-    cat.imageNames.addAll(
-        await _imageManager.save(imageFiles, compress: compressImages));
+    cat.imageNames
+        .addAll(await _imageManager.save(imageFiles, compress: compressImages));
 
     return super.addOrUpdate(cat, notify: notify);
   }
@@ -161,8 +168,9 @@ class CatchManager extends EntityManager<Catch> {
     Id speciesId,
   }) {
     return list().firstWhere(
-        (cat) => cat.hasSpeciesId() && cat.speciesId == speciesId,
-        orElse: () => null) != null;
+            (cat) => cat.hasSpeciesId() && cat.speciesId == speciesId,
+            orElse: () => null) !=
+        null;
   }
 
   String deleteMessage(BuildContext context, Catch cat) {
@@ -184,27 +192,25 @@ class CatchManager extends EntityManager<Catch> {
   /// Returns the total number of [CustomEntityValue] objects associated with
   /// [Catch] objects and [customEntityId].
   int numberOfCustomEntityValues(Id customEntityId) {
-    return entityValuesCount<Catch>(list(), customEntityId,
-        (cat) => cat.customEntityValues);
+    return entityValuesCount<Catch>(
+        list(), customEntityId, (cat) => cat.customEntityValues);
   }
 
   void _onDeleteBait(Bait bait) async {
-    List<Catch>.from(list()
-        .where((cat) => bait.id == cat.baitId))
+    List<Catch>.from(list().where((cat) => bait.id == cat.baitId))
         .forEach((cat) {
-          entities[cat.id].clearBaitId();
-        });
+      entities[cat.id].clearBaitId();
+    });
 
     replaceDatabaseWithCache();
     notifyOnAddOrUpdate();
   }
 
   void _onDeleteFishingSpot(FishingSpot fishingSpot) async {
-    List<Catch>.from(list()
-        .where((cat) => fishingSpot.id == cat.fishingSpotId))
+    List<Catch>.from(list().where((cat) => fishingSpot.id == cat.fishingSpotId))
         .forEach((cat) {
-          entities[cat.id].clearFishingSpotId();
-        });
+      entities[cat.id].clearFishingSpotId();
+    });
 
     replaceDatabaseWithCache();
     notifyOnAddOrUpdate();

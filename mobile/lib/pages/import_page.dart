@@ -54,17 +54,20 @@ class _ImportPageState extends State<ImportPage> {
                 size: _cloudIconSize,
                 color: Colors.black12,
               ),
-              Text(Strings.of(context).importPageDescription,
+              Text(
+                Strings.of(context).importPageDescription,
                 style: Theme.of(context).textTheme.subtitle1,
                 textAlign: TextAlign.center,
               ),
               VerticalSpace(paddingWidget),
               Button(
                 text: Strings.of(context).importPageChooseFile,
-                onPressed: _loading ? null : () {
-                  _updateImportState(_State.loading);
-                  _chooseFile();
-                },
+                onPressed: _loading
+                    ? null
+                    : () {
+                        _updateImportState(_State.loading);
+                        _chooseFile();
+                      },
               ),
               VerticalSpace(paddingWidget),
               _buildFeedbackWidgets(),
@@ -87,34 +90,41 @@ class _ImportPageState extends State<ImportPage> {
         children.add(Text(Strings.of(context).importPageImportingData));
         break;
       case _State.success:
-        children.add(Icon(Icons.check_circle,
+        children.add(Icon(
+          Icons.check_circle,
           color: styleSuccess.color,
           size: _feedbackIconSize,
         ));
         children.add(VerticalSpace(paddingWidgetSmall));
-        children.add(Text(Strings.of(context).importPageSuccess,
+        children.add(Text(
+          Strings.of(context).importPageSuccess,
           style: styleSuccess,
         ));
         break;
       case _State.error:
-        children.add(Icon(Icons.error,
+        children.add(Icon(
+          Icons.error,
           color: styleError.color,
           size: _feedbackIconSize,
         ));
         children.add(VerticalSpace(paddingWidgetSmall));
-        children.add(Text(Strings.of(context).importPageError,
+        children.add(Text(
+          Strings.of(context).importPageError,
           style: styleError,
           textAlign: TextAlign.center,
         ));
         children.add(VerticalSpace(paddingWidget));
         children.add(Button(
           text: Strings.of(context).importPageSendReport,
-          onPressed: () => present(context, FeedbackPage(
-            title: Strings.of(context).importPageErrorTitle,
-            error: _importError.toString(),
-            warningMessage: Strings.of(context).importPageErrorWarningMessage,
-            attachment: _importErrorJson,
-          )),
+          onPressed: () => present(
+              context,
+              FeedbackPage(
+                title: Strings.of(context).importPageErrorTitle,
+                error: _importError.toString(),
+                warningMessage:
+                    Strings.of(context).importPageErrorWarningMessage,
+                attachment: _importErrorJson,
+              )),
         ));
         break;
     }
@@ -150,10 +160,8 @@ class _ImportPageState extends State<ImportPage> {
   }
 
   void _updateImportState(_State state) => setState(() {
-    _importState = state;
-  });
+        _importState = state;
+      });
 }
 
-enum _State {
-  none, loading, error, success
-}
+enum _State { none, loading, error, success }

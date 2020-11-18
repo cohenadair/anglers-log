@@ -31,9 +31,9 @@ class FloatingContainer extends StatelessWidget {
     this.alignment = Alignment.bottomCenter,
     this.onTap,
     this.children = const [],
-  }) : assert(isNotEmpty(title) || isNotEmpty(subtitle)),
-       assert(children != null),
-       assert(alignment != null);
+  })  : assert(isNotEmpty(title) || isNotEmpty(subtitle)),
+        assert(children != null),
+        assert(alignment != null);
 
   bool get _tapEnabled => onTap != null;
 
@@ -49,8 +49,8 @@ class FloatingContainer extends StatelessWidget {
           children: [
             Material(
               clipBehavior: Clip.antiAlias,
-              borderRadius: BorderRadius.all(
-                  Radius.circular(floatingCornerRadius)),
+              borderRadius:
+                  BorderRadius.all(Radius.circular(floatingCornerRadius)),
               color: Colors.transparent,
               child: ListItem(
                 contentPadding: EdgeInsets.only(
@@ -58,9 +58,11 @@ class FloatingContainer extends StatelessWidget {
                   right: _tapEnabled ? paddingSmall : paddingDefault,
                 ),
                 title: isNotEmpty(title)
-                    ? Label(title, style: styleHeading) : Label(subtitle),
+                    ? Label(title, style: styleHeading)
+                    : Label(subtitle),
                 subtitle: isEmpty(title) || isEmpty(subtitle)
-                    ? null : SubtitleLabel(subtitle),
+                    ? null
+                    : SubtitleLabel(subtitle),
                 onTap: onTap,
                 trailing: _tapEnabled ? RightChevronIcon() : null,
               ),

@@ -65,39 +65,37 @@ class DataManager extends ListenerManager<DataListener> {
   }
 
   /// Returns `true` if values were successfully added or replaced.
-  Future<bool> insertOrReplace(String tableName, Map<String, dynamic> values)
-      async
-  {
+  Future<bool> insertOrReplace(
+      String tableName, Map<String, dynamic> values) async {
     return await _database.insert(tableName, values,
-        conflictAlgorithm: ConflictAlgorithm.replace) > 0;
+            conflictAlgorithm: ConflictAlgorithm.replace) >
+        0;
   }
 
   /// Returns `true` if at least one row was removed.
-  Future<bool> delete(String table, {String where, List<dynamic> whereArgs})
-      async
-  {
-    return await _database.delete(table, where: where, whereArgs: whereArgs)
-        > 0;
+  Future<bool> delete(String table,
+      {String where, List<dynamic> whereArgs}) async {
+    return await _database.delete(table, where: where, whereArgs: whereArgs) >
+        0;
   }
 
   /// Returns `true` if the row from the given table with the given ID was
   /// updated.
-  Future<bool> _updateId(String tableName, Id id, Map<String, dynamic> values)
-      async
-  {
+  Future<bool> _updateId(
+      String tableName, Id id, Map<String, dynamic> values) async {
     return await _database.update(
-      tableName,
-      values,
-      where: "id = ?",
-      whereArgs: [id.uint8List],
-    ) > 0;
+          tableName,
+          values,
+          where: "id = ?",
+          whereArgs: [id.uint8List],
+        ) >
+        0;
   }
 
   /// Returns true if the given ID exists in the given table; false otherwise.
   Future<bool> _idExists(String tableName, Id id) async {
     int count = Sqflite.firstIntValue(await _database.rawQuery(
-        "SELECT COUNT(*) FROM $tableName WHERE id = ?",
-        [id.uint8List]));
+        "SELECT COUNT(*) FROM $tableName WHERE id = ?", [id.uint8List]));
     return count != null && count > 0;
   }
 
@@ -116,9 +114,8 @@ class DataManager extends ListenerManager<DataListener> {
 
   /// Inserts a new [Entity] into the given [tableName] or updates the existing
   /// [Entity] if one with the same ID already exists.
-  Future<bool> insertOrUpdateEntity(Id entityId,
-      Map<String, dynamic> map, String tableName) async
-  {
+  Future<bool> insertOrUpdateEntity(
+      Id entityId, Map<String, dynamic> map, String tableName) async {
     if (await _idExists(tableName, entityId)) {
       // Update if entity with ID already exists.
       if (await _updateId(tableName, entityId, map)) {
@@ -165,9 +162,8 @@ class DataManager extends ListenerManager<DataListener> {
   }
 
   /// Completely replaces the contents of [tableName] with [newRows].
-  Future<void> replaceRows(String tableName,
-      List<Map<String, dynamic>> newRows) async
-  {
+  Future<void> replaceRows(
+      String tableName, List<Map<String, dynamic>> newRows) async {
     await commitBatch((batch) {
       batch.rawQuery("DELETE FROM $tableName");
       for (var row in newRows) {

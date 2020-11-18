@@ -27,16 +27,15 @@ class SimpleEntityListener<T> extends EntityListener<T> {
     VoidCallback onAddOrUpdate,
     VoidCallback onClear,
   }) : super(
-    onDelete: onDelete ?? (_) {},
-    onAddOrUpdate: onAddOrUpdate ?? () {},
-    onClear: onClear ?? () {},
-  );
+          onDelete: onDelete ?? (_) {},
+          onAddOrUpdate: onAddOrUpdate ?? () {},
+          onClear: onClear ?? () {},
+        );
 }
 
 /// An abstract class for managing a collection of [Entity] objects.
 abstract class EntityManager<T extends GeneratedMessage>
-    extends ListenerManager<EntityListener<T>>
-{
+    extends ListenerManager<EntityListener<T>> {
   static const _columnId = "id";
   static const _columnBytes = "bytes";
 
@@ -53,7 +52,9 @@ abstract class EntityManager<T extends GeneratedMessage>
   /// Parses a Protobuf byte representation.
   T entityFromBytes(List<int> bytes);
 
-  EntityManager(AppManager app) : appManager = app, super() {
+  EntityManager(AppManager app)
+      : appManager = app,
+        super() {
     dataManager.addListener(DataListener(
       onReset: clear,
     ));
@@ -97,13 +98,13 @@ abstract class EntityManager<T extends GeneratedMessage>
 
   /// Adds or updates the given [Entity]. If [notify] is false (default true),
   /// listeners are not notified.
-  Future<bool> addOrUpdate(T entity, {
+  Future<bool> addOrUpdate(
+    T entity, {
     bool notify = true,
   }) async {
     Id id = this.id(entity);
-    if (await dataManager.insertOrUpdateEntity(id, _entityToMap(entity),
-        tableName))
-    {
+    if (await dataManager.insertOrUpdateEntity(
+        id, _entityToMap(entity), tableName)) {
       entities[id] = entity;
       if (notify) {
         notifyOnAddOrUpdate();
@@ -125,20 +126,22 @@ abstract class EntityManager<T extends GeneratedMessage>
   }
 
   Future<List<T>> _fetchAll() async {
-    return (await dataManager.fetchAll(tableName)).map((map) =>
-        entityFromBytes((map[_columnBytes] as Uint8List).toList())).toList();
+    return (await dataManager.fetchAll(tableName))
+        .map(
+            (map) => entityFromBytes((map[_columnBytes] as Uint8List).toList()))
+        .toList();
   }
 
   Map<String, dynamic> _entityToMap(T entity) => {
-    _columnId: id(entity).uint8List,
-    _columnBytes: entity.writeToBuffer(),
-  };
+        _columnId: id(entity).uint8List,
+        _columnBytes: entity.writeToBuffer(),
+      };
 
   /// Replaces the database table contents with the manager's memory cache.
   @protected
   Future<void> replaceDatabaseWithCache() async {
-    await dataManager
-        .replaceRows(tableName, list().map((e) => _entityToMap(e)).toList());
+    await dataManager.replaceRows(
+        tableName, list().map((e) => _entityToMap(e)).toList());
   }
 
   @protected
@@ -188,8 +191,8 @@ class EntityListenerBuilder extends StatefulWidget {
     @required this.builder,
     this.onUpdate,
     this.onDeleteEnabled = true,
-  }) : assert(managers != null && managers.isNotEmpty),
-       assert(builder != null);
+  })  : assert(managers != null && managers.isNotEmpty),
+        assert(builder != null);
 
   @override
   _EntityListenerBuilderState createState() => _EntityListenerBuilderState();
@@ -202,13 +205,12 @@ class _EntityListenerBuilderState extends State<EntityListenerBuilder> {
   void initState() {
     super.initState();
 
-    widget.managers.forEach((manager) =>
-      _listeners.add(manager.addSimpleListener(
-        onDelete: widget.onDeleteEnabled ? (_) => _update() : null,
-        onAddOrUpdate: _update,
-        onClear: _update,
-      ))
-    );
+    widget.managers
+        .forEach((manager) => _listeners.add(manager.addSimpleListener(
+              onDelete: widget.onDeleteEnabled ? (_) => _update() : null,
+              onAddOrUpdate: _update,
+              onClear: _update,
+            )));
   }
 
   @override

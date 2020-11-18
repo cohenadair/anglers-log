@@ -16,7 +16,8 @@ class BaitPage extends StatefulWidget {
   /// See [EntityPage.static].
   final bool static;
 
-  BaitPage(this.baitId, {
+  BaitPage(
+    this.baitId, {
     this.static = false,
   }) : assert(baitId != null);
 

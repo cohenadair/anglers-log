@@ -3,8 +3,7 @@ import 'dart:collection';
 /// Returns a sorted version of the given map. If [comparator] is null, the
 /// result will be sorted by value, largest to smallest.
 Map<T, int> sortedMap<T>(Map<T, int> map,
-    [int Function(T lhs, T rhs) comparator])
-{
+    [int Function(T lhs, T rhs) comparator]) {
   comparator = comparator ?? (lhs, rhs) => map[rhs].compareTo(map[lhs]);
   var sortedKeys = map.keys.toList()..sort(comparator);
 

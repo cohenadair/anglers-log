@@ -23,16 +23,15 @@ class CustomEntityValues extends StatelessWidget {
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: values.map((value) => _buildWidget(context, entityManager,
-          value)).toList(),
+      children: values
+          .map((value) => _buildWidget(context, entityManager, value))
+          .toList(),
     );
   }
 
   Widget _buildWidget(BuildContext context, CustomEntityManager entityManager,
-      CustomEntityValue entityValue)
-  {
-    CustomEntity entity =
-        entityManager.entity(entityValue.customEntityId);
+      CustomEntityValue entityValue) {
+    CustomEntity entity = entityManager.entity(entityValue.customEntityId);
     if (entity == null) {
       return Empty();
     }

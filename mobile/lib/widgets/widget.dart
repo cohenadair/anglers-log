@@ -71,8 +71,8 @@ class HeadingNoteDivider extends StatelessWidget {
     @required this.note,
     @required this.noteIcon,
     this.padding,
-  }) : assert(isNotEmpty(title)),
-       assert(hideNote || (isNotEmpty(note) && noteIcon != null));
+  })  : assert(isNotEmpty(title)),
+        assert(hideNote || (isNotEmpty(note) && noteIcon != null));
 
   @override
   Widget build(BuildContext context) {
@@ -82,26 +82,31 @@ class HeadingNoteDivider extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: hideNote ? insetsZero : EdgeInsets.only(
-              bottom: paddingWidget,
-            ),
+            padding: hideNote
+                ? insetsZero
+                : EdgeInsets.only(
+                    bottom: paddingWidget,
+                  ),
             child: HeadingDivider(title),
           ),
           AnimatedSwitcher(
             duration: defaultAnimationDuration,
-            child: hideNote ? Empty() : Padding(
-              padding: insetsHorizontalDefault,
-              child: SafeArea(
-                top: false,
-                bottom: false,
-                child: IconNoteLabel(
-                  text: note,
-                  icon: Icon(noteIcon,
-                    color: Colors.black,
+            child: hideNote
+                ? Empty()
+                : Padding(
+                    padding: insetsHorizontalDefault,
+                    child: SafeArea(
+                      top: false,
+                      bottom: false,
+                      child: IconNoteLabel(
+                        text: note,
+                        icon: Icon(
+                          noteIcon,
+                          color: Colors.black,
+                        ),
+                      ),
+                    ),
                   ),
-                ),
-              ),
-            ),
           ),
         ],
       ),
@@ -121,9 +126,7 @@ class Loading extends StatelessWidget {
 
   final EdgeInsets _padding;
 
-  Loading({
-    EdgeInsets padding = insetsZero
-  }) : _padding = padding;
+  Loading({EdgeInsets padding = insetsZero}) : _padding = padding;
 
   @override
   Widget build(BuildContext context) {
@@ -147,16 +150,16 @@ class SwipeChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Padding(
-    padding: insetsVerticalSmall,
-    child: Container(
-      width: _width,
-      height: _height,
-      decoration: BoxDecoration(
-        color: Colors.grey.shade300,
-        borderRadius: BorderRadius.all(Radius.circular(_height / 2)),
-      ),
-    ),
-  );
+        padding: insetsVerticalSmall,
+        child: Container(
+          width: _width,
+          height: _height,
+          decoration: BoxDecoration(
+            color: Colors.grey.shade300,
+            borderRadius: BorderRadius.all(Radius.circular(_height / 2)),
+          ),
+        ),
+      );
 }
 
 /// An [Opacity] wrapper whose state depends on the [enabled] property.
@@ -186,7 +189,8 @@ class EnabledOpacity extends StatelessWidget {
 class RightChevronIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Icon(Icons.chevron_right,
+    return Icon(
+      Icons.chevron_right,
       color: colorInputIconAccent,
     );
   }
@@ -195,7 +199,8 @@ class RightChevronIcon extends StatelessWidget {
 class DropdownIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Icon(Icons.arrow_drop_down,
+    return Icon(
+      Icons.arrow_drop_down,
       color: colorInputIconAccent,
     );
   }
@@ -284,8 +289,8 @@ class VerticalSpace extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Container(
-    height: size,
-  );
+        height: size,
+      );
 }
 
 class HorizontalSpace extends StatelessWidget {
@@ -295,8 +300,8 @@ class HorizontalSpace extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Container(
-    width: size,
-  );
+        width: size,
+      );
 }
 
 class AppBarDropdownItem<T> extends DropdownMenuItem<T> {
@@ -307,15 +312,16 @@ class AppBarDropdownItem<T> extends DropdownMenuItem<T> {
     @required BuildContext context,
     @required this.text,
     @required this.value,
-  }) : assert(isNotEmpty(text)),
-       assert(value != null),
-       super(
-         child: Text(text,
-           // Use the same theme as default AppBar title text.
-           style: Theme.of(context).textTheme.headline6,
-         ),
-         value: value,
-       );
+  })  : assert(isNotEmpty(text)),
+        assert(value != null),
+        super(
+          child: Text(
+            text,
+            // Use the same theme as default AppBar title text.
+            style: Theme.of(context).textTheme.headline6,
+          ),
+          value: value,
+        );
 }
 
 /// A widget that shows a list of horizontal [Chip] widgets that wrap vertically
@@ -337,10 +343,12 @@ class ChipWrap extends StatelessWidget {
     return Wrap(
       spacing: paddingWidgetSmall,
       runSpacing: paddingWidgetSmall,
-      children: items.map((item) => Chip(
-        label: Text(item),
-        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-      )).toList(),
+      children: items
+          .map((item) => Chip(
+                label: Text(item),
+                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+              ))
+          .toList(),
     );
   }
 }
@@ -354,8 +362,8 @@ class HorizontalSafeArea extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => SafeArea(
-    top: false,
-    bottom: false,
-    child: child,
-  );
+        top: false,
+        bottom: false,
+        child: child,
+      );
 }

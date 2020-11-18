@@ -21,8 +21,8 @@ class AddAnythingPage extends StatelessWidget {
         sigmaY: _blurSigma,
       ),
       child: Scaffold(
-        backgroundColor: Theme.of(context).primaryColor
-            .withOpacity(_backgroundOpacity),
+        backgroundColor:
+            Theme.of(context).primaryColor.withOpacity(_backgroundOpacity),
         body: SafeArea(
           top: true,
           bottom: true,
@@ -37,13 +37,12 @@ class AddAnythingPage extends StatelessWidget {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         FloatingIconButton(
-                          icon: CustomIcons.catches,
-                          label: Strings.of(context).addAnythingPageCatch,
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                            present(context, AddCatchJourney());
-                          }
-                        ),
+                            icon: CustomIcons.catches,
+                            label: Strings.of(context).addAnythingPageCatch,
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                              present(context, AddCatchJourney());
+                            }),
                         FloatingIconButton(
                           icon: Icons.public,
                           label: Strings.of(context).addAnythingPageTrip,

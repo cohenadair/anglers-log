@@ -177,9 +177,10 @@ class LegacyImporter {
 
         if (baitCategoryId == null) {
           baitCategoryId = _baitCategoryManager
-              .entity(_parseJsonId(map[_keyBaitCategory]))?.id;
+              .entity(_parseJsonId(map[_keyBaitCategory]))
+              ?.id;
         }
-        
+
         if (baitCategoryId != null) {
           bait.baitCategoryId = baitCategoryId;
         }
@@ -190,13 +191,15 @@ class LegacyImporter {
   }
 
   Future<void> _importBaitCategories(List<dynamic> categories) async {
-    await _importNamedEntity(categories, (name, id) async =>
-        await _baitCategoryManager.addOrUpdate(BaitCategory()
-          ..id = id ?? randomId()
-          ..name = name));
+    await _importNamedEntity(
+        categories,
+        (name, id) async =>
+            await _baitCategoryManager.addOrUpdate(BaitCategory()
+              ..id = id ?? randomId()
+              ..name = name));
   }
 
-  Future<void> _importLocations(List<dynamic> locations) async  {
+  Future<void> _importLocations(List<dynamic> locations) async {
     if (locations == null || locations.isEmpty) {
       return;
     }
@@ -207,8 +210,8 @@ class LegacyImporter {
 
       for (var fishingSpot in locationMap[_keyFishingSpots]) {
         var fishingSpotMap = fishingSpot as Map<String, dynamic>;
-        var fishingSpotName = format(_nameFormatFishingSpot,
-            [locationName, fishingSpotMap[_keyName]]);
+        var fishingSpotName = format(
+            _nameFormatFishingSpot, [locationName, fishingSpotMap[_keyName]]);
 
         var coordinatesMap =
             fishingSpotMap[_keyCoordinates] as Map<String, dynamic>;
@@ -231,23 +234,21 @@ class LegacyImporter {
           ..id = randomId()
           ..name = isNotEmpty(fishingSpotName) ? fishingSpotName : null
           ..lat = lat
-          ..lng = lng
-        );
+          ..lng = lng);
       }
     }
   }
 
   Future<void> _importSpecies(List<dynamic> species) async {
-    await _importNamedEntity(species, (name, id) async =>
-        await _speciesManager.addOrUpdate(Species()
+    await _importNamedEntity(
+        species,
+        (name, id) async => await _speciesManager.addOrUpdate(Species()
           ..id = id ?? randomId()
-          ..name = name
-        ));
+          ..name = name));
   }
 
   Future<void> _importNamedEntity(List<dynamic> entities,
-      Future<bool> Function(String name, Id id) addEntity) async
-  {
+      Future<bool> Function(String name, Id id) addEntity) async {
     if (entities == null || entities.isEmpty) {
       return;
     }
