@@ -25,15 +25,16 @@ class StyledBottomSheet extends StatefulWidget {
     @required this.child,
     @required this.onDismissed,
     this.visible = true,
-  })  : assert(child != null),
-        assert(onDismissed != null);
+  }) : assert(child != null),
+       assert(onDismissed != null);
 
   @override
   _StyledBottomSheetState createState() => _StyledBottomSheetState();
 }
 
 class _StyledBottomSheetState extends State<StyledBottomSheet>
-    with SingleTickerProviderStateMixin {
+    with SingleTickerProviderStateMixin
+{
   final _keyBottomSheet = "key_bottom_sheet";
   final _slideInDurationMs = 150;
 

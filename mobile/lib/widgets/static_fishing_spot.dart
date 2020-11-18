@@ -17,8 +17,7 @@ class StaticFishingSpot extends StatefulWidget {
   final EdgeInsets padding;
   final VoidCallback onTap;
 
-  StaticFishingSpot(
-    this.fishingSpot, {
+  StaticFishingSpot(this.fishingSpot, {
     this.padding,
     this.onTap,
     Completer<GoogleMapController> mapController,
@@ -76,8 +75,8 @@ class _StaticFishingSpotState extends State<StaticFishingSpot> {
                   // TODO: Remove when fixed in Google Maps.
                   // https://github.com/flutter/flutter/issues/27550
                   Future.delayed(Duration(milliseconds: 250), () {
-                    controller
-                        .moveCamera(CameraUpdate.newLatLng(cameraPosition));
+                    controller.moveCamera(
+                        CameraUpdate.newLatLng(cameraPosition));
                   });
                 },
                 initialCameraPosition: CameraPosition(

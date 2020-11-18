@@ -22,9 +22,9 @@ class RadioInput extends StatefulWidget {
     this.title,
     this.initialSelectedIndex,
     this.padding,
-  })  : assert(optionCount != null),
-        assert(optionBuilder != null),
-        assert(onSelect != null);
+  }) : assert(optionCount != null),
+       assert(optionBuilder != null),
+       assert(onSelect != null);
 
   @override
   _RadioInputState createState() => _RadioInputState();
@@ -45,18 +45,16 @@ class _RadioInputState extends State<RadioInput> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          isEmpty(widget.title)
-              ? Empty()
-              : Padding(
-                  padding: EdgeInsets.only(
-                    left: paddingDefault,
-                    right: paddingDefault,
-                    bottom: paddingWidgetSmall,
-                  ),
-                  child: HeadingLabel(widget.title),
-                ),
-        ]..addAll(List<Widget>.generate(
-            widget.optionCount, (index) => _buildOption(index))),
+          isEmpty(widget.title) ? Empty() : Padding(
+            padding: EdgeInsets.only(
+              left: paddingDefault,
+              right: paddingDefault,
+              bottom: paddingWidgetSmall,
+            ),
+            child: HeadingLabel(widget.title),
+          ),
+        ]..addAll(List<Widget>
+            .generate(widget.optionCount, (index) => _buildOption(index))),
       ),
     );
   }

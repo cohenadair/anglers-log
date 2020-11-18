@@ -12,11 +12,10 @@ class FilePickerWrapper {
   Future<File> getFile({
     FileType type,
     String fileExtension,
-  }) =>
-      FilePicker.getFile(
-        type: type,
-        fileExtension: fileExtension,
-      );
+  }) => FilePicker.getFile(
+    type: type,
+    fileExtension: fileExtension,
+  );
 
   Future<List<File>> getMultiFile(FileType type) =>
       FilePicker.getMultiFile(type: type);

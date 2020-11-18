@@ -14,8 +14,8 @@ class SearchPage extends StatefulWidget {
     this.hint,
     @required this.suggestionsBuilder,
     @required this.resultsBuilder,
-  })  : assert(suggestionsBuilder != null),
-        assert(resultsBuilder != null);
+  }) : assert(suggestionsBuilder != null),
+       assert(resultsBuilder != null);
 
   @override
   _SearchPageState createState() => _SearchPageState();

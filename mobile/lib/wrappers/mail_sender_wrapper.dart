@@ -11,7 +11,6 @@ class MailSenderWrapper {
   Smtp.SmtpServer gmail(String username, String password) =>
       Smtp.gmail(username, password);
 
-  Future<Mailer.SendReport> send(
-          Mailer.Message message, Smtp.SmtpServer smtpServer) async =>
-      Mailer.send(message, smtpServer);
+  Future<Mailer.SendReport> send(Mailer.Message message,
+      Smtp.SmtpServer smtpServer) async => Mailer.send(message, smtpServer);
 }

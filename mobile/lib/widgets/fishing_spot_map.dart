@@ -142,27 +142,25 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
   @override
   Widget build(BuildContext context) {
     return Stack(
-      children: <Widget>[_buildMap()]
-        ..addAll(widget.children)
-        ..add(
-          SafeArea(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                // Row to extend column across page.
-                widget.searchBar == null
-                    ? Row(
-                        children: [Empty()],
-                      )
-                    : _buildSearchBar(),
-                _buildMapTypeButton(),
-                _buildCurrentLocationButton(),
-                _buildHelpButton(),
-                _buildHelp(),
-              ],
-            ),
+      children: <Widget>[
+        _buildMap()
+      ]..addAll(widget.children)..add(
+        SafeArea(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              // Row to extend column across page.
+              widget.searchBar == null ? Row(
+                children: [Empty()],
+              ) : _buildSearchBar(),
+              _buildMapTypeButton(),
+              _buildCurrentLocationButton(),
+              _buildHelpButton(),
+              _buildHelp(),
+            ],
           ),
         ),
+      ),
     );
   }
 
@@ -193,11 +191,9 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
           // Long presses weren't being triggered first time.
           onTap: widget.onTap,
           onCameraIdle: widget.onIdle,
-          onCameraMove: widget.onMove == null
-              ? null
-              : (position) {
-                  widget.onMove(position.target);
-                },
+          onCameraMove: widget.onMove == null ? null : (position) {
+            widget.onMove(position.target);
+          },
           onCameraMoveStarted: () {
             widget.onMoveStarted?.call();
             if (widget.help != null) {
@@ -225,23 +221,21 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
         right: paddingDefault,
       ),
       delegate: ButtonSearchBarDelegate(() {
-        present(
-            context,
-            SearchPage(
-                hint: Strings.of(context).mapPageSearchHint,
-                suggestionsBuilder: (context) => _buildSearchPageList(
-                    _fishingSpotManager.listSortedByName()),
-                resultsBuilder: (context, query) {
-                  List<FishingSpot> fishingSpots =
-                      _fishingSpotManager.listSortedByName(filter: query);
+        present(context, SearchPage(
+          hint: Strings.of(context).mapPageSearchHint,
+          suggestionsBuilder: (context) => _buildSearchPageList(
+              _fishingSpotManager.listSortedByName()),
+          resultsBuilder: (context, query) {
+            List<FishingSpot> fishingSpots =
+                _fishingSpotManager.listSortedByName(filter: query);
 
-                  if (fishingSpots.isEmpty) {
-                    return NoResults(
-                        Strings.of(context).mapPageNoSearchResults);
-                  }
+            if (fishingSpots.isEmpty) {
+              return NoResults(Strings.of(context).mapPageNoSearchResults);
+            }
 
-                  return _buildSearchPageList(fishingSpots);
-                }));
+            return _buildSearchPageList(fishingSpots);
+          }
+        ));
       }),
     );
   }
@@ -311,10 +305,11 @@ class _FishingSpotMapState extends State<FishingSpotMap> {
       padding: insetsHorizontalDefault,
       icon: Icons.my_location,
       onPressed: () {
-        LatLng currentLocation = LocationMonitor.of(context).currentLocation;
+        LatLng currentLocation =
+            LocationMonitor.of(context).currentLocation;
         if (currentLocation == null) {
-          showErrorSnackBar(
-              context, Strings.of(context).mapPageErrorGettingLocation);
+          showErrorSnackBar(context,
+              Strings.of(context).mapPageErrorGettingLocation);
         } else {
           moveMap(_mapController, currentLocation);
           widget.onCurrentLocationPressed?.call();

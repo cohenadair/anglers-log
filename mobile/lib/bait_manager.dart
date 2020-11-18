@@ -47,10 +47,11 @@ class BaitManager extends NamedEntityManager<Bait> {
       return false;
     }
 
-    if (super.matchesFilter(id, filter) ||
-        _baitCategoryManager.matchesFilter(bait.baitCategoryId, filter) ||
-        entityValuesMatchesFilter(
-            bait.customEntityValues, filter, _customEntityManager)) {
+    if (super.matchesFilter(id, filter)
+        || _baitCategoryManager.matchesFilter(bait.baitCategoryId, filter)
+        || entityValuesMatchesFilter(bait.customEntityValues, filter,
+            _customEntityManager))
+    {
       return true;
     }
 
@@ -60,14 +61,10 @@ class BaitManager extends NamedEntityManager<Bait> {
   /// Returns true if the given [Bait] is a duplicate of an existing bait. A
   /// duplicate is defined as all equal properties, except [Bait.id].
   bool duplicate(Bait rhs) {
-    return list().firstWhere(
-            (lhs) =>
-                lhs.baitCategoryId == rhs.baitCategoryId &&
-                equalsTrimmedIgnoreCase(lhs.name, rhs.name) &&
-                listEquals(lhs.customEntityValues, rhs.customEntityValues) &&
-                lhs.id != rhs.id,
-            orElse: () => null) !=
-        null;
+    return list().firstWhere((lhs) => lhs.baitCategoryId == rhs.baitCategoryId
+        && equalsTrimmedIgnoreCase(lhs.name, rhs.name)
+        && listEquals(lhs.customEntityValues, rhs.customEntityValues)
+        && lhs.id != rhs.id, orElse: () => null) != null;
   }
 
   /// Returns the number of [Catch] objects associated with the given [Bait].
@@ -89,8 +86,8 @@ class BaitManager extends NamedEntityManager<Bait> {
   /// Returns the total number of [CustomEntityValue] objects associated with
   /// [Bait] objects and [customEntityId].
   int numberOfCustomEntityValues(Id customEntityId) {
-    return entityValuesCount<Bait>(
-        list(), customEntityId, (bait) => bait.customEntityValues);
+    return entityValuesCount<Bait>(list(), customEntityId,
+        (bait) => bait.customEntityValues);
   }
 
   String formatNameWithCategory(Bait bait) {
@@ -118,7 +115,7 @@ class BaitManager extends NamedEntityManager<Bait> {
     BaitCategory category = _baitCategoryManager.entity(bait.baitCategoryId);
     String baitName;
     if (category == null) {
-      baitName = bait.name;
+      baitName =  bait.name;
     } else {
       baitName = "${bait.name} (${category.name})";
     }
@@ -127,11 +124,11 @@ class BaitManager extends NamedEntityManager<Bait> {
   }
 
   void _onDeleteBaitCategory(BaitCategory baitCategory) async {
-    List<Bait>.from(
-            list().where((bait) => baitCategory.id == bait.baitCategoryId))
+    List<Bait>.from(list()
+        .where((bait) => baitCategory.id == bait.baitCategoryId))
         .forEach((bait) {
-      entities[bait.id].clearBaitCategoryId();
-    });
+          entities[bait.id].clearBaitCategoryId();
+        });
 
     replaceDatabaseWithCache();
     notifyOnAddOrUpdate();

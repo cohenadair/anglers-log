@@ -37,8 +37,8 @@ class NameValidator implements Validator {
     this.nameExistsMessage,
     this.nameExists,
     this.oldName,
-  }) : assert((nameExists != null && nameExistsMessage != null) ||
-            (nameExists == null && nameExistsMessage == null));
+  }) : assert((nameExists != null && nameExistsMessage != null)
+      || (nameExists == null && nameExistsMessage == null));
 
   @override
   ValidationCallback run(BuildContext context, String newName) {
@@ -76,9 +76,10 @@ class EmailValidator implements Validator {
     if (!required && isEmpty(newValue)) {
       return null;
     }
-    if (newValue == null ||
-        !RegExp(r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$')
-            .hasMatch(newValue)) {
+    if (newValue == null
+        || !RegExp(r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$')
+            .hasMatch(newValue))
+    {
       return (context) => Strings.of(context).inputInvalidEmail;
     }
     return null;

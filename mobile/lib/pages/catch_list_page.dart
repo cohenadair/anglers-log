@@ -38,12 +38,9 @@ class CatchListPage extends StatelessWidget {
   /// If set, shows only the catches whose bait is included in [baitIds].
   final Set<Id> baitIds;
 
-  bool get filtered =>
-      dateRange != null ||
-      catchIds.isNotEmpty ||
-      speciesIds.isNotEmpty ||
-      fishingSpotIds.isNotEmpty ||
-      baitIds.isNotEmpty;
+  bool get filtered => dateRange != null || catchIds.isNotEmpty
+      || speciesIds.isNotEmpty || fishingSpotIds.isNotEmpty
+      || baitIds.isNotEmpty;
 
   CatchListPage({
     this.enableAdding = true,
@@ -52,11 +49,11 @@ class CatchListPage extends StatelessWidget {
     this.baitIds = const {},
     this.fishingSpotIds = const {},
     this.speciesIds = const {},
-  })  : assert(enableAdding != null),
-        assert(catchIds != null),
-        assert(baitIds != null),
-        assert(fishingSpotIds != null),
-        assert(speciesIds != null);
+  }) : assert(enableAdding != null),
+       assert(catchIds != null),
+       assert(baitIds != null),
+       assert(fishingSpotIds != null),
+       assert(speciesIds != null);
 
   Widget build(BuildContext context) {
     BaitCategoryManager baitCategoryManager = BaitCategoryManager.of(context);
@@ -66,8 +63,8 @@ class CatchListPage extends StatelessWidget {
     SpeciesManager speciesManager = SpeciesManager.of(context);
 
     return ManageableListPage<Catch>(
-      titleBuilder: (catches) => Text(
-          format(Strings.of(context).catchListPageTitle, [catches.length])),
+      titleBuilder: (catches) => Text(format(
+          Strings.of(context).catchListPageTitle, [catches.length])),
       forceCenterTitle: true,
       searchDelegate: ManageableListPageSearchDelegate(
         hint: Strings.of(context).catchListPageSearchHint,
@@ -109,7 +106,8 @@ class CatchListPage extends StatelessWidget {
 
     Widget subtitle2 = Empty();
 
-    FishingSpot fishingSpot = fishingSpotManager.entity(cat.fishingSpotId);
+    FishingSpot fishingSpot =
+        fishingSpotManager.entity(cat.fishingSpotId);
     if (fishingSpot != null && isNotEmpty(fishingSpot.name)) {
       // Use fishing spot name as subtitle if available.
       subtitle2 = SubtitleLabel(fishingSpot.name);
@@ -124,8 +122,8 @@ class CatchListPage extends StatelessWidget {
     return ManageableListPageItemModel(
       child: Row(
         children: [
-          Photo.listThumbnail(
-              cat.imageNames.isNotEmpty ? cat.imageNames.first : null),
+          Photo.listThumbnail(cat.imageNames.isNotEmpty
+              ? cat.imageNames.first : null),
           Container(width: paddingWidget),
           Expanded(
             child: Column(

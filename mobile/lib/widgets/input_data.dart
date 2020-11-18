@@ -6,9 +6,8 @@ import 'package:mobile/widgets/input_type.dart';
 
 /// A simple structure for storing build information for a form's input fields.
 class InputData {
-  static String Function(BuildContext) _customEntityLabel(
-          CustomEntity entity) =>
-      (_) => entity.name;
+  static String Function(BuildContext)
+      _customEntityLabel(CustomEntity entity) => (_) => entity.name;
 
   final Id id;
 
@@ -39,9 +38,9 @@ class InputData {
     this.label,
     this.showing = true,
     this.removable = true,
-  })  : assert(id != null),
-        assert(controller != null),
-        fake = false;
+  }) : assert(id != null),
+       assert(controller != null),
+       fake = false;
 
   InputData.fromCustomEntity(CustomEntity entity)
       : assert(entity != null),

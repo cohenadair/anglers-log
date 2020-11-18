@@ -21,8 +21,8 @@ class LabelValue extends StatelessWidget {
     @required this.label,
     @required this.value,
     this.padding,
-  })  : assert(isNotEmpty(label)),
-        assert(isNotEmpty(value));
+  }) : assert(isNotEmpty(label)),
+       assert(isNotEmpty(value));
 
   @override
   Widget build(BuildContext context) {

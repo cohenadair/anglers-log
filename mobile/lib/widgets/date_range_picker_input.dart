@@ -18,8 +18,8 @@ class DateRangePickerInput extends StatefulWidget {
     this.title,
     this.initialDateRange,
     @required this.onPicked,
-  })  : assert(onPicked != null),
-        super(key: key);
+  }) : assert(onPicked != null),
+       super(key: key);
 
   @override
   _DateRangePickerInputState createState() => _DateRangePickerInputState();
@@ -40,18 +40,16 @@ class _DateRangePickerInputState extends State<DateRangePickerInput> {
       title: widget.title,
       value: _currentDateRange.title(context),
       onTap: () {
-        push(
-            context,
-            DateRangePickerPage(
-              initialValue: _currentDateRange,
-              onDateRangePicked: (dateRange) {
-                setState(() {
-                  _currentDateRange = dateRange;
-                });
-                widget.onPicked(dateRange);
-                Navigator.of(context).pop();
-              },
-            ));
+        push(context, DateRangePickerPage(
+          initialValue: _currentDateRange,
+          onDateRangePicked: (dateRange) {
+            setState(() {
+              _currentDateRange = dateRange;
+            });
+            widget.onPicked(dateRange);
+            Navigator.of(context).pop();
+          },
+        ));
       },
     );
   }

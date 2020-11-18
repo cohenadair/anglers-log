@@ -11,9 +11,7 @@ class BaitCategoryListPage extends StatelessWidget {
   final bool Function(BuildContext, BaitCategory) onPicked;
   final BaitCategory initialValue;
 
-  BaitCategoryListPage()
-      : onPicked = null,
-        initialValue = null;
+  BaitCategoryListPage() : onPicked = null, initialValue = null;
 
   BaitCategoryListPage.picker({
     @required this.onPicked,
@@ -29,9 +27,8 @@ class BaitCategoryListPage extends StatelessWidget {
     return ManageableListPage<BaitCategory>(
       titleBuilder: _picking
           ? (_) => Text(Strings.of(context).baitCategoryListPagePickerTitle)
-          : (categories) => Text(format(
-              Strings.of(context).baitCategoryListPageTitle,
-              [categories.length])),
+          : (categories) => Text(format(Strings.of(context)
+              .baitCategoryListPageTitle, [categories.length])),
       itemBuilder: (context, category) => ManageableListPageItemModel(
         child: PrimaryLabel(category.name),
       ),
@@ -42,13 +39,13 @@ class BaitCategoryListPage extends StatelessWidget {
       ),
       pickerSettings: _picking
           ? ManageableListPagePickerSettings<BaitCategory>(
-              initialValues: {initialValue},
+              initialValues: { initialValue },
               onPicked: (context, categories) =>
                   onPicked(context, categories?.first),
             )
           : null,
       itemManager: ManageableListPageItemManager<BaitCategory>(
-        listenerManagers: [baitCategoryManager],
+        listenerManagers: [ baitCategoryManager ],
         loadItems: (query) =>
             baitCategoryManager.listSortedByName(filter: query),
         deleteWidget: (context, category) =>

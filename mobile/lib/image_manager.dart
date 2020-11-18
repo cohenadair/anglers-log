@@ -70,8 +70,7 @@ class ImageManager {
   /// Returns encoded image data with the given [fileName] at the given [size].
   /// If an image of [size] does not exist in the cache, the full image is
   /// returned.
-  Future<Uint8List> image(
-    BuildContext context, {
+  Future<Uint8List> image(BuildContext context, {
     @required String fileName,
     double size,
   }) async {
@@ -95,8 +94,7 @@ class ImageManager {
   ///
   /// If there are no images associated with the given [names], an empty list
   /// is returned.
-  Future<List<Uint8List>> images(
-    BuildContext context, {
+  Future<List<Uint8List>> images(BuildContext context, {
     @required List<String> imageNames,
     double size,
   }) async {
@@ -108,8 +106,7 @@ class ImageManager {
     for (String fileName in imageNames) {
       _addToCache(fileName);
 
-      Uint8List bytes = await image(
-        context,
+      Uint8List bytes = await image(context,
         fileName: fileName,
         size: size,
       );
@@ -140,8 +137,7 @@ class ImageManager {
   ///
   /// Files are named by the image's MD5 hash value to ensure uniqueness, and so
   /// that the same image isn't saved multiple times.
-  Future<List<String>> save(
-    List<File> files, {
+  Future<List<String>> save(List<File> files, {
     bool compress = true,
   }) async {
     if (files == null || files.isEmpty) {
@@ -198,10 +194,10 @@ class ImageManager {
 
   /// Returns a Dart [ui.Image] object with the given [fileName] and [size].
   /// Returns null if the image doesn't exist.
-  Future<ui.Image> dartImage(
-      BuildContext context, String fileName, double size) async {
-    Uint8List bytes = await image(
-      context,
+  Future<ui.Image> dartImage(BuildContext context, String fileName, double size)
+      async
+  {
+    Uint8List bytes = await image(context,
       fileName: fileName,
       size: size,
     );
@@ -213,8 +209,9 @@ class ImageManager {
     return (await (await ui.instantiateImageCodec(bytes)).getNextFrame()).image;
   }
 
-  Future<Uint8List> _compress(
-      BuildContext context, File source, int quality, double size) async {
+  Future<Uint8List> _compress(BuildContext context, File source, int quality,
+      double size) async
+  {
     List<int> intBytes = [];
 
     if (await source.exists()) {
@@ -223,8 +220,8 @@ class ImageManager {
         double pixelRatio = MediaQuery.of(context).devicePixelRatio;
         pixels = size == null ? null : pixelRatio * size;
       }
-      intBytes = await _imageCompressWrapper.compress(
-          source.path, quality, pixels?.round());
+      intBytes = await _imageCompressWrapper.compress(source.path, quality,
+          pixels?.round());
     } else {
       _log.e("Attempting to compress file that doesn't exist: "
           "${source.path}");
@@ -239,8 +236,9 @@ class ImageManager {
   /// If the image doesn't exist in the memory or file system cache,
   /// [_delegate.compress] is invoked and the result is saved to the file system
   /// and added to the memory cache.
-  Future<Uint8List> _thumbnail(
-      BuildContext context, String fileName, double size) async {
+  Future<Uint8List> _thumbnail(BuildContext context, String fileName,
+      double size) async
+  {
     if (isEmpty(fileName) || size == null) {
       return null;
     }

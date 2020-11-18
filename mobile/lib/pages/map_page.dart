@@ -56,26 +56,26 @@ class _MapPageState extends State<MapPage> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        body: EntityListenerBuilder(
-          managers: [_fishingSpotManager],
-          onUpdate: () {
-            _updateMarkers();
+    body: EntityListenerBuilder(
+      managers: [ _fishingSpotManager ],
+      onUpdate: () {
+        _updateMarkers();
 
-            // Reset the active marker and fishing spot, if there was one.
-            if (_activeMarker != null) {
-              _activeFishingSpot =
-                  _fishingSpotManager.withLatLng(_activeMarker.fishingSpot);
+        // Reset the active marker and fishing spot, if there was one.
+        if (_activeMarker != null) {
+          _activeFishingSpot =
+              _fishingSpotManager.withLatLng(_activeMarker.fishingSpot);
 
-              Marker newMarker = _fishingSpotMarkers.firstWhere(
-                (m) => m.position == _activeMarker.position,
-                orElse: () => null,
-              );
-              _activeMarker = _copyMarker(newMarker, true);
-            }
-          },
-          builder: _buildMap,
-        ),
-      );
+          Marker newMarker = _fishingSpotMarkers.firstWhere(
+            (m) => m.position == _activeMarker.position,
+            orElse: () => null,
+          );
+          _activeMarker = _copyMarker(newMarker, true);
+        }
+      },
+      builder: _buildMap,
+    ),
+  );
 
   Widget _buildMap(BuildContext context) {
     Set<Marker> markers = Set.of(_fishingSpotMarkers);
@@ -109,29 +109,30 @@ class _MapPageState extends State<MapPage> {
         _buildBottomSheet(),
       ],
       searchBar: FishingSpotMapSearchBar(
-          title: isEmpty(name) ? null : name,
-          trailing: AnimatedVisibility(
-            visible: isNotEmpty(name),
-            child: IconButton(
-              icon: Icon(Icons.clear),
-              onPressed: () {
-                setState(() {
-                  _waitingForDismissal = true;
-                });
-              },
-            ),
+        title: isEmpty(name) ? null : name,
+        trailing: AnimatedVisibility(
+          visible: isNotEmpty(name),
+          child: IconButton(
+            icon: Icon(Icons.clear),
+            onPressed: () {
+              setState(() {
+                _waitingForDismissal = true;
+              });
+            },
           ),
-          onFishingSpotPicked: (fishingSpot) {
-            if (fishingSpot == null) {
-              return;
-            }
+        ),
+        onFishingSpotPicked: (fishingSpot) {
+          if (fishingSpot == null) {
+            return;
+          }
 
-            setState(() {
-              _setActiveMarker(_findMarker(fishingSpot.id));
-              _activeFishingSpot = fishingSpot;
-              moveMap(_mapController, _activeFishingSpot.latLng, false);
-            });
-          }),
+          setState(() {
+            _setActiveMarker(_findMarker(fishingSpot.id));
+            _activeFishingSpot = fishingSpot;
+            moveMap(_mapController, _activeFishingSpot.latLng, false);
+          });
+        }
+      ),
       onTap: (latLng) {
         print("Tapped map");
         setState(() {
@@ -196,15 +197,16 @@ class _MapPageState extends State<MapPage> {
       return null;
     }
     return FishingSpotMarker(
-        fishingSpot: fishingSpot,
-        active: false,
-        onTapFishingSpot: (fishingSpot) {
-          setState(() {
-            _setActiveMarker(_fishingSpotMarkers
-                .firstWhere((marker) => marker.id == fishingSpot.id));
-            _activeFishingSpot = _fishingSpotManager.entity(_activeMarker.id);
-          });
+      fishingSpot: fishingSpot,
+      active: false,
+      onTapFishingSpot: (fishingSpot) {
+        setState(() {
+          _setActiveMarker(_fishingSpotMarkers.firstWhere((marker) =>
+              marker.id == fishingSpot.id));
+          _activeFishingSpot = _fishingSpotManager.entity(_activeMarker.id);
         });
+      }
+    );
   }
 
   Marker _createDroppedPinMarker(LatLng latLng) {
@@ -242,7 +244,8 @@ class _MapPageState extends State<MapPage> {
   }
 
   FishingSpotMarker _copyMarker(FishingSpotMarker marker, bool active,
-      [double zIndex]) {
+      [double zIndex])
+  {
     if (marker == null) {
       return null;
     }
@@ -260,9 +263,8 @@ class _MapPageState extends State<MapPage> {
 
   void _updateMarkers() {
     _fishingSpotMarkers.clear();
-    _fishingSpotManager
-        .list()
-        .forEach((f) => _fishingSpotMarkers.add(_createFishingSpotMarker(f)));
+    _fishingSpotManager.list().forEach((f) =>
+        _fishingSpotMarkers.add(_createFishingSpotMarker(f)));
   }
 
   void _clearActiveFishingSpot() {
@@ -325,15 +327,13 @@ class _FishingSpotBottomSheet extends StatelessWidget {
       name = Strings.of(context).mapPageDroppedPin;
     }
 
-    return isEmpty(name)
-        ? Empty()
-        : Padding(
-            padding: insetsHorizontalDefault,
-            child: Label(
-              name,
-              style: styleHeading,
-            ),
-          );
+    return isEmpty(name) ? Empty() : Padding(
+      padding: insetsHorizontalDefault,
+      child: Label(
+        name,
+        style: styleHeading,
+      ),
+    );
   }
 
   Widget _buildChips(BuildContext context) {
@@ -350,8 +350,8 @@ class _FishingSpotBottomSheet extends StatelessWidget {
               right: paddingWidgetSmall,
             ),
             child: ChipButton(
-              label:
-                  editing ? Strings.of(context).edit : Strings.of(context).save,
+              label: editing
+                  ? Strings.of(context).edit : Strings.of(context).save,
               icon: editing ? Icons.edit : Icons.save,
               onPressed: () {
                 present(
@@ -364,36 +364,32 @@ class _FishingSpotBottomSheet extends StatelessWidget {
               },
             ),
           ),
-          editing
-              ? Padding(
-                  padding: insetsRightWidgetSmall,
-                  child: ChipButton(
-                    label: Strings.of(context).delete,
-                    icon: Icons.delete,
-                    onPressed: () {
-                      showDeleteDialog(
-                        context: context,
-                        description: Text(fishingSpotManager.deleteMessage(
-                            context, fishingSpot)),
-                        onDelete: () {
-                          onDelete?.call();
-                          fishingSpotManager.delete(fishingSpot.id);
-                        },
-                      );
-                    },
-                  ),
-                )
-              : Empty(),
-          editing
-              ? Padding(
-                  padding: insetsRightWidgetSmall,
-                  child: ChipButton(
-                    label: Strings.of(context).mapPageAddCatch,
-                    icon: Icons.add,
-                    onPressed: () {},
-                  ),
-                )
-              : Empty(),
+          editing ? Padding(
+            padding: insetsRightWidgetSmall,
+            child: ChipButton(
+              label: Strings.of(context).delete,
+              icon: Icons.delete,
+              onPressed: () {
+                showDeleteDialog(
+                  context: context,
+                  description: Text(fishingSpotManager
+                      .deleteMessage(context, fishingSpot)),
+                  onDelete: () {
+                    onDelete?.call();
+                    fishingSpotManager.delete(fishingSpot.id);
+                  },
+                );
+              },
+            ),
+          ) : Empty(),
+          editing ? Padding(
+            padding: insetsRightWidgetSmall,
+            child: ChipButton(
+              label: Strings.of(context).mapPageAddCatch,
+              icon: Icons.add,
+              onPressed: () {},
+            ),
+          ) : Empty(),
           Padding(
             padding: insetsRightDefault,
             child: ChipButton(

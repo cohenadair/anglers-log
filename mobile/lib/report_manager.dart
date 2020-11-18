@@ -5,7 +5,8 @@ import 'package:mobile/named_entity_manager.dart';
 import 'package:protobuf/protobuf.dart';
 
 abstract class ReportManager<T extends GeneratedMessage>
-    extends NamedEntityManager<T> {
+    extends NamedEntityManager<T>
+{
   void onDeleteBait(Bait bait);
   void onDeleteFishingSpot(FishingSpot fishingSpot);
   void onDeleteSpecies(Species species);

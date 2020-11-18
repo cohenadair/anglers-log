@@ -51,10 +51,10 @@ class SpeciesListPage extends StatelessWidget {
             )
           : null,
       itemManager: ManageableListPageItemManager<Species>(
-        listenerManagers: [speciesManager],
+        listenerManagers: [ speciesManager ],
         loadItems: (query) => speciesManager.listSortedByName(filter: query),
-        deleteWidget: (context, species) => Text(format(
-            Strings.of(context).speciesListPageConfirmDelete, [species.name])),
+        deleteWidget: (context, species) => Text(format(Strings.of(context)
+            .speciesListPageConfirmDelete, [species.name])),
         deleteItem: (context, species) => speciesManager.delete(species.id),
         onTapDeleteButton: (species) {
           int numOfCatches = speciesManager.numberOfCatches(species.id);

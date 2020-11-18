@@ -19,7 +19,9 @@ import 'package:mobile/wrappers/photo_manager_wrapper.dart';
 import 'package:path/path.dart' as Path;
 import 'package:photo_manager/photo_manager.dart';
 
-enum _ImagePickerSource { gallery, camera, browse }
+enum _ImagePickerSource {
+  gallery, camera, browse
+}
 
 class PickedImage {
   /// The original image file. This may be null if the [PickedImage] represents
@@ -105,10 +107,10 @@ class ImagePickerPage extends StatefulWidget {
   ImagePickerPage.single({
     @required Function(BuildContext, PickedImage) onImagePicked,
   }) : this(
-          onImagesPicked: (context, files) =>
-              onImagePicked(context, files.isEmpty ? null : files.first),
-          allowsMultipleSelection: false,
-        );
+    onImagesPicked: (context, files) =>
+        onImagePicked(context, files.isEmpty ? null : files.first),
+    allowsMultipleSelection: false,
+  );
 
   @override
   _ImagePickerPageState createState() => _ImagePickerPageState();
@@ -170,10 +172,10 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
           // Lazy initialize _allAssetsFuture.
           if (_allAssetsFuture == null) {
             // Create a future that waits for all assets.
-            AssetPathEntity entity =
-                assets.firstWhere((album) => album.isAll, orElse: () => null);
-            _allAssetsFuture =
-                entity == null ? Future.value([]) : entity.assetList;
+            AssetPathEntity entity = assets.firstWhere(
+                (album) => album.isAll, orElse: () => null);
+            _allAssetsFuture = entity == null
+                ? Future.value([]) : entity.assetList;
           }
 
           // Third, wait to get assets from each album.
@@ -189,8 +191,9 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
 
                 for (int i = 0; i < _assets.length; i++) {
                   for (PickedImage image in _initialImages.reversed) {
-                    if (image.originalFileId != null &&
-                        image.originalFileId == _assets[i].id) {
+                    if (image.originalFileId != null
+                        && image.originalFileId == _assets[i].id)
+                    {
                       _selectedIndexes.add(i);
                       _initialImages.remove(image);
                       break;
@@ -254,22 +257,19 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
       return Empty();
     }
 
-    bool enabled = !widget.requiresPick ||
-        _selectedIndexes.isNotEmpty ||
-        widget.initialImages.isNotEmpty;
+    bool enabled = !widget.requiresPick || _selectedIndexes.isNotEmpty
+        || widget.initialImages.isNotEmpty;
 
     return ActionButton(
       text: widget.doneButtonText ?? Strings.of(context).done,
-      onPressed: enabled
-          ? () async {
-              List<PickedImage> result = [];
-              for (var i in _selectedIndexes) {
-                result.add(await _pickedImageFromAsset(_assets[i]));
-              }
+      onPressed: enabled ? () async {
+        List<PickedImage> result = [];
+        for (var i in _selectedIndexes) {
+          result.add(await _pickedImageFromAsset(_assets[i]));
+        }
 
-              _pop(result);
-            }
-          : null,
+        _pop(result);
+      } : null,
     );
   }
 
@@ -327,16 +327,13 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                widget.allowsMultipleSelection
-                    ? Padding(
-                        padding: insetsHorizontalDefault,
-                        child: PrimaryLabel(
-                          format(
-                              Strings.of(context).imagePickerPageSelectedLabel,
-                              [_selectedIndexes.length, _assets.length]),
-                        ),
-                      )
-                    : Empty(),
+                widget.allowsMultipleSelection ? Padding(
+                  padding: insetsHorizontalDefault,
+                  child: PrimaryLabel(
+                    format(Strings.of(context).imagePickerPageSelectedLabel,
+                        [_selectedIndexes.length, _assets.length]),
+                  ),
+                ) : Empty(),
                 ActionButton(
                   text: Strings.of(context).clear,
                   onPressed: () {
@@ -412,19 +409,12 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
     // the extension of each selected file.
     // https://github.com/miguelpruivo/flutter_file_picker/issues/99
     List<String> supportedFileExtensions = [
-      ".jpg",
-      ".jpeg",
-      ".jpe",
-      ".jif",
-      ".jfif",
-      ".jfi",
+      ".jpg", ".jpeg", ".jpe", ".jif", ".jfif", ".jfi",
       ".png",
       ".gif",
       ".webp",
-      ".tiff",
-      ".tif",
-      ".heif",
-      ".heic",
+      ".tiff", ".tif",
+      ".heif", ".heic",
     ];
     List<String> invalidFiles = [];
     for (int i = images.length - 1; i >= 0; i--) {
@@ -444,11 +434,9 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
       showErrorDialog(context: context, description: Text(msg));
     } else {
       // TODO #391: Extract EXIF data from image.
-      _pop(images
-          .map((image) => PickedImage(
-                originalFile: image,
-              ))
-          .toList());
+      _pop(images.map((image) => PickedImage(
+        originalFile: image,
+      )).toList());
     }
   }
 
@@ -460,8 +448,7 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
     }
   }
 
-  Future<PickedImage> _pickedImageFromAsset(
-    AssetEntity entity, {
+  Future<PickedImage> _pickedImageFromAsset(AssetEntity entity, {
     Uint8List thumbData,
   }) async {
     double lat = entity.latitude;
@@ -473,8 +460,9 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
     } else {
       // Coordinates are invalid, attempt to retrieve from OS.
       LatLng latLng = await entity.latlngAsync();
-      if (latLng != null &&
-          _coordinatesAreValid(latLng.latitude, latLng.longitude)) {
+      if (latLng != null
+          && _coordinatesAreValid(latLng.latitude, latLng.longitude))
+      {
         position = GoogleMaps.LatLng(latLng.latitude, latLng.longitude);
       }
     }

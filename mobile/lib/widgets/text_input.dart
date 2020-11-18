@@ -43,8 +43,7 @@ class TextInput extends StatefulWidget {
     this.onChanged,
   });
 
-  TextInput.name(
-    BuildContext context, {
+  TextInput.name(BuildContext context, {
     String label,
     String initialValue,
     TextInputController controller,
@@ -52,34 +51,32 @@ class TextInput extends StatefulWidget {
     bool autofocus = false,
     VoidCallback onChanged,
   }) : this(
-          initialValue: initialValue,
-          label: isEmpty(label) ? Strings.of(context).inputNameLabel : label,
-          capitalization: TextCapitalization.words,
-          controller: controller,
-          maxLength: _inputLimitName,
-          enabled: enabled,
-          autofocus: autofocus,
-          onChanged: onChanged,
-        );
+    initialValue: initialValue,
+    label: isEmpty(label) ? Strings.of(context).inputNameLabel : label,
+    capitalization: TextCapitalization.words,
+    controller: controller,
+    maxLength: _inputLimitName,
+    enabled: enabled,
+    autofocus: autofocus,
+    onChanged: onChanged,
+  );
 
-  TextInput.description(
-    BuildContext context, {
+  TextInput.description(BuildContext context, {
     String initialValue,
     TextInputController controller,
     bool enabled,
     bool autofocus = false,
   }) : this(
-          initialValue: initialValue,
-          label: Strings.of(context).inputDescriptionLabel,
-          capitalization: TextCapitalization.sentences,
-          controller: controller,
-          maxLength: _inputLimitDescription,
-          enabled: enabled,
-          autofocus: autofocus,
-        );
+    initialValue: initialValue,
+    label: Strings.of(context).inputDescriptionLabel,
+    capitalization: TextCapitalization.sentences,
+    controller: controller,
+    maxLength: _inputLimitDescription,
+    enabled: enabled,
+    autofocus: autofocus,
+  );
 
-  TextInput.number(
-    BuildContext context, {
+  TextInput.number(BuildContext context, {
     double initialValue,
     String label,
     String requiredText,
@@ -88,33 +85,31 @@ class TextInput extends StatefulWidget {
     bool autofocus = false,
     bool required = false,
   }) : this(
-          initialValue: initialValue == null ? null : initialValue.toString(),
-          label: label,
-          controller: controller,
-          keyboardType:
-              TextInputType.numberWithOptions(signed: true, decimal: true),
-          enabled: enabled,
-          autofocus: autofocus,
-          maxLength: _inputLimitNumber,
-        );
+    initialValue: initialValue == null ? null : initialValue.toString(),
+    label: label,
+    controller: controller,
+    keyboardType: TextInputType.numberWithOptions(signed: true, decimal: true),
+    enabled: enabled,
+    autofocus: autofocus,
+    maxLength: _inputLimitNumber,
+  );
 
-  TextInput.email(
-    BuildContext context, {
+  TextInput.email(BuildContext context, {
     String initialValue,
     EmailInputController controller,
     bool enabled,
     bool autofocus = false,
     VoidCallback onChanged,
   }) : this(
-          initialValue: initialValue,
-          label: Strings.of(context).inputEmailLabel,
-          capitalization: TextCapitalization.none,
-          controller: controller,
-          maxLength: _inputLimitEmail,
-          enabled: enabled,
-          autofocus: autofocus,
-          onChanged: onChanged,
-        );
+    initialValue: initialValue,
+    label: Strings.of(context).inputEmailLabel,
+    capitalization: TextCapitalization.none,
+    controller: controller,
+    maxLength: _inputLimitEmail,
+    enabled: enabled,
+    autofocus: autofocus,
+    onChanged: onChanged,
+  );
 
   @override
   _TextInputState createState() => _TextInputState();

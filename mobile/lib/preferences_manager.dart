@@ -23,17 +23,19 @@ class PreferencesManager {
   final Map<String, dynamic> _preferences = {};
 
   PreferencesManager(AppManager app) : _appManager = app {
-    _appManager.customEntityManager
-        .addListener(SimpleEntityListener(onDelete: _onDeleteCustomEntity));
-    _appManager.dataManager
-        .addListener(DataListener(onReset: _onDatabaseReset));
+    _appManager.customEntityManager.addListener(SimpleEntityListener(
+      onDelete: _onDeleteCustomEntity
+    ));
+    _appManager.dataManager.addListener(DataListener(
+      onReset: _onDatabaseReset
+    ));
   }
 
   DataManager get _dataManager => _appManager.dataManager;
 
   Future<void> initialize() async {
-    (await _dataManager.fetchAll(_tableName)).forEach(
-        (row) => _preferences[row[_keyId]] = jsonDecode(row[_keyValue]));
+    (await _dataManager.fetchAll(_tableName)).forEach((row) =>
+        _preferences[row[_keyId]] = jsonDecode(row[_keyValue]));
   }
 
   set baitCustomEntityIds(List<Id> ids) =>
@@ -70,8 +72,8 @@ class PreferencesManager {
   }
 
   void _putIdList(String key, List<Id> value) {
-    _putStringList(
-        key, value == null ? null : value.map((id) => id.toString()).toList());
+    _putStringList(key, value == null
+        ? null : value.map((id) => id.toString()).toList());
   }
 
   List<Id> _idList(String key) {

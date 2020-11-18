@@ -110,23 +110,21 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
 
   Widget _buildCategoryPicker() {
     return EntityListenerBuilder(
-      managers: [_baitCategoryManager],
+      managers: [ _baitCategoryManager ],
       builder: (context) {
         return ListPickerInput(
           title: Strings.of(context).saveBaitPageCategoryLabel,
           value: _baitCategoryController.value?.name,
           onTap: () {
-            push(
-                context,
-                BaitCategoryListPage.picker(
-                  initialValue: _baitCategoryController.value,
-                  onPicked: (context, pickedCategoryId) {
-                    setState(() {
-                      _baitCategoryController.value = pickedCategoryId;
-                    });
-                    return true;
-                  },
-                ));
+            push(context, BaitCategoryListPage.picker(
+              initialValue: _baitCategoryController.value,
+              onPicked: (context, pickedCategoryId) {
+                setState(() {
+                  _baitCategoryController.value = pickedCategoryId;
+                });
+                return true;
+              },
+            ));
           },
         );
       },
@@ -134,15 +132,14 @@ class _SaveBaitPageState extends State<SaveBaitPage> {
   }
 
   Widget _buildNameField() => Padding(
-        padding: insetsHorizontalDefault,
-        child: TextInput.name(
-          context,
-          controller: _nameController,
-          autofocus: true,
-          // Trigger "Save" button state refresh.
-          onChanged: () => setState(() {}),
-        ),
-      );
+    padding: insetsHorizontalDefault,
+    child: TextInput.name(context,
+      controller: _nameController,
+      autofocus: true,
+      // Trigger "Save" button state refresh.
+      onChanged: () => setState(() {}),
+    ),
+  );
 
   FutureOr<bool> _save(Map<Id, dynamic> customFieldValueMap) {
     _preferencesManager.baitCustomEntityIds = customFieldValueMap.keys.toList();

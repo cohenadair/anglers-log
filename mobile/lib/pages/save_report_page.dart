@@ -95,8 +95,8 @@ class _SaveReportPageState extends State<SaveReportPage> {
           nameExistsMessage: (context) =>
               Strings.of(context).saveCustomReportPageNameExists,
           nameExists: (newName) =>
-              _comparisonReportManager.nameExists(newName) ||
-              _summaryReportManager.nameExists(newName),
+              _comparisonReportManager.nameExists(newName)
+                  || _summaryReportManager.nameExists(newName),
           oldName: _oldReport?.name,
         ),
       ),
@@ -144,8 +144,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
         _descriptionController.value = report.description;
         _typeController.value = _ReportType.summary;
         _fromDateRangeController.value = DisplayDateRange.of(
-            report.displayDateRangeId,
-            report.startTimestamp,
+            report.displayDateRangeId, report.startTimestamp,
             report.endTimestamp);
         _baitsController.value = _baitManager.list(report.baitIds).toSet();
         _fishingSpotsController.value =
@@ -158,12 +157,10 @@ class _SaveReportPageState extends State<SaveReportPage> {
         _descriptionController.value = report.description;
         _typeController.value = _ReportType.comparison;
         _fromDateRangeController.value = DisplayDateRange.of(
-            report.fromDisplayDateRangeId,
-            report.fromStartTimestamp,
+            report.fromDisplayDateRangeId, report.fromStartTimestamp,
             report.fromEndTimestamp);
         _toDateRangeController.value = DisplayDateRange.of(
-            report.toDisplayDateRangeId,
-            report.toStartTimestamp,
+            report.toDisplayDateRangeId, report.toStartTimestamp,
             report.toEndTimestamp);
         _baitsController.value = _baitManager.list(report.baitIds).toSet();
         _fishingSpotsController.value =
@@ -210,8 +207,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
         right: paddingDefault,
         bottom: paddingSmall,
       ),
-      child: TextInput.name(
-        context,
+      child: TextInput.name(context,
         controller: _nameController,
         autofocus: true,
         // Trigger "Save" button state refresh.
@@ -227,8 +223,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
         right: paddingDefault,
         bottom: paddingSmall,
       ),
-      child: TextInput.description(
-        context,
+      child: TextInput.description(context,
         controller: _descriptionController,
       ),
     );
@@ -260,9 +255,9 @@ class _SaveReportPageState extends State<SaveReportPage> {
     return AnimatedSwitcher(
       duration: defaultAnimationDuration,
       child: _summary
-          ? _startDateRangePicker(_keySummaryStart, null)
-          : _startDateRangePicker(_keyComparisonStart,
-              Strings.of(context).saveCustomReportPageStartDateRangeLabel),
+        ? _startDateRangePicker(_keySummaryStart, null)
+        : _startDateRangePicker(_keyComparisonStart,
+            Strings.of(context).saveCustomReportPageStartDateRangeLabel),
     );
   }
 
@@ -280,15 +275,13 @@ class _SaveReportPageState extends State<SaveReportPage> {
   Widget _buildEndDateRange() {
     return AnimatedSwitcher(
       duration: defaultAnimationDuration,
-      child: _summary
-          ? Empty()
-          : DateRangePickerInput(
-              title: Strings.of(context).saveCustomReportPageEndDateRangeLabel,
-              initialDateRange: _toDateRangeController.value,
-              onPicked: (dateRange) => setState(() {
-                _toDateRangeController.value = dateRange;
-              }),
-            ),
+      child: _summary ? Empty() : DateRangePickerInput(
+        title: Strings.of(context).saveCustomReportPageEndDateRangeLabel,
+        initialDateRange: _toDateRangeController.value,
+        onPicked: (dateRange) => setState(() {
+          _toDateRangeController.value = dateRange;
+        }),
+      ),
     );
   }
 
@@ -299,18 +292,16 @@ class _SaveReportPageState extends State<SaveReportPage> {
       emptyValue: (context) =>
           Strings.of(context).saveCustomReportPageAllSpecies,
       onTap: () {
-        push(
-            context,
-            SpeciesListPage.picker(
-              multiPicker: true,
-              initialValues: _speciesController.value,
-              onPicked: (context, pickedSpecies) {
-                setState(() {
-                  _speciesController.value = pickedSpecies;
-                });
-                return true;
-              },
-            ));
+        push(context, SpeciesListPage.picker(
+          multiPicker: true,
+          initialValues: _speciesController.value,
+          onPicked: (context, pickedSpecies) {
+            setState(() {
+              _speciesController.value = pickedSpecies;
+            });
+            return true;
+          },
+        ));
       },
     );
   }
@@ -321,18 +312,16 @@ class _SaveReportPageState extends State<SaveReportPage> {
       values: _baitsController.value?.map((bait) => bait.name)?.toSet(),
       emptyValue: (context) => Strings.of(context).saveCustomReportPageAllBaits,
       onTap: () {
-        push(
-            context,
-            BaitListPage.picker(
-              multiPicker: true,
-              initialValues: _baitsController.value,
-              onPicked: (context, pickedBaits) {
-                setState(() {
-                  _baitsController.value = pickedBaits;
-                });
-                return true;
-              },
-            ));
+        push(context, BaitListPage.picker(
+          multiPicker: true,
+          initialValues: _baitsController.value,
+          onPicked: (context, pickedBaits) {
+            setState(() {
+              _baitsController.value = pickedBaits;
+            });
+            return true;
+          },
+        ));
       },
     );
   }
@@ -340,24 +329,21 @@ class _SaveReportPageState extends State<SaveReportPage> {
   Widget _buildFishingSpotsPicker() {
     return MultiListPickerInput(
       padding: insetsHorizontalDefaultVerticalWidget,
-      values: _fishingSpotsController.value
-          ?.map((fishingSpot) => fishingSpot.name)
-          ?.toSet(),
+      values: _fishingSpotsController
+          .value?.map((fishingSpot) => fishingSpot.name)?.toSet(),
       emptyValue: (context) =>
           Strings.of(context).saveCustomReportPageAllFishingSpots,
       onTap: () {
-        push(
-            context,
-            FishingSpotListPage.picker(
-              multiPicker: true,
-              initialValues: _fishingSpotsController.value,
-              onPicked: (context, pickedFishingSpots) {
-                setState(() {
-                  _fishingSpotsController.value = pickedFishingSpots;
-                });
-                return true;
-              },
-            ));
+        push(context, FishingSpotListPage.picker(
+          multiPicker: true,
+          initialValues: _fishingSpotsController.value,
+          onPicked: (context, pickedFishingSpots) {
+            setState(() {
+              _fishingSpotsController.value = pickedFishingSpots;
+            });
+            return true;
+          },
+        ));
       },
     );
   }
@@ -395,16 +381,16 @@ class _SaveReportPageState extends State<SaveReportPage> {
       case _ReportType.comparison:
         return _comparisonReportManager;
     }
-
+    
     // Can't happen. Silence compiler warning.
     return null;
   }
-
+  
   SummaryReport get _createSummaryReport {
-    DisplayDateRange dateRange = _fromDateRangeController.value;
+    DisplayDateRange dateRange = _fromDateRangeController.value; 
     bool custom = dateRange == DisplayDateRange.custom;
 
-    SummaryReport report = SummaryReport()
+    SummaryReport report =  SummaryReport()
       ..id = _oldReport?.id ?? randomId()
       ..name = _nameController.value
       ..displayDateRangeId = dateRange.id
@@ -425,7 +411,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
 
     return report;
   }
-
+  
   ComparisonReport _createComparisonReport() {
     DisplayDateRange fromDateRange = _fromDateRangeController.value;
     DisplayDateRange toDateRange = _toDateRangeController.value;
@@ -464,6 +450,5 @@ class _SaveReportPageState extends State<SaveReportPage> {
 }
 
 enum _ReportType {
-  summary,
-  comparison,
+  summary, comparison,
 }

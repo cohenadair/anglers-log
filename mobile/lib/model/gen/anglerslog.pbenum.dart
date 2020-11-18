@@ -14,15 +14,15 @@ class CustomEntity_Type extends $pb.ProtobufEnum {
   static const CustomEntity_Type NUMBER = CustomEntity_Type._(1, 'NUMBER');
   static const CustomEntity_Type TEXT = CustomEntity_Type._(2, 'TEXT');
 
-  static const $core.List<CustomEntity_Type> values = <CustomEntity_Type>[
+  static const $core.List<CustomEntity_Type> values = <CustomEntity_Type> [
     BOOL,
     NUMBER,
     TEXT,
   ];
 
-  static final $core.Map<$core.int, CustomEntity_Type> _byValue =
-      $pb.ProtobufEnum.initByValue(values);
+  static final $core.Map<$core.int, CustomEntity_Type> _byValue = $pb.ProtobufEnum.initByValue(values);
   static CustomEntity_Type valueOf($core.int value) => _byValue[value];
 
   const CustomEntity_Type._($core.int v, $core.String n) : super(v, n);
 }
+

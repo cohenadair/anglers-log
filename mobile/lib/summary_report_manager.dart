@@ -6,7 +6,8 @@ import 'package:provider/provider.dart';
 
 class SummaryReportManager extends ReportManager<SummaryReport> {
   static SummaryReportManager of(BuildContext context) =>
-      Provider.of<AppManager>(context, listen: false).summaryReportManager;
+      Provider.of<AppManager>(context, listen: false)
+          .summaryReportManager;
 
   SummaryReportManager(AppManager app) : super(app);
 
@@ -21,16 +22,16 @@ class SummaryReportManager extends ReportManager<SummaryReport> {
   String name(SummaryReport report) => report.name;
 
   @override
-  void onDeleteBait(Bait bait) =>
-      entities.values.forEach((report) => report.baitIds.remove(bait.id));
+  void onDeleteBait(Bait bait) => entities.values
+      .forEach((report) => report.baitIds.remove(bait.id));
 
   @override
   void onDeleteFishingSpot(FishingSpot fishingSpot) => entities.values
       .forEach((report) => report.fishingSpotIds.remove(fishingSpot.id));
 
   @override
-  void onDeleteSpecies(Species species) =>
-      entities.values.forEach((report) => report.speciesIds.remove(species.id));
+  void onDeleteSpecies(Species species) => entities.values
+      .forEach((report) => report.speciesIds.remove(species.id));
 
   @override
   String get tableName => "summary_report";

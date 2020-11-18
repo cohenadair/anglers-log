@@ -14,7 +14,9 @@ class InputController<T> {
   /// The current error message for the [InputController], if there is one.
   String error;
 
-  InputController({this.value});
+  InputController({
+    this.value
+  });
 
   void dispose() {
     clear();
@@ -32,8 +34,8 @@ class TextInputController extends InputController<String> {
   TextInputController({
     TextEditingController editingController,
     this.validator,
-  })  : editingController = editingController ?? TextEditingController(),
-        super();
+  }) : editingController = editingController ?? TextEditingController(),
+       super();
 
   @override
   get value {
@@ -70,9 +72,9 @@ class NumberInputController extends TextInputController {
   NumberInputController({
     TextEditingController editingController,
   }) : super(
-          editingController: editingController ?? TextEditingController(),
-          validator: DoubleValidator(),
-        );
+    editingController: editingController ?? TextEditingController(),
+    validator: DoubleValidator(),
+  );
 }
 
 class EmailInputController extends TextInputController {
@@ -80,9 +82,9 @@ class EmailInputController extends TextInputController {
     TextEditingController editingController,
     bool required = false,
   }) : super(
-          editingController: editingController ?? TextEditingController(),
-          validator: EmailValidator(required: required),
-        );
+    editingController: editingController ?? TextEditingController(),
+    validator: EmailValidator(required: required),
+  );
 }
 
 /// A [TimestampInputController] value, [Timestamp], is always in UTC. However,

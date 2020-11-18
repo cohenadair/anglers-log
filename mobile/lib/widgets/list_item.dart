@@ -54,8 +54,8 @@ class ExpansionListItem extends StatefulWidget {
     this.children,
     this.onExpansionChanged,
     this.toBottomSafeArea = false,
-  })  : assert(toBottomSafeArea != null),
-        assert(title != null);
+  }) : assert(toBottomSafeArea != null),
+       assert(title != null);
 
   @override
   _ExpansionListItemState createState() => _ExpansionListItemState();
@@ -98,8 +98,8 @@ class _ExpansionListItemState extends State<ExpansionListItem> {
     );
   }
 
-  Widget get _divider =>
-      MinDivider(color: _expanded ? null : Colors.transparent);
+  Widget get _divider => MinDivider(color: _expanded
+      ? null : Colors.transparent);
 }
 
 /// A custom [ListTile]-like [Widget] that animates leading and trailing
@@ -152,15 +152,16 @@ class ManageableListItem extends StatefulWidget {
     this.trailing,
     this.editing = false,
     this.enabled = true,
-  }) : assert(onTapDeleteButton != null ||
-            (deleteMessageBuilder != null && onConfirmDelete != null));
+  }) : assert(onTapDeleteButton != null
+      || (deleteMessageBuilder != null && onConfirmDelete != null));
 
   @override
   _ManageableListItemState createState() => _ManageableListItemState();
 }
 
-class _ManageableListItemState extends State<ManageableListItem>
-    with SingleTickerProviderStateMixin {
+class _ManageableListItemState extends State<ManageableListItem> with
+    SingleTickerProviderStateMixin
+{
   AnimationController _editAnimController;
   Animation<double> _deleteIconSizeAnim;
 
@@ -217,8 +218,8 @@ class _ManageableListItemState extends State<ManageableListItem>
               Expanded(
                 child: Padding(
                   padding: EdgeInsets.only(
-                    left:
-                        widget.editing ? paddingDefaultDouble : paddingDefault,
+                    left: widget.editing
+                        ? paddingDefaultDouble : paddingDefault,
                     right: paddingDefault,
                     top: paddingDefault,
                     bottom: paddingDefault,

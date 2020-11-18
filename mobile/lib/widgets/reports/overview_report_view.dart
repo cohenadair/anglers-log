@@ -26,9 +26,9 @@ class _OverviewReportViewState extends State<OverviewReportView> {
   }
 
   Widget _buildDurationPicker() => DateRangePickerInput(
-        initialDateRange: _currentDateRange,
-        onPicked: (dateRange) => setState(() {
-          _currentDateRange = dateRange;
-        }),
-      );
+    initialDateRange: _currentDateRange,
+    onPicked: (dateRange) => setState(() {
+      _currentDateRange = dateRange;
+    }),
+  );
 }

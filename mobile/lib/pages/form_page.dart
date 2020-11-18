@@ -50,12 +50,11 @@ class FormPageFieldOption {
   });
 
   @override
-  bool operator ==(other) =>
-      other is FormPageFieldOption &&
-      id == other.id &&
-      userFacingName == other.userFacingName &&
-      used == other.used &&
-      removable == other.removable;
+  bool operator ==(other) => other is FormPageFieldOption
+      && id == other.id
+      && userFacingName == other.userFacingName
+      && used == other.used
+      && removable == other.removable;
 
   @override
   int get hashCode => hash4(id, userFacingName, used, removable);
@@ -115,9 +114,9 @@ class FormPage extends StatefulWidget {
     this.runSpacing,
     this.saveButtonText,
     @required this.isInputValid,
-  })  : assert(fieldBuilder != null),
-        assert(isInputValid != null),
-        super(key: key);
+  }) : assert(fieldBuilder != null),
+       assert(isInputValid != null),
+       super(key: key);
 
   FormPage.immutable({
     Key key,
@@ -129,18 +128,18 @@ class FormPage extends StatefulWidget {
     @required bool isInputValid,
     String saveButtonText,
   }) : this(
-          key: key,
-          title: title,
-          fieldBuilder: fieldBuilder,
-          onSave: onSave,
-          addFieldOptions: null,
-          onAddFields: null,
-          editable: false,
-          padding: padding,
-          runSpacing: runSpacing,
-          isInputValid: isInputValid,
-          saveButtonText: saveButtonText,
-        );
+    key: key,
+    title: title,
+    fieldBuilder: fieldBuilder,
+    onSave: onSave,
+    addFieldOptions: null,
+    onAddFields: null,
+    editable: false,
+    padding: padding,
+    runSpacing: runSpacing,
+    isInputValid: isInputValid,
+    saveButtonText: saveButtonText,
+  );
 
   @override
   _FormPageState createState() => _FormPageState();
@@ -158,30 +157,26 @@ class _FormPageState extends State<FormPage> {
       appBar: AppBar(
         title: widget.title,
         actions: [
-          Builder(
-              builder: (context) => ActionButton(
-                    text: widget.saveButtonText ?? Strings.of(context).save,
-                    onPressed: widget.isInputValid
-                        ? () => _onPressedSave(context)
-                        : null,
-                    condensed: widget.editable,
-                  )),
-          widget.editable
-              ? PopupMenuButton<_OverflowOption>(
-                  icon: Icon(FormPage.moreMenuIcon),
-                  itemBuilder: (context) => [
-                    PopupMenuItem<_OverflowOption>(
-                      value: _OverflowOption.manageFields,
-                      child: Text(Strings.of(context).formPageManageFieldText),
-                    ),
-                  ],
-                  onSelected: (option) {
-                    if (option == _OverflowOption.manageFields) {
-                      present(context, _addFieldSelectionPage());
-                    }
-                  },
-                )
-              : Empty(),
+          Builder(builder: (context) => ActionButton(
+            text: widget.saveButtonText ?? Strings.of(context).save,
+            onPressed: widget.isInputValid
+                ? () => _onPressedSave(context) : null,
+            condensed: widget.editable,
+          )),
+          widget.editable ? PopupMenuButton<_OverflowOption>(
+            icon: Icon(FormPage.moreMenuIcon),
+            itemBuilder: (context) => [
+              PopupMenuItem<_OverflowOption>(
+                value: _OverflowOption.manageFields,
+                child: Text(Strings.of(context).formPageManageFieldText),
+              ),
+            ],
+            onSelected: (option) {
+              if (option == _OverflowOption.manageFields) {
+                present(context, _addFieldSelectionPage());
+              }
+            },
+          ) : Empty(),
         ],
       ),
       body: Padding(
@@ -214,9 +209,9 @@ class _FormPageState extends State<FormPage> {
   }
 
   Widget _addFieldSelectionPage() => _SelectionPage(
-        options: widget.addFieldOptions,
-        onSelectItems: (selectedIds) => widget.onAddFields(selectedIds),
-      );
+    options: widget.addFieldOptions,
+    onSelectItems: (selectedIds) => widget.onAddFields(selectedIds),
+  );
 
   void _onPressedSave(BuildContext saveContext) async {
     if (!_key.currentState.validate()) {
@@ -257,8 +252,8 @@ class _SelectionPageState extends State<_SelectionPage> {
       builder: (context) {
         List<PickerPageItem> items = pickerItems;
         Set<FormPageFieldOption> used = items
-            .where(
-                (item) => item.value is FormPageFieldOption && item.value.used)
+            .where((item) => item.value is FormPageFieldOption
+                && item.value.used)
             .map((item) => item.value as FormPageFieldOption)
             .toSet();
 
@@ -267,8 +262,8 @@ class _SelectionPageState extends State<_SelectionPage> {
           initialValues: used,
           itemBuilder: () => items,
           onFinishedPicking: (context, items) {
-            widget.onSelectItems(
-                items.map((item) => (item as FormPageFieldOption).id).toSet());
+            widget.onSelectItems(items.map((item) =>
+                (item as FormPageFieldOption).id).toSet());
             Navigator.pop(context);
           },
           action: IconButton(
@@ -297,10 +292,10 @@ class _SelectionPageState extends State<_SelectionPage> {
 
     // Add included field options.
     result.addAll(normalFields.map((o) => PickerPageItem<FormPageFieldOption>(
-          title: o.userFacingName,
-          value: o,
-          enabled: o.removable,
-        )));
+      title: o.userFacingName,
+      value: o,
+      enabled: o.removable,
+    )));
 
     // Add custom field separator/title.
     result..add(PickerPageItem.heading(Strings.of(context).customFields));
@@ -308,8 +303,8 @@ class _SelectionPageState extends State<_SelectionPage> {
     // Add customs fields that aren't already part of the form.
     for (var entity in customEntityManager.list()) {
       if (customFields.firstWhere((field) => field.id == entity.id,
-              orElse: () => null) ==
-          null) {
+          orElse: () => null) == null)
+      {
         customFields.add(FormPageFieldOption(
           id: entity.id,
           userFacingName: entity.name,
@@ -328,11 +323,11 @@ class _SelectionPageState extends State<_SelectionPage> {
       ));
     }
 
-    result
-        .addAll(customFields.map((field) => PickerPageItem<FormPageFieldOption>(
-              title: field.userFacingName,
-              value: field,
-            )));
+    result.addAll(customFields.map((field) =>
+        PickerPageItem<FormPageFieldOption>(
+          title: field.userFacingName,
+          value: field,
+        )));
 
     return result;
   }

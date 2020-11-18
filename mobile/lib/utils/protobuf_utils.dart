@@ -12,7 +12,8 @@ import 'package:uuid/uuid.dart';
 
 /// Returns the number of occurrences of [customEntityId] in [entities].
 int entityValuesCount<T>(List<T> entities, Id customEntityId,
-    List<CustomEntityValue> Function(T) getValues) {
+    List<CustomEntityValue> Function(T) getValues)
+{
   assert(entities.isEmpty || getValues != null);
 
   int result = 0;
@@ -30,7 +31,8 @@ int entityValuesCount<T>(List<T> entities, Id customEntityId,
 }
 
 bool entityValuesMatchesFilter(List<CustomEntityValue> values, String filter,
-    CustomEntityManager customEntityManager) {
+    CustomEntityManager customEntityManager)
+{
   if (isEmpty(filter) && (values == null || values.isEmpty)) {
     return true;
   }
@@ -38,9 +40,10 @@ bool entityValuesMatchesFilter(List<CustomEntityValue> values, String filter,
   values = values ?? [];
 
   for (CustomEntityValue value in values) {
-    if (customEntityManager.matchesFilter(value.customEntityId, filter) ||
-        (isNotEmpty(value.value) &&
-            value.value.toLowerCase().contains(filter.toLowerCase()))) {
+    if (customEntityManager.matchesFilter(value.customEntityId, filter)
+        || (isNotEmpty(value.value)
+            && value.value.toLowerCase().contains(filter.toLowerCase())))
+    {
       return true;
     }
   }
@@ -58,8 +61,9 @@ List<CustomEntityValue> entityValuesFromMap(Map<Id, dynamic> keyValues) {
   List<CustomEntityValue> result = [];
 
   for (var entry in keyValues.entries) {
-    if (entry.value == null ||
-        (entry.value is String && isEmpty(entry.value))) {
+    if (entry.value == null
+        || (entry.value is String && isEmpty(entry.value)))
+    {
       continue;
     }
 
@@ -71,9 +75,9 @@ List<CustomEntityValue> entityValuesFromMap(Map<Id, dynamic> keyValues) {
   return result;
 }
 
-dynamic valueForCustomEntityType(
-    CustomEntity_Type type, CustomEntityValue value,
-    [BuildContext context]) {
+dynamic valueForCustomEntityType(CustomEntity_Type type,
+    CustomEntityValue value, [BuildContext context])
+{
   switch (type) {
     case CustomEntity_Type.NUMBER:
     // Fallthrough.
