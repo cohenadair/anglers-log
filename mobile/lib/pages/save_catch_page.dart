@@ -49,10 +49,10 @@ class SaveCatchPage extends StatefulWidget {
     @required this.species,
     @required this.fishingSpot,
     this.popOverride,
-  }) : assert(images != null),
-       assert(species != null),
-       assert(fishingSpot != null),
-       oldCatch = null;
+  })  : assert(images != null),
+        assert(species != null),
+        assert(fishingSpot != null),
+        oldCatch = null;
 
   SaveCatchPage.edit(this.oldCatch)
       : assert(oldCatch != null),
@@ -88,7 +88,6 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
   PreferencesManager get _preferencesManager => PreferencesManager.of(context);
   SpeciesManager get _speciesManager => SpeciesManager.of(context);
   TimeManager get _timeManager => TimeManager.of(context);
-
   Catch get _oldCatch => widget.oldCatch;
 
   TimestampInputController get _timestampController =>
@@ -247,15 +246,18 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
           title: Strings.of(context).saveCatchPageBaitLabel,
           value: value,
           onTap: () {
-            push(context, BaitListPage.picker(
-              initialValues: { _baitController.value },
-              onPicked: (context, pickedBaits) {
-                setState(() {
-                  _baitController.value = pickedBaits.first;
-                });
-                return true;
-              },
-            ));
+            push(
+              context,
+              BaitListPage.picker(
+                initialValues: {_baitController.value},
+                onPicked: (context, pickedBaits) {
+                  setState(() {
+                    _baitController.value = pickedBaits.first;
+                  });
+                  return true;
+                },
+              ),
+            );
           },
         );
       },
@@ -282,21 +284,24 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
 
   Widget _buildSpecies() {
     return EntityListenerBuilder(
-      managers: [ _speciesManager ],
+      managers: [_speciesManager],
       builder: (context) {
         return ListPickerInput(
           title: Strings.of(context).saveCatchPageSpeciesLabel,
           value: _speciesController.value?.name,
           onTap: () {
-            push(context, SpeciesListPage.picker(
-              initialValues: { _speciesController.value },
-              onPicked: (context, pickedSpecies) {
-                setState(() {
-                  _speciesController.value = pickedSpecies.first;
-                });
-                return true;
-              },
-            ));
+            push(
+              context,
+              SpeciesListPage.picker(
+                initialValues: {_speciesController.value},
+                onPicked: (context, pickedSpecies) {
+                  setState(() {
+                    _speciesController.value = pickedSpecies.first;
+                  });
+                  return true;
+                },
+              ),
+            );
           },
         );
       },
@@ -325,22 +330,23 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
     _preferencesManager.catchCustomEntityIds =
         customFieldValueMap.keys.toList();
 
+    // imageNames is set in _catchManager.addOrUpdate
     Catch cat = Catch()
       ..id = _oldCatch?.id ?? randomId()
       ..timestamp = _timestampController.value
       ..speciesId = _speciesController.value.id
       ..fishingSpotId = _fishingSpotController.value.id
       ..customEntityValues.addAll(entityValuesFromMap(customFieldValueMap));
-      // imageNames is set in _catchManager.addOrUpdate
 
     if (_baitController.value != null) {
       cat.baitId = _baitController.value.id;
     }
 
-    _catchManager.addOrUpdate(cat,
+    _catchManager.addOrUpdate(
+      cat,
       fishingSpot: _fields[_idFishingSpot].controller.value,
-      imageFiles: _imagesController.value.map((img) => img.originalFile)
-          .toList(),
+      imageFiles:
+          _imagesController.value.map((img) => img.originalFile).toList(),
     );
 
     if (widget.popOverride != null) {
@@ -352,17 +358,20 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
   }
 
   void _pushFishingSpotPicker() {
-    push(context, FishingSpotPickerPage(
-      fishingSpot: _fishingSpotController.value,
-      onPicked: (context, pickedFishingSpot) {
-        if (pickedFishingSpot != _fishingSpotController.value) {
-          setState(() {
-            _fishingSpotController.value = pickedFishingSpot;
-          });
-        }
-        Navigator.pop(context);
-      },
-    ));
+    push(
+      context,
+      FishingSpotPickerPage(
+        fishingSpot: _fishingSpotController.value,
+        onPicked: (context, pickedFishingSpot) {
+          if (pickedFishingSpot != _fishingSpotController.value) {
+            setState(() {
+              _fishingSpotController.value = pickedFishingSpot;
+            });
+          }
+          Navigator.pop(context);
+        },
+      ),
+    );
   }
 
   /// Converts [oldCatch] images into a list of [PickedImage] objects to be
@@ -372,7 +381,8 @@ class _SaveCatchPageState extends State<SaveCatchPage> {
       return Future.value([]);
     }
 
-    List<Uint8List> bytesList = await _imageManager.images(context,
+    List<Uint8List> bytesList = await _imageManager.images(
+      context,
       imageNames: _oldCatch.imageNames,
       size: galleryMaxThumbSize,
     );

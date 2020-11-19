@@ -59,8 +59,8 @@ class PickerPage<T> extends StatefulWidget {
     this.listHeader,
     this.allItem,
     this.action,
-  }) : assert(itemBuilder != null),
-       initialValues = initialValues ?? const {};
+  })  : assert(itemBuilder != null),
+        initialValues = initialValues ?? const {};
 
   PickerPage.single({
     @required List<PickerPageItem<T>> Function() itemBuilder,
@@ -70,15 +70,15 @@ class PickerPage<T> extends StatefulWidget {
     Widget listHeader,
     PickerPageItem<T> allItem,
   }) : this(
-    itemBuilder: itemBuilder,
-    onFinishedPicking: (context, items) =>
-        onFinishedPicking(context, items.first),
-    initialValues: initialValue == null ? {} : { initialValue },
-    multiSelect: false,
-    title: title,
-    listHeader: listHeader,
-    allItem: allItem,
-  );
+          itemBuilder: itemBuilder,
+          onFinishedPicking: (context, items) =>
+              onFinishedPicking(context, items.first),
+          initialValues: initialValue == null ? {} : {initialValue},
+          multiSelect: false,
+          title: title,
+          listHeader: listHeader,
+          allItem: allItem,
+        );
 
   @override
   _PickerPageState<T> createState() => _PickerPageState();
@@ -99,10 +99,13 @@ class _PickerPageState<T> extends State<PickerPage<T>> {
       appBar: AppBar(
         title: widget.title,
         actions: [
-          widget.multiSelect ? ActionButton.done(
-            condensed: widget.action != null,
-            onPressed: () => widget.onFinishedPicking(context, _selectedValues),
-          ) : Empty(),
+          widget.multiSelect
+              ? ActionButton.done(
+                  condensed: widget.action != null,
+                  onPressed: () =>
+                      widget.onFinishedPicking(context, _selectedValues),
+                )
+              : Empty(),
           widget.action == null ? Empty() : widget.action,
         ],
       ),
@@ -119,61 +122,68 @@ class _PickerPageState<T> extends State<PickerPage<T>> {
       ));
     }
 
-    List<PickerPageItem<T>> items =
-        (widget.allItem == null ? [] : [widget.allItem])
-          ..addAll(widget.itemBuilder());
+    List<PickerPageItem<T>> items = (widget.allItem == null
+        ? []
+        : [widget.allItem])
+      ..addAll(widget.itemBuilder());
 
     return ListView(
-      children: children..addAll(items.map((item) {
-        if (item._divider) {
-          return Divider();
-        }
-
-        if (item._heading) {
-          return Padding(
-            padding: EdgeInsets.only(
-              bottom: paddingWidget,
-            ),
-            child: HeadingDivider(item.title),
-          );
-        }
-
-        if (item._note) {
-          return SafeArea(
-            top: false,
-            bottom: false,
-            child: Padding(
-              padding: insetsHorizontalDefault,
-              child: item.noteIcon == null
-                  ? NoteLabel(item.title)
-                  : IconNoteLabel(text: item.title, icon: Icon(item.noteIcon,
-                      color: Colors.black,
-                    )),
-            ),
-          );
-        }
-
-        VoidCallback onTap;
-        if (item.enabled) {
-          if (item.onTap != null) {
-            onTap = item.onTap;
-          } else if (item.popsOnPicked && !widget.multiSelect) {
-            onTap = () => _listItemTapped(item);
+      children: children
+        ..addAll(items.map((item) {
+          if (item._divider) {
+            return Divider();
           }
-        }
 
-        return EnabledOpacity(
-          enabled: item.enabled,
-          child: ListItem(
-            title: PrimaryLabel(item.title),
-            subtitle: isNotEmpty(item.subtitle)
-                ? SubtitleLabel(item.subtitle) : null,
+          if (item._heading) {
+            return Padding(
+              padding: EdgeInsets.only(
+                bottom: paddingWidget,
+              ),
+              child: HeadingDivider(item.title),
+            );
+          }
+
+          if (item._note) {
+            return SafeArea(
+              top: false,
+              bottom: false,
+              child: Padding(
+                padding: insetsHorizontalDefault,
+                child: item.noteIcon == null
+                    ? NoteLabel(item.title)
+                    : IconNoteLabel(
+                        text: item.title,
+                        icon: Icon(
+                          item.noteIcon,
+                          color: Colors.black,
+                        ),
+                      ),
+              ),
+            );
+          }
+
+          VoidCallback onTap;
+          if (item.enabled) {
+            if (item.onTap != null) {
+              onTap = item.onTap;
+            } else if (item.popsOnPicked && !widget.multiSelect) {
+              onTap = () => _listItemTapped(item);
+            }
+          }
+
+          return EnabledOpacity(
             enabled: item.enabled,
-            onTap: onTap,
-            trailing: _buildListItemTrailing(item),
-          ),
-        );
-      }).toList()),
+            child: ListItem(
+              title: PrimaryLabel(item.title),
+              subtitle: isNotEmpty(item.subtitle)
+                  ? SubtitleLabel(item.subtitle)
+                  : null,
+              enabled: item.enabled,
+              onTap: onTap,
+              trailing: _buildListItemTrailing(item),
+            ),
+          );
+        }).toList()),
     );
   }
 
@@ -189,11 +199,11 @@ class _PickerPageState<T> extends State<PickerPage<T>> {
           });
         },
       );
-    } else if (widget.initialValues.isNotEmpty
-        && widget.initialValues.first == item.value)
-    {
+    } else if (widget.initialValues.isNotEmpty &&
+        widget.initialValues.first == item.value) {
       // A simple check mark icon for initial value for single item pickers.
-      return Icon(Icons.check,
+      return Icon(
+        Icons.check,
         color: Theme.of(context).primaryColor,
       );
     }
@@ -205,7 +215,7 @@ class _PickerPageState<T> extends State<PickerPage<T>> {
     setState(() {
       _selectedValues = Set.of([item.value]);
     });
-    widget.onFinishedPicking(context, { item.value });
+    widget.onFinishedPicking(context, {item.value});
   }
 
   void _checkboxUpdated(T pickedItem) {
@@ -276,17 +286,18 @@ class PickerPageItem<T> {
   /// When used, a [NoteLabel] widget is rendered. This is normally used after
   /// to give an explanation as to why there are no items to show beneath a
   /// [PickerPageItem.heading].
-  PickerPageItem.note(this.title, {
+  PickerPageItem.note(
+    this.title, {
     this.noteIcon,
-  }) : assert(isNotEmpty(title)),
-       value = null,
-       subtitle = null,
-       enabled = false,
-       popsOnPicked = false,
-       onTap = null,
-       _divider = false,
-       _heading = false,
-       _note = true;
+  })  : assert(isNotEmpty(title)),
+        value = null,
+        subtitle = null,
+        enabled = false,
+        popsOnPicked = false,
+        onTap = null,
+        _divider = false,
+        _heading = false,
+        _note = true;
 
   PickerPageItem({
     @required this.title,
@@ -295,10 +306,10 @@ class PickerPageItem<T> {
     this.enabled = true,
     this.popsOnPicked = true,
     this.onTap,
-  }) : assert(value != null),
-       assert(title != null),
-       noteIcon = null,
-       _divider = false,
-       _heading = false,
-       _note = false;
+  })  : assert(value != null),
+        assert(title != null),
+        noteIcon = null,
+        _divider = false,
+        _heading = false,
+        _note = false;
 }

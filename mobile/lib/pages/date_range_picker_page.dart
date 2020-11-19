@@ -16,9 +16,9 @@ class DateRangePickerPage extends StatefulWidget {
 
   DateRangePickerPage({
     @required this.initialValue,
-    @required this.onDateRangePicked
-  }) : assert(initialValue != null),
-       assert(onDateRangePicked != null);
+    @required this.onDateRangePicked,
+  })  : assert(initialValue != null),
+        assert(onDateRangePicked != null);
 
   @override
   _DateRangePickerPageState createState() => _DateRangePickerPageState();
@@ -75,9 +75,10 @@ class _DateRangePickerPageState extends State<DateRangePickerPage> {
     );
   }
 
-  PickerPageItem<DisplayDateRange> _buildItem(BuildContext context,
-      DisplayDateRange duration)
-  {
+  PickerPageItem<DisplayDateRange> _buildItem(
+    BuildContext context,
+    DisplayDateRange duration,
+  ) {
     return PickerPageItem<DisplayDateRange>(
       title: duration.title(context),
       value: duration,
@@ -113,6 +114,7 @@ class _DateRangePickerPageState extends State<DateRangePickerPage> {
     );
 
     widget.onDateRangePicked(
-        DisplayDateRange.newCustomFromDateRange(dateRange));
+      DisplayDateRange.newCustomFromDateRange(dateRange),
+    );
   }
 }

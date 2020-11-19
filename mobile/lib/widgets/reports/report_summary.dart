@@ -45,8 +45,8 @@ class ReportSummary extends StatefulWidget {
     this.managers = const [],
     this.descriptionBuilder,
     this.headerBuilder,
-  }) : assert(onUpdate != null),
-       assert(managers != null);
+  })  : assert(onUpdate != null),
+        assert(managers != null);
 
   @override
   _ReportSummaryState createState() => _ReportSummaryState();
@@ -136,23 +136,27 @@ class _ReportSummaryState extends State<ReportSummary> {
     );
   }
 
-  Widget _buildCatchesPerSpecies() => ExpandableChart<Species>(
-    title: Strings.of(context).reportSummaryPerSpecies,
-    viewAllTitle: Strings.of(context).reportSummaryViewSpecies,
-    viewAllDescription: Strings.of(context)
-        .reportSummaryCatchesPerSpeciesDescription,
-    filters: _filters(includeDateRange: !_comparing),
-    labelBuilder: (species) => species.name,
-    series: _models.map((model) => Series<Species>(model.catchesPerSpecies,
-        model.displayDateRange)).toList(),
-    rowDetailsPage: (species, dateRange) => CatchListPage(
-      enableAdding: false,
-      dateRange: dateRange,
-      baitIds: _models.first.baitIds,
-      fishingSpotIds: _models.first.fishingSpotIds,
-      speciesIds: {species.id},
-    ),
-  );
+  Widget _buildCatchesPerSpecies() {
+    return ExpandableChart<Species>(
+      title: Strings.of(context).reportSummaryPerSpecies,
+      viewAllTitle: Strings.of(context).reportSummaryViewSpecies,
+      viewAllDescription:
+          Strings.of(context).reportSummaryCatchesPerSpeciesDescription,
+      filters: _filters(includeDateRange: !_comparing),
+      labelBuilder: (species) => species.name,
+      series: _models
+          .map((model) =>
+              Series<Species>(model.catchesPerSpecies, model.displayDateRange))
+          .toList(),
+      rowDetailsPage: (species, dateRange) => CatchListPage(
+        enableAdding: false,
+        dateRange: dateRange,
+        baitIds: _models.first.baitIds,
+        fishingSpotIds: _models.first.fishingSpotIds,
+        speciesIds: {species.id},
+      ),
+    );
+  }
 
   Widget _buildCatchesPerFishingSpot() {
     if (!_hasCatchesPerFishingSpot) {
@@ -162,13 +166,14 @@ class _ReportSummaryState extends State<ReportSummary> {
     return ExpandableChart<FishingSpot>(
       title: Strings.of(context).reportSummaryPerFishingSpot,
       viewAllTitle: Strings.of(context).reportSummaryViewFishingSpots,
-      viewAllDescription: Strings.of(context)
-          .reportSummaryCatchesPerFishingSpotDescription,
+      viewAllDescription:
+          Strings.of(context).reportSummaryCatchesPerFishingSpotDescription,
       filters: _filters(includeDateRange: !_comparing),
       labelBuilder: (fishingSpot) => fishingSpot.name,
-      series: _models.map((model) =>
-          Series<FishingSpot>(model.catchesPerFishingSpot,
-              model.displayDateRange)).toList(),
+      series: _models
+          .map((model) => Series<FishingSpot>(
+              model.catchesPerFishingSpot, model.displayDateRange))
+          .toList(),
       rowDetailsPage: (fishingSpot, dateRange) => CatchListPage(
         enableAdding: false,
         dateRange: dateRange,
@@ -187,12 +192,14 @@ class _ReportSummaryState extends State<ReportSummary> {
     return ExpandableChart<Bait>(
       title: Strings.of(context).reportSummaryPerBait,
       viewAllTitle: Strings.of(context).reportSummaryViewBaits,
-      viewAllDescription: Strings.of(context)
-          .reportSummaryCatchesPerBaitDescription,
+      viewAllDescription:
+          Strings.of(context).reportSummaryCatchesPerBaitDescription,
       filters: _filters(includeDateRange: !_comparing),
       labelBuilder: (bait) => bait.name,
-      series: _models.map((model) => Series<Bait>(model.catchesPerBait,
-          model.displayDateRange)).toList(),
+      series: _models
+          .map((model) =>
+              Series<Bait>(model.catchesPerBait, model.displayDateRange))
+          .toList(),
       rowDetailsPage: (bait, dateRange) => CatchListPage(
         enableAdding: false,
         dateRange: dateRange,
@@ -243,16 +250,17 @@ class _ReportSummaryState extends State<ReportSummary> {
     return ExpandableChart<Bait>(
       title: Strings.of(context).reportSummaryPerBait,
       viewAllTitle: Strings.of(context).reportSummaryViewBaits,
-      viewAllDescription: Strings.of(context)
-          .reportSummaryBaitsPerSpeciesDescription,
+      viewAllDescription:
+          Strings.of(context).reportSummaryBaitsPerSpeciesDescription,
       filters: _filters(
         includeSpecies: false,
         includeDateRange: !_comparing,
       )..add(_currentSpecies.name),
       labelBuilder: (bait) => bait.name,
-      series: _models.map((model) => Series<Bait>(
-          model.baitsPerSpecies(_currentSpecies),
-          model.displayDateRange)).toList(),
+      series: _models
+          .map((model) => Series<Bait>(
+              model.baitsPerSpecies(_currentSpecies), model.displayDateRange))
+          .toList(),
       rowDetailsPage: (bait, _) => BaitPage(bait.id, static: true),
     );
   }
@@ -265,32 +273,38 @@ class _ReportSummaryState extends State<ReportSummary> {
     return ExpandableChart<FishingSpot>(
       title: Strings.of(context).reportSummaryPerFishingSpot,
       viewAllTitle: Strings.of(context).reportSummaryViewFishingSpots,
-      viewAllDescription: Strings.of(context)
-          .reportSummaryFishingSpotsPerSpeciesDescription,
+      viewAllDescription:
+          Strings.of(context).reportSummaryFishingSpotsPerSpeciesDescription,
       filters: _filters(
         includeSpecies: false,
         includeDateRange: !_comparing,
       )..add(_currentSpecies.name),
       labelBuilder: (fishingSpot) => fishingSpot.name,
-      series: _models.map((model) => Series<FishingSpot>(
-          model.fishingSpotsPerSpecies(_currentSpecies),
-          model.displayDateRange)).toList(),
+      series: _models
+          .map((model) => Series<FishingSpot>(
+              model.fishingSpotsPerSpecies(_currentSpecies),
+              model.displayDateRange))
+          .toList(),
       rowDetailsPage: (fishingSpot, _) => FishingSpotPage(fishingSpot.id),
     );
   }
 
   Widget _buildViewCatches() {
     return Column(
-      children: _models.map((model) => _buildViewCatchesRow(model.allCatchIds,
-          model.displayDateRange)).toList(),
+      children: _models
+          .map((model) =>
+              _buildViewCatchesRow(model.allCatchIds, model.displayDateRange))
+          .toList(),
     );
   }
 
   Widget _buildViewCatchesPerSpecies() {
     return Column(
-      children: _models.map((model) => _buildViewCatchesRow(
-          model.catchIdsPerSpecies[_currentSpecies],
-          model.displayDateRange)).toList(),
+      children: _models
+          .map((model) => _buildViewCatchesRow(
+              model.catchIdsPerSpecies[_currentSpecies],
+              model.displayDateRange))
+          .toList(),
     );
   }
 
@@ -306,13 +320,16 @@ class _ReportSummaryState extends State<ReportSummary> {
     }
 
     return ListItem(
-      title: Text(format(Strings.of(context).reportSummaryViewCatches,
-          [catchIds.length])),
+      title: Text(format(
+          Strings.of(context).reportSummaryViewCatches, [catchIds.length])),
       subtitle: Text(dateRange.title(context)),
-      onTap: () => push(context, CatchListPage(
-        enableAdding: false,
-        catchIds: catchIds,
-      )),
+      onTap: () => push(
+        context,
+        CatchListPage(
+          enableAdding: false,
+          catchIds: catchIds,
+        ),
+      ),
       trailing: RightChevronIcon(),
     );
   }
@@ -335,34 +352,38 @@ class _ReportSummaryState extends State<ReportSummary> {
   Set<String> _filters({
     bool includeSpecies = true,
     bool includeDateRange = true,
-  }) => _models.fold<Set<String>>({}, (previousValue, model) =>
-      previousValue..addAll(model.filters(
-        includeSpecies: includeSpecies,
-        includeDateRange: includeDateRange,
-      )));
+  }) {
+    return _models.fold<Set<String>>({}, (previousValue, model) {
+      return previousValue
+        ..addAll(
+          model.filters(
+            includeSpecies: includeSpecies,
+            includeDateRange: includeDateRange,
+          ),
+        );
+    });
+  }
 
   bool get _hasCatches => _meets((model) => model.totalCatches > 0);
 
-  bool get _hasCatchesPerFishingSpot => _meets((model) =>
-      model.catchesPerFishingSpot.isNotEmpty);
+  bool get _hasCatchesPerFishingSpot =>
+      _meets((model) => model.catchesPerFishingSpot.isNotEmpty);
 
-  bool get _hasCatchesPerBait => _meets((model) =>
-      model.catchesPerBait.isNotEmpty);
+  bool get _hasCatchesPerBait =>
+      _meets((model) => model.catchesPerBait.isNotEmpty);
 
-  bool get _hasBaitsPerSpecies => _meets((model) =>
-      model.baitsPerSpecies(_currentSpecies).isNotEmpty);
+  bool get _hasBaitsPerSpecies =>
+      _meets((model) => model.baitsPerSpecies(_currentSpecies).isNotEmpty);
 
-  bool get _hasFishingSpotsPerSpecies => _meets((model) =>
-      model.fishingSpotsPerSpecies(_currentSpecies).isNotEmpty);
+  bool get _hasFishingSpotsPerSpecies => _meets(
+      (model) => model.fishingSpotsPerSpecies(_currentSpecies).isNotEmpty);
 
   bool _meets(bool Function(ReportSummaryModel model) condition) =>
-      _models.firstWhere((model) => condition(model), orElse: () => null)
-          != null;
+      _models.firstWhere((model) => condition(model), orElse: () => null) !=
+      null;
 }
 
-enum ReportSummaryModelSortOrder {
-  alphabetical, largestToSmallest,
-}
+enum ReportSummaryModelSortOrder { alphabetical, largestToSmallest }
 
 /// A class, that when instantiated, gathers all the data required to display
 /// a [ReportSummary] widget.
@@ -443,14 +464,13 @@ class ReportSummaryModel {
     this.fishingSpotIds = const {},
     this.speciesIds = const {},
     DisplayDateRange displayDateRange,
-  }) : assert(context != null),
-       assert(baitIds != null),
-       assert(fishingSpotIds != null),
-       assert(speciesIds != null),
-       _appManager = AppManager.of(context),
-       _timeManager = AppManager.of(context).timeManager,
-       displayDateRange = displayDateRange ?? DisplayDateRange.allDates
-  {
+  })  : assert(context != null),
+        assert(baitIds != null),
+        assert(fishingSpotIds != null),
+        assert(speciesIds != null),
+        _appManager = AppManager.of(context),
+        _timeManager = AppManager.of(context).timeManager,
+        displayDateRange = displayDateRange ?? DisplayDateRange.allDates {
     DateTime now = _timeManager.currentDateTime;
     _dateRange = this.displayDateRange.getValue(now);
     _containsNow = _dateRange.endDate == now;
@@ -464,7 +484,8 @@ class ReportSummaryModel {
     );
 
     _msSinceLastCatch = catches.isEmpty
-        ? 0 : _timeManager.msSinceEpoch - catches.first.timestamp.ms;
+        ? 0
+        : _timeManager.msSinceEpoch - catches.first.timestamp.ms;
 
     // Fill all collections with zero quantities if necessary.
     if (includeZeros) {
@@ -492,8 +513,7 @@ class ReportSummaryModel {
       _catchesPerSpecies[species]++;
       _catchIds.add(cat.id);
 
-      FishingSpot fishingSpot =
-          _fishingSpotManager.entity(cat.fishingSpotId);
+      FishingSpot fishingSpot = _fishingSpotManager.entity(cat.fishingSpotId);
       if (fishingSpot != null) {
         _catchesPerFishingSpot.putIfAbsent(fishingSpot, () => 0);
         _catchesPerFishingSpot[fishingSpot]++;
@@ -540,8 +560,8 @@ class ReportSummaryModel {
     _removeZeros(_catchesPerBait, other._catchesPerBait);
 
     for (Species key in _fishingSpotsPerSpecies.value.keys) {
-      _removeZeros(_fishingSpotsPerSpecies[key],
-          other._fishingSpotsPerSpecies[key]);
+      _removeZeros(
+          _fishingSpotsPerSpecies[key], other._fishingSpotsPerSpecies[key]);
     }
 
     for (Species key in _baitsPerSpecies.value.keys) {
@@ -573,21 +593,21 @@ class ReportSummaryModel {
     }
 
     if (includeSpecies) {
-      result.addAll(speciesIds
-          .map((id) => _speciesManager.entity(id)?.name)
-          .toSet()
-        ..removeWhere((e) => e == null));
+      result.addAll(
+        speciesIds.map((id) => _speciesManager.entity(id)?.name).toSet()
+          ..removeWhere((e) => e == null),
+      );
     }
 
-    result.addAll(baitIds
-        .map((id) => _baitManager.entity(id)?.name)
-        .toSet()
-      ..removeWhere((e) => e == null));
+    result.addAll(
+      baitIds.map((id) => _baitManager.entity(id)?.name).toSet()
+        ..removeWhere((e) => e == null),
+    );
 
-    result.addAll(fishingSpotIds
-        .map((id) => _fishingSpotManager.entity(id)?.name)
-        .toSet()
-      ..removeWhere((e) => e == null));
+    result.addAll(
+      fishingSpotIds.map((id) => _fishingSpotManager.entity(id)?.name).toSet()
+        ..removeWhere((e) => e == null),
+    );
 
     return result;
   }

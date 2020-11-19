@@ -12,24 +12,28 @@ class Label extends StatelessWidget {
   final TextOverflow overflow;
   final TextStyle style;
 
-  Label(this.text, {
+  Label(
+    this.text, {
     this.align,
     this.overflow,
     this.style,
   });
 
-  Label.multiline(this.text, {
+  Label.multiline(
+    this.text, {
     this.align,
     this.style,
   }) : overflow = null;
 
   @override
-  Widget build(BuildContext context) => Text(
-    text,
-    textAlign: align,
-    overflow: overflow ?? TextOverflow.ellipsis,
-    style: style,
-  );
+  Widget build(BuildContext context) {
+    return Text(
+      text,
+      textAlign: align,
+      overflow: overflow ?? TextOverflow.ellipsis,
+      style: style,
+    );
+  }
 }
 
 class HeadingLabel extends StatelessWidget {
@@ -42,8 +46,8 @@ class HeadingLabel extends StatelessWidget {
     return Label(
       text,
       style: Theme.of(context).textTheme.bodyText1.copyWith(
-        color: Theme.of(context).primaryColor,
-      ),
+            color: Theme.of(context).primaryColor,
+          ),
     );
   }
 }
@@ -71,9 +75,9 @@ class IconNoteLabel extends StatelessWidget {
   IconNoteLabel({
     @required this.text,
     @required this.icon,
-  }) : assert(isNotEmpty(text)),
-       assert(icon != null),
-       assert(text.split("%s").length == 2);
+  })  : assert(isNotEmpty(text)),
+        assert(icon != null),
+        assert(text.split("%s").length == 2);
 
   @override
   Widget build(BuildContext context) {
@@ -100,7 +104,8 @@ class PrimaryLabel extends StatelessWidget {
   final TextAlign align;
   final bool enabled;
 
-  PrimaryLabel(this.text, {
+  PrimaryLabel(
+    this.text, {
     this.align,
     this.enabled = true,
   });
@@ -129,7 +134,8 @@ class SecondaryLabel extends StatelessWidget {
   final String text;
   final TextAlign align;
 
-  SecondaryLabel(this.text, {
+  SecondaryLabel(
+    this.text, {
     this.align,
   });
 
@@ -147,7 +153,8 @@ class TitleLabel extends StatelessWidget {
   final String text;
   final TextOverflow overflow;
 
-  TitleLabel(this.text, {
+  TitleLabel(
+    this.text, {
     this.overflow,
   });
 
@@ -180,9 +187,9 @@ class SubtitleLabel extends StatelessWidget {
     return Label(
       text,
       style: Theme.of(context).textTheme.subtitle2.copyWith(
-        color: Colors.grey,
-        fontWeight: FontWeight.normal,
-      ),
+            color: Colors.grey,
+            fontWeight: FontWeight.normal,
+          ),
     );
   }
 }
@@ -193,7 +200,8 @@ class EnabledLabel extends StatelessWidget {
   final String text;
   final bool enabled;
 
-  EnabledLabel(this.text, {
+  EnabledLabel(
+    this.text, {
     this.enabled = false,
   });
 
@@ -227,7 +235,8 @@ class DateLabel extends StatelessWidget {
   final DateTime date;
   final bool enabled;
 
-  DateLabel(this.date, {
+  DateLabel(
+    this.date, {
     this.enabled = true,
   });
 
@@ -250,7 +259,8 @@ class TimeLabel extends StatelessWidget {
   final TimeOfDay time;
   final bool enabled;
 
-  TimeLabel(this.time, {
+  TimeLabel(
+    this.time, {
     this.enabled = true,
   });
 

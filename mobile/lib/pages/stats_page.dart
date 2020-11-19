@@ -46,17 +46,22 @@ class _StatsPageState extends State<StatsPage> {
 
   Widget _buildReportDropdown() {
     return InkWell(
-      onTap: () => present(context, ReportListPage.picker(
-        currentItem: _currentReport,
-        onPicked: (context, report) {
-          if (report != _currentReport) {
-            setState(() {
-              _currentReport = report;
-            });
-          }
-          return true;
-        },
-      )),
+      onTap: () {
+        present(
+          context,
+          ReportListPage.picker(
+            currentItem: _currentReport,
+            onPicked: (context, report) {
+              if (report != _currentReport) {
+                setState(() {
+                  _currentReport = report;
+                });
+              }
+              return true;
+            },
+          ),
+        );
+      },
       child: Padding(
         padding: insetsVerticalDefault,
         child: Row(
@@ -90,13 +95,11 @@ class _StatsPageState extends State<StatsPage> {
 
   void _updateCurrentReport() {
     // If the current report no longer exists, show an overview.
-    if (!_summaryReportManager.entityExists(_currentReport.id)
-        && !_comparisonReportManager.entityExists(_currentReport.id))
-    {
+    if (!_summaryReportManager.entityExists(_currentReport.id) &&
+        !_comparisonReportManager.entityExists(_currentReport.id)) {
       setState(() {
         _currentReport = OverviewReport();
       });
     }
   }
 }
-

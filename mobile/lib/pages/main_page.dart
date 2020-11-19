@@ -34,7 +34,6 @@ class _MainPageState extends State<MainPage> {
         icon: Icons.map,
         titleBuilder: (context) => Strings.of(context).mapPageMenuLabel,
       ),
-
       _BarItemData(
         page: _NavigatorPage(
           navigatorKey: GlobalKey<NavigatorState>(),
@@ -43,15 +42,13 @@ class _MainPageState extends State<MainPage> {
         icon: CustomIcons.catches,
         titleBuilder: (context) => Strings.of(context).catchListPageMenuLabel,
       ),
-
       _BarItemData(
         icon: Icons.add_box_rounded,
         titleBuilder: (context) => Strings.of(context).add,
         onTapOverride: () {
           fade(context, AddAnythingPage(), false);
-        }
+        },
       ),
-
       _BarItemData(
         page: _NavigatorPage(
           navigatorKey: GlobalKey<NavigatorState>(),
@@ -60,7 +57,6 @@ class _MainPageState extends State<MainPage> {
         icon: Icons.show_chart,
         titleBuilder: (context) => Strings.of(context).statsPageMenuTitle,
       ),
-
       _BarItemData(
         page: _NavigatorPage(
           navigatorKey: GlobalKey<NavigatorState>(),
@@ -82,16 +78,21 @@ class _MainPageState extends State<MainPage> {
         // between pages.
         body: IndexedStack(
           index: _currentBarItem,
-          children: _navItems.map((_BarItemData data) => data.page ?? Empty())
+          children: _navItems
+              .map((_BarItemData data) => data.page ?? Empty())
               .toList(),
         ),
         bottomNavigationBar: BottomNavigationBar(
           currentIndex: _currentBarItem,
           type: BottomNavigationBarType.fixed,
-          items: _navItems.map((_BarItemData data) => BottomNavigationBarItem(
-            icon: Icon(data.icon),
-            label: data.titleBuilder(context),
-          )).toList(),
+          items: _navItems
+              .map(
+                (_BarItemData data) => BottomNavigationBarItem(
+                  icon: Icon(data.icon),
+                  label: data.titleBuilder(context),
+                ),
+              )
+              .toList(),
           onTap: (index) {
             if (_navItems[index].onTapOverride != null) {
               _navItems[index].onTapOverride();
@@ -127,9 +128,9 @@ class _BarItemData {
     @required this.titleBuilder,
     @required this.icon,
     this.onTapOverride,
-  }) : assert(page != null || onTapOverride != null),
-       assert(titleBuilder!= null),
-       assert(icon != null);
+  })  : assert(page != null || onTapOverride != null),
+        assert(titleBuilder != null),
+        assert(icon != null);
 }
 
 /// A page with its own [Navigator]. Meant to be used in combination with a

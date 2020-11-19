@@ -21,8 +21,8 @@ class AddAnythingPage extends StatelessWidget {
         sigmaY: _blurSigma,
       ),
       child: Scaffold(
-        backgroundColor: Theme.of(context).primaryColor
-            .withOpacity(_backgroundOpacity),
+        backgroundColor:
+            Theme.of(context).primaryColor.withOpacity(_backgroundOpacity),
         body: SafeArea(
           top: true,
           bottom: true,
@@ -42,7 +42,7 @@ class AddAnythingPage extends StatelessWidget {
                           onPressed: () {
                             Navigator.of(context).pop();
                             present(context, AddCatchJourney());
-                          }
+                          },
                         ),
                         FloatingIconButton(
                           icon: Icons.public,

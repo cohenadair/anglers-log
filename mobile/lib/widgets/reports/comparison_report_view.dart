@@ -25,20 +25,29 @@ class ComparisonReportView extends StatelessWidget {
     return ReportSummary(
       managers: [comparisonReportManager],
       onUpdate: () => _updateModels(context, report),
-      descriptionBuilder: (context) => isEmpty(report?.description)
-          ? null : report?.description,
+      descriptionBuilder: (context) =>
+          isEmpty(report?.description) ? null : report?.description,
     );
   }
 
-  List<ReportSummaryModel> _updateModels(BuildContext context,
-      ComparisonReport report)
-  {
-    ReportSummaryModel fromModel = _createModel(context, report,
-        report.fromDisplayDateRangeId, report.fromStartTimestamp,
-        report.fromEndTimestamp);
-    ReportSummaryModel toModel = _createModel(context, report,
-        report.toDisplayDateRangeId, report.toStartTimestamp,
-        report.toEndTimestamp);
+  List<ReportSummaryModel> _updateModels(
+    BuildContext context,
+    ComparisonReport report,
+  ) {
+    ReportSummaryModel fromModel = _createModel(
+      context,
+      report,
+      report.fromDisplayDateRangeId,
+      report.fromStartTimestamp,
+      report.fromEndTimestamp,
+    );
+    ReportSummaryModel toModel = _createModel(
+      context,
+      report,
+      report.toDisplayDateRangeId,
+      report.toStartTimestamp,
+      report.toEndTimestamp,
+    );
     fromModel.removeZerosComparedTo(toModel);
 
     return [
@@ -47,16 +56,19 @@ class ComparisonReportView extends StatelessWidget {
     ];
   }
 
-  ReportSummaryModel _createModel(BuildContext context, ComparisonReport report,
-      String displayDateRangeId, Timestamp startTimestamp,
-      Timestamp endTimestamp)
-  {
+  ReportSummaryModel _createModel(
+    BuildContext context,
+    ComparisonReport report,
+    String displayDateRangeId,
+    Timestamp startTimestamp,
+    Timestamp endTimestamp,
+  ) {
     return ReportSummaryModel(
       context: context,
       includeZeros: true,
       sortOrder: ReportSummaryModelSortOrder.alphabetical,
-      displayDateRange: DisplayDateRange.of(displayDateRangeId, startTimestamp,
-          endTimestamp),
+      displayDateRange:
+          DisplayDateRange.of(displayDateRangeId, startTimestamp, endTimestamp),
       baitIds: report.baitIds.toSet(),
       fishingSpotIds: report.fishingSpotIds.toSet(),
       speciesIds: report.speciesIds.toSet(),

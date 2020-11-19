@@ -24,9 +24,9 @@ class MultiListPickerInput extends StatelessWidget {
     this.padding,
     @required this.emptyValue,
     @required this.onTap,
-  }) : assert(emptyValue != null),
-       assert(onTap != null),
-       this.values = values ?? const {};
+  })  : assert(emptyValue != null),
+        assert(onTap != null),
+        this.values = values ?? const {};
 
   @override
   Widget build(BuildContext context) {
@@ -49,9 +49,7 @@ class MultiListPickerInput extends StatelessWidget {
         child: Row(
           mainAxisSize: MainAxisSize.max,
           children: [
-            Expanded(
-              child: ChipWrap(items)
-            ),
+            Expanded(child: ChipWrap(items)),
             RightChevronIcon(),
           ],
         ),

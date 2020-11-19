@@ -6,8 +6,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mobile/model/gen/anglerslog.pb.dart';
 
 void moveMap(Completer<GoogleMapController> controller, LatLng latLng,
-    [bool animate = true])
-{
+    [bool animate = true]) {
   controller.future.then((controller) {
     var update = CameraUpdate.newLatLng(latLng);
     if (animate) {
@@ -47,15 +46,16 @@ class FishingSpotMarker extends Marker {
     this.onTapFishingSpot,
     this.active = false,
     this.zIndex,
-  }) : id = fishingSpot.id, super(
-    markerId: MarkerId(fishingSpot.id.uuid),
-    position: LatLng(fishingSpot.lat, fishingSpot.lng),
-    onTap: onTapFishingSpot == null ? null : () {
-      onTapFishingSpot(fishingSpot);
-    },
-    icon: active ? _activeIcon : _normalIcon,
-    zIndex: zIndex,
-  );
+  })  : id = fishingSpot.id,
+        super(
+          markerId: MarkerId(fishingSpot.id.uuid),
+          position: LatLng(fishingSpot.lat, fishingSpot.lng),
+          onTap: onTapFishingSpot == null
+              ? null
+              : () => onTapFishingSpot(fishingSpot),
+          icon: active ? _activeIcon : _normalIcon,
+          zIndex: zIndex,
+        );
 
   FishingSpotMarker duplicate({
     bool active = false,

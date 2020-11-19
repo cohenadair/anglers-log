@@ -18,9 +18,12 @@ class LocationMonitor {
 
   Future<void> initialize() async {
     _lastKnownPosition = await _geolocator.getLastKnownPosition();
-    _geolocator.getPositionStream(LocationOptions(
-      distanceFilter: distanceFilterMeters,
-    )).listen((Position position) {
+    Stream<Position> stream = _geolocator.getPositionStream(
+      LocationOptions(
+        distanceFilter: distanceFilterMeters,
+      ),
+    );
+    stream.listen((Position position) {
       if (position != null) {
         _lastKnownPosition = position;
         _log.d("Received location update $currentLocation");

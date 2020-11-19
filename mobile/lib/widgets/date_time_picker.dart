@@ -16,8 +16,8 @@ class DateTimePicker extends StatelessWidget {
     @required this.datePicker,
     @required this.timePicker,
     this.helper,
-  }) : assert(datePicker != null),
-       assert(timePicker != null);
+  })  : assert(datePicker != null),
+        assert(timePicker != null);
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +40,7 @@ class DateTimePicker extends StatelessWidget {
                   ),
                   child: datePicker,
                 ),
-              )
+              ),
             ),
             Flexible(
               flex: 2,
@@ -55,93 +55,103 @@ class DateTimePicker extends StatelessWidget {
             ),
           ],
         ),
-        helper == null ? Empty() : Padding(
-          padding: insetsTopSmall,
-          child: helper,
-        ),
+        helper == null
+            ? Empty()
+            : Padding(
+                padding: insetsTopSmall,
+                child: helper,
+              ),
       ],
     );
   }
 }
 
 class DatePicker extends FormField<DateTime> {
-  DatePicker(BuildContext context, {
+  DatePicker(
+    BuildContext context, {
     @required String label,
     DateTime initialDate,
     void Function(DateTime) onChange,
     String Function(DateTime) validator,
     bool enabled = true,
-  }) : assert(isNotEmpty(label)), super(
-    initialValue: initialDate ?? TimeManager.of(context).currentDateTime,
-    validator: validator,
-    builder: (FormFieldState<DateTime> state) {
-      return _Picker(
-        label: label,
-        errorText: state.errorText,
-        enabled: enabled,
-        type: _PickerType(
-          getValue: () => DateLabel(
-            state.value,
-            enabled: enabled,
-          ),
-          openPicker: () {
-            showDatePicker(
-              context: state.context,
-              initialDate: state.value,
-              // Weird requirement of showDatePicker, but essentially
-              // let the user pick any date.
-              firstDate: DateTime(1900),
-              lastDate: DateTime(3000),
-            ).then((DateTime dateTime) {
-              if (dateTime == null) {
-                return;
-              }
-              state.didChange(dateTime);
-              onChange?.call(dateTime);
-            });
-          }
-        ),
-      );
-    }
-  );
+  })  : assert(isNotEmpty(label)),
+        super(
+          initialValue: initialDate ?? TimeManager.of(context).currentDateTime,
+          validator: validator,
+          builder: (FormFieldState<DateTime> state) {
+            return _Picker(
+              label: label,
+              errorText: state.errorText,
+              enabled: enabled,
+              type: _PickerType(
+                getValue: () {
+                  return DateLabel(
+                    state.value,
+                    enabled: enabled,
+                  );
+                },
+                openPicker: () {
+                  showDatePicker(
+                    context: state.context,
+                    initialDate: state.value,
+                    // Weird requirement of showDatePicker, but essentially
+                    // let the user pick any date.
+                    firstDate: DateTime(1900),
+                    lastDate: DateTime(3000),
+                  ).then((DateTime dateTime) {
+                    if (dateTime == null) {
+                      return;
+                    }
+                    state.didChange(dateTime);
+                    onChange?.call(dateTime);
+                  });
+                },
+              ),
+            );
+          },
+        );
 }
 
 class TimePicker extends FormField<TimeOfDay> {
-  TimePicker(BuildContext context, {
+  TimePicker(
+    BuildContext context, {
     @required String label,
     TimeOfDay initialTime,
     Function(TimeOfDay) onChange,
     String Function(TimeOfDay) validator,
     bool enabled = true,
-  }) : assert(isNotEmpty(label)), super(
-    initialValue: initialTime ?? TimeManager.of(context).currentTime,
-    validator: validator,
-    builder: (FormFieldState<TimeOfDay> state) {
-      return _Picker(
-        label: label,
-        errorText: state.errorText,
-        enabled: enabled,
-        type: _PickerType(
-          getValue: () => TimeLabel(
-            state.value,
-            enabled: enabled,
-          ),
-          openPicker: () {
-            showTimePicker(
-              context: state.context,
-              initialTime: state.value,
-            ).then((TimeOfDay time) {
-              if (time == null) {
-                return;
-              }
-              state.didChange(time);
-              onChange?.call(time);
-            });
-          }
-        ),
-      );
-    }
-  );
+  })  : assert(isNotEmpty(label)),
+        super(
+          initialValue: initialTime ?? TimeManager.of(context).currentTime,
+          validator: validator,
+          builder: (FormFieldState<TimeOfDay> state) {
+            return _Picker(
+              label: label,
+              errorText: state.errorText,
+              enabled: enabled,
+              type: _PickerType(
+                getValue: () {
+                  return TimeLabel(
+                    state.value,
+                    enabled: enabled,
+                  );
+                },
+                openPicker: () {
+                  showTimePicker(
+                    context: state.context,
+                    initialTime: state.value,
+                  ).then((TimeOfDay time) {
+                    if (time == null) {
+                      return;
+                    }
+                    state.didChange(time);
+                    onChange?.call(time);
+                  });
+                },
+              ),
+            );
+          },
+        );
 }
 
 class _PickerType {
@@ -150,7 +160,7 @@ class _PickerType {
 
   _PickerType({
     @required this.getValue,
-    @required this.openPicker
+    @required this.openPicker,
   });
 }
 
@@ -165,8 +175,8 @@ class _Picker extends StatelessWidget {
     @required this.label,
     this.errorText,
     this.enabled = true,
-  }) : assert(type != null),
-       assert(isNotEmpty(label));
+  })  : assert(type != null),
+        assert(isNotEmpty(label));
 
   @override
   Widget build(BuildContext context) {

@@ -40,8 +40,14 @@ class FishingSpotListPage extends StatelessWidget {
     return ManageableListPage<FishingSpot>(
       titleBuilder: isNotEmpty(title)
           ? (_) => Text(title)
-          : (fishingSpots) => Text(format(Strings.of(context)
-              .fishingSpotListPageTitle, [fishingSpots.length])),
+          : (fishingSpots) {
+              return Text(
+                format(
+                  Strings.of(context).fishingSpotListPageTitle,
+                  [fishingSpots.length],
+                ),
+              );
+            },
       forceCenterTitle: !_picking,
       itemBuilder: (context, fishingSpot) => ManageableListPageItemModel(
         child: Column(
@@ -63,18 +69,17 @@ class FishingSpotListPage extends StatelessWidget {
       ),
       pickerSettings: _picking
           ? ManageableListPagePickerSettings<FishingSpot>(
-              onPicked: (context, fishingSpots) => onPicked(context,
-                  fishingSpots),
+              onPicked: onPicked,
               multi: multiPicker,
               initialValues: initialValues,
             )
           : null,
       itemManager: ManageableListPageItemManager<FishingSpot>(
-        listenerManagers: [ fishingSpotManager ],
+        listenerManagers: [fishingSpotManager],
         loadItems: (query) =>
             fishingSpotManager.listSortedByName(filter: query),
-        deleteWidget: (context, fishingSpot) => Text(fishingSpotManager
-            .deleteMessage(context, fishingSpot)),
+        deleteWidget: (context, fishingSpot) =>
+            Text(fishingSpotManager.deleteMessage(context, fishingSpot)),
         deleteItem: (context, fishingSpot) =>
             fishingSpotManager.delete(fishingSpot.id),
         editPageBuilder: (fishingSpot) => SaveFishingSpotPage.edit(fishingSpot),

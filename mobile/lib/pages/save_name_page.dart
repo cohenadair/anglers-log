@@ -61,9 +61,8 @@ class _SaveNamePageState extends State<SaveNamePage> {
     return FormPage.immutable(
       title: widget.title,
       onSave: (_) {
-        if (widget.oldName != null
-            && equalsTrimmedIgnoreCase(widget.oldName, _controller.value))
-        {
+        if (widget.oldName != null &&
+            equalsTrimmedIgnoreCase(widget.oldName, _controller.value)) {
           // If the name didn't change, act as though "back" or "cancel" was
           // pressed.
           return true;
@@ -77,7 +76,7 @@ class _SaveNamePageState extends State<SaveNamePage> {
       },
       fieldBuilder: (context) {
         return {
-          _idName : TextInput.name(
+          _idName: TextInput.name(
             context,
             controller: _controller,
             autofocus: true,

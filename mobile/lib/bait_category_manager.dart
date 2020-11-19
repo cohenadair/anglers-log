@@ -34,8 +34,8 @@ class BaitCategoryManager extends NamedEntityManager<BaitCategory> {
     }
 
     int result = 0;
-    _baitManager.list().forEach((bait) =>
-        result += baitCategoryId == bait.baitCategoryId ? 1 : 0);
+    _baitManager.list().forEach(
+        (bait) => result += baitCategoryId == bait.baitCategoryId ? 1 : 0);
 
     return result;
   }

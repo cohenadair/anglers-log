@@ -22,16 +22,18 @@ class Button extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return icon == null ? RaisedButton(
-      child: _textWidget,
-      onPressed: onPressed,
-      color: color,
-    ) : RaisedButton.icon(
-      onPressed: onPressed,
-      icon: icon,
-      label: _textWidget,
-      color: color,
-    );
+    return icon == null
+        ? RaisedButton(
+            child: _textWidget,
+            onPressed: onPressed,
+            color: color,
+          )
+        : RaisedButton.icon(
+            onPressed: onPressed,
+            icon: icon,
+            label: _textWidget,
+            color: color,
+          );
   }
 
   Widget get _textWidget => Text(text.toUpperCase());
@@ -80,9 +82,7 @@ class ActionButton extends StatelessWidget {
     Widget textWidget = Text(
       (text == null ? Strings.of(context).fromId(_stringId) : text)
           .toUpperCase(),
-      style: textColor == null ? null : TextStyle(
-        color: textColor
-      ),
+      style: textColor == null ? null : TextStyle(color: textColor),
     );
 
     return EnabledOpacity(
@@ -114,28 +114,30 @@ class ChipButton extends StatelessWidget {
   ChipButton({
     @required this.label,
     this.icon,
-    this.onPressed
+    this.onPressed,
   }) : assert(isNotEmpty(label));
 
   @override
-  Widget build(BuildContext context) => ActionChip(
-    avatar: Icon(
-      icon,
-      size: iconSize,
-      color: Colors.black,
-    ),
-    label: Text(
-      label,
-      style: TextStyle(
+  Widget build(BuildContext context) {
+    return ActionChip(
+      avatar: Icon(
+        icon,
+        size: iconSize,
         color: Colors.black,
-        fontSize: fontSize,
-        fontWeight: fontWeightBold,
       ),
-    ),
-    backgroundColor: Theme.of(context).accentColor,
-    pressElevation: 1,
-    onPressed: onPressed == null ? () {} : onPressed,
-  );
+      label: Text(
+        label,
+        style: TextStyle(
+          color: Colors.black,
+          fontSize: fontSize,
+          fontWeight: fontWeightBold,
+        ),
+      ),
+      backgroundColor: Theme.of(context).accentColor,
+      pressElevation: 1,
+      onPressed: onPressed == null ? () {} : onPressed,
+    );
+  }
 }
 
 /// An icon button Widget that breaks the Material [IconButton] padding/margin
@@ -210,13 +212,15 @@ class FloatingIconButton extends StatelessWidget {
               onPressed: onPressed ?? () => Navigator.of(context).pop(),
             ),
           ),
-          isNotEmpty(label) ? Padding(
-            padding: insetsTopSmall,
-            child: Text(
-              label,
-              style: styleHeadingSmall,
-            ),
-          ) : Empty(),
+          isNotEmpty(label)
+              ? Padding(
+                  padding: insetsTopSmall,
+                  child: Text(
+                    label,
+                    style: styleHeadingSmall,
+                  ),
+                )
+              : Empty(),
         ],
       ),
     );

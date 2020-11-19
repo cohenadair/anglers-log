@@ -102,7 +102,7 @@ class _CatchPageState extends State<CatchPage> {
 
     Widget subtitle;
     BaitCategory baitCategory =
-          _baitCategoryManager.entity(bait.baitCategoryId);
+        _baitCategoryManager.entity(bait.baitCategoryId);
     if (baitCategory != null) {
       subtitle = SubtitleLabel(baitCategory.name);
     }
@@ -111,15 +111,18 @@ class _CatchPageState extends State<CatchPage> {
       title: Label(bait.name),
       subtitle: subtitle,
       trailing: RightChevronIcon(),
-      onTap: () => push(context, BaitPage(bait.id,
-        static: true,
-      )),
+      onTap: () => push(
+        context,
+        BaitPage(
+          bait.id,
+          static: true,
+        ),
+      ),
     );
   }
 
   Widget _buildFishingSpot() {
-    FishingSpot fishingSpot =
-        _fishingSpotManager.entity(_catch.fishingSpotId);
+    FishingSpot fishingSpot = _fishingSpotManager.entity(_catch.fishingSpotId);
     if (fishingSpot == null) {
       return Empty();
     }

@@ -26,7 +26,8 @@ class SaveCustomEntityPage extends StatefulWidget {
     this.onSave,
   }) : oldEntity = null;
 
-  SaveCustomEntityPage.edit(this.oldEntity, {
+  SaveCustomEntityPage.edit(
+    this.oldEntity, {
     this.onSave,
   }) : assert(oldEntity != null);
 
@@ -91,7 +92,8 @@ class _SaveCustomEntityPageState extends State<SaveCustomEntityPage> {
           ? Text(Strings.of(context).saveCustomEntityPageEditTitle)
           : Text(Strings.of(context).saveCustomEntityPageNewTitle),
       fieldBuilder: (context) {
-        return Map.fromIterable(_inputOptions.keys,
+        return Map.fromIterable(
+          _inputOptions.keys,
           key: (item) => item,
           value: (item) => _inputField(context, item),
         );
@@ -117,8 +119,8 @@ class _SaveCustomEntityPageState extends State<SaveCustomEntityPage> {
       );
     } else if (id == _idType) {
       return RadioInput(
-        initialSelectedIndex: CustomEntity_Type.values
-            .indexOf(_dataTypeController.value),
+        initialSelectedIndex:
+            CustomEntity_Type.values.indexOf(_dataTypeController.value),
         optionCount: CustomEntity_Type.values.length,
         optionBuilder: (context, i) =>
             inputTypeLocalizedString(context, CustomEntity_Type.values[i]),

@@ -36,15 +36,16 @@ class Photo extends StatefulWidget {
     this.height,
     this.cacheSize,
     this.circular = false,
-  }) : assert((width != null && height != null)
-      || (width == null && height == null));
+  }) : assert((width != null && height != null) ||
+            (width == null && height == null));
 
-  Photo.listThumbnail(String fileName) : this(
-    fileName: fileName,
-    width: _listItemSize,
-    height: _listItemSize,
-    circular: true,
-  );
+  Photo.listThumbnail(String fileName)
+      : this(
+          fileName: fileName,
+          width: _listItemSize,
+          height: _listItemSize,
+          circular: true,
+        );
 
   @override
   _PhotoState createState() => _PhotoState();
@@ -85,18 +86,22 @@ class _PhotoState extends State<Photo> {
         if (image == null) {
           // Use a default icon placeholder if a size was specified, otherwise
           // use an empty widget.
-          child = hasSize ? Container(
-            width: w,
-            height: h,
-            decoration: BoxDecoration(
-              color: Theme.of(context).primaryColor,
-              shape: widget.circular ? BoxShape.circle : BoxShape.rectangle,
-            ),
-            child: Icon(CustomIcons.catches,
-              size: min<double>(w, h) / 2,
-              color: Colors.white,
-            ),
-          ) : Empty();
+          child = hasSize
+              ? Container(
+                  width: w,
+                  height: h,
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).primaryColor,
+                    shape:
+                        widget.circular ? BoxShape.circle : BoxShape.rectangle,
+                  ),
+                  child: Icon(
+                    CustomIcons.catches,
+                    size: min<double>(w, h) / 2,
+                    color: Colors.white,
+                  ),
+                )
+              : Empty();
         } else {
           // Use RawImage instead of Image to avoid the overhead of Flutter's
           // image caching.
@@ -127,7 +132,8 @@ class _PhotoState extends State<Photo> {
     double size = widget.cacheSize;
     if (size == null) {
       size = widget.width == null
-          ? null : max<double>(widget.width, widget.height);
+          ? null
+          : max<double>(widget.width, widget.height);
     }
 
     return await _imageManager.dartImage(context, widget.fileName, size);

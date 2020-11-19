@@ -23,51 +23,60 @@ class MorePage extends StatelessWidget {
       ),
       body: ListView(
         children: <Widget>[
-          _buildPageItem(context,
+          _buildPageItem(
+            context,
             icon: CustomIcons.bait_categories,
             title: Strings.of(context).baitCategoryListPageMenuTitle,
             page: BaitCategoryListPage(),
           ),
-          _buildPageItem(context,
+          _buildPageItem(
+            context,
             icon: Icons.bug_report,
             title: Strings.of(context).baitListPageMenuLabel,
             page: BaitListPage(),
           ),
-          _buildPageItem(context,
+          _buildPageItem(
+            context,
             icon: Icons.build,
             title: Strings.of(context).customFields,
             page: CustomEntityListPage(),
           ),
-          _buildPageItem(context,
+          _buildPageItem(
+            context,
             icon: Icons.photo_library,
             title: Strings.of(context).photosPageMenuLabel,
             page: PhotosPage(),
           ),
-          _buildPageItem(context,
+          _buildPageItem(
+            context,
             icon: CustomIcons.species,
             title: Strings.of(context).speciesListPageMenuTitle,
             page: SpeciesListPage(),
           ),
-          _buildPageItem(context,
+          _buildPageItem(
+            context,
             icon: Icons.public,
             title: Strings.of(context).tripListPageMenuLabel,
             page: TripListPage(),
           ),
           MinDivider(),
-          _buildPageItem(context,
+          _buildPageItem(
+            context,
             icon: Icons.cloud_download,
             title: Strings.of(context).importPageTitle,
             page: ImportPage(),
             presentPage: true,
           ),
           MinDivider(),
-          _buildPageItem(context,
+          _buildPageItem(
+            context,
             icon: Icons.feedback,
             title: Strings.of(context).feedbackPageTitle,
             page: FeedbackPage(),
             presentPage: true,
           ),
-          _buildPageItem(context,
+          _buildPageItem(
+            context,
             icon: Icons.settings,
             title: Strings.of(context).settingsPageTitle,
             page: SettingsPage(),
@@ -77,21 +86,24 @@ class MorePage extends StatelessWidget {
     );
   }
 
-  Widget _buildPageItem(BuildContext context, {
+  Widget _buildPageItem(
+    BuildContext context, {
     @required IconData icon,
     @required String title,
     @required Widget page,
     bool presentPage = false,
-  }) => ListItem(
-    title: Text(title),
-    leading: Icon(icon),
-    trailing: presentPage ? null : RightChevronIcon(),
-    onTap: () {
-      if (presentPage) {
-        present(context, page);
-      } else {
-        push(context, page);
-      }
-    },
-  );
+  }) {
+    return ListItem(
+      title: Text(title),
+      leading: Icon(icon),
+      trailing: presentPage ? null : RightChevronIcon(),
+      onTap: () {
+        if (presentPage) {
+          present(context, page);
+        } else {
+          push(context, page);
+        }
+      },
+    );
+  }
 }

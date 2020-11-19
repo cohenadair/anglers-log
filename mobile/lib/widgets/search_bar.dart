@@ -137,7 +137,9 @@ class _SearchBarState extends State<SearchBar> {
                     decoration: null,
                     onChanged: widget.delegate.onTextChanged,
                     placeholder: widget.hint,
-                    placeholderStyle: Theme.of(context).textTheme.subtitle1
+                    placeholderStyle: Theme.of(context)
+                        .textTheme
+                        .subtitle1
                         .copyWith(color: Theme.of(context).disabledColor),
                     enabled: _isInput,
                     controller: _controller,
@@ -165,9 +167,7 @@ class _SearchBarState extends State<SearchBar> {
   }
 }
 
-enum SearchBarType {
-  button, input,
-}
+enum SearchBarType { button, input }
 
 /// Defines the behavior of a [SearchBar].
 abstract class SearchBarDelegate {

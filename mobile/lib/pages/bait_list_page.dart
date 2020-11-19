@@ -53,8 +53,10 @@ class _BaitListPageState extends State<BaitListPage> {
       ),
       pickerSettings: _picking
           ? ManageableListPagePickerSettings<dynamic>(
-              onPicked: (context, items) => widget.onPicked(context,
-                  items.map((e) => (e as Bait)).toSet()),
+              onPicked: (context, items) => widget.onPicked(
+                context,
+                items.map((e) => (e as Bait)).toSet(),
+              ),
               multi: widget.multiPicker,
               initialValues: widget.initialValues,
             )

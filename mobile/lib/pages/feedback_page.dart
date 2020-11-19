@@ -113,35 +113,42 @@ class _FeedbackPageState extends State<FeedbackPage> {
   Widget build(BuildContext context) {
     return FormPage.immutable(
       title: Text(widget.title ?? Strings.of(context).feedbackPageTitle),
-      isInputValid: _emailController.valid(context)
-          && _messageController.valid(context),
+      isInputValid:
+          _emailController.valid(context) && _messageController.valid(context),
       saveButtonText: Strings.of(context).feedbackPageSend,
       fieldBuilder: (context) => {
-        _idWarning: _error && isNotEmpty(widget.warningMessage) ? Padding(
-          padding: insetsTopDefault,
-          child: Text(widget.warningMessage,
-            style: styleWarning,
-          ),
-        ) : Empty(),
-        _idName: TextInput.name(context,
+        _idWarning: _error && isNotEmpty(widget.warningMessage)
+            ? Padding(
+                padding: insetsTopDefault,
+                child: Text(
+                  widget.warningMessage,
+                  style: styleWarning,
+                ),
+              )
+            : Empty(),
+        _idName: TextInput.name(
+          context,
           controller: _nameController,
           autofocus: true,
         ),
-        _idEmail: TextInput.email(context,
+        _idEmail: TextInput.email(
+          context,
           controller: _emailController,
           // To update "Send" button state.
           onChanged: () => setState(() {}),
         ),
-        _idType: _error ? Empty() : RadioInput(
-          initialSelectedIndex: _FeedbackType.values
-              .indexOf(_typeController.value),
-          optionCount: _FeedbackType.values.length,
-          optionBuilder: (context, i) =>
-              _feedbackTypeToString(_FeedbackType.values[i]),
-          onSelect: (i) => setState(() {
-            _typeController.value = _FeedbackType.values[i];
-          }),
-        ),
+        _idType: _error
+            ? Empty()
+            : RadioInput(
+                initialSelectedIndex:
+                    _FeedbackType.values.indexOf(_typeController.value),
+                optionCount: _FeedbackType.values.length,
+                optionBuilder: (context, i) =>
+                    _feedbackTypeToString(_FeedbackType.values[i]),
+                onSelect: (i) => setState(() {
+                  _typeController.value = _FeedbackType.values[i];
+                }),
+              ),
         _idMessage: TextInput(
           label: Strings.of(context).feedbackPageMessage,
           controller: _messageController,
@@ -153,8 +160,10 @@ class _FeedbackPageState extends State<FeedbackPage> {
       },
       onSave: (context) async {
         if (!await _io.isConnected()) {
-          showErrorSnackBar(context,
-              Strings.of(context).feedbackPageConnectionError);
+          showErrorSnackBar(
+            context,
+            Strings.of(context).feedbackPageConnectionError,
+          );
           return false;
         }
 
@@ -190,33 +199,37 @@ class _FeedbackPageState extends State<FeedbackPage> {
         }
 
         Message content = Message()
-            ..from = Address(_propertiesManager.clientSenderEmail,
-                "Anglers' Log Client")
-            ..recipients.add(_propertiesManager.supportEmail)
-            ..attachments = attachment == null ? null : [attachment]
-            ..subject = "Feedback from Anglers' Log"
-            ..text = format(_propertiesManager.feedbackTemplate, [
-              appVersion,
-              isNotEmpty(osVersion) ? osVersion : "Unknown",
-              isNotEmpty(deviceModel) ? deviceModel : "Unknown",
-              type,
-              _error ? widget.error : "N/A",
-              isNotEmpty(name) ? name : "Unknown",
-              isNotEmpty(email) ? email : "Unknown",
-              isNotEmpty(message) ? message : "N/A",
-            ]);
+          ..from = Address(
+            _propertiesManager.clientSenderEmail,
+            "Anglers' Log Client",
+          )
+          ..recipients.add(_propertiesManager.supportEmail)
+          ..attachments = attachment == null ? null : [attachment]
+          ..subject = "Feedback from Anglers' Log"
+          ..text = format(_propertiesManager.feedbackTemplate, [
+            appVersion,
+            isNotEmpty(osVersion) ? osVersion : "Unknown",
+            isNotEmpty(deviceModel) ? deviceModel : "Unknown",
+            type,
+            _error ? widget.error : "N/A",
+            isNotEmpty(name) ? name : "Unknown",
+            isNotEmpty(email) ? email : "Unknown",
+            isNotEmpty(message) ? message : "N/A",
+          ]);
 
         try {
           await _mailSender.send(content, server);
-        } on MailerException catch(e) {
+        } on MailerException catch (e) {
           for (var p in e.problems) {
             _log.e("Error sending feedback: ${p.code}: ${p.msg}");
           }
 
           // Hide "sending" SnackBar and show error.
           Scaffold.of(context).hideCurrentSnackBar();
-          showErrorSnackBar(context,
-              Strings.of(context).feedbackPageErrorSending);
+          showErrorSnackBar(
+            context,
+            Strings.of(context).feedbackPageErrorSending,
+          );
 
           return false;
         }
@@ -239,6 +252,4 @@ class _FeedbackPageState extends State<FeedbackPage> {
   }
 }
 
-enum _FeedbackType {
-  suggestion, feedback, bug
-}
+enum _FeedbackType { suggestion, feedback, bug }

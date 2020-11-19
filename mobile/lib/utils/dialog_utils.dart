@@ -6,7 +6,7 @@ void showDeleteDialog({
   @required BuildContext context,
   String title,
   Widget description,
-  VoidCallback onDelete
+  VoidCallback onDelete,
 }) {
   _showDestructiveDialog(
     context: context,
@@ -118,11 +118,13 @@ Widget _buildDialogButton({
   return FlatButton(
     child: Text(name.toUpperCase()),
     textColor: textColor,
-    onPressed: enabled ? () {
-      onTap?.call();
-      if (popOnTap) {
-        Navigator.pop(context);
-      }
-    } : null,
+    onPressed: enabled
+        ? () {
+            onTap?.call();
+            if (popOnTap) {
+              Navigator.pop(context);
+            }
+          }
+        : null,
   );
 }

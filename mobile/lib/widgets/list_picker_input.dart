@@ -38,10 +38,14 @@ class ListPickerInput extends StatelessWidget {
               Expanded(
                 // If there's no title widget, the value widget will render at the
                 // start of the row.
-                child: isEmpty(title) ? Empty() : SecondaryLabel(
-                  isEmpty(value) ? Strings.of(context).inputNotSelected : value,
-                  align: TextAlign.right,
-                ),
+                child: isEmpty(title)
+                    ? Empty()
+                    : SecondaryLabel(
+                        isEmpty(value)
+                            ? Strings.of(context).inputNotSelected
+                            : value,
+                        align: TextAlign.right,
+                      ),
               ),
               Padding(
                 padding: insetsLeftWidgetSmall,

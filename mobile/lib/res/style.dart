@@ -51,8 +51,8 @@ const TextStyle styleLight = TextStyle(
 
 TextStyle styleNote(BuildContext context) =>
     Theme.of(context).textTheme.subtitle1.copyWith(
-      fontStyle: FontStyle.italic,
-    );
+          fontStyle: FontStyle.italic,
+        );
 
 const List<BoxShadow> boxShadowDefault = [
   BoxShadow(
@@ -78,18 +78,18 @@ class FloatingBoxDecoration extends BoxDecoration {
   FloatingBoxDecoration.rectangle({
     this.elevated = true,
   }) : super(
-    color: Colors.white,
-    boxShadow: elevated ? boxShadowSmallBottom : null,
-    borderRadius: BorderRadius.all(
-      Radius.circular(floatingCornerRadius),
-    ),
-  );
+          color: Colors.white,
+          boxShadow: elevated ? boxShadowSmallBottom : null,
+          borderRadius: BorderRadius.all(
+            Radius.circular(floatingCornerRadius),
+          ),
+        );
 
   FloatingBoxDecoration.circle({
     this.elevated = true,
   }) : super(
-    color: Colors.white,
-    boxShadow: elevated ? boxShadowSmallBottom : null,
-    shape: BoxShape.circle,
-  );
+          color: Colors.white,
+          boxShadow: elevated ? boxShadowSmallBottom : null,
+          shape: BoxShape.circle,
+        );
 }
