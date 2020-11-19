@@ -4,6 +4,7 @@ import 'package:sqflite/sqflite.dart';
 import 'package:test/test.dart';
 
 class MockDatabase extends Mock implements Database {}
+
 class MockDataListener extends Mock implements DataListener {}
 
 void main() {

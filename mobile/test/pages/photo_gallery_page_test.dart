@@ -79,8 +79,9 @@ main() {
     await tester.fling(find.byType(Photo), Offset(-300, 0), 800);
     await tester.pumpAndSettle(Duration(milliseconds: 250));
 
-    verify(appManager.mockImageManager.dartImage(any, "anglers_log_logo.png",
-        any)).called(1);
+    verify(appManager.mockImageManager
+            .dartImage(any, "anglers_log_logo.png", any))
+        .called(1);
 
     // Swipe back.
     await tester.fling(find.byType(Photo), Offset(300, 0), 800);

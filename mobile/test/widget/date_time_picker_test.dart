@@ -17,33 +17,39 @@ main() {
 
   group("DateTimePickerContainer", () {
     testWidgets("With helper", (WidgetTester tester) async {
-      await tester.pumpWidget(Testable((context) => DateTimePicker(
-        datePicker: DatePicker(
-          context,
-          label: "Date Picker",
+      await tester.pumpWidget(Testable(
+        (context) => DateTimePicker(
+          datePicker: DatePicker(
+            context,
+            label: "Date Picker",
+          ),
+          timePicker: TimePicker(
+            context,
+            label: "Time Picker",
+          ),
+          helper: Text("A helping message"),
         ),
-        timePicker: TimePicker(
-          context,
-          label: "Time Picker",
-        ),
-        helper: Text("A helping message"),
-      ), appManager: appManager));
+        appManager: appManager,
+      ));
 
       expect(find.text("A helping message"), findsOneWidget);
       expect(find.byType(Empty), findsNothing);
     });
 
     testWidgets("Without helper", (WidgetTester tester) async {
-      await tester.pumpWidget(Testable((context) => DateTimePicker(
-        datePicker: DatePicker(
-          context,
-          label: "Date Picker",
+      await tester.pumpWidget(Testable(
+        (context) => DateTimePicker(
+          datePicker: DatePicker(
+            context,
+            label: "Date Picker",
+          ),
+          timePicker: TimePicker(
+            context,
+            label: "Time Picker",
+          ),
         ),
-        timePicker: TimePicker(
-          context,
-          label: "Time Picker",
-        ),
-      ), appManager: appManager));
+        appManager: appManager,
+      ));
 
       expect(find.byType(Empty), findsOneWidget);
     });
@@ -51,10 +57,13 @@ main() {
 
   group("Date and time pickers", () {
     testWidgets("Enabled", (WidgetTester tester) async {
-      await tester.pumpWidget(Testable((context) => DatePicker(
-        context,
-        label: "Date Picker",
-      ), appManager: appManager));
+      await tester.pumpWidget(Testable(
+        (context) => DatePicker(
+          context,
+          label: "Date Picker",
+        ),
+        appManager: appManager,
+      ));
       await tester.tap(find.byType(DatePicker));
       await tester.pumpAndSettle();
 
@@ -63,11 +72,14 @@ main() {
     });
 
     testWidgets("Disabled", (WidgetTester tester) async {
-      await tester.pumpWidget(Testable((context) => DatePicker(
-        context,
-        label: "Date Picker",
-        enabled: false,
-      ), appManager: appManager));
+      await tester.pumpWidget(Testable(
+        (context) => DatePicker(
+          context,
+          label: "Date Picker",
+          enabled: false,
+        ),
+        appManager: appManager,
+      ));
       await tester.tap(find.byType(DatePicker));
       await tester.pumpAndSettle();
 
@@ -77,12 +89,15 @@ main() {
 
     testWidgets("DatePicker date picked", (WidgetTester tester) async {
       bool changed = false;
-      await tester.pumpWidget(Testable((context) => DatePicker(
-        context,
-        label: "Date Picker",
-        onChange: (_) => changed = true,
-        initialDate: DateTime(2020, 1, 25),
-      ), appManager: appManager));
+      await tester.pumpWidget(Testable(
+        (context) => DatePicker(
+          context,
+          label: "Date Picker",
+          onChange: (_) => changed = true,
+          initialDate: DateTime(2020, 1, 25),
+        ),
+        appManager: appManager,
+      ));
 
       // Date doesn't change.
       await tester.tap(find.byType(DatePicker));
@@ -105,12 +120,15 @@ main() {
 
     testWidgets("TimePicker time picked", (WidgetTester tester) async {
       bool changed = false;
-      await tester.pumpWidget(Testable((context) => TimePicker(
-        context,
-        label: "Time Picker",
-        onChange: (_) => changed = true,
-        initialTime: TimeOfDay(hour: 5, minute: 20),
-      ), appManager: appManager));
+      await tester.pumpWidget(Testable(
+        (context) => TimePicker(
+          context,
+          label: "Time Picker",
+          onChange: (_) => changed = true,
+          initialTime: TimeOfDay(hour: 5, minute: 20),
+        ),
+        appManager: appManager,
+      ));
 
       expect(find.text("5:20 AM"), findsOneWidget);
 
@@ -126,8 +144,8 @@ main() {
 
       // Click time based on center clock, since actual Text widgets aren't
       // used.
-      Offset center = tester.getCenter(find
-          .byKey(ValueKey<String>('time-picker-dial')));
+      Offset center =
+          tester.getCenter(find.byKey(ValueKey<String>('time-picker-dial')));
       Offset hour6 = Offset(center.dx, center.dy + 50.0); // 6:00
       Offset min48 = Offset(center.dx - 50.0, center.dy - 15); // 50 min
 

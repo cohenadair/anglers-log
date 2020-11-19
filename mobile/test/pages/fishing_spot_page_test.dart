@@ -24,8 +24,7 @@ main() {
   });
 
   testWidgets("Back button color updates on may type changes",
-      (WidgetTester tester) async
-  {
+      (WidgetTester tester) async {
     await tester.pumpWidget(Testable(
       (_) => FishingSpotPage(randomId()),
       appManager: appManager,

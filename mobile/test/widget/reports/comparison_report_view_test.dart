@@ -29,7 +29,8 @@ main() {
 
     when(appManager.mockTimeManager.currentDateTime)
         .thenReturn(DateTime.fromMillisecondsSinceEpoch(10000));
-    when(appManager.mockCatchManager.catchesSortedByTimestamp(any,
+    when(appManager.mockCatchManager.catchesSortedByTimestamp(
+      any,
       dateRange: anyNamed("dateRange"),
       baitIds: anyNamed("baitIds"),
       fishingSpotIds: anyNamed("fishingSpotIds"),
@@ -53,11 +54,11 @@ main() {
       ..id = randomId()
       ..toDisplayDateRangeId = DisplayDateRange.last7Days.id
       ..fromDisplayDateRangeId = DisplayDateRange.last30Days.id;
-    when(appManager.mockComparisonReportManager.entity(any))
-        .thenReturn(report);
+    when(appManager.mockComparisonReportManager.entity(any)).thenReturn(report);
 
     await tester.pumpWidget(
-      Testable((_) => ComparisonReportView(report.id),
+      Testable(
+        (_) => ComparisonReportView(report.id),
         appManager: appManager,
       ),
     );
@@ -67,11 +68,11 @@ main() {
   });
 
   testWidgets("Report ID doesn't exist", (WidgetTester tester) async {
-    when(appManager.mockComparisonReportManager.entity(any))
-        .thenReturn(null);
+    when(appManager.mockComparisonReportManager.entity(any)).thenReturn(null);
 
     await tester.pumpWidget(
-      Testable((_) => ComparisonReportView(randomId()),
+      Testable(
+        (_) => ComparisonReportView(randomId()),
         appManager: appManager,
       ),
     );

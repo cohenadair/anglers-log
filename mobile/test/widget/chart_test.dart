@@ -12,36 +12,46 @@ import '../test_utils.dart';
 main() {
   group("Initialization", () {
     testWidgets("Assertion if no title/description when not showing all",
-        (WidgetTester tester) async
-    {
+        (WidgetTester tester) async {
       Series<Species> series = Series({
         Species()..name = "Bass": 5,
       }, DisplayDateRange.last7Days);
 
-      await tester.pumpWidget(Testable((_) => Chart(
-        series: [series],
-        labelBuilder: null,
-      )));
+      await tester.pumpWidget(
+        Testable(
+          (_) => Chart(
+            series: [series],
+            labelBuilder: null,
+          ),
+        ),
+      );
       expect(tester.takeException(), isAssertionError);
 
-      await tester.pumpWidget(Testable((_) => Chart(
-        series: [series],
-        labelBuilder: null,
-        viewAllTitle: "Title",
-      )));
+      await tester.pumpWidget(
+        Testable(
+          (_) => Chart(
+            series: [series],
+            labelBuilder: null,
+            viewAllTitle: "Title",
+          ),
+        ),
+      );
       expect(tester.takeException(), isAssertionError);
 
-      await tester.pumpWidget(Testable((_) => Chart(
-        series: [series],
-        labelBuilder: null,
-        chartPageDescription: "A description.",
-      )));
+      await tester.pumpWidget(
+        Testable(
+          (_) => Chart(
+            series: [series],
+            labelBuilder: null,
+            chartPageDescription: "A description.",
+          ),
+        ),
+      );
       expect(tester.takeException(), isAssertionError);
     });
 
     testWidgets("Assertion if not all series data has equal length",
-        (WidgetTester tester) async
-    {
+        (WidgetTester tester) async {
       Series<Species> series1 = Series({
         Species()..name = "Bass": 5,
       }, DisplayDateRange.last7Days);
@@ -51,31 +61,38 @@ main() {
         Species()..name = "Trout": 10,
       }, DisplayDateRange.last7Days);
 
-      await tester.pumpWidget(Testable((_) => Chart(
-        series: [series1, series2],
-        labelBuilder: (_) => "",
-        viewAllTitle: "Title",
-        chartPageDescription: "A description.",
-      )));
+      await tester.pumpWidget(
+        Testable(
+          (_) => Chart(
+            series: [series1, series2],
+            labelBuilder: (_) => "",
+            viewAllTitle: "Title",
+            chartPageDescription: "A description.",
+          ),
+        ),
+      );
       expect(tester.takeException(), isAssertionError);
     });
   });
 
   group("Legend", () {
-    testWidgets("Single series does not show legend", (WidgetTester tester)
-        async
-    {
+    testWidgets("Single series does not show legend",
+        (WidgetTester tester) async {
       Series<Species> series = Series({
         Species()..name = "Bass": 5,
         Species()..name = "Trout": 10,
       }, DisplayDateRange.last7Days);
 
-      await tester.pumpWidget(Testable((_) => Chart(
-        series: [series],
-        labelBuilder: (_) => "",
-        viewAllTitle: "Title",
-        chartPageDescription: "A description.",
-      )));
+      await tester.pumpWidget(
+        Testable(
+          (_) => Chart(
+            series: [series],
+            labelBuilder: (_) => "",
+            viewAllTitle: "Title",
+            chartPageDescription: "A description.",
+          ),
+        ),
+      );
       expect(find.byType(Empty), findsOneWidget);
       expect(find.text("Last 7 days"), findsNothing);
     });
@@ -91,21 +108,24 @@ main() {
         Species()..name = "Trout": 11,
       }, DisplayDateRange.lastMonth);
 
-      await tester.pumpWidget(Testable((_) => Chart(
-        series: [series1, series2],
-        labelBuilder: (_) => "",
-        viewAllTitle: "Title",
-        chartPageDescription: "A description.",
-      )));
+      await tester.pumpWidget(
+        Testable(
+          (_) => Chart(
+            series: [series1, series2],
+            labelBuilder: (_) => "",
+            viewAllTitle: "Title",
+            chartPageDescription: "A description.",
+          ),
+        ),
+      );
       expect(find.text("Last month"), findsOneWidget);
       expect(find.text("Last 7 days"), findsOneWidget);
     });
   });
 
   group("Chart rows", () {
-    testWidgets("Series max value 0 shows empty rows", (WidgetTester tester)
-        async
-    {
+    testWidgets("Series max value 0 shows empty rows",
+        (WidgetTester tester) async {
       Series<Species> series1 = Series({
         Species()..name = "Bass": 0,
       }, DisplayDateRange.last7Days);
@@ -114,12 +134,16 @@ main() {
         Species()..name = "Bass": 0,
       }, DisplayDateRange.lastMonth);
 
-      await tester.pumpWidget(Testable((_) => Chart(
-        series: [series1, series2],
-        labelBuilder: (_) => "",
-        viewAllTitle: "Title",
-        chartPageDescription: "A description.",
-      )));
+      await tester.pumpWidget(
+        Testable(
+          (_) => Chart(
+            series: [series1, series2],
+            labelBuilder: (_) => "",
+            viewAllTitle: "Title",
+            chartPageDescription: "A description.",
+          ),
+        ),
+      );
       expect(find.byType(Empty), findsNWidgets(2));
     });
 
@@ -127,7 +151,8 @@ main() {
       MockAppManager appManager = MockAppManager(
         mockTimeManager: true,
       );
-      when(appManager.mockTimeManager.currentDateTime).thenReturn(DateTime.now());
+      when(appManager.mockTimeManager.currentDateTime)
+          .thenReturn(DateTime.now());
 
       Series<Species> series = Series({
         Species()..name = "Bass": 10,
@@ -176,12 +201,16 @@ main() {
         Species()..name = "Pike": 0,
       }, DisplayDateRange.lastMonth);
 
-      await tester.pumpWidget(Testable((_) => Chart(
-        series: [series1, series2, series3],
-        labelBuilder: (species) => species.name,
-        viewAllTitle: "View all",
-        chartPageDescription: "A description.",
-      )));
+      await tester.pumpWidget(
+        Testable(
+          (_) => Chart(
+            series: [series1, series2, series3],
+            labelBuilder: (species) => species.name,
+            viewAllTitle: "View all",
+            chartPageDescription: "A description.",
+          ),
+        ),
+      );
 
       // Legend
       expect(find.text("Last year"), findsOneWidget);
@@ -225,19 +254,22 @@ main() {
         Species()..name = "Pike": 15,
       }, DisplayDateRange.thisYear);
 
-      await tester.pumpWidget(Testable((_) => Chart(
-        series: [series1, series2],
-        labelBuilder: (species) => species.name,
-        viewAllTitle: "View all",
-        chartPageDescription: "A description.",
-      )));
+      await tester.pumpWidget(
+        Testable(
+          (_) => Chart(
+            series: [series1, series2],
+            labelBuilder: (species) => species.name,
+            viewAllTitle: "View all",
+            chartPageDescription: "A description.",
+          ),
+        ),
+      );
 
       expect(find.text("View all"), findsOneWidget);
     });
 
     testWidgets("If condensed and all series length < min, row is not rendered",
-        (WidgetTester tester) async
-    {
+        (WidgetTester tester) async {
       Series<Species> series1 = Series({
         Species()..name = "Bass": 10,
         Species()..name = "Catfish": 3,
@@ -248,19 +280,22 @@ main() {
         Species()..name = "Catfish": 5,
       }, DisplayDateRange.thisYear);
 
-      await tester.pumpWidget(Testable((_) => Chart(
-        series: [series1, series2],
-        labelBuilder: (species) => species.name,
-        viewAllTitle: "View all",
-        chartPageDescription: "A description.",
-      )));
+      await tester.pumpWidget(
+        Testable(
+          (_) => Chart(
+            series: [series1, series2],
+            labelBuilder: (species) => species.name,
+            viewAllTitle: "View all",
+            chartPageDescription: "A description.",
+          ),
+        ),
+      );
 
       expect(find.text("View all"), findsNothing);
     });
 
     testWidgets("If showing all, no show all row is rendered",
-        (WidgetTester tester) async
-    {
+        (WidgetTester tester) async {
       Series<Species> series1 = Series({
         Species()..name = "Bass": 10,
         Species()..name = "Catfish": 3,
@@ -275,21 +310,29 @@ main() {
         Species()..name = "Pike": 15,
       }, DisplayDateRange.thisYear);
 
-      await tester.pumpWidget(Testable((_) => Chart(
-        series: [series1, series2],
-        labelBuilder: (species) => species.name,
-        chartPageDescription: "A description.",
-        showAll: true,
-      )));
+      await tester.pumpWidget(
+        Testable(
+          (_) => Chart(
+            series: [series1, series2],
+            labelBuilder: (species) => species.name,
+            chartPageDescription: "A description.",
+            showAll: true,
+          ),
+        ),
+      );
       expect(find.text("View all"), findsNothing);
 
-      await tester.pumpWidget(Testable((_) => Chart(
-        series: [series1, series2],
-        labelBuilder: (species) => species.name,
-        viewAllTitle: "View all",
-        chartPageDescription: "A description.",
-        showAll: true,
-      )));
+      await tester.pumpWidget(
+        Testable(
+          (_) => Chart(
+            series: [series1, series2],
+            labelBuilder: (species) => species.name,
+            viewAllTitle: "View all",
+            chartPageDescription: "A description.",
+            showAll: true,
+          ),
+        ),
+      );
       expect(find.text("View all"), findsNothing);
     });
   });
@@ -309,7 +352,7 @@ main() {
           labelBuilder: (species) => species.name,
           viewAllTitle: "View all",
           chartPageDescription: "A description.",
-          chartPageFilters: { "Filter 1", "Filter 2" },
+          chartPageFilters: {"Filter 1", "Filter 2"},
         ),
         mediaQueryData: MediaQueryData(
           // Chart row widths are based on screen size. Need to give a screen
@@ -336,7 +379,7 @@ main() {
       }, DisplayDateRange.lastYear);
 
       await tester.pumpWidget(Testable(
-            (_) => Chart(
+        (_) => Chart(
           series: [series1],
           labelBuilder: (species) => species.name,
           viewAllTitle: "View all",

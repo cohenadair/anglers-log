@@ -211,7 +211,9 @@ class LegacyImporter {
       for (var fishingSpot in locationMap[_keyFishingSpots]) {
         var fishingSpotMap = fishingSpot as Map<String, dynamic>;
         var fishingSpotName = format(
-            _nameFormatFishingSpot, [locationName, fishingSpotMap[_keyName]],);
+          _nameFormatFishingSpot,
+          [locationName, fishingSpotMap[_keyName]],
+        );
 
         var coordinatesMap =
             fishingSpotMap[_keyCoordinates] as Map<String, dynamic>;

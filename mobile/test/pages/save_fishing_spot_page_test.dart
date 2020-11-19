@@ -19,10 +19,8 @@ main() {
 
   testWidgets("New title", (WidgetTester tester) async {
     await tester.pumpWidget(Testable(
-      (_) => SaveFishingSpotPage(
-        oldFishingSpot: FishingSpot()
-          ..id = randomId()
-      ),
+      (_) =>
+          SaveFishingSpotPage(oldFishingSpot: FishingSpot()..id = randomId()),
       appManager: appManager,
     ));
     expect(find.text("New Fishing Spot"), findsOneWidget);
@@ -31,8 +29,7 @@ main() {
   testWidgets("Edit title", (WidgetTester tester) async {
     await tester.pumpWidget(Testable(
       (_) => SaveFishingSpotPage(
-        oldFishingSpot: FishingSpot()
-          ..id = randomId(),
+        oldFishingSpot: FishingSpot()..id = randomId(),
         editing: true,
       ),
       appManager: appManager,
@@ -51,12 +48,12 @@ main() {
       appManager: appManager,
     ));
 
-    await enterTextAndSettle(tester, find.widgetWithText(TextField, "Name"),
-        "Spot A");
+    await enterTextAndSettle(
+        tester, find.widgetWithText(TextField, "Name"), "Spot A");
     await tapAndSettle(tester, find.text("SAVE"));
 
-    VerificationResult result = verify(appManager.mockFishingSpotManager
-        .addOrUpdate(captureAny));
+    VerificationResult result =
+        verify(appManager.mockFishingSpotManager.addOrUpdate(captureAny));
     result.called(1);
 
     FishingSpot spot = result.captured.first;
@@ -78,8 +75,8 @@ main() {
 
     await tapAndSettle(tester, find.text("SAVE"));
 
-    VerificationResult result = verify(appManager.mockFishingSpotManager
-        .addOrUpdate(captureAny));
+    VerificationResult result =
+        verify(appManager.mockFishingSpotManager.addOrUpdate(captureAny));
     result.called(1);
 
     FishingSpot spot = result.captured.first;
@@ -92,8 +89,7 @@ main() {
     bool called = false;
     await tester.pumpWidget(Testable(
       (_) => SaveFishingSpotPage(
-        oldFishingSpot: FishingSpot()
-          ..id = randomId(),
+        oldFishingSpot: FishingSpot()..id = randomId(),
         onSave: (_) => called = true,
       ),
       appManager: appManager,

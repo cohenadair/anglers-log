@@ -44,11 +44,12 @@ main() {
   });
 
   testWidgets("Bait without category doesn't show subtitle",
-      (WidgetTester tester) async
-  {
-    when(appManager.mockBaitManager.entity(any)).thenReturn(Bait()
-      ..id = randomId()
-      ..name = "Worm");
+      (WidgetTester tester) async {
+    when(appManager.mockBaitManager.entity(any)).thenReturn(
+      Bait()
+        ..id = randomId()
+        ..name = "Worm",
+    );
     await tester.pumpWidget(Testable(
       (_) => CatchPage(randomId()),
       appManager: appManager,
@@ -65,9 +66,10 @@ main() {
       ..id = randomId()
       ..name = "Worm");
     when(appManager.mockBaitCategoryManager.entity(any)).thenReturn(
-        BaitCategory()
-          ..id = randomId()
-          ..name = "Live Bait");
+      BaitCategory()
+        ..id = randomId()
+        ..name = "Live Bait",
+    );
     await tester.pumpWidget(Testable(
       (_) => CatchPage(randomId()),
       appManager: appManager,
@@ -91,12 +93,13 @@ main() {
   });
 
   testWidgets("Fishing spot renders", (WidgetTester tester) async {
-    when(appManager.mockFishingSpotManager.entity(any))
-        .thenReturn(FishingSpot()
-          ..id = randomId()
-          ..name = "Baskets"
-          ..lat = 1.234567
-          ..lng = 7.654321);
+    when(appManager.mockFishingSpotManager.entity(any)).thenReturn(
+      FishingSpot()
+        ..id = randomId()
+        ..name = "Baskets"
+        ..lat = 1.234567
+        ..lng = 7.654321,
+    );
     await tester.pumpWidget(Testable(
       (_) => CatchPage(randomId()),
       appManager: appManager,

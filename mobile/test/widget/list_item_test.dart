@@ -11,14 +11,18 @@ main() {
   group("ExpansionListItem", () {
     testWidgets("Expanded on tap", (WidgetTester tester) async {
       bool changed = false;
-      await tester.pumpWidget(Testable((_) => ExpansionListItem(
-        title: Text("Title"),
-        children: [
-          Text("Child 1"),
-          Text("Child 2"),
-        ],
-        onExpansionChanged: (_) => changed = true,
-      )));
+      await tester.pumpWidget(
+        Testable(
+          (_) => ExpansionListItem(
+            title: Text("Title"),
+            children: [
+              Text("Child 1"),
+              Text("Child 2"),
+            ],
+            onExpansionChanged: (_) => changed = true,
+          ),
+        ),
+      );
 
       // Verify children aren't showing.
       expect(find.byType(ExpansionListItem), findsOneWidget);
@@ -36,37 +40,46 @@ main() {
   });
 
   group("ManageableListItem", () {
-    testWidgets("Editing shows edit/delete buttons", (WidgetTester tester)
-        async
-    {
-      await tester.pumpWidget(Testable((_) => ManageableListItem(
-        child: Text("Child"),
-        editing: true,
-        onTapDeleteButton: () => false,
-      )));
+    testWidgets("Editing shows edit/delete buttons",
+        (WidgetTester tester) async {
+      await tester.pumpWidget(
+        Testable(
+          (_) => ManageableListItem(
+            child: Text("Child"),
+            editing: true,
+            onTapDeleteButton: () => false,
+          ),
+        ),
+      );
       expect(find.byIcon(Icons.delete), findsOneWidget);
       expect(find.byType(RightChevronIcon), findsOneWidget);
     });
 
     testWidgets("Custom text widget doesn't use default style",
-        (WidgetTester tester) async
-    {
-      await tester.pumpWidget(Testable((_) => ManageableListItem(
-        child: NoteLabel("Child"),
-        onTapDeleteButton: () => false,
-      )));
+        (WidgetTester tester) async {
+      await tester.pumpWidget(
+        Testable(
+          (_) => ManageableListItem(
+            child: NoteLabel("Child"),
+            onTapDeleteButton: () => false,
+          ),
+        ),
+      );
       expect(find.byType(NoteLabel), findsOneWidget);
     });
 
-    testWidgets("Tapping delete button shows dialog", (WidgetTester tester)
-        async
-    {
-      await tester.pumpWidget(Testable((_) => ManageableListItem(
-        child: Text("Child"),
-        deleteMessageBuilder: (_) => Text("A delete message."),
-        onConfirmDelete: () {},
-        editing: true,
-      )));
+    testWidgets("Tapping delete button shows dialog",
+        (WidgetTester tester) async {
+      await tester.pumpWidget(
+        Testable(
+          (_) => ManageableListItem(
+            child: Text("Child"),
+            deleteMessageBuilder: (_) => Text("A delete message."),
+            onConfirmDelete: () {},
+            editing: true,
+          ),
+        ),
+      );
       await tester.pumpAndSettle();
       await tester.tap(find.byIcon(Icons.delete));
       await tester.pumpAndSettle();
@@ -75,12 +88,16 @@ main() {
 
     testWidgets("onConfirmDelete invoked", (WidgetTester tester) async {
       bool confirmed = false;
-      await tester.pumpWidget(Testable((_) => ManageableListItem(
-        child: Text("Child"),
-        deleteMessageBuilder: (_) => Text("A delete message."),
-        onConfirmDelete: () => confirmed = true,
-        editing: true,
-      )));
+      await tester.pumpWidget(
+        Testable(
+          (_) => ManageableListItem(
+            child: Text("Child"),
+            deleteMessageBuilder: (_) => Text("A delete message."),
+            onConfirmDelete: () => confirmed = true,
+            editing: true,
+          ),
+        ),
+      );
       await tester.pumpAndSettle();
       await tester.tap(find.byIcon(Icons.delete));
       await tester.pumpAndSettle();
@@ -92,55 +109,71 @@ main() {
 
     testWidgets("Custom onTapDeleteButton", (WidgetTester tester) async {
       bool tapped = false;
-      await tester.pumpWidget(Testable((_) => ManageableListItem(
-        child: Text("Child"),
-        onTapDeleteButton: () => tapped = true,
-        editing: true,
-      )));
+      await tester.pumpWidget(
+        Testable(
+          (_) => ManageableListItem(
+            child: Text("Child"),
+            onTapDeleteButton: () => tapped = true,
+            editing: true,
+          ),
+        ),
+      );
       await tester.pumpAndSettle();
       await tester.tap(find.byIcon(Icons.delete));
       expect(tapped, isTrue);
     });
 
     testWidgets("Custom trailing widget doesn't show while editing",
-        (WidgetTester tester) async
-    {
-      await tester.pumpWidget(Testable((_) => ManageableListItem(
-        child: Text("Child"),
-        onTapDeleteButton: () => false,
-        editing: true,
-        trailing: Icon(Icons.style),
-      )));
+        (WidgetTester tester) async {
+      await tester.pumpWidget(
+        Testable(
+          (_) => ManageableListItem(
+            child: Text("Child"),
+            onTapDeleteButton: () => false,
+            editing: true,
+            trailing: Icon(Icons.style),
+          ),
+        ),
+      );
       await tester.pumpAndSettle();
 
       expect(find.byIcon(Icons.style), findsNothing);
     });
 
     testWidgets("Custom trailing widget shows when not editing",
-        (WidgetTester tester) async
-    {
-      await tester.pumpWidget(Testable((_) => ManageableListItem(
-        child: Text("Child"),
-        onTapDeleteButton: () => false,
-        trailing: Icon(Icons.style),
-      )));
+        (WidgetTester tester) async {
+      await tester.pumpWidget(
+        Testable(
+          (_) => ManageableListItem(
+            child: Text("Child"),
+            onTapDeleteButton: () => false,
+            trailing: Icon(Icons.style),
+          ),
+        ),
+      );
       await tester.pumpAndSettle();
 
       expect(find.byIcon(Icons.style), findsOneWidget);
     });
 
     testWidgets("Extra padding after delete button when editing",
-        (WidgetTester tester) async
-    {
-      await tester.pumpWidget(Testable((_) => ManageableListItem(
-        child: Text("Child"),
-        onTapDeleteButton: () => false,
-        editing: true,
-      )));
+        (WidgetTester tester) async {
+      await tester.pumpWidget(
+        Testable(
+          (_) => ManageableListItem(
+            child: Text("Child"),
+            onTapDeleteButton: () => false,
+            editing: true,
+          ),
+        ),
+      );
       await tester.pumpAndSettle();
-      expect(find.byWidgetPredicate((widget) => widget is Padding
-          && widget.padding.horizontal
-              == paddingDefaultDouble + paddingDefault), findsOneWidget);
+      expect(
+          find.byWidgetPredicate((widget) =>
+              widget is Padding &&
+              widget.padding.horizontal ==
+                  paddingDefaultDouble + paddingDefault),
+          findsOneWidget);
     });
   });
 }

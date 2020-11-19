@@ -50,10 +50,13 @@ main() {
       appManager: appManager,
     ));
 
-    expect(find.descendant(
-      of: find.widgetWithText(ManageableListItem, "Comparison 1"),
-      matching: find.byIcon(Icons.check),
-    ), findsOneWidget);
+    expect(
+      find.descendant(
+        of: find.widgetWithText(ManageableListItem, "Comparison 1"),
+        matching: find.byIcon(Icons.check),
+      ),
+      findsOneWidget,
+    );
   });
 
   testWidgets("Callback is invoked", (WidgetTester tester) async {
@@ -77,8 +80,7 @@ main() {
   });
 
   testWidgets("Different item types are displayed correctly",
-      (WidgetTester tester) async
-  {
+      (WidgetTester tester) async {
     await tester.pumpWidget(Testable(
       (_) => ReportListPage.picker(
         onPicked: (_, __) => true,
@@ -103,10 +105,13 @@ main() {
     ));
 
     await tapAndSettle(tester, find.text("EDIT"));
-    await tapAndSettle(tester, find.descendant(
-      of: find.widgetWithText(ManageableListItem, "Summary 1"),
-      matching: find.byIcon(Icons.delete),
-    ));
+    await tapAndSettle(
+      tester,
+      find.descendant(
+        of: find.widgetWithText(ManageableListItem, "Summary 1"),
+        matching: find.byIcon(Icons.delete),
+      ),
+    );
     await tapAndSettle(tester, find.text("DELETE"));
 
     verify(appManager.mockSummaryReportManager.delete(summaries.first.id))
@@ -122,10 +127,13 @@ main() {
     ));
 
     await tapAndSettle(tester, find.text("EDIT"));
-    await tapAndSettle(tester, find.descendant(
-      of: find.widgetWithText(ManageableListItem, "Comparison 1"),
-      matching: find.byIcon(Icons.delete),
-    ));
+    await tapAndSettle(
+      tester,
+      find.descendant(
+        of: find.widgetWithText(ManageableListItem, "Comparison 1"),
+        matching: find.byIcon(Icons.delete),
+      ),
+    );
     await tapAndSettle(tester, find.text("DELETE"));
 
     verify(appManager.mockComparisonReportManager.delete(comparisons.first.id))
@@ -142,15 +150,17 @@ main() {
 
     await tapAndSettle(tester, find.text("EDIT"));
 
-    expect((tester.firstWidget<SizeTransition>(find.descendant(
-      of: find.widgetWithText(ManageableListItem, "Overview"),
-      matching: find.byType(SizeTransition),
-    )).listenable as Animation<double>).value, 0.0);
+    SizeTransition transition = tester.firstWidget<SizeTransition>(
+      find.descendant(
+        of: find.widgetWithText(ManageableListItem, "Overview"),
+        matching: find.byType(SizeTransition),
+      ),
+    );
+    expect((transition.listenable as Animation<double>).value, 0.0);
   });
 
-  testWidgets("Note shown when custom reports is empty", (WidgetTester tester)
-      async
-  {
+  testWidgets("Note shown when custom reports is empty",
+      (WidgetTester tester) async {
     when(appManager.mockComparisonReportManager.list()).thenReturn([]);
     when(appManager.mockSummaryReportManager.list()).thenReturn([]);
 
@@ -164,9 +174,8 @@ main() {
     expect(find.byType(IconNoteLabel), findsOneWidget);
   });
 
-  testWidgets("Custom reports are sorted alphabetically", (WidgetTester tester)
-      async
-  {
+  testWidgets("Custom reports are sorted alphabetically",
+      (WidgetTester tester) async {
     await tester.pumpWidget(Testable(
       (_) => ReportListPage.picker(
         onPicked: (_, __) => true,
@@ -178,15 +187,25 @@ main() {
       of: find.byType(ManageableListItem),
       matching: find.byType(Text),
     );
-    expect((textWidgets.at(0).evaluate().single.widget as Text).data,
-        "Overview");
-    expect((textWidgets.at(1).evaluate().single.widget as Text).data,
-        "Comparison 1");
-    expect((textWidgets.at(2).evaluate().single.widget as Text).data,
-        "Comparison 2");
-    expect((textWidgets.at(3).evaluate().single.widget as Text).data,
-        "Summary 1");
-    expect((textWidgets.at(4).evaluate().single.widget as Text).data,
-        "Summary 2");
+    expect(
+      (textWidgets.at(0).evaluate().single.widget as Text).data,
+      "Overview",
+    );
+    expect(
+      (textWidgets.at(1).evaluate().single.widget as Text).data,
+      "Comparison 1",
+    );
+    expect(
+      (textWidgets.at(2).evaluate().single.widget as Text).data,
+      "Comparison 2",
+    );
+    expect(
+      (textWidgets.at(3).evaluate().single.widget as Text).data,
+      "Summary 1",
+    );
+    expect(
+      (textWidgets.at(4).evaluate().single.widget as Text).data,
+      "Summary 2",
+    );
   });
 }

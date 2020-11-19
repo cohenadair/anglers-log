@@ -30,53 +30,77 @@ void main() {
   });
 
   test("onDeleteBait", () async {
-    Bait baitToRemove = Bait()
-      ..id = randomId();
+    Bait baitToRemove = Bait()..id = randomId();
 
-    ComparisonReport report = ComparisonReport()
-      ..id = randomId();
+    ComparisonReport report = ComparisonReport()..id = randomId();
     report.baitIds.add(baitToRemove.id);
 
     await comparisonReportManager.addOrUpdate(report);
-    expect(comparisonReportManager.entity(report.id).baitIds
-        .contains(baitToRemove.id), isTrue);
+    expect(
+      comparisonReportManager
+          .entity(report.id)
+          .baitIds
+          .contains(baitToRemove.id),
+      isTrue,
+    );
 
     comparisonReportManager.onDeleteBait(baitToRemove);
-    expect(comparisonReportManager.entity(report.id).baitIds
-        .contains(baitToRemove.id), isFalse);
+    expect(
+      comparisonReportManager
+          .entity(report.id)
+          .baitIds
+          .contains(baitToRemove.id),
+      isFalse,
+    );
   });
 
   test("onDeleteFishingSpot", () async {
-    FishingSpot fishingSpotToRemove = FishingSpot()
-      ..id = randomId();
+    FishingSpot fishingSpotToRemove = FishingSpot()..id = randomId();
 
-    ComparisonReport report = ComparisonReport()
-      ..id = randomId();
+    ComparisonReport report = ComparisonReport()..id = randomId();
     report.fishingSpotIds.add(fishingSpotToRemove.id);
 
     await comparisonReportManager.addOrUpdate(report);
-    expect(comparisonReportManager.entity(report.id).fishingSpotIds
-        .contains(fishingSpotToRemove.id), isTrue);
+    expect(
+      comparisonReportManager
+          .entity(report.id)
+          .fishingSpotIds
+          .contains(fishingSpotToRemove.id),
+      isTrue,
+    );
 
     comparisonReportManager.onDeleteFishingSpot(fishingSpotToRemove);
-    expect(comparisonReportManager.entity(report.id).fishingSpotIds
-        .contains(fishingSpotToRemove.id), isFalse);
+    expect(
+      comparisonReportManager
+          .entity(report.id)
+          .fishingSpotIds
+          .contains(fishingSpotToRemove.id),
+      isFalse,
+    );
   });
 
   test("onDeleteSpecies", () async {
-    Species speciesToRemove = Species()
-      ..id = randomId();
+    Species speciesToRemove = Species()..id = randomId();
 
-    ComparisonReport report = ComparisonReport()
-      ..id = randomId();
+    ComparisonReport report = ComparisonReport()..id = randomId();
     report.speciesIds.add(speciesToRemove.id);
 
     await comparisonReportManager.addOrUpdate(report);
-    expect(comparisonReportManager.entity(report.id).speciesIds
-        .contains(speciesToRemove.id), isTrue);
+    expect(
+      comparisonReportManager
+          .entity(report.id)
+          .speciesIds
+          .contains(speciesToRemove.id),
+      isTrue,
+    );
 
     comparisonReportManager.onDeleteSpecies(speciesToRemove);
-    expect(comparisonReportManager.entity(report.id).speciesIds
-        .contains(speciesToRemove.id), isFalse);
+    expect(
+      comparisonReportManager
+          .entity(report.id)
+          .speciesIds
+          .contains(speciesToRemove.id),
+      isFalse,
+    );
   });
 }

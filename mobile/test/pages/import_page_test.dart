@@ -69,9 +69,8 @@ main() {
     // test environment.
   });
 
-  testWidgets("Null picked file resets state to none", (WidgetTester tester)
-      async
-  {
+  testWidgets("Null picked file resets state to none",
+      (WidgetTester tester) async {
     when(appManager.mockFilePickerWrapper.getFile(
       type: anyNamed("type"),
       fileExtension: anyNamed("fileExtension"),
@@ -92,8 +91,8 @@ main() {
     when(appManager.mockFilePickerWrapper.getFile(
       type: anyNamed("type"),
       fileExtension: anyNamed("fileExtension"),
-    )).thenAnswer((_) => Future.value(
-        File("test/resources/backups/no_journal.zip")));
+    )).thenAnswer(
+        (_) => Future.value(File("test/resources/backups/no_journal.zip")));
 
     await tester.pumpWidget(Testable(
       (_) => ImportPage(),
@@ -105,13 +104,12 @@ main() {
   });
 
   testWidgets("Import error feedback button shows feedback page",
-      (WidgetTester tester) async
-  {
+      (WidgetTester tester) async {
     when(appManager.mockFilePickerWrapper.getFile(
       type: anyNamed("type"),
       fileExtension: anyNamed("fileExtension"),
-    )).thenAnswer((_) => Future.value(
-        File("test/resources/backups/no_journal.zip")));
+    )).thenAnswer(
+        (_) => Future.value(File("test/resources/backups/no_journal.zip")));
 
     await tester.pumpWidget(Testable(
       (_) => ImportPage(),
@@ -126,13 +124,12 @@ main() {
   });
 
   testWidgets("Successful import error shows success widget",
-      (WidgetTester tester) async
-  {
+      (WidgetTester tester) async {
     when(appManager.mockFilePickerWrapper.getFile(
       type: anyNamed("type"),
       fileExtension: anyNamed("fileExtension"),
-    )).thenAnswer((_) => Future.value(
-        File("test/resources/backups/legacy_ios_entities.zip")));
+    )).thenAnswer((_) =>
+        Future.value(File("test/resources/backups/legacy_ios_entities.zip")));
 
     await tester.pumpWidget(Testable(
       (_) => ImportPage(),

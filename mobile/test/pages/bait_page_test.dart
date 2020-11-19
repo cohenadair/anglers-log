@@ -31,10 +31,11 @@ main() {
   });
 
   testWidgets("Non-null bait category", (WidgetTester tester) async {
-    when(appManager.mockBaitCategoryManager.entity(any))
-        .thenReturn(BaitCategory()
-      ..id = randomId()
-      ..name = "Rapala");
+    when(appManager.mockBaitCategoryManager.entity(any)).thenReturn(
+      BaitCategory()
+        ..id = randomId()
+        ..name = "Rapala",
+    );
     await tester.pumpWidget(Testable(
       (_) => BaitPage(randomId()),
       appManager: appManager,

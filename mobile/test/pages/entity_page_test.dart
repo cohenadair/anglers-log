@@ -31,9 +31,7 @@ main() {
 
   group("Images", () {
     testWidgets("No images", (WidgetTester tester) async {
-      await tester.pumpWidget(Testable((_) => EntityPage(
-        children: [],
-      )));
+      await tester.pumpWidget(Testable((_) => EntityPage(children: [])));
       expect(find.byType(PageView), findsNothing);
     });
 
@@ -65,11 +63,12 @@ main() {
 
       // Verify initial images state.
       expect(find.byType(PageView), findsOneWidget);
-      List<Widget> carouselDots = tester.widgetList(
-          find.byWidgetPredicate((widget) => widget is Container
-              && widget.decoration is BoxDecoration
-              && (widget.decoration as BoxDecoration).shape
-                  == BoxShape.circle)).toList();
+      List<Widget> carouselDots = tester
+          .widgetList(find.byWidgetPredicate((widget) =>
+              widget is Container &&
+              widget.decoration is BoxDecoration &&
+              (widget.decoration as BoxDecoration).shape == BoxShape.circle))
+          .toList();
       expect(carouselDots.length, 4);
       expect(((carouselDots[0] as Container).decoration as BoxDecoration).color,
           Theme.of(context).primaryColor);
@@ -88,11 +87,12 @@ main() {
       await tester.pumpAndSettle();
 
       expect(findFirst<Photo>(tester).fileName, "anglers_log_logo.png");
-      carouselDots = tester.widgetList(
-          find.byWidgetPredicate((widget) => widget is Container
-              && widget.decoration is BoxDecoration
-              && (widget.decoration as BoxDecoration).shape
-                  == BoxShape.circle)).toList();
+      carouselDots = tester
+          .widgetList(find.byWidgetPredicate((widget) =>
+              widget is Container &&
+              widget.decoration is BoxDecoration &&
+              (widget.decoration as BoxDecoration).shape == BoxShape.circle))
+          .toList();
       expect(((carouselDots[0] as Container).decoration as BoxDecoration).color,
           Colors.white.withOpacity(0.5));
       expect(((carouselDots[1] as Container).decoration as BoxDecoration).color,
@@ -103,9 +103,8 @@ main() {
           Colors.white.withOpacity(0.5));
     });
 
-    testWidgets("Image carousel hidden for only 1 image", (WidgetTester tester)
-        async
-    {
+    testWidgets("Image carousel hidden for only 1 image",
+        (WidgetTester tester) async {
       await image(tester, "flutter_logo.png");
       await tester.pumpWidget(Testable(
         (_) => EntityPage(
@@ -120,10 +119,13 @@ main() {
         ),
       ));
 
-      expect(find.byWidgetPredicate((widget) => widget is Container
-          && widget.decoration is BoxDecoration
-          && (widget.decoration as BoxDecoration).shape
-              == BoxShape.circle), findsNothing);
+      expect(
+        find.byWidgetPredicate((widget) =>
+            widget is Container &&
+            widget.decoration is BoxDecoration &&
+            (widget.decoration as BoxDecoration).shape == BoxShape.circle),
+        findsNothing,
+      );
     });
   });
 
@@ -136,15 +138,15 @@ main() {
     expect(find.text("Custom Fields"), findsNothing);
   });
 
-  testWidgets("Custom entities are shown with separator", (WidgetTester tester)
-      async
-  {
+  testWidgets("Custom entities are shown with separator",
+      (WidgetTester tester) async {
     Id customEntityId = randomId();
     when(appManager.mockCustomEntityManager.entity(customEntityId)).thenReturn(
-        CustomEntity()
-          ..id = randomId()
-          ..name = "Test Name"
-          ..type = CustomEntity_Type.TEXT);
+      CustomEntity()
+        ..id = randomId()
+        ..name = "Test Name"
+        ..type = CustomEntity_Type.TEXT,
+    );
     await tester.pumpWidget(Testable(
       (_) => EntityPage(
         children: [],
@@ -163,59 +165,69 @@ main() {
   });
 
   testWidgets("Static page does not show edit and delete buttons",
-      (WidgetTester tester) async
-  {
-    await tester.pumpWidget(Testable((_) => EntityPage(
-      children: [],
-      static: true,
-    )));
+      (WidgetTester tester) async {
+    await tester.pumpWidget(
+      Testable(
+        (_) => EntityPage(
+          children: [],
+          static: true,
+        ),
+      ),
+    );
 
     expect(find.text("EDIT"), findsNothing);
     expect(find.byIcon(Icons.delete), findsNothing);
   });
 
   testWidgets("Dynamic page shows edit and delete buttons",
-      (WidgetTester tester) async
-  {
-    await tester.pumpWidget(Testable((_) => EntityPage(
-      children: [],
-    )));
+      (WidgetTester tester) async {
+    await tester.pumpWidget(Testable((_) => EntityPage(children: [])));
 
     expect(find.text("EDIT"), findsOneWidget);
     expect(find.byIcon(Icons.delete), findsOneWidget);
   });
 
   testWidgets("Delete confirmation shown when deleteMessage != null",
-      (WidgetTester tester) async
-  {
-    await tester.pumpWidget(Testable((_) => EntityPage(
-      children: [],
-      deleteMessage: "This is a delete message.",
-    )));
-    
+      (WidgetTester tester) async {
+    await tester.pumpWidget(
+      Testable(
+        (_) => EntityPage(
+          children: [],
+          deleteMessage: "This is a delete message.",
+        ),
+      ),
+    );
+
     await tapAndSettle(tester, find.byIcon(Icons.delete));
     expect(find.text("This is a delete message."), findsOneWidget);
     expect(find.text("DELETE"), findsOneWidget);
   });
 
   testWidgets("Delete confirmation not shown when deleteMessage == null",
-      (WidgetTester tester) async
-  {
-    await tester.pumpWidget(Testable((_) => EntityPage(
-      children: [],
-    )));
+      (WidgetTester tester) async {
+    await tester.pumpWidget(
+      Testable(
+        (_) => EntityPage(
+          children: [],
+        ),
+      ),
+    );
 
     await tapAndSettle(tester, find.byIcon(Icons.delete));
     expect(find.text("DELETE"), findsNothing);
   });
 
   testWidgets("All children rendered", (WidgetTester tester) async {
-    await tester.pumpWidget(Testable((_) => EntityPage(
-      children: [
-        Text("Child 1"),
-        Text("Child 2"),
-      ],
-    )));
+    await tester.pumpWidget(
+      Testable(
+        (_) => EntityPage(
+          children: [
+            Text("Child 1"),
+            Text("Child 2"),
+          ],
+        ),
+      ),
+    );
 
     expect(find.text("Child 1"), findsOneWidget);
     expect(find.text("Child 2"), findsOneWidget);

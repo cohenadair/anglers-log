@@ -74,8 +74,7 @@ main() {
   });
 
   testWidgets("Navigation state is persisted when switching tabs",
-      (WidgetTester tester) async
-  {
+      (WidgetTester tester) async {
     await tester.pumpWidget(Testable(
       (_) => MainPage(),
       appManager: appManager,
@@ -93,8 +92,7 @@ main() {
   });
 
   testWidgets("Tapping current nav item again pops all pages on current stack",
-      (WidgetTester tester) async
-  {
+      (WidgetTester tester) async {
     await tester.pumpWidget(Testable(
       (_) => MainPage(),
       appManager: appManager,

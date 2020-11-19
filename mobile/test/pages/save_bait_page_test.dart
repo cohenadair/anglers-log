@@ -36,9 +36,10 @@ main() {
 
   testWidgets("Edit title", (WidgetTester tester) async {
     await tester.pumpWidget(Testable(
-      (_) => SaveBaitPage.edit(Bait()
-        ..id = randomId()
-        ..name = "Rapala",
+      (_) => SaveBaitPage.edit(
+        Bait()
+          ..id = randomId()
+          ..name = "Rapala",
       ),
       appManager: appManager,
     ));
@@ -53,15 +54,15 @@ main() {
     expect(find.text("New Bait"), findsOneWidget);
   });
 
-  testWidgets("Selecting bait category updates state", (WidgetTester tester)
-      async
-  {
+  testWidgets("Selecting bait category updates state",
+      (WidgetTester tester) async {
     when(appManager.mockBaitCategoryManager
-        .listSortedByName(filter: anyNamed("filter"))).thenReturn([
-          BaitCategory()
-            ..id = randomId()
-            ..name = "Lure",
-        ]);
+            .listSortedByName(filter: anyNamed("filter")))
+        .thenReturn([
+      BaitCategory()
+        ..id = randomId()
+        ..name = "Lure",
+    ]);
 
     await tester.pumpWidget(Testable(
       (_) => SaveBaitPage(),
@@ -76,9 +77,8 @@ main() {
     expect(find.text("Lure"), findsOneWidget);
   });
 
-  testWidgets("Updating name updates save button state", (WidgetTester tester)
-      async
-  {
+  testWidgets("Updating name updates save button state",
+      (WidgetTester tester) async {
     await tester.pumpWidget(Testable(
       (_) => SaveBaitPage(),
       appManager: appManager,
@@ -131,8 +131,8 @@ main() {
     expect(find.text("Custom Entity"), findsOneWidget);
     expect(find.text("Custom Value"), findsOneWidget);
 
-    await enterTextAndSettle(tester, find.widgetWithText(TextField, "Name"),
-        "Plug");
+    await enterTextAndSettle(
+        tester, find.widgetWithText(TextField, "Name"), "Plug");
     await tapAndSettle(tester, find.text("SAVE"));
 
     VerificationResult result =

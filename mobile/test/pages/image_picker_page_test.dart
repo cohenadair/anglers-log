@@ -24,12 +24,14 @@ main() {
 
     allAlbum = MockAssetPathEntity();
     when(allAlbum.isAll).thenReturn(true);
-    when(allAlbum.assetList).thenAnswer((_) => Future.value([
-      createMockAssetEntity(fileName: "android_logo.png"),
-      createMockAssetEntity(fileName: "anglers_log_logo.png"),
-      createMockAssetEntity(fileName: "apple_logo.png"),
-      createMockAssetEntity(fileName: "flutter_logo.png"),
-    ]));
+    when(allAlbum.assetList).thenAnswer(
+      (_) => Future.value([
+        createMockAssetEntity(fileName: "android_logo.png"),
+        createMockAssetEntity(fileName: "anglers_log_logo.png"),
+        createMockAssetEntity(fileName: "apple_logo.png"),
+        createMockAssetEntity(fileName: "flutter_logo.png"),
+      ]),
+    );
     when(appManager.mockPhotoManagerWrapper.getAssetPathList(any))
         .thenAnswer((_) => Future.value([allAlbum]));
   });
@@ -79,8 +81,7 @@ main() {
   });
 
   testWidgets("Null result from camera does not invoke callback",
-      (WidgetTester tester) async
-  {
+      (WidgetTester tester) async {
     bool called = false;
     await tester.pumpWidget(Testable(
       (_) => ImagePickerPage(
@@ -97,8 +98,8 @@ main() {
     expect(called, isFalse);
   });
 
-  testWidgets("Result from camera invokes callback", (WidgetTester tester) async
-  {
+  testWidgets("Result from camera invokes callback",
+      (WidgetTester tester) async {
     bool called = false;
     await tester.pumpWidget(Testable(
       (_) => ImagePickerPage(
@@ -170,8 +171,8 @@ main() {
     expect(find.text("Must select image files."), findsNothing);
   });
 
-  testWidgets("Doc single picker unsupported format", (WidgetTester tester) async
-  {
+  testWidgets("Doc single picker unsupported format",
+      (WidgetTester tester) async {
     await tester.pumpWidget(Testable(
       (_) => ImagePickerPage.single(
         onImagePicked: (_, __) {},
@@ -189,9 +190,8 @@ main() {
     expect(find.text("Must select an image file."), findsOneWidget);
   });
 
-  testWidgets("Doc multi picker unsupported format", (WidgetTester tester)
-      async
-  {
+  testWidgets("Doc multi picker unsupported format",
+      (WidgetTester tester) async {
     await tester.pumpWidget(Testable(
       (_) => ImagePickerPage(
         onImagesPicked: (_, __) {},
@@ -200,11 +200,12 @@ main() {
     ));
     await tester.pumpAndSettle(Duration(milliseconds: 50));
 
-    when(appManager.mockFilePickerWrapper.getMultiFile(any))
-        .thenAnswer((_) => Future.value([
-          File("test.invalid"),
-          File("test2.invalid"),
-        ]));
+    when(appManager.mockFilePickerWrapper.getMultiFile(any)).thenAnswer(
+      (_) => Future.value([
+        File("test.invalid"),
+        File("test2.invalid"),
+      ]),
+    );
 
     await tapAndSettle(tester, find.text("Gallery"));
     await tapAndSettle(tester, find.text("Browse").last);
@@ -213,8 +214,7 @@ main() {
   });
 
   testWidgets("Doc multi picker valid picks invokes callback",
-      (WidgetTester tester) async
-  {
+      (WidgetTester tester) async {
     bool called = false;
     await tester.pumpWidget(Testable(
       (_) => ImagePickerPage(
@@ -224,11 +224,12 @@ main() {
     ));
     await tester.pumpAndSettle(Duration(milliseconds: 50));
 
-    when(appManager.mockFilePickerWrapper.getMultiFile(any))
-        .thenAnswer((_) => Future.value([
-          File("test.jpg"),
-          File("test2.png"),
-        ]));
+    when(appManager.mockFilePickerWrapper.getMultiFile(any)).thenAnswer(
+      (_) => Future.value([
+        File("test.jpg"),
+        File("test2.png"),
+      ]),
+    );
 
     await tapAndSettle(tester, find.text("Gallery"));
     await tapAndSettle(tester, find.text("Browse").last);
@@ -262,8 +263,7 @@ main() {
   });
 
   testWidgets("Done button disabled when pick is required",
-      (WidgetTester tester) async
-  {
+      (WidgetTester tester) async {
     await tester.pumpWidget(Testable(
       (_) => ImagePickerPage(
         onImagesPicked: (_, __) {},
@@ -277,8 +277,7 @@ main() {
   });
 
   testWidgets("Done button enabled when pick is not required",
-      (WidgetTester tester) async
-  {
+      (WidgetTester tester) async {
     await tester.pumpWidget(Testable(
       (_) => ImagePickerPage(
         onImagesPicked: (_, __) {},
@@ -288,8 +287,8 @@ main() {
     ));
     await tester.pumpAndSettle(Duration(milliseconds: 50));
 
-    expect(findFirstWithText<ActionButton>(tester, "DONE").onPressed,
-        isNotNull);
+    expect(
+        findFirstWithText<ActionButton>(tester, "DONE").onPressed, isNotNull);
   });
 
   testWidgets("Done button invokes callback", (WidgetTester tester) async {
@@ -309,8 +308,7 @@ main() {
   });
 
   testWidgets("Clear button clears selected for multi picker",
-      (WidgetTester tester) async
-  {
+      (WidgetTester tester) async {
     bool called = false;
     await tester.pumpWidget(Testable(
       (_) => ImagePickerPage(
@@ -333,8 +331,7 @@ main() {
   });
 
   testWidgets("Clear button invokes callback for single picker",
-      (WidgetTester tester) async
-  {
+      (WidgetTester tester) async {
     bool called = false;
     await tester.pumpWidget(Testable(
       (_) => ImagePickerPage.single(
@@ -366,8 +363,7 @@ main() {
   });
 
   testWidgets("Selecting/deselecting photo updates state for multi picker",
-      (WidgetTester tester) async
-  {
+      (WidgetTester tester) async {
     await tester.pumpWidget(Testable(
       (_) => ImagePickerPage(
         onImagesPicked: (_, __) {},
@@ -384,8 +380,7 @@ main() {
   });
 
   testWidgets("Selecting photo invokes callback for single picker",
-      (WidgetTester tester) async
-  {
+      (WidgetTester tester) async {
     bool called = false;
     await tester.pumpWidget(Testable(
       (_) => ImagePickerPage.single(
@@ -400,8 +395,7 @@ main() {
   });
 
   testWidgets("Do not pop picker if popsOnFinish is false",
-      (WidgetTester tester) async
-  {
+      (WidgetTester tester) async {
     var navObserver = MockNavigatorObserver();
     bool called = false;
     await tester.pumpWidget(Testable(
@@ -420,17 +414,18 @@ main() {
     verifyNever(navObserver.didPop(any, any));
   });
 
-  testWidgets("Picked image with invalid coordinates", (WidgetTester tester)
-      async
-  {
+  testWidgets("Picked image with invalid coordinates",
+      (WidgetTester tester) async {
     MockAssetEntity entity = createMockAssetEntity(
       fileName: "android_logo.png",
       latLngAsync: null,
       latLngLegacy: null,
     );
-    when(allAlbum.assetList).thenAnswer((_) => Future.value([
-      entity,
-    ]));
+    when(allAlbum.assetList).thenAnswer(
+      (_) => Future.value([
+        entity,
+      ]),
+    );
 
     PickedImage result;
     await tester.pumpWidget(Testable(
@@ -447,8 +442,7 @@ main() {
   });
 
   testWidgets("Picked image with valid legacy coordinates",
-      (WidgetTester tester) async
-  {
+      (WidgetTester tester) async {
     MockAssetEntity entity = createMockAssetEntity(
       fileName: "android_logo.png",
       latLngAsync: null,
@@ -456,9 +450,11 @@ main() {
         ..latitude = 0.654321
         ..longitude = 0.123456,
     );
-    when(allAlbum.assetList).thenAnswer((_) => Future.value([
-      entity,
-    ]));
+    when(allAlbum.assetList).thenAnswer(
+      (_) => Future.value([
+        entity,
+      ]),
+    );
 
     PickedImage result;
     await tester.pumpWidget(Testable(
@@ -474,9 +470,8 @@ main() {
     verifyNever(entity.latlngAsync());
   });
 
-  testWidgets("Picked image with valid OS coordinates", (WidgetTester tester)
-      async
-  {
+  testWidgets("Picked image with valid OS coordinates",
+      (WidgetTester tester) async {
     MockAssetEntity entity = createMockAssetEntity(
       fileName: "android_logo.png",
       latLngAsync: LatLng()
@@ -484,9 +479,11 @@ main() {
         ..longitude = 0.123456,
       latLngLegacy: null,
     );
-    when(allAlbum.assetList).thenAnswer((_) => Future.value([
-      entity,
-    ]));
+    when(allAlbum.assetList).thenAnswer(
+      (_) => Future.value([
+        entity,
+      ]),
+    );
 
     PickedImage result;
     await tester.pumpWidget(Testable(

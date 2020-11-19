@@ -9,10 +9,12 @@ main() {
     testWidgets("Runner is called", (WidgetTester tester) async {
       BuildContext context = await buildContext(tester);
       bool ran = false;
-      GenericValidator((_, __) => (___) {
-        ran = true;
-        return null;
-      }).run(context, "")(context);
+      GenericValidator(
+        (_, __) => (___) {
+          ran = true;
+          return null;
+        },
+      ).run(context, "")(context);
       expect(ran, isTrue);
     });
   });
@@ -21,52 +23,73 @@ main() {
     testWidgets("Input", (WidgetTester tester) async {
       BuildContext context = await buildContext(tester);
       expect(NameValidator().run(context, "Test"), isNull);
-      expect(() => NameValidator(
-        nameExists: (_) => false,
-        nameExistsMessage: null,
-      ), throwsAssertionError);
-      expect(NameValidator(
-        nameExists: (_) => false,
-        nameExistsMessage: (_) => "Message",
-      ).run(context, "Test"), isNull);
+      expect(
+        () => NameValidator(
+          nameExists: (_) => false,
+          nameExistsMessage: null,
+        ),
+        throwsAssertionError,
+      );
+      expect(
+        NameValidator(
+          nameExists: (_) => false,
+          nameExistsMessage: (_) => "Message",
+        ).run(context, "Test"),
+        isNull,
+      );
     });
 
     testWidgets("null if old name == new name", (WidgetTester tester) async {
       BuildContext context = await buildContext(tester);
-      expect(NameValidator(
-        nameExists: (_) => false,
-        nameExistsMessage: (_) => "Message",
-        oldName: "Test",
-      ).run(context, "Test"), isNull);
+      expect(
+        NameValidator(
+          nameExists: (_) => false,
+          nameExistsMessage: (_) => "Message",
+          oldName: "Test",
+        ).run(context, "Test"),
+        isNull,
+      );
     });
 
     testWidgets("Error if new name is empty/null", (WidgetTester tester) async {
       BuildContext context = await buildContext(tester);
-      expect(NameValidator(
-        nameExists: (_) => false,
-        nameExistsMessage: (_) => "Message",
-      ).run(context, "")(context), "Required");
-      expect(NameValidator(
-        nameExists: (_) => false,
-        nameExistsMessage: (_) => "Message",
-      ).run(context, null)(context), "Required");
+      expect(
+        NameValidator(
+          nameExists: (_) => false,
+          nameExistsMessage: (_) => "Message",
+        ).run(context, "")(context),
+        "Required",
+      );
+      expect(
+        NameValidator(
+          nameExists: (_) => false,
+          nameExistsMessage: (_) => "Message",
+        ).run(context, null)(context),
+        "Required",
+      );
     });
 
     testWidgets("Error if new name exists", (WidgetTester tester) async {
       BuildContext context = await buildContext(tester);
-      expect(NameValidator(
-        nameExists: (_) => true,
-        nameExistsMessage: (_) => "Exists",
-      ).run(context, "Test")(context), "Exists");
+      expect(
+        NameValidator(
+          nameExists: (_) => true,
+          nameExistsMessage: (_) => "Exists",
+        ).run(context, "Test")(context),
+        "Exists",
+      );
     });
 
     testWidgets("null if valid", (WidgetTester tester) async {
       BuildContext context = await buildContext(tester);
-      expect(NameValidator(
-        nameExists: (_) => false,
-        nameExistsMessage: (_) => "Exists",
-        oldName: "Test",
-      ).run(context, "Test 2"), isNull);
+      expect(
+        NameValidator(
+          nameExists: (_) => false,
+          nameExistsMessage: (_) => "Exists",
+          oldName: "Test",
+        ).run(context, "Test 2"),
+        isNull,
+      );
     });
   });
 

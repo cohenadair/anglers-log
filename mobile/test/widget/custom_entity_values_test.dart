@@ -19,21 +19,24 @@ main() {
   });
 
   testWidgets("Null input", (WidgetTester tester) async {
-    await tester.pumpWidget(Testable((_) => CustomEntityValues(null),
-        appManager: appManager));
+    await tester.pumpWidget(
+        Testable((_) => CustomEntityValues(null), appManager: appManager));
     expect(find.byType(Empty), findsOneWidget);
   });
 
   testWidgets("Empty input", (WidgetTester tester) async {
-    await tester.pumpWidget(Testable((_) => CustomEntityValues([]),
-        appManager: appManager));
+    await tester.pumpWidget(
+        Testable((_) => CustomEntityValues([]), appManager: appManager));
     expect(find.byType(Empty), findsOneWidget);
   });
 
   testWidgets("Value ID doesn't exist in manager", (WidgetTester tester) async {
-    await tester.pumpWidget(Testable((_) => CustomEntityValues([
-      CustomEntityValue()..customEntityId = randomId(),
-    ]), appManager: appManager));
+    await tester.pumpWidget(Testable(
+      (_) => CustomEntityValues([
+        CustomEntityValue()..customEntityId = randomId(),
+      ]),
+      appManager: appManager,
+    ));
     when(appManager.mockCustomEntityManager.entity(any)).thenReturn(null);
     expect(find.byType(Empty), findsOneWidget);
   });
@@ -44,29 +47,35 @@ main() {
     Id id3 = randomId();
 
     when(appManager.mockCustomEntityManager.entity(id1)).thenReturn(
-        CustomEntity()
-          ..name = "Entity 1"
-          ..type = CustomEntity_Type.TEXT);
+      CustomEntity()
+        ..name = "Entity 1"
+        ..type = CustomEntity_Type.TEXT,
+    );
     when(appManager.mockCustomEntityManager.entity(id2)).thenReturn(
-        CustomEntity()
-          ..name = "Entity 2"
-          ..type = CustomEntity_Type.BOOL);
+      CustomEntity()
+        ..name = "Entity 2"
+        ..type = CustomEntity_Type.BOOL,
+    );
     when(appManager.mockCustomEntityManager.entity(id3)).thenReturn(
-        CustomEntity()
-          ..name = "Entity 3"
-          ..type = CustomEntity_Type.NUMBER);
+      CustomEntity()
+        ..name = "Entity 3"
+        ..type = CustomEntity_Type.NUMBER,
+    );
 
-    await tester.pumpWidget(Testable((_) => CustomEntityValues([
-      CustomEntityValue()
-        ..customEntityId = id1
-        ..value = "Test 1",
-      CustomEntityValue()
-        ..customEntityId = id2
-        ..value = "1",
-      CustomEntityValue()
-        ..customEntityId = id3
-        ..value = "150",
-    ]), appManager: appManager));
+    await tester.pumpWidget(Testable(
+      (_) => CustomEntityValues([
+        CustomEntityValue()
+          ..customEntityId = id1
+          ..value = "Test 1",
+        CustomEntityValue()
+          ..customEntityId = id2
+          ..value = "1",
+        CustomEntityValue()
+          ..customEntityId = id3
+          ..value = "150",
+      ]),
+      appManager: appManager,
+    ));
 
     expect(find.byType(LabelValue), findsNWidgets(3));
     expect(find.text("Entity 1"), findsOneWidget);

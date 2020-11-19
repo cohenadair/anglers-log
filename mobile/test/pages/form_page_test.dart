@@ -26,69 +26,90 @@ main() {
   });
 
   testWidgets("Save button disabled when isInputValid = false",
-      (WidgetTester tester) async
-  {
-    await tester.pumpWidget(Testable((_) => FormPage(
-      fieldBuilder: (_) => {},
-      isInputValid: false,
-    )));
+      (WidgetTester tester) async {
+    await tester.pumpWidget(
+      Testable(
+        (_) => FormPage(
+          fieldBuilder: (_) => {},
+          isInputValid: false,
+        ),
+      ),
+    );
     expect(findFirstWithText<ActionButton>(tester, "SAVE").onPressed, isNull);
   });
 
   testWidgets("Save button enabled when isInputValid = true",
-      (WidgetTester tester) async
-  {
-    await tester.pumpWidget(Testable((_) => FormPage(
-      fieldBuilder: (_) => {},
-      isInputValid: true,
-    )));
-    expect(findFirstWithText<ActionButton>(tester, "SAVE").onPressed,
-        isNotNull);
+      (WidgetTester tester) async {
+    await tester.pumpWidget(
+      Testable(
+        (_) => FormPage(
+          fieldBuilder: (_) => {},
+          isInputValid: true,
+        ),
+      ),
+    );
+    expect(
+        findFirstWithText<ActionButton>(tester, "SAVE").onPressed, isNotNull);
   });
 
   testWidgets("Custom save button text", (WidgetTester tester) async {
-    await tester.pumpWidget(Testable((_) => FormPage(
-      fieldBuilder: (_) => {},
-      isInputValid: true,
-      saveButtonText: "DONE",
-    )));
+    await tester.pumpWidget(
+      Testable(
+        (_) => FormPage(
+          fieldBuilder: (_) => {},
+          isInputValid: true,
+          saveButtonText: "DONE",
+        ),
+      ),
+    );
     expect(find.text("SAVE"), findsNothing);
     expect(find.text("DONE"), findsOneWidget);
   });
 
   testWidgets("Editable form shows overflow menu", (WidgetTester tester) async {
-    await tester.pumpWidget(Testable((_) => FormPage(
-      fieldBuilder: (_) => {},
-      isInputValid: true,
-    )));
+    await tester.pumpWidget(
+      Testable(
+        (_) => FormPage(
+          fieldBuilder: (_) => {},
+          isInputValid: true,
+        ),
+      ),
+    );
     expect(find.byIcon(FormPage.moreMenuIcon), findsOneWidget);
   });
 
   testWidgets("Immutable form does not show overflow menu",
-      (WidgetTester tester) async
-  {
-    await tester.pumpWidget(Testable((_) => FormPage.immutable(
-      fieldBuilder: (_) => {},
-      isInputValid: true,
-    )));
+      (WidgetTester tester) async {
+    await tester.pumpWidget(
+      Testable(
+        (_) => FormPage.immutable(
+          fieldBuilder: (_) => {},
+          isInputValid: true,
+        ),
+      ),
+    );
     expect(find.byIcon(FormPage.moreMenuIcon), findsNothing);
   });
 
   testWidgets("All form fields are built", (WidgetTester tester) async {
-    await tester.pumpWidget(Testable((_) => FormPage.immutable(
-      fieldBuilder: (context) => {
-        randomId() : TextInput.name(context),
-        randomId() : TextInput.description(context),
-        randomId() : TextInput.number(
-          context,
-          label: "Age",
+    await tester.pumpWidget(
+      Testable(
+        (_) => FormPage.immutable(
+          fieldBuilder: (context) => {
+            randomId(): TextInput.name(context),
+            randomId(): TextInput.description(context),
+            randomId(): TextInput.number(
+              context,
+              label: "Age",
+            ),
+            randomId(): CheckboxInput(
+              label: "Enabled",
+            ),
+          },
+          isInputValid: true,
         ),
-        randomId() : CheckboxInput(
-          label: "Enabled",
-        ),
-      },
-      isInputValid: true,
-    )));
+      ),
+    );
 
     expect(find.text("Name"), findsOneWidget);
     expect(find.text("Description"), findsOneWidget);
@@ -113,9 +134,8 @@ main() {
     verify(navObserver.didPop(any, any)).called(1);
   });
 
-  testWidgets("onSave returns false does not pop page", (WidgetTester tester)
-      async
-  {
+  testWidgets("onSave returns false does not pop page",
+      (WidgetTester tester) async {
     var navObserver = MockNavigatorObserver();
     await tester.pumpWidget(Testable(
       (_) => FormPage.immutable(
@@ -146,24 +166,27 @@ main() {
   });
 
   testWidgets("Form state validation failing does not invoke onSave",
-      (WidgetTester tester) async
-  {
+      (WidgetTester tester) async {
     bool onFormSaveCalled = false;
     bool onTextFieldSavedCalled = false;
     bool validateCalled = false;
-    await tester.pumpWidget(Testable((_) => FormPage.immutable(
-      fieldBuilder: (context) => {
-        randomId() : TextFormField(
-          validator: (_) {
-            validateCalled =  true;
-            return "Invalid value";
+    await tester.pumpWidget(
+      Testable(
+        (_) => FormPage.immutable(
+          fieldBuilder: (context) => {
+            randomId(): TextFormField(
+              validator: (_) {
+                validateCalled = true;
+                return "Invalid value";
+              },
+              onSaved: (_) => onTextFieldSavedCalled = true,
+            ),
           },
-          onSaved: (_) => onTextFieldSavedCalled = true,
+          isInputValid: true,
+          onSave: (_) => onFormSaveCalled = true,
         ),
-      },
-      isInputValid: true,
-      onSave: (_) => onFormSaveCalled = true,
-    )));
+      ),
+    );
 
     await tapAndSettle(tester, find.text("SAVE"));
 
@@ -181,13 +204,13 @@ main() {
     await tester.pumpWidget(Testable(
       (_) => FormPage(
         fieldBuilder: (context) => {
-          nameId : TextInput.name(context),
-          descriptionId : TextInput.description(context),
-          ageId : TextInput.number(
+          nameId: TextInput.name(context),
+          descriptionId: TextInput.description(context),
+          ageId: TextInput.number(
             context,
             label: "Age",
           ),
-          enabledId : CheckboxInput(
+          enabledId: CheckboxInput(
             label: "Enabled",
           ),
         },
@@ -227,29 +250,32 @@ main() {
         isTrue);
 
     expect(find.text("Description"), findsOneWidget);
-    expect(findSiblingOfText<PaddedCheckbox>(tester, ListItem, "Description")
-        .checked, isFalse);
+    expect(
+        findSiblingOfText<PaddedCheckbox>(tester, ListItem, "Description")
+            .checked,
+        isFalse);
 
     expect(find.text("Age"), findsOneWidget);
     expect(findSiblingOfText<PaddedCheckbox>(tester, ListItem, "Age").checked,
         isTrue);
 
     expect(find.text("Enabled"), findsOneWidget);
-    expect(findSiblingOfText<PaddedCheckbox>(tester, ListItem, "Enabled")
-        .checked, isFalse);
+    expect(
+        findSiblingOfText<PaddedCheckbox>(tester, ListItem, "Enabled").checked,
+        isFalse);
     expect(findFirstWithText<ListItem>(tester, "Enabled").enabled, isFalse);
 
     expect(find.byType(PaddedCheckbox), findsNWidgets(4));
   });
 
-  testWidgets("Selection page invokes onAddFields", (WidgetTester tester) async
-  {
+  testWidgets("Selection page invokes onAddFields",
+      (WidgetTester tester) async {
     Id nameId = randomId();
     Set<Id> selectedIds;
     await tester.pumpWidget(Testable(
       (_) => FormPage(
         fieldBuilder: (context) => {
-          nameId : TextInput.name(context),
+          nameId: TextInput.name(context),
         },
         addFieldOptions: [
           FormPageFieldOption(
@@ -275,14 +301,13 @@ main() {
   });
 
   testWidgets("Toggling fields removes them from callback",
-      (WidgetTester tester) async
-  {
+      (WidgetTester tester) async {
     Id nameId = randomId();
     Set<Id> selectedIds;
     await tester.pumpWidget(Testable(
       (_) => FormPage(
         fieldBuilder: (context) => {
-          nameId : TextInput.name(context),
+          nameId: TextInput.name(context),
         },
         addFieldOptions: [
           FormPageFieldOption(
@@ -310,8 +335,7 @@ main() {
   });
 
   testWidgets("Selection page add button opens save entity page",
-      (WidgetTester tester) async
-  {
+      (WidgetTester tester) async {
     await tester.pumpWidget(Testable(
       (_) => FormPage(
         fieldBuilder: (context) => {},
@@ -328,16 +352,13 @@ main() {
   });
 
   testWidgets("Custom fields included in form are shown on selection page",
-      (WidgetTester tester) async
-  {
+      (WidgetTester tester) async {
     Id customEntityId = randomId();
     var customEntity = CustomEntity()
       ..id = customEntityId
       ..name = "Name"
       ..type = CustomEntity_Type.TEXT;
-    when(appManager.mockCustomEntityManager.list()).thenReturn([
-      customEntity
-    ]);
+    when(appManager.mockCustomEntityManager.list()).thenReturn([customEntity]);
     when(appManager.mockCustomEntityManager.entity(customEntityId))
         .thenReturn(customEntity);
     await tester.pumpWidget(Testable(
@@ -364,16 +385,13 @@ main() {
   });
 
   testWidgets("Custom fields not included in form are shown on selection page",
-      (WidgetTester tester) async
-  {
+      (WidgetTester tester) async {
     Id customEntityId = randomId();
     var customEntity = CustomEntity()
       ..id = customEntityId
       ..name = "Name"
       ..type = CustomEntity_Type.TEXT;
-    when(appManager.mockCustomEntityManager.list()).thenReturn([
-      customEntity
-    ]);
+    when(appManager.mockCustomEntityManager.list()).thenReturn([customEntity]);
     when(appManager.mockCustomEntityManager.entity(customEntityId))
         .thenReturn(customEntity);
     await tester.pumpWidget(Testable(
@@ -398,8 +416,7 @@ main() {
   });
 
   testWidgets("Selection page custom fields are in alphabetical order",
-      (WidgetTester tester) async
-  {
+      (WidgetTester tester) async {
     Id customEntityId1 = randomId();
     Id customEntityId2 = randomId();
     var customEntity1 = CustomEntity()
@@ -412,7 +429,8 @@ main() {
       ..type = CustomEntity_Type.TEXT;
 
     when(appManager.mockCustomEntityManager.list()).thenReturn([
-      customEntity1, customEntity2,
+      customEntity1,
+      customEntity2,
     ]);
     when(appManager.mockCustomEntityManager.entity(customEntityId1))
         .thenReturn(customEntity1);
@@ -440,19 +458,24 @@ main() {
     await tapAndSettle(tester, find.byIcon(FormPage.moreMenuIcon));
     await tapAndSettle(tester, find.text("Manage Fields"));
 
-    expect(find.descendant(
-      of: find.byType(ListItem).at(0),
-      matching: find.text("Address"),
-    ), findsOneWidget);
-    expect(find.descendant(
-      of: find.byType(ListItem).at(1),
-      matching: find.text("Name"),
-    ), findsOneWidget);
+    expect(
+      find.descendant(
+        of: find.byType(ListItem).at(0),
+        matching: find.text("Address"),
+      ),
+      findsOneWidget,
+    );
+    expect(
+      find.descendant(
+        of: find.byType(ListItem).at(1),
+        matching: find.text("Name"),
+      ),
+      findsOneWidget,
+    );
   });
 
   testWidgets("Selection page no custom fields shows note",
-      (WidgetTester tester) async
-  {
+      (WidgetTester tester) async {
     await tester.pumpWidget(Testable(
       (_) => FormPage(
         fieldBuilder: (_) => {},

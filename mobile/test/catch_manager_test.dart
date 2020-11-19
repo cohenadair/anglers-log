@@ -42,22 +42,25 @@ void main() {
 
     dataManager = appManager.mockDataManager;
     when(appManager.dataManager).thenReturn(dataManager);
-    when(dataManager.insertOrUpdateEntity(any, any, any)).thenAnswer((_) =>
-        Future.value(true));
+    when(dataManager.insertOrUpdateEntity(any, any, any))
+        .thenAnswer((_) => Future.value(true));
 
     imageManager = appManager.mockImageManager;
     when(appManager.imageManager).thenReturn(imageManager);
-    when(imageManager
-        .save(any, compress: anyNamed("compress")))
-        .thenAnswer((invocation) => Future.value((invocation.positionalArguments
-            .first as List<File>)?.map((f) => f.path)?.toList() ?? []));
+    when(imageManager.save(any, compress: anyNamed("compress"))).thenAnswer(
+      (invocation) => Future.value(
+          (invocation.positionalArguments.first as List<File>)
+                  ?.map((f) => f.path)
+                  ?.toList() ??
+              []),
+    );
 
     fishingSpotManager = FishingSpotManager(appManager);
     when(appManager.fishingSpotManager).thenReturn(fishingSpotManager);
 
     baitManager = BaitManager(appManager);
     when(appManager.baitManager).thenReturn(baitManager);
-    
+
     speciesManager = appManager.mockSpeciesManager;
     when(appManager.speciesManager).thenReturn(speciesManager);
     when(speciesManager.matchesFilter(any, any)).thenReturn(false);
@@ -106,8 +109,8 @@ void main() {
     expect(catchManager.entity(catchId1).hasBaitId(), false);
   });
 
-  test("When a fishing spot is deleted, existing catches are updated", () async
-  {
+  test("When a fishing spot is deleted, existing catches are updated",
+      () async {
     when(dataManager.insertOrUpdateEntity(any, any, any))
         .thenAnswer((_) => Future.value(true));
     when(dataManager.deleteEntity(any, any))
@@ -115,14 +118,13 @@ void main() {
     when(dataManager.replaceRows(any, any)).thenAnswer((_) => Future.value());
 
     MockCatchListener catchListener = MockCatchListener();
-    when(catchListener.onDelete).thenReturn((_) { });
-    when(catchListener.onAddOrUpdate).thenReturn(() { });
+    when(catchListener.onDelete).thenReturn((_) {});
+    when(catchListener.onAddOrUpdate).thenReturn(() {});
     catchManager.addListener(catchListener);
 
     // Add a fishing spot.
     Id fishingSpotId0 = randomId();
-    FishingSpot fishingSpot = FishingSpot()
-      ..id = fishingSpotId0;
+    FishingSpot fishingSpot = FishingSpot()..id = fishingSpotId0;
     await fishingSpotManager.addOrUpdate(fishingSpot);
 
     // Add a couple catches that use the new fishing spot.
@@ -148,8 +150,7 @@ void main() {
   });
 
   testWidgets("Filtering by search query; non-ID reference properties",
-      (WidgetTester tester) async
-  {
+      (WidgetTester tester) async {
     await catchManager.addOrUpdate(Catch()
       ..id = randomId()
       ..timestamp = Timestamp.fromDateTime(DateTime(2020, 1, 1)));
@@ -188,9 +189,8 @@ void main() {
     expect(catchManager.filteredCatches(context, filter: "Bait").length, 2);
   });
 
-  testWidgets("Filtering by search query; fishing spot", (WidgetTester tester)
-      async
-  {
+  testWidgets("Filtering by search query; fishing spot",
+      (WidgetTester tester) async {
     var fishingSpotManager = MockFishingSpotManager();
     when(appManager.fishingSpotManager).thenReturn(fishingSpotManager);
     when(fishingSpotManager.matchesFilter(any, any)).thenReturn(true);
@@ -206,9 +206,8 @@ void main() {
     expect(catchManager.filteredCatches(context, filter: "Spot").length, 2);
   });
 
-  testWidgets("Filtering by search query; species", (WidgetTester tester)
-      async
-  {
+  testWidgets("Filtering by search query; species",
+      (WidgetTester tester) async {
     var speciesManager = MockSpeciesManager();
     when(appManager.speciesManager).thenReturn(speciesManager);
     when(speciesManager.matchesFilter(any, any)).thenReturn(true);
@@ -250,12 +249,14 @@ void main() {
       ..speciesId = speciesId2);
 
     BuildContext context = await buildContext(tester, appManager: appManager);
-    List<Catch> catches = catchManager.filteredCatches(context,
+    List<Catch> catches = catchManager.filteredCatches(
+      context,
       speciesIds: {speciesId1},
     );
     expect(catches.length, 2);
 
-    catches = catchManager.filteredCatches(context,
+    catches = catchManager.filteredCatches(
+      context,
       speciesIds: {speciesId1, speciesId2},
     );
     expect(catches.length, 3);
@@ -263,7 +264,8 @@ void main() {
     catches = catchManager.filteredCatches(context);
     expect(catches.length, 4);
 
-    catches = catchManager.filteredCatches(context,
+    catches = catchManager.filteredCatches(
+      context,
       speciesIds: {randomId()},
     );
     expect(catches.isEmpty, true);
@@ -284,7 +286,8 @@ void main() {
       ..timestamp = timestampFromMillis(20000));
 
     BuildContext context = await buildContext(tester, appManager: appManager);
-    List<Catch> catches = catchManager.filteredCatches(context,
+    List<Catch> catches = catchManager.filteredCatches(
+      context,
       dateRange: DateRange(
         startDate: DateTime.fromMillisecondsSinceEpoch(0),
         endDate: DateTime.fromMillisecondsSinceEpoch(15000),
@@ -295,7 +298,8 @@ void main() {
     catches = catchManager.filteredCatches(context);
     expect(catches.length, 3);
 
-    catches = catchManager.filteredCatches(context,
+    catches = catchManager.filteredCatches(
+      context,
       dateRange: DateRange(
         startDate: DateTime.fromMillisecondsSinceEpoch(20001),
         endDate: DateTime.fromMillisecondsSinceEpoch(30000),
@@ -327,12 +331,14 @@ void main() {
       ..fishingSpotId = fishingSpotId3);
 
     BuildContext context = await buildContext(tester, appManager: appManager);
-    List<Catch> catches = catchManager.filteredCatches(context,
+    List<Catch> catches = catchManager.filteredCatches(
+      context,
       fishingSpotIds: {fishingSpotId0},
     );
     expect(catches.length, 2);
 
-    catches = catchManager.filteredCatches(context,
+    catches = catchManager.filteredCatches(
+      context,
       fishingSpotIds: {fishingSpotId0, fishingSpotId3},
     );
     expect(catches.length, 3);
@@ -340,7 +346,8 @@ void main() {
     catches = catchManager.filteredCatches(context);
     expect(catches.length, 4);
 
-    catches = catchManager.filteredCatches(context,
+    catches = catchManager.filteredCatches(
+      context,
       fishingSpotIds: {fishingSpotId2},
     );
     expect(catches.isEmpty, true);
@@ -369,12 +376,14 @@ void main() {
       ..baitId = baitId3);
 
     BuildContext context = await buildContext(tester, appManager: appManager);
-    List<Catch> catches = catchManager.filteredCatches(context,
+    List<Catch> catches = catchManager.filteredCatches(
+      context,
       baitIds: {baitId0},
     );
     expect(catches.length, 2);
 
-    catches = catchManager.filteredCatches(context,
+    catches = catchManager.filteredCatches(
+      context,
       baitIds: {baitId0, baitId3},
     );
     expect(catches.length, 3);
@@ -382,7 +391,8 @@ void main() {
     catches = catchManager.filteredCatches(context);
     expect(catches.length, 4);
 
-    catches = catchManager.filteredCatches(context,
+    catches = catchManager.filteredCatches(
+      context,
       baitIds: {baitId2},
     );
     expect(catches.isEmpty, true);
@@ -397,17 +407,14 @@ void main() {
     Id catchId2 = randomId();
     Id catchId3 = randomId();
 
-    await catchManager.addOrUpdate(Catch()
-      ..id = catchId0);
-    await catchManager.addOrUpdate(Catch()
-      ..id = catchId1);
-    await catchManager.addOrUpdate(Catch()
-      ..id = catchId2);
-    await catchManager.addOrUpdate(Catch()
-      ..id = catchId3);
+    await catchManager.addOrUpdate(Catch()..id = catchId0);
+    await catchManager.addOrUpdate(Catch()..id = catchId1);
+    await catchManager.addOrUpdate(Catch()..id = catchId2);
+    await catchManager.addOrUpdate(Catch()..id = catchId3);
 
     BuildContext context = await buildContext(tester, appManager: appManager);
-    List<Catch> catches = catchManager.filteredCatches(context,
+    List<Catch> catches = catchManager.filteredCatches(
+      context,
       catchIds: {catchId2, catchId0},
     );
     expect(catches.length, 2);
@@ -415,7 +422,8 @@ void main() {
     catches = catchManager.filteredCatches(context);
     expect(catches.length, 4);
 
-    catches = catchManager.filteredCatches(context,
+    catches = catchManager.filteredCatches(
+      context,
       catchIds: {randomId()},
     );
     expect(catches.isEmpty, true);
@@ -456,7 +464,8 @@ void main() {
       ..fishingSpotId = fishingSpotId1);
 
     BuildContext context = await buildContext(tester, appManager: appManager);
-    List<Catch> catches = catchManager.filteredCatches(context,
+    List<Catch> catches = catchManager.filteredCatches(
+      context,
       catchIds: {catchId0},
       speciesIds: {speciesId0},
       baitIds: {baitId0},
@@ -467,7 +476,8 @@ void main() {
     catches = catchManager.filteredCatches(context);
     expect(catches.length, 3);
 
-    catches = catchManager.filteredCatches(context,
+    catches = catchManager.filteredCatches(
+      context,
       catchIds: {catchId0},
       speciesIds: {randomId()},
       baitIds: {baitId0},
@@ -500,19 +510,22 @@ void main() {
 
     BuildContext context = await buildContext(tester, appManager: appManager);
     expect(catchManager.imageNamesSortedByTimestamp(context), [
-      "img2", "img3", "img0", "img1", "img4",
+      "img2",
+      "img3",
+      "img0",
+      "img1",
+      "img4",
     ]);
   });
 
   group("deleteMessage", () {
     testWidgets("Input", (WidgetTester tester) async {
-      expect(() => catchManager.deleteMessage(null, Catch()
-        ..id = randomId()
-      ), throwsAssertionError);
+      expect(() => catchManager.deleteMessage(null, Catch()..id = randomId()),
+          throwsAssertionError);
 
       BuildContext context = await buildContext(tester, appManager: appManager);
-      expect(() => baitManager.deleteMessage(context, null),
-          throwsAssertionError);
+      expect(
+          () => baitManager.deleteMessage(context, null), throwsAssertionError);
     });
 
     testWidgets("No species", (WidgetTester tester) async {
@@ -520,11 +533,14 @@ void main() {
         ..id = randomId()
         ..timestamp = Timestamp.fromDateTime(DateTime(2020, 9, 25));
 
-      when(appManager.mockTimeManager.currentDateTime).thenReturn(DateTime(2020, 9, 25));
+      when(appManager.mockTimeManager.currentDateTime)
+          .thenReturn(DateTime(2020, 9, 25));
       BuildContext context = await buildContext(tester, appManager: appManager);
-      expect(catchManager.deleteMessage(context, cat),
-          "Are you sure you want to delete catch (Today at 4:00 AM)? "
-              "This cannot be undone.");
+      expect(
+        catchManager.deleteMessage(context, cat),
+        "Are you sure you want to delete catch (Today at 4:00 AM)? "
+        "This cannot be undone.",
+      );
     });
 
     testWidgets("With species", (WidgetTester tester) async {
@@ -537,11 +553,14 @@ void main() {
         ..speciesId = species.id;
 
       when(speciesManager.entity(any)).thenReturn(species);
-      when(appManager.mockTimeManager.currentDateTime).thenReturn(DateTime(2020, 9, 25));
+      when(appManager.mockTimeManager.currentDateTime)
+          .thenReturn(DateTime(2020, 9, 25));
       BuildContext context = await buildContext(tester, appManager: appManager);
-      expect(catchManager.deleteMessage(context, cat),
-          "Are you sure you want to delete catch Steelhead (Today at 4:00 AM)? "
-              "This cannot be undone.");
+      expect(
+        catchManager.deleteMessage(context, cat),
+        "Are you sure you want to delete catch Steelhead (Today at 4:00 AM)? "
+        "This cannot be undone.",
+      );
     });
   });
 }

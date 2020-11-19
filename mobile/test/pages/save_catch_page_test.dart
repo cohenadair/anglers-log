@@ -34,9 +34,8 @@ main() {
   });
 
   group("From journey", () {
-    testWidgets("Images with date sets Catch date", (WidgetTester tester)
-        async
-    {
+    testWidgets("Images with date sets Catch date",
+        (WidgetTester tester) async {
       await tester.pumpWidget(Testable(
         (_) => SaveCatchPage(
           images: [
@@ -60,9 +59,8 @@ main() {
       expect(find.text("3:30 PM"), findsOneWidget);
     });
 
-    testWidgets("Images without date sets default date", (WidgetTester tester)
-        async
-    {
+    testWidgets("Images without date sets default date",
+        (WidgetTester tester) async {
       await tester.pumpWidget(Testable(
         (_) => SaveCatchPage(
           images: [
@@ -85,9 +83,8 @@ main() {
       expect(find.text("10:30 AM"), findsOneWidget);
     });
 
-    testWidgets("All journey fields set correctly", (WidgetTester tester)
-        async
-    {
+    testWidgets("All journey fields set correctly",
+        (WidgetTester tester) async {
       await tester.pumpWidget(Testable(
         (_) => SaveCatchPage(
           images: [
@@ -189,9 +186,10 @@ main() {
         any,
         imageNames: anyNamed("imageNames"),
         size: anyNamed("size"),
-      )).thenAnswer((_) => Future.value([
-        File("test/resources/flutter_logo.png").readAsBytesSync()
-      ]));
+      )).thenAnswer(
+        (_) => Future.value(
+            [File("test/resources/flutter_logo.png").readAsBytesSync()]),
+      );
 
       await tester.pumpWidget(Testable(
         (_) => SaveCatchPage.edit(cat),
@@ -283,9 +281,10 @@ main() {
         any,
         imageNames: anyNamed("imageNames"),
         size: anyNamed("size"),
-      )).thenAnswer((_) => Future.value([
-        File("test/resources/flutter_logo.png").readAsBytesSync()
-      ]));
+      )).thenAnswer(
+        (_) => Future.value(
+            [File("test/resources/flutter_logo.png").readAsBytesSync()]),
+      );
 
       await tester.pumpWidget(Testable(
         (_) => SaveCatchPage.edit(cat),
@@ -306,12 +305,13 @@ main() {
       });
       await tapAndSettle(tester, find.text("SAVE"));
 
-      VerificationResult result = verify(appManager.mockCatchManager
-          .addOrUpdate(
-            captureAny,
-            fishingSpot: anyNamed("fishingSpot"),
-            imageFiles: anyNamed("imageFiles"),
-          ));
+      VerificationResult result = verify(
+        appManager.mockCatchManager.addOrUpdate(
+          captureAny,
+          fishingSpot: anyNamed("fishingSpot"),
+          imageFiles: anyNamed("imageFiles"),
+        ),
+      );
       result.called(1);
       expect(result.captured.first, cat);
     });
@@ -360,18 +360,19 @@ main() {
 
       await tapAndSettle(tester, find.text("SAVE"));
 
-      VerificationResult result = verify(appManager.mockCatchManager
-          .addOrUpdate(
-            captureAny,
-            fishingSpot: anyNamed("fishingSpot"),
-            imageFiles: anyNamed("imageFiles"),
-          ));
+      VerificationResult result = verify(
+        appManager.mockCatchManager.addOrUpdate(
+          captureAny,
+          fishingSpot: anyNamed("fishingSpot"),
+          imageFiles: anyNamed("imageFiles"),
+        ),
+      );
       result.called(1);
 
       Catch cat = result.captured.first;
       expect(cat, isNotNull);
-      expect(cat.timestamp,
-          Timestamp.fromDateTime(DateTime(2020, 2, 1, 10, 30)));
+      expect(
+          cat.timestamp, Timestamp.fromDateTime(DateTime(2020, 2, 1, 10, 30)));
       expect(cat.speciesId, speciesId);
       expect(cat.fishingSpotId, fishingSpotId);
       expect(cat.hasBaitId(), false);

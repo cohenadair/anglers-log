@@ -29,9 +29,10 @@ main() {
 
   testWidgets("Edit title", (WidgetTester tester) async {
     await tester.pumpWidget(Testable(
-      (_) => SaveSpeciesPage.edit(Species()
-        ..id = randomId()
-        ..name = "Steelhead",
+      (_) => SaveSpeciesPage.edit(
+        Species()
+          ..id = randomId()
+          ..name = "Steelhead",
       ),
       appManager: appManager,
     ));

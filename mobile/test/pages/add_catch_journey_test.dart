@@ -35,42 +35,48 @@ main() {
 
     allAlbum = MockAssetPathEntity();
     when(allAlbum.isAll).thenReturn(true);
-    when(allAlbum.assetList).thenAnswer((_) => Future.value([
-      createMockAssetEntity(
-        fileName: "android_logo.png",
-        latLngLegacy: LatLng()..latitude = 1.234567..longitude = 7.654321,
-        latLngAsync: LatLng()..latitude = 1.234567..longitude = 7.654321,
-        dateTime: DateTime(2020, 4, 1),
-      ),
-      createMockAssetEntity(
-        fileName: "anglers_log_logo.png",
-        dateTime: DateTime(2020, 3, 1),
-      ),
-      createMockAssetEntity(
-        fileName: "apple_logo.png",
-        dateTime: DateTime(2020, 2, 1),
-      ),
-      createMockAssetEntity(
-        fileName: "flutter_logo.png",
-        dateTime: DateTime(2020, 1, 1),
-      ),
-    ]));
+    when(allAlbum.assetList).thenAnswer(
+      (_) => Future.value([
+        createMockAssetEntity(
+          fileName: "android_logo.png",
+          latLngLegacy: LatLng()
+            ..latitude = 1.234567
+            ..longitude = 7.654321,
+          latLngAsync: LatLng()
+            ..latitude = 1.234567
+            ..longitude = 7.654321,
+          dateTime: DateTime(2020, 4, 1),
+        ),
+        createMockAssetEntity(
+          fileName: "anglers_log_logo.png",
+          dateTime: DateTime(2020, 3, 1),
+        ),
+        createMockAssetEntity(
+          fileName: "apple_logo.png",
+          dateTime: DateTime(2020, 2, 1),
+        ),
+        createMockAssetEntity(
+          fileName: "flutter_logo.png",
+          dateTime: DateTime(2020, 1, 1),
+        ),
+      ]),
+    );
     when(appManager.mockPhotoManagerWrapper.getAssetPathList(any))
         .thenAnswer((_) => Future.value([allAlbum]));
 
     when(appManager.mockPreferencesManager.catchCustomEntityIds).thenReturn([]);
 
-    when(appManager.mockSpeciesManager.listSortedByName(filter: anyNamed("filter")))
+    when(appManager.mockSpeciesManager
+            .listSortedByName(filter: anyNamed("filter")))
         .thenReturn([
-          Species()
-            ..id = randomId()
-            ..name = "Steelhead"
-        ]);
+      Species()
+        ..id = randomId()
+        ..name = "Steelhead"
+    ]);
   });
 
   testWidgets("Picked image uses location data to fetch existing fishing spot",
-      (WidgetTester tester) async
-  {
+      (WidgetTester tester) async {
     await tester.pumpWidget(Testable(
       (_) => AddCatchJourney(),
       appManager: appManager,
@@ -97,8 +103,7 @@ main() {
   });
 
   testWidgets("Picked image uses location data to create new fishing spot",
-      (WidgetTester tester) async
-  {
+      (WidgetTester tester) async {
     await tester.pumpWidget(Testable(
       (_) => AddCatchJourney(),
       appManager: appManager,
@@ -118,8 +123,7 @@ main() {
   });
 
   testWidgets("Picked image without location data shows fishing spot picker",
-      (WidgetTester tester) async
-  {
+      (WidgetTester tester) async {
     await tester.pumpWidget(Testable(
       (_) => AddCatchJourney(),
       appManager: appManager,

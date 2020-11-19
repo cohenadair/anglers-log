@@ -47,42 +47,48 @@ main() {
     when(appManager.mockFishingSpotManager.listSortedByName())
         .thenReturn(fishingSpots);
     when(appManager.mockFishingSpotManager
-        .listSortedByName(filter: anyNamed("filter"))).thenAnswer(
-            (invocation) => fishingSpots..removeWhere((spot) {
-              String filter = invocation.namedArguments[Symbol("filter")];
-              if (Q.isEmpty(filter)) {
-                return false;
-              }
-              if (Q.isEmpty(spot.name)) {
-                return !spot.lat.toString().contains(filter)
-                    && !spot.lng.toString().contains(filter);
-              }
-              return !spot.name.contains(invocation
-                  .namedArguments[Symbol("filter")] as String);
-            }));
+            .listSortedByName(filter: anyNamed("filter")))
+        .thenAnswer((invocation) => fishingSpots
+          ..removeWhere((spot) {
+            String filter = invocation.namedArguments[Symbol("filter")];
+            if (Q.isEmpty(filter)) {
+              return false;
+            }
+            if (Q.isEmpty(spot.name)) {
+              return !spot.lat.toString().contains(filter) &&
+                  !spot.lng.toString().contains(filter);
+            }
+            return !spot.name.contains(
+                invocation.namedArguments[Symbol("filter")] as String);
+          }));
   }
 
   group("Search bar", () {
     testWidgets("No search bar", (WidgetTester tester) async {
-      await tester.pumpWidget(Testable((_) => FishingSpotMap(
-        mapController: Completer<GoogleMapController>(),
-      ), appManager: appManager));
+      await tester.pumpWidget(Testable(
+        (_) => FishingSpotMap(
+          mapController: Completer<GoogleMapController>(),
+        ),
+        appManager: appManager,
+      ));
       await tester.pumpAndSettle(Duration(milliseconds: 200));
       expect(find.byType(SearchBar), findsNothing);
     });
 
     testWidgets("Search bar exists", (WidgetTester tester) async {
-      await tester.pumpWidget(Testable((_) => FishingSpotMap(
-        mapController: Completer<GoogleMapController>(),
-        searchBar: FishingSpotMapSearchBar(),
-      ), appManager: appManager));
+      await tester.pumpWidget(Testable(
+        (_) => FishingSpotMap(
+          mapController: Completer<GoogleMapController>(),
+          searchBar: FishingSpotMapSearchBar(),
+        ),
+        appManager: appManager,
+      ));
       await tester.pumpAndSettle(Duration(milliseconds: 200));
       expect(find.byType(SearchBar), findsOneWidget);
     });
 
     testWidgets("Open fishing spot list with no fishing spots",
-        (WidgetTester tester) async
-    {
+        (WidgetTester tester) async {
       when(appManager.mockFishingSpotManager.listSortedByName()).thenReturn([]);
 
       await tester.pumpWidget(Testable(
@@ -101,9 +107,8 @@ main() {
       expect(find.byType(ListItem), findsNothing);
     });
 
-    testWidgets("Spots rendered in list correctly", (WidgetTester tester)
-        async
-    {
+    testWidgets("Spots rendered in list correctly",
+        (WidgetTester tester) async {
       stubFishingSpots();
 
       await tester.pumpWidget(Testable(
@@ -123,9 +128,8 @@ main() {
       expect(find.text("Fishing Spot 4"), findsOneWidget);
     });
 
-    testWidgets("Tap fishing spot invokes callback", (WidgetTester tester)
-        async
-    {
+    testWidgets("Tap fishing spot invokes callback",
+        (WidgetTester tester) async {
       stubFishingSpots();
 
       bool picked = false;
@@ -193,14 +197,17 @@ main() {
 
   group("Children", () {
     testWidgets("Children are rendered", (WidgetTester tester) async {
-      await tester.pumpWidget(Testable((_) => FishingSpotMap(
-        mapController: Completer<GoogleMapController>(),
-        children: [
-          Text("Test 1"),
-          Text("Test 2"),
-          Text("Test 3"),
-        ],
-      ), appManager: appManager));
+      await tester.pumpWidget(Testable(
+        (_) => FishingSpotMap(
+          mapController: Completer<GoogleMapController>(),
+          children: [
+            Text("Test 1"),
+            Text("Test 2"),
+            Text("Test 3"),
+          ],
+        ),
+        appManager: appManager,
+      ));
 
       await tester.pumpAndSettle(Duration(milliseconds: 200));
       expect(find.text("Test 1"), findsOneWidget);
@@ -211,38 +218,50 @@ main() {
 
   group("Help tooltip", () {
     testWidgets("No help", (WidgetTester tester) async {
-      await tester.pumpWidget(Testable((_) => FishingSpotMap(
-        mapController: Completer<GoogleMapController>(),
-      ), appManager: appManager));
+      await tester.pumpWidget(Testable(
+        (_) => FishingSpotMap(
+          mapController: Completer<GoogleMapController>(),
+        ),
+        appManager: appManager,
+      ));
       await tester.pumpAndSettle(Duration(milliseconds: 2100));
       expect(find.byType(HelpTooltip), findsNothing);
       expect(find.byIcon(Icons.help), findsNothing);
     });
 
     testWidgets("Help", (WidgetTester tester) async {
-      await tester.pumpWidget(Testable((_) => FishingSpotMap(
-        mapController: Completer<GoogleMapController>(),
-        help: Text("Help"),
-      ), appManager: appManager));
+      await tester.pumpWidget(Testable(
+        (_) => FishingSpotMap(
+          mapController: Completer<GoogleMapController>(),
+          help: Text("Help"),
+        ),
+        appManager: appManager,
+      ));
       await tester.pumpAndSettle(Duration(milliseconds: 200));
       expect(findFirst<HelpTooltip>(tester).showing, isTrue);
       expect(find.byIcon(Icons.help), findsOneWidget);
     });
 
     testWidgets("Help is hidden after delay", (WidgetTester tester) async {
-      await tester.pumpWidget(Testable((_) => FishingSpotMap(
-        mapController: Completer<GoogleMapController>(),
-        help: Text("Help"),
-      ), appManager: appManager));
+      await tester.pumpWidget(Testable(
+        (_) => FishingSpotMap(
+          mapController: Completer<GoogleMapController>(),
+          help: Text("Help"),
+        ),
+        appManager: appManager,
+      ));
       await tester.pumpAndSettle(Duration(milliseconds: 2100));
       expect(findFirst<HelpTooltip>(tester).showing, isFalse);
     });
 
     testWidgets("Tapping FAB shows widget", (WidgetTester tester) async {
-      await tester.pumpWidget(Testable((_) => FishingSpotMap(
-        mapController: Completer<GoogleMapController>(),
-        help: Text("Help"),
-      ), appManager: appManager));
+      await tester.pumpWidget(Testable(
+        (_) => FishingSpotMap(
+          mapController: Completer<GoogleMapController>(),
+          help: Text("Help"),
+        ),
+        appManager: appManager,
+      ));
       await tester.pumpAndSettle(Duration(milliseconds: 2100));
 
       // Show help.
@@ -254,10 +273,13 @@ main() {
     testWidgets("Hides if map is dragged", (WidgetTester tester) async {
       var controller = Completer<GoogleMapController>();
 
-      await tester.pumpWidget(Testable((_) => FishingSpotMap(
-        mapController: controller,
-        help: Text("Help"),
-      ), appManager: appManager));
+      await tester.pumpWidget(Testable(
+        (_) => FishingSpotMap(
+          mapController: controller,
+          help: Text("Help"),
+        ),
+        appManager: appManager,
+      ));
       await tester.pumpAndSettle(Duration(milliseconds: 2100));
 
       // Show help.
@@ -274,10 +296,13 @@ main() {
   group("Map interaction", () {
     testWidgets("onCameraMoveStarted", (WidgetTester tester) async {
       bool called = false;
-      await tester.pumpWidget(Testable((_) => FishingSpotMap(
-        mapController: Completer<GoogleMapController>(),
-        onMoveStarted: () => called = true,
-      ), appManager: appManager));
+      await tester.pumpWidget(Testable(
+        (_) => FishingSpotMap(
+          mapController: Completer<GoogleMapController>(),
+          onMoveStarted: () => called = true,
+        ),
+        appManager: appManager,
+      ));
       await tester.pumpAndSettle(Duration(milliseconds: 200));
 
       findFirst<GoogleMap>(tester).onCameraMoveStarted();
@@ -286,10 +311,13 @@ main() {
 
     testWidgets("onCameraMove", (WidgetTester tester) async {
       bool called = false;
-      await tester.pumpWidget(Testable((_) => FishingSpotMap(
-        mapController: Completer<GoogleMapController>(),
-        onMove: (_) => called = true,
-      ), appManager: appManager));
+      await tester.pumpWidget(Testable(
+        (_) => FishingSpotMap(
+          mapController: Completer<GoogleMapController>(),
+          onMove: (_) => called = true,
+        ),
+        appManager: appManager,
+      ));
       await tester.pumpAndSettle(Duration(milliseconds: 200));
 
       findFirst<GoogleMap>(tester).onCameraMove(CameraPosition(
@@ -306,10 +334,14 @@ main() {
         matching: find.byType(Visibility),
       ));
     }
+
     testWidgets("All map options + check mark", (WidgetTester tester) async {
-      await tester.pumpWidget(Testable((_) => FishingSpotMap(
-        mapController: Completer<GoogleMapController>(),
-      ), appManager: appManager));
+      await tester.pumpWidget(Testable(
+        (_) => FishingSpotMap(
+          mapController: Completer<GoogleMapController>(),
+        ),
+        appManager: appManager,
+      ));
       await tester.pumpAndSettle(Duration(milliseconds: 200));
 
       await tester.tap(find.byIcon(Icons.layers));
@@ -328,10 +360,13 @@ main() {
 
     testWidgets("Changing the map type", (WidgetTester tester) async {
       MapType currentType;
-      await tester.pumpWidget(Testable((_) => FishingSpotMap(
-        mapController: Completer<GoogleMapController>(),
-        onMapTypeChanged: (newType) => currentType = newType,
-      ), appManager: appManager));
+      await tester.pumpWidget(Testable(
+        (_) => FishingSpotMap(
+          mapController: Completer<GoogleMapController>(),
+          onMapTypeChanged: (newType) => currentType = newType,
+        ),
+        appManager: appManager,
+      ));
       await tester.pumpAndSettle(Duration(milliseconds: 200));
 
       await tester.tap(find.byIcon(Icons.layers));
@@ -345,32 +380,40 @@ main() {
 
   group("My location button", () {
     testWidgets("Hidden", (WidgetTester tester) async {
-      await tester.pumpWidget(Testable((_) => FishingSpotMap(
-        mapController: Completer<GoogleMapController>(),
-        showMyLocationButton: false,
-      ), appManager: appManager));
+      await tester.pumpWidget(Testable(
+        (_) => FishingSpotMap(
+          mapController: Completer<GoogleMapController>(),
+          showMyLocationButton: false,
+        ),
+        appManager: appManager,
+      ));
       await tester.pumpAndSettle(Duration(milliseconds: 200));
       expect(find.byIcon(Icons.my_location), findsNothing);
     });
 
     testWidgets("Showing", (WidgetTester tester) async {
-      await tester.pumpWidget(Testable((_) => FishingSpotMap(
-        mapController: Completer<GoogleMapController>(),
-      ), appManager: appManager));
+      await tester.pumpWidget(Testable(
+        (_) => FishingSpotMap(
+          mapController: Completer<GoogleMapController>(),
+        ),
+        appManager: appManager,
+      ));
       await tester.pumpAndSettle(Duration(milliseconds: 200));
       expect(find.byIcon(Icons.my_location), findsOneWidget);
     });
 
-    testWidgets("onPressed no location shows error", (WidgetTester tester)
-        async
-    {
+    testWidgets("onPressed no location shows error",
+        (WidgetTester tester) async {
       bool pressed = false;
-      await tester.pumpWidget(Testable((_) => Scaffold(
-        body: FishingSpotMap(
-          mapController: Completer<GoogleMapController>(),
-          onCurrentLocationPressed: () => pressed = true,
+      await tester.pumpWidget(Testable(
+        (_) => Scaffold(
+          body: FishingSpotMap(
+            mapController: Completer<GoogleMapController>(),
+            onCurrentLocationPressed: () => pressed = true,
+          ),
         ),
-      ), appManager: appManager));
+        appManager: appManager,
+      ));
       await tester.pumpAndSettle(Duration(milliseconds: 200));
 
       when(appManager.mockLocationMonitor.currentLocation).thenReturn(null);
@@ -383,10 +426,13 @@ main() {
 
     testWidgets("onPressed invokes callback", (WidgetTester tester) async {
       bool pressed = false;
-      await tester.pumpWidget(Testable((_) => FishingSpotMap(
-        mapController: Completer<GoogleMapController>(),
-        onCurrentLocationPressed: () => pressed = true,
-      ), appManager: appManager));
+      await tester.pumpWidget(Testable(
+        (_) => FishingSpotMap(
+          mapController: Completer<GoogleMapController>(),
+          onCurrentLocationPressed: () => pressed = true,
+        ),
+        appManager: appManager,
+      ));
       await tester.pumpAndSettle(Duration(milliseconds: 200));
 
       when(appManager.mockLocationMonitor.currentLocation)

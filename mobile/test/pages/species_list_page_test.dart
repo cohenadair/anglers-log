@@ -15,11 +15,21 @@ main() {
   SpeciesManager speciesManager;
 
   List<Species> speciesList = [
-    Species()..id = randomId()..name = "Steelhead",
-    Species()..id = randomId()..name = "Smallmouth Bass",
-    Species()..id = randomId()..name = "Largemouth Bass",
-    Species()..id = randomId()..name = "Striped Bass",
-    Species()..id = randomId()..name = "Pike",
+    Species()
+      ..id = randomId()
+      ..name = "Steelhead",
+    Species()
+      ..id = randomId()
+      ..name = "Smallmouth Bass",
+    Species()
+      ..id = randomId()
+      ..name = "Largemouth Bass",
+    Species()
+      ..id = randomId()
+      ..name = "Striped Bass",
+    Species()
+      ..id = randomId()
+      ..name = "Pike",
   ];
 
   setUp(() async {
@@ -29,7 +39,8 @@ main() {
     );
 
     when(appManager.mockCatchManager
-        .existsWith(speciesId: anyNamed("speciesId"))).thenReturn(false);
+            .existsWith(speciesId: anyNamed("speciesId")))
+        .thenReturn(false);
     when(appManager.mockCatchManager.list()).thenReturn([]);
 
     when(appManager.mockDataManager.deleteEntity(any, any))
@@ -46,9 +57,8 @@ main() {
   });
 
   group("Normal list page", () {
-    testWidgets("Title updates when species updated", (WidgetTester tester)
-        async
-    {
+    testWidgets("Title updates when species updated",
+        (WidgetTester tester) async {
       await tester.pumpWidget(Testable(
         (_) => SpeciesListPage(),
         appManager: appManager,
@@ -60,9 +70,8 @@ main() {
       expect(find.text("Species (4)"), findsOneWidget);
     });
 
-    testWidgets("List updates when species updated", (WidgetTester tester)
-        async
-    {
+    testWidgets("List updates when species updated",
+        (WidgetTester tester) async {
       await tester.pumpWidget(Testable(
         (_) => SpeciesListPage(),
         appManager: appManager,
@@ -79,15 +88,14 @@ main() {
     });
 
     testWidgets("Species deleted if not associated with a catch",
-        (WidgetTester tester) async
-    {
+        (WidgetTester tester) async {
       await tester.pumpWidget(Testable(
         (_) => SpeciesListPage(),
         appManager: appManager,
       ));
 
-      expect(find.byType(ManageableListItem),
-          findsNWidgets(speciesList.length));
+      expect(
+          find.byType(ManageableListItem), findsNWidgets(speciesList.length));
       await tapAndSettle(tester, find.text("EDIT"));
       await tapAndSettle(tester, find.byIcon(Icons.delete).first);
       await tapAndSettle(tester, find.text("DELETE"), 250);
@@ -96,10 +104,10 @@ main() {
     });
 
     testWidgets("Dialog when deleting species associated with 1 catch",
-        (WidgetTester tester) async
-    {
+        (WidgetTester tester) async {
       when(appManager.mockCatchManager
-          .existsWith(speciesId: anyNamed("speciesId"))).thenReturn(true);
+              .existsWith(speciesId: anyNamed("speciesId")))
+          .thenReturn(true);
       when(appManager.mockCatchManager.list()).thenReturn([
         Catch()
           ..id = randomId()
@@ -114,16 +122,18 @@ main() {
       await tapAndSettle(tester, find.text("EDIT"));
       await tapAndSettle(tester, find.byIcon(Icons.delete).first);
 
-      expect(find.text(
-          "Largemouth Bass is associated with 1 catch and cannot be deleted."),
-          findsOneWidget);
+      expect(
+        find.text(
+            "Largemouth Bass is associated with 1 catch and cannot be deleted."),
+        findsOneWidget,
+      );
     });
 
     testWidgets("Dialog when deleting species associated with multiple catches",
-        (WidgetTester tester) async
-    {
+        (WidgetTester tester) async {
       when(appManager.mockCatchManager
-          .existsWith(speciesId: anyNamed("speciesId"))).thenReturn(true);
+              .existsWith(speciesId: anyNamed("speciesId")))
+          .thenReturn(true);
       when(appManager.mockCatchManager.list()).thenReturn([
         Catch()
           ..id = randomId()
@@ -141,9 +151,11 @@ main() {
       await tapAndSettle(tester, find.text("EDIT"));
       await tapAndSettle(tester, find.byIcon(Icons.delete).first);
 
-      expect(find.text("Largemouth Bass is associated with 2 catches and "
-          "cannot be deleted."),
-          findsOneWidget);
+      expect(
+        find.text("Largemouth Bass is associated with 2 catches and "
+            "cannot be deleted."),
+        findsOneWidget,
+      );
     });
 
     testWidgets("Edit screen shown", (WidgetTester tester) async {

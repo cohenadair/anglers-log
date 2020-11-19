@@ -8,10 +8,14 @@ import '../test_utils.dart';
 main() {
   testWidgets("Enabled", (WidgetTester tester) async {
     bool checked = false;
-    await tester.pumpWidget(Testable((_) => CheckboxInput(
-      label: "Test",
-      onChanged: (_) => checked = true,
-    )));
+    await tester.pumpWidget(
+      Testable(
+        (_) => CheckboxInput(
+          label: "Test",
+          onChanged: (_) => checked = true,
+        ),
+      ),
+    );
     await tester.tap(find.byType(Checkbox));
     await tester.pumpAndSettle();
     expect(checked, isTrue);
@@ -23,10 +27,14 @@ main() {
   });
 
   testWidgets("Disabled", (WidgetTester tester) async {
-    await tester.pumpWidget(Testable((_) => CheckboxInput(
-      label: "Test",
-      enabled: false,
-    )));
+    await tester.pumpWidget(
+      Testable(
+        (_) => CheckboxInput(
+          label: "Test",
+          enabled: false,
+        ),
+      ),
+    );
     expect(find.byType(DisabledLabel), findsOneWidget);
   });
 }

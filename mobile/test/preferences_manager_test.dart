@@ -13,6 +13,7 @@ import 'package:sqflite/sqlite_api.dart';
 import 'mock_app_manager.dart';
 
 class MockDatabase extends Mock implements Database {}
+
 class MockSpeciesListener extends Mock implements EntityListener<Species> {}
 
 void main() {
@@ -38,8 +39,8 @@ void main() {
   });
 
   test("Test initialize", () async {
-    when(dataManager.fetchAll("preference")).thenAnswer((_) =>
-        Future.value([]));
+    when(dataManager.fetchAll("preference"))
+        .thenAnswer((_) => Future.value([]));
     await preferencesManager.initialize();
     expect(preferencesManager.baitCustomEntityIds.isEmpty, true);
     expect(preferencesManager.catchCustomEntityIds.isEmpty, true);
@@ -49,8 +50,9 @@ void main() {
     Id id2 = randomId();
     Id id3 = randomId();
 
-    when(dataManager.fetchAll("preference")).thenAnswer((_) =>
-        Future.value([
+    when(dataManager.fetchAll("preference")).thenAnswer(
+      (_) => Future.value(
+        [
           {
             "id": "bait_custom_entity_ids",
             "value": jsonEncode([id0.toString(), id1.toString()])
@@ -59,7 +61,9 @@ void main() {
             "id": "catch_custom_entity_ids",
             "value": jsonEncode([id2.toString(), id3.toString()])
           },
-        ]));
+        ],
+      ),
+    );
     await preferencesManager.initialize();
     expect(preferencesManager.baitCustomEntityIds, [id0, id1]);
     expect(preferencesManager.catchCustomEntityIds, [id2, id3]);
@@ -84,9 +88,9 @@ void main() {
     expect(preferencesManager.catchCustomEntityIds, [id2, id3]);
   });
 
-  test("Custom entity IDs are deleted from preferences when custom entity "
-      "objects are deleted", () async
-  {
+  test(
+      "Custom entity IDs are deleted from preferences when custom entity "
+      "objects are deleted", () async {
     var deleteEntity = CustomEntity()
       ..id = randomId()
       ..name = "Size"
@@ -109,10 +113,13 @@ void main() {
 
   test("Preferences are cleared when database is reset", () async {
     var database = MockDatabase();
-    when(database.insert(any, any,
+    when(database.insert(
+      any,
+      any,
       conflictAlgorithm: anyNamed("conflictAlgorithm"),
     )).thenAnswer((_) => Future.value(1));
-    when(database.delete(any,
+    when(database.delete(
+      any,
       where: anyNamed("where"),
       whereArgs: anyNamed("whereArgs"),
     )).thenAnswer((_) => Future.value(1));

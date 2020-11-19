@@ -13,8 +13,9 @@ import 'package:sqflite/sqflite.dart';
 import 'mock_app_manager.dart';
 
 class MockBatch extends Mock implements Batch {}
-class MockCustomReportListener extends Mock implements
-    EntityListener<SummaryReport> {}
+
+class MockCustomReportListener extends Mock
+    implements EntityListener<SummaryReport> {}
 
 class TestCustomReportManager extends ReportManager<SummaryReport> {
   final _id = randomId();
@@ -135,8 +136,7 @@ void main() {
   });
 
   test("On fishing spots deleted, reports updated and listeners notified",
-      () async
-  {
+      () async {
     // Nothing to delete.
     when(appManager.mockDataManager.deleteEntity(any, any))
         .thenAnswer((_) => Future.value(false));

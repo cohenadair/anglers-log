@@ -8,12 +8,16 @@ import '../test_utils.dart';
 
 main() {
   testWidgets("Fishing spot marker is shown", (WidgetTester tester) async {
-    await tester.pumpWidget(Testable((_) => StaticFishingSpot(
-      FishingSpot()
-        ..id = randomId()
-        ..lat = 1.234567
-        ..lng = 2.345678,
-    )));
+    await tester.pumpWidget(
+      Testable(
+        (_) => StaticFishingSpot(
+          FishingSpot()
+            ..id = randomId()
+            ..lat = 1.234567
+            ..lng = 2.345678,
+        ),
+      ),
+    );
     await tester.pumpAndSettle();
     expect(findFirst<GoogleMap>(tester).markers.length, 1);
   });

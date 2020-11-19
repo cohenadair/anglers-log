@@ -27,30 +27,52 @@ import 'package:mockito/mockito.dart';
 import 'package:sqflite/sqflite.dart';
 
 class MockBaitCategoryManager extends Mock implements BaitCategoryManager {}
+
 class MockBaitManager extends Mock implements BaitManager {}
+
 class MockDatabase extends Mock implements Database {}
+
 class MockDataManager extends Mock implements DataManager {}
+
 class MockCatchManager extends Mock implements CatchManager {}
-class MockComparisonReportManager extends Mock implements 
-    ComparisonReportManager {}
+
+class MockComparisonReportManager extends Mock
+    implements ComparisonReportManager {}
+
 class MockCustomEntityManager extends Mock implements CustomEntityManager {}
+
 class MockFishingSpotManager extends Mock implements FishingSpotManager {}
+
 class MockImageManager extends Mock implements ImageManager {}
+
 class MockLocationMonitor extends Mock implements LocationMonitor {}
+
 class MockPreferencesManager extends Mock implements PreferencesManager {}
+
 class MockPropertiesManager extends Mock implements PropertiesManager {}
+
 class MockSpeciesManager extends Mock implements SpeciesManager {}
+
 class MockSummaryReportManager extends Mock implements SummaryReportManager {}
+
 class MockTimeManager extends Mock implements TimeManager {}
+
 class MockTripManager extends Mock implements TripManager {}
 
 class MockFilePickerWrapper extends Mock implements FilePickerWrapper {}
+
 class MockImageCompressWrapper extends Mock implements ImageCompressWrapper {}
+
 class MockImagePickerWrapper extends Mock implements ImagePickerWrapper {}
+
 class MockIoWrapper extends Mock implements IoWrapper {}
+
 class MockMailSenderWrapper extends Mock implements MailSenderWrapper {}
+
 class MockPackageInfoWrapper extends Mock implements PackageInfoWrapper {}
+
 class MockPathProviderWrapper extends Mock implements PathProviderWrapper {}
+
 class MockPhotoManagerWrapper extends Mock implements PhotoManagerWrapper {}
 
 class MockAppManager extends Mock implements AppManager {

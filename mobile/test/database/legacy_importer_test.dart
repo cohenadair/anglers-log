@@ -44,8 +44,7 @@ void main() {
 
     imageManager = appManager.mockImageManager;
     when(imageManager.save(any)).thenAnswer((_) => Future.value());
-    when(imageManager
-        .save(any, compress: anyNamed("compress")))
+    when(imageManager.save(any, compress: anyNamed("compress")))
         .thenAnswer((_) => Future.value([]));
     when(appManager.imageManager).thenReturn(imageManager);
 
@@ -106,26 +105,29 @@ void main() {
 
   group("Error cases", () {
     test("Bad input", () async {
-      await LegacyImporter(appManager, null).start()
+      await LegacyImporter(appManager, null)
+          .start()
           .catchError(expectAsync1((error) {
-            expect(error, equals(LegacyImporterError.invalidZipFile));
-          }));
+        expect(error, equals(LegacyImporterError.invalidZipFile));
+      }));
     });
 
     test("Missing journal key", () async {
       File file = File("test/resources/backups/no_journal.zip");
-      await LegacyImporter(appManager, file).start()
+      await LegacyImporter(appManager, file)
+          .start()
           .catchError(expectAsync1((error) {
-            expect(error, equals(LegacyImporterError.missingJournal));
-          }));
+        expect(error, equals(LegacyImporterError.missingJournal));
+      }));
     });
 
     test("Missing userDefines key", () async {
       File file = File("test/resources/backups/no_user_defines.zip");
-      await LegacyImporter(appManager, file).start()
+      await LegacyImporter(appManager, file)
+          .start()
           .catchError(expectAsync1((error) {
-            expect(error, equals(LegacyImporterError.missingUserDefines));
-          }));
+        expect(error, equals(LegacyImporterError.missingUserDefines));
+      }));
     });
   });
 
@@ -181,8 +183,7 @@ void main() {
     expect(catches[0].timestamp.ms,
         DateTime(2019, 8, 13, 0, 44).millisecondsSinceEpoch);
     expect(catches[0].hasFishingSpotId(), true);
-    expect(speciesManager.entity(catches[0].speciesId).name,
-        "Carp - Common");
+    expect(speciesManager.entity(catches[0].speciesId).name, "Carp - Common");
     expect(catches[0].hasBaitId(), true);
     expect(baitManager.entity(catches[0].baitId).name, "Corn");
     expect(catches[0].hasFishingSpotId(), true);
@@ -236,10 +237,10 @@ void main() {
     List<File> importedImages = [];
     when(imageManager.save(any, compress: anyNamed("compress")))
         .thenAnswer((invocation) {
-          importedImages.addAll(invocation.positionalArguments[0]);
-          return Future.value(importedImages
-              .map((f) => Path.basename(f.path)).toList());
-        });
+      importedImages.addAll(invocation.positionalArguments[0]);
+      return Future.value(
+          importedImages.map((f) => Path.basename(f.path)).toList());
+    });
 
     await LegacyImporter(appManager, zip).start();
 
@@ -262,11 +263,10 @@ void main() {
     expect(catches.first.timestamp.ms,
         DateTime(2017, 10, 11, 17, 19, 19, 420).millisecondsSinceEpoch);
     expect(catches.first.hasFishingSpotId(), true);
-    expect(speciesManager.entity(catches[0].speciesId).name,
-        "Trout - Rainbow");
+    expect(speciesManager.entity(catches[0].speciesId).name, "Trout - Rainbow");
     expect(catches.first.hasBaitId(), true);
-    expect(baitManager.entity(catches[0].baitId).name,
-        "Rapala F-7 - Brown Trout");
+    expect(
+        baitManager.entity(catches[0].baitId).name, "Rapala F-7 - Brown Trout");
     expect(catches.first.hasFishingSpotId(), true);
     expect(fishingSpotManager.entity(catches[0].fishingSpotId).name,
         "Bow River - Sewer Run");
@@ -327,10 +327,10 @@ void main() {
     List<File> importedImages = [];
     when(imageManager.save(any, compress: anyNamed("compress")))
         .thenAnswer((invocation) {
-          importedImages.addAll(invocation.positionalArguments[0]);
-          return Future.value(importedImages
-              .map((f) => Path.basename(f.path)).toList());
-        });
+      importedImages.addAll(invocation.positionalArguments[0]);
+      return Future.value(
+          importedImages.map((f) => Path.basename(f.path)).toList());
+    });
 
     await LegacyImporter(appManager, zip).start();
 

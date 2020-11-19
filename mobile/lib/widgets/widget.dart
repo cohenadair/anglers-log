@@ -346,7 +346,7 @@ class ChipWrap extends StatelessWidget {
             (item) => Chip(
               label: Text(item),
               materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-            )
+            ),
           )
           .toList(),
     );

@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/utils/search_timer.dart';
 
-void main () {
+void main() {
   test("Callback is called immediately with an empty query", () {
     bool called = false;
     var timer = SearchTimer(() {

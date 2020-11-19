@@ -8,54 +8,77 @@ import '../test_utils.dart';
 
 main() {
   testWidgets("Custom leading widget", (WidgetTester tester) async {
-    await tester.pumpWidget(Testable((_) => SearchBar(
-      delegate: InputSearchBarDelegate((_) {}),
-      leading: Text("LEAD"),
-    )));
+    await tester.pumpWidget(
+      Testable(
+        (_) => SearchBar(
+          delegate: InputSearchBarDelegate((_) {}),
+          leading: Text("LEAD"),
+        ),
+      ),
+    );
     expect(find.text("LEAD"), findsOneWidget);
     expect(find.byIcon(Icons.search), findsNothing);
   });
 
   testWidgets("Default leading widget", (WidgetTester tester) async {
-    await tester.pumpWidget(Testable((_) => SearchBar(
-      delegate: InputSearchBarDelegate((_) {}),
-    )));
+    await tester.pumpWidget(
+      Testable(
+        (_) => SearchBar(
+          delegate: InputSearchBarDelegate((_) {}),
+        ),
+      ),
+    );
     expect(find.byIcon(Icons.search), findsOneWidget);
   });
 
   testWidgets("Custom trailing widget", (WidgetTester tester) async {
-    await tester.pumpWidget(Testable((_) => SearchBar(
-      delegate: InputSearchBarDelegate((_) {}),
-      trailing: Text("TRAIL"),
-    )));
+    await tester.pumpWidget(
+      Testable(
+        (_) => SearchBar(
+          delegate: InputSearchBarDelegate((_) {}),
+          trailing: Text("TRAIL"),
+        ),
+      ),
+    );
     expect(find.text("TRAIL"), findsOneWidget);
     expect(find.byIcon(Icons.close), findsNothing);
   });
 
   testWidgets("Initial text is shown", (WidgetTester tester) async {
-    await tester.pumpWidget(Testable((_) => SearchBar(
-      delegate: InputSearchBarDelegate((_) {}),
-      text: "A search term",
-    )));
+    await tester.pumpWidget(
+      Testable(
+        (_) => SearchBar(
+          delegate: InputSearchBarDelegate((_) {}),
+          text: "A search term",
+        ),
+      ),
+    );
     expect(find.text("A search term"), findsOneWidget);
   });
 
   group("As button", () {
-    testWidgets("Default trailing widget for button", (WidgetTester tester)
-        async
-    {
-      await tester.pumpWidget(Testable((_) => SearchBar(
-        delegate: ButtonSearchBarDelegate(() {}),
-      )));
+    testWidgets("Default trailing widget for button",
+        (WidgetTester tester) async {
+      await tester.pumpWidget(
+        Testable(
+          (_) => SearchBar(
+            delegate: ButtonSearchBarDelegate(() {}),
+          ),
+        ),
+      );
       expect(find.byIcon(Icons.close), findsNothing);
       expect(find.byType(Empty), findsOneWidget);
     });
 
     testWidgets("Delegate onTap is invoked", (WidgetTester tester) async {
       bool tapped = false;
-      await tester.pumpWidget(Testable((_) => SearchBar(
-        delegate: ButtonSearchBarDelegate(() => tapped = true),
-      )));
+      await tester.pumpWidget(
+        Testable(
+          (_) => SearchBar(
+            delegate: ButtonSearchBarDelegate(() => tapped = true),
+          ),
+        ),
+      );
 
       await tester.tap(find.byType(SearchBar));
       await tester.pumpAndSettle();
@@ -64,23 +87,29 @@ main() {
   });
 
   group("As input", () {
-    testWidgets("Default trailing widget for input", (WidgetTester tester)
-        async
-    {
-      await tester.pumpWidget(Testable((_) => SearchBar(
-        delegate: InputSearchBarDelegate((_) {}),
-      )));
+    testWidgets("Default trailing widget for input",
+        (WidgetTester tester) async {
+      await tester.pumpWidget(
+        Testable(
+          (_) => SearchBar(
+            delegate: InputSearchBarDelegate((_) {}),
+          ),
+        ),
+      );
       expect(find.byIcon(Icons.close), findsOneWidget);
       expect(find.byType(Empty), findsNothing);
     });
 
-    testWidgets("Delegate onTextChanged is invoked", (WidgetTester tester)
-        async
-    {
+    testWidgets("Delegate onTextChanged is invoked",
+        (WidgetTester tester) async {
       int invokedCount = 0;
-      await tester.pumpWidget(Testable((_) => SearchBar(
-        delegate: InputSearchBarDelegate((_) => invokedCount++),
-      )));
+      await tester.pumpWidget(
+        Testable(
+          (_) => SearchBar(
+            delegate: InputSearchBarDelegate((_) => invokedCount++),
+          ),
+        ),
+      );
 
       await tester.enterText(find.byType(CupertinoTextField), "search");
       await tester.pumpAndSettle();
@@ -88,12 +117,15 @@ main() {
     });
 
     testWidgets("Clear invokes callback when text changes",
-        (WidgetTester tester) async
-    {
+        (WidgetTester tester) async {
       int invokedCount = 0;
-      await tester.pumpWidget(Testable((_) => SearchBar(
-        delegate: InputSearchBarDelegate((_) => invokedCount++),
-      )));
+      await tester.pumpWidget(
+        Testable(
+          (_) => SearchBar(
+            delegate: InputSearchBarDelegate((_) => invokedCount++),
+          ),
+        ),
+      );
 
       await tester.enterText(find.byType(CupertinoTextField), "search");
       await tester.pumpAndSettle();
@@ -105,12 +137,15 @@ main() {
     });
 
     testWidgets("Clear does not invoke callback when text doesn't change",
-        (WidgetTester tester) async
-    {
+        (WidgetTester tester) async {
       int invokedCount = 0;
-      await tester.pumpWidget(Testable((_) => SearchBar(
-        delegate: InputSearchBarDelegate((_) => invokedCount++),
-      )));
+      await tester.pumpWidget(
+        Testable(
+          (_) => SearchBar(
+            delegate: InputSearchBarDelegate((_) => invokedCount++),
+          ),
+        ),
+      );
 
       await tester.tap(find.byIcon(Icons.close));
       await tester.pumpAndSettle();

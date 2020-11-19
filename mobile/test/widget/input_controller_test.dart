@@ -48,9 +48,7 @@ main() {
       BuildContext context = await buildContext(tester);
       var validator = MockNameValidator();
       when(validator.run(context, "Test")).thenReturn((context) => "BAD");
-      var controller = TextInputController(
-        validator: MockNameValidator()
-      );
+      var controller = TextInputController(validator: MockNameValidator());
       expect(controller.valid(context), isTrue);
     });
   });

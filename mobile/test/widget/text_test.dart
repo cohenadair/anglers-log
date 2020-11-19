@@ -7,33 +7,51 @@ import '../test_utils.dart';
 void main() {
   group("IconNoteLabel", () {
     testWidgets("Bad input", (WidgetTester tester) async {
-      await tester.pumpWidget(Testable((_) => IconNoteLabel(
-        text: "Test",
-        icon: Icon(Icons.group),
-      )));
+      await tester.pumpWidget(
+        Testable(
+          (_) => IconNoteLabel(
+            text: "Test",
+            icon: Icon(Icons.group),
+          ),
+        ),
+      );
       expect(tester.takeException(), isAssertionError);
     });
 
     testWidgets("Valid input", (WidgetTester tester) async {
-      await tester.pumpWidget(Testable((_) => IconNoteLabel(
-        text: "Test %s",
-        icon: Icon(Icons.group),
-      )));
+      await tester.pumpWidget(
+        Testable(
+          (_) => IconNoteLabel(
+            text: "Test %s",
+            icon: Icon(Icons.group),
+          ),
+        ),
+      );
       expect(find.byType(IconNoteLabel), findsOneWidget);
     });
   });
 
   group("PrimaryLabel", () {
     testWidgets("State color", (WidgetTester tester) async {
-      await tester.pumpWidget(Testable((_) => PrimaryLabel("Test",
-        enabled: true,
-      )));
+      await tester.pumpWidget(
+        Testable(
+          (_) => PrimaryLabel(
+            "Test",
+            enabled: true,
+          ),
+        ),
+      );
       Color enabledColor =
           (tester.firstWidget(find.text("Test")) as Text).style.color;
 
-      await tester.pumpWidget(Testable((_) => PrimaryLabel("Test 2",
-        enabled: false,
-      )));
+      await tester.pumpWidget(
+        Testable(
+          (_) => PrimaryLabel(
+            "Test 2",
+            enabled: false,
+          ),
+        ),
+      );
       Color disabledColor =
           (tester.firstWidget(find.text("Test 2")) as Text).style.color;
 
@@ -43,15 +61,25 @@ void main() {
 
   group("EnabledLabel", () {
     testWidgets("State color", (WidgetTester tester) async {
-      await tester.pumpWidget(Testable((_) => EnabledLabel("Test",
-        enabled: true,
-      )));
+      await tester.pumpWidget(
+        Testable(
+          (_) => EnabledLabel(
+            "Test",
+            enabled: true,
+          ),
+        ),
+      );
       Color enabledColor =
           (tester.firstWidget(find.text("Test")) as Text).style.color;
 
-      await tester.pumpWidget(Testable((_) => EnabledLabel("Test 2",
-        enabled: false,
-      )));
+      await tester.pumpWidget(
+        Testable(
+          (_) => EnabledLabel(
+            "Test 2",
+            enabled: false,
+          ),
+        ),
+      );
       Color disabledColor =
           (tester.firstWidget(find.text("Test 2")) as Text).style.color;
 

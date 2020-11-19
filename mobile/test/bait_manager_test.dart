@@ -52,8 +52,8 @@ void main() {
     when(dataManager.replaceRows(any, any)).thenAnswer((_) => Future.value());
 
     MockBaitListener baitListener = MockBaitListener();
-    when(baitListener.onDelete).thenReturn((_) { });
-    when(baitListener.onAddOrUpdate).thenReturn(() { });
+    when(baitListener.onDelete).thenReturn((_) {});
+    when(baitListener.onAddOrUpdate).thenReturn(() {});
     baitManager.addListener(baitListener);
 
     // Add a BaitCategory.
@@ -134,9 +134,12 @@ void main() {
       ..name = "Test Category");
 
     expect(baitManager.formatNameWithCategory(null), null);
-    expect(baitManager.formatNameWithCategory(Bait()
-      ..name = "Test"
-      ..baitCategoryId = baitCategoryId0), "Test Category - Test");
+    expect(
+      baitManager.formatNameWithCategory(Bait()
+        ..name = "Test"
+        ..baitCategoryId = baitCategoryId0),
+      "Test Category - Test",
+    );
     expect(baitManager.formatNameWithCategory(Bait()..name = "Test"), "Test");
   });
 
@@ -176,9 +179,12 @@ void main() {
 
   group("duplicate", () {
     test("false if bait does not exist", () {
-      expect(baitManager.duplicate(Bait()
-        ..id = randomId()
-        ..name = "Rapala"), isFalse);
+      expect(
+        baitManager.duplicate(Bait()
+          ..id = randomId()
+          ..name = "Rapala"),
+        isFalse,
+      );
     });
 
     test("false if bait category IDs differ", () async {
@@ -186,38 +192,50 @@ void main() {
         ..id = randomId()
         ..name = "Rapala"
         ..baitCategoryId = randomId());
-      expect(baitManager.duplicate(Bait()
-        ..id = randomId()
-        ..name = "Rapala"
-        ..baitCategoryId = randomId()), isFalse);
+      expect(
+        baitManager.duplicate(Bait()
+          ..id = randomId()
+          ..name = "Rapala"
+          ..baitCategoryId = randomId()),
+        isFalse,
+      );
     });
 
     test("false if bait category ID is null", () async {
       await baitManager.addOrUpdate(Bait()
         ..id = randomId()
         ..name = "Rapala");
-      expect(baitManager.duplicate(Bait()
-        ..id = randomId()
-        ..name = "Rapala"
-        ..baitCategoryId = randomId()), isFalse);
+      expect(
+        baitManager.duplicate(Bait()
+          ..id = randomId()
+          ..name = "Rapala"
+          ..baitCategoryId = randomId()),
+        isFalse,
+      );
     });
 
     test("false if names differ", () async {
       await baitManager.addOrUpdate(Bait()
         ..id = randomId()
         ..name = "Rapala");
-      expect(baitManager.duplicate(Bait()
-        ..id = randomId()
-        ..name = "Bugger"), isFalse);
+      expect(
+        baitManager.duplicate(Bait()
+          ..id = randomId()
+          ..name = "Bugger"),
+        isFalse,
+      );
     });
 
     test("false if custom entity values differ", () async {
       await baitManager.addOrUpdate(Bait()
         ..id = randomId()
         ..name = "Rapala");
-      expect(baitManager.duplicate(Bait()
-        ..id = randomId()
-        ..name = "Bugger"), isFalse);
+      expect(
+        baitManager.duplicate(Bait()
+          ..id = randomId()
+          ..name = "Bugger"),
+        isFalse,
+      );
     });
 
     test("false if IDs are equal", () async {
@@ -225,9 +243,12 @@ void main() {
       await baitManager.addOrUpdate(Bait()
         ..id = id
         ..name = "Rapala");
-      expect(baitManager.duplicate(Bait()
-        ..id = id
-        ..name = "Rapala"), isFalse);
+      expect(
+        baitManager.duplicate(Bait()
+          ..id = id
+          ..name = "Rapala"),
+        isFalse,
+      );
     });
 
     test("true with all properties", () async {
@@ -246,8 +267,8 @@ void main() {
         ..id = randomId()
         ..name = "Rapala"
         ..baitCategoryId = categoryId;
-      bait2.customEntityValues.add(
-          CustomEntityValue.fromBuffer(value.writeToBuffer()));
+      bait2.customEntityValues
+          .add(CustomEntityValue.fromBuffer(value.writeToBuffer()));
 
       await baitManager.addOrUpdate(bait1);
       expect(baitManager.duplicate(bait2), isTrue);
@@ -257,21 +278,29 @@ void main() {
       await baitManager.addOrUpdate(Bait()
         ..id = randomId()
         ..name = "Rapala");
-      expect(baitManager.duplicate(Bait()
-        ..id = randomId()
-        ..name = "Rapala"), isTrue);
+      expect(
+        baitManager.duplicate(Bait()
+          ..id = randomId()
+          ..name = "Rapala"),
+        isTrue,
+      );
     });
   });
 
   group("deleteMessage", () {
     testWidgets("Input", (WidgetTester tester) async {
-      expect(() => baitManager.deleteMessage(null, Bait()
-        ..id = randomId()
-        ..name = "Worm"), throwsAssertionError);
+      expect(
+        () => baitManager.deleteMessage(
+            null,
+            Bait()
+              ..id = randomId()
+              ..name = "Worm"),
+        throwsAssertionError,
+      );
 
       BuildContext context = await buildContext(tester);
-      expect(() => baitManager.deleteMessage(context, null),
-          throwsAssertionError);
+      expect(
+          () => baitManager.deleteMessage(context, null), throwsAssertionError);
     });
 
     testWidgets("Singular", (WidgetTester tester) async {
@@ -288,9 +317,11 @@ void main() {
       ]);
 
       BuildContext context = await buildContext(tester);
-      expect(baitManager.deleteMessage(context, bait),
-          "Worm is associated with 1 catch; are you sure you want to delete it?"
-              " This cannot be undone.");
+      expect(
+        baitManager.deleteMessage(context, bait),
+        "Worm is associated with 1 catch; are you sure you want to delete it?"
+        " This cannot be undone.",
+      );
     });
 
     testWidgets("Plural zero", (WidgetTester tester) async {
@@ -301,9 +332,11 @@ void main() {
       when(catchManager.list()).thenReturn([]);
 
       BuildContext context = await buildContext(tester);
-      expect(baitManager.deleteMessage(context, bait),
-          "Worm is associated with 0 catches; are you sure you want to delete "
-              "it? This cannot be undone.");
+      expect(
+        baitManager.deleteMessage(context, bait),
+        "Worm is associated with 0 catches; are you sure you want to delete "
+        "it? This cannot be undone.",
+      );
     });
 
     testWidgets("Plural none zero", (WidgetTester tester) async {
@@ -325,9 +358,11 @@ void main() {
       ]);
 
       BuildContext context = await buildContext(tester);
-      expect(baitManager.deleteMessage(context, bait),
-          "Worm is associated with 2 catches; are you sure you want to delete "
-              "it? This cannot be undone.");
+      expect(
+        baitManager.deleteMessage(context, bait),
+        "Worm is associated with 2 catches; are you sure you want to delete "
+        "it? This cannot be undone.",
+      );
     });
 
     testWidgets("With bait category", (WidgetTester tester) async {
@@ -349,9 +384,11 @@ void main() {
       ]);
 
       BuildContext context = await buildContext(tester);
-      expect(baitManager.deleteMessage(context, bait),
-          "Worm (Live) is associated with 1 catch; are you sure you want to "
-              "delete it? This cannot be undone.");
+      expect(
+        baitManager.deleteMessage(context, bait),
+        "Worm (Live) is associated with 1 catch; are you sure you want to "
+        "delete it? This cannot be undone.",
+      );
     });
   });
 }

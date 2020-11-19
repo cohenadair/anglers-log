@@ -25,8 +25,7 @@ main() {
   });
 
   testWidgets("Note shows when there are no custom values",
-      (WidgetTester tester) async
-  {
+      (WidgetTester tester) async {
     await tester.pumpWidget(Testable(
       (_) => EditableFormPage(),
       appManager: appManager,
@@ -55,13 +54,13 @@ main() {
   });
 
   testWidgets("CustomEntityValue that doesn't exist in fields is still added",
-      (WidgetTester tester) async
-  {
+      (WidgetTester tester) async {
     when(appManager.mockCustomEntityManager.entity(any)).thenReturn(
-        CustomEntity()
-          ..id = randomId()
-          ..name = "Custom Field 1"
-          ..type = CustomEntity_Type.TEXT);
+      CustomEntity()
+        ..id = randomId()
+        ..name = "Custom Field 1"
+        ..type = CustomEntity_Type.TEXT,
+    );
     await tester.pumpWidget(Testable(
       (_) => EditableFormPage(
         customEntityValues: [
@@ -106,9 +105,8 @@ main() {
     expect(find.text(id2.toString()), findsOneWidget);
   });
 
-  testWidgets("Field selection excludes fake InputData", (WidgetTester tester)
-      async
-  {
+  testWidgets("Field selection excludes fake InputData",
+      (WidgetTester tester) async {
     Id id1 = randomId();
     Id id2 = randomId();
     await tester.pumpWidget(Testable(
@@ -136,8 +134,8 @@ main() {
     expect(find.text(id2.toString()), findsOneWidget);
     expect(find.text("Custom Fields"), findsOneWidget);
 
-    await tapAndSettle(tester,
-        find.widgetWithIcon(IconButton, Icons.more_vert));
+    await tapAndSettle(
+        tester, find.widgetWithIcon(IconButton, Icons.more_vert));
     await tapAndSettle(tester, find.text("Manage Fields"));
 
     expect(find.text("Input 1"), findsOneWidget);
@@ -146,8 +144,7 @@ main() {
   });
 
   testWidgets("Selecting hidden field updates state to show field",
-      (WidgetTester tester) async
-  {
+      (WidgetTester tester) async {
     Id id1 = randomId();
     Id id2 = randomId();
     await tester.pumpWidget(Testable(
@@ -174,22 +171,28 @@ main() {
     expect(find.text(id1.toString()), findsNothing);
     expect(find.text(id2.toString()), findsOneWidget);
 
-    await tapAndSettle(tester,
-        find.widgetWithIcon(IconButton, Icons.more_vert));
+    await tapAndSettle(
+        tester, find.widgetWithIcon(IconButton, Icons.more_vert));
     await tapAndSettle(tester, find.text("Manage Fields"));
 
     expect(find.text("Input 1"), findsOneWidget);
     expect(find.text("Input 2"), findsOneWidget);
 
     // Select and deselect items.
-    await tapAndSettle(tester, find.descendant(
-      of: find.widgetWithText(ListItem, "Input 1"),
-      matching: find.byType(PaddedCheckbox),
-    ));
-    await tapAndSettle(tester, find.descendant(
-      of: find.widgetWithText(ListItem, "Input 2"),
-      matching: find.byType(PaddedCheckbox),
-    ));
+    await tapAndSettle(
+      tester,
+      find.descendant(
+        of: find.widgetWithText(ListItem, "Input 1"),
+        matching: find.byType(PaddedCheckbox),
+      ),
+    );
+    await tapAndSettle(
+      tester,
+      find.descendant(
+        of: find.widgetWithText(ListItem, "Input 2"),
+        matching: find.byType(PaddedCheckbox),
+      ),
+    );
     await tapAndSettle(tester, find.text("DONE"));
 
     expect(find.text(id1.toString()), findsOneWidget);
@@ -197,8 +200,7 @@ main() {
   });
 
   testWidgets("Adding a new custom field updates state and shows field",
-      (WidgetTester tester) async
-  {
+      (WidgetTester tester) async {
     CustomEntity customEntity = CustomEntity()
       ..id = randomId()
       ..name = "Custom Field 1"
@@ -215,27 +217,30 @@ main() {
     ));
 
     // Select a custom field that doesn't already exist in the form.
-    await tapAndSettle(tester,
-        find.widgetWithIcon(IconButton, Icons.more_vert));
+    await tapAndSettle(
+        tester, find.widgetWithIcon(IconButton, Icons.more_vert));
     await tapAndSettle(tester, find.text("Manage Fields"));
-    await tapAndSettle(tester, find.descendant(
-      of: find.widgetWithText(ListItem, "Custom Field 1"),
-      matching: find.byType(PaddedCheckbox),
-    ));
+    await tapAndSettle(
+      tester,
+      find.descendant(
+        of: find.widgetWithText(ListItem, "Custom Field 1"),
+        matching: find.byType(PaddedCheckbox),
+      ),
+    );
     await tapAndSettle(tester, find.text("DONE"));
 
     expect(find.widgetWithText(TextField, "Custom Field 1"), findsOneWidget);
   });
 
-  testWidgets("Callback invoked with correct values", (WidgetTester tester)
-      async
-  {
+  testWidgets("Callback invoked with correct values",
+      (WidgetTester tester) async {
     Map<Id, dynamic> onSaveMap;
     when(appManager.mockCustomEntityManager.entity(any)).thenReturn(
-        CustomEntity()
-          ..id = randomId()
-          ..name = "Custom Field 1"
-          ..type = CustomEntity_Type.TEXT);
+      CustomEntity()
+        ..id = randomId()
+        ..name = "Custom Field 1"
+        ..type = CustomEntity_Type.TEXT,
+    );
     await tester.pumpWidget(Testable(
       (_) => EditableFormPage(
         customEntityValues: [
@@ -254,8 +259,8 @@ main() {
     expect(find.byType(IconNoteLabel), findsNothing);
     expect(find.widgetWithText(TextField, "Custom Field 1"), findsOneWidget);
 
-    await enterTextAndSettle(tester, find.widgetWithText(TextField, "Test"),
-        "Test 2");
+    await enterTextAndSettle(
+        tester, find.widgetWithText(TextField, "Test"), "Test 2");
     await tapAndSettle(tester, find.text("SAVE"));
 
     expect(onSaveMap, isNotNull);

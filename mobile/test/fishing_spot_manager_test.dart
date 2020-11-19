@@ -54,8 +54,8 @@ void main() {
       ..lat = 35.955348
       ..lng = -84.240310;
     await fishingSpotManager.addOrUpdate(newSpot);
-    fishingSpot = fishingSpotManager.withinRadius(LatLng(35.955348, -84.240310),
-        20);
+    fishingSpot =
+        fishingSpotManager.withinRadius(LatLng(35.955348, -84.240310), 20);
     expect(fishingSpot, isNotNull);
     await fishingSpotManager.delete(newSpot.id);
 
@@ -65,8 +65,8 @@ void main() {
       ..lat = 35.953638
       ..lng = -84.241233;
     await fishingSpotManager.addOrUpdate(newSpot);
-    fishingSpot = fishingSpotManager.withinRadius(LatLng(35.955348, -84.240310),
-        20);
+    fishingSpot =
+        fishingSpotManager.withinRadius(LatLng(35.955348, -84.240310), 20);
     expect(fishingSpot, isNull);
     await fishingSpotManager.delete(newSpot.id);
 
@@ -84,8 +84,8 @@ void main() {
       ..lat = 35.955335
       ..lng = -84.240300);
 
-    fishingSpot = fishingSpotManager.withinRadius(LatLng(35.955340, -84.240295),
-        20);
+    fishingSpot =
+        fishingSpotManager.withinRadius(LatLng(35.955340, -84.240295), 20);
     expect(fishingSpot, isNotNull);
     expect(fishingSpot.lat, 35.955335);
     expect(fishingSpot.lng, -84.240300);
@@ -96,14 +96,20 @@ void main() {
       ..id = randomId()
       ..lat = 35.955296
       ..lng = -84.240337);
-    expect(fishingSpotManager.withLatLng(FishingSpot()
-      ..id = randomId()
-      ..lat = 35.955296
-      ..lng = -84.240337), isNotNull);
-    expect(fishingSpotManager.withLatLng(FishingSpot()
-      ..id = randomId()
-      ..lat = 35.955297
-      ..lng = -84.240337), isNull);
+    expect(
+      fishingSpotManager.withLatLng(FishingSpot()
+        ..id = randomId()
+        ..lat = 35.955296
+        ..lng = -84.240337),
+      isNotNull,
+    );
+    expect(
+      fishingSpotManager.withLatLng(FishingSpot()
+        ..id = randomId()
+        ..lat = 35.955297
+        ..lng = -84.240337),
+      isNull,
+    );
     expect(fishingSpotManager.withLatLng(null), isNull);
   });
 
@@ -142,28 +148,42 @@ void main() {
     ]);
 
     expect(fishingSpotManager.numberOfCatches(null), 0);
-    expect(fishingSpotManager.numberOfCatches(FishingSpot()
-      ..name = "Spot 1"
-      ..id = fishingSpotId0
-      ..lat = 0
-      ..lng = 0), 2);
-    expect(fishingSpotManager.numberOfCatches(FishingSpot()
-      ..name = "Spot 1"
-      ..id = fishingSpotId3
-      ..lat = 0
-      ..lng = 0), 1);
-    expect(fishingSpotManager.numberOfCatches(FishingSpot()
-      ..name = "Spot 1"
-      ..id = fishingSpotId4
-      ..lat = 0
-      ..lng = 0), 1);
+    expect(
+      fishingSpotManager.numberOfCatches(FishingSpot()
+        ..name = "Spot 1"
+        ..id = fishingSpotId0
+        ..lat = 0
+        ..lng = 0),
+      2,
+    );
+    expect(
+      fishingSpotManager.numberOfCatches(FishingSpot()
+        ..name = "Spot 1"
+        ..id = fishingSpotId3
+        ..lat = 0
+        ..lng = 0),
+      1,
+    );
+    expect(
+      fishingSpotManager.numberOfCatches(FishingSpot()
+        ..name = "Spot 1"
+        ..id = fishingSpotId4
+        ..lat = 0
+        ..lng = 0),
+      1,
+    );
   });
 
   group("deleteMessage", () {
     testWidgets("Input", (WidgetTester tester) async {
-      expect(() => fishingSpotManager.deleteMessage(null, FishingSpot()
-        ..id = randomId()
-        ..name = "A"), throwsAssertionError);
+      expect(
+        () => fishingSpotManager.deleteMessage(
+            null,
+            FishingSpot()
+              ..id = randomId()
+              ..name = "A"),
+        throwsAssertionError,
+      );
 
       BuildContext context = await buildContext(tester);
       expect(() => fishingSpotManager.deleteMessage(context, null),
@@ -184,9 +204,11 @@ void main() {
       ]);
 
       BuildContext context = await buildContext(tester);
-      expect(fishingSpotManager.deleteMessage(context, fishingSpot),
-          "A is associated with 1 catch; are you sure you want to delete it?"
-              " This cannot be undone.");
+      expect(
+        fishingSpotManager.deleteMessage(context, fishingSpot),
+        "A is associated with 1 catch; are you sure you want to delete it?"
+        " This cannot be undone.",
+      );
     });
 
     testWidgets("Plural zero", (WidgetTester tester) async {
@@ -197,9 +219,11 @@ void main() {
       when(catchManager.list()).thenReturn([]);
 
       BuildContext context = await buildContext(tester);
-      expect(fishingSpotManager.deleteMessage(context, fishingSpot),
-          "A is associated with 0 catches; are you sure you want to delete it?"
-              " This cannot be undone.");
+      expect(
+        fishingSpotManager.deleteMessage(context, fishingSpot),
+        "A is associated with 0 catches; are you sure you want to delete it?"
+        " This cannot be undone.",
+      );
     });
 
     testWidgets("Plural none zero", (WidgetTester tester) async {
@@ -221,9 +245,11 @@ void main() {
       ]);
 
       BuildContext context = await buildContext(tester);
-      expect(fishingSpotManager.deleteMessage(context, fishingSpot),
-          "A is associated with 2 catches; are you sure you want to delete it?"
-              " This cannot be undone.");
+      expect(
+        fishingSpotManager.deleteMessage(context, fishingSpot),
+        "A is associated with 2 catches; are you sure you want to delete it?"
+        " This cannot be undone.",
+      );
     });
 
     testWidgets("Without a name singular", (WidgetTester tester) async {
@@ -241,9 +267,11 @@ void main() {
       ]);
 
       BuildContext context = await buildContext(tester);
-      expect(fishingSpotManager.deleteMessage(context, fishingSpot),
-          "This fishing spot is associated with 1 catch; are you sure you "
-              "want to delete it? This cannot be undone.");
+      expect(
+        fishingSpotManager.deleteMessage(context, fishingSpot),
+        "This fishing spot is associated with 1 catch; are you sure you "
+        "want to delete it? This cannot be undone.",
+      );
     });
 
     testWidgets("Without a name plural", (WidgetTester tester) async {
@@ -266,9 +294,11 @@ void main() {
       ]);
 
       BuildContext context = await buildContext(tester);
-      expect(fishingSpotManager.deleteMessage(context, fishingSpot),
-          "This fishing spot is associated with 2 catches; are you sure you "
-              "want to delete it? This cannot be undone.");
+      expect(
+        fishingSpotManager.deleteMessage(context, fishingSpot),
+        "This fishing spot is associated with 2 catches; are you sure you "
+        "want to delete it? This cannot be undone.",
+      );
     });
   });
 }

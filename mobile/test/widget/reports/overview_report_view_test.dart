@@ -20,7 +20,8 @@ main() {
 
     when(appManager.mockTimeManager.currentDateTime)
         .thenReturn(DateTime.fromMillisecondsSinceEpoch(10000));
-    when(appManager.mockCatchManager.catchesSortedByTimestamp(any,
+    when(appManager.mockCatchManager.catchesSortedByTimestamp(
+      any,
       dateRange: anyNamed("dateRange"),
       baitIds: anyNamed("baitIds"),
       fishingSpotIds: anyNamed("fishingSpotIds"),
@@ -32,7 +33,8 @@ main() {
   });
 
   testWidgets("Picking date updates state", (WidgetTester tester) async {
-    await tester.pumpWidget(Testable((_) => OverviewReportView(),
+    await tester.pumpWidget(Testable(
+      (_) => OverviewReportView(),
       appManager: appManager,
     ));
 

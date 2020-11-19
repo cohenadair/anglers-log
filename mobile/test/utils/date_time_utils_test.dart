@@ -9,51 +9,95 @@ import '../test_utils.dart';
 
 void main() {
   test("isLater", () {
-    expect(isLater(TimeOfDay(hour: 10, minute: 30),
-        TimeOfDay(hour: 8, minute: 30)), true);
-    expect(isLater(TimeOfDay(hour: 10, minute: 30),
-        TimeOfDay(hour: 10, minute: 30)), false);
-    expect(isLater(TimeOfDay(hour: 10, minute: 30),
-        TimeOfDay(hour: 10, minute: 45)), false);
-    expect(isLater(TimeOfDay(hour: 10, minute: 30),
-        TimeOfDay(hour: 10, minute: 15)), true);
+    expect(
+      isLater(TimeOfDay(hour: 10, minute: 30), TimeOfDay(hour: 8, minute: 30)),
+      true,
+    );
+    expect(
+      isLater(TimeOfDay(hour: 10, minute: 30), TimeOfDay(hour: 10, minute: 30)),
+      false,
+    );
+    expect(
+      isLater(TimeOfDay(hour: 10, minute: 30), TimeOfDay(hour: 10, minute: 45)),
+      false,
+    );
+    expect(
+      isLater(TimeOfDay(hour: 10, minute: 30), TimeOfDay(hour: 10, minute: 15)),
+      true,
+    );
   });
 
   group("isInFutureWithMinuteAccuracy", () {
     DateTime now = DateTime(2015, 5, 15, 12, 30, 45, 10000);
 
     test("Value should be in the past", () {
-      expect(isInFutureWithMinuteAccuracy(
-          DateTime(2014, 6, 16, 13, 31, 46, 10001), now), isFalse);
-      expect(isInFutureWithMinuteAccuracy(
-          DateTime(2015, 4, 16, 13, 31, 46, 10001), now), isFalse);
-      expect(isInFutureWithMinuteAccuracy(
-          DateTime(2015, 5, 14, 13, 31, 46, 10001), now), isFalse);
-      expect(isInFutureWithMinuteAccuracy(
-          DateTime(2015, 5, 15, 11, 31, 46, 10001), now), isFalse);
-      expect(isInFutureWithMinuteAccuracy(
-          DateTime(2015, 5, 15, 12, 29, 46, 10001), now), isFalse);
+      expect(
+        isInFutureWithMinuteAccuracy(
+            DateTime(2014, 6, 16, 13, 31, 46, 10001), now),
+        isFalse,
+      );
+      expect(
+        isInFutureWithMinuteAccuracy(
+            DateTime(2015, 4, 16, 13, 31, 46, 10001), now),
+        isFalse,
+      );
+      expect(
+        isInFutureWithMinuteAccuracy(
+            DateTime(2015, 5, 14, 13, 31, 46, 10001), now),
+        isFalse,
+      );
+      expect(
+        isInFutureWithMinuteAccuracy(
+            DateTime(2015, 5, 15, 11, 31, 46, 10001), now),
+        isFalse,
+      );
+      expect(
+        isInFutureWithMinuteAccuracy(
+            DateTime(2015, 5, 15, 12, 29, 46, 10001), now),
+        isFalse,
+      );
     });
 
     test("Value should be in the future", () {
-      expect(isInFutureWithMinuteAccuracy(
-          DateTime(2016, 4, 14, 11, 29, 44, 9999), now), isTrue);
-      expect(isInFutureWithMinuteAccuracy(
-          DateTime(2015, 6, 14, 11, 29, 44, 9999), now), isTrue);
-      expect(isInFutureWithMinuteAccuracy(
-          DateTime(2015, 5, 16, 11, 29, 44, 9999), now), isTrue);
-      expect(isInFutureWithMinuteAccuracy(
-          DateTime(2015, 5, 15, 13, 29, 44, 9999), now), isTrue);
+      expect(
+        isInFutureWithMinuteAccuracy(
+            DateTime(2016, 4, 14, 11, 29, 44, 9999), now),
+        isTrue,
+      );
+      expect(
+        isInFutureWithMinuteAccuracy(
+            DateTime(2015, 6, 14, 11, 29, 44, 9999), now),
+        isTrue,
+      );
+      expect(
+        isInFutureWithMinuteAccuracy(
+            DateTime(2015, 5, 16, 11, 29, 44, 9999), now),
+        isTrue,
+      );
+      expect(
+        isInFutureWithMinuteAccuracy(
+            DateTime(2015, 5, 15, 13, 29, 44, 9999), now),
+        isTrue,
+      );
     });
 
     test("Values are equal, but isInFuture returns false", () {
       // Equal, since seconds and milliseconds aren't considered.
-      expect(isInFutureWithMinuteAccuracy(
-          DateTime(2015, 5, 15, 12, 30, 44, 10001), now), isFalse);
-      expect(isInFutureWithMinuteAccuracy(
-          DateTime(2015, 5, 15, 12, 30, 45, 9999), now), isFalse);
-      expect(isInFutureWithMinuteAccuracy(
-          DateTime(2015, 5, 15, 12, 30, 44, 9999), now), isFalse);
+      expect(
+        isInFutureWithMinuteAccuracy(
+            DateTime(2015, 5, 15, 12, 30, 44, 10001), now),
+        isFalse,
+      );
+      expect(
+        isInFutureWithMinuteAccuracy(
+            DateTime(2015, 5, 15, 12, 30, 45, 9999), now),
+        isFalse,
+      );
+      expect(
+        isInFutureWithMinuteAccuracy(
+            DateTime(2015, 5, 15, 12, 30, 44, 9999), now),
+        isFalse,
+      );
     });
   });
 
@@ -61,38 +105,63 @@ void main() {
     DateTime now = DateTime(2015, 5, 15, 12, 30, 45, 10000);
 
     test("Value should be in the past", () {
-      expect(isInFutureWithDayAccuracy(
-          DateTime(2014, 6, 16, 13, 31, 46, 10001), now), isFalse);
-      expect(isInFutureWithDayAccuracy(
-          DateTime(2015, 4, 16, 13, 31, 46, 10001), now), isFalse);
-      expect(isInFutureWithDayAccuracy(
-          DateTime(2015, 5, 14, 13, 31, 46, 10001), now), isFalse);
+      expect(
+        isInFutureWithDayAccuracy(
+            DateTime(2014, 6, 16, 13, 31, 46, 10001), now),
+        isFalse,
+      );
+      expect(
+        isInFutureWithDayAccuracy(
+            DateTime(2015, 4, 16, 13, 31, 46, 10001), now),
+        isFalse,
+      );
+      expect(
+        isInFutureWithDayAccuracy(
+            DateTime(2015, 5, 14, 13, 31, 46, 10001), now),
+        isFalse,
+      );
     });
 
     test("Value should be in the future", () {
-      expect(isInFutureWithDayAccuracy(
-          DateTime(2016, 4, 14, 11, 29, 44, 9999), now), isTrue);
-      expect(isInFutureWithDayAccuracy(
-          DateTime(2015, 6, 14, 11, 29, 44, 9999), now), isTrue);
-      expect(isInFutureWithDayAccuracy(
-          DateTime(2015, 5, 16, 11, 29, 44, 9999), now), isTrue);
+      expect(
+        isInFutureWithDayAccuracy(DateTime(2016, 4, 14, 11, 29, 44, 9999), now),
+        isTrue,
+      );
+      expect(
+        isInFutureWithDayAccuracy(DateTime(2015, 6, 14, 11, 29, 44, 9999), now),
+        isTrue,
+      );
+      expect(
+        isInFutureWithDayAccuracy(DateTime(2015, 5, 16, 11, 29, 44, 9999), now),
+        isTrue,
+      );
     });
 
     test("Values are equal, but isInFuture returns false", () {
       // Equal, since seconds and milliseconds aren't considered.
-      expect(isInFutureWithDayAccuracy(
-          DateTime(2015, 5, 15, 11, 31, 46, 10001), now), isFalse);
-      expect(isInFutureWithDayAccuracy(
-          DateTime(2015, 5, 15, 12, 29, 46, 10001), now), isFalse);
-      expect(isInFutureWithDayAccuracy(
-          DateTime(2015, 5, 15, 13, 29, 44, 9999), now), isFalse);
+      expect(
+        isInFutureWithDayAccuracy(
+            DateTime(2015, 5, 15, 11, 31, 46, 10001), now),
+        isFalse,
+      );
+      expect(
+        isInFutureWithDayAccuracy(
+            DateTime(2015, 5, 15, 12, 29, 46, 10001), now),
+        isFalse,
+      );
+      expect(
+        isInFutureWithDayAccuracy(DateTime(2015, 5, 15, 13, 29, 44, 9999), now),
+        isFalse,
+      );
     });
   });
 
   test("combine", () {
-    expect(combine(DateTime(2020, 10, 26, 15, 30, 20, 1000),
-        TimeOfDay(hour: 16, minute: 45)),
-        DateTime(2020, 10, 26, 16, 45, 20, 1000));
+    expect(
+      combine(DateTime(2020, 10, 26, 15, 30, 20, 1000),
+          TimeOfDay(hour: 16, minute: 45)),
+      DateTime(2020, 10, 26, 16, 45, 20, 1000),
+    );
   });
 
   test("dateTimeToDayAccuracy", () {
@@ -113,39 +182,45 @@ void main() {
   });
 
   testWidgets("formatTimeOfDay", (WidgetTester tester) async {
-    expect(formatTimeOfDay(await buildContext(tester),
-        TimeOfDay(hour: 15, minute: 30)), "3:30 PM");
-    expect(formatTimeOfDay(await buildContext(tester, use24Hour: true),
-        TimeOfDay(hour: 15, minute: 30)), "15:30");
+    expect(
+      formatTimeOfDay(
+          await buildContext(tester), TimeOfDay(hour: 15, minute: 30)),
+      "3:30 PM",
+    );
+    expect(
+      formatTimeOfDay(await buildContext(tester, use24Hour: true),
+          TimeOfDay(hour: 15, minute: 30)),
+      "15:30",
+    );
   });
 
   testWidgets("timestampToSearchString", (WidgetTester tester) async {
     MockAppManager appManager = MockAppManager(
       mockTimeManager: true,
     );
-    when(appManager.mockTimeManager.currentDateTime).thenReturn(DateTime(2020, 9, 24));
-    expect(timestampToSearchString(
-        await buildContext(tester, appManager: appManager),
-        Timestamp.fromDateTime(DateTime(2020, 9, 24))),
-        "Today at 4:00 AM September 24, 2020");
+    when(appManager.mockTimeManager.currentDateTime)
+        .thenReturn(DateTime(2020, 9, 24));
+    expect(
+      timestampToSearchString(
+          await buildContext(tester, appManager: appManager),
+          Timestamp.fromDateTime(DateTime(2020, 9, 24))),
+      "Today at 4:00 AM September 24, 2020",
+    );
   });
 
   testWidgets("formatDateAsRecent", (WidgetTester tester) async {
     MockAppManager appManager = MockAppManager(
       mockTimeManager: true,
     );
-    when(appManager.mockTimeManager.currentDateTime).thenReturn(DateTime(2020, 9, 24));
+    when(appManager.mockTimeManager.currentDateTime)
+        .thenReturn(DateTime(2020, 9, 24));
     BuildContext context = await buildContext(tester, appManager: appManager);
 
     expect(formatDateAsRecent(context, DateTime(2020, 9, 24)), "Today");
-    expect(formatDateAsRecent(context, DateTime(2020, 9, 23)),
-        "Yesterday");
-    expect(formatDateAsRecent(context, DateTime(2020, 9, 22)),
-        "Tuesday");
-    expect(formatDateAsRecent(context, DateTime(2020, 8, 22)),
-        "Aug 22");
-    expect(formatDateAsRecent(context, DateTime(2019, 8, 22)),
-        "Aug 22, 2019");
+    expect(formatDateAsRecent(context, DateTime(2020, 9, 23)), "Yesterday");
+    expect(formatDateAsRecent(context, DateTime(2020, 9, 22)), "Tuesday");
+    expect(formatDateAsRecent(context, DateTime(2020, 8, 22)), "Aug 22");
+    expect(formatDateAsRecent(context, DateTime(2019, 8, 22)), "Aug 22, 2019");
   });
 
   group("DateTime", () {
@@ -567,16 +642,22 @@ void main() {
     testWidgets("0 duration", (WidgetTester tester) async {
       BuildContext context = await buildContext(tester);
 
-      expect(formatDuration(
-        context: context,
-        millisecondsDuration: 0,
-      ), "0d 0h 0m 0s");
+      expect(
+        formatDuration(
+          context: context,
+          millisecondsDuration: 0,
+        ),
+        "0d 0h 0m 0s",
+      );
 
-      expect(formatDuration(
-        context: context,
-        millisecondsDuration: 0,
-        condensed: true,
-      ), "0m");
+      expect(
+        formatDuration(
+          context: context,
+          millisecondsDuration: 0,
+          condensed: true,
+        ),
+        "0m",
+      );
     });
 
     testWidgets("All units", (WidgetTester tester) async {
@@ -589,16 +670,22 @@ void main() {
 
       BuildContext context = await buildContext(tester);
 
-      expect(formatDuration(
-        context: context,
-        millisecondsDuration: ms,
-      ), "2d 5h 45m 30s");
+      expect(
+        formatDuration(
+          context: context,
+          millisecondsDuration: ms,
+        ),
+        "2d 5h 45m 30s",
+      );
 
-      expect(formatDuration(
-        context: context,
-        millisecondsDuration: ms,
-        condensed: true,
-      ), "2d 5h 45m 30s");
+      expect(
+        formatDuration(
+          context: context,
+          millisecondsDuration: ms,
+          condensed: true,
+        ),
+        "2d 5h 45m 30s",
+      );
     });
 
     testWidgets("Days only", (WidgetTester tester) async {
@@ -608,16 +695,22 @@ void main() {
 
       BuildContext context = await buildContext(tester);
 
-      expect(formatDuration(
-        context: context,
-        millisecondsDuration: ms,
-      ), "2d 0h 0m 0s");
+      expect(
+        formatDuration(
+          context: context,
+          millisecondsDuration: ms,
+        ),
+        "2d 0h 0m 0s",
+      );
 
-      expect(formatDuration(
-        context: context,
-        millisecondsDuration: ms,
-        condensed: true,
-      ), "2d");
+      expect(
+        formatDuration(
+          context: context,
+          millisecondsDuration: ms,
+          condensed: true,
+        ),
+        "2d",
+      );
     });
 
     testWidgets("Hours only", (WidgetTester tester) async {
@@ -627,16 +720,22 @@ void main() {
 
       BuildContext context = await buildContext(tester);
 
-      expect(formatDuration(
-        context: context,
-        millisecondsDuration: ms,
-      ), "0d 10h 0m 0s");
+      expect(
+        formatDuration(
+          context: context,
+          millisecondsDuration: ms,
+        ),
+        "0d 10h 0m 0s",
+      );
 
-      expect(formatDuration(
-        context: context,
-        millisecondsDuration: ms,
-        condensed: true,
-      ), "10h");
+      expect(
+        formatDuration(
+          context: context,
+          millisecondsDuration: ms,
+          condensed: true,
+        ),
+        "10h",
+      );
     });
 
     testWidgets("Minutes only", (WidgetTester tester) async {
@@ -646,16 +745,22 @@ void main() {
 
       BuildContext context = await buildContext(tester);
 
-      expect(formatDuration(
-        context: context,
-        millisecondsDuration: ms,
-      ), "0d 0h 20m 0s");
+      expect(
+        formatDuration(
+          context: context,
+          millisecondsDuration: ms,
+        ),
+        "0d 0h 20m 0s",
+      );
 
-      expect(formatDuration(
-        context: context,
-        millisecondsDuration: ms,
-        condensed: true,
-      ), "20m");
+      expect(
+        formatDuration(
+          context: context,
+          millisecondsDuration: ms,
+          condensed: true,
+        ),
+        "20m",
+      );
     });
 
     testWidgets("Seconds only", (WidgetTester tester) async {
@@ -665,16 +770,22 @@ void main() {
 
       BuildContext context = await buildContext(tester);
 
-      expect(formatDuration(
-        context: context,
-        millisecondsDuration: ms,
-      ), "0d 0h 0m 50s");
+      expect(
+        formatDuration(
+          context: context,
+          millisecondsDuration: ms,
+        ),
+        "0d 0h 0m 50s",
+      );
 
-      expect(formatDuration(
-        context: context,
-        millisecondsDuration: ms,
-        condensed: true,
-      ), "50s");
+      expect(
+        formatDuration(
+          context: context,
+          millisecondsDuration: ms,
+          condensed: true,
+        ),
+        "50s",
+      );
     });
 
     testWidgets("Excluding days", (WidgetTester tester) async {
@@ -687,11 +798,14 @@ void main() {
 
       BuildContext context = await buildContext(tester);
 
-      expect(formatDuration(
-        context: context,
-        millisecondsDuration: ms,
-        includesDays: false,
-      ), "53h 45m 30s");
+      expect(
+        formatDuration(
+          context: context,
+          millisecondsDuration: ms,
+          includesDays: false,
+        ),
+        "53h 45m 30s",
+      );
     });
 
     testWidgets("Excluding hours", (WidgetTester tester) async {
@@ -704,12 +818,15 @@ void main() {
 
       BuildContext context = await buildContext(tester);
 
-      expect(formatDuration(
-        context: context,
-        millisecondsDuration: ms,
-        includesDays: false,
-        includesHours: false,
-      ), "3225m 30s");
+      expect(
+        formatDuration(
+          context: context,
+          millisecondsDuration: ms,
+          includesDays: false,
+          includesHours: false,
+        ),
+        "3225m 30s",
+      );
     });
 
     testWidgets("Excluding minutes", (WidgetTester tester) async {
@@ -722,13 +839,16 @@ void main() {
 
       BuildContext context = await buildContext(tester);
 
-      expect(formatDuration(
-        context: context,
-        millisecondsDuration: ms,
-        includesDays: false,
-        includesHours: false,
-        includesMinutes: false,
-      ), "193530s");
+      expect(
+        formatDuration(
+          context: context,
+          millisecondsDuration: ms,
+          includesDays: false,
+          includesHours: false,
+          includesMinutes: false,
+        ),
+        "193530s",
+      );
     });
 
     testWidgets("Excluding all", (WidgetTester tester) async {
@@ -741,14 +861,17 @@ void main() {
 
       BuildContext context = await buildContext(tester);
 
-      expect(formatDuration(
-        context: context,
-        millisecondsDuration: ms,
-        includesDays: false,
-        includesHours: false,
-        includesMinutes: false,
-        includesSeconds: false,
-      ), "");
+      expect(
+        formatDuration(
+          context: context,
+          millisecondsDuration: ms,
+          includesDays: false,
+          includesHours: false,
+          includesMinutes: false,
+          includesSeconds: false,
+        ),
+        "",
+      );
     });
 
     testWidgets("Show highest two only", (WidgetTester tester) async {
@@ -761,11 +884,14 @@ void main() {
 
       BuildContext context = await buildContext(tester);
 
-      expect(formatDuration(
-        context: context,
-        millisecondsDuration: ms,
-        showHighestTwoOnly: true,
-      ), "2d 5h");
+      expect(
+        formatDuration(
+          context: context,
+          millisecondsDuration: ms,
+          showHighestTwoOnly: true,
+        ),
+        "2d 5h",
+      );
 
       ms = Duration(
         hours: 5,
@@ -773,35 +899,44 @@ void main() {
         seconds: 30,
       ).inMilliseconds;
 
-      expect(formatDuration(
-        context: context,
-        millisecondsDuration: ms,
-        condensed: true,
-        showHighestTwoOnly: true,
-      ), "5h 45m");
+      expect(
+        formatDuration(
+          context: context,
+          millisecondsDuration: ms,
+          condensed: true,
+          showHighestTwoOnly: true,
+        ),
+        "5h 45m",
+      );
 
       ms = Duration(
         minutes: 45,
         seconds: 30,
       ).inMilliseconds;
 
-      expect(formatDuration(
-        context: context,
-        millisecondsDuration: ms,
-        condensed: true,
-        showHighestTwoOnly: true,
-      ), "45m 30s");
+      expect(
+        formatDuration(
+          context: context,
+          millisecondsDuration: ms,
+          condensed: true,
+          showHighestTwoOnly: true,
+        ),
+        "45m 30s",
+      );
 
       ms = Duration(
         seconds: 30,
       ).inMilliseconds;
 
-      expect(formatDuration(
-        context: context,
-        millisecondsDuration: ms,
-        condensed: true,
-        showHighestTwoOnly: true,
-      ), "30s");
+      expect(
+        formatDuration(
+          context: context,
+          millisecondsDuration: ms,
+          condensed: true,
+          showHighestTwoOnly: true,
+        ),
+        "30s",
+      );
     });
 
     testWidgets("With duration unit", (WidgetTester tester) async {
@@ -814,17 +949,23 @@ void main() {
 
       BuildContext context = await buildContext(tester);
 
-      expect(formatDuration(
-        context: context,
-        millisecondsDuration: ms,
-        largestDurationUnit: DurationUnit.hours,
-      ), "53h 45m 30s");
+      expect(
+        formatDuration(
+          context: context,
+          millisecondsDuration: ms,
+          largestDurationUnit: DurationUnit.hours,
+        ),
+        "53h 45m 30s",
+      );
 
-      expect(formatDuration(
-        context: context,
-        millisecondsDuration: ms,
-        largestDurationUnit: DurationUnit.minutes,
-      ), "3225m 30s");
+      expect(
+        formatDuration(
+          context: context,
+          millisecondsDuration: ms,
+          largestDurationUnit: DurationUnit.minutes,
+        ),
+        "3225m 30s",
+      );
     });
   });
 }

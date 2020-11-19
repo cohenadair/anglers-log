@@ -72,9 +72,14 @@ void main() {
 
   group("deleteMessage", () {
     testWidgets("Invalid input", (WidgetTester tester) async {
-      expect(() => baitCategoryManager.deleteMessage(null, BaitCategory()
-        ..id = randomId()
-        ..name = "Live"), throwsAssertionError);
+      expect(
+        () => baitCategoryManager.deleteMessage(
+            null,
+            BaitCategory()
+              ..id = randomId()
+              ..name = "Live"),
+        throwsAssertionError,
+      );
 
       BuildContext context = await buildContext(tester);
       expect(() => baitCategoryManager.deleteMessage(context, null),
@@ -94,9 +99,11 @@ void main() {
       ]);
 
       BuildContext context = await buildContext(tester);
-      expect(baitCategoryManager.deleteMessage(context, category),
-          "Live is associated with 1 bait; are you sure you want to delete it? "
-              "This cannot be undone.");
+      expect(
+        baitCategoryManager.deleteMessage(context, category),
+        "Live is associated with 1 bait; are you sure you want to delete it? "
+        "This cannot be undone.",
+      );
     });
 
     testWidgets("Plural zero", (WidgetTester tester) async {
@@ -106,9 +113,11 @@ void main() {
       when(baitManager.list()).thenReturn([]);
 
       BuildContext context = await buildContext(tester);
-      expect(baitCategoryManager.deleteMessage(context, category),
-          "Live is associated with 0 baits; are you sure you want to delete it?"
-              " This cannot be undone.");
+      expect(
+        baitCategoryManager.deleteMessage(context, category),
+        "Live is associated with 0 baits; are you sure you want to delete it?"
+        " This cannot be undone.",
+      );
     });
 
     testWidgets("Plural not zero", (WidgetTester tester) async {
@@ -127,9 +136,11 @@ void main() {
       ]);
 
       BuildContext context = await buildContext(tester);
-      expect(baitCategoryManager.deleteMessage(context, category),
-          "Live is associated with 2 baits; are you sure you want to delete it?"
-              " This cannot be undone.");
+      expect(
+        baitCategoryManager.deleteMessage(context, category),
+        "Live is associated with 2 baits; are you sure you want to delete it?"
+        " This cannot be undone.",
+      );
     });
   });
 }

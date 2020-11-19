@@ -82,7 +82,8 @@ main() {
     expect(find.text("Baits (5)"), findsOneWidget);
 
     when(appManager.mockBaitManager.filteredList(any)).thenReturn([
-      baits[1], baits[2],
+      baits[1],
+      baits[2],
     ]);
     await enterTextAndSettle(tester, find.byType(CupertinoTextField), "Shad");
     await tester.pumpAndSettle(Duration(milliseconds: 600));

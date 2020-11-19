@@ -39,9 +39,11 @@ main() {
 
   group("entityValuesCount", () {
     test("Input", () {
-      expect(() => entityValuesCount<Catch>([Catch()
-        ..id = randomId()
-      ], randomId(), null), throwsAssertionError);
+      expect(
+        () => entityValuesCount<Catch>(
+            [Catch()..id = randomId()], randomId(), null),
+        throwsAssertionError,
+      );
     });
 
     test("Empty entities", () {
@@ -49,48 +51,56 @@ main() {
     });
 
     test("Null getValues", () {
-      expect(entityValuesCount<Catch>([Catch()
-        ..id = randomId()
-      ], randomId(), (_) => null), 0);
+      expect(
+        entityValuesCount<Catch>(
+            [Catch()..id = randomId()], randomId(), (_) => null),
+        0,
+      );
     });
 
     test("Empty getValues", () {
-      expect(entityValuesCount<Catch>([Catch()
-        ..id = randomId()
-      ], randomId(), (_) => []), 0);
+      expect(
+        entityValuesCount<Catch>(
+            [Catch()..id = randomId()], randomId(), (_) => []),
+        0,
+      );
     });
 
     test("0 count", () {
-      Catch cat = Catch()
-        ..id = randomId();
-      cat.customEntityValues.add(CustomEntityValue()
-        ..customEntityId = randomId());
-      expect(entityValuesCount<Catch>([
-        cat
-      ], randomId(), (cat) => cat.customEntityValues), 0);
+      Catch cat = Catch()..id = randomId();
+      cat.customEntityValues
+          .add(CustomEntityValue()..customEntityId = randomId());
+      expect(
+        entityValuesCount<Catch>(
+            [cat], randomId(), (cat) => cat.customEntityValues),
+        0,
+      );
     });
 
     test("Greater than 0 count", () {
-      Catch cat = Catch()
-        ..id = randomId();
+      Catch cat = Catch()..id = randomId();
 
       Id customId1 = randomId();
       Id customId2 = randomId();
       cat.customEntityValues
-        ..add(CustomEntityValue()
-          ..customEntityId = customId1)
-        ..add(CustomEntityValue()
-          ..customEntityId = customId2);
+        ..add(CustomEntityValue()..customEntityId = customId1)
+        ..add(CustomEntityValue()..customEntityId = customId2);
 
-      expect(entityValuesCount<Catch>([
-        cat
-      ], randomId(), (cat) => cat.customEntityValues), 0);
-      expect(entityValuesCount<Catch>([
-        cat
-      ], customId1, (cat) => cat.customEntityValues), 1);
-      expect(entityValuesCount<Catch>([
-        cat
-      ], customId2, (cat) => cat.customEntityValues), 1);
+      expect(
+        entityValuesCount<Catch>(
+            [cat], randomId(), (cat) => cat.customEntityValues),
+        0,
+      );
+      expect(
+        entityValuesCount<Catch>(
+            [cat], customId1, (cat) => cat.customEntityValues),
+        1,
+      );
+      expect(
+        entityValuesCount<Catch>(
+            [cat], customId2, (cat) => cat.customEntityValues),
+        1,
+      );
     });
   });
 
@@ -102,9 +112,11 @@ main() {
       expect(entityValuesMatchesFilter(null, null, null), isTrue);
       expect(entityValuesMatchesFilter([], "", null), isTrue);
       expect(entityValuesMatchesFilter(null, "", null), isTrue);
-      expect(entityValuesMatchesFilter([
-        CustomEntityValue()
-      ], "", customEntityManager), isFalse);
+      expect(
+        entityValuesMatchesFilter(
+            [CustomEntityValue()], "", customEntityManager),
+        isFalse,
+      );
     });
 
     test("Empty values", () {
@@ -112,17 +124,21 @@ main() {
     });
 
     test("Null values", () {
-      expect(entityValuesMatchesFilter([
-        CustomEntityValue()
-          ..value = ""
-      ], "Filter", customEntityManager), isFalse);
+      expect(
+        entityValuesMatchesFilter(
+            [CustomEntityValue()..value = ""], "Filter", customEntityManager),
+        isFalse,
+      );
     });
 
     test("Values value matches filter", () {
-      expect(entityValuesMatchesFilter([
-        CustomEntityValue()
-          ..value = "A filter value"
-      ], "Filter", customEntityManager), isTrue);
+      expect(
+        entityValuesMatchesFilter(
+            [CustomEntityValue()..value = "A filter value"],
+            "Filter",
+            customEntityManager),
+        isTrue,
+      );
     });
   });
 
@@ -137,52 +153,65 @@ main() {
       Id id2 = randomId();
       Id id3 = randomId();
 
-      expect(entityValuesFromMap({
-        randomId(): null,
-        randomId(): "",
-        id1: "Value 1",
-        id2: "Value 2",
-        id3: "Value 3",
-      }), [
-        CustomEntityValue()
-          ..customEntityId = id1
-          ..value = "Value 1",
-        CustomEntityValue()
-          ..customEntityId = id2
-          ..value = "Value 2",
-        CustomEntityValue()
-          ..customEntityId = id3
-          ..value = "Value 3",
-      ]);
+      expect(
+        entityValuesFromMap({
+          randomId(): null,
+          randomId(): "",
+          id1: "Value 1",
+          id2: "Value 2",
+          id3: "Value 3",
+        }),
+        [
+          CustomEntityValue()
+            ..customEntityId = id1
+            ..value = "Value 1",
+          CustomEntityValue()
+            ..customEntityId = id2
+            ..value = "Value 2",
+          CustomEntityValue()
+            ..customEntityId = id3
+            ..value = "Value 3",
+        ],
+      );
     });
   });
 
   group("valueForCustomEntityType", () {
     test("Number", () {
-      expect(valueForCustomEntityType(CustomEntity_Type.NUMBER,
-          CustomEntityValue()
-            ..value = "50"), "50");
+      expect(
+        valueForCustomEntityType(
+            CustomEntity_Type.NUMBER, CustomEntityValue()..value = "50"),
+        "50",
+      );
     });
 
     test("Text", () {
-      expect(valueForCustomEntityType(CustomEntity_Type.TEXT,
-          CustomEntityValue()
-            ..value = "50"), "50");
+      expect(
+        valueForCustomEntityType(
+            CustomEntity_Type.TEXT, CustomEntityValue()..value = "50"),
+        "50",
+      );
     });
 
     test("Bool without context", () {
-      expect(valueForCustomEntityType(CustomEntity_Type.BOOL,
-          CustomEntityValue()
-            ..value = "1"), isTrue);
+      expect(
+        valueForCustomEntityType(
+            CustomEntity_Type.BOOL, CustomEntityValue()..value = "1"),
+        isTrue,
+      );
     });
 
     testWidgets("Bool with context", (WidgetTester tester) async {
-      expect(valueForCustomEntityType(CustomEntity_Type.BOOL,
-          CustomEntityValue()
-            ..value = "1", await buildContext(tester)), "Yes");
-      expect(valueForCustomEntityType(CustomEntity_Type.BOOL,
-          CustomEntityValue()
-            ..value = "0", await buildContext(tester)), "No");
+      expect(
+        valueForCustomEntityType(CustomEntity_Type.BOOL,
+            CustomEntityValue()..value = "1", await buildContext(tester)),
+        "Yes",
+      );
+      expect(
+        valueForCustomEntityType(CustomEntity_Type.BOOL,
+            CustomEntityValue()..value = "0", await buildContext(tester)),
+        "No",
+      );
     });
   });
 

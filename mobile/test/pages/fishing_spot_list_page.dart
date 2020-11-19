@@ -17,13 +17,14 @@ main() {
     );
 
     when(appManager.mockFishingSpotManager
-        .listSortedByName(filter: anyNamed("filter"))).thenReturn([
-          FishingSpot()
-            ..id = randomId()
-            ..name = "Test Fishing Spot"
-            ..lat = 1.234567
-            ..lng = 7.654321,
-        ]);
+            .listSortedByName(filter: anyNamed("filter")))
+        .thenReturn([
+      FishingSpot()
+        ..id = randomId()
+        ..name = "Test Fishing Spot"
+        ..lat = 1.234567
+        ..lng = 7.654321,
+    ]);
   });
 
   group("Picker", () {

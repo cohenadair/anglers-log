@@ -20,22 +20,27 @@ main() {
   });
 
   testWidgets("Invalid image shows placeholder", (WidgetTester tester) async {
-    await tester.pumpWidget(Testable((_) => Photo(
-      fileName: null,
-      width: 50,
-      height: 50,
-    ), appManager: appManager));
+    await tester.pumpWidget(Testable(
+      (_) => Photo(
+        fileName: null,
+        width: 50,
+        height: 50,
+      ),
+      appManager: appManager,
+    ));
     await tester.pump(Duration(milliseconds: 250));
 
     expect(find.byIcon(CustomIcons.catches), findsOneWidget);
   });
 
   testWidgets("Invalid image no size shows empty placeholder",
-      (WidgetTester tester) async
-  {
-    await tester.pumpWidget(Testable((_) => Photo(
-      fileName: null,
-    ), appManager: appManager));
+      (WidgetTester tester) async {
+    await tester.pumpWidget(Testable(
+      (_) => Photo(
+        fileName: null,
+      ),
+      appManager: appManager,
+    ));
     await tester.pump(Duration(milliseconds: 250));
 
     expect(find.byIcon(CustomIcons.catches), findsNothing);
@@ -43,12 +48,15 @@ main() {
   });
 
   testWidgets("Circular placeholder", (WidgetTester tester) async {
-    await tester.pumpWidget(Testable((_) => Photo(
-      fileName: null,
-      circular: true,
-      width: 50,
-      height: 50,
-    ), appManager: appManager));
+    await tester.pumpWidget(Testable(
+      (_) => Photo(
+        fileName: null,
+        circular: true,
+        width: 50,
+        height: 50,
+      ),
+      appManager: appManager,
+    ));
     await tester.pump(Duration(milliseconds: 250));
 
     expect((findFirst<Container>(tester).decoration as BoxDecoration).shape,
@@ -57,11 +65,14 @@ main() {
   });
 
   testWidgets("Rectangular placeholder", (WidgetTester tester) async {
-    await tester.pumpWidget(Testable((_) => Photo(
-      fileName: null,
-      width: 50,
-      height: 50,
-    ), appManager: appManager));
+    await tester.pumpWidget(Testable(
+      (_) => Photo(
+        fileName: null,
+        width: 50,
+        height: 50,
+      ),
+      appManager: appManager,
+    ));
     await tester.pump(Duration(milliseconds: 250));
 
     expect((findFirst<Container>(tester).decoration as BoxDecoration).shape,
@@ -74,36 +85,52 @@ main() {
     when(appManager.mockImageManager.dartImage(any, any, any))
         .thenAnswer((_) => Future.value(image));
 
-    await tester.pumpWidget(Testable((_) => Photo(
-      fileName: "flutter_logo.png",
-    ), appManager: appManager));
+    await tester.pumpWidget(Testable(
+      (_) => Photo(
+        fileName: "flutter_logo.png",
+      ),
+      appManager: appManager,
+    ));
     await tester.pump(Duration(milliseconds: 250));
 
     expect(find.byType(RawImage), findsOneWidget);
   });
 
   testWidgets("Given cache size is honored", (WidgetTester tester) async {
-    await tester.pumpWidget(Testable((_) => Photo(
-      fileName: "flutter_logo.png",
-      cacheSize: 50,
-    ), appManager: appManager));
+    await tester.pumpWidget(Testable(
+      (_) => Photo(
+        fileName: "flutter_logo.png",
+        cacheSize: 50,
+      ),
+      appManager: appManager,
+    ));
     await tester.pump(Duration(milliseconds: 250));
 
-    expect(verify(appManager.mockImageManager.dartImage(any, any, captureAny))
-        .captured.single, 50);
+    expect(
+      verify(appManager.mockImageManager.dartImage(any, any, captureAny))
+          .captured
+          .single,
+      50,
+    );
   });
 
-  testWidgets("If no cache size, widget size is used", (WidgetTester tester)
-      async
-  {
-    await tester.pumpWidget(Testable((_) => Photo(
-      fileName: "flutter_logo.png",
-      width: 50,
-      height: 50,
-    ), appManager: appManager));
+  testWidgets("If no cache size, widget size is used",
+      (WidgetTester tester) async {
+    await tester.pumpWidget(Testable(
+      (_) => Photo(
+        fileName: "flutter_logo.png",
+        width: 50,
+        height: 50,
+      ),
+      appManager: appManager,
+    ));
     await tester.pump(Duration(milliseconds: 250));
 
-    expect(verify(appManager.mockImageManager.dartImage(any, any, captureAny))
-        .captured.single, 50);
+    expect(
+      verify(appManager.mockImageManager.dartImage(any, any, captureAny))
+          .captured
+          .single,
+      50,
+    );
   });
 }

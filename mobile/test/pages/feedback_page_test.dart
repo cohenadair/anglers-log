@@ -39,9 +39,13 @@ main() {
   });
 
   testWidgets("Custom title", (WidgetTester tester) async {
-    await tester.pumpWidget(Testable((_) => FeedbackPage(
-      title: "Title",
-    )));
+    await tester.pumpWidget(
+      Testable(
+        (_) => FeedbackPage(
+          title: "Title",
+        ),
+      ),
+    );
     expect(find.text("Title"), findsOneWidget);
   });
 
@@ -51,55 +55,64 @@ main() {
   });
 
   testWidgets("Warning message shown", (WidgetTester tester) async {
-    await tester.pumpWidget(Testable((_) => FeedbackPage(
-      warningMessage: "This is a warning.",
-      error: "Error",
-    )));
+    await tester.pumpWidget(
+      Testable(
+        (_) => FeedbackPage(
+          warningMessage: "This is a warning.",
+          error: "Error",
+        ),
+      ),
+    );
     expect(find.text("This is a warning."), findsOneWidget);
   });
 
   testWidgets("Warning message not shown", (WidgetTester tester) async {
-    await tester.pumpWidget(Testable((_) => FeedbackPage(
-      warningMessage: "This is a warning.",
-    )));
+    await tester.pumpWidget(
+      Testable(
+        (_) => FeedbackPage(
+          warningMessage: "This is a warning.",
+        ),
+      ),
+    );
     expect(find.text("This is a warning."), findsNothing);
   });
 
   testWidgets("Send button state updates when email changes",
-      (WidgetTester tester) async
-  {
+      (WidgetTester tester) async {
     await tester.pumpWidget(Testable((_) => FeedbackPage()));
     expect(findFirstWithText<ActionButton>(tester, "SEND").onPressed, isNull);
 
-    await enterTextAndSettle(tester, find.widgetWithText(TextInput, "Message"),
-        "A message.");
-    await enterTextAndSettle(tester, find.widgetWithText(TextInput, "Email"),
-        "test@test.com");
-    expect(findFirstWithText<ActionButton>(tester, "SEND").onPressed,
-        isNotNull);
+    await enterTextAndSettle(
+        tester, find.widgetWithText(TextInput, "Message"), "A message.");
+    await enterTextAndSettle(
+        tester, find.widgetWithText(TextInput, "Email"), "test@test.com");
+    expect(
+        findFirstWithText<ActionButton>(tester, "SEND").onPressed, isNotNull);
 
-    await enterTextAndSettle(tester, find.widgetWithText(TextInput, "Email"),
-        "test@tes");
+    await enterTextAndSettle(
+        tester, find.widgetWithText(TextInput, "Email"), "test@tes");
     expect(findFirstWithText<ActionButton>(tester, "SEND").onPressed, isNull);
 
-    await enterTextAndSettle(tester, find.widgetWithText(TextInput, "Email"),
-        "test@test.com");
-    expect(findFirstWithText<ActionButton>(tester, "SEND").onPressed,
-        isNotNull);
+    await enterTextAndSettle(
+        tester, find.widgetWithText(TextInput, "Email"), "test@test.com");
+    expect(
+        findFirstWithText<ActionButton>(tester, "SEND").onPressed, isNotNull);
   });
 
-  testWidgets("For errors, type RadioInput is hidden", (WidgetTester tester)
-      async
-  {
-    await tester.pumpWidget(Testable((_) => FeedbackPage(
-      error: "Error",
-    )));
+  testWidgets("For errors, type RadioInput is hidden",
+      (WidgetTester tester) async {
+    await tester.pumpWidget(
+      Testable(
+        (_) => FeedbackPage(
+          error: "Error",
+        ),
+      ),
+    );
     expect(find.byType(RadioInput), findsNothing);
   });
 
-  testWidgets("For non-errors, type RadioInput is shown", (WidgetTester tester)
-      async
-  {
+  testWidgets("For non-errors, type RadioInput is shown",
+      (WidgetTester tester) async {
     await tester.pumpWidget(Testable((_) => FeedbackPage()));
     expect(find.byType(RadioInput), findsOneWidget);
   });
@@ -135,14 +148,14 @@ main() {
         .thenAnswer((_) => Future.value(false));
 
     await tapAndSettle(tester, find.text("SEND"));
-    expect(find.widgetWithText(SnackBar,
-        "No internet connection. Please check your connection and try again."),
+    expect(
+        find.widgetWithText(SnackBar,
+            "No internet connection. Please check your connection and try again."),
         findsOneWidget);
   });
 
-  testWidgets("Error Snackbar shows for sending error", (WidgetTester tester)
-      async
-  {
+  testWidgets("Error Snackbar shows for sending error",
+      (WidgetTester tester) async {
     var navObserver = MockNavigatorObserver();
     await tester.pumpWidget(Testable(
       (_) => FeedbackPage(
@@ -155,8 +168,10 @@ main() {
         .thenAnswer((_) => throw SmtpClientAuthenticationException("Error"));
 
     await tapAndSettle(tester, find.text("SEND"));
-    expect(find.widgetWithText(SnackBar,
-        "Error sending feedback. Please try again later."), findsOneWidget);
+    expect(
+        find.widgetWithText(
+            SnackBar, "Error sending feedback. Please try again later."),
+        findsOneWidget);
     verifyNever(navObserver.didPop(any, any));
   });
 

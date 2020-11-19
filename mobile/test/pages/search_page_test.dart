@@ -23,23 +23,30 @@ main() {
     expect(popped, isTrue);
   });
 
-  testWidgets("Clear button when text is not empty", (WidgetTester tester)
-      async
-  {
-    await tester.pumpWidget(Testable((_) => SearchPage(
-      suggestionsBuilder: (_) => Text("Suggestions"),
-      resultsBuilder: (_, __) => Text("Results"),
-    )));
+  testWidgets("Clear button when text is not empty",
+      (WidgetTester tester) async {
+    await tester.pumpWidget(
+      Testable(
+        (_) => SearchPage(
+          suggestionsBuilder: (_) => Text("Suggestions"),
+          resultsBuilder: (_, __) => Text("Results"),
+        ),
+      ),
+    );
 
     await enterTextAndSettle(tester, find.byType(TextField), "Search text");
     expect(find.text("CLEAR"), findsOneWidget);
   });
 
   testWidgets("Close button clears text", (WidgetTester tester) async {
-    await tester.pumpWidget(Testable((_) => SearchPage(
-      suggestionsBuilder: (_) => Text("Suggestions"),
-      resultsBuilder: (_, __) => Text("Results"),
-    )));
+    await tester.pumpWidget(
+      Testable(
+        (_) => SearchPage(
+          suggestionsBuilder: (_) => Text("Suggestions"),
+          resultsBuilder: (_, __) => Text("Results"),
+        ),
+      ),
+    );
 
     await enterTextAndSettle(tester, find.byType(TextField), "Search text");
     await tapAndSettle(tester, find.text("CLEAR"));
@@ -47,10 +54,14 @@ main() {
   });
 
   testWidgets("Input text updates state", (WidgetTester tester) async {
-    await tester.pumpWidget(Testable((_) => SearchPage(
-      suggestionsBuilder: (_) => Text("Suggestions"),
-      resultsBuilder: (_, __) => Text("Results"),
-    )));
+    await tester.pumpWidget(
+      Testable(
+        (_) => SearchPage(
+          suggestionsBuilder: (_) => Text("Suggestions"),
+          resultsBuilder: (_, __) => Text("Results"),
+        ),
+      ),
+    );
 
     expect(find.text("Suggestions"), findsOneWidget);
 

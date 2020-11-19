@@ -12,8 +12,11 @@ import 'package:sqflite/sqlite_api.dart';
 import 'mock_app_manager.dart';
 
 class MockBatch extends Mock implements Batch {}
+
 class MockDatabase extends Mock implements Database {}
+
 class MockEntityListener extends Mock implements EntityListener<Species> {}
+
 class MockSpeciesListener extends Mock implements EntityListener<Species> {}
 
 class TestEntityManager extends EntityManager<Species> {
@@ -61,11 +64,24 @@ void main() {
     Species species1 = Species()..id = id1;
     Species species2 = Species()..id = id2;
 
-    when(dataManager.fetchAll("species")).thenAnswer((_) => Future.value([
-      {"id": Uint8List.fromList(id0.bytes), "bytes": species0.writeToBuffer()},
-      {"id": Uint8List.fromList(id1.bytes), "bytes": species1.writeToBuffer()},
-      {"id": Uint8List.fromList(id2.bytes), "bytes": species2.writeToBuffer()},
-    ]));
+    when(dataManager.fetchAll("species")).thenAnswer(
+      (_) => Future.value(
+        [
+          {
+            "id": Uint8List.fromList(id0.bytes),
+            "bytes": species0.writeToBuffer()
+          },
+          {
+            "id": Uint8List.fromList(id1.bytes),
+            "bytes": species1.writeToBuffer()
+          },
+          {
+            "id": Uint8List.fromList(id2.bytes),
+            "bytes": species2.writeToBuffer()
+          },
+        ],
+      ),
+    );
     await entityManager.initialize();
     expect(entityManager.entityCount, 3);
   });
@@ -83,25 +99,36 @@ void main() {
     Id speciesId0 = randomId();
     Id speciesId1 = randomId();
 
-    expect(await entityManager.addOrUpdate(Species()
-      ..id = speciesId0
-      ..name = "Bluegill"), true);
+    expect(
+      await entityManager.addOrUpdate(Species()
+        ..id = speciesId0
+        ..name = "Bluegill"),
+      true,
+    );
     expect(entityManager.entityCount, 1);
     expect(entityManager.entity(speciesId0).name, "Bluegill");
     verify(listener.onAddOrUpdate).called(1);
 
     // Update.
-    expect(await entityManager.addOrUpdate(Species()
-      ..id = speciesId0
-      ..name = "Bass"), true);
+    expect(
+      await entityManager.addOrUpdate(Species()
+        ..id = speciesId0
+        ..name = "Bass"),
+      true,
+    );
     expect(entityManager.entityCount, 1);
     expect(entityManager.entity(speciesId0).name, "Bass");
     verify(listener.onAddOrUpdate).called(1);
 
     // No notify.
-    expect(await entityManager.addOrUpdate(Species()
-      ..id = speciesId1
-      ..name = "Catfish", notify: false), true);
+    expect(
+      await entityManager.addOrUpdate(
+          Species()
+            ..id = speciesId1
+            ..name = "Catfish",
+          notify: false),
+      true,
+    );
     expect(entityManager.entityCount, 2);
     expect(entityManager.entity(speciesId1).name, "Catfish");
     verifyNever(listener.onAddOrUpdate);
@@ -131,8 +158,7 @@ void main() {
   });
 
   test("Data is cleared and listeners notified when database is reset",
-      () async
-  {
+      () async {
     // Setup real DataManager to initiate callback.
     var batch = MockBatch();
     when(batch.commit()).thenAnswer((_) => Future.value([]));
@@ -184,15 +210,24 @@ void main() {
     Id speciesId1 = randomId();
     Id speciesId2 = randomId();
 
-    expect(await entityManager.addOrUpdate(Species()
-      ..id = speciesId0
-      ..name = "Bluegill"), true);
-    expect(await entityManager.addOrUpdate(Species()
-      ..id = speciesId1
-      ..name = "Catfish"), true);
-    expect(await entityManager.addOrUpdate(Species()
-      ..id = speciesId2
-      ..name = "Bass"), true);
+    expect(
+      await entityManager.addOrUpdate(Species()
+        ..id = speciesId0
+        ..name = "Bluegill"),
+      true,
+    );
+    expect(
+      await entityManager.addOrUpdate(Species()
+        ..id = speciesId1
+        ..name = "Catfish"),
+      true,
+    );
+    expect(
+      await entityManager.addOrUpdate(Species()
+        ..id = speciesId2
+        ..name = "Bass"),
+      true,
+    );
     expect(entityManager.entityCount, 3);
     expect(entityManager.list().length, 3);
     expect(entityManager.list([speciesId0, speciesId2]).length, 2);

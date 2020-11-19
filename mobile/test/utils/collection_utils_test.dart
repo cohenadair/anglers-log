@@ -2,26 +2,31 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/utils/collection_utils.dart';
 
 enum TestEnum {
-  a, b, c,
+  a,
+  b,
+  c,
 }
 
 void main() {
   test("Default sortedMap", () {
-    expect(sortedMap<String>({
-      "0": 200,
-      "6": 5678,
-      "3": 1000,
-      "2": 1035,
-      "8": 109,
-      "1": 100,
-    }).values, {
-      "6": 5678,
-      "2": 1035,
-      "3": 1000,
-      "0": 200,
-      "8": 109,
-      "1": 100,
-    }.values);
+    expect(
+      sortedMap<String>({
+        "0": 200,
+        "6": 5678,
+        "3": 1000,
+        "2": 1035,
+        "8": 109,
+        "1": 100,
+      }).values,
+      {
+        "6": 5678,
+        "2": 1035,
+        "3": 1000,
+        "0": 200,
+        "8": 109,
+        "1": 100,
+      }.values,
+    );
   });
 
   test("sortedMap with comparator", () {
@@ -34,15 +39,17 @@ void main() {
       "1": 100,
     };
 
-    expect(sortedMap<String>(map, (lhs, rhs) => map[lhs].compareTo(map[rhs]))
-        .values, {
-          "1": 100,
-          "8": 109,
-          "0": 200,
-          "3": 1000,
-          "2": 1035,
-          "6": 5678,
-        }.values);
+    expect(
+      sortedMap<String>(map, (lhs, rhs) => map[lhs].compareTo(map[rhs])).values,
+      {
+        "1": 100,
+        "8": 109,
+        "0": 200,
+        "3": 1000,
+        "2": 1035,
+        "6": 5678,
+      }.values,
+    );
   });
 
   test("firstElements", () {
@@ -82,8 +89,8 @@ void main() {
 
   test("valueOf", () {
     expect(valueOf<TestEnum>(TestEnum.values, 0), TestEnum.a);
-    expect(valueOf<TestEnum>(TestEnum.values, TestEnum.values.length + 1),
-        isNull);
+    expect(
+        valueOf<TestEnum>(TestEnum.values, TestEnum.values.length + 1), isNull);
     expect(valueOf<TestEnum>(TestEnum.values, null), isNull);
   });
 }

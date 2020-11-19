@@ -113,9 +113,8 @@ main() {
     expect(find.byType(ComparisonReportView), findsNothing);
   });
 
-  testWidgets("Selecting comparison shows comparison", (WidgetTester tester)
-      async
-  {
+  testWidgets("Selecting comparison shows comparison",
+      (WidgetTester tester) async {
     when(appManager.mockSummaryReportManager.list()).thenReturn([]);
     when(appManager.mockComparisonReportManager.list()).thenReturn([
       ComparisonReport()
@@ -137,8 +136,7 @@ main() {
   });
 
   testWidgets("If current report is deleted, falls back to overview",
-      (WidgetTester tester) async
-  {
+      (WidgetTester tester) async {
     var summaryReportManager = SummaryReportManager(appManager);
     when(appManager.summaryReportManager).thenReturn(summaryReportManager);
 
@@ -148,8 +146,7 @@ main() {
     Id reportId = randomId();
     await comparisonReportManager.addOrUpdate(ComparisonReport()
       ..id = reportId
-      ..name = "Comparison"
-    );
+      ..name = "Comparison");
 
     await tester.pumpWidget(Testable(
       (_) => StatsPage(),
@@ -173,15 +170,13 @@ main() {
   });
 
   testWidgets("If non-current report is deleted, report stays the same",
-      (WidgetTester tester) async
-  {
+      (WidgetTester tester) async {
     var summaryReportManager = SummaryReportManager(appManager);
     when(appManager.summaryReportManager).thenReturn(summaryReportManager);
     Id summaryId = randomId();
     await summaryReportManager.addOrUpdate(SummaryReport()
       ..id = summaryId
-      ..name = "Summary"
-    );
+      ..name = "Summary");
 
     var comparisonReportManager = ComparisonReportManager(appManager);
     when(appManager.comparisonReportManager)
@@ -189,8 +184,7 @@ main() {
     Id comparisonId = randomId();
     await comparisonReportManager.addOrUpdate(ComparisonReport()
       ..id = comparisonId
-      ..name = "Comparison"
-    );
+      ..name = "Comparison");
 
     await tester.pumpWidget(Testable(
       (_) => StatsPage(),

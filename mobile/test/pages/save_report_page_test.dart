@@ -60,7 +60,8 @@ main() {
 
     when(appManager.mockBaitManager.list(any)).thenReturn(baitList);
     when(appManager.mockBaitManager
-        .listSortedByName(filter: anyNamed("filter"))).thenReturn(baitList);
+            .listSortedByName(filter: anyNamed("filter")))
+        .thenReturn(baitList);
     when(appManager.mockBaitManager.filteredList(any)).thenReturn(baitList);
 
     // Sunday, September 13, 2020 12:26:40 PM GMT
@@ -75,19 +76,17 @@ main() {
     when(appManager.mockFishingSpotManager.list(any))
         .thenReturn(fishingSpotList);
     when(appManager.mockFishingSpotManager
-        .listSortedByName(filter: anyNamed("filter")))
+            .listSortedByName(filter: anyNamed("filter")))
         .thenReturn(fishingSpotList);
 
-    when(appManager.mockSpeciesManager.list(any))
-        .thenReturn(speciesList);
+    when(appManager.mockSpeciesManager.list(any)).thenReturn(speciesList);
     when(appManager.mockSpeciesManager
-        .listSortedByName(filter: anyNamed("filter")))
+            .listSortedByName(filter: anyNamed("filter")))
         .thenReturn(speciesList);
   });
 
-  Future<void> selectItems(WidgetTester tester, String startText,
-      List<String> items) async
-  {
+  Future<void> selectItems(
+      WidgetTester tester, String startText, List<String> items) async {
     await tapAndSettle(tester, find.text(startText));
     for (String item in items) {
       await tester.tap(find.descendant(
@@ -106,7 +105,9 @@ main() {
   testWidgets("Edit title", (WidgetTester tester) async {
     await tester.pumpWidget(Testable(
       (_) => SaveReportPage.edit(
-        SummaryReport()..id = randomId()..name = "Summary",
+        SummaryReport()
+          ..id = randomId()
+          ..name = "Summary",
       ),
       appManager: appManager,
     ));
@@ -115,10 +116,13 @@ main() {
 
   testWidgets("Type defaults to summary", (WidgetTester tester) async {
     await tester.pumpWidget(Testable((_) => SaveReportPage()));
-    expect(find.descendant(
-      of: find.widgetWithText(Row, "Summary"),
-      matching: find.byIcon(Icons.radio_button_checked),
-    ), findsOneWidget);
+    expect(
+      find.descendant(
+        of: find.widgetWithText(Row, "Summary"),
+        matching: find.byIcon(Icons.radio_button_checked),
+      ),
+      findsOneWidget,
+    );
   });
 
   testWidgets("Date range defaults to all", (WidgetTester tester) async {
@@ -127,8 +131,7 @@ main() {
   });
 
   testWidgets("Save button state updates when name changes",
-      (WidgetTester tester) async
-  {
+      (WidgetTester tester) async {
     await tester.pumpWidget(Testable(
       (_) => SaveReportPage(),
       appManager: appManager,
@@ -138,15 +141,14 @@ main() {
     expect(findFirstWithText<ActionButton>(tester, "SAVE").onPressed, isNull);
 
     // Entering valid text updates state.
-    await enterTextAndSettle(tester, find.widgetWithText(TextField, "Name"),
-        "Report Name");
-    expect(findFirstWithText<ActionButton>(tester, "SAVE").onPressed,
-        isNotNull);
+    await enterTextAndSettle(
+        tester, find.widgetWithText(TextField, "Name"), "Report Name");
+    expect(
+        findFirstWithText<ActionButton>(tester, "SAVE").onPressed, isNotNull);
   });
 
-  testWidgets("Selecting type updates date range pickers", (WidgetTester tester)
-      async
-  {
+  testWidgets("Selecting type updates date range pickers",
+      (WidgetTester tester) async {
     await tester.pumpWidget(Testable(
       (_) => SaveReportPage(),
       appManager: appManager,
@@ -158,8 +160,8 @@ main() {
     // Switch to comparison shows end date picker.
     await tapAndSettle(tester, find.widgetWithText(InkWell, "Comparison"));
     expect(find.byType(DateRangePickerInput), findsNWidgets(2));
-    expect(find.widgetWithText(DateRangePickerInput, "Compare"),
-        findsOneWidget);
+    expect(
+        find.widgetWithText(DateRangePickerInput, "Compare"), findsOneWidget);
     expect(find.widgetWithText(DateRangePickerInput, "To"), findsOneWidget);
 
     // Switching back to summary removes end date picker.
@@ -214,9 +216,8 @@ main() {
     expect(find.byType(BaitListPage), findsOneWidget);
   });
 
-  testWidgets("Fishing spot picker shows picker page", (WidgetTester tester)
-      async
-  {
+  testWidgets("Fishing spot picker shows picker page",
+      (WidgetTester tester) async {
     await tester.pumpWidget(Testable(
       (_) => SaveReportPage(),
       appManager: appManager,
@@ -227,19 +228,20 @@ main() {
   });
 
   group("Comparison report", () {
-    testWidgets("Add report with preset date ranges", (WidgetTester tester)
-        async
-    {
+    testWidgets("Add report with preset date ranges",
+        (WidgetTester tester) async {
       await tester.pumpWidget(Testable(
         (_) => SaveReportPage(),
         appManager: appManager,
       ));
 
-      await enterTextAndSettle(tester, find.widgetWithText(TextField, "Name"),
-          "Report Name");
-      await enterTextAndSettle(tester,
-          find.widgetWithText(TextField, "Description"),
-          "A brief description.");
+      await enterTextAndSettle(
+          tester, find.widgetWithText(TextField, "Name"), "Report Name");
+      await enterTextAndSettle(
+        tester,
+        find.widgetWithText(TextField, "Description"),
+        "A brief description.",
+      );
       await tapAndSettle(tester, find.widgetWithText(InkWell, "Comparison"));
       await tapAndSettle(tester, find.text("Compare"));
       await tapAndSettle(tester, find.text("Last month"));
@@ -249,14 +251,20 @@ main() {
       await selectItems(tester, "All fishing spots", ["A", "B"]);
       await selectItems(tester, "All baits", ["Spoon", "Rapala"]);
 
-      expect(find.descendant(
-        of: find.widgetWithText(InkWell, "Compare"),
-        matching: find.text("Last month"),
-      ), findsOneWidget);
-      expect(find.descendant(
-        of: find.widgetWithText(InkWell, "To"),
-        matching: find.text("This month"),
-      ), findsOneWidget);
+      expect(
+        find.descendant(
+          of: find.widgetWithText(InkWell, "Compare"),
+          matching: find.text("Last month"),
+        ),
+        findsOneWidget,
+      );
+      expect(
+        find.descendant(
+          of: find.widgetWithText(InkWell, "To"),
+          matching: find.text("This month"),
+        ),
+        findsOneWidget,
+      );
       expect(find.text("Steelhead"), findsOneWidget);
       expect(find.text("Catfish"), findsOneWidget);
       expect(find.text("A"), findsOneWidget);
@@ -280,9 +288,8 @@ main() {
       expect(report.fishingSpotIds.length, 2);
     });
 
-    testWidgets("Add report with custom date ranges", (WidgetTester tester)
-        async
-    {
+    testWidgets("Add report with custom date ranges",
+        (WidgetTester tester) async {
       DateRange fromDateRange;
       DateRange toDateRange;
       await tester.pumpWidget(Testable(
@@ -295,8 +302,8 @@ main() {
         appManager: appManager,
       ));
 
-      await enterTextAndSettle(tester, find.widgetWithText(TextField, "Name"),
-          "Report Name");
+      await enterTextAndSettle(
+          tester, find.widgetWithText(TextField, "Name"), "Report Name");
       await tapAndSettle(tester, find.widgetWithText(InkWell, "Comparison"));
 
       await tapAndSettle(tester, find.text("Compare"));
@@ -351,14 +358,20 @@ main() {
       // Verify all fields are set correctly.
       expect(find.text("Report Name"), findsOneWidget);
       expect(find.text("Report description"), findsOneWidget);
-      expect(find.descendant(
-        of: find.widgetWithText(InkWell, "Compare"),
-        matching: find.text("Yesterday"),
-      ), findsOneWidget);
-      expect(find.descendant(
-        of: find.widgetWithText(InkWell, "To"),
-        matching: find.text("Today"),
-      ), findsOneWidget);
+      expect(
+        find.descendant(
+          of: find.widgetWithText(InkWell, "Compare"),
+          matching: find.text("Yesterday"),
+        ),
+        findsOneWidget,
+      );
+      expect(
+        find.descendant(
+          of: find.widgetWithText(InkWell, "To"),
+          matching: find.text("Today"),
+        ),
+        findsOneWidget,
+      );
       expect(find.text("Rapala"), findsOneWidget);
       expect(find.text("Spoon"), findsOneWidget);
       expect(find.text("A"), findsOneWidget);
@@ -377,19 +390,20 @@ main() {
   });
 
   group("Summary report", () {
-    testWidgets("Add report with preset date ranges", (WidgetTester tester)
-        async
-    {
+    testWidgets("Add report with preset date ranges",
+        (WidgetTester tester) async {
       await tester.pumpWidget(Testable(
         (_) => SaveReportPage(),
         appManager: appManager,
       ));
 
-      await enterTextAndSettle(tester, find.widgetWithText(TextField, "Name"),
-          "Report Name");
-      await enterTextAndSettle(tester,
-          find.widgetWithText(TextField, "Description"),
-          "A brief description.");
+      await enterTextAndSettle(
+          tester, find.widgetWithText(TextField, "Name"), "Report Name");
+      await enterTextAndSettle(
+        tester,
+        find.widgetWithText(TextField, "Description"),
+        "A brief description.",
+      );
       await tapAndSettle(tester, find.widgetWithText(InkWell, "Summary"));
       await tapAndSettle(tester, find.text("All dates"));
       await tapAndSettle(tester, find.text("Last month"));
@@ -407,8 +421,8 @@ main() {
 
       await tapAndSettle(tester, find.text("SAVE"));
 
-      VerificationResult result = verify(
-          appManager.mockSummaryReportManager.addOrUpdate(captureAny));
+      VerificationResult result =
+          verify(appManager.mockSummaryReportManager.addOrUpdate(captureAny));
       result.called(1);
 
       SummaryReport report = result.captured.first;
@@ -420,9 +434,8 @@ main() {
       expect(report.fishingSpotIds.length, 2);
     });
 
-    testWidgets("Add report with custom date ranges", (WidgetTester tester)
-        async
-    {
+    testWidgets("Add report with custom date ranges",
+        (WidgetTester tester) async {
       DateRange dateRange;
       await tester.pumpWidget(Testable(
         (context) {
@@ -433,8 +446,8 @@ main() {
         appManager: appManager,
       ));
 
-      await enterTextAndSettle(tester, find.widgetWithText(TextField, "Name"),
-          "Report Name");
+      await enterTextAndSettle(
+          tester, find.widgetWithText(TextField, "Name"), "Report Name");
       await tapAndSettle(tester, find.widgetWithText(InkWell, "Summary"));
 
       await tapAndSettle(tester, find.text("All dates"));
@@ -446,8 +459,8 @@ main() {
 
       await tapAndSettle(tester, find.text("SAVE"));
 
-      VerificationResult result = verify(
-          appManager.mockSummaryReportManager.addOrUpdate(captureAny));
+      VerificationResult result =
+          verify(appManager.mockSummaryReportManager.addOrUpdate(captureAny));
       result.called(1);
 
       SummaryReport report = result.captured.first;
@@ -488,8 +501,8 @@ main() {
 
       await tapAndSettle(tester, find.text("SAVE"));
 
-      VerificationResult result = verify(
-          appManager.mockSummaryReportManager.addOrUpdate(captureAny));
+      VerificationResult result =
+          verify(appManager.mockSummaryReportManager.addOrUpdate(captureAny));
       result.called(1);
 
       expect(result.captured.first.id, report.id);

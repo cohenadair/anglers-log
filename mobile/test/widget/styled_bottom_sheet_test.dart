@@ -7,10 +7,14 @@ import '../test_utils.dart';
 main() {
   testWidgets("onDismissed callback invoked", (WidgetTester tester) async {
     bool invoked = false;
-    await tester.pumpWidget(Testable((_) => StyledBottomSheet(
-      child: Text("Test"),
-      onDismissed: () => invoked = true,
-    )));
+    await tester.pumpWidget(
+      Testable(
+        (_) => StyledBottomSheet(
+          child: Text("Test"),
+          onDismissed: () => invoked = true,
+        ),
+      ),
+    );
     // Wait for initial animation.
     await tester.pumpAndSettle();
 

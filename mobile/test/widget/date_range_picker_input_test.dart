@@ -7,9 +7,13 @@ import '../test_utils.dart';
 main() {
   testWidgets("onPicked is called", (WidgetTester tester) async {
     bool picked = false;
-    await tester.pumpWidget(Testable((_) => DateRangePickerInput(
-      onPicked: (_) => picked = true,
-    )));
+    await tester.pumpWidget(
+      Testable(
+        (_) => DateRangePickerInput(
+          onPicked: (_) => picked = true,
+        ),
+      ),
+    );
 
     // Tap row.
     expect(find.text("All dates"), findsOneWidget);

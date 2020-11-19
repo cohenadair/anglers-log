@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'dart:ui' as ui;
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -15,6 +16,7 @@ import 'package:photo_manager/photo_manager.dart';
 import 'package:provider/provider.dart';
 
 class MockAssetEntity extends Mock implements AssetEntity {}
+
 class MockAssetPathEntity extends Mock implements AssetPathEntity {}
 
 class MockNavigatorObserver extends Mock implements NavigatorObserver {}
@@ -26,7 +28,8 @@ class Testable extends StatelessWidget {
   final NavigatorObserver navigatorObserver;
   final AppManager appManager;
 
-  Testable(this.builder, {
+  Testable(
+    this.builder, {
     this.mediaQueryData = const MediaQueryData(),
     this.navigatorObserver,
     this.appManager,
@@ -47,8 +50,8 @@ class Testable extends StatelessWidget {
           GlobalWidgetsLocalizations.delegate,
         ],
         locale: Locale("en", "CA"),
-        navigatorObservers: navigatorObserver == null
-            ? [] : [navigatorObserver],
+        navigatorObservers:
+            navigatorObserver == null ? [] : [navigatorObserver],
         home: MediaQuery(
           data: mediaQueryData,
           child: Material(
@@ -69,13 +72,14 @@ DisplayDateRange stubDateRange(DateRange dateRange) {
   );
 }
 
-Future<BuildContext> buildContext(WidgetTester tester, {
+Future<BuildContext> buildContext(
+  WidgetTester tester, {
   bool use24Hour = false,
   AppManager appManager,
 }) async {
   BuildContext context;
-  await tester.pumpWidget(
-    Testable((buildContext) {
+  await tester.pumpWidget(Testable(
+    (buildContext) {
       context = buildContext;
       return Empty();
     },
@@ -97,8 +101,8 @@ MockAssetEntity createMockAssetEntity({
   var entity = MockAssetEntity();
   when(entity.id).thenReturn(fileName);
   when(entity.createDateTime).thenReturn(dateTime ?? DateTime.now());
-  when(entity.thumbData).thenAnswer((_) =>
-      Future.value(File("test/resources/$fileName").readAsBytesSync()));
+  when(entity.thumbData).thenAnswer(
+      (_) => Future.value(File("test/resources/$fileName").readAsBytesSync()));
   when(entity.latlngAsync()).thenAnswer((_) => Future.value(latLngAsync));
   when(entity.latitude).thenReturn(latLngLegacy?.latitude);
   when(entity.longitude).thenReturn(latLngLegacy?.longitude);
@@ -129,14 +133,13 @@ T findSiblingOfText<T>(WidgetTester tester, Type parentType, String text) =>
 
 /// Different from [Finder.byType] in that it works for widgets with generic
 /// arguments.
-List<T> findType<T>(WidgetTester tester) =>
-    tester.widgetList(find.byWidgetPredicate((widget) => widget is T))
-        .map((e) => e as T)
-        .toList();
+List<T> findType<T>(WidgetTester tester) => tester
+    .widgetList(find.byWidgetPredicate((widget) => widget is T))
+    .map((e) => e as T)
+    .toList();
 
 Future<void> tapAndSettle(WidgetTester tester, Finder finder,
-    [int durationMillis]) async
-{
+    [int durationMillis]) async {
   await tester.tap(finder);
   if (durationMillis == null) {
     await tester.pumpAndSettle();
@@ -145,9 +148,8 @@ Future<void> tapAndSettle(WidgetTester tester, Finder finder,
   }
 }
 
-Future<void> enterTextAndSettle(WidgetTester tester, Finder finder, String text)
-    async
-{
+Future<void> enterTextAndSettle(
+    WidgetTester tester, Finder finder, String text) async {
   await tester.enterText(finder, text);
   await tester.pumpAndSettle();
 }
@@ -157,8 +159,8 @@ Future<ui.Image> loadImage(WidgetTester tester, String path) async {
   // runAsync is required here because instantiateImageCodec does real async
   // work and can't be used with pump().
   await tester.runAsync(() async {
-    image = (await (await ui.instantiateImageCodec(
-        File(path).readAsBytesSync())).getNextFrame()).image;
+    Codec codec = await ui.instantiateImageCodec(File(path).readAsBytesSync());
+    image = (await codec.getNextFrame()).image;
   });
   return image;
 }

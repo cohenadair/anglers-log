@@ -10,26 +10,38 @@ import '../test_utils.dart';
 
 main() {
   testWidgets("Default margins", (WidgetTester tester) async {
-    await tester.pumpWidget(Testable((_) => FloatingContainer(
-      title: "Test",
-    )));
+    await tester.pumpWidget(
+      Testable(
+        (_) => FloatingContainer(
+          title: "Test",
+        ),
+      ),
+    );
     expect(findFirst<Container>(tester).margin, insetsDefault);
   });
 
   testWidgets("Custom margins", (WidgetTester tester) async {
-    await tester.pumpWidget(Testable((_) => FloatingContainer(
-      title: "Test",
-      margin: EdgeInsets.all(37),
-    )));
+    await tester.pumpWidget(
+      Testable(
+        (_) => FloatingContainer(
+          title: "Test",
+          margin: EdgeInsets.all(37),
+        ),
+      ),
+    );
     expect(findFirst<Container>(tester).margin, EdgeInsets.all(37));
   });
 
   testWidgets("Tap enabled", (WidgetTester tester) async {
     bool tapped = false;
-    await tester.pumpWidget(Testable((_) => FloatingContainer(
-      title: "Test",
-      onTap: () => tapped = true,
-    )));
+    await tester.pumpWidget(
+      Testable(
+        (_) => FloatingContainer(
+          title: "Test",
+          onTap: () => tapped = true,
+        ),
+      ),
+    );
     await tester.tap(find.text("Test"));
     await tester.pumpAndSettle();
 
@@ -39,49 +51,64 @@ main() {
   });
 
   testWidgets("Tap disabled", (WidgetTester tester) async {
-    await tester.pumpWidget(Testable((_) => FloatingContainer(
-      title: "Test",
-    )));
+    await tester.pumpWidget(
+      Testable(
+        (_) => FloatingContainer(
+          title: "Test",
+        ),
+      ),
+    );
     expect(find.byType(RightChevronIcon), findsNothing);
     expect(findFirst<ListItem>(tester).contentPadding.right, paddingDefault);
   });
 
   testWidgets("Empty title shows subtitle", (WidgetTester tester) async {
-    await tester.pumpWidget(Testable((_) => FloatingContainer(
-      subtitle: "Subtitle",
-    )));
+    await tester.pumpWidget(
+      Testable(
+        (_) => FloatingContainer(
+          subtitle: "Subtitle",
+        ),
+      ),
+    );
     expect(find.byType(SubtitleLabel), findsNothing);
     expect(find.text("Subtitle"), findsOneWidget);
   });
 
   testWidgets("Title and subtitle", (WidgetTester tester) async {
-    await tester.pumpWidget(Testable((_) => FloatingContainer(
-      title: "Title",
-      subtitle: "Subtitle",
-    )));
+    await tester.pumpWidget(
+      Testable(
+        (_) => FloatingContainer(
+          title: "Title",
+          subtitle: "Subtitle",
+        ),
+      ),
+    );
     expect(find.byType(Label), findsNWidgets(2)); // Title and Subtitle
     expect(find.text("Title"), findsOneWidget);
     expect(find.byType(SubtitleLabel), findsOneWidget);
     expect(find.text("Subtitle"), findsOneWidget);
   });
 
-  testWidgets("Title/subtitle cannot both be empty", (WidgetTester tester)
-      async
-  {
+  testWidgets("Title/subtitle cannot both be empty",
+      (WidgetTester tester) async {
     await tester.pumpWidget(Testable((_) => FloatingContainer()));
     expect(tester.takeException(), isAssertionError);
   });
 
   testWidgets("Children are added", (WidgetTester tester) async {
-    await tester.pumpWidget(Testable((_) => FloatingContainer(
-      title: "Title",
-      subtitle: "Subtitle",
-      children: [
-        Text("Child 1"),
-        Text("Child 2"),
-        Text("Child 3"),
-      ],
-    )));
+    await tester.pumpWidget(
+      Testable(
+        (_) => FloatingContainer(
+          title: "Title",
+          subtitle: "Subtitle",
+          children: [
+            Text("Child 1"),
+            Text("Child 2"),
+            Text("Child 3"),
+          ],
+        ),
+      ),
+    );
     expect(find.text("Child 1"), findsOneWidget);
     expect(find.text("Child 2"), findsOneWidget);
     expect(find.text("Child 3"), findsOneWidget);

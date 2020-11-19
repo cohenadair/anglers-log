@@ -37,18 +37,17 @@ main() {
   });
 
   testWidgets("Save button state updates when name changes",
-      (WidgetTester tester) async
-  {
+      (WidgetTester tester) async {
     await tester.pumpWidget(Testable(
       (_) => SaveCustomEntityPage(),
       appManager: appManager,
     ));
 
     expect(findFirstWithText<ActionButton>(tester, "SAVE").onPressed, isNull);
-    await enterTextAndSettle(tester, find.widgetWithText(TextField, "Name"),
-        "Water Depth");
-    expect(findFirstWithText<ActionButton>(tester, "SAVE").onPressed,
-        isNotNull);
+    await enterTextAndSettle(
+        tester, find.widgetWithText(TextField, "Name"), "Water Depth");
+    expect(
+        findFirstWithText<ActionButton>(tester, "SAVE").onPressed, isNotNull);
   });
 
   testWidgets("All type options are rendered", (WidgetTester tester) async {
@@ -77,18 +76,21 @@ main() {
     expect(find.widgetWithText(TextField, "Water Depth"), findsOneWidget);
     expect(find.widgetWithText(TextField, "How deep the water is."),
         findsOneWidget);
-    expect(find.descendant(
-      of: find.widgetWithText(InkWell, "Number"),
-      matching: find.byIcon(Icons.radio_button_checked),
-    ), findsOneWidget);
+    expect(
+      find.descendant(
+        of: find.widgetWithText(InkWell, "Number"),
+        matching: find.byIcon(Icons.radio_button_checked),
+      ),
+      findsOneWidget,
+    );
 
     await enterTextAndSettle(tester,
         find.widgetWithText(TextField, "Description"), "A description.");
     await tapAndSettle(tester, find.text("Checkbox"));
     await tapAndSettle(tester, find.text("SAVE"));
 
-    VerificationResult result = verify(appManager.mockCustomEntityManager
-        .addOrUpdate(captureAny));
+    VerificationResult result =
+        verify(appManager.mockCustomEntityManager.addOrUpdate(captureAny));
     result.called(1);
 
     CustomEntity newEntity = result.captured.first;
@@ -104,12 +106,12 @@ main() {
       appManager: appManager,
     ));
 
-    await enterTextAndSettle(tester, find.widgetWithText(TextField, "Name"),
-        "A Name");
+    await enterTextAndSettle(
+        tester, find.widgetWithText(TextField, "Name"), "A Name");
     await tapAndSettle(tester, find.text("SAVE"));
 
-    VerificationResult result = verify(appManager.mockCustomEntityManager
-        .addOrUpdate(captureAny));
+    VerificationResult result =
+        verify(appManager.mockCustomEntityManager.addOrUpdate(captureAny));
     result.called(1);
 
     CustomEntity newEntity = result.captured.first;

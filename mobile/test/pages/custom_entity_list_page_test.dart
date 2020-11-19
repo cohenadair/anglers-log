@@ -34,12 +34,12 @@ main() {
     );
 
     when(appManager.mockCustomEntityManager
-        .listSortedByName(filter: anyNamed("filter"))).thenReturn(entities);
+            .listSortedByName(filter: anyNamed("filter")))
+        .thenReturn(entities);
   });
 
   testWidgets("CustomEntity description rendered correctly",
-      (WidgetTester tester) async
-  {
+      (WidgetTester tester) async {
     await tester.pumpWidget(Testable(
       (_) => CustomEntityListPage(),
       appManager: appManager,

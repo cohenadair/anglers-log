@@ -9,7 +9,7 @@ import '../test_utils.dart';
 
 main() {
   MockAppManager appManager;
-  
+
   setUp(() {
     appManager = MockAppManager(
       mockTimeManager: true,
@@ -38,9 +38,8 @@ main() {
     expect(find.text("Jan 1, 2020 - Feb 1, 2020"), findsOneWidget);
   });
 
-  testWidgets("Selecting date range invokes callback", (WidgetTester tester)
-      async
-  {
+  testWidgets("Selecting date range invokes callback",
+      (WidgetTester tester) async {
     DisplayDateRange picked;
     await tester.pumpWidget(Testable(
       (_) => DateRangePickerPage(
@@ -55,8 +54,7 @@ main() {
   });
 
   testWidgets("Tapping custom date range opens date picker",
-      (WidgetTester tester) async
-  {
+      (WidgetTester tester) async {
     await tester.pumpWidget(Testable(
       (_) => DateRangePickerPage(
         initialValue: DisplayDateRange.yesterday,
@@ -75,8 +73,7 @@ main() {
   });
 
   testWidgets("Cancelling date picker doesn't update state",
-      (WidgetTester tester) async
-  {
+      (WidgetTester tester) async {
     await tester.pumpWidget(Testable(
       (_) => DateRangePickerPage(
         initialValue: DisplayDateRange.yesterday,
@@ -95,8 +92,7 @@ main() {
   });
 
   testWidgets("Start/end date are the same, set range of 1 day",
-      (WidgetTester tester) async
-  {
+      (WidgetTester tester) async {
     BuildContext context;
     DisplayDateRange picked;
     await tester.pumpWidget(Testable(
